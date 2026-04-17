@@ -1,30 +1,39 @@
-import { useMemo, useState } from "react";
+import { lazy, Suspense, useDeferredValue, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Compass, Globe2, Layers, Library, Map, Search, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { PlaceCard } from "./components/PlaceCard";
-import { PlaceDetail } from "./components/PlaceDetail";
 import { FilterBar } from "./components/FilterBar";
-import { CompareView } from "./components/CompareView";
-import { CollectionsView } from "./components/CollectionsView";
-import { LearnMode } from "./components/LearnMode";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
 import { applyFilters, rankPlaces, type FilterState, type RankingProfile } from "./lib/scoring";
 import { useUnits } from "./lib/units";
 import type { MicroclimateArchetype } from "./types";
 
+// Lazy-loaded secondary views and heavy panels. Keeping them out of the main
+// bundle trims ~40 % off the initial JS parse, which is the single biggest
+// win on memory-constrained hardware.
+const PlaceDetail = lazy(() => import("./components/PlaceDetail").then(m => ({ default: m.PlaceDetail })));
+const CompareView = lazy(() => import("./components/CompareView").then(m => ({ default: m.CompareView })));
+const CollectionsView = lazy(() => import("./components/CollectionsView").then(m => ({ default: m.CollectionsView })));
+const LearnMode = lazy(() => import("./components/LearnMode").then(m => ({ default: m.LearnMode })));
+
 type View = "explorer" | "collections" | "learn";
 
 export default function App() {
   const [view, setView] = useState<View>("explorer");
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [hoverId, setHoverId] = useState<string | null>(null);
   const [compareIds, setCompareIds] = useState<Set<string>>(new Set());
   const [compareOpen, setCompareOpen] = useState(false);
   const [activeCollection, setActiveCollection] = useState<string | null>(null);
   const [filters, setFilters] = useState<FilterState>({ countries: new Set(), archetypes: new Set(), search: "" });
   const [ranking, setRanking] = useState<RankingProfile>("hidden-gems");
+  // Track whether each heavy lazy panel has ever been opened. Once opened we
+  // keep it mounted so its internal AnimatePresence can play the exit
+  // animation (unmounting kills the animation). Before first open we skip
+  // it entirely so the lazy chunk never downloads.
+  const [detailEverOpened, setDetailEverOpened] = useState(false);
+  const [compareEverOpened, setCompareEverOpened] = useState(false);
 
   const pool = useMemo(() => {
     if (activeCollection) {
@@ -34,7 +43,12 @@ export default function App() {
     return PLACES;
   }, [activeCollection]);
 
-  const filtered = useMemo(() => applyFilters(pool, filters), [pool, filters]);
+  // Defer the filter object so typing in the search box stays responsive
+  // even while the list/map recompute. React yields the heavy filter+rank
+  // work to a lower priority, which is exactly what we want on low-spec
+  // hardware.
+  const deferredFilters = useDeferredValue(filters);
+  const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
   const ranked = useMemo(() => rankPlaces(ranking, filtered), [ranking, filtered]);
 
   const selectedPlace = selectedId ? PLACES_BY_ID[selectedId] ?? null : null;
@@ -51,7 +65,15 @@ export default function App() {
     });
   };
 
-  const openPlace = (id: string) => { setSelectedId(id); };
+  const openPlace = (id: string) => {
+    setSelectedId(id);
+    setDetailEverOpened(true);
+  };
+
+  const openCompare = () => {
+    setCompareOpen(true);
+    setCompareEverOpened(true);
+  };
 
   const pickArchetype = (a: MicroclimateArchetype) => {
     setFilters(f => ({ ...f, archetypes: new Set([a]) }));
@@ -61,7 +83,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col text-ice">
-      <TopBar view={view} setView={setView} onOpenCompare={() => setCompareOpen(true)} compareCount={compareIds.size} />
+      <TopBar view={view} setView={setView} onOpenCompare={openCompare} compareCount={compareIds.size} />
 
       <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1600px] w-full mx-auto">
         <AnimatePresence mode="wait">
@@ -79,9 +101,8 @@ export default function App() {
                 <div className="h-[52vh] min-h-[460px] relative">
                   <AtlasMap
                     places={filtered}
-                    selectedId={selectedId ?? hoverId ?? undefined}
+                    selectedId={selectedId ?? undefined}
                     onSelect={openPlace}
-                    onHover={setHoverId}
                   />
                   <MapLegend />
                 </div>
@@ -128,11 +149,13 @@ export default function App() {
                     Hand-assembled thematic bundles — the rain shadows, the sky islands, the eternal springs. Pin a collection to constrain the explorer map to just those places.
                   </p>
                 </div>
-                <CollectionsView
-                  onOpenPlace={(id) => { setSelectedId(id); setView("explorer"); }}
-                  onPick={(id) => { setActiveCollection(a => a === id ? null : id); setView("explorer"); }}
-                  activeId={activeCollection ?? undefined}
-                />
+                <Suspense fallback={<LazyFallback />}>
+                  <CollectionsView
+                    onOpenPlace={(id) => { setSelectedId(id); setView("explorer"); }}
+                    onPick={(id) => { setActiveCollection(a => a === id ? null : id); setView("explorer"); }}
+                    activeId={activeCollection ?? undefined}
+                  />
+                </Suspense>
               </div>
             </motion.div>
           )}
@@ -147,7 +170,9 @@ export default function App() {
                     The vocabulary of microclimate — concepts like lapse rate, cold-air pooling, orographic lift, and thermal belts — gives you the language to read a landscape and understand why the weather there is the way it is.
                   </p>
                 </div>
-                <LearnMode onOpenPlace={(id) => { setSelectedId(id); setView("explorer"); }} />
+                <Suspense fallback={<LazyFallback />}>
+                  <LearnMode onOpenPlace={(id) => { setSelectedId(id); setView("explorer"); }} />
+                </Suspense>
               </div>
             </motion.div>
           )}
@@ -156,20 +181,39 @@ export default function App() {
 
       <Footer />
 
-      <PlaceDetail
-        place={selectedPlace}
-        onClose={() => setSelectedId(null)}
-        onCompareToggle={toggleCompare}
-        inCompareIds={compareIds}
-        onPickArchetype={pickArchetype}
-        onOpenPlace={(id) => setSelectedId(id)}
-      />
-      <CompareView
-        places={[...compareIds].map(id => PLACES_BY_ID[id]).filter(Boolean)}
-        open={compareOpen}
-        onClose={() => setCompareOpen(false)}
-        onRemove={toggleCompare}
-      />
+      {/* Heavy panels load on first open, then stay mounted so their internal
+          AnimatePresence can play the exit animation on close. The chunks
+          themselves never download until the user interacts. */}
+      {detailEverOpened && (
+        <Suspense fallback={null}>
+          <PlaceDetail
+            place={selectedPlace}
+            onClose={() => setSelectedId(null)}
+            onCompareToggle={toggleCompare}
+            inCompareIds={compareIds}
+            onPickArchetype={pickArchetype}
+            onOpenPlace={openPlace}
+          />
+        </Suspense>
+      )}
+      {compareEverOpened && (
+        <Suspense fallback={null}>
+          <CompareView
+            places={[...compareIds].map(id => PLACES_BY_ID[id]).filter(Boolean)}
+            open={compareOpen}
+            onClose={() => setCompareOpen(false)}
+            onRemove={toggleCompare}
+          />
+        </Suspense>
+      )}
+    </div>
+  );
+}
+
+function LazyFallback() {
+  return (
+    <div className="panel p-6 text-sm text-stone text-center anim-fade-in">
+      Loading…
     </div>
   );
 }

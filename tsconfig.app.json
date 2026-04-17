@@ -15,7 +15,9 @@
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "incremental": true,
+    "tsBuildInfoFile": "./tsconfig.app.tsbuildinfo"
   },
   "include": ["src"]
 }

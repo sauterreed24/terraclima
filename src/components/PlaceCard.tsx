@@ -1,9 +1,10 @@
+import { memo } from "react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
-import { motion } from "framer-motion";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
+import { PLACE_ANNUAL_PRECIP } from "../data/places";
 import { ArrowRight } from "lucide-react";
 
 interface Props {
@@ -25,23 +26,31 @@ const TONE_ACCENT: Record<string, string> = {
   aurora: "linear-gradient(180deg, #c7b5ea 0%, #5a4397 100%)",
 };
 
-export function PlaceCard({ place, selected, note, onClick, onCompareToggle, inCompare, compact }: Props) {
+/**
+ * Atlas place card.
+ *
+ * Memoized and reduced to a plain button + CSS hover transform. Previously
+ * each card mounted a framer-motion `motion.button` with `layout` and
+ * `whileHover`, which on a 40-card grid meant 40 motion runtimes doing
+ * per-frame work even when idle. Switching to CSS-only hover (no JS) drops
+ * the interactive render budget dramatically on low-spec hardware.
+ */
+export const PlaceCard = memo(function PlaceCard({
+  place, selected, note, onClick, onCompareToggle, inCompare, compact,
+}: Props) {
   const { temp, dist } = useUnits();
   const prose = useProse();
   const julyHighC = meanJulyHigh(place);
   const janLowC = meanJanLow(place);
-  const annualP = place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
+  const annualP = PLACE_ANNUAL_PRECIP[place.id] ?? place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
   const primaryArchetype = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
   const tone = primaryArchetype?.tone ?? "ice";
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
 
   return (
-    <motion.button
-      layout
+    <button
       onClick={onClick}
-      whileHover={{ y: -2 }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className={`text-left panel w-full transition-all relative overflow-hidden group ${selected ? "glow-glacier" : ""}`}
+      className={`place-card text-left panel w-full relative overflow-hidden group ${selected ? "glow-glacier" : ""}`}
       style={{ borderColor: selected ? "rgba(140,200,224,0.75)" : undefined }}
     >
       <span
@@ -111,9 +120,9 @@ export function PlaceCard({ place, selected, note, onClick, onCompareToggle, inC
 
         {note && <div className="text-xs text-stone italic mt-2">{note}</div>}
       </div>
-    </motion.button>
+    </button>
   );
-}
+});
 
 function Stat({ label, value, tone }: { label: string; value: string; tone: string }) {
   const color: Record<string, string> = {

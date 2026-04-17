@@ -331,6 +331,19 @@
     transition: background 160ms;
   }
   .reveal-row:hover { background: rgba(79, 170, 205, 0.06); }
+
+  /* Place card — CSS-only hover lift (replaces framer-motion per-card).
+     Cheaper on low-spec hardware because the GPU composites the transform
+     without any JS in the render loop. */
+  .place-card {
+    cursor: pointer;
+    transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 200ms;
+  }
+  .place-card:hover { transform: translateY(-2px); }
+  .place-card:focus-visible {
+    outline: 2px solid rgba(140, 200, 224, 0.75);
+    outline-offset: 2px;
+  }
 }
 
 @layer utilities {

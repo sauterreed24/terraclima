@@ -3,7 +3,7 @@
 // ============================================================
 
 import type { Place, MicroclimateArchetype, RiskLevel } from "../types";
-import { PLACES } from "../data/places";
+import { PLACES, PLACE_SEARCH_INDEX, PLACE_ANNUAL_PRECIP } from "../data/places";
 
 export const RISK_VALUE: Record<RiskLevel, number> = {
   "very-low": 0,
@@ -49,7 +49,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
   const scored: RankingResult[] = pool.map(p => {
     const julyHigh = meanJulyHigh(p);
     const janLow = meanJanLow(p);
-    const annualPrecip = p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
+    const annualPrecip = PLACE_ANNUAL_PRECIP[p.id] ?? p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
     const diurnal = p.climate.diurnalSummerC ?? (p.climate.tempHighC[6] - p.climate.tempLowC[6]);
 
     switch (profile) {
@@ -131,18 +131,26 @@ export interface FilterState {
 }
 
 export function applyFilters(places: Place[], f: FilterState): Place[] {
-  return places.filter(p => {
-    if (f.countries.size > 0 && !f.countries.has(p.country)) return false;
-    if (f.archetypes.size > 0 && !p.archetypes.some(a => f.archetypes.has(a))) return false;
-    if (f.minElevation !== undefined && p.elevationM < f.minElevation) return false;
-    if (f.maxElevation !== undefined && p.elevationM > f.maxElevation) return false;
-    if (f.maxFireRisk && RISK_VALUE[p.risks.wildfire.level] > RISK_VALUE[f.maxFireRisk]) return false;
-    if (f.minGrowability !== undefined && p.scores.growability < f.minGrowability) return false;
-    if (f.search) {
-      const q = f.search.toLowerCase();
-      const hay = `${p.name} ${p.region} ${p.municipality ?? ""} ${p.archetypes.join(" ")} ${p.summaryShort}`.toLowerCase();
-      if (!hay.includes(q)) return false;
+  // Precompute the query lowercased once, not per-place.
+  const q = f.search ? f.search.trim().toLowerCase() : "";
+  const hasCountries = f.countries.size > 0;
+  const hasArchetypes = f.archetypes.size > 0;
+  const hasMaxFire = !!f.maxFireRisk;
+  const maxFireVal = f.maxFireRisk ? RISK_VALUE[f.maxFireRisk] : 0;
+
+  const out: Place[] = [];
+  for (const p of places) {
+    if (hasCountries && !f.countries.has(p.country)) continue;
+    if (hasArchetypes && !p.archetypes.some(a => f.archetypes.has(a))) continue;
+    if (f.minElevation !== undefined && p.elevationM < f.minElevation) continue;
+    if (f.maxElevation !== undefined && p.elevationM > f.maxElevation) continue;
+    if (hasMaxFire && RISK_VALUE[p.risks.wildfire.level] > maxFireVal) continue;
+    if (f.minGrowability !== undefined && p.scores.growability < f.minGrowability) continue;
+    if (q) {
+      const hay = PLACE_SEARCH_INDEX[p.id];
+      if (!hay || !hay.includes(q)) continue;
     }
-    return true;
-  });
+    out.push(p);
+  }
+  return out;
 }

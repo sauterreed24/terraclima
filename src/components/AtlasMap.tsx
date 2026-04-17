@@ -26,6 +26,12 @@ interface Props {
   places: Place[];
   selectedId?: string;
   onSelect: (id: string) => void;
+  /**
+   * Optional hover callback. Note: this fires on every marker mouseover, so
+   * parent components that use it will re-render frequently. Prefer letting
+   * AtlasMap manage its own hover state (the map's hover ring is already
+   * rendered internally).
+   */
   onHover?: (id: string | null) => void;
   width?: number;
   height?: number;
@@ -145,7 +151,11 @@ export function AtlasMap({
     [pts, hoverId]
   );
 
-  useEffect(() => { onHover?.(hoverId); }, [hoverId, onHover]);
+  // Only notify external listeners if they opted in. Guard the effect so the
+  // common (no-listener) path doesn't cause any work per hover.
+  useEffect(() => {
+    if (onHover) onHover(hoverId);
+  }, [hoverId, onHover]);
 
   // DOM transform applier — used both during drag (no re-render) and after
   // committed view changes.

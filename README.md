@@ -41,6 +41,17 @@ npm run dev
 
 Open http://localhost:5173/.
 
+### Performance posture
+
+Terraclima is tuned to run comfortably on modest hardware (it's developed on a Surface Pro 5 / 8 GB). Specifically:
+
+- Heavy panels (`PlaceDetail`, `CompareView`, `CollectionsView`, `LearnMode`) are lazy-loaded — the initial JS payload only contains the explorer, map, cards, and filter bar.
+- `vite.config.ts` splits `world-atlas` / `us-atlas` / `d3-geo` / `topojson-client` / `framer-motion` into dedicated chunks so the main entry stays lean and the browser cache reuses them aggressively.
+- A search index and annual-precipitation cache are precomputed once in `src/data/places.ts`, so filtering is O(n) substring checks per keystroke rather than per-place string concatenation.
+- The filter state is wrapped in `useDeferredValue`, keeping search typing responsive while the list/map reconcile at lower priority.
+- `PlaceCard` is a pure, memoized `<button>` with a CSS-only hover lift — no framer-motion runtime work per card.
+- The atlas map already avoids React re-renders during drag (direct DOM transform mutation) and coalesces wheel-zoom into a single RAF per frame; hover state is kept local so hovering a marker does not re-render the app tree.
+
 ## Scripts
 
 ```bash
