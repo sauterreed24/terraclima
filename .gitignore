@@ -1,0 +1,57 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build output
+dist/
+dist-ssr/
+build/
+*.local
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# Transpiled-JS artifacts shadowing TS sources (never commit)
+src/**/*.js
+scripts/**/*.js
+src/**/*.d.ts
+!src/vite-env.d.ts
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+logs
+*.log
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Coverage / test output
+coverage/
+.nyc_output/
+
+# Vite / bundler cache
+.vite/
+.cache/
+
+# OS junk
+ehthumbs.db
+Icon?
