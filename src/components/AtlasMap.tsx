@@ -7,6 +7,7 @@ import type { Topology, GeometryCollection } from "topojson-specification";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
+import type { DistUnit } from "../lib/units";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 
@@ -69,9 +70,22 @@ export function AtlasMap({
   const [view, setView] = useState({ k: 1, x: 0, y: 0 });
   const viewRef = useRef(view);
   viewRef.current = view;
+  const { dist } = useUnits();
+  // Units read from a closure-captured ref so our direct-DOM scale-bar updater
+  // never fires a React re-render when the user toggles imperial/metric —
+  // instead we recompute on mount/unit change and when view changes.
+  const distRef = useRef(dist);
+  distRef.current = dist;
 
   const [hoverId, setHoverId] = useState<string | null>(null);
   const [tooltipScreen, setTooltipScreen] = useState<{ xPct: number; yPct: number } | null>(null);
+
+  // Direct-DOM refs for the cursor lat/lon readout and the scale bar. These
+  // are mutated imperatively (via ref.textContent / ref.style.width) on
+  // pointer move / zoom — no React reconciliation on the hot path.
+  const coordLabelRef = useRef<HTMLDivElement>(null);
+  const scaleBarRef = useRef<HTMLDivElement>(null);
+  const scaleBarBarRef = useRef<HTMLDivElement>(null);
 
   const dragRef = useRef({
     active: false,
@@ -146,6 +160,45 @@ export function AtlasMap({
     return out;
   }, [places, projection]);
 
+  // Country labels — computed from geographic anchor points (not polygon
+  // centroids, which sit at Nunavut for Canada and the Aleutians for the US).
+  // Hand-picked lon/lat anchors give visually balanced placement at every
+  // zoom level. Positions projected once; the parent pan/zoom `<g>` moves
+  // them so they always stay tied to the land.
+  const countryLabels = useMemo(() => {
+    const anchors: { id: string; label: string; lonLat: [number, number] }[] = [
+      { id: "usa",    label: "UNITED STATES", lonLat: [-98.0, 40.5] },
+      { id: "canada", label: "CANADA",        lonLat: [-98.0, 58.0] },
+      { id: "mexico", label: "MÉXICO",        lonLat: [-102.0, 23.5] },
+    ];
+    const out: { id: string; label: string; x: number; y: number }[] = [];
+    for (const a of anchors) {
+      const xy = projection(a.lonLat);
+      if (xy) out.push({ id: a.id, label: a.label, x: xy[0], y: xy[1] });
+    }
+    return out;
+  }, [projection]);
+
+  // Precompute km-per-pixel at the map centre at zoom=1. Scale bar width at
+  // any zoom is then `nicePixels = niceDistance_km / (kmPerPx / k)`. We
+  // derive this using the projection's own inverse so it's robust to any
+  // projection parameter change.
+  const kmPerPxAt1 = useMemo(() => {
+    const midX = width / 2;
+    const midY = height / 2;
+    const a = projection.invert?.([midX, midY]);
+    const b = projection.invert?.([midX + 100, midY]);
+    if (!a || !b) return 25; // reasonable fallback
+    return haversineKm(a[0], a[1], b[0], b[1]) / 100;
+  }, [projection, width, height]);
+
+  // Update the scale bar imperatively whenever zoom changes or the user
+  // flips the unit toggle. We avoid re-rendering the map; instead we mutate
+  // the DOM directly via refs.
+  useEffect(() => {
+    updateScaleBar(scaleBarRef.current, scaleBarBarRef.current, view.k, kmPerPxAt1, distRef.current);
+  }, [view, kmPerPxAt1, dist]);
+
   const hoverPlace = useMemo(
     () => pts.find(pt => pt.place.id === hoverId)?.place ?? null,
     [pts, hoverId]
@@ -218,7 +271,37 @@ export function AtlasMap({
     };
   }, []);
 
+  // Cursor lat/lon overlay — RAF-coalesced direct-DOM update. Runs on every
+  // pointer move (not just drag). No React renders.
+  const coordRAF = useRef<number>(0);
+  const coordBufRef = useRef<{ lon: number; lat: number } | null>(null);
+  const updateCursorCoord = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const localX = ((e.clientX - rect.left) / rect.width) * width;
+    const localY = ((e.clientY - rect.top) / rect.height) * height;
+    const v = viewRef.current;
+    // Undo current pan/zoom to get map-space coords, then invert projection.
+    const mapX = (localX - v.x) / v.k;
+    const mapY = (localY - v.y) / v.k;
+    const ll = projection.invert?.([mapX, mapY]);
+    if (!ll) return;
+    coordBufRef.current = { lon: ll[0], lat: ll[1] };
+    if (!coordRAF.current) {
+      coordRAF.current = requestAnimationFrame(() => {
+        coordRAF.current = 0;
+        const buf = coordBufRef.current;
+        coordBufRef.current = null;
+        const el = coordLabelRef.current;
+        if (el && buf) {
+          el.textContent = formatLatLon(buf.lat, buf.lon);
+        }
+      });
+    }
+  }, [projection, width, height]);
+
   const onPointerMove = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
+    updateCursorCoord(e);
     if (!dragRef.current.active) return;
     const rect = svgRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -235,7 +318,7 @@ export function AtlasMap({
         applyDOMTransform();
       });
     }
-  }, [width, height, applyDOMTransform]);
+  }, [width, height, applyDOMTransform, updateCursorCoord]);
 
   const onPointerUp = useCallback(() => {
     if (!dragRef.current.active) return;
@@ -301,7 +384,13 @@ export function AtlasMap({
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        onPointerLeave={() => { onPointerUp(); setHoverId(null); setTooltipScreen(null); }}
+        onPointerEnter={() => { if (coordLabelRef.current) coordLabelRef.current.style.opacity = "1"; }}
+        onPointerLeave={() => {
+          onPointerUp();
+          setHoverId(null);
+          setTooltipScreen(null);
+          if (coordLabelRef.current) coordLabelRef.current.style.opacity = "0";
+        }}
       >
         <defs>
           {/* Ocean — deep navy with a subtle warmth aloft */}
@@ -373,8 +462,8 @@ export function AtlasMap({
           <path d={focusPath} fill="url(#hillshade)" opacity="0.85" />
           <path d={focusPath} fill="url(#hillshade2)" opacity="0.7" />
 
-          {/* Graticule (lat/lon grid) */}
-          <Graticule pathGen={pathGen} />
+          {/* Graticule (lat/lon grid with edge tick labels) */}
+          <Graticule pathGen={pathGen} projection={projection} />
 
           {/* US state interior borders */}
           <path
@@ -395,6 +484,24 @@ export function AtlasMap({
             strokeLinejoin="round"
             vectorEffect="non-scaling-stroke"
           />
+
+          {/* Country labels — big, quiet, sit under markers. Opacity falls
+              off at high zoom so they don't compete with marker labels. */}
+          <g pointerEvents="none" opacity={Math.max(0, Math.min(0.9, 1.35 - view.k * 0.35))}>
+            {countryLabels.map(cl => (
+              <g key={cl.id} transform={`translate(${cl.x} ${cl.y}) scale(${1 / view.k})`}>
+                <text
+                  textAnchor="middle"
+                  fontSize={13}
+                  letterSpacing="0.32em"
+                  fontWeight={600}
+                  fill="rgba(230,242,252,0.62)"
+                  fontFamily="Inter"
+                  style={{ paintOrder: "stroke fill", stroke: "rgba(8,14,26,0.85)", strokeWidth: 4, strokeLinejoin: "round" }}
+                >{cl.label}</text>
+              </g>
+            ))}
+          </g>
 
           {/* Markers */}
           <g>
@@ -417,25 +524,53 @@ export function AtlasMap({
         {/* Vignette (above geometry, below UI) */}
         <rect x="0" y="0" width={width} height={height} fill="url(#vignette)" pointerEvents="none" />
 
-        {/* Compass rose */}
-        <g transform={`translate(${width - 56} 56)`} pointerEvents="none" opacity="0.55">
-          <circle r="22" fill="rgba(13,20,32,0.65)" stroke="rgba(170,193,220,0.45)" strokeWidth="0.8" />
-          <path d="M0 -18 L4 0 L0 18 L-4 0 Z" fill="url(#compassFill)" />
-          <path d="M-18 0 L0 -3 L18 0 L0 3 Z" fill="rgba(195,228,241,0.25)" />
-          <text x="0" y="-25" textAnchor="middle" fontSize="9" fill="rgba(241,246,252,0.85)" fontFamily="Inter" fontWeight={600}>N</text>
+        {/* Compass rose — full 4-point cardinal readout */}
+        <g transform={`translate(${width - 60} 60)`} pointerEvents="none" opacity="0.7">
+          <circle r="26" fill="rgba(13,20,32,0.72)" stroke="rgba(170,193,220,0.5)" strokeWidth="0.9" />
+          <circle r="20" fill="none" stroke="rgba(170,193,220,0.18)" strokeWidth="0.5" strokeDasharray="2 2" />
+          {/* North-South needle */}
+          <path d="M0 -21 L4 0 L0 21 L-4 0 Z" fill="url(#compassFill)" />
+          {/* East-West crossbar */}
+          <path d="M-21 0 L0 -3 L21 0 L0 3 Z" fill="rgba(195,228,241,0.28)" />
+          {/* Centre stud */}
+          <circle r="1.6" fill="rgba(230,242,252,0.85)" />
+          <text x="0" y="-29" textAnchor="middle" fontSize="9" fill="rgba(241,246,252,0.9)" fontFamily="Inter" fontWeight={700}>N</text>
+          <text x="29" y="3"   textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="Inter" fontWeight={500}>E</text>
+          <text x="0" y="37"   textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="Inter" fontWeight={500}>S</text>
+          <text x="-29" y="3"  textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="Inter" fontWeight={500}>W</text>
         </g>
 
-        {/* Scale credit */}
+        {/* Projection credit */}
         <text
-          x="14"
+          x={width - 14}
           y={height - 12}
+          textAnchor="end"
           fontSize="9"
-          fill="rgba(165,185,210,0.65)"
+          fill="rgba(165,185,210,0.55)"
           fontFamily="Inter"
           letterSpacing="0.08em"
           pointerEvents="none"
-        >ALBERS CONIC · NORTH AMERICA · TERRACLIMA</text>
+        >ALBERS CONIC · NORTH AMERICA</text>
       </svg>
+
+      {/* Live scale bar — mutates imperatively via refs on zoom / unit flip.
+          Shows a round number of miles or kilometres at current zoom. */}
+      <div className="absolute bottom-3 left-3 pointer-events-none z-[2] flex flex-col gap-1">
+        <div ref={scaleBarRef} className="text-[9px] font-mono-num text-frost tracking-wider">— mi</div>
+        <div className="h-[10px] flex items-end gap-0">
+          <div ref={scaleBarBarRef} className="h-[6px] border border-[rgba(170,193,220,0.75)] bg-[rgba(13,20,32,0.55)]" style={{ width: 100 }}>
+            {/* Two-tone tick bar: 50/50 split filled vs unfilled for visual bite. */}
+            <div className="w-1/2 h-full bg-[rgba(230,242,252,0.55)]" />
+          </div>
+        </div>
+      </div>
+
+      {/* Cursor lat/lon readout — imperatively updated via ref on pointer move */}
+      <div
+        ref={coordLabelRef}
+        className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none z-[2] px-2.5 py-1 rounded-md panel-thin text-[10px] font-mono-num text-frost tracking-wider opacity-0 transition-opacity"
+        style={{ transition: "opacity 200ms" }}
+      >—</div>
 
       {/* Zoom controls */}
       <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[2]">
@@ -444,8 +579,8 @@ export function AtlasMap({
         <button className="map-btn !text-[9px]" onClick={reset} title="Reset view (0)" aria-label="Reset view">RESET</button>
       </div>
 
-      {/* Tier legend */}
-      <div className="absolute bottom-3 right-3 panel-thin px-3 py-2 text-[10px] text-stone space-y-1 pointer-events-none z-[2]">
+      {/* Tier legend + keyboard hints */}
+      <div className="absolute bottom-3 right-3 panel-thin px-3 py-2 text-[10px] text-stone space-y-1.5 pointer-events-none z-[2]">
         <div className="flex items-center gap-2">
           <span style={{display:"inline-block",width:10,height:10,transform:"rotate(45deg)",background:"#cfe9f3",border:"1px solid #0a1322"}} />
           <span>Flagship · Tier A</span>
@@ -457,6 +592,11 @@ export function AtlasMap({
         <div className="flex items-center gap-2">
           <span style={{display:"inline-block",width:8,height:8,borderRadius:4,background:"#cfe9f3",opacity:0.9,border:"1px solid #0a1322"}} />
           <span>Index · Tier C</span>
+        </div>
+        <div className="pt-1.5 mt-1 border-t border-[rgba(71,90,122,0.5)] flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[9px] text-shadow">
+          <span className="flex items-center gap-1"><span className="kbd">+</span><span className="kbd">−</span>zoom</span>
+          <span className="flex items-center gap-1"><span className="kbd">0</span>reset</span>
+          <span className="flex items-center gap-1"><span className="kbd">←↑↓→</span>pan</span>
         </div>
       </div>
 
@@ -648,23 +788,107 @@ const TONE: Record<string, string> = {
   aurora: "#c7b5ea",
 };
 
-const Graticule = memo(function Graticule({ pathGen }: { pathGen: ReturnType<typeof geoPath> }) {
-  const lines = useMemo(() => {
+/**
+ * Great-circle distance in kilometres between two lon/lat pairs.
+ * Used to derive the scale bar and to validate the inverse projection.
+ */
+function haversineKm(lon1: number, lat1: number, lon2: number, lat2: number): number {
+  const R = 6371;
+  const toRad = (d: number) => (d * Math.PI) / 180;
+  const dLat = toRad(lat2 - lat1);
+  const dLon = toRad(lon2 - lon1);
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
+}
+
+/**
+ * Format a lat/lon pair for the cursor overlay. We pick degree-decimal
+ * precision based on zoom-independent intuition: three decimals are about
+ * 110 metres of horizontal resolution, which is appropriate at any map zoom
+ * level that fits in a browser window.
+ */
+function formatLatLon(lat: number, lon: number): string {
+  const latH = lat >= 0 ? "N" : "S";
+  const lonH = lon >= 0 ? "E" : "W";
+  return `${Math.abs(lat).toFixed(2)}°${latH}  ${Math.abs(lon).toFixed(2)}°${lonH}`;
+}
+
+/** Nice round distances for the scale bar. Chosen so both miles and km have
+ *  values at roughly the same magnitude; the scale bar picks the largest that
+ *  still fits inside ~120px at the current zoom. */
+const SCALE_KM_STEPS = [5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1] as const;
+const SCALE_MI_STEPS = [3000, 1500, 500, 250, 100, 50, 20, 10, 5, 2, 1] as const;
+
+/**
+ * Imperative scale bar renderer. Rather than returning JSX, we take DOM
+ * references and mutate `textContent` / `style.width` directly. This keeps
+ * the scale bar perfectly in sync with zoom without forcing a React render.
+ */
+function updateScaleBar(
+  labelEl: HTMLDivElement | null,
+  barEl: HTMLDivElement | null,
+  zoom: number,
+  kmPerPxAt1: number,
+  dist: DistUnit
+): void {
+  if (!labelEl || !barEl) return;
+  const kmPerPx = kmPerPxAt1 / zoom;
+  const maxPx = 120;
+  if (dist === "metric") {
+    const maxKm = kmPerPx * maxPx;
+    const step = SCALE_KM_STEPS.find(s => s <= maxKm) ?? 1;
+    const px = step / kmPerPx;
+    barEl.style.width = `${Math.round(px)}px`;
+    labelEl.textContent = step >= 1000
+      ? `${(step / 1000).toLocaleString()} × 1,000 km`
+      : `${step.toLocaleString()} km`;
+  } else {
+    const miPerPx = kmPerPx * 0.621371;
+    const maxMi = miPerPx * maxPx;
+    const step = SCALE_MI_STEPS.find(s => s <= maxMi) ?? 1;
+    const px = step / miPerPx;
+    barEl.style.width = `${Math.round(px)}px`;
+    labelEl.textContent = step >= 1000
+      ? `${(step / 1000).toLocaleString()} × 1,000 mi`
+      : `${step.toLocaleString()} mi`;
+  }
+}
+
+const Graticule = memo(function Graticule({ pathGen, projection }: { pathGen: ReturnType<typeof geoPath>; projection: GeoProjection }) {
+  const { lines, latLabels, lonLabels } = useMemo(() => {
     const out: string[] = [];
+    // Longitudes (meridians)
     for (let lon = -170; lon <= -40; lon += 10) {
       const coords: [number, number][] = [];
       for (let lat = 15; lat <= 75; lat += 2) coords.push([lon, lat]);
       const d = pathGen({ type: "LineString", coordinates: coords } as never);
       if (d) out.push(d);
     }
+    // Latitudes (parallels)
     for (let lat = 15; lat <= 75; lat += 10) {
       const coords: [number, number][] = [];
       for (let lon = -170; lon <= -40; lon += 2) coords.push([lon, lat]);
       const d = pathGen({ type: "LineString", coordinates: coords } as never);
       if (d) out.push(d);
     }
-    return out;
-  }, [pathGen]);
+
+    // Tick labels — small degree markers at the edges of the focus area,
+    // projected once and positioned in SVG user units. These sit inside the
+    // pan/zoom group and so will move with the map.
+    const latList: Array<{ text: string; x: number; y: number }> = [];
+    for (const lat of [30, 45, 60]) {
+      const xy = projection([-125, lat]); // left edge of continental US
+      if (xy) latList.push({ text: `${lat}°N`, x: xy[0] - 4, y: xy[1] + 3 });
+    }
+    const lonList: Array<{ text: string; x: number; y: number }> = [];
+    for (const lon of [-120, -100, -80]) {
+      const xy = projection([lon, 22]); // bottom edge ~MX gulf
+      if (xy) lonList.push({ text: `${Math.abs(lon)}°W`, x: xy[0], y: xy[1] + 10 });
+    }
+    return { lines: out, latLabels: latList, lonLabels: lonList };
+  }, [pathGen, projection]);
 
   return (
     <g>
@@ -678,6 +902,32 @@ const Graticule = memo(function Graticule({ pathGen }: { pathGen: ReturnType<typ
           vectorEffect="non-scaling-stroke"
         />
       ))}
+      <g pointerEvents="none">
+        {latLabels.map(l => (
+          <text
+            key={l.text}
+            x={l.x}
+            y={l.y}
+            textAnchor="end"
+            fontSize={8}
+            fill="rgba(170,193,220,0.45)"
+            fontFamily="Inter"
+            letterSpacing="0.05em"
+          >{l.text}</text>
+        ))}
+        {lonLabels.map(l => (
+          <text
+            key={l.text}
+            x={l.x}
+            y={l.y}
+            textAnchor="middle"
+            fontSize={8}
+            fill="rgba(170,193,220,0.45)"
+            fontFamily="Inter"
+            letterSpacing="0.05em"
+          >{l.text}</text>
+        ))}
+      </g>
     </g>
   );
 });

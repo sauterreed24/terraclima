@@ -210,50 +210,193 @@ function formatLocalized(valueF: number, explicitSign: boolean): string {
  *   - "to" ranges:     "+3 to +5°C", "20 to 30°C"
  *   - delta vs. absolute, via surrounding word context
  *
- * No-op when the user prefers Celsius.
+ * When `dist` is `"imperial"`, also rewrites common editorial metric units:
+ *   - "1,427 m" → "4,682 ft"
+ *   - "1,500 mm" → "59 in"
+ *   - "80 cm"   → "31 in"
+ *   - "10 km"   → "6 mi"
+ *   - "25 km/h" / "25 kph" → "16 mph"
+ *
+ * No-op for temperatures when the user prefers Celsius, and no-op for
+ * distances when the user prefers metric.
  */
-export function localizeProse(text: string | null | undefined, unit: TempUnit): string {
+export function localizeProse(text: string | null | undefined, unit: TempUnit, dist: DistUnit = "imperial"): string {
   if (!text) return "";
-  if (unit === "C") return text;
 
-  // Pass 1: dash ranges first (consumes both numbers)
-  const rangePat = /([\u2212\-+]?\d+(?:\.\d+)?)\s*([\u2013\u2014\-])\s*([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
-  text = text.replace(rangePat, (match, n1: string, dash: string, n2: string, offset: number, full: string) => {
-    const v1 = parseSigned(n1);
-    const v2 = parseSigned(n2);
-    const delta = isDeltaContext(full, offset, match.length) || n1.startsWith("+") || n2.startsWith("+");
-    const f1 = delta ? (v1 * 9) / 5 : cToF(v1);
-    const f2 = delta ? (v2 * 9) / 5 : cToF(v2);
-    return `${formatLocalized(f1, n1.startsWith("+"))}${dash}${formatLocalized(f2, n2.startsWith("+"))}°F`;
+  // --- Temperature (°C → °F) ---
+  if (unit === "F") {
+    // Pass 1: dash ranges first (consumes both numbers)
+    const rangePat = /([\u2212\-+]?\d+(?:\.\d+)?)\s*([\u2013\u2014\-])\s*([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
+    text = text.replace(rangePat, (match, n1: string, dash: string, n2: string, offset: number, full: string) => {
+      const v1 = parseSigned(n1);
+      const v2 = parseSigned(n2);
+      const delta = isDeltaContext(full, offset, match.length) || n1.startsWith("+") || n2.startsWith("+");
+      const f1 = delta ? (v1 * 9) / 5 : cToF(v1);
+      const f2 = delta ? (v2 * 9) / 5 : cToF(v2);
+      return `${formatLocalized(f1, n1.startsWith("+"))}${dash}${formatLocalized(f2, n2.startsWith("+"))}°F`;
+    });
+
+    // Pass 2: "N to M °C"
+    const toPat = /([\u2212\-+]?\d+(?:\.\d+)?)\s+to\s+([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
+    text = text.replace(toPat, (match, n1: string, n2: string, offset: number, full: string) => {
+      const v1 = parseSigned(n1);
+      const v2 = parseSigned(n2);
+      const delta = isDeltaContext(full, offset, match.length) || n1.startsWith("+") || n2.startsWith("+");
+      const f1 = delta ? (v1 * 9) / 5 : cToF(v1);
+      const f2 = delta ? (v2 * 9) / 5 : cToF(v2);
+      return `${formatLocalized(f1, n1.startsWith("+"))} to ${formatLocalized(f2, n2.startsWith("+"))}°F`;
+    });
+
+    // Pass 3: single values
+    const singlePat = /([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
+    text = text.replace(singlePat, (match, n: string, offset: number, full: string) => {
+      const v = parseSigned(n);
+      const delta = isDeltaContext(full, offset, match.length) || n.startsWith("+");
+      const f = delta ? (v * 9) / 5 : cToF(v);
+      return `${formatLocalized(f, n.startsWith("+"))}°F`;
+    });
+  }
+
+  // --- Distance / elevation / precipitation (metric → imperial) ---
+  if (dist === "imperial") {
+    text = localizeDistanceProse(text);
+  }
+
+  return text;
+}
+
+/** Parse a possibly comma-separated numeric token ("1,427" → 1427). */
+function parseLooseNum(s: string): number {
+  return parseFloat(s.replace(/,/g, ""));
+}
+
+/** Human-format a number with commas when large, trimmed decimals otherwise. */
+function formatUSNumber(n: number, digits = 0): string {
+  const rounded = Number(n.toFixed(digits));
+  if (Math.abs(rounded) >= 1000) return rounded.toLocaleString("en-US");
+  if (digits === 0) return Math.round(rounded).toString();
+  return rounded.toString();
+}
+
+/**
+ * Context-aware metric → imperial rewriter for prose.
+ *
+ * Rules are careful to avoid false positives:
+ *   - Must have a word boundary before the number (so Köppen codes like
+ *     "BSk" and compound tokens like "km/h" are handled explicitly rather
+ *     than caught mid-word).
+ *   - km/h and kph are detected *before* bare km so we don't grab only "km".
+ *   - mm is only treated as millimetres when followed by a non-letter
+ *     (avoiding "mm-hg" or "mmWh" style compounds) and when the preceding
+ *     context suggests precipitation / rainfall / snow (or is simply bare).
+ *   - m (bare metres) is the trickiest: we require either a digits-with-unit
+ *     shape followed by whitespace / punctuation that isn't "m[a-z]" (so we
+ *     don't eat "25 m/s" wind speed or "m²"), *and* some elevation-ish
+ *     context nearby ("elevation", "sits at", "rises", "above", "peak",
+ *     "summit", altitude, crest, ridge, m.a.s.l., etc.), to avoid mangling
+ *     data like "8 m wetland" or "Route 5 m".
+ */
+function localizeDistanceProse(text: string): string {
+  // km/h or kph → mph (do this FIRST so bare "km" doesn't eat the "km" of "km/h")
+  text = text.replace(/(\d+(?:[,.]\d+)?)\s*(?:km\/h|kph|km\s*\/\s*h)\b/gi, (_m, n: string) => {
+    const v = parseLooseNum(n);
+    return `${formatUSNumber(v * 0.621371, v < 10 ? 1 : 0)} mph`;
   });
 
-  // Pass 2: "N to M °C"
-  const toPat = /([\u2212\-+]?\d+(?:\.\d+)?)\s+to\s+([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
-  text = text.replace(toPat, (match, n1: string, n2: string, offset: number, full: string) => {
-    const v1 = parseSigned(n1);
-    const v2 = parseSigned(n2);
-    const delta = isDeltaContext(full, offset, match.length) || n1.startsWith("+") || n2.startsWith("+");
-    const f1 = delta ? (v1 * 9) / 5 : cToF(v1);
-    const f2 = delta ? (v2 * 9) / 5 : cToF(v2);
-    return `${formatLocalized(f1, n1.startsWith("+"))} to ${formatLocalized(f2, n2.startsWith("+"))}°F`;
+  // Bare "N km" (word-bounded, not immediately followed by "/" as in km/h which
+  // is already handled above).
+  text = text.replace(/(\d+(?:[,.]\d+)?)\s*km\b(?!\/)/g, (_m, n: string) => {
+    const v = parseLooseNum(n);
+    const mi = v * 0.621371;
+    return `${formatUSNumber(mi, mi < 10 ? 1 : 0)} mi`;
   });
 
-  // Pass 3: single values
-  const singlePat = /([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
-  text = text.replace(singlePat, (match, n: string, offset: number, full: string) => {
-    const v = parseSigned(n);
-    const delta = isDeltaContext(full, offset, match.length) || n.startsWith("+");
-    const f = delta ? (v * 9) / 5 : cToF(v);
-    return `${formatLocalized(f, n.startsWith("+"))}°F`;
+  // "N mm" — millimetres of precip in this corpus. \b already prevents matching
+  // mid-word (e.g. "mm-level" still has \b before the "-"), and any compound
+  // unit like "mmHg" can't match because "m" directly followed by "H" isn't a
+  // \b-terminated token boundary break we'd be looking at. We block only
+  // directly adjacent letters.
+  text = text.replace(/(\d+(?:[,.]\d+)?)\s*mm\b(?![a-zA-Z])/g, (_m, n: string) => {
+    const v = parseLooseNum(n);
+    const inches = v / 25.4;
+    return `${formatUSNumber(inches, inches < 10 ? 1 : 0)} in`;
   });
 
-  // Pass 4: bare mm/km in prose — only when user is imperial
-  // (We only touch common editorial tokens to avoid mangling IDs or numbers.)
+  // "N cm" — snow / depth contexts in this corpus.
+  text = text.replace(/(\d+(?:[,.]\d+)?)\s*cm\b(?![a-zA-Z])/g, (_m, n: string) => {
+    const v = parseLooseNum(n);
+    const inches = v / 2.54;
+    return `${formatUSNumber(inches, inches < 10 ? 1 : 0)} in`;
+  });
+
+  // Metre ranges "N–M m" / "N-M m" / "N to M m" — used for stratus layers,
+  // elevation bands ("homes at 700–900 m"), etc. Run BEFORE the bare-m
+  // handler so we consume both numbers as a range.
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014\-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![\/²^])/g,
+    (match, n1: string, sep: string, n2: string, offset: number, full: string) => {
+      const before = full.substring(Math.max(0, offset - 80), offset).toLowerCase();
+      const after = full.substring(offset + match.length, offset + match.length + 64).toLowerCase();
+      const elevationy =
+        /\b(at|to|above|over|elevation|altitude|homes?|stratus|layer|depth|rise|rising|drop|peak|peaks|crest|ridge|summit|plateau|capping|band)\b/.test(before) ||
+        /\b(stratus|layer|peaks?|crest|ridge|summit|plateau|depth|rise|rising|drop|higher|lower|snow|snowfall|annually|elevation|altitude|band|belt)\b/.test(after);
+      if (!elevationy) return match;
+      const v1 = parseLooseNum(n1);
+      const v2 = parseLooseNum(n2);
+      const ft1 = v1 * 3.28084;
+      const ft2 = v2 * 3.28084;
+      return `${formatUSNumber(ft1)}${sep === "to" ? " to " : sep}${formatUSNumber(ft2)} ft`;
+    }
+  );
+
+  // Bare "N m" as metres — only in elevation / altitude / depth / snow-depth
+  // contexts. We require one of the following to hold:
+  //
+  //   (a) A vocabulary word within ~80 chars *before* the token that signals
+  //       vertical position ("at", "to", "above", "over", "sits at",
+  //       "perches at", "elevation", "altitude", "rises", …).
+  //   (b) A vocabulary word within ~40 chars *after* the token ("higher",
+  //       "lower", "rise", "drop", "depth", "of snow", "of annual",
+  //       "elevation", "asl", "above", …).
+  //
+  // The tight negative lookahead `(?![\/²^])` blocks m/s (speed), m² / m^2
+  // (area). `\b` already prevents matches inside "mm", "cm", "km", "kph",
+  // "kmh", "minutes", "meters", etc.
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![\/²^])/g,
+    (match, n: string, offset: number, full: string) => {
+      const before = full.substring(Math.max(0, offset - 80), offset).toLowerCase();
+      const after = full.substring(offset + match.length, offset + match.length + 48).toLowerCase();
+
+      // Before-context: words that commonly introduce an elevation or
+      // vertical measurement. Using `\b…\b` keeps us away from substrings.
+      const beforeHit =
+        /\b(elevation|altitude|sits\s+(?:at|above|on)|perch(?:es|ed)?\s+at|situated\s+at|lies\s+at|located\s+at|rests\s+at|nestled\s+at|grassland\s+at|town\s+at|city\s+at|capital\s+at|town\s+of\s+\w+\s+at|at\s+nearly|at\s+roughly|at\s+about|from|to|above|over|approaches?|averag(?:es|ing)?|rises?|rising|peaks?\s+at|crest|ridge|plateau|m\.a\.s\.l\.|asl|meters?|metres?|higher\s+than|lower\s+than|tall|climbs?|drops?\s+(?:to|of)?|floor\s+of|basin|slopes?\s+(?:up|down)?\s*to|pass|saddle|crater|caldera|uplift|escarpment|up\s+to|storms?\s+of|swells?\s+of|layer|stratus|permafrost|kilometer|kilometre|km)\b/.test(before) ||
+        // "at 1,920 m" / "at 2200 m" — the bare "at" token immediately before.
+        /\bat\s*$/.test(before);
+
+      // After-context: words that immediately follow a vertical measurement.
+      // The anchor (^) keeps the immediate-neighbour strict pattern, while the
+      // second regex allows a short "adjective/proper-noun" to intervene so
+      // things like "2000 m Black Mountains crest" or "2000 m peaks" work.
+      const afterHit =
+        /^\s*(?:above|a\.?s\.?l\.?|elevation|altitude|of\s+elevation|asl\b|peaks?|summit|slope|ridge|plateau|escarpment|higher|lower|rise|rising|drop|depth|of\s+snow|of\s+annual|annually|of\s+snowfall|snowfall|snow|swells?|layer|range|thermal\s+belt|vertical\s+rise|crest|stack)\b/i.test(after) ||
+        /^\s*[A-Z][\w-]*(?:\s+[A-Z][\w-]*){0,3}\s+(?:peaks?|crest|ridge|summit|plateau|escarpment|mountains|hills|range)\b/.test(after.replace(/^\s+/, "") ? full.substring(offset + match.length, offset + match.length + 48) : "") ||
+        /^\s*(?:Black\s+Mountains|Sierra|mountains|hills)\b/i.test(full.substring(offset + match.length, offset + match.length + 48));
+
+      if (!beforeHit && !afterHit) return match;
+
+      const v = parseLooseNum(n);
+      const ft = v * 3.28084;
+      return `${formatUSNumber(ft)} ft`;
+    }
+  );
+
   return text;
 }
 
 /** Hook wrapper so components can use `const prose = useProse(); prose(str)`. */
 export function useProse(): (s: string | null | undefined) => string {
-  const { temp } = useUnits();
-  return (s) => localizeProse(s, temp);
+  const { temp, dist } = useUnits();
+  return (s) => localizeProse(s, temp, dist);
 }

@@ -1,6 +1,9 @@
 import { localizeProse } from "../src/lib/units";
 
-const cases: Array<{ input: string; expect: string[] }> = [
+interface Case { input: string; expect: string[]; reject?: string[]; unit?: "F" | "C"; dist?: "imperial" | "metric" }
+
+const cases: Case[] = [
+  // Temperature (existing corpus)
   { input: "summer highs near 23°C, winter lows near \u221227°C", expect: ["73\u00b0F", "\u221217\u00b0F"] },
   { input: "warming (+3 to +5\u00b0C) likely fastest on Earth", expect: ["+5 to +9\u00b0F"] },
   { input: "cold pools sit 5\u201315\u00b0C colder than ridges", expect: ["9\u201327", "colder"] },
@@ -16,21 +19,45 @@ const cases: Array<{ input: string; expect: string[] }> = [
   { input: "15 \u00b0C warmer in 10 minutes", expect: ["27\u00b0F warmer"] },
   { input: "Afternoons rarely exceed 23\u00b0C even at peak sun", expect: ["73\u00b0F"] },
   { input: "2\u20133\u00b0C cooler year-round", expect: ["4\u20135\u00b0F cooler"] },
+
+  // --- Distance / elevation / precip / snow / wind (NEW) ---
+  { input: "Xalapa sits at 1,427 m on the eastern slope", expect: ["4,682 ft"] },
+  { input: "Rainfall is heavy and persistent (1,500 mm annually)", expect: ["59 in"] },
+  { input: "gets 420 cm of snow in a normal winter", expect: ["165 in"] },
+  { input: "10 km west of the escarpment", expect: ["6.2 mi"] },
+  { input: "peak of 3,850 m elevation", expect: ["12,631 ft"] },
+  { input: "winds of 25 km/h are routine", expect: ["16 mph"] },
+  { input: "storm gusts up to 100 kph", expect: ["62 mph"] },
+  { input: "elevation 800 m, with 600 mm of annual precip and 80 cm of snow",
+    expect: ["2,625 ft", "24 in", "31 in"] },
+  // Reject cases: things that MUST NOT be touched. Use whole-token checks.
+  { input: "held within 10 minutes of the coast", expect: ["10 minutes"], reject: [" ft ", " mi ", " mph "] },
+  { input: "Köppen class BSk dominates", expect: ["BSk"], reject: [" ft ", " mi "] },
+  { input: "the mm-level precision radar sees it", expect: ["mm-level"], reject: [" in "] },
+
+  // Celsius mode (keep metric untouched when dist=metric)
+  { input: "Xalapa sits at 1,427 m on the eastern slope",
+    expect: ["1,427 m"], reject: ["ft"], unit: "C", dist: "metric" },
+  { input: "summer highs near 23°C",
+    expect: ["23°C"], reject: ["73°F"], unit: "C", dist: "metric" },
 ];
 
 let pass = 0;
 let fail = 0;
 for (const c of cases) {
-  const out = localizeProse(c.input, "F");
-  const ok = c.expect.every(e => out.includes(e));
+  const out = localizeProse(c.input, c.unit ?? "F", c.dist ?? "imperial");
+  const hasAll = c.expect.every(e => out.includes(e));
+  const hasForbidden = (c.reject ?? []).some(r => out.includes(r));
+  const ok = hasAll && !hasForbidden;
   if (ok) {
     pass++;
-    console.log("OK  ", c.input);
+    console.log("OK  ", c.input, " -> ", out);
   } else {
     fail++;
     console.log("FAIL", c.input);
-    console.log("    got:", out);
-    console.log("    want parts:", c.expect);
+    console.log("    got:        ", out);
+    if (!hasAll)       console.log("    want parts: ", c.expect);
+    if (hasForbidden)  console.log("    forbidden:  ", c.reject);
   }
 }
 console.log(`\n${pass}/${pass + fail} tests passed`);

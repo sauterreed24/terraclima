@@ -1,4 +1,4 @@
-import { lazy, Suspense, useDeferredValue, useMemo, useState } from "react";
+import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Compass, Globe2, Layers, Library, Map, Search, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
@@ -13,10 +13,49 @@ import type { MicroclimateArchetype } from "./types";
 // Lazy-loaded secondary views and heavy panels. Keeping them out of the main
 // bundle trims ~40 % off the initial JS parse, which is the single biggest
 // win on memory-constrained hardware.
-const PlaceDetail = lazy(() => import("./components/PlaceDetail").then(m => ({ default: m.PlaceDetail })));
-const CompareView = lazy(() => import("./components/CompareView").then(m => ({ default: m.CompareView })));
-const CollectionsView = lazy(() => import("./components/CollectionsView").then(m => ({ default: m.CollectionsView })));
-const LearnMode = lazy(() => import("./components/LearnMode").then(m => ({ default: m.LearnMode })));
+//
+// We hold onto the raw `import()` factories as well as the `lazy()` wrappers
+// so that we can warm them up during browser idle time — that way clicking a
+// card / opening Compare after the app has settled feels instant rather than
+// hitting a chunk-download delay on the first interaction.
+const importPlaceDetail    = () => import("./components/PlaceDetail");
+const importCompareView    = () => import("./components/CompareView");
+const importCollectionsView = () => import("./components/CollectionsView");
+const importLearnMode      = () => import("./components/LearnMode");
+
+const PlaceDetail = lazy(() => importPlaceDetail().then(m => ({ default: m.PlaceDetail })));
+const CompareView = lazy(() => importCompareView().then(m => ({ default: m.CompareView })));
+const CollectionsView = lazy(() => importCollectionsView().then(m => ({ default: m.CollectionsView })));
+const LearnMode = lazy(() => importLearnMode().then(m => ({ default: m.LearnMode })));
+
+/**
+ * Warm up the lazy chunks during the browser's idle time. This fires once
+ * on app mount, ~1–2 seconds after the main thread settles, so the initial
+ * first-paint isn't penalised but subsequent interactions (clicking a card,
+ * opening Compare, visiting Collections / Learn) are instant.
+ *
+ * Safe to call repeatedly — module imports are cached by the bundler.
+ */
+function scheduleIdlePrefetch(): void {
+  const ric = (cb: () => void) => {
+    const anyWin = window as unknown as { requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number };
+    if (typeof anyWin.requestIdleCallback === "function") {
+      anyWin.requestIdleCallback(cb, { timeout: 2500 });
+    } else {
+      setTimeout(cb, 1200);
+    }
+  };
+  ric(() => {
+    void importPlaceDetail();
+    void importCollectionsView();
+    // Defer the heaviest (LearnMode + CompareView pull in extra charts) to a
+    // second idle slice so we never block.
+    ric(() => {
+      void importCompareView();
+      void importLearnMode();
+    });
+  });
+}
 
 type View = "explorer" | "collections" | "learn";
 
@@ -34,6 +73,11 @@ export default function App() {
   // it entirely so the lazy chunk never downloads.
   const [detailEverOpened, setDetailEverOpened] = useState(false);
   const [compareEverOpened, setCompareEverOpened] = useState(false);
+
+  // Prefetch lazy chunks during idle time so first click / navigation is
+  // instant. This runs exactly once and is a no-op after the chunks are
+  // cached.
+  useEffect(() => { scheduleIdlePrefetch(); }, []);
 
   const pool = useMemo(() => {
     if (activeCollection) {
