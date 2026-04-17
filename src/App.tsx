@@ -1,5 +1,4 @@
-import { lazy, Suspense, useDeferredValue, useEffect, useMemo, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
 import { Compass, Globe2, Layers, Library, Map, Search, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { PlaceCard } from "./components/PlaceCard";
@@ -97,49 +96,67 @@ export default function App() {
 
   const selectedPlace = selectedId ? PLACES_BY_ID[selectedId] ?? null : null;
 
-  const toggleCompare = (id: string) => {
+  // Callbacks are stabilised with useCallback so memoized children (TopBar,
+  // HeroCard, FootprintPanel, Footer) do not re-render on unrelated state
+  // changes — notably every keystroke in the search box.
+  const toggleCompare = useCallback((id: string) => {
     setCompareIds(s => {
       const ns = new Set(s);
-      ns.has(id) ? ns.delete(id) : ns.add(id);
+      if (ns.has(id)) ns.delete(id); else ns.add(id);
       if (ns.size > 4) {
         const arr = [...ns];
         return new Set(arr.slice(arr.length - 4));
       }
       return ns;
     });
-  };
+  }, []);
 
-  const openPlace = (id: string) => {
+  const openPlace = useCallback((id: string) => {
     setSelectedId(id);
     setDetailEverOpened(true);
-  };
+  }, []);
 
-  const openCompare = () => {
+  const openCompare = useCallback(() => {
     setCompareOpen(true);
     setCompareEverOpened(true);
-  };
+  }, []);
 
-  const pickArchetype = (a: MicroclimateArchetype) => {
+  const pickArchetype = useCallback((a: MicroclimateArchetype) => {
     setFilters(f => ({ ...f, archetypes: new Set([a]) }));
     setActiveCollection(null);
     setView("explorer");
-  };
+  }, []);
+
+  const clearCollection = useCallback(() => setActiveCollection(null), []);
+  const clearArchetypes = useCallback(() => setFilters(f => ({ ...f, archetypes: new Set() })), []);
+  const closeDetail = useCallback(() => setSelectedId(null), []);
+  const closeCompare = useCallback(() => setCompareOpen(false), []);
+  const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setView("explorer"); }, [openPlace]);
+  const onPickCollection = useCallback((id: string) => {
+    setActiveCollection(a => a === id ? null : id);
+    setView("explorer");
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col text-ice">
       <TopBar view={view} setView={setView} onOpenCompare={openCompare} compareCount={compareIds.size} />
 
       <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1600px] w-full mx-auto">
-        <AnimatePresence mode="wait">
+        {/* View transition: instead of AnimatePresence (which drags in the
+            ~36 kB gz framer-motion runtime), we re-key the container and
+            rely on a CSS-only fade-in. The browser handles the animation on
+            the compositor, so view switches cost zero React work beyond the
+            normal unmount/mount of the branch. */}
+        <div key={view} className="view-enter flex-1 flex flex-col lg:flex-row gap-4 min-w-0">
           {view === "explorer" && (
-            <motion.div key="explorer" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex flex-col lg:flex-row gap-4">
+            <>
               <div className="flex-1 min-w-0 flex flex-col gap-4">
                 <HeroCard
                   count={ranked.length}
                   activeCollection={activeCollection}
-                  onClearCollection={() => setActiveCollection(null)}
+                  onClearCollection={clearCollection}
                   activeArchetypes={filters.archetypes}
-                  onClearArchetypes={() => setFilters(f => ({ ...f, archetypes: new Set() }))}
+                  onClearArchetypes={clearArchetypes}
                 />
 
                 <div className="h-[52vh] min-h-[460px] relative">
@@ -180,11 +197,11 @@ export default function App() {
                 <FilterBar filters={filters} setFilters={setFilters} ranking={ranking} setRanking={setRanking} />
                 <FootprintPanel />
               </div>
-            </motion.div>
+            </>
           )}
 
           {view === "collections" && (
-            <motion.div key="collections" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1">
+            <div className="flex-1">
               <div className="max-w-3xl mx-auto">
                 <div className="mb-5">
                   <div className="text-xs uppercase tracking-wider text-stone">Curated</div>
@@ -195,17 +212,17 @@ export default function App() {
                 </div>
                 <Suspense fallback={<LazyFallback />}>
                   <CollectionsView
-                    onOpenPlace={(id) => { setSelectedId(id); setView("explorer"); }}
-                    onPick={(id) => { setActiveCollection(a => a === id ? null : id); setView("explorer"); }}
+                    onOpenPlace={onOpenPlaceFromSubview}
+                    onPick={onPickCollection}
                     activeId={activeCollection ?? undefined}
                   />
                 </Suspense>
               </div>
-            </motion.div>
+            </div>
           )}
 
           {view === "learn" && (
-            <motion.div key="learn" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1">
+            <div className="flex-1">
               <div className="max-w-3xl mx-auto">
                 <div className="mb-5">
                   <div className="text-xs uppercase tracking-wider text-stone">Learn</div>
@@ -215,12 +232,12 @@ export default function App() {
                   </p>
                 </div>
                 <Suspense fallback={<LazyFallback />}>
-                  <LearnMode onOpenPlace={(id) => { setSelectedId(id); setView("explorer"); }} />
+                  <LearnMode onOpenPlace={onOpenPlaceFromSubview} />
                 </Suspense>
               </div>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
+        </div>
       </div>
 
       <Footer />
@@ -232,7 +249,7 @@ export default function App() {
         <Suspense fallback={null}>
           <PlaceDetail
             place={selectedPlace}
-            onClose={() => setSelectedId(null)}
+            onClose={closeDetail}
             onCompareToggle={toggleCompare}
             inCompareIds={compareIds}
             onPickArchetype={pickArchetype}
@@ -245,7 +262,7 @@ export default function App() {
           <CompareView
             places={[...compareIds].map(id => PLACES_BY_ID[id]).filter(Boolean)}
             open={compareOpen}
-            onClose={() => setCompareOpen(false)}
+            onClose={closeCompare}
             onRemove={toggleCompare}
           />
         </Suspense>
@@ -262,7 +279,7 @@ function LazyFallback() {
   );
 }
 
-function TopBar({ view, setView, onOpenCompare, compareCount }: { view: View; setView: (v: View) => void; onOpenCompare: () => void; compareCount: number }) {
+const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount }: { view: View; setView: (v: View) => void; onOpenCompare: () => void; compareCount: number }) {
   const { temp, toggle } = useUnits();
   return (
     <header className="sticky top-0 z-30 backdrop-blur-md bg-[rgba(13,20,32,0.78)] border-b border-[rgba(71,90,122,0.5)]">
@@ -304,9 +321,9 @@ function TopBar({ view, setView, onOpenCompare, compareCount }: { view: View; se
       </div>
     </header>
   );
-}
+});
 
-function NavBtn({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
+const NavBtn = memo(function NavBtn({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
   return (
     <button
       onClick={onClick}
@@ -315,7 +332,7 @@ function NavBtn({ active, onClick, icon, label }: { active: boolean; onClick: ()
       {icon} {label}
     </button>
   );
-}
+});
 
 function LogoMark() {
   return (
@@ -335,7 +352,7 @@ function LogoMark() {
   );
 }
 
-function HeroCard({
+const HeroCard = memo(function HeroCard({
   count, activeCollection, onClearCollection, activeArchetypes, onClearArchetypes,
 }: {
   count: number;
@@ -382,18 +399,18 @@ function HeroCard({
       </div>
     </div>
   );
-}
+});
 
-function Metric({ label, value }: { label: string; value: string }) {
+const Metric = memo(function Metric({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex flex-col items-end">
       <span className="text-[10px] uppercase tracking-wider text-stone">{label}</span>
       <span className="font-mono-num text-xl text-ice">{value}</span>
     </div>
   );
-}
+});
 
-function MapLegend() {
+const MapLegend = memo(function MapLegend() {
   return (
     <div className="absolute bottom-3 left-3 panel-thin px-3 py-2 text-[11px] text-stone backdrop-blur-md">
       <div className="flex items-center gap-3 flex-wrap">
@@ -404,7 +421,7 @@ function MapLegend() {
       </div>
     </div>
   );
-}
+});
 
 function LegendDot({ color, label }: { color: string; label: string }) {
   return (
@@ -415,7 +432,7 @@ function LegendDot({ color, label }: { color: string; label: string }) {
   );
 }
 
-function FootprintPanel() {
+const FootprintPanel = memo(function FootprintPanel() {
   return (
     <div className="panel p-4 space-y-3">
       <div className="flex items-center gap-2">
@@ -438,7 +455,7 @@ function FootprintPanel() {
       </p>
     </div>
   );
-}
+});
 
 function StatBlock({ label, value }: { label: string; value: number }) {
   return (
@@ -449,7 +466,7 @@ function StatBlock({ label, value }: { label: string; value: number }) {
   );
 }
 
-function Footer() {
+const Footer = memo(function Footer() {
   return (
     <footer className="mt-10 border-t border-[rgba(71,90,122,0.5)] bg-[rgba(13,20,32,0.7)]">
       <div className="max-w-[1600px] mx-auto px-6 py-6 text-xs text-stone flex flex-wrap gap-4 items-center justify-between">
@@ -466,4 +483,4 @@ function Footer() {
       </div>
     </footer>
   );
-}
+});

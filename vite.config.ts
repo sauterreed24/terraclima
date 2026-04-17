@@ -52,7 +52,33 @@ export default defineConfig({
       output: {
         // Split the bundle so the main entry stays lean and big, cacheable
         // libraries live in their own long-lived chunks.
+        //
+        // Place-data chunks are by far the heaviest thing the app ships
+        // (500 kB+ of rich per-place prose, climate arrays, and scoring
+        // metadata). Isolating them into per-country chunks lets the
+        // browser:
+        //   1. Download the three countries *in parallel* alongside the
+        //      tiny main entry, instead of serialising everything through
+        //      one huge index.js.
+        //   2. Cache each country independently — tweaking USA prose
+        //      doesn't invalidate the Canada / Mexico payloads.
+        //   3. Parse/compile each chunk on a separate task, which keeps the
+        //      main thread free for React hydration on the Surface Pro 5.
         manualChunks(id) {
+          // Place data — per country, so we get three parallel downloads
+          // instead of one 500 kB blob.
+          if (id.includes("/data/places.usa")) return "places-usa";
+          if (id.includes("/data/places.canada")) return "places-canada";
+          if (id.includes("/data/places.mexico")) return "places-mexico";
+          // Curated / reference data — smaller, but still belongs out of
+          // the main entry so the entry compiles fast and these can be
+          // cached independently as the rest of the UI evolves.
+          if (
+            id.includes("/data/collections") ||
+            id.includes("/data/archetypes") ||
+            id.includes("/data/glossary")
+          ) return "data-curated";
+
           if (!id.includes("node_modules")) return undefined;
           if (id.includes("world-atlas") || id.includes("us-atlas")) return "atlas-data";
           if (id.includes("d3-geo") || id.includes("topojson-client")) return "geo";

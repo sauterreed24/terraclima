@@ -17,7 +17,8 @@
     "skipLibCheck": true,
     "useDefineForClassFields": true,
     "incremental": true,
-    "tsBuildInfoFile": "./tsconfig.app.tsbuildinfo"
+    "tsBuildInfoFile": "./tsconfig.app.tsbuildinfo",
+    "noEmit": true
   },
   "include": ["src"]
 }

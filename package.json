@@ -6,7 +6,7 @@
   "description": "Terraclima — The North American Microclimate Atlas. A research-grade microclimate intelligence app for scouting relocation, travel, and hidden gems across the USA, Mexico, and Canada.",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b --noEmit && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit"
   },

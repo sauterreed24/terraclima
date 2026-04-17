@@ -437,8 +437,15 @@ export function AtlasMap({
         {/* Ocean background */}
         <rect x="0" y="0" width={width} height={height} fill="url(#oceanGrad)" />
 
-        {/* Pan/zoom group (mutated directly during drag) */}
-        <g ref={transformRef} transform={`translate(${view.x} ${view.y}) scale(${view.k})`}>
+        {/* Pan/zoom group (mutated directly during drag).
+            `will-change: transform` hints the browser to promote this
+            subtree onto its own compositor layer so pan/zoom are pure GPU
+            operations — no repaint of the country paths per frame. */}
+        <g
+          ref={transformRef}
+          transform={`translate(${view.x} ${view.y}) scale(${view.k})`}
+          style={{ willChange: "transform" }}
+        >
           {/* Distant countries — faint context silhouettes */}
           <path
             d={otherPath}

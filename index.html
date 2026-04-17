@@ -4,17 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0d1420" />
     <meta
       name="description"
       content="Terraclima — the North American Microclimate Atlas. Scout hidden-gem towns, rain shadows, sky islands, and thermal belts across the USA, Mexico, and Canada."
     />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Resource hints. preconnect lets the browser warm up the TLS
+         handshake to the font CDNs before the stylesheet is parsed, which
+         trims ~150 ms off the first contentful paint on typical
+         residential links. dns-prefetch is a fallback for older
+         environments that ignore preconnect. -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts stylesheet. display=swap lets fallback UI show
+         immediately so the app never flashes invisible text. Weights are
+         pruned to the exact set the CSS actually uses. -->
     <link
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Inline critical colour tokens so the dark atlas background paints
+         instantly instead of flashing white while the bundle is fetched. -->
+    <style>
+      html, body { background: #0d1420; color: #dde6f2; }
+      #root { min-height: 100vh; }
+    </style>
+
     <title>Terraclima — North American Microclimate Atlas</title>
   </head>
   <body>

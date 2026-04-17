@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { Country, MicroclimateArchetype } from "../types";
 import type { FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
@@ -28,15 +29,15 @@ interface Props {
   setRanking: (r: RankingProfile) => void;
 }
 
-export function FilterBar({ filters, setFilters, ranking, setRanking }: Props) {
+export const FilterBar = memo(function FilterBar({ filters, setFilters, ranking, setRanking }: Props) {
   const toggleCountry = (c: Country) => {
     const ns = new Set(filters.countries);
-    ns.has(c) ? ns.delete(c) : ns.add(c);
+    if (ns.has(c)) ns.delete(c); else ns.add(c);
     setFilters({ ...filters, countries: ns });
   };
   const toggleArchetype = (a: MicroclimateArchetype) => {
     const ns = new Set(filters.archetypes);
-    ns.has(a) ? ns.delete(a) : ns.add(a);
+    if (ns.has(a)) ns.delete(a); else ns.add(a);
     setFilters({ ...filters, archetypes: ns });
   };
 
@@ -123,4 +124,4 @@ export function FilterBar({ filters, setFilters, ranking, setRanking }: Props) {
       </div>
     </div>
   );
-}
+});
