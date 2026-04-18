@@ -18,7 +18,7 @@ interface Props {
  */
 export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, refLabel }: Props) {
   const { temp } = useUnits();
-  const W = 560, H = height, PAD_L = 40, PAD_R = 12, PAD_T = 14, PAD_B = 28;
+  const W = 560, H = height, PAD_L = 44, PAD_R = 12, PAD_T = 14, PAD_B = 28;
   const chartW = W - PAD_L - PAD_R;
   const chartH = H - PAD_T - PAD_B;
 
@@ -63,10 +63,19 @@ export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, re
       </defs>
 
       {/* Horizontal gridlines */}
-      {ticks.map(t => (
+      {ticks.map((t, ti) => (
         <g key={t}>
-          <line x1={PAD_L} x2={W - PAD_R} y1={y(t)} y2={y(t)} stroke="rgba(124,135,150,0.22)" strokeDasharray="2 4" />
-          <text x={PAD_L - 6} y={y(t) + 3} fontSize="10" fill="#9badc2" textAnchor="end" fontFamily="JetBrains Mono">{t.toFixed(0)}°</text>
+          <line x1={PAD_L} x2={W - PAD_R} y1={y(t)} y2={y(t)} stroke="rgba(124,135,150,0.18)" strokeDasharray="2 4" />
+          <text
+            x={PAD_L - 6}
+            y={y(t) + 3}
+            fontSize="10"
+            fill="#9badc2"
+            textAnchor="end"
+            fontFamily="JetBrains Mono"
+          >
+            {t.toFixed(0)}{ti === ticks.length - 1 ? `°${temp}` : "°"}
+          </text>
         </g>
       ))}
 

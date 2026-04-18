@@ -75,6 +75,14 @@ const cases: Case[] = [
     expect: ["7.9 inches"], reject: ["20 centimeters"] },
   { input: "200 millimeters fell in one afternoon",
     expect: ["7.9 inches"], reject: ["200 millimeters"] },
+
+  // --- Regression: landform-context "N m" conversions (Sandhills / Loess Hills / Eureka) ---
+  { input: "rolling dunes 40\u201390 m tall",
+    expect: ["131\u2013295 ft"], reject: ["40\u201390 m"] },
+  { input: "loess up to 60 m thick rising 90 m above the floodplain",
+    expect: ["197 ft thick", "295 ft"], reject: [" 60 m", " 90 m"] },
+  { input: "three steeply dissected ridges with 90 m of relief in less than 500 m of horizontal distance",
+    expect: ["295 ft of relief", "1,640 ft of horizontal"], reject: [" 90 m", " 500 m"] },
 ];
 
 let pass = 0;

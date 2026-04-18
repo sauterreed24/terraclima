@@ -179,6 +179,47 @@ export interface Citation {
   url?: string;
 }
 
+/**
+ * A populated settlement that shares this microclimate zone. Keeps both
+ * structured attributes (population, role) and a light prose note so the
+ * detail panel can surface human context alongside terrain & climate.
+ */
+export interface ZoneSettlement {
+  name: string;
+  /** What role this settlement plays within the zone. */
+  role: "hub" | "town" | "village" | "hamlet" | "resort" | "ranching" | "tribal" | "waypoint" | "ghost-town";
+  /** Rough population — kept as a string so we can say "~3,500" etc. */
+  population?: string;
+  /** Optional one-liner: what makes this settlement noteworthy in-zone. */
+  note?: string;
+}
+
+/**
+ * A curated activity or attraction within the microclimate zone. We group
+ * things loosely by cadence so the UI can theme accordingly (e.g. a
+ * seasonal icon for "summer-only" experiences).
+ */
+export interface ZoneActivity {
+  label: string;
+  /** Functional category — UI chip + future filtering. */
+  kind:
+    | "nature"
+    | "trail"
+    | "vista"
+    | "water"
+    | "stargazing"
+    | "wildlife"
+    | "culture"
+    | "food-drink"
+    | "seasonal"
+    | "winter-sport"
+    | "urban"
+    | "historic";
+  /** When it's best: "year-round", "summer", "winter", "shoulder seasons", etc. */
+  season?: string;
+  note?: string;
+}
+
 export interface Place {
   id: string;
   tier: Tier;
@@ -240,6 +281,18 @@ export interface Place {
   confidence: Confidence;
   confidenceNotes?: string;
   citations: Citation[];
+
+  /**
+   * Populated places that share this microclimate zone — helps anchor the
+   * abstract climate signal in lived context (e.g. "Sierra Vista, Hereford,
+   * Bisbee all share the Huachuca sky-island influence").
+   */
+  settlementsWithinZone?: ZoneSettlement[];
+  /**
+   * Curated things to do inside the zone. Optional; when present the detail
+   * panel renders a compact grid with kind/season chips.
+   */
+  thingsToDo?: ZoneActivity[];
 }
 
 /** Derived helpers. */

@@ -481,8 +481,8 @@ function localizeDistanceProse(text: string): string {
       const before = full.substring(Math.max(0, offset - 80), offset).toLowerCase();
       const after = full.substring(offset + match.length, offset + match.length + 64).toLowerCase();
       const elevationy =
-        /\b(at|to|above|over|elevation|altitude|homes?|stratus|layer|depth|rise|rising|drop|peak|peaks|crest|ridge|summit|plateau|capping|band)\b/.test(before) ||
-        /\b(stratus|layer|peaks?|crest|ridge|summit|plateau|depth|rise|rising|drop|higher|lower|snow|snowfall|annually|elevation|altitude|band|belt)\b/.test(after);
+        /\b(at|to|above|over|elevation|altitude|homes?|stratus|layer|depth|rise|rising|drop|peak|peaks|crest|ridge|summit|plateau|capping|band|relief|dunes?|bluffs?|horizontal)\b/.test(before) ||
+        /\b(stratus|layer|peaks?|crest|ridge|summit|plateau|depth|rise|rising|drop|higher|lower|snow|snowfall|annually|elevation|altitude|band|belt|relief|dunes?|bluffs?|horizontal)\b/.test(after);
       if (!elevationy) return match;
       const v1 = parseLooseNum(n1);
       const v2 = parseLooseNum(n2);
@@ -518,7 +518,7 @@ function localizeDistanceProse(text: string): string {
       // Broad vocabulary of landform / elevation cues. Order is longest-first
       // only where ambiguity could arise; otherwise alphabetical.
       const beforeHit =
-        /\b(?:elevation|altitude|sits\s+(?:at|above|on)|perch(?:es|ed)?\s+at|situated\s+at|lies\s+at|located\s+at|rests\s+at|nestled\s+at|grassland\s+at|town\s+(?:at|of)|city\s+(?:at|of)|capital\s+at|town\s+of\s+\w+\s+at|at\s+nearly|at\s+roughly|at\s+about|from|to|above|over|approaches?|averag(?:es|ing)?|rises?|rising|peaks?|summit|crest|ridge|plateau|m\.a\.s\.l\.|asl|meters?|metres?|higher\s+than|lower\s+than|tall|climbs?|drops?\s+(?:to|of)?|floor\s+of|basin|slopes?\s+(?:up|down)?\s*to|pass|saddle|crater|caldera|uplift|escarpment|up\s+to|storms?\s+of|swells?\s+of|layer|stratus|permafrost|kilometer|kilometre|km|volcano|volcan|mountain|mountains|mt\.?|mount|lake|canyon|bluff|headland|cliff|plateau|mesa|dune|dunes|cirque|plate|bedrock)\b/.test(before) ||
+        /\b(?:elevation|altitude|sits\s+(?:at|above|on)|perch(?:es|ed)?\s+at|situated\s+at|lies\s+at|located\s+at|rests\s+at|nestled\s+at|grassland\s+at|town\s+(?:at|of)|city\s+(?:at|of)|capital\s+at|town\s+of\s+\w+\s+at|at\s+nearly|at\s+roughly|at\s+about|from|to|above|over|approaches?|averag(?:es|ing)?|rises?|rising|peaks?|summit|crest|ridge|plateau|m\.a\.s\.l\.|asl|meters?|metres?|higher\s+than|lower\s+than|tall|climbs?|drops?\s+(?:to|of)?|floor\s+of|basin|slopes?\s+(?:up|down)?\s*to|pass|saddle|crater|caldera|uplift|escarpment|up\s+to|storms?\s+of|swells?\s+of|layer|stratus|permafrost|kilometer|kilometre|km|volcano|volcan|mountain|mountains|mt\.?|mount|lake|canyon|bluff|headland|cliff|plateau|mesa|dune|dunes|cirque|plate|bedrock|relief|horizontal|with)\b/.test(before) ||
         /\bat\s*$/.test(before) ||
         // Approximation tilde immediately preceding the number: "~1200 m".
         /~\s*$/.test(beforeRaw) ||
@@ -529,7 +529,7 @@ function localizeDistanceProse(text: string): string {
 
       // After-context: immediate vertical / dimensional neighbours.
       const afterHit =
-        /^\s*(?:above|a\.?s\.?l\.?|elevation|altitude|of\s+elevation|asl\b|peaks?|summit|slope|ridge|plateau|escarpment|higher|lower|rise|rising|drop|depth|deep|high|tall|long|wide|thick|down|up|of\s+snow|of\s+annual|annually|of\s+snowfall|snowfall|snow|swells?|layer|range|thermal\s+belt|vertical\s+rise|crest|stack)\b/i.test(after) ||
+        /^\s*(?:above|a\.?s\.?l\.?|elevation|altitude|of\s+elevation|asl\b|peaks?|summit|slope|ridge|plateau|escarpment|higher|lower|rise|rising|drop|depth|deep|high|tall|long|wide|thick|down|up|below|beneath|under|of\s+snow|of\s+annual|annually|of\s+snowfall|snowfall|snow|swells?|layer|range|thermal\s+belt|vertical\s+rise|crest|stack|of\s+relief|of\s+horizontal|relief|dunes?|bluffs?|horizontal|dunes)\b/i.test(after) ||
         /^\s*[\)\]]/.test(afterRaw) ||     // "(3429 m)" or "[3429 m]"
         /^\s*[A-Z][\w-]*(?:\s+[A-Z][\w-]*){0,3}\s+(?:peaks?|crest|ridge|summit|plateau|escarpment|mountains|hills|range)\b/.test(afterRaw);
 

@@ -20,6 +20,7 @@ import { findSimilarPlaces } from "../lib/similarity";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
+  Users, Compass,
 } from "lucide-react";
 
 const TONE_HERO: Record<string, string> = {
@@ -38,6 +39,87 @@ const ARCHETYPE_ACCENT: Record<string, string> = {
   ember: "linear-gradient(180deg, #efb49a 0%, #9a4a2a 100%)",
   ice: "linear-gradient(180deg, #c3e4f1 0%, #4faacd 100%)",
   aurora: "linear-gradient(180deg, #c7b5ea 0%, #5a4397 100%)",
+};
+
+const SETTLEMENT_ROLE_LABEL: Record<string, string> = {
+  hub: "Hub",
+  town: "Town",
+  village: "Village",
+  hamlet: "Hamlet",
+  resort: "Resort",
+  ranching: "Ranching",
+  tribal: "Tribal land",
+  waypoint: "Waypoint",
+  "ghost-town": "Ghost town",
+};
+
+const SETTLEMENT_ROLE_TONE: Record<string, string> = {
+  hub: "glacier",
+  town: "ice",
+  village: "sage",
+  hamlet: "sage",
+  resort: "aurora",
+  ranching: "ochre",
+  tribal: "ember",
+  waypoint: "ice",
+  "ghost-town": "ember",
+};
+
+const SETTLEMENT_ROLE_COLOR: Record<string, string> = {
+  hub: "#8cc8e0",
+  town: "#c3e4f1",
+  village: "#c6dcbd",
+  hamlet: "#b6c8b0",
+  resort: "#c7b5ea",
+  ranching: "#f0d29c",
+  tribal: "#efb49a",
+  waypoint: "#9badc2",
+  "ghost-town": "#7c8796",
+};
+
+const ACTIVITY_KIND_LABEL: Record<string, string> = {
+  nature: "Nature",
+  trail: "Trail",
+  vista: "Vista",
+  water: "Water",
+  stargazing: "Stargazing",
+  wildlife: "Wildlife",
+  culture: "Culture",
+  "food-drink": "Food & drink",
+  seasonal: "Seasonal",
+  "winter-sport": "Winter sport",
+  urban: "Urban",
+  historic: "Historic",
+};
+
+const ACTIVITY_KIND_TONE: Record<string, string> = {
+  nature: "sage",
+  trail: "sage",
+  vista: "ochre",
+  water: "ice",
+  stargazing: "aurora",
+  wildlife: "sage",
+  culture: "aurora",
+  "food-drink": "ember",
+  seasonal: "ochre",
+  "winter-sport": "glacier",
+  urban: "ice",
+  historic: "ochre",
+};
+
+const ACTIVITY_KIND_GLYPH: Record<string, string> = {
+  nature: "🌲",
+  trail: "🥾",
+  vista: "🏔️",
+  water: "💧",
+  stargazing: "✨",
+  wildlife: "🦅",
+  culture: "🎭",
+  "food-drink": "🍷",
+  seasonal: "🍂",
+  "winter-sport": "❄️",
+  urban: "🏙️",
+  historic: "🏛️",
 };
 
 // Build a lookup from driver id → glossary short def where we have one.
@@ -491,6 +573,71 @@ function DetailBody({
         </div>
       </Section>
 
+      {place.settlementsWithinZone && place.settlementsWithinZone.length > 0 && (
+        <Section title="Settlements within this zone" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
+          <div className="grid md:grid-cols-2 gap-2">
+            {place.settlementsWithinZone.map(s => (
+              <div key={s.name} className="panel-thin p-3 flex items-start gap-3">
+                <div
+                  aria-hidden="true"
+                  className="mt-0.5 w-2 h-2 rounded-full shrink-0"
+                  style={{ background: SETTLEMENT_ROLE_COLOR[s.role] ?? "#9badc2" }}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="font-atlas text-sm text-ice truncate">{s.name}</div>
+                    <span className="chip" data-tone={SETTLEMENT_ROLE_TONE[s.role] ?? "ice"} style={{ fontSize: "10px" }}>
+                      {SETTLEMENT_ROLE_LABEL[s.role] ?? s.role}
+                    </span>
+                  </div>
+                  {s.population && (
+                    <div className="text-[11px] text-stone font-mono-num mt-0.5">pop. {s.population}</div>
+                  )}
+                  {s.note && (
+                    <div className="text-[12px] text-frost italic mt-1 leading-snug">{prose(s.note)}</div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-[11px] text-stone italic mt-2">
+            Towns listed share the same microclimate influences; each can feel subtly different along the gradient.
+          </div>
+        </Section>
+      )}
+
+      {place.thingsToDo && place.thingsToDo.length > 0 && (
+        <Section title="Things to do in zone" icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+          <div className="grid md:grid-cols-2 gap-2">
+            {place.thingsToDo.map((a, i) => (
+              <div key={`${a.label}-${i}`} className="panel-thin p-3">
+                <div className="flex items-start gap-2">
+                  <div className="text-lg leading-none pt-0.5" aria-hidden="true">
+                    {ACTIVITY_KIND_GLYPH[a.kind] ?? "✶"}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm text-ice leading-snug">{a.label}</div>
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      <span className="chip" data-tone={ACTIVITY_KIND_TONE[a.kind] ?? "ice"} style={{ fontSize: "10px" }}>
+                        {ACTIVITY_KIND_LABEL[a.kind] ?? a.kind}
+                      </span>
+                      {a.season && (
+                        <span className="chip" data-tone="glacier" style={{ fontSize: "10px" }}>
+                          {a.season}
+                        </span>
+                      )}
+                    </div>
+                    {a.note && (
+                      <div className="text-[12px] text-frost italic mt-1 leading-snug">{prose(a.note)}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
+
       {similar.length > 0 && (
         <Section title="Places that feel similar" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
           <div className="grid md:grid-cols-3 gap-2">
@@ -546,7 +693,7 @@ function DetailBody({
             <div className="text-[10px] uppercase tracking-wider text-stone">Confidence</div>
             <div className="text-sm text-ice capitalize">{place.confidence}</div>
           </div>
-          {place.confidenceNotes && <div className="text-xs text-stone italic max-w-[70%] text-right">{place.confidenceNotes}</div>}
+          {place.confidenceNotes && <div className="text-xs text-stone italic max-w-[70%] text-right">{prose(place.confidenceNotes)}</div>}
         </div>
 
         <div className="mt-3">
@@ -568,7 +715,7 @@ function DetailBody({
                       {c.label}
                     </a>
                   ) : c.label}
-                  {c.note ? <span className="text-stone italic"> — {c.note}</span> : null}
+                  {c.note ? <span className="text-stone italic"> — {prose(c.note)}</span> : null}
                 </span>
               </li>
             ))}
@@ -658,7 +805,9 @@ function synthesizePlaceSignals(place: Place, temp: "F" | "C", dist: "imperial" 
       value: `${MONTHS[wetIdx]} ${fmtPrecipSmall(wet, dist)} · ${MONTHS[dryIdx]} ${fmtPrecipSmall(dry, dist)} (${wetDryRatio})`,
     },
     {
-      label: "Comfort-window months (12–28°C highs)",
+      label: temp === "F"
+        ? "Comfort-window months (54–82°F highs)"
+        : "Comfort-window months (12–28°C highs)",
       value: `${comfortMonths} / 12`,
     },
   ];

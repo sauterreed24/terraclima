@@ -8,20 +8,27 @@ interface Props {
   height?: number;
 }
 
-/** Monthly precipitation bars with optional snow overlay. */
+/**
+ * Monthly precipitation bars with optional snow overlay.
+ *
+ * Polished treatment: slimmer bars with vertical rain-gradient, dashed mean
+ * reference line, annual-total callout, wettest-month highlight and
+ * driest-month label (only when meaningfully dry).
+ */
 export function PrecipBars({ precip, snow, height = 160 }: Props) {
   const { dist } = useUnits();
-  const W = 560, H = height, PAD_L = 42, PAD_R = 12, PAD_T = 14, PAD_B = 28;
+  const W = 560, H = height, PAD_L = 44, PAD_R = 14, PAD_T = 16, PAD_B = 30;
   const chartW = W - PAD_L - PAD_R;
   const chartH = H - PAD_T - PAD_B;
-  const barW = chartW / 12 - 6;
+  // Tighter column width with a bit more air between bars for a cleaner feel.
+  const barW = chartW / 12 - 8;
 
   const convert = (mm: number) => (dist === "imperial" ? mmToIn(mm) : mm);
   const convertSnow = (cm: number) => {
-    // Snow is stored in cm; "mm-equivalent" at ~0.1 inch / cm (with scaling) retained for visual.
-    // Convert to the user's chosen unit consistent with precip axis:
-    if (dist === "imperial") return cmToIn(cm) * 0.8; // ~80% visual weight
-    return cm * 8; // approximate mm-equivalent scaling (1 cm ≈ 8 mm water equivalent)
+    // Snow stays visually proportional on the same axis — ~80% visual weight
+    // to keep attention on rainfall without hiding the snow signal entirely.
+    if (dist === "imperial") return cmToIn(cm) * 0.8;
+    return cm * 8;
   };
 
   const dPrecip = precip.map(convert);
@@ -29,7 +36,7 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
 
   const maxVal = Math.max(...dPrecip, ...(dSnow ?? [0])) * 1.15 || 1;
 
-  const x = (i: number) => PAD_L + i * (chartW / 12) + 3;
+  const x = (i: number) => PAD_L + i * (chartW / 12) + 4;
   const y = (v: number) => PAD_T + chartH - (v / maxVal) * chartH;
 
   const step = precipTickStep(maxVal, dist);
@@ -43,19 +50,62 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
 
   const axisLabel = dist === "imperial" ? "in" : "mm";
   const fmt = (v: number) => dist === "imperial" ? v.toFixed(v < 2 ? 1 : 0) : v.toFixed(0);
+  const totalLabel = dist === "imperial" ? `${total.toFixed(total < 10 ? 1 : 0)} in / yr` : `${total.toFixed(0)} mm / yr`;
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
-      {ticks.map(t => (
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Monthly precipitation chart">
+      <defs>
+        <linearGradient id="precipGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#8cc8e0" stopOpacity="0.95" />
+          <stop offset="1" stopColor="#4faacd" stopOpacity="0.68" />
+        </linearGradient>
+        <linearGradient id="snowGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#e8f3f9" stopOpacity="0.65" />
+          <stop offset="1" stopColor="#c3e4f1" stopOpacity="0.28" />
+        </linearGradient>
+      </defs>
+
+      {ticks.map((t, ti) => (
         <g key={t}>
-          <line x1={PAD_L} x2={W - PAD_R} y1={y(t)} y2={y(t)} stroke="rgba(124,135,150,0.2)" strokeDasharray="2 4" />
-          <text x={PAD_L - 6} y={y(t) + 3} fontSize="10" fill="#9badc2" textAnchor="end" fontFamily="JetBrains Mono">{fmt(t)}</text>
+          <line
+            x1={PAD_L}
+            x2={W - PAD_R}
+            y1={y(t)}
+            y2={y(t)}
+            stroke="rgba(124,135,150,0.16)"
+            strokeDasharray="2 4"
+          />
+          <text
+            x={PAD_L - 6}
+            y={y(t) + 3}
+            fontSize="10"
+            fill="#9badc2"
+            textAnchor="end"
+            fontFamily="JetBrains Mono"
+          >
+            {fmt(t)}{ti === ticks.length - 1 ? ` ${axisLabel}` : ""}
+          </text>
         </g>
       ))}
 
-      {/* Mean reference line */}
-      <line x1={PAD_L} x2={W - PAD_R} y1={y(mean)} y2={y(mean)} stroke="rgba(240,210,156,0.6)" strokeWidth="1" strokeDasharray="5 3" />
-      <text x={W - PAD_R - 4} y={y(mean) - 3} fontSize="9" fill="#d6ad66" textAnchor="end" fontFamily="Inter" fontStyle="italic">
+      <line
+        x1={PAD_L}
+        x2={W - PAD_R}
+        y1={y(mean)}
+        y2={y(mean)}
+        stroke="rgba(240,210,156,0.55)"
+        strokeWidth="1"
+        strokeDasharray="5 3"
+      />
+      <text
+        x={W - PAD_R - 4}
+        y={y(mean) - 4}
+        fontSize="9"
+        fill="#d6ad66"
+        textAnchor="end"
+        fontFamily="Inter"
+        fontStyle="italic"
+      >
         mean {fmt(mean)} {axisLabel}
       </text>
 
@@ -67,9 +117,8 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
               y={y(Math.max(v, dSnow[i]))}
               width={barW}
               height={Math.max(0, chartH - (y(Math.max(v, dSnow[i])) - PAD_T))}
-              fill="#c3e4f1"
-              opacity="0.42"
-              rx="1.5"
+              fill="url(#snowGrad)"
+              rx="2"
             />
           )}
           <rect
@@ -77,10 +126,21 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
             y={y(v)}
             width={barW}
             height={Math.max(0, chartH - (y(v) - PAD_T))}
-            fill="#4faacd"
-            opacity="0.9"
-            rx="1.5"
+            fill="url(#precipGrad)"
+            rx="2"
           />
+          {i === wettestIdx && (
+            <rect
+              x={x(i) - 0.5}
+              y={y(v) - 0.5}
+              width={barW + 1}
+              height={Math.max(0, chartH - (y(v) - PAD_T)) + 0.5}
+              fill="none"
+              stroke="rgba(140,200,224,0.85)"
+              strokeWidth="0.9"
+              rx="2"
+            />
+          )}
         </g>
       ))}
 
@@ -91,7 +151,7 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
           <text
             key={m}
             x={x(i) + barW / 2}
-            y={H - 8}
+            y={H - 10}
             fontSize="10"
             fill={isMax ? "#bbe1f0" : isMin ? "#f0d29c" : "#9badc2"}
             textAnchor="middle"
@@ -101,12 +161,39 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
         );
       })}
 
-      <text x={x(wettestIdx) + barW / 2} y={y(dPrecip[wettestIdx]) - 4} fontSize="9" fill="#bbe1f0" textAnchor="middle" fontFamily="JetBrains Mono">{fmt(dPrecip[wettestIdx])}</text>
+      <text
+        x={x(wettestIdx) + barW / 2}
+        y={y(dPrecip[wettestIdx]) - 5}
+        fontSize="9"
+        fill="#bbe1f0"
+        textAnchor="middle"
+        fontFamily="JetBrains Mono"
+      >
+        {fmt(dPrecip[wettestIdx])}
+      </text>
       {dPrecip[driestIdx] < mean * 0.4 && (
-        <text x={x(driestIdx) + barW / 2} y={y(dPrecip[driestIdx]) - 4} fontSize="9" fill="#f0d29c" textAnchor="middle" fontFamily="JetBrains Mono">{fmt(dPrecip[driestIdx])}</text>
+        <text
+          x={x(driestIdx) + barW / 2}
+          y={y(dPrecip[driestIdx]) - 5}
+          fontSize="9"
+          fill="#f0d29c"
+          textAnchor="middle"
+          fontFamily="JetBrains Mono"
+        >
+          {fmt(dPrecip[driestIdx])}
+        </text>
       )}
 
-      <text x={PAD_L} y={PAD_T - 2} fontSize="10" fill="#7c8796" fontFamily="Inter">{axisLabel}</text>
+      <text
+        x={W - PAD_R}
+        y={PAD_T - 4}
+        fontSize="10"
+        fill="#c6dcbd"
+        textAnchor="end"
+        fontFamily="JetBrains Mono"
+      >
+        Σ {totalLabel}
+      </text>
     </svg>
   );
 }

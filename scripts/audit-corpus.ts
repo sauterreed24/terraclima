@@ -66,8 +66,17 @@ function placeFields(p: Place): Array<[string, string]> {
   push("climateChange.resilienceNote", p.climateChange?.resilienceNote);
   push("whoWouldLove", p.whoWouldLove);
   push("whoMightNot", p.whoMightNot);
+  push("confidenceNotes", p.confidenceNotes);
   for (const lc of p.localContrast ?? []) push(`localContrast.note`, lc.note);
   for (const nc of p.nearbyContrasts ?? []) push(`nearbyContrast[${nc.label}].note`, nc.note);
+  for (const c of p.citations ?? []) push(`citation[${c.kind}].note`, c.note);
+  for (const sh of p.climateChange?.keyShifts ?? []) push(`climateChange.keyShift[${sh.variable}].note`, sh.note);
+  for (const s of p.settlementsWithinZone ?? []) push(`settlement[${s.name}].note`, s.note);
+  for (const a of p.thingsToDo ?? []) {
+    push(`thingsToDo[${a.label.slice(0, 24)}].label`, a.label);
+    push(`thingsToDo[${a.label.slice(0, 24)}].note`, a.note);
+    push(`thingsToDo[${a.label.slice(0, 24)}].season`, a.season);
+  }
   const risks = p.risks as unknown as Record<string, { note?: string }>;
   for (const k of Object.keys(risks ?? {})) push(`risks.${k}.note`, risks[k]?.note);
   return out;
