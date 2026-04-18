@@ -234,6 +234,31 @@
     color: #d9ceef;
   }
 
+  /* Best-month pill shown at the bottom of each PlaceCard. Compact,
+     typography-led. When the active ranking profile resonates with this
+     window, the pill picks up a subtle golden glow so the user sees the
+     numeric reason the place ranked well. */
+  .best-window-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    padding: 0.15rem 0.55rem 0.15rem 0.1rem;
+    font-size: 11px;
+    color: var(--color-stone);
+    border-radius: 999px;
+    transition: background-color 180ms ease, box-shadow 180ms ease, color 180ms ease;
+  }
+  .best-window-pill[data-resonant="true"] {
+    background: linear-gradient(90deg, rgba(240, 210, 156, 0.18), rgba(240, 210, 156, 0.05));
+    box-shadow: inset 0 0 0 1px rgba(240, 210, 156, 0.35);
+    color: #f2dfb1;
+    padding-left: 0.55rem;
+  }
+  .best-window-pill[data-resonant="true"] .text-frost {
+    color: #f2dfb1;
+  }
+
   /* Clickable chip — interactive affordance */
   .chip-btn {
     cursor: pointer;

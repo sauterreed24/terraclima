@@ -5,7 +5,7 @@ import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { PLACE_ANNUAL_PRECIP } from "../data/places";
-import { computeBestMonths } from "../lib/best-months";
+import { computeBestMonths, type BestWindow } from "../lib/best-months";
 import { ArrowRight } from "lucide-react";
 
 interface Props {
@@ -16,6 +16,11 @@ interface Props {
   onCompareToggle?: () => void;
   inCompare?: boolean;
   compact?: boolean;
+  /**
+   * Best-month window id that the active ranking profile resonates with.
+   * When the card's primary window matches this id, the chip brightens.
+   */
+  resonantWindow?: BestWindow["id"] | null;
 }
 
 const TONE_ACCENT: Record<string, string> = {
@@ -49,7 +54,7 @@ const TONE_RGB: Record<string, string> = {
  * the interactive render budget dramatically on low-spec hardware.
  */
 export const PlaceCard = memo(function PlaceCard({
-  place, selected, note, onClick, onCompareToggle, inCompare, compact,
+  place, selected, note, onClick, onCompareToggle, inCompare, compact, resonantWindow,
 }: Props) {
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -148,8 +153,11 @@ export const PlaceCard = memo(function PlaceCard({
 
         {topWindow && (
           <div
-            className="mt-2 inline-flex items-center gap-1.5 text-[11px] text-stone"
-            title={topWindow.note}
+            className="best-window-pill"
+            data-resonant={resonantWindow && topWindow.id === resonantWindow ? "true" : "false"}
+            title={resonantWindow && topWindow.id === resonantWindow
+              ? `${topWindow.note ?? ""} Aligned with current ranking.`
+              : topWindow.note}
           >
             <span aria-hidden="true">{topWindow.glyph}</span>
             <span className="uppercase tracking-wider">{topWindow.label}</span>

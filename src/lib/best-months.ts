@@ -8,6 +8,7 @@
  */
 
 import type { Place } from "../types";
+import type { RankingProfile } from "./scoring";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
 
@@ -29,6 +30,23 @@ export interface BestWindow {
  * Compute ordered windows. Positive windows first so the top-1 consumer
  * (PlaceCard) can safely just pick `windows.find(w => w.kind === "good")`.
  */
+/**
+ * When the active ranking profile directly highlights one of the
+ * best-month windows, the card chip resonates — slight brightness / glow
+ * treatment so the user sees the numeric reason the place ranked high.
+ *
+ * `null` means the profile has no single resonant window.
+ */
+export function resonantWindowFor(profile: RankingProfile): BestWindow["id"] | null {
+  switch (profile) {
+    case "best-growability": return "garden";
+    case "driest-air": return "crisp";
+    case "best-shoulder-seasons": return "outdoor";
+    case "mediterranean-like": return "dry";
+    default: return null;
+  }
+}
+
 export function computeBestMonths(place: Place): BestWindow[] {
   const highs = place.climate.tempHighC;
   const lows = place.climate.tempLowC;

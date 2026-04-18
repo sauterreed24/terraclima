@@ -7,6 +7,7 @@ import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
 import { FIELD_NOTES } from "./data/field-notes";
 import { applyFilters, rankPlaces, type FilterState, type RankingProfile } from "./lib/scoring";
+import { resonantWindowFor } from "./lib/best-months";
 import { useUnits } from "./lib/units";
 import type { MicroclimateArchetype } from "./types";
 
@@ -321,6 +322,7 @@ export default function App() {
                         onClick={() => openPlace(r.place.id)}
                         onCompareToggle={() => toggleCompare(r.place.id)}
                         inCompare={compareIds.has(r.place.id)}
+                        resonantWindow={resonantWindowFor(ranking)}
                       />
                     ))
                   )}

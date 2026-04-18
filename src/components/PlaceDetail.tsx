@@ -11,14 +11,15 @@ import { ContrastChart } from "./charts/ContrastChart";
 import { ClimateChangeDelta } from "./charts/ClimateChangeDelta";
 import { ComfortMatrix } from "./charts/ComfortMatrix";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
-import { PLACES_BY_ID } from "../data/places";
+import { PLACES, PLACES_BY_ID } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse } from "../lib/units";
 import { computeBestMonths } from "../lib/best-months";
+import { findSimilarPlaces } from "../lib/similarity";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
-  TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar,
+  TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
 } from "lucide-react";
 
 const TONE_HERO: Record<string, string> = {
@@ -28,6 +29,15 @@ const TONE_HERO: Record<string, string> = {
   ember: "radial-gradient(1000px 300px at 15% 0%, rgba(239,180,154,0.22), transparent 65%)",
   ice: "radial-gradient(1000px 300px at 15% 0%, rgba(195,228,241,0.2), transparent 65%)",
   aurora: "radial-gradient(1000px 300px at 15% 0%, rgba(199,181,234,0.22), transparent 65%)",
+};
+
+const ARCHETYPE_ACCENT: Record<string, string> = {
+  glacier: "linear-gradient(180deg, #8cc8e0 0%, #2b7a9a 100%)",
+  sage: "linear-gradient(180deg, #c6dcbd 0%, #567957 100%)",
+  ochre: "linear-gradient(180deg, #f0d29c 0%, #9a7c3b 100%)",
+  ember: "linear-gradient(180deg, #efb49a 0%, #9a4a2a 100%)",
+  ice: "linear-gradient(180deg, #c3e4f1 0%, #4faacd 100%)",
+  aurora: "linear-gradient(180deg, #c7b5ea 0%, #5a4397 100%)",
 };
 
 // Build a lookup from driver id → glossary short def where we have one.
@@ -250,6 +260,7 @@ function DetailBody({
 
   const synthesized = useMemo(() => synthesizePlaceSignals(place, temp, dist), [place, temp, dist]);
   const bestMonths = useMemo(() => computeBestMonths(place), [place]);
+  const similar = useMemo(() => findSimilarPlaces(place, PLACES, 3), [place]);
 
   return (
     <div className="p-6 space-y-6">
@@ -479,6 +490,46 @@ function DetailBody({
           {place.travelFit.map(t => <span key={t} className="chip" data-tone="sage">Travel · {t}</span>)}
         </div>
       </Section>
+
+      {similar.length > 0 && (
+        <Section title="Places that feel similar" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+          <div className="grid md:grid-cols-3 gap-2">
+            {similar.map(({ place: s, score }) => {
+              const sTone = ARCHETYPE_BY_ID[s.archetypes[0]]?.tone ?? "ice";
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => onOpenPlace?.(s.id)}
+                  className="panel-thin p-3 text-left reveal-row min-w-0 relative overflow-hidden"
+                  title={`Open ${s.name}`}
+                >
+                  <span
+                    aria-hidden
+                    className="absolute top-0 left-0 bottom-0 w-[3px]"
+                    style={{ background: ARCHETYPE_ACCENT[sTone] }}
+                  />
+                  <div className="pl-2 min-w-0">
+                    <div className="font-atlas text-sm text-ice truncate">{s.name}</div>
+                    <div className="text-[11px] text-stone truncate">{s.region}, {s.country === "USA" ? "US" : s.country === "Canada" ? "CA" : "MX"}</div>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {s.archetypes.slice(0, 2).map(a => (
+                        <span key={a} className="chip" data-tone={ARCHETYPE_BY_ID[a]?.tone ?? "ice"} style={{ fontSize: "10px" }}>
+                          {ARCHETYPE_BY_ID[a]?.label ?? a}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="mt-1.5 text-[10px] text-stone flex items-center gap-1.5">
+                      <span>Resonance</span>
+                      <span className="font-mono-num text-frost">{Math.round(score * 100)}</span>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          <div className="text-[11px] text-stone italic mt-2">Ranked by shared archetypes, topographic drivers, and climate distance.</div>
+        </Section>
+      )}
 
       <Section title="Hidden-gem verdict · sources">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
