@@ -1,10 +1,11 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
-import { Compass, Globe2, Layers, Library, Map, Search, Sparkles, Target, X } from "lucide-react";
+import { BookOpen, Compass, Globe2, Layers, Library, Map, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { PlaceCard } from "./components/PlaceCard";
 import { FilterBar } from "./components/FilterBar";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
+import { FIELD_NOTES } from "./data/field-notes";
 import { applyFilters, rankPlaces, type FilterState, type RankingProfile } from "./lib/scoring";
 import { useUnits } from "./lib/units";
 import type { MicroclimateArchetype } from "./types";
@@ -80,10 +81,49 @@ export default function App() {
   // cached.
   useEffect(() => { scheduleIdlePrefetch(); }, []);
 
-  // Global keyboard shortcuts. Single-key presses are handled; anything
-  // with a modifier or inside an <input>/<textarea> falls through to
-  // normal browser behaviour so typing in the search box is uninterrupted.
+  // Global keyboard shortcuts — effect is registered after `openPlace` / ranked pool exist (see below).
   const [showShortcuts, setShowShortcuts] = useState(false);
+
+  const pool = useMemo(() => {
+    if (activeCollection) {
+      const c = COLLECTION_BY_ID[activeCollection];
+      if (c) return c.placeIds.map(id => PLACES_BY_ID[id]).filter(Boolean);
+    }
+    return PLACES;
+  }, [activeCollection]);
+
+  // Defer the filter object so typing in the search box stays responsive
+  // even while the list/map recompute. React yields the heavy filter+rank
+  // work to a lower priority, which is exactly what we want on low-spec
+  // hardware.
+  const deferredFilters = useDeferredValue(filters);
+  const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
+  const ranked = useMemo(() => rankPlaces(ranking, filtered), [ranking, filtered]);
+  const rankedRef = useRef(ranked);
+  rankedRef.current = ranked;
+
+  const selectedPlace = selectedId ? PLACES_BY_ID[selectedId] ?? null : null;
+
+  // Callbacks are stabilised with useCallback so memoized children (TopBar,
+  // HeroCard, FootprintPanel, Footer) do not re-render on unrelated state
+  // changes — notably every keystroke in the search box.
+  const toggleCompare = useCallback((id: string) => {
+    setCompareIds(s => {
+      const ns = new Set(s);
+      if (ns.has(id)) ns.delete(id); else ns.add(id);
+      if (ns.size > 4) {
+        const arr = [...ns];
+        return new Set(arr.slice(arr.length - 4));
+      }
+      return ns;
+    });
+  }, []);
+
+  const openPlace = useCallback((id: string) => {
+    setSelectedId(id);
+    setDetailEverOpened(true);
+  }, []);
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
@@ -109,57 +149,28 @@ export default function App() {
           setView("learn");
           break;
         case "/":
-          // Focus search from any view: jump to Explorer first, then focus the
-          // known input id once the next frame has mounted the filter panel.
           e.preventDefault();
           setView("explorer");
           requestAnimationFrame(() => {
             document.getElementById(SEARCH_INPUT_ID)?.focus();
           });
           break;
+        case "r": case "R": {
+          e.preventDefault();
+          setView("explorer");
+          requestAnimationFrame(() => {
+            const poolRanked = rankedRef.current;
+            if (poolRanked.length === 0) return;
+            const idx = Math.floor(Math.random() * poolRanked.length);
+            openPlace(poolRanked[idx].place.id);
+          });
+          break;
+        }
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [showShortcuts, compareOpen, selectedId]);
-
-  const pool = useMemo(() => {
-    if (activeCollection) {
-      const c = COLLECTION_BY_ID[activeCollection];
-      if (c) return c.placeIds.map(id => PLACES_BY_ID[id]).filter(Boolean);
-    }
-    return PLACES;
-  }, [activeCollection]);
-
-  // Defer the filter object so typing in the search box stays responsive
-  // even while the list/map recompute. React yields the heavy filter+rank
-  // work to a lower priority, which is exactly what we want on low-spec
-  // hardware.
-  const deferredFilters = useDeferredValue(filters);
-  const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
-  const ranked = useMemo(() => rankPlaces(ranking, filtered), [ranking, filtered]);
-
-  const selectedPlace = selectedId ? PLACES_BY_ID[selectedId] ?? null : null;
-
-  // Callbacks are stabilised with useCallback so memoized children (TopBar,
-  // HeroCard, FootprintPanel, Footer) do not re-render on unrelated state
-  // changes — notably every keystroke in the search box.
-  const toggleCompare = useCallback((id: string) => {
-    setCompareIds(s => {
-      const ns = new Set(s);
-      if (ns.has(id)) ns.delete(id); else ns.add(id);
-      if (ns.size > 4) {
-        const arr = [...ns];
-        return new Set(arr.slice(arr.length - 4));
-      }
-      return ns;
-    });
-  }, []);
-
-  const openPlace = useCallback((id: string) => {
-    setSelectedId(id);
-    setDetailEverOpened(true);
-  }, []);
+  }, [showShortcuts, compareOpen, selectedId, openPlace]);
 
   const openCompare = useCallback(() => {
     setCompareOpen(true);
@@ -186,8 +197,16 @@ export default function App() {
     setView("explorer");
   }, []);
 
+  const surpriseMe = useCallback(() => {
+    if (ranked.length === 0) return;
+    const idx = Math.floor(Math.random() * ranked.length);
+    openPlace(ranked[idx].place.id);
+  }, [ranked, openPlace]);
+
   return (
-    <div className="min-h-screen flex flex-col text-ice">
+    <div className="relative min-h-screen flex flex-col text-ice overflow-x-hidden">
+      <div className="ambient-aurora" aria-hidden="true" />
+      <div className="relative z-10 flex flex-col flex-1 min-h-0">
       <TopBar view={view} setView={setView} onOpenCompare={openCompare} compareCount={compareIds.size} />
 
       <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1600px] w-full mx-auto">
@@ -206,6 +225,8 @@ export default function App() {
                   onClearCollection={clearCollection}
                   activeArchetypes={filters.archetypes}
                   onClearArchetypes={clearArchetypes}
+                  onSurpriseMe={surpriseMe}
+                  canSurprise={ranked.length > 0}
                 />
 
                 <div className="h-[52vh] min-h-[460px] relative">
@@ -224,6 +245,7 @@ export default function App() {
                   <div className="text-xs text-stone hidden md:flex items-center gap-3">
                     <span><span className="kbd">scroll</span> to zoom map</span>
                     <span><span className="kbd">/</span> search</span>
+                    <span><span className="kbd">R</span> surprise</span>
                     <span><span className="kbd">?</span> shortcuts</span>
                   </div>
                 </div>
@@ -263,7 +285,7 @@ export default function App() {
           {view === "collections" && (
             <div className="flex-1">
               <div className="max-w-3xl mx-auto">
-                <div className="mb-5">
+                <div className="mb-5 border-l-2 border-[rgba(140,200,224,0.4)] pl-4">
                   <div className="text-xs uppercase tracking-wider text-stone">Curated</div>
                   <h2 className="font-atlas text-3xl text-ice">Collections</h2>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
@@ -284,7 +306,7 @@ export default function App() {
           {view === "learn" && (
             <div className="flex-1">
               <div className="max-w-3xl mx-auto">
-                <div className="mb-5">
+                <div className="mb-5 border-l-2 border-[rgba(198,220,189,0.45)] pl-4">
                   <div className="text-xs uppercase tracking-wider text-stone">Learn</div>
                   <h2 className="font-atlas text-3xl text-ice">Field guide</h2>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
@@ -301,6 +323,8 @@ export default function App() {
       </div>
 
       <Footer />
+
+      </div>
 
       {/* Heavy panels load on first open, then stay mounted so their internal
           AnimatePresence can play the exit animation on close. The chunks
@@ -364,12 +388,13 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
           <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
           <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
           <Kbds keys={["/"]} />        <span className="text-frost">Focus search</span>
+          <Kbds keys={["R"]} />        <span className="text-frost">Surprise — random place in your current list</span>
           <Kbds keys={["Esc"]} />      <span className="text-frost">Close panel / detail</span>
           <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
         </div>
         <div className="divider-contour my-3" />
         <div className="text-xs text-stone">
-          On the map: scroll to zoom, drag to pan, click a dot or card to open its detail.
+          On the map: scroll to zoom, drag to pan, click a dot or card to open its detail. Explorer&apos;s &ldquo;Surprise me&rdquo; respects filters and ranking — same pool as the cards below.
         </div>
       </div>
     </div>
@@ -439,7 +464,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
           <LogoMark />
           <div>
             <div className="font-atlas text-lg text-ice leading-none">Terraclima</div>
-            <div className="text-[11px] text-stone tracking-wide">North American Microclimate Atlas</div>
+            <div className="text-[11px] tracking-wide text-gradient-atlas">North American Microclimate Atlas</div>
           </div>
         </div>
 
@@ -503,20 +528,58 @@ function LogoMark() {
   );
 }
 
+const FieldNoteStrip = memo(function FieldNoteStrip() {
+  const dailyIdx = useMemo(() => {
+    const d = new Date();
+    return (d.getFullYear() * 372 + d.getMonth() * 31 + d.getDate()) % FIELD_NOTES.length;
+  }, []);
+  const [pick, setPick] = useState<number | null>(null);
+  const idx = pick ?? dailyIdx;
+  const note = FIELD_NOTES[idx];
+
+  return (
+    <div className="rounded-xl border border-[rgba(199,181,234,0.28)] bg-[linear-gradient(135deg,rgba(24,35,57,0.75)_0%,rgba(32,44,72,0.55)_100%)] px-4 py-3 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+      <div className="flex items-center gap-2 shrink-0">
+        <BookOpen className="w-3.5 h-3.5 shrink-0" style={{ color: "#c7b5ea" }} aria-hidden />
+        <div className="flex flex-col gap-0.5">
+          <span className="text-[10px] uppercase tracking-wider" style={{ color: "#c7b5ea" }}>Field note</span>
+          {pick === null ? (
+            <span className="text-[10px] text-stone">Today&apos;s draw — shuffle for more</span>
+          ) : (
+            <span className="text-[10px] text-stone">Picked just now</span>
+          )}
+        </div>
+      </div>
+      <p className="text-sm text-frost leading-relaxed flex-1 min-w-0">{note}</p>
+      <button
+        type="button"
+        onClick={() => setPick(Math.floor(Math.random() * FIELD_NOTES.length))}
+        className="btn-ghost !text-xs !py-1.5 shrink-0 self-start sm:self-center border-[rgba(199,181,234,0.35)]"
+        aria-label="Show another field note"
+      >
+        <Shuffle className="w-3.5 h-3.5" style={{ color: "#c7b5ea" }} />
+        Another
+      </button>
+    </div>
+  );
+});
+
 const HeroCard = memo(function HeroCard({
-  count, activeCollection, onClearCollection, activeArchetypes, onClearArchetypes,
+  count, activeCollection, onClearCollection, activeArchetypes, onClearArchetypes, onSurpriseMe, canSurprise,
 }: {
   count: number;
   activeCollection: string | null;
   onClearCollection: () => void;
   activeArchetypes: Set<MicroclimateArchetype>;
   onClearArchetypes: () => void;
+  onSurpriseMe: () => void;
+  canSurprise: boolean;
 }) {
   const active = activeCollection ? COLLECTION_BY_ID[activeCollection] : null;
   return (
-    <div className="panel p-5 anim-fade-in">
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
-        <div>
+    <div className="panel panel-hero p-5 anim-fade-in space-y-4">
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Sparkles className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
             <span className="text-xs uppercase tracking-wider text-stone">
@@ -542,12 +605,27 @@ const HeroCard = memo(function HeroCard({
               : "Find rain shadows, sky islands, cool-summer coasts, eternal-spring highlands, orchard valleys, chinook corridors, and more — with the mechanisms that shape each place made explicit."}
           </p>
         </div>
-        <div className="flex items-center gap-4 shrink-0 text-right">
-          <Metric label="In view" value={count} animated />
-          <Metric label="Atlas total" value={PLACE_COUNTS.total} />
-          <Metric label="Flagships" value={PLACE_COUNTS.tierA} />
+        <div className="flex flex-col items-stretch sm:items-end gap-3 shrink-0">
+          {canSurprise && (
+            <button
+              type="button"
+              onClick={onSurpriseMe}
+              className="btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(199,181,234,0.4)]"
+              aria-label="Open a random place from the current filtered list"
+              title="Uses the same pool as the cards and map below"
+            >
+              <Shuffle className="w-3.5 h-3.5" style={{ color: "#c7b5ea" }} />
+              Surprise me
+            </button>
+          )}
+          <div className="flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
+            <Metric label="In view" value={count} animated />
+            <Metric label="Atlas total" value={PLACE_COUNTS.total} />
+            <Metric label="Flagships" value={PLACE_COUNTS.tierA} />
+          </div>
         </div>
       </div>
+      <FieldNoteStrip />
     </div>
   );
 });

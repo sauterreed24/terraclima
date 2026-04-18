@@ -86,6 +86,12 @@
     min-height: 100vh;
   }
 
+  /* Slow-moving colour wash — sits behind app chrome (see `.ambient-aurora`). */
+  @keyframes auroraDrift {
+    0% { transform: translate3d(-3%, -2%, 0) scale(1.03); opacity: 0.55; }
+    100% { transform: translate3d(3%, 2%, 0) scale(1.06); opacity: 0.78; }
+  }
+
   h1, h2, h3, h4 {
     font-family: var(--font-serif);
     font-weight: 500;
@@ -118,6 +124,38 @@
 }
 
 @layer components {
+  /* Hero / spotlight panels — extra glow without heavier borders. */
+  .panel-hero {
+    background:
+      linear-gradient(155deg, rgba(55, 72, 108, 0.88) 0%, rgba(28, 40, 72, 0.82) 45%, rgba(24, 35, 57, 0.88) 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.05) inset,
+      0 0 0 1px rgba(140, 200, 224, 0.12) inset,
+      0 16px 48px -20px rgba(79, 170, 205, 0.22),
+      0 24px 56px -28px rgba(142, 115, 212, 0.12);
+  }
+
+  .ambient-aurora {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 90% 55% at 50% -15%, rgba(79, 170, 205, 0.16), transparent 52%),
+      radial-gradient(ellipse 55% 45% at 100% 40%, rgba(142, 115, 212, 0.1), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 0% 85%, rgba(137, 175, 136, 0.1), transparent 58%),
+      radial-gradient(ellipse 70% 50% at 70% 100%, rgba(240, 210, 156, 0.06), transparent 50%);
+    animation: auroraDrift 28s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+  }
+
+  .text-gradient-atlas {
+    background: linear-gradient(92deg, var(--color-glacier-300) 0%, var(--color-sage-300) 42%, var(--color-ochre-300) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
   .panel {
     background:
       linear-gradient(180deg, rgba(41, 56, 83, 0.78) 0%, rgba(24, 35, 57, 0.82) 100%);
@@ -455,8 +493,13 @@
   .anim-fade-in,
   .view-enter,
   .shimmer,
-  .pulse-dot {
+  .pulse-dot,
+  .ambient-aurora {
     animation: none !important;
+  }
+  .ambient-aurora {
+    opacity: 0.65;
+    transform: none;
   }
   * {
     transition-duration: 0.01ms !important;
