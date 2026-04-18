@@ -16,38 +16,38 @@
   --color-slate-3: #354664;
   --color-slate-4: #475a7a;
 
-  /* Text — mineral whites, boosted for legibility */
-  --color-ice: #f1f6fc;
-  --color-frost: #d3dce9;
-  --color-stone: #9badc2;
-  --color-shadow: #6a7d95;
+  /* Text — higher contrast on dark chrome (WCAG-friendly body copy) */
+  --color-ice: #f7fbff;
+  --color-frost: #e2ebf7;
+  --color-stone: #a8bad4;
+  --color-shadow: #7a8fa8;
 
-  /* Primary accent — glacial cyan, saturated */
-  --color-glacier-50: #e6f5fb;
-  --color-glacier-100: #c3e4f1;
-  --color-glacier-300: #8cc8e0;
-  --color-glacier-500: #4faacd;
-  --color-glacier-700: #2b7a9a;
+  /* Primary accent — brighter glacial cyan */
+  --color-glacier-50: #edfbff;
+  --color-glacier-100: #c8effc;
+  --color-glacier-300: #7ad4f0;
+  --color-glacier-500: #2eb8e6;
+  --color-glacier-700: #0f7aa3;
 
-  /* Secondary — alpine sage with warmer lean */
-  --color-sage-300: #c6dcbd;
-  --color-sage-500: #89af88;
-  --color-sage-700: #567957;
+  /* Secondary — punchier sage */
+  --color-sage-300: #d4f0c4;
+  --color-sage-500: #6ecf7a;
+  --color-sage-700: #3d8a48;
 
-  /* Tertiary — mineral gold / ochre (orchard & terrain) */
-  --color-ochre-300: #f0d29c;
-  --color-ochre-500: #d6ad66;
-  --color-ochre-700: #9a7c3b;
+  /* Tertiary — bright gold / ochre */
+  --color-ochre-300: #ffe08a;
+  --color-ochre-500: #f0b429;
+  --color-ochre-700: #b07812;
 
-  /* Quaternary — aurora violet (rare / sky-island) */
-  --color-aurora-300: #c7b5ea;
-  --color-aurora-500: #8e73d4;
-  --color-aurora-700: #5a4397;
+  /* Quaternary — vivid aurora violet */
+  --color-aurora-300: #dcc4ff;
+  --color-aurora-500: #a855f7;
+  --color-aurora-700: #6d28d9;
 
-  /* Risk — ember / rust, slightly richer */
-  --color-ember-300: #efb49a;
-  --color-ember-500: #d37c5b;
-  --color-ember-700: #9a4a2a;
+  /* Risk — ember / rust, higher chroma */
+  --color-ember-300: #ffc4a8;
+  --color-ember-500: #f97357;
+  --color-ember-700: #c2410c;
 
   /* Map/contour accents */
   --color-teal-contour: #4d8591;
@@ -79,10 +79,10 @@
 
   body {
     background:
-      radial-gradient(1400px 700px at 85% -10%, rgba(79, 170, 205, 0.14), transparent 60%),
-      radial-gradient(1100px 600px at 5% 105%, rgba(137, 175, 136, 0.09), transparent 60%),
-      radial-gradient(900px 500px at 50% 50%, rgba(142, 115, 212, 0.04), transparent 70%),
-      linear-gradient(180deg, #0d1420 0%, #101a2a 55%, #0b1220 100%);
+      radial-gradient(1400px 700px at 85% -10%, rgba(46, 184, 230, 0.22), transparent 58%),
+      radial-gradient(1100px 600px at 5% 105%, rgba(110, 207, 122, 0.14), transparent 58%),
+      radial-gradient(900px 500px at 50% 50%, rgba(168, 85, 247, 0.09), transparent 68%),
+      linear-gradient(180deg, #0a101f 0%, #0d1628 55%, #080f18 100%);
     min-height: 100vh;
   }
 
@@ -141,10 +141,10 @@
     z-index: 0;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 90% 55% at 50% -15%, rgba(79, 170, 205, 0.16), transparent 52%),
-      radial-gradient(ellipse 55% 45% at 100% 40%, rgba(142, 115, 212, 0.1), transparent 55%),
-      radial-gradient(ellipse 50% 40% at 0% 85%, rgba(137, 175, 136, 0.1), transparent 58%),
-      radial-gradient(ellipse 70% 50% at 70% 100%, rgba(240, 210, 156, 0.06), transparent 50%);
+      radial-gradient(ellipse 90% 55% at 50% -15%, rgba(46, 184, 230, 0.22), transparent 52%),
+      radial-gradient(ellipse 55% 45% at 100% 40%, rgba(168, 85, 247, 0.14), transparent 55%),
+      radial-gradient(ellipse 50% 40% at 0% 85%, rgba(110, 207, 122, 0.12), transparent 58%),
+      radial-gradient(ellipse 70% 50% at 70% 100%, rgba(240, 180, 41, 0.09), transparent 50%);
     animation: auroraDrift 28s ease-in-out infinite alternate;
     will-change: transform, opacity;
   }
@@ -204,34 +204,34 @@
     transition: all 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .chip[data-tone="glacier"] {
-    background: rgba(79, 170, 205, 0.16);
-    border-color: rgba(140, 200, 224, 0.45);
-    color: #bbe1f0;
+    background: rgba(46, 184, 230, 0.22);
+    border-color: rgba(122, 212, 240, 0.55);
+    color: #d2f4ff;
   }
   .chip[data-tone="sage"] {
-    background: rgba(137, 175, 136, 0.16);
-    border-color: rgba(198, 220, 189, 0.45);
-    color: #d9ead2;
+    background: rgba(110, 207, 122, 0.2);
+    border-color: rgba(180, 240, 180, 0.5);
+    color: #e8ffe8;
   }
   .chip[data-tone="ochre"] {
-    background: rgba(214, 173, 102, 0.18);
-    border-color: rgba(240, 210, 156, 0.5);
-    color: #f2dfb1;
+    background: rgba(240, 180, 41, 0.22);
+    border-color: rgba(255, 224, 138, 0.55);
+    color: #fff3c4;
   }
   .chip[data-tone="ember"] {
-    background: rgba(211, 124, 91, 0.18);
-    border-color: rgba(239, 180, 154, 0.48);
-    color: #f3cab6;
+    background: rgba(249, 115, 87, 0.2);
+    border-color: rgba(255, 196, 168, 0.5);
+    color: #ffe4d8;
   }
   .chip[data-tone="ice"] {
-    background: rgba(195, 228, 241, 0.12);
-    border-color: rgba(195, 228, 241, 0.38);
-    color: #dfecf4;
+    background: rgba(200, 239, 252, 0.14);
+    border-color: rgba(200, 239, 252, 0.42);
+    color: #f0fbff;
   }
   .chip[data-tone="aurora"] {
-    background: rgba(142, 115, 212, 0.18);
-    border-color: rgba(199, 181, 234, 0.5);
-    color: #d9ceef;
+    background: rgba(168, 85, 247, 0.22);
+    border-color: rgba(220, 196, 255, 0.55);
+    color: #efe4ff;
   }
 
   /* Best-month pill shown at the bottom of each PlaceCard. Compact,
@@ -302,13 +302,13 @@
     display: inline-flex; align-items: center; gap: 0.45rem;
     padding: 0.55rem 1rem;
     border-radius: 10px;
-    background: linear-gradient(180deg, #6cbbd6 0%, #3b88a8 100%);
-    color: #0d1825;
+    background: linear-gradient(180deg, #4dd8f5 0%, #0ea5c9 100%);
+    color: #061018;
     font-weight: 600;
     font-size: 0.85rem;
     box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.25) inset,
-      0 8px 22px -10px rgba(108, 187, 214, 0.7);
+      0 1px 0 rgba(255, 255, 255, 0.35) inset,
+      0 8px 26px -10px rgba(46, 184, 230, 0.85);
     transition: all 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .btn-primary:hover { transform: translateY(-1px); filter: brightness(1.08); }

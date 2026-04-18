@@ -24,24 +24,24 @@ interface Props {
 }
 
 const TONE_ACCENT: Record<string, string> = {
-  glacier: "linear-gradient(180deg, #8cc8e0 0%, #2b7a9a 100%)",
-  sage: "linear-gradient(180deg, #c6dcbd 0%, #567957 100%)",
-  ochre: "linear-gradient(180deg, #f0d29c 0%, #9a7c3b 100%)",
-  ember: "linear-gradient(180deg, #efb49a 0%, #9a4a2a 100%)",
-  ice: "linear-gradient(180deg, #c3e4f1 0%, #4faacd 100%)",
-  aurora: "linear-gradient(180deg, #c7b5ea 0%, #5a4397 100%)",
+  glacier: "linear-gradient(180deg, #7ad4f0 0%, #0f7aa3 100%)",
+  sage: "linear-gradient(180deg, #d4f0c4 0%, #3d8a48 100%)",
+  ochre: "linear-gradient(180deg, #ffe08a 0%, #b07812 100%)",
+  ember: "linear-gradient(180deg, #ffc4a8 0%, #c2410c 100%)",
+  ice: "linear-gradient(180deg, #c8effc 0%, #2eb8e6 100%)",
+  aurora: "linear-gradient(180deg, #dcc4ff 0%, #6d28d9 100%)",
 };
 
 // Archetype tone expressed as comma-separated RGB so CSS can interpolate
 // opacity in box-shadow without a second JS pass. Piped into the card via
 // the --tone-rgb custom property.
 const TONE_RGB: Record<string, string> = {
-  glacier: "140, 200, 224",
-  sage: "198, 220, 189",
-  ochre: "240, 210, 156",
-  ember: "239, 180, 154",
-  ice: "195, 228, 241",
-  aurora: "199, 181, 234",
+  glacier: "122, 212, 240",
+  sage: "180, 240, 180",
+  ochre: "255, 224, 138",
+  ember: "255, 156, 120",
+  ice: "200, 239, 252",
+  aurora: "220, 196, 255",
 };
 
 /**
