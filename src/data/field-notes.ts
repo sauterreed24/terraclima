@@ -18,4 +18,6 @@ export const FIELD_NOTES: readonly string[] = [
   "Karst and limestone don’t just look pretty — they steal rainfall underground and surface it miles away as cold springs.",
   "Urban heat islands aren’t only cities — they’re contrast machines that make nearby ravines feel like time travel.",
   "The best atlas isn’t the one with the most dots — it’s the one that tells you why the weather is weird right here.",
+  "A river gap can be a winter furnace: downslope warming through a Coast Range notch sometimes lifts a shore town into spring-like afternoons while neighbours stay grey.",
+  "The Great Lakes aren’t just shoreline — they’re a conveyor of ice, steam fog, and lake-breeze fronts that ignore political borders.",
 ];
