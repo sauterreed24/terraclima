@@ -131,7 +131,7 @@ export const PLACES_CANADA: Place[] = [
     drivers: ["chinook-foehn", "gap-winds"],
 
     summaryShort: "Canadian prairie shaped by the most celebrated warm winter winds on the continent.",
-    summaryImmersive: "A chinook in southern Alberta is a climatological thunderclap. On a January morning the temperature may be -25°C under a heavy prairie inversion; by afternoon a wall of lenticular cloud — the 'chinook arch' — appears over the Rockies, and within two hours the air is 10°C. Lethbridge averages roughly 30–40 chinook days each winter, making its climate meaningfully milder than its latitude suggests. Summers are warm and dry; the wind never really stops. Pincher Creek, nearer the mountains, is even more chinook-shaped, with the strongest wind statistics on the Canadian prairies. The sky here is enormous and always moving.",
+    summaryImmersive: "A chinook in southern Alberta is a climatological thunderclap. On a January morning the temperature may be −25°C under a heavy prairie inversion; by afternoon a wall of lenticular cloud — the 'chinook arch' — appears over the Rockies, and within two hours the air is 10°C. Lethbridge averages roughly 30–40 chinook days each winter, making its climate meaningfully milder than its latitude suggests. Summers are warm and dry; the wind never really stops. Pincher Creek, nearer the mountains, is even more chinook-shaped, with the strongest wind statistics on the Canadian prairies. The sky here is enormous and always moving.",
     whyDistinct: "Stable westerly flow descends the Rockies, warming adiabatically and gusting across the foothills plains. Chinook frequency produces winters that are warm relative to the same latitude elsewhere on the prairies.",
 
     climate: {
@@ -810,7 +810,7 @@ export const PLACES_CANADA: Place[] = [
     archetypes: ["subarctic-continental", "rain-shadow-sanctuary", "basin-inversion"],
     drivers: ["rain-shadow", "continentality", "inversion"],
     summaryShort: "The driest subarctic capital in North America — a rain-shadow Yukon valley with sun-drenched winter cold and near-midnight-sun summers.",
-    summaryImmersive: "Whitehorse sits at 60.7° latitude but in the deep rain shadow of the Coast Mountains, making it one of the driest subarctic climates on the continent — under 260 mm annual precipitation. Winters are long and cold (January lows near -24°C) but also sunny and strikingly dry. Summer daylight approaches 20 hours; afternoon highs reach the low 20s. The dryness produces clearer winter skies than most Canadian north, contributing to exceptional aurora conditions.",
+    summaryImmersive: "Whitehorse sits at 60.7° latitude but in the deep rain shadow of the Coast Mountains, making it one of the driest subarctic climates on the continent — under 260 mm annual precipitation. Winters are long and cold (January lows near −24°C) but also sunny and strikingly dry. Summer daylight approaches 20 hours; afternoon highs reach the low 20s. The dryness produces clearer winter skies than most Canadian north, contributing to exceptional aurora conditions.",
     whyDistinct: "Rain shadow transforms typical subarctic wetness into aridity, producing a unique cold-dry-sunny regime unusual for the latitude.",
     climate: { tempHighC: [-11.4, -7.1, -1.1, 6.8, 14.2, 19.3, 20.9, 19.1, 12.8, 3.4, -6.1, -10.4], tempLowC: [-24.0, -20.8, -14.6, -5.9, 0.6, 5.8, 8.1, 6.6, 2.1, -4.4, -14.8, -21.6], precipMm: [14, 11, 10, 9, 18, 31, 36, 35, 31, 23, 20, 22], snowCm: [20, 14, 10, 4, 2, 0, 0, 0, 2, 14, 26, 28], annualPrecipMm: 260, frostFreeDays: 70, hardinessZone: "2b" },
     soil: { texture: "Sandy loam over permafrost / gravel", drainage: "good", phRange: [6.2, 7.2], waterHolding: "low" },
@@ -831,8 +831,8 @@ export const PLACES_CANADA: Place[] = [
     biome: "Boreal-taiga transition", koppen: "Dfc",
     archetypes: ["subarctic-continental", "lake-moderated", "frost-hollow"],
     drivers: ["continentality", "polar-jet-exposure"],
-    summaryShort: "One of the coldest capitals in the world — winter means drop to -26°C, summer days reach 22°C, and the aurora runs 240 nights a year.",
-    summaryImmersive: "Yellowknife sits on Great Slave Lake's rocky north shore at 62.5° latitude. Winters are dark, dry, and brutal: January mean lows of -30°C, February sometimes colder. Great Slave Lake tempers the shore but freezes for half the year anyway. Summers are short, warm, and mosquito-saturated. The aurora is statistically the best in North America here.",
+    summaryShort: "One of the coldest capitals in the world — winter means drop to −26°C, summer days reach 22°C, and the aurora runs 240 nights a year.",
+    summaryImmersive: "Yellowknife sits on Great Slave Lake's rocky north shore at 62.5° latitude. Winters are dark, dry, and brutal: January mean lows of −30°C, February sometimes colder. Great Slave Lake tempers the shore but freezes for half the year anyway. Summers are short, warm, and mosquito-saturated. The aurora is statistically the best in North America here.",
     whyDistinct: "Deep continental subarctic position with major freshwater lake moderation only during ice-free months.",
     climate: { tempHighC: [-21.9, -18.7, -12.1, -1.4, 9.6, 17.8, 21.1, 18.6, 11.1, 1.6, -10.9, -18.6], tempLowC: [-30.1, -28.1, -22.8, -11.1, -0.4, 8.1, 12.4, 10.4, 3.8, -4.8, -18.6, -26.9], precipMm: [16, 14, 14, 10, 18, 26, 38, 37, 38, 34, 23, 21], snowCm: [22, 18, 20, 14, 8, 0, 0, 0, 6, 30, 32, 26], annualPrecipMm: 289, frostFreeDays: 100, hardinessZone: "2a" },
     soil: { texture: "Thin till over Shield bedrock", drainage: "moderate", phRange: [5.6, 6.6], waterHolding: "low" },
@@ -854,7 +854,7 @@ export const PLACES_CANADA: Place[] = [
     archetypes: ["subarctic-continental", "hyper-maritime", "hurricane-coast"],
     drivers: ["polar-jet-exposure", "continentality", "marine-layer"],
     summaryShort: "The polar-bear capital of the world — where Hudson Bay's open water produces unusually heavy snowfall at a brutally continental subarctic latitude.",
-    summaryImmersive: "Churchill sits on Hudson Bay's west shore at 58.8° latitude. Hudson Bay freezes fully in winter, producing continental-cold conditions with lows below -30°C; during the open-water season (July–November), it acts as a heat-and-moisture source, moderating autumn temperatures and generating lake-effect-style snow. Polar bears gather here in October, waiting for the bay to re-freeze. Summer is brief, cool, and buggy.",
+    summaryImmersive: "Churchill sits on Hudson Bay's west shore at 58.8° latitude. Hudson Bay freezes fully in winter, producing continental-cold conditions with lows below −30°C; during the open-water season (July–November), it acts as a heat-and-moisture source, moderating autumn temperatures and generating lake-effect-style snow. Polar bears gather here in October, waiting for the bay to re-freeze. Summer is brief, cool, and buggy.",
     whyDistinct: "Hudson Bay's annual cycle of freeze and open water produces a bimodal climate: continental-extreme in winter, maritime-moderate in autumn.",
     climate: { tempHighC: [-21.2, -19.4, -13.4, -3.6, 4.8, 13.4, 18.1, 17.1, 10.4, 2.4, -7.6, -16.8], tempLowC: [-30.4, -28.8, -23.6, -13.1, -3.4, 3.4, 8.6, 8.8, 3.8, -3.4, -12.9, -24.6], precipMm: [18, 14, 18, 18, 23, 42, 56, 66, 58, 47, 32, 20], snowCm: [20, 16, 20, 16, 14, 2, 0, 0, 8, 34, 32, 24], annualPrecipMm: 412, frostFreeDays: 70, hardinessZone: "1a" },
     soil: { texture: "Peat over permafrost", drainage: "poor", phRange: [4.6, 5.8], waterHolding: "high" },

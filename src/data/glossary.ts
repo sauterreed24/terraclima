@@ -77,7 +77,7 @@ export const CONCEPTS: Concept[] = [
     id: "subarctic-continentality",
     term: "Subarctic continentality",
     short: "Deep-interior high latitudes where annual temperature ranges exceed 55°C.",
-    long: "North of roughly 58° and far from any moderating ocean, continental climates reach their extreme expression. Winter lows of -40°C and summer highs of 28°C — in the same calendar year, at the same place — are routine. The thermal amplitude shapes every aspect of life, from architecture to agriculture to the rhythm of the sun.",
+    long: "North of roughly 58° and far from any moderating ocean, continental climates reach their extreme expression. Winter lows of −40°C and summer highs of 28°C — in the same calendar year, at the same place — are routine. The thermal amplitude shapes every aspect of life, from architecture to agriculture to the rhythm of the sun.",
     exampleIds: ["whitehorse-yt", "yellowknife-nt", "fairbanks-ak", "iqaluit-nu", "inuvik-nt", "ely-mn"],
   },
   {

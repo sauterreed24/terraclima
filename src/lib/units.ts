@@ -172,21 +172,57 @@ export function precipTickStep(maxVal: number, dist: DistUnit): number {
 // ---------- Prose localization ----------
 
 /**
- * Word-boundary regex patterns that, when found within ~48 chars of a
+ * Word-boundary regex patterns that, when found within the SAME CLAUSE as a
  * temperature literal, mark that literal as a DELTA / difference rather
- * than an absolute reading. Tight word boundaries prevent false positives
- * like "windchills" triggering on "chill", or "continentality" on "tall".
+ * than an absolute reading.
+ *
+ * Crucially: the windows used are narrow and clause-bounded. A 48-char
+ * window previously caught "below" from "fall below −25°C" three clauses
+ * away from an unrelated "exceed 23°C", and mis-converted 23°C as a delta
+ * (23 × 9/5 = 41) instead of an absolute (23 × 9/5 + 32 = 74). We now clip
+ * both windows at the nearest clause terminator (. ; : , — | newline) so
+ * modifier detection can never cross that boundary.
+ *
+ * Tight word boundaries prevent false positives like "windchills"
+ * triggering on "chill", or "continentality" on "tall".
  */
 const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narrower|stronger|weaker|apart|bigger|smaller|greater|above|below)\b/;
 const DELTA_BEFORE_PAT = /\b(by|of|spike[sd]?|swing of|range of|spread of|delta|differential|diurnal|amplitude|gradient|shift(?:ed|s)? (?:of|by)|lift(?:ed|s)? (?:of|by)|drop(?:ped|s)? (?:of|by)|rise(?:s)? (?:of|by)|fall(?:s)? (?:of|by)|jump(?:s|ed)? (?:of|by)|climb(?:s|ed)? (?:of|by)|plunge(?:s|d)? (?:of|by)|lift|strip(?:s|ped)?|boost(?:s|ed)? (?:by|of)|warm(?:s|ed|ing)? (?:by|up by)|cool(?:s|ed|ing)? (?:by|down by)|moderat\w+ (?:by)|up to|down to|averag(?:es|ing)? (?:\d+°?\s*[CF] )?(?:warmer|cooler|colder))\s*$/;
 
+/** Characters that terminate a clause for the purposes of delta detection. */
+const CLAUSE_TERMINATORS = /[.;:,\u2014\u2013|\n]/;
+
+/**
+ * Slice a window of `maxLen` chars from `text` ending at `idx`, but only as
+ * far back as the nearest clause terminator. The terminator itself is not
+ * included. This makes the "before" context strictly clause-local.
+ */
+function beforeClauseWindow(text: string, idx: number, maxLen: number): string {
+  const start = Math.max(0, idx - maxLen);
+  const raw = text.substring(start, idx);
+  const m = raw.match(/[.;:,\u2014\u2013|\n][^.;:,\u2014\u2013|\n]*$/);
+  return (m ? raw.substring(m.index! + 1) : raw).toLowerCase();
+}
+
+/**
+ * Slice a window of `maxLen` chars from `text` starting at `idx`, but only
+ * up to the nearest clause terminator.
+ */
+function afterClauseWindow(text: string, idx: number, maxLen: number): string {
+  const raw = text.substring(idx, idx + maxLen);
+  const m = raw.match(CLAUSE_TERMINATORS);
+  return (m ? raw.substring(0, m.index) : raw).toLowerCase();
+}
+
 /** Decide whether a temperature token at `idx` is a delta (vs. absolute). */
 function isDeltaContext(text: string, idx: number, len: number): boolean {
-  const before = text.substring(Math.max(0, idx - 48), idx).toLowerCase();
-  const after = text.substring(idx + len, idx + len + 48).toLowerCase();
+  // Narrow, clause-local windows.
+  const before = beforeClauseWindow(text, idx, 40);
+  const after = afterClauseWindow(text, idx + len, 24);
   if (DELTA_AFTER_PAT.test(after)) return true;
   if (DELTA_BEFORE_PAT.test(before)) return true;
-  // Explicit phrasings commonly used for deltas
+  // Explicit phrasings commonly used for deltas — allow scanning both
+  // windows jointly because these phrases are unambiguous.
   if (/\b(thermal window|annual range|annual swing|daily range|diurnal swing|temperature (?:range|difference|spread|gap|swing))\b/.test(before + " " + after)) return true;
   return false;
 }
@@ -297,6 +333,113 @@ function formatUSNumber(n: number, digits = 0): string {
  *     data like "8 m wetland" or "Route 5 m".
  */
 function localizeDistanceProse(text: string): string {
+  // --- Hyphenated adjectival forms ---
+  //
+  // Prose uses a hyphen-bound spelled-out unit as a modifier: "980-meter-high
+  // ridge", "4,200-meter summit", "12-kilometer corridor", "15-km pass",
+  // "20-centimeter snowpack", "200-millimeter floods". Convert these BEFORE
+  // the plain-numeric passes so the numeric portion can't be caught twice.
+  //
+  // The pattern admits an optional trailing word ("-high", "-tall", "-deep",
+  // "-long", "-wide") which we preserve after localization.
+
+  // N-metre[s]- / N-meter[s]-  →  N-foot- (e.g. "980-meter-high" → "3,215-foot-high")
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*met(?:er|re)s?\s*-\s*(high|tall|deep|long|wide|thick)\b/gi,
+    (_m, n: string, qual: string) => {
+      const ft = parseLooseNum(n) * 3.28084;
+      return `${formatUSNumber(ft)}-foot-${qual.toLowerCase()}`;
+    }
+  );
+  // N-metre[s] (no trailing qualifier) as adjectival: "4,200-meter summit"
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*met(?:er|re)s?\b(?!\s*-\s*(?:high|tall|deep|long|wide|thick))/gi,
+    (_m, n: string) => {
+      const ft = parseLooseNum(n) * 3.28084;
+      return `${formatUSNumber(ft)}-foot`;
+    }
+  );
+
+  // N-kilometre[s]- / N-km- → N-mile-
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:kilomet(?:er|re)s?|km)\s*-\s*(high|tall|deep|long|wide|thick)\b/gi,
+    (_m, n: string, qual: string) => {
+      const mi = parseLooseNum(n) * 0.621371;
+      return `${formatUSNumber(mi, mi < 10 ? 1 : 0)}-mile-${qual.toLowerCase()}`;
+    }
+  );
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:kilomet(?:er|re)s?|km)\b(?!\s*-\s*(?:high|tall|deep|long|wide|thick))/gi,
+    (_m, n: string) => {
+      const mi = parseLooseNum(n) * 0.621371;
+      return `${formatUSNumber(mi, mi < 10 ? 1 : 0)}-mile`;
+    }
+  );
+
+  // N-centimetre[s]- / N-cm- → N-inch-
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:centimet(?:er|re)s?|cm)\s*-\s*(high|tall|deep|long|wide|thick)\b/gi,
+    (_m, n: string, qual: string) => {
+      const inches = parseLooseNum(n) / 2.54;
+      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}-inch-${qual.toLowerCase()}`;
+    }
+  );
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:centimet(?:er|re)s?|cm)\b(?!\s*-\s*(?:high|tall|deep|long|wide|thick))/gi,
+    (_m, n: string) => {
+      const inches = parseLooseNum(n) / 2.54;
+      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}-inch`;
+    }
+  );
+
+  // N-millimetre[s]- / N-mm- → N-inch-
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:millimet(?:er|re)s?|mm)\s*-\s*(high|tall|deep|long|wide|thick)\b/gi,
+    (_m, n: string, qual: string) => {
+      const inches = parseLooseNum(n) / 25.4;
+      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}-inch-${qual.toLowerCase()}`;
+    }
+  );
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:millimet(?:er|re)s?|mm)\b(?!\s*-\s*(?:high|tall|deep|long|wide|thick))/gi,
+    (_m, n: string) => {
+      const inches = parseLooseNum(n) / 25.4;
+      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}-inch`;
+    }
+  );
+
+  // Spelled-out non-hyphenated metric units. These come before the bare-symbol
+  // passes so we consume the entire phrase ("980 meters" stays a single match
+  // instead of matching "980 m" and orphaning "eters").
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s+met(?:er|re)s?\b/gi,
+    (_m, n: string) => {
+      const ft = parseLooseNum(n) * 3.28084;
+      return `${formatUSNumber(ft)} feet`;
+    }
+  );
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s+kilomet(?:er|re)s?\b/gi,
+    (_m, n: string) => {
+      const mi = parseLooseNum(n) * 0.621371;
+      return `${formatUSNumber(mi, mi < 10 ? 1 : 0)} miles`;
+    }
+  );
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s+centimet(?:er|re)s?\b/gi,
+    (_m, n: string) => {
+      const inches = parseLooseNum(n) / 2.54;
+      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)} inches`;
+    }
+  );
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s+millimet(?:er|re)s?\b/gi,
+    (_m, n: string) => {
+      const inches = parseLooseNum(n) / 25.4;
+      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)} inches`;
+    }
+  );
+
   // km/h or kph → mph (do this FIRST so bare "km" doesn't eat the "km" of "km/h")
   text = text.replace(/(\d+(?:[,.]\d+)?)\s*(?:km\/h|kph|km\s*\/\s*h)\b/gi, (_m, n: string) => {
     const v = parseLooseNum(n);
@@ -365,24 +508,30 @@ function localizeDistanceProse(text: string): string {
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![\/²^])/g,
     (match, n: string, offset: number, full: string) => {
-      const before = full.substring(Math.max(0, offset - 80), offset).toLowerCase();
-      const after = full.substring(offset + match.length, offset + match.length + 48).toLowerCase();
+      // Keep tilde "~" and opening parenthesis in the view so "(3429 m)" and
+      // "~1200 m" get the contextual signal they need.
+      const beforeRaw = full.substring(Math.max(0, offset - 80), offset);
+      const afterRaw = full.substring(offset + match.length, offset + match.length + 48);
+      const before = beforeRaw.toLowerCase();
+      const after = afterRaw.toLowerCase();
 
-      // Before-context: words that commonly introduce an elevation or
-      // vertical measurement. Using `\b…\b` keeps us away from substrings.
+      // Broad vocabulary of landform / elevation cues. Order is longest-first
+      // only where ambiguity could arise; otherwise alphabetical.
       const beforeHit =
-        /\b(elevation|altitude|sits\s+(?:at|above|on)|perch(?:es|ed)?\s+at|situated\s+at|lies\s+at|located\s+at|rests\s+at|nestled\s+at|grassland\s+at|town\s+at|city\s+at|capital\s+at|town\s+of\s+\w+\s+at|at\s+nearly|at\s+roughly|at\s+about|from|to|above|over|approaches?|averag(?:es|ing)?|rises?|rising|peaks?\s+at|crest|ridge|plateau|m\.a\.s\.l\.|asl|meters?|metres?|higher\s+than|lower\s+than|tall|climbs?|drops?\s+(?:to|of)?|floor\s+of|basin|slopes?\s+(?:up|down)?\s*to|pass|saddle|crater|caldera|uplift|escarpment|up\s+to|storms?\s+of|swells?\s+of|layer|stratus|permafrost|kilometer|kilometre|km)\b/.test(before) ||
-        // "at 1,920 m" / "at 2200 m" — the bare "at" token immediately before.
-        /\bat\s*$/.test(before);
+        /\b(?:elevation|altitude|sits\s+(?:at|above|on)|perch(?:es|ed)?\s+at|situated\s+at|lies\s+at|located\s+at|rests\s+at|nestled\s+at|grassland\s+at|town\s+(?:at|of)|city\s+(?:at|of)|capital\s+at|town\s+of\s+\w+\s+at|at\s+nearly|at\s+roughly|at\s+about|from|to|above|over|approaches?|averag(?:es|ing)?|rises?|rising|peaks?|summit|crest|ridge|plateau|m\.a\.s\.l\.|asl|meters?|metres?|higher\s+than|lower\s+than|tall|climbs?|drops?\s+(?:to|of)?|floor\s+of|basin|slopes?\s+(?:up|down)?\s*to|pass|saddle|crater|caldera|uplift|escarpment|up\s+to|storms?\s+of|swells?\s+of|layer|stratus|permafrost|kilometer|kilometre|km|volcano|volcan|mountain|mountains|mt\.?|mount|lake|canyon|bluff|headland|cliff|plateau|mesa|dune|dunes|cirque|plate|bedrock)\b/.test(before) ||
+        /\bat\s*$/.test(before) ||
+        // Approximation tilde immediately preceding the number: "~1200 m".
+        /~\s*$/.test(beforeRaw) ||
+        // Parenthetical form: "(3,429 m)" after a proper noun → elevation.
+        /\(\s*$/.test(beforeRaw) ||
+        // Comma-introduced parenthetical: "White Mtn Peak, 4344 m".
+        /,\s*$/.test(beforeRaw);
 
-      // After-context: words that immediately follow a vertical measurement.
-      // The anchor (^) keeps the immediate-neighbour strict pattern, while the
-      // second regex allows a short "adjective/proper-noun" to intervene so
-      // things like "2000 m Black Mountains crest" or "2000 m peaks" work.
+      // After-context: immediate vertical / dimensional neighbours.
       const afterHit =
-        /^\s*(?:above|a\.?s\.?l\.?|elevation|altitude|of\s+elevation|asl\b|peaks?|summit|slope|ridge|plateau|escarpment|higher|lower|rise|rising|drop|depth|of\s+snow|of\s+annual|annually|of\s+snowfall|snowfall|snow|swells?|layer|range|thermal\s+belt|vertical\s+rise|crest|stack)\b/i.test(after) ||
-        /^\s*[A-Z][\w-]*(?:\s+[A-Z][\w-]*){0,3}\s+(?:peaks?|crest|ridge|summit|plateau|escarpment|mountains|hills|range)\b/.test(after.replace(/^\s+/, "") ? full.substring(offset + match.length, offset + match.length + 48) : "") ||
-        /^\s*(?:Black\s+Mountains|Sierra|mountains|hills)\b/i.test(full.substring(offset + match.length, offset + match.length + 48));
+        /^\s*(?:above|a\.?s\.?l\.?|elevation|altitude|of\s+elevation|asl\b|peaks?|summit|slope|ridge|plateau|escarpment|higher|lower|rise|rising|drop|depth|deep|high|tall|long|wide|thick|down|up|of\s+snow|of\s+annual|annually|of\s+snowfall|snowfall|snow|swells?|layer|range|thermal\s+belt|vertical\s+rise|crest|stack)\b/i.test(after) ||
+        /^\s*[\)\]]/.test(afterRaw) ||     // "(3429 m)" or "[3429 m]"
+        /^\s*[A-Z][\w-]*(?:\s+[A-Z][\w-]*){0,3}\s+(?:peaks?|crest|ridge|summit|plateau|escarpment|mountains|hills|range)\b/.test(afterRaw);
 
       if (!beforeHit && !afterHit) return match;
 

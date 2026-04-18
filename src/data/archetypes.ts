@@ -250,7 +250,7 @@ export const ARCHETYPES: ArchetypeMeta[] = [
     id: "subarctic-continental",
     label: "Subarctic Continental",
     tone: "aurora",
-    blurb: "Deep-interior latitudes where winter reaches -40°C and summer briefly hits 25°C.",
+    blurb: "Deep-interior latitudes where winter reaches −40°C and summer briefly hits 25°C.",
     guide: "North of 58° latitude and far from any ocean, the annual temperature range becomes staggering. Whitehorse, Yellowknife, Fairbanks: long aurora-lit winters, short near-midnight-sun summers, boreal forest and muskeg, and a relationship with the sun that reshapes life. These are not extreme microclimates — they are extreme regional climates, distinctively their own.",
   },
   {

@@ -148,7 +148,7 @@ export const COLLECTIONS: Collection[] = [
     id: "subarctic",
     title: "Subarctic Continental",
     subtitle: "Where winter is eight months long",
-    description: "The deep interior north — where January lows of -30°C are routine, summer is fierce and brief, and aurora season runs 240 nights a year. North America's most climatically extreme inhabited landscapes.",
+    description: "The deep interior north — where January lows of −30°C are routine, summer is fierce and brief, and aurora season runs 240 nights a year. North America's most climatically extreme inhabited landscapes.",
     tone: "ice",
     placeIds: ["whitehorse-yt", "yellowknife-nt", "churchill-mb", "thunder-bay-on", "fairbanks-ak", "iqaluit-nu", "inuvik-nt", "ely-mn"],
   },

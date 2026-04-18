@@ -516,7 +516,7 @@ export const PLACES_MEXICO: Place[] = [
     archetypes: ["eternal-spring-highland", "high-desert-escape", "volcanic-upland"],
     drivers: ["elevation-lapse-rate", "continentality"],
     summaryShort: "Mexico's 'cool' colonial city — at 2440 m, summers cap at 25°C and winter frosts are routine.",
-    summaryImmersive: "Zacatecas perches at 2440 m — 500 m higher than Morelia and in a more continental interior position. The result is a colder, drier eternal-spring climate: summer highs in the low 20s, winter lows that can reach -4°C, and annual precipitation under 500 mm. It's Mexico's most genuinely cool major historic city. The rose-pink stone, silver-mining history, and cultural intensity are all at altitude.",
+    summaryImmersive: "Zacatecas perches at 2440 m — 500 m higher than Morelia and in a more continental interior position. The result is a colder, drier eternal-spring climate: summer highs in the low 20s, winter lows that can reach −4°C, and annual precipitation under 500 mm. It's Mexico's most genuinely cool major historic city. The rose-pink stone, silver-mining history, and cultural intensity are all at altitude.",
     whyDistinct: "Higher interior-highland position produces colder eternal-spring than the Bajío; real frost and dry cold distinguish it.",
     climate: { tempHighC: [18.6, 20.4, 23.1, 25.2, 26.2, 24.8, 22.4, 22.1, 21.6, 21.4, 20.6, 18.4], tempLowC: [2.4, 3.8, 6.2, 9.4, 11.6, 12.4, 11.6, 11.1, 10.4, 7.6, 4.8, 3.1], precipMm: [10, 6, 4, 8, 18, 62, 86, 78, 64, 22, 8, 10], annualPrecipMm: 376, frostFreeDays: 260, hardinessZone: "8b equiv." },
     soil: { texture: "Stony calcareous loam", drainage: "good", phRange: [7.2, 8.0], waterHolding: "low" },

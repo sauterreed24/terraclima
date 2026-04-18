@@ -227,7 +227,11 @@ function DetailBody({
   return (
     <div className="p-6 space-y-6">
       <Section>
-        <p className="font-atlas text-lg text-frost leading-relaxed italic">"{prose(place.summaryShort)}"</p>
+        <p className="font-atlas text-lg text-frost leading-relaxed italic">
+          <span aria-hidden="true" className="text-ochre-400">&ldquo;</span>
+          {prose(place.summaryShort)}
+          <span aria-hidden="true" className="text-ochre-400">&rdquo;</span>
+        </p>
         <div className="divider-contour my-4" />
         <p className="text-ice leading-relaxed">{prose(place.summaryImmersive)}</p>
       </Section>
