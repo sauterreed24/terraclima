@@ -18,7 +18,7 @@
  *        - Any "lows near/around X°C" phrase should be within 6°C of the
  *          min monthly `tempLowC`.
  *
- * Run with `npx tsx scripts/audit-corpus.ts` (or via `npm run audit`).
+ * Run with `npx tsx scripts/audit-corpus.ts` (or via `npm run audit:corpus`).
  * Exit code 1 on any fatal finding so CI / pre-commit can gate on it.
  */
 import { localizeProse } from "../src/lib/units";

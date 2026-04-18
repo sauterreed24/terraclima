@@ -23,13 +23,14 @@ export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
 ];
 
 interface Props {
+  searchInputId?: string;
   filters: FilterState;
   setFilters: (f: FilterState) => void;
   ranking: RankingProfile;
   setRanking: (r: RankingProfile) => void;
 }
 
-export const FilterBar = memo(function FilterBar({ filters, setFilters, ranking, setRanking }: Props) {
+export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFilters, ranking, setRanking }: Props) {
   const toggleCountry = (c: Country) => {
     const ns = new Set(filters.countries);
     if (ns.has(c)) ns.delete(c); else ns.add(c);
@@ -49,13 +50,20 @@ export const FilterBar = memo(function FilterBar({ filters, setFilters, ranking,
       <label className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-[rgba(13,20,32,0.7)] border border-[rgba(71,90,122,0.55)] focus-within:border-[rgba(140,200,224,0.6)] transition-colors">
         <Search className="w-3.5 h-3.5 text-stone shrink-0" aria-hidden />
         <input
+          id={searchInputId}
           value={filters.search ?? ""}
           onChange={e => setFilters({ ...filters, search: e.target.value })}
           placeholder="Search name, region, or archetype"
+          aria-label="Search places by name, region, or archetype"
           className="bg-transparent text-sm text-ice placeholder:text-shadow outline-none flex-1 min-w-0"
         />
         {hasAny && (
-          <button onClick={clearAll} className="text-stone hover:text-ice flex items-center gap-1 text-xs" title="Clear filters">
+          <button
+            onClick={clearAll}
+            aria-label="Clear all filters"
+            className="text-stone hover:text-ice flex items-center gap-1 text-xs"
+            title="Clear filters"
+          >
             <X className="w-3 h-3" />
           </button>
         )}

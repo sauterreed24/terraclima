@@ -871,9 +871,9 @@ function haversineKm(lon1: number, lat1: number, lon2: number, lat2: number): nu
 
 /**
  * Format a lat/lon pair for the cursor overlay. We pick degree-decimal
- * precision based on zoom-independent intuition: three decimals are about
- * 110 metres of horizontal resolution, which is appropriate at any map zoom
- * level that fits in a browser window.
+ * precision based on zoom-independent intuition: two decimals are about
+ * 1.1 km of horizontal resolution at the equator, which keeps the label
+ * readable at a glance while still being useful for regional orientation.
  */
 function formatLatLon(lat: number, lon: number): string {
   const latH = lat >= 0 ? "N" : "S";

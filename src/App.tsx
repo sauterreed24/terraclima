@@ -9,6 +9,8 @@ import { applyFilters, rankPlaces, type FilterState, type RankingProfile } from 
 import { useUnits } from "./lib/units";
 import type { MicroclimateArchetype } from "./types";
 
+const SEARCH_INPUT_ID = "terraclima-place-search";
+
 // Lazy-loaded secondary views and heavy panels. Keeping them out of the main
 // bundle trims ~40 % off the initial JS parse, which is the single biggest
 // win on memory-constrained hardware.
@@ -107,9 +109,13 @@ export default function App() {
           setView("learn");
           break;
         case "/":
-          // Focus the search input without triggering a type character.
+          // Focus search from any view: jump to Explorer first, then focus the
+          // known input id once the next frame has mounted the filter panel.
           e.preventDefault();
-          document.querySelector<HTMLInputElement>('input[placeholder^="Search"]')?.focus();
+          setView("explorer");
+          requestAnimationFrame(() => {
+            document.getElementById(SEARCH_INPUT_ID)?.focus();
+          });
           break;
       }
     };
@@ -242,7 +248,13 @@ export default function App() {
               </div>
 
               <div className="lg:w-[340px] lg:shrink-0 flex flex-col gap-4">
-                <FilterBar filters={filters} setFilters={setFilters} ranking={ranking} setRanking={setRanking} />
+                <FilterBar
+                  searchInputId={SEARCH_INPUT_ID}
+                  filters={filters}
+                  setFilters={setFilters}
+                  ranking={ranking}
+                  setRanking={setRanking}
+                />
                 <FootprintPanel />
               </div>
             </>
