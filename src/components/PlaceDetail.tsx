@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import type { Place, MicroclimateArchetype, TopographicDriver } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { DRIVER_LABELS } from "../types";
@@ -14,10 +14,10 @@ import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { PLACES_BY_ID } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
-import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtDelta, useProse } from "../lib/units";
+import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse } from "../lib/units";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
-  TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle,
+  TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar,
 } from "lucide-react";
 
 const TONE_HERO: Record<string, string> = {
@@ -49,6 +49,29 @@ const DRIVER_CONCEPT_MAP: Partial<Record<TopographicDriver, string>> = {
   "katabatic-flow": "katabatic",
   "continentality": "continentality",
   "trade-wind": "continentality",
+};
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
+
+const RISK_SCORE: Record<string, number> = {
+  "very-low": 0,
+  "low": 1,
+  "moderate": 2,
+  "elevated": 3,
+  "high": 4,
+  "very-high": 5,
+};
+
+const RISK_LABEL: Record<string, string> = {
+  wildfire: "Wildfire",
+  flood: "Flood",
+  drought: "Drought",
+  extremeHeat: "Extreme heat",
+  extremeCold: "Extreme cold",
+  smoke: "Smoke",
+  storm: "Storm",
+  landslide: "Landslide",
+  coastal: "Coastal",
 };
 
 interface Props {
@@ -224,6 +247,9 @@ function DetailBody({
     ? CONCEPTS.find(c => c.id === DRIVER_CONCEPT_MAP[activeDriver])
     : null;
 
+  const synthesized = useMemo(() => synthesizePlaceSignals(place, temp, dist), [place, temp, dist]);
+  const bestMonths = useMemo(() => computeBestMonths(place), [place]);
+
   return (
     <div className="p-6 space-y-6">
       <Section>
@@ -304,6 +330,45 @@ function DetailBody({
               <Legend color="#9a4a2a" text="Harsh" />
             </div>
           </div>
+        </div>
+      </Section>
+
+      {bestMonths.length > 0 && (
+        <Section title="Best months for…" icon={<Calendar className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+          <div className="grid md:grid-cols-2 gap-2">
+            {bestMonths.map(w => (
+              <div key={w.label} className="panel-thin p-3 flex items-start gap-3">
+                <div className="text-xl leading-none pt-0.5" aria-hidden="true">{w.glyph}</div>
+                <div className="min-w-0 flex-1">
+                  <div className="text-xs uppercase tracking-wider text-stone">{w.label}</div>
+                  <div className="text-sm text-ice font-mono-num">{w.range}</div>
+                  {w.note && <div className="text-[11px] text-stone italic mt-0.5 leading-snug">{w.note}</div>}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-[11px] text-stone italic mt-2">Derived from monthly climate signals; treat as a planning heuristic, not a forecast.</div>
+        </Section>
+      )}
+
+      <Section title="Data synthesis" icon={<TrendingUp className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
+        <div className="panel-thin p-4 space-y-2">
+          {synthesized.lines.map((line, i) => (
+            <div key={i} className="flex items-start justify-between gap-4 text-sm border-b last:border-0 pb-2 last:pb-0 border-[rgba(71,90,122,0.3)]">
+              <span className="text-stone">{line.label}</span>
+              <span className="text-frost text-right font-mono-num">{line.value}</span>
+            </div>
+          ))}
+          {synthesized.topRisks.length > 0 && (
+            <div className="pt-2">
+              <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Primary risk concentration</div>
+              <div className="flex flex-wrap gap-1.5">
+                {synthesized.topRisks.map(r => (
+                  <span key={r} className="chip" data-tone="ember">{r}</span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </Section>
 
@@ -511,4 +576,207 @@ function ScorePill({ label, value, tone }: { label: string; value: number; tone:
       </div>
     </div>
   );
+}
+
+interface BestWindow {
+  label: string;
+  glyph: string;
+  range: string;
+  note?: string;
+}
+
+function computeBestMonths(place: Place): BestWindow[] {
+  const highs = place.climate.tempHighC;
+  const lows = place.climate.tempLowC;
+  const precip = place.climate.precipMm;
+  const snow = place.climate.snowCm;
+  const humidity = place.climate.humidity;
+  const windows: BestWindow[] = [];
+
+  const gardenMask = highs.map((h, i) => h >= 15 && h <= 28 && lows[i] >= 4);
+  const gardenRange = formatMonthMask(gardenMask);
+  if (gardenRange) {
+    windows.push({
+      label: "Gardening window",
+      glyph: "🌱",
+      range: gardenRange,
+      note: "Mild highs, nights above frost — safe for most annual vegetables.",
+    });
+  }
+
+  const meanPrecip = precip.reduce((a, b) => a + b, 0) / 12;
+  const comfortMask = highs.map((h, i) => h >= 12 && h <= 25 && precip[i] <= meanPrecip * 1.1);
+  const comfortRange = formatMonthMask(comfortMask);
+  if (comfortRange) {
+    windows.push({
+      label: "Outdoor comfort",
+      glyph: "🥾",
+      range: comfortRange,
+      note: "Walkable temperatures with at-or-below-average rainfall.",
+    });
+  }
+
+  if (snow) {
+    const snowMask = snow.map(v => v >= 15);
+    const snowRange = formatMonthMask(snowMask);
+    if (snowRange) {
+      windows.push({
+        label: "Snow-on-ground window",
+        glyph: "❄",
+        range: snowRange,
+        note: "Months with meaningful snow accumulation.",
+      });
+    }
+  }
+
+  const p33 = quantile(precip, 0.33);
+  const dryMask = precip.map(v => v <= p33);
+  const dryRange = formatMonthMask(dryMask);
+  if (dryRange) {
+    windows.push({
+      label: "Dry travel window",
+      glyph: "☀",
+      range: dryRange,
+      note: "Driest third of the year — best for road trips and photography.",
+    });
+  }
+
+  if (humidity) {
+    const crispMask = humidity.map((h, i) => h < 55 && highs[i] >= 10 && highs[i] <= 28);
+    const crispRange = formatMonthMask(crispMask);
+    if (crispRange) {
+      windows.push({
+        label: "Crisp-air window",
+        glyph: "💨",
+        range: crispRange,
+        note: "Low humidity with comfortable temperatures.",
+      });
+    }
+  }
+
+  const heatMask = highs.map(h => h >= 32);
+  const heatRange = formatMonthMask(heatMask);
+  if (heatRange && heatMask.filter(Boolean).length >= 1) {
+    windows.push({
+      label: "Avoid if heat-sensitive",
+      glyph: "🔥",
+      range: heatRange,
+      note: "Typical daily highs above 32°C / 90°F.",
+    });
+  }
+
+  const coldMask = lows.map(l => l <= -10);
+  const coldRange = formatMonthMask(coldMask);
+  if (coldRange && coldMask.filter(Boolean).length >= 1) {
+    windows.push({
+      label: "Deep-cold window",
+      glyph: "🧊",
+      range: coldRange,
+      note: "Overnight lows commonly below −10°C / 14°F.",
+    });
+  }
+
+  return windows;
+}
+
+function quantile(arr: readonly number[], q: number): number {
+  const sorted = [...arr].sort((a, b) => a - b);
+  const idx = (sorted.length - 1) * q;
+  const lo = Math.floor(idx);
+  const hi = Math.ceil(idx);
+  if (lo === hi) return sorted[lo];
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+}
+
+/** Format a 12-length boolean mask into human ranges, handling wraparound (e.g. Nov–Feb). */
+function formatMonthMask(mask: readonly boolean[]): string | null {
+  const trueCount = mask.filter(Boolean).length;
+  if (trueCount === 0) return null;
+  if (trueCount === 12) return "Year-round";
+
+  const segments: Array<[number, number]> = [];
+  let start = -1;
+  for (let i = 0; i < 12; i++) {
+    if (mask[i] && start === -1) start = i;
+    if (!mask[i] && start !== -1) {
+      segments.push([start, i - 1]);
+      start = -1;
+    }
+  }
+  if (start !== -1) segments.push([start, 11]);
+
+  if (segments.length >= 2 && segments[0][0] === 0 && segments[segments.length - 1][1] === 11) {
+    const first = segments.shift()!;
+    const last = segments.pop()!;
+    segments.push([last[0], first[1] + 12]);
+  }
+
+  return segments
+    .map(([a, b]) => {
+      const ma = MONTHS[a % 12];
+      const mb = MONTHS[b % 12];
+      return a === b ? ma : `${ma}\u2013${mb}`;
+    })
+    .join(", ");
+}
+
+function synthesizePlaceSignals(place: Place, temp: "F" | "C", dist: "imperial" | "metric"): { lines: { label: string; value: string }[]; topRisks: string[] } {
+  const highs = place.climate.tempHighC;
+  const lows = place.climate.tempLowC;
+  const precip = place.climate.precipMm;
+  const snow = place.climate.snowCm;
+
+  const maxHigh = Math.max(...highs);
+  const minLow = Math.min(...lows);
+  const annualSpan = maxHigh - minLow;
+
+  const wetIdx = precip.reduce((best, v, i, arr) => (v > arr[best] ? i : best), 0);
+  const dryIdx = precip.reduce((best, v, i, arr) => (v < arr[best] ? i : best), 0);
+  const wet = precip[wetIdx];
+  const dry = precip[dryIdx];
+  const wetDryRatio = dry <= 0.1 ? "∞" : `${(wet / dry).toFixed(1)}×`;
+
+  const comfortMonths = highs.filter(h => h >= 12 && h <= 28).length;
+
+  const lines: { label: string; value: string }[] = [
+    {
+      label: "Annual thermal span",
+      value: `${fmtTemp(minLow, temp)} to ${fmtTemp(maxHigh, temp)} (${fmtDelta(annualSpan, temp, { signed: false })})`,
+    },
+    {
+      label: "Wettest / driest month",
+      value: `${MONTHS[wetIdx]} ${fmtPrecipSmall(wet, dist)} · ${MONTHS[dryIdx]} ${fmtPrecipSmall(dry, dist)} (${wetDryRatio})`,
+    },
+    {
+      label: "Comfort-window months (12–28°C highs)",
+      value: `${comfortMonths} / 12`,
+    },
+  ];
+
+  if (place.climate.humidity) {
+    const h = place.climate.humidity;
+    const summerAvg = (h[5] + h[6] + h[7]) / 3;
+    const winterAvg = (h[11] + h[0] + h[1]) / 3;
+    lines.push({
+      label: "Humidity regime",
+      value: `Summer ${Math.round(summerAvg)}% · Winter ${Math.round(winterAvg)}%`,
+    });
+  }
+
+  if (snow) {
+    const snowMonths = snow.filter(v => v > 0.5).length;
+    lines.push({
+      label: "Snow-active months",
+      value: `${snowMonths} / 12`,
+    });
+  }
+
+  const risks = Object.entries(place.risks)
+    .map(([k, v]) => ({ key: k, level: v.level, score: RISK_SCORE[v.level] ?? 0 }))
+    .sort((a, b) => b.score - a.score)
+    .filter(r => r.score >= 3)
+    .slice(0, 3)
+    .map(r => `${RISK_LABEL[r.key] ?? r.key} · ${r.level}`);
+
+  return { lines, topRisks: risks };
 }
