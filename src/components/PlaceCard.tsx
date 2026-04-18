@@ -1,10 +1,11 @@
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { PLACE_ANNUAL_PRECIP } from "../data/places";
+import { computeBestMonths } from "../lib/best-months";
 import { ArrowRight } from "lucide-react";
 
 interface Props {
@@ -58,6 +59,14 @@ export const PlaceCard = memo(function PlaceCard({
   const primaryArchetype = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
   const tone = primaryArchetype?.tone ?? "ice";
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
+
+  // Compute the single "best window" teaser for the card. Memoized because
+  // PlaceCard is already wrapped in React.memo and `place` is stable — so
+  // this cost is paid exactly once per card per session.
+  const topWindow = useMemo(() => {
+    if (compact) return null;
+    return computeBestMonths(place).find(w => w.kind === "good") ?? null;
+  }, [place, compact]);
 
   const toneRgb = TONE_RGB[tone] ?? TONE_RGB.ice;
 
@@ -134,6 +143,17 @@ export const PlaceCard = memo(function PlaceCard({
                 {ARCHETYPE_BY_ID[a]?.label ?? a}
               </span>
             ))}
+          </div>
+        )}
+
+        {topWindow && (
+          <div
+            className="mt-2 inline-flex items-center gap-1.5 text-[11px] text-stone"
+            title={topWindow.note}
+          >
+            <span aria-hidden="true">{topWindow.glyph}</span>
+            <span className="uppercase tracking-wider">{topWindow.label}</span>
+            <span className="font-mono-num text-frost">{topWindow.range}</span>
           </div>
         )}
 

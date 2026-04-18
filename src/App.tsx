@@ -13,6 +13,31 @@ import type { MicroclimateArchetype } from "./types";
 const SEARCH_INPUT_ID = "terraclima-place-search";
 const INITIAL_VISIBLE_CARDS = 40;
 const CARD_PAGE_STEP = 24;
+const RANKING_STORAGE_KEY = "terraclima.ranking.v1";
+
+/** All ranking profiles accepted by the scorer — used to validate restored values. */
+const RANKING_PROFILES: readonly RankingProfile[] = [
+  "coolest-summers", "mildest-winters", "best-shoulder-seasons", "driest-air",
+  "best-growability", "hidden-gems", "most-unique", "lowest-fire-risk",
+  "climate-resilient", "best-four-season", "best-diurnal-sleep",
+  "mediterranean-like", "wet-forest-refuges", "monsoon-drama",
+] as const;
+
+function loadPersistedRanking(): RankingProfile {
+  if (typeof window === "undefined") return "hidden-gems";
+  try {
+    const raw = window.localStorage.getItem(RANKING_STORAGE_KEY);
+    if (raw && (RANKING_PROFILES as readonly string[]).includes(raw)) {
+      return raw as RankingProfile;
+    }
+  } catch { /* noop */ }
+  return "hidden-gems";
+}
+
+function prefersReducedMotion(): boolean {
+  if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 // Lazy-loaded secondary views and heavy panels. Keeping them out of the main
 // bundle trims ~40 % off the initial JS parse, which is the single biggest
@@ -70,7 +95,11 @@ export default function App() {
   const [compareOpen, setCompareOpen] = useState(false);
   const [activeCollection, setActiveCollection] = useState<string | null>(null);
   const [filters, setFilters] = useState<FilterState>({ countries: new Set(), archetypes: new Set(), search: "" });
-  const [ranking, setRanking] = useState<RankingProfile>("hidden-gems");
+  const [ranking, setRankingRaw] = useState<RankingProfile>(loadPersistedRanking);
+  const setRanking = useCallback((profile: RankingProfile) => {
+    setRankingRaw(profile);
+    try { window.localStorage.setItem(RANKING_STORAGE_KEY, profile); } catch { /* noop */ }
+  }, []);
   // Track whether each heavy lazy panel has ever been opened. Once opened we
   // keep it mounted so its internal AnimatePresence can play the exit
   // animation (unmounting kills the animation). Before first open we skip
@@ -82,6 +111,16 @@ export default function App() {
   // instant. This runs exactly once and is a no-op after the chunks are
   // cached.
   useEffect(() => { scheduleIdlePrefetch(); }, []);
+
+  // Scroll the window to the top when switching between top-level views.
+  // Users deep on Explorer cards should land at the top of the next view
+  // instead of mid-scroll. Respect prefers-reduced-motion.
+  const firstViewRender = useRef(true);
+  useEffect(() => {
+    if (firstViewRender.current) { firstViewRender.current = false; return; }
+    if (typeof window === "undefined") return;
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+  }, [view]);
 
   // Global keyboard shortcuts — effect is registered after `openPlace` / ranked pool exist (see below).
   const [showShortcuts, setShowShortcuts] = useState(false);
@@ -253,7 +292,12 @@ export default function App() {
                 </div>
 
                 <div className="panel-thin p-3 flex items-center justify-between flex-wrap gap-2">
-                  <div className="text-xs text-stone">
+                  <div
+                    className="text-xs text-stone"
+                    role="status"
+                    aria-live="polite"
+                    aria-atomic="true"
+                  >
                     Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{ranking.replace(/-/g, " ")}</span>
                   </div>
                   <div className="text-xs text-stone hidden md:flex items-center gap-3">
@@ -685,6 +729,11 @@ function AnimatedNumber({ value, durationMs = 520 }: { value: number; durationMs
     const from = displayedRef.current;
     const to = value;
     if (from === to) return;
+    if (prefersReducedMotion()) {
+      if (ref.current) ref.current.textContent = to.toString();
+      displayedRef.current = to;
+      return;
+    }
     let start = 0;
     const step = (ts: number) => {
       if (!start) start = ts;
