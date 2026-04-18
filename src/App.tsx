@@ -11,6 +11,8 @@ import { useUnits } from "./lib/units";
 import type { MicroclimateArchetype } from "./types";
 
 const SEARCH_INPUT_ID = "terraclima-place-search";
+const INITIAL_VISIBLE_CARDS = 40;
+const CARD_PAGE_STEP = 24;
 
 // Lazy-loaded secondary views and heavy panels. Keeping them out of the main
 // bundle trims ~40 % off the initial JS parse, which is the single biggest
@@ -101,6 +103,12 @@ export default function App() {
   const ranked = useMemo(() => rankPlaces(ranking, filtered), [ranking, filtered]);
   const rankedRef = useRef(ranked);
   rankedRef.current = ranked;
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_CARDS);
+
+  // Reset Explorer card pagination whenever the source pool changes.
+  useEffect(() => {
+    setVisibleCount(INITIAL_VISIBLE_CARDS);
+  }, [ranking, filtered.length, activeCollection, filters.search, filters.countries.size, filters.archetypes.size]);
 
   const selectedPlace = selectedId ? PLACES_BY_ID[selectedId] ?? null : null;
 
@@ -203,6 +211,12 @@ export default function App() {
     openPlace(ranked[idx].place.id);
   }, [ranked, openPlace]);
 
+  const visibleRanked = useMemo(() => ranked.slice(0, visibleCount), [ranked, visibleCount]);
+  const hasMoreRanked = visibleCount < ranked.length;
+  const showMoreCards = useCallback(() => {
+    setVisibleCount(v => Math.min(v + CARD_PAGE_STEP, ranked.length));
+  }, [ranked.length]);
+
   return (
     <div className="relative min-h-screen flex flex-col text-ice overflow-x-hidden">
       <div className="ambient-aurora" aria-hidden="true" />
@@ -254,7 +268,7 @@ export default function App() {
                   {ranked.length === 0 ? (
                     <EmptyResults onClear={clearAllFilters} />
                   ) : (
-                    ranked.slice(0, 40).map(r => (
+                    visibleRanked.map(r => (
                       <PlaceCard
                         key={r.place.id}
                         place={r.place}
@@ -267,6 +281,21 @@ export default function App() {
                     ))
                   )}
                 </div>
+                {ranked.length > 0 && (
+                  <div className="panel-thin p-3 flex flex-wrap items-center justify-between gap-2">
+                    <div className="text-xs text-stone">
+                      Browsing <span className="font-mono-num text-frost">{visibleRanked.length}</span> /{" "}
+                      <span className="font-mono-num text-frost">{ranked.length}</span> places in current view
+                    </div>
+                    {hasMoreRanked ? (
+                      <button onClick={showMoreCards} className="btn-ghost !text-xs !py-1.5">
+                        Show {Math.min(CARD_PAGE_STEP, ranked.length - visibleRanked.length)} more
+                      </button>
+                    ) : (
+                      <span className="text-xs text-stone">All places in this filtered set are loaded</span>
+                    )}
+                  </div>
+                )}
               </div>
 
               <div className="lg:w-[340px] lg:shrink-0 flex flex-col gap-4">

@@ -440,7 +440,19 @@ function DetailBody({
             {place.citations.map((c, i) => (
               <li key={i} className="flex items-start gap-2 text-frost">
                 <span className="chip" data-tone="ice" style={{ fontSize: "10px" }}>{c.kind.toUpperCase()}</span>
-                <span>{c.label}{c.note ? <span className="text-stone italic"> — {c.note}</span> : null}</span>
+                <span>
+                  {c.url ? (
+                    <a
+                      href={c.url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      className="underline decoration-[rgba(140,200,224,0.55)] decoration-dotted hover:text-ice"
+                    >
+                      {c.label}
+                    </a>
+                  ) : c.label}
+                  {c.note ? <span className="text-stone italic"> — {c.note}</span> : null}
+                </span>
               </li>
             ))}
           </ul>
