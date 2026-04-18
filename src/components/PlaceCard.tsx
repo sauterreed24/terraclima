@@ -26,6 +26,18 @@ const TONE_ACCENT: Record<string, string> = {
   aurora: "linear-gradient(180deg, #c7b5ea 0%, #5a4397 100%)",
 };
 
+// Archetype tone expressed as comma-separated RGB so CSS can interpolate
+// opacity in box-shadow without a second JS pass. Piped into the card via
+// the --tone-rgb custom property.
+const TONE_RGB: Record<string, string> = {
+  glacier: "140, 200, 224",
+  sage: "198, 220, 189",
+  ochre: "240, 210, 156",
+  ember: "239, 180, 154",
+  ice: "195, 228, 241",
+  aurora: "199, 181, 234",
+};
+
 /**
  * Atlas place card.
  *
@@ -47,11 +59,18 @@ export const PlaceCard = memo(function PlaceCard({
   const tone = primaryArchetype?.tone ?? "ice";
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
 
+  const toneRgb = TONE_RGB[tone] ?? TONE_RGB.ice;
+
   return (
     <button
       onClick={onClick}
-      className={`place-card text-left panel w-full relative overflow-hidden group ${selected ? "glow-glacier" : ""}`}
-      style={{ borderColor: selected ? "rgba(140,200,224,0.75)" : undefined }}
+      className={`place-card place-card--tinted text-left panel w-full relative overflow-hidden group${selected ? " place-card--selected" : ""}`}
+      style={{
+        // Tint the hover/selected glow with the primary archetype's colour.
+        // A string custom property so CSS rgba() can consume it.
+        ["--tone-rgb" as string]: toneRgb,
+      }}
+      aria-pressed={selected ? true : undefined}
     >
       <span
         aria-hidden

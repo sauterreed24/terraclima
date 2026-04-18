@@ -11,17 +11,40 @@ import type { DistUnit } from "../lib/units";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 
-import countriesTopoRaw from "world-atlas/countries-110m.json";
-import statesTopoRaw from "us-atlas/states-10m.json";
-
-const countriesTopo = countriesTopoRaw as unknown as Topology<{
+// Topojson atlas data lives in the `atlas-data` Rollup chunk (~74 kB gz).
+// Loading it eagerly would block first paint even though the UI shell
+// (ocean, projection math, markers, legend, scale bar, compass) is perfectly
+// happy to render without it. Instead we dynamically import both datasets on
+// mount — the map appears instantly with markers on a warm ocean, and the
+// country / state polygons fade in one frame after the chunk arrives.
+type CountriesTopo = Topology<{
   countries: GeometryCollection<{ name: string }>;
   land: GeometryCollection;
 }>;
-const statesTopo = statesTopoRaw as unknown as Topology<{
+type StatesTopo = Topology<{
   states: GeometryCollection<{ name: string }>;
   nation: GeometryCollection;
 }>;
+
+// Module-level cache so navigating away and back doesn't re-download.
+let cachedTopo: { countries: CountriesTopo; states: StatesTopo } | null = null;
+let topoPromise: Promise<{ countries: CountriesTopo; states: StatesTopo }> | null = null;
+
+function loadTopo(): Promise<{ countries: CountriesTopo; states: StatesTopo }> {
+  if (cachedTopo) return Promise.resolve(cachedTopo);
+  if (topoPromise) return topoPromise;
+  topoPromise = Promise.all([
+    import("world-atlas/countries-110m.json"),
+    import("us-atlas/states-10m.json"),
+  ]).then(([c, s]) => {
+    cachedTopo = {
+      countries: (c.default ?? c) as unknown as CountriesTopo,
+      states: (s.default ?? s) as unknown as StatesTopo,
+    };
+    return cachedTopo;
+  });
+  return topoPromise;
+}
 
 interface Props {
   places: Place[];
@@ -108,37 +131,49 @@ export function AtlasMap({
 
   const pathGen = useMemo(() => geoPath(projection), [projection]);
 
-  // Topology features (decoded once)
-  const focusFC = useMemo(() => feature(
-    countriesTopo,
-    countriesTopo.objects.countries
-  ) as unknown as FeatureCollection<Geometry, { name: string }>, []);
+  // Lazy-loaded topology. Starts null — all the country/state path strings
+  // below resolve to "" until the chunk arrives. The ocean, markers,
+  // graticule, compass, scale bar, and zoom controls all render
+  // immediately; the country fills and state borders fade in via CSS a
+  // frame after loadTopo() resolves.
+  const [topo, setTopo] = useState<{ countries: CountriesTopo; states: StatesTopo } | null>(cachedTopo);
+
+  useEffect(() => {
+    if (topo) return;
+    let cancelled = false;
+    loadTopo().then(t => { if (!cancelled) setTopo(t); });
+    return () => { cancelled = true; };
+  }, [topo]);
+
+  // Topology features (decoded once, only once the chunk is present)
+  const focusFC = useMemo<FeatureCollection<Geometry, { name: string }> | null>(() => {
+    if (!topo) return null;
+    return feature(topo.countries, topo.countries.objects.countries) as unknown as FeatureCollection<Geometry, { name: string }>;
+  }, [topo]);
 
   const focusCountries = useMemo(
-    () => focusFC.features.filter(f => ["United States of America", "Canada", "Mexico"].includes(f.properties?.name ?? "")),
+    () => focusFC?.features.filter(f => ["United States of America", "Canada", "Mexico"].includes(f.properties?.name ?? "")) ?? [],
     [focusFC]
   );
   const otherCountries = useMemo(
-    () => focusFC.features.filter(f => !["United States of America", "Canada", "Mexico", "Antarctica"].includes(f.properties?.name ?? "")),
+    () => focusFC?.features.filter(f => !["United States of America", "Canada", "Mexico", "Antarctica"].includes(f.properties?.name ?? "")) ?? [],
     [focusFC]
   );
 
   // Mesh borders only (much faster than per-state polygon paths)
-  const stateMeshGeo = useMemo(() => mesh(
-    statesTopo,
-    statesTopo.objects.states,
-    (a, b) => a !== b
-  ), []);
-  const countryBorderMesh = useMemo(() => mesh(
-    countriesTopo,
-    countriesTopo.objects.countries,
-    (a, b) => {
+  const stateMeshGeo = useMemo(() => {
+    if (!topo) return null;
+    return mesh(topo.states, topo.states.objects.states, (a, b) => a !== b);
+  }, [topo]);
+  const countryBorderMesh = useMemo(() => {
+    if (!topo) return null;
+    return mesh(topo.countries, topo.countries.objects.countries, (a, b) => {
       const an = (a as unknown as { properties?: { name?: string } }).properties?.name;
       const bn = (b as unknown as { properties?: { name?: string } }).properties?.name;
       const focus = ["United States of America", "Canada", "Mexico"];
       return focus.includes(an ?? "") || focus.includes(bn ?? "");
-    }
-  ), []);
+    });
+  }, [topo]);
 
   const focusPath = useMemo(
     () => focusCountries.map(f => pathGen(f) ?? "").join(" "),
@@ -148,8 +183,14 @@ export function AtlasMap({
     () => otherCountries.map(f => pathGen(f) ?? "").join(" "),
     [otherCountries, pathGen]
   );
-  const statePath = useMemo(() => pathGen(stateMeshGeo as never), [stateMeshGeo, pathGen]);
-  const countryPath = useMemo(() => pathGen(countryBorderMesh as never), [countryBorderMesh, pathGen]);
+  const statePath = useMemo(
+    () => stateMeshGeo ? pathGen(stateMeshGeo as never) : null,
+    [stateMeshGeo, pathGen]
+  );
+  const countryPath = useMemo(
+    () => countryBorderMesh ? pathGen(countryBorderMesh as never) : null,
+    [countryBorderMesh, pathGen]
+  );
 
   const pts = useMemo(() => {
     const out: { place: Place; x: number; y: number }[] = [];
@@ -446,51 +487,69 @@ export function AtlasMap({
           transform={`translate(${view.x} ${view.y}) scale(${view.k})`}
           style={{ willChange: "transform" }}
         >
-          {/* Distant countries — faint context silhouettes */}
-          <path
-            d={otherPath}
-            fill="rgba(60,75,100,0.32)"
-            stroke="rgba(155,178,205,0.18)"
-            strokeWidth="0.4"
-            vectorEffect="non-scaling-stroke"
-          />
+          {/* Cartography group. When the atlas-data chunk hasn't landed yet
+              this subtree renders with `opacity: 0` and no `d` attributes,
+              so the browser does zero painting — the GPU-composited
+              opacity transition then fades the whole layer in as soon as
+              React sees the new topology. */}
+          <g
+            className="cartography"
+            style={{
+              opacity: topo ? 1 : 0,
+              transition: "opacity 420ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+            }}
+          >
+            {/* Distant countries — faint context silhouettes */}
+            <path
+              d={otherPath}
+              fill="rgba(60,75,100,0.32)"
+              stroke="rgba(155,178,205,0.18)"
+              strokeWidth="0.4"
+              vectorEffect="non-scaling-stroke"
+            />
 
-          {/* Coastline glow (only on focus countries) */}
-          <path
-            d={focusPath}
-            fill="rgba(140,200,224,0.18)"
-            filter="url(#coastalGlow)"
-          />
+            {/* Coastline glow (only on focus countries) */}
+            <path
+              d={focusPath}
+              fill="rgba(140,200,224,0.18)"
+              filter="url(#coastalGlow)"
+            />
 
-          {/* Focus country fills */}
-          <path d={focusPath} fill="url(#landGrad)" />
+            {/* Focus country fills */}
+            <path d={focusPath} fill="url(#landGrad)" />
 
-          {/* Hillshade overlays */}
-          <path d={focusPath} fill="url(#hillshade)" opacity="0.85" />
-          <path d={focusPath} fill="url(#hillshade2)" opacity="0.7" />
+            {/* Hillshade overlays */}
+            <path d={focusPath} fill="url(#hillshade)" opacity="0.85" />
+            <path d={focusPath} fill="url(#hillshade2)" opacity="0.7" />
+          </g>
 
           {/* Graticule (lat/lon grid with edge tick labels) */}
           <Graticule pathGen={pathGen} projection={projection} />
 
-          {/* US state interior borders */}
-          <path
-            d={statePath ?? undefined}
-            fill="none"
-            stroke="rgba(170,193,220,0.32)"
-            strokeWidth="0.5"
-            strokeLinejoin="round"
-            vectorEffect="non-scaling-stroke"
-          />
-
-          {/* Country borders */}
-          <path
-            d={countryPath ?? undefined}
-            fill="none"
-            stroke="rgba(210,228,245,0.7)"
-            strokeWidth="1"
-            strokeLinejoin="round"
-            vectorEffect="non-scaling-stroke"
-          />
+          {/* Borders — also fade with the cartography group */}
+          <g
+            style={{
+              opacity: topo ? 1 : 0,
+              transition: "opacity 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 80ms",
+            }}
+          >
+            <path
+              d={statePath ?? undefined}
+              fill="none"
+              stroke="rgba(170,193,220,0.32)"
+              strokeWidth="0.5"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+            />
+            <path
+              d={countryPath ?? undefined}
+              fill="none"
+              stroke="rgba(210,228,245,0.7)"
+              strokeWidth="1"
+              strokeLinejoin="round"
+              vectorEffect="non-scaling-stroke"
+            />
+          </g>
 
           {/* Country labels — big, quiet, sit under markers. Opacity falls
               off at high zoom so they don't compete with marker labels. */}

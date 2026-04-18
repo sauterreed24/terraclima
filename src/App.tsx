@@ -1,4 +1,4 @@
-import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useState } from "react";
+import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import { Compass, Globe2, Layers, Library, Map, Search, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { PlaceCard } from "./components/PlaceCard";
@@ -78,6 +78,45 @@ export default function App() {
   // cached.
   useEffect(() => { scheduleIdlePrefetch(); }, []);
 
+  // Global keyboard shortcuts. Single-key presses are handled; anything
+  // with a modifier or inside an <input>/<textarea> falls through to
+  // normal browser behaviour so typing in the search box is uninterrupted.
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const tgt = e.target as HTMLElement | null;
+      if (tgt && (tgt.tagName === "INPUT" || tgt.tagName === "TEXTAREA" || tgt.isContentEditable)) return;
+      switch (e.key) {
+        case "?":
+          setShowShortcuts(s => !s);
+          e.preventDefault();
+          break;
+        case "Escape":
+          if (showShortcuts) { setShowShortcuts(false); break; }
+          if (compareOpen) { setCompareOpen(false); break; }
+          if (selectedId) { setSelectedId(null); break; }
+          break;
+        case "e": case "E":
+          setView("explorer");
+          break;
+        case "c": case "C":
+          setView("collections");
+          break;
+        case "l": case "L":
+          setView("learn");
+          break;
+        case "/":
+          // Focus the search input without triggering a type character.
+          e.preventDefault();
+          document.querySelector<HTMLInputElement>('input[placeholder^="Search"]')?.focus();
+          break;
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showShortcuts, compareOpen, selectedId]);
+
   const pool = useMemo(() => {
     if (activeCollection) {
       const c = COLLECTION_BY_ID[activeCollection];
@@ -129,6 +168,10 @@ export default function App() {
 
   const clearCollection = useCallback(() => setActiveCollection(null), []);
   const clearArchetypes = useCallback(() => setFilters(f => ({ ...f, archetypes: new Set() })), []);
+  const clearAllFilters = useCallback(() => {
+    setFilters({ countries: new Set(), archetypes: new Set(), search: "" });
+    setActiveCollection(null);
+  }, []);
   const closeDetail = useCallback(() => setSelectedId(null), []);
   const closeCompare = useCallback(() => setCompareOpen(false), []);
   const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setView("explorer"); }, [openPlace]);
@@ -170,26 +213,31 @@ export default function App() {
 
                 <div className="panel-thin p-3 flex items-center justify-between flex-wrap gap-2">
                   <div className="text-xs text-stone">
-                    Showing <span className="font-mono-num text-frost">{ranked.length}</span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{ranking.replace(/-/g, " ")}</span>
+                    Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{ranking.replace(/-/g, " ")}</span>
                   </div>
                   <div className="text-xs text-stone hidden md:flex items-center gap-3">
                     <span><span className="kbd">scroll</span> to zoom map</span>
-                    <span><span className="kbd">click</span> a dot or card</span>
+                    <span><span className="kbd">/</span> search</span>
+                    <span><span className="kbd">?</span> shortcuts</span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {ranked.slice(0, 40).map(r => (
-                    <PlaceCard
-                      key={r.place.id}
-                      place={r.place}
-                      selected={r.place.id === selectedId}
-                      note={r.note}
-                      onClick={() => openPlace(r.place.id)}
-                      onCompareToggle={() => toggleCompare(r.place.id)}
-                      inCompare={compareIds.has(r.place.id)}
-                    />
-                  ))}
+                  {ranked.length === 0 ? (
+                    <EmptyResults onClear={clearAllFilters} />
+                  ) : (
+                    ranked.slice(0, 40).map(r => (
+                      <PlaceCard
+                        key={r.place.id}
+                        place={r.place}
+                        selected={r.place.id === selectedId}
+                        note={r.note}
+                        onClick={() => openPlace(r.place.id)}
+                        onCompareToggle={() => toggleCompare(r.place.id)}
+                        inCompare={compareIds.has(r.place.id)}
+                      />
+                    ))
+                  )}
                 </div>
               </div>
 
@@ -267,17 +315,108 @@ export default function App() {
           />
         </Suspense>
       )}
+
+      {showShortcuts && <ShortcutsOverlay onClose={() => setShowShortcuts(false)} />}
     </div>
   );
 }
 
+/**
+ * Keyboard shortcuts overlay — toggled with `?`. Tiny, inline, no lazy
+ * chunk overhead. Rendered via absolute positioning so the map and cards
+ * underneath keep their scroll position when it's dismissed.
+ */
+const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: () => void }) {
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="Keyboard shortcuts"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 anim-fade-in"
+      style={{ background: "rgba(5, 10, 18, 0.7)", backdropFilter: "blur(6px)" }}
+      onClick={onClose}
+    >
+      <div
+        className="panel p-6 max-w-md w-full"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-3">
+          <h3 className="font-atlas text-xl text-ice">Keyboard shortcuts</h3>
+          <button onClick={onClose} className="btn-ghost !p-1.5" aria-label="Close">
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+        <div className="divider-contour mb-3" />
+        <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+          <Kbds keys={["E"]} />        <span className="text-frost">Explorer</span>
+          <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
+          <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
+          <Kbds keys={["/"]} />        <span className="text-frost">Focus search</span>
+          <Kbds keys={["Esc"]} />      <span className="text-frost">Close panel / detail</span>
+          <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
+        </div>
+        <div className="divider-contour my-3" />
+        <div className="text-xs text-stone">
+          On the map: scroll to zoom, drag to pan, click a dot or card to open its detail.
+        </div>
+      </div>
+    </div>
+  );
+});
+
+function Kbds({ keys }: { keys: string[] }) {
+  return (
+    <span className="inline-flex items-center gap-1">
+      {keys.map(k => <kbd key={k} className="kbd">{k}</kbd>)}
+    </span>
+  );
+}
+
+/**
+ * LazyFallback — shown while a lazy-loaded view chunk is downloading.
+ * Renders a skeleton that matches the rough layout of the incoming view
+ * (hero + 3 stacked rows) so the user's eye has stable landing zones.
+ * Pure CSS shimmer — no per-frame JS.
+ */
 function LazyFallback() {
   return (
-    <div className="panel p-6 text-sm text-stone text-center anim-fade-in">
-      Loading…
+    <div className="panel p-6 anim-fade-in space-y-3" role="status" aria-live="polite">
+      <div className="sr-only">Loading view…</div>
+      <div className="shimmer h-5 w-2/5 rounded" aria-hidden />
+      <div className="shimmer h-3 w-4/5 rounded opacity-70" aria-hidden />
+      <div className="shimmer h-3 w-3/5 rounded opacity-60" aria-hidden />
+      <div className="divider-contour" />
+      <div className="grid grid-cols-2 gap-3">
+        <div className="shimmer h-20 rounded" aria-hidden />
+        <div className="shimmer h-20 rounded" aria-hidden />
+        <div className="shimmer h-20 rounded" aria-hidden />
+        <div className="shimmer h-20 rounded" aria-hidden />
+      </div>
     </div>
   );
 }
+
+/**
+ * EmptyResults — warm, actionable empty-state card shown when the filter
+ * / search combination yields zero places. Offers an explicit clear button
+ * instead of leaving the user staring at a blank grid.
+ */
+const EmptyResults = memo(function EmptyResults({ onClear }: { onClear: () => void }) {
+  return (
+    <div className="col-span-full panel-warm p-6 text-center anim-fade-in">
+      <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(240,210,156,0.18)] border border-[rgba(240,210,156,0.4)] mb-3">
+        <Search className="w-4 h-4" style={{ color: "#f0d29c" }} />
+      </div>
+      <h3 className="font-atlas text-lg text-ice mb-1">No places match those filters</h3>
+      <p className="text-sm text-frost mb-4 max-w-md mx-auto">
+        Try loosening the archetype or country selection, or search for a region or koppen code.
+      </p>
+      <button onClick={onClear} className="btn-ghost !text-xs">
+        <X className="w-3.5 h-3.5" /> Clear filters
+      </button>
+    </div>
+  );
+});
 
 const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount }: { view: View; setView: (v: View) => void; onOpenCompare: () => void; compareCount: number }) {
   const { temp, toggle } = useUnits();
@@ -392,23 +531,57 @@ const HeroCard = memo(function HeroCard({
           </p>
         </div>
         <div className="flex items-center gap-4 shrink-0 text-right">
-          <Metric label="In view" value={count.toString()} />
-          <Metric label="Atlas total" value={PLACE_COUNTS.total.toString()} />
-          <Metric label="Flagships" value={PLACE_COUNTS.tierA.toString()} />
+          <Metric label="In view" value={count} animated />
+          <Metric label="Atlas total" value={PLACE_COUNTS.total} />
+          <Metric label="Flagships" value={PLACE_COUNTS.tierA} />
         </div>
       </div>
     </div>
   );
 });
 
-const Metric = memo(function Metric({ label, value }: { label: string; value: string }) {
+const Metric = memo(function Metric({ label, value, animated }: { label: string; value: number; animated?: boolean }) {
   return (
     <div className="flex flex-col items-end">
       <span className="text-[10px] uppercase tracking-wider text-stone">{label}</span>
-      <span className="font-mono-num text-xl text-ice">{value}</span>
+      <span className="font-mono-num text-xl text-ice tabular-nums">
+        {animated ? <AnimatedNumber value={value} /> : value}
+      </span>
     </div>
   );
 });
+
+/**
+ * AnimatedNumber — smoothly tweens between numeric values via RAF and
+ * direct DOM mutation. No React re-render fires during the tween, so on
+ * the Surface Pro 5 this costs exactly one text-node update per frame
+ * regardless of how rich the surrounding tree is.
+ */
+function AnimatedNumber({ value, durationMs = 520 }: { value: number; durationMs?: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const displayedRef = useRef(value);
+  const rafRef = useRef(0);
+
+  useEffect(() => {
+    const from = displayedRef.current;
+    const to = value;
+    if (from === to) return;
+    let start = 0;
+    const step = (ts: number) => {
+      if (!start) start = ts;
+      const t = Math.min(1, (ts - start) / durationMs);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const v = Math.round(from + (to - from) * eased);
+      if (ref.current) ref.current.textContent = v.toString();
+      displayedRef.current = v;
+      if (t < 1) rafRef.current = requestAnimationFrame(step);
+    };
+    rafRef.current = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [value, durationMs]);
+
+  return <span ref={ref}>{displayedRef.current}</span>;
+}
 
 const MapLegend = memo(function MapLegend() {
   return (
