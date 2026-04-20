@@ -14,6 +14,30 @@ export interface Concept {
 
 export const CONCEPTS: Concept[] = [
   {
+    id: "microclimate",
+    term: "Microclimate",
+    short: "A pocket where temperature, moisture, wind, or humidity departs sharply from the surrounding macroclimate.",
+    long: "A microclimate is not a marketing term — it is a physically bounded zone, from a hillside to a canyon mouth to a lake shore, where local terrain, water, vegetation, or construction rewrites the weather you would expect from latitude and longitude alone. The atlas treats these deviations as first-class signals: they explain why two towns at the same zip code can feel like different planets.",
+    mechanism: "Macroclimate sets the background field; orography, water bodies, surface cover, and cold-air drainage impose local perturbations on that field.",
+    exampleIds: ["huachuca-az", "oaxaca-mx", "eureka-ca"],
+  },
+  {
+    id: "station-representativeness",
+    term: "Station vs. hillside",
+    short: "Published weather often comes from airports and valley floors — not from the slope where you might actually live.",
+    long: "Many public climate series are measured on flat, open, often paved sites chosen for aviation safety, not for representing a mountain community five miles away. Elevation, aspect, cold-air pooling, and canopy shade routinely shift frost dates, highs, and humidity relative to the nearest official station. Terraclima cross-references station data with terrain context so profiles describe the place, not only the instrument enclosure.",
+    mechanism: "Horizontal distance matters less than vertical relief and surface type: a few hundred meters of elevation or a forest edge can exceed the difference between two airport normals.",
+    exampleIds: ["huachuca-az", "gunnison-co", "black-mountain-nc"],
+  },
+  {
+    id: "phytoclimate",
+    term: "Phytoclimate (canopy microclimate)",
+    short: "Dense vegetation acts as shelter, humidifier, and sunshade — a cooler, damper world under the leaves.",
+    long: "Forests intercept sunlight, slow wind, and transpire moisture, creating understory conditions that can differ by several degrees and a large fraction of relative humidity from an adjacent clearing. Old-growth and fog belts show this most dramatically — the felt climate is as much biology as geography.",
+    mechanism: "Reduced shortwave at the surface + evapotranspiration + wind attenuation → cooler daytime maxima and moister air in the canopy layer.",
+    exampleIds: ["forks-wa", "eureka-ca", "haida-gwaii-bc"],
+  },
+  {
     id: "rain-shadow",
     term: "Rain shadow",
     short: "The dry side of a mountain range, wrung out by prevailing winds.",

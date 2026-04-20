@@ -174,7 +174,7 @@ export const ARCHETYPES: ArchetypeMeta[] = [
     label: "Urban Heat Contrast",
     tone: "ember",
     blurb: "City cores that run several degrees hotter than surrounding land — for better and worse.",
-    guide: "Urban surfaces absorb, retain, and re-radiate heat. The effect delays frost in spring, preserves tender plantings, and lengthens growing seasons — but also amplifies summer heat stress. Understanding the gradient from core to edge is key to urban livability.",
+    guide: "Urban surfaces absorb, retain, and re-radiate heat. The effect delays frost in spring, preserves tender plantings, and lengthens growing seasons — but also amplifies summer heat stress. Street canyons and tower corridors can further channel wind or trap stagnant air, so the same metro can hold several distinct night-time climates block to block. Understanding the gradient from core to edge is key to urban livability.",
   },
   {
     id: "desert-oasis",

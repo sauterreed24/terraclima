@@ -36,6 +36,46 @@ export function LearnMode({ onOpenPlace }: Props) {
         </div>
       </div>
 
+      <div className="panel p-4 border-[rgba(232,155,32,0.2)]">
+        <div className="text-xs uppercase tracking-wider text-stone mb-1">Classification frame</div>
+        <h3 className="font-atlas text-lg text-ice mb-2">Five families of physical drivers</h3>
+        <p className="text-sm text-frost leading-relaxed mb-3">
+          Every stop in the atlas is tagged by the mechanisms that make local weather diverge from the regional average. Grouping drivers this way keeps comparisons honest when you move from, say, a rain-shadow desert to a fog belt or a tropical highland.
+        </p>
+        <dl className="space-y-2.5 text-sm">
+          <div className="border-l-2 border-[rgba(232,155,32,0.45)] pl-3">
+            <dt className="font-semibold text-ice">Topography &amp; elevation</dt>
+            <dd className="text-frost leading-relaxed mt-0.5">
+              Sky islands, thermal belts, rain shadows and foehn, slope aspect, cold-air drainage, gap winds — terrain rewrites temperature, moisture, and wind speed.
+            </dd>
+          </div>
+          <div className="border-l-2 border-[rgba(26,143,168,0.4)] pl-3">
+            <dt className="font-semibold text-ice">Hydrological</dt>
+            <dd className="text-frost leading-relaxed mt-0.5">
+              Oceans and cold currents, lakes (moderation and lake-effect snow), rivers and wetlands — water stores heat and moisture differently than land.
+            </dd>
+          </div>
+          <div className="border-l-2 border-[rgba(61,143,85,0.4)] pl-3">
+            <dt className="font-semibold text-ice">Vegetation &amp; soil</dt>
+            <dd className="text-frost leading-relaxed mt-0.5">
+              Forest canopies (phytoclimates), soil drainage, karst — the surface cover and substrate change humidity, frost, and how water moves.
+            </dd>
+          </div>
+          <div className="border-l-2 border-[rgba(224,77,122,0.35)] pl-3">
+            <dt className="font-semibold text-ice">Urban &amp; built form</dt>
+            <dd className="text-frost leading-relaxed mt-0.5">
+              Heat islands from paving and rooftops; wind channeling in street canyons; altered drainage — cities overlay their own microclimates on natural ones.
+            </dd>
+          </div>
+          <div className="border-l-2 border-[rgba(90,79,71,0.35)] pl-3">
+            <dt className="font-semibold text-ice">Subterranean &amp; shelter</dt>
+            <dd className="text-frost leading-relaxed mt-0.5">
+              Caves, deep ravines, and frost hollows — highly sheltered volumes where temperature and air stagnation decouple from the free atmosphere.
+            </dd>
+          </div>
+        </dl>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-3">
         {CONCEPTS.map(c => (
           <motion.div
