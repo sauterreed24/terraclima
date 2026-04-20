@@ -3,8 +3,9 @@ import type { PlaceDeepSection } from "../../types";
 import { useProse } from "../../lib/units";
 import { detailScrollRoot, pickActiveSectionIndex } from "../../lib/detail-scroll-spy";
 import { replaceDossierHash } from "../../lib/dossier-url-hash";
+import { childOverflowsContainer, scrollChildIntoContainer } from "../../lib/scroll-within-container";
 import { useReducedMotion } from "framer-motion";
-import { ListTree, Share2 } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
 /** Short jump labels for derived appendix ids; curator sections fall back to trimmed title. */
 function jumpLabelForSection(sec: PlaceDeepSection): string {
@@ -89,19 +90,30 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
     };
   }, [runSpy, sectionIdsKey, sections.length]);
 
+  const jumpScrollDebounceRef = useRef(0);
   useEffect(() => {
     if (!activeId || !jumpStripRef.current) return;
-    const strip = jumpStripRef.current;
-    const want = `#deep-${activeId}`;
-    const link = Array.from(strip.querySelectorAll<HTMLAnchorElement>("a")).find(
-      a => a.getAttribute("href") === want,
-    );
-    if (!link) return;
-    link.scrollIntoView({
-      inline: reduceMotion ? "nearest" : "center",
-      block: "nearest",
-      behavior: reduceMotion ? "auto" : "smooth",
-    });
+    if (jumpScrollDebounceRef.current) window.clearTimeout(jumpScrollDebounceRef.current);
+    const id = activeId;
+    jumpScrollDebounceRef.current = window.setTimeout(() => {
+      jumpScrollDebounceRef.current = 0;
+      const strip = jumpStripRef.current;
+      if (!strip) return;
+      const want = `#deep-${id}`;
+      const link = Array.from(strip.querySelectorAll<HTMLAnchorElement>("a")).find(
+        a => a.getAttribute("href") === want,
+      );
+      if (!link) return;
+      if (!childOverflowsContainer(strip, link, "x")) return;
+      scrollChildIntoContainer(strip, link, {
+        axis: "x",
+        behavior: reduceMotion ? "auto" : "smooth",
+      });
+    }, 80);
+
+    return () => {
+      if (jumpScrollDebounceRef.current) window.clearTimeout(jumpScrollDebounceRef.current);
+    };
   }, [activeId, reduceMotion, sectionIdsKey]);
 
   useEffect(() => {
@@ -126,18 +138,17 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
       className="space-y-4"
       aria-labelledby="place-deep-sections-heading"
     >
-      <div className="detail-dossier-hero rounded-2xl border border-[rgba(26,143,168,0.22)] bg-gradient-to-br from-[rgba(232,248,252,0.55)] via-white/90 to-[rgba(255,252,247,0.98)] px-4 py-3.5 md:px-5 md:py-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+      <div className="rounded-2xl border border-[rgba(200,170,140,0.38)] bg-[rgba(255,253,248,0.92)] px-4 py-3.5 md:px-5 md:py-4">
         <div className="flex flex-wrap items-center gap-2 text-ice">
-          <ListTree className="w-4 h-4 shrink-0 text-glacier-500" aria-hidden />
+          <BookOpen className="w-4 h-4 shrink-0 text-stone opacity-80" aria-hidden />
           <h3 id="place-deep-sections-heading" className="font-atlas text-lg md:text-xl tracking-tight">
             Field dossier
           </h3>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-stone font-semibold ml-0.5">stacked read</span>
         </div>
         <p className="text-[11px] md:text-xs text-stone leading-relaxed mt-2 max-w-[52rem]">
           {hasBestMonthsGuide
-            ? "Curator essays run first when we have them. The chapters below share one spine — season shape, drivers, soil pocket, neighbourhood contrasts if present, scouting wrap — all from fields on this page. Calendar-style when-to-visit-or-plant windows live in Best months for… so we do not say it twice. Temperatures and distances follow your °F / °C toggle."
-            : "Curator essays run first when we have them. The chapters below share one spine — season shape, drivers, soil pocket, neighbourhood contrasts if present, scouting wrap — all from fields on this page. Temperatures and distances follow your °F / °C toggle."}
+            ? "If we have written a longer note for this stop, it runs first. What follows is the same backbone every profile carries: how rain and snow pile through the year, the terrain mechanisms we tagged, soil and yard in one pass, nearby contrasts when the record has them, then an honest closing on fit and risk. For trip or planting calendars, use Best months for… farther down so we are not redundant. Your °F / °C toggle applies throughout."
+            : "If we have written a longer note for this stop, it runs first. What follows is the same backbone every profile carries: how rain and snow pile through the year, the terrain mechanisms we tagged, soil and yard in one pass, nearby contrasts when the record has them, then an honest closing on fit and risk. Your °F / °C toggle applies throughout."}
         </p>
         <nav
           ref={jumpStripRef}
@@ -158,13 +169,10 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
             );
           })}
         </nav>
-        <p className="mt-2.5 flex items-start gap-1.5 text-[10px] text-stone">
-          <Share2 className="w-3 h-3 shrink-0 opacity-70 mt-0.5" aria-hidden />
-          <span>
-            Sending this stop to a planner or neighbour? Use <span className="font-medium text-frost">Copy link</span> in the drawer header — it captures the exact place. While the dossier block stays on screen, the address bar quietly picks up a{" "}
-            <span className="font-mono-num text-[10px] text-frost/90">#deep-…</span>
-            {" "}fragment for the chapter in view; leaving that section strips it so <span className="font-mono-num text-[10px] text-frost/90">?p=</span> links stay tidy.
-          </span>
+        <p className="mt-2 text-[10px] text-stone leading-relaxed">
+          <span className="font-medium text-frost">Copy link</span> in the header passes this exact stop. If you stay over the dossier while you read, the URL may pick up a short{" "}
+          <span className="font-mono-num text-frost/90">#deep-…</span>
+          {" "}suffix for the chapter in view; scroll elsewhere and it falls away so the link stays shareable.
         </p>
       </div>
 
@@ -174,7 +182,6 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
             key={sec.id}
             id={`deep-${sec.id}`}
             className="detail-dossier-chapter scroll-mt-28"
-            data-chapter-index={idx % 6}
           >
             <header className="detail-dossier-chapter-head">
               <span className="detail-dossier-chapter-idx" aria-hidden>

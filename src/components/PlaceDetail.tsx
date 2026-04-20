@@ -51,15 +51,6 @@ const ARCHETYPE_ACCENT: Record<string, string> = {
 };
 
 /** Solid leading edge on the detail drawer — instant place identity without re-tinting the whole panel. */
-const DRAWER_EDGE: Record<string, string> = {
-  glacier: "#1a8fa8",
-  sage: "#2d6b45",
-  ochre: "#c77d12",
-  ember: "#c24a28",
-  ice: "#2a8aad",
-  aurora: "#6b4aa3",
-};
-
 const SETTLEMENT_ROLE_LABEL: Record<string, string> = {
   hub: "Hub",
   town: "Town",
@@ -199,7 +190,6 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
   const reduceMotion = useReducedMotion();
   const panelRef = useRef<HTMLElement>(null);
   const titleId = useId();
-  const drawerEdge = place ? (DRAWER_EDGE[ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice"] ?? DRAWER_EDGE.ice) : DRAWER_EDGE.ice;
   useFocusTrap(panelRef, Boolean(place));
 
   const hadOpenPlaceRef = useRef(false);
@@ -233,8 +223,14 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
       const hash = window.location.hash;
       if (hash.startsWith("#deep-")) {
         const target = el.querySelector<HTMLElement>(hash);
-        if (target) target.scrollIntoView({ block: "start", behavior: "auto" });
-        else clearDossierHash();
+        if (target) {
+          const er = el.getBoundingClientRect();
+          const tr = target.getBoundingClientRect();
+          const top = el.scrollTop + (tr.top - er.top) - 12;
+          el.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+        } else {
+          clearDossierHash();
+        }
       }
     });
   }, [place?.id]);
@@ -268,10 +264,9 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
                 ? { duration: 0 }
                 : { type: "spring", stiffness: 280, damping: 32 }
             }
-            className="fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto outline-none border-l-[5px] border-l-transparent"
+            className="fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto outline-none border-l border-[rgba(200,170,140,0.38)]"
             style={{
               boxShadow: "-20px 0 48px -14px rgba(62, 38, 24, 0.18)",
-              borderLeftColor: drawerEdge,
             }}
           >
             <DetailHeader
@@ -301,12 +296,7 @@ function CopyPlaceLink({ placeId }: { placeId: string }) {
     });
   }, [placeId]);
   return (
-    <button
-      type="button"
-      onClick={onCopy}
-      className="btn-ghost !text-xs !border-[rgba(26,143,168,0.38)] !bg-[rgba(232,248,252,0.35)] hover:!border-[rgba(26,143,168,0.55)] hover:!bg-[rgba(232,248,252,0.65)]"
-      title="Copy URL to this place"
-    >
+    <button type="button" onClick={onCopy} className="btn-ghost !text-xs" title="Copy URL to this place">
       <Link2 className="w-3 h-3" aria-hidden />
       {copied ? "Copied" : "Copy link"}
     </button>
