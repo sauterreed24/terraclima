@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { geoPath, geoAlbers } from "d3-geo";
 import type { GeoProjection } from "d3-geo";
 import { feature, mesh } from "topojson-client";
@@ -6,11 +6,13 @@ import type { FeatureCollection, Geometry } from "geojson";
 import type { Topology, GeometryCollection } from "topojson-specification";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
-import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
+import { useUnits } from "../lib/units";
 import type { DistUnit } from "../lib/units";
-import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { useRichVisualEffects } from "../lib/device-profile";
-import { MiniClimateStrip } from "./charts/MiniClimateStrip";
+import { fitMapViewToPoints } from "../lib/atlas-map-fit";
+import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
+import { computePinLabelModes, type MapPinLabelMode } from "../lib/atlas-map-label-visibility";
+import { AtlasMapTooltip } from "./AtlasMapTooltip";
 
 // Topojson atlas data lives in the `atlas-data` Rollup chunk (~74 kB gz).
 // Loading it eagerly would block first paint even though the UI shell
@@ -62,7 +64,8 @@ interface Props {
   height?: number;
 }
 
-const MIN_ZOOM = 0.85;
+/** Allow zooming out enough to frame every pin across NA; must match `fitMapViewToPoints` bounds. */
+const MIN_ZOOM = 0.42;
 const MAX_ZOOM = 8;
 
 /** Microclimate driver legend — lives on the dark map chrome with high-contrast labels. */
@@ -105,11 +108,36 @@ export function AtlasMap({
   selectedId,
   onSelect,
   onHover,
-  width = 820,
-  height = 520,
+  width: widthProp = 820,
+  height: heightProp = 520,
 }: Props) {
   /** Skip SVG Gaussian blur on coast & heavy marker pulse on low-power / save-data devices (e.g. older Surfaces). */
   const richEffects = useRichVisualEffects();
+
+  const shellRef = useRef<HTMLDivElement>(null);
+  const [dims, setDims] = useState({ width: widthProp, height: heightProp });
+
+  useLayoutEffect(() => {
+    const el = shellRef.current;
+    if (!el) return;
+    const apply = () => {
+      const r = el.getBoundingClientRect();
+      const w = Math.max(280, Math.round(r.width));
+      const h = Math.max(260, Math.round(r.height));
+      setDims(d => (d.width === w && d.height === h ? d : { width: w, height: h }));
+    };
+    apply();
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(apply) : null;
+    ro?.observe(el);
+    window.addEventListener("resize", apply);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener("resize", apply);
+    };
+  }, []);
+
+  const width = dims.width;
+  const height = dims.height;
 
   const svgRef = useRef<SVGSVGElement>(null);
   const transformRef = useRef<SVGGElement>(null);
@@ -125,6 +153,25 @@ export function AtlasMap({
 
   const [hoverId, setHoverId] = useState<string | null>(null);
   const [tooltipScreen, setTooltipScreen] = useState<{ xPct: number; yPct: number } | null>(null);
+  const hoverClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelHoverClear = useCallback(() => {
+    if (hoverClearTimerRef.current) {
+      clearTimeout(hoverClearTimerRef.current);
+      hoverClearTimerRef.current = null;
+    }
+  }, []);
+
+  const scheduleHoverClear = useCallback(() => {
+    cancelHoverClear();
+    hoverClearTimerRef.current = setTimeout(() => {
+      hoverClearTimerRef.current = null;
+      setHoverId(null);
+      setTooltipScreen(null);
+    }, 240);
+  }, [cancelHoverClear]);
+
+  useEffect(() => () => cancelHoverClear(), [cancelHoverClear]);
 
   // Direct-DOM refs for the cursor lat/lon readout and the scale bar. These
   // are mutated imperatively (via ref.textContent / ref.style.width) on
@@ -224,6 +271,22 @@ export function AtlasMap({
     return out;
   }, [places, projection]);
 
+  useLayoutEffect(() => {
+    if (pts.length === 0) {
+      setView({ k: 1, x: 0, y: 0 });
+      return;
+    }
+    setView(
+      fitMapViewToPoints(
+        pts.map(p => ({ x: p.x, y: p.y })),
+        width,
+        height,
+        48,
+        { minK: MIN_ZOOM, maxK: MAX_ZOOM, inset: 0.065 }
+      )
+    );
+  }, [pts, width, height]);
+
   // Country labels — computed from geographic anchor points (not polygon
   // centroids, which sit at Nunavut for Canada and the Aleutians for the US).
   // Hand-picked lon/lat anchors give visually balanced placement at every
@@ -294,6 +357,11 @@ export function AtlasMap({
   const hoverPlace = useMemo(
     () => pts.find(pt => pt.place.id === hoverId)?.place ?? null,
     [pts, hoverId]
+  );
+
+  const pinLabelModes = useMemo(
+    () => computePinLabelModes(pts, view.k, selectedId, hoverId),
+    [pts, view.k, selectedId, hoverId]
   );
 
   // Markers call `onSelect` directly. Do not gate on `dragRef.moved`: marker
@@ -435,7 +503,21 @@ export function AtlasMap({
     });
   }, [width, height]);
 
-  const reset = useCallback(() => setView({ k: 1, x: 0, y: 0 }), []);
+  const reset = useCallback(() => {
+    if (pts.length === 0) {
+      setView({ k: 1, x: 0, y: 0 });
+      return;
+    }
+    setView(
+      fitMapViewToPoints(
+        pts.map(p => ({ x: p.x, y: p.y })),
+        width,
+        height,
+        48,
+        { minK: MIN_ZOOM, maxK: MAX_ZOOM, inset: 0.065 }
+      )
+    );
+  }, [pts, width, height]);
 
   // Keyboard: +/- to zoom, 0 to reset, arrows to pan
   useEffect(() => {
@@ -467,12 +549,16 @@ export function AtlasMap({
   }, [width, height]);
 
   return (
-    <div className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
+    <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
       <svg
         ref={svgRef}
+        width={width}
+        height={height}
         viewBox={`0 0 ${width} ${height}`}
-        className="w-full h-full block select-none atlas-svg"
+        className="block max-w-full max-h-full w-full h-full select-none atlas-svg"
         style={{ touchAction: "none" }}
+        shapeRendering="geometricPrecision"
+        textRendering="geometricPrecision"
         role="img"
         tabIndex={0}
         aria-label="Atlas map of North America. Scroll to zoom, drag to pan. Click or tap any pin to open that place’s full profile."
@@ -483,8 +569,6 @@ export function AtlasMap({
         onPointerEnter={() => { if (coordLabelRef.current) coordLabelRef.current.style.opacity = "1"; }}
         onPointerLeave={() => {
           onPointerUp();
-          setHoverId(null);
-          setTooltipScreen(null);
           if (coordLabelRef.current) coordLabelRef.current.style.opacity = "0";
         }}
       >
@@ -537,7 +621,7 @@ export function AtlasMap({
 
           {/* Coastline halo (light glow on the seaward side of land) */}
           <filter id="coastalGlow" x="-10%" y="-10%" width="120%" height="120%">
-            <feGaussianBlur stdDeviation="1.4" />
+            <feGaussianBlur stdDeviation="0.85" />
           </filter>
 
           {/* Compass rose accent */}
@@ -686,13 +770,17 @@ export function AtlasMap({
                 key={pt.place.id}
                 pt={pt}
                 k={view.k}
+                labelMode={pinLabelModes.get(pt.place.id) ?? "hidden"}
                 isActive={pt.place.id === selectedId}
                 isHover={pt.place.id === hoverId}
                 richEffects={richEffects}
                 onSelect={onSelect}
-                onEnter={() => { setHoverId(pt.place.id); updateTooltip(pt); }}
-                onLeave={() => { setHoverId(null); setTooltipScreen(null); }}
-                showHighTierLabel={view.k >= 1.4}
+                onEnter={() => {
+                  cancelHoverClear();
+                  setHoverId(pt.place.id);
+                  updateTooltip(pt);
+                }}
+                onLeave={scheduleHoverClear}
               />
             ))}
           </g>
@@ -749,9 +837,9 @@ export function AtlasMap({
         <div
           role="group"
           aria-label="Marker colors by primary climate driver"
-          className="rounded-xl border border-[rgba(140,200,224,0.38)] bg-[rgba(10,18,32,0.82)] backdrop-blur-md px-2.5 py-2 shadow-[0_6px_24px_-4px_rgba(0,0,0,0.45)]"
+          className="map-chrome-panel px-2.5 py-2"
         >
-          <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[11px] leading-snug">
+          <div className="flex flex-wrap gap-x-3 gap-y-2 text-[11px] leading-relaxed">
             <MapLegendDot color="#ffc860" label="Orographic / orchard / chinook" />
             <MapLegendDot color="#8fd99a" label="Highland / sky-island / cloud" />
             <MapLegendDot color="#6ec8ea" label="Maritime / fog / rain-shadow" />
@@ -771,14 +859,21 @@ export function AtlasMap({
       <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[2]">
         <button className="map-btn" onClick={() => zoomBy(1.4)} title="Zoom in (+)" aria-label="Zoom in">＋</button>
         <button className="map-btn" onClick={() => zoomBy(1 / 1.4)} title="Zoom out (−)" aria-label="Zoom out">−</button>
-        <button className="map-btn !text-[9px]" onClick={reset} title="Reset view (0)" aria-label="Reset view">RESET</button>
+        <button
+          className="map-btn !text-[9px]"
+          onClick={reset}
+          title="Fit every pin in view (keyboard: 0)"
+          aria-label="Fit all places in view"
+        >
+          FIT
+        </button>
       </div>
 
       {/* Tier legend — matches map chrome; hints are plain language (no key-cap styling). */}
       <div
         role="group"
         aria-label="Marker shapes by atlas tier"
-        className="absolute bottom-3 right-3 z-[2] max-w-[13.5rem] rounded-xl border border-[rgba(140,200,224,0.38)] bg-[rgba(10,18,32,0.82)] backdrop-blur-md px-3 py-2.5 shadow-[0_6px_24px_-4px_rgba(0,0,0,0.45)] pointer-events-none text-[10px] leading-snug space-y-2"
+        className="map-chrome-panel absolute bottom-3 right-3 z-[2] max-w-[13.5rem] px-3 py-2.5 pointer-events-none text-[10px] leading-relaxed space-y-2.5"
       >
         <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Pin shape · tier</div>
         <div className="flex items-center gap-2.5 text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
@@ -800,15 +895,18 @@ export function AtlasMap({
           <span>Index — open ring (driver colour on stroke)</span>
         </div>
         <p className="pt-1 mt-0.5 border-t border-[rgba(140,200,224,0.25)] text-[9px] text-[rgba(210,225,240,0.88)] leading-relaxed">
-          Tap a pin to open its sheet. On the map, use the plus and minus controls to zoom, Reset to reframe, and drag to pan.
+          Tap a pin to open its sheet. Use + / − to zoom, Fit (or the 0 key) to show every pin in the frame, and drag to pan.
         </p>
         <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
-          Pale ring around each pin: <span className="text-[rgba(255,236,210,0.95)]">US</span>
+          Names auto-hide when crowded: at most one label per map cell (tier wins ties). Zoom in or hover for full text.
+        </p>
+        <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
+          Pale ring: <span className="text-[rgba(255,236,210,0.95)]">US</span>
           {" · "}
           <span className="text-[rgba(190,230,255,0.95)]">Canada</span>
           {" · "}
           <span className="text-[rgba(255,220,150,0.95)]">Mexico</span>
-          {" "}— driver colour stays the fill.
+          {" "}— fill stays the climate driver.
         </p>
       </div>
 
@@ -818,7 +916,13 @@ export function AtlasMap({
       </div>
 
       {hoverPlace && tooltipScreen && (
-        <MapTooltip place={hoverPlace} xPct={tooltipScreen.xPct} yPct={tooltipScreen.yPct} />
+        <AtlasMapTooltip
+          place={hoverPlace}
+          xPct={tooltipScreen.xPct}
+          yPct={tooltipScreen.yPct}
+          onHoverCardPointerEnter={cancelHoverClear}
+          onHoverCardPointerLeave={scheduleHoverClear}
+        />
       )}
     </div>
   );
@@ -827,6 +931,7 @@ export function AtlasMap({
 interface MarkerProps {
   pt: { place: Place; x: number; y: number };
   k: number;
+  labelMode: MapPinLabelMode;
   isActive: boolean;
   isHover: boolean;
   /** When false, skip pulsing ring animation (older tablets / reduced motion). */
@@ -834,22 +939,45 @@ interface MarkerProps {
   onSelect: (id: string) => void;
   onEnter: () => void;
   onLeave: () => void;
-  showHighTierLabel: boolean;
 }
 
 const Marker = memo(function Marker({
-  pt, k, isActive, isHover, richEffects, onSelect, onEnter, onLeave, showHighTierLabel,
+  pt, k, labelMode, isActive, isHover, richEffects, onSelect, onEnter, onLeave,
 }: MarkerProps) {
   const { place, x, y } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
   const color = TONE[tone];
 
-  const baseSize = place.tier === "A" ? 6.8 : place.tier === "B" ? 5 : 4.1;
-  const r = isActive ? baseSize + 1.6 : isHover ? baseSize + 1 : baseSize;
+  const baseSize = place.tier === "A" ? 7.2 : place.tier === "B" ? 5.4 : 4.35;
+  const r = isActive ? baseSize + 1.8 : isHover ? baseSize + 1.2 : baseSize;
 
   const inv = 1 / k;
-  const showLabel = isActive || isHover || (place.tier === "A" && showHighTierLabel);
-  const labelW = place.name.length * 6.6 + 12;
+  const subLine = placeMapSecondaryLine(place);
+
+  const titleLimit =
+    labelMode === "compact"
+      ? 16
+      : labelMode === "full"
+        ? isActive || isHover
+          ? 120
+          : k >= 1.38
+            ? 56
+            : Math.max(12, Math.min(30, Math.floor(11 + k * 11)))
+        : 0;
+  const titleDisp =
+    labelMode === "hidden" ? "" : truncateMapTitle(place.name, Math.max(1, titleLimit));
+  const showSub =
+    labelMode === "full" &&
+    (isActive || isHover || k >= 1.24) &&
+    subLine.length > 0;
+  const labelW = Math.min(
+    300,
+    Math.max(
+      titleDisp.length * 6.15 + 18,
+      showSub ? subLine.length * 5.2 + 18 : 0
+    )
+  );
+  const labelH = showSub ? 34 : labelMode === "compact" ? 18 : 18;
 
   const activate = useCallback(
     (e: React.SyntheticEvent) => {
@@ -874,12 +1002,17 @@ const Marker = memo(function Marker({
     [onSelect, place.id],
   );
 
+  const ariaLabel =
+    subLine.length > 0
+      ? `${place.name}, ${subLine}. Open full profile.`
+      : `Open full profile for ${place.name}`;
+
   return (
     <g
       transform={`translate(${x} ${y})`}
       role="button"
       tabIndex={0}
-      aria-label={`Open full profile for ${place.name}`}
+      aria-label={ariaLabel}
       className="map-marker"
       style={{ cursor: "pointer" }}
       onPointerDown={stopPan}
@@ -959,29 +1092,41 @@ const Marker = memo(function Marker({
           />
         )}
 
-        {showLabel && (
-          <g transform={`translate(${r + 5} 4)`} pointerEvents="none">
-            <rect
-              x={-2}
-              y={-11}
-              rx={3}
-              ry={3}
-              width={labelW}
-              height={16}
-              fill="rgba(13,20,32,0.94)"
-              stroke="rgba(170,193,220,0.55)"
-              strokeWidth={0.8}
-            />
+        {labelMode !== "hidden" ? (
+        <g transform={`translate(${r + 6} ${showSub ? 2 : 4})`} pointerEvents="none" className="map-marker-label">
+          <rect
+            x={-2}
+            y={showSub ? -15 : -11}
+            rx={4}
+            ry={4}
+            width={labelW}
+            height={labelH}
+            fill="rgba(8,14,24,0.94)"
+            stroke={isActive ? "rgba(240,210,156,0.85)" : "rgba(170,193,220,0.62)"}
+            strokeWidth={isActive ? 1.05 : 0.85}
+          />
+          <text
+            x={4}
+            y={showSub ? -4 : 1}
+            fontSize={labelMode === "compact" ? 10.5 : 11.5}
+            fill="#f4f8fc"
+            fontFamily="var(--font-sans),system-ui,sans-serif"
+            fontWeight={600}
+            style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.88)", strokeWidth: 2.5, strokeLinejoin: "round" }}
+          >{titleDisp}</text>
+          {showSub ? (
             <text
               x={4}
-              y={1}
-              fontSize={11}
-              fill="#f1f6fc"
+              y={9}
+              fontSize={9.5}
+              fill="rgba(200,218,238,0.95)"
               fontFamily="var(--font-sans),system-ui,sans-serif"
               fontWeight={500}
-            >{place.name}</text>
-          </g>
-        )}
+              style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.82)", strokeWidth: 2, strokeLinejoin: "round" }}
+            >{subLine}</text>
+          ) : null}
+        </g>
+        ) : null}
         {/* Hit target on top so touch/stylus picks the marker, not the map pan layer beneath. */}
         <circle r={r + 18} fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
       </g>
@@ -989,93 +1134,15 @@ const Marker = memo(function Marker({
   );
 }, (prev, next) =>
   prev.onSelect === next.onSelect &&
+  prev.labelMode === next.labelMode &&
   prev.isActive === next.isActive &&
   prev.isHover === next.isHover &&
   prev.k === next.k &&
   prev.richEffects === next.richEffects &&
-  prev.showHighTierLabel === next.showHighTierLabel &&
   prev.pt.x === next.pt.x &&
   prev.pt.y === next.pt.y &&
   prev.pt.place === next.pt.place
 );
-
-function MapTooltip({
-  place,
-  xPct,
-  yPct,
-}: {
-  place: Place;
-  xPct: number;
-  yPct: number;
-}) {
-  const richEffects = useRichVisualEffects();
-  const { temp, dist } = useUnits();
-  const prose = useProse();
-  const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
-  const julyHigh = meanJulyHigh(place);
-  const janLow = meanJanLow(place);
-  const annualP = place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
-
-  const onRight = xPct < 55;
-  const onTop = yPct > 55;
-  const style: React.CSSProperties = {
-    left: `${xPct}%`,
-    top: `${yPct}%`,
-    transform: `translate(${onRight ? "18px" : "calc(-100% - 18px)"}, ${onTop ? "calc(-100% - 14px)" : "14px"})`,
-  };
-
-  return (
-    <div
-      className="absolute panel w-[280px] p-3 shadow-2xl pointer-events-none anim-fade-in z-10"
-      style={{
-        ...style,
-        borderColor: `var(--color-${tone === "ochre" ? "ochre-500" : tone === "sage" ? "sage-500" : tone === "ember" ? "ember-500" : tone === "aurora" ? "aurora-500" : "glacier-500"})`,
-      }}
-    >
-      <div className="flex items-baseline justify-between gap-2 mb-1">
-        <div className="min-w-0">
-          <div className="text-[10px] uppercase tracking-wider text-stone">
-            {place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index"} ·{" "}
-            {place.country === "USA" ? "US" : place.country === "Canada" ? "CA" : "MX"}
-          </div>
-          <div className="font-atlas text-base text-ice truncate">{place.name}</div>
-        </div>
-        <span className="chip" data-tone={tone}>
-          {ARCHETYPE_BY_ID[place.archetypes[0]]?.label ?? place.archetypes[0]}
-        </span>
-      </div>
-      <div className="text-[11px] text-stone mb-2">
-        {place.region} · <span className="font-mono-num">{fmtElev(place.elevationM, dist)}</span> · {place.koppen}
-      </div>
-      <div className="rounded overflow-hidden mb-2" style={richEffects ? { filter: "saturate(1.08)" } : undefined}>
-        <MiniClimateStrip place={place} height={22} />
-      </div>
-      <div className="grid grid-cols-3 gap-2 text-[11px]">
-        <Metric tone="ochre" label="Jul high" value={fmtTemp(julyHigh, temp)} />
-        <Metric tone="glacier" label="Jan low" value={fmtTemp(janLow, temp)} />
-        <Metric tone="sage" label="Annual" value={fmtPrecip(annualP, dist)} />
-      </div>
-      <p className="text-xs text-frost mt-2 leading-snug line-clamp-2">{prose(place.summaryShort)}</p>
-      <div className="mt-3 pt-2 border-t border-[rgba(71,90,122,0.45)] text-[10px] text-stone leading-relaxed pointer-events-none">
-        <span className="text-frost/90">Click or tap the pin on the map</span> to open the full field guide — charts, mechanisms, and the story of this place.
-      </div>
-    </div>
-  );
-}
-
-function Metric({ label, value, tone }: { label: string; value: string; tone: string }) {
-  const c: Record<string, string> = {
-    ochre: "#f0d29c",
-    glacier: "#8cc8e0",
-    sage: "#c6dcbd",
-  };
-  return (
-    <div className="flex flex-col">
-      <span className="text-[9px] uppercase tracking-wider text-stone">{label}</span>
-      <span className="font-mono-num" style={{ color: c[tone] }}>{value}</span>
-    </div>
-  );
-}
 
 /** Driver hues — saturated so diamonds / rings / squares read at a glance on dark land. */
 const TONE: Record<string, string> = {

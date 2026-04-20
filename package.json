@@ -7,7 +7,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b --noEmit && vite build",
+    "build:pages": "cross-env VITE_BASE_PATH=/terraclima/ npm run build",
     "preview": "vite preview",
+    "preview:lan": "vite preview --host 0.0.0.0 --port 4173",
     "typecheck": "tsc --noEmit",
     "test:prose": "tsx scripts/test-prose.ts",
     "audit:corpus": "tsx scripts/audit-corpus.ts",
@@ -28,11 +30,13 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.0.0",
     "@types/d3-geo": "^3.1.0",
+    "@types/node": "^25.6.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@types/topojson-client": "^3.1.5",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
+    "cross-env": "^7.0.3",
     "postcss": "^8.4.49",
     "tailwindcss": "^4.0.0",
     "tsx": "^4.21.0",

@@ -1,6 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
+function vitePublicBase(): string {
+  const raw = process.env.VITE_BASE_PATH?.trim();
+  if (!raw || raw === "/") return "/";
+  return raw.endsWith("/") ? raw : `${raw}/`;
+}
+
 /**
  * Terraclima Vite configuration.
  *
@@ -14,6 +20,9 @@ import react from "@vitejs/plugin-react";
  *     footprint and are rarely needed for this static SPA.
  */
 export default defineConfig({
+  /** GitHub Project Pages: set `VITE_BASE_PATH=/repo-name/` when building (see `build:pages` script). */
+  base: vitePublicBase(),
+
   plugins: [react()],
 
   server: {
