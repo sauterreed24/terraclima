@@ -3,6 +3,7 @@
 // ============================================================
 
 import type { Place } from "../types";
+import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { PLACES_USA } from "./places.usa";
 import { PLACES_CANADA } from "./places.canada";
 import { PLACES_MEXICO } from "./places.mexico";
@@ -30,13 +31,15 @@ export const PLACE_SEARCH_INDEX: Record<string, string> = {};
 export const PLACE_ANNUAL_PRECIP: Record<string, number> = {};
 
 for (const p of PLACES) {
+  const deepIdx = mergeDeepSections(p).map(s => `${s.title} ${s.paragraphs.join(" ")}`).join(" ");
   PLACE_SEARCH_INDEX[p.id] = (
     p.name + " " +
     p.region + " " +
     (p.municipality ?? "") + " " +
     p.archetypes.join(" ") + " " +
     p.koppen + " " +
-    (p.summaryShort ?? "")
+    (p.summaryShort ?? "") +
+    " " + deepIdx
   ).toLowerCase();
   PLACE_ANNUAL_PRECIP[p.id] = p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
 }

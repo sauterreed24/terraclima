@@ -45,6 +45,38 @@ export type RankingProfile =
 
 export interface RankingResult { place: Place; score: number; note?: string }
 
+/**
+ * Fixed “livability lens” for the hero — **not** a hidden-gems or novelty sort.
+ * Transparent weights so a skeptical reader can sanity-check the list.
+ * Uses only fields already shown elsewhere in the atlas (resilience, risks, temps, growability).
+ */
+export function rankLivabilityPreview(pool: Place[]): RankingResult[] {
+  if (pool.length === 0) return [];
+  const scored: RankingResult[] = pool.map(p => {
+    const resilience = p.scores.resilience;
+    const grow = p.scores.growability;
+    const risk = avgRisk(p);
+    const jh = meanJulyHigh(p);
+    const jl = meanJanLow(p);
+    const winterEase = Math.max(0, 100 - Math.max(0, -jl) * 4.5);
+    const summerEase = Math.max(0, 100 - Math.max(0, jh - 26) * 5);
+    const hazardEase = Math.max(0, 100 - risk * 14);
+    const s =
+      0.34 * resilience +
+      0.22 * winterEase +
+      0.18 * summerEase +
+      0.14 * hazardEase +
+      0.12 * grow;
+    const rounded = Math.round(Math.max(0, Math.min(100, s)));
+    return {
+      place: p,
+      score: rounded,
+      note: `Resilience ${resilience} · hazard cushion ${Math.round(hazardEase)}`,
+    };
+  });
+  return scored.sort((a, b) => b.score - a.score);
+}
+
 export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): RankingResult[] {
   const scored: RankingResult[] = pool.map(p => {
     const julyHigh = meanJulyHigh(p);

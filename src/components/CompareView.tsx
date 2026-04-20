@@ -33,7 +33,7 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 bg-[rgba(13,20,32,0.88)] backdrop-blur-md overflow-y-auto"
+          className="fixed inset-0 z-50 bg-[rgba(62,38,24,0.35)] backdrop-blur-md overflow-y-auto"
           onClick={onClose}
         >
           <motion.div

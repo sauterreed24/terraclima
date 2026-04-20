@@ -24,6 +24,10 @@ export default defineConfig({
         "./src/main.tsx",
         "./src/App.tsx",
         "./src/components/AtlasMap.tsx",
+        "./src/components/PlaceDetail.tsx",
+        "./src/components/CompareView.tsx",
+        "./src/components/CollectionsView.tsx",
+        "./src/components/LearnMode.tsx",
         "./src/lib/scoring.ts",
         "./src/lib/units.ts",
         "./src/data/places.ts",
@@ -46,6 +50,8 @@ export default defineConfig({
   build: {
     target: "es2022",
     sourcemap: false,
+    /** Faster CI / low-RAM builds; gzip sizes are predictable from chunk names. */
+    reportCompressedSize: false,
     cssCodeSplit: true,
     chunkSizeWarningLimit: 1200,
     rollupOptions: {

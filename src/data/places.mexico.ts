@@ -103,6 +103,32 @@ export const PLACES_MEXICO: Place[] = [
 
     confidence: "high",
     confidenceNotes: "SMN station coverage at Oaxaca is strong; WorldClim downscaling agrees with station means.",
+    deepSections: [
+      {
+        id: "oaxaca-dry-wet-rhythm",
+        title: "Dry season vs wet season — how the year actually feels",
+        paragraphs: [
+          "From November into May the valleys sit under dry, stable air most afternoons. Rain is rare; dust picks up on windier days; irrigation and municipal water planning dominate conversation. This is when outdoor markets, rooftop dining, and festival calendars concentrate — the city feels like perpetual spring because humidity is moderate and skies are reliably clear.",
+          "June opens the monsoon gate: convection builds over the sierras first, then cells drift across the valles. Rain tends to arrive mid-afternoon to evening, often intense but short; mornings can still be bright. September is usually the wettest month emotionally as well as hydrologically — roads cut by arroyos, hillside communities watch for debris flows. Anyone scouting property should ask where stormwater goes, not only what the view looks like in February.",
+        ],
+      },
+      {
+        id: "oaxaca-valley-wind-light",
+        title: "Valley breezes, smoke, and air you can plan around",
+        paragraphs: [
+          "East–west valley orientation channels easterly flow in some regimes and blocks it in others, so micro-variation block-to-block is real: a courtyard with tall walls may feel still while a rooftop two streets over catches a steady draft.",
+          "Late dry season agricultural burns and occasional forest-fire smoke can degrade air quality for days at a time — less a surprise than a calendar item for sensitive households. The atlas treats smoke as a seasonal risk; locals often track visibility toward Monte Albán as an informal index.",
+        ],
+      },
+      {
+        id: "oaxaca-elevation-pocket",
+        title: "Why this valley elevation reads cooler than the map latitude suggests",
+        paragraphs: [
+          "Free-air lapse rates mean each ~100 m of lift knocks roughly half a degree off afternoon potential temperature — stack that across 1500 m above sea level and tropical latitude stops meaning tropical heat. Add valley shelter from the hottest maritime air masses and you get a climate tourists describe as 'perfect' and agronomists describe as 'carefully scheduled around the rains'.",
+          "Small elevation differences within the valles (ridge toes vs basin floor) can separate frost pockets from frost-free gardens. If you are buying land for trees or citrus, walk the parcel at dawn in January, not only at noon in April.",
+        ],
+      },
+    ],
     citations: [
       { label: "Servicio Meteorológico Nacional — Oaxaca Observatorio", kind: "smn" },
       { label: "INEGI topographic layers — Valles Centrales", kind: "inegi" },

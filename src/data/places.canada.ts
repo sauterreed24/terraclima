@@ -631,6 +631,24 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["retirees", "mild-climate seekers"], travelFit: ["beaches", "Pacific Rim gateway"],
     whoWouldLove: "Those chasing Mediterranean mild at a Canadian latitude.", whoMightNot: "Budget-constrained.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "qualicum-rain-shadow",
+        title: "How the island spine steals the rain",
+        paragraphs: [
+          "Pacific moisture hits the western slopes first; by the time air subsides over the Strait of Georgia side, much of the water has already fallen. That is why Qualicum can sit in a Csb pocket while communities a short ferry ride away log rainforest totals — the atlas numbers are not a mistake, they are geometry.",
+          "For a home search, translate that into winter light: east-side winters are grey but not as endlessly sodden as the outer west coast; summers reward you with clearer skies and a real dry window for decks, tomatoes, and outdoor work.",
+        ],
+      },
+      {
+        id: "qualicum-coastal-moderation",
+        title: "Salish Sea moderation without downtown Victoria heat",
+        paragraphs: [
+          "Marine air caps extreme heat — heat waves that roast interior BC often arrive here as warm but tolerable afternoons. The trade-off is humidity during onshore flow and a smaller diurnal swing than the Okanagan.",
+          "If you are comparing retirement towns along the east coast of the island, walk each at the same clock time in August: subtle differences in fetch, elevation above the water table, and tree cover matter as much as the headline Köppen label.",
+        ],
+      },
+    ],
     citations: [{ label: "ECCC — Qualicum Beach AWS", kind: "eccc" }],
   },
 

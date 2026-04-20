@@ -29,8 +29,10 @@ export function CollectionsView({ onOpenPlace, onPick, activeId }: Props) {
                 <div className="text-[11px] text-stone mt-0.5">{c.placeIds.length} places</div>
               </div>
               <button
+                type="button"
                 onClick={() => onPick(c.id)}
                 className={isActive ? "btn-primary !text-xs !py-1.5" : "btn-ghost !text-xs"}
+                aria-pressed={isActive}
               >
                 {isActive ? "Pinned" : "Pin collection"}
               </button>
@@ -43,6 +45,7 @@ export function CollectionsView({ onOpenPlace, onPick, activeId }: Props) {
                 return (
                   <button
                     key={id}
+                    type="button"
                     onClick={() => onOpenPlace(id)}
                     className="chip chip-btn"
                     data-tone={c.tone}

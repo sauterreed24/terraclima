@@ -9,6 +9,7 @@ import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import type { DistUnit } from "../lib/units";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
+import { useRichVisualEffects } from "../lib/device-profile";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 
 // Topojson atlas data lives in the `atlas-data` Rollup chunk (~74 kB gz).
@@ -64,6 +65,20 @@ interface Props {
 const MIN_ZOOM = 0.85;
 const MAX_ZOOM = 8;
 
+/** Microclimate driver legend — lives on the dark map chrome with high-contrast labels. */
+function MapLegendDot({ color, label }: { color: string; label: string }) {
+  return (
+    <span className="inline-flex items-center gap-1.5 min-w-0">
+      <span
+        className="inline-block w-2.5 h-2.5 rounded-full shrink-0 ring-1 ring-[rgba(255,255,255,0.45)]"
+        style={{ background: color }}
+        aria-hidden
+      />
+      <span className="font-medium text-[rgba(245,250,255,0.98)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">{label}</span>
+    </span>
+  );
+}
+
 /**
  * North-America microclimate atlas map.
  *
@@ -77,8 +92,13 @@ const MAX_ZOOM = 8;
  *     re-renders on mouseover, not all 130.
  *   - Marker visual size stays constant at any zoom via a counter-scale
  *     wrapper (no per-marker arithmetic).
+ *   - Pins call the parent `onSelect` directly — not gated on pan `moved`,
+ *     because marker pointerdown stops propagation so the map never resets
+ *     that flag after a drag (which previously made pins “dead” until reload).
  *   - SVG filters are avoided on the marker layer (replaced with stacked
  *     translucent halo circles, which composite far cheaper than a blur).
+ *   - Coastline blur / marker pulse / land grain follow `useRichVisualEffects()`
+ *     (`device-profile.ts`, paired with App `tc-low-power`).
  */
 export function AtlasMap({
   places,
@@ -88,6 +108,9 @@ export function AtlasMap({
   width = 820,
   height = 520,
 }: Props) {
+  /** Skip SVG Gaussian blur on coast & heavy marker pulse on low-power / save-data devices (e.g. older Surfaces). */
+  const richEffects = useRichVisualEffects();
+
   const svgRef = useRef<SVGSVGElement>(null);
   const transformRef = useRef<SVGGElement>(null);
   const [view, setView] = useState({ k: 1, x: 0, y: 0 });
@@ -220,6 +243,34 @@ export function AtlasMap({
     return out;
   }, [projection]);
 
+  /** Soft, clipped ellipses over major cordilleras — reads as relief without raster tiles. */
+  const terrainVeils = useMemo(() => {
+    const anchors: Array<{ lon: number; lat: number; rxk: number; ryk: number; rot: number; op: number }> = [
+      { lon: -116, lat: 46.5, rxk: 0.2, ryk: 0.12, rot: -32, op: 0.11 },
+      { lon: -109, lat: 40, rxk: 0.17, ryk: 0.14, rot: -18, op: 0.13 },
+      { lon: -119.5, lat: 38, rxk: 0.11, ryk: 0.26, rot: 15, op: 0.1 },
+      { lon: -82.5, lat: 36.2, rxk: 0.1, ryk: 0.22, rot: 22, op: 0.09 },
+      { lon: -105, lat: 29.5, rxk: 0.09, ryk: 0.15, rot: 38, op: 0.075 },
+      { lon: -126, lat: 53.5, rxk: 0.12, ryk: 0.09, rot: 8, op: 0.085 },
+      { lon: -97, lat: 19.5, rxk: 0.09, ryk: 0.13, rot: 55, op: 0.07 },
+    ];
+    const out: Array<{ id: string; cx: number; cy: number; rx: number; ry: number; rot: number; op: number }> = [];
+    anchors.forEach((a, i) => {
+      const xy = projection([a.lon, a.lat]);
+      if (!xy) return;
+      out.push({
+        id: `rel-${i}`,
+        cx: xy[0],
+        cy: xy[1],
+        rx: width * a.rxk,
+        ry: height * a.ryk,
+        rot: a.rot,
+        op: a.op,
+      });
+    });
+    return out;
+  }, [projection, width, height]);
+
   // Precompute km-per-pixel at the map centre at zoom=1. Scale bar width at
   // any zoom is then `nicePixels = niceDistance_km / (kmPerPx / k)`. We
   // derive this using the projection's own inverse so it's robust to any
@@ -244,6 +295,10 @@ export function AtlasMap({
     () => pts.find(pt => pt.place.id === hoverId)?.place ?? null,
     [pts, hoverId]
   );
+
+  // Markers call `onSelect` directly. Do not gate on `dragRef.moved`: marker
+  // `pointerdown` stops propagation so the map never resets `moved` after a
+  // pan — using a drag guard here left pins unclickable until full reload.
 
   // Only notify external listeners if they opted in. Guard the effect so the
   // common (no-listener) path doesn't cause any work per hover.
@@ -420,7 +475,7 @@ export function AtlasMap({
         style={{ touchAction: "none" }}
         role="img"
         tabIndex={0}
-        aria-label="Atlas map of North America. Scroll to zoom, drag to pan, click a marker to open a place."
+        aria-label="Atlas map of North America. Scroll to zoom, drag to pan. Click or tap any pin to open that place’s full profile."
         onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -434,33 +489,50 @@ export function AtlasMap({
         }}
       >
         <defs>
-          {/* Ocean — deep navy with a subtle warmth aloft */}
+          {/* Ocean — moonlit swell + depth (no bitmaps; GPU-friendly gradients) */}
           <radialGradient id="oceanGrad" cx="60%" cy="32%" r="90%">
-            <stop offset="0" stopColor="#1c2a44" />
-            <stop offset="0.5" stopColor="#0f1a2c" />
-            <stop offset="1" stopColor="#070d18" />
+            <stop offset="0" stopColor="#2c4060" />
+            <stop offset="0.35" stopColor="#1a2844" />
+            <stop offset="0.7" stopColor="#101c32" />
+            <stop offset="1" stopColor="#050a14" />
+          </radialGradient>
+          <radialGradient id="oceanMoon" cx="78%" cy="18%" r="55%">
+            <stop offset="0" stopColor="rgba(200, 232, 252, 0.14)" />
+            <stop offset="0.4" stopColor="rgba(100, 150, 190, 0.06)" />
+            <stop offset="1" stopColor="rgba(0,0,0,0)" />
+          </radialGradient>
+          <radialGradient id="oceanWarm" cx="12%" cy="88%" r="45%">
+            <stop offset="0" stopColor="rgba(240, 200, 140, 0.07)" />
+            <stop offset="1" stopColor="rgba(0,0,0,0)" />
           </radialGradient>
 
-          {/* Land — warm mineral slate (brighter than v1) */}
-          <linearGradient id="landGrad" x1="0" y1="0" x2="0.2" y2="1">
-            <stop offset="0" stopColor="#42577a" />
-            <stop offset="0.55" stopColor="#36476a" />
-            <stop offset="1" stopColor="#283b5a" />
+          {/* Land — layered mineral tones (cool north → warm low-latitude hint) */}
+          <linearGradient id="landGrad" x1="0.15" y1="0" x2="0.25" y2="1">
+            <stop offset="0" stopColor="#526a8e" />
+            <stop offset="0.35" stopColor="#3d5578" />
+            <stop offset="0.72" stopColor="#334a68" />
+            <stop offset="1" stopColor="#283850" />
           </linearGradient>
 
-          {/* Hillshade-like cross-hatch (very subtle) */}
+          {/* Hillshade-like cross-hatch — slightly richer on capable GPUs */}
           <pattern id="hillshade" width="20" height="20" patternUnits="userSpaceOnUse" patternTransform="rotate(28)">
-            <line x1="0" y1="0" x2="20" y2="0" stroke="rgba(190,212,236,0.06)" strokeWidth="0.5" />
-            <line x1="0" y1="10" x2="20" y2="10" stroke="rgba(255,222,168,0.04)" strokeWidth="0.4" />
+            <line x1="0" y1="0" x2="20" y2="0" stroke="rgba(200,220,245,0.085)" strokeWidth="0.5" />
+            <line x1="0" y1="10" x2="20" y2="10" stroke="rgba(255,224,180,0.055)" strokeWidth="0.4" />
           </pattern>
           <pattern id="hillshade2" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(-22)">
-            <line x1="0" y1="0" x2="26" y2="0" stroke="rgba(140,200,224,0.045)" strokeWidth="0.4" />
+            <line x1="0" y1="0" x2="26" y2="0" stroke="rgba(150,205,230,0.065)" strokeWidth="0.4" />
+          </pattern>
+          {/* Sparse paper grain on land — vector only, skips on low-power via opacity */}
+          <pattern id="landGrain" width="8" height="8" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="2" r="0.35" fill="rgba(255,255,255,0.12)" />
+            <circle cx="5" cy="5" r="0.28" fill="rgba(255,255,255,0.08)" />
+            <circle cx="3" cy="7" r="0.22" fill="rgba(240,210,156,0.06)" />
           </pattern>
 
           {/* Vignette */}
           <radialGradient id="vignette" cx="50%" cy="50%" r="78%">
-            <stop offset="0.55" stopColor="rgba(0,0,0,0)" />
-            <stop offset="1" stopColor="rgba(0,0,0,0.55)" />
+            <stop offset="0.5" stopColor="rgba(0,0,0,0)" />
+            <stop offset="1" stopColor="rgba(0,0,0,0.58)" />
           </radialGradient>
 
           {/* Coastline halo (light glow on the seaward side of land) */}
@@ -473,10 +545,19 @@ export function AtlasMap({
             <stop offset="0" stopColor="rgba(241,246,252,0.95)" />
             <stop offset="1" stopColor="rgba(155,178,205,0.55)" />
           </radialGradient>
+
+          {/* Clip NA landmass for relief veils (no extra network; vector only). */}
+          {topo && focusPath.length > 8 ? (
+            <clipPath id="tc-focus-land-clip">
+              <path d={focusPath} />
+            </clipPath>
+          ) : null}
         </defs>
 
-        {/* Ocean background */}
+        {/* Ocean background + layered light (still just rects / gradients) */}
         <rect x="0" y="0" width={width} height={height} fill="url(#oceanGrad)" />
+        <rect x="0" y="0" width={width} height={height} fill="url(#oceanMoon)" pointerEvents="none" />
+        <rect x="0" y="0" width={width} height={height} fill="url(#oceanWarm)" pointerEvents="none" />
 
         {/* Pan/zoom group (mutated directly during drag).
             `will-change: transform` hints the browser to promote this
@@ -508,23 +589,52 @@ export function AtlasMap({
               vectorEffect="non-scaling-stroke"
             />
 
-            {/* Coastline glow (only on focus countries) */}
+            {/* Coastline glow — blur filter skipped on modest hardware (GPU savings). */}
             <path
               d={focusPath}
-              fill="rgba(140,200,224,0.18)"
-              filter="url(#coastalGlow)"
+              fill={richEffects ? "rgba(140,200,224,0.18)" : "rgba(140,200,224,0.12)"}
+              filter={richEffects ? "url(#coastalGlow)" : undefined}
             />
 
             {/* Focus country fills */}
             <path d={focusPath} fill="url(#landGrad)" />
 
             {/* Hillshade overlays */}
-            <path d={focusPath} fill="url(#hillshade)" opacity="0.85" />
-            <path d={focusPath} fill="url(#hillshade2)" opacity="0.7" />
+            <path d={focusPath} fill="url(#hillshade)" opacity={richEffects ? 0.95 : 0.72} />
+            <path d={focusPath} fill="url(#hillshade2)" opacity={richEffects ? 0.82 : 0.55} />
+            <path d={focusPath} fill="url(#landGrain)" opacity={richEffects ? 0.35 : 0.12} />
+
+            {/* Faux cordillera shading — clipped to land, cheap ellipses (no DEM fetch). */}
+            {topo && focusPath.length > 8 ? (
+              <g clipPath="url(#tc-focus-land-clip)" pointerEvents="none" opacity={richEffects ? 0.88 : 0.62}>
+                {terrainVeils.map(v => (
+                  <ellipse
+                    key={v.id}
+                    cx={v.cx}
+                    cy={v.cy}
+                    rx={v.rx}
+                    ry={v.ry}
+                    transform={`rotate(${v.rot} ${v.cx} ${v.cy})`}
+                    fill="rgba(4,10,22,0.4)"
+                    opacity={v.op * (richEffects ? 1.15 : 0.85)}
+                  />
+                ))}
+              </g>
+            ) : null}
+
+            {/* Sunward rim on landmass — 1 extra path, no filter */}
+            <path
+              d={focusPath}
+              fill="none"
+              stroke="rgba(255, 248, 235, 0.11)"
+              strokeWidth="1.2"
+              vectorEffect="non-scaling-stroke"
+              opacity={richEffects ? 0.9 : 0.45}
+            />
           </g>
 
           {/* Graticule (lat/lon grid with edge tick labels) */}
-          <Graticule pathGen={pathGen} projection={projection} />
+          <Graticule pathGen={pathGen} projection={projection} richEffects={richEffects} />
 
           {/* Borders — also fade with the cartography group */}
           <g
@@ -562,7 +672,7 @@ export function AtlasMap({
                   letterSpacing="0.32em"
                   fontWeight={600}
                   fill="rgba(230,242,252,0.62)"
-                  fontFamily="Inter"
+                  fontFamily="var(--font-sans), system-ui, sans-serif"
                   style={{ paintOrder: "stroke fill", stroke: "rgba(8,14,26,0.85)", strokeWidth: 4, strokeLinejoin: "round" }}
                 >{cl.label}</text>
               </g>
@@ -578,7 +688,8 @@ export function AtlasMap({
                 k={view.k}
                 isActive={pt.place.id === selectedId}
                 isHover={pt.place.id === hoverId}
-                onSelect={(id) => { if (!dragRef.current.moved) onSelect(id); }}
+                richEffects={richEffects}
+                onSelect={onSelect}
                 onEnter={() => { setHoverId(pt.place.id); updateTooltip(pt); }}
                 onLeave={() => { setHoverId(null); setTooltipScreen(null); }}
                 showHighTierLabel={view.k >= 1.4}
@@ -600,10 +711,10 @@ export function AtlasMap({
           <path d="M-21 0 L0 -3 L21 0 L0 3 Z" fill="rgba(195,228,241,0.28)" />
           {/* Centre stud */}
           <circle r="1.6" fill="rgba(230,242,252,0.85)" />
-          <text x="0" y="-29" textAnchor="middle" fontSize="9" fill="rgba(241,246,252,0.9)" fontFamily="Inter" fontWeight={700}>N</text>
-          <text x="29" y="3"   textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="Inter" fontWeight={500}>E</text>
-          <text x="0" y="37"   textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="Inter" fontWeight={500}>S</text>
-          <text x="-29" y="3"  textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="Inter" fontWeight={500}>W</text>
+          <text x="0" y="-29" textAnchor="middle" fontSize="9" fill="rgba(241,246,252,0.9)" fontFamily="var(--font-sans),system-ui,sans-serif" fontWeight={700}>N</text>
+          <text x="29" y="3"   textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="var(--font-sans),system-ui,sans-serif" fontWeight={500}>E</text>
+          <text x="0" y="37"   textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="var(--font-sans),system-ui,sans-serif" fontWeight={500}>S</text>
+          <text x="-29" y="3"  textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="var(--font-sans),system-ui,sans-serif" fontWeight={500}>W</text>
         </g>
 
         {/* Projection credit */}
@@ -613,20 +724,38 @@ export function AtlasMap({
           textAnchor="end"
           fontSize="9"
           fill="rgba(165,185,210,0.55)"
-          fontFamily="Inter"
+          fontFamily="var(--font-sans),system-ui,sans-serif"
           letterSpacing="0.08em"
           pointerEvents="none"
         >ALBERS CONIC · NORTH AMERICA</text>
       </svg>
 
-      {/* Live scale bar — mutates imperatively via refs on zoom / unit flip.
-          Shows a round number of miles or kilometres at current zoom. */}
-      <div className="absolute bottom-3 left-3 pointer-events-none z-[2] flex flex-col gap-1">
-        <div ref={scaleBarRef} className="text-[9px] font-mono-num text-frost tracking-wider">— mi</div>
-        <div className="h-[10px] flex items-end gap-0">
-          <div ref={scaleBarBarRef} className="h-[6px] border border-[rgba(170,193,220,0.75)] bg-[rgba(13,20,32,0.55)]" style={{ width: 100 }}>
-            {/* Two-tone tick bar: 50/50 split filled vs unfilled for visual bite. */}
-            <div className="w-1/2 h-full bg-[rgba(230,242,252,0.55)]" />
+      {/* Scale + marker-color legend — stacked so wide labels (e.g. "1,500 mi")
+          never collide with legend text (previously both used bottom-left). */}
+      <div className="absolute bottom-3 left-3 z-[3] flex flex-col items-stretch gap-2 pointer-events-none max-w-[min(calc(100vw-8rem),22rem)]">
+        <div className="flex flex-col gap-1 w-[104px] shrink-0">
+          <div
+            ref={scaleBarRef}
+            className="text-[10px] font-mono-num tracking-wide text-[rgba(236,244,252,0.95)] tabular-nums leading-tight drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)]"
+          >
+            — mi
+          </div>
+          <div className="h-[10px] flex items-end gap-0">
+            <div ref={scaleBarBarRef} className="h-[6px] border border-[rgba(170,193,220,0.75)] bg-[rgba(13,20,32,0.55)]" style={{ width: 100 }}>
+              <div className="w-1/2 h-full bg-[rgba(230,242,252,0.55)]" />
+            </div>
+          </div>
+        </div>
+        <div
+          role="group"
+          aria-label="Marker colors by primary climate driver"
+          className="rounded-xl border border-[rgba(140,200,224,0.38)] bg-[rgba(10,18,32,0.82)] backdrop-blur-md px-2.5 py-2 shadow-[0_6px_24px_-4px_rgba(0,0,0,0.45)]"
+        >
+          <div className="flex flex-wrap gap-x-3 gap-y-1.5 text-[11px] leading-snug">
+            <MapLegendDot color="#ffc860" label="Orographic / orchard / chinook" />
+            <MapLegendDot color="#8fd99a" label="Highland / sky-island / cloud" />
+            <MapLegendDot color="#6ec8ea" label="Maritime / fog / rain-shadow" />
+            <MapLegendDot color="#d4a8ff" label="Rare / sky-island / aurora" />
           </div>
         </div>
       </div>
@@ -645,25 +774,42 @@ export function AtlasMap({
         <button className="map-btn !text-[9px]" onClick={reset} title="Reset view (0)" aria-label="Reset view">RESET</button>
       </div>
 
-      {/* Tier legend + keyboard hints */}
-      <div className="absolute bottom-3 right-3 panel-thin px-3 py-2 text-[10px] text-stone space-y-1.5 pointer-events-none z-[2]">
-        <div className="flex items-center gap-2">
-          <span style={{display:"inline-block",width:10,height:10,transform:"rotate(45deg)",background:"#cfe9f3",border:"1px solid #0a1322"}} />
-          <span>Flagship · Tier A</span>
+      {/* Tier legend — matches map chrome; hints are plain language (no key-cap styling). */}
+      <div
+        role="group"
+        aria-label="Marker shapes by atlas tier"
+        className="absolute bottom-3 right-3 z-[2] max-w-[13.5rem] rounded-xl border border-[rgba(140,200,224,0.38)] bg-[rgba(10,18,32,0.82)] backdrop-blur-md px-3 py-2.5 shadow-[0_6px_24px_-4px_rgba(0,0,0,0.45)] pointer-events-none text-[10px] leading-snug space-y-2"
+      >
+        <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Pin shape · tier</div>
+        <div className="flex items-center gap-2.5 text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
+          <span className="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0" aria-hidden>
+            <span className="inline-block w-[11px] h-[11px] rotate-45 rounded-[1px] bg-[#ffc860] ring-2 ring-[rgba(255,252,245,0.9)] border border-[rgba(6,10,18,0.95)]" />
+          </span>
+          <span>Flagship — diamond with bright rim</span>
         </div>
-        <div className="flex items-center gap-2">
-          <span style={{display:"inline-block",width:10,height:10,borderRadius:5,background:"#cfe9f3",border:"1px solid #0a1322"}} />
-          <span>Spotlight · Tier B</span>
+        <div className="flex items-center gap-2.5 text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
+          <span className="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0" aria-hidden>
+            <span className="inline-block w-[11px] h-[11px] rounded-[3px] bg-[#6ec8ea] border-2 border-[rgba(6,10,18,0.92)]" />
+          </span>
+          <span>Spotlight — filled rounded square</span>
         </div>
-        <div className="flex items-center gap-2">
-          <span style={{display:"inline-block",width:8,height:8,borderRadius:4,background:"#cfe9f3",opacity:0.9,border:"1px solid #0a1322"}} />
-          <span>Index · Tier C</span>
+        <div className="flex items-center gap-2.5 text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
+          <span className="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0" aria-hidden>
+            <span className="inline-block w-[10px] h-[10px] rounded-full bg-[rgba(8,14,24,0.75)] border-2 border-[#8fd99a] ring-1 ring-[rgba(255,252,245,0.55)]" />
+          </span>
+          <span>Index — open ring (driver colour on stroke)</span>
         </div>
-        <div className="pt-1.5 mt-1 border-t border-[rgba(71,90,122,0.5)] flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[9px] text-shadow">
-          <span className="flex items-center gap-1"><span className="kbd">+</span><span className="kbd">−</span>zoom</span>
-          <span className="flex items-center gap-1"><span className="kbd">0</span>reset</span>
-          <span className="flex items-center gap-1"><span className="kbd">←↑↓→</span>pan</span>
-        </div>
+        <p className="pt-1 mt-0.5 border-t border-[rgba(140,200,224,0.25)] text-[9px] text-[rgba(210,225,240,0.88)] leading-relaxed">
+          Tap a pin to open its sheet. On the map, use the plus and minus controls to zoom, Reset to reframe, and drag to pan.
+        </p>
+        <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
+          Pale ring around each pin: <span className="text-[rgba(255,236,210,0.95)]">US</span>
+          {" · "}
+          <span className="text-[rgba(190,230,255,0.95)]">Canada</span>
+          {" · "}
+          <span className="text-[rgba(255,220,150,0.95)]">Mexico</span>
+          {" "}— driver colour stays the fill.
+        </p>
       </div>
 
       {/* Zoom indicator */}
@@ -683,6 +829,8 @@ interface MarkerProps {
   k: number;
   isActive: boolean;
   isHover: boolean;
+  /** When false, skip pulsing ring animation (older tablets / reduced motion). */
+  richEffects: boolean;
   onSelect: (id: string) => void;
   onEnter: () => void;
   onLeave: () => void;
@@ -690,36 +838,78 @@ interface MarkerProps {
 }
 
 const Marker = memo(function Marker({
-  pt, k, isActive, isHover, onSelect, onEnter, onLeave, showHighTierLabel,
+  pt, k, isActive, isHover, richEffects, onSelect, onEnter, onLeave, showHighTierLabel,
 }: MarkerProps) {
   const { place, x, y } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
   const color = TONE[tone];
 
-  const baseSize = place.tier === "A" ? 6.5 : place.tier === "B" ? 4.8 : 3.4;
+  const baseSize = place.tier === "A" ? 6.8 : place.tier === "B" ? 5 : 4.1;
   const r = isActive ? baseSize + 1.6 : isHover ? baseSize + 1 : baseSize;
 
   const inv = 1 / k;
   const showLabel = isActive || isHover || (place.tier === "A" && showHighTierLabel);
   const labelW = place.name.length * 6.6 + 12;
 
+  const activate = useCallback(
+    (e: React.SyntheticEvent) => {
+      e.stopPropagation();
+      onSelect(place.id);
+    },
+    [onSelect, place.id],
+  );
+
+  const stopPan = useCallback((e: React.PointerEvent) => {
+    e.stopPropagation();
+  }, []);
+
+  const onMarkerKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        e.stopPropagation();
+        onSelect(place.id);
+      }
+    },
+    [onSelect, place.id],
+  );
+
   return (
     <g
       transform={`translate(${x} ${y})`}
-      onClick={(e) => { e.stopPropagation(); onSelect(place.id); }}
-      onPointerEnter={onEnter}
-      onPointerLeave={onLeave}
+      role="button"
+      tabIndex={0}
+      aria-label={`Open full profile for ${place.name}`}
       className="map-marker"
       style={{ cursor: "pointer" }}
+      onPointerDown={stopPan}
+      onClick={activate}
+      onPointerEnter={onEnter}
+      onPointerLeave={onLeave}
+      onKeyDown={onMarkerKeyDown}
     >
       <g transform={`scale(${inv})`}>
+        <circle
+          r={r + 3.65}
+          fill="none"
+          stroke={COUNTRY_RING_STROKE[place.country]}
+          strokeWidth={1.55}
+          opacity={0.93}
+        />
         {/* Cheap halo (no SVG filter — stacked translucent circles composite far faster) */}
         <circle r={r + 7} fill={color} opacity={0.05} />
         <circle r={r + 4} fill={color} opacity={0.12} />
 
         {/* Active pulse ring */}
         {isActive && (
-          <circle r={r + 10} fill="none" stroke={color} strokeWidth={1.4} opacity={0.75} className="pulse-dot" />
+          <circle
+            r={r + 10}
+            fill="none"
+            stroke={color}
+            strokeWidth={1.4}
+            opacity={0.75}
+            className={richEffects ? "pulse-dot" : undefined}
+          />
         )}
 
         {/* Hover ring */}
@@ -727,19 +917,46 @@ const Marker = memo(function Marker({
           <circle r={r + 5} fill="none" stroke="#f0d29c" strokeWidth={1.1} opacity={0.95} />
         )}
 
-        {/* Tier glyph */}
+        {/* Tier glyph — shape encodes tier; fill encodes driver (see legend). */}
         {place.tier === "A" ? (
           <g transform="rotate(45)">
-            <rect x={-r} y={-r} width={r * 2} height={r * 2} fill={color} stroke="#0a1322" strokeWidth={1.4} rx={0.6} />
-            <rect x={-r * 0.42} y={-r * 0.42} width={r * 0.84} height={r * 0.84} fill="rgba(13,20,32,0.42)" />
+            <rect x={-(r + 2.2)} y={-(r + 2.2)} width={(r + 2.2) * 2} height={(r + 2.2) * 2} fill="none" stroke="rgba(255,252,245,0.92)" strokeWidth="2.2" rx={0.9} />
+            <rect x={-r} y={-r} width={r * 2} height={r * 2} fill={color} stroke="rgba(6,10,18,0.95)" strokeWidth="1.65" rx={0.65} />
+            <rect x={-r * 0.36} y={-r * 0.36} width={r * 0.72} height={r * 0.72} fill="rgba(6,10,18,0.48)" rx={0.35} />
           </g>
         ) : place.tier === "B" ? (
           <>
-            <circle r={r} fill={color} stroke="#0a1322" strokeWidth={1.3} />
-            <circle r={r * 0.42} fill="rgba(13,20,32,0.42)" />
+            <rect
+              x={-r}
+              y={-r}
+              width={r * 2}
+              height={r * 2}
+              rx={r * 0.32}
+              ry={r * 0.32}
+              fill={color}
+              stroke="rgba(6,10,18,0.95)"
+              strokeWidth="1.45"
+            />
+            <line x1={-r * 0.52} y1={0} x2={r * 0.52} y2={0} stroke="rgba(6,10,18,0.38)" strokeWidth={Math.max(0.9, r * 0.14)} strokeLinecap="round" />
           </>
         ) : (
-          <circle r={r} fill={color} stroke="#0a1322" strokeWidth={0.9} opacity={0.95} />
+          <>
+            <circle r={r + 1.35} fill="none" stroke="rgba(255,252,245,0.5)" strokeWidth="1.15" />
+            <circle r={r} fill="rgba(8,14,24,0.72)" stroke={color} strokeWidth="2.35" />
+          </>
+        )}
+
+        {/* Specular fleck on top of glyph — cheap highlight, skipped on low-power */}
+        {richEffects && (
+          <ellipse
+            cx={-r * 0.22}
+            cy={-r * 0.5}
+            rx={r * 0.38}
+            ry={r * 0.2}
+            fill="rgba(255, 252, 245, 0.26)"
+            transform="rotate(-28)"
+            pointerEvents="none"
+          />
         )}
 
         {showLabel && (
@@ -760,25 +977,38 @@ const Marker = memo(function Marker({
               y={1}
               fontSize={11}
               fill="#f1f6fc"
-              fontFamily="Inter"
+              fontFamily="var(--font-sans),system-ui,sans-serif"
               fontWeight={500}
             >{place.name}</text>
           </g>
         )}
+        {/* Hit target on top so touch/stylus picks the marker, not the map pan layer beneath. */}
+        <circle r={r + 18} fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
       </g>
     </g>
   );
 }, (prev, next) =>
+  prev.onSelect === next.onSelect &&
   prev.isActive === next.isActive &&
   prev.isHover === next.isHover &&
   prev.k === next.k &&
+  prev.richEffects === next.richEffects &&
   prev.showHighTierLabel === next.showHighTierLabel &&
   prev.pt.x === next.pt.x &&
   prev.pt.y === next.pt.y &&
   prev.pt.place === next.pt.place
 );
 
-function MapTooltip({ place, xPct, yPct }: { place: Place; xPct: number; yPct: number }) {
+function MapTooltip({
+  place,
+  xPct,
+  yPct,
+}: {
+  place: Place;
+  xPct: number;
+  yPct: number;
+}) {
+  const richEffects = useRichVisualEffects();
   const { temp, dist } = useUnits();
   const prose = useProse();
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
@@ -817,7 +1047,7 @@ function MapTooltip({ place, xPct, yPct }: { place: Place; xPct: number; yPct: n
       <div className="text-[11px] text-stone mb-2">
         {place.region} · <span className="font-mono-num">{fmtElev(place.elevationM, dist)}</span> · {place.koppen}
       </div>
-      <div className="rounded overflow-hidden mb-2" style={{ filter: "saturate(1.1)" }}>
+      <div className="rounded overflow-hidden mb-2" style={richEffects ? { filter: "saturate(1.08)" } : undefined}>
         <MiniClimateStrip place={place} height={22} />
       </div>
       <div className="grid grid-cols-3 gap-2 text-[11px]">
@@ -826,7 +1056,9 @@ function MapTooltip({ place, xPct, yPct }: { place: Place; xPct: number; yPct: n
         <Metric tone="sage" label="Annual" value={fmtPrecip(annualP, dist)} />
       </div>
       <p className="text-xs text-frost mt-2 leading-snug line-clamp-2">{prose(place.summaryShort)}</p>
-      <div className="text-[10px] text-stone italic mt-1.5">Click marker to open full profile →</div>
+      <div className="mt-3 pt-2 border-t border-[rgba(71,90,122,0.45)] text-[10px] text-stone leading-relaxed pointer-events-none">
+        <span className="text-frost/90">Click or tap the pin on the map</span> to open the full field guide — charts, mechanisms, and the story of this place.
+      </div>
     </div>
   );
 }
@@ -845,13 +1077,21 @@ function Metric({ label, value, tone }: { label: string; value: string; tone: st
   );
 }
 
+/** Driver hues — saturated so diamonds / rings / squares read at a glance on dark land. */
 const TONE: Record<string, string> = {
-  glacier: "#8cc8e0",
-  sage: "#c6dcbd",
-  ochre: "#f0d29c",
-  ember: "#efb49a",
-  ice: "#cfe9f3",
-  aurora: "#c7b5ea",
+  glacier: "#6ec8ea",
+  sage: "#8fd99a",
+  ochre: "#ffc860",
+  ember: "#ff8a5c",
+  ice: "#b8ecff",
+  aurora: "#d4a8ff",
+};
+
+/** Thin outer ring — encodes country at a glance (driver colour stays fill). */
+const COUNTRY_RING_STROKE: Record<Place["country"], string> = {
+  USA: "rgba(240, 205, 168, 0.98)",
+  Canada: "rgba(168, 218, 252, 0.98)",
+  Mexico: "rgba(255, 214, 138, 0.98)",
 };
 
 /**
@@ -922,7 +1162,7 @@ function updateScaleBar(
   }
 }
 
-const Graticule = memo(function Graticule({ pathGen, projection }: { pathGen: ReturnType<typeof geoPath>; projection: GeoProjection }) {
+const Graticule = memo(function Graticule({ pathGen, projection, richEffects }: { pathGen: ReturnType<typeof geoPath>; projection: GeoProjection; richEffects: boolean }) {
   const { lines, latLabels, lonLabels } = useMemo(() => {
     const out: string[] = [];
     // Longitudes (meridians)
@@ -956,6 +1196,9 @@ const Graticule = memo(function Graticule({ pathGen, projection }: { pathGen: Re
     return { lines: out, latLabels: latList, lonLabels: lonList };
   }, [pathGen, projection]);
 
+  const gridStroke = richEffects ? "rgba(175,200,228,0.14)" : "rgba(170,193,220,0.075)";
+  const tickFill = richEffects ? "rgba(185,205,230,0.5)" : "rgba(170,193,220,0.38)";
+
   return (
     <g>
       {lines.map((d, i) => (
@@ -963,7 +1206,7 @@ const Graticule = memo(function Graticule({ pathGen, projection }: { pathGen: Re
           key={i}
           d={d}
           fill="none"
-          stroke="rgba(170,193,220,0.10)"
+          stroke={gridStroke}
           strokeWidth="0.5"
           vectorEffect="non-scaling-stroke"
         />
@@ -976,8 +1219,8 @@ const Graticule = memo(function Graticule({ pathGen, projection }: { pathGen: Re
             y={l.y}
             textAnchor="end"
             fontSize={8}
-            fill="rgba(170,193,220,0.45)"
-            fontFamily="Inter"
+            fill={tickFill}
+            fontFamily="var(--font-sans),system-ui,sans-serif"
             letterSpacing="0.05em"
           >{l.text}</text>
         ))}
@@ -988,8 +1231,8 @@ const Graticule = memo(function Graticule({ pathGen, projection }: { pathGen: Re
             y={l.y}
             textAnchor="middle"
             fontSize={8}
-            fill="rgba(170,193,220,0.45)"
-            fontFamily="Inter"
+            fill={tickFill}
+            fontFamily="var(--font-sans),system-ui,sans-serif"
             letterSpacing="0.05em"
           >{l.text}</text>
         ))}

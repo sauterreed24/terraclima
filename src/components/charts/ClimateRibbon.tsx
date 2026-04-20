@@ -70,7 +70,7 @@ export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, re
             x={PAD_L - 6}
             y={y(t) + 3}
             fontSize="10"
-            fill="#9badc2"
+            fill="#5c534c"
             textAnchor="end"
             fontFamily="JetBrains Mono"
           >
@@ -123,7 +123,7 @@ export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, re
 
       {/* X labels */}
       {MONTHS.map((m, i) => (
-        <text key={m} x={x(i)} y={H - 8} fontSize="10" fill="#9badc2" textAnchor="middle" fontFamily="Inter">{m}</text>
+        <text key={m} x={x(i)} y={H - 8} fontSize="10" fill="#5c534c" textAnchor="middle" fontFamily="Inter">{m}</text>
       ))}
 
       {refLabel && (

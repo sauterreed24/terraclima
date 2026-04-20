@@ -77,6 +77,10 @@ function placeFields(p: Place): Array<[string, string]> {
     push(`thingsToDo[${a.label.slice(0, 24)}].note`, a.note);
     push(`thingsToDo[${a.label.slice(0, 24)}].season`, a.season);
   }
+  for (const ds of p.deepSections ?? []) {
+    push(`deepSections[${ds.id}].title`, ds.title);
+    ds.paragraphs.forEach((para, i) => push(`deepSections[${ds.id}].p${i}`, para));
+  }
   const risks = p.risks as unknown as Record<string, { note?: string }>;
   for (const k of Object.keys(risks ?? {})) push(`risks.${k}.note`, risks[k]?.note);
   return out;

@@ -20,4 +20,7 @@ export const FIELD_NOTES: readonly string[] = [
   "The best atlas isn’t the one with the most dots — it’s the one that tells you why the weather is weird right here.",
   "A river gap can be a winter furnace: downslope warming through a Coast Range notch sometimes lifts a shore town into spring-like afternoons while neighbours stay grey.",
   "The Great Lakes aren’t just shoreline — they’re a conveyor of ice, steam fog, and lake-breeze fronts that ignore political borders.",
+  "Dew point is honest in a way ‘humidity %’ often isn’t — it’s the temperature air must reach to saturate, and it sets whether sweat evaporates.",
+  "Snow albedo is a feedback: fresh cover reflects sun; bare ground or forest absorbs it — so the same March day can mean freeze or thaw depending on what’s on the ground.",
+  "A station’s siting (roof, parking lot, river bottom) can bias its record by a full hardiness zone — always ask where the sensor sleeps at night.",
 ];

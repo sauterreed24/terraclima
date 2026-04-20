@@ -199,6 +199,18 @@ export interface ZoneSettlement {
  * things loosely by cadence so the UI can theme accordingly (e.g. a
  * seasonal icon for "summer-only" experiences).
  */
+/**
+ * Optional research-grade subsections for the place detail panel. Keeps long
+ * narrative out of the core schema fields while remaining typed and auditable.
+ */
+export interface PlaceDeepSection {
+  /** Stable id for anchors / analytics (kebab-case). */
+  id: string;
+  title: string;
+  /** Metric °C / mm / km in source where applicable — passed through prose(). */
+  paragraphs: string[];
+}
+
 export interface ZoneActivity {
   label: string;
   /** Functional category — UI chip + future filtering. */
@@ -293,6 +305,12 @@ export interface Place {
    * panel renders a compact grid with kind/season chips.
    */
   thingsToDo?: ZoneActivity[];
+
+  /**
+   * Curated deep dives (air masses, hydrology, biogeography, human history).
+   * Rendered in the detail panel when present; omitted in cards and list views.
+   */
+  deepSections?: PlaceDeepSection[];
 }
 
 /** Derived helpers. */

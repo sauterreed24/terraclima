@@ -1,5 +1,6 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useState, useEffect, useMemo } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useState, useEffect, useMemo, useRef, useId, useCallback } from "react";
+import { useFocusTrap } from "../hooks/use-focus-trap";
 import type { Place, MicroclimateArchetype, TopographicDriver } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { DRIVER_LABELS } from "../types";
@@ -17,19 +18,27 @@ import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse } from "../lib/units";
 import { computeBestMonths } from "../lib/best-months";
 import { findSimilarPlaces } from "../lib/similarity";
+import { composeFieldStory } from "../lib/place-story";
+import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
+import { mergeDeepSections } from "../lib/place-appendix-sections";
+import { clearDossierHash } from "../lib/dossier-url-hash";
+import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
+import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
+import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
+import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
-  Users, Compass,
+  Users, Compass, ExternalLink,
 } from "lucide-react";
 
 const TONE_HERO: Record<string, string> = {
-  glacier: "radial-gradient(1000px 300px at 15% 0%, rgba(140,200,224,0.28), transparent 65%)",
-  sage: "radial-gradient(1000px 300px at 15% 0%, rgba(198,220,189,0.22), transparent 65%)",
-  ochre: "radial-gradient(1000px 300px at 15% 0%, rgba(240,210,156,0.24), transparent 65%)",
-  ember: "radial-gradient(1000px 300px at 15% 0%, rgba(239,180,154,0.22), transparent 65%)",
-  ice: "radial-gradient(1000px 300px at 15% 0%, rgba(195,228,241,0.2), transparent 65%)",
-  aurora: "radial-gradient(1000px 300px at 15% 0%, rgba(199,181,234,0.22), transparent 65%)",
+  glacier: "radial-gradient(1000px 300px at 15% 0%, rgba(94,196,220,0.22), transparent 65%)",
+  sage: "radial-gradient(1000px 300px at 15% 0%, rgba(61,143,85,0.12), transparent 65%)",
+  ochre: "radial-gradient(1000px 300px at 15% 0%, rgba(255,224,102,0.28), transparent 65%)",
+  ember: "radial-gradient(1000px 300px at 15% 0%, rgba(255,196,214,0.35), transparent 65%)",
+  ice: "radial-gradient(1000px 300px at 15% 0%, rgba(196,236,245,0.35), transparent 65%)",
+  aurora: "radial-gradient(1000px 300px at 15% 0%, rgba(255,196,214,0.4), transparent 65%)",
 };
 
 const ARCHETYPE_ACCENT: Record<string, string> = {
@@ -39,6 +48,16 @@ const ARCHETYPE_ACCENT: Record<string, string> = {
   ember: "linear-gradient(180deg, #efb49a 0%, #9a4a2a 100%)",
   ice: "linear-gradient(180deg, #c3e4f1 0%, #4faacd 100%)",
   aurora: "linear-gradient(180deg, #c7b5ea 0%, #5a4397 100%)",
+};
+
+/** Solid leading edge on the detail drawer — instant place identity without re-tinting the whole panel. */
+const DRAWER_EDGE: Record<string, string> = {
+  glacier: "#1a8fa8",
+  sage: "#2d6b45",
+  ochre: "#c77d12",
+  ember: "#c24a28",
+  ice: "#2a8aad",
+  aurora: "#6b4aa3",
 };
 
 const SETTLEMENT_ROLE_LABEL: Record<string, string> = {
@@ -177,6 +196,23 @@ interface Props {
 }
 
 export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace }: Props) {
+  const reduceMotion = useReducedMotion();
+  const panelRef = useRef<HTMLElement>(null);
+  const titleId = useId();
+  const drawerEdge = place ? (DRAWER_EDGE[ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice"] ?? DRAWER_EDGE.ice) : DRAWER_EDGE.ice;
+  useFocusTrap(panelRef, Boolean(place));
+
+  const hadOpenPlaceRef = useRef(false);
+  useEffect(() => {
+    if (place) {
+      hadOpenPlaceRef.current = true;
+      return;
+    }
+    if (typeof window === "undefined" || !hadOpenPlaceRef.current) return;
+    hadOpenPlaceRef.current = false;
+    clearDossierHash();
+  }, [place]);
+
   useEffect(() => {
     if (!place) return;
     const handler = (e: KeyboardEvent) => {
@@ -186,6 +222,23 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
     return () => window.removeEventListener("keydown", handler);
   }, [place, onClose]);
 
+  useEffect(() => {
+    if (!place) return;
+    const el = panelRef.current;
+    if (!el) return;
+    el.scrollTop = 0;
+    requestAnimationFrame(() => {
+      const closeBtn = el.querySelector<HTMLElement>("[data-place-detail-close]");
+      (closeBtn ?? el).focus({ preventScroll: true });
+      const hash = window.location.hash;
+      if (hash.startsWith("#deep-")) {
+        const target = el.querySelector<HTMLElement>(hash);
+        if (target) target.scrollIntoView({ block: "start", behavior: "auto" });
+        else clearDossierHash();
+      }
+    });
+  }, [place?.id]);
+
   return (
     <AnimatePresence>
       {place && (
@@ -194,25 +247,36 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.18 }}
-            className="fixed inset-0 z-30 bg-[rgba(6,14,26,0.56)] backdrop-blur-[2px]"
+            transition={{ duration: reduceMotion ? 0 : 0.18 }}
+            className="fixed inset-0 z-30 bg-[rgba(62,38,24,0.28)] backdrop-blur-[3px]"
             onClick={onClose}
             aria-hidden="true"
           />
           <motion.aside
+            ref={panelRef}
             key={place.id}
+            data-place-detail
+            tabIndex={-1}
             role="dialog"
-            aria-label={`${place.name} climate profile`}
+            aria-labelledby={titleId}
             aria-modal="true"
             initial={{ x: "100%", opacity: 0.6 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: "100%", opacity: 0.4 }}
-            transition={{ type: "spring", stiffness: 280, damping: 32 }}
-            className="fixed top-0 right-0 h-full w-full md:w-[760px] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto"
-            style={{ boxShadow: "-24px 0 60px -12px rgba(0,0,0,0.55)" }}
+            transition={
+              reduceMotion
+                ? { duration: 0 }
+                : { type: "spring", stiffness: 280, damping: 32 }
+            }
+            className="fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto outline-none border-l-[5px] border-l-transparent"
+            style={{
+              boxShadow: "-20px 0 48px -14px rgba(62, 38, 24, 0.18)",
+              borderLeftColor: drawerEdge,
+            }}
           >
             <DetailHeader
               place={place}
+              titleId={titleId}
               onClose={onClose}
               onCompareToggle={onCompareToggle}
               inCompare={inCompareIds?.has(place.id) ?? false}
@@ -226,10 +290,34 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
   );
 }
 
+function CopyPlaceLink({ placeId }: { placeId: string }) {
+  const [copied, setCopied] = useState(false);
+  const onCopy = useCallback(() => {
+    const u = new URL(window.location.href);
+    u.searchParams.set("p", placeId);
+    void navigator.clipboard.writeText(u.toString()).then(() => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2000);
+    });
+  }, [placeId]);
+  return (
+    <button
+      type="button"
+      onClick={onCopy}
+      className="btn-ghost !text-xs !border-[rgba(26,143,168,0.38)] !bg-[rgba(232,248,252,0.35)] hover:!border-[rgba(26,143,168,0.55)] hover:!bg-[rgba(232,248,252,0.65)]"
+      title="Copy URL to this place"
+    >
+      <Link2 className="w-3 h-3" aria-hidden />
+      {copied ? "Copied" : "Copy link"}
+    </button>
+  );
+}
+
 function DetailHeader({
-  place, onClose, onCompareToggle, inCompare, onPickArchetype,
+  place, titleId, onClose, onCompareToggle, inCompare, onPickArchetype,
 }: {
   place: Place;
+  titleId: string;
   onClose: () => void;
   onCompareToggle?: (id: string) => void;
   inCompare: boolean;
@@ -244,31 +332,36 @@ function DetailHeader({
     ? Math.round(place.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12)
     : null;
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
+  const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
+  const osmHref = openStreetMapUrl(place.lat, place.lon, 10);
 
   return (
     <div
-      className="sticky top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-6 pt-5 pb-4 bg-[rgba(24,35,57,0.94)] backdrop-blur relative"
+      className="sticky top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-6 pt-5 pb-4 bg-[rgba(255,253,248,0.97)] backdrop-blur relative border-b border-[rgba(200,160,120,0.35)]"
       style={{ backgroundImage: TONE_HERO[tone] }}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
           <div className="flex items-center gap-2 text-xs text-stone mb-1 flex-wrap">
             <span className="chip" data-tone={place.tier === "A" ? "ochre" : place.tier === "B" ? "ice" : "sage"}>{tierLabel}</span>
-            <MapPin className="w-3 h-3" />
+            <MapPin className="w-3 h-3" aria-hidden />
             <span>{place.municipality ? `${place.municipality}, ` : ""}{place.region}, {place.country}</span>
             <span className="text-shadow">·</span>
-            <Mountain className="w-3 h-3" />
+            <Mountain className="w-3 h-3" aria-hidden />
             <span className="font-mono-num">{fmtElev(place.elevationM, dist)}</span>
             <span className="text-shadow">·</span>
             <span>{place.koppen}</span>
             <span className="text-shadow">·</span>
             <span className="font-mono-num">{place.lat.toFixed(2)}°, {place.lon.toFixed(2)}°</span>
           </div>
-          <h2 className="font-atlas text-3xl text-ice tracking-tight leading-[1.15]">{place.name}</h2>
+          <h2 id={titleId} className="font-atlas text-3xl text-ice tracking-tight leading-[1.15]">
+            {place.name}
+          </h2>
           <div className="flex flex-wrap gap-1.5 mt-2">
             {place.archetypes.map(a => (
               <button
                 key={a}
+                type="button"
                 className="chip chip-btn"
                 data-tone={ARCHETYPE_BY_ID[a]?.tone ?? "ice"}
                 onClick={(e) => { e.stopPropagation(); onPickArchetype?.(a); onClose(); }}
@@ -280,8 +373,10 @@ function DetailHeader({
           </div>
         </div>
         <div className="flex items-center gap-1 shrink-0">
+          <CopyPlaceLink placeId={place.id} />
           {onCompareToggle && (
             <button
+              type="button"
               onClick={() => onCompareToggle(place.id)}
               className={`btn-ghost !text-xs ${inCompare ? "!border-[rgba(240,210,156,0.8)] !text-ochre-300" : ""}`}
             >
@@ -289,10 +384,47 @@ function DetailHeader({
               {inCompare ? "In compare" : "Compare"}
             </button>
           )}
-          <button onClick={onClose} className="btn-ghost !p-2" aria-label="Close">
-            <X className="w-4 h-4" />
+          <button
+            type="button"
+            data-place-detail-close
+            onClick={onClose}
+            className="btn-ghost !p-2"
+            aria-label="Close profile"
+          >
+            <X className="w-4 h-4" aria-hidden />
           </button>
         </div>
+      </div>
+
+      {hero && (
+        <figure className="mt-4 rounded-2xl overflow-hidden border border-[rgba(200,160,120,0.45)] shadow-[0_8px_28px_-12px_rgba(62,38,24,0.12)]">
+          <img
+            src={hero.src}
+            alt={hero.alt}
+            width={1280}
+            height={520}
+            className="w-full h-44 md:h-52 object-cover"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+          <figcaption className="px-3 py-2 text-[10px] leading-snug text-stone bg-[rgba(252,244,232,0.96)] border-t border-[rgba(200,160,120,0.28)]">
+            {hero.creditLine}
+          </figcaption>
+        </figure>
+      )}
+
+      <div className="mt-2">
+        <a
+          href={osmHref}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-[11px] font-medium text-glacier-700 hover:text-glacier-500 hover:underline"
+        >
+          <MapPin className="w-3.5 h-3.5 shrink-0" aria-hidden />
+          Open this area on a live map (OpenStreetMap)
+          <ExternalLink className="w-3 h-3 shrink-0 opacity-80" aria-hidden />
+        </a>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
@@ -343,21 +475,61 @@ function DetailBody({
   const synthesized = useMemo(() => synthesizePlaceSignals(place, temp, dist), [place, temp, dist]);
   const bestMonths = useMemo(() => computeBestMonths(place), [place]);
   const similar = useMemo(() => findSimilarPlaces(place, PLACES, 3), [place]);
+  const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
+  const navItems = useMemo(() => buildPlaceDetailNavItems(place), [place]);
+  const navDomIds = useMemo(() => navItems.map(i => i.id), [navItems]);
+  const readingActiveAnchor = useDetailReadingSpy(navDomIds);
+  const deepMerged = useMemo(() => mergeDeepSections(place), [place]);
+
+  const readingActiveRef = useRef<string | null>(readingActiveAnchor);
+  readingActiveRef.current = readingActiveAnchor;
+  useEffect(() => {
+    const t = window.setTimeout(() => {
+      if (readingActiveRef.current === PD.deepDives) return;
+      clearDossierHash();
+    }, 130);
+    return () => clearTimeout(t);
+  }, [readingActiveAnchor]);
 
   return (
-    <div className="p-6 space-y-6">
-      <Section>
-        <p className="font-atlas text-lg text-frost leading-relaxed italic">
-          <span aria-hidden="true" className="text-ochre-400">&ldquo;</span>
+    <div className="detail-body-shell mx-auto w-full px-4 py-6 md:px-7 md:py-8 lg:grid lg:grid-cols-[11.25rem_minmax(0,1fr)] lg:gap-x-10 lg:px-8">
+      <PlaceDetailReadingNav items={navItems} activeAnchorId={readingActiveAnchor} />
+      <div className="min-w-0 space-y-10 tc-detail-prose">
+      <Section anchorId={PD.overview}>
+        <p className="font-atlas text-lg text-ice/95 leading-relaxed italic">
+          <span aria-hidden="true" className="text-ochre-500">&ldquo;</span>
           {prose(place.summaryShort)}
-          <span aria-hidden="true" className="text-ochre-400">&rdquo;</span>
+          <span aria-hidden="true" className="text-ochre-500">&rdquo;</span>
         </p>
         <div className="divider-contour my-4" />
-        <p className="text-ice leading-relaxed">{prose(place.summaryImmersive)}</p>
+        <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.summaryImmersive)}</p>
       </Section>
 
-      <Section icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="Why this climate is different here">
-        <p className="text-ice leading-relaxed">{prose(place.whyDistinct)}</p>
+      <Section anchorId={PD.fieldStory} icon={<Compass className="w-4 h-4" style={{ color: "#dcc4ff" }} />} title={fieldStory.title}>
+        <div className="panel-field-story p-4 md:p-5 space-y-3.5 rounded-2xl border border-[rgba(199,181,234,0.22)]">
+          {fieldStory.paragraphs.map((p, i) => (
+            <p key={i} className="text-[color:var(--color-frost-strong)] leading-[1.72] text-[15px] tracking-[0.012em]">
+              {prose(p)}
+            </p>
+          ))}
+        </div>
+        <p className="text-[11px] text-stone italic mt-2">
+          Woven from this place&apos;s terrain, climate, and community notes — read it together with the summaries above, not instead of them.
+        </p>
+      </Section>
+
+      {deepMerged.length > 0 ? (
+        <div id={PD.deepDives} className="detail-doc-section scroll-mt-28">
+          <PlaceDeepSections
+            sections={deepMerged}
+            hasBestMonthsGuide={bestMonths.length > 0}
+            syncDossierHash={readingActiveAnchor === PD.deepDives}
+          />
+        </div>
+      ) : null}
+
+      <Section anchorId={PD.whyHere} icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="Why this climate is different here">
+        <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.whyDistinct)}</p>
 
         <div className="flex flex-wrap gap-1.5 mt-3">
           {place.drivers.map(d => {
@@ -394,7 +566,7 @@ function DetailBody({
               <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
               <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
               {activeConcept.mechanism && (
-                <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Mechanism ·</span> {prose(activeConcept.mechanism)}</div>
+                <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Under the hood ·</span> {prose(activeConcept.mechanism)}</div>
               )}
             </motion.div>
           )}
@@ -403,7 +575,7 @@ function DetailBody({
         <div className="text-sm text-stone mt-3 italic">Relief context: {prose(place.reliefContext)}</div>
       </Section>
 
-      <Section icon={<Wind className="w-4 h-4" style={{ color: "#8cc8e0" }} />} title="Seasonal rhythm">
+      <Section anchorId={PD.rhythm} icon={<Wind className="w-4 h-4" style={{ color: "#8cc8e0" }} />} title="Seasonal rhythm">
         <div className="space-y-4">
           <div>
             <LabelRow label={`Monthly highs & lows (°${temp})`} />
@@ -428,7 +600,7 @@ function DetailBody({
       </Section>
 
       {bestMonths.length > 0 && (
-        <Section title="Best months for…" icon={<Calendar className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+        <Section anchorId={PD.bestMonths} title="Best months for…" icon={<Calendar className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
           <div className="grid md:grid-cols-2 gap-2">
             {bestMonths.map(w => (
               <div key={w.label} className="panel-thin p-3 flex items-start gap-3">
@@ -441,21 +613,23 @@ function DetailBody({
               </div>
             ))}
           </div>
-          <div className="text-[11px] text-stone italic mt-2">Derived from monthly climate signals; treat as a planning heuristic, not a forecast.</div>
+          <div className="text-[11px] text-stone italic mt-2">
+            Penciled from typical monthly patterns — a rough planning guide, not a forecast.
+          </div>
         </Section>
       )}
 
-      <Section title="Data synthesis" icon={<TrendingUp className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
+      <Section anchorId={PD.numbersTogether} title="How the numbers read together" icon={<TrendingUp className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
         <div className="panel-thin p-4 space-y-2">
           {synthesized.lines.map((line, i) => (
-            <div key={i} className="flex items-start justify-between gap-4 text-sm border-b last:border-0 pb-2 last:pb-0 border-[rgba(71,90,122,0.3)]">
+            <div key={i} className="flex items-start justify-between gap-4 text-sm border-b last:border-0 pb-2 last:pb-0 border-[rgba(200,160,120,0.28)]">
               <span className="text-stone">{line.label}</span>
               <span className="text-frost text-right font-mono-num">{line.value}</span>
             </div>
           ))}
           {synthesized.topRisks.length > 0 && (
             <div className="pt-2">
-              <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Primary risk concentration</div>
+              <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Main risks called out here</div>
               <div className="flex flex-wrap gap-1.5">
                 {synthesized.topRisks.map(r => (
                   <span key={r} className="chip" data-tone="ember">{r}</span>
@@ -466,7 +640,7 @@ function DetailBody({
         </div>
       </Section>
 
-      <Section title="Microclimate fingerprint" icon={<Sparkles className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
+      <Section anchorId={PD.signature} title="Climate signature (radar chart)" icon={<Sparkles className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
         <div className="grid md:grid-cols-[1fr_260px] gap-6 items-center">
           <div className="space-y-2">
             <KeyValue label="Mean annual precipitation" value={fmtPrecip(annualP, dist)} />
@@ -481,7 +655,7 @@ function DetailBody({
       </Section>
 
       {(place.localContrast?.length || place.nearbyContrasts?.length) ? (
-        <Section title="Local contrast" icon={<TrendingUp className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+        <Section anchorId={PD.contrast} title="Local contrast" icon={<TrendingUp className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
           {place.localContrast && <ContrastChart contrasts={place.localContrast} />}
           {place.nearbyContrasts && place.nearbyContrasts.length > 0 && (
             <div className="mt-4 space-y-2">
@@ -512,7 +686,7 @@ function DetailBody({
         </Section>
       ) : null}
 
-      <Section title="Soil & growability" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+      <Section anchorId={PD.soil} title="Soil & growability" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="panel-thin p-4">
             <div className="text-[10px] uppercase tracking-wider text-stone mb-2">Soil profile</div>
@@ -548,15 +722,15 @@ function DetailBody({
         </div>
       </Section>
 
-      <Section title="Climate risk" icon={<CloudRain className="w-4 h-4" style={{ color: "#d37c5b" }} />}>
+      <Section anchorId={PD.risk} title="Climate risk" icon={<CloudRain className="w-4 h-4" style={{ color: "#d37c5b" }} />}>
         <RiskProfile place={place} />
       </Section>
 
-      <Section title="Climate-change outlook">
+      <Section anchorId={PD.outlook} title="Climate-change outlook">
         <ClimateChangeDelta place={place} />
       </Section>
 
-      <Section title="Who would love this · who might not">
+      <Section anchorId={PD.who} title="Who would love this · who might not">
         <div className="grid md:grid-cols-2 gap-3">
           <div className="panel-thin p-3 border-l-2" style={{ borderLeftColor: "#c6dcbd" }}>
             <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Fits best</div>
@@ -574,7 +748,7 @@ function DetailBody({
       </Section>
 
       {place.settlementsWithinZone && place.settlementsWithinZone.length > 0 && (
-        <Section title="Settlements within this zone" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
+        <Section anchorId={PD.settlements} title="Settlements within this zone" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
           <div className="grid md:grid-cols-2 gap-2">
             {place.settlementsWithinZone.map(s => (
               <div key={s.name} className="panel-thin p-3 flex items-start gap-3">
@@ -607,7 +781,7 @@ function DetailBody({
       )}
 
       {place.thingsToDo && place.thingsToDo.length > 0 && (
-        <Section title="Things to do in zone" icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+        <Section anchorId={PD.activities} title="Things to do in zone" icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
           <div className="grid md:grid-cols-2 gap-2">
             {place.thingsToDo.map((a, i) => (
               <div key={`${a.label}-${i}`} className="panel-thin p-3">
@@ -639,7 +813,7 @@ function DetailBody({
       )}
 
       {similar.length > 0 && (
-        <Section title="Places that feel similar" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+        <Section anchorId={PD.similar} title="Places that feel similar" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
           <div className="grid md:grid-cols-3 gap-2">
             {similar.map(({ place: s, score }) => {
               const sTone = ARCHETYPE_BY_ID[s.archetypes[0]]?.tone ?? "ice";
@@ -678,7 +852,7 @@ function DetailBody({
         </Section>
       )}
 
-      <Section title="Hidden-gem verdict · sources">
+      <Section anchorId={PD.verdict} title="Hidden-gem verdict · sources">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
           <ScorePill label="Hidden gem" value={place.scores.hiddenGem} tone="sage" />
           <ScorePill label="Microclimate uniqueness" value={place.scores.microclimateUniqueness} tone="ochre" />
@@ -722,15 +896,26 @@ function DetailBody({
           </ul>
         </div>
       </Section>
+      </div>
     </div>
   );
 }
 
-function Section({ title, icon, children }: { title?: string; icon?: React.ReactNode; children: React.ReactNode }) {
+function Section({
+  anchorId,
+  title,
+  icon,
+  children,
+}: {
+  anchorId?: string;
+  title?: string;
+  icon?: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
-    <section className="anim-fade-in">
+    <section id={anchorId} className="detail-doc-section anim-fade-in">
       {title && (
-        <h3 className="font-atlas text-base text-ice mb-3 flex items-center gap-2 tracking-wide">
+        <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
           {icon}{title}
         </h3>
       )}
@@ -741,7 +926,7 @@ function Section({ title, icon, children }: { title?: string; icon?: React.React
 
 function KeyValue({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-4 py-1 text-sm border-b last:border-0 border-[rgba(71,90,122,0.3)]">
+    <div className="flex items-baseline justify-between gap-4 py-1 text-sm border-b last:border-0 border-[rgba(200,160,120,0.28)]">
       <span className="text-stone">{label}</span>
       <span className="text-frost text-right font-mono-num">{value}</span>
     </div>

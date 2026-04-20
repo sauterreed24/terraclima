@@ -7,6 +7,9 @@
 // ============================================================
 
 import type { Place } from "../types";
+import { PLACES_USA_EXTRA } from "./places.usa.extra";
+import { PLACES_USA_GAP_STATES } from "./places.usa.gap-states";
+import { PLACES_USA_ROUND2 } from "./places.usa.round2";
 
 export const PLACES_USA: Place[] = [
 
@@ -113,6 +116,48 @@ export const PLACES_USA: Place[] = [
       { label: "PRISM 30-year normals precipitation grid", kind: "prism" },
       { label: "USDA Plant Hardiness Zone Map 2023", kind: "usda" },
       { label: "Washington State Climatologist — Olympic rain-shadow notes", kind: "academic" },
+    ],
+    deepSections: [
+      {
+        id: "sequim-air-masses",
+        title: "Air masses, fronts, and the Olympic barrier",
+        paragraphs: [
+          "In winter and spring, mid-latitude cyclones approach the Pacific Northwest with deeply maritime air. The Olympic Mountains act as a multi-kilometre wall: saturated westerly flow lifts on windward slopes, wringing out thousands of millimetres on the Quinault and Hoh. Air that reaches the northern rain-shadow has already surrendered most of its water; subsidence and downslope drying further warm and clear it. That is why Sequim can sit under high pressure with crisp visibility while Forks, less than 50 km away, records another soaking day.",
+          "Summer brings a different rhythm: the North Pacific subtropical high strengthens, and the strait becomes a corridor for cool, stable northwesterlies. June can still feel muted — the Pacific Northwest ‘June gloom’ reaches Sequim in softened form — but July and August are genuinely dry. The combination of rain-shadow subsidence and strait ventilation keeps afternoon highs modest even when interior Washington and Oregon bake.",
+        ],
+      },
+      {
+        id: "sequim-hydrology",
+        title: "Hydrology, irrigation, and snowpack teleconnections",
+        paragraphs: [
+          "Annual precipitation near 475 mm is far below crop demand for most row crops; the Dungeness River and its glacial outwash aquifers are the economic backbone of the valley. Summer irrigation demand rises with temperature and evaporation just as natural recharge is minimal — a classic Mediterranean-style water stress pattern transposed onto the cool Pacific margin.",
+          "Olympic snowpack on the Bailey Range and Mount Olympus is the upstream reservoir. Mid-century warming projects earlier melt and tighter late-summer streamflow — a direct challenge for irrigated agriculture and salmon habitat in the lower Dungeness. The microclimate story is not only about rainfall totals; it is about when water arrives and when it does not.",
+        ],
+      },
+      {
+        id: "sequim-ecology",
+        title: "Ecology, land use, and the lavender belt",
+        paragraphs: [
+          "The rain-shadow mosaic blends temperate grassland openings, Douglas-fir and Garry oak patches, and intensive agriculture. Commercial lavender production took off partly because dry summers and mild winters mimic Mediterranean production regions without continental heat. The same dryness that delights gardeners stresses native forest regeneration — fire historically played a smaller role here than east of the Cascades, but regional wildfire smoke is now a recurring summer air-quality issue.",
+          "Bird migration along the Strait of Juan de Fuca is intense: raptors use thermals on the Olympic lee, and shorebirds stage on tidal flats. The climatic contrast between Sequim and the windward coast is mirrored in vegetation within a short drive — a living lab for orographic effects.",
+        ],
+      },
+      {
+        id: "sequim-methods",
+        title: "How we know — stations, PRISM, and residual uncertainty",
+        paragraphs: [
+          "Sequim 2 E (USW00094240) anchors the lowland signal; PRISM grids capture the sharp gradient toward the Hoh. Residual uncertainty lies in garden-level frost on radiative nights — local cold-air pooling in the Dungeness valley can dip below grid expectations, especially under clear, calm inversions after snow in the Olympics.",
+          "Confidence in the rain-shadow magnitude is high; confidence in any single farm’s last frost date remains moderate because micro-scale topography within the lowland still matters at the 100–500 m scale.",
+        ],
+      },
+      {
+        id: "sequim-strait-ventilation",
+        title: "Strait ventilation, ebb-and-flood breezes, and the Olympic lee",
+        paragraphs: [
+          "The Strait of Juan de Fuca is not merely a water body — it is a pressure-gradient corridor. When interior British Columbia builds summer high pressure and the Pacific maintains lower pressure offshore, the strait funnels cool, stable northwesterlies onto the northern Olympic lowland. Those breezes cap afternoon heating and keep relative humidity from collapsing the way it does in California’s interior valleys.",
+          "Tidal and local sea-breeze circulations add a second, finer-scale rhythm: onshore components strengthen on many summer afternoons even when synoptic flow is weak. For gardeners, that means afternoon relief and reduced heat stress on crops that would scorch in a continental rain shadow at the same latitude.",
+        ],
+      },
     ],
   },
 
@@ -238,6 +283,40 @@ export const PLACES_USA: Place[] = [
       { label: "Visit the Southwestern Research Station", kind: "culture", season: "open to day visitors most seasons", note: "American Museum of Natural History field station in Cave Creek Canyon; public tours and natural-history lectures." },
       { label: "Drive Paradise Road to the ghost-town ruins", kind: "historic", season: "year-round; high-clearance advised", note: "Classic southwestern boom-to-bust story with scattered foundations and 19th-century graves along the creek." },
     ],
+    deepSections: [
+      {
+        id: "portal-monsoon",
+        title: "North American Monsoon — dynamics at the range edge",
+        paragraphs: [
+          "From late June into September, subtropical moisture penetrates northwest Mexico and the southwestern US. The Chiricahuas intercept that flow: orographic lifting triggers afternoon convection that can be hyper-local — rain on the south face while the San Simon valley stays sun-baked. Lightning ignitions and flash floods in arroyos are the flip side of the monsoon’s generosity.",
+          "Pre-monsoon May and June are the stress window: extreme heat, low humidity, and high fire danger before the first reliable storms. Climate projections emphasize longer, drier pre-monsoon windows even when total monsoon moisture does not collapse — a recipe for ecological stress.",
+        ],
+      },
+      {
+        id: "portal-vertical-climate",
+        title: "Vertical climate stacking and rhyolite terrain",
+        paragraphs: [
+          "Roughly 1,500 m of relief within a few kilometres produces a full Madrean vertical sequence: desert scrub and sycamore-ash riparian in the canyon mouths, oak-pine woodlands mid-slope, mixed conifer and fir on cool north aspects near the crest. Temperatures fall roughly 6–7°C per 1,000 m of ascent — enough to move mean annual temperature from basin heat to montane coolness in one hike.",
+          "Rhyolitic hoodoos and jointed cliffs add micro-shade and radiative cooling at dawn; canyon bottoms pool cold air on clear nights, so Portal’s morning minima can diverge sharply from exposed ridges only hundreds of metres above.",
+        ],
+      },
+      {
+        id: "portal-research",
+        title: "Field science, birding economy, and fire memory",
+        paragraphs: [
+          "The Southwestern Research Station and a constellation of feeder networks have made Cave Creek one of the most sampled bird communities in North America. The same sky-island structure that concentrates species also concentrates fire risk — the 2011 Horseshoe Two Fire reshaped thousands of hectares of habitat and debris-flow hazard.",
+          "Ecotourism and research are now co-equal economic drivers with ranching. Understanding the microclimate is not academic; it determines trail access after storms, fire closures, and hummingbird migration timing.",
+        ],
+      },
+      {
+        id: "portal-borderlands-water",
+        title: "Bootheel hydrology, grazing, and the San Pedro–Animas groundwater story",
+        paragraphs: [
+          "Portal sits at the hinge between the San Simon and Animas basins — ranching country where shallow alluvium and fractured volcanic aquifers hold just enough water to support cottonwood corridors and human settlement. Summer monsoon storms recharge arroyos episodically; the rest of the year, baseflow and wells carry the landscape.",
+          "That hydrologic thin margin is why fire and drought compound so quickly: vegetation stress in the foothills propagates into sediment yield in Cave Creek after burns. The sky-island climate is glorious on paper, but its lived resilience is tied to groundwater, grazing history, and post-fire recovery in the same canyon walls that shelter the village.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Huachuca Mountains / Sierra Vista ===================
@@ -354,6 +433,32 @@ export const PLACES_USA: Place[] = [
       { label: "Drive Montezuma Pass for sunset over Mexico", kind: "vista", season: "year-round; road closed briefly for snow", note: "~2,100-m pass at the south end of the Huachucas with a straight-line view into Sonora." },
       { label: "Visit Fort Huachuca Historical Museum", kind: "historic", season: "year-round (weekday access)", note: "One of the most continuously active frontier-era forts in the US; Buffalo Soldier history is deep here." },
     ],
+    deepSections: [
+      {
+        id: "huachuca-san-pedro",
+        title: "San Pedro River — last free-flowing desert lifeline",
+        paragraphs: [
+          "The San Pedro is one of the few perennial desert rivers in the US without a major mainstem dam. Cottonwood-willow gallery forest along the corridor creates a humid, cool island at dawn relative to the mesquite uplands — a classic riparian microclimate embedded in arid country. Baseflow depends on regional aquifers stressed by municipal pumping and climate-driven evaporation.",
+          "Migratory birds treat the corridor as a north–south highway; the hydrology and microclimate are inseparable — lose water and you unravel the entire biotic community within a few hot seasons.",
+        ],
+      },
+      {
+        id: "huachuca-urban-military",
+        title: "Fort Huachuca, Sierra Vista, and local heat budgets",
+        paragraphs: [
+          "Sierra Vista’s built area and irrigated turf modify nocturnal temperatures relative to open desert — a mild urban heat island, partly offset by elevation. Military land buffers large blocks from suburban sprawl, preserving dark skies and limiting road dust that would otherwise nucleate haze.",
+          "Training schedules and aviation can affect noise and access, but climatologically the fort’s footprint is secondary to elevation and monsoon timing for human comfort.",
+        ],
+      },
+      {
+        id: "huachuca-biogeography",
+        title: "Sky-island biogeography and the Mexico connection",
+        paragraphs: [
+          "Species richness peaks where Madrean woodlands connect across the international boundary — hummingbirds, trogons, and oaks do not respect passports. Climate change pushes elevational bands upward; sky islands are finite: species that run out of mountain have nowhere else to go.",
+          "Huachuca’s scientific value is the combination of accessibility (roads to mid-elevation trailheads) and intact vertical habitat — a living textbook for orographic precipitation and monsoon convection.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER A — Monterey Bay ===================
@@ -459,6 +564,48 @@ export const PLACES_USA: Place[] = [
       { label: "NOAA Coastal Upwelling Index (PFEL)", kind: "oss-data" },
       { label: "California State Climatologist publications", kind: "academic" },
       { label: "USDA Hardiness Zone Map 2023", kind: "usda" },
+    ],
+    deepSections: [
+      {
+        id: "monterey-upwelling",
+        title: "California Current, upwelling, and cold sea-surface temperatures",
+        paragraphs: [
+          "Equatorward surface transport in the California Current draws deep, nutrient-rich water toward the surface along the central coast — the same process that feeds kelp forests and cold-water fisheries. Near Monterey Canyon, bathymetry and wind-stress curl intensify upwelling filaments; sea-surface temperatures in summer can sit near 10–14°C only kilometres offshore.",
+          "That cold water is the thermodynamic anchor for the marine layer: warm air aloft over cold water yields strong inversions, capping stratus and fog until solar heating or offshore flow breaks the cap.",
+        ],
+      },
+      {
+        id: "monterey-diurnal-marine-layer",
+        title: "Diurnal cycle of the marine layer — why August feels like spring",
+        paragraphs: [
+          "Overnight, longwave cooling and onshore flow deepen the stratus; mornings are gray and cool. By mid-morning, solar absorption on land strengthens the thermal contrast that eventually erodes the inversion — the layer retreats offshore, revealing blue sky while Salinas and inland valleys heat rapidly. Afternoon onshore breezes can rebuild fog at the immediate shoreline while a few kilometres inland stays clear.",
+          "This oscillation inverts the seasonal expectation many newcomers carry: summer is the cool, cloudy season at the water’s edge; the warmest, sunniest afternoons for coastal residents often arrive in autumn when offshore flow weakens.",
+        ],
+      },
+      {
+        id: "monterey-fog-ecology",
+        title: "Fog drip, redwoods, and coastal prairie",
+        paragraphs: [
+          "Coast redwoods and closed-cone pines along canyons intercept fog droplets that supplement summer rainfall — a hidden hydrologic input not captured in rain-gauge totals alone. Prairie openings on warmer, drier aspects host rare endemic plants tuned to wind and salt spray.",
+          "The ecological edge between fog-fed forest and Salinas Valley heat is sharp enough to measure in plant community turnover across a single afternoon drive.",
+        ],
+      },
+      {
+        id: "monterey-coastal-hazards",
+        title: "Coastal hazards — erosion, SLR, and atmospheric rivers",
+        paragraphs: [
+          "Monterey Bay’s sandy bluffs and soft cliffs respond quickly to storm waves and El Niño winters. Atmospheric river events deliver most annual precipitation in a handful of intense storms — useful for reservoirs inland, erosive at the coast. Sea-level rise amplifies surge reach in the harbor and low marina districts.",
+          "Planning here is explicitly climate-aware: wastewater, desalination, and harbor infrastructure must anticipate both warmer offshore waters and higher baseline sea level over infrastructure lifetimes.",
+        ],
+      },
+      {
+        id: "monterey-salinas-coupling",
+        title: "Salinas Valley heat, coastal stratus, and the agricultural fog economy",
+        paragraphs: [
+          "Monterey’s cool shore is inseparable from the Salinas River corridor’s summer warmth twenty minutes inland. The same subsidence inversion that traps stratus at the coast allows solar heating to run freely once the marine layer tears eastward — producing the continent’s sharpest short-distance vegetable and berry economy. Growers time plantings to the stratus calendar: leaf crops and brassicas hug the fog belt; heat-demanding row crops push slightly inland where GDD accumulates.",
+          "Fog drip on coastal terraces and canyon redwoods supplements gauge-captured rainfall for perennial systems — a hidden moisture budget embedded in orchard and vineyard siting. Climate change questions here are as much about fog frequency and offshore stratification as about mean temperature.",
+        ],
+      },
     ],
   },
 
@@ -567,6 +714,48 @@ export const PLACES_USA: Place[] = [
       { label: "Cogbill, C. et al. — Southern Appalachian cold-air drainage studies", kind: "academic" },
       { label: "FEMA National Risk Index (Buncombe County)", kind: "fema" },
     ],
+    deepSections: [
+      {
+        id: "black-mountain-drainage",
+        title: "Cold-air drainage and the mid-slope thermal belt",
+        paragraphs: [
+          "On clear, calm nights the Swannanoa Valley behaves like a shallow lake of dense air. Katabatic flow slides off surrounding slopes and accumulates on the floor; the coldest pockets sit where topography blocks exit drainage. Mid-slope benches between roughly 2,100 and 3,000 ft often sit above that pool — not because they are warmer in absolute energy terms, but because they exchange air with the broader slope circulation and avoid the deepest stagnation.",
+          "Orchardists learned this empirically: bloom dates on mid-slopes can run one to three weeks ahead of the floor, enough to dodge a late frost that would wipe out valley apples. The same geometry repeats across the Southern Appalachians, but the Black Mountains add a second control — proximity to very high relief just to the north steepens lapse-rate gradients and sharpens fog/cloud caps on ridges while leaving thermal-belt afternoons comparatively sunny.",
+        ],
+      },
+      {
+        id: "black-mountain-orographic",
+        title: "Orographic rain and the Black Mountains wall",
+        paragraphs: [
+          "Southwesterly flow ahead of mid-latitude systems and moisture tongues from the Gulf stream moisture up the Blue Ridge escarpment. The Black Mountains include the highest summits east of the Mississippi; windward slopes and convex terrain can receive substantially more annual precipitation than leeward valleys only kilometres away.",
+          "For a resident, the signature is experiential: it can be raining on the flank of Mitchell while Black Mountain town stays in broken sun — not magic, just geometry and wind direction interacting with a very rough surface.",
+        ],
+      },
+      {
+        id: "black-mountain-hydro",
+        title: "Heavy rain, saturated slopes, and landslide hydrology",
+        paragraphs: [
+          "Warm-season convection and remnant tropical moisture are both efficient at loading Appalachian soils past their shear strength. Intense bursts on already wet antecedent conditions translate into rapid stream rises and debris movement on steep colluvium — the classic Blue Ridge recipe for road closures and hillside failures.",
+          "Climate projections for the region emphasize heavier sub-daily rainfall extremes even when seasonal totals shift modestly. That matters more for hazard than for annual averages: landslide recurrence is driven by rare combinations of rain rate and soil moisture, not by mean precipitation alone.",
+        ],
+      },
+      {
+        id: "black-mountain-horticulture",
+        title: "Cove soils, heritage orchards, and modern gardeners",
+        paragraphs: [
+          "North-facing coves accumulate deep, organic-rich soil washed from upslope; south-facing benches warm earlier in spring. The thermal belt is not a single line on a map — it is a stack of aspect × slope × soil packages that competent growers read the way sailors read wind.",
+          "Contemporary gardeners inherit that knowledge through plant societies, county extension trials, and hardiness-zone maps — but the first-order control remains local cold pooling on radiative nights. The best sites trade a little midsummer heat for spring frost insurance — the defining trade of Appalachian fruit culture.",
+        ],
+      },
+      {
+        id: "black-mountain-asheville-metro",
+        title: "Asheville metro, tourism pressure, and ridge–valley air quality",
+        paragraphs: [
+          "The Swannanoa corridor sits immediately east of Asheville’s growing basin — close enough that commuter traffic and wood-smoke episodes occasionally pool under winter inversions alongside natural cold drainage. Ozone and fine-particle pollution in mountain valleys is rarely as severe as in major basins, but terrain channeling still matters for sensitive populations on still January mornings.",
+          "Tourism and second-home development push housing onto steeper, forested slopes where landslide risk rises when tropical remnants saturate soils — the same Helene-class events that define modern Appalachian hazard planning. The thermal belt’s climatic advantages come with explicit land-use trade-offs.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Bishop, CA ===================
@@ -614,6 +803,32 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Humidity-lovers; those needing close cultural/urban amenities; anyone sensitive to summer smoke.",
     confidence: "high",
     citations: [{ label: "NOAA Climate Normals — Bishop AP", kind: "noaa" }, { label: "California Dept. of Water Resources", kind: "oss-data" }, { label: "USGS Owens Valley studies", kind: "usgs" }],
+    deepSections: [
+      {
+        id: "bishop-sierra-rain-shadow",
+        title: "Sierra lee subsidence and the steepest precipitation gradient in the West",
+        paragraphs: [
+          "Pacific storms approach the range as saturated westerly flow; orographic lift on the windward San Joaquin side wrings out most of the column before air descends into the Owens. Subsidence warms and dries the lee slope — the thermodynamic core of Bishop’s ~130 mm annual precipitation while Mammoth, one drainage west, measures well over a metre of water equivalent.",
+          "That gradient is not a curiosity; it is the entire basis of eastern Sierra life: snowpack as distant reservoir, ditches as historical lifeline, and a summer sky so clear that radiative cooling dominates every night.",
+        ],
+      },
+      {
+        id: "bishop-los-angeles-aqueduct",
+        title: "Owens River hydrology — snowmelt, exports, and the irrigation economy",
+        paragraphs: [
+          "The Owens Valley’s water story is inseparable from Los Angeles’s imports — a century-long rearrangement of surface flow that still shapes how much native vegetation, ranching, and orchard irrigation can rely on local rivers versus groundwater.",
+          "For microclimate interpretation, the point is simple: apparent aridity at Bishop is moderated by engineered flow in ditches and by alluvial aquifers along Bishop Creek. Without that plumbing, the climate numbers would feel even harsher on the ground than they already do.",
+        ],
+      },
+      {
+        id: "bishop-eastside-wind",
+        title: "Downslope winds, dust, and smoke from the Sierra–White Mountain corridor",
+        paragraphs: [
+          "Strong pressure gradients across the Sierra crest occasionally produce fierce northeast downslope events — winds that strip snow, raise dust from dry lake beds, and fan wildfire plumes from the range. Smoke from Sierra fires is the summer air-quality signature even when Bishop itself is not burning.",
+          "Gardeners and residents learn to read wind direction as a hazard dial: clear nights for cold, windy days for particulates, and monsoon surges from the southeast as the rare moisture exception.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Flagstaff ===================
@@ -661,6 +876,32 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "People who don't handle cold; those wanting a long growing season.",
     confidence: "high",
     citations: [{ label: "NOAA Climate Normals — Flagstaff Pulliam AP", kind: "noaa" }, { label: "USDA Hardiness Map 2023", kind: "usda" }],
+    deepSections: [
+      {
+        id: "flagstaff-peaks-orography",
+        title: "San Francisco Peaks orography — split between winter Pacific and summer monsoon",
+        paragraphs: [
+          "Flagstaff’s ~560 mm of annual precipitation is the Peaks’ doing: winter mid-latitude systems arrive with southwesterly flow that ascends the southwestern flank; summer moisture returns from the Gulf of California and Four Corners region, triggering afternoon convection on the same topography.",
+          "The result is a bimodal precipitation personality — snowy cold-season storms and reliable August thunderstorms — unusual for the Southwest’s reputation as a single dry desert.",
+        ],
+      },
+      {
+        id: "flagstaff-ponderosa-fire",
+        title: "Ponderosa fire ecology and the warming squeeze on snowpack",
+        paragraphs: [
+          "The world’s largest contiguous ponderosa pine forest surrounds the city — an ecosystem adapted to frequent low-severity fire but now confronting extended high-severity seasons and bark-beetle stress. Fuel loads and housing encroachment into the wildland-urban interface translate climate projections into evacuation maps.",
+          "Snowpack on the Peaks is the municipal water-storage buffer; warming shifts snow to rain and advances melt — tightening late-summer streamflow for both ecology and supply.",
+        ],
+      },
+      {
+        id: "flagstaff-colorado-plateau",
+        title: "Colorado Plateau continentality versus Phoenix Sonoran heat",
+        paragraphs: [
+          "At 2100 m, Flagstaff sits on the southern edge of the Colorado Plateau — far enough from marine air that diurnal swings stay large, yet high enough to avoid Phoenix’s basin heat. The drive to the low desert is a lesson in lapse rate: each 300 m of descent buys summer warmth most people underestimate until they thermometer-check Sedona or Phoenix.",
+          "Winter visitors from Phoenix experience the gradient as relief; summer visitors experience it as escape — the same physics, opposite season.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Silver City, NM ===================
@@ -708,6 +949,32 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Those needing humidity; urbanites; humid-summer-garden fans.",
     confidence: "high",
     citations: [{ label: "NOAA Climate Normals — Silver City", kind: "noaa" }, { label: "NM State Climate Office", kind: "academic" }],
+    deepSections: [
+      {
+        id: "silver-city-mogollon-monsoon",
+        title: "Mogollon uplift and the North American Monsoon at the Gila’s edge",
+        paragraphs: [
+          "Silver City sits where the Mogollon–Gila highlands intercept moisture surging north from Mexico in July and August. Orographic lifting organizes afternoon storms that can drench one canyon while leaving the Mimbres basin sunlit — the same spatial lottery that defines Sky Island country.",
+          "Spring pre-monsoon is the stress window: hot, dry, and windy — fire weather on the piñon–juniper ecotone before convection returns.",
+        ],
+      },
+      {
+        id: "silver-city-gila-wilderness",
+        title: "Gila Wilderness vertical climate and backcountry exposure",
+        paragraphs: [
+          "Within a short drive, elevation climbs into ponderosa and mixed conifer where mean temperatures fall sharply and lightning-ignited fires shape the landscape. Backpackers experience a full Madrean vertical stack in a day — desert scrub at the trailhead to fir forest near the crest.",
+          "That relief is why the town’s climate summary is only a partial guide: gardeners at 1800 m face different frost calendars than campers at 2800 m only kilometres away.",
+        ],
+      },
+      {
+        id: "silver-city-mining-water",
+        title: "Mining legacy, water rights, and community-scale hydrology",
+        paragraphs: [
+          "Historic copper and silver mining left a scattered footprint of tailings and altered drainages; modern water management balances domestic demand against intermittent streamflow. Elevation buffers heat but does not manufacture water — summer monsoon is welcome, but total annual moisture remains semi-arid.",
+          "For growers, that means drip and timing discipline: the monsoon is a bonus, not a substitute for a deep soil-moisture bank.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Hood River, OR ===================
@@ -755,6 +1022,32 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "People who hate wind (the Gorge is relentless in summer).",
     confidence: "high",
     citations: [{ label: "NOAA — Hood River Experiment Station", kind: "noaa" }, { label: "OSU Hood River Extension research", kind: "academic" }],
+    deepSections: [
+      {
+        id: "hood-river-cascade-gap",
+        title: "The Cascade sea-level gap and the Columbia as climate conveyor",
+        paragraphs: [
+          "The Columbia River is the only continuous low-elevation breach of the Cascades for hundreds of kilometres. Marine air spills through the gap, while interior continental air spills west — producing the Gorge’s famous pressure-driven winds and a precipitation gradient that drops from rainforest to orchard steppe within tens of kilometres.",
+          "Hood River sits just east of the crest’s rain-shadow onset: wet enough for dryland orchards with supplemental irrigation, sunny enough for sugar development in pears and cherries.",
+        ],
+      },
+      {
+        id: "hood-river-thermal-belts",
+        title: "South-facing orchard benches and the Hood River Valley stack",
+        paragraphs: [
+          "Orchards climb the north side of the valley in terrace bands — each elevation a different bloom date and frost exposure. Thermal belts here are economically legible: early sites risk bloom frost; mid-slopes trade a week of spring safety for slightly cooler nights at harvest.",
+          "Cold-air drainage still pools in low pockets during radiative freezes — the same geometry Black Mountain illustrates, transplanted to Pacific fruit country.",
+        ],
+      },
+      {
+        id: "hood-river-east-wind",
+        title: "Outflow winds, smoke, and heat domes from the interior",
+        paragraphs: [
+          "When interior high pressure builds, the Gorge becomes a nozzle for hot easterly winds — a pattern that brought record 2021 heat east of the crest. Wildfire smoke from Cascade and interior fires follows the same channel, occasionally trapping under stable layers.",
+          "Fruit growers watch these episodes closely: sun scald, tainted wine grapes, and worker heat protocols all spike together.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Ashland, OR ===================
@@ -802,6 +1095,30 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Smoke-sensitive people; those seeking humidity or heavy snow.",
     confidence: "high",
     citations: [{ label: "NOAA — Medford Regional AP", kind: "noaa" }, { label: "OSU Southern Oregon Research & Extension", kind: "academic" }],
+    deepSections: [
+      {
+        id: "ashland-siskiyou-shadow",
+        title: "Siskiyou rain shadow and the Rogue Valley dry slot",
+        paragraphs: [
+          "Southwest Oregon’s geography places the Rogue in a partial lee of the Siskiyou–Klamath knot: enough moisture for dryland oak savanna and irrigated orchards, not enough for Willamette-style gray winters. Summer subtropical high pressure caps the region with subsidence — long sunny runs broken by occasional north Pacific troughs.",
+          "The combination yields classic warm-day/cool-night diurnals that wine grapes and pears exploit for acid retention and sugar balance.",
+        ],
+      },
+      {
+        id: "ashland-theatre-climate",
+        title: "Outdoor theatre season and the shoulder-season comfort window",
+        paragraphs: [
+          "The Oregon Shakespeare Festival’s outdoor stages depend on summer evenings that cool reliably — a thermal pattern rare in humid eastern North America at the same temperatures. When smoke intrudes from regional fires, the festival’s economics and air-quality safety protocols intersect directly with climate variability.",
+        ],
+      },
+      {
+        id: "ashland-fire-smoke",
+        title: "Klamath–Siskiyou fire regime and smoke climatology",
+        paragraphs: [
+          "Southern Oregon sits in one of the West’s most lightning-prone, fuel-rich interfaces between interior dryness and coastal moisture penetration. Megafire smoke seasons are now a recurring constraint on tourism, viticulture, and respiratory health — as much a part of the lived climate as January frost.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Santa Fe, NM ===================
@@ -849,6 +1166,31 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Sea-level romantics, humidity-lovers, water-intensive gardeners.",
     confidence: "high",
     citations: [{ label: "NOAA — Santa Fe County Muni AP", kind: "noaa" }, { label: "NM State Climatologist", kind: "academic" }],
+    deepSections: [
+      {
+        id: "santa-fe-sangre-orography",
+        title: "Sangre de Cristo lifting and bimodal precipitation",
+        paragraphs: [
+          "Santa Fe’s bench lies where moisture approaches from both Gulf return flow in summer and southwesterly mid-latitude systems in winter. The Sangre de Cristos provide sharp orographic enhancement — enough for skiable snow above town while the plaza stays comparatively dry.",
+          "Monsoon storms in July and August are the horticultural lifeline for native landscapes; May and June remain desiccating until convection organizes.",
+        ],
+      },
+      {
+        id: "santa-fe-rio-grande-water",
+        title: "Rio Grande compact, acequia culture, and high-desert supply",
+        paragraphs: [
+          "Surface water in the Middle Rio Grande is fully spoken for across municipalities, pueblos, and agriculture — a legal and hydrologic context that frames every discussion of trees, turf, and development. Traditional acequia irrigation embedded water-sharing norms long before climate stress intensified.",
+          "Snowpack in the Sangres is the natural reservoir; earlier melt tightens late-summer stress even when annual totals look adequate.",
+        ],
+      },
+      {
+        id: "santa-fe-adobe-thermal",
+        title: "Adobe massing, solar gain, and high-desert building physics",
+        paragraphs: [
+          "Santa Fe’s architectural vernacular — thick earthen walls, small east-west exposures, courtyards — is climate technology. Daily temperature swings are large; thermal mass smooths interior comfort without mechanical cooling for much of the summer.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Santa Barbara, CA ===================
@@ -895,6 +1237,31 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Those priced out; fire-sensitive; snow-season lovers.",
     confidence: "high",
     citations: [{ label: "NOAA — Santa Barbara Muni AP", kind: "noaa" }, { label: "CAL FIRE historical fires", kind: "oss-data" }],
+    deepSections: [
+      {
+        id: "santa-barbara-south-coast",
+        title: "South-facing coast geometry and the shortest June-gloom season on the central coast",
+        paragraphs: [
+          "Where the coastline bends east–west, solar geometry favors the urban strip with more direct insolation than north-facing Central Coast neighbors. The Santa Ynez Mountains block interior continental air and wring winter storms, leaving a regime of mild wet winters and dry warm summers.",
+          "Marine layer still intrudes — but retreats faster here than in Santa Monica or San Francisco on many June days, a subtle but decisive tourism and viticulture advantage.",
+        ],
+      },
+      {
+        id: "santa-barbara-montecito-debris",
+        title: "Santa Ynez fire, chaparral, and post-fire debris-flow hazard",
+        paragraphs: [
+          "Steep chaparral slopes behind the city burned repeatedly in the modern record; intense rain on hydrophobic post-fire soils generates debris flows that reach the urban interface — the Montecito 2018 tragedy is the reference event for coupling wildfire to alluvial-fan hazard.",
+          "Planning and insurance markets here treat burn–rain sequences as predictable, not exceptional.",
+        ],
+      },
+      {
+        id: "santa-barbara-channel-upwelling",
+        title: "Santa Barbara Channel eddies and coastal stratus variability",
+        paragraphs: [
+          "The Channel’s island archipelago and cyclonic eddies modulate sea-surface temperature and low cloud — enough to shift fog frequency block by block along the mesa versus beach. Avocado and citrus plantings track these micro-scale warm pockets.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Driggs / Teton Valley, ID ===================
@@ -942,6 +1309,30 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Anyone who can't tolerate −25°C mornings; gardeners needing long season; inversion-affected asthma.",
     confidence: "high",
     citations: [{ label: "NOAA — Driggs-Reed Memorial AP", kind: "noaa" }, { label: "Idaho Climate-Economy Impacts Assessment", kind: "academic" }],
+    deepSections: [
+      {
+        id: "driggs-teton-basin-pool",
+        title: "Closed-basin cold-air pooling and multi-day valley inversions",
+        paragraphs: [
+          "Teton Valley has no low outlet for dense nocturnal air — cold drains from the Tetons and Big Hole summits and accumulates on the floor until sun angle or synoptic mixing breaks the lid. Multi-day inversions are common; wood smoke and particulates can accumulate under the same stable layer that holds −30°C mornings.",
+          "Ski-area operations and valley agriculture literally occupy different air masses during the coldest weeks — the microclimate story is vertical as much as horizontal.",
+        ],
+      },
+      {
+        id: "driggs-targhee-contrast",
+        title: "Grand Targhee versus valley floor — skiing above the inversion",
+        paragraphs: [
+          "Resort elevations often sit above the inversion ceiling — warmer overnight in mid-winter than the valley, paradoxically, while receiving far more snow from orographic lift. The contrast is economically central: powder skiing above, ice fog below.",
+        ],
+      },
+      {
+        id: "driggs-growing-season",
+        title: "Compressed frost-free season and high-UV horticulture",
+        paragraphs: [
+          "Summers are glorious but frost-free days are few; growing seasons rely on cold-hardy cultivars, season extension, and careful siting on benches that drain cold air. Intense solar UV at 1860 m speeds growth but also stresses tender transplants.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Traverse City, MI ===================
@@ -989,6 +1380,30 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Anyone unwilling to endure serious lake-effect winter.",
     confidence: "high",
     citations: [{ label: "NOAA — Cherry Capital AP", kind: "noaa" }, { label: "MSU Extension fruit research", kind: "academic" }],
+    deepSections: [
+      {
+        id: "traverse-city-lake-delay",
+        title: "Lake Michigan thermal inertia and bloom-delay horticulture",
+        paragraphs: [
+          "The bay’s water volume delays spring warming along shore — pushing bloom until after the riskiest advective frosts from continental cold-air outbreaks. That timing is the economic foundation of tart cherries: late flowers, reliable pollination windows, and harvest compressed into July.",
+          "Autumn moderation extends hang-time for wine grapes and color for tourism — the same heat storage that frustrates early-season beachgoers rewards growers.",
+        ],
+      },
+      {
+        id: "traverse-city-lake-effect",
+        title: "Lake-effect snow as soil-insulating winter precipitation",
+        paragraphs: [
+          "Heavy lake-effect snow blankets orchards with an insulating layer that moderates soil freeze–thaw and protects roots — a counterintuitive benefit of otherwise arduous winter maintenance.",
+        ],
+      },
+      {
+        id: "traverse-city-ice-decline",
+        title: "Declining Great Lakes ice and the future of moderation",
+        paragraphs: [
+          "As Lake Michigan loses winter ice cover, spring water temperatures rise earlier — potentially advancing bloom into riskier alignment with late frosts. Fruit breeders and growers watch chill-hour trends and bloom phenology together; climate change here is measured in degree-days and bloom date, not annual rainfall alone.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Ithaca, NY ===================
@@ -1036,6 +1451,29 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Anyone sensitive to gray winters or gorge-country cloud cover.",
     confidence: "high",
     citations: [{ label: "Cornell NRCC — Ithaca Cornell", kind: "noaa" }, { label: "Cornell Extension viticulture", kind: "academic" }],
+    deepSections: [
+      {
+        id: "ithaca-finger-lakes-fetch",
+        title: "Deep glacial lakes as north–south thermal batteries",
+        paragraphs: [
+          "Cayuga and neighboring lakes store summer heat into autumn and blunt midwinter cold near shore — lengthening frost-free periods relative to the upland plateau only kilometres away. Fetch length along the lake axis organizes local wind fields and cloud streets during unstable outbreaks.",
+        ],
+      },
+      {
+        id: "ithaca-slope-viticulture",
+        title: "Slope aspect, drainage air, and Finger Lakes Riesling",
+        paragraphs: [
+          "West- and southwest-facing slopes above the eastern lakeshores capture afternoon sun while cold air drains toward the lake — a combination that preserves acidity in aromatic whites. Seneca and Cayuga AVAs exploit these mesoscale geometries explicitly.",
+        ],
+      },
+      {
+        id: "ithaca-gorge-cloud",
+        title: "Gorge microclimate and campus–upland gradients",
+        paragraphs: [
+          "Ithaca’s incised gorges create shaded microclimates with shorter effective growing seasons in cove bottoms versus ridgetops. Hikers notice temperature and humidity shifts within hundreds of steps — the same relief that challenges winter road maintenance also diversifies wildflower phenology.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Grand Marais, MN ===================
@@ -1083,6 +1521,29 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Gardeners needing warmth; those who dislike long hard winters.",
     confidence: "high",
     citations: [{ label: "NOAA — Grand Marais coop", kind: "noaa" }, { label: "MN State Climatology", kind: "academic" }],
+    deepSections: [
+      {
+        id: "grand-marais-mn-superior-mass",
+        title: "Lake Superior as inland ocean — summer chill and winter moderation",
+        paragraphs: [
+          "Superior’s immense volume and depth keep summer afternoon highs along the shore in the high teens while inland Minnesota climbs toward the high twenties. In winter, open-water heat flux and cloud cover raise minimums relative to the Boundary Waters plateau — the classic maritime versus continental split within one county.",
+        ],
+      },
+      {
+        id: "grand-marais-mn-fog",
+        title: "Fog belts, sea breeze analogs, and the Sawtooth escarpment",
+        paragraphs: [
+          "Warm air over cold water produces stratus and fog that can linger mornings — a Nova-Scotia rhythm on Minnesota bedrock. Local topography channels drainage winds and fog penetration; trail runners learn micro-variation by cove.",
+        ],
+      },
+      {
+        id: "grand-marais-mn-boreal-edge",
+        title: "Boreal transition, lake ice, and changing seasonality",
+        paragraphs: [
+          "The north shore is an ecological tension zone between boreal forest and northern hardwoods. Ice-cover decline on Superior shifts spring onset and storm tracks — with uncertain long-term effects on lake-effect snow that skiers and loggers both depend on.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER B — Niagara / Finger Lakes fruit south ===================
@@ -1133,6 +1594,29 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Sun lovers; gardeners needing heat or sun; those intolerant of fog and rain.",
     confidence: "high",
     citations: [{ label: "NOAA — Highlands coop", kind: "noaa" }, { label: "USFS Southern Appalachian studies", kind: "academic" }],
+    deepSections: [
+      {
+        id: "highlands-escarpment-lift",
+        title: "Blue Ridge escarpment and Gulf moisture ascent",
+        paragraphs: [
+          "Moist southerly flow rides up the abrupt escarpment west of the Piedmont, yielding some of the highest orographic rainfall totals in the eastern US. Summer convection is frequent but cool — cloud bases low, rain rates high — producing the cloud-forest feel that distinguishes Highlands from nearby Asheville.",
+        ],
+      },
+      {
+        id: "highlands-temperate-rainforest",
+        title: "Temperate rainforest ecology on Appalachian bedrock",
+        paragraphs: [
+          "Dense hemlock–hardwood understory, massive rhododendron thickets, and leached acidic soils mirror Pacific Northwest structure at a smaller scale. Endemic salamander diversity and bryophyte loads signal persistently high humidity — a system tuned to fog drip as much as gauge rainfall.",
+        ],
+      },
+      {
+        id: "highlands-helene-hydro",
+        title: "Tropical remnant rainfall and landslide hydrology",
+        paragraphs: [
+          "Remnant tropical systems can deliver multi-day rainfall on already saturated steep slopes — the recipe for debris slides that sever roads and threaten structures. Climate projections emphasize heavier sub-daily extremes; here, that translates directly into slope hazard rather than abstract averages.",
+        ],
+      },
+    ],
   },
 
   // =================== TIER C — short entries ===================
@@ -1247,6 +1731,30 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "People who want sun, dry air, four real seasons, and fruit trees in their backyard.", whoMightNot: "Anyone needing mild winters or cool summers.",
     confidence: "high",
     citations: [{ label: "NOAA — Wenatchee 1991–2020 normals", kind: "noaa" }, { label: "PRISM 30-year precipitation", kind: "prism" }, { label: "WSU Tree Fruit Research", kind: "academic" }],
+    deepSections: [
+      {
+        id: "wenatchee-cascade-shadow",
+        title: "Deep Cascade lee and the Columbia River moderation wedge",
+        paragraphs: [
+          "Wenatchee sits multiple tens of kilometres east of the crest in one of the continent’s strongest rain shadows — annual precipitation near 240 mm while windward slopes measure metres. The Columbia River’s thermal mass and valley airflow blunt the most extreme diurnal swings that would otherwise characterize pure steppe.",
+          "Irrigation from Bureau of Reclamation infrastructure and snowmelt-fed tributaries converts climatic dryness into agricultural productivity — the climate story is incomplete without the plumbing.",
+        ],
+      },
+      {
+        id: "wenatchee-fruit-chill",
+        title: "Chill hours, diurnal swing, and the Washington apple economy",
+        paragraphs: [
+          "Cold nights and hot days during fruit fill raise sugar and color in apples and cherries while winter chill satisfies cultivar requirements — for now. Warming pushes bloom earlier into riskier alignment with spring frosts; breeders and growers track hourly chill models as closely as rainfall.",
+        ],
+      },
+      {
+        id: "wenatchee-smoke-pressure",
+        title: "Interior smoke corridors and heat domes",
+        paragraphs: [
+          "Eastern Washington lies downwind of Cascades fires and interior lightning ignitions; stable summer highs trap smoke in the basin. The 2021 heat dome showed how synoptic blocking can overwhelm local river moderation — a preview of tail risks orchard insurance now prices explicitly.",
+        ],
+      },
+    ],
   },
 
   {
@@ -1380,6 +1888,29 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those who want cool year-round with a real maritime rhythm.", whoMightNot: "Sun-dependent; summer-heat-seekers.",
     confidence: "high",
     citations: [{ label: "NOAA — Eureka/Woodley Island", kind: "noaa" }, { label: "Humboldt State Schatz Energy climate notes", kind: "academic" }],
+    deepSections: [
+      {
+        id: "eureka-upwelling-narrow-range",
+        title: "California Current upwelling and the continent’s narrowest annual temperature range",
+        paragraphs: [
+          "Eureka’s mean monthly highs span only ~6°C from January to August because cold offshore water and onshore flow cap summer warming while marine air limits winter cooling. The climate behaves more like coastal Ireland than like latitude-matched inland California — upwelling, not latitude, is the thermostat.",
+        ],
+      },
+      {
+        id: "eureka-redwood-fog-drip",
+        title: "Redwood fog drip and hidden summer moisture",
+        paragraphs: [
+          "Coast redwoods intercept stratus droplets that never register in rain gauges — a supplementary hydrologic input that sustains alluvial aquifers and stream baseflow through the dry season. Timber history and modern conservation both depend on that fog budget.",
+        ],
+      },
+      {
+        id: "eureka-humboldt-bay-slr",
+        title: "Humboldt Bay, tsunami exposure, and sea-level rise",
+        paragraphs: [
+          "The bay’s mudflats and low industrial waterfront face joint pressures from Pacific storms, Cascadia tsunami risk, and accelerating SLR — climate resilience here is coastal engineering as much as temperature trend.",
+        ],
+      },
+    ],
   },
 
   {
@@ -2086,6 +2617,40 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Anyone chasing the continent's most extreme seasonal range — long bright summers and long dark winters aren't for most, but for some they're transformative.", whoMightNot: "Sunlight-sensitive; winter-depression prone; those needing mild winters or moderate summers.",
     confidence: "high",
     citations: [{ label: "NOAA — Fairbanks Int'l Airport NORMAL 1991–2020", kind: "noaa" }, { label: "Alaska Climate Research Center — interior inversion studies", kind: "academic" }, { label: "UAF Geophysical Institute — aurora statistics", kind: "academic" }],
+    deepSections: [
+      {
+        id: "fairbanks-basin",
+        title: "Tanana basin geometry and interior continentality",
+        paragraphs: [
+          "Fairbanks sits in a broad lowland rimmed by uplands — a shape that favors both pooling of cold air and long sight lines for radiative cooling under polar night. The Alaska Range to the south blocks mild Pacific air much of the year; the Brooks Range to the north filters Arctic outbreaks differently by season. The practical result is a climate dominated by continental air masses and by the valley’s own nocturnal stratification rather than by maritime moderation.",
+          "Distance from ocean heat storage is the macro control; basin geometry is the micro-scale amplifier. That combination produces one of North America’s largest honest annual temperature ranges for a populated place.",
+        ],
+      },
+      {
+        id: "fairbanks-ice-fog",
+        title: "Ice fog, inversions, and the Chena Ridge escape",
+        paragraphs: [
+          "When temperatures fall far below freezing and moisture sources remain — open water, vehicle exhaust, combustion plumes — supersaturated air near the surface nucleates into tiny ice crystals: ice fog. It is not merely aesthetic; it marks a stable layer where mixing is weak and pollutants can accumulate under the same inversion that holds cold air down.",
+          "A short climb to hilltops above the fog often lands in dramatically warmer air — sometimes a difference large enough to change road traction, visibility, and even effective plant hardiness for exposed landscaping. Locals treat elevation as a vertical evacuation route from the valley’s winter worst.",
+        ],
+      },
+      {
+        id: "fairbanks-midnight-sun",
+        title: "Midnight sun, growing season compression, and agriculture",
+        paragraphs: [
+          "Summer’s extremely long photoperiod concentrates photosynthesis into a short frost-free window. Cool-season crops can reach remarkable size because daily integrated light is high even when afternoon temperatures are modest by lower-latitude standards.",
+          "The constraint is not daytime warmth alone — it is the abrupt shoulder seasons and the short count of frost-free days. Greenhouse culture and season-extension techniques are part of ordinary gardening here, not hobbyist excess.",
+        ],
+      },
+      {
+        id: "fairbanks-permafrost",
+        title: "Permafrost thaw, infrastructure, and accelerating change",
+        paragraphs: [
+          "Discontinuous permafrost underlies much of the Fairbanks area; buildings, roads, and utilities were often engineered for frozen ground that now warms and consolidates unevenly. Thermokarst and frost-heave risk are not abstract climate topics — they show up as cracked foundations, dipping pavement, and shifting water lines.",
+          "Winter warming is among the fastest signals on Earth in this region. For residents, that can mean fewer historically extreme cold events — but also more freeze–thaw cycling, changing snowpack, longer wildfire smoke seasons, and ecological transitions from boreal forest toward shrubbier or deciduous-dominated systems on favorable sites.",
+        ],
+      },
+    ],
   },
 
   {
@@ -3194,4 +3759,7 @@ export const PLACES_USA: Place[] = [
     confidence: "moderate",
     citations: [{ label: "NOAA — Ojai coop", kind: "noaa" }],
   },
+  ...PLACES_USA_EXTRA,
+  ...PLACES_USA_GAP_STATES,
+  ...PLACES_USA_ROUND2,
 ];

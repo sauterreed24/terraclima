@@ -12,6 +12,16 @@ export function LearnMode({ onOpenPlace }: Props) {
   const prose = useProse();
   return (
     <div className="space-y-4">
+      <div className="panel p-4 border-[rgba(26,143,168,0.22)]">
+        <div className="text-xs uppercase tracking-wider text-stone mb-1">Start here</div>
+        <h3 className="font-atlas text-lg text-ice mb-2">How to read every location in the atlas</h3>
+        <ol className="text-sm text-frost leading-relaxed list-decimal pl-5 space-y-1.5">
+          <li>Go to <span className="text-ice font-medium">Explorer</span>, then open any place from the map or the card list.</li>
+          <li>In the profile, read top to bottom, or use <span className="text-ice font-medium">On this page</span> to jump — same content, less scrolling.</li>
+          <li>Use <span className="text-ice font-medium">Search</span> and <span className="text-ice font-medium">Rank by</span> in the sidebar to reorder or narrow the list; the map always shows the same filtered set.</li>
+          <li>Come back to <span className="text-ice font-medium">Learn</span> for vocabulary (rain shadow, chinook, etc.) and example places linked under each term.</li>
+        </ol>
+      </div>
       <div className="panel-warm p-4">
         <div className="flex items-start gap-3">
           <BookOpen className="w-5 h-5 mt-1" style={{ color: "#f0d29c" }} />

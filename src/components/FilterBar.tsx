@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useCallback, type Dispatch, type SetStateAction } from "react";
 import type { Country, MicroclimateArchetype } from "../types";
 import type { FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
@@ -25,46 +25,53 @@ export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
 interface Props {
   searchInputId?: string;
   filters: FilterState;
-  setFilters: (f: FilterState) => void;
+  setFilters: Dispatch<SetStateAction<FilterState>>;
   ranking: RankingProfile;
   setRanking: (r: RankingProfile) => void;
 }
 
 export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFilters, ranking, setRanking }: Props) {
-  const toggleCountry = (c: Country) => {
-    const ns = new Set(filters.countries);
-    if (ns.has(c)) ns.delete(c); else ns.add(c);
-    setFilters({ ...filters, countries: ns });
-  };
-  const toggleArchetype = (a: MicroclimateArchetype) => {
-    const ns = new Set(filters.archetypes);
-    if (ns.has(a)) ns.delete(a); else ns.add(a);
-    setFilters({ ...filters, archetypes: ns });
-  };
+  const toggleCountry = useCallback((c: Country) => {
+    setFilters(f => {
+      const ns = new Set(f.countries);
+      if (ns.has(c)) ns.delete(c); else ns.add(c);
+      return { ...f, countries: ns };
+    });
+  }, [setFilters]);
+  const toggleArchetype = useCallback((a: MicroclimateArchetype) => {
+    setFilters(f => {
+      const ns = new Set(f.archetypes);
+      if (ns.has(a)) ns.delete(a); else ns.add(a);
+      return { ...f, archetypes: ns };
+    });
+  }, [setFilters]);
 
   const hasAny = filters.countries.size > 0 || filters.archetypes.size > 0 || (filters.search?.length ?? 0) > 0;
-  const clearAll = () => setFilters({ countries: new Set(), archetypes: new Set(), search: "" });
+  const clearAll = useCallback(() => setFilters({ countries: new Set(), archetypes: new Set(), search: "" }), [setFilters]);
 
   return (
-    <div className="panel p-3 space-y-3">
-      <label className="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-[rgba(13,20,32,0.7)] border border-[rgba(71,90,122,0.55)] focus-within:border-[rgba(140,200,224,0.6)] transition-colors">
-        <Search className="w-3.5 h-3.5 text-stone shrink-0" aria-hidden />
+    <div className="panel contour-bg p-3 space-y-3">
+      <label className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white/90 border border-[rgba(210,180,150,0.4)] focus-within:border-[rgba(26,143,168,0.55)] focus-within:ring-2 focus-within:ring-[rgba(94,196,220,0.25)] transition-[border-color,box-shadow] min-h-[2.75rem]">
+        <Search className="w-4 h-4 text-stone shrink-0" aria-hidden />
         <input
           id={searchInputId}
           value={filters.search ?? ""}
           onChange={e => setFilters({ ...filters, search: e.target.value })}
           placeholder="Search name, region, or archetype"
           aria-label="Search places by name, region, or archetype"
-          className="bg-transparent text-sm text-ice placeholder:text-shadow outline-none flex-1 min-w-0"
+          enterKeyHint="search"
+          autoComplete="off"
+          className="bg-transparent text-[15px] text-ice placeholder:text-stone/65 outline-none flex-1 min-w-0"
         />
         {hasAny && (
           <button
+            type="button"
             onClick={clearAll}
             aria-label="Clear all filters"
-            className="text-stone hover:text-ice flex items-center gap-1 text-xs"
+            className="text-stone hover:text-ice flex items-center justify-center min-w-9 min-h-9 rounded-lg hover:bg-[rgba(94,196,220,0.1)] -mr-1"
             title="Clear filters"
           >
-            <X className="w-3 h-3" />
+            <X className="w-4 h-4" />
           </button>
         )}
       </label>
@@ -75,10 +82,12 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
           {RANKING_OPTIONS.map(opt => (
             <button
               key={opt.id}
+              type="button"
               onClick={() => setRanking(opt.id)}
               className="chip chip-btn"
               data-tone={ranking === opt.id ? "glacier" : undefined}
               data-active={ranking === opt.id}
+              aria-pressed={ranking === opt.id}
             >
               {opt.label}
             </button>
@@ -92,10 +101,12 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
           {(["USA", "Mexico", "Canada"] as Country[]).map(c => (
             <button
               key={c}
+              type="button"
               onClick={() => toggleCountry(c)}
               className="chip chip-btn"
               data-tone={filters.countries.has(c) ? "ochre" : undefined}
               data-active={filters.countries.has(c)}
+              aria-pressed={filters.countries.has(c)}
             >
               {c}
             </button>
@@ -108,6 +119,7 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
           <span>Archetype</span>
           {filters.archetypes.size > 0 && (
             <button
+              type="button"
               onClick={() => setFilters({ ...filters, archetypes: new Set() })}
               className="text-stone hover:text-ice normal-case text-[11px] tracking-normal"
             >
@@ -119,10 +131,12 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
           {ARCHETYPES.map(a => (
             <button
               key={a.id}
+              type="button"
               onClick={() => toggleArchetype(a.id)}
               className="chip chip-btn"
               data-tone={filters.archetypes.has(a.id) ? a.tone : undefined}
               data-active={filters.archetypes.has(a.id)}
+              aria-pressed={filters.archetypes.has(a.id)}
               title={a.blurb}
             >
               {a.label}
