@@ -3,8 +3,10 @@ import type { MicroclimateArchetype, Place, RiskAssessment, RiskLevel, Topograph
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
+import { getCorpusMapHint } from "../lib/atlas-corpus-stats";
 import { useRichVisualEffects } from "../lib/device-profile";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
+import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 
 const RISK_ORDER: Record<RiskLevel, number> = {
   "very-low": 0,
@@ -96,6 +98,7 @@ export function AtlasMapTooltip({
   const s = place.scores;
   const drivers = place.drivers.slice(0, 6).map(formatDriver);
   const watch = topRiskRows(place, 3);
+  const geospatial = buildGeospatialAnalysis(place);
   const settlements = place.settlementsWithinZone?.slice(0, 5);
   const secondaryArchetypes = place.archetypes.slice(1);
 
@@ -270,6 +273,14 @@ export function AtlasMapTooltip({
               <InstrumentMetric label="Jan low" value={fmtTemp(janLow, temp)} tone="glacier" />
               <InstrumentMetric label="Annual precip" value={fmtPrecip(annualP, dist)} tone="sage" />
             </div>
+            <p className="text-[0.65rem] leading-relaxed text-stone mt-2.5 pl-0.5 border-t border-[rgba(195,165,138,0.28)] pt-2">
+              <span className="font-semibold text-ice/90">Full-atlas context · </span>
+              {getCorpusMapHint(place)}
+            </p>
+            <p className="text-[0.65rem] leading-relaxed text-stone mt-1 pl-0.5">
+              <span className="font-semibold text-ice/90">Geospatial signal · </span>
+              {geospatial.geospatialSignalScore}/100 · EO {geospatial.eoObservabilityScore}/100 · {geospatial.analysisConfidence} confidence.
+            </p>
           </div>
         </section>
 

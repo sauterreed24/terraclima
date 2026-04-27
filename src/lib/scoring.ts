@@ -4,6 +4,7 @@
 
 import type { Place, MicroclimateArchetype, RiskLevel } from "../types";
 import { PLACES, PLACE_SEARCH_INDEX, PLACE_ANNUAL_PRECIP } from "../data/places";
+import { buildGeospatialAnalysis } from "./geospatial-analysis";
 
 export const RISK_VALUE: Record<RiskLevel, number> = {
   "very-low": 0,
@@ -39,6 +40,7 @@ export type RankingProfile =
   | "climate-resilient"
   | "best-four-season"
   | "best-diurnal-sleep"
+  | "strongest-geospatial-signal"
   | "mediterranean-like"
   | "wet-forest-refuges"
   | "monsoon-drama";
@@ -125,6 +127,14 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
       case "best-diurnal-sleep": {
         const s = Math.min(100, Math.max(0, (diurnal - 6) * 10));
         return { place: p, score: s, note: `Summer diurnal swing ${diurnal.toFixed(0)}°C` };
+      }
+      case "strongest-geospatial-signal": {
+        const g = buildGeospatialAnalysis(p);
+        return {
+          place: p,
+          score: g.geospatialSignalScore,
+          note: `EO ${g.eoObservabilityScore}/100 · ${g.analysisConfidence} confidence`,
+        };
       }
       case "mediterranean-like": {
         // Dry summers + mild winters + Csa/Csb

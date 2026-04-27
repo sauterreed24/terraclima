@@ -12,7 +12,7 @@ import { ContrastChart } from "./charts/ContrastChart";
 import { ClimateChangeDelta } from "./charts/ClimateChangeDelta";
 import { ComfortMatrix } from "./charts/ComfortMatrix";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
-import { PLACES, PLACES_BY_ID } from "../data/places";
+import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse } from "../lib/units";
@@ -22,14 +22,18 @@ import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { clearDossierHash } from "../lib/dossier-url-hash";
+import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD } from "../lib/atlas-metadata";
+import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
+import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
 import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
 import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
 import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
+import { PlaceAtAGlance } from "./place-detail/PlaceAtAGlance";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
-  Users, Compass, ExternalLink,
+  Users, Compass, ExternalLink, Scale, Satellite,
 } from "lucide-react";
 
 const TONE_HERO: Record<string, string> = {
@@ -395,7 +399,6 @@ function DetailHeader({
             height={520}
             className="w-full h-44 md:h-52 object-cover"
             loading="eager"
-            fetchPriority="high"
             decoding="async"
           />
           <figcaption className="px-3 py-2 text-[10px] leading-snug text-stone bg-[rgba(252,244,232,0.96)] border-t border-[rgba(200,160,120,0.28)]">
@@ -439,7 +442,7 @@ function DetailHeader({
 
 function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="panel-thin px-3 py-2">
+    <div className="atlas-hero-stat panel-thin px-3 py-2">
       <div className="text-[10px] uppercase tracking-wider text-stone flex items-center gap-1">{icon}{label}</div>
       <div className="font-mono-num text-sm text-ice">{value}</div>
     </div>
@@ -462,10 +465,25 @@ function DetailBody({
     ? CONCEPTS.find(c => c.id === DRIVER_CONCEPT_MAP[activeDriver])
     : null;
 
-  const synthesized = useMemo(() => synthesizePlaceSignals(place, temp, dist), [place, temp, dist]);
+  const synthesized = useMemo(() => {
+    const s = synthesizePlaceSignals(place, temp, dist);
+    return { topRisks: s.topRisks, lines: [...s.lines, ...getCorpusSynthesisLines(place)] };
+  }, [place, temp, dist]);
+  const corpusMatrixRows = useMemo(
+    () =>
+      getCorpusContextPanelRows(
+        place,
+        c => fmtTemp(c, temp),
+        m => fmtElev(m, dist),
+        mm => fmtPrecip(mm, dist),
+        c => fmtDelta(c, temp, { signed: false }),
+      ),
+    [place, temp, dist],
+  );
   const bestMonths = useMemo(() => computeBestMonths(place), [place]);
   const similar = useMemo(() => findSimilarPlaces(place, PLACES, 3), [place]);
   const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
+  const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
   const navItems = useMemo(() => buildPlaceDetailNavItems(place), [place]);
   const navDomIds = useMemo(() => navItems.map(i => i.id), [navItems]);
   const readingActiveAnchor = useDetailReadingSpy(navDomIds);
@@ -494,6 +512,8 @@ function DetailBody({
         <div className="divider-contour my-4" />
         <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.summaryImmersive)}</p>
       </Section>
+
+      <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
 
       <Section anchorId={PD.fieldStory} icon={<Compass className="w-4 h-4" style={{ color: "#dcc4ff" }} />} title={fieldStory.title}>
         <div className="panel-field-story p-4 md:p-5 space-y-3.5 rounded-2xl border border-[rgba(199,181,234,0.22)]">
@@ -627,6 +647,108 @@ function DetailBody({
               </div>
             </div>
           )}
+        </div>
+      </Section>
+
+      <Section anchorId={PD.corpus} title="How this place sits in the full atlas" icon={<Scale className="w-4 h-4" style={{ color: "var(--color-glacier-500)" }} />}>
+        <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
+          Every row compares this stop to the other <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated places on the same map — same fields as the header stats and comfort matrix. A high &ldquo;wetter than&rdquo; share means annual totals here beat most other entries, not that more rain is intrinsically &ldquo;better.&rdquo;
+        </p>
+        <div className="atlas-corpus-matrix panel-thin overflow-hidden p-0">
+          <div className="atlas-corpus-matrix__head grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1.15fr)] gap-x-2 gap-y-1 px-3 py-2.5 text-[10px] uppercase tracking-wider text-stone bg-[linear-gradient(90deg,rgba(94,196,220,0.14),rgba(255,196,214,0.08))] border-b border-[rgba(200,160,120,0.3)]">
+            <span>Signal</span>
+            <span className="text-right">Here</span>
+            <span>vs atlas</span>
+          </div>
+          {corpusMatrixRows.map(row => (
+            <div
+              key={row.metric}
+              className="atlas-corpus-matrix__row grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1.15fr)] gap-x-2 gap-y-1 px-3 py-2.5 text-sm border-b last:border-0 border-[rgba(200,160,120,0.2)]"
+            >
+              <span className="text-stone min-w-0">{row.metric}</span>
+              <span className="text-ice font-mono-num text-right tabular-nums shrink-0 self-start">{row.you}</span>
+              <span className="text-frost text-[12px] min-[480px]:text-[13px] leading-snug min-w-0">{row.context}</span>
+            </div>
+          ))}
+        </div>
+        <p className="text-[11px] text-stone italic mt-2">
+          Percent shares count strict inequalities in the same snapshot distribution (not a parametric fit). Ties in rounded normals are common, so 50/50-style splits are normal in dense Köppen classes.
+        </p>
+      </Section>
+
+      <Section anchorId={PD.geospatial} title="Geospatial analysis" icon={<Satellite className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+        <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
+          Sentinel-2 and Landsat context is fused with this place&apos;s terrain, monthly climate, and risk structure to produce a lightweight geospatial signal profile for fast comparison. Analysis confidence and Sensor fit are shown separately so the numbers read as screening evidence, not false precision.
+        </p>
+        <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-3">
+          <div className="panel-thin p-4 space-y-2">
+            <KeyValue label="Geospatial signal score" value={`${geospatial.geospatialSignalScore}/100`} />
+            <KeyValue label="EO observability" value={`${geospatial.eoObservabilityScore}/100`} />
+            <KeyValue label="Analysis confidence" value={titleCaseLocal(geospatial.analysisConfidence)} />
+            <KeyValue
+              label="Relief energy"
+              value={`${Math.round(geospatial.reliefEnergyMPerKm)} m/km`}
+            />
+            <KeyValue
+              label="Hydro seasonality"
+              value={`${geospatial.hydroSeasonalityRatio.toFixed(1)}x wettest/driest month`}
+            />
+            <KeyValue
+              label="Thermal amplitude"
+              value={fmtDelta(geospatial.annualThermalAmplitudeC, temp, { signed: false })}
+            />
+            <KeyValue
+              label="Terrain exposure index"
+              value={geospatial.terrainExposureIndex.toFixed(1)}
+            />
+          </div>
+          <div className="panel-thin p-4">
+            <div className="text-[10px] uppercase tracking-wider text-stone mb-2">Sensor fit</div>
+            <div className="space-y-2">
+              {geospatial.sourceFits.map(source => (
+                <div key={source.sourceId} className="rounded-lg border border-[rgba(200,160,120,0.28)] bg-white/60 px-3 py-2">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="font-medium text-ice">{source.sourceId === "sentinel-2" ? "Sentinel-2" : "Landsat"}</span>
+                    <span className="font-mono-num text-sm text-frost">{source.score}/100</span>
+                  </div>
+                  <div className="text-[11px] uppercase tracking-wider text-stone">{source.label} fit</div>
+                  <p className="text-[12px] text-stone leading-snug mt-1">{source.note}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <p className="text-[11px] text-stone italic mt-2">
+          {geospatial.contextLine}
+        </p>
+        <div className="mt-3 panel-thin p-3">
+          <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Likely spectral checks</div>
+          <div className="grid md:grid-cols-2 gap-2">
+            {geospatial.spectralSignals.map(signal => (
+              <div key={`${signal.sourceId}-${signal.index}-${signal.label}`} className="rounded-lg border border-[rgba(200,160,120,0.25)] bg-white/60 px-3 py-2">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="text-sm text-ice font-medium">{signal.label}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-stone">{signal.sourceId === "sentinel-2" ? "Sentinel-2" : "Landsat"}</span>
+                </div>
+                <div className="font-mono-num text-[12px] text-frost mt-0.5">{signal.index}</div>
+                <p className="text-[12px] text-stone leading-snug mt-1">{signal.reason}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="mt-3 panel-thin p-3">
+          <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Earth-observation stack</div>
+          <ul className="space-y-1.5 text-sm text-frost">
+            {EARTH_OBSERVATION_SOURCES.map(source => (
+              <li key={source.id}>
+                <span className="font-medium text-ice">{source.label}</span>{" "}
+                <span className="text-stone">({source.operator}, {source.nominalResolutionM} m, {source.revisitDays})</span>
+                <span className="text-stone"> — {source.role}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="text-[11px] text-stone italic mt-2">{GEOSPATIAL_ANALYSIS_METHOD}</p>
+        <p className="text-[11px] text-stone italic mt-1">{geospatial.limitNote}</p>
         </div>
       </Section>
 
@@ -861,6 +983,9 @@ function DetailBody({
         </div>
 
         <div className="mt-3">
+          <p className="text-[11px] text-stone leading-relaxed mb-2">
+            Citations name the station, product, or study behind each number. WMO-style 30-year windows are typically {CLIMATE_NORMALS_PERIOD} when a period appears in the label; mixed or reanalysis sources are called out in the note.
+          </p>
           <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5 flex items-center gap-2">
             <BookOpen className="w-3 h-3" /> Citations
           </div>
@@ -921,6 +1046,10 @@ function KeyValue({ label, value }: { label: string; value: string }) {
       <span className="text-frost text-right font-mono-num">{value}</span>
     </div>
   );
+}
+
+function titleCaseLocal(s: string): string {
+  return s.slice(0, 1).toUpperCase() + s.slice(1);
 }
 
 function LabelRow({ label }: { label: string }) {

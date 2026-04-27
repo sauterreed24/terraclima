@@ -43,6 +43,7 @@ export function resonantWindowFor(profile: RankingProfile): BestWindow["id"] | n
     case "driest-air": return "crisp";
     case "best-shoulder-seasons": return "outdoor";
     case "mediterranean-like": return "dry";
+    case "strongest-geospatial-signal": return "outdoor";
     default: return null;
   }
 }

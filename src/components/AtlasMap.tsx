@@ -13,6 +13,7 @@ import { fitMapViewToPoints } from "../lib/atlas-map-fit";
 import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
 import { computePinLabelModes, type MapPinLabelMode } from "../lib/atlas-map-label-visibility";
 import { AtlasMapTooltip } from "./AtlasMapTooltip";
+import { CLIMATE_NORMALS_PERIOD } from "../lib/atlas-metadata";
 
 // Topojson atlas data lives in the `atlas-data` Rollup chunk (~74 kB gz).
 // Loading it eagerly would block first paint even though the UI shell
@@ -363,6 +364,21 @@ export function AtlasMap({
     () => computePinLabelModes(pts, view.k, selectedId, hoverId),
     [pts, view.k, selectedId, hoverId]
   );
+
+  /**
+   * SVG paint order = hit-test order. Render inactive pins first, then hover,
+   * then selection so stacked pins are clickable without hunting for a gap.
+   */
+  const markerRenderOrder = useMemo(() => {
+    const out = [...pts];
+    const z = (id: string) => (id === selectedId ? 2 : id === hoverId ? 1 : 0);
+    out.sort((a, b) => {
+      const d = z(a.place.id) - z(b.place.id);
+      if (d !== 0) return d;
+      return a.place.id.localeCompare(b.place.id);
+    });
+    return out;
+  }, [pts, selectedId, hoverId]);
 
   // Markers call `onSelect` directly. Do not gate on `dragRef.moved`: marker
   // `pointerdown` stops propagation so the map never resets `moved` after a
@@ -765,7 +781,7 @@ export function AtlasMap({
 
           {/* Markers */}
           <g>
-            {pts.map(pt => (
+            {markerRenderOrder.map(pt => (
               <Marker
                 key={pt.place.id}
                 pt={pt}
@@ -907,6 +923,9 @@ export function AtlasMap({
           {" · "}
           <span className="text-[rgba(255,220,150,0.95)]">Mexico</span>
           {" "}— fill stays the climate driver.
+        </p>
+        <p className="text-[9px] text-[rgba(200,218,236,0.78)] leading-snug pt-0.5">
+          Chart numbers in each profile use the cited normals or blends; WMO 30-year windows are often {CLIMATE_NORMALS_PERIOD} when a period is named.
         </p>
       </div>
 

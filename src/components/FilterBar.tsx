@@ -17,6 +17,7 @@ export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
   { id: "climate-resilient", label: "Climate-resilient" },
   { id: "best-four-season", label: "Best four-season" },
   { id: "best-diurnal-sleep", label: "Best diurnal / sleep climate" },
+  { id: "strongest-geospatial-signal", label: "Strongest geospatial signal" },
   { id: "mediterranean-like", label: "Mediterranean-like" },
   { id: "wet-forest-refuges", label: "Wet-forest refuges" },
   { id: "monsoon-drama", label: "Monsoon drama" },
@@ -50,7 +51,7 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
   const clearAll = useCallback(() => setFilters({ countries: new Set(), archetypes: new Set(), search: "" }), [setFilters]);
 
   return (
-    <div className="panel contour-bg p-3 space-y-3">
+    <div className="panel contour-bg atlas-filter-dock p-3 space-y-3">
       <label className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white/90 border border-[rgba(210,180,150,0.4)] focus-within:border-[rgba(26,143,168,0.55)] focus-within:ring-2 focus-within:ring-[rgba(94,196,220,0.25)] transition-[border-color,box-shadow] min-h-[2.75rem]">
         <Search className="w-4 h-4 text-stone shrink-0" aria-hidden />
         <input

@@ -14,7 +14,9 @@
     "test:prose": "tsx scripts/test-prose.ts",
     "audit:corpus": "tsx scripts/audit-corpus.ts",
     "sanity": "tsx scripts/sanity-check.ts",
-    "quality:check": "npm run typecheck && npm run test:prose && npm run audit:corpus && npm run sanity && npm run build"
+    "test:corpus-gold": "tsx scripts/corpus-rank-gold.ts",
+    "dump:corpus-rank": "tsx scripts/dump-corpus-ranks.ts",
+    "quality:check": "npm run typecheck && npm run test:prose && npm run audit:corpus && npm run sanity && npm run test:corpus-gold && npm run build"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.13.24",

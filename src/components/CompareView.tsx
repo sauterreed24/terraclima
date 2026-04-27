@@ -5,6 +5,7 @@ import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
 import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
+import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { X } from "lucide-react";
 
 interface Props {
@@ -52,7 +53,9 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
             </div>
 
             <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${places.length}, minmax(0, 1fr))` }}>
-              {places.map(p => (
+              {places.map(p => {
+                const geo = buildGeospatialAnalysis(p);
+                return (
                 <div key={p.id} className="panel p-4 relative">
                   <button onClick={() => onRemove(p.id)} className="absolute top-2 right-2 text-stone hover:text-ice" aria-label="Remove">
                     <X className="w-4 h-4" />
@@ -72,6 +75,8 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
                     <Row label="Hardiness" value={p.growability.hardinessZone ?? p.climate.hardinessZone ?? "—"} />
                     <Row label="Chill hrs" value={`${p.climate.chillHours ?? "—"}`} />
                     <Row label="Uniqueness" value={p.scores.microclimateUniqueness.toString()} />
+                    <Row label="Geo signal" value={`${geo.geospatialSignalScore}/100`} />
+                    <Row label="EO fit" value={`${geo.eoObservabilityScore}/100`} />
                     <Row label="Hidden gem" value={p.scores.hiddenGem.toString()} />
                     <Row label="Resilience" value={p.scores.resilience.toString()} />
                     <Row label="Growability" value={p.scores.growability.toString()} />
@@ -84,7 +89,8 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
 
                   <p className="text-sm text-frost mt-3 leading-snug">{prose(p.summaryShort)}</p>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </motion.div>
         </motion.div>

@@ -23,4 +23,10 @@ export const FIELD_NOTES: readonly string[] = [
   "Dew point is honest in a way ‘humidity %’ often isn’t — it’s the temperature air must reach to saturate, and it sets whether sweat evaporates.",
   "Snow albedo is a feedback: fresh cover reflects sun; bare ground or forest absorbs it — so the same March day can mean freeze or thaw depending on what’s on the ground.",
   "A station’s siting (roof, parking lot, river bottom) can bias its record by a full hardiness zone — always ask where the sensor sleeps at night.",
+  "PET (potential evapotranspiration) tells you how thirsty the air is, not just how much it rained — the same annual rainfall can feel arid or soggy depending on sun and heat.",
+  "A dryline is a density boundary: on one side Gulf moisture, on the other desert air — the sharpest summer thunderstorm factories on the continent often form along that invisible seam.",
+  "Barrier jets hug windward coasts and mountains, lifting moisture long before a warm front arrives — the rain gauge can max out while people inland stay dry and sunny.",
+  "Foehn ‘illness’ was old Alpine folklore, but the pressure drop, dust, and ion chemistry behind a warm downslope can genuinely skew sleep and sinuses for sensitive people.",
+  "Continental arctic versus maritime polar air is not a pedantic label — the second carries ocean moisture even when it is bitterly cold, which changes snow type and road icing overnight.",
+  "Sentinel-2 and Landsat together are a microclimate x-ray: one captures sharp land-cover texture, the other gives long thermal memory across decades.",
 ];

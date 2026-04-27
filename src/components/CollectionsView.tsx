@@ -19,7 +19,8 @@ export function CollectionsView({ onOpenPlace, onPick, activeId }: Props) {
           <motion.div
             key={c.id}
             layout
-            className={`panel p-4 anim-fade-in ${isActive ? "glow-glacier" : ""}`}
+            className={`panel collection-curation-card p-4 anim-fade-in ${isActive ? "glow-glacier" : ""}`}
+            data-tone={c.tone}
             style={isActive ? { borderColor: "rgba(140,200,224,0.75)" } : undefined}
           >
             <div className="flex items-start justify-between gap-3 mb-2">

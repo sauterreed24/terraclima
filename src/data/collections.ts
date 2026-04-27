@@ -193,6 +193,28 @@ export const COLLECTIONS: Collection[] = [
     tone: "sage",
     placeIds: ["black-mountain-nc", "asheville-nc", "boone-nc", "highlands-nc", "gatlinburg-tn", "chattanooga-tn", "eureka-springs-ar", "morgantown-wv", "mentone-al", "clayton-ga", "burkes-garden-va"],
   },
+  {
+    id: "comfort-exemplars",
+    title: "Year-Round Comfort — A Small Tour",
+    subtitle: "Madrean islands, eternal-spring highlands, Mediterranean pockets, Appalachian belts",
+    description:
+      "A deliberately short list that stitches together the same story the atlas tells in prose: Madrean sky-island relief above desert heat; Mexican highlands where latitude and altitude trade off into endless spring; Baja and California coasts where cold water and terrain carve mild, dry-summer pockets; and Southern Appalachian ridges and thermal belts where mid-slopes stay kinder than the valleys. Each stop is in the full atlas — use it as a narrative spine, not an exhaustive catalog.",
+    tone: "sage",
+    placeIds: [
+      "huachuca-az",
+      "portal-az",
+      "silver-city-nm",
+      "oaxaca-mx",
+      "cuernavaca-mx",
+      "san-miguel-mx",
+      "ensenada-mx",
+      "valle-guadalupe-mx",
+      "santa-barbara-ca",
+      "monterey-ca",
+      "black-mountain-nc",
+      "highlands-nc",
+    ],
+  },
 ];
 
 export const COLLECTION_BY_ID = Object.fromEntries(COLLECTIONS.map(c => [c.id, c]));

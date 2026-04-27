@@ -12,6 +12,7 @@ import { COLLECTION_BY_ID } from "./data/collections";
 import { FIELD_NOTES } from "./data/field-notes";
 import { applyFilters, rankLivabilityPreview, rankPlaces, type FilterState, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { resonantWindowFor } from "./lib/best-months";
+import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { useUnits } from "./lib/units";
 import {
@@ -36,7 +37,7 @@ const RANKING_PROFILES: readonly RankingProfile[] = [
   "coolest-summers", "mildest-winters", "best-shoulder-seasons", "driest-air",
   "best-growability", "hidden-gems", "most-unique", "lowest-fire-risk",
   "climate-resilient", "best-four-season", "best-diurnal-sleep",
-  "mediterranean-like", "wet-forest-refuges", "monsoon-drama",
+  "strongest-geospatial-signal", "mediterranean-like", "wet-forest-refuges", "monsoon-drama",
 ] as const;
 
 const URL_INIT = readInitialAppState(
@@ -330,7 +331,7 @@ export default function App() {
                 <div className="text-[11px] text-stone leading-relaxed px-0.5 max-w-3xl space-y-2.5 tc-page-intro">
                   <p>
                     <span className="font-medium text-frost">How you learn each place:</span>{" "}
-                    tap any pin or card. A profile opens on the right — that is the full write-up for that microclimate. Scroll it like an article, or use <span className="text-frost font-medium">On this page</span> (snap chips on your phone, a soft rail on wider screens) to jump between sections: opening story, <span className="text-frost font-medium">field dossier</span> (stacked chapters + in-dossier jumps), seasons, soil, risks, who it fits, similar stops, and data sources.
+                    tap any pin or card. A profile opens on the right — that is the full write-up for that microclimate. Scroll it like an article, or use <span className="text-frost font-medium">On this page</span> (snap chips on your phone, a soft rail on wider screens) to jump between sections: opening story, <span className="text-frost font-medium">field dossier</span> (stacked chapters + in-dossier jumps), seasons, geospatial analysis, soil, risks, who it fits, similar stops, and data sources.
                   </p>
                   <p>
                     <span className="font-medium text-frost">Depth you will always see:</span>{" "}
@@ -742,7 +743,7 @@ const HeroCard = memo(function HeroCard({
                 Show the exact weights
               </summary>
               <p className="mt-1.5 leading-relaxed border-l-2 border-[rgba(61,143,85,0.35)] pl-2">
-                34% atlas resilience score · 22% mild-winter index · 18% summer headroom · 14% composite hazard cushion · 12% growability.                 This is editorial triage for exploration — not appraisal, insurance, civil engineering, or medical heat-stress advice.
+                34% atlas resilience score · 22% mild-winter index · 18% summer headroom · 14% composite hazard cushion · 12% growability. This is editorial triage for exploration — not appraisal, insurance, civil engineering, or medical heat-stress advice.
               </p>
             </details>
           </div>
@@ -755,10 +756,11 @@ const HeroCard = memo(function HeroCard({
                 key={row.place.id}
                 type="button"
                 onClick={() => onOpenPlace(row.place.id)}
+                aria-label={`Livability rank ${i + 1}. ${row.place.name}, ${row.place.koppen}. Open place profile.`}
                 className="hero-top-ten__chip snap-start shrink-0 text-left rounded-lg border border-[rgba(200,170,140,0.45)] bg-white/90 px-3 py-2 min-w-[10.5rem] max-w-[13rem] transition-[border-color,box-shadow,transform] hover:border-[rgba(26,143,168,0.45)] hover:shadow-md hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgba(26,143,168,0.55)]"
               >
                 <div className="flex items-baseline justify-between gap-2">
-                  <span className="font-atlas text-lg text-ice/90 tabular-nums leading-none">{i + 1}</span>
+                  <span className="font-atlas text-lg text-ice/90 tabular-nums leading-none" aria-hidden>{i + 1}</span>
                   <span className="text-[10px] uppercase tracking-wider text-stone truncate">{row.place.country === "USA" ? "US" : row.place.country === "Canada" ? "CA" : "MX"}</span>
                 </div>
                 <div className="font-atlas text-sm text-ice leading-tight mt-1 truncate" title={row.place.name}>{row.place.name}</div>
@@ -785,9 +787,10 @@ const HeroCard = memo(function HeroCard({
                     key={row.place.id}
                     type="button"
                     onClick={() => onOpenPlace(row.place.id)}
+                    aria-label={`${i + 1}. ${row.place.name}. Open place profile.`}
                     className="inline-flex items-baseline gap-1.5 rounded-full border border-[rgba(180,160,140,0.5)] bg-white/85 px-2.5 py-1 text-left text-[11px] text-frost hover:border-[rgba(26,143,168,0.5)] hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[rgba(26,143,168,0.55)]"
                   >
-                    <span className="font-mono-num text-stone tabular-nums">{i + 1}.</span>
+                    <span className="font-mono-num text-stone tabular-nums" aria-hidden>{i + 1}.</span>
                     <span className="font-medium truncate max-w-[9rem]">{row.place.name}</span>
                   </button>
                 ))}
@@ -865,6 +868,9 @@ const FootprintPanel = memo(function FootprintPanel() {
       <p className="text-xs text-stone leading-relaxed">
         Flagship stops are written like chapters — rich story, risks, and climate-change context. Spotlight stops are built to compare cleanly. Index entries keep the list honest as we add more towns without bloating the map.
       </p>
+      <p className="text-[10px] text-stone/90 leading-relaxed border-t border-[rgba(200,160,120,0.2)] pt-2 mt-2">
+        Open any profile: cards, map, and the detail drawer rank that stop against the full {PLACE_COUNTS.total}-place corpus (wetter/drier, cooler summers, higher ground, diurnal, scores) using the same summary fields as the header numbers.
+      </p>
     </div>
   );
 });
@@ -885,12 +891,14 @@ const Footer = memo(function Footer() {
         <div className="flex items-center gap-3">
           <Layers className="w-3.5 h-3.5" />
           <span>
-            Terraclima is built for curious travelers and serious readers alike. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals (1991–2020 where we have them), with WorldClim where we need a wider net. Soil sketches lean on SoilGrids and regional soil surveys. Every score ties back to notes on that place; if data are thin, we say so.
+            Terraclima is built for curious travelers and serious readers alike. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals ({CLIMATE_NORMALS_PERIOD} where we have them), with WorldClim where we need a wider net. Geospatial context layers Sentinel-2 and Landsat over the same terrain-climate framework used across the atlas. Soil sketches lean on SoilGrids and regional soil surveys. Every score ties back to notes on that place; if data are thin, we say so. This is a curated atlas — not a live weather or appraisal feed.
           </span>
         </div>
         <div className="flex items-center gap-3">
           <Search className="w-3.5 h-3.5" />
-          <span>{PLACE_COUNTS.total} hand-picked places · room to grow</span>
+          <span>
+            {PLACE_COUNTS.total} hand-picked places · editorial refresh {ATLAS_EDITORIAL_SNAPSHOT}
+          </span>
         </div>
       </div>
     </footer>

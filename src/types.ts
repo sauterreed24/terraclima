@@ -174,7 +174,7 @@ export interface ScoreBundle {
 
 export interface Citation {
   label: string;
-  kind: "noaa" | "prism" | "usda" | "usgs" | "fema" | "epa" | "eccc" | "climate-atlas-canada" | "smn" | "inegi" | "inecc" | "atlas-riesgos" | "worldclim" | "soilgrids" | "nasa-nex" | "cmip6" | "oss-data" | "academic" | "field-observation" | "other";
+  kind: "noaa" | "prism" | "usda" | "usgs" | "fema" | "epa" | "eccc" | "climate-atlas-canada" | "smn" | "inegi" | "inecc" | "atlas-riesgos" | "worldclim" | "soilgrids" | "nasa-nex" | "cmip6" | "sentinel-2" | "landsat" | "oss-data" | "academic" | "field-observation" | "other";
   note?: string;
   url?: string;
 }

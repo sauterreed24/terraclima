@@ -4,12 +4,15 @@
  */
 export const PD = {
   overview: "pd-overview",
+  atAGlance: "pd-at-a-glance",
   fieldStory: "pd-field-story",
   deepDives: "pd-deep-dives",
   whyHere: "pd-why-here",
   rhythm: "pd-seasonal-rhythm",
   bestMonths: "pd-best-months",
   numbersTogether: "pd-numbers-together",
+  corpus: "pd-atlas-corpus",
+  geospatial: "pd-geospatial",
   signature: "pd-signature",
   contrast: "pd-contrast",
   soil: "pd-soil-grow",
@@ -35,6 +38,7 @@ export interface PlaceNavItem {
 export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   const items: PlaceNavItem[] = [
     { id: PD.overview, label: "Opening" },
+    { id: PD.atAGlance, label: "At a glance" },
     { id: PD.fieldStory, label: "Field story" },
   ];
 
@@ -53,6 +57,8 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
 
   items.push(
     { id: PD.numbersTogether, label: "Numbers together" },
+    { id: PD.corpus, label: "Full atlas context" },
+    { id: PD.geospatial, label: "Geospatial analysis" },
     { id: PD.signature, label: "Climate signature" },
   );
 

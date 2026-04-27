@@ -5,7 +5,9 @@ import { meanJanLow, meanJulyHigh } from "../lib/scoring";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { PLACE_ANNUAL_PRECIP } from "../data/places";
+import { getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { computeBestMonths, type BestWindow } from "../lib/best-months";
+import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { ArrowRight } from "lucide-react";
 
 interface Props {
@@ -76,6 +78,9 @@ export const PlaceCard = memo(function PlaceCard({
     if (compact) return null;
     return computeBestMonths(place).find(w => w.kind === "good") ?? null;
   }, [place, compact]);
+
+  const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);
+  const geospatial = useMemo(() => (compact ? null : buildGeospatialAnalysis(place)), [place, compact]);
 
   const toneRgb = TONE_RGB[tone] ?? TONE_RGB.ice;
 
@@ -179,6 +184,16 @@ export const PlaceCard = memo(function PlaceCard({
             <Stat label="Annual precip" value={fmtPrecip(annualP, dist)} tone="sage" />
             <Stat label="Uniqueness" value={place.scores.microclimateUniqueness.toString()} tone="ice" />
           </div>
+          {corpusTeaser ? (
+            <p className="text-[10px] leading-snug text-stone/88 mt-2 pl-0.5 border-t border-dashed border-[rgba(71,90,122,0.12)] pt-2" title={corpusTeaser}>
+              {corpusTeaser}
+            </p>
+          ) : null}
+          {geospatial ? (
+            <p className="text-[10px] leading-snug text-stone/88 mt-1 pl-0.5">
+              Geospatial signal {geospatial.geospatialSignalScore}/100 · EO fit {geospatial.eoObservabilityScore}/100 · Sentinel-2 + Landsat terrain context.
+            </p>
+          ) : null}
         </div>
 
         {!compact && place.archetypes.length > 0 && (

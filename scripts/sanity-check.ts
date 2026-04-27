@@ -8,6 +8,8 @@ import { COLLECTIONS } from "../src/data/collections";
 import { CONCEPTS } from "../src/data/glossary";
 import { ARCHETYPES } from "../src/data/archetypes";
 import { DRIVER_LABELS } from "../src/types";
+import { assertAtlasCorpusHealthy } from "../src/lib/atlas-corpus-stats";
+import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
 
 type Issue = { id: string; severity: "WARN" | "ERROR"; msg: string };
 const issues: Issue[] = [];
@@ -108,6 +110,22 @@ for (const p of PLACES) {
     if (val < 0 || val > 100) report(p.id, "ERROR", `score ${key}=${val} out of [0,100]`);
   }
 
+  // --- Geospatial analysis invariants ---
+  const geo = buildGeospatialAnalysis(p);
+  if (geo.geospatialSignalScore < 0 || geo.geospatialSignalScore > 100) {
+    report(p.id, "ERROR", `geospatialSignalScore ${geo.geospatialSignalScore} out of [0,100]`);
+  }
+  if (geo.eoObservabilityScore < 0 || geo.eoObservabilityScore > 100) {
+    report(p.id, "ERROR", `eoObservabilityScore ${geo.eoObservabilityScore} out of [0,100]`);
+  }
+  for (const source of geo.sourceFits) {
+    if (source.score < 0 || source.score > 100) report(p.id, "ERROR", `${source.sourceId} source fit ${source.score} out of [0,100]`);
+  }
+  if (geo.spectralSignals.length < 2) report(p.id, "WARN", `only ${geo.spectralSignals.length} spectral signals`);
+  if (!Number.isFinite(geo.reliefEnergyMPerKm) || !Number.isFinite(geo.hydroSeasonalityRatio)) {
+    report(p.id, "ERROR", `non-finite geospatial metrics`);
+  }
+
   // --- Citation count ---
   if (!p.citations || p.citations.length === 0) {
     report(p.id, "ERROR", `no citations`);
@@ -146,6 +164,13 @@ for (const c of CONCEPTS) {
   for (const id of c.exampleIds ?? []) {
     if (!placeIdSet.has(id)) report(`concept:${c.id}`, "ERROR", `unknown example placeId "${id}"`);
   }
+}
+
+// --- Atlas-wide corpus invariants (percentile arrays) ---
+try {
+  assertAtlasCorpusHealthy();
+} catch (e) {
+  report("atlas-corpus", "ERROR", e instanceof Error ? e.message : String(e));
 }
 
 // --- Report ---
