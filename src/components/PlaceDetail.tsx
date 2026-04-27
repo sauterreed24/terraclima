@@ -678,7 +678,7 @@ function DetailBody({
 
       <Section anchorId={PD.geospatial} title="Geospatial analysis" icon={<Satellite className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          Sentinel-2 and Landsat context is fused with this place&apos;s terrain, monthly climate, and risk structure to produce a lightweight geospatial signal profile for fast comparison. Analysis confidence and Sensor fit are shown separately so the numbers read as screening evidence, not false precision.
+          This screening profile is derived from the atlas terrain, monthly climate, risk, and corpus-rank fields. Sentinel-2 and Landsat are shown as reference sensors for checking the surface signals a field analyst would review next. Analysis confidence and Sensor fit are separated so the numbers read as evidence, not false precision.
         </p>
         <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-3">
           <div className="panel-thin p-4 space-y-2">
@@ -748,7 +748,7 @@ function DetailBody({
             ))}
           </ul>
           <p className="text-[11px] text-stone italic mt-2">{GEOSPATIAL_ANALYSIS_METHOD}</p>
-        <p className="text-[11px] text-stone italic mt-1">{geospatial.limitNote}</p>
+          <p className="text-[11px] text-stone italic mt-1">{geospatial.limitNote}</p>
         </div>
       </Section>
 

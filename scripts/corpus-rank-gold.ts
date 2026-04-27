@@ -6,6 +6,7 @@
  */
 import { assertAtlasCorpusHealthy, getPlaceCorpusRanks, type PlaceCorpusRanks } from "../src/lib/atlas-corpus-stats";
 import { PLACES_BY_ID } from "../src/data/places";
+import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
 
 const TOL = 1e-5;
 
@@ -114,6 +115,72 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
   },
 ];
 
+type GeospatialGold = {
+  geospatialSignalScore: number;
+  eoObservabilityScore: number;
+  reliefEnergyMPerKm: number;
+  hydroSeasonalityRatio: number;
+  terrainExposureIndex: number;
+  analysisConfidence: string;
+  sourceFits: { sourceId: string; score: number; label: string }[];
+  spectralSignals: string[];
+};
+
+const GEOSPATIAL_GOLD: { id: string; expected: GeospatialGold }[] = [
+  {
+    id: "sequim-wa",
+    expected: {
+      geospatialSignalScore: 40,
+      eoObservabilityScore: 65,
+      reliefEnergyMPerKm: 1.1,
+      hydroSeasonalityRatio: 5.142857,
+      terrainExposureIndex: 1.533333,
+      analysisConfidence: "high",
+      sourceFits: [{ sourceId: "sentinel-2", score: 77, label: "useful" }, { sourceId: "landsat", score: 53, label: "contextual" }],
+      spectralSignals: ["NDVI / red-edge NDVI", "LST anomaly", "NDMI", "NDSI"],
+    },
+  },
+  {
+    id: "tofino-bc",
+    expected: {
+      geospatialSignalScore: 43,
+      eoObservabilityScore: 60,
+      reliefEnergyMPerKm: 0.416667,
+      hydroSeasonalityRatio: 7.914286,
+      terrainExposureIndex: 2.733333,
+      analysisConfidence: "high",
+      sourceFits: [{ sourceId: "sentinel-2", score: 76, label: "useful" }, { sourceId: "landsat", score: 43, label: "contextual" }],
+      spectralSignals: ["NDVI / red-edge NDVI", "LST anomaly", "NDMI"],
+    },
+  },
+  {
+    id: "portal-az",
+    expected: {
+      geospatialSignalScore: 66,
+      eoObservabilityScore: 71,
+      reliefEnergyMPerKm: 58.4,
+      hydroSeasonalityRatio: 9.3,
+      terrainExposureIndex: 3.067538,
+      analysisConfidence: "high",
+      sourceFits: [{ sourceId: "sentinel-2", score: 68, label: "useful" }, { sourceId: "landsat", score: 75, label: "useful" }],
+      spectralSignals: ["NDVI / red-edge NDVI", "LST anomaly", "NDMI", "NBR / dNBR", "NDSI"],
+    },
+  },
+  {
+    id: "fairbanks-ak",
+    expected: {
+      geospatialSignalScore: 59,
+      eoObservabilityScore: 64,
+      reliefEnergyMPerKm: 5.4,
+      hydroSeasonalityRatio: 6.75,
+      terrainExposureIndex: 3.546667,
+      analysisConfidence: "high",
+      sourceFits: [{ sourceId: "sentinel-2", score: 52, label: "contextual" }, { sourceId: "landsat", score: 78, label: "strong" }],
+      spectralSignals: ["NDVI / red-edge NDVI", "LST anomaly", "NBR / dNBR", "NDSI"],
+    },
+  },
+];
+
 function close(a: number, b: number): boolean {
   return Math.abs(a - b) <= TOL;
 }
@@ -167,6 +234,42 @@ function main() {
       }
     }
   }
+  for (const row of GEOSPATIAL_GOLD) {
+    const place = PLACES_BY_ID[row.id];
+    if (!place) {
+      console.error(`FAIL: unknown place id "${row.id}" (geospatial gold)`);
+      failed++;
+      continue;
+    }
+    const act = buildGeospatialAnalysis(place);
+    const numericPairs = [
+      ["geospatialSignalScore", act.geospatialSignalScore, row.expected.geospatialSignalScore],
+      ["eoObservabilityScore", act.eoObservabilityScore, row.expected.eoObservabilityScore],
+      ["reliefEnergyMPerKm", Number(act.reliefEnergyMPerKm.toFixed(6)), row.expected.reliefEnergyMPerKm],
+      ["hydroSeasonalityRatio", Number(act.hydroSeasonalityRatio.toFixed(6)), row.expected.hydroSeasonalityRatio],
+      ["terrainExposureIndex", Number(act.terrainExposureIndex.toFixed(6)), row.expected.terrainExposureIndex],
+    ] as const;
+    for (const [k, av, ev] of numericPairs) {
+      if (!close(av, ev)) {
+        console.error(`FAIL ${row.id} geo ${k}: expected ${ev}, got ${av}`);
+        failed++;
+      }
+    }
+    if (act.analysisConfidence !== row.expected.analysisConfidence) {
+      console.error(`FAIL ${row.id} geo analysisConfidence: expected ${row.expected.analysisConfidence}, got ${act.analysisConfidence}`);
+      failed++;
+    }
+    const sourceFits = act.sourceFits.map(s => ({ sourceId: s.sourceId, score: s.score, label: s.label }));
+    if (JSON.stringify(sourceFits) !== JSON.stringify(row.expected.sourceFits)) {
+      console.error(`FAIL ${row.id} geo sourceFits: expected ${JSON.stringify(row.expected.sourceFits)}, got ${JSON.stringify(sourceFits)}`);
+      failed++;
+    }
+    const spectralSignals = act.spectralSignals.map(s => s.index);
+    if (JSON.stringify(spectralSignals) !== JSON.stringify(row.expected.spectralSignals)) {
+      console.error(`FAIL ${row.id} geo spectralSignals: expected ${JSON.stringify(row.expected.spectralSignals)}, got ${JSON.stringify(spectralSignals)}`);
+      failed++;
+    }
+  }
   if (failed > 0) {
     console.error(
       `\n${failed} regression mismatch(es). If you edited climate JSON on purpose, update expected[] in scripts/corpus-rank-gold.ts ` +
@@ -174,7 +277,7 @@ function main() {
     );
     process.exit(1);
   }
-  console.log(`OK  corpus-rank-gold: ${GOLD.length} place snapshots`);
+  console.log(`OK  corpus-rank-gold: ${GOLD.length} rank snapshots + ${GEOSPATIAL_GOLD.length} geospatial snapshots`);
 }
 
 main();

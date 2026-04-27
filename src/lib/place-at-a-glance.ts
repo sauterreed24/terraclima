@@ -65,10 +65,17 @@ export function buildAtAGlanceTiles(
   });
 
   out.push({
-    label: "Earth observation",
-    value: "Sentinel-2 + Landsat",
+    label: "Reference sensors",
+    value: "Sentinel-2 / Landsat",
     hint: `${EARTH_OBSERVATION_SOURCES.map(s => `${s.label} (${s.nominalResolutionM} m)`).join(" · ")} · EO fit ${geo.eoObservabilityScore}/100`,
     tone: "ice",
+  });
+
+  out.push({
+    label: "Geospatial signal",
+    value: `${geo.geospatialSignalScore}/100`,
+    hint: `${geo.analysisConfidence} confidence · ${geo.sourceFits.map(s => `${s.sourceId} ${s.score}`).join(" · ")}`,
+    tone: "aurora",
   });
 
   const annual = PLACE_ANNUAL_PRECIP[place.id] ?? place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
@@ -119,13 +126,6 @@ export function buildAtAGlanceTiles(
       tone: "aurora",
     });
   }
-
-  out.push({
-    label: "Geospatial signal",
-    value: `${geo.geospatialSignalScore}/100`,
-    hint: `${geo.analysisConfidence} confidence · ${geo.sourceFits.map(s => `${s.sourceId} ${s.score}`).join(" · ")}`,
-    tone: "aurora",
-  });
 
   return out.slice(0, 8);
 }

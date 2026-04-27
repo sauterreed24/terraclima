@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { useMemo, type CSSProperties } from "react";
 import type { MicroclimateArchetype, Place, RiskAssessment, RiskLevel, TopographicDriver } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
@@ -98,7 +98,7 @@ export function AtlasMapTooltip({
   const s = place.scores;
   const drivers = place.drivers.slice(0, 6).map(formatDriver);
   const watch = topRiskRows(place, 3);
-  const geospatial = buildGeospatialAnalysis(place);
+  const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
   const settlements = place.settlementsWithinZone?.slice(0, 5);
   const secondaryArchetypes = place.archetypes.slice(1);
 

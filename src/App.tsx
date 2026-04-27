@@ -891,7 +891,7 @@ const Footer = memo(function Footer() {
         <div className="flex items-center gap-3">
           <Layers className="w-3.5 h-3.5" />
           <span>
-            Terraclima is built for curious travelers and serious readers alike. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals ({CLIMATE_NORMALS_PERIOD} where we have them), with WorldClim where we need a wider net. Geospatial context layers Sentinel-2 and Landsat over the same terrain-climate framework used across the atlas. Soil sketches lean on SoilGrids and regional soil surveys. Every score ties back to notes on that place; if data are thin, we say so. This is a curated atlas — not a live weather or appraisal feed.
+            Terraclima is built for curious travelers and serious readers alike. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals ({CLIMATE_NORMALS_PERIOD} where we have them), with WorldClim where we need a wider net. Geospatial screening is derived from the same terrain-climate framework used across the atlas, with Sentinel-2 and Landsat listed as reference sensors for follow-up surface checks. Soil sketches lean on SoilGrids and regional soil surveys. Every score ties back to notes on that place; if data are thin, we say so. This is a curated atlas — not a live weather or appraisal feed.
           </span>
         </div>
         <div className="flex items-center gap-3">

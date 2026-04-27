@@ -144,6 +144,13 @@ for (const p of PLACES) {
   if (ph1 < 3 || ph2 > 9.5 || ph1 > ph2) report(p.id, "WARN", `pH range [${ph1}, ${ph2}]`);
 
   // --- nearbyContrasts ids ---
+  for (const lc of p.localContrast ?? []) {
+    if (!Number.isFinite(lc.radiusKm) || lc.radiusKm <= 0) {
+      report(p.id, "ERROR", `localContrast radiusKm ${lc.radiusKm} is not positive/finite`);
+    } else if (lc.radiusKm < 1 || lc.radiusKm > 250) {
+      report(p.id, "WARN", `localContrast radiusKm ${lc.radiusKm}km is unusual`);
+    }
+  }
   for (const nc of p.nearbyContrasts ?? []) {
     if (nc.placeId && !PLACES.some(x => x.id === nc.placeId)) {
       report(p.id, "ERROR", `nearbyContrast references unknown placeId "${nc.placeId}"`);
