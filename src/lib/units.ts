@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useCallback, useContext, useMemo, useState, useEffect } from "react";
 import type { ReactNode } from "react";
 import React from "react";
 
@@ -49,17 +49,23 @@ export function UnitProvider({ children }: { children: ReactNode }) {
     } catch { /* noop */ }
   }, []);
 
-  const setTemp = (t: TempUnit) => {
+  const setTemp = useCallback((t: TempUnit) => {
     setTempRaw(t);
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ temp: t, dist })); } catch { /* noop */ }
-  };
-  const setDist = (d: DistUnit) => {
+  }, [dist]);
+  const setDist = useCallback((d: DistUnit) => {
     setDistRaw(d);
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ temp, dist: d })); } catch { /* noop */ }
-  };
-  const toggle = () => setTemp(temp === "F" ? "C" : "F");
+  }, [temp]);
+  const toggle = useCallback(() => {
+    setTempRaw(t => {
+      const next = t === "F" ? "C" : "F";
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ temp: next, dist })); } catch { /* noop */ }
+      return next;
+    });
+  }, [dist]);
 
-  const value: UnitState = { temp, dist, setTemp, setDist, toggle };
+  const value: UnitState = useMemo(() => ({ temp, dist, setTemp, setDist, toggle }), [temp, dist, setTemp, setDist, toggle]);
   return React.createElement(UnitContext.Provider, { value }, children);
 }
 
@@ -547,5 +553,5 @@ function localizeDistanceProse(text: string): string {
 /** Hook wrapper so components can use `const prose = useProse(); prose(str)`. */
 export function useProse(): (s: string | null | undefined) => string {
   const { temp, dist } = useUnits();
-  return (s) => localizeProse(s, temp, dist);
+  return useCallback((s) => localizeProse(s, temp, dist), [temp, dist]);
 }

@@ -1,6 +1,7 @@
 import { MONTHS } from "../../types";
 import type { Monthly12 } from "../../types";
 import { useUnits, toTempUnit } from "../../lib/units";
+import { useId } from "react";
 
 interface Props {
   highs: Monthly12;
@@ -17,6 +18,7 @@ interface Props {
  * across the 12 months of a typical year. Honours user unit preference.
  */
 export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, refLabel }: Props) {
+  const ribbonGradId = `ribbon-grad-${useId().replace(/:/g, "")}`;
   const { temp } = useUnits();
   const W = 560, H = height, PAD_L = 44, PAD_R = 12, PAD_T = 14, PAD_B = 28;
   const chartW = W - PAD_L - PAD_R;
@@ -53,9 +55,9 @@ export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, re
   for (let t = Math.ceil(dataMin / tickStep) * tickStep; t <= dataMax; t += tickStep) ticks.push(t);
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto">
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label={`Monthly high and low temperature ribbon in degrees ${temp}`}>
       <defs>
-        <linearGradient id="ribbonGrad" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={ribbonGradId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#d6ad66" stopOpacity="0.6" />
           <stop offset="0.5" stopColor="#89af88" stopOpacity="0.42" />
           <stop offset="1" stopColor="#4faacd" stopOpacity="0.55" />
@@ -107,7 +109,7 @@ export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, re
       )}
 
       {/* Ribbon */}
-      <path d={pathRibbon()} fill="url(#ribbonGrad)" stroke="none" />
+      <path d={pathRibbon()} fill={`url(#${ribbonGradId})`} stroke="none" />
 
       {/* Reference line (optional) */}
       {dRefHighs && <path d={pathLine(dRefHighs)} fill="none" stroke="#7c8796" strokeWidth="1.2" strokeDasharray="4 3" />}

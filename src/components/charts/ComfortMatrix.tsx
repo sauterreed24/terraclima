@@ -1,5 +1,6 @@
 import type { Place } from "../../types";
 import { MONTHS } from "../../types";
+import { useId } from "react";
 
 interface Props { place: Place }
 
@@ -10,6 +11,7 @@ interface Props { place: Place }
  * instantly legible. Not a scientific index — a glanceable seasonal read.
  */
 export function ComfortMatrix({ place }: Props) {
+  const glowId = `comfort-glow-${useId().replace(/:/g, "")}`;
   const scores = MONTHS.map((_, i) => scoreMonth(place, i));
   const peakIdx = scores.reduce((best, v, i, arr) => (v > arr[best] ? i : best), 0);
 
@@ -24,7 +26,7 @@ export function ComfortMatrix({ place }: Props) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Monthly comfort matrix">
       <defs>
-        <filter id="comfortGlow" x="-20%" y="-20%" width="140%" height="140%">
+        <filter id={glowId} x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="1.4" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
@@ -47,7 +49,7 @@ export function ComfortMatrix({ place }: Props) {
               rx="6"
               fill={fill}
               opacity={isPeak ? 0.95 : 0.82}
-              filter={isPeak ? "url(#comfortGlow)" : undefined}
+              filter={isPeak ? `url(#${glowId})` : undefined}
             />
             {isPeak && (
               <rect

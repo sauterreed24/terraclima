@@ -1,6 +1,6 @@
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
-import { meanJanLow, meanJulyHigh } from "./scoring";
+import { meanJanLow, meanSummerHigh } from "./scoring";
 import { fmtElev, fmtPrecip, fmtTemp } from "./units";
 import type { DistUnit, TempUnit } from "./units";
 
@@ -14,7 +14,7 @@ export function composeFieldStory(
   temp: TempUnit,
   dist: DistUnit,
 ): { title: string; paragraphs: string[] } {
-  const jh = meanJulyHigh(place);
+  const jh = meanSummerHigh(place);
   const jl = meanJanLow(place);
   const annualP =
     place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);

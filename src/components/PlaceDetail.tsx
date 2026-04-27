@@ -14,7 +14,7 @@ import { ComfortMatrix } from "./charts/ComfortMatrix";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
-import { meanJanLow, meanJulyHigh } from "../lib/scoring";
+import { meanJanLow, meanSummerHigh } from "../lib/scoring";
 import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse } from "../lib/units";
 import { computeBestMonths } from "../lib/best-months";
 import { findSimilarPlaces } from "../lib/similarity";
@@ -209,15 +209,6 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
 
   useEffect(() => {
     if (!place) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [place, onClose]);
-
-  useEffect(() => {
-    if (!place) return;
     const el = panelRef.current;
     if (!el) return;
     el.scrollTop = 0;
@@ -300,9 +291,15 @@ function CopyPlaceLink({ placeId }: { placeId: string }) {
     });
   }, [placeId]);
   return (
-    <button type="button" onClick={onCopy} className="btn-ghost !text-xs" title="Copy URL to this place">
+    <button
+      type="button"
+      onClick={onCopy}
+      className="btn-ghost !text-xs"
+      title="Copy URL to this place"
+      aria-label={copied ? "Copied link to this place" : "Copy link to this place"}
+    >
       <Link2 className="w-3 h-3" aria-hidden />
-      {copied ? "Copied" : "Copy link"}
+      <span aria-live="polite">{copied ? "Copied" : "Copy link"}</span>
     </button>
   );
 }
@@ -319,7 +316,7 @@ function DetailHeader({
 }) {
   const { temp, dist } = useUnits();
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice";
-  const julyHigh = meanJulyHigh(place);
+  const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
   const annualP = place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
   const sunshine = place.climate.sunshinePct
@@ -421,7 +418,7 @@ function DetailHeader({
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
-        <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="Jul high" value={fmtTemp(julyHigh, temp)} />
+        <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="JJA high" value={fmtTemp(summerHigh, temp)} />
         <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />} label="Jan low" value={fmtTemp(janLow, temp)} />
         <HeroStat icon={<Droplets className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />} label="Annual precip" value={fmtPrecip(annualP, dist)} />
         {sunshine != null ? (
@@ -571,7 +568,7 @@ function DetailBody({
             >
               <div className="flex items-start justify-between gap-2 mb-1">
                 <div className="font-atlas text-base text-ice">{activeConcept.term}</div>
-                <button onClick={() => setActiveDriver(null)} className="text-stone hover:text-ice"><X className="w-3.5 h-3.5" /></button>
+                <button type="button" onClick={() => setActiveDriver(null)} className="text-stone hover:text-ice" aria-label="Close glossary explanation"><X className="w-3.5 h-3.5" /></button>
               </div>
               <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
               <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
@@ -1074,7 +1071,15 @@ function ScorePill({ label, value, tone }: { label: string; value: number; tone:
         <span className="font-mono-num text-xl" style={{ color: c[tone] }}>{value}</span>
         <span className="text-xs text-stone">/ 100</span>
       </div>
-      <div className="h-1 rounded-full bg-[rgba(71,90,122,0.4)] mt-2 overflow-hidden">
+      <div
+        className="h-1 rounded-full bg-[rgba(71,90,122,0.4)] mt-2 overflow-hidden"
+        role="meter"
+        aria-label={label}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={value}
+        aria-valuetext={`${value} out of 100`}
+      >
         <div className="h-full rounded-full" style={{ width: `${value}%`, background: c[tone] }} />
       </div>
     </div>

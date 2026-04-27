@@ -20,7 +20,7 @@
  */
 
 import type { Place } from "../types";
-import { meanJanLow, meanJulyHigh } from "./scoring";
+import { meanJanLow, meanSummerHigh } from "./scoring";
 
 export interface SimilarPlace {
   place: Place;
@@ -49,7 +49,7 @@ export function scoreSimilarity(a: Place, b: Place): number {
   const arch = jaccard(a.archetypes, b.archetypes);
   const driv = jaccard(a.drivers, b.drivers);
   const janDiff = Math.abs(meanJanLow(a) - meanJanLow(b));
-  const julDiff = Math.abs(meanJulyHigh(a) - meanJulyHigh(b));
+  const julDiff = Math.abs(meanSummerHigh(a) - meanSummerHigh(b));
   const pa = annualPrecip(a);
   const pb = annualPrecip(b);
   // log-space precip distance (handles desert vs rainforest gracefully)

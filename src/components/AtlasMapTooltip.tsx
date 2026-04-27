@@ -2,7 +2,7 @@ import { useMemo, type CSSProperties } from "react";
 import type { MicroclimateArchetype, Place, RiskAssessment, RiskLevel, TopographicDriver } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
-import { meanJanLow, meanJulyHigh } from "../lib/scoring";
+import { meanJanLow, meanSummerHigh } from "../lib/scoring";
 import { getCorpusMapHint } from "../lib/atlas-corpus-stats";
 import { useRichVisualEffects } from "../lib/device-profile";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
@@ -92,7 +92,7 @@ export function AtlasMapTooltip({
   const prose = useProse();
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
   const dataTone = toneToDataTone(tone);
-  const julyHigh = meanJulyHigh(place);
+  const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
   const annualP = place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
   const s = place.scores;
@@ -269,7 +269,7 @@ export function AtlasMapTooltip({
               <MiniClimateStrip place={place} height={26} />
             </div>
             <div className="tc-map-hover-instrument__metrics">
-              <InstrumentMetric label="Jul high" value={fmtTemp(julyHigh, temp)} tone="ochre" />
+              <InstrumentMetric label="JJA high" value={fmtTemp(summerHigh, temp)} tone="ochre" />
               <InstrumentMetric label="Jan low" value={fmtTemp(janLow, temp)} tone="glacier" />
               <InstrumentMetric label="Annual precip" value={fmtPrecip(annualP, dist)} tone="sage" />
             </div>

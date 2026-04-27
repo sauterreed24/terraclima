@@ -122,7 +122,7 @@ export function buildAtAGlanceTiles(
     out.push({
       label: "High-season diurnal",
       value: fmtDiurnal(dSum),
-      hint: `Larger summer swing than ${ld}% of atlas stops (same July-ish window)`,
+      hint: `Larger summer swing than ${ld}% of atlas stops (same high-season window)`,
       tone: "aurora",
     });
   }

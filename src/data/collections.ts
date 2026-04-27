@@ -100,7 +100,7 @@ export const COLLECTIONS: Collection[] = [
     id: "hidden-gems",
     title: "Deep Hidden Gems",
     subtitle: "Climatically distinctive and under-celebrated",
-    description: "Places whose microclimate is genuinely distinctive but whose names remain off most lists. Each entry scores at least 70 on both uniqueness and hidden-gem metrics.",
+    description: "Places whose microclimate is genuinely distinctive but whose names remain off most lists: high hidden-gem value, strong local climate identity, or both.",
     tone: "sage",
     placeIds: ["portal-az", "silver-city-nm", "grand-marais-mn", "grand-manan-nb", "creel-mx", "tapalpa-mx", "xilitla-mx", "alamos-mx", "salt-spring-bc", "sunshine-coast-bc", "creston-bc", "mazamitla-mx", "canaan-valley-wv", "fort-davis-tx", "cypress-hills-sk", "joseph-or", "real-catorce-mx", "parras-mx", "cuauhtemoc-mx", "redfield-ny", "houghton-mi", "viroqua-wi", "stanley-id", "twillingate-nl", "ely-mn", "xalapa-mx", "haida-gwaii-bc", "medicine-hat-ab", "winthrop-wa", "mount-charleston-nv", "burkes-garden-va"],
   },

@@ -18,7 +18,7 @@ interface Props { place: Place }
 export function RiskProfile({ place }: Props) {
   const rows: [string, RiskAssessment][] = Object.entries(place.risks);
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-1.5" role="list" aria-label={`Climate risk profile for ${place.name}`}>
       {rows.map(([k, v]) => {
         const val = RISK_VALUE[v.level];
         const pct = (val / 5) * 100;
@@ -27,9 +27,17 @@ export function RiskProfile({ place }: Props) {
         const trendColor = v.trend === "improving" ? "#7ea182" : v.trend === "worsening" ? "#d48c66" : "#8a99ac";
 
         return (
-          <div key={k} className="flex items-center gap-3 text-sm" title={v.note || ""}>
+          <div key={k} className="flex items-center gap-3 text-sm" title={v.note || ""} role="listitem">
             <div className="w-28 text-frost">{LABEL[k]}</div>
-            <div className="flex-1 h-2 rounded-full bg-[rgba(58,77,102,0.35)] overflow-hidden">
+            <div
+              className="flex-1 h-2 rounded-full bg-[rgba(58,77,102,0.35)] overflow-hidden"
+              role="meter"
+              aria-label={`${LABEL[k]} risk`}
+              aria-valuemin={0}
+              aria-valuemax={5}
+              aria-valuenow={val}
+              aria-valuetext={`${v.level.replace(/-/g, " ")} risk, trend ${v.trend ?? "stable"}`}
+            >
               <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: tone }} />
             </div>
             <div className="w-28 text-right flex items-center justify-end gap-2">

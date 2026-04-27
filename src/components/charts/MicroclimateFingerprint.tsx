@@ -1,5 +1,5 @@
 import type { Place } from "../../types";
-import { meanJanLow, meanJulyHigh } from "../../lib/scoring";
+import { meanJanLow, meanSummerHigh } from "../../lib/scoring";
 
 interface Props { place: Place; compare?: Place; size?: number }
 
@@ -31,7 +31,7 @@ export function MicroclimateFingerprint({ place, compare, size = 260 }: Props) {
   const rings = [25, 50, 75, 100];
 
   return (
-    <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto">
+    <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto" role="img" aria-label={`Microclimate fingerprint for ${place.name}`}>
       {/* Polygonal rings */}
       {rings.map(ring => {
         const pts = axes.map((_, i) => {
@@ -87,7 +87,7 @@ export function MicroclimateFingerprint({ place, compare, size = 260 }: Props) {
 interface Axis { label: string; v: number }
 
 function buildAxes(p: Place): Axis[] {
-  const julyHigh = meanJulyHigh(p);
+  const summerHigh = meanSummerHigh(p);
   const janLow = meanJanLow(p);
   const annualP = p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
   const diurnal = p.climate.diurnalSummerC ?? p.climate.tempHighC[6] - p.climate.tempLowC[6];
@@ -96,7 +96,7 @@ function buildAxes(p: Place): Axis[] {
 
   // All axes normalized 0..100
   return [
-    { label: "Cool summers", v: clamp(100 - Math.max(0, julyHigh - 16) * 4) },
+    { label: "Cool summers", v: clamp(100 - Math.max(0, summerHigh - 16) * 4) },
     { label: "Mild winters", v: clamp(100 - Math.max(0, -janLow) * 5) },
     { label: "Dryness", v: clamp(100 - annualP / 20) },
     { label: "Sunshine", v: clamp(sunshine * 1.2) },

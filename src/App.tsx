@@ -7,6 +7,7 @@ import { PlaceDetail } from "./components/PlaceDetail";
 import { CompareView } from "./components/CompareView";
 import { CollectionsView } from "./components/CollectionsView";
 import { LearnMode } from "./components/LearnMode";
+import { useFocusTrap } from "./hooks/use-focus-trap";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
 import { FIELD_NOTES } from "./data/field-notes";
@@ -23,7 +24,7 @@ import {
   replaceAppUrl,
   validatedStateFromSearch,
 } from "./lib/app-url";
-import type { MicroclimateArchetype } from "./types";
+import type { MicroclimateArchetype, Place } from "./types";
 
 const SEARCH_INPUT_ID = "terraclima-place-search";
 const RANKING_STORAGE_KEY = "terraclima.ranking.v1";
@@ -39,6 +40,14 @@ const RANKING_PROFILES: readonly RankingProfile[] = [
   "climate-resilient", "best-four-season", "best-diurnal-sleep",
   "strongest-geospatial-signal", "mediterranean-like", "wet-forest-refuges", "monsoon-drama",
 ] as const;
+
+function placeForId(id: string): Place | undefined {
+  return PLACES_BY_ID[id];
+}
+
+function isPlace(p: Place | undefined): p is Place {
+  return p != null;
+}
 
 const URL_INIT = readInitialAppState(
   PLACES_BY_ID as Record<string, unknown>,
@@ -165,7 +174,7 @@ export default function App() {
   const pool = useMemo(() => {
     if (activeCollection) {
       const c = COLLECTION_BY_ID[activeCollection];
-      if (c) return c.placeIds.map(id => PLACES_BY_ID[id]).filter(Boolean);
+      if (c) return c.placeIds.map(placeForId).filter(isPlace);
     }
     return PLACES;
   }, [activeCollection]);
@@ -223,9 +232,9 @@ export default function App() {
           e.preventDefault();
           break;
         case "Escape":
-          if (showShortcuts) { setShowShortcuts(false); break; }
-          if (compareOpen) { setCompareOpen(false); break; }
-          if (selectedId) { closeDetail(); break; }
+          if (showShortcuts) { e.preventDefault(); setShowShortcuts(false); break; }
+          if (compareOpen) { e.preventDefault(); setCompareOpen(false); break; }
+          if (selectedId) { e.preventDefault(); closeDetail(); break; }
           break;
         case "e": case "E":
           setView("explorer");
@@ -320,7 +329,7 @@ export default function App() {
                   canSurprise={ranked.length > 0}
                 />
 
-                <div className="h-[52vh] min-h-[460px] relative">
+                <div className="h-[52dvh] min-h-[min(460px,44dvh)] max-[480px]:min-h-[320px] relative">
                   <AtlasMap
                     places={filtered}
                     selectedId={selectedId ?? undefined}
@@ -450,7 +459,7 @@ export default function App() {
         onOpenPlace={openPlace}
       />
       <CompareView
-        places={[...compareIds].map(id => PLACES_BY_ID[id]).filter(Boolean)}
+        places={[...compareIds].map(placeForId).filter(isPlace)}
         open={compareOpen}
         onClose={closeCompare}
         onRemove={toggleCompare}
@@ -463,6 +472,8 @@ export default function App() {
 
 const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: () => void }) {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(panelRef, true);
   useEffect(() => {
     closeBtnRef.current?.focus();
   }, []);
@@ -476,6 +487,7 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
       onClick={onClose}
     >
       <div
+        ref={panelRef}
         className="panel p-6 max-w-md w-full"
         onClick={(e) => e.stopPropagation()}
       >
@@ -680,7 +692,7 @@ const HeroCard = memo(function HeroCard({
   onSurpriseMe: () => void;
   canSurprise: boolean;
 }) {
-  const active = activeCollection ? COLLECTION_BY_ID[activeCollection] : null;
+  const active = activeCollection ? COLLECTION_BY_ID[activeCollection] ?? null : null;
   return (
     <div className="panel panel-hero p-5 anim-fade-in space-y-4">
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">

@@ -12,6 +12,7 @@ const OVERSCAN_ROWS = 3;
 function useGridColumns(): 1 | 2 {
   const [cols, setCols] = useState<1 | 2>(2);
   useLayoutEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
     const mq = window.matchMedia("(min-width: 768px)");
     const sync = () => setCols(mq.matches ? 2 : 1);
     sync();
@@ -54,12 +55,12 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
     };
     update();
     window.addEventListener("resize", update);
-    const ro = new ResizeObserver(update);
-    ro.observe(el);
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
+    ro?.observe(el);
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", update);
-      ro.disconnect();
+      ro?.disconnect();
     };
   }, [cols, rowCount]);
 

@@ -1,11 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion";
-import { useEffect } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { useEffect, useId, useMemo, useRef } from "react";
 import type { Place } from "../types";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
-import { meanJanLow, meanJulyHigh } from "../lib/scoring";
+import { meanJanLow, meanSummerHigh } from "../lib/scoring";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
+import { useFocusTrap } from "../hooks/use-focus-trap";
 import { X } from "lucide-react";
 
 interface Props {
@@ -18,15 +19,20 @@ interface Props {
 export function CompareView({ places, open, onClose, onRemove }: Props) {
   const { temp, dist } = useUnits();
   const prose = useProse();
+  const reduceMotion = useReducedMotion();
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
+  const columnTemplate = useMemo(
+    () => `repeat(${places.length}, minmax(17rem, 1fr))`,
+    [places.length],
+  );
+  useFocusTrap(panelRef, open && places.length > 0);
 
   useEffect(() => {
-    if (!open) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [open, onClose]);
+    if (!open || places.length === 0) return;
+    closeBtnRef.current?.focus({ preventScroll: true });
+  }, [open, places.length]);
   return (
     <AnimatePresence>
       {open && places.length > 0 && (
@@ -34,30 +40,38 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.18 }}
           className="fixed inset-0 z-50 bg-[rgba(62,38,24,0.35)] backdrop-blur-md overflow-y-auto"
           onClick={onClose}
         >
           <motion.div
-            initial={{ y: 30, opacity: 0 }}
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
+            initial={reduceMotion ? { opacity: 1 } : { y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 30, opacity: 0 }}
-            className="max-w-[1280px] mx-auto p-6"
+            exit={reduceMotion ? { opacity: 1 } : { y: 30, opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2 }}
+            tabIndex={-1}
+            className="max-w-[1280px] mx-auto p-4 sm:p-6"
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
               <div>
                 <div className="text-xs uppercase tracking-wider text-stone">Compare</div>
-                <h2 className="font-atlas text-2xl text-ice">{places.length} places side by side</h2>
+                <h2 id={titleId} className="font-atlas text-2xl text-ice">{places.length} places side by side</h2>
               </div>
-              <button onClick={onClose} className="btn-ghost"><X className="w-4 h-4" /> Close</button>
+              <button ref={closeBtnRef} type="button" onClick={onClose} className="btn-ghost"><X className="w-4 h-4" /> Close</button>
             </div>
 
-            <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${places.length}, minmax(0, 1fr))` }}>
+            <div className="overflow-x-auto pb-3 -mx-1 px-1" aria-label="Scrollable comparison columns">
+              <div className="grid gap-4 min-w-full" style={{ gridTemplateColumns: columnTemplate }}>
               {places.map(p => {
                 const geo = buildGeospatialAnalysis(p);
                 return (
                 <div key={p.id} className="panel p-4 relative">
-                  <button onClick={() => onRemove(p.id)} className="absolute top-2 right-2 text-stone hover:text-ice" aria-label="Remove">
+                  <button type="button" onClick={() => onRemove(p.id)} className="absolute top-2 right-2 text-stone hover:text-ice" aria-label={`Remove ${p.name} from comparison`}>
                     <X className="w-4 h-4" />
                   </button>
                   <div className="text-xs text-stone">{p.region}, {p.country}</div>
@@ -68,7 +82,7 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
                   <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
                     <Row label="Elevation" value={fmtElev(p.elevationM, dist)} />
                     <Row label="Köppen" value={p.koppen} />
-                    <Row label="Jul high" value={fmtTemp(meanJulyHigh(p), temp, { digits: 1 })} />
+                    <Row label="JJA high" value={fmtTemp(meanSummerHigh(p), temp, { digits: 1 })} />
                     <Row label="Jan low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
                     <Row label="Annual precip" value={fmtPrecip(p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0), dist)} />
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
@@ -91,6 +105,7 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
                 </div>
                 );
               })}
+              </div>
             </div>
           </motion.div>
         </motion.div>

@@ -1,6 +1,7 @@
 import { MONTHS } from "../../types";
 import type { Monthly12 } from "../../types";
 import { useUnits, mmToIn, cmToIn, precipTickStep } from "../../lib/units";
+import { useId } from "react";
 
 interface Props {
   precip: Monthly12;
@@ -16,6 +17,9 @@ interface Props {
  * driest-month label (only when meaningfully dry).
  */
 export function PrecipBars({ precip, snow, height = 160 }: Props) {
+  const idBase = useId().replace(/:/g, "");
+  const precipGradId = `precip-grad-${idBase}`;
+  const snowGradId = `snow-grad-${idBase}`;
   const { dist } = useUnits();
   const W = 560, H = height, PAD_L = 44, PAD_R = 14, PAD_T = 16, PAD_B = 30;
   const chartW = W - PAD_L - PAD_R;
@@ -55,11 +59,11 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Monthly precipitation chart">
       <defs>
-        <linearGradient id="precipGrad" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={precipGradId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#8cc8e0" stopOpacity="0.95" />
           <stop offset="1" stopColor="#4faacd" stopOpacity="0.68" />
         </linearGradient>
-        <linearGradient id="snowGrad" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={snowGradId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#e8f3f9" stopOpacity="0.65" />
           <stop offset="1" stopColor="#c3e4f1" stopOpacity="0.28" />
         </linearGradient>
@@ -117,7 +121,7 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
               y={y(Math.max(v, dSnow[i]))}
               width={barW}
               height={Math.max(0, chartH - (y(Math.max(v, dSnow[i])) - PAD_T))}
-              fill="url(#snowGrad)"
+              fill={`url(#${snowGradId})`}
               rx="2"
             />
           )}
@@ -126,7 +130,7 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
             y={y(v)}
             width={barW}
             height={Math.max(0, chartH - (y(v) - PAD_T))}
-            fill="url(#precipGrad)"
+            fill={`url(#${precipGradId})`}
             rx="2"
           />
           {i === wettestIdx && (

@@ -1,7 +1,7 @@
 import { memo, useCallback, useId, useMemo, type KeyboardEvent, type MouseEvent } from "react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
-import { meanJanLow, meanJulyHigh } from "../lib/scoring";
+import { meanJanLow, meanSummerHigh } from "../lib/scoring";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { PLACE_ANNUAL_PRECIP } from "../data/places";
@@ -64,7 +64,7 @@ export const PlaceCard = memo(function PlaceCard({
   const titleId = useId();
   const { temp, dist } = useUnits();
   const prose = useProse();
-  const julyHighC = meanJulyHigh(place);
+  const summerHighC = meanSummerHigh(place);
   const janLowC = meanJanLow(place);
   const annualP = PLACE_ANNUAL_PRECIP[place.id] ?? place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
   const primaryArchetype = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
@@ -128,7 +128,7 @@ export const PlaceCard = memo(function PlaceCard({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 id={titleId} className="font-atlas text-lg text-ice truncate">{place.name}</h3>
-              <ArrowRight className="w-3 h-3 text-stone opacity-0 group-hover:opacity-100 transition-opacity shrink-0" aria-hidden />
+              <ArrowRight className="w-3 h-3 text-stone opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity shrink-0" aria-hidden />
             </div>
             <p className="text-[11px] text-stone mt-1 leading-snug">
               {place.region}
@@ -179,7 +179,7 @@ export const PlaceCard = memo(function PlaceCard({
         <div className="pt-3">
           <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Core numbers</div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 rounded-lg border border-[rgba(71,90,122,0.15)] bg-[rgba(255,253,248,0.45)] px-2 py-2">
-            <Stat label="Jul high" value={fmtTemp(julyHighC, temp)} tone="ochre" />
+            <Stat label="JJA high" value={fmtTemp(summerHighC, temp)} tone="ochre" />
             <Stat label="Jan low" value={fmtTemp(janLowC, temp)} tone="glacier" />
             <Stat label="Annual precip" value={fmtPrecip(annualP, dist)} tone="sage" />
             <Stat label="Uniqueness" value={place.scores.microclimateUniqueness.toString()} tone="ice" />

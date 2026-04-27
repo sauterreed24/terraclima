@@ -21,9 +21,11 @@ export function avgRisk(p: Place): number {
   return vals.reduce((s, a) => s + RISK_VALUE[a.level], 0) / vals.length;
 }
 
-export function meanJulyHigh(p: Place): number {
+export function meanSummerHigh(p: Place): number {
   return (p.climate.tempHighC[5] + p.climate.tempHighC[6] + p.climate.tempHighC[7]) / 3;
 }
+/** @deprecated Use meanSummerHigh; this is a Jun-Aug mean, not July-only. */
+export const meanJulyHigh = meanSummerHigh;
 export function meanJanLow(p: Place): number {
   return (p.climate.tempLowC[11] + p.climate.tempLowC[0] + p.climate.tempLowC[1]) / 3;
 }
@@ -58,7 +60,7 @@ export function rankLivabilityPreview(pool: Place[]): RankingResult[] {
     const resilience = p.scores.resilience;
     const grow = p.scores.growability;
     const risk = avgRisk(p);
-    const jh = meanJulyHigh(p);
+    const jh = meanSummerHigh(p);
     const jl = meanJanLow(p);
     const winterEase = Math.max(0, 100 - Math.max(0, -jl) * 4.5);
     const summerEase = Math.max(0, 100 - Math.max(0, jh - 26) * 5);
@@ -81,15 +83,15 @@ export function rankLivabilityPreview(pool: Place[]): RankingResult[] {
 
 export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): RankingResult[] {
   const scored: RankingResult[] = pool.map(p => {
-    const julyHigh = meanJulyHigh(p);
+    const summerHigh = meanSummerHigh(p);
     const janLow = meanJanLow(p);
     const annualPrecip = PLACE_ANNUAL_PRECIP[p.id] ?? p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
     const diurnal = p.climate.diurnalSummerC ?? (p.climate.tempHighC[6] - p.climate.tempLowC[6]);
 
     switch (profile) {
       case "coolest-summers": {
-        const s = Math.max(0, 100 - Math.max(0, julyHigh - 14) * 5);
-        return { place: p, score: s, note: `Mean summer high ${julyHigh.toFixed(1)}°C` };
+        const s = Math.max(0, 100 - Math.max(0, summerHigh - 14) * 5);
+        return { place: p, score: s, note: `Mean summer high ${summerHigh.toFixed(1)}°C` };
       }
       case "mildest-winters": {
         const s = Math.max(0, 100 - Math.max(0, -janLow) * 5);
@@ -119,7 +121,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
       case "climate-resilient":
         return { place: p, score: p.scores.resilience };
       case "best-four-season": {
-        const range = julyHigh - janLow;
+        const range = summerHigh - janLow;
         const sweetSpot = Math.abs(range - 26);
         const s = Math.max(0, 100 - sweetSpot * 3);
         return { place: p, score: s, note: `Seasonal range ${range.toFixed(0)}°C` };

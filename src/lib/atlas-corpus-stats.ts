@@ -6,7 +6,7 @@
 
 import type { Place } from "../types";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../data/places";
-import { meanJanLow, meanJulyHigh } from "./scoring";
+import { meanJanLow, meanSummerHigh } from "./scoring";
 
 function sortAsc(a: number[]): number[] {
   return [...a].sort((x, y) => x - y);
@@ -41,7 +41,7 @@ function summerDiurnalC(p: Place): number {
 
 export interface AtlasCorpusDistributions {
   readonly n: number;
-  /** Mean Jul high (°C) */
+  /** Mean Jun-Aug high (°C) */
   july: readonly number[];
   /** Mean Jan low (°C) */
   jan: readonly number[];
@@ -56,7 +56,7 @@ export interface AtlasCorpusDistributions {
 }
 
 function buildDistributions(): AtlasCorpusDistributions {
-  const july = PLACES.map(meanJulyHigh);
+  const july = PLACES.map(meanSummerHigh);
   const jan = PLACES.map(meanJanLow);
   const annualPrecipMm = PLACES.map(p => PLACE_ANNUAL_PRECIP[p.id]);
   const elevationM = PLACES.map(p => p.elevationM);
@@ -105,7 +105,7 @@ export interface PlaceCorpusRanks {
 
 export function getPlaceCorpusRanks(place: Place): PlaceCorpusRanks {
   const c = ATLAS_CORPUS;
-  const jh = meanJulyHigh(place);
+  const jh = meanSummerHigh(place);
   const jl = meanJanLow(place);
   const pr = PLACE_ANNUAL_PRECIP[place.id];
   const el = place.elevationM;
@@ -143,7 +143,7 @@ export function getCorpusSynthesisLines(place: Place): { label: string; value: s
       value: `Wetter than ${pct(r.wetterThanAtlasShare)} of stops · drier than ${pct(r.drierThanAtlasShare)} of stops (ties possible)`,
     },
     {
-      label: "Summer mean high vs full atlas (Jul–Aug blend)",
+      label: "Summer mean high vs full atlas (Jun–Aug blend)",
       value: `Cooler than ${pct(r.coolerSummersThanAtlasShare)} of stops; hotter than ${pct(1 - r.coolerSummersThanAtlasShare)}`,
     },
     {
@@ -174,16 +174,16 @@ export function getCorpusContextPanelRows(
   fmtD: (c: number) => string,
 ): CorpusPanelRow[] {
   const r = getPlaceCorpusRanks(place);
-  const jh = meanJulyHigh(place);
+  const jh = meanSummerHigh(place);
   const jl = meanJanLow(place);
   const pr = PLACE_ANNUAL_PRECIP[place.id];
   const di = summerDiurnalC(place);
   const rows: CorpusPanelRow[] = [
-    { metric: "Mean Jul high (normal)", you: fmtT(jh), context: `Cooler summers than ${pct(r.coolerSummersThanAtlasShare)} of atlas stops` },
+    { metric: "Mean Jun–Aug high (normal)", you: fmtT(jh), context: `Cooler summers than ${pct(r.coolerSummersThanAtlasShare)} of atlas stops` },
     { metric: "Mean Jan low (normal)", you: fmtT(jl), context: `Milder mid-winter than ${pct(r.milderWintersThanAtlasShare)} of atlas stops` },
-    { metric: "Annual precip (sum of months)", you: fmtP(pr), context: `Wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops` },
+    { metric: "Annual precip (atlas field)", you: fmtP(pr), context: `Wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops` },
     { metric: "Site elevation", you: fmtE(place.elevationM), context: `Higher than ${pct(r.higherElevationThanAtlasShare)} of stops` },
-    { metric: "High-season diurnal (Jul-ish)", you: fmtD(di), context: `Larger swing than ${pct(r.largerDiurnalThanAtlasShare)} of stops` },
+    { metric: "High-season diurnal (July proxy)", you: fmtD(di), context: `Larger swing than ${pct(r.largerDiurnalThanAtlasShare)} of stops` },
     { metric: "Resilience / grow / uniqueness (scores)", you: `${place.scores.resilience} / ${place.scores.growability} / ${place.scores.microclimateUniqueness}`,
       context: `Resilience above ${pct(r.higherResilienceShare)} · grow above ${pct(r.higherGrowabilityShare)} · uniqueness above ${pct(r.higherUniquenessShare)} of stops`,
     },
@@ -212,13 +212,13 @@ export function getCorpusContextPanelRows(
 /** One-line for map/cards — no HTML */
 export function getCorpusMapHint(place: Place): string {
   const r = getPlaceCorpusRanks(place);
-  return `Water year wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops; Jul mean high cooler than ${pct(r.coolerSummersThanAtlasShare)} of stops.`;
+  return `Water year wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops; Jun-Aug mean high cooler than ${pct(r.coolerSummersThanAtlasShare)} of stops.`;
 }
 
 /** Short line for list cards (no newlines) */
 export function getCorpusCardTeaser(place: Place): string {
   const r = getPlaceCorpusRanks(place);
-  return `Vs full atlas: wetter than ${pct(r.wetterThanAtlasShare)} of stops · cooler Jul than ${pct(r.coolerSummersThanAtlasShare)} · higher ground than ${pct(r.higherElevationThanAtlasShare)}.`;
+  return `Vs full atlas: wetter than ${pct(r.wetterThanAtlasShare)} of stops · cooler JJA than ${pct(r.coolerSummersThanAtlasShare)} · higher ground than ${pct(r.higherElevationThanAtlasShare)}.`;
 }
 
 /**

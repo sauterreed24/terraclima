@@ -1,80 +1,140 @@
-# Terraclima — The North American Microclimate Atlas
+# Terraclima
 
-A research-grade microclimate intelligence application for the USA, Canada, and Mexico. Terraclima is a field guide in software form: explore rain shadows, sky islands, cool-summer coasts, eternal-spring highlands, orchard valleys, chinook corridors, fog belts, fjord inlets, and frost hollows — with the topographic and atmospheric mechanisms that shape each place made explicit.
+**The North American Microclimate Atlas.**
 
-> "Alpine twilight — bright enough to read a chart in, quiet enough to look like a field guide."
+Terraclima is a research-grade, human-readable climate intelligence application for exploring how terrain changes lived weather across the United States, Canada, and Mexico. It treats places as physical systems, not just pins on a map: rain shadows, sky islands, marine layers, chinook corridors, frost hollows, tropical highlands, fog belts, lake-effect snowbelts, orchard valleys, and wind gaps are explained through the mechanisms that make them real.
 
-## What it does
+The result is part atlas, part field guide, part decision tool. It is built to show architectural judgment: structured data, provenance, derived analysis, accessible UI, performance discipline, and enough validation tooling that both humans and coding agents can review it without guessing what matters.
 
-- **Explorer map.** Albers-projected atlas of North America with 130+ curated microclimate places, tier-graded markers, live climate tooltips, and archetype filtering.
-- **Hidden-gem finder.** Ranks places by a small library of profiles (`hidden-gems`, `comfortable-year-round`, `climate-resilient`, `growability-leaning`, …).
-- **Place detail.** Deep per-place brief: monthly climate ribbon, precipitation bars, microclimate fingerprint, comfort matrix, risk profile, local-contrast chart, climate-change delta, soils, growability, and curated citations.
-- **Compare places.** Up to 4 places side-by-side across temp/precip/comfort/risk/resilience.
-- **Collections.** Hand-assembled thematic bundles — "Continental Rain Shadows", "Pacific Fog-Belt Coasts", "Sky-Island Refuges", etc.
-- **Learn mode.** Field-guide glossary: lapse rate, cold-air pooling, orographic lift, chinook foehn, marine layer, gap winds — with example places for each.
-- **Units.** Fahrenheit-first with a live °C toggle. Distances in imperial or metric. Descriptive prose localizes Celsius ↔ Fahrenheit automatically (including ranges and deltas).
+## Why This Project Exists
 
-## Data
+Most climate products answer "what is the weather like?" Terraclima asks a more useful question: **why does this place feel different from the region around it?**
 
-- Climate normals (1991–2020 where available): NOAA (USA) · ECCC / Climate Atlas of Canada · SMN (Mexico).
-- Spatial baselines: PRISM, WorldClim downscaling.
-- Soils: SoilGrids + regional soil-series references.
-- Risk briefs: FEMA, USGS, INEGI, INECC, Atlas Nacional de Riesgos.
-- Climate-change outlook: CMIP6 ensembles, NASA NEX-GDDP.
+That distinction matters for relocation research, agricultural scouting, travel planning, climate adaptation, and plain curiosity. A coastal city can be cool because of upwelling, a mountain town can be mild because it sits above a cold-air pool, and two places at the same latitude can live in different worlds because one is exposed to gap winds while the other is sheltered by relief. Terraclima makes those differences legible.
 
-Every place ships with a citation list. Sparse or low-confidence data are labeled; this is designed to scale to hundreds of places while keeping provenance explicit.
+## What It Does
+
+- **Explorer map:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, live climate previews, country and archetype filters, and URL-shareable state.
+- **Place profiles:** Long-form dossiers for each microclimate with seasonal charts, corpus comparisons, geospatial screening, soils, growability, risks, local contrasts, climate-change notes, similar places, and citations.
+- **Geospatial analysis:** Deterministic terrain, climate, risk, and corpus-derived scores that explain geospatial signal strength and typical Sentinel-2 / Landsat reference-sensor fit. The app is explicit that these are screening scores, not live pixel retrievals.
+- **Ranking lenses:** Sort by hidden gems, coolest summers, mildest winters, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
+- **Collections and learning mode:** Curated bundles and a glossary that connect mechanisms such as lapse rate, cold-air pooling, orographic lift, marine layer, foehn winds, and karst hydrology to real places.
+- **Comparison workflow:** Up to four places side by side, with responsive columns, focus-managed modal behavior, climate ribbons, fingerprint charts, and derived scores.
+- **Unit-aware prose:** The corpus is authored in metric climate language, while the UI localizes temperatures, ranges, deltas, precipitation, snowfall, elevation, wind speed, and distance for the active unit system.
+
+## Engineering Highlights
+
+- **Typed climate intelligence schema:** `src/types.ts` models climate normals, soil, growability, hazards, citations, local contrasts, field notes, deep sections, and derived geospatial context.
+- **Deterministic scoring:** `src/lib/scoring.ts`, `src/lib/geospatial-analysis.ts`, and `src/lib/atlas-corpus-stats.ts` keep ranking logic explainable and regression-testable.
+- **Agent-friendly validation:** `scripts/sanity-check.ts`, `scripts/audit-corpus.ts`, `scripts/test-prose.ts`, and `scripts/corpus-rank-gold.ts` catch malformed data, prose/unit regressions, corpus drift, and rank instability.
+- **Accessible modal stack:** Global Escape handling is owned by the app shell; detail, compare, and keyboard-help overlays use focus traps and explicit dialog semantics.
+- **Performance-conscious map:** The SVG map avoids React re-renders during drag by mutating the transform through refs, coalesces wheel zoom with `requestAnimationFrame`, lazy-loads topology, and gates rich effects on device capability.
+- **Progressive visual system:** The interface uses a custom atmospheric design language in `src/styles.css`, but it is deliberately constrained: charts are SVG, cards are virtualized, heavy effects are tiered, and low-power devices receive cheaper rendering paths.
+
+## Performance Targets
+
+Terraclima is tuned for the kind of hardware people actually use while browsing research-heavy interfaces:
+
+- **Surface Pro 5, 8 GB RAM:** Low-power mode disables expensive map blur, marker pulse, hover lifts, deep shadows, and unnecessary backdrop filters. Card rendering uses virtualization plus `content-visibility` so offscreen work does not punish scrolling.
+- **iPhone 13 Pro Max:** The map height uses dynamic viewport units and a smaller mobile minimum, compare columns scroll horizontally instead of collapsing into unreadable slivers, and interaction targets remain touch-friendly.
+- **General browser efficiency:** Search uses precomputed indexes; filtering is deferred with `useDeferredValue`; atlas topology is code-split; SVG paint IDs are unique per chart instance; unit and geospatial helpers cache derived work where appropriate.
+
+## Data and Provenance
+
+Terraclima combines structured editorial research with public climate and geospatial references:
+
+- Climate normals, usually 1991-2020 where available: NOAA, ECCC / Climate Atlas of Canada, SMN, and adjacent public station products.
+- Spatial and environmental baselines: PRISM, WorldClim, SoilGrids, USGS, INEGI, INECC, FEMA, Atlas Nacional de Riesgos, CMIP6, and NASA NEX-GDDP where applicable.
+- Earth-observation context: Sentinel-2 and Landsat are represented as reference sensors for typical surface checks such as NDVI, NDMI, NBR, NDSI, and land-surface-temperature context. The current app does not claim direct scene processing.
+
+Every place carries citations and confidence notes. Derived scores are intentionally transparent and conservative; where the corpus is screening-grade rather than measurement-grade, the UI says so.
 
 ## Stack
 
-- React 18 + TypeScript + Vite
-- Tailwind CSS v4 + a custom design-system in `src/styles.css`
-- Framer Motion for view transitions
-- `d3-geo` + `topojson-client` for the atlas map
-- `world-atlas` (countries 110m) + `us-atlas` (states 10m) for geography
+- React 18, TypeScript, Vite
+- Tailwind CSS v4 plus a custom CSS design system
+- Framer Motion for selected overlays and transitions
+- `d3-geo`, `topojson-client`, `world-atlas`, and `us-atlas` for cartography
+- `@tanstack/react-virtual` for scalable card rendering
 
-## Running locally
+## Running Locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173/.
+Open `http://localhost:5173/`.
 
-### Performance posture
+## Quality Gate
 
-Terraclima is tuned to run comfortably on modest hardware (it's developed on a Surface Pro 5 / 8 GB). Specifically:
-
-- Heavy panels (`PlaceDetail`, `CompareView`, `CollectionsView`, `LearnMode`) are lazy-loaded — the initial JS payload only contains the explorer, map, cards, and filter bar.
-- `vite.config.ts` splits `world-atlas` / `us-atlas` / `d3-geo` / `topojson-client` / `framer-motion` into dedicated chunks so the main entry stays lean and the browser cache reuses them aggressively.
-- A search index and annual-precipitation cache are precomputed once in `src/data/places.ts`, so filtering is O(n) substring checks per keystroke rather than per-place string concatenation.
-- The filter state is wrapped in `useDeferredValue`, keeping search typing responsive while the list/map reconcile at lower priority.
-- `PlaceCard` is a pure, memoized `<button>` with a CSS-only hover lift — no framer-motion runtime work per card.
-- The atlas map already avoids React re-renders during drag (direct DOM transform mutation) and coalesces wheel-zoom into a single RAF per frame; hover state is kept local so hovering a marker does not re-render the app tree.
-
-## Scripts
+Use the full check before publishing or reviewing a substantial change:
 
 ```bash
-npm run dev         # start Vite dev server
-npm run build       # type-check + production build
-npm run preview     # preview the production build
-npm run typecheck   # tsc --noEmit
-npx tsx scripts/sanity-check.ts      # adversarial data validator
-npx tsx scripts/test-prose-corpus.ts # prose unit-localizer test
+npm run quality:check
 ```
 
-## Project layout
+That runs:
 
+```bash
+npm run typecheck
+npm run test:prose
+npm run audit:corpus
+npm run sanity
+npm run test:corpus-gold
+npm run build
 ```
+
+Individual commands are useful while iterating:
+
+```bash
+npm run dev                # Vite dev server
+npm run build              # TypeScript build check + Vite production build
+npm run preview            # Preview production output
+npm run typecheck          # tsc --noEmit
+npm run test:prose         # Unit localization regression tests
+npm run audit:corpus       # Authored prose, units, typography, and consistency audit
+npm run sanity             # Structural corpus and geospatial sanity checks
+npm run test:corpus-gold   # Ranking and geospatial snapshot guardrails
+```
+
+## Human Review Guide
+
+If you are reviewing this as an engineering portfolio, start here:
+
+1. **Product thinking:** Open `src/App.tsx`, `src/components/PlaceDetail.tsx`, and `src/components/AtlasMap.tsx` to see how the app turns a large corpus into a navigable research product.
+2. **Data modeling:** Read `src/types.ts`, then inspect a few entries in `src/data/places.*.ts`. The app is built around typed structured knowledge, not arbitrary blobs.
+3. **Derived intelligence:** Review `src/lib/geospatial-analysis.ts`, `src/lib/scoring.ts`, and `src/lib/atlas-corpus-stats.ts` for explainable ranking and screening logic.
+4. **Quality discipline:** Run `npm run quality:check`. The scripts are meant to make the corpus auditable, not just make TypeScript happy.
+5. **Performance and accessibility:** Check `src/lib/device-profile.ts`, `src/components/VirtualPlaceGrid.tsx`, `src/hooks/use-focus-trap.ts`, and the low-power sections in `src/styles.css`.
+
+## Agentic Review Guide
+
+For AI agents or automated reviewers, the safest review path is:
+
+- Treat `src/types.ts` as the contract.
+- Treat `scripts/sanity-check.ts` and `scripts/audit-corpus.ts` as executable invariants.
+- Prefer adding validation before changing corpus shape.
+- Do not invent climate facts. If a data point is not present or cited, keep derived language framed as screening or editorial context.
+- Preserve URL behavior in `src/lib/app-url.ts` and modal focus behavior in `src/hooks/use-focus-trap.ts`.
+- After edits, run `npm run quality:check`; for UI changes, also inspect the Explorer, a place profile, the compare overlay, and mobile-width layout.
+
+## Project Layout
+
+```text
 src/
-  components/        React components (AtlasMap, PlaceDetail, CompareView, …)
-    charts/          SVG charts (ClimateRibbon, PrecipBars, RiskProfile, …)
-  data/              Place, archetype, collection, and glossary data
-  lib/               Units, scoring, filters
-  types.ts           Place intelligence schema
-scripts/             Validation + test scripts
+  components/                  React UI: atlas, cards, profile, compare, collections, learn mode
+    charts/                    SVG chart primitives
+    place-detail/              Reading nav and deep profile sections
+  data/                        Places, collections, archetypes, glossary, field notes
+  hooks/                       Focus and reading-spy hooks
+  lib/                         Scoring, units, geospatial analysis, URL state, corpus stats
+  types.ts                     Domain schema
+scripts/                       Corpus audits, sanity checks, rank goldens, debug dumps
 ```
 
-## Philosophy
+## What This Demonstrates
 
-Most "climate" apps show you weather. Terraclima shows you the *mechanism*. Why does Ensenada stay cool while San Diego bakes? Why does Creel get snow while Chihuahua doesn't? Why is Haines cooler than Juneau but colder than Sitka? The answer is always topography + atmosphere — orographic lift, rain shadow, marine layer, inversions, chinook, gap winds — and this app makes those forces legible for every place in the corpus.
+Terraclima is meant to show the kind of work I want to do: use AI-augmented engineering tools like Cursor to move quickly without surrendering taste, rigor, or accountability. The app combines product architecture, data modeling, visual design, performance engineering, accessibility, validation, and editorial judgment into one coherent system.
+
+It is not a toy weather dashboard. It is a serious attempt to make complex environmental knowledge understandable, inspectable, and useful.
