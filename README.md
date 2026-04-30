@@ -14,7 +14,8 @@ That distinction matters for relocation research, agricultural scouting, travel 
 
 ## What It Does
 
-- **Explorer map:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, live climate previews, country and archetype filters, and URL-shareable state.
+- **Explorer map:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, live climate previews, country and archetype filters, and URL-shareable state. On **narrow viewports** the primary nav moves into a **hamburger menu** (`<dialog>` with blurred scrim); filters and ranking move into a **floating “Filters & rank” sheet** with the same modal polish, a single search field (no duplicate IDs), and the atlas footprint panel below the controls. From **1024px** up, filters stay in a **fixed-width dock** beside the explorer.
+- **Keyboard shortcuts:** `E` / `C` / `L` switch views; `/` jumps to Explorer and focuses search (on narrow layouts it also opens the filter sheet so the field is visible); `F` opens the filter sheet on narrow Explorer; `R` picks a random place from the current filtered list; `Esc` closes shortcuts, compare, the filter sheet, the site menu, or an open place profile in that order; `?` toggles shortcut help (rendered above other dialogs).
 - **Place profiles:** Long-form dossiers for each microclimate with seasonal charts, corpus comparisons, geospatial screening, soils, growability, risks, local contrasts, climate-change notes, similar places, and citations.
 - **Geospatial analysis:** Deterministic terrain, climate, risk, and corpus-derived scores that explain geospatial signal strength and typical Sentinel-2 / Landsat reference-sensor fit. The app is explicit that these are screening scores, not live pixel retrievals.
 - **Ranking lenses:** Sort by hidden gems, coolest summers, mildest winters, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
@@ -27,7 +28,7 @@ That distinction matters for relocation research, agricultural scouting, travel 
 - **Typed climate intelligence schema:** `src/types.ts` models climate normals, soil, growability, hazards, citations, local contrasts, field notes, deep sections, and derived geospatial context.
 - **Deterministic scoring:** `src/lib/scoring.ts`, `src/lib/geospatial-analysis.ts`, and `src/lib/atlas-corpus-stats.ts` keep ranking logic explainable and regression-testable.
 - **Agent-friendly validation:** `scripts/sanity-check.ts`, `scripts/audit-corpus.ts`, `scripts/test-prose.ts`, and `scripts/corpus-rank-gold.ts` catch malformed data, prose/unit regressions, corpus drift, and rank instability.
-- **Accessible modal stack:** Global Escape handling is owned by the app shell; detail, compare, and keyboard-help overlays use focus traps and explicit dialog semantics.
+- **Accessible modal stack:** Global `Escape` handling lives in the app shell (including HTML `<dialog>` elements for the site menu and Explorer filter sheet). Compare, keyboard-help, and place detail use focus traps and explicit dialog semantics where applicable. Opening a place profile **closes** the mobile filter sheet so the stack stays predictable. Glass dialogs share a light entrance motion (`tc-glass-dialog-motion`); the filter sheet **traps focus** inside the panel and **focuses search** when it opens (including after the `/` shortcut opens the sheet on narrow layouts).
 - **Performance-conscious map:** The SVG map avoids React re-renders during drag by mutating the transform through refs, coalesces wheel zoom with `requestAnimationFrame`, lazy-loads topology, and gates rich effects on device capability.
 - **Progressive visual system:** The interface uses a custom atmospheric design language in `src/styles.css`, but it is deliberately constrained: charts are SVG, cards are virtualized, heavy effects are tiered, and low-power devices receive cheaper rendering paths.
 
@@ -117,6 +118,7 @@ For AI agents or automated reviewers, the safest review path is:
 - Prefer adding validation before changing corpus shape.
 - Do not invent climate facts. If a data point is not present or cited, keep derived language framed as screening or editorial context.
 - Preserve URL behavior in `src/lib/app-url.ts` and modal focus behavior in `src/hooks/use-focus-trap.ts`.
+- **Shipping:** When a change is user-visible or architectural, update `README.md` in the same work (features, layout breakpoints, keyboard shortcuts, new scripts). Commit with a clear message and push to `origin` so GitHub stays current.
 - After edits, run `npm run quality:check`; for UI changes, also inspect the Explorer, a place profile, the compare overlay, and mobile-width layout.
 
 ## Project Layout
@@ -126,8 +128,11 @@ src/
   components/                  React UI: atlas, cards, profile, compare, collections, learn mode
     charts/                    SVG chart primitives
     place-detail/              Reading nav and deep profile sections
+    ExplorerFilterSheet.tsx    Mobile filter dialog + FAB trigger (ref: open / close)
+    FootprintPanel.tsx         Atlas country / tier counts beside filters or in the sheet
+    TempToggle.tsx             Shared °F / °C control (header + mobile menu)
   data/                        Places, collections, archetypes, glossary, field notes
-  hooks/                       Focus and reading-spy hooks
+  hooks/                       use-focus-trap, use-media-query (breakpoint for dock vs sheet), reading-spy
   lib/                         Scoring, units, geospatial analysis, URL state, corpus stats
   types.ts                     Domain schema
 scripts/                       Corpus audits, sanity checks, rank goldens, debug dumps

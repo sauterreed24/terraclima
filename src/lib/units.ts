@@ -267,6 +267,16 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
 
   // --- Temperature (°C → °F) ---
   if (unit === "F") {
+    // Decade shorthand before numeric passes: "20s °C", "20s Celsius" → N0–N9 °C band (e.g. 20s → 20–29 °C).
+    const decadeBandToF = (tensStart: string, full: string): string => {
+      const lo = parseInt(tensStart, 10);
+      if (!Number.isFinite(lo) || lo < 10 || lo > 90 || lo % 10 !== 0) return full;
+      const hi = lo + 9;
+      return `${Math.round(cToF(lo))}\u2013${Math.round(cToF(hi))}\u00b0F`;
+    };
+    text = text.replace(/\b([1-9]0)s\s*\u00b0\s*C\b/gi, (m, tens: string) => decadeBandToF(tens, m));
+    text = text.replace(/\b([1-9]0)s\s+Celsius\b/gi, (m, tens: string) => decadeBandToF(tens, m));
+
     // Pass 1: dash ranges first (consumes both numbers)
     const rangePat = /([\u2212\-+]?\d+(?:\.\d+)?)\s*([\u2013\u2014\-])\s*([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
     text = text.replace(rangePat, (match, n1: string, dash: string, n2: string, offset: number, full: string) => {

@@ -4,6 +4,7 @@ import type { FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
 import { Search, X } from "lucide-react";
+import { useProse } from "../lib/units";
 
 export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
   { id: "hidden-gems", label: "Hidden gems" },
@@ -29,9 +30,19 @@ interface Props {
   setFilters: Dispatch<SetStateAction<FilterState>>;
   ranking: RankingProfile;
   setRanking: (r: RankingProfile) => void;
+  /** Taller archetype scroller inside the mobile filter dialog. */
+  variant?: "dock" | "sheet";
 }
 
-export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFilters, ranking, setRanking }: Props) {
+export const FilterBar = memo(function FilterBar({
+  searchInputId,
+  filters,
+  setFilters,
+  ranking,
+  setRanking,
+  variant = "dock",
+}: Props) {
+  const prose = useProse();
   const toggleCountry = useCallback((c: Country) => {
     setFilters(f => {
       const ns = new Set(f.countries);
@@ -78,7 +89,7 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
       </label>
 
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Rank by</div>
+        <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Rank by</div>
         <div className="flex flex-wrap gap-1.5">
           {RANKING_OPTIONS.map(opt => (
             <button
@@ -97,7 +108,7 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
       </div>
 
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Country</div>
+        <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Country</div>
         <div className="flex flex-wrap gap-1.5">
           {(["USA", "Mexico", "Canada"] as Country[]).map(c => (
             <button
@@ -116,7 +127,7 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
       </div>
 
       <div>
-        <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5 flex items-center justify-between">
+        <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 flex items-center justify-between">
           <span>Archetype</span>
           {filters.archetypes.size > 0 && (
             <button
@@ -128,7 +139,11 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
             </button>
           )}
         </div>
-        <div className="flex flex-wrap gap-1.5 max-h-56 overflow-y-auto pr-1 no-scrollbar">
+        <div
+          className={`flex flex-wrap gap-1.5 overflow-y-auto pr-1 no-scrollbar ${
+            variant === "sheet" ? "max-h-[min(52dvh,22rem)]" : "max-h-56"
+          }`}
+        >
           {ARCHETYPES.map(a => (
             <button
               key={a.id}
@@ -138,7 +153,7 @@ export const FilterBar = memo(function FilterBar({ searchInputId, filters, setFi
               data-tone={filters.archetypes.has(a.id) ? a.tone : undefined}
               data-active={filters.archetypes.has(a.id)}
               aria-pressed={filters.archetypes.has(a.id)}
-              title={a.blurb}
+              title={prose(a.blurb)}
             >
               {a.label}
             </button>

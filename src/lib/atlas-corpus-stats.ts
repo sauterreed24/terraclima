@@ -7,6 +7,7 @@
 import type { Place } from "../types";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../data/places";
 import { meanJanLow, meanSummerHigh } from "./scoring";
+import type { TempUnit } from "./units";
 
 function sortAsc(a: number[]): number[] {
   return [...a].sort((x, y) => x - y);
@@ -131,7 +132,7 @@ export function getPlaceCorpusRanks(place: Place): PlaceCorpusRanks {
   };
 }
 
-export function getCorpusSynthesisLines(place: Place): { label: string; value: string }[] {
+export function getCorpusSynthesisLines(place: Place, displayTemp: TempUnit = "F"): { label: string; value: string }[] {
   const r = getPlaceCorpusRanks(place);
   const c = ATLAS_CORPUS;
   const n = c.n;
@@ -156,8 +157,9 @@ export function getCorpusSynthesisLines(place: Place): { label: string; value: s
     },
   ];
   if (r.gddAboveShare != null) {
+    const gddLabel = displayTemp === "F" ? "Growing-degree signal (GDD, base 50°F)" : "Growing-degree signal (GDD, base 10°C)";
     out.push({
-      label: "Growing-degree signal (GDD, base 10°C)",
+      label: gddLabel,
       value: `More degree-days than ${pct(r.gddAboveShare)} of stops with GDD filled`,
     });
   }
@@ -172,6 +174,7 @@ export function getCorpusContextPanelRows(
   fmtE: (m: number) => string,
   fmtP: (mm: number) => string,
   fmtD: (c: number) => string,
+  displayTemp: TempUnit = "F",
 ): CorpusPanelRow[] {
   const r = getPlaceCorpusRanks(place);
   const jh = meanSummerHigh(place);
@@ -198,8 +201,9 @@ export function getCorpusContextPanelRows(
     });
   }
   if (place.climate.gdd10 != null) {
+    const gddMetric = displayTemp === "F" ? "GDD (base 50°F) (est.)" : "GDD (base 10°C) (est.)";
     rows.push({
-      metric: "GDD (10°C) (est.)",
+      metric: gddMetric,
       you: `${Math.round(place.climate.gdd10)}`,
       context: r.gddAboveShare != null
         ? `More heat units than ${pct(r.gddAboveShare)} of stops with GDD`

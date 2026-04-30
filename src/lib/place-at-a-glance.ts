@@ -11,6 +11,7 @@ import { mergeDeepSections } from "./place-appendix-sections";
 import { getPlaceCorpusRanks } from "./atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import { EARTH_OBSERVATION_SOURCES } from "./atlas-metadata";
+import type { TempUnit } from "./units";
 
 export type AtGlanceTone = "glacier" | "sage" | "ochre" | "ice" | "ember" | "aurora";
 
@@ -35,6 +36,7 @@ export function buildAtAGlanceTiles(
   place: Place,
   fmt: (mm: number) => string,
   fmtDiurnal: (deltaC: number) => string,
+  displayTemp: TempUnit = "F",
 ): AtGlanceTile[] {
   const out: AtGlanceTile[] = [];
   const cr = getPlaceCorpusRanks(place);
@@ -92,7 +94,10 @@ export function buildAtAGlanceTiles(
   if (f != null || g != null) {
     const parts: string[] = [];
     if (f != null) parts.push(`Frost-free ~${f} d`);
-    if (g != null) parts.push(`GDD (10°C) ~${Math.round(g)}`);
+    if (g != null) {
+      const gddTag = displayTemp === "F" ? "GDD (base 50°F)" : "GDD (base 10°C)";
+      parts.push(`${gddTag} ~${Math.round(g)}`);
+    }
     out.push({ label: "Growing season (est.)", value: parts.join(" · "), hint: "Rough agronomic read from the same table as the charts", tone: "sage" });
   }
 

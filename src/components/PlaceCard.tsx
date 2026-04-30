@@ -76,8 +76,8 @@ export const PlaceCard = memo(function PlaceCard({
   // this cost is paid exactly once per card per session.
   const topWindow = useMemo(() => {
     if (compact) return null;
-    return computeBestMonths(place).find(w => w.kind === "good") ?? null;
-  }, [place, compact]);
+    return computeBestMonths(place, temp).find(w => w.kind === "good") ?? null;
+  }, [place, compact, temp]);
 
   const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);
   const geospatial = useMemo(() => (compact ? null : buildGeospatialAnalysis(place)), [place, compact]);
@@ -136,12 +136,12 @@ export const PlaceCard = memo(function PlaceCard({
               {place.country === "USA" ? "United States" : place.country === "Canada" ? "Canada" : "Mexico"}
             </p>
             {!compact && (
-              <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 text-[11px] text-stone max-w-md">
-                <dt className="text-stone/75">Archetype</dt>
+              <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-2 gap-y-0.5 text-[11px] text-stone-readable max-w-md">
+                <dt className="text-stone-readable/85">Archetype</dt>
                 <dd className="text-frost truncate">{primaryArchetype?.label ?? "—"}</dd>
-                <dt className="text-stone/75">Elevation</dt>
+                <dt className="text-stone-readable/85">Elevation</dt>
                 <dd><span className="font-mono-num text-frost">{fmtElev(place.elevationM, dist)}</span></dd>
-                <dt className="text-stone/75">Köppen</dt>
+                <dt className="text-stone-readable/85">Köppen</dt>
                 <dd className="font-mono-num text-frost">{place.koppen}</dd>
               </dl>
             )}
@@ -169,7 +169,7 @@ export const PlaceCard = memo(function PlaceCard({
 
         {!compact && (
           <div className="pt-3">
-            <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Year at a glance</div>
+            <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Year at a glance</div>
             <div className="rounded-lg overflow-hidden border border-[rgba(71,90,122,0.2)] bg-[rgba(255,253,248,0.5)]" style={{ filter: "saturate(1.05)" }}>
               <MiniClimateStrip place={place} />
             </div>
@@ -177,7 +177,7 @@ export const PlaceCard = memo(function PlaceCard({
         )}
 
         <div className="pt-3">
-          <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Core numbers</div>
+          <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Core numbers</div>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 rounded-lg border border-[rgba(71,90,122,0.15)] bg-[rgba(255,253,248,0.45)] px-2 py-2">
             <Stat label="JJA high" value={fmtTemp(summerHighC, temp)} tone="ochre" />
             <Stat label="Jan low" value={fmtTemp(janLowC, temp)} tone="glacier" />
@@ -185,12 +185,12 @@ export const PlaceCard = memo(function PlaceCard({
             <Stat label="Uniqueness" value={place.scores.microclimateUniqueness.toString()} tone="ice" />
           </div>
           {corpusTeaser ? (
-            <p className="text-[10px] leading-snug text-stone/88 mt-2 pl-0.5 border-t border-dashed border-[rgba(71,90,122,0.12)] pt-2" title={corpusTeaser}>
-              {corpusTeaser}
+            <p className="text-[10px] leading-snug text-stone-readable mt-2 pl-0.5 border-t border-dashed border-[rgba(71,90,122,0.12)] pt-2" title={prose(corpusTeaser)}>
+              {prose(corpusTeaser)}
             </p>
           ) : null}
           {geospatial ? (
-            <p className="text-[10px] leading-snug text-stone/88 mt-1 pl-0.5">
+            <p className="text-[10px] leading-snug text-stone-readable mt-1 pl-0.5">
               Geospatial signal {geospatial.geospatialSignalScore}/100 · EO fit {geospatial.eoObservabilityScore}/100 · Sentinel-2/Landsat reference sensors.
             </p>
           ) : null}
@@ -198,7 +198,7 @@ export const PlaceCard = memo(function PlaceCard({
 
         {!compact && place.archetypes.length > 0 && (
           <div className="pt-3 border-t border-[rgba(71,90,122,0.12)]">
-            <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Also tagged</div>
+            <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Also tagged</div>
             <div className="flex flex-wrap gap-1">
               {place.archetypes.slice(0, 3).map(a => (
                 <span key={a} className="chip" data-tone={ARCHETYPE_BY_ID[a]?.tone ?? "ice"}>
@@ -215,8 +215,8 @@ export const PlaceCard = memo(function PlaceCard({
               className="best-window-pill"
               data-resonant={resonantWindow && topWindow.id === resonantWindow ? "true" : "false"}
               title={resonantWindow && topWindow.id === resonantWindow
-                ? `${topWindow.note ?? ""} Aligned with current ranking.`
-                : topWindow.note}
+                ? `${topWindow.note ? prose(topWindow.note) : ""} Aligned with current ranking.`
+                : topWindow.note ? prose(topWindow.note) : undefined}
             >
               <span aria-hidden="true">{topWindow.glyph}</span>
               <span className="uppercase tracking-wider">{topWindow.label}</span>
@@ -225,7 +225,7 @@ export const PlaceCard = memo(function PlaceCard({
           </div>
         )}
 
-        {note && <div className="text-xs text-stone italic pt-2 border-t border-[rgba(71,90,122,0.1)] mt-2">{note}</div>}
+        {note && <div className="text-xs text-stone-readable italic pt-2 border-t border-[rgba(71,90,122,0.1)] mt-2">{prose(note)}</div>}
       </div>
     </div>
   );
@@ -240,7 +240,7 @@ function Stat({ label, value, tone }: { label: string; value: string; tone: stri
   };
   return (
     <div className="flex flex-col">
-      <span className="text-[10px] uppercase tracking-wider text-stone">{label}</span>
+      <span className="text-[10px] uppercase tracking-wider text-stone-readable">{label}</span>
       <span className="font-mono-num text-sm" style={{ color: color[tone] ?? "#2a4a58" }}>{value}</span>
     </div>
   );

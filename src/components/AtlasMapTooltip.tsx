@@ -153,8 +153,8 @@ export function AtlasMapTooltip({
               </p>
             ) : null}
             {place.confidenceNotes ? (
-              <p className="text-[0.72rem] leading-snug text-stone italic border-l-2 border-[rgba(195,165,138,0.5)] pl-2.5 line-clamp-3" title={place.confidenceNotes}>
-                {place.confidenceNotes}
+              <p className="text-[0.72rem] leading-snug text-stone italic border-l-2 border-[rgba(195,165,138,0.5)] pl-2.5 line-clamp-3" title={prose(place.confidenceNotes)}>
+                {prose(place.confidenceNotes)}
               </p>
             ) : null}
           </div>
@@ -249,7 +249,7 @@ export function AtlasMapTooltip({
                     <span className="text-stone font-normal text-[0.72rem] uppercase tracking-wide"> · {z.role}</span>
                   ) : null}
                   {z.population ? <span className="text-stone font-normal"> · {z.population}</span> : null}
-                  {z.note ? <span className="block mt-0.5 text-stone font-normal">{z.note}</span> : null}
+                  {z.note ? <span className="block mt-0.5 text-stone font-normal">{prose(z.note)}</span> : null}
                 </li>
               ))}
             </ul>
@@ -275,7 +275,7 @@ export function AtlasMapTooltip({
             </div>
             <p className="text-[0.65rem] leading-relaxed text-stone mt-2.5 pl-0.5 border-t border-[rgba(195,165,138,0.28)] pt-2">
               <span className="font-semibold text-ice/90">Full-atlas context · </span>
-              {getCorpusMapHint(place)}
+              {prose(getCorpusMapHint(place))}
             </p>
             <p className="text-[0.65rem] leading-relaxed text-stone mt-1 pl-0.5">
               <span className="font-semibold text-ice/90">Geospatial signal · </span>
@@ -344,7 +344,7 @@ export function AtlasMapTooltip({
                       {w.level.replace(/-/g, " ")}
                     </span>
                   </div>
-                  {w.note ? <p className="tc-map-hover-risk__note w-full m-0">{w.note}</p> : null}
+                  {w.note ? <p className="tc-map-hover-risk__note w-full m-0">{prose(w.note)}</p> : null}
                 </div>
               ))}
             </div>

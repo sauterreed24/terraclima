@@ -40,7 +40,7 @@ export const ARCHETYPES: ArchetypeMeta[] = [
     id: "cool-summer-maritime",
     label: "Cool-Summer Maritime",
     tone: "glacier",
-    blurb: "Ocean-moderated coasts where summer highs rarely leave the 20s Celsius.",
+    blurb: "Ocean-moderated coasts where summer highs rarely leave the 20s °C.",
     guide: "Where cold ocean currents and persistent marine layers dominate, summers remain astonishingly cool. July afternoons in the teens and low 20s are normal. Winters, too, moderate — the sea refuses to freeze. For heat-sensitive humans and plants, these coasts are refuges.",
   },
   {

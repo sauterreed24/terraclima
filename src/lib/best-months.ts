@@ -9,6 +9,7 @@
 
 import type { Place } from "../types";
 import type { RankingProfile } from "./scoring";
+import type { TempUnit } from "./units";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
 
@@ -48,7 +49,7 @@ export function resonantWindowFor(profile: RankingProfile): BestWindow["id"] | n
   }
 }
 
-export function computeBestMonths(place: Place): BestWindow[] {
+export function computeBestMonths(place: Place, displayTemp: TempUnit = "F"): BestWindow[] {
   const highs = place.climate.tempHighC;
   const lows = place.climate.tempLowC;
   const precip = place.climate.precipMm;
@@ -137,7 +138,10 @@ export function computeBestMonths(place: Place): BestWindow[] {
       label: "Avoid if heat-sensitive",
       glyph: "\u{1F525}",
       range: heatRange,
-      note: "Typical daily highs above 32°C / 90°F.",
+      note:
+        displayTemp === "F"
+          ? "Typical daily highs at or above about 90°F."
+          : "Typical daily highs at or above 32°C.",
     });
   }
 
@@ -150,7 +154,10 @@ export function computeBestMonths(place: Place): BestWindow[] {
       label: "Deep-cold window",
       glyph: "\u{1F9CA}",
       range: coldRange,
-      note: "Overnight lows commonly below \u221210°C / 14°F.",
+      note:
+        displayTemp === "F"
+          ? "Overnight lows commonly below about 14°F."
+          : "Overnight lows commonly below \u221210°C.",
     });
   }
 

@@ -464,7 +464,7 @@ function DetailBody({
 
   const synthesized = useMemo(() => {
     const s = synthesizePlaceSignals(place, temp, dist);
-    return { topRisks: s.topRisks, lines: [...s.lines, ...getCorpusSynthesisLines(place)] };
+    return { topRisks: s.topRisks, lines: [...s.lines, ...getCorpusSynthesisLines(place, temp)] };
   }, [place, temp, dist]);
   const corpusMatrixRows = useMemo(
     () =>
@@ -474,10 +474,11 @@ function DetailBody({
         m => fmtElev(m, dist),
         mm => fmtPrecip(mm, dist),
         c => fmtDelta(c, temp, { signed: false }),
+        temp,
       ),
     [place, temp, dist],
   );
-  const bestMonths = useMemo(() => computeBestMonths(place), [place]);
+  const bestMonths = useMemo(() => computeBestMonths(place, temp), [place, temp]);
   const similar = useMemo(() => findSimilarPlaces(place, PLACES, 3), [place]);
   const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
@@ -595,7 +596,7 @@ function DetailBody({
           <div>
             <LabelRow label="Month-by-month comfort" />
             <ComfortMatrix place={place} />
-            <div className="text-[10px] text-stone mt-2 flex items-center gap-3 flex-wrap">
+            <div className="text-[10px] text-stone-readable mt-2 flex items-center gap-3 flex-wrap">
               <Legend color="#89af88" text="Ideal" />
               <Legend color="#c6dcbd" text="Very good" />
               <Legend color="#f0d29c" text="Good" />
@@ -615,7 +616,7 @@ function DetailBody({
                 <div className="min-w-0 flex-1">
                   <div className="text-xs uppercase tracking-wider text-stone">{w.label}</div>
                   <div className="text-sm text-ice font-mono-num">{w.range}</div>
-                  {w.note && <div className="text-[11px] text-stone italic mt-0.5 leading-snug">{w.note}</div>}
+                  {w.note && <div className="text-[11px] text-stone italic mt-0.5 leading-snug">{prose(w.note)}</div>}
                 </div>
               </div>
             ))}
@@ -709,14 +710,14 @@ function DetailBody({
                     <span className="font-mono-num text-sm text-frost">{source.score}/100</span>
                   </div>
                   <div className="text-[11px] uppercase tracking-wider text-stone">{source.label} fit</div>
-                  <p className="text-[12px] text-stone leading-snug mt-1">{source.note}</p>
+                  <p className="text-[12px] text-stone leading-snug mt-1">{prose(source.note)}</p>
                 </div>
               ))}
             </div>
           </div>
         </div>
         <p className="text-[11px] text-stone italic mt-2">
-          {geospatial.contextLine}
+          {prose(geospatial.contextLine)}
         </p>
         <div className="mt-3 panel-thin p-3">
           <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Likely spectral checks</div>

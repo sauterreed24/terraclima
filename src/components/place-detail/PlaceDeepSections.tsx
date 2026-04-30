@@ -145,10 +145,10 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
             Field dossier
           </h3>
         </div>
-        <p className="text-[11px] md:text-xs text-stone leading-relaxed mt-2 max-w-[52rem]">
+        <p className="text-[11px] md:text-xs text-stone-readable leading-relaxed mt-2 max-w-[52rem]">
           {hasBestMonthsGuide
-            ? "If we have written a longer note for this stop, it runs first. What follows is the same backbone every profile carries: how rain and snow pile through the year, the terrain mechanisms we tagged, soil and yard in one pass, nearby contrasts when the record has them, then an honest closing on fit and risk. For trip or planting calendars, use Best months for… farther down so we are not redundant. Your °F / °C toggle applies throughout."
-            : "If we have written a longer note for this stop, it runs first. What follows is the same backbone every profile carries: how rain and snow pile through the year, the terrain mechanisms we tagged, soil and yard in one pass, nearby contrasts when the record has them, then an honest closing on fit and risk. Your °F / °C toggle applies throughout."}
+            ? "If we have written a longer note for this stop, it runs first. What follows is the same backbone every profile carries: how rain and snow pile through the year, the terrain mechanisms we tagged, soil and yard in one pass, nearby contrasts when the record has them, then an honest closing on fit and risk. For trip or planting calendars, use Best months for… farther down so we are not redundant. Temperatures track the unit you choose in the header."
+            : "If we have written a longer note for this stop, it runs first. What follows is the same backbone every profile carries: how rain and snow pile through the year, the terrain mechanisms we tagged, soil and yard in one pass, nearby contrasts when the record has them, then an honest closing on fit and risk. Temperatures track the unit you choose in the header."}
         </p>
         <nav
           ref={jumpStripRef}

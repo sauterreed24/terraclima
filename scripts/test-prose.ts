@@ -35,6 +35,10 @@ const cases: Case[] = [
   { input: "Köppen class BSk dominates", expect: ["BSk"], reject: [" ft ", " mi "] },
   { input: "the mm-level precision radar sees it", expect: ["mm-level"], reject: [" in "] },
 
+  // Decade shorthand (°C → °F)
+  { input: "highs rarely leave the 20s °C.", expect: ["68\u201384\u00b0F"] },
+  { input: "afternoons in the 20s Celsius.", expect: ["68\u201384\u00b0F"] },
+
   // Celsius mode (keep metric untouched when dist=metric)
   { input: "Xalapa sits at 1,427 m on the eastern slope",
     expect: ["1,427 m"], reject: ["ft"], unit: "C", dist: "metric" },

@@ -1,13 +1,17 @@
-import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
-import { BookOpen, Compass, Globe2, Layers, Library, Map, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
+import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { BookOpen, Compass, Layers, Library, Map, Menu, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
+import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
 import { FilterBar, RANKING_OPTIONS } from "./components/FilterBar";
+import { FootprintPanel } from "./components/FootprintPanel";
+import { TempToggle } from "./components/TempToggle";
 import { PlaceDetail } from "./components/PlaceDetail";
 import { CompareView } from "./components/CompareView";
 import { CollectionsView } from "./components/CollectionsView";
 import { LearnMode } from "./components/LearnMode";
 import { useFocusTrap } from "./hooks/use-focus-trap";
+import { useMediaQuery } from "./hooks/use-media-query";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
 import { FIELD_NOTES } from "./data/field-notes";
@@ -15,7 +19,7 @@ import { applyFilters, rankLivabilityPreview, rankPlaces, type FilterState, type
 import { resonantWindowFor } from "./lib/best-months";
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
-import { useUnits } from "./lib/units";
+import { useProse } from "./lib/units";
 import {
   type AppHistoryState,
   formatAppRelativeUrl,
@@ -86,6 +90,8 @@ export default function App() {
     try { window.localStorage.setItem(RANKING_STORAGE_KEY, profile); } catch { /* noop */ }
   }, []);
   const prevPlaceIdRef = useRef<string | null>(URL_INIT.placeId);
+  const explorerDockLg = useMediaQuery("(min-width: 1024px)");
+  const explorerFilterSheetRef = useRef<ExplorerFilterSheetHandle | null>(null);
 
   useEffect(() => {
     if (!selectedId) {
@@ -231,11 +237,24 @@ export default function App() {
           setShowShortcuts(s => !s);
           e.preventDefault();
           break;
-        case "Escape":
+        case "Escape": {
           if (showShortcuts) { e.preventDefault(); setShowShortcuts(false); break; }
           if (compareOpen) { e.preventDefault(); setCompareOpen(false); break; }
+          const filterDlg = document.getElementById("tc-explorer-filter-sheet") as HTMLDialogElement | null;
+          if (filterDlg?.open) {
+            e.preventDefault();
+            filterDlg.close();
+            break;
+          }
+          const siteMenuDlg = document.getElementById("tc-site-menu") as HTMLDialogElement | null;
+          if (siteMenuDlg?.open) {
+            e.preventDefault();
+            siteMenuDlg.close();
+            break;
+          }
           if (selectedId) { e.preventDefault(); closeDetail(); break; }
           break;
+        }
         case "e": case "E":
           setView("explorer");
           break;
@@ -249,9 +268,21 @@ export default function App() {
           e.preventDefault();
           setView("explorer");
           requestAnimationFrame(() => {
-            document.getElementById(SEARCH_INPUT_ID)?.focus();
+            if (!explorerDockLg) {
+              explorerFilterSheetRef.current?.open();
+            }
+            requestAnimationFrame(() => {
+              document.getElementById(SEARCH_INPUT_ID)?.focus();
+            });
           });
           break;
+        case "f":
+        case "F": {
+          if (explorerDockLg || view !== "explorer") break;
+          e.preventDefault();
+          explorerFilterSheetRef.current?.open();
+          break;
+        }
         case "r": case "R": {
           e.preventDefault();
           setView("explorer");
@@ -267,7 +298,7 @@ export default function App() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [showShortcuts, compareOpen, selectedId, openPlace, closeDetail]);
+  }, [showShortcuts, compareOpen, selectedId, openPlace, closeDetail, explorerDockLg, view]);
 
   const openCompare = useCallback(() => {
     setCompareOpen(true);
@@ -397,16 +428,29 @@ export default function App() {
                 )}
               </div>
 
-              <div className="lg:w-[340px] lg:shrink-0 flex flex-col gap-4">
-                <FilterBar
+              {explorerDockLg ? (
+                <aside className="w-[340px] shrink-0 flex flex-col gap-4" aria-label="Explorer filters and atlas footprint">
+                  <FilterBar
+                    searchInputId={SEARCH_INPUT_ID}
+                    filters={filters}
+                    setFilters={setFilters}
+                    ranking={ranking}
+                    setRanking={setRanking}
+                  />
+                  <FootprintPanel />
+                </aside>
+              ) : (
+                <ExplorerFilterSheet
+                  ref={explorerFilterSheetRef}
                   searchInputId={SEARCH_INPUT_ID}
                   filters={filters}
                   setFilters={setFilters}
                   ranking={ranking}
                   setRanking={setRanking}
+                  footer={<FootprintPanel />}
+                  detailOpen={Boolean(selectedId)}
                 />
-                <FootprintPanel />
-              </div>
+              )}
             </>
           )}
 
@@ -482,7 +526,7 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
       role="dialog"
       aria-modal="true"
       aria-labelledby="kbd-shortcuts-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 anim-fade-in"
+      className="fixed inset-0 z-[90] flex items-center justify-center p-4 anim-fade-in"
       style={{ background: "rgba(62, 38, 24, 0.22)", backdropFilter: "blur(8px)" }}
       onClick={onClose}
     >
@@ -502,9 +546,10 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
           <Kbds keys={["E"]} />        <span className="text-frost">Explorer</span>
           <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
           <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
-          <Kbds keys={["/"]} />        <span className="text-frost">Focus search</span>
+          <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
+          <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
           <Kbds keys={["R"]} />        <span className="text-frost">Surprise — random place in your current list</span>
-          <Kbds keys={["Esc"]} />      <span className="text-frost">Close panel / detail</span>
+          <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail</span>
           <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
         </div>
         <div className="divider-contour my-3" />
@@ -549,41 +594,92 @@ const EmptyResults = memo(function EmptyResults({ onClear }: { onClear: () => vo
 });
 
 const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount }: { view: View; setView: (v: View) => void; onOpenCompare: () => void; compareCount: number }) {
-  const { temp, toggle } = useUnits();
+  const menuRef = useRef<HTMLDialogElement>(null);
+  const menuPanelRef = useRef<HTMLDivElement>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useFocusTrap(menuPanelRef, menuOpen);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    let alive = true;
+    const id = window.requestAnimationFrame(() => {
+      if (!alive) return;
+      menuPanelRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+    });
+    return () => {
+      alive = false;
+      window.cancelAnimationFrame(id);
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    const d = menuRef.current;
+    if (!d) return;
+    const sync = () => setMenuOpen(d.open);
+    d.addEventListener("toggle", sync);
+    sync();
+    return () => d.removeEventListener("toggle", sync);
+  }, []);
+
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [menuOpen]);
+
+  const closeMenu = useCallback(() => {
+    menuRef.current?.close();
+  }, []);
+
+  const openMenu = useCallback(() => {
+    menuRef.current?.showModal();
+  }, []);
+
+  const pickView = useCallback(
+    (v: View) => {
+      setView(v);
+      closeMenu();
+    },
+    [setView, closeMenu],
+  );
+
   return (
     <header className="sticky top-0 z-30 tc-header-bar">
-      <div className="max-w-[1600px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="drop-shadow-[0_2px_14px_rgba(255,196,214,0.45)]">
-            <LogoMark />
+      <div className="max-w-[1600px] mx-auto px-4 py-3 flex flex-col gap-3 min-[560px]:flex-row min-[560px]:items-center min-[560px]:justify-between min-[560px]:gap-4">
+        <div className="flex items-center justify-between gap-3 min-w-0 min-[560px]:contents">
+          <div className="flex items-center gap-3 min-w-0 shrink-0">
+            <div className="drop-shadow-[0_2px_14px_rgba(255,196,214,0.45)] shrink-0">
+              <LogoMark />
+            </div>
+            <div className="min-w-0">
+              <div className="font-atlas text-lg text-ice leading-none">Terraclima</div>
+              <div className="text-[11px] tracking-wide text-gradient-atlas leading-snug">North American Microclimate Atlas</div>
+            </div>
           </div>
-          <div>
-            <div className="font-atlas text-lg text-ice leading-none">Terraclima</div>
-            <div className="text-[11px] tracking-wide text-gradient-atlas">North American Microclimate Atlas</div>
-          </div>
+
+          <button
+            type="button"
+            onClick={openMenu}
+            className="tc-header-menu-trigger min-[560px]:hidden"
+            aria-haspopup="dialog"
+            aria-expanded={menuOpen}
+            aria-controls="tc-site-menu"
+          >
+            <Menu className="w-5 h-5" aria-hidden />
+            <span className="sr-only">Open site menu</span>
+          </button>
         </div>
 
-        <nav className="flex items-center gap-1.5">
+        <nav className="hidden min-[560px]:flex flex-wrap items-center gap-1.5 min-[560px]:justify-end" aria-label="Primary">
           <NavBtn active={view === "explorer"} onClick={() => setView("explorer")} icon={<Map className="w-3.5 h-3.5" />} label="Explorer" />
           <NavBtn active={view === "collections"} onClick={() => setView("collections")} icon={<Library className="w-3.5 h-3.5" />} label="Collections" />
           <NavBtn active={view === "learn"} onClick={() => setView("learn")} icon={<Compass className="w-3.5 h-3.5" />} label="Learn" />
 
-          <div className="ml-1 inline-flex rounded-lg border border-[rgba(180,150,120,0.5)] overflow-hidden" role="group" aria-label="Temperature unit">
-            <button
-              type="button"
-              onClick={() => temp === "C" && toggle()}
-              className={`px-2.5 py-1.5 text-xs font-mono-num transition-colors ${temp === "F" ? "bg-[rgba(94,196,220,0.2)] text-ice" : "text-stone hover:text-ice"}`}
-              aria-pressed={temp === "F"}
-              title="Use Fahrenheit"
-            >°F</button>
-            <button
-              type="button"
-              onClick={() => temp === "F" && toggle()}
-              className={`px-2.5 py-1.5 text-xs font-mono-num transition-colors border-l border-[rgba(180,150,120,0.5)] ${temp === "C" ? "bg-[rgba(94,196,220,0.2)] text-ice" : "text-stone hover:text-ice"}`}
-              aria-pressed={temp === "C"}
-              title="Use Celsius"
-            >°C</button>
-          </div>
+          <TempToggle className="ml-1" />
 
           {compareCount > 0 && (
             <button type="button" onClick={onOpenCompare} className="btn-primary !text-xs !py-1.5" aria-label={`Open compare (${compareCount} places)`}>
@@ -591,21 +687,84 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
             </button>
           )}
         </nav>
+
+        <dialog
+          ref={menuRef}
+          id="tc-site-menu"
+          className="tc-site-menu-dialog tc-glass-dialog-motion"
+          aria-labelledby="tc-site-menu-title"
+          onClick={e => {
+            if (e.target === menuRef.current) closeMenu();
+          }}
+        >
+          <div ref={menuPanelRef} className="tc-site-menu-dialog__inner">
+            <div className="tc-site-menu-dialog__head">
+              <h2 id="tc-site-menu-title" className="font-atlas text-lg text-ice m-0">
+                Navigate
+              </h2>
+              <button type="button" onClick={closeMenu} className="btn-ghost !p-2 rounded-lg" aria-label="Close menu">
+                <X className="w-4 h-4" aria-hidden />
+              </button>
+            </div>
+            <div className="flex flex-col gap-2">
+              <NavBtn stretch active={view === "explorer"} onClick={() => pickView("explorer")} icon={<Map className="w-4 h-4" />} label="Explorer" />
+              <NavBtn stretch active={view === "collections"} onClick={() => pickView("collections")} icon={<Library className="w-4 h-4" />} label="Collections" />
+              <NavBtn stretch active={view === "learn"} onClick={() => pickView("learn")} icon={<Compass className="w-4 h-4" />} label="Learn" />
+
+              <div className="pt-1">
+                <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 px-0.5">Temperature units</div>
+                <TempToggle stretch onAfterChange={closeMenu} />
+              </div>
+
+              {compareCount > 0 ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    closeMenu();
+                    onOpenCompare();
+                  }}
+                  className="btn-primary w-full justify-center !py-2.5 mt-1"
+                  aria-label={`Open compare (${compareCount} places)`}
+                >
+                  <Target className="w-4 h-4" aria-hidden /> Compare · {compareCount}
+                </button>
+              ) : null}
+            </div>
+          </div>
+        </dialog>
       </div>
     </header>
   );
 });
 
-const NavBtn = memo(function NavBtn({ active, onClick, icon, label }: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
+const NavBtn = memo(function NavBtn({
+  active,
+  onClick,
+  icon,
+  label,
+  stretch,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: ReactNode;
+  label: string;
+  stretch?: boolean;
+}) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-current={active ? "page" : undefined}
-      className={`inline-flex items-center gap-1.5 px-3 py-2 text-xs rounded-lg transition-all duration-200 min-h-[2.25rem] ${
+      className={`inline-flex items-center gap-1.5 rounded-lg transition-all duration-200 ${
+        stretch
+          ? "w-full justify-center min-h-[2.75rem] px-3 py-2.5 text-sm"
+          : "gap-1.5 px-3 py-2 text-xs min-h-[2.25rem]"
+      } ${
         active
           ? "text-ice bg-[rgba(94,196,220,0.18)] shadow-[inset_0_-2px_0_0_rgba(26,143,168,0.85)] ring-1 ring-[rgba(26,143,168,0.22)]"
-          : "text-stone border border-transparent hover:text-frost hover:bg-[rgba(255,248,236,0.95)]"
+          : stretch
+            ? "text-stone border border-[rgba(180,150,120,0.42)] hover:text-frost hover:bg-[rgba(255,248,236,0.95)]"
+            : "text-stone border border-transparent hover:text-frost hover:bg-[rgba(255,248,236,0.95)]"
       }`}
     >
       {icon} {label}
@@ -692,6 +851,7 @@ const HeroCard = memo(function HeroCard({
   onSurpriseMe: () => void;
   canSurprise: boolean;
 }) {
+  const prose = useProse();
   const active = activeCollection ? COLLECTION_BY_ID[activeCollection] ?? null : null;
   return (
     <div className="panel panel-hero p-5 anim-fade-in space-y-4">
@@ -699,7 +859,7 @@ const HeroCard = memo(function HeroCard({
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Sparkles className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
-            <span className="text-xs uppercase tracking-wider text-stone">
+            <span className="text-xs uppercase tracking-wider text-stone-readable">
               {active ? "Collection pinned" : activeArchetypes.size > 0 ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}` : "Explorer"}
             </span>
             {active && (
@@ -744,13 +904,13 @@ const HeroCard = memo(function HeroCard({
       </div>
 
       {livabilityTopTen.length > 0 ? (
-        <div className="hero-top-ten rounded-xl border border-[rgba(210,180,150,0.38)] bg-[linear-gradient(180deg,rgba(255,253,248,0.92)_0%,rgba(248,252,244,0.72)_100%)] px-3 py-3 sm:px-4 space-y-3">
+        <div className="hero-top-ten px-3 py-3 sm:px-4 space-y-3">
           <div className="min-w-0">
             <div className="text-[10px] uppercase tracking-wider text-sage-700">Livability lens · top ten</div>
-            <p className="text-xs text-stone mt-1 leading-relaxed max-w-3xl">
+            <p className="text-xs text-stone-readable mt-1 leading-relaxed max-w-3xl">
               Same filtered pool as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by our published blend (resilience, winter and summer headroom, hazard cushion, growability) — not by whatever you picked in Rank by.
             </p>
-            <details className="mt-2 text-[11px] text-stone group">
+            <details className="mt-2 text-[11px] text-stone-readable group">
               <summary className="cursor-pointer select-none text-frost/90 hover:text-ice underline decoration-dotted underline-offset-2 list-none [&::-webkit-details-marker]:hidden flex items-center gap-1">
                 Show the exact weights
               </summary>
@@ -769,19 +929,19 @@ const HeroCard = memo(function HeroCard({
                 type="button"
                 onClick={() => onOpenPlace(row.place.id)}
                 aria-label={`Livability rank ${i + 1}. ${row.place.name}, ${row.place.koppen}. Open place profile.`}
-                className="hero-top-ten__chip snap-start shrink-0 text-left rounded-lg border border-[rgba(200,170,140,0.45)] bg-white/90 px-3 py-2 min-w-[10.5rem] max-w-[13rem] transition-[border-color,box-shadow,transform] hover:border-[rgba(26,143,168,0.45)] hover:shadow-md hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgba(26,143,168,0.55)]"
+                className="hero-top-ten__chip snap-start shrink-0 px-3 py-2"
               >
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="font-atlas text-lg text-ice/90 tabular-nums leading-none" aria-hidden>{i + 1}</span>
-                  <span className="text-[10px] uppercase tracking-wider text-stone truncate">{row.place.country === "USA" ? "US" : row.place.country === "Canada" ? "CA" : "MX"}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-stone-readable truncate">{row.place.country === "USA" ? "US" : row.place.country === "Canada" ? "CA" : "MX"}</span>
                 </div>
                 <div className="font-atlas text-sm text-ice leading-tight mt-1 truncate" title={row.place.name}>{row.place.name}</div>
-                <div className="text-[11px] text-stone mt-0.5 truncate">{row.place.koppen}</div>
-                <div className="text-[10px] text-stone/90 mt-1 font-mono-num tabular-nums">
+                <div className="text-[11px] text-stone-readable mt-0.5 truncate">{row.place.koppen}</div>
+                <div className="text-[10px] text-stone-readable mt-1 font-mono-num tabular-nums">
                   Blend <span className="text-frost">{Math.round(row.score)}</span>
                 </div>
                 {row.note ? (
-                  <div className="text-[10px] text-stone mt-0.5 leading-snug line-clamp-2" title={row.note}>{row.note}</div>
+                  <div className="text-[10px] text-stone-readable mt-0.5 leading-snug line-clamp-2" title={prose(row.note)}>{prose(row.note)}</div>
                 ) : null}
               </button>
             ))}
@@ -789,8 +949,8 @@ const HeroCard = memo(function HeroCard({
 
           {sortTopFive.length > 0 ? (
             <div className="pt-2 border-t border-[rgba(200,170,140,0.35)]">
-              <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Your Rank by · leading five</div>
-              <p className="text-[11px] text-stone mb-2 leading-relaxed">
+              <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Your Rank by · leading five</div>
+              <p className="text-[11px] text-stone-readable mb-2 leading-relaxed">
                 Matches the long ranked list below — currently <span className="font-medium text-frost">{rankingLabel}</span>.
               </p>
               <div className="flex flex-wrap gap-1.5" aria-label="Top five places for the selected ranking profile">
@@ -820,7 +980,7 @@ const HeroCard = memo(function HeroCard({
 const Metric = memo(function Metric({ label, value, animated }: { label: string; value: number; animated?: boolean }) {
   return (
     <div className="flex flex-col items-end">
-      <span className="text-[10px] uppercase tracking-wider text-stone">{label}</span>
+      <span className="text-[10px] uppercase tracking-wider text-stone-readable">{label}</span>
       <span className="font-mono-num text-xl text-ice tabular-nums">
         {animated ? <AnimatedNumber value={value} /> : value}
       </span>
@@ -857,43 +1017,6 @@ function AnimatedNumber({ value, durationMs = 520 }: { value: number; durationMs
   }, [value, durationMs]);
 
   return <span ref={ref}>{displayedRef.current}</span>;
-}
-
-const FootprintPanel = memo(function FootprintPanel() {
-  return (
-    <div className="panel p-4 space-y-3">
-      <div className="flex items-center gap-2">
-        <Globe2 className="w-4 h-4" style={{ color: "#c6dcbd" }} />
-        <h3 className="font-atlas text-base text-ice">The atlas in three countries</h3>
-      </div>
-      <div className="grid grid-cols-3 gap-2 text-center">
-        <StatBlock label="USA" value={PLACE_COUNTS.usa} />
-        <StatBlock label="Canada" value={PLACE_COUNTS.canada} />
-        <StatBlock label="Mexico" value={PLACE_COUNTS.mexico} />
-      </div>
-      <div className="divider-contour" />
-      <div className="grid grid-cols-3 gap-2 text-center">
-        <StatBlock label="Flagship" value={PLACE_COUNTS.tierA} />
-        <StatBlock label="Spotlight" value={PLACE_COUNTS.tierB} />
-        <StatBlock label="Index" value={PLACE_COUNTS.tierC} />
-      </div>
-      <p className="text-xs text-stone leading-relaxed">
-        Flagship stops are written like chapters — rich story, risks, and climate-change context. Spotlight stops are built to compare cleanly. Index entries keep the list honest as we add more towns without bloating the map.
-      </p>
-      <p className="text-[10px] text-stone/90 leading-relaxed border-t border-[rgba(200,160,120,0.2)] pt-2 mt-2">
-        Open any profile: cards, map, and the detail drawer rank that stop against the full {PLACE_COUNTS.total}-place corpus (wetter/drier, cooler summers, higher ground, diurnal, scores) using the same summary fields as the header numbers.
-      </p>
-    </div>
-  );
-});
-
-function StatBlock({ label, value }: { label: string; value: number }) {
-  return (
-    <div className="panel-thin p-2">
-      <div className="font-mono-num text-xl text-ice">{value}</div>
-      <div className="text-[10px] uppercase tracking-wider text-stone">{label}</div>
-    </div>
-  );
 }
 
 const Footer = memo(function Footer() {
