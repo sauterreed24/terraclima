@@ -924,6 +924,9 @@ export function AtlasMap({
           <span className="text-[rgba(255,220,150,0.95)]">Mexico</span>
           {" "}— fill stays the climate driver.
         </p>
+        <p className="text-[9px] text-[rgba(200,218,236,0.72)] leading-snug pt-1.5 border-t border-[rgba(140,200,224,0.18)]">
+          Geospatial numbers are atlas screening analytics (terrain + climate + reference EO design goals). They are not live Sentinel, Landsat, or lidar products.
+        </p>
         <p className="text-[9px] text-[rgba(200,218,236,0.78)] leading-snug pt-0.5">
           Chart numbers in each profile use the cited normals or blends; WMO 30-year windows are often {CLIMATE_NORMALS_PERIOD} when a period is named.
         </p>

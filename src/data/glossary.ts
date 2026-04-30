@@ -265,4 +265,26 @@ export const CONCEPTS: Concept[] = [
     long: "At tropical latitudes where the sun's elevation changes only modestly through the year, temperatures at a given altitude stay remarkably constant. Seasons are defined by rainfall, not heat. The classic Mexican highland eternal-spring climate is the paradigm case.",
     exampleIds: ["oaxaca-mx", "san-cristobal-mx", "patzcuaro-mx"],
   },
+  {
+    id: "eo-reference-sensors",
+    term: "Earth observation (atlas reference)",
+    short: "Sentinel-2 and Landsat name the band families and archives field analysts use for vegetation, moisture, snow, and thermal screening — not satellite scenes rendered inside Terraclima.",
+    long: "Operational land imaging stacks differ by resolution, revisit, and thermal capability. The atlas uses them as design references: which indices are likely to be informative for a place's archetype, and where cloud, snow, or marine stratus would make scenes sparse. Scores remain deterministic blends of climate, terrain, and corpus context so readers are never shown false real-time imagery.",
+    mechanism: "Sentinel-2 MSI emphasizes 10 m VNIR/SWIR for texture; Landsat OLI-TIRS pairs 30 m multispectral with thermal history for longer baselines.",
+    exampleIds: ["portal-az", "sequim-wa", "hood-river-gorge"],
+  },
+  {
+    id: "relief-texture-proxy",
+    term: "Relief texture (atlas proxy)",
+    short: "A screening score for where fine-scale surface geometry and seasonality would make high-resolution topography unusually important.",
+    long: "Where canyons, sky islands, karst, fog belts, or sharp rain-shadow edges dominate, coarse DEMs can hide the microclimate story. Airborne or satellite lidar is often flown in exactly those settings to recover bare-earth elevation under canopy and to map levees, scarps, and channel geometry. Terraclima approximates that need with atlas elevation context, climate amplitude, humidity seasonality, and archetype weights — it is a triage flag, not a substitute for lidar products.",
+    exampleIds: ["portal-az", "gunnison-co", "forks-wa"],
+  },
+  {
+    id: "lidar-field-practice",
+    term: "Lidar in field practice",
+    short: "Laser ranging maps canopy height, bare earth under forest, and infrastructure at scales topography products often smooth away.",
+    long: "Hydrologists and wildfire crews routinely pair lidar with multispectral imagery: lidar fixes the surface model while Sentinel-class data tracks moisture and greenness through a season. The atlas borrows that division of labor conceptually — relief texture hints where lidar would tighten interpretation — while keeping all numbers derivable from published normals and editorial terrain notes so the product cannot be mistaken for a geospatial data warehouse.",
+    exampleIds: ["canaan-valley-wv", "silver-city-nm", "haida-gwaii-bc"],
+  },
 ];

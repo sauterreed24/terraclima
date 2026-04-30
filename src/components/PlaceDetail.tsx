@@ -22,7 +22,7 @@ import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { clearDossierHash } from "../lib/dossier-url-hash";
-import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD } from "../lib/atlas-metadata";
+import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
@@ -676,7 +676,7 @@ function DetailBody({
 
       <Section anchorId={PD.geospatial} title="Geospatial analysis" icon={<Satellite className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          This screening profile is derived from the atlas terrain, monthly climate, risk, and corpus-rank fields. Sentinel-2 and Landsat are shown as reference sensors for checking the surface signals a field analyst would review next. Analysis confidence and Sensor fit are separated so the numbers read as evidence, not false precision.
+          Screening blends atlas terrain, climate seasonality, risks, and corpus ranks. Sentinel-2 and Landsat appear below as <span className="text-frost font-medium">reference</span> sensor families for the spectral checks a field analyst would queue — not live scenes from this app. Relief texture is a separate atlas proxy for where fine-scale topography would usually matter.
         </p>
         <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-3">
           <div className="panel-thin p-4 space-y-2">
@@ -698,6 +698,10 @@ function DetailBody({
             <KeyValue
               label="Terrain exposure index"
               value={geospatial.terrainExposureIndex.toFixed(1)}
+            />
+            <KeyValue
+              label="Relief texture (atlas proxy)"
+              value={`${geospatial.structuralTextureScore}/100`}
             />
           </div>
           <div className="panel-thin p-4">
@@ -744,6 +748,10 @@ function DetailBody({
                 <span className="text-stone"> — {source.role}</span>
               </li>
             ))}
+            <li className="pt-1.5 mt-1 border-t border-[rgba(200,160,120,0.22)]">
+              <span className="font-medium text-ice">Topography context</span>
+              <span className="text-stone"> — {STRUCTURAL_BASELINE_NOTE}</span>
+            </li>
           </ul>
           <p className="text-[11px] text-stone italic mt-2">{GEOSPATIAL_ANALYSIS_METHOD}</p>
           <p className="text-[11px] text-stone italic mt-1">{geospatial.limitNote}</p>

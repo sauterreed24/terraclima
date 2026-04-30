@@ -279,7 +279,7 @@ export function AtlasMapTooltip({
             </p>
             <p className="text-[0.65rem] leading-relaxed text-stone mt-1 pl-0.5">
               <span className="font-semibold text-ice/90">Geospatial signal · </span>
-              {geospatial.geospatialSignalScore}/100 · EO {geospatial.eoObservabilityScore}/100 · {geospatial.analysisConfidence} confidence.
+              {geospatial.geospatialSignalScore}/100 · EO {geospatial.eoObservabilityScore}/100 · relief {geospatial.structuralTextureScore}/100 · {geospatial.analysisConfidence} confidence.
             </p>
           </div>
         </section>

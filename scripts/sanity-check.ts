@@ -118,6 +118,9 @@ for (const p of PLACES) {
   if (geo.eoObservabilityScore < 0 || geo.eoObservabilityScore > 100) {
     report(p.id, "ERROR", `eoObservabilityScore ${geo.eoObservabilityScore} out of [0,100]`);
   }
+  if (geo.structuralTextureScore < 0 || geo.structuralTextureScore > 100) {
+    report(p.id, "ERROR", `structuralTextureScore ${geo.structuralTextureScore} out of [0,100]`);
+  }
   for (const source of geo.sourceFits) {
     if (source.score < 0 || source.score > 100) report(p.id, "ERROR", `${source.sourceId} source fit ${source.score} out of [0,100]`);
   }

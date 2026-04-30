@@ -130,33 +130,33 @@ const GEOSPATIAL_GOLD: { id: string; expected: GeospatialGold }[] = [
   {
     id: "sequim-wa",
     expected: {
-      geospatialSignalScore: 40,
+      geospatialSignalScore: 36,
       eoObservabilityScore: 65,
       reliefEnergyMPerKm: 1.1,
       hydroSeasonalityRatio: 5.142857,
       terrainExposureIndex: 1.533333,
       analysisConfidence: "high",
       sourceFits: [{ sourceId: "sentinel-2", score: 77, label: "useful" }, { sourceId: "landsat", score: 53, label: "contextual" }],
-      spectralSignals: ["NDVI / red-edge NDVI", "LST anomaly", "NDMI", "NDSI"],
+      spectralSignals: ["Aerosol-aware RGB / turbidity", "NDVI / red-edge NDVI", "LST anomaly", "NDMI", "NDSI"],
     },
   },
   {
     id: "tofino-bc",
     expected: {
-      geospatialSignalScore: 43,
+      geospatialSignalScore: 40,
       eoObservabilityScore: 60,
       reliefEnergyMPerKm: 0.416667,
       hydroSeasonalityRatio: 7.914286,
       terrainExposureIndex: 2.733333,
       analysisConfidence: "high",
       sourceFits: [{ sourceId: "sentinel-2", score: 76, label: "useful" }, { sourceId: "landsat", score: 43, label: "contextual" }],
-      spectralSignals: ["NDVI / red-edge NDVI", "LST anomaly", "NDMI"],
+      spectralSignals: ["Aerosol-aware RGB / turbidity", "NDVI / red-edge NDVI", "LST anomaly", "NDMI"],
     },
   },
   {
     id: "portal-az",
     expected: {
-      geospatialSignalScore: 66,
+      geospatialSignalScore: 62,
       eoObservabilityScore: 71,
       reliefEnergyMPerKm: 58.4,
       hydroSeasonalityRatio: 9.3,
@@ -169,7 +169,7 @@ const GEOSPATIAL_GOLD: { id: string; expected: GeospatialGold }[] = [
   {
     id: "fairbanks-ak",
     expected: {
-      geospatialSignalScore: 59,
+      geospatialSignalScore: 57,
       eoObservabilityScore: 64,
       reliefEnergyMPerKm: 5.4,
       hydroSeasonalityRatio: 6.75,

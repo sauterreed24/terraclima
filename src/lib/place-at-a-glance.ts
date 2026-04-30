@@ -67,9 +67,9 @@ export function buildAtAGlanceTiles(
   });
 
   out.push({
-    label: "Reference sensors",
-    value: "Sentinel-2 / Landsat",
-    hint: `${EARTH_OBSERVATION_SOURCES.map(s => `${s.label} (${s.nominalResolutionM} m)`).join(" · ")} · EO fit ${geo.eoObservabilityScore}/100`,
+    label: "Remote sensing",
+    value: "EO + relief texture",
+    hint: `${EARTH_OBSERVATION_SOURCES.map(s => `${s.label} (${s.nominalResolutionM} m)`).join(" · ")} · screening ${geo.eoObservabilityScore}/100 · relief proxy ${geo.structuralTextureScore}/100`,
     tone: "ice",
   });
 

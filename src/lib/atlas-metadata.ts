@@ -37,3 +37,7 @@ export const EARTH_OBSERVATION_SOURCES: readonly EarthObservationSource[] = [
 
 export const GEOSPATIAL_ANALYSIS_METHOD =
   "Topography-, climate-, and risk-derived terrain analytics over the atlas corpus (deterministic, not ML-inferred)." as const;
+
+/** One-line provenance for relief texture — used in detail + glossary, not map chrome. */
+export const STRUCTURAL_BASELINE_NOTE =
+  "Relief texture summarizes where fine-scale surface geometry likely matters (elevation context, seasonality, archetypes). Airborne or satellite lidar would tighten this in the field; the atlas does not ingest lidar point clouds." as const;

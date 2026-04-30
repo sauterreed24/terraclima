@@ -191,7 +191,7 @@ export const PlaceCard = memo(function PlaceCard({
           ) : null}
           {geospatial ? (
             <p className="text-[10px] leading-snug text-stone-readable mt-1 pl-0.5">
-              Geospatial signal {geospatial.geospatialSignalScore}/100 · EO fit {geospatial.eoObservabilityScore}/100 · Sentinel-2/Landsat reference sensors.
+              Geospatial signal {geospatial.geospatialSignalScore}/100 · EO screening {geospatial.eoObservabilityScore}/100 · relief texture {geospatial.structuralTextureScore}/100.
             </p>
           ) : null}
         </div>
