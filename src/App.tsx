@@ -90,6 +90,11 @@ export default function App() {
     try { window.localStorage.setItem(RANKING_STORAGE_KEY, profile); } catch { /* noop */ }
   }, []);
   const prevPlaceIdRef = useRef<string | null>(URL_INIT.placeId);
+  /** True only after `pushAppUrl` from explorer (never from deep-link `replaceAppUrl`). Avoids `history.back()` leaving the site when the stack has no in-app entry. */
+  const placeOpenedWithHistoryPushRef = useRef(false);
+  useEffect(() => {
+    if (!selectedId) placeOpenedWithHistoryPushRef.current = false;
+  }, [selectedId]);
   const explorerDockLg = useMediaQuery("(min-width: 1024px)");
   const explorerFilterSheetRef = useRef<ExplorerFilterSheetHandle | null>(null);
 
@@ -132,6 +137,7 @@ export default function App() {
     const opening = !prev && !!selectedId;
 
     if (opening) {
+      placeOpenedWithHistoryPushRef.current = true;
       pushAppUrl({ tcPlace: true }, state);
     } else {
       replaceAppUrl(selectedId ? { tcPlace: true } : null, state);
@@ -219,7 +225,7 @@ export default function App() {
   const closeDetail = useCallback(() => {
     if (typeof window !== "undefined" && selectedId) {
       const st = window.history.state as AppHistoryState | null;
-      if (st?.tcPlace) {
+      if (st?.tcPlace && placeOpenedWithHistoryPushRef.current) {
         window.history.back();
         return;
       }
