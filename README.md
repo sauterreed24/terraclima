@@ -5,7 +5,7 @@
 ## Project links
 
 - **Try it live (no install, no account):** [Open Terraclima in StackBlitz](https://stackblitz.com/github/sauterreed24/terraclima) — boots the Vite dev server in your browser straight from this repo. Works for human reviewers and for AI agents that can browse URLs.
-- **Production deploy:** [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/) — GitHub Pages build of `main`. Requires the repo owner to enable Pages once at **Settings → Pages → Source: GitHub Actions**; until then, use the StackBlitz link above.
+- **Production deploy:** [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/) — GitHub Pages build of `main`. Requires a one-time toggle: open **[the repository's Pages settings](https://github.com/sauterreed24/terraclima/settings/pages)** and under **Build and deployment → Source** choose **GitHub Actions**. Until that's set, use the StackBlitz link above.
 - **Source code:** [https://github.com/sauterreed24/terraclima](https://github.com/sauterreed24/terraclima)
 - **Reviewer entry points:** [src/App.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/App.tsx), [src/types.ts](https://github.com/sauterreed24/terraclima/blob/main/src/types.ts), [src/components/AtlasMap.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/AtlasMap.tsx), [src/components/PlaceDetail.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/PlaceDetail.tsx), [src/lib/scoring.ts](https://github.com/sauterreed24/terraclima/blob/main/src/lib/scoring.ts), [scripts/sanity-check.ts](https://github.com/sauterreed24/terraclima/blob/main/scripts/sanity-check.ts)
 - **Deployment workflow:** [.github/workflows/deploy-pages.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml)
@@ -89,7 +89,13 @@ Every place carries citations and confidence notes. Derived scores are deliberat
 
 Terraclima ships as a static GitHub Pages app at [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/). The deploy workflow (`.github/workflows/deploy-pages.yml`) runs on every push to `main`.
 
-**One-time setup (repo owner only):** GitHub Pages must be enabled once in the UI at **Settings → Pages → Source: GitHub Actions**. The workflow can build and upload artifacts, but Pages cannot serve them until this toggle is set. Until then, the [StackBlitz preview](https://stackblitz.com/github/sauterreed24/terraclima) is the always-on reviewer entry point.
+**One-time setup (repo owner only).** GitHub Pages must be enabled once in the UI; the workflow can build and upload artifacts but Pages cannot serve them until this toggle is set. The default `GITHUB_TOKEN` cannot enable Pages programmatically, so there is no workflow-only fix.
+
+1. Open **[github.com/sauterreed24/terraclima/settings/pages](https://github.com/sauterreed24/terraclima/settings/pages)** (the deep link to this repo's Pages settings).
+2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+3. Re-run the latest **Deploy GitHub Pages** workflow (Actions tab → Deploy GitHub Pages → Run workflow), or push any commit to `main`.
+
+Until step 1 is done, the [StackBlitz preview](https://stackblitz.com/github/sauterreed24/terraclima) is the always-on reviewer entry point.
 
 - `npm run build:pages` sets `VITE_BASE_PATH=/terraclima/` so Vite rewrites bundle and static-asset URLs for Project Pages.
 - `index.html` carries canonical, Open Graph, Twitter card, app-title, install, and crawler metadata.
