@@ -3,7 +3,7 @@ import type { Country, MicroclimateArchetype } from "../types";
 import type { FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
-import { Search, X } from "lucide-react";
+import { Check, Search, X } from "lucide-react";
 import { useProse } from "../lib/units";
 
 export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
@@ -91,38 +91,46 @@ export const FilterBar = memo(function FilterBar({
       <div>
         <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Rank by</div>
         <div className="flex flex-wrap gap-1.5">
-          {RANKING_OPTIONS.map(opt => (
-            <button
-              key={opt.id}
-              type="button"
-              onClick={() => setRanking(opt.id)}
-              className="chip chip-btn"
-              data-tone={ranking === opt.id ? "glacier" : undefined}
-              data-active={ranking === opt.id}
-              aria-pressed={ranking === opt.id}
-            >
-              {opt.label}
-            </button>
-          ))}
+          {RANKING_OPTIONS.map(opt => {
+            const isActive = ranking === opt.id;
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => setRanking(opt.id)}
+                className="chip chip-btn"
+                data-tone={isActive ? "glacier" : undefined}
+                data-active={isActive}
+                aria-pressed={isActive}
+              >
+                {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
+                {opt.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       <div>
         <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Country</div>
         <div className="flex flex-wrap gap-1.5">
-          {(["USA", "Mexico", "Canada"] as Country[]).map(c => (
-            <button
-              key={c}
-              type="button"
-              onClick={() => toggleCountry(c)}
-              className="chip chip-btn"
-              data-tone={filters.countries.has(c) ? "ochre" : undefined}
-              data-active={filters.countries.has(c)}
-              aria-pressed={filters.countries.has(c)}
-            >
-              {c}
-            </button>
-          ))}
+          {(["USA", "Mexico", "Canada"] as Country[]).map(c => {
+            const isActive = filters.countries.has(c);
+            return (
+              <button
+                key={c}
+                type="button"
+                onClick={() => toggleCountry(c)}
+                className="chip chip-btn"
+                data-tone={isActive ? "ochre" : undefined}
+                data-active={isActive}
+                aria-pressed={isActive}
+              >
+                {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
+                {c}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -144,20 +152,24 @@ export const FilterBar = memo(function FilterBar({
             variant === "sheet" ? "max-h-[min(52dvh,22rem)]" : "max-h-56"
           }`}
         >
-          {ARCHETYPES.map(a => (
-            <button
-              key={a.id}
-              type="button"
-              onClick={() => toggleArchetype(a.id)}
-              className="chip chip-btn"
-              data-tone={filters.archetypes.has(a.id) ? a.tone : undefined}
-              data-active={filters.archetypes.has(a.id)}
-              aria-pressed={filters.archetypes.has(a.id)}
-              title={prose(a.blurb)}
-            >
-              {a.label}
-            </button>
-          ))}
+          {ARCHETYPES.map(a => {
+            const isActive = filters.archetypes.has(a.id);
+            return (
+              <button
+                key={a.id}
+                type="button"
+                onClick={() => toggleArchetype(a.id)}
+                className="chip chip-btn"
+                data-tone={isActive ? a.tone : undefined}
+                data-active={isActive}
+                aria-pressed={isActive}
+                title={prose(a.blurb)}
+              >
+                {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
+                {a.label}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

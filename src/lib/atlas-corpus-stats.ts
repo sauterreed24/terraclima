@@ -6,18 +6,8 @@
 
 import type { Place } from "../types";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../data/places";
+import { meanSummerHigh, meanJanLow, summerDiurnalC } from "./climate-metrics";
 import type { TempUnit } from "./units";
-
-// Inlined to avoid a `scoring → geospatial-analysis → atlas-corpus-stats →
-// scoring` import cycle that crashed test-time module init (atlas-corpus-stats
-// builds its singleton distribution at load time, before scoring's exports
-// settle). Definitions are kept identical to scoring.ts.
-function meanSummerHigh(p: Place): number {
-  return (p.climate.tempHighC[5] + p.climate.tempHighC[6] + p.climate.tempHighC[7]) / 3;
-}
-function meanJanLow(p: Place): number {
-  return (p.climate.tempLowC[11] + p.climate.tempLowC[0] + p.climate.tempLowC[1]) / 3;
-}
 
 function sortAsc(a: number[]): number[] {
   return [...a].sort((x, y) => x - y);
@@ -43,11 +33,6 @@ function fracStrictlyGreater(value: number, sortedAsc: readonly number[]): numbe
 
 function pct(share: number): string {
   return `${Math.max(0, Math.min(100, Math.round(share * 100)))}%`;
-}
-
-function summerDiurnalC(p: Place): number {
-  if (p.climate.diurnalSummerC != null) return p.climate.diurnalSummerC;
-  return p.climate.tempHighC[6] - p.climate.tempLowC[6];
 }
 
 export interface AtlasCorpusDistributions {
@@ -99,6 +84,28 @@ function buildDistributions(): AtlasCorpusDistributions {
 
 /** Singleton sorted distributions — do not mutate. */
 export const ATLAS_CORPUS: AtlasCorpusDistributions = buildDistributions();
+
+/**
+ * Corpus-wide mean of authored monthly humidity (%). Used as a neutral
+ * fallback when a single place has no humidity data — better than a hardcoded
+ * 65% guess that would bias rankings toward "dry" or "humid". Computed once
+ * at module init from the subset of places that have humidity authored;
+ * defaults to 60 if none are present (defensive — corpus has tens of authored
+ * humidity series).
+ */
+export const CORPUS_MEAN_HUMIDITY: number = (() => {
+  let sum = 0;
+  let n = 0;
+  for (const p of PLACES) {
+    const h = p.climate.humidity;
+    if (!h) continue;
+    let monthly = 0;
+    for (const v of h) monthly += v;
+    sum += monthly / 12;
+    n += 1;
+  }
+  return n > 0 ? sum / n : 60;
+})();
 
 export interface PlaceCorpusRanks {
   wetterThanAtlasShare: number;

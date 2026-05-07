@@ -1,5 +1,5 @@
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { BookOpen, Compass, Layers, Library, Map, Menu, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
+import { BookOpen, Compass, HelpCircle, Layers, Library, Map, Menu, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -11,31 +11,32 @@ import { CompareView } from "./components/CompareView";
 import { CollectionsView } from "./components/CollectionsView";
 import { LearnMode } from "./components/LearnMode";
 import { useFocusTrap } from "./hooks/use-focus-trap";
+import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
 import { useMediaQuery } from "./hooks/use-media-query";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
+import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
-import { applyFilters, rankLivabilityPreview, rankPlaces, type FilterState, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, type FilterState, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { resonantWindowFor } from "./lib/best-months";
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { useProse } from "./lib/units";
 import {
   type AppHistoryState,
+  COMPARE_LIMIT,
   formatAppRelativeUrl,
   pushAppUrl,
   readInitialAppState,
   replaceAppUrl,
   validatedStateFromSearch,
 } from "./lib/app-url";
-import type { MicroclimateArchetype, Place } from "./types";
+import type { Country, MicroclimateArchetype, Place } from "./types";
 
 const SEARCH_INPUT_ID = "terraclima-place-search";
 const RANKING_STORAGE_KEY = "terraclima.ranking.v1";
+const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
 const DOC_TITLE_BASE = "Terraclima — North American Microclimate Atlas";
-
-/** Survives React Strict Mode remounts so the first URL sync stays a single `replaceState(null, …)`. */
-let didInitialExplorerUrlSync = false;
 
 /** All ranking profiles accepted by the scorer — used to validate restored values. */
 const RANKING_PROFILES: readonly RankingProfile[] = [
@@ -54,8 +55,9 @@ function isPlace(p: Place | undefined): p is Place {
 }
 
 const URL_INIT = readInitialAppState(
-  PLACES_BY_ID as Record<string, unknown>,
-  COLLECTION_BY_ID as Record<string, unknown>,
+  PLACES_BY_ID,
+  COLLECTION_BY_ID,
+  ARCHETYPE_BY_ID,
 );
 
 function loadPersistedRanking(): RankingProfile {
@@ -80,18 +82,43 @@ export default function App() {
 
   const [view, setView] = useState<View>(URL_INIT.view);
   const [selectedId, setSelectedId] = useState<string | null>(URL_INIT.placeId);
-  const [compareIds, setCompareIds] = useState<Set<string>>(new Set());
+  const [compareIds, setCompareIds] = useState<Set<string>>(() => new Set(URL_INIT.compareIds));
   const [compareOpen, setCompareOpen] = useState(false);
   const [activeCollection, setActiveCollection] = useState<string | null>(URL_INIT.collectionId);
-  const [filters, setFilters] = useState<FilterState>({ countries: new Set(), archetypes: new Set(), search: "" });
+  const [filters, setFilters] = useState<FilterState>(() => ({
+    countries: new Set<string>(URL_INIT.countries),
+    archetypes: new Set<MicroclimateArchetype>(URL_INIT.archetypes),
+    search: URL_INIT.search,
+  }));
   const [ranking, setRankingRaw] = useState<RankingProfile>(loadPersistedRanking);
+  /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
+  const [transientFeedback, setTransientFeedback] = useState<string | null>(null);
+  /** Latest place id to be auto-evicted from compare so the feedback can name it. */
+  const [evictedComparePlaceId, setEvictedComparePlaceId] = useState<string | null>(null);
+  /** Hide the "?" first-run pulse once the user has seen / opened it. */
+  const [shortcutsSeen, setShortcutsSeen] = useState<boolean>(() => {
+    if (typeof window === "undefined") return true;
+    try {
+      return Boolean(window.localStorage.getItem(SHORTCUTS_SEEN_KEY));
+    } catch { return false; }
+  });
   const setRanking = useCallback((profile: RankingProfile) => {
     setRankingRaw(profile);
     try { window.localStorage.setItem(RANKING_STORAGE_KEY, profile); } catch { /* noop */ }
   }, []);
   const prevPlaceIdRef = useRef<string | null>(URL_INIT.placeId);
+  /**
+   * First-paint URL sync flag. A useRef instead of a module-level mutable
+   * so the contract is explicit and there's no shared mutable state across
+   * a hypothetical second App instance. StrictMode dev double-mount may run
+   * the initial replaceAppUrl twice, but replaceAppUrl is idempotent for the
+   * same target URL so the user-visible behaviour matches.
+   */
+  const initialUrlSyncDoneRef = useRef(false);
   const explorerDockLg = useMediaQuery("(min-width: 1024px)");
   const explorerFilterSheetRef = useRef<ExplorerFilterSheetHandle | null>(null);
+  /** Reference to the trigger that opened the place detail, so we can return focus on close. */
+  const detailTriggerRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (!selectedId) {
@@ -108,7 +135,13 @@ export default function App() {
       view,
       placeId: selectedId,
       collectionId: activeCollection,
+      countries: [...filters.countries] as Country[],
+      archetypes: [...filters.archetypes],
+      search: filters.search ?? "",
+      compareIds: [...compareIds],
       collectionExists: (id: string) => Boolean(COLLECTION_BY_ID[id]),
+      archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
+      placeExists: (id: string) => Object.prototype.hasOwnProperty.call(PLACES_BY_ID, id),
     };
     const wantUrl = formatAppRelativeUrl(state);
     const haveUrl = `${window.location.pathname}${window.location.search}`;
@@ -116,8 +149,8 @@ export default function App() {
     const wantTc = Boolean(selectedId);
     const haveTc = Boolean(haveHist?.tcPlace);
 
-    if (!didInitialExplorerUrlSync) {
-      didInitialExplorerUrlSync = true;
+    if (!initialUrlSyncDoneRef.current) {
+      initialUrlSyncDoneRef.current = true;
       replaceAppUrl(null, state);
       prevPlaceIdRef.current = selectedId;
       return;
@@ -137,7 +170,7 @@ export default function App() {
       replaceAppUrl(selectedId ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection]);
+  }, [view, selectedId, activeCollection, filters, compareIds]);
 
   useEffect(() => {
     const onPop = () => {
@@ -145,10 +178,17 @@ export default function App() {
         window.location.search,
         PLACES_BY_ID as Record<string, unknown>,
         COLLECTION_BY_ID as Record<string, unknown>,
+        ARCHETYPE_BY_ID as Record<string, unknown>,
       );
       setView(v.view);
       setSelectedId(v.placeId);
       setActiveCollection(v.collectionId);
+      setFilters({
+        countries: new Set<string>(v.countries),
+        archetypes: new Set<MicroclimateArchetype>(v.archetypes),
+        search: v.search,
+      });
+      setCompareIds(new Set(v.compareIds));
       prevPlaceIdRef.current = v.placeId;
     };
     window.addEventListener("popstate", onPop);
@@ -203,16 +243,27 @@ export default function App() {
   const toggleCompare = useCallback((id: string) => {
     setCompareIds(s => {
       const ns = new Set(s);
-      if (ns.has(id)) ns.delete(id); else ns.add(id);
-      if (ns.size > 4) {
+      if (ns.has(id)) {
+        ns.delete(id);
+        return ns;
+      }
+      ns.add(id);
+      if (ns.size > COMPARE_LIMIT) {
         const arr = [...ns];
-        return new Set(arr.slice(arr.length - 4));
+        const dropped = arr[0];
+        if (dropped) setEvictedComparePlaceId(dropped);
+        return new Set(arr.slice(arr.length - COMPARE_LIMIT));
       }
       return ns;
     });
   }, []);
 
-  const openPlace = useCallback((id: string) => {
+  const openPlace = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
+    if (opts?.trigger) {
+      detailTriggerRef.current = opts.trigger;
+    } else if (typeof document !== "undefined") {
+      detailTriggerRef.current = (document.activeElement as HTMLElement | null) ?? null;
+    }
     setSelectedId(id);
   }, []);
 
@@ -227,78 +278,35 @@ export default function App() {
     setSelectedId(null);
   }, [selectedId]);
 
+  // Return focus to the place's opening trigger after the detail panel closes.
+  // Without this, focus drops to <body> and keyboard users lose context.
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
-      const tgt = e.target as HTMLElement | null;
-      if (tgt && (tgt.tagName === "INPUT" || tgt.tagName === "TEXTAREA" || tgt.isContentEditable)) return;
-      switch (e.key) {
-        case "?":
-          setShowShortcuts(s => !s);
-          e.preventDefault();
-          break;
-        case "Escape": {
-          if (showShortcuts) { e.preventDefault(); setShowShortcuts(false); break; }
-          if (compareOpen) { e.preventDefault(); setCompareOpen(false); break; }
-          const filterDlg = document.getElementById("tc-explorer-filter-sheet") as HTMLDialogElement | null;
-          if (filterDlg?.open) {
-            e.preventDefault();
-            filterDlg.close();
-            break;
-          }
-          const siteMenuDlg = document.getElementById("tc-site-menu") as HTMLDialogElement | null;
-          if (siteMenuDlg?.open) {
-            e.preventDefault();
-            siteMenuDlg.close();
-            break;
-          }
-          if (selectedId) { e.preventDefault(); closeDetail(); break; }
-          break;
-        }
-        case "e": case "E":
-          setView("explorer");
-          break;
-        case "c": case "C":
-          setView("collections");
-          break;
-        case "l": case "L":
-          setView("learn");
-          break;
-        case "/":
-          e.preventDefault();
-          setView("explorer");
-          requestAnimationFrame(() => {
-            if (!explorerDockLg) {
-              explorerFilterSheetRef.current?.open();
-            }
-            requestAnimationFrame(() => {
-              document.getElementById(SEARCH_INPUT_ID)?.focus();
-            });
-          });
-          break;
-        case "f":
-        case "F": {
-          if (explorerDockLg || view !== "explorer") break;
-          e.preventDefault();
-          explorerFilterSheetRef.current?.open();
-          break;
-        }
-        case "r": case "R": {
-          e.preventDefault();
-          setView("explorer");
-          requestAnimationFrame(() => {
-            const poolRanked = rankedRef.current;
-            if (poolRanked.length === 0) return;
-            const idx = Math.floor(Math.random() * poolRanked.length);
-            openPlace(poolRanked[idx].place.id);
-          });
-          break;
-        }
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [showShortcuts, compareOpen, selectedId, openPlace, closeDetail, explorerDockLg, view]);
+    if (selectedId !== null) return;
+    const trigger = detailTriggerRef.current;
+    if (!trigger) return;
+    const id = window.requestAnimationFrame(() => {
+      try { trigger.focus({ preventScroll: true }); } catch { /* noop */ }
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [selectedId]);
+
+  // Auto-clear transient feedback after 4s (5s is too long, 3s too short for
+  // longer messages). Cleared early when a new message arrives.
+  useEffect(() => {
+    if (!transientFeedback) return;
+    const t = window.setTimeout(() => setTransientFeedback(null), 4000);
+    return () => window.clearTimeout(t);
+  }, [transientFeedback]);
+
+  // When the compare cap auto-evicts a place, surface a feedback strip naming it.
+  useEffect(() => {
+    if (!evictedComparePlaceId) return;
+    const place = PLACES_BY_ID[evictedComparePlaceId];
+    setTransientFeedback(
+      `Compare holds ${COMPARE_LIMIT} places — replaced ${place?.name ?? "the oldest"} with the new pick.`,
+    );
+    setEvictedComparePlaceId(null);
+  }, [evictedComparePlaceId]);
 
   const openCompare = useCallback(() => {
     setCompareOpen(true);
@@ -317,6 +325,48 @@ export default function App() {
     setActiveCollection(null);
   }, []);
   const closeCompare = useCallback(() => setCompareOpen(false), []);
+
+  const focusSearchInput = useCallback(() => {
+    document.getElementById(SEARCH_INPUT_ID)?.focus();
+  }, []);
+
+  const openFilterSheet = useCallback(() => {
+    explorerFilterSheetRef.current?.open();
+  }, []);
+
+  const pickRandomPlace = useCallback((): boolean => {
+    const poolRanked = rankedRef.current;
+    if (poolRanked.length === 0) return false;
+    const idx = Math.floor(Math.random() * poolRanked.length);
+    openPlace(poolRanked[idx].place.id);
+    return true;
+  }, [openPlace]);
+
+  const onRandomEmpty = useCallback(() => {
+    setTransientFeedback("No places match your filters — clear one to enable Surprise / R.");
+  }, []);
+
+  const openShortcutsHelp = useCallback(() => {
+    setShowShortcuts(true);
+    setShortcutsSeen(true);
+    try { window.localStorage.setItem(SHORTCUTS_SEEN_KEY, "1"); } catch { /* noop */ }
+  }, []);
+
+  useKeyboardShortcuts({
+    view,
+    showShortcuts,
+    compareOpen,
+    selectedId,
+    explorerDockLg,
+    setView,
+    setShowShortcuts,
+    setCompareOpen,
+    closeDetail,
+    focusSearchInput,
+    openFilterSheet,
+    pickRandomPlace,
+    onRandomEmpty,
+  });
   const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setView("explorer"); }, [openPlace]);
   const onPickCollection = useCallback((id: string) => {
     setActiveCollection(a => a === id ? null : id);
@@ -324,10 +374,13 @@ export default function App() {
   }, []);
 
   const surpriseMe = useCallback(() => {
-    if (ranked.length === 0) return;
+    if (ranked.length === 0) {
+      onRandomEmpty();
+      return;
+    }
     const idx = Math.floor(Math.random() * ranked.length);
     openPlace(ranked[idx].place.id);
-  }, [ranked, openPlace]);
+  }, [ranked, openPlace, onRandomEmpty]);
 
   return (
     <div className="relative min-h-screen flex flex-col text-ice overflow-x-hidden">
@@ -398,9 +451,38 @@ export default function App() {
                     <span><span className="tc-tip-pill">Scroll</span> zooms the map</span>
                     <span><span className="tc-tip-pill">/</span> focuses search</span>
                     <span><span className="tc-tip-pill">R</span> surprise pick</span>
-                    <span><span className="tc-tip-pill">?</span> shortcut list</span>
+                    <button
+                      type="button"
+                      onClick={openShortcutsHelp}
+                      className={`inline-flex items-center gap-1 text-xs text-frost rounded-md border border-[rgba(180,160,140,0.45)] bg-white/85 px-2 py-1 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[rgba(26,143,168,0.55)] ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
+                      aria-label="Show keyboard shortcuts"
+                    >
+                      <HelpCircle className="w-3.5 h-3.5" aria-hidden /> Shortcuts
+                    </button>
                   </div>
+                  <button
+                    type="button"
+                    onClick={openShortcutsHelp}
+                    className={`md:hidden inline-flex items-center gap-1 text-xs text-frost rounded-md border border-[rgba(180,160,140,0.45)] bg-white/85 px-2 py-1.5 min-h-[36px] ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
+                    aria-label="Show keyboard shortcuts and tips"
+                  >
+                    <HelpCircle className="w-3.5 h-3.5" aria-hidden /> Tips
+                  </button>
                 </div>
+
+                {transientFeedback ? (
+                  <div role="status" aria-live="polite" className="tc-toast panel-warm flex items-center justify-between gap-3 px-3 py-2 anim-fade-in">
+                    <span className="text-sm text-frost">{transientFeedback}</span>
+                    <button
+                      type="button"
+                      onClick={() => setTransientFeedback(null)}
+                      className="btn-ghost !text-xs !py-1"
+                      aria-label="Dismiss message"
+                    >
+                      <X className="w-3 h-3" aria-hidden /> Dismiss
+                    </button>
+                  </div>
+                ) : null}
 
                 {ranked.length === 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -581,15 +663,15 @@ const EmptyResults = memo(function EmptyResults({ onClear }: { onClear: () => vo
       <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(240,210,156,0.18)] border border-[rgba(240,210,156,0.4)] mb-3">
         <Search className="w-4 h-4" style={{ color: "#f0d29c" }} />
       </div>
-      <h3 className="font-atlas text-lg text-ice mb-1">No places match those filters</h3>
+      <h3 className="font-atlas text-lg text-ice mb-1">Nothing matches all those filters at once</h3>
       <p className="text-sm text-frost mb-2 max-w-md mx-auto">
-        Try loosening the archetype or country selection, or clear the search — names, regions, and Köppen codes all match.
+        That's a tight intersection — try loosening one. Drop a country, drop one of the archetypes, or shorten the search. Names, regions, archetypes, and Köppen codes all match.
       </p>
       <p className="text-xs text-stone mb-4 max-w-md mx-auto">
-        Nothing is broken: the atlas still holds <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated stops; the filters are just tight.
+        Nothing is broken: the atlas still holds <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated stops behind the filters.
       </p>
-      <button type="button" onClick={onClear} className="btn-ghost !text-xs">
-        <X className="w-3.5 h-3.5" aria-hidden /> Clear filters
+      <button type="button" onClick={onClear} className="btn-primary !text-xs">
+        <X className="w-3.5 h-3.5" aria-hidden /> Clear all filters
       </button>
     </div>
   );
@@ -910,16 +992,18 @@ const HeroCard = memo(function HeroCard({
           <div className="min-w-0">
             <div className="text-[10px] uppercase tracking-wider text-sage-700">Livability lens · top ten</div>
             <p className="text-xs text-stone-readable mt-1 leading-relaxed max-w-3xl">
-              Same filtered pool as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by our published blend (resilience, winter and summer headroom, hazard cushion, growability) — not by whatever you picked in Rank by.
+              Same filtered pool as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by our published blend — not by whatever you picked in Rank by.
             </p>
-            <details className="mt-2 text-[11px] text-stone-readable group">
-              <summary className="cursor-pointer select-none text-frost/90 hover:text-ice underline decoration-dotted underline-offset-2 list-none [&::-webkit-details-marker]:hidden flex items-center gap-1">
-                Show the exact weights
-              </summary>
-              <p className="mt-1.5 leading-relaxed border-l-2 border-[rgba(61,143,85,0.35)] pl-2">
-                34% atlas resilience score · 22% mild-winter index · 18% summer headroom · 14% composite hazard cushion · 12% growability. This is editorial triage for exploration — not appraisal, insurance, civil engineering, or medical heat-stress advice.
-              </p>
-            </details>
+            <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights">
+              <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
+              <span className="livability-weight-pill">Winter ease {Math.round(LIVABILITY_WEIGHTS.winterEase * 100)}%</span>
+              <span className="livability-weight-pill">Summer ease {Math.round(LIVABILITY_WEIGHTS.summerEase * 100)}%</span>
+              <span className="livability-weight-pill">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardEase * 100)}%</span>
+              <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
+            </div>
+            <p className="mt-1.5 text-[10px] text-stone-readable/85 italic">
+              Editorial triage for exploration — not appraisal, insurance, civil engineering, or medical heat-stress advice.
+            </p>
           </div>
           <div
             className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
