@@ -2,6 +2,13 @@
 
 **The North American Microclimate Atlas.**
 
+## Project links
+
+- **Live app:** [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/)
+- **Source code:** [https://github.com/sauterreed24/terraclima](https://github.com/sauterreed24/terraclima)
+- **Reviewer entry points:** [src/App.tsx](src/App.tsx), [src/types.ts](src/types.ts), [src/components/AtlasMap.tsx](src/components/AtlasMap.tsx), [src/components/PlaceDetail.tsx](src/components/PlaceDetail.tsx), [src/lib/scoring.ts](src/lib/scoring.ts), [scripts/sanity-check.ts](scripts/sanity-check.ts)
+- **Deployment workflow:** [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml)
+
 Terraclima is a research-grade climate atlas for exploring how terrain shapes lived weather across the United States, Canada, and Mexico. It treats each place as a physical system: rain shadows, sky islands, marine layers, chinook corridors, frost hollows, tropical highlands, fog belts, lake-effect snowbelts, orchard valleys, and wind gaps are explained through the forces that create them.
 
 The project sits between atlas, field guide, and decision tool. It turns a large authored corpus into an interface for relocation research, travel scouting, agricultural curiosity, climate adaptation, and environmental learning. The goal is not to summarize weather. The goal is to make place-specific climate logic visible, comparable, and inspectable.
@@ -79,7 +86,7 @@ Every place carries citations and confidence notes. Derived scores are deliberat
 
 ## Deployment and Discoverability
 
-Terraclima ships as a static GitHub Pages app under `/terraclima/`.
+Terraclima ships as a static GitHub Pages app at [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/).
 
 - `npm run build:pages` sets `VITE_BASE_PATH=/terraclima/` so Vite rewrites bundle and static-asset URLs for Project Pages.
 - `index.html` carries canonical, Open Graph, Twitter card, app-title, install, and crawler metadata.
