@@ -384,13 +384,15 @@ export default function App() {
                 </div>
 
                 <div className="panel-thin p-3 flex items-center justify-between flex-wrap gap-2">
-                  <div
-                    className="text-xs text-stone"
-                    role="status"
-                    aria-live="polite"
-                    aria-atomic="true"
-                  >
+                  {/* Visual count is animated via raf-driven textContent mutation,
+                      which would spam any enclosing aria-live region. The
+                      authoritative announcement lives in the sr-only sibling
+                      below so screen readers hear only the final value. */}
+                  <div className="text-xs text-stone" aria-hidden="true">
                     Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{rankingLabel}</span>
+                  </div>
+                  <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+                    {`Showing ${ranked.length} of ${PLACE_COUNTS.total} places, ranked by ${rankingLabel}.`}
                   </div>
                   <div className="text-xs text-stone hidden md:flex items-center gap-2 flex-wrap">
                     <span><span className="tc-tip-pill">Scroll</span> zooms the map</span>

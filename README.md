@@ -28,7 +28,10 @@ That distinction matters for relocation research, agricultural scouting, travel 
 - **Typed climate intelligence schema:** `src/types.ts` models climate normals, soil, growability, hazards, citations, local contrasts, field notes, deep sections, and derived geospatial context.
 - **Deterministic scoring:** `src/lib/scoring.ts`, `src/lib/geospatial-analysis.ts`, and `src/lib/atlas-corpus-stats.ts` keep ranking logic explainable and regression-testable.
 - **Agent-friendly validation:** `scripts/sanity-check.ts`, `scripts/audit-corpus.ts`, `scripts/test-prose.ts`, and `scripts/corpus-rank-gold.ts` catch malformed data, prose/unit regressions, corpus drift, and rank instability.
-- **Accessible modal stack:** Global `Escape` handling lives in the app shell (including HTML `<dialog>` elements for the site menu and Explorer filter sheet). Compare, keyboard-help, and place detail use focus traps and explicit dialog semantics where applicable. Opening a place profile **closes** the mobile filter sheet so the stack stays predictable. Glass dialogs share a light entrance motion (`tc-glass-dialog-motion`); the filter sheet **traps focus** inside the panel and **focuses search** when it opens (including after the `/` shortcut opens the sheet on narrow layouts).
+- **Unit tests for pure logic:** `src/lib/__tests__/` covers `units`, `scoring`, `best-months`, `similarity`, and `app-url` with Vitest. The corpus scripts validate data shape; these tests guard the math (unit conversion, ranking arithmetic, month-window derivation, URL round-trips).
+- **Linting with intent:** ESLint flat config in `eslint.config.js` runs `@typescript-eslint`, `react-hooks`, and `jsx-a11y` (a11y as warnings so the existing baseline doesn't block, but new violations surface in PRs and CI).
+- **PR-time CI:** `.github/workflows/quality.yml` runs the full `npm run quality:check` pipeline on every pull request and non-`main` push, so the gate is enforced rather than honor-system.
+- **Accessible modal stack:** Global `Escape` handling lives in the app shell (including HTML `<dialog>` elements for the site menu and Explorer filter sheet). Compare, keyboard-help, and place detail use focus traps and explicit dialog semantics where applicable. Opening a place profile **closes** the mobile filter sheet so the stack stays predictable. Glass dialogs share a light entrance motion (`tc-glass-dialog-motion`); the filter sheet **traps focus** inside the panel and **focuses search** when it opens (including after the `/` shortcut opens the sheet on narrow layouts). The filtered result count is announced to screen readers via a dedicated `sr-only` `aria-live` region (the visible counter animates and is `aria-hidden`, so SR users hear the final count once instead of every tween frame). SVG map markers carry a `:focus-visible` ring so keyboard navigation across the atlas is visible.
 - **Performance-conscious map:** The SVG map avoids React re-renders during drag by mutating the transform through refs, coalesces wheel zoom with `requestAnimationFrame`, lazy-loads topology, and gates rich effects on device capability.
 - **Progressive visual system:** The interface uses a custom atmospheric design language in `src/styles.css`, but it is deliberately constrained: charts are SVG, cards are virtualized, heavy effects are tiered, and low-power devices receive cheaper rendering paths.
 
@@ -57,6 +60,9 @@ Every place carries citations and confidence notes. Derived scores are intention
 - Framer Motion for selected overlays and transitions
 - `d3-geo`, `topojson-client`, `world-atlas`, and `us-atlas` for cartography
 - `@tanstack/react-virtual` for scalable card rendering
+- Vitest for unit tests on pure logic
+- ESLint v9 (flat config) with `typescript-eslint`, `react-hooks`, and `jsx-a11y`
+- GitHub Actions for PR-time `quality:check` and `main`-push GitHub Pages deploys
 
 ## Running Locally
 
@@ -79,6 +85,8 @@ That runs:
 
 ```bash
 npm run typecheck
+npm run lint
+npm run test
 npm run test:prose
 npm run audit:corpus
 npm run sanity
@@ -86,17 +94,23 @@ npm run test:corpus-gold
 npm run build
 ```
 
+The same pipeline runs automatically on every pull request and non-`main` push via `.github/workflows/quality.yml`, so a green CI badge means the gate actually held.
+
 Individual commands are useful while iterating:
 
 ```bash
 npm run dev                # Vite dev server
 npm run build              # TypeScript build check + Vite production build
 npm run preview            # Preview production output
-npm run typecheck          # tsc --noEmit
+npm run typecheck          # tsc --noEmit (with noUnusedLocals/Parameters)
+npm run lint               # ESLint over src/ and scripts/ (caps at 30 warnings)
+npm run test               # Vitest — unit tests for pure logic in src/lib
+npm run test:watch         # Vitest in watch mode
 npm run test:prose         # Unit localization regression tests
 npm run audit:corpus       # Authored prose, units, typography, and consistency audit
 npm run sanity             # Structural corpus and geospatial sanity checks
 npm run test:corpus-gold   # Ranking and geospatial snapshot guardrails
+npm run generate:og        # Regenerate public/og-image.png (1200×630 social card)
 ```
 
 ## Human Review Guide
@@ -108,6 +122,7 @@ If you are reviewing this as an engineering portfolio, start here:
 3. **Derived intelligence:** Review `src/lib/geospatial-analysis.ts`, `src/lib/scoring.ts`, and `src/lib/atlas-corpus-stats.ts` for explainable ranking and screening logic.
 4. **Quality discipline:** Run `npm run quality:check`. The scripts are meant to make the corpus auditable, not just make TypeScript happy.
 5. **Performance and accessibility:** Check `src/lib/device-profile.ts`, `src/components/VirtualPlaceGrid.tsx`, `src/hooks/use-focus-trap.ts`, and the low-power sections in `src/styles.css`.
+6. **Test discipline:** `src/lib/__tests__/` for the unit-test layer, plus the corpus scripts under `scripts/`. CI in `.github/workflows/quality.yml` runs the full gate on every PR.
 
 ## Agentic Review Guide
 
@@ -134,8 +149,10 @@ src/
   data/                        Places, collections, archetypes, glossary, field notes
   hooks/                       use-focus-trap, use-media-query (breakpoint for dock vs sheet), reading-spy
   lib/                         Scoring, units, geospatial analysis, URL state, corpus stats
+    __tests__/                 Vitest unit tests for the pure logic in lib (units, scoring, best-months, similarity, app-url)
   types.ts                     Domain schema
-scripts/                       Corpus audits, sanity checks, rank goldens, debug dumps
+scripts/                       Corpus audits, sanity checks, rank goldens, debug dumps, OG-image generator
+.github/workflows/             quality.yml (PR-time gate) + deploy-pages.yml (main → GitHub Pages)
 ```
 
 ## What This Demonstrates

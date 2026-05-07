@@ -6,8 +6,18 @@
 
 import type { Place } from "../types";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../data/places";
-import { meanJanLow, meanSummerHigh } from "./scoring";
 import type { TempUnit } from "./units";
+
+// Inlined to avoid a `scoring → geospatial-analysis → atlas-corpus-stats →
+// scoring` import cycle that crashed test-time module init (atlas-corpus-stats
+// builds its singleton distribution at load time, before scoring's exports
+// settle). Definitions are kept identical to scoring.ts.
+function meanSummerHigh(p: Place): number {
+  return (p.climate.tempHighC[5] + p.climate.tempHighC[6] + p.climate.tempHighC[7]) / 3;
+}
+function meanJanLow(p: Place): number {
+  return (p.climate.tempLowC[11] + p.climate.tempLowC[0] + p.climate.tempLowC[1]) / 3;
+}
 
 function sortAsc(a: number[]): number[] {
   return [...a].sort((x, y) => x - y);

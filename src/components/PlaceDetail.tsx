@@ -272,7 +272,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               inCompare={inCompareIds?.has(place.id) ?? false}
               onPickArchetype={onPickArchetype}
             />
-            <DetailBody place={place} onPickArchetype={onPickArchetype} onOpenPlace={onOpenPlace} />
+            <DetailBody place={place} onOpenPlace={onOpenPlace} />
           </motion.aside>
         </>
       )}
@@ -447,10 +447,9 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
 }
 
 function DetailBody({
-  place, onPickArchetype, onOpenPlace,
+  place, onOpenPlace,
 }: {
   place: Place;
-  onPickArchetype?: (a: MicroclimateArchetype) => void;
   onOpenPlace?: (id: string) => void;
 }) {
   const { temp, dist } = useUnits();

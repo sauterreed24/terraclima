@@ -1,0 +1,28 @@
+# Runs the full quality gate (typecheck + corpus audits + tests + lint + build)
+# on every pull request and on pushes to non-main branches. Pushes to main
+# already trigger deploy-pages.yml, which builds as part of the deploy.
+name: Quality
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run quality:check
