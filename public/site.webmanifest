@@ -1,0 +1,20 @@
+{
+  "name": "Terraclima — North American Microclimate Atlas",
+  "short_name": "Terraclima",
+  "description": "A hand-built atlas of North American microclimates: rain shadows, sky islands, marine layers, thermal belts, and the terrain mechanisms behind lived weather.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#fffefb",
+  "theme_color": "#fffefb",
+  "orientation": "portrait-primary",
+  "categories": ["education", "travel", "weather", "reference"],
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
