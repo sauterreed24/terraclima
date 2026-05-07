@@ -4,10 +4,11 @@
 
 ## Project links
 
-- **Live app:** [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/)
+- **Try it live (no install, no account):** [Open Terraclima in StackBlitz](https://stackblitz.com/github/sauterreed24/terraclima) — boots the Vite dev server in your browser straight from this repo. Works for human reviewers and for AI agents that can browse URLs.
+- **Production deploy:** [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/) — GitHub Pages build of `main`. Requires the repo owner to enable Pages once at **Settings → Pages → Source: GitHub Actions**; until then, use the StackBlitz link above.
 - **Source code:** [https://github.com/sauterreed24/terraclima](https://github.com/sauterreed24/terraclima)
 - **Reviewer entry points:** [src/App.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/App.tsx), [src/types.ts](https://github.com/sauterreed24/terraclima/blob/main/src/types.ts), [src/components/AtlasMap.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/AtlasMap.tsx), [src/components/PlaceDetail.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/PlaceDetail.tsx), [src/lib/scoring.ts](https://github.com/sauterreed24/terraclima/blob/main/src/lib/scoring.ts), [scripts/sanity-check.ts](https://github.com/sauterreed24/terraclima/blob/main/scripts/sanity-check.ts)
-- **Deployment workflow:** [https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml)
+- **Deployment workflow:** [.github/workflows/deploy-pages.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml)
 
 Terraclima is a research-grade climate atlas for exploring how terrain shapes lived weather across the United States, Canada, and Mexico. It treats each place as a physical system: rain shadows, sky islands, marine layers, chinook corridors, frost hollows, tropical highlands, fog belts, lake-effect snowbelts, orchard valleys, and wind gaps are explained through the forces that create them.
 
@@ -86,12 +87,16 @@ Every place carries citations and confidence notes. Derived scores are deliberat
 
 ## Deployment and Discoverability
 
-Terraclima ships as a static GitHub Pages app at [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/).
+Terraclima ships as a static GitHub Pages app at [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/). The deploy workflow (`.github/workflows/deploy-pages.yml`) runs on every push to `main`.
+
+**One-time setup (repo owner only):** GitHub Pages must be enabled once in the UI at **Settings → Pages → Source: GitHub Actions**. The workflow can build and upload artifacts, but Pages cannot serve them until this toggle is set. Until then, the [StackBlitz preview](https://stackblitz.com/github/sauterreed24/terraclima) is the always-on reviewer entry point.
 
 - `npm run build:pages` sets `VITE_BASE_PATH=/terraclima/` so Vite rewrites bundle and static-asset URLs for Project Pages.
 - `index.html` carries canonical, Open Graph, Twitter card, app-title, install, and crawler metadata.
 - `public/site.webmanifest` supports add-to-home-screen behavior with the existing SVG icon.
 - `public/robots.txt` and `public/sitemap.xml` point crawlers at the canonical GitHub Pages deployment.
+- `public/.nojekyll` keeps Pages from stripping files starting with `_` and matches Pages convention.
+- `public/404.html` redirects unknown paths back to the SPA root so stray deep links recover gracefully.
 
 If the project moves to a custom domain, update the canonical URL, Open Graph URL/image URL, robots sitemap URL, and sitemap `<loc>` together.
 
@@ -159,6 +164,7 @@ For a portfolio review, start here:
 
 For AI agents or automated reviewers:
 
+- **Runnable preview:** [Open in StackBlitz](https://stackblitz.com/github/sauterreed24/terraclima) — boots the Vite dev server in-browser without auth. Use this if you can browse URLs and want to interact with the live UI.
 - Treat `src/types.ts` as the contract.
 - Treat `scripts/sanity-check.ts` and `scripts/audit-corpus.ts` as executable invariants.
 - Prefer adding validation before changing corpus shape.
