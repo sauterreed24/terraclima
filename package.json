@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc -b --noEmit && vite build",
     "build:pages": "cross-env VITE_BASE_PATH=/terraclima/ npm run build",
+    "build:static": "cross-env VITE_BASE_PATH=./ npm run build",
     "preview": "vite preview",
     "preview:lan": "vite preview --host 0.0.0.0 --port 4173",
     "typecheck": "tsc --noEmit",
