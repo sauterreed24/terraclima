@@ -8,16 +8,23 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="application-name" content="Terraclima" />
+    <meta name="apple-mobile-web-app-title" content="Terraclima" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
     <meta
       name="description"
       content="Terraclima — a hand-built North American microclimate atlas for serious readers and curious travelers. Rain shadows, sky islands, and thermal belts across the US, Canada, and Mexico — editorial geography, not a brokerage."
     />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="canonical" href="https://sauterreed24.github.io/terraclima/" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <link rel="apple-touch-icon" href="%BASE_URL%favicon.svg" />
+    <link rel="manifest" href="%BASE_URL%site.webmanifest" />
+    <link rel="sitemap" type="application/xml" href="%BASE_URL%sitemap.xml" />
 
     <!-- Open Graph + Twitter card. Absolute og:image URL is required by most
          scrapers; the canonical site URL is the GitHub Pages deployment. If
-         the project moves to a custom domain, update both og:url and og:image. -->
+         the project moves to a custom domain, update canonical, og:url,
+         og:image, robots.txt, and sitemap.xml together. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Terraclima" />
     <meta property="og:title" content="Terraclima — North American Microclimate Atlas" />
@@ -37,6 +44,7 @@
       content="A hand-built atlas of North American microclimates. Rain shadows, sky islands, marine layers, and thermal belts."
     />
     <meta name="twitter:image" content="https://sauterreed24.github.io/terraclima/og-image.png" />
+    <meta name="twitter:image:alt" content="Terraclima — North American Microclimate Atlas" />
 
     <!-- Resource hints. preconnect lets the browser warm up the TLS
          handshake to the font CDNs before the stylesheet is parsed, which
