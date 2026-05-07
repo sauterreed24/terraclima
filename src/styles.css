@@ -1426,6 +1426,15 @@
   .map-marker:focus-visible .map-marker-label rect {
     stroke: rgba(240, 210, 156, 0.95);
   }
+  /* Keyboard focus ring on the marker itself. Modern browsers support
+     `outline` on SVG <g>; Safari falls back to the inset ring on .atlas-svg
+     plus the label-rect hint above, which is acceptable. */
+  .map-marker:focus { outline: none; }
+  .map-marker:focus-visible {
+    outline: 2px solid rgba(240, 210, 156, 0.95);
+    outline-offset: 2px;
+    border-radius: 999px;
+  }
 
   .map-btn {
     display: inline-flex;
