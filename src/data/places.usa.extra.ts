@@ -44,7 +44,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["remote workers", "tropical-ag researchers"], travelFit: ["volcanoes", "Mauna Kea stargazing", "waterfalls"],
     whoWouldLove: "Rainforest people who enjoy steady warmth and don't mind humidity.", whoMightNot: "Sun-chasers seeking dry summers; mold-sensitive residents.",
     confidence: "high",
-    citations: [{ label: "NOAA — Hilo International", kind: "noaa" }, { label: "NWS Honolulu — Hawaiʻi climate summaries", kind: "noaa" }],
+    citations: [{ label: "NOAA — Hilo International", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Honolulu — Hawaiʻi climate summaries", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
     deepSections: [
       {
         id: "hilo-trades",
@@ -91,7 +91,8 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["mining logistics", "research"], travelFit: ["Iditarod finish", "Bering land bridge archaeology"],
     whoWouldLove: "Arctic coastal culture and long-light summers.", whoMightNot: "Anyone needing mild winters or tree cover.",
     confidence: "moderate",
-    citations: [{ label: "NOAA — Nome Airport", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Nome Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
     deepSections: [
       {
         id: "nome-ice-season",
@@ -138,7 +139,8 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["port workers", "wind energy"], travelFit: ["Padre Island", "birding"],
     whoWouldLove: "Gulf coast life with strong Hispanic cultural ties.", whoMightNot: "Dry-climate seekers; hurricane-averse.",
     confidence: "high",
-    citations: [{ label: "NOAA — Corpus Christi Intl", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Corpus Christi Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
     deepSections: [
       {
         id: "corpus-surge-bay",
@@ -185,7 +187,8 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["logistics", "healthcare"], travelFit: ["quilt museum", "riverfront"],
     whoWouldLove: "River-town Midwesterners who tolerate humidity.", whoMightNot: "Mountain-air seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Barkley Regional", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Barkley Regional", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "bismarck-nd",
@@ -214,7 +217,8 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["energy sector", "remote workers"], travelFit: ["Lewis & Clark", "prairie reserves"],
     whoWouldLove: "Wide-open plains people who own a good parka.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Bismarck Municipal", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Bismarck Municipal", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "morgantown-wv",
@@ -243,6 +247,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["university families", "healthcare"], travelFit: ["fall color", "whitewater"],
     whoWouldLove: "Appalachian foothills without deep South heat.", whoMightNot: "Sun-belt retirees seeking dry air.",
     confidence: "high",
-    citations: [{ label: "NOAA — Morgantown Municipal", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Morgantown Municipal", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 ];

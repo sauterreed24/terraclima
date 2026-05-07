@@ -130,10 +130,10 @@ export const PLACES_MEXICO: Place[] = [
       },
     ],
     citations: [
-      { label: "Servicio Meteorológico Nacional — Oaxaca Observatorio", kind: "smn" },
-      { label: "INEGI topographic layers — Valles Centrales", kind: "inegi" },
-      { label: "WorldClim 2.1 — 30s resolution", kind: "worldclim" },
-      { label: "INECC — Regional climate vulnerability assessments", kind: "inecc" },
+      { label: "Servicio Meteorológico Nacional — Oaxaca Observatorio", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "INEGI topographic layers — Valles Centrales", kind: "inegi", url: "https://www.inegi.org.mx/" },
+      { label: "WorldClim 2.1 — 30s resolution", kind: "worldclim", url: "https://www.worldclim.org/" },
+      { label: "INECC — Regional climate vulnerability assessments", kind: "inecc", url: "https://www.gob.mx/inecc" },
     ],
   },
 
@@ -230,9 +230,9 @@ export const PLACES_MEXICO: Place[] = [
 
     confidence: "high",
     citations: [
-      { label: "SMN — San Cristóbal station", kind: "smn" },
-      { label: "INECC vulnerability assessments (Chiapas highland)", kind: "inecc" },
-      { label: "WorldClim 2.1", kind: "worldclim" },
+      { label: "SMN — San Cristóbal station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "INECC vulnerability assessments (Chiapas highland)", kind: "inecc", url: "https://www.gob.mx/inecc" },
+      { label: "WorldClim 2.1", kind: "worldclim", url: "https://www.worldclim.org/" },
     ],
   },
 
@@ -276,7 +276,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "families"], travelFit: ["year-round"],
     whoWouldLove: "Those wanting year-round bougainvillea.", whoMightNot: "Cool-climate seekers.",
     confidence: "high",
-    citations: [{ label: "SMN — Cuernavaca station", kind: "smn" }, { label: "WorldClim", kind: "worldclim" }],
+    citations: [{ label: "SMN — Cuernavaca station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "WorldClim", kind: "worldclim", url: "https://www.worldclim.org/" }],
   },
 
   // =================== TIER B — Valle de Guadalupe ===================
@@ -319,7 +319,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine country"],
     whoWouldLove: "Mediterranean-climate wine people.", whoMightNot: "Water-conscious relocators (local stress is real).",
     confidence: "moderate",
-    citations: [{ label: "SMN — Ensenada/Valle de Guadalupe stations", kind: "smn" }, { label: "WorldClim", kind: "worldclim" }],
+    citations: [{ label: "SMN — Ensenada/Valle de Guadalupe stations", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "WorldClim", kind: "worldclim", url: "https://www.worldclim.org/" }],
   },
 
   // =================== TIER B — Pátzcuaro ===================
@@ -358,7 +358,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cultural immersion", "highland dreamers"], travelFit: ["Día de Muertos", "lake villages"],
     whoWouldLove: "Those drawn to Purépecha culture and highland water.", whoMightNot: "Heat-seekers.",
     confidence: "high",
-    citations: [{ label: "SMN — Pátzcuaro station", kind: "smn" }, { label: "INECC", kind: "inecc" }],
+    citations: [{ label: "SMN — Pátzcuaro station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INECC", kind: "inecc", url: "https://www.gob.mx/inecc" }],
   },
 
   // =================== TIER C ===================
@@ -380,7 +380,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["coffee people", "cloud-forest lovers"], travelFit: ["coffee tourism"],
     whoWouldLove: "Misty-mountain romantics.", whoMightNot: "Those wanting sun.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Coatepec station", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Coatepec station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -401,7 +402,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbird winter escape"], travelFit: ["birding", "colonial architecture"],
     whoWouldLove: "Monsoon-edge Sonora romantics.", whoMightNot: "Heat-averse.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Álamos station", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Álamos station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -422,7 +424,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "retirees"], travelFit: ["art scene", "surfing"],
     whoWouldLove: "Pacific-Baja lovers.", whoMightNot: "Hurricane-averse.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Todos Santos station", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Todos Santos station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -443,7 +446,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["expat retirees", "artists"], travelFit: ["colonial architecture"],
     whoWouldLove: "Artists wanting dry light.", whoMightNot: "Water-concerned; seekers of wetter climates.",
     confidence: "high",
-    citations: [{ label: "SMN — San Miguel station", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — San Miguel station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -464,7 +468,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cool-climate retreat"], travelFit: ["pine forest", "mountain retreat"],
     whoWouldLove: "Pine-forest highlanders.", whoMightNot: "Heat-seekers.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Tapalpa station", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Tapalpa station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -485,7 +490,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cloud-forest dwellers"], travelFit: ["Las Pozas", "cascades"],
     whoWouldLove: "Cloud-forest dreamers.", whoMightNot: "Those wanting sunshine.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Xilitla station", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Xilitla station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   // ====================================================================
@@ -510,7 +516,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["Latin-American urbanites", "retirees"], travelFit: ["colonial architecture", "Monarch reserve gateway"],
     whoWouldLove: "Eternal-spring seekers who also want urban amenities.", whoMightNot: "Anyone seeking seasonal drama.",
     confidence: "high",
-    citations: [{ label: "SMN — Morelia 1991–2020", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Morelia 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -531,7 +538,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cultural expats"], travelFit: ["colonial sightseeing"],
     whoWouldLove: "Those who love stone cities at altitude.", whoMightNot: "Anyone with mobility limitations.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Guanajuato station", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Guanajuato station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -553,7 +561,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["historic-city expats"], travelFit: ["UNESCO architecture", "silver-mine tourism"],
     whoWouldLove: "Those who want Mexican eternal spring with a colder twist.", whoMightNot: "Tropical-seeking.",
     confidence: "high",
-    citations: [{ label: "SMN — Zacatecas 1991–2020", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Zacatecas 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   // ====================================================================
@@ -578,7 +587,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["northern-Mexico expats"], travelFit: ["colonial center"],
     whoWouldLove: "Those needing an escape from Monterrey heat.", whoMightNot: "Tropical-seekers.",
     confidence: "high",
-    citations: [{ label: "SMN — Saltillo 1991–2020", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Saltillo 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -599,7 +609,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["small-scale viticulturists"], travelFit: ["Casa Madero", "Oasis architecture"],
     whoWouldLove: "Desert-oasis romantics, wine-history pilgrims.", whoMightNot: "Anyone expecting green.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Parras station", kind: "smn" }, { label: "Casa Madero agronomic records", kind: "other" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Parras station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "Casa Madero agronomic records", kind: "other" }],
   },
 
   {
@@ -620,7 +631,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["orchard farmers"], travelFit: ["Mennonite cheese tourism"],
     whoWouldLove: "Dryland-fruit-country romantics.", whoMightNot: "Anyone wanting a Mexican coast.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Cuauhtémoc station", kind: "smn" }, { label: "INIFAP orchard data", kind: "inecc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Cuauhtémoc station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INIFAP orchard data", kind: "inecc", url: "https://www.gob.mx/inecc" }],
   },
 
   {
@@ -642,7 +654,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["artists", "pilgrims"], travelFit: ["Wirikuta pilgrimage", "ghost-town tourism"],
     whoWouldLove: "Travelers drawn to remote, thin-air silence.", whoMightNot: "Services-dependent.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Catorce station", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Catorce station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   // ====================================================================
@@ -668,7 +681,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbirds", "marine-adjacent"], travelFit: ["whale sharks", "island tourism"],
     whoWouldLove: "Those wanting winter perfection on clear turquoise water.", whoMightNot: "Year-round heat-averse.",
     confidence: "high",
-    citations: [{ label: "SMN — La Paz 1991–2020", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — La Paz 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -690,7 +704,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
-    citations: [{ label: "SMN — Puerto Escondido", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Puerto Escondido", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   // ====================================================================
@@ -716,7 +731,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["colonial-city expats"], travelFit: ["Maya sites", "cenotes"],
     whoWouldLove: "Tropical-dry + culture seekers.", whoMightNot: "Summer-heat-averse.",
     confidence: "high",
-    citations: [{ label: "SMN — Mérida 1991–2020", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Mérida 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -738,7 +754,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["tropical expats"], travelFit: ["lagoon tourism", "stromatolites"],
     whoWouldLove: "Caribbean-adjacent freshwater lovers.", whoMightNot: "Hurricane-averse.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Chetumal (nearest station)", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Chetumal (nearest station)", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   // ====================================================================
@@ -764,7 +781,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["agrotourism"], travelFit: ["agave fields", "distillery tours"],
     whoWouldLove: "Terroir-obsessed travelers.", whoMightNot: "Cool-climate seekers.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Tequila station", kind: "smn" }, { label: "UNESCO agave landscape", kind: "other" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Tequila station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "UNESCO agave landscape", kind: "other" }],
   },
 
   {
@@ -785,7 +803,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cool mountain retreat"], travelFit: ["cabin tourism"],
     whoWouldLove: "Pine-forest travelers.", whoMightNot: "Heat-seekers.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Mazamitla station", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Mazamitla station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   // =================== NEW ANOMALY SET ===================
@@ -816,7 +835,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["wind energy workers", "meteorology enthusiasts"], travelFit: ["wind farms", "kite/windsurfing", "Zapotec cultural tours"],
     whoWouldLove: "Meteorologists, kite sportspeople, anyone who likes feeling the planet's weather machinery at work.", whoMightNot: "Anyone whose hat would fly off.",
     confidence: "high",
-    citations: [{ label: "SMN — La Ventosa / Salina Cruz stations", kind: "smn" }, { label: "Academic: Chelton et al. on Tehuantepec wind jets", kind: "academic" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — La Ventosa / Salina Cruz stations", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "Academic: Chelton et al. on Tehuantepec wind jets", kind: "academic" }],
   },
 
   {
@@ -845,7 +865,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["highland retreat", "Tarahumara-country residents"], travelFit: ["Copper Canyon railway", "Tarahumara cultural tourism", "vertical climate gradients"],
     whoWouldLove: "Explorers of dramatic elevational gradients; people who want genuine cold winters in Mexico.", whoMightNot: "Warm-winter seekers; anyone expecting Mexico to be uniformly tropical.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Creel station", kind: "smn" }, { label: "INEGI — Sierra Tarahumara elevation", kind: "other" }],
+    citations: [{ label: "SMN — Creel station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INEGI — Sierra Tarahumara elevation", kind: "other" }],
   },
 
   {
@@ -874,7 +894,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["winemakers", "cool-Mediterranean lovers", "retirees seeking a California-South alternative"], travelFit: ["wine country tours", "seafood cuisine", "whale watching"],
     whoWouldLove: "Anyone who loves Napa/Sonoma but wants a Mexican spin — and better prices.", whoMightNot: "Water-supply worriers.",
     confidence: "high",
-    citations: [{ label: "SMN — Ensenada / El Ciprés", kind: "smn" }, { label: "INIFAP — Valle de Guadalupe viticulture studies", kind: "academic" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Ensenada / El Ciprés", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INIFAP — Valle de Guadalupe viticulture studies", kind: "academic" }],
   },
 
   {
@@ -902,7 +923,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["mist lovers", "coffee growers", "Mexican-highland expats"], travelFit: ["cloud-forest hikes", "coffee tours", "Instituto de Ecología"],
     whoWouldLove: "Readers, mossy-path walkers, anyone who thinks cool and misty is the correct climate.", whoMightNot: "Sun-seekers; anyone with damp-aggravated joints.",
     confidence: "high",
-    citations: [{ label: "SMN — Xalapa station 1991–2020", kind: "smn" }, { label: "INECOL — Cloud forest ecology research", kind: "academic" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Xalapa station 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INECOL — Cloud forest ecology research", kind: "academic" }],
   },
 
   {
@@ -931,6 +953,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "artists", "highland-climate seekers"], travelFit: ["colonial architecture", "highland festivals", "walkable mild-weather city breaks"],
     whoWouldLove: "People who want dry sun and cool evenings without truly cold winters.", whoMightNot: "Humidity lovers or those needing lush, high-rain landscapes.",
     confidence: "moderate",
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [
       { label: "WeatherSpark — San Miguel de Allende climate profile", kind: "oss-data", url: "https://weatherspark.com/y/4978/Average-Weather-in-San-Miguel-de-Allende-Mexico-Year-Round" },
       { label: "SMN / CONAGUA station network (Guanajuato highlands)", kind: "smn", url: "https://smn.conagua.gob.mx/" },
@@ -962,6 +985,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["desert ecologists", "conservation-oriented residents"], travelFit: ["oasis springs", "gypsum dunes", "desert biodiversity expeditions"],
     whoWouldLove: "People fascinated by rare desert-water systems and biological oddities.", whoMightNot: "Anyone seeking lush, low-maintenance living conditions.",
     confidence: "moderate",
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [
       { label: "ResearchGate summary — Climate of Cuatro Ciénegas Basin", kind: "academic", url: "https://www.researchgate.net/publication/325428359_The_Climate_of_Cuatro_Cienegas_Basin_Drivers_and_Temporal_Patterns" },
       { label: "Ramsar profile — Área de Protección de Flora y Fauna Cuatrociénegas", kind: "other", url: "https://rsis.ramsar.org/" },
@@ -993,6 +1017,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["wine-industry professionals", "dry-climate growers"], travelFit: ["historic wineries", "high-desert valley food-and-wine routes"],
     whoWouldLove: "Wine-focused travelers and residents who prefer dry highland heat over humid climates.", whoMightNot: "People who need lush landscapes or low-maintenance water budgets.",
     confidence: "moderate",
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [
       { label: "Wikipedia — Parras (historic viticulture context)", kind: "other", url: "https://en.wikipedia.org/wiki/Parras" },
       { label: "Wine-Searcher — Parras Valley regional profile", kind: "oss-data", url: "https://www.wine-searcher.com/regions-parras+valley" },
@@ -1025,7 +1050,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["altitude-loving urbanites"], travelFit: ["Nevado de Toluca hiking", "colonial architecture", "traditional markets"],
     whoWouldLove: "Altitude enthusiasts, cool-climate seekers in Mexico.", whoMightNot: "Anyone sensitive to thin air or winter cold.",
     confidence: "high",
-    citations: [{ label: "SMN — Toluca observatory 1991–2020", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Toluca observatory 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 
   {
@@ -1048,7 +1074,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["manufacturing", "startup scene"], travelFit: ["Chipinque", "Cola de Caballo"],
     whoWouldLove: "Business travelers who want mountain access near a major hub.", whoMightNot: "Clean-air purists on stagnant inversion days.",
     confidence: "high",
-    citations: [{ label: "SMN — Monterrey / INEGI climate summaries", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Monterrey / INEGI climate summaries", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
   {
     id: "hermosillo-mx", tier: "C", country: "Mexico", region: "Sonora", municipality: "Hermosillo", name: "Hermosillo (Sonoran Desert)",
@@ -1070,7 +1097,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["desert-industry workers"], travelFit: ["Bahía de Kino day trips", "desert ecotours"],
     whoWouldLove: "Dry-heat devotees.", whoMightNot: "Anyone who needs summer air conditioning to be optional.",
     confidence: "high",
-    citations: [{ label: "SMN — Hermosillo", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Hermosillo", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
   {
     id: "puerto-vallarta-mx", tier: "C", country: "Mexico", region: "Jalisco", municipality: "Puerto Vallarta", name: "Puerto Vallarta (Banderas Bay)",
@@ -1092,7 +1120,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["hospitality retirees", "remote workers"], travelFit: ["whale watching", "beaches"],
     whoWouldLove: "Tropical beach life with mountain backdrop.", whoMightNot: "Dry-climate seekers; hurricane-anxious buyers.",
     confidence: "high",
-    citations: [{ label: "SMN — Puerto Vallarta", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Puerto Vallarta", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
   {
     id: "mazatlan-mx", tier: "C", country: "Mexico", region: "Sinaloa", municipality: "Mazatlán", name: "Mazatlán (Pacific Humid Tropical)",
@@ -1114,7 +1143,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
-    citations: [{ label: "SMN — Mazatlán", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Mazatlán", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
   {
     id: "campeche-mx", tier: "C", country: "Mexico", region: "Campeche", municipality: "San Francisco de Campeche", name: "Campeche (Gulf Coast Fort)",
@@ -1136,7 +1166,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Campeche", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Campeche", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
   {
     id: "palenque-mx", tier: "C", country: "Mexico", region: "Chiapas", municipality: "Palenque", name: "Palenque (Lacandon Jungle Edge)",
@@ -1158,7 +1189,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["archaeology guides", "ecotourism"], travelFit: ["ruins", "jungle trails"],
     whoWouldLove: "Jungle climate with Maya history.", whoMightNot: "Anyone who cannot tolerate humidity.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Palenque", kind: "smn" }, { label: "INECC — Chiapas biodiversity notes", kind: "inecc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Palenque", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INECC — Chiapas biodiversity notes", kind: "inecc", url: "https://www.gob.mx/inecc" }],
   },
   {
     id: "taxco-mx", tier: "C", country: "Mexico", region: "Guerrero", municipality: "Taxco de Alarcón", name: "Taxco (Sierra Madre del Sur)",
@@ -1180,7 +1212,8 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["artisans", "retirees"], travelFit: ["silver markets", "cobblestone walks"],
     whoWouldLove: "Highland colonial towns with tropical latitude.", whoMightNot: "Mobility-limited — steep streets everywhere.",
     confidence: "moderate",
-    citations: [{ label: "SMN — Taxco region", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Taxco region", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
   {
     id: "puebla-mx", tier: "C", country: "Mexico", region: "Puebla", municipality: "Puebla", name: "Puebla (Trans-Mexican Volcanic Belt)",
@@ -1202,6 +1235,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["students", "manufacturing"], travelFit: ["Talavera", "volcano viewpoints"],
     whoWouldLove: "Highland Mexican urban culture with volcano views.", whoMightNot: "Altitude-sensitive; smog-sensitive winter visitors.",
     confidence: "high",
-    citations: [{ label: "SMN — Puebla", kind: "smn" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "SMN — Puebla", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
   },
 ];

@@ -105,9 +105,9 @@ export const PLACES_CANADA: Place[] = [
     confidence: "high",
     confidenceNotes: "ECCC station data at Osoyoos West and Oliver are extensive; Okanagan valley is among BC's best-studied microclimate gradients.",
     citations: [
-      { label: "Environment & Climate Change Canada — Osoyoos West 1991–2020 normals", kind: "eccc" },
+      { label: "Environment & Climate Change Canada — Osoyoos West 1991–2020 normals", kind: "eccc", url: "https://climate.weather.gc.ca/" },
       { label: "BC Wine Institute climate summaries", kind: "academic" },
-      { label: "Climate Atlas of Canada — Osoyoos profile", kind: "climate-atlas-canada" },
+      { label: "Climate Atlas of Canada — Osoyoos profile", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
       { label: "BC Wildfire Service historical fire perimeters", kind: "oss-data" },
     ],
   },
@@ -210,9 +210,9 @@ export const PLACES_CANADA: Place[] = [
     confidence: "high",
     confidenceNotes: "Dense ECCC observation network; chinook frequency is well-studied by University of Lethbridge.",
     citations: [
-      { label: "ECCC Canadian Climate Normals — Lethbridge A 1991–2020", kind: "eccc" },
+      { label: "ECCC Canadian Climate Normals — Lethbridge A 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" },
       { label: "University of Lethbridge chinook studies", kind: "academic" },
-      { label: "Climate Atlas of Canada — Lethbridge profile", kind: "climate-atlas-canada" },
+      { label: "Climate Atlas of Canada — Lethbridge profile", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
       { label: "Agriculture & Agri-Food Canada soil survey", kind: "academic" },
     ],
   },
@@ -261,7 +261,7 @@ export const PLACES_CANADA: Place[] = [
     whoWouldLove: "Canadians seeking the mildest climate in their country.",
     whoMightNot: "Those wanting hot summers or real snow.",
     confidence: "high",
-    citations: [{ label: "ECCC — Victoria Gonzales Heights 1991–2020", kind: "eccc" }, { label: "Climate Atlas of Canada — Victoria", kind: "climate-atlas-canada" }],
+    citations: [{ label: "ECCC — Victoria Gonzales Heights 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Climate Atlas of Canada — Victoria", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }],
   },
 
   // =================== TIER B — Tofino, BC ===================
@@ -303,8 +303,8 @@ export const PLACES_CANADA: Place[] = [
     whoWouldLove: "Ocean-obsessed souls.", whoMightNot: "Sun lovers.",
     confidence: "high",
     citations: [
-      { label: "ECCC — Tofino A 1991–2020", kind: "eccc" },
-      { label: "Climate Atlas of Canada — Pacific coast profiles", kind: "climate-atlas-canada" },
+      { label: "ECCC — Tofino A 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — Pacific coast profiles", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
       { label: "Environment Canada — Coastal storm frequency analyses", kind: "other" },
     ],
   },
@@ -348,7 +348,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families", "university communities"], travelFit: ["wine trails", "tidal bore", "apple blossom"],
     whoWouldLove: "Fruit-country romantics; Maritimes lovers.", whoMightNot: "Those wanting mild winters.",
     confidence: "high",
-    citations: [{ label: "ECCC — Kentville CDA 1991–2020", kind: "eccc" }, { label: "AAFC Kentville Research Station", kind: "academic" }],
+    citations: [{ label: "ECCC — Kentville CDA 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "AAFC Kentville Research Station", kind: "academic" }],
   },
 
   // =================== TIER B — Niagara-on-the-Lake, ON ===================
@@ -389,7 +389,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers", "food-focused families"], travelFit: ["wine country", "Shaw Festival"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Those wanting true mild winters or dry summers.",
     confidence: "high",
-    citations: [{ label: "ECCC — Vineland Research Station 1991–2020", kind: "eccc" }, { label: "Vineland Research & Innovation Centre", kind: "academic" }],
+    citations: [{ label: "ECCC — Vineland Research Station 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Vineland Research & Innovation Centre", kind: "academic" }],
   },
 
   // =================== TIER C entries ===================
@@ -411,7 +411,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "retirees"], travelFit: ["Pacific shoulder-season"],
     whoWouldLove: "BC coastal dreamers.", whoMightNot: "Those needing heat or urban services.",
     confidence: "moderate",
-    citations: [{ label: "ECCC — Sechelt", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Sechelt", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -432,7 +433,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["artist-farmers", "off-grid"], travelFit: ["island farm tour"],
     whoWouldLove: "Slow-island small-farm romantics.", whoMightNot: "Those needing services.",
     confidence: "moderate",
-    citations: [{ label: "ECCC — Salt Spring Island St Mary Lake", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Salt Spring Island St Mary Lake", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -453,7 +455,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulturalists", "orchardists"], travelFit: ["wine tours"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-    citations: [{ label: "ECCC — Summerland CDA", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Summerland CDA", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -474,7 +477,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hardy maritime families"], travelFit: ["whales", "puffins"],
     whoWouldLove: "Deep-Fundy lovers.", whoMightNot: "Fog-intolerant.",
     confidence: "moderate",
-    citations: [{ label: "ECCC — Grand Manan", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Grand Manan", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -495,7 +499,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families"], travelFit: ["wildlife area", "orchards"],
     whoWouldLove: "Quiet Kootenay folk.", whoMightNot: "Urbanites.",
     confidence: "moderate",
-    citations: [{ label: "ECCC — Creston CDA", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Creston CDA", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   // ====================================================================
@@ -521,7 +526,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers", "orchardists", "retirees"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Sun-desiring Canadians.", whoMightNot: "Fire-averse.",
     confidence: "high",
-    citations: [{ label: "ECCC — Penticton 1991–2020", kind: "eccc" }, { label: "BCMAF terroir reports", kind: "other" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Penticton 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "BCMAF terroir reports", kind: "other" }],
   },
 
   {
@@ -543,7 +549,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seeking Canadians"], travelFit: ["desert hiking", "fly-fishing"],
     whoWouldLove: "Dry-climate-loving British Columbians.", whoMightNot: "Fire-smoke-sensitive.",
     confidence: "high",
-    citations: [{ label: "ECCC — Kamloops AP", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Kamloops AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -565,7 +572,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["mountain-arts community"], travelFit: ["heritage town", "ski"],
     whoWouldLove: "Creative mountain-town lovers.", whoMightNot: "Services-demanding.",
     confidence: "high",
-    citations: [{ label: "ECCC — Nelson Rixen Ck", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Nelson Rixen Ck", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -587,7 +595,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["serious skiers", "snow-loving families"], travelFit: ["ski", "powder tourism"],
     whoWouldLove: "Committed winter people.", whoMightNot: "Anyone expecting summer heat.",
     confidence: "high",
-    citations: [{ label: "ECCC — Revelstoke 1991–2020", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Revelstoke 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -609,7 +618,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["storm-coast romantics"], travelFit: ["surfing", "storm watching"],
     whoWouldLove: "Those who want Tofino's climate at half the tourism intensity.", whoMightNot: "Sun-seekers.",
     confidence: "high",
-    citations: [{ label: "ECCC — Tofino AP", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Tofino AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -631,6 +641,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["retirees", "mild-climate seekers"], travelFit: ["beaches", "Pacific Rim gateway"],
     whoWouldLove: "Those chasing Mediterranean mild at a Canadian latitude.", whoMightNot: "Budget-constrained.",
     confidence: "high",
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     deepSections: [
       {
         id: "qualicum-rain-shadow",
@@ -649,7 +660,7 @@ export const PLACES_CANADA: Place[] = [
         ],
       },
     ],
-    citations: [{ label: "ECCC — Qualicum Beach AWS", kind: "eccc" }],
+    citations: [{ label: "ECCC — Qualicum Beach AWS", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -671,7 +682,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hyper-maritime devotees"], travelFit: ["Skeena fishing", "BC Ferries terminus"],
     whoWouldLove: "Those who want to live in a coastal cloud.", whoMightNot: "Sun-needing humans.",
     confidence: "high",
-    citations: [{ label: "ECCC — Prince Rupert 1991–2020", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Prince Rupert 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   // ====================================================================
@@ -696,7 +708,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["ranchers", "wind-tolerant"], travelFit: ["Waterton gateway"],
     whoWouldLove: "Chinook romantics.", whoMightNot: "Wind-averse.",
     confidence: "high",
-    citations: [{ label: "ECCC — Pincher Creek 1991–2020", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Pincher Creek 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -719,7 +732,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["prairie ranchers"], travelFit: ["dark-sky preserve", "boreal surprise"],
     whoWouldLove: "Those who love an ecological anomaly.", whoMightNot: "Service-dependent.",
     confidence: "high",
-    citations: [{ label: "ECCC — Cypress Hills 1991–2020", kind: "eccc" }, { label: "Parks Canada Cypress Hills ecosystem", kind: "other" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Cypress Hills 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Parks Canada Cypress Hills ecosystem", kind: "other" }],
   },
 
   // ====================================================================
@@ -744,7 +758,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["greenhouse farmers"], travelFit: ["Point Pelee birding"],
     whoWouldLove: "Those drawn to Canada's longest growing season.", whoMightNot: "Mountain-lovers.",
     confidence: "high",
-    citations: [{ label: "ECCC — Leamington / Harrow AP", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Leamington / Harrow AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -765,7 +780,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["boreal families"], travelFit: ["Sleeping Giant Park"],
     whoWouldLove: "Boreal-lake devotees.", whoMightNot: "Heat-needing.",
     confidence: "high",
-    citations: [{ label: "ECCC — Thunder Bay AP", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Thunder Bay AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   // ====================================================================
@@ -791,7 +807,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["maritime romantics"], travelFit: ["Forillon", "fishing villages"],
     whoWouldLove: "Those who want wild Atlantic Canada.", whoMightNot: "Anyone needing warmth.",
     confidence: "high",
-    citations: [{ label: "ECCC — Gaspé AP", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Gaspé AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -813,7 +830,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Atlantic romantics"], travelFit: ["iceberg watching", "Jellybean Row"],
     whoWouldLove: "Storm-loving maritime people.", whoMightNot: "Sun-dependent.",
     confidence: "high",
-    citations: [{ label: "ECCC — St. John's AP", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — St. John's AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   // ====================================================================
@@ -839,7 +857,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["aurora-chasers", "far-north idealists"], travelFit: ["aurora", "Klondike history"],
     whoWouldLove: "Those who see six-month winter as a feature not a bug.", whoMightNot: "Daylight-sensitive.",
     confidence: "high",
-    citations: [{ label: "ECCC — Whitehorse AP 1991–2020", kind: "eccc" }, { label: "Climate Atlas Canada", kind: "climate-atlas-canada" }],
+    citations: [{ label: "ECCC — Whitehorse AP 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Climate Atlas Canada", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }],
   },
 
   {
@@ -861,7 +879,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["aurora-centric life", "northern service workers"], travelFit: ["aurora", "ice road"],
     whoWouldLove: "Northern dreamers.", whoMightNot: "Cold-sensitive anyone.",
     confidence: "high",
-    citations: [{ label: "ECCC — Yellowknife AP", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Yellowknife AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -883,7 +902,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["subarctic researchers"], travelFit: ["polar bears", "beluga whales", "aurora"],
     whoWouldLove: "Polar-ecosystem pilgrims.", whoMightNot: "Virtually everyone else permanently.",
     confidence: "high",
-    citations: [{ label: "ECCC — Churchill AP", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Churchill AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -904,7 +924,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Cool-climate wine people.", whoMightNot: "Those wanting mild winters.",
     confidence: "moderate",
-    citations: [{ label: "ECCC — Point Petre 1991–2020", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Point Petre 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   // =================== NEW ANOMALY SET ===================
@@ -933,7 +954,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
-    citations: [{ label: "ECCC — Iqaluit A normal 1991–2020", kind: "eccc" }, { label: "Climate Atlas of Canada — Arctic profiles", kind: "climate-atlas-canada" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Iqaluit A normal 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Climate Atlas of Canada — Arctic profiles", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }],
   },
 
   {
@@ -960,7 +982,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
-    citations: [{ label: "ECCC — Inuvik Climate A 1991–2020", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Inuvik Climate A 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -987,7 +1010,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["rainforest residents", "Haida Nation community", "cool-climate purists"], travelFit: ["Gwaii Haanas National Park", "Haida cultural tourism", "ancient cedar forests"],
     whoWouldLove: "Those who love cool, wet, remote rainforest country.", whoMightNot: "Anyone requiring sun, warmth, or easy travel.",
     confidence: "high",
-    citations: [{ label: "ECCC — Sandspit A normal 1991–2020", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Sandspit A normal 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -1017,7 +1041,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seekers in Canada", "retirees", "drought-tolerant gardeners"], travelFit: ["badlands tours", "South Saskatchewan River", "dark-sky observers"],
     whoWouldLove: "Anyone who wants a Colorado-style Canadian climate: sunny, dry, and chinook-warmed.", whoMightNot: "Those who expect reliably cold Canadian winters.",
     confidence: "high",
-    citations: [{ label: "ECCC — Medicine Hat A normal 1991–2020", kind: "eccc" }, { label: "Climate Atlas of Canada — prairie sunshine statistics", kind: "climate-atlas-canada" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Medicine Hat A normal 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Climate Atlas of Canada — prairie sunshine statistics", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }],
   },
 
   {
@@ -1045,7 +1070,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["maritime-climate purists", "iceberg obsessives"], travelFit: ["iceberg viewing (May–Jun)", "whale watching (Jun–Aug)", "cod jigging"],
     whoWouldLove: "Anyone who wants to watch icebergs from their porch.", whoMightNot: "Those who need warm summers.",
     confidence: "moderate",
-    citations: [{ label: "ECCC — Gander A / Twillingate climate reference", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Gander A / Twillingate climate reference", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 
   {
@@ -1068,7 +1094,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulture workers", "remote tech"], travelFit: ["wine routes", "skiing Big White"],
     whoWouldLove: "Sun-seekers who want Canadian healthcare and mountain-lake scenery.", whoMightNot: "Rainforest lovers; smoke-sensitive lungs.",
     confidence: "high",
-    citations: [{ label: "ECCC — Kelowna UBC Okanagan / airport", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Kelowna UBC Okanagan / airport", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
   {
     id: "squamish-bc", tier: "C", country: "Canada", region: "British Columbia", municipality: "Squamish", name: "Squamish (Howe Sound)",
@@ -1090,7 +1117,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["climbers", "wind-sport athletes"], travelFit: ["Stawamus Chief", "Sea to Sky Gondola"],
     whoWouldLove: "Mountain–ocean people who commute to Vancouver occasionally.", whoMightNot: "Budget renters; sun-belt seekers.",
     confidence: "high",
-    citations: [{ label: "ECCC — Squamish Airport", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Squamish Airport", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
   {
     id: "banff-ab", tier: "C", country: "Canada", region: "Alberta", municipality: "Banff", name: "Banff (Bow Valley)",
@@ -1112,7 +1140,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hospitality seasonal workers", "park staff"], travelFit: ["Lake Louise", "skiing", "hiking"],
     whoWouldLove: "Rocky Mountain purists.", whoMightNot: "Affordable-housing seekers; warm-winter lovers.",
     confidence: "high",
-    citations: [{ label: "ECCC — Banff CS", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Banff CS", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
   {
     id: "halifax-ns", tier: "C", country: "Canada", region: "Nova Scotia", municipality: "Halifax", name: "Halifax",
@@ -1134,7 +1163,8 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["students", "maritime professionals"], travelFit: ["Peggy's Cove", "tidal bore"],
     whoWouldLove: "Atlantic Canada urban life without Montreal cold.", whoMightNot: "Drought-climate seekers.",
     confidence: "high",
-    citations: [{ label: "ECCC — Halifax Stanfield Intl", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Halifax Stanfield Intl", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
   {
     id: "charlottetown-pei", tier: "C", country: "Canada", region: "Prince Edward Island", municipality: "Charlottetown", name: "Charlottetown",
@@ -1156,6 +1186,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
-    citations: [{ label: "ECCC — Charlottetown", kind: "eccc" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "ECCC — Charlottetown", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
   },
 ];
