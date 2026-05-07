@@ -6,8 +6,8 @@
 
 - **Live app:** [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/)
 - **Source code:** [https://github.com/sauterreed24/terraclima](https://github.com/sauterreed24/terraclima)
-- **Reviewer entry points:** [src/App.tsx](src/App.tsx), [src/types.ts](src/types.ts), [src/components/AtlasMap.tsx](src/components/AtlasMap.tsx), [src/components/PlaceDetail.tsx](src/components/PlaceDetail.tsx), [src/lib/scoring.ts](src/lib/scoring.ts), [scripts/sanity-check.ts](scripts/sanity-check.ts)
-- **Deployment workflow:** [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml)
+- **Reviewer entry points:** [src/App.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/App.tsx), [src/types.ts](https://github.com/sauterreed24/terraclima/blob/main/src/types.ts), [src/components/AtlasMap.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/AtlasMap.tsx), [src/components/PlaceDetail.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/PlaceDetail.tsx), [src/lib/scoring.ts](https://github.com/sauterreed24/terraclima/blob/main/src/lib/scoring.ts), [scripts/sanity-check.ts](https://github.com/sauterreed24/terraclima/blob/main/scripts/sanity-check.ts)
+- **Deployment workflow:** [https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml)
 
 Terraclima is a research-grade climate atlas for exploring how terrain shapes lived weather across the United States, Canada, and Mexico. It treats each place as a physical system: rain shadows, sky islands, marine layers, chinook corridors, frost hollows, tropical highlands, fog belts, lake-effect snowbelts, orchard valleys, and wind gaps are explained through the forces that create them.
 
