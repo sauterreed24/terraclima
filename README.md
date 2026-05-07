@@ -4,8 +4,8 @@
 
 ## Project links
 
-- **Try it live (no install, no account):** [Open Terraclima in StackBlitz](https://stackblitz.com/github/sauterreed24/terraclima) — boots the Vite dev server in your browser straight from this repo. Works for human reviewers and for AI agents that can browse URLs.
-- **Production deploy:** [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/) — GitHub Pages build of `main`. Requires a one-time toggle: open **[the repository's Pages settings](https://github.com/sauterreed24/terraclima/settings/pages)** and under **Build and deployment → Source** choose **GitHub Actions**. Until that's set, use the StackBlitz link above.
+- **Deploy your own (≈30 seconds, mobile-fast, no install):** [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/sauterreed24/terraclima) — Vercel auto-detects Vite, builds, and serves the SPA on a global CDN. Sign in with GitHub, click Deploy, and share the resulting `https://terraclima-<you>.vercel.app/` URL with anyone (including on a phone).
+- **GitHub Pages alternative:** open **[the repo's Pages settings](https://github.com/sauterreed24/terraclima/settings/pages)** and set **Build and deployment → Source** to **GitHub Actions**. The deploy workflow then publishes to [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/).
 - **Source code:** [https://github.com/sauterreed24/terraclima](https://github.com/sauterreed24/terraclima)
 - **Reviewer entry points:** [src/App.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/App.tsx), [src/types.ts](https://github.com/sauterreed24/terraclima/blob/main/src/types.ts), [src/components/AtlasMap.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/AtlasMap.tsx), [src/components/PlaceDetail.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/PlaceDetail.tsx), [src/lib/scoring.ts](https://github.com/sauterreed24/terraclima/blob/main/src/lib/scoring.ts), [scripts/sanity-check.ts](https://github.com/sauterreed24/terraclima/blob/main/scripts/sanity-check.ts)
 - **Deployment workflow:** [.github/workflows/deploy-pages.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml)
@@ -87,22 +87,37 @@ Every place carries citations and confidence notes. Derived scores are deliberat
 
 ## Deployment and Discoverability
 
-Terraclima ships as a static GitHub Pages app at [https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/). The deploy workflow (`.github/workflows/deploy-pages.yml`) runs on every push to `main`.
+Terraclima is a static SPA. Two production paths are supported; either one yields a real URL you can open on a phone.
 
-**One-time setup (repo owner only).** GitHub Pages must be enabled once in the UI; the workflow can build and upload artifacts but Pages cannot serve them until this toggle is set. The default `GITHUB_TOKEN` cannot enable Pages programmatically, so there is no workflow-only fix.
+### Vercel (recommended — works on mobile, no GitHub Pages setup needed)
 
-1. Open **[github.com/sauterreed24/terraclima/settings/pages](https://github.com/sauterreed24/terraclima/settings/pages)** (the deep link to this repo's Pages settings).
-2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-3. Re-run the latest **Deploy GitHub Pages** workflow (Actions tab → Deploy GitHub Pages → Run workflow), or push any commit to `main`.
+1. Click [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/sauterreed24/terraclima).
+2. Sign in with GitHub.
+3. Vercel auto-detects Vite, runs `npm run build`, and serves `dist/` over its global CDN.
+4. Share the resulting `https://terraclima-<username>.vercel.app/` URL.
 
-Until step 1 is done, the [StackBlitz preview](https://stackblitz.com/github/sauterreed24/terraclima) is the always-on reviewer entry point.
+`vercel.json` ships an SPA fallback rewrite so any path serves the app shell. Auto-deploys on every push to `main`; pull requests get preview URLs automatically.
 
-- `npm run build:pages` sets `VITE_BASE_PATH=/terraclima/` so Vite rewrites bundle and static-asset URLs for Project Pages.
+### GitHub Pages (alternative)
+
+The deploy workflow `.github/workflows/deploy-pages.yml` already builds the SPA with `VITE_BASE_PATH=/terraclima/`. To activate it:
+
+1. Open **[github.com/sauterreed24/terraclima/settings/pages](https://github.com/sauterreed24/terraclima/settings/pages)**.
+2. Set **Build and deployment → Source** to **GitHub Actions**.
+3. Re-run the **Deploy GitHub Pages** workflow (Actions tab → Deploy GitHub Pages → Run workflow), or push any commit to `main`.
+
+The default `GITHUB_TOKEN` cannot enable Pages programmatically, so this toggle has to be set once in the UI. If you can't navigate to this page, use the Vercel path above instead.
+
+### Hardening shipped in this repo
+
+- `npm run build` produces a default-base build for Vercel, Netlify, or any other root-mounted host.
+- `npm run build:pages` sets `VITE_BASE_PATH=/terraclima/` for the GitHub Pages mount.
 - `index.html` carries canonical, Open Graph, Twitter card, app-title, install, and crawler metadata.
 - `public/site.webmanifest` supports add-to-home-screen behavior with the existing SVG icon.
-- `public/robots.txt` and `public/sitemap.xml` point crawlers at the canonical GitHub Pages deployment.
-- `public/.nojekyll` keeps Pages from stripping files starting with `_` and matches Pages convention.
-- `public/404.html` redirects unknown paths back to the SPA root so stray deep links recover gracefully.
+- `public/robots.txt` and `public/sitemap.xml` point crawlers at the canonical deploy.
+- `public/.nojekyll` keeps Pages from stripping files starting with `_`.
+- `public/404.html` redirects unknown Pages paths back to the SPA root (no-op on Vercel because the rewrite catches them first).
+- `vercel.json` adds an SPA fallback rewrite for Vercel.
 
 If the project moves to a custom domain, update the canonical URL, Open Graph URL/image URL, robots sitemap URL, and sitemap `<loc>` together.
 
@@ -170,7 +185,7 @@ For a portfolio review, start here:
 
 For AI agents or automated reviewers:
 
-- **Runnable preview:** [Open in StackBlitz](https://stackblitz.com/github/sauterreed24/terraclima) — boots the Vite dev server in-browser without auth. Use this if you can browse URLs and want to interact with the live UI.
+- **Runnable preview:** open the production URL (Vercel or Pages — see Project links). If neither has been deployed yet, [Open in StackBlitz](https://stackblitz.com/github/sauterreed24/terraclima) is a no-account fallback that boots the Vite dev server in-browser; cold boot is slow and may not work on mobile browsers.
 - Treat `src/types.ts` as the contract.
 - Treat `scripts/sanity-check.ts` and `scripts/audit-corpus.ts` as executable invariants.
 - Prefer adding validation before changing corpus shape.
