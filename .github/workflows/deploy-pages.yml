@@ -1,10 +1,11 @@
 # Builds the SPA with base path /terraclima/ and publishes to GitHub Pages.
-# Enable once: Repository → Settings → Pages → Build and deployment → Source: GitHub Actions.
+# Repository → Settings → Pages should use Source: GitHub Actions.
 name: Deploy GitHub Pages
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,6 +21,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
