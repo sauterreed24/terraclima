@@ -1,0 +1,37 @@
+# Builds the SPA with relative asset paths (VITE_BASE_PATH=./) and force-pushes
+# the resulting dist/ to the `static-preview` branch. The README's primary
+# "Live app" link points at raw.githack.com serving that branch, so the URL
+# stays in sync with main with no Pages or Vercel configuration required.
+name: Publish static-preview branch
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: static-preview
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run build:static
+      - name: Force-push dist/ to static-preview branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: static-preview
+          publish_dir: ./dist
+          force_orphan: true
+          commit_message: "Publish static-preview from ${{ github.sha }}"

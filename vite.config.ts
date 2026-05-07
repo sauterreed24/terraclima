@@ -3,7 +3,10 @@ import react from "@vitejs/plugin-react";
 
 function vitePublicBase(): string {
   const raw = process.env.VITE_BASE_PATH?.trim();
-  if (!raw || raw === "/") return "/";
+  if (raw === undefined) return "/";
+  if (raw === "/") return "/";
+  // Empty string or "./" → relative-path build (portable: serves from any URL).
+  if (raw === "" || raw === "./") return "./";
   return raw.endsWith("/") ? raw : `${raw}/`;
 }
 
