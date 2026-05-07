@@ -64,6 +64,17 @@ Every place carries citations and confidence notes. Derived scores are intention
 - ESLint v9 (flat config) with `typescript-eslint`, `react-hooks`, and `jsx-a11y`
 - GitHub Actions for PR-time `quality:check` and `main`-push GitHub Pages deploys
 
+## Deployment and Discoverability
+
+Terraclima is designed to ship cleanly as a static GitHub Pages app under `/terraclima/`:
+
+- `npm run build:pages` sets `VITE_BASE_PATH=/terraclima/` so Vite rewrites bundle and static-asset URLs for Project Pages.
+- `index.html` carries canonical, Open Graph, Twitter card, install-title, and crawl metadata.
+- `public/site.webmanifest` supports add-to-home-screen behavior with the existing SVG icon.
+- `public/robots.txt` and `public/sitemap.xml` point crawlers at the canonical GitHub Pages deployment.
+
+If the project moves to a custom domain, update the canonical URL, Open Graph URL/image URL, robots sitemap URL, and sitemap `<loc>` together.
+
 ## Running Locally
 
 ```bash
