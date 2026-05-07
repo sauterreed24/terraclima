@@ -30,6 +30,29 @@ type StatesTopo = Topology<{
   nation: GeometryCollection;
 }>;
 
+/**
+ * Validate the JSON shape returned by world-atlas / us-atlas before treating
+ * it as a typed Topology. Replaces a previous `as unknown as` double-cast that
+ * silently trusted the import. Throws clearly if the on-disk shape ever drifts
+ * (e.g. a future package version changes the object names).
+ */
+function assertCountriesTopo(value: unknown): asserts value is CountriesTopo {
+  if (!value || typeof value !== "object") throw new Error("countries topo: not an object");
+  const objects = (value as { objects?: unknown }).objects;
+  if (!objects || typeof objects !== "object") throw new Error("countries topo: missing objects");
+  if (!("countries" in objects) || !("land" in objects)) {
+    throw new Error("countries topo: expected objects.countries and objects.land");
+  }
+}
+function assertStatesTopo(value: unknown): asserts value is StatesTopo {
+  if (!value || typeof value !== "object") throw new Error("states topo: not an object");
+  const objects = (value as { objects?: unknown }).objects;
+  if (!objects || typeof objects !== "object") throw new Error("states topo: missing objects");
+  if (!("states" in objects) || !("nation" in objects)) {
+    throw new Error("states topo: expected objects.states and objects.nation");
+  }
+}
+
 // Module-level cache so navigating away and back doesn't re-download.
 let cachedTopo: { countries: CountriesTopo; states: StatesTopo } | null = null;
 let topoPromise: Promise<{ countries: CountriesTopo; states: StatesTopo }> | null = null;
@@ -40,11 +63,12 @@ function loadTopo(): Promise<{ countries: CountriesTopo; states: StatesTopo }> {
   topoPromise = Promise.all([
     import("world-atlas/countries-110m.json"),
     import("us-atlas/states-10m.json"),
-  ]).then(([c, s]) => {
-    cachedTopo = {
-      countries: (c.default ?? c) as unknown as CountriesTopo,
-      states: (s.default ?? s) as unknown as StatesTopo,
-    };
+  ]).then(([cMod, sMod]) => {
+    const cRaw: unknown = (cMod as { default?: unknown }).default ?? cMod;
+    const sRaw: unknown = (sMod as { default?: unknown }).default ?? sMod;
+    assertCountriesTopo(cRaw);
+    assertStatesTopo(sRaw);
+    cachedTopo = { countries: cRaw, states: sRaw };
     return cachedTopo;
   });
   return topoPromise;
@@ -564,8 +588,19 @@ export function AtlasMap({
     setTooltipScreen({ xPct: (sx / width) * 100, yPct: (sy / height) * 100 });
   }, [width, height]);
 
+  const topoLoading = topo === null;
+
   return (
     <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
+      {topoLoading ? (
+        <div
+          className="tc-map-topology-loading absolute top-2 left-1/2 -translate-x-1/2 z-20 rounded-full px-3 py-1 text-[11px] text-frost bg-white/85 border border-[rgba(91,113,144,0.45)] shadow-sm"
+          role="status"
+          aria-live="polite"
+        >
+          Loading country & state outlines…
+        </div>
+      ) : null}
       <svg
         ref={svgRef}
         width={width}

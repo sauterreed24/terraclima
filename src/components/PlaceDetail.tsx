@@ -14,7 +14,7 @@ import { ComfortMatrix } from "./charts/ComfortMatrix";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
-import { meanJanLow, meanSummerHigh } from "../lib/scoring";
+import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse } from "../lib/units";
 import { computeBestMonths } from "../lib/best-months";
 import { findSimilarPlaces } from "../lib/similarity";
@@ -224,7 +224,18 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
           const top = el.scrollTop + (tr.top - er.top) - 12;
           el.scrollTo({ top: Math.max(0, top), behavior: "auto" });
         } else {
+          // D7: stale hash (e.g. user navigated between places via similar-places)
+          // Drop the hash and try to anchor at the dossier opener so they at
+          // least land on the deep-sections region of the new place. If even
+          // that's missing (no deepSections), the panel stays at scrollTop=0.
           clearDossierHash();
+          const dossier = el.querySelector<HTMLElement>(`#${PD.deepDives}`);
+          if (dossier) {
+            const er = el.getBoundingClientRect();
+            const dr = dossier.getBoundingClientRect();
+            const top = el.scrollTop + (dr.top - er.top) - 12;
+            el.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+          }
         }
       }
     });
@@ -318,7 +329,7 @@ function DetailHeader({
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice";
   const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
-  const annualP = place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
+  const annualP = getAnnualPrecipMm(place);
   const sunshine = place.climate.sunshinePct
     ? Math.round(place.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12)
     : null;
@@ -394,9 +405,25 @@ function DetailHeader({
             alt={hero.alt}
             width={1280}
             height={520}
-            className="w-full h-44 md:h-52 object-cover"
+            className="w-full h-44 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
             loading="eager"
             decoding="async"
+            onError={(e) => {
+              // Hero image failed (offline / 404 / blocked). Replace with a
+              // tone-matched gradient placeholder so the panel doesn't show
+              // an awkward broken-image icon. The figcaption still renders
+              // the credit line so context is preserved.
+              const img = e.currentTarget;
+              img.style.display = "none";
+              const fig = img.parentElement;
+              if (fig && !fig.querySelector(".tc-hero-fallback")) {
+                const fallback = document.createElement("div");
+                fallback.className = "tc-hero-fallback w-full h-44 md:h-52 flex items-center justify-center text-stone text-[11px]";
+                fallback.style.background = "linear-gradient(135deg, rgba(140,200,224,0.35), rgba(200,170,140,0.45))";
+                fallback.textContent = "Image unavailable";
+                fig.insertBefore(fallback, img);
+              }
+            }}
           />
           <figcaption className="px-3 py-2 text-[10px] leading-snug text-stone bg-[rgba(252,244,232,0.96)] border-t border-[rgba(200,160,120,0.28)]">
             {hero.creditLine}
@@ -454,7 +481,7 @@ function DetailBody({
 }) {
   const { temp, dist } = useUnits();
   const prose = useProse();
-  const annualP = place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
+  const annualP = getAnnualPrecipMm(place);
   const [activeDriver, setActiveDriver] = useState<TopographicDriver | null>(null);
 
   const activeConcept = activeDriver

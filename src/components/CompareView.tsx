@@ -3,7 +3,7 @@ import { useEffect, useId, useMemo, useRef } from "react";
 import type { Place } from "../types";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
-import { meanJanLow, meanSummerHigh } from "../lib/scoring";
+import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { useFocusTrap } from "../hooks/use-focus-trap";
@@ -23,8 +23,14 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
+  /**
+   * Mobile (<lg breakpoint via the Tailwind class) gets fixed-width columns
+   * with a horizontal scroll snap so 2–4 places stay readable on a phone
+   * instead of collapsing the column min-width below 17rem and being
+   * essentially unusable. Desktop fills the available width.
+   */
   const columnTemplate = useMemo(
-    () => `repeat(${places.length}, minmax(17rem, 1fr))`,
+    () => `repeat(${places.length}, minmax(min(17rem, 88vw), 1fr))`,
     [places.length],
   );
   useFocusTrap(panelRef, open && places.length > 0);
@@ -65,13 +71,14 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
               <button ref={closeBtnRef} type="button" onClick={onClose} className="btn-ghost"><X className="w-4 h-4" /> Close</button>
             </div>
 
-            <div className="overflow-x-auto pb-3 -mx-1 px-1" aria-label="Scrollable comparison columns">
-              <div className="grid gap-4 min-w-full" style={{ gridTemplateColumns: columnTemplate }}>
+            <div className="text-[11px] text-stone-readable lg:hidden mb-2">Swipe sideways to compare → ({places.length} places)</div>
+            <div className="overflow-x-auto pb-3 -mx-1 px-1 snap-x snap-mandatory scroll-smooth" aria-label="Scrollable comparison columns" style={{ touchAction: "pan-x pan-y" }}>
+              <div className="grid gap-4 min-w-full snap-mandatory" style={{ gridTemplateColumns: columnTemplate }}>
               {places.map(p => {
                 const geo = buildGeospatialAnalysis(p);
                 return (
-                <div key={p.id} className="panel p-4 relative">
-                  <button type="button" onClick={() => onRemove(p.id)} className="absolute top-2 right-2 text-stone hover:text-ice" aria-label={`Remove ${p.name} from comparison`}>
+                <div key={p.id} className="panel p-4 relative snap-start">
+                  <button type="button" onClick={() => onRemove(p.id)} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center" aria-label={`Remove ${p.name} from comparison`}>
                     <X className="w-4 h-4" />
                   </button>
                   <div className="text-xs text-stone">{p.region}, {p.country}</div>
@@ -84,7 +91,7 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
                     <Row label="Köppen" value={p.koppen} />
                     <Row label="JJA high" value={fmtTemp(meanSummerHigh(p), temp, { digits: 1 })} />
                     <Row label="Jan low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
-                    <Row label="Annual precip" value={fmtPrecip(p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0), dist)} />
+                    <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
                     <Row label="Hardiness" value={p.growability.hardinessZone ?? p.climate.hardinessZone ?? "—"} />
                     <Row label="Chill hrs" value={`${p.climate.chillHours ?? "—"}`} />

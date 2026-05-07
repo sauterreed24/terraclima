@@ -2,7 +2,7 @@ import { useMemo, type CSSProperties } from "react";
 import type { MicroclimateArchetype, Place, RiskAssessment, RiskLevel, TopographicDriver } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
-import { meanJanLow, meanSummerHigh } from "../lib/scoring";
+import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { getCorpusMapHint } from "../lib/atlas-corpus-stats";
 import { useRichVisualEffects } from "../lib/device-profile";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
@@ -94,7 +94,7 @@ export function AtlasMapTooltip({
   const dataTone = toneToDataTone(tone);
   const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
-  const annualP = place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
+  const annualP = getAnnualPrecipMm(place);
   const s = place.scores;
   const drivers = place.drivers.slice(0, 6).map(formatDriver);
   const watch = topRiskRows(place, 3);
@@ -102,12 +102,25 @@ export function AtlasMapTooltip({
   const settlements = place.settlementsWithinZone?.slice(0, 5);
   const secondaryArchetypes = place.archetypes.slice(1);
 
+  // Snap the tooltip to whichever side of the pin keeps it inside the map
+  // frame. The viewport-aware fudge factors below also account for narrow
+  // screens (<360px) where flipping below 52% / above 52% otherwise produces
+  // a tooltip clipped to the right edge.
   const onRight = xPct < 52;
   const onTop = yPct > 52;
+  // When near the bottom or right edge, prefer the opposite side aggressively
+  // so the rendered card doesn't bleed past the map shell.
+  const horizontalFlipMargin = 8; // % of viewport at which we force the flip
+  const verticalFlipMargin = 12;
+  const flipRight = xPct > (100 - horizontalFlipMargin) ? false : onRight;
+  const flipTop = yPct < verticalFlipMargin ? false : onTop;
   const style: CSSProperties = {
     left: `${xPct}%`,
     top: `${yPct}%`,
-    transform: `translate(${onRight ? "14px" : "calc(-100% - 14px)"}, ${onTop ? "calc(-100% - 10px)" : "10px"})`,
+    transform: `translate(${flipRight ? "14px" : "calc(-100% - 14px)"}, ${flipTop ? "calc(-100% - 10px)" : "10px"})`,
+    // Cap the tooltip width at viewport width minus 16px gutter so it can
+    // never exceed the screen on any dimension.
+    maxWidth: "min(28rem, calc(100vw - 1rem))",
   };
 
   const growList = place.growability.growsWell.slice(0, 3);
@@ -121,7 +134,6 @@ export function AtlasMapTooltip({
   return (
     <div
       role="dialog"
-      aria-modal="false"
       aria-labelledby="tc-map-hover-title"
       className="tc-map-hover-card absolute w-[min(28rem,calc(100vw-1.25rem))] max-h-[min(74vh,580px)] overflow-y-auto pointer-events-auto anim-fade-in z-10 text-left shadow-2xl"
       data-tone={dataTone}

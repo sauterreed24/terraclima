@@ -1,5 +1,5 @@
 import type { Place } from "../../types";
-import { meanJanLow, meanSummerHigh } from "../../lib/scoring";
+import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../../lib/climate-metrics";
 
 interface Props { place: Place; compare?: Place; size?: number }
 
@@ -89,7 +89,7 @@ interface Axis { label: string; v: number }
 function buildAxes(p: Place): Axis[] {
   const summerHigh = meanSummerHigh(p);
   const janLow = meanJanLow(p);
-  const annualP = p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
+  const annualP = getAnnualPrecipMm(p);
   const diurnal = p.climate.diurnalSummerC ?? p.climate.tempHighC[6] - p.climate.tempLowC[6];
   const humidity = p.climate.humidity ? p.climate.humidity.reduce((a, b) => a + b, 0) / 12 : 65;
   const sunshine = p.climate.sunshinePct ? p.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12 : 55;

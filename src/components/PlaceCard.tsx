@@ -1,10 +1,9 @@
-import { memo, useCallback, useId, useMemo, type KeyboardEvent, type MouseEvent } from "react";
+import { memo, useCallback, useId, useMemo, type MouseEvent } from "react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
-import { meanJanLow, meanSummerHigh } from "../lib/scoring";
+import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
-import { PLACE_ANNUAL_PRECIP } from "../data/places";
 import { getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { computeBestMonths, type BestWindow } from "../lib/best-months";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
@@ -66,7 +65,7 @@ export const PlaceCard = memo(function PlaceCard({
   const prose = useProse();
   const summerHighC = meanSummerHigh(place);
   const janLowC = meanJanLow(place);
-  const annualP = PLACE_ANNUAL_PRECIP[place.id] ?? place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
+  const annualP = getAnnualPrecipMm(place);
   const primaryArchetype = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
   const tone = primaryArchetype?.tone ?? "ice";
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
@@ -90,40 +89,44 @@ export const PlaceCard = memo(function PlaceCard({
   }, [onOpenPlace, onClick, place.id]);
 
   const handleCompare = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    // Compare button is a sibling of the open button, not nested — but a
+    // user clicking it is interacting with the card too, so we still don't
+    // want the click to bubble into wrapping link/scroll handlers.
     e.stopPropagation();
     onCompareToggle?.(place.id);
   }, [onCompareToggle, place.id]);
 
-  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      handleOpen();
-    }
-  }, [handleOpen]);
-
-  /* Outer `div[role=button]` (not `<button>`) so the compare control can be a real nested `<button>` without invalid HTML. */
+  /*
+   * Layout note: previously the whole card was a `div[role=button]` so the
+   * compare control could be a nested real `<button>`. That's an a11y smell
+   * because Enter/Space behavior depends on hand-rolled key handling and
+   * some ATs miss the role. Now the open target is a real `<button>` and the
+   * compare control sits *outside* it (still inside the card frame), so we
+   * keep correct semantics on both interactive elements.
+   */
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={handleOpen}
-      onKeyDown={handleKeyDown}
-      className={`place-card place-card--tinted text-left panel w-full relative overflow-hidden group${selected ? " place-card--selected" : ""}`}
+    <article
+      className={`place-card place-card--tinted panel w-full relative overflow-hidden group${selected ? " place-card--selected" : ""}`}
       style={{
         // Tint the hover/selected glow with the primary archetype's colour.
         // A string custom property so CSS rgba() can consume it.
         ["--tone-rgb" as string]: toneRgb,
       }}
       aria-labelledby={titleId}
-      aria-pressed={selected ? true : undefined}
     >
       <span
         aria-hidden
-        className="absolute top-0 left-0 bottom-0 w-[3px]"
+        className="absolute top-0 left-0 bottom-0 w-[3px] pointer-events-none"
         style={{ background: TONE_ACCENT[tone] }}
       />
 
-      <div className="p-4 pl-[calc(1rem+3px)] flex flex-col gap-0 min-h-0">
+      <button
+        type="button"
+        onClick={handleOpen}
+        className="place-card__open-target text-left w-full p-4 pl-[calc(1rem+3px)] flex flex-col gap-0 min-h-0 bg-transparent border-0 cursor-pointer"
+        aria-labelledby={titleId}
+        aria-pressed={selected ? true : undefined}
+      >
         <header className="flex items-start justify-between gap-3 pb-3 border-b border-[rgba(71,90,122,0.18)]">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
@@ -148,18 +151,8 @@ export const PlaceCard = memo(function PlaceCard({
           </div>
           <div className="flex flex-col items-end gap-1.5 shrink-0">
             <span className="chip" data-tone={place.tier === "A" ? "ochre" : place.tier === "B" ? "ice" : "sage"} title={`Tier ${place.tier}`}>{tierLabel}</span>
-            {onCompareToggle && (
-              <button
-                type="button"
-                onClick={handleCompare}
-                className={`btn-ghost !px-2 !py-1 !text-xs ${inCompare ? "!border-[rgba(240,210,156,0.8)] !text-ochre-300" : ""}`}
-                title="Add to comparison"
-                aria-label={inCompare ? `Remove ${place.name} from comparison` : `Add ${place.name} to comparison`}
-                aria-pressed={inCompare}
-              >
-                {inCompare ? "− Compare" : "+ Compare"}
-              </button>
-            )}
+            {/* Spacer to reserve room next to the tier chip so the absolutely-positioned compare button doesn't overlap content. */}
+            {onCompareToggle ? <span className="block h-7 min-h-[44px]" aria-hidden /> : null}
           </div>
         </header>
 
@@ -226,8 +219,21 @@ export const PlaceCard = memo(function PlaceCard({
         )}
 
         {note && <div className="text-xs text-stone-readable italic pt-2 border-t border-[rgba(71,90,122,0.1)] mt-2">{prose(note)}</div>}
-      </div>
-    </div>
+      </button>
+
+      {onCompareToggle && (
+        <button
+          type="button"
+          onClick={handleCompare}
+          className={`btn-ghost place-card__compare-btn !px-3 !py-2 !text-xs ${inCompare ? "!border-[rgba(240,210,156,0.8)] !text-ochre-300" : ""}`}
+          title="Add to comparison"
+          aria-label={inCompare ? `Remove ${place.name} from comparison` : `Add ${place.name} to comparison`}
+          aria-pressed={inCompare}
+        >
+          {inCompare ? "− Compare" : "+ Compare"}
+        </button>
+      )}
+    </article>
   );
 });
 

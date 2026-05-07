@@ -112,10 +112,10 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
     confidenceNotes: "Sequim is one of the best-studied rain-shadow microclimates in North America. Station data at WA Sequim 2 E (USW00094240) and PRISM agree well on the precipitation anomaly.",
     citations: [
-      { label: "NOAA Climate Normals 1991–2020 — Sequim 2 E", kind: "noaa" },
-      { label: "PRISM 30-year normals precipitation grid", kind: "prism" },
-      { label: "USDA Plant Hardiness Zone Map 2023", kind: "usda" },
-      { label: "Washington State Climatologist — Olympic rain-shadow notes", kind: "academic" },
+      { label: "NOAA Climate Normals 1991–2020 — Sequim 2 E", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM 30-year normals precipitation grid", kind: "prism", url: "https://prism.oregonstate.edu/normals/" },
+      { label: "USDA Plant Hardiness Zone Map 2023", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
+      { label: "Washington State Climatologist — Olympic rain-shadow notes", kind: "academic", url: "https://climate.washington.edu/" },
     ],
     deepSections: [
       {
@@ -260,9 +260,9 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
     confidenceNotes: "Portal/Rodeo climate values use RAWS and USHCN data; summit data extrapolated from Chiricahua NM stations.",
     citations: [
-      { label: "NOAA RAWS — Portal 4 SW", kind: "noaa" },
-      { label: "PRISM gridded climate", kind: "prism" },
-      { label: "USFS Southwestern Region sky-island vegetation surveys", kind: "academic" },
+      { label: "NOAA RAWS — Portal 4 SW", kind: "noaa", url: "https://raws.dri.edu/" },
+      { label: "PRISM gridded climate", kind: "prism", url: "https://prism.oregonstate.edu/" },
+      { label: "USFS Southwestern Region sky-island vegetation surveys", kind: "academic", url: "https://www.fs.usda.gov/r3/" },
       { label: "Warshall, P. 'The Madrean Sky Island Archipelago' (1995)", kind: "academic" },
     ],
     settlementsWithinZone: [
@@ -406,7 +406,7 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
     confidenceNotes: "Values reflect Sierra Vista Muni/Fort Huachuca and Hereford stations 1991–2020; summit data extrapolated from Huachuca Peak and Carr Canyon.",
     citations: [
-      { label: "NOAA — Sierra Vista / Fort Huachuca coop", kind: "noaa" },
+      { label: "NOAA — Sierra Vista / Fort Huachuca coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "USFS Coronado National Forest — Huachuca ecosystem", kind: "academic" },
       { label: "San Pedro Riparian NCA — BLM", kind: "other", url: "https://www.blm.gov/programs/national-conservation-lands/arizona/san-pedro" },
       { label: "Tucson Audubon — Southeast Arizona birding site guides", kind: "field-observation" },
@@ -560,10 +560,10 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
     confidenceNotes: "Dense NOAA network coverage; Monterey Peninsula Airport station provides high-quality normals.",
     citations: [
-      { label: "NOAA Climate Normals 1991–2020 — Monterey Peninsula AP", kind: "noaa" },
+      { label: "NOAA Climate Normals 1991–2020 — Monterey Peninsula AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA Coastal Upwelling Index (PFEL)", kind: "oss-data" },
       { label: "California State Climatologist publications", kind: "academic" },
-      { label: "USDA Hardiness Zone Map 2023", kind: "usda" },
+      { label: "USDA Hardiness Zone Map 2023", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
     ],
     deepSections: [
       {
@@ -709,10 +709,10 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
     confidenceNotes: "Excellent station coverage (Asheville Regional, Mt. Mitchell, Black Mountain coop). Thermal-belt deltas are well-documented in Southern Appalachian horticultural literature.",
     citations: [
-      { label: "NOAA Climate Normals 1991–2020 — Asheville Regional AP", kind: "noaa" },
-      { label: "USDA Plant Hardiness Zone Map 2023", kind: "usda" },
+      { label: "NOAA Climate Normals 1991–2020 — Asheville Regional AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "USDA Plant Hardiness Zone Map 2023", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
       { label: "Cogbill, C. et al. — Southern Appalachian cold-air drainage studies", kind: "academic" },
-      { label: "FEMA National Risk Index (Buncombe County)", kind: "fema" },
+      { label: "FEMA National Risk Index (Buncombe County)", kind: "fema", url: "https://www.fema.gov/flood-maps" },
     ],
     deepSections: [
       {
@@ -802,7 +802,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "High-desert romantics; climbers; anyone who wants big-mountain access without mountain-town prices.",
     whoMightNot: "Humidity-lovers; those needing close cultural/urban amenities; anyone sensitive to summer smoke.",
     confidence: "high",
-    citations: [{ label: "NOAA Climate Normals — Bishop AP", kind: "noaa" }, { label: "California Dept. of Water Resources", kind: "oss-data" }, { label: "USGS Owens Valley studies", kind: "usgs" }],
+    citations: [{ label: "NOAA Climate Normals — Bishop AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "California Dept. of Water Resources", kind: "oss-data" }, { label: "USGS Owens Valley studies", kind: "usgs", url: "https://www.usgs.gov/" }],
     deepSections: [
       {
         id: "bishop-sierra-rain-shadow",
@@ -875,7 +875,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those who want real winters, mild summers, and big sky country.",
     whoMightNot: "People who don't handle cold; those wanting a long growing season.",
     confidence: "high",
-    citations: [{ label: "NOAA Climate Normals — Flagstaff Pulliam AP", kind: "noaa" }, { label: "USDA Hardiness Map 2023", kind: "usda" }],
+    citations: [{ label: "NOAA Climate Normals — Flagstaff Pulliam AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USDA Hardiness Map 2023", kind: "usda", url: "https://planthardiness.ars.usda.gov/" }],
     deepSections: [
       {
         id: "flagstaff-peaks-orography",
@@ -948,7 +948,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Dry-climate romantics, small-town arts lovers, monsoon enthusiasts.",
     whoMightNot: "Those needing humidity; urbanites; humid-summer-garden fans.",
     confidence: "high",
-    citations: [{ label: "NOAA Climate Normals — Silver City", kind: "noaa" }, { label: "NM State Climate Office", kind: "academic" }],
+    citations: [{ label: "NOAA Climate Normals — Silver City", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NM State Climate Office", kind: "academic" }],
     deepSections: [
       {
         id: "silver-city-mogollon-monsoon",
@@ -1021,7 +1021,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Fruit-growing obsessives; active families; those who want sun and mountains from a river-town base.",
     whoMightNot: "People who hate wind (the Gorge is relentless in summer).",
     confidence: "high",
-    citations: [{ label: "NOAA — Hood River Experiment Station", kind: "noaa" }, { label: "OSU Hood River Extension research", kind: "academic" }],
+    citations: [{ label: "NOAA — Hood River Experiment Station", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "OSU Hood River Extension research", kind: "academic" }],
     deepSections: [
       {
         id: "hood-river-cascade-gap",
@@ -1094,7 +1094,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those chasing Mediterranean character in the Pacific NW with arts/culture included.",
     whoMightNot: "Smoke-sensitive people; those seeking humidity or heavy snow.",
     confidence: "high",
-    citations: [{ label: "NOAA — Medford Regional AP", kind: "noaa" }, { label: "OSU Southern Oregon Research & Extension", kind: "academic" }],
+    citations: [{ label: "NOAA — Medford Regional AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "OSU Southern Oregon Research & Extension", kind: "academic" }],
     deepSections: [
       {
         id: "ashland-siskiyou-shadow",
@@ -1165,7 +1165,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those craving altitude light, strong culture, and four true seasons without brutal humidity.",
     whoMightNot: "Sea-level romantics, humidity-lovers, water-intensive gardeners.",
     confidence: "high",
-    citations: [{ label: "NOAA — Santa Fe County Muni AP", kind: "noaa" }, { label: "NM State Climatologist", kind: "academic" }],
+    citations: [{ label: "NOAA — Santa Fe County Muni AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NM State Climatologist", kind: "academic" }],
     deepSections: [
       {
         id: "santa-fe-sangre-orography",
@@ -1236,7 +1236,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Mediterranean-climate obsessives; garden people; cold-avoiders.",
     whoMightNot: "Those priced out; fire-sensitive; snow-season lovers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Santa Barbara Muni AP", kind: "noaa" }, { label: "CAL FIRE historical fires", kind: "oss-data" }],
+    citations: [{ label: "NOAA — Santa Barbara Muni AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "CAL FIRE historical fires", kind: "oss-data" }],
     deepSections: [
       {
         id: "santa-barbara-south-coast",
@@ -1308,7 +1308,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "People who fall in love with clear, bitter-cold mountain winters and long golden summers.",
     whoMightNot: "Anyone who can't tolerate −25°C mornings; gardeners needing long season; inversion-affected asthma.",
     confidence: "high",
-    citations: [{ label: "NOAA — Driggs-Reed Memorial AP", kind: "noaa" }, { label: "Idaho Climate-Economy Impacts Assessment", kind: "academic" }],
+    citations: [{ label: "NOAA — Driggs-Reed Memorial AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Idaho Climate-Economy Impacts Assessment", kind: "academic" }],
     deepSections: [
       {
         id: "driggs-teton-basin-pool",
@@ -1379,7 +1379,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those drawn to working fruit country and cold, bright Great Lakes winters.",
     whoMightNot: "Anyone unwilling to endure serious lake-effect winter.",
     confidence: "high",
-    citations: [{ label: "NOAA — Cherry Capital AP", kind: "noaa" }, { label: "MSU Extension fruit research", kind: "academic" }],
+    citations: [{ label: "NOAA — Cherry Capital AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "MSU Extension fruit research", kind: "academic" }],
     deepSections: [
       {
         id: "traverse-city-lake-delay",
@@ -1450,7 +1450,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "People who want cultural depth, elegant cold-climate wine country, and four real seasons.",
     whoMightNot: "Anyone sensitive to gray winters or gorge-country cloud cover.",
     confidence: "high",
-    citations: [{ label: "Cornell NRCC — Ithaca Cornell", kind: "noaa" }, { label: "Cornell Extension viticulture", kind: "academic" }],
+    citations: [{ label: "Cornell NRCC — Ithaca Cornell", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Cornell Extension viticulture", kind: "academic" }],
     deepSections: [
       {
         id: "ithaca-finger-lakes-fetch",
@@ -1520,7 +1520,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those who want cool dry summers, huge-lake atmosphere, and genuine boreal feel.",
     whoMightNot: "Gardeners needing warmth; those who dislike long hard winters.",
     confidence: "high",
-    citations: [{ label: "NOAA — Grand Marais coop", kind: "noaa" }, { label: "MN State Climatology", kind: "academic" }],
+    citations: [{ label: "NOAA — Grand Marais coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "MN State Climatology", kind: "academic" }],
     deepSections: [
       {
         id: "grand-marais-mn-superior-mass",
@@ -1593,7 +1593,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "People who want a mountain-cool, deeply wooded, gentle-summer retreat in the eastern US.",
     whoMightNot: "Sun lovers; gardeners needing heat or sun; those intolerant of fog and rain.",
     confidence: "high",
-    citations: [{ label: "NOAA — Highlands coop", kind: "noaa" }, { label: "USFS Southern Appalachian studies", kind: "academic" }],
+    citations: [{ label: "NOAA — Highlands coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USFS Southern Appalachian studies", kind: "academic" }],
     deepSections: [
       {
         id: "highlands-escarpment-lift",
@@ -1639,7 +1639,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor recreationists", "tech workers"], travelFit: ["mountain access", "climbing"],
     whoWouldLove: "Dry-air enthusiasts who want mountain-city life.", whoMightNot: "Humidity-seekers; fire-sensitive.",
     confidence: "high",
-    citations: [{ label: "NOAA — Boulder", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Boulder", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -1660,7 +1661,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["serious winter lovers"], travelFit: ["snow sports", "Pictured Rocks"],
     whoWouldLove: "People who feel most alive in winter and deep forest.", whoMightNot: "Anyone needing warmth, services, or long growing seasons.",
     confidence: "moderate",
-    citations: [{ label: "NOAA — Munising coop", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Munising coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -1681,7 +1683,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["coastal-water lovers"], travelFit: ["oysters", "dark-sky"],
     whoWouldLove: "Estuary romantics.", whoMightNot: "Storm-averse families.",
     confidence: "moderate",
-    citations: [{ label: "NOAA — Apalachicola", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Apalachicola", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -1702,7 +1705,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["redwood-forest lovers", "remote workers"], travelFit: ["hiking", "fog photography"],
     whoWouldLove: "Those bewitched by cool, green, dripping Pacific forest.", whoMightNot: "Sun worshippers; fire-sensitive.",
     confidence: "moderate",
-    citations: [{ label: "NOAA — Felton coop", kind: "noaa" }, { label: "USGS Santa Cruz Mtns climate", kind: "usgs" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Felton coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USGS Santa Cruz Mtns climate", kind: "usgs", url: "https://www.usgs.gov/" }],
   },
 
   // ====================================================================
@@ -1730,7 +1734,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["orchardists", "dry-climate seekers", "outdoor families"], travelFit: ["orchard tours", "Lake Chelan access", "wine trail"],
     whoWouldLove: "People who want sun, dry air, four real seasons, and fruit trees in their backyard.", whoMightNot: "Anyone needing mild winters or cool summers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Wenatchee 1991–2020 normals", kind: "noaa" }, { label: "PRISM 30-year precipitation", kind: "prism" }, { label: "WSU Tree Fruit Research", kind: "academic" }],
+    citations: [{ label: "NOAA — Wenatchee 1991–2020 normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "PRISM 30-year precipitation", kind: "prism", url: "https://prism.oregonstate.edu/" }, { label: "WSU Tree Fruit Research", kind: "academic" }],
     deepSections: [
       {
         id: "wenatchee-cascade-shadow",
@@ -1776,7 +1780,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote workers", "wind-tolerant outdoor people"], travelFit: ["rodeo", "central WA gateway"],
     whoWouldLove: "People who love wind, sun, and big sky.", whoMightNot: "Anyone irritated by persistent wind.",
     confidence: "high",
-    citations: [{ label: "NOAA — Ellensburg 1991–2020", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Ellensburg 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -1797,7 +1802,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["solitude-seekers", "rainforest people"], travelFit: ["Hoh Rainforest", "Rialto Beach"],
     whoWouldLove: "People who find rain meditative and want to live inside a green cathedral.", whoMightNot: "Sun-dependent moods.",
     confidence: "high",
-    citations: [{ label: "NOAA — Forks 1A2", kind: "noaa" }, { label: "NPS Olympic Climate Data", kind: "other" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Forks 1A2", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NPS Olympic Climate Data", kind: "other" }],
   },
 
   {
@@ -1818,7 +1824,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["maritime-loving remote workers"], travelFit: ["Goonies tourism", "Columbia bar", "port food"],
     whoWouldLove: "People who romanticize storm-coast ports.", whoMightNot: "Sun-seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Astoria 1991–2020", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Astoria 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -1839,7 +1846,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["creative remote workers", "retirees"], travelFit: ["Victorian architecture", "wooden boat culture"],
     whoWouldLove: "Anyone who wants Pacific Northwest life with fewer gray days.", whoMightNot: "Housing-price-sensitive.",
     confidence: "high",
-    citations: [{ label: "NOAA — Port Townsend coop 1991–2020", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Port Townsend coop 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -1860,7 +1868,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["windsurfers", "orchardists"], travelFit: ["windsurfing", "waterfalls", "wine tasting"],
     whoWouldLove: "Kinetic outdoor people who want wind, sun, and Pacific access.", whoMightNot: "Fire- or smoke-sensitive.",
     confidence: "high",
-    citations: [{ label: "NOAA — The Dalles 1991–2020", kind: "noaa" }, { label: "USGS Gorge Climate Transect", kind: "usgs" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — The Dalles 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USGS Gorge Climate Transect", kind: "usgs", url: "https://www.usgs.gov/" }],
   },
 
   // ====================================================================
@@ -1887,7 +1896,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["heat-averse families", "serious writers", "redwood-forest people"], travelFit: ["redwood parks", "Lost Coast"],
     whoWouldLove: "Those who want cool year-round with a real maritime rhythm.", whoMightNot: "Sun-dependent; summer-heat-seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Eureka/Woodley Island", kind: "noaa" }, { label: "Humboldt State Schatz Energy climate notes", kind: "academic" }],
+    citations: [{ label: "NOAA — Eureka/Woodley Island", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Humboldt State Schatz Energy climate notes", kind: "academic" }],
     deepSections: [
       {
         id: "eureka-upwelling-narrow-range",
@@ -1932,7 +1941,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["dairy ranchers", "heat-averse"], travelFit: ["wildflowers", "elk viewing", "beaches"],
     whoWouldLove: "Those drawn to cool fog and big skies.", whoMightNot: "Sun-cravers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Pt Reyes lighthouse", kind: "noaa" }, { label: "NPS Pt Reyes climate monitoring", kind: "other" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Pt Reyes lighthouse", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NPS Pt Reyes climate monitoring", kind: "other" }],
   },
 
   {
@@ -1954,7 +1964,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snow people", "alpine aesthetes"], travelFit: ["Tahoe", "Mt. Rose skiing"],
     whoWouldLove: "People who want deep mountain winters.", whoMightNot: "Heat/garden people.",
     confidence: "high",
-    citations: [{ label: "NOAA — Truckee Ranger Station", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Truckee Ranger Station", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -1976,7 +1987,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski bums", "alpine workers"], travelFit: ["skiing", "hot springs"],
     whoWouldLove: "Serious skiers and mountain lovers.", whoMightNot: "Garden lovers, heat lovers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Mammoth Lakes Ranger Station", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Mammoth Lakes Ranger Station", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -1998,7 +2010,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["winter-only retirees", "astronomers"], travelFit: ["wildflower blooms", "night sky"],
     whoWouldLove: "People who want dry winter perfection and can escape summer.", whoMightNot: "Year-round heat-sensitive.",
     confidence: "high",
-    citations: [{ label: "NOAA — Borrego Desert Park", kind: "noaa" }, { label: "IDA Dark-Sky designation", kind: "other" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Borrego Desert Park", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "IDA Dark-Sky designation", kind: "other" }],
   },
 
   // ====================================================================
@@ -2025,7 +2038,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["astronomers", "dark-sky devotees", "heat-averse West Texans"], travelFit: ["McDonald Observatory", "Big Bend access"],
     whoWouldLove: "Anyone who values sky and silence above almost anything else.", whoMightNot: "People needing services or summer humidity.",
     confidence: "high",
-    citations: [{ label: "NOAA — Fort Davis coop", kind: "noaa" }, { label: "McDonald Observatory climate notes", kind: "academic" }],
+    citations: [{ label: "NOAA — Fort Davis coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "McDonald Observatory climate notes", kind: "academic" }],
   },
 
   {
@@ -2047,7 +2060,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["artists", "high-desert romantics"], travelFit: ["art pilgrimages", "dark sky"],
     whoWouldLove: "Writers, artists, and big-sky people.", whoMightNot: "Services/infrastructure-dependent.",
     confidence: "high",
-    citations: [{ label: "NOAA — Marfa 1991–2020", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Marfa 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2069,7 +2083,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wellness retreat life", "retirees"], travelFit: ["red rock hiking", "vortex tourism"],
     whoWouldLove: "Elevation-tuned Southwest lovers.", whoMightNot: "Those seeking anonymity — tourism crowded.",
     confidence: "high",
-    citations: [{ label: "NOAA — Sedona RS", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Sedona RS", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2091,7 +2106,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["retirees", "Phoenix climate refugees"], travelFit: ["historic downtown"],
     whoWouldLove: "Arizona residents who need summer relief without leaving the state.", whoMightNot: "Fire-averse.",
     confidence: "high",
-    citations: [{ label: "NOAA — Prescott AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Prescott AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2113,7 +2129,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["summer-climate refugees"], travelFit: ["skiing", "cool escape"],
     whoWouldLove: "High-elevation forest seekers.", whoMightNot: "Service-dependent.",
     confidence: "high",
-    citations: [{ label: "NOAA — Cloudcroft coop", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Cloudcroft coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2135,7 +2152,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["artists", "dry-climate retirees"], travelFit: ["Taos Pueblo", "skiing"],
     whoWouldLove: "Those seeking high-desert clarity.", whoMightNot: "Humidity-loving gardeners.",
     confidence: "high",
-    citations: [{ label: "NOAA — Taos 1991–2020", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Taos 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // ====================================================================
@@ -2162,7 +2180,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hardy winter enthusiasts", "climate-phenomenon nerds"], travelFit: ["skiing", "Black Canyon"],
     whoWouldLove: "Cold-weather obsessives; climate students.", whoMightNot: "Anyone with thin winter tolerance.",
     confidence: "high",
-    citations: [{ label: "NOAA — Gunnison 1991–2020", kind: "noaa" }, { label: "UC Boulder cold-pool studies", kind: "academic" }],
+    citations: [{ label: "NOAA — Gunnison 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "UC Boulder cold-pool studies", kind: "academic" }],
   },
 
   {
@@ -2183,7 +2201,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["skiers", "alpine devotees"], travelFit: ["wildflowers", "powder skiing"],
     whoWouldLove: "Alpine people.", whoMightNot: "Anyone needing accessible services.",
     confidence: "high",
-    citations: [{ label: "NOAA — Crested Butte 3W coop", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Crested Butte 3W coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2204,7 +2223,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["extreme-sport athletes", "altitude trainers"], travelFit: ["climbing fourteeners", "mining history"],
     whoWouldLove: "People who thrive at altitude.", whoMightNot: "Anyone oxygen-limited.",
     confidence: "high",
-    citations: [{ label: "NOAA — Leadville Lake County AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Leadville Lake County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2225,7 +2245,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["active retirees", "outdoor families"], travelFit: ["ski and mountain access"],
     whoWouldLove: "Those who want mountain town without Front Range prices.", whoMightNot: "Fire-smoke-sensitive.",
     confidence: "high",
-    citations: [{ label: "NOAA — Durango La Plata County AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Durango La Plata County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2246,7 +2267,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Yellowstone-adjacent lifestyle"], travelFit: ["Yellowstone gate"],
     whoWouldLove: "Dry sun lovers.", whoMightNot: "Those put off by wind.",
     confidence: "high",
-    citations: [{ label: "NOAA — Cody WY", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Cody WY", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2267,7 +2289,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor culture seekers", "mountain town romantics"], travelFit: ["river access"],
     whoWouldLove: "Rocky-valley outdoor people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-    citations: [{ label: "NOAA — Missoula AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Missoula AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2288,7 +2311,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski-town commuters", "tech remotes"], travelFit: ["Yellowstone north"],
     whoWouldLove: "Outdoor people wanting four real seasons.", whoMightNot: "Budget-constrained.",
     confidence: "high",
-    citations: [{ label: "NOAA — Bozeman-Belgrade AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Bozeman-Belgrade AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2309,7 +2333,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["agricultural families", "university affiliated"], travelFit: ["ski access", "cheese trail"],
     whoWouldLove: "Those drawn to a real four-season valley who can tolerate winter inversions.", whoMightNot: "Air-quality-sensitive.",
     confidence: "high",
-    citations: [{ label: "NOAA — Logan USU 1991–2020", kind: "noaa" }, { label: "Utah DEQ air quality", kind: "epa" }],
+    citations: [{ label: "NOAA — Logan USU 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Utah DEQ air quality", kind: "epa", url: "https://www.epa.gov/" }],
   },
 
   {
@@ -2330,7 +2354,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["adventure sports"], travelFit: ["Arches", "Canyonlands", "mountain biking"],
     whoWouldLove: "Climbers and mountain bikers.", whoMightNot: "Heat-intolerant.",
     confidence: "high",
-    citations: [{ label: "NOAA — Moab 1991–2020", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Moab 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2352,7 +2377,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["boreal-ecosystem lovers", "writers who want solitude"], travelFit: ["Blackwater Falls", "cross-country skiing"],
     whoWouldLove: "Anyone fascinated by climate anomalies and deep ecological rarity.", whoMightNot: "Those who want a predictable growing season.",
     confidence: "high",
-    citations: [{ label: "NOAA — Davis 3SE coop", kind: "noaa" }, { label: "USGS Allegheny relict bogs", kind: "usgs" }],
+    citations: [{ label: "NOAA — Davis 3SE coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USGS Allegheny relict bogs", kind: "usgs", url: "https://www.usgs.gov/" }],
   },
 
   // ====================================================================
@@ -2378,7 +2403,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["serious winter people", "snowmobilers"], travelFit: ["snowmobiling", "snow-record chasing"],
     whoWouldLove: "Anyone who finds 6 m of annual snow romantic rather than punishing.", whoMightNot: "Anyone else.",
     confidence: "high",
-    citations: [{ label: "NOAA — Redfield coop", kind: "noaa" }, { label: "NWS Buffalo lake-effect research", kind: "academic" }],
+    citations: [{ label: "NOAA — Redfield coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Buffalo lake-effect research", kind: "academic" }],
   },
 
   {
@@ -2399,7 +2424,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snow-resilient families"], travelFit: ["Finger Lakes gateway"],
     whoWouldLove: "Snow-happy city folk.", whoMightNot: "Sun-dependent.",
     confidence: "high",
-    citations: [{ label: "NOAA — Syracuse Hancock AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Syracuse Hancock AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2420,7 +2446,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Great Lakes lovers"], travelFit: ["Pictured Rocks", "Superior"],
     whoWouldLove: "Those who find Great Lakes winters majestic.", whoMightNot: "Sun-seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Marquette 1991–2020", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Marquette 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2441,7 +2468,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["winter-loving academics"], travelFit: ["Isle Royale gateway", "Keweenaw snow"],
     whoWouldLove: "Snow-obsessed northerners.", whoMightNot: "Those needing warmth.",
     confidence: "high",
-    citations: [{ label: "NOAA — Houghton coop", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Houghton coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // ====================================================================
@@ -2466,7 +2494,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["organic farmers", "homesteaders"], travelFit: ["trout fishing", "Amish country"],
     whoWouldLove: "Small-farm idealists.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Viroqua coop", kind: "noaa" }, { label: "USDA NRCS Driftless soils", kind: "usda" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Viroqua coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USDA NRCS Driftless soils", kind: "usda", url: "https://planthardiness.ars.usda.gov/" }],
   },
 
   {
@@ -2487,7 +2516,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["creative remotes", "retirees"], travelFit: ["Biltmore", "Blue Ridge Parkway"],
     whoWouldLove: "Those wanting Southern mild with real summer relief.", whoMightNot: "Flood-averse post-Helene.",
     confidence: "high",
-    citations: [{ label: "NOAA — Asheville Regional AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Asheville Regional AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2508,7 +2538,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["summer-heat refugees"], travelFit: ["Appalachian Trail", "ski"],
     whoWouldLove: "People who want New-England feel in the South.", whoMightNot: "Flood-averse.",
     confidence: "high",
-    citations: [{ label: "NOAA — Boone coop", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Boone coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // ====================================================================
@@ -2534,7 +2565,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["tropical-island people"], travelFit: ["island culture", "sailing"],
     whoWouldLove: "Those who want genuine tropical with a US passport.", whoMightNot: "Hurricane-averse; future-flood worried.",
     confidence: "high",
-    citations: [{ label: "NOAA — Key West International AP", kind: "noaa" }, { label: "NOAA Hurricane Center climatology", kind: "noaa" }],
+    citations: [{ label: "NOAA — Key West International AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NOAA Hurricane Center climatology", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2556,7 +2587,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Southern urbanites"], travelFit: ["history", "food"],
     whoWouldLove: "Those drawn to gentle Southern coastal culture.", whoMightNot: "Hurricane- or SLR-averse.",
     confidence: "high",
-    citations: [{ label: "NOAA — Charleston Int'l AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Charleston Int'l AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // ====================================================================
@@ -2581,7 +2613,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ranchers", "alpine romantics"], travelFit: ["Wallowa Lake", "Hells Canyon"],
     whoWouldLove: "Those who want alpine beauty without Colorado prices.", whoMightNot: "Service-dependent.",
     confidence: "high",
-    citations: [{ label: "NOAA — Enterprise 2S coop", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Enterprise 2S coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // =================== NEW ANOMALY SET ===================
@@ -2616,7 +2649,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["extreme-climate devotees", "aurora researchers", "off-grid homesteaders", "long-daylight gardeners"], travelFit: ["aurora viewing (Aug–Apr)", "summer solstice festivals", "cold-weather sports"],
     whoWouldLove: "Anyone chasing the continent's most extreme seasonal range — long bright summers and long dark winters aren't for most, but for some they're transformative.", whoMightNot: "Sunlight-sensitive; winter-depression prone; those needing mild winters or moderate summers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Fairbanks Int'l Airport NORMAL 1991–2020", kind: "noaa" }, { label: "Alaska Climate Research Center — interior inversion studies", kind: "academic" }, { label: "UAF Geophysical Institute — aurora statistics", kind: "academic" }],
+    citations: [{ label: "NOAA — Fairbanks Int'l Airport NORMAL 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Alaska Climate Research Center — interior inversion studies", kind: "academic" }, { label: "UAF Geophysical Institute — aurora statistics", kind: "academic" }],
     deepSections: [
       {
         id: "fairbanks-basin",
@@ -2678,7 +2711,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["rainforest dwellers", "commercial fishers", "maritime-climate purists"], travelFit: ["brown bears", "whale watching", "historic Russian America", "rainforest hiking"],
     whoWouldLove: "People who find rain soothing and extremes exhausting. Anglers, naturalists, introverts.", whoMightNot: "Sun-seekers; anyone prone to seasonal affective patterns.",
     confidence: "high",
-    citations: [{ label: "NOAA — Sitka Magnetic Obs / SIT Airport", kind: "noaa" }, { label: "Alaska Climate Research Center", kind: "academic" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Sitka Magnetic Obs / SIT Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Alaska Climate Research Center", kind: "academic" }],
   },
 
   {
@@ -2705,7 +2739,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["extreme-snow enthusiasts", "fishing industry", "backcountry skiers"], travelFit: ["heli-skiing", "glacier tours", "Prince William Sound kayaking"],
     whoWouldLove: "Anyone for whom 24 feet of snow per year is a feature rather than a warning.", whoMightNot: "Drivers; those with avalanche fears; anyone needing sun.",
     confidence: "high",
-    citations: [{ label: "NOAA — Valdez WSO", kind: "noaa" }, { label: "Thompson Pass snowfall records (NWS Anchorage)", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Valdez WSO", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Thompson Pass snowfall records (NWS Anchorage)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2735,7 +2770,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["extreme-climate researchers", "park staff"], travelFit: ["Oct–Mar superb weather", "dark-sky observers", "wildflower superblooms", "landscape photographers"],
     whoWouldLove: "Anyone drawn to superlatives — the hottest, driest, lowest, quietest, starriest reliably-accessible place in the Lower 48.", whoMightNot: "Summer travelers; heat-sensitive; anyone requiring any green.",
     confidence: "high",
-    citations: [{ label: "NOAA — Death Valley 1913 world heat record", kind: "noaa" }, { label: "NPS Death Valley — climate overview", kind: "academic" }, { label: "PRISM precipitation normals", kind: "prism" }],
+    citations: [{ label: "NOAA — Death Valley 1913 world heat record", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NPS Death Valley — climate overview", kind: "academic" }, { label: "PRISM precipitation normals", kind: "prism", url: "https://prism.oregonstate.edu/" }],
   },
 
   {
@@ -2765,7 +2800,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["extreme-cold enthusiasts", "river guides", "off-grid homesteaders"], travelFit: ["Sawtooth backpacking", "Salmon River rafting", "dark-sky observers (Central Idaho DSR)"],
     whoWouldLove: "People who find 30°C diurnal swings clarifying and silence medicinal.", whoMightNot: "Gardeners; anyone whose knees mind persistent cold.",
     confidence: "high",
-    citations: [{ label: "NOAA — Stanley Ranger Station records", kind: "noaa" }, { label: "Idaho Climate Office — Sawtooth Valley cold-pool analysis", kind: "academic" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Stanley Ranger Station records", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Idaho Climate Office — Sawtooth Valley cold-pool analysis", kind: "academic" }],
   },
 
   {
@@ -2794,7 +2830,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["observatory staff"], travelFit: ["weather enthusiasts", "Cog Railway", "summer hiking", "winter mountaineering training"],
     whoWouldLove: "Meteorology obsessives. Alpine climbers seeking training terrain.", whoMightNot: "Essentially everyone else, as a residence; as a visit, it's magnificent.",
     confidence: "high",
-    citations: [{ label: "Mount Washington Observatory records (continuous since 1932)", kind: "academic" }, { label: "NOAA — historical wind records", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "Mount Washington Observatory records (continuous since 1932)", kind: "academic" }, { label: "NOAA — historical wind records", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2823,7 +2860,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["winter-escape retirees (snowbirds)", "agricultural workers", "sun-obsessed"], travelFit: ["winter dark-sky", "date-palm heritage", "Sonoran Desert access"],
     whoWouldLove: "Anyone whose body heals in sun. Winter snowbirds. Desert-crop agronomists.", whoMightNot: "Summer residents; water-conservation idealists; humidity-lovers.",
     confidence: "high",
-    citations: [{ label: "NOAA Yuma International Airport normals", kind: "noaa" }, { label: "WMO — global sunshine rankings", kind: "academic" }, { label: "USDA — Yuma winter vegetable statistics", kind: "usda" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA Yuma International Airport normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "WMO — global sunshine rankings", kind: "academic" }, { label: "USDA — Yuma winter vegetable statistics", kind: "usda", url: "https://planthardiness.ars.usda.gov/" }],
   },
 
   {
@@ -2850,7 +2888,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["winter-residents", "surfers", "subtropical-coast lovers"], travelFit: ["spring break", "sea turtle nesting (Kemp's ridley)", "birding"],
     whoWouldLove: "Anyone who wants Florida-like mildness without humidity maximum; anglers and surfers.", whoMightNot: "Hurricane-averse; storm-anxious; those who need seasons.",
     confidence: "moderate",
-    citations: [{ label: "NOAA — Brownsville airport normals (nearby)", kind: "noaa" }, { label: "NHC hurricane climatology", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Brownsville airport normals (nearby)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NHC hurricane climatology", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -2878,7 +2917,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wilderness-oriented", "winter-sport enthusiasts", "off-grid"], travelFit: ["Boundary Waters canoe trips", "winter sled-dog training", "aurora", "wolf howls"],
     whoWouldLove: "Paddlers, hardy winter-sport people, those who feel at home in silent boreal forest.", whoMightNot: "Anyone unwilling to heat for 7 months; gardeners; humidity-lovers in summer.",
     confidence: "high",
-    citations: [{ label: "NOAA — Ely 25 S", kind: "noaa" }, { label: "Minnesota DNR climatology", kind: "academic" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Ely 25 S", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Minnesota DNR climatology", kind: "academic" }],
   },
 
   {
@@ -2907,7 +2947,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["cool-summer lovers", "maritime-climate devotees", "sensitive gardeners"], travelFit: ["summer beach", "winter storm watching", "tide pools"],
     whoWouldLove: "Hot-weather haters, heavy sleepers (cool nights), garden nerds comfortable in fog.", whoMightNot: "Anyone who needs regular hot days or deep sun.",
     confidence: "high",
-    citations: [{ label: "NOAA — Astoria / Seaside coop stations", kind: "noaa" }, { label: "Oregon Climate Service — coastal upwelling summaries", kind: "academic" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Astoria / Seaside coop stations", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Oregon Climate Service — coastal upwelling summaries", kind: "academic" }],
   },
 
   // =================== TIER B — Valentine / Nebraska Sandhills ===================
@@ -2996,8 +3037,8 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
     confidenceNotes: "Climate values based on NOAA Valentine Lake 4SSW normals 1991–2020 and nearby Ainsworth station. Soil description follows USDA Valentine Series type location.",
     citations: [
-      { label: "NOAA Valentine Lake 4SSW — 1991–2020 normals", kind: "noaa" },
-      { label: "USDA NRCS — Valentine Series soil type description", kind: "usda" },
+      { label: "NOAA Valentine Lake 4SSW — 1991–2020 normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "USDA NRCS — Valentine Series soil type description", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
       { label: "Nebraska Sandhills Task Force — ecological assessments", kind: "academic" },
       { label: "Niobrara National Scenic River — NPS", kind: "other", url: "https://www.nps.gov/niob/" },
     ],
@@ -3106,9 +3147,9 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
     confidenceNotes: "Climate values blended from NOAA stations at Council Bluffs, Sioux City, and Missouri Valley; soil mapping follows USDA Ida and Monona series.",
     citations: [
-      { label: "NOAA — Sioux City / Council Bluffs stations, 1991–2020 normals", kind: "noaa" },
-      { label: "USDA NRCS — Ida Series type description", kind: "usda" },
-      { label: "Iowa Geological Survey — Loess Hills stratigraphy", kind: "usgs" },
+      { label: "NOAA — Sioux City / Council Bluffs stations, 1991–2020 normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "USDA NRCS — Ida Series type description", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
+      { label: "Iowa Geological Survey — Loess Hills stratigraphy", kind: "usgs", url: "https://www.usgs.gov/" },
       { label: "Loess Hills National Scenic Byway", kind: "other", url: "https://www.visitloesshills.org/" },
     ],
     settlementsWithinZone: [
@@ -3216,10 +3257,10 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
     confidenceNotes: "Values reflect NOAA Cottonwood Falls 1S and Manhattan stations, 1991–2020; ecosystem descriptions follow Konza Prairie LTER and TNC Tallgrass Prairie Preserve literature.",
     citations: [
-      { label: "NOAA — Cottonwood Falls & Manhattan normals", kind: "noaa" },
+      { label: "NOAA — Cottonwood Falls & Manhattan normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "Konza Prairie Biological Station LTER", kind: "academic" },
       { label: "Tallgrass Prairie National Preserve — NPS", kind: "other", url: "https://www.nps.gov/tapr/" },
-      { label: "USDA NRCS — Florence Series", kind: "usda" },
+      { label: "USDA NRCS — Florence Series", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
     ],
     settlementsWithinZone: [
       { name: "Manhattan", role: "hub", population: "~54,000", note: "Northern anchor; home of Kansas State and the Konza Prairie; the urban doorway to the Hills." },
@@ -3328,9 +3369,9 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
     confidenceNotes: "Climate values reflect NOAA Eureka Springs 3WNW and Fayetteville Experiment Station 1991–2020 normals; karst descriptions follow Arkansas Geological Survey publications.",
     citations: [
-      { label: "NOAA — Eureka Springs 3WNW station", kind: "noaa" },
-      { label: "Arkansas Geological Survey — Springfield Plateau karst", kind: "usgs" },
-      { label: "USDA NRCS — Clarksville Series", kind: "usda" },
+      { label: "NOAA — Eureka Springs 3WNW station", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Arkansas Geological Survey — Springfield Plateau karst", kind: "usgs", url: "https://www.usgs.gov/" },
+      { label: "USDA NRCS — Clarksville Series", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
       { label: "Buffalo National River — NPS", kind: "other", url: "https://www.nps.gov/buff/" },
     ],
     settlementsWithinZone: [
@@ -3378,7 +3419,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["storm watchers", "coastal gardeners"], travelFit: ["winter banana-belt days", "Samuel Boardman corridor"],
     whoWouldLove: "Anyone fascinated by micro-scale winter warm bursts on a cold ocean.", whoMightNot: "Those who need predictable dry summers inland-style.",
     confidence: "moderate",
-    citations: [{ label: "NOAA — Brookings area COOP / Chetco effect case studies", kind: "noaa" }, { label: "NWS Medford — Chetco wind climatology notes", kind: "academic" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Brookings area COOP / Chetco effect case studies", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Medford — Chetco wind climatology notes", kind: "academic" }],
   },
   {
     id: "medford-or", tier: "C", country: "USA", region: "Oregon", municipality: "Medford", name: "Medford (Rogue Valley)",
@@ -3403,7 +3445,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["orchardists", "remote workers"], travelFit: ["Crater Lake", "Rogue River rafting", "pear harvest"],
     whoWouldLove: "Sun-seekers who still want Oregon scenery.", whoMightNot: "Fog-haters in winter; smoke-sensitive lungs.",
     confidence: "high",
-    citations: [{ label: "NOAA — Medford AP normals", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Medford AP normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "friday-harbor-wa", tier: "C", country: "USA", region: "Washington", municipality: "Friday Harbor", name: "Friday Harbor (San Juan Islands)",
@@ -3428,7 +3471,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["sailors", "remote creatives"], travelFit: ["orca watching", "island hopping"],
     whoWouldLove: "Maritime-climate fans who want fewer dreary winters than Seattle proper.", whoMightNot: "Budget shoppers — island cost of living is steep.",
     confidence: "high",
-    citations: [{ label: "NOAA — Friday Harbor station", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Friday Harbor station", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   {
@@ -3451,7 +3495,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Nordic skiers", "dark-sky photographers"], travelFit: ["North Cascades Highway", "Methow Trails"],
     whoWouldLove: "Dry-side Washington seekers who want alpine access without Seattle drizzle.", whoMightNot: "Those needing mild winters or humidity.",
     confidence: "high",
-    citations: [{ label: "NOAA — Winthrop COOP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Winthrop COOP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "leavenworth-wa", tier: "C", country: "USA", region: "Washington", municipality: "Leavenworth", name: "Leavenworth (Cascade East Slope)",
@@ -3473,7 +3518,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski families", "orchardists"], travelFit: ["Oktoberfest", "Enchantment peaks"],
     whoWouldLove: "Four-season mountain-town lovers without Colorado altitude.", whoMightNot: "Cool-summer maritime purists.",
     confidence: "high",
-    citations: [{ label: "NOAA — Leavenworth area", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Leavenworth area", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "lone-pine-ca", tier: "C", country: "USA", region: "California", municipality: "Lone Pine", name: "Lone Pine (Owens Valley)",
@@ -3495,7 +3541,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["climbers", "desert photographers"], travelFit: ["Alabama Hills", "Whitney"],
     whoWouldLove: "High-desert aesthetes and peak baggers.", whoMightNot: "Humidity seekers; noise-sensitive — freight trains run the valley.",
     confidence: "high",
-    citations: [{ label: "NOAA — Lone Pine 8 SW", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Lone Pine 8 SW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "page-az", tier: "C", country: "USA", region: "Arizona", municipality: "Page", name: "Page (Colorado Plateau)",
@@ -3517,7 +3564,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["river guides", "remote workers"], travelFit: ["Antelope Canyon", "Horseshoe Bend"],
     whoWouldLove: "Canyon-country obsessives.", whoMightNot: "Anyone who needs greenery without irrigation.",
     confidence: "high",
-    citations: [{ label: "NOAA — Page AZ", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Page AZ", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "international-falls-mn", tier: "C", country: "USA", region: "Minnesota", municipality: "International Falls", name: "International Falls",
@@ -3539,7 +3587,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snowmobilers", "boreal researchers"], travelFit: ["Voyageurs NP", "ice fishing"],
     whoWouldLove: "Hardy winter people who want true northern seasons.", whoMightNot: "Heat-lovers; thin-blood snowbirds.",
     confidence: "high",
-    citations: [{ label: "NOAA — International Falls Intl AP", kind: "noaa" }, { label: "GLISA — International Falls station summary", kind: "academic" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — International Falls Intl AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "GLISA — International Falls station summary", kind: "academic" }],
   },
   {
     id: "duluth-mn", tier: "C", country: "USA", region: "Minnesota", municipality: "Duluth", name: "Duluth (Lake Superior)",
@@ -3561,7 +3610,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor enthusiasts", "remote workers"], travelFit: ["tall ships", "fall color", "skiing"],
     whoWouldLove: "Cool-summer lovers who still want real winter.", whoMightNot: "Sun-belt retirees seeking warmth.",
     confidence: "high",
-    citations: [{ label: "NOAA — Duluth Intl", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Duluth Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "erie-pa", tier: "C", country: "USA", region: "Pennsylvania", municipality: "Erie", name: "Erie (Lake Erie Snowbelt)",
@@ -3583,7 +3633,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["lake-house seekers"], travelFit: ["Presque Isle beaches", "winter storm chasing"],
     whoWouldLove: "Great Lakes culture and dramatic snow.", whoMightNot: "Snow shovel haters.",
     confidence: "high",
-    citations: [{ label: "NOAA — Erie Intl", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Erie Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "chattanooga-tn", tier: "C", country: "USA", region: "Tennessee", municipality: "Chattanooga", name: "Chattanooga (Tennessee River Gap)",
@@ -3605,7 +3656,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor families", "logistics workers"], travelFit: ["Lookout Mountain", "riverfront"],
     whoWouldLove: "Southeastern urban life with real topography.", whoMightNot: "Dry-climate devotees.",
     confidence: "high",
-    citations: [{ label: "NOAA — Chattanooga AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Chattanooga AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "gatlinburg-tn", tier: "C", country: "USA", region: "Tennessee", municipality: "Gatlinburg", name: "Gatlinburg (Great Smokies)",
@@ -3627,7 +3679,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Smokies trails", "autumn color"],
     whoWouldLove: "Misty-mountain hikers and waterfall chasers.", whoMightNot: "Crowd-averse visitors in October weekends.",
     confidence: "high",
-    citations: [{ label: "NOAA — Gatlinburg 2 SW", kind: "noaa" }, { label: "NPS — Great Smoky Mountains precip climatology", kind: "other", url: "https://www.nps.gov/grsm/" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Gatlinburg 2 SW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NPS — Great Smoky Mountains precip climatology", kind: "other", url: "https://www.nps.gov/grsm/" }],
   },
   {
     id: "nags-head-nc", tier: "C", country: "USA", region: "North Carolina", municipality: "Nags Head", name: "Outer Banks (Nags Head)",
@@ -3649,7 +3702,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote coastal workers"], travelFit: ["Wright Brothers", "wild horses", "surf"],
     whoWouldLove: "Beach people who accept hurricane season soberly.", whoMightNot: "Evacuation-averse; flood-insurance skeptics.",
     confidence: "high",
-    citations: [{ label: "NOAA — Cape Hatteras ASOS", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Cape Hatteras ASOS", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "burlington-vt", tier: "C", country: "USA", region: "Vermont", municipality: "Burlington", name: "Burlington (Lake Champlain)",
@@ -3671,7 +3725,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote tech workers", "ski commuters"], travelFit: ["Champlain Islands", "ski resorts"],
     whoWouldLove: "Small-city New England with lake recreation.", whoMightNot: "Those who need warm winters.",
     confidence: "high",
-    citations: [{ label: "NOAA — Burlington Intl", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Burlington Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "bar-harbor-me", tier: "C", country: "USA", region: "Maine", municipality: "Bar Harbor", name: "Bar Harbor (Downeast)",
@@ -3693,7 +3748,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Acadia", "whale watching"],
     whoWouldLove: "Granite-coast hikers and blueberry fans.", whoMightNot: "Budget travelers in peak July.",
     confidence: "high",
-    citations: [{ label: "NOAA — Hancock County stations", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Hancock County stations", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "lubbock-tx", tier: "C", country: "USA", region: "Texas", municipality: "Lubbock", name: "Lubbock (Llano Estacado)",
@@ -3715,7 +3771,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ag researchers", "storm chasers"], travelFit: ["Palo Duro", "wine country nearby"],
     whoWouldLove: "Big-sky storm watchers.", whoMightNot: "Humidity lovers; tree-huggers seeking forests.",
     confidence: "high",
-    citations: [{ label: "NOAA — Lubbock Intl", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Lubbock Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "new-orleans-la", tier: "C", country: "USA", region: "Louisiana", municipality: "New Orleans", name: "New Orleans",
@@ -3737,7 +3794,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["culture seekers", "port workers"], travelFit: ["jazz", "Mardi Gras", "swamp tours"],
     whoWouldLove: "Humid subtropical city lovers who accept flood risk.", whoMightNot: "Mold-allergic; hurricane-risk averse.",
     confidence: "high",
-    citations: [{ label: "NOAA — New Orleans Intl", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — New Orleans Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   {
     id: "ojai-ca", tier: "C", country: "USA", region: "California", municipality: "Ojai", name: "Ojai",
@@ -3757,7 +3815,8 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wellness retreat life"], travelFit: ["citrus farms", "sunset chasers"],
     whoWouldLove: "Mediterranean-light obsessives.", whoMightNot: "Fire-averse; seekers of seasonal drama.",
     confidence: "moderate",
-    citations: [{ label: "NOAA — Ojai coop", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Ojai coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
   ...PLACES_USA_EXTRA,
   ...PLACES_USA_GAP_STATES,

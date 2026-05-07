@@ -44,7 +44,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-    citations: [{ label: "NOAA — Valley Head 2 NE (proxy)", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Valley Head 2 NE (proxy)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Connecticut — NW highlands cold pocket
@@ -83,7 +84,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-    citations: [{ label: "NOAA — Norfolk 2 SW", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Norfolk 2 SW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Delaware — Delaware Bay / Atlantic moderation
@@ -122,7 +124,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-    citations: [{ label: "NOAA — Lewes (Sussex County)", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Lewes (Sussex County)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Georgia — Southern Appalachian escarpment
@@ -161,7 +164,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-    citations: [{ label: "NOAA — Clayton 1 WSW", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Clayton 1 WSW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Illinois — Driftless / Mississippi bluffs
@@ -200,7 +204,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-town lovers", "remote workers"], travelFit: ["Mississippi Palisades", "architecture"],
     whoWouldLove: "Midwest topography fans who still want seasons.", whoMightNot: "Those avoiding cold winters or steep drives.",
     confidence: "high",
-    citations: [{ label: "NOAA — Galena", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Galena", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Indiana — southern lakeshore snowbelt + mesoscale lake breeze
@@ -239,7 +244,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Michigan City IN", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Michigan City IN", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Maryland — Appalachian high county
@@ -278,7 +284,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Oakland 2 SE", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Oakland 2 SE", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Massachusetts — Berkshires
@@ -317,7 +324,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Pittsfield Airport", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Pittsfield Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Mississippi — Gulf maritime
@@ -355,7 +363,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Biloxi MS (proxy sound)", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Biloxi MS (proxy sound)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Missouri — Ozark karst / Current River
@@ -393,7 +402,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-    citations: [{ label: "NOAA — Eminence", kind: "noaa" }, { label: "USGS — Ozark Plateau springs", kind: "usgs" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Eminence", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USGS — Ozark Plateau springs", kind: "usgs", url: "https://www.usgs.gov/" }],
   },
 
   // Nevada — Spring Mountains sky island (Tier B + deep)
@@ -436,7 +446,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["hikers", "remote workers"], travelFit: ["bristlecone trails", "summer heat escape"],
     whoWouldLove: "Desert-city residents who need forest weekends.", whoMightNot: "Those needing mild winters at elevation.",
     confidence: "high",
-    citations: [{ label: "NOAA — Mount Charleston cooperative summaries", kind: "noaa" }, { label: "USFS — Spring Mountains NRA", kind: "other" }],
+    citations: [{ label: "NOAA — Mount Charleston cooperative summaries", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USFS — Spring Mountains NRA", kind: "other" }],
     deepSections: [
       {
         id: "charleston-inversion",
@@ -492,7 +502,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-home restorers", "retirees"], travelFit: ["Victorian architecture", "bird migration"],
     whoWouldLove: "Beach-town people who want walkable scale.", whoMightNot: "Dry-air or mountain-climate seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Cape May County AP", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Cape May County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Ohio — eastern Lake Erie snowbelt
@@ -531,7 +542,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-    citations: [{ label: "NOAA — Geneva", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Geneva", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Oklahoma — Ouachita uplift
@@ -569,7 +581,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Broken Bow", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Broken Bow", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // Rhode Island — Block Island outer coast
@@ -607,7 +620,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["seasonal residents", "fishermen"], travelFit: ["bluffs", "biking"],
     whoWouldLove: "Cool-summer island people who tolerate ferry logistics.", whoMightNot: "Heat seekers; budget shoppers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Block Island State Airport", kind: "noaa" }],
+    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    citations: [{ label: "NOAA — Block Island State Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
   },
 
   // South Dakota — Black Hills chinook corridor (Tier B + deep)
@@ -646,7 +660,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor workers", "remote workers"], travelFit: ["Spearfish Canyon", "Sturgis proximity"],
     whoWouldLove: "Plains–mountain ecotone people who respect wind.", whoMightNot: "Those needing stable mild winters.",
     confidence: "high",
-    citations: [{ label: "NOAA — Spearfish", kind: "noaa" }, { label: "NWS Rapid City — Black Hills climatology notes", kind: "noaa" }],
+    citations: [{ label: "NOAA — Spearfish", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Rapid City — Black Hills climatology notes", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
     deepSections: [
       {
         id: "spearfish-chinook",
@@ -704,7 +718,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["ranching families", "remote workers"], travelFit: ["ridge vistas", "spring frost photography"],
     whoWouldLove: "Atmospheric science nerds and pastoral landscapes.", whoMightNot: "Frost-sensitive orchardists on the basin floor.",
     confidence: "high",
-    citations: [{ label: "NOAA — nearby Tazewell County stations", kind: "noaa" }, { label: "Journal of Applied Meteorology — Appalachian cold pools (regional synthesis)", kind: "academic" }],
+    citations: [{ label: "NOAA — nearby Tazewell County stations", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Journal of Applied Meteorology — Appalachian cold pools (regional synthesis)", kind: "academic" }],
     deepSections: [
       {
         id: "burkes-pool-dynamics",

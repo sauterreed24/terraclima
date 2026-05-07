@@ -3,32 +3,44 @@
 // ============================================================
 
 import type { Place, MicroclimateArchetype, RiskLevel } from "../types";
-import { PLACES, PLACE_SEARCH_INDEX, PLACE_ANNUAL_PRECIP } from "../data/places";
+import { PLACES, PLACE_SEARCH_INDEX, foldDiacritics } from "../data/places";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
+import { CORPUS_MEAN_HUMIDITY } from "./atlas-corpus-stats";
+import {
+  RISK_VALUE,
+  avgRisk,
+  meanSummerHigh,
+  meanJanLow,
+  getAnnualPrecipMm,
+} from "./climate-metrics";
 
-export const RISK_VALUE: Record<RiskLevel, number> = {
-  "very-low": 0,
-  "low": 1,
-  "moderate": 2,
-  "elevated": 3,
-  "high": 4,
-  "very-high": 5,
-};
+// Re-exported so the public surface of scoring.ts stays unchanged for callers
+// (components, charts, tests) that previously imported these from here.
+export { RISK_VALUE, avgRisk, meanSummerHigh, meanJanLow, getAnnualPrecipMm };
 
-export function avgRisk(p: Place): number {
-  const r = p.risks;
-  const vals = [r.wildfire, r.flood, r.drought, r.extremeHeat, r.extremeCold, r.smoke, r.storm, r.landslide, r.coastal];
-  return vals.reduce((s, a) => s + RISK_VALUE[a.level], 0) / vals.length;
-}
+/**
+ * Transparent weights for the hero "livability lens". Exposed so the UI can
+ * surface them and so a skeptical reader can sanity-check the formula.
+ */
+export const LIVABILITY_WEIGHTS = {
+  resilience: 0.34,
+  winterEase: 0.22,
+  summerEase: 0.18,
+  hazardEase: 0.14,
+  growability: 0.12,
+} as const;
 
-export function meanSummerHigh(p: Place): number {
-  return (p.climate.tempHighC[5] + p.climate.tempHighC[6] + p.climate.tempHighC[7]) / 3;
-}
-/** @deprecated Use meanSummerHigh; this is a Jun-Aug mean, not July-only. */
-export const meanJulyHigh = meanSummerHigh;
-export function meanJanLow(p: Place): number {
-  return (p.climate.tempLowC[11] + p.climate.tempLowC[0] + p.climate.tempLowC[1]) / 3;
-}
+/** Penalty scales used by the hero ranking. Calibrated against the corpus. */
+export const LIVABILITY_PENALTIES = {
+  /** Each °C below 0 in mean Jan low subtracts this many points from winterEase. */
+  winterPerDegC: 4.5,
+  /** Threshold above which summerEase starts dropping (mean Jun–Aug high, °C). */
+  summerComfortHighC: 26,
+  /** Each °C above the threshold subtracts this many points. */
+  summerPerDegC: 5,
+  /** Each unit of avgRisk subtracts this many points from hazardEase. */
+  hazardPerRiskUnit: 14,
+} as const;
 
 export type RankingProfile =
   | "coolest-summers"
@@ -56,21 +68,23 @@ export interface RankingResult { place: Place; score: number; note?: string }
  */
 export function rankLivabilityPreview(pool: Place[]): RankingResult[] {
   if (pool.length === 0) return [];
+  const w = LIVABILITY_WEIGHTS;
+  const pen = LIVABILITY_PENALTIES;
   const scored: RankingResult[] = pool.map(p => {
     const resilience = p.scores.resilience;
     const grow = p.scores.growability;
     const risk = avgRisk(p);
     const jh = meanSummerHigh(p);
     const jl = meanJanLow(p);
-    const winterEase = Math.max(0, 100 - Math.max(0, -jl) * 4.5);
-    const summerEase = Math.max(0, 100 - Math.max(0, jh - 26) * 5);
-    const hazardEase = Math.max(0, 100 - risk * 14);
+    const winterEase = Math.max(0, 100 - Math.max(0, -jl) * pen.winterPerDegC);
+    const summerEase = Math.max(0, 100 - Math.max(0, jh - pen.summerComfortHighC) * pen.summerPerDegC);
+    const hazardEase = Math.max(0, 100 - risk * pen.hazardPerRiskUnit);
     const s =
-      0.34 * resilience +
-      0.22 * winterEase +
-      0.18 * summerEase +
-      0.14 * hazardEase +
-      0.12 * grow;
+      w.resilience * resilience +
+      w.winterEase * winterEase +
+      w.summerEase * summerEase +
+      w.hazardEase * hazardEase +
+      w.growability * grow;
     const rounded = Math.round(Math.max(0, Math.min(100, s)));
     return {
       place: p,
@@ -81,31 +95,73 @@ export function rankLivabilityPreview(pool: Place[]): RankingResult[] {
   return scored.sort((a, b) => b.score - a.score);
 }
 
+/**
+ * Tunables for the secondary ranking profiles. Each value here is documented
+ * inline so the scoring math stays auditable; constants stay co-located with
+ * the function that uses them rather than scattered across magic literals.
+ */
+export const RANKING_PARAMS = {
+  /** "coolest-summers": ideal mean Jun–Aug high (°C); each °C above subtracts 5. */
+  coolSummerIdealHighC: 14,
+  coolSummerPerDegC: 5,
+  /** "mildest-winters": each °C below 0 in mean Jan low subtracts 5. */
+  mildWinterPerDegC: 5,
+  /** "best-shoulder-seasons": ideal Apr/May + Sep/Oct mean high (°C). */
+  shoulderIdealHighC: 20,
+  shoulderPerDegC: 6,
+  /** "driest-air": comfort threshold (%). Each % above subtracts 2. */
+  dryAirComfortPct: 35,
+  dryAirPerPct: 2,
+  /** "lowest-fire-risk": each step on RISK_VALUE subtracts 18. */
+  fireRiskPerStep: 18,
+  /** "best-four-season": sweet-spot seasonal range (°C); each °C off subtracts 3. */
+  fourSeasonIdealRangeC: 26,
+  fourSeasonPerDegC: 3,
+  /** "best-diurnal-sleep": baseline diurnal °C; each °C above adds 10. */
+  diurnalSleepBaselineC: 6,
+  diurnalSleepPerDegC: 10,
+  /** "mediterranean-like": warm-summer Csb gets a clean +30; hot-summer Csa gets +20. */
+  mediterraneanCsbBonus: 30,
+  mediterraneanCsaBonus: 20,
+  mediterraneanWinterBudget: 30,
+  mediterraneanWinterPerDegC: 4,
+  mediterraneanSummerBudget: 30,
+  mediterraneanPerMmJulAug: 0.3,
+  /** "wet-forest-refuges": annual precip divided by 30 capped at 100. */
+  wetForestPrecipDivisor: 30,
+  /** "monsoon-drama": JJA / DJF precip ratio multiplied by 18, capped at 100. */
+  monsoonRatioMultiplier: 18,
+} as const;
+
 export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): RankingResult[] {
+  const k = RANKING_PARAMS;
   const scored: RankingResult[] = pool.map(p => {
     const summerHigh = meanSummerHigh(p);
     const janLow = meanJanLow(p);
-    const annualPrecip = PLACE_ANNUAL_PRECIP[p.id] ?? p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
+    const annualPrecip = getAnnualPrecipMm(p);
     const diurnal = p.climate.diurnalSummerC ?? (p.climate.tempHighC[6] - p.climate.tempLowC[6]);
 
     switch (profile) {
       case "coolest-summers": {
-        const s = Math.max(0, 100 - Math.max(0, summerHigh - 14) * 5);
+        const s = Math.max(0, 100 - Math.max(0, summerHigh - k.coolSummerIdealHighC) * k.coolSummerPerDegC);
         return { place: p, score: s, note: `Mean summer high ${summerHigh.toFixed(1)}°C` };
       }
       case "mildest-winters": {
-        const s = Math.max(0, 100 - Math.max(0, -janLow) * 5);
+        const s = Math.max(0, 100 - Math.max(0, -janLow) * k.mildWinterPerDegC);
         return { place: p, score: s, note: `Mean winter low ${janLow.toFixed(1)}°C` };
       }
       case "best-shoulder-seasons": {
         const shoulder = (p.climate.tempHighC[3] + p.climate.tempHighC[4] + p.climate.tempHighC[8] + p.climate.tempHighC[9]) / 4;
-        const s = Math.max(0, 100 - Math.abs(shoulder - 20) * 6);
+        const s = Math.max(0, 100 - Math.abs(shoulder - k.shoulderIdealHighC) * k.shoulderPerDegC);
         return { place: p, score: s, note: `Spring/fall highs near ${shoulder.toFixed(1)}°C` };
       }
       case "driest-air": {
-        const hum = p.climate.humidity ? p.climate.humidity.reduce((a, b) => a + b, 0) / 12 : 65;
-        const s = Math.max(0, 100 - Math.max(0, hum - 35) * 2);
-        return { place: p, score: s, note: `Mean humidity ~${hum.toFixed(0)}%` };
+        const hum = p.climate.humidity
+          ? p.climate.humidity.reduce((a, b) => a + b, 0) / 12
+          : CORPUS_MEAN_HUMIDITY;
+        const s = Math.max(0, 100 - Math.max(0, hum - k.dryAirComfortPct) * k.dryAirPerPct);
+        const noteSuffix = p.climate.humidity ? "" : " (atlas mean)";
+        return { place: p, score: s, note: `Mean humidity ~${hum.toFixed(0)}%${noteSuffix}` };
       }
       case "best-growability":
         return { place: p, score: p.scores.growability, note: p.growability.hardinessZone };
@@ -115,19 +171,19 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
         return { place: p, score: p.scores.microclimateUniqueness };
       case "lowest-fire-risk": {
         const fire = RISK_VALUE[p.risks.wildfire.level];
-        const s = Math.max(0, 100 - fire * 18);
+        const s = Math.max(0, 100 - fire * k.fireRiskPerStep);
         return { place: p, score: s, note: p.risks.wildfire.level };
       }
       case "climate-resilient":
         return { place: p, score: p.scores.resilience };
       case "best-four-season": {
         const range = summerHigh - janLow;
-        const sweetSpot = Math.abs(range - 26);
-        const s = Math.max(0, 100 - sweetSpot * 3);
+        const sweetSpot = Math.abs(range - k.fourSeasonIdealRangeC);
+        const s = Math.max(0, 100 - sweetSpot * k.fourSeasonPerDegC);
         return { place: p, score: s, note: `Seasonal range ${range.toFixed(0)}°C` };
       }
       case "best-diurnal-sleep": {
-        const s = Math.min(100, Math.max(0, (diurnal - 6) * 10));
+        const s = Math.min(100, Math.max(0, (diurnal - k.diurnalSleepBaselineC) * k.diurnalSleepPerDegC));
         return { place: p, score: s, note: `Summer diurnal swing ${diurnal.toFixed(0)}°C` };
       }
       case "strongest-geospatial-signal": {
@@ -139,22 +195,27 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
         };
       }
       case "mediterranean-like": {
-        // Dry summers + mild winters + Csa/Csb
+        // Csb (warm-summer Mediterranean — coastal CA, Pacific NW pockets) is the
+        // canonical match; Csa (hot-summer — interior valleys) gets a smaller bonus.
         const koppen = p.koppen;
-        const bonus = koppen.startsWith("Cs") ? 30 : 0;
-        const wint = Math.max(0, 30 - Math.max(0, -janLow) * 4);
-        const dry = Math.max(0, 30 - (p.climate.precipMm[6] + p.climate.precipMm[7]) * 0.3);
+        const bonus = koppen.startsWith("Csb")
+          ? k.mediterraneanCsbBonus
+          : koppen.startsWith("Csa")
+            ? k.mediterraneanCsaBonus
+            : 0;
+        const wint = Math.max(0, k.mediterraneanWinterBudget - Math.max(0, -janLow) * k.mediterraneanWinterPerDegC);
+        const dry = Math.max(0, k.mediterraneanSummerBudget - (p.climate.precipMm[6] + p.climate.precipMm[7]) * k.mediterraneanPerMmJulAug);
         return { place: p, score: bonus + wint + dry };
       }
       case "wet-forest-refuges": {
-        const s = Math.min(100, annualPrecip / 30);
+        const s = Math.min(100, annualPrecip / k.wetForestPrecipDivisor);
         return { place: p, score: s, note: `${annualPrecip.toFixed(0)} mm / yr` };
       }
       case "monsoon-drama": {
         const monsoon = p.climate.precipMm[6] + p.climate.precipMm[7] + p.climate.precipMm[8];
         const winter = p.climate.precipMm[11] + p.climate.precipMm[0] + p.climate.precipMm[1];
         const ratio = monsoon / Math.max(1, winter);
-        const s = Math.min(100, ratio * 18);
+        const s = Math.min(100, ratio * k.monsoonRatioMultiplier);
         return { place: p, score: s, note: `${monsoon.toFixed(0)} mm in JJA vs ${winter.toFixed(0)} DJF` };
       }
     }
@@ -175,8 +236,9 @@ export interface FilterState {
 }
 
 export function applyFilters(places: Place[], f: FilterState): Place[] {
-  // Precompute the query lowercased once, not per-place.
-  const q = f.search ? f.search.trim().toLowerCase() : "";
+  // Precompute the diacritic-folded query once, not per-place. The search
+  // index is built with the same fold so "san jose" matches "San José".
+  const q = f.search ? foldDiacritics(f.search.trim()) : "";
   const hasCountries = f.countries.size > 0;
   const hasArchetypes = f.archetypes.size > 0;
   const hasMaxFire = !!f.maxFireRisk;

@@ -19,6 +19,36 @@ const report = (id: string, severity: "WARN" | "ERROR", msg: string) =>
 const validArchetypes = new Set(ARCHETYPES.map(a => a.id));
 const validDrivers = new Set(Object.keys(DRIVER_LABELS));
 
+/**
+ * E2 — archetype ↔ driver alignment expectations. When a place uses one of
+ * these archetypes, the listed driver should appear in `place.drivers` (warn,
+ * not error — editorial discretion still wins, but a missing core driver is a
+ * frequent omission worth flagging). Keys list a *family* of acceptable
+ * drivers because the same archetype can manifest via different mechanisms
+ * (e.g. "lake-moderated" can be lake-, sea-, or river-driven).
+ */
+const ARCHETYPE_DRIVER_EXPECTATIONS: Record<string, readonly string[]> = {
+  "rain-shadow-sanctuary": ["rain-shadow"],
+  "fog-belt-coast": ["marine-layer", "upwelling"],
+  "coastal-upwelling": ["upwelling"],
+  "chinook-corridor": ["chinook-foehn"],
+  "santa-ana-corridor": ["santa-ana"],
+  "gap-wind-corridor": ["gap-winds"],
+  "lake-effect-snowbelt": ["lake-effect", "orographic-lift"],
+  "lake-moderated": ["lake-effect", "river-moderation", "marine-layer", "sea-breeze", "continentality"],
+  "monsoon-edge": ["monsoon-lift", "tropical-convection"],
+  "frost-hollow": ["cold-air-drainage", "inversion", "katabatic-flow"],
+  "cold-air-pool": ["cold-air-drainage", "inversion", "katabatic-flow"],
+  "basin-inversion": ["inversion", "cold-air-drainage"],
+  "limestone-karst": ["karst-infiltration"],
+  "river-valley-moderation": ["river-moderation"],
+  "thermal-belt": ["aspect-slope", "elevation-lapse-rate"],
+  "alpine-tundra": ["elevation-lapse-rate", "polar-jet-exposure"],
+  "sky-island-refuge": ["elevation-lapse-rate", "orographic-lift"],
+  "eternal-spring-highland": ["elevation-lapse-rate", "tropical-convection"],
+  "hurricane-coast": ["hurricane-track", "tropical-convection"],
+};
+
 // Duplicate id check
 {
   const seen = new Map<string, number>();
@@ -82,7 +112,33 @@ for (const p of PLACES) {
   if (climate.snowCm) {
     for (let m = 0; m < 12; m++) {
       if (climate.snowCm[m] < 0) report(p.id, "ERROR", `negative snow month ${m + 1}`);
+      // 300cm/month outside polar latitudes is a data-entry typo signal.
+      if (climate.snowCm[m] > 300 && p.lat < 60) {
+        report(p.id, "WARN", `snow month ${m + 1}: ${climate.snowCm[m]}cm at lat ${p.lat}`);
+      }
     }
+  }
+
+  // --- E5: monthly temperature monotonicity sanity ---
+  // Flag absurd month-to-month jumps (>18°C delta) — typical seasonal swings
+  // anywhere in NA stay under that. Catches typos like a stray "230" in tempHighC.
+  for (let m = 0; m < 12; m++) {
+    const next = (m + 1) % 12;
+    const dh = Math.abs(climate.tempHighC[next] - climate.tempHighC[m]);
+    const dl = Math.abs(climate.tempLowC[next] - climate.tempLowC[m]);
+    if (dh > 18) report(p.id, "WARN", `tempHighC month ${m + 1}→${next + 1} delta ${dh.toFixed(0)}°C is implausible`);
+    if (dl > 18) report(p.id, "WARN", `tempLowC month ${m + 1}→${next + 1} delta ${dl.toFixed(0)}°C is implausible`);
+  }
+
+  // --- E4: optional-field plausibility ---
+  if (climate.gdd10 != null && climate.gdd10 < 0) {
+    report(p.id, "ERROR", `gdd10 ${climate.gdd10} is negative`);
+  }
+  if (climate.frostFreeDays != null && (climate.frostFreeDays < 0 || climate.frostFreeDays > 366)) {
+    report(p.id, "ERROR", `frostFreeDays ${climate.frostFreeDays} out of [0, 366]`);
+  }
+  if (climate.chillHours != null && (climate.chillHours < 0 || climate.chillHours > 4500)) {
+    report(p.id, "WARN", `chillHours ${climate.chillHours} is unusual`);
   }
 
   // --- Elevation sanity ---
@@ -92,6 +148,28 @@ for (const p of PLACES) {
   // --- Archetype / driver validity ---
   for (const a of p.archetypes) if (!validArchetypes.has(a)) report(p.id, "ERROR", `unknown archetype "${a}"`);
   for (const d of p.drivers) if (!validDrivers.has(d)) report(p.id, "ERROR", `unknown driver "${d}"`);
+
+  // --- E2: archetype ↔ driver alignment ---
+  const driverSet = new Set<string>(p.drivers);
+  for (const a of p.archetypes) {
+    const expected = ARCHETYPE_DRIVER_EXPECTATIONS[a];
+    if (!expected) continue;
+    const hasAny = expected.some(d => driverSet.has(d));
+    if (!hasAny) {
+      report(p.id, "WARN", `archetype "${a}" usually carries one of [${expected.join(", ")}] in drivers`);
+    }
+  }
+
+  // --- E3: deepSection id uniqueness within a place ---
+  if (p.deepSections) {
+    const seenIds = new Map<string, number>();
+    for (const s of p.deepSections) {
+      seenIds.set(s.id, (seenIds.get(s.id) ?? 0) + 1);
+    }
+    for (const [sid, n] of seenIds) {
+      if (n > 1) report(p.id, "ERROR", `deepSection id "${sid}" appears ${n}× within this place`);
+    }
+  }
 
   // --- Required prose fields ---
   for (const field of ["summaryShort", "summaryImmersive", "whyDistinct", "reliefContext"] as const) {

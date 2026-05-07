@@ -19,6 +19,16 @@ export const PLACES_BY_ID: Record<string, Place> = Object.fromEntries(
 );
 
 /**
+ * Strip diacritics so "san jose" can match "San José" and "queretaro" can
+ * match "Querétaro". Used both to build the search index and to fold the
+ * runtime query before substring matching. NFD splits combining marks; the
+ * regex drops them. Also lowercases for case-insensitive comparison.
+ */
+export function foldDiacritics(input: string): string {
+  return input.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase();
+}
+
+/**
  * Precomputed runtime indexes.
  *
  * These are built once at module initialization so hot paths (search filter,
@@ -32,15 +42,15 @@ export const PLACE_ANNUAL_PRECIP: Record<string, number> = {};
 
 for (const p of PLACES) {
   const deepIdx = mergeDeepSections(p).map(s => `${s.title} ${s.paragraphs.join(" ")}`).join(" ");
-  PLACE_SEARCH_INDEX[p.id] = (
+  PLACE_SEARCH_INDEX[p.id] = foldDiacritics(
     p.name + " " +
     p.region + " " +
     (p.municipality ?? "") + " " +
     p.archetypes.join(" ") + " " +
     p.koppen + " " +
     (p.summaryShort ?? "") +
-    " " + deepIdx
-  ).toLowerCase();
+    " " + deepIdx,
+  );
   PLACE_ANNUAL_PRECIP[p.id] = p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
 }
 

@@ -1,14 +1,6 @@
-import type { MicroclimateArchetype, Place, RiskLevel, TopographicDriver } from "../types";
+import type { MicroclimateArchetype, Place, TopographicDriver } from "../types";
 import { getPlaceCorpusRanks } from "./atlas-corpus-stats";
-
-const RISK_NUMERIC: Record<RiskLevel, number> = {
-  "very-low": 0,
-  low: 1,
-  moderate: 2,
-  elevated: 3,
-  high: 4,
-  "very-high": 5,
-};
+import { getAnnualPrecipMm, RISK_VALUE as RISK_NUMERIC } from "./climate-metrics";
 
 /** Archetypes where fine-scale topography or canopy structure usually matters for interpretation. */
 const STRUCTURE_ARCHETYPES: readonly MicroclimateArchetype[] = [
@@ -38,6 +30,62 @@ const STRUCTURE_DRIVERS: readonly TopographicDriver[] = [
   "gap-winds",
   "orographic-lift",
 ] as const;
+
+/**
+ * Named blend weights for the geospatial signal. Exposed so reviewers can
+ * see what the score is really weighing, and so future tuning can happen in
+ * one place rather than scattered magic literals. All `*0..1` numbers are
+ * shares of a final 100-point score.
+ */
+export const GEOSPATIAL_WEIGHTS = {
+  /** structuralTextureScore() — relative weights of its inputs. Sum to 1.00. */
+  structure: {
+    relief: 0.26,
+    elevation: 0.20,
+    thermalAmplitude: 0.18,
+    hydroSeasonality: 0.14,
+    uniqueness: 0.12,
+    canopy: 0.10,
+  },
+  /** Sentinel-2 observability score — base + signal contributions, then
+   * cloud / snow penalties. */
+  sentinel: {
+    base: 42,
+    moistureMagnitude: 24,
+    hydroSeasonalityMagnitude: 16,
+    vegetationMagnitude: 22,
+    riverMarineBoost: 8,
+    cloudPenalty: 18,
+    snowPenalty: 8,
+  },
+  /** Landsat thermal score — same shape, different inputs. */
+  landsat: {
+    base: 44,
+    thermalAmplitudeMagnitude: 26,
+    tradeoffMagnitude: 14,
+    archetypeBonus: 10,
+    extremeHeatBonus: 8,
+    cloudPenaltyShare: 0.45,
+  },
+  /** Final EO observability blend weights. Sum to 1.00. */
+  eoObservability: {
+    sentinel: 0.52,
+    landsat: 0.48,
+  },
+  /** Final geospatial signal blend. Sum to 1.00. */
+  signal: {
+    relief: 0.18,
+    thermalAmplitude: 0.17,
+    hydroSeasonality: 0.16,
+    terrainExposure: 0.14,
+    eoObservability: 0.12,
+    uniqueness: 0.11,
+    structuralTexture: 0.12,
+  },
+  /** Top-risk averaging weight on terrain exposure. */
+  terrainExposureRiskWeight: 0.72,
+  terrainExposureReliefWeight: 0.45,
+} as const;
 
 function clamp01(v: number): number {
   return Math.max(0, Math.min(1, v));
@@ -97,6 +145,7 @@ function structuralTextureScore(
   annualThermalAmplitudeC: number,
   hydroSeasonalityRatio: number,
 ): number {
+  const w = GEOSPATIAL_WEIGHTS.structure;
   const rRel = normalize(reliefEnergyMPerKm, 6, 170);
   const rElev = normalize(place.elevationM, 80, 4000);
   const rAmp = normalize(annualThermalAmplitudeC, 9, 54);
@@ -105,12 +154,12 @@ function structuralTextureScore(
   const canopy = place.climate.humidity != null ? normalize(mean(place.climate.humidity), 38, 90) : 0.45;
   const boost = structureContextBoost(place);
   const blend =
-    0.26 * rRel +
-    0.2 * rElev +
-    0.18 * rAmp +
-    0.14 * rHydro +
-    0.12 * rUniq +
-    0.1 * canopy +
+    w.relief * rRel +
+    w.elevation * rElev +
+    w.thermalAmplitude * rAmp +
+    w.hydroSeasonality * rHydro +
+    w.uniqueness * rUniq +
+    w.canopy * canopy +
     boost;
   return Math.round(clamp01(blend) * 100);
 }
@@ -245,45 +294,64 @@ export function buildGeospatialAnalysis(place: Place): GeospatialAnalysis {
 
   const wettest = Math.max(...place.climate.precipMm);
   const driest = Math.max(0.1, Math.min(...place.climate.precipMm));
-  const radiusKm = Math.max(8, place.localContrast?.[0]?.radiusKm ?? 24);
+  // Floor radiusKm to 8 even when an authored value is 0 / negative — see E7
+  // (divide-by-zero guard). The floor is also a sane lower bound for what a
+  // "local contrast ring" represents physically.
+  const authoredRadius = place.localContrast?.[0]?.radiusKm;
+  const radiusKm = Math.max(8, authoredRadius && authoredRadius > 0 ? authoredRadius : 24);
   const reliefEnergyMPerKm = place.elevationM / radiusKm;
   const annualThermalAmplitudeC = Math.max(...place.climate.tempHighC) - Math.min(...place.climate.tempLowC);
   const hydroSeasonalityRatio = safeRatio(wettest, driest);
-  const annualPrecipMm = place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
+  const annualPrecipMm = getAnnualPrecipMm(place);
   const humidityMean = place.climate.humidity ? mean(place.climate.humidity) : null;
   const snowMonths = place.climate.snowCm?.filter(v => v > 2).length ?? 0;
 
+  const W = GEOSPATIAL_WEIGHTS;
   const riskAvg = topRiskAverage(place); // 0..5
   const driverDiversity = Math.min(1, place.drivers.length / 6);
-  const terrainExposureIndex = riskAvg * 0.72 + driverDiversity + normalize(reliefEnergyMPerKm, 10, 140) * 0.45;
+  const terrainExposureIndex =
+    riskAvg * W.terrainExposureRiskWeight +
+    driverDiversity +
+    normalize(reliefEnergyMPerKm, 10, 140) * W.terrainExposureReliefWeight;
 
   const cloudPenalty =
-    hasArchetype(place, ["fog-belt-coast", "cloud-forest", "hyper-maritime", "lake-effect-snowbelt"]) ? 18 : 0;
-  const snowPenalty = snowMonths >= 5 ? 8 : 0;
-  const moistureSignal = normalize(annualPrecipMm, 250, 2400) * 24 + normalize(hydroSeasonalityRatio, 1, 9) * 16;
-  const vegetationSignal = normalize(place.scores.growability, 35, 95) * 22 + (hasDriver(place, ["river-moderation", "lake-effect", "marine-layer"]) ? 8 : 0);
-  const sentinelScore = Math.round(clamp01((42 + moistureSignal + vegetationSignal - cloudPenalty - snowPenalty) / 100) * 100);
+    hasArchetype(place, ["fog-belt-coast", "cloud-forest", "hyper-maritime", "lake-effect-snowbelt"])
+      ? W.sentinel.cloudPenalty : 0;
+  const snowPenalty = snowMonths >= 5 ? W.sentinel.snowPenalty : 0;
+  const moistureSignal =
+    normalize(annualPrecipMm, 250, 2400) * W.sentinel.moistureMagnitude +
+    normalize(hydroSeasonalityRatio, 1, 9) * W.sentinel.hydroSeasonalityMagnitude;
+  const vegetationSignal =
+    normalize(place.scores.growability, 35, 95) * W.sentinel.vegetationMagnitude +
+    (hasDriver(place, ["river-moderation", "lake-effect", "marine-layer"]) ? W.sentinel.riverMarineBoost : 0);
+  const sentinelScore = Math.round(
+    clamp01((W.sentinel.base + moistureSignal + vegetationSignal - cloudPenalty - snowPenalty) / 100) * 100,
+  );
 
   const thermalSignal =
-    normalize(annualThermalAmplitudeC, 12, 55) * 26 +
-    normalize(place.scores.tradeoff, 20, 95) * 14 +
-    (hasArchetype(place, ["urban-heat-contrast", "desert-oasis", "high-desert-escape"]) ? 10 : 0) +
-    (place.risks.extremeHeat.level === "high" || place.risks.extremeHeat.level === "very-high" ? 8 : 0);
-  const landsatScore = Math.round(clamp01((44 + thermalSignal - cloudPenalty * 0.45) / 100) * 100);
-  const eoObservabilityScore = Math.round(sentinelScore * 0.52 + landsatScore * 0.48);
+    normalize(annualThermalAmplitudeC, 12, 55) * W.landsat.thermalAmplitudeMagnitude +
+    normalize(place.scores.tradeoff, 20, 95) * W.landsat.tradeoffMagnitude +
+    (hasArchetype(place, ["urban-heat-contrast", "desert-oasis", "high-desert-escape"]) ? W.landsat.archetypeBonus : 0) +
+    (place.risks.extremeHeat.level === "high" || place.risks.extremeHeat.level === "very-high" ? W.landsat.extremeHeatBonus : 0);
+  const landsatScore = Math.round(
+    clamp01((W.landsat.base + thermalSignal - cloudPenalty * W.landsat.cloudPenaltyShare) / 100) * 100,
+  );
+  const eoObservabilityScore = Math.round(
+    sentinelScore * W.eoObservability.sentinel + landsatScore * W.eoObservability.landsat,
+  );
 
   const structuralTexture = structuralTextureScore(place, reliefEnergyMPerKm, annualThermalAmplitudeC, hydroSeasonalityRatio);
 
   const corpus = getPlaceCorpusRanks(place);
   const structuralN = normalize(structuralTexture, 22, 94);
   const combined =
-    0.18 * normalize(reliefEnergyMPerKm, 8, 180) +
-    0.17 * normalize(annualThermalAmplitudeC, 8, 55) +
-    0.16 * normalize(Math.min(hydroSeasonalityRatio, 10), 1, 10) +
-    0.14 * normalize(terrainExposureIndex, 0, 5) +
-    0.12 * normalize(eoObservabilityScore, 30, 92) +
-    0.11 * corpus.higherUniquenessShare +
-    0.12 * structuralN;
+    W.signal.relief * normalize(reliefEnergyMPerKm, 8, 180) +
+    W.signal.thermalAmplitude * normalize(annualThermalAmplitudeC, 8, 55) +
+    W.signal.hydroSeasonality * normalize(Math.min(hydroSeasonalityRatio, 10), 1, 10) +
+    W.signal.terrainExposure * normalize(terrainExposureIndex, 0, 5) +
+    W.signal.eoObservability * normalize(eoObservabilityScore, 30, 92) +
+    W.signal.uniqueness * corpus.higherUniquenessShare +
+    W.signal.structuralTexture * structuralN;
   const geospatialSignalScore = Math.round(combined * 100);
 
   const spectralSignals = buildSpectralSignals(place, annualPrecipMm, snowMonths);

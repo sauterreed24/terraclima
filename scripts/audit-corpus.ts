@@ -234,6 +234,31 @@ function checkConsistency(p: Place, where: string, text: string) {
 
 // ---------- Run ----------
 
+// ---------- Check 4: citation URL format ----------
+
+/**
+ * E1 — every Citation that supplies a `url` must have a parseable https://
+ * URL. http:// is flagged as fatal because the corpus claims modern public
+ * sources (NOAA, ECCC, SMN, USGS, INEGI) which all serve over TLS.
+ */
+function checkCitationUrls(p: Place) {
+  for (const c of p.citations ?? []) {
+    if (!c.url) continue;
+    let parsed: URL | null = null;
+    try { parsed = new URL(c.url); } catch { /* fallthrough */ }
+    if (!parsed) {
+      record("fatal", `${p.id}:citation[${c.kind}].url`, `unparseable URL "${c.url}"`);
+      continue;
+    }
+    if (parsed.protocol !== "https:") {
+      record("fatal", `${p.id}:citation[${c.kind}].url`, `non-https URL "${c.url}"`);
+    }
+    if (/^bit\.ly|tinyurl\.com|t\.co$/i.test(parsed.hostname)) {
+      record("warn", `${p.id}:citation[${c.kind}].url`, `URL shortener — prefer canonical: "${c.url}"`);
+    }
+  }
+}
+
 for (const p of PLACES) {
   for (const [field, text] of placeFields(p)) {
     const where = `${p.id}:${field}`;
@@ -241,6 +266,7 @@ for (const p of PLACES) {
     checkTypography(where, text);
     checkConsistency(p, where, text);
   }
+  checkCitationUrls(p);
 }
 for (const c of CONCEPTS) {
   for (const [field, val] of [["short", c.short], ["long", c.long], ["mechanism", c.mechanism]] as const) {
