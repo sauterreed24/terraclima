@@ -99,7 +99,7 @@ interface Props {
 /** Allow zooming out enough to frame every pin across NA; must match `fitMapViewToPoints` bounds. */
 const MIN_ZOOM = 0.42;
 const MAX_ZOOM = 8;
-const MOBILE_CLUSTER_RADIUS_PX = 42;
+const MOBILE_CLUSTER_RADIUS_PX = 48;
 const MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF = 1.65;
 
 /** Microclimate driver legend — lives on the dark map chrome with high-contrast labels. */
@@ -183,10 +183,12 @@ export function AtlasMap({
   height: heightProp = 520,
 }: Props) {
   /** Skip SVG Gaussian blur on coast & heavy marker pulse on low-power / save-data devices (e.g. older Surfaces). */
-  const richEffects = useRichVisualEffects();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
-  const [mapInteractionEnabled, setMapInteractionEnabled] = useState(false);
-  const mapInteractive = !coarsePointer || mapInteractionEnabled;
+  // Touch devices skip rich effects unconditionally — the SVG blur filter and
+  // marker pulses are the largest paint cost on iOS Safari, and modern phones
+  // still report >4 GB / >4 cores so the generic `useRichVisualEffects()`
+  // probe leaves them on. We always keep gradients, halos, and tier glyphs.
+  const richEffects = useRichVisualEffects() && !coarsePointer;
   const [legendOpen, setLegendOpen] = useState(false);
 
   const shellRef = useRef<HTMLDivElement>(null);
@@ -216,27 +218,41 @@ export function AtlasMap({
   const mapMeasured = dims.measured;
 
   useEffect(() => {
-    if (!coarsePointer) {
-      setMapInteractionEnabled(false);
-      setLegendOpen(false);
-    }
+    if (!coarsePointer) setLegendOpen(false);
   }, [coarsePointer]);
-
-  useEffect(() => {
-    if (mapInteractive) return;
-    activeTouchPointersRef.current.clear();
-    pinchRef.current = null;
-    touchPinchRef.current = null;
-    dragRef.current.active = false;
-    dragRef.current.dx = 0;
-    dragRef.current.dy = 0;
-  }, [mapInteractive]);
 
   const svgRef = useRef<SVGSVGElement>(null);
   const transformRef = useRef<SVGGElement>(null);
   const [view, setView] = useState({ k: 1, x: 0, y: 0 });
   const viewRef = useRef(view);
   viewRef.current = view;
+  // `settledView` lags `view` by ~120 ms while a gesture is in flight. We use
+  // it for expensive O(n²) work — clustering and label-bucket layout — so a
+  // 60 Hz pinch doesn't recompute them every frame. The marker layer still
+  // tracks the finger because pan/zoom is applied imperatively on `transformRef`.
+  const [settledView, setSettledView] = useState(view);
+  useEffect(() => {
+    const ric: ((cb: () => void, opts?: { timeout?: number }) => number) | undefined =
+      typeof window !== "undefined"
+        ? (window as Window & { requestIdleCallback?: (cb: () => void, opts?: { timeout?: number }) => number }).requestIdleCallback
+        : undefined;
+    const cic: ((id: number) => void) | undefined =
+      typeof window !== "undefined"
+        ? (window as Window & { cancelIdleCallback?: (id: number) => void }).cancelIdleCallback
+        : undefined;
+    let idleId: number | null = null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    const commit = () => setSettledView(view);
+    if (ric) {
+      idleId = ric(commit, { timeout: 140 });
+    } else {
+      timeoutId = setTimeout(commit, 120);
+    }
+    return () => {
+      if (idleId !== null && cic) cic(idleId);
+      if (timeoutId !== null) clearTimeout(timeoutId);
+    };
+  }, [view]);
   const fitSignatureRef = useRef<string | null>(null);
   const { dist } = useUnits();
   // Units read from a closure-captured ref so our direct-DOM scale-bar updater
@@ -492,28 +508,49 @@ export function AtlasMap({
     return ids;
   }, [selectedId, hoverId]);
 
-  const clusterEnabled = coarsePointer && view.k < MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF && pts.length > 18;
+  const clusterEnabled = coarsePointer && settledView.k < MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF && pts.length > 18;
   const renderItems = useMemo(
     () => clusterMapPoints(clusterSourcePoints, {
       enabled: clusterEnabled,
-      view,
+      view: settledView,
       radiusPx: MOBILE_CLUSTER_RADIUS_PX,
       protectedIds: protectedClusterIds,
     }),
-    [clusterSourcePoints, clusterEnabled, view, protectedClusterIds],
+    [clusterSourcePoints, clusterEnabled, settledView, protectedClusterIds],
   );
   const clusterItems = useMemo(
     () => renderItems.filter((item): item is AtlasClusterItem<{ place: Place; x: number; y: number; id: string }> => item.kind === "cluster"),
     [renderItems],
   );
-  const markerPoints = useMemo(
+  const markerPointsAll = useMemo(
     () => renderItems.flatMap(item => item.kind === "point" ? [item.point] : []),
     [renderItems],
   );
 
+  // Viewport-cull markers on mobile above the cluster cutoff. Below it
+  // clustering already collapses ~210 pins to ~30. Above it (k ≥ 1.65) only
+  // ~25 of the 210 are typically on-screen; rendering the rest just costs
+  // paint and reconciliation. We pad by one marker hit-radius (~80 SVG units)
+  // so markers don't pop in/out at the edge, and always include
+  // selected/hovered ids so they survive even when scrolled out of frame.
+  const markerPoints = useMemo(() => {
+    if (!coarsePointer || settledView.k < MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF) return markerPointsAll;
+    if (markerPointsAll.length <= 32) return markerPointsAll;
+    const pad = 80;
+    const k = settledView.k;
+    const minX = (-settledView.x - pad) / k;
+    const maxX = (width - settledView.x + pad) / k;
+    const minY = (-settledView.y - pad) / k;
+    const maxY = (height - settledView.y + pad) / k;
+    return markerPointsAll.filter(pt => {
+      if (pt.place.id === selectedId || pt.place.id === hoverId) return true;
+      return pt.x >= minX && pt.x <= maxX && pt.y >= minY && pt.y <= maxY;
+    });
+  }, [markerPointsAll, coarsePointer, settledView, width, height, selectedId, hoverId]);
+
   const pinLabelModes = useMemo(
-    () => computePinLabelModes(markerPoints, view.k, selectedId, hoverId),
-    [markerPoints, view.k, selectedId, hoverId]
+    () => computePinLabelModes(markerPoints, settledView.k, selectedId, hoverId),
+    [markerPoints, settledView.k, selectedId, hoverId]
   );
 
   /**
@@ -626,7 +663,6 @@ export function AtlasMap({
   // Pan via Pointer Events + direct DOM mutation (no React re-renders during drag)
   const onPointerDown = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
     if (e.pointerType === "touch") {
-      if (!mapInteractive) return;
       e.preventDefault();
       (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
       activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
@@ -643,13 +679,16 @@ export function AtlasMap({
     (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
     setClusterPicker(null);
     startDragAt(e.clientX, e.clientY);
-  }, [mapInteractive, startDragAt, startPinch]);
+  }, [startDragAt, startPinch]);
 
   // Cursor lat/lon overlay — RAF-coalesced direct-DOM update. Runs on every
-  // pointer move (not just drag). No React renders.
+  // pointer move (not just drag). No React renders. Skipped on coarse
+  // pointers: touch never hovers usefully and the overlay would just steal a
+  // getBoundingClientRect + projection-invert per touchmove frame.
   const coordRAF = useRef<number>(0);
   const coordBufRef = useRef<{ lon: number; lat: number } | null>(null);
   const updateCursorCoord = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
+    if (coarsePointer) return;
     const rect = svgRef.current?.getBoundingClientRect();
     if (!rect) return;
     const localX = ((e.clientX - rect.left) / rect.width) * width;
@@ -672,11 +711,11 @@ export function AtlasMap({
         }
       });
     }
-  }, [projection, width, height]);
+  }, [coarsePointer, projection, width, height]);
 
   const onPointerMove = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
     if (e.pointerType === "touch") {
-      if (!mapInteractive || !activeTouchPointersRef.current.has(e.pointerId)) return;
+      if (!activeTouchPointersRef.current.has(e.pointerId)) return;
       e.preventDefault();
       activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
       const pair = firstTwoPointers(activeTouchPointersRef.current);
@@ -719,7 +758,7 @@ export function AtlasMap({
         applyDOMTransform();
       });
     }
-  }, [width, height, applyDOMTransform, updateCursorCoord, mapInteractive]);
+  }, [width, height, applyDOMTransform, updateCursorCoord]);
 
   const onPointerUp = useCallback((e?: React.PointerEvent<SVGSVGElement>) => {
     if (e?.pointerType === "touch") {
@@ -773,15 +812,15 @@ export function AtlasMap({
   }, [width, height]);
 
   const onTouchStart = useCallback((e: React.TouchEvent<SVGSVGElement>) => {
-    if (!mapInteractive || e.touches.length < 2) return;
+    if (e.touches.length < 2) return;
     startTouchPinch(e.touches);
-  }, [mapInteractive, startTouchPinch]);
+  }, [startTouchPinch]);
 
   const onTouchMove = useCallback((e: React.TouchEvent<SVGSVGElement>) => {
     const pinch = touchPinchRef.current;
     const rect = svgRef.current?.getBoundingClientRect();
     const pair = touchPair(e.touches);
-    if (!mapInteractive || !pinch || !rect || !pair) return;
+    if (!pinch || !rect || !pair) return;
     const [a, b] = pair;
     const center = svgPointFromClient(
       (a.clientX + b.clientX) / 2,
@@ -796,7 +835,7 @@ export function AtlasMap({
       x: center.x - pinch.mapCenterX * nextK,
       y: center.y - pinch.mapCenterY * nextK,
     });
-  }, [mapInteractive, width, height]);
+  }, [width, height]);
 
   const onTouchEnd = useCallback((e: React.TouchEvent<SVGSVGElement>) => {
     if (e.touches.length >= 2) {
@@ -889,7 +928,11 @@ export function AtlasMap({
   }, [width, height, coarsePointer, openClusterPicker]);
 
   const topoLoading = topo === null;
-  const svgTouchAction = mapInteractive ? "none" : "pan-y pinch-zoom";
+  // Always own gestures inside the SVG. Users scroll the page from above/below
+  // the map (matches Apple/Google embedded maps). This is what makes marker
+  // taps reliable: with `pan-y` the browser converts a tap-with-2px-drift into
+  // the start of a page scroll and cancels the click.
+  const svgTouchAction = "none";
 
   return (
     <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
@@ -913,7 +956,7 @@ export function AtlasMap({
         textRendering="geometricPrecision"
         role="img"
         tabIndex={0}
-        aria-label={coarsePointer ? "Atlas map of North America. The page scrolls normally. Use the map control to enable pan and pinch zoom. Tap any pin to open that place's full profile." : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile."}
+        aria-label="Atlas map of North America. Drag to pan, pinch or scroll to zoom. Tap any pin to open that place's full profile."
         onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -1040,10 +1083,15 @@ export function AtlasMap({
             {/* Focus country fills */}
             <path d={focusPath} fill="url(#landGrad)" />
 
-            {/* Hillshade overlays */}
+            {/* Hillshade overlays — phones get just one to keep the relief feel
+                without three full-landmass fill repaints per pinch frame. */}
             <path d={focusPath} fill="url(#hillshade)" opacity={richEffects ? 0.95 : 0.72} />
-            <path d={focusPath} fill="url(#hillshade2)" opacity={richEffects ? 0.82 : 0.55} />
-            <path d={focusPath} fill="url(#landGrain)" opacity={richEffects ? 0.35 : 0.12} />
+            {!coarsePointer ? (
+              <>
+                <path d={focusPath} fill="url(#hillshade2)" opacity={richEffects ? 0.82 : 0.55} />
+                <path d={focusPath} fill="url(#landGrain)" opacity={richEffects ? 0.35 : 0.12} />
+              </>
+            ) : null}
 
             {/* Faux cordillera shading — clipped to land, cheap ellipses (no DEM fetch). */}
             {topo && focusPath.length > 8 ? (
@@ -1229,12 +1277,15 @@ export function AtlasMap({
         )}
       </div>
 
-      {/* Cursor lat/lon readout — imperatively updated via ref on pointer move */}
-      <div
-        ref={coordLabelRef}
-        className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none z-[2] px-2.5 py-1 rounded-md panel-thin text-[10px] font-mono-num text-frost tracking-wider opacity-0 transition-opacity"
-        style={{ transition: "opacity 200ms" }}
-      >—</div>
+      {/* Cursor lat/lon readout — imperatively updated via ref on pointer move.
+          Hidden on coarse pointers (touch never hovers usefully). */}
+      {!coarsePointer ? (
+        <div
+          ref={coordLabelRef}
+          className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none z-[2] px-2.5 py-1 rounded-md panel-thin text-[10px] font-mono-num text-frost tracking-wider opacity-0 transition-opacity"
+          style={{ transition: "opacity 200ms" }}
+        >—</div>
+      ) : null}
 
       {/* Zoom controls */}
       <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[2]">
@@ -1250,17 +1301,6 @@ export function AtlasMap({
           FIT
         </button>
       </div>
-
-      {coarsePointer ? (
-        <button
-          type="button"
-          className={`map-mode-toggle ${mapInteractionEnabled ? "map-mode-toggle--active" : ""}`}
-          aria-pressed={mapInteractionEnabled}
-          onClick={() => setMapInteractionEnabled(v => !v)}
-        >
-          {mapInteractionEnabled ? "Scroll page" : "Use map"}
-        </button>
-      ) : null}
 
       {/* Tier legend — matches map chrome; hints are plain language (no key-cap styling). */}
       {!coarsePointer ? (
@@ -1312,7 +1352,7 @@ export function AtlasMap({
       ) : null}
 
       {/* Zoom indicator */}
-      <div className={`absolute ${coarsePointer ? "top-[4.2rem] left-3" : "top-3 left-3"} panel-thin px-2 py-1 text-[10px] font-mono-num text-stone pointer-events-none z-[2]`}>
+      <div className="absolute top-3 left-3 panel-thin px-2 py-1 text-[10px] font-mono-num text-stone pointer-events-none z-[2]">
         ×{view.k.toFixed(2)}
       </div>
 
@@ -1420,12 +1460,12 @@ const ClusterMarker = memo(function ClusterMarker({
       onKeyDown={onKeyDown}
     >
       <g transform={`scale(${inv})`}>
-        <circle r="21" fill="rgba(8,14,24,0.88)" stroke="rgba(245,250,255,0.92)" strokeWidth="1.5" />
-        <circle r="16" fill="rgba(94,196,220,0.32)" stroke="rgba(94,196,220,0.78)" strokeWidth="1.1" />
+        <circle r="24" fill="rgba(8,14,24,0.88)" stroke="rgba(245,250,255,0.92)" strokeWidth="1.5" />
+        <circle r="18" fill="rgba(94,196,220,0.32)" stroke="rgba(94,196,220,0.78)" strokeWidth="1.1" />
         <text
           textAnchor="middle"
-          y="4"
-          fontSize="13"
+          y="5"
+          fontSize="14"
           fontFamily="var(--font-mono),ui-monospace,monospace"
           fontWeight={700}
           fill="rgba(245,250,255,0.98)"
@@ -1433,7 +1473,7 @@ const ClusterMarker = memo(function ClusterMarker({
         >
           {count}
         </text>
-        <circle r="25" fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
+        <circle r="30" fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
       </g>
     </g>
   );
@@ -1579,8 +1619,7 @@ const Marker = memo(function Marker({
           strokeWidth={1.55}
           opacity={0.93}
         />
-        {/* Cheap halo (no SVG filter — stacked translucent circles composite far faster) */}
-        <circle r={r + 7} fill={color} opacity={0.05} />
+        {/* Cheap halo (no SVG filter — one translucent circle reads as glow). */}
         <circle r={r + 4} fill={color} opacity={0.12} />
 
         {/* Active pulse ring */}

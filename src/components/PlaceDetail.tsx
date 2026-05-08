@@ -26,6 +26,7 @@ import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
+import { useMediaQuery } from "../hooks/use-media-query";
 import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
 import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
 import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
@@ -192,6 +193,7 @@ interface Props {
 
 export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace }: Props) {
   const reduceMotion = useReducedMotion();
+  const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
   const titleId = useId();
   useFocusTrap(panelRef, Boolean(place));
@@ -269,7 +271,9 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
             transition={
               reduceMotion
                 ? { duration: 0 }
-                : { type: "spring", stiffness: 280, damping: 32 }
+                : coarsePointer
+                  ? { duration: 0.18, ease: [0.2, 0.8, 0.2, 1] }
+                  : { type: "spring", stiffness: 280, damping: 32 }
             }
             className="fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto outline-none border-l border-[rgba(200,170,140,0.38)]"
             style={{

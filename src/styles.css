@@ -1514,28 +1514,6 @@
   }
   .map-btn:active { transform: translateY(0); }
 
-  .map-mode-toggle {
-    position: absolute;
-    left: 0.75rem;
-    top: 0.75rem;
-    z-index: 4;
-    min-height: 44px;
-    padding: 0 0.9rem;
-    border-radius: 999px;
-    border: 1px solid rgba(140, 200, 224, 0.55);
-    background: rgba(13, 20, 32, 0.9);
-    color: rgba(245, 250, 255, 0.98);
-    font-size: 0.8rem;
-    font-weight: 700;
-    box-shadow:
-      0 10px 26px -12px rgba(0, 0, 0, 0.75),
-      0 1px 0 rgba(255, 255, 255, 0.1) inset;
-  }
-  .map-mode-toggle--active {
-    border-color: rgba(240, 210, 156, 0.9);
-    background: rgba(60, 42, 20, 0.93);
-  }
-  .map-mode-toggle:focus-visible,
   .map-control-pill:focus-visible,
   .map-legend-close:focus-visible,
   .cluster-picker__item:focus-visible {
