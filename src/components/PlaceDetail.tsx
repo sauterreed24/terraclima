@@ -331,6 +331,7 @@ function DetailHeader({
   onPickArchetype?: (a: MicroclimateArchetype) => void;
 }) {
   const { temp, dist } = useUnits();
+  const coarsePointer = useMediaQuery("(pointer: coarse)");
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice";
   const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
@@ -344,12 +345,12 @@ function DetailHeader({
 
   return (
     <div
-      className="sticky top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-6 pt-5 pb-4 bg-[rgba(255,253,248,0.97)] backdrop-blur relative border-b border-[rgba(200,160,120,0.35)]"
+      className="md:sticky md:top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 bg-[rgba(255,253,248,0.97)] backdrop-blur relative border-b border-[rgba(200,160,120,0.35)]"
       style={{ backgroundImage: TONE_HERO[tone] }}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
-          <div className="flex items-center gap-2 text-xs text-stone mb-1 flex-wrap">
+          <div className="flex items-center gap-1.5 md:gap-2 text-xs text-stone mb-1 flex-wrap">
             <span className="chip" data-tone={place.tier === "A" ? "ochre" : place.tier === "B" ? "ice" : "sage"}>{tierLabel}</span>
             <MapPin className="w-3 h-3" aria-hidden />
             <span>{place.municipality ? `${place.municipality}, ` : ""}{place.region}, {place.country}</span>
@@ -361,7 +362,7 @@ function DetailHeader({
             <span className="text-shadow">·</span>
             <span className="font-mono-num">{place.lat.toFixed(2)}°, {place.lon.toFixed(2)}°</span>
           </div>
-          <h2 id={titleId} className="font-atlas text-3xl text-ice tracking-tight leading-[1.15]">
+          <h2 id={titleId} className="font-atlas text-[1.65rem] md:text-3xl text-ice tracking-tight leading-[1.15]">
             {place.name}
           </h2>
           <div className="flex flex-wrap gap-1.5 mt-2">
@@ -410,7 +411,7 @@ function DetailHeader({
             alt={hero.alt}
             width={1280}
             height={520}
-            className="w-full h-44 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
+            className="w-full h-36 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
             loading="eager"
             decoding="async"
             onError={(e) => {
@@ -423,7 +424,7 @@ function DetailHeader({
               const fig = img.parentElement;
               if (fig && !fig.querySelector(".tc-hero-fallback")) {
                 const fallback = document.createElement("div");
-                fallback.className = "tc-hero-fallback w-full h-44 md:h-52 flex items-center justify-center text-stone text-[11px]";
+                fallback.className = "tc-hero-fallback w-full h-36 md:h-52 flex items-center justify-center text-stone text-[11px]";
                 fallback.style.background = "linear-gradient(135deg, rgba(140,200,224,0.35), rgba(200,170,140,0.45))";
                 fallback.textContent = "Image unavailable";
                 fig.insertBefore(fallback, img);
@@ -462,9 +463,11 @@ function DetailHeader({
         )}
       </div>
 
-      <div className="mt-3">
-        <MiniClimateStrip place={place} height={22} />
-      </div>
+      {!coarsePointer ? (
+        <div className="mt-3">
+          <MiniClimateStrip place={place} height={22} />
+        </div>
+      ) : null}
     </div>
   );
 }
