@@ -1,6 +1,10 @@
-// Flat config (ESLint v9). Strict-but-friendly preset for the existing
-// codebase: TypeScript + React hooks + jsx-a11y as warnings (so they
-// surface in PRs without blocking the existing baseline).
+// ESLint v9 flat config for Terraclima.
+//
+// Several rules use severity "warn", but `npm run lint` passes `--max-warnings 0`
+// (see package.json), so **any warning fails CI** — treat warns like errors when fixing issues.
+//
+// jsx-a11y rules remain mapped to "warn" so `recommended` presets stay readable in config,
+// but the warning budget is zero in practice.
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import reactHooks from "eslint-plugin-react-hooks";
@@ -35,27 +39,19 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      // jsx-a11y is warn-only so the existing codebase isn't gated on it;
-      // new violations still show up in editor + CI output.
+      // Mapped to warn for parity with jsx-a11y recommended; CI still fails on any warning.
       ...Object.fromEntries(
         Object.entries(jsxA11y.configs.recommended.rules ?? {}).map(([k, v]) => [
           k,
           Array.isArray(v) ? ["warn", ...v.slice(1)] : "warn",
         ]),
       ),
-      // Keep the unused-var signal but allow leading-underscore opt-out so
-      // call-site clarity (e.g. `(_e) => …`) isn't punished.
       "@typescript-eslint/no-unused-vars": [
         "warn",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_", caughtErrorsIgnorePattern: "^_" },
       ],
-      // The codebase intentionally uses `any` in a handful of bridging spots
-      // (e.g. URL state validators that take `Record<string, unknown>`).
-      // Flag new uses without breaking the build.
       "@typescript-eslint/no-explicit-any": "warn",
-      // Regex-heavy modules (units.ts in particular) keep extra escapes inside
-      // character classes for visual clarity. Removing them is a no-op
-      // semantically but harms readability — warn, don't error.
+      // Prefer fixing escapes; CI fails while this warning exists (`--max-warnings 0`).
       "no-useless-escape": "warn",
     },
   },

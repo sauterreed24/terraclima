@@ -82,7 +82,7 @@ Every place carries citations and confidence notes. Derived scores are deliberat
 - Framer Motion for selected overlays and transitions
 - `d3-geo`, `topojson-client`, `world-atlas`, and `us-atlas` for cartography
 - `@tanstack/react-virtual` for scalable card rendering
-- Vitest for pure-logic tests
+- Vitest + Testing Library for unit / light DOM smoke tests
 - ESLint v9 with `typescript-eslint`, `react-hooks`, and `jsx-a11y`; `npm run lint` uses **`--max-warnings 0`** so warnings fail the quality gate.
 - GitHub Actions for PR-time quality checks and GitHub Pages deployment
 
@@ -123,6 +123,18 @@ The default `GITHUB_TOKEN` cannot enable Pages programmatically, so this toggle 
 - `npm run build` — default `/` base. Suitable for Vercel, Netlify, any root-mounted host.
 - `npm run build:static` — `./` (relative) base. Used by the static-preview workflow; portable across hosts.
 - `npm run build:pages` — `/terraclima/` base. Used by the GitHub Pages workflow.
+
+### Canonical URL vs preview (sharing + SEO)
+
+There are **multiple valid ways** to host this static SPA. They ship the **same JavaScript bundle**, but **search engines and scrapers** follow the canonical URL you advertise in metadata:
+
+| Deploy | Typical role |
+|--------|----------------|
+| **GitHub Pages** (`https://sauterreed24.github.io/terraclima/`) | **Canonical** in [`index.html`](index.html), [`public/robots.txt`](public/robots.txt), [`public/sitemap.xml`](public/sitemap.xml), Open Graph / Twitter |
+| **raw.githack `static-preview`** ([link at top](#project-links)) | **Frictionless preview** from the README (phones welcome) |
+| **Vercel** | Custom domain or PR previews |
+
+If the **primary public URL** changes, update canonical, OG, robots, and sitemap **together** (see **Hardening** below).
 
 ### Hardening shipped in this repo
 
@@ -165,7 +177,7 @@ npm run test:corpus-gold
 npm run build
 ```
 
-The same pipeline runs automatically on every pull request and non-`main` push via `.github/workflows/quality.yml`.
+The same pipeline runs automatically on every **pull request** and on **pushes to non-`main` branches** via [`.github/workflows/quality.yml`](.github/workflows/quality.yml). Pushes to **`main`** also run the full gate via [`.github/workflows/quality-main.yml`](.github/workflows/quality-main.yml) (so direct commits cannot skip it).
 
 Individual commands are useful while iterating:
 
@@ -184,6 +196,19 @@ npm run test:corpus-gold   # Ranking and geospatial snapshot guardrails
 npm run generate:og        # Regenerate public/og-image.png
 ```
 
+### Manual QA — desktop and phone (after UI or map changes)
+
+CI cannot exercise **touch** or real device GPUs. After anything that affects layout, the map, nav, or overlays, spot-check in a browser (or DevTools device mode):
+
+| Check | Phone / narrow | Desktop / wide |
+|-------|----------------|----------------|
+| **Primary nav** | Hamburger menu (under ~560px width); dialog closes; focus sensible | Explorer / Collections / Learn in header bar |
+| **Explorer filters** | Bottom “Filters & rank” sheet; **`F`** opens it | Filter **dock** beside explorer (≥1024px) |
+| **Map** | Page **scrolls** over the map by default; **Use map** → pan/pinch; **Scroll page** exits | Wheel zoom, drag pan, pin opens detail |
+| **Place + compare** | Detail drawer scrolls; compare readable | Same; keyboard shortcuts (`?` overlay) |
+
+Try widths near **375px**, **768px**, **1024px**, and full desktop. Always run `npm run quality:check` first.
+
 ## Human Review Guide
 
 For a portfolio review, start here:
@@ -193,7 +218,7 @@ For a portfolio review, start here:
 3. **Derived intelligence:** Review `src/lib/geospatial-analysis.ts`, `src/lib/scoring.ts`, and `src/lib/atlas-corpus-stats.ts` for explainable ranking and screening logic.
 4. **Quality discipline:** Run `npm run quality:check`. The scripts make the corpus auditable, not merely type-safe.
 5. **Performance and accessibility:** Check `src/lib/device-profile.ts`, `src/components/AtlasMap.tsx`, `src/lib/atlas-map-cluster.ts`, `src/components/VirtualPlaceGrid.tsx`, `src/hooks/use-focus-trap.ts`, and the low-power sections in `src/styles.css`.
-6. **Test coverage:** Review `src/lib/__tests__/` and the validation scripts under `scripts/`.
+6. **Test coverage:** Review `src/lib/__tests__/`, `src/__tests__/`, and the validation scripts under `scripts/`.
 
 ## Agentic Review Guide
 
@@ -208,7 +233,7 @@ For AI agents or automated reviewers:
 - Preserve URL behavior in `src/lib/app-url.ts` and modal focus behavior in `src/hooks/use-focus-trap.ts`.
 - Preserve phone map behavior: page scroll by default, explicit **Use map** mode for pan/pinch, cluster tap-to-zoom, and a clear **Scroll page** exit.
 - When a change is user-visible or architectural, update `README.md` in the same work.
-- After edits, run `npm run quality:check`. For UI changes, also inspect Explorer, a place profile, the compare overlay, and mobile-width layout.
+- After edits, run `npm run quality:check`. For UI changes, follow **Manual QA — desktop and phone** above (Explorer, filters, map touch mode, place detail, compare).
 
 ## Project Layout
 
@@ -224,10 +249,11 @@ src/
   hooks/                       Focus trap, media query, reading spy
   lib/                         Scoring, units, geospatial analysis, URL state, corpus stats,
                                map fit and map clustering helpers
-    __tests__/                 Vitest tests for pure logic
+    __tests__/                 Vitest tests (lib + ranking contracts)
+  __tests__/                   Light DOM smoke tests (App shell; map stubbed)
   types.ts                     Domain schema
 scripts/                       Corpus audits, sanity checks, rank goldens, debug dumps, OG-image generator
-.github/workflows/             quality.yml and deploy-pages.yml
+.github/workflows/             quality.yml, quality-main.yml, static-preview.yml, deploy-pages.yml
 ```
 
 ## What This Demonstrates

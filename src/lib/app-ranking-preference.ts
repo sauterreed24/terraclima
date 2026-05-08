@@ -4,27 +4,11 @@
  */
 
 import type { RankingProfile } from "./scoring";
+import { ALL_RANKING_PROFILES } from "./ranking-options";
+
+export { ALL_RANKING_PROFILES } from "./ranking-options";
 
 export const RANKING_STORAGE_KEY = "terraclima.ranking.v1";
-
-/** Every ranking profile accepted by the scorer — mirrors explorer UI options. */
-export const ALL_RANKING_PROFILES: readonly RankingProfile[] = [
-  "coolest-summers",
-  "mildest-winters",
-  "best-shoulder-seasons",
-  "driest-air",
-  "best-growability",
-  "hidden-gems",
-  "most-unique",
-  "lowest-fire-risk",
-  "climate-resilient",
-  "best-four-season",
-  "best-diurnal-sleep",
-  "strongest-geospatial-signal",
-  "mediterranean-like",
-  "wet-forest-refuges",
-  "monsoon-drama",
-] as const;
 
 const PROFILE_SET = new Set<string>(ALL_RANKING_PROFILES);
 

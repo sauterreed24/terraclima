@@ -1,0 +1,31 @@
+# Dependabot: grouped npm updates keep PR noise low while staying current on patches.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 8
+    groups:
+      vite-ecosystem:
+        patterns:
+          - vite
+          - vitest
+          - "@vitejs/*"
+          - "@vitest/*"
+      lint-types:
+        patterns:
+          - eslint*
+          - typescript-eslint
+          - "@eslint/*"
+          - typescript
+          - "@types/*"
+      react-ui-libs:
+        patterns:
+          - react
+          - react-dom
+          - "@types/react*"
+          - framer-motion
+          - lucide-react
+          - "@tanstack/*"

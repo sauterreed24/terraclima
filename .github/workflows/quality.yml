@@ -1,6 +1,7 @@
-# Runs the full quality gate (typecheck + corpus audits + tests + lint + build)
-# on every pull request and on pushes to non-main branches. Pushes to main
-# already trigger deploy-pages.yml, which builds as part of the deploy.
+# Runs `npm run quality:check` on every pull request and on pushes to branches
+# other than `main`. Pushes to `main` run the same gate via `quality-main.yml`
+# so direct commits cannot bypass typecheck, lint (zero warnings), tests, corpus
+# audits, and production build.
 name: Quality
 
 on:

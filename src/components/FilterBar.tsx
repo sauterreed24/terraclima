@@ -3,26 +3,11 @@ import type { Country, MicroclimateArchetype } from "../types";
 import type { FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
+import { RANKING_OPTIONS } from "../lib/ranking-options";
 import { Check, Search, X } from "lucide-react";
 import { useProse } from "../lib/units";
 
-export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
-  { id: "hidden-gems", label: "Hidden gems" },
-  { id: "most-unique", label: "Most unique" },
-  { id: "coolest-summers", label: "Coolest summers" },
-  { id: "mildest-winters", label: "Mildest winters" },
-  { id: "best-shoulder-seasons", label: "Best shoulder seasons" },
-  { id: "driest-air", label: "Driest air" },
-  { id: "best-growability", label: "Best growability" },
-  { id: "lowest-fire-risk", label: "Lowest fire risk" },
-  { id: "climate-resilient", label: "Climate-resilient" },
-  { id: "best-four-season", label: "Best four-season" },
-  { id: "best-diurnal-sleep", label: "Best diurnal / sleep climate" },
-  { id: "strongest-geospatial-signal", label: "Strongest geospatial signal" },
-  { id: "mediterranean-like", label: "Mediterranean-like" },
-  { id: "wet-forest-refuges", label: "Wet-forest refuges" },
-  { id: "monsoon-drama", label: "Monsoon drama" },
-];
+export { RANKING_OPTIONS } from "../lib/ranking-options";
 
 interface Props {
   searchInputId?: string;

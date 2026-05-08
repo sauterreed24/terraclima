@@ -1,5 +1,4 @@
 // @vitest-environment jsdom
-// @vitest-environment jsdom
 import { describe, expect, it, beforeEach, afterEach } from "vitest";
 import {
   ALL_RANKING_PROFILES,
