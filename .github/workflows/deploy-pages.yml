@@ -1,5 +1,12 @@
 # Builds the SPA with base path /terraclima/ and publishes to GitHub Pages.
 # Repository → Settings → Pages should use Source: GitHub Actions.
+#
+# Pages is opt-in: the GITHUB_TOKEN cannot enable Pages programmatically, so
+# this workflow first probes whether Pages is configured via the REST API. If
+# it is not, every subsequent step is skipped with a `notice` annotation — the
+# workflow stays green so post-merge runs on `main` don't red-X. The
+# static-preview branch (raw.githack-served) is the canonical hosting either
+# way; enabling Pages just adds a second mirror at sauterreed24.github.io.
 name: Deploy GitHub Pages
 
 on:
@@ -19,22 +26,41 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      pages_enabled: ${{ steps.check.outputs.pages_enabled }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Pages
+      - id: check
+        name: Check whether GitHub Pages is enabled
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${{ github.repository }}/pages" >/dev/null 2>&1; then
+            echo "pages_enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "pages_enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::GitHub Pages is not enabled for this repository. Skipping the Pages build. The static-preview branch (raw.githack-served) remains the canonical live URL. To activate Pages, enable Settings → Pages → Source: GitHub Actions and re-run this workflow."
+          fi
+      - if: steps.check.outputs.pages_enabled == 'true'
+        name: Setup Pages
         uses: actions/configure-pages@v5
-      - uses: actions/setup-node@v4
+      - if: steps.check.outputs.pages_enabled == 'true'
+        uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: npm
-      - run: npm ci
-      - run: npm run build:pages
-      - uses: actions/upload-pages-artifact@v3
+      - if: steps.check.outputs.pages_enabled == 'true'
+        run: npm ci
+      - if: steps.check.outputs.pages_enabled == 'true'
+        run: npm run build:pages
+      - if: steps.check.outputs.pages_enabled == 'true'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
   deploy:
     needs: build
+    if: needs.build.outputs.pages_enabled == 'true'
     runs-on: ubuntu-latest
     environment:
       name: github-pages

@@ -98,7 +98,7 @@ interface Props {
 
 /** Allow zooming out enough to frame every pin across NA; must match `fitMapViewToPoints` bounds. */
 const MIN_ZOOM = 0.42;
-const MAX_ZOOM = 8;
+const MAX_ZOOM = 14;
 const MOBILE_CLUSTER_RADIUS_PX = 48;
 const MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF = 1.65;
 
@@ -317,6 +317,11 @@ export function AtlasMap({
     mapCenterX: number;
     mapCenterY: number;
   } | null>(null);
+  // Tracks the previous touch's pointerdown for double-tap-to-zoom detection.
+  // The follow-up tap zooms ~1.9× centered on the tap point (matches the
+  // wheel-zoom math) — only when the gesture didn't move and didn't land on a
+  // marker (markers stop propagation so this handler never sees their taps).
+  const lastTouchTapRef = useRef<{ t: number; clientX: number; clientY: number } | null>(null);
 
   const projection: GeoProjection = useMemo(() =>
     geoAlbers()
@@ -761,6 +766,7 @@ export function AtlasMap({
   }, [width, height, applyDOMTransform, updateCursorCoord]);
 
   const onPointerUp = useCallback((e?: React.PointerEvent<SVGSVGElement>) => {
+    let touchTap: { clientX: number; clientY: number } | null = null;
     if (e?.pointerType === "touch") {
       activeTouchPointersRef.current.delete(e.pointerId);
       if (activeTouchPointersRef.current.size >= 2) {
@@ -773,19 +779,59 @@ export function AtlasMap({
         startDragAt(remaining.clientX, remaining.clientY);
         return;
       }
+      // Last finger lifted with no pinch in flight: this might be a tap.
+      // Double-tap-to-zoom only triggers when the gesture didn't pan and
+      // we have no other pointers — markers stop propagation so a marker
+      // tap never reaches this handler.
+      if (
+        !pinchRef.current &&
+        activeTouchPointersRef.current.size === 0 &&
+        !dragRef.current.moved
+      ) {
+        touchTap = { clientX: e.clientX, clientY: e.clientY };
+      }
       pinchRef.current = null;
     } else if (!e) {
       activeTouchPointersRef.current.clear();
       pinchRef.current = null;
     }
 
-    if (!dragRef.current.active) return;
-    const { dx, dy } = dragRef.current;
-    dragRef.current.active = false;
-    if (dx !== 0 || dy !== 0) setView(v => ({ ...v, x: v.x + dx, y: v.y + dy }));
-    dragRef.current.dx = 0;
-    dragRef.current.dy = 0;
-  }, [startDragAt, startPinch]);
+    if (dragRef.current.active) {
+      const { dx, dy } = dragRef.current;
+      dragRef.current.active = false;
+      if (dx !== 0 || dy !== 0) setView(v => ({ ...v, x: v.x + dx, y: v.y + dy }));
+      dragRef.current.dx = 0;
+      dragRef.current.dy = 0;
+    }
+
+    if (touchTap) {
+      const now = performance.now();
+      const prev = lastTouchTapRef.current;
+      const close =
+        prev &&
+        now - prev.t < 320 &&
+        Math.hypot(touchTap.clientX - prev.clientX, touchTap.clientY - prev.clientY) < 24;
+      if (close) {
+        lastTouchTapRef.current = null;
+        const rect = svgRef.current?.getBoundingClientRect();
+        if (rect) {
+          const mx = ((touchTap.clientX - rect.left) / rect.width) * width;
+          const my = ((touchTap.clientY - rect.top) / rect.height) * height;
+          setView(v => {
+            const nextK = clampZoom(v.k * 1.9);
+            const f = nextK / v.k;
+            return {
+              k: nextK,
+              x: mx - (mx - v.x) * f,
+              y: my - (my - v.y) * f,
+            };
+          });
+        }
+      } else {
+        lastTouchTapRef.current = { t: now, clientX: touchTap.clientX, clientY: touchTap.clientY };
+      }
+    }
+  }, [startDragAt, startPinch, width, height]);
 
   const startTouchPinch = useCallback((touches: TouchListLike) => {
     const rect = svgRef.current?.getBoundingClientRect();
@@ -1182,24 +1228,34 @@ export function AtlasMap({
 
           {/* Markers */}
           <g>
-            {markerRenderOrder.map(pt => (
-              <Marker
-                key={pt.place.id}
-                pt={pt}
-                k={view.k}
-                labelMode={pinLabelModes.get(pt.place.id) ?? "hidden"}
-                isActive={pt.place.id === selectedId}
-                isHover={pt.place.id === hoverId}
-                richEffects={richEffects}
-                onSelect={onSelect}
-                onEnter={() => {
-                  cancelHoverClear();
-                  setHoverId(pt.place.id);
-                  updateTooltip(pt);
-                }}
-                onLeave={scheduleHoverClear}
-              />
-            ))}
+            {markerRenderOrder.map(pt => {
+              // Flip the label to the left of the pin when the marker sits in
+              // the right band of the visible map. Uses settledView so the
+              // side doesn't jitter mid-pan; threshold 0.62 keeps the default
+              // "right" placement for everything except markers comfortably
+              // inside the right edge.
+              const screenX = pt.x * settledView.k + settledView.x;
+              const labelSide: "left" | "right" = screenX > width * 0.62 ? "left" : "right";
+              return (
+                <Marker
+                  key={pt.place.id}
+                  pt={pt}
+                  k={view.k}
+                  labelMode={pinLabelModes.get(pt.place.id) ?? "hidden"}
+                  labelSide={labelSide}
+                  isActive={pt.place.id === selectedId}
+                  isHover={pt.place.id === hoverId}
+                  richEffects={richEffects}
+                  onSelect={onSelect}
+                  onEnter={() => {
+                    cancelHoverClear();
+                    setHoverId(pt.place.id);
+                    updateTooltip(pt);
+                  }}
+                  onLeave={scheduleHoverClear}
+                />
+              );
+            })}
           </g>
         </g>
 
@@ -1289,8 +1345,8 @@ export function AtlasMap({
 
       {/* Zoom controls */}
       <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[2]">
-        <button type="button" className="map-btn" onClick={() => zoomBy(1.4)} title="Zoom in (+)" aria-label="Zoom in">＋</button>
-        <button type="button" className="map-btn" onClick={() => zoomBy(1 / 1.4)} title="Zoom out (−)" aria-label="Zoom out">−</button>
+        <button type="button" className="map-btn" onClick={() => zoomBy(1.7)} title="Zoom in (+)" aria-label="Zoom in">＋</button>
+        <button type="button" className="map-btn" onClick={() => zoomBy(1 / 1.7)} title="Zoom out (−)" aria-label="Zoom out">−</button>
         <button
           type="button"
           className="map-btn !text-[9px]"
@@ -1411,6 +1467,10 @@ interface MarkerProps {
   pt: { place: Place; x: number; y: number };
   k: number;
   labelMode: MapPinLabelMode;
+  /** Side of the pin to draw the label on. Flips to "left" when the marker
+   * sits in the right band of the visible viewport so the label never clips
+   * past the SVG edge at high zoom. */
+  labelSide: "left" | "right";
   isActive: boolean;
   isHover: boolean;
   /** When false, skip pulsing ring animation (older tablets / reduced motion). */
@@ -1532,7 +1592,7 @@ const ClusterPicker = memo(function ClusterPicker({
 });
 
 const Marker = memo(function Marker({
-  pt, k, labelMode, isActive, isHover, richEffects, onSelect, onEnter, onLeave,
+  pt, k, labelMode, labelSide, isActive, isHover, richEffects, onSelect, onEnter, onLeave,
 }: MarkerProps) {
   const { place, x, y } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
@@ -1681,41 +1741,48 @@ const Marker = memo(function Marker({
           />
         )}
 
-        {labelMode !== "hidden" ? (
-        <g transform={`translate(${r + 6} ${showSub ? 2 : 4})`} pointerEvents="none" className="map-marker-label">
-          <rect
-            x={-2}
-            y={showSub ? -15 : -11}
-            rx={4}
-            ry={4}
-            width={labelW}
-            height={labelH}
-            fill="rgba(8,14,24,0.94)"
-            stroke={isActive ? "rgba(240,210,156,0.85)" : "rgba(170,193,220,0.62)"}
-            strokeWidth={isActive ? 1.05 : 0.85}
-          />
-          <text
-            x={4}
-            y={showSub ? -4 : 1}
-            fontSize={labelMode === "compact" ? 10.5 : 11.5}
-            fill="#f4f8fc"
-            fontFamily="var(--font-sans),system-ui,sans-serif"
-            fontWeight={600}
-            style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.88)", strokeWidth: 2.5, strokeLinejoin: "round" }}
-          >{titleDisp}</text>
-          {showSub ? (
-            <text
-              x={4}
-              y={9}
-              fontSize={9.5}
-              fill="rgba(200,218,238,0.95)"
-              fontFamily="var(--font-sans),system-ui,sans-serif"
-              fontWeight={500}
-              style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.82)", strokeWidth: 2, strokeLinejoin: "round" }}
-            >{subLine}</text>
-          ) : null}
-        </g>
-        ) : null}
+        {labelMode !== "hidden" ? (() => {
+          // Label sits to the right of the pin by default. When `labelSide`
+          // is "left", the entire group is shifted by -(labelW + r + 6) so
+          // its right edge lands just before the pin — never past the SVG
+          // edge at high zoom.
+          const labelDx = labelSide === "right" ? r + 6 : -(r + 6) - labelW;
+          return (
+            <g transform={`translate(${labelDx} ${showSub ? 2 : 4})`} pointerEvents="none" className="map-marker-label">
+              <rect
+                x={-2}
+                y={showSub ? -15 : -11}
+                rx={4}
+                ry={4}
+                width={labelW}
+                height={labelH}
+                fill="rgba(8,14,24,0.94)"
+                stroke={isActive ? "rgba(240,210,156,0.85)" : "rgba(170,193,220,0.62)"}
+                strokeWidth={isActive ? 1.05 : 0.85}
+              />
+              <text
+                x={4}
+                y={showSub ? -4 : 1}
+                fontSize={labelMode === "compact" ? 10.5 : 11.5}
+                fill="#f4f8fc"
+                fontFamily="var(--font-sans),system-ui,sans-serif"
+                fontWeight={600}
+                style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.88)", strokeWidth: 2.5, strokeLinejoin: "round" }}
+              >{titleDisp}</text>
+              {showSub ? (
+                <text
+                  x={4}
+                  y={9}
+                  fontSize={9.5}
+                  fill="rgba(200,218,238,0.95)"
+                  fontFamily="var(--font-sans),system-ui,sans-serif"
+                  fontWeight={500}
+                  style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.82)", strokeWidth: 2, strokeLinejoin: "round" }}
+                >{subLine}</text>
+              ) : null}
+            </g>
+          );
+        })() : null}
         {/* Hit target on top so touch/stylus picks the marker, not the map pan layer beneath. */}
         <circle r={r + 18} fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
       </g>
@@ -1724,6 +1791,7 @@ const Marker = memo(function Marker({
 }, (prev, next) =>
   prev.onSelect === next.onSelect &&
   prev.labelMode === next.labelMode &&
+  prev.labelSide === next.labelSide &&
   prev.isActive === next.isActive &&
   prev.isHover === next.isHover &&
   prev.k === next.k &&
