@@ -60,6 +60,7 @@ export function useDetailReadingSpy(navDomIds: readonly string[]): string | null
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = 0;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- `key` mirrors navDomIds identity
   }, [key, runSpy]);
 
   return activeId;

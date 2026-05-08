@@ -88,6 +88,9 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       rafRef.current = 0;
     };
+    // sectionIdsKey captures identity changes without depending on `sections`
+    // reference churn; adding `sections` would re-bind listeners too often.
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- stable sections via sectionIdsKey
   }, [runSpy, sectionIdsKey, sections.length]);
 
   const jumpScrollDebounceRef = useRef(0);

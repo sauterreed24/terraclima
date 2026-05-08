@@ -200,6 +200,7 @@ For a portfolio review, start here:
 For AI agents or automated reviewers:
 
 - **Runnable preview:** [Open Terraclima](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html) — the always-on raw.githack-served `static-preview` branch. No auth, no install.
+- **URL / compare invariants:** [docs/URL-INVARIANTS.md](docs/URL-INVARIANTS.md) (see also `src/lib/app-url.ts` tests and `COMPARE_LIMIT`).
 - Treat `src/types.ts` as the contract.
 - Treat `scripts/sanity-check.ts` and `scripts/audit-corpus.ts` as executable invariants.
 - Prefer adding validation before changing corpus shape.

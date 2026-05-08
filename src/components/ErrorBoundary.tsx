@@ -41,6 +41,8 @@ export class ErrorBoundary extends Component<Props, State> {
             type="button"
             className="rounded-lg px-4 py-2 text-sm font-medium"
             style={{ background: "linear-gradient(180deg,#4dd8f5 0%,#0ea5c9 100%)", color: "#061018" }}
+            // Recovery UI: focus must land on the only actionable control immediately.
+            // eslint-disable-next-line jsx-a11y/no-autofocus -- intentional error-recovery affordance
             autoFocus
             onClick={() => window.location.reload()}
           >

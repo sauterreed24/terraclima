@@ -86,6 +86,25 @@ describe("formatAppRelativeUrl", () => {
   });
 });
 
+describe("parseAppSearch compare cap", () => {
+  it("parses at most COMPARE_LIMIT comma-separated ids", () => {
+    const ids = ["a", "b", "c", "d", "e", "f"].join(",");
+    expect(parseAppSearch(`?cmp=${ids}`).compareIds).toEqual(["a", "b", "c", "d"]);
+  });
+});
+
+describe("validatedStateFromSearch compare cap", () => {
+  it("keeps only known place ids up to COMPARE_LIMIT", () => {
+    const places = { a: {}, b: {}, c: {}, d: {}, e: {}, f: {} };
+    const out = validatedStateFromSearch(
+      "?cmp=a,b,c,d,e,f",
+      places,
+      {},
+    );
+    expect(out.compareIds).toEqual(["a", "b", "c", "d"]);
+  });
+});
+
 describe("history writers", () => {
   beforeEach(() => {
     window.history.replaceState(null, "", "/");

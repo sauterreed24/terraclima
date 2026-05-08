@@ -132,11 +132,14 @@ export const ExplorerFilterSheet = memo(
           id="tc-explorer-filter-sheet"
           className="tc-filter-sheet-dialog tc-glass-dialog-motion"
           aria-labelledby="tc-explorer-filter-sheet-title"
-          onClick={e => {
-            if (e.target === dialogRef.current) close();
-          }}
         >
-          <div ref={panelRef} className="tc-filter-sheet-dialog__inner">
+          <button
+            type="button"
+            className="fixed inset-0 z-0 min-h-[100dvh] min-w-[100vw] cursor-default border-0 bg-transparent p-0"
+            aria-label="Close filters"
+            onClick={close}
+          />
+          <div ref={panelRef} className="relative z-10 tc-filter-sheet-dialog__inner">
             <div className="tc-filter-sheet-dialog__head">
               <h2 id="tc-explorer-filter-sheet-title" className="font-atlas text-lg text-ice m-0">
                 Explorer filters

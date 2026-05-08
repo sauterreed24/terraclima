@@ -239,6 +239,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
         }
       }
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by place identity only (`place?.id`), not full object churn
   }, [place?.id]);
 
   return (
@@ -964,9 +965,11 @@ function DetailBody({
               return (
                 <button
                   key={s.id}
+                  type="button"
                   onClick={() => onOpenPlace?.(s.id)}
                   className="panel-thin p-3 text-left reveal-row min-w-0 relative overflow-hidden"
                   title={`Open ${s.name}`}
+                  aria-label={`Open similar place ${s.name}`}
                 >
                   <span
                     aria-hidden

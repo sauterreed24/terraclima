@@ -23,6 +23,10 @@ import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-me
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { useProse } from "./lib/units";
 import {
+  loadPersistedRanking,
+  persistRankingProfile,
+} from "./lib/app-ranking-preference";
+import {
   type AppHistoryState,
   COMPARE_LIMIT,
   formatAppRelativeUrl,
@@ -34,17 +38,8 @@ import {
 import type { Country, MicroclimateArchetype, Place } from "./types";
 
 const SEARCH_INPUT_ID = "terraclima-place-search";
-const RANKING_STORAGE_KEY = "terraclima.ranking.v1";
 const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
 const DOC_TITLE_BASE = "Terraclima — North American Microclimate Atlas";
-
-/** All ranking profiles accepted by the scorer — used to validate restored values. */
-const RANKING_PROFILES: readonly RankingProfile[] = [
-  "coolest-summers", "mildest-winters", "best-shoulder-seasons", "driest-air",
-  "best-growability", "hidden-gems", "most-unique", "lowest-fire-risk",
-  "climate-resilient", "best-four-season", "best-diurnal-sleep",
-  "strongest-geospatial-signal", "mediterranean-like", "wet-forest-refuges", "monsoon-drama",
-] as const;
 
 function placeForId(id: string): Place | undefined {
   return PLACES_BY_ID[id];
@@ -59,17 +54,6 @@ const URL_INIT = readInitialAppState(
   COLLECTION_BY_ID,
   ARCHETYPE_BY_ID,
 );
-
-function loadPersistedRanking(): RankingProfile {
-  if (typeof window === "undefined") return "hidden-gems";
-  try {
-    const raw = window.localStorage.getItem(RANKING_STORAGE_KEY);
-    if (raw && (RANKING_PROFILES as readonly string[]).includes(raw)) {
-      return raw as RankingProfile;
-    }
-  } catch { /* noop */ }
-  return "hidden-gems";
-}
 
 type View = "explorer" | "collections" | "learn";
 
@@ -104,7 +88,7 @@ export default function App() {
   });
   const setRanking = useCallback((profile: RankingProfile) => {
     setRankingRaw(profile);
-    try { window.localStorage.setItem(RANKING_STORAGE_KEY, profile); } catch { /* noop */ }
+    persistRankingProfile(profile);
   }, []);
   const prevPlaceIdRef = useRef<string | null>(URL_INIT.placeId);
   /**
@@ -606,18 +590,24 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
     closeBtnRef.current?.focus();
   }, []);
   return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="kbd-shortcuts-title"
-      className="fixed inset-0 z-[90] flex items-center justify-center p-4 anim-fade-in"
-      style={{ background: "rgba(62, 38, 24, 0.22)", backdropFilter: "blur(8px)" }}
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 anim-fade-in">
+      <button
+        type="button"
+        className="absolute inset-0 z-0 cursor-default border-0 p-0"
+        style={{
+          background: "rgba(62, 38, 24, 0.22)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+        }}
+        aria-label="Close keyboard shortcuts"
+        onClick={onClose}
+      />
       <div
         ref={panelRef}
-        className="panel p-6 max-w-md w-full"
-        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="kbd-shortcuts-title"
+        className="relative z-10 panel p-6 max-w-md w-full"
       >
         <div className="flex items-center justify-between mb-3">
           <h3 id="kbd-shortcuts-title" className="font-atlas text-xl text-ice">Keyboard shortcuts</h3>
@@ -781,11 +771,14 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
           id="tc-site-menu"
           className="tc-site-menu-dialog tc-glass-dialog-motion"
           aria-labelledby="tc-site-menu-title"
-          onClick={e => {
-            if (e.target === menuRef.current) closeMenu();
-          }}
         >
-          <div ref={menuPanelRef} className="tc-site-menu-dialog__inner">
+          <button
+            type="button"
+            className="fixed inset-0 z-0 min-h-[100dvh] min-w-[100vw] cursor-default border-0 bg-transparent p-0"
+            aria-label="Close menu"
+            onClick={closeMenu}
+          />
+          <div ref={menuPanelRef} className="relative z-10 tc-site-menu-dialog__inner">
             <div className="tc-site-menu-dialog__head">
               <h2 id="tc-site-menu-title" className="font-atlas text-lg text-ice m-0">
                 Navigate

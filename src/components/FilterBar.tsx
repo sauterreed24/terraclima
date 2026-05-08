@@ -43,6 +43,7 @@ export const FilterBar = memo(function FilterBar({
   variant = "dock",
 }: Props) {
   const prose = useProse();
+  const searchFieldId = searchInputId ?? "tc-atlas-filter-search";
   const toggleCountry = useCallback((c: Country) => {
     setFilters(f => {
       const ns = new Set(f.countries);
@@ -63,10 +64,13 @@ export const FilterBar = memo(function FilterBar({
 
   return (
     <div className="panel contour-bg atlas-filter-dock p-3 space-y-3">
-      <label className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white/90 border border-[rgba(210,180,150,0.4)] focus-within:border-[rgba(26,143,168,0.55)] focus-within:ring-2 focus-within:ring-[rgba(94,196,220,0.25)] transition-[border-color,box-shadow] min-h-[2.75rem]">
+      <label
+        htmlFor={searchFieldId}
+        className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white/90 border border-[rgba(210,180,150,0.4)] focus-within:border-[rgba(26,143,168,0.55)] focus-within:ring-2 focus-within:ring-[rgba(94,196,220,0.25)] transition-[border-color,box-shadow] min-h-[2.75rem]"
+      >
         <Search className="w-4 h-4 text-stone shrink-0" aria-hidden />
         <input
-          id={searchInputId}
+          id={searchFieldId}
           value={filters.search ?? ""}
           onChange={e => setFilters({ ...filters, search: e.target.value })}
           placeholder="Search name, region, or archetype"

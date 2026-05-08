@@ -15,7 +15,7 @@ export function PlaceAtAGlance({ place, anchorId }: { place: Place; anchorId: st
         dC => fmtDelta(dC, temp, { signed: false }),
         temp,
       ),
-    [place, dist, temp, prose],
+    [place, dist, temp],
   );
 
   if (tiles.length === 0) return null;

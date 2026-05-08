@@ -1,0 +1,26 @@
+# Runs the full quality gate on every push to main so direct commits cannot
+# bypass PR checks. Keeps parity with .github/workflows/quality.yml.
+name: Quality (main)
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-main-${{ github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npm run quality:check
