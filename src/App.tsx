@@ -397,7 +397,7 @@ export default function App() {
                   canSurprise={ranked.length > 0}
                 />
 
-                <div className="relative h-[clamp(340px,56svh,620px)] md:h-[52dvh] md:min-h-[min(460px,44dvh)]">
+                <div className="relative h-[clamp(300px,48svh,520px)] md:h-[52dvh] md:min-h-[min(460px,44dvh)]">
                   <AtlasMap
                     places={filtered}
                     selectedId={selectedId ?? undefined}
