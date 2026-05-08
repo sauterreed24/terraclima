@@ -133,7 +133,7 @@ function checkTypography(where: string, text: string) {
   // ASCII hyphen-minus used as mathematical minus, e.g. "-5°C" in prose.
   // We want the Unicode minus (U+2212) for proper typography and for the
   // localizer's downstream formatting consistency.
-  for (const m of text.matchAll(/(?<=[\s(\[,])-\d/g)) {
+  for (const m of text.matchAll(/(?<=[\s([,])-\d/g)) {
     record("fatal", where, `ASCII hyphen used as minus`, excerpt(text, m.index ?? 0, 40));
   }
   // "--" or " -- " used as em-dash instead of U+2014.
@@ -196,7 +196,7 @@ function checkConsistency(p: Place, where: string, text: string) {
   const minLow = Math.min(...p.climate.tempLowC);
 
   // Matches "highs near −11°C", "summer highs of 30°C", "January highs near 5°C".
-  const highsRE = /\b((?:january|february|december|july|august|june|summer|winter|afternoon)?\s*(?:mean\s+)?highs?)\s+(?:near|around|of|up\s+to|hitting|reach(?:ing)?)\s+([\u2212\-]?\d+(?:\.\d+)?)\s*°\s*C\b/gi;
+  const highsRE = /\b((?:january|february|december|july|august|june|summer|winter|afternoon)?\s*(?:mean\s+)?highs?)\s+(?:near|around|of|up\s+to|hitting|reach(?:ing)?)\s+([-\u2212]?\d+(?:\.\d+)?)\s*°\s*C\b/gi;
   for (const m of text.matchAll(highsRE)) {
     const claimed = parseFloat(m[2].replace(/[\u2212]/g, "-"));
     if (!isFinite(claimed)) continue;
@@ -211,7 +211,7 @@ function checkConsistency(p: Place, where: string, text: string) {
     }
   }
 
-  const lowsRE = /\b((?:january|february|december|july|august|june|summer|winter|nighttime|overnight)?\s*(?:mean\s+)?lows?)\s+(?:near|around|of|down\s+to|dropping\s+to|bottom\s+out\s+at|below)\s+([\u2212\-]?\d+(?:\.\d+)?)\s*°\s*C\b/gi;
+  const lowsRE = /\b((?:january|february|december|july|august|june|summer|winter|nighttime|overnight)?\s*(?:mean\s+)?lows?)\s+(?:near|around|of|down\s+to|dropping\s+to|bottom\s+out\s+at|below)\s+([-\u2212]?\d+(?:\.\d+)?)\s*°\s*C\b/gi;
   for (const m of text.matchAll(lowsRE)) {
     const claimed = parseFloat(m[2].replace(/[\u2212]/g, "-"));
     if (!isFinite(claimed)) continue;

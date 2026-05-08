@@ -83,7 +83,7 @@ Every place carries citations and confidence notes. Derived scores are deliberat
 - `d3-geo`, `topojson-client`, `world-atlas`, and `us-atlas` for cartography
 - `@tanstack/react-virtual` for scalable card rendering
 - Vitest for pure-logic tests
-- ESLint v9 with `typescript-eslint`, `react-hooks`, and `jsx-a11y`
+- ESLint v9 with `typescript-eslint`, `react-hooks`, and `jsx-a11y`; `npm run lint` uses **`--max-warnings 0`** so warnings fail the quality gate.
 - GitHub Actions for PR-time quality checks and GitHub Pages deployment
 
 ## Deployment and Discoverability

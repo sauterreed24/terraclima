@@ -278,7 +278,7 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
     text = text.replace(/\b([1-9]0)s\s+Celsius\b/gi, (m, tens: string) => decadeBandToF(tens, m));
 
     // Pass 1: dash ranges first (consumes both numbers)
-    const rangePat = /([\u2212\-+]?\d+(?:\.\d+)?)\s*([\u2013\u2014\-])\s*([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
+    const rangePat = /([-+\u2212]?\d+(?:\.\d+)?)\s*([\u2013\u2014-])\s*([-+\u2212]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
     text = text.replace(rangePat, (match, n1: string, dash: string, n2: string, offset: number, full: string) => {
       const v1 = parseSigned(n1);
       const v2 = parseSigned(n2);
@@ -289,7 +289,7 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
     });
 
     // Pass 2: "N to M °C"
-    const toPat = /([\u2212\-+]?\d+(?:\.\d+)?)\s+to\s+([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
+    const toPat = /([-+\u2212]?\d+(?:\.\d+)?)\s+to\s+([-+\u2212]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
     text = text.replace(toPat, (match, n1: string, n2: string, offset: number, full: string) => {
       const v1 = parseSigned(n1);
       const v2 = parseSigned(n2);
@@ -300,7 +300,7 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
     });
 
     // Pass 3: single values
-    const singlePat = /([\u2212\-+]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
+    const singlePat = /([-+\u2212]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
     text = text.replace(singlePat, (match, n: string, offset: number, full: string) => {
       const v = parseSigned(n);
       const delta = isDeltaContext(full, offset, match.length) || n.startsWith("+");
@@ -492,7 +492,7 @@ function localizeDistanceProse(text: string): string {
   // elevation bands ("homes at 700–900 m"), etc. Run BEFORE the bare-m
   // handler so we consume both numbers as a range.
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014\-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![\/²^])/g,
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![/²^])/g,
     (match, n1: string, sep: string, n2: string, offset: number, full: string) => {
       const before = full.substring(Math.max(0, offset - 80), offset).toLowerCase();
       const after = full.substring(offset + match.length, offset + match.length + 64).toLowerCase();
@@ -522,7 +522,7 @@ function localizeDistanceProse(text: string): string {
   // (area). `\b` already prevents matches inside "mm", "cm", "km", "kph",
   // "kmh", "minutes", "meters", etc.
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![\/²^])/g,
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![/²^])/g,
     (match, n: string, offset: number, full: string) => {
       // Keep tilde "~" and opening parenthesis in the view so "(3429 m)" and
       // "~1200 m" get the contextual signal they need.
@@ -546,7 +546,7 @@ function localizeDistanceProse(text: string): string {
       // After-context: immediate vertical / dimensional neighbours.
       const afterHit =
         /^\s*(?:above|a\.?s\.?l\.?|elevation|altitude|of\s+elevation|asl\b|peaks?|summit|slope|ridge|plateau|escarpment|higher|lower|rise|rising|drop|depth|deep|high|tall|long|wide|thick|down|up|below|beneath|under|of\s+snow|of\s+annual|annually|of\s+snowfall|snowfall|snow|swells?|layer|range|thermal\s+belt|vertical\s+rise|crest|stack|of\s+relief|of\s+horizontal|relief|dunes?|bluffs?|horizontal|dunes)\b/i.test(after) ||
-        /^\s*[\)\]]/.test(afterRaw) ||     // "(3429 m)" or "[3429 m]"
+        /^\s*[)\]]/.test(afterRaw) ||     // "(3429 m)" or "[3429 m]"
         /^\s*[A-Z][\w-]*(?:\s+[A-Z][\w-]*){0,3}\s+(?:peaks?|crest|ridge|summit|plateau|escarpment|mountains|hills|range)\b/.test(afterRaw);
 
       if (!beforeHit && !afterHit) return match;
