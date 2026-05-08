@@ -5,9 +5,11 @@ import type { BestWindow } from "../lib/best-months";
 import type { RankingResult } from "../lib/scoring";
 
 const ROW_GAP_PX = 12;
-/** Slightly tall cards (stats + sections); underestimate causes scroll jank. */
-const EST_ROW_HEIGHT_PX = 272;
+/** Card estimates by layout. Mobile cards are one-column and significantly taller. */
+const EST_ROW_HEIGHT_DESKTOP_PX = 300;
+const EST_ROW_HEIGHT_MOBILE_PX = 430;
 const OVERSCAN_ROWS = 3;
+const disableScrollAdjustment = () => false;
 
 function useGridColumns(): 1 | 2 {
   const [cols, setCols] = useState<1 | 2>(2);
@@ -66,11 +68,15 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
 
   const virtualizer = useWindowVirtualizer({
     count: rowCount,
-    estimateSize: () => EST_ROW_HEIGHT_PX,
+    estimateSize: () => (cols === 1 ? EST_ROW_HEIGHT_MOBILE_PX : EST_ROW_HEIGHT_DESKTOP_PX),
     overscan: OVERSCAN_ROWS,
     scrollMargin,
     gap: ROW_GAP_PX,
   });
+  // This version exposes the adjustment hook on the Virtualizer instance, not
+  // in React options. Disable correction to avoid backward-scroll tugging when
+  // variable-height mobile cards finish measuring.
+  virtualizer.shouldAdjustScrollPositionOnItemSizeChange = disableScrollAdjustment;
 
   if (rowCount === 0) return null;
 
@@ -94,7 +100,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
               ref={virtualizer.measureElement}
               className="grid grid-cols-1 md:grid-cols-2 gap-3 absolute top-0 left-0 w-full"
               style={{
-                transform: `translateY(${vRow.start}px)`,
+                transform: `translateY(${vRow.start - scrollMargin}px)`,
               }}
             >
               {row.map(r => (

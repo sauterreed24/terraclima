@@ -152,7 +152,7 @@ export const PlaceCard = memo(function PlaceCard({
           <div className="flex flex-col items-end gap-1.5 shrink-0">
             <span className="chip" data-tone={place.tier === "A" ? "ochre" : place.tier === "B" ? "ice" : "sage"} title={`Tier ${place.tier}`}>{tierLabel}</span>
             {/* Spacer to reserve room next to the tier chip so the absolutely-positioned compare button doesn't overlap content. */}
-            {onCompareToggle ? <span className="block h-7 min-h-[44px]" aria-hidden /> : null}
+            {onCompareToggle ? <span className="place-card__compare-spacer" aria-hidden /> : null}
           </div>
         </header>
 

@@ -27,6 +27,7 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 ## What It Does
 
 - **Explorer map:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
+- **Phone-safe map interaction:** Mobile users can scroll the page normally over the map by default. Tapping **Use map** switches into explicit map mode for one-finger pan, two-finger pinch zoom, plus/minus zoom, Fit, clusters, and the compact legend; tapping **Scroll page** gives control back to the page.
 - **Place profiles:** Long-form dossiers for each microclimate, including seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, citations, and confidence notes.
 - **Ranking lenses:** Sort by hidden gems, coolest summers, mildest winters, shoulder seasons, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
 - **Comparison workflow:** Compare up to four places side by side with climate ribbons, derived scores, responsive columns, and focus-managed modal behavior.
@@ -50,9 +51,9 @@ Terraclima combines editorial research with deterministic analysis. The app does
 - **Explainable scoring:** `src/lib/scoring.ts`, `src/lib/geospatial-analysis.ts`, and `src/lib/atlas-corpus-stats.ts` keep rankings and derived scores transparent, deterministic, and testable.
 - **Validation built into the project:** `scripts/sanity-check.ts`, `scripts/audit-corpus.ts`, `scripts/test-prose.ts`, and `scripts/corpus-rank-gold.ts` catch malformed data, unit/prose regressions, corpus drift, and rank instability.
 - **Unit tests for pure logic:** `src/lib/__tests__/` covers units, scoring, best-month windows, similarity, and URL state with Vitest.
-- **Accessibility as architecture:** Dialogs use focus traps and clear escape behavior. The filtered result count has a screen-reader-only live region. SVG map markers expose visible focus states. Mobile filter/search behavior avoids duplicate IDs and unpredictable modal stacks.
-- **Performance-conscious map:** The SVG atlas avoids React re-renders during drag, coalesces wheel zoom with `requestAnimationFrame`, lazy-loads topology, and gates expensive effects based on device capability.
-- **Scalable card rendering:** The place grid uses virtualization and `content-visibility` so a large corpus stays responsive on modest hardware.
+- **Accessibility as architecture:** Dialogs use focus traps and clear escape behavior. The filtered result count has a screen-reader-only live region. SVG map markers, cluster markers, and map controls expose visible focus states. Mobile filter/search behavior avoids duplicate IDs and unpredictable modal stacks.
+- **Performance-conscious map:** The SVG atlas avoids React re-renders during drag, coalesces wheel zoom with `requestAnimationFrame`, lazy-loads topology, clusters dense mobile pins in screen space, and gates expensive effects based on device capability.
+- **Scalable card rendering:** The place grid uses virtualization, realistic mobile row estimates, scroll-position-safe dynamic measurement, and `content-visibility` so a large corpus stays responsive on modest hardware.
 - **CI-backed quality gate:** `.github/workflows/quality.yml` runs the full `npm run quality:check` pipeline on pull requests and non-`main` pushes.
 
 ## Performance Targets
@@ -60,7 +61,7 @@ Terraclima combines editorial research with deterministic analysis. The app does
 Terraclima is tuned for real devices, not just high-end developer machines.
 
 - **Surface Pro 5, 8 GB RAM:** Low-power mode disables expensive blur, marker pulse, hover lifts, deep shadows, and unnecessary backdrop filters. The map and card grid are structured to avoid punishing scroll and pan interactions.
-- **iPhone 13 Pro Max:** The map uses dynamic viewport units, touch targets stay usable, and comparison columns scroll horizontally instead of collapsing into unreadable fragments.
+- **iPhone 13 Pro Max:** The map uses stable small-viewport sizing, defaults to browser-friendly page scroll, offers an explicit touch map mode for pan and pinch zoom, clusters dense pins at low zoom, and keeps 44px-plus touch targets reachable. Comparison columns still scroll horizontally instead of collapsing into unreadable fragments.
 - **General browser efficiency:** Search uses precomputed indexes. Filtering is deferred with `useDeferredValue`. Atlas topology is code-split. SVG paint IDs are unique per chart instance. Unit and geospatial helpers cache derived work where useful.
 
 ## Data and Provenance
@@ -95,6 +96,7 @@ Every push to `main` triggers `.github/workflows/static-preview.yml`, which buil
 
 - **Live URL:** [`https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html`](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html)
 - No signup, no Pages toggle, no Vercel import. The link works for anyone, on any device, including mobile.
+- On phones, the public link opens directly into the same Explorer experience: scroll normally past the map, tap **Use map** only when you want to pan or pinch, then tap **Scroll page** to return to normal page scrolling.
 - Build artifact size is the same Vite bundle the other paths produce (same code splitting, same lazy chunks).
 
 To rebuild manually: trigger the **Publish static-preview branch** workflow from the Actions tab, or push any commit to `main`.
@@ -190,7 +192,7 @@ For a portfolio review, start here:
 2. **Data modeling:** Read `src/types.ts`, then inspect entries in `src/data/places.*.ts`. The app is built around structured knowledge, not arbitrary content blobs.
 3. **Derived intelligence:** Review `src/lib/geospatial-analysis.ts`, `src/lib/scoring.ts`, and `src/lib/atlas-corpus-stats.ts` for explainable ranking and screening logic.
 4. **Quality discipline:** Run `npm run quality:check`. The scripts make the corpus auditable, not merely type-safe.
-5. **Performance and accessibility:** Check `src/lib/device-profile.ts`, `src/components/VirtualPlaceGrid.tsx`, `src/hooks/use-focus-trap.ts`, and the low-power sections in `src/styles.css`.
+5. **Performance and accessibility:** Check `src/lib/device-profile.ts`, `src/components/AtlasMap.tsx`, `src/lib/atlas-map-cluster.ts`, `src/components/VirtualPlaceGrid.tsx`, `src/hooks/use-focus-trap.ts`, and the low-power sections in `src/styles.css`.
 6. **Test coverage:** Review `src/lib/__tests__/` and the validation scripts under `scripts/`.
 
 ## Agentic Review Guide
@@ -203,6 +205,7 @@ For AI agents or automated reviewers:
 - Prefer adding validation before changing corpus shape.
 - Do not invent climate facts. If a data point is not present or cited, keep language framed as screening or editorial context.
 - Preserve URL behavior in `src/lib/app-url.ts` and modal focus behavior in `src/hooks/use-focus-trap.ts`.
+- Preserve phone map behavior: page scroll by default, explicit **Use map** mode for pan/pinch, cluster tap-to-zoom, and a clear **Scroll page** exit.
 - When a change is user-visible or architectural, update `README.md` in the same work.
 - After edits, run `npm run quality:check`. For UI changes, also inspect Explorer, a place profile, the compare overlay, and mobile-width layout.
 
@@ -218,7 +221,8 @@ src/
     TempToggle.tsx             Shared °F / °C control
   data/                        Places, collections, archetypes, glossary, field notes
   hooks/                       Focus trap, media query, reading spy
-  lib/                         Scoring, units, geospatial analysis, URL state, corpus stats
+  lib/                         Scoring, units, geospatial analysis, URL state, corpus stats,
+                               map fit and map clustering helpers
     __tests__/                 Vitest tests for pure logic
   types.ts                     Domain schema
 scripts/                       Corpus audits, sanity checks, rank goldens, debug dumps, OG-image generator

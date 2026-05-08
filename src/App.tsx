@@ -413,7 +413,7 @@ export default function App() {
                   canSurprise={ranked.length > 0}
                 />
 
-                <div className="h-[52dvh] min-h-[min(460px,44dvh)] max-[480px]:min-h-[320px] relative">
+                <div className="relative h-[clamp(340px,56svh,620px)] md:h-[52dvh] md:min-h-[min(460px,44dvh)]">
                   <AtlasMap
                     places={filtered}
                     selectedId={selectedId ?? undefined}
@@ -421,7 +421,7 @@ export default function App() {
                   />
                 </div>
 
-                <div className="text-[11px] text-stone leading-relaxed px-0.5 max-w-3xl space-y-2.5 tc-page-intro">
+                <div className="hidden md:block text-[11px] text-stone leading-relaxed px-0.5 max-w-3xl space-y-2.5 tc-page-intro">
                   <p>
                     <span className="font-medium text-frost">How you learn each place:</span>{" "}
                     tap any pin or card. A profile opens on the right — that is the full write-up for that microclimate. Scroll it like an article, or use <span className="text-frost font-medium">On this page</span> (snap chips on your phone, a soft rail on wider screens) to jump between sections: opening story, <span className="text-frost font-medium">field dossier</span> (stacked chapters + in-dossier jumps), seasons, geospatial analysis, soil, risks, who it fits, similar stops, and data sources.
@@ -637,12 +637,16 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
           <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
         </div>
         <div className="divider-contour my-3" />
-        <div className="text-xs text-stone">
-          Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header — the URL encodes which place (and view) to open.
-        </div>
-        <div className="divider-contour my-3" />
-        <div className="text-xs text-stone">
-          Map: scroll to zoom, drag to pan. Surprise uses the same filtered pool as the cards.
+        <div className="space-y-2 text-xs text-stone leading-relaxed">
+          <p>
+            Phone map: the page scrolls normally first. Tap <strong className="text-frost font-normal">Use map</strong> on the map to pan or pinch zoom, then tap <strong className="text-frost font-normal">Scroll page</strong> to return to reading.
+          </p>
+          <p>
+            Place profiles: tap any pin or card to open the full write-up. The profile includes the field dossier, seasons, geospatial analysis, soils, risks, similar stops, and data sources.
+          </p>
+          <p>
+            Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header — the URL encodes which place and view to open. Surprise uses the same filtered pool as the cards.
+          </p>
         </div>
       </div>
     </div>
