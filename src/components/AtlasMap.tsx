@@ -18,6 +18,7 @@ import {
 } from "../lib/atlas-map-cluster";
 import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
 import { computePinLabelModes, type MapPinLabelMode } from "../lib/atlas-map-label-visibility";
+import { classifyAtlasTouchGesture } from "../lib/atlas-map-touch-gesture";
 import { useMediaQuery } from "../hooks/use-media-query";
 import { AtlasMapTooltip } from "./AtlasMapTooltip";
 import { CLIMATE_NORMALS_PERIOD } from "../lib/atlas-metadata";
@@ -189,6 +190,8 @@ export function AtlasMap({
   // still report >4 GB / >4 cores so the generic `useRichVisualEffects()`
   // probe leaves them on. We always keep gradients, halos, and tier glyphs.
   const richEffects = useRichVisualEffects() && !coarsePointer;
+  const [mapInteractionEnabled, setMapInteractionEnabled] = useState(false);
+  const mapInteractive = !coarsePointer || mapInteractionEnabled;
   const [legendOpen, setLegendOpen] = useState(false);
 
   const shellRef = useRef<HTMLDivElement>(null);
@@ -216,10 +219,27 @@ export function AtlasMap({
   const width = dims.width;
   const height = dims.height;
   const mapMeasured = dims.measured;
+  const compactMapChrome = coarsePointer || width < 760;
 
   useEffect(() => {
-    if (!coarsePointer) setLegendOpen(false);
-  }, [coarsePointer]);
+    if (!coarsePointer) {
+      setMapInteractionEnabled(false);
+    }
+    if (!compactMapChrome) {
+      setLegendOpen(false);
+    }
+  }, [coarsePointer, compactMapChrome]);
+
+  useEffect(() => {
+    if (mapInteractive) return;
+    activeTouchPointersRef.current.clear();
+    directionalTouchRef.current = null;
+    pinchRef.current = null;
+    touchPinchRef.current = null;
+    dragRef.current.active = false;
+    dragRef.current.dx = 0;
+    dragRef.current.dy = 0;
+  }, [mapInteractive]);
 
   const svgRef = useRef<SVGSVGElement>(null);
   const transformRef = useRef<SVGGElement>(null);
@@ -305,6 +325,14 @@ export function AtlasMap({
     raf: 0,
   });
   const activeTouchPointersRef = useRef(new Map<number, { clientX: number; clientY: number }>());
+  const directionalTouchRef = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+    state: "pending" | "map-pan" | "page-scroll";
+  } | null>(null);
+  const suppressTouchActivationRef = useRef(false);
+  const suppressTouchActivationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pinchRef = useRef<{
     startDistance: number;
     startK: number;
@@ -641,6 +669,43 @@ export function AtlasMap({
     };
   }, []);
 
+  const clearTouchActivationSuppression = useCallback(() => {
+    suppressTouchActivationRef.current = false;
+    if (suppressTouchActivationTimerRef.current) {
+      clearTimeout(suppressTouchActivationTimerRef.current);
+      suppressTouchActivationTimerRef.current = null;
+    }
+  }, []);
+
+  const suppressNextTouchActivation = useCallback(() => {
+    if (suppressTouchActivationTimerRef.current) {
+      clearTimeout(suppressTouchActivationTimerRef.current);
+    }
+    suppressTouchActivationRef.current = true;
+    suppressTouchActivationTimerRef.current = setTimeout(() => {
+      suppressTouchActivationRef.current = false;
+      suppressTouchActivationTimerRef.current = null;
+    }, 450);
+  }, []);
+
+  const shouldSuppressTouchActivation = useCallback(() => {
+    if (!suppressTouchActivationRef.current) return false;
+    clearTouchActivationSuppression();
+    return true;
+  }, [clearTouchActivationSuppression]);
+
+  useEffect(() => () => clearTouchActivationSuppression(), [clearTouchActivationSuppression]);
+
+  const finishDrag = useCallback((): boolean => {
+    if (!dragRef.current.active) return false;
+    const { dx, dy, moved } = dragRef.current;
+    dragRef.current.active = false;
+    if (dx !== 0 || dy !== 0) setView(v => ({ ...v, x: v.x + dx, y: v.y + dy }));
+    dragRef.current.dx = 0;
+    dragRef.current.dy = 0;
+    return moved;
+  }, []);
+
   const startPinch = useCallback(() => {
     const rect = svgRef.current?.getBoundingClientRect();
     const pair = firstTwoPointers(activeTouchPointersRef.current);
@@ -668,15 +733,39 @@ export function AtlasMap({
   // Pan via Pointer Events + direct DOM mutation (no React re-renders during drag)
   const onPointerDown = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
     if (e.pointerType === "touch") {
-      e.preventDefault();
-      (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
       activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
       setClusterPicker(null);
-      if (activeTouchPointersRef.current.size === 1) {
-        startDragAt(e.clientX, e.clientY);
-      } else {
-        startPinch();
+
+      if (mapInteractive) {
+        e.preventDefault();
+        (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+        if (activeTouchPointersRef.current.size === 1) {
+          startDragAt(e.clientX, e.clientY);
+        } else {
+          startPinch();
+        }
+        return;
       }
+
+      if (activeTouchPointersRef.current.size > 1) {
+        directionalTouchRef.current = null;
+        dragRef.current.active = false;
+        dragRef.current.dx = 0;
+        dragRef.current.dy = 0;
+        return;
+      }
+
+      clearTouchActivationSuppression();
+      directionalTouchRef.current = {
+        pointerId: e.pointerId,
+        startX: e.clientX,
+        startY: e.clientY,
+        state: "pending",
+      };
+      dragRef.current.active = false;
+      dragRef.current.dx = 0;
+      dragRef.current.dy = 0;
+      dragRef.current.moved = false;
       return;
     }
 
@@ -684,7 +773,89 @@ export function AtlasMap({
     (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
     setClusterPicker(null);
     startDragAt(e.clientX, e.clientY);
-  }, [startDragAt, startPinch]);
+  }, [mapInteractive, startDragAt, startPinch, clearTouchActivationSuppression]);
+
+  const updateDirectionalTouchPan = useCallback((e: React.PointerEvent<SVGSVGElement>): boolean => {
+    const gesture = directionalTouchRef.current;
+    if (!gesture || gesture.pointerId !== e.pointerId) return false;
+    activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
+
+    if (gesture.state === "page-scroll") return true;
+
+    if (gesture.state === "pending") {
+      const decision = classifyAtlasTouchGesture({
+        dx: e.clientX - gesture.startX,
+        dy: e.clientY - gesture.startY,
+        explicitMapMode: false,
+      });
+      if (decision === "pending") return true;
+      gesture.state = decision;
+      if (decision === "page-scroll") {
+        activeTouchPointersRef.current.delete(e.pointerId);
+        return true;
+      }
+      (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+      startDragAt(gesture.startX, gesture.startY);
+    }
+
+    e.preventDefault();
+    return false;
+  }, [startDragAt]);
+
+  const updateExplicitTouchPan = useCallback((e: React.PointerEvent<SVGSVGElement>): boolean => {
+    if (!activeTouchPointersRef.current.has(e.pointerId)) return false;
+    e.preventDefault();
+    activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
+    const pair = firstTwoPointers(activeTouchPointersRef.current);
+    if (pair && pinchRef.current) {
+      const rect = svgRef.current?.getBoundingClientRect();
+      if (!rect) return true;
+      const [a, b] = pair;
+      const center = svgPointFromClient(
+        (a.clientX + b.clientX) / 2,
+        (a.clientY + b.clientY) / 2,
+        rect,
+        width,
+        height,
+      );
+      const nextK = clampZoom(pinchRef.current.startK * (pointerDistance(a, b) / pinchRef.current.startDistance));
+      setView({
+        k: nextK,
+        x: center.x - pinchRef.current.mapCenterX * nextK,
+        y: center.y - pinchRef.current.mapCenterY * nextK,
+      });
+      return true;
+    }
+    return false;
+  }, [width, height]);
+
+  const finishTouchPointer = useCallback((e: React.PointerEvent<SVGSVGElement>): boolean => {
+    const gesture = directionalTouchRef.current;
+    const directionalPan = !mapInteractive && gesture?.pointerId === e.pointerId && gesture.state === "map-pan";
+    if (gesture?.pointerId === e.pointerId) directionalTouchRef.current = null;
+
+    activeTouchPointersRef.current.delete(e.pointerId);
+
+    if (!mapInteractive) {
+      const moved = finishDrag();
+      if (directionalPan && moved) suppressNextTouchActivation();
+      pinchRef.current = null;
+      return true;
+    }
+
+    if (activeTouchPointersRef.current.size >= 2) {
+      startPinch();
+      return true;
+    }
+    if (activeTouchPointersRef.current.size === 1 && pinchRef.current) {
+      const remaining = [...activeTouchPointersRef.current.values()][0];
+      pinchRef.current = null;
+      startDragAt(remaining.clientX, remaining.clientY);
+      return true;
+    }
+    pinchRef.current = null;
+    return false;
+  }, [finishDrag, mapInteractive, startDragAt, startPinch, suppressNextTouchActivation]);
 
   // Cursor lat/lon overlay — RAF-coalesced direct-DOM update. Runs on every
   // pointer move (not just drag). No React renders. Skipped on coarse
@@ -720,27 +891,9 @@ export function AtlasMap({
 
   const onPointerMove = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
     if (e.pointerType === "touch") {
-      if (!activeTouchPointersRef.current.has(e.pointerId)) return;
-      e.preventDefault();
-      activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
-      const pair = firstTwoPointers(activeTouchPointersRef.current);
-      if (pair && pinchRef.current) {
-        const rect = svgRef.current?.getBoundingClientRect();
-        if (!rect) return;
-        const [a, b] = pair;
-        const center = svgPointFromClient(
-          (a.clientX + b.clientX) / 2,
-          (a.clientY + b.clientY) / 2,
-          rect,
-          width,
-          height,
-        );
-        const nextK = clampZoom(pinchRef.current.startK * (pointerDistance(a, b) / pinchRef.current.startDistance));
-        setView({
-          k: nextK,
-          x: center.x - pinchRef.current.mapCenterX * nextK,
-          y: center.y - pinchRef.current.mapCenterY * nextK,
-        });
+      if (mapInteractive) {
+        if (updateExplicitTouchPan(e)) return;
+      } else if (updateDirectionalTouchPan(e)) {
         return;
       }
     } else {
@@ -763,46 +916,27 @@ export function AtlasMap({
         applyDOMTransform();
       });
     }
-  }, [width, height, applyDOMTransform, updateCursorCoord]);
+  }, [width, height, applyDOMTransform, updateCursorCoord, mapInteractive, updateDirectionalTouchPan, updateExplicitTouchPan]);
 
   const onPointerUp = useCallback((e?: React.PointerEvent<SVGSVGElement>) => {
     let touchTap: { clientX: number; clientY: number } | null = null;
     if (e?.pointerType === "touch") {
-      activeTouchPointersRef.current.delete(e.pointerId);
-      if (activeTouchPointersRef.current.size >= 2) {
-        startPinch();
-        return;
-      }
-      if (activeTouchPointersRef.current.size === 1 && pinchRef.current) {
-        const remaining = [...activeTouchPointersRef.current.values()][0];
-        pinchRef.current = null;
-        startDragAt(remaining.clientX, remaining.clientY);
-        return;
-      }
-      // Last finger lifted with no pinch in flight: this might be a tap.
-      // Double-tap-to-zoom only triggers when the gesture didn't pan and
-      // we have no other pointers — markers stop propagation so a marker
-      // tap never reaches this handler.
-      if (
+      const canDoubleTap =
+        mapInteractive &&
+        activeTouchPointersRef.current.size === 1 &&
         !pinchRef.current &&
-        activeTouchPointersRef.current.size === 0 &&
-        !dragRef.current.moved
-      ) {
+        !dragRef.current.moved;
+      if (finishTouchPointer(e)) return;
+      if (canDoubleTap && activeTouchPointersRef.current.size === 0) {
         touchTap = { clientX: e.clientX, clientY: e.clientY };
       }
-      pinchRef.current = null;
     } else if (!e) {
       activeTouchPointersRef.current.clear();
+      directionalTouchRef.current = null;
       pinchRef.current = null;
     }
 
-    if (dragRef.current.active) {
-      const { dx, dy } = dragRef.current;
-      dragRef.current.active = false;
-      if (dx !== 0 || dy !== 0) setView(v => ({ ...v, x: v.x + dx, y: v.y + dy }));
-      dragRef.current.dx = 0;
-      dragRef.current.dy = 0;
-    }
+    finishDrag();
 
     if (touchTap) {
       const now = performance.now();
@@ -831,7 +965,7 @@ export function AtlasMap({
         lastTouchTapRef.current = { t: now, clientX: touchTap.clientX, clientY: touchTap.clientY };
       }
     }
-  }, [startDragAt, startPinch, width, height]);
+  }, [finishDrag, finishTouchPointer, height, mapInteractive, width]);
 
   const startTouchPinch = useCallback((touches: TouchListLike) => {
     const rect = svgRef.current?.getBoundingClientRect();
@@ -858,15 +992,15 @@ export function AtlasMap({
   }, [width, height]);
 
   const onTouchStart = useCallback((e: React.TouchEvent<SVGSVGElement>) => {
-    if (e.touches.length < 2) return;
+    if (!mapInteractive || e.touches.length < 2) return;
     startTouchPinch(e.touches);
-  }, [startTouchPinch]);
+  }, [mapInteractive, startTouchPinch]);
 
   const onTouchMove = useCallback((e: React.TouchEvent<SVGSVGElement>) => {
     const pinch = touchPinchRef.current;
     const rect = svgRef.current?.getBoundingClientRect();
     const pair = touchPair(e.touches);
-    if (!pinch || !rect || !pair) return;
+    if (!mapInteractive || !pinch || !rect || !pair) return;
     const [a, b] = pair;
     const center = svgPointFromClient(
       (a.clientX + b.clientX) / 2,
@@ -881,7 +1015,7 @@ export function AtlasMap({
       x: center.x - pinch.mapCenterX * nextK,
       y: center.y - pinch.mapCenterY * nextK,
     });
-  }, [width, height]);
+  }, [mapInteractive, width, height]);
 
   const onTouchEnd = useCallback((e: React.TouchEvent<SVGSVGElement>) => {
     if (e.touches.length >= 2) {
@@ -974,11 +1108,7 @@ export function AtlasMap({
   }, [width, height, coarsePointer, openClusterPicker]);
 
   const topoLoading = topo === null;
-  // Always own gestures inside the SVG. Users scroll the page from above/below
-  // the map (matches Apple/Google embedded maps). This is what makes marker
-  // taps reliable: with `pan-y` the browser converts a tap-with-2px-drift into
-  // the start of a page scroll and cancels the click.
-  const svgTouchAction = "none";
+  const svgTouchAction = mapInteractive ? "none" : "pan-y pinch-zoom";
 
   return (
     <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
@@ -1002,7 +1132,7 @@ export function AtlasMap({
         textRendering="geometricPrecision"
         role="img"
         tabIndex={0}
-        aria-label="Atlas map of North America. Drag to pan, pinch or scroll to zoom. Tap any pin to open that place's full profile."
+        aria-label={coarsePointer ? "Atlas map of North America. The page scrolls normally; sideways and diagonal one-finger drags pan the map. Use the map control to enable all-direction pan and pinch zoom. Tap any pin to open that place's full profile." : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile."}
         onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -1222,6 +1352,7 @@ export function AtlasMap({
                 cluster={cluster}
                 k={view.k}
                 onActivate={activateCluster}
+                shouldSuppressTouchActivation={shouldSuppressTouchActivation}
               />
             ))}
           </g>
@@ -1253,6 +1384,7 @@ export function AtlasMap({
                     updateTooltip(pt);
                   }}
                   onLeave={scheduleHoverClear}
+                  shouldSuppressTouchActivation={shouldSuppressTouchActivation}
                 />
               );
             })}
@@ -1357,6 +1489,19 @@ export function AtlasMap({
           FIT
         </button>
       </div>
+
+      {coarsePointer ? (
+        <div className="absolute top-3 left-3 z-[3] pointer-events-auto">
+          <button
+            type="button"
+            className="map-control-pill"
+            aria-pressed={mapInteractionEnabled}
+            onClick={() => setMapInteractionEnabled(v => !v)}
+          >
+            {mapInteractionEnabled ? "Scroll page" : "Use map"}
+          </button>
+        </div>
+      ) : null}
 
       {/* Tier legend — matches map chrome; hints are plain language (no key-cap styling). */}
       {!coarsePointer ? (
@@ -1478,6 +1623,7 @@ interface MarkerProps {
   onSelect: (id: string) => void;
   onEnter: () => void;
   onLeave: () => void;
+  shouldSuppressTouchActivation: () => boolean;
 }
 
 type ClusterPoint = { place: Place; x: number; y: number; id: string };
@@ -1486,18 +1632,22 @@ const ClusterMarker = memo(function ClusterMarker({
   cluster,
   k,
   onActivate,
+  shouldSuppressTouchActivation,
 }: {
   cluster: AtlasClusterItem<ClusterPoint>;
   k: number;
   onActivate: (cluster: AtlasClusterItem<ClusterPoint>) => void;
+  shouldSuppressTouchActivation: () => boolean;
 }) {
   const inv = 1 / k;
   const count = cluster.points.length;
   const activate = useCallback((e: React.SyntheticEvent) => {
     e.stopPropagation();
+    if (shouldSuppressTouchActivation()) return;
     onActivate(cluster);
-  }, [cluster, onActivate]);
+  }, [cluster, onActivate, shouldSuppressTouchActivation]);
   const stopPan = useCallback((e: React.PointerEvent) => {
+    if (e.pointerType === "touch") return;
     e.stopPropagation();
   }, []);
   const onKeyDown = useCallback((e: React.KeyboardEvent) => {
@@ -1592,7 +1742,7 @@ const ClusterPicker = memo(function ClusterPicker({
 });
 
 const Marker = memo(function Marker({
-  pt, k, labelMode, labelSide, isActive, isHover, richEffects, onSelect, onEnter, onLeave,
+  pt, k, labelMode, labelSide, isActive, isHover, richEffects, onSelect, onEnter, onLeave, shouldSuppressTouchActivation,
 }: MarkerProps) {
   const { place, x, y } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
@@ -1632,12 +1782,14 @@ const Marker = memo(function Marker({
   const activate = useCallback(
     (e: React.SyntheticEvent) => {
       e.stopPropagation();
+      if (shouldSuppressTouchActivation()) return;
       onSelect(place.id);
     },
-    [onSelect, place.id],
+    [onSelect, place.id, shouldSuppressTouchActivation],
   );
 
   const stopPan = useCallback((e: React.PointerEvent) => {
+    if (e.pointerType === "touch") return;
     e.stopPropagation();
   }, []);
 
@@ -1796,6 +1948,7 @@ const Marker = memo(function Marker({
   prev.isHover === next.isHover &&
   prev.k === next.k &&
   prev.richEffects === next.richEffects &&
+  prev.shouldSuppressTouchActivation === next.shouldSuppressTouchActivation &&
   prev.pt.x === next.pt.x &&
   prev.pt.y === next.pt.y &&
   prev.pt.place === next.pt.place

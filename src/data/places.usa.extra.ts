@@ -204,7 +204,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     biome: "Northern mixed grass prairie",
     koppen: "Dfb",
     archetypes: ["subarctic-continental", "lake-effect-snowbelt", "chinook-corridor"],
-    drivers: ["continentality", "polar-jet-exposure", "lake-effect"],
+    drivers: ["continentality", "polar-jet-exposure", "lake-effect", "chinook-foehn"],
     summaryShort: "Cold, sunny, windy continental climate — scorching summer days and bitter subzero winter nights both occur.",
     summaryImmersive: "Bismarck sits in one of the continent’s starkest annual temperature ranges. Arctic highs in winter deliver brilliant cold and dry air; summer opens to dryline thunderstorms and occasional severe hail. Chinook warming on eastern Rocky lee slopes occasionally interrupts mid-winter cold. Lake Sakakawea moderates lee-side microclimates only slightly — continentality dominates.",
     whyDistinct: "Central position in North America maximizes contrast between maritime air masses — rarely seen — and dry continental polar or tropical air advected from the Gulf in summer.",

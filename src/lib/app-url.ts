@@ -146,11 +146,13 @@ export function validatedStateFromSearch(
   placesById: Record<string, unknown>,
   collectionById: Record<string, unknown>,
   archetypesById?: Record<string, unknown>,
+  resolvePlaceId?: (id: string) => string | null,
 ): ValidatedAppState {
   const p = parseAppSearch(search);
   const view: AppView =
     p.view === "collections" || p.view === "learn" ? p.view : "explorer";
-  const placeId = p.placeId && placesById[p.placeId] ? p.placeId : null;
+  const resolveId = resolvePlaceId ?? ((id: string) => placesById[id] ? id : null);
+  const placeId = p.placeId ? resolveId(p.placeId) : null;
   const collectionId = p.collectionId && collectionById[p.collectionId] ? p.collectionId : null;
   const countries = p.countries ?? [];
   const archetypes = archetypesById
@@ -159,7 +161,8 @@ export function validatedStateFromSearch(
       )
     : (p.archetypes ?? []) as MicroclimateArchetype[];
   const search_ = p.search ?? "";
-  const compareIds = (p.compareIds ?? []).filter(id => placesById[id]).slice(0, COMPARE_LIMIT);
+  const compareIds = [...new Set((p.compareIds ?? []).map(resolveId).filter((id): id is string => id != null))]
+    .slice(0, COMPARE_LIMIT);
   return { view, placeId, collectionId, countries, archetypes, search: search_, compareIds };
 }
 
@@ -168,6 +171,7 @@ export function readInitialAppState(
   placesById: Record<string, unknown>,
   collectionById: Record<string, unknown>,
   archetypesById?: Record<string, unknown>,
+  resolvePlaceId?: (id: string) => string | null,
 ): ValidatedAppState {
   if (typeof window === "undefined") {
     return {
@@ -180,5 +184,5 @@ export function readInitialAppState(
       compareIds: [],
     };
   }
-  return validatedStateFromSearch(window.location.search, placesById, collectionById, archetypesById);
+  return validatedStateFromSearch(window.location.search, placesById, collectionById, archetypesById, resolvePlaceId);
 }

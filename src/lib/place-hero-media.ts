@@ -53,10 +53,6 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
     alt: "Maya lowlands near Mérida — tropical heat broken by Gulf breezes and limestone country",
   },
   "guanajuato-mx": { file: "Guanajuato_City.jpg", alt: "Colourful hillside lanes and churches in Guanajuato" },
-  "san-miguel-mx": {
-    file: "Parroquia_de_San_Miguel_Arcangel,_San_Miguel_de_Allende.jpg",
-    alt: "Parroquia towers rising above San Miguel de Allende",
-  },
   "san-miguel-de-allende-mx": {
     file: "Parroquia_de_San_Miguel_Arcangel,_San_Miguel_de_Allende.jpg",
     alt: "Parroquia towers rising above San Miguel de Allende",

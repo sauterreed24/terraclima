@@ -44,6 +44,17 @@ describe("validatedStateFromSearch", () => {
     expect(validatedStateFromSearch("?col=nope", places, collections).collectionId).toBeNull();
     expect(validatedStateFromSearch("?col=trip", places, collections).collectionId).toBe("trip");
   });
+  it("canonicalizes legacy place aliases in selected place URLs", () => {
+    const resolve = (id: string) => id === "old-foo" ? "foo" : places[id as keyof typeof places] ? id : null;
+    expect(validatedStateFromSearch("?p=old-foo", places, collections, undefined, resolve).placeId).toBe("foo");
+    expect(validatedStateFromSearch("?p=missing", places, collections, undefined, resolve).placeId).toBeNull();
+  });
+  it("canonicalizes, dedupes, and filters aliases in compare URLs", () => {
+    const resolve = (id: string) => id === "old-foo" ? "foo" : places[id as keyof typeof places] ? id : null;
+    expect(
+      validatedStateFromSearch("?cmp=old-foo,bar,missing,old-foo", places, collections, undefined, resolve).compareIds,
+    ).toEqual(["foo", "bar"]);
+  });
 });
 
 describe("formatAppRelativeUrl", () => {
