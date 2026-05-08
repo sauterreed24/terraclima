@@ -4,7 +4,7 @@
 
 ## Project links
 
-- **Live app — works on any device, no signup, no install:** **[Open Terraclima](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html)** — served as a static SPA from this repo's `static-preview` branch via raw.githack.com. Anyone with the URL can use the app, including on a phone. The branch is auto-rebuilt on every push to `main` by `.github/workflows/static-preview.yml`.
+- **Live app — works on any device, no signup, no install:** **[Open Terraclima](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html)** — served as a static SPA from this repo's `static-preview` branch via raw.githack.com. Anyone with the URL can use the app, including on a phone. If raw.githack shows a safety notice, click **Open the page**. The branch is auto-rebuilt on every push to `main` by `.github/workflows/static-preview.yml`.
 - **Source code:** [https://github.com/sauterreed24/terraclima](https://github.com/sauterreed24/terraclima)
 - **Reviewer entry points:** [src/App.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/App.tsx), [src/types.ts](https://github.com/sauterreed24/terraclima/blob/main/src/types.ts), [src/components/AtlasMap.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/AtlasMap.tsx), [src/components/PlaceDetail.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/PlaceDetail.tsx), [src/lib/scoring.ts](https://github.com/sauterreed24/terraclima/blob/main/src/lib/scoring.ts), [scripts/sanity-check.ts](https://github.com/sauterreed24/terraclima/blob/main/scripts/sanity-check.ts)
 - **Other deploy options:** [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/sauterreed24/terraclima) (custom domain) · [GitHub Pages](https://github.com/sauterreed24/terraclima/settings/pages) (set Source to GitHub Actions to publish to `https://sauterreed24.github.io/terraclima/`).
@@ -95,7 +95,7 @@ Terraclima is a static SPA. Three deploy paths are wired up; the first works wit
 Every push to `main` triggers `.github/workflows/static-preview.yml`, which builds the SPA with `VITE_BASE_PATH=./` (relative asset paths) and force-pushes the resulting `dist/` to the orphan `static-preview` branch. raw.githack.com proxies that branch with proper MIME types over HTTPS.
 
 - **Live URL:** [`https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html`](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html)
-- No signup, no Pages toggle, no Vercel import. The link works for anyone, on any device, including mobile.
+- No signup, no Pages toggle, no Vercel import. The link works for anyone, on any device, including mobile. If raw.githack displays its external-content notice, click **Open the page** to load the app.
 - On phones, the public link opens directly into the same Explorer experience: scroll normally past the map, tap **Use map** only when you want to pan or pinch, then tap **Scroll page** to return to normal page scrolling.
 - Build artifact size is the same Vite bundle the other paths produce (same code splitting, same lazy chunks).
 
