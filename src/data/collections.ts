@@ -46,7 +46,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "Subtropical latitude, temperate comfort",
     description: "Where tropical latitudes meet 1500–2500 m of altitude, a different climate emerges: highs in the low 20s and lows in the teens, month after month. These are the cities where spring refuses to end.",
     tone: "sage",
-    placeIds: ["oaxaca-mx", "cuernavaca-mx", "san-cristobal-mx", "patzcuaro-mx", "san-miguel-mx", "tapalpa-mx", "mazamitla-mx", "morelia-mx", "guanajuato-mx", "zacatecas-mx", "toluca-mx", "taxco-mx", "puebla-mx"],
+    placeIds: ["oaxaca-mx", "cuernavaca-mx", "san-cristobal-mx", "patzcuaro-mx", "ajijic-lake-chapala-mx", "san-miguel-de-allende-mx", "queretaro-mx", "orizaba-mx", "tapalpa-mx", "mazamitla-mx", "morelia-mx", "guanajuato-mx", "zacatecas-mx", "toluca-mx", "taxco-mx", "puebla-mx"],
   },
   {
     id: "cool-summer-maritimes",
@@ -54,7 +54,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "The ocean is the air conditioner",
     description: "Coasts where deep cold water and persistent marine air keep summer highs at 14–19°C while inland valleys bake. Some of the most climate-resilient places on the continent for extreme heat.",
     tone: "glacier",
-    placeIds: ["monterey-ca", "santa-cruz-felton-ca", "tofino-bc", "victoria-bc", "grand-marais-mn", "grand-manan-nb", "eureka-ca", "point-reyes-ca", "astoria-or", "forks-wa", "prince-rupert-bc", "tofino-ucluelet-corridor", "gaspe-qc", "st-johns-nl", "cannon-beach-or", "sitka-ak", "twillingate-nl", "ensenada-mx", "duluth-mn", "bar-harbor-me", "halifax-ns", "charlottetown-pei", "squamish-bc", "friday-harbor-wa", "brookings-or", "burlington-vt", "block-island-ri", "cape-may-nj"],
+    placeIds: ["monterey-ca", "santa-cruz-felton-ca", "tofino-bc", "victoria-bc", "grand-marais-mn", "grand-manan-nb", "baie-saint-paul-qc", "eureka-ca", "point-reyes-ca", "astoria-or", "forks-wa", "prince-rupert-bc", "tofino-ucluelet-corridor", "gaspe-qc", "st-johns-nl", "cannon-beach-or", "sitka-ak", "twillingate-nl", "ensenada-mx", "duluth-mn", "bar-harbor-me", "halifax-ns", "charlottetown-pei", "squamish-bc", "friday-harbor-wa", "brookings-or", "burlington-vt", "block-island-ri", "cape-may-nj"],
   },
   {
     id: "orchard-valleys",
@@ -62,7 +62,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "Where terrain, sun, and chill align",
     description: "Valleys whose microclimate — lake moderation, rain-shadow dryness, thermal belts, or river-valley sheltering — produces the conditions for apples, cherries, pears, and grapes. The continent's fruit belts tell a climate story in every harvest.",
     tone: "ochre",
-    placeIds: ["hood-river-or", "osoyoos-bc", "traverse-city-mi", "niagara-on-the-lake", "wolfville-ns", "ashland-or", "summerland-bc", "creston-bc", "prince-edward-co-on", "wenatchee-wa", "penticton-bc", "leamington-on", "cuauhtemoc-mx", "medford-or", "kelowna-bc", "leavenworth-wa", "napa-ca"],
+    placeIds: ["hood-river-or", "osoyoos-bc", "traverse-city-mi", "niagara-on-the-lake", "wolfville-ns", "baie-saint-paul-qc", "morden-mb", "sutton-qc", "ashland-or", "summerland-bc", "creston-bc", "prince-edward-co-on", "wenatchee-wa", "penticton-bc", "leamington-on", "cuauhtemoc-mx", "medford-or", "kelowna-bc", "leavenworth-wa", "napa-ca"],
   },
   {
     id: "thermal-belts",
@@ -102,7 +102,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "Climatically distinctive and under-celebrated",
     description: "Places whose microclimate is genuinely distinctive but whose names remain off most lists: high hidden-gem value, strong local climate identity, or both.",
     tone: "sage",
-    placeIds: ["portal-az", "silver-city-nm", "grand-marais-mn", "grand-manan-nb", "creel-mx", "tapalpa-mx", "xilitla-mx", "alamos-mx", "salt-spring-bc", "sunshine-coast-bc", "creston-bc", "mazamitla-mx", "canaan-valley-wv", "fort-davis-tx", "cypress-hills-sk", "joseph-or", "real-catorce-mx", "parras-mx", "cuauhtemoc-mx", "redfield-ny", "houghton-mi", "viroqua-wi", "stanley-id", "twillingate-nl", "ely-mn", "xalapa-mx", "haida-gwaii-bc", "medicine-hat-ab", "winthrop-wa", "mount-charleston-nv", "burkes-garden-va"],
+    placeIds: ["portal-az", "silver-city-nm", "grand-marais-mn", "grand-manan-nb", "creel-mx", "baie-saint-paul-qc", "dawson-city-yt", "sutton-qc", "durango-mx", "orizaba-mx", "tapalpa-mx", "xilitla-mx", "alamos-mx", "salt-spring-bc", "sunshine-coast-bc", "creston-bc", "mazamitla-mx", "canaan-valley-wv", "fort-davis-tx", "cypress-hills-sk", "joseph-or", "real-catorce-mx", "parras-de-la-fuente-mx", "cuauhtemoc-mx", "redfield-ny", "houghton-mi", "viroqua-wi", "stanley-id", "twillingate-nl", "ely-mn", "xalapa-mx", "haida-gwaii-bc", "medicine-hat-ab", "winthrop-wa", "mount-charleston-nv", "burkes-garden-va"],
   },
   {
     id: "alpine-tundra",
@@ -118,7 +118,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "Fed by mist as much as by rain",
     description: "Windward mountain slopes where moist air condenses continuously onto forest canopies. A globally rare ecosystem compressed into specific elevation-and-aspect bands.",
     tone: "sage",
-    placeIds: ["highlands-nc", "xilitla-mx", "coatepec-mx", "san-cristobal-mx", "boone-nc", "xalapa-mx", "gatlinburg-tn", "palenque-mx", "hilo-hi"],
+    placeIds: ["highlands-nc", "xilitla-mx", "coatepec-mx", "san-cristobal-mx", "orizaba-mx", "boone-nc", "xalapa-mx", "gatlinburg-tn", "palenque-mx", "hilo-hi"],
   },
   {
     id: "dry-air-comfort",
@@ -126,7 +126,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "Low dew points, crisp skies",
     description: "Dry-climate pockets where summer comfort is a function of humidity more than temperature. A 30°C afternoon at 15% humidity feels radically different than 30°C at 75%.",
     tone: "glacier",
-    placeIds: ["bishop-ca", "silver-city-nm", "santa-fe-nm", "flagstaff-az", "boulder-co", "creel-mx", "san-miguel-mx", "taos-nm", "prescott-az", "borrego-springs-ca", "marfa-tx", "lubbock-tx", "page-az", "hermosillo-mx", "lone-pine-ca"],
+    placeIds: ["bishop-ca", "silver-city-nm", "santa-fe-nm", "flagstaff-az", "boulder-co", "creel-mx", "san-miguel-de-allende-mx", "queretaro-mx", "durango-mx", "taos-nm", "prescott-az", "borrego-springs-ca", "marfa-tx", "lubbock-tx", "page-az", "hermosillo-mx", "lone-pine-ca"],
   },
   {
     id: "monsoon-edges",
@@ -134,7 +134,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "Where summer convection reliably arrives",
     description: "Places on the leading edge of the North American Monsoon — spectacular afternoon thunderstorms, dry foresummers, luminous late-summer green.",
     tone: "sage",
-    placeIds: ["silver-city-nm", "portal-az", "flagstaff-az", "alamos-mx", "santa-fe-nm", "fort-davis-tx", "marfa-tx", "cloudcroft-nm", "sedona-az", "durango-co", "taos-nm", "page-az", "monterrey-mx", "hermosillo-mx", "puebla-mx", "tucson-az"],
+    placeIds: ["silver-city-nm", "portal-az", "flagstaff-az", "alamos-mx", "santa-fe-nm", "fort-davis-tx", "marfa-tx", "cloudcroft-nm", "sedona-az", "durango-co", "durango-mx", "taos-nm", "page-az", "monterrey-mx", "hermosillo-mx", "puebla-mx", "tucson-az"],
   },
   {
     id: "hyper-maritime",
@@ -150,7 +150,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "Where winter is eight months long",
     description: "The deep interior north — where January lows of −30°C are routine, summer is fierce and brief, and aurora season runs 240 nights a year. North America's most climatically extreme inhabited landscapes.",
     tone: "ice",
-    placeIds: ["whitehorse-yt", "yellowknife-nt", "churchill-mb", "thunder-bay-on", "fairbanks-ak", "nome-ak", "iqaluit-nu", "inuvik-nt", "ely-mn", "anchorage-ak"],
+    placeIds: ["whitehorse-yt", "dawson-city-yt", "yellowknife-nt", "churchill-mb", "thunder-bay-on", "fairbanks-ak", "nome-ak", "iqaluit-nu", "inuvik-nt", "ely-mn", "anchorage-ak"],
   },
   {
     id: "desert-oases",
@@ -158,7 +158,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "Water where no one would expect it",
     description: "Spring-fed or river-fed pockets of greenery inside vast arid landscapes. Each oasis is a story of specific hydrogeology — and a climate that depends on the water beneath as much as the sun above.",
     tone: "sage",
-    placeIds: ["parras-mx", "moab-ut", "borrego-springs-ca", "alamos-mx", "la-paz-mx", "death-valley-ca", "yuma-az"],
+    placeIds: ["parras-de-la-fuente-mx", "moab-ut", "borrego-springs-ca", "alamos-mx", "la-paz-mx", "death-valley-ca", "yuma-az"],
   },
   {
     id: "tropical-coasts",
@@ -191,7 +191,7 @@ export const COLLECTIONS: Collection[] = [
     subtitle: "Ridges, gorges, and orchard benches",
     description: "From the Blue Ridge to the Ozark rim, the eastern highlands concentrate rainfall, shelter cold pools, and host orchard belts on sunny midslopes — a full vocabulary of relief in one winding chain.",
     tone: "sage",
-    placeIds: ["black-mountain-nc", "asheville-nc", "boone-nc", "highlands-nc", "gatlinburg-tn", "chattanooga-tn", "eureka-springs-ar", "morgantown-wv", "mentone-al", "clayton-ga", "burkes-garden-va"],
+    placeIds: ["black-mountain-nc", "asheville-nc", "boone-nc", "highlands-nc", "sutton-qc", "gatlinburg-tn", "chattanooga-tn", "eureka-springs-ar", "morgantown-wv", "mentone-al", "clayton-ga", "burkes-garden-va"],
   },
   {
     id: "comfort-exemplars",
@@ -206,7 +206,8 @@ export const COLLECTIONS: Collection[] = [
       "silver-city-nm",
       "oaxaca-mx",
       "cuernavaca-mx",
-      "san-miguel-mx",
+      "ajijic-lake-chapala-mx",
+      "san-miguel-de-allende-mx",
       "ensenada-mx",
       "valle-guadalupe-mx",
       "santa-barbara-ca",

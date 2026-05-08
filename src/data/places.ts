@@ -18,6 +18,17 @@ export const PLACES_BY_ID: Record<string, Place> = Object.fromEntries(
   PLACES.map(p => [p.id, p]),
 );
 
+export const PLACE_ID_ALIASES: Record<string, string> = {
+  "san-miguel-mx": "san-miguel-de-allende-mx",
+  "parras-mx": "parras-de-la-fuente-mx",
+};
+
+export function resolvePlaceId(id: string | null | undefined): string | null {
+  if (!id) return null;
+  const canonical = PLACE_ID_ALIASES[id] ?? id;
+  return Object.prototype.hasOwnProperty.call(PLACES_BY_ID, canonical) ? canonical : null;
+}
+
 /**
  * Strip diacritics so "san jose" can match "San José" and "queretaro" can
  * match "Querétaro". Used both to build the search index and to fold the

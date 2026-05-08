@@ -13,7 +13,7 @@ import { LearnMode } from "./components/LearnMode";
 import { useFocusTrap } from "./hooks/use-focus-trap";
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
 import { useMediaQuery } from "./hooks/use-media-query";
-import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "./data/places";
+import { PLACES, PLACES_BY_ID, PLACE_COUNTS, resolvePlaceId } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
@@ -42,7 +42,8 @@ const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
 const DOC_TITLE_BASE = "Terraclima — North American Microclimate Atlas";
 
 function placeForId(id: string): Place | undefined {
-  return PLACES_BY_ID[id];
+  const canonical = resolvePlaceId(id);
+  return canonical ? PLACES_BY_ID[canonical] : undefined;
 }
 
 function isPlace(p: Place | undefined): p is Place {
@@ -53,6 +54,7 @@ const URL_INIT = readInitialAppState(
   PLACES_BY_ID,
   COLLECTION_BY_ID,
   ARCHETYPE_BY_ID,
+  resolvePlaceId,
 );
 
 type View = "explorer" | "collections" | "learn";
@@ -125,7 +127,7 @@ export default function App() {
       compareIds: [...compareIds],
       collectionExists: (id: string) => Boolean(COLLECTION_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
-      placeExists: (id: string) => Object.prototype.hasOwnProperty.call(PLACES_BY_ID, id),
+      placeExists: (id: string) => resolvePlaceId(id) != null,
     };
     const wantUrl = formatAppRelativeUrl(state);
     const haveUrl = `${window.location.pathname}${window.location.search}`;
@@ -163,6 +165,7 @@ export default function App() {
         PLACES_BY_ID as Record<string, unknown>,
         COLLECTION_BY_ID as Record<string, unknown>,
         ARCHETYPE_BY_ID as Record<string, unknown>,
+        resolvePlaceId,
       );
       setView(v.view);
       setSelectedId(v.placeId);
@@ -222,7 +225,7 @@ export default function App() {
   const rankedRef = useRef(ranked);
   rankedRef.current = ranked;
 
-  const selectedPlace = selectedId ? PLACES_BY_ID[selectedId] ?? null : null;
+  const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
 
   const toggleCompare = useCallback((id: string) => {
     setCompareIds(s => {
@@ -629,7 +632,7 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
         <div className="divider-contour my-3" />
         <div className="space-y-2 text-xs text-stone leading-relaxed">
           <p>
-            Phone map: the page scrolls normally first. Tap <strong className="text-frost font-normal">Use map</strong> on the map to pan or pinch zoom, then tap <strong className="text-frost font-normal">Scroll page</strong> to return to reading.
+            Phone map: the page scrolls normally first; drag sideways or diagonally to shift the atlas. Tap <strong className="text-frost font-normal">Use map</strong> for all-direction pan or pinch zoom, then tap <strong className="text-frost font-normal">Scroll page</strong> to return to reading.
           </p>
           <p>
             Place profiles: tap any pin or card to open the full write-up. The profile includes the field dossier, seasons, geospatial analysis, soils, risks, similar stops, and data sources.
@@ -935,8 +938,8 @@ const HeroCard = memo(function HeroCard({
   const prose = useProse();
   const active = activeCollection ? COLLECTION_BY_ID[activeCollection] ?? null : null;
   return (
-    <div className="panel panel-hero p-5 anim-fade-in space-y-4">
-      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+    <div className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4">
+      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Sparkles className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
@@ -954,10 +957,10 @@ const HeroCard = memo(function HeroCard({
               </button>
             )}
           </div>
-          <h1 className="font-atlas text-2xl md:text-3xl text-ice leading-tight text-depth-hero">
+          <h1 className="font-atlas text-2xl min-[1400px]:text-3xl text-ice leading-tight text-depth-hero">
             {active ? active.title : "Scout the continent, one microclimate at a time"}
           </h1>
-          <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed">
+          <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-3 min-[1400px]:line-clamp-none">
             {active
               ? active.description
               : "Rain shadows, sky islands, orchard valleys, chinook corridors, and cool-summer coasts — each write-up ties weather to terrain so you can read a place the way locals do, not just scan numbers."}
@@ -985,20 +988,20 @@ const HeroCard = memo(function HeroCard({
       </div>
 
       {livabilityTopTen.length > 0 ? (
-        <div className="hero-top-ten px-3 py-3 sm:px-4 space-y-3">
+        <div className="hero-top-ten px-3 py-2.5 sm:px-4 min-[1400px]:py-3 space-y-2.5 min-[1400px]:space-y-3">
           <div className="min-w-0">
             <div className="text-[10px] uppercase tracking-wider text-sage-700">Livability lens · top ten</div>
-            <p className="text-xs text-stone-readable mt-1 leading-relaxed max-w-3xl">
+            <p className="hidden min-[1400px]:block text-xs text-stone-readable mt-1 leading-relaxed max-w-3xl">
               Same filtered pool as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by our published blend — not by whatever you picked in Rank by.
             </p>
-            <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights">
+            <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights">
               <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
               <span className="livability-weight-pill">Winter ease {Math.round(LIVABILITY_WEIGHTS.winterEase * 100)}%</span>
               <span className="livability-weight-pill">Summer ease {Math.round(LIVABILITY_WEIGHTS.summerEase * 100)}%</span>
               <span className="livability-weight-pill">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardEase * 100)}%</span>
               <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
             </div>
-            <p className="mt-1.5 text-[10px] text-stone-readable/85 italic">
+            <p className="hidden min-[1400px]:block mt-1.5 text-[10px] text-stone-readable/85 italic">
               Editorial triage for exploration — not appraisal, insurance, civil engineering, or medical heat-stress advice.
             </p>
           </div>
@@ -1031,7 +1034,7 @@ const HeroCard = memo(function HeroCard({
           </div>
 
           {sortTopFive.length > 0 ? (
-            <div className="pt-2 border-t border-[rgba(200,170,140,0.35)]">
+            <div className="hidden min-[1400px]:block pt-2 border-t border-[rgba(200,170,140,0.35)]">
               <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Your Rank by · leading five</div>
               <p className="text-[11px] text-stone-readable mb-2 leading-relaxed">
                 Matches the long ranked list below — currently <span className="font-medium text-frost">{rankingLabel}</span>.
@@ -1055,7 +1058,9 @@ const HeroCard = memo(function HeroCard({
         </div>
       ) : null}
 
-      <FieldNoteStrip />
+      <div className="hidden min-[1400px]:block">
+        <FieldNoteStrip />
+      </div>
     </div>
   );
 });
