@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "Terraclima — The North American Microclimate Atlas. A research-grade microclimate intelligence app for scouting relocation, travel, and hidden gems across the USA, Mexico, and Canada.",
+  "description": "Terraclima — North American Microclimate Atlas. A research-grade microclimate intelligence app for scouting relocation, travel, and hidden gems across the USA, Mexico, and Canada.",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b --noEmit && vite build",
@@ -16,12 +16,13 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:prose": "tsx scripts/test-prose.ts",
+    "check:metadata": "tsx scripts/check-site-metadata.ts",
     "audit:corpus": "tsx scripts/audit-corpus.ts",
     "sanity": "tsx scripts/sanity-check.ts",
     "test:corpus-gold": "tsx scripts/corpus-rank-gold.ts",
     "dump:corpus-rank": "tsx scripts/dump-corpus-ranks.ts",
     "generate:og": "tsx scripts/generate-og-image.ts",
-    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run audit:corpus && npm run sanity && npm run test:corpus-gold && npm run build"
+    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run test:corpus-gold && npm run build"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.13.24",

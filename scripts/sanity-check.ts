@@ -10,6 +10,13 @@ import { ARCHETYPES } from "../src/data/archetypes";
 import { DRIVER_LABELS } from "../src/types";
 import { assertAtlasCorpusHealthy } from "../src/lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
+import { mergeDeepSections } from "../src/lib/place-appendix-sections";
+import {
+  buildNearbyContextRows,
+  buildPracticalActivities,
+  buildPracticalReadCards,
+  buildSettlementAnchors,
+} from "../src/lib/practical-read";
 
 type Issue = { id: string; severity: "WARN" | "ERROR"; msg: string };
 const issues: Issue[] = [];
@@ -212,6 +219,38 @@ for (const p of PLACES) {
     report(p.id, "ERROR", `no citations`);
   } else if (p.citations.length === 1 && p.tier !== "C") {
     report(p.id, "WARN", `only one citation for tier ${p.tier} place`);
+  }
+
+  // --- A/B effective corpus polish coverage ---
+  // Counts the rendered typed corpus, including deterministic context derived
+  // from existing place fields. This keeps the UI rich without inventing
+  // unsupported market data or fake named attractions.
+  if (p.tier === "A" || p.tier === "B") {
+    const minDeep = p.tier === "A" ? 4 : 3;
+    const minActivities = p.tier === "A" ? 4 : 3;
+    const minSettlementAnchors = p.tier === "A" ? 2 : 1;
+    const minNearbyRows = p.tier === "A" ? 2 : 1;
+    const cards = buildPracticalReadCards(p);
+    const badCards = cards.filter(card => !card.title.trim() || !card.body.trim() || card.bullets.length < 3 || card.bullets.some(b => !b.trim()));
+    if (cards.length !== 4 || badCards.length > 0) {
+      report(p.id, "ERROR", `practical read should render 4 complete cards, got ${cards.length} (${badCards.length} incomplete)`);
+    }
+    const deep = mergeDeepSections(p);
+    if (deep.length < minDeep) {
+      report(p.id, "ERROR", `effective deep section count ${deep.length}, expected at least ${minDeep}`);
+    }
+    const activities = buildPracticalActivities(p);
+    if (activities.length < minActivities) {
+      report(p.id, "ERROR", `effective activity count ${activities.length}, expected at least ${minActivities}`);
+    }
+    const settlementAnchors = buildSettlementAnchors(p);
+    if (settlementAnchors.length < minSettlementAnchors) {
+      report(p.id, "ERROR", `effective settlement/scouting anchor count ${settlementAnchors.length}, expected at least ${minSettlementAnchors}`);
+    }
+    const nearbyRows = buildNearbyContextRows(p);
+    if (nearbyRows.length < minNearbyRows) {
+      report(p.id, "ERROR", `effective nearby context count ${nearbyRows.length}, expected at least ${minNearbyRows}`);
+    }
   }
 
   // --- Hardiness zone sanity vs Jan low ---

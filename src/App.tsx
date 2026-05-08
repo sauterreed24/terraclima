@@ -21,6 +21,7 @@ import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, ty
 import { resonantWindowFor } from "./lib/best-months";
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
+import { placeDocumentTitle } from "./lib/site-metadata";
 import { useProse } from "./lib/units";
 import {
   loadPersistedRanking,
@@ -39,7 +40,6 @@ import type { Country, MicroclimateArchetype, Place } from "./types";
 
 const SEARCH_INPUT_ID = "terraclima-place-search";
 const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
-const DOC_TITLE_BASE = "Terraclima — North American Microclimate Atlas";
 
 function placeForId(id: string): Place | undefined {
   const canonical = resolvePlaceId(id);
@@ -108,11 +108,11 @@ export default function App() {
 
   useEffect(() => {
     if (!selectedId) {
-      document.title = DOC_TITLE_BASE;
+      document.title = placeDocumentTitle(null);
       return;
     }
     const p = PLACES_BY_ID[selectedId];
-    document.title = p ? `${p.name} · Terraclima` : DOC_TITLE_BASE;
+    document.title = placeDocumentTitle(p?.name);
   }, [selectedId]);
 
   useEffect(() => {

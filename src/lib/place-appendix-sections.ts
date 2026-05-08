@@ -171,9 +171,9 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
         : head.join(" · ");
     out.push({
       id: "appendix-forces-atlas",
-      title: "Mechanisms tagged for this place",
+      title: "Spatial logic and terrain engines",
       paragraphs: [
-        `${list} Tap the matching chips under “Why this climate is different here” for glossary definitions and how each process shows up in the terrain.`,
+        `${list} Use these as the spatial grammar for the profile: slope, exposure, water, elevation, and air-mass pathways explain why one map dot can feel unlike the surrounding region. Tap the matching chips under "Why this climate is different here" for glossary definitions.`,
       ],
     });
   }
@@ -193,7 +193,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     if (g.orchard) groundParas.push(`Orchard / perennial note: ${trimProse(g.orchard, 240)}`);
     out.push({
       id: "appendix-ground-garden",
-      title: "Ground, drainage, and what grows",
+      title: "Agriculture, soils, and garden fit",
       paragraphs: groundParas.slice(0, 4),
     });
   }
@@ -212,7 +212,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     if (paras.length > 0) {
       out.push({
         id: "appendix-nearby-differences",
-        title: "Contrasts within the neighbourhood",
+        title: "Nearby contrasts and side trips",
         paragraphs: paras.slice(0, 3),
       });
     }
@@ -244,7 +244,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
 
     out.push({
       id: "appendix-scouting-diligence",
-      title: "Homes, land, and long-term bets — how to read this stop",
+      title: "Homes, land, and long-term fit",
       paragraphs: [
         `If you are scouting a home or small land parcel, start with who already thrives here: ${place.whoWouldLove} Relocation tags we attach include ${rel} — they are editorial shorthand, not census demographics.`,
         `Be equally clear on poor fit so you do not waste a site visit: ${place.whoMightNot} Travel-wise, people often show up for ${travel}.`,

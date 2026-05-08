@@ -29,6 +29,7 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 - **Explorer map:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
 - **Phone-safe map interaction:** Touch users land in direct map mode by default: one-finger drag pans the atlas, pinch zooms, plus/minus and Fit remain available, clusters stay tappable, and dense pins visually spread with leader lines back to their exact locations. Tapping **Scroll page** gives control back to browser scrolling; **Use map** re-enters direct map interaction.
 - **Place profiles:** Long-form dossiers for each microclimate, including seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, citations, and confidence notes.
+- **Practical read:** Every profile now leads with plain-language cards for agriculture and gardens, spatial evidence, homes and land scouting, and nearby hikes or day trips before the longer dossier.
 - **Ranking lenses:** Sort by hidden gems, coolest summers, mildest winters, shoulder seasons, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
 - **Comparison workflow:** Compare up to four places side by side with climate ribbons, derived scores, responsive columns, and focus-managed modal behavior.
 - **Collections and learning mode:** Curated bundles and a glossary connect mechanisms such as lapse rate, cold-air pooling, orographic lift, marine layer, foehn winds, thermal belts, and karst hydrology to real places.
@@ -49,6 +50,7 @@ Terraclima combines editorial research with deterministic analysis. The app does
 
 - **Typed climate schema:** `src/types.ts` models climate normals, soils, growability, hazards, citations, field notes, local contrasts, deep profile sections, and derived geospatial context.
 - **Explainable scoring:** `src/lib/scoring.ts`, `src/lib/geospatial-analysis.ts`, and `src/lib/atlas-corpus-stats.ts` keep rankings and derived scores transparent, deterministic, and testable.
+- **Practical corpus synthesis:** `src/lib/practical-read.ts` turns existing typed fields into stable, non-market user guidance for agriculture, spatial analysis, homes and land, activities, settlements, and nearby contrasts.
 - **Validation built into the project:** `scripts/sanity-check.ts`, `scripts/audit-corpus.ts`, `scripts/test-prose.ts`, and `scripts/corpus-rank-gold.ts` catch malformed data, unit/prose regressions, corpus drift, and rank instability.
 - **Unit tests for pure logic:** `src/lib/__tests__/` covers units, scoring, best-month windows, similarity, and URL state with Vitest.
 - **Accessibility as architecture:** Dialogs use focus traps and clear escape behavior. The filtered result count has a screen-reader-only live region. SVG map markers, cluster markers, and map controls expose visible focus states. Mobile filter/search behavior avoids duplicate IDs and unpredictable modal stacks.
@@ -139,6 +141,8 @@ If the **primary public URL** changes, update canonical, OG, robots, and sitemap
 ### Hardening shipped in this repo
 
 - `index.html` carries canonical, Open Graph, Twitter card, app-title, install, and crawler metadata.
+- `src/lib/site-metadata.ts` is the source of truth for public app metadata used by runtime document titles and metadata validation.
+- `scripts/check-site-metadata.ts` keeps `index.html`, manifest, robots, sitemap, and 404 metadata aligned.
 - `public/site.webmanifest` supports add-to-home-screen behavior with the existing SVG icon.
 - `public/robots.txt` and `public/sitemap.xml` point crawlers at the canonical deploy.
 - `public/.nojekyll` keeps Pages from stripping files starting with `_`.
@@ -190,6 +194,7 @@ npm run lint               # ESLint over src/ and scripts/
 npm run test               # Vitest unit tests
 npm run test:watch         # Vitest in watch mode
 npm run test:prose         # Prose/unit localization regression tests
+npm run check:metadata     # Static shell / discovery metadata consistency
 npm run audit:corpus       # Corpus prose, units, typography, and consistency audit
 npm run sanity             # Structural corpus and geospatial sanity checks
 npm run test:corpus-gold   # Ranking and geospatial snapshot guardrails
@@ -226,6 +231,7 @@ For AI agents or automated reviewers:
 
 - **Runnable preview:** [Open Terraclima](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html) — the always-on raw.githack-served `static-preview` branch. No auth, no install.
 - **URL / compare invariants:** [docs/URL-INVARIANTS.md](docs/URL-INVARIANTS.md) (see also `src/lib/app-url.ts` tests and `COMPARE_LIMIT`).
+- **Improvement context:** [docs/IMPROVEMENT-CONTEXT.md](docs/IMPROVEMENT-CONTEXT.md) reconciles external research notes with the actual Vite/React atlas repo.
 - Treat `src/types.ts` as the contract.
 - Treat `scripts/sanity-check.ts` and `scripts/audit-corpus.ts` as executable invariants.
 - Prefer adding validation before changing corpus shape.
