@@ -27,7 +27,7 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 ## What It Does
 
 - **Explorer map:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
-- **Phone-safe map interaction:** Mobile users can scroll the page normally over the map by default, while sideways or diagonal one-finger drags pan the atlas without entering a separate mode. Tapping **Use map** switches into explicit map mode for all-direction one-finger pan, two-finger pinch zoom, plus/minus zoom, Fit, clusters, and the compact legend; tapping **Scroll page** gives control back to the page.
+- **Phone-safe map interaction:** Touch users land in direct map mode by default: one-finger drag pans the atlas, pinch zooms, plus/minus and Fit remain available, clusters stay tappable, and dense pins visually spread with leader lines back to their exact locations. Tapping **Scroll page** gives control back to browser scrolling; **Use map** re-enters direct map interaction.
 - **Place profiles:** Long-form dossiers for each microclimate, including seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, citations, and confidence notes.
 - **Ranking lenses:** Sort by hidden gems, coolest summers, mildest winters, shoulder seasons, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
 - **Comparison workflow:** Compare up to four places side by side with climate ribbons, derived scores, responsive columns, and focus-managed modal behavior.
@@ -61,7 +61,7 @@ Terraclima combines editorial research with deterministic analysis. The app does
 Terraclima is tuned for real devices, not just high-end developer machines.
 
 - **Surface Pro 5, 8 GB RAM:** Low-power mode disables expensive blur, marker pulse, hover lifts, deep shadows, and unnecessary backdrop filters. The map and card grid are structured to avoid punishing scroll and pan interactions.
-- **iPhone 13 Pro Max:** The map uses stable small-viewport sizing, defaults to browser-friendly page scroll with directional one-finger pan for sideways map shifts, offers an explicit touch map mode for all-direction pan and pinch zoom, clusters dense pins at low zoom, and keeps 44px-plus touch targets reachable. Comparison columns still scroll horizontally instead of collapsing into unreadable fragments.
+- **Phones and coarse-pointer devices:** The map uses stable small-viewport sizing, defaults to direct one-finger pan plus pinch zoom, keeps an explicit **Scroll page** escape, clusters dense low-zoom pins, visually spreads crowded pins with leader lines, and keeps 44px-plus touch targets reachable. Comparison columns still scroll horizontally instead of collapsing into unreadable fragments.
 - **General browser efficiency:** Search uses precomputed indexes. Filtering is deferred with `useDeferredValue`. Atlas topology is code-split. SVG paint IDs are unique per chart instance. Unit and geospatial helpers cache derived work where useful.
 
 ## Data and Provenance
@@ -96,7 +96,7 @@ Every push to `main` triggers `.github/workflows/static-preview.yml`, which buil
 
 - **Live URL:** [`https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html`](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html)
 - No signup, no Pages toggle, no Vercel import. The link works for anyone, on any device, including mobile. If raw.githack displays its external-content notice, click **Open the page** to load the app.
-- On phones, the public link opens directly into the same Explorer experience: scroll normally past the map, drag sideways or diagonally to shift the map, tap **Use map** when you want all-direction pan or pinch, then tap **Scroll page** to return to normal page scrolling.
+- On phones, the public link opens directly into the same Explorer experience: one-finger drag pans the map, pinch zooms, and **Scroll page** lets normal page scrolling pass through the map until **Use map** is tapped again.
 - Build artifact size is the same Vite bundle the other paths produce (same code splitting, same lazy chunks).
 
 To rebuild manually: trigger the **Publish static-preview branch** workflow from the Actions tab, or push any commit to `main`.
@@ -204,7 +204,7 @@ CI cannot exercise **touch** or real device GPUs. After anything that affects la
 |-------|----------------|----------------|
 | **Primary nav** | Hamburger menu (under ~560px width); dialog closes; focus sensible | Explorer / Collections / Learn in header bar |
 | **Explorer filters** | Bottom “Filters & rank” sheet; **`F`** opens it | Filter **dock** beside explorer (≥1024px) |
-| **Map** | Page **scrolls** over the map by default; **Use map** → pan/pinch; **Scroll page** exits | Wheel zoom, drag pan, pin opens detail |
+| **Map** | One-finger pan and pinch by default; **Scroll page** exits to browser scrolling; **Use map** re-enters map control | Wheel zoom, drag pan, keyboard controls, pin opens detail |
 | **Place + compare** | Detail drawer scrolls; compare readable | Same; keyboard shortcuts (`?` overlay) |
 
 Try widths near **375px**, **768px**, **1024px**, and full desktop. Always run `npm run quality:check` first.
@@ -231,7 +231,7 @@ For AI agents or automated reviewers:
 - Prefer adding validation before changing corpus shape.
 - Do not invent climate facts. If a data point is not present or cited, keep language framed as screening or editorial context.
 - Preserve URL behavior in `src/lib/app-url.ts` and modal focus behavior in `src/hooks/use-focus-trap.ts`.
-- Preserve phone map behavior: page scroll by default, sideways or diagonal one-finger drags pan the map, explicit **Use map** mode handles all-direction pan/pinch, cluster tap-to-zoom still works, and **Scroll page** remains a clear exit.
+- Preserve phone map behavior: direct one-finger pan and pinch by default, **Scroll page** remains a clear exit to browser scrolling, **Use map** re-enters direct control, cluster tap-to-zoom still works, and visual pin offsets must keep leader lines back to exact anchors.
 - When a change is user-visible or architectural, update `README.md` in the same work.
 - After edits, run `npm run quality:check`. For UI changes, follow **Manual QA — desktop and phone** above (Explorer, filters, map touch mode, place detail, compare).
 

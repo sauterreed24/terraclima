@@ -1,24 +1,24 @@
 import { describe, expect, it } from "vitest";
-import { classifyAtlasTouchGesture } from "../atlas-map-touch-gesture";
+import {
+  ATLAS_DEFAULT_TOUCH_MODE,
+  atlasTouchActionForMode,
+  resolveAtlasMapInteractive,
+} from "../atlas-map-touch-gesture";
 
-describe("classifyAtlasTouchGesture", () => {
-  it("keeps tiny movements pending", () => {
-    expect(classifyAtlasTouchGesture({ dx: 4, dy: 3, explicitMapMode: false })).toBe("pending");
+describe("atlas touch mode", () => {
+  it("defaults coarse pointers to direct map interaction", () => {
+    expect(ATLAS_DEFAULT_TOUCH_MODE).toBe("map");
+    expect(resolveAtlasMapInteractive({ coarsePointer: true, touchMode: ATLAS_DEFAULT_TOUCH_MODE })).toBe(true);
+    expect(atlasTouchActionForMode(true)).toBe("none");
   });
 
-  it("pans the map for horizontal drags", () => {
-    expect(classifyAtlasTouchGesture({ dx: 18, dy: 3, explicitMapMode: false })).toBe("map-pan");
+  it("lets phone users explicitly give scrolling back to the browser", () => {
+    expect(resolveAtlasMapInteractive({ coarsePointer: true, touchMode: "page" })).toBe(false);
+    expect(atlasTouchActionForMode(false)).toBe("pan-y pinch-zoom");
   });
 
-  it("pans the map for diagonal drags", () => {
-    expect(classifyAtlasTouchGesture({ dx: 18, dy: 16, explicitMapMode: false })).toBe("map-pan");
-  });
-
-  it("lets mostly vertical drags scroll the page", () => {
-    expect(classifyAtlasTouchGesture({ dx: 8, dy: 22, explicitMapMode: false })).toBe("page-scroll");
-  });
-
-  it("always pans in explicit map mode", () => {
-    expect(classifyAtlasTouchGesture({ dx: 0, dy: 24, explicitMapMode: true })).toBe("map-pan");
+  it("keeps desktop maps interactive regardless of the coarse touch toggle state", () => {
+    expect(resolveAtlasMapInteractive({ coarsePointer: false, touchMode: "page" })).toBe(true);
+    expect(resolveAtlasMapInteractive({ coarsePointer: false, touchMode: "map" })).toBe(true);
   });
 });

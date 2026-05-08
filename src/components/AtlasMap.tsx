@@ -16,9 +16,15 @@ import {
   fitMapViewToCluster,
   type AtlasClusterItem,
 } from "../lib/atlas-map-cluster";
+import { layoutAtlasMapPins } from "../lib/atlas-map-pin-layout";
 import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
 import { computePinLabelModes, type MapPinLabelMode } from "../lib/atlas-map-label-visibility";
-import { classifyAtlasTouchGesture } from "../lib/atlas-map-touch-gesture";
+import {
+  ATLAS_DEFAULT_TOUCH_MODE,
+  atlasTouchActionForMode,
+  resolveAtlasMapInteractive,
+  type AtlasTouchMode,
+} from "../lib/atlas-map-touch-gesture";
 import { useMediaQuery } from "../hooks/use-media-query";
 import { AtlasMapTooltip } from "./AtlasMapTooltip";
 import { CLIMATE_NORMALS_PERIOD } from "../lib/atlas-metadata";
@@ -102,6 +108,19 @@ const MIN_ZOOM = 0.42;
 const MAX_ZOOM = 14;
 const MOBILE_CLUSTER_RADIUS_PX = 48;
 const MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF = 1.65;
+const MOBILE_PIN_MIN_SPACING_PX = 42;
+const DESKTOP_PIN_MIN_SPACING_PX = 28;
+const MOBILE_PIN_MAX_OFFSET_PX = 34;
+const DESKTOP_PIN_MAX_OFFSET_PX = 20;
+
+type ClusterPoint = { place: Place; x: number; y: number; id: string };
+type RenderedClusterPoint = ClusterPoint & {
+  anchorX: number;
+  anchorY: number;
+  offsetPx: number;
+  needsLeader: boolean;
+  crowded: boolean;
+};
 
 /** Microclimate driver legend — lives on the dark map chrome with high-contrast labels. */
 function MapLegendDot({ color, label }: { color: string; label: string }) {
@@ -119,6 +138,13 @@ function MapLegendDot({ color, label }: { color: string; label: string }) {
 
 function clampZoom(k: number): number {
   return Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, k));
+}
+
+function pinLayoutPriority(place: Place, selectedId: string | undefined, hoverId: string | null): number {
+  if (place.id === selectedId) return 100;
+  if (place.id === hoverId) return 90;
+  const tierPriority = place.tier === "A" ? 8 : place.tier === "B" ? 4 : 1;
+  return tierPriority + Math.max(0, 2 - place.name.length / 24);
 }
 
 function svgPointFromClient(
@@ -190,8 +216,8 @@ export function AtlasMap({
   // still report >4 GB / >4 cores so the generic `useRichVisualEffects()`
   // probe leaves them on. We always keep gradients, halos, and tier glyphs.
   const richEffects = useRichVisualEffects() && !coarsePointer;
-  const [mapInteractionEnabled, setMapInteractionEnabled] = useState(false);
-  const mapInteractive = !coarsePointer || mapInteractionEnabled;
+  const [touchMode, setTouchMode] = useState<AtlasTouchMode>(ATLAS_DEFAULT_TOUCH_MODE);
+  const mapInteractive = resolveAtlasMapInteractive({ coarsePointer, touchMode });
   const [legendOpen, setLegendOpen] = useState(false);
 
   const shellRef = useRef<HTMLDivElement>(null);
@@ -223,7 +249,7 @@ export function AtlasMap({
 
   useEffect(() => {
     if (!coarsePointer) {
-      setMapInteractionEnabled(false);
+      setTouchMode(ATLAS_DEFAULT_TOUCH_MODE);
     }
     if (!compactMapChrome) {
       setLegendOpen(false);
@@ -233,7 +259,6 @@ export function AtlasMap({
   useEffect(() => {
     if (mapInteractive) return;
     activeTouchPointersRef.current.clear();
-    directionalTouchRef.current = null;
     pinchRef.current = null;
     touchPinchRef.current = null;
     dragRef.current.active = false;
@@ -325,12 +350,6 @@ export function AtlasMap({
     raf: 0,
   });
   const activeTouchPointersRef = useRef(new Map<number, { clientX: number; clientY: number }>());
-  const directionalTouchRef = useRef<{
-    pointerId: number;
-    startX: number;
-    startY: number;
-    state: "pending" | "map-pan" | "page-scroll";
-  } | null>(null);
   const suppressTouchActivationRef = useRef(false);
   const suppressTouchActivationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pinchRef = useRef<{
@@ -541,7 +560,10 @@ export function AtlasMap({
     return ids;
   }, [selectedId, hoverId]);
 
-  const clusterEnabled = coarsePointer && settledView.k < MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF && pts.length > 18;
+  const clusterEnabled =
+    coarsePointer &&
+    pts.length > 18 &&
+    (settledView.k < MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF || settledView.k >= MAX_ZOOM * 0.96);
   const renderItems = useMemo(
     () => clusterMapPoints(clusterSourcePoints, {
       enabled: clusterEnabled,
@@ -581,9 +603,38 @@ export function AtlasMap({
     });
   }, [markerPointsAll, coarsePointer, settledView, width, height, selectedId, hoverId]);
 
+  const laidOutMarkerPoints = useMemo<RenderedClusterPoint[]>(() => {
+    const layout = layoutAtlasMapPins(
+      markerPoints.map(pt => ({
+        ...pt,
+        priority: pinLayoutPriority(pt.place, selectedId, hoverId),
+        locked: pt.place.id === selectedId || pt.place.id === hoverId,
+      })),
+      {
+        enabled: markerPoints.length > 1,
+        view: settledView,
+        minSpacingPx: coarsePointer ? MOBILE_PIN_MIN_SPACING_PX : DESKTOP_PIN_MIN_SPACING_PX,
+        maxOffsetPx: coarsePointer ? MOBILE_PIN_MAX_OFFSET_PX : DESKTOP_PIN_MAX_OFFSET_PX,
+        iterations: coarsePointer ? 14 : 10,
+        leaderThresholdPx: coarsePointer ? 5 : 4,
+      },
+    );
+
+    return layout.pins.map(pin => ({
+      ...pin.point,
+      x: pin.x,
+      y: pin.y,
+      anchorX: pin.anchorX,
+      anchorY: pin.anchorY,
+      offsetPx: pin.offsetPx,
+      needsLeader: pin.needsLeader,
+      crowded: pin.crowded,
+    }));
+  }, [markerPoints, settledView, coarsePointer, selectedId, hoverId]);
+
   const pinLabelModes = useMemo(
-    () => computePinLabelModes(markerPoints, settledView.k, selectedId, hoverId),
-    [markerPoints, settledView.k, selectedId, hoverId]
+    () => computePinLabelModes(laidOutMarkerPoints, settledView.k, selectedId, hoverId),
+    [laidOutMarkerPoints, settledView.k, selectedId, hoverId]
   );
 
   /**
@@ -591,7 +642,7 @@ export function AtlasMap({
    * then selection so stacked pins are clickable without hunting for a gap.
    */
   const markerRenderOrder = useMemo(() => {
-    const out = [...markerPoints];
+    const out = [...laidOutMarkerPoints];
     const z = (id: string) => (id === selectedId ? 2 : id === hoverId ? 1 : 0);
     out.sort((a, b) => {
       const d = z(a.place.id) - z(b.place.id);
@@ -599,7 +650,7 @@ export function AtlasMap({
       return a.place.id.localeCompare(b.place.id);
     });
     return out;
-  }, [markerPoints, selectedId, hoverId]);
+  }, [laidOutMarkerPoints, selectedId, hoverId]);
 
   // Markers call `onSelect` directly. Do not gate on `dragRef.moved`: marker
   // `pointerdown` stops propagation so the map never resets `moved` after a
@@ -733,39 +784,20 @@ export function AtlasMap({
   // Pan via Pointer Events + direct DOM mutation (no React re-renders during drag)
   const onPointerDown = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
     if (e.pointerType === "touch") {
-      activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
       setClusterPicker(null);
 
-      if (mapInteractive) {
-        e.preventDefault();
-        (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
-        if (activeTouchPointersRef.current.size === 1) {
-          startDragAt(e.clientX, e.clientY);
-        } else {
-          startPinch();
-        }
+      if (!mapInteractive) {
         return;
       }
 
-      if (activeTouchPointersRef.current.size > 1) {
-        directionalTouchRef.current = null;
-        dragRef.current.active = false;
-        dragRef.current.dx = 0;
-        dragRef.current.dy = 0;
-        return;
+      e.preventDefault();
+      activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
+      (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+      if (activeTouchPointersRef.current.size === 1) {
+        startDragAt(e.clientX, e.clientY);
+      } else {
+        startPinch();
       }
-
-      clearTouchActivationSuppression();
-      directionalTouchRef.current = {
-        pointerId: e.pointerId,
-        startX: e.clientX,
-        startY: e.clientY,
-        state: "pending",
-      };
-      dragRef.current.active = false;
-      dragRef.current.dx = 0;
-      dragRef.current.dy = 0;
-      dragRef.current.moved = false;
       return;
     }
 
@@ -773,34 +805,7 @@ export function AtlasMap({
     (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
     setClusterPicker(null);
     startDragAt(e.clientX, e.clientY);
-  }, [mapInteractive, startDragAt, startPinch, clearTouchActivationSuppression]);
-
-  const updateDirectionalTouchPan = useCallback((e: React.PointerEvent<SVGSVGElement>): boolean => {
-    const gesture = directionalTouchRef.current;
-    if (!gesture || gesture.pointerId !== e.pointerId) return false;
-    activeTouchPointersRef.current.set(e.pointerId, { clientX: e.clientX, clientY: e.clientY });
-
-    if (gesture.state === "page-scroll") return true;
-
-    if (gesture.state === "pending") {
-      const decision = classifyAtlasTouchGesture({
-        dx: e.clientX - gesture.startX,
-        dy: e.clientY - gesture.startY,
-        explicitMapMode: false,
-      });
-      if (decision === "pending") return true;
-      gesture.state = decision;
-      if (decision === "page-scroll") {
-        activeTouchPointersRef.current.delete(e.pointerId);
-        return true;
-      }
-      (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
-      startDragAt(gesture.startX, gesture.startY);
-    }
-
-    e.preventDefault();
-    return false;
-  }, [startDragAt]);
+  }, [mapInteractive, startDragAt, startPinch]);
 
   const updateExplicitTouchPan = useCallback((e: React.PointerEvent<SVGSVGElement>): boolean => {
     if (!activeTouchPointersRef.current.has(e.pointerId)) return false;
@@ -830,15 +835,9 @@ export function AtlasMap({
   }, [width, height]);
 
   const finishTouchPointer = useCallback((e: React.PointerEvent<SVGSVGElement>): boolean => {
-    const gesture = directionalTouchRef.current;
-    const directionalPan = !mapInteractive && gesture?.pointerId === e.pointerId && gesture.state === "map-pan";
-    if (gesture?.pointerId === e.pointerId) directionalTouchRef.current = null;
-
     activeTouchPointersRef.current.delete(e.pointerId);
 
     if (!mapInteractive) {
-      const moved = finishDrag();
-      if (directionalPan && moved) suppressNextTouchActivation();
       pinchRef.current = null;
       return true;
     }
@@ -855,7 +854,7 @@ export function AtlasMap({
     }
     pinchRef.current = null;
     return false;
-  }, [finishDrag, mapInteractive, startDragAt, startPinch, suppressNextTouchActivation]);
+  }, [mapInteractive, startDragAt, startPinch]);
 
   // Cursor lat/lon overlay — RAF-coalesced direct-DOM update. Runs on every
   // pointer move (not just drag). No React renders. Skipped on coarse
@@ -891,9 +890,8 @@ export function AtlasMap({
 
   const onPointerMove = useCallback((e: React.PointerEvent<SVGSVGElement>) => {
     if (e.pointerType === "touch") {
-      if (mapInteractive) {
-        if (updateExplicitTouchPan(e)) return;
-      } else if (updateDirectionalTouchPan(e)) {
+      if (!mapInteractive) return;
+      if (updateExplicitTouchPan(e)) {
         return;
       }
     } else {
@@ -916,11 +914,12 @@ export function AtlasMap({
         applyDOMTransform();
       });
     }
-  }, [width, height, applyDOMTransform, updateCursorCoord, mapInteractive, updateDirectionalTouchPan, updateExplicitTouchPan]);
+  }, [width, height, applyDOMTransform, updateCursorCoord, mapInteractive, updateExplicitTouchPan]);
 
   const onPointerUp = useCallback((e?: React.PointerEvent<SVGSVGElement>) => {
     let touchTap: { clientX: number; clientY: number } | null = null;
     if (e?.pointerType === "touch") {
+      if (!mapInteractive) return;
       const canDoubleTap =
         mapInteractive &&
         activeTouchPointersRef.current.size === 1 &&
@@ -932,11 +931,13 @@ export function AtlasMap({
       }
     } else if (!e) {
       activeTouchPointersRef.current.clear();
-      directionalTouchRef.current = null;
       pinchRef.current = null;
     }
 
-    finishDrag();
+    const moved = finishDrag();
+    if (e?.pointerType === "touch" && mapInteractive && moved) {
+      suppressNextTouchActivation();
+    }
 
     if (touchTap) {
       const now = performance.now();
@@ -965,7 +966,7 @@ export function AtlasMap({
         lastTouchTapRef.current = { t: now, clientX: touchTap.clientX, clientY: touchTap.clientY };
       }
     }
-  }, [finishDrag, finishTouchPointer, height, mapInteractive, width]);
+  }, [finishDrag, finishTouchPointer, height, mapInteractive, suppressNextTouchActivation, width]);
 
   const startTouchPinch = useCallback((touches: TouchListLike) => {
     const rect = svgRef.current?.getBoundingClientRect();
@@ -1108,7 +1109,7 @@ export function AtlasMap({
   }, [width, height, coarsePointer, openClusterPicker]);
 
   const topoLoading = topo === null;
-  const svgTouchAction = mapInteractive ? "none" : "pan-y pinch-zoom";
+  const svgTouchAction = atlasTouchActionForMode(mapInteractive);
 
   return (
     <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
@@ -1132,7 +1133,7 @@ export function AtlasMap({
         textRendering="geometricPrecision"
         role="img"
         tabIndex={0}
-        aria-label={coarsePointer ? "Atlas map of North America. The page scrolls normally; sideways and diagonal one-finger drags pan the map. Use the map control to enable all-direction pan and pinch zoom. Tap any pin to open that place's full profile." : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile."}
+        aria-label={coarsePointer ? "Atlas map of North America. One-finger drag pans the map; pinch zooms when map mode is active. Use the Scroll page control to let the browser scroll past the map. Tap any pin to open that place's full profile." : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile."}
         onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
@@ -1357,6 +1358,34 @@ export function AtlasMap({
             ))}
           </g>
 
+          {/* Visual-only pin offsets keep dense touch targets usable while leader lines preserve exact geography. */}
+          <g pointerEvents="none" aria-hidden>
+            {markerRenderOrder.filter(pt => pt.needsLeader).map(pt => (
+              <g key={`leader-${pt.place.id}`}>
+                <line
+                  x1={pt.anchorX}
+                  y1={pt.anchorY}
+                  x2={pt.x}
+                  y2={pt.y}
+                  stroke={pt.crowded ? "rgba(240,210,156,0.76)" : "rgba(220,235,248,0.52)"}
+                  strokeWidth="1"
+                  strokeDasharray={pt.crowded ? "2.5 2.5" : "none"}
+                  strokeLinecap="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <circle
+                  cx={pt.anchorX}
+                  cy={pt.anchorY}
+                  r={Math.max(0.6, 1.8 / view.k)}
+                  fill="rgba(245,250,255,0.8)"
+                  stroke="rgba(8,14,24,0.9)"
+                  strokeWidth="0.65"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </g>
+            ))}
+          </g>
+
           {/* Markers */}
           <g>
             {markerRenderOrder.map(pt => {
@@ -1495,10 +1524,12 @@ export function AtlasMap({
           <button
             type="button"
             className="map-control-pill"
-            aria-pressed={mapInteractionEnabled}
-            onClick={() => setMapInteractionEnabled(v => !v)}
+            aria-pressed={mapInteractive}
+            aria-label={mapInteractive ? "Switch map to page scrolling" : "Switch map to direct interaction"}
+            title={mapInteractive ? "Let page scroll gestures pass through the map" : "Use one-finger pan and pinch zoom on the map"}
+            onClick={() => setTouchMode(mode => mode === "map" ? "page" : "map")}
           >
-            {mapInteractionEnabled ? "Scroll page" : "Use map"}
+            {mapInteractive ? "Scroll page" : "Use map"}
           </button>
         </div>
       ) : null}
@@ -1625,8 +1656,6 @@ interface MarkerProps {
   onLeave: () => void;
   shouldSuppressTouchActivation: () => boolean;
 }
-
-type ClusterPoint = { place: Place; x: number; y: number; id: string };
 
 const ClusterMarker = memo(function ClusterMarker({
   cluster,

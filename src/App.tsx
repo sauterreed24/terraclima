@@ -632,7 +632,7 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
         <div className="divider-contour my-3" />
         <div className="space-y-2 text-xs text-stone leading-relaxed">
           <p>
-            Phone map: the page scrolls normally first; drag sideways or diagonally to shift the atlas. Tap <strong className="text-frost font-normal">Use map</strong> for all-direction pan or pinch zoom, then tap <strong className="text-frost font-normal">Scroll page</strong> to return to reading.
+            Phone map: one-finger drag pans the atlas and pinch zooms by default. Tap <strong className="text-frost font-normal">Scroll page</strong> when you want browser scrolling over the map, then tap <strong className="text-frost font-normal">Use map</strong> to return to direct map control.
           </p>
           <p>
             Place profiles: tap any pin or card to open the full write-up. The profile includes the field dossier, seasons, geospatial analysis, soils, risks, similar stops, and data sources.
