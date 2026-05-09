@@ -1,12 +1,12 @@
 import { useMemo, type ReactNode } from "react";
 import { Calendar, Compass, Home, Leaf, MapPin, Route, ShieldAlert, Sprout, TrendingUp } from "lucide-react";
 import type { Place } from "../../types";
-import { buildClimateTourismProfile } from "../../lib/climate-tourism";
+import { getClimateTourismProfile } from "../../lib/climate-tourism";
 import { useProse } from "../../lib/units";
 
 export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: string }) {
   const prose = useProse();
-  const profile = useMemo(() => buildClimateTourismProfile(place), [place]);
+  const profile = useMemo(() => getClimateTourismProfile(place), [place]);
 
   return (
     <section id={anchorId} className="detail-doc-section anim-fade-in scroll-mt-28">

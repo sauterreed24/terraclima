@@ -915,6 +915,15 @@
   .collection-curation-card[data-tone="ochre"]::before { background: linear-gradient(180deg, #ffe08a, #e89b20); }
   .collection-curation-card[data-tone="ember"]::before { background: linear-gradient(180deg, #ffc4a8, #e85a32); }
   .collection-curation-card[data-tone="ice"]::before { background: linear-gradient(180deg, #c8effc, #2eb8e6); }
+  .collection-curation-card[data-tone="aurora"]::before { background: linear-gradient(180deg, #ffc4d6, #9a2a4d); }
+
+  .climate-trip-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 340px;
+  }
+  .climate-trip-pick-card {
+    contain-intrinsic-size: 0 560px;
+  }
 
   /* Map — frame reads like a lit instrument panel, not a flat widget */
   .map-shell {
@@ -1814,6 +1823,11 @@
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.06) inset,
       0 0 0 1px rgba(100, 140, 190, 0.18) inset;
+  }
+
+  html.tc-low-power .anim-fade-in,
+  html.tc-low-power .view-enter {
+    animation-duration: 120ms;
   }
 }
 

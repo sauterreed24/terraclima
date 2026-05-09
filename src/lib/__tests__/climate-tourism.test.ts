@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CLIMATE_TRIP_THEMES } from "../../data/climate-trip-themes";
 import { PLACES, PLACES_BY_ID } from "../../data/places";
-import { buildClimateTourismProfile } from "../climate-tourism";
+import { buildClimateTourismProfile, getClimateTourismProfile } from "../climate-tourism";
 import { makePlace } from "./test-fixtures";
 
 describe("climate tourism profiles", () => {
@@ -27,6 +27,13 @@ describe("climate tourism profiles", () => {
   it("is deterministic for the same place", () => {
     const place = PLACES_BY_ID["sequim-wa"];
     expect(buildClimateTourismProfile(place)).toEqual(buildClimateTourismProfile(place));
+  });
+
+  it("reuses cached profiles without changing derived output", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    const cached = getClimateTourismProfile(place);
+    expect(getClimateTourismProfile(place)).toBe(cached);
+    expect(cached).toEqual(buildClimateTourismProfile(place));
   });
 
   it("always emits exactly days 1, 2, and 3 with complete itinerary text", () => {
