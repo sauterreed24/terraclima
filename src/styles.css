@@ -924,6 +924,18 @@
   .climate-trip-pick-card {
     contain-intrinsic-size: 0 560px;
   }
+  /* Same off-screen paint skipping for the lazy-loaded Curated and Learn
+     views. Sized to typical rendered card heights. */
+  .collection-curation-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 220px;
+  }
+  .learn-concept-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 280px;
+    transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .learn-concept-card:hover { transform: translateY(-2px); }
 
   /* Map — frame reads like a lit instrument panel, not a flat widget */
   .map-shell {
@@ -1923,7 +1935,8 @@
   .btn-ghost,
   .chip-btn,
   .reveal-row,
-  .term {
+  .term,
+  .learn-concept-card {
     transition-duration: 0.01ms !important;
   }
   html {

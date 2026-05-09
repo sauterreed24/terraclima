@@ -92,13 +92,6 @@ interface Props {
   places: Place[];
   selectedId?: string;
   onSelect: (id: string) => void;
-  /**
-   * Optional hover callback. Note: this fires on every marker mouseover, so
-   * parent components that use it will re-render frequently. Prefer letting
-   * AtlasMap manage its own hover state (the map's hover ring is already
-   * rendered internally).
-   */
-  onHover?: (id: string | null) => void;
   width?: number;
   height?: number;
 }
@@ -205,7 +198,6 @@ export function AtlasMap({
   places,
   selectedId,
   onSelect,
-  onHover,
   width: widthProp = 820,
   height: heightProp = 520,
 }: Props) {
@@ -640,27 +632,30 @@ export function AtlasMap({
   /**
    * SVG paint order = hit-test order. Render inactive pins first, then hover,
    * then selection so stacked pins are clickable without hunting for a gap.
+   *
+   * Implemented as a single linear partition pass: with ~130 pins, only 0–2
+   * ever have non-zero priority. The previous spread + sort allocated a new
+   * array and ran ~896 `localeCompare` calls per recompute (every hover,
+   * every selection). The base order from `laidOutMarkerPoints` is already
+   * deterministic so we don't need a tiebreaker.
    */
   const markerRenderOrder = useMemo(() => {
-    const out = [...laidOutMarkerPoints];
-    const z = (id: string) => (id === selectedId ? 2 : id === hoverId ? 1 : 0);
-    out.sort((a, b) => {
-      const d = z(a.place.id) - z(b.place.id);
-      if (d !== 0) return d;
-      return a.place.id.localeCompare(b.place.id);
-    });
-    return out;
+    const base: RenderedClusterPoint[] = [];
+    let hover: RenderedClusterPoint | null = null;
+    let selected: RenderedClusterPoint | null = null;
+    for (const pt of laidOutMarkerPoints) {
+      if (pt.place.id === selectedId) selected = pt;
+      else if (pt.place.id === hoverId) hover = pt;
+      else base.push(pt);
+    }
+    if (hover) base.push(hover);
+    if (selected) base.push(selected);
+    return base;
   }, [laidOutMarkerPoints, selectedId, hoverId]);
 
   // Markers call `onSelect` directly. Do not gate on `dragRef.moved`: marker
   // `pointerdown` stops propagation so the map never resets `moved` after a
   // pan — using a drag guard here left pins unclickable until full reload.
-
-  // Only notify external listeners if they opted in. Guard the effect so the
-  // common (no-listener) path doesn't cause any work per hover.
-  useEffect(() => {
-    if (onHover) onHover(hoverId);
-  }, [hoverId, onHover]);
 
   // DOM transform applier — used both during drag (no re-render) and after
   // committed view changes.

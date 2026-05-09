@@ -241,7 +241,14 @@ export default function App() {
   const deferredFilters = useDeferredValue(filters);
   const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
   const ranked = useMemo(() => rankPlaces(ranking, filtered), [ranking, filtered]);
-  const livabilityTopTen = useMemo(() => rankLivabilityPreview(filtered).slice(0, 10), [filtered]);
+  // The hero top-ten is decorative (lives below the map + cards). Defer it
+  // so React can drop a stale render and let the higher-value updates above
+  // commit first when the user is rapidly changing filters.
+  const deferredFiltered = useDeferredValue(filtered);
+  const livabilityTopTen = useMemo(
+    () => rankLivabilityPreview(deferredFiltered).slice(0, 10),
+    [deferredFiltered],
+  );
   const sortTopFive = useMemo(() => ranked.slice(0, 5), [ranked]);
   const rankingLabel = useMemo(
     () => RANKING_OPTIONS.find(o => o.id === ranking)?.label ?? ranking.replace(/-/g, " "),
