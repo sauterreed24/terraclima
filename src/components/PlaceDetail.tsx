@@ -350,8 +350,8 @@ function DetailHeader({
       className="md:sticky md:top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 bg-[rgba(255,253,248,0.97)] backdrop-blur relative border-b border-[rgba(200,160,120,0.35)]"
       style={{ backgroundImage: TONE_HERO[tone] }}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
+        <div className="min-w-0 w-full">
           <div className="flex items-center gap-1.5 md:gap-2 text-xs text-stone mb-1 flex-wrap">
             <span className="chip" data-tone={place.tier === "A" ? "ochre" : place.tier === "B" ? "ice" : "sage"}>{tierLabel}</span>
             <MapPin className="w-3 h-3" aria-hidden />
@@ -382,7 +382,7 @@ function DetailHeader({
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex items-center gap-1 self-end shrink-0 md:self-start">
           <CopyPlaceLink placeId={place.id} />
           {onCompareToggle && (
             <button
