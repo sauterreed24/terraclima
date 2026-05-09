@@ -32,6 +32,7 @@ import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
 import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
 import { PlaceAtAGlance } from "./place-detail/PlaceAtAGlance";
 import { PlacePracticalRead } from "./place-detail/PlacePracticalRead";
+import { PlaceTourismRead } from "./place-detail/PlaceTourismRead";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
@@ -553,6 +554,8 @@ function DetailBody({
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
 
       <PlacePracticalRead place={place} anchorId={PD.practical} />
+
+      <PlaceTourismRead place={place} anchorId={PD.tourism} />
 
       <Section anchorId={PD.fieldStory} icon={<Compass className="w-4 h-4" style={{ color: "#dcc4ff" }} />} title={fieldStory.title}>
         <div className="panel-field-story p-4 md:p-5 space-y-3.5 rounded-2xl border border-[rgba(199,181,234,0.22)]">

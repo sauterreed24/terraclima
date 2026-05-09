@@ -8,8 +8,8 @@ describe("app-url state", () => {
   });
 
   it("parses filters and compare from query string", () => {
-    const p = parseAppSearch("?v=collections&p=sequim-wa&col=rainshadow&c=USA,Canada&a=fog-belt-coast,rain-shadow-sanctuary&q=san+jose&cmp=a,b,c");
-    expect(p.view).toBe("collections");
+    const p = parseAppSearch("?v=trips&p=sequim-wa&col=rainshadow&c=USA,Canada&a=fog-belt-coast,rain-shadow-sanctuary&q=san+jose&cmp=a,b,c");
+    expect(p.view).toBe("trips");
     expect(p.placeId).toBe("sequim-wa");
     expect(p.collectionId).toBe("rainshadow");
     expect(p.countries).toEqual(["USA", "Canada"]);

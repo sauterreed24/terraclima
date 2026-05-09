@@ -1,5 +1,5 @@
 import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { BookOpen, Compass, HelpCircle, Layers, Library, Map, Menu, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
+import { BookOpen, Compass, HelpCircle, Layers, Library, Map, Menu, Route, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -9,12 +9,14 @@ import { TempToggle } from "./components/TempToggle";
 import { PlaceDetail } from "./components/PlaceDetail";
 import { CompareView } from "./components/CompareView";
 import { CollectionsView } from "./components/CollectionsView";
+import { ClimateTripsView } from "./components/ClimateTripsView";
 import { LearnMode } from "./components/LearnMode";
 import { useFocusTrap } from "./hooks/use-focus-trap";
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
 import { useMediaQuery } from "./hooks/use-media-query";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS, resolvePlaceId } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
+import { CLIMATE_TRIP_THEME_BY_ID } from "./data/climate-trip-themes";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
 import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, type FilterState, type RankingProfile, type RankingResult } from "./lib/scoring";
@@ -40,6 +42,10 @@ import type { Country, MicroclimateArchetype, Place } from "./types";
 
 const SEARCH_INPUT_ID = "terraclima-place-search";
 const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
+const CURATED_SET_BY_ID = {
+  ...Object.fromEntries(Object.entries(COLLECTION_BY_ID).map(([id, c]) => [id, { ...c, kind: "collection" as const }])),
+  ...Object.fromEntries(Object.entries(CLIMATE_TRIP_THEME_BY_ID).map(([id, t]) => [id, { ...t, kind: "trip" as const }])),
+};
 
 function placeForId(id: string): Place | undefined {
   const canonical = resolvePlaceId(id);
@@ -53,13 +59,13 @@ function isPlace(p: Place | undefined): p is Place {
 function readCurrentAppState() {
   return readInitialAppState(
     PLACES_BY_ID,
-    COLLECTION_BY_ID,
+    CURATED_SET_BY_ID,
     ARCHETYPE_BY_ID,
     resolvePlaceId,
   );
 }
 
-type View = "explorer" | "collections" | "learn";
+type View = "explorer" | "trips" | "collections" | "learn";
 
 export default function App() {
   const richVisualEffects = useRichVisualEffects();
@@ -133,7 +139,7 @@ export default function App() {
       archetypes: [...filters.archetypes],
       search: filters.search ?? "",
       compareIds: [...compareIds],
-      collectionExists: (id: string) => Boolean(COLLECTION_BY_ID[id]),
+      collectionExists: (id: string) => Boolean(CURATED_SET_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
       placeExists: (id: string) => resolvePlaceId(id) != null,
     };
@@ -171,7 +177,7 @@ export default function App() {
       const v = validatedStateFromSearch(
         window.location.search,
         PLACES_BY_ID as Record<string, unknown>,
-        COLLECTION_BY_ID as Record<string, unknown>,
+        CURATED_SET_BY_ID as Record<string, unknown>,
         ARCHETYPE_BY_ID as Record<string, unknown>,
         resolvePlaceId,
       );
@@ -184,6 +190,7 @@ export default function App() {
         search: v.search,
       });
       setCompareIds(new Set(v.compareIds));
+      setCompareOpen(v.compareIds.length >= 2);
       prevPlaceIdRef.current = v.placeId;
     };
     window.addEventListener("popstate", onPop);
@@ -214,7 +221,7 @@ export default function App() {
 
   const pool = useMemo(() => {
     if (activeCollection) {
-      const c = COLLECTION_BY_ID[activeCollection];
+      const c = CURATED_SET_BY_ID[activeCollection];
       if (c) return c.placeIds.map(placeForId).filter(isPlace);
     }
     return PLACES;
@@ -307,6 +314,11 @@ export default function App() {
     setCompareOpen(true);
   }, []);
 
+  const comparePlaces = useCallback((ids: string[]) => {
+    setCompareIds(new Set(ids.slice(0, COMPARE_LIMIT)));
+    setCompareOpen(ids.length > 0);
+  }, []);
+
   const pickArchetype = useCallback((a: MicroclimateArchetype) => {
     setFilters(f => ({ ...f, archetypes: new Set([a]) }));
     setActiveCollection(null);
@@ -363,7 +375,14 @@ export default function App() {
     onRandomEmpty,
   });
   const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setView("explorer"); }, [openPlace]);
+  const onOpenPlaceFromTrips = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
+    openPlace(id, opts);
+  }, [openPlace]);
   const onPickCollection = useCallback((id: string) => {
+    setActiveCollection(a => a === id ? null : id);
+    setView("explorer");
+  }, []);
+  const onPickTripTheme = useCallback((id: string) => {
     setActiveCollection(a => a === id ? null : id);
     setView("explorer");
   }, []);
@@ -534,6 +553,19 @@ export default function App() {
             </>
           )}
 
+          {view === "trips" && (
+            <div className="flex-1 min-w-0">
+              <div className="max-w-6xl mx-auto">
+                <ClimateTripsView
+                  onOpenPlace={onOpenPlaceFromTrips}
+                  onPickTripTheme={onPickTripTheme}
+                  onComparePlaces={comparePlaces}
+                  activeThemeId={activeCollection && CLIMATE_TRIP_THEME_BY_ID[activeCollection] ? activeCollection : undefined}
+                />
+              </div>
+            </div>
+          )}
+
           {view === "collections" && (
             <div className="flex-1">
               <div className="max-w-3xl mx-auto">
@@ -630,6 +662,7 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
         <div className="divider-contour mb-3" />
         <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
           <Kbds keys={["E"]} />        <span className="text-frost">Explorer</span>
+          <Kbds keys={["T"]} />        <span className="text-frost">Trips</span>
           <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
           <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
           <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
@@ -644,7 +677,7 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
             Phone map: one-finger drag pans the atlas and pinch zooms by default. Tap <strong className="text-frost font-normal">Scroll page</strong> when you want browser scrolling over the map, then tap <strong className="text-frost font-normal">Use map</strong> to return to direct map control.
           </p>
           <p>
-            Place profiles: tap any pin or card. Read the opening story, then use On this page to move through practical read, field dossier, seasons, geospatial analysis, soils, risks, similar stops, and sources.
+            Place profiles: tap any pin or card. Read the opening story, then use On this page to move through practical read, climate tourism, field dossier, seasons, geospatial analysis, soils, risks, similar stops, and sources.
           </p>
           <p>
             Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The URL encodes the place and view. Surprise uses the same filtered pool as the cards.
@@ -767,6 +800,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
 
         <nav className="hidden min-[560px]:flex flex-wrap items-center gap-1.5 min-[560px]:justify-end" aria-label="Primary">
           <NavBtn active={view === "explorer"} onClick={() => setView("explorer")} icon={<Map className="w-3.5 h-3.5" />} label="Explorer" />
+          <NavBtn active={view === "trips"} onClick={() => setView("trips")} icon={<Route className="w-3.5 h-3.5" />} label="Trips" />
           <NavBtn active={view === "collections"} onClick={() => setView("collections")} icon={<Library className="w-3.5 h-3.5" />} label="Collections" />
           <NavBtn active={view === "learn"} onClick={() => setView("learn")} icon={<Compass className="w-3.5 h-3.5" />} label="Learn" />
 
@@ -803,6 +837,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
             </div>
             <div className="flex flex-col gap-2">
               <NavBtn stretch active={view === "explorer"} onClick={() => pickView("explorer")} icon={<Map className="w-4 h-4" />} label="Explorer" />
+              <NavBtn stretch active={view === "trips"} onClick={() => pickView("trips")} icon={<Route className="w-4 h-4" />} label="Trips" />
               <NavBtn stretch active={view === "collections"} onClick={() => pickView("collections")} icon={<Library className="w-4 h-4" />} label="Collections" />
               <NavBtn stretch active={view === "learn"} onClick={() => pickView("learn")} icon={<Compass className="w-4 h-4" />} label="Learn" />
 
@@ -947,7 +982,7 @@ const HeroCard = memo(function HeroCard({
   canSurprise: boolean;
 }) {
   const prose = useProse();
-  const active = activeCollection ? COLLECTION_BY_ID[activeCollection] ?? null : null;
+  const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
   return (
     <div className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4">
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
@@ -955,11 +990,11 @@ const HeroCard = memo(function HeroCard({
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Sparkles className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
             <span className="text-xs uppercase tracking-wider text-stone-readable">
-              {active ? "Collection pinned" : activeArchetypes.size > 0 ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}` : "Explorer"}
+              {active ? (active.kind === "trip" ? "Trip pinned" : "Collection pinned") : activeArchetypes.size > 0 ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}` : "Explorer"}
             </span>
             {active && (
               <button type="button" onClick={onClearCollection} className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice">
-                <X className="w-3 h-3" aria-hidden /> Clear collection
+                <X className="w-3 h-3" aria-hidden /> Clear {active.kind === "trip" ? "trip" : "collection"}
               </button>
             )}
             {!active && activeArchetypes.size > 0 && (

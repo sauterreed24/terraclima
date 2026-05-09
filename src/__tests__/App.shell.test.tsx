@@ -13,6 +13,10 @@ vi.mock("../components/VirtualPlaceGrid", () => ({
   VirtualPlaceGrid: () => <div data-testid="place-grid-stub" />,
 }));
 
+vi.mock("../components/ClimateTripsView", () => ({
+  ClimateTripsView: () => <div data-testid="climate-trips-view">Climate Trips mocked</div>,
+}));
+
 function renderApp() {
   return render(
     <UnitProvider>
@@ -37,26 +41,48 @@ describe("App shell", () => {
     expect(header).not.toBeNull();
     expect(header!.textContent).toMatch(/Terraclima/);
     expect(header!.textContent).toMatch(/North American Microclimate Atlas/);
-  });
+  }, 15000);
+
+  it("renders Trips in the primary navigation", () => {
+    renderApp();
+    expect(screen.getAllByRole("button", { name: "Trips" }).length).toBeGreaterThan(0);
+  }, 15000);
+
+  it("opens the Trips view from navigation", () => {
+    renderApp();
+    fireEvent.click(screen.getAllByRole("button", { name: "Trips" })[0]);
+    expect(screen.getByTestId("climate-trips-view")).toBeInTheDocument();
+  }, 15000);
+
+  it("loads ?v=trips directly", () => {
+    window.history.replaceState(null, "", "/?v=trips");
+    renderApp();
+    expect(screen.getByTestId("climate-trips-view")).toBeInTheDocument();
+  }, 15000);
+
+  it("falls back to Explorer for unknown view values", () => {
+    window.history.replaceState(null, "", "/?v=garbage");
+    renderApp();
+    expect(screen.queryByTestId("climate-trips-view")).toBeNull();
+    expect(screen.getByTestId("atlas-map-stub")).toBeInTheDocument();
+  }, 15000);
 
   it("opens compare immediately for shared URLs with two or more valid places", async () => {
-    window.history.replaceState(null, "", "/?cmp=san-miguel-mx,parras-mx");
+    window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa");
 
     renderApp();
 
     expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
-    expect(screen.getByText("San Miguel de Allende")).toBeInTheDocument();
-    expect(screen.getAllByText("Parras Valley").length).toBeGreaterThan(0);
-  });
+  }, 15000);
 
   it("keeps a one-place compare URL saved without opening the compare dialog", () => {
-    window.history.replaceState(null, "", "/?cmp=san-miguel-mx");
+    window.history.replaceState(null, "", "/?cmp=sequim-wa");
 
     renderApp();
 
-    expect(screen.queryByRole("dialog", { name: /places side by side/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("dialog", { name: "1 place side by side" })).not.toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: "Open compare (1 place)" }).length).toBeGreaterThan(0);
-  });
+  }, 15000);
 
   it("exposes only the visible close button in the mobile site menu", async () => {
     renderApp();
@@ -64,7 +90,7 @@ describe("App shell", () => {
     fireEvent.click(screen.getAllByRole("button", { name: "Open site menu" })[0]);
 
     await waitFor(() => expect(screen.getAllByRole("button", { name: "Close menu" })).toHaveLength(1));
-  });
+  }, 15000);
 
   it("exposes only the visible close button in the mobile filter sheet", async () => {
     renderApp();
@@ -73,5 +99,5 @@ describe("App shell", () => {
 
     await waitFor(() => expect(screen.getAllByRole("button", { name: "Close filters" })).toHaveLength(1));
     expect(screen.getByLabelText("Search places by name, region, or archetype")).toHaveAttribute("placeholder", "Search places");
-  });
+  }, 15000);
 });

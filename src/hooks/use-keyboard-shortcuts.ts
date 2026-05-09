@@ -8,7 +8,7 @@
 
 import { useEffect } from "react";
 
-export type ShortcutView = "explorer" | "collections" | "learn";
+export type ShortcutView = "explorer" | "trips" | "collections" | "learn";
 
 export interface KeyboardShortcutDeps {
   view: ShortcutView;
@@ -76,6 +76,7 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
           break;
         }
         case "e": case "E": setView("explorer"); break;
+        case "t": case "T": setView("trips"); break;
         case "c": case "C": setView("collections"); break;
         case "l": case "L": setView("learn"); break;
         case "/": {
