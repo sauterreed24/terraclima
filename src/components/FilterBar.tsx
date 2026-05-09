@@ -29,6 +29,7 @@ export const FilterBar = memo(function FilterBar({
 }: Props) {
   const prose = useProse();
   const searchFieldId = searchInputId ?? "tc-atlas-filter-search";
+  const searchPlaceholder = variant === "sheet" ? "Search places" : "Search name, region, or archetype";
   const toggleCountry = useCallback((c: Country) => {
     setFilters(f => {
       const ns = new Set(f.countries);
@@ -58,7 +59,7 @@ export const FilterBar = memo(function FilterBar({
           id={searchFieldId}
           value={filters.search ?? ""}
           onChange={e => setFilters({ ...filters, search: e.target.value })}
-          placeholder="Search name, region, or archetype"
+          placeholder={searchPlaceholder}
           aria-label="Search places by name, region, or archetype"
           enterKeyHint="search"
           autoComplete="off"

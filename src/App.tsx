@@ -50,12 +50,14 @@ function isPlace(p: Place | undefined): p is Place {
   return p != null;
 }
 
-const URL_INIT = readInitialAppState(
-  PLACES_BY_ID,
-  COLLECTION_BY_ID,
-  ARCHETYPE_BY_ID,
-  resolvePlaceId,
-);
+function readCurrentAppState() {
+  return readInitialAppState(
+    PLACES_BY_ID,
+    COLLECTION_BY_ID,
+    ARCHETYPE_BY_ID,
+    resolvePlaceId,
+  );
+}
 
 type View = "explorer" | "collections" | "learn";
 
@@ -66,15 +68,21 @@ export default function App() {
     return () => document.documentElement.classList.remove("tc-low-power");
   }, [richVisualEffects]);
 
-  const [view, setView] = useState<View>(URL_INIT.view);
-  const [selectedId, setSelectedId] = useState<string | null>(URL_INIT.placeId);
-  const [compareIds, setCompareIds] = useState<Set<string>>(() => new Set(URL_INIT.compareIds));
-  const [compareOpen, setCompareOpen] = useState(false);
-  const [activeCollection, setActiveCollection] = useState<string | null>(URL_INIT.collectionId);
+  const initialAppStateRef = useRef<ReturnType<typeof readCurrentAppState> | null>(null);
+  if (initialAppStateRef.current === null) {
+    initialAppStateRef.current = readCurrentAppState();
+  }
+  const initialAppState = initialAppStateRef.current;
+
+  const [view, setView] = useState<View>(initialAppState.view);
+  const [selectedId, setSelectedId] = useState<string | null>(initialAppState.placeId);
+  const [compareIds, setCompareIds] = useState<Set<string>>(() => new Set(initialAppState.compareIds));
+  const [compareOpen, setCompareOpen] = useState(() => initialAppState.compareIds.length >= 2);
+  const [activeCollection, setActiveCollection] = useState<string | null>(initialAppState.collectionId);
   const [filters, setFilters] = useState<FilterState>(() => ({
-    countries: new Set<string>(URL_INIT.countries),
-    archetypes: new Set<MicroclimateArchetype>(URL_INIT.archetypes),
-    search: URL_INIT.search,
+    countries: new Set<string>(initialAppState.countries),
+    archetypes: new Set<MicroclimateArchetype>(initialAppState.archetypes),
+    search: initialAppState.search,
   }));
   const [ranking, setRankingRaw] = useState<RankingProfile>(loadPersistedRanking);
   /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
@@ -92,7 +100,7 @@ export default function App() {
     setRankingRaw(profile);
     persistRankingProfile(profile);
   }, []);
-  const prevPlaceIdRef = useRef<string | null>(URL_INIT.placeId);
+  const prevPlaceIdRef = useRef<string | null>(initialAppState.placeId);
   /**
    * First-paint URL sync flag. A useRef instead of a module-level mutable
    * so the contract is explicit and there's no shared mutable state across
@@ -780,7 +788,8 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
           <button
             type="button"
             className="fixed inset-0 z-0 min-h-[100dvh] min-w-[100vw] cursor-default border-0 bg-transparent p-0"
-            aria-label="Close menu"
+            aria-hidden="true"
+            tabIndex={-1}
             onClick={closeMenu}
           />
           <div ref={menuPanelRef} className="relative z-10 tc-site-menu-dialog__inner">
