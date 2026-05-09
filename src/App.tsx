@@ -728,6 +728,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
     },
     [setView, closeMenu],
   );
+  const compareAriaLabel = `Open compare (${compareCount} ${compareCount === 1 ? "place" : "places"})`;
 
   return (
     <header className="sticky top-0 z-30 tc-header-bar">
@@ -764,7 +765,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
           <TempToggle className="ml-1" />
 
           {compareCount > 0 && (
-            <button type="button" onClick={onOpenCompare} className="btn-primary !text-xs !py-1.5" aria-label={`Open compare (${compareCount} places)`}>
+            <button type="button" onClick={onOpenCompare} className="btn-primary !text-xs !py-1.5" aria-label={compareAriaLabel}>
               <Target className="w-3.5 h-3.5" aria-hidden /> Compare · {compareCount}
             </button>
           )}
@@ -809,7 +810,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
                     onOpenCompare();
                   }}
                   className="btn-primary w-full justify-center !py-2.5 mt-1"
-                  aria-label={`Open compare (${compareCount} places)`}
+                  aria-label={compareAriaLabel}
                 >
                   <Target className="w-4 h-4" aria-hidden /> Compare · {compareCount}
                 </button>

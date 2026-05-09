@@ -107,6 +107,10 @@ export const ExplorerFilterSheet = memo(
     }, [open, searchInputId]);
 
     const chips = useMemo(() => filterChipsCount(filters), [filters]);
+    const triggerLabel =
+      chips > 0
+        ? `Open Explorer filters and ranking (${chips} active ${chips === 1 ? "filter" : "filters"})`
+        : "Open Explorer filters and ranking";
 
     return (
       <>
@@ -117,6 +121,7 @@ export const ExplorerFilterSheet = memo(
           aria-haspopup="dialog"
           aria-expanded={open}
           aria-controls="tc-explorer-filter-sheet"
+          aria-label={triggerLabel}
         >
           <SlidersHorizontal className="w-4 h-4 shrink-0" aria-hidden />
           <span>Filters & rank</span>
