@@ -32,7 +32,7 @@ export function PlacePracticalRead({ place, anchorId }: { place: Place; anchorId
         Practical read
       </h3>
       <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
-        The quick human pass before the long dossier: agriculture, spatial evidence, homes and land, and nearby ways to test the microclimate in person.
+        Start here when the profile needs to become practical: what the ground can grow, how to read the terrain, which tradeoffs matter, and where to test the contrast in person.
       </p>
       <div className="grid md:grid-cols-2 gap-3">
         {cards.map(card => (

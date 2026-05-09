@@ -134,36 +134,36 @@ export function buildPracticalReadCards(place: Place): PracticalReadCard[] {
     {
       id: "agriculture",
       eyebrow: "Agriculture",
-      title: "Gardens, orchards, and soil",
+      title: "What the ground can grow",
       tone: "sage",
       body:
-        `Growability is ${place.growability.score}/100 on ${place.soil.texture} with ${place.soil.drainage} drainage, pH ${soilPh}, and ${place.soil.waterHolding} water holding. ${trimSentence(place.growability.homeGarden ?? place.growability.orchard, "Use the crop list as a climate fit screen, then verify irrigation, frost pockets, and soil depth locally.")}`,
+        `Read the growing signal as climate plus ground truth: ${place.growability.score}/100 growability on ${place.soil.texture}, ${place.soil.drainage} drainage, pH ${soilPh}, and ${place.soil.waterHolding} water holding. ${trimSentence(place.growability.homeGarden ?? place.growability.orchard, "Use the crop list as a climate fit screen, then verify irrigation, frost pockets, and soil depth locally.")}`,
       bullets: [
         `Best fits: ${cleanList(place.growability.growsWell, 5)}`,
         `Needs care: ${cleanList(place.growability.tricky, 4)}`,
-        `Season frame: ${frost}; ${gdd}`,
+        `Season to verify: ${frost}; ${gdd}`,
       ],
     },
     {
       id: "spatial",
       eyebrow: "Spatial",
-      title: "Terrain and remote-sensing read",
+      title: "How to read the terrain",
       tone: "ice",
       body:
-        `This is a spatial climate, not just a weather station. The profile scores ${geo.geospatialSignalScore}/100 for geospatial signal and ${geo.eoObservabilityScore}/100 for earth-observation fit, with ${geo.analysisConfidence} analysis confidence.`,
+        `This is a landscape pattern, not just a weather-station average. The profile scores ${geo.geospatialSignalScore}/100 for geospatial signal and ${geo.eoObservabilityScore}/100 for earth-observation fit, with ${geo.analysisConfidence} analysis confidence.`,
       bullets: [
         `Terrain engines: ${cleanList(driverLabels, 4)}`,
         `Relief context: ${trimSentence(place.reliefContext, "Read slope, aspect, water, and elevation together.")}`,
-        `Likely checks: ${cleanList(spectral, 3)}; relief texture ${geo.structuralTextureScore}/100`,
+        `Analyst checks: ${cleanList(spectral, 3)}; relief texture ${geo.structuralTextureScore}/100`,
       ],
     },
     {
       id: "housing",
       eyebrow: "Homes & land",
-      title: "Stable scouting context",
+      title: "Homes, land, and tradeoffs",
       tone: "ember",
       body:
-        `Read this as climate and land due diligence, not a housing-market claim. ${trimSentence(place.whoWouldLove, "Start with the fit tags, then check water, access, and exposure.")} Poor fit: ${trimSentence(place.whoMightNot, "Some households will find the tradeoffs too large.")}`,
+        `Use this as climate and land due diligence, not a housing-market claim. Strongest fit: ${trimSentence(place.whoWouldLove, "Start with the fit tags, then check water, access, and exposure.")} Harder fit: ${trimSentence(place.whoMightNot, "Some households will find the tradeoffs too large.")}`,
       bullets: [
         `Main climate checks: ${topRiskPhrase(place, 4)}`,
         `Long-term read: ${trimSentence(place.climateChange.resilienceNote, "Climate outlook should be verified against local hazard maps.")}`,
@@ -173,10 +173,10 @@ export function buildPracticalReadCards(place: Place): PracticalReadCard[] {
     {
       id: "nearby",
       eyebrow: "Nearby",
-      title: "Hikes, day trips, and local contrast",
+      title: "Walk the contrasts",
       tone: "aurora",
       body:
-        `Use the place as a base for side-by-side scouting: walk or drive across elevation, water, shade, and exposure changes before assuming one average describes the whole zone.`,
+        `Use the place as a base for side-by-side scouting. Walk or drive across elevation, water, shade, and exposure changes before assuming one average describes the whole zone.`,
       bullets: [
         `Trip modes: ${cleanList(place.travelFit, 4)}`,
         `Outdoor window: ${bestOutdoorSeason(place)}; water year is ${waterYearPhrase(place)}`,

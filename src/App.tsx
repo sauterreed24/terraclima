@@ -408,20 +408,21 @@ export default function App() {
                   />
                 </div>
 
-                <div className="hidden md:block text-[11px] text-stone leading-relaxed px-0.5 max-w-3xl space-y-2.5 tc-page-intro">
-                  <p>
-                    <span className="font-medium text-frost">How you learn each place:</span>{" "}
-                    tap any pin or card. A profile opens on the right — that is the full write-up for that microclimate. Scroll it like an article, or use <span className="text-frost font-medium">On this page</span> (snap chips on your phone, a soft rail on wider screens) to jump between sections: opening story, <span className="text-frost font-medium">field dossier</span> (stacked chapters + in-dossier jumps), seasons, geospatial analysis, soil, risks, who it fits, similar stops, and data sources.
-                  </p>
-                  <p>
-                    <span className="font-medium text-frost">Depth you will always see:</span>{" "}
-                    many stops include extra <span className="text-frost font-medium">field notes</span> (longer essays where we have written them). Every stop also gets a <span className="text-frost font-medium">field dossier</span> — one editorial column of chapters (season rhythm, drivers, soil pocket, nearby contrasts when we have them, scouting wrap) with quick jumps at the top, all generated from the same structured data as the charts, so the profile stays one coherent story.
-                  </p>
-                  <p>
-                    <span className="font-medium text-frost">Reading the map:</span>{" "}
-                    fill colour follows the main climate driver; the thin outer ring shows country (US, Canada, Mexico). Scale and driver legend sit in the lower-left on the map frame. Zoom with the controls or scroll — the scale bar updates with zoom.
-                  </p>
-                </div>
+                <section className="hidden md:grid grid-cols-3 gap-3 tc-reader-path" aria-labelledby="reader-path-heading">
+                  <h2 id="reader-path-heading" className="sr-only">How to read Terraclima</h2>
+                  <div>
+                    <div className="tc-reader-path__label">Scout</div>
+                    <p>Open any pin or card for a profile that reads like a field notebook: story first, then charts, risks, soil, sources, and similar places.</p>
+                  </div>
+                  <div>
+                    <div className="tc-reader-path__label">Compare</div>
+                    <p>Use Rank by, filters, Surprise, and four-place compare to move from a continental view to a short list worth reading closely.</p>
+                  </div>
+                  <div>
+                    <div className="tc-reader-path__label">Trust</div>
+                    <p>Scores are screening signals. Confidence notes, citations, and geospatial methods stay visible so readers and agents can audit the trail.</p>
+                  </div>
+                </section>
 
                 <div className="panel-thin p-3 flex items-center justify-between flex-wrap gap-2">
                   {/* Visual count is animated via raf-driven textContent mutation,
@@ -532,7 +533,7 @@ export default function App() {
                   <div className="text-xs uppercase tracking-wider text-stone">Curated</div>
                   <h2 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Collections</h2>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
-                    Hand-assembled thematic bundles — the rain shadows, the sky islands, the eternal springs. Pin a collection to constrain the explorer map to just those places.
+                    Hand-assembled routes through the atlas: rain shadows, sky islands, eternal springs, lake snowbelts, and other climate families. Pin one to narrow the map.
                   </p>
                 </div>
                 <CollectionsView
@@ -551,7 +552,7 @@ export default function App() {
                   <div className="text-xs uppercase tracking-wider text-stone">Learn</div>
                   <h2 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Field guide</h2>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
-                    The vocabulary of microclimate — concepts like lapse rate, cold-air pooling, orographic lift, and thermal belts — gives you the language to read a landscape and understand why the weather there is the way it is.
+                    Microclimate has a grammar. Lapse rate, cold-air pooling, orographic lift, and thermal belts give readers and agents the words to explain why a place feels unlike its neighbors.
                   </p>
                 </div>
                 <LearnMode onOpenPlace={onOpenPlaceFromSubview} />
@@ -625,7 +626,7 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
           <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
           <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
           <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
-          <Kbds keys={["R"]} />        <span className="text-frost">Surprise — random place in your current list</span>
+          <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
           <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail</span>
           <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
         </div>
@@ -635,10 +636,10 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
             Phone map: one-finger drag pans the atlas and pinch zooms by default. Tap <strong className="text-frost font-normal">Scroll page</strong> when you want browser scrolling over the map, then tap <strong className="text-frost font-normal">Use map</strong> to return to direct map control.
           </p>
           <p>
-            Place profiles: tap any pin or card to open the full write-up. The profile includes the field dossier, seasons, geospatial analysis, soils, risks, similar stops, and data sources.
+            Place profiles: tap any pin or card. Read the opening story, then use On this page to move through practical read, field dossier, seasons, geospatial analysis, soils, risks, similar stops, and sources.
           </p>
           <p>
-            Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header — the URL encodes which place and view to open. Surprise uses the same filtered pool as the cards.
+            Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The URL encodes the place and view. Surprise uses the same filtered pool as the cards.
           </p>
         </div>
       </div>
@@ -958,12 +959,12 @@ const HeroCard = memo(function HeroCard({
             )}
           </div>
           <h1 className="font-atlas text-2xl min-[1400px]:text-3xl text-ice leading-tight text-depth-hero">
-            {active ? active.title : "Scout the continent, one microclimate at a time"}
+            {active ? active.title : "Read the continent by its microclimates"}
           </h1>
-          <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-3 min-[1400px]:line-clamp-none">
+          <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
             {active
               ? active.description
-              : "Rain shadows, sky islands, orchard valleys, chinook corridors, and cool-summer coasts — each write-up ties weather to terrain so you can read a place the way locals do, not just scan numbers."}
+              : "Trace rain shadows, sky islands, orchard valleys, and cool coasts. Each profile ties weather to terrain, season, and lived place."}
           </p>
         </div>
         <div className="flex flex-col items-stretch sm:items-end gap-3 shrink-0">
@@ -1114,13 +1115,13 @@ const Footer = memo(function Footer() {
         <div className="flex items-center gap-3">
           <Layers className="w-3.5 h-3.5" />
           <span>
-            Terraclima is built for curious travelers and serious readers alike. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals ({CLIMATE_NORMALS_PERIOD} where we have them), with WorldClim where we need a wider net. Geospatial screening uses the same terrain–climate framework across the atlas, with Sentinel-2 and Landsat as reference EO families and a relief-texture proxy for where lidar-grade topography would matter most in field work — not live satellite or lidar feeds. Soil sketches lean on SoilGrids and regional soil surveys. Every score ties back to notes on that place; if data are thin, we say so. This is a curated atlas — not a live weather or appraisal feed.
+            Terraclima is a curated atlas, not a live weather, appraisal, or parcel feed. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals ({CLIMATE_NORMALS_PERIOD} where available), with WorldClim as a wider net. Geospatial screening uses consistent terrain-climate logic, Sentinel-2 and Landsat reference families, and a relief-texture proxy; every score points back to place notes, sources, and confidence.
           </span>
         </div>
         <div className="flex items-center gap-3">
           <Search className="w-3.5 h-3.5" />
           <span>
-            {PLACE_COUNTS.total} hand-picked places · editorial refresh {ATLAS_EDITORIAL_SNAPSHOT}
+            {PLACE_COUNTS.total} hand-picked places - editorial refresh {ATLAS_EDITORIAL_SNAPSHOT}
           </span>
         </div>
       </div>
