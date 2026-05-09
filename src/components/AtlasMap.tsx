@@ -680,7 +680,7 @@ export function AtlasMap({
   const wheelRAF = useRef<number>(0);
   const wheelBuf = useRef<{ k: number; mx: number; my: number } | null>(null);
 
-  const onWheel = useCallback((e: React.WheelEvent<SVGSVGElement>) => {
+  const onWheel = useCallback((e: WheelEvent) => {
     e.preventDefault();
     const rect = svgRef.current?.getBoundingClientRect();
     if (!rect) return;
@@ -707,6 +707,13 @@ export function AtlasMap({
       });
     }
   }, [width, height]);
+
+  useEffect(() => {
+    const node = svgRef.current;
+    if (!node) return;
+    node.addEventListener("wheel", onWheel, { passive: false });
+    return () => node.removeEventListener("wheel", onWheel);
+  }, [onWheel]);
 
   const startDragAt = useCallback((clientX: number, clientY: number) => {
     dragRef.current = {
@@ -1134,7 +1141,6 @@ export function AtlasMap({
         role="img"
         tabIndex={0}
         aria-label={coarsePointer ? "Atlas map of North America. One-finger drag pans the map; pinch zooms when map mode is active. Use the Scroll page control to let the browser scroll past the map. Tap any pin to open that place's full profile." : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile."}
-        onWheel={onWheel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -1631,8 +1637,6 @@ export function AtlasMap({
           place={hoverPlace}
           xPct={tooltipScreen.xPct}
           yPct={tooltipScreen.yPct}
-          onHoverCardPointerEnter={cancelHoverClear}
-          onHoverCardPointerLeave={scheduleHoverClear}
         />
       )}
     </div>
