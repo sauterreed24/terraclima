@@ -54,11 +54,13 @@ Terraclima combines editorial research with deterministic analysis. The app does
 - **Typed climate schema:** `src/types.ts` models climate normals, soils, growability, hazards, citations, field notes, local contrasts, deep profile sections, and derived geospatial context.
 - **Explainable scoring:** `src/lib/scoring.ts`, `src/lib/geospatial-analysis.ts`, and `src/lib/atlas-corpus-stats.ts` keep rankings and derived scores transparent, deterministic, and testable.
 - **Practical corpus synthesis:** `src/lib/practical-read.ts` turns existing typed fields into stable, non-market user guidance for agriculture, spatial analysis, homes and land, activities, settlements, and nearby contrasts.
+- **Climate tourism synthesis:** `src/lib/climate-tourism.ts` derives trip windows, scouting itineraries, static lodging cues, habitat reads, and caveated tourism / climate-land scores from the typed corpus, with cached per-place profiles for repeated UI reads.
 - **Validation built into the project:** `scripts/sanity-check.ts`, `scripts/audit-corpus.ts`, `scripts/test-prose.ts`, and `scripts/corpus-rank-gold.ts` catch malformed data, unit/prose regressions, corpus drift, and rank instability.
 - **Unit tests for pure logic:** `src/lib/__tests__/` covers units, scoring, best-month windows, similarity, and URL state with Vitest.
 - **Accessibility as architecture:** Dialogs use focus traps and clear escape behavior. The filtered result count has a screen-reader-only live region. SVG map markers, cluster markers, and map controls expose visible focus states. Mobile filter/search behavior avoids duplicate IDs and unpredictable modal stacks.
 - **Performance-conscious map:** The SVG atlas avoids React re-renders during drag, coalesces wheel zoom with `requestAnimationFrame`, lazy-loads topology, clusters dense mobile pins in screen space, and gates expensive effects based on device capability.
 - **Scalable card rendering:** The place grid uses virtualization, realistic mobile row estimates, scroll-position-safe dynamic measurement, and `content-visibility` so a large corpus stays responsive on modest hardware.
+- **Cold-route bundle discipline:** Explorer stays on the eager path; Climate Trips, Collections, Learn, Place Detail, and Compare load on demand so the first atlas screen parses less JavaScript.
 - **CI-backed quality gate:** `.github/workflows/quality.yml` runs the full `npm run quality:check` pipeline on pull requests and non-`main` pushes.
 
 ## Performance Targets
@@ -67,7 +69,7 @@ Terraclima is tuned for real devices, not just high-end developer machines.
 
 - **Surface Pro 5, 8 GB RAM:** Low-power mode disables expensive blur, marker pulse, hover lifts, deep shadows, and unnecessary backdrop filters. The map and card grid are structured to avoid punishing scroll and pan interactions.
 - **Phones and coarse-pointer devices:** The map uses stable small-viewport sizing, defaults to direct one-finger pan plus pinch zoom, keeps an explicit **Scroll page** escape, clusters dense low-zoom pins, visually spreads crowded pins with leader lines, and keeps 44px-plus touch targets reachable. Comparison columns still scroll horizontally instead of collapsing into unreadable fragments.
-- **General browser efficiency:** Search uses precomputed indexes. Filtering is deferred with `useDeferredValue`. Atlas topology is code-split. SVG paint IDs are unique per chart instance. Unit and geospatial helpers cache derived work where useful.
+- **General browser efficiency:** Search uses precomputed indexes. Filtering is deferred with `useDeferredValue`. Atlas topology and cold views are code-split. SVG paint IDs are unique per chart instance. Unit, geospatial, and climate-tourism helpers cache derived work where useful.
 
 ## Data and Provenance
 
@@ -210,8 +212,9 @@ CI cannot exercise **touch** or real device GPUs. After anything that affects la
 
 | Check | Phone / narrow | Desktop / wide |
 |-------|----------------|----------------|
-| **Primary nav** | Hamburger menu (under ~560px width); dialog closes; focus sensible | Explorer / Collections / Learn in header bar |
+| **Primary nav** | Hamburger menu (under ~560px width); dialog closes; focus sensible | Explorer / Trips / Collections / Learn in header bar |
 | **Explorer filters** | Bottom “Filters & rank” sheet; **`F`** opens it | Filter **dock** beside explorer (≥1024px) |
+| **Climate Trips** | Trips route loads, trip cards fit, Compare top stops opens compare | Trip pinning returns to Explorer; opening a trip profile works |
 | **Map** | One-finger pan and pinch by default; **Scroll page** exits to browser scrolling; **Use map** re-enters map control | Wheel zoom, drag pan, keyboard controls, pin opens detail |
 | **Place + compare** | Detail drawer scrolls; compare readable | Same; keyboard shortcuts (`?` overlay) |
 
@@ -222,11 +225,11 @@ Try widths near **375px**, **768px**, **1024px**, and full desktop. Always run `
 For a portfolio review, start here:
 
 1. **Use the atlas first:** open Explorer, pick a pin or card, then read a profile from opening story to scores and sources. The app is meant to feel like a field guide with instrumentation, not a weather table.
-2. **Product architecture:** open `src/App.tsx`, `src/components/PlaceDetail.tsx`, and `src/components/AtlasMap.tsx` to see how the corpus becomes a navigable research product.
+2. **Product architecture:** open `src/App.tsx`, `src/components/PlaceDetail.tsx`, `src/components/ClimateTripsView.tsx`, and `src/components/AtlasMap.tsx` to see how the corpus becomes a navigable research product.
 3. **Data modeling:** read `src/types.ts`, then inspect entries in `src/data/places.*.ts`. The app is built around structured knowledge, not arbitrary content blobs.
-4. **Derived intelligence:** review `src/lib/place-story.ts`, `src/lib/practical-read.ts`, `src/lib/geospatial-analysis.ts`, `src/lib/scoring.ts`, and `src/lib/atlas-corpus-stats.ts` for deterministic narrative, ranking, and screening logic.
+4. **Derived intelligence:** review `src/lib/place-story.ts`, `src/lib/practical-read.ts`, `src/lib/climate-tourism.ts`, `src/lib/geospatial-analysis.ts`, `src/lib/scoring.ts`, and `src/lib/atlas-corpus-stats.ts` for deterministic narrative, routing, ranking, and screening logic.
 5. **Quality discipline:** run `npm run quality:check`. The scripts make the corpus auditable, not merely type-safe.
-6. **Performance and accessibility:** check `src/lib/device-profile.ts`, `src/components/AtlasMap.tsx`, `src/lib/atlas-map-cluster.ts`, `src/components/VirtualPlaceGrid.tsx`, `src/hooks/use-focus-trap.ts`, and the low-power sections in `src/styles.css`.
+6. **Performance and accessibility:** check `src/lib/device-profile.ts`, `src/components/AtlasMap.tsx`, `src/lib/atlas-map-cluster.ts`, `src/components/VirtualPlaceGrid.tsx`, `src/components/ClimateTripsView.tsx`, `src/hooks/use-focus-trap.ts`, and the low-power sections in `src/styles.css`.
 7. **Test coverage:** review `src/lib/__tests__/`, `src/__tests__/`, and the validation scripts under `scripts/`.
 
 ## Agentic Review Guide
@@ -238,13 +241,13 @@ For AI agents or automated reviewers:
 - **Improvement context:** [docs/IMPROVEMENT-CONTEXT.md](docs/IMPROVEMENT-CONTEXT.md) reconciles external research notes with the actual Vite/React atlas repo.
 - Treat `src/types.ts` as the contract.
 - Treat `scripts/sanity-check.ts` and `scripts/audit-corpus.ts` as executable invariants.
-- Treat `src/lib/place-story.ts`, `src/lib/practical-read.ts`, and `src/lib/place-at-a-glance.ts` as deterministic prose adapters over existing fields, not places to invent new climate facts.
+- Treat `src/lib/place-story.ts`, `src/lib/practical-read.ts`, `src/lib/climate-tourism.ts`, and `src/lib/place-at-a-glance.ts` as deterministic prose adapters over existing fields, not places to invent new climate facts.
 - Prefer adding validation before changing corpus shape.
 - Do not invent climate facts. If a data point is not present or cited, keep language framed as screening or editorial context.
 - Preserve URL behavior in `src/lib/app-url.ts` and modal focus behavior in `src/hooks/use-focus-trap.ts`.
 - Preserve phone map behavior: direct one-finger pan and pinch by default, **Scroll page** remains a clear exit to browser scrolling, **Use map** re-enters direct control, cluster tap-to-zoom still works, and visual pin offsets must keep leader lines back to exact anchors.
 - When a change is user-visible or architectural, update `README.md` in the same work.
-- After edits, run `npm run quality:check`. For UI changes, follow **Manual QA — desktop and phone** above (Explorer, filters, map touch mode, place detail, compare).
+- After edits, run `npm run quality:check`. For UI changes, follow **Manual QA — desktop and phone** above (Explorer, Trips, filters, map touch mode, place detail, compare).
 
 ## Project Layout
 
@@ -254,6 +257,7 @@ src/
     charts/                    SVG chart primitives
     place-detail/              Reading nav and deep profile sections
     ExplorerFilterSheet.tsx    Mobile filter dialog + FAB trigger
+    ClimateTripsView.tsx       Trip-theme funnel and climate-tourism picks
     FootprintPanel.tsx         Atlas country / tier counts
     TempToggle.tsx             Shared °F / °C control
   data/                        Places, collections, archetypes, glossary, field notes

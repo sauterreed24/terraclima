@@ -499,3 +499,13 @@ export function buildClimateTourismProfile(place: Place): ClimateTourismProfile 
     },
   };
 }
+
+const TOURISM_PROFILE_CACHE = new WeakMap<Place, ClimateTourismProfile>();
+
+export function getClimateTourismProfile(place: Place): ClimateTourismProfile {
+  const cached = TOURISM_PROFILE_CACHE.get(place);
+  if (cached) return cached;
+  const profile = buildClimateTourismProfile(place);
+  TOURISM_PROFILE_CACHE.set(place, profile);
+  return profile;
+}

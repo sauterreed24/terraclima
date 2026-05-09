@@ -1,8 +1,8 @@
-import { useMemo, type ReactNode } from "react";
-import { ArrowLeftRight, Compass, ExternalLink, Leaf, Map, Route, ShieldAlert, Sprout, Telescope } from "lucide-react";
+import { useCallback, useMemo, type ReactNode } from "react";
+import { ArrowLeftRight, Compass, ExternalLink, Leaf, Map as MapIcon, Route, ShieldAlert, Sprout, Telescope } from "lucide-react";
 import { CLIMATE_TRIP_THEMES, type ClimateTripTheme } from "../data/climate-trip-themes";
 import { PLACES, PLACES_BY_ID } from "../data/places";
-import { buildClimateTourismProfile, type ClimateTourismProfile } from "../lib/climate-tourism";
+import { getClimateTourismProfile, type ClimateTourismProfile } from "../lib/climate-tourism";
 import { COMPARE_LIMIT } from "../lib/app-url";
 import { useProse } from "../lib/units";
 
@@ -22,7 +22,14 @@ function themePlaces(theme: ClimateTripTheme): ProfileRow[] {
   return theme.placeIds
     .map(id => PLACES_BY_ID[id])
     .filter((place): place is (typeof PLACES)[number] => place != null)
-    .map(place => ({ place, profile: buildClimateTourismProfile(place) }));
+    .map(place => ({ place, profile: getClimateTourismProfile(place) }));
+}
+
+function rowsForTheme(theme: ClimateTripTheme, rowsById: Map<string, ProfileRow>): ProfileRow[] {
+  return theme.placeIds
+    .map(id => rowsById.get(id))
+    .filter((row): row is ProfileRow => row != null)
+    .sort((a, b) => b.profile.scores.tourismAppeal - a.profile.scores.tourismAppeal);
 }
 
 function scoreTone(score: number): "glacier" | "sage" | "ochre" | "ember" {
@@ -37,27 +44,31 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
   const allProfiles = useMemo<ProfileRow[]>(
     () =>
       PLACES
-        .map(place => ({ place, profile: buildClimateTourismProfile(place) }))
+        .map(place => ({ place, profile: getClimateTourismProfile(place) }))
         .sort((a, b) => b.profile.scores.tourismAppeal - a.profile.scores.tourismAppeal),
     [],
   );
-  const tourismPicks = allProfiles.slice(0, 9);
+  const rowsById = useMemo(() => new Map(allProfiles.map(row => [row.place.id, row])), [allProfiles]);
+  const tourismPicks = useMemo(() => allProfiles.slice(0, 9), [allProfiles]);
   const themeRows = useMemo(
     () =>
       CLIMATE_TRIP_THEMES.map(theme => ({
         theme,
-        rows: themePlaces(theme).sort((a, b) => b.profile.scores.tourismAppeal - a.profile.scores.tourismAppeal),
+        rows: rowsForTheme(theme, rowsById),
       })),
-    [],
+    [rowsById],
+  );
+  const themeRowsById = useMemo(
+    () => new Map(themeRows.map(({ theme, rows }) => [theme.id, rows])),
+    [themeRows],
   );
 
-  const compareTheme = (theme: ClimateTripTheme) => {
-    const ids = themePlaces(theme)
-      .sort((a, b) => b.profile.scores.tourismAppeal - a.profile.scores.tourismAppeal)
+  const compareTheme = useCallback((theme: ClimateTripTheme) => {
+    const ids = (themeRowsById.get(theme.id) ?? themePlaces(theme))
       .slice(0, COMPARE_LIMIT)
       .map(row => row.place.id);
     onComparePlaces(ids);
-  };
+  }, [onComparePlaces, themeRowsById]);
 
   return (
     <div className="space-y-7">
@@ -90,7 +101,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
             return (
               <article
                 key={theme.id}
-                className={`panel collection-curation-card p-4 anim-fade-in ${active ? "glow-glacier" : ""}`}
+                className={`panel collection-curation-card climate-trip-card p-4 anim-fade-in ${active ? "glow-glacier" : ""}`}
                 data-tone={theme.tone}
                 style={active ? { borderColor: "rgba(140,200,224,0.75)" } : undefined}
               >
@@ -118,7 +129,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <button type="button" onClick={() => onPickTripTheme(theme.id)} className={active ? "btn-primary !text-xs" : "btn-ghost !text-xs"}>
-                    <Map className="w-3.5 h-3.5" aria-hidden />
+                    <MapIcon className="w-3.5 h-3.5" aria-hidden />
                     {active ? "Trip pinned" : "Filter map to this trip"}
                   </button>
                   <button type="button" onClick={() => compareTheme(theme)} className="btn-ghost !text-xs">
@@ -185,7 +196,7 @@ function TourismPickCard({
   const { place, profile } = row;
   const firstDay = profile.itinerary.days[0];
   return (
-    <article className="panel p-4 anim-fade-in space-y-3">
+    <article className="panel climate-trip-card climate-trip-pick-card p-4 anim-fade-in space-y-3">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="text-xs text-stone">{place.region}, {place.country}</div>

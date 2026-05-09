@@ -1,4 +1,4 @@
-import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { BookOpen, Compass, HelpCircle, Layers, Library, Map, Menu, Route, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
@@ -6,11 +6,6 @@ import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./component
 import { FilterBar, RANKING_OPTIONS } from "./components/FilterBar";
 import { FootprintPanel } from "./components/FootprintPanel";
 import { TempToggle } from "./components/TempToggle";
-import { PlaceDetail } from "./components/PlaceDetail";
-import { CompareView } from "./components/CompareView";
-import { CollectionsView } from "./components/CollectionsView";
-import { ClimateTripsView } from "./components/ClimateTripsView";
-import { LearnMode } from "./components/LearnMode";
 import { useFocusTrap } from "./hooks/use-focus-trap";
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
 import { useMediaQuery } from "./hooks/use-media-query";
@@ -66,6 +61,22 @@ function readCurrentAppState() {
 }
 
 type View = "explorer" | "trips" | "collections" | "learn";
+
+const ClimateTripsView = lazy(() =>
+  import("./components/ClimateTripsView").then(module => ({ default: module.ClimateTripsView })),
+);
+const CollectionsView = lazy(() =>
+  import("./components/CollectionsView").then(module => ({ default: module.CollectionsView })),
+);
+const LearnMode = lazy(() =>
+  import("./components/LearnMode").then(module => ({ default: module.LearnMode })),
+);
+const PlaceDetail = lazy(() =>
+  import("./components/PlaceDetail").then(module => ({ default: module.PlaceDetail })),
+);
+const CompareView = lazy(() =>
+  import("./components/CompareView").then(module => ({ default: module.CompareView })),
+);
 
 export default function App() {
   const richVisualEffects = useRichVisualEffects();
@@ -556,12 +567,14 @@ export default function App() {
           {view === "trips" && (
             <div className="flex-1 min-w-0">
               <div className="max-w-6xl mx-auto">
-                <ClimateTripsView
-                  onOpenPlace={onOpenPlaceFromTrips}
-                  onPickTripTheme={onPickTripTheme}
-                  onComparePlaces={comparePlaces}
-                  activeThemeId={activeCollection && CLIMATE_TRIP_THEME_BY_ID[activeCollection] ? activeCollection : undefined}
-                />
+                <Suspense fallback={<RouteLoadingFallback label="Loading Climate Trips" />}>
+                  <ClimateTripsView
+                    onOpenPlace={onOpenPlaceFromTrips}
+                    onPickTripTheme={onPickTripTheme}
+                    onComparePlaces={comparePlaces}
+                    activeThemeId={activeCollection && CLIMATE_TRIP_THEME_BY_ID[activeCollection] ? activeCollection : undefined}
+                  />
+                </Suspense>
               </div>
             </div>
           )}
@@ -576,11 +589,13 @@ export default function App() {
                     Hand-assembled routes through the atlas: rain shadows, sky islands, eternal springs, lake snowbelts, and other climate families. Pin one to narrow the map.
                   </p>
                 </div>
-                <CollectionsView
-                  onOpenPlace={onOpenPlaceFromSubview}
-                  onPick={onPickCollection}
-                  activeId={activeCollection ?? undefined}
-                />
+                <Suspense fallback={<RouteLoadingFallback label="Loading Collections" />}>
+                  <CollectionsView
+                    onOpenPlace={onOpenPlaceFromSubview}
+                    onPick={onPickCollection}
+                    activeId={activeCollection ?? undefined}
+                  />
+                </Suspense>
               </div>
             </div>
           )}
@@ -595,7 +610,9 @@ export default function App() {
                     Microclimate has a grammar. Lapse rate, cold-air pooling, orographic lift, and thermal belts give readers and agents the words to explain why a place feels unlike its neighbors.
                   </p>
                 </div>
-                <LearnMode onOpenPlace={onOpenPlaceFromSubview} />
+                <Suspense fallback={<RouteLoadingFallback label="Loading Learn" />}>
+                  <LearnMode onOpenPlace={onOpenPlaceFromSubview} />
+                </Suspense>
               </div>
             </div>
           )}
@@ -606,22 +623,48 @@ export default function App() {
 
       </div>
 
-      <PlaceDetail
-        place={selectedPlace}
-        onClose={closeDetail}
-        onCompareToggle={toggleCompare}
-        inCompareIds={compareIds}
-        onPickArchetype={pickArchetype}
-        onOpenPlace={openPlace}
-      />
-      <CompareView
-        places={[...compareIds].map(placeForId).filter(isPlace)}
-        open={compareOpen}
-        onClose={closeCompare}
-        onRemove={toggleCompare}
-      />
+      {selectedPlace ? (
+        <Suspense fallback={<OverlayLoadingFallback label={`Loading ${selectedPlace.name}`} />}>
+          <PlaceDetail
+            place={selectedPlace}
+            onClose={closeDetail}
+            onCompareToggle={toggleCompare}
+            inCompareIds={compareIds}
+            onPickArchetype={pickArchetype}
+            onOpenPlace={openPlace}
+          />
+        </Suspense>
+      ) : null}
+      {compareOpen ? (
+        <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
+          <CompareView
+            places={[...compareIds].map(placeForId).filter(isPlace)}
+            open={compareOpen}
+            onClose={closeCompare}
+            onRemove={toggleCompare}
+          />
+        </Suspense>
+      ) : null}
 
       {showShortcuts && <ShortcutsOverlay onClose={() => setShowShortcuts(false)} />}
+    </div>
+  );
+}
+
+function RouteLoadingFallback({ label }: { label: string }) {
+  return (
+    <div role="status" aria-live="polite" className="panel-thin p-4 text-sm text-stone-readable">
+      {label}...
+    </div>
+  );
+}
+
+function OverlayLoadingFallback({ label }: { label: string }) {
+  return (
+    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 pointer-events-none" aria-live="polite">
+      <div role="status" className="panel p-4 text-sm text-stone-readable shadow-2xl">
+        {label}...
+      </div>
     </div>
   );
 }
