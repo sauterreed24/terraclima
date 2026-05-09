@@ -138,8 +138,7 @@ export const ExplorerFilterSheet = memo(
           className="tc-filter-sheet-dialog tc-glass-dialog-motion"
           aria-labelledby="tc-explorer-filter-sheet-title"
         >
-          <button
-            type="button"
+          <div
             className="fixed inset-0 z-0 min-h-[100dvh] min-w-[100vw] cursor-default border-0 bg-transparent p-0"
             aria-hidden="true"
             tabIndex={-1}

@@ -6,9 +6,9 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 
 | Param | Meaning | Validation |
 |-------|---------|------------|
-| `v` | View: `explorer` (default), `collections`, `learn` | Unknown → `explorer` |
-| `p` | Selected place id | Omitted if id ∉ corpus |
-| `col` | Active collection id | Omitted if id ∉ collections |
+| `v` | View: `explorer` (default), `trips`, `collections`, `learn` | Unknown -> `explorer` |
+| `p` | Selected place id | Omitted if id is not in corpus |
+| `col` | Active collection id or climate-trip theme id | Omitted if id is not in curated sets |
 | `c` | Countries, comma-separated (`USA`, `Canada`, `Mexico`) | Non-members stripped |
 | `a` | Archetype ids, comma-separated | Filtered to known archetypes when validator provided |
 | `q` | Search string | Trimmed for round-trip |
@@ -18,11 +18,13 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 
 - Default view (`explorer`) omits `v`.
 - Countries and archetypes are sorted for stable URLs.
-- History flag `tcPlace` on pushState indicates “opened place in-app” so **Back** closes the panel instead of leaving the site.
+- History flag `tcPlace` on pushState indicates "opened place in-app" so **Back** closes the panel instead of leaving the site.
 
 ## Compare cap
 
 - At most **4** ids in `cmp` and in memory (`Set` eviction drops oldest).
+- A shared URL with two or more valid `cmp` ids opens Compare immediately.
+- A shared URL with one valid `cmp` id saves that place to compare but does not auto-open Compare.
 
 ## Regression vectors
 

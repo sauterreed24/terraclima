@@ -5,6 +5,7 @@
  */
 import { PLACES } from "../src/data/places";
 import { COLLECTIONS } from "../src/data/collections";
+import { CLIMATE_TRIP_THEMES } from "../src/data/climate-trip-themes";
 import { CONCEPTS } from "../src/data/glossary";
 import { ARCHETYPES } from "../src/data/archetypes";
 import { DRIVER_LABELS } from "../src/types";
@@ -285,6 +286,22 @@ for (const c of COLLECTIONS) {
     if (!placeIdSet.has(pid)) report(`collection:${c.id}`, "ERROR", `unknown placeId "${pid}"`);
   }
   if (c.placeIds.length < 3) report(`collection:${c.id}`, "WARN", `only ${c.placeIds.length} places`);
+}
+
+// --- Climate trip theme referential integrity ---
+{
+  const seen = new Set<string>();
+  for (const t of CLIMATE_TRIP_THEMES) {
+    if (seen.has(t.id)) report(`climate-trip:${t.id}`, "ERROR", `duplicate climate trip theme id`);
+    seen.add(t.id);
+    for (const pid of t.placeIds) {
+      if (!placeIdSet.has(pid)) report(`climate-trip:${t.id}`, "ERROR", `unknown placeId "${pid}"`);
+    }
+    for (const a of t.archetypeFilters ?? []) {
+      if (!validArchetypes.has(a)) report(`climate-trip:${t.id}`, "ERROR", `unknown archetype filter "${a}"`);
+    }
+    if (t.placeIds.length < 3) report(`climate-trip:${t.id}`, "WARN", `only ${t.placeIds.length} places`);
+  }
 }
 
 for (const c of CONCEPTS) {
