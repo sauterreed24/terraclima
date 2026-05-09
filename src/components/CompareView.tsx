@@ -23,6 +23,12 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
+  const placeCount = `${places.length} ${places.length === 1 ? "place" : "places"}`;
+  const isSinglePlace = places.length === 1;
+  const title = isSinglePlace ? `${placeCount} saved to compare` : `${placeCount} side by side`;
+  const helperText = isSinglePlace
+    ? "Add another place from any card or profile to start a side-by-side comparison."
+    : "Compare climate fingerprints, seasonal ranges, and screening scores across the saved places.";
   /**
    * Mobile (<lg breakpoint via the Tailwind class) gets fixed-width columns
    * with a horizontal scroll snap so 2–4 places stay readable on a phone
@@ -66,12 +72,15 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <div className="text-xs uppercase tracking-wider text-stone">Compare</div>
-                <h2 id={titleId} className="font-atlas text-2xl text-ice">{places.length} places side by side</h2>
+                <h2 id={titleId} className="font-atlas text-2xl text-ice">{title}</h2>
+                <p className="mt-1 max-w-2xl text-sm text-stone-readable">{helperText}</p>
               </div>
               <button ref={closeBtnRef} type="button" onClick={onClose} className="btn-ghost"><X className="w-4 h-4" /> Close</button>
             </div>
 
-            <div className="text-[11px] text-stone-readable lg:hidden mb-2">Swipe sideways to compare → ({places.length} places)</div>
+            <div className="text-[11px] text-stone-readable lg:hidden mb-2">
+              {isSinglePlace ? "Add a second place to unlock the comparison lane." : `Swipe sideways to compare -> (${placeCount})`}
+            </div>
             <div className="overflow-x-auto pb-3 -mx-1 px-1 snap-x snap-mandatory scroll-smooth" aria-label="Scrollable comparison columns" style={{ touchAction: "pan-x pan-y" }}>
               <div className="grid gap-4 min-w-full snap-mandatory" style={{ gridTemplateColumns: columnTemplate }}>
               {places.map(p => {
