@@ -10,11 +10,11 @@
 - **Other deploy options:** [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/sauterreed24/terraclima) (custom domain) · [GitHub Pages](https://github.com/sauterreed24/terraclima/settings/pages) (set Source to GitHub Actions to publish to `https://sauterreed24.github.io/terraclima/`).
 - **Deployment workflows:** [.github/workflows/static-preview.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/static-preview.yml) (primary, raw.githack-served) · [.github/workflows/deploy-pages.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml) (Pages, opt-in).
 
-Terraclima is a research-grade climate atlas for exploring how terrain shapes lived weather across the United States, Canada, and Mexico. It treats each place as a physical system: rain shadows, sky islands, marine layers, chinook corridors, frost hollows, tropical highlands, fog belts, lake-effect snowbelts, orchard valleys, and wind gaps are explained through the forces that create them.
+Terraclima is a research-grade climate atlas for exploring how terrain shapes lived weather across the United States, Canada, and Mexico. It treats each place as a physical system: rain shadows, sky islands, marine layers, chinook corridors, frost hollows, tropical highlands, fog belts, lake-effect snowbelts, orchard valleys, and wind gaps are read through the forces that create them.
 
-The project sits between atlas, field guide, and decision tool. It turns a large authored corpus into an interface for relocation research, travel scouting, agricultural curiosity, climate adaptation, and environmental learning. The goal is not to summarize weather. The goal is to make place-specific climate logic visible, comparable, and inspectable.
+The project sits between atlas, field guide, and decision tool. It turns a large authored corpus into an interface for relocation research, travel scouting, agricultural curiosity, climate adaptation, and environmental learning. The goal is not to summarize weather. The goal is to make place-specific climate logic visible, comparable, and inspectable enough that a map dot starts to feel like a landscape.
 
-Terraclima is also built as an engineering portfolio: typed data, transparent scoring, accessible interaction patterns, performance discipline, source-aware climate writing, automated validation, and a visual system that makes complex environmental knowledge feel navigable instead of buried.
+Terraclima is also built as an engineering portfolio: typed data, transparent scoring, deterministic prose helpers, accessible interaction patterns, performance discipline, source-aware climate writing, automated validation, and a visual system that makes complex environmental knowledge feel navigable instead of buried.
 
 ## Why This Project Exists
 
@@ -28,8 +28,8 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 
 - **Explorer map:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
 - **Phone-safe map interaction:** Touch users land in direct map mode by default: one-finger drag pans the atlas, pinch zooms, plus/minus and Fit remain available, clusters stay tappable, and dense pins visually spread with leader lines back to their exact locations. Tapping **Scroll page** gives control back to browser scrolling; **Use map** re-enters direct map interaction.
-- **Place profiles:** Long-form dossiers for each microclimate, including seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, citations, and confidence notes.
-- **Practical read:** Every profile now leads with plain-language cards for agriculture and gardens, spatial evidence, homes and land scouting, and nearby hikes or day trips before the longer dossier.
+- **Place profiles:** Long-form field profiles for each microclimate, including an opening story, scannable at-a-glance facts, practical scouting cards, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, citations, and confidence notes.
+- **Practical read:** Every profile turns the same typed fields into plain-language cards for what the ground can grow, how to read terrain, homes and land tradeoffs, and nearby ways to test the microclimate in person before the longer dossier.
 - **Ranking lenses:** Sort by hidden gems, coolest summers, mildest winters, shoulder seasons, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
 - **Comparison workflow:** Compare up to four places side by side with climate ribbons, derived scores, responsive columns, and focus-managed modal behavior.
 - **Collections and learning mode:** Curated bundles and a glossary connect mechanisms such as lapse rate, cold-air pooling, orographic lift, marine layer, foehn winds, thermal belts, and karst hydrology to real places.
@@ -218,12 +218,13 @@ Try widths near **375px**, **768px**, **1024px**, and full desktop. Always run `
 
 For a portfolio review, start here:
 
-1. **Product architecture:** Open `src/App.tsx`, `src/components/PlaceDetail.tsx`, and `src/components/AtlasMap.tsx` to see how the corpus becomes a navigable research product.
-2. **Data modeling:** Read `src/types.ts`, then inspect entries in `src/data/places.*.ts`. The app is built around structured knowledge, not arbitrary content blobs.
-3. **Derived intelligence:** Review `src/lib/geospatial-analysis.ts`, `src/lib/scoring.ts`, and `src/lib/atlas-corpus-stats.ts` for explainable ranking and screening logic.
-4. **Quality discipline:** Run `npm run quality:check`. The scripts make the corpus auditable, not merely type-safe.
-5. **Performance and accessibility:** Check `src/lib/device-profile.ts`, `src/components/AtlasMap.tsx`, `src/lib/atlas-map-cluster.ts`, `src/components/VirtualPlaceGrid.tsx`, `src/hooks/use-focus-trap.ts`, and the low-power sections in `src/styles.css`.
-6. **Test coverage:** Review `src/lib/__tests__/`, `src/__tests__/`, and the validation scripts under `scripts/`.
+1. **Use the atlas first:** open Explorer, pick a pin or card, then read a profile from opening story to scores and sources. The app is meant to feel like a field guide with instrumentation, not a weather table.
+2. **Product architecture:** open `src/App.tsx`, `src/components/PlaceDetail.tsx`, and `src/components/AtlasMap.tsx` to see how the corpus becomes a navigable research product.
+3. **Data modeling:** read `src/types.ts`, then inspect entries in `src/data/places.*.ts`. The app is built around structured knowledge, not arbitrary content blobs.
+4. **Derived intelligence:** review `src/lib/place-story.ts`, `src/lib/practical-read.ts`, `src/lib/geospatial-analysis.ts`, `src/lib/scoring.ts`, and `src/lib/atlas-corpus-stats.ts` for deterministic narrative, ranking, and screening logic.
+5. **Quality discipline:** run `npm run quality:check`. The scripts make the corpus auditable, not merely type-safe.
+6. **Performance and accessibility:** check `src/lib/device-profile.ts`, `src/components/AtlasMap.tsx`, `src/lib/atlas-map-cluster.ts`, `src/components/VirtualPlaceGrid.tsx`, `src/hooks/use-focus-trap.ts`, and the low-power sections in `src/styles.css`.
+7. **Test coverage:** review `src/lib/__tests__/`, `src/__tests__/`, and the validation scripts under `scripts/`.
 
 ## Agentic Review Guide
 
@@ -234,6 +235,7 @@ For AI agents or automated reviewers:
 - **Improvement context:** [docs/IMPROVEMENT-CONTEXT.md](docs/IMPROVEMENT-CONTEXT.md) reconciles external research notes with the actual Vite/React atlas repo.
 - Treat `src/types.ts` as the contract.
 - Treat `scripts/sanity-check.ts` and `scripts/audit-corpus.ts` as executable invariants.
+- Treat `src/lib/place-story.ts`, `src/lib/practical-read.ts`, and `src/lib/place-at-a-glance.ts` as deterministic prose adapters over existing fields, not places to invent new climate facts.
 - Prefer adding validation before changing corpus shape.
 - Do not invent climate facts. If a data point is not present or cited, keep language framed as screening or editorial context.
 - Preserve URL behavior in `src/lib/app-url.ts` and modal focus behavior in `src/hooks/use-focus-trap.ts`.
@@ -264,6 +266,6 @@ scripts/                       Corpus audits, sanity checks, rank goldens, debug
 
 ## What This Demonstrates
 
-Terraclima shows how AI-accelerated development can still produce work with taste, structure, and accountability. The project combines product judgment, environmental research, data modeling, visual design, performance engineering, accessibility, validation, and editorial discipline into one coherent system.
+Terraclima shows how AI-accelerated development can still produce work with taste, structure, and accountability. The project combines product judgment, environmental research, data modeling, deterministic narrative synthesis, visual design, performance engineering, accessibility, validation, and editorial discipline into one coherent system.
 
-It is not a toy weather dashboard. It is an attempt to make complex environmental knowledge understandable, inspectable, and useful.
+It is not a toy weather dashboard. It is an attempt to make complex environmental knowledge legible: human enough to read with curiosity, structured enough for agents to inspect, and disciplined enough to keep its claims tied to evidence.

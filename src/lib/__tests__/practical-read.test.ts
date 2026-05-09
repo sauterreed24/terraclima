@@ -18,6 +18,14 @@ describe("practical read helpers", () => {
 
     expect(cards).toHaveLength(4);
     expect(cards.map(c => c.id)).toEqual(["agriculture", "spatial", "housing", "nearby"]);
+    expect(cards.map(c => c.title)).toEqual([
+      "What the ground can grow",
+      "How to read the terrain",
+      "Homes, land, and tradeoffs",
+      "Walk the contrasts",
+    ]);
+    expect(cards.find(c => c.id === "spatial")?.body).toContain("landscape pattern");
+    expect(cards.find(c => c.id === "housing")?.body).toContain("not a housing-market claim");
     for (const card of cards) {
       expect(card.title.length).toBeGreaterThan(5);
       expect(card.body.length).toBeGreaterThan(40);

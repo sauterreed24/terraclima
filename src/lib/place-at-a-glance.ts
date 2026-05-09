@@ -1,6 +1,5 @@
 // ============================================================
-// Dense “At a glance” strip — 100% derived from existing Place
-// fields (no new authored JSON per place).
+// Dense at-a-glance strip: 100% derived from existing Place fields.
 // ============================================================
 
 import type { Place } from "../types";
@@ -27,9 +26,9 @@ function titleCase(s: string): string {
 }
 
 const TIER: Record<Place["tier"], { line: string; hint: string; tone: AtGlanceTone }> = {
-  A: { line: "Flagship write-up", hint: "Full story, risk matrix, and climate outlook", tone: "ochre" },
-  B: { line: "Spotlight card", hint: "Structured to compare with peers cleanly", tone: "ice" },
-  C: { line: "Index entry", hint: "Lean, searchable, map-first", tone: "sage" },
+  A: { line: "Flagship write-up", hint: "Deep profile with story, risks, sources, and outlook", tone: "ochre" },
+  B: { line: "Spotlight card", hint: "Enough structure to compare the place cleanly", tone: "ice" },
+  C: { line: "Index entry", hint: "Lean, searchable, and map-first", tone: "sage" },
 };
 
 export function buildAtAGlanceTiles(
@@ -55,28 +54,28 @@ export function buildAtAGlanceTiles(
   out.push({
     label: "Terrain engines",
     value: `${place.drivers.length} driver${place.drivers.length === 1 ? "" : "s"}`,
-    hint: place.drivers.slice(0, 2).map(d => DRIVER_LABELS[d]).join(" · "),
+    hint: place.drivers.slice(0, 2).map(d => DRIVER_LABELS[d]).join(" / "),
     tone: "ochre",
   });
 
   out.push({
     label: "Data confidence",
     value: titleCase(place.confidence),
-    hint: "Based on network density and how well stations represent this site",
+    hint: "How much weight to give the profile before checking primary sources",
     tone: "glacier",
   });
 
   out.push({
     label: "Remote sensing",
     value: "EO + relief texture",
-    hint: `${EARTH_OBSERVATION_SOURCES.map(s => `${s.label} (${s.nominalResolutionM} m)`).join(" · ")} · screening ${geo.eoObservabilityScore}/100 · relief proxy ${geo.structuralTextureScore}/100`,
+    hint: `${EARTH_OBSERVATION_SOURCES.map(s => `${s.label} (${s.nominalResolutionM} m)`).join(" / ")} / screening ${geo.eoObservabilityScore}/100 / relief proxy ${geo.structuralTextureScore}/100`,
     tone: "ice",
   });
 
   out.push({
     label: "Geospatial signal",
     value: `${geo.geospatialSignalScore}/100`,
-    hint: `${geo.analysisConfidence} confidence · ${geo.sourceFits.map(s => `${s.sourceId} ${s.score}`).join(" · ")}`,
+    hint: `${geo.analysisConfidence} confidence / ${geo.sourceFits.map(s => `${s.sourceId} ${s.score}`).join(" / ")}`,
     tone: "aurora",
   });
 
@@ -85,7 +84,7 @@ export function buildAtAGlanceTiles(
   out.push({
     label: "Water year (mean)",
     value: fmt(annual),
-    hint: `Among all ${PLACE_COUNTS.total} curated stops: wetter than ${w}% (by annual mean)`,
+    hint: `Among all ${PLACE_COUNTS.total} curated stops: wetter than ${w}% by annual mean`,
     tone: "glacier",
   });
 
@@ -95,10 +94,10 @@ export function buildAtAGlanceTiles(
     const parts: string[] = [];
     if (f != null) parts.push(`Frost-free ~${f} d`);
     if (g != null) {
-      const gddTag = displayTemp === "F" ? "GDD (base 50°F)" : "GDD (base 10°C)";
+      const gddTag = displayTemp === "F" ? "GDD base 50F" : "GDD base 10C";
       parts.push(`${gddTag} ~${Math.round(g)}`);
     }
-    out.push({ label: "Growing season (est.)", value: parts.join(" · "), hint: "Rough agronomic read from the same table as the charts", tone: "sage" });
+    out.push({ label: "Growing season (est.)", value: parts.join(" / "), hint: "Rough agronomic read from the same table as the charts", tone: "sage" });
   }
 
   const nLocal = (place.localContrast?.length ?? 0) + (place.nearbyContrasts?.length ?? 0);
@@ -106,7 +105,7 @@ export function buildAtAGlanceTiles(
     out.push({
       label: "Local contrast hooks",
       value: `${nLocal} comparison${nLocal === 1 ? "" : "s"}`,
-      hint: "To valleys, basins, or named neighbours — section below",
+      hint: "Valleys, basins, or named neighbors to compare below",
       tone: "ember",
     });
   }
@@ -116,7 +115,7 @@ export function buildAtAGlanceTiles(
     out.push({
       label: "Field dossier",
       value: `${deepN} chapter${deepN === 1 ? "" : "s"}`,
-      hint: "Long-form, still tied to the structured climate table",
+      hint: "Chaptered long-form reading, still tied to structured climate fields",
       tone: "sage",
     });
   }
@@ -127,7 +126,7 @@ export function buildAtAGlanceTiles(
     out.push({
       label: "High-season diurnal",
       value: fmtDiurnal(dSum),
-      hint: `Larger summer swing than ${ld}% of atlas stops (same high-season window)`,
+      hint: `Larger summer swing than ${ld}% of atlas stops in the same high-season window`,
       tone: "aurora",
     });
   }
