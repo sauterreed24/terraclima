@@ -160,6 +160,16 @@ describe("localizeProse — distances", () => {
   it("converts elevations with vocabulary cues", () => {
     expect(localizeProse("The town sits at 1,500 m.", "F", "imperial")).toContain("4,921 ft");
   });
+  it("converts threshold elevations and sensor-resolution metre claims", () => {
+    expect(localizeProse("At more than 2,200 m, Los Alamos keeps strong night cooling.", "F", "imperial")).toContain("7,218 ft");
+    const sensorText = localizeProse(
+      "Sentinel-2 MSI emphasizes 10 m VNIR/SWIR for texture; Landsat OLI-TIRS pairs 30 m multispectral with thermal history.",
+      "F",
+      "imperial"
+    );
+    expect(sensorText).toContain("33 ft VNIR/SWIR");
+    expect(sensorText).toContain("98 ft multispectral");
+  });
   it("is a no-op when dist=metric", () => {
     expect(localizeProse("The town sits at 1,500 m.", "C", "metric")).toBe("The town sits at 1,500 m.");
   });

@@ -87,6 +87,10 @@ const cases: Case[] = [
     expect: ["197 ft thick", "295 ft"], reject: [" 60 m", " 90 m"] },
   { input: "three steeply dissected ridges with 90 m of relief in less than 500 m of horizontal distance",
     expect: ["295 ft of relief", "1,640 ft of horizontal"], reject: [" 90 m", " 500 m"] },
+  { input: "At more than 2,200 m, Los Alamos keeps strong night cooling.",
+    expect: ["7,218 ft"], reject: ["2,200 m"] },
+  { input: "Sentinel-2 MSI emphasizes 10 m VNIR/SWIR for texture; Landsat OLI-TIRS pairs 30 m multispectral with thermal history.",
+    expect: ["33 ft VNIR/SWIR", "98 ft multispectral"], reject: ["10 m", "30 m"] },
 ];
 
 let pass = 0;
