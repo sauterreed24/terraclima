@@ -16,7 +16,7 @@ import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse } from "../lib/units";
-import { computeBestMonths } from "../lib/best-months";
+import { getBestMonths } from "../lib/best-months";
 import { findSimilarPlaces } from "../lib/similarity";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
@@ -515,7 +515,7 @@ function DetailBody({
       ),
     [place, temp, dist],
   );
-  const bestMonths = useMemo(() => computeBestMonths(place, temp), [place, temp]);
+  const bestMonths = useMemo(() => getBestMonths(place, temp), [place, temp]);
   const similar = useMemo(() => findSimilarPlaces(place, PLACES, 3), [place]);
   const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);

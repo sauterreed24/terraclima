@@ -1,6 +1,6 @@
 import type { Place, RiskLevel, ZoneActivity, ZoneSettlement } from "../types";
 import { DRIVER_LABELS } from "../types";
-import { computeBestMonths } from "./best-months";
+import { getBestMonths } from "./best-months";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 
 export type PracticalReadId = "agriculture" | "spatial" | "housing" | "nearby";
@@ -111,7 +111,7 @@ function waterYearPhrase(place: Place): string {
 }
 
 function bestOutdoorSeason(place: Place): string {
-  const windows = computeBestMonths(place);
+  const windows = getBestMonths(place);
   const outdoor = windows.find(w => /outdoor|hike|dry|comfort/i.test(w.label)) ?? windows[0];
   return outdoor ? outdoor.range : "seasonal windows vary by exposure";
 }

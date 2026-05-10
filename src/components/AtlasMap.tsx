@@ -101,6 +101,7 @@ const MIN_ZOOM = 0.42;
 const MAX_ZOOM = 14;
 const MOBILE_CLUSTER_RADIUS_PX = 48;
 const MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF = 1.65;
+const DESKTOP_MARKER_CULL_ZOOM_CUTOFF = 1.9;
 const MOBILE_PIN_MIN_SPACING_PX = 42;
 const DESKTOP_PIN_MIN_SPACING_PX = 28;
 const MOBILE_PIN_MAX_OFFSET_PX = 34;
@@ -133,9 +134,8 @@ function clampZoom(k: number): number {
   return Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, k));
 }
 
-function pinLayoutPriority(place: Place, selectedId: string | undefined, hoverId: string | null): number {
+function pinLayoutPriority(place: Place, selectedId: string | undefined): number {
   if (place.id === selectedId) return 100;
-  if (place.id === hoverId) return 90;
   const tierPriority = place.tier === "A" ? 8 : place.tier === "B" ? 4 : 1;
   return tierPriority + Math.max(0, 2 - place.name.length / 24);
 }
@@ -299,6 +299,8 @@ export function AtlasMap({
   distRef.current = dist;
 
   const [hoverId, setHoverId] = useState<string | null>(null);
+  const hoverIdRef = useRef<string | null>(null);
+  hoverIdRef.current = hoverId;
   const [tooltipScreen, setTooltipScreen] = useState<{ xPct: number; yPct: number } | null>(null);
   const [clusterPicker, setClusterPicker] = useState<{
     cluster: AtlasClusterItem<{ place: Place; x: number; y: number; id: string }>;
@@ -574,33 +576,35 @@ export function AtlasMap({
     [renderItems],
   );
 
-  // Viewport-cull markers on mobile above the cluster cutoff. Below it
-  // clustering already collapses ~210 pins to ~30. Above it (k ≥ 1.65) only
-  // ~25 of the 210 are typically on-screen; rendering the rest just costs
-  // paint and reconciliation. We pad by one marker hit-radius (~80 SVG units)
-  // so markers don't pop in/out at the edge, and always include
-  // selected/hovered ids so they survive even when scrolled out of frame.
+  // Viewport-cull markers once the user is zoomed in. Below the cutoff,
+  // clustering/label modes already reduce visual work. Above it, only a small
+  // fraction of the atlas is visible; rendering off-screen markers just costs
+  // paint and reconciliation. Always include selected/hovered ids so they
+  // survive even when scrolled out of frame.
   const markerPoints = useMemo(() => {
-    if (!coarsePointer || settledView.k < MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF) return markerPointsAll;
-    if (markerPointsAll.length <= 32) return markerPointsAll;
-    const pad = 80;
+    const cullZoomCutoff = coarsePointer ? MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF : DESKTOP_MARKER_CULL_ZOOM_CUTOFF;
+    const minCountForCull = coarsePointer ? 32 : 70;
+    if (settledView.k < cullZoomCutoff) return markerPointsAll;
+    if (markerPointsAll.length <= minCountForCull) return markerPointsAll;
+    const pad = coarsePointer ? 80 : 120;
     const k = settledView.k;
     const minX = (-settledView.x - pad) / k;
     const maxX = (width - settledView.x + pad) / k;
     const minY = (-settledView.y - pad) / k;
     const maxY = (height - settledView.y + pad) / k;
+    const currentHoverId = hoverIdRef.current;
     return markerPointsAll.filter(pt => {
-      if (pt.place.id === selectedId || pt.place.id === hoverId) return true;
+      if (pt.place.id === selectedId || pt.place.id === currentHoverId) return true;
       return pt.x >= minX && pt.x <= maxX && pt.y >= minY && pt.y <= maxY;
     });
-  }, [markerPointsAll, coarsePointer, settledView, width, height, selectedId, hoverId]);
+  }, [markerPointsAll, coarsePointer, settledView, width, height, selectedId]);
 
   const laidOutMarkerPoints = useMemo<RenderedClusterPoint[]>(() => {
     const layout = layoutAtlasMapPins(
       markerPoints.map(pt => ({
         ...pt,
-        priority: pinLayoutPriority(pt.place, selectedId, hoverId),
-        locked: pt.place.id === selectedId || pt.place.id === hoverId,
+        priority: pinLayoutPriority(pt.place, selectedId),
+        locked: pt.place.id === selectedId,
       })),
       {
         enabled: markerPoints.length > 1,
@@ -622,7 +626,7 @@ export function AtlasMap({
       needsLeader: pin.needsLeader,
       crowded: pin.crowded,
     }));
-  }, [markerPoints, settledView, coarsePointer, selectedId, hoverId]);
+  }, [markerPoints, settledView, coarsePointer, selectedId]);
 
   const pinLabelModes = useMemo(
     () => computePinLabelModes(laidOutMarkerPoints, settledView.k, selectedId, hoverId),

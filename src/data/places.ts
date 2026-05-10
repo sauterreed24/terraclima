@@ -40,29 +40,56 @@ export function foldDiacritics(input: string): string {
 }
 
 /**
- * Precomputed runtime indexes.
+ * Runtime indexes.
  *
- * These are built once at module initialization so hot paths (search filter,
- * annual-precip formatting, card rendering) don't have to rebuild them on
- * every keystroke. This is the single largest interactive win on
- * memory-constrained hardware: search goes from O(places × prose length)
- * string concatenation per keystroke to an O(places) substring check.
+ * Annual precipitation stays eager because it is a small numeric lookup used
+ * across cards, ranking, and detail panels. Full-prose search text is lazy:
+ * building it walks derived deep sections for every place, so doing that at
+ * module initialization hurts cold Explorer load even when the user never
+ * searches. App warms it opportunistically after first paint.
  */
-export const PLACE_SEARCH_INDEX: Record<string, string> = {};
+const PLACE_SEARCH_TEXT = new WeakMap<Place, string>();
 export const PLACE_ANNUAL_PRECIP: Record<string, number> = {};
 
 for (const p of PLACES) {
-  const deepIdx = mergeDeepSections(p).map(s => `${s.title} ${s.paragraphs.join(" ")}`).join(" ");
-  PLACE_SEARCH_INDEX[p.id] = foldDiacritics(
-    p.name + " " +
-    p.region + " " +
-    (p.municipality ?? "") + " " +
-    p.archetypes.join(" ") + " " +
-    p.koppen + " " +
-    (p.summaryShort ?? "") +
+  PLACE_ANNUAL_PRECIP[p.id] = p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
+}
+
+function runtimeNowMs(): number {
+  return typeof performance !== "undefined" ? performance.now() : Date.now();
+}
+
+export function getPlaceSearchText(place: Place): string {
+  const cached = PLACE_SEARCH_TEXT.get(place);
+  if (cached !== undefined) return cached;
+
+  const deepIdx = mergeDeepSections(place).map(s => `${s.title} ${s.paragraphs.join(" ")}`).join(" ");
+  const text = foldDiacritics(
+    place.name + " " +
+    place.region + " " +
+    (place.municipality ?? "") + " " +
+    place.archetypes.join(" ") + " " +
+    place.koppen + " " +
+    (place.summaryShort ?? "") +
     " " + deepIdx,
   );
-  PLACE_ANNUAL_PRECIP[p.id] = p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);
+  PLACE_SEARCH_TEXT.set(place, text);
+  return text;
+}
+
+export function warmPlaceSearchIndex(
+  places: readonly Place[] = PLACES,
+  startIndex = 0,
+  budgetMs = 6,
+): number {
+  const start = runtimeNowMs();
+  let i = Math.max(0, startIndex);
+  while (i < places.length) {
+    getPlaceSearchText(places[i]!);
+    i += 1;
+    if (runtimeNowMs() - start >= budgetMs) break;
+  }
+  return i;
 }
 
 export const PLACE_COUNTS = {

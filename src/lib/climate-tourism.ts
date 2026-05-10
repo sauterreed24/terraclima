@@ -1,6 +1,6 @@
 import type { Place, RiskLevel, TopographicDriver } from "../types";
 import { ARCHETYPE_LABELS, DRIVER_LABELS } from "../types";
-import { computeBestMonths } from "./best-months";
+import { getBestMonths } from "./best-months";
 import { avgRisk, meanJanLow, meanSummerHigh, RISK_VALUE } from "./scoring";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import {
@@ -272,7 +272,7 @@ function vibeFor(place: Place): ClimateTourismProfile["vibe"] {
 }
 
 function bestVisitWindow(place: Place): ClimateTourismProfile["bestVisitWindow"] {
-  const windows = computeBestMonths(place);
+  const windows = getBestMonths(place);
   const good = windows.filter(w => w.kind === "good");
   const first = good[0] ?? windows[0];
   if (!first) {
@@ -394,7 +394,7 @@ function buildItinerary(place: Place, profileBits: {
 
 function computeScores(place: Place): ClimateTourismProfile["scores"] {
   const geo = buildGeospatialAnalysis(place);
-  const goodWindows = computeBestMonths(place).filter(w => w.kind === "good").length;
+  const goodWindows = getBestMonths(place).filter(w => w.kind === "good").length;
   const travelRichness = richnessScore(place.travelFit.length, TOURISM_SCORE_PARAMS.travelFitTarget);
   const activityRichness = richnessScore(buildPracticalActivities(place).length, TOURISM_SCORE_PARAMS.activityTarget);
   const bestWindowClarity = richnessScore(goodWindows, TOURISM_SCORE_PARAMS.goodWindowTarget);

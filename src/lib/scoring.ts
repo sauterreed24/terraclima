@@ -3,7 +3,7 @@
 // ============================================================
 
 import type { Place, MicroclimateArchetype, RiskLevel } from "../types";
-import { PLACES, PLACE_SEARCH_INDEX, foldDiacritics } from "../data/places";
+import { PLACES, foldDiacritics, getPlaceSearchText } from "../data/places";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import { CORPUS_MEAN_HUMIDITY } from "./atlas-corpus-stats";
 import {
@@ -253,8 +253,7 @@ export function applyFilters(places: Place[], f: FilterState): Place[] {
     if (hasMaxFire && RISK_VALUE[p.risks.wildfire.level] > maxFireVal) continue;
     if (f.minGrowability !== undefined && p.scores.growability < f.minGrowability) continue;
     if (q) {
-      const hay = PLACE_SEARCH_INDEX[p.id];
-      if (!hay || !hay.includes(q)) continue;
+      if (!getPlaceSearchText(p).includes(q)) continue;
     }
     out.push(p);
   }
