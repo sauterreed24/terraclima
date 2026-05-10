@@ -13,7 +13,7 @@ import {
   type LiveFitPresetId,
 } from "../lib/live-fit";
 import { Check, Search, X } from "lucide-react";
-import { useProse } from "../lib/units";
+import { fmtTemp, useProse, useUnits } from "../lib/units";
 
 export { RANKING_OPTIONS } from "../lib/ranking-options";
 
@@ -36,6 +36,7 @@ export const FilterBar = memo(function FilterBar({
   variant = "dock",
 }: Props) {
   const prose = useProse();
+  const { temp } = useUnits();
   const searchFieldId = searchInputId ?? "tc-atlas-filter-search";
   const searchPlaceholder = variant === "sheet" ? "Search places" : "Search name, region, or archetype";
   const toggleCountry = useCallback((c: Country) => {
@@ -150,7 +151,7 @@ export const FilterBar = memo(function FilterBar({
             value={filters.maxSummerHighC}
             options={[
               { label: "None", value: undefined },
-              ...LIVE_FIT_SUMMER_CAPS_C.map(value => ({ label: `<= ${value}C`, value })),
+              ...LIVE_FIT_SUMMER_CAPS_C.map(value => ({ label: `<= ${fmtTemp(value, temp)}`, value })),
             ]}
             onPick={v => setLiveNumber("maxSummerHighC", v)}
           />
@@ -159,7 +160,7 @@ export const FilterBar = memo(function FilterBar({
             value={filters.minWinterLowC}
             options={[
               { label: "None", value: undefined },
-              ...LIVE_FIT_WINTER_FLOORS_C.map(value => ({ label: `>= ${value}C`, value })),
+              ...LIVE_FIT_WINTER_FLOORS_C.map(value => ({ label: `>= ${fmtTemp(value, temp)}`, value })),
             ]}
             onPick={v => setLiveNumber("minWinterLowC", v)}
           />

@@ -23,7 +23,7 @@ export function CollectionsView({ onOpenPlace, onPick, activeId }: Props) {
           >
             <div className="flex items-start justify-between gap-3 mb-2">
               <div>
-                <div className="text-xs uppercase tracking-wider text-stone">{c.subtitle}</div>
+                <div className="text-xs uppercase tracking-wider text-stone">{prose(c.subtitle)}</div>
                 <h3 className="font-atlas text-xl text-ice">{c.title}</h3>
                 <div className="text-[11px] text-stone mt-0.5">{c.placeIds.length} places</div>
               </div>

@@ -23,9 +23,11 @@
  */
 import { localizeProse } from "../src/lib/units";
 import { PLACES } from "../src/data/places";
+import { ARCHETYPES } from "../src/data/archetypes";
 import { CONCEPTS } from "../src/data/glossary";
 import { COLLECTIONS } from "../src/data/collections";
 import { CLIMATE_TRIP_THEMES } from "../src/data/climate-trip-themes";
+import { FIELD_NOTES } from "../src/data/field-notes";
 import type { Place } from "../src/types";
 
 // ---------- Config ----------
@@ -277,11 +279,28 @@ for (const c of CONCEPTS) {
     checkTypography(where, val);
   }
 }
+for (const a of ARCHETYPES) {
+  for (const [field, value] of [
+    ["label", a.label],
+    ["blurb", a.blurb],
+    ["guide", a.guide],
+  ] as const) {
+    if (!value) continue;
+    const where = `archetype:${a.id}:${field}`;
+    checkUnitResidues(where, value);
+    checkTypography(where, value);
+  }
+}
 for (const c of COLLECTIONS) {
-  const where = `collection:${c.id}:description`;
-  if (c.description) {
-    checkUnitResidues(where, c.description);
-    checkTypography(where, c.description);
+  for (const [field, value] of [
+    ["title", c.title],
+    ["subtitle", c.subtitle],
+    ["description", c.description],
+  ] as const) {
+    if (!value) continue;
+    const where = `collection:${c.id}:${field}`;
+    checkUnitResidues(where, value);
+    checkTypography(where, value);
   }
 }
 for (const t of CLIMATE_TRIP_THEMES) {
@@ -299,6 +318,11 @@ for (const t of CLIMATE_TRIP_THEMES) {
     checkTypography(where, value);
   }
 }
+FIELD_NOTES.forEach((note, i) => {
+  const where = `field-note:${i}`;
+  checkUnitResidues(where, note);
+  checkTypography(where, note);
+});
 
 // ---------- Report ----------
 
