@@ -156,6 +156,7 @@ If the **primary public URL** changes, update canonical, OG, robots, and sitemap
 - `public/.nojekyll` keeps Pages from stripping files starting with `_`.
 - `public/404.html` redirects unknown Pages paths back to the SPA root (no-op on raw.githack and Vercel).
 - `vercel.json` adds an SPA fallback rewrite for Vercel.
+- The `static-preview` workflow publishes `dist/` with first-party git commands under the repository token instead of handing a write-scoped token to a third-party deploy action.
 
 If the project moves to a custom domain, update the canonical URL, Open Graph URL/image URL, robots sitemap URL, and sitemap `<loc>` together.
 

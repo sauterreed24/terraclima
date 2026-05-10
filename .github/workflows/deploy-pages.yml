@@ -29,7 +29,7 @@ jobs:
     outputs:
       pages_enabled: ${{ steps.check.outputs.pages_enabled }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6.0.2
       - id: check
         name: Check whether GitHub Pages is enabled
         env:
@@ -45,7 +45,7 @@ jobs:
         name: Setup Pages
         uses: actions/configure-pages@v5
       - if: steps.check.outputs.pages_enabled == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6.4.0
         with:
           node-version: "22"
           cache: npm

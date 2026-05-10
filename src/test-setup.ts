@@ -33,9 +33,11 @@ if (typeof window !== "undefined") {
     this.dispatchEvent(new Event("toggle"));
   };
 
-  globalThis.ResizeObserver = vi.fn().mockImplementation(() => ({
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-    disconnect: vi.fn(),
-  })) as unknown as typeof ResizeObserver;
+  class MockResizeObserver {
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
+  }
+
+  globalThis.ResizeObserver = MockResizeObserver as unknown as typeof ResizeObserver;
 }

@@ -38,7 +38,11 @@ export default tseslint.config(
       "jsx-a11y": jsxA11y,
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
+      // Keep the stable Hooks rules explicit. eslint-plugin-react-hooks v7's
+      // broad recommended preset also enables React Compiler diagnostics that
+      // are too noisy for Terraclima's intentional imperative map/ref code.
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
       // Mapped to warn for parity with jsx-a11y recommended; CI still fails on any warning.
       ...Object.fromEntries(
         Object.entries(jsxA11y.configs.recommended.rules ?? {}).map(([k, v]) => [
