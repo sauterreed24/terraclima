@@ -6,7 +6,7 @@
 
 import type { Place, PlaceDeepSection, RiskLevel } from "../types";
 import { DRIVER_LABELS } from "../types";
-import { computeBestMonths } from "./best-months";
+import { getBestMonths } from "./best-months";
 
 const RISK_KEYS = [
   "wildfire",
@@ -105,7 +105,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     const { wet, dry } = wetDryIndices(precip);
     const wetM = MO[wet] ?? "—";
     const dryM = MO[dry] ?? "—";
-    const hasCalendarWindows = computeBestMonths(place).length > 0;
+    const hasCalendarWindows = getBestMonths(place).length > 0;
     const chartHint = hasCalendarWindows
       ? "The monthly strip sits under Seasonal rhythm below. Best months for… on this same page already turns these normals into garden, outdoor-comfort, dry-travel, and snow windows — this block stays on how total rain stacks month to month."
       : "The monthly precipitation strip lives in Seasonal rhythm a little farther down this page — read narrative here first, then line it up against the bars.";

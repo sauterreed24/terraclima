@@ -9,7 +9,7 @@ import { TempToggle } from "./components/TempToggle";
 import { useFocusTrap } from "./hooks/use-focus-trap";
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
 import { useMediaQuery } from "./hooks/use-media-query";
-import { PLACES, PLACES_BY_ID, PLACE_COUNTS, resolvePlaceId } from "./data/places";
+import { PLACES, PLACES_BY_ID, PLACE_COUNTS, resolvePlaceId, warmPlaceSearchIndex } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
 import { CLIMATE_TRIP_THEME_BY_ID } from "./data/climate-trip-themes";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
@@ -84,6 +84,53 @@ export default function App() {
     document.documentElement.classList.toggle("tc-low-power", !richVisualEffects);
     return () => document.documentElement.classList.remove("tc-low-power");
   }, [richVisualEffects]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    type IdleDeadlineLike = { timeRemaining?: () => number };
+    const w = window as Window & {
+      requestIdleCallback?: (cb: (deadline: IdleDeadlineLike) => void, opts?: { timeout?: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    let nextIndex = 0;
+    let idleId: number | null = null;
+    let timeoutId: number | null = null;
+    let cancelled = false;
+
+    const cancelPending = () => {
+      if (idleId !== null && w.cancelIdleCallback) w.cancelIdleCallback(idleId);
+      if (timeoutId !== null) window.clearTimeout(timeoutId);
+      idleId = null;
+      timeoutId = null;
+    };
+
+    const schedule = () => {
+      if (cancelled) return;
+      if (w.requestIdleCallback) {
+        idleId = w.requestIdleCallback(run, { timeout: 1500 });
+      } else {
+        timeoutId = window.setTimeout(() => run(), 250);
+      }
+    };
+
+    const run = (deadline?: IdleDeadlineLike) => {
+      if (cancelled) return;
+      idleId = null;
+      timeoutId = null;
+      const remaining = deadline?.timeRemaining?.();
+      const budgetMs = remaining == null ? 6 : Math.max(3, Math.min(12, remaining));
+      nextIndex = warmPlaceSearchIndex(PLACES, nextIndex, budgetMs);
+      if (nextIndex < PLACES.length) schedule();
+    };
+
+    schedule();
+    return () => {
+      cancelled = true;
+      cancelPending();
+    };
+  }, []);
 
   const initialAppStateRef = useRef<ReturnType<typeof readCurrentAppState> | null>(null);
   if (initialAppStateRef.current === null) {

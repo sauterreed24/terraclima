@@ -1,34 +1,54 @@
 // ============================================================
 // Atlas-wide distributions — percentiles & ranks for 200+ stops
-// One-time O(n) sort at module init; per-place calls are O(n) scans
-// (n≈210 — cheap on every open / hover / card paint).
+// One-time O(n) sort at module init; per-place calls use binary search and
+// WeakMap caches so cards, map hints, and detail panels reuse identical ranks.
 // ============================================================
 
 import type { Place } from "../types";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../data/places";
-import { meanSummerHigh, meanJanLow, summerDiurnalC } from "./climate-metrics";
+import { getAnnualPrecipMm, meanSummerHigh, meanJanLow, summerDiurnalC } from "./climate-metrics";
 import type { TempUnit } from "./units";
 
 function sortAsc(a: number[]): number[] {
   return [...a].sort((x, y) => x - y);
 }
 
+function lowerBound(sortedAsc: readonly number[], value: number): number {
+  let lo = 0;
+  let hi = sortedAsc.length;
+  while (lo < hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (sortedAsc[mid]! < value) {
+      lo = mid + 1;
+    } else {
+      hi = mid;
+    }
+  }
+  return lo;
+}
+
+function upperBound(sortedAsc: readonly number[], value: number): number {
+  let lo = 0;
+  let hi = sortedAsc.length;
+  while (lo < hi) {
+    const mid = Math.floor((lo + hi) / 2);
+    if (sortedAsc[mid]! <= value) {
+      lo = mid + 1;
+    } else {
+      hi = mid;
+    }
+  }
+  return lo;
+}
+
 function fracStrictlyLess(value: number, sortedAsc: readonly number[]): number {
   if (sortedAsc.length === 0) return 0.5;
-  let c = 0;
-  for (const x of sortedAsc) {
-    if (x < value) c++;
-  }
-  return c / sortedAsc.length;
+  return lowerBound(sortedAsc, value) / sortedAsc.length;
 }
 
 function fracStrictlyGreater(value: number, sortedAsc: readonly number[]): number {
   if (sortedAsc.length === 0) return 0.5;
-  let c = 0;
-  for (const x of sortedAsc) {
-    if (x > value) c++;
-  }
-  return c / sortedAsc.length;
+  return (sortedAsc.length - upperBound(sortedAsc, value)) / sortedAsc.length;
 }
 
 function pct(share: number): string {
@@ -121,14 +141,21 @@ export interface PlaceCorpusRanks {
   frostAboveShare: number | null;
 }
 
+const PLACE_CORPUS_RANK_CACHE = new WeakMap<Place, PlaceCorpusRanks>();
+const PLACE_CORPUS_MAP_HINT_CACHE = new WeakMap<Place, string>();
+const PLACE_CORPUS_CARD_TEASER_CACHE = new WeakMap<Place, string>();
+
 export function getPlaceCorpusRanks(place: Place): PlaceCorpusRanks {
+  const cached = PLACE_CORPUS_RANK_CACHE.get(place);
+  if (cached) return cached;
+
   const c = ATLAS_CORPUS;
   const jh = meanSummerHigh(place);
   const jl = meanJanLow(place);
-  const pr = PLACE_ANNUAL_PRECIP[place.id];
+  const pr = PLACE_ANNUAL_PRECIP[place.id] ?? getAnnualPrecipMm(place);
   const el = place.elevationM;
   const di = summerDiurnalC(place);
-  return {
+  const ranks: PlaceCorpusRanks = {
     wetterThanAtlasShare: fracStrictlyLess(pr, c.annualPrecipMm),
     drierThanAtlasShare: fracStrictlyGreater(pr, c.annualPrecipMm),
     coolerSummersThanAtlasShare: fracStrictlyGreater(jh, c.july),
@@ -147,6 +174,8 @@ export function getPlaceCorpusRanks(place: Place): PlaceCorpusRanks {
         ? fracStrictlyLess(place.climate.frostFreeDays, c.frostFreeDays)
         : null,
   };
+  PLACE_CORPUS_RANK_CACHE.set(place, ranks);
+  return ranks;
 }
 
 export function getCorpusSynthesisLines(place: Place, displayTemp: TempUnit = "F"): { label: string; value: string }[] {
@@ -232,14 +261,22 @@ export function getCorpusContextPanelRows(
 
 /** One-line for map/cards — no HTML */
 export function getCorpusMapHint(place: Place): string {
+  const cached = PLACE_CORPUS_MAP_HINT_CACHE.get(place);
+  if (cached) return cached;
   const r = getPlaceCorpusRanks(place);
-  return `Water year wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops; Jun-Aug mean high cooler than ${pct(r.coolerSummersThanAtlasShare)} of stops.`;
+  const hint = `Water year wetter than ${pct(r.wetterThanAtlasShare)} of atlas stops; Jun-Aug mean high cooler than ${pct(r.coolerSummersThanAtlasShare)} of stops.`;
+  PLACE_CORPUS_MAP_HINT_CACHE.set(place, hint);
+  return hint;
 }
 
 /** Short line for list cards (no newlines) */
 export function getCorpusCardTeaser(place: Place): string {
+  const cached = PLACE_CORPUS_CARD_TEASER_CACHE.get(place);
+  if (cached) return cached;
   const r = getPlaceCorpusRanks(place);
-  return `Vs full atlas: wetter than ${pct(r.wetterThanAtlasShare)} of stops · cooler JJA than ${pct(r.coolerSummersThanAtlasShare)} · higher ground than ${pct(r.higherElevationThanAtlasShare)}.`;
+  const teaser = `Vs full atlas: wetter than ${pct(r.wetterThanAtlasShare)} of stops · cooler JJA than ${pct(r.coolerSummersThanAtlasShare)} · higher ground than ${pct(r.higherElevationThanAtlasShare)}.`;
+  PLACE_CORPUS_CARD_TEASER_CACHE.set(place, teaser);
+  return teaser;
 }
 
 /**

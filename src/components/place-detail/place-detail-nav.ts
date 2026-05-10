@@ -29,7 +29,7 @@ export const PD = {
 
 import type { Place } from "../../types";
 import { mergeDeepSections } from "../../lib/place-appendix-sections";
-import { computeBestMonths } from "../../lib/best-months";
+import { getBestMonths } from "../../lib/best-months";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../../lib/practical-read";
 
 export interface PlaceNavItem {
@@ -59,7 +59,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
     { id: PD.rhythm, label: "Seasonal rhythm" },
   );
 
-  if (computeBestMonths(place).length > 0) {
+  if (getBestMonths(place).length > 0) {
     items.push({ id: PD.bestMonths, label: "Best months" });
   }
 

@@ -69,7 +69,7 @@ Terraclima is tuned for real devices, not just high-end developer machines.
 
 - **Surface Pro 5, 8 GB RAM:** Low-power mode disables expensive blur, marker pulse, hover lifts, deep shadows, and unnecessary backdrop filters. The map and card grid are structured to avoid punishing scroll and pan interactions.
 - **Phones and coarse-pointer devices:** The map uses stable small-viewport sizing, defaults to direct one-finger pan plus pinch zoom, keeps an explicit **Scroll page** escape, clusters dense low-zoom pins, visually spreads crowded pins with leader lines, and keeps 44px-plus touch targets reachable. Comparison columns still scroll horizontally instead of collapsing into unreadable fragments.
-- **General browser efficiency:** Search uses precomputed indexes. Filtering is deferred with `useDeferredValue`. Atlas topology and cold views are code-split. SVG paint IDs are unique per chart instance. Unit, geospatial, and climate-tourism helpers cache derived work where useful.
+- **General browser efficiency:** Search builds full-prose text lazily and warms it during idle time. Filtering is deferred with `useDeferredValue`. Atlas topology and cold views are code-split, with a post-build budget check to keep cold chunks out of initial `modulepreload`s. SVG paint IDs are unique per chart instance. Unit, geospatial, corpus-rank, best-month, and climate-tourism helpers cache derived work where useful.
 
 ## Data and Provenance
 
@@ -184,6 +184,7 @@ npm run audit:corpus
 npm run sanity
 npm run test:corpus-gold
 npm run build
+npm run check:performance-budget
 ```
 
 The same pipeline runs automatically on every **pull request** and on **pushes to non-`main` branches** via [`.github/workflows/quality.yml`](.github/workflows/quality.yml). Pushes to **`main`** also run the full gate via [`.github/workflows/quality-main.yml`](.github/workflows/quality-main.yml) (so direct commits cannot skip it).
@@ -200,6 +201,7 @@ npm run test               # Vitest unit tests
 npm run test:watch         # Vitest in watch mode
 npm run test:prose         # Prose/unit localization regression tests
 npm run check:metadata     # Static shell / discovery metadata consistency
+npm run check:performance-budget # Post-build cold-route modulepreload guard
 npm run audit:corpus       # Corpus prose, units, typography, and consistency audit
 npm run sanity             # Structural corpus and geospatial sanity checks
 npm run test:corpus-gold   # Ranking and geospatial snapshot guardrails
