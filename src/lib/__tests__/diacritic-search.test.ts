@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { foldDiacritics } from "../../data/places";
+import { PLACES_BY_ID, foldDiacritics, getPlaceSearchText } from "../../data/places";
 
 describe("foldDiacritics (D3)", () => {
   it("strips combining marks and lowercases", () => {
@@ -17,5 +17,19 @@ describe("foldDiacritics (D3)", () => {
     const once = foldDiacritics("Cañón");
     const twice = foldDiacritics(once);
     expect(twice).toBe(once);
+  });
+});
+
+describe("getPlaceSearchText live-here fields", () => {
+  it("indexes settlements, things to do, confidence notes, citations, and deep sections", () => {
+    const losAlamos = getPlaceSearchText(PLACES_BY_ID["los-alamos-pajarito-plateau-nm"]);
+    expect(losAlamos).toContain("pajarito acres");
+    expect(losAlamos).toContain("bandelier");
+    expect(losAlamos).toContain("noaa ncei");
+    expect(losAlamos).toContain("mesa neighborhoods are not one smooth climate");
+
+    const zacatlan = getPlaceSearchText(PLACES_BY_ID["zacatlan-de-las-manzanas-mx"]);
+    expect(zacatlan).toContain("apple orchards");
+    expect(zacatlan).toContain("gulf moisture climbs into apple country");
   });
 });

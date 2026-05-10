@@ -25,6 +25,7 @@ import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
+import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
 import { useMediaQuery } from "../hooks/use-media-query";
 import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
@@ -192,9 +193,10 @@ interface Props {
   inCompareIds?: Set<string>;
   onPickArchetype?: (a: MicroclimateArchetype) => void;
   onOpenPlace?: (id: string) => void;
+  liveFitFilters?: LiveFitFilters;
 }
 
-export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace }: Props) {
+export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters }: Props) {
   const reduceMotion = useReducedMotion();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
@@ -291,7 +293,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               inCompare={inCompareIds?.has(place.id) ?? false}
               onPickArchetype={onPickArchetype}
             />
-            <DetailBody place={place} onOpenPlace={onOpenPlace} />
+            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} />
           </motion.aside>
         </>
       )}
@@ -485,10 +487,11 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
 }
 
 function DetailBody({
-  place, onOpenPlace,
+  place, onOpenPlace, liveFitFilters,
 }: {
   place: Place;
   onOpenPlace?: (id: string) => void;
+  liveFitFilters?: LiveFitFilters;
 }) {
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -519,6 +522,7 @@ function DetailBody({
   const similar = useMemo(() => findSimilarPlaces(place, PLACES, 3), [place]);
   const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
+  const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
   const settlementAnchors = useMemo(() => buildSettlementAnchors(place), [place]);
   const practicalActivities = useMemo(() => buildPracticalActivities(place), [place]);
   const nearbyContextRows = useMemo(() => buildNearbyContextRows(place), [place]);
@@ -552,6 +556,36 @@ function DetailBody({
       </Section>
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
+
+      <Section title="Live-here fit" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
+        <div className="grid md:grid-cols-[11rem_1fr] gap-3">
+          <div className="panel-thin p-4">
+            <div className="text-[10px] uppercase tracking-wider text-stone">Current match</div>
+            <div className="font-mono-num text-3xl text-ice mt-1">{liveFit.score}<span className="text-sm text-stone">/100</span></div>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {liveFit.badges.map(b => <span key={b} className="chip" data-tone="glacier">{b}</span>)}
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div className="panel-thin p-4 border-l-2" style={{ borderLeftColor: "#5ec4dc" }}>
+              <div className="text-[10px] uppercase tracking-wider text-stone mb-2">Why it fits</div>
+              <ul className="space-y-1.5 text-sm text-frost">
+                {liveFit.reasons.map(r => <li key={r}>{prose(r)}</li>)}
+              </ul>
+            </div>
+            <div className="panel-thin p-4 border-l-2" style={{ borderLeftColor: "#e89b20" }}>
+              <div className="text-[10px] uppercase tracking-wider text-stone mb-2">Watch this</div>
+              {liveFit.cautions.length ? (
+                <ul className="space-y-1.5 text-sm text-frost">
+                  {liveFit.cautions.map(c => <li key={c}>{prose(c)}</li>)}
+                </ul>
+              ) : (
+                <p className="text-sm text-frost">No single hard warning dominates the structured profile; still read risks, water, and fit before shortlisting.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </Section>
 
       <PlacePracticalRead place={place} anchorId={PD.practical} />
 

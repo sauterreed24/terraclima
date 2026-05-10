@@ -802,6 +802,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "High-desert romantics; climbers; anyone who wants big-mountain access without mountain-town prices.",
     whoMightNot: "Humidity-lovers; those needing close cultural/urban amenities; anyone sensitive to summer smoke.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
     citations: [{ label: "NOAA Climate Normals — Bishop AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "California Dept. of Water Resources", kind: "oss-data" }, { label: "USGS Owens Valley studies", kind: "usgs", url: "https://www.usgs.gov/" }],
     deepSections: [
       {
@@ -875,6 +876,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those who want real winters, mild summers, and big sky country.",
     whoMightNot: "People who don't handle cold; those wanting a long growing season.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
     citations: [{ label: "NOAA Climate Normals — Flagstaff Pulliam AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USDA Hardiness Map 2023", kind: "usda", url: "https://planthardiness.ars.usda.gov/" }],
     deepSections: [
       {
@@ -948,7 +950,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Dry-climate romantics, small-town arts lovers, monsoon enthusiasts.",
     whoMightNot: "Those needing humidity; urbanites; humid-summer-garden fans.",
     confidence: "high",
-    citations: [{ label: "NOAA Climate Normals — Silver City", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NM State Climate Office", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA Climate Normals — Silver City", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NM State Climate Office", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "silver-city-mogollon-monsoon",
@@ -1021,7 +1026,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Fruit-growing obsessives; active families; those who want sun and mountains from a river-town base.",
     whoMightNot: "People who hate wind (the Gorge is relentless in summer).",
     confidence: "high",
-    citations: [{ label: "NOAA — Hood River Experiment Station", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "OSU Hood River Extension research", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Hood River Experiment Station", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "OSU Hood River Extension research", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "hood-river-cascade-gap",
@@ -1094,7 +1102,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those chasing Mediterranean character in the Pacific NW with arts/culture included.",
     whoMightNot: "Smoke-sensitive people; those seeking humidity or heavy snow.",
     confidence: "high",
-    citations: [{ label: "NOAA — Medford Regional AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "OSU Southern Oregon Research & Extension", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Medford Regional AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "OSU Southern Oregon Research & Extension", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "ashland-siskiyou-shadow",
@@ -1165,7 +1176,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those craving altitude light, strong culture, and four true seasons without brutal humidity.",
     whoMightNot: "Sea-level romantics, humidity-lovers, water-intensive gardeners.",
     confidence: "high",
-    citations: [{ label: "NOAA — Santa Fe County Muni AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NM State Climatologist", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Santa Fe County Muni AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NM State Climatologist", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "santa-fe-sangre-orography",
@@ -1236,7 +1250,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Mediterranean-climate obsessives; garden people; cold-avoiders.",
     whoMightNot: "Those priced out; fire-sensitive; snow-season lovers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Santa Barbara Muni AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "CAL FIRE historical fires", kind: "oss-data" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Santa Barbara Muni AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "CAL FIRE historical fires", kind: "oss-data" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "santa-barbara-south-coast",
@@ -1308,7 +1325,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "People who fall in love with clear, bitter-cold mountain winters and long golden summers.",
     whoMightNot: "Anyone who can't tolerate −25°C mornings; gardeners needing long season; inversion-affected asthma.",
     confidence: "high",
-    citations: [{ label: "NOAA — Driggs-Reed Memorial AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Idaho Climate-Economy Impacts Assessment", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Driggs-Reed Memorial AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Idaho Climate-Economy Impacts Assessment", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "driggs-teton-basin-pool",
@@ -1379,7 +1399,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those drawn to working fruit country and cold, bright Great Lakes winters.",
     whoMightNot: "Anyone unwilling to endure serious lake-effect winter.",
     confidence: "high",
-    citations: [{ label: "NOAA — Cherry Capital AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "MSU Extension fruit research", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Cherry Capital AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "MSU Extension fruit research", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "traverse-city-lake-delay",
@@ -1450,7 +1473,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "People who want cultural depth, elegant cold-climate wine country, and four real seasons.",
     whoMightNot: "Anyone sensitive to gray winters or gorge-country cloud cover.",
     confidence: "high",
-    citations: [{ label: "Cornell NRCC — Ithaca Cornell", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Cornell Extension viticulture", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "Cornell NRCC — Ithaca Cornell", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Cornell Extension viticulture", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "ithaca-finger-lakes-fetch",
@@ -1520,7 +1546,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those who want cool dry summers, huge-lake atmosphere, and genuine boreal feel.",
     whoMightNot: "Gardeners needing warmth; those who dislike long hard winters.",
     confidence: "high",
-    citations: [{ label: "NOAA — Grand Marais coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "MN State Climatology", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Grand Marais coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "MN State Climatology", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "grand-marais-mn-superior-mass",
@@ -1593,7 +1622,10 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "People who want a mountain-cool, deeply wooded, gentle-summer retreat in the eastern US.",
     whoMightNot: "Sun lovers; gardeners needing heat or sun; those intolerant of fog and rain.",
     confidence: "high",
-    citations: [{ label: "NOAA — Highlands coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USFS Southern Appalachian studies", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Highlands coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USFS Southern Appalachian studies", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "highlands-escarpment-lift",
@@ -1734,6 +1766,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["orchardists", "dry-climate seekers", "outdoor families"], travelFit: ["orchard tours", "Lake Chelan access", "wine trail"],
     whoWouldLove: "People who want sun, dry air, four real seasons, and fruit trees in their backyard.", whoMightNot: "Anyone needing mild winters or cool summers.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
     citations: [{ label: "NOAA — Wenatchee 1991–2020 normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "PRISM 30-year precipitation", kind: "prism", url: "https://prism.oregonstate.edu/" }, { label: "WSU Tree Fruit Research", kind: "academic" }],
     deepSections: [
       {
@@ -1896,7 +1929,10 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["heat-averse families", "serious writers", "redwood-forest people"], travelFit: ["redwood parks", "Lost Coast"],
     whoWouldLove: "Those who want cool year-round with a real maritime rhythm.", whoMightNot: "Sun-dependent; summer-heat-seekers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Eureka/Woodley Island", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Humboldt State Schatz Energy climate notes", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Eureka/Woodley Island", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Humboldt State Schatz Energy climate notes", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "eureka-upwelling-narrow-range",
@@ -2038,7 +2074,28 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["astronomers", "dark-sky devotees", "heat-averse West Texans"], travelFit: ["McDonald Observatory", "Big Bend access"],
     whoWouldLove: "Anyone who values sky and silence above almost anything else.", whoMightNot: "People needing services or summer humidity.",
     confidence: "high",
-    citations: [{ label: "NOAA — Fort Davis coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "McDonald Observatory climate notes", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Fort Davis coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "McDonald Observatory climate notes", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
+    deepSections: [
+      {
+        id: "fort-davis-sky-island",
+        title: "Volcanic sky-island lift above the Chihuahuan floor",
+        paragraphs: [
+          "The Davis Mountains are a true elevation island: volcanic uplands rise from hot desert basins into oak, juniper, and pine-oak pockets. That lift is enough to turn West Texas summer from a survival problem into a dry, breezy highland climate with cool nights and monsoon cloud towers.",
+          "The same isolation makes the range ecologically important. Species track slope, aspect, and drainage, so a north-facing canyon and a sun-baked bajada can feel like different counties even when they sit minutes apart.",
+        ],
+      },
+      {
+        id: "fort-davis-dark-sky-water",
+        title: "Dark skies, transparency, and the water tradeoff",
+        paragraphs: [
+          "McDonald Observatory is not here by accident: thin dry air, sparse settlement, and low aerosol load give the Davis Mountains some of the best optical seeing in the country. Clear sky is a climate asset as much as a scenery asset.",
+          "The constraint is water. High elevation softens heat but does not create a large watershed; ranching, tourism, and gardening all depend on careful groundwater use and drought-tolerant expectations.",
+        ],
+      },
+    ],
   },
 
   {
@@ -2180,7 +2237,28 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hardy winter enthusiasts", "climate-phenomenon nerds"], travelFit: ["skiing", "Black Canyon"],
     whoWouldLove: "Cold-weather obsessives; climate students.", whoMightNot: "Anyone with thin winter tolerance.",
     confidence: "high",
-    citations: [{ label: "NOAA — Gunnison 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "UC Boulder cold-pool studies", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Gunnison 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "UC Boulder cold-pool studies", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
+    deepSections: [
+      {
+        id: "gunnison-cold-pool-engine",
+        title: "Why the cold pool gets so strong",
+        paragraphs: [
+          "Gunnison combines nearly every ingredient cold-air pooling needs: a high enclosed basin, clear dry air, weak winter sun, snow cover, and limited nighttime mixing. Dense air drains off the surrounding slopes, settles on the floor, and can sit there for days beneath an inversion cap.",
+          "The result is counterintuitive for visitors: a sunny ridge or ski slope above town may be dramatically warmer than the valley floor. The atlas treats Gunnison as a mechanism case, not just a cold station normal.",
+        ],
+      },
+      {
+        id: "gunnison-brief-summer",
+        title: "Brief summer, big diurnal range",
+        paragraphs: [
+          "Summer is the release valve. The same dry basin air that radiates heat away in January lets July afternoons warm quickly, then drop hard after sunset. Gardens can grow fast under high sun, but frost risk still brackets the season tightly.",
+          "Monsoon storms add another pulse: short, bright mornings, tower-building afternoons, and localized rain that matters more to rangeland and fire behavior than annual totals suggest.",
+        ],
+      },
+    ],
   },
 
   {
@@ -2333,7 +2411,26 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["agricultural families", "university affiliated"], travelFit: ["ski access", "cheese trail"],
     whoWouldLove: "Those drawn to a real four-season valley who can tolerate winter inversions.", whoMightNot: "Air-quality-sensitive.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
     citations: [{ label: "NOAA — Logan USU 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Utah DEQ air quality", kind: "epa", url: "https://www.epa.gov/" }],
+    deepSections: [
+      {
+        id: "logan-inversion-bowl",
+        title: "Cache Valley as an inversion bowl",
+        paragraphs: [
+          "Cache Valley has limited winter ventilation: cold air drains from surrounding ranges, fog forms over snow and moist valley soils, and a stable lid can keep emissions close to the surface. That is why winter comfort here cannot be separated from air quality.",
+          "The same basin walls that create a scenic four-season setting also make pollution management a local climate issue. Wood smoke, traffic, and agricultural emissions all matter more when the atmosphere stops mixing.",
+        ],
+      },
+      {
+        id: "logan-agricultural-floor",
+        title: "Lake Bonneville soils and the summer reversal",
+        paragraphs: [
+          "The valley floor is built from old Lake Bonneville sediments: deep, productive, and water-holding compared with the surrounding sagebrush benches. Once spring mixing returns, the basin becomes an agricultural asset rather than an air-quality trap.",
+          "Summer days are sunny and warm, irrigation is legible everywhere, and evening drainage restores cool nights. The lived climate is therefore split sharply by season: winter stagnation, summer openness.",
+        ],
+      },
+    ],
   },
 
   {
@@ -2377,7 +2474,26 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["boreal-ecosystem lovers", "writers who want solitude"], travelFit: ["Blackwater Falls", "cross-country skiing"],
     whoWouldLove: "Anyone fascinated by climate anomalies and deep ecological rarity.", whoMightNot: "Those who want a predictable growing season.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
     citations: [{ label: "NOAA — Davis 3SE coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USGS Allegheny relict bogs", kind: "usgs", url: "https://www.usgs.gov/" }],
+    deepSections: [
+      {
+        id: "canaan-boreal-basin",
+        title: "A boreal basin inside the central Appalachians",
+        paragraphs: [
+          "Canaan Valley behaves colder than its latitude because elevation and shape work together. The basin floor radiates freely on clear nights, while surrounding ridges slow the export of dense air. Peat and wetland surfaces then reinforce the cool, damp microclimate.",
+          "That is why red spruce, balsam fir, sphagnum, and cranberry bog communities persist here while warmer Appalachian valleys nearby support very different forests. The anomaly is ecological, not just statistical.",
+        ],
+      },
+      {
+        id: "canaan-conservation-pressure",
+        title: "Cold refuge under a warming ceiling",
+        paragraphs: [
+          "Warming does not erase the basin shape, but it does raise the background climate that the cold pool starts from. Snowpack duration, spruce-fir stress, and wetland hydrology become the key variables to watch.",
+          "For visitors and residents, the practical trade is solitude and cool summer air in exchange for a short growing season, persistent wet ground, and winter conditions that can feel much farther north than West Virginia suggests.",
+        ],
+      },
+    ],
   },
 
   // ====================================================================
@@ -2403,7 +2519,28 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["serious winter people", "snowmobilers"], travelFit: ["snowmobiling", "snow-record chasing"],
     whoWouldLove: "Anyone who finds 6 m of annual snow romantic rather than punishing.", whoMightNot: "Anyone else.",
     confidence: "high",
-    citations: [{ label: "NOAA — Redfield coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Buffalo lake-effect research", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Redfield coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Buffalo lake-effect research", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
+    deepSections: [
+      {
+        id: "redfield-fetch-lift",
+        title: "Lake Ontario fetch plus plateau lift",
+        paragraphs: [
+          "The Tug Hill machine starts over open water. Cold air crosses Lake Ontario long enough to pick up heat and moisture, then reaches the plateau and is forced upward. That final lift turns lake-effect bands from heavy snow into extreme snow.",
+          "Small wind-direction changes decide who gets buried. A band parked over Redfield can miss Syracuse or Watertown entirely, which is why regional snowfall maps look streaked rather than smooth.",
+        ],
+      },
+      {
+        id: "redfield-snow-economy",
+        title: "A snow economy with a volatile future",
+        paragraphs: [
+          "Deep snow supports snowmobiling, forestry access rhythms, and a winter identity that few eastern towns can match. It also loads roofs, narrows roads, and makes emergency logistics a climate design problem.",
+          "Near-term warming can intensify lake-effect events while Lake Ontario stays ice-free longer, but the late-century signal points toward more rain-on-snow and shorter continuous snowpack. That makes Tug Hill both a snow refuge and a snow-transition laboratory.",
+        ],
+      },
+    ],
   },
 
   {
@@ -2565,7 +2702,26 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["tropical-island people"], travelFit: ["island culture", "sailing"],
     whoWouldLove: "Those who want genuine tropical with a US passport.", whoMightNot: "Hurricane-averse; future-flood worried.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
     citations: [{ label: "NOAA — Key West International AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NOAA Hurricane Center climatology", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    deepSections: [
+      {
+        id: "key-west-isothermal-water",
+        title: "Ocean on every side",
+        paragraphs: [
+          "Key West has almost no continental temperature memory. Gulf, Straits, and Atlantic water surround the island, damping daily and seasonal range so strongly that rainfall seasonality matters more than winter versus summer in the usual mainland sense.",
+          "That oceanic stability is why frost is not the concern; wind, salt, storm tide, and insurance are. A perfect tropical evening and an evacuation order come from the same water-dominated setting.",
+        ],
+      },
+      {
+        id: "key-west-dry-wet-hurricane",
+        title: "Dry season, wet season, hurricane season",
+        paragraphs: [
+          "The dry season is the livability peak: lower humidity, trade-wind ventilation, and reliable outdoor nights. Wet season shifts the rhythm toward thunderstorms, mosquito pressure, and tropical cyclone monitoring.",
+          "Sea-level rise changes the background on which every storm arrives. The microclimate may remain exceptionally stable in temperature terms while the physical island becomes harder to insure, drain, and defend.",
+        ],
+      },
+    ],
   },
 
   {
@@ -2649,7 +2805,10 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["extreme-climate devotees", "aurora researchers", "off-grid homesteaders", "long-daylight gardeners"], travelFit: ["aurora viewing (Aug–Apr)", "summer solstice festivals", "cold-weather sports"],
     whoWouldLove: "Anyone chasing the continent's most extreme seasonal range — long bright summers and long dark winters aren't for most, but for some they're transformative.", whoMightNot: "Sunlight-sensitive; winter-depression prone; those needing mild winters or moderate summers.",
     confidence: "high",
-    citations: [{ label: "NOAA — Fairbanks Int'l Airport NORMAL 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Alaska Climate Research Center — interior inversion studies", kind: "academic" }, { label: "UAF Geophysical Institute — aurora statistics", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Fairbanks Int'l Airport NORMAL 1991–2020", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Alaska Climate Research Center — interior inversion studies", kind: "academic" }, { label: "UAF Geophysical Institute — aurora statistics", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "fairbanks-basin",
@@ -2770,7 +2929,26 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["extreme-climate researchers", "park staff"], travelFit: ["Oct–Mar superb weather", "dark-sky observers", "wildflower superblooms", "landscape photographers"],
     whoWouldLove: "Anyone drawn to superlatives — the hottest, driest, lowest, quietest, starriest reliably-accessible place in the Lower 48.", whoMightNot: "Summer travelers; heat-sensitive; anyone requiring any green.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
     citations: [{ label: "NOAA — Death Valley 1913 world heat record", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NPS Death Valley — climate overview", kind: "academic" }, { label: "PRISM precipitation normals", kind: "prism", url: "https://prism.oregonstate.edu/" }],
+    deepSections: [
+      {
+        id: "death-valley-heat-bowl",
+        title: "The heat bowl mechanism",
+        paragraphs: [
+          "Death Valley is not merely low and sunny. It is a deep, dry basin behind multiple rain-shadow barriers, so air descending into the floor is already moisture-starved and efficient at heating. Once dense hot air collects, vertical mixing is limited by the surrounding walls and the summer thermal low.",
+          "That is why the place produces extreme heat with such consistency. The record is famous, but the more important climate fact is persistence: long sequences of dangerous afternoons and warm nights define the season.",
+        ],
+      },
+      {
+        id: "death-valley-water-pulse",
+        title: "Rare water, superblooms, and destructive floods",
+        paragraphs: [
+          "The basin can appear static until rare rain arrives. A single atmospheric-river remnant or desert thunderstorm can erase roads, move gravel fans, and refill playas that were dust weeks earlier.",
+          "Those same pulses can produce wildflower superblooms when timing and antecedent moisture line up. In Death Valley, water is both spectacle and hazard because the landscape is built to receive it rarely and violently.",
+        ],
+      },
+    ],
   },
 
   {
@@ -3042,6 +3220,24 @@ export const PLACES_USA: Place[] = [
       { label: "Nebraska Sandhills Task Force — ecological assessments", kind: "academic" },
       { label: "Niobrara National Scenic River — NPS", kind: "other", url: "https://www.nps.gov/niob/" },
     ],
+    deepSections: [
+      {
+        id: "valentine-dune-grass-water",
+        title: "Grass, sand, and the Ogallala water table",
+        paragraphs: [
+          "The Sandhills look permanent because prairie grass holds the dunes in place, but the stability is biological. Deep roots bind loose sand, while the Ogallala Aquifer sits close enough to feed interdune lakes, wet meadows, and spring-fed streams.",
+          "That makes drought more consequential than annual rainfall alone implies. If grass cover weakens and groundwater drops, the landscape can shift from quiet ranch country toward moving sand and stressed wetlands.",
+        ],
+      },
+      {
+        id: "valentine-niobrara-crossroads",
+        title: "The Niobrara canyon as a climate crossroads",
+        paragraphs: [
+          "The Niobrara slices through the dune country and creates shaded walls, seep lines, and protected benches that host species from several biomes in one corridor. A float trip is therefore also a climate transect: prairie, ponderosa, deciduous woodland, and cool ravines repeat in quick succession.",
+          "For travelers and land scouts, the canyon is the most legible microclimate. It can feel cooler and more humid than the surrounding grass sea at midday, then collect colder air after sunset.",
+        ],
+      },
+    ],
     settlementsWithinZone: [
       { name: "Valentine", role: "hub", population: "~2,600", note: "County seat of Cherry County; the cultural center of the Sandhills." },
       { name: "Ainsworth", role: "town", population: "~1,600", note: "Eastern gateway; classic plains ranch-country downtown." },
@@ -3152,6 +3348,24 @@ export const PLACES_USA: Place[] = [
       { label: "Iowa Geological Survey — Loess Hills stratigraphy", kind: "usgs", url: "https://www.usgs.gov/" },
       { label: "Loess Hills National Scenic Byway", kind: "other", url: "https://www.visitloesshills.org/" },
     ],
+    deepSections: [
+      {
+        id: "loess-hills-global-rarity",
+        title: "A globally rare loess ridge",
+        paragraphs: [
+          "Loess is wind-built silt, but in western Iowa it accumulated deeply enough to behave like a sculpted mountain material. Streams and gravity cut the deposit into narrow ridges, catsteps, and knife-edge slopes that feel out of scale with the surrounding Corn Belt.",
+          "That physical oddity is the climate story too: slope angle and aspect create dry prairie, oak shade, and frost pockets over very short distances. The atlas treats the Hills as a topographic anomaly embedded in a broadly ordinary Midwestern climate.",
+        ],
+      },
+      {
+        id: "loess-hills-erosion-prairie",
+        title: "Prairie cover as climate infrastructure",
+        paragraphs: [
+          "The same fine silt that makes the bluffs dramatic also makes them fragile. Native prairie roots slow slumping and sheet erosion; bare cuts, trails, and oversteepened roads can fail quickly during heavy rain.",
+          "Climate resilience here is therefore practical land management. Keeping slopes covered does more for long-term stability than any single drainage project, especially as extreme rainfall events intensify.",
+        ],
+      },
+    ],
     settlementsWithinZone: [
       { name: "Sioux City", role: "hub", population: "~85,000", note: "Northern anchor of the Loess Hills; Sgt. Floyd Monument sits on a loess bluff above the Missouri." },
       { name: "Missouri Valley", role: "town", population: "~2,800", note: "Midpoint on the byway; classic stop at DeSoto National Wildlife Refuge." },
@@ -3261,6 +3475,24 @@ export const PLACES_USA: Place[] = [
       { label: "Konza Prairie Biological Station LTER", kind: "academic" },
       { label: "Tallgrass Prairie National Preserve — NPS", kind: "other", url: "https://www.nps.gov/tapr/" },
       { label: "USDA NRCS — Florence Series", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
+    ],
+    deepSections: [
+      {
+        id: "flint-hills-chert-prairie",
+        title: "Why the tallgrass survived here",
+        paragraphs: [
+          "The Flint Hills are not spared prairie by chance. Cherty limestone made the uplands difficult to plow, so grazing and fire remained the dominant land uses while flatter neighboring counties converted to row crops.",
+          "That accident of geology preserves one of the continent's largest intact tallgrass systems. Climate, soil, and ranch economics are inseparable: the same thin rocky ground that frustrates corn supports deep-rooted prairie and cattle range.",
+        ],
+      },
+      {
+        id: "flint-hills-fire-season",
+        title: "Fire, smoke, and continental storm energy",
+        paragraphs: [
+          "Prescribed fire is the management heartbeat of the Hills. Spring burns remove woody encroachment, recycle nutrients, and keep grassland open, but they also create regional smoke events that make climate visible to people far beyond the pasture fence.",
+          "Summer then shifts to continental volatility: heat, humidity, supercells, and flash flood risk along creek bottoms. The prairie is resilient to that variability; roads, fences, and rural emergency systems are the parts under pressure.",
+        ],
+      },
     ],
     settlementsWithinZone: [
       { name: "Manhattan", role: "hub", population: "~54,000", note: "Northern anchor; home of Kansas State and the Konza Prairie; the urban doorway to the Hills." },
@@ -3373,6 +3605,24 @@ export const PLACES_USA: Place[] = [
       { label: "Arkansas Geological Survey — Springfield Plateau karst", kind: "usgs", url: "https://www.usgs.gov/" },
       { label: "USDA NRCS — Clarksville Series", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
       { label: "Buffalo National River — NPS", kind: "other", url: "https://www.nps.gov/buff/" },
+    ],
+    deepSections: [
+      {
+        id: "eureka-spring-line",
+        title: "Spring-line hydrology and karst storage",
+        paragraphs: [
+          "Eureka Springs sits where water moving through limestone finds exits along bedding planes, fractures, and slope breaks. Springs are not decorative here; they are the visible plumbing of a karst system that stores and routes rainfall through rock.",
+          "That routing can make the town feel lush even when nearby ridgetops are dry. It also means contamination, sinkholes, and rapid storm response deserve more attention than a simple humid-subtropical label would suggest.",
+        ],
+      },
+      {
+        id: "eureka-ridge-hollow-town",
+        title: "Ridges, hollows, and block-scale microclimate",
+        paragraphs: [
+          "The town's vertical street pattern turns climate into a walking experience. A shaded hollow can hold cool damp air while a south-facing limestone bench a few blocks away warms early, dries fast, and supports a different garden palette.",
+          "That fine-scale contrast is the point of the entry: Eureka is not just an Ozark town with springs. It is a compact demonstration of how karst relief makes climate change at neighborhood scale.",
+        ],
+      },
     ],
     settlementsWithinZone: [
       { name: "Eureka Springs", role: "hub", population: "~2,200", note: "Entire historic district on the National Register; Crescent Hotel (1886) crowns the escarpment." },

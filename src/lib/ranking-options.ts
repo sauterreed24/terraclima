@@ -5,6 +5,7 @@ import type { RankingProfile } from "./scoring";
  * `ALL_RANKING_PROFILES` is derived from this list so localStorage validation never drifts.
  */
 export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
+  { id: "live-fit", label: "Live-here fit" },
   { id: "hidden-gems", label: "Hidden gems" },
   { id: "most-unique", label: "Most unique" },
   { id: "coolest-summers", label: "Coolest summers" },

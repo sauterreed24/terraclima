@@ -8,7 +8,7 @@ describe("app-url state", () => {
   });
 
   it("parses filters and compare from query string", () => {
-    const p = parseAppSearch("?v=trips&p=sequim-wa&col=rainshadow&c=USA,Canada&a=fog-belt-coast,rain-shadow-sanctuary&q=san+jose&cmp=a,b,c");
+    const p = parseAppSearch("?v=trips&p=sequim-wa&col=rainshadow&c=USA,Canada&a=fog-belt-coast,rain-shadow-sanctuary&q=san+jose&cmp=a,b,c&r=live-fit&fit=cool-summers,quiet-small-town&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated");
     expect(p.view).toBe("trips");
     expect(p.placeId).toBe("sequim-wa");
     expect(p.collectionId).toBe("rainshadow");
@@ -17,6 +17,13 @@ describe("app-url state", () => {
     // URLSearchParams decodes "+" as a space.
     expect(p.search).toBe("san jose");
     expect(p.compareIds).toEqual(["a", "b", "c"]);
+    expect(p.ranking).toBe("live-fit");
+    expect(p.fitPresets).toEqual(["cool-summers", "quiet-small-town"]);
+    expect(p.maxSummerHighC).toBe(22);
+    expect(p.minWinterLowC).toBe(-5);
+    expect(p.minGrowability).toBe(65);
+    expect(p.maxFireRisk).toBe("moderate");
+    expect(p.maxOverallRisk).toBe("elevated");
   });
 
   it("validates against unknown ids and drops them", () => {
@@ -44,6 +51,13 @@ describe("app-url state", () => {
       archetypes: ["rain-shadow-sanctuary"],
       search: "  fog  ",
       compareIds: ["a", "b"],
+      ranking: "live-fit",
+      fitPresets: ["quiet-small-town", "cool-summers"],
+      maxSummerHighC: 22,
+      minWinterLowC: -5,
+      minGrowability: 65,
+      maxFireRisk: "moderate",
+      maxOverallRisk: "elevated",
       collectionExists: () => false,
       archetypeExists: () => true,
       placeExists: () => true,
@@ -52,6 +66,13 @@ describe("app-url state", () => {
     expect(url).toMatch(/c=Canada%2CUSA/);
     expect(url).toMatch(/a=rain-shadow-sanctuary/);
     expect(url).toMatch(/q=fog/);
+    expect(url).toMatch(/r=live-fit/);
+    expect(url).toMatch(/fit=cool-summers%2Cquiet-small-town/);
+    expect(url).toMatch(/sh=22/);
+    expect(url).toMatch(/wl=-5/);
+    expect(url).toMatch(/grow=65/);
+    expect(url).toMatch(/fire=moderate/);
+    expect(url).toMatch(/risk=elevated/);
     expect(url).toMatch(/cmp=a%2Cb/);
   });
 
@@ -70,6 +91,13 @@ describe("app-url state", () => {
     expect(url).not.toMatch(/[?&]c=/);
     expect(url).not.toMatch(/[?&]a=/);
     expect(url).not.toMatch(/[?&]q=/);
+    expect(url).not.toMatch(/[?&]r=/);
+    expect(url).not.toMatch(/[?&]fit=/);
+    expect(url).not.toMatch(/[?&]sh=/);
+    expect(url).not.toMatch(/[?&]wl=/);
+    expect(url).not.toMatch(/[?&]grow=/);
+    expect(url).not.toMatch(/[?&]fire=/);
+    expect(url).not.toMatch(/[?&]risk=/);
     expect(url).not.toMatch(/[?&]cmp=/);
   });
 

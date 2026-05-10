@@ -38,7 +38,13 @@ function filterChipsCount(filters: FilterState): number {
   let n = 0;
   n += filters.countries.size;
   n += filters.archetypes.size;
+  n += filters.fitPresets?.size ?? 0;
   if ((filters.search?.length ?? 0) > 0) n += 1;
+  if (filters.maxSummerHighC != null) n += 1;
+  if (filters.minWinterLowC != null) n += 1;
+  if (filters.minGrowability != null) n += 1;
+  if (filters.maxFireRisk != null) n += 1;
+  if (filters.maxOverallRisk != null) n += 1;
   return n;
 }
 
@@ -124,7 +130,7 @@ export const ExplorerFilterSheet = memo(
           aria-label={triggerLabel}
         >
           <SlidersHorizontal className="w-4 h-4 shrink-0" aria-hidden />
-          <span>Filters & rank</span>
+          <span>Live Finder</span>
           {chips > 0 ? (
             <span className="tc-filter-sheet-trigger__badge" aria-hidden>
               {chips > 9 ? "9+" : chips}
@@ -147,7 +153,7 @@ export const ExplorerFilterSheet = memo(
           <div ref={panelRef} className="relative z-10 tc-filter-sheet-dialog__inner">
             <div className="tc-filter-sheet-dialog__head">
               <h2 id="tc-explorer-filter-sheet-title" className="font-atlas text-lg text-ice m-0">
-                Explorer filters
+                Live Finder
               </h2>
               <button type="button" onClick={close} className="btn-ghost !p-2 rounded-lg" aria-label="Close filters">
                 <X className="w-4 h-4" aria-hidden />

@@ -229,6 +229,7 @@ export const PLACES_MEXICO: Place[] = [
     whoMightNot: "Heat-seekers; rainy-season-averse travelers.",
 
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because SMN/CONAGUA normals, INEGI relief context, and atlas elevation reasoning agree; neighborhood water, slope, and storm exposure still need local checks.",
     deepSections: [
       {
         id: "san-cristobal-basin-cold",
@@ -311,6 +312,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "families"], travelFit: ["year-round"],
     whoWouldLove: "Those wanting year-round bougainvillea.", whoMightNot: "Cool-climate seekers.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is grounded in SMN/CONAGUA, INEGI lake-basin context, and strong lived settlement anchors; lake health, drainage, and neighborhood water access still need local checks.",
     deepSections: [
       {
         id: "cuernavaca-slope-bench",
@@ -384,6 +386,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine country"],
     whoWouldLove: "Mediterranean-climate wine people.", whoMightNot: "Water-conscious relocators (local stress is real).",
     confidence: "moderate",
+    confidenceNotes: "This moderate-confidence profile is reliable at microclimate-zone scale because SMN/CONAGUA normals, INEGI relief context, and atlas elevation reasoning agree; neighborhood water, slope, and storm exposure still need local checks.",
     deepSections: [
       {
         id: "valle-guadalupe-marine-intrusion",
@@ -453,6 +456,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cultural immersion", "highland dreamers"], travelFit: ["Día de Muertos", "lake villages"],
     whoWouldLove: "Those drawn to Purépecha culture and highland water.", whoMightNot: "Heat-seekers.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is grounded in SMN/CONAGUA, INEGI lake-basin context, and strong lived settlement anchors; lake health, drainage, and neighborhood water access still need local checks.",
     deepSections: [
       {
         id: "patzcuaro-lake-basin",
@@ -483,6 +487,124 @@ export const PLACES_MEXICO: Place[] = [
       { label: "SMN — Pátzcuaro station", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
       { label: "INECC — Mexico climate vulnerability context", kind: "inecc", url: "https://www.gob.mx/inecc" },
       { label: "INEGI digital map — Michoacán lake basin and relief", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
+    ],
+    settlementsWithinZone: [
+      { name: "Patzcuaro", role: "town", population: "~60,000", note: "The main highland-lake service anchor and cultural center." },
+      { name: "Tzintzuntzan", role: "village", note: "Lake-edge Purépecha heritage settlement with a slightly warmer, lower feel." },
+      { name: "Janitzio", role: "village", note: "Island settlement that makes the lake-climate relationship impossible to miss." },
+    ],
+    thingsToDo: [
+      { label: "Lake Patzcuaro villages", kind: "culture", season: "year-round", note: "The best way to read the lived basin rather than just the town." },
+      { label: "Day of the Dead lake traditions", kind: "seasonal", season: "late October and early November", note: "A cultural anchor tied to the lake landscape." },
+      { label: "Volcanic highland markets", kind: "food-drink", season: "year-round", note: "Orchard, maize, and craft economies show the productive highland climate." },
+      { label: "Estribo Grande viewpoint", kind: "vista", season: "dry season", note: "A quick view of the lake basin and surrounding volcanic rim." },
+    ],
+  },
+
+  {
+    id: "valle-de-bravo-mx",
+    tier: "B",
+    country: "Mexico",
+    region: "Estado de Mexico",
+    municipality: "Valle de Bravo",
+    name: "Valle de Bravo & Lake Avandaro",
+    lat: 19.1950,
+    lon: -100.1320,
+    elevationM: 1850,
+    reliefContext: "High volcanic lake basin west of Mexico City, ringed by pine-oak slopes and wet-season cloud build-up.",
+    biome: "Pine-oak highland, lake shore, and subtropical ravines",
+    koppen: "Cwb",
+    archetypes: ["eternal-spring-highland", "lake-moderated", "volcanic-upland", "mild-winter-foothills"],
+    drivers: ["elevation-lapse-rate", "lake-effect", "orographic-lift"],
+    summaryShort: "A lake-and-pine highland escape with warm dry-season light, wet-season storms, and a much more specific climate than generic Mexico City weekend weather.",
+    summaryImmersive: "Valle de Bravo wraps a high lake with forested slopes, village streets, and a weekend culture that exists because the climate is so usable. Afternoons are warm but rarely punishing at this elevation; nights cool down enough to make stone houses and terraces comfortable. The wet season is dramatic, with storms building on the surrounding rim and feeding a green pine-oak landscape. It is beautiful, but not carefree: slope stability, holiday congestion, watershed pressure, and wildfire at the dry-season edge all belong in a live-here read.",
+    whyDistinct: "Elevation keeps heat in check, the lake damps daily extremes close to shore, and volcanic relief organizes wet-season convection. The result is a highland lake climate that feels more sheltered and water-shaped than drier plateau towns nearby.",
+    climate: { tempHighC: [21.5, 23.0, 25.0, 26.0, 25.8, 23.8, 22.4, 22.6, 22.0, 22.0, 21.4, 21.1], tempLowC: [6.0, 7.0, 9.0, 11.0, 12.4, 13.0, 12.2, 12.1, 11.8, 10.0, 8.0, 6.2], precipMm: [10, 8, 10, 25, 80, 190, 220, 210, 180, 80, 20, 12], annualPrecipMm: 1045, frostFreeDays: 340, hardinessZone: "10a equiv.", diurnalSummerC: 11, diurnalWinterC: 15 },
+    soil: { texture: "Volcanic loam and andisol pockets on slopes and lake terraces", drainage: "good", phRange: [5.8, 7.0], organicMatterPct: [3, 7], waterHolding: "moderate", notes: "Slope, drainage, and watershed rules matter more than broad soil labels." },
+    growability: { score: 78, growsWell: ["Avocado on warmer slopes", "Maize", "Beans", "Temperate fruit in cooler pockets", "Ornamentals"], tricky: ["Lowland tropical crops", "Water-hungry lawns on slopes"], orchard: "Lake-adjacent gardens can be extremely productive if drainage and water access are sane." },
+    climateChange: { outlook2050: "Warmer dry seasons, more intense rain bursts, and more pressure on lake and forest management.", outlook2100: "Watershed health becomes the main determinant of climate resilience.", keyShifts: [{ variable: "Dry-season heat", direction: "up" }, { variable: "Extreme rainfall", direction: "up" }, { variable: "Watershed stress", direction: "up" }], resilienceNote: "Elevation protects human comfort; land-use pressure and watershed health set the ceiling." },
+    risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "moderate", trend: "worsening" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
+    localContrast: [{ radiusKm: 65, summerHighDeltaC: -4, precipDeltaPct: 30, note: "vs drier plateau towns toward Toluca/Mexico City; the lake basin and slopes hold more moisture and summer cloud." }],
+    nearbyContrasts: [{ label: "Toluca, Mexico", note: "Higher, cooler, more urban, and more frost-prone." }, { label: "Temascaltepec slopes", note: "Warmer and more subtropical downslope from the lake basin." }],
+    scores: { hiddenGem: 62, microclimateUniqueness: 74, comfort: 86, resilience: 62, growability: 78, tradeoff: 36 },
+    relocationFit: ["lake-town remote workers", "Mexico City weekenders going permanent", "highland gardeners"],
+    travelFit: ["Lake Avandaro sailing", "paragliding", "pine-forest hikes", "waterfall walks"],
+    whoWouldLove: "People who want a Mexican highland lake town with terraces, forest, and outdoor life nearly every month.",
+    whoMightNot: "People seeking quiet low-growth isolation, dry air all summer, or low-complexity slope and water due diligence.",
+    confidence: "high",
+    confidenceNotes: "This high-confidence profile is grounded in SMN/CONAGUA normals and INEGI highland/lake context; neighborhood slope, water access, and holiday traffic are local checks.",
+    settlementsWithinZone: [
+      { name: "Valle de Bravo", role: "town", population: "~25,000", note: "The primary lakeside anchor, with the strongest service base and weekend pressure." },
+      { name: "Avandaro", role: "resort", note: "Forested/lakeside neighborhoods where slope, shade, and access vary block by block." },
+      { name: "Colorines", role: "town", note: "Lower, warmer hydroelectric-settlement context on the basin edge." },
+    ],
+    thingsToDo: [
+      { label: "Lake Avandaro", kind: "water", season: "year-round", note: "The lake makes the microclimate visible and governs much of the town's identity." },
+      { label: "Velo de Novia waterfall area", kind: "trail", season: "wet season", note: "A direct read on wet-season forest and runoff." },
+      { label: "Paragliding launch slopes", kind: "vista", season: "dry season", note: "Thermals and basin airflow become experiential, not abstract." },
+      { label: "Historic town center", kind: "culture", season: "year-round", note: "The settlement anchor keeps the profile from becoming just a scenic lake card." },
+    ],
+    deepSections: [
+      { id: "valle-bravo-lake-basin", title: "Lake comfort with slope complications", paragraphs: ["The lake softens local extremes and makes the town feel cooler and more humid than nearby dry highland stretches, especially at night and during the shoulder seasons. That moderation is the heart of the climate appeal.", "But the same basin is steep and developed. Drainage, landslide exposure, road access, and water rules can vary sharply between neighborhoods, so site selection matters more than the regional score implies."] },
+      { id: "valle-bravo-wet-dry-rhythm", title: "Dry-season ease, wet-season drama", paragraphs: ["Dry season brings the postcard version: bright afternoons, cool nights, outdoor dining, and lake light. Wet season brings the ecological engine, when storms build on the rim and keep pine-oak slopes green.", "For living there, both seasons matter. The rain feeds beauty and water supply, but it also tests roads, slopes, roofs, and drainage in ways a climate chart can hide."] },
+    ],
+    citations: [
+      { label: "SMN/CONAGUA climate data bank", kind: "smn", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },
+      { label: "INEGI digital map relief and hydrography", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
+      { label: "CONANP protected-area and watershed context", kind: "other", url: "https://www.gob.mx/conanp" },
+    ],
+  },
+  {
+    id: "zacatlan-de-las-manzanas-mx",
+    tier: "B",
+    country: "Mexico",
+    region: "Puebla",
+    municipality: "Zacatlan",
+    name: "Zacatlan de las Manzanas",
+    lat: 19.9350,
+    lon: -97.9610,
+    elevationM: 2040,
+    reliefContext: "Sierra Norte de Puebla highland town on the humid Gulf-facing side of the Trans-Mexican volcanic belt.",
+    biome: "Cloud-forest edge, pine-oak, apple orchards, and humid highland agriculture",
+    koppen: "Cwb / Cfb",
+    archetypes: ["cloud-forest", "orchard-valley", "eternal-spring-highland", "volcanic-upland"],
+    drivers: ["orographic-lift", "elevation-lapse-rate", "trade-wind"],
+    summaryShort: "A cool, mist-prone apple highland where Gulf moisture climbs the Sierra Norte and turns a Puebla town into orchard-cloud country.",
+    summaryImmersive: "Zacatlan is one of those places a flat climate map undersells. It sits high enough for cool nights and apple culture, but close enough to the humid Gulf-facing mountains that fog, drizzle, and wet-season clouds keep the landscape green. Afternoons are mild, winters are cool rather than harsh, and the town has a lived orchard identity rather than just a pretty mountain label. The tradeoff is dampness: landslides, cloudy stretches, and road/slope exposure are part of the climate.",
+    whyDistinct: "Elevation cools a tropical latitude while Sierra Norte orographic lift imports Gulf moisture. That combination makes Zacatlan greener, mistier, and more orchard-friendly than many drier central-Mexican highland towns.",
+    climate: { tempHighC: [19.0, 20.1, 22.0, 23.0, 22.8, 21.0, 20.2, 20.4, 20.0, 20.0, 19.2, 18.8], tempLowC: [6.0, 7.0, 9.0, 10.8, 12.0, 12.8, 12.0, 12.0, 11.8, 10.0, 8.0, 6.2], precipMm: [25, 20, 25, 55, 105, 220, 230, 215, 240, 135, 55, 30], annualPrecipMm: 1355, frostFreeDays: 330, hardinessZone: "10a equiv.", diurnalSummerC: 8, diurnalWinterC: 13 },
+    soil: { texture: "Volcanic andisol and humid mountain loams", drainage: "moderate", phRange: [5.5, 6.8], organicMatterPct: [4, 8], waterHolding: "high", notes: "Good water-holding soils can also mean soggy gardens and slope-instability issues." },
+    growability: { score: 82, growsWell: ["Apples", "Pears", "Berries", "Maize", "Beans", "Hydrangeas", "Cool-season vegetables"], tricky: ["Dry-climate herbs", "Tropical heat crops", "Poorly drained slopes"], orchard: "Apple identity is central; cultivar and disease pressure depend on fog, slope, and ventilation." },
+    climateChange: { outlook2050: "Warmer nights and more intense rainfall, with cloud-forest stress and landslide exposure increasing.", outlook2100: "Moist highland crops may shift upslope while extreme rain management becomes more important.", keyShifts: [{ variable: "Extreme rainfall", direction: "up" }, { variable: "Cloud-forest stress", direction: "up" }, { variable: "Winter chill", direction: "down" }], resilienceNote: "Cool elevation helps human comfort; moisture and slope hazards drive site risk." },
+    risks: { wildfire: { level: "moderate", trend: "mixed" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "low", trend: "stable" }, smoke: { level: "low", trend: "mixed" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
+    localContrast: [{ radiusKm: 50, precipDeltaPct: 45, summerHighDeltaC: -3, note: "vs drier Puebla/Tlaxcala highland interiors; the Sierra Norte intercepts much more Gulf moisture." }],
+    nearbyContrasts: [{ label: "Chignahuapan, Puebla", note: "Similar highland setting, slightly more open and thermal-spring oriented." }, { label: "Puebla city", note: "Drier, more urban, and less cloud-forest influenced." }],
+    scores: { hiddenGem: 86, microclimateUniqueness: 78, comfort: 82, resilience: 60, growability: 82, tradeoff: 34 },
+    relocationFit: ["orchard people", "mist-loving remote workers", "cool highland families", "cloud-forest romantics"],
+    travelFit: ["apple festivals", "waterfall walks", "Sierra Norte viewpoints", "historic center"],
+    whoWouldLove: "People who want green Mexican highlands, cool evenings, orchards, fog, and a town that smells like wet pine and fruit.",
+    whoMightNot: "Dry-air purists, sun-every-day seekers, or anyone unwilling to evaluate slope and drainage closely.",
+    confidence: "moderate",
+    confidenceNotes: "This moderate-confidence profile uses SMN/CONAGUA and INEGI highland context; Gulf-slope microgradients are strong enough that parcel exposure needs verification.",
+    settlementsWithinZone: [
+      { name: "Zacatlan", role: "town", population: "~34,000", note: "The orchard-town anchor and best base for services." },
+      { name: "Chignahuapan", role: "town", population: "~20,000", note: "Nearby highland counterpart with similar cool nights and wetter mountain context." },
+      { name: "Aquixtla", role: "village", note: "Smaller Sierra Norte settlement context where slope, fog, and access become more rural." },
+    ],
+    thingsToDo: [
+      { label: "Apple orchards and cider makers", kind: "food-drink", season: "late summer and fall", note: "The crop identity is not decorative; it reveals the cool humid highland climate." },
+      { label: "Barranca de los Jilgueros", kind: "vista", season: "dry season", note: "A dramatic canyon edge that makes slope and fog exposure obvious." },
+      { label: "Waterfall walks", kind: "trail", season: "wet season", note: "The Sierra Norte moisture engine shows up in water, moss, and cloud." },
+      { label: "Historic center and clockmaking culture", kind: "culture", season: "year-round", note: "A lived town center, not a resort-only climate bubble." },
+    ],
+    deepSections: [
+      { id: "zacatlan-gulf-slope-cloud", title: "Gulf moisture climbs into apple country", paragraphs: ["Zacatlan's climate comes from a collision: tropical Gulf moisture moves upslope into a highland that is cool enough for temperate fruit. Fog and drizzle are not accidents; they are the atmospheric signature of the Sierra Norte.", "That makes the place unusually gardenable for cool-season crops at a Mexican latitude, but also damp enough that ventilation, drainage, and fungal pressure matter."] },
+      { id: "zacatlan-slope-living", title: "The best climate is on the right slope", paragraphs: ["A highland cloud climate changes quickly with aspect and exposure. A bright, draining slope can feel like an orchard refuge, while a shaded pocket nearby may hold damp air and road-surface problems much longer.", "For a live-here shortlist, Zacatlan rewards precise scouting: morning sun, drainage, landslide history, access in wet season, and the distance to everyday services all matter."] },
+    ],
+    citations: [
+      { label: "SMN/CONAGUA climate data bank", kind: "smn", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },
+      { label: "INEGI digital map relief and hydrography", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
+      { label: "CONABIO biodiversity and cloud-forest context", kind: "other", url: "https://www.biodiversidad.gob.mx/" },
     ],
   },
 
@@ -532,7 +654,7 @@ export const PLACES_MEXICO: Place[] = [
   },
 
   {
-    id: "todos-santos-mx", tier: "C", country: "Mexico", region: "Baja California Sur", municipality: "Todos Santos", name: "Todos Santos",
+    id: "todos-santos-mx", tier: "B", country: "Mexico", region: "Baja California Sur", municipality: "Todos Santos", name: "Todos Santos",
     lat: 23.4486, lon: -110.2233, elevationM: 40,
     reliefContext: "Pacific-facing Baja peninsula coast; cooled by California Current remnants.",
     biome: "Sonoran Desert meeting Pacific ocean", koppen: "BWh",
@@ -549,12 +671,31 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "retirees"], travelFit: ["art scene", "surfing"],
     whoWouldLove: "Pacific-Baja lovers.", whoMightNot: "Hurricane-averse.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Todos Santos station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    confidenceNotes: "This moderate-confidence profile is grounded in SMN/CONAGUA and INEGI Baja Sur context; oasis water, hurricane drainage, and Pacific exposure are block-level checks.",
+    citations: [
+      { label: "SMN/CONAGUA climate data bank — Baja California Sur stations", kind: "smn", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },
+      { label: "INEGI digital map — Baja California Sur relief and hydrography", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
+      { label: "CONAGUA water context", kind: "other", url: "https://www.gob.mx/conagua" },
+    ],
+    settlementsWithinZone: [
+      { name: "Todos Santos", role: "town", population: "~7,000", note: "The oasis town anchor with art, services, and Pacific exposure." },
+      { name: "Pescadero", role: "village", note: "A nearby farming/surfing pocket where marine influence and irrigation are central." },
+      { name: "Cerritos beach area", role: "resort", note: "More surf-facing and exposed than the historic town center." },
+    ],
+    thingsToDo: [
+      { label: "Pacific surf beaches", kind: "water", season: "winter and spring", note: "Cool-current influence is easier to feel here than on the Sea of Cortez side." },
+      { label: "Historic town center", kind: "culture", season: "year-round", note: "The lived anchor behind the art-town reputation." },
+      { label: "Oasis farms and orchards", kind: "food-drink", season: "winter", note: "Water, not temperature, explains the productive pocket." },
+      { label: "Sierra de la Laguna day trips", kind: "trail", season: "cool season", note: "A fast climb into the mountain source area behind the oasis." },
+    ],
+    deepSections: [
+      { id: "todos-santos-pacific-oasis", title: "Pacific coolness around a desert oasis", paragraphs: ["Todos Santos works because two unlikely systems overlap: a groundwater-fed oasis and the cooler Pacific side of Baja Sur. The ocean lowers the summer ceiling compared with the Gulf side, while the oasis lets palms, citrus, and gardens exist in desert surroundings.", "That does not mean easy water. A live-here read should ask where water comes from, how drainage behaves during tropical storms, and whether the parcel is truly protected from wind and flood pulses."] },
+      { id: "todos-santos-seasonal-reality", title: "Winter perfection, summer humidity, hurricane homework", paragraphs: ["The winter climate is the postcard: warm days, cool nights, bright dry air, and ocean texture. It is one of the reasons Todos Santos keeps attracting people who thought they wanted Cabo but needed a quieter rhythm.", "Late summer and fall are the test. Humidity rises, tropical systems can matter, and roads and arroyos reveal whether a pretty place is also practical."] },
+    ],
   },
 
   {
-    id: "tapalpa-mx", tier: "C", country: "Mexico", region: "Jalisco", municipality: "Tapalpa", name: "Tapalpa (Sierra de Tapalpa)",
+    id: "tapalpa-mx", tier: "B", country: "Mexico", region: "Jalisco", municipality: "Tapalpa", name: "Tapalpa (Sierra de Tapalpa)",
     lat: 19.9436, lon: -103.7597, elevationM: 2020,
     reliefContext: "Volcanic plateau in western Jalisco; pine forest surrounds.",
     biome: "Pine-oak", koppen: "Cwb",
@@ -571,8 +712,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cool-climate retreat"], travelFit: ["pine forest", "mountain retreat"],
     whoWouldLove: "Pine-forest highlanders.", whoMightNot: "Heat-seekers.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Tapalpa station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    confidenceNotes: "This moderate-confidence profile is grounded in SMN/CONAGUA and INEGI Sierra de Tapalpa context; slope exposure, forest-edge fire, and weekend-growth pressure need local checks.",
+    citations: [
+      { label: "SMN/CONAGUA climate data bank — Jalisco highland stations", kind: "smn", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },
+      { label: "INEGI digital map — Sierra de Tapalpa relief", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
+      { label: "CONAFOR forest and fire context", kind: "other", url: "https://www.gob.mx/conafor" },
+    ],
+    settlementsWithinZone: [
+      { name: "Tapalpa", role: "town", population: "~20,000", note: "The highland town anchor where cabins, services, and pine forest meet." },
+      { name: "Atacco", role: "village", note: "A nearby smaller settlement showing the rural plateau version of the climate." },
+      { name: "Las Piedrotas area", role: "waypoint", note: "Open plateau exposure and tourist pressure are both easy to read here." },
+    ],
+    thingsToDo: [
+      { label: "Las Piedrotas", kind: "vista", season: "dry season", note: "Open volcanic plateau exposure, wind, and sky in one stop." },
+      { label: "Pine forest cabin belt", kind: "nature", season: "year-round", note: "The main lived climate appeal: cool air under forest cover." },
+      { label: "Salto del Nogal routes", kind: "trail", season: "wet season", note: "A strong signal of summer-rain hydrology and slope terrain." },
+      { label: "Town center food markets", kind: "food-drink", season: "weekends", note: "A practical anchor for repeated-life scouting." },
+    ],
+    deepSections: [
+      { id: "tapalpa-pine-plateau", title: "A cool pine plateau above warm Jalisco", paragraphs: ["Tapalpa's appeal is the immediate altitude correction: climb from lower Jalisco into pine-oak air, and the heat falls away. Summer afternoons stay usable, wet-season storms keep the forest green, and nights carry a mountain chill.", "That makes it a serious live-here candidate for people who want Mexico without lowland heat. It also means accepting damp-season roads, weekend crowding, and forest-edge fire management."] },
+      { id: "tapalpa-cabin-siting", title: "Cabin climate depends on exposure", paragraphs: ["A sunny clearing, a shaded pine lot, and a windy plateau edge can all claim the Tapalpa climate while feeling different day to day. The best sites balance morning sun, drainage, wind protection, and access to services.", "Because the profile is partly lifestyle-driven, it is worth scouting on both a busy weekend and a quiet weekday. The climate is excellent; the settlement pattern decides whether it feels peaceful."] },
+    ],
   },
 
   {
@@ -867,7 +1027,7 @@ export const PLACES_MEXICO: Place[] = [
   },
 
   {
-    id: "mazamitla-mx", tier: "C", country: "Mexico", region: "Jalisco", municipality: "Mazamitla", name: "Mazamitla",
+    id: "mazamitla-mx", tier: "B", country: "Mexico", region: "Jalisco", municipality: "Mazamitla", name: "Mazamitla",
     lat: 19.9158, lon: -103.0244, elevationM: 2220,
     reliefContext: "Sierra del Tigre highland pine-oak.",
     biome: "Pine-oak", koppen: "Cwb",
@@ -884,8 +1044,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cool mountain retreat"], travelFit: ["cabin tourism"],
     whoWouldLove: "Pine-forest travelers.", whoMightNot: "Heat-seekers.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Mazamitla station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    confidenceNotes: "This moderate-confidence profile is grounded in SMN/CONAGUA and INEGI Sierra del Tigre context; shade, access, and forest-fire exposure vary sharply between cabin pockets.",
+    citations: [
+      { label: "SMN/CONAGUA climate data bank — Jalisco highland stations", kind: "smn", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },
+      { label: "INEGI digital map — Sierra del Tigre relief", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
+      { label: "CONAFOR forest and fire context", kind: "other", url: "https://www.gob.mx/conafor" },
+    ],
+    settlementsWithinZone: [
+      { name: "Mazamitla", role: "town", population: "~14,000", note: "The cabin-town anchor for the Sierra del Tigre climate." },
+      { name: "La Estacada", role: "village", note: "A smaller forest-edge reference point for slope, road, and shade exposure." },
+      { name: "Valle de Juarez", role: "town", note: "Nearby lower valley contrast with warmer and more agricultural conditions." },
+    ],
+    thingsToDo: [
+      { label: "Sierra del Tigre forest roads", kind: "trail", season: "dry season", note: "The cool pine climate is easiest to feel on shaded ridges." },
+      { label: "Cascada El Salto", kind: "water", season: "wet season", note: "A compact read on summer rainfall and canyon drainage." },
+      { label: "Cabin belt scouting", kind: "nature", season: "year-round", note: "The practical live-here question is which forest pocket has sun, road access, and drainage." },
+      { label: "Town center weekend market", kind: "food-drink", season: "weekends", note: "Shows the resort pressure and services behind the climate appeal." },
+    ],
+    deepSections: [
+      { id: "mazamitla-sierra-tigre-cool", title: "Sierra del Tigre coolness at a subtropical latitude", paragraphs: ["Mazamitla is the kind of Mexican highland that feels improbable if you arrive from lower Jalisco: pine scent, cool evenings, mist after storms, and a cabin culture built around needing a sweater.", "The climate score is not about agricultural power alone. It is about human comfort, summer relief, and the ability to live outdoors without the heat load common in nearby lower valleys."] },
+      { id: "mazamitla-forest-cabin-tradeoffs", title: "The cabin fantasy needs drainage and fire realism", paragraphs: ["Forest shade is the attraction and the complication. It keeps afternoons cool, but can hold dampness, hide drainage problems, and place homes close to fuels that need maintenance.", "A good Mazamitla shortlist looks at access after rain, defensible space, morning sun, and whether weekend tourism changes the quiet-small-town feel. The climate is lovely; the property details decide durability."] },
+    ],
   },
 
   // =================== NEW ANOMALY SET ===================
@@ -946,6 +1125,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["highland retreat", "Tarahumara-country residents"], travelFit: ["Copper Canyon railway", "Tarahumara cultural tourism", "vertical climate gradients"],
     whoWouldLove: "Explorers of dramatic elevational gradients; people who want genuine cold winters in Mexico.", whoMightNot: "Warm-winter seekers; anyone expecting Mexico to be uniformly tropical.",
     confidence: "moderate",
+    confidenceNotes: "This moderate-confidence profile is reliable at microclimate-zone scale because SMN/CONAGUA normals, INEGI relief context, and atlas elevation reasoning agree; neighborhood water, slope, and storm exposure still need local checks.",
     deepSections: [
       {
         id: "creel-vertical-gradient",

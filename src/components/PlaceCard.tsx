@@ -7,6 +7,7 @@ import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { getBestMonths, type BestWindow } from "../lib/best-months";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
+import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { ArrowRight } from "lucide-react";
 
 interface Props {
@@ -25,6 +26,7 @@ interface Props {
    * When the card's primary window matches this id, the chip brightens.
    */
   resonantWindow?: BestWindow["id"] | null;
+  liveFitFilters?: LiveFitFilters;
 }
 
 const TONE_ACCENT: Record<string, string> = {
@@ -58,7 +60,7 @@ const TONE_RGB: Record<string, string> = {
  * the interactive render budget dramatically on low-spec hardware.
  */
 export const PlaceCard = memo(function PlaceCard({
-  place, selected, note, onOpenPlace, onClick, onCompareToggle, inCompare, compact, resonantWindow,
+  place, selected, note, onOpenPlace, onClick, onCompareToggle, inCompare, compact, resonantWindow, liveFitFilters,
 }: Props) {
   const titleId = useId();
   const { temp, dist } = useUnits();
@@ -80,6 +82,10 @@ export const PlaceCard = memo(function PlaceCard({
 
   const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);
   const geospatial = useMemo(() => (compact ? null : buildGeospatialAnalysis(place)), [place, compact]);
+  const liveFit = useMemo(
+    () => (compact ? null : assessLiveFit(place, liveFitFilters)),
+    [place, compact, liveFitFilters],
+  );
 
   const toneRgb = TONE_RGB[tone] ?? TONE_RGB.ice;
 
@@ -188,6 +194,19 @@ export const PlaceCard = memo(function PlaceCard({
             </p>
           ) : null}
         </div>
+
+        {liveFit ? (
+          <div className="mt-3 rounded-lg border border-[rgba(26,143,168,0.22)] bg-[rgba(232,248,251,0.55)] px-3 py-2">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[10px] uppercase tracking-wider text-stone-readable">Live-here fit</span>
+              <span className="font-mono-num text-sm text-ice">{liveFit.score}/100</span>
+            </div>
+            <p className="text-[11px] leading-snug text-frost mt-1">{prose(liveFit.reasons[0] ?? "Balanced scouting signal.")}</p>
+            {liveFit.cautions.length > 0 ? (
+              <p className="text-[10px] leading-snug text-stone-readable mt-1">Watch: {prose(liveFit.cautions[0])}</p>
+            ) : null}
+          </div>
+        ) : null}
 
         {!compact && place.archetypes.length > 0 && (
           <div className="pt-3 border-t border-[rgba(71,90,122,0.12)]">

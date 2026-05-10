@@ -26,13 +26,13 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 
 ## What It Does
 
-- **Explorer map:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
+- **Live Finder explorer:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. The Live Finder layer adds presets for cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, and quiet small-town scouting, plus hard constraints for summer high, winter low, growability, fire risk, and overall risk. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
 - **Climate Trips:** A static climate-tourism funnel for traveling by microclimate: fog belts, rain shadows, sky islands, cold-air pools, orchard valleys, volcanic soils, Great Lakes snowbelts, Appalachian hollows, and places that feel climatically out of place. Trips pin curated climate themes back onto the Explorer map and can compare the top stops without adding booking or inventory data.
 - **Phone-safe map interaction:** Touch users land in direct map mode by default: one-finger drag pans the atlas, pinch zooms, plus/minus and Fit remain available, clusters stay tappable, and dense pins visually spread with leader lines back to their exact locations. Tapping **Scroll page** gives control back to browser scrolling; **Use map** re-enters direct map interaction.
-- **Place profiles:** Long-form field profiles for each microclimate, including an opening story, scannable at-a-glance facts, practical scouting cards, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, citations, and confidence notes.
+- **Place profiles:** Long-form field profiles for each microclimate, including an opening story, scannable at-a-glance facts, practical scouting cards, live-here fit reasons/cautions, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, settlement anchors, things to do, citations, and confidence notes.
 - **Climate tourism read:** Each profile derives a compact scouting itinerary, visit window, growability read, habitat cues, static lodging search cues, risk screen, and three transparent scores: tourism appeal, climate-oriented "Would I live here?", and a climate/land signal.
 - **Practical read:** Every profile turns the same typed fields into plain-language cards for what the ground can grow, how to read terrain, homes and land tradeoffs, and nearby ways to test the microclimate in person before the longer dossier.
-- **Ranking lenses:** Sort by hidden gems, coolest summers, mildest winters, shoulder seasons, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
+- **Ranking lenses:** Sort by live-here fit, hidden gems, coolest summers, mildest winters, shoulder seasons, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
 - **Comparison workflow:** Compare up to four places side by side with climate ribbons, derived scores, responsive columns, and focus-managed modal behavior.
 - **Collections and learning mode:** Curated bundles and a glossary connect mechanisms such as lapse rate, cold-air pooling, orographic lift, marine layer, foehn winds, thermal belts, and karst hydrology to real places.
 - **Static lodging and investment caveats:** Lodging cues are static style/search prompts, not reservation inventory or paid placement. The investment lens is a climate-and-land screening signal, not financial advice, not a valuation, not a parcel recommendation, and not a recommendation to buy.
@@ -46,6 +46,7 @@ Terraclima combines editorial research with deterministic analysis. The app does
 - **Terrain and exposure:** Elevation, relief, slope context, coastal influence, mountain barriers, valley geometry, and regional position inform the atlas narrative.
 - **Climate normals:** Monthly temperature, precipitation, snowfall, seasonality, diurnal range, and regional climate class anchor each profile.
 - **Risk and resilience:** Fire, heat, drought, flood, humidity, wind, snow, water stress, and long-term climate pressure are framed as decision signals, not guarantees.
+- **Live-here scoring:** `src/lib/live-fit.ts` deterministically blends comfort, resilience, hazards, growability, hidden-gem signal, selected presets, and user constraints into a match score with human-readable reasons and cautions. It does not use live feeds, parcel appraisal, insurance advice, or medical heat-stress modeling.
 - **Geospatial screening:** Deterministic scores explain where remote-sensing indices, thermal contrast, snow cover, moisture signals, burn history, or relief texture would likely add interpretive value.
 - **Local contrasts:** Profiles emphasize nearby differences, because microclimate only becomes meaningful when compared against the surrounding landscape.
 
@@ -81,6 +82,8 @@ Terraclima uses structured editorial research supported by public climate and ge
 - **Relief texture:** A separate screening score highlights where public topography and atlas archetypes suggest finer terrain data would materially improve interpretation.
 
 Every place carries citations and confidence notes. Derived scores are deliberately conservative. Where the corpus is interpretive rather than measurement-grade, the interface says so.
+
+The current corpus covers **226** North American places, including **8 Tier A flagships** and **54 Tier B deeper relocation/travel candidates**. Tier A/B entries are sanity-checked for confidence notes, at least two URL-backed citations, and deep-section coverage; the latest pass added Port Orford / Cape Blanco, Klamath Falls / Upper Klamath Basin, Los Alamos / Pajarito Plateau, Lander / Sinks Canyon, Atlin Lake, Fernie / Elk Valley, Valle de Bravo, and Zacatlan de las Manzanas, while promoting or deepening Nelson, Patzcuaro, Todos Santos, Tapalpa, and Mazamitla.
 
 ## Stack
 

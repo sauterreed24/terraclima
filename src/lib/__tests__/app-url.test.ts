@@ -24,6 +24,18 @@ describe("parseAppSearch", () => {
   it("captures p (place) and col (collection)", () => {
     expect(parseAppSearch("?p=foo&col=bar")).toEqual({ placeId: "foo", collectionId: "bar" });
   });
+  it("parses Live Finder state without disturbing legacy params", () => {
+    expect(parseAppSearch("?p=foo&r=live-fit&fit=cool-summers,dry-air,unknown&sh=22&wl=-5&grow=70&fire=moderate&risk=elevated")).toEqual({
+      placeId: "foo",
+      ranking: "live-fit",
+      fitPresets: ["cool-summers", "dry-air"],
+      maxSummerHighC: 22,
+      minWinterLowC: -5,
+      minGrowability: 70,
+      maxFireRisk: "moderate",
+      maxOverallRisk: "elevated",
+    });
+  });
   it("tolerates a missing leading ?", () => {
     expect(parseAppSearch("p=foo")).toEqual({ placeId: "foo" });
   });
@@ -101,6 +113,26 @@ describe("formatAppRelativeUrl", () => {
       collectionExists: ce,
     });
     expect(url).toBe("/?v=collections&p=foo&col=trip");
+  });
+  it("formats Live Finder params after legacy view/place/filter state", () => {
+    const url = formatAppRelativeUrl({
+      view: "explorer",
+      placeId: "foo",
+      collectionId: null,
+      countries: ["USA"],
+      archetypes: ["rain-shadow-sanctuary"],
+      search: "garden town",
+      ranking: "live-fit",
+      fitPresets: ["dry-air", "cool-summers"],
+      maxSummerHighC: 22,
+      minWinterLowC: -5,
+      minGrowability: 70,
+      maxFireRisk: "moderate",
+      maxOverallRisk: "elevated",
+      collectionExists: ce,
+      archetypeExists: () => true,
+    });
+    expect(url).toBe("/?p=foo&c=USA&a=rain-shadow-sanctuary&q=garden+town&r=live-fit&fit=cool-summers%2Cdry-air&sh=22&wl=-5&grow=70&fire=moderate&risk=elevated");
   });
 });
 

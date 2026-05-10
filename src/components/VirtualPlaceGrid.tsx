@@ -2,7 +2,7 @@ import { memo, useLayoutEffect, useRef, useState } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { PlaceCard } from "./PlaceCard";
 import type { BestWindow } from "../lib/best-months";
-import type { RankingResult } from "../lib/scoring";
+import type { FilterState, RankingResult } from "../lib/scoring";
 
 const ROW_GAP_PX = 12;
 /** Card estimates by layout. Mobile cards are one-column and significantly taller. */
@@ -31,6 +31,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   toggleCompare,
   compareIds,
   resonantWindow,
+  liveFitFilters,
 }: {
   ranked: RankingResult[];
   selectedId: string | null;
@@ -38,6 +39,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   toggleCompare: (id: string) => void;
   compareIds: Set<string>;
   resonantWindow: BestWindow["id"] | null;
+  liveFitFilters: FilterState;
 }) {
   const cols = useGridColumns();
   const rowCount = ranked.length === 0 ? 0 : Math.ceil(ranked.length / cols);
@@ -113,6 +115,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
                   onCompareToggle={toggleCompare}
                   inCompare={compareIds.has(r.place.id)}
                   resonantWindow={resonantWindow}
+                  liveFitFilters={liveFitFilters}
                 />
               ))}
             </div>

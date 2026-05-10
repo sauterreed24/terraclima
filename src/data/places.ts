@@ -64,13 +64,31 @@ export function getPlaceSearchText(place: Place): string {
   if (cached !== undefined) return cached;
 
   const deepIdx = mergeDeepSections(place).map(s => `${s.title} ${s.paragraphs.join(" ")}`).join(" ");
+  const settlementsIdx = (place.settlementsWithinZone ?? [])
+    .map(s => `${s.name} ${s.role} ${s.population ?? ""} ${s.note ?? ""}`)
+    .join(" ");
+  const activitiesIdx = (place.thingsToDo ?? [])
+    .map(a => `${a.label} ${a.kind} ${a.season ?? ""} ${a.note ?? ""}`)
+    .join(" ");
+  const citationsIdx = place.citations.map(c => `${c.label} ${c.kind} ${c.note ?? ""}`).join(" ");
   const text = foldDiacritics(
     place.name + " " +
     place.region + " " +
     (place.municipality ?? "") + " " +
     place.archetypes.join(" ") + " " +
+    place.drivers.join(" ") + " " +
     place.koppen + " " +
     (place.summaryShort ?? "") +
+    " " + place.summaryImmersive +
+    " " + place.whyDistinct +
+    " " + place.relocationFit.join(" ") +
+    " " + place.travelFit.join(" ") +
+    " " + place.whoWouldLove +
+    " " + place.whoMightNot +
+    " " + (place.confidenceNotes ?? "") +
+    " " + settlementsIdx +
+    " " + activitiesIdx +
+    " " + citationsIdx +
     " " + deepIdx,
   );
   PLACE_SEARCH_TEXT.set(place, text);
