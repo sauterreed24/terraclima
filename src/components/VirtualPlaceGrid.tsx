@@ -6,8 +6,8 @@ import type { FilterState, RankingResult } from "../lib/scoring";
 
 const ROW_GAP_PX = 12;
 /** Card estimates by layout. Mobile cards are one-column and significantly taller. */
-const EST_ROW_HEIGHT_DESKTOP_PX = 300;
-const EST_ROW_HEIGHT_MOBILE_PX = 430;
+const EST_ROW_HEIGHT_DESKTOP_PX = 340;
+const EST_ROW_HEIGHT_MOBILE_PX = 475;
 const OVERSCAN_ROWS = 3;
 const disableScrollAdjustment = () => false;
 
@@ -32,6 +32,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   compareIds,
   resonantWindow,
   liveFitFilters,
+  rankingLabel,
 }: {
   ranked: RankingResult[];
   selectedId: string | null;
@@ -40,6 +41,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   compareIds: Set<string>;
   resonantWindow: BestWindow["id"] | null;
   liveFitFilters: FilterState;
+  rankingLabel: string;
 }) {
   const cols = useGridColumns();
   const rowCount = ranked.length === 0 ? 0 : Math.ceil(ranked.length / cols);
@@ -105,7 +107,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
                 transform: `translateY(${vRow.start - scrollMargin}px)`,
               }}
             >
-              {row.map(r => (
+              {row.map((r, colIndex) => (
                 <PlaceCard
                   key={r.place.id}
                   place={r.place}
@@ -116,6 +118,9 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
                   inCompare={compareIds.has(r.place.id)}
                   resonantWindow={resonantWindow}
                   liveFitFilters={liveFitFilters}
+                  rank={start + colIndex + 1}
+                  rankingLabel={rankingLabel}
+                  rankingScore={r.score}
                 />
               ))}
             </div>

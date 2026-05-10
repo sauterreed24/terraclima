@@ -27,6 +27,9 @@ interface Props {
    */
   resonantWindow?: BestWindow["id"] | null;
   liveFitFilters?: LiveFitFilters;
+  rank?: number;
+  rankingLabel?: string;
+  rankingScore?: number;
 }
 
 const TONE_ACCENT: Record<string, string> = {
@@ -60,9 +63,10 @@ const TONE_RGB: Record<string, string> = {
  * the interactive render budget dramatically on low-spec hardware.
  */
 export const PlaceCard = memo(function PlaceCard({
-  place, selected, note, onOpenPlace, onClick, onCompareToggle, inCompare, compact, resonantWindow, liveFitFilters,
+  place, selected, note, onOpenPlace, onClick, onCompareToggle, inCompare, compact, resonantWindow, liveFitFilters, rank, rankingLabel, rankingScore,
 }: Props) {
   const titleId = useId();
+  const rankId = useId();
   const { temp, dist } = useUnits();
   const prose = useProse();
   const summerHighC = meanSummerHigh(place);
@@ -131,8 +135,21 @@ export const PlaceCard = memo(function PlaceCard({
         onClick={handleOpen}
         className="place-card__open-target text-left w-full p-4 pl-[calc(1rem+3px)] flex flex-col gap-0 min-h-0 bg-transparent border-0 cursor-pointer"
         aria-labelledby={titleId}
+        aria-describedby={rank != null && rankingLabel && rankingScore != null ? rankId : undefined}
         aria-pressed={selected ? true : undefined}
       >
+        {rank != null && rankingLabel && rankingScore != null ? (
+          <div
+            id={rankId}
+            className="place-card__rank-strip"
+            aria-label={`Rank ${rank} by ${rankingLabel}; score ${Math.round(rankingScore)}.`}
+          >
+            <span className="place-card__rank-number" aria-hidden>{rank}</span>
+            <span className="place-card__rank-label">{rankingLabel}</span>
+            <span className="place-card__rank-score" aria-hidden>{Math.round(rankingScore)}</span>
+          </div>
+        ) : null}
+
         <header className="flex items-start justify-between gap-3 pb-3 border-b border-[rgba(71,90,122,0.18)]">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">

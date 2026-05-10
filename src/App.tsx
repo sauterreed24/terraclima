@@ -608,6 +608,7 @@ export default function App() {
                       compareIds={compareIds}
                       resonantWindow={resonantWindow}
                       liveFitFilters={filters}
+                      rankingLabel={rankingLabel}
                     />
                     <div className="panel-thin p-3 flex flex-wrap items-center justify-between gap-2">
                       <div className="text-xs text-stone">
@@ -1172,6 +1173,41 @@ const HeroCard = memo(function HeroCard({
         </div>
       </div>
 
+      {sortTopFive.length > 0 ? (
+        <div className="current-rank-strip px-3 py-2.5 sm:px-4 min-[1400px]:py-3">
+          <div className="flex flex-col gap-2.5">
+            <div className="min-w-0">
+              <div className="text-[10px] uppercase tracking-wider text-glacier-700">Current rank</div>
+              <p className="text-[11px] text-stone-readable leading-snug mt-1">
+                Leading matches by <span className="font-medium text-frost">{rankingLabel}</span>.
+              </p>
+            </div>
+            <div
+              className="current-rank-strip__rail"
+              aria-label={`Top five places for the selected ranking profile: ${rankingLabel}`}
+            >
+              {sortTopFive.map((row, i) => (
+                <button
+                  key={row.place.id}
+                  type="button"
+                  onClick={() => onOpenPlace(row.place.id)}
+                  aria-label={`Rank ${i + 1}. ${row.place.name}. Score ${Math.round(row.score)}. Open place profile.`}
+                  className="current-rank-strip__chip"
+                >
+                  <span className="current-rank-strip__rank" aria-hidden>{i + 1}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="current-rank-strip__name" title={row.place.name}>{row.place.name}</span>
+                    <span className="current-rank-strip__note" title={row.note ? prose(row.note) : undefined}>
+                      {row.note ? prose(row.note) : row.place.koppen}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       {livabilityTopTen.length > 0 ? (
         <div className="hero-top-ten px-3 py-2.5 sm:px-4 min-[1400px]:py-3 space-y-2.5 min-[1400px]:space-y-3">
           <div className="min-w-0">
@@ -1218,28 +1254,6 @@ const HeroCard = memo(function HeroCard({
             ))}
           </div>
 
-          {sortTopFive.length > 0 ? (
-            <div className="hidden min-[1400px]:block pt-2 border-t border-[rgba(200,170,140,0.35)]">
-              <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Your Rank by · leading five</div>
-              <p className="text-[11px] text-stone-readable mb-2 leading-relaxed">
-                Matches the long ranked list below — currently <span className="font-medium text-frost">{rankingLabel}</span>.
-              </p>
-              <div className="flex flex-wrap gap-1.5" aria-label="Top five places for the selected ranking profile">
-                {sortTopFive.map((row, i) => (
-                  <button
-                    key={row.place.id}
-                    type="button"
-                    onClick={() => onOpenPlace(row.place.id)}
-                    aria-label={`${i + 1}. ${row.place.name}. Open place profile.`}
-                    className="inline-flex items-baseline gap-1.5 rounded-full border border-[rgba(180,160,140,0.5)] bg-white/85 px-2.5 py-1 text-left text-[11px] text-frost hover:border-[rgba(26,143,168,0.5)] hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[rgba(26,143,168,0.55)]"
-                  >
-                    <span className="font-mono-num text-stone tabular-nums" aria-hidden>{i + 1}.</span>
-                    <span className="font-medium truncate max-w-[9rem]">{row.place.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : null}
         </div>
       ) : null}
 
