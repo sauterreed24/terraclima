@@ -510,6 +510,116 @@
     border-bottom: 1px solid rgba(200, 170, 140, 0.32);
   }
 
+  /* Explorer hero - selected ranking strip */
+  .current-rank-strip {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.875rem;
+    border: 1px solid rgba(26, 143, 168, 0.26);
+    background:
+      linear-gradient(135deg, rgba(232, 248, 251, 0.82) 0%, rgba(255, 253, 248, 0.98) 54%, rgba(255, 248, 236, 0.78) 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 12px 34px -18px rgba(26, 143, 168, 0.12);
+  }
+  .current-rank-strip::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(26, 143, 168, 0.7), rgba(232, 155, 32, 0.38), rgba(61, 143, 85, 0.38));
+    opacity: 0.85;
+    pointer-events: none;
+  }
+  .current-rank-strip__rail {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(11.5rem, 1fr));
+    gap: 0.5rem;
+    min-width: 0;
+    overflow-x: auto;
+    padding: 0.1rem 0.05rem 0.25rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+  .current-rank-strip__chip {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 3.2rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(140, 200, 224, 0.42);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-frost);
+    text-align: left;
+    scroll-snap-align: start;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 1) inset;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+  .current-rank-strip__chip:hover {
+    border-color: rgba(26, 143, 168, 0.62);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 1) inset,
+      0 10px 24px -14px rgba(26, 143, 168, 0.24);
+    transform: translateY(-1px);
+  }
+  .current-rank-strip__chip:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
+  }
+  .current-rank-strip__rank {
+    display: inline-grid;
+    place-items: center;
+    width: 1.55rem;
+    height: 1.55rem;
+    border-radius: 999px;
+    background: rgba(26, 143, 168, 0.16);
+    color: var(--color-glacier-700);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+  }
+  .current-rank-strip__name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: var(--font-serif);
+    font-size: 0.88rem;
+    line-height: 1.2;
+    color: var(--color-ice);
+  }
+  .current-rank-strip__note {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 0.12rem;
+    font-size: 0.66rem;
+    line-height: 1.2;
+    color: var(--color-stone-readable);
+  }
+  @media (max-width: 640px) {
+    .current-rank-strip__rail {
+      grid-template-columns: repeat(5, minmax(13rem, 76vw));
+    }
+    .current-rank-strip__chip {
+      min-height: 3.35rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .current-rank-strip__chip {
+      transition: none;
+    }
+    .current-rank-strip__chip:hover {
+      transform: none;
+    }
+  }
+
   /* Explorer hero — livability lens strip */
   .hero-top-ten {
     position: relative;
@@ -1764,6 +1874,48 @@
     outline: 2px solid rgba(26, 143, 168, 0.65);
     outline-offset: -2px;
     border-radius: inherit;
+  }
+  .place-card__rank-strip {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2rem;
+    margin: -0.2rem 0 0.65rem;
+    padding: 0.28rem 0.5rem;
+    border-radius: 0.55rem;
+    border: 1px solid rgba(26, 143, 168, 0.2);
+    background: linear-gradient(90deg, rgba(232, 248, 251, 0.76), rgba(255, 253, 248, 0.72));
+    color: var(--color-stone-readable);
+  }
+  .place-card__rank-number,
+  .place-card__rank-score {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+  .place-card__rank-number {
+    display: inline-grid;
+    place-items: center;
+    min-width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 999px;
+    background: rgba(26, 143, 168, 0.18);
+    color: var(--color-glacier-700);
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+  .place-card__rank-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .place-card__rank-score {
+    color: var(--color-ice);
+    font-size: 0.78rem;
+    font-weight: 650;
   }
   .place-card__compare-spacer {
     display: block;

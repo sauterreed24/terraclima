@@ -74,6 +74,16 @@ describe("App shell", () => {
     expect(screen.getByTestId("atlas-map-stub")).toBeInTheDocument();
   }, 15000);
 
+  it("surfaces the active ranking leaders in the Explorer hero", () => {
+    window.history.replaceState(null, "", "/?col=places-that-feel-like-another-country&r=live-fit");
+
+    renderApp();
+
+    expect(screen.getByText("Current rank")).toBeInTheDocument();
+    expect(screen.getByText(/Leading matches by/)).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
+  }, 15000);
+
   it("opens compare immediately for shared URLs with two or more valid places", async () => {
     window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa");
 
