@@ -12,6 +12,7 @@ import { DRIVER_LABELS } from "../src/types";
 import { assertAtlasCorpusHealthy } from "../src/lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
 import { mergeDeepSections } from "../src/lib/place-appendix-sections";
+import { safeExternalHref } from "../src/lib/safe-url";
 import {
   buildNearbyContextRows,
   buildPracticalActivities,
@@ -232,11 +233,16 @@ for (const p of PLACES) {
   } else if (p.citations.length === 1 && p.tier !== "C") {
     report(p.id, "WARN", `only one citation for tier ${p.tier} place`);
   }
+  for (const c of p.citations) {
+    if (c.url != null && safeExternalHref(c.url) == null) {
+      report(p.id, "ERROR", `citation "${c.label}" has unsafe or malformed URL "${c.url}"`);
+    }
+  }
   if (p.tier === "A" || p.tier === "B") {
     if (!p.confidenceNotes?.trim()) {
       report(p.id, "ERROR", `tier ${p.tier} place missing confidenceNotes`);
     }
-    const urlCitationCount = p.citations.filter(c => /^https?:\/\//.test(c.url ?? "")).length;
+    const urlCitationCount = p.citations.filter(c => safeExternalHref(c.url) != null).length;
     if (urlCitationCount < 2) {
       report(p.id, "ERROR", `tier ${p.tier} place has ${urlCitationCount} URL citations, expected at least 2`);
     }

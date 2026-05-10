@@ -20,18 +20,23 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-node@v6.4.0
         with:
           node-version: "22"
           cache: npm
       - run: npm ci
       - run: npm run build:static
       - name: Force-push dist/ to static-preview branch
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: static-preview
-          publish_dir: ./dist
-          force_orphan: true
-          commit_message: "Publish static-preview from ${{ github.sha }}"
+        run: |
+          tmpdir="$(mktemp -d)"
+          cp -a dist/. "$tmpdir"/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --orphan static-preview-publish
+          git rm -rf .
+          find . -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a "$tmpdir"/. .
+          git add -A
+          git commit -m "Publish static-preview from ${{ github.sha }}"
+          git push --force origin HEAD:static-preview

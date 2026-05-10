@@ -1,6 +1,16 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
+const COLD_HTML_PRELOAD_CHUNK_STEMS = [
+  "motion",
+  "PlaceDetail",
+  "CompareView",
+  "ClimateTripsView",
+  "CollectionsView",
+  "LearnMode",
+  "atlas-data",
+];
+
 function vitePublicBase(): string {
   const raw = process.env.VITE_BASE_PATH?.trim();
   if (raw === undefined) return "/";
@@ -58,6 +68,12 @@ export default defineConfig({
   build: {
     target: "es2022",
     sourcemap: false,
+    modulePreload: {
+      resolveDependencies(_filename, deps, context) {
+        if (context.hostType !== "html") return deps;
+        return deps.filter(dep => !COLD_HTML_PRELOAD_CHUNK_STEMS.some(stem => dep.includes(stem)));
+      },
+    },
     /** Faster CI / low-RAM builds; gzip sizes are predictable from chunk names. */
     reportCompressedSize: false,
     cssCodeSplit: true,

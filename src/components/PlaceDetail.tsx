@@ -26,6 +26,7 @@ import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
+import { safeExternalHref } from "../lib/safe-url";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
 import { useMediaQuery } from "../hooks/use-media-query";
 import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
@@ -346,7 +347,7 @@ function DetailHeader({
     : null;
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
   const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
-  const osmHref = openStreetMapUrl(place.lat, place.lon, 10);
+  const osmHref = safeExternalHref(openStreetMapUrl(place.lat, place.lon, 10)) ?? "https://www.openstreetmap.org/";
 
   return (
     <div
@@ -1084,24 +1085,27 @@ function DetailBody({
             <BookOpen className="w-3 h-3" /> Citations
           </div>
           <ul className="space-y-1 text-sm">
-            {place.citations.map((c, i) => (
-              <li key={i} className="flex items-start gap-2 text-frost">
-                <span className="chip" data-tone="ice" style={{ fontSize: "10px" }}>{c.kind.toUpperCase()}</span>
-                <span>
-                  {c.url ? (
-                    <a
-                      href={c.url}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="underline decoration-[rgba(140,200,224,0.55)] decoration-dotted hover:text-ice"
-                    >
-                      {c.label}
-                    </a>
-                  ) : c.label}
-                  {c.note ? <span className="text-stone italic"> — {prose(c.note)}</span> : null}
-                </span>
-              </li>
-            ))}
+            {place.citations.map((c, i) => {
+              const href = safeExternalHref(c.url);
+              return (
+                <li key={i} className="flex items-start gap-2 text-frost">
+                  <span className="chip" data-tone="ice" style={{ fontSize: "10px" }}>{c.kind.toUpperCase()}</span>
+                  <span>
+                    {href ? (
+                      <a
+                        href={href}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="underline decoration-[rgba(140,200,224,0.55)] decoration-dotted hover:text-ice"
+                      >
+                        {c.label}
+                      </a>
+                    ) : c.label}
+                    {c.note ? <span className="text-stone italic"> — {prose(c.note)}</span> : null}
+                  </span>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </Section>
