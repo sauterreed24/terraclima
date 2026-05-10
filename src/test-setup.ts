@@ -21,6 +21,18 @@ if (typeof window !== "undefined") {
 
   window.scrollTo = vi.fn() as typeof window.scrollTo;
 
+  HTMLDialogElement.prototype.showModal = function showModal() {
+    this.open = true;
+    this.setAttribute("open", "");
+    this.dispatchEvent(new Event("toggle"));
+  };
+
+  HTMLDialogElement.prototype.close = function close() {
+    this.open = false;
+    this.removeAttribute("open");
+    this.dispatchEvent(new Event("toggle"));
+  };
+
   globalThis.ResizeObserver = vi.fn().mockImplementation(() => ({
     observe: vi.fn(),
     unobserve: vi.fn(),

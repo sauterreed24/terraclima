@@ -1,6 +1,5 @@
 import { CONCEPTS } from "../data/glossary";
 import { PLACES_BY_ID } from "../data/places";
-import { motion } from "framer-motion";
 import { BookOpen, Compass } from "lucide-react";
 import { useProse } from "../lib/units";
 
@@ -78,11 +77,9 @@ export function LearnMode({ onOpenPlace }: Props) {
 
       <div className="grid md:grid-cols-2 gap-3">
         {CONCEPTS.map(c => (
-          <motion.div
+          <div
             key={c.id}
-            layout
-            whileHover={{ y: -2 }}
-            className="panel p-4"
+            className="panel p-4 learn-concept-card"
           >
             <div className="flex items-center gap-2 mb-2">
               <Compass className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />
@@ -116,7 +113,7 @@ export function LearnMode({ onOpenPlace }: Props) {
                 })}
               </div>
             )}
-          </motion.div>
+          </div>
         ))}
       </div>
     </div>

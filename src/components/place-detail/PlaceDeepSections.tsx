@@ -12,9 +12,9 @@ function jumpLabelForSection(sec: PlaceDeepSection): string {
   const byId: Record<string, string> = {
     "appendix-season-pocket": "Rain year",
     "appendix-forces-atlas": "Mechanisms",
-    "appendix-ground-garden": "Soil",
+    "appendix-ground-garden": "Gardens",
     "appendix-nearby-differences": "Nearby",
-    "appendix-scouting-diligence": "Scouting",
+    "appendix-scouting-diligence": "Homes",
   };
   if (byId[sec.id]) return byId[sec.id]!;
   const t = sec.title.trim();
@@ -150,8 +150,8 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
         </div>
         <p className="text-[11px] md:text-xs text-stone-readable leading-relaxed mt-2 max-w-[52rem]">
           {hasBestMonthsGuide
-            ? "If we have written a longer note for this stop, it runs first. What follows is the same backbone every profile carries: how rain and snow pile through the year, the terrain mechanisms we tagged, soil and yard in one pass, nearby contrasts when the record has them, then an honest closing on fit and risk. For trip or planting calendars, use Best months for… farther down so we are not redundant. Temperatures track the unit you choose in the header."
-            : "If we have written a longer note for this stop, it runs first. What follows is the same backbone every profile carries: how rain and snow pile through the year, the terrain mechanisms we tagged, soil and yard in one pass, nearby contrasts when the record has them, then an honest closing on fit and risk. Temperatures track the unit you choose in the header."}
+            ? "Read this as the atlas field notebook. Any authored essay comes first; then the shared backbone follows: rain year, terrain mechanisms, soil and gardens, nearby contrasts when present, and homes or long-term fit. Best months for... handles calendars below; this section explains why the place behaves the way it does. Temperatures follow the unit in the header."
+            : "Read this as the atlas field notebook. Any authored essay comes first; then the shared backbone follows: rain year, terrain mechanisms, soil and gardens, nearby contrasts when present, and homes or long-term fit. Temperatures follow the unit in the header."}
         </p>
         <nav
           ref={jumpStripRef}
@@ -173,9 +173,9 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
           })}
         </nav>
         <p className="mt-2 text-[10px] text-stone leading-relaxed">
-          <span className="font-medium text-frost">Copy link</span> in the header passes this exact stop. If you stay over the dossier while you read, the URL may pick up a short{" "}
+          <span className="font-medium text-frost">Copy link</span> can pass this chapter. While you read the dossier, the URL may pick up a short{" "}
           <span className="font-mono-num text-frost/90">#deep-…</span>
-          {" "}suffix for the chapter in view; scroll elsewhere and it falls away so the link stays shareable.
+          {" "}suffix for the chapter in view; scroll elsewhere and it falls away so the main place link stays clean.
         </p>
       </div>
 

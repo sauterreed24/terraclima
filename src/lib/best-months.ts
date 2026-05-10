@@ -164,6 +164,22 @@ export function computeBestMonths(place: Place, displayTemp: TempUnit = "F"): Be
   return windows;
 }
 
+const BEST_MONTHS_CACHE = new WeakMap<Place, Partial<Record<TempUnit, BestWindow[]>>>();
+
+export function getBestMonths(place: Place, displayTemp: TempUnit = "F"): BestWindow[] {
+  const byUnit = BEST_MONTHS_CACHE.get(place);
+  const cached = byUnit?.[displayTemp];
+  if (cached) return cached;
+
+  const windows = computeBestMonths(place, displayTemp);
+  if (byUnit) {
+    byUnit[displayTemp] = windows;
+  } else {
+    BEST_MONTHS_CACHE.set(place, { [displayTemp]: windows });
+  }
+  return windows;
+}
+
 function quantile(arr: readonly number[], q: number): number {
   const sorted = [...arr].sort((a, b) => a - b);
   const idx = (sorted.length - 1) * q;

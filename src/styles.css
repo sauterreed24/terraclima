@@ -648,6 +648,38 @@
     box-shadow: inset 3px 0 14px -8px rgba(61, 143, 85, 0.12);
   }
 
+  .tc-reader-path {
+    align-items: stretch;
+  }
+  .tc-reader-path > div {
+    min-width: 0;
+    padding: 0.75rem 0.85rem;
+    border-left: 2px solid rgba(26, 143, 168, 0.35);
+    border-radius: 0.75rem;
+    background:
+      linear-gradient(150deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 252, 247, 0.7) 100%),
+      radial-gradient(90% 120% at 0% 0%, rgba(94, 196, 220, 0.08), transparent 65%);
+  }
+  .tc-reader-path > div:nth-of-type(2) {
+    border-left-color: rgba(232, 155, 32, 0.45);
+  }
+  .tc-reader-path > div:nth-of-type(3) {
+    border-left-color: rgba(61, 143, 85, 0.42);
+  }
+  .tc-reader-path__label {
+    margin-bottom: 0.25rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-stone-readable);
+  }
+  .tc-reader-path p {
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--color-frost);
+  }
+
   .panel {
     background:
       linear-gradient(155deg, #ffffff 0%, rgba(255, 253, 248, 0.98) 40%, rgba(255, 249, 242, 0.96) 100%);
@@ -883,6 +915,27 @@
   .collection-curation-card[data-tone="ochre"]::before { background: linear-gradient(180deg, #ffe08a, #e89b20); }
   .collection-curation-card[data-tone="ember"]::before { background: linear-gradient(180deg, #ffc4a8, #e85a32); }
   .collection-curation-card[data-tone="ice"]::before { background: linear-gradient(180deg, #c8effc, #2eb8e6); }
+  .collection-curation-card[data-tone="aurora"]::before { background: linear-gradient(180deg, #ffc4d6, #9a2a4d); }
+
+  .climate-trip-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 340px;
+  }
+  .climate-trip-pick-card {
+    contain-intrinsic-size: 0 560px;
+  }
+  /* Same off-screen paint skipping for the lazy-loaded Curated and Learn
+     views. Sized to typical rendered card heights. */
+  .collection-curation-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 220px;
+  }
+  .learn-concept-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 280px;
+    transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .learn-concept-card:hover { transform: translateY(-2px); }
 
   /* Map — frame reads like a lit instrument panel, not a flat widget */
   .map-shell {
@@ -910,14 +963,14 @@
       0 1px 0 rgba(255, 255, 255, 0.06) inset;
   }
 
-  /* —— Atlas map hover card: editorial “field specimen” layout (chunked, scannable, no run-on walls) —— */
+  /* —— Atlas map hover card: compact scout preview for fast pin-to-pin scanning —— */
   .tc-map-hover-card {
     --tc-map-accent: var(--color-glacier-500);
     --tc-map-accent-muted: rgba(26, 143, 168, 0.11);
     --tc-map-accent-line: rgba(26, 143, 168, 0.35);
     --tc-map-ink: var(--color-ice);
     --tc-map-muted: var(--color-stone);
-    border-radius: 18px;
+    border-radius: 14px;
     border: 1px solid rgba(195, 165, 138, 0.38);
     background:
       linear-gradient(165deg, rgba(255, 255, 255, 0.99) 0%, rgba(255, 252, 247, 0.97) 42%, rgba(252, 246, 238, 0.95) 100%);
@@ -961,7 +1014,7 @@
 
   .tc-map-hover-card__hero {
     position: relative;
-    padding: 1rem 1.125rem 1.125rem;
+    padding: 0.75rem 0.85rem 0.8rem;
     background:
       radial-gradient(120% 90% at 0% 0%, var(--tc-map-accent-muted), transparent 52%),
       linear-gradient(180deg, rgba(255, 253, 248, 0.65) 0%, rgba(255, 252, 247, 0.35) 100%);
@@ -980,30 +1033,30 @@
   }
 
   .tc-map-hover-card__body {
-    padding: 1rem 1.125rem 1.25rem;
+    padding: 0.75rem 0.85rem 0.9rem;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 0.75rem;
   }
 
   .tc-map-hover-kicker {
-    font-size: 0.625rem;
+    font-size: 0.55rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--tc-map-muted);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.35rem;
   }
 
   .tc-map-hover-section {
     position: relative;
-    padding-left: 0.85rem;
+    padding-left: 0.65rem;
     margin: 0;
     border-left: 2px solid var(--tc-map-accent-line);
   }
   .tc-map-hover-section--inset {
-    padding: 0.75rem 0.85rem 0.85rem 1rem;
-    border-radius: 12px;
+    padding: 0.6rem 0.65rem 0.65rem 0.75rem;
+    border-radius: 10px;
     border: 1px solid rgba(195, 165, 138, 0.28);
     border-left-width: 3px;
     border-left-color: var(--tc-map-accent-line);
@@ -1027,8 +1080,8 @@
   }
 
   .tc-map-hover-prose {
-    font-size: 0.8125rem;
-    line-height: 1.62;
+    font-size: 0.75rem;
+    line-height: 1.48;
     letter-spacing: 0.01em;
     color: var(--color-frost-strong);
   }
@@ -1037,8 +1090,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.35rem 0.5rem;
-    font-size: 0.6875rem;
+    gap: 0.25rem 0.4rem;
+    font-size: 0.6rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     font-weight: 600;
@@ -1077,14 +1130,14 @@
   .tc-map-hover-pillstrip {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
+    gap: 0.35rem;
   }
   .tc-map-hover-pill {
     display: inline-flex;
     align-items: center;
-    padding: 0.2rem 0.55rem;
+    padding: 0.16rem 0.45rem;
     border-radius: 999px;
-    font-size: 0.6875rem;
+    font-size: 0.64rem;
     font-weight: 500;
     letter-spacing: 0.02em;
     line-height: 1.35;
@@ -1095,14 +1148,14 @@
   }
 
   .tc-map-hover-instrument {
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
     border: 1px solid rgba(195, 165, 138, 0.32);
     background: linear-gradient(180deg, rgba(255, 253, 248, 0.9) 0%, rgba(252, 248, 242, 0.95) 100%);
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.88) inset;
   }
   .tc-map-hover-instrument__strip {
-    padding: 0.35rem 0.5rem;
+    padding: 0.28rem 0.45rem;
     border-bottom: 1px solid rgba(195, 165, 138, 0.22);
     background: rgba(255, 255, 255, 0.35);
   }
@@ -1111,10 +1164,44 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 0;
     text-align: center;
-    padding: 0.55rem 0.35rem 0.65rem;
+    padding: 0.42rem 0.3rem 0.5rem;
   }
   .tc-map-hover-instrument__metrics > div + div {
     border-left: 1px solid rgba(195, 165, 138, 0.22);
+  }
+
+  .tc-map-hover-cues {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .tc-map-hover-cues > div {
+    display: grid;
+    grid-template-columns: 4.4rem minmax(0, 1fr);
+    gap: 0.45rem;
+    align-items: start;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: var(--color-frost-strong);
+  }
+  .tc-map-hover-cues > div[data-risk="moderate"] {
+    color: #7a5209;
+  }
+  .tc-map-hover-cues > div[data-risk="high"] {
+    color: #8b3412;
+  }
+  .tc-map-hover-cues > div > span:last-child {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  .tc-map-hover-cue-label {
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.11em;
+    line-height: 1.45;
+    text-transform: uppercase;
+    color: var(--tc-map-muted);
   }
 
   .tc-map-hover-scoregrid {
@@ -1749,6 +1836,11 @@
       0 1px 0 rgba(255, 255, 255, 0.06) inset,
       0 0 0 1px rgba(100, 140, 190, 0.18) inset;
   }
+
+  html.tc-low-power .anim-fade-in,
+  html.tc-low-power .view-enter {
+    animation-duration: 120ms;
+  }
 }
 
 @layer utilities {
@@ -1794,8 +1886,8 @@
    runtime animation library. Re-keyed on view change; the browser does the
    cross-fade entirely on the compositor. */
 @keyframes viewEnter {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 .view-enter { animation: viewEnter 280ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 
@@ -1843,7 +1935,8 @@
   .btn-ghost,
   .chip-btn,
   .reveal-row,
-  .term {
+  .term,
+  .learn-concept-card {
     transition-duration: 0.01ms !important;
   }
   html {

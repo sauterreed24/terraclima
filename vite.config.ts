@@ -36,10 +36,6 @@ export default defineConfig({
         "./src/main.tsx",
         "./src/App.tsx",
         "./src/components/AtlasMap.tsx",
-        "./src/components/PlaceDetail.tsx",
-        "./src/components/CompareView.tsx",
-        "./src/components/CollectionsView.tsx",
-        "./src/components/LearnMode.tsx",
         "./src/lib/scoring.ts",
         "./src/lib/units.ts",
         "./src/data/places.ts",
@@ -94,7 +90,8 @@ export default defineConfig({
           if (
             id.includes("/data/collections") ||
             id.includes("/data/archetypes") ||
-            id.includes("/data/glossary")
+            id.includes("/data/glossary") ||
+            id.includes("/data/climate-trip-themes")
           ) return "data-curated";
 
           if (!id.includes("node_modules")) return undefined;

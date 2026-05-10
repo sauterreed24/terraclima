@@ -1,6 +1,5 @@
 import { COLLECTIONS } from "../data/collections";
 import { PLACES_BY_ID } from "../data/places";
-import { motion } from "framer-motion";
 import { useProse } from "../lib/units";
 
 interface Props {
@@ -16,9 +15,8 @@ export function CollectionsView({ onOpenPlace, onPick, activeId }: Props) {
       {COLLECTIONS.map(c => {
         const isActive = c.id === activeId;
         return (
-          <motion.div
+          <div
             key={c.id}
-            layout
             className={`panel collection-curation-card p-4 anim-fade-in ${isActive ? "glow-glacier" : ""}`}
             data-tone={c.tone}
             style={isActive ? { borderColor: "rgba(140,200,224,0.75)" } : undefined}
@@ -57,7 +55,7 @@ export function CollectionsView({ onOpenPlace, onPick, activeId }: Props) {
                 );
               })}
             </div>
-          </motion.div>
+          </div>
         );
       })}
     </div>

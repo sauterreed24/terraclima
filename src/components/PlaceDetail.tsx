@@ -16,7 +16,7 @@ import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse } from "../lib/units";
-import { computeBestMonths } from "../lib/best-months";
+import { getBestMonths } from "../lib/best-months";
 import { findSimilarPlaces } from "../lib/similarity";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
@@ -32,6 +32,9 @@ import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
 import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
 import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
 import { PlaceAtAGlance } from "./place-detail/PlaceAtAGlance";
+import { PlacePracticalRead } from "./place-detail/PlacePracticalRead";
+import { PlaceTourismRead } from "./place-detail/PlaceTourismRead";
+import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
@@ -350,8 +353,8 @@ function DetailHeader({
       className="md:sticky md:top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 bg-[rgba(255,253,248,0.97)] backdrop-blur relative border-b border-[rgba(200,160,120,0.35)]"
       style={{ backgroundImage: TONE_HERO[tone] }}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
+        <div className="min-w-0 w-full">
           <div className="flex items-center gap-1.5 md:gap-2 text-xs text-stone mb-1 flex-wrap">
             <span className="chip" data-tone={place.tier === "A" ? "ochre" : place.tier === "B" ? "ice" : "sage"}>{tierLabel}</span>
             <MapPin className="w-3 h-3" aria-hidden />
@@ -382,7 +385,7 @@ function DetailHeader({
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex items-center gap-1 self-end shrink-0 md:self-start">
           <CopyPlaceLink placeId={place.id} />
           {onCompareToggle && (
             <button
@@ -515,11 +518,14 @@ function DetailBody({
       ),
     [place, temp, dist],
   );
-  const bestMonths = useMemo(() => computeBestMonths(place, temp), [place, temp]);
+  const bestMonths = useMemo(() => getBestMonths(place, temp), [place, temp]);
   const similar = useMemo(() => findSimilarPlaces(place, PLACES, 3), [place]);
   const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
   const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
+  const settlementAnchors = useMemo(() => buildSettlementAnchors(place), [place]);
+  const practicalActivities = useMemo(() => buildPracticalActivities(place), [place]);
+  const nearbyContextRows = useMemo(() => buildNearbyContextRows(place), [place]);
   const navItems = useMemo(() => buildPlaceDetailNavItems(place), [place]);
   const navDomIds = useMemo(() => navItems.map(i => i.id), [navItems]);
   const readingActiveAnchor = useDetailReadingSpy(navDomIds);
@@ -580,6 +586,10 @@ function DetailBody({
           </div>
         </div>
       </Section>
+
+      <PlacePracticalRead place={place} anchorId={PD.practical} />
+
+      <PlaceTourismRead place={place} anchorId={PD.tourism} />
 
       <Section anchorId={PD.fieldStory} icon={<Compass className="w-4 h-4" style={{ color: "#dcc4ff" }} />} title={fieldStory.title}>
         <div className="panel-field-story p-4 md:p-5 space-y-3.5 rounded-2xl border border-[rgba(199,181,234,0.22)]">
@@ -840,13 +850,13 @@ function DetailBody({
         </div>
       </Section>
 
-      {(place.localContrast?.length || place.nearbyContrasts?.length) ? (
+      {nearbyContextRows.length > 0 ? (
         <Section anchorId={PD.contrast} title="Local contrast" icon={<TrendingUp className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
           {place.localContrast && <ContrastChart contrasts={place.localContrast} />}
-          {place.nearbyContrasts && place.nearbyContrasts.length > 0 && (
+          {nearbyContextRows.length > 0 && (
             <div className="mt-4 space-y-2">
-              <div className="text-[10px] uppercase tracking-wider text-stone">Nearby contrasts</div>
-              {place.nearbyContrasts.map((n, i) => {
+              <div className="text-[10px] uppercase tracking-wider text-stone">Nearby contrasts and scouting checks</div>
+              {nearbyContextRows.map((n, i) => {
                 const linked = n.placeId && PLACES_BY_ID[n.placeId];
                 return linked ? (
                   <button
@@ -933,10 +943,10 @@ function DetailBody({
         </div>
       </Section>
 
-      {place.settlementsWithinZone && place.settlementsWithinZone.length > 0 && (
-        <Section anchorId={PD.settlements} title="Settlements within this zone" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
+      {settlementAnchors.length > 0 && (
+        <Section anchorId={PD.settlements} title="Settlements and scouting bases" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
           <div className="grid md:grid-cols-2 gap-2">
-            {place.settlementsWithinZone.map(s => (
+            {settlementAnchors.map(s => (
               <div key={s.name} className="panel-thin p-3 flex items-start gap-3">
                 <div
                   aria-hidden="true"
@@ -948,6 +958,9 @@ function DetailBody({
                     <div className="font-atlas text-sm text-ice truncate">{s.name}</div>
                     <span className="chip" data-tone={SETTLEMENT_ROLE_TONE[s.role] ?? "ice"} style={{ fontSize: "10px" }}>
                       {SETTLEMENT_ROLE_LABEL[s.role] ?? s.role}
+                    </span>
+                    <span className="chip" data-tone="glacier" style={{ fontSize: "10px" }}>
+                      {s.relation}
                     </span>
                   </div>
                   {s.population && (
@@ -961,15 +974,15 @@ function DetailBody({
             ))}
           </div>
           <div className="text-[11px] text-stone italic mt-2">
-            Towns listed share the same microclimate influences; each can feel subtly different along the gradient.
+            Authored settlements share the zone; derived bases are practical anchors for comparing access, services, and nearby climate gradients.
           </div>
         </Section>
       )}
 
-      {place.thingsToDo && place.thingsToDo.length > 0 && (
-        <Section anchorId={PD.activities} title="Things to do in zone" icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+      {practicalActivities.length > 0 && (
+        <Section anchorId={PD.activities} title="Things to do nearby" icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
           <div className="grid md:grid-cols-2 gap-2">
-            {place.thingsToDo.map((a, i) => (
+            {practicalActivities.map((a, i) => (
               <div key={`${a.label}-${i}`} className="panel-thin p-3">
                 <div className="flex items-start gap-2">
                   <div className="text-lg leading-none pt-0.5" aria-hidden="true">
@@ -984,6 +997,11 @@ function DetailBody({
                       {a.season && (
                         <span className="chip" data-tone="glacier" style={{ fontSize: "10px" }}>
                           {a.season}
+                        </span>
+                      )}
+                      {a.source === "derived" && (
+                        <span className="chip" data-tone="ice" style={{ fontSize: "10px" }}>
+                          Derived
                         </span>
                       )}
                     </div>

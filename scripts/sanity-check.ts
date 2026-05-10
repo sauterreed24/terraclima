@@ -5,11 +5,19 @@
  */
 import { PLACES } from "../src/data/places";
 import { COLLECTIONS } from "../src/data/collections";
+import { CLIMATE_TRIP_THEMES } from "../src/data/climate-trip-themes";
 import { CONCEPTS } from "../src/data/glossary";
 import { ARCHETYPES } from "../src/data/archetypes";
 import { DRIVER_LABELS } from "../src/types";
 import { assertAtlasCorpusHealthy } from "../src/lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
+import { mergeDeepSections } from "../src/lib/place-appendix-sections";
+import {
+  buildNearbyContextRows,
+  buildPracticalActivities,
+  buildPracticalReadCards,
+  buildSettlementAnchors,
+} from "../src/lib/practical-read";
 
 type Issue = { id: string; severity: "WARN" | "ERROR"; msg: string };
 const issues: Issue[] = [];
@@ -234,6 +242,38 @@ for (const p of PLACES) {
     }
   }
 
+  // --- A/B effective corpus polish coverage ---
+  // Counts the rendered typed corpus, including deterministic context derived
+  // from existing place fields. This keeps the UI rich without inventing
+  // unsupported market data or fake named attractions.
+  if (p.tier === "A" || p.tier === "B") {
+    const minDeep = p.tier === "A" ? 4 : 3;
+    const minActivities = p.tier === "A" ? 4 : 3;
+    const minSettlementAnchors = p.tier === "A" ? 2 : 1;
+    const minNearbyRows = p.tier === "A" ? 2 : 1;
+    const cards = buildPracticalReadCards(p);
+    const badCards = cards.filter(card => !card.title.trim() || !card.body.trim() || card.bullets.length < 3 || card.bullets.some(b => !b.trim()));
+    if (cards.length !== 4 || badCards.length > 0) {
+      report(p.id, "ERROR", `practical read should render 4 complete cards, got ${cards.length} (${badCards.length} incomplete)`);
+    }
+    const deep = mergeDeepSections(p);
+    if (deep.length < minDeep) {
+      report(p.id, "ERROR", `effective deep section count ${deep.length}, expected at least ${minDeep}`);
+    }
+    const activities = buildPracticalActivities(p);
+    if (activities.length < minActivities) {
+      report(p.id, "ERROR", `effective activity count ${activities.length}, expected at least ${minActivities}`);
+    }
+    const settlementAnchors = buildSettlementAnchors(p);
+    if (settlementAnchors.length < minSettlementAnchors) {
+      report(p.id, "ERROR", `effective settlement/scouting anchor count ${settlementAnchors.length}, expected at least ${minSettlementAnchors}`);
+    }
+    const nearbyRows = buildNearbyContextRows(p);
+    if (nearbyRows.length < minNearbyRows) {
+      report(p.id, "ERROR", `effective nearby context count ${nearbyRows.length}, expected at least ${minNearbyRows}`);
+    }
+  }
+
   // --- Hardiness zone sanity vs Jan low ---
   const zone = climate.hardinessZone ?? p.growability.hardinessZone ?? "";
   const janLow = Math.min(...climate.tempLowC);
@@ -266,6 +306,22 @@ for (const c of COLLECTIONS) {
     if (!placeIdSet.has(pid)) report(`collection:${c.id}`, "ERROR", `unknown placeId "${pid}"`);
   }
   if (c.placeIds.length < 3) report(`collection:${c.id}`, "WARN", `only ${c.placeIds.length} places`);
+}
+
+// --- Climate trip theme referential integrity ---
+{
+  const seen = new Set<string>();
+  for (const t of CLIMATE_TRIP_THEMES) {
+    if (seen.has(t.id)) report(`climate-trip:${t.id}`, "ERROR", `duplicate climate trip theme id`);
+    seen.add(t.id);
+    for (const pid of t.placeIds) {
+      if (!placeIdSet.has(pid)) report(`climate-trip:${t.id}`, "ERROR", `unknown placeId "${pid}"`);
+    }
+    for (const a of t.archetypeFilters ?? []) {
+      if (!validArchetypes.has(a)) report(`climate-trip:${t.id}`, "ERROR", `unknown archetype filter "${a}"`);
+    }
+    if (t.placeIds.length < 3) report(`climate-trip:${t.id}`, "WARN", `only ${t.placeIds.length} places`);
+  }
 }
 
 for (const c of CONCEPTS) {

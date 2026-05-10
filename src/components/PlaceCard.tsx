@@ -5,7 +5,7 @@ import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-me
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
-import { computeBestMonths, type BestWindow } from "../lib/best-months";
+import { getBestMonths, type BestWindow } from "../lib/best-months";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { ArrowRight } from "lucide-react";
@@ -77,7 +77,7 @@ export const PlaceCard = memo(function PlaceCard({
   // this cost is paid exactly once per card per session.
   const topWindow = useMemo(() => {
     if (compact) return null;
-    return computeBestMonths(place, temp).find(w => w.kind === "good") ?? null;
+    return getBestMonths(place, temp).find(w => w.kind === "good") ?? null;
   }, [place, compact, temp]);
 
   const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);

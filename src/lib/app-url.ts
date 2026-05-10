@@ -3,7 +3,7 @@
  * Defaults stay out of the URL (?p=id rather than ?v=explorer&p=id).
  *
  * URL parameters
- *   v       view: "explorer" (default) | "collections" | "learn"
+ *   v       view: "explorer" (default) | "trips" | "collections" | "learn"
  *   p       selected place id
  *   col     active collection id
  *   c       country filter list (comma-separated, e.g. "USA,Canada")
@@ -24,7 +24,7 @@ import type { RankingProfile } from "./scoring";
 import { ALL_RANKING_PROFILES } from "./ranking-options";
 import { LIVE_FIT_PRESET_BY_ID, type LiveFitPresetId } from "./live-fit";
 
-export type AppView = "explorer" | "collections" | "learn";
+export type AppView = "explorer" | "trips" | "collections" | "learn";
 
 /** Hard cap on compared places — kept here so URL parsing and toggleCompare share a single source. */
 export const COMPARE_LIMIT = 4;
@@ -46,7 +46,7 @@ export interface ParsedAppUrl {
   maxOverallRisk: RiskLevel | null;
 }
 
-const VIEWS = new Set<AppView>(["explorer", "collections", "learn"]);
+const VIEWS = new Set<AppView>(["explorer", "trips", "collections", "learn"]);
 const COUNTRY_VALUES = new Set<Country>(["USA", "Canada", "Mexico"]);
 const RANKING_VALUES = new Set<string>(ALL_RANKING_PROFILES);
 const RISK_VALUES = new Set<RiskLevel>(["very-low", "low", "moderate", "elevated", "high", "very-high"]);
@@ -221,7 +221,7 @@ export function validatedStateFromSearch(
 ): ValidatedAppState {
   const p = parseAppSearch(search);
   const view: AppView =
-    p.view === "collections" || p.view === "learn" ? p.view : "explorer";
+    p.view === "trips" || p.view === "collections" || p.view === "learn" ? p.view : "explorer";
   const resolveId = resolvePlaceId ?? ((id: string) => placesById[id] ? id : null);
   const placeId = p.placeId ? resolveId(p.placeId) : null;
   const collectionId = p.collectionId && collectionById[p.collectionId] ? p.collectionId : null;

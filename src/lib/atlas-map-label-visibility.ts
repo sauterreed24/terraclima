@@ -5,19 +5,56 @@ export type MapPinLabelMode = "hidden" | "compact" | "full";
 
 const TIER_RANK: Record<Tier, number> = { A: 3, B: 2, C: 1 };
 
-function bucketOf(x: number, y: number, cell: number): string {
-  return `${Math.floor(x / cell)},${Math.floor(y / cell)}`;
-}
-
 function priority(place: Place): number {
   return TIER_RANK[place.tier] * 1_000_000 - place.name.length;
 }
 
+interface LabelBox {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+}
+
+function estimateLabelBox(
+  place: Place,
+  screenX: number,
+  screenY: number,
+  mode: MapPinLabelMode
+): LabelBox {
+  const nameWidth = Math.min(184, Math.max(72, place.name.length * 7.2));
+  const width = mode === "full" ? nameWidth + 58 : Math.min(136, nameWidth + 36);
+  const height = mode === "full" ? 42 : 24;
+  return {
+    left: screenX - width / 2,
+    right: screenX + width / 2,
+    top: screenY - height / 2,
+    bottom: screenY + height / 2,
+  };
+}
+
+function intersects(a: LabelBox, b: LabelBox, gutter: number): boolean {
+  return !(
+    a.right + gutter < b.left ||
+    a.left - gutter > b.right ||
+    a.bottom + gutter < b.top ||
+    a.top - gutter > b.bottom
+  );
+}
+
+function candidateMode(place: Place, mapZoomK: number): MapPinLabelMode {
+  if (mapZoomK < 0.48) return "hidden";
+  if (mapZoomK < 0.86 && place.tier !== "A") return "hidden";
+  if (mapZoomK < 1.02 && place.tier === "C") return "hidden";
+  return mapZoomK >= 1.18 ? "full" : "compact";
+}
+
 /**
- * Pick at most one “label slot” per map cell so names do not stack into unreadable soup.
- * Selected and hovered pins always get a full label; everyone else follows zoom + grid rules.
+ * Pick readable labels in screen-pixel space so visually displaced pins do not
+ * stack names after the map transform is applied.
  *
- * Map coordinates are projected SVG units (same space as pan/zoom `translate/scale`).
+ * Selected and hovered pins always get a full label; everyone else follows zoom + collision rules.
+ * Input coordinates are projected SVG units after any visual pin displacement.
  */
 export function computePinLabelModes(
   pts: readonly { place: Place; x: number; y: number }[],
@@ -47,37 +84,36 @@ export function computePinLabelModes(
     return out;
   }
 
-  // Smaller cells when zoomed in → more winners, still one label per cell.
-  const cell = Math.max(22, 58 / Math.sqrt(Math.max(0.35, mapZoomK)));
+  const accepted: LabelBox[] = [];
+  const byId = new Map(pts.map(pt => [pt.place.id, pt]));
+  const gutter = mapZoomK < 0.86 ? 18 : mapZoomK < 1.18 ? 12 : 8;
 
-  const winnerByBucket = new Map<string, string>();
-  const winnerPri = new Map<string, number>();
-
-  for (const { place, x, y } of pts) {
-    const b = bucketOf(x, y, cell);
-    const pri = priority(place);
-    const cur = winnerByBucket.get(b);
-    if (cur === undefined) {
-      winnerByBucket.set(b, place.id);
-      winnerPri.set(b, pri);
-      continue;
-    }
-    const curPri = winnerPri.get(b) ?? -Infinity;
-    if (pri > curPri || (pri === curPri && place.id < cur)) {
-      winnerByBucket.set(b, place.id);
-      winnerPri.set(b, pri);
-    }
+  for (const id of alwaysFull) {
+    const pt = byId.get(id);
+    if (!pt) continue;
+    accepted.push(estimateLabelBox(pt.place, pt.x * mapZoomK, pt.y * mapZoomK, "full"));
   }
 
-  const winners = new Set(winnerByBucket.values());
+  const candidates = pts
+    .filter(({ place }) => !alwaysFull.has(place.id))
+    .map(pt => ({
+      ...pt,
+      mode: candidateMode(pt.place, mapZoomK),
+      screenX: pt.x * mapZoomK,
+      screenY: pt.y * mapZoomK,
+      score: priority(pt.place),
+    }))
+    .filter(pt => pt.mode !== "hidden")
+    .sort((a, b) => b.score - a.score || a.place.id.localeCompare(b.place.id));
 
-  for (const { place } of pts) {
-    if (alwaysFull.has(place.id)) continue;
-    if (winners.has(place.id)) {
-      out.set(place.id, mapZoomK >= 1.18 ? "full" : "compact");
-    } else {
-      out.set(place.id, "hidden");
+  for (const pt of candidates) {
+    const box = estimateLabelBox(pt.place, pt.screenX, pt.screenY, pt.mode);
+    if (accepted.some(other => intersects(box, other, gutter))) {
+      out.set(pt.place.id, "hidden");
+      continue;
     }
+    accepted.push(box);
+    out.set(pt.place.id, pt.mode);
   }
 
   for (const { place } of pts) {

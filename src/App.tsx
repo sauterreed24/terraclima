@@ -1,20 +1,17 @@
-import { memo, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { BookOpen, Compass, HelpCircle, Layers, Library, Map, Menu, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
+import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { BookOpen, Compass, HelpCircle, Layers, Library, Map, Menu, Route, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
 import { FilterBar, RANKING_OPTIONS } from "./components/FilterBar";
 import { FootprintPanel } from "./components/FootprintPanel";
 import { TempToggle } from "./components/TempToggle";
-import { PlaceDetail } from "./components/PlaceDetail";
-import { CompareView } from "./components/CompareView";
-import { CollectionsView } from "./components/CollectionsView";
-import { LearnMode } from "./components/LearnMode";
 import { useFocusTrap } from "./hooks/use-focus-trap";
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
 import { useMediaQuery } from "./hooks/use-media-query";
-import { PLACES, PLACES_BY_ID, PLACE_COUNTS, resolvePlaceId } from "./data/places";
+import { PLACES, PLACES_BY_ID, PLACE_COUNTS, resolvePlaceId, warmPlaceSearchIndex } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
+import { CLIMATE_TRIP_THEME_BY_ID } from "./data/climate-trip-themes";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
 import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, type FilterState, type RankingProfile, type RankingResult } from "./lib/scoring";
@@ -22,6 +19,7 @@ import { rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
+import { placeDocumentTitle } from "./lib/site-metadata";
 import { useProse } from "./lib/units";
 import {
   loadPersistedRanking,
@@ -40,7 +38,10 @@ import type { Country, MicroclimateArchetype, Place } from "./types";
 
 const SEARCH_INPUT_ID = "terraclima-place-search";
 const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
-const DOC_TITLE_BASE = "Terraclima — North American Microclimate Atlas";
+const CURATED_SET_BY_ID = {
+  ...Object.fromEntries(Object.entries(COLLECTION_BY_ID).map(([id, c]) => [id, { ...c, kind: "collection" as const }])),
+  ...Object.fromEntries(Object.entries(CLIMATE_TRIP_THEME_BY_ID).map(([id, t]) => [id, { ...t, kind: "trip" as const }])),
+};
 
 function placeForId(id: string): Place | undefined {
   const canonical = resolvePlaceId(id);
@@ -51,14 +52,32 @@ function isPlace(p: Place | undefined): p is Place {
   return p != null;
 }
 
-const URL_INIT = readInitialAppState(
-  PLACES_BY_ID,
-  COLLECTION_BY_ID,
-  ARCHETYPE_BY_ID,
-  resolvePlaceId,
-);
+function readCurrentAppState() {
+  return readInitialAppState(
+    PLACES_BY_ID,
+    CURATED_SET_BY_ID,
+    ARCHETYPE_BY_ID,
+    resolvePlaceId,
+  );
+}
 
-type View = "explorer" | "collections" | "learn";
+type View = "explorer" | "trips" | "collections" | "learn";
+
+const ClimateTripsView = lazy(() =>
+  import("./components/ClimateTripsView").then(module => ({ default: module.ClimateTripsView })),
+);
+const CollectionsView = lazy(() =>
+  import("./components/CollectionsView").then(module => ({ default: module.CollectionsView })),
+);
+const LearnMode = lazy(() =>
+  import("./components/LearnMode").then(module => ({ default: module.LearnMode })),
+);
+const PlaceDetail = lazy(() =>
+  import("./components/PlaceDetail").then(module => ({ default: module.PlaceDetail })),
+);
+const CompareView = lazy(() =>
+  import("./components/CompareView").then(module => ({ default: module.CompareView })),
+);
 
 export default function App() {
   const richVisualEffects = useRichVisualEffects();
@@ -67,23 +86,76 @@ export default function App() {
     return () => document.documentElement.classList.remove("tc-low-power");
   }, [richVisualEffects]);
 
-  const [view, setView] = useState<View>(URL_INIT.view);
-  const [selectedId, setSelectedId] = useState<string | null>(URL_INIT.placeId);
-  const [compareIds, setCompareIds] = useState<Set<string>>(() => new Set(URL_INIT.compareIds));
-  const [compareOpen, setCompareOpen] = useState(false);
-  const [activeCollection, setActiveCollection] = useState<string | null>(URL_INIT.collectionId);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    type IdleDeadlineLike = { timeRemaining?: () => number };
+    const w = window as Window & {
+      requestIdleCallback?: (cb: (deadline: IdleDeadlineLike) => void, opts?: { timeout?: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+
+    let nextIndex = 0;
+    let idleId: number | null = null;
+    let timeoutId: number | null = null;
+    let cancelled = false;
+
+    const cancelPending = () => {
+      if (idleId !== null && w.cancelIdleCallback) w.cancelIdleCallback(idleId);
+      if (timeoutId !== null) window.clearTimeout(timeoutId);
+      idleId = null;
+      timeoutId = null;
+    };
+
+    const schedule = () => {
+      if (cancelled) return;
+      if (w.requestIdleCallback) {
+        idleId = w.requestIdleCallback(run, { timeout: 1500 });
+      } else {
+        timeoutId = window.setTimeout(() => run(), 250);
+      }
+    };
+
+    const run = (deadline?: IdleDeadlineLike) => {
+      if (cancelled) return;
+      idleId = null;
+      timeoutId = null;
+      const remaining = deadline?.timeRemaining?.();
+      const budgetMs = remaining == null ? 6 : Math.max(3, Math.min(12, remaining));
+      nextIndex = warmPlaceSearchIndex(PLACES, nextIndex, budgetMs);
+      if (nextIndex < PLACES.length) schedule();
+    };
+
+    schedule();
+    return () => {
+      cancelled = true;
+      cancelPending();
+    };
+  }, []);
+
+  const initialAppStateRef = useRef<ReturnType<typeof readCurrentAppState> | null>(null);
+  if (initialAppStateRef.current === null) {
+    initialAppStateRef.current = readCurrentAppState();
+  }
+  const initialAppState = initialAppStateRef.current;
+
+  const [view, setView] = useState<View>(initialAppState.view);
+  const [selectedId, setSelectedId] = useState<string | null>(initialAppState.placeId);
+  const [compareIds, setCompareIds] = useState<Set<string>>(() => new Set(initialAppState.compareIds));
+  const [compareOpen, setCompareOpen] = useState(() => initialAppState.compareIds.length >= 2);
+  const [activeCollection, setActiveCollection] = useState<string | null>(initialAppState.collectionId);
   const [filters, setFilters] = useState<FilterState>(() => ({
-    countries: new Set<string>(URL_INIT.countries),
-    archetypes: new Set<MicroclimateArchetype>(URL_INIT.archetypes),
-    fitPresets: new Set(URL_INIT.fitPresets),
-    search: URL_INIT.search,
-    maxSummerHighC: URL_INIT.maxSummerHighC ?? undefined,
-    minWinterLowC: URL_INIT.minWinterLowC ?? undefined,
-    minGrowability: URL_INIT.minGrowability ?? undefined,
-    maxFireRisk: URL_INIT.maxFireRisk ?? undefined,
-    maxOverallRisk: URL_INIT.maxOverallRisk ?? undefined,
+    countries: new Set<string>(initialAppState.countries),
+    archetypes: new Set<MicroclimateArchetype>(initialAppState.archetypes),
+    fitPresets: new Set(initialAppState.fitPresets),
+    search: initialAppState.search,
+    maxSummerHighC: initialAppState.maxSummerHighC ?? undefined,
+    minWinterLowC: initialAppState.minWinterLowC ?? undefined,
+    minGrowability: initialAppState.minGrowability ?? undefined,
+    maxFireRisk: initialAppState.maxFireRisk ?? undefined,
+    maxOverallRisk: initialAppState.maxOverallRisk ?? undefined,
   }));
-  const [ranking, setRankingRaw] = useState<RankingProfile>(() => URL_INIT.ranking ?? loadPersistedRanking());
+  const [ranking, setRankingRaw] = useState<RankingProfile>(() => initialAppState.ranking ?? loadPersistedRanking());
   /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
   const [transientFeedback, setTransientFeedback] = useState<string | null>(null);
   /** Latest place id to be auto-evicted from compare so the feedback can name it. */
@@ -99,7 +171,7 @@ export default function App() {
     setRankingRaw(profile);
     persistRankingProfile(profile);
   }, []);
-  const prevPlaceIdRef = useRef<string | null>(URL_INIT.placeId);
+  const prevPlaceIdRef = useRef<string | null>(initialAppState.placeId);
   /**
    * First-paint URL sync flag. A useRef instead of a module-level mutable
    * so the contract is explicit and there's no shared mutable state across
@@ -115,11 +187,11 @@ export default function App() {
 
   useEffect(() => {
     if (!selectedId) {
-      document.title = DOC_TITLE_BASE;
+      document.title = placeDocumentTitle(null);
       return;
     }
     const p = PLACES_BY_ID[selectedId];
-    document.title = p ? `${p.name} · Terraclima` : DOC_TITLE_BASE;
+    document.title = placeDocumentTitle(p?.name);
   }, [selectedId]);
 
   useEffect(() => {
@@ -139,7 +211,7 @@ export default function App() {
       minGrowability: filters.minGrowability ?? null,
       maxFireRisk: filters.maxFireRisk ?? null,
       maxOverallRisk: filters.maxOverallRisk ?? null,
-      collectionExists: (id: string) => Boolean(COLLECTION_BY_ID[id]),
+      collectionExists: (id: string) => Boolean(CURATED_SET_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
       placeExists: (id: string) => resolvePlaceId(id) != null,
     };
@@ -177,7 +249,7 @@ export default function App() {
       const v = validatedStateFromSearch(
         window.location.search,
         PLACES_BY_ID as Record<string, unknown>,
-        COLLECTION_BY_ID as Record<string, unknown>,
+        CURATED_SET_BY_ID as Record<string, unknown>,
         ARCHETYPE_BY_ID as Record<string, unknown>,
         resolvePlaceId,
       );
@@ -197,6 +269,7 @@ export default function App() {
       });
       setCompareIds(new Set(v.compareIds));
       setRankingRaw(v.ranking ?? loadPersistedRanking());
+      setCompareOpen(v.compareIds.length >= 2);
       prevPlaceIdRef.current = v.placeId;
     };
     window.addEventListener("popstate", onPop);
@@ -227,7 +300,7 @@ export default function App() {
 
   const pool = useMemo(() => {
     if (activeCollection) {
-      const c = COLLECTION_BY_ID[activeCollection];
+      const c = CURATED_SET_BY_ID[activeCollection];
       if (c) return c.placeIds.map(placeForId).filter(isPlace);
     }
     return PLACES;
@@ -239,7 +312,14 @@ export default function App() {
     () => ranking === "live-fit" ? rankLiveFit(filtered, deferredFilters) : rankPlaces(ranking, filtered),
     [ranking, filtered, deferredFilters],
   );
-  const livabilityTopTen = useMemo(() => rankLivabilityPreview(filtered).slice(0, 10), [filtered]);
+  // The hero top-ten is decorative (lives below the map + cards). Defer it
+  // so React can drop a stale render and let the higher-value updates above
+  // commit first when the user is rapidly changing filters.
+  const deferredFiltered = useDeferredValue(filtered);
+  const livabilityTopTen = useMemo(
+    () => rankLivabilityPreview(deferredFiltered).slice(0, 10),
+    [deferredFiltered],
+  );
   const sortTopFive = useMemo(() => ranked.slice(0, 5), [ranked]);
   const rankingLabel = useMemo(
     () => RANKING_OPTIONS.find(o => o.id === ranking)?.label ?? ranking.replace(/-/g, " "),
@@ -323,6 +403,11 @@ export default function App() {
     setCompareOpen(true);
   }, []);
 
+  const comparePlaces = useCallback((ids: string[]) => {
+    setCompareIds(new Set(ids.slice(0, COMPARE_LIMIT)));
+    setCompareOpen(ids.length > 0);
+  }, []);
+
   const pickArchetype = useCallback((a: MicroclimateArchetype) => {
     setFilters(f => ({ ...f, archetypes: new Set([a]) }));
     setActiveCollection(null);
@@ -379,7 +464,14 @@ export default function App() {
     onRandomEmpty,
   });
   const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setView("explorer"); }, [openPlace]);
+  const onOpenPlaceFromTrips = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
+    openPlace(id, opts);
+  }, [openPlace]);
   const onPickCollection = useCallback((id: string) => {
+    setActiveCollection(a => a === id ? null : id);
+    setView("explorer");
+  }, []);
+  const onPickTripTheme = useCallback((id: string) => {
     setActiveCollection(a => a === id ? null : id);
     setView("explorer");
   }, []);
@@ -433,20 +525,21 @@ export default function App() {
                   />
                 </div>
 
-                <div className="hidden md:block text-[11px] text-stone leading-relaxed px-0.5 max-w-3xl space-y-2.5 tc-page-intro">
-                  <p>
-                    <span className="font-medium text-frost">How you learn each place:</span>{" "}
-                    tap any pin or card. A profile opens on the right — that is the full write-up for that microclimate. Scroll it like an article, or use <span className="text-frost font-medium">On this page</span> (snap chips on your phone, a soft rail on wider screens) to jump between sections: opening story, <span className="text-frost font-medium">field dossier</span> (stacked chapters + in-dossier jumps), seasons, geospatial analysis, soil, risks, who it fits, similar stops, and data sources.
-                  </p>
-                  <p>
-                    <span className="font-medium text-frost">Depth you will always see:</span>{" "}
-                    many stops include extra <span className="text-frost font-medium">field notes</span> (longer essays where we have written them). Every stop also gets a <span className="text-frost font-medium">field dossier</span> — one editorial column of chapters (season rhythm, drivers, soil pocket, nearby contrasts when we have them, scouting wrap) with quick jumps at the top, all generated from the same structured data as the charts, so the profile stays one coherent story.
-                  </p>
-                  <p>
-                    <span className="font-medium text-frost">Reading the map:</span>{" "}
-                    fill colour follows the main climate driver; the thin outer ring shows country (US, Canada, Mexico). Scale and driver legend sit in the lower-left on the map frame. Zoom with the controls or scroll — the scale bar updates with zoom.
-                  </p>
-                </div>
+                <section className="hidden md:grid grid-cols-3 gap-3 tc-reader-path" aria-labelledby="reader-path-heading">
+                  <h2 id="reader-path-heading" className="sr-only">How to read Terraclima</h2>
+                  <div>
+                    <div className="tc-reader-path__label">Scout</div>
+                    <p>Open any pin or card for a profile that reads like a field notebook: story first, then charts, risks, soil, sources, and similar places.</p>
+                  </div>
+                  <div>
+                    <div className="tc-reader-path__label">Compare</div>
+                    <p>Use Rank by, filters, Surprise, and four-place compare to move from a continental view to a short list worth reading closely.</p>
+                  </div>
+                  <div>
+                    <div className="tc-reader-path__label">Trust</div>
+                    <p>Scores are screening signals. Confidence notes, citations, and geospatial methods stay visible so readers and agents can audit the trail.</p>
+                  </div>
+                </section>
 
                 <div className="panel-thin p-3 flex items-center justify-between flex-wrap gap-2">
                   {/* Visual count is animated via raf-driven textContent mutation,
@@ -551,6 +644,21 @@ export default function App() {
             </>
           )}
 
+          {view === "trips" && (
+            <div className="flex-1 min-w-0">
+              <div className="max-w-6xl mx-auto">
+                <Suspense fallback={<RouteLoadingFallback label="Loading Climate Trips" />}>
+                  <ClimateTripsView
+                    onOpenPlace={onOpenPlaceFromTrips}
+                    onPickTripTheme={onPickTripTheme}
+                    onComparePlaces={comparePlaces}
+                    activeThemeId={activeCollection && CLIMATE_TRIP_THEME_BY_ID[activeCollection] ? activeCollection : undefined}
+                  />
+                </Suspense>
+              </div>
+            </div>
+          )}
+
           {view === "collections" && (
             <div className="flex-1">
               <div className="max-w-3xl mx-auto">
@@ -558,14 +666,16 @@ export default function App() {
                   <div className="text-xs uppercase tracking-wider text-stone">Curated</div>
                   <h2 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Collections</h2>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
-                    Hand-assembled thematic bundles — the rain shadows, the sky islands, the eternal springs. Pin a collection to constrain the explorer map to just those places.
+                    Hand-assembled routes through the atlas: rain shadows, sky islands, eternal springs, lake snowbelts, and other climate families. Pin one to narrow the map.
                   </p>
                 </div>
-                <CollectionsView
-                  onOpenPlace={onOpenPlaceFromSubview}
-                  onPick={onPickCollection}
-                  activeId={activeCollection ?? undefined}
-                />
+                <Suspense fallback={<RouteLoadingFallback label="Loading Collections" />}>
+                  <CollectionsView
+                    onOpenPlace={onOpenPlaceFromSubview}
+                    onPick={onPickCollection}
+                    activeId={activeCollection ?? undefined}
+                  />
+                </Suspense>
               </div>
             </div>
           )}
@@ -577,10 +687,12 @@ export default function App() {
                   <div className="text-xs uppercase tracking-wider text-stone">Learn</div>
                   <h2 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Field guide</h2>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
-                    The vocabulary of microclimate — concepts like lapse rate, cold-air pooling, orographic lift, and thermal belts — gives you the language to read a landscape and understand why the weather there is the way it is.
+                    Microclimate has a grammar. Lapse rate, cold-air pooling, orographic lift, and thermal belts give readers and agents the words to explain why a place feels unlike its neighbors.
                   </p>
                 </div>
-                <LearnMode onOpenPlace={onOpenPlaceFromSubview} />
+                <Suspense fallback={<RouteLoadingFallback label="Loading Learn" />}>
+                  <LearnMode onOpenPlace={onOpenPlaceFromSubview} />
+                </Suspense>
               </div>
             </div>
           )}
@@ -591,23 +703,49 @@ export default function App() {
 
       </div>
 
-      <PlaceDetail
-        place={selectedPlace}
-        onClose={closeDetail}
-        onCompareToggle={toggleCompare}
-        inCompareIds={compareIds}
-        onPickArchetype={pickArchetype}
-        onOpenPlace={openPlace}
-        liveFitFilters={filters}
-      />
-      <CompareView
-        places={[...compareIds].map(placeForId).filter(isPlace)}
-        open={compareOpen}
-        onClose={closeCompare}
-        onRemove={toggleCompare}
-      />
+      {selectedPlace ? (
+        <Suspense fallback={<OverlayLoadingFallback label={`Loading ${selectedPlace.name}`} />}>
+          <PlaceDetail
+            place={selectedPlace}
+            onClose={closeDetail}
+            onCompareToggle={toggleCompare}
+            inCompareIds={compareIds}
+            onPickArchetype={pickArchetype}
+            onOpenPlace={openPlace}
+            liveFitFilters={filters}
+          />
+        </Suspense>
+      ) : null}
+      {compareOpen ? (
+        <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
+          <CompareView
+            places={[...compareIds].map(placeForId).filter(isPlace)}
+            open={compareOpen}
+            onClose={closeCompare}
+            onRemove={toggleCompare}
+          />
+        </Suspense>
+      ) : null}
 
       {showShortcuts && <ShortcutsOverlay onClose={() => setShowShortcuts(false)} />}
+    </div>
+  );
+}
+
+function RouteLoadingFallback({ label }: { label: string }) {
+  return (
+    <div role="status" aria-live="polite" className="panel-thin p-4 text-sm text-stone-readable">
+      {label}...
+    </div>
+  );
+}
+
+function OverlayLoadingFallback({ label }: { label: string }) {
+  return (
+    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 pointer-events-none" aria-live="polite">
+      <div role="status" className="panel p-4 text-sm text-stone-readable shadow-2xl">
+        {label}...
+      </div>
     </div>
   );
 }
@@ -648,24 +786,25 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
         <div className="divider-contour mb-3" />
         <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
           <Kbds keys={["E"]} />        <span className="text-frost">Explorer</span>
+          <Kbds keys={["T"]} />        <span className="text-frost">Trips</span>
           <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
           <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
           <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
           <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
-          <Kbds keys={["R"]} />        <span className="text-frost">Surprise — random place in your current list</span>
+          <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
           <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail</span>
           <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
         </div>
         <div className="divider-contour my-3" />
         <div className="space-y-2 text-xs text-stone leading-relaxed">
           <p>
-            Phone map: the page scrolls normally first; drag sideways or diagonally to shift the atlas. Tap <strong className="text-frost font-normal">Use map</strong> for all-direction pan or pinch zoom, then tap <strong className="text-frost font-normal">Scroll page</strong> to return to reading.
+            Phone map: one-finger drag pans the atlas and pinch zooms by default. Tap <strong className="text-frost font-normal">Scroll page</strong> when you want browser scrolling over the map, then tap <strong className="text-frost font-normal">Use map</strong> to return to direct map control.
           </p>
           <p>
-            Place profiles: tap any pin or card to open the full write-up. The profile includes the field dossier, seasons, geospatial analysis, soils, risks, similar stops, and data sources.
+            Place profiles: tap any pin or card. Read the opening story, then use On this page to move through practical read, climate tourism, field dossier, seasons, geospatial analysis, soils, risks, similar stops, and sources.
           </p>
           <p>
-            Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header — the URL encodes which place and view to open. Surprise uses the same filtered pool as the cards.
+            Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The URL encodes the place and view. Surprise uses the same filtered pool as the cards.
           </p>
         </div>
       </div>
@@ -754,6 +893,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
     },
     [setView, closeMenu],
   );
+  const compareAriaLabel = `Open compare (${compareCount} ${compareCount === 1 ? "place" : "places"})`;
 
   return (
     <header className="sticky top-0 z-30 tc-header-bar">
@@ -784,13 +924,14 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
 
         <nav className="hidden min-[560px]:flex flex-wrap items-center gap-1.5 min-[560px]:justify-end" aria-label="Primary">
           <NavBtn active={view === "explorer"} onClick={() => setView("explorer")} icon={<Map className="w-3.5 h-3.5" />} label="Explorer" />
+          <NavBtn active={view === "trips"} onClick={() => setView("trips")} icon={<Route className="w-3.5 h-3.5" />} label="Trips" />
           <NavBtn active={view === "collections"} onClick={() => setView("collections")} icon={<Library className="w-3.5 h-3.5" />} label="Collections" />
           <NavBtn active={view === "learn"} onClick={() => setView("learn")} icon={<Compass className="w-3.5 h-3.5" />} label="Learn" />
 
           <TempToggle className="ml-1" />
 
           {compareCount > 0 && (
-            <button type="button" onClick={onOpenCompare} className="btn-primary !text-xs !py-1.5" aria-label={`Open compare (${compareCount} places)`}>
+            <button type="button" onClick={onOpenCompare} className="btn-primary !text-xs !py-1.5" aria-label={compareAriaLabel}>
               <Target className="w-3.5 h-3.5" aria-hidden /> Compare · {compareCount}
             </button>
           )}
@@ -805,7 +946,8 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
           <button
             type="button"
             className="fixed inset-0 z-0 min-h-[100dvh] min-w-[100vw] cursor-default border-0 bg-transparent p-0"
-            aria-label="Close menu"
+            aria-hidden="true"
+            tabIndex={-1}
             onClick={closeMenu}
           />
           <div ref={menuPanelRef} className="relative z-10 tc-site-menu-dialog__inner">
@@ -819,6 +961,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
             </div>
             <div className="flex flex-col gap-2">
               <NavBtn stretch active={view === "explorer"} onClick={() => pickView("explorer")} icon={<Map className="w-4 h-4" />} label="Explorer" />
+              <NavBtn stretch active={view === "trips"} onClick={() => pickView("trips")} icon={<Route className="w-4 h-4" />} label="Trips" />
               <NavBtn stretch active={view === "collections"} onClick={() => pickView("collections")} icon={<Library className="w-4 h-4" />} label="Collections" />
               <NavBtn stretch active={view === "learn"} onClick={() => pickView("learn")} icon={<Compass className="w-4 h-4" />} label="Learn" />
 
@@ -835,7 +978,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
                     onOpenCompare();
                   }}
                   className="btn-primary w-full justify-center !py-2.5 mt-1"
-                  aria-label={`Open compare (${compareCount} places)`}
+                  aria-label={compareAriaLabel}
                 >
                   <Target className="w-4 h-4" aria-hidden /> Compare · {compareCount}
                 </button>
@@ -965,7 +1108,7 @@ const HeroCard = memo(function HeroCard({
   filters: FilterState;
 }) {
   const prose = useProse();
-  const active = activeCollection ? COLLECTION_BY_ID[activeCollection] ?? null : null;
+  const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
   const liveSignalCount = (filters.fitPresets?.size ?? 0) + [
     filters.maxSummerHighC,
     filters.minWinterLowC,
@@ -981,7 +1124,7 @@ const HeroCard = memo(function HeroCard({
             <Sparkles className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
             <span className="text-xs uppercase tracking-wider text-stone-readable">
               {active
-                ? "Collection pinned"
+                ? active.kind === "trip" ? "Trip pinned" : "Collection pinned"
                 : liveSignalCount > 0
                   ? `Live Finder · ${liveSignalCount} signal${liveSignalCount > 1 ? "s" : ""}`
                   : activeArchetypes.size > 0
@@ -990,7 +1133,7 @@ const HeroCard = memo(function HeroCard({
             </span>
             {active && (
               <button type="button" onClick={onClearCollection} className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice">
-                <X className="w-3 h-3" aria-hidden /> Clear collection
+                <X className="w-3 h-3" aria-hidden /> Clear {active.kind === "trip" ? "trip" : "collection"}
               </button>
             )}
             {!active && activeArchetypes.size > 0 && (
@@ -1000,12 +1143,12 @@ const HeroCard = memo(function HeroCard({
             )}
           </div>
           <h1 className="font-atlas text-2xl min-[1400px]:text-3xl text-ice leading-tight text-depth-hero">
-            {active ? active.title : "Scout the continent, one microclimate at a time"}
+            {active ? active.title : "Read the continent by its microclimates"}
           </h1>
-          <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-3 min-[1400px]:line-clamp-none">
+          <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
             {active
               ? active.description
-              : "Rain shadows, sky islands, orchard valleys, chinook corridors, and cool-summer coasts — each write-up ties weather to terrain so you can read a place the way locals do, not just scan numbers."}
+              : "Trace rain shadows, sky islands, orchard valleys, and cool coasts. Each profile ties weather to terrain, season, and lived place."}
           </p>
         </div>
         <div className="flex flex-col items-stretch sm:items-end gap-3 shrink-0">
@@ -1156,13 +1299,13 @@ const Footer = memo(function Footer() {
         <div className="flex items-center gap-3">
           <Layers className="w-3.5 h-3.5" />
           <span>
-            Terraclima is built for curious travelers and serious readers alike. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals ({CLIMATE_NORMALS_PERIOD} where we have them), with WorldClim where we need a wider net. Geospatial screening uses the same terrain–climate framework across the atlas, with Sentinel-2 and Landsat as reference EO families and a relief-texture proxy for where lidar-grade topography would matter most in field work — not live satellite or lidar feeds. Soil sketches lean on SoilGrids and regional soil surveys. Every score ties back to notes on that place; if data are thin, we say so. This is a curated atlas — not a live weather or appraisal feed.
+            Terraclima is a curated atlas, not a live weather, appraisal, or parcel feed. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals ({CLIMATE_NORMALS_PERIOD} where available), with WorldClim as a wider net. Geospatial screening uses consistent terrain-climate logic, Sentinel-2 and Landsat reference families, and a relief-texture proxy; every score points back to place notes, sources, and confidence.
           </span>
         </div>
         <div className="flex items-center gap-3">
           <Search className="w-3.5 h-3.5" />
           <span>
-            {PLACE_COUNTS.total} hand-picked places · editorial refresh {ATLAS_EDITORIAL_SNAPSHOT}
+            {PLACE_COUNTS.total} hand-picked places - editorial refresh {ATLAS_EDITORIAL_SNAPSHOT}
           </span>
         </div>
       </div>

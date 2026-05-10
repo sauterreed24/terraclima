@@ -25,6 +25,7 @@ import { localizeProse } from "../src/lib/units";
 import { PLACES } from "../src/data/places";
 import { CONCEPTS } from "../src/data/glossary";
 import { COLLECTIONS } from "../src/data/collections";
+import { CLIMATE_TRIP_THEMES } from "../src/data/climate-trip-themes";
 import type { Place } from "../src/types";
 
 // ---------- Config ----------
@@ -281,6 +282,21 @@ for (const c of COLLECTIONS) {
   if (c.description) {
     checkUnitResidues(where, c.description);
     checkTypography(where, c.description);
+  }
+}
+for (const t of CLIMATE_TRIP_THEMES) {
+  for (const [field, value] of [
+    ["title", t.title],
+    ["subtitle", t.subtitle],
+    ["description", t.description],
+    ["seasonHint", t.seasonHint],
+    ["monetizationHint", t.monetizationHint ?? ""],
+    ["bestFor", t.bestFor.join(" ")],
+  ] as const) {
+    if (!value) continue;
+    const where = `climate-trip:${t.id}:${field}`;
+    checkUnitResidues(where, value);
+    checkTypography(where, value);
   }
 }
 

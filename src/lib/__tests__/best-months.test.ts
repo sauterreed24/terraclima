@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { computeBestMonths, formatMonthMask, resonantWindowFor } from "../best-months";
+import { computeBestMonths, formatMonthMask, getBestMonths, resonantWindowFor } from "../best-months";
 import { makePlace, makeClimate } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
 
@@ -72,6 +72,21 @@ describe("computeBestMonths", () => {
     const heatC = computeBestMonths(p, "C").find(w => w.id === "heat");
     expect(heatF?.note).toContain("90°F");
     expect(heatC?.note).toContain("32°C");
+  });
+  it("cached best-month reads match the pure builder by unit", () => {
+    const p = makePlace({
+      climate: makeClimate({
+        tempHighC: [10, 12, 16, 22, 28, 33, 35, 34, 30, 24, 16, 10] as Monthly12,
+      }),
+    });
+    const cachedF = getBestMonths(p, "F");
+    expect(cachedF).toEqual(computeBestMonths(p, "F"));
+    expect(getBestMonths(p, "F")).toBe(cachedF);
+
+    const cachedC = getBestMonths(p, "C");
+    expect(cachedC).toEqual(computeBestMonths(p, "C"));
+    expect(cachedC).not.toBe(cachedF);
+    expect(getBestMonths(p, "C")).toBe(cachedC);
   });
 });
 

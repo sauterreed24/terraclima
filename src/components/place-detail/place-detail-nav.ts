@@ -5,6 +5,8 @@
 export const PD = {
   overview: "pd-overview",
   atAGlance: "pd-at-a-glance",
+  practical: "pd-practical-read",
+  tourism: "pd-climate-tourism",
   fieldStory: "pd-field-story",
   deepDives: "pd-deep-dives",
   whyHere: "pd-why-here",
@@ -27,7 +29,8 @@ export const PD = {
 
 import type { Place } from "../../types";
 import { mergeDeepSections } from "../../lib/place-appendix-sections";
-import { computeBestMonths } from "../../lib/best-months";
+import { getBestMonths } from "../../lib/best-months";
+import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../../lib/practical-read";
 
 export interface PlaceNavItem {
   id: string;
@@ -36,9 +39,14 @@ export interface PlaceNavItem {
 
 /** Builds the table of contents for the current place (conditional sections omitted). */
 export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
+  const nearbyRows = buildNearbyContextRows(place);
+  const settlementAnchors = buildSettlementAnchors(place);
+  const activities = buildPracticalActivities(place);
   const items: PlaceNavItem[] = [
     { id: PD.overview, label: "Opening" },
     { id: PD.atAGlance, label: "At a glance" },
+    { id: PD.practical, label: "Practical read" },
+    { id: PD.tourism, label: "Climate tourism" },
     { id: PD.fieldStory, label: "Field story" },
   ];
 
@@ -51,7 +59,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
     { id: PD.rhythm, label: "Seasonal rhythm" },
   );
 
-  if (computeBestMonths(place).length > 0) {
+  if (getBestMonths(place).length > 0) {
     items.push({ id: PD.bestMonths, label: "Best months" });
   }
 
@@ -62,7 +70,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
     { id: PD.signature, label: "Climate signature" },
   );
 
-  if (place.localContrast?.length || place.nearbyContrasts?.length) {
+  if (nearbyRows.length) {
     items.push({ id: PD.contrast, label: "Local contrast" });
   }
 
@@ -73,10 +81,10 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
     { id: PD.who, label: "Who fits" },
   );
 
-  if (place.settlementsWithinZone?.length) {
-    items.push({ id: PD.settlements, label: "Settlements" });
+  if (settlementAnchors.length) {
+    items.push({ id: PD.settlements, label: "Scouting bases" });
   }
-  if (place.thingsToDo?.length) {
+  if (activities.length) {
     items.push({ id: PD.activities, label: "Things to do" });
   }
 
