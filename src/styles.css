@@ -776,6 +776,9 @@
   .tc-reader-path > div:nth-of-type(3) {
     border-left-color: rgba(61, 143, 85, 0.42);
   }
+  .tc-reader-path > div:nth-of-type(4) {
+    border-left-color: rgba(94, 95, 180, 0.42);
+  }
   .tc-reader-path__label {
     margin-bottom: 0.25rem;
     font-size: 0.625rem;
@@ -788,6 +791,68 @@
     font-size: 0.78rem;
     line-height: 1.55;
     color: var(--color-frost);
+  }
+
+  .tc-commercial-panel {
+    overflow: hidden;
+    border-color: rgba(26, 143, 168, 0.28);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 1) inset,
+      0 14px 40px -18px rgba(26, 143, 168, 0.16),
+      0 0 0 1px rgba(94, 196, 220, 0.1) inset;
+  }
+  .tc-commercial-panel__icon,
+  .tc-offer-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex: 0 0 auto;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(26, 143, 168, 0.22);
+    background: rgba(232, 248, 251, 0.78);
+    color: var(--color-glacier-700);
+  }
+  .tc-commercial-panel__place {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0.6rem;
+    align-items: start;
+    min-width: 0;
+    padding: 0.45rem 0.5rem;
+    border-radius: 0.65rem;
+    background: rgba(255, 253, 248, 0.64);
+    border: 1px solid rgba(195, 165, 138, 0.22);
+  }
+  .tc-pro-hero {
+    position: relative;
+  }
+  .tc-offer-card {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 360px;
+  }
+  .tc-pro-shortlist-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    width: 100%;
+    min-width: 0;
+    padding: 0.65rem 0.7rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(195, 165, 138, 0.3);
+    background: rgba(255, 253, 248, 0.76);
+    text-align: left;
+    transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+  }
+  .tc-pro-shortlist-row:hover {
+    transform: translateY(-1px);
+    border-color: rgba(26, 143, 168, 0.42);
+    background: rgba(255, 255, 255, 0.94);
+  }
+  .tc-pro-shortlist-row:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
   }
 
   .panel {
