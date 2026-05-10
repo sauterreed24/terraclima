@@ -16,10 +16,11 @@ describe("parseAppSearch", () => {
   it("rejects unknown view values", () => {
     expect(parseAppSearch("?v=spaceship")).toEqual({});
   });
-  it("accepts 'trips', 'collections', and 'learn' as views", () => {
+  it("accepts 'trips', 'collections', 'learn', and 'pro' as views", () => {
     expect(parseAppSearch("?v=trips")).toEqual({ view: "trips" });
     expect(parseAppSearch("?v=collections")).toEqual({ view: "collections" });
     expect(parseAppSearch("?v=learn")).toEqual({ view: "learn" });
+    expect(parseAppSearch("?v=pro")).toEqual({ view: "pro" });
   });
   it("captures p (place) and col (collection)", () => {
     expect(parseAppSearch("?p=foo&col=bar")).toEqual({ placeId: "foo", collectionId: "bar" });
@@ -54,6 +55,9 @@ describe("validatedStateFromSearch", () => {
   });
   it("validates trips as a top-level view", () => {
     expect(validatedStateFromSearch("?v=trips", places, collections).view).toBe("trips");
+  });
+  it("validates pro as a top-level view", () => {
+    expect(validatedStateFromSearch("?v=pro", places, collections).view).toBe("pro");
   });
   it("returns null placeId when the id is unknown", () => {
     expect(validatedStateFromSearch("?p=missing", places, collections).placeId).toBeNull();
@@ -94,6 +98,9 @@ describe("formatAppRelativeUrl", () => {
     expect(
       formatAppRelativeUrl({ view: "collections", placeId: null, collectionId: null, collectionExists: ce }),
     ).toBe("/?v=collections");
+    expect(
+      formatAppRelativeUrl({ view: "pro", placeId: null, collectionId: null, collectionExists: ce }),
+    ).toBe("/?v=pro");
   });
   it("includes ?p= when set", () => {
     expect(

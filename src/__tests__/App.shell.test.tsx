@@ -17,6 +17,10 @@ vi.mock("../components/ClimateTripsView", () => ({
   ClimateTripsView: () => <div data-testid="climate-trips-view">Climate Trips mocked</div>,
 }));
 
+vi.mock("../components/ProView", () => ({
+  ProView: () => <div data-testid="pro-view">Pro mocked</div>,
+}));
+
 vi.mock("../components/CompareView", () => ({
   CompareView: ({ places, open }: { places: Array<{ id: string }>; open: boolean }) =>
     open && places.length > 0 ? (
@@ -55,16 +59,33 @@ describe("App shell", () => {
     expect(screen.getAllByRole("button", { name: "Trips" }).length).toBeGreaterThan(0);
   }, 15000);
 
+  it("renders Pro in the primary navigation", () => {
+    renderApp();
+    expect(screen.getAllByRole("button", { name: "Pro" }).length).toBeGreaterThan(0);
+  }, 15000);
+
   it("opens the Trips view from navigation", async () => {
     renderApp();
     fireEvent.click(screen.getAllByRole("button", { name: "Trips" })[0]);
     expect(await screen.findByTestId("climate-trips-view")).toBeInTheDocument();
   }, 15000);
 
+  it("opens the Pro view from navigation", async () => {
+    renderApp();
+    fireEvent.click(screen.getAllByRole("button", { name: "Pro" })[0]);
+    expect(await screen.findByTestId("pro-view")).toBeInTheDocument();
+  }, 15000);
+
   it("loads ?v=trips directly", async () => {
     window.history.replaceState(null, "", "/?v=trips");
     renderApp();
     expect(await screen.findByTestId("climate-trips-view")).toBeInTheDocument();
+  }, 15000);
+
+  it("loads ?v=pro directly", async () => {
+    window.history.replaceState(null, "", "/?v=pro");
+    renderApp();
+    expect(await screen.findByTestId("pro-view")).toBeInTheDocument();
   }, 15000);
 
   it("falls back to Explorer for unknown view values", () => {

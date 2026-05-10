@@ -26,6 +26,12 @@ describe("app-url state", () => {
     expect(p.maxOverallRisk).toBe("elevated");
   });
 
+  it("round-trips the Pro top-level view", () => {
+    const p = parseAppSearch("?v=pro");
+    expect(p.view).toBe("pro");
+    expect(validatedStateFromSearch("?v=pro", {}, {}).view).toBe("pro");
+  });
+
   it("validates against unknown ids and drops them", () => {
     const places = { foo: 1, bar: 1 } as Record<string, unknown>;
     const collections = {} as Record<string, unknown>;
