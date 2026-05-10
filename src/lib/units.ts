@@ -229,7 +229,7 @@ function isDeltaContext(text: string, idx: number, len: number): boolean {
   if (DELTA_BEFORE_PAT.test(before)) return true;
   // Explicit phrasings commonly used for deltas — allow scanning both
   // windows jointly because these phrases are unambiguous.
-  if (/\b(thermal window|annual range|annual swing|daily range|diurnal swing|temperature (?:range|difference|spread|gap|swing))\b/.test(before + " " + after)) return true;
+  if (/\b(thermal windows?|annual (?:temperature )?ranges?|annual swings?|daily ranges?|diurnal swings?|temperature (?:ranges?|differences?|spreads?|gaps?|swings?))\b/.test(before + " " + after)) return true;
   return false;
 }
 
@@ -240,6 +240,12 @@ function parseSigned(n: string): number {
 
 function formatLocalized(valueF: number, explicitSign: boolean): string {
   const rounded = Math.round(valueF);
+  const sign = rounded < 0 ? "\u2212" : (explicitSign && rounded > 0 ? "+" : "");
+  return `${sign}${Math.abs(rounded)}`;
+}
+
+function formatLocalizedDecimal(valueF: number, explicitSign: boolean, digits = 1): string {
+  const rounded = Number(valueF.toFixed(digits));
   const sign = rounded < 0 ? "\u2212" : (explicitSign && rounded > 0 ? "+" : "");
   return `${sign}${Math.abs(rounded)}`;
 }
@@ -267,12 +273,21 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
 
   // --- Temperature (°C → °F) ---
   if (unit === "F") {
+    // Lapse-rate shorthand is a temperature delta per vertical distance, not
+    // an absolute reading. Convert common °C/km and °C per 1000 m forms to
+    // the familiar °F per 1,000 ft expression.
+    const lapseRatePat = /([-+\u2212]?\d+(?:\.\d+)?)\s*\u00b0\s*C\s*(?:\/\s*km|per\s+1,?000\s*m)\b/gi;
+    text = text.replace(lapseRatePat, (_m, n: string) => {
+      const per1000Ft = (parseSigned(n) * 9) / 5 / 3.28084;
+      return `${formatLocalizedDecimal(per1000Ft, n.startsWith("+"))}\u00b0F per 1,000 ft`;
+    });
+
     // Decade shorthand before numeric passes: "20s °C", "20s Celsius" → N0–N9 °C band (e.g. 20s → 20–29 °C).
     const decadeBandToF = (tensStart: string, full: string): string => {
       const lo = parseInt(tensStart, 10);
       if (!Number.isFinite(lo) || lo < 10 || lo > 90 || lo % 10 !== 0) return full;
       const hi = lo + 9;
-      return `${Math.round(cToF(lo))}\u2013${Math.round(cToF(hi))}\u00b0F`;
+      return `${Math.round(cToF(lo))}\u2013${Math.round(cToF(hi))}\u00b0F range`;
     };
     text = text.replace(/\b([1-9]0)s\s*\u00b0\s*C\b/gi, (m, tens: string) => decadeBandToF(tens, m));
     text = text.replace(/\b([1-9]0)s\s+Celsius\b/gi, (m, tens: string) => decadeBandToF(tens, m));
@@ -428,31 +443,31 @@ function localizeDistanceProse(text: string): string {
   // passes so we consume the entire phrase ("980 meters" stays a single match
   // instead of matching "980 m" and orphaning "eters").
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s+met(?:er|re)s?\b/gi,
-    (_m, n: string) => {
+    /(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s+met(?:er|re)s?\b/gi,
+    (_m, n: string, plus: string) => {
       const ft = parseLooseNum(n) * 3.28084;
-      return `${formatUSNumber(ft)} feet`;
+      return `${formatUSNumber(ft)}${plus} feet`;
     }
   );
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s+kilomet(?:er|re)s?\b/gi,
-    (_m, n: string) => {
+    /(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s+kilomet(?:er|re)s?\b/gi,
+    (_m, n: string, plus: string) => {
       const mi = parseLooseNum(n) * 0.621371;
-      return `${formatUSNumber(mi, mi < 10 ? 1 : 0)} miles`;
+      return `${formatUSNumber(mi, mi < 10 ? 1 : 0)}${plus} miles`;
     }
   );
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s+centimet(?:er|re)s?\b/gi,
-    (_m, n: string) => {
+    /(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s+centimet(?:er|re)s?\b/gi,
+    (_m, n: string, plus: string) => {
       const inches = parseLooseNum(n) / 2.54;
-      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)} inches`;
+      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}${plus} inches`;
     }
   );
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s+millimet(?:er|re)s?\b/gi,
-    (_m, n: string) => {
+    /(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s+millimet(?:er|re)s?\b/gi,
+    (_m, n: string, plus: string) => {
       const inches = parseLooseNum(n) / 25.4;
-      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)} inches`;
+      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}${plus} inches`;
     }
   );
 

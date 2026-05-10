@@ -136,12 +136,19 @@ describe("localizeProse — temperatures", () => {
   it("treats explicit deltas as 9/5 (no +32)", () => {
     expect(localizeProse("The town runs 3°C cooler than the basin.", "F", "metric")).toContain("5°F cooler");
   });
+  it("treats annual ranges and lapse rates as deltas, not absolute readings", () => {
+    expect(localizeProse("Annual ranges under 10°C.", "F", "metric")).toBe("Annual ranges under 18°F.");
+    expect(localizeProse("Annual temperature ranges exceed 55°C.", "F", "metric")).toBe("Annual temperature ranges exceed 99°F.");
+    expect(localizeProse("Elevation lapse rate (~6.5°C / km).", "F", "imperial")).toBe("Elevation lapse rate (~3.6°F per 1,000 ft).");
+    expect(localizeProse("Temperature drops roughly 6.5°C per 1000 m of rise.", "F", "imperial")).toBe("Temperature drops roughly 3.6°F per 1,000 ft of rise.");
+  });
   it("is a no-op when target unit is C", () => {
     const text = "Highs reach 25°C in July.";
     expect(localizeProse(text, "C", "metric")).toBe(text);
   });
   it("converts decade shorthand (20s °C → mid-60s to mid-70s °F band)", () => {
-    expect(localizeProse("Summers stay in the 20s°C.", "F", "metric")).toContain("68–84°F");
+    expect(localizeProse("Summers stay in the 20s°C.", "F", "metric")).toContain("68–84°F range");
+    expect(localizeProse("Highs rarely leave the 20s °C.", "F", "metric")).toBe("Highs rarely leave the 68–84°F range.");
   });
 });
 
@@ -159,6 +166,9 @@ describe("localizeProse — distances", () => {
   });
   it("converts elevations with vocabulary cues", () => {
     expect(localizeProse("The town sits at 1,500 m.", "F", "imperial")).toContain("4,921 ft");
+  });
+  it("preserves plus thresholds when localizing spelled metric lengths", () => {
+    expect(localizeProse("5+ meters of annual snow.", "F", "imperial")).toContain("16+ feet");
   });
   it("converts threshold elevations and sensor-resolution metre claims", () => {
     expect(localizeProse("At more than 2,200 m, Los Alamos keeps strong night cooling.", "F", "imperial")).toContain("7,218 ft");
