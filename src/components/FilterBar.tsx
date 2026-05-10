@@ -1,9 +1,10 @@
 import { memo, useCallback, type Dispatch, type SetStateAction } from "react";
-import type { Country, MicroclimateArchetype } from "../types";
+import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
 import type { FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
 import { RANKING_OPTIONS } from "../lib/ranking-options";
+import { LIVE_FIT_PRESETS, type LiveFitPresetId } from "../lib/live-fit";
 import { Check, Search, X } from "lucide-react";
 import { useProse } from "../lib/units";
 
@@ -43,9 +44,31 @@ export const FilterBar = memo(function FilterBar({
       return { ...f, archetypes: ns };
     });
   }, [setFilters]);
+  const toggleFitPreset = useCallback((id: LiveFitPresetId) => {
+    setFilters(f => {
+      const ns = new Set(f.fitPresets ?? []);
+      if (ns.has(id)) ns.delete(id); else ns.add(id);
+      return { ...f, fitPresets: ns };
+    });
+  }, [setFilters]);
+  const setLiveNumber = useCallback((key: "maxSummerHighC" | "minWinterLowC" | "minGrowability", value: number | undefined) => {
+    setFilters(f => ({ ...f, [key]: value }));
+  }, [setFilters]);
+  const setLiveRisk = useCallback((key: "maxFireRisk" | "maxOverallRisk", value: RiskLevel | undefined) => {
+    setFilters(f => ({ ...f, [key]: value }));
+  }, [setFilters]);
 
-  const hasAny = filters.countries.size > 0 || filters.archetypes.size > 0 || (filters.search?.length ?? 0) > 0;
-  const clearAll = useCallback(() => setFilters({ countries: new Set(), archetypes: new Set(), search: "" }), [setFilters]);
+  const hasAny =
+    filters.countries.size > 0 ||
+    filters.archetypes.size > 0 ||
+    (filters.fitPresets?.size ?? 0) > 0 ||
+    (filters.search?.length ?? 0) > 0 ||
+    filters.maxSummerHighC != null ||
+    filters.minWinterLowC != null ||
+    filters.minGrowability != null ||
+    filters.maxFireRisk != null ||
+    filters.maxOverallRisk != null;
+  const clearAll = useCallback(() => setFilters({ countries: new Set(), archetypes: new Set(), fitPresets: new Set(), search: "" }), [setFilters]);
 
   return (
     <div className="panel contour-bg atlas-filter-dock p-3 space-y-3">
@@ -76,6 +99,86 @@ export const FilterBar = memo(function FilterBar({
           </button>
         )}
       </label>
+
+      <div className="rounded-xl border border-[rgba(26,143,168,0.2)] bg-[rgba(232,248,251,0.42)] p-2.5 space-y-2">
+        <div className="flex items-center justify-between gap-2">
+          <div>
+            <div className="text-[10px] uppercase tracking-wider text-stone-readable">Live Finder</div>
+            <div className="text-[11px] text-stone-readable leading-snug">Pick the life you are scouting for; cards explain fit and tradeoffs.</div>
+          </div>
+          {(filters.fitPresets?.size ?? 0) > 0 ? (
+            <button
+              type="button"
+              onClick={() => setFilters({ ...filters, fitPresets: new Set() })}
+              className="text-stone hover:text-ice normal-case text-[11px] tracking-normal shrink-0"
+            >
+              clear
+            </button>
+          ) : null}
+        </div>
+        <div className="flex flex-wrap gap-1.5">
+          {LIVE_FIT_PRESETS.map(preset => {
+            const isActive = filters.fitPresets?.has(preset.id) ?? false;
+            return (
+              <button
+                key={preset.id}
+                type="button"
+                onClick={() => toggleFitPreset(preset.id)}
+                className="chip chip-btn"
+                data-tone={isActive ? "glacier" : undefined}
+                data-active={isActive}
+                aria-pressed={isActive}
+                title={preset.description}
+              >
+                {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
+                {preset.label}
+              </button>
+            );
+          })}
+        </div>
+        <div className="grid grid-cols-1 gap-2">
+          <ConstraintRow
+            label="Summer cap"
+            value={filters.maxSummerHighC}
+            options={[
+              { label: "None", value: undefined },
+              { label: "<= 22C", value: 22 },
+              { label: "<= 26C", value: 26 },
+            ]}
+            onPick={v => setLiveNumber("maxSummerHighC", v)}
+          />
+          <ConstraintRow
+            label="Winter floor"
+            value={filters.minWinterLowC}
+            options={[
+              { label: "None", value: undefined },
+              { label: ">= -5C", value: -5 },
+              { label: ">= 0C", value: 0 },
+            ]}
+            onPick={v => setLiveNumber("minWinterLowC", v)}
+          />
+          <ConstraintRow
+            label="Garden floor"
+            value={filters.minGrowability}
+            options={[
+              { label: "None", value: undefined },
+              { label: "65+", value: 65 },
+              { label: "75+", value: 75 },
+            ]}
+            onPick={v => setLiveNumber("minGrowability", v)}
+          />
+          <RiskConstraintRow
+            label="Fire ceiling"
+            value={filters.maxFireRisk}
+            onPick={v => setLiveRisk("maxFireRisk", v)}
+          />
+          <RiskConstraintRow
+            label="Risk ceiling"
+            value={filters.maxOverallRisk}
+            onPick={v => setLiveRisk("maxOverallRisk", v)}
+          />
+        </div>
+      </div>
 
       <div>
         <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Rank by</div>
@@ -164,3 +267,79 @@ export const FilterBar = memo(function FilterBar({
     </div>
   );
 });
+
+function ConstraintRow({
+  label,
+  value,
+  options,
+  onPick,
+}: {
+  label: string;
+  value: number | undefined;
+  options: { label: string; value: number | undefined }[];
+  onPick: (value: number | undefined) => void;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="text-[10px] uppercase tracking-wider text-stone-readable shrink-0">{label}</span>
+      <div className="flex flex-wrap justify-end gap-1">
+        {options.map(opt => {
+          const active = value === opt.value;
+          return (
+            <button
+              key={`${label}-${opt.label}`}
+              type="button"
+              onClick={() => onPick(opt.value)}
+              className="chip chip-btn"
+              data-tone={active ? "sage" : undefined}
+              data-active={active}
+              aria-pressed={active}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function RiskConstraintRow({
+  label,
+  value,
+  onPick,
+}: {
+  label: string;
+  value: RiskLevel | undefined;
+  onPick: (value: RiskLevel | undefined) => void;
+}) {
+  const options: { label: string; value: RiskLevel | undefined }[] = [
+    { label: "None", value: undefined },
+    { label: "Low", value: "low" },
+    { label: "Moderate", value: "moderate" },
+    { label: "Elevated", value: "elevated" },
+  ];
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="text-[10px] uppercase tracking-wider text-stone-readable shrink-0">{label}</span>
+      <div className="flex flex-wrap justify-end gap-1">
+        {options.map(opt => {
+          const active = value === opt.value;
+          return (
+            <button
+              key={`${label}-${opt.label}`}
+              type="button"
+              onClick={() => onPick(opt.value)}
+              className="chip chip-btn"
+              data-tone={active ? "ochre" : undefined}
+              data-active={active}
+              aria-pressed={active}
+            >
+              {opt.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

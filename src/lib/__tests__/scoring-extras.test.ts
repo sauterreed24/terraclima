@@ -62,6 +62,7 @@ describe("rankLivabilityPreview", () => {
 describe("rankPlaces — empty pool", () => {
   it("returns [] for every profile", () => {
     const profiles = [
+      "live-fit",
       "coolest-summers", "mildest-winters", "best-shoulder-seasons",
       "driest-air", "best-growability", "hidden-gems", "most-unique",
       "lowest-fire-risk", "climate-resilient", "best-four-season",

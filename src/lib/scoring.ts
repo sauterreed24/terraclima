@@ -13,6 +13,7 @@ import {
   meanJanLow,
   getAnnualPrecipMm,
 } from "./climate-metrics";
+import { assessLiveFit, liveFitFilterPass, type LiveFitPresetId } from "./live-fit";
 
 // Re-exported so the public surface of scoring.ts stays unchanged for callers
 // (components, charts, tests) that previously imported these from here.
@@ -43,6 +44,7 @@ export const LIVABILITY_PENALTIES = {
 } as const;
 
 export type RankingProfile =
+  | "live-fit"
   | "coolest-summers"
   | "mildest-winters"
   | "best-shoulder-seasons"
@@ -142,6 +144,10 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
     const diurnal = p.climate.diurnalSummerC ?? (p.climate.tempHighC[6] - p.climate.tempLowC[6]);
 
     switch (profile) {
+      case "live-fit": {
+        const fit = assessLiveFit(p);
+        return { place: p, score: fit.score, note: `${fit.score}/100 live-here fit · ${fit.reasons[0]}` };
+      }
       case "coolest-summers": {
         const s = Math.max(0, 100 - Math.max(0, summerHigh - k.coolSummerIdealHighC) * k.coolSummerPerDegC);
         return { place: p, score: s, note: `Mean summer high ${summerHigh.toFixed(1)}°C` };
@@ -228,9 +234,13 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
 export interface FilterState {
   countries: Set<string>;
   archetypes: Set<MicroclimateArchetype>;
+  fitPresets?: Set<LiveFitPresetId>;
   minElevation?: number;
   maxElevation?: number;
+  maxSummerHighC?: number;
+  minWinterLowC?: number;
   maxFireRisk?: RiskLevel;
+  maxOverallRisk?: RiskLevel;
   minGrowability?: number;
   search?: string;
 }
@@ -248,6 +258,7 @@ export function applyFilters(places: Place[], f: FilterState): Place[] {
   for (const p of places) {
     if (hasCountries && !f.countries.has(p.country)) continue;
     if (hasArchetypes && !p.archetypes.some(a => f.archetypes.has(a))) continue;
+    if (!liveFitFilterPass(p, f)) continue;
     if (f.minElevation !== undefined && p.elevationM < f.minElevation) continue;
     if (f.maxElevation !== undefined && p.elevationM > f.maxElevation) continue;
     if (hasMaxFire && RISK_VALUE[p.risks.wildfire.level] > maxFireVal) continue;

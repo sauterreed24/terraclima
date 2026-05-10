@@ -26,10 +26,10 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 
 ## What It Does
 
-- **Explorer map:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
+- **Live Finder explorer:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. The Live Finder layer adds presets for cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, and quiet small-town scouting, plus hard constraints for summer high, winter low, growability, fire risk, and overall risk. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
 - **Phone-safe map interaction:** Mobile users can scroll the page normally over the map by default, while sideways or diagonal one-finger drags pan the atlas without entering a separate mode. Tapping **Use map** switches into explicit map mode for all-direction one-finger pan, two-finger pinch zoom, plus/minus zoom, Fit, clusters, and the compact legend; tapping **Scroll page** gives control back to the page.
-- **Place profiles:** Long-form dossiers for each microclimate, including seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, citations, and confidence notes.
-- **Ranking lenses:** Sort by hidden gems, coolest summers, mildest winters, shoulder seasons, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
+- **Place profiles:** Long-form dossiers for each microclimate, including seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, live-here fit reasons/cautions, settlement anchors, things to do, citations, and confidence notes.
+- **Ranking lenses:** Sort by live-here fit, hidden gems, coolest summers, mildest winters, shoulder seasons, growability, low fire risk, diurnal sleep climate, geospatial signal, monsoon drama, wet-forest refuges, Mediterranean-like conditions, and more.
 - **Comparison workflow:** Compare up to four places side by side with climate ribbons, derived scores, responsive columns, and focus-managed modal behavior.
 - **Collections and learning mode:** Curated bundles and a glossary connect mechanisms such as lapse rate, cold-air pooling, orographic lift, marine layer, foehn winds, thermal belts, and karst hydrology to real places.
 - **Unit-aware prose:** The corpus is authored in metric climate language while the interface localizes temperatures, ranges, deltas, precipitation, snowfall, elevation, wind speed, and distance for the active unit system.
@@ -42,6 +42,7 @@ Terraclima combines editorial research with deterministic analysis. The app does
 - **Terrain and exposure:** Elevation, relief, slope context, coastal influence, mountain barriers, valley geometry, and regional position inform the atlas narrative.
 - **Climate normals:** Monthly temperature, precipitation, snowfall, seasonality, diurnal range, and regional climate class anchor each profile.
 - **Risk and resilience:** Fire, heat, drought, flood, humidity, wind, snow, water stress, and long-term climate pressure are framed as decision signals, not guarantees.
+- **Live-here scoring:** `src/lib/live-fit.ts` deterministically blends comfort, resilience, hazards, growability, hidden-gem signal, selected presets, and user constraints into a match score with human-readable reasons and cautions. It does not use live feeds, parcel appraisal, insurance advice, or medical heat-stress modeling.
 - **Geospatial screening:** Deterministic scores explain where remote-sensing indices, thermal contrast, snow cover, moisture signals, burn history, or relief texture would likely add interpretive value.
 - **Local contrasts:** Profiles emphasize nearby differences, because microclimate only becomes meaningful when compared against the surrounding landscape.
 
@@ -74,6 +75,8 @@ Terraclima uses structured editorial research supported by public climate and ge
 - **Relief texture:** A separate screening score highlights where public topography and atlas archetypes suggest finer terrain data would materially improve interpretation.
 
 Every place carries citations and confidence notes. Derived scores are deliberately conservative. Where the corpus is interpretive rather than measurement-grade, the interface says so.
+
+The current corpus covers **226** North American places, including **8 Tier A flagships** and **54 Tier B deeper relocation/travel candidates**. Tier A/B entries are sanity-checked for confidence notes, at least two URL-backed citations, and deep-section coverage; the latest pass added Port Orford / Cape Blanco, Klamath Falls / Upper Klamath Basin, Los Alamos / Pajarito Plateau, Lander / Sinks Canyon, Atlin Lake, Fernie / Elk Valley, Valle de Bravo, and Zacatlan de las Manzanas, while promoting or deepening Nelson, Patzcuaro, Todos Santos, Tapalpa, and Mazamitla.
 
 ## Stack
 

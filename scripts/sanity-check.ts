@@ -165,10 +165,21 @@ for (const p of PLACES) {
     const seenIds = new Map<string, number>();
     for (const s of p.deepSections) {
       seenIds.set(s.id, (seenIds.get(s.id) ?? 0) + 1);
+      if (!s.title.trim()) report(p.id, "ERROR", `deepSection "${s.id}" has empty title`);
+      if (s.paragraphs.length < 1) report(p.id, "ERROR", `deepSection "${s.id}" has no paragraphs`);
+      for (const [i, para] of s.paragraphs.entries()) {
+        if (para.trim().length < 80) report(p.id, "ERROR", `deepSection "${s.id}" paragraph ${i + 1} too short`);
+      }
     }
     for (const [sid, n] of seenIds) {
       if (n > 1) report(p.id, "ERROR", `deepSection id "${sid}" appears ${n}× within this place`);
     }
+  }
+  if (p.tier === "A" && (p.deepSections?.length ?? 0) < 3) {
+    report(p.id, "ERROR", `tier A place has fewer than 3 deepSections`);
+  }
+  if (p.tier === "B" && (p.deepSections?.length ?? 0) < 2) {
+    report(p.id, "ERROR", `tier B place has fewer than 2 deepSections`);
   }
 
   // --- Required prose fields ---
@@ -212,6 +223,15 @@ for (const p of PLACES) {
     report(p.id, "ERROR", `no citations`);
   } else if (p.citations.length === 1 && p.tier !== "C") {
     report(p.id, "WARN", `only one citation for tier ${p.tier} place`);
+  }
+  if (p.tier === "A" || p.tier === "B") {
+    if (!p.confidenceNotes?.trim()) {
+      report(p.id, "ERROR", `tier ${p.tier} place missing confidenceNotes`);
+    }
+    const urlCitationCount = p.citations.filter(c => /^https?:\/\//.test(c.url ?? "")).length;
+    if (urlCitationCount < 2) {
+      report(p.id, "ERROR", `tier ${p.tier} place has ${urlCitationCount} URL citations, expected at least 2`);
+    }
   }
 
   // --- Hardiness zone sanity vs Jan low ---

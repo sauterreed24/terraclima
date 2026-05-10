@@ -102,6 +102,30 @@ describe("applyFilters", () => {
   it("filters by elevation range (inclusive)", () => {
     expect(applyFilters(pool, f({ minElevation: 1000, maxElevation: 2000 })).map(p => p.id)).toEqual(["b"]);
   });
+  it("filters by live-fit climate and risk constraints", () => {
+    const coolLowRisk = makePlace({
+      id: "cool-low-risk",
+      climate: makeClimate({ tempHighC: [5, 7, 10, 14, 18, 20, 21, 20, 17, 12, 8, 5] as Monthly12 }),
+      risks: {
+        ...a.risks,
+        wildfire: { level: "low" },
+      },
+    });
+    const hotHighRisk = makePlace({
+      id: "hot-high-risk",
+      climate: makeClimate({ tempHighC: [12, 15, 20, 25, 31, 36, 38, 37, 32, 25, 18, 13] as Monthly12 }),
+      risks: {
+        ...a.risks,
+        wildfire: { level: "high" },
+      },
+    });
+    expect(
+      applyFilters(
+        [coolLowRisk, hotHighRisk],
+        f({ maxSummerHighC: 24, maxFireRisk: "moderate" }),
+      ).map(p => p.id),
+    ).toEqual(["cool-low-risk"]);
+  });
   it("preserves input order", () => {
     expect(applyFilters([c, a, b], f()).map(p => p.id)).toEqual(["c", "a", "b"]);
   });

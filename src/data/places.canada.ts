@@ -330,6 +330,7 @@ export const PLACES_CANADA: Place[] = [
     whoWouldLove: "Canadians seeking the mildest climate in their country.",
     whoMightNot: "Those wanting hot summers or real snow.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because ECCC normals, federal terrain/soil context, and atlas relief reasoning agree; site exposure, wildfire smoke, and winter maintenance still need local checks.",
     deepSections: [
       {
         id: "victoria-olympic-shadow",
@@ -401,6 +402,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["surfers", "rainforest people"], travelFit: ["storm watching", "surfing"],
     whoWouldLove: "Ocean-obsessed souls.", whoMightNot: "Sun lovers.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because ECCC normals, federal terrain/soil context, and atlas relief reasoning agree; site exposure, wildfire smoke, and winter maintenance still need local checks.",
     deepSections: [
       {
         id: "tofino-open-pacific",
@@ -473,6 +475,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families", "university communities"], travelFit: ["wine trails", "tidal bore", "apple blossom"],
     whoWouldLove: "Fruit-country romantics; Maritimes lovers.", whoMightNot: "Those wanting mild winters.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because ECCC normals, federal terrain/soil context, and atlas relief reasoning agree; site exposure, wildfire smoke, and winter maintenance still need local checks.",
     deepSections: [
       {
         id: "wolfville-ridge-shelter",
@@ -544,6 +547,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers", "food-focused families"], travelFit: ["wine country", "Shaw Festival"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Those wanting true mild winters or dry summers.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because ECCC normals, federal terrain/soil context, and atlas relief reasoning agree; site exposure, wildfire smoke, and winter maintenance still need local checks.",
     deepSections: [
       {
         id: "niagara-lake-escarpment",
@@ -574,6 +578,113 @@ export const PLACES_CANADA: Place[] = [
       { label: "ECCC — Vineland Research Station 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "Vineland Research & Innovation Centre", kind: "academic", url: "https://www.vinelandresearch.com/" },
       { label: "Climate Atlas of Canada — Niagara regional projections", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
+    ],
+  },
+
+  {
+    id: "atlin-lake-bc",
+    tier: "B",
+    country: "Canada",
+    region: "British Columbia",
+    municipality: "Atlin",
+    name: "Atlin & Atlin Lake",
+    lat: 59.5786,
+    lon: -133.6896,
+    elevationM: 670,
+    reliefContext: "Remote northern lake basin east of the Coast Mountains, with glacier-fed Atlin Lake moderating a subarctic interior setting.",
+    biome: "Boreal spruce, dry interior slopes, and cold mountain lake shore",
+    koppen: "Dfc",
+    archetypes: ["lake-moderated", "subarctic-continental", "frost-hollow", "high-desert-escape"],
+    drivers: ["continentality", "river-moderation", "cold-air-drainage", "orographic-lift"],
+    summaryShort: "A remote lake-country microclimate: dry northern light, severe winter, brief vivid summer, and a giant cold lake softening the edges.",
+    summaryImmersive: "Atlin is for people who mean it when they say they want remote. The town sits beside a long, glacier-fed lake in a northern rain-shadow pocket, so the air is clearer and drier than many coastal BC places while winter still arrives with subarctic force. Summer is short but bright, with mountain lake light, long evenings, and cool nights. The climate is not broadly easy; it is particular, beautiful, and logistical. The lake moderates, but it does not erase darkness, distance, or cold.",
+    whyDistinct: "Atlin Lake adds thermal inertia inside a northern interior basin, while the Coast Mountains strip moisture from Pacific flow. The result is a dry, lake-moderated subarctic settlement climate with sharper seasonal contrast than coastal BC and softer edges than treeless interior basins.",
+    climate: { tempHighC: [-8, -4, 1, 7, 13, 17, 20, 19, 13, 5, -3, -7], tempLowC: [-17, -15, -10, -4, 1, 6, 8, 7, 3, -3, -10, -15], precipMm: [28, 22, 20, 18, 24, 38, 55, 50, 45, 40, 34, 30], snowCm: [35, 28, 20, 8, 1, 0, 0, 0, 3, 12, 28, 35], annualPrecipMm: 404, frostFreeDays: 90, hardinessZone: "3a", diurnalSummerC: 12, diurnalWinterC: 9 },
+    soil: { texture: "Glacial till, gravelly loam, and lake alluvium", drainage: "good", phRange: [5.8, 7.0], organicMatterPct: [2, 6], waterHolding: "moderate", notes: "Cold soils, slope, and drainage determine usable garden pockets." },
+    growability: { score: 32, hardinessZone: "3a", growsWell: ["Potatoes", "Hardy greens", "Rhubarb", "Peas", "Cold-tolerant berries"], tricky: ["Tree fruit", "Warm-season crops", "Anything needing a long frost-free season"], homeGarden: "Use raised beds, wind shelter, and long-day crops; the growing season is vivid but unforgiving." },
+    climateChange: { outlook2050: "Warmer winters and longer shoulder seasons, with wildfire smoke and glacier-fed hydrology changes increasing.", outlook2100: "Lake and glacier systems shift while the settlement remains cold-season limited.", keyShifts: [{ variable: "Winter cold", direction: "down" }, { variable: "Smoke", direction: "up" }, { variable: "Glacier melt timing", direction: "mixed" }], resilienceNote: "Heat refuge value is strong, but remoteness, cold, and smoke can dominate livability." },
+    risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "mixed" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "very-high", trend: "improving" }, smoke: { level: "elevated", trend: "worsening" }, storm: { level: "low", trend: "stable" }, landslide: { level: "moderate", trend: "mixed" }, coastal: { level: "very-low", trend: "stable" } },
+    localContrast: [{ radiusKm: 80, summerHighDeltaC: -4, winterLowDeltaC: 5, note: "vs more exposed Yukon interior basins; the lake softens extremes but keeps nights cool." }],
+    nearbyContrasts: [{ label: "Whitehorse, YT", note: "Larger and drier urban anchor with more continental basin behavior." }, { label: "Coast Mountains west of Atlin", note: "Much wetter, snowier, and more maritime." }],
+    scores: { hiddenGem: 92, microclimateUniqueness: 84, comfort: 36, resilience: 60, growability: 32, tradeoff: 70 },
+    relocationFit: ["remote artists", "northern lake people", "summer field workers", "heat-refuge absolutists"],
+    travelFit: ["Atlin Lake", "glacier views", "aurora", "long-day summer paddling"],
+    whoWouldLove: "People who want a quiet northern lake town, real solitude, and light that feels almost arctic in summer.",
+    whoMightNot: "Anyone needing easy healthcare, mild winter, cheap logistics, or a long garden season.",
+    confidence: "moderate",
+    confidenceNotes: "This moderate-confidence profile is grounded in ECCC northern normals and terrain context, but station sparsity and local lake effects require on-site verification.",
+    settlementsWithinZone: [
+      { name: "Atlin", role: "village", population: "~400", note: "The lived anchor on the lake shore, with services and remoteness intertwined." },
+      { name: "Surprise Lake area", role: "hamlet", note: "Nearby upland/lake pockets with colder drainage and more site-specific winter exposure." },
+      { name: "Jakes Corner", role: "waypoint", note: "Road-access reference point toward Yukon, useful for understanding logistics." },
+    ],
+    thingsToDo: [
+      { label: "Atlin Lake paddling", kind: "water", season: "summer", note: "The lake is the climate moderator and the emotional center of the place." },
+      { label: "Monarch Mountain views", kind: "vista", season: "summer", note: "High-relief terrain makes the lake-basin setting legible." },
+      { label: "Northern lights", kind: "stargazing", season: "winter", note: "Cold dark-season clarity is part of the appeal and the difficulty." },
+      { label: "Local arts and summer gatherings", kind: "culture", season: "summer", note: "Small-community life is concentrated and seasonal." },
+    ],
+    deepSections: [
+      { id: "atlin-lake-moderation", title: "A huge cold lake in a dry northern basin", paragraphs: ["Atlin Lake is large enough to matter thermally, but cold enough that it does not create softness in the coastal sense. It trims some extremes, delays seasonal transitions, and gives the town a lake-shore identity inside a fundamentally northern climate.", "That is why Atlin belongs in a live-here finder: it is not just cold. It is cold with lake light, dry air, long summer days, and a specific kind of small settlement resilience."] },
+      { id: "atlin-remoteness-filter", title: "The climate includes the logistics", paragraphs: ["Remote northern climates cannot be judged by weather alone. Road distance, supply chains, healthcare access, winter darkness, and heating loads are part of the lived climate because they determine whether cold becomes manageable or exhausting.", "Atlin rewards people who want solitude and can plan around it. The same remoteness that makes the place magical also raises the threshold for everyday life."] },
+    ],
+    citations: [
+      { label: "ECCC Canadian Climate Normals", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
+      { label: "Climate Atlas of Canada northern projections", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
+      { label: "Natural Resources Canada topographic context", kind: "other", url: "https://natural-resources.canada.ca/maps-tools-and-publications/maps" },
+    ],
+  },
+  {
+    id: "fernie-elk-valley-bc",
+    tier: "B",
+    country: "Canada",
+    region: "British Columbia",
+    municipality: "Fernie",
+    name: "Fernie & the Elk Valley",
+    lat: 49.5042,
+    lon: -115.0628,
+    elevationM: 1010,
+    reliefContext: "Narrow Rocky Mountain valley on the Elk River, where Pacific moisture reaches the Continental Divide as deep winter snow.",
+    biome: "Interior cedar-hemlock and montane conifer with avalanche paths and river flats",
+    koppen: "Dfb",
+    archetypes: ["canyon-sheltered", "cold-air-pool", "alpine-tundra", "lake-effect-snowbelt"],
+    drivers: ["orographic-lift", "cold-air-drainage", "polar-jet-exposure", "aspect-slope"],
+    summaryShort: "A real mountain-town climate: snow-loaded winters, cool nights, green summers, and a valley floor that lives under huge terrain.",
+    summaryImmersive: "Fernie is not a mild BC hideout; it is a snowy, steep, working mountain town. Pacific moisture that survives the Columbia and Purcell ranges is wrung out again on the Elk Valley and Continental Divide, giving the place a deep winter identity. Summer is comfortable, green, and active, with warm afternoons and cool nights. The caution is equally clear: wildfire smoke, avalanche terrain, floodplain choices, and winter maintenance are not details. They are the lived climate.",
+    whyDistinct: "Fernie sits where a narrow valley, strong relief, and moist westerly storm tracks turn the southern Canadian Rockies into a snow-and-slope microclimate with a very different feel from drier Prairie foothills.",
+    climate: { tempHighC: [-2, 1, 6, 12, 17, 21, 25, 24, 18, 10, 2, -2], tempLowC: [-9, -7, -3, 1, 5, 9, 11, 10, 6, 1, -4, -8], precipMm: [70, 55, 60, 65, 75, 85, 65, 55, 60, 65, 70, 75], snowCm: [100, 70, 45, 15, 2, 0, 0, 0, 2, 18, 55, 95], annualPrecipMm: 800, frostFreeDays: 130, hardinessZone: "5a", diurnalSummerC: 14, diurnalWinterC: 7 },
+    soil: { texture: "Alluvial loam, glacial till, and stony colluvium", drainage: "imperfect", phRange: [5.5, 7.0], organicMatterPct: [3, 7], waterHolding: "moderate", notes: "Floodplain parcels, benches, and shaded slopes differ sharply." },
+    growability: { score: 52, hardinessZone: "5a", growsWell: ["Hardy berries", "Potatoes", "Cool-season greens", "Rhubarb", "Native perennials"], tricky: ["Tender fruit", "Long-season heat crops", "Shaded valley gardens"], homeGarden: "Pick sun exposure carefully; valley shade and wildlife pressure can matter as much as frost dates." },
+    climateChange: { outlook2050: "Warmer winters, more rain-on-snow events, and rising fire-smoke exposure.", outlook2100: "Snow reliability retreats upslope while flood and fire management become more important.", keyShifts: [{ variable: "Snowpack", direction: "down" }, { variable: "Rain-on-snow", direction: "up" }, { variable: "Smoke", direction: "up" }], resilienceNote: "Mountain relief offers cooler summers but concentrates hazard on slopes, floodplains, and travel corridors." },
+    risks: { wildfire: { level: "elevated", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "elevated", trend: "improving" }, smoke: { level: "elevated", trend: "worsening" }, storm: { level: "high", trend: "stable" }, landslide: { level: "high", trend: "mixed" }, coastal: { level: "very-low", trend: "stable" } },
+    localContrast: [{ radiusKm: 70, precipDeltaPct: 40, winterLowDeltaC: -4, note: "vs drier east-slope foothill towns; Fernie carries more snow and valley shelter." }],
+    nearbyContrasts: [{ label: "Sparwood, BC", note: "Higher, more industrial Elk Valley anchor with colder exposure." }, { label: "Cranbrook, BC", note: "Drier, sunnier, and less snow-loaded in the Rocky Mountain trench." }],
+    scores: { hiddenGem: 68, microclimateUniqueness: 80, comfort: 58, resilience: 54, growability: 52, tradeoff: 54 },
+    relocationFit: ["ski families", "mountain remote workers", "cool-summer seekers", "river-and-trail people"],
+    travelFit: ["Fernie Alpine Resort", "Elk River fishing", "mountain biking", "winter snow culture"],
+    whoWouldLove: "People who want a true mountain town with snow, summer trails, and a working valley feel.",
+    whoMightNot: "Low-maintenance winter seekers, smoke-sensitive buyers, or anyone who dislikes steep hazard homework.",
+    confidence: "high",
+    confidenceNotes: "This high-confidence profile uses ECCC normals and official mountain-region context; avalanche, floodplain, and shade exposure remain parcel-scale questions.",
+    settlementsWithinZone: [
+      { name: "Fernie", role: "town", population: "~6,000", note: "The main valley anchor, where ski culture, river life, and winter maintenance all meet." },
+      { name: "Sparwood", role: "town", population: "~4,000", note: "A colder, more industrial Elk Valley reference point to the northeast." },
+      { name: "Elkford", role: "town", population: "~2,500", note: "Higher and deeper in the valley system, with stronger winter exposure." },
+    ],
+    thingsToDo: [
+      { label: "Fernie Alpine Resort", kind: "winter-sport", season: "winter", note: "The snow climate is the town's clearest public face." },
+      { label: "Elk River", kind: "water", season: "summer", note: "A valley-floor climate anchor for fishing, floodplain, and cool-night context." },
+      { label: "Mount Fernie Provincial Park", kind: "trail", season: "summer", note: "Forest, shade, and slope exposure are easy to read from town." },
+      { label: "Historic downtown Fernie", kind: "culture", season: "year-round", note: "A real settlement center, not only a resort appendage." },
+    ],
+    deepSections: [
+      { id: "fernie-snow-machine", title: "Why the Elk Valley holds winter", paragraphs: ["Fernie sits in a storm corridor where moist westerlies keep finding terrain to climb. The valley floor is lower than the alpine bowls, but the whole settlement lives under a snow machine that shapes roads, roofs, recreation, and mood.", "That makes the climate attractive to people who want winter as identity. It also makes maintenance, roof load, avalanche literacy, and travel disruption part of the lived profile."] },
+      { id: "fernie-valley-hazards", title: "Comfort comes with slope homework", paragraphs: ["Summer comfort is strong: mild afternoons, cool nights, and lush mountain shade. But the same terrain concentrates water, snow, debris, and smoke in ways a flat-city score cannot show.", "A serious Fernie shortlist should ask simple questions early: floodplain or bench, shaded or sunny, evacuation route or dead end, and how much winter labor the household is willing to do."] },
+    ],
+    citations: [
+      { label: "ECCC Canadian Climate Normals", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
+      { label: "Climate Atlas of Canada mountain-region projections", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
+      { label: "BC Parks - Mount Fernie Provincial Park", kind: "other", url: "https://bcparks.ca/mount-fernie-park/" },
     ],
   },
 
@@ -739,7 +850,7 @@ export const PLACES_CANADA: Place[] = [
   },
 
   {
-    id: "nelson-bc", tier: "C", country: "Canada", region: "British Columbia", municipality: "Nelson", name: "Nelson (West Kootenay)",
+    id: "nelson-bc", tier: "B", country: "Canada", region: "British Columbia", municipality: "Nelson", name: "Nelson (West Kootenay)",
     lat: 49.4928, lon: -117.2948, elevationM: 535,
     reliefContext: "On Kootenay Lake at the foot of the Selkirks; deep mountain-lake fjord geometry.",
     biome: "Interior cedar-hemlock forest", koppen: "Dfb",
@@ -757,8 +868,41 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["mountain-arts community"], travelFit: ["heritage town", "ski"],
     whoWouldLove: "Creative mountain-town lovers.", whoMightNot: "Services-demanding.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Nelson Rixen Ck", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    confidenceNotes: "This high-confidence profile is grounded in ECCC normals and Kootenay Lake terrain context; smoke exposure, slope shade, and lake-adjacent winter conditions need neighborhood checks.",
+    citations: [
+      { label: "ECCC Canadian Climate Normals — Nelson Rixen Creek context", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
+      { label: "Climate Atlas of Canada — West Kootenay projections", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
+      { label: "BC Parks — Kokanee Glacier regional context", kind: "other", url: "https://bcparks.ca/kokanee-glacier-park/" },
+    ],
+    settlementsWithinZone: [
+      { name: "Nelson", role: "town", population: "~11,000", note: "The arts-and-services anchor on the steep lake shore." },
+      { name: "Balfour", role: "village", note: "A quieter lake-edge pocket with more ferry and slope exposure." },
+      { name: "Kaslo", role: "village", population: "~1,000", note: "North-lake settlement with even stronger mountain-lake identity." },
+    ],
+    thingsToDo: [
+      { label: "Kootenay Lake shore", kind: "water", season: "summer", note: "The lake is the climate moderator and the town's daily horizon." },
+      { label: "Whitewater Ski Resort", kind: "winter-sport", season: "winter", note: "A quick climb into the snowier Selkirk climate above town." },
+      { label: "Rail trail and lakefront walks", kind: "trail", season: "shoulder seasons", note: "Easy ways to read slope, shade, and lake breezes." },
+      { label: "Historic Baker Street", kind: "culture", season: "year-round", note: "A real town center with services, not just mountain scenery." },
+    ],
+    deepSections: [
+      {
+        id: "nelson-lake-selkirk-moderation",
+        title: "A deep lake at the foot of the Selkirks",
+        paragraphs: [
+          "Kootenay Lake gives Nelson a softer edge than many interior mountain towns. It delays seasonal swings, keeps some winter nights from bottoming out as hard, and adds a maritime glint to a place that is otherwise deep in continental mountain country.",
+          "The moderation is local rather than magical. A shaded slope, a bench above town, and a lakeside pocket can feel materially different in winter ice, summer smoke, and garden timing.",
+        ],
+      },
+      {
+        id: "nelson-smoke-snow-tradeoff",
+        title: "Mountain charm with smoke and winter labor",
+        paragraphs: [
+          "Nelson's live-here appeal is obvious: walkable heritage core, lake views, cool summer nights, and fast access to snowy Selkirk terrain. That combination is why it graduates from hidden-gem curiosity to a serious shortlist candidate.",
+          "The caution is equally real. Regional wildfire smoke can settle into valleys, steep lots need winter maintenance, and services are still small-town services. The climate works best for people who want mountain life enough to do the work.",
+        ],
+      },
+    ],
   },
 
   {
@@ -1042,6 +1186,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["aurora-chasers", "far-north idealists"], travelFit: ["aurora", "Klondike history"],
     whoWouldLove: "Those who see six-month winter as a feature not a bug.", whoMightNot: "Daylight-sensitive.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because ECCC normals, federal terrain/soil context, and atlas relief reasoning agree; site exposure, wildfire smoke, and winter maintenance still need local checks.",
     deepSections: [
       {
         id: "whitehorse-rain-shadow-north",

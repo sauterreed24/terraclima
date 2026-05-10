@@ -18,6 +18,7 @@ import { COLLECTION_BY_ID } from "./data/collections";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
 import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, type FilterState, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
@@ -74,9 +75,15 @@ export default function App() {
   const [filters, setFilters] = useState<FilterState>(() => ({
     countries: new Set<string>(URL_INIT.countries),
     archetypes: new Set<MicroclimateArchetype>(URL_INIT.archetypes),
+    fitPresets: new Set(URL_INIT.fitPresets),
     search: URL_INIT.search,
+    maxSummerHighC: URL_INIT.maxSummerHighC ?? undefined,
+    minWinterLowC: URL_INIT.minWinterLowC ?? undefined,
+    minGrowability: URL_INIT.minGrowability ?? undefined,
+    maxFireRisk: URL_INIT.maxFireRisk ?? undefined,
+    maxOverallRisk: URL_INIT.maxOverallRisk ?? undefined,
   }));
-  const [ranking, setRankingRaw] = useState<RankingProfile>(loadPersistedRanking);
+  const [ranking, setRankingRaw] = useState<RankingProfile>(() => URL_INIT.ranking ?? loadPersistedRanking());
   /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
   const [transientFeedback, setTransientFeedback] = useState<string | null>(null);
   /** Latest place id to be auto-evicted from compare so the feedback can name it. */
@@ -125,6 +132,13 @@ export default function App() {
       archetypes: [...filters.archetypes],
       search: filters.search ?? "",
       compareIds: [...compareIds],
+      ranking: ranking === "hidden-gems" ? null : ranking,
+      fitPresets: [...(filters.fitPresets ?? new Set())],
+      maxSummerHighC: filters.maxSummerHighC ?? null,
+      minWinterLowC: filters.minWinterLowC ?? null,
+      minGrowability: filters.minGrowability ?? null,
+      maxFireRisk: filters.maxFireRisk ?? null,
+      maxOverallRisk: filters.maxOverallRisk ?? null,
       collectionExists: (id: string) => Boolean(COLLECTION_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
       placeExists: (id: string) => resolvePlaceId(id) != null,
@@ -156,7 +170,7 @@ export default function App() {
       replaceAppUrl(selectedId ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection, filters, compareIds]);
+  }, [view, selectedId, activeCollection, filters, compareIds, ranking]);
 
   useEffect(() => {
     const onPop = () => {
@@ -173,9 +187,16 @@ export default function App() {
       setFilters({
         countries: new Set<string>(v.countries),
         archetypes: new Set<MicroclimateArchetype>(v.archetypes),
+        fitPresets: new Set(v.fitPresets),
         search: v.search,
+        maxSummerHighC: v.maxSummerHighC ?? undefined,
+        minWinterLowC: v.minWinterLowC ?? undefined,
+        minGrowability: v.minGrowability ?? undefined,
+        maxFireRisk: v.maxFireRisk ?? undefined,
+        maxOverallRisk: v.maxOverallRisk ?? undefined,
       });
       setCompareIds(new Set(v.compareIds));
+      setRankingRaw(v.ranking ?? loadPersistedRanking());
       prevPlaceIdRef.current = v.placeId;
     };
     window.addEventListener("popstate", onPop);
@@ -214,7 +235,10 @@ export default function App() {
 
   const deferredFilters = useDeferredValue(filters);
   const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
-  const ranked = useMemo(() => rankPlaces(ranking, filtered), [ranking, filtered]);
+  const ranked = useMemo(
+    () => ranking === "live-fit" ? rankLiveFit(filtered, deferredFilters) : rankPlaces(ranking, filtered),
+    [ranking, filtered, deferredFilters],
+  );
   const livabilityTopTen = useMemo(() => rankLivabilityPreview(filtered).slice(0, 10), [filtered]);
   const sortTopFive = useMemo(() => ranked.slice(0, 5), [ranked]);
   const rankingLabel = useMemo(
@@ -308,7 +332,7 @@ export default function App() {
   const clearCollection = useCallback(() => setActiveCollection(null), []);
   const clearArchetypes = useCallback(() => setFilters(f => ({ ...f, archetypes: new Set() })), []);
   const clearAllFilters = useCallback(() => {
-    setFilters({ countries: new Set(), archetypes: new Set(), search: "" });
+    setFilters({ countries: new Set(), archetypes: new Set(), fitPresets: new Set(), search: "" });
     setActiveCollection(null);
   }, []);
   const closeCompare = useCallback(() => setCompareOpen(false), []);
@@ -398,6 +422,7 @@ export default function App() {
                   onClearArchetypes={clearArchetypes}
                   onSurpriseMe={surpriseMe}
                   canSurprise={ranked.length > 0}
+                  filters={filters}
                 />
 
                 <div className="relative h-[clamp(300px,48svh,520px)] md:h-[52dvh] md:min-h-[min(460px,44dvh)]">
@@ -489,6 +514,7 @@ export default function App() {
                       toggleCompare={toggleCompare}
                       compareIds={compareIds}
                       resonantWindow={resonantWindow}
+                      liveFitFilters={filters}
                     />
                     <div className="panel-thin p-3 flex flex-wrap items-center justify-between gap-2">
                       <div className="text-xs text-stone">
@@ -572,6 +598,7 @@ export default function App() {
         inCompareIds={compareIds}
         onPickArchetype={pickArchetype}
         onOpenPlace={openPlace}
+        liveFitFilters={filters}
       />
       <CompareView
         places={[...compareIds].map(placeForId).filter(isPlace)}
@@ -922,6 +949,7 @@ const HeroCard = memo(function HeroCard({
   onClearArchetypes,
   onSurpriseMe,
   canSurprise,
+  filters,
 }: {
   count: number;
   livabilityTopTen: RankingResult[];
@@ -934,9 +962,17 @@ const HeroCard = memo(function HeroCard({
   onClearArchetypes: () => void;
   onSurpriseMe: () => void;
   canSurprise: boolean;
+  filters: FilterState;
 }) {
   const prose = useProse();
   const active = activeCollection ? COLLECTION_BY_ID[activeCollection] ?? null : null;
+  const liveSignalCount = (filters.fitPresets?.size ?? 0) + [
+    filters.maxSummerHighC,
+    filters.minWinterLowC,
+    filters.minGrowability,
+    filters.maxFireRisk,
+    filters.maxOverallRisk,
+  ].filter(v => v != null).length;
   return (
     <div className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4">
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
@@ -944,7 +980,13 @@ const HeroCard = memo(function HeroCard({
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Sparkles className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
             <span className="text-xs uppercase tracking-wider text-stone-readable">
-              {active ? "Collection pinned" : activeArchetypes.size > 0 ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}` : "Explorer"}
+              {active
+                ? "Collection pinned"
+                : liveSignalCount > 0
+                  ? `Live Finder · ${liveSignalCount} signal${liveSignalCount > 1 ? "s" : ""}`
+                  : activeArchetypes.size > 0
+                    ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}`
+                    : "Explorer"}
             </span>
             {active && (
               <button type="button" onClick={onClearCollection} className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice">

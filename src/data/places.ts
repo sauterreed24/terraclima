@@ -53,13 +53,31 @@ export const PLACE_ANNUAL_PRECIP: Record<string, number> = {};
 
 for (const p of PLACES) {
   const deepIdx = mergeDeepSections(p).map(s => `${s.title} ${s.paragraphs.join(" ")}`).join(" ");
+  const settlementsIdx = (p.settlementsWithinZone ?? [])
+    .map(s => `${s.name} ${s.role} ${s.population ?? ""} ${s.note ?? ""}`)
+    .join(" ");
+  const activitiesIdx = (p.thingsToDo ?? [])
+    .map(a => `${a.label} ${a.kind} ${a.season ?? ""} ${a.note ?? ""}`)
+    .join(" ");
+  const citationsIdx = p.citations.map(c => `${c.label} ${c.kind} ${c.note ?? ""}`).join(" ");
   PLACE_SEARCH_INDEX[p.id] = foldDiacritics(
     p.name + " " +
     p.region + " " +
     (p.municipality ?? "") + " " +
     p.archetypes.join(" ") + " " +
+    p.drivers.join(" ") + " " +
     p.koppen + " " +
     (p.summaryShort ?? "") +
+    " " + p.summaryImmersive +
+    " " + p.whyDistinct +
+    " " + p.relocationFit.join(" ") +
+    " " + p.travelFit.join(" ") +
+    " " + p.whoWouldLove +
+    " " + p.whoMightNot +
+    " " + (p.confidenceNotes ?? "") +
+    " " + settlementsIdx +
+    " " + activitiesIdx +
+    " " + citationsIdx +
     " " + deepIdx,
   );
   PLACE_ANNUAL_PRECIP[p.id] = p.climate.annualPrecipMm ?? p.climate.precipMm.reduce((a, b) => a + b, 0);

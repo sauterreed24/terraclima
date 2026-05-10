@@ -446,7 +446,10 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["hikers", "remote workers"], travelFit: ["bristlecone trails", "summer heat escape"],
     whoWouldLove: "Desert-city residents who need forest weekends.", whoMightNot: "Those needing mild winters at elevation.",
     confidence: "high",
-    citations: [{ label: "NOAA — Mount Charleston cooperative summaries", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USFS — Spring Mountains NRA", kind: "other" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — Mount Charleston cooperative summaries", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USFS — Spring Mountains NRA", kind: "other" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "charleston-inversion",
@@ -660,6 +663,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor workers", "remote workers"], travelFit: ["Spearfish Canyon", "Sturgis proximity"],
     whoWouldLove: "Plains–mountain ecotone people who respect wind.", whoMightNot: "Those needing stable mild winters.",
     confidence: "high",
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
     citations: [{ label: "NOAA — Spearfish", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Rapid City — Black Hills climatology notes", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
     deepSections: [
       {
@@ -718,7 +722,10 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["ranching families", "remote workers"], travelFit: ["ridge vistas", "spring frost photography"],
     whoWouldLove: "Atmospheric science nerds and pastoral landscapes.", whoMightNot: "Frost-sensitive orchardists on the basin floor.",
     confidence: "high",
-    citations: [{ label: "NOAA — nearby Tazewell County stations", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Journal of Applied Meteorology — Appalachian cold pools (regional synthesis)", kind: "academic" }],
+    confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
+    citations: [{ label: "NOAA — nearby Tazewell County stations", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Journal of Applied Meteorology — Appalachian cold pools (regional synthesis)", kind: "academic" },
+      { label: "NOAA NCEI 1991-2020 U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" }
+    ],
     deepSections: [
       {
         id: "burkes-pool-dynamics",
