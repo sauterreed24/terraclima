@@ -22,7 +22,14 @@
 import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
 import type { RankingProfile } from "./scoring";
 import { ALL_RANKING_PROFILES } from "./ranking-options";
-import { LIVE_FIT_PRESET_BY_ID, type LiveFitPresetId } from "./live-fit";
+import {
+  LIVE_FIT_GROWABILITY_FLOORS,
+  LIVE_FIT_PRESET_BY_ID,
+  LIVE_FIT_RISK_CEILINGS,
+  LIVE_FIT_SUMMER_CAPS_C,
+  LIVE_FIT_WINTER_FLOORS_C,
+  type LiveFitPresetId,
+} from "./live-fit";
 
 export type AppView = "explorer" | "trips" | "collections" | "learn";
 
@@ -49,12 +56,24 @@ export interface ParsedAppUrl {
 const VIEWS = new Set<AppView>(["explorer", "trips", "collections", "learn"]);
 const COUNTRY_VALUES = new Set<Country>(["USA", "Canada", "Mexico"]);
 const RANKING_VALUES = new Set<string>(ALL_RANKING_PROFILES);
-const RISK_VALUES = new Set<RiskLevel>(["very-low", "low", "moderate", "elevated", "high", "very-high"]);
 
 function parseFiniteNumber(raw: string | null): number | undefined {
   if (!raw) return undefined;
   const n = Number(raw);
   return Number.isFinite(n) ? n : undefined;
+}
+
+function parseAllowedNumber(raw: string | null, allowed: readonly number[]): number | undefined {
+  const n = parseFiniteNumber(raw);
+  return n !== undefined && allowed.includes(n) ? n : undefined;
+}
+
+function isAllowedNumber(value: number | null | undefined, allowed: readonly number[]): value is number {
+  return value != null && allowed.includes(value);
+}
+
+function isLiveFitRiskCeiling(value: RiskLevel | string | null | undefined): value is RiskLevel {
+  return value != null && (LIVE_FIT_RISK_CEILINGS as readonly string[]).includes(value);
 }
 
 export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
@@ -92,16 +111,16 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
       .map(t => t.trim())
       .filter((id): id is LiveFitPresetId => Object.prototype.hasOwnProperty.call(LIVE_FIT_PRESET_BY_ID, id));
   }
-  const sh = parseFiniteNumber(params.get("sh"));
+  const sh = parseAllowedNumber(params.get("sh"), LIVE_FIT_SUMMER_CAPS_C);
   if (sh !== undefined) out.maxSummerHighC = sh;
-  const wl = parseFiniteNumber(params.get("wl"));
+  const wl = parseAllowedNumber(params.get("wl"), LIVE_FIT_WINTER_FLOORS_C);
   if (wl !== undefined) out.minWinterLowC = wl;
-  const grow = parseFiniteNumber(params.get("grow"));
+  const grow = parseAllowedNumber(params.get("grow"), LIVE_FIT_GROWABILITY_FLOORS);
   if (grow !== undefined) out.minGrowability = grow;
   const fire = params.get("fire");
-  if (fire && RISK_VALUES.has(fire as RiskLevel)) out.maxFireRisk = fire as RiskLevel;
+  if (isLiveFitRiskCeiling(fire)) out.maxFireRisk = fire;
   const risk = params.get("risk");
-  if (risk && RISK_VALUES.has(risk as RiskLevel)) out.maxOverallRisk = risk as RiskLevel;
+  if (isLiveFitRiskCeiling(risk)) out.maxOverallRisk = risk;
   return out;
 }
 
@@ -169,11 +188,11 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
     const allowed = fitPresets.filter(id => Object.prototype.hasOwnProperty.call(LIVE_FIT_PRESET_BY_ID, id));
     if (allowed.length > 0) params.set("fit", allowed.slice().sort().join(","));
   }
-  if (state.maxSummerHighC != null) params.set("sh", String(state.maxSummerHighC));
-  if (state.minWinterLowC != null) params.set("wl", String(state.minWinterLowC));
-  if (state.minGrowability != null) params.set("grow", String(state.minGrowability));
-  if (state.maxFireRisk) params.set("fire", state.maxFireRisk);
-  if (state.maxOverallRisk) params.set("risk", state.maxOverallRisk);
+  if (isAllowedNumber(state.maxSummerHighC, LIVE_FIT_SUMMER_CAPS_C)) params.set("sh", String(state.maxSummerHighC));
+  if (isAllowedNumber(state.minWinterLowC, LIVE_FIT_WINTER_FLOORS_C)) params.set("wl", String(state.minWinterLowC));
+  if (isAllowedNumber(state.minGrowability, LIVE_FIT_GROWABILITY_FLOORS)) params.set("grow", String(state.minGrowability));
+  if (isLiveFitRiskCeiling(state.maxFireRisk)) params.set("fire", state.maxFireRisk);
+  if (isLiveFitRiskCeiling(state.maxOverallRisk)) params.set("risk", state.maxOverallRisk);
   const compareIds = state.compareIds ?? [];
   if (compareIds.length > 0) {
     const validate = state.placeExists ?? (() => true);

@@ -4,7 +4,14 @@ import type { FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
 import { RANKING_OPTIONS } from "../lib/ranking-options";
-import { LIVE_FIT_PRESETS, type LiveFitPresetId } from "../lib/live-fit";
+import {
+  LIVE_FIT_GROWABILITY_FLOORS,
+  LIVE_FIT_PRESETS,
+  LIVE_FIT_RISK_CEILINGS,
+  LIVE_FIT_SUMMER_CAPS_C,
+  LIVE_FIT_WINTER_FLOORS_C,
+  type LiveFitPresetId,
+} from "../lib/live-fit";
 import { Check, Search, X } from "lucide-react";
 import { useProse } from "../lib/units";
 
@@ -143,8 +150,7 @@ export const FilterBar = memo(function FilterBar({
             value={filters.maxSummerHighC}
             options={[
               { label: "None", value: undefined },
-              { label: "<= 22C", value: 22 },
-              { label: "<= 26C", value: 26 },
+              ...LIVE_FIT_SUMMER_CAPS_C.map(value => ({ label: `<= ${value}C`, value })),
             ]}
             onPick={v => setLiveNumber("maxSummerHighC", v)}
           />
@@ -153,8 +159,7 @@ export const FilterBar = memo(function FilterBar({
             value={filters.minWinterLowC}
             options={[
               { label: "None", value: undefined },
-              { label: ">= -5C", value: -5 },
-              { label: ">= 0C", value: 0 },
+              ...LIVE_FIT_WINTER_FLOORS_C.map(value => ({ label: `>= ${value}C`, value })),
             ]}
             onPick={v => setLiveNumber("minWinterLowC", v)}
           />
@@ -163,8 +168,7 @@ export const FilterBar = memo(function FilterBar({
             value={filters.minGrowability}
             options={[
               { label: "None", value: undefined },
-              { label: "65+", value: 65 },
-              { label: "75+", value: 75 },
+              ...LIVE_FIT_GROWABILITY_FLOORS.map(value => ({ label: `${value}+`, value })),
             ]}
             onPick={v => setLiveNumber("minGrowability", v)}
           />
@@ -316,9 +320,7 @@ function RiskConstraintRow({
 }) {
   const options: { label: string; value: RiskLevel | undefined }[] = [
     { label: "None", value: undefined },
-    { label: "Low", value: "low" },
-    { label: "Moderate", value: "moderate" },
-    { label: "Elevated", value: "elevated" },
+    ...LIVE_FIT_RISK_CEILINGS.map(value => ({ label: RISK_LABELS[value], value })),
   ];
   return (
     <div className="flex items-center justify-between gap-2">
@@ -344,3 +346,12 @@ function RiskConstraintRow({
     </div>
   );
 }
+
+const RISK_LABELS: Record<RiskLevel, string> = {
+  "very-low": "Very low",
+  low: "Low",
+  moderate: "Moderate",
+  elevated: "Elevated",
+  high: "High",
+  "very-high": "Very high",
+};

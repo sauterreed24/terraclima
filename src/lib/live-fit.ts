@@ -95,6 +95,11 @@ export const LIVE_FIT_PRESETS: readonly LiveFitPreset[] = [
 export const LIVE_FIT_PRESET_BY_ID: Record<LiveFitPresetId, LiveFitPreset> =
   Object.fromEntries(LIVE_FIT_PRESETS.map(p => [p.id, p])) as Record<LiveFitPresetId, LiveFitPreset>;
 
+export const LIVE_FIT_SUMMER_CAPS_C = [22, 26] as const;
+export const LIVE_FIT_WINTER_FLOORS_C = [-5, 0] as const;
+export const LIVE_FIT_GROWABILITY_FLOORS = [65, 75] as const;
+export const LIVE_FIT_RISK_CEILINGS = ["low", "moderate", "elevated"] as const satisfies readonly RiskLevel[];
+
 const LIVE_FIT_DEFAULT_WEIGHTS = {
   comfort: 0.24,
   resilience: 0.24,

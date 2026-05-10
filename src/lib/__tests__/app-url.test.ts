@@ -25,16 +25,19 @@ describe("parseAppSearch", () => {
     expect(parseAppSearch("?p=foo&col=bar")).toEqual({ placeId: "foo", collectionId: "bar" });
   });
   it("parses Live Finder state without disturbing legacy params", () => {
-    expect(parseAppSearch("?p=foo&r=live-fit&fit=cool-summers,dry-air,unknown&sh=22&wl=-5&grow=70&fire=moderate&risk=elevated")).toEqual({
+    expect(parseAppSearch("?p=foo&r=live-fit&fit=cool-summers,dry-air,unknown&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated")).toEqual({
       placeId: "foo",
       ranking: "live-fit",
       fitPresets: ["cool-summers", "dry-air"],
       maxSummerHighC: 22,
       minWinterLowC: -5,
-      minGrowability: 70,
+      minGrowability: 65,
       maxFireRisk: "moderate",
       maxOverallRisk: "elevated",
     });
+  });
+  it("drops Live Finder constraints the UI cannot represent", () => {
+    expect(parseAppSearch("?sh=25&wl=-3&grow=99&fire=high&risk=very-high")).toEqual({});
   });
   it("tolerates a missing leading ?", () => {
     expect(parseAppSearch("p=foo")).toEqual({ placeId: "foo" });
@@ -126,13 +129,27 @@ describe("formatAppRelativeUrl", () => {
       fitPresets: ["dry-air", "cool-summers"],
       maxSummerHighC: 22,
       minWinterLowC: -5,
-      minGrowability: 70,
+      minGrowability: 65,
       maxFireRisk: "moderate",
       maxOverallRisk: "elevated",
       collectionExists: ce,
       archetypeExists: () => true,
     });
-    expect(url).toBe("/?p=foo&c=USA&a=rain-shadow-sanctuary&q=garden+town&r=live-fit&fit=cool-summers%2Cdry-air&sh=22&wl=-5&grow=70&fire=moderate&risk=elevated");
+    expect(url).toBe("/?p=foo&c=USA&a=rain-shadow-sanctuary&q=garden+town&r=live-fit&fit=cool-summers%2Cdry-air&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated");
+  });
+  it("omits Live Finder constraints the UI cannot represent", () => {
+    const url = formatAppRelativeUrl({
+      view: "explorer",
+      placeId: null,
+      collectionId: null,
+      maxSummerHighC: 25,
+      minWinterLowC: -3,
+      minGrowability: 99,
+      maxFireRisk: "high",
+      maxOverallRisk: "very-high",
+      collectionExists: ce,
+    });
+    expect(url).toBe("/");
   });
 });
 

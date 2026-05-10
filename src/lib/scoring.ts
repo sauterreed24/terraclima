@@ -251,8 +251,6 @@ export function applyFilters(places: Place[], f: FilterState): Place[] {
   const q = f.search ? foldDiacritics(f.search.trim()) : "";
   const hasCountries = f.countries.size > 0;
   const hasArchetypes = f.archetypes.size > 0;
-  const hasMaxFire = !!f.maxFireRisk;
-  const maxFireVal = f.maxFireRisk ? RISK_VALUE[f.maxFireRisk] : 0;
 
   const out: Place[] = [];
   for (const p of places) {
@@ -261,8 +259,6 @@ export function applyFilters(places: Place[], f: FilterState): Place[] {
     if (!liveFitFilterPass(p, f)) continue;
     if (f.minElevation !== undefined && p.elevationM < f.minElevation) continue;
     if (f.maxElevation !== undefined && p.elevationM > f.maxElevation) continue;
-    if (hasMaxFire && RISK_VALUE[p.risks.wildfire.level] > maxFireVal) continue;
-    if (f.minGrowability !== undefined && p.scores.growability < f.minGrowability) continue;
     if (q) {
       if (!getPlaceSearchText(p).includes(q)) continue;
     }
