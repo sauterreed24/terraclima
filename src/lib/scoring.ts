@@ -159,7 +159,7 @@ function sunshineComfortBonus(p: Place): number {
   // Summer gray is more damaging than winter gray — it violates seasonal expectations
   // and eliminates the serotonin/circadian benefit people rely on in peak activity season.
   if (hum) {
-    const summerHum = p.climate.humidity!.length >= 8
+    const summerHum = hum.length >= 8
       ? (hum[4] + hum[5] + hum[6] + hum[7]) / 4
       : hum.reduce((a, b) => a + b, 0) / 12;
     if (summerHum > 72 && diurnal < 12) {

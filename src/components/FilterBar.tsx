@@ -273,9 +273,12 @@ export const FilterBar = memo(function FilterBar({
                   setFilters(f => ({
                     ...f,
                     fitPresets: new Set(bundle.presets),
-                    maxSummerHighC: bundle.maxSummerHighC ?? f.maxSummerHighC,
-                    minWinterLowC: bundle.minWinterLowC ?? f.minWinterLowC,
-                    maxFireRisk: bundle.maxFireRisk ?? f.maxFireRisk,
+                    // Reset bundle-managed constraints so switching bundles never leaves
+                    // stale values from a previous preset (e.g. "Remote Work" sets
+                    // maxSummerHighC:26; switching to "Garden & Grow" should clear it).
+                    maxSummerHighC: bundle.maxSummerHighC,
+                    minWinterLowC: bundle.minWinterLowC,
+                    maxFireRisk: bundle.maxFireRisk,
                   }));
                 }}
                 className={`lifestyle-bundle-btn${isActive ? " lifestyle-bundle-btn--active" : ""}`}

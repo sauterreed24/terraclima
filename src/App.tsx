@@ -603,6 +603,7 @@ export default function App() {
                   count={ranked.length}
                   livabilityTopTen={livabilityTopTen}
                   sortTopFive={sortTopFive}
+                  ranking={ranking}
                   rankingLabel={rankingLabel}
                   onOpenPlace={openPlace}
                   activeCollection={activeCollection}
@@ -1210,6 +1211,7 @@ const HeroCard = memo(function HeroCard({
   count,
   livabilityTopTen,
   sortTopFive,
+  ranking,
   rankingLabel,
   onOpenPlace,
   activeCollection,
@@ -1232,6 +1234,7 @@ const HeroCard = memo(function HeroCard({
   count: number;
   livabilityTopTen: RankingResult[];
   sortTopFive: RankingResult[];
+  ranking: RankingProfile;
   rankingLabel: string;
   onOpenPlace: (id: string) => void;
   activeCollection: string | null;
@@ -1298,12 +1301,12 @@ const HeroCard = memo(function HeroCard({
           {/* Lifestyle quick-picks — instant one-click ranking presets */}
           {!active && (
             <div className="hero-quick-picks mt-3" role="group" aria-label="Quick ranking presets">
-              <QuickPick emoji="📅" label="Best this month" onClick={() => onSetRanking("best-this-month")} active={rankingLabel === "Best this month"} />
-              <QuickPick emoji="💻" label="Remote work" onClick={() => onSetRanking("best-for-remote-work")} active={rankingLabel === "Remote-work ready"} />
-              <QuickPick emoji="🌅" label="Retirement" onClick={() => onSetRanking("best-retirement")} active={rankingLabel === "Retirement dream"} />
-              <QuickPick emoji="🌱" label="Garden life" onClick={() => onSetRanking("best-growability")} active={rankingLabel === "Best growability"} />
-              <QuickPick emoji="❄️" label="Snow country" onClick={() => onSetRanking("coolest-summers")} active={rankingLabel === "Coolest summers"} />
-              <QuickPick emoji="🛡" label="Low risk" onClick={() => onSetRanking("climate-resilient")} active={rankingLabel === "Climate-resilient"} />
+              <QuickPick emoji="📅" label="Best this month" onClick={() => onSetRanking("best-this-month")} active={ranking === "best-this-month"} />
+              <QuickPick emoji="💻" label="Remote work" onClick={() => onSetRanking("best-for-remote-work")} active={ranking === "best-for-remote-work"} />
+              <QuickPick emoji="🌅" label="Retirement" onClick={() => onSetRanking("best-retirement")} active={ranking === "best-retirement"} />
+              <QuickPick emoji="🌱" label="Garden life" onClick={() => onSetRanking("best-growability")} active={ranking === "best-growability"} />
+              <QuickPick emoji="❄️" label="Snow country" onClick={() => onSetRanking("coolest-summers")} active={ranking === "coolest-summers"} />
+              <QuickPick emoji="🛡" label="Low risk" onClick={() => onSetRanking("climate-resilient")} active={ranking === "climate-resilient"} />
             </div>
           )}
         </div>
