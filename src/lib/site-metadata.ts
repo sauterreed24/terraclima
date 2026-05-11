@@ -10,7 +10,7 @@ export const SITE_METADATA = {
   manifestDescription:
     "A hand-built atlas of North American microclimates: rain shadows, sky islands, marine layers, thermal belts, and the terrain mechanisms behind lived weather.",
   canonicalUrl: "https://sauterreed24.github.io/terraclima/",
-  previewUrl: "https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html",
+  previewUrl: "https://sauterreed24.github.io/terraclima/",
   repositoryUrl: "https://github.com/sauterreed24/terraclima",
   ogImageUrl: "https://sauterreed24.github.io/terraclima/og-image.png",
   manifestCategories: ["education", "travel", "weather", "reference"],

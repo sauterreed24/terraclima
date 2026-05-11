@@ -1,11 +1,10 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { BookOpen, Briefcase, Compass, HelpCircle, Layers, Library, Map, Menu, Route, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
+import { BookOpen, Compass, HelpCircle, Layers, Library, Map, Menu, Route, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
 import { FilterBar, RANKING_OPTIONS } from "./components/FilterBar";
 import { FootprintPanel } from "./components/FootprintPanel";
-import { CommercialBriefPanel } from "./components/CommercialBriefPanel";
 import { TempToggle } from "./components/TempToggle";
 import { useFocusTrap } from "./hooks/use-focus-trap";
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
@@ -62,7 +61,7 @@ function readCurrentAppState() {
   );
 }
 
-type View = "explorer" | "trips" | "collections" | "learn" | "pro";
+type View = "explorer" | "trips" | "collections" | "learn";
 
 const ClimateTripsView = lazy(() =>
   import("./components/ClimateTripsView").then(module => ({ default: module.ClimateTripsView })),
@@ -72,9 +71,6 @@ const CollectionsView = lazy(() =>
 );
 const LearnMode = lazy(() =>
   import("./components/LearnMode").then(module => ({ default: module.LearnMode })),
-);
-const ProView = lazy(() =>
-  import("./components/ProView").then(module => ({ default: module.ProView })),
 );
 const PlaceDetail = lazy(() =>
   import("./components/PlaceDetail").then(module => ({ default: module.PlaceDetail })),
@@ -334,7 +330,6 @@ export default function App() {
   rankedRef.current = ranked;
 
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
-  const comparedPlaces = useMemo(() => [...compareIds].map(placeForId).filter(isPlace), [compareIds]);
 
   const toggleCompare = useCallback((id: string) => {
     setCompareIds(s => {
@@ -408,7 +403,7 @@ export default function App() {
     setCompareOpen(true);
   }, []);
 
-  const comparePlacesById = useCallback((ids: string[]) => {
+  const comparePlaces = useCallback((ids: string[]) => {
     setCompareIds(new Set(ids.slice(0, COMPARE_LIMIT)));
     setCompareOpen(ids.length > 0);
   }, []);
@@ -434,8 +429,6 @@ export default function App() {
   const openFilterSheet = useCallback(() => {
     explorerFilterSheetRef.current?.open();
   }, []);
-  const openProView = useCallback(() => setView("pro"), []);
-  const openExplorerView = useCallback(() => setView("explorer"), []);
 
   const pickRandomPlace = useCallback((): boolean => {
     const poolRanked = rankedRef.current;
@@ -532,7 +525,7 @@ export default function App() {
                   />
                 </div>
 
-                <section className="hidden md:grid grid-cols-4 gap-3 tc-reader-path" aria-labelledby="reader-path-heading">
+                <section className="hidden md:grid grid-cols-3 gap-3 tc-reader-path" aria-labelledby="reader-path-heading">
                   <h2 id="reader-path-heading" className="sr-only">How to read Terraclima</h2>
                   <div>
                     <div className="tc-reader-path__label">Scout</div>
@@ -545,10 +538,6 @@ export default function App() {
                   <div>
                     <div className="tc-reader-path__label">Trust</div>
                     <p>Scores are screening signals. Confidence notes, citations, and geospatial methods stay visible so readers and agents can audit the trail.</p>
-                  </div>
-                  <div>
-                    <div className="tc-reader-path__label">Monetize</div>
-                    <p>Use Pro to convert the active shortlist into a paid climate-fit brief while keeping rankings and citations independent.</p>
                   </div>
                 </section>
 
@@ -640,13 +629,6 @@ export default function App() {
                     setRanking={setRanking}
                   />
                   <FootprintPanel />
-                  <CommercialBriefPanel
-                    ranked={ranked}
-                    comparePlaces={comparedPlaces}
-                    filters={filters}
-                    rankingLabel={rankingLabel}
-                    onOpenPro={openProView}
-                  />
                 </aside>
               ) : (
                 <ExplorerFilterSheet
@@ -656,19 +638,7 @@ export default function App() {
                   setFilters={setFilters}
                   ranking={ranking}
                   setRanking={setRanking}
-                  footer={(
-                    <div className="flex flex-col gap-4">
-                      <FootprintPanel />
-                      <CommercialBriefPanel
-                        ranked={ranked}
-                        comparePlaces={comparedPlaces}
-                        filters={filters}
-                        rankingLabel={rankingLabel}
-                        variant="compact"
-                        onOpenPro={openProView}
-                      />
-                    </div>
-                  )}
+                  footer={<FootprintPanel />}
                   detailOpen={Boolean(selectedId)}
                 />
               )}
@@ -682,7 +652,7 @@ export default function App() {
                   <ClimateTripsView
                     onOpenPlace={onOpenPlaceFromTrips}
                     onPickTripTheme={onPickTripTheme}
-                    onComparePlaces={comparePlacesById}
+                    onComparePlaces={comparePlaces}
                     activeThemeId={activeCollection && CLIMATE_TRIP_THEME_BY_ID[activeCollection] ? activeCollection : undefined}
                   />
                 </Suspense>
@@ -727,23 +697,6 @@ export default function App() {
               </div>
             </div>
           )}
-
-          {view === "pro" && (
-            <div className="flex-1 min-w-0">
-              <div className="max-w-6xl mx-auto">
-                <Suspense fallback={<RouteLoadingFallback label="Loading Pro" />}>
-                  <ProView
-                    ranked={ranked}
-                    comparePlaces={comparedPlaces}
-                    filters={filters}
-                    rankingLabel={rankingLabel}
-                    onOpenPlace={openPlace}
-                    onOpenExplorer={openExplorerView}
-                  />
-                </Suspense>
-              </div>
-            </div>
-          )}
         </div>
       </div>
 
@@ -767,7 +720,7 @@ export default function App() {
       {compareOpen ? (
         <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
           <CompareView
-            places={comparedPlaces}
+            places={[...compareIds].map(placeForId).filter(isPlace)}
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
@@ -837,7 +790,6 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
           <Kbds keys={["T"]} />        <span className="text-frost">Trips</span>
           <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
           <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
-          <Kbds keys={["P"]} />        <span className="text-frost">Pro</span>
           <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
           <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
           <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
@@ -854,9 +806,6 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
           </p>
           <p>
             Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The URL encodes the place and view. Surprise uses the same filtered pool as the cards.
-          </p>
-          <p>
-            Pro briefs use the same filtered shortlist and URL state, but paid requests never change rankings, citations, confidence, or risk warnings.
           </p>
         </div>
       </div>
@@ -979,7 +928,6 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
           <NavBtn active={view === "trips"} onClick={() => setView("trips")} icon={<Route className="w-3.5 h-3.5" />} label="Trips" />
           <NavBtn active={view === "collections"} onClick={() => setView("collections")} icon={<Library className="w-3.5 h-3.5" />} label="Collections" />
           <NavBtn active={view === "learn"} onClick={() => setView("learn")} icon={<Compass className="w-3.5 h-3.5" />} label="Learn" />
-          <NavBtn active={view === "pro"} onClick={() => setView("pro")} icon={<Briefcase className="w-3.5 h-3.5" />} label="Pro" />
 
           <TempToggle className="ml-1" />
 
@@ -1017,7 +965,6 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
               <NavBtn stretch active={view === "trips"} onClick={() => pickView("trips")} icon={<Route className="w-4 h-4" />} label="Trips" />
               <NavBtn stretch active={view === "collections"} onClick={() => pickView("collections")} icon={<Library className="w-4 h-4" />} label="Collections" />
               <NavBtn stretch active={view === "learn"} onClick={() => pickView("learn")} icon={<Compass className="w-4 h-4" />} label="Learn" />
-              <NavBtn stretch active={view === "pro"} onClick={() => pickView("pro")} icon={<Briefcase className="w-4 h-4" />} label="Pro" />
 
               <div className="pt-1">
                 <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 px-0.5">Temperature units</div>

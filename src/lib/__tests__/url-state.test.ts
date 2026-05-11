@@ -26,12 +26,6 @@ describe("app-url state", () => {
     expect(p.maxOverallRisk).toBe("elevated");
   });
 
-  it("round-trips the Pro top-level view", () => {
-    const p = parseAppSearch("?v=pro");
-    expect(p.view).toBe("pro");
-    expect(validatedStateFromSearch("?v=pro", {}, {}).view).toBe("pro");
-  });
-
   it("validates against unknown ids and drops them", () => {
     const places = { foo: 1, bar: 1 } as Record<string, unknown>;
     const collections = {} as Record<string, unknown>;
@@ -46,6 +40,11 @@ describe("app-url state", () => {
     // cmp was 6 ids, only "foo"/"bar" exist in placesById; capped by COMPARE_LIMIT.
     expect(v.compareIds).toEqual(["foo", "bar"]);
     expect(v.compareIds.length).toBeLessThanOrEqual(COMPARE_LIMIT);
+  });
+
+  it("falls retired view URLs back to Explorer", () => {
+    const v = validatedStateFromSearch("?v=pro", {}, {});
+    expect(v.view).toBe("explorer");
   });
 
   it("formatAppRelativeUrl round-trips filters and compare", () => {
