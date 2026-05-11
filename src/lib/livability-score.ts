@@ -109,27 +109,61 @@ export const THERMAL_COMFORT = {
 /** Sky / dampness modifiers for lived comfort, independent from mean temperature. */
 export const SKY_COMFORT = {
   /** Atlas-neutral value when sunshine and humidity are missing. */
-  missingDataNeutral: 72,
+  missingDataNeutral: 70,
   /** US-like annual sunshine baseline; values above lift, below drag. */
   annualSunBaselinePct: 58,
   sunshinePerPct: 1.35,
   /** Summer humidity above this, paired with small diurnal range, suggests fog/marine-layer drag. */
   summerFogHumidityPct: 72,
   fogDiurnalCeilingC: 12,
-  fogPenaltyMaxPts: 28,
+  fogPenaltyMaxPts: 36,
+  /**
+   * Tier-A fog-signature penalty: when monthly summer sunshine collapses
+   * (Eureka / Point Reyes / Fort Bragg pattern) the marine-layer impact on
+   * lived sky is sharper than the summer-humidity proxy alone can capture.
+   */
+  summerSunshineCollapsePct: 55,
+  summerSunshineCollapsePenaltyMaxPts: 18,
   /** High-precip climates can be thermally mild but damp, dark, and mold-prone. */
   dampPrecipStartMm: 1800,
-  dampPrecipPenaltyMaxPts: 18,
+  dampPrecipPenaltyMaxPts: 22,
 } as const;
 
 /** Hazard cushion blending. */
 export const HAZARD_CUSHION = {
   /** Mean-of-nine multiplier (per 0..5 unit). */
-  meanPerUnit: 14,
+  meanPerUnit: 13,
   /** Max-of-nine multiplier (per 0..5 unit). */
-  maxPerUnit: 18,
+  maxPerUnit: 20,
   /** Weight on the mean component. The remainder (1 − meanWeight) goes to max. */
-  meanWeight: 0.6,
+  meanWeight: 0.55,
+} as const;
+
+/**
+ * Lived-friction parameters. The component starts at a neutral baseline so
+ * places without curated `liveSignals` are not penalised, then deducts on each
+ * of the three lived axes. The relative weights reflect the strongest signals
+ * surfaced by resident-review and cost-of-living research: affordability is
+ * the dominant filter for most relocators, social fabric is the dominant
+ * filter for places that look "perfect" on paper but read poorly in lived
+ * reports (Eureka), and access friction sets a ceiling on how rural a place
+ * can be before its livability suffers (Tofino, Forks, Point Reyes).
+ */
+export const LIVED_FRICTION = {
+  /** Neutral baseline when no axis is graded. Keeps unannotated places stable. */
+  neutralBaseline: 70,
+  /** Per-point weight on the three friction axes (0..100 input → 0..100 deduction). */
+  costWeight: 0.45,
+  socialWeight: 0.35,
+  accessWeight: 0.20,
+  /** Below this friction value, no penalty applies — only credit for known-easy places. */
+  benignFloor: 35,
+  /** Per-point credit applied when an axis grades below `benignFloor`. */
+  creditPerPoint: 0.18,
+  /** Above this friction value, the per-point penalty escalates. */
+  severeFloor: 65,
+  /** Per-point penalty above the friction axis itself contributes. */
+  severeMultiplier: 1.35,
 } as const;
 
 /** Precipitation moderation parameters. */
@@ -142,13 +176,23 @@ export const PRECIP_MODERATION = {
   ceilingMm: 3500,
 } as const;
 
-/** Final blend weights. Must sum to 1.0; asserted in tests. */
+/**
+ * Final blend weights. Must sum to 1.0; asserted in tests.
+ *
+ * v2.1 — Adds an explicit `livedFriction` component so curated affordability /
+ * social-fabric / access signals can move the final blended score directly,
+ * rather than being trapped behind the thermal-comfort gate. Resilience and
+ * precipitation moderation were both slightly down-weighted; the freed weight
+ * went into thermal comfort (so sky/dampness corrections register more
+ * clearly) and the new lived-friction axis.
+ */
 export const LIVABILITY_BLEND_WEIGHTS = {
-  resilience: 0.28,
-  thermalComfort: 0.24,
-  hazardCushion: 0.22,
-  growability: 0.14,
-  precipModeration: 0.12,
+  resilience: 0.22,
+  thermalComfort: 0.26,
+  hazardCushion: 0.20,
+  growability: 0.12,
+  precipModeration: 0.08,
+  livedFriction: 0.12,
 } as const;
 
 const COMPONENT_KEYS = [
@@ -157,6 +201,7 @@ const COMPONENT_KEYS = [
   "hazardCushion",
   "growability",
   "precipModeration",
+  "livedFriction",
 ] as const;
 type ComponentKey = (typeof COMPONENT_KEYS)[number];
 
@@ -191,6 +236,7 @@ const COMPONENT_LABEL: Record<ComponentKey, string> = {
   hazardCushion: "Hazard cushion",
   growability: "Growability",
   precipModeration: "Precip moderation",
+  livedFriction: "Lived friction",
 };
 
 function clamp(n: number, lo = 0, hi = 100): number {
@@ -259,17 +305,30 @@ export function skyComfortScore(p: Place): number {
   if (summerHumidity != null && summerHumidity > SKY_COMFORT.summerFogHumidityPct && diurnal < SKY_COMFORT.fogDiurnalCeilingC) {
     score -= Math.min(
       SKY_COMFORT.fogPenaltyMaxPts,
-      (summerHumidity - SKY_COMFORT.summerFogHumidityPct) * 0.75 +
-        (SKY_COMFORT.fogDiurnalCeilingC - diurnal) * 1.1,
+      (summerHumidity - SKY_COMFORT.summerFogHumidityPct) * 0.9 +
+        (SKY_COMFORT.fogDiurnalCeilingC - diurnal) * 1.4,
     );
   } else if (annualHumidity != null && annualHumidity > 78 && diurnal < 10) {
-    score -= Math.min(16, (annualHumidity - 78) * 0.45 + (10 - diurnal) * 0.8);
+    score -= Math.min(18, (annualHumidity - 78) * 0.5 + (10 - diurnal) * 0.9);
+  }
+
+  // Summer-sunshine collapse: even when the humidity proxy understates the
+  // fog deck, a real measurement of dim summers should pull sky comfort down.
+  const sunshine = p.climate.sunshinePct;
+  if (sunshine) {
+    const summerSun = (sunshine[5] + sunshine[6] + sunshine[7]) / 3;
+    if (summerSun < SKY_COMFORT.summerSunshineCollapsePct) {
+      score -= Math.min(
+        SKY_COMFORT.summerSunshineCollapsePenaltyMaxPts,
+        (SKY_COMFORT.summerSunshineCollapsePct - summerSun) * 0.85,
+      );
+    }
   }
 
   if (annualPrecip > SKY_COMFORT.dampPrecipStartMm) {
     score -= Math.min(
       SKY_COMFORT.dampPrecipPenaltyMaxPts,
-      (annualPrecip - SKY_COMFORT.dampPrecipStartMm) / 95,
+      (annualPrecip - SKY_COMFORT.dampPrecipStartMm) / 80,
     );
   }
 
@@ -281,14 +340,77 @@ export function skyComfortScore(p: Place): number {
  * high/low envelope, year-round usable-month runway, sky/dampness, and the
  * curated corpus comfort score so one pleasant season cannot erase a hard
  * rest-of-year livability burden.
+ *
+ * v2.1 — Increases sky-comfort weight from 0.12 → 0.20 and reduces curator
+ * comfort weight from 0.24 → 0.16. Fog-belt coasts were inheriting the bulk
+ * of their felt-comfort score from a curator note that read the mild thermal
+ * envelope as universally pleasant, when resident reports describe the
+ * persistent stratus deck as a real day-to-day drag. Sky comfort is now the
+ * stronger anchor on the lived side of the blend.
  */
 export function feltComfortScore(p: Place): number {
   return clamp(
     thermalComfortScore(p) * 0.42 +
     seasonalUsabilityScore(p) * 0.22 +
-    clamp(p.scores.comfort) * 0.24 +
-    skyComfortScore(p) * 0.12,
+    clamp(p.scores.comfort) * 0.16 +
+    skyComfortScore(p) * 0.20,
   );
+}
+
+/**
+ * Lived-friction sub-score 0..100 (higher = more lived comfort).
+ *
+ * When `liveSignals` is absent or fully unmarked the score returns the
+ * neutral baseline (~70) so most of the atlas is unchanged. Each graded axis
+ * either lifts (axis < `benignFloor`) or drags (axis > `benignFloor`) the
+ * score by a weighted, escalating penalty.
+ */
+export function livedFrictionScore(p: Place): number {
+  const ls = p.liveSignals;
+  if (!ls) return LIVED_FRICTION.neutralBaseline;
+
+  const axes: [number | undefined, number][] = [
+    [ls.costPressure, LIVED_FRICTION.costWeight],
+    [ls.socialStress, LIVED_FRICTION.socialWeight],
+    [ls.accessFriction, LIVED_FRICTION.accessWeight],
+  ];
+
+  let totalWeight = 0;
+  let weightedFriction = 0;
+  for (const [value, weight] of axes) {
+    if (value == null) continue;
+    totalWeight += weight;
+    weightedFriction += clamp(value) * weight;
+  }
+  if (totalWeight === 0) return LIVED_FRICTION.neutralBaseline;
+
+  // Normalise to a 0..100 friction reading across the graded axes.
+  const friction = weightedFriction / totalWeight;
+
+  if (friction <= LIVED_FRICTION.benignFloor) {
+    const credit = (LIVED_FRICTION.benignFloor - friction) * LIVED_FRICTION.creditPerPoint;
+    return clamp(LIVED_FRICTION.neutralBaseline + credit);
+  }
+  if (friction <= LIVED_FRICTION.severeFloor) {
+    return clamp(LIVED_FRICTION.neutralBaseline - (friction - LIVED_FRICTION.benignFloor));
+  }
+  const baseDeduction = LIVED_FRICTION.severeFloor - LIVED_FRICTION.benignFloor;
+  const severeDeduction = (friction - LIVED_FRICTION.severeFloor) * LIVED_FRICTION.severeMultiplier;
+  return clamp(LIVED_FRICTION.neutralBaseline - (baseDeduction + severeDeduction));
+}
+
+/**
+ * Public accessor for the dominant lived-friction driver, used by the UI
+ * and live-fit reasons/cautions so the score is never opaque.
+ */
+export function dominantLivedFriction(p: Place): { axis: "cost" | "social" | "access"; value: number } | null {
+  const ls = p.liveSignals;
+  if (!ls) return null;
+  let best: { axis: "cost" | "social" | "access"; value: number } | null = null;
+  if (ls.costPressure != null) best = { axis: "cost", value: ls.costPressure };
+  if (ls.socialStress != null && (!best || ls.socialStress > best.value)) best = { axis: "social", value: ls.socialStress };
+  if (ls.accessFriction != null && (!best || ls.accessFriction > best.value)) best = { axis: "access", value: ls.accessFriction };
+  return best;
 }
 
 /** Maximum risk value across the nine axes. 0..5. */
@@ -345,6 +467,12 @@ function makeRationale(p: Place, key: ComponentKey, value: number): string {
       const ann = getAnnualPrecipMm(p);
       return `Annual precip ${ann.toFixed(0)} mm → moderation ${Math.round(value)}/100`;
     }
+    case "livedFriction": {
+      const dom = dominantLivedFriction(p);
+      if (!dom) return `Lived friction unrated → neutral ${Math.round(value)}/100`;
+      const axis = dom.axis === "cost" ? "Cost pressure" : dom.axis === "social" ? "Social stress" : "Access friction";
+      return `${axis} ${Math.round(dom.value)}/100 (lower is easier) → lived comfort ${Math.round(value)}/100`;
+    }
   }
 }
 
@@ -368,6 +496,7 @@ export function scoreLivability(p: Place): LivabilityResult {
     hazardCushion: hazardCushionScore(p),
     growability: clamp(p.scores.growability),
     precipModeration: precipModerationScore(p),
+    livedFriction: livedFrictionScore(p),
   };
   const components: LivabilityComponent[] = COMPONENT_KEYS.map(key => ({
     key,

@@ -346,6 +346,23 @@ export const PlaceCard = memo(function PlaceCard({
                 ))}
               </div>
             )}
+            {place.liveSignals ? (
+              <div className="place-card__livability-components mt-1.5" aria-label="Lived-friction signals">
+                {(["costPressure","socialStress","accessFriction"] as const).map(axis => {
+                  const value = place.liveSignals?.[axis];
+                  if (value == null) return null;
+                  const label = axis === "costPressure" ? "Cost" : axis === "socialStress" ? "Social" : "Access";
+                  const tone = value <= 35 ? "#3d8f55" : value <= 60 ? "#e89b20" : "#e05030";
+                  return (
+                    <span key={axis} className="place-card__livability-component" title={`${label} friction (0 easy, 100 severe): ${Math.round(value)}/100${place.liveSignals?.note ? ` · ${place.liveSignals.note}` : ""}`}>
+                      <span className="place-card__livability-component__dot" style={{ background: tone }} aria-hidden />
+                      {label}
+                      <span className="font-mono-num text-frost">{Math.round(value)}</span>
+                    </span>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
         ) : null}
 

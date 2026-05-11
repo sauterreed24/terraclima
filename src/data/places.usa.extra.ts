@@ -287,11 +287,20 @@ export const PLACES_USA_EXTRA: Place[] = [
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "high", trend: "stable" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "high", trend: "worsening" } },
     localContrast: [{ radiusKm: 35, summerHighDeltaC: -4, precipDeltaPct: 40, note: "vs interior Rogue/Coquille foothill valleys, where summer warms quickly away from the upwelling layer." }],
     nearbyContrasts: [{ label: "Bandon, OR", note: "Still marine and windy, but a little less headland-exposed." }, { label: "Grants Pass, OR", note: "Hotter, drier inland Rogue Valley climate within a few hours." }],
-    scores: { hiddenGem: 88, microclimateUniqueness: 90, comfort: 66, resilience: 72, growability: 64, tradeoff: 50 },
+    scores: { hiddenGem: 88, microclimateUniqueness: 90, comfort: 60, resilience: 72, growability: 64, tradeoff: 56 },
+    liveSignals: {
+      costPressure: 36,
+      socialStress: 24,
+      accessFriction: 68,
+      note: "Cape Blanco is the windiest US headland; Curry County services are thin and Eugene / Medford are 2.5–3 h away on US-101.",
+      sources: [
+        { label: "Niche — Port Orford OR", url: "https://www.niche.com/places-to-live/port-orford-curry-or/" },
+      ],
+    },
     relocationFit: ["heat-averse remote workers", "storm-coast romantics", "small-town ocean people"],
     travelFit: ["Cape Blanco headlands", "working harbor", "coastal trails", "storm watching"],
     whoWouldLove: "People who want quiet, cold-ocean weather, visible storms, and a town small enough that the harbor still sets the rhythm.",
-    whoMightNot: "Sun-and-heat seekers, anyone allergic to wind, or buyers who want simple coastal parcel due diligence.",
+    whoMightNot: "Sun-and-heat seekers, anyone allergic to wind, or buyers who want simple coastal parcel due diligence. Daily-services access is genuinely limited.",
     confidence: "high",
     confidenceNotes: "This high-confidence profile is anchored by NOAA Port Orford/Cape Blanco normals and official coastal terrain context; bluff exposure, wind shelter, and tsunami/landslide siting need parcel checks.",
     settlementsWithinZone: [

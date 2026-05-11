@@ -597,7 +597,7 @@ function DetailBody({
               </div>
             </div>
             <div className="text-[11px] text-stone-readable max-w-lg leading-snug">
-              Bidirectional thermal plateau, humidity-aware summer comfort, tail-risk-aware hazard cushion, U-shaped precip moderation. Hover a row for its formula.
+              Bidirectional thermal plateau, humidity-aware summer comfort, tail-risk-aware hazard cushion, U-shaped precip moderation, and a curated lived-friction axis (cost / social fabric / daily-services access). Hover a row for its formula.
             </div>
           </div>
           <div className="divider-contour my-3" />
@@ -641,6 +641,53 @@ function DetailBody({
           ) : null}
         </div>
       </Section>
+
+      {place.liveSignals ? (
+        <Section title="Lived signals" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
+          <div className="panel-thin p-4">
+            <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
+              Editorial reads on three axes climate normals cannot capture: cost pressure, social-fabric stress, and daily-services access. 0 = no friction, 100 = severe. These are screening signals anchored to public sources, not appraisals or insurance underwriting.
+            </div>
+            <ul className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              {(["costPressure", "socialStress", "accessFriction"] as const).map(axis => {
+                const value = place.liveSignals?.[axis];
+                if (value == null) return null;
+                const label = axis === "costPressure" ? "Cost pressure" : axis === "socialStress" ? "Social stress" : "Access friction";
+                const desc = axis === "costPressure"
+                  ? "Housing burden & cost-of-living."
+                  : axis === "socialStress"
+                    ? "Crime, homelessness, civic distress."
+                    : "Distance to hospital, airport, daily services.";
+                const level = value <= 35 ? "high" : value <= 60 ? "mid" : "low";
+                return (
+                  <li key={axis} className="tc-livability-row" title={`${label}: ${Math.round(value)}/100`}>
+                    <div className="tc-livability-row__label">{label}<span className="block text-[10px] text-stone-readable font-normal">{desc}</span></div>
+                    <div className="tc-livability-row__bar">
+                      <div className="tc-livability-row__bar-fill" data-level={level} style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
+                    </div>
+                    <div className="tc-livability-row__value font-mono-num">{Math.round(value)}<span className="text-stone text-[10px]">/100</span></div>
+                  </li>
+                );
+              })}
+            </ul>
+            {place.liveSignals.note ? (
+              <p className="mt-3 text-[12px] leading-snug text-frost border-t border-dashed border-[rgba(71,90,122,0.18)] pt-2">{prose(place.liveSignals.note)}</p>
+            ) : null}
+            {place.liveSignals.sources && place.liveSignals.sources.length > 0 ? (
+              <div className="mt-2 text-[11px] text-stone-readable">
+                Sources:
+                {" "}
+                {place.liveSignals.sources.map((s, i) => (
+                  <span key={s.label}>
+                    {i > 0 ? " · " : ""}
+                    {s.url ? <a href={s.url} className="underline decoration-dotted hover:text-frost" target="_blank" rel="noreferrer noopener">{s.label}</a> : s.label}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </Section>
+      ) : null}
 
       <Section title="Live-here fit" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="grid md:grid-cols-[11rem_1fr] gap-3">
