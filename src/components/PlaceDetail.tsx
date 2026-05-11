@@ -606,7 +606,11 @@ function DetailBody({
               >
                 <div className="tc-livability-row__label">{c.label}</div>
                 <div className="tc-livability-row__bar">
-                  <div className="tc-livability-row__bar-fill" style={{ width: `${Math.max(0, Math.min(100, c.value))}%` }} />
+                  <div
+                    className="tc-livability-row__bar-fill"
+                    data-level={c.value >= 68 ? "high" : c.value >= 38 ? "mid" : "low"}
+                    style={{ width: `${Math.max(0, Math.min(100, c.value))}%` }}
+                  />
                 </div>
                 <div className="tc-livability-row__value font-mono-num">
                   {Math.round(c.value)}

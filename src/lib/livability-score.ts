@@ -263,12 +263,19 @@ function makeRationale(p: Place, key: ComponentKey, value: number): string {
   }
 }
 
+// WeakMap cache — Place objects from data/places are module-level singletons, so
+// the same reference always maps to the same result. Test fixtures create fresh
+// objects per call, so there is no risk of stale data across test cases.
+const _scoreCache = new WeakMap<Place, LivabilityResult>();
+
 /**
  * Score a single place. Returns the blended 0..100 score plus its
  * per-component breakdown so the UI can surface why a place ranked
- * where it did.
+ * where it did. Results are cached by object identity.
  */
 export function scoreLivability(p: Place): LivabilityResult {
+  const cached = _scoreCache.get(p);
+  if (cached) return cached;
   const w = LIVABILITY_BLEND_WEIGHTS;
   const values: Record<ComponentKey, number> = {
     resilience: clamp(p.scores.resilience),
@@ -295,7 +302,9 @@ export function scoreLivability(p: Place): LivabilityResult {
     .slice(0, 2)
     .map(c => c.key);
 
-  return { place: p, score, components, drivers, drags };
+  const result: LivabilityResult = { place: p, score, components, drivers, drags };
+  _scoreCache.set(p, result);
+  return result;
 }
 
 /** Rank a pool by livability v2, returning the per-place breakdown alongside the score. */
