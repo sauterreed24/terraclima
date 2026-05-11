@@ -32,6 +32,12 @@ export interface KeyboardShortcutDeps {
   pickRandomPlace: () => boolean;
   /** Optional hook for "no random pick available" UX feedback. */
   onRandomEmpty?: () => void;
+  /**
+   * Toggle the bookmark state of the currently-selected place. No-op when
+   * nothing is selected — the shortcut hint silently does nothing rather
+   * than throwing or showing UI noise.
+   */
+  toggleBookmarkSelected?: () => void;
 }
 
 /**
@@ -53,6 +59,7 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
     openFilterSheet,
     pickRandomPlace,
     onRandomEmpty,
+    toggleBookmarkSelected,
   } = deps;
 
   useEffect(() => {
@@ -103,6 +110,14 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
           });
           break;
         }
+        case "b": case "B": {
+          // Only meaningful when a place is open — there's nothing to pin
+          // otherwise. Avoids hijacking the keystroke on the index views.
+          if (!selectedId || !toggleBookmarkSelected) break;
+          e.preventDefault();
+          toggleBookmarkSelected();
+          break;
+        }
       }
     };
     window.addEventListener("keydown", onKey);
@@ -111,5 +126,6 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
     view, showShortcuts, compareOpen, selectedId, explorerDockLg,
     setView, setShowShortcuts, setCompareOpen, closeDetail,
     focusSearchInput, openFilterSheet, pickRandomPlace, onRandomEmpty,
+    toggleBookmarkSelected,
   ]);
 }

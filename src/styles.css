@@ -2198,6 +2198,288 @@
     touch-action: manipulation;
   }
 
+  /* Bookmark/pin chip — small circular button anchored at the top-right of
+     the card next to the tier badge. The compact size keeps the affordance
+     out of the reading flow while staying obvious to scout. */
+  .tc-bookmark-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: 999px;
+    background: rgba(255, 252, 247, 0.95);
+    border: 1px solid rgba(200, 170, 140, 0.45);
+    color: var(--color-frost);
+    cursor: pointer;
+    transition: background 160ms, border-color 160ms, color 160ms, transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 1) inset;
+  }
+  .tc-bookmark-chip:hover {
+    background: rgba(255, 248, 226, 0.98);
+    border-color: rgba(232, 180, 60, 0.65);
+  }
+  .tc-bookmark-chip:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
+  }
+  .tc-bookmark-chip--pinned {
+    background: rgba(255, 236, 184, 0.92);
+    border-color: rgba(232, 180, 60, 0.7);
+    color: rgba(160, 110, 20, 0.95);
+  }
+  .place-card__bookmark-btn {
+    position: absolute;
+    top: 0.85rem;
+    right: 6.55rem;
+    z-index: 2;
+    transform: translateZ(0);
+    touch-action: manipulation;
+  }
+  @media (max-width: 540px) {
+    .place-card__bookmark-btn {
+      right: 5.6rem;
+    }
+  }
+  .tc-bookmark-btn {
+    /* Header variant: text + icon. Pinned state mirrors the chip tint. */
+    transition: background 160ms, border-color 160ms, color 160ms;
+  }
+  .tc-bookmark-btn--pinned {
+    border-color: rgba(232, 180, 60, 0.7) !important;
+    color: rgba(160, 110, 20, 0.95) !important;
+    background: rgba(255, 236, 184, 0.65);
+  }
+  .tc-bookmark-btn--pinned:hover {
+    background: rgba(255, 240, 196, 0.85);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tc-bookmark-chip {
+      transition-duration: 0.01ms;
+    }
+  }
+
+  /* Hero rails for pinned + recently viewed places. */
+  .hero-mini-rail {
+    display: flex;
+    gap: 0.4rem;
+    overflow-x: auto;
+    padding: 0.15rem 0.1rem 0.45rem;
+    margin: 0 -0.1rem;
+    scrollbar-width: thin;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    list-style: none;
+  }
+  .hero-mini-rail::-webkit-scrollbar {
+    height: 6px;
+  }
+  .hero-mini-rail::-webkit-scrollbar-thumb {
+    background: rgba(200, 170, 140, 0.4);
+    border-radius: 999px;
+  }
+  .hero-mini-rail__chip {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid rgba(200, 170, 140, 0.45);
+    background: rgba(255, 252, 247, 0.95);
+    color: var(--color-frost);
+    font-size: 0.72rem;
+    line-height: 1.05;
+    max-width: 14rem;
+    transition: background 160ms, border-color 160ms, transform 160ms;
+    cursor: pointer;
+  }
+  .hero-mini-rail__chip:hover {
+    background: rgba(232, 248, 251, 0.98);
+    border-color: rgba(26, 143, 168, 0.55);
+    transform: translateY(-1px);
+  }
+  .hero-mini-rail__chip:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.65);
+    outline-offset: 2px;
+  }
+  .hero-mini-rail__chip[data-tone="ochre"] {
+    background: rgba(255, 244, 218, 0.94);
+    border-color: rgba(232, 180, 60, 0.55);
+  }
+  .hero-mini-rail__chip-name {
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .hero-mini-rail__chip-meta {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-stone);
+    white-space: nowrap;
+  }
+  .hero-mini-rail__chip-remove {
+    margin-left: 0.15rem;
+    color: var(--color-stone);
+    opacity: 0.65;
+    transition: opacity 160ms, color 160ms;
+    line-height: 1;
+  }
+  .hero-mini-rail__chip-remove:hover,
+  .hero-mini-rail__chip-remove:focus-visible {
+    opacity: 1;
+    color: rgba(180, 70, 40, 0.9);
+  }
+  .hero-mini-rail__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.35rem;
+  }
+  .hero-mini-rail__title {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-stone);
+  }
+  .hero-mini-rail__action {
+    font-size: 0.66rem;
+    color: var(--color-stone);
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0.15rem 0.3rem;
+    border-radius: 6px;
+    transition: color 160ms, background 160ms;
+  }
+  .hero-mini-rail__action:hover {
+    color: var(--color-frost);
+    background: rgba(255, 252, 247, 0.95);
+  }
+  .hero-mini-rail__action:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
+  }
+
+  /* Back-to-top button anchored to the bottom-right of the detail panel.
+     Position: sticky so it travels with the user as they scroll; the panel
+     itself is the scroll container, so the button sits inside that overflow
+     box and the offsets are relative to the panel's viewport. */
+  .tc-detail-back-to-top {
+    position: sticky;
+    bottom: 1.4rem;
+    margin-left: auto;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 252, 247, 0.96);
+    border: 1px solid rgba(180, 150, 120, 0.45);
+    color: var(--color-frost);
+    cursor: pointer;
+    box-shadow: 0 6px 18px -8px rgba(62, 38, 24, 0.35), 0 1px 0 rgba(255, 255, 255, 1) inset;
+    transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1), background 160ms, border-color 160ms;
+    z-index: 5;
+    /* Anchor to the bottom-right corner of the panel without taking up
+       row-flow space. The float keeps the surrounding content laid out
+       as if the button weren't there. */
+    float: right;
+    clear: both;
+  }
+  .tc-detail-back-to-top:hover {
+    transform: translateY(-1px);
+    background: rgba(232, 248, 251, 0.98);
+    border-color: rgba(26, 143, 168, 0.55);
+  }
+  .tc-detail-back-to-top:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.65);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tc-detail-back-to-top {
+      transition-duration: 0.01ms;
+    }
+  }
+
+  /* Livability v2 breakdown rows inside PlaceDetail. Each row is a
+     three-column grid: label / proportional bar / numeric value. The
+     bar fills from left and uses the same glacier/seafoam gradient as
+     the reading progress bar so the visual language stays coherent. */
+  .tc-livability-row {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, max-content) 1fr 3.5rem;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 0.5rem;
+    background: rgba(255, 252, 247, 0.6);
+    border: 1px solid rgba(180, 150, 120, 0.25);
+  }
+  .tc-livability-row__label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-stone);
+    white-space: nowrap;
+  }
+  .tc-livability-row__bar {
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(180, 150, 120, 0.2);
+    overflow: hidden;
+  }
+  .tc-livability-row__bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, rgba(122, 212, 240, 0.95) 0%, rgba(26, 143, 168, 0.95) 100%);
+    transition: width 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .tc-livability-row__value {
+    font-size: 0.78rem;
+    text-align: right;
+    color: var(--color-frost);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tc-livability-row__bar-fill { transition: none; }
+  }
+
+  /* Reading progress bar — pinned to the very top edge of the detail
+     panel scroll container. The track is a thin transparent strip; the
+     fill is transform-scaled by JS to mirror scrollTop/scrollHeight.
+     transform-origin: left ensures it grows left-to-right. */
+  .tc-detail-progress-track {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(180, 150, 120, 0.18);
+    z-index: 20;
+    overflow: hidden;
+  }
+  .tc-detail-progress-fill {
+    height: 100%;
+    width: 100%;
+    transform-origin: left center;
+    transform: scaleX(0);
+    background: linear-gradient(90deg, rgba(122, 212, 240, 0.95) 0%, rgba(26, 143, 168, 0.95) 100%);
+    transition: transform 90ms linear;
+    will-change: transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tc-detail-progress-fill {
+      transition: none;
+    }
+  }
+
   /* Archetype-tinted card. --tone-rgb is set inline per card; CSS animates
      the glow on hover/selection using the primary archetype colour. This
      adds zero JS work per hover — the browser interpolates the rgba() in
@@ -2327,6 +2609,104 @@
    (Windows "Show animations off"), we skip the fade-in / shimmer entirely
    rather than queue them up. This also trims a little GPU work on older
    hardware when the user has indicated they don't care about motion. */
+/* =========================================================
+   Print stylesheet — readable, paperboard-friendly profiles.
+   When a place detail is open, print only that panel so a user
+   can hand someone a one-page brief of a Terraclima dossier.
+   ========================================================= */
+@media print {
+  :root {
+    color-scheme: light;
+  }
+  html, body {
+    background: white !important;
+    color: #1c2329 !important;
+  }
+  /* Hide ambient/chrome surfaces that don't serve a paper read. */
+  .ambient-aurora,
+  .skip-to-main,
+  .tc-header-bar,
+  .tc-footer,
+  .map-shell,
+  .map-chrome-panel,
+  .map-btn,
+  .ExplorerFilterSheet,
+  #tc-explorer-filter-sheet,
+  #tc-site-menu,
+  .panel-hero .scout-brief,
+  .panel-hero .current-rank-strip,
+  .panel-hero .hero-top-ten,
+  .panel-hero .hero-mini-rail,
+  .panel-hero .tc-reader-path,
+  .tc-detail-back-to-top,
+  .tc-bookmark-chip,
+  .tc-bookmark-btn,
+  .place-card__compare-btn,
+  .place-card__bookmark-btn {
+    display: none !important;
+  }
+  /* If a place profile is open, drop the rest of the app so it gets a
+     clean single-document print rather than appending all explorer state. */
+  body:has([data-place-detail]) > #root > *:not([data-place-detail]),
+  body:has([data-place-detail]) main:not([data-place-detail]) {
+    /* Best-effort; not all browsers support :has yet but the rule does no harm. */
+  }
+  [data-place-detail] {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    box-shadow: none !important;
+    border: 0 !important;
+    background: white !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+  [data-place-detail] .btn-ghost,
+  [data-place-detail] .btn-primary,
+  [data-place-detail] [data-place-detail-close] {
+    display: none !important;
+  }
+  /* Always show the headers and sections without panel chrome. */
+  .panel, .panel-hero, .panel-thin, .panel-warm {
+    box-shadow: none !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    background: white !important;
+  }
+  a {
+    color: #0b3d5e !important;
+    text-decoration: underline !important;
+  }
+  /* Avoid breaking inside a chart, list, or paragraph block. */
+  section, .panel, ul, ol, table {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  h1, h2, h3 {
+    page-break-after: avoid;
+    break-after: avoid;
+  }
+  .place-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border: 1px solid rgba(0, 0, 0, 0.18) !important;
+    box-shadow: none !important;
+    background: white !important;
+  }
+  /* Tighter type sizes for paper. */
+  body, p, li, td, dd {
+    font-size: 10.5pt !important;
+    line-height: 1.45 !important;
+  }
+  h1 { font-size: 18pt !important; }
+  h2 { font-size: 14pt !important; }
+  h3 { font-size: 12pt !important; }
+  /* Stop sticky offsets jamming page flow. */
+  .sticky, [class*="sticky"] {
+    position: static !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .anim-fade-in,
   .view-enter,

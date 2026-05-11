@@ -2,6 +2,20 @@
 
 **The North American Microclimate Atlas.**
 
+## Quick start
+
+**Use it now:** open **[https://sauterreed24.github.io/terraclima/](https://sauterreed24.github.io/terraclima/)**. No signup, no install, works on phones and desktops.
+
+What to try first:
+
+1. Hover or tap any pin on the map for a one-line climate snapshot.
+2. Open a place card — the profile reads like a field guide: opening story, livability breakdown, practical read, charts, risks, similar places, sources.
+3. Pin places to your shortlist with the bookmark control (or press **B** while a profile is open). Pins live in your browser, no account required.
+4. Sort by **Rank by**, narrow with **Filters**, then use **Compare** to put up to four places side by side.
+5. Press **?** anywhere for the keyboard-shortcut overlay.
+
+Built for new users: every screen-reader-only label, focus state, keyboard shortcut, touch-friendly tap target, and reduced-motion mode is wired in by default. Mobile users get a hamburger menu + bottom filter sheet; desktop users get a dock-style layout above 1024 px.
+
 ## Project links
 
 - **Live app — works on any device, no signup, no install:** **[Open Terraclima](https://sauterreed24.github.io/terraclima/)** — served as a static SPA from GitHub Pages. Anyone with the URL can use the app, including on a phone. The site is rebuilt on every push to `main` by `.github/workflows/deploy-pages.yml`.
@@ -37,7 +51,12 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 - **Collections and learning mode:** Curated bundles and a glossary connect mechanisms such as lapse rate, cold-air pooling, orographic lift, marine layer, foehn winds, thermal belts, and karst hydrology to real places.
 - **Static lodging and investment caveats:** Lodging cues are static style/search prompts, not reservation inventory or paid placement. The investment lens is a climate-and-land screening signal, not financial advice, not a valuation, not a parcel recommendation, and not a recommendation to buy.
 - **Unit-aware prose:** The corpus is authored in metric climate language while the interface localizes temperatures, ranges, deltas, precipitation, snowfall, elevation, wind speed, and distance for the active unit system.
-- **Keyboard shortcuts:** `E`, `T`, `C`, and `L` switch views; `/` opens Explorer search; `F` opens mobile filters; `R` picks a random place from the current ranked set; `Esc` closes the active overlay; `?` opens shortcut help.
+- **Keyboard shortcuts:** `E`, `T`, `C`, and `L` switch views; `/` opens Explorer search; `F` opens mobile filters; `R` picks a random place from the current ranked set; `B` pins / unpins the currently open place to your shortlist; `Esc` closes the active overlay; `?` opens shortcut help.
+- **Persistent shortlist:** Pin any place to your local shortlist with the bookmark control on cards or in the place profile header. The Explorer hero exposes a quick-jump rail for pinned places. Pins persist across sessions in `localStorage` — no account required.
+- **Recently viewed rail:** The Explorer hero remembers the last ten place profiles you opened on this device so you can resume scouting without losing context.
+- **Print-friendly profiles:** Open a place profile and choose your browser's Print to get a paperboard-ready brief (atlas chrome, controls, and overlays are hidden by the print stylesheet).
+- **Reading progress:** Place profiles show a thin progress bar at the top of the panel and a back-to-top button after deep scrolling.
+- **Livability lens v2:** The hero "Livability blend" score now uses a bidirectional thermal-comfort plateau (humidity-aware, with diurnal recovery credit), a tail-risk-aware hazard cushion (60% mean-of-9 + 40% max-of-9), and a U-shaped precipitation moderation curve. Per-component breakdowns appear inside every place profile so you can see why a place ranked where it did. See [`src/lib/livability-score.ts`](src/lib/livability-score.ts).
 
 ## Public Release Posture
 

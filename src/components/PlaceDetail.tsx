@@ -26,6 +26,7 @@ import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
+import { scoreLivability } from "../lib/livability-score";
 import { safeExternalHref } from "../lib/safe-url";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
 import { useMediaQuery } from "../hooks/use-media-query";
@@ -39,8 +40,9 @@ import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchor
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
-  Users, Compass, ExternalLink, Scale, Satellite,
+  Users, Compass, ExternalLink, Scale, Satellite, ArrowUp,
 } from "lucide-react";
+import { BookmarkButton } from "./BookmarkButton";
 
 const TONE_HERO: Record<string, string> = {
   glacier: "radial-gradient(1000px 300px at 15% 0%, rgba(94,196,220,0.22), transparent 65%)",
@@ -195,9 +197,12 @@ interface Props {
   onPickArchetype?: (a: MicroclimateArchetype) => void;
   onOpenPlace?: (id: string) => void;
   liveFitFilters?: LiveFitFilters;
+  /** Whether this place is currently pinned. Hides the control when callback absent. */
+  bookmarked?: boolean;
+  onBookmarkToggle?: (id: string) => void;
 }
 
-export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters }: Props) {
+export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, bookmarked, onBookmarkToggle }: Props) {
   const reduceMotion = useReducedMotion();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
@@ -286,6 +291,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               boxShadow: "-20px 0 48px -14px rgba(62, 38, 24, 0.18)",
             }}
           >
+            <ReadingProgressBar panelRef={panelRef} />
             <DetailHeader
               place={place}
               titleId={titleId}
@@ -293,8 +299,11 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               onCompareToggle={onCompareToggle}
               inCompare={inCompareIds?.has(place.id) ?? false}
               onPickArchetype={onPickArchetype}
+              bookmarked={Boolean(bookmarked)}
+              onBookmarkToggle={onBookmarkToggle}
             />
-            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} />
+            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} panelRef={panelRef} />
+            <BackToTopButton panelRef={panelRef} />
           </motion.aside>
         </>
       )}
@@ -327,7 +336,7 @@ function CopyPlaceLink({ placeId }: { placeId: string }) {
 }
 
 function DetailHeader({
-  place, titleId, onClose, onCompareToggle, inCompare, onPickArchetype,
+  place, titleId, onClose, onCompareToggle, inCompare, onPickArchetype, bookmarked, onBookmarkToggle,
 }: {
   place: Place;
   titleId: string;
@@ -335,6 +344,8 @@ function DetailHeader({
   onCompareToggle?: (id: string) => void;
   inCompare: boolean;
   onPickArchetype?: (a: MicroclimateArchetype) => void;
+  bookmarked: boolean;
+  onBookmarkToggle?: (id: string) => void;
 }) {
   const { temp, dist } = useUnits();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
@@ -386,8 +397,16 @@ function DetailHeader({
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-1 self-end shrink-0 md:self-start">
+        <div className="flex items-center gap-1 self-end shrink-0 md:self-start flex-wrap justify-end">
           <CopyPlaceLink placeId={place.id} />
+          {onBookmarkToggle && (
+            <BookmarkButton
+              pinned={bookmarked}
+              placeName={place.name}
+              onToggle={() => onBookmarkToggle(place.id)}
+              size="header"
+            />
+          )}
           {onCompareToggle && (
             <button
               type="button"
@@ -489,10 +508,15 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
 
 function DetailBody({
   place, onOpenPlace, liveFitFilters,
+  // panelRef is reserved for future progress-bar / reading-spy refinements
+  // tied to the scroll container, kept here so the contract is explicit even
+  // if currently unused inside the body.
+  panelRef: _panelRef,
 }: {
   place: Place;
   onOpenPlace?: (id: string) => void;
   liveFitFilters?: LiveFitFilters;
+  panelRef?: { current: HTMLElement | null };
 }) {
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -524,6 +548,7 @@ function DetailBody({
   const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
   const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
+  const livability = useMemo(() => scoreLivability(place), [place]);
   const settlementAnchors = useMemo(() => buildSettlementAnchors(place), [place]);
   const practicalActivities = useMemo(() => buildPracticalActivities(place), [place]);
   const nearbyContextRows = useMemo(() => buildNearbyContextRows(place), [place]);
@@ -557,6 +582,57 @@ function DetailBody({
       </Section>
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
+
+      <Section title="Livability lens v2" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
+        <div className="panel-thin p-4">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div>
+              <div className="text-[10px] uppercase tracking-wider text-stone">Blended livability score</div>
+              <div className="font-mono-num text-3xl text-ice mt-0.5">
+                {livability.score}<span className="text-sm text-stone">/100</span>
+              </div>
+            </div>
+            <div className="text-[11px] text-stone-readable max-w-lg leading-snug">
+              Bidirectional thermal plateau, humidity-aware summer comfort, tail-risk-aware hazard cushion, U-shaped precip moderation. Hover a row for its formula.
+            </div>
+          </div>
+          <div className="divider-contour my-3" />
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {livability.components.map(c => (
+              <li
+                key={c.key}
+                className="tc-livability-row"
+                title={c.rationale}
+              >
+                <div className="tc-livability-row__label">{c.label}</div>
+                <div className="tc-livability-row__bar">
+                  <div className="tc-livability-row__bar-fill" style={{ width: `${Math.max(0, Math.min(100, c.value))}%` }} />
+                </div>
+                <div className="tc-livability-row__value font-mono-num">
+                  {Math.round(c.value)}
+                  <span className="text-stone text-[10px]">/100</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+          {(livability.drivers.length > 0 || livability.drags.length > 0) ? (
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+              {livability.drivers.length > 0 ? (
+                <div className="rounded-lg border border-[rgba(61,143,85,0.28)] bg-[rgba(236,248,232,0.55)] px-3 py-2">
+                  <div className="text-[10px] uppercase tracking-wider text-sage-700 mb-0.5">Drivers</div>
+                  <div className="text-frost">{livability.drivers.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
+                </div>
+              ) : null}
+              {livability.drags.length > 0 ? (
+                <div className="rounded-lg border border-[rgba(232,90,50,0.28)] bg-[rgba(255,236,228,0.55)] px-3 py-2">
+                  <div className="text-[10px] uppercase tracking-wider text-ember-700 mb-0.5">Drags</div>
+                  <div className="text-frost">{livability.drags.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      </Section>
 
       <Section title="Live-here fit" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="grid md:grid-cols-[11rem_1fr] gap-3">
@@ -1248,4 +1324,92 @@ function synthesizePlaceSignals(place: Place, temp: "F" | "C", dist: "imperial" 
     .map(r => `${RISK_LABEL[r.key] ?? r.key} · ${r.level}`);
 
   return { lines, topRisks: risks };
+}
+
+/**
+ * Floating back-to-top button. Visible only after the user has scrolled
+ * past ~480 px inside the detail panel. Scrolls the panel's overflow
+ * container — not the page — because the panel is the actual scroll host.
+ * Cheap: a single rAF-throttled scroll listener with no React state
+ * churn beyond visibility toggling.
+ */
+function BackToTopButton({ panelRef }: { panelRef: { current: HTMLElement | null } }) {
+  const [visible, setVisible] = useState(false);
+  useEffect(() => {
+    const el = panelRef.current;
+    if (!el) return;
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      setVisible(el.scrollTop > 480);
+    };
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(update);
+    };
+    update();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [panelRef]);
+
+  const onClick = useCallback(() => {
+    const el = panelRef.current;
+    if (!el) return;
+    const behavior: ScrollBehavior =
+      typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth";
+    el.scrollTo({ top: 0, behavior });
+  }, [panelRef]);
+
+  if (!visible) return null;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="tc-detail-back-to-top"
+      aria-label="Scroll to top of place profile"
+      title="Back to top"
+    >
+      <ArrowUp className="w-4 h-4" aria-hidden />
+    </button>
+  );
+}
+
+/**
+ * Thin progress bar that fills as the user scrolls through the dossier.
+ * Mutates the bar's transform via DOM directly to avoid re-rendering on
+ * every scroll frame. Lives sticky at the very top edge of the panel so
+ * it never competes with the dossier title for attention.
+ */
+function ReadingProgressBar({ panelRef }: { panelRef: { current: HTMLElement | null } }) {
+  const barRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    const el = panelRef.current;
+    const bar = barRef.current;
+    if (!el || !bar) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const max = el.scrollHeight - el.clientHeight;
+      const pct = max <= 0 ? 0 : Math.min(1, Math.max(0, el.scrollTop / max));
+      bar.style.transform = `scaleX(${pct})`;
+    };
+    const onScroll = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(update);
+    };
+    update();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      if (raf) window.cancelAnimationFrame(raf);
+    };
+  }, [panelRef]);
+  return (
+    <div className="tc-detail-progress-track" aria-hidden="true">
+      <div ref={barRef} className="tc-detail-progress-fill" />
+    </div>
+  );
 }

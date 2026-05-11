@@ -33,6 +33,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   resonantWindow,
   liveFitFilters,
   rankingLabel,
+  bookmarkIds,
+  onBookmarkToggle,
 }: {
   ranked: RankingResult[];
   selectedId: string | null;
@@ -42,6 +44,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   resonantWindow: BestWindow["id"] | null;
   liveFitFilters: FilterState;
   rankingLabel: string;
+  bookmarkIds?: Set<string>;
+  onBookmarkToggle?: (id: string) => void;
 }) {
   const cols = useGridColumns();
   const rowCount = ranked.length === 0 ? 0 : Math.ceil(ranked.length / cols);
@@ -116,6 +120,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
                   onOpenPlace={openPlace}
                   onCompareToggle={toggleCompare}
                   inCompare={compareIds.has(r.place.id)}
+                  bookmarked={bookmarkIds?.has(r.place.id)}
+                  onBookmarkToggle={onBookmarkToggle}
                   resonantWindow={resonantWindow}
                   liveFitFilters={liveFitFilters}
                   rank={start + colIndex + 1}
