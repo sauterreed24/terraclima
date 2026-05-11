@@ -26,7 +26,7 @@ describe("live-fit scoring", () => {
     expect(fit.reasons.length).toBeGreaterThanOrEqual(2);
     expect(fit.reasons.length).toBeLessThanOrEqual(3);
     expect(fit.cautions.length).toBeGreaterThanOrEqual(1);
-    expect(fit.cautions.length).toBeLessThanOrEqual(2);
+    expect(fit.cautions.length).toBeLessThanOrEqual(3);
     expect(fit.badges).toContain("Hidden");
   });
 

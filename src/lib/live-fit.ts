@@ -7,7 +7,11 @@ import {
   RISK_VALUE,
   seasonalUsabilityScore,
 } from "./climate-metrics";
-import { feltComfortScore } from "./livability-score";
+import {
+  dominantLivedFriction,
+  feltComfortScore,
+  livedFrictionScore,
+} from "./livability-score";
 
 export type LiveFitPresetId =
   | "cool-summers"
@@ -108,15 +112,27 @@ export const LIVE_FIT_WINTER_FLOORS_C = [-5, 0, 2] as const;
 export const LIVE_FIT_GROWABILITY_FLOORS = [65, 75] as const;
 export const LIVE_FIT_RISK_CEILINGS = ["low", "moderate", "elevated"] as const satisfies readonly RiskLevel[];
 
+/**
+ * v2.1 — Down-weights `uniqueness` from 0.13 → 0.04. Microclimate uniqueness
+ * is editorial novelty, not a relocation signal; fog-belt coasts inheriting
+ * 12 pts from a "weird-climate" credit was the largest single driver of
+ * Monterey, Eureka, and Point Reyes ranking above objectively more livable
+ * highlands.
+ *
+ * Adds `livedFriction` at 0.10 so curated affordability / social-fabric /
+ * access signals move the score directly. Increases `sunshine` from 0.06 →
+ * 0.09 and `hazardEase` from 0.11 → 0.12 to reabsorb the freed weight.
+ */
 const LIVE_FIT_DEFAULT_WEIGHTS = {
-  feltComfort: 0.23,
-  seasonalRunway: 0.12,
-  resilience: 0.17,
-  uniqueness: 0.13,
-  growability: 0.12,
-  hazardEase: 0.11,
-  hiddenGem: 0.06,
-  sunshine: 0.06,
+  feltComfort: 0.22,
+  seasonalRunway: 0.13,
+  resilience: 0.15,
+  uniqueness: 0.04,
+  growability: 0.11,
+  hazardEase: 0.12,
+  hiddenGem: 0.04,
+  sunshine: 0.09,
+  livedFriction: 0.10,
 } as const;
 
 function clamp100(n: number): number {
@@ -254,7 +270,8 @@ function defaultLiveScore(place: Place): number {
     place.scores.growability * w.growability +
     hazardEase * w.hazardEase +
     place.scores.hiddenGem * w.hiddenGem +
-    sunshineScore(place) * w.sunshine,
+    sunshineScore(place) * w.sunshine +
+    livedFrictionScore(place) * w.livedFriction,
   ));
 }
 
@@ -303,14 +320,33 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   if (place.settlementsWithinZone?.length) pushUnique(reasons, "Nearby settlement anchors make the climate easier to picture on the ground.", 3);
   if (reasons.length === 0) pushUnique(reasons, "Balanced climate, risk, and terrain scores make it worth a closer look.", 3);
 
-  if (place.scores.tradeoff >= 65) pushUnique(cautions, "Tradeoffs are substantial; read the risk and fit sections before shortlisting.", 2);
-  if (RISK_VALUE[place.risks.wildfire.level] >= 3) pushUnique(cautions, `Wildfire risk is ${place.risks.wildfire.level}.`, 2);
-  if (RISK_VALUE[place.risks.smoke.level] >= 3) pushUnique(cautions, `Smoke risk is ${place.risks.smoke.level}.`, 2);
-  if (RISK_VALUE[place.risks.coastal.level] >= 3) pushUnique(cautions, `Coastal exposure is ${place.risks.coastal.level}.`, 2);
-  if (winter < -12) pushUnique(cautions, "Winter cold is a real lifestyle filter.", 2);
-  if (summer > 31) pushUnique(cautions, "Peak summer heat will matter for daily routines.", 2);
-  if (comfortMonths <= 4) pushUnique(cautions, `Only ${comfortMonths} months clear the easy-living comfort screen.`, 2);
-  if (annualRange > 36) pushUnique(cautions, "Annual temperature range is large; expect harder seasonal swings.", 2);
+  if (place.scores.tradeoff >= 65) pushUnique(cautions, "Tradeoffs are substantial; read the risk and fit sections before shortlisting.", 3);
+  if (RISK_VALUE[place.risks.wildfire.level] >= 3) pushUnique(cautions, `Wildfire risk is ${place.risks.wildfire.level}.`, 3);
+  if (RISK_VALUE[place.risks.smoke.level] >= 3) pushUnique(cautions, `Smoke risk is ${place.risks.smoke.level}.`, 3);
+  if (RISK_VALUE[place.risks.coastal.level] >= 3) pushUnique(cautions, `Coastal exposure is ${place.risks.coastal.level}.`, 3);
+  if (winter < -12) pushUnique(cautions, "Winter cold is a real lifestyle filter.", 3);
+  if (summer > 31) pushUnique(cautions, "Peak summer heat will matter for daily routines.", 3);
+  if (comfortMonths <= 4) pushUnique(cautions, `Only ${comfortMonths} months clear the easy-living comfort screen.`, 3);
+  if (annualRange > 36) pushUnique(cautions, "Annual temperature range is large; expect harder seasonal swings.", 3);
+
+  // Lived-friction cautions — surface curated affordability, social-fabric and
+  // access drags so a climatically perfect coast cannot bury its lived reality.
+  const lived = place.liveSignals;
+  if (lived) {
+    const dom = dominantLivedFriction(place);
+    if (lived.costPressure != null && lived.costPressure >= 70) {
+      pushUnique(cautions, `Affordability is a real filter — cost pressure ${Math.round(lived.costPressure)}/100${lived.note && dom?.axis === "cost" ? ` (${lived.note})` : ""}.`, 3);
+    }
+    if (lived.socialStress != null && lived.socialStress >= 55) {
+      pushUnique(cautions, `Resident reports describe social-fabric stress — graded ${Math.round(lived.socialStress)}/100${lived.note && dom?.axis === "social" ? ` (${lived.note})` : ""}.`, 3);
+    }
+    if (lived.accessFriction != null && lived.accessFriction >= 60) {
+      pushUnique(cautions, `Daily-services access is limited — friction ${Math.round(lived.accessFriction)}/100${lived.note && dom?.axis === "access" ? ` (${lived.note})` : ""}.`, 3);
+    }
+    if ((lived.costPressure ?? 100) <= 35 && (lived.socialStress ?? 100) <= 35 && (lived.accessFriction ?? 100) <= 40) {
+      pushUnique(reasons, "Lived signals are easy: cost, social fabric, and daily-services access all read benign.", 3);
+    }
+  }
 
   // Marine-fog / low-sunshine caution
   const diurnal = place.climate.diurnalSummerC ?? (place.climate.tempHighC[6] - place.climate.tempLowC[6]);
@@ -319,16 +355,16 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
     const summerHum = (hum[4] + hum[5] + hum[6] + hum[7]) / 4;
     const annualHum = hum.reduce((a, b) => a + b, 0) / 12;
     if (summerHum > 72 && diurnal < 12) {
-      pushUnique(cautions, "Summer marine layer likely (\"June Gloom\" pattern) — temperatures feel colder and greyer than they appear on paper.", 2);
+      pushUnique(cautions, "Summer marine layer likely (\"June Gloom\" pattern) — temperatures feel colder and greyer than they appear on paper.", 3);
     } else if (annualHum > 76 && diurnal < 12) {
-      pushUnique(cautions, "Persistent overcast or fog — mild temperatures can feel colder and greyer than the numbers suggest.", 2);
+      pushUnique(cautions, "Persistent overcast or fog — mild temperatures can feel colder and greyer than the numbers suggest.", 3);
     }
   }
   if (place.climate.sunshinePct) {
     const annualSun = place.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12;
     // US average is ~58%; below 48% (Eureka's level) is a clear quality-of-life drag per research
-    if (annualSun < 48) pushUnique(cautions, `Below-average sunshine (~${Math.round(annualSun)}% of possible; US avg 58%) — expect frequent overcast days.`, 2);
-    else if (annualSun < 55) pushUnique(cautions, `Sunshine is below the US average of 58% (~${Math.round(annualSun)}%) — overcast days are common.`, 2);
+    if (annualSun < 48) pushUnique(cautions, `Below-average sunshine (~${Math.round(annualSun)}% of possible; US avg 58%) — expect frequent overcast days.`, 3);
+    else if (annualSun < 55) pushUnique(cautions, `Sunshine is below the US average of 58% (~${Math.round(annualSun)}%) — overcast days are common.`, 3);
   }
 
   if (place.scores.resilience >= 72) badges.push("Resilient");

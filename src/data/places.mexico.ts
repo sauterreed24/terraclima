@@ -96,6 +96,16 @@ export const PLACES_MEXICO: Place[] = [
 
     scores: { hiddenGem: 44, microclimateUniqueness: 84, comfort: 90, resilience: 60, growability: 82, tradeoff: 34 },
 
+    liveSignals: {
+      costPressure: 32,
+      socialStress: 34,
+      accessFriction: 26,
+      note: "Affordable for relocators on USD/CAD incomes but rapid tourism-driven gentrification has tightened the historic centre; OAX airport links Mexico City and US gateways.",
+      sources: [
+        { label: "INEGI — Oaxaca de Juárez urban profile", url: "https://www.inegi.org.mx/" },
+      ],
+    },
+
     relocationFit: ["creatives", "writers", "families wanting mild year-round", "digital nomads", "food-culture lovers"],
     travelFit: ["Día de Muertos", "archaeology (Monte Albán)", "mezcal trails", "dry-season any time"],
     whoWouldLove: "Those chasing year-round spring, deep culture, and strong food/craft traditions.",
@@ -221,7 +231,16 @@ export const PLACES_MEXICO: Place[] = [
       { label: "Montebello lakes district", note: "Slightly lower; similar character, different setting." },
     ],
 
-    scores: { hiddenGem: 70, microclimateUniqueness: 86, comfort: 80, resilience: 62, growability: 72, tradeoff: 38 },
+    scores: { hiddenGem: 70, microclimateUniqueness: 86, comfort: 80, resilience: 62, growability: 72, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 24,
+      socialStress: 38,
+      accessFriction: 38,
+      note: "Cool-highland Chiapas cost-of-living remains low; political tensions surface periodically, and Tuxtla airport is a 70-minute drive.",
+      sources: [
+        { label: "INEGI — San Cristóbal de las Casas urban profile", url: "https://www.inegi.org.mx/" },
+      ],
+    },
 
     relocationFit: ["creatives", "cool-climate seekers in the tropics", "cultural immersion"],
     travelFit: ["Maya culture", "cloud-forest hikes", "weaving villages"],
@@ -308,7 +327,16 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Warmer, drier, increased fire risk on surrounding slopes.", outlook2100: "Heat stress rises; water supply increasingly tight.", keyShifts: [{variable: "Urban heat island", direction: "up"}, {variable: "Water stress", direction: "up"}], resilienceNote: "Elevation helps; urban growth stresses water." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "low", trend: "worsening"}, extremeCold: {level: "very-low", trend: "stable"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "moderate", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     nearbyContrasts: [{ label: "Mexico City (2250 m)", note: "Cooler, cloudier, grittier air quality." }, { label: "Taxco (1800 m, west)", note: "Similar character but steeper-terrain." }],
-    scores: { hiddenGem: 20, microclimateUniqueness: 72, comfort: 86, resilience: 60, growability: 86, tradeoff: 36 },
+    scores: { hiddenGem: 20, microclimateUniqueness: 72, comfort: 86, resilience: 60, growability: 86, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 36,
+      socialStress: 44,
+      accessFriction: 22,
+      note: "Mexico-City weekend hub keeps housing tighter than other Mexico highland towns; Morelos has ranked higher on Mexican-government safety advisories than Oaxaca or Querétaro.",
+      sources: [
+        { label: "INEGI — Cuernavaca city profile", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["retirees", "families"], travelFit: ["year-round"],
     whoWouldLove: "Those wanting year-round bougainvillea.", whoMightNot: "Cool-climate seekers.",
     confidence: "high",
@@ -579,7 +607,16 @@ export const PLACES_MEXICO: Place[] = [
     risks: { wildfire: { level: "moderate", trend: "mixed" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "low", trend: "stable" }, smoke: { level: "low", trend: "mixed" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     localContrast: [{ radiusKm: 50, precipDeltaPct: 45, summerHighDeltaC: -3, note: "vs drier Puebla/Tlaxcala highland interiors; the Sierra Norte intercepts much more Gulf moisture." }],
     nearbyContrasts: [{ label: "Chignahuapan, Puebla", note: "Similar highland setting, slightly more open and thermal-spring oriented." }, { label: "Puebla city", note: "Drier, more urban, and less cloud-forest influenced." }],
-    scores: { hiddenGem: 86, microclimateUniqueness: 78, comfort: 82, resilience: 60, growability: 82, tradeoff: 34 },
+    scores: { hiddenGem: 86, microclimateUniqueness: 78, comfort: 82, resilience: 60, growability: 82, tradeoff: 36 },
+    liveSignals: {
+      costPressure: 22,
+      socialStress: 28,
+      accessFriction: 42,
+      note: "Sierra Norte de Puebla orchard town with low cost-of-living and quiet civic life; nearest commercial airport is Puebla, ~2.5 h south.",
+      sources: [
+        { label: "INEGI — Zacatlán urban profile", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["orchard people", "mist-loving remote workers", "cool highland families", "cloud-forest romantics"],
     travelFit: ["apple festivals", "waterfall walks", "Sierra Norte viewpoints", "historic center"],
     whoWouldLove: "People who want green Mexican highlands, cool evenings, orchards, fog, and a town that smells like wet pine and fruit.",
@@ -624,6 +661,15 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Warming threatens optimum coffee elevation.", outlook2100: "Coffee belts retreat upslope.", keyShifts: [{variable: "Cloud base", direction: "up"}], resilienceNote: "Coffee culture must adapt upward." },
     risks: { wildfire: {level: "low", trend: "stable"}, flood: {level: "elevated", trend: "worsening"}, drought: {level: "low", trend: "stable"}, extremeHeat: {level: "low", trend: "worsening"}, extremeCold: {level: "very-low", trend: "stable"}, smoke: {level: "low", trend: "stable"}, storm: {level: "moderate", trend: "worsening"}, landslide: {level: "elevated", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 78, microclimateUniqueness: 76, comfort: 74, resilience: 62, growability: 80, tradeoff: 38 },
+    liveSignals: {
+      costPressure: 24,
+      socialStress: 32,
+      accessFriction: 32,
+      note: "Coffee-cloud-belt town with strong cost-of-living advantage; Xalapa and Veracruz are short drives away for full services.",
+      sources: [
+        { label: "INEGI — Coatepec urban profile", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["coffee people", "cloud-forest lovers"], travelFit: ["coffee tourism"],
     whoWouldLove: "Misty-mountain romantics.", whoMightNot: "Those wanting sun.",
     confidence: "moderate",
@@ -1658,6 +1704,15 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Cloud-base and rainfall timing shifts affect coffee and slope stability.", outlook2100: "Cloud-forest bands move upslope while heavy-rain risk increases.", keyShifts: [{ variable: "Cloud base", direction: "up" }, { variable: "Heavy rain", direction: "up" }], resilienceNote: "Moisture buffers heat but increases landslide and infrastructure diligence." },
     risks: { wildfire: { level: "low", trend: "mixed" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "mixed" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 74, microclimateUniqueness: 78, comfort: 72, growability: 78, resilience: 56, tradeoff: 40 },
+    liveSignals: {
+      costPressure: 26,
+      socialStress: 36,
+      accessFriction: 30,
+      note: "Highland Veracruz town with low cost-of-living; Veracruz international airport ~2 h away.",
+      sources: [
+        { label: "INEGI — Orizaba urban profile", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["cloud-forest lovers", "coffee people"], travelFit: ["Pico de Orizaba views", "green highland walks"],
     whoWouldLove: "People who want green mountains, mild temperatures, and Veracruz culture without lowland heat.", whoMightNot: "People seeking dry air and constant sun.",
     confidence: "moderate",

@@ -16,6 +16,7 @@ import {
 import { assessLiveFit, liveFitFilterPass, type LiveFitPresetId } from "./live-fit";
 import {
   LIVABILITY_BLEND_WEIGHTS,
+  livedFrictionScore,
   rankLivabilityWithBreakdown,
   type LivabilityResult,
 } from "./livability-score";
@@ -280,27 +281,39 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
         return { place: p, score: s, note: `${MONTH_NAMES[mi]}: ${monthHigh.toFixed(0)}°C day · ${monthLow.toFixed(0)}°C night · ${monthPrecip.toFixed(0)} mm` };
       }
       case "best-for-remote-work": {
-        // Cool productive summers + mild winters + low fire + low smoke.
-        // Sunshine comfort bonus distinguishes sunny highland towns from foggy marine-belt coasts
-        // that share mild temperatures but feel cold and overcast.
-        const coolSummer = Math.max(0, 33 - Math.max(0, summerHigh - 22) * 2.8);
-        const mildWinter = Math.max(0, 24 - Math.max(0, -(janLow + 4)) * 2.2);
-        const fireScore = Math.max(0, 20 - RISK_VALUE[p.risks.wildfire.level] * 5);
-        const smokeScore = Math.max(0, 14 - RISK_VALUE[p.risks.smoke.level] * 4);
+        // Cool productive summers + mild winters + low fire + low smoke +
+        // reliable daily-services access. A remote worker needs broadband,
+        // dependable air travel for client meetings, and same-day specialty
+        // services; ferry-only Pacific outposts that score 16°C summers cannot
+        // run a calendar around weather closures, so we apply both a generic
+        // lived-comfort bonus and an explicit access-friction deduction.
+        const coolSummer = Math.max(0, 28 - Math.max(0, summerHigh - 22) * 2.8);
+        const mildWinter = Math.max(0, 18 - Math.max(0, -(janLow + 4)) * 2.2);
+        const fireScore = Math.max(0, 16 - RISK_VALUE[p.risks.wildfire.level] * 5);
+        const smokeScore = Math.max(0, 12 - RISK_VALUE[p.risks.smoke.level] * 4);
         const sunBonus = sunshineComfortBonus(p);
-        const s = Math.min(100, coolSummer + mildWinter + fireScore + smokeScore + sunBonus);
+        const livedBonus = (livedFrictionScore(p) - 50) * 0.22;
+        const access = p.liveSignals?.accessFriction;
+        const accessPenalty = access != null ? Math.max(0, (access - 40)) * 0.32 : 0;
+        const s = Math.min(100, coolSummer + mildWinter + fireScore + smokeScore + sunBonus + livedBonus - accessPenalty);
         return { place: p, score: s, note: `${summerHigh.toFixed(0)}°C summers · fire ${p.risks.wildfire.level} · smoke ${p.risks.smoke.level}` };
       }
       case "best-retirement": {
-        // Mild all-year, low aggregate risk, good growability.
-        // Sunshine comfort bonus rewards open sunny highland climates (Bisbee AZ, Silver City NM)
-        // over persistently overcast marine-layer coasts with similar mean temps.
-        const winterScore = Math.max(0, 28 - Math.max(0, -(janLow + 1)) * 3.8);
-        const summerScore = Math.max(0, 24 - Math.max(0, summerHigh - 28) * 2.5);
-        const riskScore = Math.max(0, 22 - avgRisk(p) * 5.2);
-        const growScore = p.scores.growability * 0.18;
+        // Mild all-year, low aggregate risk, good growability, and a livable
+        // cost / social / access reality (retirees are highly sensitive to
+        // specialty-care distance and to neighbourhood social-fabric stress).
+        const winterScore = Math.max(0, 24 - Math.max(0, -(janLow + 1)) * 3.8);
+        const summerScore = Math.max(0, 20 - Math.max(0, summerHigh - 28) * 2.5);
+        const riskScore = Math.max(0, 18 - avgRisk(p) * 5.2);
+        const growScore = p.scores.growability * 0.16;
         const sunBonus = sunshineComfortBonus(p);
-        const s = Math.min(100, winterScore + summerScore + riskScore + growScore + sunBonus);
+        const livedBonus = (livedFrictionScore(p) - 50) * 0.28;
+        // Retirees specifically dislike high cost pressure and high access friction.
+        const cost = p.liveSignals?.costPressure;
+        const access = p.liveSignals?.accessFriction;
+        const costPenalty = cost != null ? Math.max(0, (cost - 50)) * 0.18 : 0;
+        const accessPenalty = access != null ? Math.max(0, (access - 45)) * 0.24 : 0;
+        const s = Math.min(100, winterScore + summerScore + riskScore + growScore + sunBonus + livedBonus - costPenalty - accessPenalty);
         return { place: p, score: s, note: `Mild all-year · grow ${p.scores.growability}/100 · avg risk ${avgRisk(p).toFixed(1)}` };
       }
     }

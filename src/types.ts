@@ -172,6 +172,55 @@ export interface ScoreBundle {
   tradeoff: number;               // 0..100 (higher = more significant tradeoffs)
 }
 
+/**
+ * Lived-experience signals that climate normals alone cannot capture.
+ * Each axis is 0..100, where 0 = no friction and 100 = severe friction.
+ *
+ * Used by Live-fit and Livability v2 to keep climatically "perfect" places
+ * (e.g. fog-belt coasts with documented affordability or isolation issues,
+ * or upwelling towns with documented social-stress problems) from monopolising
+ * the rankings. Fields are intentionally optional and individually graded so
+ * the model can scale across the full 226-place corpus without authors
+ * having to fill every axis at once.
+ *
+ * Source convention: gradings are anchored to publicly observable signals
+ * (median home / income ratios, Niche/AreaVibes reviews, BLS / Statcan crime
+ * indices, drive-time / hospital-access proxies). They are editorial reads,
+ * not appraisals or insurance underwriting.
+ */
+export interface LivedSignals {
+  /**
+   * Affordability / cost pressure. 0 = cost is not a meaningful filter for
+   * a typical relocator; 100 = housing burden is severe (Bay Area / Hawai'i
+   * top-tier). Anchored loosely to median-home / median-income ratios and
+   * housing-cost-burdened share.
+   */
+  costPressure?: number;
+  /**
+   * Social-fabric / civic stress. 0 = quiet, easy-to-settle community;
+   * 100 = persistent reports of violent crime, homelessness, or visible
+   * social distress in core walkable areas. Anchored to recent crime
+   * indices and resident-review sentiment, not tourist anxiety.
+   */
+  socialStress?: number;
+  /**
+   * Access friction. 0 = dense services, multiple groceries, hospital in
+   * town, major airport within ~1 h; 100 = ferry-only / long drive to a
+   * staffed hospital / one road in. Captures the lived "what if I need
+   * something" cost that pure-climate scoring ignores.
+   */
+  accessFriction?: number;
+  /**
+   * Free-text annotation. Single short clause attached to the dominant
+   * driver so the UI can surface a reason rather than a bare number.
+   */
+  note?: string;
+  /**
+   * Editorial citations or anchors for the gradings above.
+   */
+  sources?: { label: string; url?: string }[];
+}
+
 export interface Citation {
   label: string;
   kind: "noaa" | "prism" | "usda" | "usgs" | "fema" | "epa" | "eccc" | "climate-atlas-canada" | "smn" | "inegi" | "inecc" | "atlas-riesgos" | "worldclim" | "soilgrids" | "nasa-nex" | "cmip6" | "sentinel-2" | "landsat" | "oss-data" | "academic" | "field-observation" | "other";
@@ -311,6 +360,13 @@ export interface Place {
    * Rendered in the detail panel when present; omitted in cards and list views.
    */
   deepSections?: PlaceDeepSection[];
+
+  /**
+   * Optional lived-experience signals (affordability, social-fabric, access).
+   * Defaults to neutral when absent so unannotated places are not penalised;
+   * see `livedFrictionScore` in `src/lib/livability-score.ts`.
+   */
+  liveSignals?: LivedSignals;
 }
 
 /** Derived helpers. */

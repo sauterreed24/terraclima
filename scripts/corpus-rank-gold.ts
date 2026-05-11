@@ -143,13 +143,16 @@ const GEOSPATIAL_GOLD: { id: string; expected: GeospatialGold }[] = [
   {
     id: "tofino-bc",
     expected: {
-      geospatialSignalScore: 39,
-      eoObservabilityScore: 60,
+      // Tradeoff curated up from 50 → 60 after lived-signals review (Highway-4
+      // washouts, no major airport, tourism-tightened housing). The geospatial
+      // tradeoff-magnitude weight propagates that bump into landsat / EO scores.
+      geospatialSignalScore: 40,
+      eoObservabilityScore: 61,
       reliefEnergyMPerKm: 0.416667,
       hydroSeasonalityRatio: 7.914286,
       terrainExposureIndex: 2.733333,
       analysisConfidence: "high",
-      sourceFits: [{ sourceId: "sentinel-2", score: 76, label: "useful" }, { sourceId: "landsat", score: 43, label: "contextual" }],
+      sourceFits: [{ sourceId: "sentinel-2", score: 76, label: "useful" }, { sourceId: "landsat", score: 45, label: "contextual" }],
       spectralSignals: ["Aerosol-aware RGB / turbidity", "NDVI / red-edge NDVI", "LST anomaly", "NDMI"],
     },
   },

@@ -14,9 +14,15 @@ describe("scoring constants", () => {
     expect(LIVABILITY_WEIGHTS).toBe(LIVABILITY_BLEND_WEIGHTS);
   });
 
-  it("LIVABILITY_BLEND_WEIGHTS (v2) sums to 1.0", () => {
+  it("LIVABILITY_BLEND_WEIGHTS (v2.1) sums to 1.0", () => {
     const w = LIVABILITY_BLEND_WEIGHTS;
-    const sum = w.resilience + w.thermalComfort + w.hazardCushion + w.growability + w.precipModeration;
+    const sum =
+      w.resilience +
+      w.thermalComfort +
+      w.hazardCushion +
+      w.growability +
+      w.precipModeration +
+      w.livedFriction;
     expect(sum).toBeCloseTo(1.0, 6);
   });
 
