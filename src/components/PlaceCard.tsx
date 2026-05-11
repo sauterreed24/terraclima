@@ -293,10 +293,10 @@ export const PlaceCard = memo(function PlaceCard({
 
 function Stat({ label, value, tone }: { label: string; value: string; tone: string }) {
   const color: Record<string, string> = {
-    ochre: "#f0d29c",
-    glacier: "#8cc8e0",
-    sage: "#c6dcbd",
-    ice: "#c3e4f1",
+    ochre: "#c17d0a",
+    glacier: "#1a8fa8",
+    sage: "#3d8f55",
+    ice: "#2491b8",
   };
   return (
     <div className="flex flex-col">
