@@ -101,12 +101,13 @@ export const LIVE_FIT_GROWABILITY_FLOORS = [65, 75] as const;
 export const LIVE_FIT_RISK_CEILINGS = ["low", "moderate", "elevated"] as const satisfies readonly RiskLevel[];
 
 const LIVE_FIT_DEFAULT_WEIGHTS = {
-  comfort: 0.24,
-  resilience: 0.24,
-  uniqueness: 0.18,
-  growability: 0.14,
-  hazardEase: 0.12,
+  comfort: 0.22,
+  resilience: 0.22,
+  uniqueness: 0.17,
+  growability: 0.13,
+  hazardEase: 0.11,
   hiddenGem: 0.08,
+  sunshine: 0.07,   // sunshine/fog-free comfort: rewards open sunny places, penalises fog-belt coasts
 } as const;
 
 function clamp100(n: number): number {
@@ -133,6 +134,43 @@ function humidityScore(place: Place): number {
   if (!place.climate.humidity) return 55;
   const mean = place.climate.humidity.reduce((a, b) => a + b, 0) / 12;
   return clamp100(100 - Math.max(0, mean - 35) * 2.2);
+}
+
+/**
+ * Sunshine + fog-free comfort score (0–100).
+ *
+ * Returns 50 when no data is available (neutral — no penalty/reward).
+ * Rewards high sunshine percentage (e.g. Bisbee AZ, Silver City NM at 60–75%+)
+ * and penalises persistent marine-layer conditions: high humidity combined with
+ * suppressed summer diurnal swing — the signature of NorCal / PNW fog-belt coasts
+ * that feel cold and grey despite mild mean temperatures.
+ */
+function sunshineScore(place: Place): number {
+  const sunny = place.climate.sunshinePct;
+  const hum = place.climate.humidity;
+  const diurnal = place.climate.diurnalSummerC ?? (place.climate.tempHighC[6] - place.climate.tempLowC[6]);
+
+  if (!sunny && !hum) return 50; // no data — neutral
+
+  let score = 55; // slight positive baseline
+
+  if (sunny) {
+    const annualSun = sunny.reduce((a, b) => a + b, 0) / 12;
+    // 0% = 0 pts, 60% = 50 pts, 80% = 75 pts, 100% = 100 pts
+    score = clamp100(annualSun * 1.2);
+  }
+
+  // Marine-layer fog penalty: high mean humidity + suppressed diurnal swing
+  // Even if mean temp is mild, persistent fog & cold feel are a real quality-of-life drag
+  if (hum) {
+    const annualHum = hum.reduce((a, b) => a + b, 0) / 12;
+    if (annualHum > 70 && diurnal < 12) {
+      const fogPenalty = Math.min(20, (annualHum - 70) * 0.4 + Math.max(0, 12 - diurnal) * 0.6);
+      score = clamp100(score - fogPenalty);
+    }
+  }
+
+  return score;
 }
 
 function coastalModerationScore(place: Place): number {
@@ -196,7 +234,8 @@ function defaultLiveScore(place: Place): number {
     place.scores.microclimateUniqueness * w.uniqueness +
     place.scores.growability * w.growability +
     hazardEase * w.hazardEase +
-    place.scores.hiddenGem * w.hiddenGem,
+    place.scores.hiddenGem * w.hiddenGem +
+    sunshineScore(place) * w.sunshine,
   ));
 }
 
@@ -250,6 +289,19 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   if (winter < -12) pushUnique(cautions, "Winter cold is a real lifestyle filter.", 2);
   if (summer > 31) pushUnique(cautions, "Peak summer heat will matter for daily routines.", 2);
   if (annualRange > 36) pushUnique(cautions, "Annual temperature range is large; expect harder seasonal swings.", 2);
+
+  // Marine-fog / low-sunshine caution
+  const diurnal = place.climate.diurnalSummerC ?? (place.climate.tempHighC[6] - place.climate.tempLowC[6]);
+  if (place.climate.humidity) {
+    const annualHum = place.climate.humidity.reduce((a, b) => a + b, 0) / 12;
+    if (annualHum > 72 && diurnal < 12) {
+      pushUnique(cautions, "Persistent marine layer or fog belt likely — mild temperatures can feel colder and greyer than the numbers suggest.", 2);
+    }
+  }
+  if (place.climate.sunshinePct) {
+    const annualSun = place.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12;
+    if (annualSun < 45) pushUnique(cautions, `Low mean sunshine (~${Math.round(annualSun)}% of possible) — overcast conditions are common.`, 2);
+  }
 
   if (place.scores.resilience >= 72) badges.push("Resilient");
   if (place.scores.hiddenGem >= 78) badges.push("Hidden");

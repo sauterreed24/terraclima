@@ -49,7 +49,10 @@ export type RankingProfile =
   | "strongest-geospatial-signal"
   | "mediterranean-like"
   | "wet-forest-refuges"
-  | "monsoon-drama";
+  | "monsoon-drama"
+  | "best-this-month"
+  | "best-for-remote-work"
+  | "best-retirement";
 
 export interface RankingResult { place: Place; score: number; note?: string }
 
@@ -128,6 +131,40 @@ export const RANKING_PARAMS = {
   monsoonRatioMultiplier: 18,
 } as const;
 
+/**
+ * Sunshine comfort bonus (0–14 pts).
+ *
+ * High-elevation dry sunny places like Bisbee AZ or Silver City NM deserve a
+ * positive signal over persistently foggy marine-layer coasts that share
+ * similar mean temperatures but feel cold and grey. We reward documented
+ * sunshine hours and penalise places with high mean humidity combined with
+ * muted diurnal swings (the marine-layer signature).
+ */
+function sunshineComfortBonus(p: Place): number {
+  const sunny = p.climate.sunshinePct;
+  const hum = p.climate.humidity;
+  const diurnal = p.climate.diurnalSummerC ?? (p.climate.tempHighC[6] - p.climate.tempLowC[6]);
+
+  let bonus = 0;
+
+  // Direct sunshine reward
+  if (sunny) {
+    const annualSun = sunny.reduce((a, b) => a + b, 0) / 12;
+    bonus += Math.min(10, (annualSun - 45) * 0.22); // 0 at 45%, +10 at ~90%
+  }
+
+  // Marine-layer / persistent fog penalty: high humidity + suppressed diurnal swing
+  if (hum) {
+    const annualHum = hum.reduce((a, b) => a + b, 0) / 12;
+    if (annualHum > 72 && diurnal < 10) {
+      // Typical NorCal/PNW fog-belt pattern
+      bonus -= Math.min(8, (annualHum - 72) * 0.35 + Math.max(0, (10 - diurnal)) * 0.3);
+    }
+  }
+
+  return bonus;
+}
+
 export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): RankingResult[] {
   const k = RANKING_PARAMS;
   const scored: RankingResult[] = pool.map(p => {
@@ -151,7 +188,9 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
       }
       case "best-shoulder-seasons": {
         const shoulder = (p.climate.tempHighC[3] + p.climate.tempHighC[4] + p.climate.tempHighC[8] + p.climate.tempHighC[9]) / 4;
-        const s = Math.max(0, 100 - Math.abs(shoulder - k.shoulderIdealHighC) * k.shoulderPerDegC);
+        const base = Math.max(0, 100 - Math.abs(shoulder - k.shoulderIdealHighC) * k.shoulderPerDegC);
+        const sunBonus = sunshineComfortBonus(p);
+        const s = Math.min(100, base + sunBonus);
         return { place: p, score: s, note: `Spring/fall highs near ${shoulder.toFixed(1)}°C` };
       }
       case "driest-air": {
@@ -216,6 +255,43 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
         const ratio = monsoon / Math.max(1, winter);
         const s = Math.min(100, ratio * k.monsoonRatioMultiplier);
         return { place: p, score: s, note: `${monsoon.toFixed(0)} mm in JJA vs ${winter.toFixed(0)} DJF` };
+      }
+      case "best-this-month": {
+        const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] as const;
+        const mi = new Date().getMonth();
+        const monthHigh = p.climate.tempHighC[mi];
+        const monthPrecip = p.climate.precipMm[mi];
+        const monthSnow = p.climate.snowCm?.[mi] ?? 0;
+        // Sweet spot: 16-26°C highs, moderate precip, little snow
+        const tempScore = Math.max(0, 50 - Math.abs(monthHigh - 21) * 3.2);
+        const precipScore = Math.max(0, 28 - Math.max(0, monthPrecip - 65) * 0.18);
+        const snowScore = Math.max(0, 22 - Math.min(22, monthSnow * 0.65));
+        const s = Math.min(100, tempScore + precipScore + snowScore);
+        return { place: p, score: s, note: `${MONTH_NAMES[mi]}: ${monthHigh.toFixed(0)}°C highs · ${monthPrecip.toFixed(0)} mm` };
+      }
+      case "best-for-remote-work": {
+        // Cool productive summers + mild winters + low fire + low smoke.
+        // Sunshine comfort bonus distinguishes sunny highland towns from foggy marine-belt coasts
+        // that share mild temperatures but feel cold and overcast.
+        const coolSummer = Math.max(0, 33 - Math.max(0, summerHigh - 22) * 2.8);
+        const mildWinter = Math.max(0, 24 - Math.max(0, -(janLow + 4)) * 2.2);
+        const fireScore = Math.max(0, 20 - RISK_VALUE[p.risks.wildfire.level] * 5);
+        const smokeScore = Math.max(0, 14 - RISK_VALUE[p.risks.smoke.level] * 4);
+        const sunBonus = sunshineComfortBonus(p);
+        const s = Math.min(100, coolSummer + mildWinter + fireScore + smokeScore + sunBonus);
+        return { place: p, score: s, note: `${summerHigh.toFixed(0)}°C summers · fire ${p.risks.wildfire.level} · smoke ${p.risks.smoke.level}` };
+      }
+      case "best-retirement": {
+        // Mild all-year, low aggregate risk, good growability.
+        // Sunshine comfort bonus rewards open sunny highland climates (Bisbee AZ, Silver City NM)
+        // over persistently overcast marine-layer coasts with similar mean temps.
+        const winterScore = Math.max(0, 28 - Math.max(0, -(janLow + 1)) * 3.8);
+        const summerScore = Math.max(0, 24 - Math.max(0, summerHigh - 28) * 2.5);
+        const riskScore = Math.max(0, 22 - avgRisk(p) * 5.2);
+        const growScore = p.scores.growability * 0.18;
+        const sunBonus = sunshineComfortBonus(p);
+        const s = Math.min(100, winterScore + summerScore + riskScore + growScore + sunBonus);
+        return { place: p, score: s, note: `Mild all-year · grow ${p.scores.growability}/100 · avg risk ${avgRisk(p).toFixed(1)}` };
       }
     }
   });

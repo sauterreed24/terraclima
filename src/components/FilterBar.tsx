@@ -17,6 +17,75 @@ import { fmtTemp, useProse, useUnits } from "../lib/units";
 
 export { RANKING_OPTIONS } from "../lib/ranking-options";
 
+// ── Compound lifestyle bundles ────────────────────────────────────────────────
+// Each bundle sets a primary ranking, a set of Live Finder presets,
+// and optional numeric constraints — all applied in one click.
+interface LifestyleBundle {
+  id: string;
+  emoji: string;
+  label: string;
+  description: string;
+  ranking: RankingProfile;
+  presets: LiveFitPresetId[];
+  maxSummerHighC?: number;
+  minWinterLowC?: number;
+  maxFireRisk?: RiskLevel;
+}
+
+const LIFESTYLE_BUNDLES: LifestyleBundle[] = [
+  {
+    id: "remote-work",
+    emoji: "💻",
+    label: "Remote Work",
+    description: "Cool, productive summers. Low fire & smoke. Mild winters. Ranked by remote-work readiness.",
+    ranking: "best-for-remote-work",
+    presets: ["cool-summers", "low-fire-smoke"],
+    maxSummerHighC: 26,
+  },
+  {
+    id: "retirement",
+    emoji: "🌅",
+    label: "Retirement",
+    description: "Mild all-year, low aggregate risk, good growability. Ranked by year-round comfort.",
+    ranking: "best-retirement",
+    presets: ["mild-winters"],
+    minWinterLowC: 2,
+  },
+  {
+    id: "garden",
+    emoji: "🌱",
+    label: "Garden & Grow",
+    description: "Long growing season, good soils, frost-free nights. Ranked by growability.",
+    ranking: "best-growability",
+    presets: ["gardenable"],
+  },
+  {
+    id: "snow-ski",
+    emoji: "⛷",
+    label: "Snow & Ski",
+    description: "Real winter with reliable snowpack. Four-season drama. Ranked by coolest summers.",
+    ranking: "coolest-summers",
+    presets: ["snow-country", "four-seasons"],
+  },
+  {
+    id: "fire-safe",
+    emoji: "🛡",
+    label: "Fire-Safe",
+    description: "Low wildfire and smoke exposure. Climate-resilient trajectory. Ranked by resilience.",
+    ranking: "climate-resilient",
+    presets: ["low-fire-smoke"],
+    maxFireRisk: "moderate",
+  },
+  {
+    id: "shoulder-season",
+    emoji: "🍂",
+    label: "Best Shoulder",
+    description: "Ideal spring and autumn conditions. Mild winters, dry air, comfortable year-round.",
+    ranking: "best-shoulder-seasons",
+    presets: ["mild-winters", "dry-air"],
+  },
+];
+
 interface Props {
   searchInputId?: string;
   filters: FilterState;
@@ -183,6 +252,39 @@ export const FilterBar = memo(function FilterBar({
             value={filters.maxOverallRisk}
             onPick={v => setLiveRisk("maxOverallRisk", v)}
           />
+        </div>
+      </div>
+
+      {/* ── Lifestyle bundles ──────────────────────────────────────── */}
+      <div className="rounded-xl border border-[rgba(232,155,32,0.22)] bg-[rgba(255,248,236,0.48)] p-2.5 space-y-2">
+        <div className="text-[10px] uppercase tracking-wider text-stone-readable">Lifestyle bundles</div>
+        <p className="text-[11px] text-stone-readable leading-snug">One-click compound presets — sets ranking, filters, and Live Finder signals together.</p>
+        <div className="grid grid-cols-2 gap-1.5">
+          {LIFESTYLE_BUNDLES.map(bundle => {
+            const isActive = ranking === bundle.ranking && bundle.presets.every(p => filters.fitPresets?.has(p));
+            return (
+              <button
+                key={bundle.id}
+                type="button"
+                aria-pressed={isActive}
+                title={bundle.description}
+                onClick={() => {
+                  setRanking(bundle.ranking);
+                  setFilters(f => ({
+                    ...f,
+                    fitPresets: new Set(bundle.presets),
+                    maxSummerHighC: bundle.maxSummerHighC ?? f.maxSummerHighC,
+                    minWinterLowC: bundle.minWinterLowC ?? f.minWinterLowC,
+                    maxFireRisk: bundle.maxFireRisk ?? f.maxFireRisk,
+                  }));
+                }}
+                className={`lifestyle-bundle-btn${isActive ? " lifestyle-bundle-btn--active" : ""}`}
+              >
+                <span className="lifestyle-bundle-btn__emoji" aria-hidden>{bundle.emoji}</span>
+                <span className="lifestyle-bundle-btn__label">{bundle.label}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

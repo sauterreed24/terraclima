@@ -2914,6 +2914,251 @@
   }
 }
 
+/* ── Place Card enhancements ─────────────────────────────────────────────── */
+
+/* 12-month temperature gradient bar */
+@layer components {
+  .place-card__climate-bar {
+    display: flex;
+    height: 5px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0;
+    flex-shrink: 0;
+  }
+  .place-card__climate-bar__segment {
+    flex: 1;
+    height: 100%;
+    transition: filter 180ms ease;
+  }
+  .place-card__climate-bar__segment--now {
+    position: relative;
+    height: 100%;
+  }
+  .place-card__climate-bar__segment--now::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 1px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
+  }
+  .place-card:hover .place-card__climate-bar__segment,
+  .place-card:focus-within .place-card__climate-bar__segment {
+    filter: saturate(1.2) brightness(1.06);
+  }
+
+  /* "This Month" live chip */
+  .place-card__this-month {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.35rem 0.65rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(26, 143, 168, 0.22);
+    background: rgba(255, 253, 248, 0.72);
+  }
+  .place-card__this-month__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    opacity: 0.85;
+  }
+  .place-card__this-month__label {
+    font-size: 0.6875rem;
+    line-height: 1.3;
+    color: var(--color-stone-readable);
+  }
+  .place-card__this-month__label strong {
+    font-weight: 600;
+    color: var(--color-frost);
+  }
+
+  /* Extended stats (sunshine, humidity, frost-free) */
+  .place-card__ext-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    padding-top: 0.45rem;
+    border-top: 1px dashed rgba(71, 90, 122, 0.14);
+  }
+  .place-card__ext-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    font-size: 0.6875rem;
+    color: var(--color-stone-readable);
+    line-height: 1.2;
+  }
+
+  /* Livability score bar */
+  .place-card__livability-bar {
+    padding: 0.5rem 0.65rem;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(61, 143, 85, 0.22);
+    background: linear-gradient(135deg, rgba(255, 253, 248, 0.94) 0%, rgba(236, 248, 232, 0.52) 100%);
+  }
+  .place-card__livability-bar__track {
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(71, 90, 122, 0.1);
+    overflow: hidden;
+  }
+  .place-card__livability-bar__fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg,
+      #6ab4e8 0%,
+      #3d8f55 25%,
+      #72d49c 55%,
+      #d4cc44 78%,
+      #e87838 100%
+    );
+    transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .place-card__livability-components {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.5rem;
+  }
+  .place-card__livability-component {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    font-size: 0.625rem;
+    color: var(--color-stone-readable);
+    line-height: 1.2;
+  }
+  .place-card__livability-component__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Hero quick-picks row */
+  .hero-quick-picks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .hero-quick-pick {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.32rem 0.72rem;
+    border-radius: 999px;
+    border: 1px solid rgba(180, 150, 120, 0.38);
+    background: rgba(255, 253, 248, 0.88);
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-stone-readable);
+    letter-spacing: 0.01em;
+    transition: border-color 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.88) inset;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .hero-quick-pick:hover {
+    color: var(--color-ice);
+    border-color: rgba(26, 143, 168, 0.45);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 1) inset,
+      0 4px 14px -6px rgba(26, 143, 168, 0.22);
+    transform: translateY(-1px);
+  }
+  .hero-quick-pick:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
+  }
+  .hero-quick-pick--active {
+    border-color: rgba(26, 143, 168, 0.6);
+    background: rgba(94, 196, 220, 0.18);
+    color: var(--color-glacier-700);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 0 0 1px rgba(26, 143, 168, 0.22);
+  }
+  .hero-quick-pick--active:hover { transform: none; }
+
+  /* Lifestyle bundle buttons in FilterBar */
+  .lifestyle-bundle-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.22rem;
+    padding: 0.55rem 0.65rem;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(200, 170, 140, 0.38);
+    background: rgba(255, 253, 248, 0.9);
+    color: var(--color-stone-readable);
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background 160ms ease;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  }
+  .lifestyle-bundle-btn:hover {
+    border-color: rgba(232, 155, 32, 0.55);
+    background: rgba(255, 248, 232, 0.96);
+    color: var(--color-frost);
+    transform: translateY(-1px);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 1) inset,
+      0 4px 14px -5px rgba(232, 155, 32, 0.22);
+  }
+  .lifestyle-bundle-btn:focus-visible {
+    outline: 2px solid rgba(232, 155, 32, 0.55);
+    outline-offset: 2px;
+  }
+  .lifestyle-bundle-btn--active {
+    border-color: rgba(232, 155, 32, 0.68);
+    background: linear-gradient(135deg, rgba(255, 248, 224, 0.92) 0%, rgba(255, 236, 184, 0.72) 100%);
+    color: var(--color-ochre-700);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 1) inset,
+      0 0 0 1px rgba(232, 155, 32, 0.22);
+  }
+  .lifestyle-bundle-btn--active:hover { transform: none; }
+  .lifestyle-bundle-btn__emoji {
+    font-size: 1.1rem;
+    line-height: 1;
+  }
+  .lifestyle-bundle-btn__label {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.25;
+  }
+
+  /* Medal rank chips (top 3) */
+  .place-card__rank-number--medal {
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 1rem;
+    line-height: 1;
+    width: 1.65rem;
+    height: 1.65rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-quick-pick,
+  .lifestyle-bundle-btn,
+  .place-card__livability-bar__fill {
+    transition-duration: 0.01ms !important;
+  }
+  .hero-quick-pick:hover,
+  .lifestyle-bundle-btn:hover { transform: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .anim-fade-in,
   .view-enter,
