@@ -1,7 +1,23 @@
 import { describe, expect, it } from "vitest";
 import { PLACES } from "../../data/places";
+import type { RiskLevel } from "../../types";
+import { makePlace } from "./test-fixtures";
 import { buildExplorerScoutBrief } from "../explorer-scout-brief";
-import { rankPlaces } from "../scoring";
+import { rankPlaces, type RankingResult } from "../scoring";
+
+function risks(level: RiskLevel) {
+  return {
+    wildfire: { level },
+    flood: { level },
+    drought: { level },
+    extremeHeat: { level },
+    extremeCold: { level },
+    smoke: { level },
+    storm: { level },
+    landslide: { level },
+    coastal: { level },
+  };
+}
 
 describe("buildExplorerScoutBrief", () => {
   it("summarizes the current ranked shortlist and preserves compare order", () => {
@@ -21,7 +37,74 @@ describe("buildExplorerScoutBrief", () => {
       "Avg risk",
       "Dominant family",
     ]);
+    expect(brief!.decisionSignals.map(signal => signal.label)).toEqual([
+      "Daily comfort",
+      "Low risk load",
+      "Garden / land",
+      "Climate resilience",
+      "Distinctive terrain",
+    ]);
+    expect(brief!.decisionLine).toContain("living signals");
     expect(brief!.cautionLine.length).toBeGreaterThan(20);
+  });
+
+  it("shows which shortlisted place wins each living-priority signal", () => {
+    const comfortTown = makePlace({
+      id: "comfort-town",
+      name: "Comfort Town",
+      risks: risks("moderate"),
+      scores: {
+        hiddenGem: 40,
+        microclimateUniqueness: 55,
+        comfort: 96,
+        resilience: 60,
+        growability: 58,
+        tradeoff: 35,
+      },
+    });
+    const riskCove = makePlace({
+      id: "risk-cove",
+      name: "Risk Cove",
+      risks: risks("very-low"),
+      scores: {
+        hiddenGem: 52,
+        microclimateUniqueness: 60,
+        comfort: 76,
+        resilience: 70,
+        growability: 63,
+        tradeoff: 12,
+      },
+    });
+    const gardenRidge = makePlace({
+      id: "garden-ridge",
+      name: "Garden Ridge",
+      risks: risks("low"),
+      scores: {
+        hiddenGem: 65,
+        microclimateUniqueness: 97,
+        comfort: 74,
+        resilience: 94,
+        growability: 99,
+        tradeoff: 25,
+      },
+    });
+    const ranked: RankingResult[] = [
+      { place: comfortTown, score: 93, note: "Comfort leader." },
+      { place: riskCove, score: 89, note: "Risk leader." },
+      { place: gardenRidge, score: 84, note: "Land leader." },
+    ];
+
+    const brief = buildExplorerScoutBrief(ranked, "Test rank");
+
+    expect(brief!.decisionSignals.map(signal => [signal.label, signal.place.id])).toEqual([
+      ["Daily comfort", "comfort-town"],
+      ["Low risk load", "risk-cove"],
+      ["Garden / land", "garden-ridge"],
+      ["Climate resilience", "garden-ridge"],
+      ["Distinctive terrain", "garden-ridge"],
+    ]);
+    expect(brief!.decisionLine).toContain("Garden Ridge");
+    expect(brief!.decisionLine).toContain("3 of 5");
   });
 
   it("returns null for an empty ranked set", () => {
