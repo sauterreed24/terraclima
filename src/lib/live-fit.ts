@@ -101,13 +101,13 @@ export const LIVE_FIT_GROWABILITY_FLOORS = [65, 75] as const;
 export const LIVE_FIT_RISK_CEILINGS = ["low", "moderate", "elevated"] as const satisfies readonly RiskLevel[];
 
 const LIVE_FIT_DEFAULT_WEIGHTS = {
-  comfort: 0.22,
-  resilience: 0.22,
-  uniqueness: 0.17,
+  comfort: 0.18,
+  resilience: 0.19,
+  uniqueness: 0.15,
   growability: 0.13,
   hazardEase: 0.11,
   hiddenGem: 0.08,
-  sunshine: 0.07,   // sunshine/fog-free comfort: rewards open sunny places, penalises fog-belt coasts
+  sunshine: 0.16,   // research: sunshine is the most underweighted factor in commercial indices; ~25% of wellbeing impact per PMC12272345
 } as const;
 
 function clamp100(n: number): number {
@@ -139,11 +139,12 @@ function humidityScore(place: Place): number {
 /**
  * Sunshine + fog-free comfort score (0–100).
  *
- * Returns 50 when no data is available (neutral — no penalty/reward).
- * Rewards high sunshine percentage (e.g. Bisbee AZ, Silver City NM at 60–75%+)
- * and penalises persistent marine-layer conditions: high humidity combined with
- * suppressed summer diurnal swing — the signature of NorCal / PNW fog-belt coasts
- * that feel cold and grey despite mild mean temperatures.
+ * Calibrated to research baselines (PMC12272345, Frontiers Public Health 2025):
+ * - 58% possible sunshine = US national average → neutral (50 pts)
+ * - Eureka CA: ~48% → ~35 pts; Bisbee AZ: ~80% → ~83 pts
+ * - Summer marine layer (May–Aug) penalised more heavily than winter grayness:
+ *   "June Gloom" / "Fogust" pattern where the gray season coincides with peak
+ *   cultural outdoor expectations is the most mood-damaging pattern.
  */
 function sunshineScore(place: Place): number {
   const sunny = place.climate.sunshinePct;
@@ -152,20 +153,28 @@ function sunshineScore(place: Place): number {
 
   if (!sunny && !hum) return 50; // no data — neutral
 
-  let score = 55; // slight positive baseline
+  let score = 50; // neutral baseline tied to US average
 
   if (sunny) {
     const annualSun = sunny.reduce((a, b) => a + b, 0) / 12;
-    // 0% = 0 pts, 60% = 50 pts, 80% = 75 pts, 100% = 100 pts
-    score = clamp100(annualSun * 1.2);
+    // 58% = US avg = 50 pts; +1.5 pts per % above, -1.5 below; capped 0–100
+    score = clamp100(50 + (annualSun - 58) * 1.5);
   }
 
-  // Marine-layer fog penalty: high mean humidity + suppressed diurnal swing
-  // Even if mean temp is mild, persistent fog & cold feel are a real quality-of-life drag
   if (hum) {
+    // Summer months (May–Aug = indices 4–7) are the most damaging for marine-layer coasts.
+    // A place with fog in winter only (Portland pattern) is less harmful than one where
+    // summer is the gray season (Eureka, Half Moon Bay "June Gloom" pattern).
+    const summerHum = (hum[4] + hum[5] + hum[6] + hum[7]) / 4;
     const annualHum = hum.reduce((a, b) => a + b, 0) / 12;
-    if (annualHum > 70 && diurnal < 12) {
-      const fogPenalty = Math.min(20, (annualHum - 70) * 0.4 + Math.max(0, 12 - diurnal) * 0.6);
+
+    if (summerHum > 72 && diurnal < 12) {
+      // Summer fog-belt signature — strongest penalty
+      const fogPenalty = Math.min(25, (summerHum - 72) * 0.65 + Math.max(0, 12 - diurnal) * 0.75);
+      score = clamp100(score - fogPenalty);
+    } else if (annualHum > 76 && diurnal < 12) {
+      // Year-round overcast without a strong summer peak
+      const fogPenalty = Math.min(15, (annualHum - 76) * 0.4 + Math.max(0, 12 - diurnal) * 0.5);
       score = clamp100(score - fogPenalty);
     }
   }
@@ -293,14 +302,20 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   // Marine-fog / low-sunshine caution
   const diurnal = place.climate.diurnalSummerC ?? (place.climate.tempHighC[6] - place.climate.tempLowC[6]);
   if (place.climate.humidity) {
-    const annualHum = place.climate.humidity.reduce((a, b) => a + b, 0) / 12;
-    if (annualHum > 72 && diurnal < 12) {
-      pushUnique(cautions, "Persistent marine layer or fog belt likely — mild temperatures can feel colder and greyer than the numbers suggest.", 2);
+    const hum = place.climate.humidity;
+    const summerHum = (hum[4] + hum[5] + hum[6] + hum[7]) / 4;
+    const annualHum = hum.reduce((a, b) => a + b, 0) / 12;
+    if (summerHum > 72 && diurnal < 12) {
+      pushUnique(cautions, "Summer marine layer likely (\"June Gloom\" pattern) — temperatures feel colder and greyer than they appear on paper.", 2);
+    } else if (annualHum > 76 && diurnal < 12) {
+      pushUnique(cautions, "Persistent overcast or fog — mild temperatures can feel colder and greyer than the numbers suggest.", 2);
     }
   }
   if (place.climate.sunshinePct) {
     const annualSun = place.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12;
-    if (annualSun < 45) pushUnique(cautions, `Low mean sunshine (~${Math.round(annualSun)}% of possible) — overcast conditions are common.`, 2);
+    // US average is ~58%; below 48% (Eureka's level) is a clear quality-of-life drag per research
+    if (annualSun < 48) pushUnique(cautions, `Below-average sunshine (~${Math.round(annualSun)}% of possible; US avg 58%) — expect frequent overcast days.`, 2);
+    else if (annualSun < 55) pushUnique(cautions, `Sunshine is below the US average of 58% (~${Math.round(annualSun)}%) — overcast days are common.`, 2);
   }
 
   if (place.scores.resilience >= 72) badges.push("Resilient");

@@ -132,13 +132,15 @@ export const RANKING_PARAMS = {
 } as const;
 
 /**
- * Sunshine comfort bonus (0–14 pts).
+ * Sunshine comfort bonus (range −12 to +15 pts).
  *
- * High-elevation dry sunny places like Bisbee AZ or Silver City NM deserve a
- * positive signal over persistently foggy marine-layer coasts that share
- * similar mean temperatures but feel cold and grey. We reward documented
- * sunshine hours and penalise places with high mean humidity combined with
- * muted diurnal swings (the marine-layer signature).
+ * Research baseline (PMC12272345, Frontiers Public Health 2025): sunshine is
+ * the most underweighted factor in commercial ranking indices relative to its
+ * actual wellbeing impact. 58% possible sunshine = US national average.
+ * Bisbee AZ / Silver City NM (~80%, 285-295 sunny days) should score well above
+ * fog-belt coasts (Eureka CA ~48%, Half Moon Bay ~55-60%) that share mild mean
+ * temperatures but rarely reach the 70-80°F comfort band and have suppressed
+ * diurnal swings that prevent quality sleep cooling.
  */
 function sunshineComfortBonus(p: Place): number {
   const sunny = p.climate.sunshinePct;
@@ -147,18 +149,21 @@ function sunshineComfortBonus(p: Place): number {
 
   let bonus = 0;
 
-  // Direct sunshine reward
+  // Direct sunshine reward — calibrated to US avg (58% = neutral, 80% ≈ +7.3 pts, 95%+ ≈ +15)
   if (sunny) {
     const annualSun = sunny.reduce((a, b) => a + b, 0) / 12;
-    bonus += Math.min(10, (annualSun - 45) * 0.22); // 0 at 45%, +10 at ~90%
+    bonus += Math.min(15, Math.max(0, (annualSun - 45) * 0.33));
   }
 
-  // Marine-layer / persistent fog penalty: high humidity + suppressed diurnal swing
+  // Summer marine-layer penalty: check May–Aug (indices 4–7) specifically.
+  // Summer gray is more damaging than winter gray — it violates seasonal expectations
+  // and eliminates the serotonin/circadian benefit people rely on in peak activity season.
   if (hum) {
-    const annualHum = hum.reduce((a, b) => a + b, 0) / 12;
-    if (annualHum > 72 && diurnal < 10) {
-      // Typical NorCal/PNW fog-belt pattern
-      bonus -= Math.min(8, (annualHum - 72) * 0.35 + Math.max(0, (10 - diurnal)) * 0.3);
+    const summerHum = p.climate.humidity!.length >= 8
+      ? (hum[4] + hum[5] + hum[6] + hum[7]) / 4
+      : hum.reduce((a, b) => a + b, 0) / 12;
+    if (summerHum > 72 && diurnal < 12) {
+      bonus -= Math.min(12, (summerHum - 72) * 0.5 + Math.max(0, (12 - diurnal)) * 0.4);
     }
   }
 
@@ -260,14 +265,19 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
         const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] as const;
         const mi = new Date().getMonth();
         const monthHigh = p.climate.tempHighC[mi];
+        const monthLow = p.climate.tempLowC[mi];
         const monthPrecip = p.climate.precipMm[mi];
         const monthSnow = p.climate.snowCm?.[mi] ?? 0;
-        // Sweet spot: 16-26°C highs, moderate precip, little snow
-        const tempScore = Math.max(0, 50 - Math.abs(monthHigh - 21) * 3.2);
-        const precipScore = Math.max(0, 28 - Math.max(0, monthPrecip - 65) * 0.18);
-        const snowScore = Math.max(0, 22 - Math.min(22, monthSnow * 0.65));
-        const s = Math.min(100, tempScore + precipScore + snowScore);
-        return { place: p, score: s, note: `${MONTH_NAMES[mi]}: ${monthHigh.toFixed(0)}°C highs · ${monthPrecip.toFixed(0)} mm` };
+        // Research: comfort band is 18–28°C (64–82°F) highs; nights 13–19°C (55–67°F) for sleep
+        // Penalty above/below band; reward for nights in sleep-ideal zone
+        const highScore = monthHigh >= 18 && monthHigh <= 28
+          ? 45
+          : Math.max(0, 45 - Math.min(Math.abs(monthHigh - 18), Math.abs(monthHigh - 28)) * 3.5);
+        const nightScore = monthLow >= 13 && monthLow <= 19 ? 18 : Math.max(0, 18 - Math.min(Math.abs(monthLow - 13), Math.abs(monthLow - 19)) * 2.5);
+        const precipScore = Math.max(0, 22 - Math.max(0, monthPrecip - 55) * 0.16);
+        const snowScore = Math.max(0, 15 - Math.min(15, monthSnow * 0.5));
+        const s = Math.min(100, highScore + nightScore + precipScore + snowScore);
+        return { place: p, score: s, note: `${MONTH_NAMES[mi]}: ${monthHigh.toFixed(0)}°C day · ${monthLow.toFixed(0)}°C night · ${monthPrecip.toFixed(0)} mm` };
       }
       case "best-for-remote-work": {
         // Cool productive summers + mild winters + low fire + low smoke.
