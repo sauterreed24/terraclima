@@ -4,11 +4,11 @@
 
 ## Project links
 
-- **Live app — works on any device, no signup, no install:** **[Open Terraclima](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html)** — served as a static SPA from this repo's `static-preview` branch via raw.githack.com. Anyone with the URL can use the app, including on a phone. If raw.githack shows a safety notice, click **Open the page**. The branch is auto-rebuilt on every push to `main` by `.github/workflows/static-preview.yml`.
+- **Live app — works on any device, no signup, no install:** **[Open Terraclima](https://sauterreed24.github.io/terraclima/)** — served as a static SPA from GitHub Pages. Anyone with the URL can use the app, including on a phone. The site is rebuilt on every push to `main` by `.github/workflows/deploy-pages.yml`.
 - **Source code:** [https://github.com/sauterreed24/terraclima](https://github.com/sauterreed24/terraclima)
 - **Reviewer entry points:** [src/App.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/App.tsx), [src/types.ts](https://github.com/sauterreed24/terraclima/blob/main/src/types.ts), [src/components/AtlasMap.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/AtlasMap.tsx), [src/components/PlaceDetail.tsx](https://github.com/sauterreed24/terraclima/blob/main/src/components/PlaceDetail.tsx), [src/lib/scoring.ts](https://github.com/sauterreed24/terraclima/blob/main/src/lib/scoring.ts), [scripts/sanity-check.ts](https://github.com/sauterreed24/terraclima/blob/main/scripts/sanity-check.ts)
-- **Other deploy options:** [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/sauterreed24/terraclima) (custom domain) · [GitHub Pages](https://github.com/sauterreed24/terraclima/settings/pages) (set Source to GitHub Actions to publish to `https://sauterreed24.github.io/terraclima/`).
-- **Deployment workflows:** [.github/workflows/static-preview.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/static-preview.yml) (primary, raw.githack-served) · [.github/workflows/deploy-pages.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml) (Pages, opt-in).
+- **Other deploy options:** [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/sauterreed24/terraclima) (custom domain or pull-request previews).
+- **Deployment workflows:** [.github/workflows/deploy-pages.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/deploy-pages.yml) (primary public site) · [.github/workflows/static-preview.yml](https://github.com/sauterreed24/terraclima/blob/main/.github/workflows/static-preview.yml) (portable static artifact branch).
 
 Terraclima is a research-grade climate atlas for exploring how terrain shapes lived weather across the United States, Canada, and Mexico. It treats each place as a physical system: rain shadows, sky islands, marine layers, chinook corridors, frost hollows, tropical highlands, fog belts, lake-effect snowbelts, orchard valleys, and wind gaps are read through the forces that create them.
 
@@ -27,7 +27,6 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 ## What It Does
 
 - **Live Finder explorer:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. The Live Finder layer adds presets for cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, and quiet small-town scouting, plus hard constraints for summer high, winter low, growability, fire risk, and overall risk. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
-- **Pro / paid briefs:** A static-safe conversion layer turns the current Live Finder shortlist into a prefilled paid climate-fit brief request. The public atlas stays useful and free, while Pro offers paid personal briefs, relocation deep briefs, advisor packs, and corpus/signal licensing without adding fake checkout, live inventory, paid-placement ranking, or parcel advice.
 - **Climate Trips:** A static climate-tourism funnel for traveling by microclimate: fog belts, rain shadows, sky islands, cold-air pools, orchard valleys, volcanic soils, Great Lakes snowbelts, Appalachian hollows, and places that feel climatically out of place. Trips pin curated climate themes back onto the Explorer map and can compare the top stops without adding booking or inventory data.
 - **Phone-safe map interaction:** Touch users land in direct map mode by default: one-finger drag pans the atlas, pinch zooms, plus/minus and Fit remain available, clusters stay tappable, and dense pins visually spread with leader lines back to their exact locations. Tapping **Scroll page** gives control back to browser scrolling; **Use map** re-enters direct map interaction.
 - **Place profiles:** Long-form field profiles for each microclimate, including an opening story, scannable at-a-glance facts, practical scouting cards, live-here fit reasons/cautions, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, settlement anchors, things to do, citations, and confidence notes.
@@ -38,19 +37,16 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 - **Collections and learning mode:** Curated bundles and a glossary connect mechanisms such as lapse rate, cold-air pooling, orographic lift, marine layer, foehn winds, thermal belts, and karst hydrology to real places.
 - **Static lodging and investment caveats:** Lodging cues are static style/search prompts, not reservation inventory or paid placement. The investment lens is a climate-and-land screening signal, not financial advice, not a valuation, not a parcel recommendation, and not a recommendation to buy.
 - **Unit-aware prose:** The corpus is authored in metric climate language while the interface localizes temperatures, ranges, deltas, precipitation, snowfall, elevation, wind speed, and distance for the active unit system.
-- **Keyboard shortcuts:** `E`, `T`, `C`, `L`, and `P` switch views; `/` opens Explorer search; `F` opens mobile filters; `R` picks a random place from the current ranked set; `Esc` closes the active overlay; `?` opens shortcut help.
-- **Commercial guardrails:** Paid briefs monetize synthesis, prioritization, and human service. They do not alter place ranking, citations, confidence notes, risk warnings, or the public methodology.
+- **Keyboard shortcuts:** `E`, `T`, `C`, and `L` switch views; `/` opens Explorer search; `F` opens mobile filters; `R` picks a random place from the current ranked set; `Esc` closes the active overlay; `?` opens shortcut help.
 
-## Monetization
+## Public Release Posture
 
-Terraclima now has a lightweight revenue path that fits a static SPA:
+Terraclima is free, public, and quality-first. The current priority is making the atlas fast to open, easy to share, trustworthy to inspect, and stable on phones and desktops.
 
-- **Personal Climate Fit Brief ($29):** the low-friction starter offer for users who found an interesting shortlist and want the first synthesis pass.
-- **Relocation Deep Brief ($149):** the higher-margin individual offer for people actively narrowing where to live.
-- **Advisor / Agent Pack ($499/mo):** a recurring B2B package for relocation advisors, recruiters, and climate-aware real-estate professionals who need client-ready climate packets.
-- **Corpus + Signal License (from $1,200/mo):** a licensing path for publishers, research tools, civic products, and proptech pilots.
-
-The Pro route (`?v=pro`) and Explorer brief panel carry the user's current ranked matches, compare selections, filters, and shareable URL into a prefilled sales email. That keeps conversion immediate while preserving trust: revenue is attached to paid synthesis and access, not hidden ranking manipulation.
+- **No signup wall:** the live app opens directly into the atlas.
+- **Open atlas surface:** rankings, profile depth, citations, confidence notes, and risk caveats are the product surface.
+- **One canonical URL:** `https://sauterreed24.github.io/terraclima/` is the public entry point used by metadata, robots, sitemap, and README links.
+- **Regression discipline:** URL parsing, metadata, ranking, corpus shape, prose localization, and production builds are all guarded by `npm run quality:check`.
 
 ## Climate Intelligence
 
@@ -100,7 +96,7 @@ The current corpus covers **226** North American places, including **8 Tier A fl
 
 ## Stack
 
-- React 18, TypeScript, Vite
+- React 19, TypeScript, Vite 8
 - Tailwind CSS v4 plus a custom CSS design system
 - Framer Motion for selected overlays and transitions
 - `d3-geo`, `topojson-client`, `world-atlas`, and `us-atlas` for cartography
@@ -111,35 +107,28 @@ The current corpus covers **226** North American places, including **8 Tier A fl
 
 ## Deployment and Discoverability
 
-Terraclima is a static SPA. Three deploy paths are wired up; the first works with no setup at all.
+Terraclima is a static SPA with one public URL, one optional custom-domain path, and one portable build artifact path.
 
-### Primary — `static-preview` branch served by raw.githack.com
+### Primary — GitHub Pages
 
-Every push to `main` triggers `.github/workflows/static-preview.yml`, which builds the SPA with `VITE_BASE_PATH=./` (relative asset paths) and force-pushes the resulting `dist/` to the orphan `static-preview` branch. raw.githack.com proxies that branch with proper MIME types over HTTPS.
+Every push to `main` triggers `.github/workflows/deploy-pages.yml`, which builds the SPA with `VITE_BASE_PATH=/terraclima/` and publishes it to GitHub Pages.
 
-- **Live URL:** [`https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html`](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html)
-- No signup, no Pages toggle, no Vercel import. The link works for anyone, on any device, including mobile. If raw.githack displays its external-content notice, click **Open the page** to load the app.
-- On phones, the public link opens directly into the same Explorer experience: one-finger drag pans the map, pinch zooms, and **Scroll page** lets normal page scrolling pass through the map until **Use map** is tapped again.
-- Build artifact size is the same Vite bundle the other paths produce (same code splitting, same lazy chunks).
+- **Live URL:** [`https://sauterreed24.github.io/terraclima/`](https://sauterreed24.github.io/terraclima/)
+- The link opens directly into the Explorer experience: one-finger drag pans the map on phones, pinch zooms, and **Scroll page** lets normal page scrolling pass through the map until **Use map** is tapped again.
+- The same URL is used by `index.html`, Open Graph, Twitter cards, `public/robots.txt`, `public/sitemap.xml`, and `public/404.html`.
 
-To rebuild manually: trigger the **Publish static-preview branch** workflow from the Actions tab, or push any commit to `main`.
+To rebuild manually: trigger the **Deploy GitHub Pages** workflow from the Actions tab, or push any commit to `main`.
 
-### Vercel (optional — for a custom domain or pull-request preview URLs)
+### Vercel (optional — custom domain or pull-request previews)
 
 1. Click [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/sauterreed24/terraclima).
 2. Sign in with GitHub. **Tip:** if Vercel drops you on your dashboard, paste `https://github.com/sauterreed24/terraclima` into the "Import Git Repository" box at [vercel.com/new](https://vercel.com/new) — don't pick an unrelated existing project.
 3. Vercel auto-detects Vite, runs `npm run build`, and serves `dist/` over its global CDN. `vercel.json` adds the SPA fallback rewrite.
-4. Share the resulting `https://terraclima-<username>.vercel.app/` URL.
+4. Share the resulting `https://terraclima-<username>.vercel.app/` URL or attach a custom domain.
 
-### GitHub Pages (optional)
+### Static artifact branch
 
-The deploy workflow `.github/workflows/deploy-pages.yml` already builds with `VITE_BASE_PATH=/terraclima/`. To activate:
-
-1. Open **[github.com/sauterreed24/terraclima/settings/pages](https://github.com/sauterreed24/terraclima/settings/pages)**.
-2. Set **Build and deployment → Source** to **GitHub Actions**.
-3. Re-run the **Deploy GitHub Pages** workflow or push any commit to `main`.
-
-The default `GITHUB_TOKEN` cannot enable Pages programmatically, so this toggle is UI-only. If the toggle doesn't take, the static-preview link above keeps working regardless.
+`.github/workflows/static-preview.yml` also builds with `VITE_BASE_PATH=./` and force-pushes `dist/` to the orphan `static-preview` branch. Treat that branch as a portable build artifact for reviewers or emergency mirrors, not the README's primary public URL.
 
 ### Build modes
 
@@ -149,13 +138,13 @@ The default `GITHUB_TOKEN` cannot enable Pages programmatically, so this toggle 
 
 ### Canonical URL vs preview (sharing + SEO)
 
-There are **multiple valid ways** to host this static SPA. They ship the **same JavaScript bundle**, but **search engines and scrapers** follow the canonical URL you advertise in metadata:
+There are **multiple valid ways** to host this static SPA. They ship the **same JavaScript bundle**, but **search engines and scrapers** follow the canonical URL advertised in metadata:
 
 | Deploy | Typical role |
 |--------|----------------|
-| **GitHub Pages** (`https://sauterreed24.github.io/terraclima/`) | **Canonical** in [`index.html`](index.html), [`public/robots.txt`](public/robots.txt), [`public/sitemap.xml`](public/sitemap.xml), Open Graph / Twitter |
-| **raw.githack `static-preview`** ([link at top](#project-links)) | **Frictionless preview** from the README (phones welcome) |
+| **GitHub Pages** (`https://sauterreed24.github.io/terraclima/`) | **Canonical public app** in [`index.html`](index.html), [`public/robots.txt`](public/robots.txt), [`public/sitemap.xml`](public/sitemap.xml), Open Graph, and Twitter metadata |
 | **Vercel** | Custom domain or PR previews |
+| **`static-preview` branch** | Relative-path build artifact that can be mirrored if needed |
 
 If the **primary public URL** changes, update canonical, OG, robots, and sitemap **together** (see **Hardening** below).
 
@@ -167,7 +156,7 @@ If the **primary public URL** changes, update canonical, OG, robots, and sitemap
 - `public/site.webmanifest` supports add-to-home-screen behavior with the existing SVG icon.
 - `public/robots.txt` and `public/sitemap.xml` point crawlers at the canonical deploy.
 - `public/.nojekyll` keeps Pages from stripping files starting with `_`.
-- `public/404.html` redirects unknown Pages paths back to the SPA root (no-op on raw.githack and Vercel).
+- `public/404.html` redirects unknown Pages paths back to the SPA root (Vercel uses `vercel.json` for the same fallback behavior).
 - `vercel.json` adds an SPA fallback rewrite for Vercel.
 - The `static-preview` workflow publishes `dist/` with first-party git commands under the repository token instead of handing a write-scoped token to a third-party deploy action.
 
@@ -255,7 +244,7 @@ For a portfolio review, start here:
 
 For AI agents or automated reviewers:
 
-- **Runnable preview:** [Open Terraclima](https://raw.githack.com/sauterreed24/terraclima/static-preview/index.html) — the always-on raw.githack-served `static-preview` branch. No auth, no install.
+- **Runnable preview:** [Open Terraclima](https://sauterreed24.github.io/terraclima/) — the public GitHub Pages build. No auth, no install.
 - **URL / compare invariants:** [docs/URL-INVARIANTS.md](docs/URL-INVARIANTS.md) (see also `src/lib/app-url.ts` tests and `COMPARE_LIMIT`).
 - **Improvement context:** [docs/IMPROVEMENT-CONTEXT.md](docs/IMPROVEMENT-CONTEXT.md) reconciles external research notes with the actual Vite/React atlas repo.
 - Treat `src/types.ts` as the contract.

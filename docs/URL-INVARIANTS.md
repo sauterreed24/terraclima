@@ -6,7 +6,7 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 
 | Param | Meaning | Validation |
 |-------|---------|------------|
-| `v` | View: `explorer` (default), `trips`, `collections`, `learn` | Unknown -> `explorer` |
+| `v` | View: `explorer` (default), `trips`, `collections`, `learn` | Unknown or retired values -> `explorer` |
 | `p` | Selected place id | Omitted if id is not in corpus |
 | `col` | Active collection id or climate-trip theme id | Omitted if id is not in curated sets |
 | `c` | Countries, comma-separated (`USA`, `Canada`, `Mexico`) | Non-members stripped |
@@ -17,6 +17,7 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 ## Formatting rules
 
 - Default view (`explorer`) omits `v`.
+- Retired view links, including `?v=pro`, canonicalize back to Explorer instead of rendering a dead route.
 - Countries and archetypes are sorted for stable URLs.
 - History flag `tcPlace` on pushState indicates "opened place in-app" so **Back** closes the panel instead of leaving the site.
 

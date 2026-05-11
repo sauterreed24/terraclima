@@ -1,7 +1,7 @@
 # Builds the SPA with relative asset paths (VITE_BASE_PATH=./) and force-pushes
-# the resulting dist/ to the `static-preview` branch. The README's primary
-# "Live app" link points at raw.githack.com serving that branch, so the URL
-# stays in sync with main with no Pages or Vercel configuration required.
+# the resulting dist/ to the `static-preview` branch. The public app is served
+# by GitHub Pages; this branch remains a portable static artifact for reviewers
+# or emergency mirrors.
 name: Publish static-preview branch
 
 on:

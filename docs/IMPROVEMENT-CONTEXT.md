@@ -16,7 +16,7 @@ Do not add PHP entrypoints, Composer tooling, contact-form CSRF handling, or Loc
 - `src/lib/` contains deterministic scoring, URL state, unit localization, metadata, geospatial analysis, and map helpers.
 - `scripts/` contains executable corpus and ranking guardrails.
 - `index.html`, `public/robots.txt`, `public/sitemap.xml`, `public/site.webmanifest`, and `public/404.html` define static hosting and discovery metadata.
-- `.github/workflows/quality*.yml` run the quality gate, and `.github/workflows/static-preview.yml` publishes the frictionless raw.githack preview branch.
+- `.github/workflows/quality*.yml` run the quality gate, `.github/workflows/deploy-pages.yml` publishes the public GitHub Pages app, and `.github/workflows/static-preview.yml` keeps a portable static artifact branch.
 
 ## Current Quality Gate
 
