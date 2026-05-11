@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { BookOpen, Compass, HelpCircle, Layers, Library, Map, Menu, Route, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
+import { BookOpen, Compass, HelpCircle, Layers, Library, Link2, Map, Menu, Route, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -38,6 +38,7 @@ import type { Country, MicroclimateArchetype, Place } from "./types";
 
 const SEARCH_INPUT_ID = "terraclima-place-search";
 const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
+type ShareStatus = "idle" | "copied" | "failed";
 const CURATED_SET_BY_ID = {
   ...Object.fromEntries(Object.entries(COLLECTION_BY_ID).map(([id, c]) => [id, { ...c, kind: "collection" as const }])),
   ...Object.fromEntries(Object.entries(CLIMATE_TRIP_THEME_BY_ID).map(([id, t]) => [id, { ...t, kind: "trip" as const }])),
@@ -50,6 +51,34 @@ function placeForId(id: string): Place | undefined {
 
 function isPlace(p: Place | undefined): p is Place {
   return p != null;
+}
+
+async function writeClipboardText(text: string): Promise<boolean> {
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {
+    // Fall through to the textarea path for older browsers or denied writes.
+  }
+
+  try {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.top = "0";
+    textarea.style.left = "-9999px";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    const copied = document.execCommand("copy");
+    document.body.removeChild(textarea);
+    return copied;
+  } catch {
+    return false;
+  }
 }
 
 function readCurrentAppState() {
@@ -158,6 +187,8 @@ export default function App() {
   const [ranking, setRankingRaw] = useState<RankingProfile>(() => initialAppState.ranking ?? loadPersistedRanking());
   /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
   const [transientFeedback, setTransientFeedback] = useState<string | null>(null);
+  const [shareStatus, setShareStatus] = useState<ShareStatus>("idle");
+  const shareResetRef = useRef<number | null>(null);
   /** Latest place id to be auto-evicted from compare so the feedback can name it. */
   const [evictedComparePlaceId, setEvictedComparePlaceId] = useState<string | null>(null);
   /** Hide the "?" first-run pulse once the user has seen / opened it. */
@@ -171,6 +202,24 @@ export default function App() {
     setRankingRaw(profile);
     persistRankingProfile(profile);
   }, []);
+
+  useEffect(() => () => {
+    if (shareResetRef.current !== null) window.clearTimeout(shareResetRef.current);
+  }, []);
+
+  const copyCurrentView = useCallback(() => {
+    if (typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    void writeClipboardText(url.toString()).then(copied => {
+      setShareStatus(copied ? "copied" : "failed");
+      if (shareResetRef.current !== null) window.clearTimeout(shareResetRef.current);
+      shareResetRef.current = window.setTimeout(() => {
+        setShareStatus("idle");
+        shareResetRef.current = null;
+      }, 2200);
+    });
+  }, []);
+
   const prevPlaceIdRef = useRef<string | null>(initialAppState.placeId);
   /**
    * First-paint URL sync flag. A useRef instead of a module-level mutable
@@ -515,6 +564,8 @@ export default function App() {
                   onSurpriseMe={surpriseMe}
                   canSurprise={ranked.length > 0}
                   filters={filters}
+                  onCopyView={copyCurrentView}
+                  shareStatus={shareStatus}
                 />
 
                 <div className="relative h-[clamp(300px,48svh,520px)] md:h-[52dvh] md:min-h-[min(460px,44dvh)]">
@@ -1094,6 +1145,8 @@ const HeroCard = memo(function HeroCard({
   onSurpriseMe,
   canSurprise,
   filters,
+  onCopyView,
+  shareStatus,
 }: {
   count: number;
   livabilityTopTen: RankingResult[];
@@ -1107,6 +1160,8 @@ const HeroCard = memo(function HeroCard({
   onSurpriseMe: () => void;
   canSurprise: boolean;
   filters: FilterState;
+  onCopyView: () => void;
+  shareStatus: ShareStatus;
 }) {
   const prose = useProse();
   const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
@@ -1153,6 +1208,18 @@ const HeroCard = memo(function HeroCard({
           </p>
         </div>
         <div className="flex flex-col items-stretch sm:items-end gap-3 shrink-0">
+          <button
+            type="button"
+            onClick={onCopyView}
+            className={`btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)] ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
+            aria-label="Copy current Explorer view"
+            title="Copy a URL with the current filters, ranking, and selected place"
+          >
+            <Link2 className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+            <span aria-live="polite">
+              {shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy view"}
+            </span>
+          </button>
           {canSurprise && (
             <button
               type="button"

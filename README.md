@@ -26,7 +26,7 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 
 ## What It Does
 
-- **Live Finder explorer:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, and URL-shareable state. The Live Finder layer adds presets for cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, and quiet small-town scouting, plus hard constraints for summer high, winter low, growability, fire risk, and overall risk. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
+- **Live Finder explorer:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, a one-tap current-view share link, and URL-shareable state. The Live Finder layer adds presets for cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, and quiet small-town scouting, plus hard constraints for summer high, winter low, growability, fire risk, and overall risk. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays beside the explorer.
 - **Climate Trips:** A static climate-tourism funnel for traveling by microclimate: fog belts, rain shadows, sky islands, cold-air pools, orchard valleys, volcanic soils, Great Lakes snowbelts, Appalachian hollows, and places that feel climatically out of place. Trips pin curated climate themes back onto the Explorer map and can compare the top stops without adding booking or inventory data.
 - **Phone-safe map interaction:** Touch users land in direct map mode by default: one-finger drag pans the atlas, pinch zooms, plus/minus and Fit remain available, clusters stay tappable, and dense pins visually spread with leader lines back to their exact locations. Tapping **Scroll page** gives control back to browser scrolling; **Use map** re-enters direct map interaction.
 - **Place profiles:** Long-form field profiles for each microclimate, including an opening story, scannable at-a-glance facts, practical scouting cards, live-here fit reasons/cautions, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, similar places, settlement anchors, things to do, citations, and confidence notes.
@@ -45,6 +45,7 @@ Terraclima is free, public, and quality-first. The current priority is making th
 
 - **No signup wall:** the live app opens directly into the atlas.
 - **Open atlas surface:** rankings, profile depth, citations, confidence notes, and risk caveats are the product surface.
+- **Shareable scouting state:** Explorer exposes a copy-current-view control so filtered, ranked, and place-specific atlas states can move cleanly between devices or reviewers.
 - **One canonical URL:** `https://sauterreed24.github.io/terraclima/` is the public entry point used by metadata, robots, sitemap, and README links.
 - **Regression discipline:** URL parsing, metadata, ranking, corpus shape, prose localization, and production builds are all guarded by `npm run quality:check`.
 
