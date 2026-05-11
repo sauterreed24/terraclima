@@ -5,19 +5,56 @@
 
 export type PlaceHeroMedia = {
   src: string;
+  srcSet: string;
+  sizes: string;
   alt: string;
   creditLine: string;
+  sourceUrl: string;
 };
 
 const CREDIT =
-  "Photo: Wikimedia Commons — open the file page on Commons for photographer and license.";
+  "Photo: Wikimedia Commons. Open the file page for photographer and license.";
 
 function commonsFile(file: string, width = 1280): string {
   return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=${width}`;
 }
 
-/** place.id → Commons filename (underscores as on Commons). */
+function commonsFilePage(file: string): string {
+  return `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file)}`;
+}
+
+function commonsSrcSet(file: string): string {
+  return [640, 960, 1280]
+    .map(width => `${commonsFile(file, width)} ${width}w`)
+    .join(", ");
+}
+
+/** place.id → Commons filename. */
 const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
+  "sequim-wa": {
+    file: "John Wayne Marina - Sequim Washington.jpg",
+    alt: "Sequim's John Wayne Marina on the dry Olympic rain-shadow shore",
+  },
+  "monterey-ca": {
+    file: "Pacific Grove Coastline, Monterey, CA, jjron 24.03.2012.jpg",
+    alt: "Rocky Monterey Peninsula shoreline and cool Pacific water",
+  },
+  "black-mountain-nc": {
+    file: "Black Mountain, North Carolina.jpg",
+    alt: "Black Mountain town and wooded Blue Ridge foothills in North Carolina",
+  },
+  "hood-river-or": {
+    file: "Columbia Gorge Hotel - Hood River Oregon.jpg",
+    alt: "Hood River's Columbia Gorge setting above the river and orchard country",
+  },
+  "santa-barbara-ca": {
+    file: "Santa Barbara 2012 7.jpg",
+    alt: "Santa Barbara's coastal cityscape beneath the Santa Ynez Mountains",
+  },
+  "port-townsend-wa": {
+    file: "Adventuress Schooner Port Townsend Marina , Washington State.jpg",
+    alt: "Port Townsend marina and wooden-boat waterfront on the Olympic rain shadow edge",
+  },
   "tucson-az": {
     file: "Saguaro_National_Park,_Tucson.jpg",
     alt: "Saguaro cacti and Sonoran Desert hills near Tucson",
@@ -44,8 +81,12 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
   },
   "banff-ab": { file: "Moraine_Lake_17092005.jpg", alt: "Turquoise moraine lake and Rocky peaks in Banff National Park" },
   "victoria-bc": {
-    file: "Butchart_Gardens.jpg",
-    alt: "Victoria-area gardens on Vancouver Island — mild maritime winters, dry bright summers",
+    file: "View from Malahat lookout 1.jpg",
+    alt: "Southern Vancouver Island water and hills near Victoria's rain-shadow coast",
+  },
+  "qualicum-bc": {
+    file: "Qualicum Beach, British Columbia - panoramio.jpg",
+    alt: "Qualicum Beach shoreline on Vancouver Island's drier east side",
   },
   "oaxaca-mx": { file: "Oaxaca_de_Juarez.jpg", alt: "Colonial streets and mountains framing Oaxaca de Juárez" },
   "merida-mx": {
@@ -69,8 +110,11 @@ export function getPlaceHeroMedia(placeId: string): PlaceHeroMedia | null {
   if (!row) return null;
   return {
     src: commonsFile(row.file),
+    srcSet: commonsSrcSet(row.file),
+    sizes: "(min-width: 768px) 52rem, calc(100vw - 2rem)",
     alt: row.alt,
     creditLine: CREDIT,
+    sourceUrl: commonsFilePage(row.file),
   };
 }
 

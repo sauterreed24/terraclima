@@ -106,6 +106,24 @@ describe("app-url state", () => {
     expect(url).not.toMatch(/[?&]cmp=/);
   });
 
+  it("keeps default live-fit URLs clean unless live-fit controls are active", () => {
+    expect(formatAppRelativeUrl({
+      view: "explorer",
+      placeId: null,
+      collectionId: null,
+      ranking: "live-fit",
+      collectionExists: () => true,
+    })).toBe("/");
+    expect(formatAppRelativeUrl({
+      view: "explorer",
+      placeId: null,
+      collectionId: null,
+      ranking: "live-fit",
+      fitPresets: ["cool-summers"],
+      collectionExists: () => true,
+    })).toMatch(/[?&]r=live-fit/);
+  });
+
   it("caps compare set at COMPARE_LIMIT on parse", () => {
     const p = parseAppSearch("?cmp=a,b,c,d,e,f,g");
     expect(p.compareIds!.length).toBe(COMPARE_LIMIT);

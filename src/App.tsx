@@ -23,6 +23,7 @@ import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile
 import { placeDocumentTitle } from "./lib/site-metadata";
 import { useProse } from "./lib/units";
 import {
+  DEFAULT_RANKING,
   loadPersistedRanking,
   persistRankingProfile,
 } from "./lib/app-ranking-preference";
@@ -150,9 +151,9 @@ export default function App() {
     const schedule = () => {
       if (cancelled) return;
       if (w.requestIdleCallback) {
-        idleId = w.requestIdleCallback(run, { timeout: 1500 });
+        idleId = w.requestIdleCallback(run, { timeout: richVisualEffects ? 1500 : 3000 });
       } else {
-        timeoutId = window.setTimeout(() => run(), 250);
+        timeoutId = window.setTimeout(() => run(), richVisualEffects ? 250 : 600);
       }
     };
 
@@ -161,7 +162,10 @@ export default function App() {
       idleId = null;
       timeoutId = null;
       const remaining = deadline?.timeRemaining?.();
-      const budgetMs = remaining == null ? 6 : Math.max(3, Math.min(12, remaining));
+      const minBudget = richVisualEffects ? 3 : 1;
+      const maxBudget = richVisualEffects ? 12 : 5;
+      const fallbackBudget = richVisualEffects ? 6 : 3;
+      const budgetMs = remaining == null ? fallbackBudget : Math.max(minBudget, Math.min(maxBudget, remaining));
       nextIndex = warmPlaceSearchIndex(PLACES, nextIndex, budgetMs);
       if (nextIndex < PLACES.length) schedule();
     };
@@ -171,7 +175,7 @@ export default function App() {
       cancelled = true;
       cancelPending();
     };
-  }, []);
+  }, [richVisualEffects]);
 
   const initialAppStateRef = useRef<ReturnType<typeof readCurrentAppState> | null>(null);
   if (initialAppStateRef.current === null) {
@@ -258,6 +262,12 @@ export default function App() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    const hasLiveFitState = (filters.fitPresets?.size ?? 0) > 0 ||
+      filters.maxSummerHighC != null ||
+      filters.minWinterLowC != null ||
+      filters.minGrowability != null ||
+      filters.maxFireRisk != null ||
+      filters.maxOverallRisk != null;
     const state = {
       view,
       placeId: selectedId,
@@ -266,7 +276,7 @@ export default function App() {
       archetypes: [...filters.archetypes],
       search: filters.search ?? "",
       compareIds: [...compareIds],
-      ranking: ranking === "hidden-gems" ? null : ranking,
+      ranking: ranking === DEFAULT_RANKING && !hasLiveFitState ? null : ranking,
       fitPresets: [...(filters.fitPresets ?? new Set())],
       maxSummerHighC: filters.maxSummerHighC ?? null,
       minWinterLowC: filters.minWinterLowC ?? null,
@@ -727,7 +737,7 @@ export default function App() {
               </div>
 
               {explorerDockLg ? (
-                <aside className="w-[340px] shrink-0 flex flex-col gap-4" aria-label="Explorer filters and atlas footprint">
+                <aside className="tc-explorer-dock w-[340px] shrink-0 flex flex-col gap-4" aria-label="Explorer filters and atlas footprint">
                   <FilterBar
                     searchInputId={SEARCH_INPUT_ID}
                     filters={filters}
@@ -1347,6 +1357,13 @@ const HeroCard = memo(function HeroCard({
       ) : null}
 
       {scoutBrief ? (
+        <DesktopScoutBoard
+          brief={scoutBrief}
+          onOpenPlace={onOpenPlace}
+        />
+      ) : null}
+
+      {scoutBrief ? (
         <ScoutBriefPanel
           brief={scoutBrief}
           onOpenPlace={onOpenPlace}
@@ -1622,6 +1639,68 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
           <ShieldAlert className="w-3.5 h-3.5 text-ember-700 shrink-0" aria-hidden />
           <span>{prose(brief.cautionLine)}</span>
         </div>
+      </div>
+    </section>
+  );
+});
+
+const DesktopScoutBoard = memo(function DesktopScoutBoard({
+  brief,
+  onOpenPlace,
+}: {
+  brief: ExplorerScoutBrief;
+  onOpenPlace: (id: string) => void;
+}) {
+  const prose = useProse();
+  return (
+    <section className="desktop-scout-board" aria-label="Desktop relocation workbench">
+      <div className="desktop-scout-board__leader">
+        <div>
+          <div className="desktop-scout-board__eyebrow">Relocation read</div>
+          <button
+            type="button"
+            className="desktop-scout-board__leader-button"
+            onClick={() => onOpenPlace(brief.leader.place.id)}
+            aria-label={`Open ${brief.leader.place.name} from the desktop relocation workbench`}
+          >
+            <span className="desktop-scout-board__place">{brief.leader.place.name}</span>
+            <span className="desktop-scout-board__note">{prose(brief.fitLine)}</span>
+          </button>
+        </div>
+        <div className="desktop-scout-board__score" aria-label={`Score ${Math.round(brief.leader.score)}`}>
+          {Math.round(brief.leader.score)}
+        </div>
+      </div>
+
+      <div className="desktop-scout-board__metrics" aria-label="Current shortlist desktop metrics">
+        {brief.metrics.slice(0, 4).map(metric => (
+          <div key={metric.label} className="desktop-scout-board__metric" title={metric.detail}>
+            <span className="desktop-scout-board__metric-label">{metric.label}</span>
+            <span className="desktop-scout-board__metric-value">{metric.value}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="desktop-scout-board__signals" aria-label="Priority winners in the current shortlist">
+        {brief.decisionSignals.slice(0, 3).map(signal => (
+          <button
+            key={signal.label}
+            type="button"
+            className="desktop-scout-board__signal"
+            onClick={() => onOpenPlace(signal.place.id)}
+            title={prose(signal.detail)}
+            aria-label={`${signal.label}: ${signal.place.name}, ${signal.value}. Open place profile.`}
+          >
+            <span className="desktop-scout-board__signal-label">{signal.label}</span>
+            <span className="desktop-scout-board__signal-place">{signal.place.name}</span>
+            <span className="desktop-scout-board__signal-value">{signal.value}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="desktop-scout-board__caution">
+        <ShieldAlert className="w-3.5 h-3.5 text-ember-700 shrink-0" aria-hidden />
+        <span>{prose(brief.cautionLine)}</span>
       </div>
     </section>
   );
