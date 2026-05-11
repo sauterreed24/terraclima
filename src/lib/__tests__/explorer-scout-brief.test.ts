@@ -33,12 +33,14 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.metrics.map(metric => metric.label)).toEqual([
       "Summer highs",
       "Winter lows",
+      "Easy months",
       "Precip spread",
       "Avg risk",
       "Dominant family",
     ]);
+    expect(brief!.metrics.find(metric => metric.label === "Summer highs")!.value).toMatch(/°C$/);
     expect(brief!.decisionSignals.map(signal => signal.label)).toEqual([
-      "Daily comfort",
+      "Felt comfort",
       "Low risk load",
       "Garden / land",
       "Climate resilience",
@@ -97,7 +99,7 @@ describe("buildExplorerScoutBrief", () => {
     const brief = buildExplorerScoutBrief(ranked, "Test rank");
 
     expect(brief!.decisionSignals.map(signal => [signal.label, signal.place.id])).toEqual([
-      ["Daily comfort", "comfort-town"],
+      ["Felt comfort", "comfort-town"],
       ["Low risk load", "risk-cove"],
       ["Garden / land", "garden-ridge"],
       ["Climate resilience", "garden-ridge"],

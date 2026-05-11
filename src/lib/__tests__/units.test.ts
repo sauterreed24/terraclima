@@ -161,6 +161,11 @@ describe("localizeProse — distances", () => {
   it("converts millimetres of precip", () => {
     expect(localizeProse("Annual precip averages 1,500 mm.", "F", "imperial")).toContain("59 in");
   });
+  it("converts metric ranges with one trailing unit before single-unit passes", () => {
+    expect(localizeProse("Annual precip spans 3,375 to 6,096 mm.", "F", "imperial")).toContain("133 to 240 in");
+    expect(localizeProse("The hiking belt runs 5–10 km from town.", "F", "imperial")).toContain("3.1–6.2 mi");
+    expect(localizeProse("Snow depth often reaches 20-40 cm.", "F", "imperial")).toContain("8-16 in");
+  });
   it("converts km/h before bare km", () => {
     expect(localizeProse("Gusts reach 80 km/h.", "F", "imperial")).toContain("50 mph");
   });

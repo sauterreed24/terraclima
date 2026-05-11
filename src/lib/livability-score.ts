@@ -29,7 +29,8 @@
 //
 // • **Felt comfort, not means-only comfort.** The livability blend now
 //   uses a felt-comfort component that mixes summer/winter envelope,
-//   sunshine/fog/dampness, and the curated corpus comfort score. This
+//   usable-month runway, sunshine/fog/dampness, and the curated corpus
+//   comfort score. This
 //   prevents thermally mild summit, rain-forest, and fog-belt entries
 //   from ranking as more comfortable than they feel on the ground.
 //
@@ -57,6 +58,7 @@
 import type { Place } from "../types";
 import {
   avgRisk,
+  annualComfortMonthCount,
   getAnnualPrecipMm,
   meanAnnualHumidityPct,
   meanAnnualSunshinePct,
@@ -64,6 +66,7 @@ import {
   meanSummerHigh,
   meanSummerHumidityPct,
   RISK_VALUE,
+  seasonalUsabilityScore,
   summerDiurnalC,
 } from "./climate-metrics";
 
@@ -275,15 +278,16 @@ export function skyComfortScore(p: Place): number {
 
 /**
  * Final comfort signal used by livability ranking. It blends the objective
- * high/low envelope, sky/dampness, and the curated corpus comfort score so
- * summit, fog-belt, rain-forest, and arctic entries do not receive inflated
- * "comfortable" reads from temperature averages alone.
+ * high/low envelope, year-round usable-month runway, sky/dampness, and the
+ * curated corpus comfort score so one pleasant season cannot erase a hard
+ * rest-of-year livability burden.
  */
 export function feltComfortScore(p: Place): number {
   return clamp(
-    thermalComfortScore(p) * 0.56 +
-    clamp(p.scores.comfort) * 0.30 +
-    skyComfortScore(p) * 0.14,
+    thermalComfortScore(p) * 0.42 +
+    seasonalUsabilityScore(p) * 0.22 +
+    clamp(p.scores.comfort) * 0.24 +
+    skyComfortScore(p) * 0.12,
   );
 }
 
@@ -331,7 +335,7 @@ function makeRationale(p: Place, key: ComponentKey, value: number): string {
     case "thermalComfort": {
       const sh = meanSummerHigh(p);
       const jl = meanJanLow(p);
-      return `Summer ${sh.toFixed(1)}°C · winter ${jl.toFixed(1)}°C · sky ${Math.round(skyComfortScore(p))}/100 · curator ${Math.round(p.scores.comfort)}/100 → felt comfort ${Math.round(value)}/100`;
+      return `Summer ${sh.toFixed(1)}°C · winter ${jl.toFixed(1)}°C · ${annualComfortMonthCount(p)}/12 easy months · sky ${Math.round(skyComfortScore(p))}/100 · curator ${Math.round(p.scores.comfort)}/100 → felt comfort ${Math.round(value)}/100`;
     }
     case "hazardCushion":
       return `Risk: mean ${avgRisk(p).toFixed(2)} · max ${maxRisk(p).toFixed(0)}/5 → cushion ${Math.round(value)}/100`;

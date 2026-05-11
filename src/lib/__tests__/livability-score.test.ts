@@ -14,6 +14,7 @@ import {
   thermalComfortScore,
   winterComfortScore,
 } from "../livability-score";
+import { seasonalUsabilityScore } from "../climate-metrics";
 import { makeClimate, makePlace } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
 
@@ -154,6 +155,31 @@ describe("skyComfortScore + feltComfortScore", () => {
     expect(thermalComfortScore(harshSummit)).toBeCloseTo(thermalComfortScore(easy), 0);
     expect(feltComfortScore(harshSummit)).toBeLessThan(thermalComfortScore(harshSummit));
     expect(feltComfortScore(harshSummit)).toBeLessThan(feltComfortScore(easy));
+  });
+
+  it("penalises a short livable season even when JJA and DJF thermal means match", () => {
+    const allYear = makePlace({
+      scores: { hiddenGem: 50, microclimateUniqueness: 50, comfort: 72, resilience: 70, growability: 70, tradeoff: 30 },
+      climate: makeClimate({
+        tempHighC: [22,22,22,22,22,22,22,22,22,22,22,22] as Monthly12,
+        tempLowC: [12,12,12,12,12,12,12,12,12,12,12,12] as Monthly12,
+        precipMm: [45,45,45,45,45,45,45,45,45,45,45,45] as Monthly12,
+        snowCm: [0,0,0,0,0,0,0,0,0,0,0,0] as Monthly12,
+      }),
+    });
+    const shortSeason = makePlace({
+      scores: { hiddenGem: 50, microclimateUniqueness: 50, comfort: 72, resilience: 70, growability: 70, tradeoff: 30 },
+      climate: makeClimate({
+        tempHighC: [22,22,2,6,10,22,22,22,10,6,2,22] as Monthly12,
+        tempLowC: [12,12,-10,-6,0,12,12,12,0,-6,-10,12] as Monthly12,
+        precipMm: [45,45,45,45,45,45,45,45,45,45,45,45] as Monthly12,
+        snowCm: [0,0,8,4,0,0,0,0,0,4,8,0] as Monthly12,
+      }),
+    });
+
+    expect(thermalComfortScore(shortSeason)).toBeCloseTo(thermalComfortScore(allYear), 0);
+    expect(seasonalUsabilityScore(shortSeason)).toBeLessThan(seasonalUsabilityScore(allYear));
+    expect(feltComfortScore(shortSeason)).toBeLessThan(feltComfortScore(allYear));
   });
 });
 

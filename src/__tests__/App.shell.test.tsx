@@ -89,6 +89,8 @@ describe("App shell", () => {
 
     expect(screen.getByText("Current rank")).toBeInTheDocument();
     expect(screen.getByText("Scout brief")).toBeInTheDocument();
+    expect(screen.getAllByText("Easy months").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Felt comfort").length).toBeGreaterThan(0);
     expect(screen.getByText(/Leading matches by/)).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
   }, 15000);

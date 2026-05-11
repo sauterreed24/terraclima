@@ -1,6 +1,14 @@
 import type { Place } from "../types";
 import { ARCHETYPE_LABELS } from "../types";
-import { avgRisk, getAnnualPrecipMm, meanJanLow, meanSummerHigh, RISK_VALUE } from "./climate-metrics";
+import {
+  annualComfortMonthCount,
+  avgRisk,
+  getAnnualPrecipMm,
+  meanJanLow,
+  meanSummerHigh,
+  RISK_VALUE,
+} from "./climate-metrics";
+import { feltComfortScore } from "./livability-score";
 import type { RankingResult } from "./scoring";
 
 const RISK_LABELS: Record<keyof Place["risks"], string> = {
@@ -111,7 +119,7 @@ function pickLowRiskSignal(places: Place[]): ExplorerScoutBrief["decisionSignals
 
 function buildDecisionSignals(places: Place[]): ExplorerScoutBrief["decisionSignals"] {
   return [
-    pickMaxSignal(places, "Daily comfort", place => place.scores.comfort),
+    pickMaxSignal(places, "Felt comfort", place => feltComfortScore(place)),
     pickLowRiskSignal(places),
     pickMaxSignal(places, "Garden / land", place => place.scores.growability),
     pickMaxSignal(places, "Climate resilience", place => place.scores.resilience),
@@ -161,13 +169,18 @@ export function buildExplorerScoutBrief(ranked: RankingResult[], rankingLabel: s
     metrics: [
       {
         label: "Summer highs",
-        value: formatRange(places.map(meanSummerHigh), " C"),
+        value: formatRange(places.map(meanSummerHigh), "°C"),
         detail: "Mean Jun-Aug high across the current leaders",
       },
       {
         label: "Winter lows",
-        value: formatRange(places.map(meanJanLow), " C"),
+        value: formatRange(places.map(meanJanLow), "°C"),
         detail: "Mean Dec-Feb low across the current leaders",
+      },
+      {
+        label: "Easy months",
+        value: formatRange(places.map(annualComfortMonthCount), " mo"),
+        detail: "Months that clear the day/night/precip easy-living screen",
       },
       {
         label: "Precip spread",
