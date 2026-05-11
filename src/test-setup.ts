@@ -21,6 +21,11 @@ if (typeof window !== "undefined") {
 
   window.scrollTo = vi.fn() as typeof window.scrollTo;
 
+  /** jsdom lacks Element.scrollTo; place detail uses it for reading-nav motion. */
+  if (typeof Element !== "undefined") {
+    Element.prototype.scrollTo = vi.fn() as typeof Element.prototype.scrollTo;
+  }
+
   HTMLDialogElement.prototype.showModal = function showModal() {
     this.open = true;
     this.setAttribute("open", "");

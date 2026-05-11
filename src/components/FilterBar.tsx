@@ -29,7 +29,9 @@ interface LifestyleBundle {
   presets: LiveFitPresetId[];
   maxSummerHighC?: number;
   minWinterLowC?: number;
+  minGrowability?: number;
   maxFireRisk?: RiskLevel;
+  maxOverallRisk?: RiskLevel;
 }
 
 const LIFESTYLE_BUNDLES: LifestyleBundle[] = [
@@ -50,6 +52,7 @@ const LIFESTYLE_BUNDLES: LifestyleBundle[] = [
     ranking: "best-retirement",
     presets: ["mild-winters"],
     minWinterLowC: 2,
+    maxOverallRisk: "moderate",
   },
   {
     id: "garden",
@@ -58,6 +61,7 @@ const LIFESTYLE_BUNDLES: LifestyleBundle[] = [
     description: "Long growing season, good soils, frost-free nights. Ranked by growability.",
     ranking: "best-growability",
     presets: ["gardenable"],
+    minGrowability: 65,
   },
   {
     id: "snow-ski",
@@ -75,6 +79,7 @@ const LIFESTYLE_BUNDLES: LifestyleBundle[] = [
     ranking: "climate-resilient",
     presets: ["low-fire-smoke"],
     maxFireRisk: "moderate",
+    maxOverallRisk: "moderate",
   },
   {
     id: "shoulder-season",
@@ -85,6 +90,21 @@ const LIFESTYLE_BUNDLES: LifestyleBundle[] = [
     presets: ["mild-winters", "dry-air"],
   },
 ];
+
+function samePresetSet(actual: Set<LiveFitPresetId> | undefined, expected: readonly LiveFitPresetId[]): boolean {
+  if ((actual?.size ?? 0) !== expected.length) return false;
+  return expected.every(preset => actual?.has(preset));
+}
+
+function isBundleActive(bundle: LifestyleBundle, ranking: RankingProfile, filters: FilterState): boolean {
+  return ranking === bundle.ranking &&
+    samePresetSet(filters.fitPresets, bundle.presets) &&
+    filters.maxSummerHighC === bundle.maxSummerHighC &&
+    filters.minWinterLowC === bundle.minWinterLowC &&
+    filters.minGrowability === bundle.minGrowability &&
+    filters.maxFireRisk === bundle.maxFireRisk &&
+    filters.maxOverallRisk === bundle.maxOverallRisk;
+}
 
 interface Props {
   searchInputId?: string;
@@ -107,7 +127,7 @@ export const FilterBar = memo(function FilterBar({
   const prose = useProse();
   const { temp } = useUnits();
   const searchFieldId = searchInputId ?? "tc-atlas-filter-search";
-  const searchPlaceholder = variant === "sheet" ? "Search places" : "Search name, region, or archetype";
+  const searchPlaceholder = variant === "sheet" ? "Search places" : "Search places or regions";
   const toggleCountry = useCallback((c: Country) => {
     setFilters(f => {
       const ns = new Set(f.countries);
@@ -261,7 +281,7 @@ export const FilterBar = memo(function FilterBar({
         <p className="text-[11px] text-stone-readable leading-snug">One-click compound presets — sets ranking, filters, and Live Finder signals together.</p>
         <div className="grid grid-cols-2 gap-1.5">
           {LIFESTYLE_BUNDLES.map(bundle => {
-            const isActive = ranking === bundle.ranking && bundle.presets.every(p => filters.fitPresets?.has(p));
+            const isActive = isBundleActive(bundle, ranking, filters);
             return (
               <button
                 key={bundle.id}
@@ -273,12 +293,13 @@ export const FilterBar = memo(function FilterBar({
                   setFilters(f => ({
                     ...f,
                     fitPresets: new Set(bundle.presets),
-                    // Reset bundle-managed constraints so switching bundles never leaves
-                    // stale values from a previous preset (e.g. "Remote Work" sets
-                    // maxSummerHighC:26; switching to "Garden & Grow" should clear it).
+                    // Bundles own the Live Finder constraint surface; keep text, country,
+                    // and archetype filters, but clear stale fit constraints from older modes.
                     maxSummerHighC: bundle.maxSummerHighC,
                     minWinterLowC: bundle.minWinterLowC,
+                    minGrowability: bundle.minGrowability,
                     maxFireRisk: bundle.maxFireRisk,
+                    maxOverallRisk: bundle.maxOverallRisk,
                   }));
                 }}
                 className={`lifestyle-bundle-btn${isActive ? " lifestyle-bundle-btn--active" : ""}`}

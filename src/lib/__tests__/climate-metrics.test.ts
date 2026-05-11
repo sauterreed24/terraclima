@@ -1,5 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { avgRisk, getAnnualPrecipMm, meanJanLow, meanSummerHigh, RISK_VALUE, summerDiurnalC } from "../climate-metrics";
+import {
+  avgRisk,
+  getAnnualPrecipMm,
+  meanAnnualHumidityPct,
+  meanAnnualSunshinePct,
+  meanJanLow,
+  meanSummerHigh,
+  meanSummerHumidityPct,
+  RISK_VALUE,
+  summerDiurnalC,
+} from "../climate-metrics";
 import { makePlace, makeClimate } from "./test-fixtures";
 
 describe("climate-metrics", () => {
@@ -51,5 +61,22 @@ describe("climate-metrics", () => {
     expect(getAnnualPrecipMm(authored)).toBe(999);
     const fallback = makePlace({ climate: makeClimate({ annualPrecipMm: undefined, precipMm: [10,20,30,40,50,60,70,80,90,100,110,120] }) });
     expect(getAnnualPrecipMm(fallback)).toBe(780);
+  });
+
+  it("summarizes optional humidity and sunshine fields without punishing missing data", () => {
+    const withFields = makePlace({
+      climate: makeClimate({
+        humidity: [80, 78, 72, 66, 60, 54, 48, 54, 62, 70, 76, 82],
+        sunshinePct: [40, 45, 50, 55, 60, 70, 80, 75, 65, 55, 45, 40],
+      }),
+    });
+    expect(meanAnnualHumidityPct(withFields)).toBeCloseTo(66.83, 2);
+    expect(meanSummerHumidityPct(withFields)).toBeCloseTo((54 + 48 + 54) / 3, 6);
+    expect(meanAnnualSunshinePct(withFields)).toBeCloseTo(56.67, 2);
+
+    const missing = makePlace({ climate: makeClimate({ humidity: undefined, sunshinePct: undefined }) });
+    expect(meanAnnualHumidityPct(missing)).toBeNull();
+    expect(meanSummerHumidityPct(missing)).toBeNull();
+    expect(meanAnnualSunshinePct(missing)).toBeNull();
   });
 });

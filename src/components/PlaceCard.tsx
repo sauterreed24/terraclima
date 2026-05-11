@@ -3,7 +3,7 @@ import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
-import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
+import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib/units";
 import { getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { getBestMonths, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
@@ -176,7 +176,7 @@ export const PlaceCard = memo(function PlaceCard({
             key={i}
             className={`place-card__climate-bar__segment${i === CURRENT_MONTH ? " place-card__climate-bar__segment--now" : ""}`}
             style={{ background: tempToColor(tempC) }}
-            title={`${MONTH_ABBR[i]}: ${tempC.toFixed(0)}°C`}
+            title={`${MONTH_ABBR[i]}: ${fmtTemp(tempC, temp)}`}
           />
         ))}
       </div>
@@ -300,7 +300,7 @@ export const PlaceCard = memo(function PlaceCard({
                   <span className="font-mono-num">{fmtTemp(monthHigh, temp)}</span>
                   <span className="text-stone-readable/70"> highs · </span>
                   <span className="font-mono-num">{fmtPrecip(monthPrecip, dist)}</span>
-                  {monthSnow && monthSnow > 0.5 ? <span className="text-stone-readable/70"> · {monthSnow.toFixed(0)} cm snow</span> : null}
+                  {monthSnow && monthSnow > 0.5 ? <span className="text-stone-readable/70"> · {fmtSnow(monthSnow, dist)} snow</span> : null}
                 </span>
               </div>
             );
