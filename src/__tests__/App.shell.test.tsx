@@ -88,8 +88,17 @@ describe("App shell", () => {
     renderApp();
 
     expect(screen.getByText("Current rank")).toBeInTheDocument();
+    expect(screen.getByText("Scout brief")).toBeInTheDocument();
     expect(screen.getByText(/Leading matches by/)).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
+  }, 15000);
+
+  it("compares current Explorer leaders from the scout brief", async () => {
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: /Compare current leaders/ }));
+
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
   }, 15000);
 
   it("copies the current Explorer URL for sharing", async () => {
