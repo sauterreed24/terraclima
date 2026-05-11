@@ -12,7 +12,7 @@ export const RANKING_STORAGE_KEY = "terraclima.ranking.v1";
 
 const PROFILE_SET = new Set<string>(ALL_RANKING_PROFILES);
 
-export const DEFAULT_RANKING: RankingProfile = "hidden-gems";
+export const DEFAULT_RANKING: RankingProfile = "live-fit";
 
 export function loadPersistedRanking(): RankingProfile {
   if (typeof window === "undefined") return DEFAULT_RANKING;

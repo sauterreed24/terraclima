@@ -21,6 +21,7 @@
 
 import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
 import type { RankingProfile } from "./scoring";
+import { DEFAULT_RANKING } from "./app-ranking-preference";
 import { ALL_RANKING_PROFILES } from "./ranking-options";
 import {
   LIVE_FIT_GROWABILITY_FLOORS,
@@ -74,6 +75,15 @@ function isAllowedNumber(value: number | null | undefined, allowed: readonly num
 
 function isLiveFitRiskCeiling(value: RiskLevel | string | null | undefined): value is RiskLevel {
   return value != null && (LIVE_FIT_RISK_CEILINGS as readonly string[]).includes(value);
+}
+
+function hasLiveFitSpecificState(state: AppUrlState): boolean {
+  return (state.fitPresets?.length ?? 0) > 0 ||
+    state.maxSummerHighC != null ||
+    state.minWinterLowC != null ||
+    state.minGrowability != null ||
+    state.maxFireRisk != null ||
+    state.maxOverallRisk != null;
 }
 
 export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
@@ -180,7 +190,11 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
   if (search.trim()) {
     params.set("q", search.trim());
   }
-  if (state.ranking && RANKING_VALUES.has(state.ranking)) {
+  if (
+    state.ranking &&
+    RANKING_VALUES.has(state.ranking) &&
+    (state.ranking !== DEFAULT_RANKING || hasLiveFitSpecificState(state))
+  ) {
     params.set("r", state.ranking);
   }
   const fitPresets = state.fitPresets ?? [];

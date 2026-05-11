@@ -93,6 +93,14 @@ describe("App shell", () => {
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
   }, 15000);
 
+  it("starts new sessions with live-here fit as the default Explorer ranking", () => {
+    renderApp();
+
+    expect(screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit")).toBeInTheDocument();
+    expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
+    expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
+  }, 15000);
+
   it("compares current Explorer leaders from the scout brief", async () => {
     renderApp();
 
@@ -116,8 +124,26 @@ describe("App shell", () => {
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
     expect(copied.searchParams.get("q")).toBe("monterey");
-    expect(copied.searchParams.get("r")).toBe("live-fit");
+    expect(copied.searchParams.get("r")).toBeNull();
     expect(await screen.findByText("Link copied")).toBeInTheDocument();
+  }, 15000);
+
+  it("keeps live-fit ranking in shared URLs when live-fit controls are active", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+    window.history.replaceState(null, "", "/?r=live-fit&fit=cool-summers");
+
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Copy current Explorer view" }));
+
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const copied = new URL(writeText.mock.calls[0][0] as string);
+    expect(copied.searchParams.get("r")).toBe("live-fit");
+    expect(copied.searchParams.get("fit")).toBe("cool-summers");
   }, 15000);
 
   it("opens compare immediately for shared URLs with two or more valid places", async () => {

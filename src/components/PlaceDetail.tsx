@@ -433,6 +433,8 @@ function DetailHeader({
         <figure className="mt-4 rounded-2xl overflow-hidden border border-[rgba(200,160,120,0.45)] shadow-[0_8px_28px_-12px_rgba(62,38,24,0.12)]">
           <img
             src={hero.src}
+            srcSet={hero.srcSet}
+            sizes={hero.sizes}
             alt={hero.alt}
             width={1280}
             height={520}
@@ -457,7 +459,9 @@ function DetailHeader({
             }}
           />
           <figcaption className="px-3 py-2 text-[10px] leading-snug text-stone bg-[rgba(252,244,232,0.96)] border-t border-[rgba(200,160,120,0.28)]">
-            {hero.creditLine}
+            <a href={hero.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:text-glacier-700 hover:underline">
+              {hero.creditLine}
+            </a>
           </figcaption>
         </figure>
       )}

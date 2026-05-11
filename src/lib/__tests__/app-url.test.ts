@@ -141,6 +141,26 @@ describe("formatAppRelativeUrl", () => {
     });
     expect(url).toBe("/?p=foo&c=USA&a=rain-shadow-sanctuary&q=garden+town&r=live-fit&fit=cool-summers%2Cdry-air&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated");
   });
+  it("omits the default live-fit ranking until live-fit constraints are present", () => {
+    expect(
+      formatAppRelativeUrl({
+        view: "explorer",
+        placeId: null,
+        collectionId: null,
+        ranking: "live-fit",
+        collectionExists: ce,
+      }),
+    ).toBe("/");
+    expect(
+      formatAppRelativeUrl({
+        view: "explorer",
+        placeId: null,
+        collectionId: null,
+        ranking: "hidden-gems",
+        collectionExists: ce,
+      }),
+    ).toBe("/?r=hidden-gems");
+  });
   it("omits Live Finder constraints the UI cannot represent", () => {
     const url = formatAppRelativeUrl({
       view: "explorer",
