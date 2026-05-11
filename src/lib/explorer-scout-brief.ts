@@ -20,7 +20,14 @@ export interface ExplorerScoutBrief {
   compareIds: string[];
   summary: string;
   fitLine: string;
+  decisionLine: string;
   cautionLine: string;
+  decisionSignals: {
+    label: string;
+    place: Place;
+    value: string;
+    detail: string;
+  }[];
   metrics: {
     label: string;
     value: string;
@@ -75,6 +82,62 @@ function topArchetypeLabel(places: Place[]): string {
   return id ? ARCHETYPE_LABELS[id as keyof typeof ARCHETYPE_LABELS] : "Mixed terrain";
 }
 
+function pickMaxSignal(
+  places: Place[],
+  label: string,
+  valueOf: (place: Place) => number,
+  valueSuffix = "/100",
+): ExplorerScoutBrief["decisionSignals"][number] {
+  const place = [...places].sort((a, b) => valueOf(b) - valueOf(a) || a.name.localeCompare(b.name))[0]!;
+  const value = Math.round(valueOf(place));
+  return {
+    label,
+    place,
+    value: `${value}${valueSuffix}`,
+    detail: `${place.name} leads the current shortlist on ${label.toLowerCase()} at ${value}${valueSuffix}.`,
+  };
+}
+
+function pickLowRiskSignal(places: Place[]): ExplorerScoutBrief["decisionSignals"][number] {
+  const place = [...places].sort((a, b) => avgRisk(a) - avgRisk(b) || a.name.localeCompare(b.name))[0]!;
+  const value = Math.round(avgRisk(place) * 20);
+  return {
+    label: "Low risk load",
+    place,
+    value: `${value}/100`,
+    detail: `${place.name} has the lowest composite risk load among current leaders; lower is easier.`,
+  };
+}
+
+function buildDecisionSignals(places: Place[]): ExplorerScoutBrief["decisionSignals"] {
+  return [
+    pickMaxSignal(places, "Daily comfort", place => place.scores.comfort),
+    pickLowRiskSignal(places),
+    pickMaxSignal(places, "Garden / land", place => place.scores.growability),
+    pickMaxSignal(places, "Climate resilience", place => place.scores.resilience),
+    pickMaxSignal(places, "Distinctive terrain", place => place.scores.microclimateUniqueness),
+  ];
+}
+
+function decisionLine(signals: ExplorerScoutBrief["decisionSignals"]): string {
+  const counts = new Map<string, { place: Place; count: number }>();
+  for (const signal of signals) {
+    const current = counts.get(signal.place.id) ?? { place: signal.place, count: 0 };
+    current.count += 1;
+    counts.set(signal.place.id, current);
+  }
+  const winners = [...counts.values()].sort((a, b) => b.count - a.count || a.place.name.localeCompare(b.place.name));
+  const top = winners[0];
+  if (!top) return "Decision signals are unavailable for this view.";
+  if (winners.length === 1) {
+    return `${top.place.name} leads every living signal in this shortlist; still read risk and local access before deciding.`;
+  }
+  if (top.count >= 3) {
+    return `${top.place.name} is the consensus leader across ${top.count} of ${signals.length} living signals; use the remaining split to check tradeoffs.`;
+  }
+  return `No single place dominates: ${top.place.name} leads ${top.count} living signals, while ${winners[1]!.place.name} keeps at least one priority in play.`;
+}
+
 export function buildExplorerScoutBrief(ranked: RankingResult[], rankingLabel: string): ExplorerScoutBrief | null {
   if (ranked.length === 0) return null;
 
@@ -85,13 +148,16 @@ export function buildExplorerScoutBrief(ranked: RankingResult[], rankingLabel: s
   const archetypes = new Set(places.flatMap(place => place.archetypes.slice(0, 2)));
   const compareIds = ranked.slice(0, 4).map(row => row.place.id);
   const leaderNote = leader.note?.replace(/\s+/g, " ").trim();
+  const decisionSignals = buildDecisionSignals(places);
 
   return {
     leader,
     compareIds,
     summary: `${leader.place.name} leads this view by ${rankingLabel}; the top ${shortlist.length} span ${countries.join(", ")} and ${archetypes.size} microclimate families.`,
     fitLine: leaderNote ? leaderNote : `${leader.place.koppen} climate signal with ${Math.round(leader.score)} score.`,
+    decisionLine: decisionLine(decisionSignals),
     cautionLine: topRiskLine(leader.place),
+    decisionSignals,
     metrics: [
       {
         label: "Summer highs",

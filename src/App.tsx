@@ -1595,6 +1595,29 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
           ))}
         </div>
 
+        <div className="scout-brief__signals" aria-label="Where current leaders win across living priorities">
+          <div className="scout-brief__signals-head">
+            <span className="scout-brief__signals-title">Where leaders win</span>
+            <span className="scout-brief__signals-line">{prose(brief.decisionLine)}</span>
+          </div>
+          <div className="scout-brief__signal-grid">
+            {brief.decisionSignals.map(signal => (
+              <button
+                key={signal.label}
+                type="button"
+                className="scout-brief__signal"
+                onClick={() => onOpenPlace(signal.place.id)}
+                title={prose(signal.detail)}
+                aria-label={`${signal.label}: ${signal.place.name}, ${signal.value}. Open place profile.`}
+              >
+                <span className="scout-brief__signal-label">{signal.label}</span>
+                <span className="scout-brief__signal-place">{signal.place.name}</span>
+                <span className="scout-brief__signal-value">{signal.value}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="scout-brief__caution">
           <ShieldAlert className="w-3.5 h-3.5 text-ember-700 shrink-0" aria-hidden />
           <span>{prose(brief.cautionLine)}</span>
