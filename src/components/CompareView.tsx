@@ -3,7 +3,7 @@ import { useEffect, useId, useMemo, useRef } from "react";
 import type { Place } from "../types";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
-import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
+import { avgRisk, meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { useFocusTrap } from "../hooks/use-focus-trap";
@@ -29,6 +29,19 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
   const helperText = isSinglePlace
     ? "Add another place from any card or profile to start a side-by-side comparison."
     : "Compare climate fingerprints, seasonal ranges, and screening scores across the saved places.";
+  const compareHighlights = useMemo(() => {
+    if (places.length < 2) return [];
+    const coolestSummer = places.reduce((best, place) => meanSummerHigh(place) < meanSummerHigh(best) ? place : best, places[0]);
+    const mildestWinter = places.reduce((best, place) => meanJanLow(place) > meanJanLow(best) ? place : best, places[0]);
+    const lowestRisk = places.reduce((best, place) => avgRisk(place) < avgRisk(best) ? place : best, places[0]);
+    const bestGrowability = places.reduce((best, place) => place.scores.growability > best.scores.growability ? place : best, places[0]);
+    return [
+      { label: "Coolest summer", place: coolestSummer, value: fmtTemp(meanSummerHigh(coolestSummer), temp, { digits: 1 }) },
+      { label: "Mildest winter", place: mildestWinter, value: fmtTemp(meanJanLow(mildestWinter), temp, { digits: 1 }) },
+      { label: "Lowest risk load", place: lowestRisk, value: `${Math.round(avgRisk(lowestRisk) * 20)}/100` },
+      { label: "Best growability", place: bestGrowability, value: `${bestGrowability.scores.growability}/100` },
+    ];
+  }, [places, temp]);
   /**
    * Mobile (<lg breakpoint via the Tailwind class) gets fixed-width columns
    * with a horizontal scroll snap so 2–4 places stay readable on a phone
@@ -77,6 +90,18 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
               </div>
               <button ref={closeBtnRef} type="button" onClick={onClose} className="btn-ghost"><X className="w-4 h-4" /> Close</button>
             </div>
+
+            {compareHighlights.length > 0 ? (
+              <div className="compare-insight-strip" aria-label="Comparison highlights">
+                {compareHighlights.map(item => (
+                  <div key={item.label} className="compare-insight-strip__item">
+                    <span className="compare-insight-strip__label">{item.label}</span>
+                    <span className="compare-insight-strip__place" title={item.place.name}>{item.place.name}</span>
+                    <span className="compare-insight-strip__value">{item.value}</span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
 
             <div className="text-[11px] text-stone-readable lg:hidden mb-2">
               {isSinglePlace ? "Add a second place to unlock the comparison lane." : `Swipe sideways to compare -> (${placeCount})`}

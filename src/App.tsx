@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { BookOpen, Compass, HelpCircle, Layers, Library, Link2, Map, Menu, Route, Search, Shuffle, Sparkles, Target, X } from "lucide-react";
+import { ArrowLeftRight, BookOpen, Compass, HelpCircle, Layers, Library, Link2, Map, Menu, Route, Search, ShieldAlert, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -17,6 +17,7 @@ import { FIELD_NOTES } from "./data/field-notes";
 import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, type FilterState, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
+import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
@@ -374,6 +375,10 @@ export default function App() {
     () => RANKING_OPTIONS.find(o => o.id === ranking)?.label ?? ranking.replace(/-/g, " "),
     [ranking],
   );
+  const scoutBrief = useMemo(
+    () => buildExplorerScoutBrief(ranked, rankingLabel),
+    [ranked, rankingLabel],
+  );
   const resonantWindow = useMemo(() => resonantWindowFor(ranking), [ranking]);
   const rankedRef = useRef(ranked);
   rankedRef.current = ranked;
@@ -566,6 +571,8 @@ export default function App() {
                   filters={filters}
                   onCopyView={copyCurrentView}
                   shareStatus={shareStatus}
+                  scoutBrief={scoutBrief}
+                  onCompareLeaders={comparePlaces}
                 />
 
                 <div className="relative h-[clamp(300px,48svh,520px)] md:h-[52dvh] md:min-h-[min(460px,44dvh)]">
@@ -1147,6 +1154,8 @@ const HeroCard = memo(function HeroCard({
   filters,
   onCopyView,
   shareStatus,
+  scoutBrief,
+  onCompareLeaders,
 }: {
   count: number;
   livabilityTopTen: RankingResult[];
@@ -1162,6 +1171,8 @@ const HeroCard = memo(function HeroCard({
   filters: FilterState;
   onCopyView: () => void;
   shareStatus: ShareStatus;
+  scoutBrief: ExplorerScoutBrief | null;
+  onCompareLeaders: (ids: string[]) => void;
 }) {
   const prose = useProse();
   const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
@@ -1275,6 +1286,14 @@ const HeroCard = memo(function HeroCard({
         </div>
       ) : null}
 
+      {scoutBrief ? (
+        <ScoutBriefPanel
+          brief={scoutBrief}
+          onOpenPlace={onOpenPlace}
+          onCompareLeaders={onCompareLeaders}
+        />
+      ) : null}
+
       {livabilityTopTen.length > 0 ? (
         <div className="hero-top-ten px-3 py-2.5 sm:px-4 min-[1400px]:py-3 space-y-2.5 min-[1400px]:space-y-3">
           <div className="min-w-0">
@@ -1328,6 +1347,85 @@ const HeroCard = memo(function HeroCard({
         <FieldNoteStrip />
       </div>
     </div>
+  );
+});
+
+const ScoutBriefPanel = memo(function ScoutBriefPanel({
+  brief,
+  onOpenPlace,
+  onCompareLeaders,
+}: {
+  brief: ExplorerScoutBrief;
+  onOpenPlace: (id: string) => void;
+  onCompareLeaders: (ids: string[]) => void;
+}) {
+  const prose = useProse();
+  return (
+    <section className="scout-brief" aria-labelledby="explorer-scout-brief-title">
+      <div className="scout-brief__head">
+        <div className="min-w-0">
+          <div id="explorer-scout-brief-title" className="scout-brief__eyebrow">
+            Scout brief
+          </div>
+          <p className="scout-brief__summary">{prose(brief.summary)}</p>
+        </div>
+        <div className="scout-brief__actions">
+          <button
+            type="button"
+            className="btn-ghost !text-xs !py-1.5"
+            onClick={() => onOpenPlace(brief.leader.place.id)}
+            aria-label={`Open scout brief leader ${brief.leader.place.name}`}
+          >
+            <Target className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+            Open leader
+          </button>
+          {brief.compareIds.length >= 2 ? (
+            <button
+              type="button"
+              className="btn-primary !text-xs !py-1.5"
+              onClick={() => onCompareLeaders(brief.compareIds)}
+              aria-label={`Compare current leaders: ${brief.compareIds.length} places`}
+            >
+              <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
+              Compare leaders
+            </button>
+          ) : null}
+        </div>
+      </div>
+
+      <div className="scout-brief__body">
+        <button
+          type="button"
+          className="scout-brief__leader"
+          onClick={() => onOpenPlace(brief.leader.place.id)}
+          aria-label={`Open ${brief.leader.place.name}, current best match`}
+        >
+          <span className="scout-brief__leader-rank" aria-hidden>1</span>
+          <span className="min-w-0">
+            <span className="scout-brief__leader-kicker">Best current match</span>
+            <span className="scout-brief__leader-name">{brief.leader.place.name}</span>
+            <span className="scout-brief__leader-note">{prose(brief.fitLine)}</span>
+          </span>
+          <span className="scout-brief__score" aria-label={`Score ${Math.round(brief.leader.score)}`}>
+            {Math.round(brief.leader.score)}
+          </span>
+        </button>
+
+        <div className="scout-brief__metrics" aria-label="Current shortlist climate and risk summary">
+          {brief.metrics.map(metric => (
+            <div key={metric.label} className="scout-brief__metric" title={metric.detail}>
+              <span className="scout-brief__metric-label">{metric.label}</span>
+              <span className="scout-brief__metric-value">{metric.value}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="scout-brief__caution">
+          <ShieldAlert className="w-3.5 h-3.5 text-ember-700 shrink-0" aria-hidden />
+          <span>{prose(brief.cautionLine)}</span>
+        </div>
+      </div>
+    </section>
   );
 });
 
