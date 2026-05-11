@@ -613,6 +613,7 @@ export default function App() {
                   count={ranked.length}
                   livabilityTopTen={livabilityTopTen}
                   sortTopFive={sortTopFive}
+                  ranking={ranking}
                   rankingLabel={rankingLabel}
                   onOpenPlace={openPlace}
                   activeCollection={activeCollection}
@@ -630,6 +631,7 @@ export default function App() {
                   recentIds={recentIds}
                   onToggleBookmark={toggleBookmark}
                   onClearRecents={clearRecents}
+                  onSetRanking={setRanking}
                 />
 
                 <div className="relative h-[clamp(300px,48svh,520px)] md:h-[52dvh] md:min-h-[min(460px,44dvh)]">
@@ -1147,6 +1149,20 @@ const NavBtn = memo(function NavBtn({
   );
 });
 
+const QuickPick = memo(function QuickPick({ emoji, label, onClick, active }: { emoji: string; label: string; onClick: () => void; active: boolean }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`hero-quick-pick${active ? " hero-quick-pick--active" : ""}`}
+      aria-pressed={active}
+    >
+      <span aria-hidden="true">{emoji}</span>
+      <span>{label}</span>
+    </button>
+  );
+});
+
 function LogoMark() {
   return (
     <svg viewBox="0 0 64 64" width="36" height="36">
@@ -1205,6 +1221,7 @@ const HeroCard = memo(function HeroCard({
   count,
   livabilityTopTen,
   sortTopFive,
+  ranking,
   rankingLabel,
   onOpenPlace,
   activeCollection,
@@ -1222,10 +1239,12 @@ const HeroCard = memo(function HeroCard({
   recentIds,
   onToggleBookmark,
   onClearRecents,
+  onSetRanking,
 }: {
   count: number;
   livabilityTopTen: RankingResult[];
   sortTopFive: RankingResult[];
+  ranking: RankingProfile;
   rankingLabel: string;
   onOpenPlace: (id: string) => void;
   activeCollection: string | null;
@@ -1243,6 +1262,7 @@ const HeroCard = memo(function HeroCard({
   recentIds: readonly string[];
   onToggleBookmark: (id: string) => void;
   onClearRecents: () => void;
+  onSetRanking: (r: RankingProfile) => void;
 }) {
   const prose = useProse();
   const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
@@ -1287,6 +1307,18 @@ const HeroCard = memo(function HeroCard({
               ? active.description
               : "Trace rain shadows, sky islands, orchard valleys, and cool coasts. Each profile ties weather to terrain, season, and lived place."}
           </p>
+
+          {/* Lifestyle quick-picks — instant one-click ranking presets */}
+          {!active && (
+            <div className="hero-quick-picks mt-3" role="group" aria-label="Quick ranking presets">
+              <QuickPick emoji="📅" label="Best this month" onClick={() => onSetRanking("best-this-month")} active={ranking === "best-this-month"} />
+              <QuickPick emoji="💻" label="Remote work" onClick={() => onSetRanking("best-for-remote-work")} active={ranking === "best-for-remote-work"} />
+              <QuickPick emoji="🌅" label="Retirement" onClick={() => onSetRanking("best-retirement")} active={ranking === "best-retirement"} />
+              <QuickPick emoji="🌱" label="Garden life" onClick={() => onSetRanking("best-growability")} active={ranking === "best-growability"} />
+              <QuickPick emoji="❄️" label="Snow country" onClick={() => onSetRanking("coolest-summers")} active={ranking === "coolest-summers"} />
+              <QuickPick emoji="🛡" label="Low risk" onClick={() => onSetRanking("climate-resilient")} active={ranking === "climate-resilient"} />
+            </div>
+          )}
         </div>
         <div className="flex flex-col items-stretch sm:items-end gap-3 shrink-0">
           <button

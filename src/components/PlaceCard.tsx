@@ -6,10 +6,29 @@ import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { getBestMonths, type BestWindow } from "../lib/best-months";
-import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sun } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
+import { scoreLivability } from "../lib/livability-score";
+
+// ── Climate gradient bar helpers ─────────────────────────────────────────────
+
+const MONTH_ABBR = ["J","F","M","A","M","J","J","A","S","O","N","D"] as const;
+
+/** Map a temperature in °C to an HSL colour (blue → teal → green → yellow → orange → red). */
+function tempToColor(celsius: number): string {
+  if (celsius <= -5) return "#6ab4e8";      // deep cold blue
+  if (celsius <= 2)  return "#88cce8";      // cold blue
+  if (celsius <= 8)  return "#7ad4c8";      // cool teal
+  if (celsius <= 14) return "#72d49c";      // mild green
+  if (celsius <= 20) return "#a8d868";      // gentle yellow-green
+  if (celsius <= 24) return "#d4cc44";      // warm yellow
+  if (celsius <= 28) return "#f0b040";      // orange
+  if (celsius <= 32) return "#e87838";      // deep orange
+  return "#d64828";                         // hot red
+}
+
+const CURRENT_MONTH = new Date().getMonth(); // 0-based index, persistent across the session
 
 interface Props {
   place: Place;
@@ -90,11 +109,22 @@ export const PlaceCard = memo(function PlaceCard({
   }, [place, compact, temp]);
 
   const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);
-  const geospatial = useMemo(() => (compact ? null : buildGeospatialAnalysis(place)), [place, compact]);
   const liveFit = useMemo(
     () => (compact ? null : assessLiveFit(place, liveFitFilters)),
     [place, compact, liveFitFilters],
   );
+  const livabilityResult = useMemo(() => (compact ? null : scoreLivability(place)), [place, compact]);
+
+  // Derived at-a-glance extras surfaced on non-compact cards
+  const annualSunshinePct = useMemo(() => {
+    if (compact || !place.climate.sunshinePct) return null;
+    return Math.round(place.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12);
+  }, [place, compact]);
+  const avgHumidity = useMemo(() => {
+    if (compact || !place.climate.humidity) return null;
+    return Math.round(place.climate.humidity.reduce((a, b) => a + b, 0) / 12);
+  }, [place, compact]);
+  const frostFreeDays = place.climate.frostFreeDays ?? null;
 
   const toneRgb = TONE_RGB[tone] ?? TONE_RGB.ice;
 
@@ -139,6 +169,18 @@ export const PlaceCard = memo(function PlaceCard({
         style={{ background: TONE_ACCENT[tone] }}
       />
 
+      {/* 12-month temperature gradient bar — always rendered, visually encodes the full year */}
+      <div className="place-card__climate-bar" aria-hidden="true">
+        {place.climate.tempHighC.map((tempC, i) => (
+          <div
+            key={i}
+            className={`place-card__climate-bar__segment${i === CURRENT_MONTH ? " place-card__climate-bar__segment--now" : ""}`}
+            style={{ background: tempToColor(tempC) }}
+            title={`${MONTH_ABBR[i]}: ${tempC.toFixed(0)}°C`}
+          />
+        ))}
+      </div>
+
       <button
         type="button"
         onClick={handleOpen}
@@ -153,7 +195,12 @@ export const PlaceCard = memo(function PlaceCard({
             className="place-card__rank-strip"
             aria-label={`Rank ${rank} by ${rankingLabel}; score ${Math.round(rankingScore)}.`}
           >
-            <span className="place-card__rank-number" aria-hidden>{rank}</span>
+            <span
+              className={`place-card__rank-number${rank <= 3 ? ` place-card__rank-number--medal place-card__rank-number--medal-${rank}` : ""}`}
+              aria-hidden
+            >
+              {rank <= 3 ? ["🥇","🥈","🥉"][rank - 1] : rank}
+            </span>
             <span className="place-card__rank-label">{rankingLabel}</span>
             <span className="place-card__rank-score" aria-hidden>{Math.round(rankingScore)}</span>
           </div>
@@ -209,17 +256,98 @@ export const PlaceCard = memo(function PlaceCard({
             <Stat label="Annual precip" value={fmtPrecip(annualP, dist)} tone="sage" />
             <Stat label="Uniqueness" value={place.scores.microclimateUniqueness.toString()} tone="ice" />
           </div>
+
+          {/* Extended stats row: sunshine, humidity, frost-free days */}
+          {!compact && (annualSunshinePct != null || avgHumidity != null || frostFreeDays != null) && (
+            <div className="place-card__ext-stats">
+              {annualSunshinePct != null && (
+                <span className="place-card__ext-stat" title="Mean annual sunshine % of possible">
+                  <Sun className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#c4a020" }} />
+                  <span className="font-mono-num">{annualSunshinePct}%</span>
+                  <span className="text-stone-readable/60">sun</span>
+                </span>
+              )}
+              {avgHumidity != null && (
+                <span className="place-card__ext-stat" title="Mean annual relative humidity">
+                  <span aria-hidden>💧</span>
+                  <span className="font-mono-num">{avgHumidity}%</span>
+                  <span className="text-stone-readable/60">RH</span>
+                </span>
+              )}
+              {frostFreeDays != null && (
+                <span className="place-card__ext-stat" title="Approximate frost-free days per year">
+                  <span aria-hidden>🌿</span>
+                  <span className="font-mono-num">{frostFreeDays}</span>
+                  <span className="text-stone-readable/60">frost-free days</span>
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* "This Month" live chip */}
+          {!compact && (() => {
+            const monthHigh = place.climate.tempHighC[CURRENT_MONTH];
+            const monthPrecip = place.climate.precipMm[CURRENT_MONTH];
+            const monthSnow = place.climate.snowCm?.[CURRENT_MONTH];
+            const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] as const;
+            const currentColor = tempToColor(monthHigh);
+            return (
+              <div className="place-card__this-month" style={{ borderColor: `${currentColor}55` }}>
+                <span className="place-card__this-month__dot" style={{ background: currentColor }} aria-hidden />
+                <span className="place-card__this-month__label">
+                  <strong>{MONTH_NAMES[CURRENT_MONTH]}</strong>
+                  {" "}
+                  <span className="font-mono-num">{fmtTemp(monthHigh, temp)}</span>
+                  <span className="text-stone-readable/70"> highs · </span>
+                  <span className="font-mono-num">{fmtPrecip(monthPrecip, dist)}</span>
+                  {monthSnow && monthSnow > 0.5 ? <span className="text-stone-readable/70"> · {monthSnow.toFixed(0)} cm snow</span> : null}
+                </span>
+              </div>
+            );
+          })()}
+
           {corpusTeaser ? (
             <p className="text-[10px] leading-snug text-stone-readable mt-2 pl-0.5 border-t border-dashed border-[rgba(71,90,122,0.12)] pt-2" title={prose(corpusTeaser)}>
               {prose(corpusTeaser)}
             </p>
           ) : null}
-          {geospatial ? (
-            <p className="text-[10px] leading-snug text-stone-readable mt-1 pl-0.5">
-              Geospatial signal {geospatial.geospatialSignalScore}/100 · EO screening {geospatial.eoObservabilityScore}/100 · relief texture {geospatial.structuralTextureScore}/100.
-            </p>
-          ) : null}
         </div>
+
+        {/* Livability score bar */}
+        {!compact && livabilityResult ? (
+          <div className="place-card__livability-bar mt-3">
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <span className="text-[10px] uppercase tracking-wider text-stone-readable">Livability</span>
+              <span className="font-mono-num text-xs text-frost">{Math.round(livabilityResult.score)}<span className="text-stone-readable/60">/100</span></span>
+            </div>
+            <div className="place-card__livability-bar__track">
+              <div
+                className="place-card__livability-bar__fill"
+                style={{ width: `${livabilityResult.score}%` }}
+                role="progressbar"
+                aria-valuenow={Math.round(livabilityResult.score)}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`Livability score: ${Math.round(livabilityResult.score)}/100`}
+              />
+            </div>
+            {livabilityResult.components.length > 0 && (
+              <div className="place-card__livability-components mt-1.5">
+                {livabilityResult.components.slice(0, 3).map(c => (
+                  <span key={c.key} className="place-card__livability-component" title={`${c.label}: ${Math.round(c.value)}/100`}>
+                    <span
+                      className="place-card__livability-component__dot"
+                      style={{ background: c.value >= 70 ? "#3d8f55" : c.value >= 50 ? "#e89b20" : "#e05030" }}
+                      aria-hidden
+                    />
+                    {c.label}
+                    <span className="font-mono-num text-frost">{Math.round(c.value)}</span>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        ) : null}
 
         {liveFit ? (
           <div className="mt-3 rounded-lg border border-[rgba(26,143,168,0.22)] bg-[rgba(232,248,251,0.55)] px-3 py-2">
