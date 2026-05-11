@@ -153,4 +153,24 @@ describe("App shell", () => {
     await waitFor(() => expect(screen.getAllByRole("button", { name: "Close filters" })).toHaveLength(1));
     expect(screen.getByLabelText("Search places by name, region, or archetype")).toHaveAttribute("placeholder", "Search places");
   }, 15000);
+
+  it("renders the pinned shortlist rail when bookmarks exist in localStorage", () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa", "port-townsend-wa"]),
+    );
+    renderApp();
+    expect(screen.getByText(/Your shortlist · 2/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Open Sequim from your shortlist/ })).toBeInTheDocument();
+  }, 15000);
+
+  it("renders the recently viewed rail when recents exist in localStorage", () => {
+    window.localStorage.setItem(
+      "terraclima.recent-places.v1",
+      JSON.stringify(["sequim-wa"]),
+    );
+    renderApp();
+    expect(screen.getByText(/Recently viewed · 1/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Open Sequim \(recently viewed\)/ })).toBeInTheDocument();
+  }, 15000);
 });

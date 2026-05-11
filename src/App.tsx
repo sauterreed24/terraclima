@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeftRight, BookOpen, Compass, HelpCircle, Layers, Library, Link2, Map, Menu, Route, Search, ShieldAlert, Shuffle, Sparkles, Target, X } from "lucide-react";
+import { ArrowLeftRight, BookmarkCheck, BookOpen, Clock, Compass, HelpCircle, Layers, Library, Link2, Map, Menu, Route, Search, ShieldAlert, Shuffle, Sparkles, Target, X } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -26,6 +26,16 @@ import {
   loadPersistedRanking,
   persistRankingProfile,
 } from "./lib/app-ranking-preference";
+import {
+  BOOKMARK_LIMIT,
+  loadBookmarks,
+  toggleBookmark as toggleBookmarkPersist,
+} from "./lib/place-bookmarks";
+import {
+  clearRecentPlaces,
+  loadRecentPlaces,
+  recordRecentPlace,
+} from "./lib/place-history";
 import {
   type AppHistoryState,
   COMPARE_LIMIT,
@@ -186,6 +196,8 @@ export default function App() {
     maxOverallRisk: initialAppState.maxOverallRisk ?? undefined,
   }));
   const [ranking, setRankingRaw] = useState<RankingProfile>(() => initialAppState.ranking ?? loadPersistedRanking());
+  const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
+  const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
   /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
   const [transientFeedback, setTransientFeedback] = useState<string | null>(null);
   const [shareStatus, setShareStatus] = useState<ShareStatus>("idle");
@@ -409,7 +421,32 @@ export default function App() {
     } else if (typeof document !== "undefined") {
       detailTriggerRef.current = (document.activeElement as HTMLElement | null) ?? null;
     }
+    const canonical = resolvePlaceId(id);
+    if (canonical) {
+      setRecentIds(recordRecentPlace(canonical));
+    }
     setSelectedId(id);
+  }, []);
+
+  const toggleBookmark = useCallback((id: string) => {
+    const canonical = resolvePlaceId(id) ?? id;
+    const { ids, pinned } = toggleBookmarkPersist(canonical);
+    setBookmarkIds(new Set(ids));
+    const place = PLACES_BY_ID[canonical];
+    const placeName = place?.name ?? "Place";
+    if (pinned && ids.length === BOOKMARK_LIMIT) {
+      setTransientFeedback(
+        `Pinned ${placeName}. Shortlist is at the ${BOOKMARK_LIMIT}-place cap — older pins drop off the tail.`,
+      );
+    } else if (pinned) {
+      setTransientFeedback(`Pinned ${placeName} to your shortlist.`);
+    } else {
+      setTransientFeedback(`Removed ${placeName} from your shortlist.`);
+    }
+  }, []);
+
+  const clearRecents = useCallback(() => {
+    setRecentIds(clearRecentPlaces());
   }, []);
 
   const closeDetail = useCallback(() => {
@@ -502,6 +539,11 @@ export default function App() {
     try { window.localStorage.setItem(SHORTCUTS_SEEN_KEY, "1"); } catch { /* noop */ }
   }, []);
 
+  const toggleBookmarkSelected = useCallback(() => {
+    if (!selectedId) return;
+    toggleBookmark(selectedId);
+  }, [selectedId, toggleBookmark]);
+
   useKeyboardShortcuts({
     view,
     showShortcuts,
@@ -516,6 +558,7 @@ export default function App() {
     openFilterSheet,
     pickRandomPlace,
     onRandomEmpty,
+    toggleBookmarkSelected,
   });
   const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setView("explorer"); }, [openPlace]);
   const onOpenPlaceFromTrips = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
@@ -573,6 +616,10 @@ export default function App() {
                   shareStatus={shareStatus}
                   scoutBrief={scoutBrief}
                   onCompareLeaders={comparePlaces}
+                  bookmarkIds={bookmarkIds}
+                  recentIds={recentIds}
+                  onToggleBookmark={toggleBookmark}
+                  onClearRecents={clearRecents}
                 />
 
                 <div className="relative h-[clamp(300px,48svh,520px)] md:h-[52dvh] md:min-h-[min(460px,44dvh)]">
@@ -667,6 +714,8 @@ export default function App() {
                       resonantWindow={resonantWindow}
                       liveFitFilters={filters}
                       rankingLabel={rankingLabel}
+                      bookmarkIds={bookmarkIds}
+                      onBookmarkToggle={toggleBookmark}
                     />
                     <div className="panel-thin p-3 flex flex-wrap items-center justify-between gap-2">
                       <div className="text-xs text-stone">
@@ -772,6 +821,8 @@ export default function App() {
             onPickArchetype={pickArchetype}
             onOpenPlace={openPlace}
             liveFitFilters={filters}
+            bookmarked={selectedPlace ? bookmarkIds.has(selectedPlace.id) : false}
+            onBookmarkToggle={toggleBookmark}
           />
         </Suspense>
       ) : null}
@@ -851,6 +902,7 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
           <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
           <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
           <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
+          <Kbds keys={["B"]} />        <span className="text-frost">Pin / unpin the currently open place to your shortlist</span>
           <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail</span>
           <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
         </div>
@@ -1156,6 +1208,10 @@ const HeroCard = memo(function HeroCard({
   shareStatus,
   scoutBrief,
   onCompareLeaders,
+  bookmarkIds,
+  recentIds,
+  onToggleBookmark,
+  onClearRecents,
 }: {
   count: number;
   livabilityTopTen: RankingResult[];
@@ -1173,6 +1229,10 @@ const HeroCard = memo(function HeroCard({
   shareStatus: ShareStatus;
   scoutBrief: ExplorerScoutBrief | null;
   onCompareLeaders: (ids: string[]) => void;
+  bookmarkIds: Set<string>;
+  recentIds: readonly string[];
+  onToggleBookmark: (id: string) => void;
+  onClearRecents: () => void;
 }) {
   const prose = useProse();
   const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
@@ -1301,15 +1361,15 @@ const HeroCard = memo(function HeroCard({
             <p className="hidden min-[1400px]:block text-xs text-stone-readable mt-1 leading-relaxed max-w-3xl">
               Same filtered pool as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by our published blend — not by whatever you picked in Rank by.
             </p>
-            <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights">
+            <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights (v2)">
               <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
-              <span className="livability-weight-pill">Winter ease {Math.round(LIVABILITY_WEIGHTS.winterEase * 100)}%</span>
-              <span className="livability-weight-pill">Summer ease {Math.round(LIVABILITY_WEIGHTS.summerEase * 100)}%</span>
-              <span className="livability-weight-pill">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardEase * 100)}%</span>
+              <span className="livability-weight-pill" title="Bidirectional plateau (18..26°C summer, −4..+12°C winter) with humidity tax and diurnal recovery credit.">Thermal comfort {Math.round(LIVABILITY_WEIGHTS.thermalComfort * 100)}%</span>
+              <span className="livability-weight-pill" title="0.6 × mean-of-9 + 0.4 × max-of-9 — surfaces tail risk that an averaged hazard score would hide.">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardCushion * 100)}%</span>
               <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
+              <span className="livability-weight-pill" title="U-shaped penalty: full marks 700..1500 mm/yr; both arid (<300) and saturated (>2500) reduce the score.">Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
             </div>
             <p className="hidden min-[1400px]:block mt-1.5 text-[10px] text-stone-readable/85 italic">
-              Editorial triage for exploration — not appraisal, insurance, civil engineering, or medical heat-stress advice.
+              v2 livability lens — bidirectional thermal plateau, tail-risk-aware hazard cushion, U-shaped precip moderation. Editorial triage for exploration, not appraisal or medical heat-stress advice.
             </p>
           </div>
           <div
@@ -1343,9 +1403,124 @@ const HeroCard = memo(function HeroCard({
         </div>
       ) : null}
 
+      <PinnedAndRecentRails
+        bookmarkIds={bookmarkIds}
+        recentIds={recentIds}
+        onOpenPlace={onOpenPlace}
+        onToggleBookmark={onToggleBookmark}
+        onClearRecents={onClearRecents}
+      />
+
       <div className="hidden min-[1400px]:block">
         <FieldNoteStrip />
       </div>
+    </div>
+  );
+});
+
+const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
+  bookmarkIds,
+  recentIds,
+  onOpenPlace,
+  onToggleBookmark,
+  onClearRecents,
+}: {
+  bookmarkIds: Set<string>;
+  recentIds: readonly string[];
+  onOpenPlace: (id: string) => void;
+  onToggleBookmark: (id: string) => void;
+  onClearRecents: () => void;
+}) {
+  const pinnedPlaces = useMemo(
+    () => [...bookmarkIds].map(placeForId).filter(isPlace),
+    [bookmarkIds],
+  );
+  const recentPlaces = useMemo(
+    () =>
+      recentIds
+        .map(placeForId)
+        .filter(isPlace)
+        // Don't repeat a pinned place in the recent rail — pins already live
+        // in the row above and visual duplication makes the surface noisier.
+        .filter(p => !bookmarkIds.has(p.id))
+        .slice(0, 6),
+    [recentIds, bookmarkIds],
+  );
+
+  if (pinnedPlaces.length === 0 && recentPlaces.length === 0) return null;
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      {pinnedPlaces.length > 0 ? (
+        <section aria-labelledby="hero-pinned-title">
+          <div className="hero-mini-rail__header">
+            <span id="hero-pinned-title" className="hero-mini-rail__title flex items-center gap-1.5">
+              <BookmarkCheck className="w-3 h-3 text-ochre-700" aria-hidden />
+              Your shortlist · {pinnedPlaces.length}
+            </span>
+          </div>
+          <ul
+            className="hero-mini-rail"
+            aria-label="Pinned places — click to open, × to remove"
+          >
+            {pinnedPlaces.map(p => (
+              <li key={p.id} className="hero-mini-rail__chip" data-tone="ochre">
+                <button
+                  type="button"
+                  className="bg-transparent border-0 p-0 m-0 inline-flex items-center gap-1.5 cursor-pointer text-left min-w-0"
+                  onClick={() => onOpenPlace(p.id)}
+                  aria-label={`Open ${p.name} from your shortlist`}
+                >
+                  <span className="hero-mini-rail__chip-name">{p.name}</span>
+                  <span className="hero-mini-rail__chip-meta">{p.country === "USA" ? "US" : p.country === "Canada" ? "CA" : "MX"}</span>
+                </button>
+                <button
+                  type="button"
+                  className="hero-mini-rail__chip-remove bg-transparent border-0 cursor-pointer"
+                  onClick={() => onToggleBookmark(p.id)}
+                  aria-label={`Unpin ${p.name} from your shortlist`}
+                >
+                  ×
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      {recentPlaces.length > 0 ? (
+        <section aria-labelledby="hero-recent-title">
+          <div className="hero-mini-rail__header">
+            <span id="hero-recent-title" className="hero-mini-rail__title flex items-center gap-1.5">
+              <Clock className="w-3 h-3" aria-hidden />
+              Recently viewed · {recentPlaces.length}
+            </span>
+            <button
+              type="button"
+              className="hero-mini-rail__action"
+              onClick={onClearRecents}
+              aria-label="Clear recently viewed list"
+            >
+              Clear
+            </button>
+          </div>
+          <ul className="hero-mini-rail" aria-label="Recently opened place profiles">
+            {recentPlaces.map(p => (
+              <li key={p.id} className="contents">
+                <button
+                  type="button"
+                  className="hero-mini-rail__chip"
+                  onClick={() => onOpenPlace(p.id)}
+                  aria-label={`Open ${p.name} (recently viewed)`}
+                >
+                  <span className="hero-mini-rail__chip-name">{p.name}</span>
+                  <span className="hero-mini-rail__chip-meta">{p.koppen}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </div>
   );
 });

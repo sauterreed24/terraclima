@@ -14,34 +14,24 @@ import {
   getAnnualPrecipMm,
 } from "./climate-metrics";
 import { assessLiveFit, liveFitFilterPass, type LiveFitPresetId } from "./live-fit";
+import {
+  LIVABILITY_BLEND_WEIGHTS,
+  rankLivabilityWithBreakdown,
+  type LivabilityResult,
+} from "./livability-score";
 
 // Re-exported so the public surface of scoring.ts stays unchanged for callers
 // (components, charts, tests) that previously imported these from here.
 export { RISK_VALUE, avgRisk, meanSummerHigh, meanJanLow, getAnnualPrecipMm };
 
 /**
- * Transparent weights for the hero "livability lens". Exposed so the UI can
- * surface them and so a skeptical reader can sanity-check the formula.
+ * Public weights for the hero "livability lens". Aliased to the v2 blend so
+ * the UI and tests have one source of truth. The shape is the v2 5-component
+ * one (resilience / thermalComfort / hazardCushion / growability /
+ * precipModeration); legacy markup that pulled this in by name now consumes
+ * the same constants.
  */
-export const LIVABILITY_WEIGHTS = {
-  resilience: 0.34,
-  winterEase: 0.22,
-  summerEase: 0.18,
-  hazardEase: 0.14,
-  growability: 0.12,
-} as const;
-
-/** Penalty scales used by the hero ranking. Calibrated against the corpus. */
-export const LIVABILITY_PENALTIES = {
-  /** Each °C below 0 in mean Jan low subtracts this many points from winterEase. */
-  winterPerDegC: 4.5,
-  /** Threshold above which summerEase starts dropping (mean Jun–Aug high, °C). */
-  summerComfortHighC: 26,
-  /** Each °C above the threshold subtracts this many points. */
-  summerPerDegC: 5,
-  /** Each unit of avgRisk subtracts this many points from hazardEase. */
-  hazardPerRiskUnit: 14,
-} as const;
+export const LIVABILITY_WEIGHTS = LIVABILITY_BLEND_WEIGHTS;
 
 export type RankingProfile =
   | "live-fit"
@@ -64,38 +54,41 @@ export type RankingProfile =
 export interface RankingResult { place: Place; score: number; note?: string }
 
 /**
- * Fixed “livability lens” for the hero — **not** a hidden-gems or novelty sort.
- * Transparent weights so a skeptical reader can sanity-check the list.
- * Uses only fields already shown elsewhere in the atlas (resilience, risks, temps, growability).
+ * Fixed "livability lens" for the hero — **not** a hidden-gems or novelty sort.
+ * Defers the heavy lifting to ./livability-score, which computes a per-place
+ * 5-component breakdown (resilience, thermal comfort, hazard cushion,
+ * growability, precip moderation), blends it with published weights, and
+ * returns drivers/drags. We keep this wrapper so older call sites that only
+ * need `{ place, score, note }[]` (`RankingResult`) keep working.
+ *
+ * The `note` surfaces the top driver from the underlying breakdown so the
+ * sorted list reads like a quick rationale rather than a bare integer.
  */
 export function rankLivabilityPreview(pool: Place[]): RankingResult[] {
   if (pool.length === 0) return [];
-  const w = LIVABILITY_WEIGHTS;
-  const pen = LIVABILITY_PENALTIES;
-  const scored: RankingResult[] = pool.map(p => {
-    const resilience = p.scores.resilience;
-    const grow = p.scores.growability;
-    const risk = avgRisk(p);
-    const jh = meanSummerHigh(p);
-    const jl = meanJanLow(p);
-    const winterEase = Math.max(0, 100 - Math.max(0, -jl) * pen.winterPerDegC);
-    const summerEase = Math.max(0, 100 - Math.max(0, jh - pen.summerComfortHighC) * pen.summerPerDegC);
-    const hazardEase = Math.max(0, 100 - risk * pen.hazardPerRiskUnit);
-    const s =
-      w.resilience * resilience +
-      w.winterEase * winterEase +
-      w.summerEase * summerEase +
-      w.hazardEase * hazardEase +
-      w.growability * grow;
-    const rounded = Math.round(Math.max(0, Math.min(100, s)));
-    return {
-      place: p,
-      score: rounded,
-      note: `Resilience ${resilience} · hazard cushion ${Math.round(hazardEase)}`,
-    };
-  });
-  return scored.sort((a, b) => b.score - a.score);
+  const detailed = rankLivabilityWithBreakdown(pool);
+  return detailed.map(r => ({
+    place: r.place,
+    score: r.score,
+    note: liveabilityNoteFromResult(r),
+  }));
 }
+
+function liveabilityNoteFromResult(r: LivabilityResult): string {
+  const sorted = [...r.components].sort((a, b) => b.value - a.value);
+  const top = sorted[0];
+  const drag = [...r.components].sort((a, b) => a.value - b.value)[0];
+  if (!top) return `Livability blend ${r.score}/100`;
+  if (drag && drag.value < 55 && drag.key !== top.key) {
+    return `${top.label} ${Math.round(top.value)} · ${drag.label} ${Math.round(drag.value)}`;
+  }
+  return `${top.label} ${Math.round(top.value)}/100`;
+}
+
+// Re-export so consumers that already import from scoring.ts can opt into the
+// richer per-place breakdown without learning a second module path.
+export { rankLivabilityWithBreakdown, scoreLivability, livabilityPercentiles, LIVABILITY_BLEND_WEIGHTS } from "./livability-score";
+export type { LivabilityResult, LivabilityComponent } from "./livability-score";
 
 /**
  * Tunables for the secondary ranking profiles. Each value here is documented

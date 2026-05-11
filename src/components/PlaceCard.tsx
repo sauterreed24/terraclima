@@ -9,6 +9,7 @@ import { getBestMonths, type BestWindow } from "../lib/best-months";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { ArrowRight } from "lucide-react";
+import { BookmarkButton } from "./BookmarkButton";
 
 interface Props {
   place: Place;
@@ -20,6 +21,10 @@ interface Props {
   onClick?: () => void;
   onCompareToggle?: (id: string) => void;
   inCompare?: boolean;
+  /** Whether this place is bookmarked. Card shows a filled pin icon when true. */
+  bookmarked?: boolean;
+  /** Toggle bookmark for this place id. Omit to hide the pin control. */
+  onBookmarkToggle?: (id: string) => void;
   compact?: boolean;
   /**
    * Best-month window id that the active ranking profile resonates with.
@@ -63,7 +68,7 @@ const TONE_RGB: Record<string, string> = {
  * the interactive render budget dramatically on low-spec hardware.
  */
 export const PlaceCard = memo(function PlaceCard({
-  place, selected, note, onOpenPlace, onClick, onCompareToggle, inCompare, compact, resonantWindow, liveFitFilters, rank, rankingLabel, rankingScore,
+  place, selected, note, onOpenPlace, onClick, onCompareToggle, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, rank, rankingLabel, rankingScore,
 }: Props) {
   const titleId = useId();
   const rankId = useId();
@@ -105,6 +110,10 @@ export const PlaceCard = memo(function PlaceCard({
     e.stopPropagation();
     onCompareToggle?.(place.id);
   }, [onCompareToggle, place.id]);
+
+  const handleBookmark = useCallback(() => {
+    onBookmarkToggle?.(place.id);
+  }, [onBookmarkToggle, place.id]);
 
   /*
    * Layout note: previously the whole card was a `div[role=button]` so the
@@ -174,8 +183,8 @@ export const PlaceCard = memo(function PlaceCard({
           </div>
           <div className="flex flex-col items-end gap-1.5 shrink-0">
             <span className="chip" data-tone={place.tier === "A" ? "ochre" : place.tier === "B" ? "ice" : "sage"} title={`Tier ${place.tier}`}>{tierLabel}</span>
-            {/* Spacer to reserve room next to the tier chip so the absolutely-positioned compare button doesn't overlap content. */}
-            {onCompareToggle ? <span className="place-card__compare-spacer" aria-hidden /> : null}
+            {/* Spacer to reserve room next to the tier chip so the absolutely-positioned compare/bookmark buttons don't overlap content. */}
+            {(onCompareToggle || onBookmarkToggle) ? <span className="place-card__compare-spacer" aria-hidden /> : null}
           </div>
         </header>
 
@@ -256,6 +265,15 @@ export const PlaceCard = memo(function PlaceCard({
 
         {note && <div className="text-xs text-stone-readable italic pt-2 border-t border-[rgba(71,90,122,0.1)] mt-2">{prose(note)}</div>}
       </button>
+
+      {onBookmarkToggle && (
+        <BookmarkButton
+          pinned={Boolean(bookmarked)}
+          placeName={place.name}
+          onToggle={handleBookmark}
+          className="place-card__bookmark-btn"
+        />
+      )}
 
       {onCompareToggle && (
         <button

@@ -1,24 +1,46 @@
 import { describe, it, expect } from "vitest";
 import {
-  LIVABILITY_PENALTIES,
+  LIVABILITY_BLEND_WEIGHTS,
   LIVABILITY_WEIGHTS,
   RANKING_PARAMS,
   rankLivabilityPreview,
   rankPlaces,
 } from "../scoring";
+import { HAZARD_CUSHION, PRECIP_MODERATION, THERMAL_COMFORT } from "../livability-score";
 import { makeClimate, makePlace } from "./test-fixtures";
 
 describe("scoring constants", () => {
-  it("LIVABILITY_WEIGHTS sums to 1.0", () => {
-    const w = LIVABILITY_WEIGHTS;
-    const sum = w.resilience + w.winterEase + w.summerEase + w.hazardEase + w.growability;
+  it("LIVABILITY_WEIGHTS aliases LIVABILITY_BLEND_WEIGHTS", () => {
+    expect(LIVABILITY_WEIGHTS).toBe(LIVABILITY_BLEND_WEIGHTS);
+  });
+
+  it("LIVABILITY_BLEND_WEIGHTS (v2) sums to 1.0", () => {
+    const w = LIVABILITY_BLEND_WEIGHTS;
+    const sum = w.resilience + w.thermalComfort + w.hazardCushion + w.growability + w.precipModeration;
     expect(sum).toBeCloseTo(1.0, 6);
   });
 
-  it("livability penalties are positive (no accidental sign flips)", () => {
-    expect(LIVABILITY_PENALTIES.winterPerDegC).toBeGreaterThan(0);
-    expect(LIVABILITY_PENALTIES.summerPerDegC).toBeGreaterThan(0);
-    expect(LIVABILITY_PENALTIES.hazardPerRiskUnit).toBeGreaterThan(0);
+  it("thermal-comfort plateau is ordered & slopes are positive", () => {
+    expect(THERMAL_COMFORT.summerPlateauC[0]).toBeLessThan(THERMAL_COMFORT.summerPlateauC[1]);
+    expect(THERMAL_COMFORT.winterPlateauC[0]).toBeLessThan(THERMAL_COMFORT.winterPlateauC[1]);
+    expect(THERMAL_COMFORT.summerPerDegHotC).toBeGreaterThan(0);
+    expect(THERMAL_COMFORT.summerPerDegCoolC).toBeGreaterThan(0);
+    expect(THERMAL_COMFORT.winterPerDegColdC).toBeGreaterThan(0);
+    expect(THERMAL_COMFORT.winterPerDegWarmC).toBeGreaterThan(0);
+    // Sanity: cold-side slope is harsher than warm-winter slope.
+    expect(THERMAL_COMFORT.winterPerDegColdC).toBeGreaterThan(THERMAL_COMFORT.winterPerDegWarmC);
+  });
+
+  it("hazard cushion blends mean and max with sensible weight bounds", () => {
+    expect(HAZARD_CUSHION.meanWeight).toBeGreaterThan(0);
+    expect(HAZARD_CUSHION.meanWeight).toBeLessThan(1);
+    expect(HAZARD_CUSHION.maxPerUnit).toBeGreaterThanOrEqual(HAZARD_CUSHION.meanPerUnit);
+  });
+
+  it("precip moderation plateau is ordered", () => {
+    expect(PRECIP_MODERATION.plateauMm[0]).toBeLessThan(PRECIP_MODERATION.plateauMm[1]);
+    expect(PRECIP_MODERATION.floorMm).toBeLessThan(PRECIP_MODERATION.plateauMm[0]);
+    expect(PRECIP_MODERATION.ceilingMm).toBeGreaterThan(PRECIP_MODERATION.plateauMm[1]);
   });
 
   it("Csb gets a larger Mediterranean bonus than Csa (F3)", () => {
