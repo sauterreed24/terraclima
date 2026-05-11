@@ -477,6 +477,37 @@ function localizeDistanceProse(text: string): string {
     return `${formatUSNumber(v * 0.621371, v < 10 ? 1 : 0)} mph`;
   });
 
+  // Metric ranges with one trailing unit: "300 to 700 mm", "5–10 km",
+  // "20-40 cm". Convert both endpoints before the single-unit passes so the
+  // first number cannot be orphaned or reversed in localized UI summaries.
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*km\b(?!\/)/gi,
+    (_m, n1: string, sep: string, n2: string) => {
+      const v1 = parseLooseNum(n1) * 0.621371;
+      const v2 = parseLooseNum(n2) * 0.621371;
+      const digits = Math.max(v1, v2) < 10 ? 1 : 0;
+      return `${formatUSNumber(v1, digits)}${sep === "to" ? " to " : sep}${formatUSNumber(v2, digits)} mi`;
+    }
+  );
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*mm\b(?![a-zA-Z])/gi,
+    (_m, n1: string, sep: string, n2: string) => {
+      const v1 = parseLooseNum(n1) / 25.4;
+      const v2 = parseLooseNum(n2) / 25.4;
+      const digits = Math.max(v1, v2) < 10 ? 1 : 0;
+      return `${formatUSNumber(v1, digits)}${sep === "to" ? " to " : sep}${formatUSNumber(v2, digits)} in`;
+    }
+  );
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*cm\b(?![a-zA-Z])/gi,
+    (_m, n1: string, sep: string, n2: string) => {
+      const v1 = parseLooseNum(n1) / 2.54;
+      const v2 = parseLooseNum(n2) / 2.54;
+      const digits = Math.max(v1, v2) < 10 ? 1 : 0;
+      return `${formatUSNumber(v1, digits)}${sep === "to" ? " to " : sep}${formatUSNumber(v2, digits)} in`;
+    }
+  );
+
   // Bare "N km" (word-bounded, not immediately followed by "/" as in km/h which
   // is already handled above).
   text = text.replace(/(\d+(?:[,.]\d+)?)\s*km\b(?!\/)/g, (_m, n: string) => {

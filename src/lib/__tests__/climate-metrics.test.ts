@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
+  annualComfortMonthCount,
+  annualUsableMonthCount,
   avgRisk,
   getAnnualPrecipMm,
   meanAnnualHumidityPct,
@@ -7,7 +9,9 @@ import {
   meanJanLow,
   meanSummerHigh,
   meanSummerHumidityPct,
+  monthlyUsabilityScore,
   RISK_VALUE,
+  seasonalUsabilityScore,
   summerDiurnalC,
 } from "../climate-metrics";
 import { makePlace, makeClimate } from "./test-fixtures";
@@ -78,5 +82,51 @@ describe("climate-metrics", () => {
     expect(meanAnnualHumidityPct(missing)).toBeNull();
     expect(meanSummerHumidityPct(missing)).toBeNull();
     expect(meanAnnualSunshinePct(missing)).toBeNull();
+  });
+
+  it("scores monthly usability from day comfort, sleep comfort, and precip burden", () => {
+    const easy = makePlace({
+      climate: makeClimate({
+        tempHighC: [22,22,22,22,22,22,22,22,22,22,22,22],
+        tempLowC: [12,12,12,12,12,12,12,12,12,12,12,12],
+        precipMm: [40,40,40,40,40,40,40,40,40,40,40,40],
+        snowCm: [0,0,0,0,0,0,0,0,0,0,0,0],
+      }),
+    });
+    const wetSnowy = makePlace({
+      climate: makeClimate({
+        tempHighC: [22,22,22,22,22,22,22,22,22,22,22,22],
+        tempLowC: [12,12,12,12,12,12,12,12,12,12,12,12],
+        precipMm: [260,260,260,260,260,260,260,260,260,260,260,260],
+        snowCm: [40,40,40,40,40,40,40,40,40,40,40,40],
+      }),
+    });
+
+    expect(monthlyUsabilityScore(easy, 0)).toBe(100);
+    expect(monthlyUsabilityScore(wetSnowy, 0)).toBeLessThan(monthlyUsabilityScore(easy, 0));
+  });
+
+  it("counts year-round comfort months instead of only peak season comfort", () => {
+    const yearRound = makePlace({
+      climate: makeClimate({
+        tempHighC: [22,22,22,22,22,22,22,22,22,22,22,22],
+        tempLowC: [12,12,12,12,12,12,12,12,12,12,12,12],
+        precipMm: [40,40,40,40,40,40,40,40,40,40,40,40],
+        snowCm: [0,0,0,0,0,0,0,0,0,0,0,0],
+      }),
+    });
+    const oneSeason = makePlace({
+      climate: makeClimate({
+        tempHighC: [-8,-4,2,10,18,24,26,24,16,8,0,-6],
+        tempLowC: [-22,-18,-12,-4,4,10,12,10,5,-2,-10,-20],
+        precipMm: [40,40,40,40,40,40,40,40,40,40,40,40],
+        snowCm: [25,20,10,4,0,0,0,0,0,4,14,24],
+      }),
+    });
+
+    expect(annualComfortMonthCount(yearRound)).toBe(12);
+    expect(annualUsableMonthCount(yearRound)).toBe(12);
+    expect(annualComfortMonthCount(oneSeason)).toBeLessThan(annualComfortMonthCount(yearRound));
+    expect(seasonalUsabilityScore(oneSeason)).toBeLessThan(seasonalUsabilityScore(yearRound));
   });
 });

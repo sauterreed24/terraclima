@@ -61,4 +61,30 @@ describe("live-fit scoring", () => {
     expect(ranked[0].place.id).toBe("garden-town");
     expect(ranked[0].note).toContain("live-here fit");
   });
+
+  it("rewards a longer livable season when peak-season temperatures tie", () => {
+    const longSeason = makePlace({
+      id: "long-season",
+      climate: makeClimate({
+        tempHighC: [22,22,22,22,22,22,22,22,22,22,22,22] as Monthly12,
+        tempLowC: [12,12,12,12,12,12,12,12,12,12,12,12] as Monthly12,
+        precipMm: [45,45,45,45,45,45,45,45,45,45,45,45] as Monthly12,
+        snowCm: [0,0,0,0,0,0,0,0,0,0,0,0] as Monthly12,
+      }),
+    });
+    const narrowSeason = makePlace({
+      id: "narrow-season",
+      climate: makeClimate({
+        tempHighC: [22,22,2,6,10,22,22,22,10,6,2,22] as Monthly12,
+        tempLowC: [12,12,-10,-6,0,12,12,12,0,-6,-10,12] as Monthly12,
+        precipMm: [45,45,45,45,45,45,45,45,45,45,45,45] as Monthly12,
+        snowCm: [0,0,8,4,0,0,0,0,0,4,8,0] as Monthly12,
+      }),
+    });
+
+    const ranked = rankLiveFit([narrowSeason, longSeason]);
+
+    expect(ranked[0].place.id).toBe("long-season");
+    expect(assessLiveFit(longSeason).badges).toContain("Long season");
+  });
 });

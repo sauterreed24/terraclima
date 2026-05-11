@@ -56,7 +56,7 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 - **Recently viewed rail:** The Explorer hero remembers the last ten place profiles you opened on this device so you can resume scouting without losing context.
 - **Print-friendly profiles:** Open a place profile and choose your browser's Print to get a paperboard-ready brief (atlas chrome, controls, and overlays are hidden by the print stylesheet).
 - **Reading progress:** Place profiles show a thin progress bar at the top of the panel and a back-to-top button after deep scrolling.
-- **Livability lens v2:** The hero "Livability blend" score now uses a bidirectional thermal-comfort plateau (humidity-aware, with diurnal recovery credit), a tail-risk-aware hazard cushion (60% mean-of-9 + 40% max-of-9), and a U-shaped precipitation moderation curve. Per-component breakdowns appear inside every place profile so you can see why a place ranked where it did. See [`src/lib/livability-score.ts`](src/lib/livability-score.ts).
+- **Livability lens v2:** The hero "Livability blend" score now uses felt comfort: a bidirectional thermal-comfort plateau, year-round usable-month runway, sky/dampness adjustment, and curated corpus comfort anchor, plus a tail-risk-aware hazard cushion (60% mean-of-9 + 40% max-of-9) and a U-shaped precipitation moderation curve. Per-component breakdowns appear inside every place profile so you can see why a place ranked where it did. See [`src/lib/livability-score.ts`](src/lib/livability-score.ts).
 
 ## Public Release Posture
 
@@ -83,7 +83,7 @@ Terraclima combines editorial research with deterministic analysis. The app does
 
 - **Typed climate schema:** `src/types.ts` models climate normals, soils, growability, hazards, citations, field notes, local contrasts, deep profile sections, and derived geospatial context.
 - **Explainable scoring:** `src/lib/scoring.ts`, `src/lib/geospatial-analysis.ts`, and `src/lib/atlas-corpus-stats.ts` keep rankings and derived scores transparent, deterministic, and testable.
-- **Shortlist synthesis:** `src/lib/explorer-scout-brief.ts` turns the active Explorer ranking into a deterministic field brief: best current match, leader rationale, climate/risk spread, dominant microclimate family, and compare-ready leader IDs.
+- **Shortlist synthesis:** `src/lib/explorer-scout-brief.ts` turns the active Explorer ranking into a deterministic field brief: best current match, leader rationale, easy-month runway, climate/risk spread, dominant microclimate family, and compare-ready leader IDs.
 - **Practical corpus synthesis:** `src/lib/practical-read.ts` turns existing typed fields into stable, non-market user guidance for agriculture, spatial analysis, homes and land, activities, settlements, and nearby contrasts.
 - **Climate tourism synthesis:** `src/lib/climate-tourism.ts` derives trip windows, scouting itineraries, static lodging cues, habitat reads, and caveated tourism / climate-land scores from the typed corpus, with cached per-place profiles for repeated UI reads.
 - **Validation built into the project:** `scripts/sanity-check.ts`, `scripts/audit-corpus.ts`, `scripts/test-prose.ts`, and `scripts/corpus-rank-gold.ts` catch malformed data, unit/prose regressions, corpus drift, and rank instability.

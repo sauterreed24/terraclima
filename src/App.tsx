@@ -1415,13 +1415,13 @@ const HeroCard = memo(function HeroCard({
             </p>
             <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights (v2)">
               <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
-              <span className="livability-weight-pill" title="Bidirectional plateau (18..26°C summer, −4..+12°C winter) with humidity tax and diurnal recovery credit.">Thermal comfort {Math.round(LIVABILITY_WEIGHTS.thermalComfort * 100)}%</span>
+              <span className="livability-weight-pill" title="Blends the thermal plateau, year-round usable-month runway, sky/dampness, and curated comfort.">Felt comfort {Math.round(LIVABILITY_WEIGHTS.thermalComfort * 100)}%</span>
               <span className="livability-weight-pill" title="0.6 × mean-of-9 + 0.4 × max-of-9 — surfaces tail risk that an averaged hazard score would hide.">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardCushion * 100)}%</span>
               <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
               <span className="livability-weight-pill" title="U-shaped penalty: full marks 700..1500 mm/yr; both arid (<300) and saturated (>2500) reduce the score.">Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
             </div>
             <p className="hidden min-[1400px]:block mt-1.5 text-[10px] text-stone-readable/85 italic">
-              v2 livability lens — bidirectional thermal plateau, tail-risk-aware hazard cushion, U-shaped precip moderation. Editorial triage for exploration, not appraisal or medical heat-stress advice.
+              v2 livability lens — felt comfort, year-round usable-month runway, tail-risk-aware hazard cushion, U-shaped precip moderation. Editorial triage for exploration, not appraisal or medical heat-stress advice.
             </p>
           </div>
           <div
@@ -1642,7 +1642,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
           {brief.metrics.map(metric => (
             <div key={metric.label} className="scout-brief__metric" title={metric.detail}>
               <span className="scout-brief__metric-label">{metric.label}</span>
-              <span className="scout-brief__metric-value">{metric.value}</span>
+              <span className="scout-brief__metric-value">{prose(metric.value)}</span>
             </div>
           ))}
         </div>
@@ -1711,7 +1711,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
         {brief.metrics.slice(0, 4).map(metric => (
           <div key={metric.label} className="desktop-scout-board__metric" title={metric.detail}>
             <span className="desktop-scout-board__metric-label">{metric.label}</span>
-            <span className="desktop-scout-board__metric-value">{metric.value}</span>
+            <span className="desktop-scout-board__metric-value">{prose(metric.value)}</span>
           </div>
         ))}
       </div>
