@@ -311,7 +311,11 @@ export default function App() {
     if (opening) {
       pushAppUrl({ tcPlace: true }, state);
     } else {
-      replaceAppUrl(selectedId ? { tcPlace: true } : null, state);
+      const st = window.history.state as AppHistoryState | null;
+      // Only preserve tcPlace on replace when this history entry was already
+      // created by pushAppUrl (in-app open). Adding tcPlace here on a deep-link
+      // load would make closeDetail call history.back() and leave the site.
+      replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
   }, [view, selectedId, activeCollection, filters, compareIds, ranking]);

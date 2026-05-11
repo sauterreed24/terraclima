@@ -199,4 +199,24 @@ describe("App shell", () => {
     expect(screen.getByText(/Recently viewed · 1/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Open Sequim \(recently viewed\)/ })).toBeInTheDocument();
   }, 15000);
+
+  it("does not set tcPlace on history when URL sync runs after a deep-linked place (regression)", async () => {
+    window.history.replaceState(null, "", "/?p=sequim-wa");
+    renderApp();
+
+    await screen.findByRole("button", { name: "Close profile" }, { timeout: 15000 });
+
+    expect((window.history.state as { tcPlace?: boolean } | null)?.tcPlace).toBeFalsy();
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]);
+    await screen.findByLabelText("Search places by name, region, or archetype", { timeout: 15000 });
+
+    fireEvent.click(screen.getAllByRole("button", { name: "USA" })[0]);
+
+    await waitFor(() => {
+      expect(window.location.search).toMatch(/c=USA/);
+    }, { timeout: 15000 });
+
+    expect((window.history.state as { tcPlace?: boolean } | null)?.tcPlace).toBeFalsy();
+  }, 20000);
 });
