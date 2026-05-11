@@ -92,6 +92,25 @@ describe("App shell", () => {
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
   }, 15000);
 
+  it("copies the current Explorer URL for sharing", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+    window.history.replaceState(null, "", "/?q=monterey&r=live-fit");
+
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Copy current Explorer view" }));
+
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const copied = new URL(writeText.mock.calls[0][0] as string);
+    expect(copied.searchParams.get("q")).toBe("monterey");
+    expect(copied.searchParams.get("r")).toBe("live-fit");
+    expect(await screen.findByText("Link copied")).toBeInTheDocument();
+  }, 15000);
+
   it("opens compare immediately for shared URLs with two or more valid places", async () => {
     window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa");
 
