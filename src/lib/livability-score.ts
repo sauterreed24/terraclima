@@ -27,6 +27,12 @@
 //   buildings recover from peak heat. Up to +8 pts of credit gets
 //   added back to the summer comfort sub-score when diurnal > 8°C.
 //
+// • **Felt comfort, not means-only comfort.** The livability blend now
+//   uses a felt-comfort component that mixes summer/winter envelope,
+//   sunshine/fog/dampness, and the curated corpus comfort score. This
+//   prevents thermally mild summit, rain-forest, and fog-belt entries
+//   from ranking as more comfortable than they feel on the ground.
+//
 // • **Tail-risk-aware hazard cushion.** Most places sit on a
 //   reasonable risk floor; livability is dominated by tail axes (one
 //   high-fire site is concerning even when the other eight axes look
@@ -49,7 +55,17 @@
 // surfaces that caveat.
 
 import type { Place } from "../types";
-import { avgRisk, meanJanLow, meanSummerHigh, summerDiurnalC, getAnnualPrecipMm, RISK_VALUE } from "./climate-metrics";
+import {
+  avgRisk,
+  getAnnualPrecipMm,
+  meanAnnualHumidityPct,
+  meanAnnualSunshinePct,
+  meanJanLow,
+  meanSummerHigh,
+  meanSummerHumidityPct,
+  RISK_VALUE,
+  summerDiurnalC,
+} from "./climate-metrics";
 
 const RISK_KEYS = [
   "wildfire",
@@ -85,6 +101,22 @@ export const THERMAL_COMFORT = {
   humidityComfortFloorPct: 50,
   humidityHeatThresholdC: 22,
   humidityPerPct: 0.6,
+} as const;
+
+/** Sky / dampness modifiers for lived comfort, independent from mean temperature. */
+export const SKY_COMFORT = {
+  /** Atlas-neutral value when sunshine and humidity are missing. */
+  missingDataNeutral: 72,
+  /** US-like annual sunshine baseline; values above lift, below drag. */
+  annualSunBaselinePct: 58,
+  sunshinePerPct: 1.35,
+  /** Summer humidity above this, paired with small diurnal range, suggests fog/marine-layer drag. */
+  summerFogHumidityPct: 72,
+  fogDiurnalCeilingC: 12,
+  fogPenaltyMaxPts: 28,
+  /** High-precip climates can be thermally mild but damp, dark, and mold-prone. */
+  dampPrecipStartMm: 1800,
+  dampPrecipPenaltyMaxPts: 18,
 } as const;
 
 /** Hazard cushion blending. */
@@ -152,7 +184,7 @@ export interface LivabilityResult {
 
 const COMPONENT_LABEL: Record<ComponentKey, string> = {
   resilience: "Climate resilience",
-  thermalComfort: "Thermal comfort",
+  thermalComfort: "Felt comfort",
   hazardCushion: "Hazard cushion",
   growability: "Growability",
   precipModeration: "Precip moderation",
@@ -206,6 +238,55 @@ export function thermalComfortScore(p: Place): number {
   return (summerComfortScore(p) + winterComfortScore(p)) / 2;
 }
 
+/**
+ * Sky comfort catches a gap in pure high/low scoring: foggy, dark, or very
+ * damp places can look perfect thermally while feeling less comfortable to
+ * live in. Missing sky data stays neutral rather than punitive.
+ */
+export function skyComfortScore(p: Place): number {
+  const annualSun = meanAnnualSunshinePct(p);
+  const annualHumidity = meanAnnualHumidityPct(p);
+  const summerHumidity = meanSummerHumidityPct(p);
+  const diurnal = summerDiurnalC(p);
+  const annualPrecip = getAnnualPrecipMm(p);
+  let score = annualSun == null
+    ? SKY_COMFORT.missingDataNeutral
+    : clamp(50 + (annualSun - SKY_COMFORT.annualSunBaselinePct) * SKY_COMFORT.sunshinePerPct);
+
+  if (summerHumidity != null && summerHumidity > SKY_COMFORT.summerFogHumidityPct && diurnal < SKY_COMFORT.fogDiurnalCeilingC) {
+    score -= Math.min(
+      SKY_COMFORT.fogPenaltyMaxPts,
+      (summerHumidity - SKY_COMFORT.summerFogHumidityPct) * 0.75 +
+        (SKY_COMFORT.fogDiurnalCeilingC - diurnal) * 1.1,
+    );
+  } else if (annualHumidity != null && annualHumidity > 78 && diurnal < 10) {
+    score -= Math.min(16, (annualHumidity - 78) * 0.45 + (10 - diurnal) * 0.8);
+  }
+
+  if (annualPrecip > SKY_COMFORT.dampPrecipStartMm) {
+    score -= Math.min(
+      SKY_COMFORT.dampPrecipPenaltyMaxPts,
+      (annualPrecip - SKY_COMFORT.dampPrecipStartMm) / 95,
+    );
+  }
+
+  return clamp(score);
+}
+
+/**
+ * Final comfort signal used by livability ranking. It blends the objective
+ * high/low envelope, sky/dampness, and the curated corpus comfort score so
+ * summit, fog-belt, rain-forest, and arctic entries do not receive inflated
+ * "comfortable" reads from temperature averages alone.
+ */
+export function feltComfortScore(p: Place): number {
+  return clamp(
+    thermalComfortScore(p) * 0.56 +
+    clamp(p.scores.comfort) * 0.30 +
+    skyComfortScore(p) * 0.14,
+  );
+}
+
 /** Maximum risk value across the nine axes. 0..5. */
 export function maxRisk(p: Place): number {
   let max = 0;
@@ -250,7 +331,7 @@ function makeRationale(p: Place, key: ComponentKey, value: number): string {
     case "thermalComfort": {
       const sh = meanSummerHigh(p);
       const jl = meanJanLow(p);
-      return `Summer high ${sh.toFixed(1)}°C · winter low ${jl.toFixed(1)}°C → comfort ${Math.round(value)}/100`;
+      return `Summer ${sh.toFixed(1)}°C · winter ${jl.toFixed(1)}°C · sky ${Math.round(skyComfortScore(p))}/100 · curator ${Math.round(p.scores.comfort)}/100 → felt comfort ${Math.round(value)}/100`;
     }
     case "hazardCushion":
       return `Risk: mean ${avgRisk(p).toFixed(2)} · max ${maxRisk(p).toFixed(0)}/5 → cushion ${Math.round(value)}/100`;
@@ -279,7 +360,7 @@ export function scoreLivability(p: Place): LivabilityResult {
   const w = LIVABILITY_BLEND_WEIGHTS;
   const values: Record<ComponentKey, number> = {
     resilience: clamp(p.scores.resilience),
-    thermalComfort: thermalComfortScore(p),
+    thermalComfort: feltComfortScore(p),
     hazardCushion: hazardCushionScore(p),
     growability: clamp(p.scores.growability),
     precipModeration: precipModerationScore(p),

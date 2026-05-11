@@ -1,5 +1,6 @@
 import type { Place, RiskLevel } from "../types";
 import { avgRisk, meanJanLow, meanSummerHigh, RISK_VALUE } from "./climate-metrics";
+import { feltComfortScore } from "./livability-score";
 
 export type LiveFitPresetId =
   | "cool-summers"
@@ -96,18 +97,18 @@ export const LIVE_FIT_PRESET_BY_ID: Record<LiveFitPresetId, LiveFitPreset> =
   Object.fromEntries(LIVE_FIT_PRESETS.map(p => [p.id, p])) as Record<LiveFitPresetId, LiveFitPreset>;
 
 export const LIVE_FIT_SUMMER_CAPS_C = [22, 26] as const;
-export const LIVE_FIT_WINTER_FLOORS_C = [-5, 0] as const;
+export const LIVE_FIT_WINTER_FLOORS_C = [-5, 0, 2] as const;
 export const LIVE_FIT_GROWABILITY_FLOORS = [65, 75] as const;
 export const LIVE_FIT_RISK_CEILINGS = ["low", "moderate", "elevated"] as const satisfies readonly RiskLevel[];
 
 const LIVE_FIT_DEFAULT_WEIGHTS = {
-  comfort: 0.18,
-  resilience: 0.19,
-  uniqueness: 0.15,
+  feltComfort: 0.27,
+  resilience: 0.18,
+  uniqueness: 0.14,
   growability: 0.13,
-  hazardEase: 0.11,
+  hazardEase: 0.12,
   hiddenGem: 0.08,
-  sunshine: 0.16,   // research: sunshine is the most underweighted factor in commercial indices; ~25% of wellbeing impact per PMC12272345
+  sunshine: 0.08,
 } as const;
 
 function clamp100(n: number): number {
@@ -238,7 +239,7 @@ function defaultLiveScore(place: Place): number {
   const hazardEase = clamp100(100 - avgRisk(place) * 16);
   const w = LIVE_FIT_DEFAULT_WEIGHTS;
   return Math.round(clamp100(
-    place.scores.comfort * w.comfort +
+    feltComfortScore(place) * w.feltComfort +
     place.scores.resilience * w.resilience +
     place.scores.microclimateUniqueness * w.uniqueness +
     place.scores.growability * w.growability +

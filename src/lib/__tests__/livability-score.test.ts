@@ -2,12 +2,14 @@ import { describe, it, expect } from "vitest";
 import {
   LIVABILITY_BLEND_WEIGHTS,
   PRECIP_MODERATION,
+  feltComfortScore,
   hazardCushionScore,
   livabilityPercentiles,
   maxRisk,
   precipModerationScore,
   rankLivabilityWithBreakdown,
   scoreLivability,
+  skyComfortScore,
   summerComfortScore,
   thermalComfortScore,
   winterComfortScore,
@@ -122,6 +124,36 @@ describe("thermalComfortScore", () => {
     const s = summerComfortScore(p);
     const w = winterComfortScore(p);
     expect(thermalComfortScore(p)).toBeCloseTo((s + w) / 2, 6);
+  });
+});
+
+describe("skyComfortScore + feltComfortScore", () => {
+  it("penalises foggy, low-diurnal summer dampness against otherwise mild thermal scores", () => {
+    const bright = makePlace({
+      climate: uniformClimate({ high: 21, low: 12, humidity: 45, diurnalSummerC: 14, precipMm: Array(12).fill(45) as unknown as Monthly12 }),
+    });
+    const foggy = makePlace({
+      climate: uniformClimate({ high: 21, low: 12, humidity: 86, diurnalSummerC: 6, precipMm: Array(12).fill(220) as unknown as Monthly12 }),
+    });
+
+    expect(thermalComfortScore(foggy)).toBeCloseTo(thermalComfortScore(bright), 0);
+    expect(skyComfortScore(foggy)).toBeLessThan(skyComfortScore(bright));
+    expect(feltComfortScore(foggy)).toBeLessThan(feltComfortScore(bright));
+  });
+
+  it("uses the curated corpus comfort anchor when thermal averages alone are misleading", () => {
+    const easy = makePlace({
+      scores: { hiddenGem: 50, microclimateUniqueness: 50, comfort: 82, resilience: 70, growability: 70, tradeoff: 30 },
+      climate: uniformClimate({ high: 21, low: 3, humidity: 55, precipMm: Array(12).fill(65) as unknown as Monthly12 }),
+    });
+    const harshSummit = makePlace({
+      scores: { hiddenGem: 50, microclimateUniqueness: 90, comfort: 8, resilience: 60, growability: 12, tradeoff: 90 },
+      climate: uniformClimate({ high: 21, low: 3, humidity: 85, diurnalSummerC: 5, precipMm: Array(12).fill(190) as unknown as Monthly12 }),
+    });
+
+    expect(thermalComfortScore(harshSummit)).toBeCloseTo(thermalComfortScore(easy), 0);
+    expect(feltComfortScore(harshSummit)).toBeLessThan(thermalComfortScore(harshSummit));
+    expect(feltComfortScore(harshSummit)).toBeLessThan(feltComfortScore(easy));
   });
 });
 

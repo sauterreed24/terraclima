@@ -56,6 +56,24 @@ export function summerDiurnalC(p: Place): number {
   return p.climate.tempHighC[6] - p.climate.tempLowC[6];
 }
 
+export function meanAnnualHumidityPct(p: Place): number | null {
+  const humidity = p.climate.humidity;
+  if (!humidity) return null;
+  return humidity.reduce((sum, value) => sum + value, 0) / humidity.length;
+}
+
+export function meanSummerHumidityPct(p: Place): number | null {
+  const humidity = p.climate.humidity;
+  if (!humidity) return null;
+  return (humidity[5] + humidity[6] + humidity[7]) / 3;
+}
+
+export function meanAnnualSunshinePct(p: Place): number | null {
+  const sunshine = p.climate.sunshinePct;
+  if (!sunshine) return null;
+  return sunshine.reduce((sum, value) => sum + value, 0) / sunshine.length;
+}
+
 /**
  * Annual precipitation (mm) for a place. Uses authored value when present,
  * otherwise sums monthlies. Components and scoring should call this rather
