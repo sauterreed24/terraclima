@@ -20,7 +20,7 @@ function setCoarsePointer(matches: boolean) {
   }));
 }
 
-function renderMap(onSelect = vi.fn()) {
+function renderMap(onSelect = vi.fn(), featuredIds: readonly string[] = []) {
   return render(
     <UnitProvider>
       <AtlasMap
@@ -54,6 +54,7 @@ function renderMap(onSelect = vi.fn()) {
           makePlace({ id: "b", name: "Beta Ridge", lat: 41, lon: -101, tier: "B" }),
         ]}
         onSelect={onSelect}
+        featuredIds={featuredIds}
       />
     </UnitProvider>,
   );
@@ -125,5 +126,13 @@ describe("AtlasMap DOM controls", () => {
     fireEvent.click(marker);
 
     expect(onSelect).toHaveBeenCalledWith("a");
+  });
+
+  it("projects current ranked leaders onto the map as accessible halos", () => {
+    setCoarsePointer(false);
+    renderMap(vi.fn(), ["a", "b"]);
+
+    expect(screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Current rank #2\. Beta Ridge/ })).toBeInTheDocument();
   });
 });

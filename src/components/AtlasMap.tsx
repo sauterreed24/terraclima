@@ -93,6 +93,7 @@ interface Props {
   places: Place[];
   selectedId?: string;
   onSelect: (id: string) => void;
+  featuredIds?: readonly string[];
   width?: number;
   height?: number;
 }
@@ -144,8 +145,9 @@ function clampZoom(k: number): number {
   return Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, k));
 }
 
-function pinLayoutPriority(place: Place, selectedId: string | undefined): number {
+function pinLayoutPriority(place: Place, selectedId: string | undefined, featuredRank?: number): number {
   if (place.id === selectedId) return 100;
+  if (featuredRank) return 28 - featuredRank;
   const tierPriority = place.tier === "A" ? 8 : place.tier === "B" ? 4 : 1;
   return tierPriority + Math.max(0, 2 - place.name.length / 24);
 }
@@ -214,6 +216,7 @@ export function AtlasMap({
   places,
   selectedId,
   onSelect,
+  featuredIds = [],
   width: widthProp = 820,
   height: heightProp = 520,
 }: Props) {
@@ -610,6 +613,14 @@ export function AtlasMap({
     [pts, hoverId]
   );
 
+  const featuredRankById = useMemo(() => {
+    const rankById = new Map<string, number>();
+    featuredIds.slice(0, 5).forEach((id, index) => {
+      if (!rankById.has(id)) rankById.set(id, index + 1);
+    });
+    return rankById;
+  }, [featuredIds]);
+
   const clusterSourcePoints = useMemo(
     () => pts.map(pt => ({ ...pt, id: pt.place.id })),
     [pts],
@@ -619,8 +630,9 @@ export function AtlasMap({
     const ids = new Set<string>();
     if (selectedId) ids.add(selectedId);
     if (hoverId) ids.add(hoverId);
+    for (const id of featuredRankById.keys()) ids.add(id);
     return ids;
-  }, [selectedId, hoverId]);
+  }, [selectedId, hoverId, featuredRankById]);
 
   const clusterEnabled =
     coarsePointer &&
@@ -671,7 +683,7 @@ export function AtlasMap({
     const layout = layoutAtlasMapPins(
       markerPoints.map(pt => ({
         ...pt,
-        priority: pinLayoutPriority(pt.place, selectedId),
+        priority: pinLayoutPriority(pt.place, selectedId, featuredRankById.get(pt.place.id)),
         locked: pt.place.id === selectedId,
       })),
       {
@@ -694,7 +706,7 @@ export function AtlasMap({
       needsLeader: pin.needsLeader,
       crowded: pin.crowded,
     }));
-  }, [markerPoints, settledView, coarsePointer, selectedId]);
+  }, [markerPoints, settledView, coarsePointer, selectedId, featuredRankById]);
 
   const pinLabelModes = useMemo(
     () => computePinLabelModes(laidOutMarkerPoints, settledView.k, selectedId, hoverId),
@@ -713,17 +725,20 @@ export function AtlasMap({
    */
   const markerRenderOrder = useMemo(() => {
     const base: RenderedClusterPoint[] = [];
+    const featured: RenderedClusterPoint[] = [];
     let hover: RenderedClusterPoint | null = null;
     let selected: RenderedClusterPoint | null = null;
     for (const pt of laidOutMarkerPoints) {
       if (pt.place.id === selectedId) selected = pt;
       else if (pt.place.id === hoverId) hover = pt;
+      else if (featuredRankById.has(pt.place.id)) featured.push(pt);
       else base.push(pt);
     }
+    base.push(...featured);
     if (hover) base.push(hover);
     if (selected) base.push(selected);
     return base;
-  }, [laidOutMarkerPoints, selectedId, hoverId]);
+  }, [laidOutMarkerPoints, selectedId, hoverId, featuredRankById]);
 
   // Markers call `onSelect` directly. Do not gate on `dragRef.moved`: marker
   // `pointerdown` stops propagation so the map never resets `moved` after a
@@ -1519,6 +1534,7 @@ export function AtlasMap({
                   labelSide={labelSide}
                   isActive={pt.place.id === selectedId}
                   isHover={pt.place.id === hoverId}
+                  featuredRank={featuredRankById.get(pt.place.id)}
                   richEffects={richEffects}
                   onSelect={onSelect}
                   onEnter={() => {
@@ -1699,6 +1715,9 @@ export function AtlasMap({
         <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
           Names auto-hide when crowded: at most one label per map cell (tier wins ties). Zoom in or hover for full text.
         </p>
+        <p className="text-[9px] text-[rgba(255,232,180,0.9)] leading-snug">
+          Gold numbered halos mark the current top-ranked leaders, matching the rank strip and cards.
+        </p>
         <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
           Pale ring: <span className="text-[rgba(255,236,210,0.95)]">US</span>
           {" · "}
@@ -1742,6 +1761,7 @@ export function AtlasMap({
           </div>
           <div className="grid gap-1.5 border-t border-[rgba(140,200,224,0.24)] pt-2 text-[10px] text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
             <div>Diamond: flagship. Square: spotlight. Open ring: index.</div>
+            <div>Gold numbered halos mark the current top-ranked leaders.</div>
             <div>Pale outer ring: US, Canada, or Mexico. Fill color stays the climate driver.</div>
             <div>Clusters show nearby pins. Tap one to zoom; tightly overlapping groups open a picker.</div>
           </div>
@@ -1782,6 +1802,7 @@ interface MarkerProps {
   labelSide: "left" | "right";
   isActive: boolean;
   isHover: boolean;
+  featuredRank?: number;
   /** When false, skip pulsing ring animation (older tablets / reduced motion). */
   richEffects: boolean;
   onSelect: (id: string) => void;
@@ -1906,7 +1927,7 @@ const ClusterPicker = memo(function ClusterPicker({
 });
 
 const Marker = memo(function Marker({
-  pt, k, labelMode, labelSide, isActive, isHover, richEffects, onSelect, onEnter, onLeave, shouldSuppressTouchActivation,
+  pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, onSelect, onEnter, onLeave, shouldSuppressTouchActivation,
 }: MarkerProps) {
   const { place, x, y } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
@@ -1968,10 +1989,11 @@ const Marker = memo(function Marker({
     [onSelect, place.id],
   );
 
-  const ariaLabel =
+  const ariaLabelBase =
     subLine.length > 0
       ? `${place.name}, ${subLine}. Open full profile.`
       : `Open full profile for ${place.name}`;
+  const ariaLabel = featuredRank ? `Current rank #${featuredRank}. ${ariaLabelBase}` : ariaLabelBase;
 
   return (
     <g
@@ -1979,7 +2001,7 @@ const Marker = memo(function Marker({
       role="button"
       tabIndex={0}
       aria-label={ariaLabel}
-      className="map-marker"
+      className={`map-marker${featuredRank ? " map-marker--featured" : ""}`}
       style={{ cursor: "pointer" }}
       onPointerDown={stopPan}
       onClick={activate}
@@ -1988,6 +2010,32 @@ const Marker = memo(function Marker({
       onKeyDown={onMarkerKeyDown}
     >
       <g transform={`scale(${inv})`}>
+        {featuredRank ? (
+          <g className="map-rank-halo" aria-hidden>
+            <circle
+              r={r + 13}
+              fill="none"
+              stroke="rgba(255, 214, 128, 0.76)"
+              strokeWidth={1.15}
+              strokeDasharray="5 5"
+              className={richEffects ? "map-rank-halo__orbit" : undefined}
+            />
+            <circle r={r + 8.2} fill="rgba(255, 198, 96, 0.1)" stroke="rgba(255, 238, 190, 0.55)" strokeWidth={1.05} />
+            <g className="map-rank-badge" transform={`translate(${r + 12} ${-(r + 13)})`}>
+              <circle r="8.5" fill="rgba(255, 228, 166, 0.96)" stroke="rgba(8,14,24,0.92)" strokeWidth="1.15" />
+              <text
+                textAnchor="middle"
+                y="3.2"
+                fontSize="8.8"
+                fontFamily="var(--font-mono),ui-monospace,monospace"
+                fontWeight={800}
+                fill="rgba(8,14,24,0.96)"
+              >
+                {featuredRank}
+              </text>
+            </g>
+          </g>
+        ) : null}
         <circle
           r={r + 3.65}
           fill="none"
@@ -2110,6 +2158,7 @@ const Marker = memo(function Marker({
   prev.labelSide === next.labelSide &&
   prev.isActive === next.isActive &&
   prev.isHover === next.isHover &&
+  prev.featuredRank === next.featuredRank &&
   prev.k === next.k &&
   prev.richEffects === next.richEffects &&
   prev.shouldSuppressTouchActivation === next.shouldSuppressTouchActivation &&

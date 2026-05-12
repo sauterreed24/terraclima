@@ -2751,6 +2751,19 @@
     outline-offset: 2px;
     border-radius: 999px;
   }
+  .map-marker--featured .map-marker-label rect {
+    stroke: rgba(255, 228, 166, 0.82);
+  }
+  .map-rank-halo {
+    filter: drop-shadow(0 0 7px rgba(255, 204, 112, 0.32));
+  }
+  .map-rank-halo__orbit {
+    transform-origin: center;
+    animation: atlasRankHalo 13s linear infinite;
+  }
+  .map-rank-badge {
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45));
+  }
   .map-cluster {
     cursor: pointer;
   }
@@ -3468,6 +3481,9 @@
     animation: none;
     filter: none;
   }
+  html.tc-low-power .map-rank-halo__orbit {
+    animation: none;
+  }
 
   html.tc-low-power .anim-fade-in,
   html.tc-low-power .view-enter {
@@ -3542,6 +3558,10 @@
 @keyframes atlasRibbonFlow {
   from { stroke-dashoffset: 0; }
   to { stroke-dashoffset: -72; }
+}
+@keyframes atlasRankHalo {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -40; }
 }
 
 /* Respect user intent. On systems where the OS requests reduced motion
@@ -3801,6 +3821,13 @@
     white-space: nowrap;
     cursor: pointer;
   }
+  .hero-quick-pick__icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    color: rgba(26, 143, 168, 0.85);
+    stroke-width: 2.1;
+    flex-shrink: 0;
+  }
   .hero-quick-pick:hover {
     color: var(--color-ice);
     border-color: rgba(26, 143, 168, 0.45);
@@ -3820,6 +3847,9 @@
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.9) inset,
       0 0 0 1px rgba(26, 143, 168, 0.22);
+  }
+  .hero-quick-pick--active .hero-quick-pick__icon {
+    color: var(--color-glacier-700);
   }
   .hero-quick-pick--active:hover { transform: none; }
 
@@ -3874,12 +3904,15 @@
 
   /* Medal rank chips (top 3) */
   .place-card__rank-number--medal {
-    background: transparent !important;
-    box-shadow: none !important;
-    font-size: 1rem;
-    line-height: 1;
-    width: 1.65rem;
-    height: 1.65rem;
+    min-width: 1.55rem;
+    height: 1.55rem;
+    color: #4f3410;
+    background: linear-gradient(180deg, rgba(255, 232, 166, 0.98), rgba(232, 155, 32, 0.42)) !important;
+    border: 1px solid rgba(168, 106, 12, 0.3);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.86) inset,
+      0 0 0 1px rgba(255, 248, 225, 0.45);
+    font-size: 0.72rem;
   }
 }
 
@@ -3899,6 +3932,7 @@
   .shimmer,
   .pulse-dot,
   .map-signal-ribbons path,
+  .map-rank-halo__orbit,
   .ambient-aurora {
     animation: none !important;
   }
