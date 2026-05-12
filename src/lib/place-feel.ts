@@ -201,7 +201,7 @@ function scoutingClarity(place: Place): number {
 function componentRationale(place: Place, key: PlaceFeelComponentKey): string {
   switch (key) {
     case "sensoryComfort":
-      return `${annualComfortMonthCount(place)}/12 easy months, summer ${meanSummerHigh(place).toFixed(1)}C, winter ${meanJanLow(place).toFixed(1)}C, sky/air cue ${Math.round(skyAirCue(place))}/100`;
+      return `${annualComfortMonthCount(place)}/12 easy months, summer ${meanSummerHigh(place).toFixed(1)}°C, winter ${meanJanLow(place).toFixed(1)}°C, sky/air cue ${Math.round(skyAirCue(place))}/100`;
     case "dailyEase":
       return `Services/access ${Math.round(serviceAnchorScore(place))}/100, lived axes ${Math.round(livedAxisEase(place))}/100, risk ease ${Math.round(clamp(100 - avgRisk(place) * 17))}/100`;
     case "placeIdentity":

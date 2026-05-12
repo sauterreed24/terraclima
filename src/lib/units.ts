@@ -193,7 +193,15 @@ export function precipTickStep(maxVal: number, dist: DistUnit): number {
  * triggering on "chill", or "continentality" on "tall".
  */
 const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narrower|stronger|weaker|apart|bigger|smaller|greater|above|below)\b/;
-const DELTA_BEFORE_PAT = /\b(by|of|spike[sd]?|swing of|range of|spread of|delta|differential|diurnal|amplitude|gradient|shift(?:ed|s)? (?:of|by)|lift(?:ed|s)? (?:of|by)|drop(?:ped|s)? (?:of|by)|rise(?:s)? (?:of|by)|fall(?:s)? (?:of|by)|jump(?:s|ed)? (?:of|by)|climb(?:s|ed)? (?:of|by)|plunge(?:s|d)? (?:of|by)|lift|strip(?:s|ped)?|boost(?:s|ed)? (?:by|of)|warm(?:s|ed|ing)? (?:by|up by)|cool(?:s|ed|ing)? (?:by|down by)|moderat\w+ (?:by)|up to|down to|averag(?:es|ing)? (?:\d+°?\s*[CF] )?(?:warmer|cooler|colder))\s*$/;
+// Bare "of" is NOT a delta cue — "lows of −30°C" / "highs of 28°C" /
+// "afternoons of 25°C" are absolute readings. Compound delta forms that
+// happen to contain "of" ("swing of", "drop of", "range of", …) are
+// matched explicitly below, so we never need the bare "of" rule.
+//
+// Bare "by" is kept because corpus prose uses "warmer by 5°C", "punctuated
+// by 25°C warm-ups", "differs by 8°C", and similar. The one absolute
+// "by 27°C water" phrasing has been rewritten in the corpus.
+const DELTA_BEFORE_PAT = /\b(by|spike[sd]?|swing of|range of|spread of|delta|differential|diurnal|amplitude|gradient|shift(?:ed|s)? (?:of|by)|lift(?:ed|s)? (?:of|by)|drop(?:ped|s)? (?:of|by)|rise(?:s)? (?:of|by)|fall(?:s)? (?:of|by)|jump(?:s|ed)? (?:of|by)|climb(?:s|ed)? (?:of|by)|plunge(?:s|d)? (?:of|by)|lift|strip(?:s|ped)?|boost(?:s|ed)? (?:by|of)|warm(?:s|ed|ing)? (?:by|up by)|cool(?:s|ed|ing)? (?:by|down by)|moderat\w+ (?:by)|up to|down to|averag(?:es|ing)? (?:\d+°?\s*[CF] )?(?:warmer|cooler|colder))\s*$/;
 
 /** Characters that terminate a clause for the purposes of delta detection. */
 const CLAUSE_TERMINATORS = /[.;:,\u2014\u2013|\n]/;
