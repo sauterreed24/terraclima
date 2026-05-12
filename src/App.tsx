@@ -18,7 +18,7 @@ import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, ty
 import { rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
-import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
+import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
@@ -648,6 +648,7 @@ export default function App() {
                   scoutBrief={scoutBrief}
                   contextStressRows={contextStressRows}
                   onCompareLeaders={comparePlaces}
+                  onCompareContextLeaders={comparePlaces}
                   onApplyContextScenario={applyContextScenario}
                   bookmarkIds={bookmarkIds}
                   recentIds={recentIds}
@@ -1258,6 +1259,7 @@ const HeroCard = memo(function HeroCard({
   scoutBrief,
   contextStressRows,
   onCompareLeaders,
+  onCompareContextLeaders,
   onApplyContextScenario,
   bookmarkIds,
   recentIds,
@@ -1283,6 +1285,7 @@ const HeroCard = memo(function HeroCard({
   scoutBrief: ExplorerScoutBrief | null;
   contextStressRows: ContextStressRow[];
   onCompareLeaders: (ids: string[]) => void;
+  onCompareContextLeaders: (ids: string[]) => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
   bookmarkIds: Set<string>;
   recentIds: readonly string[];
@@ -1434,6 +1437,7 @@ const HeroCard = memo(function HeroCard({
         <ContextStressPanel
           rows={contextStressRows}
           onOpenPlace={onOpenPlace}
+          onCompareContextLeaders={onCompareContextLeaders}
           onApplyContextScenario={onApplyContextScenario}
         />
       ) : null}
@@ -1614,13 +1618,16 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
 const ContextStressPanel = memo(function ContextStressPanel({
   rows,
   onOpenPlace,
+  onCompareContextLeaders,
   onApplyContextScenario,
 }: {
   rows: ContextStressRow[];
   onOpenPlace: (id: string) => void;
+  onCompareContextLeaders: (ids: string[]) => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
 }) {
   const prose = useProse();
+  const leaderSummary = useMemo(() => summarizeContextStressRows(rows, COMPARE_LIMIT), [rows]);
   return (
     <section className="context-stress" aria-labelledby="context-stress-title">
       <div className="context-stress__head">
@@ -1630,10 +1637,27 @@ const ContextStressPanel = memo(function ContextStressPanel({
           </div>
           <p className="context-stress__summary">
             Same place context, rerun through different living priorities so leader shifts and caveats surface before you dig into cards.
+            {leaderSummary ? (
+              <span className="context-stress__split">{leaderSummary.summary}</span>
+            ) : null}
           </p>
         </div>
-        <div className="context-stress__count" aria-label={`${rows.length} context reads`}>
-          {rows.length} reads
+        <div className="context-stress__head-actions">
+          <div className="context-stress__count" aria-label={`${rows.length} context reads`}>
+            {rows.length} reads
+          </div>
+          {leaderSummary && leaderSummary.compareIds.length >= 2 ? (
+            <button
+              type="button"
+              className="btn-ghost !text-xs !py-1.5"
+              onClick={() => onCompareContextLeaders(leaderSummary.compareIds)}
+              aria-label={`Compare context top picks: ${leaderSummary.compareIds.length} places`}
+              title={leaderSummary.summary}
+            >
+              <ArrowLeftRight className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+              Compare top picks
+            </button>
+          ) : null}
         </div>
       </div>
 
@@ -1877,7 +1901,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
         ))}
       </div>
 
-      <div className="desktop-scout-board__signals" aria-label="Priority winners in the current shortlist">
+      <div className="desktop-scout-board__signals" aria-label="Priority leaders in the current shortlist">
         {brief.decisionSignals.slice(0, 3).map(signal => (
           <button
             key={signal.label}

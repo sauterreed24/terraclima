@@ -98,6 +98,7 @@ describe("App shell", () => {
     expect(screen.getByText("Current rank")).toBeInTheDocument();
     expect(screen.getByText("Scout brief")).toBeInTheDocument();
     expect(screen.getByText("Context stress test")).toBeInTheDocument();
+    expect(screen.getByText(/distinct leaders across/)).toBeInTheDocument();
     expect(screen.getAllByText("Decision matrix").length).toBeGreaterThan(0);
     expect(screen.getAllByRole("button", { name: /Apply context:/ }).length).toBeGreaterThan(3);
     expect(screen.getAllByText("Easy months").length).toBeGreaterThan(0);
@@ -120,6 +121,14 @@ describe("App shell", () => {
     fireEvent.click(screen.getByRole("button", { name: /Compare current leaders/ }));
 
     expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+  }, 15000);
+
+  it("compares distinct context leaders from the stress test", async () => {
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: /Compare context top picks/ }));
+
+    expect(await screen.findByRole("dialog", { name: /places side by side/ })).toBeInTheDocument();
   }, 15000);
 
   it("applies alternate context presets from the Explorer hero", async () => {

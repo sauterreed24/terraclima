@@ -1088,8 +1088,22 @@
     font-size: 0.84rem;
     line-height: 1.4;
   }
-  .context-stress__count {
+  .context-stress__split {
+    display: block;
+    margin-top: 0.18rem;
+    color: var(--color-stone-readable);
+    font-size: 0.76rem;
+    line-height: 1.35;
+  }
+  .context-stress__head-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
     flex: 0 0 auto;
+  }
+  .context-stress__count {
+    align-self: flex-end;
     padding: 0.25rem 0.52rem;
     border-radius: 999px;
     border: 1px solid rgba(232, 155, 32, 0.3);
@@ -1245,6 +1259,9 @@
     }
     .context-stress__count {
       align-self: flex-start;
+    }
+    .context-stress__head-actions {
+      align-items: flex-start;
     }
     .context-stress__rail {
       grid-template-columns: none;
