@@ -7,7 +7,7 @@ import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib
 import { getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { getBestMonths, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
-import { ArrowRight, Sun } from "lucide-react";
+import { ArrowRight, Droplets, Leaf, Sun } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
 import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
 
@@ -200,7 +200,7 @@ export const PlaceCard = memo(function PlaceCard({
               className={`place-card__rank-number${rank <= 3 ? ` place-card__rank-number--medal place-card__rank-number--medal-${rank}` : ""}`}
               aria-hidden
             >
-              {rank <= 3 ? ["🥇","🥈","🥉"][rank - 1] : rank}
+              {rank}
             </span>
             <span className="place-card__rank-label">{rankingLabel}</span>
             <span className="place-card__rank-score" aria-hidden>{Math.round(rankingScore)}</span>
@@ -270,14 +270,14 @@ export const PlaceCard = memo(function PlaceCard({
               )}
               {avgHumidity != null && (
                 <span className="place-card__ext-stat" title="Mean annual relative humidity">
-                  <span aria-hidden>💧</span>
+                  <Droplets className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#1a8fa8" }} />
                   <span className="font-mono-num">{avgHumidity}%</span>
                   <span className="text-stone-readable/60">RH</span>
                 </span>
               )}
               {frostFreeDays != null && (
                 <span className="place-card__ext-stat" title="Approximate frost-free days per year">
-                  <span aria-hidden>🌿</span>
+                  <Leaf className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#3d8f55" }} />
                   <span className="font-mono-num">{frostFreeDays}</span>
                   <span className="text-stone-readable/60">frost-free days</span>
                 </span>

@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeftRight, BookmarkCheck, BookOpen, Clock, Compass, HelpCircle, Layers, Library, Link2, Map, Menu, Route, Search, ShieldAlert, Shuffle, Sparkles, Target, X } from "lucide-react";
+import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Compass, HelpCircle, Laptop, Layers, Library, Link2, Map, Menu, Route, Search, ShieldAlert, ShieldCheck, Shuffle, Snowflake, Sparkles, Sprout, Sun, Sunrise, Target, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -397,6 +397,10 @@ export default function App() {
     [deferredFiltered],
   );
   const sortTopFive = useMemo(() => ranked.slice(0, 5), [ranked]);
+  const topRankedPlaceIds = useMemo(
+    () => sortTopFive.map(row => row.place.id),
+    [sortTopFive],
+  );
   const rankingLabel = useMemo(
     () => RANKING_OPTIONS.find(o => o.id === ranking)?.label ?? ranking.replace(/-/g, " "),
     [ranking],
@@ -661,6 +665,7 @@ export default function App() {
                   <AtlasMap
                     places={filtered}
                     selectedId={selectedId ?? undefined}
+                    featuredIds={topRankedPlaceIds}
                     onSelect={openPlace}
                   />
                 </div>
@@ -1172,7 +1177,7 @@ const NavBtn = memo(function NavBtn({
   );
 });
 
-const QuickPick = memo(function QuickPick({ emoji, label, onClick, active }: { emoji: string; label: string; onClick: () => void; active: boolean }) {
+const QuickPick = memo(function QuickPick({ icon: Icon, label, onClick, active }: { icon: LucideIcon; label: string; onClick: () => void; active: boolean }) {
   return (
     <button
       type="button"
@@ -1180,7 +1185,7 @@ const QuickPick = memo(function QuickPick({ emoji, label, onClick, active }: { e
       className={`hero-quick-pick${active ? " hero-quick-pick--active" : ""}`}
       aria-pressed={active}
     >
-      <span aria-hidden="true">{emoji}</span>
+      <Icon className="hero-quick-pick__icon" aria-hidden />
       <span>{label}</span>
     </button>
   );
@@ -1340,13 +1345,13 @@ const HeroCard = memo(function HeroCard({
           {/* Lifestyle quick-picks — instant one-click ranking presets */}
           {!active && (
             <div className="hero-quick-picks mt-3" role="group" aria-label="Quick ranking presets">
-              <QuickPick emoji="📅" label="Best this month" onClick={() => onSetRanking("best-this-month")} active={ranking === "best-this-month"} />
-              <QuickPick emoji="☀️" label="Comfort" onClick={() => onSetRanking("most-comfortable")} active={ranking === "most-comfortable"} />
-              <QuickPick emoji="💻" label="Remote work" onClick={() => onSetRanking("best-for-remote-work")} active={ranking === "best-for-remote-work"} />
-              <QuickPick emoji="🌅" label="Retirement" onClick={() => onSetRanking("best-retirement")} active={ranking === "best-retirement"} />
-              <QuickPick emoji="🌱" label="Garden life" onClick={() => onSetRanking("best-growability")} active={ranking === "best-growability"} />
-              <QuickPick emoji="❄️" label="Snow country" onClick={() => onSetRanking("coolest-summers")} active={ranking === "coolest-summers"} />
-              <QuickPick emoji="🛡" label="Low risk" onClick={() => onSetRanking("climate-resilient")} active={ranking === "climate-resilient"} />
+              <QuickPick icon={CalendarDays} label="Best this month" onClick={() => onSetRanking("best-this-month")} active={ranking === "best-this-month"} />
+              <QuickPick icon={Sun} label="Comfort" onClick={() => onSetRanking("most-comfortable")} active={ranking === "most-comfortable"} />
+              <QuickPick icon={Laptop} label="Remote work" onClick={() => onSetRanking("best-for-remote-work")} active={ranking === "best-for-remote-work"} />
+              <QuickPick icon={Sunrise} label="Retirement" onClick={() => onSetRanking("best-retirement")} active={ranking === "best-retirement"} />
+              <QuickPick icon={Sprout} label="Garden life" onClick={() => onSetRanking("best-growability")} active={ranking === "best-growability"} />
+              <QuickPick icon={Snowflake} label="Snow country" onClick={() => onSetRanking("coolest-summers")} active={ranking === "coolest-summers"} />
+              <QuickPick icon={ShieldCheck} label="Low risk" onClick={() => onSetRanking("climate-resilient")} active={ranking === "climate-resilient"} />
             </div>
           )}
         </div>
