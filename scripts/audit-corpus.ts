@@ -94,10 +94,25 @@ function placeFields(p: Place): Array<[string, string]> {
 const METRIC_SCAN = /\b\d+(?:[,.]\d+)*\s*(mm|cm|km\/h|kph|km|m)\b/g;
 let metricLeftoverCount = 0;
 
+/**
+ * Patterns that constitute a Celsius leak in F-mode after localizeProse runs.
+ * The unit layer now normalizes all known editorial forms — degree symbol,
+ * "Celsius" word, "degrees Celsius", "degrees C" — so any residue here means
+ * an authoring pattern slipped past every conversion pass. All are fatal.
+ */
+const CELSIUS_LEAK_PATTERNS: Array<[string, RegExp]> = [
+  ["°C residue", /°C\b/],
+  ["Celsius word residue", /\b-?\d+(?:\.\d+)?\s*(?:°\s*)?(?:degrees?\s+)?Celsius\b/i],
+  ["degrees C residue", /\b-?\d+(?:\.\d+)?\s*degrees?\s+C\b/i],
+];
+
 function checkUnitResidues(where: string, text: string) {
   const imperial = localizeProse(text, "F", "imperial");
-  if (/°C/.test(imperial)) {
-    record("fatal", where, "°C leftover after imperial localization", imperial.slice(0, 160));
+  for (const [label, pat] of CELSIUS_LEAK_PATTERNS) {
+    if (pat.test(imperial)) {
+      record("fatal", where, `${label} after imperial localization`, imperial.slice(0, 160));
+      break;
+    }
   }
   const rem = imperial.match(METRIC_SCAN);
   if (rem) metricLeftoverCount += rem.length;

@@ -261,7 +261,7 @@ export const CONCEPTS: Concept[] = [
   {
     id: "tropical-isothermal",
     term: "Tropical isothermal climate",
-    short: "Low-latitude elevations where the monthly mean barely varies — often under 2°C range across the year.",
+    short: "Low-latitude elevations where the monthly mean barely varies — annual ranges often stay under 2°C across the year.",
     long: "At tropical latitudes where the sun's elevation changes only modestly through the year, temperatures at a given altitude stay remarkably constant. Seasons are defined by rainfall, not heat. The classic Mexican highland eternal-spring climate is the paradigm case.",
     exampleIds: ["oaxaca-mx", "san-cristobal-mx", "patzcuaro-mx"],
   },

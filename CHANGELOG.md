@@ -4,6 +4,17 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Celsius leak fixes (round 2)
+- **Thermal-amplitude joint pattern (`src/lib/units.ts`):** `localizeProse` now reads `thermal span`, `thermal amplitude`, `seasonal swing`, `annual amplitude`, `day-night spread`, and `day/night swing` as deltas. Pre-fix, `buildGeospatialAnalysis().contextLine` was rendering `thermal span 25°C` as `77°F` (absolute) instead of `45°F` (delta) in every place dossier.
+- **Immediate delta-noun cue (`src/lib/units.ts`):** A delta-noun (`swing`, `spread`, `amplitude`, `gap`, `differential`, `window`) directly after a temperature now forces delta detection, so phrasings like `13°C swing` or `30°C amplitude` localize correctly without depending on the surrounding clause. `range` is deliberately excluded because it's overloaded with absolute-interval usage (`dew points in the 10–15°C range`).
+- **Editorial Celsius word forms (`src/lib/units.ts`):** F-mode now normalizes `25 Celsius`, `20 degrees Celsius`, `20 degree Celsius`, `20 °Celsius`, `20° Celsius`, and `20 degrees C` to canonical `°C` before the numeric passes run. Closes the `${x}C` missing-degree-symbol bug class that surfaced in `place-feel.ts`. C-mode leaves the editorial word forms byte-for-byte.
+- **Three corpus delta misclassifications:**
+  - `places.usa.ts` (Sitka nearbyContrast): `Sitka averages 17°C` → reworded so the joint `annual range` cue is in the same clause, giving 31°F delta instead of the prior 63°F absolute.
+  - `places.usa.ts` (South Padre summaryImmersive): `about 13°C between coolest and warmest months, versus 21°C in inland San Antonio` → reworded with explicit `swing` cues so both numbers localize as deltas (23°F / 38°F) instead of absolutes (55°F / 70°F).
+  - `glossary.ts` (`tropical-isothermal`): `under 2°C range across the year` → reworded with `annual ranges` joint cue (4°F delta instead of 36°F absolute).
+- **Stronger leak detection (`scripts/audit-corpus.ts`, `scripts/playtest-celsius.ts`):** Both gates now flag any post-localize residue of `°C`, `N Celsius`, `N degrees Celsius`, or `N degrees C` — not just the bare degree-symbol form. The playtest also exercises every place's `buildGeospatialAnalysis()` contextLine/limitNote/sourceFit/spectral notes and every `buildPracticalReadCards()` body/bullets, so future runtime template literals can't sneak past the same bug class.
+- **22 new prose test cases / 11 new unit tests** cover the new delta cues, Celsius word forms, immediate delta-noun cues, the actual geospatial contextLine, and the corpus rewrites.
+
 ### Major improvements
 - **Shortlist decision matrix (`src/lib/decision-matrix.ts`, `src/lib/explorer-scout-brief.ts`):** Explorer scout briefs now translate the current top five into decision rows: live-here fit, felt comfort, easy months, risk load, land/garden signal, best-fit audience, and the first caveat to inspect. The desktop relocation workbench gets a compact top-three matrix, while the full scout brief exposes all five rows as open-profile controls.
 - **Compare as a decision surface (`src/components/CompareView.tsx`):** Compare now promotes live-here fit and livability in the highlight strip and adds live-here fit, livability, felt comfort, easy months, and lived ease to each comparison column, so comparing leaders does not drop the comfort intelligence added by the ranking model.

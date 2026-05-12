@@ -193,6 +193,15 @@ export function precipTickStep(maxVal: number, dist: DistUnit): number {
  * triggering on "chill", or "continentality" on "tall".
  */
 const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narrower|stronger|weaker|apart|bigger|smaller|greater|above|below)\b/;
+// Delta-noun cues that, when they appear IMMEDIATELY after a temperature
+// (only whitespace between the unit and the noun), force a delta reading.
+// Each of these reads naturally as a difference in everyday prose:
+// "13°C swing", "12°C spread", "30°C amplitude", "7°C gap", "5°C differential",
+// "20°C window". `range` is *deliberately excluded* because it has a strong
+// absolute usage too ("dew points in the 10–15°C range" means an interval,
+// not a delta); rely on the joint pattern + explicit "annual/diurnal range"
+// cues instead.
+const DELTA_IMMEDIATE_AFTER_PAT = /^\s*(?:swings?|spreads?|amplitudes?|gaps?|differentials?|windows?)\b/i;
 // Bare "of" is NOT a delta cue — "lows of −30°C" / "highs of 28°C" /
 // "afternoons of 25°C" are absolute readings. Compound delta forms that
 // happen to contain "of" ("swing of", "drop of", "range of", …) are
@@ -228,6 +237,17 @@ function afterClauseWindow(text: string, idx: number, maxLen: number): string {
   return (m ? raw.substring(0, m.index) : raw).toLowerCase();
 }
 
+/**
+ * Joint delta-noun cues. Matched against the **before + after** windows so a
+ * phrasing like "annual range, … 17°C" still resolves to a delta even when the
+ * noun sits in a neighbouring clause. Order is alphabetical inside each
+ * modifier group; the unmodified `temperature (range|swing|…)` form is kept
+ * separate for clarity. New variants are intentionally generous — a missed
+ * delta cue silently mis-converts a temperature, while a false positive only
+ * rescales an obviously-delta phrasing.
+ */
+const DELTA_JOINT_PAT = /\b(?:thermal\s+(?:amplitudes?|gaps?|ranges?|spans?|spreads?|swings?|windows?)|seasonal\s+(?:amplitudes?|gaps?|ranges?|spans?|spreads?|swings?)|annual\s+(?:temperature\s+)?(?:amplitudes?|cycles?|gaps?|ranges?|spans?|spreads?|swings?)|daily\s+(?:ranges?|spreads?|swings?)|diurnal\s+(?:amplitudes?|gaps?|ranges?|spreads?|swings?)|day[-/]?night\s+(?:gaps?|ranges?|spreads?|swings?|differences?)|night[-/]?to[-/]?day\s+(?:gaps?|ranges?|spreads?|swings?|differences?)|monthly\s+swings?|temperature\s+(?:differences?|differentials?|gaps?|ranges?|spreads?|swings?))\b/i;
+
 /** Decide whether a temperature token at `idx` is a delta (vs. absolute). */
 function isDeltaContext(text: string, idx: number, len: number): boolean {
   // Narrow, clause-local windows.
@@ -235,9 +255,14 @@ function isDeltaContext(text: string, idx: number, len: number): boolean {
   const after = afterClauseWindow(text, idx + len, 24);
   if (DELTA_AFTER_PAT.test(after)) return true;
   if (DELTA_BEFORE_PAT.test(before)) return true;
-  // Explicit phrasings commonly used for deltas — allow scanning both
-  // windows jointly because these phrases are unambiguous.
-  if (/\b(thermal windows?|annual (?:temperature )?ranges?|annual swings?|daily ranges?|diurnal swings?|temperature (?:ranges?|differences?|spreads?|gaps?|swings?))\b/.test(before + " " + after)) return true;
+  // Delta-noun cue immediately after the temperature ("13°C swing", "30°C
+  // amplitude"). Anchored to the after-window so distant unrelated uses
+  // (e.g. "23°C … this is the swing all summer") can't mis-trigger.
+  if (DELTA_IMMEDIATE_AFTER_PAT.test(after)) return true;
+  // Joint phrasings — allow scanning both windows together because once a
+  // delta-y phrase like "annual range" or "thermal span" is present in
+  // either neighbouring clause it dominates the local reading.
+  if (DELTA_JOINT_PAT.test(before + " " + after)) return true;
   return false;
 }
 
@@ -281,6 +306,15 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
 
   // --- Temperature (°C → °F) ---
   if (unit === "F") {
+    // Defense in depth: editorial Celsius word forms get normalized to "°C"
+    // BEFORE the numeric passes run. This catches authoring patterns the °C
+    // passes alone would miss ("25 Celsius", "20 degrees Celsius",
+    // "20 degrees C") and shields the UI from the place-feel "${x}C"
+    // missing-degree-symbol bug class. Word forms only fire in F-mode so
+    // C-mode prose round-trips byte-for-byte.
+    const celsiusWordPat = /([-+−]?\d+(?:\.\d+)?)\s*(?:°\s*)?(?:degrees?\s+)?(?:Celsius|degrees?\s+C)\b/g;
+    text = text.replace(celsiusWordPat, (_m, n: string) => `${n}°C`);
+
     // Lapse-rate shorthand is a temperature delta per vertical distance, not
     // an absolute reading. Convert common °C/km and °C per 1000 m forms to
     // the familiar °F per 1,000 ft expression.

@@ -150,6 +150,57 @@ describe("localizeProse — temperatures", () => {
     expect(localizeProse("Summers stay in the 20s°C.", "F", "metric")).toContain("68–84°F range");
     expect(localizeProse("Highs rarely leave the 20s °C.", "F", "metric")).toBe("Highs rarely leave the 68–84°F range.");
   });
+
+  it("treats thermal/seasonal/annual amplitude-style nouns as deltas", () => {
+    // Joint delta pattern covers every thermal × {span,range,amplitude,
+    // swing,spread,gap,window} combination, plus seasonal/annual/diurnal
+    // variants and day-night/day/night/night-to-day forms.
+    expect(localizeProse("thermal span 25°C", "F", "metric")).toBe("thermal span 45°F");
+    expect(localizeProse("thermal amplitude 30°C", "F", "metric")).toBe("thermal amplitude 54°F");
+    expect(localizeProse("seasonal swing 18°C", "F", "metric")).toBe("seasonal swing 32°F");
+    expect(localizeProse("annual amplitude 32°C", "F", "metric")).toBe("annual amplitude 58°F");
+    expect(localizeProse("day-night spread 12°C", "F", "metric")).toBe("day-night spread 22°F");
+    expect(localizeProse("day/night swing 14°C", "F", "metric")).toBe("day/night swing 25°F");
+  });
+
+  it("treats delta nouns immediately following a temperature as a delta", () => {
+    // "N°C swing", "N°C amplitude", "N°C gap" — unambiguous deltas.
+    expect(localizeProse("a 13°C swing keeps the valley honest.", "F", "metric")).toBe("a 23°F swing keeps the valley honest.");
+    expect(localizeProse("an 8°C differential drives the breeze.", "F", "metric")).toBe("an 14°F differential drives the breeze.");
+    expect(localizeProse("a 25°C amplitude is unusual at this latitude.", "F", "metric")).toBe("a 45°F amplitude is unusual at this latitude.");
+  });
+
+  it("does NOT treat 'N°C range' as a delta (range is overloaded)", () => {
+    // Authors use "in the X–Y°C range" to mean an absolute interval, not a
+    // delta. Only the joint pattern (annual/diurnal/temperature range) or
+    // explicit cues like "range of" force the delta reading.
+    expect(localizeProse("dew points in the 10–15°C range", "F", "metric")).toBe("dew points in the 50–59°F range");
+    expect(localizeProse("afternoons push into the 33–36°C range", "F", "metric")).toBe("afternoons push into the 91–97°F range");
+  });
+
+  it("normalizes editorial Celsius word forms before conversion", () => {
+    // Defense in depth for the place-feel `${x}C` missing-degree-symbol bug
+    // class: word forms are rewritten to "°C" in F-mode so all numeric passes
+    // (delta detection, range/to passes, decade shorthand) apply uniformly.
+    expect(localizeProse("25 Celsius", "F", "metric")).toBe("77°F");
+    expect(localizeProse("20 degrees Celsius", "F", "metric")).toBe("68°F");
+    expect(localizeProse("20 degree Celsius", "F", "metric")).toBe("68°F");
+    expect(localizeProse("20 degrees C", "F", "metric")).toBe("68°F");
+    expect(localizeProse("warmer by 5 Celsius", "F", "metric")).toBe("warmer by 9°F");
+    // C-mode preserves the editorial word form byte-for-byte.
+    expect(localizeProse("25 Celsius", "C", "metric")).toBe("25 Celsius");
+    expect(localizeProse("20 degrees Celsius", "C", "metric")).toBe("20 degrees Celsius");
+  });
+
+  it("recovers from a missing degree symbol in computed prose", () => {
+    // Reproduce the place-feel bug class: a template literal forgets the
+    // degree glyph, e.g. `${x.toFixed(1)}C`. The Celsius-word pass catches
+    // bare "N C" only when the C is part of a "degrees C" / "Celsius" form,
+    // but a single trailing digit-+-C with whitespace and a "degrees" prefix
+    // is the typical authoring hazard. Verify both shapes localize cleanly.
+    expect(localizeProse("summer mean 26.5 degrees C", "F", "metric")).toBe("summer mean 80°F");
+    expect(localizeProse("winter mean −3.2 degrees C", "F", "metric")).toBe("winter mean 26°F");
+  });
 });
 
 describe("localizeProse — distances", () => {

@@ -99,6 +99,56 @@ const cases: Case[] = [
   { input: "Chinooks have raised winter temperatures by 20\u201330\u00b0C in hours",
     expect: ["36\u201354\u00b0F"], reject: ["68\u201386\u00b0F"] },
 
+  // --- Regression: thermal/seasonal/annual-amplitude variants must be DELTA ---
+  // (Found post-PR-#59: geospatial-analysis emits "thermal span N\u00b0C" through
+  // useProse, and pre-fix it converted as absolute. Joint pattern now covers
+  // every thermal/seasonal/annual/diurnal/day-night \u00d7 span/range/amplitude/
+  // swing/spread/gap combination.)
+  { input: "thermal span 25\u00b0C", expect: ["45\u00b0F"], reject: ["77\u00b0F"] },
+  { input: "thermal amplitude 30\u00b0C", expect: ["54\u00b0F"], reject: ["86\u00b0F"] },
+  { input: "seasonal swing 18\u00b0C", expect: ["32\u00b0F"], reject: ["64\u00b0F"] },
+  { input: "annual amplitude 32\u00b0C", expect: ["58\u00b0F"], reject: ["90\u00b0F"] },
+  { input: "day-night spread 12\u00b0C", expect: ["22\u00b0F"], reject: ["54\u00b0F"] },
+  { input: "day/night swing 14\u00b0C", expect: ["25\u00b0F"], reject: ["57\u00b0F"] },
+
+  // --- Regression: actual geospatial contextLine that PlaceDetail renders ---
+  { input: "Relief energy ~120 m/km, hydro seasonality 1.2x, thermal span 25\u00b0C, structure texture 60/100, EO observability 70/100.",
+    expect: ["thermal span 45\u00b0F"], reject: ["thermal span 77\u00b0F"] },
+
+  // --- Regression: delta-noun immediately after a temperature ---
+  // ("13\u00b0C swing", "21\u00b0C annual swing")
+  { input: "only about a 13\u00b0C swing between coolest and warmest months",
+    expect: ["23\u00b0F swing"], reject: ["55\u00b0F"] },
+  { input: "versus a 21\u00b0C annual swing inland in San Antonio",
+    expect: ["38\u00b0F annual swing"], reject: ["70\u00b0F"] },
+  { input: "Sitka's annual range averages just 17\u00b0C.",
+    expect: ["31\u00b0F"], reject: ["63\u00b0F"] },
+  // Critically, "X\u00b0C range" must NOT be force-converted to delta because
+  // "in the 10\u201315\u00b0C range" means an absolute interval. Only swing/
+  // spread/amplitude/gap/differential are safe immediate-after cues.
+  { input: "afternoon dew points in the 10\u201315\u00b0C range",
+    expect: ["50\u201359\u00b0F"], reject: ["18\u201327\u00b0F"] },
+  { input: "summer afternoons push into the 33\u201336\u00b0C range",
+    expect: ["91\u201397\u00b0F"], reject: ["59\u201365\u00b0F"] },
+  { input: "kept in the 10\u201312\u00b0C range",
+    expect: ["50\u201354\u00b0F"], reject: ["18\u201322\u00b0F"] },
+
+  // --- Editorial Celsius word forms (defense in depth for ${x}C bug class) ---
+  { input: "25 Celsius", expect: ["77\u00b0F"], reject: ["Celsius"] },
+  { input: "20 degrees Celsius", expect: ["68\u00b0F"], reject: ["Celsius"] },
+  { input: "20 degree Celsius", expect: ["68\u00b0F"], reject: ["Celsius"] },
+  { input: "20 \u00b0Celsius", expect: ["68\u00b0F"], reject: ["Celsius"] },
+  { input: "20\u00b0 Celsius", expect: ["68\u00b0F"], reject: ["Celsius"] },
+  { input: "20 degrees C", expect: ["68\u00b0F"], reject: [" degrees C"] },
+  { input: "summer highs near 25 Celsius",
+    expect: ["77\u00b0F"], reject: ["Celsius"] },
+  // Delta context applies to Celsius word forms too.
+  { input: "warmer by 5 Celsius in two hours",
+    expect: ["9\u00b0F"], reject: ["41\u00b0F", "Celsius"] },
+  // Celsius mode: editorial word forms are left intact byte-for-byte.
+  { input: "summer highs near 25 Celsius",
+    expect: ["25 Celsius"], reject: ["77\u00b0F", "\u00b0C"], unit: "C", dist: "metric" },
+
   // --- Regression: landform-context "N m" conversions (Sandhills / Loess Hills / Eureka) ---
   { input: "rolling dunes 40\u201390 m tall",
     expect: ["131\u2013295 ft"], reject: ["40\u201390 m"] },

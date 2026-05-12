@@ -25,6 +25,8 @@ import { rankPlaces, type RankingProfile } from "../src/lib/scoring";
 import { describeHumanComfort, scoreLivability } from "../src/lib/livability-score";
 import { scorePlaceFeel } from "../src/lib/place-feel";
 import { buildExplorerScoutBrief } from "../src/lib/explorer-scout-brief";
+import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
+import { buildPracticalReadCards } from "../src/lib/practical-read";
 
 const RANKINGS: RankingProfile[] = [
   "live-fit",
@@ -52,12 +54,31 @@ const RANKINGS: RankingProfile[] = [
 let leaks = 0;
 let mismatches = 0;
 
+/**
+ * In F-mode, every editorial Celsius surface must vanish:
+ *   - "°C" anywhere
+ *   - "N Celsius", "N degrees Celsius", "N degrees C" word forms
+ *   - "degrees C" bare phrase (in case a number was lost during a refactor)
+ *
+ * localizeProse normalizes Celsius word forms to "°C" before the numeric
+ * passes, so a leak in any of these patterns after localization indicates
+ * an unconverted residue.
+ */
+const F_LEAK_PATTERNS: Array<[string, RegExp]> = [
+  ["°C", /°C\b/],
+  ["N Celsius", /\b-?\d+(?:\.\d+)?\s*(?:°\s*)?(?:degrees?\s+)?Celsius\b/i],
+  ["N degrees C", /\b-?\d+(?:\.\d+)?\s*degrees?\s+C\b/i],
+];
+
 function expectNoCelsiusInF(where: string, text: string | null | undefined): void {
   if (!text) return;
   const localized = localizeProse(text, "F", "imperial");
-  if (/°C\b/.test(localized) || /\b\d+(?:\.\d+)?\s+Celsius\b/i.test(localized)) {
-    leaks++;
-    console.log(`F-LEAK ${where}: ${localized.substring(0, 220)}`);
+  for (const [label, pat] of F_LEAK_PATTERNS) {
+    if (pat.test(localized)) {
+      leaks++;
+      console.log(`F-LEAK[${label}] ${where}: ${localized.substring(0, 220)}`);
+      return;
+    }
   }
 }
 
@@ -158,6 +179,26 @@ for (const p of PLACES) {
   for (const c of feel.components) expectNoCelsiusInF(`feel.rationale[${c.key}] ${p.id}`, c.rationale);
   for (const s of feel.strengths) expectNoCelsiusInF(`feel.strength ${p.id}`, s);
   for (const f of feel.frictions) expectNoCelsiusInF(`feel.friction ${p.id}`, f);
+
+  // Geospatial analysis exposes a `contextLine` that PlaceDetail renders via
+  // `prose()`. Without delta cues for "thermal span", this surface mis-converted
+  // every thermal-amplitude number until the joint-pattern fix.
+  const geo = buildGeospatialAnalysis(p);
+  expectNoCelsiusInF(`geo.contextLine ${p.id}`, geo.contextLine);
+  expectNoCelsiusInF(`geo.limitNote ${p.id}`, geo.limitNote);
+  for (const sf of geo.sourceFits) expectNoCelsiusInF(`geo.sourceFit.note[${sf.id}] ${p.id}`, sf.note);
+  for (const sig of geo.spectralSignals) {
+    expectNoCelsiusInF(`geo.spectral.note[${sig.id}] ${p.id}`, sig.note);
+  }
+
+  // Practical read cards are user-facing rationale tiles — make sure no
+  // runtime template literal leaks raw °C in their body/bullets.
+  for (const card of buildPracticalReadCards(p)) {
+    expectNoCelsiusInF(`practical[${card.id}].eyebrow ${p.id}`, card.eyebrow);
+    expectNoCelsiusInF(`practical[${card.id}].title ${p.id}`, card.title);
+    expectNoCelsiusInF(`practical[${card.id}].body ${p.id}`, card.body);
+    for (const b of card.bullets) expectNoCelsiusInF(`practical[${card.id}].bullet ${p.id}`, b);
+  }
 }
 
 console.log(
