@@ -83,6 +83,13 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("button", { name: "Zoom out" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Fit all places in view" })).toBeInTheDocument();
     expect(screen.getByRole("img", { name: /Scroll to zoom, drag to pan/ })).toBeInTheDocument();
+    expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: "Key" }));
+
+    expect(screen.getByRole("group", { name: "Map key" })).toBeInTheDocument();
+    expect(screen.getByText("Orographic / orchard / chinook")).toBeInTheDocument();
+    expect(screen.getByText(/Flagship/)).toBeInTheDocument();
   });
 
   it("shows a compact non-blocking scout preview on desktop hover while click still selects", () => {

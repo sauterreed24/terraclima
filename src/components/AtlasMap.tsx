@@ -4,6 +4,7 @@ import type { GeoProjection } from "d3-geo";
 import { feature, mesh } from "topojson-client";
 import type { FeatureCollection, Geometry } from "geojson";
 import type { Topology, GeometryCollection } from "topojson-specification";
+import { Info, Maximize2, Minus, Plus, X } from "lucide-react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useUnits } from "../lib/units";
@@ -116,6 +117,15 @@ type RenderedClusterPoint = ClusterPoint & {
   crowded: boolean;
 };
 
+type ClimateRibbon = {
+  id: string;
+  d: string;
+  color: string;
+  width: number;
+  opacity: number;
+  dash?: string;
+};
+
 /** Microclimate driver legend — lives on the dark map chrome with high-contrast labels. */
 function MapLegendDot({ color, label }: { color: string; label: string }) {
   return (
@@ -161,6 +171,12 @@ function firstTwoPointers(map: Map<number, { clientX: number; clientY: number }>
 
 function pointerDistance(a: { clientX: number; clientY: number }, b: { clientX: number; clientY: number }): number {
   return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+}
+
+function linePath(points: Array<[number, number]>): string {
+  if (points.length === 0) return "";
+  const [first, ...rest] = points;
+  return `M ${first[0].toFixed(1)} ${first[1].toFixed(1)}${rest.map(([x, y]) => ` L ${x.toFixed(1)} ${y.toFixed(1)}`).join("")}`;
 }
 
 type TouchPointLike = { clientX: number; clientY: number };
@@ -516,6 +532,58 @@ export function AtlasMap({
     });
     return out;
   }, [projection, width, height]);
+
+  const climateRibbons = useMemo<ClimateRibbon[]>(() => {
+    const ribbons: Array<{
+      id: string;
+      lonLat: Array<[number, number]>;
+      color: string;
+      width: number;
+      opacity: number;
+      dash?: string;
+    }> = [
+      {
+        id: "marine-layer",
+        lonLat: [[-129, 51], [-126, 47], [-124, 43], [-122, 39], [-120, 35], [-116, 31]],
+        color: "rgba(120, 220, 245, 0.68)",
+        width: 4.2,
+        opacity: 0.34,
+        dash: "2 10",
+      },
+      {
+        id: "rocky-rain-shadow",
+        lonLat: [[-116, 51], [-113, 46], [-110, 42], [-107, 38], [-105, 34], [-104, 30]],
+        color: "rgba(255, 204, 112, 0.72)",
+        width: 3.6,
+        opacity: 0.3,
+        dash: "1 8",
+      },
+      {
+        id: "gulf-moisture",
+        lonLat: [[-98, 24], [-93, 29], [-88, 33], [-83, 37], [-77, 41]],
+        color: "rgba(143, 217, 154, 0.64)",
+        width: 3.2,
+        opacity: 0.23,
+        dash: "4 12",
+      },
+      {
+        id: "sierra-madre",
+        lonLat: [[-108, 31], [-104, 27], [-101, 23], [-98, 19], [-95, 16]],
+        color: "rgba(212, 168, 255, 0.68)",
+        width: 3.1,
+        opacity: 0.25,
+        dash: "2 9",
+      },
+    ];
+
+    return ribbons.flatMap(r => {
+      const projected = r.lonLat
+        .map(ll => projection(ll))
+        .filter((xy): xy is [number, number] => Boolean(xy));
+      if (projected.length < 2) return [];
+      return [{ ...r, d: linePath(projected) }];
+    });
+  }, [projection]);
 
   // Precompute km-per-pixel at the map centre at zoom=1. Scale bar width at
   // any zoom is then `nicePixels = niceDistance_km / (kmPerPx / k)`. We
@@ -1116,6 +1184,7 @@ export function AtlasMap({
 
   const topoLoading = topo === null;
   const svgTouchAction = atlasTouchActionForMode(mapInteractive);
+  const legendPanelId = coarsePointer ? "tc-map-mobile-legend" : "tc-map-desktop-legend";
 
   return (
     <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
@@ -1171,6 +1240,20 @@ export function AtlasMap({
             <stop offset="0" stopColor="rgba(240, 200, 140, 0.07)" />
             <stop offset="1" stopColor="rgba(0,0,0,0)" />
           </radialGradient>
+          <pattern id="oceanContours" width="104" height="76" patternUnits="userSpaceOnUse">
+            <path
+              d="M-24 42 C 8 18, 36 18, 64 38 S 118 54, 136 28"
+              fill="none"
+              stroke="rgba(174, 211, 236, 0.14)"
+              strokeWidth="0.75"
+            />
+            <path
+              d="M-18 65 C 14 42, 46 44, 78 62 S 126 76, 146 48"
+              fill="none"
+              stroke="rgba(240, 210, 156, 0.08)"
+              strokeWidth="0.55"
+            />
+          </pattern>
 
           {/* Land — layered mineral tones (cool north → warm low-latitude hint) */}
           <linearGradient id="landGrad" x1="0.15" y1="0" x2="0.25" y2="1">
@@ -1224,6 +1307,15 @@ export function AtlasMap({
         <rect x="0" y="0" width={width} height={height} fill="url(#oceanGrad)" />
         <rect x="0" y="0" width={width} height={height} fill="url(#oceanMoon)" pointerEvents="none" />
         <rect x="0" y="0" width={width} height={height} fill="url(#oceanWarm)" pointerEvents="none" />
+        <rect
+          x="0"
+          y="0"
+          width={width}
+          height={height}
+          fill="url(#oceanContours)"
+          opacity={richEffects ? 0.62 : 0.32}
+          pointerEvents="none"
+        />
 
         {/* Pan/zoom group (mutated directly during drag).
             `will-change: transform` hints the browser to promote this
@@ -1302,6 +1394,23 @@ export function AtlasMap({
               vectorEffect="non-scaling-stroke"
               opacity={richEffects ? 0.9 : 0.45}
             />
+
+            <g className="map-signal-ribbons" pointerEvents="none" aria-hidden>
+              {climateRibbons.map(ribbon => (
+                <path
+                  key={ribbon.id}
+                  d={ribbon.d}
+                  fill="none"
+                  stroke={ribbon.color}
+                  strokeWidth={ribbon.width}
+                  strokeDasharray={ribbon.dash}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                  opacity={richEffects ? ribbon.opacity : ribbon.opacity * 0.55}
+                />
+              ))}
+            </g>
           </g>
 
           {/* Graticule (lat/lon grid with edge tick labels) */}
@@ -1457,9 +1566,8 @@ export function AtlasMap({
         >ALBERS CONIC · NORTH AMERICA</text>
       </svg>
 
-      {/* Scale + marker-color legend — stacked so wide labels (e.g. "1,500 mi")
-          never collide with legend text (previously both used bottom-left). */}
-      <div className="absolute bottom-3 left-3 z-[3] flex flex-col items-stretch gap-2 pointer-events-none max-w-[min(calc(100vw-8rem),22rem)]">
+      {/* Scale plus compact key access. The full legend stays hidden until requested. */}
+      <div className="map-scale-stack absolute bottom-3 left-3 z-[3] flex flex-col items-start gap-2 pointer-events-none max-w-[min(calc(100vw-8rem),22rem)]">
         <div className="flex flex-col gap-1 w-[104px] shrink-0">
           <div
             ref={scaleBarRef}
@@ -1476,27 +1584,15 @@ export function AtlasMap({
         {coarsePointer ? (
           <button
             type="button"
-            className="map-control-pill pointer-events-auto"
+            className="map-control-pill map-key-toggle pointer-events-auto"
             aria-expanded={legendOpen}
-            aria-controls="tc-map-mobile-legend"
+            aria-controls={legendPanelId}
             onClick={() => setLegendOpen(v => !v)}
           >
-            Legend
+            <Info className="w-3.5 h-3.5" aria-hidden />
+            <span>Key</span>
           </button>
-        ) : (
-          <div
-            role="group"
-            aria-label="Marker colors by primary climate driver"
-            className="map-chrome-panel px-2.5 py-2"
-          >
-            <div className="flex flex-wrap gap-x-3 gap-y-2 text-[11px] leading-relaxed">
-              <MapLegendDot color="#ffc860" label="Orographic / orchard / chinook" />
-              <MapLegendDot color="#8fd99a" label="Highland / sky-island / cloud" />
-              <MapLegendDot color="#6ec8ea" label="Maritime / fog / rain-shadow" />
-              <MapLegendDot color="#d4a8ff" label="Rare / sky-island / aurora" />
-            </div>
-          </div>
-        )}
+        ) : null}
       </div>
 
       {/* Cursor lat/lon readout — imperatively updated via ref on pointer move.
@@ -1511,16 +1607,20 @@ export function AtlasMap({
 
       {/* Zoom controls */}
       <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[2]">
-        <button type="button" className="map-btn" onClick={() => zoomBy(1.7)} title="Zoom in (+)" aria-label="Zoom in">＋</button>
-        <button type="button" className="map-btn" onClick={() => zoomBy(1 / 1.7)} title="Zoom out (−)" aria-label="Zoom out">−</button>
+        <button type="button" className="map-btn" onClick={() => zoomBy(1.7)} title="Zoom in (+)" aria-label="Zoom in">
+          <Plus className="w-4 h-4" aria-hidden />
+        </button>
+        <button type="button" className="map-btn" onClick={() => zoomBy(1 / 1.7)} title="Zoom out (-)" aria-label="Zoom out">
+          <Minus className="w-4 h-4" aria-hidden />
+        </button>
         <button
           type="button"
-          className="map-btn !text-[9px]"
+          className="map-btn"
           onClick={reset}
           title="Fit every pin in view (keyboard: 0)"
           aria-label="Fit all places in view"
         >
-          FIT
+          <Maximize2 className="w-3.5 h-3.5" aria-hidden />
         </button>
       </div>
 
@@ -1539,13 +1639,41 @@ export function AtlasMap({
         </div>
       ) : null}
 
-      {/* Tier legend — matches map chrome; hints are plain language (no key-cap styling). */}
+      {/* Map key — tucked above the button so it does not sit on the atlas by default. */}
       {!coarsePointer ? (
+        <div className="map-key-dock absolute bottom-3 right-3 z-[4] pointer-events-auto">
+          <button
+            type="button"
+            className="map-control-pill map-key-toggle"
+            aria-expanded={legendOpen}
+            aria-controls={legendPanelId}
+            onClick={() => setLegendOpen(v => !v)}
+          >
+            <Info className="w-3.5 h-3.5" aria-hidden />
+            <span>Key</span>
+          </button>
+        </div>
+      ) : null}
+
+      {!coarsePointer && legendOpen ? (
       <div
         role="group"
-        aria-label="Marker shapes by atlas tier"
-        className="map-chrome-panel absolute bottom-3 right-3 z-[2] max-w-[13.5rem] px-3 py-2.5 pointer-events-none text-[10px] leading-relaxed space-y-2.5"
+        id={legendPanelId}
+        aria-label="Map key"
+        className="map-key-popover map-chrome-panel absolute bottom-16 right-3 z-[4] max-w-[18.5rem] px-3 py-2.5 pointer-events-auto text-[10px] leading-relaxed space-y-2.5"
       >
+        <div className="flex items-center justify-between gap-2">
+          <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Map key</div>
+          <button type="button" className="map-legend-close" onClick={() => setLegendOpen(false)} aria-label="Close map key">
+            <X className="w-3.5 h-3.5" aria-hidden />
+          </button>
+        </div>
+        <div className="grid gap-2 border-t border-[rgba(140,200,224,0.22)] pt-2 text-[11px] leading-relaxed">
+          <MapLegendDot color="#ffc860" label="Orographic / orchard / chinook" />
+          <MapLegendDot color="#8fd99a" label="Highland / sky-island / cloud" />
+          <MapLegendDot color="#6ec8ea" label="Maritime / fog / rain-shadow" />
+          <MapLegendDot color="#d4a8ff" label="Rare / sky-island / aurora" />
+        </div>
         <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Pin shape · tier</div>
         <div className="flex items-center gap-2.5 text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
           <span className="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0" aria-hidden>
@@ -1602,7 +1730,9 @@ export function AtlasMap({
         >
           <div className="flex items-center justify-between gap-2">
             <div className="text-[10px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Map legend</div>
-            <button type="button" className="map-legend-close" onClick={() => setLegendOpen(false)} aria-label="Close map legend">×</button>
+            <button type="button" className="map-legend-close" onClick={() => setLegendOpen(false)} aria-label="Close map legend">
+              <X className="w-3.5 h-3.5" aria-hidden />
+            </button>
           </div>
           <div className="grid gap-2 text-[11px] leading-relaxed">
             <MapLegendDot color="#ffc860" label="Orographic / orchard / chinook" />
@@ -1751,7 +1881,9 @@ const ClusterPicker = memo(function ClusterPicker({
         <div className="text-[10px] uppercase tracking-wider text-[rgba(236,244,252,0.76)]">
           {cluster.points.length} nearby pins
         </div>
-        <button type="button" className="map-legend-close" onClick={onClose} aria-label="Close cluster picker">×</button>
+        <button type="button" className="map-legend-close" onClick={onClose} aria-label="Close cluster picker">
+          <X className="w-3.5 h-3.5" aria-hidden />
+        </button>
       </div>
       <div className="grid gap-1.5 max-h-[14rem] overflow-y-auto pt-2">
         {cluster.points
