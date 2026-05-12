@@ -101,4 +101,25 @@ describe("livability v3 — corpus smoke", () => {
       expect(place!.deepSections?.length, `${id} deepSections`).toBeGreaterThanOrEqual(2);
     }
   });
+
+  it("keeps high-impact U.S. live-here profiles backed by lived context", () => {
+    const ids = [
+      "silver-city-nm",
+      "hood-river-or",
+      "ashland-or",
+      "santa-fe-nm",
+      "santa-barbara-ca",
+      "fort-davis-tx",
+    ];
+
+    for (const id of ids) {
+      const place = PLACES_BY_ID[id];
+      expect(place, id).toBeDefined();
+      expect(place!.liveSignals?.note?.length, `${id} liveSignals.note`).toBeGreaterThan(24);
+      expect(place!.liveSignals?.sources?.length, `${id} liveSignals.sources`).toBeGreaterThanOrEqual(1);
+      expect(place!.settlementsWithinZone?.length, `${id} settlement anchors`).toBeGreaterThanOrEqual(3);
+      expect(place!.thingsToDo?.length, `${id} thingsToDo`).toBeGreaterThanOrEqual(4);
+      expect(place!.deepSections?.length, `${id} deepSections`).toBeGreaterThanOrEqual(2);
+    }
+  });
 });
