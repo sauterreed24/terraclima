@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { PLACES_BY_ID } from "../../data/places";
 import { LIVE_FIT_PRESETS, assessLiveFit, liveFitFilterPass, rankLiveFit } from "../live-fit";
 import { makeClimate, makePlace } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
@@ -86,5 +87,27 @@ describe("live-fit scoring", () => {
 
     expect(ranked[0].place.id).toBe("long-season");
     expect(assessLiveFit(longSeason).badges).toContain("Long season");
+  });
+
+  it("ranks dry highland comfort anchors ahead of fog, extreme heat, and Alaska anchors", () => {
+    const silverCity = PLACES_BY_ID["silver-city-nm"]!;
+    const saltillo = PLACES_BY_ID["saltillo-mx"]!;
+    const eureka = PLACES_BY_ID["eureka-ca"]!;
+    const deathValley = PLACES_BY_ID["death-valley-ca"]!;
+    const fairbanks = PLACES_BY_ID["fairbanks-ak"]!;
+
+    const silver = assessLiveFit(silverCity).score;
+    const salt = assessLiveFit(saltillo).score;
+    const fog = assessLiveFit(eureka).score;
+    const heat = assessLiveFit(deathValley).score;
+    const arctic = assessLiveFit(fairbanks).score;
+
+    expect(silver).toBeGreaterThan(fog);
+    expect(salt).toBeGreaterThan(fog);
+    expect(silver).toBeGreaterThan(heat);
+    expect(salt).toBeGreaterThan(heat);
+    expect(silver).toBeGreaterThan(arctic);
+    expect(salt).toBeGreaterThan(arctic);
+    expect(fog).toBeGreaterThan(heat);
   });
 });

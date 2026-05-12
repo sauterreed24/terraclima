@@ -15,6 +15,10 @@ import {
 } from "./climate-metrics";
 import { assessLiveFit, liveFitFilterPass, type LiveFitPresetId } from "./live-fit";
 import {
+  atmosphericComfortScore,
+  describeHumanComfort,
+  feltComfortScore,
+  humanComfortScore,
   LIVABILITY_BLEND_WEIGHTS,
   livedFrictionScore,
   rankLivabilityWithBreakdown,
@@ -36,6 +40,7 @@ export const LIVABILITY_WEIGHTS = LIVABILITY_BLEND_WEIGHTS;
 
 export type RankingProfile =
   | "live-fit"
+  | "most-comfortable"
   | "coolest-summers"
   | "mildest-winters"
   | "best-shoulder-seasons"
@@ -183,6 +188,15 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
       case "live-fit": {
         const fit = assessLiveFit(p);
         return { place: p, score: fit.score, note: `${fit.score}/100 live-here fit · ${fit.reasons[0]}` };
+      }
+      case "most-comfortable": {
+        const s = humanComfortScore(p);
+        const comfort = describeHumanComfort(p);
+        return {
+          place: p,
+          score: s,
+          note: `${comfort.headline} | felt ${Math.round(feltComfortScore(p))}/100 | atmosphere ${Math.round(atmosphericComfortScore(p))}/100`,
+        };
       }
       case "coolest-summers": {
         const s = Math.max(0, 100 - Math.max(0, summerHigh - k.coolSummerIdealHighC) * k.coolSummerPerDegC);

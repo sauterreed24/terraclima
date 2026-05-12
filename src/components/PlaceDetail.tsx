@@ -26,7 +26,7 @@ import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
-import { scoreLivability } from "../lib/livability-score";
+import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
 import { safeExternalHref } from "../lib/safe-url";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
 import { useMediaQuery } from "../hooks/use-media-query";
@@ -553,6 +553,7 @@ function DetailBody({
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
   const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
   const livability = useMemo(() => scoreLivability(place), [place]);
+  const comfortRead = useMemo(() => describeHumanComfort(place), [place]);
   const settlementAnchors = useMemo(() => buildSettlementAnchors(place), [place]);
   const practicalActivities = useMemo(() => buildPracticalActivities(place), [place]);
   const nearbyContextRows = useMemo(() => buildNearbyContextRows(place), [place]);
@@ -587,7 +588,7 @@ function DetailBody({
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
 
-      <Section title="Livability lens v2" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
+      <Section title="Livability lens v3" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="panel-thin p-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <div>
@@ -597,10 +598,14 @@ function DetailBody({
               </div>
             </div>
             <div className="text-[11px] text-stone-readable max-w-lg leading-snug">
-              Bidirectional thermal plateau, humidity-aware summer comfort, tail-risk-aware hazard cushion, U-shaped precip moderation, and a curated lived-friction axis (cost / social fabric / daily-services access). Hover a row for its formula.
+              Human-felt thermal comfort, atmosphere (sky, wind, humidity, smoke, and solar load), tail-risk-aware hazard cushion, U-shaped precip moderation, and curated lived friction. Hover a row for its formula.
             </div>
           </div>
           <div className="divider-contour my-3" />
+          <div className="rounded-lg border border-[rgba(26,143,168,0.18)] bg-[rgba(232,248,251,0.48)] px-3 py-2.5 mb-3">
+            <div className="text-[10px] uppercase tracking-wider text-glacier-700 mb-1">{comfortRead.headline}</div>
+            <p className="text-[12px] leading-snug text-frost">{prose(comfortRead.summary)}</p>
+          </div>
           <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {livability.components.map(c => (
               <li

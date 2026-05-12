@@ -1,5 +1,5 @@
 // ============================================================
-// Terraclima — Livability scoring (v2)
+// Terraclima - Livability scoring (v3)
 // ============================================================
 //
 // A transparent, audit-able livability lens. Each component is a
@@ -55,7 +55,7 @@
 // underwriting, or medical heat-stress advice. The footer copy still
 // surfaces that caveat.
 
-import type { Place } from "../types";
+import type { MicroclimateArchetype, Place, TopographicDriver } from "../types";
 import {
   avgRisk,
   annualComfortMonthCount,
@@ -104,12 +104,18 @@ export const THERMAL_COMFORT = {
   humidityComfortFloorPct: 50,
   humidityHeatThresholdC: 22,
   humidityPerPct: 0.6,
+  /** Warm nights erase recovery even when afternoon highs look acceptable. */
+  summerNightHeatFloorC: 20,
+  summerNightHeatPerDegC: 2.15,
+  /** Hot, very dry, high-sun climates carry radiant load beyond air temperature. */
+  aridSolarBurdenHighC: 33,
+  aridSolarBurdenPenaltyMaxPts: 14,
 } as const;
 
 /** Sky / dampness modifiers for lived comfort, independent from mean temperature. */
 export const SKY_COMFORT = {
   /** Atlas-neutral value when sunshine and humidity are missing. */
-  missingDataNeutral: 70,
+  missingDataNeutral: 66,
   /** US-like annual sunshine baseline; values above lift, below drag. */
   annualSunBaselinePct: 58,
   sunshinePerPct: 1.35,
@@ -127,6 +133,22 @@ export const SKY_COMFORT = {
   /** High-precip climates can be thermally mild but damp, dark, and mold-prone. */
   dampPrecipStartMm: 1800,
   dampPrecipPenaltyMaxPts: 22,
+} as const;
+
+/** Human atmospheric comfort beyond temperature normals. */
+export const ATMOSPHERIC_COMFORT = {
+  /** Mugginess thresholds use estimated summer dew point (C). */
+  muggyDewPointStartC: 15,
+  oppressiveDewPointC: 22,
+  /** Very dry air plus heat and wind also feels harsh. */
+  aridHumidityFloorPct: 28,
+  aridPenaltyMaxPts: 18,
+  /** Component blend. Must sum to 1. */
+  skyWeight: 0.30,
+  windWeight: 0.20,
+  mugginessWeight: 0.18,
+  airQualityWeight: 0.18,
+  solarWeight: 0.14,
 } as const;
 
 /** Hazard cushion blending. */
@@ -187,18 +209,20 @@ export const PRECIP_MODERATION = {
  * clearly) and the new lived-friction axis.
  */
 export const LIVABILITY_BLEND_WEIGHTS = {
-  resilience: 0.22,
-  thermalComfort: 0.26,
-  hazardCushion: 0.20,
-  growability: 0.12,
-  precipModeration: 0.08,
-  livedFriction: 0.12,
+  thermalComfort: 0.30,
+  atmosphericEase: 0.16,
+  hazardCushion: 0.17,
+  resilience: 0.15,
+  growability: 0.09,
+  precipModeration: 0.05,
+  livedFriction: 0.08,
 } as const;
 
 const COMPONENT_KEYS = [
-  "resilience",
   "thermalComfort",
+  "atmosphericEase",
   "hazardCushion",
+  "resilience",
   "growability",
   "precipModeration",
   "livedFriction",
@@ -230,9 +254,17 @@ export interface LivabilityResult {
   drags: ComponentKey[];
 }
 
+export interface HumanComfortNarrative {
+  headline: string;
+  summary: string;
+  strengths: string[];
+  frictions: string[];
+}
+
 const COMPONENT_LABEL: Record<ComponentKey, string> = {
   resilience: "Climate resilience",
   thermalComfort: "Felt comfort",
+  atmosphericEase: "Atmospheric ease",
   hazardCushion: "Hazard cushion",
   growability: "Growability",
   precipModeration: "Precip moderation",
@@ -241,6 +273,88 @@ const COMPONENT_LABEL: Record<ComponentKey, string> = {
 
 function clamp(n: number, lo = 0, hi = 100): number {
   return Math.min(hi, Math.max(lo, n));
+}
+
+function hasArchetype(p: Place, ids: readonly MicroclimateArchetype[]): boolean {
+  return ids.some(id => p.archetypes.includes(id));
+}
+
+function hasDriver(p: Place, ids: readonly TopographicDriver[]): boolean {
+  return ids.some(id => p.drivers.includes(id));
+}
+
+function meanSummerLow(p: Place): number {
+  return (p.climate.tempLowC[5] + p.climate.tempLowC[6] + p.climate.tempLowC[7]) / 3;
+}
+
+function meanWinterPrecipMm(p: Place): number {
+  return (p.climate.precipMm[11] + p.climate.precipMm[0] + p.climate.precipMm[1]) / 3;
+}
+
+function estimatedSummerHumidityPct(p: Place): number | null {
+  const measured = meanSummerHumidityPct(p);
+  if (measured != null) return measured;
+  if (hasArchetype(p, ["cloud-forest", "tropical-isothermal", "hurricane-coast"])) return 82;
+  if (hasArchetype(p, ["hyper-maritime", "fog-belt-coast", "fjord-inlet"])) return 80;
+  if (hasArchetype(p, ["cool-summer-maritime", "coastal-upwelling", "lake-moderated"])) return 72;
+  if (hasArchetype(p, ["high-desert-escape", "rain-shadow-sanctuary", "desert-oasis", "badland-steppe", "tropical-dry"])) return 34;
+  if (hasArchetype(p, ["sky-island-refuge", "volcanic-upland", "monsoon-edge"])) return 42;
+  return null;
+}
+
+function estimatedAnnualHumidityPct(p: Place): number | null {
+  const measured = meanAnnualHumidityPct(p);
+  if (measured != null) return measured;
+  if (hasArchetype(p, ["cloud-forest", "tropical-isothermal", "hurricane-coast"])) return 80;
+  if (hasArchetype(p, ["hyper-maritime", "fog-belt-coast", "fjord-inlet"])) return 78;
+  if (hasArchetype(p, ["cool-summer-maritime", "coastal-upwelling", "lake-moderated"])) return 70;
+  if (hasArchetype(p, ["high-desert-escape", "rain-shadow-sanctuary", "desert-oasis", "badland-steppe", "tropical-dry"])) return 32;
+  if (hasArchetype(p, ["sky-island-refuge", "volcanic-upland", "monsoon-edge"])) return 42;
+  return null;
+}
+
+function inferredAnnualSunshinePct(p: Place): number | null {
+  const measured = meanAnnualSunshinePct(p);
+  if (measured != null) return measured;
+
+  let inferred: number | null = null;
+  if (hasArchetype(p, ["hyper-maritime", "fog-belt-coast"])) inferred = 46;
+  else if (hasArchetype(p, ["cloud-forest"])) inferred = 48;
+  else if (hasArchetype(p, ["coastal-upwelling"])) inferred = 54;
+  else if (hasArchetype(p, ["cool-summer-maritime", "fjord-inlet"])) inferred = 56;
+  else if (hasArchetype(p, ["subarctic-continental", "alpine-tundra"])) inferred = 50;
+  else if (hasArchetype(p, ["high-desert-escape", "rain-shadow-sanctuary", "desert-oasis", "badland-steppe"])) inferred = 78;
+  else if (hasArchetype(p, ["sky-island-refuge", "volcanic-upland", "monsoon-edge"])) inferred = 72;
+  else if (hasArchetype(p, ["tropical-dry", "mild-winter-foothills", "eternal-spring-highland"])) inferred = 68;
+
+  if (inferred == null) return null;
+  const latitudeDim = Math.max(0, Math.abs(p.lat) - 48) * 0.85;
+  return clamp(inferred - latitudeDim, 30, 90);
+}
+
+function coastalFogSignature(p: Place): number {
+  let s = 0;
+  if (hasArchetype(p, ["fog-belt-coast"])) s += 34;
+  if (hasArchetype(p, ["hyper-maritime"])) s += 26;
+  if (hasArchetype(p, ["coastal-upwelling"])) s += 20;
+  if (hasArchetype(p, ["cool-summer-maritime"])) s += 10;
+  if (hasDriver(p, ["marine-layer"])) s += 18;
+  if (hasDriver(p, ["upwelling"])) s += 16;
+  if (summerDiurnalC(p) < 8) s += 14;
+  else if (summerDiurnalC(p) < 11) s += 7;
+  return clamp(s);
+}
+
+function riskAxisPenalty(p: Place, key: keyof Place["risks"], perStep: number): number {
+  return RISK_VALUE[p.risks[key].level] * perStep;
+}
+
+function dewPointC(tempC: number, relativeHumidityPct: number): number {
+  const rh = clamp(relativeHumidityPct, 1, 100);
+  const a = 17.625;
+  const b = 243.04;
+  const gamma = Math.log(rh / 100) + (a * tempC) / (b + tempC);
+  return (b * gamma) / (a - gamma);
 }
 
 /**
@@ -255,11 +369,30 @@ export function summerComfortScore(p: Place): number {
   else if (sh > hiBand) base = 100 - (sh - hiBand) * THERMAL_COMFORT.summerPerDegHotC;
   else base = 100 - (loBand - sh) * THERMAL_COMFORT.summerPerDegCoolC;
 
-  // Humidity tax (only when summer high implies actual heat).
-  if (p.climate.humidity && sh > THERMAL_COMFORT.humidityHeatThresholdC) {
-    const summerHum = (p.climate.humidity[5] + p.climate.humidity[6] + p.climate.humidity[7]) / 3;
+  // Humidity tax (only when summer high implies actual heat). Missing humidity
+  // is inferred from the local archetype so humid coasts and tropical entries
+  // do not get a free neutral score while measured desert entries stay dry.
+  const summerHum = estimatedSummerHumidityPct(p);
+  if (summerHum != null && sh > THERMAL_COMFORT.humidityHeatThresholdC) {
     const excess = Math.max(0, summerHum - THERMAL_COMFORT.humidityComfortFloorPct);
     base -= excess * THERMAL_COMFORT.humidityPerPct;
+  }
+
+  const summerLow = meanSummerLow(p);
+  if (summerLow > THERMAL_COMFORT.summerNightHeatFloorC) {
+    base -= (summerLow - THERMAL_COMFORT.summerNightHeatFloorC) * THERMAL_COMFORT.summerNightHeatPerDegC;
+  }
+
+  const annualSun = inferredAnnualSunshinePct(p);
+  if (
+    sh > THERMAL_COMFORT.aridSolarBurdenHighC &&
+    getAnnualPrecipMm(p) < 300 &&
+    (annualSun ?? 70) > 70
+  ) {
+    base -= Math.min(
+      THERMAL_COMFORT.aridSolarBurdenPenaltyMaxPts,
+      (sh - THERMAL_COMFORT.aridSolarBurdenHighC) * 1.8 + ((annualSun ?? 70) - 70) * 0.22,
+    );
   }
 
   // Diurnal credit (clamped).
@@ -277,9 +410,17 @@ export function summerComfortScore(p: Place): number {
 export function winterComfortScore(p: Place): number {
   const [loBand, hiBand] = THERMAL_COMFORT.winterPlateauC;
   const jl = meanJanLow(p);
-  if (jl >= loBand && jl <= hiBand) return 100;
-  if (jl < loBand) return clamp(100 - (loBand - jl) * THERMAL_COMFORT.winterPerDegColdC);
-  return clamp(100 - (jl - hiBand) * THERMAL_COMFORT.winterPerDegWarmC);
+  let base: number;
+  if (jl >= loBand && jl <= hiBand) base = 100;
+  else if (jl < loBand) base = 100 - (loBand - jl) * THERMAL_COMFORT.winterPerDegColdC;
+  else base = 100 - (jl - hiBand) * THERMAL_COMFORT.winterPerDegWarmC;
+
+  const winterPrecip = meanWinterPrecipMm(p);
+  const wind = windExposureScore(p);
+  if (jl < 7 && winterPrecip > 110 && wind < 70) {
+    base -= Math.min(14, (winterPrecip - 110) / 18 + (70 - wind) * 0.10);
+  }
+  return clamp(base);
 }
 
 /** Composite thermal comfort: average of summer & winter sub-scores. */
@@ -293,9 +434,9 @@ export function thermalComfortScore(p: Place): number {
  * live in. Missing sky data stays neutral rather than punitive.
  */
 export function skyComfortScore(p: Place): number {
-  const annualSun = meanAnnualSunshinePct(p);
-  const annualHumidity = meanAnnualHumidityPct(p);
-  const summerHumidity = meanSummerHumidityPct(p);
+  const annualSun = inferredAnnualSunshinePct(p);
+  const annualHumidity = estimatedAnnualHumidityPct(p);
+  const summerHumidity = estimatedSummerHumidityPct(p);
   const diurnal = summerDiurnalC(p);
   const annualPrecip = getAnnualPrecipMm(p);
   let score = annualSun == null
@@ -325,6 +466,11 @@ export function skyComfortScore(p: Place): number {
     }
   }
 
+  const fogSignature = coastalFogSignature(p);
+  if (fogSignature > 0) {
+    score -= Math.min(24, fogSignature * 0.24 + Math.max(0, 10 - diurnal) * 1.2);
+  }
+
   if (annualPrecip > SKY_COMFORT.dampPrecipStartMm) {
     score -= Math.min(
       SKY_COMFORT.dampPrecipPenaltyMaxPts,
@@ -335,26 +481,196 @@ export function skyComfortScore(p: Place): number {
   return clamp(score);
 }
 
+/** Wind and exposure score: 100 = calm/easy, 0 = consistently punishing. */
+export function windExposureScore(p: Place): number {
+  let score = 100;
+  const driverPenalty: Partial<Record<TopographicDriver, number>> = {
+    "gap-winds": 20,
+    "polar-jet-exposure": 18,
+    "katabatic-flow": 12,
+    "chinook-foehn": 12,
+    upwelling: 8,
+    "marine-layer": 6,
+    "sea-breeze": 4,
+  };
+  for (const d of p.drivers) score -= driverPenalty[d] ?? 0;
+
+  if (hasArchetype(p, ["gap-wind-corridor"])) score -= 18;
+  if (hasArchetype(p, ["alpine-tundra", "subarctic-continental"])) score -= 14;
+  if (hasArchetype(p, ["hyper-maritime", "fjord-inlet", "hurricane-coast"])) score -= 12;
+  if (hasArchetype(p, ["fog-belt-coast", "coastal-upwelling"])) score -= 7;
+  if (p.elevationM > 2300) score -= Math.min(16, (p.elevationM - 2300) / 85);
+  score -= riskAxisPenalty(p, "storm", 3.2);
+  score -= riskAxisPenalty(p, "coastal", 1.6);
+  return clamp(score);
+}
+
+/** Humid heat plus very dry irritation, scored as lived comfort. */
+export function mugginessScore(p: Place): number {
+  const sh = meanSummerHigh(p);
+  const summerLow = meanSummerLow(p);
+  const summerMean = (sh + summerLow) / 2;
+  const hum = estimatedSummerHumidityPct(p);
+  if (hum == null) return 72;
+
+  const dp = dewPointC(summerMean, hum);
+  let score = 100;
+  if (dp > ATMOSPHERIC_COMFORT.muggyDewPointStartC) {
+    const span = ATMOSPHERIC_COMFORT.oppressiveDewPointC - ATMOSPHERIC_COMFORT.muggyDewPointStartC;
+    score -= Math.min(55, ((dp - ATMOSPHERIC_COMFORT.muggyDewPointStartC) / span) * 55);
+  }
+  if (summerLow > 21) score -= Math.min(18, (summerLow - 21) * 3);
+
+  const annualHumidity = estimatedAnnualHumidityPct(p);
+  if (
+    annualHumidity != null &&
+    annualHumidity < ATMOSPHERIC_COMFORT.aridHumidityFloorPct &&
+    (sh > 30 || windExposureScore(p) < 70)
+  ) {
+    score -= Math.min(
+      ATMOSPHERIC_COMFORT.aridPenaltyMaxPts,
+      (ATMOSPHERIC_COMFORT.aridHumidityFloorPct - annualHumidity) * 0.7 + Math.max(0, sh - 30) * 1.0,
+    );
+  }
+  return clamp(score);
+}
+
+/** Smoke, wildfire, drought dust, and heat-event proxy. */
+export function airQualityComfortScore(p: Place): number {
+  return clamp(
+    100 -
+      riskAxisPenalty(p, "smoke", 9.5) -
+      riskAxisPenalty(p, "wildfire", 5.0) -
+      riskAxisPenalty(p, "drought", 3.4) -
+      riskAxisPenalty(p, "extremeHeat", 3.0),
+  );
+}
+
+/** Sunshine is beneficial until it pairs with brutal heat, aridity, or altitude. */
+export function solarComfortScore(p: Place): number {
+  const annualSun = inferredAnnualSunshinePct(p);
+  const sh = meanSummerHigh(p);
+  let score = annualSun == null
+    ? 72
+    : clamp(64 + (annualSun - SKY_COMFORT.annualSunBaselinePct) * 0.82);
+
+  if (annualSun != null && annualSun < 52) score -= (52 - annualSun) * 0.7;
+  if (annualSun != null && annualSun > 78 && sh > 31) {
+    score -= Math.min(18, (annualSun - 78) * 0.35 + (sh - 31) * 2.4);
+  }
+  if (p.elevationM > 1800 && Math.abs(p.lat) < 35 && (annualSun ?? 70) > 70) {
+    score -= Math.min(8, (p.elevationM - 1800) / 250);
+  }
+  if (coastalFogSignature(p) > 35) score -= 8;
+  return clamp(score);
+}
+
+/** Composite atmosphere: sky, wind, mugginess, smoke/air, and solar burden. */
+export function atmosphericComfortScore(p: Place): number {
+  const w = ATMOSPHERIC_COMFORT;
+  return clamp(
+    skyComfortScore(p) * w.skyWeight +
+    windExposureScore(p) * w.windWeight +
+    mugginessScore(p) * w.mugginessWeight +
+    airQualityComfortScore(p) * w.airQualityWeight +
+    solarComfortScore(p) * w.solarWeight -
+    Math.min(
+      30,
+      Math.max(0, meanSummerHigh(p) - 34) * 1.65 +
+        Math.max(0, meanSummerLow(p) - 22) * 1.55 +
+        riskAxisPenalty(p, "extremeHeat", 1.8),
+    ),
+  );
+}
+
 /**
  * Final comfort signal used by livability ranking. It blends the objective
  * high/low envelope, year-round usable-month runway, sky/dampness, and the
  * curated corpus comfort score so one pleasant season cannot erase a hard
  * rest-of-year livability burden.
  *
- * v2.1 — Increases sky-comfort weight from 0.12 → 0.20 and reduces curator
- * comfort weight from 0.24 → 0.16. Fog-belt coasts were inheriting the bulk
- * of their felt-comfort score from a curator note that read the mild thermal
- * envelope as universally pleasant, when resident reports describe the
- * persistent stratus deck as a real day-to-day drag. Sky comfort is now the
- * stronger anchor on the lived side of the blend.
+ * v3: Adds atmosphere as a first-class felt-comfort input so fog, wind,
+ * humidity, smoke exposure, and radiant heat can move comfort ranking even
+ * when the raw high/low envelope looks mild on paper.
  */
 export function feltComfortScore(p: Place): number {
   return clamp(
-    thermalComfortScore(p) * 0.42 +
+    thermalComfortScore(p) * 0.38 +
     seasonalUsabilityScore(p) * 0.22 +
-    clamp(p.scores.comfort) * 0.16 +
-    skyComfortScore(p) * 0.20,
+    clamp(p.scores.comfort) * 0.12 +
+    skyComfortScore(p) * 0.18 +
+    atmosphericComfortScore(p) * 0.10,
   );
+}
+
+/** Pure "how it feels to be there" ranking signal for comfort-first sorting. */
+export function humanComfortScore(p: Place): number {
+  return clamp(
+    feltComfortScore(p) * 0.48 +
+    atmosphericComfortScore(p) * 0.26 +
+    seasonalUsabilityScore(p) * 0.14 +
+    hazardCushionScore(p) * 0.07 +
+    livedFrictionScore(p) * 0.05,
+  );
+}
+
+function pushLimited(list: string[], value: string, max = 3): void {
+  if (list.length >= max || list.includes(value)) return;
+  list.push(value);
+}
+
+function comfortBand(score: number): string {
+  if (score >= 84) return "Exceptional";
+  if (score >= 74) return "Easy";
+  if (score >= 62) return "Mixed";
+  if (score >= 48) return "Hard-edged";
+  return "Severe";
+}
+
+/** Plain-language comfort read generated from the same score components. */
+export function describeHumanComfort(p: Place): HumanComfortNarrative {
+  const score = humanComfortScore(p);
+  const felt = feltComfortScore(p);
+  const atmosphere = atmosphericComfortScore(p);
+  const summer = summerComfortScore(p);
+  const winter = winterComfortScore(p);
+  const sky = skyComfortScore(p);
+  const wind = windExposureScore(p);
+  const muggy = mugginessScore(p);
+  const air = airQualityComfortScore(p);
+  const solar = solarComfortScore(p);
+  const months = annualComfortMonthCount(p);
+  const summerHigh = meanSummerHigh(p);
+  const winterLow = meanJanLow(p);
+  const diurnal = summerDiurnalC(p);
+  const strengths: string[] = [];
+  const frictions: string[] = [];
+
+  if (felt >= 82) pushLimited(strengths, `${months}/12 months feel broadly usable, not just one perfect shoulder season.`);
+  else if (months <= 5) pushLimited(frictions, `Only ${months}/12 months clear the easy day-night-precip screen.`);
+
+  if (summer >= 82 && summerHigh <= 30) pushLimited(strengths, `Summer heat is restrained enough for normal afternoon routines (${summerHigh.toFixed(1)}°C mean high).`);
+  else if (summer < 55) pushLimited(frictions, `Summer heat load is a dominant constraint (${summerHigh.toFixed(1)}°C mean high).`);
+
+  if (winter >= 82 && winterLow >= -6) pushLimited(strengths, `Winter lows stay within a manageable daily-life band (${winterLow.toFixed(1)}°C mean).`);
+  else if (winter < 55) pushLimited(frictions, `Winter cold is not cosmetic; it changes transport, housing, and outdoor rhythm (${winterLow.toFixed(1)}°C mean low).`);
+
+  if (diurnal >= 12 && summerHigh < 34) pushLimited(strengths, `Night recovery is strong: about ${Math.round(diurnal)}°C of summer day-night relief.`);
+  if (sky >= 70) pushLimited(strengths, "Sky and light support outdoor time rather than just mild thermometer readings.");
+  if (atmosphere >= 76) pushLimited(strengths, "Wind, humidity, smoke, and solar load combine into an easy atmospheric read.");
+
+  if (sky < 45) pushLimited(frictions, "Fog, low sun, or damp sky cuts into the lived feel even when temperatures look mild.");
+  if (wind < 55) pushLimited(frictions, "Wind exposure is strong enough to affect walking, patios, sleep noise, and perceived cold.");
+  if (muggy < 55) pushLimited(frictions, "Humidity or arid-air stress changes how the heat feels on skin and during sleep.");
+  if (air < 55) pushLimited(frictions, "Smoke, fire, drought dust, or heat-event air quality lowers the comfort ceiling.");
+  if (solar < 55) pushLimited(frictions, "Sun angle, altitude, or desert radiant load makes shade and timing matter.");
+
+  if (strengths.length === 0) pushLimited(strengths, "The comfort case is balanced rather than spectacular; read the component bars.");
+  if (frictions.length === 0) pushLimited(frictions, "No single atmospheric drag dominates the comfort read.");
+
+  const headline = `${comfortBand(score)} human comfort (${Math.round(score)}/100)`;
+  const summary = `${strengths[0]} ${frictions[0]}`;
+  return { headline, summary, strengths, frictions };
 }
 
 /**
@@ -459,6 +775,8 @@ function makeRationale(p: Place, key: ComponentKey, value: number): string {
       const jl = meanJanLow(p);
       return `Summer ${sh.toFixed(1)}°C · winter ${jl.toFixed(1)}°C · ${annualComfortMonthCount(p)}/12 easy months · sky ${Math.round(skyComfortScore(p))}/100 · curator ${Math.round(p.scores.comfort)}/100 → felt comfort ${Math.round(value)}/100`;
     }
+    case "atmosphericEase":
+      return `Sky ${Math.round(skyComfortScore(p))}/100 | wind ${Math.round(windExposureScore(p))}/100 | humidity ${Math.round(mugginessScore(p))}/100 | air ${Math.round(airQualityComfortScore(p))}/100 | solar ${Math.round(solarComfortScore(p))}/100`;
     case "hazardCushion":
       return `Risk: mean ${avgRisk(p).toFixed(2)} · max ${maxRisk(p).toFixed(0)}/5 → cushion ${Math.round(value)}/100`;
     case "growability":
@@ -491,9 +809,10 @@ export function scoreLivability(p: Place): LivabilityResult {
   if (cached) return cached;
   const w = LIVABILITY_BLEND_WEIGHTS;
   const values: Record<ComponentKey, number> = {
-    resilience: clamp(p.scores.resilience),
     thermalComfort: feltComfortScore(p),
+    atmosphericEase: atmosphericComfortScore(p),
     hazardCushion: hazardCushionScore(p),
+    resilience: clamp(p.scores.resilience),
     growability: clamp(p.scores.growability),
     precipModeration: precipModerationScore(p),
     livedFriction: livedFrictionScore(p),
@@ -521,7 +840,7 @@ export function scoreLivability(p: Place): LivabilityResult {
   return result;
 }
 
-/** Rank a pool by livability v2, returning the per-place breakdown alongside the score. */
+/** Rank a pool by livability v3, returning the per-place breakdown alongside the score. */
 export function rankLivabilityWithBreakdown(pool: Place[]): LivabilityResult[] {
   if (pool.length === 0) return [];
   return pool.map(scoreLivability).sort((a, b) => b.score - a.score);

@@ -2,16 +2,20 @@ import { describe, it, expect } from "vitest";
 import {
   LIVABILITY_BLEND_WEIGHTS,
   PRECIP_MODERATION,
+  atmosphericComfortScore,
   feltComfortScore,
   hazardCushionScore,
+  humanComfortScore,
   livabilityPercentiles,
   maxRisk,
+  mugginessScore,
   precipModerationScore,
   rankLivabilityWithBreakdown,
   scoreLivability,
   skyComfortScore,
   summerComfortScore,
   thermalComfortScore,
+  windExposureScore,
   winterComfortScore,
 } from "../livability-score";
 import { seasonalUsabilityScore } from "../climate-metrics";
@@ -180,6 +184,64 @@ describe("skyComfortScore + feltComfortScore", () => {
     expect(thermalComfortScore(shortSeason)).toBeCloseTo(thermalComfortScore(allYear), 0);
     expect(seasonalUsabilityScore(shortSeason)).toBeLessThan(seasonalUsabilityScore(allYear));
     expect(feltComfortScore(shortSeason)).toBeLessThan(feltComfortScore(allYear));
+  });
+});
+
+describe("atmosphericComfortScore + humanComfortScore", () => {
+  it("does not treat missing sky data as neutral when the archetype screams fog belt", () => {
+    const brightHighland = makePlace({
+      id: "bright-highland",
+      lat: 32,
+      elevationM: 1800,
+      archetypes: ["high-desert-escape", "sky-island-refuge"],
+      drivers: ["elevation-lapse-rate"],
+      climate: makeClimate({
+        humidity: undefined,
+        sunshinePct: undefined,
+        tempHighC: [14, 17, 20, 24, 27, 29, 30, 29, 26, 22, 17, 14] as Monthly12,
+        tempLowC: [-2, 0, 3, 7, 11, 14, 15, 15, 11, 6, 1, -2] as Monthly12,
+        precipMm: [30, 28, 32, 25, 30, 38, 70, 78, 50, 32, 28, 30] as Monthly12,
+      }),
+    });
+    const fogCoast = makePlace({
+      id: "fog-coast",
+      lat: 41,
+      elevationM: 10,
+      archetypes: ["hyper-maritime", "fog-belt-coast", "coastal-upwelling"],
+      drivers: ["upwelling", "marine-layer"],
+      climate: makeClimate({
+        humidity: undefined,
+        sunshinePct: undefined,
+        diurnalSummerC: 6,
+        tempHighC: [12, 12, 13, 14, 15, 16, 17, 17, 17, 16, 14, 12] as Monthly12,
+        tempLowC: [5, 5, 6, 7, 9, 10, 11, 11, 10, 8, 6, 5] as Monthly12,
+        precipMm: [170, 150, 140, 80, 42, 22, 8, 10, 24, 70, 160, 175] as Monthly12,
+      }),
+      scores: { hiddenGem: 60, microclimateUniqueness: 90, comfort: 50, resilience: 80, growability: 60, tradeoff: 60 },
+    });
+
+    expect(thermalComfortScore(fogCoast)).toBeGreaterThan(thermalComfortScore(brightHighland));
+    expect(skyComfortScore(fogCoast)).toBeLessThan(skyComfortScore(brightHighland));
+    expect(atmosphericComfortScore(fogCoast)).toBeLessThan(atmosphericComfortScore(brightHighland));
+    expect(humanComfortScore(fogCoast)).toBeLessThan(humanComfortScore(brightHighland));
+  });
+
+  it("penalises wind exposure and muggy heat as separate human comfort signals", () => {
+    const calmDry = makePlace({
+      climate: uniformClimate({ high: 28, low: 14, humidity: 35, diurnalSummerC: 14 }),
+      drivers: ["elevation-lapse-rate"],
+      archetypes: ["high-desert-escape"],
+    });
+    const windyMuggy = makePlace({
+      climate: uniformClimate({ high: 30, low: 24, humidity: 82, diurnalSummerC: 5 }),
+      drivers: ["gap-winds", "marine-layer"],
+      archetypes: ["gap-wind-corridor", "hurricane-coast"],
+      risks: { ...makePlace().risks, storm: { level: "high" }, smoke: { level: "moderate" } },
+    });
+
+    expect(windExposureScore(windyMuggy)).toBeLessThan(windExposureScore(calmDry));
+    expect(mugginessScore(windyMuggy)).toBeLessThan(mugginessScore(calmDry));
+    expect(atmosphericComfortScore(windyMuggy)).toBeLessThan(atmosphericComfortScore(calmDry));
   });
 });
 

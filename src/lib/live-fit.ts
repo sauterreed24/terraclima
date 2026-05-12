@@ -8,9 +8,12 @@ import {
   seasonalUsabilityScore,
 } from "./climate-metrics";
 import {
+  atmosphericComfortScore,
   dominantLivedFriction,
   feltComfortScore,
   livedFrictionScore,
+  mugginessScore,
+  windExposureScore,
 } from "./livability-score";
 
 export type LiveFitPresetId =
@@ -124,15 +127,14 @@ export const LIVE_FIT_RISK_CEILINGS = ["low", "moderate", "elevated"] as const s
  * 0.09 and `hazardEase` from 0.11 → 0.12 to reabsorb the freed weight.
  */
 const LIVE_FIT_DEFAULT_WEIGHTS = {
-  feltComfort: 0.22,
+  feltComfort: 0.34,
   seasonalRunway: 0.13,
-  resilience: 0.15,
-  uniqueness: 0.04,
-  growability: 0.11,
-  hazardEase: 0.12,
-  hiddenGem: 0.04,
-  sunshine: 0.09,
-  livedFriction: 0.10,
+  atmosphericEase: 0.16,
+  hazardEase: 0.13,
+  resilience: 0.10,
+  growability: 0.08,
+  livedFriction: 0.05,
+  uniqueness: 0.01,
 } as const;
 
 function clamp100(n: number): number {
@@ -265,13 +267,12 @@ function defaultLiveScore(place: Place): number {
   return Math.round(clamp100(
     feltComfortScore(place) * w.feltComfort +
     seasonalUsabilityScore(place) * w.seasonalRunway +
-    place.scores.resilience * w.resilience +
-    place.scores.microclimateUniqueness * w.uniqueness +
-    place.scores.growability * w.growability +
+    atmosphericComfortScore(place) * w.atmosphericEase +
     hazardEase * w.hazardEase +
-    place.scores.hiddenGem * w.hiddenGem +
-    sunshineScore(place) * w.sunshine +
-    livedFrictionScore(place) * w.livedFriction,
+    place.scores.resilience * w.resilience +
+    place.scores.growability * w.growability +
+    livedFrictionScore(place) * w.livedFriction +
+    place.scores.microclimateUniqueness * w.uniqueness,
   ));
 }
 
@@ -301,6 +302,10 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   const winter = meanJanLow(place);
   const annualRange = summer - winter;
   const comfortMonths = annualComfortMonthCount(place);
+  const atmosphere = atmosphericComfortScore(place);
+  const windEase = windExposureScore(place);
+  const humidityEase = mugginessScore(place);
+  const sunEase = sunshineScore(place);
 
   if (presets.length) {
     for (const id of presets
@@ -314,6 +319,7 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
 
   if (summer <= 23) pushUnique(reasons, "Summer afternoons stay comparatively cool for the atlas.", 3);
   if (winter >= -2) pushUnique(reasons, "Winter lows are relatively easy compared with colder inland basins.", 3);
+  if (atmosphere >= 74) pushUnique(reasons, "Sun, humidity, wind, and smoke signals read easy for daily outdoor time.", 3);
   if (place.scores.growability >= 72) pushUnique(reasons, "Growability is strong enough for serious garden or orchard scouting.", 3);
   if (comfortMonths >= 8) pushUnique(reasons, `${comfortMonths} months clear the easy-living comfort screen.`, 3);
   if (place.scores.microclimateUniqueness >= 78) pushUnique(reasons, "The terrain signal is distinctive, not generic regional weather.", 3);
@@ -326,6 +332,9 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   if (RISK_VALUE[place.risks.coastal.level] >= 3) pushUnique(cautions, `Coastal exposure is ${place.risks.coastal.level}.`, 3);
   if (winter < -12) pushUnique(cautions, "Winter cold is a real lifestyle filter.", 3);
   if (summer > 31) pushUnique(cautions, "Peak summer heat will matter for daily routines.", 3);
+  if (atmosphere < 48) pushUnique(cautions, "Atmospheric comfort is the main drag: sky, wind, humidity, smoke, or solar load reduce the lived feel.", 3);
+  if (windEase < 55) pushUnique(cautions, `Wind exposure is a real comfort filter (${Math.round(windEase)}/100).`, 3);
+  if (humidityEase < 55) pushUnique(cautions, `Humidity or arid-air strain pulls down the comfort read (${Math.round(humidityEase)}/100).`, 3);
   if (comfortMonths <= 4) pushUnique(cautions, `Only ${comfortMonths} months clear the easy-living comfort screen.`, 3);
   if (annualRange > 36) pushUnique(cautions, "Annual temperature range is large; expect harder seasonal swings.", 3);
 
@@ -366,6 +375,8 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
     if (annualSun < 48) pushUnique(cautions, `Below-average sunshine (~${Math.round(annualSun)}% of possible; US avg 58%) — expect frequent overcast days.`, 3);
     else if (annualSun < 55) pushUnique(cautions, `Sunshine is below the US average of 58% (~${Math.round(annualSun)}%) — overcast days are common.`, 3);
   }
+
+  if (sunEase < 40) pushUnique(cautions, `Sunlight and fog score poorly (${Math.round(sunEase)}/100), so mild temperatures may still feel gloomy.`, 3);
 
   if (place.scores.resilience >= 72) badges.push("Resilient");
   if (place.scores.hiddenGem >= 78) badges.push("Hidden");
