@@ -18,6 +18,7 @@ import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, ty
 import { rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
+import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
@@ -404,6 +405,16 @@ export default function App() {
     () => buildExplorerScoutBrief(ranked, rankingLabel, deferredFilters),
     [ranked, rankingLabel, deferredFilters],
   );
+  const contextStressRows = useMemo(
+    () => buildContextStressRows({
+      pool,
+      currentRanked: ranked,
+      currentFilters: deferredFilters,
+      currentRanking: ranking,
+      currentRankingLabel: rankingLabel,
+    }),
+    [pool, ranked, deferredFilters, ranking, rankingLabel],
+  );
   const resonantWindow = useMemo(() => resonantWindowFor(ranking), [ranking]);
   const rankedRef = useRef(ranked);
   rankedRef.current = ranked;
@@ -511,6 +522,12 @@ export default function App() {
     setCompareIds(new Set(ids.slice(0, COMPARE_LIMIT)));
     setCompareOpen(ids.length > 0);
   }, []);
+
+  const applyContextScenario = useCallback((id: ContextScenarioId) => {
+    const scenario = CONTEXT_SCENARIO_BY_ID[id];
+    setRanking(scenario.ranking);
+    setFilters(f => filtersForContextScenario(f, scenario));
+  }, [setRanking]);
 
   const pickArchetype = useCallback((a: MicroclimateArchetype) => {
     setFilters(f => ({ ...f, archetypes: new Set([a]) }));
@@ -629,7 +646,9 @@ export default function App() {
                   onCopyView={copyCurrentView}
                   shareStatus={shareStatus}
                   scoutBrief={scoutBrief}
+                  contextStressRows={contextStressRows}
                   onCompareLeaders={comparePlaces}
+                  onApplyContextScenario={applyContextScenario}
                   bookmarkIds={bookmarkIds}
                   recentIds={recentIds}
                   onToggleBookmark={toggleBookmark}
@@ -1237,7 +1256,9 @@ const HeroCard = memo(function HeroCard({
   onCopyView,
   shareStatus,
   scoutBrief,
+  contextStressRows,
   onCompareLeaders,
+  onApplyContextScenario,
   bookmarkIds,
   recentIds,
   onToggleBookmark,
@@ -1260,7 +1281,9 @@ const HeroCard = memo(function HeroCard({
   onCopyView: () => void;
   shareStatus: ShareStatus;
   scoutBrief: ExplorerScoutBrief | null;
+  contextStressRows: ContextStressRow[];
   onCompareLeaders: (ids: string[]) => void;
+  onApplyContextScenario: (id: ContextScenarioId) => void;
   bookmarkIds: Set<string>;
   recentIds: readonly string[];
   onToggleBookmark: (id: string) => void;
@@ -1404,6 +1427,14 @@ const HeroCard = memo(function HeroCard({
           brief={scoutBrief}
           onOpenPlace={onOpenPlace}
           onCompareLeaders={onCompareLeaders}
+        />
+      ) : null}
+
+      {contextStressRows.length > 1 ? (
+        <ContextStressPanel
+          rows={contextStressRows}
+          onOpenPlace={onOpenPlace}
+          onApplyContextScenario={onApplyContextScenario}
         />
       ) : null}
 
@@ -1577,6 +1608,98 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
         </section>
       ) : null}
     </div>
+  );
+});
+
+const ContextStressPanel = memo(function ContextStressPanel({
+  rows,
+  onOpenPlace,
+  onApplyContextScenario,
+}: {
+  rows: ContextStressRow[];
+  onOpenPlace: (id: string) => void;
+  onApplyContextScenario: (id: ContextScenarioId) => void;
+}) {
+  const prose = useProse();
+  return (
+    <section className="context-stress" aria-labelledby="context-stress-title">
+      <div className="context-stress__head">
+        <div className="min-w-0">
+          <div id="context-stress-title" className="context-stress__eyebrow">
+            Context stress test
+          </div>
+          <p className="context-stress__summary">
+            Same place context, rerun through different living priorities so leader shifts and caveats surface before you dig into cards.
+          </p>
+        </div>
+        <div className="context-stress__count" aria-label={`${rows.length} context reads`}>
+          {rows.length} reads
+        </div>
+      </div>
+
+      <div className="context-stress__rail" aria-label="Scenario leaders for the current place context">
+        {rows.map(row => (
+          <div key={row.id} className="context-stress__card" data-current={row.id === "current" ? "true" : undefined}>
+            <div className="context-stress__card-head">
+              <div className="min-w-0">
+                <div className="context-stress__label">{row.label}</div>
+                <div className="context-stress__shift">{row.shiftLabel}</div>
+              </div>
+              <span className="context-stress__score" aria-label={`Score ${Math.round(row.leader.score)}`}>
+                {Math.round(row.leader.score)}
+              </span>
+            </div>
+
+            <button
+              type="button"
+              className="context-stress__leader"
+              onClick={() => onOpenPlace(row.leader.place.id)}
+              aria-label={`${row.label}: open ${row.leader.place.name}, score ${Math.round(row.leader.score)}`}
+              title={prose(row.description)}
+            >
+              <span className="context-stress__leader-name">{row.leader.place.name}</span>
+              <span className="context-stress__leader-note">
+                {row.leader.note ? prose(row.leader.note) : row.leader.place.koppen}
+              </span>
+            </button>
+
+            <div className="context-stress__stats" aria-label={`${row.label} decision metrics`}>
+              <span>Fit {row.decision.liveFitScore}</span>
+              <span>Comfort {row.decision.comfortScore}</span>
+              <span>Easy {row.decision.easyMonths} mo</span>
+              <span>Risk {row.decision.riskLoad}</span>
+            </div>
+
+            <div className="context-stress__watch">
+              <span>Watch:</span> {prose(row.decision.watch)}
+            </div>
+
+            <div className="context-stress__actions">
+              <button
+                type="button"
+                className="btn-ghost !text-xs !py-1.5"
+                onClick={() => onOpenPlace(row.leader.place.id)}
+                aria-label={`Open ${row.leader.place.name} from ${row.label}`}
+              >
+                <Target className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+                Open
+              </button>
+              {row.scenario ? (
+                <button
+                  type="button"
+                  className="btn-primary !text-xs !py-1.5"
+                  onClick={() => onApplyContextScenario(row.scenario!.id)}
+                  aria-label={`Apply context: ${row.label}`}
+                  title={prose(row.description)}
+                >
+                  Apply
+                </button>
+              ) : null}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 });
 

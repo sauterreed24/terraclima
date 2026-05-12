@@ -97,7 +97,9 @@ describe("App shell", () => {
 
     expect(screen.getByText("Current rank")).toBeInTheDocument();
     expect(screen.getByText("Scout brief")).toBeInTheDocument();
+    expect(screen.getByText("Context stress test")).toBeInTheDocument();
     expect(screen.getAllByText("Decision matrix").length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("button", { name: /Apply context:/ }).length).toBeGreaterThan(3);
     expect(screen.getAllByText("Easy months").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Felt comfort").length).toBeGreaterThan(0);
     expect(screen.getByText(/Leading matches by/)).toBeInTheDocument();
@@ -118,6 +120,18 @@ describe("App shell", () => {
     fireEvent.click(screen.getByRole("button", { name: /Compare current leaders/ }));
 
     expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+  }, 15000);
+
+  it("applies alternate context presets from the Explorer hero", async () => {
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Apply context: Cool summers" }));
+
+    await waitFor(() => {
+      expect(window.location.search).toContain("fit=cool-summers");
+      expect(window.location.search).toContain("sh=26");
+    });
+    expect(screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit")).toBeInTheDocument();
   }, 15000);
 
   it("copies the current Explorer URL for sharing", async () => {
