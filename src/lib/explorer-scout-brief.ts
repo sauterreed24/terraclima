@@ -9,6 +9,8 @@ import {
   RISK_VALUE,
 } from "./climate-metrics";
 import { feltComfortScore } from "./livability-score";
+import { buildShortlistDecisionRows, type ShortlistDecisionRow } from "./decision-matrix";
+import type { LiveFitFilters } from "./live-fit";
 import type { RankingResult } from "./scoring";
 
 const RISK_LABELS: Record<keyof Place["risks"], string> = {
@@ -36,6 +38,7 @@ export interface ExplorerScoutBrief {
     value: string;
     detail: string;
   }[];
+  decisionRows: ShortlistDecisionRow[];
   metrics: {
     label: string;
     value: string;
@@ -146,7 +149,11 @@ function decisionLine(signals: ExplorerScoutBrief["decisionSignals"]): string {
   return `No single place dominates: ${top.place.name} leads ${top.count} living signals, while ${winners[1]!.place.name} keeps at least one priority in play.`;
 }
 
-export function buildExplorerScoutBrief(ranked: RankingResult[], rankingLabel: string): ExplorerScoutBrief | null {
+export function buildExplorerScoutBrief(
+  ranked: RankingResult[],
+  rankingLabel: string,
+  liveFitFilters: LiveFitFilters = {},
+): ExplorerScoutBrief | null {
   if (ranked.length === 0) return null;
 
   const shortlist = ranked.slice(0, Math.min(5, ranked.length));
@@ -157,6 +164,7 @@ export function buildExplorerScoutBrief(ranked: RankingResult[], rankingLabel: s
   const compareIds = ranked.slice(0, 4).map(row => row.place.id);
   const leaderNote = leader.note?.replace(/\s+/g, " ").trim();
   const decisionSignals = buildDecisionSignals(places);
+  const decisionRows = buildShortlistDecisionRows(shortlist, liveFitFilters);
 
   return {
     leader,
@@ -166,6 +174,7 @@ export function buildExplorerScoutBrief(ranked: RankingResult[], rankingLabel: s
     decisionLine: decisionLine(decisionSignals),
     cautionLine: topRiskLine(leader.place),
     decisionSignals,
+    decisionRows,
     metrics: [
       {
         label: "Summer highs",

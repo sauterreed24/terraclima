@@ -46,6 +46,14 @@ describe("buildExplorerScoutBrief", () => {
       "Climate resilience",
       "Distinctive terrain",
     ]);
+    expect(brief!.decisionRows).toHaveLength(5);
+    expect(brief!.decisionRows[0]).toMatchObject({
+      place: ranked[0].place,
+      rank: 1,
+      rankingScore: Math.round(ranked[0].score),
+    });
+    expect(brief!.decisionRows[0].bestFor).toMatch(/; .+ is the edge\./);
+    expect(brief!.decisionRows[0].watch.length).toBeGreaterThan(6);
     expect(brief!.decisionLine).toContain("living signals");
     expect(brief!.cautionLine.length).toBeGreaterThan(20);
   });
@@ -107,6 +115,8 @@ describe("buildExplorerScoutBrief", () => {
     ]);
     expect(brief!.decisionLine).toContain("Garden Ridge");
     expect(brief!.decisionLine).toContain("3 of 5");
+    expect(brief!.decisionRows.map(row => row.place.id)).toEqual(["comfort-town", "risk-cove", "garden-ridge"]);
+    expect(brief!.decisionRows[0].decisionCue).toContain("Watch");
   });
 
   it("returns null for an empty ranked set", () => {
