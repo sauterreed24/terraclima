@@ -1,4 +1,4 @@
-// Smoke tests for the v2 livability algorithm run against the full corpus.
+// Smoke tests for the v3 livability algorithm run against the full corpus.
 // These are coarse-grained sanity checks — not statistical claims — that
 // catch regressions where the algorithm starts producing NaN / Infinity /
 // undefined component values, or where the percentile distribution
@@ -10,7 +10,7 @@
 // loudly rather than at runtime.
 
 import { describe, expect, it } from "vitest";
-import { PLACES } from "../../data/places";
+import { PLACES, PLACES_BY_ID } from "../../data/places";
 import {
   LIVABILITY_COMPONENT_KEYS,
   livabilityPercentiles,
@@ -18,7 +18,7 @@ import {
   scoreLivability,
 } from "../livability-score";
 
-describe("livability v2 — corpus smoke", () => {
+describe("livability v3 — corpus smoke", () => {
   it("scores every place to a finite 0..100 value", () => {
     let badCount = 0;
     const examples: string[] = [];
@@ -76,6 +76,29 @@ describe("livability v2 — corpus smoke", () => {
     // The corpus has both: this guarantees we still gracefully fall back.
     for (const p of PLACES) {
       expect(() => scoreLivability(p)).not.toThrow();
+    }
+  });
+
+  it("keeps high-impact Mexico live-here profiles backed by lived context", () => {
+    const ids = [
+      "patzcuaro-mx",
+      "valle-de-bravo-mx",
+      "tapalpa-mx",
+      "mazamitla-mx",
+      "ajijic-lake-chapala-mx",
+      "tequila-mx",
+      "guanajuato-mx",
+      "queretaro-mx",
+    ];
+
+    for (const id of ids) {
+      const place = PLACES_BY_ID[id];
+      expect(place, id).toBeDefined();
+      expect(place!.liveSignals?.note?.length, `${id} liveSignals.note`).toBeGreaterThan(24);
+      expect(place!.liveSignals?.sources?.length, `${id} liveSignals.sources`).toBeGreaterThanOrEqual(1);
+      expect(place!.settlementsWithinZone?.length, `${id} settlement anchors`).toBeGreaterThanOrEqual(3);
+      expect(place!.thingsToDo?.length, `${id} thingsToDo`).toBeGreaterThanOrEqual(4);
+      expect(place!.deepSections?.length, `${id} deepSections`).toBeGreaterThanOrEqual(2);
     }
   });
 });

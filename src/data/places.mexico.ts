@@ -481,6 +481,16 @@ export const PLACES_MEXICO: Place[] = [
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "very-low", trend: "worsening"}, extremeCold: {level: "low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "moderate", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     nearbyContrasts: [{ label: "Morelia (1920 m)", note: "Warmer in the afternoon; busier regional capital." }, { label: "Uruapan (1630 m)", note: "Warmer, lower; avocado capital." }],
     scores: { hiddenGem: 74, microclimateUniqueness: 72, comfort: 84, resilience: 62, growability: 80, tradeoff: 36 },
+    liveSignals: {
+      costPressure: 30,
+      socialStress: 36,
+      accessFriction: 34,
+      note: "A real regional town with groceries, clinics, schools, and Morelia backup; lake health, older housing, and tourist-season pressure are the practical checks.",
+      sources: [
+        { label: "INEGI - Patzcuaro municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Municipio de Patzcuaro - local services", url: "https://www.patzcuaro.gob.mx/" },
+      ],
+    },
     relocationFit: ["cultural immersion", "highland dreamers"], travelFit: ["Día de Muertos", "lake villages"],
     whoWouldLove: "Those drawn to Purépecha culture and highland water.", whoMightNot: "Heat-seekers.",
     confidence: "high",
@@ -555,6 +565,16 @@ export const PLACES_MEXICO: Place[] = [
     localContrast: [{ radiusKm: 65, summerHighDeltaC: -4, precipDeltaPct: 30, note: "vs drier plateau towns toward Toluca/Mexico City; the lake basin and slopes hold more moisture and summer cloud." }],
     nearbyContrasts: [{ label: "Toluca, Mexico", note: "Higher, cooler, more urban, and more frost-prone." }, { label: "Temascaltepec slopes", note: "Warmer and more subtropical downslope from the lake basin." }],
     scores: { hiddenGem: 62, microclimateUniqueness: 74, comfort: 86, resilience: 62, growability: 78, tradeoff: 36 },
+    liveSignals: {
+      costPressure: 68,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Excellent climate with weekend-home economics: housing pressure, traffic surges, slope diligence, and lake access can dominate the lived experience.",
+      sources: [
+        { label: "INEGI - Valle de Bravo municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Municipio de Valle de Bravo - local government", url: "https://valledebravo.gob.mx/" },
+      ],
+    },
     relocationFit: ["lake-town remote workers", "Mexico City weekenders going permanent", "highland gardeners"],
     travelFit: ["Lake Avandaro sailing", "paragliding", "pine-forest hikes", "waterfall walks"],
     whoWouldLove: "People who want a Mexican highland lake town with terraces, forest, and outdoor life nearly every month.",
@@ -755,6 +775,16 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Warmer.", outlook2100: "Warmer.", keyShifts: [{variable: "Temperature", direction: "up"}], resilienceNote: "Elevation provides buffer." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "very-low", trend: "worsening"}, extremeCold: {level: "low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "moderate", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 82, microclimateUniqueness: 70, comfort: 80, resilience: 62, growability: 72, tradeoff: 34 },
+    liveSignals: {
+      costPressure: 44,
+      socialStress: 28,
+      accessFriction: 48,
+      note: "A cool, appealing cabin-and-weekend town, but full-service life leans on Sayula/Guadalajara and forest-edge roads are part of the daily calculus.",
+      sources: [
+        { label: "INEGI - Tapalpa municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Gobierno de Jalisco - municipal services context", url: "https://www.jalisco.gob.mx/" },
+      ],
+    },
     relocationFit: ["cool-climate retreat"], travelFit: ["pine forest", "mountain retreat"],
     whoWouldLove: "Pine-forest highlanders.", whoMightNot: "Heat-seekers.",
     confidence: "moderate",
@@ -883,6 +913,45 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Warmer with stressed water.", outlook2100: "Drying pressure.", keyShifts: [{variable: "Water stress", direction: "up"}], resilienceNote: "Elevation protects temperature; water is the issue." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "elevated", trend: "worsening", note: "Flash-flood-prone canyon."}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "very-low", trend: "worsening"}, extremeCold: {level: "very-low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "moderate", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 52, microclimateUniqueness: 58, comfort: 84, resilience: 58, growability: 70, tradeoff: 32 },
+    liveSignals: {
+      costPressure: 42,
+      socialStress: 38,
+      accessFriction: 36,
+      note: "A real university/culture town, but steep streets, tourist pressure, canyon drainage, and car access can dominate daily comfort.",
+      sources: [
+        { label: "INEGI - Guanajuato municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Municipio de Guanajuato - local services", url: "https://www.guanajuatocapital.gob.mx/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Guanajuato", role: "town", population: "~195,000 municipality", note: "The canyon-city core where shade, stairs, tunnels, and services define daily life." },
+      { name: "Marfil", role: "town", note: "Lower corridor contrast with more road access and less postcard canyon texture." },
+      { name: "Santa Rosa de Lima", role: "village", note: "Higher Sierra edge where pine-oak air and colder nights sharpen the gradient." },
+    ],
+    thingsToDo: [
+      { label: "Canyon-stair neighborhood walk", kind: "urban", season: "dry season", note: "The practical test for mobility, shade, and daily errands." },
+      { label: "Tunnel and drainage route", kind: "historic", season: "wet season", note: "Guanajuato's water-management history is part of the lived climate story." },
+      { label: "Sierra de Santa Rosa drive", kind: "vista", season: "spring and fall", note: "A nearby cooler forest contrast to the urban basin." },
+      { label: "Market morning", kind: "food-drink", season: "year-round", note: "Checks service density and heat before the visitor crowds arrive." },
+    ],
+    deepSections: [
+      {
+        id: "guanajuato-canyon-microclimate",
+        title: "Canyon geometry makes the city feel different block by block",
+        paragraphs: [
+          "Guanajuato's climate is not spread evenly across a flat grid. Sun-facing slopes warm quickly, shaded lanes hold cool air, and the tunnel-and-stair network changes how wind, runoff, and daily movement feel.",
+          "That geometry is why a mild annual profile can still demand careful neighborhood choice. The best streets can feel cool and atmospheric; the wrong exposure can mean hard climbs, poor drainage, and limited access.",
+        ],
+      },
+      {
+        id: "guanajuato-services-and-mobility",
+        title: "The comfort score needs a mobility check",
+        paragraphs: [
+          "The city has enough services, university life, and cultural depth to be more than a tourist stop. But living there is physically specific: stairs, narrow lanes, parking limits, festival crowds, and hillside maintenance are part of the climate experience.",
+          "The corpus now treats those factors as lived friction rather than leaving the ranking to over-reward cool nights and pretty stone. A scouting trip should include errands, rain, and an uphill walk home.",
+        ],
+      },
+    ],
     relocationFit: ["cultural expats"], travelFit: ["colonial sightseeing"],
     whoWouldLove: "Those who love stone cities at altitude.", whoMightNot: "Anyone with mobility limitations.",
     confidence: "moderate",
@@ -1182,6 +1251,45 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Warmer; water-stressed summers.", outlook2100: "Agave cultivation range shifting.", keyShifts: [{variable: "Heat", direction: "up"}], resilienceNote: "Agave is drought-resilient; the cultural infrastructure is the asset." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "low", trend: "worsening"}, extremeCold: {level: "very-low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "moderate", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 36, microclimateUniqueness: 72, comfort: 78, resilience: 54, growability: 76, tradeoff: 32 },
+    liveSignals: {
+      costPressure: 44,
+      socialStress: 34,
+      accessFriction: 30,
+      note: "Close to Guadalajara and highly legible for visitors; tourism demand and harvest/distillery traffic matter more than service scarcity.",
+      sources: [
+        { label: "INEGI - Tequila municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "UNESCO - Agave Landscape and Ancient Industrial Facilities of Tequila", url: "https://whc.unesco.org/en/list/1209/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Tequila", role: "town", population: "~45,000", note: "The service and tourism anchor inside the agave landscape." },
+      { name: "Amatitan", role: "town", note: "Agave-valley settlement where distillery logistics, heat, and road exposure become clearer." },
+      { name: "Magdalena", role: "town", note: "Nearby upland contrast for drier fields, mining heritage, and less touristic daily texture." },
+    ],
+    thingsToDo: [
+      { label: "Agave field dawn check", kind: "food-drink", season: "dry season", note: "Cool nights, volcanic soil, and sun exposure explain the crop better than a tasting room does." },
+      { label: "Tequila Volcano slope drive", kind: "vista", season: "dry season", note: "A quick way to read elevation, drainage, and the monsoon-facing slopes." },
+      { label: "Distillery logistics loop", kind: "urban", season: "harvest windows", note: "Tour buses, trucks, and town traffic are part of the lived climate economy." },
+      { label: "Wet-season field edge", kind: "seasonal", season: "summer", note: "Storm runoff and field access show where the monsoon helps and where it complicates movement." },
+    ],
+    deepSections: [
+      {
+        id: "tequila-agave-terroir",
+        title: "Agave terroir is the climate story",
+        paragraphs: [
+          "Tequila is not just a warm highland town with a famous product. The place works because volcanic soils, summer rain, dry-season sun, and cool nights line up for blue agave at landscape scale.",
+          "That gives the profile stronger identity than its generic comfort score would suggest. The ranking now has better anchors for why this is a specific lived agricultural climate rather than just another Jalisco town.",
+        ],
+      },
+      {
+        id: "tequila-tourism-and-heat-check",
+        title: "Tourism access is easy; heat and traffic need checking",
+        paragraphs: [
+          "Guadalajara proximity keeps services and transport friction relatively low, but the tourism economy changes the street-level feel. Distillery traffic, visitor peaks, and harvest logistics can make the town feel busier than the climate map implies.",
+          "A live-here scout should check shade, drainage, noise, and road access outside the central visitor corridor. The agave landscape is real; so are hot exposed streets and monsoon runoff around fields and slopes.",
+        ],
+      },
+    ],
     relocationFit: ["agrotourism"], travelFit: ["agave fields", "distillery tours"],
     whoWouldLove: "Terroir-obsessed travelers.", whoMightNot: "Cool-climate seekers.",
     confidence: "moderate",
@@ -1204,6 +1312,16 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Warmer.", outlook2100: "Warmer.", keyShifts: [{variable: "Temperature", direction: "up"}], resilienceNote: "Elevation protects." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "very-low", trend: "worsening"}, extremeCold: {level: "low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "moderate", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 78, microclimateUniqueness: 68, comfort: 78, resilience: 62, growability: 70, tradeoff: 36 },
+    liveSignals: {
+      costPressure: 46,
+      socialStress: 28,
+      accessFriction: 50,
+      note: "Cool forest comfort is strong, but it is a small tourism/cabin market with limited services, weekend traffic, road exposure, and forest-fire homework.",
+      sources: [
+        { label: "INEGI - Mazamitla municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Gobierno de Jalisco - municipal services context", url: "https://www.jalisco.gob.mx/" },
+      ],
+    },
     relocationFit: ["cool mountain retreat"], travelFit: ["cabin tourism"],
     whoWouldLove: "Pine-forest travelers.", whoMightNot: "Heat-seekers.",
     confidence: "moderate",
@@ -1718,6 +1836,27 @@ export const PLACES_MEXICO: Place[] = [
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "moderate", trend: "worsening" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "moderate", trend: "stable" }, landslide: { level: "moderate", trend: "mixed" }, coastal: { level: "very-low", trend: "stable" } },
     nearbyContrasts: [{ label: "Guadalajara", note: "Warmer urban nights, more heat island, less direct lake moderation." }, { label: "Mazamitla", note: "Higher, cooler, pine-forest climate south of the lake basin." }],
     scores: { hiddenGem: 36, microclimateUniqueness: 72, comfort: 88, growability: 84, resilience: 60, tradeoff: 34 },
+    liveSignals: {
+      costPressure: 62,
+      socialStress: 26,
+      accessFriction: 24,
+      note: "The service base is unusually easy for a lake village, but expat demand, traffic, water quality, and hillside drainage keep the live-here score grounded.",
+      sources: [
+        { label: "INEGI - Chapala municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Municipio de Chapala - local services", url: "https://www.chapala.gob.mx/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Ajijic", role: "village", population: "~11,000", note: "The walkable expat and lakeshore core where comfort, cost pressure, and traffic are all visible." },
+      { name: "Chapala", role: "town", population: "~22,000", note: "The municipal service anchor with more errands, transit, and public waterfront." },
+      { name: "San Juan Cosala", role: "village", note: "Warmer slope-and-lakeshore contrast where hot springs, hillside drainage, and road access matter." },
+    ],
+    thingsToDo: [
+      { label: "Ajijic malecon climate walk", kind: "urban", season: "dry season", note: "Lake breeze, sun angle, foot traffic, and services are readable in one pass." },
+      { label: "Chapala errand loop", kind: "urban", season: "year-round", note: "A practical check for groceries, clinics, bus links, and daily-life friction." },
+      { label: "Sierra de San Juan Cosala trail edge", kind: "trail", season: "cool season", note: "Shows how quickly slope, drainage, and exposure change above the village." },
+      { label: "Wet-season lake watch", kind: "seasonal", season: "summer", note: "Lake level, runoff, and storm rhythm are central to the real resilience story." },
+    ],
     relocationFit: ["retirees", "remote workers", "gardeners"], travelFit: ["lake villages", "winter sun", "birding"],
     whoWouldLove: "People who want Mexican highland warmth without desert dryness or lowland humidity.",
     whoMightNot: "People who want undiscovered places or who are sensitive to lake water-quality concerns.",
@@ -1771,6 +1910,45 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "More heat stress and water pressure in a rapidly growing metro.", outlook2100: "Urban heat and supply constraints dominate comfort more than the regional climate envelope.", keyShifts: [{ variable: "Urban heat", direction: "up" }, { variable: "Water stress", direction: "up" }], resilienceNote: "Elevation helps, but growth management decides lived resilience." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "low", trend: "mixed" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 24, microclimateUniqueness: 60, comfort: 74, growability: 70, resilience: 52, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 48,
+      socialStress: 32,
+      accessFriction: 18,
+      note: "One of the easiest service bases in the Bajio, with airport and industry; growth pressure, water stress, and fringe heat are the counterweights.",
+      sources: [
+        { label: "INEGI - Queretaro municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Municipio de Queretaro - local services", url: "https://municipiodequeretaro.gob.mx/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Santiago de Queretaro", role: "hub", population: "~1.5M metro", note: "The full-service urban base with hospitals, airport access, universities, and major job markets." },
+      { name: "Juriquilla", role: "town", note: "Northern growth edge where planned development, heat, water use, and car dependence are clearer." },
+      { name: "El Marques", role: "town", note: "Industrial-airport corridor useful for reading commute and air-quality tradeoffs." },
+    ],
+    thingsToDo: [
+      { label: "Historic centre dry-season walk", kind: "culture", season: "dry season", note: "Shows the highland light and walkable core before fringe growth enters the picture." },
+      { label: "Juriquilla service loop", kind: "urban", season: "year-round", note: "Checks modern housing, heat exposure, traffic, and water-hungry landscaping." },
+      { label: "Bernal / wine-route contrast", kind: "food-drink", season: "cool season", note: "A nearby dry highland edge that reveals how semiarid the broader region is." },
+      { label: "Wet-season drainage check", kind: "seasonal", season: "summer", note: "Storms cool the city but test expanding roads and low spots." },
+    ],
+    deepSections: [
+      {
+        id: "queretaro-service-ease",
+        title: "A climate compromise with unusually strong services",
+        paragraphs: [
+          "Queretaro is not the most romantic highland profile, but it is one of the easiest to live in if daily infrastructure matters. Hospitals, airport access, universities, industry, and shopping reduce the access penalty that smaller highland towns carry.",
+          "That is why the ranking should not read it as only a dry climate point. The place is a practical relocation candidate whose value comes from combining tolerable highland weather with a deep service base.",
+        ],
+      },
+      {
+        id: "queretaro-growth-water-heat",
+        title: "Growth is the climate modifier",
+        paragraphs: [
+          "The same growth that makes Queretaro practical also changes its feel. New districts can run hotter, more car-dependent, and more water-stressed than the historic centre or older shaded neighborhoods.",
+          "A scouting pass should compare the walkable core, northern planned communities, and industrial corridors separately. The climate is broadly comfortable; the metro form decides whether it feels easy.",
+        ],
+      },
+    ],
     relocationFit: ["professionals", "families"], travelFit: ["historic center", "wine route"],
     whoWouldLove: "People who want a dry highland Mexican city with strong services and broad mobility.", whoMightNot: "People seeking lush scenery or low-growth quiet.",
     confidence: "high",
