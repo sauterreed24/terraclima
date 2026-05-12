@@ -360,7 +360,7 @@ export const PlaceCard = memo(function PlaceCard({
                   const label = axis === "costPressure" ? "Cost" : axis === "socialStress" ? "Social" : "Access";
                   const tone = value <= 35 ? "#3d8f55" : value <= 60 ? "#e89b20" : "#e05030";
                   return (
-                    <span key={axis} className="place-card__livability-component" title={`${label} friction (0 easy, 100 severe): ${Math.round(value)}/100${place.liveSignals?.note ? ` · ${place.liveSignals.note}` : ""}`}>
+                    <span key={axis} className="place-card__livability-component" title={`${label} friction (0 easy, 100 severe): ${Math.round(value)}/100${place.liveSignals?.note ? ` · ${prose(place.liveSignals.note)}` : ""}`}>
                       <span className="place-card__livability-component__dot" style={{ background: tone }} aria-hidden />
                       {label}
                       <span className="font-mono-num text-frost">{Math.round(value)}</span>

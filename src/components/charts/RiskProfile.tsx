@@ -1,5 +1,6 @@
 import type { Place, RiskAssessment } from "../../types";
 import { RISK_VALUE } from "../../lib/scoring";
+import { useProse } from "../../lib/units";
 
 const LABEL: Record<string, string> = {
   wildfire: "Wildfire",
@@ -16,6 +17,7 @@ const LABEL: Record<string, string> = {
 interface Props { place: Place }
 
 export function RiskProfile({ place }: Props) {
+  const prose = useProse();
   const rows: [string, RiskAssessment][] = Object.entries(place.risks);
   return (
     <div className="flex flex-col gap-1.5" role="list" aria-label={`Climate risk profile for ${place.name}`}>
@@ -27,7 +29,7 @@ export function RiskProfile({ place }: Props) {
         const trendColor = v.trend === "improving" ? "#7ea182" : v.trend === "worsening" ? "#d48c66" : "#8a99ac";
 
         return (
-          <div key={k} className="flex items-center gap-3 text-sm" title={v.note || ""} role="listitem">
+          <div key={k} className="flex items-center gap-3 text-sm" title={v.note ? prose(v.note) : ""} role="listitem">
             <div className="w-28 text-frost">{LABEL[k]}</div>
             <div
               className="flex-1 h-2 rounded-full bg-[rgba(58,77,102,0.35)] overflow-hidden"

@@ -144,7 +144,7 @@ export const CONCEPTS: Concept[] = [
     id: "chinook",
     term: "Chinook / foehn",
     short: "A warm, dry downslope wind that can melt snow and spike temperatures by tens of degrees.",
-    long: "When stable air crosses a mountain range and descends rapidly on the lee side, it compresses and warms adiabatically. Chinooks in Alberta and the Colorado Front Range have raised winter temperatures 20–30°C in hours. The effect moderates winters and dries snowpack rapidly.",
+    long: "When stable air crosses a mountain range and descends rapidly on the lee side, it compresses and warms adiabatically. Chinooks in Alberta and the Colorado Front Range have raised winter temperatures by 20–30°C in hours. The effect moderates winters and dries snowpack rapidly.",
     mechanism: "Stable cross-mountain flow + adiabatic compression on descent → warm, dry surface wind.",
     exampleIds: ["lethbridge-ab", "boulder-co"],
   },

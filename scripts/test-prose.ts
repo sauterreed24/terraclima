@@ -80,6 +80,25 @@ const cases: Case[] = [
   { input: "200 millimeters fell in one afternoon",
     expect: ["7.9 inches"], reject: ["200 millimeters"] },
 
+  // --- Regression: "lows/highs of N\u00b0C" must stay ABSOLUTE (bare "of" used to
+  // false-trigger delta detection and convert \u221230\u00b0C to \u221254\u00b0F instead of \u221222\u00b0F).
+  { input: "January lows of \u221230\u00b0C are routine",
+    expect: ["\u221222\u00b0F"], reject: ["\u221254\u00b0F"] },
+  { input: "Winter lows of \u221240\u00b0C and summer highs of 28\u00b0C",
+    expect: ["\u221240\u00b0F", "82\u00b0F"], reject: ["\u221272\u00b0F", "50\u00b0F"] },
+  { input: "Summer highs of 21\u00b0C are exceptional",
+    expect: ["70\u00b0F"], reject: ["38\u00b0F"] },
+  { input: "annual range of 7\u00b0C and a real dry/wet seasonality",
+    expect: ["13\u00b0F"], reject: ["45\u00b0F"] },
+  // --- Regression: explicit delta phrasings used by computed score notes ---
+  { input: "Annual range 25\u00b0C",
+    expect: ["45\u00b0F"], reject: ["77\u00b0F"] },
+  { input: "Night recovery is strong: summer diurnal swing of 14\u00b0C lifts sleep quality.",
+    expect: ["25\u00b0F"], reject: ["57\u00b0F"] },
+  // --- Regression: chinook "raised temperatures by N\u00b0C" must be DELTA ---
+  { input: "Chinooks have raised winter temperatures by 20\u201330\u00b0C in hours",
+    expect: ["36\u201354\u00b0F"], reject: ["68\u201386\u00b0F"] },
+
   // --- Regression: landform-context "N m" conversions (Sandhills / Loess Hills / Eureka) ---
   { input: "rolling dunes 40\u201390 m tall",
     expect: ["131\u2013295 ft"], reject: ["40\u201390 m"] },

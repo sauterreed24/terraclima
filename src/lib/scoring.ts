@@ -239,7 +239,9 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
         const range = summerHigh - janLow;
         const sweetSpot = Math.abs(range - k.fourSeasonIdealRangeC);
         const s = Math.max(0, 100 - sweetSpot * k.fourSeasonPerDegC);
-        return { place: p, score: s, note: `Seasonal range ${range.toFixed(0)}°C` };
+        // "Annual range" triggers delta detection in localizeProse so the
+        // value is converted as a Δ (×9/5), not as an absolute reading.
+        return { place: p, score: s, note: `Annual range ${range.toFixed(0)}°C` };
       }
       case "best-diurnal-sleep": {
         const s = Math.min(100, Math.max(0, (diurnal - k.diurnalSleepBaselineC) * k.diurnalSleepPerDegC));
