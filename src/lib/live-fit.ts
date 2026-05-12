@@ -15,6 +15,7 @@ import {
   mugginessScore,
   windExposureScore,
 } from "./livability-score";
+import { dominantPlaceFeelDrag, placeFeelScore, scorePlaceFeel } from "./place-feel";
 
 export type LiveFitPresetId =
   | "cool-summers"
@@ -116,24 +117,20 @@ export const LIVE_FIT_GROWABILITY_FLOORS = [65, 75] as const;
 export const LIVE_FIT_RISK_CEILINGS = ["low", "moderate", "elevated"] as const satisfies readonly RiskLevel[];
 
 /**
- * v2.1 — Down-weights `uniqueness` from 0.13 → 0.04. Microclimate uniqueness
- * is editorial novelty, not a relocation signal; fog-belt coasts inheriting
- * 12 pts from a "weird-climate" credit was the largest single driver of
- * Monterey, Eureka, and Point Reyes ranking above objectively more livable
- * highlands.
- *
- * Adds `livedFriction` at 0.10 so curated affordability / social-fabric /
- * access signals move the score directly. Increases `sunshine` from 0.06 →
- * 0.09 and `hazardEase` from 0.11 → 0.12 to reabsorb the freed weight.
+ * v3 - Relocation-first blend. Raw novelty is now only a tie-breaker, while
+ * place feel gets a direct lane so authored daily texture, scouting anchors,
+ * and practical ease can move the live-here ranking without overpowering
+ * felt comfort, hazards, and resilience.
  */
 const LIVE_FIT_DEFAULT_WEIGHTS = {
-  feltComfort: 0.34,
-  seasonalRunway: 0.13,
-  atmosphericEase: 0.16,
-  hazardEase: 0.13,
-  resilience: 0.10,
-  growability: 0.08,
-  livedFriction: 0.05,
+  feltComfort: 0.31,
+  seasonalRunway: 0.12,
+  atmosphericEase: 0.14,
+  hazardEase: 0.12,
+  resilience: 0.09,
+  growability: 0.07,
+  livedFriction: 0.04,
+  placeFeel: 0.10,
   uniqueness: 0.01,
 } as const;
 
@@ -272,6 +269,7 @@ function defaultLiveScore(place: Place): number {
     place.scores.resilience * w.resilience +
     place.scores.growability * w.growability +
     livedFrictionScore(place) * w.livedFriction +
+    placeFeelScore(place) * w.placeFeel +
     place.scores.microclimateUniqueness * w.uniqueness,
   ));
 }
@@ -306,6 +304,7 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   const windEase = windExposureScore(place);
   const humidityEase = mugginessScore(place);
   const sunEase = sunshineScore(place);
+  const feel = scorePlaceFeel(place);
 
   if (presets.length) {
     for (const id of presets
@@ -322,6 +321,7 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   if (atmosphere >= 74) pushUnique(reasons, "Sun, humidity, wind, and smoke signals read easy for daily outdoor time.", 3);
   if (place.scores.growability >= 72) pushUnique(reasons, "Growability is strong enough for serious garden or orchard scouting.", 3);
   if (comfortMonths >= 8) pushUnique(reasons, `${comfortMonths} months clear the easy-living comfort screen.`, 3);
+  if (feel.score >= 74) pushUnique(reasons, `Place feel is ${feel.band.toLowerCase()}: ${feel.strengths[0]}`, 3);
   if (place.scores.microclimateUniqueness >= 78) pushUnique(reasons, "The terrain signal is distinctive, not generic regional weather.", 3);
   if (place.settlementsWithinZone?.length) pushUnique(reasons, "Nearby settlement anchors make the climate easier to picture on the ground.", 3);
   if (reasons.length === 0) pushUnique(reasons, "Balanced climate, risk, and terrain scores make it worth a closer look.", 3);
@@ -337,6 +337,10 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   if (humidityEase < 55) pushUnique(cautions, `Humidity or arid-air strain pulls down the comfort read (${Math.round(humidityEase)}/100).`, 3);
   if (comfortMonths <= 4) pushUnique(cautions, `Only ${comfortMonths} months clear the easy-living comfort screen.`, 3);
   if (annualRange > 36) pushUnique(cautions, "Annual temperature range is large; expect harder seasonal swings.", 3);
+  if (feel.score < 58) {
+    const drag = dominantPlaceFeelDrag(place);
+    pushUnique(cautions, `Place feel is ${feel.band.toLowerCase()}; verify ${drag.label.toLowerCase()} before shortlisting.`, 3);
+  }
 
   // Lived-friction cautions — surface curated affordability, social-fabric and
   // access drags so a climatically perfect coast cannot bury its lived reality.
@@ -382,6 +386,7 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   if (place.scores.hiddenGem >= 78) badges.push("Hidden");
   if (place.scores.comfort >= 72) badges.push("Comfort");
   if (comfortMonths >= 8) badges.push("Long season");
+  if (feel.score >= 74) badges.push("Good feel");
   if (place.confidence === "high") badges.push("High confidence");
 
   return { score, reasons, cautions, badges: [...new Set(badges)].slice(0, 5) };

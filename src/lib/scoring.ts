@@ -24,6 +24,7 @@ import {
   rankLivabilityWithBreakdown,
   type LivabilityResult,
 } from "./livability-score";
+import { placeFeelScore } from "./place-feel";
 
 // Re-exported so the public surface of scoring.ts stays unchanged for callers
 // (components, charts, tests) that previously imported these from here.
@@ -307,9 +308,10 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
         const smokeScore = Math.max(0, 12 - RISK_VALUE[p.risks.smoke.level] * 4);
         const sunBonus = sunshineComfortBonus(p);
         const livedBonus = (livedFrictionScore(p) - 50) * 0.22;
+        const feelBonus = (placeFeelScore(p) - 60) * 0.18;
         const access = p.liveSignals?.accessFriction;
         const accessPenalty = access != null ? Math.max(0, (access - 40)) * 0.32 : 0;
-        const s = Math.min(100, coolSummer + mildWinter + fireScore + smokeScore + sunBonus + livedBonus - accessPenalty);
+        const s = Math.min(100, coolSummer + mildWinter + fireScore + smokeScore + sunBonus + livedBonus + feelBonus - accessPenalty);
         return { place: p, score: s, note: `${summerHigh.toFixed(0)}°C summers · fire ${p.risks.wildfire.level} · smoke ${p.risks.smoke.level}` };
       }
       case "best-retirement": {
@@ -322,12 +324,13 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
         const growScore = p.scores.growability * 0.16;
         const sunBonus = sunshineComfortBonus(p);
         const livedBonus = (livedFrictionScore(p) - 50) * 0.28;
+        const feelBonus = (placeFeelScore(p) - 60) * 0.20;
         // Retirees specifically dislike high cost pressure and high access friction.
         const cost = p.liveSignals?.costPressure;
         const access = p.liveSignals?.accessFriction;
         const costPenalty = cost != null ? Math.max(0, (cost - 50)) * 0.18 : 0;
         const accessPenalty = access != null ? Math.max(0, (access - 45)) * 0.24 : 0;
-        const s = Math.min(100, winterScore + summerScore + riskScore + growScore + sunBonus + livedBonus - costPenalty - accessPenalty);
+        const s = Math.min(100, winterScore + summerScore + riskScore + growScore + sunBonus + livedBonus + feelBonus - costPenalty - accessPenalty);
         return { place: p, score: s, note: `Mild all-year · grow ${p.scores.growability}/100 · avg risk ${avgRisk(p).toFixed(1)}` };
       }
     }

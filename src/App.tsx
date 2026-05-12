@@ -1457,9 +1457,10 @@ const HeroCard = memo(function HeroCard({
               <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
               <span className="livability-weight-pill" title="U-shaped penalty: full marks 700..1500 mm/yr; both arid (<300) and saturated (>2500) reduce the score.">Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
               <span className="livability-weight-pill" title="Curated cost, social-fabric, and daily-services friction.">Lived friction {Math.round(LIVABILITY_WEIGHTS.livedFriction * 100)}%</span>
+              <span className="livability-weight-pill" title="Derived actual-place read from sensory comfort, daily ease, place identity, and scouting clarity.">Place feel {Math.round(LIVABILITY_WEIGHTS.placeFeel * 100)}%</span>
             </div>
             <p className="hidden min-[1400px]:block mt-1.5 text-[10px] text-stone-readable/85 italic">
-              v3 livability lens — felt comfort, atmosphere, year-round usable-month runway, tail-risk-aware hazard cushion, U-shaped precip moderation. Editorial triage for exploration, not appraisal or medical heat-stress advice.
+              v3 livability lens — felt comfort, atmosphere, usable-month runway, hazard cushion, precip moderation, lived friction, and place feel. Editorial triage for exploration, not appraisal or medical heat-stress advice.
             </p>
           </div>
           <div
@@ -1690,6 +1691,7 @@ const ContextStressPanel = memo(function ContextStressPanel({
             <div className="context-stress__stats" aria-label={`${row.label} decision metrics`}>
               <span>Fit {row.decision.liveFitScore}</span>
               <span>Comfort {row.decision.comfortScore}</span>
+              <span>Feel {row.decision.placeFeelScore}</span>
               <span>Easy {row.decision.easyMonths} mo</span>
               <span>Risk {row.decision.riskLoad}</span>
             </div>
@@ -1844,6 +1846,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
                   <span className="scout-brief__matrix-stats" aria-hidden>
                     <span>Fit {row.liveFitScore}</span>
                     <span>Comfort {row.comfortScore}</span>
+                    <span>Feel {row.placeFeelScore}</span>
                     <span>Easy {row.easyMonths} mo</span>
                     <span>Risk {row.riskLoad}</span>
                     <span>Land {row.growability}</span>
@@ -1932,7 +1935,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="desktop-scout-board__matrix-rank" aria-hidden>{row.rank}</span>
             <span className="desktop-scout-board__matrix-name">{row.place.name}</span>
             <span className="desktop-scout-board__matrix-stats">
-              Fit {row.liveFitScore} · comfort {row.comfortScore} · risk {row.riskLoad}
+              Fit {row.liveFitScore} · comfort {row.comfortScore} · feel {row.placeFeelScore} · risk {row.riskLoad}
             </span>
             <span className="desktop-scout-board__matrix-watch">Watch: {prose(row.watch)}</span>
           </button>

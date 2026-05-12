@@ -23,7 +23,8 @@ describe("scoring constants", () => {
       w.hazardCushion +
       w.growability +
       w.precipModeration +
-      w.livedFriction;
+      w.livedFriction +
+      w.placeFeel;
     expect(sum).toBeCloseTo(1.0, 6);
   });
 
