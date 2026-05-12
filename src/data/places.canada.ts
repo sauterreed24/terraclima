@@ -1210,6 +1210,45 @@ export const PLACES_CANADA: Place[] = [
     climateChange: { outlook2050: "Warmer winters; storm pattern uncertain.", outlook2100: "Labrador Current changes could reshape climate.", keyShifts: [{variable: "Storm track", direction: "mixed"}], resilienceNote: "Oceanic moderation provides some buffer." },
     risks: { wildfire: {level: "very-low", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "very-low", trend: "stable"}, extremeHeat: {level: "very-low", trend: "worsening"}, extremeCold: {level: "moderate", trend: "improving"}, smoke: {level: "low", trend: "stable"}, storm: {level: "high", trend: "worsening"}, landslide: {level: "moderate", trend: "stable"}, coastal: {level: "high", trend: "worsening"} },
     scores: { hiddenGem: 40, microclimateUniqueness: 82, comfort: 44, resilience: 60, growability: 34, tradeoff: 56 },
+    liveSignals: {
+      costPressure: 44,
+      socialStress: 30,
+      accessFriction: 38,
+      note: "A full regional capital makes the extreme maritime weather more livable, but fog, wind, slope, snow clearing, and storm surge shape daily routines.",
+      sources: [
+        { label: "City of St. John's - municipal services", url: "https://www.stjohns.ca/" },
+        { label: "ECCC - Canadian climate data", url: "https://climate.weather.gc.ca/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "St. John's", role: "hub", population: "~110,000 city", note: "The service anchor: hospitals, university, harbour jobs, airport access, and steep foggy neighborhoods all in one compact urban basin." },
+      { name: "Mount Pearl", role: "town", population: "~23,000", note: "More suburban and practical, useful for checking snow clearing, commutes, and less-touristic daily life." },
+      { name: "Quidi Vidi", role: "village", note: "A small harbour pocket that makes the fog, wind, slope, and Atlantic exposure legible at walking scale." },
+    ],
+    thingsToDo: [
+      { label: "Signal Hill wind check", kind: "vista", season: "year-round", note: "The fastest way to feel the Atlantic exposure that defines the score." },
+      { label: "East Coast Trail segment", kind: "trail", season: "summer", note: "Coastal heath, fog, cliffs, and cool air show why summer warmth is not the point here." },
+      { label: "Harbour storm watch", kind: "seasonal", season: "winter", note: "Winter livability depends on whether the storm theatre feels energizing or exhausting." },
+      { label: "Iceberg-season lookout", kind: "seasonal", season: "spring", note: "A cold-current signal that explains both the beauty and the fog tax." },
+    ],
+    deepSections: [
+      {
+        id: "st-johns-fog-wind-lifestyle",
+        title: "Fog and wind are lifestyle, not backdrop",
+        paragraphs: [
+          "St. John's is not a bad-weather version of a normal city. It is a full urban life built around fog, wind, wet snow, salt air, steep streets, and sudden Atlantic changes. The climate's drama is daily, not occasional.",
+          "The place-feel score therefore reads differently from the comfort score. Thermal comfort is modest and sunshine is scarce, but identity is extremely strong: harbour light, coloured row houses, cliff walks, and storm awareness make the place memorable if a person is wired for it.",
+        ],
+      },
+      {
+        id: "st-johns-service-depth",
+        title: "Service depth keeps the weather from becoming isolation",
+        paragraphs: [
+          "Because St. John's is the provincial capital, the access penalty is not as punishing as the weather map implies. Hospitals, university services, an airport, shops, and a large labour market are nearby enough that the city can absorb storms better than a small outport.",
+          "A relocation scouting trip should still test slope, wind exposure, snow storage, basement water, and neighbourhood microclimate. Two homes a few blocks apart can have very different winter maintenance loads when the same storm arrives from the harbour.",
+        ],
+      },
+    ],
     relocationFit: ["Atlantic romantics"], travelFit: ["iceberg watching", "Jellybean Row"],
     whoWouldLove: "Storm-loving maritime people.", whoMightNot: "Sun-dependent.",
     confidence: "high",
@@ -1583,6 +1622,45 @@ export const PLACES_CANADA: Place[] = [
     climateChange: { outlook2050: "Sea-level and surge risk for waterfront; more intense precipitation.", outlook2100: "Hurricane decay tracks may shift.", keyShifts: [{ variable: "Sea level", direction: "up" }], resilienceNote: "Coastal infrastructure is the front line." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "elevated", trend: "worsening" } },
     scores: { hiddenGem: 36, microclimateUniqueness: 62, comfort: 64, growability: 54, resilience: 56, tradeoff: 40 },
+    liveSignals: {
+      costPressure: 55,
+      socialStress: 34,
+      accessFriction: 22,
+      note: "Halifax has the easiest service base in Atlantic Canada, but housing pressure, harbour weather, fog, and coastal storm exposure keep the lived score grounded.",
+      sources: [
+        { label: "Halifax Regional Municipality - planning and services", url: "https://www.halifax.ca/" },
+        { label: "ECCC - Canadian climate data", url: "https://climate.weather.gc.ca/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Halifax", role: "hub", population: "~440,000 metro", note: "Hospitals, universities, port jobs, airport access, and a walkable core make the maritime climate unusually service-rich." },
+      { name: "Dartmouth", role: "town", note: "Across the harbour, useful for comparing fog, bridge commutes, lake pockets, and daily errands." },
+      { name: "Bedford", role: "town", note: "A sheltered basin edge where suburban convenience, inland warmth, and harbour influence mix." },
+    ],
+    thingsToDo: [
+      { label: "Harbour waterfront walk", kind: "urban", season: "summer", note: "Sea breeze, fog, humidity, and urban services meet in one easy read." },
+      { label: "Point Pleasant Park loop", kind: "trail", season: "year-round", note: "Spruce shade, salt air, and storm-damaged forest show the maritime ecology up close." },
+      { label: "Peggy's Cove contrast", kind: "vista", season: "shoulder seasons", note: "The exposed coast explains why Halifax feels mild but never fully detached from Atlantic risk." },
+      { label: "Winter storm harbour check", kind: "seasonal", season: "winter", note: "A reality test for wind, slush, drainage, and the household tolerance for wet cold." },
+    ],
+    deepSections: [
+      {
+        id: "halifax-urban-maritime-ease",
+        title: "The easiest urban version of Atlantic maritime living",
+        paragraphs: [
+          "Halifax gives the cool-summer maritime profile a service base that smaller coastal towns cannot match. Hospitals, universities, transit, groceries, flights, and cultural life make the fog and winter storms less isolating.",
+          "That service depth now matters in the ranking. Halifax is not as rare climatically as St. John's or the outer Oregon coast, but it is easier to live in day after day because errands, health care, and social options are close.",
+        ],
+      },
+      {
+        id: "halifax-storm-and-housing-friction",
+        title: "Storm exposure and housing pressure are the checks",
+        paragraphs: [
+          "The comfort case is real: summer heat is moderated, fall is crisp, and winter cold is softer than inland Canada. The penalty is water from several directions: nor'easters, hurricane remnants, freeze-thaw slush, harbour surge, and old-building moisture.",
+          "Housing pressure has also changed the lived feel. A perfect climate pocket is less useful if the household ends up far from transit, exposed to a long bridge commute, or paying urban prices for damp maintenance. The place-feel model rewards access but still flags those frictions.",
+        ],
+      },
+    ],
     relocationFit: ["students", "maritime professionals"], travelFit: ["Peggy's Cove", "tidal bore"],
     whoWouldLove: "Atlantic Canada urban life without Montreal cold.", whoMightNot: "Drought-climate seekers.",
     confidence: "high",

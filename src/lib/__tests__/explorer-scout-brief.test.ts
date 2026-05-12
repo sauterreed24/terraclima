@@ -34,6 +34,7 @@ describe("buildExplorerScoutBrief", () => {
       "Summer highs",
       "Winter lows",
       "Easy months",
+      "Place feel",
       "Precip spread",
       "Avg risk",
       "Dominant family",
@@ -41,6 +42,7 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.metrics.find(metric => metric.label === "Summer highs")!.value).toMatch(/°C$/);
     expect(brief!.decisionSignals.map(signal => signal.label)).toEqual([
       "Felt comfort",
+      "Place feel",
       "Low risk load",
       "Garden / land",
       "Climate resilience",
@@ -108,13 +110,14 @@ describe("buildExplorerScoutBrief", () => {
 
     expect(brief!.decisionSignals.map(signal => [signal.label, signal.place.id])).toEqual([
       ["Felt comfort", "comfort-town"],
+      ["Place feel", "garden-ridge"],
       ["Low risk load", "risk-cove"],
       ["Garden / land", "garden-ridge"],
       ["Climate resilience", "garden-ridge"],
       ["Distinctive terrain", "garden-ridge"],
     ]);
     expect(brief!.decisionLine).toContain("Garden Ridge");
-    expect(brief!.decisionLine).toContain("3 of 5");
+    expect(brief!.decisionLine).toContain("4 of 6");
     expect(brief!.decisionRows.map(row => row.place.id)).toEqual(["comfort-town", "risk-cove", "garden-ridge"]);
     expect(brief!.decisionRows[0].decisionCue).toContain("Watch");
   });

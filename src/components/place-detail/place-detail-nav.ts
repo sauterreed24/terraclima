@@ -5,6 +5,7 @@
 export const PD = {
   overview: "pd-overview",
   atAGlance: "pd-at-a-glance",
+  placeFeel: "pd-place-feel",
   practical: "pd-practical-read",
   tourism: "pd-climate-tourism",
   fieldStory: "pd-field-story",
@@ -45,6 +46,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   const items: PlaceNavItem[] = [
     { id: PD.overview, label: "Opening" },
     { id: PD.atAGlance, label: "At a glance" },
+    { id: PD.placeFeel, label: "Place feel" },
     { id: PD.practical, label: "Practical read" },
     { id: PD.tourism, label: "Climate tourism" },
     { id: PD.fieldStory, label: "Field story" },

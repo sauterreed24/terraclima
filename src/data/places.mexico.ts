@@ -822,6 +822,45 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Warmer; more variable monsoon.", outlook2100: "Drying concern on dry-side flanks.", keyShifts: [{variable: "Rainfall variability", direction: "up"}], resilienceNote: "Elevation-based climate signature is geographically stable." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "very-low", trend: "worsening"}, extremeCold: {level: "very-low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "moderate", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 40, microclimateUniqueness: 60, comfort: 88, resilience: 66, growability: 82, tradeoff: 24 },
+    liveSignals: {
+      costPressure: 38,
+      socialStress: 42,
+      accessFriction: 24,
+      note: "Full-service state capital with airport, universities, hospitals, and a colonial core; neighborhood selection matters more than the climate grid suggests.",
+      sources: [
+        { label: "INEGI - Morelia municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Ayuntamiento de Morelia - city services", url: "https://www.morelia.gob.mx/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Morelia", role: "hub", population: "~850,000 metro", note: "The practical base: hospitals, universities, airport access, and a large historic core inside the same highland comfort envelope." },
+      { name: "Tarimbaro", role: "town", note: "Northern peri-urban edge where the basin opens, traffic and subdivision growth are more visible, and heat feels less romantic." },
+      { name: "Charo", role: "town", note: "Eastern hill-edge reference for drier slopes, commuter access, and orchard/garden scouting." },
+    ],
+    thingsToDo: [
+      { label: "Historic centre evening walk", kind: "culture", season: "dry season", note: "Crisp highland nights, cantera stone, plazas, and cafe life make the comfort case tangible." },
+      { label: "Patzcuaro day trip", kind: "culture", season: "dry season", note: "A nearby higher-lake contrast that shows how quickly the Meseta Tarasca changes the feel." },
+      { label: "Orchard and avocado-belt scouting", kind: "food-drink", season: "harvest windows", note: "The region's agriculture is field evidence for frost-light volcanic uplands." },
+      { label: "Monarch reserve gateway", kind: "seasonal", season: "winter", note: "A cold-season trip that reveals the broader Trans-Mexican Volcanic Belt context." },
+    ],
+    deepSections: [
+      {
+        id: "morelia-urban-highland-feel",
+        title: "Why Morelia feels easier than smaller highland towns",
+        paragraphs: [
+          "Morelia is not only a climate point; it is a full-service state capital sitting inside the highland comfort envelope. That changes the relocation math: hospitals, universities, airport access, groceries, and repair services are normal city infrastructure rather than special trips.",
+          "The tradeoff is that the lived feel depends strongly on neighborhood choice. The historic core gives the atmospheric Morelia people imagine, while fringe growth can read hotter, busier, and more car-dependent. The ranking now treats service depth as a real positive without pretending the whole metro feels identical.",
+        ],
+      },
+      {
+        id: "morelia-rainy-season-rhythm",
+        title: "Rainy-season rhythm and dry-season light",
+        paragraphs: [
+          "The climate feels most generous from late autumn through spring: crisp mornings, dry highland light, and evenings cool enough for plazas and walking. This is the version of Morelia that pushes it up the live-here rankings.",
+          "June through September shifts the day around storms. Afternoon convection cools the basin but also tests drainage, traffic, hillside roads, and older roofs. The comfort score is high because heat is rarely oppressive; the scouting note is to verify water movement block by block.",
+        ],
+      },
+    ],
     relocationFit: ["Latin-American urbanites", "retirees"], travelFit: ["colonial architecture", "Monarch reserve gateway"],
     whoWouldLove: "Eternal-spring seekers who also want urban amenities.", whoMightNot: "Anyone seeking seasonal drama.",
     confidence: "high",
@@ -867,6 +906,45 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Warmer; drought intensifying.", outlook2100: "Water-constrained.", keyShifts: [{variable: "Drought", direction: "up"}], resilienceNote: "Elevation buffers temperature; water is limiting." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "elevated", trend: "worsening"}, extremeHeat: {level: "very-low", trend: "worsening"}, extremeCold: {level: "low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "low", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 74, microclimateUniqueness: 68, comfort: 74, resilience: 50, growability: 58, tradeoff: 38 },
+    liveSignals: {
+      costPressure: 34,
+      socialStress: 36,
+      accessFriction: 34,
+      note: "Cool, walkable, and comparatively affordable for a historic capital, but water stress, thin air-service depth, and winter cold are real daily filters.",
+      sources: [
+        { label: "INEGI - Zacatecas municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Gobierno de Zacatecas - state services", url: "https://www.zacatecas.gob.mx/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Zacatecas", role: "hub", population: "~140,000 city", note: "Historic core, university life, health services, and the steep daily walking profile all sit at cool highland elevation." },
+      { name: "Guadalupe", role: "town", population: "~200,000", note: "The practical metro extension with flatter growth, shopping, and warmer exposed edges." },
+      { name: "Vetagrande", role: "village", note: "High, dry mining-country edge useful for reading wind, frost, and road exposure." },
+    ],
+    thingsToDo: [
+      { label: "Cerro de la Bufa ridge check", kind: "vista", season: "dry season", note: "A fast way to feel the altitude, wind, sun, and basin exposure in one stop." },
+      { label: "Historic centre night walk", kind: "culture", season: "year-round", note: "Cool evenings and stone canyons are the lived comfort signature." },
+      { label: "Mina El Eden", kind: "historic", season: "year-round", note: "The mining layer explains why this dry highland city exists where it does." },
+      { label: "Guadalupe service loop", kind: "urban", season: "year-round", note: "A practical relocation check for groceries, clinics, traffic, and flatter neighborhoods." },
+    ],
+    deepSections: [
+      {
+        id: "zacatecas-cool-highland-feel",
+        title: "The cool Mexican highland with real frost",
+        paragraphs: [
+          "Zacatecas is the place in the Mexican highland set where the word cool is literal. At roughly 2440 m, it has mild summer afternoons, dry air, and winter mornings that can bite. That makes it feel more like a stone-built high-desert capital than a soft eternal-spring resort.",
+          "The ranking benefits from this because heat stress is low and the city has a strong identity. It also subtracts for water and cold-season friction: unheated interiors, wind exposure, dry skin, and drought planning matter more here than in lower Bajio cities.",
+        ],
+      },
+      {
+        id: "zacatecas-service-and-water",
+        title: "Services are good; water is the long question",
+        paragraphs: [
+          "Daily life is easier than the remote mining-town atmosphere implies. Zacatecas and Guadalupe form a functional metro with universities, hospitals, supermarkets, and culture, so the access penalty is moderate rather than severe.",
+          "The constraint is water. The same dry, clear sky that gives Zacatecas its appeal also means gardens, trees, household storage, and future growth depend on careful supply management. A scouting trip should include neighborhood water reliability, not just temperature comfort.",
+        ],
+      },
+    ],
     relocationFit: ["historic-city expats"], travelFit: ["UNESCO architecture", "silver-mine tourism"],
     whoWouldLove: "Those who want Mexican eternal spring with a colder twist.", whoMightNot: "Tropical-seeking.",
     confidence: "high",
@@ -893,6 +971,45 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Warmer; water stress.", outlook2100: "Drying.", keyShifts: [{variable: "Heat waves", direction: "up"}], resilienceNote: "Elevation buffer holds; water supply tight." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "elevated", trend: "worsening"}, extremeHeat: {level: "moderate", trend: "worsening"}, extremeCold: {level: "low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "low", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 54, microclimateUniqueness: 52, comfort: 76, resilience: 52, growability: 60, tradeoff: 32 },
+    liveSignals: {
+      costPressure: 32,
+      socialStress: 34,
+      accessFriction: 18,
+      note: "A real industrial and university city with Monterrey access; dry highland comfort is easier to live with because services are broad and daily logistics are normal.",
+      sources: [
+        { label: "INEGI - Saltillo municipal context", url: "https://www.inegi.org.mx/" },
+        { label: "Municipio de Saltillo - local services", url: "https://www.saltillo.gob.mx/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Saltillo", role: "hub", population: "~880,000 metro", note: "The core service base: hospitals, universities, manufacturing jobs, and dry highland neighborhoods." },
+      { name: "Arteaga", role: "town", note: "Foothill and orchard edge with cooler pockets, weekend cabins, and stronger Sierra Madre influence." },
+      { name: "Ramos Arizpe", role: "town", note: "Industrial corridor toward Monterrey where commute practicality matters more than historic atmosphere." },
+    ],
+    thingsToDo: [
+      { label: "Arteaga foothill loop", kind: "vista", season: "spring and fall", note: "A short drive that reveals how fast elevation and slope sharpen the local climate." },
+      { label: "Historic centre dry-season walk", kind: "culture", season: "dry season", note: "Clear air, mild afternoons, and cool nights are the urban comfort signature." },
+      { label: "Desert garden check", kind: "nature", season: "year-round", note: "Native planting and water discipline are the practical garden story." },
+      { label: "Monterrey contrast drive", kind: "urban", season: "summer", note: "The heat difference over a short distance is the simplest proof of Saltillo's elevation value." },
+    ],
+    deepSections: [
+      {
+        id: "saltillo-monterrey-relief",
+        title: "The Monterrey escape that still functions like a city",
+        paragraphs: [
+          "Saltillo's value is easiest to understand from Monterrey. The drive west climbs into cooler, drier highland air without leaving a serious service economy behind. That combination makes Saltillo more relocation-relevant than many prettier but thinner desert towns.",
+          "The city is not lush or soft; it is bright, dry, and sometimes windy. But the live-here score improves because hospitals, universities, manufacturing work, and regional transport keep the climate advantage connected to everyday life.",
+        ],
+      },
+      {
+        id: "saltillo-water-and-foothills",
+        title: "Water discipline and foothill choice",
+        paragraphs: [
+          "The climate dividend comes with a water bill. Desert landscaping, household storage, shade, and drainage all matter because the same dry air that moderates humidity also limits resilience in prolonged drought.",
+          "Neighbourhood choice changes the feel. Foothill edges near Arteaga can read cooler and greener; industrial corridors toward Ramos Arizpe feel flatter, hotter, and more utilitarian. The ranking now gives Saltillo credit for urban ease while keeping drought and heat trend penalties visible.",
+        ],
+      },
+    ],
     relocationFit: ["northern-Mexico expats"], travelFit: ["colonial center"],
     whoWouldLove: "Those needing an escape from Monterrey heat.", whoMightNot: "Tropical-seekers.",
     confidence: "high",

@@ -1,6 +1,7 @@
 import type { Place } from "../types";
 import { annualComfortMonthCount, avgRisk, meanJanLow, meanSummerHigh, RISK_VALUE } from "./climate-metrics";
 import { feltComfortScore, livedFrictionScore, dominantLivedFriction } from "./livability-score";
+import { dominantPlaceFeelDrag, placeFeelScore } from "./place-feel";
 import { assessLiveFit, type LiveFitFilters } from "./live-fit";
 
 export interface DecisionMatrixInput {
@@ -20,6 +21,7 @@ export interface ShortlistDecisionRow {
   riskLoad: number;
   growability: number;
   livedEase: number;
+  placeFeelScore: number;
   bestFor: string;
   watch: string;
   decisionCue: string;
@@ -67,9 +69,10 @@ function highestRisk(place: Place): { label: string; level: string; value: numbe
   };
 }
 
-function bestForLine(place: Place, comfortScore: number, riskEase: number): string {
+function bestForLine(place: Place, comfortScore: number, riskEase: number, feelScore: number): string {
   const topSignal = [
     { label: "felt comfort", value: comfortScore },
+    { label: "place feel", value: feelScore },
     { label: "low-risk living", value: riskEase },
     { label: "garden life", value: place.scores.growability },
     { label: "climate resilience", value: place.scores.resilience },
@@ -81,7 +84,7 @@ function bestForLine(place: Place, comfortScore: number, riskEase: number): stri
   return `${audience}; ${topSignal.label} is the edge.`;
 }
 
-function watchLine(place: Place, livedEase: number): string {
+function watchLine(place: Place, livedEase: number, feelScore: number): string {
   const risk = highestRisk(place);
   if (risk.value >= 3) return `${risk.label}: ${risk.level}`;
 
@@ -103,6 +106,7 @@ function watchLine(place: Place, livedEase: number): string {
 
   if (place.scores.tradeoff >= 60) return "Tradeoff load is high";
   if (livedEase < 55) return "Lived friction needs checking";
+  if (feelScore < 58) return `${dominantPlaceFeelDrag(place).label} needs checking`;
   return compactSentence(place.whoMightNot, 82);
 }
 
@@ -116,8 +120,9 @@ export function buildShortlistDecisionRows(
     const comfortScore = Math.round(feltComfortScore(row.place));
     const riskLoad = Math.round(avgRisk(row.place) * 20);
     const livedEase = Math.round(livedFrictionScore(row.place));
-    const bestFor = bestForLine(row.place, comfortScore, clamp100(100 - riskLoad));
-    const watch = watchLine(row.place, livedEase);
+    const feelScore = Math.round(placeFeelScore(row.place));
+    const bestFor = bestForLine(row.place, comfortScore, clamp100(100 - riskLoad), feelScore);
+    const watch = watchLine(row.place, livedEase, feelScore);
     const watchCue = watch.replace(/[.!?]+$/, "");
     const rankingNote = row.note?.replace(/\s+/g, " ").trim() || `${Math.round(row.score)}/100 current ranking score`;
 
@@ -132,6 +137,7 @@ export function buildShortlistDecisionRows(
       riskLoad,
       growability: Math.round(row.place.scores.growability),
       livedEase,
+      placeFeelScore: feelScore,
       bestFor,
       watch,
       decisionCue: `${bestFor} Watch ${watchCue.toLowerCase()}.`,

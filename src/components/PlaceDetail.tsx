@@ -34,6 +34,7 @@ import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
 import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
 import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
 import { PlaceAtAGlance } from "./place-detail/PlaceAtAGlance";
+import { PlaceFeelRead } from "./place-detail/PlaceFeelRead";
 import { PlacePracticalRead } from "./place-detail/PlacePracticalRead";
 import { PlaceTourismRead } from "./place-detail/PlaceTourismRead";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
@@ -588,6 +589,8 @@ function DetailBody({
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
 
+      <PlaceFeelRead place={place} anchorId={PD.placeFeel} />
+
       <Section title="Livability lens v3" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="panel-thin p-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -598,7 +601,7 @@ function DetailBody({
               </div>
             </div>
             <div className="text-[11px] text-stone-readable max-w-lg leading-snug">
-              Human-felt thermal comfort, atmosphere (sky, wind, humidity, smoke, and solar load), tail-risk-aware hazard cushion, U-shaped precip moderation, and curated lived friction. Hover a row for its formula.
+              Human-felt thermal comfort, atmosphere (sky, wind, humidity, smoke, and solar load), tail-risk-aware hazard cushion, U-shaped precip moderation, curated lived friction, and derived place feel. Hover a row for its formula.
             </div>
           </div>
           <div className="divider-contour my-3" />

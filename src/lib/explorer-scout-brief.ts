@@ -9,6 +9,7 @@ import {
   RISK_VALUE,
 } from "./climate-metrics";
 import { feltComfortScore } from "./livability-score";
+import { placeFeelScore } from "./place-feel";
 import { buildShortlistDecisionRows, type ShortlistDecisionRow } from "./decision-matrix";
 import type { LiveFitFilters } from "./live-fit";
 import type { RankingResult } from "./scoring";
@@ -123,6 +124,7 @@ function pickLowRiskSignal(places: Place[]): ExplorerScoutBrief["decisionSignals
 function buildDecisionSignals(places: Place[]): ExplorerScoutBrief["decisionSignals"] {
   return [
     pickMaxSignal(places, "Felt comfort", place => feltComfortScore(place)),
+    pickMaxSignal(places, "Place feel", place => placeFeelScore(place)),
     pickLowRiskSignal(places),
     pickMaxSignal(places, "Garden / land", place => place.scores.growability),
     pickMaxSignal(places, "Climate resilience", place => place.scores.resilience),
@@ -190,6 +192,11 @@ export function buildExplorerScoutBrief(
         label: "Easy months",
         value: formatRange(places.map(annualComfortMonthCount), " mo"),
         detail: "Months that clear the day/night/precip easy-living screen",
+      },
+      {
+        label: "Place feel",
+        value: formatRange(places.map(placeFeelScore), "/100"),
+        detail: "Derived feel rating across sensory comfort, daily ease, identity, and scouting clarity",
       },
       {
         label: "Precip spread",

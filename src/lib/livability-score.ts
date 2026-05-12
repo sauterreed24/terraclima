@@ -69,6 +69,7 @@ import {
   seasonalUsabilityScore,
   summerDiurnalC,
 } from "./climate-metrics";
+import { dominantPlaceFeelDrag, placeFeelScore } from "./place-feel";
 
 const RISK_KEYS = [
   "wildfire",
@@ -201,21 +202,19 @@ export const PRECIP_MODERATION = {
 /**
  * Final blend weights. Must sum to 1.0; asserted in tests.
  *
- * v2.1 — Adds an explicit `livedFriction` component so curated affordability /
- * social-fabric / access signals can move the final blended score directly,
- * rather than being trapped behind the thermal-comfort gate. Resilience and
- * precipitation moderation were both slightly down-weighted; the freed weight
- * went into thermal comfort (so sky/dampness corrections register more
- * clearly) and the new lived-friction axis.
+ * v3 - Adds a `placeFeel` component so authored corpus texture, daily ease,
+ * identity, and scouting clarity contribute to the blended read. Core thermal,
+ * atmosphere, hazard, and resilience components still dominate the score.
  */
 export const LIVABILITY_BLEND_WEIGHTS = {
-  thermalComfort: 0.30,
-  atmosphericEase: 0.16,
-  hazardCushion: 0.17,
-  resilience: 0.15,
-  growability: 0.09,
-  precipModeration: 0.05,
+  thermalComfort: 0.28,
+  atmosphericEase: 0.15,
+  hazardCushion: 0.16,
+  resilience: 0.14,
+  growability: 0.08,
+  precipModeration: 0.04,
   livedFriction: 0.08,
+  placeFeel: 0.07,
 } as const;
 
 const COMPONENT_KEYS = [
@@ -226,6 +225,7 @@ const COMPONENT_KEYS = [
   "growability",
   "precipModeration",
   "livedFriction",
+  "placeFeel",
 ] as const;
 type ComponentKey = (typeof COMPONENT_KEYS)[number];
 
@@ -269,6 +269,7 @@ const COMPONENT_LABEL: Record<ComponentKey, string> = {
   growability: "Growability",
   precipModeration: "Precip moderation",
   livedFriction: "Lived friction",
+  placeFeel: "Place feel",
 };
 
 function clamp(n: number, lo = 0, hi = 100): number {
@@ -791,6 +792,10 @@ function makeRationale(p: Place, key: ComponentKey, value: number): string {
       const axis = dom.axis === "cost" ? "Cost pressure" : dom.axis === "social" ? "Social stress" : "Access friction";
       return `${axis} ${Math.round(dom.value)}/100 (lower is easier) → lived comfort ${Math.round(value)}/100`;
     }
+    case "placeFeel": {
+      const drag = dominantPlaceFeelDrag(p);
+      return `Place feel ${Math.round(value)}/100; verify ${drag.label.toLowerCase()} first (${Math.round(drag.value)}/100)`;
+    }
   }
 }
 
@@ -816,6 +821,7 @@ export function scoreLivability(p: Place): LivabilityResult {
     growability: clamp(p.scores.growability),
     precipModeration: precipModerationScore(p),
     livedFriction: livedFrictionScore(p),
+    placeFeel: placeFeelScore(p),
   };
   const components: LivabilityComponent[] = COMPONENT_KEYS.map(key => ({
     key,

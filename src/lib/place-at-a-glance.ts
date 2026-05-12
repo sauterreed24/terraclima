@@ -10,6 +10,7 @@ import { mergeDeepSections } from "./place-appendix-sections";
 import { getPlaceCorpusRanks } from "./atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import { EARTH_OBSERVATION_SOURCES } from "./atlas-metadata";
+import { scorePlaceFeel } from "./place-feel";
 import type { TempUnit } from "./units";
 
 export type AtGlanceTone = "glacier" | "sage" | "ochre" | "ice" | "ember" | "aurora";
@@ -40,8 +41,16 @@ export function buildAtAGlanceTiles(
   const out: AtGlanceTile[] = [];
   const cr = getPlaceCorpusRanks(place);
   const geo = buildGeospatialAnalysis(place);
+  const feel = scorePlaceFeel(place);
   const tr = TIER[place.tier];
   out.push({ label: "Depth", value: tr.line, hint: tr.hint, tone: tr.tone });
+
+  out.push({
+    label: "Place feel",
+    value: `${feel.score}/100`,
+    hint: `${feel.headline}: ${feel.strengths[0]} ${feel.frictions[0]}`,
+    tone: feel.score >= 74 ? "sage" : feel.score >= 58 ? "ice" : "ember",
+  });
 
   const primaryA = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
   out.push({

@@ -2203,6 +2203,45 @@ export const PLACES_USA: Place[] = [
     climateChange: { outlook2050: "Warmer, drier.", outlook2100: "Grassland stress.", keyShifts: [{variable: "Heat waves", direction: "up"}, {variable: "Monsoon variability", direction: "up"}], resilienceNote: "Elevation buys time; water is the long-term issue." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "elevated", trend: "worsening"}, extremeHeat: {level: "low", trend: "worsening"}, extremeCold: {level: "low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "very-low", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 64, microclimateUniqueness: 66, comfort: 72, resilience: 58, growability: 46, tradeoff: 40 },
+    liveSignals: {
+      costPressure: 72,
+      socialStress: 24,
+      accessFriction: 66,
+      note: "The sky, art scene, and cool nights are exceptional; housing cost, long drives, limited services, and water limits are the real live-here filter.",
+      sources: [
+        { label: "City of Marfa - local government", url: "https://www.cityofmarfa.com/" },
+        { label: "Presidio County - services context", url: "https://www.co.presidio.tx.us/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Marfa", role: "town", population: "~1,700", note: "The cultural anchor on the high grassland plain, with the strongest identity and the highest housing pressure." },
+      { name: "Alpine", role: "hub", population: "~6,000", note: "The nearby service fallback for groceries, college energy, clinics, and broader housing stock." },
+      { name: "Fort Davis", role: "village", population: "~1,000", note: "Higher Davis Mountains contrast with cooler nights, observatory access, and a more sheltered mountain-valley feel." },
+    ],
+    thingsToDo: [
+      { label: "Chinati Foundation light check", kind: "culture", season: "year-round", note: "Minimalist art and desert light make Marfa's clear-sky climate visible indoors and out." },
+      { label: "Davis Mountains day trip", kind: "vista", season: "spring and fall", note: "A fast altitude contrast for checking cooler pockets, tree cover, and observatory-grade sky clarity." },
+      { label: "Monsoon sky watch", kind: "seasonal", season: "late summer", note: "Thunderheads over the grassland are the seasonal drama behind the otherwise dry score." },
+      { label: "Night-sky drive", kind: "stargazing", season: "dry season", note: "Sparse settlement and clean air are part of the place's livability identity, not just a tourist asset." },
+    ],
+    deepSections: [
+      {
+        id: "marfa-sky-and-distance",
+        title: "Sky, distance, and the high-grassland feel",
+        paragraphs: [
+          "Marfa's appeal is less about lushness than exposure. The plain is high enough for cool nights and long sightlines, while the Davis and Chinati Mountains frame the horizon without enclosing the town. Wind, glare, and silence are part of the daily sensory field.",
+          "That clarity now feeds the place-feel rating: Marfa has a stronger identity than its raw comfort score suggests. The same openness also means little shade, long errand loops, and a sharper divide between people who find the emptiness restorative and people who find it isolating.",
+        ],
+      },
+      {
+        id: "marfa-services-water-and-cost",
+        title: "The live-here test is services, water, and cost",
+        paragraphs: [
+          "Marfa is compact, but it is not easy in the way a larger city is easy. Groceries, specialists, airport access, and many repairs require planning around Alpine, Fort Davis, Midland-Odessa, or El Paso. That access friction keeps the ranking from over-rewarding the climate romance.",
+          "Housing pressure from tourism and the art economy is the other check. The climate is forgiving for a desert edge, but the practical scouting question is whether the household budget, groundwater reality, and service distance still feel acceptable after the first week of beautiful evenings.",
+        ],
+      },
+    ],
     relocationFit: ["artists", "high-desert romantics"], travelFit: ["art pilgrimages", "dark sky"],
     whoWouldLove: "Writers, artists, and big-sky people.", whoMightNot: "Services/infrastructure-dependent.",
     confidence: "high",
@@ -3229,6 +3268,45 @@ export const PLACES_USA: Place[] = [
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "very-low", trend: "stable" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening", note: "Pacific storms and 'atmospheric rivers' intense." }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "elevated", trend: "worsening", note: "Beach erosion; CSZ tsunami exposure is severe." } },
     nearbyContrasts: [{ placeId: "astoria-or", label: "Astoria, OR", note: "30 km north, cooler and cloudier at the Columbia mouth." }, { placeId: "point-reyes-ca", label: "Point Reyes, CA", note: "Similar upwelling-cooled coastal climate, slightly milder winters." }],
     scores: { hiddenGem: 48, microclimateUniqueness: 76, comfort: 72, resilience: 72, growability: 58, tradeoff: 48 },
+    liveSignals: {
+      costPressure: 72,
+      socialStress: 22,
+      accessFriction: 48,
+      note: "The temperature profile is superb for heat-averse people, but housing cost, tourism seasonality, tsunami exposure, and dependence on Seaside/Astoria services shape the live-here feel.",
+      sources: [
+        { label: "City of Cannon Beach - emergency and planning context", url: "https://www.ci.cannon-beach.or.us/" },
+        { label: "Oregon Department of Geology - coastal hazards", url: "https://www.oregongeology.org/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Cannon Beach", role: "resort", population: "~1,500", note: "The iconic beach-town core, strongest for walkability, fog, visitors, and housing pressure." },
+      { name: "Seaside", role: "town", population: "~7,000", note: "The practical service fallback north of the headlands for groceries, clinics, schools, and cheaper errands." },
+      { name: "Arch Cape", role: "village", note: "Quieter south-coast pocket where landslide, tsunami, and storm-road checks become more explicit." },
+    ],
+    thingsToDo: [
+      { label: "Haystack Rock tide-pool check", kind: "nature", season: "low tides", note: "Cold upwelling, fog, wind, and intertidal life are visible in one walk." },
+      { label: "Ecola State Park headlands", kind: "trail", season: "dry summer windows", note: "Spruce forest, bluff exposure, and marine-layer breakup show the coast-range edge." },
+      { label: "Winter storm watch", kind: "seasonal", season: "winter", note: "A practical test for wind load, power resilience, surf violence, and whether wet mildness still feels good." },
+      { label: "Seaside errand loop", kind: "urban", season: "year-round", note: "The live-here check for service access beyond the postcard core." },
+    ],
+    deepSections: [
+      {
+        id: "cannon-beach-temperature-stability",
+        title: "The Lower 48 cool-summer extreme",
+        paragraphs: [
+          "Cannon Beach is one of the clearest examples of temperature stability in the atlas. Pacific upwelling, sea breeze, and immediate coastal exposure flatten both summer heat and winter cold, producing a climate that heat-sensitive residents can actually feel in their bodies.",
+          "That stability is why the place-feel model rewards sensory comfort even though annual rainfall is high. The climate is not sunny Mediterranean ease; it is cool, damp, salt-air moderation with bright summer breaks and long wet-season stretches.",
+        ],
+      },
+      {
+        id: "cannon-beach-resort-friction",
+        title: "Beautiful, expensive, and hazard-aware",
+        paragraphs: [
+          "The same place that feels climatically rare is also a small resort economy on an exposed coast. Housing cost, visitor surges, landslide-prone headlands, winter storms, and Cascadia tsunami planning are not side notes; they are part of the daily decision.",
+          "A relocation scout should spend time in both Cannon Beach and Seaside. The first shows the atmospheric ideal; the second shows whether groceries, health care, schools, evacuation routes, and off-season services make the ideal workable.",
+        ],
+      },
+    ],
     relocationFit: ["cool-summer lovers", "maritime-climate devotees", "sensitive gardeners"], travelFit: ["summer beach", "winter storm watching", "tide pools"],
     whoWouldLove: "Hot-weather haters, heavy sleepers (cool nights), garden nerds comfortable in fog.", whoMightNot: "Anyone who needs regular hot days or deep sun.",
     confidence: "high",
