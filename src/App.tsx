@@ -401,8 +401,8 @@ export default function App() {
     [ranking],
   );
   const scoutBrief = useMemo(
-    () => buildExplorerScoutBrief(ranked, rankingLabel),
-    [ranked, rankingLabel],
+    () => buildExplorerScoutBrief(ranked, rankingLabel, deferredFilters),
+    [ranked, rankingLabel, deferredFilters],
   );
   const resonantWindow = useMemo(() => resonantWindowFor(ranking), [ranking]);
   const rankedRef = useRef(ranked);
@@ -1673,6 +1673,41 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
           </div>
         </div>
 
+        {brief.decisionRows.length > 0 ? (
+          <div className="scout-brief__matrix" aria-label="Shortlist decision matrix">
+            <div className="scout-brief__matrix-head">
+              <span className="scout-brief__matrix-title">Decision matrix</span>
+              <span className="scout-brief__matrix-line">Top places, translated into fit, comfort, risk, land, and the first caveat to check.</span>
+            </div>
+            <div className="scout-brief__matrix-grid">
+              {brief.decisionRows.map(row => (
+                <button
+                  key={row.place.id}
+                  type="button"
+                  className="scout-brief__matrix-row"
+                  onClick={() => onOpenPlace(row.place.id)}
+                  title={prose(row.decisionCue)}
+                  aria-label={`Decision matrix rank ${row.rank}. ${row.place.name}. ${row.decisionCue} Open place profile.`}
+                >
+                  <span className="scout-brief__matrix-rank" aria-hidden>{row.rank}</span>
+                  <span className="scout-brief__matrix-main">
+                    <span className="scout-brief__matrix-name">{row.place.name}</span>
+                    <span className="scout-brief__matrix-fit">{prose(row.bestFor)}</span>
+                  </span>
+                  <span className="scout-brief__matrix-stats" aria-hidden>
+                    <span>Fit {row.liveFitScore}</span>
+                    <span>Comfort {row.comfortScore}</span>
+                    <span>Easy {row.easyMonths} mo</span>
+                    <span>Risk {row.riskLoad}</span>
+                    <span>Land {row.growability}</span>
+                  </span>
+                  <span className="scout-brief__matrix-watch">Watch: {prose(row.watch)}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         <div className="scout-brief__caution">
           <ShieldAlert className="w-3.5 h-3.5 text-ember-700 shrink-0" aria-hidden />
           <span>{prose(brief.cautionLine)}</span>
@@ -1732,6 +1767,27 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="desktop-scout-board__signal-label">{signal.label}</span>
             <span className="desktop-scout-board__signal-place">{signal.place.name}</span>
             <span className="desktop-scout-board__signal-value">{signal.value}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="desktop-scout-board__matrix" aria-label="Desktop decision matrix">
+        <div className="desktop-scout-board__matrix-title">Decision matrix</div>
+        {brief.decisionRows.slice(0, 3).map(row => (
+          <button
+            key={row.place.id}
+            type="button"
+            className="desktop-scout-board__matrix-row"
+            onClick={() => onOpenPlace(row.place.id)}
+            title={prose(row.decisionCue)}
+            aria-label={`Open ${row.place.name} from the desktop decision matrix`}
+          >
+            <span className="desktop-scout-board__matrix-rank" aria-hidden>{row.rank}</span>
+            <span className="desktop-scout-board__matrix-name">{row.place.name}</span>
+            <span className="desktop-scout-board__matrix-stats">
+              Fit {row.liveFitScore} · comfort {row.comfortScore} · risk {row.riskLoad}
+            </span>
+            <span className="desktop-scout-board__matrix-watch">Watch: {prose(row.watch)}</span>
           </button>
         ))}
       </div>

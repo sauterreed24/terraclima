@@ -3,9 +3,11 @@ import { useEffect, useId, useMemo, useRef } from "react";
 import type { Place } from "../types";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
-import { avgRisk, meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
+import { annualComfortMonthCount, avgRisk, meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
+import { scoreLivability, feltComfortScore, livedFrictionScore } from "../lib/livability-score";
+import { assessLiveFit } from "../lib/live-fit";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { X } from "lucide-react";
 
@@ -29,19 +31,40 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
   const helperText = isSinglePlace
     ? "Add another place from any card or profile to start a side-by-side comparison."
     : "Compare climate fingerprints, seasonal ranges, and screening scores across the saved places.";
+  const decisionProfiles = useMemo(() => places.map(place => {
+    const liveFit = assessLiveFit(place);
+    const livability = scoreLivability(place);
+    return {
+      place,
+      liveFitScore: liveFit.score,
+      livabilityScore: livability.score,
+      feltComfort: Math.round(feltComfortScore(place)),
+      livedEase: Math.round(livedFrictionScore(place)),
+      easyMonths: annualComfortMonthCount(place),
+      riskLoad: Math.round(avgRisk(place) * 20),
+    };
+  }), [places]);
+  const decisionById = useMemo(
+    () => new Map(decisionProfiles.map(profile => [profile.place.id, profile])),
+    [decisionProfiles],
+  );
   const compareHighlights = useMemo(() => {
     if (places.length < 2) return [];
     const coolestSummer = places.reduce((best, place) => meanSummerHigh(place) < meanSummerHigh(best) ? place : best, places[0]);
     const mildestWinter = places.reduce((best, place) => meanJanLow(place) > meanJanLow(best) ? place : best, places[0]);
-    const lowestRisk = places.reduce((best, place) => avgRisk(place) < avgRisk(best) ? place : best, places[0]);
+    const bestLiveFit = decisionProfiles.reduce((best, profile) => profile.liveFitScore > best.liveFitScore ? profile : best, decisionProfiles[0]);
+    const topLivability = decisionProfiles.reduce((best, profile) => profile.livabilityScore > best.livabilityScore ? profile : best, decisionProfiles[0]);
+    const lowestRisk = decisionProfiles.reduce((best, profile) => profile.riskLoad < best.riskLoad ? profile : best, decisionProfiles[0]);
     const bestGrowability = places.reduce((best, place) => place.scores.growability > best.scores.growability ? place : best, places[0]);
     return [
       { label: "Coolest summer", place: coolestSummer, value: fmtTemp(meanSummerHigh(coolestSummer), temp, { digits: 1 }) },
       { label: "Mildest winter", place: mildestWinter, value: fmtTemp(meanJanLow(mildestWinter), temp, { digits: 1 }) },
-      { label: "Lowest risk load", place: lowestRisk, value: `${Math.round(avgRisk(lowestRisk) * 20)}/100` },
+      { label: "Best live-here fit", place: bestLiveFit.place, value: `${bestLiveFit.liveFitScore}/100` },
+      { label: "Top livability", place: topLivability.place, value: `${topLivability.livabilityScore}/100` },
+      { label: "Lowest risk load", place: lowestRisk.place, value: `${lowestRisk.riskLoad}/100` },
       { label: "Best growability", place: bestGrowability, value: `${bestGrowability.scores.growability}/100` },
     ];
-  }, [places, temp]);
+  }, [decisionProfiles, places, temp]);
   /**
    * Mobile (<lg breakpoint via the Tailwind class) gets fixed-width columns
    * with a horizontal scroll snap so 2–4 places stay readable on a phone
@@ -110,6 +133,7 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
               <div className="grid gap-4 min-w-full snap-mandatory" style={{ gridTemplateColumns: columnTemplate }}>
               {places.map(p => {
                 const geo = buildGeospatialAnalysis(p);
+                const decision = decisionById.get(p.id)!;
                 return (
                 <div key={p.id} className="panel p-4 relative snap-start">
                   <button type="button" onClick={() => onRemove(p.id)} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center" aria-label={`Remove ${p.name} from comparison`}>
@@ -129,6 +153,11 @@ export function CompareView({ places, open, onClose, onRemove }: Props) {
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
                     <Row label="Hardiness" value={p.growability.hardinessZone ?? p.climate.hardinessZone ?? "—"} />
                     <Row label="Chill hrs" value={`${p.climate.chillHours ?? "—"}`} />
+                    <Row label="Live-here fit" value={`${decision.liveFitScore}/100`} />
+                    <Row label="Livability" value={`${decision.livabilityScore}/100`} />
+                    <Row label="Felt comfort" value={`${decision.feltComfort}/100`} />
+                    <Row label="Easy months" value={`${decision.easyMonths}/12`} />
+                    <Row label="Lived ease" value={`${decision.livedEase}/100`} />
                     <Row label="Uniqueness" value={p.scores.microclimateUniqueness.toString()} />
                     <Row label="Geo signal" value={`${geo.geospatialSignalScore}/100`} />
                     <Row label="EO fit" value={`${geo.eoObservabilityScore}/100`} />

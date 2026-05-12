@@ -47,7 +47,12 @@ describe("CompareView", () => {
     expect(screen.getByLabelText("Comparison highlights")).toBeInTheDocument();
     expect(screen.getByText("Coolest summer")).toBeInTheDocument();
     expect(screen.getByText("Mildest winter")).toBeInTheDocument();
+    expect(screen.getByText("Best live-here fit")).toBeInTheDocument();
+    expect(screen.getByText("Top livability")).toBeInTheDocument();
     expect(screen.getByText("Lowest risk load")).toBeInTheDocument();
     expect(screen.getByText("Best growability")).toBeInTheDocument();
+    expect(screen.getAllByText("Live-here fit").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Livability").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Felt comfort").length).toBeGreaterThan(0);
   });
 });
