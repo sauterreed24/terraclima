@@ -8,7 +8,7 @@ export default defineConfig({
     environment: "node",
     // Full-suite DOM runs now include heavier rendered Explorer surfaces.
     // Keep the local gate deterministic under parallel transform load.
-    testTimeout: 15000,
+    testTimeout: 30000,
     globals: false,
     reporters: process.env.CI ? ["default", "github-actions"] : ["default"],
   },
