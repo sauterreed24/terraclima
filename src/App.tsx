@@ -1315,6 +1315,7 @@ const HeroCard = memo(function HeroCard({
           {!active && (
             <div className="hero-quick-picks mt-3" role="group" aria-label="Quick ranking presets">
               <QuickPick emoji="📅" label="Best this month" onClick={() => onSetRanking("best-this-month")} active={ranking === "best-this-month"} />
+              <QuickPick emoji="☀️" label="Comfort" onClick={() => onSetRanking("most-comfortable")} active={ranking === "most-comfortable"} />
               <QuickPick emoji="💻" label="Remote work" onClick={() => onSetRanking("best-for-remote-work")} active={ranking === "best-for-remote-work"} />
               <QuickPick emoji="🌅" label="Retirement" onClick={() => onSetRanking("best-retirement")} active={ranking === "best-retirement"} />
               <QuickPick emoji="🌱" label="Garden life" onClick={() => onSetRanking("best-growability")} active={ranking === "best-growability"} />
@@ -1413,15 +1414,17 @@ const HeroCard = memo(function HeroCard({
             <p className="hidden min-[1400px]:block text-xs text-stone-readable mt-1 leading-relaxed max-w-3xl">
               Same filtered pool as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by our published blend — not by whatever you picked in Rank by.
             </p>
-            <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights (v2)">
-              <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
-              <span className="livability-weight-pill" title="Blends the thermal plateau, year-round usable-month runway, sky/dampness, and curated comfort.">Felt comfort {Math.round(LIVABILITY_WEIGHTS.thermalComfort * 100)}%</span>
+            <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights (v3)">
+              <span className="livability-weight-pill" title="Blends the thermal plateau, warm-night recovery, year-round usable-month runway, sky/dampness, and curated comfort.">Felt comfort {Math.round(LIVABILITY_WEIGHTS.thermalComfort * 100)}%</span>
+              <span className="livability-weight-pill" title="Sky, wind exposure, humidity or arid-air strain, smoke/air, and solar burden.">Atmosphere {Math.round(LIVABILITY_WEIGHTS.atmosphericEase * 100)}%</span>
               <span className="livability-weight-pill" title="0.6 × mean-of-9 + 0.4 × max-of-9 — surfaces tail risk that an averaged hazard score would hide.">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardCushion * 100)}%</span>
+              <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
               <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
               <span className="livability-weight-pill" title="U-shaped penalty: full marks 700..1500 mm/yr; both arid (<300) and saturated (>2500) reduce the score.">Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
+              <span className="livability-weight-pill" title="Curated cost, social-fabric, and daily-services friction.">Lived friction {Math.round(LIVABILITY_WEIGHTS.livedFriction * 100)}%</span>
             </div>
             <p className="hidden min-[1400px]:block mt-1.5 text-[10px] text-stone-readable/85 italic">
-              v2 livability lens — felt comfort, year-round usable-month runway, tail-risk-aware hazard cushion, U-shaped precip moderation. Editorial triage for exploration, not appraisal or medical heat-stress advice.
+              v3 livability lens — felt comfort, atmosphere, year-round usable-month runway, tail-risk-aware hazard cushion, U-shaped precip moderation. Editorial triage for exploration, not appraisal or medical heat-stress advice.
             </p>
           </div>
           <div

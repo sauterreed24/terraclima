@@ -3,6 +3,8 @@ import type { MicroclimateArchetype, Place, RiskAssessment, RiskLevel, Topograph
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { fmtPrecip, fmtTemp, useProse, useUnits } from "../lib/units";
 import { getAnnualPrecipMm, meanJanLow, meanSummerHigh } from "../lib/climate-metrics";
+import { assessLiveFit } from "../lib/live-fit";
+import { atmosphericComfortScore, describeHumanComfort, humanComfortScore } from "../lib/livability-score";
 import { useRichVisualEffects } from "../lib/device-profile";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 
@@ -75,6 +77,10 @@ export function AtlasMapTooltip({
   const watch = topRiskRows(place, 2);
   const growList = place.growability.growsWell.slice(0, 2);
   const trickyFirst = place.growability.tricky[0];
+  const liveFit = assessLiveFit(place);
+  const comfort = Math.round(humanComfortScore(place));
+  const atmosphere = Math.round(atmosphericComfortScore(place));
+  const comfortRead = describeHumanComfort(place);
 
   const onRight = xPct < 55;
   const onTop = yPct > 58;
@@ -141,6 +147,16 @@ export function AtlasMapTooltip({
           </div>
         </section>
 
+        <section className="tc-map-hover-section" aria-label="Comfort read">
+          <h3 className="tc-map-hover-kicker">Comfort read</h3>
+          <div className="tc-map-hover-scoregrid">
+            <TooltipScore label="Comfort" value={comfort} />
+            <TooltipScore label="Live fit" value={liveFit.score} />
+            <TooltipScore label="Atmosphere" value={atmosphere} caution={atmosphere < 55} />
+          </div>
+          <p className="tc-map-hover-prose mt-2 line-clamp-2">{prose(comfortRead.summary)}</p>
+        </section>
+
         <section className="tc-map-hover-section" aria-label="Microclimate gist">
           <h3 className="tc-map-hover-kicker">Microclimate gist</h3>
           <p className="tc-map-hover-prose line-clamp-3">{prose(place.whyDistinct || place.summaryShort)}</p>
@@ -198,6 +214,19 @@ function InstrumentMetric({ label, value, tone }: { label: string; value: string
       <span className="text-[0.52rem] font-bold uppercase tracking-[0.08em] text-stone leading-tight text-center">{label}</span>
       <span className="font-mono-num text-[0.82rem] font-semibold tabular-nums text-center" style={{ color: c[tone] }}>
         {value}
+      </span>
+    </div>
+  );
+}
+
+function TooltipScore({ label, value, caution }: { label: string; value: number; caution?: boolean }) {
+  const clamped = Math.max(0, Math.min(100, value));
+  return (
+    <div className={`tc-map-hover-score${caution ? " tc-map-hover-score--caution" : ""}`}>
+      <span className="tc-map-hover-score__label">{label}</span>
+      <span className="tc-map-hover-score__value">{Math.round(clamped)}</span>
+      <span className="tc-map-hover-score__meter" aria-hidden>
+        <span style={{ width: `${clamped}%` }} />
       </span>
     </div>
   );

@@ -9,7 +9,7 @@ import { getBestMonths, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { ArrowRight, Sun } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
-import { scoreLivability } from "../lib/livability-score";
+import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
 
 // ── Climate gradient bar helpers ─────────────────────────────────────────────
 
@@ -114,6 +114,7 @@ export const PlaceCard = memo(function PlaceCard({
     [place, compact, liveFitFilters],
   );
   const livabilityResult = useMemo(() => (compact ? null : scoreLivability(place)), [place, compact]);
+  const comfortRead = useMemo(() => (compact ? null : describeHumanComfort(place)), [place, compact]);
 
   // Derived at-a-glance extras surfaced on non-compact cards
   const annualSunshinePct = useMemo(() => {
@@ -346,6 +347,11 @@ export const PlaceCard = memo(function PlaceCard({
                 ))}
               </div>
             )}
+            {comfortRead ? (
+              <p className="text-[10px] leading-snug text-stone-readable mt-1.5 line-clamp-2" title={prose(comfortRead.summary)}>
+                {prose(comfortRead.summary)}
+              </p>
+            ) : null}
             {place.liveSignals ? (
               <div className="place-card__livability-components mt-1.5" aria-label="Lived-friction signals">
                 {(["costPressure","socialStress","accessFriction"] as const).map(axis => {

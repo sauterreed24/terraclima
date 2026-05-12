@@ -98,6 +98,10 @@ describe("AtlasMap DOM controls", () => {
     expect(preview).toHaveTextContent("Alpha Valley");
     expect(preview).toHaveTextContent("Climate snapshot");
     expect(preview).toHaveTextContent("JJA high");
+    expect(preview).toHaveTextContent("Comfort read");
+    expect(preview).toHaveTextContent("Comfort");
+    expect(preview).toHaveTextContent("Live fit");
+    expect(preview).toHaveTextContent("Atmosphere");
     expect(preview).toHaveTextContent("Microclimate gist");
     expect(preview).toHaveTextContent("rain-shadow bench");
     expect(preview).toHaveTextContent("Physical drivers");

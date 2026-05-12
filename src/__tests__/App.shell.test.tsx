@@ -24,6 +24,14 @@ vi.mock("../components/CompareView", () => ({
     ) : null,
 }));
 
+vi.mock("../components/PlaceDetail", () => ({
+  PlaceDetail: ({ onClose }: { onClose: () => void }) => (
+    <div role="dialog" aria-label="Place profile">
+      <button type="button" aria-label="Close profile" onClick={onClose} />
+    </div>
+  ),
+}));
+
 function renderApp() {
   return render(
     <UnitProvider>

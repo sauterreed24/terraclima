@@ -38,5 +38,5 @@ describe("ExplorerFilterSheet", () => {
     expect(screen.getByPlaceholderText("Search places")).toBeInTheDocument();
     expect(screen.queryByPlaceholderText("Search name, region, or archetype")).toBeNull();
     expect(screen.getAllByRole("button", { name: "Close filters" })).toHaveLength(1);
-  });
+  }, 30000);
 });

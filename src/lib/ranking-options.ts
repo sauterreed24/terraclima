@@ -6,6 +6,7 @@ import type { RankingProfile } from "./scoring";
  */
 export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
   { id: "best-this-month", label: "Best this month" },
+  { id: "most-comfortable", label: "Most comfortable" },
   { id: "best-for-remote-work", label: "Remote-work ready" },
   { id: "best-retirement", label: "Retirement dream" },
   { id: "live-fit", label: "Live-here fit" },
