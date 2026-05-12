@@ -136,6 +136,18 @@ export interface ContextStressRow {
   scenario?: ContextScenario;
 }
 
+export interface ContextLeaderSummary {
+  totalRows: number;
+  uniqueLeaderCount: number;
+  compareIds: string[];
+  leaders: {
+    place: Place;
+    wins: number;
+    labels: string[];
+  }[];
+  summary: string;
+}
+
 const LIVE_CONSTRAINT_KEYS: readonly LiveConstraintKey[] = [
   "maxSummerHighC",
   "minWinterLowC",
@@ -261,4 +273,58 @@ export function buildContextStressRows({
   }
 
   return rows;
+}
+
+function plural(n: number, one: string, many: string): string {
+  return n === 1 ? one : many;
+}
+
+export function summarizeContextStressRows(
+  rows: readonly ContextStressRow[],
+  compareLimit = 4,
+): ContextLeaderSummary | null {
+  if (rows.length === 0) return null;
+
+  const byLeader = new Map<string, ContextLeaderSummary["leaders"][number]>();
+  const firstSeen = new Map<string, number>();
+  rows.forEach((row, index) => {
+    const id = row.leader.place.id;
+    const existing = byLeader.get(id);
+    if (existing) {
+      existing.wins += 1;
+      existing.labels.push(row.shortLabel);
+    } else {
+      byLeader.set(id, {
+        place: row.leader.place,
+        wins: 1,
+        labels: [row.shortLabel],
+      });
+      firstSeen.set(id, index);
+    }
+  });
+
+  const leaders = [...byLeader.entries()]
+    .sort((a, b) =>
+      b[1].wins - a[1].wins ||
+      (firstSeen.get(a[0]) ?? 0) - (firstSeen.get(b[0]) ?? 0) ||
+      a[1].place.name.localeCompare(b[1].place.name),
+    )
+    .map(([, leader]) => leader);
+  const top = leaders[0];
+  if (!top) return null;
+
+  const totalRows = rows.length;
+  const uniqueLeaderCount = leaders.length;
+  const contextWord = plural(top.wins, "context", "contexts");
+  const summary = uniqueLeaderCount === 1
+    ? `${top.place.name} leads all ${totalRows} ${plural(totalRows, "read", "reads")}.`
+    : `${uniqueLeaderCount} distinct leaders across ${totalRows} reads; ${top.place.name} leads ${top.wins} ${contextWord}.`;
+
+  return {
+    totalRows,
+    uniqueLeaderCount,
+    compareIds: leaders.slice(0, Math.max(0, compareLimit)).map(leader => leader.place.id),
+    leaders,
+    summary,
+  };
 }
