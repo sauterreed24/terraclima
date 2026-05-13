@@ -136,6 +136,26 @@ describe("localizeProse — temperatures", () => {
   it("treats explicit deltas as 9/5 (no +32)", () => {
     expect(localizeProse("The town runs 3°C cooler than the basin.", "F", "metric")).toContain("5°F cooler");
   });
+  it("treats +NN°C after 'to' as absolute warm readings (chinook ceilings)", () => {
+    expect(
+      localizeProse(
+        "Chinook events can lift January temperatures to +15°C for days at a time.",
+        "F",
+        "metric",
+      ),
+    ).toContain("59°F");
+    expect(localizeProse("Chinook events can lift January temperatures to +15°C for days at a time.", "F", "metric")).not.toMatch(/\+\d+°F/);
+  });
+  it("treats 'highs up to N°C' as absolute ceilings, not Δ", () => {
+    expect(localizeProse("Summer highs up to 40°C.", "F", "metric")).toContain("104°F");
+    const range = localizeProse("Summer highs up to 35–40°C.", "F", "metric");
+    expect(range).toContain("95");
+    expect(range).toContain("104°F");
+  });
+  it("still treats signed outlook ranges and warming shorthand as deltas", () => {
+    expect(localizeProse("Warmer winters (+3 to +5°C) likely fastest.", "F", "metric")).toMatch(/\+5 to \+9°F/);
+    expect(localizeProse("Warming ~+2°C; longer growing season.", "F", "metric")).toMatch(/~\+4°F/);
+  });
   it("treats annual ranges and lapse rates as deltas, not absolute readings", () => {
     expect(localizeProse("Annual ranges under 10°C.", "F", "metric")).toBe("Annual ranges under 18°F.");
     expect(localizeProse("Annual temperature ranges exceed 55°C.", "F", "metric")).toBe("Annual temperature ranges exceed 99°F.");
