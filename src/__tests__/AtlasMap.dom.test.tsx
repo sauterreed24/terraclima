@@ -130,9 +130,11 @@ describe("AtlasMap DOM controls", () => {
 
   it("projects current ranked leaders onto the map as accessible halos", () => {
     setCoarsePointer(false);
-    renderMap(vi.fn(), ["a", "b"]);
+    const { container } = renderMap(vi.fn(), ["a", "b"]);
 
     expect(screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Current rank #2\. Beta Ridge/ })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
+    expect(container.querySelector(".map-rank-trail__line")).toBeInTheDocument();
   });
 });

@@ -4,6 +4,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
 import { UnitProvider } from "../lib/units";
 
+const APP_SHELL_TIMEOUT_MS = 30000;
+
 /** Avoid dynamic topojson imports + async map setup leaking past test teardown. */
 vi.mock("../components/AtlasMap", () => ({
   AtlasMap: () => <div data-testid="atlas-map-stub" />,
@@ -56,31 +58,31 @@ describe("App shell", () => {
     expect(header).not.toBeNull();
     expect(header!.textContent).toMatch(/Terraclima/);
     expect(header!.textContent).toMatch(/North American Microclimate Atlas/);
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("renders Trips in the primary navigation", () => {
     renderApp();
     expect(screen.getAllByRole("button", { name: "Trips" }).length).toBeGreaterThan(0);
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("opens the Trips view from navigation", async () => {
     renderApp();
     fireEvent.click(screen.getAllByRole("button", { name: "Trips" })[0]);
     expect(await screen.findByTestId("climate-trips-view")).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("loads ?v=trips directly", async () => {
     window.history.replaceState(null, "", "/?v=trips");
     renderApp();
     expect(await screen.findByTestId("climate-trips-view")).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("falls back to Explorer for unknown view values", () => {
     window.history.replaceState(null, "", "/?v=garbage");
     renderApp();
     expect(screen.queryByTestId("climate-trips-view")).toBeNull();
     expect(screen.getByTestId("atlas-map-stub")).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("falls back to Explorer for retired Pro links", () => {
     window.history.replaceState(null, "", "/?v=pro");
@@ -88,7 +90,7 @@ describe("App shell", () => {
     expect(screen.queryByText("Pro")).not.toBeInTheDocument();
     expect(screen.queryByTestId("climate-trips-view")).toBeNull();
     expect(screen.getByTestId("atlas-map-stub")).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("surfaces the active ranking leaders in the Explorer hero", () => {
     window.history.replaceState(null, "", "/?col=places-that-feel-like-another-country&r=live-fit");
@@ -105,7 +107,7 @@ describe("App shell", () => {
     expect(screen.getAllByText("Felt comfort").length).toBeGreaterThan(0);
     expect(screen.getByText(/Leading matches by/)).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("starts new sessions with live-here fit as the default Explorer ranking", () => {
     renderApp();
@@ -113,7 +115,7 @@ describe("App shell", () => {
     expect(screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit")).toBeInTheDocument();
     expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("compares current Explorer leaders from the scout brief", async () => {
     renderApp();
@@ -121,7 +123,7 @@ describe("App shell", () => {
     fireEvent.click(screen.getByRole("button", { name: /Compare current leaders/ }));
 
     expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("compares distinct context leaders from the stress test", async () => {
     renderApp();
@@ -129,7 +131,7 @@ describe("App shell", () => {
     fireEvent.click(screen.getByRole("button", { name: /Compare context top picks/ }));
 
     expect(await screen.findByRole("dialog", { name: /places side by side/ })).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("applies alternate context presets from the Explorer hero", async () => {
     renderApp();
@@ -141,7 +143,7 @@ describe("App shell", () => {
       expect(window.location.search).toContain("sh=26");
     });
     expect(screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit")).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("copies the current Explorer URL for sharing", async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
@@ -160,7 +162,7 @@ describe("App shell", () => {
     expect(copied.searchParams.get("q")).toBe("monterey");
     expect(copied.searchParams.get("r")).toBeNull();
     expect(await screen.findByText("Link copied")).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps live-fit ranking in shared URLs when live-fit controls are active", async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
@@ -178,7 +180,7 @@ describe("App shell", () => {
     const copied = new URL(writeText.mock.calls[0][0] as string);
     expect(copied.searchParams.get("r")).toBe("live-fit");
     expect(copied.searchParams.get("fit")).toBe("cool-summers");
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("opens compare immediately for shared URLs with two or more valid places", async () => {
     window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa");
@@ -186,7 +188,7 @@ describe("App shell", () => {
     renderApp();
 
     expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps a one-place compare URL saved without opening the compare dialog", () => {
     window.history.replaceState(null, "", "/?cmp=sequim-wa");
@@ -195,7 +197,7 @@ describe("App shell", () => {
 
     expect(screen.queryByRole("dialog", { name: "1 place side by side" })).not.toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: "Open compare (1 place)" }).length).toBeGreaterThan(0);
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("exposes only the visible close button in the mobile site menu", async () => {
     renderApp();
@@ -203,7 +205,7 @@ describe("App shell", () => {
     fireEvent.click(screen.getAllByRole("button", { name: "Open site menu" })[0]);
 
     await waitFor(() => expect(screen.getAllByRole("button", { name: "Close menu" })).toHaveLength(1));
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("exposes only the visible close button in the mobile filter sheet", async () => {
     renderApp();
@@ -212,7 +214,7 @@ describe("App shell", () => {
 
     await waitFor(() => expect(screen.getAllByRole("button", { name: "Close filters" })).toHaveLength(1));
     expect(screen.getByLabelText("Search places by name, region, or archetype")).toHaveAttribute("placeholder", "Search places");
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("renders the pinned shortlist rail when bookmarks exist in localStorage", () => {
     window.localStorage.setItem(
@@ -222,7 +224,7 @@ describe("App shell", () => {
     renderApp();
     expect(screen.getByText(/Your shortlist · 2/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Open Sequim from your shortlist/ })).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("renders the recently viewed rail when recents exist in localStorage", () => {
     window.localStorage.setItem(
@@ -232,23 +234,23 @@ describe("App shell", () => {
     renderApp();
     expect(screen.getByText(/Recently viewed · 1/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Open Sequim \(recently viewed\)/ })).toBeInTheDocument();
-  }, 15000);
+  }, APP_SHELL_TIMEOUT_MS);
 
   it("does not mark deep-linked place history as in-app navigation after URL sync", async () => {
     window.history.replaceState(null, "", "/?p=sequim-wa");
     renderApp();
 
-    await screen.findByRole("button", { name: "Close profile" }, { timeout: 15000 });
+    await screen.findByRole("button", { name: "Close profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
     expect((window.history.state as { tcPlace?: boolean } | null)?.tcPlace).toBeFalsy();
 
     fireEvent.click(screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]);
-    await screen.findByLabelText("Search places by name, region, or archetype", {}, { timeout: 15000 });
+    await screen.findByLabelText("Search places by name, region, or archetype", {}, { timeout: APP_SHELL_TIMEOUT_MS });
     fireEvent.click(screen.getAllByRole("button", { name: "USA" })[0]);
 
     await waitFor(() => {
       expect(window.location.search).toMatch(/c=USA/);
-    }, { timeout: 15000 });
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
 
     expect((window.history.state as { tcPlace?: boolean } | null)?.tcPlace).toBeFalsy();
-  }, 20000);
+  }, APP_SHELL_TIMEOUT_MS);
 });

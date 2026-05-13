@@ -13,7 +13,7 @@
     "preview:lan": "vite preview --host 0.0.0.0 --port 4173",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src scripts --max-warnings 0",
-    "test": "vitest run",
+    "test": "vitest run --maxWorkers=1",
     "test:watch": "vitest",
     "test:prose": "tsx scripts/test-prose.ts",
     "test:celsius": "tsx scripts/playtest-celsius.ts",

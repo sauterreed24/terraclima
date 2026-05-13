@@ -181,6 +181,25 @@ function linePath(points: Array<[number, number]>): string {
   return `M ${first[0].toFixed(1)} ${first[1].toFixed(1)}${rest.map(([x, y]) => ` L ${x.toFixed(1)} ${y.toFixed(1)}`).join("")}`;
 }
 
+function smoothTrailPath(points: Array<[number, number]>): string {
+  if (points.length < 2) return "";
+  if (points.length === 2) return linePath(points);
+  const [first] = points;
+  let d = `M ${first[0].toFixed(1)} ${first[1].toFixed(1)}`;
+  for (let i = 1; i < points.length; i += 1) {
+    const current = points[i];
+    const next = points[i + 1];
+    if (next) {
+      const mx = (current[0] + next[0]) / 2;
+      const my = (current[1] + next[1]) / 2;
+      d += ` Q ${current[0].toFixed(1)} ${current[1].toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)}`;
+    } else {
+      d += ` L ${current[0].toFixed(1)} ${current[1].toFixed(1)}`;
+    }
+  }
+  return d;
+}
+
 type TouchPointLike = { clientX: number; clientY: number };
 type TouchListLike = { length: number; item(index: number): TouchPointLike | null };
 
@@ -621,6 +640,18 @@ export function AtlasMap({
     return rankById;
   }, [featuredIds]);
 
+  const featuredTrailPoints = useMemo(() => {
+    const pointById = new Map(pts.map(pt => [pt.place.id, pt]));
+    return featuredIds.slice(0, 5).flatMap(id => {
+      const pt = pointById.get(id);
+      return pt ? [{ id, x: pt.x, y: pt.y }] : [];
+    });
+  }, [featuredIds, pts]);
+  const featuredTrailPath = useMemo(
+    () => smoothTrailPath(featuredTrailPoints.map(pt => [pt.x, pt.y])),
+    [featuredTrailPoints],
+  );
+
   const clusterSourcePoints = useMemo(
     () => pts.map(pt => ({ ...pt, id: pt.place.id })),
     [pts],
@@ -739,6 +770,20 @@ export function AtlasMap({
     if (selected) base.push(selected);
     return base;
   }, [laidOutMarkerPoints, selectedId, hoverId, featuredRankById]);
+
+  const rankTrailTopMarkerIds = useMemo(() => {
+    const ids = new Set(featuredRankById.keys());
+    if (selectedId) ids.add(selectedId);
+    return ids;
+  }, [featuredRankById, selectedId]);
+  const baseMarkerRenderOrder = useMemo(
+    () => markerRenderOrder.filter(pt => !rankTrailTopMarkerIds.has(pt.place.id)),
+    [markerRenderOrder, rankTrailTopMarkerIds],
+  );
+  const topMarkerRenderOrder = useMemo(
+    () => markerRenderOrder.filter(pt => rankTrailTopMarkerIds.has(pt.place.id)),
+    [markerRenderOrder, rankTrailTopMarkerIds],
+  );
 
   // Markers call `onSelect` directly. Do not gate on `dragRef.moved`: marker
   // `pointerdown` stops propagation so the map never resets `moved` after a
@@ -1200,6 +1245,36 @@ export function AtlasMap({
   const topoLoading = topo === null;
   const svgTouchAction = atlasTouchActionForMode(mapInteractive);
   const legendPanelId = coarsePointer ? "tc-map-mobile-legend" : "tc-map-desktop-legend";
+  const mapAriaLabel =
+    (coarsePointer
+      ? "Atlas map of North America. One-finger drag pans the map; pinch zooms when map mode is active. Use the Scroll page control to let the browser scroll past the map. Tap any pin to open that place's full profile."
+      : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile.") +
+    (featuredTrailPoints.length > 1 ? " Gold trail connects the current top-ranked places." : "");
+  const renderMarker = (pt: RenderedClusterPoint) => {
+    const screenX = pt.x * settledView.k + settledView.x;
+    const labelSide: "left" | "right" = screenX > width * 0.62 ? "left" : "right";
+    return (
+      <Marker
+        key={pt.place.id}
+        pt={pt}
+        k={view.k}
+        labelMode={pinLabelModes.get(pt.place.id) ?? "hidden"}
+        labelSide={labelSide}
+        isActive={pt.place.id === selectedId}
+        isHover={pt.place.id === hoverId}
+        featuredRank={featuredRankById.get(pt.place.id)}
+        richEffects={richEffects}
+        onSelect={onSelect}
+        onEnter={() => {
+          cancelHoverClear();
+          setHoverId(pt.place.id);
+          updateTooltip(pt);
+        }}
+        onLeave={scheduleHoverClear}
+        shouldSuppressTouchActivation={shouldSuppressTouchActivation}
+      />
+    );
+  };
 
   return (
     <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
@@ -1223,7 +1298,7 @@ export function AtlasMap({
         textRendering="geometricPrecision"
         role="img"
         tabIndex={0}
-        aria-label={coarsePointer ? "Atlas map of North America. One-finger drag pans the map; pinch zooms when map mode is active. Use the Scroll page control to let the browser scroll past the map. Tap any pin to open that place's full profile." : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile."}
+        aria-label={mapAriaLabel}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
@@ -1487,6 +1562,60 @@ export function AtlasMap({
             ))}
           </g>
 
+          {/* Base pins first; the ranked trail then reads above the field without covering top-ranked / active pins. */}
+          <g>
+            {baseMarkerRenderOrder.map(renderMarker)}
+          </g>
+
+          {featuredTrailPath ? (
+            <g className="map-rank-trail" pointerEvents="none" aria-hidden>
+              <path
+                className="map-rank-trail__glow"
+                d={featuredTrailPath}
+                fill="none"
+                stroke="rgba(255, 190, 92, 0.18)"
+                strokeWidth="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+              />
+              <path
+                className="map-rank-trail__line"
+                d={featuredTrailPath}
+                fill="none"
+                stroke="rgba(255, 225, 166, 0.78)"
+                strokeWidth="2.2"
+                strokeDasharray="7 9"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+              />
+              {richEffects ? (
+                <path
+                  className="map-rank-trail__pulse"
+                  d={featuredTrailPath}
+                  fill="none"
+                  stroke="rgba(255, 250, 220, 0.92)"
+                  strokeWidth="1.15"
+                  strokeDasharray="1 18"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+              ) : null}
+              {featuredTrailPoints.map(pt => (
+                <circle
+                  key={`rank-node-${pt.id}`}
+                  className="map-rank-trail__node"
+                  cx={pt.x}
+                  cy={pt.y}
+                  r={3.1}
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+            </g>
+          ) : null}
+
           {/* Visual-only pin offsets keep dense touch targets usable while leader lines preserve exact geography. */}
           <g pointerEvents="none" aria-hidden>
             {markerRenderOrder.filter(pt => pt.needsLeader).map(pt => (
@@ -1515,38 +1644,9 @@ export function AtlasMap({
             ))}
           </g>
 
-          {/* Markers */}
+          {/* Ranked, hovered, and selected pins stay above the trail for clear hit targets and badges. */}
           <g>
-            {markerRenderOrder.map(pt => {
-              // Flip the label to the left of the pin when the marker sits in
-              // the right band of the visible map. Uses settledView so the
-              // side doesn't jitter mid-pan; threshold 0.62 keeps the default
-              // "right" placement for everything except markers comfortably
-              // inside the right edge.
-              const screenX = pt.x * settledView.k + settledView.x;
-              const labelSide: "left" | "right" = screenX > width * 0.62 ? "left" : "right";
-              return (
-                <Marker
-                  key={pt.place.id}
-                  pt={pt}
-                  k={view.k}
-                  labelMode={pinLabelModes.get(pt.place.id) ?? "hidden"}
-                  labelSide={labelSide}
-                  isActive={pt.place.id === selectedId}
-                  isHover={pt.place.id === hoverId}
-                  featuredRank={featuredRankById.get(pt.place.id)}
-                  richEffects={richEffects}
-                  onSelect={onSelect}
-                  onEnter={() => {
-                    cancelHoverClear();
-                    setHoverId(pt.place.id);
-                    updateTooltip(pt);
-                  }}
-                  onLeave={scheduleHoverClear}
-                  shouldSuppressTouchActivation={shouldSuppressTouchActivation}
-                />
-              );
-            })}
+            {topMarkerRenderOrder.map(renderMarker)}
           </g>
         </g>
 
@@ -1716,7 +1816,7 @@ export function AtlasMap({
           Names auto-hide when crowded: at most one label per map cell (tier wins ties). Zoom in or hover for full text.
         </p>
         <p className="text-[9px] text-[rgba(255,232,180,0.9)] leading-snug">
-          Gold numbered halos mark the current top-ranked leaders, matching the rank strip and cards.
+          Gold halos and the connecting trail mark the current top-ranked leaders, matching the rank strip and cards.
         </p>
         <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
           Pale ring: <span className="text-[rgba(255,236,210,0.95)]">US</span>
@@ -1761,7 +1861,7 @@ export function AtlasMap({
           </div>
           <div className="grid gap-1.5 border-t border-[rgba(140,200,224,0.24)] pt-2 text-[10px] text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
             <div>Diamond: flagship. Square: spotlight. Open ring: index.</div>
-            <div>Gold numbered halos mark the current top-ranked leaders.</div>
+            <div>Gold halos and route line mark the current top-ranked leaders.</div>
             <div>Pale outer ring: US, Canada, or Mexico. Fill color stays the climate driver.</div>
             <div>Clusters show nearby pins. Tap one to zoom; tightly overlapping groups open a picker.</div>
           </div>
