@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { PLACES } from "../../data/places";
 import { UnitProvider } from "../../lib/units";
 import { CompareView } from "../CompareView";
@@ -27,7 +27,15 @@ vi.mock("../charts/ClimateRibbon", () => ({
   ClimateRibbon: () => <div data-testid="climate-ribbon" />,
 }));
 
-function renderCompare() {
+afterEach(() => cleanup());
+
+function renderCompare({
+  onCopyView,
+  shareStatus,
+}: {
+  onCopyView?: () => void;
+  shareStatus?: "idle" | "copied" | "failed";
+} = {}) {
   render(
     <UnitProvider>
       <CompareView
@@ -35,6 +43,8 @@ function renderCompare() {
         open
         onClose={() => undefined}
         onRemove={() => undefined}
+        onCopyView={onCopyView}
+        shareStatus={shareStatus}
       />
     </UnitProvider>,
   );
@@ -54,5 +64,20 @@ describe("CompareView", () => {
     expect(screen.getAllByText("Live-here fit").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Livability").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Felt comfort").length).toBeGreaterThan(0);
+  });
+
+  it("adds a decision read and copyable comparison handoff", () => {
+    const onCopyView = vi.fn();
+    renderCompare({ onCopyView });
+
+    expect(screen.getByLabelText("Comparison decision read")).toBeInTheDocument();
+    expect(screen.getByText("Decision read")).toBeInTheDocument();
+    expect(screen.getByText("Broadest fit")).toBeInTheDocument();
+    expect(screen.getByText("Lowest risk")).toBeInTheDocument();
+    expect(screen.getByText("Comfort leader")).toBeInTheDocument();
+    expect(screen.getByText("Garden edge")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Copy comparison link" }));
+    expect(onCopyView).toHaveBeenCalledTimes(1);
   });
 });

@@ -21,9 +21,25 @@ vi.mock("../components/ClimateTripsView", () => ({
 }));
 
 vi.mock("../components/CompareView", () => ({
-  CompareView: ({ places, open }: { places: Array<{ id: string }>; open: boolean }) =>
+  CompareView: ({
+    places,
+    open,
+    onCopyView,
+    shareStatus,
+  }: {
+    places: Array<{ id: string }>;
+    open: boolean;
+    onCopyView?: () => void;
+    shareStatus?: "idle" | "copied" | "failed";
+  }) =>
     open && places.length > 0 ? (
-      <div role="dialog" aria-label={places.length === 1 ? "1 place saved to compare" : `${places.length} places side by side`} />
+      <div role="dialog" aria-label={places.length === 1 ? "1 place saved to compare" : `${places.length} places side by side`}>
+        {onCopyView ? (
+          <button type="button" aria-label="Copy comparison link" onClick={onCopyView}>
+            {shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
+          </button>
+        ) : null}
+      </div>
     ) : null,
 }));
 
@@ -225,6 +241,26 @@ describe("App shell", () => {
     renderApp();
 
     expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("copies comparison URLs from the compare dialog", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+    window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa&temp=C&dist=metric");
+
+    renderApp();
+
+    fireEvent.click(await screen.findByRole("button", { name: "Copy comparison link" }));
+
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const copied = new URL(writeText.mock.calls[0][0] as string);
+    expect(copied.searchParams.get("cmp")).toBe("sequim-wa,port-townsend-wa");
+    expect(copied.searchParams.get("temp")).toBe("C");
+    expect(copied.searchParams.get("dist")).toBe("metric");
+    await waitFor(() => expect(screen.getAllByText("Link copied").length).toBeGreaterThan(0));
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps a one-place compare URL saved without opening the compare dialog", () => {

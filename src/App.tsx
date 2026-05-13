@@ -879,6 +879,8 @@ export default function App() {
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
+            onCopyView={copyCurrentView}
+            shareStatus={shareStatus}
           />
         </Suspense>
       ) : null}

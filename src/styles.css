@@ -2349,6 +2349,111 @@
   .collection-curation-card[data-tone="ice"]::before { background: linear-gradient(180deg, #c8effc, #2eb8e6); }
   .collection-curation-card[data-tone="aurora"]::before { background: linear-gradient(180deg, #ffc4d6, #9a2a4d); }
 
+  .compare-decision-read {
+    display: grid;
+    grid-template-columns: minmax(16rem, 0.9fr) minmax(0, 1.6fr);
+    gap: 0.75rem;
+    margin: 0 0 0.85rem;
+    padding: 0.75rem;
+    border-radius: 0.875rem;
+    border: 1px solid rgba(180, 150, 120, 0.28);
+    background:
+      linear-gradient(135deg, rgba(255, 253, 248, 0.96), rgba(241, 251, 253, 0.72));
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.95) inset,
+      0 12px 30px -20px rgba(92, 70, 48, 0.18);
+  }
+  .compare-decision-read__summary {
+    min-width: 0;
+    padding: 0.65rem 0.7rem;
+    border-radius: 0.65rem;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background: rgba(255, 255, 255, 0.68);
+  }
+  .compare-decision-read__eyebrow {
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-glacier-700);
+  }
+  .compare-decision-read__summary p {
+    margin: 0.3rem 0 0;
+    color: var(--color-ice);
+    font-size: 0.92rem;
+    line-height: 1.35;
+  }
+  .compare-decision-read__summary span:last-child {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--color-stone-readable);
+    font-size: 0.76rem;
+    line-height: 1.35;
+  }
+  .compare-decision-read__lanes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.55rem;
+    min-width: 0;
+  }
+  .compare-decision-read__lane {
+    min-width: 0;
+    padding: 0.55rem 0.6rem;
+    border-radius: 0.65rem;
+    border: 1px solid rgba(180, 150, 120, 0.3);
+    background: rgba(255, 253, 248, 0.78);
+  }
+  .compare-decision-read__lane-label {
+    display: block;
+    font-size: 0.58rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-stone-readable);
+  }
+  .compare-decision-read__lane-place {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 0.18rem;
+    color: var(--color-ice);
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    line-height: 1.15;
+  }
+  .compare-decision-read__lane-value {
+    display: block;
+    margin-top: 0.16rem;
+    color: var(--color-frost);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .compare-decision-read__lane-detail {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--color-stone-readable);
+    font-size: 0.66rem;
+    line-height: 1.25;
+  }
+  @media (max-width: 980px) {
+    .compare-decision-read {
+      grid-template-columns: 1fr;
+    }
+    .compare-decision-read__lanes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 520px) {
+    .compare-decision-read {
+      margin-left: -0.25rem;
+      margin-right: -0.25rem;
+    }
+    .compare-decision-read__lanes {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .compare-insight-strip {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(9.75rem, 1fr));
