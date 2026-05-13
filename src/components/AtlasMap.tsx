@@ -29,6 +29,7 @@ import {
 import { useMediaQuery } from "../hooks/use-media-query";
 import { AtlasMapTooltip } from "./AtlasMapTooltip";
 import { CLIMATE_NORMALS_PERIOD } from "../lib/atlas-metadata";
+import { getPlaceVisualSignature } from "../lib/place-visual-signature";
 
 // Topojson atlas data lives in the `atlas-data` Rollup chunk (~74 kB gz).
 // Loading it eagerly would block first paint even though the UI shell
@@ -1819,6 +1820,9 @@ export function AtlasMap({
           Gold halos and the connecting trail mark the current top-ranked leaders, matching the rank strip and cards.
         </p>
         <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
+          Thin colored aura: strongest place-feel signal, matching the card signature band.
+        </p>
+        <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
           Pale ring: <span className="text-[rgba(255,236,210,0.95)]">US</span>
           {" · "}
           <span className="text-[rgba(190,230,255,0.95)]">Canada</span>
@@ -1862,6 +1866,7 @@ export function AtlasMap({
           <div className="grid gap-1.5 border-t border-[rgba(140,200,224,0.24)] pt-2 text-[10px] text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
             <div>Diamond: flagship. Square: spotlight. Open ring: index.</div>
             <div>Gold halos and route line mark the current top-ranked leaders.</div>
+            <div>Thin colored aura marks each place's strongest feel signal.</div>
             <div>Pale outer ring: US, Canada, or Mexico. Fill color stays the climate driver.</div>
             <div>Clusters show nearby pins. Tap one to zoom; tightly overlapping groups open a picker.</div>
           </div>
@@ -2032,6 +2037,7 @@ const Marker = memo(function Marker({
   const { place, x, y } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
   const color = TONE[tone];
+  const signature = useMemo(() => getPlaceVisualSignature(place), [place]);
 
   const baseSize = place.tier === "A" ? 7.2 : place.tier === "B" ? 5.4 : 4.35;
   const r = isActive ? baseSize + 1.8 : isHover ? baseSize + 1.2 : baseSize;
@@ -2055,14 +2061,16 @@ const Marker = memo(function Marker({
     labelMode === "full" &&
     (isActive || isHover || k >= 1.24) &&
     subLine.length > 0;
+  const showSignatureLine = showSub && (isActive || isHover || k >= 1.38);
   const labelW = Math.min(
-    300,
+    320,
     Math.max(
       titleDisp.length * 6.15 + 18,
-      showSub ? subLine.length * 5.2 + 18 : 0
+      showSub ? subLine.length * 5.2 + 18 : 0,
+      showSignatureLine ? signature.mapLabel.length * 5.2 + 32 : 0,
     )
   );
-  const labelH = showSub ? 34 : labelMode === "compact" ? 18 : 18;
+  const labelH = showSignatureLine ? 48 : showSub ? 34 : labelMode === "compact" ? 18 : 18;
 
   const activate = useCallback(
     (e: React.SyntheticEvent) => {
@@ -2136,6 +2144,17 @@ const Marker = memo(function Marker({
             </g>
           </g>
         ) : null}
+        <circle
+          className="map-marker__signature-aura"
+          r={r + 6.6}
+          fill="none"
+          stroke={signature.mapAccentColor}
+          strokeWidth={1.25}
+          strokeDasharray={signature.mapDash === "none" ? undefined : signature.mapDash}
+          strokeLinecap="round"
+          opacity={isActive || isHover || featuredRank ? 0.94 : 0.58}
+          style={{ color: signature.mapAccentColor }}
+        />
         <circle
           r={r + 3.65}
           fill="none"
@@ -2215,7 +2234,7 @@ const Marker = memo(function Marker({
             <g transform={`translate(${labelDx} ${showSub ? 2 : 4})`} pointerEvents="none" className="map-marker-label">
               <rect
                 x={-2}
-                y={showSub ? -15 : -11}
+                y={showSignatureLine ? -16 : showSub ? -15 : -11}
                 rx={4}
                 ry={4}
                 width={labelW}
@@ -2224,9 +2243,19 @@ const Marker = memo(function Marker({
                 stroke={isActive ? "rgba(240,210,156,0.85)" : "rgba(170,193,220,0.62)"}
                 strokeWidth={isActive ? 1.05 : 0.85}
               />
+              <rect
+                x={-2}
+                y={showSignatureLine ? -16 : showSub ? -15 : -11}
+                rx={4}
+                ry={4}
+                width={3.5}
+                height={labelH}
+                fill={signature.mapAccentColor}
+                opacity={0.88}
+              />
               <text
                 x={4}
-                y={showSub ? -4 : 1}
+                y={showSignatureLine ? -5 : showSub ? -4 : 1}
                 fontSize={labelMode === "compact" ? 10.5 : 11.5}
                 fill="#f4f8fc"
                 fontFamily="var(--font-sans),system-ui,sans-serif"
@@ -2243,6 +2272,20 @@ const Marker = memo(function Marker({
                   fontWeight={500}
                   style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.82)", strokeWidth: 2, strokeLinejoin: "round" }}
                 >{subLine}</text>
+              ) : null}
+              {showSignatureLine ? (
+                <>
+                  <circle cx={6} cy={22} r={2.2} fill={signature.mapAccentColor} />
+                  <text
+                    x={13}
+                    y={25}
+                    fontSize={8.8}
+                    fill="rgba(236,244,252,0.88)"
+                    fontFamily="var(--font-sans),system-ui,sans-serif"
+                    fontWeight={650}
+                    style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.82)", strokeWidth: 1.7, strokeLinejoin: "round" }}
+                  >{signature.mapLabel}</text>
+                </>
               ) : null}
             </g>
           );
