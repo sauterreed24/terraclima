@@ -14,8 +14,8 @@ import { COLLECTION_BY_ID } from "./data/collections";
 import { CLIMATE_TRIP_THEME_BY_ID } from "./data/climate-trip-themes";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
-import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, type FilterState, type RankingProfile, type RankingResult } from "./lib/scoring";
-import { rankLiveFit } from "./lib/live-fit";
+import { applyFilters, rankLivabilityPreview, rankPlaces, scoreLivability, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { assessLiveFit, rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-visual-signature";
@@ -638,7 +638,7 @@ export default function App() {
         <div key={view} className="view-enter flex-1 flex flex-col lg:flex-row gap-4 min-w-0">
           {view === "explorer" && (
             <>
-              <div className="flex-1 min-w-0 flex flex-col gap-4">
+              <div className="tc-explorer-main flex-1 min-w-0 flex flex-col gap-4">
                 <HeroCard
                   count={ranked.length}
                   livabilityTopTen={livabilityTopTen}
@@ -667,7 +667,11 @@ export default function App() {
                   onSetRanking={setRanking}
                 />
 
-                <div className="relative h-[clamp(300px,48svh,520px)] md:h-[52dvh] md:min-h-[min(460px,44dvh)]">
+                <div className="tc-map-stage relative h-[clamp(320px,50svh,560px)] md:h-[54dvh] md:min-h-[min(480px,46dvh)]">
+                  <div className="tc-map-stage__caption" aria-hidden="true">
+                    <span>Atlas instrument</span>
+                    <strong>{topRankedPlaceIds.length} leaders</strong>
+                  </div>
                   <AtlasMap
                     places={filtered}
                     selectedId={selectedId ?? undefined}
@@ -1404,17 +1408,17 @@ const HeroCard = memo(function HeroCard({
       </div>
 
       {signatureLeaders.length > 0 ? (
-        <div className="current-rank-strip px-3 py-2.5 sm:px-4 min-[1400px]:py-3">
+        <div className="current-rank-strip hidden px-3 py-2.5 sm:px-4 min-[1400px]:py-3">
           <div className="flex flex-col gap-2.5">
             <div className="min-w-0">
-              <div className="text-[10px] uppercase tracking-wider text-glacier-700">Current rank</div>
+              <div className="text-[10px] uppercase tracking-wider text-glacier-700">Previous rank strip</div>
               <p className="text-[11px] text-stone-readable leading-snug mt-1">
-                Leading matches by <span className="font-medium text-frost">{rankingLabel}</span>.
+                Previous matches by <span className="font-medium text-frost">{rankingLabel}</span>.
               </p>
             </div>
             <div
               className="current-rank-strip__rail"
-              aria-label={`Top five places for the selected ranking profile: ${rankingLabel}`}
+              aria-label={`Hidden previous top five places for the selected ranking profile: ${rankingLabel}`}
             >
               {signatureLeaders.map((row, i) => (
                 <button
@@ -1443,9 +1447,11 @@ const HeroCard = memo(function HeroCard({
       ) : null}
 
       {signatureLeaders.length > 0 ? (
-        <SignatureConstellation
+        <LivingCompassWorkbench
           rows={signatureLeaders}
           rankingLabel={rankingLabel}
+          filters={filters}
+          scoutBrief={scoutBrief}
           onOpenPlace={onOpenPlace}
         />
       ) : null}
@@ -1541,64 +1547,180 @@ const HeroCard = memo(function HeroCard({
   );
 });
 
-const SignatureConstellation = memo(function SignatureConstellation({
+type LivabilityComponentKey = LivabilityResult["components"][number]["key"];
+
+const COMPASS_AXIS_KEYS: Array<{ key: LivabilityComponentKey; label: string }> = [
+  { key: "thermalComfort", label: "Comfort" },
+  { key: "atmosphericEase", label: "Air" },
+  { key: "hazardCushion", label: "Risk" },
+  { key: "resilience", label: "Resilience" },
+  { key: "growability", label: "Land" },
+  { key: "placeFeel", label: "Feel" },
+];
+
+function livabilityComponentValue(result: LivabilityResult, key: LivabilityComponentKey): number {
+  return result.components.find(component => component.key === key)?.value ?? 0;
+}
+
+function radarPoint(index: number, total: number, value: number, radius = 42): string {
+  const angle = -Math.PI / 2 + (index / total) * Math.PI * 2;
+  const scaled = radius * Math.max(0, Math.min(100, value)) / 100;
+  const x = 50 + Math.cos(angle) * scaled;
+  const y = 50 + Math.sin(angle) * scaled;
+  return `${x.toFixed(1)},${y.toFixed(1)}`;
+}
+
+function radarPolygon(values: readonly number[]): string {
+  return values.map((value, index) => radarPoint(index, values.length, value)).join(" ");
+}
+
+function scoreTone(score: number): "great" | "good" | "mixed" | "hard" {
+  if (score >= 84) return "great";
+  if (score >= 72) return "good";
+  if (score >= 58) return "mixed";
+  return "hard";
+}
+
+const LivingCompassWorkbench = memo(function LivingCompassWorkbench({
   rows,
   rankingLabel,
+  filters,
+  scoutBrief,
   onOpenPlace,
 }: {
   rows: SignatureLeader[];
   rankingLabel: string;
+  filters: FilterState;
+  scoutBrief: ExplorerScoutBrief | null;
   onOpenPlace: (id: string) => void;
 }) {
-  const axisCounts = useMemo(() => {
-    const counts = new globalThis.Map<string, number>();
-    for (const row of rows) {
-      counts.set(row.signature.strength.shortLabel, (counts.get(row.signature.strength.shortLabel) ?? 0) + 1);
-    }
-    return [...counts.entries()].sort((a, b) => b[1] - a[1]);
-  }, [rows]);
-  const dominantAxis = axisCounts[0]?.[0] ?? "mixed";
-  const signatureCount = new Set(rows.map(row => row.signature.primaryLabel)).size;
+  const prose = useProse();
+  const leader = scoutBrief?.leader ?? rows[0] ?? null;
+  const leaderSignature = useMemo(() => {
+    if (!leader) return null;
+    return rows.find(row => row.place.id === leader.place.id)?.signature ?? getPlaceVisualSignature(leader.place);
+  }, [leader, rows]);
+  const leaderLivability = useMemo(() => leader ? scoreLivability(leader.place) : null, [leader]);
+  const leaderLiveFit = useMemo(() => leader ? assessLiveFit(leader.place, filters) : null, [leader, filters]);
+  const leaderDecision = useMemo(
+    () => leader ? scoutBrief?.decisionRows.find(row => row.place.id === leader.place.id) ?? null : null,
+    [leader, scoutBrief],
+  );
+  const axes = useMemo(() => {
+    if (!leaderLivability) return [];
+    return COMPASS_AXIS_KEYS.map(axis => ({
+      ...axis,
+      value: Math.round(livabilityComponentValue(leaderLivability, axis.key)),
+    }));
+  }, [leaderLivability]);
+  const rankRows = useMemo(() => rows.map(row => ({
+    ...row,
+    liveFit: assessLiveFit(row.place, filters),
+    decision: scoutBrief?.decisionRows.find(decision => decision.place.id === row.place.id) ?? null,
+  })), [rows, filters, scoutBrief]);
+
+  if (!leader || !leaderSignature || !leaderLivability || !leaderLiveFit) return null;
+
+  const radarValues = axes.map(axis => axis.value);
+  const leaderReason = leaderLiveFit.reasons[0] ?? leader.note ?? `${Math.round(leader.score)}/100 current ranking signal.`;
+  const leaderWatch = leaderDecision?.watch ?? leaderLiveFit.cautions[0] ?? `Verify ${leaderSignature.verify.shortLabel.toLowerCase()} before deciding.`;
+  const leaderBestFor = leaderDecision?.bestFor ?? leaderReason;
 
   return (
-    <section className="signature-constellation" aria-labelledby="signature-constellation-title">
-      <div className="signature-constellation__head">
-        <div className="min-w-0">
-          <div id="signature-constellation-title" className="signature-constellation__eyebrow">
-            Leader signature mix
+    <section
+      className="living-compass"
+      style={{ ["--signature-rgb" as string]: leaderSignature.mapAccentRgb }}
+      aria-labelledby="living-compass-title"
+    >
+      <div className="living-compass__leader">
+        <div className="living-compass__leader-copy">
+          <div id="living-compass-title" className="living-compass__eyebrow">Would I live here?</div>
+          <h2 className="living-compass__place">{leader.place.name}</h2>
+          <p className="living-compass__best-for">{prose(leaderBestFor)}</p>
+          <div className="living-compass__meta-row" aria-label={`${leader.place.name} live-here summary`}>
+            <span>{leaderSignature.primaryLabel}</span>
+            <span>{leaderSignature.feelBand} feel {leaderSignature.feelScore}</span>
+            <span>{leader.place.country === "USA" ? "US" : leader.place.country === "Canada" ? "CA" : "MX"} · {leader.place.koppen}</span>
           </div>
-          <p className="signature-constellation__summary">
-            {signatureCount} place signatures in the current top five. Dominant read: <span>{dominantAxis}</span>, with each leader balancing comfort, ease, identity, and clarity.
-          </p>
         </div>
-        <div className="signature-constellation__lens" title={`Current ranking profile: ${rankingLabel}`}>
-          {rankingLabel}
+
+        <div
+          className="living-compass__score-ring"
+          data-tone={scoreTone(leaderLiveFit.score)}
+          style={{ ["--score" as string]: `${leaderLiveFit.score}%` }}
+          aria-label={`Live-here fit ${leaderLiveFit.score} out of 100`}
+        >
+          <span>{leaderLiveFit.score}</span>
+          <small>fit</small>
         </div>
       </div>
 
-      <div className="signature-constellation__rail" aria-label="Current leaders by place signature">
-        {rows.map((row, i) => (
-          <button
-            key={row.place.id}
-            type="button"
-            className="signature-constellation__card"
-            style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
-            onClick={() => onOpenPlace(row.place.id)}
-            aria-label={`Open ${row.place.name}. ${row.signature.primaryLabel}, ${row.signature.feelBand} feel, leading with ${row.signature.strength.shortLabel}.`}
-          >
-            <span className="signature-constellation__rank" aria-hidden>{i + 1}</span>
-            <span className="signature-constellation__place">{row.place.name}</span>
-            <span className="signature-constellation__type">{row.signature.primaryLabel}</span>
-            <span className="signature-constellation__bar" aria-hidden>
-              <span style={{ width: `${row.signature.feelScore}%` }} />
-            </span>
-            <span className="signature-constellation__meta">
-              <span>{row.signature.feelBand} {row.signature.feelScore}</span>
-              <span>{row.signature.strength.shortLabel}</span>
-              <span>Verify {row.signature.verify.shortLabel}</span>
-            </span>
-          </button>
-        ))}
+      <div className="living-compass__body">
+        <div className="living-compass__radar-panel">
+          <svg className="living-compass__radar" viewBox="0 0 100 100" aria-hidden="true">
+            {[25, 50, 75, 100].map(value => (
+              <polygon key={value} points={radarPolygon(axes.map(() => value))} />
+            ))}
+            {axes.map((_axis, index) => {
+              const [x, y] = radarPoint(index, axes.length, 100).split(",").map(Number);
+              return <line key={index} x1="50" y1="50" x2={x} y2={y} />;
+            })}
+            <polygon className="living-compass__radar-fill" points={radarPolygon(radarValues)} />
+            <circle cx="50" cy="50" r="2.2" />
+          </svg>
+          <div className="living-compass__axis-list">
+            {axes.map(axis => (
+              <div key={axis.key} className="living-compass__axis">
+                <span>{axis.label}</span>
+                <span className="font-mono-num">{axis.value}</span>
+                <i aria-hidden><b style={{ width: `${axis.value}%` }} /></i>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="living-compass__watch">
+          <ShieldAlert className="w-3.5 h-3.5 shrink-0" aria-hidden />
+          <span><strong>Watch:</strong> {prose(leaderWatch)}</span>
+        </div>
+      </div>
+
+      <div className="living-compass__shortlist">
+        <div className="living-compass__shortlist-head">
+          <div className="living-compass__eyebrow">Current rank</div>
+          <p>Leading matches by <span>{rankingLabel}</span>.</p>
+        </div>
+
+        <div
+          className="living-compass__rank-list"
+          aria-label={`Top five places for the selected ranking profile: ${rankingLabel}`}
+        >
+          {rankRows.map((row, i) => (
+            <button
+              key={row.place.id}
+              type="button"
+              className="living-compass__rank-row"
+              style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
+              onClick={() => onOpenPlace(row.place.id)}
+              aria-label={`Rank ${i + 1}. ${row.place.name}. Score ${Math.round(row.score)}. Open place profile.`}
+            >
+              <span className="living-compass__rank-number" aria-hidden>{i + 1}</span>
+              <span className="living-compass__rank-main">
+                <span className="living-compass__rank-name" title={row.place.name}>{row.place.name}</span>
+                <span className="living-compass__rank-note" title={row.note ? prose(row.note) : undefined}>
+                  {row.note ? prose(row.note) : row.signature.primaryLabel}
+                </span>
+                <span className="living-compass__rank-caveat">
+                  Watch {prose(row.decision?.watch ?? row.signature.verify.shortLabel)}
+                </span>
+              </span>
+              <span className="living-compass__rank-meter" aria-hidden>
+                <span className="font-mono-num">{row.liveFit.score}</span>
+                <i><b style={{ width: `${row.liveFit.score}%` }} /></i>
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </section>
   );
