@@ -228,11 +228,38 @@ function afterClauseWindow(text: string, idx: number, maxLen: number): string {
   return (m ? raw.substring(0, m.index) : raw).toLowerCase();
 }
 
+/**
+ * Phrases like "summer highs up to 40°C" or "winter lows down to −10°C"
+ * describe absolute ceilings/floors, not °C deltas. Those must not match
+ * `up to` / `down to` inside DELTA_BEFORE_PAT.
+ */
+function isAbsoluteTemperatureCeilingContext(before: string): boolean {
+  return (
+    /\b(highs?|lows?|temperatures?|temps?|days?|nights?|afternoons?|mornings?|readings?)\s+up\s+to\s*$/i.test(before) ||
+    /\b(highs?|lows?|temperatures?|temps?|days?|nights?|afternoons?|mornings?|readings?)\s+down\s+to\s*$/i.test(before)
+  );
+}
+
+/**
+ * Signed "+NN°C" is often a projected warming increment, but prose also uses
+ * an explicit plus for absolute warm readings ("lift ... to +15°C"). The latter
+ * follows prepositions like `to` / `into` / `near` (never the `to` in `up to`).
+ */
+function signedCelsiusLooksAbsolute(before: string): boolean {
+  if (/\bup\s+to\s*$/i.test(before)) return false;
+  return /\b(to|into|towards?|near|reaches?|reached|reaching|hits?|hitting|tops?|topping|exceeds?|exceeding|past)\s*$/i.test(before);
+}
+
+function signedCelsiusLooksDelta(before: string, token: string): boolean {
+  return token.startsWith("+") && !signedCelsiusLooksAbsolute(before) && !isAbsoluteTemperatureCeilingContext(before);
+}
+
 /** Decide whether a temperature token at `idx` is a delta (vs. absolute). */
 function isDeltaContext(text: string, idx: number, len: number): boolean {
   // Narrow, clause-local windows.
   const before = beforeClauseWindow(text, idx, 40);
   const after = afterClauseWindow(text, idx + len, 24);
+  if (isAbsoluteTemperatureCeilingContext(before)) return false;
   if (DELTA_AFTER_PAT.test(after)) return true;
   if (DELTA_BEFORE_PAT.test(before)) return true;
   // Explicit phrasings commonly used for deltas — allow scanning both
@@ -305,10 +332,11 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
     text = text.replace(rangePat, (match, n1: string, dash: string, n2: string, offset: number, full: string) => {
       const v1 = parseSigned(n1);
       const v2 = parseSigned(n2);
-      const delta = isDeltaContext(full, offset, match.length) || n1.startsWith("+") || n2.startsWith("+");
+      const before = beforeClauseWindow(full, offset, 40);
+      const delta = isDeltaContext(full, offset, match.length) || signedCelsiusLooksDelta(before, n1) || signedCelsiusLooksDelta(before, n2);
       const f1 = delta ? (v1 * 9) / 5 : cToF(v1);
       const f2 = delta ? (v2 * 9) / 5 : cToF(v2);
-      return `${formatLocalized(f1, n1.startsWith("+"))}${dash}${formatLocalized(f2, n2.startsWith("+"))}°F`;
+      return `${formatLocalized(f1, delta && n1.startsWith("+"))}${dash}${formatLocalized(f2, delta && n2.startsWith("+"))}°F`;
     });
 
     // Pass 2: "N to M °C"
@@ -316,19 +344,21 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
     text = text.replace(toPat, (match, n1: string, n2: string, offset: number, full: string) => {
       const v1 = parseSigned(n1);
       const v2 = parseSigned(n2);
-      const delta = isDeltaContext(full, offset, match.length) || n1.startsWith("+") || n2.startsWith("+");
+      const before = beforeClauseWindow(full, offset, 40);
+      const delta = isDeltaContext(full, offset, match.length) || signedCelsiusLooksDelta(before, n1) || signedCelsiusLooksDelta(before, n2);
       const f1 = delta ? (v1 * 9) / 5 : cToF(v1);
       const f2 = delta ? (v2 * 9) / 5 : cToF(v2);
-      return `${formatLocalized(f1, n1.startsWith("+"))} to ${formatLocalized(f2, n2.startsWith("+"))}°F`;
+      return `${formatLocalized(f1, delta && n1.startsWith("+"))} to ${formatLocalized(f2, delta && n2.startsWith("+"))}°F`;
     });
 
     // Pass 3: single values
     const singlePat = /([-+\u2212]?\d+(?:\.\d+)?)\s*°\s*C\b/g;
     text = text.replace(singlePat, (match, n: string, offset: number, full: string) => {
       const v = parseSigned(n);
-      const delta = isDeltaContext(full, offset, match.length) || n.startsWith("+");
+      const before = beforeClauseWindow(full, offset, 40);
+      const delta = isDeltaContext(full, offset, match.length) || signedCelsiusLooksDelta(before, n);
       const f = delta ? (v * 9) / 5 : cToF(v);
-      return `${formatLocalized(f, n.startsWith("+"))}°F`;
+      return `${formatLocalized(f, delta && n.startsWith("+"))}°F`;
     });
   }
 
