@@ -16,7 +16,7 @@ import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse } from "../lib/units";
-import { getBestMonths } from "../lib/best-months";
+import { getBestMonths, type BestWindow } from "../lib/best-months";
 import { findSimilarPlaces } from "../lib/similarity";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
@@ -25,9 +25,9 @@ import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
-import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
-import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
-import { getPlaceVisualSignature } from "../lib/place-visual-signature";
+import { assessLiveFit, type LiveFitAssessment, type LiveFitFilters } from "../lib/live-fit";
+import { describeHumanComfort, scoreLivability, type LivabilityResult } from "../lib/livability-score";
+import { getPlaceVisualSignature, type PlaceVisualSignature } from "../lib/place-visual-signature";
 import { safeExternalHref } from "../lib/safe-url";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
 import { useMediaQuery } from "../hooks/use-media-query";
@@ -42,7 +42,7 @@ import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchor
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
-  Users, Compass, ExternalLink, Scale, Satellite, ArrowUp,
+  Users, Compass, ExternalLink, Scale, Satellite, ArrowUp, ShieldAlert,
 } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
 
@@ -545,6 +545,150 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
   );
 }
 
+function DetailDecisionBrief({
+  place,
+  liveFit,
+  livability,
+  bestMonths,
+  visualSignature,
+}: {
+  place: Place;
+  liveFit: LiveFitAssessment;
+  livability: LivabilityResult;
+  bestMonths: BestWindow[];
+  visualSignature: PlaceVisualSignature;
+}) {
+  const prose = useProse();
+  const bestWindow = bestMonths.find(w => w.kind === "good") ?? null;
+  const cautionWindow = bestMonths.find(w => w.kind === "caution") ?? null;
+  const leadDriver =
+    livability.drivers
+      .map(key => livability.components.find(component => component.key === key))
+      .find(Boolean) ??
+    [...livability.components].sort((a, b) => b.value - a.value)[0];
+  const mainDrag =
+    liveFit.cautions[0] ??
+    livability.drags
+      .map(key => livability.components.find(component => component.key === key))
+      .find(Boolean)?.rationale ??
+    "No single hard warning dominates; still verify risk, services, and fit before shortlisting.";
+  const cautionLabel = liveFit.cautions.length > 0 ? "Verify on the ground" : `${visualSignature.verify.shortLabel} check`;
+  const scoreBand =
+    liveFit.score >= 82 ? "Prime shortlist" :
+    liveFit.score >= 72 ? "Strong prospect" :
+    liveFit.score >= 60 ? "Specialist fit" :
+    "Needs scrutiny";
+  const goodReason = liveFit.reasons[0] ?? "Balanced climate, risk, and terrain scores make it worth a closer look.";
+  const lanes = [
+    {
+      label: "Live fit",
+      value: liveFit.score,
+      note: goodReason,
+      tone: "glacier",
+    },
+    {
+      label: "Livability",
+      value: livability.score,
+      note: leadDriver ? `${leadDriver.label} is the leading contributor.` : "Balanced blend.",
+      tone: "sage",
+    },
+    {
+      label: "Place feel",
+      value: visualSignature.feelScore,
+      note: visualSignature.primaryLabel,
+      tone: "aurora",
+    },
+    {
+      label: visualSignature.verify.label,
+      value: Math.round(visualSignature.verify.value),
+      note: describeSignatureVerification(visualSignature),
+      tone: "ochre",
+    },
+  ] as const;
+
+  return (
+    <section
+      className="detail-doc-section residency-brief anim-fade-in"
+      style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb }}
+      aria-labelledby="residency-brief-title"
+    >
+      <div className="residency-brief__head">
+        <div className="min-w-0">
+          <div id="residency-brief-title" className="residency-brief__eyebrow">
+            Residency brief
+          </div>
+          <p className="residency-brief__headline">
+            {place.name} reads as a <span>{scoreBand}</span> under the current living lens.
+          </p>
+        </div>
+        <div
+          className="residency-brief__score"
+          style={{ ["--score-deg" as string]: `${Math.round(liveFit.score * 3.6)}deg` }}
+          aria-label={`Live-here fit ${liveFit.score} out of 100`}
+        >
+          <span className="font-mono-num">{liveFit.score}</span>
+          <span>fit</span>
+        </div>
+      </div>
+
+      <div className="residency-brief__grid">
+        <div className="residency-brief__primary">
+          <div className="residency-brief__primary-label">Why it belongs on the shortlist</div>
+          <p>{prose(goodReason)}</p>
+          <div className="residency-brief__chips" aria-label="Shortlist tags">
+            {liveFit.badges.slice(0, 4).map(badge => (
+              <span key={badge}>{badge}</span>
+            ))}
+            <span>{visualSignature.primaryLabel}</span>
+          </div>
+        </div>
+
+        <div className="residency-brief__fact">
+          <Calendar className="w-4 h-4" aria-hidden />
+          <span>Best timing</span>
+          <strong>{bestWindow ? `${bestWindow.label} · ${bestWindow.range}` : "Read monthly rhythm"}</strong>
+          {cautionWindow ? <small>Watch {cautionWindow.range.toLowerCase()}</small> : null}
+        </div>
+
+        <div className="residency-brief__fact">
+          <ShieldAlert className="w-4 h-4" aria-hidden />
+          <span>First caution</span>
+          <strong>{cautionLabel}</strong>
+          <small>{prose(mainDrag)}</small>
+        </div>
+      </div>
+
+      <div className="residency-brief__lanes" aria-label={`${place.name} decision signal lanes`}>
+        {lanes.map(lane => (
+          <div key={lane.label} className="residency-brief__lane" data-tone={lane.tone} title={prose(lane.note)}>
+            <div className="residency-brief__lane-top">
+              <span>{lane.label}</span>
+              <strong className="font-mono-num">{Math.round(lane.value)}</strong>
+            </div>
+            <div className="residency-brief__track" aria-hidden>
+              <span style={{ width: `${Math.max(0, Math.min(100, lane.value))}%` }} />
+            </div>
+            <p>{prose(lane.note)}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function describeSignatureVerification(signature: PlaceVisualSignature): string {
+  switch (signature.verify.key) {
+    case "sensoryComfort":
+      return "Thermal envelope, easy months, and sky or air cues are the first comfort check.";
+    case "dailyEase":
+      return "Services, access, lived friction, and risk load set the daily-life verification floor.";
+    case "placeIdentity":
+      return "Authored texture, distinctness, and hidden-gem signal determine how legible the place feels.";
+    case "scoutingClarity":
+      return "Sources, settlement anchors, nearby contrasts, and confidence determine how easy it is to verify.";
+  }
+}
+
 function DetailBody({
   place, onOpenPlace, liveFitFilters,
   // panelRef is reserved for future progress-bar / reading-spy refinements
@@ -589,6 +733,7 @@ function DetailBody({
   const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
   const livability = useMemo(() => scoreLivability(place), [place]);
   const comfortRead = useMemo(() => describeHumanComfort(place), [place]);
+  const visualSignature = useMemo(() => getPlaceVisualSignature(place), [place]);
   const settlementAnchors = useMemo(() => buildSettlementAnchors(place), [place]);
   const practicalActivities = useMemo(() => buildPracticalActivities(place), [place]);
   const nearbyContextRows = useMemo(() => buildNearbyContextRows(place), [place]);
@@ -620,6 +765,14 @@ function DetailBody({
         <div className="divider-contour my-4" />
         <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.summaryImmersive)}</p>
       </Section>
+
+      <DetailDecisionBrief
+        place={place}
+        liveFit={liveFit}
+        livability={livability}
+        bestMonths={bestMonths}
+        visualSignature={visualSignature}
+      />
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
 

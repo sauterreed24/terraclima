@@ -1,5 +1,4 @@
-import { useMemo } from "react";
-import type { ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 import { Compass, Home, Leaf, Satellite } from "lucide-react";
 import type { Place } from "../../types";
 import { buildPracticalReadCards, type PracticalReadCard, type PracticalReadId } from "../../lib/practical-read";
