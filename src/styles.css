@@ -3070,7 +3070,7 @@
     --signature-rgb: 94, 196, 220;
     position: relative;
     display: grid;
-    grid-template-columns: minmax(8.5rem, 1.75fr) minmax(3.85rem, 0.58fr) minmax(4.45rem, 0.72fr) minmax(4.45rem, 0.72fr);
+    grid-template-columns: minmax(7.5rem, 1.35fr) minmax(4.85rem, 0.82fr) minmax(5.05rem, 0.9fr) minmax(5rem, 0.86fr);
     gap: 1px;
     margin-top: 0.78rem;
     overflow: hidden;
@@ -3108,6 +3108,9 @@
     text-transform: uppercase;
     color: var(--color-stone-readable);
     white-space: nowrap;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .place-card__signature-band dd {
     display: flex;
