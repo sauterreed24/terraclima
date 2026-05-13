@@ -7,7 +7,7 @@ import { annualComfortMonthCount, avgRisk, meanJanLow, meanSummerHigh, getAnnual
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { scoreLivability, feltComfortScore, livedFrictionScore } from "../lib/livability-score";
-import { assessLiveFit } from "../lib/live-fit";
+import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { Link2, X } from "lucide-react";
 
@@ -30,9 +30,18 @@ interface Props {
   onRemove: (id: string) => void;
   onCopyView?: () => void;
   shareStatus?: CompareShareStatus;
+  liveFitFilters?: LiveFitFilters;
 }
 
-export function CompareView({ places, open, onClose, onRemove, onCopyView, shareStatus = "idle" }: Props) {
+export function CompareView({
+  places,
+  open,
+  onClose,
+  onRemove,
+  onCopyView,
+  shareStatus = "idle",
+  liveFitFilters,
+}: Props) {
   const { temp, dist } = useUnits();
   const prose = useProse();
   const reduceMotion = useReducedMotion();
@@ -46,7 +55,7 @@ export function CompareView({ places, open, onClose, onRemove, onCopyView, share
     ? "Add another place from any card or profile to start a side-by-side comparison."
     : "Compare climate fingerprints, seasonal ranges, and screening scores across the saved places.";
   const decisionProfiles = useMemo<DecisionProfile[]>(() => places.map(place => {
-    const liveFit = assessLiveFit(place);
+    const liveFit = assessLiveFit(place, liveFitFilters);
     const livability = scoreLivability(place);
     return {
       place,
@@ -57,7 +66,7 @@ export function CompareView({ places, open, onClose, onRemove, onCopyView, share
       easyMonths: annualComfortMonthCount(place),
       riskLoad: Math.round(avgRisk(place) * 20),
     };
-  }), [places]);
+  }), [places, liveFitFilters]);
   const decisionById = useMemo(
     () => new Map(decisionProfiles.map(profile => [profile.place.id, profile])),
     [decisionProfiles],

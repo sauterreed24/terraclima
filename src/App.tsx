@@ -881,6 +881,7 @@ export default function App() {
             onRemove={toggleCompare}
             onCopyView={copyCurrentView}
             shareStatus={shareStatus}
+            liveFitFilters={filters}
           />
         </Suspense>
       ) : null}

@@ -26,11 +26,16 @@ vi.mock("../components/CompareView", () => ({
     open,
     onCopyView,
     shareStatus,
+    liveFitFilters,
   }: {
     places: Array<{ id: string }>;
     open: boolean;
     onCopyView?: () => void;
     shareStatus?: "idle" | "copied" | "failed";
+    liveFitFilters?: {
+      fitPresets?: Set<string>;
+      maxSummerHighC?: number;
+    };
   }) =>
     open && places.length > 0 ? (
       <div role="dialog" aria-label={places.length === 1 ? "1 place saved to compare" : `${places.length} places side by side`}>
@@ -38,6 +43,12 @@ vi.mock("../components/CompareView", () => ({
           <button type="button" aria-label="Copy comparison link" onClick={onCopyView}>
             {shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
           </button>
+        ) : null}
+        {(liveFitFilters?.fitPresets?.size ?? 0) > 0 || liveFitFilters?.maxSummerHighC != null ? (
+          <div data-testid="compare-live-filters">
+            {[...(liveFitFilters?.fitPresets ?? new Set())].join(",") || "no presets"}
+            {liveFitFilters?.maxSummerHighC != null ? ` / summer ${liveFitFilters.maxSummerHighC}` : ""}
+          </div>
         ) : null}
       </div>
     ) : null,
@@ -261,6 +272,15 @@ describe("App shell", () => {
     expect(copied.searchParams.get("temp")).toBe("C");
     expect(copied.searchParams.get("dist")).toBe("metric");
     await waitFor(() => expect(screen.getAllByText("Link copied").length).toBeGreaterThan(0));
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("passes active Live Finder filters into shared compare views", async () => {
+    window.history.replaceState(null, "", "/?cmp=sequim-wa,portal-az&r=live-fit&fit=cool-summers&sh=22");
+
+    renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+    expect(screen.getByTestId("compare-live-filters")).toHaveTextContent("cool-summers / summer 22");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps a one-place compare URL saved without opening the compare dialog", () => {
