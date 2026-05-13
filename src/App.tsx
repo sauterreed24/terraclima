@@ -18,6 +18,7 @@ import { applyFilters, rankLivabilityPreview, rankPlaces, LIVABILITY_WEIGHTS, ty
 import { rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
+import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-visual-signature";
 import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
@@ -1245,6 +1246,8 @@ const FieldNoteStrip = memo(function FieldNoteStrip() {
   );
 });
 
+type SignatureLeader = RankingResult & { signature: PlaceVisualSignature };
+
 const HeroCard = memo(function HeroCard({
   count,
   livabilityTopTen,
@@ -1307,6 +1310,10 @@ const HeroCard = memo(function HeroCard({
     filters.maxFireRisk,
     filters.maxOverallRisk,
   ].filter(v => v != null).length;
+  const signatureLeaders = useMemo<SignatureLeader[]>(
+    () => sortTopFive.map(row => ({ ...row, signature: getPlaceVisualSignature(row.place) })),
+    [sortTopFive],
+  );
   return (
     <div className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4">
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
@@ -1388,7 +1395,7 @@ const HeroCard = memo(function HeroCard({
         </div>
       </div>
 
-      {sortTopFive.length > 0 ? (
+      {signatureLeaders.length > 0 ? (
         <div className="current-rank-strip px-3 py-2.5 sm:px-4 min-[1400px]:py-3">
           <div className="flex flex-col gap-2.5">
             <div className="min-w-0">
@@ -1401,13 +1408,14 @@ const HeroCard = memo(function HeroCard({
               className="current-rank-strip__rail"
               aria-label={`Top five places for the selected ranking profile: ${rankingLabel}`}
             >
-              {sortTopFive.map((row, i) => (
+              {signatureLeaders.map((row, i) => (
                 <button
                   key={row.place.id}
                   type="button"
                   onClick={() => onOpenPlace(row.place.id)}
                   aria-label={`Rank ${i + 1}. ${row.place.name}. Score ${Math.round(row.score)}. Open place profile.`}
                   className="current-rank-strip__chip"
+                  style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
                 >
                   <span className="current-rank-strip__rank" aria-hidden>{i + 1}</span>
                   <span className="min-w-0 flex-1">
@@ -1415,12 +1423,23 @@ const HeroCard = memo(function HeroCard({
                     <span className="current-rank-strip__note" title={row.note ? prose(row.note) : undefined}>
                       {row.note ? prose(row.note) : row.place.koppen}
                     </span>
+                    <span className="current-rank-strip__signature" title={row.signature.primaryBlurb}>
+                      {row.signature.primaryLabel} · {row.signature.feelBand} {row.signature.feelScore} · {row.signature.strength.shortLabel}
+                    </span>
                   </span>
                 </button>
               ))}
             </div>
           </div>
         </div>
+      ) : null}
+
+      {signatureLeaders.length > 0 ? (
+        <SignatureConstellation
+          rows={signatureLeaders}
+          rankingLabel={rankingLabel}
+          onOpenPlace={onOpenPlace}
+        />
       ) : null}
 
       {scoutBrief ? (
@@ -1511,6 +1530,69 @@ const HeroCard = memo(function HeroCard({
         <FieldNoteStrip />
       </div>
     </div>
+  );
+});
+
+const SignatureConstellation = memo(function SignatureConstellation({
+  rows,
+  rankingLabel,
+  onOpenPlace,
+}: {
+  rows: SignatureLeader[];
+  rankingLabel: string;
+  onOpenPlace: (id: string) => void;
+}) {
+  const axisCounts = useMemo(() => {
+    const counts = new globalThis.Map<string, number>();
+    for (const row of rows) {
+      counts.set(row.signature.strength.shortLabel, (counts.get(row.signature.strength.shortLabel) ?? 0) + 1);
+    }
+    return [...counts.entries()].sort((a, b) => b[1] - a[1]);
+  }, [rows]);
+  const dominantAxis = axisCounts[0]?.[0] ?? "mixed";
+  const signatureCount = new Set(rows.map(row => row.signature.primaryLabel)).size;
+
+  return (
+    <section className="signature-constellation" aria-labelledby="signature-constellation-title">
+      <div className="signature-constellation__head">
+        <div className="min-w-0">
+          <div id="signature-constellation-title" className="signature-constellation__eyebrow">
+            Leader signature mix
+          </div>
+          <p className="signature-constellation__summary">
+            {signatureCount} place signatures in the current top five. Dominant read: <span>{dominantAxis}</span>, with each leader balancing comfort, ease, identity, and clarity.
+          </p>
+        </div>
+        <div className="signature-constellation__lens" title={`Current ranking profile: ${rankingLabel}`}>
+          {rankingLabel}
+        </div>
+      </div>
+
+      <div className="signature-constellation__rail" aria-label="Current leaders by place signature">
+        {rows.map((row, i) => (
+          <button
+            key={row.place.id}
+            type="button"
+            className="signature-constellation__card"
+            style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
+            onClick={() => onOpenPlace(row.place.id)}
+            aria-label={`Open ${row.place.name}. ${row.signature.primaryLabel}, ${row.signature.feelBand} feel, leading with ${row.signature.strength.shortLabel}.`}
+          >
+            <span className="signature-constellation__rank" aria-hidden>{i + 1}</span>
+            <span className="signature-constellation__place">{row.place.name}</span>
+            <span className="signature-constellation__type">{row.signature.primaryLabel}</span>
+            <span className="signature-constellation__bar" aria-hidden>
+              <span style={{ width: `${row.signature.feelScore}%` }} />
+            </span>
+            <span className="signature-constellation__meta">
+              <span>{row.signature.feelBand} {row.signature.feelScore}</span>
+              <span>{row.signature.strength.shortLabel}</span>
+              <span>Verify {row.signature.verify.shortLabel}</span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </section>
   );
 });
 

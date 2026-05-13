@@ -1791,6 +1791,13 @@ export function AtlasMap({
           <MapLegendDot color="#6ec8ea" label="Maritime / fog / rain-shadow" />
           <MapLegendDot color="#d4a8ff" label="Rare / sky-island / aurora" />
         </div>
+        <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Aura language</div>
+        <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px] leading-relaxed">
+          <MapLegendDot color="#5ec4dc" label="Comfort" />
+          <MapLegendDot color="#67b96f" label="Ease" />
+          <MapLegendDot color="#e3a63b" label="Identity" />
+          <MapLegendDot color="#ad8cff" label="Clarity" />
+        </div>
         <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Pin shape · tier</div>
         <div className="flex items-center gap-2.5 text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
           <span className="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0" aria-hidden>
@@ -1862,6 +1869,12 @@ export function AtlasMap({
             <MapLegendDot color="#8fd99a" label="Highland / sky-island / cloud" />
             <MapLegendDot color="#6ec8ea" label="Maritime / fog / rain-shadow" />
             <MapLegendDot color="#d4a8ff" label="Rare / sky-island / aurora" />
+          </div>
+          <div className="grid grid-cols-2 gap-x-2 gap-y-1 border-t border-[rgba(140,200,224,0.24)] pt-2 text-[10px] leading-relaxed">
+            <MapLegendDot color="#5ec4dc" label="Comfort aura" />
+            <MapLegendDot color="#67b96f" label="Ease aura" />
+            <MapLegendDot color="#e3a63b" label="Identity aura" />
+            <MapLegendDot color="#ad8cff" label="Clarity aura" />
           </div>
           <div className="grid gap-1.5 border-t border-[rgba(140,200,224,0.24)] pt-2 text-[10px] text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
             <div>Diamond: flagship. Square: spotlight. Open ring: index.</div>

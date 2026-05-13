@@ -27,6 +27,7 @@ import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
+import { getPlaceVisualSignature } from "../lib/place-visual-signature";
 import { safeExternalHref } from "../lib/safe-url";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
 import { useMediaQuery } from "../hooks/use-media-query";
@@ -359,6 +360,7 @@ function DetailHeader({
     : null;
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
   const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
+  const visualSignature = useMemo(() => getPlaceVisualSignature(place), [place]);
   const osmHref = safeExternalHref(openStreetMapUrl(place.lat, place.lon, 10)) ?? "https://www.openstreetmap.org/";
 
   return (
@@ -429,6 +431,38 @@ function DetailHeader({
           </button>
         </div>
       </div>
+
+      <dl
+        className="detail-signature-panel"
+        style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb }}
+        aria-label={`${place.name} place signature`}
+      >
+        <div className="detail-signature-panel__primary">
+          <dt>Place signature</dt>
+          <dd title={visualSignature.primaryBlurb}>{visualSignature.primaryLabel}</dd>
+        </div>
+        <div>
+          <dt>Feel</dt>
+          <dd title={`Place-feel score ${visualSignature.feelScore}/100`}>
+            <span>{visualSignature.feelBand}</span>
+            <span className="font-mono-num">{visualSignature.feelScore}</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Leads with</dt>
+          <dd title={visualSignature.strength.rationale}>
+            <span>{visualSignature.strength.shortLabel}</span>
+            <span className="font-mono-num">{Math.round(visualSignature.strength.value)}</span>
+          </dd>
+        </div>
+        <div>
+          <dt>Verify</dt>
+          <dd title={visualSignature.verify.rationale}>
+            <span>{visualSignature.verify.shortLabel}</span>
+            <span className="font-mono-num">{Math.round(visualSignature.verify.value)}</span>
+          </dd>
+        </div>
+      </dl>
 
       {hero && (
         <figure className="mt-4 rounded-2xl overflow-hidden border border-[rgba(200,160,120,0.45)] shadow-[0_8px_28px_-12px_rgba(62,38,24,0.12)]">
