@@ -2754,6 +2754,9 @@
   .map-marker--featured .map-marker-label rect {
     stroke: rgba(255, 228, 166, 0.82);
   }
+  .map-marker__signature-aura {
+    filter: drop-shadow(0 0 4px color-mix(in srgb, currentColor 60%, transparent));
+  }
   .map-rank-halo {
     filter: drop-shadow(0 0 7px rgba(255, 204, 112, 0.32));
   }
@@ -3061,6 +3064,84 @@
     /* Stop hover transform on the parent card from also lifting the button visually. */
     transform: translateZ(0);
     touch-action: manipulation;
+  }
+
+  .place-card__signature-band {
+    --signature-rgb: 94, 196, 220;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(8.5rem, 1.75fr) minmax(3.85rem, 0.58fr) minmax(4.45rem, 0.72fr) minmax(4.45rem, 0.72fr);
+    gap: 1px;
+    margin-top: 0.78rem;
+    overflow: hidden;
+    border-top: 1px solid rgba(71, 90, 122, 0.16);
+    border-bottom: 1px solid rgba(71, 90, 122, 0.16);
+    background:
+      linear-gradient(90deg, rgba(var(--signature-rgb), 0.18), rgba(255, 253, 248, 0.08) 46%, rgba(71, 90, 122, 0.08)),
+      rgba(71, 90, 122, 0.1);
+  }
+  .place-card__signature-band::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: rgb(var(--signature-rgb));
+    box-shadow: 0 0 14px rgba(var(--signature-rgb), 0.35);
+  }
+  .place-card__signature-band > div {
+    min-width: 0;
+    padding: 0.46rem 0.5rem 0.48rem;
+    background: rgba(255, 253, 248, 0.72);
+  }
+  .place-card__signature-band > div:first-child {
+    padding-left: 0.78rem;
+    background:
+      linear-gradient(135deg, rgba(var(--signature-rgb), 0.13), rgba(255, 253, 248, 0.78) 58%),
+      rgba(255, 253, 248, 0.72);
+  }
+  .place-card__signature-band dt {
+    font-size: 0.52rem;
+    line-height: 1.1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-stone-readable);
+    white-space: nowrap;
+  }
+  .place-card__signature-band dd {
+    display: flex;
+    align-items: baseline;
+    gap: 0.24rem;
+    min-width: 0;
+    margin: 0.18rem 0 0;
+    color: var(--color-frost);
+    font-size: 0.68rem;
+    font-weight: 650;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .place-card__signature-band dd > span:first-child {
+    color: var(--color-ice);
+  }
+  .place-card__signature-value {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .place-card__signature-muted {
+    color: var(--color-stone-readable);
+    font-weight: 500;
+  }
+  @media (max-width: 540px) {
+    .place-card__signature-band {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .place-card__signature-band > div:first-child {
+      grid-column: 1 / -1;
+    }
   }
 
   /* Bookmark/pin chip — small circular button anchored at the top-right of

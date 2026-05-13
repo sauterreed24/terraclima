@@ -6,8 +6,8 @@ import type { FilterState, RankingResult } from "../lib/scoring";
 
 const ROW_GAP_PX = 12;
 /** Card estimates by layout. Mobile cards are one-column and significantly taller. */
-const EST_ROW_HEIGHT_DESKTOP_PX = 340;
-const EST_ROW_HEIGHT_MOBILE_PX = 475;
+const EST_ROW_HEIGHT_DESKTOP_PX = 380;
+const EST_ROW_HEIGHT_MOBILE_PX = 530;
 const OVERSCAN_ROWS = 3;
 const disableScrollAdjustment = () => false;
 

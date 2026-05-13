@@ -10,6 +10,7 @@ import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { ArrowRight, Droplets, Leaf, Sun } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
 import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
+import { getPlaceVisualSignature } from "../lib/place-visual-signature";
 
 // ── Climate gradient bar helpers ─────────────────────────────────────────────
 
@@ -115,6 +116,7 @@ export const PlaceCard = memo(function PlaceCard({
   );
   const livabilityResult = useMemo(() => (compact ? null : scoreLivability(place)), [place, compact]);
   const comfortRead = useMemo(() => (compact ? null : describeHumanComfort(place)), [place, compact]);
+  const visualSignature = useMemo(() => (compact ? null : getPlaceVisualSignature(place)), [place, compact]);
 
   // Derived at-a-glance extras surfaced on non-compact cards
   const annualSunshinePct = useMemo(() => {
@@ -239,6 +241,42 @@ export const PlaceCard = memo(function PlaceCard({
         {!compact && (
           <p className="text-sm text-frost leading-snug pt-3 line-clamp-2">{prose(place.summaryShort)}</p>
         )}
+
+        {visualSignature ? (
+          <dl
+            className="place-card__signature-band"
+            style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb }}
+            aria-label={`${place.name} visual signature`}
+          >
+            <div>
+              <dt>Signature</dt>
+              <dd title={visualSignature.primaryBlurb}>
+                <span className="place-card__signature-value">{visualSignature.primaryLabel}</span>
+              </dd>
+            </div>
+            <div>
+              <dt>{visualSignature.feelBand} feel</dt>
+              <dd title={`Place-feel score ${visualSignature.feelScore}/100`}>
+                <span className="font-mono-num">{visualSignature.feelScore}</span>
+                <span className="place-card__signature-muted">/100</span>
+              </dd>
+            </div>
+            <div>
+              <dt>Leads with</dt>
+              <dd title={visualSignature.strength.rationale}>
+                <span className="place-card__signature-value">{visualSignature.strength.shortLabel}</span>
+                <span className="font-mono-num">{Math.round(visualSignature.strength.value)}</span>
+              </dd>
+            </div>
+            <div>
+              <dt>Verify</dt>
+              <dd title={visualSignature.verify.rationale}>
+                <span className="place-card__signature-value">{visualSignature.verify.shortLabel}</span>
+                <span className="font-mono-num">{Math.round(visualSignature.verify.value)}</span>
+              </dd>
+            </div>
+          </dl>
+        ) : null}
 
         {!compact && (
           <div className="pt-3">
