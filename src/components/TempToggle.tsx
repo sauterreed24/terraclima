@@ -9,16 +9,16 @@ type Props = {
 };
 
 export const TempToggle = memo(function TempToggle({ stretch, className = "", onAfterChange }: Props) {
-  const { temp, toggle } = useUnits();
+  const { temp, dist, setTemp, setDist } = useUnits();
   const wrap = `tc-temp-toggle${stretch ? " tc-temp-toggle--stretch" : ""} ${className}`.trim();
 
   return (
-    <div className={wrap} role="group" aria-label="Temperature unit">
+    <div className={wrap} role="group" aria-label="Units">
       <button
         type="button"
         onClick={() => {
           if (temp === "C") {
-            toggle();
+            setTemp("F");
             onAfterChange?.();
           }
         }}
@@ -32,7 +32,7 @@ export const TempToggle = memo(function TempToggle({ stretch, className = "", on
         type="button"
         onClick={() => {
           if (temp === "F") {
-            toggle();
+            setTemp("C");
             onAfterChange?.();
           }
         }}
@@ -41,6 +41,34 @@ export const TempToggle = memo(function TempToggle({ stretch, className = "", on
         title="Switch to degrees Celsius"
       >
         °C
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          if (dist === "metric") {
+            setDist("imperial");
+            onAfterChange?.();
+          }
+        }}
+        className="tc-temp-toggle__btn tc-temp-toggle__btn--distance"
+        aria-pressed={dist === "imperial"}
+        title="Use miles, feet, and inches"
+      >
+        mi
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          if (dist === "imperial") {
+            setDist("metric");
+            onAfterChange?.();
+          }
+        }}
+        className="tc-temp-toggle__btn"
+        aria-pressed={dist === "metric"}
+        title="Use kilometers, meters, and millimeters"
+      >
+        km
       </button>
     </div>
   );

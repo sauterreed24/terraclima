@@ -23,7 +23,7 @@ import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenar
 import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
-import { useProse } from "./lib/units";
+import { useProse, useUnits } from "./lib/units";
 import {
   DEFAULT_RANKING,
   loadPersistedRanking,
@@ -124,6 +124,7 @@ const CompareView = lazy(() =>
 
 export default function App() {
   const richVisualEffects = useRichVisualEffects();
+  const { temp, dist, setTemp, setDist } = useUnits();
   useEffect(() => {
     document.documentElement.classList.toggle("tc-low-power", !richVisualEffects);
     return () => document.documentElement.classList.remove("tc-low-power");
@@ -285,6 +286,8 @@ export default function App() {
       minGrowability: filters.minGrowability ?? null,
       maxFireRisk: filters.maxFireRisk ?? null,
       maxOverallRisk: filters.maxOverallRisk ?? null,
+      temp,
+      dist,
       collectionExists: (id: string) => Boolean(CURATED_SET_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
       placeExists: (id: string) => resolvePlaceId(id) != null,
@@ -319,7 +322,7 @@ export default function App() {
       replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection, filters, compareIds, ranking]);
+  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist]);
 
   useEffect(() => {
     const onPop = () => {
@@ -346,12 +349,14 @@ export default function App() {
       });
       setCompareIds(new Set(v.compareIds));
       setRankingRaw(v.ranking ?? loadPersistedRanking());
+      setTemp(v.temp ?? "F");
+      setDist(v.dist ?? "imperial");
       setCompareOpen(v.compareIds.length >= 2);
       prevPlaceIdRef.current = v.placeId;
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
-  }, []);
+  }, [setTemp, setDist]);
 
   // Pause expensive CSS animations while the tab is backgrounded (battery / CPU).
   useEffect(() => {
@@ -1118,7 +1123,7 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
               <NavBtn stretch active={view === "learn"} onClick={() => pickView("learn")} icon={<Compass className="w-4 h-4" />} label="Learn" />
 
               <div className="pt-1">
-                <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 px-0.5">Temperature units</div>
+                <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 px-0.5">Units</div>
                 <TempToggle stretch onAfterChange={closeMenu} />
               </div>
 

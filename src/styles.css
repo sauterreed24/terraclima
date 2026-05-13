@@ -303,7 +303,7 @@
     outline-offset: 2px;
   }
 
-  /** °F / °C control — shared by header and mobile menu */
+  /** Unit control shared by header and mobile menu. */
   .tc-temp-toggle {
     display: inline-flex;
     border-radius: 0.5rem;
@@ -328,6 +328,9 @@
   }
   .tc-temp-toggle__btn + .tc-temp-toggle__btn {
     border-left: 1px solid rgba(180, 150, 120, 0.5);
+  }
+  .tc-temp-toggle__btn--distance {
+    border-left-color: rgba(26, 143, 168, 0.36);
   }
   .tc-temp-toggle--stretch {
     width: 100%;

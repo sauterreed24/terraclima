@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState, useEffect } from "react";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import React from "react";
 
@@ -14,7 +14,7 @@ import React from "react";
 export type TempUnit = "F" | "C";
 export type DistUnit = "imperial" | "metric";
 
-const STORAGE_KEY = "terraclima.units.v1";
+export const UNIT_STORAGE_KEY = "terraclima.units.v1";
 
 export interface UnitState {
   temp: TempUnit;
@@ -34,36 +34,71 @@ const defaultState: UnitState = {
 
 export const UnitContext = createContext<UnitState>(defaultState);
 
-export function UnitProvider({ children }: { children: ReactNode }) {
-  const [temp, setTempRaw] = useState<TempUnit>("F");
-  const [dist, setDistRaw] = useState<DistUnit>("imperial");
+type UnitPreference = Pick<UnitState, "temp" | "dist">;
 
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const parsed = JSON.parse(raw) as { temp?: TempUnit; dist?: DistUnit };
-        if (parsed.temp === "F" || parsed.temp === "C") setTempRaw(parsed.temp);
-        if (parsed.dist === "imperial" || parsed.dist === "metric") setDistRaw(parsed.dist);
-      }
-    } catch { /* noop */ }
-  }, []);
+export function parseUnitSearch(search: string): Partial<UnitPreference> {
+  let s = search;
+  if (s.startsWith("?")) s = s.slice(1);
+  const params = new URLSearchParams(s);
+  const out: Partial<UnitPreference> = {};
+  const temp = params.get("temp");
+  if (temp === "F" || temp === "C") out.temp = temp;
+  const dist = params.get("dist");
+  if (dist === "imperial" || dist === "metric") out.dist = dist;
+  return out;
+}
+
+function readInitialUnitPreference(): UnitPreference {
+  let next: UnitPreference = { temp: "F", dist: "imperial" };
+  if (typeof window === "undefined") return next;
+
+  try {
+    const raw = localStorage.getItem(UNIT_STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as { temp?: TempUnit; dist?: DistUnit };
+      if (parsed.temp === "F" || parsed.temp === "C") next = { ...next, temp: parsed.temp };
+      if (parsed.dist === "imperial" || parsed.dist === "metric") next = { ...next, dist: parsed.dist };
+    }
+  } catch { /* noop */ }
+
+  try {
+    next = { ...next, ...parseUnitSearch(window.location.search) };
+  } catch { /* noop */ }
+
+  return next;
+}
+
+function persistUnitPreference(next: UnitPreference): void {
+  try { localStorage.setItem(UNIT_STORAGE_KEY, JSON.stringify(next)); } catch { /* noop */ }
+}
+
+export function UnitProvider({ children }: { children: ReactNode }) {
+  const [{ temp, dist }, setUnits] = useState<UnitPreference>(() => readInitialUnitPreference());
 
   const setTemp = useCallback((t: TempUnit) => {
-    setTempRaw(t);
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ temp: t, dist })); } catch { /* noop */ }
-  }, [dist]);
-  const setDist = useCallback((d: DistUnit) => {
-    setDistRaw(d);
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ temp, dist: d })); } catch { /* noop */ }
-  }, [temp]);
-  const toggle = useCallback(() => {
-    setTempRaw(t => {
-      const next = t === "F" ? "C" : "F";
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ temp: next, dist })); } catch { /* noop */ }
+    setUnits(current => {
+      const next = { ...current, temp: t };
+      persistUnitPreference(next);
       return next;
     });
-  }, [dist]);
+  }, []);
+
+  const setDist = useCallback((d: DistUnit) => {
+    setUnits(current => {
+      const next = { ...current, dist: d };
+      persistUnitPreference(next);
+      return next;
+    });
+  }, []);
+
+  const toggle = useCallback(() => {
+    setUnits(current => {
+      const nextTemp: TempUnit = current.temp === "F" ? "C" : "F";
+      const next = { ...current, temp: nextTemp };
+      persistUnitPreference(next);
+      return next;
+    });
+  }, []);
 
   const value: UnitState = useMemo(() => ({ temp, dist, setTemp, setDist, toggle }), [temp, dist, setTemp, setDist, toggle]);
   return React.createElement(UnitContext.Provider, { value }, children);
