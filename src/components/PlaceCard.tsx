@@ -255,10 +255,10 @@ export const PlaceCard = memo(function PlaceCard({
               </dd>
             </div>
             <div>
-              <dt>{visualSignature.feelBand} feel</dt>
+              <dt>Feel</dt>
               <dd title={`Place-feel score ${visualSignature.feelScore}/100`}>
+                <span className="place-card__signature-value">{visualSignature.feelBand}</span>
                 <span className="font-mono-num">{visualSignature.feelScore}</span>
-                <span className="place-card__signature-muted">/100</span>
               </dd>
             </div>
             <div>
