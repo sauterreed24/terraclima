@@ -5,6 +5,7 @@ import App from "../App";
 import { UnitProvider } from "../lib/units";
 
 const APP_SHELL_TIMEOUT_MS = 30000;
+const DEG = "\u00b0";
 
 /** Avoid dynamic topojson imports + async map setup leaking past test teardown. */
 vi.mock("../components/AtlasMap", () => ({
@@ -162,6 +163,42 @@ describe("App shell", () => {
     expect(copied.searchParams.get("q")).toBe("monterey");
     expect(copied.searchParams.get("r")).toBeNull();
     expect(await screen.findByText("Link copied")).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("preserves unit choices in copied Explorer URLs", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+    window.history.replaceState(null, "", "/?q=wenatchee");
+
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: `${DEG}C` }));
+    fireEvent.click(screen.getByRole("button", { name: "km" }));
+
+    await waitFor(() => {
+      expect(window.location.search).toContain("temp=C");
+      expect(window.location.search).toContain("dist=metric");
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Copy current Explorer view" }));
+
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const copied = new URL(writeText.mock.calls[0][0] as string);
+    expect(copied.searchParams.get("q")).toBe("wenatchee");
+    expect(copied.searchParams.get("temp")).toBe("C");
+    expect(copied.searchParams.get("dist")).toBe("metric");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("hydrates unit choices from a shared URL", () => {
+    window.history.replaceState(null, "", "/?temp=C&dist=metric");
+
+    renderApp();
+
+    expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps live-fit ranking in shared URLs when live-fit controls are active", async () => {

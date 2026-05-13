@@ -17,6 +17,7 @@ import {
   toTempUnit,
   toDeltaUnit,
   localizeProse,
+  parseUnitSearch,
 } from "../units";
 
 describe("conversion primitives", () => {
@@ -105,6 +106,17 @@ describe("formatters with units", () => {
     expect(fmtSnow(NaN, "metric")).toBe("—");
     expect(fmtElev(NaN, "imperial")).toBe("—");
     expect(fmtDist(Infinity, "metric")).toBe("—");
+  });
+});
+
+describe("parseUnitSearch", () => {
+  it("accepts shareable temperature and distance unit params", () => {
+    expect(parseUnitSearch("?temp=C&dist=metric")).toEqual({ temp: "C", dist: "metric" });
+    expect(parseUnitSearch("temp=F&dist=imperial")).toEqual({ temp: "F", dist: "imperial" });
+  });
+
+  it("drops unsupported unit params", () => {
+    expect(parseUnitSearch("?temp=K&dist=nautical")).toEqual({});
   });
 });
 

@@ -28,7 +28,7 @@ describe("parseAppSearch", () => {
     expect(parseAppSearch("?p=foo&col=bar")).toEqual({ placeId: "foo", collectionId: "bar" });
   });
   it("parses Live Finder state without disturbing legacy params", () => {
-    expect(parseAppSearch("?p=foo&r=live-fit&fit=cool-summers,dry-air,unknown&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated")).toEqual({
+    expect(parseAppSearch("?p=foo&r=live-fit&fit=cool-summers,dry-air,unknown&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated&temp=C&dist=metric")).toEqual({
       placeId: "foo",
       ranking: "live-fit",
       fitPresets: ["cool-summers", "dry-air"],
@@ -37,7 +37,12 @@ describe("parseAppSearch", () => {
       minGrowability: 65,
       maxFireRisk: "moderate",
       maxOverallRisk: "elevated",
+      temp: "C",
+      dist: "metric",
     });
+  });
+  it("drops unit params the UI cannot represent", () => {
+    expect(parseAppSearch("?temp=K&dist=nautical")).toEqual({});
   });
   it("drops Live Finder constraints the UI cannot represent", () => {
     expect(parseAppSearch("?sh=25&wl=-3&grow=99&fire=high&risk=very-high")).toEqual({});
@@ -136,10 +141,12 @@ describe("formatAppRelativeUrl", () => {
       minGrowability: 65,
       maxFireRisk: "moderate",
       maxOverallRisk: "elevated",
+      temp: "C",
+      dist: "metric",
       collectionExists: ce,
       archetypeExists: () => true,
     });
-    expect(url).toBe("/?p=foo&c=USA&a=rain-shadow-sanctuary&q=garden+town&r=live-fit&fit=cool-summers%2Cdry-air&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated");
+    expect(url).toBe("/?p=foo&c=USA&a=rain-shadow-sanctuary&q=garden+town&r=live-fit&fit=cool-summers%2Cdry-air&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated&temp=C&dist=metric");
   });
   it("omits the default live-fit ranking until live-fit constraints are present", () => {
     expect(
@@ -147,6 +154,8 @@ describe("formatAppRelativeUrl", () => {
         view: "explorer",
         placeId: null,
         collectionId: null,
+        temp: "F",
+        dist: "imperial",
         ranking: "live-fit",
         collectionExists: ce,
       }),

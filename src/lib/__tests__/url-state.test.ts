@@ -8,7 +8,7 @@ describe("app-url state", () => {
   });
 
   it("parses filters and compare from query string", () => {
-    const p = parseAppSearch("?v=trips&p=sequim-wa&col=rainshadow&c=USA,Canada&a=fog-belt-coast,rain-shadow-sanctuary&q=san+jose&cmp=a,b,c&r=live-fit&fit=cool-summers,quiet-small-town&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated");
+    const p = parseAppSearch("?v=trips&p=sequim-wa&col=rainshadow&c=USA,Canada&a=fog-belt-coast,rain-shadow-sanctuary&q=san+jose&cmp=a,b,c&r=live-fit&fit=cool-summers,quiet-small-town&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated&temp=C&dist=metric");
     expect(p.view).toBe("trips");
     expect(p.placeId).toBe("sequim-wa");
     expect(p.collectionId).toBe("rainshadow");
@@ -24,6 +24,8 @@ describe("app-url state", () => {
     expect(p.minGrowability).toBe(65);
     expect(p.maxFireRisk).toBe("moderate");
     expect(p.maxOverallRisk).toBe("elevated");
+    expect(p.temp).toBe("C");
+    expect(p.dist).toBe("metric");
   });
 
   it("validates against unknown ids and drops them", () => {
@@ -63,6 +65,8 @@ describe("app-url state", () => {
       minGrowability: 65,
       maxFireRisk: "moderate",
       maxOverallRisk: "elevated",
+      temp: "C",
+      dist: "metric",
       collectionExists: () => false,
       archetypeExists: () => true,
       placeExists: () => true,
@@ -78,6 +82,8 @@ describe("app-url state", () => {
     expect(url).toMatch(/grow=65/);
     expect(url).toMatch(/fire=moderate/);
     expect(url).toMatch(/risk=elevated/);
+    expect(url).toMatch(/temp=C/);
+    expect(url).toMatch(/dist=metric/);
     expect(url).toMatch(/cmp=a%2Cb/);
   });
 
@@ -103,6 +109,8 @@ describe("app-url state", () => {
     expect(url).not.toMatch(/[?&]grow=/);
     expect(url).not.toMatch(/[?&]fire=/);
     expect(url).not.toMatch(/[?&]risk=/);
+    expect(url).not.toMatch(/[?&]temp=/);
+    expect(url).not.toMatch(/[?&]dist=/);
     expect(url).not.toMatch(/[?&]cmp=/);
   });
 
