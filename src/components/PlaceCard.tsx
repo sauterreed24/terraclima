@@ -258,21 +258,21 @@ export const PlaceCard = memo(function PlaceCard({
               <dt>Feel</dt>
               <dd title={`Place-feel score ${visualSignature.feelScore}/100`}>
                 <span className="place-card__signature-value">{visualSignature.feelBand}</span>
-                <span className="font-mono-num">{visualSignature.feelScore}</span>
+                <span className="place-card__signature-score font-mono-num">{visualSignature.feelScore}</span>
               </dd>
             </div>
             <div>
               <dt>Leads with</dt>
               <dd title={visualSignature.strength.rationale}>
                 <span className="place-card__signature-value">{visualSignature.strength.shortLabel}</span>
-                <span className="font-mono-num">{Math.round(visualSignature.strength.value)}</span>
+                <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.strength.value)}</span>
               </dd>
             </div>
             <div>
               <dt>Verify</dt>
               <dd title={visualSignature.verify.rationale}>
                 <span className="place-card__signature-value">{visualSignature.verify.shortLabel}</span>
-                <span className="font-mono-num">{Math.round(visualSignature.verify.value)}</span>
+                <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.verify.value)}</span>
               </dd>
             </div>
           </dl>

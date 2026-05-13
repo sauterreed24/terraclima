@@ -544,6 +544,8 @@
     scrollbar-width: thin;
   }
   .current-rank-strip__chip {
+    --signature-rgb: 94, 196, 220;
+    position: relative;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
@@ -551,20 +553,34 @@
     min-height: 3.2rem;
     padding: 0.5rem 0.6rem;
     border-radius: 0.625rem;
-    border: 1px solid rgba(140, 200, 224, 0.42);
-    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(var(--signature-rgb), 0.4);
+    background:
+      linear-gradient(135deg, rgba(var(--signature-rgb), 0.1), rgba(255, 255, 255, 0.94) 44%),
+      rgba(255, 255, 255, 0.92);
     color: var(--color-frost);
     text-align: left;
     scroll-snap-align: start;
+    overflow: hidden;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 1) inset;
     transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
   }
+  .current-rank-strip__chip::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: rgb(var(--signature-rgb));
+    opacity: 0.82;
+    pointer-events: none;
+  }
   .current-rank-strip__chip:hover {
-    border-color: rgba(26, 143, 168, 0.65);
+    border-color: rgba(var(--signature-rgb), 0.68);
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 1) inset,
-      0 0 0 1px rgba(26, 143, 168, 0.2),
-      0 12px 28px -12px rgba(26, 143, 168, 0.32);
+      0 0 0 1px rgba(var(--signature-rgb), 0.2),
+      0 12px 28px -12px rgba(var(--signature-rgb), 0.36);
     transform: translateY(-1.5px);
   }
   .current-rank-strip__chip:focus-visible {
@@ -577,7 +593,7 @@
     width: 1.55rem;
     height: 1.55rem;
     border-radius: 999px;
-    background: rgba(26, 143, 168, 0.16);
+    background: rgba(var(--signature-rgb), 0.18);
     color: var(--color-glacier-700);
     font-family: var(--font-mono);
     font-size: 0.75rem;
@@ -604,6 +620,16 @@
     line-height: 1.2;
     color: var(--color-stone-readable);
   }
+  .current-rank-strip__signature {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 0.12rem;
+    font-size: 0.6rem;
+    line-height: 1.2;
+    color: rgba(26, 21, 17, 0.78);
+  }
   @media (max-width: 640px) {
     .current-rank-strip__rail {
       grid-template-columns: repeat(5, minmax(13rem, 76vw));
@@ -617,6 +643,200 @@
       transition: none;
     }
     .current-rank-strip__chip:hover {
+      transform: none;
+    }
+  }
+
+  .signature-constellation {
+    --signature-rgb: 94, 196, 220;
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.875rem;
+    border: 1px solid rgba(200, 170, 140, 0.34);
+    background:
+      linear-gradient(180deg, rgba(255, 253, 248, 0.96), rgba(250, 246, 238, 0.84)),
+      rgba(255, 255, 255, 0.92);
+    padding: 0.75rem 0.8rem 0.85rem;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 14px 32px -20px rgba(62, 38, 24, 0.14);
+  }
+  .signature-constellation::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    background: linear-gradient(90deg, #5ec4dc, #67b96f, #e3a63b, #ad8cff);
+    opacity: 0.72;
+    pointer-events: none;
+  }
+  .signature-constellation__head {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 0.65rem;
+  }
+  .signature-constellation__eyebrow {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-glacier-700);
+  }
+  .signature-constellation__summary {
+    margin-top: 0.18rem;
+    max-width: 48rem;
+    color: var(--color-stone-readable);
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+  .signature-constellation__summary span {
+    color: var(--color-ice);
+    font-weight: 700;
+  }
+  .signature-constellation__lens {
+    max-width: 12rem;
+    border-radius: 999px;
+    border: 1px solid rgba(26, 143, 168, 0.24);
+    background: rgba(232, 248, 251, 0.72);
+    color: var(--color-glacier-700);
+    padding: 0.3rem 0.55rem;
+    font-size: 0.62rem;
+    line-height: 1.2;
+    text-align: right;
+  }
+  .signature-constellation__rail {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(9.75rem, 1fr));
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding: 0.05rem 0.05rem 0.25rem;
+    scrollbar-width: thin;
+    scroll-snap-type: x proximity;
+  }
+  .signature-constellation__card {
+    --signature-rgb: 94, 196, 220;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      "rank place"
+      "rank type"
+      "bar bar"
+      "meta meta";
+    gap: 0.18rem 0.52rem;
+    min-width: 0;
+    min-height: 6.1rem;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(var(--signature-rgb), 0.34);
+    background:
+      linear-gradient(160deg, rgba(var(--signature-rgb), 0.13), rgba(255, 255, 255, 0.92) 48%),
+      rgba(255, 255, 255, 0.94);
+    padding: 0.58rem 0.62rem;
+    text-align: left;
+    color: var(--color-frost);
+    scroll-snap-align: start;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 1) inset;
+    cursor: pointer;
+    transition: border-color 160ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+  .signature-constellation__card:hover {
+    border-color: rgba(var(--signature-rgb), 0.66);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 1) inset,
+      0 14px 30px -16px rgba(var(--signature-rgb), 0.42);
+    transform: translateY(-1.5px);
+  }
+  .signature-constellation__card:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
+  }
+  .signature-constellation__rank {
+    grid-area: rank;
+    display: inline-grid;
+    place-items: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 999px;
+    background: rgba(var(--signature-rgb), 0.18);
+    color: var(--color-ice);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .signature-constellation__place {
+    grid-area: place;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-ice);
+    font-family: var(--font-serif);
+    font-size: 0.94rem;
+    line-height: 1.15;
+  }
+  .signature-constellation__type {
+    grid-area: type;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-stone-readable);
+    font-size: 0.67rem;
+    line-height: 1.25;
+  }
+  .signature-constellation__bar {
+    grid-area: bar;
+    display: block;
+    height: 0.38rem;
+    margin-top: 0.35rem;
+    border-radius: 999px;
+    background: rgba(90, 79, 71, 0.12);
+    overflow: hidden;
+  }
+  .signature-constellation__bar span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, rgba(var(--signature-rgb), 0.72), rgb(var(--signature-rgb)));
+  }
+  .signature-constellation__meta {
+    grid-area: meta;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+  }
+  .signature-constellation__meta span {
+    border-radius: 999px;
+    border: 1px solid rgba(var(--signature-rgb), 0.22);
+    background: rgba(255, 253, 248, 0.76);
+    color: var(--color-frost);
+    padding: 0.16rem 0.38rem;
+    font-size: 0.56rem;
+    line-height: 1.1;
+  }
+  @media (max-width: 1180px) {
+    .signature-constellation__rail {
+      grid-template-columns: repeat(5, minmax(11rem, 44vw));
+    }
+  }
+  @media (max-width: 640px) {
+    .signature-constellation__head {
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+    .signature-constellation__lens {
+      max-width: 100%;
+      text-align: left;
+    }
+    .signature-constellation__rail {
+      grid-template-columns: repeat(5, minmax(12.5rem, 76vw));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .signature-constellation__card {
+      transition: none;
+    }
+    .signature-constellation__card:hover {
       transform: none;
     }
   }
@@ -2580,6 +2800,88 @@
     opacity: 0.7;
   }
 
+  .detail-signature-panel {
+    --signature-rgb: 94, 196, 220;
+    display: grid;
+    grid-template-columns: minmax(14rem, 1.85fr) repeat(3, minmax(4.85rem, 0.58fr));
+    gap: 1px;
+    margin-top: 0.8rem;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(var(--signature-rgb), 0.3);
+    background:
+      linear-gradient(90deg, rgba(var(--signature-rgb), 0.18), rgba(255, 253, 248, 0.22) 42%, rgba(200, 170, 140, 0.12)),
+      rgba(140, 120, 100, 0.14);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.92) inset,
+      0 14px 34px -24px rgba(var(--signature-rgb), 0.38);
+  }
+  .detail-signature-panel > div {
+    min-width: 0;
+    padding: 0.62rem 0.68rem;
+    background: rgba(255, 253, 248, 0.76);
+  }
+  .detail-signature-panel__primary {
+    background:
+      linear-gradient(135deg, rgba(var(--signature-rgb), 0.14), rgba(255, 253, 248, 0.78) 62%),
+      rgba(255, 253, 248, 0.82) !important;
+  }
+  .detail-signature-panel dt {
+    color: var(--color-stone-readable);
+    font-size: 0.56rem;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .detail-signature-panel dd {
+    display: flex;
+    align-items: baseline;
+    gap: 0.34rem;
+    min-width: 0;
+    margin: 0.24rem 0 0;
+    color: var(--color-ice);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.22;
+  }
+  .detail-signature-panel dd span:not(.font-mono-num) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .detail-signature-panel__primary dd {
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .detail-signature-panel dd .font-mono-num {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: rgba(var(--signature-rgb), 0.14);
+    color: var(--color-frost);
+    padding: 0.08rem 0.34rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+  }
+  @media (max-width: 720px) {
+    .detail-signature-panel {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .detail-signature-panel__primary {
+      grid-column: 1 / -1;
+    }
+  }
+
   /* Place detail — reading column & encyclopedia rhythm */
   .detail-body-shell {
     max-width: 52rem;
@@ -3137,6 +3439,16 @@
   .place-card__signature-muted {
     color: var(--color-stone-readable);
     font-weight: 500;
+  }
+  .place-card__signature-score {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: rgba(var(--signature-rgb), 0.13);
+    color: var(--color-frost);
+    padding: 0.04rem 0.28rem;
+    font-size: 0.62rem;
+    font-weight: 800;
+    line-height: 1.18;
   }
   @media (max-width: 540px) {
     .place-card__signature-band {
