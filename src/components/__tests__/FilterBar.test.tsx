@@ -49,6 +49,23 @@ function renderFilterBar(
 }
 
 describe("FilterBar Live Finder temperature constraints", () => {
+  it("summarizes the active Explorer lens before the control groups", () => {
+    const filters = emptyFilters();
+    filters.fitPresets = new Set(["gardenable"]);
+    filters.minGrowability = 65;
+
+    renderFilterBar("F", {
+      filters,
+      ranking: "hidden-gems",
+    });
+
+    const lens = screen.getByRole("region", { name: "Current Explorer lens" });
+    expect(lens).toHaveTextContent("Hidden gems");
+    expect(lens).toHaveTextContent("2 living signals active");
+    expect(screen.getByText("1 Live Finder preset")).toBeInTheDocument();
+    expect(screen.getByText("Garden 65+")).toBeInTheDocument();
+  });
+
   it("renders threshold chips in Fahrenheit when the app is in Fahrenheit mode", () => {
     renderFilterBar("F");
 
@@ -75,6 +92,22 @@ describe("FilterBar Live Finder temperature constraints", () => {
 });
 
 describe("FilterBar lifestyle bundles", () => {
+  it("uses the active bundle as the current lens receipt when all bundle controls match", () => {
+    const exactGarden = emptyFilters();
+    exactGarden.fitPresets = new Set(["gardenable"]);
+    exactGarden.minGrowability = 65;
+
+    renderFilterBar("F", {
+      filters: exactGarden,
+      ranking: "best-growability",
+    });
+
+    const lens = screen.getByRole("region", { name: "Current Explorer lens" });
+    expect(lens).toHaveTextContent("Best growability");
+    expect(lens).toHaveTextContent("Garden & Grow");
+    expect(lens).toHaveTextContent("Long growing season");
+  });
+
   it("only marks a lifestyle bundle active when all bundle-owned live filters match", () => {
     const exactRemote = emptyFilters();
     exactRemote.fitPresets = new Set(["cool-summers", "low-fire-smoke"]);
