@@ -2764,6 +2764,24 @@
   .map-rank-badge {
     filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45));
   }
+  .map-rank-trail {
+    filter: drop-shadow(0 0 10px rgba(255, 204, 112, 0.18));
+    mix-blend-mode: screen;
+  }
+  .map-rank-trail__glow {
+    opacity: 0.9;
+  }
+  .map-rank-trail__line {
+    opacity: 0.95;
+  }
+  .map-rank-trail__pulse {
+    animation: atlasRankTrail 7s linear infinite;
+  }
+  .map-rank-trail__node {
+    fill: rgba(255, 233, 176, 0.58);
+    stroke: rgba(8, 14, 24, 0.78);
+    stroke-width: 1;
+  }
   .map-cluster {
     cursor: pointer;
   }
@@ -3484,6 +3502,9 @@
   html.tc-low-power .map-rank-halo__orbit {
     animation: none;
   }
+  html.tc-low-power .map-rank-trail__pulse {
+    animation: none;
+  }
 
   html.tc-low-power .anim-fade-in,
   html.tc-low-power .view-enter {
@@ -3562,6 +3583,10 @@
 @keyframes atlasRankHalo {
   from { stroke-dashoffset: 0; }
   to { stroke-dashoffset: -40; }
+}
+@keyframes atlasRankTrail {
+  from { stroke-dashoffset: 0; }
+  to { stroke-dashoffset: -76; }
 }
 
 /* Respect user intent. On systems where the OS requests reduced motion
@@ -3933,6 +3958,7 @@
   .pulse-dot,
   .map-signal-ribbons path,
   .map-rank-halo__orbit,
+  .map-rank-trail__pulse,
   .ambient-aurora {
     animation: none !important;
   }
