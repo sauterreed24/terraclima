@@ -1,7 +1,8 @@
-import type { MicroclimateArchetype, Place } from "../types";
+import type { MicroclimateArchetype, Monthly12, Place } from "../types";
 import {
   annualComfortMonthCount,
   annualUsableMonthCount,
+  getAnnualPrecipMm,
   meanSummerHumidityPct,
   monthlyUsabilityScores,
 } from "./climate-metrics";
@@ -16,7 +17,7 @@ export interface ComfortPrecisionMonth {
   highC: number;
   lowC: number;
   humidityPct: number | null;
-  humiditySource: "measured" | "archetype" | "missing";
+  humiditySource: "measured" | "analog" | "archetype" | "missing";
   dewPointC: number | null;
   wetBulbC: number | null;
   apparentHighC: number;
@@ -36,11 +37,54 @@ export interface ComfortPrecisionProfile {
   summerHumidityPct: number | null;
   confidence: ComfortConfidence;
   confidenceNote: string;
+  humidityBasisNote: string;
   methodNote: string;
 }
 
+interface HumidityAnalog {
+  id: string;
+  name: string;
+  score: number;
+  humidity: Monthly12;
+}
+
+interface HumidityAnalogSeries {
+  monthly: Monthly12;
+  analogs: readonly HumidityAnalog[];
+}
+
+export interface ComfortPrecisionOptions {
+  humidityAnalogPool?: readonly Place[];
+}
+
+const MIN_ANALOG_SCORE = 0.35;
+const MIN_ANALOG_COUNT = 3;
+const MAX_ANALOG_COUNT = 5;
+
 function clamp(n: number, lo: number, hi: number): number {
   return Math.min(hi, Math.max(lo, n));
+}
+
+function jaccard<T>(a: readonly T[], b: readonly T[]): number {
+  if (a.length === 0 && b.length === 0) return 0;
+  const seen = new Set(a);
+  let inter = 0;
+  for (const item of b) if (seen.has(item)) inter += 1;
+  const union = seen.size + b.length - inter;
+  return union === 0 ? 0 : inter / union;
+}
+
+function decay(diff: number, scale: number): number {
+  return Math.exp(-(diff * diff) / (scale * scale));
+}
+
+function rmse(a: readonly number[], b: readonly number[], transform: (value: number) => number = value => value): number {
+  let sum = 0;
+  for (let i = 0; i < a.length; i += 1) {
+    const diff = transform(a[i]!) - transform(b[i]!);
+    sum += diff * diff;
+  }
+  return Math.sqrt(sum / a.length);
 }
 
 export function cToF(c: number): number {
@@ -103,6 +147,58 @@ function hasArchetype(p: Place, ids: readonly MicroclimateArchetype[]): boolean 
   return ids.some(id => p.archetypes.includes(id));
 }
 
+function humidityAnalogScore(target: Place, analog: Place): number {
+  const high = decay(rmse(target.climate.tempHighC, analog.climate.tempHighC), 9);
+  const low = decay(rmse(target.climate.tempLowC, analog.climate.tempLowC), 9);
+  const precip = decay(rmse(target.climate.precipMm, analog.climate.precipMm, value => Math.log1p(value)), 1.25);
+  const annualPrecip = decay(Math.abs(Math.log1p(getAnnualPrecipMm(target)) - Math.log1p(getAnnualPrecipMm(analog))), 1.2);
+  const elevation = decay(Math.abs(target.elevationM - analog.elevationM), 1800);
+  const archetypes = jaccard(target.archetypes, analog.archetypes);
+  const drivers = jaccard(target.drivers, analog.drivers);
+  const koppenFamily = target.koppen[0] === analog.koppen[0] ? 1 : 0;
+
+  return (
+    high * 0.24 +
+    low * 0.15 +
+    precip * 0.18 +
+    annualPrecip * 0.12 +
+    archetypes * 0.12 +
+    drivers * 0.08 +
+    elevation * 0.07 +
+    koppenFamily * 0.04
+  );
+}
+
+function buildHumidityAnalogSeries(target: Place, pool: readonly Place[] | undefined): HumidityAnalogSeries | null {
+  if (!pool || target.climate.humidity) return null;
+  const analogs = pool
+    .filter((place): place is Place & { climate: Place["climate"] & { humidity: Monthly12 } } => place.id !== target.id && place.climate.humidity != null)
+    .map(place => ({
+      id: place.id,
+      name: place.name,
+      score: humidityAnalogScore(target, place),
+      humidity: place.climate.humidity,
+    }))
+    .filter(analog => analog.score >= MIN_ANALOG_SCORE)
+    .sort((a, b) => (b.score - a.score) || a.id.localeCompare(b.id))
+    .slice(0, MAX_ANALOG_COUNT);
+
+  if (analogs.length < MIN_ANALOG_COUNT) return null;
+
+  const monthly = target.climate.tempHighC.map((_, monthIndex) => {
+    let weighted = 0;
+    let weights = 0;
+    for (const analog of analogs) {
+      const weight = analog.score * analog.score;
+      weighted += analog.humidity[monthIndex]! * weight;
+      weights += weight;
+    }
+    return Math.round(clamp(weighted / weights, 10, 96));
+  }) as Monthly12;
+
+  return { monthly, analogs };
+}
+
 function inferredHumidityForMonth(p: Place, monthIndex: number): number | null {
   const summer = monthIndex >= 5 && monthIndex <= 7;
   let annual: number | null = null;
@@ -119,9 +215,15 @@ function inferredHumidityForMonth(p: Place, monthIndex: number): number | null {
   return annual;
 }
 
-function monthHumidity(p: Place, monthIndex: number): Pick<ComfortPrecisionMonth, "humidityPct" | "humiditySource"> {
+function monthHumidity(
+  p: Place,
+  monthIndex: number,
+  analogHumidity: HumidityAnalogSeries | null,
+): Pick<ComfortPrecisionMonth, "humidityPct" | "humiditySource"> {
   const measured = p.climate.humidity?.[monthIndex];
   if (measured != null) return { humidityPct: measured, humiditySource: "measured" };
+  const analog = analogHumidity?.monthly[monthIndex];
+  if (analog != null) return { humidityPct: analog, humiditySource: "analog" };
   const inferred = inferredHumidityForMonth(p, monthIndex);
   if (inferred != null) return { humidityPct: inferred, humiditySource: "archetype" };
   return { humidityPct: null, humiditySource: "missing" };
@@ -146,17 +248,33 @@ function confidenceForPlace(p: Place, humiditySource: ComfortPrecisionMonth["hum
   if (p.climate.humidity && p.climate.sunshinePct && p.climate.diurnalSummerC != null) {
     return { confidence: "high", note: "Monthly humidity, sunshine, and authored diurnal recovery are present." };
   }
-  if (humiditySource === "measured" || humiditySource === "archetype") {
-    return { confidence: "medium", note: humiditySource === "measured" ? "Monthly humidity is present; sunshine or diurnal detail is partial." : "Humidity is archetype-estimated; verify with local station normals before committing." };
+  if (humiditySource === "measured") {
+    return { confidence: "medium", note: "Monthly humidity is present; sunshine or diurnal detail is partial." };
+  }
+  if (humiditySource === "analog") {
+    return { confidence: "medium", note: "Humidity is inferred from measured climate analogs; verify with local station normals before committing." };
+  }
+  if (humiditySource === "archetype") {
+    return { confidence: "medium", note: "Humidity is archetype-estimated; verify with local station normals before committing." };
   }
   return { confidence: "screening", note: "Humidity is missing, so this is a thermal and precip screen that needs local humidity verification." };
 }
 
-export function buildComfortPrecisionProfile(p: Place): ComfortPrecisionProfile {
+function humidityBasisNote(analogHumidity: HumidityAnalogSeries | null, source: ComfortPrecisionMonth["humiditySource"]): string {
+  if (source === "measured") return "Monthly humidity normals are authored directly for this place.";
+  if (source === "analog" && analogHumidity) {
+    return `Humidity inferred from measured analogs: ${analogHumidity.analogs.slice(0, 3).map(analog => analog.name).join(", ")}.`;
+  }
+  if (source === "archetype") return "Humidity inferred from this place's microclimate archetype set.";
+  return "No humidity basis yet; field-check dew point and wet-bulb values locally.";
+}
+
+export function buildComfortPrecisionProfile(p: Place, options: ComfortPrecisionOptions = {}): ComfortPrecisionProfile {
   const usability = monthlyUsabilityScores(p);
+  const analogHumidity = buildHumidityAnalogSeries(p, options.humidityAnalogPool);
   const months = p.climate.tempHighC.map((highC, index): ComfortPrecisionMonth => {
     const lowC = p.climate.tempLowC[index]!;
-    const { humidityPct, humiditySource } = monthHumidity(p, index);
+    const { humidityPct, humiditySource } = monthHumidity(p, index, analogHumidity);
     const dew = humidityPct == null ? null : dewPointC((highC + lowC) / 2, humidityPct);
     const wetBulb = humidityPct == null ? null : wetBulbStullC(highC, humidityPct);
     const apparentHigh = humidityPct == null ? highC : heatIndexC(highC, humidityPct);
@@ -199,6 +317,7 @@ export function buildComfortPrecisionProfile(p: Place): ComfortPrecisionProfile 
     ),
     confidence: confidence.confidence,
     confidenceNote: confidence.note,
-    methodNote: `Peak feel uses NWS-style heat index only when heat and humidity warrant it; wet-bulb is a shade proxy, not WBGT, because this atlas does not model sun angle, cloud cover, or wind speed.`,
+    humidityBasisNote: humidityBasisNote(analogHumidity, anySource),
+    methodNote: `Peak feel uses NWS-style heat index only when heat and humidity warrant it; when monthly humidity is absent, the model prefers measured-corpus climate analogs before archetype estimates. Wet-bulb is a shade proxy, not WBGT, because this atlas does not model sun angle, cloud cover, or wind speed.`,
   };
 }

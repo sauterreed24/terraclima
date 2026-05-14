@@ -706,6 +706,7 @@ function monthList(months: ComfortPrecisionMonth[]): string {
 
 function humiditySourceLabel(month: ComfortPrecisionMonth): string {
   if (month.humiditySource === "measured") return "measured humidity";
+  if (month.humiditySource === "analog") return "climate-analog humidity";
   if (month.humiditySource === "archetype") return "archetype humidity";
   return "humidity unmodeled";
 }
@@ -794,6 +795,10 @@ function ComfortPrecisionRead({ profile }: { profile: ComfortPrecisionProfile })
             <strong>{monthList(profile.hardestMonths)}</strong>
           </div>
           <div>
+            <span>Moisture basis</span>
+            <strong>{profile.humidityBasisNote}</strong>
+          </div>
+          <div>
             <span>Confidence</span>
             <strong>{profile.confidenceNote}</strong>
           </div>
@@ -848,7 +853,7 @@ function DetailBody({
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
   const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
   const livability = useMemo(() => scoreLivability(place), [place]);
-  const comfortPrecision = useMemo(() => buildComfortPrecisionProfile(place), [place]);
+  const comfortPrecision = useMemo(() => buildComfortPrecisionProfile(place, { humidityAnalogPool: PLACES }), [place]);
   const comfortRead = useMemo(() => describeHumanComfort(place), [place]);
   const visualSignature = useMemo(() => getPlaceVisualSignature(place), [place]);
   const settlementAnchors = useMemo(() => buildSettlementAnchors(place), [place]);
