@@ -349,8 +349,11 @@ export default function App() {
       });
       setCompareIds(new Set(v.compareIds));
       setRankingRaw(v.ranking ?? loadPersistedRanking());
-      setTemp(v.temp ?? "F");
-      setDist(v.dist ?? "imperial");
+      // Only apply units when the URL encodes them. Older history entries omit
+      // temp/dist; defaulting here would clobber UnitProvider state and
+      // localStorage (e.g. Back from ?temp=C to a legacy ?q=… URL).
+      if (v.temp != null) setTemp(v.temp);
+      if (v.dist != null) setDist(v.dist);
       setCompareOpen(v.compareIds.length >= 2);
       prevPlaceIdRef.current = v.placeId;
     };
