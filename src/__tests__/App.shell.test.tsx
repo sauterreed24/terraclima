@@ -2,7 +2,7 @@
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
-import { UnitProvider } from "../lib/units";
+import { UNIT_STORAGE_KEY, UnitProvider } from "../lib/units";
 
 const APP_SHELL_TIMEOUT_MS = 30000;
 const DEG = "\u00b0";
@@ -226,6 +226,28 @@ describe("App shell", () => {
 
     expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
     expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("does not clobber metric/Celsius when Back lands on a legacy URL without unit params", async () => {
+    window.history.replaceState(null, "", "/?q=wenatchee");
+    window.history.pushState(null, "", "/?q=wenatchee&temp=C&dist=metric");
+
+    renderApp();
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
+      expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
+    });
+
+    window.history.back();
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
+      expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
+    });
+
+    const raw = window.localStorage.getItem(UNIT_STORAGE_KEY);
+    expect(raw == null || !raw.includes("\"temp\":\"F\"")).toBe(true);
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps live-fit ranking in shared URLs when live-fit controls are active", async () => {
