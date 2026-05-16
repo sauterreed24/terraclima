@@ -103,12 +103,14 @@ interface Props {
 const MIN_ZOOM = 0.42;
 const MAX_ZOOM = 14;
 const MOBILE_CLUSTER_RADIUS_PX = 48;
+const DESKTOP_CLUSTER_RADIUS_PX = 36;
 const MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF = 1.65;
-const DESKTOP_MARKER_CULL_ZOOM_CUTOFF = 1.9;
+const DESKTOP_CLUSTER_LABEL_ZOOM_CUTOFF = 1.45;
+const DESKTOP_MARKER_CULL_ZOOM_CUTOFF = 1.45;
 const MOBILE_PIN_MIN_SPACING_PX = 42;
-const DESKTOP_PIN_MIN_SPACING_PX = 28;
+const DESKTOP_PIN_MIN_SPACING_PX = 32;
 const MOBILE_PIN_MAX_OFFSET_PX = 34;
-const DESKTOP_PIN_MAX_OFFSET_PX = 20;
+const DESKTOP_PIN_MAX_OFFSET_PX = 24;
 
 type ClusterPoint = { place: Place; x: number; y: number; id: string };
 type RenderedClusterPoint = ClusterPoint & {
@@ -666,18 +668,19 @@ export function AtlasMap({
     return ids;
   }, [selectedId, hoverId, featuredRankById]);
 
+  const clusterRadiusPx = coarsePointer ? MOBILE_CLUSTER_RADIUS_PX : DESKTOP_CLUSTER_RADIUS_PX;
+  const clusterZoomCutoff = coarsePointer ? MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF : DESKTOP_CLUSTER_LABEL_ZOOM_CUTOFF;
   const clusterEnabled =
-    coarsePointer &&
-    pts.length > 18 &&
-    (settledView.k < MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF || settledView.k >= MAX_ZOOM * 0.96);
+    pts.length > (coarsePointer ? 18 : 90) &&
+    (settledView.k < clusterZoomCutoff || (coarsePointer && settledView.k >= MAX_ZOOM * 0.96));
   const renderItems = useMemo(
     () => clusterMapPoints(clusterSourcePoints, {
       enabled: clusterEnabled,
       view: settledView,
-      radiusPx: MOBILE_CLUSTER_RADIUS_PX,
+      radiusPx: clusterRadiusPx,
       protectedIds: protectedClusterIds,
     }),
-    [clusterSourcePoints, clusterEnabled, settledView, protectedClusterIds],
+    [clusterSourcePoints, clusterEnabled, settledView, clusterRadiusPx, protectedClusterIds],
   );
   const clusterItems = useMemo(
     () => renderItems.filter((item): item is AtlasClusterItem<{ place: Place; x: number; y: number; id: string }> => item.kind === "cluster"),
@@ -741,8 +744,12 @@ export function AtlasMap({
   }, [markerPoints, settledView, coarsePointer, selectedId, featuredRankById]);
 
   const pinLabelModes = useMemo(
-    () => computePinLabelModes(laidOutMarkerPoints, settledView.k, selectedId, hoverId),
-    [laidOutMarkerPoints, settledView.k, selectedId, hoverId]
+    () => computePinLabelModes(laidOutMarkerPoints, settledView, selectedId, hoverId, {
+      viewportWidth: width,
+      viewportHeight: height,
+      featuredRankById,
+    }),
+    [laidOutMarkerPoints, settledView, selectedId, hoverId, width, height, featuredRankById]
   );
 
   /**
@@ -1234,14 +1241,14 @@ export function AtlasMap({
       inset: 0.08,
     });
 
-    if (next.k >= MAX_ZOOM * 0.98 && !canClusterSeparateAtZoom(cluster, MAX_ZOOM, MOBILE_CLUSTER_RADIUS_PX * 0.85)) {
+    if (next.k >= MAX_ZOOM * 0.98 && !canClusterSeparateAtZoom(cluster, MAX_ZOOM, clusterRadiusPx * 0.85)) {
       openClusterPicker(cluster);
       return;
     }
 
     setClusterPicker(null);
     setView(next);
-  }, [width, height, coarsePointer, openClusterPicker]);
+  }, [width, height, coarsePointer, clusterRadiusPx, openClusterPicker]);
 
   const topoLoading = topo === null;
   const svgTouchAction = atlasTouchActionForMode(mapInteractive);

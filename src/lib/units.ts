@@ -303,6 +303,78 @@ function isDeltaContext(text: string, idx: number, len: number): boolean {
   return false;
 }
 
+const IMPLICIT_CELSIUS_BAND_CONTEXT_PAT =
+  /\b(highs?|lows?|temperatures?|temps?|readings?|afternoons?|mornings?|nights?|days?|dew\s*points?|wet[-\s]?bulb|summer|winter|january|february|july|august|cool(?:s|ed|ing)?|warm(?:s|ed|ing)?|cold|heat|hot|mild|hover(?:s|ed|ing)?|stay(?:s|ed|ing)?|sit(?:s|ting)?|reach(?:es|ed|ing)?|climb(?:s|ed|ing)?|drop(?:s|ped|ping)?|dip(?:s|ped|ping)?|fall(?:s|en|ing)?|range|year-round|season)\b/i;
+
+function implicitBandContextLooksCelsius(text: string, idx: number, len: number): boolean {
+  const before = beforeClauseWindow(text, idx, 72);
+  const after = afterClauseWindow(text, idx + len, 56);
+  return IMPLICIT_CELSIUS_BAND_CONTEXT_PAT.test(before) || IMPLICIT_CELSIUS_BAND_CONTEXT_PAT.test(after);
+}
+
+function qualifierRange(
+  q1: string | undefined,
+  q2: string | undefined,
+  base: number,
+  top: number,
+): readonly [number, number] {
+  const segment = (q: string | undefined): readonly [number, number] => {
+    if (!q) return [base, top];
+    const normalized = q.toLowerCase();
+    if (normalized === "low") return [base, Math.min(top, base + 3)];
+    if (normalized === "mid") return [Math.min(top, base + 4), Math.min(top, base + 6)];
+    return [Math.min(top, base + 7), top];
+  };
+  const first = segment(q1);
+  const second = q2 ? segment(q2) : first;
+  return [Math.min(first[0], second[0]), Math.max(first[1], second[1])];
+}
+
+function formatFahrenheitBand(loC: number, hiC: number): string {
+  const lo = Math.round(cToF(loC));
+  const hi = Math.round(cToF(hiC));
+  return lo === hi ? `${lo}\u00b0F` : `${lo}\u2013${hi}\u00b0F range`;
+}
+
+function localizeImplicitCelsiusBands(text: string): string {
+  const replaceIfCelsiusContext = (
+    match: string,
+    loC: number,
+    hiC: number,
+    unitToken: string | undefined,
+    offset: number,
+    full: string,
+  ): string => {
+    if (!unitToken && !implicitBandContextLooksCelsius(full, offset, match.length)) return match;
+    return formatFahrenheitBand(loC, hiC);
+  };
+
+  text = text.replace(
+    /\b((?:(low|mid|upper|high)(?:[-\s]+to[-\s]+(low|mid|upper|high))?\s+)?([1-4]0)s)(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
+    (match, _phrase: string, q1: string | undefined, q2: string | undefined, tens: string, unitToken: string | undefined, offset: number, full: string) => {
+      const base = parseInt(tens, 10);
+      const [lo, hi] = qualifierRange(q1, q2, base, base + 9);
+      return replaceIfCelsiusContext(match, lo, hi, unitToken, offset, full);
+    },
+  );
+
+  text = text.replace(
+    /\b((?:(low|mid|upper|high)(?:[-\s]+to[-\s]+(low|mid|upper|high))?[-\s]+)?teens)(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
+    (match, _phrase: string, q1: string | undefined, q2: string | undefined, unitToken: string | undefined, offset: number, full: string) => {
+      const [lo, hi] = qualifierRange(q1, q2, 10, 19);
+      return replaceIfCelsiusContext(match, lo, hi, unitToken, offset, full);
+    },
+  );
+
+  text = text.replace(
+    /\bsingle[-\s]+digits?(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
+    (match, unitToken: string | undefined, offset: number, full: string) =>
+      replaceIfCelsiusContext(match, 0, 9, unitToken, offset, full),
+  );
+
+  return text;
+}
+
 /** Parse a signed numeric literal that may use a Unicode minus. */
 function parseSigned(n: string): number {
   return parseFloat(n.replace(/[\u2212\u2013\u2014]/g, "-").replace(/\+/g, ""));
@@ -352,15 +424,9 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
       return `${formatLocalizedDecimal(per1000Ft, n.startsWith("+"))}\u00b0F per 1,000 ft`;
     });
 
-    // Decade shorthand before numeric passes: "20s °C", "20s Celsius" → N0–N9 °C band (e.g. 20s → 20–29 °C).
-    const decadeBandToF = (tensStart: string, full: string): string => {
-      const lo = parseInt(tensStart, 10);
-      if (!Number.isFinite(lo) || lo < 10 || lo > 90 || lo % 10 !== 0) return full;
-      const hi = lo + 9;
-      return `${Math.round(cToF(lo))}\u2013${Math.round(cToF(hi))}\u00b0F range`;
-    };
-    text = text.replace(/\b([1-9]0)s\s*\u00b0\s*C\b/gi, (m, tens: string) => decadeBandToF(tens, m));
-    text = text.replace(/\b([1-9]0)s\s+Celsius\b/gi, (m, tens: string) => decadeBandToF(tens, m));
+    // Celsius-band shorthand before numeric passes: explicit "20s °C" plus
+    // contextual phrases such as "low-to-mid 20s" and "single digits".
+    text = localizeImplicitCelsiusBands(text);
 
     // Pass 1: dash ranges first (consumes both numbers)
     const rangePat = /([-+\u2212]?\d+(?:\.\d+)?)\s*([\u2013\u2014-])\s*([-+\u2212]?\d+(?:\.\d+)?)\s*°\s*C\b/g;

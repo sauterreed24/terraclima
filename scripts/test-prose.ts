@@ -39,6 +39,12 @@ const cases: Case[] = [
   // Decade shorthand (°C → °F)
   { input: "highs rarely leave the 20s °C.", expect: ["68\u201384\u00b0F"] },
   { input: "afternoons in the 20s Celsius.", expect: ["68\u201384\u00b0F"] },
+  { input: "Daytime highs hover in the low-to-mid 20s year-round; nights cool into the single digits in winter, low teens in summer.",
+    expect: ["68\u201379\u00b0F range", "32\u201348\u00b0F range", "50\u201355\u00b0F range"], reject: ["low-to-mid 20s", "single digits", "low teens"] },
+  { input: "Summers never warm past the mid-teens on the west coast.",
+    expect: ["57\u201361\u00b0F range"], reject: ["mid-teens"] },
+  { input: "WorldClim 2.1 uses 30s resolution.",
+    expect: ["30s resolution"], reject: ["86\u2013102\u00b0F"] },
 
   // Celsius mode (keep metric untouched when dist=metric)
   { input: "Xalapa sits at 1,427 m on the eastern slope",

@@ -92,12 +92,32 @@ function placeFields(p: Place): Array<[string, string]> {
 // ---------- Check 1: unit-conversion residues ----------
 
 const METRIC_SCAN = /\b\d+(?:[,.]\d+)*\s*(mm|cm|km\/h|kph|km|m)\b/g;
+const IMPLICIT_CELSIUS_BAND_SCAN =
+  /\b(?:(?:low|mid|upper|high)(?:[-\s]+to[-\s]+(?:low|mid|upper|high))?\s+)?(?:teens|[1-4]0s)\b|\bsingle[-\s]+digits?\b/gi;
+const IMPLICIT_CELSIUS_BAND_CONTEXT =
+  /\b(highs?|lows?|temperatures?|temps?|readings?|afternoons?|mornings?|nights?|days?|dew\s*points?|summer|winter|cool|warm|cold|heat|hot|mild|hover|stay|reach|climb|drop|dip|fall|range|year-round|season)\b/i;
 let metricLeftoverCount = 0;
+
+function implicitCelsiusBandLeakSample(text: string): string | null {
+  for (const match of text.matchAll(IMPLICIT_CELSIUS_BAND_SCAN)) {
+    const idx = match.index ?? 0;
+    const before = text.substring(Math.max(0, idx - 72), idx);
+    const after = text.substring(idx + match[0].length, Math.min(text.length, idx + match[0].length + 56));
+    if (IMPLICIT_CELSIUS_BAND_CONTEXT.test(before) || IMPLICIT_CELSIUS_BAND_CONTEXT.test(after)) {
+      return excerpt(text, idx, 70);
+    }
+  }
+  return null;
+}
 
 function checkUnitResidues(where: string, text: string) {
   const imperial = localizeProse(text, "F", "imperial");
   if (/°C/.test(imperial)) {
     record("fatal", where, "°C leftover after imperial localization", imperial.slice(0, 160));
+  }
+  const implicitLeak = implicitCelsiusBandLeakSample(imperial);
+  if (implicitLeak) {
+    record("fatal", where, "implicit Celsius temperature band leftover after imperial localization", implicitLeak);
   }
   const rem = imperial.match(METRIC_SCAN);
   if (rem) metricLeftoverCount += rem.length;

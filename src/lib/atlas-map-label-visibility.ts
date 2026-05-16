@@ -1,12 +1,21 @@
 import type { Place, Tier } from "../types";
+import type { MapViewState } from "./atlas-map-fit";
+import { placeMapSecondaryLine } from "./atlas-map-label";
 
 /** How much typography to draw next to a pin (pins are always visible). */
 export type MapPinLabelMode = "hidden" | "compact" | "full";
 
 const TIER_RANK: Record<Tier, number> = { A: 3, B: 2, C: 1 };
 
-function priority(place: Place): number {
-  return TIER_RANK[place.tier] * 1_000_000 - place.name.length;
+export interface MapPinLabelOptions {
+  viewportWidth: number;
+  viewportHeight: number;
+  featuredRankById?: ReadonlyMap<string, number>;
+}
+
+function priority(place: Place, featuredRank?: number): number {
+  const featuredBoost = featuredRank ? (10 - featuredRank) * 1_000_000 : 0;
+  return featuredBoost + TIER_RANK[place.tier] * 100_000 - place.name.length;
 }
 
 interface LabelBox {
@@ -20,14 +29,31 @@ function estimateLabelBox(
   place: Place,
   screenX: number,
   screenY: number,
-  mode: MapPinLabelMode
+  mode: MapPinLabelMode,
+  side: "left" | "right",
+  mapZoomK: number,
+  emphasized: boolean,
 ): LabelBox {
-  const nameWidth = Math.min(184, Math.max(72, place.name.length * 7.2));
-  const width = mode === "full" ? nameWidth + 58 : Math.min(136, nameWidth + 36);
-  const height = mode === "full" ? 42 : 24;
+  const titleLimit =
+    mode === "compact"
+      ? 16
+      : emphasized
+        ? 120
+        : mapZoomK >= 1.38
+          ? 56
+          : Math.max(12, Math.min(30, Math.floor(11 + mapZoomK * 11)));
+  const titleWidth = Math.min(place.name.length, titleLimit) * (mode === "compact" ? 6.7 : 7.2) + 22;
+  const secondaryWidth = mode === "full" ? placeMapSecondaryLine(place).length * 5.8 + 22 : 0;
+  const width = Math.min(
+    mode === "full" ? 320 : 168,
+    Math.max(mode === "full" ? 104 : 72, titleWidth, secondaryWidth),
+  );
+  const height = mode === "full" ? (emphasized || mapZoomK >= 1.38 ? 54 : 40) : 24;
+  const gap = mode === "full" ? 13 : 11;
+  const left = side === "right" ? screenX + gap : screenX - gap - width;
   return {
-    left: screenX - width / 2,
-    right: screenX + width / 2,
+    left,
+    right: left + width,
     top: screenY - height / 2,
     bottom: screenY + height / 2,
   };
@@ -42,11 +68,17 @@ function intersects(a: LabelBox, b: LabelBox, gutter: number): boolean {
   );
 }
 
-function candidateMode(place: Place, mapZoomK: number): MapPinLabelMode {
-  if (mapZoomK < 0.48) return "hidden";
-  if (mapZoomK < 0.86 && place.tier !== "A") return "hidden";
-  if (mapZoomK < 1.02 && place.tier === "C") return "hidden";
-  return mapZoomK >= 1.18 ? "full" : "compact";
+function candidateMode(place: Place, mapZoomK: number, featuredRank?: number): MapPinLabelMode {
+  if (featuredRank) return mapZoomK >= 1.1 ? "full" : mapZoomK >= 0.58 ? "compact" : "hidden";
+  if (mapZoomK < 0.92) return "hidden";
+  if (mapZoomK < 1.12) return place.tier === "A" ? "compact" : "hidden";
+  if (mapZoomK < 1.32) return place.tier === "C" ? "hidden" : "compact";
+  if (mapZoomK < 1.55) return place.tier === "C" ? "compact" : "full";
+  return "full";
+}
+
+function labelSide(screenX: number, viewportWidth: number): "left" | "right" {
+  return screenX > viewportWidth * 0.62 ? "left" : "right";
 }
 
 /**
@@ -58,12 +90,14 @@ function candidateMode(place: Place, mapZoomK: number): MapPinLabelMode {
  */
 export function computePinLabelModes(
   pts: readonly { place: Place; x: number; y: number }[],
-  mapZoomK: number,
+  view: MapViewState,
   selectedId: string | undefined,
-  hoverId: string | null | undefined
+  hoverId: string | null | undefined,
+  opts: MapPinLabelOptions,
 ): ReadonlyMap<string, MapPinLabelMode> {
   const out = new Map<string, MapPinLabelMode>();
   const alwaysFull = new Set<string>();
+  const mapZoomK = view.k;
 
   if (selectedId) {
     out.set(selectedId, "full");
@@ -86,28 +120,57 @@ export function computePinLabelModes(
 
   const accepted: LabelBox[] = [];
   const byId = new Map(pts.map(pt => [pt.place.id, pt]));
-  const gutter = mapZoomK < 0.86 ? 18 : mapZoomK < 1.18 ? 12 : 8;
+  const gutter = mapZoomK < 1.12 ? 18 : mapZoomK < 1.42 ? 12 : 9;
+  const viewportPad = 28;
 
   for (const id of alwaysFull) {
     const pt = byId.get(id);
     if (!pt) continue;
-    accepted.push(estimateLabelBox(pt.place, pt.x * mapZoomK, pt.y * mapZoomK, "full"));
+    const screenX = pt.x * view.k + view.x;
+    const screenY = pt.y * view.k + view.y;
+    accepted.push(estimateLabelBox(
+      pt.place,
+      screenX,
+      screenY,
+      "full",
+      labelSide(screenX, opts.viewportWidth),
+      mapZoomK,
+      true,
+    ));
   }
 
   const candidates = pts
     .filter(({ place }) => !alwaysFull.has(place.id))
     .map(pt => ({
       ...pt,
-      mode: candidateMode(pt.place, mapZoomK),
-      screenX: pt.x * mapZoomK,
-      screenY: pt.y * mapZoomK,
-      score: priority(pt.place),
+      mode: candidateMode(pt.place, mapZoomK, opts.featuredRankById?.get(pt.place.id)),
+      screenX: pt.x * view.k + view.x,
+      screenY: pt.y * view.k + view.y,
+      featuredRank: opts.featuredRankById?.get(pt.place.id),
+      score: priority(pt.place, opts.featuredRankById?.get(pt.place.id)),
     }))
     .filter(pt => pt.mode !== "hidden")
     .sort((a, b) => b.score - a.score || a.place.id.localeCompare(b.place.id));
 
   for (const pt of candidates) {
-    const box = estimateLabelBox(pt.place, pt.screenX, pt.screenY, pt.mode);
+    if (
+      pt.screenX < -viewportPad ||
+      pt.screenX > opts.viewportWidth + viewportPad ||
+      pt.screenY < -viewportPad ||
+      pt.screenY > opts.viewportHeight + viewportPad
+    ) {
+      out.set(pt.place.id, "hidden");
+      continue;
+    }
+    const box = estimateLabelBox(
+      pt.place,
+      pt.screenX,
+      pt.screenY,
+      pt.mode,
+      labelSide(pt.screenX, opts.viewportWidth),
+      mapZoomK,
+      Boolean(pt.featuredRank),
+    );
     if (accepted.some(other => intersects(box, other, gutter))) {
       out.set(pt.place.id, "hidden");
       continue;
