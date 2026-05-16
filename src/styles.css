@@ -4175,7 +4175,12 @@
     stroke: rgba(255, 228, 166, 0.82);
   }
   .map-marker__signature-aura {
-    filter: drop-shadow(0 0 4px color-mix(in srgb, currentColor 60%, transparent));
+    filter: none;
+  }
+  .map-marker--featured .map-marker__signature-aura,
+  .map-marker:hover .map-marker__signature-aura,
+  .map-marker:focus-visible .map-marker__signature-aura {
+    filter: drop-shadow(0 0 4px color-mix(in srgb, currentColor 58%, transparent));
   }
   .map-rank-halo {
     filter: drop-shadow(0 0 7px rgba(255, 204, 112, 0.32));

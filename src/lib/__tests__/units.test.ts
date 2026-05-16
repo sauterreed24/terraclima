@@ -184,6 +184,10 @@ describe("localizeProse — temperatures", () => {
   it("converts decade shorthand (20s °C → mid-60s to mid-70s °F band)", () => {
     expect(localizeProse("Summers stay in the 20s°C.", "F", "metric")).toContain("68–84°F range");
     expect(localizeProse("Highs rarely leave the 20s °C.", "F", "metric")).toBe("Highs rarely leave the 68–84°F range.");
+    expect(localizeProse("Daytime highs hover in the low-to-mid 20s year-round.", "F", "metric")).toBe("Daytime highs hover in the 68–79°F range year-round.");
+    expect(localizeProse("Nights cool into the single digits in winter, low teens in summer.", "F", "metric")).toBe("Nights cool into the 32–48°F range in winter, 50–55°F range in summer.");
+    expect(localizeProse("Summers never warm past the mid-teens on the west coast.", "F", "metric")).toContain("57–61°F range");
+    expect(localizeProse("WorldClim 2.1 uses 30s resolution.", "F", "metric")).toBe("WorldClim 2.1 uses 30s resolution.");
   });
 });
 
