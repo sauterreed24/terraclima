@@ -27,6 +27,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build:static
+        env:
+          VITE_BUILD_REVISION: ${{ github.sha }}
       - name: Force-push dist/ to static-preview branch
         run: |
           tmpdir="$(mktemp -d)"
