@@ -122,4 +122,25 @@ describe("livability v3 — corpus smoke", () => {
       expect(place!.deepSections?.length, `${id} deepSections`).toBeGreaterThanOrEqual(2);
     }
   });
+
+  it("keeps high-ranking lived-reality gaps source-backed", () => {
+    const ids = [
+      "cuauhtemoc-mx",
+      "huachuca-az",
+      "traverse-city-mi",
+      "ithaca-ny",
+      "niagara-on-the-lake",
+      "burlington-vt",
+    ];
+
+    for (const id of ids) {
+      const place = PLACES_BY_ID[id];
+      expect(place, id).toBeDefined();
+      expect(place!.liveSignals?.note?.length, `${id} liveSignals.note`).toBeGreaterThan(48);
+      expect(place!.liveSignals?.sources?.length, `${id} liveSignals.sources`).toBeGreaterThanOrEqual(2);
+      expect(place!.liveSignals?.costPressure, `${id} costPressure`).toBeGreaterThanOrEqual(0);
+      expect(place!.liveSignals?.socialStress, `${id} socialStress`).toBeGreaterThanOrEqual(0);
+      expect(place!.liveSignals?.accessFriction, `${id} accessFriction`).toBeGreaterThanOrEqual(0);
+    }
+  });
 });

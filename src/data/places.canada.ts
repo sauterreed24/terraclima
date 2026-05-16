@@ -562,6 +562,17 @@ export const PLACES_CANADA: Place[] = [
     climateChange: { outlook2050: "Longer growing season; hotter summers; heavier rain events.", outlook2100: "Grape varieties shift; traditional ice-wine climate erodes.", keyShifts: [{variable: "Growing season", direction: "up"}, {variable: "Freezes for ice wine", direction: "down"}, {variable: "Heat extremes", direction: "up"}], resilienceNote: "Agricultural adaptation is active." },
     risks: { wildfire: {level: "very-low", trend: "stable"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "low", trend: "stable"}, extremeHeat: {level: "moderate", trend: "worsening"}, extremeCold: {level: "low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "low", trend: "stable"}, coastal: {level: "low", trend: "mixed"} },
     scores: { hiddenGem: 22, microclimateUniqueness: 76, comfort: 70, resilience: 62, growability: 85, tradeoff: 32 },
+    liveSignals: {
+      costPressure: 66,
+      socialStress: 22,
+      accessFriction: 26,
+      note: "Niagara-on-the-Lake is not an isolated orchard village: the wider Niagara service base is close, but heritage tourism, wine-country demand, and region-wide attainable-housing pressure make cost a real live-here filter.",
+      sources: [
+        { label: "Niagara Region - Consolidated Housing Master Plan", url: "https://www.niagararegion.ca/housing-homelessness/planning-research/housing-master-plan.aspx" },
+        { label: "Niagara Region - Attainable Housing Strategy", url: "https://www.niagararegion.ca/housing-homelessness/planning-research/attainable-housing-strategy.aspx" },
+        { label: "Niagara Region - Purpose-built rental housing incentive", url: "https://www.niagararegion.ca/government/incentive-programs/affordable-housing/rental-housing-incentive.aspx" },
+      ],
+    },
     relocationFit: ["winemakers", "food-focused families"], travelFit: ["wine country", "Shaw Festival"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Those wanting true mild winters or dry summers.",
     confidence: "high",

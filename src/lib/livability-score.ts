@@ -163,9 +163,11 @@ export const HAZARD_CUSHION = {
 } as const;
 
 /**
- * Lived-friction parameters. The component starts at a neutral baseline so
- * places without curated `liveSignals` are not penalised, then deducts on each
- * of the three lived axes. The relative weights reflect the strongest signals
+ * Lived-friction parameters. The component starts near a neutral baseline, but
+ * places without curated `liveSignals` now receive a small coverage penalty so
+ * an unresearched housing/services/safety read cannot look as decision-ready as
+ * a sourced one. Graded places then deduct on each of the three lived axes.
+ * The relative weights reflect the strongest signals
  * surfaced by resident-review and cost-of-living research: affordability is
  * the dominant filter for most relocators, social fabric is the dominant
  * filter for places that look "perfect" on paper but read poorly in lived
@@ -173,8 +175,10 @@ export const HAZARD_CUSHION = {
  * can be before its livability suffers (Tofino, Forks, Point Reyes).
  */
 export const LIVED_FRICTION = {
-  /** Neutral baseline when no axis is graded. Keeps unannotated places stable. */
+  /** Neutral baseline when the lived axes are graded. */
   neutralBaseline: 70,
+  /** Conservative coverage penalty when lived reality is not yet source-backed. */
+  unratedCoveragePenalty: 4,
   /** Per-point weight on the three friction axes (0..100 input → 0..100 deduction). */
   costWeight: 0.45,
   socialWeight: 0.35,
@@ -259,6 +263,12 @@ export interface HumanComfortNarrative {
   summary: string;
   strengths: string[];
   frictions: string[];
+}
+
+export interface LivedRealityCoverage {
+  axes: number;
+  sourceCount: number;
+  confidence: "source-backed" | "partial" | "unrated";
 }
 
 const COMPONENT_LABEL: Record<ComponentKey, string> = {
@@ -677,14 +687,14 @@ export function describeHumanComfort(p: Place): HumanComfortNarrative {
 /**
  * Lived-friction sub-score 0..100 (higher = more lived comfort).
  *
- * When `liveSignals` is absent or fully unmarked the score returns the
- * neutral baseline (~70) so most of the atlas is unchanged. Each graded axis
- * either lifts (axis < `benignFloor`) or drags (axis > `benignFloor`) the
- * score by a weighted, escalating penalty.
+ * When `liveSignals` is absent or fully unmarked the score returns a slightly
+ * conservative screening baseline rather than a full neutral. Each graded axis
+ * either lifts (axis < `benignFloor`) or drags (axis > `benignFloor`) the score
+ * by a weighted, escalating penalty.
  */
 export function livedFrictionScore(p: Place): number {
   const ls = p.liveSignals;
-  if (!ls) return LIVED_FRICTION.neutralBaseline;
+  if (!ls) return LIVED_FRICTION.neutralBaseline - LIVED_FRICTION.unratedCoveragePenalty;
 
   const axes: [number | undefined, number][] = [
     [ls.costPressure, LIVED_FRICTION.costWeight],
@@ -699,7 +709,7 @@ export function livedFrictionScore(p: Place): number {
     totalWeight += weight;
     weightedFriction += clamp(value) * weight;
   }
-  if (totalWeight === 0) return LIVED_FRICTION.neutralBaseline;
+  if (totalWeight === 0) return LIVED_FRICTION.neutralBaseline - LIVED_FRICTION.unratedCoveragePenalty;
 
   // Normalise to a 0..100 friction reading across the graded axes.
   const friction = weightedFriction / totalWeight;
@@ -714,6 +724,17 @@ export function livedFrictionScore(p: Place): number {
   const baseDeduction = LIVED_FRICTION.severeFloor - LIVED_FRICTION.benignFloor;
   const severeDeduction = (friction - LIVED_FRICTION.severeFloor) * LIVED_FRICTION.severeMultiplier;
   return clamp(LIVED_FRICTION.neutralBaseline - (baseDeduction + severeDeduction));
+}
+
+export function livedRealityCoverage(p: Place): LivedRealityCoverage {
+  const ls = p.liveSignals;
+  if (!ls) return { axes: 0, sourceCount: 0, confidence: "unrated" };
+  const axes = [ls.costPressure, ls.socialStress, ls.accessFriction].filter(v => v != null).length;
+  const sourceCount = ls.sources?.filter(s => s.url?.trim() || s.label.trim()).length ?? 0;
+  if (axes >= 3 && sourceCount > 0 && ls.note?.trim()) {
+    return { axes, sourceCount, confidence: "source-backed" };
+  }
+  return { axes, sourceCount, confidence: "partial" };
 }
 
 /**
@@ -788,7 +809,7 @@ function makeRationale(p: Place, key: ComponentKey, value: number): string {
     }
     case "livedFriction": {
       const dom = dominantLivedFriction(p);
-      if (!dom) return `Lived friction unrated → neutral ${Math.round(value)}/100`;
+      if (!dom) return `Lived reality unrated → conservative screening ${Math.round(value)}/100`;
       const axis = dom.axis === "cost" ? "Cost pressure" : dom.axis === "social" ? "Social stress" : "Access friction";
       return `${axis} ${Math.round(dom.value)}/100 (lower is easier) → lived comfort ${Math.round(value)}/100`;
     }

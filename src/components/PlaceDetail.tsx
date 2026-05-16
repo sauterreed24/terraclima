@@ -967,7 +967,7 @@ function DetailBody({
             <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
               Editorial reads on three axes climate normals cannot capture: cost pressure, social-fabric stress, and daily-services access. 0 = no friction, 100 = severe. These are screening signals anchored to public sources, not appraisals or insurance underwriting.
             </div>
-            <ul className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <ul className="tc-livability-signal-grid">
               {(["costPressure", "socialStress", "accessFriction"] as const).map(axis => {
                 const value = place.liveSignals?.[axis];
                 if (value == null) return null;
@@ -979,7 +979,7 @@ function DetailBody({
                     : "Distance to hospital, airport, daily services.";
                 const level = value <= 35 ? "high" : value <= 60 ? "mid" : "low";
                 return (
-                  <li key={axis} className="tc-livability-row" title={`${label}: ${Math.round(value)}/100`}>
+                  <li key={axis} className="tc-livability-row tc-livability-row--signal" title={`${label}: ${Math.round(value)}/100`}>
                     <div className="tc-livability-row__label">{label}<span className="block text-[10px] text-stone-readable font-normal">{desc}</span></div>
                     <div className="tc-livability-row__bar">
                       <div className="tc-livability-row__bar-fill" data-level={level} style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
