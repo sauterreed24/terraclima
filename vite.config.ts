@@ -11,6 +11,14 @@ const COLD_HTML_PRELOAD_CHUNK_STEMS = [
   "atlas-data",
 ];
 
+// Country corpus chunks are the app's reality payload; suffix deploy builds so
+// returning browsers cannot reuse a stale place-data chunk after a main push.
+const REVISIONED_PLACE_DATA_CHUNKS = new Set([
+  "places-usa",
+  "places-canada",
+  "places-mexico",
+]);
+
 function vitePublicBase(): string {
   const raw = process.env.VITE_BASE_PATH?.trim();
   if (raw === undefined) return "/";
@@ -19,6 +27,14 @@ function vitePublicBase(): string {
   if (raw === "" || raw === "./") return "./";
   return raw.endsWith("/") ? raw : `${raw}/`;
 }
+
+function viteBuildRevision(): string {
+  const raw = process.env.VITE_BUILD_REVISION?.trim();
+  if (!raw) return "";
+  return raw.replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 12);
+}
+
+const buildRevision = viteBuildRevision();
 
 /**
  * Terraclima Vite configuration.
@@ -80,6 +96,12 @@ export default defineConfig({
     chunkSizeWarningLimit: 1200,
     rollupOptions: {
       output: {
+        chunkFileNames(chunkInfo) {
+          if (buildRevision && REVISIONED_PLACE_DATA_CHUNKS.has(chunkInfo.name)) {
+            return `assets/[name]-[hash]-${buildRevision}.js`;
+          }
+          return "assets/[name]-[hash].js";
+        },
         // Split the bundle so the main entry stays lean and big, cacheable
         // libraries live in their own long-lived chunks.
         //

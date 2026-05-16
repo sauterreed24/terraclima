@@ -50,6 +50,8 @@ jobs:
         run: npm ci
       - if: steps.check.outputs.pages_enabled == 'true'
         run: npm run build:pages
+        env:
+          VITE_BUILD_REVISION: ${{ github.sha }}
       - if: steps.check.outputs.pages_enabled == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
