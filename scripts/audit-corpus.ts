@@ -93,9 +93,9 @@ function placeFields(p: Place): Array<[string, string]> {
 
 const METRIC_SCAN = /\b\d+(?:[,.]\d+)*\s*(mm|cm|km\/h|kph|km|m)\b/g;
 const IMPLICIT_CELSIUS_BAND_SCAN =
-  /\b(?:(?:low|mid|upper|high)(?:[-\s]+to[-\s]+(?:low|mid|upper|high))?\s+)?(?:teens|[1-4]0s)\b|\bsingle[-\s]+digits?\b/gi;
+  /\b(?:(?:low|mid|upper|high)(?:[-\s]+to[-\s]+(?:low|mid|upper|high))?[-\s]+)?(?:teens|[1-4]0s|twenties|thirties|forties)\b|\bsingle[-\s]+digits?\b/gi;
 const IMPLICIT_CELSIUS_BAND_CONTEXT =
-  /\b(highs?|lows?|temperatures?|temps?|readings?|afternoons?|mornings?|nights?|days?|dew\s*points?|summer|winter|cool|warm|cold|heat|hot|mild|hover|stay|reach|climb|drop|dip|fall|range|year-round|season)\b/i;
+  /\b(highs?|lows?|temperatures?|temps?|readings?|afternoons?|mornings?|nights?|days?|dew\s*points?|wet[-\s]?bulb|summer|winter|january|february|july|august|cool(?:s|ed|ing)?|warm(?:s|ed|ing)?|cold|heat|hot|mild|hover(?:s|ed|ing)?|stay(?:s|ed|ing)?|sit(?:s|ting)?|reach(?:es|ed|ing)?|climb(?:s|ed|ing)?|drop(?:s|ped|ping)?|dip(?:s|ped|ping)?|fall(?:s|en|ing)?|range|year-round|season)\b/i;
 let metricLeftoverCount = 0;
 
 function implicitCelsiusBandLeakSample(text: string): string | null {

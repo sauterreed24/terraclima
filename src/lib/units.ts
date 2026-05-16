@@ -336,6 +336,15 @@ function formatFahrenheitBand(loC: number, hiC: number): string {
   return lo === hi ? `${lo}\u00b0F` : `${lo}\u2013${hi}\u00b0F range`;
 }
 
+function wordDecadeBase(word: string): number {
+  switch (word.toLowerCase()) {
+    case "twenties": return 20;
+    case "thirties": return 30;
+    case "forties": return 40;
+    default: return Number.NaN;
+  }
+}
+
 function localizeImplicitCelsiusBands(text: string): string {
   const replaceIfCelsiusContext = (
     match: string,
@@ -353,6 +362,16 @@ function localizeImplicitCelsiusBands(text: string): string {
     /\b((?:(low|mid|upper|high)(?:[-\s]+to[-\s]+(low|mid|upper|high))?\s+)?([1-4]0)s)(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
     (match, _phrase: string, q1: string | undefined, q2: string | undefined, tens: string, unitToken: string | undefined, offset: number, full: string) => {
       const base = parseInt(tens, 10);
+      const [lo, hi] = qualifierRange(q1, q2, base, base + 9);
+      return replaceIfCelsiusContext(match, lo, hi, unitToken, offset, full);
+    },
+  );
+
+  text = text.replace(
+    /\b((?:(low|mid|upper|high)(?:[-\s]+to[-\s]+(low|mid|upper|high))?[-\s]+)?(twenties|thirties|forties))(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
+    (match, _phrase: string, q1: string | undefined, q2: string | undefined, decade: string, unitToken: string | undefined, offset: number, full: string) => {
+      const base = wordDecadeBase(decade);
+      if (!Number.isFinite(base)) return match;
       const [lo, hi] = qualifierRange(q1, q2, base, base + 9);
       return replaceIfCelsiusContext(match, lo, hi, unitToken, offset, full);
     },

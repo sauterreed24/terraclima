@@ -43,6 +43,10 @@ const cases: Case[] = [
     expect: ["68\u201379\u00b0F range", "32\u201348\u00b0F range", "50\u201355\u00b0F range"], reject: ["low-to-mid 20s", "single digits", "low teens"] },
   { input: "Summers never warm past the mid-teens on the west coast.",
     expect: ["57\u201361\u00b0F range"], reject: ["mid-teens"] },
+  { input: "Inland Minnesota climbs toward the high twenties.",
+    expect: ["81\u201384\u00b0F range"], reject: ["high twenties"] },
+  { input: "Warm-season afternoons in the low thirties Celsius.",
+    expect: ["86\u201391\u00b0F range"], reject: ["low thirties"] },
   { input: "WorldClim 2.1 uses 30s resolution.",
     expect: ["30s resolution"], reject: ["86\u2013102\u00b0F"] },
 
