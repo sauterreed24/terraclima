@@ -5167,6 +5167,34 @@
     color: var(--color-frost);
     font-variant-numeric: tabular-nums;
   }
+  .tc-livability-signal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 13.5rem), 1fr));
+    gap: 0.5rem;
+  }
+  .tc-livability-row--signal {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "label value"
+      "bar bar";
+    align-items: start;
+    row-gap: 0.45rem;
+    min-width: 0;
+    padding: 0.55rem 0.62rem;
+  }
+  .tc-livability-row--signal .tc-livability-row__label {
+    grid-area: label;
+    min-width: 0;
+    white-space: normal;
+  }
+  .tc-livability-row--signal .tc-livability-row__bar {
+    grid-area: bar;
+    width: 100%;
+  }
+  .tc-livability-row--signal .tc-livability-row__value {
+    grid-area: value;
+    white-space: nowrap;
+  }
   @media (prefers-reduced-motion: reduce) {
     .tc-livability-row__bar-fill { transition: none; }
     .tc-livability-row { transition: none; }

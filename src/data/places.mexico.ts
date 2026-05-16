@@ -1101,6 +1101,17 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Chill hours declining; heat stress rising.", outlook2100: "Apple viability pressure.", keyShifts: [{variable: "Chill hours", direction: "down"}], resilienceNote: "Water-supply is long-term pressure." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "elevated", trend: "worsening"}, extremeHeat: {level: "low", trend: "worsening"}, extremeCold: {level: "moderate", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "very-low", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 84, microclimateUniqueness: 66, comfort: 68, resilience: 54, growability: 82, tradeoff: 32 },
+    liveSignals: {
+      costPressure: 30,
+      socialStress: 42,
+      accessFriction: 36,
+      note: "Cuauhtemoc is a genuine northwest-Chihuahua service and agro-industrial hub rather than just a scenic orchard pocket; the live-here checks are water stress, winter road weather, and northern-Chihuahua security context.",
+      sources: [
+        { label: "Gobierno del Estado de Chihuahua - Cuauhtemoc municipal profile", url: "https://www.chihuahua.gob.mx/info/cuauhtemoc" },
+        { label: "INEGI - Cuauhtemoc municipal census context", url: "https://www.inegi.org.mx/app/cpv/2020/resultadosrapidos/default.html" },
+        { label: "Hospital Angeles Cuauhtemoc - regional hospital services", url: "https://angelescuauhtemoc.com/" },
+      ],
+    },
     relocationFit: ["orchard farmers"], travelFit: ["Mennonite cheese tourism"],
     whoWouldLove: "Dryland-fruit-country romantics.", whoMightNot: "Anyone wanting a Mexican coast.",
     confidence: "moderate",

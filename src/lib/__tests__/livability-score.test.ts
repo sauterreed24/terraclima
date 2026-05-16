@@ -6,6 +6,8 @@ import {
   feltComfortScore,
   hazardCushionScore,
   humanComfortScore,
+  livedFrictionScore,
+  livedRealityCoverage,
   livabilityPercentiles,
   maxRisk,
   mugginessScore,
@@ -397,6 +399,27 @@ describe("scoreLivability + rankLivabilityWithBreakdown", () => {
     const r = scoreLivability(p);
     expect(r.drivers).toContain("resilience");
     expect(r.drags).toContain("growability");
+  });
+});
+
+describe("lived reality coverage", () => {
+  it("treats missing liveSignals as conservative screening rather than fully neutral", () => {
+    const unrated = makePlace({ liveSignals: undefined });
+    const sourceBackedEasy = makePlace({
+      liveSignals: {
+        costPressure: 20,
+        socialStress: 22,
+        accessFriction: 24,
+        note: "Full-service town with benign lived-friction signals.",
+        sources: [{ label: "Municipal profile", url: "https://example.com/profile" }],
+      },
+    });
+
+    expect(livedRealityCoverage(unrated)).toEqual({ axes: 0, sourceCount: 0, confidence: "unrated" });
+    expect(livedRealityCoverage(sourceBackedEasy).confidence).toBe("source-backed");
+    expect(livedFrictionScore(unrated)).toBeLessThan(livedFrictionScore(sourceBackedEasy));
+    expect(scoreLivability(unrated).components.find(c => c.key === "livedFriction")?.rationale)
+      .toContain("conservative screening");
   });
 });
 

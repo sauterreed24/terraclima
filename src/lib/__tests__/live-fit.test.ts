@@ -63,6 +63,28 @@ describe("live-fit scoring", () => {
     expect(ranked[0].note).toContain("live-here fit");
   });
 
+  it("surfaces a caution when lived-reality coverage is missing", () => {
+    const unrated = makePlace({ id: "unrated-live-reality", liveSignals: undefined });
+    const fit = assessLiveFit(unrated);
+    expect(fit.cautions.some(c => c.includes("Lived-reality signals are not source-backed yet"))).toBe(true);
+  });
+
+  it("keeps missing lived-reality coverage visible even when other cautions are saturated", () => {
+    const saturated = makePlace({
+      id: "risk-saturated-unrated-live-reality",
+      liveSignals: undefined,
+      scores: { ...makePlace().scores, tradeoff: 72 },
+      risks: {
+        ...makePlace().risks,
+        wildfire: { level: "high" },
+        smoke: { level: "elevated" },
+      },
+    });
+    const fit = assessLiveFit(saturated);
+    expect(fit.cautions.length).toBeLessThanOrEqual(3);
+    expect(fit.cautions.some(c => c.includes("Lived-reality signals are not source-backed yet"))).toBe(true);
+  });
+
   it("rewards a longer livable season when peak-season temperatures tie", () => {
     const longSeason = makePlace({
       id: "long-season",

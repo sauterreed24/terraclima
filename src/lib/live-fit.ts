@@ -11,6 +11,7 @@ import {
   atmosphericComfortScore,
   dominantLivedFriction,
   feltComfortScore,
+  livedRealityCoverage,
   livedFrictionScore,
   mugginessScore,
   windExposureScore,
@@ -279,6 +280,15 @@ function pushUnique(list: string[], value: string, max: number): void {
   list.push(value);
 }
 
+function pushPinnedUnique(list: string[], value: string, max: number): void {
+  if (list.includes(value)) return;
+  if (list.length >= max) {
+    list.splice(max - 1, 1, value);
+    return;
+  }
+  list.push(value);
+}
+
 export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveFitAssessment {
   const presets = [...(filters.fitPresets ?? new Set<LiveFitPresetId>())];
   const presetScores = presets.map(id => presetScore(place, id));
@@ -345,6 +355,7 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   // Lived-friction cautions — surface curated affordability, social-fabric and
   // access drags so a climatically perfect coast cannot bury its lived reality.
   const lived = place.liveSignals;
+  const livedCoverage = livedRealityCoverage(place);
   if (lived) {
     const dom = dominantLivedFriction(place);
     if (lived.costPressure != null && lived.costPressure >= 70) {
@@ -359,6 +370,11 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
     if ((lived.costPressure ?? 100) <= 35 && (lived.socialStress ?? 100) <= 35 && (lived.accessFriction ?? 100) <= 40) {
       pushUnique(reasons, "Lived signals are easy: cost, social fabric, and daily-services access all read benign.", 3);
     }
+    if (livedCoverage.confidence === "partial") {
+      pushPinnedUnique(cautions, "Lived-reality coverage is partial; verify housing, services, safety, and insurance before shortlisting.", 3);
+    }
+  } else {
+    pushPinnedUnique(cautions, "Lived-reality signals are not source-backed yet; verify housing, services, safety, and insurance before shortlisting.", 3);
   }
 
   // Marine-fog / low-sunshine caution
