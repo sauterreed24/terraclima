@@ -112,6 +112,13 @@ const DESKTOP_PIN_MIN_SPACING_PX = 32;
 const MOBILE_PIN_MAX_OFFSET_PX = 34;
 const DESKTOP_PIN_MAX_OFFSET_PX = 24;
 
+export function wheelZoomFactor(deltaY: number, deltaMode = 0): number {
+  if (!Number.isFinite(deltaY) || deltaY === 0) return 1;
+  const modeMultiplier = deltaMode === 1 ? 16 : deltaMode === 2 ? 480 : 1;
+  const pixelDelta = Math.max(-240, Math.min(240, deltaY * modeMultiplier));
+  return 2 ** (-pixelDelta / 360);
+}
+
 type ClusterPoint = { place: Place; x: number; y: number; id: string };
 type RenderedClusterPoint = ClusterPoint & {
   anchorX: number;
@@ -821,7 +828,7 @@ export function AtlasMap({
     if (!rect) return;
     const mx = ((e.clientX - rect.left) / rect.width) * width;
     const my = ((e.clientY - rect.top) / rect.height) * height;
-    const factor = e.deltaY < 0 ? 1.18 : 1 / 1.18;
+    const factor = wheelZoomFactor(e.deltaY, e.deltaMode);
     const prev = wheelBuf.current;
     wheelBuf.current = prev
       ? { k: prev.k * factor, mx, my }

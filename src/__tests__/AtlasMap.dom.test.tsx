@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { AtlasMap } from "../components/AtlasMap";
+import { AtlasMap, wheelZoomFactor } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
 import { makePlace } from "../lib/__tests__/test-fixtures";
 
@@ -61,6 +61,15 @@ function renderMap(onSelect = vi.fn(), featuredIds: readonly string[] = []) {
 }
 
 describe("AtlasMap DOM controls", () => {
+  it("scales wheel zoom by delta size for trackpads without making mouse wheels sluggish", () => {
+    expect(wheelZoomFactor(-1, 0)).toBeGreaterThan(1);
+    expect(wheelZoomFactor(-1, 0)).toBeLessThan(1.01);
+    expect(wheelZoomFactor(-100, 0)).toBeGreaterThan(1.18);
+    expect(wheelZoomFactor(100, 0)).toBeLessThan(0.84);
+    expect(wheelZoomFactor(-10_000, 0)).toBeLessThan(1.6);
+    expect(wheelZoomFactor(0, 0)).toBe(1);
+  });
+
   it("defaults phone-sized coarse pointers to direct map mode with a scroll escape", () => {
     setCoarsePointer(true);
     renderMap();

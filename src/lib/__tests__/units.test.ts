@@ -187,6 +187,8 @@ describe("localizeProse — temperatures", () => {
     expect(localizeProse("Daytime highs hover in the low-to-mid 20s year-round.", "F", "metric")).toBe("Daytime highs hover in the 68–79°F range year-round.");
     expect(localizeProse("Nights cool into the single digits in winter, low teens in summer.", "F", "metric")).toBe("Nights cool into the 32–48°F range in winter, 50–55°F range in summer.");
     expect(localizeProse("Summers never warm past the mid-teens on the west coast.", "F", "metric")).toContain("57–61°F range");
+    expect(localizeProse("Inland Minnesota climbs toward the high twenties.", "F", "metric")).toBe("Inland Minnesota climbs toward the 81–84°F range.");
+    expect(localizeProse("Warm-season afternoons in the low thirties Celsius.", "F", "metric")).toBe("Warm-season afternoons in the 86–91°F range.");
     expect(localizeProse("WorldClim 2.1 uses 30s resolution.", "F", "metric")).toBe("WorldClim 2.1 uses 30s resolution.");
   });
 });
