@@ -95,6 +95,34 @@ async function writeClipboardText(text: string): Promise<boolean> {
   }
 }
 
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (update: () => void) => {
+    finished: Promise<void>;
+    ready: Promise<void>;
+    updateCallbackDone: Promise<void>;
+    skipTransition: () => void;
+  };
+};
+
+function runViewTransition(update: () => void): void {
+  if (typeof document === "undefined" || prefersReducedMotion()) {
+    update();
+    return;
+  }
+
+  const startViewTransition = (document as ViewTransitionDocument).startViewTransition;
+  if (!startViewTransition) {
+    update();
+    return;
+  }
+
+  try {
+    void startViewTransition.call(document, update);
+  } catch {
+    update();
+  }
+}
+
 function readCurrentAppState() {
   return readInitialAppState(
     PLACES_BY_ID,
@@ -187,6 +215,9 @@ export default function App() {
   const initialAppState = initialAppStateRef.current;
 
   const [view, setView] = useState<View>(initialAppState.view);
+  const setViewFluid = useCallback((next: View) => {
+    runViewTransition(() => setView(next));
+  }, []);
   const [selectedId, setSelectedId] = useState<string | null>(initialAppState.placeId);
   const [compareIds, setCompareIds] = useState<Set<string>>(() => new Set(initialAppState.compareIds));
   const [compareOpen, setCompareOpen] = useState(() => initialAppState.compareIds.length >= 2);
@@ -542,8 +573,8 @@ export default function App() {
   const pickArchetype = useCallback((a: MicroclimateArchetype) => {
     setFilters(f => ({ ...f, archetypes: new Set([a]) }));
     setActiveCollection(null);
-    setView("explorer");
-  }, []);
+    setViewFluid("explorer");
+  }, [setViewFluid]);
 
   const clearCollection = useCallback(() => setActiveCollection(null), []);
   const clearArchetypes = useCallback(() => setFilters(f => ({ ...f, archetypes: new Set() })), []);
@@ -590,7 +621,7 @@ export default function App() {
     compareOpen,
     selectedId,
     explorerDockLg,
-    setView,
+    setView: setViewFluid,
     setShowShortcuts,
     setCompareOpen,
     closeDetail,
@@ -600,18 +631,18 @@ export default function App() {
     onRandomEmpty,
     toggleBookmarkSelected,
   });
-  const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setView("explorer"); }, [openPlace]);
+  const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setViewFluid("explorer"); }, [openPlace, setViewFluid]);
   const onOpenPlaceFromTrips = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
     openPlace(id, opts);
   }, [openPlace]);
   const onPickCollection = useCallback((id: string) => {
     setActiveCollection(a => a === id ? null : id);
-    setView("explorer");
-  }, []);
+    setViewFluid("explorer");
+  }, [setViewFluid]);
   const onPickTripTheme = useCallback((id: string) => {
     setActiveCollection(a => a === id ? null : id);
-    setView("explorer");
-  }, []);
+    setViewFluid("explorer");
+  }, [setViewFluid]);
 
   const surpriseMe = useCallback(() => {
     if (ranked.length === 0) {
@@ -632,7 +663,7 @@ export default function App() {
       </a>
       <div className="ambient-aurora" aria-hidden="true" />
       <div id="main-content" role="main" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
-      <TopBar view={view} setView={setView} onOpenCompare={openCompare} compareCount={compareIds.size} />
+      <TopBar view={view} setView={setViewFluid} onOpenCompare={openCompare} compareCount={compareIds.size} />
 
       <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1600px] w-full mx-auto">
         <div key={view} className="view-enter flex-1 flex flex-col lg:flex-row gap-4 min-w-0">
@@ -1260,6 +1291,63 @@ const FieldNoteStrip = memo(function FieldNoteStrip() {
 
 type SignatureLeader = RankingResult & { signature: PlaceVisualSignature };
 
+const ClimateSignalRail = memo(function ClimateSignalRail({
+  rows,
+  rankingLabel,
+  onOpenPlace,
+}: {
+  rows: readonly SignatureLeader[];
+  rankingLabel: string;
+  onOpenPlace: (id: string) => void;
+}) {
+  const prose = useProse();
+  const visibleRows = rows.slice(0, 5);
+  const leader = visibleRows[0];
+  if (!leader) return null;
+
+  return (
+    <section
+      className="climate-signal-rail"
+      style={{ ["--signature-rgb" as string]: leader.signature.mapAccentRgb }}
+      aria-label={`Current ${rankingLabel} climate signal leaders`}
+    >
+      <div className="climate-signal-rail__head">
+        <span>Climate signal</span>
+        <strong>{rankingLabel}</strong>
+      </div>
+      <div className="climate-signal-rail__beam" aria-hidden="true">
+        {visibleRows.map(row => (
+          <span
+            key={row.place.id}
+            style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
+          />
+        ))}
+      </div>
+      <div className="climate-signal-rail__grid">
+        {visibleRows.map((row, i) => (
+          <button
+            key={row.place.id}
+            type="button"
+            onClick={() => onOpenPlace(row.place.id)}
+            className="climate-signal-rail__chip"
+            style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
+            aria-label={`Open ${row.place.name}, climate signal rank ${i + 1} by ${rankingLabel}`}
+          >
+            <span className="climate-signal-rail__rank" aria-hidden>{i + 1}</span>
+            <span className="climate-signal-rail__copy">
+              <span className="climate-signal-rail__place" title={row.place.name}>{row.place.name}</span>
+              <span className="climate-signal-rail__note" title={row.note ? prose(row.note) : row.signature.primaryBlurb}>
+                {row.note ? prose(row.note) : row.signature.primaryLabel}
+              </span>
+            </span>
+            <span className="climate-signal-rail__score font-mono-num" aria-hidden>{Math.round(row.score)}</span>
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+});
+
 const HeroCard = memo(function HeroCard({
   count,
   livabilityTopTen,
@@ -1326,8 +1414,12 @@ const HeroCard = memo(function HeroCard({
     () => sortTopFive.map(row => ({ ...row, signature: getPlaceVisualSignature(row.place) })),
     [sortTopFive],
   );
+  const heroAccentRgb = signatureLeaders[0]?.signature.mapAccentRgb ?? "94, 196, 220";
   return (
-    <div className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4">
+    <div
+      className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
+      style={{ ["--hero-accent-rgb" as string]: heroAccentRgb }}
+    >
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
@@ -1406,6 +1498,14 @@ const HeroCard = memo(function HeroCard({
           </div>
         </div>
       </div>
+
+      {signatureLeaders.length > 0 ? (
+        <ClimateSignalRail
+          rows={signatureLeaders}
+          rankingLabel={rankingLabel}
+          onOpenPlace={onOpenPlace}
+        />
+      ) : null}
 
       {signatureLeaders.length > 0 ? (
         <div className="current-rank-strip hidden px-3 py-2.5 sm:px-4 min-[1400px]:py-3">
