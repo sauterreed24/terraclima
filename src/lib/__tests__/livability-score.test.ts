@@ -22,7 +22,7 @@ import {
 } from "../livability-score";
 import { seasonalUsabilityScore } from "../climate-metrics";
 import { makeClimate, makePlace } from "./test-fixtures";
-import type { Monthly12 } from "../../types";
+import type { LivedSignals, Monthly12 } from "../../types";
 
 // Build a climate that hits a flat target high/low across the year, for tests
 // that want full control of the JJA/DJF means.
@@ -420,6 +420,24 @@ describe("lived reality coverage", () => {
     expect(livedFrictionScore(unrated)).toBeLessThan(livedFrictionScore(sourceBackedEasy));
     expect(scoreLivability(unrated).components.find(c => c.key === "livedFriction")?.rationale)
       .toContain("conservative screening");
+  });
+
+  it("does not throw when a lived source has a URL but a missing label", () => {
+    const urlOnlySources = [{ url: "https://example.com/evidence" }] as unknown as NonNullable<LivedSignals["sources"]>;
+    const p = makePlace({
+      liveSignals: {
+        costPressure: 20,
+        socialStress: 22,
+        accessFriction: 24,
+        note: "Full-service town with benign lived-friction signals.",
+        sources: urlOnlySources,
+      },
+    });
+    expect(livedRealityCoverage(p)).toEqual({
+      axes: 3,
+      sourceCount: 1,
+      confidence: "source-backed",
+    });
   });
 });
 

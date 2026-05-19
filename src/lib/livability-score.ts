@@ -730,7 +730,7 @@ export function livedRealityCoverage(p: Place): LivedRealityCoverage {
   const ls = p.liveSignals;
   if (!ls) return { axes: 0, sourceCount: 0, confidence: "unrated" };
   const axes = [ls.costPressure, ls.socialStress, ls.accessFriction].filter(v => v != null).length;
-  const sourceCount = ls.sources?.filter(s => s.url?.trim() || s.label.trim()).length ?? 0;
+  const sourceCount = ls.sources?.filter(s => s.url?.trim() || s.label?.trim()).length ?? 0;
   if (axes >= 3 && sourceCount > 0 && ls.note?.trim()) {
     return { axes, sourceCount, confidence: "source-backed" };
   }
