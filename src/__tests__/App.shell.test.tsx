@@ -145,6 +145,13 @@ describe("App shell", () => {
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("keeps the mobile Live Finder trigger outside the animated view subtree", () => {
+    renderApp();
+
+    const trigger = screen.getByRole("button", { name: /Open Explorer filters and ranking/ });
+    expect(trigger.closest(".view-enter")).toBeNull();
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("compares current Explorer leaders from the scout brief", async () => {
     renderApp();
 
