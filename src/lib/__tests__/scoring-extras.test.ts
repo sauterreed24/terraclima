@@ -92,15 +92,43 @@ describe("rankLivabilityPreview", () => {
 describe("rankPlaces — empty pool", () => {
   it("returns [] for every profile", () => {
     const profiles = [
-      "live-fit",
+      "live-fit", "most-comfortable",
       "coolest-summers", "mildest-winters", "best-shoulder-seasons",
       "driest-air", "best-growability", "hidden-gems", "most-unique",
       "lowest-fire-risk", "climate-resilient", "best-four-season",
       "best-diurnal-sleep", "strongest-geospatial-signal",
       "mediterranean-like", "wet-forest-refuges", "monsoon-drama",
+      "best-this-month", "best-for-remote-work", "best-retirement",
     ] as const;
     for (const p of profiles) {
       expect(rankPlaces(p, [])).toEqual([]);
     }
+  });
+});
+
+describe("rankPlaces — determinism", () => {
+  it("breaks score ties by place name (order-independent ranking)", () => {
+    // Identical climate => identical coolest-summers score => pure tiebreak.
+    const places = [
+      makePlace({ id: "z", name: "Zephyr Flats" }),
+      makePlace({ id: "a", name: "Aspen Grove" }),
+      makePlace({ id: "m", name: "Mesa Verde" }),
+    ];
+    const ranked = rankPlaces("coolest-summers", places);
+    expect(ranked.map(r => r.place.name)).toEqual(["Aspen Grove", "Mesa Verde", "Zephyr Flats"]);
+    // The scores really are tied — this is the tiebreaker, not the score order.
+    expect(new Set(ranked.map(r => r.score)).size).toBe(1);
+  });
+
+  it("best-this-month reads the supplied date and is deterministic for it", () => {
+    const p = makePlace({ id: "p", name: "Probe" });
+    const jul = rankPlaces("best-this-month", [p], new Date(2026, 6, 15));
+    const jan = rankPlaces("best-this-month", [p], new Date(2026, 0, 15));
+    expect(jul[0].note).toContain("Jul");
+    expect(jan[0].note).toContain("Jan");
+    // Same date in => same score out (no wall-clock nondeterminism).
+    expect(rankPlaces("best-this-month", [p], new Date(2026, 6, 15))[0].score).toBe(jul[0].score);
+    // Warm summer-comfort fixture scores its July window above its January one.
+    expect(jul[0].score).toBeGreaterThan(jan[0].score);
   });
 });

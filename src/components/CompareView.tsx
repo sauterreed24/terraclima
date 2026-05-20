@@ -99,7 +99,7 @@ export function CompareView({
     () => `repeat(${places.length}, minmax(min(17rem, 88vw), 1fr))`,
     [places.length],
   );
-  useFocusTrap(panelRef, open && places.length > 0);
+  useFocusTrap(panelRef, open && places.length > 0, true);
 
   useEffect(() => {
     if (!open || places.length === 0) return;

@@ -63,25 +63,52 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
   } = deps;
 
   useEffect(() => {
+    const isDialogOpen = (id: string): boolean =>
+      Boolean((document.getElementById(id) as HTMLDialogElement | null)?.open);
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
       const tgt = e.target as HTMLElement | null;
       if (tgt && (tgt.tagName === "INPUT" || tgt.tagName === "TEXTAREA" || tgt.isContentEditable)) return;
+
+      // Help, escape, and the bookmark toggle stay available even while a modal
+      // owns the screen.
+      if (e.key === "?") {
+        e.preventDefault();
+        setShowShortcuts(s => !s);
+        return;
+      }
+      if (e.key === "Escape") {
+        if (showShortcuts) { e.preventDefault(); setShowShortcuts(false); return; }
+        if (compareOpen) { e.preventDefault(); setCompareOpen(false); return; }
+        const filterDlg = document.getElementById("tc-explorer-filter-sheet") as HTMLDialogElement | null;
+        if (filterDlg?.open) { e.preventDefault(); filterDlg.close(); return; }
+        const siteMenuDlg = document.getElementById("tc-site-menu") as HTMLDialogElement | null;
+        if (siteMenuDlg?.open) { e.preventDefault(); siteMenuDlg.close(); return; }
+        if (selectedId) { e.preventDefault(); closeDetail(); return; }
+        return;
+      }
+      if (e.key === "b" || e.key === "B") {
+        // Only meaningful when a place is open — there's nothing to pin
+        // otherwise. Avoids hijacking the keystroke on the index views.
+        if (!selectedId || !toggleBookmarkSelected) return;
+        e.preventDefault();
+        toggleBookmarkSelected();
+        return;
+      }
+
+      // View-switch and search shortcuts must not mutate the view hidden behind
+      // an open overlay. Suppress them whenever a modal/dialog owns the screen,
+      // so a stray keystroke can't silently swap the view under a place profile,
+      // compare panel, filter sheet, site menu, or shortcuts dialog.
+      const overlayOpen =
+        showShortcuts ||
+        compareOpen ||
+        selectedId !== null ||
+        isDialogOpen("tc-explorer-filter-sheet") ||
+        isDialogOpen("tc-site-menu");
+      if (overlayOpen) return;
+
       switch (e.key) {
-        case "?":
-          e.preventDefault();
-          setShowShortcuts(s => !s);
-          break;
-        case "Escape": {
-          if (showShortcuts) { e.preventDefault(); setShowShortcuts(false); break; }
-          if (compareOpen) { e.preventDefault(); setCompareOpen(false); break; }
-          const filterDlg = document.getElementById("tc-explorer-filter-sheet") as HTMLDialogElement | null;
-          if (filterDlg?.open) { e.preventDefault(); filterDlg.close(); break; }
-          const siteMenuDlg = document.getElementById("tc-site-menu") as HTMLDialogElement | null;
-          if (siteMenuDlg?.open) { e.preventDefault(); siteMenuDlg.close(); break; }
-          if (selectedId) { e.preventDefault(); closeDetail(); break; }
-          break;
-        }
         case "e": case "E": setView("explorer"); break;
         case "t": case "T": setView("trips"); break;
         case "c": case "C": setView("collections"); break;
@@ -108,14 +135,6 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
             const ok = pickRandomPlace();
             if (!ok) onRandomEmpty?.();
           });
-          break;
-        }
-        case "b": case "B": {
-          // Only meaningful when a place is open — there's nothing to pin
-          // otherwise. Avoids hijacking the keystroke on the index views.
-          if (!selectedId || !toggleBookmarkSelected) break;
-          e.preventDefault();
-          toggleBookmarkSelected();
           break;
         }
       }

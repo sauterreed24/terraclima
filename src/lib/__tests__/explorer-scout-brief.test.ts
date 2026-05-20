@@ -3,6 +3,7 @@ import { PLACES } from "../../data/places";
 import type { RiskLevel } from "../../types";
 import { makePlace } from "./test-fixtures";
 import { buildExplorerScoutBrief } from "../explorer-scout-brief";
+import { buildShortlistDecisionRows } from "../decision-matrix";
 import { rankPlaces, type RankingResult } from "../scoring";
 
 function risks(level: RiskLevel) {
@@ -124,5 +125,35 @@ describe("buildExplorerScoutBrief", () => {
 
   it("returns null for an empty ranked set", () => {
     expect(buildExplorerScoutBrief([], "Hidden gems")).toBeNull();
+  });
+
+  it("names the same top risk as the decision matrix when risk levels tie", () => {
+    // wildfire + coastal both peak at "high". Their labels (Wildfire vs Coastal)
+    // sort opposite to the corpus field order, so without a shared tiebreaker the
+    // scout-brief caution and the decision-matrix watch line disagree.
+    const place = makePlace({
+      id: "tied-risk-bay",
+      name: "Tied Risk Bay",
+      risks: {
+        wildfire: { level: "high" },
+        flood: { level: "low" },
+        drought: { level: "low" },
+        extremeHeat: { level: "low" },
+        extremeCold: { level: "low" },
+        smoke: { level: "low" },
+        storm: { level: "low" },
+        landslide: { level: "low" },
+        coastal: { level: "high" },
+      },
+    });
+    const ranked = rankPlaces("hidden-gems", [place]);
+    const brief = buildExplorerScoutBrief(ranked, "Hidden gems")!;
+    const rows = buildShortlistDecisionRows(ranked);
+
+    // decision-matrix breaks the tie by label → "Coastal".
+    expect(rows[0].watch.toLowerCase()).toContain("coastal");
+    // the scout-brief caution must agree, not pick the corpus-order-first axis.
+    expect(brief.cautionLine.toLowerCase()).toContain("coastal");
+    expect(brief.cautionLine.toLowerCase()).not.toContain("wildfire");
   });
 });

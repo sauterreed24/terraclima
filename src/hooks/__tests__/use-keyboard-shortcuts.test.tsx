@@ -77,3 +77,78 @@ describe("useKeyboardShortcuts — bookmark (B) shortcut", () => {
     expect(toggleBookmarkSelected).toHaveBeenCalledTimes(2);
   });
 });
+
+describe("useKeyboardShortcuts — overlay suppression", () => {
+  afterEach(() => cleanup());
+
+  it("switches views with e/t/c/l when no overlay is open", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView })} />);
+    fireEvent.keyDown(window, { key: "t" });
+    fireEvent.keyDown(window, { key: "c" });
+    fireEvent.keyDown(window, { key: "l" });
+    fireEvent.keyDown(window, { key: "e" });
+    expect(setView.mock.calls.map(c => c[0])).toEqual(["trips", "collections", "learn", "explorer"]);
+  });
+
+  it("does not switch views while a place profile is open", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView, selectedId: "sequim-wa" })} />);
+    fireEvent.keyDown(window, { key: "t" });
+    fireEvent.keyDown(window, { key: "c" });
+    expect(setView).not.toHaveBeenCalled();
+  });
+
+  it("does not switch views while compare is open", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView, compareOpen: true })} />);
+    fireEvent.keyDown(window, { key: "l" });
+    expect(setView).not.toHaveBeenCalled();
+  });
+
+  it("does not switch views while the shortcuts dialog is open", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView, showShortcuts: true })} />);
+    fireEvent.keyDown(window, { key: "c" });
+    expect(setView).not.toHaveBeenCalled();
+  });
+
+  it("suppresses Surprise (R) and search (/) while an overlay is open", () => {
+    const setView = vi.fn();
+    const pickRandomPlace = vi.fn(() => true);
+    const focusSearchInput = vi.fn();
+    render(
+      <MountShortcuts
+        {...defaults({ setView, pickRandomPlace, focusSearchInput, compareOpen: true })}
+      />,
+    );
+    fireEvent.keyDown(window, { key: "r" });
+    fireEvent.keyDown(window, { key: "/" });
+    expect(setView).not.toHaveBeenCalled();
+    expect(pickRandomPlace).not.toHaveBeenCalled();
+    expect(focusSearchInput).not.toHaveBeenCalled();
+  });
+
+  it("still toggles the shortcuts overlay with ? while a modal is open", () => {
+    const setShowShortcuts = vi.fn();
+    render(<MountShortcuts {...defaults({ setShowShortcuts, selectedId: "sequim-wa" })} />);
+    fireEvent.keyDown(window, { key: "?" });
+    expect(setShowShortcuts).toHaveBeenCalledTimes(1);
+  });
+
+  it("still toggles the bookmark with B while a place profile is open", () => {
+    const toggleBookmarkSelected = vi.fn();
+    render(
+      <MountShortcuts {...defaults({ selectedId: "sequim-wa", compareOpen: true, toggleBookmarkSelected })} />,
+    );
+    fireEvent.keyDown(window, { key: "b" });
+    expect(toggleBookmarkSelected).toHaveBeenCalledTimes(1);
+  });
+
+  it("closes the open place profile on Escape", () => {
+    const closeDetail = vi.fn();
+    render(<MountShortcuts {...defaults({ selectedId: "sequim-wa", closeDetail })} />);
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(closeDetail).toHaveBeenCalledTimes(1);
+  });
+});

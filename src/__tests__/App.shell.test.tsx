@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
 import { UnitProvider } from "../lib/units";
@@ -225,6 +225,27 @@ describe("App shell", () => {
     renderApp();
 
     expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("keeps the chosen units when navigating Back to an entry without unit params", async () => {
+    window.history.replaceState(null, "", "/?temp=C&dist=metric");
+    renderApp();
+
+    expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
+
+    // Simulate Back to a history entry created before the unit toggle: its URL
+    // carries no temp/dist param. Units are a sticky global preference, so the
+    // navigation must not silently revert them (and overwrite the saved value).
+    window.history.replaceState(null, "", "/");
+    act(() => {
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
+    });
     expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
   }, APP_SHELL_TIMEOUT_MS);
 

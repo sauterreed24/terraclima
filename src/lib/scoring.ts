@@ -177,7 +177,7 @@ function sunshineComfortBonus(p: Place): number {
   return bonus;
 }
 
-export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): RankingResult[] {
+export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now: Date = new Date()): RankingResult[] {
   const k = RANKING_PARAMS;
   const scored: RankingResult[] = pool.map(p => {
     const summerHigh = meanSummerHigh(p);
@@ -281,7 +281,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
       }
       case "best-this-month": {
         const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] as const;
-        const mi = new Date().getMonth();
+        const mi = now.getMonth();
         const monthHigh = p.climate.tempHighC[mi];
         const monthLow = p.climate.tempLowC[mi];
         const monthPrecip = p.climate.precipMm[mi];
@@ -338,7 +338,10 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES): Ran
     }
   });
 
-  return scored.sort((a, b) => b.score - a.score);
+  // Name tiebreaker gives a total order so tied scores rank identically
+  // regardless of corpus insertion order (and matches the tiebreakers used by
+  // explorer-scout-brief and decision-matrix).
+  return scored.sort((a, b) => b.score - a.score || a.place.name.localeCompare(b.place.name));
 }
 
 // Filters

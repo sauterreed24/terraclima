@@ -380,8 +380,12 @@ export default function App() {
       });
       setCompareIds(new Set(v.compareIds));
       setRankingRaw(v.ranking ?? loadPersistedRanking());
-      setTemp(v.temp ?? "F");
-      setDist(v.dist ?? "imperial");
+      // Units are a sticky global preference persisted by the UnitProvider.
+      // Only honour an explicit unit param on the target entry — otherwise
+      // Back/Forward to an entry created before a toggle (no temp/dist param)
+      // would silently revert the user's choice and overwrite the saved value.
+      if (v.temp) setTemp(v.temp);
+      if (v.dist) setDist(v.dist);
       setCompareOpen(v.compareIds.length >= 2);
       prevPlaceIdRef.current = v.placeId;
     };
@@ -947,7 +951,7 @@ function OverlayLoadingFallback({ label }: { label: string }) {
 const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: () => void }) {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  useFocusTrap(panelRef, true);
+  useFocusTrap(panelRef, true, true);
   useEffect(() => {
     closeBtnRef.current?.focus();
   }, []);

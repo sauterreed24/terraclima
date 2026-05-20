@@ -66,7 +66,11 @@ function formatRange(values: number[], suffix = ""): string {
 
 function topRiskLine(place: Place): string {
   const entries = Object.entries(place.risks) as Array<[keyof Place["risks"], Place["risks"][keyof Place["risks"]]]>;
-  const [key, risk] = entries.sort((a, b) => RISK_VALUE[b[1].level] - RISK_VALUE[a[1].level])[0];
+  // Label tiebreaker mirrors decision-matrix.highestRisk so the scout brief and
+  // the decision matrix never name a different "top risk" for the same place.
+  const [key, risk] = entries.sort((a, b) =>
+    RISK_VALUE[b[1].level] - RISK_VALUE[a[1].level] || RISK_LABELS[a[0]].localeCompare(RISK_LABELS[b[0]]),
+  )[0];
   const riskText = risk.level.replace(/-/g, " ");
   if (place.scores.tradeoff >= 70) {
     return `Tradeoffs are high; start with ${RISK_LABELS[key].toLowerCase()} (${riskText}).`;
