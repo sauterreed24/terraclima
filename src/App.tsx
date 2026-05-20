@@ -822,18 +822,7 @@ export default function App() {
                   />
                   <FootprintPanel />
                 </aside>
-              ) : (
-                <ExplorerFilterSheet
-                  ref={explorerFilterSheetRef}
-                  searchInputId={SEARCH_INPUT_ID}
-                  filters={filters}
-                  setFilters={setFilters}
-                  ranking={ranking}
-                  setRanking={setRanking}
-                  footer={<FootprintPanel />}
-                  detailOpen={Boolean(selectedId)}
-                />
-              )}
+              ) : null}
             </>
           )}
 
@@ -890,6 +879,18 @@ export default function App() {
             </div>
           )}
         </div>
+        {view === "explorer" && !explorerDockLg ? (
+          <ExplorerFilterSheet
+            ref={explorerFilterSheetRef}
+            searchInputId={SEARCH_INPUT_ID}
+            filters={filters}
+            setFilters={setFilters}
+            ranking={ranking}
+            setRanking={setRanking}
+            footer={<FootprintPanel />}
+            detailOpen={Boolean(selectedId)}
+          />
+        ) : null}
       </div>
 
       <Footer />
