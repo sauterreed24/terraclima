@@ -418,7 +418,11 @@ export function rankLiveFit(pool: Place[], filters: LiveFitFilters = {}) {
         note: `${fit.score}/100 live-here fit · ${fit.reasons[0] ?? "Balanced scouting signal."}`,
       };
     })
-    .sort((a, b) => b.score - a.score);
+    .sort((a, b) =>
+      b.score - a.score ||
+      a.place.name.localeCompare(b.place.name) ||
+      a.place.id.localeCompare(b.place.id),
+    );
 }
 
 export function liveFitFilterPass(place: Place, filters: LiveFitFilters = {}): boolean {

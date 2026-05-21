@@ -63,6 +63,15 @@ describe("live-fit scoring", () => {
     expect(ranked[0].note).toContain("live-here fit");
   });
 
+  it("keeps tied live-fit results stable regardless of input order", () => {
+    const alpha = makePlace({ id: "alpha-ridge", name: "Alpha Ridge" });
+    const zulu = makePlace({ id: "zulu-ridge", name: "Zulu Ridge" });
+
+    expect(assessLiveFit(alpha).score).toBe(assessLiveFit(zulu).score);
+    expect(rankLiveFit([zulu, alpha]).map(result => result.place.id)).toEqual(["alpha-ridge", "zulu-ridge"]);
+    expect(rankLiveFit([alpha, zulu]).map(result => result.place.id)).toEqual(["alpha-ridge", "zulu-ridge"]);
+  });
+
   it("surfaces a caution when lived-reality coverage is missing", () => {
     const unrated = makePlace({ id: "unrated-live-reality", liveSignals: undefined });
     const fit = assessLiveFit(unrated);

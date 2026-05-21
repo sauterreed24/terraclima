@@ -21,7 +21,9 @@ vi.mock("framer-motion", () => ({
 }));
 
 vi.mock("../charts/MicroclimateFingerprint", () => ({
-  MicroclimateFingerprint: () => <div data-testid="fingerprint-chart" />,
+  MicroclimateFingerprint: ({ compactLabels }: { compactLabels?: boolean }) => (
+    <div data-testid="fingerprint-chart" data-compact-labels={String(Boolean(compactLabels))} />
+  ),
 }));
 
 vi.mock("../charts/ClimateRibbon", () => ({
@@ -68,6 +70,7 @@ describe("CompareView", () => {
     expect(screen.getAllByText("Live-here fit").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Livability").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Felt comfort").length).toBeGreaterThan(0);
+    expect(screen.getAllByTestId("fingerprint-chart").every(chart => chart.dataset.compactLabels === "true")).toBe(true);
   });
 
   it("adds a decision read and copyable comparison handoff", () => {

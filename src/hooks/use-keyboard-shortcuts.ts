@@ -67,16 +67,8 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
       Boolean((document.getElementById(id) as HTMLDialogElement | null)?.open);
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.metaKey || e.altKey) return;
-      const tgt = e.target as HTMLElement | null;
-      if (tgt && (tgt.tagName === "INPUT" || tgt.tagName === "TEXTAREA" || tgt.isContentEditable)) return;
 
-      // Help, escape, and the bookmark toggle stay available even while a modal
-      // owns the screen.
-      if (e.key === "?") {
-        e.preventDefault();
-        setShowShortcuts(s => !s);
-        return;
-      }
+      // Escape must stay available even when a focused input owns the event.
       if (e.key === "Escape") {
         if (showShortcuts) { e.preventDefault(); setShowShortcuts(false); return; }
         if (compareOpen) { e.preventDefault(); setCompareOpen(false); return; }
@@ -85,6 +77,17 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
         const siteMenuDlg = document.getElementById("tc-site-menu") as HTMLDialogElement | null;
         if (siteMenuDlg?.open) { e.preventDefault(); siteMenuDlg.close(); return; }
         if (selectedId) { e.preventDefault(); closeDetail(); return; }
+        return;
+      }
+
+      const tgt = e.target as HTMLElement | null;
+      if (tgt && (tgt.tagName === "INPUT" || tgt.tagName === "TEXTAREA" || tgt.isContentEditable)) return;
+
+      // Help and the bookmark toggle stay available even while a modal owns the
+      // screen, but still avoid hijacking text entry.
+      if (e.key === "?") {
+        e.preventDefault();
+        setShowShortcuts(s => !s);
         return;
       }
       if (e.key === "b" || e.key === "B") {

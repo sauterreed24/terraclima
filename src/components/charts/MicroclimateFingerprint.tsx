@@ -1,20 +1,21 @@
 import type { Place } from "../../types";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../../lib/climate-metrics";
 
-interface Props { place: Place; compare?: Place; size?: number }
+interface Props { place: Place; compare?: Place; size?: number; compactLabels?: boolean }
 
 /**
  * Microclimate fingerprint: 8-axis radial profile.
  * Axes normalize disparate climate variables to 0..100 so that
  * places across biomes can be compared at a glance.
  */
-export function MicroclimateFingerprint({ place, compare, size = 260 }: Props) {
+export function MicroclimateFingerprint({ place, compare, size = 260, compactLabels = false }: Props) {
   const axes = buildAxes(place);
   const compareAxes = compare ? buildAxes(compare) : null;
 
   const N = axes.length;
   const cx = size / 2, cy = size / 2;
   const r = size / 2 - 32;
+  const labelRadius = compactLabels ? 110 : 118;
 
   const angle = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / N;
   const point = (i: number, v: number) => {
@@ -66,18 +67,18 @@ export function MicroclimateFingerprint({ place, compare, size = 260 }: Props) {
 
       {/* Labels */}
       {axes.map((a, i) => {
-        const [x, y] = point(i, 118);
+        const [x, y] = point(i, labelRadius);
         return (
           <text
             key={a.label}
             x={x}
             y={y}
-            fontSize="10"
+            fontSize={compactLabels ? "9.25" : "10"}
             fill="#4a433c"
             textAnchor="middle"
             dominantBaseline="middle"
             fontFamily="Inter"
-          >{a.label}</text>
+          >{compactLabels ? compactAxisLabel(a.label) : a.label}</text>
         );
       })}
     </svg>
@@ -85,6 +86,20 @@ export function MicroclimateFingerprint({ place, compare, size = 260 }: Props) {
 }
 
 interface Axis { label: string; v: number }
+
+function compactAxisLabel(label: string): string {
+  switch (label) {
+    case "Cool summers": return "Cool";
+    case "Mild winters": return "Mild";
+    case "Dryness": return "Dry";
+    case "Sunshine": return "Sun";
+    case "Diurnal swing": return "Swing";
+    case "Elevation": return "Elev.";
+    case "Low humidity": return "Low hum.";
+    case "Uniqueness": return "Unique";
+    default: return label;
+  }
+}
 
 function buildAxes(p: Place): Axis[] {
   const summerHigh = meanSummerHigh(p);
