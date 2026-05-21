@@ -106,6 +106,27 @@ describe("findClimateTwins", () => {
     expect(twins[0].analog).toBeGreaterThanOrEqual(twins[1].analog);
   });
 
+  it("keeps cached twin pools scoped to the supplied pool identity", () => {
+    const target = makePlace({ id: "pool-target", climate: makeClimate({ tempHighC: seasonalHighs, tempLowC: seasonalLows }) });
+    const maritime = makePlace({
+      id: "pool-maritime",
+      climate: makeClimate({
+        tempHighC: seasonalHighs.map(v => v - 3) as Monthly12,
+        tempLowC: seasonalLows.map(v => v + 2) as Monthly12,
+      }),
+    });
+    const continental = makePlace({
+      id: "pool-continental",
+      climate: makeClimate({
+        tempHighC: seasonalHighs.map(v => v + 4) as Monthly12,
+        tempLowC: seasonalLows.map(v => v - 3) as Monthly12,
+      }),
+    });
+
+    expect(findClimateTwins(target, [maritime], 1)[0].place.id).toBe("pool-maritime");
+    expect(findClimateTwins(target, [continental], 1)[0].place.id).toBe("pool-continental");
+  });
+
   it("a 'warmer' shift promotes the warmer of two otherwise-similar twins", () => {
     const anchor = makePlace({ id: "anchor", climate: makeClimate({ tempHighC: seasonalHighs, tempLowC: seasonalLows }) });
     const warmer = makePlace({

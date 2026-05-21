@@ -357,7 +357,7 @@ function DetailHeader({
 
   return (
     <div
-      className="md:sticky md:top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 bg-[rgba(255,253,248,0.97)] backdrop-blur relative border-b border-[rgba(200,160,120,0.35)]"
+      className="detail-drawer-header md:sticky md:top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 bg-[rgba(255,253,248,0.97)] backdrop-blur relative border-b border-[rgba(200,160,120,0.35)]"
       style={{ backgroundImage: TONE_HERO[tone] }}
     >
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
