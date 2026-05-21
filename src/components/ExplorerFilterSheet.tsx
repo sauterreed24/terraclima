@@ -130,7 +130,7 @@ export const ExplorerFilterSheet = memo(
           aria-label={triggerLabel}
         >
           <SlidersHorizontal className="w-4 h-4 shrink-0" aria-hidden />
-          <span>Live Finder</span>
+          <span className="tc-filter-sheet-trigger__label">Live Finder</span>
           {chips > 0 ? (
             <span className="tc-filter-sheet-trigger__badge" aria-hidden>
               {chips > 9 ? "9+" : chips}

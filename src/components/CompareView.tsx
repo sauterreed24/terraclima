@@ -202,11 +202,11 @@ export function CompareView({
                   <div className="text-xs text-stone">{p.region}, {p.country}</div>
                   <h3 className="font-atlas text-lg text-ice mb-3">{p.name}</h3>
 
-                  <MicroclimateFingerprint place={p} size={220} />
+                  <MicroclimateFingerprint place={p} size={220} compactLabels />
 
                   <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
                     <Row label="Elevation" value={fmtElev(p.elevationM, dist)} />
-                    <Row label="Köppen" value={p.koppen} />
+                    <Row label="Köppen" value={p.koppen} wide />
                     <Row label="JJA high" value={fmtTemp(meanSummerHigh(p), temp, { digits: 1 })} />
                     <Row label="Jan low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
@@ -244,11 +244,14 @@ export function CompareView({
   );
 }
 
-function Row({ label, value }: { label: string; value: string }) {
+function Row({ label, value, wide = false }: { label: string; value: string; wide?: boolean }) {
+  const columns = wide
+    ? "col-span-2 grid-cols-[minmax(0,0.45fr)_minmax(0,1.55fr)]"
+    : "grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)]";
   return (
-    <div className="flex items-baseline justify-between gap-2 py-1 border-b last:border-0 border-[rgba(71,90,122,0.3)]">
-      <span className="text-stone text-xs uppercase tracking-wide">{label}</span>
-      <span className="text-frost font-mono-num">{value}</span>
+    <div className={`grid ${columns} items-baseline gap-2 py-1 border-b last:border-0 border-[rgba(71,90,122,0.3)]`}>
+      <span className="min-w-0 text-stone text-xs uppercase tracking-wide leading-snug">{label}</span>
+      <span className="min-w-0 text-frost font-mono-num text-right leading-snug break-words">{value}</span>
     </div>
   );
 }

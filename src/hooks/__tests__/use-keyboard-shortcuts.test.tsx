@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { render, cleanup, fireEvent } from "@testing-library/react";
+import { render, cleanup, fireEvent, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { useKeyboardShortcuts, type KeyboardShortcutDeps } from "../use-keyboard-shortcuts";
 
@@ -150,5 +150,27 @@ describe("useKeyboardShortcuts — overlay suppression", () => {
     render(<MountShortcuts {...defaults({ selectedId: "sequim-wa", closeDetail })} />);
     fireEvent.keyDown(window, { key: "Escape" });
     expect(closeDetail).toHaveBeenCalledTimes(1);
+  });
+
+  it("closes the filter sheet on Escape even when the search input is focused", () => {
+    render(
+      <>
+        <dialog id="tc-explorer-filter-sheet" open>
+          <input aria-label="Search places" />
+        </dialog>
+        <MountShortcuts {...defaults()} />
+      </>,
+    );
+    const dialog = document.getElementById("tc-explorer-filter-sheet") as HTMLDialogElement;
+    const close = vi.fn(() => {
+      dialog.open = false;
+    });
+    dialog.close = close;
+
+    const input = screen.getByLabelText("Search places");
+    input.focus();
+    fireEvent.keyDown(input, { key: "Escape" });
+
+    expect(close).toHaveBeenCalledTimes(1);
   });
 });
