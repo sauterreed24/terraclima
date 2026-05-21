@@ -414,7 +414,7 @@ interface RankedAnalog {
   axes: ClimateAnalogAxis[];
 }
 
-const _twinCache = new WeakMap<Place, RankedAnalog[]>();
+const _twinCache = new WeakMap<Place, WeakMap<readonly Place[], RankedAnalog[]>>();
 
 function buildTwinPool(target: Place, pool: readonly Place[]): RankedAnalog[] {
   const scored: RankedAnalog[] = [];
@@ -429,6 +429,21 @@ function buildTwinPool(target: Place, pool: readonly Place[]): RankedAnalog[] {
   return scored;
 }
 
+function cachedTwinPool(target: Place, pool: readonly Place[]): RankedAnalog[] {
+  let poolCache = _twinCache.get(target);
+  if (!poolCache) {
+    poolCache = new WeakMap<readonly Place[], RankedAnalog[]>();
+    _twinCache.set(target, poolCache);
+  }
+
+  let ranked = poolCache.get(pool);
+  if (!ranked) {
+    ranked = buildTwinPool(target, pool);
+    poolCache.set(pool, ranked);
+  }
+  return ranked;
+}
+
 function withSynopsis(target: Place, r: RankedAnalog): ClimateTwin {
   return { ...r, synopsis: describeAnalogMatch(target, r.place) };
 }
@@ -441,8 +456,8 @@ function withSynopsis(target: Place, r: RankedAnalog): ClimateTwin {
  * warmer / drier / lower-risk" workflow — so an unrelated climate can
  * never jump the queue just because it leans the right way.
  *
- * The corpus is scored once per `target` (cached by identity); the prose
- * synopsis is built only for the handful of places actually returned.
+ * Each supplied pool is scored once per `target` (cached by identity); the
+ * prose synopsis is built only for the handful of places actually returned.
  */
 export function findClimateTwins(
   target: Place,
@@ -450,11 +465,7 @@ export function findClimateTwins(
   k = 6,
   shift?: ClimateShiftId | null,
 ): ClimateTwin[] {
-  let ranked = _twinCache.get(target);
-  if (!ranked) {
-    ranked = buildTwinPool(target, pool);
-    _twinCache.set(target, ranked);
-  }
+  const ranked = cachedTwinPool(target, pool);
 
   if (!shift) return ranked.slice(0, k).map(r => withSynopsis(target, r));
 

@@ -3891,6 +3891,12 @@
   .detail-doc-section {
     scroll-margin-top: 7.5rem;
   }
+  @media (min-width: 768px) and (max-width: 900px), (min-width: 768px) and (max-height: 980px) {
+    [data-place-detail] .detail-drawer-header {
+      position: relative !important;
+      top: auto !important;
+    }
+  }
 
   /* ---- Climate twins (analog finder) -------------------------------- */
   .tc-twins {
@@ -3934,6 +3940,7 @@
     transition: border-color 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.88) inset;
     cursor: pointer;
+    touch-action: manipulation;
     white-space: nowrap;
   }
   .tc-twin-shift:hover {
@@ -3965,7 +3972,16 @@
     box-shadow:
       0 1px 0 rgba(255, 255, 255, 0.9) inset,
       0 10px 26px -22px rgba(62, 38, 24, 0.32);
-    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, opacity 140ms ease, filter 140ms ease;
+  }
+  .tc-twins[data-pending="true"] .tc-twin-lead,
+  .tc-twins[data-pending="true"] .tc-twin-card {
+    opacity: 0.78;
+    filter: saturate(0.94);
+  }
+  .tc-twins[data-pending="true"] .tc-twin-fingerprint__bar {
+    transform: scaleY(0.92);
+    transform-origin: bottom;
   }
   .tc-twin-lead { padding: 0.9rem; }
   .tc-twin-card { padding: 0.7rem 0.8rem; }
@@ -4060,6 +4076,8 @@
     background: var(--c);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45);
     opacity: 0.92;
+    transform-origin: bottom;
+    transition: transform 140ms ease, opacity 140ms ease;
   }
   .tc-twin-card__synopsis {
     font-size: 0.74rem;
@@ -4107,6 +4125,11 @@
   html.tc-low-power .tc-twin-card:hover,
   html.tc-low-power .tc-twin-shift:hover {
     transform: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tc-twins[data-pending="true"] .tc-twin-fingerprint__bar {
+      transform: none;
+    }
   }
 
   .residency-brief {

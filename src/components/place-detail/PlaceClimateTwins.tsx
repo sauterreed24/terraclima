@@ -1,4 +1,4 @@
-import { memo, useMemo, useState } from "react";
+import { memo, useMemo, useState, useTransition } from "react";
 import { Sparkles } from "lucide-react";
 import type { Place } from "../../types";
 import { PLACES } from "../../data/places";
@@ -61,7 +61,13 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
   onOpenPlace?: (id: string) => void;
 }) {
   const [shift, setShift] = useState<ClimateShiftId | null>(null);
+  const [isPending, startTransition] = useTransition();
   const twins = useMemo(() => findClimateTwins(place, PLACES, 6, shift), [place, shift]);
+  const selectShift = (id: ClimateShiftId) => {
+    startTransition(() => {
+      setShift(prev => (prev === id ? null : id));
+    });
+  };
 
   if (twins.length === 0) {
     return <div className="text-sm text-stone italic">No close climate analog sits in the atlas yet.</div>;
@@ -70,7 +76,10 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
   const [lead, ...rest] = twins;
 
   return (
-    <div className="tc-twins">
+    <div className="tc-twins" aria-busy={isPending || undefined} data-pending={isPending || undefined}>
+      <span className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {isPending ? "Updating climate twins." : ""}
+      </span>
       <p className="tc-twins__intro">
         Ranked by how the <em>whole year</em> lines up — overall warmth, the shape of the seasons, when the rain
         falls, and the air — not just a shared label. Pick a nudge to find a twin that keeps the rhythm but shifts one thing.
@@ -85,7 +94,7 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
             className="tc-twin-shift"
             aria-pressed={shift === s.id}
             title={s.description}
-            onClick={() => setShift(prev => (prev === s.id ? null : s.id))}
+            onClick={() => selectShift(s.id)}
           >
             {s.label}
           </button>
