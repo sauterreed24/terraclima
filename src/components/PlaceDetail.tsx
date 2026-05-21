@@ -17,7 +17,7 @@ import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse, type TempUnit } from "../lib/units";
 import { getBestMonths, type BestWindow } from "../lib/best-months";
-import { findSimilarPlaces } from "../lib/similarity";
+import { PlaceClimateTwins } from "./place-detail/PlaceClimateTwins";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
@@ -54,15 +54,6 @@ const TONE_HERO: Record<string, string> = {
   ember: "radial-gradient(1000px 300px at 15% 0%, rgba(255,196,214,0.35), transparent 65%)",
   ice: "radial-gradient(1000px 300px at 15% 0%, rgba(196,236,245,0.35), transparent 65%)",
   aurora: "radial-gradient(1000px 300px at 15% 0%, rgba(255,196,214,0.4), transparent 65%)",
-};
-
-const ARCHETYPE_ACCENT: Record<string, string> = {
-  glacier: "linear-gradient(180deg, #8cc8e0 0%, #2b7a9a 100%)",
-  sage: "linear-gradient(180deg, #c6dcbd 0%, #567957 100%)",
-  ochre: "linear-gradient(180deg, #f0d29c 0%, #9a7c3b 100%)",
-  ember: "linear-gradient(180deg, #efb49a 0%, #9a4a2a 100%)",
-  ice: "linear-gradient(180deg, #c3e4f1 0%, #4faacd 100%)",
-  aurora: "linear-gradient(180deg, #c7b5ea 0%, #5a4397 100%)",
 };
 
 /** Solid leading edge on the detail drawer — instant place identity without re-tinting the whole panel. */
@@ -848,7 +839,6 @@ function DetailBody({
     [place, temp, dist],
   );
   const bestMonths = useMemo(() => getBestMonths(place, temp), [place, temp]);
-  const similar = useMemo(() => findSimilarPlaces(place, PLACES, 3), [place]);
   const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
   const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
@@ -1467,47 +1457,9 @@ function DetailBody({
         </Section>
       )}
 
-      {similar.length > 0 && (
-        <Section anchorId={PD.similar} title="Places that feel similar" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
-          <div className="grid md:grid-cols-3 gap-2">
-            {similar.map(({ place: s, score }) => {
-              const sTone = ARCHETYPE_BY_ID[s.archetypes[0]]?.tone ?? "ice";
-              return (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => onOpenPlace?.(s.id)}
-                  className="panel-thin p-3 text-left reveal-row min-w-0 relative overflow-hidden"
-                  title={`Open ${s.name}`}
-                  aria-label={`Open similar place ${s.name}`}
-                >
-                  <span
-                    aria-hidden
-                    className="absolute top-0 left-0 bottom-0 w-[3px]"
-                    style={{ background: ARCHETYPE_ACCENT[sTone] }}
-                  />
-                  <div className="pl-2 min-w-0">
-                    <div className="font-atlas text-sm text-ice truncate">{s.name}</div>
-                    <div className="text-[11px] text-stone truncate">{s.region}, {s.country === "USA" ? "US" : s.country === "Canada" ? "CA" : "MX"}</div>
-                    <div className="mt-1.5 flex flex-wrap gap-1">
-                      {s.archetypes.slice(0, 2).map(a => (
-                        <span key={a} className="chip" data-tone={ARCHETYPE_BY_ID[a]?.tone ?? "ice"} style={{ fontSize: "10px" }}>
-                          {ARCHETYPE_BY_ID[a]?.label ?? a}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="mt-1.5 text-[10px] text-stone flex items-center gap-1.5">
-                      <span>Resonance</span>
-                      <span className="font-mono-num text-frost">{Math.round(score * 100)}</span>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-          </div>
-          <div className="text-[11px] text-stone italic mt-2">Ranked by shared archetypes, topographic drivers, and climate distance.</div>
-        </Section>
-      )}
+      <Section anchorId={PD.similar} title="Climate twins" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+        <PlaceClimateTwins place={place} onOpenPlace={onOpenPlace} />
+      </Section>
 
       <Section anchorId={PD.verdict} title="Hidden-gem verdict · sources">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">

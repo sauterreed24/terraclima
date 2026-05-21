@@ -1,7 +1,7 @@
 // ============================================================
 // Terraclima — Shared climate metric primitives
 // ============================================================
-// Pure helpers used by scoring, similarity, geospatial analysis,
+// Pure helpers used by scoring, climate-analog, geospatial analysis,
 // corpus-stats, and detail components. Lives outside scoring.ts
 // to break the previous scoring → geospatial-analysis →
 // atlas-corpus-stats → scoring import cycle (see atlas-corpus-stats
