@@ -92,7 +92,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
     items.push({ id: PD.activities, label: "Things to do" });
   }
 
-  items.push({ id: PD.similar, label: "Similar places" });
+  items.push({ id: PD.similar, label: "Climate twins" });
   items.push({ id: PD.verdict, label: "Scores & sources" });
 
   return items;
