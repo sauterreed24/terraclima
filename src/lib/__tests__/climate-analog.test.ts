@@ -133,4 +133,41 @@ describe("findClimateTwins", () => {
     const twins = findClimateTwins(anchor, [wet, dry], 2, "drier");
     expect(twins[0].place.id).toBe("dry");
   });
+
+  it("a shift never lets a non-twin leapfrog genuine twins (regression: cool coast asked for 'milder winter')", () => {
+    // A cool, low-amplitude maritime anchor.
+    const coolClimate = makeClimate({
+      tempHighC: [10, 11, 13, 15, 17, 18, 19, 19, 18, 15, 12, 10],
+      tempLowC: [5, 5, 7, 8, 10, 12, 13, 13, 12, 10, 7, 5],
+      annualPrecipMm: 1100,
+      precipMm: [160, 130, 110, 70, 40, 20, 10, 12, 40, 90, 140, 170],
+    });
+    const anchor = makePlace({ id: "cool-anchor", climate: coolClimate });
+    // Six genuine cool twins (small perturbations keep them clearly analogous).
+    const twins = Array.from({ length: 6 }, (_, i) =>
+      makePlace({
+        id: `cool-${i}`,
+        climate: makeClimate({
+          ...coolClimate,
+          tempHighC: coolClimate.tempHighC.map(v => v + (i - 3) * 0.4) as Monthly12,
+          tempLowC: coolClimate.tempLowC.map(v => v + (i - 3) * 0.4) as Monthly12,
+        }),
+      }),
+    );
+    // A tropical interloper: maximally satisfies "milder winter" but is no twin.
+    const tropical = makePlace({
+      id: "tropical",
+      archetypes: ["tropical-isothermal"],
+      drivers: ["trade-wind"],
+      climate: makeClimate({
+        tempHighC: flat(31),
+        tempLowC: flat(24),
+        annualPrecipMm: 1300,
+        precipMm: [20, 20, 30, 60, 140, 180, 180, 170, 150, 120, 60, 30],
+      }),
+    });
+    const out = findClimateTwins(anchor, [...twins, tropical], 6, "milder-winter");
+    expect(out.find(t => t.place.id === "tropical")).toBeUndefined();
+    expect(out.every(t => t.analog >= 0.62)).toBe(true);
+  });
 });

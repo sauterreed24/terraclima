@@ -393,10 +393,19 @@ function shiftImprovement(anchor: Place, twin: Place, shift: ClimateShiftId): nu
   }
 }
 
-/** Floor below which a place is no longer a credible "twin" of the anchor. */
-const TWIN_FLOOR = 0.5;
-/** How much a selected shift can reorder the credible-twin pool. */
-const SHIFT_RERANK_WEIGHT = 0.32;
+/**
+ * Shift eligibility. A "twin, but warmer / drier / …" must still be a
+ * recognizable twin, so the shift only ever reorders the anchor's genuine
+ * climate kin — never lets a place that merely satisfies the direction
+ * (e.g. tropical Key West for a foggy cool coast asked for a "milder
+ * winter") leapfrog the real twins. Eligibility is *relative* to the
+ * anchor's own best twin (climates differ in how many close kin exist),
+ * with an absolute floor as a backstop.
+ */
+const SHIFT_ELIGIBLE_BAND = 0.18;
+const SHIFT_ABS_FLOOR = 0.62;
+/** How much a selected shift can reorder the eligible-twin pool. */
+const SHIFT_RERANK_WEIGHT = 0.35;
 
 /** Ranked candidate before the (lazily built) prose synopsis is attached. */
 interface RankedAnalog {
@@ -426,10 +435,11 @@ function withSynopsis(target: Place, r: RankedAnalog): ClimateTwin {
 
 /**
  * Top-k climate twins of `target`. Without a shift, ranks by raw analog
- * score. With a shift, keeps the credible-twin pool (analog ≥ floor) and
- * reorders it to reward places that move in the requested direction —
- * the "like here, but warmer / drier / lower-risk" workflow — without
- * letting an unrelated climate jump the queue.
+ * score. With a shift, restricts to the anchor's genuine twins (within
+ * `SHIFT_ELIGIBLE_BAND` of the best, and at least `SHIFT_ABS_FLOOR`) and
+ * reorders *those* toward the requested direction — the "like here, but
+ * warmer / drier / lower-risk" workflow — so an unrelated climate can
+ * never jump the queue just because it leans the right way.
  *
  * The corpus is scored once per `target` (cached by identity); the prose
  * synopsis is built only for the handful of places actually returned.
@@ -448,8 +458,12 @@ export function findClimateTwins(
 
   if (!shift) return ranked.slice(0, k).map(r => withSynopsis(target, r));
 
-  const credible = ranked.filter(t => t.analog >= TWIN_FLOOR);
-  const base = credible.length >= k ? credible : ranked.slice(0, Math.max(k, 8));
+  const topAnalog = ranked[0]?.analog ?? 0;
+  const floor = Math.max(SHIFT_ABS_FLOOR, topAnalog - SHIFT_ELIGIBLE_BAND);
+  const eligible = ranked.filter(t => t.analog >= floor);
+  // Never show fewer than k: if the anchor has few genuine kin, fall back to
+  // its best available twins rather than dropping below the requested count.
+  const base = eligible.length >= k ? eligible : ranked.slice(0, k);
   return [...base]
     .map(t => ({ t, rank: t.analog * (1 - SHIFT_RERANK_WEIGHT) + shiftImprovement(target, t.place, shift) * SHIFT_RERANK_WEIGHT }))
     .sort((a, b) => b.rank - a.rank || b.t.analog - a.t.analog || a.t.place.id.localeCompare(b.t.place.id))
