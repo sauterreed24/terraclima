@@ -12,7 +12,10 @@ const OVERSCAN_ROWS = 3;
 const disableScrollAdjustment = () => false;
 
 function useGridColumns(): 1 | 2 {
-  const [cols, setCols] = useState<1 | 2>(2);
+  const [cols, setCols] = useState<1 | 2>(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia !== "function") return 2;
+    return window.matchMedia("(min-width: 768px)").matches ? 2 : 1;
+  });
   useLayoutEffect(() => {
     if (typeof window === "undefined" || typeof window.matchMedia !== "function") return;
     const mq = window.matchMedia("(min-width: 768px)");
@@ -29,6 +32,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   selectedId,
   openPlace,
   toggleCompare,
+  onPreloadPlaceDetail,
+  onPreloadCompare,
   compareIds,
   resonantWindow,
   liveFitFilters,
@@ -40,6 +45,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   selectedId: string | null;
   openPlace: (id: string) => void;
   toggleCompare: (id: string) => void;
+  onPreloadPlaceDetail?: () => void;
+  onPreloadCompare?: () => void;
   compareIds: Set<string>;
   resonantWindow: BestWindow["id"] | null;
   liveFitFilters: FilterState;
@@ -60,7 +67,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
         const r = el.getBoundingClientRect();
-        setScrollMargin(r.top + window.scrollY);
+        const nextScrollMargin = Math.round(r.top + window.scrollY);
+        setScrollMargin(current => current === nextScrollMargin ? current : nextScrollMargin);
       });
     };
     update();
@@ -119,6 +127,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
                   note={r.note}
                   onOpenPlace={openPlace}
                   onCompareToggle={toggleCompare}
+                  onPreloadPlaceDetail={onPreloadPlaceDetail}
+                  onPreloadCompare={onPreloadCompare}
                   inCompare={compareIds.has(r.place.id)}
                   bookmarked={bookmarkIds?.has(r.place.id)}
                   onBookmarkToggle={onBookmarkToggle}

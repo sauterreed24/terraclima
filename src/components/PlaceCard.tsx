@@ -40,6 +40,8 @@ interface Props {
   /** @deprecated use `onOpenPlace` */
   onClick?: () => void;
   onCompareToggle?: (id: string) => void;
+  onPreloadPlaceDetail?: () => void;
+  onPreloadCompare?: () => void;
   inCompare?: boolean;
   /** Whether this place is bookmarked. Card shows a filled pin icon when true. */
   bookmarked?: boolean;
@@ -88,7 +90,7 @@ const TONE_RGB: Record<string, string> = {
  * the interactive render budget dramatically on low-spec hardware.
  */
 export const PlaceCard = memo(function PlaceCard({
-  place, selected, note, onOpenPlace, onClick, onCompareToggle, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, rank, rankingLabel, rankingScore,
+  place, selected, note, onOpenPlace, onClick, onCompareToggle, onPreloadPlaceDetail, onPreloadCompare, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, rank, rankingLabel, rankingScore,
 }: Props) {
   const titleId = useId();
   const rankId = useId();
@@ -187,6 +189,9 @@ export const PlaceCard = memo(function PlaceCard({
       <button
         type="button"
         onClick={handleOpen}
+        onPointerEnter={onPreloadPlaceDetail}
+        onFocus={onPreloadPlaceDetail}
+        onPointerDown={onPreloadPlaceDetail}
         className="place-card__open-target text-left w-full p-4 pl-[calc(1rem+3px)] flex flex-col gap-0 min-h-0 bg-transparent border-0 cursor-pointer"
         aria-labelledby={titleId}
         aria-describedby={rank != null && rankingLabel && rankingScore != null ? rankId : undefined}
@@ -468,6 +473,9 @@ export const PlaceCard = memo(function PlaceCard({
         <button
           type="button"
           onClick={handleCompare}
+          onPointerEnter={onPreloadCompare}
+          onFocus={onPreloadCompare}
+          onPointerDown={onPreloadCompare}
           className={`btn-ghost place-card__compare-btn !px-3 !py-2 !text-xs ${inCompare ? "!border-[rgba(240,210,156,0.8)] !text-ochre-300" : ""}`}
           title="Add to comparison"
           aria-label={inCompare ? `Remove ${place.name} from comparison` : `Add ${place.name} to comparison`}
