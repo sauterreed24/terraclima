@@ -134,21 +134,62 @@ function readCurrentAppState() {
 
 type View = "explorer" | "trips" | "collections" | "learn";
 
-const ClimateTripsView = lazy(() =>
-  import("./components/ClimateTripsView").then(module => ({ default: module.ClimateTripsView })),
-);
-const CollectionsView = lazy(() =>
-  import("./components/CollectionsView").then(module => ({ default: module.CollectionsView })),
-);
-const LearnMode = lazy(() =>
-  import("./components/LearnMode").then(module => ({ default: module.LearnMode })),
-);
-const PlaceDetail = lazy(() =>
-  import("./components/PlaceDetail").then(module => ({ default: module.PlaceDetail })),
-);
-const CompareView = lazy(() =>
-  import("./components/CompareView").then(module => ({ default: module.CompareView })),
-);
+function loadClimateTripsView() {
+  return import("./components/ClimateTripsView").then(module => ({ default: module.ClimateTripsView }));
+}
+
+function loadCollectionsView() {
+  return import("./components/CollectionsView").then(module => ({ default: module.CollectionsView }));
+}
+
+function loadLearnMode() {
+  return import("./components/LearnMode").then(module => ({ default: module.LearnMode }));
+}
+
+function importPlaceDetail() {
+  return import("./components/PlaceDetail").then(module => ({ default: module.PlaceDetail }));
+}
+
+function importCompareView() {
+  return import("./components/CompareView").then(module => ({ default: module.CompareView }));
+}
+
+let placeDetailLoadPromise: ReturnType<typeof importPlaceDetail> | null = null;
+let compareViewLoadPromise: ReturnType<typeof importCompareView> | null = null;
+
+function loadPlaceDetail() {
+  if (!placeDetailLoadPromise) {
+    placeDetailLoadPromise = importPlaceDetail().catch(error => {
+      placeDetailLoadPromise = null;
+      throw error;
+    });
+  }
+  return placeDetailLoadPromise;
+}
+
+function loadCompareView() {
+  if (!compareViewLoadPromise) {
+    compareViewLoadPromise = importCompareView().catch(error => {
+      compareViewLoadPromise = null;
+      throw error;
+    });
+  }
+  return compareViewLoadPromise;
+}
+
+function preloadPlaceDetail() {
+  void loadPlaceDetail();
+}
+
+function preloadCompareView() {
+  void loadCompareView();
+}
+
+const ClimateTripsView = lazy(loadClimateTripsView);
+const CollectionsView = lazy(loadCollectionsView);
+const LearnMode = lazy(loadLearnMode);
+const PlaceDetail = lazy(loadPlaceDetail);
+const CompareView = lazy(loadCompareView);
 
 export default function App() {
   const richVisualEffects = useRichVisualEffects();
@@ -485,6 +526,7 @@ export default function App() {
   }, []);
 
   const openPlace = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
+    preloadPlaceDetail();
     if (opts?.trigger) {
       detailTriggerRef.current = opts.trigger;
     } else if (typeof document !== "undefined") {
@@ -560,10 +602,12 @@ export default function App() {
   }, [evictedComparePlaceId]);
 
   const openCompare = useCallback(() => {
+    preloadCompareView();
     setCompareOpen(true);
   }, []);
 
   const comparePlaces = useCallback((ids: string[]) => {
+    if (ids.length > 0) preloadCompareView();
     setCompareIds(new Set(ids.slice(0, COMPARE_LIMIT)));
     setCompareOpen(ids.length > 0);
   }, []);
@@ -667,7 +711,13 @@ export default function App() {
       </a>
       <div className="ambient-aurora" aria-hidden="true" />
       <div id="main-content" role="main" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
-      <TopBar view={view} setView={setViewFluid} onOpenCompare={openCompare} compareCount={compareIds.size} />
+      <TopBar
+        view={view}
+        setView={setViewFluid}
+        onOpenCompare={openCompare}
+        onPreloadCompare={preloadCompareView}
+        compareCount={compareIds.size}
+      />
 
       <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1600px] w-full mx-auto">
         <div key={view} className="view-enter flex-1 flex flex-col lg:flex-row gap-4 min-w-0">
@@ -694,6 +744,7 @@ export default function App() {
                   contextStressRows={contextStressRows}
                   onCompareLeaders={comparePlaces}
                   onCompareContextLeaders={comparePlaces}
+                  onPreloadCompare={preloadCompareView}
                   onApplyContextScenario={applyContextScenario}
                   bookmarkIds={bookmarkIds}
                   recentIds={recentIds}
@@ -795,6 +846,8 @@ export default function App() {
                       selectedId={selectedId}
                       openPlace={openPlace}
                       toggleCompare={toggleCompare}
+                      onPreloadPlaceDetail={preloadPlaceDetail}
+                      onPreloadCompare={preloadCompareView}
                       compareIds={compareIds}
                       resonantWindow={resonantWindow}
                       liveFitFilters={filters}
@@ -834,6 +887,8 @@ export default function App() {
                     onOpenPlace={onOpenPlaceFromTrips}
                     onPickTripTheme={onPickTripTheme}
                     onComparePlaces={comparePlaces}
+                    onPreloadPlaceDetail={preloadPlaceDetail}
+                    onPreloadCompare={preloadCompareView}
                     activeThemeId={activeCollection && CLIMATE_TRIP_THEME_BY_ID[activeCollection] ? activeCollection : undefined}
                   />
                 </Suspense>
@@ -1040,7 +1095,19 @@ const EmptyResults = memo(function EmptyResults({ onClear }: { onClear: () => vo
   );
 });
 
-const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount }: { view: View; setView: (v: View) => void; onOpenCompare: () => void; compareCount: number }) {
+const TopBar = memo(function TopBar({
+  view,
+  setView,
+  onOpenCompare,
+  onPreloadCompare,
+  compareCount,
+}: {
+  view: View;
+  setView: (v: View) => void;
+  onOpenCompare: () => void;
+  onPreloadCompare: () => void;
+  compareCount: number;
+}) {
   const menuRef = useRef<HTMLDialogElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -1131,7 +1198,15 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
           <TempToggle className="ml-1" />
 
           {compareCount > 0 && (
-            <button type="button" onClick={onOpenCompare} className="btn-primary !text-xs !py-1.5" aria-label={compareAriaLabel}>
+            <button
+              type="button"
+              onClick={onOpenCompare}
+              onPointerEnter={onPreloadCompare}
+              onFocus={onPreloadCompare}
+              onPointerDown={onPreloadCompare}
+              className="btn-primary !text-xs !py-1.5"
+              aria-label={compareAriaLabel}
+            >
               <Target className="w-3.5 h-3.5" aria-hidden /> Compare · {compareCount}
             </button>
           )}
@@ -1173,6 +1248,9 @@ const TopBar = memo(function TopBar({ view, setView, onOpenCompare, compareCount
               {compareCount > 0 ? (
                 <button
                   type="button"
+                  onPointerEnter={onPreloadCompare}
+                  onFocus={onPreloadCompare}
+                  onPointerDown={onPreloadCompare}
                   onClick={() => {
                     closeMenu();
                     onOpenCompare();
@@ -1373,6 +1451,7 @@ const HeroCard = memo(function HeroCard({
   contextStressRows,
   onCompareLeaders,
   onCompareContextLeaders,
+  onPreloadCompare,
   onApplyContextScenario,
   bookmarkIds,
   recentIds,
@@ -1399,6 +1478,7 @@ const HeroCard = memo(function HeroCard({
   contextStressRows: ContextStressRow[];
   onCompareLeaders: (ids: string[]) => void;
   onCompareContextLeaders: (ids: string[]) => void;
+  onPreloadCompare: () => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
   bookmarkIds: Set<string>;
   recentIds: readonly string[];
@@ -1573,6 +1653,7 @@ const HeroCard = memo(function HeroCard({
           brief={scoutBrief}
           onOpenPlace={onOpenPlace}
           onCompareLeaders={onCompareLeaders}
+          onPreloadCompare={onPreloadCompare}
         />
       ) : null}
 
@@ -1581,6 +1662,7 @@ const HeroCard = memo(function HeroCard({
           rows={contextStressRows}
           onOpenPlace={onOpenPlace}
           onCompareContextLeaders={onCompareContextLeaders}
+          onPreloadCompare={onPreloadCompare}
           onApplyContextScenario={onApplyContextScenario}
         />
       ) : null}
@@ -1942,11 +2024,13 @@ const ContextStressPanel = memo(function ContextStressPanel({
   rows,
   onOpenPlace,
   onCompareContextLeaders,
+  onPreloadCompare,
   onApplyContextScenario,
 }: {
   rows: ContextStressRow[];
   onOpenPlace: (id: string) => void;
   onCompareContextLeaders: (ids: string[]) => void;
+  onPreloadCompare: () => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
 }) {
   const prose = useProse();
@@ -1973,6 +2057,9 @@ const ContextStressPanel = memo(function ContextStressPanel({
             <button
               type="button"
               className="btn-ghost !text-xs !py-1.5"
+              onPointerEnter={onPreloadCompare}
+              onFocus={onPreloadCompare}
+              onPointerDown={onPreloadCompare}
               onClick={() => onCompareContextLeaders(leaderSummary.compareIds)}
               aria-label={`Compare context top picks: ${leaderSummary.compareIds.length} places`}
               title={leaderSummary.summary}
@@ -2055,10 +2142,12 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
   brief,
   onOpenPlace,
   onCompareLeaders,
+  onPreloadCompare,
 }: {
   brief: ExplorerScoutBrief;
   onOpenPlace: (id: string) => void;
   onCompareLeaders: (ids: string[]) => void;
+  onPreloadCompare: () => void;
 }) {
   const prose = useProse();
   return (
@@ -2084,6 +2173,9 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
             <button
               type="button"
               className="btn-primary !text-xs !py-1.5"
+              onPointerEnter={onPreloadCompare}
+              onFocus={onPreloadCompare}
+              onPointerDown={onPreloadCompare}
               onClick={() => onCompareLeaders(brief.compareIds)}
               aria-label={`Compare current leaders: ${brief.compareIds.length} places`}
             >

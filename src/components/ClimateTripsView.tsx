@@ -10,6 +10,8 @@ interface Props {
   onOpenPlace: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
   onPickTripTheme: (id: string) => void;
   onComparePlaces: (ids: string[]) => void;
+  onPreloadPlaceDetail?: () => void;
+  onPreloadCompare?: () => void;
   activeThemeId?: string;
 }
 
@@ -39,7 +41,7 @@ function scoreTone(score: number): "glacier" | "sage" | "ochre" | "ember" {
   return "ember";
 }
 
-export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces, activeThemeId }: Props) {
+export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces, onPreloadPlaceDetail, onPreloadCompare, activeThemeId }: Props) {
   const prose = useProse();
   const allProfiles = useMemo<ProfileRow[]>(
     () =>
@@ -132,7 +134,14 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
                     <MapIcon className="w-3.5 h-3.5" aria-hidden />
                     {active ? "Trip pinned" : "Filter map to this trip"}
                   </button>
-                  <button type="button" onClick={() => compareTheme(theme)} className="btn-ghost !text-xs">
+                  <button
+                    type="button"
+                    onClick={() => compareTheme(theme)}
+                    onPointerEnter={onPreloadCompare}
+                    onFocus={onPreloadCompare}
+                    onPointerDown={onPreloadCompare}
+                    className="btn-ghost !text-xs"
+                  >
                     <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
                     Compare top stops
                   </button>
@@ -155,6 +164,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
               key={row.place.id}
               row={row}
               onOpenPlace={onOpenPlace}
+              onPreloadPlaceDetail={onPreloadPlaceDetail}
             />
           ))}
         </div>
@@ -171,6 +181,9 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
             <button
               key={place.id}
               type="button"
+              onPointerEnter={onPreloadPlaceDetail}
+              onFocus={onPreloadPlaceDetail}
+              onPointerDown={onPreloadPlaceDetail}
               onClick={e => onOpenPlace(place.id, { trigger: e.currentTarget })}
               className="panel-thin p-3 text-left reveal-row"
               aria-label={`Open ${place.name} climate tourism profile`}
@@ -188,9 +201,11 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
 function TourismPickCard({
   row,
   onOpenPlace,
+  onPreloadPlaceDetail,
 }: {
   row: ProfileRow;
   onOpenPlace: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
+  onPreloadPlaceDetail?: () => void;
 }) {
   const prose = useProse();
   const { place, profile } = row;
@@ -246,6 +261,9 @@ function TourismPickCard({
       <div className="flex flex-wrap gap-2 pt-1">
         <button
           type="button"
+          onPointerEnter={onPreloadPlaceDetail}
+          onFocus={onPreloadPlaceDetail}
+          onPointerDown={onPreloadPlaceDetail}
           onClick={e => onOpenPlace(place.id, { trigger: e.currentTarget })}
           className="btn-primary !text-xs"
         >

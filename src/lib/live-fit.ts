@@ -52,6 +52,10 @@ export interface LiveFitAssessment {
   badges: string[];
 }
 
+const LIVE_FIT_CACHE_LIMIT_PER_PLACE = 96;
+const LIVE_FIT_KEY_SEP = "\u001f";
+const liveFitAssessmentCache = new WeakMap<Place, Map<string, LiveFitAssessment>>();
+
 export const LIVE_FIT_PRESETS: readonly LiveFitPreset[] = [
   {
     id: "cool-summers",
@@ -289,7 +293,43 @@ function pushPinnedUnique(list: string[], value: string, max: number): void {
   list.push(value);
 }
 
-export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveFitAssessment {
+function liveFitFilterKey(filters: LiveFitFilters = {}): string {
+  return [
+    filters.fitPresets ? [...filters.fitPresets].join(",") : "",
+    filters.maxSummerHighC ?? "",
+    filters.minWinterLowC ?? "",
+    filters.minGrowability ?? "",
+    filters.maxFireRisk ?? "",
+    filters.maxOverallRisk ?? "",
+  ].join(LIVE_FIT_KEY_SEP);
+}
+
+function cloneLiveFitAssessment(fit: LiveFitAssessment): LiveFitAssessment {
+  return {
+    score: fit.score,
+    reasons: [...fit.reasons],
+    cautions: [...fit.cautions],
+    badges: [...fit.badges],
+  };
+}
+
+function getCachedLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): LiveFitAssessment {
+  const key = liveFitFilterKey(filters);
+  let placeCache = liveFitAssessmentCache.get(place);
+  if (!placeCache) {
+    placeCache = new Map();
+    liveFitAssessmentCache.set(place, placeCache);
+  }
+  const cached = placeCache.get(key);
+  if (cached) return cached;
+
+  const fit = computeLiveFitAssessment(place, filters);
+  if (placeCache.size >= LIVE_FIT_CACHE_LIMIT_PER_PLACE) placeCache.clear();
+  placeCache.set(key, fit);
+  return fit;
+}
+
+function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): LiveFitAssessment {
   const presets = [...(filters.fitPresets ?? new Set<LiveFitPresetId>())];
   const presetScores = presets.map(id => presetScore(place, id));
   let score = presetScores.length
@@ -408,10 +448,14 @@ export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveF
   return { score, reasons, cautions, badges: [...new Set(badges)].slice(0, 5) };
 }
 
+export function assessLiveFit(place: Place, filters: LiveFitFilters = {}): LiveFitAssessment {
+  return cloneLiveFitAssessment(getCachedLiveFitAssessment(place, filters));
+}
+
 export function rankLiveFit(pool: Place[], filters: LiveFitFilters = {}) {
   return pool
     .map(place => {
-      const fit = assessLiveFit(place, filters);
+      const fit = getCachedLiveFitAssessment(place, filters);
       return {
         place,
         score: fit.score,

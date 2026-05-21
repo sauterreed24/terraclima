@@ -72,6 +72,20 @@ describe("live-fit scoring", () => {
     expect(rankLiveFit([alpha, zulu]).map(result => result.place.id)).toEqual(["alpha-ridge", "zulu-ridge"]);
   });
 
+  it("returns defensive copies from the cached live-fit assessment", () => {
+    const place = makePlace({ id: "cache-copy", name: "Cache Copy" });
+    const first = assessLiveFit(place);
+    first.reasons.push("mutated reason");
+    first.cautions.push("mutated caution");
+    first.badges.push("mutated badge");
+
+    const second = assessLiveFit(place);
+
+    expect(second.reasons).not.toContain("mutated reason");
+    expect(second.cautions).not.toContain("mutated caution");
+    expect(second.badges).not.toContain("mutated badge");
+  });
+
   it("surfaces a caution when lived-reality coverage is missing", () => {
     const unrated = makePlace({ id: "unrated-live-reality", liveSignals: undefined });
     const fit = assessLiveFit(unrated);
