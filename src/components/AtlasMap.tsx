@@ -4,7 +4,7 @@ import type { GeoProjection } from "d3-geo";
 import { feature, mesh } from "topojson-client";
 import type { FeatureCollection, Geometry } from "geojson";
 import type { Topology, GeometryCollection } from "topojson-specification";
-import { Info, Maximize2, Minus, Plus, X } from "lucide-react";
+import { Info, Maximize2, Minus, Plus, RotateCw, X } from "lucide-react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useUnits } from "../lib/units";
@@ -86,6 +86,11 @@ function loadTopo(): Promise<{ countries: CountriesTopo; states: StatesTopo }> {
     assertStatesTopo(sRaw);
     cachedTopo = { countries: cRaw, states: sRaw };
     return cachedTopo;
+  }).catch((err: unknown) => {
+    // Clear the cache so a later mount or explicit retry re-attempts the
+    // imports instead of re-serving a permanently rejected promise.
+    topoPromise = null;
+    throw err;
   });
   return topoPromise;
 }
@@ -427,15 +432,27 @@ export function AtlasMap({
   // below resolve to "" until the chunk arrives. The ocean, markers,
   // graticule, compass, scale bar, and zoom controls all render
   // immediately; the country fills and state borders fade in via CSS a
-  // frame after loadTopo() resolves.
+  // frame after loadTopo() resolves. If the load fails the map stays usable
+  // (pins still work) and surfaces a retry control instead of silently
+  // sitting border-less forever.
   const [topo, setTopo] = useState<{ countries: CountriesTopo; states: StatesTopo } | null>(cachedTopo);
+  const [topoError, setTopoError] = useState(false);
+  const [topoRetryNonce, setTopoRetryNonce] = useState(0);
 
   useEffect(() => {
     if (topo) return;
     let cancelled = false;
-    loadTopo().then(t => { if (!cancelled) setTopo(t); });
+    setTopoError(false);
+    loadTopo()
+      .then(t => { if (!cancelled) setTopo(t); })
+      .catch(() => { if (!cancelled) setTopoError(true); });
     return () => { cancelled = true; };
-  }, [topo]);
+  }, [topo, topoRetryNonce]);
+
+  const retryTopo = useCallback(() => {
+    setTopoError(false);
+    setTopoRetryNonce(n => n + 1);
+  }, []);
 
   // Topology features (decoded once, only once the chunk is present)
   const focusFC = useMemo<FeatureCollection<Geometry, { name: string }> | null>(() => {
@@ -1753,6 +1770,17 @@ export function AtlasMap({
         >
           <Maximize2 className="w-3.5 h-3.5" aria-hidden />
         </button>
+        {topoError && !topo ? (
+          <button
+            type="button"
+            className="map-btn"
+            onClick={retryTopo}
+            title="Map borders failed to load — retry"
+            aria-label="Retry loading map borders"
+          >
+            <RotateCw className="w-3.5 h-3.5" aria-hidden />
+          </button>
+        ) : null}
       </div>
 
       {coarsePointer ? (
