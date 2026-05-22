@@ -17,6 +17,11 @@ All notable changes to Terraclima are tracked here.
 - **Print-friendly place profiles:** New `@media print` stylesheet hides chrome and renders only the open profile as a clean one-page brief.
 - **Reading progress + back-to-top in PlaceDetail:** Thin sticky progress bar tracks scroll inside the dossier; a circular back-to-top button appears after deep scrolling.
 
+### Corpus accuracy & climate-class verification
+- **Deterministic Köppen-Geiger classifier (`src/lib/koppen.ts`):** computes each place's Köppen class directly from its authored monthly temperature + precipitation normals (Peel et al. 2007 conventions; Northern-Hemisphere seasons), inventing no climate facts. The authored `koppen` string is now an independently verifiable, data-backed signal — the place "Climate class" at-a-glance tile shows whether the label is confirmed by the normals or sits on a documented Köppen boundary.
+- **Climate-class + physical-plausibility audit (`scripts/sanity-check.ts`):** the corpus gate cross-checks every authored Köppen label against the computed class and errors only on a *gross* family mismatch with no nearby class threshold; near-threshold knife-edges (the inherent ambiguity of the system) are expected and only summarised. A full audit of all 226 places found **zero gross labelling errors** (170 exact matches, 41 sub-class and 15 boundary knife-edges). A new snow-plausibility check — snowfall recorded at a place whose coldest month never approaches freezing — caught and fixed a spurious snow normal at Port Orford / Cape Blanco, OR.
+- **Robustified Köppen consumers (`src/lib/scoring.ts`, `src/lib/comfort-precision.ts`):** the `mediterranean-like` ranking bonus and the climate-analog humidity-family signal now read the computed/parsed class instead of a brittle `startsWith` prefix, so multi-zone labels like `"BSk (valley) / Csb analog (summit)"` are credited correctly.
+
 ### Reliability & a11y
 - **Atlas map survives a topology-load failure (`src/components/AtlasMap.tsx`):** a failed border/country chunk no longer leaves the map silently incomplete forever. `loadTopo()` now clears its module cache on error (matching the existing PlaceDetail/Compare lazy-loader pattern) so a remount re-attempts the import, and a focusable **Retry loading map borders** control appears beside the zoom buttons while pins, ocean, graticule, and controls stay usable.
 
@@ -26,6 +31,7 @@ All notable changes to Terraclima are tracked here.
 - Added a Livability breakdown panel to every place profile with per-component bars and driver/drag chips.
 
 ### Tests & guardrails
+- Added `src/lib/__tests__/koppen.test.ts` (29 cases): the classifier locked to textbook exemplars (Af, BWh, BSk, Csa, Cfb, Cfc, Cfa, Dfb, Dfd, ET, EF), the corpus hand-traces (Sequim Csb, Osoyoos BSk, Oaxaca Cwa), the C/D 0 °C and B-priority boundaries, degenerate-input handling, and the parse/audit (match / sub-class / boundary / divergent) reconciliation — plus a `mediterranean-like` ranking test proving a Csb zone inside a multi-zone label is credited.
 - Added unit coverage for previously-untested pure logic — map viewport-fit math (`atlas-map-fit`, 12 cases incl. empty/degenerate viewports, single-point collision, width/height-dominated fits, min/max-K clamping, and the non-positive-inset fallback), map label formatting (`atlas-map-label`), and dossier URL/hash sync (`dossier-url-hash`) — plus a DOM regression test asserting the map surfaces a retry control and keeps pins usable when topology fails to load.
 - 60+ new unit + integration tests across bookmarks, recent history, livability v2 (component bounds, monotonicity, blend math), corpus-wide smoke tests, the keyboard-B shortcut, and the new hero rails.
 

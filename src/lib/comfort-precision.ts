@@ -6,6 +6,7 @@ import {
   meanSummerHumidityPct,
   monthlyUsabilityScores,
 } from "./climate-metrics";
+import { computeKoppen } from "./koppen";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
 
@@ -155,7 +156,11 @@ function humidityAnalogScore(target: Place, analog: Place): number {
   const elevation = decay(Math.abs(target.elevationM - analog.elevationM), 1800);
   const archetypes = jaccard(target.archetypes, analog.archetypes);
   const drivers = jaccard(target.drivers, analog.drivers);
-  const koppenFamily = target.koppen[0] === analog.koppen[0] ? 1 : 0;
+  // Compare the class computed from the normals (falls back to the authored
+  // first letter) so the family signal is robust to free-form label formatting.
+  const targetFamily = computeKoppen(target)?.family ?? target.koppen[0];
+  const analogFamily = computeKoppen(analog)?.family ?? analog.koppen[0];
+  const koppenFamily = targetFamily === analogFamily ? 1 : 0;
 
   return (
     high * 0.24 +

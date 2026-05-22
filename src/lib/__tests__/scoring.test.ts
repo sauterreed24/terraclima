@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { avgRisk, meanSummerHigh, meanJanLow, applyFilters, RISK_VALUE } from "../scoring";
+import { avgRisk, meanSummerHigh, meanJanLow, applyFilters, rankPlaces, RISK_VALUE } from "../scoring";
 import type { FilterState } from "../scoring";
 import { makePlace, makeClimate } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
@@ -128,5 +128,36 @@ describe("applyFilters", () => {
   });
   it("preserves input order", () => {
     expect(applyFilters([c, a, b], f()).map(p => p.id)).toEqual(["c", "a", "b"]);
+  });
+});
+
+describe("rankPlaces — mediterranean-like credits the computed/parsed Köppen class", () => {
+  const med = makePlace({
+    id: "med",
+    // Multi-zone label: the old `koppen.startsWith("Csb")` check missed this
+    // because the string begins with "BSk". The computed/parsed class catches it.
+    koppen: "BSk (valley) / Csb analog (summit)",
+    climate: makeClimate({
+      tempHighC: [7.8, 9.2, 11.1, 13.4, 16.3, 18.8, 21.6, 21.8, 19.6, 14.8, 10.3, 7.9] as Monthly12,
+      tempLowC: [1.2, 1.6, 2.8, 4.6, 7.2, 9.8, 11.6, 11.4, 9.6, 6.7, 3.6, 1.6] as Monthly12,
+      precipMm: [65, 48, 42, 28, 22, 18, 14, 18, 28, 48, 72, 72] as Monthly12,
+    }),
+  });
+  const cont = makePlace({
+    id: "cont",
+    koppen: "Dfb",
+    climate: makeClimate({
+      tempHighC: [-4, -2, 4, 12, 19, 24, 26, 25, 19, 12, 4, -2] as Monthly12,
+      tempLowC: [-12, -10, -4, 2, 8, 13, 16, 15, 9, 3, -3, -9] as Monthly12,
+      precipMm: [40, 35, 45, 60, 80, 95, 100, 90, 70, 55, 50, 45] as Monthly12,
+    }),
+  });
+
+  it("credits a Csb summit hidden inside a multi-zone label, ranking it above a continental place", () => {
+    const ranked = rankPlaces("mediterranean-like", [cont, med]);
+    expect(ranked[0]!.place.id).toBe("med");
+    const medScore = ranked.find(r => r.place.id === "med")!.score;
+    const contScore = ranked.find(r => r.place.id === "cont")!.score;
+    expect(medScore).toBeGreaterThan(contScore);
   });
 });
