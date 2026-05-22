@@ -3005,6 +3005,9 @@
   .collection-curation-card {
     position: relative;
     overflow: hidden;
+    background:
+      radial-gradient(circle at 0 0, rgba(var(--collection-accent-rgb, 232, 155, 32), 0.16), transparent 19rem),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 251, 244, 0.88));
   }
   .collection-curation-card::before {
     content: "";
@@ -3022,6 +3025,66 @@
   .collection-curation-card[data-tone="ember"]::before { background: linear-gradient(180deg, #ffc4a8, #e85a32); }
   .collection-curation-card[data-tone="ice"]::before { background: linear-gradient(180deg, #c8effc, #2eb8e6); }
   .collection-curation-card[data-tone="aurora"]::before { background: linear-gradient(180deg, #ffc4d6, #9a2a4d); }
+  .collection-curation-card[data-tone="glacier"] { --collection-accent-rgb: 26, 143, 168; }
+  .collection-curation-card[data-tone="sage"] { --collection-accent-rgb: 61, 143, 85; }
+  .collection-curation-card[data-tone="ochre"] { --collection-accent-rgb: 232, 155, 32; }
+  .collection-curation-card[data-tone="ember"] { --collection-accent-rgb: 232, 90, 50; }
+  .collection-curation-card[data-tone="ice"] { --collection-accent-rgb: 46, 184, 230; }
+  .collection-curation-card[data-tone="aurora"] { --collection-accent-rgb: 224, 77, 122; }
+
+  .collection-spectrum {
+    display: grid;
+    grid-template-columns: repeat(var(--collection-spectrum-count, 6), minmax(0, 1fr));
+    gap: 2px;
+    height: 0.42rem;
+    margin: 0.1rem 0 0.85rem;
+    padding: 1px;
+    border-radius: 999px;
+    background: rgba(255, 253, 248, 0.82);
+    box-shadow:
+      inset 0 0 0 1px rgba(180, 150, 120, 0.26),
+      0 6px 16px -14px rgba(62, 38, 24, 0.3);
+    overflow: hidden;
+  }
+  .collection-spectrum__bar {
+    min-width: 0;
+    border-radius: inherit;
+    background:
+      linear-gradient(90deg, rgba(var(--signature-rgb), 0.58), rgba(var(--signature-rgb), 0.98));
+  }
+  .collection-place-chip-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.42rem;
+  }
+  .collection-place-chip {
+    --signature-rgb: 94, 196, 220;
+    max-width: 100%;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(var(--signature-rgb), 0.14));
+    border-color: rgba(var(--signature-rgb), 0.38);
+    color: var(--color-frost);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.86) inset;
+  }
+  .collection-place-chip:hover {
+    border-color: rgba(var(--signature-rgb), 0.68);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 9px 18px -15px rgba(var(--signature-rgb), 0.65);
+  }
+  .collection-place-chip__dot {
+    width: 0.44rem;
+    height: 0.44rem;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: rgb(var(--signature-rgb));
+    box-shadow: 0 0 0 2px rgba(var(--signature-rgb), 0.16);
+  }
+  .collection-place-chip__name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .compare-decision-read {
     display: grid;
