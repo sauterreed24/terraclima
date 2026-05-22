@@ -6,6 +6,7 @@ import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./component
 import { FilterBar, RANKING_OPTIONS } from "./components/FilterBar";
 import { FootprintPanel } from "./components/FootprintPanel";
 import { TempToggle } from "./components/TempToggle";
+import { useElementIsolation } from "./hooks/use-element-isolation";
 import { useFocusTrap } from "./hooks/use-focus-trap";
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
 import { useMediaQuery } from "./hooks/use-media-query";
@@ -323,6 +324,7 @@ export default function App() {
   const initialUrlSyncDoneRef = useRef(false);
   const explorerDockLg = useMediaQuery("(min-width: 1024px)");
   const explorerFilterSheetRef = useRef<ExplorerFilterSheetHandle | null>(null);
+  const appShellRef = useRef<HTMLDivElement>(null);
   /** Reference to the trigger that opened the place detail, so we can return focus on close. */
   const detailTriggerRef = useRef<HTMLElement | null>(null);
 
@@ -506,6 +508,10 @@ export default function App() {
   rankedRef.current = ranked;
 
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
+  const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
+  const placeDetailOccluded = compareOpen || showShortcuts;
+  const compareViewOccluded = showShortcuts;
+  useElementIsolation(appShellRef, appShellOccluded);
 
   const toggleCompare = useCallback((id: string) => {
     setCompareIds(s => {
@@ -703,14 +709,15 @@ export default function App() {
 
   return (
     <div className="relative min-h-screen flex flex-col text-ice overflow-x-hidden">
-      <a
-        href="#main-content"
-        className="skip-to-main focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,143,168,0.55)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffefb]"
-      >
-        Skip to main content
-      </a>
-      <div className="ambient-aurora" aria-hidden="true" />
-      <div id="main-content" role="main" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
+      <div ref={appShellRef} data-app-shell className="relative z-10 flex flex-col flex-1 min-h-0">
+        <a
+          href="#main-content"
+          className="skip-to-main focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,143,168,0.55)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffefb]"
+        >
+          Skip to main content
+        </a>
+        <div className="ambient-aurora" aria-hidden="true" />
+        <div id="main-content" role="main" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
       <TopBar
         view={view}
         setView={setViewFluid}
@@ -950,6 +957,7 @@ export default function App() {
 
       <Footer />
 
+        </div>
       </div>
 
       {selectedPlace ? (
@@ -964,6 +972,7 @@ export default function App() {
             liveFitFilters={filters}
             bookmarked={selectedPlace ? bookmarkIds.has(selectedPlace.id) : false}
             onBookmarkToggle={toggleBookmark}
+            occluded={placeDetailOccluded}
           />
         </Suspense>
       ) : null}
@@ -977,6 +986,7 @@ export default function App() {
             onCopyView={copyCurrentView}
             shareStatus={shareStatus}
             liveFitFilters={filters}
+            occluded={compareViewOccluded}
           />
         </Suspense>
       ) : null}

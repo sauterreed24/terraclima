@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useState, useEffect, useMemo, useRef, useId, useCallback } from "react";
 import { useFocusTrap } from "../hooks/use-focus-trap";
+import { useElementIsolation } from "../hooks/use-element-isolation";
 import type { Place, MicroclimateArchetype, TopographicDriver } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { DRIVER_LABELS } from "../types";
@@ -194,14 +195,16 @@ interface Props {
   /** Whether this place is currently pinned. Hides the control when callback absent. */
   bookmarked?: boolean;
   onBookmarkToggle?: (id: string) => void;
+  occluded?: boolean;
 }
 
-export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, bookmarked, onBookmarkToggle }: Props) {
+export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, bookmarked, onBookmarkToggle, occluded = false }: Props) {
   const reduceMotion = useReducedMotion();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
   const titleId = useId();
-  useFocusTrap(panelRef, Boolean(place));
+  useElementIsolation(panelRef, occluded);
+  useFocusTrap(panelRef, Boolean(place) && !occluded);
 
   const hadOpenPlaceRef = useRef(false);
   useEffect(() => {
@@ -215,7 +218,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
   }, [place]);
 
   useEffect(() => {
-    if (!place) return;
+    if (!place || occluded) return;
     const el = panelRef.current;
     if (!el) return;
     el.scrollTop = 0;
@@ -246,7 +249,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
         }
       }
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by place identity only (`place?.id`), not full object churn
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by place identity only (`place?.id`), not full object churn; occlusion only prevents a covered panel from stealing focus
   }, [place?.id]);
 
   return (
