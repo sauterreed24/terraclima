@@ -34,10 +34,12 @@ afterEach(() => cleanup());
 
 function renderCompare({
   onCopyView,
+  onRemove = () => undefined,
   shareStatus,
   liveFitFilters,
 }: {
   onCopyView?: () => void;
+  onRemove?: (id: string) => void;
   shareStatus?: "idle" | "copied" | "failed";
   liveFitFilters?: LiveFitFilters;
 } = {}) {
@@ -47,7 +49,7 @@ function renderCompare({
         places={PLACES.slice(0, 4)}
         open
         onClose={() => undefined}
-        onRemove={() => undefined}
+        onRemove={onRemove}
         onCopyView={onCopyView}
         shareStatus={shareStatus}
         liveFitFilters={liveFitFilters}
@@ -86,6 +88,18 @@ describe("CompareView", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Copy comparison link" }));
     expect(onCopyView).toHaveBeenCalledTimes(1);
+  });
+
+  it("scopes remove controls to the compare dialog cards", () => {
+    const onRemove = vi.fn();
+    renderCompare({ onRemove });
+
+    const dialog = screen.getByRole("dialog", { name: "4 places side by side" });
+    const removeButtons = within(dialog).getAllByRole("button", { name: /Remove .* from comparison/ });
+
+    expect(removeButtons).toHaveLength(4);
+    fireEvent.click(removeButtons[0]);
+    expect(onRemove).toHaveBeenCalledWith(PLACES[0].id);
   });
 
   it("aligns live-here comparison scores with the active Live Finder filters", () => {

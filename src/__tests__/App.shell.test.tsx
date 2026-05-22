@@ -24,21 +24,33 @@ vi.mock("../components/CompareView", () => ({
   CompareView: ({
     places,
     open,
+    onClose,
     onCopyView,
     shareStatus,
     liveFitFilters,
+    occluded,
   }: {
     places: Array<{ id: string }>;
     open: boolean;
+    onClose: () => void;
     onCopyView?: () => void;
     shareStatus?: "idle" | "copied" | "failed";
     liveFitFilters?: {
       fitPresets?: Set<string>;
       maxSummerHighC?: number;
     };
+    occluded?: boolean;
   }) =>
     open && places.length > 0 ? (
-      <div role="dialog" aria-label={places.length === 1 ? "1 place saved to compare" : `${places.length} places side by side`}>
+      <div
+        role="dialog"
+        aria-label={places.length === 1 ? "1 place saved to compare" : `${places.length} places side by side`}
+        aria-hidden={occluded ? "true" : undefined}
+        data-testid="compare-view-mock"
+      >
+        <button type="button" aria-label="Close comparison" onClick={onClose}>
+          Close comparison
+        </button>
         {onCopyView ? (
           <button type="button" aria-label="Copy comparison link" onClick={onCopyView}>
             {shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
@@ -55,8 +67,13 @@ vi.mock("../components/CompareView", () => ({
 }));
 
 vi.mock("../components/PlaceDetail", () => ({
-  PlaceDetail: ({ onClose }: { onClose: () => void }) => (
-    <div role="dialog" aria-label="Place profile">
+  PlaceDetail: ({ onClose, occluded }: { onClose: () => void; occluded?: boolean }) => (
+    <div
+      role="dialog"
+      aria-label="Place profile"
+      aria-hidden={occluded ? "true" : undefined}
+      data-testid="place-detail-mock"
+    >
       <button type="button" aria-label="Close profile" onClick={onClose} />
     </div>
   ),
@@ -282,6 +299,45 @@ describe("App shell", () => {
     expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("isolates the app shell while a shared compare URL is open, then restores it on close", async () => {
+    window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa");
+    const { container } = renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+    const shell = container.querySelector("[data-app-shell]");
+    expect(shell).not.toBeNull();
+
+    await waitFor(() => expect(shell).toHaveAttribute("aria-hidden", "true"));
+    expect(shell).toHaveAttribute("inert");
+
+    fireEvent.click(screen.getByRole("button", { name: "Close comparison" }));
+
+    await waitFor(() => expect(shell).not.toHaveAttribute("aria-hidden"));
+    expect(shell).not.toHaveAttribute("inert");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("isolates the app shell while a place detail deep link is open", async () => {
+    window.history.replaceState(null, "", "/?p=sequim-wa");
+    const { container } = renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "Place profile" })).toBeInTheDocument();
+    const shell = container.querySelector("[data-app-shell]");
+    expect(shell).not.toBeNull();
+
+    await waitFor(() => expect(shell).toHaveAttribute("aria-hidden", "true"));
+    expect(shell).toHaveAttribute("inert");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("marks the place detail layer hidden when compare is stacked above it", async () => {
+    window.history.replaceState(null, "", "/?p=sequim-wa&cmp=sequim-wa,port-townsend-wa");
+    const { container } = renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+    const detail = container.querySelector("[data-testid='place-detail-mock']");
+    expect(detail).not.toBeNull();
+    expect(detail).toHaveAttribute("aria-hidden", "true");
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("copies comparison URLs from the compare dialog", async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "clipboard", {
@@ -361,7 +417,7 @@ describe("App shell", () => {
     window.history.replaceState(null, "", "/?p=sequim-wa");
     renderApp();
 
-    await screen.findByRole("button", { name: "Close profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    fireEvent.click(await screen.findByRole("button", { name: "Close profile" }, { timeout: APP_SHELL_TIMEOUT_MS }));
     expect((window.history.state as { tcPlace?: boolean } | null)?.tcPlace).toBeFalsy();
 
     fireEvent.click(screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]);

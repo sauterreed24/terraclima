@@ -9,6 +9,7 @@ import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { scoreLivability, feltComfortScore, livedFrictionScore } from "../lib/livability-score";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { useFocusTrap } from "../hooks/use-focus-trap";
+import { useElementIsolation } from "../hooks/use-element-isolation";
 import { Link2, X } from "lucide-react";
 
 type CompareShareStatus = "idle" | "copied" | "failed";
@@ -31,6 +32,7 @@ interface Props {
   onCopyView?: () => void;
   shareStatus?: CompareShareStatus;
   liveFitFilters?: LiveFitFilters;
+  occluded?: boolean;
 }
 
 export function CompareView({
@@ -41,6 +43,7 @@ export function CompareView({
   onCopyView,
   shareStatus = "idle",
   liveFitFilters,
+  occluded = false,
 }: Props) {
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -99,12 +102,13 @@ export function CompareView({
     () => `repeat(${places.length}, minmax(min(17rem, 88vw), 1fr))`,
     [places.length],
   );
-  useFocusTrap(panelRef, open && places.length > 0, true);
+  useElementIsolation(panelRef, occluded);
+  useFocusTrap(panelRef, open && places.length > 0 && !occluded, true);
 
   useEffect(() => {
-    if (!open || places.length === 0) return;
+    if (!open || places.length === 0 || occluded) return;
     closeBtnRef.current?.focus({ preventScroll: true });
-  }, [open, places.length]);
+  }, [occluded, open, places.length]);
   return (
     <AnimatePresence>
       {open && places.length > 0 && (
@@ -129,13 +133,13 @@ export function CompareView({
             className="max-w-[1280px] mx-auto p-4 sm:p-6"
             onClick={e => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between gap-3 mb-4">
-              <div>
-                <div className="text-xs uppercase tracking-wider text-stone">Compare</div>
-                <h2 id={titleId} className="font-atlas text-2xl text-ice">{title}</h2>
-                <p className="mt-1 max-w-2xl text-sm text-stone-readable">{helperText}</p>
+            <div className="compare-dialog__head">
+              <div className="compare-dialog__title">
+                <div className="compare-dialog__eyebrow">Compare</div>
+                <h2 id={titleId} className="compare-dialog__title-text">{title}</h2>
+                <p className="compare-dialog__helper">{helperText}</p>
               </div>
-              <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
+              <div className="compare-dialog__actions">
                 {onCopyView ? (
                   <button
                     type="button"
