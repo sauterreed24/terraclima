@@ -1,6 +1,9 @@
 import { COLLECTIONS } from "../data/collections";
 import { PLACES_BY_ID } from "../data/places";
 import { useProse } from "../lib/units";
+import { getPlaceVisualSignature, type PlaceVisualSignature } from "../lib/place-visual-signature";
+import type { Collection } from "../data/collections";
+import type { Place } from "../types";
 
 interface Props {
   onOpenPlace: (id: string) => void;
@@ -8,11 +11,81 @@ interface Props {
   activeId?: string;
 }
 
+interface CollectionStop {
+  place: Place;
+  signature: PlaceVisualSignature;
+}
+
+interface CollectionRow {
+  collection: Collection;
+  stops: CollectionStop[];
+}
+
+function buildCollectionRows(): CollectionRow[] {
+  return COLLECTIONS.map(collection => ({
+    collection,
+    stops: collection.placeIds.flatMap(id => {
+      const place = PLACES_BY_ID[id];
+      return place ? [{ place, signature: getPlaceVisualSignature(place) }] : [];
+    }),
+  }));
+}
+
+const COLLECTION_ROWS = buildCollectionRows();
+
+function CollectionSpectrum({ stops }: { stops: CollectionStop[] }) {
+  const visibleStops = stops.slice(0, 12);
+  if (visibleStops.length === 0) return null;
+
+  return (
+    <div
+      className="collection-spectrum"
+      aria-hidden="true"
+      style={{ ["--collection-spectrum-count" as string]: visibleStops.length }}
+    >
+      {visibleStops.map(({ place, signature }) => (
+        <span
+          key={place.id}
+          className="collection-spectrum__bar"
+          title={`${place.name}: ${signature.mapLabel}`}
+          style={{ ["--signature-rgb" as string]: signature.mapAccentRgb }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function CollectionPlaceChip({
+  stop,
+  tone,
+  onOpenPlace,
+}: {
+  stop: CollectionStop;
+  tone: Collection["tone"];
+  onOpenPlace: (id: string) => void;
+}) {
+  const { place, signature } = stop;
+  return (
+    <button
+      type="button"
+      onClick={() => onOpenPlace(place.id)}
+      className="chip chip-btn collection-place-chip"
+      data-tone={tone}
+      title={`Open ${place.name}: ${signature.mapLabel}`}
+      style={{ ["--signature-rgb" as string]: signature.mapAccentRgb }}
+    >
+      <span className="collection-place-chip__dot" aria-hidden="true" />
+      <span className="collection-place-chip__name">{place.name}</span>
+    </button>
+  );
+}
+
 export function CollectionsView({ onOpenPlace, onPick, activeId }: Props) {
   const prose = useProse();
+
   return (
     <div className="space-y-5">
-      {COLLECTIONS.map(c => {
+      {COLLECTION_ROWS.map(({ collection: c, stops }) => {
         const isActive = c.id === activeId;
         return (
           <div
@@ -37,23 +110,16 @@ export function CollectionsView({ onOpenPlace, onPick, activeId }: Props) {
               </button>
             </div>
             <p className="text-sm text-frost leading-relaxed mb-3">{prose(c.description)}</p>
-            <div className="flex flex-wrap gap-1.5">
-              {c.placeIds.map(id => {
-                const p = PLACES_BY_ID[id];
-                if (!p) return null;
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => onOpenPlace(id)}
-                    className="chip chip-btn"
-                    data-tone={c.tone}
-                    title={`Open ${p.name}`}
-                  >
-                    {p.name}
-                  </button>
-                );
-              })}
+            <CollectionSpectrum stops={stops} />
+            <div className="collection-place-chip-grid">
+              {stops.map(stop => (
+                <CollectionPlaceChip
+                  key={stop.place.id}
+                  stop={stop}
+                  tone={c.tone}
+                  onOpenPlace={onOpenPlace}
+                />
+              ))}
             </div>
           </div>
         );
