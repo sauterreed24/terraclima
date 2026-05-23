@@ -168,13 +168,13 @@ describe("AtlasMap DOM controls", () => {
     const third = items[2]!;
 
     expect(first).toHaveTextContent("Alpha Valley");
-    expect(first).toHaveTextContent("Tier A");
+    expect(first).toHaveTextContent("Flagship");
     expect(first).toHaveTextContent("2 lived sources");
     expect(second).toHaveTextContent("Beta Ridge");
-    expect(second).toHaveTextContent("Tier B");
+    expect(second).toHaveTextContent("Spotlight");
     expect(second).toHaveTextContent("Partial lived read");
     expect(third).toHaveTextContent("Cedar Draw");
-    expect(third).toHaveTextContent("Tier C");
+    expect(third).toHaveTextContent("Index");
     expect(third).toHaveTextContent("Lived read pending");
 
     fireEvent.click(first);

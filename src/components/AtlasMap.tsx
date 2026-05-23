@@ -60,6 +60,11 @@ const DESKTOP_PIN_MIN_SPACING_PX = 32;
 const MOBILE_PIN_MAX_OFFSET_PX = 34;
 const DESKTOP_PIN_MAX_OFFSET_PX = 24;
 const CLUSTER_TIER_ORDER: Record<Place["tier"], number> = { A: 0, B: 1, C: 2 };
+const CLUSTER_TIER_LABEL: Record<Place["tier"], string> = {
+  A: "Flagship",
+  B: "Spotlight",
+  C: "Index",
+};
 
 export function wheelZoomFactor(deltaY: number, deltaMode = 0): number {
   if (!Number.isFinite(deltaY) || deltaY === 0) return 1;
@@ -2048,7 +2053,9 @@ const ClusterPicker = memo(function ClusterPicker({
       <div className="grid gap-1.5 max-h-[14rem] overflow-y-auto pt-2">
         {sortedPoints.map(pt => {
           const rank = featuredRankById.get(pt.place.id);
-          const tierLabel = rank ? `#${rank} / Tier ${pt.place.tier}` : `Tier ${pt.place.tier}`;
+          const tierLabel = rank
+            ? `#${rank} ${CLUSTER_TIER_LABEL[pt.place.tier]}`
+            : CLUSTER_TIER_LABEL[pt.place.tier];
           const coverage = livedRealityCoverage(pt.place);
           const coverageLabel = clusterPickerCoverageLabel(pt.place);
           return (
