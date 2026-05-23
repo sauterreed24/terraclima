@@ -81,6 +81,11 @@ type RenderedClusterPoint = ClusterPoint & {
   needsLeader: boolean;
   crowded: boolean;
 };
+type ClusterPickerSpatialPoint = ClusterPoint & {
+  pickerIndex: number;
+  miniX: number;
+  miniY: number;
+};
 
 type ClimateRibbon = {
   id: string;
@@ -1207,7 +1212,8 @@ export function AtlasMap({
   }, [width, height]);
 
   const activateCluster = useCallback((cluster: AtlasClusterItem<{ place: Place; x: number; y: number; id: string }>) => {
-    if (!canClusterSeparateAtZoom(cluster, MAX_ZOOM, clusterRadiusPx * 0.85)) {
+    const alreadyAtTouchLimit = coarsePointer && viewRef.current.k >= MAX_ZOOM * 0.94;
+    if (alreadyAtTouchLimit || !canClusterSeparateAtZoom(cluster, MAX_ZOOM, clusterRadiusPx * 0.85)) {
       openClusterPicker(cluster);
       return;
     }
@@ -1956,7 +1962,7 @@ const ClusterMarker = memo(function ClusterMarker({
       transform={`translate(${cluster.x} ${cluster.y})`}
       role="button"
       tabIndex={0}
-      aria-label={`${count} nearby microclimates. Zoom to separate these pins.`}
+      aria-label={`${count} nearby microclimates. Zoom or choose from this cluster.`}
       className="map-cluster"
       onPointerDown={stopPan}
       onClick={activate}
@@ -2009,6 +2015,43 @@ function compareClusterPickerPoints(
   return a.place.id.localeCompare(b.place.id);
 }
 
+function clusterPickerMiniPoints(points: readonly ClusterPoint[]): ClusterPickerSpatialPoint[] {
+  if (points.length === 0) return [];
+
+  const xs = points.map(pt => pt.x);
+  const ys = points.map(pt => pt.y);
+  const minX = Math.min(...xs);
+  const maxX = Math.max(...xs);
+  const minY = Math.min(...ys);
+  const maxY = Math.max(...ys);
+  const spreadX = maxX - minX;
+  const spreadY = maxY - minY;
+
+  if (spreadX < 1.2 && spreadY < 1.2) {
+    const count = points.length;
+    return points.map((pt, index) => {
+      const angle = (index / count) * Math.PI * 2 - Math.PI / 2;
+      const radius = count > 12 ? (index % 2 === 0 ? 34 : 22) : count > 5 ? 30 : 24;
+      return {
+        ...pt,
+        pickerIndex: index + 1,
+        miniX: 50 + Math.cos(angle) * radius,
+        miniY: 50 + Math.sin(angle) * radius,
+      };
+    });
+  }
+
+  const centerX = (minX + maxX) / 2;
+  const centerY = (minY + maxY) / 2;
+  const scale = 76 / Math.max(spreadX, spreadY, 1);
+  return points.map((pt, index) => ({
+    ...pt,
+    pickerIndex: index + 1,
+    miniX: Math.max(10, Math.min(90, 50 + (pt.x - centerX) * scale)),
+    miniY: Math.max(10, Math.min(90, 50 + (pt.y - centerY) * scale)),
+  }));
+}
+
 const ClusterPicker = memo(function ClusterPicker({
   cluster,
   xPct,
@@ -2026,21 +2069,25 @@ const ClusterPicker = memo(function ClusterPicker({
 }) {
   const onRight = xPct < 52;
   const onTop = yPct > 56;
+  const verticalOffset = onTop ? "calc(-100% - 10px)" : "10px";
+  const pickerStyle = {
+    left: `${xPct}%`,
+    top: `${yPct}%`,
+    "--cluster-picker-y-offset": verticalOffset,
+    transform: `translate(${onRight ? "12px" : "calc(-100% - 12px)"}, var(--cluster-picker-y-offset))`,
+  } as React.CSSProperties;
   const sortedPoints = useMemo(
     () => cluster.points.slice().sort((a, b) => compareClusterPickerPoints(a, b, featuredRankById)),
     [cluster.points, featuredRankById],
   );
+  const spatialPoints = useMemo(() => clusterPickerMiniPoints(sortedPoints), [sortedPoints]);
 
   return (
     <div
       role="dialog"
       aria-label="Choose a microclimate from this cluster"
       className="cluster-picker map-chrome-panel"
-      style={{
-        left: `${xPct}%`,
-        top: `${yPct}%`,
-        transform: `translate(${onRight ? "12px" : "calc(-100% - 12px)"}, ${onTop ? "calc(-100% - 10px)" : "10px"})`,
-      }}
+      style={pickerStyle}
     >
       <div className="flex items-center justify-between gap-2 border-b border-[rgba(140,200,224,0.24)] pb-2">
         <div className="text-[10px] uppercase tracking-wider text-[rgba(236,244,252,0.76)]">
@@ -2050,8 +2097,27 @@ const ClusterPicker = memo(function ClusterPicker({
           <X className="w-3.5 h-3.5" aria-hidden />
         </button>
       </div>
-      <div className="grid gap-1.5 max-h-[14rem] overflow-y-auto pt-2">
-        {sortedPoints.map(pt => {
+      <div className="cluster-picker__spatial" aria-label="Cluster location key">
+        <div className="cluster-picker__mini-map" aria-hidden="true">
+          <span className="cluster-picker__mini-center" />
+          {spatialPoints.map(pt => (
+            <span
+              key={pt.place.id}
+              className="cluster-picker__mini-pin"
+              data-tier={pt.place.tier}
+              style={{ left: `${pt.miniX}%`, top: `${pt.miniY}%` }}
+            >
+              {pt.pickerIndex}
+            </span>
+          ))}
+        </div>
+        <div className="cluster-picker__spatial-copy">
+          <span className="cluster-picker__spatial-label">Location key</span>
+          <span className="cluster-picker__spatial-count">{cluster.points.length} pins separated</span>
+        </div>
+      </div>
+      <div className="cluster-picker__list">
+        {spatialPoints.map(pt => {
           const rank = featuredRankById.get(pt.place.id);
           const tierLabel = rank
             ? `#${rank} ${CLUSTER_TIER_LABEL[pt.place.tier]}`
@@ -2063,11 +2129,14 @@ const ClusterPicker = memo(function ClusterPicker({
               key={pt.place.id}
               type="button"
               className="cluster-picker__item"
-              aria-label={`Open ${pt.place.name}. ${tierLabel}. ${coverageLabel}.`}
+              aria-label={`Open ${pt.place.name}. Position ${pt.pickerIndex}. ${tierLabel}. ${coverageLabel}.`}
               onClick={() => onSelect(pt.place.id)}
             >
               <span className="cluster-picker__item-head">
-                <span className="cluster-picker__title">{pt.place.name}</span>
+                <span className="cluster-picker__title-row">
+                  <span className="cluster-picker__index" aria-hidden="true">{pt.pickerIndex}</span>
+                  <span className="cluster-picker__title">{pt.place.name}</span>
+                </span>
                 <span className="cluster-picker__tier">{tierLabel}</span>
               </span>
               <span className="cluster-picker__secondary">{placeMapSecondaryLine(pt.place)}</span>

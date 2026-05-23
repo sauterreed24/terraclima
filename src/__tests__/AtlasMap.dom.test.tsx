@@ -167,6 +167,10 @@ describe("AtlasMap DOM controls", () => {
     const second = items[1]!;
     const third = items[2]!;
 
+    expect(within(dialog).getByText("Location key")).toBeInTheDocument();
+    expect(within(dialog).getByText("20 pins separated")).toBeInTheDocument();
+    expect(dialog.querySelectorAll(".cluster-picker__mini-pin")).toHaveLength(20);
+    expect(first).toHaveAttribute("aria-label", expect.stringContaining("Position 1"));
     expect(first).toHaveTextContent("Alpha Valley");
     expect(first).toHaveTextContent("Flagship");
     expect(first).toHaveTextContent("2 lived sources");

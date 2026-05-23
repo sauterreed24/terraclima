@@ -5019,6 +5019,94 @@
     padding: 0.75rem;
     color: rgba(245, 250, 255, 0.96);
   }
+  .cluster-picker__spatial {
+    display: grid;
+    grid-template-columns: 5.75rem minmax(0, 1fr);
+    gap: 0.72rem;
+    align-items: center;
+    margin-top: 0.65rem;
+    padding: 0.55rem;
+    border-radius: 0.55rem;
+    border: 1px solid rgba(140, 200, 224, 0.2);
+    background:
+      linear-gradient(135deg, rgba(13, 20, 32, 0.76), rgba(19, 31, 45, 0.48)),
+      rgba(8, 14, 24, 0.42);
+  }
+  .cluster-picker__mini-map {
+    position: relative;
+    width: 5.75rem;
+    height: 3.75rem;
+    overflow: hidden;
+    border-radius: 0.45rem;
+    border: 1px solid rgba(140, 200, 224, 0.22);
+    background:
+      radial-gradient(circle at 50% 50%, rgba(140, 200, 224, 0.18), transparent 58%),
+      linear-gradient(90deg, rgba(245, 250, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(245, 250, 255, 0.055) 1px, transparent 1px),
+      rgba(6, 12, 20, 0.56);
+    background-size: auto, 1.15rem 1.15rem, 1.15rem 1.15rem, auto;
+  }
+  .cluster-picker__mini-center {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 0.34rem;
+    height: 0.34rem;
+    border-radius: 999px;
+    background: rgba(245, 250, 255, 0.42);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0 12px rgba(140, 200, 224, 0.04);
+  }
+  .cluster-picker__mini-pin {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.05rem;
+    height: 1.05rem;
+    border-radius: 999px;
+    border: 1px solid rgba(8, 14, 24, 0.82);
+    color: rgba(6, 12, 18, 0.92);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.52rem;
+    font-weight: 800;
+    line-height: 1;
+    transform: translate(-50%, -50%);
+    box-shadow:
+      0 0 0 1px rgba(245, 250, 255, 0.42),
+      0 4px 10px rgba(0, 0, 0, 0.32);
+  }
+  .cluster-picker__mini-pin[data-tier="A"] {
+    background: rgba(255, 216, 128, 0.95);
+  }
+  .cluster-picker__mini-pin[data-tier="B"] {
+    background: rgba(145, 218, 231, 0.95);
+  }
+  .cluster-picker__mini-pin[data-tier="C"] {
+    background: rgba(178, 216, 160, 0.92);
+  }
+  .cluster-picker__spatial-copy {
+    display: grid;
+    gap: 0.18rem;
+    min-width: 0;
+  }
+  .cluster-picker__spatial-label {
+    color: rgba(245, 250, 255, 0.96);
+    font-size: 0.72rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+  .cluster-picker__spatial-count {
+    color: rgba(204, 222, 238, 0.78);
+    font-size: 0.64rem;
+    line-height: 1.25;
+  }
+  .cluster-picker__list {
+    display: grid;
+    gap: 0.375rem;
+    max-height: min(10rem, 34vh);
+    overflow-y: auto;
+    padding-top: 0.5rem;
+  }
   .cluster-picker__item {
     display: grid;
     gap: 0.25rem;
@@ -5037,6 +5125,29 @@
     justify-content: space-between;
     gap: 0.5rem;
     min-width: 0;
+  }
+  .cluster-picker__title-row {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.42rem;
+    min-width: 0;
+  }
+  .cluster-picker__index {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.12rem;
+    height: 1.12rem;
+    margin-top: 0.02rem;
+    border-radius: 999px;
+    border: 1px solid rgba(245, 250, 255, 0.28);
+    background: rgba(140, 200, 224, 0.16);
+    color: rgba(235, 247, 255, 0.94);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.58rem;
+    font-weight: 800;
+    line-height: 1;
   }
   .cluster-picker__title {
     min-width: 0;
@@ -5089,6 +5200,22 @@
   .cluster-picker__item:hover {
     border-color: rgba(140, 200, 224, 0.65);
     background: rgba(24, 35, 57, 0.72);
+  }
+
+  @media (max-width: 560px) {
+    .cluster-picker {
+      left: 50% !important;
+      width: min(21rem, calc(100vw - 1.5rem));
+      max-width: calc(100vw - 1.5rem);
+      transform: translate(-50%, var(--cluster-picker-y-offset, 10px)) !important;
+    }
+    .cluster-picker__spatial {
+      grid-template-columns: 5.2rem minmax(0, 1fr);
+      gap: 0.62rem;
+    }
+    .cluster-picker__mini-map {
+      width: 5.2rem;
+    }
   }
 
   @media (pointer: coarse) {
