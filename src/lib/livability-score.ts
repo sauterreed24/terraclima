@@ -69,6 +69,7 @@ import {
   seasonalUsabilityScore,
   summerDiurnalC,
 } from "./climate-metrics";
+import { countLivedSourceEvidence } from "./lived-sources";
 import { dominantPlaceFeelDrag, placeFeelScore } from "./place-feel";
 
 const RISK_KEYS = [
@@ -730,7 +731,7 @@ export function livedRealityCoverage(p: Place): LivedRealityCoverage {
   const ls = p.liveSignals;
   if (!ls) return { axes: 0, sourceCount: 0, confidence: "unrated" };
   const axes = [ls.costPressure, ls.socialStress, ls.accessFriction].filter(v => v != null).length;
-  const sourceCount = ls.sources?.filter(s => s.url?.trim() || s.label.trim()).length ?? 0;
+  const sourceCount = countLivedSourceEvidence(ls.sources);
   if (axes >= 3 && sourceCount > 0 && ls.note?.trim()) {
     return { axes, sourceCount, confidence: "source-backed" };
   }

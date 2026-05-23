@@ -27,6 +27,7 @@ import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitAssessment, type LiveFitFilters } from "../lib/live-fit";
+import { formatLivedSources } from "../lib/lived-sources";
 import { buildComfortPrecisionProfile, type ComfortPrecisionMonth, type ComfortPrecisionProfile } from "../lib/comfort-precision";
 import { describeHumanComfort, scoreLivability, type LivabilityResult } from "../lib/livability-score";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "../lib/place-visual-signature";
@@ -846,6 +847,7 @@ function DetailBody({
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
   const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
   const livability = useMemo(() => scoreLivability(place), [place]);
+  const livedSources = useMemo(() => formatLivedSources(place.liveSignals?.sources), [place.liveSignals?.sources]);
   const comfortPrecision = useMemo(() => buildComfortPrecisionProfile(place, { humidityAnalogPool: PLACES }), [place]);
   const comfortRead = useMemo(() => describeHumanComfort(place), [place]);
   const visualSignature = useMemo(() => getPlaceVisualSignature(place), [place]);
@@ -985,14 +987,14 @@ function DetailBody({
             {place.liveSignals.note ? (
               <p className="mt-3 text-[12px] leading-snug text-frost border-t border-dashed border-[rgba(71,90,122,0.18)] pt-2">{prose(place.liveSignals.note)}</p>
             ) : null}
-            {place.liveSignals.sources && place.liveSignals.sources.length > 0 ? (
+            {livedSources.length > 0 ? (
               <div className="mt-2 text-[11px] text-stone-readable">
                 Sources:
                 {" "}
-                {place.liveSignals.sources.map((s, i) => (
-                  <span key={s.label}>
+                {livedSources.map((source, i) => (
+                  <span key={source.key}>
                     {i > 0 ? " · " : ""}
-                    {s.url ? <a href={s.url} className="underline decoration-dotted hover:text-frost" target="_blank" rel="noreferrer noopener">{s.label}</a> : s.label}
+                    {source.href ? <a href={source.href} className="underline decoration-dotted hover:text-frost" target="_blank" rel="noreferrer noopener">{source.label}</a> : source.label}
                   </span>
                 ))}
               </div>
