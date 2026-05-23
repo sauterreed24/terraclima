@@ -125,6 +125,8 @@ describe("livability v3 — corpus smoke", () => {
 
   it("keeps high-ranking lived-reality gaps source-backed", () => {
     const ids = [
+      "creel-mx",
+      "portal-az",
       "cuauhtemoc-mx",
       "huachuca-az",
       "traverse-city-mi",

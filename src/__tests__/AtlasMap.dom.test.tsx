@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AtlasMap, wheelZoomFactor } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
@@ -20,39 +20,43 @@ function setCoarsePointer(matches: boolean) {
   }));
 }
 
-function renderMap(onSelect = vi.fn(), featuredIds: readonly string[] = []) {
+function defaultMapPlaces() {
+  return [
+    makePlace({
+      id: "a",
+      name: "Alpha Valley",
+      lat: 40,
+      lon: -100,
+      tier: "A",
+      whyDistinct: "A sharp rain-shadow bench keeps this valley sunnier and drier than the forested slopes around it.",
+      drivers: ["rain-shadow", "aspect-slope", "cold-air-drainage", "orographic-lift"],
+      growability: {
+        score: 70,
+        hardinessZone: "8a",
+        growsWell: ["lavender", "grapes", "apples"],
+        tricky: ["late frost pockets"],
+      },
+      risks: {
+        wildfire: { level: "elevated" },
+        flood: { level: "low" },
+        drought: { level: "moderate" },
+        extremeHeat: { level: "low" },
+        extremeCold: { level: "low" },
+        smoke: { level: "moderate" },
+        storm: { level: "low" },
+        landslide: { level: "low" },
+        coastal: { level: "very-low" },
+      },
+    }),
+    makePlace({ id: "b", name: "Beta Ridge", lat: 41, lon: -101, tier: "B" }),
+  ];
+}
+
+function renderMap(onSelect = vi.fn(), featuredIds: readonly string[] = [], places = defaultMapPlaces()) {
   return render(
     <UnitProvider>
       <AtlasMap
-        places={[
-          makePlace({
-            id: "a",
-            name: "Alpha Valley",
-            lat: 40,
-            lon: -100,
-            tier: "A",
-            whyDistinct: "A sharp rain-shadow bench keeps this valley sunnier and drier than the forested slopes around it.",
-            drivers: ["rain-shadow", "aspect-slope", "cold-air-drainage", "orographic-lift"],
-            growability: {
-              score: 70,
-              hardinessZone: "8a",
-              growsWell: ["lavender", "grapes", "apples"],
-              tricky: ["late frost pockets"],
-            },
-            risks: {
-              wildfire: { level: "elevated" },
-              flood: { level: "low" },
-              drought: { level: "moderate" },
-              extremeHeat: { level: "low" },
-              extremeCold: { level: "low" },
-              smoke: { level: "moderate" },
-              storm: { level: "low" },
-              landslide: { level: "low" },
-              coastal: { level: "very-low" },
-            },
-          }),
-          makePlace({ id: "b", name: "Beta Ridge", lat: 41, lon: -101, tier: "B" }),
-        ]}
+        places={places}
         onSelect={onSelect}
         featuredIds={featuredIds}
       />
@@ -100,6 +104,81 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("group", { name: "Map key" })).toBeInTheDocument();
     expect(screen.getByText("Orographic / orchard / chinook")).toBeInTheDocument();
     expect(screen.getByText(/Flagship/)).toBeInTheDocument();
+  });
+
+  it("opens dense clusters into a sorted picker with tier and lived-coverage context", () => {
+    setCoarsePointer(true);
+    const onSelect = vi.fn();
+    const clusterPlaces = [
+      makePlace({
+        id: "cluster-c",
+        name: "Cedar Draw",
+        tier: "C",
+        lat: 40,
+        lon: -100,
+      }),
+      makePlace({
+        id: "cluster-a",
+        name: "Alpha Valley",
+        tier: "A",
+        lat: 40,
+        lon: -100,
+        liveSignals: {
+          costPressure: 30,
+          socialStress: 20,
+          accessFriction: 35,
+          note: "Two source lived-reality read for the dense-cluster picker.",
+          sources: [
+            { label: "County profile", url: "https://example.com/county" },
+            { label: "Local services", url: "https://example.com/services" },
+          ],
+        },
+      }),
+      makePlace({
+        id: "cluster-b",
+        name: "Beta Ridge",
+        tier: "B",
+        lat: 40,
+        lon: -100,
+        liveSignals: {
+          costPressure: 44,
+          note: "Partial lived-reality read with one graded axis.",
+          sources: [],
+        },
+      }),
+      ...Array.from({ length: 17 }, (_, index) =>
+        makePlace({
+          id: `cluster-z-${index}`,
+          name: `Zulu Pocket ${String(index).padStart(2, "0")}`,
+          tier: "C",
+          lat: 40,
+          lon: -100,
+        }),
+      ),
+    ];
+
+    renderMap(onSelect, [], clusterPlaces);
+
+    fireEvent.click(screen.getByRole("button", { name: /20 nearby microclimates/ }));
+
+    const dialog = screen.getByRole("dialog", { name: "Choose a microclimate from this cluster" });
+    const items = within(dialog).getAllByRole("button", { name: /Open / });
+    const first = items[0]!;
+    const second = items[1]!;
+    const third = items[2]!;
+
+    expect(first).toHaveTextContent("Alpha Valley");
+    expect(first).toHaveTextContent("Tier A");
+    expect(first).toHaveTextContent("2 lived sources");
+    expect(second).toHaveTextContent("Beta Ridge");
+    expect(second).toHaveTextContent("Tier B");
+    expect(second).toHaveTextContent("Partial lived read");
+    expect(third).toHaveTextContent("Cedar Draw");
+    expect(third).toHaveTextContent("Tier C");
+    expect(third).toHaveTextContent("Lived read pending");
+
+    fireEvent.click(first);
+    expect(onSelect).toHaveBeenCalledWith("cluster-a");
   });
 
   it("shows a compact non-blocking scout preview on desktop hover while click still selects", () => {

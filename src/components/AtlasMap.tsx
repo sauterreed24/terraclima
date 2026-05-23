@@ -20,6 +20,7 @@ import {
 import { layoutAtlasMapPins } from "../lib/atlas-map-pin-layout";
 import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
 import { computePinLabelModes, type MapPinLabelMode } from "../lib/atlas-map-label-visibility";
+import { livedRealityCoverage } from "../lib/livability-score";
 import {
   ATLAS_DEFAULT_TOUCH_MODE,
   atlasTouchActionForMode,
@@ -58,6 +59,7 @@ const MOBILE_PIN_MIN_SPACING_PX = 42;
 const DESKTOP_PIN_MIN_SPACING_PX = 32;
 const MOBILE_PIN_MAX_OFFSET_PX = 34;
 const DESKTOP_PIN_MAX_OFFSET_PX = 24;
+const CLUSTER_TIER_ORDER: Record<Place["tier"], number> = { A: 0, B: 1, C: 2 };
 
 export function wheelZoomFactor(deltaY: number, deltaMode = 0): number {
   if (!Number.isFinite(deltaY) || deltaY === 0) return 1;
@@ -1200,17 +1202,17 @@ export function AtlasMap({
   }, [width, height]);
 
   const activateCluster = useCallback((cluster: AtlasClusterItem<{ place: Place; x: number; y: number; id: string }>) => {
+    if (!canClusterSeparateAtZoom(cluster, MAX_ZOOM, clusterRadiusPx * 0.85)) {
+      openClusterPicker(cluster);
+      return;
+    }
+
     const next = fitMapViewToCluster(cluster, width, height, {
       minK: Math.min(MAX_ZOOM, Math.max(viewRef.current.k * 1.45, MIN_ZOOM)),
       maxK: MAX_ZOOM,
       pad: coarsePointer ? 92 : 72,
       inset: 0.08,
     });
-
-    if (next.k >= MAX_ZOOM * 0.98 && !canClusterSeparateAtZoom(cluster, MAX_ZOOM, clusterRadiusPx * 0.85)) {
-      openClusterPicker(cluster);
-      return;
-    }
 
     setClusterPicker(null);
     setView(next);
@@ -1875,6 +1877,7 @@ export function AtlasMap({
           cluster={clusterPicker.cluster}
           xPct={clusterPicker.xPct}
           yPct={clusterPicker.yPct}
+          featuredRankById={featuredRankById}
           onClose={() => setClusterPicker(null)}
           onSelect={(id) => {
             setClusterPicker(null);
@@ -1974,21 +1977,55 @@ const ClusterMarker = memo(function ClusterMarker({
   );
 });
 
+function clusterPickerCoverageLabel(place: Place): string {
+  const coverage = livedRealityCoverage(place);
+  if (coverage.confidence === "source-backed") {
+    return coverage.sourceCount >= 2 ? `${coverage.sourceCount} lived sources` : "Source-backed lived read";
+  }
+  if (coverage.confidence === "partial") return "Partial lived read";
+  return "Lived read pending";
+}
+
+function compareClusterPickerPoints(
+  a: ClusterPoint,
+  b: ClusterPoint,
+  featuredRankById: ReadonlyMap<string, number>,
+) {
+  const aRank = featuredRankById.get(a.place.id) ?? Number.POSITIVE_INFINITY;
+  const bRank = featuredRankById.get(b.place.id) ?? Number.POSITIVE_INFINITY;
+  if (aRank !== bRank) return aRank - bRank;
+
+  const tierDelta = CLUSTER_TIER_ORDER[a.place.tier] - CLUSTER_TIER_ORDER[b.place.tier];
+  if (tierDelta !== 0) return tierDelta;
+
+  const nameDelta = a.place.name.localeCompare(b.place.name);
+  if (nameDelta !== 0) return nameDelta;
+
+  return a.place.id.localeCompare(b.place.id);
+}
+
 const ClusterPicker = memo(function ClusterPicker({
   cluster,
   xPct,
   yPct,
+  featuredRankById,
   onClose,
   onSelect,
 }: {
   cluster: AtlasClusterItem<ClusterPoint>;
   xPct: number;
   yPct: number;
+  featuredRankById: ReadonlyMap<string, number>;
   onClose: () => void;
   onSelect: (id: string) => void;
 }) {
   const onRight = xPct < 52;
   const onTop = yPct > 56;
+  const sortedPoints = useMemo(
+    () => cluster.points.slice().sort((a, b) => compareClusterPickerPoints(a, b, featuredRankById)),
+    [cluster.points, featuredRankById],
+  );
+
   return (
     <div
       role="dialog"
@@ -2009,20 +2046,28 @@ const ClusterPicker = memo(function ClusterPicker({
         </button>
       </div>
       <div className="grid gap-1.5 max-h-[14rem] overflow-y-auto pt-2">
-        {cluster.points
-          .slice()
-          .sort((a, b) => a.place.name.localeCompare(b.place.name))
-          .map(pt => (
+        {sortedPoints.map(pt => {
+          const rank = featuredRankById.get(pt.place.id);
+          const tierLabel = rank ? `#${rank} / Tier ${pt.place.tier}` : `Tier ${pt.place.tier}`;
+          const coverage = livedRealityCoverage(pt.place);
+          const coverageLabel = clusterPickerCoverageLabel(pt.place);
+          return (
             <button
               key={pt.place.id}
               type="button"
               className="cluster-picker__item"
+              aria-label={`Open ${pt.place.name}. ${tierLabel}. ${coverageLabel}.`}
               onClick={() => onSelect(pt.place.id)}
             >
-              <span className="font-atlas text-[0.9rem] leading-tight">{pt.place.name}</span>
-              <span className="text-[0.68rem] text-[rgba(215,228,242,0.86)] leading-snug">{placeMapSecondaryLine(pt.place)}</span>
+              <span className="cluster-picker__item-head">
+                <span className="cluster-picker__title">{pt.place.name}</span>
+                <span className="cluster-picker__tier">{tierLabel}</span>
+              </span>
+              <span className="cluster-picker__secondary">{placeMapSecondaryLine(pt.place)}</span>
+              <span className="cluster-picker__coverage" data-coverage={coverage.confidence}>{coverageLabel}</span>
             </button>
-          ))}
+          );
+        })}
       </div>
     </div>
   );

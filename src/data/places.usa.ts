@@ -263,6 +263,19 @@ export const PLACES_USA: Place[] = [
 
     scores: { hiddenGem: 88, microclimateUniqueness: 95, comfort: 66, resilience: 52, growability: 56, tradeoff: 58 },
 
+    liveSignals: {
+      costPressure: 42,
+      socialStress: 18,
+      accessFriction: 82,
+      note: "Tiny-market housing and quiet community fabric are not the hard part; long service drives, volunteer fire/EMS dependence, wildfire planning, and specialty-care distance are the real live-here filter.",
+      sources: [
+        { label: "Arizona OEO - ZCTA 85632 population profile", url: "https://www.azcommerce.com/media/1544608/pop-sdc-azzcta-service-area-statistics.pdf" },
+        { label: "Portal Rescue - volunteer fire and EMS", url: "https://www.portalrescue.com/" },
+        { label: "Cochise County - community wildfire protection plan", url: "https://www.cochise.az.gov/288/County-Emergency-Plans" },
+        { label: "Northern Cochise Community Hospital - Willcox services", url: "https://www.ncch.com/en" },
+      ],
+    },
+
     relocationFit: ["naturalists", "birders", "writers/artists", "off-grid minded", "heat-tolerant"],
     travelFit: ["birding (elegant trogon, 14 hummingbird species)", "dark sky", "monsoon storm watchers", "wildflower season"],
     whoWouldLove: "Desert romantics who want elevation-cooled summers and vivid summer monsoons; anyone captivated by vertical ecology.",
