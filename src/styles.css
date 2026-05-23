@@ -5084,6 +5084,15 @@
   .cluster-picker__mini-pin[data-tier="C"] {
     background: rgba(178, 216, 160, 0.92);
   }
+  .cluster-picker__mini-pin[data-keyed="false"] {
+    width: 0.62rem;
+    height: 0.62rem;
+    color: transparent;
+    opacity: 0.78;
+    box-shadow:
+      0 0 0 1px rgba(245, 250, 255, 0.24),
+      0 3px 8px rgba(0, 0, 0, 0.26);
+  }
   .cluster-picker__spatial-copy {
     display: grid;
     gap: 0.18rem;
