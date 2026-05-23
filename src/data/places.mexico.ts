@@ -1414,6 +1414,17 @@ export const PLACES_MEXICO: Place[] = [
     risks: { wildfire: { level: "elevated", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "low", trend: "stable" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     nearbyContrasts: [{ label: "Batopilas (canyon floor, 495 m)", note: "Subtropical, palm-and-citrus climate just 25 km horizontal but 1,800 m down; winter highs 26°C while Creel shivers near freezing." }],
     scores: { hiddenGem: 82, microclimateUniqueness: 86, comfort: 54, resilience: 58, growability: 46, tradeoff: 60 },
+    liveSignals: {
+      costPressure: 38,
+      socialStress: 46,
+      accessFriction: 66,
+      note: "Creel is not an expat-cost outlier, but winter-ready housing, Indigenous-region due diligence, rural poverty, and long mountain travel make the lived read materially harder than the climate score alone.",
+      sources: [
+        { label: "Data Mexico - Bocoyna demographic and poverty profile", url: "https://www.economia.gob.mx/datamexico/en/profile/geo/bocoyna?redirect=true" },
+        { label: "SECTUR - Creel Pueblo Magico profile", url: "https://www.sectur.gob.mx/gobmx/pueblos-magicos/creel-chihuahua/" },
+        { label: "Chihuahua state - Creel tourism and Raramuri context", url: "https://chihuahua.gob.mx/index.php/prensa/celebra-creel-xv-aniversario-como-pueblo-magico" },
+      ],
+    },
     relocationFit: ["highland retreat", "Tarahumara-country residents"], travelFit: ["Copper Canyon railway", "Tarahumara cultural tourism", "vertical climate gradients"],
     whoWouldLove: "Explorers of dramatic elevational gradients; people who want genuine cold winters in Mexico.", whoMightNot: "Warm-winter seekers; anyone expecting Mexico to be uniformly tropical.",
     confidence: "moderate",
