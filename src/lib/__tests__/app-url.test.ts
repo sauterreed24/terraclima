@@ -225,4 +225,24 @@ describe("history writers", () => {
     expect(window.location.search).toBe("?v=collections");
     expect(window.history.length).toBe(before);
   });
+
+  it("replaceAppUrl preserves #deep- dossier hash when p= stays the same", () => {
+    window.history.replaceState(null, "", "/?p=foo#deep-atAGlance");
+    replaceAppUrl(null, {
+      view: "explorer",
+      placeId: "foo",
+      collectionId: null,
+      countries: ["USA"],
+      collectionExists: ce,
+      archetypeExists: () => true,
+    });
+    expect(`${window.location.pathname}${window.location.search}`).toBe("/?p=foo&c=USA");
+    expect(window.location.hash).toBe("#deep-atAGlance");
+  });
+
+  it("replaceAppUrl does not carry #deep- to a different selected place", () => {
+    window.history.replaceState(null, "", "/?p=foo#deep-atAGlance");
+    replaceAppUrl(null, { view: "explorer", placeId: "bar", collectionId: null, collectionExists: ce });
+    expect(window.location.hash).toBe("");
+  });
 });

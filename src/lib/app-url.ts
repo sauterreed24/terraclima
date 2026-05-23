@@ -231,14 +231,30 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
   return qs ? `${path}?${qs}` : path;
 }
 
+/**
+ * `history.replaceState` / `pushState` clear the fragment when the new URL
+ * omits it. Re-append an in-app dossier hash so query-only syncs do not drop
+ * `#deep-…` anchors while the same `p=` stays selected.
+ */
+function withPreservedDossierHash(state: AppUrlState, relativeUrl: string): string {
+  if (typeof window === "undefined" || !state.placeId) return relativeUrl;
+  const h = window.location.hash;
+  if (!h.startsWith("#deep-")) return relativeUrl;
+  const curP = new URLSearchParams(window.location.search).get("p");
+  if (curP !== state.placeId) return relativeUrl;
+  return `${relativeUrl}${h}`;
+}
+
 export function replaceAppUrl(historyState: AppHistoryState, state: AppUrlState): void {
   if (typeof window === "undefined") return;
-  window.history.replaceState(historyState, "", formatAppRelativeUrl(state));
+  const url = withPreservedDossierHash(state, formatAppRelativeUrl(state));
+  window.history.replaceState(historyState, "", url);
 }
 
 export function pushAppUrl(historyState: AppHistoryState, state: AppUrlState): void {
   if (typeof window === "undefined") return;
-  window.history.pushState(historyState, "", formatAppRelativeUrl(state));
+  const url = withPreservedDossierHash(state, formatAppRelativeUrl(state));
+  window.history.pushState(historyState, "", url);
 }
 
 export interface ValidatedAppState {
