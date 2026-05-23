@@ -129,13 +129,15 @@ for (const p of PLACES) {
         report(p.id, "WARN", `snow month ${m + 1}: ${climate.snowCm[m]}cm at lat ${p.lat}`);
       }
     }
-    // Snowfall normals at a place that never approaches freezing (coldest
-    // daily low ≥ 3°C and coldest daily high ≥ 6°C) are physically implausible.
+    // Snowfall normals at a place whose coldest *monthly mean* low ≥ 3 °C AND
+    // coldest monthly mean high ≥ 6 °C are physically implausible — at those
+    // monthly averages, nightly excursions rarely reach freezing and an
+    // accumulating snow normal is almost certainly a data entry error.
     if (climate.snowCm.some(s => s > 0)) {
       const minLow = Math.min(...climate.tempLowC);
       const minHigh = Math.min(...climate.tempHighC);
       if (minLow >= 3 && minHigh >= 6) {
-        report(p.id, "WARN", `snowfall present but no month is cold enough to snow (min low ${minLow}°C, min high ${minHigh}°C)`);
+        report(p.id, "WARN", `snowfall present but no month's normals approach freezing (coldest monthly low ${minLow}°C, coldest monthly high ${minHigh}°C)`);
       }
     }
   }

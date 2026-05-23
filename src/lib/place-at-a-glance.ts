@@ -67,7 +67,9 @@ export function buildAtAGlanceTiles(
         ? `${baseClimateHint} · normals sit on the ${ka.computed.code} boundary`
         : ka.level === "subclass"
           ? `${baseClimateHint} · normals compute ${ka.computed.code}`
-          : baseClimateHint;
+          : ka.level === "divergent"
+            ? `${baseClimateHint} · authored label diverges from normals (computed ${ka.computed.code})`
+            : baseClimateHint;
   }
   out.push({
     label: "Climate class",

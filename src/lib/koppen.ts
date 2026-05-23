@@ -163,23 +163,31 @@ export function computeKoppen(place: Place): KoppenResult | null {
 
 function isValidKoppenCode(token: string): boolean {
   const first = token[0];
-  if (first === "A") return /^A[fmws]?$/.test(token);
+  // A and E require a second letter (bare "A" or "E" is not a full code); A's
+  // second letter is f/m/w/s, E's is T/F. B always has three letters
+  // (W/S + h/k). C has 2–3 letters (s/w/f + optional a/b/c); D has 2–3
+  // letters (s/w/f + optional a/b/c/d — `d` is the continental-only sub-letter).
+  if (first === "A") return /^A[fmws]$/.test(token);
   if (first === "B") return /^B[WS][hk]?$/.test(token);
-  if (first === "C" || first === "D") return /^[CD][swf][abcd]?$/.test(token);
-  if (first === "E") return /^E[TF]?$/.test(token);
+  if (first === "C") return /^C[swf][abc]?$/.test(token);
+  if (first === "D") return /^D[swf][abcd]?$/.test(token);
+  if (first === "E") return /^E[TF]$/.test(token);
   return false;
 }
 
 /**
  * Extract valid Köppen codes from a free-form authored label. The atlas
  * stores prose-y, multi-zone strings like
- * "BSk (valley) / Csb analog (summit)" → ["BSk", "Csb"].
+ * "BSk (valley) / Csb analog (summit)" → ["BSk", "Csb"], and also
+ * hyphen-joined siblings like "Csb-Cfb" → ["Csb", "Cfb"].
  */
 export function parseAuthoredKoppen(authored: string): string[] {
   const out: string[] = [];
   for (const zone of authored.split("/")) {
     const noParens = zone.replace(/\([^)]*\)/g, " ");
-    for (const token of noParens.split(/[\s,;]+/)) {
+    // Split on whitespace, commas, semicolons, and hyphens — the corpus uses
+    // any of these to join codes (e.g. "Csb-Cfb", "Csb, Cfb", "Csb / Cfb").
+    for (const token of noParens.split(/[-\s,;]+/)) {
       const t = token.trim();
       if (t && isValidKoppenCode(t)) out.push(t);
     }
@@ -263,9 +271,13 @@ export function koppenAudit(place: Place): KoppenAudit {
     };
   }
   if (authoredZones.length === 0) {
+    // The authored field is present (sanity-check already enforces that elsewhere)
+    // but yields no valid Köppen code — almost always a typo like "Csab", "Cfd",
+    // or pure prose. The audit treats this as a genuine labelling error so it
+    // cannot silently slip past CI.
     return {
       computed, authored, authoredZones, familyMatch: false, classMatch: false,
-      allowlisted: false, level: "skip",
+      allowlisted: false, level: "divergent",
       note: `No parseable Köppen code in authored label "${authored}"; computed ${computed.code}.`,
     };
   }

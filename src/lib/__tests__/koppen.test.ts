@@ -177,11 +177,26 @@ describe("parseAuthoredKoppen", () => {
     expect(parseAuthoredKoppen("Dfb / BSk")).toEqual(["Dfb", "BSk"]);
     expect(parseAuthoredKoppen("Cwb / Cfb")).toEqual(["Cwb", "Cfb"]);
   });
+  it("splits hyphen-joined sibling codes (e.g. \"Csb-Cfb\" → [Csb, Cfb])", () => {
+    expect(parseAuthoredKoppen("BSk (valley) / Csb-Cfb analog (summit)")).toEqual(["BSk", "Csb", "Cfb"]);
+    expect(parseAuthoredKoppen("Csb-Cfb")).toEqual(["Csb", "Cfb"]);
+  });
   it("keeps E codes and dedupes", () => {
     expect(parseAuthoredKoppen("ET (alpine) / ET")).toEqual(["ET"]);
   });
   it("returns nothing for prose with no valid code", () => {
     expect(parseAuthoredKoppen("temperate highland")).toEqual([]);
+  });
+  it("rejects bare family letters (\"A\", \"E\") as not a full Köppen code", () => {
+    expect(parseAuthoredKoppen("A")).toEqual([]);
+    expect(parseAuthoredKoppen("E")).toEqual([]);
+  });
+  it("rejects impossible C/D sub-letter combinations (`d` is D-only)", () => {
+    expect(parseAuthoredKoppen("Csd")).toEqual([]);
+    expect(parseAuthoredKoppen("Cwd")).toEqual([]);
+    expect(parseAuthoredKoppen("Cfd")).toEqual([]);
+    // Sanity: the same shape is valid on D.
+    expect(parseAuthoredKoppen("Dfd")).toEqual(["Dfd"]);
   });
 });
 
@@ -263,6 +278,21 @@ describe("koppenAudit", () => {
     const r = koppenAudit(place);
     expect(r.computed?.code).toBe("Csb");
     expect(r.level).toBe("match");
+  });
+
+  it("flags an unparseable authored label as divergent — typos cannot silently slip past CI", () => {
+    const place = makePlace({
+      koppen: "Csab", // typo for Csa/Csb; the parser yields []
+      climate: climate(
+        [7.8, 9.2, 11.1, 13.4, 16.3, 18.8, 21.6, 21.8, 19.6, 14.8, 10.3, 7.9],
+        [1.2, 1.6, 2.8, 4.6, 7.2, 9.8, 11.6, 11.4, 9.6, 6.7, 3.6, 1.6],
+        [65, 48, 42, 28, 22, 18, 14, 18, 28, 48, 72, 72],
+      ),
+    });
+    const r = koppenAudit(place);
+    expect(r.computed?.code).toBe("Csb");
+    expect(r.authoredZones).toEqual([]);
+    expect(r.level).toBe("divergent");
   });
 });
 
