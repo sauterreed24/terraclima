@@ -231,14 +231,28 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
   return qs ? `${path}?${qs}` : path;
 }
 
+function withPreservedDossierHash(state: AppUrlState, relativeUrl: string): string {
+  if (typeof window === "undefined" || !state.placeId) return relativeUrl;
+
+  const hash = window.location.hash;
+  if (!hash.startsWith("#deep-")) return relativeUrl;
+
+  const currentPlaceId = new URLSearchParams(window.location.search).get("p");
+  if (currentPlaceId !== state.placeId) return relativeUrl;
+
+  return `${relativeUrl}${hash}`;
+}
+
 export function replaceAppUrl(historyState: AppHistoryState, state: AppUrlState): void {
   if (typeof window === "undefined") return;
-  window.history.replaceState(historyState, "", formatAppRelativeUrl(state));
+  const url = withPreservedDossierHash(state, formatAppRelativeUrl(state));
+  window.history.replaceState(historyState, "", url);
 }
 
 export function pushAppUrl(historyState: AppHistoryState, state: AppUrlState): void {
   if (typeof window === "undefined") return;
-  window.history.pushState(historyState, "", formatAppRelativeUrl(state));
+  const url = withPreservedDossierHash(state, formatAppRelativeUrl(state));
+  window.history.pushState(historyState, "", url);
 }
 
 export interface ValidatedAppState {

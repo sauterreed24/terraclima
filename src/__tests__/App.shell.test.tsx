@@ -328,6 +328,19 @@ describe("App shell", () => {
     expect(shell).toHaveAttribute("inert");
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("preserves a dossier hash during initial open-place URL sync", async () => {
+    window.history.replaceState(null, "", "/?p=sequim-wa#deep-sequim-hydrology");
+
+    renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "Place profile" })).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(window.location.search).toBe("?p=sequim-wa");
+      expect(window.location.hash).toBe("#deep-sequim-hydrology");
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("marks the place detail layer hidden when compare is stacked above it", async () => {
     window.history.replaceState(null, "", "/?p=sequim-wa&cmp=sequim-wa,port-townsend-wa");
     const { container } = renderApp();

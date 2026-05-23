@@ -225,4 +225,48 @@ describe("history writers", () => {
     expect(window.location.search).toBe("?v=collections");
     expect(window.history.length).toBe(before);
   });
+
+  it("replaceAppUrl preserves a dossier hash when p= stays on the same place", () => {
+    window.history.replaceState(null, "", "/?p=sequim-wa#deep-sequim-hydrology");
+
+    replaceAppUrl(null, {
+      view: "explorer",
+      placeId: "sequim-wa",
+      collectionId: null,
+      countries: ["USA"],
+      temp: "C",
+      dist: "metric",
+      collectionExists: ce,
+    });
+
+    expect(window.location.search).toBe("?p=sequim-wa&c=USA&temp=C&dist=metric");
+    expect(window.location.hash).toBe("#deep-sequim-hydrology");
+  });
+
+  it("pushAppUrl preserves a dossier hash for same-place query-only entries", () => {
+    const before = window.history.length;
+    window.history.replaceState({ tcPlace: true }, "", "/?p=sequim-wa#deep-sequim-ecology");
+
+    pushAppUrl({ tcPlace: true }, {
+      view: "explorer",
+      placeId: "sequim-wa",
+      collectionId: null,
+      compareIds: ["sequim-wa", "port-townsend-wa"],
+      collectionExists: ce,
+    });
+
+    expect(window.location.search).toBe("?p=sequim-wa&cmp=sequim-wa%2Cport-townsend-wa");
+    expect(window.location.hash).toBe("#deep-sequim-ecology");
+    expect(window.history.state).toEqual({ tcPlace: true });
+    expect(window.history.length).toBeGreaterThanOrEqual(before);
+  });
+
+  it("replaceAppUrl drops a dossier hash when the selected place changes", () => {
+    window.history.replaceState(null, "", "/?p=sequim-wa#deep-sequim-hydrology");
+
+    replaceAppUrl(null, { view: "explorer", placeId: "portal-az", collectionId: null, collectionExists: ce });
+
+    expect(window.location.search).toBe("?p=portal-az");
+    expect(window.location.hash).toBe("");
+  });
 });
