@@ -131,6 +131,7 @@ describe("livability v3 — corpus smoke", () => {
       "ithaca-ny",
       "niagara-on-the-lake",
       "burlington-vt",
+      "los-alamos-pajarito-plateau-nm",
     ];
 
     for (const id of ids) {

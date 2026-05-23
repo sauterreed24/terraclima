@@ -416,6 +416,18 @@ export const PLACES_USA_EXTRA: Place[] = [
     localContrast: [{ radiusKm: 35, summerHighDeltaC: -6, winterLowDeltaC: -4, note: "vs Espanola/Rio Grande valley floor; the mesa is cooler and more exposed to forest-edge weather." }],
     nearbyContrasts: [{ label: "Santa Fe, NM", note: "Similar highland light but broader basin city fabric and less mesa-canyon fragmentation." }, { label: "Bandelier canyon country", note: "Warmer canyon bottoms and sharper post-fire flood exposure." }],
     scores: { hiddenGem: 62, microclimateUniqueness: 86, comfort: 72, resilience: 56, growability: 54, tradeoff: 60 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 22,
+      accessFriction: 46,
+      note: "High incomes cushion the housing market, but limited mesa supply, one-county hospital access, and wildfire/evacuation due diligence keep this from being a frictionless climate win.",
+      sources: [
+        { label: "U.S. Census QuickFacts - Los Alamos County", url: "https://www.census.gov/quickfacts/fact/table/losalamoscountynewmexico/HSG495223" },
+        { label: "Los Alamos County Affordable Housing Plan", url: "https://www.losalamosnm.gov/files/sharedassets/public/v/3/departments/community-development/documents/lachp-final-approval-2024-09-10.pdf" },
+        { label: "Los Alamos Medical Center", url: "https://www.losalamosmedicalcenter.com/" },
+        { label: "Los Alamos County Local Hazard Mitigation Plan", url: "https://www.losalamosnm.us/files/sharedassets/public/v/1/departments/emergency-management/documents/los-alamos-lhmp-2024-apa-3-compressed.pdf" },
+      ],
+    },
     relocationFit: ["science workers", "dry-air seekers", "altitude-adapted families", "trail-first residents"],
     travelFit: ["Bandelier", "Valles Caldera", "mesa trails", "Pajarito Mountain"],
     whoWouldLove: "People who want a cerebral mountain-mesa town with dry air, cool nights, and trails five minutes from the door.",
