@@ -2,12 +2,13 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-// Resolve the topology imports with an invalid shape so the runtime shape
-// assertions inside loadTopo() throw — exercising the load-failure path
-// deterministically without real network behavior. Kept in its own file so
-// the module-level topo cache in AtlasMap starts fresh.
-vi.mock("world-atlas/countries-110m.json", () => ({ default: {} }));
-vi.mock("us-atlas/states-10m.json", () => ({ default: {} }));
+// Mock the loader seam instead of the JSON packages. Vitest does not reliably
+// intercept dynamic JSON imports from node_modules, and this test only needs
+// to prove AtlasMap's recovery UI handles loader failure.
+vi.mock("../lib/atlas-map-topology", () => ({
+  getCachedAtlasTopology: () => null,
+  loadAtlasTopology: vi.fn().mockRejectedValue(new Error("topology load failed")),
+}));
 
 import { AtlasMap } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
@@ -43,6 +44,7 @@ describe("AtlasMap topology load failure", () => {
 
     // The retry affordance appears only after the async load rejects.
     expect(await screen.findByRole("button", { name: /retry loading map borders/i })).toBeInTheDocument();
+    expect(screen.queryByText(/loading country/i)).not.toBeInTheDocument();
 
     // Graceful degradation: pins and the standard zoom controls still render.
     expect(screen.getByRole("button", { name: /Alpha Valley/ })).toBeInTheDocument();

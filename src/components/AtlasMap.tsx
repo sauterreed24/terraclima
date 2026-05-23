@@ -3,12 +3,12 @@ import { geoPath, geoAlbers } from "d3-geo";
 import type { GeoProjection } from "d3-geo";
 import { feature, mesh } from "topojson-client";
 import type { FeatureCollection, Geometry } from "geojson";
-import type { Topology, GeometryCollection } from "topojson-specification";
 import { Info, Maximize2, Minus, Plus, RotateCw, X } from "lucide-react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useUnits } from "../lib/units";
 import type { DistUnit } from "../lib/units";
+import { getCachedAtlasTopology, loadAtlasTopology, type AtlasTopology } from "../lib/atlas-map-topology";
 import { useRichVisualEffects } from "../lib/device-profile";
 import { fitMapViewToPoints } from "../lib/atlas-map-fit";
 import {
@@ -37,64 +37,6 @@ import { getPlaceVisualSignature } from "../lib/place-visual-signature";
 // happy to render without it. Instead we dynamically import both datasets on
 // mount — the map appears instantly with markers on a warm ocean, and the
 // country / state polygons fade in one frame after the chunk arrives.
-type CountriesTopo = Topology<{
-  countries: GeometryCollection<{ name: string }>;
-  land: GeometryCollection;
-}>;
-type StatesTopo = Topology<{
-  states: GeometryCollection<{ name: string }>;
-  nation: GeometryCollection;
-}>;
-
-/**
- * Validate the JSON shape returned by world-atlas / us-atlas before treating
- * it as a typed Topology. Replaces a previous `as unknown as` double-cast that
- * silently trusted the import. Throws clearly if the on-disk shape ever drifts
- * (e.g. a future package version changes the object names).
- */
-function assertCountriesTopo(value: unknown): asserts value is CountriesTopo {
-  if (!value || typeof value !== "object") throw new Error("countries topo: not an object");
-  const objects = (value as { objects?: unknown }).objects;
-  if (!objects || typeof objects !== "object") throw new Error("countries topo: missing objects");
-  if (!("countries" in objects) || !("land" in objects)) {
-    throw new Error("countries topo: expected objects.countries and objects.land");
-  }
-}
-function assertStatesTopo(value: unknown): asserts value is StatesTopo {
-  if (!value || typeof value !== "object") throw new Error("states topo: not an object");
-  const objects = (value as { objects?: unknown }).objects;
-  if (!objects || typeof objects !== "object") throw new Error("states topo: missing objects");
-  if (!("states" in objects) || !("nation" in objects)) {
-    throw new Error("states topo: expected objects.states and objects.nation");
-  }
-}
-
-// Module-level cache so navigating away and back doesn't re-download.
-let cachedTopo: { countries: CountriesTopo; states: StatesTopo } | null = null;
-let topoPromise: Promise<{ countries: CountriesTopo; states: StatesTopo }> | null = null;
-
-function loadTopo(): Promise<{ countries: CountriesTopo; states: StatesTopo }> {
-  if (cachedTopo) return Promise.resolve(cachedTopo);
-  if (topoPromise) return topoPromise;
-  topoPromise = Promise.all([
-    import("world-atlas/countries-110m.json"),
-    import("us-atlas/states-10m.json"),
-  ]).then(([cMod, sMod]) => {
-    const cRaw: unknown = (cMod as { default?: unknown }).default ?? cMod;
-    const sRaw: unknown = (sMod as { default?: unknown }).default ?? sMod;
-    assertCountriesTopo(cRaw);
-    assertStatesTopo(sRaw);
-    cachedTopo = { countries: cRaw, states: sRaw };
-    return cachedTopo;
-  }).catch((err: unknown) => {
-    // Clear the cache so a later mount or explicit retry re-attempts the
-    // imports instead of re-serving a permanently rejected promise.
-    topoPromise = null;
-    throw err;
-  });
-  return topoPromise;
-}
-
 interface Props {
   places: Place[];
   selectedId?: string;
@@ -432,10 +374,10 @@ export function AtlasMap({
   // below resolve to "" until the chunk arrives. The ocean, markers,
   // graticule, compass, scale bar, and zoom controls all render
   // immediately; the country fills and state borders fade in via CSS a
-  // frame after loadTopo() resolves. If the load fails the map stays usable
+  // frame after loadAtlasTopology() resolves. If the load fails the map stays usable
   // (pins still work) and surfaces a retry control instead of silently
   // sitting border-less forever.
-  const [topo, setTopo] = useState<{ countries: CountriesTopo; states: StatesTopo } | null>(cachedTopo);
+  const [topo, setTopo] = useState<AtlasTopology | null>(getCachedAtlasTopology);
   const [topoError, setTopoError] = useState(false);
   const [topoRetryNonce, setTopoRetryNonce] = useState(0);
 
@@ -443,7 +385,7 @@ export function AtlasMap({
     if (topo) return;
     let cancelled = false;
     setTopoError(false);
-    loadTopo()
+    loadAtlasTopology()
       .then(t => { if (!cancelled) setTopo(t); })
       .catch(() => { if (!cancelled) setTopoError(true); });
     return () => { cancelled = true; };
@@ -1274,7 +1216,7 @@ export function AtlasMap({
     setView(next);
   }, [width, height, coarsePointer, clusterRadiusPx, openClusterPicker]);
 
-  const topoLoading = topo === null;
+  const topoLoading = topo === null && !topoError;
   const svgTouchAction = atlasTouchActionForMode(mapInteractive);
   const legendPanelId = coarsePointer ? "tc-map-mobile-legend" : "tc-map-desktop-legend";
   const mapAriaLabel =
