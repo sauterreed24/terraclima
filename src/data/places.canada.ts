@@ -236,6 +236,19 @@ export const PLACES_CANADA: Place[] = [
     ],
 
     scores: { hiddenGem: 48, microclimateUniqueness: 76, comfort: 62, resilience: 60, growability: 68, tradeoff: 40 },
+    liveSignals: {
+      costPressure: 50,
+      socialStress: 52,
+      accessFriction: 40,
+      note: "Lethbridge remains easier than coastal Canadian metros, but its 2024 housing assessment flags rental and ownership stress for single, one-parent, and fixed-income households; the 2024-2029 wellbeing strategy treats housing insecurity, homelessness, and safety as active work. Regional access is buffered by Chinook Regional Hospital and intercity transit, while YQL's own 2026 FAQ says the only commercial carrier planned to discontinue Lethbridge-Calgary service on June 24, 2026 as the airport pursued replacement routes.",
+      sources: [
+        { label: "City of Lethbridge - Municipal Housing Strategy Needs Assessment (2024)", url: "https://www.lethbridge.ca/media/gm3lkcq1/lethbridge-municipal-housing-strategy-needs-assessment-2024.pdf" },
+        { label: "City of Lethbridge - Community Wellbeing & Safety Strategy Update (2024-2029)", url: "https://www.lethbridge.ca/media/jv0dlih0/community-wellbeing-and-safety-strategy_updated.pdf" },
+        { label: "Alberta Health Services - Chinook Regional Hospital", url: "https://www.albertahealthservices.ca/crh/crh.aspx" },
+        { label: "City of Lethbridge - Park 'n' Ride Transit Terminal", url: "https://www.lethbridge.ca/roads-parking-transit/parking/park-n-ride-transit-terminal/" },
+        { label: "YQL Lethbridge Airport - The FAQ on YQL (2026)", url: "https://www.lethbridgeairport.ca/news/the-faq-on-yql" },
+      ],
+    },
 
     relocationFit: ["dryland farmers", "families okay with big wind", "prairie romantics"],
     travelFit: ["Waterton Lakes", "dinosaur badlands", "chinook-watching"],
