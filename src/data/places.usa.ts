@@ -853,6 +853,18 @@ export const PLACES_USA: Place[] = [
     localContrast: [{ radiusKm: 50, precipDeltaPct: -85, note: "vs Mammoth Lakes on the Sierra crest — Bishop receives less than a fifth of the precipitation." }],
     nearbyContrasts: [{ label: "Mammoth Lakes (2400 m, 50 km NW)", note: "~1700 mm annual precipitation; ski-town snow climate." }, { label: "Death Valley (south, lower)", note: "Driest place in NA; Bishop's shadow is still in the rain-shadow belt but higher and cooler." }],
     scores: { hiddenGem: 72, microclimateUniqueness: 94, comfort: 64, resilience: 52, growability: 58, tradeoff: 50 },
+    liveSignals: {
+      costPressure: 62,
+      socialStress: 38,
+      accessFriction: 58,
+      note: "Bishop is the eastern Sierra's practical hub, but the live-here friction is real: local housing-element material flags limited supply and rental pressure in Bishop/Inyo, while Inyo's community health assessment frames housing, transportation, and care access as social-determinant constraints. Northern Inyo gives the valley a local emergency-care anchor and Eastern Sierra Transit links Bishop north/south, yet specialist depth, airports, and urban services still require long US-395 travel.",
+      sources: [
+        { label: "City of Bishop - 2021-2029 Housing Element", url: "https://cms9files1.revize.com/bishopca/Document%20Center/Department/Planning/General%20Plan/FINAL%202021-2029%20HOUSING%20ELEMENT.pdf" },
+        { label: "Inyo County - Community Health Assessment Report (2024)", url: "https://www.inyocounty.us/sites/default/files/2025-05/Inyo%20County%20Community%20Health%20Assessment%20Report_5.29.2024_0.pdf" },
+        { label: "Northern Inyo Healthcare District - Emergency Services", url: "https://www.nih.org/services/hospital-services/emergency/" },
+        { label: "Eastern Sierra Transit Authority - Routes & Schedules", url: "https://www.estransit.com/routes-schedules" },
+      ],
+    },
     relocationFit: ["climbers", "remote workers", "high-desert lovers"],
     travelFit: ["Sierra eastside climbing/skiing access", "bristlecone pine forest", "dark-sky"],
     whoWouldLove: "High-desert romantics; climbers; anyone who wants big-mountain access without mountain-town prices.",

@@ -129,6 +129,7 @@ describe("livability v3 — corpus smoke", () => {
       "portal-az",
       "osoyoos-bc",
       "lethbridge-ab",
+      "bishop-ca",
       "cuauhtemoc-mx",
       "huachuca-az",
       "traverse-city-mi",
