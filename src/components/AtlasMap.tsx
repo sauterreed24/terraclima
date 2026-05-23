@@ -83,6 +83,7 @@ type RenderedClusterPoint = ClusterPoint & {
 };
 type ClusterPickerSpatialPoint = ClusterPoint & {
   pickerIndex: number;
+  keyed: boolean;
   miniX: number;
   miniY: number;
 };
@@ -2017,6 +2018,7 @@ function compareClusterPickerPoints(
 
 function clusterPickerMiniPoints(points: readonly ClusterPoint[]): ClusterPickerSpatialPoint[] {
   if (points.length === 0) return [];
+  const keyedLimit = points.length > 24 ? 12 : points.length;
 
   const xs = points.map(pt => pt.x);
   const ys = points.map(pt => pt.y);
@@ -2035,6 +2037,7 @@ function clusterPickerMiniPoints(points: readonly ClusterPoint[]): ClusterPicker
       return {
         ...pt,
         pickerIndex: index + 1,
+        keyed: index < keyedLimit,
         miniX: 50 + Math.cos(angle) * radius,
         miniY: 50 + Math.sin(angle) * radius,
       };
@@ -2047,6 +2050,7 @@ function clusterPickerMiniPoints(points: readonly ClusterPoint[]): ClusterPicker
   return points.map((pt, index) => ({
     ...pt,
     pickerIndex: index + 1,
+    keyed: index < keyedLimit,
     miniX: Math.max(10, Math.min(90, 50 + (pt.x - centerX) * scale)),
     miniY: Math.max(10, Math.min(90, 50 + (pt.y - centerY) * scale)),
   }));
@@ -2081,6 +2085,9 @@ const ClusterPicker = memo(function ClusterPicker({
     [cluster.points, featuredRankById],
   );
   const spatialPoints = useMemo(() => clusterPickerMiniPoints(sortedPoints), [sortedPoints]);
+  const keyedCount = spatialPoints.reduce((count, pt) => count + (pt.keyed ? 1 : 0), 0);
+  const spatialCountLabel =
+    keyedCount < cluster.points.length ? `${cluster.points.length} pins · ${keyedCount} keyed` : `${cluster.points.length} pins separated`;
 
   return (
     <div
@@ -2105,15 +2112,16 @@ const ClusterPicker = memo(function ClusterPicker({
               key={pt.place.id}
               className="cluster-picker__mini-pin"
               data-tier={pt.place.tier}
+              data-keyed={pt.keyed ? "true" : "false"}
               style={{ left: `${pt.miniX}%`, top: `${pt.miniY}%` }}
             >
-              {pt.pickerIndex}
+              {pt.keyed ? pt.pickerIndex : ""}
             </span>
           ))}
         </div>
         <div className="cluster-picker__spatial-copy">
           <span className="cluster-picker__spatial-label">Location key</span>
-          <span className="cluster-picker__spatial-count">{cluster.points.length} pins separated</span>
+          <span className="cluster-picker__spatial-count">{spatialCountLabel}</span>
         </div>
       </div>
       <div className="cluster-picker__list">
