@@ -27,6 +27,21 @@ describe("clusterMapPoints", () => {
     expect(items.some(item => item.kind === "point" && item.id === "c")).toBe(true);
   });
 
+  it("checks adjacent screen buckets without changing seed-radius semantics", () => {
+    const items = clusterMapPoints(
+      [
+        { id: "seed", x: 15.9, y: 10 },
+        { id: "near-next-bucket", x: 16.2, y: 10 },
+        { id: "near-neighbor-only", x: 32.1, y: 10 },
+      ],
+      { enabled: true, view: { k: 1, x: 0, y: 0 }, radiusPx: 16 },
+    );
+
+    expect(clusters(items)).toHaveLength(1);
+    expect(clusters(items)[0].points.map(p => p.id)).toEqual(["seed", "near-next-bucket"]);
+    expect(items.some(item => item.kind === "point" && item.id === "near-neighbor-only")).toBe(true);
+  });
+
   it("keeps selected or otherwise protected points out of clusters", () => {
     const items = clusterMapPoints(
       [

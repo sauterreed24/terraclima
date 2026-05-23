@@ -45,6 +45,51 @@ function clusterId(points: readonly AtlasClusterPoint[]): string {
   return `cluster:${points.map(p => p.id).sort().join("|")}`;
 }
 
+interface ProjectedClusterPoint<T extends AtlasClusterPoint> {
+  point: T;
+  index: number;
+  sx: number;
+  sy: number;
+  protected: boolean;
+}
+
+function screenBucketKey(sx: number, sy: number, cellSizePx: number): string {
+  return `${Math.floor(sx / cellSizePx)}:${Math.floor(sy / cellSizePx)}`;
+}
+
+function addProjectedPointToBucket<T extends AtlasClusterPoint>(
+  buckets: Map<string, number[]>,
+  projected: ProjectedClusterPoint<T>,
+  cellSizePx: number,
+): void {
+  const key = screenBucketKey(projected.sx, projected.sy, cellSizePx);
+  const bucket = buckets.get(key);
+  if (bucket) {
+    bucket.push(projected.index);
+    return;
+  }
+  buckets.set(key, [projected.index]);
+}
+
+function nearbyProjectedIndices<T extends AtlasClusterPoint>(
+  seed: ProjectedClusterPoint<T>,
+  buckets: ReadonlyMap<string, readonly number[]>,
+  cellSizePx: number,
+): number[] {
+  const cx = Math.floor(seed.sx / cellSizePx);
+  const cy = Math.floor(seed.sy / cellSizePx);
+  const indices: number[] = [];
+
+  for (let y = cy - 1; y <= cy + 1; y += 1) {
+    for (let x = cx - 1; x <= cx + 1; x += 1) {
+      const bucket = buckets.get(`${x}:${y}`);
+      if (bucket) indices.push(...bucket);
+    }
+  }
+
+  return indices.sort((a, b) => a - b);
+}
+
 export function clusterMapPoints<T extends AtlasClusterPoint>(
   points: readonly T[],
   opts: ClusterMapPointsOptions,
@@ -62,6 +107,11 @@ export function clusterMapPoints<T extends AtlasClusterPoint>(
     sy: point.y * opts.view.k + opts.view.y,
     protected: protectedIds.has(point.id),
   }));
+  const bucketCellPx = Math.max(1, opts.radiusPx);
+  const buckets = new Map<string, number[]>();
+  for (const point of projected) {
+    if (!point.protected) addProjectedPointToBucket(buckets, point, bucketCellPx);
+  }
 
   const used = new Set<number>();
   const out: AtlasRenderItem<T>[] = [];
@@ -76,7 +126,8 @@ export function clusterMapPoints<T extends AtlasClusterPoint>(
     }
 
     const group = [seed];
-    for (const candidate of projected) {
+    for (const candidateIndex of nearbyProjectedIndices(seed, buckets, bucketCellPx)) {
+      const candidate = projected[candidateIndex]!;
       if (used.has(candidate.index) || candidate.protected) continue;
       if (screenDistanceSq(seed, candidate) <= radiusSq) {
         used.add(candidate.index);
