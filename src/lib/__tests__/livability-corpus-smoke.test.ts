@@ -127,6 +127,7 @@ describe("livability v3 — corpus smoke", () => {
     const ids = [
       "creel-mx",
       "portal-az",
+      "osoyoos-bc",
       "lethbridge-ab",
       "cuauhtemoc-mx",
       "huachuca-az",

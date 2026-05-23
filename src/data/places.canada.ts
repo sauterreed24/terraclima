@@ -96,6 +96,18 @@ export const PLACES_CANADA: Place[] = [
     ],
 
     scores: { hiddenGem: 56, microclimateUniqueness: 94, comfort: 72, resilience: 48, growability: 86, tradeoff: 52 },
+    liveSignals: {
+      costPressure: 70,
+      socialStress: 42,
+      accessFriction: 56,
+      note: "Osoyoos is a high-amenity resort and retirement town where housing is the main lived filter: the 2024 housing-needs report tracks affordability, adequacy, accessibility, and proximity-to-services constraints. Social stress reads moderate rather than severe, but cost and seasonal tourism pressure matter. Access is workable but not metro-deep: BC Transit Route 40 links Osoyoos, Oliver, and Penticton, South Okanagan General Hospital in Oliver provides 24/7 emergency and acute care, and higher-order hospital/airport depth remains north in Penticton/Kelowna.",
+      sources: [
+        { label: "Town of Osoyoos - Housing Needs Report (2024)", url: "https://www.osoyoos.ca/sites/osoyoos.ca/files/2025-02/Housing%20Needs%20Report%20%282024%29.pdf" },
+        { label: "BC Transit - South Okanagan-Similkameen Route 40 Osoyoos/Penticton", url: "https://www.bctransit.com/south-okanagan-similkameen/schedules-and-maps/riders-guide/" },
+        { label: "Interior Health - South Okanagan General Hospital", url: "https://www.interiorhealth.ca/locations/south-okanagan-general-hospital" },
+        { label: "PHSA - Osoyoos Community Health Profile", url: "https://communityhealth.phsa.ca/HealthProfiles/HealthReportForPDF/Osoyoos" },
+      ],
+    },
 
     relocationFit: ["retirees wanting warm sunny summers", "viticulturalists", "snowbirds within Canada"],
     travelFit: ["wine country", "lake beach", "dark-sky preserve"],
