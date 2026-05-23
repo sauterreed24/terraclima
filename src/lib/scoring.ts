@@ -25,6 +25,7 @@ import {
   type LivabilityResult,
 } from "./livability-score";
 import { placeFeelScore } from "./place-feel";
+import { computeKoppen, parseAuthoredKoppen } from "./koppen";
 
 // Re-exported so the public surface of scoring.ts stays unchanged for callers
 // (components, charts, tests) that previously imported these from here.
@@ -258,10 +259,16 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       case "mediterranean-like": {
         // Csb (warm-summer Mediterranean — coastal CA, Pacific NW pockets) is the
         // canonical match; Csa (hot-summer — interior valleys) gets a smaller bonus.
-        const koppen = p.koppen;
-        const bonus = koppen.startsWith("Csb")
+        // Match on the class computed from the normals OR any authored zone, so a
+        // multi-zone label like "BSk (valley) / Csb analog (summit)" is not missed
+        // by a brittle string prefix.
+        const computedCode = computeKoppen(p)?.code;
+        const zones = parseAuthoredKoppen(p.koppen);
+        const isCsb = computedCode === "Csb" || zones.includes("Csb");
+        const isCsa = computedCode === "Csa" || zones.includes("Csa");
+        const bonus = isCsb
           ? k.mediterraneanCsbBonus
-          : koppen.startsWith("Csa")
+          : isCsa
             ? k.mediterraneanCsaBonus
             : 0;
         const wint = Math.max(0, k.mediterraneanWinterBudget - Math.max(0, -janLow) * k.mediterraneanWinterPerDegC);

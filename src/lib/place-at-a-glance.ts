@@ -11,6 +11,7 @@ import { getPlaceCorpusRanks } from "./atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import { EARTH_OBSERVATION_SOURCES } from "./atlas-metadata";
 import { scorePlaceFeel } from "./place-feel";
+import { koppenAudit } from "./koppen";
 import type { TempUnit } from "./units";
 
 export type AtGlanceTone = "glacier" | "sage" | "ochre" | "ice" | "ember" | "aurora";
@@ -53,11 +54,28 @@ export function buildAtAGlanceTiles(
   });
 
   const primaryA = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
+  const baseClimateHint = primaryA ? primaryA.label : place.biome.split(" / ")[0];
+  // Cross-check the authored Köppen label against the class computed straight
+  // from this place's monthly normals, and surface the agreement so the label
+  // is an inspectable, data-backed signal rather than a static string.
+  const ka = koppenAudit(place);
+  let climateHint = baseClimateHint;
+  if (ka.computed) {
+    climateHint = ka.level === "match"
+      ? `${baseClimateHint} · Köppen ${ka.computed.code} confirmed from normals`
+      : ka.level === "boundary"
+        ? `${baseClimateHint} · normals sit on the ${ka.computed.code} boundary`
+        : ka.level === "subclass"
+          ? `${baseClimateHint} · normals compute ${ka.computed.code}`
+          : ka.level === "divergent"
+            ? `${baseClimateHint} · authored label diverges from normals (computed ${ka.computed.code})`
+            : baseClimateHint;
+  }
   out.push({
     label: "Climate class",
     value: place.koppen,
-    hint: primaryA ? primaryA.label : place.biome.split(" / ")[0],
-    tone: "ice",
+    hint: climateHint,
+    tone: ka.level === "match" ? "sage" : "ice",
   });
 
   out.push({

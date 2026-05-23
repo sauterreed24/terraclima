@@ -13,6 +13,7 @@ import { assertAtlasCorpusHealthy } from "../src/lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
 import { mergeDeepSections } from "../src/lib/place-appendix-sections";
 import { safeExternalHref } from "../src/lib/safe-url";
+import { koppenAudit, type KoppenAuditLevel } from "../src/lib/koppen";
 import {
   buildNearbyContextRows,
   buildPracticalActivities,
@@ -24,6 +25,8 @@ type Issue = { id: string; severity: "WARN" | "ERROR"; msg: string };
 const issues: Issue[] = [];
 const report = (id: string, severity: "WARN" | "ERROR", msg: string) =>
   issues.push({ id, severity, msg });
+
+const koppenLevels: Record<KoppenAuditLevel, number> = { match: 0, subclass: 0, boundary: 0, divergent: 0, skip: 0 };
 
 const validArchetypes = new Set(ARCHETYPES.map(a => a.id));
 const validDrivers = new Set(Object.keys(DRIVER_LABELS));
@@ -126,6 +129,29 @@ for (const p of PLACES) {
         report(p.id, "WARN", `snow month ${m + 1}: ${climate.snowCm[m]}cm at lat ${p.lat}`);
       }
     }
+    // Snowfall normals at a place whose coldest *monthly mean* low ≥ 3 °C AND
+    // coldest monthly mean high ≥ 6 °C are physically implausible — at those
+    // monthly averages, nightly excursions rarely reach freezing and an
+    // accumulating snow normal is almost certainly a data entry error.
+    if (climate.snowCm.some(s => s > 0)) {
+      const minLow = Math.min(...climate.tempLowC);
+      const minHigh = Math.min(...climate.tempHighC);
+      if (minLow >= 3 && minHigh >= 6) {
+        report(p.id, "WARN", `snowfall present but no month's normals approach freezing (coldest monthly low ${minLow}°C, coldest monthly high ${minHigh}°C)`);
+      }
+    }
+  }
+
+  // --- Köppen label vs the class computed from the monthly normals ---
+  // The authored `koppen` string should be derivable from this place's own
+  // temperature + precipitation. A *family* disagreement only errors when the
+  // place is NOT near the dividing isotherm/aridity line ("divergent" —
+  // a real mislabel); near-threshold disagreements are expected Köppen
+  // knife-edges and are only counted (see the summary line below).
+  const ka = koppenAudit(p);
+  koppenLevels[ka.level] += 1;
+  if (ka.level === "divergent") {
+    report(p.id, "ERROR", `Köppen label "${p.koppen}" diverges from computed ${ka.computed?.code} with no nearby class boundary — likely mislabel`);
   }
 
   // --- E5: monthly temperature monotonicity sanity ---
@@ -351,5 +377,9 @@ for (const i of issues) {
   console.log(`${i.severity.padEnd(5)} ${i.id.padEnd(28)} ${i.msg}`);
 }
 console.log(`\nTotal places: ${PLACES.length}`);
+console.log(
+  `Köppen class check: ${koppenLevels.match} match, ${koppenLevels.subclass} sub-class, ` +
+  `${koppenLevels.boundary} boundary, ${koppenLevels.divergent} divergent, ${koppenLevels.skip} skip`,
+);
 console.log(`Errors: ${errs.length}  Warnings: ${warns.length}`);
 if (errs.length > 0) process.exit(1);
