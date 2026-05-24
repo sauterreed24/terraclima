@@ -26,6 +26,7 @@ import {
 } from "./livability-score";
 import { placeFeelScore } from "./place-feel";
 import { computeKoppen, parseAuthoredKoppen } from "./koppen";
+import { computeBioclim } from "./bioclim";
 
 // Re-exported so the public surface of scoring.ts stays unchanged for callers
 // (components, charts, tests) that previously imported these from here.
@@ -55,6 +56,9 @@ export type RankingProfile =
   | "best-four-season"
   | "best-diurnal-sleep"
   | "strongest-geospatial-signal"
+  | "most-continental"
+  | "driest-growing-season"
+  | "lowest-evaporative-demand"
   | "mediterranean-like"
   | "wet-forest-refuges"
   | "monsoon-drama"
@@ -255,6 +259,27 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
           score: g.geospatialSignalScore,
           note: `EO ${g.eoObservabilityScore}/100 · ${g.analysisConfidence} confidence`,
         };
+      }
+      case "most-continental": {
+        const bio = computeBioclim(p);
+        if (!bio || bio.conrad.value == null) return { place: p, score: 0, note: "Bioclim unavailable" };
+        return { place: p, score: bio.conrad.value, note: `Conrad K ${bio.conrad.value.toFixed(1)} · ${bio.conrad.classLabel}` };
+      }
+      case "driest-growing-season": {
+        const bio = computeBioclim(p);
+        if (!bio) return { place: p, score: 0, note: "Bioclim unavailable" };
+        if (bio.selianinov.value == null) {
+          return { place: p, score: 0, note: "No growing season; Selianinov HTC undefined." };
+        }
+        const s = Math.max(0, 100 - bio.selianinov.value * 40);
+        return { place: p, score: s, note: `Selianinov HTC ${bio.selianinov.value.toFixed(2)} · ${bio.selianinov.classLabel}` };
+      }
+      case "lowest-evaporative-demand": {
+        const bio = computeBioclim(p);
+        if (!bio) return { place: p, score: 0, note: "Bioclim unavailable" };
+        const pet = bio.thornthwaitePet.value;
+        const s = Math.max(0, 100 - pet / 20);
+        return { place: p, score: s, note: `Thornthwaite PET ${Math.round(pet)} mm/yr` };
       }
       case "mediterranean-like": {
         // Csb (warm-summer Mediterranean — coastal CA, Pacific NW pockets) is the

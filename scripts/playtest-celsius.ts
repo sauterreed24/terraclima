@@ -21,33 +21,13 @@
 import { localizeProse } from "../src/lib/units";
 import { PLACES } from "../src/data/places";
 import { CONCEPTS } from "../src/data/glossary";
-import { rankPlaces, type RankingProfile } from "../src/lib/scoring";
+import { ALL_RANKING_PROFILES } from "../src/lib/ranking-options";
+import { rankPlaces } from "../src/lib/scoring";
 import { describeHumanComfort, scoreLivability } from "../src/lib/livability-score";
 import { scorePlaceFeel } from "../src/lib/place-feel";
 import { buildExplorerScoutBrief } from "../src/lib/explorer-scout-brief";
 
-const RANKINGS: RankingProfile[] = [
-  "live-fit",
-  "most-comfortable",
-  "coolest-summers",
-  "mildest-winters",
-  "best-shoulder-seasons",
-  "driest-air",
-  "best-growability",
-  "hidden-gems",
-  "most-unique",
-  "lowest-fire-risk",
-  "climate-resilient",
-  "best-four-season",
-  "best-diurnal-sleep",
-  "strongest-geospatial-signal",
-  "mediterranean-like",
-  "wet-forest-refuges",
-  "monsoon-drama",
-  "best-this-month",
-  "best-for-remote-work",
-  "best-retirement",
-];
+const RANKINGS = ALL_RANKING_PROFILES;
 
 let leaks = 0;
 let mismatches = 0;
