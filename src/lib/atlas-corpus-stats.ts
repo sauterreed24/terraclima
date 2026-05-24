@@ -107,7 +107,10 @@ function buildDistributions(): AtlasCorpusDistributions {
     if (!b) continue;
     if (b.deMartonne.value !== null) bioDeM.push(b.deMartonne.value);
     if (b.conrad.value !== null) bioCon.push(b.conrad.value);
-    bioPet.push(b.thornthwaitePet.value);
+    // Exclude PET = 0 (frozen-year places): a zero isn't a measurement, it's
+    // an absence — including it would inflate the "above this" share that
+    // gets displayed alongside "no evaporative demand".
+    if (b.thornthwaitePet.value > 0) bioPet.push(b.thornthwaitePet.value);
     if (b.selianinov.value !== null) bioSel.push(b.selianinov.value);
     if (b.unepAridity.value !== null) bioUnep.push(b.unepAridity.value);
   }
@@ -297,8 +300,10 @@ export interface PlaceBioclimRanks {
   deMartonneAboveShare: number | null;
   /** Share with a smaller Conrad index (this place is more continental). */
   conradAboveShare: number;
-  /** Share with smaller Thornthwaite PET (this place's water demand is higher). */
-  thornthwaitePetAboveShare: number;
+  /** Share with smaller Thornthwaite PET (this place's water demand is higher).
+   *  Null when this place's PET = 0 (every month below freezing — comparing
+   *  "no demand" against the corpus distribution would be misleading). */
+  thornthwaitePetAboveShare: number | null;
   /** Share with smaller Selianinov HTC (this place's growing season is wetter). */
   selianinovAboveShare: number | null;
   /** Share with smaller UNEP aridity (this place is more humid). */
@@ -318,7 +323,9 @@ export function getPlaceBioclimRanks(place: Place): PlaceBioclimRanks {
         ? fracStrictlyLess(b.deMartonne.value, c.bioclimDeMartonne)
         : null,
       conradAboveShare: fracStrictlyLess(b.conrad.value!, c.bioclimConrad),
-      thornthwaitePetAboveShare: fracStrictlyLess(b.thornthwaitePet.value, c.bioclimPetMm),
+      thornthwaitePetAboveShare: b.thornthwaitePet.value > 0
+        ? fracStrictlyLess(b.thornthwaitePet.value, c.bioclimPetMm)
+        : null,
       selianinovAboveShare: b.selianinov.value !== null
         ? fracStrictlyLess(b.selianinov.value, c.bioclimSelianinov)
         : null,
@@ -329,7 +336,7 @@ export function getPlaceBioclimRanks(place: Place): PlaceBioclimRanks {
     : {
       deMartonneAboveShare: null,
       conradAboveShare: 0,
-      thornthwaitePetAboveShare: 0,
+      thornthwaitePetAboveShare: null,
       selianinovAboveShare: null,
       unepAridityAboveShare: null,
     };

@@ -28,9 +28,11 @@ import type { Monthly12, Place } from "../types";
 import { computeKoppen, type KoppenResult } from "./koppen";
 
 const DAYS_IN_MONTH: readonly number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-// Month-midpoint day-of-year (non-leap convention; locked from Plan-agent
-// hand-traces against Sequim/Phoenix/Singapore — see bioclim.test.ts).
-const J_MID: readonly number[] = [15, 45, 74, 105, 135, 162, 198, 228, 259, 289, 320, 350];
+// Month-midpoint day-of-year (15th of each month, non-leap convention). Used
+// by the daylength formula's solar declination — at this precision the
+// daylength changes by under a minute month-to-month, well below the noise
+// floor of monthly-mean climate inputs.
+const J_MID: readonly number[] = [15, 46, 74, 105, 135, 166, 196, 227, 258, 288, 319, 349];
 
 const DEG_TO_RAD = Math.PI / 180;
 
@@ -130,12 +132,17 @@ function classifyConrad(value: number): { class: string; classLabel: string } {
 }
 
 function classifySelianinov(value: number): { class: string; classLabel: string } {
+  // Published Selianinov bands cap at ≥1.6 "wet"; tropical monsoon climates
+  // routinely run far higher (Hilo ≈ 4). Splitting the upper band keeps "wet"
+  // (1.6–3.0) and "tropical-wet" (≥3.0) distinguishable on the UI tile and
+  // CompareView row.
   if (value < 0.4) return { class: "dry", classLabel: "Dry" };
   if (value < 0.7) return { class: "arid", classLabel: "Arid" };
   if (value < 1.0) return { class: "semi-arid", classLabel: "Semi-arid" };
   if (value < 1.3) return { class: "sufficient", classLabel: "Sufficient moisture" };
   if (value < 1.6) return { class: "humid", classLabel: "Humid" };
-  return { class: "wet", classLabel: "Wet" };
+  if (value < 3.0) return { class: "wet", classLabel: "Wet" };
+  return { class: "tropical-wet", classLabel: "Tropical-wet" };
 }
 
 function classifyUnep(value: number): { class: string; classLabel: string } {
@@ -274,9 +281,12 @@ export function classifyBioclim(
     deMartonne = { value, ...classifyDeMartonne(value) };
   }
 
-  // Conrad continentality. φ + 10 in degrees → radians inside sin.
+  // Conrad continentality. The `+10°` offset is a latitude *magnitude* offset
+  // that keeps the denominator well away from 0 — using `|latDeg|` makes the
+  // formula truly hemisphere-agnostic (without `abs`, `lat = −10` would zero
+  // the denominator and a southern-tropical place would diverge).
   const conradValue = round9(
-    1.7 * amplitudeC / Math.sin((latDeg + 10) * DEG_TO_RAD) - 14,
+    1.7 * amplitudeC / Math.sin((Math.abs(latDeg) + 10) * DEG_TO_RAD) - 14,
   );
   const conrad: BioclimIndex = { value: conradValue, ...classifyConrad(conradValue) };
 

@@ -35,7 +35,7 @@ interface CardConfig {
 }
 
 function deMartonneRead(b: BioclimResult): string {
-  if (b.deMartonne.value === null) return "Mean annual temperature is below −10 °C, so the De Martonne ratio is not defined.";
+  if (b.deMartonne.value === null) return "Mean annual temperature is at or below −10 °C, so the De Martonne ratio is not defined.";
   const value = b.deMartonne.value;
   const cls = b.deMartonne.class;
   if (cls === "hyperarid") return "Annual precipitation is a tiny fraction of warmth — desert-end of the spectrum.";
@@ -75,7 +75,8 @@ function selianinovRead(b: BioclimResult): string {
   if (cls === "semi-arid") return "Growing-season moisture is partial — supplemental water often needed.";
   if (cls === "sufficient") return "Growing-season precipitation roughly matches thermal demand.";
   if (cls === "humid") return "Reliable growing-season moisture — green-summer regime.";
-  return "Abundant warm-season rain — tropical or monsoon-fed.";
+  if (cls === "wet") return "Abundant growing-season rain — wet temperate / lush regime.";
+  return "Monsoon-grade growing-season rainfall — tropical wet climate.";
 }
 
 function unepRead(b: BioclimResult): string {
