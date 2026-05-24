@@ -20,7 +20,7 @@
 //     share a Jul-high and a Jan-low while feeling nothing alike.
 //
 // This engine decomposes "feels like" into interpretable, physically
-// grounded axes, each returning a 0..1 closeness, blended by published
+// grounded axes, each returning a 0..1 closeness, blended by documented
 // weights into a 0..1 analog score. The per-axis breakdown is returned
 // so the UI can say *what* matches and *where* two places diverge.
 //
@@ -39,6 +39,11 @@
 //                        12-month precipitation share. Separates winter-wet
 //                        Mediterranean, summer-wet monsoon, and even
 //                        maritime regimes that share an annual total.
+//   • aridity          — De Martonne water-balance aridity, computed from
+//                        the same monthly normals as the dossier bioclim
+//                        panel.
+//   • continentality   — Conrad continentality, a latitude-normalized read
+//                        on maritime vs. interior annual range.
 //   • atmosphere       — humidity / sunshine / summer diurnal, on whatever
 //                        measured signals both places share (diurnal always
 //                        available; humidity / sunshine when present).
@@ -62,6 +67,7 @@ import {
   meanJanLow,
   summerDiurnalC,
 } from "./climate-metrics";
+import { computeBioclim } from "./bioclim";
 
 export type ClimateAnalogAxisKey =
   | "thermalLevel"
@@ -69,6 +75,8 @@ export type ClimateAnalogAxisKey =
   | "seasonalAmplitude"
   | "moisture"
   | "precipRegime"
+  | "aridity"
+  | "continentality"
   | "atmosphere"
   | "mechanism";
 
@@ -92,15 +100,20 @@ export interface ClimateTwin {
   synopsis: string;
 }
 
-/** Blend weights — must sum to 1.0 (asserted in tests). */
+/** Blend weights — must sum to 1.0 (asserted in tests).
+ *  The bioclim axes are modest physical tie-breakers: they strengthen annual
+ *  water balance and maritime/interior structure without displacing the core
+ *  lived-year shape signals. */
 export const CLIMATE_ANALOG_WEIGHTS: Record<ClimateAnalogAxisKey, number> = {
   thermalLevel: 0.24,
   seasonalShape: 0.2,
   seasonalAmplitude: 0.13,
-  moisture: 0.14,
-  precipRegime: 0.14,
-  atmosphere: 0.08,
-  mechanism: 0.07,
+  moisture: 0.11,
+  precipRegime: 0.11,
+  aridity: 0.06,
+  continentality: 0.06,
+  atmosphere: 0.05,
+  mechanism: 0.04,
 };
 
 const AXIS_LABEL: Record<ClimateAnalogAxisKey, string> = {
@@ -109,6 +122,8 @@ const AXIS_LABEL: Record<ClimateAnalogAxisKey, string> = {
   seasonalAmplitude: "Swing",
   moisture: "Moisture",
   precipRegime: "Rain timing",
+  aridity: "Aridity",
+  continentality: "Continentality",
   atmosphere: "Air & light",
   mechanism: "Terrain",
 };
@@ -119,6 +134,8 @@ const AXIS_ORDER: ClimateAnalogAxisKey[] = [
   "seasonalAmplitude",
   "moisture",
   "precipRegime",
+  "aridity",
+  "continentality",
   "atmosphere",
   "mechanism",
 ];
@@ -136,6 +153,10 @@ const SCALE = {
   amplitudeC: 13,
   /** Log-precip gap. */
   moistureLog: 1.1,
+  /** De Martonne aridity-index gap. */
+  deMartonne: 8,
+  /** Conrad continentality-index gap. */
+  conrad: 12,
   /** Atmospheric scalar gaps. */
   humidityPct: 22,
   sunshinePct: 18,
@@ -189,6 +210,8 @@ interface AnalogFeatures {
   curveStd: number;
   logPrecip: number;
   precipShare: number[];
+  deMartonne: number | null;
+  conrad: number | null;
   humidity: number | null;
   sunshine: number | null;
   diurnal: number;
@@ -211,6 +234,7 @@ function features(p: Place): AnalogFeatures {
   const precip = p.climate.precipMm;
   const precipSum = precip.reduce((a, b) => a + b, 0);
   const precipShare = precipSum > 0 ? precip.map(v => v / precipSum) : precip.map(() => 1 / 12);
+  const bioclim = computeBioclim(p);
 
   const f: AnalogFeatures = {
     monthlyMean,
@@ -219,6 +243,8 @@ function features(p: Place): AnalogFeatures {
     curveStd: std(monthlyMean),
     logPrecip: Math.log1p(getAnnualPrecipMm(p)),
     precipShare,
+    deMartonne: bioclim?.deMartonne.value ?? null,
+    conrad: bioclim?.conrad.value ?? null,
     humidity: meanAnnualHumidityPct(p),
     sunshine: meanAnnualSunshinePct(p),
     diurnal: summerDiurnalC(p),
@@ -255,6 +281,14 @@ function atmosphereCloseness(a: AnalogFeatures, b: AnalogFeatures): number {
   return mean(parts);
 }
 
+function optionalIndexCloseness(a: number | null, b: number | null, scale: number): number {
+  if (a == null && b == null) return 1;
+  // De Martonne is undefined for frozen-year places; one undefined side should
+  // mark a real mismatch without turning the whole analog score into a cliff.
+  if (a == null || b == null) return 0.35;
+  return decay(Math.abs(a - b), scale);
+}
+
 function axisCloseness(a: AnalogFeatures, b: AnalogFeatures): Record<ClimateAnalogAxisKey, number> {
   return {
     thermalLevel: decay(Math.abs(a.annualMean - b.annualMean), SCALE.thermalLevelC),
@@ -262,6 +296,8 @@ function axisCloseness(a: AnalogFeatures, b: AnalogFeatures): Record<ClimateAnal
     seasonalAmplitude: decay(Math.abs(a.amplitude - b.amplitude), SCALE.amplitudeC),
     moisture: decay(Math.abs(a.logPrecip - b.logPrecip), SCALE.moistureLog),
     precipRegime: precipRegimeCloseness(a, b),
+    aridity: optionalIndexCloseness(a.deMartonne, b.deMartonne, SCALE.deMartonne),
+    continentality: optionalIndexCloseness(a.conrad, b.conrad, SCALE.conrad),
     atmosphere: atmosphereCloseness(a, b),
     mechanism: 0.6 * jaccard(a.archetypes, b.archetypes) + 0.4 * jaccard(a.drivers, b.drivers),
   };
@@ -294,6 +330,8 @@ const MATCH_PHRASE: Record<ClimateAnalogAxisKey, string> = {
   seasonalAmplitude: "a similar maritime–continental swing",
   moisture: "annual moisture",
   precipRegime: "wet-season timing",
+  aridity: "water-balance aridity",
+  continentality: "continentality",
   atmosphere: "air and light",
   mechanism: "the terrain mechanism behind it",
 };
@@ -310,6 +348,16 @@ function divergencePhrase(key: ClimateAnalogAxisKey, anchor: Place, twin: Place)
       return ft.logPrecip > fa.logPrecip ? "is wetter through the year" : "is drier through the year";
     case "precipRegime":
       return "rains on a different schedule";
+    case "aridity":
+      if (fa.deMartonne != null && ft.deMartonne != null) {
+        return ft.deMartonne > fa.deMartonne ? "is less arid by water balance" : "is more arid by water balance";
+      }
+      return "has a differently defined aridity baseline";
+    case "continentality":
+      if (fa.conrad != null && ft.conrad != null) {
+        return ft.conrad > fa.conrad ? "is more continental" : "is more ocean-tempered";
+      }
+      return "has a different continentality baseline";
     case "atmosphere": {
       if (fa.humidity != null && ft.humidity != null && Math.abs(ft.humidity - fa.humidity) > 8) {
         return ft.humidity > fa.humidity ? "feels more humid" : "feels drier in the air";

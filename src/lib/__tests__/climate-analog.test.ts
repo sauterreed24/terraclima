@@ -5,14 +5,37 @@ import {
   CLIMATE_ANALOG_WEIGHTS,
   describeAnalogMatch,
   findClimateTwins,
+  type ClimateAnalogAxisKey,
 } from "../climate-analog";
 import { makeClimate, makePlace } from "./test-fixtures";
-import type { Monthly12 } from "../../types";
+import type { Monthly12, Place } from "../../types";
 
 const flat = (v: number): Monthly12 => Array(12).fill(v) as Monthly12;
+const monthly = (values: number[]): Monthly12 => values as Monthly12;
+const annual = (values: readonly number[]): number => values.reduce((sum, value) => sum + value, 0);
 // Strong single-peak (continental) annual curve.
 const seasonalHighs: Monthly12 = [2, 5, 11, 18, 24, 29, 31, 30, 25, 17, 9, 3];
 const seasonalLows: Monthly12 = [-8, -5, -1, 4, 9, 14, 17, 16, 11, 4, -2, -6];
+const mediterraneanHighs = monthly([10, 12, 15, 18, 22, 26, 29, 29, 26, 20, 14, 10]);
+const mediterraneanLows = monthly([3, 4, 6, 8, 11, 14, 16, 16, 14, 10, 6, 3]);
+const mediterraneanPrecip = monthly([95, 78, 62, 42, 24, 12, 6, 8, 22, 54, 82, 105]);
+const aridWinterPrecip = monthly([20, 15, 10, 5, 3, 1, 1, 2, 5, 10, 15, 20]);
+
+function climateWithPrecip(tempHighC: Monthly12, tempLowC: Monthly12, precipMm: Monthly12) {
+  return makeClimate({
+    tempHighC,
+    tempLowC,
+    precipMm,
+    annualPrecipMm: annual(precipMm),
+    snowCm: flat(0),
+  });
+}
+
+function axisCloseness(a: Place, b: Place, key: ClimateAnalogAxisKey): number {
+  const axis = analogBreakdown(a, b).find(item => item.key === key);
+  if (!axis) throw new Error(`Missing analog axis ${key}`);
+  return axis.closeness;
+}
 
 describe("CLIMATE_ANALOG_WEIGHTS", () => {
   it("sums to 1.0", () => {
@@ -83,6 +106,42 @@ describe("precip regime axis", () => {
     const sameRegime = analogBreakdown(winterWet, makePlace({ id: "w2", climate: winterWet.climate })).find(a => a.key === "precipRegime")!;
     expect(opposite.closeness).toBeLessThan(0.4);
     expect(sameRegime.closeness).toBeGreaterThan(0.95);
+  });
+});
+
+describe("bioclim axes", () => {
+  it("penalizes a thermally similar place that crosses from Mediterranean water balance into aridity", () => {
+    const source = makePlace({
+      id: "med-source",
+      lat: 48.1,
+      climate: climateWithPrecip(mediterraneanHighs, mediterraneanLows, mediterraneanPrecip),
+    });
+    const mediterraneanTwin = makePlace({
+      id: "med-twin",
+      lat: 47.8,
+      climate: climateWithPrecip(mediterraneanHighs, mediterraneanLows, mediterraneanPrecip),
+    });
+    const aridThermalTwin = makePlace({
+      id: "arid-thermal-twin",
+      lat: 47.8,
+      climate: climateWithPrecip(mediterraneanHighs, mediterraneanLows, aridWinterPrecip),
+    });
+
+    expect(axisCloseness(source, mediterraneanTwin, "aridity")).toBeGreaterThan(0.95);
+    expect(axisCloseness(source, aridThermalTwin, "aridity")).toBeLessThan(0.15);
+    expect(analogScore(source, mediterraneanTwin)).toBeGreaterThan(analogScore(source, aridThermalTwin));
+  });
+
+  it("separates thermally identical places when Conrad continentality diverges", () => {
+    const climate = climateWithPrecip(seasonalHighs, seasonalLows, flat(60));
+    const anchor = makePlace({ id: "conrad-anchor", lat: 48, climate });
+    const nearConrad = makePlace({ id: "near-conrad", lat: 49, climate });
+    const farConrad = makePlace({ id: "far-conrad", lat: 20, climate });
+
+    expect(axisCloseness(anchor, farConrad, "thermalLevel")).toBeCloseTo(1, 6);
+    expect(axisCloseness(anchor, farConrad, "seasonalAmplitude")).toBeCloseTo(1, 6);
+    expect(axisCloseness(anchor, nearConrad, "continentality")).toBeGreaterThan(0.98);
+    expect(axisCloseness(anchor, farConrad, "continentality")).toBeLessThan(0.25);
   });
 });
 
@@ -190,5 +249,34 @@ describe("findClimateTwins", () => {
     const out = findClimateTwins(anchor, [...twins, tropical], 6, "milder-winter");
     expect(out.find(t => t.place.id === "tropical")).toBeUndefined();
     expect(out.every(t => t.analog >= 0.62)).toBe(true);
+  });
+
+  it("prefers a Mediterranean water-balance twin over a thermally similar arid candidate", () => {
+    const anchor = makePlace({
+      id: "med-anchor",
+      lat: 48.1,
+      climate: climateWithPrecip(mediterraneanHighs, mediterraneanLows, mediterraneanPrecip),
+    });
+    const aridCandidate = makePlace({
+      id: "aa-arid-candidate",
+      lat: 48.1,
+      climate: climateWithPrecip(mediterraneanHighs, mediterraneanLows, aridWinterPrecip),
+    });
+    const medCandidate = makePlace({
+      id: "zz-med-candidate",
+      lat: 48.1,
+      climate: climateWithPrecip(mediterraneanHighs, mediterraneanLows, mediterraneanPrecip),
+    });
+
+    expect(findClimateTwins(anchor, [aridCandidate, medCandidate], 2)[0].place.id).toBe("zz-med-candidate");
+  });
+
+  it("uses Conrad continentality to break otherwise identical climate-twin ties", () => {
+    const climate = climateWithPrecip(seasonalHighs, seasonalLows, flat(60));
+    const anchor = makePlace({ id: "conrad-anchor-twin", lat: 48, climate });
+    const farConrad = makePlace({ id: "aa-far-conrad", lat: 20, climate });
+    const nearConrad = makePlace({ id: "zz-near-conrad", lat: 49, climate });
+
+    expect(findClimateTwins(anchor, [farConrad, nearConrad], 2)[0].place.id).toBe("zz-near-conrad");
   });
 });
