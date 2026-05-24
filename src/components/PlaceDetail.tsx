@@ -39,6 +39,7 @@ import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
 import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
 import { PlaceAtAGlance } from "./place-detail/PlaceAtAGlance";
 import { PlaceFeelRead } from "./place-detail/PlaceFeelRead";
+import { PlaceBioclimaticIndices } from "./place-detail/PlaceBioclimaticIndices";
 import { PlacePracticalRead } from "./place-detail/PlacePracticalRead";
 import { PlaceTourismRead } from "./place-detail/PlaceTourismRead";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
@@ -896,6 +897,8 @@ function DetailBody({
       <PlaceFeelRead place={place} anchorId={PD.placeFeel} />
 
       <ComfortPrecisionRead profile={comfortPrecision} />
+
+      <PlaceBioclimaticIndices place={place} anchorId={PD.bioclimaticIndices} />
 
       <Section title="Livability lens v3" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="panel-thin p-4">

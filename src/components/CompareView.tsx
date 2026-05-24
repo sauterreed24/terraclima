@@ -6,6 +6,7 @@ import { ClimateRibbon } from "./charts/ClimateRibbon";
 import { annualComfortMonthCount, avgRisk, meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
+import { computeBioclim, type BioclimIndex } from "../lib/bioclim";
 import { scoreLivability, feltComfortScore, livedFrictionScore } from "../lib/livability-score";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { useFocusTrap } from "../hooks/use-focus-trap";
@@ -198,6 +199,7 @@ export function CompareView({
               {places.map(p => {
                 const geo = buildGeospatialAnalysis(p);
                 const decision = decisionById.get(p.id)!;
+                const bio = computeBioclim(p);
                 return (
                 <div key={p.id} className="panel p-4 relative snap-start">
                   <button type="button" onClick={() => onRemove(p.id)} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center" aria-label={`Remove ${p.name} from comparison`}>
@@ -211,6 +213,11 @@ export function CompareView({
                   <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
                     <Row label="Elevation" value={fmtElev(p.elevationM, dist)} />
                     <Row label="Köppen" value={p.koppen} wide />
+                    <Row label="De Martonne" value={bio ? bioclimRow(bio.deMartonne, v => v.toFixed(1)) : "—"} wide />
+                    <Row label="Conrad" value={bio ? bioclimRow(bio.conrad, v => v.toFixed(1)) : "—"} wide />
+                    <Row label="Selianinov HTC" value={bio ? bioclimRow(bio.selianinov, v => v.toFixed(2)) : "—"} wide />
+                    <Row label="UNEP P/PET" value={bio ? bioclimRow(bio.unepAridity, v => v.toFixed(2)) : "—"} wide />
+                    <Row label="Thornthwaite PET" value={bio ? `${Math.round(bio.thornthwaitePet.value)} mm` : "—"} />
                     <Row label="JJA high" value={fmtTemp(meanSummerHigh(p), temp, { digits: 1 })} />
                     <Row label="Jan low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
@@ -246,6 +253,15 @@ export function CompareView({
       )}
     </AnimatePresence>
   );
+}
+
+function bioclimRow(idx: BioclimIndex, format: (v: number) => string): string {
+  if (idx.value === null) {
+    return idx.reason === "no_growing_season" ? "— (no growing season)"
+      : idx.reason === "mat_below_neg10" ? "— (MAT ≤ −10 °C)"
+      : "— (no PET)";
+  }
+  return `${format(idx.value)} · ${idx.classLabel}`;
 }
 
 function Row({ label, value, wide = false }: { label: string; value: string; wide?: boolean }) {

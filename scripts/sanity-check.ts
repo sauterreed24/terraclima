@@ -14,6 +14,7 @@ import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
 import { mergeDeepSections } from "../src/lib/place-appendix-sections";
 import { safeExternalHref } from "../src/lib/safe-url";
 import { koppenAudit, type KoppenAuditLevel } from "../src/lib/koppen";
+import { computeBioclim } from "../src/lib/bioclim";
 import {
   buildNearbyContextRows,
   buildPracticalActivities,
@@ -27,6 +28,12 @@ const report = (id: string, severity: "WARN" | "ERROR", msg: string) =>
   issues.push({ id, severity, msg });
 
 const koppenLevels: Record<KoppenAuditLevel, number> = { match: 0, subclass: 0, boundary: 0, divergent: 0, skip: 0 };
+const bioclimSummary = {
+  classified: 0,
+  deMartonneNullColdMat: 0,
+  selianinovNullArctic: 0,
+  unepNullFrozen: 0,
+};
 
 const validArchetypes = new Set(ARCHETYPES.map(a => a.id));
 const validDrivers = new Set(Object.keys(DRIVER_LABELS));
@@ -152,6 +159,73 @@ for (const p of PLACES) {
   koppenLevels[ka.level] += 1;
   if (ka.level === "divergent") {
     report(p.id, "ERROR", `Köppen label "${p.koppen}" diverges from computed ${ka.computed?.code} with no nearby class boundary — likely mislabel`);
+  }
+
+  // --- Bioclimatic indices vs the monthly normals ---
+  // Five citable, deterministic indices (De Martonne, Conrad, Thornthwaite PET,
+  // Selianinov, UNEP). Each may legitimately be `null` for documented reasons
+  // (MAT below −10 for De Martonne, no growing-season month for Selianinov,
+  // every month below freezing for UNEP). Errors only on *unexpected* non-
+  // finite values or out-of-range numeric outputs; tropical-flag warnings keep
+  // the audit honest about Thornthwaite's known high-heat behaviour.
+  const bio = computeBioclim(p);
+  if (bio) {
+    bioclimSummary.classified += 1;
+    // De Martonne
+    if (bio.deMartonne.value === null) {
+      if (bio.breakdown.matC > -10) {
+        report(p.id, "ERROR", `De Martonne unexpectedly null with MAT ${bio.breakdown.matC} > -10`);
+      } else {
+        bioclimSummary.deMartonneNullColdMat += 1;
+      }
+    } else if (!Number.isFinite(bio.deMartonne.value)) {
+      report(p.id, "ERROR", `De Martonne non-finite (${bio.deMartonne.value})`);
+    } else if (bio.deMartonne.value < 0 || bio.deMartonne.value > 500) {
+      // De Martonne diverges as MAT approaches -10 from above, so cold-humid
+      // places (alpine, sub-Arctic) can legitimately reach the hundreds. The
+      // [0, 500] band is wide enough for those edge cases but still catches
+      // genuine data anomalies (e.g. wrong precip units land in the thousands).
+      report(p.id, "WARN", `De Martonne ${bio.deMartonne.value} outside [0, 500]`);
+    }
+    // Conrad continentality
+    if (bio.conrad.value === null || !Number.isFinite(bio.conrad.value)) {
+      report(p.id, "ERROR", `Conrad continentality non-finite`);
+    } else if (bio.conrad.value < -20 || bio.conrad.value > 130) {
+      report(p.id, "WARN", `Conrad continentality ${bio.conrad.value} outside [-20, 130]`);
+    }
+    // Thornthwaite PET
+    const pet = bio.thornthwaitePet.value;
+    if (!Number.isFinite(pet) || pet < 0) {
+      report(p.id, "ERROR", `Thornthwaite PET ${pet} is non-finite or negative`);
+    } else if (pet > 2500) {
+      report(p.id, "WARN", `Thornthwaite PET ${pet.toFixed(0)} mm/yr > 2500 (high-heat overshoot)`);
+    } else if (pet < 100 && bio.breakdown.matC > 10) {
+      report(p.id, "WARN", `Thornthwaite PET ${pet.toFixed(0)} mm/yr suspiciously low for MAT ${bio.breakdown.matC}°C`);
+    }
+    // Selianinov HTC
+    if (bio.selianinov.value === null) {
+      if (bio.breakdown.growingSeasonMonths > 0) {
+        report(p.id, "ERROR", `Selianinov unexpectedly null with ${bio.breakdown.growingSeasonMonths} growing-season months`);
+      } else {
+        bioclimSummary.selianinovNullArctic += 1;
+      }
+    } else if (!Number.isFinite(bio.selianinov.value)) {
+      report(p.id, "ERROR", `Selianinov non-finite`);
+    } else if (bio.selianinov.value > 50) {
+      report(p.id, "WARN", `Selianinov HTC ${bio.selianinov.value} > 50 (tropical-monsoon territory)`);
+    }
+    // UNEP aridity
+    if (bio.unepAridity.value === null) {
+      if (pet > 0) {
+        report(p.id, "ERROR", `UNEP aridity unexpectedly null with PET ${pet} > 0`);
+      } else {
+        bioclimSummary.unepNullFrozen += 1;
+      }
+    } else if (!Number.isFinite(bio.unepAridity.value)) {
+      report(p.id, "ERROR", `UNEP aridity non-finite`);
+    } else if (bio.unepAridity.value < 0 || bio.unepAridity.value > 8) {
+      report(p.id, "WARN", `UNEP aridity ${bio.unepAridity.value} outside [0, 8]`);
+    }
   }
 
   // --- E5: monthly temperature monotonicity sanity ---
@@ -380,6 +454,12 @@ console.log(`\nTotal places: ${PLACES.length}`);
 console.log(
   `Köppen class check: ${koppenLevels.match} match, ${koppenLevels.subclass} sub-class, ` +
   `${koppenLevels.boundary} boundary, ${koppenLevels.divergent} divergent, ${koppenLevels.skip} skip`,
+);
+console.log(
+  `Bioclimatic indices: ${bioclimSummary.classified} classified` +
+  (bioclimSummary.deMartonneNullColdMat ? ` · ${bioclimSummary.deMartonneNullColdMat} De Martonne null (MAT ≤ −10)` : "") +
+  (bioclimSummary.selianinovNullArctic ? ` · ${bioclimSummary.selianinovNullArctic} Selianinov null (no growing season)` : "") +
+  (bioclimSummary.unepNullFrozen ? ` · ${bioclimSummary.unepNullFrozen} UNEP null (all months frozen)` : ""),
 );
 console.log(`Errors: ${errs.length}  Warnings: ${warns.length}`);
 if (errs.length > 0) process.exit(1);
