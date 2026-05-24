@@ -42,6 +42,8 @@ export function resonantWindowFor(profile: RankingProfile): BestWindow["id"] | n
   switch (profile) {
     case "best-growability": return "garden";
     case "driest-air": return "crisp";
+    case "driest-growing-season": return "dry";
+    case "lowest-evaporative-demand": return "garden";
     case "best-shoulder-seasons": return "outdoor";
     case "mediterranean-like": return "dry";
     case "strongest-geospatial-signal": return "outdoor";

@@ -1,8 +1,20 @@
 import { describe, expect, it } from "vitest";
 import { avgRisk, meanSummerHigh, meanJanLow, applyFilters, rankPlaces, RISK_VALUE } from "../scoring";
 import type { FilterState } from "../scoring";
+import { PLACES } from "../../data/places";
 import { makePlace, makeClimate } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
+
+const flat = (v: number): Monthly12 => Array(12).fill(v) as Monthly12;
+const annual = (values: readonly number[]): number => values.reduce((sum, value) => sum + value, 0);
+
+function climateForRanking(overrides: Parameters<typeof makeClimate>[0]) {
+  const climate = makeClimate(overrides);
+  return makeClimate({
+    ...overrides,
+    annualPrecipMm: annual(climate.precipMm),
+  });
+}
 
 describe("avgRisk", () => {
   it("returns 0 for an all-very-low place", () => {
@@ -159,5 +171,91 @@ describe("rankPlaces — mediterranean-like credits the computed/parsed Köppen 
     const medScore = ranked.find(r => r.place.id === "med")!.score;
     const contScore = ranked.find(r => r.place.id === "cont")!.score;
     expect(medScore).toBeGreaterThan(contScore);
+  });
+});
+
+describe("rankPlaces — bioclim ranking presets", () => {
+  it("ranks higher Conrad continentality first", () => {
+    const continental = makePlace({
+      id: "continental",
+      lat: 48,
+      climate: climateForRanking({
+        tempHighC: [-8, -5, 4, 14, 23, 29, 32, 30, 22, 12, 2, -6] as Monthly12,
+        tempLowC: [-22, -19, -10, -1, 7, 13, 16, 14, 7, -2, -11, -20] as Monthly12,
+        precipMm: flat(45),
+      }),
+    });
+    const maritime = makePlace({
+      id: "maritime",
+      lat: 48,
+      climate: climateForRanking({
+        tempHighC: [8, 9, 11, 13, 16, 18, 20, 20, 18, 14, 10, 8] as Monthly12,
+        tempLowC: [3, 4, 5, 7, 9, 11, 13, 13, 11, 8, 5, 3] as Monthly12,
+        precipMm: flat(45),
+      }),
+    });
+
+    const ranked = rankPlaces("most-continental", [maritime, continental]);
+    expect(ranked[0]!.place.id).toBe("continental");
+    expect(ranked[0]!.note).toContain("Conrad K");
+  });
+
+  it("ranks lower Selianinov HTC as the drier growing season", () => {
+    const dry = makePlace({
+      id: "dry-grow",
+      climate: climateForRanking({
+        precipMm: [6, 5, 6, 8, 10, 8, 4, 4, 6, 8, 7, 6] as Monthly12,
+      }),
+    });
+    const wet = makePlace({
+      id: "wet-grow",
+      climate: climateForRanking({
+        precipMm: [80, 75, 90, 95, 110, 95, 85, 80, 90, 95, 85, 80] as Monthly12,
+      }),
+    });
+
+    const ranked = rankPlaces("driest-growing-season", [wet, dry]);
+    expect(ranked[0]!.place.id).toBe("dry-grow");
+    expect(ranked[0]!.note).toContain("Selianinov HTC");
+  });
+
+  it("ranks lower Thornthwaite PET as lower evaporative demand", () => {
+    const lowDemand = makePlace({
+      id: "low-demand",
+      lat: 60,
+      climate: climateForRanking({
+        tempHighC: [-12, -10, -3, 4, 10, 15, 18, 16, 10, 3, -5, -11] as Monthly12,
+        tempLowC: [-22, -20, -13, -5, 1, 6, 9, 7, 2, -4, -14, -21] as Monthly12,
+        precipMm: flat(40),
+      }),
+    });
+    const highDemand = makePlace({
+      id: "high-demand",
+      lat: 33,
+      climate: climateForRanking({
+        tempHighC: [20, 22, 27, 32, 37, 41, 42, 41, 38, 32, 25, 20] as Monthly12,
+        tempLowC: [7, 9, 12, 16, 21, 26, 29, 28, 24, 17, 10, 7] as Monthly12,
+        precipMm: flat(20),
+      }),
+    });
+
+    const ranked = rankPlaces("lowest-evaporative-demand", [highDemand, lowDemand]);
+    expect(ranked[0]!.place.id).toBe("low-demand");
+    expect(ranked[0]!.note).toContain("Thornthwaite PET");
+  });
+
+  it("keeps the most-continental corpus leaders in the interior-north pool", () => {
+    const ids = rankPlaces("most-continental", PLACES).slice(0, 8).map(r => r.place.id);
+    expect(ids).toEqual(expect.arrayContaining(["inuvik-nt", "yellowknife-nt", "dawson-city-yt"]));
+  });
+
+  it("keeps the driest-growing-season corpus leaders in the hot desert / Owens Valley pool", () => {
+    const ids = rankPlaces("driest-growing-season", PLACES).slice(0, 8).map(r => r.place.id);
+    expect(ids).toEqual(expect.arrayContaining(["death-valley-ca", "yuma-az", "bishop-ca", "lone-pine-ca"]));
+  });
+
+  it("keeps the lowest-evaporative-demand corpus leaders in Arctic or alpine low-PET places", () => {
+    const ids = rankPlaces("lowest-evaporative-demand", PLACES).slice(0, 8).map(r => r.place.id);
+    expect(ids).toEqual(expect.arrayContaining(["mount-washington-nh", "iqaluit-nu", "churchill-mb", "leadville-co"]));
   });
 });
