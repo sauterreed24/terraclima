@@ -7,6 +7,7 @@
 import type { Place } from "../types";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../data/places";
 import { getAnnualPrecipMm, meanSummerHigh, meanJanLow, summerDiurnalC } from "./climate-metrics";
+import { computeBioclim } from "./bioclim";
 import type { TempUnit } from "./units";
 
 function sortAsc(a: number[]): number[] {
@@ -69,6 +70,12 @@ export interface AtlasCorpusDistributions {
   uniqueness0_100: readonly number[];
   gdd10: readonly number[] | null;
   frostFreeDays: readonly number[] | null;
+  /** Bioclimatic-index distributions across the corpus (defined-value subsets). */
+  bioclimDeMartonne: readonly number[];
+  bioclimConrad: readonly number[];
+  bioclimPetMm: readonly number[];
+  bioclimSelianinov: readonly number[];
+  bioclimUnepAridity: readonly number[];
 }
 
 function buildDistributions(): AtlasCorpusDistributions {
@@ -87,6 +94,24 @@ function buildDistributions(): AtlasCorpusDistributions {
   const frostRaw = PLACES.map(p => p.climate.frostFreeDays);
   const frostFreeDays = frostRaw.some(x => x != null) ? sortAsc(frostRaw.filter((x): x is number => x != null)) : null;
 
+  // Bioclimatic-index distributions — only include defined values (some
+  // indices are null for documented edges: De Martonne null when MAT ≤ −10,
+  // Selianinov null when no month > 10 °C, UNEP null when annual PET = 0).
+  const bioDeM: number[] = [];
+  const bioCon: number[] = [];
+  const bioPet: number[] = [];
+  const bioSel: number[] = [];
+  const bioUnep: number[] = [];
+  for (const p of PLACES) {
+    const b = computeBioclim(p);
+    if (!b) continue;
+    if (b.deMartonne.value !== null) bioDeM.push(b.deMartonne.value);
+    if (b.conrad.value !== null) bioCon.push(b.conrad.value);
+    bioPet.push(b.thornthwaitePet.value);
+    if (b.selianinov.value !== null) bioSel.push(b.selianinov.value);
+    if (b.unepAridity.value !== null) bioUnep.push(b.unepAridity.value);
+  }
+
   return {
     n: PLACES.length,
     july: Object.freeze(sortAsc(july)),
@@ -99,6 +124,11 @@ function buildDistributions(): AtlasCorpusDistributions {
     uniqueness0_100: Object.freeze(sortAsc(uniqueness0_100)),
     gdd10: gdd10 ? Object.freeze(gdd10) : null,
     frostFreeDays: frostFreeDays ? Object.freeze(frostFreeDays) : null,
+    bioclimDeMartonne: Object.freeze(sortAsc(bioDeM)),
+    bioclimConrad: Object.freeze(sortAsc(bioCon)),
+    bioclimPetMm: Object.freeze(sortAsc(bioPet)),
+    bioclimSelianinov: Object.freeze(sortAsc(bioSel)),
+    bioclimUnepAridity: Object.freeze(sortAsc(bioUnep)),
   };
 }
 
@@ -259,6 +289,54 @@ export function getCorpusContextPanelRows(
   return rows;
 }
 
+// ----- Bioclimatic-index ranks ------------------------------------------
+
+export interface PlaceBioclimRanks {
+  /** Share of corpus places with a *smaller* De Martonne value than this place
+   *  (i.e. this place is wetter-per-degree than that share of stops). */
+  deMartonneAboveShare: number | null;
+  /** Share with a smaller Conrad index (this place is more continental). */
+  conradAboveShare: number;
+  /** Share with smaller Thornthwaite PET (this place's water demand is higher). */
+  thornthwaitePetAboveShare: number;
+  /** Share with smaller Selianinov HTC (this place's growing season is wetter). */
+  selianinovAboveShare: number | null;
+  /** Share with smaller UNEP aridity (this place is more humid). */
+  unepAridityAboveShare: number | null;
+}
+
+const PLACE_BIOCLIM_RANK_CACHE = new WeakMap<Place, PlaceBioclimRanks>();
+
+export function getPlaceBioclimRanks(place: Place): PlaceBioclimRanks {
+  const cached = PLACE_BIOCLIM_RANK_CACHE.get(place);
+  if (cached) return cached;
+  const c = ATLAS_CORPUS;
+  const b = computeBioclim(place);
+  const ranks: PlaceBioclimRanks = b
+    ? {
+      deMartonneAboveShare: b.deMartonne.value !== null
+        ? fracStrictlyLess(b.deMartonne.value, c.bioclimDeMartonne)
+        : null,
+      conradAboveShare: fracStrictlyLess(b.conrad.value!, c.bioclimConrad),
+      thornthwaitePetAboveShare: fracStrictlyLess(b.thornthwaitePet.value, c.bioclimPetMm),
+      selianinovAboveShare: b.selianinov.value !== null
+        ? fracStrictlyLess(b.selianinov.value, c.bioclimSelianinov)
+        : null,
+      unepAridityAboveShare: b.unepAridity.value !== null
+        ? fracStrictlyLess(b.unepAridity.value, c.bioclimUnepAridity)
+        : null,
+    }
+    : {
+      deMartonneAboveShare: null,
+      conradAboveShare: 0,
+      thornthwaitePetAboveShare: 0,
+      selianinovAboveShare: null,
+      unepAridityAboveShare: null,
+    };
+  PLACE_BIOCLIM_RANK_CACHE.set(place, ranks);
+  return ranks;
+}
+
 /** One-line for map/cards — no HTML */
 export function getCorpusMapHint(place: Place): string {
   const cached = PLACE_CORPUS_MAP_HINT_CACHE.get(place);
@@ -303,6 +381,22 @@ export function assertAtlasCorpusHealthy(): void {
   L("res", c.resilience0_100);
   for (let i = 1; i < c.july.length; i++) {
     if (c.july[i]! < c.july[i - 1]!) throw new Error("july not sorted");
+  }
+  // Bioclimatic-index distributions — these are subsets (some nullable), so
+  // their length may be < n. Validate that they are sorted and finite.
+  const bioBands: Array<[string, readonly number[]]> = [
+    ["bioclimDeMartonne", c.bioclimDeMartonne],
+    ["bioclimConrad", c.bioclimConrad],
+    ["bioclimPetMm", c.bioclimPetMm],
+    ["bioclimSelianinov", c.bioclimSelianinov],
+    ["bioclimUnepAridity", c.bioclimUnepAridity],
+  ];
+  for (const [name, arr] of bioBands) {
+    if (arr.length > n) throw new Error(`corpus ${name} len ${arr.length} > n ${n}`);
+    for (let i = 1; i < arr.length; i++) {
+      if (arr[i]! < arr[i - 1]!) throw new Error(`corpus ${name} not sorted`);
+      if (!Number.isFinite(arr[i]!)) throw new Error(`corpus ${name} non-finite at index ${i}`);
+    }
   }
   const testPlace = PLACES[0]!;
   const r = getPlaceCorpusRanks(testPlace);
