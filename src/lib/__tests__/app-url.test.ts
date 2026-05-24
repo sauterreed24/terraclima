@@ -243,6 +243,24 @@ describe("history writers", () => {
     expect(window.location.hash).toBe("#deep-sequim-hydrology");
   });
 
+  it("replaceAppUrl preserves a dossier hash when p= is an alias of the canonical place id", () => {
+    window.history.replaceState(null, "", "/?p=san-miguel-mx#deep-intro");
+
+    replaceAppUrl(null, {
+      view: "explorer",
+      placeId: "san-miguel-de-allende-mx",
+      collectionId: null,
+      countries: ["Mexico"],
+      temp: "C",
+      dist: "metric",
+      collectionExists: ce,
+      resolvePlaceId: (id: string) => (id === "san-miguel-mx" ? "san-miguel-de-allende-mx" : null),
+    });
+
+    expect(window.location.search).toBe("?p=san-miguel-de-allende-mx&c=Mexico&temp=C&dist=metric");
+    expect(window.location.hash).toBe("#deep-intro");
+  });
+
   it("pushAppUrl preserves a dossier hash for same-place query-only entries", () => {
     const before = window.history.length;
     window.history.replaceState({ tcPlace: true }, "", "/?p=sequim-wa#deep-sequim-ecology");

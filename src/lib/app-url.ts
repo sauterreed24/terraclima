@@ -173,6 +173,12 @@ export interface AppUrlState {
   collectionExists: (id: string) => boolean;
   archetypeExists?: (id: string) => boolean;
   placeExists?: (id: string) => boolean;
+  /**
+   * When the address bar may still carry a legacy or alias `p=` slug, pass the
+   * same resolver used for hydration so dossier hash preservation compares
+   * canonical ids (e.g. `san-miguel-mx` → `san-miguel-de-allende-mx`).
+   */
+  resolvePlaceId?: (id: string) => string | null;
 }
 
 /** Pathname + search for the given explorer state — used to compare with `window.location` and dedupe history writes. */
@@ -231,14 +237,22 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
   return qs ? `${path}?${qs}` : path;
 }
 
+function urlBarPlaceMatchesSelectedForDossierHash(state: AppUrlState): boolean {
+  if (!state.placeId) return false;
+  const rawP = new URLSearchParams(window.location.search).get("p");
+  if (!rawP) return false;
+  if (rawP === state.placeId) return true;
+  const canonical = state.resolvePlaceId?.(rawP);
+  return canonical != null && canonical === state.placeId;
+}
+
 function withPreservedDossierHash(state: AppUrlState, relativeUrl: string): string {
   if (typeof window === "undefined" || !state.placeId) return relativeUrl;
 
   const hash = window.location.hash;
   if (!hash.startsWith("#deep-")) return relativeUrl;
 
-  const currentPlaceId = new URLSearchParams(window.location.search).get("p");
-  if (currentPlaceId !== state.placeId) return relativeUrl;
+  if (!urlBarPlaceMatchesSelectedForDossierHash(state)) return relativeUrl;
 
   return `${relativeUrl}${hash}`;
 }

@@ -365,6 +365,7 @@ export default function App() {
       collectionExists: (id: string) => Boolean(CURATED_SET_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
       placeExists: (id: string) => resolvePlaceId(id) != null,
+      resolvePlaceId,
     };
     const wantUrl = formatAppRelativeUrl(state);
     const haveUrl = `${window.location.pathname}${window.location.search}`;
