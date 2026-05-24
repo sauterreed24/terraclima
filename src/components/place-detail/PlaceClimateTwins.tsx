@@ -17,6 +17,8 @@ const AXIS_TONE: Record<ClimateAnalogAxis["key"], string> = {
   seasonalAmplitude: "#4faacd",
   moisture: "#1a8fa8",
   precipRegime: "#5ec4dc",
+  aridity: "#c7833a",
+  continentality: "#7a9b45",
   atmosphere: "#3d8f55",
   mechanism: "#d6ad66",
 };
@@ -25,7 +27,7 @@ function countryCode(c: Place["country"]): string {
   return c === "USA" ? "US" : c === "Canada" ? "CA" : "MX";
 }
 
-/** Compact 7-bar "alignment fingerprint" — one bar per analog axis. */
+/** Compact 9-bar "alignment fingerprint" — one bar per analog axis. */
 const AlignmentFingerprint = memo(function AlignmentFingerprint({ axes }: { axes: ClimateAnalogAxis[] }) {
   return (
     <div className="tc-twin-fingerprint" aria-hidden="true">
@@ -162,7 +164,8 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
       </div>
 
       <div className="tc-twins__foot">
-        Twin score blends thermal level, seasonal shape, swing, moisture, rain timing, air, and shared terrain mechanism.
+        Twin score blends thermal level, seasonal shape, swing, moisture, rain timing, water-balance aridity,
+        continentality, air, and shared terrain mechanism.
         Editorial climate kinship for scouting — not a forecast, cost-of-living, or appraisal claim.
       </div>
     </div>
