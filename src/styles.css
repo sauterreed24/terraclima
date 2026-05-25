@@ -6249,6 +6249,21 @@
     color: var(--color-stone-readable);
     line-height: 1.2;
   }
+  .place-card__bioclim-row {
+    display: flex;
+    min-width: 0;
+    margin-top: 0.55rem;
+  }
+  .place-card__bioclim-chip {
+    max-width: 100%;
+    min-width: 0;
+    text-transform: none;
+  }
+  .place-card__bioclim-chip > span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   /* Livability score bar */
   .place-card__livability-bar {

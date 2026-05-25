@@ -30,6 +30,13 @@ function renderPlaceCard({
 }
 
 describe("PlaceCard overlay warmup", () => {
+  it("surfaces the computed bioclimatic card signature", () => {
+    renderPlaceCard();
+    const bioclim = screen.getByLabelText("Bioclimatic signature");
+
+    expect(bioclim.textContent).toContain("K ");
+  });
+
   it("preloads the place detail chunk on hover, focus, and tap intent", () => {
     const onPreloadPlaceDetail = vi.fn();
     const onPreloadCompare = vi.fn();
