@@ -43,6 +43,7 @@ import { PlaceBioclimaticIndices } from "./place-detail/PlaceBioclimaticIndices"
 import { PlacePracticalRead } from "./place-detail/PlacePracticalRead";
 import { PlaceTourismRead } from "./place-detail/PlaceTourismRead";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
+import { buildGrowabilityRationale } from "../lib/growability-score";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
@@ -285,7 +286,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
                   ? { duration: 0.18, ease: [0.2, 0.8, 0.2, 1] }
                   : { type: "spring", stiffness: 280, damping: 32 }
             }
-            className="fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto outline-none border-l border-[rgba(200,170,140,0.38)]"
+            className="fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto overflow-x-hidden outline-none border-l border-[rgba(200,170,140,0.38)]"
             style={{
               boxShadow: "-20px 0 48px -14px rgba(62, 38, 24, 0.18)",
             }}
@@ -855,6 +856,7 @@ function DetailBody({
   const settlementAnchors = useMemo(() => buildSettlementAnchors(place), [place]);
   const practicalActivities = useMemo(() => buildPracticalActivities(place), [place]);
   const nearbyContextRows = useMemo(() => buildNearbyContextRows(place), [place]);
+  const growabilityRationale = useMemo(() => buildGrowabilityRationale(place), [place]);
   const navItems = useMemo(() => buildPlaceDetailNavItems(place), [place]);
   const navDomIds = useMemo(() => navItems.map(i => i.id), [navItems]);
   const readingActiveAnchor = useDetailReadingSpy(navDomIds);
@@ -1352,13 +1354,19 @@ function DetailBody({
             <div className="mb-3">
               <div className="text-xs text-stone mb-1">Grows well</div>
               <div className="flex flex-wrap gap-1">
-                {place.growability.growsWell.map(g => <span key={g} className="chip" data-tone="sage">{g}</span>)}
+                {place.growability.growsWell.map(g => <span key={g} className="chip max-w-full !whitespace-normal text-left leading-tight" data-tone="sage">{g}</span>)}
               </div>
             </div>
             <div className="mb-3">
               <div className="text-xs text-stone mb-1">Tricky</div>
               <div className="flex flex-wrap gap-1">
-                {place.growability.tricky.map(g => <span key={g} className="chip" data-tone="ember">{g}</span>)}
+                {place.growability.tricky.map(g => <span key={g} className="chip max-w-full !whitespace-normal text-left leading-tight" data-tone="ember">{g}</span>)}
+              </div>
+            </div>
+            <div className="mt-3 rounded-lg border border-[rgba(61,143,85,0.18)] bg-[rgba(236,248,232,0.42)] px-3 py-2.5">
+              <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Why this score?</div>
+              <div className="space-y-1.5 text-[12px] leading-snug text-frost">
+                {growabilityRationale.lines.map(line => <p key={line}>{prose(line)}</p>)}
               </div>
             </div>
             {place.growability.orchard && <div className="text-sm text-ice italic mt-2">{prose(place.growability.orchard)}</div>}
