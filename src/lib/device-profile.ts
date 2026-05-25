@@ -15,7 +15,7 @@ function getNavigatorConnection(): { saveData?: boolean; addEventListener?: (t: 
   return (navigator as Navigator & { connection?: { saveData?: boolean; addEventListener?: (t: string, fn: () => void) => void; removeEventListener?: (t: string, fn: () => void) => void } }).connection;
 }
 
-export function getRichVisualEffects(): boolean {
+function getRichVisualEffects(): boolean {
   if (typeof window === "undefined") return true;
   if (prefersReducedMotion()) return false;
   const cores = typeof navigator.hardwareConcurrency === "number" ? navigator.hardwareConcurrency : 8;
@@ -26,7 +26,7 @@ export function getRichVisualEffects(): boolean {
   return !saveData && !lowMem && cores > 4;
 }
 
-export function subscribeRichVisualEffects(onChange: () => void): () => void {
+function subscribeRichVisualEffects(onChange: () => void): () => void {
   if (typeof window === "undefined") return () => {};
   const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
   mq.addEventListener("change", onChange);
