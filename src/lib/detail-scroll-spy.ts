@@ -14,7 +14,8 @@ export function detailScrollRoot(): HTMLElement | null {
 export function pickActiveSectionIndex(root: HTMLElement, sectionEls: HTMLElement[]): number {
   if (sectionEls.length === 0) return 0;
   const slack = 10;
-  if (root.scrollTop + root.clientHeight >= root.scrollHeight - slack) {
+  const canScroll = root.scrollHeight > root.clientHeight + slack;
+  if (canScroll && root.scrollTop + root.clientHeight >= root.scrollHeight - slack) {
     return sectionEls.length - 1;
   }
   const rootRect = root.getBoundingClientRect();
