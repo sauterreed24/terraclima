@@ -4,7 +4,7 @@ import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib/units";
-import { getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
+import { getBioclimCardSignal, getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { getBestMonths, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { ArrowRight, Droplets, Leaf, Sun } from "lucide-react";
@@ -112,6 +112,7 @@ export const PlaceCard = memo(function PlaceCard({
   }, [place, compact, temp]);
 
   const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);
+  const bioclimSignal = useMemo(() => (compact ? null : getBioclimCardSignal(place)), [place, compact]);
   const liveFit = useMemo(
     () => (compact ? null : assessLiveFit(place, liveFitFilters)),
     [place, compact, liveFitFilters],
@@ -327,6 +328,15 @@ export const PlaceCard = memo(function PlaceCard({
               )}
             </div>
           )}
+
+          {bioclimSignal ? (
+            <div className="place-card__bioclim-row" aria-label="Bioclimatic signature">
+              <span className="chip place-card__bioclim-chip" data-tone={bioclimSignal.tone} title={bioclimSignal.title}>
+                <Droplets className="w-3 h-3 shrink-0" aria-hidden />
+                <span>{bioclimSignal.label}</span>
+              </span>
+            </div>
+          ) : null}
 
           {/* "This Month" live chip */}
           {!compact && (() => {

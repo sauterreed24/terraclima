@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../../data/places";
 import type { Place } from "../../types";
 import {
+  getBioclimCardSignal,
   getCorpusCardTeaser,
   getCorpusMapHint,
   getPlaceCorpusRanks,
@@ -86,6 +87,16 @@ describe("atlas corpus stats", () => {
     expect(getCorpusCardTeaser(place)).toBe(teaser);
     expect(getCorpusMapHint(place)).toBe(hint);
     expect(teaser).toContain("Vs full atlas:");
+    expect(teaser).toContain("bioclim:");
     expect(hint).toContain("Water year wetter than");
+  });
+
+  it("builds a compact bioclim card signal from computed indices", () => {
+    const signal = getBioclimCardSignal(PLACES.find(p => p.id === "yuma-az") ?? PLACES[0]!);
+
+    expect(signal).not.toBeNull();
+    expect(signal!.label).toContain("K ");
+    expect(signal!.title).toContain("De Martonne");
+    expect(signal!.title).toContain("Conrad K");
   });
 });

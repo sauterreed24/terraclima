@@ -310,6 +310,17 @@ export interface PlaceBioclimRanks {
   unepAridityAboveShare: number | null;
 }
 
+export interface BioclimCardSignal {
+  /** Short, card-safe label for chip surfaces. */
+  label: string;
+  /** Tooltip with the underlying computed values. */
+  title: string;
+  /** Existing chip tone key. */
+  tone: "glacier" | "sage" | "ochre" | "ember" | "ice" | "aurora";
+}
+
+const PLACE_BIOCLIM_CARD_SIGNAL_CACHE = new WeakMap<Place, BioclimCardSignal | null>();
+
 const PLACE_BIOCLIM_RANK_CACHE = new WeakMap<Place, PlaceBioclimRanks>();
 
 export function getPlaceBioclimRanks(place: Place): PlaceBioclimRanks {
@@ -344,6 +355,54 @@ export function getPlaceBioclimRanks(place: Place): PlaceBioclimRanks {
   return ranks;
 }
 
+function shortConradClass(cls: string): string {
+  switch (cls) {
+    case "extreme-oceanic": return "ext. oceanic";
+    case "sub-continental": return "sub-cont";
+    case "extreme-continental": return "ext. continental";
+    default: return cls;
+  }
+}
+
+function bioclimTone(cls: string | null, conrad: number): BioclimCardSignal["tone"] {
+  if (!cls) return conrad >= 50 ? "aurora" : "ice";
+  if (cls === "hyperarid" || cls === "arid") return "ember";
+  if (cls === "semi-arid" || cls === "mediterranean") return "ochre";
+  if (cls === "sub-humid" || cls === "humid") return "sage";
+  return "glacier";
+}
+
+/** Short bioclimatic signature for dense card surfaces. */
+export function getBioclimCardSignal(place: Place): BioclimCardSignal | null {
+  if (PLACE_BIOCLIM_CARD_SIGNAL_CACHE.has(place)) return PLACE_BIOCLIM_CARD_SIGNAL_CACHE.get(place)!;
+  const b = computeBioclim(place);
+  if (!b || b.conrad.value === null) {
+    PLACE_BIOCLIM_CARD_SIGNAL_CACHE.set(place, null);
+    return null;
+  }
+
+  const conradShort = `K ${Math.round(b.conrad.value)} ${shortConradClass(b.conrad.class)}`;
+  const waterLabel = b.deMartonne.value !== null ? b.deMartonne.classLabel : "Frozen-year";
+  const titleParts = [
+    b.deMartonne.value !== null
+      ? `De Martonne ${b.deMartonne.value.toFixed(1)} (${b.deMartonne.classLabel})`
+      : "De Martonne undefined: mean annual temperature <= -10 C",
+    `Conrad K ${b.conrad.value.toFixed(1)} (${b.conrad.classLabel})`,
+    `Thornthwaite PET ${Math.round(b.thornthwaitePet.value)} mm/yr`,
+  ];
+  if (b.selianinov.value !== null) {
+    titleParts.push(`Selianinov HTC ${b.selianinov.value.toFixed(2)} (${b.selianinov.classLabel})`);
+  }
+
+  const signal: BioclimCardSignal = {
+    label: `${waterLabel} · ${conradShort}`,
+    title: titleParts.join("; "),
+    tone: bioclimTone(b.deMartonne.value !== null ? b.deMartonne.class : null, b.conrad.value),
+  };
+  PLACE_BIOCLIM_CARD_SIGNAL_CACHE.set(place, signal);
+  return signal;
+}
+
 /** One-line for map/cards — no HTML */
 export function getCorpusMapHint(place: Place): string {
   const cached = PLACE_CORPUS_MAP_HINT_CACHE.get(place);
@@ -359,7 +418,8 @@ export function getCorpusCardTeaser(place: Place): string {
   const cached = PLACE_CORPUS_CARD_TEASER_CACHE.get(place);
   if (cached) return cached;
   const r = getPlaceCorpusRanks(place);
-  const teaser = `Vs full atlas: wetter than ${pct(r.wetterThanAtlasShare)} of stops · cooler JJA than ${pct(r.coolerSummersThanAtlasShare)} · higher ground than ${pct(r.higherElevationThanAtlasShare)}.`;
+  const bioclim = getBioclimCardSignal(place);
+  const teaser = `Vs full atlas: wetter than ${pct(r.wetterThanAtlasShare)} of stops · cooler JJA than ${pct(r.coolerSummersThanAtlasShare)} · higher ground than ${pct(r.higherElevationThanAtlasShare)}${bioclim ? ` · bioclim: ${bioclim.label}` : ""}.`;
   PLACE_CORPUS_CARD_TEASER_CACHE.set(place, teaser);
   return teaser;
 }
