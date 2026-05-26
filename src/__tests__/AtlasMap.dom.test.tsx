@@ -167,6 +167,14 @@ describe("AtlasMap DOM controls", () => {
     const second = items[1]!;
     const third = items[2]!;
 
+    expect(dialog).toHaveAttribute("aria-describedby");
+    expect(within(dialog).getByText("20 nearby pins")).toBeInTheDocument();
+    expect(within(dialog).getByText("20 nearby pins. Sorted by featured rank, tier, then name.")).toBeInTheDocument();
+    expect(within(dialog).getByText("Tier mix")).toBeInTheDocument();
+    expect(within(dialog).getByText("1 flagship / 1 spotlight / 18 index")).toBeInTheDocument();
+    expect(within(dialog).getByText("Lived read")).toBeInTheDocument();
+    expect(within(dialog).getByText("1 source-backed / 1 partial / 18 pending")).toBeInTheDocument();
+    expect(within(dialog).getByRole("button", { name: "Close cluster picker" })).toBeInTheDocument();
     expect(within(dialog).getByText("Location key")).toBeInTheDocument();
     expect(within(dialog).getByText("20 pins separated")).toBeInTheDocument();
     expect(dialog.querySelectorAll(".cluster-picker__mini-pin")).toHaveLength(20);

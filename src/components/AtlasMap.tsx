@@ -87,6 +87,11 @@ type ClusterPickerSpatialPoint = ClusterPoint & {
   miniX: number;
   miniY: number;
 };
+type ClusterPickerSummary = {
+  description: string;
+  tierMixLabel: string;
+  coverageMixLabel: string;
+};
 
 type ClimateRibbon = {
   id: string;
@@ -1889,6 +1894,7 @@ export function AtlasMap({
           cluster={clusterPicker.cluster}
           xPct={clusterPicker.xPct}
           yPct={clusterPicker.yPct}
+          mapHeight={height}
           featuredRankById={featuredRankById}
           onClose={() => setClusterPicker(null)}
           onSelect={(id) => {
@@ -2016,6 +2022,41 @@ function compareClusterPickerPoints(
   return a.place.id.localeCompare(b.place.id);
 }
 
+function pluralCount(count: number, singular: string, plural = `${singular}s`): string {
+  return `${count} ${count === 1 ? singular : plural}`;
+}
+
+function summarizeClusterPicker(points: readonly ClusterPoint[]): ClusterPickerSummary {
+  const tierCounts: Record<Place["tier"], number> = { A: 0, B: 0, C: 0 };
+  const coverageCounts = { sourceBacked: 0, partial: 0, unrated: 0 };
+
+  for (const pt of points) {
+    tierCounts[pt.place.tier] += 1;
+    const coverage = livedRealityCoverage(pt.place);
+    if (coverage.confidence === "source-backed") coverageCounts.sourceBacked += 1;
+    else if (coverage.confidence === "partial") coverageCounts.partial += 1;
+    else coverageCounts.unrated += 1;
+  }
+
+  const tierParts = [
+    tierCounts.A > 0 ? pluralCount(tierCounts.A, "flagship") : null,
+    tierCounts.B > 0 ? pluralCount(tierCounts.B, "spotlight") : null,
+    tierCounts.C > 0 ? pluralCount(tierCounts.C, "index", "index") : null,
+  ].filter((part): part is string => Boolean(part));
+
+  const coverageParts = [
+    coverageCounts.sourceBacked > 0 ? pluralCount(coverageCounts.sourceBacked, "source-backed", "source-backed") : null,
+    coverageCounts.partial > 0 ? pluralCount(coverageCounts.partial, "partial", "partial") : null,
+    coverageCounts.unrated > 0 ? pluralCount(coverageCounts.unrated, "pending", "pending") : null,
+  ].filter((part): part is string => Boolean(part));
+
+  const tierMixLabel = tierParts.join(" / ");
+  const coverageMixLabel = coverageParts.join(" / ");
+  const description = `${pluralCount(points.length, "nearby pin")}. Sorted by featured rank, tier, then name.`;
+
+  return { description, tierMixLabel, coverageMixLabel };
+}
+
 function clusterPickerMiniPoints(points: readonly ClusterPoint[]): ClusterPickerSpatialPoint[] {
   if (points.length === 0) return [];
   const keyedLimit = points.length > 24 ? 12 : points.length;
@@ -2060,6 +2101,7 @@ const ClusterPicker = memo(function ClusterPicker({
   cluster,
   xPct,
   yPct,
+  mapHeight,
   featuredRankById,
   onClose,
   onSelect,
@@ -2067,42 +2109,66 @@ const ClusterPicker = memo(function ClusterPicker({
   cluster: AtlasClusterItem<ClusterPoint>;
   xPct: number;
   yPct: number;
+  mapHeight: number;
   featuredRankById: ReadonlyMap<string, number>;
   onClose: () => void;
   onSelect: (id: string) => void;
 }) {
   const onRight = xPct < 52;
-  const onTop = yPct > 56;
-  const verticalOffset = onTop ? "calc(-100% - 10px)" : "10px";
+  const pickerInsetPx = 12;
+  const maxPickerHeightPx = Math.min(520, Math.max(280, mapHeight - pickerInsetPx * 2));
+  const anchorY = (yPct / 100) * mapHeight;
+  const topPx = Math.max(
+    pickerInsetPx,
+    Math.min(anchorY + 10, mapHeight - maxPickerHeightPx - pickerInsetPx),
+  );
+  const listMaxHeightPx = Math.max(84, maxPickerHeightPx - 270);
   const pickerStyle = {
     left: `${xPct}%`,
-    top: `${yPct}%`,
-    "--cluster-picker-y-offset": verticalOffset,
-    transform: `translate(${onRight ? "12px" : "calc(-100% - 12px)"}, var(--cluster-picker-y-offset))`,
+    top: `${topPx}px`,
+    "--cluster-picker-max-height": `${maxPickerHeightPx}px`,
+    "--cluster-picker-list-max-height": `${listMaxHeightPx}px`,
+    transform: `translateX(${onRight ? "12px" : "calc(-100% - 12px)"})`,
   } as React.CSSProperties;
   const sortedPoints = useMemo(
     () => cluster.points.slice().sort((a, b) => compareClusterPickerPoints(a, b, featuredRankById)),
     [cluster.points, featuredRankById],
   );
+  const summary = useMemo(() => summarizeClusterPicker(sortedPoints), [sortedPoints]);
   const spatialPoints = useMemo(() => clusterPickerMiniPoints(sortedPoints), [sortedPoints]);
   const keyedCount = spatialPoints.reduce((count, pt) => count + (pt.keyed ? 1 : 0), 0);
   const spatialCountLabel =
     keyedCount < cluster.points.length ? `${cluster.points.length} pins · ${keyedCount} keyed` : `${cluster.points.length} pins separated`;
+  const descriptionId = `cluster-picker-summary-${Math.round(xPct * 100)}-${Math.round(yPct * 100)}-${cluster.points.length}`;
 
   return (
     <div
       role="dialog"
       aria-label="Choose a microclimate from this cluster"
+      aria-describedby={descriptionId}
       className="cluster-picker map-chrome-panel"
       style={pickerStyle}
     >
-      <div className="flex items-center justify-between gap-2 border-b border-[rgba(140,200,224,0.24)] pb-2">
-        <div className="text-[10px] uppercase tracking-wider text-[rgba(236,244,252,0.76)]">
-          {cluster.points.length} nearby pins
+      <div className="cluster-picker__head">
+        <div className="cluster-picker__head-copy">
+          <div className="cluster-picker__eyebrow">
+            {pluralCount(cluster.points.length, "nearby pin")}
+          </div>
+          <div id={descriptionId} className="cluster-picker__sort">{summary.description}</div>
         </div>
         <button type="button" className="map-legend-close" onClick={onClose} aria-label="Close cluster picker">
           <X className="w-3.5 h-3.5" aria-hidden />
         </button>
+      </div>
+      <div className="cluster-picker__summary-grid" aria-label="Cluster summary">
+        <span className="cluster-picker__summary-pill">
+          <span className="cluster-picker__summary-label">Tier mix</span>
+          <span className="cluster-picker__summary-value">{summary.tierMixLabel}</span>
+        </span>
+        <span className="cluster-picker__summary-pill">
+          <span className="cluster-picker__summary-label">Lived read</span>
+          <span className="cluster-picker__summary-value">{summary.coverageMixLabel}</span>
+        </span>
       </div>
       <div className="cluster-picker__spatial" aria-label="Cluster location key">
         <div className="cluster-picker__mini-map" aria-hidden="true">
