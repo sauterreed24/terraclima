@@ -174,3 +174,220 @@ describe("useKeyboardShortcuts — overlay suppression", () => {
     expect(close).toHaveBeenCalledTimes(1);
   });
 });
+
+describe("useKeyboardShortcuts — Cmd/Ctrl+K search shortcut", () => {
+  afterEach(() => cleanup());
+
+  it("focuses search via setView('explorer') on Ctrl+K when no overlay is open", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView, view: "trips" })} />);
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    expect(setView).toHaveBeenCalledWith("explorer");
+  });
+
+  it("focuses search via setView('explorer') on Meta+K when no overlay is open", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView, view: "learn" })} />);
+    fireEvent.keyDown(window, { key: "k", metaKey: true });
+    expect(setView).toHaveBeenCalledWith("explorer");
+  });
+
+  it("works even when focus is in a text input (deliberately global)", () => {
+    const setView = vi.fn();
+    render(
+      <>
+        <input data-testid="other-input" />
+        <MountShortcuts {...defaults({ setView })} />
+      </>,
+    );
+    const input = document.querySelector("input")!;
+    input.focus();
+    fireEvent.keyDown(input, { key: "k", ctrlKey: true });
+    expect(setView).toHaveBeenCalledWith("explorer");
+  });
+
+  it("is suppressed when a place profile is open (overlay-occluded)", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView, selectedId: "sequim-wa" })} />);
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+    expect(setView).not.toHaveBeenCalled();
+  });
+
+  it("ignores Ctrl+Shift+K (modifier combo reserved for browser DevTools)", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView })} />);
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true, shiftKey: true });
+    expect(setView).not.toHaveBeenCalled();
+  });
+
+  it("ignores Alt+K (alt is reserved for OS / accent input)", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView })} />);
+    fireEvent.keyDown(window, { key: "k", altKey: true });
+    expect(setView).not.toHaveBeenCalled();
+  });
+
+  it("does not trigger plain k (no modifier) — that key is reserved for typing", () => {
+    const setView = vi.fn();
+    render(<MountShortcuts {...defaults({ setView })} />);
+    fireEvent.keyDown(window, { key: "k" });
+    expect(setView).not.toHaveBeenCalled();
+  });
+});
+
+describe("useKeyboardShortcuts — Escape clears non-empty search input", () => {
+  afterEach(() => cleanup());
+
+  it("clears a non-empty search input when no overlay is open", () => {
+    const clearSearch = vi.fn();
+    const closeDetail = vi.fn();
+    render(
+      <>
+        <input id="terraclima-place-search" defaultValue="seq" aria-label="Search places" />
+        <MountShortcuts
+          {...defaults({
+            closeDetail,
+            searchInputId: "terraclima-place-search",
+            clearSearch,
+          })}
+        />
+      </>,
+    );
+    const input = screen.getByLabelText("Search places") as HTMLInputElement;
+    input.focus();
+    fireEvent.keyDown(input, { key: "Escape" });
+    expect(clearSearch).toHaveBeenCalledTimes(1);
+    expect(closeDetail).not.toHaveBeenCalled();
+  });
+
+  it("does not clear when the search input is empty (falls through to no-op)", () => {
+    const clearSearch = vi.fn();
+    render(
+      <>
+        <input id="terraclima-place-search" defaultValue="" aria-label="Search places" />
+        <MountShortcuts
+          {...defaults({
+            searchInputId: "terraclima-place-search",
+            clearSearch,
+          })}
+        />
+      </>,
+    );
+    const input = screen.getByLabelText("Search places") as HTMLInputElement;
+    input.focus();
+    fireEvent.keyDown(input, { key: "Escape" });
+    expect(clearSearch).not.toHaveBeenCalled();
+  });
+
+  it("prefers closing an open place detail over clearing the search", () => {
+    const clearSearch = vi.fn();
+    const closeDetail = vi.fn();
+    render(
+      <>
+        <input id="terraclima-place-search" defaultValue="seq" aria-label="Search places" />
+        <MountShortcuts
+          {...defaults({
+            selectedId: "sequim-wa",
+            closeDetail,
+            searchInputId: "terraclima-place-search",
+            clearSearch,
+          })}
+        />
+      </>,
+    );
+    const input = screen.getByLabelText("Search places") as HTMLInputElement;
+    input.focus();
+    fireEvent.keyDown(input, { key: "Escape" });
+    expect(closeDetail).toHaveBeenCalledTimes(1);
+    expect(clearSearch).not.toHaveBeenCalled();
+  });
+
+  it("prefers closing an open filter sheet dialog over clearing the search", () => {
+    const clearSearch = vi.fn();
+    render(
+      <>
+        <dialog id="tc-explorer-filter-sheet" open>
+          <input id="terraclima-place-search" defaultValue="seq" aria-label="Search places" />
+        </dialog>
+        <MountShortcuts
+          {...defaults({
+            searchInputId: "terraclima-place-search",
+            clearSearch,
+          })}
+        />
+      </>,
+    );
+    const dialog = document.getElementById("tc-explorer-filter-sheet") as HTMLDialogElement;
+    const close = vi.fn(() => { dialog.open = false; });
+    dialog.close = close;
+    const input = screen.getByLabelText("Search places") as HTMLInputElement;
+    input.focus();
+    fireEvent.keyDown(input, { key: "Escape" });
+    expect(close).toHaveBeenCalledTimes(1);
+    expect(clearSearch).not.toHaveBeenCalled();
+  });
+
+  it("does not clear when focus is on an unrelated input", () => {
+    const clearSearch = vi.fn();
+    render(
+      <>
+        <input id="other" defaultValue="hello" aria-label="Other field" />
+        <input id="terraclima-place-search" defaultValue="seq" aria-label="Search places" />
+        <MountShortcuts
+          {...defaults({
+            searchInputId: "terraclima-place-search",
+            clearSearch,
+          })}
+        />
+      </>,
+    );
+    const other = screen.getByLabelText("Other field") as HTMLInputElement;
+    other.focus();
+    fireEvent.keyDown(other, { key: "Escape" });
+    expect(clearSearch).not.toHaveBeenCalled();
+  });
+});
+
+describe("useKeyboardShortcuts — listener is stable across prop changes", () => {
+  afterEach(() => cleanup());
+
+  it("does not unbind/rebind the global listener when deps change between renders", () => {
+    const addSpy = vi.spyOn(window, "addEventListener");
+    const removeSpy = vi.spyOn(window, "removeEventListener");
+    try {
+      const { rerender } = render(<MountShortcuts {...defaults()} />);
+      // Initial mount installs one keydown listener (plus the testing-library noise
+      // for other event types — we only count keydown).
+      const initialKeydownAdds = addSpy.mock.calls.filter(c => c[0] === "keydown").length;
+      const initialKeydownRemoves = removeSpy.mock.calls.filter(c => c[0] === "keydown").length;
+      // A re-render with new prop values would have caused the old hook to tear
+      // down and re-install the listener on every change. The ref-based version
+      // keeps the same handler in place across many re-renders.
+      rerender(<MountShortcuts {...defaults({ selectedId: "sequim-wa" })} />);
+      rerender(<MountShortcuts {...defaults({ selectedId: null, compareOpen: true })} />);
+      rerender(<MountShortcuts {...defaults({ view: "trips" })} />);
+      rerender(<MountShortcuts {...defaults({ showShortcuts: true })} />);
+      const finalKeydownAdds = addSpy.mock.calls.filter(c => c[0] === "keydown").length;
+      const finalKeydownRemoves = removeSpy.mock.calls.filter(c => c[0] === "keydown").length;
+      expect(finalKeydownAdds).toBe(initialKeydownAdds);
+      expect(finalKeydownRemoves).toBe(initialKeydownRemoves);
+    } finally {
+      addSpy.mockRestore();
+      removeSpy.mockRestore();
+    }
+  });
+
+  it("still reacts to the latest deps even though the listener is installed once", () => {
+    const setView = vi.fn();
+    const { rerender } = render(<MountShortcuts {...defaults({ setView, selectedId: null })} />);
+    // Selection becomes non-null — view-switch keys should now be suppressed.
+    rerender(<MountShortcuts {...defaults({ setView, selectedId: "sequim-wa" })} />);
+    fireEvent.keyDown(window, { key: "t" });
+    expect(setView).not.toHaveBeenCalled();
+
+    // Clear the selection again — view-switch keys should work.
+    rerender(<MountShortcuts {...defaults({ setView, selectedId: null })} />);
+    fireEvent.keyDown(window, { key: "t" });
+    expect(setView).toHaveBeenCalledWith("trips");
+  });
+});

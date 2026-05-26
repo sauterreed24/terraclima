@@ -443,4 +443,56 @@ describe("App shell", () => {
 
     expect((window.history.state as { tcPlace?: boolean } | null)?.tcPlace).toBeFalsy();
   }, APP_SHELL_TIMEOUT_MS);
+
+  it("clears a non-empty Explorer search on Escape without closing anything else", async () => {
+    renderApp();
+
+    const search = screen.getByLabelText(
+      "Search places by name, region, or archetype",
+    ) as HTMLInputElement;
+    fireEvent.change(search, { target: { value: "sequim" } });
+    expect(search.value).toBe("sequim");
+
+    search.focus();
+    fireEvent.keyDown(search, { key: "Escape" });
+
+    await waitFor(() => {
+      expect(search.value).toBe("");
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("focuses the Explorer search on Ctrl+K from outside the dock", async () => {
+    renderApp();
+
+    const search = screen.getByLabelText(
+      "Search places by name, region, or archetype",
+    ) as HTMLInputElement;
+    expect(document.activeElement).not.toBe(search);
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(search);
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("selects existing search text when Ctrl+K focuses the search input", async () => {
+    renderApp();
+
+    const search = screen.getByLabelText(
+      "Search places by name, region, or archetype",
+    ) as HTMLInputElement;
+    fireEvent.change(search, { target: { value: "rain shadow" } });
+    // Move focus away so the shortcut has somewhere to land from.
+    (document.body as HTMLElement).focus();
+
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(search);
+      // Select-on-focus: the entire value is selected so the next keystroke replaces it.
+      expect(search.selectionStart).toBe(0);
+      expect(search.selectionEnd).toBe("rain shadow".length);
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
 });

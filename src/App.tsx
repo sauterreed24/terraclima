@@ -639,7 +639,18 @@ export default function App() {
   const closeCompare = useCallback(() => setCompareOpen(false), []);
 
   const focusSearchInput = useCallback(() => {
-    document.getElementById(SEARCH_INPUT_ID)?.focus();
+    const el = document.getElementById(SEARCH_INPUT_ID) as HTMLInputElement | null;
+    if (!el) return;
+    el.focus();
+    // Pre-select an existing query so a follow-up keystroke replaces it —
+    // matches the standard command-palette / search-bar select-on-focus pattern.
+    if (el.value && el.value.length > 0) {
+      try { el.select(); } catch { /* noop */ }
+    }
+  }, []);
+
+  const clearSearch = useCallback(() => {
+    setFilters(f => (f.search ? { ...f, search: "" } : f));
   }, []);
 
   const openFilterSheet = useCallback(() => {
@@ -684,6 +695,8 @@ export default function App() {
     pickRandomPlace,
     onRandomEmpty,
     toggleBookmarkSelected,
+    searchInputId: SEARCH_INPUT_ID,
+    clearSearch,
   });
   const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setViewFluid("explorer"); }, [openPlace, setViewFluid]);
   const onOpenPlaceFromTrips = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
@@ -1054,10 +1067,11 @@ const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: 
           <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
           <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
           <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
+          <Kbds keys={["Ctrl", "K"]} /> <span className="text-frost">Explorer: focus search (also works from inside any text input)</span>
           <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
           <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
           <Kbds keys={["B"]} />        <span className="text-frost">Pin / unpin the currently open place to your shortlist</span>
-          <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail</span>
+          <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail (or clear a non-empty search field)</span>
           <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
         </div>
         <div className="divider-contour my-3" />
