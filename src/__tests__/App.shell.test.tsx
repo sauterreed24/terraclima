@@ -157,9 +157,20 @@ describe("App shell", () => {
   it("starts new sessions with live-here fit as the default Explorer ranking", () => {
     renderApp();
 
+    expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Live-here fit · top 5");
     expect(screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit")).toBeInTheDocument();
     expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("keeps the map leader caption synchronized with the selected ranking", () => {
+    window.history.replaceState(null, "", "/?r=best-growability");
+
+    renderApp();
+
+    const caption = document.querySelector(".tc-map-stage__caption strong");
+    expect(caption).toHaveTextContent("Best growability · top 5");
+    expect(caption).toHaveAttribute("title", "Best growability · top 5");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the mobile Live Finder trigger outside the animated view subtree", () => {

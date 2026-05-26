@@ -775,8 +775,10 @@ export default function App() {
 
                 <div className="tc-map-stage relative h-[clamp(320px,50svh,560px)] md:h-[54dvh] md:min-h-[min(480px,46dvh)]">
                   <div className="tc-map-stage__caption" aria-hidden="true">
-                    <span>Atlas instrument</span>
-                    <strong>{topRankedPlaceIds.length} leaders</strong>
+                    <span>Rank trail</span>
+                    <strong title={`${rankingLabel} · top ${topRankedPlaceIds.length}`}>
+                      {rankingLabel} · top {topRankedPlaceIds.length}
+                    </strong>
                   </div>
                   <AtlasMap
                     places={filtered}
