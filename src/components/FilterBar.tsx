@@ -209,7 +209,7 @@ export const FilterBar = memo(function FilterBar({
         <input
           id={searchFieldId}
           value={filters.search ?? ""}
-          onChange={e => setFilters({ ...filters, search: e.target.value })}
+          onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
           placeholder={searchPlaceholder}
           aria-label="Search places by name, region, or archetype"
           enterKeyHint="search"
@@ -247,7 +247,7 @@ export const FilterBar = memo(function FilterBar({
           {(filters.fitPresets?.size ?? 0) > 0 ? (
             <button
               type="button"
-              onClick={() => setFilters({ ...filters, fitPresets: new Set() })}
+              onClick={() => setFilters(f => ({ ...f, fitPresets: new Set() }))}
               className="text-stone hover:text-ice normal-case text-[11px] tracking-normal shrink-0"
             >
               clear
@@ -406,7 +406,7 @@ export const FilterBar = memo(function FilterBar({
           {filters.archetypes.size > 0 && (
             <button
               type="button"
-              onClick={() => setFilters({ ...filters, archetypes: new Set() })}
+              onClick={() => setFilters(f => ({ ...f, archetypes: new Set() }))}
               className="text-stone hover:text-ice normal-case text-[11px] tracking-normal"
             >
               clear · {filters.archetypes.size}

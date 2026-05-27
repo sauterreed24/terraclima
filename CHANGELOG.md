@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Touch & state-update hygiene
+- **44 px touch targets on coarse pointers (`src/styles.css`):** Live Finder chips, hero quick-picks, ghost buttons, and the temp/distance toggles are now ≥ 46 px tall under `@media (pointer: coarse)` — they previously rendered at 26–30 px on every device. The desktop dock keeps its compact size; only touch and stylus inputs see the larger hit area, joining the existing `.map-btn` rule that already met WCAG 2.5.5 AAA. The 46 px target leaves a 2 px safety margin so sub-pixel rounding on high-DPR phones (iPhone DPR 3, Android DPR 2.625) still clears 44 px.
+- **Functional-updater hygiene in FilterBar (`src/components/FilterBar.tsx`):** Three lingering `setFilters({ ...filters, … })` closure-capture callbacks (the search input's onChange and the two "clear" buttons for Live Finder presets and archetypes) now use functional updaters (`setFilters(f => ({ ...f, … }))`), matching the rest of the file. Eliminates the latent risk that a fast concurrent update — search keystroke + filter chip click in the same tick — could base its merge on a stale captured `filters` and silently clobber the other change.
+
 ### Keyboard symbiosis & input polish
 - **Cmd/Ctrl+K focuses Explorer search (`src/hooks/use-keyboard-shortcuts.ts`, `src/App.tsx`):** Modern command-palette convention added alongside the existing `/` shortcut. Cmd/Ctrl+K is deliberately global — it fires even when a text input has focus (matching GitHub / Linear / Notion / Slack), so a user already typing somewhere else can jump to Explorer search without first reaching for the mouse. Shift / Alt modifiers fall through (Ctrl+Shift+K is reserved for DevTools; Alt+K for OS accents). Suppressed while a place profile, compare panel, filter sheet, site menu, or shortcuts dialog owns the screen.
 - **Select-on-focus for the Explorer search input (`src/App.tsx`):** When `/` or Cmd/Ctrl+K refocuses the input and there is already a query in the field, the existing text is pre-selected so the next keystroke replaces it cleanly. Matches the established command-palette / browser-omnibar pattern.

@@ -5307,6 +5307,26 @@
     .map-btn[aria-label="Fit all places in view"] {
       font-size: 0.65rem !important;
     }
+    /* Coarse-pointer tap targets — the dock chips, hero quick-picks, ghost
+       buttons, and temp/distance toggles are all small enough on desktop that
+       they fall under the WCAG 2.5.5 AAA 44×44 px threshold on touch devices.
+       Bump their effective hit area without changing their visual width by
+       padding vertically and enforcing a min-height. Visual layout still
+       reflows cleanly because each control is in a flex/grid container.
+       The 46 px target leaves a 2 px safety margin over the 44 px threshold
+       so sub-pixel rounding on devices with non-integer DPR (e.g. iPhone
+       devicePixelRatio = 3, Android = 2.625) still clears the bar. */
+    .chip-btn,
+    .hero-quick-pick,
+    .btn-ghost,
+    .tc-temp-toggle__btn {
+      min-height: 46px;
+    }
+    .chip-btn,
+    .hero-quick-pick {
+      padding-top: 0.6rem;
+      padding-bottom: 0.6rem;
+    }
   }
 
   /* Soft pills — readable hints without monospace “code” styling */
