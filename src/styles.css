@@ -5339,6 +5339,18 @@
       height: 46px;
       flex-shrink: 0;
     }
+    /* Mobile-chrome triggers (hamburger menu, floating filter-sheet pill,
+       place-detail close icon) all rendered below 44 px on phones — bring
+       each up to the WCAG 2.5.5 AAA threshold without disturbing the
+       text-bearing variants on wider breakpoints. */
+    .tc-header-menu-trigger,
+    .tc-filter-sheet-trigger {
+      min-width: 44px;
+      min-height: 44px;
+    }
+    [data-place-detail-close] {
+      min-width: 44px;
+    }
   }
 
   /* Soft pills — readable hints without monospace “code” styling */
