@@ -5327,6 +5327,18 @@
       padding-top: 0.6rem;
       padding-bottom: 0.6rem;
     }
+    /* Square-icon buttons stay square on touch (width tracks height) so they
+       grow into a 46×46 px hit area instead of a 46-tall, 32-wide sliver.
+       Note: .tc-bookmark-chip is bumped in a second pointer:coarse block at
+       the end of the stylesheet, AFTER its base width/height rules — same
+       specificity, so we need to win on source order. flex-shrink: 0 keeps
+       the close button at full width when it sits inside a flex header that
+       has competing copy (e.g. the cluster picker head). */
+    .map-legend-close {
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+    }
   }
 
   /* Soft pills — readable hints without monospace “code” styling */
@@ -6583,5 +6595,16 @@
   }
   html {
     scroll-behavior: auto;
+  }
+}
+
+/* Bookmark chip needs a 44×44 px tap area on touch devices. This block sits
+   AFTER the base .tc-bookmark-chip rule so it wins on source order; same
+   specificity (single class), so the cascade resolves in favour of the later
+   declaration when @media (pointer: coarse) matches. */
+@media (pointer: coarse) {
+  .tc-bookmark-chip {
+    width: 46px;
+    height: 46px;
   }
 }

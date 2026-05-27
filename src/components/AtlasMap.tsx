@@ -6,6 +6,7 @@ import type { FeatureCollection, Geometry } from "geojson";
 import { Info, Maximize2, Minus, Plus, RotateCw, X } from "lucide-react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
+import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useUnits } from "../lib/units";
 import type { DistUnit } from "../lib/units";
 import { getCachedAtlasTopology, loadAtlasTopology, type AtlasTopology } from "../lib/atlas-map-topology";
@@ -2141,8 +2142,40 @@ const ClusterPicker = memo(function ClusterPicker({
     keyedCount < cluster.points.length ? `${cluster.points.length} pins · ${keyedCount} keyed` : `${cluster.points.length} pins separated`;
   const descriptionId = `cluster-picker-summary-${Math.round(xPct * 100)}-${Math.round(yPct * 100)}-${cluster.points.length}`;
 
+  // Trap Tab focus inside the picker and restore focus to the cluster trigger
+  // (the pin that opened the picker) on teardown, so keyboard users don't lose
+  // their place on the map.
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  useFocusTrap(panelRef, true, true);
+
+  useEffect(() => {
+    // Move keyboard focus into the picker on open so Tab and Escape both work
+    // immediately. The close button is the safest landing — auto-focusing the
+    // first place option would auto-trigger on Enter for users who pressed
+    // Escape but had momentary keyboard latency.
+    closeBtnRef.current?.focus({ preventScroll: true });
+  }, []);
+
+  useEffect(() => {
+    // Local Escape handler — the global keyboard-shortcut hook does not know
+    // about the cluster picker (it lives inside the map, not the app shell),
+    // so we close it locally. Capture phase ensures we run before the global
+    // handler when both could fire (e.g. with a focused search input).
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+        onClose();
+      }
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [onClose]);
+
   return (
     <div
+      ref={panelRef}
       role="dialog"
       aria-label="Choose a microclimate from this cluster"
       aria-describedby={descriptionId}
@@ -2156,7 +2189,7 @@ const ClusterPicker = memo(function ClusterPicker({
           </div>
           <div id={descriptionId} className="cluster-picker__sort">{summary.description}</div>
         </div>
-        <button type="button" className="map-legend-close" onClick={onClose} aria-label="Close cluster picker">
+        <button ref={closeBtnRef} type="button" className="map-legend-close" onClick={onClose} aria-label="Close cluster picker">
           <X className="w-3.5 h-3.5" aria-hidden />
         </button>
       </div>

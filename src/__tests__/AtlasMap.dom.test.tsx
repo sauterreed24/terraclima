@@ -193,6 +193,64 @@ describe("AtlasMap DOM controls", () => {
     expect(onSelect).toHaveBeenCalledWith("cluster-a");
   });
 
+  it("closes the cluster picker on Escape and restores focus to the cluster trigger", () => {
+    setCoarsePointer(true);
+    const clusterPlaces = [
+      makePlace({ id: "c-1", name: "Alpha Cluster", tier: "A", lat: 40, lon: -100 }),
+      makePlace({ id: "c-2", name: "Beta Cluster", tier: "A", lat: 40, lon: -100 }),
+      ...Array.from({ length: 18 }, (_, i) =>
+        makePlace({ id: `c-z-${i}`, name: `Gamma ${i}`, tier: "C", lat: 40, lon: -100 }),
+      ),
+    ];
+    renderMap(vi.fn(), [], clusterPlaces);
+
+    const trigger = screen.getByRole("button", { name: /20 nearby microclimates/ });
+    // jsdom's fireEvent.click does NOT focus the click target the way a real
+    // browser does, so explicitly focus the trigger first to mimic the real
+    // open path (where the keyboard/touch user activates the cluster pin).
+    trigger.focus();
+    fireEvent.click(trigger);
+
+    const dialog = screen.getByRole("dialog", { name: "Choose a microclimate from this cluster" });
+    expect(dialog).toBeInTheDocument();
+    // The close button auto-receives focus so Tab + Escape both work immediately.
+    const closeBtn = within(dialog).getByRole("button", { name: "Close cluster picker" });
+    expect(document.activeElement).toBe(closeBtn);
+
+    fireEvent.keyDown(window, { key: "Escape" });
+
+    expect(
+      screen.queryByRole("dialog", { name: "Choose a microclimate from this cluster" }),
+    ).toBeNull();
+    // Focus is restored to whatever launched the picker.
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it("traps Tab focus inside the cluster picker (Tab from last item cycles back to close)", () => {
+    setCoarsePointer(true);
+    const clusterPlaces = [
+      makePlace({ id: "tab-a", name: "Tab Alpha", tier: "A", lat: 40, lon: -100 }),
+      makePlace({ id: "tab-b", name: "Tab Beta", tier: "A", lat: 40, lon: -100 }),
+      ...Array.from({ length: 18 }, (_, i) =>
+        makePlace({ id: `tab-z-${i}`, name: `Tab Gamma ${i}`, tier: "C", lat: 40, lon: -100 }),
+      ),
+    ];
+    renderMap(vi.fn(), [], clusterPlaces);
+    fireEvent.click(screen.getByRole("button", { name: /20 nearby microclimates/ }));
+
+    const dialog = screen.getByRole("dialog", { name: "Choose a microclimate from this cluster" });
+    const close = within(dialog).getByRole("button", { name: "Close cluster picker" });
+    const optionButtons = within(dialog).getAllByRole("button", { name: /Open / });
+    const lastOption = optionButtons[optionButtons.length - 1]!;
+
+    // Focus the last in-dialog button manually, then Tab — focus should jump
+    // back to the close button (the first focusable in the trap).
+    lastOption.focus();
+    expect(document.activeElement).toBe(lastOption);
+    fireEvent.keyDown(dialog, { key: "Tab" });
+    expect(document.activeElement).toBe(close);
+  });
+
   it("shows a compact non-blocking scout preview on desktop hover while click still selects", () => {
     setCoarsePointer(false);
     const onSelect = vi.fn();
