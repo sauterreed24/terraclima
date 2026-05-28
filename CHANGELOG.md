@@ -4,6 +4,15 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Terraclima evolution v4.8
+
+- **Apparent-comfort (UTCI-style) proxy (`src/lib/comfort-precision.ts`):** `apparentComfortIndex` reports a warm-season thermal-strain band (mirroring UTCI's 26/32/38 °C heat breakpoints) from air temperature + relative humidity and the wet-bulb shade proxy — **explicitly not a true UTCI** (no wind / solar / mean-radiant inputs, which the corpus does not carry). Surfaced in the place dossier comfort section and a `CompareView` row, each with an honesty caption.
+- **2050 climate-scenario projection (`src/lib/climate-projection.ts` new):** deterministic `projectPlace` morphs 1991–2020 normals to mid-century SSP2-4.5 / SSP5-8.5 layers using a coarse **sourced regional anomaly table** (country + latitude band; IPCC AR6 Atlas, NASA NEX-GDDP-CMIP6) with high-latitude winter amplification and a wet-north / dry-southwest precip dipole. Illustrative regional projection, not a downscaled per-site forecast; authored `Place.projection` overrides win. New `scn=` URL param flips the whole Explorer (ranking, map, cards, compass, analogs); the dossier stays present-day.
+- **Compute worker (`src/workers/climate-processor.worker.ts`, `src/hooks/use-climate-processor.ts`, `src/lib/climate-processor.ts` new):** the project→filter→rank pipeline runs off the main thread through a pure, shared `runScenarioRanking` orchestrator with a synchronous fallback. The worker is loaded lazily only when a future scenario is engaged (it carries the corpus), so the default present-day view downloads nothing extra. New typed messaging contract in `src/types/worker.ts`.
+- **Native web-platform CSS (`src/styles.css`):** Tailwind v4 `@property`-registered animatable accent (motion-gated), first-class container queries on cards (`.place-card`), the card grid, and compare columns (`.tc-compare-col`), and a `@starting-style` entry on the scenario control.
+- **Vite 8 (`vite.config.ts`):** `server.forwardConsole` forwards browser + Web Worker runtime errors/warnings to the dev terminal.
+- **Pipeline guards (`scripts/sanity-check.ts`, `scripts/audit-corpus.ts`):** validate authored `Place.projection` deltas (finite, plausibility-bounded, SSP pathway ordering).
+
 ### Maximum-effort symbiosis
 
 - **Lifestyle lens parity:** [`src/lib/lifestyle-bundles.ts`](src/lib/lifestyle-bundles.ts) centralizes dock + hero bundles; auto-switch to **`live-fit`** ranking when Live Finder constraints are active without a full bundle match; dismissible Lens Receipt chips with `aria-live="polite"`.

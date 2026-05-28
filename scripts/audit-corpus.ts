@@ -282,6 +282,24 @@ function checkCitationUrls(p: Place) {
   }
 }
 
+function checkProjection(p: Place): void {
+  const proj = p.projection;
+  if (!proj) return;
+  const entries = [["ssp245", proj.ssp245], ["ssp585", proj.ssp585]] as const;
+  for (const [scen, d] of entries) {
+    if (!d) continue;
+    for (const [k, v] of [
+      ["deltaJJAHighC", d.deltaJJAHighC],
+      ["deltaJANLowC", d.deltaJANLowC],
+      ["deltaPrecipPct", d.deltaPrecipPct],
+    ] as const) {
+      if (typeof v !== "number" || !Number.isFinite(v)) {
+        record("fatal", `${p.id}:projection.${scen}.${k}`, "projection delta must be a finite number");
+      }
+    }
+  }
+}
+
 for (const p of PLACES) {
   for (const [field, text] of placeFields(p)) {
     const where = `${p.id}:${field}`;
@@ -290,6 +308,7 @@ for (const p of PLACES) {
     checkConsistency(p, where, text);
   }
   checkCitationUrls(p);
+  checkProjection(p);
 }
 for (const c of CONCEPTS) {
   for (const [field, val] of [["short", c.short], ["long", c.long], ["mechanism", c.mechanism]] as const) {
