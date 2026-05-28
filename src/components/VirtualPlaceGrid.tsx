@@ -108,7 +108,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   if (rowCount === 0) return null;
 
   return (
-    <div ref={anchorRef}>
+    <div ref={anchorRef} className="tc-card-grid">
       <div
         className="w-full"
         style={{
@@ -125,7 +125,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
               key={vRow.key}
               data-index={vRow.index}
               ref={virtualizer.measureElement}
-              className="grid grid-cols-1 md:grid-cols-2 gap-3 absolute top-0 left-0 w-full"
+              className="tc-card-row grid grid-cols-1 md:grid-cols-2 gap-3 absolute top-0 left-0 w-full"
               style={{
                 transform: `translateY(${vRow.start - scrollMargin}px)`,
               }}

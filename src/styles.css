@@ -7207,3 +7207,146 @@ html[data-theme="dark"] .detail-drawer-header[data-tone="aurora"] {
     height: 46px;
   }
 }
+
+/* ============================================================
+   Terraclima v4.8 — native web-platform primitives
+   Tailwind v4 + modern CSS: @property-registered animatable accents,
+   first-class container queries, and @starting-style entry transitions.
+   ============================================================ */
+
+/* Registered custom property → GPU-animatable angle for the scenario accent.
+   A bare `--x` cannot be interpolated; registering it with a typed syntax lets
+   the conic sweep animate on the compositor instead of repainting. */
+@property --tc-scenario-sweep {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Climate-scenario layer switch ("2050 time machine"). */
+.climate-scenario {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  /* @starting-style entry: fade/rise in on first paint. */
+  transition: opacity 0.32s ease, transform 0.32s ease;
+}
+@starting-style {
+  .climate-scenario {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.climate-scenario__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-stone-readable);
+}
+.climate-scenario__seg {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 0.6rem;
+  background: var(--color-ink);
+  border: 1px solid var(--color-slate-1);
+}
+.climate-scenario__opt {
+  position: relative;
+  appearance: none;
+  border: 0;
+  border-radius: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--color-stone-readable);
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.18s ease, background-color 0.18s ease;
+  min-height: 32px;
+}
+.climate-scenario__opt:hover {
+  color: var(--color-ice);
+}
+.climate-scenario__opt[data-active="true"] {
+  color: var(--color-ice);
+  background: var(--color-abyss);
+  box-shadow: 0 1px 2px rgba(40, 30, 20, 0.18);
+}
+.climate-scenario__note {
+  font-size: 0.7rem;
+  color: var(--color-stone-readable);
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+@media (pointer: coarse) {
+  .climate-scenario__opt {
+    min-height: 44px;
+    padding-inline: 0.95rem;
+  }
+}
+
+/* Animated accent ring on the active future-scenario segment — only at the
+   full motion tier so reduced-motion users get a static highlight. */
+html[data-motion="full"] .climate-scenario__opt[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--tc-scenario-sweep),
+    var(--color-glacier-500), var(--color-ochre-500), var(--color-glacier-500));
+  /* mask the fill so only the 1px ring shows */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: tc-scenario-sweep 4.5s linear infinite;
+  pointer-events: none;
+}
+@keyframes tc-scenario-sweep {
+  to { --tc-scenario-sweep: 360deg; }
+}
+
+/* First-class container queries: layouts respond to their OWN width, not the
+   viewport. The card grid's column COUNT stays JS-driven (the window
+   virtualizer needs it for row math), but per-card and per-compare-column
+   internals adapt natively here. */
+.place-card {
+  container-type: inline-size;
+  container-name: tc-place-card;
+}
+/* Very narrow cards (single-column phones) tighten their open-target padding. */
+@container tc-place-card (max-width: 340px) {
+  .place-card__open-target {
+    padding: 0.8rem;
+  }
+}
+
+.tc-card-grid {
+  container-type: inline-size;
+  container-name: tc-card-grid;
+}
+/* Roomy two-column desktop containers earn a little more inter-card air. */
+@container tc-card-grid (min-width: 1200px) {
+  .tc-card-row {
+    gap: 1.1rem;
+  }
+}
+
+.tc-compare-col {
+  container-type: inline-size;
+  container-name: tc-compare-col;
+}
+/* On a narrow compare column (3–4 places on a small screen) the paired stat
+   grid stacks to a single column so labels and values stop colliding. */
+@container tc-compare-col (max-width: 232px) {
+  .tc-compare-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

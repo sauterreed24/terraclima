@@ -20,9 +20,10 @@
  *   temp    temperature unit: "F" (default) | "C"
  *   dist    distance unit: "imperial" (default) | "metric"
  *   theme   color theme: "auto" (default) | "light" | "dark"
+ *   scn     climate scenario layer: "now" (default) | "ssp245" | "ssp585"
  */
 
-import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
+import type { Country, MicroclimateArchetype, RiskLevel, ScenarioId } from "../types";
 import type { RankingProfile } from "./scoring";
 import type { DistUnit, TempUnit } from "./units";
 import { DEFAULT_RANKING } from "./app-ranking-preference";
@@ -61,11 +62,14 @@ export interface ParsedAppUrl {
   temp: TempUnit | null;
   dist: DistUnit | null;
   theme: ThemePreference | null;
+  scenario: ScenarioId | null;
 }
 
 const VIEWS = new Set<AppView>(["explorer", "trips", "collections", "learn"]);
 const COUNTRY_VALUES = new Set<Country>(["USA", "Canada", "Mexico"]);
 const RANKING_VALUES = new Set<string>(ALL_RANKING_PROFILES);
+// "now" is the implicit default and is never written to the URL.
+const SCENARIO_VALUES = new Set<ScenarioId>(["ssp245", "ssp585"]);
 
 function parseFiniteNumber(raw: string | null): number | undefined {
   if (!raw) return undefined;
@@ -146,6 +150,8 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
   if (dist === "imperial" || dist === "metric") out.dist = dist;
   const theme = params.get("theme");
   if (isThemePreference(theme)) out.theme = theme;
+  const scn = params.get("scn");
+  if (scn && SCENARIO_VALUES.has(scn as ScenarioId)) out.scenario = scn as ScenarioId;
   return out;
 }
 
@@ -177,6 +183,7 @@ export interface AppUrlState {
   temp?: TempUnit | null;
   dist?: DistUnit | null;
   theme?: ThemePreference | null;
+  scenario?: ScenarioId | null;
   collectionExists: (id: string) => boolean;
   archetypeExists?: (id: string) => boolean;
   placeExists?: (id: string) => boolean;
@@ -231,6 +238,10 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
     // "auto" is the implicit default; omit so a link doesn't force a theme.
     params.set("theme", state.theme);
   }
+  if (state.scenario && SCENARIO_VALUES.has(state.scenario)) {
+    // "now" is the implicit default; omit so a link doesn't force a projection.
+    params.set("scn", state.scenario);
+  }
   const compareIds = state.compareIds ?? [];
   if (compareIds.length > 0) {
     const validate = state.placeExists ?? (() => true);
@@ -284,6 +295,7 @@ export interface ValidatedAppState {
   temp: TempUnit | null;
   dist: DistUnit | null;
   theme: ThemePreference | null;
+  scenario: ScenarioId | null;
 }
 
 export function validatedStateFromSearch(
@@ -326,6 +338,7 @@ export function validatedStateFromSearch(
     temp: p.temp ?? null,
     dist: p.dist ?? null,
     theme: p.theme ?? null,
+    scenario: p.scenario ?? null,
   };
 }
 
@@ -355,6 +368,7 @@ export function readInitialAppState(
       temp: null,
       dist: null,
       theme: null,
+      scenario: null,
     };
   }
   return validatedStateFromSearch(window.location.search, placesById, collectionById, archetypesById, resolvePlaceId);

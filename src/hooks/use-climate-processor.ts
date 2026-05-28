@@ -77,12 +77,21 @@ export function useClimateProcessor(input: UseClimateProcessorInput): UseClimate
     [scenario, ranking, filters, poolIds, nowEpochMs],
   );
 
-  // Lazily create (at most) one worker for the lifetime of the hook.
-  const workerRef = useRef<Worker | null | undefined>(undefined);
-  if (workerRef.current === undefined) {
-    workerRef.current = disableWorker ? null : createWorker();
-  }
-  const worker = workerRef.current;
+  // Synchronous seed — always correct, instant, and what tests observe. This
+  // is the source of truth; the worker only mirrors it off-thread.
+  const syncRows = useMemo<RankedRow[]>(
+    () => runScenarioRanking(buildRequest({ scenario, ranking, filters, poolIds, nowEpochMs }, -1)).rows,
+    // signature captures every input that affects the result.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [signature],
+  );
+
+  // The worker is created LAZILY and only when enabled — so the default
+  // present-day view never downloads the (corpus-carrying) worker chunk. It
+  // spins up the first time the caller engages a future scenario.
+  const workerRef = useRef<Worker | null>(null);
+  const requestIdRef = useRef(0);
+  const [workerState, setWorkerState] = useState<{ signature: string; rows: RankedRow[] } | null>(null);
 
   useEffect(() => {
     return () => {
@@ -91,19 +100,11 @@ export function useClimateProcessor(input: UseClimateProcessorInput): UseClimate
     };
   }, []);
 
-  // Synchronous seed — always correct, instant, and what tests observe.
-  const syncRows = useMemo<RankedRow[]>(
-    () => runScenarioRanking(buildRequest({ scenario, ranking, filters, poolIds, nowEpochMs }, -1)).rows,
-    // signature captures every input that affects the result.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [signature],
-  );
-
-  const requestIdRef = useRef(0);
-  const [workerState, setWorkerState] = useState<{ signature: string; rows: RankedRow[] } | null>(null);
-
   useEffect(() => {
-    if (!worker) return;
+    if (disableWorker) return;
+    if (!workerRef.current) workerRef.current = createWorker();
+    const worker = workerRef.current;
+    if (!worker) return; // unsupported env → synchronous seed stands
     const requestId = ++requestIdRef.current;
     const onMessage = (event: MessageEvent) => {
       if (!isWorkerResponse(event.data)) return;
@@ -114,17 +115,17 @@ export function useClimateProcessor(input: UseClimateProcessorInput): UseClimate
     worker.postMessage(buildRequest({ scenario, ranking, filters, poolIds, nowEpochMs }, requestId));
     return () => worker.removeEventListener("message", onMessage);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [worker, signature]);
+  }, [disableWorker, signature]);
 
-  if (!worker) {
+  if (disableWorker || workerRef.current == null) {
     return { rows: syncRows, status: "sync", projecting: false };
   }
 
   const fresh = workerState?.signature === signature;
   return {
     // The synchronous seed guarantees correctness on the first frame and while
-    // the worker is in flight; the worker rows replace it once they land.
-    rows: fresh ? workerState!.rows : syncRows,
+    // the worker recompute is in flight; the worker rows replace it on arrival.
+    rows: fresh ? workerState.rows : syncRows,
     status: fresh ? "ready" : "projecting",
     projecting: !fresh,
   };

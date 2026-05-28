@@ -249,7 +249,7 @@ export function CompareView({
                 const bio = computeBioclim(p);
                 const utci = apparentComfortIndex(p);
                 return (
-                <div key={p.id} className="panel p-4 relative snap-start">
+                <div key={p.id} className="panel p-4 relative snap-start tc-compare-col">
                   <button type="button" onClick={() => onRemove(p.id)} aria-label={`Remove ${p.name} from comparison`} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center">
                     <X className="w-4 h-4" />
                   </button>
@@ -269,7 +269,7 @@ export function CompareView({
 
                   <MicroclimateFingerprint place={p} size={220} compactLabels />
 
-                  <div className="grid grid-cols-2 gap-2 mt-3 text-sm">
+                  <div className="grid grid-cols-2 gap-2 mt-3 text-sm tc-compare-stats">
                     <Row label="Elevation" value={fmtElev(p.elevationM, dist)} />
                     <Row label="Köppen" value={p.koppen} wide />
                     <Row label="De Martonne" value={bio ? bioclimRow(bio.deMartonne, v => v.toFixed(1)) : "—"} wide />
