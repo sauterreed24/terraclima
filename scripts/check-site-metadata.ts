@@ -92,6 +92,32 @@ expectEqual(
   JSON.stringify(SITE_METADATA.manifestCategories),
 );
 
+// PWA installability: the manifest must include a PNG ladder + a maskable
+// variant so Android install + Apple touch icons both render correctly.
+const manifestIcons = Array.isArray(manifest.icons) ? manifest.icons as Array<Record<string, unknown>> : [];
+const iconSrcs = manifestIcons.map(i => String(i.src));
+for (const required of ["icon-180.png", "icon-192.png", "icon-512.png", "icon-512-maskable.png"]) {
+  if (!iconSrcs.includes(required)) {
+    record("public/site.webmanifest icons", `missing ${required} in icons[]`);
+  }
+}
+const hasMaskable = manifestIcons.some(i => String(i.purpose ?? "").includes("maskable"));
+if (!hasMaskable) {
+  record("public/site.webmanifest icons", "no icon advertises purpose=maskable");
+}
+
+// index.html should link the apple-touch-icon PNG (not the SVG) so iOS
+// home-screen installs use a proper raster icon.
+expectIncludes("index.html", indexHtml, 'rel="apple-touch-icon"');
+expectIncludes("index.html", indexHtml, "icon-180.png");
+
+// Dark-mode pairing: index.html must declare both light and dark
+// theme-color hints so the OS chrome (status bar / address bar) tracks
+// the active theme.
+expectIncludes("index.html", indexHtml, 'name="color-scheme" content="light dark"');
+expectIncludes("index.html", indexHtml, 'media="(prefers-color-scheme: light)"');
+expectIncludes("index.html", indexHtml, 'media="(prefers-color-scheme: dark)"');
+
 expectIncludes("public/robots.txt", robots, `Sitemap: ${sitemapUrl}`);
 expectIncludes("public/sitemap.xml", sitemap, `<loc>${SITE_METADATA.canonicalUrl}</loc>`);
 expectIncludes("public/404.html", notFound, `<title>${SITE_METADATA.appName} — redirecting</title>`);
