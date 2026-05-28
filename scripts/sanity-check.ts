@@ -4,6 +4,7 @@
  * broken references, and growability/soil inconsistencies.
  */
 import { PLACES } from "../src/data/places";
+import { rankPlaces } from "../src/lib/scoring";
 import { COLLECTIONS } from "../src/data/collections";
 import { CLIMATE_TRIP_THEMES } from "../src/data/climate-trip-themes";
 import { CONCEPTS } from "../src/data/glossary";
@@ -433,6 +434,23 @@ for (const c of COLLECTIONS) {
 for (const c of CONCEPTS) {
   for (const id of c.exampleIds ?? []) {
     if (!placeIdSet.has(id)) report(`concept:${c.id}`, "ERROR", `unknown example placeId "${id}"`);
+  }
+}
+
+// --- Tier-aware editorial gaps (WARN) ---
+const HUMIDITY_ARCHETYPES = new Set(["fog-belt-coast", "cool-summer-maritime"]);
+for (const p of PLACES) {
+  if (p.archetypes.some(a => HUMIDITY_ARCHETYPES.has(a)) && p.climate.humidity == null) {
+    report(p.id, "WARN", "humidity missing for fog-belt / cool-summer-maritime archetype");
+  }
+}
+
+for (const profile of ["best-for-remote-work", "best-retirement"] as const) {
+  const top = rankPlaces(profile, PLACES).slice(0, 20);
+  for (const row of top) {
+    if (!row.place.liveSignals) {
+      report(row.place.id, "WARN", `top-20 ${profile} rank lacks liveSignals`);
+    }
   }
 }
 

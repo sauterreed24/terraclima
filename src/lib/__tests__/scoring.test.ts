@@ -1,5 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { avgRisk, meanSummerHigh, meanJanLow, applyFilters, createEmptyFilterState, rankPlaces, RISK_VALUE, type FilterState } from "../scoring";
+import {
+  avgRisk,
+  meanSummerHigh,
+  meanJanLow,
+  applyFilters,
+  createEmptyFilterState,
+  filterStateFromValidated,
+  hasActiveExplorerFilters,
+  countActiveExplorerFilterSignals,
+  rankPlaces,
+  RISK_VALUE,
+  type FilterState,
+} from "../scoring";
 import { PLACES } from "../../data/places";
 import { makePlace, makeClimate } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
@@ -103,6 +115,40 @@ describe("applyFilters", () => {
     expect(applyFilters(pool, f()).map(p => p.id)).toEqual(["a", "b", "c"]);
   });
 
+  it("filterStateFromValidated matches createEmptyFilterState when URL has no filter params", () => {
+    expect(
+      filterStateFromValidated({
+        countries: [],
+        archetypes: [],
+        fitPresets: [],
+        search: "",
+        maxSummerHighC: null,
+        minWinterLowC: null,
+        minGrowability: null,
+        maxFireRisk: null,
+        maxOverallRisk: null,
+      }),
+    ).toEqual(createEmptyFilterState());
+  });
+
+  it("filterStateFromValidated omits absent optional constraint keys", () => {
+    const state = filterStateFromValidated({
+      countries: ["USA"],
+      archetypes: ["mediterranean-pocket"],
+      fitPresets: ["cool-summers"],
+      search: "garden",
+      maxSummerHighC: 22,
+      minWinterLowC: null,
+      minGrowability: 75,
+      maxFireRisk: "low",
+      maxOverallRisk: null,
+    });
+    expect(state.minWinterLowC).toBeUndefined();
+    expect(state.maxOverallRisk).toBeUndefined();
+    expect(hasActiveExplorerFilters(state)).toBe(true);
+    expect(countActiveExplorerFilterSignals(state)).toBeGreaterThan(0);
+  });
+
   it("createEmptyFilterState drops stale constraints so applyFilters matches an unfiltered pool", () => {
     const polluted: FilterState = {
       ...createEmptyFilterState(),
@@ -112,8 +158,6 @@ describe("applyFilters", () => {
       minGrowability: 75,
       maxFireRisk: "low",
       maxOverallRisk: "moderate",
-      minElevation: 1000,
-      maxElevation: 2000,
     };
     expect(applyFilters(pool, polluted).length).toBeLessThan(pool.length);
     expect(applyFilters(pool, createEmptyFilterState()).map(p => p.id)).toEqual(["a", "b", "c"]);
@@ -126,9 +170,24 @@ describe("applyFilters", () => {
       applyFilters(pool, f({ archetypes: new Set(["chinook-corridor", "eternal-spring-highland"]) })).map(p => p.id),
     ).toEqual(["b", "c"]);
   });
-  it("filters by elevation range (inclusive)", () => {
-    expect(applyFilters(pool, f({ minElevation: 1000, maxElevation: 2000 })).map(p => p.id)).toEqual(["b"]);
+  it("filters by live-fit preset pool threshold", () => {
+    const hot = makePlace({
+      id: "hot",
+      climate: makeClimate({
+        tempHighC: [12, 15, 20, 25, 31, 36, 38, 37, 32, 25, 18, 13] as Monthly12,
+      }),
+    });
+    const cool = makePlace({
+      id: "cool",
+      climate: makeClimate({
+        tempHighC: [5, 7, 10, 14, 18, 20, 21, 20, 17, 12, 8, 5] as Monthly12,
+      }),
+    });
+    expect(
+      applyFilters([hot, cool], { ...f(), fitPresets: new Set(["cool-summers"]) }).map(p => p.id),
+    ).toEqual(["cool"]);
   });
+
   it("filters by live-fit climate and risk constraints", () => {
     const coolLowRisk = makePlace({
       id: "cool-low-risk",

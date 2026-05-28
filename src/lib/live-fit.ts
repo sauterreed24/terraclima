@@ -238,6 +238,17 @@ function quietScore(place: Place): number {
   return clamp100(hidden + anchors * 4 + tierLift - (isMajorCity ? 24 : 0));
 }
 
+/** Minimum presetScore for a place to remain in the Explorer pool when a preset is active in filters/URL. */
+export const LIVE_FIT_PRESET_POOL_THRESHOLD = 50;
+
+export function liveFitPresetsPoolPass(place: Place, presets?: Set<LiveFitPresetId>): boolean {
+  if (!presets?.size) return true;
+  for (const id of presets) {
+    if (presetScore(place, id) < LIVE_FIT_PRESET_POOL_THRESHOLD) return false;
+  }
+  return true;
+}
+
 function presetScore(place: Place, preset: LiveFitPresetId): number {
   const summer = meanSummerHigh(place);
   const winter = meanJanLow(place);
@@ -470,6 +481,7 @@ export function rankLiveFit(pool: Place[], filters: LiveFitFilters = {}) {
 }
 
 export function liveFitFilterPass(place: Place, filters: LiveFitFilters = {}): boolean {
+  if (!liveFitPresetsPoolPass(place, filters.fitPresets)) return false;
   if (filters.maxSummerHighC != null && meanSummerHigh(place) > filters.maxSummerHighC) return false;
   if (filters.minWinterLowC != null && meanJanLow(place) < filters.minWinterLowC) return false;
   if (filters.minGrowability != null && place.scores.growability < filters.minGrowability) return false;

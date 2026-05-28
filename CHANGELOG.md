@@ -4,6 +4,15 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Corpus, contract, and deterministic stability
+
+- **Filter contract (ported from `593ab79` onto current `main`):** `filterStateFromValidated()`, `hasActiveExplorerFilters()`, `countActiveExplorerFilterSignals()` in `src/lib/scoring.ts`; shared URL hydration in `App`; Lens Receipt **Clear all**; extended `playtest:polish` (polluted filters, empty pool, cleared Live Finder URL params, `data-motion` smoke).
+- **Live Finder `fitPresets` pool:** non-empty presets require `presetScore >= 50` per active id in `liveFitFilterPass`; documented in `docs/URL-INVARIANTS.md` (`fit`, `sh`, `wl`, `grow`, `fire`, `risk`).
+- **Dead elevation filters removed** from `FilterState` / `applyFilters` (no URL or UI).
+- **Corpus guardrails:** `scripts/corpus-coverage-report.ts` + `npm run corpus:coverage` (warn-only in `quality:check`); tier-aware sanity WARNs for fog/cool-maritime without humidity and top-ranked remote-work/retirement gaps without `liveSignals`.
+- **Corpus-rank-gold:** five new anchors (`oaxaca-mx`, `banff-ab`, `los-alamos-pajarito-plateau-nm`, `victoria-bc`, `nelson-bc`).
+- **Bounded editorial:** `liveSignals` for top-ranked remote-work/retirement shortlist places; humidity on Cape May and Mystic maritime entries.
+
 ### UI beauty, symbiosis, and fluidity
 
 - **Beauty tokens (`src/lib/theme-tokens.ts`, `src/styles.css`):** `--tc-shadow-elevated`, inset/glass/accent/glow/focus/motion duration tokens; utilities `.tc-inset-panel`, `.tc-accent-panel`, `.tc-surface-glass`, `.tc-icon-ochre`.
@@ -16,6 +25,13 @@ All notable changes to Terraclima are tracked here.
 
 - **Clear all filters (`src/lib/scoring.ts`, `FilterBar`, `App`):** `createEmptyFilterState()` is the single reset shape; clears Live Finder numeric/risk constraints and elevation limits, not only search/country/archetype/presets. Live Finder inline control renamed to **Clear presets**.
 - **Place profile copy link (`src/components/place-detail/CopyPlaceLink.tsx`):** uses `writeClipboardText` with Copied / Copy failed feedback and unmount-safe status reset.
+
+### Filter contract polish
+
+- **`filterStateFromValidated()`** centralizes URL → `FilterState` hydration in `App` (first paint + Back/Forward).
+- **`hasActiveExplorerFilters()`** / **`countActiveExplorerFilterSignals()`** unify FilterBar clear affordances and the mobile filter-sheet badge.
+- **Lens Receipt** clear control labeled **Clear all** with `aria-label="Clear all filters"`.
+- **`playtest:polish`** now regression-tests filter clear + live-fit URL omission; App shell smoke test for bookmark writes when `localStorage` throws.
 
 ### UI & visual quality pass (deterministic stability)
 
