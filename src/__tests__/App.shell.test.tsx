@@ -470,6 +470,27 @@ describe("App shell", () => {
     expect(screen.getByLabelText("Search places by name, region, or archetype")).toHaveAttribute("placeholder", "Search places");
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("does not crash when bookmark persistence throws on toggle", () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa"]),
+    );
+    const originalSetItem = window.localStorage.setItem.bind(window.localStorage);
+    window.localStorage.setItem = ((key: string, value: string) => {
+      if (key === "terraclima.bookmarks.v1") throw new Error("quota");
+      return originalSetItem(key, value);
+    }) as typeof window.localStorage.setItem;
+
+    renderApp();
+
+    expect(screen.getByText(/Your shortlist · 1/)).toBeInTheDocument();
+    expect(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Unpin Sequim from your shortlist" }));
+    }).not.toThrow();
+    expect(screen.getByRole("main")).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Unpin Sequim from your shortlist" })).not.toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("renders the pinned shortlist rail when bookmarks exist in localStorage", () => {
     window.localStorage.setItem(
       "terraclima.bookmarks.v1",

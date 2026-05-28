@@ -1,5 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { avgRisk, meanSummerHigh, meanJanLow, applyFilters, createEmptyFilterState, rankPlaces, RISK_VALUE, type FilterState } from "../scoring";
+import {
+  avgRisk,
+  meanSummerHigh,
+  meanJanLow,
+  applyFilters,
+  createEmptyFilterState,
+  filterStateFromValidated,
+  hasActiveExplorerFilters,
+  countActiveExplorerFilterSignals,
+  rankPlaces,
+  RISK_VALUE,
+  type FilterState,
+} from "../scoring";
 import { PLACES } from "../../data/places";
 import { makePlace, makeClimate } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
@@ -101,6 +113,41 @@ describe("applyFilters", () => {
 
   it("returns all places with empty filter sets", () => {
     expect(applyFilters(pool, f()).map(p => p.id)).toEqual(["a", "b", "c"]);
+  });
+
+  it("filterStateFromValidated matches createEmptyFilterState when URL has no filter params", () => {
+    expect(
+      filterStateFromValidated({
+        countries: [],
+        archetypes: [],
+        fitPresets: [],
+        search: "",
+        maxSummerHighC: null,
+        minWinterLowC: null,
+        minGrowability: null,
+        maxFireRisk: null,
+        maxOverallRisk: null,
+      }),
+    ).toEqual(createEmptyFilterState());
+  });
+
+  it("filterStateFromValidated omits absent optional constraint keys", () => {
+    const state = filterStateFromValidated({
+      countries: ["USA"],
+      archetypes: ["mediterranean-pocket"],
+      fitPresets: ["cool-summers"],
+      search: "garden",
+      maxSummerHighC: 22,
+      minWinterLowC: null,
+      minGrowability: 75,
+      maxFireRisk: "low",
+      maxOverallRisk: null,
+    });
+    expect(state.minWinterLowC).toBeUndefined();
+    expect(state.maxOverallRisk).toBeUndefined();
+    expect(state.minElevation).toBeUndefined();
+    expect(hasActiveExplorerFilters(state)).toBe(true);
+    expect(countActiveExplorerFilterSignals(state)).toBeGreaterThan(0);
   });
 
   it("createEmptyFilterState drops stale constraints so applyFilters matches an unfiltered pool", () => {

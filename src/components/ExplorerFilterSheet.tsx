@@ -14,8 +14,7 @@ import {
 import { SlidersHorizontal, X } from "lucide-react";
 import { FilterBar } from "./FilterBar";
 import { useFocusTrap } from "../hooks/use-focus-trap";
-import type { FilterState } from "../lib/scoring";
-import type { RankingProfile } from "../lib/scoring";
+import { countActiveExplorerFilterSignals, type FilterState, type RankingProfile } from "../lib/scoring";
 
 export type ExplorerFilterSheetHandle = {
   open: () => void;
@@ -33,20 +32,6 @@ type Props = {
   /** When a place profile opens, the sheet closes so the drawer is unobstructed. */
   detailOpen?: boolean;
 };
-
-function filterChipsCount(filters: FilterState): number {
-  let n = 0;
-  n += filters.countries.size;
-  n += filters.archetypes.size;
-  n += filters.fitPresets?.size ?? 0;
-  if ((filters.search?.length ?? 0) > 0) n += 1;
-  if (filters.maxSummerHighC != null) n += 1;
-  if (filters.minWinterLowC != null) n += 1;
-  if (filters.minGrowability != null) n += 1;
-  if (filters.maxFireRisk != null) n += 1;
-  if (filters.maxOverallRisk != null) n += 1;
-  return n;
-}
 
 export const ExplorerFilterSheet = memo(
   forwardRef<ExplorerFilterSheetHandle, Props>(function ExplorerFilterSheet(
@@ -112,7 +97,7 @@ export const ExplorerFilterSheet = memo(
       };
     }, [open, searchInputId]);
 
-    const chips = useMemo(() => filterChipsCount(filters), [filters]);
+    const chips = useMemo(() => countActiveExplorerFilterSignals(filters), [filters]);
     const triggerLabel =
       chips > 0
         ? `Open Explorer filters and ranking (${chips} active ${chips === 1 ? "filter" : "filters"})`

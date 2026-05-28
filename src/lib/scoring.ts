@@ -401,6 +401,54 @@ export function createEmptyFilterState(): FilterState {
   };
 }
 
+/** URL-validated explorer filter fields — shared by first paint and popstate hydration. */
+export interface ValidatedFilterInput {
+  countries: readonly string[];
+  archetypes: readonly MicroclimateArchetype[];
+  fitPresets: readonly LiveFitPresetId[];
+  search: string;
+  maxSummerHighC?: number | null;
+  minWinterLowC?: number | null;
+  minGrowability?: number | null;
+  maxFireRisk?: RiskLevel | null;
+  maxOverallRisk?: RiskLevel | null;
+}
+
+/** Build explorer filter state from validated URL/search fields without stale optional keys. */
+export function filterStateFromValidated(v: ValidatedFilterInput): FilterState {
+  const state: FilterState = {
+    countries: new Set(v.countries),
+    archetypes: new Set(v.archetypes),
+    fitPresets: new Set(v.fitPresets),
+    search: v.search,
+  };
+  if (v.maxSummerHighC != null) state.maxSummerHighC = v.maxSummerHighC;
+  if (v.minWinterLowC != null) state.minWinterLowC = v.minWinterLowC;
+  if (v.minGrowability != null) state.minGrowability = v.minGrowability;
+  if (v.maxFireRisk != null) state.maxFireRisk = v.maxFireRisk;
+  if (v.maxOverallRisk != null) state.maxOverallRisk = v.maxOverallRisk;
+  return state;
+}
+
+/** Count active Explorer filter signals (for mobile sheet badge). */
+export function countActiveExplorerFilterSignals(filters: FilterState): number {
+  let n = 0;
+  n += filters.countries.size;
+  n += filters.archetypes.size;
+  n += filters.fitPresets?.size ?? 0;
+  if ((filters.search?.length ?? 0) > 0) n += 1;
+  if (filters.maxSummerHighC != null) n += 1;
+  if (filters.minWinterLowC != null) n += 1;
+  if (filters.minGrowability != null) n += 1;
+  if (filters.maxFireRisk != null) n += 1;
+  if (filters.maxOverallRisk != null) n += 1;
+  return n;
+}
+
+export function hasActiveExplorerFilters(filters: FilterState): boolean {
+  return countActiveExplorerFilterSignals(filters) > 0;
+}
+
 export function applyFilters(places: Place[], f: FilterState): Place[] {
   // Precompute the diacritic-folded query once, not per-place. The search
   // index is built with the same fold so "san jose" matches "San José".
