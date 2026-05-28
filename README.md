@@ -43,6 +43,10 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 - **Live Finder explorer:** An Albers-projected North America atlas with tiered pins, keyboard-accessible markers, climate previews, country filters, archetype filters, ranking controls, a scout brief for the current shortlist, a desktop relocation workbench, a one-tap current-view share link, and URL-shareable state. First-run sessions start with **Live-here fit** so the opening shortlist is relocation-oriented before readers branch into hidden gems, **Most comfortable**, or specialty climate lenses. The Live Finder layer adds presets for cool summers, mild winters, dry air, gardenability, low fire/smoke, four seasons, snow country, coastal buffering, and quiet small-town scouting, plus hard constraints for summer high, winter low, growability, fire risk, and overall risk. The scout brief explains the leading match, shortlist climate/risk spread, main caution, where top contenders win across living-priority signals, and a decision matrix that translates the top places into fit, comfort, easy months, risk load, land/garden signal, and first caveat. On narrow screens, navigation moves into a hamburger menu and filters move into a polished modal sheet. From 1024px up, the filter dock stays sticky beside the explorer.
 - **Climate Trips:** A static climate-tourism funnel for traveling by microclimate: fog belts, rain shadows, sky islands, cold-air pools, orchard valleys, volcanic soils, Great Lakes snowbelts, Appalachian hollows, and places that feel climatically out of place. Trips pin curated climate themes back onto the Explorer map and can compare the top stops without adding booking or inventory data.
 - **Phone-safe map interaction:** Touch users land in direct map mode by default: one-finger drag pans the atlas, pinch zooms, plus/minus and Fit remain available, clusters stay tappable, and dense pins visually spread with leader lines back to their exact locations. Tapping **Scroll page** gives control back to browser scrolling; **Use map** re-enters direct map interaction.
+- **Keyboard-first map:** every visible pin is keyboard-reachable via a single Tab into the map, then ArrowLeft/Right walks through the visible markers in render order and ArrowUp/Down step between screen rows; Home/End jump to first/last. The roving-tabindex layout means Tab never has to walk through hundreds of pins to reach the next interactive control after the map.
+- **Light / dark / auto theme:** a three-state Auto / Light / Dark control in the top bar (and inside the mobile site menu) flips the chrome between the bright Sonoran-courtyard light theme and a high-contrast moonlit dark theme. "Auto" follows the OS preference live via `prefers-color-scheme`. The intentionally-dark atlas map shell stays consistent across themes. Preference round-trips via `?theme=light|dark` and persists across sessions in `localStorage`.
+- **Installable PWA, offline-capable shell:** a vanilla service worker precaches the app shell and stale-while-revalidates hashed assets, so the atlas opens fully offline after a single visit. Install on iOS (Add to Home Screen, full PNG icon ladder including 180 × 180 Apple touch), Android (192 × 192 and 512 × 512 PNGs plus a 10%-inset maskable for adaptive-icon masks), and desktop Chromium browsers (manifest install prompt).
+- **Native share + shortlist export:** the Copy view control now uses `navigator.share` on platforms that support it (mobile, modern Safari) and silently falls back to clipboard everywhere else. The shortlist exporter library (`src/lib/shortlist-export.ts`) ships pure JSON / CSV / GeoJSON (RFC 7946) / ICS (RFC 5545 — one VEVENT per place sized to its best-month window) emitters so a future popover can offer download-as-X without any I/O lock-in.
 - **Place profiles:** Long-form field profiles for each microclimate, including an opening story, responsive Wikimedia hero media where curated, scannable at-a-glance facts, practical scouting cards, live-here fit reasons/cautions, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, climate twins, settlement anchors, things to do, citations, and confidence notes.
 - **Climate twins (analog finder):** Every profile answers the core relocation question — *"where else feels like here, across the whole year?"* — with a deterministic climate-analog engine that compares overall warmth, the **shape** of the seasonal curve, the maritime↔continental swing, annual moisture, **when** the rain falls, the air (humidity/sunshine/diurnal), and shared terrain mechanism. Each twin shows a match score, an alignment "fingerprint" across those axes, a dual annual-temperature ribbon over the source place, and a plain-language read of what aligns and where it diverges. A **"Twin, but —"** control re-ranks the credible twins toward *milder winters, warmer, cooler, drier,* or *lower risk* without letting an unrelated climate jump the queue (e.g. Eureka's drier twins surface Sequim, a real rain-shadow town). See [`src/lib/climate-analog.ts`](src/lib/climate-analog.ts).
 - **Climate tourism read:** Each profile derives a compact scouting itinerary, visit window, growability read, habitat cues, static lodging search cues, risk screen, and three transparent scores: tourism appeal, climate-oriented "Would I live here?", and a climate/land signal.
@@ -52,7 +56,7 @@ Terraclima makes those patterns easier to see. It gives readers the vocabulary, 
 - **Collections and learning mode:** Curated bundles and a glossary connect mechanisms such as lapse rate, cold-air pooling, orographic lift, marine layer, foehn winds, thermal belts, and karst hydrology to real places.
 - **Static lodging and investment caveats:** Lodging cues are static style/search prompts, not reservation inventory or paid placement. The investment lens is a climate-and-land screening signal, not financial advice, not a valuation, not a parcel recommendation, and not a recommendation to buy.
 - **Unit-aware prose:** The corpus is authored in metric climate language while the interface localizes temperatures, ranges, deltas, precipitation, snowfall, elevation, wind speed, and distance for the active unit system.
-- **Keyboard shortcuts:** `E`, `T`, `C`, and `L` switch views; `/` opens Explorer search; `Ctrl/⌘+K` also opens Explorer search (works even from inside other text inputs, and selects any existing query so you can immediately overwrite it); `F` opens mobile filters; `R` picks a random place from the current ranked set; `B` pins / unpins the currently open place to your shortlist; `Esc` closes the active overlay or, when nothing is open, clears a non-empty search field; `?` opens shortcut help.
+- **Keyboard shortcuts:** `E`, `T`, `C`, and `L` switch views; `/` opens Explorer search; `Ctrl/⌘+K` also opens Explorer search (works even from inside other text inputs, and selects any existing query so you can immediately overwrite it); `F` opens mobile filters; `R` picks a random place from the current ranked set; `B` pins / unpins the currently open place to your shortlist; `Esc` closes the active overlay or, when nothing is open, clears a non-empty search field; `?` opens shortcut help. Once the map has Tab focus, ArrowLeft/Right walks through visible pins in render order, ArrowUp/Down steps between screen rows, and Home/End jump to first/last.
 - **Persistent shortlist:** Pin any place to your local shortlist with the bookmark control on cards or in the place profile header. The Explorer hero exposes a quick-jump rail for pinned places. Pins persist across sessions in `localStorage` — no account required.
 - **Recently viewed rail:** The Explorer hero remembers the last ten place profiles you opened on this device so you can resume scouting without losing context.
 - **Print-friendly profiles:** Open a place profile and choose your browser's Print to get a paperboard-ready brief (atlas chrome, controls, and overlays are hidden by the print stylesheet).
@@ -91,7 +95,7 @@ Terraclima combines editorial research with deterministic analysis. The app does
 - **Climate tourism synthesis:** `src/lib/climate-tourism.ts` derives trip windows, scouting itineraries, static lodging cues, habitat reads, and caveated tourism / climate-land scores from the typed corpus, with cached per-place profiles for repeated UI reads.
 - **Validation built into the project:** `scripts/sanity-check.ts`, `scripts/audit-corpus.ts`, `scripts/test-prose.ts`, and `scripts/corpus-rank-gold.ts` catch malformed data, unit/prose regressions, corpus drift, and rank instability.
 - **Unit tests for pure logic:** `src/lib/__tests__/` covers units, scoring, best-month windows, climate analogs, and URL state with Vitest.
-- **Accessibility as architecture:** Dialogs use focus traps and clear escape behavior. The filtered result count has a screen-reader-only live region. SVG map markers, cluster markers, and map controls expose visible focus states. Mobile filter/search behavior avoids duplicate IDs and unpredictable modal stacks.
+- **Accessibility as architecture:** Dialogs use focus traps and clear escape behavior (`role="dialog"` + `aria-modal` on the cluster picker, mobile map legend, PlaceDetail, CompareView, and ShortcutsOverlay). The filtered result count has a screen-reader-only live region. SVG map markers, cluster markers, and map controls expose visible focus states. Map pins use roving-tabindex with arrow-key navigation so the map never balloons the Tab order. Mobile filter/search behavior avoids duplicate IDs and unpredictable modal stacks. Compare and driver-chip toggles expose `aria-pressed` / `aria-expanded` with stable `aria-controls` targets so screen readers announce disclosure state correctly.
 - **Performance-conscious map:** The SVG atlas avoids React re-renders during drag, coalesces wheel zoom with `requestAnimationFrame`, lazy-loads topology, clusters dense mobile pins in screen space, and gates expensive effects based on device capability.
 - **Scalable card rendering:** The place grid uses virtualization, realistic mobile row estimates, scroll-position-safe dynamic measurement, and `content-visibility` so a large corpus stays responsive on modest hardware.
 - **Cold-route bundle discipline:** Explorer stays on the eager path; Climate Trips, Collections, Learn, Place Detail, and Compare load on demand so the first atlas screen parses less JavaScript.
@@ -236,6 +240,7 @@ npm run audit:corpus       # Corpus prose, units, typography, and consistency au
 npm run sanity             # Structural corpus and geospatial sanity checks
 npm run test:corpus-gold   # Ranking and geospatial snapshot guardrails
 npm run generate:og        # Regenerate public/og-image.png
+npm run generate:icons     # Regenerate the PWA PNG icon ladder
 ```
 
 ### Manual QA — desktop and phone (after UI or map changes)
@@ -288,7 +293,8 @@ For AI agents or automated reviewers:
 src/
   components/                  React UI: atlas, cards, profile, compare, collections, learn mode
     charts/                    SVG chart primitives
-    place-detail/              Reading nav and deep profile sections
+    chrome/                    TopBar / Footer / LogoMark / ShortcutsOverlay / ThemeToggle
+    place-detail/              Per-section dossier files + shared place-detail-ui primitives
     ExplorerFilterSheet.tsx    Mobile filter dialog + FAB trigger
     ClimateTripsView.tsx       Trip-theme funnel and climate-tourism picks
     FootprintPanel.tsx         Atlas country / tier counts
@@ -296,11 +302,17 @@ src/
   data/                        Places, collections, archetypes, glossary, field notes
   hooks/                       Focus trap, media query, reading spy
   lib/                         Scoring, units, geospatial analysis, URL state, corpus stats,
-                               map fit and map clustering helpers
+                               map fit / cluster / geometry / zoom / scale-bar / keyboard
+                               helpers, theme, pwa registration, clipboard, share, lazy-view
+                               loaders, view-transition, shortlist-export
     __tests__/                 Vitest tests (lib + ranking contracts)
   __tests__/                   Light DOM smoke tests (App shell; map stubbed)
   types.ts                     Domain schema
-scripts/                       Corpus audits, sanity checks, rank goldens, debug dumps, OG-image generator
+public/
+  sw.js                        Service worker (shell precache + SWR for hashed assets)
+  icon-{180,192,512,512-maskable}.png  PWA icon ladder (regenerate via scripts/generate-icons.ts)
+scripts/                       Corpus audits, sanity checks, rank goldens, debug dumps,
+                               OG-image + PNG icon generators
 .github/workflows/             quality.yml, quality-main.yml, static-preview.yml, deploy-pages.yml
 ```
 
