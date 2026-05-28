@@ -1,5 +1,11 @@
 import { memo, useCallback, type Dispatch, type SetStateAction } from "react";
 import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
+import {
+  applyLifestyleBundle,
+  isBundleActive,
+  LIFESTYLE_BUNDLES,
+  type LifestyleBundle,
+} from "../lib/lifestyle-bundles";
 import { createEmptyFilterState, hasActiveExplorerFilters, type FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
@@ -28,102 +34,16 @@ import {
 import { fmtTemp, useProse, useUnits, type UnitState } from "../lib/units";
 
 export { RANKING_OPTIONS } from "../lib/ranking-options";
+export { LIFESTYLE_BUNDLES, applyLifestyleBundle, isBundleActive } from "../lib/lifestyle-bundles";
 
-// ── Compound lifestyle bundles ────────────────────────────────────────────────
-// Each bundle sets a primary ranking, a set of Live Finder presets,
-// and optional numeric constraints — all applied in one click.
-interface LifestyleBundle {
-  id: string;
-  icon: LucideIcon;
-  tone: "glacier" | "sage" | "ochre" | "ember" | "ice" | "aurora";
-  label: string;
-  description: string;
-  ranking: RankingProfile;
-  presets: LiveFitPresetId[];
-  maxSummerHighC?: number;
-  minWinterLowC?: number;
-  minGrowability?: number;
-  maxFireRisk?: RiskLevel;
-  maxOverallRisk?: RiskLevel;
-}
-
-const LIFESTYLE_BUNDLES: LifestyleBundle[] = [
-  {
-    id: "remote-work",
-    icon: Laptop,
-    tone: "glacier",
-    label: "Remote Work",
-    description: "Cool, productive summers. Low fire & smoke. Mild winters. Ranked by remote-work readiness.",
-    ranking: "best-for-remote-work",
-    presets: ["cool-summers", "low-fire-smoke"],
-    maxSummerHighC: 26,
-  },
-  {
-    id: "retirement",
-    icon: Sunrise,
-    tone: "ochre",
-    label: "Retirement",
-    description: "Mild all-year, low aggregate risk, good growability. Ranked by year-round comfort.",
-    ranking: "best-retirement",
-    presets: ["mild-winters"],
-    minWinterLowC: 2,
-    maxOverallRisk: "moderate",
-  },
-  {
-    id: "garden",
-    icon: Sprout,
-    tone: "sage",
-    label: "Garden & Grow",
-    description: "Long growing season, good soils, frost-free nights. Ranked by growability.",
-    ranking: "best-growability",
-    presets: ["gardenable"],
-    minGrowability: 65,
-  },
-  {
-    id: "snow-ski",
-    icon: Snowflake,
-    tone: "ice",
-    label: "Snow & Ski",
-    description: "Real winter with reliable snowpack. Four-season drama. Ranked by coolest summers.",
-    ranking: "coolest-summers",
-    presets: ["snow-country", "four-seasons"],
-  },
-  {
-    id: "fire-safe",
-    icon: ShieldCheck,
-    tone: "ember",
-    label: "Fire-Safe",
-    description: "Low wildfire and smoke exposure. Climate-resilient trajectory. Ranked by resilience.",
-    ranking: "climate-resilient",
-    presets: ["low-fire-smoke"],
-    maxFireRisk: "moderate",
-    maxOverallRisk: "moderate",
-  },
-  {
-    id: "shoulder-season",
-    icon: CalendarDays,
-    tone: "aurora",
-    label: "Best Shoulder",
-    description: "Ideal spring and autumn conditions. Mild winters, dry air, comfortable year-round.",
-    ranking: "best-shoulder-seasons",
-    presets: ["mild-winters", "dry-air"],
-  },
-];
-
-function samePresetSet(actual: Set<LiveFitPresetId> | undefined, expected: readonly LiveFitPresetId[]): boolean {
-  if ((actual?.size ?? 0) !== expected.length) return false;
-  return expected.every(preset => actual?.has(preset));
-}
-
-function isBundleActive(bundle: LifestyleBundle, ranking: RankingProfile, filters: FilterState): boolean {
-  return ranking === bundle.ranking &&
-    samePresetSet(filters.fitPresets, bundle.presets) &&
-    filters.maxSummerHighC === bundle.maxSummerHighC &&
-    filters.minWinterLowC === bundle.minWinterLowC &&
-    filters.minGrowability === bundle.minGrowability &&
-    filters.maxFireRisk === bundle.maxFireRisk &&
-    filters.maxOverallRisk === bundle.maxOverallRisk;
-}
+const BUNDLE_ICONS: Record<string, LucideIcon> = {
+  "remote-work": Laptop,
+  "retirement": Sunrise,
+  "garden": Sprout,
+  "snow-ski": Snowflake,
+  "fire-safe": ShieldCheck,
+  "shoulder-season": CalendarDays,
+};
 
 function countLiveSignals(filters: FilterState): number {
   return (filters.fitPresets?.size ?? 0) + [
@@ -227,6 +147,8 @@ export const FilterBar = memo(function FilterBar({
         activeBundle={activeBundle}
         hasAny={hasAny}
         onClearAll={clearAll}
+        setFilters={setFilters}
+        ranking={ranking}
       />
 
       <div className="tc-accent-panel p-2.5 space-y-2">
@@ -320,24 +242,14 @@ export const FilterBar = memo(function FilterBar({
                 type="button"
                 aria-pressed={isActive}
                 title={bundle.description}
-                onClick={() => {
-                  setRanking(bundle.ranking);
-                  setFilters(f => ({
-                    ...f,
-                    fitPresets: new Set(bundle.presets),
-                    // Bundles own the Live Finder constraint surface; keep text, country,
-                    // and archetype filters, but clear stale fit constraints from older modes.
-                    maxSummerHighC: bundle.maxSummerHighC,
-                    minWinterLowC: bundle.minWinterLowC,
-                    minGrowability: bundle.minGrowability,
-                    maxFireRisk: bundle.maxFireRisk,
-                    maxOverallRisk: bundle.maxOverallRisk,
-                  }));
-                }}
+                onClick={() => applyLifestyleBundle(bundle, setRanking, setFilters)}
                 className={`lifestyle-bundle-btn${isActive ? " lifestyle-bundle-btn--active" : ""}`}
               >
                 <span className="lifestyle-bundle-btn__icon" data-tone={bundle.tone} aria-hidden>
-                  <bundle.icon className="w-3.5 h-3.5" />
+                  {(() => {
+                    const Icon = BUNDLE_ICONS[bundle.id];
+                    return Icon ? <Icon className="w-3.5 h-3.5" /> : null;
+                  })()}
                 </span>
                 <span className="lifestyle-bundle-btn__label">{bundle.label}</span>
               </button>
@@ -434,6 +346,18 @@ export const FilterBar = memo(function FilterBar({
   );
 });
 
+function clearLiveFinderConstraints(f: FilterState): FilterState {
+  return {
+    ...f,
+    fitPresets: new Set(),
+    maxSummerHighC: undefined,
+    minWinterLowC: undefined,
+    minGrowability: undefined,
+    maxFireRisk: undefined,
+    maxOverallRisk: undefined,
+  };
+}
+
 function LensReceipt({
   rankingLabel,
   filters,
@@ -441,6 +365,8 @@ function LensReceipt({
   activeBundle,
   hasAny,
   onClearAll,
+  setFilters,
+  ranking,
 }: {
   rankingLabel: string;
   filters: FilterState;
@@ -448,33 +374,108 @@ function LensReceipt({
   activeBundle: LifestyleBundle | null;
   hasAny: boolean;
   onClearAll: () => void;
+  setFilters: Dispatch<SetStateAction<FilterState>>;
+  ranking: RankingProfile;
 }) {
   const liveSignalCount = countLiveSignals(filters);
-  const chips: { label: string; tone?: string }[] = [];
+  const chips: { key: string; label: string; tone?: string; onDismiss?: () => void }[] = [];
   const search = filters.search?.trim();
   const presetCount = filters.fitPresets?.size ?? 0;
+  const sortedByLiveFit = ranking === "live-fit";
 
-  if (activeBundle) chips.push({ label: activeBundle.label, tone: activeBundle.tone });
-  if (search) chips.push({ label: `Search: ${search}`, tone: "glacier" });
-  if (filters.countries.size > 0) chips.push({ label: [...filters.countries].join(", "), tone: "ochre" });
-  if (filters.archetypes.size > 0) chips.push({ label: `${filters.archetypes.size} archetype${filters.archetypes.size === 1 ? "" : "s"}`, tone: "ice" });
-  if (presetCount > 0) chips.push({ label: `${presetCount} Live Finder preset${presetCount === 1 ? "" : "s"}`, tone: "sage" });
-  if (filters.maxSummerHighC != null) chips.push({ label: `Summer <= ${fmtTemp(filters.maxSummerHighC, temp)}`, tone: "glacier" });
-  if (filters.minWinterLowC != null) chips.push({ label: `Winter >= ${fmtTemp(filters.minWinterLowC, temp)}`, tone: "ice" });
-  if (filters.minGrowability != null) chips.push({ label: `Garden ${filters.minGrowability}+`, tone: "sage" });
-  if (filters.maxFireRisk) chips.push({ label: `Fire <= ${RISK_LABELS[filters.maxFireRisk]}`, tone: "ember" });
-  if (filters.maxOverallRisk) chips.push({ label: `Risk <= ${RISK_LABELS[filters.maxOverallRisk]}`, tone: "ochre" });
+  if (activeBundle) {
+    chips.push({
+      key: "bundle",
+      label: activeBundle.label,
+      tone: activeBundle.tone,
+      onDismiss: () => setFilters(f => clearLiveFinderConstraints(f)),
+    });
+  }
+  if (search) {
+    chips.push({
+      key: "search",
+      label: `Search: ${search}`,
+      tone: "glacier",
+      onDismiss: () => setFilters(f => ({ ...f, search: "" })),
+    });
+  }
+  if (filters.countries.size > 0) {
+    chips.push({
+      key: "countries",
+      label: [...filters.countries].join(", "),
+      tone: "ochre",
+      onDismiss: () => setFilters(f => ({ ...f, countries: new Set() })),
+    });
+  }
+  if (filters.archetypes.size > 0) {
+    chips.push({
+      key: "archetypes",
+      label: `${filters.archetypes.size} archetype${filters.archetypes.size === 1 ? "" : "s"}`,
+      tone: "ice",
+      onDismiss: () => setFilters(f => ({ ...f, archetypes: new Set() })),
+    });
+  }
+  if (presetCount > 0) {
+    chips.push({
+      key: "presets",
+      label: `${presetCount} Live Finder preset${presetCount === 1 ? "" : "s"}`,
+      tone: "sage",
+      onDismiss: () => setFilters(f => ({ ...f, fitPresets: new Set() })),
+    });
+  }
+  if (filters.maxSummerHighC != null) {
+    chips.push({
+      key: "summer",
+      label: `Summer <= ${fmtTemp(filters.maxSummerHighC, temp)}`,
+      tone: "glacier",
+      onDismiss: () => setFilters(f => ({ ...f, maxSummerHighC: undefined })),
+    });
+  }
+  if (filters.minWinterLowC != null) {
+    chips.push({
+      key: "winter",
+      label: `Winter >= ${fmtTemp(filters.minWinterLowC, temp)}`,
+      tone: "ice",
+      onDismiss: () => setFilters(f => ({ ...f, minWinterLowC: undefined })),
+    });
+  }
+  if (filters.minGrowability != null) {
+    chips.push({
+      key: "grow",
+      label: `Garden ${filters.minGrowability}+`,
+      tone: "sage",
+      onDismiss: () => setFilters(f => ({ ...f, minGrowability: undefined })),
+    });
+  }
+  if (filters.maxFireRisk) {
+    chips.push({
+      key: "fire",
+      label: `Fire <= ${RISK_LABELS[filters.maxFireRisk]}`,
+      tone: "ember",
+      onDismiss: () => setFilters(f => ({ ...f, maxFireRisk: undefined })),
+    });
+  }
+  if (filters.maxOverallRisk) {
+    chips.push({
+      key: "risk",
+      label: `Risk <= ${RISK_LABELS[filters.maxOverallRisk]}`,
+      tone: "ochre",
+      onDismiss: () => setFilters(f => ({ ...f, maxOverallRisk: undefined })),
+    });
+  }
 
   const lensLine = activeBundle
     ? activeBundle.description
     : liveSignalCount > 0
-      ? `${liveSignalCount} living signal${liveSignalCount === 1 ? "" : "s"} active against the current ranking.`
+      ? sortedByLiveFit
+        ? `${liveSignalCount} living signal${liveSignalCount === 1 ? "" : "s"} — sorted by live-fit.`
+        : `${liveSignalCount} living signal${liveSignalCount === 1 ? "" : "s"} active — switch ranking to Live-fit for aligned sort.`
       : hasAny
         ? "Filtered atlas view with the selected ranking lens."
         : "Broad atlas scan with ranking only.";
 
   return (
-    <section className="lens-receipt" aria-label="Current Explorer lens">
+    <section className="lens-receipt" aria-label="Current Explorer lens" aria-live="polite">
       <div className="lens-receipt__head">
         <span className="lens-receipt__icon" aria-hidden>
           <Compass className="w-4 h-4" />
@@ -498,9 +499,23 @@ function LensReceipt({
       <div className="lens-receipt__chips" aria-label="Active lens signals">
         {chips.length > 0 ? (
           chips.slice(0, 7).map(chip => (
-            <span key={chip.label} className="lens-receipt__chip" data-tone={chip.tone}>
-              {chip.label}
-            </span>
+            chip.onDismiss ? (
+              <button
+                key={chip.key}
+                type="button"
+                className="lens-receipt__chip lens-receipt__chip--dismiss"
+                data-tone={chip.tone}
+                onClick={chip.onDismiss}
+                aria-label={`Remove filter: ${chip.label}`}
+              >
+                {chip.label}
+                <X className="w-3 h-3 shrink-0 opacity-70" aria-hidden />
+              </button>
+            ) : (
+              <span key={chip.key} className="lens-receipt__chip" data-tone={chip.tone}>
+                {chip.label}
+              </span>
+            )
           ))
         ) : (
           <span className="lens-receipt__chip" data-tone="glacier">

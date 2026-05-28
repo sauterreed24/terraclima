@@ -493,6 +493,28 @@ export function AtlasMap({
     );
   }, [pts, pointsSignature, width, height, mapMeasured]);
 
+  const lastPanSelectionRef = useRef<string | null>(null);
+  useLayoutEffect(() => {
+    if (!mapMeasured || !selectedId) return;
+    if (lastPanSelectionRef.current === selectedId) return;
+    const pt = pts.find(p => p.place.id === selectedId);
+    if (!pt) return;
+    lastPanSelectionRef.current = selectedId;
+    setView(
+      fitMapViewToPoints(
+        [{ x: pt.x, y: pt.y }],
+        width,
+        height,
+        48,
+        { minK: MIN_ZOOM, maxK: MAX_ZOOM, inset: 0.14 },
+      ),
+    );
+  }, [selectedId, pts, width, height, mapMeasured]);
+
+  useEffect(() => {
+    if (!selectedId) lastPanSelectionRef.current = null;
+  }, [selectedId]);
+
   // Country labels — computed from geographic anchor points (not polygon
   // centroids, which sit at Nunavut for Canada and the Aleutians for the US).
   // Hand-picked lon/lat anchors give visually balanced placement at every

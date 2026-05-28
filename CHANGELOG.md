@@ -4,6 +4,15 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Maximum-effort symbiosis
+
+- **Lifestyle lens parity:** [`src/lib/lifestyle-bundles.ts`](src/lib/lifestyle-bundles.ts) centralizes dock + hero bundles; auto-switch to **`live-fit`** ranking when Live Finder constraints are active without a full bundle match; dismissible Lens Receipt chips with `aria-live="polite"`.
+- **Map ↔ list coupling:** `AtlasMap` pans to selected pin; `VirtualPlaceGrid` scrolls selected card into view (debounced, respects reduced motion).
+- **Compare → profile:** column titles and insight strips open the place dossier (`onOpenPlace`).
+- **Share depth:** `CopyPlaceLink` routes through `shareUrl()` and keeps `#deep-…` dossier section hashes on copy.
+- **Corpus:** monthly `climate.humidity` for 28 fog-belt / cool-summer-maritime places (sanity humidity WARNs → 0).
+- **A11y:** mobile filter FAB labeled **Filters**; Living Compass screen-reader leader summary; `playtest:polish` remote-work bundle URL round-trip.
+
 ### Playtest hardening and debug fixes
 
 - **BookmarkButton test:** propagation test uses a `div` wrapper (matches production sibling layout; removes nested-button Vitest stderr).

@@ -94,6 +94,17 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   // variable-height mobile cards finish measuring.
   virtualizer.shouldAdjustScrollPositionOnItemSizeChange = disableScrollAdjustment;
 
+  useLayoutEffect(() => {
+    if (!selectedId || rowCount === 0) return;
+    const idx = ranked.findIndex(r => r.place.id === selectedId);
+    if (idx < 0) return;
+    const row = Math.floor(idx / cols);
+    const t = window.setTimeout(() => {
+      virtualizer.scrollToIndex(row, { align: "center" });
+    }, 50);
+    return () => window.clearTimeout(t);
+  }, [selectedId, ranked, cols, rowCount, virtualizer]);
+
   if (rowCount === 0) return null;
 
   return (

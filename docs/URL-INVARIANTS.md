@@ -30,6 +30,14 @@ Hydration uses [`filterStateFromValidated()`](../src/lib/scoring.ts) from valida
 
 Omitted when unset (clear-all / empty state): `fit`, `sh`, `wl`, `grow`, `fire`, `risk`, and `q`.
 
+## Lifestyle bundles (hero + FilterBar dock)
+
+Six curated bundles live in [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyle-bundles.ts). Applying a bundle sets **`r`** (ranking profile) and the Live Finder fields above (`fit`, `sh`, `wl`, `grow`, `fire`, `risk`) in one shot. Hero quick-picks that overlap a bundle (remote work, retirement, garden, snow, fire-safe) call the same `applyLifestyleBundle()` path as the dock chips.
+
+**Auto live-fit sort:** When Live Finder constraints are active (any preset or numeric/risk cap) but no lifestyle bundle is fully active and **`r`** is not `live-fit`, Explorer switches ranking to **`live-fit`** so the list sorts with `rankLiveFit()`. Lens Receipt may note when display ranking and live-fit sort diverge.
+
+**Lens Receipt chips:** Each active explorer signal renders as a dismissible chip; removing one field uses a functional `setFilters` update (search, country, archetype, presets, and caps are independent).
+
 ## Formatting rules
 
 - Default view (`explorer`) omits `v`.

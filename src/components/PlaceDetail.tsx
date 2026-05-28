@@ -350,7 +350,7 @@ function DetailHeader({
           </div>
         </div>
         <div className="flex items-center gap-1 self-end shrink-0 md:self-start flex-wrap justify-end">
-          <CopyPlaceLink placeId={place.id} />
+          <CopyPlaceLink placeId={place.id} placeName={place.name} />
           {onBookmarkToggle && (
             <BookmarkButton
               pinned={bookmarked}

@@ -31,6 +31,7 @@ interface Props {
   open: boolean;
   onClose: () => void;
   onRemove: (id: string) => void;
+  onOpenPlace?: (id: string) => void;
   onCopyView?: () => void;
   shareStatus?: CompareShareStatus;
   liveFitFilters?: LiveFitFilters;
@@ -42,6 +43,7 @@ export function CompareView({
   open,
   onClose,
   onRemove,
+  onOpenPlace,
   onCopyView,
   shareStatus = "idle",
   liveFitFilters,
@@ -209,7 +211,18 @@ export function CompareView({
                 {compareHighlights.map(item => (
                   <div key={item.label} className="compare-insight-strip__item">
                     <span className="compare-insight-strip__label">{item.label}</span>
-                    <span className="compare-insight-strip__place" title={item.place.name}>{item.place.name}</span>
+                    {onOpenPlace ? (
+                      <button
+                        type="button"
+                        className="compare-insight-strip__place compare-insight-strip__place--link"
+                        title={`Open profile: ${item.place.name}`}
+                        onClick={() => onOpenPlace(item.place.id)}
+                      >
+                        {item.place.name}
+                      </button>
+                    ) : (
+                      <span className="compare-insight-strip__place" title={item.place.name}>{item.place.name}</span>
+                    )}
                     <span className="compare-insight-strip__value">{item.value}</span>
                   </div>
                 ))}
@@ -239,7 +252,18 @@ export function CompareView({
                     <X className="w-4 h-4" />
                   </button>
                   <div className="text-xs text-stone">{p.region}, {p.country}</div>
-                  <h3 className="font-atlas text-lg text-ice mb-3">{p.name}</h3>
+                  {onOpenPlace ? (
+                    <button
+                      type="button"
+                      className="font-atlas text-lg text-ice mb-3 text-left hover:underline focus-visible:underline"
+                      aria-label={`Open ${p.name} profile`}
+                      onClick={() => onOpenPlace(p.id)}
+                    >
+                      {p.name}
+                    </button>
+                  ) : (
+                    <h3 className="font-atlas text-lg text-ice mb-3">{p.name}</h3>
+                  )}
 
                   <MicroclimateFingerprint place={p} size={220} compactLabels />
 

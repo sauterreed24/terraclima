@@ -115,7 +115,7 @@ export const ExplorerFilterSheet = memo(
           aria-label={triggerLabel}
         >
           <SlidersHorizontal className="w-4 h-4 shrink-0" aria-hidden />
-          <span className="tc-filter-sheet-trigger__label">Live Finder</span>
+          <span className="tc-filter-sheet-trigger__label">Filters</span>
           {chips > 0 ? (
             <span className="tc-filter-sheet-trigger__badge" aria-hidden>
               {chips > 9 ? "9+" : chips}
@@ -138,7 +138,7 @@ export const ExplorerFilterSheet = memo(
           <div ref={panelRef} className="relative z-10 tc-filter-sheet-dialog__inner">
             <div className="tc-filter-sheet-dialog__head">
               <h2 id="tc-explorer-filter-sheet-title" className="font-atlas text-lg text-ice m-0">
-                Live Finder
+                Filters & ranking
               </h2>
               <button type="button" onClick={close} className="btn-ghost !p-2 rounded-lg" aria-label="Close filters">
                 <X className="w-4 h-4" aria-hidden />
