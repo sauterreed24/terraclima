@@ -8,7 +8,6 @@ import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useUnits } from "../lib/units";
-import type { DistUnit } from "../lib/units";
 import { getCachedAtlasTopology, loadAtlasTopology, type AtlasTopology } from "../lib/atlas-map-topology";
 import { useRichVisualEffects } from "../lib/device-profile";
 import { fitMapViewToPoints } from "../lib/atlas-map-fit";
@@ -19,6 +18,26 @@ import {
   type AtlasArrowDirection,
   type AtlasMarkerLayoutPoint,
 } from "../lib/atlas-map-keyboard";
+import {
+  firstTwoPointers,
+  formatLatLon,
+  haversineKm,
+  pointerDistance,
+  svgPointFromClient,
+} from "../lib/atlas-map-geometry";
+import {
+  clampZoom,
+  MAX_ZOOM,
+  MIN_ZOOM,
+  wheelZoomFactor as wheelZoomFactorImpl,
+  zoomAtScreenPoint,
+} from "../lib/atlas-map-zoom";
+import { updateScaleBar } from "../lib/atlas-map-scale-bar";
+
+/** Re-export so existing imports of `wheelZoomFactor` from this component
+ *  (notably the dom-test that imports it from "../components/AtlasMap")
+ *  keep working unchanged. */
+export const wheelZoomFactor = wheelZoomFactorImpl;
 import {
   canClusterSeparateAtZoom,
   clusterMapPoints,
@@ -55,9 +74,6 @@ interface Props {
   height?: number;
 }
 
-/** Allow zooming out enough to frame every pin across NA; must match `fitMapViewToPoints` bounds. */
-const MIN_ZOOM = 0.42;
-const MAX_ZOOM = 14;
 const MOBILE_CLUSTER_RADIUS_PX = 48;
 const DESKTOP_CLUSTER_RADIUS_PX = 36;
 const MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF = 1.65;
@@ -73,13 +89,6 @@ const CLUSTER_TIER_LABEL: Record<Place["tier"], string> = {
   B: "Spotlight",
   C: "Index",
 };
-
-export function wheelZoomFactor(deltaY: number, deltaMode = 0): number {
-  if (!Number.isFinite(deltaY) || deltaY === 0) return 1;
-  const modeMultiplier = deltaMode === 1 ? 16 : deltaMode === 2 ? 480 : 1;
-  const pixelDelta = Math.max(-240, Math.min(240, deltaY * modeMultiplier));
-  return 2 ** (-pixelDelta / 360);
-}
 
 type ClusterPoint = { place: Place; x: number; y: number; id: string };
 type RenderedClusterPoint = ClusterPoint & {
@@ -124,10 +133,6 @@ function MapLegendDot({ color, label }: { color: string; label: string }) {
   );
 }
 
-function clampZoom(k: number): number {
-  return Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, k));
-}
-
 function pinLayoutPriority(place: Place, selectedId: string | undefined, featuredRank?: number): number {
   if (place.id === selectedId) return 100;
   if (featuredRank) return 28 - featuredRank;
@@ -135,28 +140,6 @@ function pinLayoutPriority(place: Place, selectedId: string | undefined, feature
   return tierPriority + Math.max(0, 2 - place.name.length / 24);
 }
 
-function svgPointFromClient(
-  clientX: number,
-  clientY: number,
-  rect: DOMRect,
-  width: number,
-  height: number,
-): { x: number; y: number } {
-  return {
-    x: ((clientX - rect.left) / rect.width) * width,
-    y: ((clientY - rect.top) / rect.height) * height,
-  };
-}
-
-function firstTwoPointers(map: Map<number, { clientX: number; clientY: number }>) {
-  const arr = [...map.values()];
-  if (arr.length < 2) return null;
-  return [arr[0], arr[1]] as const;
-}
-
-function pointerDistance(a: { clientX: number; clientY: number }, b: { clientX: number; clientY: number }): number {
-  return Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
-}
 
 function linePath(points: Array<[number, number]>): string {
   if (points.length === 0) return "";
@@ -881,13 +864,7 @@ export function AtlasMap({
         const buf = wheelBuf.current;
         wheelBuf.current = null;
         if (!buf) return;
-        setView(v => {
-          const nextK = clampZoom(v.k * buf.k);
-          const f = nextK / v.k;
-          const nx = buf.mx - (buf.mx - v.x) * f;
-          const ny = buf.my - (buf.my - v.y) * f;
-          return { k: nextK, x: nx, y: ny };
-        });
+        setView(v => zoomAtScreenPoint(v, buf.k, buf.mx, buf.my));
       });
     }
   }, [width, height]);
@@ -1141,17 +1118,8 @@ export function AtlasMap({
         lastTouchTapRef.current = null;
         const rect = svgRef.current?.getBoundingClientRect();
         if (rect) {
-          const mx = ((touchTap.clientX - rect.left) / rect.width) * width;
-          const my = ((touchTap.clientY - rect.top) / rect.height) * height;
-          setView(v => {
-            const nextK = clampZoom(v.k * 1.9);
-            const f = nextK / v.k;
-            return {
-              k: nextK,
-              x: mx - (mx - v.x) * f,
-              y: my - (my - v.y) * f,
-            };
-          });
+          const { x: mx, y: my } = svgPointFromClient(touchTap.clientX, touchTap.clientY, rect, width, height);
+          setView(v => zoomAtScreenPoint(v, 1.9, mx, my));
         }
       } else {
         lastTouchTapRef.current = { t: now, clientX: touchTap.clientX, clientY: touchTap.clientY };
@@ -2682,74 +2650,6 @@ const COUNTRY_RING_STROKE: Record<Place["country"], string> = {
   Canada: "rgba(168, 218, 252, 0.98)",
   Mexico: "rgba(255, 214, 138, 0.98)",
 };
-
-/**
- * Great-circle distance in kilometres between two lon/lat pairs.
- * Used to derive the scale bar and to validate the inverse projection.
- */
-function haversineKm(lon1: number, lat1: number, lon2: number, lat2: number): number {
-  const R = 6371;
-  const toRad = (d: number) => (d * Math.PI) / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
-  return 2 * R * Math.asin(Math.min(1, Math.sqrt(a)));
-}
-
-/**
- * Format a lat/lon pair for the cursor overlay. We pick degree-decimal
- * precision based on zoom-independent intuition: two decimals are about
- * 1.1 km of horizontal resolution at the equator, which keeps the label
- * readable at a glance while still being useful for regional orientation.
- */
-function formatLatLon(lat: number, lon: number): string {
-  const latH = lat >= 0 ? "N" : "S";
-  const lonH = lon >= 0 ? "E" : "W";
-  return `${Math.abs(lat).toFixed(2)}°${latH}  ${Math.abs(lon).toFixed(2)}°${lonH}`;
-}
-
-/** Nice round distances for the scale bar. Chosen so both miles and km have
- *  values at roughly the same magnitude; the scale bar picks the largest that
- *  still fits inside ~120px at the current zoom. */
-const SCALE_KM_STEPS = [5000, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1] as const;
-const SCALE_MI_STEPS = [3000, 1500, 500, 250, 100, 50, 20, 10, 5, 2, 1] as const;
-
-/**
- * Imperative scale bar renderer. Rather than returning JSX, we take DOM
- * references and mutate `textContent` / `style.width` directly. This keeps
- * the scale bar perfectly in sync with zoom without forcing a React render.
- */
-function updateScaleBar(
-  labelEl: HTMLDivElement | null,
-  barEl: HTMLDivElement | null,
-  zoom: number,
-  kmPerPxAt1: number,
-  dist: DistUnit
-): void {
-  if (!labelEl || !barEl) return;
-  const kmPerPx = kmPerPxAt1 / zoom;
-  const maxPx = 120;
-  if (dist === "metric") {
-    const maxKm = kmPerPx * maxPx;
-    const step = SCALE_KM_STEPS.find(s => s <= maxKm) ?? 1;
-    const px = step / kmPerPx;
-    barEl.style.width = `${Math.round(px)}px`;
-    labelEl.textContent = step >= 1000
-      ? `${(step / 1000).toLocaleString()} × 1,000 km`
-      : `${step.toLocaleString()} km`;
-  } else {
-    const miPerPx = kmPerPx * 0.621371;
-    const maxMi = miPerPx * maxPx;
-    const step = SCALE_MI_STEPS.find(s => s <= maxMi) ?? 1;
-    const px = step / miPerPx;
-    barEl.style.width = `${Math.round(px)}px`;
-    labelEl.textContent = step >= 1000
-      ? `${(step / 1000).toLocaleString()} × 1,000 mi`
-      : `${step.toLocaleString()} mi`;
-  }
-}
 
 const Graticule = memo(function Graticule({ pathGen, projection, richEffects }: { pathGen: ReturnType<typeof geoPath>; projection: GeoProjection; richEffects: boolean }) {
   const { lines, latLabels, lonLabels } = useMemo(() => {
