@@ -4,6 +4,14 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### UI beauty, symbiosis, and fluidity
+
+- **Beauty tokens (`src/lib/theme-tokens.ts`, `src/styles.css`):** `--tc-shadow-elevated`, inset/glass/accent/glow/focus/motion duration tokens; utilities `.tc-inset-panel`, `.tc-accent-panel`, `.tc-surface-glass`, `.tc-icon-ochre`.
+- **Explorer chrome:** lens receipt jewel styling + full dark block; hero quick-picks glow; filter dock shadow tier; `EmptyResults` designed moment (`.tc-empty-results`).
+- **Cards & overlays:** place-card selected ring, climate-bar “now” highlight, rank medal sheen; `.place-detail-drawer` shadow; reading nav `.tc-reading-nav-link`; FilterBar Live Finder / lifestyle panels on tokens.
+- **Symbiosis:** migrated paper leaks in PlaceDetail insets, reading nav, AtlasMap loading pill.
+- **Fluidity:** `html[data-motion]` from `motionPolicy()`; unified view-enter, glass dialog, and Framer drawer/scrim timings via `device-profile` constants.
+
 ### Playtest hardening
 
 - **Clear all filters (`src/lib/scoring.ts`, `FilterBar`, `App`):** `createEmptyFilterState()` is the single reset shape; clears Live Finder numeric/risk constraints and elevation limits, not only search/country/archetype/presets. Live Finder inline control renamed to **Clear presets**.

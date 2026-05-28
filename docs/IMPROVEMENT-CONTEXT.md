@@ -41,7 +41,9 @@ That includes type checking, ESLint, Vitest, prose tests, metadata consistency, 
 
 After visual or map-pin changes, spot-check in the browser:
 
-- **Dark theme:** Explorer hero chips, shortlist rows, and place cards should not flash paper-white on `data-theme="dark"`.
+- **Light beauty pass:** Explorer hero glow → lens receipt chips → place card hover → open place detail; surfaces should feel layered (inset highlights, not flat white slabs in nested blocks).
+- **Dark theme:** lens receipt, Live Finder (`.tc-accent-panel`), reading nav, and map loading pill should read as moonlit jewel/chrome — no paper-white flash on `data-theme="dark"`. Hero spectrum bar and map instrument contrast unchanged.
+- **Motion tier:** `document.documentElement.dataset.motion` follows `motionPolicy()` (`full` / `minimal` / `reduced`). With OS reduce motion on, view cross-fade and drawer spring should calm or disable while layout stays usable.
 - **Reduced motion:** enable OS “reduce motion”; modals and map topo load should skip blur/long fades (`motionPolicy()` → `reduced` / `minimal`).
 - **Map:** one-finger pan, pinch zoom, cluster picker Escape + focus return, leader lines when pins spread.
 

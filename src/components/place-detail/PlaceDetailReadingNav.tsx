@@ -51,18 +51,12 @@ export function PlaceDetailReadingNav({
   if (items.length === 0) return null;
 
   const linkBase =
-    "rounded-lg px-2.5 py-1.5 text-left transition-[background-color,color,box-shadow] duration-150 " +
-    "text-[12.5px] leading-snug text-[color:var(--color-frost-strong)] " +
-    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 " +
-    "focus-visible:outline-[rgba(26,143,168,0.45)]";
+    "tc-reading-nav-link px-2.5 py-1.5 text-left text-[12.5px] leading-snug text-[color:var(--color-frost-strong)] " +
+    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--tc-focus-ring)]";
 
-  const mobileLink =
-    `${linkBase} shrink-0 snap-start border border-[rgba(200,170,140,0.35)] bg-white/85 ` +
-    "hover:bg-white hover:border-[rgba(200,170,140,0.5)] hover:text-ice whitespace-nowrap";
+  const mobileLink = `${linkBase} shrink-0 snap-start whitespace-nowrap`;
 
-  const desktopLink =
-    `${linkBase} block w-full border border-transparent bg-transparent ` +
-    "hover:bg-white/80 hover:border-[rgba(200,170,140,0.35)] hover:text-ice";
+  const desktopLink = `${linkBase} block w-full`;
 
   return (
     <>

@@ -238,7 +238,7 @@ export const FilterBar = memo(function FilterBar({
         onClearAll={clearAll}
       />
 
-      <div className="rounded-xl border border-[rgba(26,143,168,0.2)] bg-[rgba(232,248,251,0.42)] p-2.5 space-y-2">
+      <div className="tc-accent-panel p-2.5 space-y-2">
         <div className="flex items-center justify-between gap-2">
           <div>
             <div className="text-[10px] uppercase tracking-wider text-stone-readable">Live Finder</div>
@@ -317,7 +317,7 @@ export const FilterBar = memo(function FilterBar({
       </div>
 
       {/* ── Lifestyle bundles ──────────────────────────────────────── */}
-      <div className="rounded-xl border border-[rgba(232,155,32,0.22)] bg-[rgba(255,248,236,0.48)] p-2.5 space-y-2">
+      <div className="tc-accent-panel tc-accent-panel--warm p-2.5 space-y-2">
         <div className="text-[10px] uppercase tracking-wider text-stone-readable">Lifestyle bundles</div>
         <p className="text-[11px] text-stone-readable leading-snug">One-click compound presets — sets ranking, filters, and Live Finder signals together.</p>
         <div className="grid grid-cols-2 gap-1.5">

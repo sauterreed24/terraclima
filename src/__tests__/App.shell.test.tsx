@@ -111,6 +111,22 @@ describe("App shell", () => {
     expect(darkBtn).toHaveAttribute("aria-pressed", "true");
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("keeps lens receipt surfaces moonlit in dark theme", async () => {
+    renderApp();
+    fireEvent.click(screen.getAllByRole("button", { name: /Dark theme/i })[0]);
+    await waitFor(() => {
+      expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+    });
+    const lens = document.querySelector(".lens-receipt");
+    expect(lens).not.toBeNull();
+    const bg = getComputedStyle(lens!).backgroundColor;
+    expect(bg).not.toMatch(/rgb\(25[0-5],\s*25[0-5]/);
+    const rMatch = bg.match(/rgba?\(\s*(\d+)/);
+    if (rMatch) {
+      expect(Number(rMatch[1])).toBeLessThan(140);
+    }
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("renders primary branding inside UnitProvider", () => {
     const { container } = renderApp();
     const header = container.querySelector("header.tc-header-bar");

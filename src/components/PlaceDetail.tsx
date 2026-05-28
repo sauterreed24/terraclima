@@ -1,4 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { drawerPanelTransition, scrimFadeTransition } from "../lib/device-profile";
 import { useState, useEffect, useMemo, useRef, useId } from "react";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
@@ -245,7 +246,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.18 }}
+            transition={scrimFadeTransition(!!reduceMotion)}
             className="tc-modal-scrim fixed inset-0 z-30"
             onClick={onClose}
             aria-hidden="true"
@@ -261,17 +262,8 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
             initial={{ x: "100%", opacity: 0.6 }}
             animate={{ x: 0, opacity: 1 }}
             exit={{ x: "100%", opacity: 0.4 }}
-            transition={
-              reduceMotion
-                ? { duration: 0 }
-                : coarsePointer
-                  ? { duration: 0.18, ease: [0.2, 0.8, 0.2, 1] }
-                  : { type: "spring", stiffness: 280, damping: 32 }
-            }
-            className="fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto overflow-x-hidden outline-none border-l border-[rgba(200,170,140,0.38)]"
-            style={{
-              boxShadow: "-20px 0 48px -14px rgba(62, 38, 24, 0.18)",
-            }}
+            transition={drawerPanelTransition(!!reduceMotion, coarsePointer)}
+            className="place-detail-drawer fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto overflow-x-hidden outline-none border-l"
           >
             <PlaceReadingProgress panelRef={panelRef} />
             <DetailHeader
@@ -610,7 +602,7 @@ function DetailBody({
             </div>
           </div>
           <div className="divider-contour my-3" />
-          <div className="rounded-lg border border-[rgba(26,143,168,0.18)] bg-[rgba(232,248,251,0.48)] px-3 py-2.5 mb-3">
+          <div className="tc-accent-panel px-3 py-2.5 mb-3">
             <div className="text-[10px] uppercase tracking-wider text-glacier-700 mb-1">{comfortRead.headline}</div>
             <p className="text-[12px] leading-snug text-frost">{prose(comfortRead.summary)}</p>
           </div>
@@ -957,7 +949,7 @@ function DetailBody({
             <div className="text-[10px] uppercase tracking-wider text-stone mb-2">Sensor fit</div>
             <div className="space-y-2">
               {geospatial.sourceFits.map(source => (
-                <div key={source.sourceId} className="rounded-lg border border-[rgba(200,160,120,0.28)] bg-white/60 px-3 py-2">
+                <div key={source.sourceId} className="tc-inset-panel px-3 py-2">
                   <div className="flex items-baseline justify-between gap-2">
                     <span className="font-medium text-ice">{source.sourceId === "sentinel-2" ? "Sentinel-2" : "Landsat"}</span>
                     <span className="font-mono-num text-sm text-frost">{source.score}/100</span>
@@ -976,7 +968,7 @@ function DetailBody({
           <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5">Likely spectral checks</div>
           <div className="grid md:grid-cols-2 gap-2">
             {geospatial.spectralSignals.map(signal => (
-              <div key={`${signal.sourceId}-${signal.index}-${signal.label}`} className="rounded-lg border border-[rgba(200,160,120,0.25)] bg-white/60 px-3 py-2">
+              <div key={`${signal.sourceId}-${signal.index}-${signal.label}`} className="tc-inset-panel px-3 py-2">
                 <div className="flex items-baseline justify-between gap-2">
                   <span className="text-sm text-ice font-medium">{signal.label}</span>
                   <span className="text-[10px] uppercase tracking-wider text-stone">{signal.sourceId === "sentinel-2" ? "Sentinel-2" : "Landsat"}</span>

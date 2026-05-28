@@ -1316,7 +1316,7 @@ export function AtlasMap({
     <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
       {topoLoading ? (
         <div
-          className="tc-map-topology-loading absolute top-2 left-1/2 -translate-x-1/2 z-20 rounded-full px-3 py-1 text-[11px] text-frost bg-white/85 border border-[rgba(91,113,144,0.45)] shadow-sm"
+          className="tc-map-topology-loading absolute top-2 left-1/2 -translate-x-1/2 z-20 rounded-full px-3 py-1 text-[11px] text-frost"
           role="status"
           aria-live="polite"
         >

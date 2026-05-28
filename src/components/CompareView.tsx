@@ -1,4 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { MOTION_DURATION_BASE_S, scrimFadeTransition } from "../lib/device-profile";
 import { useEffect, useId, useMemo, useRef } from "react";
 import type { Place } from "../types";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
@@ -126,7 +127,7 @@ export function CompareView({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.18 }}
+            transition={scrimFadeTransition(!!reduceMotion)}
             className="tc-modal-scrim fixed inset-0 z-50"
             onClick={onClose}
             aria-hidden="true"
@@ -139,7 +140,10 @@ export function CompareView({
             initial={reduceMotion ? { opacity: 1 } : { y: 30, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={reduceMotion ? { opacity: 1 } : { y: 30, opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.2 }}
+            transition={{
+              duration: reduceMotion ? 0 : MOTION_DURATION_BASE_S,
+              ease: [0.2, 0.8, 0.2, 1],
+            }}
             tabIndex={-1}
             className="fixed inset-0 z-50 overflow-y-auto pointer-events-none"
           >

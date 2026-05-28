@@ -83,7 +83,7 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
           id={menuId}
           role="menu"
           aria-label="Export shortlist format"
-          className="tc-shortlist-export__panel panel-thin absolute right-0 top-full z-20 mt-1 min-w-[12.5rem] p-2 flex flex-col gap-0.5"
+          className="tc-shortlist-export__panel tc-surface-glass panel-thin absolute right-0 top-full z-20 mt-1 min-w-[12.5rem] p-2 flex flex-col gap-0.5 tc-shortlist-export__panel--open"
         >
           {FORMATS.map(fmt => (
             <button

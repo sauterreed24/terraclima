@@ -21,7 +21,7 @@ import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-visual-signature";
 import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
-import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
+import { motionPolicy, prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
 import { useProse, useUnits } from "./lib/units";
 import { shareUrl } from "./lib/share";
@@ -113,6 +113,16 @@ export default function App() {
   useEffect(() => {
     document.documentElement.classList.toggle("tc-low-power", !richVisualEffects);
     return () => document.documentElement.classList.remove("tc-low-power");
+  }, [richVisualEffects]);
+
+  useEffect(() => {
+    const applyMotionTier = () => {
+      document.documentElement.dataset.motion = motionPolicy();
+    };
+    applyMotionTier();
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    mq.addEventListener("change", applyMotionTier);
+    return () => mq.removeEventListener("change", applyMotionTier);
   }, [richVisualEffects]);
 
   useEffect(() => {
@@ -1003,9 +1013,9 @@ function OverlayLoadingFallback({ label }: { label: string }) {
 
 const EmptyResults = memo(function EmptyResults({ onClear }: { onClear: () => void }) {
   return (
-    <div className="col-span-full panel-warm p-6 text-center anim-fade-in">
-      <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[rgba(240,210,156,0.18)] border border-[rgba(240,210,156,0.4)] mb-3">
-        <Search className="w-4 h-4" style={{ color: "#f0d29c" }} />
+    <div className="col-span-full panel-warm tc-empty-results p-6 sm:p-7 text-center anim-fade-in">
+      <div className="tc-empty-results__icon">
+        <Search className="w-4 h-4 tc-icon-ochre" aria-hidden />
       </div>
       <h3 className="font-atlas text-lg text-ice mb-1">Nothing matches all those filters at once</h3>
       <p className="text-sm text-frost mb-2 max-w-md mx-auto">
@@ -1419,7 +1429,7 @@ const HeroCard = memo(function HeroCard({
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
-            <Sparkles className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
+            <Sparkles className="w-3.5 h-3.5 tc-icon-ochre" aria-hidden />
             <span className="text-xs uppercase tracking-wider text-stone-readable">
               {active
                 ? active.kind === "trip" ? "Trip pinned" : "Collection pinned"
