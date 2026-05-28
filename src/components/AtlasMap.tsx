@@ -13,6 +13,13 @@ import { getCachedAtlasTopology, loadAtlasTopology, type AtlasTopology } from ".
 import { useRichVisualEffects } from "../lib/device-profile";
 import { fitMapViewToPoints } from "../lib/atlas-map-fit";
 import {
+  endpointMarkerId,
+  isMarkerKeyboardTarget,
+  nextMarkerId,
+  type AtlasArrowDirection,
+  type AtlasMarkerLayoutPoint,
+} from "../lib/atlas-map-keyboard";
+import {
   canClusterSeparateAtZoom,
   clusterMapPoints,
   fitMapViewToCluster,
@@ -225,6 +232,11 @@ export function AtlasMap({
   const [touchMode, setTouchMode] = useState<AtlasTouchMode>(ATLAS_DEFAULT_TOUCH_MODE);
   const mapInteractive = resolveAtlasMapInteractive({ coarsePointer, touchMode });
   const [legendOpen, setLegendOpen] = useState(false);
+  // Roving-tabindex state: which marker currently owns Tab focus. Defaults to
+  // null; the first visible marker takes over until the user moves arrows or
+  // focuses a different pin. Tracking this in state (not a ref) so memoised
+  // Marker children can re-render only the two affected pins on a step.
+  const [focusedMarkerId, setFocusedMarkerId] = useState<string | null>(null);
 
   const shellRef = useRef<HTMLDivElement>(null);
   const [dims, setDims] = useState({ width: widthProp, height: heightProp, measured: false });
@@ -778,6 +790,58 @@ export function AtlasMap({
     [markerRenderOrder, rankTrailTopMarkerIds],
   );
 
+  // Roving-tabindex layout points — one per visible marker, in DOM render
+  // order, with the post-projection screen coordinates that `nextMarkerId`
+  // uses to bucket rows for ArrowUp / ArrowDown. Recomputed when the visible
+  // set changes (zoom / pan / filter) or the settled view changes.
+  const markerLayoutPoints = useMemo<AtlasMarkerLayoutPoint[]>(() => {
+    return markerRenderOrder.map(pt => ({
+      id: pt.place.id,
+      x: pt.x * settledView.k + settledView.x,
+      y: pt.y * settledView.k + settledView.y,
+    }));
+  }, [markerRenderOrder, settledView]);
+  const markerLayoutById = useMemo(() => {
+    const map = new Map<string, AtlasMarkerLayoutPoint>();
+    for (const p of markerLayoutPoints) map.set(p.id, p);
+    return map;
+  }, [markerLayoutPoints]);
+  // The "effective" focused id — what each Marker compares against to decide
+  // whether to render with tabIndex=0. When state is null (initial mount) the
+  // first visible marker becomes the keyboard entry point; when state points
+  // to a marker that's no longer visible (zoom culled it) we also fall back.
+  const effectiveFocusedMarkerId =
+    focusedMarkerId && markerLayoutById.has(focusedMarkerId)
+      ? focusedMarkerId
+      : markerLayoutPoints[0]?.id ?? null;
+  const focusMarkerInDom = useCallback((id: string) => {
+    const svg = svgRef.current;
+    if (!svg) return;
+    const el = svg.querySelector<SVGGElement>(`[data-marker-id="${CSS.escape(id)}"]`);
+    el?.focus();
+  }, []);
+  const onMarkerArrow = useCallback(
+    (fromId: string, direction: AtlasArrowDirection) => {
+      const next = nextMarkerId(fromId, direction, markerLayoutPoints);
+      if (!next) return;
+      setFocusedMarkerId(next);
+      requestAnimationFrame(() => focusMarkerInDom(next));
+    },
+    [markerLayoutPoints, focusMarkerInDom],
+  );
+  const onMarkerHomeEnd = useCallback(
+    (position: "home" | "end") => {
+      const next = endpointMarkerId(position, markerLayoutPoints);
+      if (!next) return;
+      setFocusedMarkerId(next);
+      requestAnimationFrame(() => focusMarkerInDom(next));
+    },
+    [markerLayoutPoints, focusMarkerInDom],
+  );
+  const onMarkerFocusReceived = useCallback((id: string) => {
+    setFocusedMarkerId(curr => (curr === id ? curr : id));
+  }, []);
+
   // Markers call `onSelect` directly. Do not gate on `dragRef.moved`: marker
   // `pointerdown` stops propagation so the map never resets `moved` after a
   // pan — using a drag guard here left pins unclickable until full reload.
@@ -1180,12 +1244,16 @@ export function AtlasMap({
     );
   }, [pts, width, height]);
 
-  // Keyboard: +/- to zoom, 0 to reset, arrows to pan
+  // Keyboard: +/- to zoom, 0 to reset, arrows pan the map when the SVG
+  // itself owns focus. When focus is on a marker, the Marker's own keydown
+  // owns arrows for roving-tabindex navigation between pins — bail out
+  // early here so we don't both step a pin AND pan the map.
   useEffect(() => {
     const node = svgRef.current;
     if (!node) return;
     const handler = (e: KeyboardEvent) => {
       if (e.target !== node && !node.contains(e.target as Node)) return;
+      if (isMarkerKeyboardTarget(e.target)) return;
       switch (e.key) {
         case "+": case "=": zoomBy(1.4); break;
         case "-": case "_": zoomBy(1 / 1.4); break;
@@ -1258,6 +1326,7 @@ export function AtlasMap({
         isHover={pt.place.id === hoverId}
         featuredRank={featuredRankById.get(pt.place.id)}
         richEffects={richEffects}
+        isRovingFocused={pt.place.id === effectiveFocusedMarkerId}
         onSelect={onSelect}
         onEnter={() => {
           cancelHoverClear();
@@ -1266,6 +1335,9 @@ export function AtlasMap({
         }}
         onLeave={scheduleHoverClear}
         shouldSuppressTouchActivation={shouldSuppressTouchActivation}
+        onArrow={onMarkerArrow}
+        onHomeEnd={onMarkerHomeEnd}
+        onFocusReceived={onMarkerFocusReceived}
       />
     );
   };
@@ -1930,10 +2002,20 @@ interface MarkerProps {
   featuredRank?: number;
   /** When false, skip pulsing ring animation (older tablets / reduced motion). */
   richEffects: boolean;
+  /** Roving-tabindex: true when this is the marker that currently owns
+   * Tab focus among all visible markers. */
+  isRovingFocused: boolean;
   onSelect: (id: string) => void;
   onEnter: () => void;
   onLeave: () => void;
   shouldSuppressTouchActivation: () => boolean;
+  /** Arrow-key step within the visible marker set. */
+  onArrow: (id: string, direction: AtlasArrowDirection) => void;
+  /** Home / End jump within the visible marker set. */
+  onHomeEnd: (position: "home" | "end") => void;
+  /** Notify parent when this marker receives focus (click, Tab) so the
+   * roving state stays in sync with the actual DOM focus owner. */
+  onFocusReceived: (id: string) => void;
 }
 
 const ClusterMarker = memo(function ClusterMarker({
@@ -2259,7 +2341,8 @@ const ClusterPicker = memo(function ClusterPicker({
 });
 
 const Marker = memo(function Marker({
-  pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, onSelect, onEnter, onLeave, shouldSuppressTouchActivation,
+  pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
+  onSelect, onEnter, onLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
 }: MarkerProps) {
   const { place, x, y } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
@@ -2315,14 +2398,53 @@ const Marker = memo(function Marker({
 
   const onMarkerKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        e.stopPropagation();
-        onSelect(place.id);
+      switch (e.key) {
+        case "Enter":
+        case " ":
+          e.preventDefault();
+          e.stopPropagation();
+          onSelect(place.id);
+          return;
+        case "ArrowLeft":
+          e.preventDefault();
+          e.stopPropagation();
+          onArrow(place.id, "left");
+          return;
+        case "ArrowRight":
+          e.preventDefault();
+          e.stopPropagation();
+          onArrow(place.id, "right");
+          return;
+        case "ArrowUp":
+          e.preventDefault();
+          e.stopPropagation();
+          onArrow(place.id, "up");
+          return;
+        case "ArrowDown":
+          e.preventDefault();
+          e.stopPropagation();
+          onArrow(place.id, "down");
+          return;
+        case "Home":
+          e.preventDefault();
+          e.stopPropagation();
+          onHomeEnd("home");
+          return;
+        case "End":
+          e.preventDefault();
+          e.stopPropagation();
+          onHomeEnd("end");
+          return;
+        default:
+          return;
       }
     },
-    [onSelect, place.id],
+    [onSelect, place.id, onArrow, onHomeEnd],
   );
+
+  const onMarkerFocus = useCallback(() => {
+    onFocusReceived(place.id);
+  }, [onFocusReceived, place.id]);
 
   const ariaLabelBase =
     subLine.length > 0
@@ -2334,7 +2456,9 @@ const Marker = memo(function Marker({
     <g
       transform={`translate(${x} ${y})`}
       role="button"
-      tabIndex={0}
+      tabIndex={isRovingFocused ? 0 : -1}
+      data-atlas-marker="true"
+      data-marker-id={place.id}
       aria-label={ariaLabel}
       className={`map-marker${featuredRank ? " map-marker--featured" : ""}`}
       style={{ cursor: "pointer" }}
@@ -2343,6 +2467,7 @@ const Marker = memo(function Marker({
       onPointerEnter={onEnter}
       onPointerLeave={onLeave}
       onKeyDown={onMarkerKeyDown}
+      onFocus={onMarkerFocus}
     >
       <g transform={`scale(${inv})`}>
         {featuredRank ? (
@@ -2531,7 +2656,11 @@ const Marker = memo(function Marker({
   prev.featuredRank === next.featuredRank &&
   prev.k === next.k &&
   prev.richEffects === next.richEffects &&
+  prev.isRovingFocused === next.isRovingFocused &&
   prev.shouldSuppressTouchActivation === next.shouldSuppressTouchActivation &&
+  prev.onArrow === next.onArrow &&
+  prev.onHomeEnd === next.onHomeEnd &&
+  prev.onFocusReceived === next.onFocusReceived &&
   prev.pt.x === next.pt.x &&
   prev.pt.y === next.pt.y &&
   prev.pt.place === next.pt.place

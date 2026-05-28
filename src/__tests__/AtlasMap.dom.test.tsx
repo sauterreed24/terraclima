@@ -295,4 +295,43 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("img", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
     expect(container.querySelector(".map-rank-trail__line")).toBeInTheDocument();
   });
+
+  it("uses roving tabindex so only one marker is in the Tab order at a time", () => {
+    setCoarsePointer(false);
+    const { container } = renderMap(vi.fn(), [], defaultMapPlaces());
+
+    const markers = Array.from(
+      container.querySelectorAll<SVGGElement>('[data-atlas-marker="true"]'),
+    );
+    expect(markers.length).toBeGreaterThanOrEqual(2);
+
+    const focusable = markers.filter(m => m.getAttribute("tabindex") === "0");
+    expect(focusable.length).toBe(1);
+    const nonFocusable = markers.filter(m => m.getAttribute("tabindex") === "-1");
+    expect(nonFocusable.length).toBe(markers.length - 1);
+
+    // The first visible marker is the keyboard entry point by default.
+    expect(focusable[0]?.getAttribute("data-marker-id")).toBe(markers[0]?.getAttribute("data-marker-id"));
+  });
+
+  it("ArrowRight on a focused marker moves roving focus to the next marker", () => {
+    setCoarsePointer(false);
+    const { container } = renderMap(vi.fn(), [], defaultMapPlaces());
+
+    const markers = Array.from(
+      container.querySelectorAll<SVGGElement>('[data-atlas-marker="true"]'),
+    );
+    expect(markers.length).toBeGreaterThanOrEqual(2);
+
+    const first = markers[0]!;
+    first.focus();
+    expect(first.getAttribute("tabindex")).toBe("0");
+    fireEvent.keyDown(first, { key: "ArrowRight" });
+
+    const updated = Array.from(
+      container.querySelectorAll<SVGGElement>('[data-atlas-marker="true"]'),
+    );
+    const tabZero = updated.find(m => m.getAttribute("tabindex") === "0");
+    expect(tabZero?.getAttribute("data-marker-id")).toBe(markers[1]?.getAttribute("data-marker-id"));
+  });
 });
