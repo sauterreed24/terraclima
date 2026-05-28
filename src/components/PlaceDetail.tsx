@@ -208,6 +208,12 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
   const titleId = useId();
   useElementIsolation(panelRef, occluded);
   useFocusTrap(panelRef, Boolean(place) && !occluded);
+  // Computed once for the entire drawer; both DetailHeader and DetailBody
+  // (which forwards it to DetailDecisionBrief) read from the same memo.
+  const visualSignature = useMemo<PlaceVisualSignature | null>(
+    () => (place ? getPlaceVisualSignature(place) : null),
+    [place],
+  );
 
   const hadOpenPlaceRef = useRef(false);
   useEffect(() => {
@@ -301,8 +307,9 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               onPickArchetype={onPickArchetype}
               bookmarked={Boolean(bookmarked)}
               onBookmarkToggle={onBookmarkToggle}
+              visualSignature={visualSignature!}
             />
-            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} panelRef={panelRef} />
+            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} visualSignature={visualSignature!} />
             <BackToTopButton panelRef={panelRef} />
           </motion.aside>
         </>
@@ -336,7 +343,7 @@ function CopyPlaceLink({ placeId }: { placeId: string }) {
 }
 
 function DetailHeader({
-  place, titleId, onClose, onCompareToggle, inCompare, onPickArchetype, bookmarked, onBookmarkToggle,
+  place, titleId, onClose, onCompareToggle, inCompare, onPickArchetype, bookmarked, onBookmarkToggle, visualSignature,
 }: {
   place: Place;
   titleId: string;
@@ -346,6 +353,7 @@ function DetailHeader({
   onPickArchetype?: (a: MicroclimateArchetype) => void;
   bookmarked: boolean;
   onBookmarkToggle?: (id: string) => void;
+  visualSignature: PlaceVisualSignature;
 }) {
   const { temp, dist } = useUnits();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
@@ -358,7 +366,6 @@ function DetailHeader({
     : null;
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
   const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
-  const visualSignature = useMemo(() => getPlaceVisualSignature(place), [place]);
   const osmHref = safeExternalHref(openStreetMapUrl(place.lat, place.lon, 10)) ?? "https://www.openstreetmap.org/";
 
   return (
@@ -808,16 +815,12 @@ function ComfortPrecisionRead({ profile }: { profile: ComfortPrecisionProfile })
 }
 
 function DetailBody({
-  place, onOpenPlace, liveFitFilters,
-  // panelRef is reserved for future progress-bar / reading-spy refinements
-  // tied to the scroll container, kept here so the contract is explicit even
-  // if currently unused inside the body.
-  panelRef: _panelRef,
+  place, onOpenPlace, liveFitFilters, visualSignature,
 }: {
   place: Place;
   onOpenPlace?: (id: string) => void;
   liveFitFilters?: LiveFitFilters;
-  panelRef?: { current: HTMLElement | null };
+  visualSignature: PlaceVisualSignature;
 }) {
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -852,7 +855,6 @@ function DetailBody({
   const livedSources = useMemo(() => formatLivedSources(place.liveSignals?.sources), [place.liveSignals?.sources]);
   const comfortPrecision = useMemo(() => buildComfortPrecisionProfile(place, { humidityAnalogPool: PLACES }), [place]);
   const comfortRead = useMemo(() => describeHumanComfort(place), [place]);
-  const visualSignature = useMemo(() => getPlaceVisualSignature(place), [place]);
   const settlementAnchors = useMemo(() => buildSettlementAnchors(place), [place]);
   const practicalActivities = useMemo(() => buildPracticalActivities(place), [place]);
   const nearbyContextRows = useMemo(() => buildNearbyContextRows(place), [place]);

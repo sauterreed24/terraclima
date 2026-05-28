@@ -323,6 +323,9 @@ export default function App() {
    */
   const initialUrlSyncDoneRef = useRef(false);
   const explorerDockLg = useMediaQuery("(min-width: 1024px)");
+  // Matches the styles.css `.desktop-scout-board` reveal breakpoint (line ~2170);
+  // gating the JSX avoids mounting a 200+ LOC subtree that is `display: none`.
+  const scoutBoardLg = useMediaQuery("(min-width: 1180px)");
   const explorerFilterSheetRef = useRef<ExplorerFilterSheetHandle | null>(null);
   const appShellRef = useRef<HTMLDivElement>(null);
   /** Reference to the trigger that opened the place detail, so we can return focus on close. */
@@ -706,19 +709,11 @@ export default function App() {
     setActiveCollection(a => a === id ? null : id);
     setViewFluid("explorer");
   }, [setViewFluid]);
-  const onPickTripTheme = useCallback((id: string) => {
-    setActiveCollection(a => a === id ? null : id);
-    setViewFluid("explorer");
-  }, [setViewFluid]);
+  const onPickTripTheme = onPickCollection;
 
   const surpriseMe = useCallback(() => {
-    if (ranked.length === 0) {
-      onRandomEmpty();
-      return;
-    }
-    const idx = Math.floor(Math.random() * ranked.length);
-    openPlace(ranked[idx].place.id);
-  }, [ranked, openPlace, onRandomEmpty]);
+    if (!pickRandomPlace()) onRandomEmpty();
+  }, [pickRandomPlace, onRandomEmpty]);
 
   return (
     <div className="relative min-h-screen flex flex-col text-ice overflow-x-hidden">
@@ -771,6 +766,7 @@ export default function App() {
                   onToggleBookmark={toggleBookmark}
                   onClearRecents={clearRecents}
                   onSetRanking={setRanking}
+                  showDesktopScoutBoard={scoutBoardLg}
                 />
 
                 <div className="tc-map-stage relative h-[clamp(320px,50svh,560px)] md:h-[54dvh] md:min-h-[min(480px,46dvh)]">
@@ -1484,6 +1480,7 @@ const HeroCard = memo(function HeroCard({
   onToggleBookmark,
   onClearRecents,
   onSetRanking,
+  showDesktopScoutBoard,
 }: {
   count: number;
   livabilityTopTen: RankingResult[];
@@ -1511,6 +1508,7 @@ const HeroCard = memo(function HeroCard({
   onToggleBookmark: (id: string) => void;
   onClearRecents: () => void;
   onSetRanking: (r: RankingProfile) => void;
+  showDesktopScoutBoard: boolean;
 }) {
   const prose = useProse();
   const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
@@ -1619,45 +1617,6 @@ const HeroCard = memo(function HeroCard({
       ) : null}
 
       {signatureLeaders.length > 0 ? (
-        <div className="current-rank-strip hidden px-3 py-2.5 sm:px-4 min-[1400px]:py-3">
-          <div className="flex flex-col gap-2.5">
-            <div className="min-w-0">
-              <div className="text-[10px] uppercase tracking-wider text-glacier-700">Previous rank strip</div>
-              <p className="text-[11px] text-stone-readable leading-snug mt-1">
-                Previous matches by <span className="font-medium text-frost">{rankingLabel}</span>.
-              </p>
-            </div>
-            <div
-              className="current-rank-strip__rail"
-              aria-label={`Hidden previous top five places for the selected ranking profile: ${rankingLabel}`}
-            >
-              {signatureLeaders.map((row, i) => (
-                <button
-                  key={row.place.id}
-                  type="button"
-                  onClick={() => onOpenPlace(row.place.id)}
-                  aria-label={`Rank ${i + 1}. ${row.place.name}. Score ${Math.round(row.score)}. Open place profile.`}
-                  className="current-rank-strip__chip"
-                  style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
-                >
-                  <span className="current-rank-strip__rank" aria-hidden>{i + 1}</span>
-                  <span className="min-w-0 flex-1">
-                    <span className="current-rank-strip__name" title={row.place.name}>{row.place.name}</span>
-                    <span className="current-rank-strip__note" title={row.note ? prose(row.note) : undefined}>
-                      {row.note ? prose(row.note) : row.place.koppen}
-                    </span>
-                    <span className="current-rank-strip__signature" title={row.signature.primaryBlurb}>
-                      {row.signature.primaryLabel} · {row.signature.feelBand} {row.signature.feelScore} · {row.signature.strength.shortLabel}
-                    </span>
-                  </span>
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : null}
-
-      {signatureLeaders.length > 0 ? (
         <LivingCompassWorkbench
           rows={signatureLeaders}
           rankingLabel={rankingLabel}
@@ -1667,7 +1626,7 @@ const HeroCard = memo(function HeroCard({
         />
       ) : null}
 
-      {scoutBrief ? (
+      {scoutBrief && showDesktopScoutBoard ? (
         <DesktopScoutBoard
           brief={scoutBrief}
           onOpenPlace={onOpenPlace}

@@ -88,13 +88,17 @@ function renderApp() {
 }
 
 describe("App shell", () => {
+  let originalMatchMedia: typeof window.matchMedia;
+
   beforeEach(() => {
     window.history.replaceState(null, "", "/");
     window.localStorage.clear();
+    originalMatchMedia = window.matchMedia;
   });
 
   afterEach(() => {
     cleanup();
+    window.matchMedia = originalMatchMedia;
   });
 
   it("renders primary branding inside UnitProvider", () => {
@@ -155,6 +159,20 @@ describe("App shell", () => {
   }, APP_SHELL_TIMEOUT_MS);
 
   it("starts new sessions with live-here fit as the default Explorer ranking", () => {
+    // The "Desktop relocation workbench" panel is now JSX-gated on
+    // `(min-width: 1180px)` to skip mounting it on phones (matches the
+    // existing `.desktop-scout-board { display: none }` CSS rule below
+    // 1180 px). Mock matchMedia so this test runs in the desktop branch.
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query.includes("min-width"),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })) as unknown as typeof window.matchMedia;
     renderApp();
 
     expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Live-here fit · top 5");
