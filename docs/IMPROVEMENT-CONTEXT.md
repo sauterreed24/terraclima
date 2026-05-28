@@ -1,6 +1,6 @@
 # Terraclima Improvement Context
 
-Last reconciled: 2026-05-08.
+Last reconciled: 2026-05-28.
 
 ## Repo Reality
 
@@ -27,6 +27,13 @@ npm run quality:check
 ```
 
 That includes type checking, ESLint, Vitest, prose tests, metadata consistency, corpus audits, sanity checks, ranking goldens, and a production build.
+
+## Filter state contract
+
+- **`createEmptyFilterState()`** in [`src/lib/scoring.ts`](../src/lib/scoring.ts) is the canonical reset for “clear all filters” (omits optional Live Finder / elevation keys).
+- **`filterStateFromValidated()`** hydrates explorer filters from URL-validated fields on first paint and `popstate` — keep in sync with [`validatedStateFromSearch`](../src/lib/app-url.ts), not duplicated in `App.tsx`.
+- **`hasActiveExplorerFilters()`** / **`countActiveExplorerFilterSignals()`** are the single source for “filters active” in FilterBar and the mobile filter sheet badge.
+- **`npm run playtest:polish`** asserts filter clear restores the full corpus and omits stale live-fit URL params after clear.
 
 ## Improvement Priorities
 

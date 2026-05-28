@@ -1,6 +1,6 @@
 import { memo, useCallback, type Dispatch, type SetStateAction } from "react";
 import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
-import { createEmptyFilterState, type FilterState } from "../lib/scoring";
+import { createEmptyFilterState, hasActiveExplorerFilters, type FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
 import { RANKING_OPTIONS } from "../lib/ranking-options";
@@ -187,16 +187,7 @@ export const FilterBar = memo(function FilterBar({
     setFilters(f => ({ ...f, [key]: value }));
   }, [setFilters]);
 
-  const hasAny =
-    filters.countries.size > 0 ||
-    filters.archetypes.size > 0 ||
-    (filters.fitPresets?.size ?? 0) > 0 ||
-    (filters.search?.length ?? 0) > 0 ||
-    filters.maxSummerHighC != null ||
-    filters.minWinterLowC != null ||
-    filters.minGrowability != null ||
-    filters.maxFireRisk != null ||
-    filters.maxOverallRisk != null;
+  const hasAny = hasActiveExplorerFilters(filters);
   const clearAll = useCallback(() => setFilters(createEmptyFilterState()), [setFilters]);
 
   return (
@@ -493,8 +484,13 @@ function LensReceipt({
           <div className="lens-receipt__title">{rankingLabel}</div>
         </div>
         {hasAny ? (
-          <button type="button" className="lens-receipt__clear" onClick={onClearAll}>
-            Clear
+          <button
+            type="button"
+            className="lens-receipt__clear"
+            onClick={onClearAll}
+            aria-label="Clear all filters"
+          >
+            Clear all
           </button>
         ) : null}
       </div>
