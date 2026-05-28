@@ -118,6 +118,14 @@ expectIncludes("index.html", indexHtml, 'name="color-scheme" content="light dark
 expectIncludes("index.html", indexHtml, 'media="(prefers-color-scheme: light)"');
 expectIncludes("index.html", indexHtml, 'media="(prefers-color-scheme: dark)"');
 
+// Privacy + OG locale: ensure the referrer policy + og:locale hints stay
+// in the static shell. The referrer policy keeps cross-origin citation
+// clicks from leaking the full URL (selected place, filters, ranking) to
+// third parties; og:locale lets crawlers and embed cards render the right
+// language metadata.
+expectIncludes("index.html", indexHtml, 'name="referrer" content="strict-origin-when-cross-origin"');
+expectIncludes("index.html", indexHtml, '<meta property="og:locale" content="en_US" />');
+
 expectIncludes("public/robots.txt", robots, `Sitemap: ${sitemapUrl}`);
 expectIncludes("public/sitemap.xml", sitemap, `<loc>${SITE_METADATA.canonicalUrl}</loc>`);
 expectIncludes("public/404.html", notFound, `<title>${SITE_METADATA.appName} — redirecting</title>`);

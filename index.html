@@ -12,6 +12,14 @@
     <meta name="application-name" content="Terraclima" />
     <meta name="apple-mobile-web-app-title" content="Terraclima" />
     <meta name="robots" content="index,follow,max-image-preview:large" />
+    <!--
+      Restrict the Referer header to same-origin internals when navigating
+      cross-origin so the editorial corpus doesn't accidentally leak
+      query-string state (selected place id, ranking, filters) to third-
+      party hosts referenced by citation links. Same-origin requests still
+      send the full URL so internal analytics / logs aren't affected.
+    -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
     <meta
       name="description"
       content="Terraclima — a hand-built North American microclimate atlas for serious readers and curious travelers. Rain shadows, sky islands, and thermal belts across the US, Canada, and Mexico — editorial geography, not a brokerage."
@@ -30,6 +38,7 @@
          og:image, robots.txt, and sitemap.xml together. -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Terraclima" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content="Terraclima — North American Microclimate Atlas" />
     <meta
       property="og:description"
