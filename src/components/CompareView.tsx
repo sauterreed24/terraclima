@@ -113,14 +113,24 @@ export function CompareView({
   return (
     <AnimatePresence>
       {open && places.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: reduceMotion ? 0 : 0.18 }}
-          className="fixed inset-0 z-50 bg-[rgba(62,38,24,0.35)] backdrop-blur-md overflow-y-auto"
-          onClick={onClose}
-        >
+        <>
+          {/*
+           * Scrim is a sibling of the dialog (not an ancestor) so we can mark
+           * it `aria-hidden` without also hiding the dialog from screen
+           * readers via the aria-hidden ancestor rule. Clicks on the scrim
+           * still dismiss the comparison; clicks on empty space inside the
+           * scroll container pass through (pointer-events: none on the
+           * dialog frame, pointer-events: auto on the actual card column).
+           */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.18 }}
+            className="fixed inset-0 z-50 bg-[rgba(62,38,24,0.35)] backdrop-blur-md"
+            onClick={onClose}
+            aria-hidden="true"
+          />
           <motion.div
             ref={panelRef}
             role="dialog"
@@ -131,9 +141,20 @@ export function CompareView({
             exit={reduceMotion ? { opacity: 1 } : { y: 30, opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.2 }}
             tabIndex={-1}
-            className="max-w-[1280px] mx-auto p-4 sm:p-6"
-            onClick={e => e.stopPropagation()}
+            className="fixed inset-0 z-50 overflow-y-auto pointer-events-none"
           >
+            {/*
+             * `presentation` role + `onClick stopPropagation` prevents clicks
+             * on the column-strip padding from bubbling up to the scrim and
+             * dismissing the modal. The dialog itself owns Escape via the
+             * global keyboard hook and the focus trap, so no keyboard handler
+             * is needed on this purely structural container.
+             */}
+            <div
+              role="presentation"
+              className="max-w-[1280px] mx-auto p-4 sm:p-6 pointer-events-auto"
+              onClick={e => e.stopPropagation()}
+            >
             <div className="compare-dialog__head">
               <div className="compare-dialog__title">
                 <div className="compare-dialog__eyebrow">Compare</div>
@@ -202,7 +223,7 @@ export function CompareView({
                 const bio = computeBioclim(p);
                 return (
                 <div key={p.id} className="panel p-4 relative snap-start">
-                  <button type="button" onClick={() => onRemove(p.id)} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center" aria-label={`Remove ${p.name} from comparison`}>
+                  <button type="button" onClick={() => onRemove(p.id)} aria-label={`Remove ${p.name} from comparison`} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center">
                     <X className="w-4 h-4" />
                   </button>
                   <div className="text-xs text-stone">{p.region}, {p.country}</div>
@@ -248,8 +269,9 @@ export function CompareView({
               })}
               </div>
             </div>
+            </div>
           </motion.div>
-        </motion.div>
+        </>
       )}
     </AnimatePresence>
   );

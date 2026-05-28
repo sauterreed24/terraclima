@@ -276,7 +276,10 @@
     transform: translateY(-160%);
     transition: transform 160ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .skip-to-main:focus {
+  /* :focus-visible only — a mouse click that incidentally lands on this
+     link should not reveal it. Keyboard / screen-reader users see the
+     focus-visible state correctly. */
+  .skip-to-main:focus-visible {
     transform: translateY(0);
     outline: none;
   }
@@ -6229,7 +6232,7 @@
     transition: none;
     transform: translateY(-160%);
   }
-  .skip-to-main:focus {
+  .skip-to-main:focus-visible {
     transform: translateY(0);
   }
   .ambient-aurora {

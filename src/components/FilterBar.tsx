@@ -221,7 +221,7 @@ export const FilterBar = memo(function FilterBar({
             type="button"
             onClick={clearAll}
             aria-label="Clear all filters"
-            className="text-stone hover:text-ice flex items-center justify-center min-w-9 min-h-9 rounded-lg hover:bg-[rgba(94,196,220,0.1)] -mr-1"
+            className="text-stone hover:text-ice flex items-center justify-center min-w-9 min-h-9 sm:min-w-9 sm:min-h-9 [@media(pointer:coarse)]:min-w-11 [@media(pointer:coarse)]:min-h-11 rounded-lg hover:bg-[rgba(94,196,220,0.1)] -mr-1"
             title="Clear filters"
           >
             <X className="w-4 h-4" />

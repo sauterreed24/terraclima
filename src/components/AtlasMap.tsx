@@ -1859,6 +1859,7 @@ export function AtlasMap({
         <div
           id="tc-map-mobile-legend"
           role="dialog"
+          aria-modal="true"
           aria-label="Map legend"
           className="map-mobile-legend map-chrome-panel"
         >
@@ -2177,6 +2178,7 @@ const ClusterPicker = memo(function ClusterPicker({
     <div
       ref={panelRef}
       role="dialog"
+      aria-modal="true"
       aria-label="Choose a microclimate from this cluster"
       aria-describedby={descriptionId}
       className="cluster-picker map-chrome-panel"

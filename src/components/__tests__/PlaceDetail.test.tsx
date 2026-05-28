@@ -57,3 +57,68 @@ describe("PlaceDetail growability rationale", () => {
     expect(screen.getByText(/read irrigation, soil storage, and drought trend/)).toBeInTheDocument();
   });
 });
+
+describe("PlaceDetail header accessibility", () => {
+  it("reflects compare membership on the Compare button via aria-pressed", () => {
+    const place = PLACES_BY_ID["yuma-az"];
+    expect(place).toBeTruthy();
+
+    const { rerender } = render(
+      <UnitProvider>
+        <PlaceDetail
+          place={place}
+          onClose={() => undefined}
+          onCompareToggle={() => undefined}
+          inCompareIds={new Set()}
+        />
+      </UnitProvider>,
+    );
+
+    const addBtn = screen.getByRole("button", { name: `Add ${place.name} to compare` });
+    expect(addBtn).toHaveAttribute("aria-pressed", "false");
+
+    rerender(
+      <UnitProvider>
+        <PlaceDetail
+          place={place}
+          onClose={() => undefined}
+          onCompareToggle={() => undefined}
+          inCompareIds={new Set([place.id])}
+        />
+      </UnitProvider>,
+    );
+
+    const removeBtn = screen.getByRole("button", { name: `Remove ${place.name} from compare` });
+    expect(removeBtn).toHaveAttribute("aria-pressed", "true");
+  });
+});
+
+describe("PlaceDetail glossary driver chip a11y", () => {
+  it("wires aria-expanded + aria-controls on driver chips that have a concept", () => {
+    // Eureka is one of the entries that always has drivers with concepts (e.g.
+    // marine layer, rain shadow). We only need a place with at least one
+    // driver that maps into DRIVER_CONCEPT_MAP.
+    const place = PLACES_BY_ID["eureka-ca"] ?? PLACES_BY_ID["yuma-az"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} />
+      </UnitProvider>,
+    );
+
+    // All driver chips have data-tone="ochre" — they live in the "Why this
+    // climate is different here" section and are the only ochre chips inside
+    // the dossier body. The ones with concepts must expose aria-expanded.
+    const chips = Array.from(document.querySelectorAll<HTMLButtonElement>(
+      'button.chip-btn[data-tone="ochre"]',
+    ));
+    expect(chips.length).toBeGreaterThan(0);
+
+    const chipsWithConcept = chips.filter(c => c.hasAttribute("aria-expanded"));
+    expect(chipsWithConcept.length).toBeGreaterThan(0);
+    for (const chip of chipsWithConcept) {
+      expect(chip.getAttribute("aria-expanded")).toBe("false");
+    }
+  });
+});

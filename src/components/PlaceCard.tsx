@@ -196,7 +196,7 @@ export const PlaceCard = memo(function PlaceCard({
         className="place-card__open-target text-left w-full p-4 pl-[calc(1rem+3px)] flex flex-col gap-0 min-h-0 bg-transparent border-0 cursor-pointer"
         aria-labelledby={titleId}
         aria-describedby={rank != null && rankingLabel && rankingScore != null ? rankId : undefined}
-        aria-pressed={selected ? true : undefined}
+        aria-current={selected ? "true" : undefined}
       >
         {rank != null && rankingLabel && rankingScore != null ? (
           <div

@@ -419,6 +419,8 @@ function DetailHeader({
             <button
               type="button"
               onClick={() => onCompareToggle(place.id)}
+              aria-pressed={inCompare}
+              aria-label={inCompare ? `Remove ${place.name} from compare` : `Add ${place.name} to compare`}
               className={`btn-ghost !text-xs ${inCompare ? "!border-[rgba(240,210,156,0.8)] !text-ochre-300" : ""}`}
             >
               <ArrowLeftRight className="w-3 h-3" />
@@ -824,6 +826,8 @@ function DetailBody({
 }) {
   const { temp, dist } = useUnits();
   const prose = useProse();
+  const reduceMotion = useReducedMotion();
+  const driverPanelId = useId();
   const annualP = getAnnualPrecipMm(place);
   const [activeDriver, setActiveDriver] = useState<TopographicDriver | null>(null);
 
@@ -1082,6 +1086,12 @@ function DetailBody({
                 data-active={active}
                 onClick={() => setActiveDriver(active ? null : d)}
                 title={hasConcept ? "Click to explain" : DRIVER_LABELS[d]}
+                {...(hasConcept
+                  ? {
+                      "aria-expanded": active,
+                      "aria-controls": active ? driverPanelId : undefined,
+                    }
+                  : {})}
               >
                 {DRIVER_LABELS[d]}
                 {hasConcept && <HelpCircle className="w-3 h-3 opacity-70" />}
@@ -1090,14 +1100,12 @@ function DetailBody({
           })}
         </div>
 
-        <AnimatePresence>
-          {activeConcept && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="mt-3 panel-warm p-4 overflow-hidden"
-            >
+        {/* Under reduced-motion the height/opacity tween is wasted work and a
+           subtle source of layout shift — render the panel statically and skip
+           AnimatePresence entirely so users get an instant expand/collapse. */}
+        {reduceMotion ? (
+          activeConcept ? (
+            <div id={driverPanelId} className="mt-3 panel-warm p-4 overflow-hidden">
               <div className="flex items-start justify-between gap-2 mb-1">
                 <div className="font-atlas text-base text-ice">{activeConcept.term}</div>
                 <button type="button" onClick={() => setActiveDriver(null)} className="text-stone hover:text-ice" aria-label="Close glossary explanation"><X className="w-3.5 h-3.5" /></button>
@@ -1107,9 +1115,31 @@ function DetailBody({
               {activeConcept.mechanism && (
                 <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Under the hood ·</span> {prose(activeConcept.mechanism)}</div>
               )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          ) : null
+        ) : (
+          <AnimatePresence>
+            {activeConcept && (
+              <motion.div
+                id={driverPanelId}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-3 panel-warm p-4 overflow-hidden"
+              >
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <div className="font-atlas text-base text-ice">{activeConcept.term}</div>
+                  <button type="button" onClick={() => setActiveDriver(null)} className="text-stone hover:text-ice" aria-label="Close glossary explanation"><X className="w-3.5 h-3.5" /></button>
+                </div>
+                <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
+                <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
+                {activeConcept.mechanism && (
+                  <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Under the hood ·</span> {prose(activeConcept.mechanism)}</div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
 
         <div className="text-sm text-stone mt-3 italic">Relief context: {prose(place.reliefContext)}</div>
       </Section>

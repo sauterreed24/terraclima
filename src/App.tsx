@@ -827,7 +827,7 @@ export default function App() {
                   <button
                     type="button"
                     onClick={openShortcutsHelp}
-                    className={`md:hidden inline-flex items-center gap-1 text-xs text-frost rounded-md border border-[rgba(180,160,140,0.45)] bg-white/85 px-2 py-1.5 min-h-[36px] ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
+                    className={`md:hidden inline-flex items-center gap-1 text-xs text-frost rounded-md border border-[rgba(180,160,140,0.45)] bg-white/85 px-2 py-1.5 min-h-[44px] ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
                     aria-label="Show keyboard shortcuts and tips"
                   >
                     <HelpCircle className="w-3.5 h-3.5" aria-hidden /> Tips
