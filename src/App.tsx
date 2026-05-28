@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Compass, HelpCircle, Laptop, Layers, Library, Link2, Map, Menu, Route, Search, ShieldAlert, ShieldCheck, Shuffle, Snowflake, Sparkles, Sprout, Sun, Sunrise, Target, X, type LucideIcon } from "lucide-react";
+import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Compass, HelpCircle, Laptop, Library, Link2, Map, Menu, Route, Search, ShieldAlert, ShieldCheck, Shuffle, Snowflake, Sparkles, Sprout, Sun, Sunrise, Target, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -21,10 +21,24 @@ import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-visual-signature";
 import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
-import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "./lib/atlas-metadata";
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
 import { useProse, useUnits } from "./lib/units";
+import { writeClipboardText } from "./lib/clipboard";
+import { runViewTransition } from "./lib/view-transition";
+import {
+  loadClimateTripsView,
+  loadCollectionsView,
+  loadCompareView,
+  loadLearnMode,
+  loadPlaceDetail,
+  preloadCompareView,
+  preloadPlaceDetail,
+} from "./lib/lazy-views";
+import { SEARCH_INPUT_ID, SHORTCUTS_SEEN_KEY, type ShareStatus } from "./lib/app-constants";
+import { LogoMark } from "./components/chrome/LogoMark";
+import { Footer } from "./components/chrome/Footer";
+import { ShortcutsOverlay } from "./components/chrome/ShortcutsOverlay";
 import {
   DEFAULT_RANKING,
   loadPersistedRanking,
@@ -61,9 +75,6 @@ import {
 } from "./lib/theme";
 import { ThemeToggle } from "./components/chrome/ThemeToggle";
 
-const SEARCH_INPUT_ID = "terraclima-place-search";
-const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
-type ShareStatus = "idle" | "copied" | "failed";
 const CURATED_SET_BY_ID = {
   ...Object.fromEntries(Object.entries(COLLECTION_BY_ID).map(([id, c]) => [id, { ...c, kind: "collection" as const }])),
   ...Object.fromEntries(Object.entries(CLIMATE_TRIP_THEME_BY_ID).map(([id, t]) => [id, { ...t, kind: "trip" as const }])),
@@ -78,62 +89,6 @@ function isPlace(p: Place | undefined): p is Place {
   return p != null;
 }
 
-async function writeClipboardText(text: string): Promise<boolean> {
-  try {
-    if (navigator.clipboard?.writeText) {
-      await navigator.clipboard.writeText(text);
-      return true;
-    }
-  } catch {
-    // Fall through to the textarea path for older browsers or denied writes.
-  }
-
-  try {
-    const textarea = document.createElement("textarea");
-    textarea.value = text;
-    textarea.setAttribute("readonly", "");
-    textarea.style.position = "fixed";
-    textarea.style.top = "0";
-    textarea.style.left = "-9999px";
-    textarea.style.opacity = "0";
-    document.body.appendChild(textarea);
-    textarea.select();
-    const copied = document.execCommand("copy");
-    document.body.removeChild(textarea);
-    return copied;
-  } catch {
-    return false;
-  }
-}
-
-type ViewTransitionDocument = Document & {
-  startViewTransition?: (update: () => void) => {
-    finished: Promise<void>;
-    ready: Promise<void>;
-    updateCallbackDone: Promise<void>;
-    skipTransition: () => void;
-  };
-};
-
-function runViewTransition(update: () => void): void {
-  if (typeof document === "undefined" || prefersReducedMotion()) {
-    update();
-    return;
-  }
-
-  const startViewTransition = (document as ViewTransitionDocument).startViewTransition;
-  if (!startViewTransition) {
-    update();
-    return;
-  }
-
-  try {
-    void startViewTransition.call(document, update);
-  } catch {
-    update();
-  }
-}
-
 function readCurrentAppState() {
   return readInitialAppState(
     PLACES_BY_ID,
@@ -144,57 +99,6 @@ function readCurrentAppState() {
 }
 
 type View = "explorer" | "trips" | "collections" | "learn";
-
-function loadClimateTripsView() {
-  return import("./components/ClimateTripsView").then(module => ({ default: module.ClimateTripsView }));
-}
-
-function loadCollectionsView() {
-  return import("./components/CollectionsView").then(module => ({ default: module.CollectionsView }));
-}
-
-function loadLearnMode() {
-  return import("./components/LearnMode").then(module => ({ default: module.LearnMode }));
-}
-
-function importPlaceDetail() {
-  return import("./components/PlaceDetail").then(module => ({ default: module.PlaceDetail }));
-}
-
-function importCompareView() {
-  return import("./components/CompareView").then(module => ({ default: module.CompareView }));
-}
-
-let placeDetailLoadPromise: ReturnType<typeof importPlaceDetail> | null = null;
-let compareViewLoadPromise: ReturnType<typeof importCompareView> | null = null;
-
-function loadPlaceDetail() {
-  if (!placeDetailLoadPromise) {
-    placeDetailLoadPromise = importPlaceDetail().catch(error => {
-      placeDetailLoadPromise = null;
-      throw error;
-    });
-  }
-  return placeDetailLoadPromise;
-}
-
-function loadCompareView() {
-  if (!compareViewLoadPromise) {
-    compareViewLoadPromise = importCompareView().catch(error => {
-      compareViewLoadPromise = null;
-      throw error;
-    });
-  }
-  return compareViewLoadPromise;
-}
-
-function preloadPlaceDetail() {
-  void loadPlaceDetail();
-}
-
-function preloadCompareView() {
-  void loadCompareView();
-}
 
 const ClimateTripsView = lazy(loadClimateTripsView);
 const CollectionsView = lazy(loadCollectionsView);
@@ -1089,78 +993,6 @@ function OverlayLoadingFallback({ label }: { label: string }) {
   );
 }
 
-const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: () => void }) {
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
-  useFocusTrap(panelRef, true, true);
-  useEffect(() => {
-    closeBtnRef.current?.focus();
-  }, []);
-  return (
-    <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 anim-fade-in">
-      <button
-        type="button"
-        className="absolute inset-0 z-0 cursor-default border-0 p-0"
-        style={{
-          background: "rgba(62, 38, 24, 0.22)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-        }}
-        aria-label="Close keyboard shortcuts"
-        onClick={onClose}
-      />
-      <div
-        ref={panelRef}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="kbd-shortcuts-title"
-        className="relative z-10 panel p-6 max-w-md w-full"
-      >
-        <div className="flex items-center justify-between mb-3">
-          <h3 id="kbd-shortcuts-title" className="font-atlas text-xl text-ice">Keyboard shortcuts</h3>
-          <button ref={closeBtnRef} type="button" onClick={onClose} className="btn-ghost !p-1.5" aria-label="Close keyboard shortcuts help">
-            <X className="w-3.5 h-3.5" aria-hidden />
-          </button>
-        </div>
-        <div className="divider-contour mb-3" />
-        <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
-          <Kbds keys={["E"]} />        <span className="text-frost">Explorer</span>
-          <Kbds keys={["T"]} />        <span className="text-frost">Trips</span>
-          <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
-          <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
-          <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
-          <Kbds keys={["Ctrl", "K"]} /> <span className="text-frost">Explorer: focus search (also works from inside any text input)</span>
-          <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
-          <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
-          <Kbds keys={["B"]} />        <span className="text-frost">Pin / unpin the currently open place to your shortlist</span>
-          <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail (or clear a non-empty search field)</span>
-          <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
-        </div>
-        <div className="divider-contour my-3" />
-        <div className="space-y-2 text-xs text-stone leading-relaxed">
-          <p>
-            Phone map: one-finger drag pans the atlas and pinch zooms by default. Tap <strong className="text-frost font-normal">Scroll page</strong> when you want browser scrolling over the map, then tap <strong className="text-frost font-normal">Use map</strong> to return to direct map control.
-          </p>
-          <p>
-            Place profiles: tap any pin or card. Read the opening story, then use On this page to move through practical read, climate tourism, field dossier, seasons, geospatial analysis, soils, risks, similar stops, and sources.
-          </p>
-          <p>
-            Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The URL encodes the place and view. Surprise uses the same filtered pool as the cards.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-});
-
-function Kbds({ keys }: { keys: string[] }) {
-  return (
-    <span className="inline-flex items-center gap-1">
-      {keys.map(k => <kbd key={k} className="kbd">{k}</kbd>)}
-    </span>
-  );
-}
-
 const EmptyResults = memo(function EmptyResults({ onClear }: { onClear: () => void }) {
   return (
     <div className="col-span-full panel-warm p-6 text-center anim-fade-in">
@@ -1414,23 +1246,6 @@ const QuickPick = memo(function QuickPick({ icon: Icon, label, onClick, active }
   );
 });
 
-function LogoMark() {
-  return (
-    <svg viewBox="0 0 64 64" width="36" height="36">
-      <defs>
-        <radialGradient id="logoGlow" cx="50%" cy="35%" r="60%">
-          <stop offset="0" stopColor="#fffdf8" />
-          <stop offset="1" stopColor="#f3ebe0" />
-        </radialGradient>
-      </defs>
-      <rect width="64" height="64" rx="12" fill="url(#logoGlow)" stroke="rgba(232,155,32,0.45)" />
-      <path d="M6 44 Q16 28 24 32 T40 26 T60 20" fill="none" stroke="#8cc8e0" strokeWidth="2.5" />
-      <path d="M6 50 Q16 36 24 40 T40 34 T60 28" fill="none" stroke="#c6dcbd" strokeWidth="1.8" opacity="0.9" />
-      <path d="M6 56 Q16 44 24 48 T40 42 T60 36" fill="none" stroke="#f0d29c" strokeWidth="1.3" opacity="0.85" />
-      <circle cx="32" cy="22" r="3.2" fill="#f0d29c" />
-    </svg>
-  );
-}
 
 const FieldNoteStrip = memo(function FieldNoteStrip() {
   const dailyIdx = useMemo(() => {
@@ -2465,23 +2280,3 @@ function AnimatedNumber({ value, durationMs = 520 }: { value: number; durationMs
   return <span ref={ref}>{displayedRef.current}</span>;
 }
 
-const Footer = memo(function Footer() {
-  return (
-    <footer className="mt-10 tc-footer">
-      <div className="max-w-[1600px] mx-auto px-6 py-6 text-xs text-stone flex flex-wrap gap-4 items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Layers className="w-3.5 h-3.5" />
-          <span>
-            Terraclima is a curated atlas, not a live weather, appraisal, or parcel feed. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals ({CLIMATE_NORMALS_PERIOD} where available), with WorldClim as a wider net. Geospatial screening uses consistent terrain-climate logic, Sentinel-2 and Landsat reference families, and a relief-texture proxy; every score points back to place notes, sources, and confidence.
-          </span>
-        </div>
-        <div className="flex items-center gap-3">
-          <Search className="w-3.5 h-3.5" />
-          <span>
-            {PLACE_COUNTS.total} hand-picked places - editorial refresh {ATLAS_EDITORIAL_SNAPSHOT}
-          </span>
-        </div>
-      </div>
-    </footer>
-  );
-});
