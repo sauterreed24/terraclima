@@ -30,10 +30,10 @@
     "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run build && npm run check:performance-budget"
   },
   "dependencies": {
-    "@tanstack/react-virtual": "^3.13.24",
+    "@tanstack/react-virtual": "^3.13.26",
     "d3-geo": "^3.1.1",
-    "framer-motion": "^12.38.0",
-    "lucide-react": "^1.14.0",
+    "framer-motion": "^12.40.0",
+    "lucide-react": "^1.17.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "topojson-client": "^3.1.0",
@@ -47,7 +47,7 @@
     "@testing-library/react": "^16.3.2",
     "@types/d3-geo": "^3.1.0",
     "@types/node": "^25.6.2",
-    "@types/react": "^19.2.14",
+    "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@types/topojson-client": "^3.1.5",
     "@vitejs/plugin-react": "^6.0.1",
