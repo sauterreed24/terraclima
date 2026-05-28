@@ -57,15 +57,6 @@ import {
 } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
 
-const TONE_HERO: Record<string, string> = {
-  glacier: "radial-gradient(1000px 300px at 15% 0%, rgba(94,196,220,0.22), transparent 65%)",
-  sage: "radial-gradient(1000px 300px at 15% 0%, rgba(61,143,85,0.12), transparent 65%)",
-  ochre: "radial-gradient(1000px 300px at 15% 0%, rgba(255,224,102,0.28), transparent 65%)",
-  ember: "radial-gradient(1000px 300px at 15% 0%, rgba(255,196,214,0.35), transparent 65%)",
-  ice: "radial-gradient(1000px 300px at 15% 0%, rgba(196,236,245,0.35), transparent 65%)",
-  aurora: "radial-gradient(1000px 300px at 15% 0%, rgba(255,196,214,0.4), transparent 65%)",
-};
-
 /** Solid leading edge on the detail drawer — instant place identity without re-tinting the whole panel. */
 const SETTLEMENT_ROLE_LABEL: Record<string, string> = {
   hub: "Hub",
@@ -354,8 +345,8 @@ function DetailHeader({
 
   return (
     <div
-      className="detail-drawer-header md:sticky md:top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 bg-[rgba(255,253,248,0.97)] backdrop-blur relative border-b border-[rgba(200,160,120,0.35)]"
-      style={{ backgroundImage: TONE_HERO[tone] }}
+      data-tone={tone}
+      className="detail-drawer-header md:sticky md:top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 tc-surface-elevated backdrop-blur relative border-b tc-border-warm"
     >
       <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
         <div className="min-w-0 w-full">

@@ -101,6 +101,16 @@ describe("App shell", () => {
     window.matchMedia = originalMatchMedia;
   });
 
+  it("applies dark theme when the Dark control is selected", async () => {
+    renderApp();
+    const darkBtn = screen.getAllByRole("button", { name: /Dark theme/i })[0];
+    fireEvent.click(darkBtn);
+    await waitFor(() => {
+      expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+    });
+    expect(darkBtn).toHaveAttribute("aria-pressed", "true");
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("renders primary branding inside UnitProvider", () => {
     const { container } = renderApp();
     const header = container.querySelector("header.tc-header-bar");
