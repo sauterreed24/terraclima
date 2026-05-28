@@ -60,7 +60,7 @@
     "jsdom": "^29.1.1",
     "postcss": "^8.5.14",
     "tailwindcss": "^4.3.0",
-    "tsx": "^4.21.0",
+    "tsx": "^4.22.3",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.11",
