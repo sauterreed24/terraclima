@@ -15,7 +15,7 @@ import { COLLECTION_BY_ID } from "./data/collections";
 import { CLIMATE_TRIP_THEME_BY_ID } from "./data/climate-trip-themes";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
-import { applyFilters, createEmptyFilterState, rankLivabilityPreview, rankPlaces, scoreLivability, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { applyFilters, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, rankPlaces, scoreLivability, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit, rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
@@ -179,17 +179,7 @@ export default function App() {
   const [compareIds, setCompareIds] = useState<Set<string>>(() => new Set(initialAppState.compareIds));
   const [compareOpen, setCompareOpen] = useState(() => initialAppState.compareIds.length >= 2);
   const [activeCollection, setActiveCollection] = useState<string | null>(initialAppState.collectionId);
-  const [filters, setFilters] = useState<FilterState>(() => ({
-    countries: new Set<string>(initialAppState.countries),
-    archetypes: new Set<MicroclimateArchetype>(initialAppState.archetypes),
-    fitPresets: new Set(initialAppState.fitPresets),
-    search: initialAppState.search,
-    maxSummerHighC: initialAppState.maxSummerHighC ?? undefined,
-    minWinterLowC: initialAppState.minWinterLowC ?? undefined,
-    minGrowability: initialAppState.minGrowability ?? undefined,
-    maxFireRisk: initialAppState.maxFireRisk ?? undefined,
-    maxOverallRisk: initialAppState.maxOverallRisk ?? undefined,
-  }));
+  const [filters, setFilters] = useState<FilterState>(() => filterStateFromValidated(initialAppState));
   const [ranking, setRankingRaw] = useState<RankingProfile>(() => initialAppState.ranking ?? loadPersistedRanking());
   const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
@@ -376,17 +366,7 @@ export default function App() {
       setView(v.view);
       setSelectedId(v.placeId);
       setActiveCollection(v.collectionId);
-      setFilters({
-        countries: new Set<string>(v.countries),
-        archetypes: new Set<MicroclimateArchetype>(v.archetypes),
-        fitPresets: new Set(v.fitPresets),
-        search: v.search,
-        maxSummerHighC: v.maxSummerHighC ?? undefined,
-        minWinterLowC: v.minWinterLowC ?? undefined,
-        minGrowability: v.minGrowability ?? undefined,
-        maxFireRisk: v.maxFireRisk ?? undefined,
-        maxOverallRisk: v.maxOverallRisk ?? undefined,
-      });
+      setFilters(filterStateFromValidated(v));
       setCompareIds(new Set(v.compareIds));
       setRankingRaw(v.ranking ?? loadPersistedRanking());
       // Units are a sticky global preference persisted by the UnitProvider.

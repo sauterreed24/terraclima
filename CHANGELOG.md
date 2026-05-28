@@ -9,6 +9,13 @@ All notable changes to Terraclima are tracked here.
 - **Clear all filters (`src/lib/scoring.ts`, `FilterBar`, `App`):** `createEmptyFilterState()` is the single reset shape; clears Live Finder numeric/risk constraints and elevation limits, not only search/country/archetype/presets. Live Finder inline control renamed to **Clear presets**.
 - **Place profile copy link (`src/components/place-detail/CopyPlaceLink.tsx`):** uses `writeClipboardText` with Copied / Copy failed feedback and unmount-safe status reset.
 
+### Filter contract polish
+
+- **`filterStateFromValidated()`** centralizes URL → `FilterState` hydration in `App` (first paint + Back/Forward).
+- **`hasActiveExplorerFilters()`** / **`countActiveExplorerFilterSignals()`** unify FilterBar clear affordances and the mobile filter-sheet badge.
+- **Lens Receipt** clear control labeled **Clear all** with `aria-label="Clear all filters"`.
+- **`playtest:polish`** now regression-tests filter clear + live-fit URL omission; App shell smoke test for bookmark writes when `localStorage` throws.
+
 ### UI & visual quality pass (deterministic stability)
 
 - **Semantic tokens (`src/lib/theme-tokens.ts` new, `src/styles.css`):** `--tc-surface-*`, `--tc-border-*`, `--tc-scrim`, `--tc-chip-*` custom properties remapped in dark mode; mirrored in TypeScript for Vitest.

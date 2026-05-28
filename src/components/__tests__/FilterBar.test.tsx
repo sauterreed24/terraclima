@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import type { ComponentProps } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { FilterBar } from "../FilterBar";
@@ -181,11 +181,25 @@ describe("FilterBar clear all filters", () => {
 
     renderFilterBar("F", { filters: polluted, setFilters });
 
-    fireEvent.click(screen.getByRole("button", { name: "Clear all filters" }));
+    fireEvent.click(screen.getAllByRole("button", { name: "Clear all filters" })[0]);
 
     expect(setFilters).toHaveBeenCalledTimes(1);
     const next = setFilters.mock.calls[0][0] as FilterState;
     expect(next).toEqual(createEmptyFilterState());
     assertNoStaleConstraints(next);
+  });
+
+  it("Lens Receipt clear all uses the same reset shape as the search clear control", () => {
+    const setFilters = vi.fn();
+    const polluted = createEmptyFilterState();
+    polluted.search = "sequim";
+    polluted.fitPresets = new Set(["cool-summers"]);
+
+    renderFilterBar("F", { filters: polluted, setFilters });
+
+    const lens = screen.getByRole("region", { name: "Current Explorer lens" });
+    fireEvent.click(within(lens).getByRole("button", { name: "Clear all filters" }));
+
+    expect(setFilters).toHaveBeenCalledWith(createEmptyFilterState());
   });
 });

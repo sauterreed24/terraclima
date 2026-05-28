@@ -6,6 +6,11 @@
 import { parseAppSearch, formatAppRelativeUrl } from "../src/lib/app-url";
 import { PLACES } from "../src/data/places";
 import {
+  applyFilters,
+  createEmptyFilterState,
+  filterStateFromValidated,
+} from "../src/lib/scoring";
+import {
   exportShortlistAsCSV,
   exportShortlistAsGeoJSON,
   exportShortlistAsICS,
@@ -51,6 +56,42 @@ async function main(): Promise<void> {
     if (clip !== "https://x.test/?a=1") throw new Error("clipboard share fallback failed");
   } finally {
     Object.defineProperty(globalThis, "navigator", { value: prevNav, configurable: true });
+  }
+
+  const polluted = filterStateFromValidated({
+    countries: [],
+    archetypes: [],
+    fitPresets: ["cool-summers"],
+    search: "zzzznonexistent",
+    maxSummerHighC: 22,
+    minWinterLowC: 2,
+    minGrowability: 75,
+    maxFireRisk: "low",
+    maxOverallRisk: "moderate",
+  });
+  if (applyFilters(PLACES, polluted).length !== 0) {
+    throw new Error("polluted filters should yield zero places");
+  }
+  if (applyFilters(PLACES, createEmptyFilterState()).length !== PLACES.length) {
+    throw new Error("empty filters should restore full corpus");
+  }
+
+  const clearedUrl = formatAppRelativeUrl({
+    view: "explorer",
+    placeId: null,
+    collectionId: null,
+    ranking: "live-fit",
+    fitPresets: [],
+    maxSummerHighC: null,
+    minWinterLowC: null,
+    minGrowability: null,
+    maxFireRisk: null,
+    maxOverallRisk: null,
+    search: "",
+    collectionExists: () => true,
+  });
+  for (const param of ["fit=", "sh=", "wl=", "grow=", "fire=", "risk=", "q="]) {
+    if (clearedUrl.includes(param)) throw new Error(`cleared URL still has ${param}: ${clearedUrl}`);
   }
 
   console.log("playtest-polish: OK");
