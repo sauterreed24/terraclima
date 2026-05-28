@@ -10,6 +10,7 @@ import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { computeBioclim, type BioclimIndex } from "../lib/bioclim";
 import { scoreLivability, feltComfortScore, livedFrictionScore } from "../lib/livability-score";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
+import { apparentComfortIndex } from "../lib/comfort-precision";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
 import { ChevronRight, Link2, X } from "lucide-react";
@@ -246,6 +247,7 @@ export function CompareView({
                 const geo = buildGeospatialAnalysis(p);
                 const decision = decisionById.get(p.id)!;
                 const bio = computeBioclim(p);
+                const utci = apparentComfortIndex(p);
                 return (
                 <div key={p.id} className="panel p-4 relative snap-start">
                   <button type="button" onClick={() => onRemove(p.id)} aria-label={`Remove ${p.name} from comparison`} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center">
@@ -284,6 +286,7 @@ export function CompareView({
                     <Row label="Live-here fit" value={`${decision.liveFitScore}/100`} />
                     <Row label="Livability" value={`${decision.livabilityScore}/100`} />
                     <Row label="Felt comfort" value={`${decision.feltComfort}/100`} />
+                    <Row label="Feels-like JJA (UTCI*)" value={`${fmtTemp(utci.warmSeasonApparentHighC, temp, { digits: 0 })} · ${utci.score}/100`} wide />
                     <Row label="Easy months" value={`${decision.easyMonths}/12`} />
                     <Row label="Lived ease" value={`${decision.livedEase}/100`} />
                     <Row label="Uniqueness" value={p.scores.microclimateUniqueness.toString()} />
@@ -305,6 +308,9 @@ export function CompareView({
               })}
               </div>
             </div>
+            <p className="text-[11px] text-stone mt-2 px-1 leading-snug">
+              * Feels-like (UTCI-style) is a warm-season heat-and-humidity strain screen from air temperature and relative humidity only — no wind, solar, or radiant-temperature inputs. Not a true UTCI value.
+            </p>
             </div>
           </motion.div>
         </>

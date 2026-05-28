@@ -66,6 +66,10 @@ function clamp(n: number, lo: number, hi: number): number {
   return Math.min(hi, Math.max(lo, n));
 }
 
+function round1(n: number): number {
+  return Math.round(n * 10) / 10;
+}
+
 function jaccard<T>(a: readonly T[], b: readonly T[]): number {
   if (a.length === 0 && b.length === 0) return 0;
   const seen = new Set(a);
@@ -325,4 +329,104 @@ export function buildComfortPrecisionProfile(p: Place, options: ComfortPrecision
     humidityBasisNote: humidityBasisNote(analogHumidity, anySource),
     methodNote: `Peak feel uses NWS-style heat index only when heat and humidity warrant it; when monthly humidity is absent, the model prefers measured-corpus climate analogs before archetype estimates. Wet-bulb is a shade proxy, not WBGT, because this atlas does not model sun angle, cloud cover, or wind speed.`,
   };
+}
+
+// ---- Apparent-comfort index (UTCI-style approximation) ----------------------
+//
+// HONEST SCOPE: true UTCI is a polynomial regression on air temperature, mean
+// radiant temperature, wind speed (10 m), and water-vapour pressure. This atlas
+// carries air temperature and relative humidity but NO wind, solar load, or
+// radiant-temperature inputs, so a literal UTCI is not computable without
+// inventing data. This proxy therefore reuses the same heat-index / wet-bulb
+// shade math as the comfort-precision profile and reports a UTCI-*style*
+// warm-season thermal-strain band — a heat-and-humidity screen, explicitly not
+// a true UTCI value. The band thresholds mirror the published UTCI heat-stress
+// breakpoints (26 / 32 / 38 °C) applied to the apparent ("feels-like") high.
+
+export type ThermalStrainBand =
+  | "cold"
+  | "slight"
+  | "no-strain"
+  | "moderate"
+  | "strong"
+  | "very-strong";
+
+export interface ApparentComfortIndex {
+  /** Mean Jun–Aug apparent ("feels-like") daily high (°C); heat-index based. */
+  warmSeasonApparentHighC: number;
+  /** Hottest month apparent high (°C). */
+  peakApparentHighC: number;
+  /** Coldest monthly mean low (°C). No wind-chill input on the cold side. */
+  coldSeasonLowC: number;
+  /** Mean Jun–Aug wet-bulb shade proxy (°C) when humidity is available. */
+  warmSeasonWetBulbC: number | null;
+  /** 0..100 — higher = less physiological thermal strain across the warm season. */
+  score: number;
+  /** UTCI-style warm-season strain band. */
+  band: ThermalStrainBand;
+  /** Human-readable band label. */
+  bandLabel: string;
+  /** Inherited from the comfort-precision humidity confidence ladder. */
+  confidence: ComfortConfidence;
+  /** Honest scope note (no wind / radiant inputs). */
+  methodNote: string;
+}
+
+const STRAIN_BAND_LABEL: Record<ThermalStrainBand, string> = {
+  "cold": "Cold strain",
+  "slight": "Slight cool",
+  "no-strain": "No thermal strain",
+  "moderate": "Moderate heat strain",
+  "strong": "Strong heat strain",
+  "very-strong": "Very strong heat strain",
+};
+
+/** UTCI-style band from the warm-season apparent high (mirrors UTCI heat breakpoints). */
+function strainBand(warmApparentHighC: number): ThermalStrainBand {
+  if (warmApparentHighC >= 38) return "very-strong";
+  if (warmApparentHighC >= 32) return "strong";
+  if (warmApparentHighC >= 26) return "moderate";
+  if (warmApparentHighC >= 9) return "no-strain";
+  if (warmApparentHighC >= 0) return "slight";
+  return "cold";
+}
+
+const APPARENT_COMFORT_METHOD_NOTE =
+  "UTCI-style approximation from air temperature + relative humidity (with the wet-bulb shade proxy). " +
+  "It does NOT use wind speed, solar load, or mean radiant temperature, which this atlas does not carry — " +
+  "read it as a warm-season heat-and-humidity strain screen, not a true UTCI value.";
+
+/** Derive the apparent-comfort index from a prebuilt comfort-precision profile. */
+export function apparentComfortIndexFromProfile(profile: ComfortPrecisionProfile): ApparentComfortIndex {
+  const warm = [profile.months[5]!, profile.months[6]!, profile.months[7]!];
+  const warmApparent = warm.reduce((sum, m) => sum + m.apparentHighC, 0) / warm.length;
+  const coldLow = Math.min(...profile.months.map(m => m.lowC));
+  const wetBulbs = warm.map(m => m.wetBulbC).filter((v): v is number => v != null);
+  const warmWetBulb = wetBulbs.length > 0 ? wetBulbs.reduce((sum, v) => sum + v, 0) / wetBulbs.length : null;
+
+  // Strain accrues above UTCI's 26 °C "moderate heat stress" ceiling and below
+  // its 9 °C "no thermal stress" floor; a muggy warm season (high wet-bulb)
+  // adds an extra penalty on top of the dry apparent-temperature read.
+  const heatStrain = Math.max(0, warmApparent - 26);
+  const coolStrain = Math.max(0, 9 - warmApparent);
+  const wetBulbPenalty = warmWetBulb == null ? 0 : Math.max(0, warmWetBulb - 20) * 3;
+  const score = clamp(100 - heatStrain * 4.5 - coolStrain * 2.2 - wetBulbPenalty, 0, 100);
+  const band = strainBand(warmApparent);
+
+  return {
+    warmSeasonApparentHighC: round1(warmApparent),
+    peakApparentHighC: round1(profile.peakMonth.apparentHighC),
+    coldSeasonLowC: round1(coldLow),
+    warmSeasonWetBulbC: warmWetBulb == null ? null : round1(warmWetBulb),
+    score: Math.round(score),
+    band,
+    bandLabel: STRAIN_BAND_LABEL[band],
+    confidence: profile.confidence,
+    methodNote: APPARENT_COMFORT_METHOD_NOTE,
+  };
+}
+
+/** Apparent-comfort (UTCI-style) index for a place. Pure + deterministic. */
+export function apparentComfortIndex(p: Place, options: ComfortPrecisionOptions = {}): ApparentComfortIndex {
+  return apparentComfortIndexFromProfile(buildComfortPrecisionProfile(p, options));
 }
