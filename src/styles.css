@@ -66,6 +66,14 @@
 @layer base {
   :root {
     color-scheme: light;
+    /* Semantic surfaces — remapped in :root[data-theme="dark"] for deep chrome. */
+    --tc-surface-elevated: rgba(255, 253, 248, 0.97);
+    --tc-surface-muted: rgba(255, 248, 240, 0.88);
+    --tc-border-neutral: rgba(71, 90, 122, 0.28);
+    --tc-border-warm: rgba(200, 170, 140, 0.42);
+    --tc-scrim: rgba(62, 38, 24, 0.35);
+    --tc-chip-bg: rgba(255, 255, 255, 0.94);
+    --tc-chip-active: rgba(94, 196, 220, 0.22);
   }
 
   html,
@@ -5898,6 +5906,13 @@
    ========================================================= */
 :root[data-theme="dark"] {
   color-scheme: dark;
+  --tc-surface-elevated: rgba(28, 38, 60, 0.94);
+  --tc-surface-muted: rgba(22, 30, 50, 0.88);
+  --tc-border-neutral: rgba(120, 138, 178, 0.32);
+  --tc-border-warm: rgba(140, 160, 200, 0.36);
+  --tc-scrim: rgba(8, 12, 22, 0.62);
+  --tc-chip-bg: rgba(32, 42, 68, 0.92);
+  --tc-chip-active: rgba(94, 196, 220, 0.32);
   /* Re-map the warm-ink text scale to a high-contrast moonlit palette. */
   --color-abyss: #0d1320;
   --color-midnight: #121a2a;
