@@ -152,6 +152,38 @@ export interface ClimateChangeOutlook {
   resilienceNote: string;
 }
 
+/**
+ * Climate-scenario layers for the projection ("time machine") engine. `now`
+ * is the authored 1991–2020 normal; the SSP layers morph it by a mid-century
+ * (~2050) anomaly vector. See `src/lib/climate-projection.ts`.
+ */
+export type ScenarioId = "now" | "ssp245" | "ssp585";
+
+/**
+ * Mid-century (~2050) anomaly vector applied to a place's normals. Values are
+ * deltas *relative to* the 1991–2020 baseline, never absolute climate values.
+ * The default resolver derives these from a coarse, sourced regional table
+ * (country + latitude band); a place MAY override with an authored, cited
+ * `Place.projection` vector. This is an illustrative regional projection, not
+ * a downscaled per-site forecast.
+ */
+export interface ClimateDelta {
+  /** Δ mean Jun–Aug daily high vs baseline (°C). */
+  deltaJJAHighC: number;
+  /** Δ mean Dec–Feb daily low vs baseline (°C). */
+  deltaJANLowC: number;
+  /** Δ annual precipitation as a percent of baseline (+10 = 10% wetter). */
+  deltaPrecipPct: number;
+}
+
+/** Optional per-place authored projection override (cited), by SSP scenario. */
+export interface ProjectionDeltas {
+  /** SSP2-4.5 "middle of the road" ~2050. */
+  ssp245?: ClimateDelta;
+  /** SSP5-8.5 "high emissions" ~2050. */
+  ssp585?: ClimateDelta;
+}
+
 /** Local contrast vs nearby surrounding ring. */
 export interface LocalContrast {
   radiusKm: number;
@@ -311,6 +343,14 @@ export interface Place {
   soil: SoilProfile;
   growability: Growability;
   climateChange: ClimateChangeOutlook;
+
+  /**
+   * Optional authored, cited mid-century projection override. When absent the
+   * projection engine falls back to a coarse sourced regional anomaly table
+   * (see `src/lib/climate-projection.ts`). Numbers are deltas vs the 1991–2020
+   * normals, not absolute values.
+   */
+  projection?: ProjectionDeltas;
 
   // Risk matrix
   risks: {
