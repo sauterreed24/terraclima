@@ -16,8 +16,8 @@ import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
-import { useUnits, fmtTemp, fmtPrecip, fmtPrecipSmall, fmtElev, fmtDelta, useProse, type TempUnit } from "../lib/units";
-import { getBestMonths, type BestWindow } from "../lib/best-months";
+import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtDelta, useProse } from "../lib/units";
+import { getBestMonths } from "../lib/best-months";
 import { PlaceClimateTwins } from "./place-detail/PlaceClimateTwins";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
@@ -26,10 +26,10 @@ import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
-import { assessLiveFit, type LiveFitAssessment, type LiveFitFilters } from "../lib/live-fit";
+import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { formatLivedSources } from "../lib/lived-sources";
-import { buildComfortPrecisionProfile, type ComfortPrecisionMonth, type ComfortPrecisionProfile } from "../lib/comfort-precision";
-import { describeHumanComfort, scoreLivability, type LivabilityResult } from "../lib/livability-score";
+import { buildComfortPrecisionProfile } from "../lib/comfort-precision";
+import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "../lib/place-visual-signature";
 import { safeExternalHref } from "../lib/safe-url";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
@@ -42,12 +42,18 @@ import { PlaceFeelRead } from "./place-detail/PlaceFeelRead";
 import { PlaceBioclimaticIndices } from "./place-detail/PlaceBioclimaticIndices";
 import { PlacePracticalRead } from "./place-detail/PlacePracticalRead";
 import { PlaceTourismRead } from "./place-detail/PlaceTourismRead";
+import { PlaceResidencyBrief } from "./place-detail/PlaceResidencyBrief";
+import { PlaceComfortPrecision } from "./place-detail/PlaceComfortPrecision";
+import { PlaceBackToTop } from "./place-detail/PlaceBackToTop";
+import { PlaceReadingProgress } from "./place-detail/PlaceReadingProgress";
+import { Section, KeyValue, LabelRow, Legend, ScorePill, titleCaseLocal } from "./place-detail/place-detail-ui";
+import { synthesizePlaceSignals } from "../lib/place-signals";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
 import { buildGrowabilityRationale } from "../lib/growability-score";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
-  Users, Compass, ExternalLink, Scale, Satellite, ArrowUp, ShieldAlert,
+  Users, Compass, ExternalLink, Scale, Satellite,
 } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
 
@@ -164,28 +170,6 @@ const DRIVER_CONCEPT_MAP: Partial<Record<TopographicDriver, string>> = {
   "trade-wind": "continentality",
 };
 
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
-
-const RISK_SCORE: Record<string, number> = {
-  "very-low": 0,
-  "low": 1,
-  "moderate": 2,
-  "elevated": 3,
-  "high": 4,
-  "very-high": 5,
-};
-
-const RISK_LABEL: Record<string, string> = {
-  wildfire: "Wildfire",
-  flood: "Flood",
-  drought: "Drought",
-  extremeHeat: "Extreme heat",
-  extremeCold: "Extreme cold",
-  smoke: "Smoke",
-  storm: "Storm",
-  landslide: "Landslide",
-  coastal: "Coastal",
-};
 
 interface Props {
   place: Place | null;
@@ -297,7 +281,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               boxShadow: "-20px 0 48px -14px rgba(62, 38, 24, 0.18)",
             }}
           >
-            <ReadingProgressBar panelRef={panelRef} />
+            <PlaceReadingProgress panelRef={panelRef} />
             <DetailHeader
               place={place}
               titleId={titleId}
@@ -310,7 +294,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               visualSignature={visualSignature!}
             />
             <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} visualSignature={visualSignature!} />
-            <BackToTopButton panelRef={panelRef} />
+            <PlaceBackToTop panelRef={panelRef} />
           </motion.aside>
         </>
       )}
@@ -552,270 +536,6 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
   );
 }
 
-function DetailDecisionBrief({
-  place,
-  liveFit,
-  livability,
-  bestMonths,
-  visualSignature,
-}: {
-  place: Place;
-  liveFit: LiveFitAssessment;
-  livability: LivabilityResult;
-  bestMonths: BestWindow[];
-  visualSignature: PlaceVisualSignature;
-}) {
-  const prose = useProse();
-  const bestWindow = bestMonths.find(w => w.kind === "good") ?? null;
-  const cautionWindow = bestMonths.find(w => w.kind === "caution") ?? null;
-  const leadDriver =
-    livability.drivers
-      .map(key => livability.components.find(component => component.key === key))
-      .find(Boolean) ??
-    [...livability.components].sort((a, b) => b.value - a.value)[0];
-  const mainDrag =
-    liveFit.cautions[0] ??
-    livability.drags
-      .map(key => livability.components.find(component => component.key === key))
-      .find(Boolean)?.rationale ??
-    "No single hard warning dominates; still verify risk, services, and fit before shortlisting.";
-  const cautionLabel = liveFit.cautions.length > 0 ? "Verify on the ground" : `${visualSignature.verify.shortLabel} check`;
-  const scoreBand =
-    liveFit.score >= 82 ? "Prime shortlist" :
-    liveFit.score >= 72 ? "Strong prospect" :
-    liveFit.score >= 60 ? "Specialist fit" :
-    "Needs scrutiny";
-  const goodReason = liveFit.reasons[0] ?? "Balanced climate, risk, and terrain scores make it worth a closer look.";
-  const lanes = [
-    {
-      label: "Live fit",
-      value: liveFit.score,
-      note: goodReason,
-      tone: "glacier",
-    },
-    {
-      label: "Livability",
-      value: livability.score,
-      note: leadDriver ? `${leadDriver.label} is the leading contributor.` : "Balanced blend.",
-      tone: "sage",
-    },
-    {
-      label: "Place feel",
-      value: visualSignature.feelScore,
-      note: visualSignature.primaryLabel,
-      tone: "aurora",
-    },
-    {
-      label: visualSignature.verify.label,
-      value: Math.round(visualSignature.verify.value),
-      note: describeSignatureVerification(visualSignature),
-      tone: "ochre",
-    },
-  ] as const;
-
-  return (
-    <section
-      className="detail-doc-section residency-brief anim-fade-in"
-      style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb }}
-      aria-labelledby="residency-brief-title"
-    >
-      <div className="residency-brief__head">
-        <div className="min-w-0">
-          <div id="residency-brief-title" className="residency-brief__eyebrow">
-            Residency brief
-          </div>
-          <p className="residency-brief__headline">
-            {place.name} reads as a <span>{scoreBand}</span> under the current living lens.
-          </p>
-        </div>
-        <div
-          className="residency-brief__score"
-          style={{ ["--score-deg" as string]: `${Math.round(liveFit.score * 3.6)}deg` }}
-          aria-label={`Live-here fit ${liveFit.score} out of 100`}
-        >
-          <span className="font-mono-num">{liveFit.score}</span>
-          <span>fit</span>
-        </div>
-      </div>
-
-      <div className="residency-brief__grid">
-        <div className="residency-brief__primary">
-          <div className="residency-brief__primary-label">Why it belongs on the shortlist</div>
-          <p>{prose(goodReason)}</p>
-          <div className="residency-brief__chips" aria-label="Shortlist tags">
-            {liveFit.badges.slice(0, 4).map(badge => (
-              <span key={badge}>{badge}</span>
-            ))}
-            <span>{visualSignature.primaryLabel}</span>
-          </div>
-        </div>
-
-        <div className="residency-brief__fact">
-          <Calendar className="w-4 h-4" aria-hidden />
-          <span>Best timing</span>
-          <strong>{bestWindow ? `${bestWindow.label} · ${bestWindow.range}` : "Read monthly rhythm"}</strong>
-          {cautionWindow ? <small>Watch {cautionWindow.range.toLowerCase()}</small> : null}
-        </div>
-
-        <div className="residency-brief__fact">
-          <ShieldAlert className="w-4 h-4" aria-hidden />
-          <span>First caution</span>
-          <strong>{cautionLabel}</strong>
-          <small>{prose(mainDrag)}</small>
-        </div>
-      </div>
-
-      <div className="residency-brief__lanes" aria-label={`${place.name} decision signal lanes`}>
-        {lanes.map(lane => (
-          <div key={lane.label} className="residency-brief__lane" data-tone={lane.tone} title={prose(lane.note)}>
-            <div className="residency-brief__lane-top">
-              <span>{lane.label}</span>
-              <strong className="font-mono-num">{Math.round(lane.value)}</strong>
-            </div>
-            <div className="residency-brief__track" aria-hidden>
-              <span style={{ width: `${Math.max(0, Math.min(100, lane.value))}%` }} />
-            </div>
-            <p>{prose(lane.note)}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function describeSignatureVerification(signature: PlaceVisualSignature): string {
-  switch (signature.verify.key) {
-    case "sensoryComfort":
-      return "Thermal envelope, easy months, and sky or air cues are the first comfort check.";
-    case "dailyEase":
-      return "Services, access, lived friction, and risk load set the daily-life verification floor.";
-    case "placeIdentity":
-      return "Authored texture, distinctness, and hidden-gem signal determine how legible the place feels.";
-    case "scoutingClarity":
-      return "Sources, settlement anchors, nearby contrasts, and confidence determine how easy it is to verify.";
-  }
-}
-
-function precisionTemp(value: number | null, temp: TempUnit): string {
-  return value == null ? "n/a" : fmtTemp(value, temp);
-}
-
-function precisionBand(score: number): "high" | "mid" | "low" {
-  if (score >= 72) return "high";
-  if (score >= 48) return "mid";
-  return "low";
-}
-
-function monthList(months: ComfortPrecisionMonth[]): string {
-  return months.map(month => month.label).join(", ");
-}
-
-function humiditySourceLabel(month: ComfortPrecisionMonth): string {
-  if (month.humiditySource === "measured") return "measured humidity";
-  if (month.humiditySource === "analog") return "climate-analog humidity";
-  if (month.humiditySource === "archetype") return "archetype humidity";
-  return "humidity unmodeled";
-}
-
-function ComfortPrecisionRead({ profile }: { profile: ComfortPrecisionProfile }) {
-  const { temp } = useUnits();
-  const peak = profile.peakMonth;
-  const sleep = profile.sleepRecoveryMonth;
-  const confidenceTone = profile.confidence === "high" ? "sage" : profile.confidence === "medium" ? "ochre" : "ember";
-  const cards = [
-    {
-      label: "Peak day feel",
-      value: precisionTemp(peak.apparentHighC, temp),
-      note: `${peak.label}: air ${precisionTemp(peak.highC, temp)}; ${humiditySourceLabel(peak)}.`,
-      tone: "glacier",
-    },
-    {
-      label: "Dew point",
-      value: precisionTemp(peak.dewPointC, temp),
-      note: peak.humidityPct == null ? "Local humidity check needed." : `${peak.label} mean humidity ${Math.round(peak.humidityPct)}%.`,
-      tone: "sage",
-    },
-    {
-      label: "Wet-bulb proxy",
-      value: precisionTemp(peak.wetBulbC, temp),
-      note: "Shade heat guardrail; not a full sun-and-wind WBGT.",
-      tone: "ochre",
-    },
-    {
-      label: "Night recovery",
-      value: `${Math.round(sleep.sleepRecoveryScore)}/100`,
-      note: `${sleep.label}: low ${precisionTemp(sleep.lowC, temp)} with ${fmtDelta(sleep.highC - sleep.lowC, temp, { signed: false })} day-night spread.`,
-      tone: "aurora",
-    },
-  ] as const;
-
-  return (
-    <Section anchorId={PD.comfortPrecision} title="Comfort precision" icon={<Thermometer className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
-      <div className="comfort-precision-panel">
-        <div className="comfort-precision-panel__head">
-          <div>
-            <div className="comfort-precision-panel__eyebrow">Human thermal read</div>
-            <p>
-              {profile.annualComfortMonths}/12 pleasant months and {profile.annualUsableMonths}/12 broadly usable months.
-            </p>
-          </div>
-          <span className="comfort-precision-panel__confidence" data-tone={confidenceTone}>
-            {profile.confidence}
-          </span>
-        </div>
-
-        <div className="comfort-precision-panel__cards" aria-label="Comfort precision summary">
-          {cards.map(card => (
-            <div key={card.label} className="comfort-precision-card" data-tone={card.tone}>
-              <span>{card.label}</span>
-              <strong>{card.value}</strong>
-              <small>{card.note}</small>
-            </div>
-          ))}
-        </div>
-
-        <div className="comfort-precision-panel__months" aria-label="Month-by-month comfort precision">
-          {profile.months.map(month => (
-            <div
-              key={month.label}
-              className="comfort-precision-month"
-              data-level={precisionBand(Math.min(month.usabilityScore, month.sleepRecoveryScore, month.heatStressScore))}
-              title={`${month.label}: usability ${Math.round(month.usabilityScore)}/100, heat guardrail ${Math.round(month.heatStressScore)}/100, sleep recovery ${Math.round(month.sleepRecoveryScore)}/100`}
-            >
-              <span>{month.label}</span>
-              <i aria-hidden>
-                <b style={{ height: `${Math.max(8, Math.min(100, month.usabilityScore))}%` }} />
-              </i>
-              <strong className="font-mono-num">{Math.round(month.usabilityScore)}</strong>
-            </div>
-          ))}
-        </div>
-
-        <div className="comfort-precision-panel__footer">
-          <div>
-            <span>Easy field window</span>
-            <strong>{monthList(profile.easiestMonths)}</strong>
-          </div>
-          <div>
-            <span>Months to verify</span>
-            <strong>{monthList(profile.hardestMonths)}</strong>
-          </div>
-          <div>
-            <span>Moisture basis</span>
-            <strong>{profile.humidityBasisNote}</strong>
-          </div>
-          <div>
-            <span>Confidence</span>
-            <strong>{profile.confidenceNote}</strong>
-          </div>
-        </div>
-
-        <p className="comfort-precision-panel__method">{profile.methodNote}</p>
-      </div>
-    </Section>
-  );
-}
-
 function DetailBody({
   place, onOpenPlace, liveFitFilters, visualSignature,
 }: {
@@ -892,7 +612,7 @@ function DetailBody({
         <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.summaryImmersive)}</p>
       </Section>
 
-      <DetailDecisionBrief
+      <PlaceResidencyBrief
         place={place}
         liveFit={liveFit}
         livability={livability}
@@ -904,7 +624,7 @@ function DetailBody({
 
       <PlaceFeelRead place={place} anchorId={PD.placeFeel} />
 
-      <ComfortPrecisionRead profile={comfortPrecision} />
+      <PlaceComfortPrecision profile={comfortPrecision} />
 
       <PlaceBioclimaticIndices place={place} anchorId={PD.bioclimaticIndices} />
 
@@ -1564,226 +1284,3 @@ function DetailBody({
   );
 }
 
-function Section({
-  anchorId,
-  title,
-  icon,
-  children,
-}: {
-  anchorId?: string;
-  title?: string;
-  icon?: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={anchorId} className="detail-doc-section anim-fade-in">
-      {title && (
-        <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
-          {icon}{title}
-        </h3>
-      )}
-      {children}
-    </section>
-  );
-}
-
-function KeyValue({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="flex items-baseline justify-between gap-4 py-1 text-sm border-b last:border-0 border-[rgba(200,160,120,0.28)]">
-      <span className="text-stone">{label}</span>
-      <span className="text-frost text-right font-mono-num">{value}</span>
-    </div>
-  );
-}
-
-function titleCaseLocal(s: string): string {
-  return s.slice(0, 1).toUpperCase() + s.slice(1);
-}
-
-function LabelRow({ label }: { label: string }) {
-  return <div className="text-[10px] uppercase tracking-wider text-stone mb-1">{label}</div>;
-}
-
-function Legend({ color, text }: { color: string; text: string }) {
-  return (
-    <span className="inline-flex items-center gap-1">
-      <span className="inline-block w-2.5 h-2.5 rounded-sm" style={{ background: color }} />
-      <span className="text-stone">{text}</span>
-    </span>
-  );
-}
-
-function ScorePill({ label, value, tone }: { label: string; value: number; tone: "glacier" | "sage" | "ochre" | "ember" }) {
-  const c: Record<string, string> = { glacier: "#8cc8e0", sage: "#c6dcbd", ochre: "#f0d29c", ember: "#d37c5b" };
-  return (
-    <div className="panel-thin p-3">
-      <div className="text-[10px] uppercase tracking-wider text-stone">{label}</div>
-      <div className="flex items-baseline gap-2">
-        <span className="font-mono-num text-xl" style={{ color: c[tone] }}>{value}</span>
-        <span className="text-xs text-stone">/ 100</span>
-      </div>
-      <div
-        className="h-1 rounded-full bg-[rgba(71,90,122,0.4)] mt-2 overflow-hidden"
-        role="meter"
-        aria-label={label}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-valuenow={value}
-        aria-valuetext={`${value} out of 100`}
-      >
-        <div className="h-full rounded-full" style={{ width: `${value}%`, background: c[tone] }} />
-      </div>
-    </div>
-  );
-}
-
-function synthesizePlaceSignals(place: Place, temp: "F" | "C", dist: "imperial" | "metric"): { lines: { label: string; value: string }[]; topRisks: string[] } {
-  const highs = place.climate.tempHighC;
-  const lows = place.climate.tempLowC;
-  const precip = place.climate.precipMm;
-  const snow = place.climate.snowCm;
-
-  const maxHigh = Math.max(...highs);
-  const minLow = Math.min(...lows);
-  const annualSpan = maxHigh - minLow;
-
-  const wetIdx = precip.reduce((best, v, i, arr) => (v > arr[best] ? i : best), 0);
-  const dryIdx = precip.reduce((best, v, i, arr) => (v < arr[best] ? i : best), 0);
-  const wet = precip[wetIdx];
-  const dry = precip[dryIdx];
-  const wetDryRatio = dry <= 0.1 ? "∞" : `${(wet / dry).toFixed(1)}×`;
-
-  const comfortMonths = highs.filter(h => h >= 12 && h <= 28).length;
-
-  const lines: { label: string; value: string }[] = [
-    {
-      label: "Annual thermal span",
-      value: `${fmtTemp(minLow, temp)} to ${fmtTemp(maxHigh, temp)} (${fmtDelta(annualSpan, temp, { signed: false })})`,
-    },
-    {
-      label: "Wettest / driest month",
-      value: `${MONTHS[wetIdx]} ${fmtPrecipSmall(wet, dist)} · ${MONTHS[dryIdx]} ${fmtPrecipSmall(dry, dist)} (${wetDryRatio})`,
-    },
-    {
-      label: temp === "F"
-        ? "Comfort-window months (54–82°F highs)"
-        : "Comfort-window months (12–28°C highs)",
-      value: `${comfortMonths} / 12`,
-    },
-  ];
-
-  if (place.climate.humidity) {
-    const h = place.climate.humidity;
-    const summerAvg = (h[5] + h[6] + h[7]) / 3;
-    const winterAvg = (h[11] + h[0] + h[1]) / 3;
-    lines.push({
-      label: "Humidity regime",
-      value: `Summer ${Math.round(summerAvg)}% · Winter ${Math.round(winterAvg)}%`,
-    });
-  }
-
-  if (snow) {
-    const snowMonths = snow.filter(v => v > 0.5).length;
-    lines.push({
-      label: "Snow-active months",
-      value: `${snowMonths} / 12`,
-    });
-  }
-
-  const risks = Object.entries(place.risks)
-    .map(([k, v]) => ({ key: k, level: v.level, score: RISK_SCORE[v.level] ?? 0 }))
-    .sort((a, b) => b.score - a.score)
-    .filter(r => r.score >= 3)
-    .slice(0, 3)
-    .map(r => `${RISK_LABEL[r.key] ?? r.key} · ${r.level}`);
-
-  return { lines, topRisks: risks };
-}
-
-/**
- * Floating back-to-top button. Visible only after the user has scrolled
- * past ~480 px inside the detail panel. Scrolls the panel's overflow
- * container — not the page — because the panel is the actual scroll host.
- * Cheap: a single rAF-throttled scroll listener with no React state
- * churn beyond visibility toggling.
- */
-function BackToTopButton({ panelRef }: { panelRef: { current: HTMLElement | null } }) {
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = panelRef.current;
-    if (!el) return;
-    let ticking = false;
-    const update = () => {
-      ticking = false;
-      setVisible(el.scrollTop > 480);
-    };
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(update);
-    };
-    update();
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
-  }, [panelRef]);
-
-  const onClick = useCallback(() => {
-    const el = panelRef.current;
-    if (!el) return;
-    const behavior: ScrollBehavior =
-      typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-        ? "auto"
-        : "smooth";
-    el.scrollTo({ top: 0, behavior });
-  }, [panelRef]);
-
-  if (!visible) return null;
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className="tc-detail-back-to-top"
-      aria-label="Scroll to top of place profile"
-      title="Back to top"
-    >
-      <ArrowUp className="w-4 h-4" aria-hidden />
-    </button>
-  );
-}
-
-/**
- * Thin progress bar that fills as the user scrolls through the dossier.
- * Mutates the bar's transform via DOM directly to avoid re-rendering on
- * every scroll frame. Lives sticky at the very top edge of the panel so
- * it never competes with the dossier title for attention.
- */
-function ReadingProgressBar({ panelRef }: { panelRef: { current: HTMLElement | null } }) {
-  const barRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    const el = panelRef.current;
-    const bar = barRef.current;
-    if (!el || !bar) return;
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const max = el.scrollHeight - el.clientHeight;
-      const pct = max <= 0 ? 0 : Math.min(1, Math.max(0, el.scrollTop / max));
-      bar.style.transform = `scaleX(${pct})`;
-    };
-    const onScroll = () => {
-      if (raf) return;
-      raf = window.requestAnimationFrame(update);
-    };
-    update();
-    el.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      el.removeEventListener("scroll", onScroll);
-      if (raf) window.cancelAnimationFrame(raf);
-    };
-  }, [panelRef]);
-  return (
-    <div className="tc-detail-progress-track" aria-hidden="true">
-      <div ref={barRef} className="tc-detail-progress-fill" />
-    </div>
-  );
-}
