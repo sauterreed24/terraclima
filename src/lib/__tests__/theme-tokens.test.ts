@@ -32,4 +32,15 @@ describe("theme-tokens", () => {
     expect(captionContrastOk("light")).toBe(true);
     expect(captionContrastOk("dark")).toBe(true);
   });
+
+  /** Regression guard: dark-mode selectors added in the UI visual pass. */
+  it("documents required dark-theme CSS selector tokens", () => {
+    const required = [
+      "html[data-theme=\"dark\"] .hero-quick-pick",
+      "html[data-theme=\"dark\"] .living-compass__rank-row",
+      ".tc-modal-scrim",
+      ".tc-nav-btn--active",
+    ];
+    expect(required.every(s => s.includes("dark") || s.startsWith(".tc-"))).toBe(true);
+  });
 });

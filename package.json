@@ -17,6 +17,7 @@
     "test:watch": "vitest",
     "test:prose": "tsx scripts/test-prose.ts",
     "test:celsius": "tsx scripts/playtest-celsius.ts",
+    "playtest:polish": "tsx scripts/playtest-polish.ts",
     "check:metadata": "tsx scripts/check-site-metadata.ts",
     "check:performance-budget": "tsx scripts/check-performance-budget.ts",
     "audit:corpus": "tsx scripts/audit-corpus.ts",
@@ -25,7 +26,7 @@
     "dump:corpus-rank": "tsx scripts/dump-corpus-ranks.ts",
     "generate:og": "tsx scripts/generate-og-image.ts",
     "generate:icons": "tsx scripts/generate-icons.ts",
-    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run test:corpus-gold && npm run build && npm run check:performance-budget"
+    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run test:corpus-gold && npm run build && npm run check:performance-budget"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.13.24",

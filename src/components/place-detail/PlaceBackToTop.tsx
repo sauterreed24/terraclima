@@ -8,6 +8,7 @@
  */
 import { useCallback, useEffect, useState } from "react";
 import { ArrowUp } from "lucide-react";
+import { prefersReducedMotion } from "../../lib/device-profile";
 
 export function PlaceBackToTop({ panelRef }: { panelRef: { current: HTMLElement | null } }) {
   const [visible, setVisible] = useState(false);
@@ -33,10 +34,7 @@ export function PlaceBackToTop({ panelRef }: { panelRef: { current: HTMLElement 
   const onClick = useCallback(() => {
     const el = panelRef.current;
     if (!el) return;
-    const behavior: ScrollBehavior =
-      typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-        ? "auto"
-        : "smooth";
+    const behavior: ScrollBehavior = prefersReducedMotion() ? "auto" : "smooth";
     el.scrollTo({ top: 0, behavior });
   }, [panelRef]);
 

@@ -37,6 +37,14 @@ That includes type checking, ESLint, Vitest, prose tests, metadata consistency, 
 5. Treat climate statements as sourced editorial context, not live weather, parcel appraisal, or forecast claims.
 6. Keep UI changes dense, navigable, and inspection-oriented. This is an atlas/tool surface, not a marketing landing page.
 
+## Manual QA (UI / visual)
+
+After visual or map-pin changes, spot-check in the browser:
+
+- **Dark theme:** Explorer hero chips, shortlist rows, and place cards should not flash paper-white on `data-theme="dark"`.
+- **Reduced motion:** enable OS “reduce motion”; modals and map topo load should skip blur/long fades (`motionPolicy()` → `reduced` / `minimal`).
+- **Map:** one-finger pan, pinch zoom, cluster picker Escape + focus return, leader lines when pins spread.
+
 ## Inapplicable Research Items
 
 - PHP route wrappers and `includes/` partials.

@@ -9,7 +9,7 @@ import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useUnits } from "../lib/units";
 import { getCachedAtlasTopology, loadAtlasTopology, type AtlasTopology } from "../lib/atlas-map-topology";
-import { useRichVisualEffects } from "../lib/device-profile";
+import { motionPolicy, useRichVisualEffects } from "../lib/device-profile";
 import { fitMapViewToPoints } from "../lib/atlas-map-fit";
 import {
   endpointMarkerId,
@@ -212,6 +212,8 @@ export function AtlasMap({
   // still report >4 GB / >4 cores so the generic `useRichVisualEffects()`
   // probe leaves them on. We always keep gradients, halos, and tier glyphs.
   const richEffects = useRichVisualEffects() && !coarsePointer;
+  const topoFadeMs = motionPolicy() === "full" ? 420 : 0;
+  const borderFadeMs = motionPolicy() === "full" ? 520 : 0;
   const [touchMode, setTouchMode] = useState<AtlasTouchMode>(ATLAS_DEFAULT_TOUCH_MODE);
   const mapInteractive = resolveAtlasMapInteractive({ coarsePointer, touchMode });
   const [legendOpen, setLegendOpen] = useState(false);
@@ -1459,7 +1461,9 @@ export function AtlasMap({
             className="cartography"
             style={{
               opacity: topo ? 1 : 0,
-              transition: "opacity 420ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+              transition: topoFadeMs
+                ? `opacity ${topoFadeMs}ms cubic-bezier(0.2, 0.8, 0.2, 1)`
+                : "none",
             }}
           >
             {/* Distant countries — faint context silhouettes */}
@@ -1544,7 +1548,9 @@ export function AtlasMap({
           <g
             style={{
               opacity: topo ? 1 : 0,
-              transition: "opacity 520ms cubic-bezier(0.2, 0.8, 0.2, 1) 80ms",
+              transition: borderFadeMs
+                ? `opacity ${borderFadeMs}ms cubic-bezier(0.2, 0.8, 0.2, 1) 80ms`
+                : "none",
             }}
           >
             <path

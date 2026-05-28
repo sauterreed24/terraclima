@@ -1,7 +1,8 @@
 // @vitest-environment jsdom
 import { renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { prefersReducedMotion, useRichVisualEffects } from "../device-profile";
+import { motionPolicy, prefersReducedMotion, useRichVisualEffects } from "../device-profile";
+import { mockMotionProfile } from "../../test-helpers/motion";
 
 let originalMatchMedia: typeof window.matchMedia;
 
@@ -99,5 +100,17 @@ describe("useRichVisualEffects", () => {
     });
     const { result } = renderHook(() => useRichVisualEffects());
     expect(result.current).toBe(true);
+  });
+});
+
+describe("motionPolicy", () => {
+  it.each([
+    [{ reduced: true, richEffects: true }, "reduced"],
+    [{ reduced: false, saveData: true }, "minimal"],
+    [{ reduced: false, cores: 12, memoryGb: 16 }, "full"],
+  ] as const)("returns %s for profile %o", (profile, expected) => {
+    const restore = mockMotionProfile(profile);
+    expect(motionPolicy()).toBe(expected);
+    restore();
   });
 });

@@ -4,6 +4,16 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### UI & visual quality pass (deterministic stability)
+
+- **Semantic tokens (`src/lib/theme-tokens.ts` new, `src/styles.css`):** `--tc-surface-*`, `--tc-border-*`, `--tc-scrim`, `--tc-chip-*` custom properties remapped in dark mode; mirrored in TypeScript for Vitest.
+- **Dark depth:** nested hero chips, living-compass rank rows, place-card internals, FilterBar search, PlaceDetail header (`data-tone` gradients), `.btn-primary`, `.kbd`, filter dock, `.text-depth-hero`.
+- **Chrome:** `.tc-modal-scrim`, `.tc-nav-btn`, `.tc-header-help-btn`, theme-aware `ErrorBoundary` + `LogoMark`; CompareView mobile hint uses `ChevronRight`.
+- **PlaceCard:** `referenceMonth` override for tests, `.text-caption` utilities, `place-card__inset-panel`, stat tones via `data-tone` CSS.
+- **Shortlist export UI (`src/components/chrome/ShortlistExportMenu.tsx` new):** JSON / CSV / GeoJSON / ICS download on the pinned shortlist rail (`src/lib/download-blob.ts`).
+- **Motion (`src/lib/device-profile.ts`):** `motionPolicy()` gates AtlasMap topo fade durations; `PlaceBackToTop` uses `prefersReducedMotion()`; `src/test-helpers/motion.ts` for tests.
+- **Stability gate:** `npm run playtest:polish` in `quality:check`; SVG golden snapshots for `ClimateRibbon` + `MicroclimateFingerprint`; `dark-theme-css` regression test; dark-theme App shell smoke test.
+
 ### Maximum-effort polish pass (Phases 1–12)
 
 A single multi-commit pass shipped under one PR. Each phase below is its own commit; every commit individually passes `npm run quality:check`. Test coverage on the branch grew from 484 cases to 624 (+140 cases over ~20 new test files).

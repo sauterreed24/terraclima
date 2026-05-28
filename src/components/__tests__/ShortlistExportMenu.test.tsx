@@ -36,7 +36,7 @@ describe("ShortlistExportMenu", () => {
 
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
     fireEvent.click(screen.getByRole("button", { name: /Export/i }));
-    fireEvent.click(screen.getByRole("menuitem", { name: /JSON/i }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /^JSON/i }));
 
     expect(createObjectURL).toHaveBeenCalled();
     expect(click).toHaveBeenCalled();

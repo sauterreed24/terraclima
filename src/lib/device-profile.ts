@@ -6,9 +6,22 @@ import { useSyncExternalStore } from "react";
  * Used by the map (skip SVG blur / pulse) and the shell (`tc-low-power` on
  * `<html>` for cheaper ambient animation).
  */
+export type MotionPolicy = "full" | "reduced" | "minimal";
+
 export function prefersReducedMotion(): boolean {
   if (typeof window === "undefined" || typeof window.matchMedia !== "function") return false;
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/**
+ * Single motion tier for CSS transitions, map topo fades, and backdrop blur.
+ * `minimal` = reduced motion and/or low-power device profile.
+ */
+export function motionPolicy(): MotionPolicy {
+  if (typeof window === "undefined") return "full";
+  if (prefersReducedMotion()) return "reduced";
+  if (!getRichVisualEffects()) return "minimal";
+  return "full";
 }
 
 function getNavigatorConnection(): { saveData?: boolean; addEventListener?: (t: string, fn: () => void) => void; removeEventListener?: (t: string, fn: () => void) => void } | undefined {

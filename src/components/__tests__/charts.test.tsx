@@ -5,6 +5,7 @@ import { ClimateChangeDelta } from "../charts/ClimateChangeDelta";
 import { ClimateRibbon } from "../charts/ClimateRibbon";
 import { ComfortMatrix } from "../charts/ComfortMatrix";
 import { ContrastChart } from "../charts/ContrastChart";
+import { MicroclimateFingerprint } from "../charts/MicroclimateFingerprint";
 import { MiniClimateStrip } from "../charts/MiniClimateStrip";
 import { PrecipBars } from "../charts/PrecipBars";
 import { RiskProfile } from "../charts/RiskProfile";
@@ -31,6 +32,19 @@ describe("chart components — smoke", () => {
     // 12 high dots + 12 low dots.
     expect(container.querySelectorAll("circle").length).toBe(24);
     expect(svg?.getAttribute("aria-label")).toMatch(/Monthly high and low temperature/);
+  });
+
+  it("ClimateRibbon SVG structure is stable (golden)", () => {
+    const { container } = render(withUnits(<ClimateRibbon highs={HIGHS} lows={LOWS} />));
+    const svg = container.querySelector("svg");
+    expect(svg?.outerHTML).toMatchSnapshot();
+  });
+
+  it("MicroclimateFingerprint SVG structure is stable (golden)", () => {
+    const place = makePlace({ id: "golden-fingerprint" });
+    const { container } = render(withUnits(<MicroclimateFingerprint place={place} />));
+    const svg = container.querySelector("svg");
+    expect(svg?.outerHTML).toMatchSnapshot();
   });
 
   it("PrecipBars renders a bar per month and a Σ total callout", () => {
