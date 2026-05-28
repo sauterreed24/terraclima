@@ -102,6 +102,24 @@ describe("CompareView", () => {
     expect(onRemove).toHaveBeenCalledWith(PLACES[0].id);
   });
 
+  it("opens a place profile from the column title when onOpenPlace is provided", () => {
+    const onOpenPlace = vi.fn();
+    render(
+      <UnitProvider>
+        <CompareView
+          places={PLACES.slice(0, 2)}
+          open
+          onClose={() => undefined}
+          onRemove={() => undefined}
+          onOpenPlace={onOpenPlace}
+        />
+      </UnitProvider>,
+    );
+    const dialog = screen.getByRole("dialog", { name: "2 places side by side" });
+    fireEvent.click(within(dialog).getByRole("button", { name: `Open ${PLACES[0].name} profile` }));
+    expect(onOpenPlace).toHaveBeenCalledWith(PLACES[0].id);
+  });
+
   it("aligns live-here comparison scores with the active Live Finder filters", () => {
     renderCompare({
       liveFitFilters: {

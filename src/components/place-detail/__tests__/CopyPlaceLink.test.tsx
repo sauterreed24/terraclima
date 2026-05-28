@@ -4,6 +4,11 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { CopyPlaceLink } from "../CopyPlaceLink";
 
+vi.mock("../../../lib/share", async () => {
+  const { shareUrl } = await vi.importActual<typeof import("../../../lib/share")>("../../../lib/share");
+  return { shareUrl: vi.fn(shareUrl) };
+});
+
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
@@ -18,7 +23,7 @@ describe("CopyPlaceLink", () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     vi.stubGlobal("navigator", { clipboard: { writeText } });
 
-    render(<CopyPlaceLink placeId="sequim-wa" />);
+    render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
     fireEvent.click(screen.getByRole("button", { name: "Copy link to this place" }));
 
     await waitFor(() => {
@@ -33,7 +38,7 @@ describe("CopyPlaceLink", () => {
     vi.stubGlobal("navigator", {});
     document.execCommand = (() => false) as unknown as typeof document.execCommand;
 
-    render(<CopyPlaceLink placeId="sequim-wa" />);
+    render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
     fireEvent.click(screen.getByRole("button", { name: "Copy link to this place" }));
 
     await waitFor(() => {
@@ -46,7 +51,7 @@ describe("CopyPlaceLink", () => {
     const execCommand = vi.fn().mockReturnValue(true);
     document.execCommand = execCommand as unknown as typeof document.execCommand;
 
-    render(<CopyPlaceLink placeId="port-townsend-wa" />);
+    render(<CopyPlaceLink placeId="port-townsend-wa" placeName="Port Townsend" />);
     fireEvent.click(screen.getByRole("button", { name: "Copy link to this place" }));
 
     await waitFor(() => {
@@ -60,11 +65,9 @@ describe("CopyPlaceLink", () => {
     vi.stubGlobal("navigator", { clipboard: { writeText } });
     document.execCommand = (() => false) as unknown as typeof document.execCommand;
 
-    render(<CopyPlaceLink placeId="sequim-wa" />);
+    render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
 
-    expect(() => {
-      fireEvent.click(screen.getByRole("button", { name: "Copy link to this place" }));
-    }).not.toThrow();
+    fireEvent.click(screen.getByRole("button", { name: "Copy link to this place" }));
 
     await waitFor(() => {
       expect(screen.getByText("Copy failed")).toBeInTheDocument();

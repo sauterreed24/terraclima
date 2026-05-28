@@ -13,6 +13,7 @@ import {
   hasActiveExplorerFilters,
 } from "../src/lib/scoring";
 import { liveFitPresetsPoolPass } from "../src/lib/live-fit";
+import { isBundleActive, lifestyleBundleById } from "../src/lib/lifestyle-bundles";
 import {
   exportShortlistAsCSV,
   exportShortlistAsGeoJSON,
@@ -148,6 +149,41 @@ async function main(): Promise<void> {
   });
   for (const param of ["fit=", "sh=", "wl=", "grow=", "fire=", "risk=", "q="]) {
     if (clearedUrl.includes(param)) throw new Error(`cleared URL still has ${param}: ${clearedUrl}`);
+  }
+
+  const remoteWork = lifestyleBundleById("remote-work");
+  if (!remoteWork) throw new Error("remote-work lifestyle bundle missing");
+  const remoteUrl = formatAppRelativeUrl({
+    view: "explorer",
+    ranking: remoteWork.ranking,
+    fitPresets: [...remoteWork.presets],
+    maxSummerHighC: remoteWork.maxSummerHighC ?? null,
+    minWinterLowC: remoteWork.minWinterLowC ?? null,
+    minGrowability: remoteWork.minGrowability ?? null,
+    maxFireRisk: remoteWork.maxFireRisk ?? null,
+    maxOverallRisk: remoteWork.maxOverallRisk ?? null,
+    collectionExists: () => true,
+  });
+  if (!remoteUrl.includes("fit=cool-summers") || !remoteUrl.includes("low-fire-smoke")) {
+    throw new Error(`remote-work bundle URL missing fit presets: ${remoteUrl}`);
+  }
+  if (!remoteUrl.includes("sh=26")) {
+    throw new Error(`remote-work bundle URL missing summer cap: ${remoteUrl}`);
+  }
+  const remoteParsed = parseAppSearch(new URL(remoteUrl, "https://example.com").search, { validatePlaceId });
+  const remoteHydrated = filterStateFromValidated({
+    countries: remoteParsed.countries,
+    archetypes: remoteParsed.archetypes,
+    fitPresets: remoteParsed.fitPresets,
+    search: remoteParsed.search,
+    maxSummerHighC: remoteParsed.maxSummerHighC,
+    minWinterLowC: remoteParsed.minWinterLowC,
+    minGrowability: remoteParsed.minGrowability,
+    maxFireRisk: remoteParsed.maxFireRisk,
+    maxOverallRisk: remoteParsed.maxOverallRisk,
+  });
+  if (!isBundleActive(remoteWork, remoteWork.ranking, remoteHydrated)) {
+    throw new Error("remote-work URL round-trip did not hydrate an active bundle");
   }
 
   console.log("playtest-polish: OK");

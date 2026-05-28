@@ -15,6 +15,14 @@ import { COLLECTION_BY_ID } from "./data/collections";
 import { CLIMATE_TRIP_THEME_BY_ID } from "./data/climate-trip-themes";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
+import {
+  anyLifestyleBundleActive,
+  applyLifestyleBundle,
+  countLiveFinderConstraintSignals,
+  HERO_BUNDLE_BY_RANKING,
+  isBundleActive,
+  lifestyleBundleById,
+} from "./lib/lifestyle-bundles";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, rankPlaces, scoreLivability, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit, rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
@@ -433,6 +441,34 @@ export default function App() {
     return PLACES;
   }, [activeCollection]);
 
+  const applyHeroQuickPick = useCallback((profile: RankingProfile) => {
+    const bundleId = HERO_BUNDLE_BY_RANKING[profile];
+    if (bundleId) {
+      const bundle = lifestyleBundleById(bundleId);
+      if (bundle) {
+        applyLifestyleBundle(bundle, setRanking, setFilters);
+        return;
+      }
+    }
+    setRanking(profile);
+  }, [setRanking, setFilters]);
+
+  const isHeroQuickPickActive = useCallback((profile: RankingProfile) => {
+    const bundleId = HERO_BUNDLE_BY_RANKING[profile];
+    if (bundleId) {
+      const bundle = lifestyleBundleById(bundleId);
+      return bundle ? isBundleActive(bundle, ranking, filters) : ranking === profile;
+    }
+    return ranking === profile;
+  }, [ranking, filters]);
+
+  useEffect(() => {
+    if (anyLifestyleBundleActive(ranking, filters)) return;
+    if (countLiveFinderConstraintSignals(filters) > 0 && ranking !== "live-fit") {
+      setRanking("live-fit");
+    }
+  }, [filters, ranking, setRanking]);
+
   const deferredFilters = useDeferredValue(filters);
   const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
   const ranked = useMemo(
@@ -731,7 +767,8 @@ export default function App() {
                   recentIds={recentIds}
                   onToggleBookmark={toggleBookmark}
                   onClearRecents={clearRecents}
-                  onSetRanking={setRanking}
+                  onApplyQuickPick={applyHeroQuickPick}
+                  isQuickPickActive={isHeroQuickPickActive}
                   showDesktopScoutBoard={scoutBoardLg}
                 />
 
@@ -960,6 +997,10 @@ export default function App() {
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
+            onOpenPlace={id => {
+              closeCompare();
+              openPlace(id);
+            }}
             onCopyView={copyCurrentView}
             shareStatus={shareStatus}
             liveFitFilters={filters}
@@ -1356,7 +1397,8 @@ const HeroCard = memo(function HeroCard({
   recentIds,
   onToggleBookmark,
   onClearRecents,
-  onSetRanking,
+  onApplyQuickPick,
+  isQuickPickActive,
   showDesktopScoutBoard,
 }: {
   count: number;
@@ -1384,7 +1426,8 @@ const HeroCard = memo(function HeroCard({
   recentIds: readonly string[];
   onToggleBookmark: (id: string) => void;
   onClearRecents: () => void;
-  onSetRanking: (r: RankingProfile) => void;
+  onApplyQuickPick: (r: RankingProfile) => void;
+  isQuickPickActive: (r: RankingProfile) => boolean;
   showDesktopScoutBoard: boolean;
 }) {
   const prose = useProse();
@@ -1442,13 +1485,13 @@ const HeroCard = memo(function HeroCard({
           {/* Lifestyle quick-picks — instant one-click ranking presets */}
           {!active && (
             <div className="hero-quick-picks mt-3" role="group" aria-label="Quick ranking presets">
-              <QuickPick icon={CalendarDays} label="Best this month" onClick={() => onSetRanking("best-this-month")} active={ranking === "best-this-month"} />
-              <QuickPick icon={Sun} label="Comfort" onClick={() => onSetRanking("most-comfortable")} active={ranking === "most-comfortable"} />
-              <QuickPick icon={Laptop} label="Remote work" onClick={() => onSetRanking("best-for-remote-work")} active={ranking === "best-for-remote-work"} />
-              <QuickPick icon={Sunrise} label="Retirement" onClick={() => onSetRanking("best-retirement")} active={ranking === "best-retirement"} />
-              <QuickPick icon={Sprout} label="Garden life" onClick={() => onSetRanking("best-growability")} active={ranking === "best-growability"} />
-              <QuickPick icon={Snowflake} label="Snow country" onClick={() => onSetRanking("coolest-summers")} active={ranking === "coolest-summers"} />
-              <QuickPick icon={ShieldCheck} label="Low risk" onClick={() => onSetRanking("climate-resilient")} active={ranking === "climate-resilient"} />
+              <QuickPick icon={CalendarDays} label="Best this month" onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
+              <QuickPick icon={Sun} label="Comfort" onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
+              <QuickPick icon={Laptop} label="Remote work" onClick={() => onApplyQuickPick("best-for-remote-work")} active={isQuickPickActive("best-for-remote-work")} />
+              <QuickPick icon={Sunrise} label="Retirement" onClick={() => onApplyQuickPick("best-retirement")} active={isQuickPickActive("best-retirement")} />
+              <QuickPick icon={Sprout} label="Garden life" onClick={() => onApplyQuickPick("best-growability")} active={isQuickPickActive("best-growability")} />
+              <QuickPick icon={Snowflake} label="Snow country" onClick={() => onApplyQuickPick("coolest-summers")} active={isQuickPickActive("coolest-summers")} />
+              <QuickPick icon={ShieldCheck} label="Low risk" onClick={() => onApplyQuickPick("climate-resilient")} active={isQuickPickActive("climate-resilient")} />
             </div>
           )}
         </div>
@@ -1496,6 +1539,7 @@ const HeroCard = memo(function HeroCard({
       {signatureLeaders.length > 0 ? (
         <LivingCompassWorkbench
           rows={signatureLeaders}
+          ranking={ranking}
           rankingLabel={rankingLabel}
           filters={filters}
           scoutBrief={scoutBrief}
@@ -1632,12 +1676,14 @@ function scoreTone(score: number): "great" | "good" | "mixed" | "hard" {
 
 const LivingCompassWorkbench = memo(function LivingCompassWorkbench({
   rows,
+  ranking,
   rankingLabel,
   filters,
   scoutBrief,
   onOpenPlace,
 }: {
   rows: SignatureLeader[];
+  ranking: RankingProfile;
   rankingLabel: string;
   filters: FilterState;
   scoutBrief: ExplorerScoutBrief | null;
@@ -1681,6 +1727,11 @@ const LivingCompassWorkbench = memo(function LivingCompassWorkbench({
       style={{ ["--signature-rgb" as string]: leaderSignature.mapAccentRgb }}
       aria-labelledby="living-compass-title"
     >
+      <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {ranking === "live-fit"
+          ? `Live-fit leader: ${leader.place.name}, score ${leaderLiveFit.score} out of 100.`
+          : `Top match for ${rankingLabel}: ${leader.place.name}, ranking score ${Math.round(leader.score)}.`}
+      </p>
       <div className="living-compass__leader">
         <div className="living-compass__leader-copy">
           <div id="living-compass-title" className="living-compass__eyebrow">Would I live here?</div>

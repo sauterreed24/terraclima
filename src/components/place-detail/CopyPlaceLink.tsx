@@ -1,12 +1,12 @@
 import { Link2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { writeClipboardText } from "../../lib/clipboard";
+import { shareUrl } from "../../lib/share";
 
 type CopyStatus = "idle" | "copied" | "failed";
 
 const RESET_MS = 2000;
 
-export function CopyPlaceLink({ placeId }: { placeId: string }) {
+export function CopyPlaceLink({ placeId, placeName }: { placeId: string; placeName: string }) {
   const [status, setStatus] = useState<CopyStatus>("idle");
   const resetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -21,16 +21,24 @@ export function CopyPlaceLink({ placeId }: { placeId: string }) {
   const onCopy = useCallback(async () => {
     const u = new URL(window.location.href);
     u.searchParams.set("p", placeId);
-    const ok = await writeClipboardText(u.toString());
+    const hash = window.location.hash;
+    if (hash.startsWith("#deep-")) {
+      u.hash = hash;
+    }
+    const outcome = await shareUrl({
+      url: u.toString(),
+      title: placeName,
+      text: `Terraclima — ${placeName}`,
+    });
     if (resetTimerRef.current != null) {
       clearTimeout(resetTimerRef.current);
     }
-    setStatus(ok ? "copied" : "failed");
+    setStatus(outcome === "failed" ? "failed" : "copied");
     resetTimerRef.current = setTimeout(() => {
       setStatus("idle");
       resetTimerRef.current = null;
     }, RESET_MS);
-  }, [placeId]);
+  }, [placeId, placeName]);
 
   const label =
     status === "copied" ? "Copied" : status === "failed" ? "Copy failed" : "Copy link";
@@ -40,7 +48,7 @@ export function CopyPlaceLink({ placeId }: { placeId: string }) {
       type="button"
       onClick={() => void onCopy()}
       className="btn-ghost !text-xs"
-      title="Copy URL to this place"
+      title="Copy or share URL to this place"
       aria-label={
         status === "copied"
           ? "Copied link to this place"

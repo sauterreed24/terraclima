@@ -35,6 +35,14 @@ That includes type checking, ESLint, Vitest, prose tests, metadata consistency, 
 - **`hasActiveExplorerFilters()`** / **`countActiveExplorerFilterSignals()`** are the single source for “filters active” in FilterBar and the mobile filter sheet badge.
 - **`npm run playtest:polish`** asserts filter clear restores the full corpus and omits stale live-fit URL params after clear.
 
+## Explorer symbiosis (2026-05)
+
+- **Lifestyle bundles:** [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyle-bundles.ts) — hero quick-picks and FilterBar dock share `applyLifestyleBundle()`; auto **`live-fit`** ranking when constraints are active without a full bundle match.
+- **Map ↔ list:** `AtlasMap` pans to the selected pin via `fitMapViewToPoints` (respects `motionPolicy()`); `VirtualPlaceGrid` scrolls the selected card into view (debounced `scrollToIndex`).
+- **Compare → profile:** Compare column titles and highlight strips call `onOpenPlace`; App closes compare then opens the dossier (focus return matches place-detail pattern).
+- **Share depth:** `CopyPlaceLink` uses `shareUrl()` and preserves `#deep-…` dossier section hashes when copying from a scrolled profile.
+- **Corpus:** 28 fog-belt / cool-summer-maritime places now ship station-sourced `climate.humidity` (sanity WARNs cleared).
+
 ## Improvement Priorities
 
 1. Keep the atlas URL model stable. Changes to `src/lib/app-url.ts` should update `docs/URL-INVARIANTS.md` and tests.
@@ -53,6 +61,8 @@ After visual or map-pin changes, spot-check in the browser:
 - **Motion tier:** `document.documentElement.dataset.motion` follows `motionPolicy()` (`full` / `minimal` / `reduced`). With OS reduce motion on, view cross-fade and drawer spring should calm or disable while layout stays usable.
 - **Reduced motion:** enable OS “reduce motion”; modals and map topo load should skip blur/long fades (`motionPolicy()` → `reduced` / `minimal`).
 - **Map:** one-finger pan, pinch zoom, cluster picker Escape + focus return, leader lines when pins spread.
+- **Map ↔ list sync:** select a pin or card — map view should center the pin; virtual grid should scroll the matching card into view (reduced motion: no animated fly).
+- **Lifestyle bundle:** hero Remote Work and dock Remote Work should produce the same URL (`fit=cool-summers,low-fire-smoke`, `sh=26`, ranking `best-for-remote-work`).
 
 ## Inapplicable Research Items
 
