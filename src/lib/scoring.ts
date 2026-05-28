@@ -412,6 +412,21 @@ export interface ValidatedFilterInput {
   maxOverallRisk?: RiskLevel | null;
 }
 
+/** Serialize a live `FilterState` back to the validated array shape (worker transport). */
+export function toValidatedFilterInput(f: FilterState): ValidatedFilterInput {
+  return {
+    countries: [...f.countries],
+    archetypes: [...f.archetypes],
+    fitPresets: [...(f.fitPresets ?? [])],
+    search: f.search ?? "",
+    maxSummerHighC: f.maxSummerHighC ?? null,
+    minWinterLowC: f.minWinterLowC ?? null,
+    minGrowability: f.minGrowability ?? null,
+    maxFireRisk: f.maxFireRisk ?? null,
+    maxOverallRisk: f.maxOverallRisk ?? null,
+  };
+}
+
 /** Build explorer filter state from validated URL/search fields without stale optional keys. */
 export function filterStateFromValidated(v: ValidatedFilterInput): FilterState {
   const state: FilterState = {

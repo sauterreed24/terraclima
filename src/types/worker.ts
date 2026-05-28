@@ -32,6 +32,8 @@ export interface ScenarioRankRequest {
   ranking: RankingProfile;
   /** URL-validated filter fields (JSON-serializable; no `Set`s). */
   filters: ValidatedFilterInput;
+  /** Restrict ranking to these place ids (curated collection view). */
+  poolIds?: readonly string[];
   /** Optional month override for deterministic "best-this-month" tests. */
   nowEpochMs?: number;
 }
