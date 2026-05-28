@@ -4,7 +4,7 @@
  */
 export function LogoMark() {
   return (
-    <svg viewBox="0 0 64 64" width="36" height="36">
+    <svg className="tc-logo-mark" viewBox="0 0 64 64" width="36" height="36" aria-hidden>
       <defs>
         <radialGradient id="logoGlow" cx="50%" cy="35%" r="60%">
           <stop offset="0" stopColor="#fffdf8" />

@@ -11,7 +11,7 @@ import { scoreLivability, feltComfortScore, livedFrictionScore } from "../lib/li
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
-import { Link2, X } from "lucide-react";
+import { ChevronRight, Link2, X } from "lucide-react";
 
 type CompareShareStatus = "idle" | "copied" | "failed";
 
@@ -127,7 +127,7 @@ export function CompareView({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.18 }}
-            className="fixed inset-0 z-50 bg-[rgba(62,38,24,0.35)] backdrop-blur-md"
+            className="tc-modal-scrim fixed inset-0 z-50"
             onClick={onClose}
             aria-hidden="true"
           />
@@ -212,9 +212,17 @@ export function CompareView({
               </div>
             ) : null}
 
-            <div className="text-[11px] text-stone-readable lg:hidden mb-2">
-              {isSinglePlace ? "Add a second place to unlock the comparison lane." : `Swipe sideways to compare -> (${placeCount})`}
-            </div>
+            <p className="text-caption text-stone-readable lg:hidden mb-2 flex items-center gap-1">
+              {isSinglePlace ? (
+                "Add a second place to unlock the comparison lane."
+              ) : (
+                <>
+                  <span>Swipe sideways to compare</span>
+                  <ChevronRight className="w-3 h-3 shrink-0 opacity-70" aria-hidden />
+                  <span className="font-mono-num">({placeCount})</span>
+                </>
+              )}
+            </p>
             <div className="overflow-x-auto pb-3 -mx-1 px-1 snap-x snap-mandatory scroll-smooth" aria-label="Scrollable comparison columns" style={{ touchAction: "pan-x pan-y" }}>
               <div className="grid gap-4 min-w-full snap-mandatory" style={{ gridTemplateColumns: columnTemplate }}>
               {places.map(p => {

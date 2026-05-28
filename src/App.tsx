@@ -693,7 +693,7 @@ export default function App() {
       <div ref={appShellRef} data-app-shell className="relative z-10 flex flex-col flex-1 min-h-0">
         <a
           href="#main-content"
-          className="skip-to-main focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,143,168,0.55)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#fffefb]"
+          className="skip-to-main focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,143,168,0.55)] focus-visible:ring-offset-2"
         >
           Skip to main content
         </a>
@@ -793,7 +793,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={openShortcutsHelp}
-                      className={`inline-flex items-center gap-1 text-xs text-frost rounded-md border border-[rgba(180,160,140,0.45)] bg-white/85 px-2 py-1 hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[rgba(26,143,168,0.55)] ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
+                      className={`tc-header-help-btn focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[rgba(26,143,168,0.55)] ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
                       aria-label="Show keyboard shortcuts"
                     >
                       <HelpCircle className="w-3.5 h-3.5" aria-hidden /> Shortcuts
@@ -802,7 +802,7 @@ export default function App() {
                   <button
                     type="button"
                     onClick={openShortcutsHelp}
-                    className={`md:hidden inline-flex items-center gap-1 text-xs text-frost rounded-md border border-[rgba(180,160,140,0.45)] bg-white/85 px-2 py-1.5 min-h-[44px] ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
+                    className={`md:hidden tc-header-help-btn tc-header-help-btn--touch ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
                     aria-label="Show keyboard shortcuts and tips"
                   >
                     <HelpCircle className="w-3.5 h-3.5" aria-hidden /> Tips
@@ -1222,17 +1222,7 @@ const NavBtn = memo(function NavBtn({
       type="button"
       onClick={onClick}
       aria-current={active ? "page" : undefined}
-      className={`inline-flex items-center gap-1.5 rounded-lg transition-all duration-200 ${
-        stretch
-          ? "w-full justify-center min-h-[2.75rem] px-3 py-2.5 text-sm"
-          : "gap-1.5 px-3 py-2 text-xs min-h-[2.25rem]"
-      } ${
-        active
-          ? "text-ice bg-[rgba(94,196,220,0.18)] shadow-[inset_0_-2px_0_0_rgba(26,143,168,0.85)] ring-1 ring-[rgba(26,143,168,0.22)]"
-          : stretch
-            ? "text-stone border border-[rgba(180,150,120,0.42)] hover:text-frost hover:bg-[rgba(255,248,236,0.95)]"
-            : "text-stone border border-transparent hover:text-frost hover:bg-[rgba(255,248,236,0.95)]"
-      }`}
+      className={`tc-nav-btn${stretch ? " tc-nav-btn--stretch" : ""}${active ? " tc-nav-btn--active" : ""}`}
     >
       {icon} {label}
     </button>

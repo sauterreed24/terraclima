@@ -13,6 +13,8 @@ describe("dark theme CSS coverage", () => {
     "html[data-theme=\"dark\"] .lifestyle-bundle-btn",
     "html[data-theme=\"dark\"] .text-depth-hero",
     "html[data-theme=\"dark\"] .tc-filter-search-field",
+    ".tc-modal-scrim",
+    ".tc-nav-btn--active",
   ];
 
   it.each(selectors)("stylesheet defines %s", (sel) => {

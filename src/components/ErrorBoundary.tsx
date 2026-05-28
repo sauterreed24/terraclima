@@ -28,19 +28,14 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.err) {
       return (
-        <div
-          role="alert"
-          className="min-h-screen flex flex-col items-center justify-center p-6 text-center"
-          style={{ background: "#faf5ed", color: "#3d342c" }}
-        >
-          <p className="font-atlas text-lg mb-2">Something went wrong</p>
-          <p className="text-sm opacity-80 mb-4 max-w-md">
+        <div role="alert" className="tc-error-boundary">
+          <p className="font-atlas text-lg mb-2 text-ice">Something went wrong</p>
+          <p className="text-sm text-stone mb-4 max-w-md">
             The atlas hit an unexpected error. You can reload the page — your last unit preference is stored in the browser.
           </p>
           <button
             type="button"
-            className="rounded-lg px-4 py-2 text-sm font-medium"
-            style={{ background: "linear-gradient(180deg,#4dd8f5 0%,#0ea5c9 100%)", color: "#061018" }}
+            className="tc-error-boundary__btn"
             // Recovery UI: focus must land on the only actionable control immediately.
             // eslint-disable-next-line jsx-a11y/no-autofocus -- intentional error-recovery affordance
             autoFocus

@@ -21,12 +21,7 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
     <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 anim-fade-in">
       <button
         type="button"
-        className="absolute inset-0 z-0 cursor-default border-0 p-0"
-        style={{
-          background: "rgba(62, 38, 24, 0.22)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-        }}
+        className="tc-modal-scrim absolute inset-0 z-0 cursor-default border-0 p-0"
         aria-label="Close keyboard shortcuts"
         onClick={onClose}
       />

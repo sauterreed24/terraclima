@@ -245,7 +245,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.18 }}
-            className="fixed inset-0 z-30 bg-[rgba(62,38,24,0.28)] backdrop-blur-[3px]"
+            className="tc-modal-scrim fixed inset-0 z-30"
             onClick={onClose}
             aria-hidden="true"
           />
