@@ -4,6 +4,13 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Playtest hardening and debug fixes
+
+- **BookmarkButton test:** propagation test uses a `div` wrapper (matches production sibling layout; removes nested-button Vitest stderr).
+- **PlaceCard test:** asserts bookmark chip is not inside `.place-card__open-target`.
+- **Corpus:** `humidity` on Bar Harbor + Highlands; `liveSignals` on Highlands and Xalapa (clears top-20 remote-work sanity gaps).
+- **`playtest:polish`:** empty/active filter signals, `liveFitPresetsPoolPass` anchors (Sequim vs Death Valley).
+
 ### Corpus, contract, and deterministic stability
 
 - **Filter contract (ported from `593ab79` onto current `main`):** `filterStateFromValidated()`, `hasActiveExplorerFilters()`, `countActiveExplorerFilterSignals()` in `src/lib/scoring.ts`; shared URL hydration in `App`; Lens Receipt **Clear all**; extended `playtest:polish` (polluted filters, empty pool, cleared Live Finder URL params, `data-motion` smoke).

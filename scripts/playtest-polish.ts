@@ -7,9 +7,12 @@ import { parseAppSearch, formatAppRelativeUrl } from "../src/lib/app-url";
 import { PLACES } from "../src/data/places";
 import {
   applyFilters,
+  countActiveExplorerFilterSignals,
   createEmptyFilterState,
   filterStateFromValidated,
+  hasActiveExplorerFilters,
 } from "../src/lib/scoring";
+import { liveFitPresetsPoolPass } from "../src/lib/live-fit";
 import {
   exportShortlistAsCSV,
   exportShortlistAsGeoJSON,
@@ -98,6 +101,35 @@ async function main(): Promise<void> {
   }
   if (applyFilters(PLACES, createEmptyFilterState()).length !== PLACES.length) {
     throw new Error("empty filters should restore full corpus");
+  }
+
+  const empty = createEmptyFilterState();
+  if (hasActiveExplorerFilters(empty) || countActiveExplorerFilterSignals(empty) !== 0) {
+    throw new Error("createEmptyFilterState should have zero active signals");
+  }
+  const active = filterStateFromValidated({
+    countries: ["USA"],
+    archetypes: [],
+    fitPresets: ["cool-summers"],
+    search: "sequim",
+    maxSummerHighC: 24,
+    minWinterLowC: null,
+    minGrowability: null,
+    maxFireRisk: null,
+    maxOverallRisk: null,
+  });
+  if (!hasActiveExplorerFilters(active) || countActiveExplorerFilterSignals(active) < 3) {
+    throw new Error("active filter state should register multiple explorer signals");
+  }
+
+  const coolSummerPlace = PLACES.find((p) => p.id === "sequim-wa");
+  const hotSummerPlace = PLACES.find((p) => p.id === "death-valley-ca");
+  if (!coolSummerPlace || !hotSummerPlace) throw new Error("anchor places missing for preset pool pass");
+  if (!liveFitPresetsPoolPass(coolSummerPlace, new Set(["cool-summers"]))) {
+    throw new Error("Sequim should pass cool-summers preset pool");
+  }
+  if (liveFitPresetsPoolPass(hotSummerPlace, new Set(["cool-summers"]))) {
+    throw new Error("Death Valley should fail cool-summers preset pool");
   }
 
   const clearedUrl = formatAppRelativeUrl({
