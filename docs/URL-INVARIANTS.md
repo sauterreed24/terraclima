@@ -14,6 +14,7 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 | `q` | Search string | Trimmed for round-trip |
 | `cmp` | Compare set, comma-separated place ids | Only known ids; **max 4** (`COMPARE_LIMIT`) |
 | `theme` | Color theme override: `light`, `dark` | `auto` (the implicit default) is never written; unknown values dropped |
+| `scn` | Climate-scenario layer: `ssp245`, `ssp585` | `now` (the implicit default) is never written; unknown values dropped |
 
 ## Live Finder parameters (Explorer filters)
 
@@ -37,6 +38,15 @@ Six curated bundles live in [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyl
 **Auto live-fit sort:** When Live Finder constraints are active (any preset or numeric/risk cap) but no lifestyle bundle is fully active and **`r`** is not `live-fit`, Explorer switches ranking to **`live-fit`** so the list sorts with `rankLiveFit()`. Lens Receipt may note when display ranking and live-fit sort diverge.
 
 **Lens Receipt chips:** Each active explorer signal renders as a dismissible chip; removing one field uses a functional `setFilters` update (search, country, archetype, presets, and caps are independent).
+
+## Climate scenario layer (`scn`)
+
+The "2050 time machine" ([`src/lib/climate-projection.ts`](../src/lib/climate-projection.ts)) reshapes the whole Explorer — ranking, map, cards, compass, analogs — by morphing the authored 1991–2020 normals with a mid-century CMIP6 anomaly.
+
+- `scn=ssp245` (SSP2-4.5 "middle of the road") and `scn=ssp585` (SSP5-8.5 "high emissions"); `now` is the default and is never written.
+- The projection is an **illustrative coarse regional anomaly** (sourced country + latitude-band table; IPCC AR6 Atlas / NASA NEX-GDDP-CMIP6), not a downscaled per-site forecast. A place may carry an authored, cited `Place.projection` override.
+- The place **dossier still shows present-day normals**; only the Explorer aggregate views project.
+- Ranking under a scenario flows through the climate-processor worker subsystem ([`src/hooks/use-climate-processor.ts`](../src/hooks/use-climate-processor.ts)); a synchronous fallback keeps the result identical when no worker is available.
 
 ## Formatting rules
 

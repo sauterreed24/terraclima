@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Monthly12 } from "../../types";
 import {
+  apparentComfortIndex,
   buildComfortPrecisionProfile,
   dewPointC,
   heatIndexC,
@@ -112,5 +113,55 @@ describe("comfort precision", () => {
     expect(profile.months).toHaveLength(12);
     expect(profile.peakMonth.humidityPct).toBeNull();
     expect(profile.annualUsableMonths).toBeGreaterThan(0);
+  });
+});
+
+describe("apparent comfort index (UTCI-style proxy)", () => {
+  it("flags humid heat as higher strain and lower comfort than dry heat", () => {
+    const hotHumid = makePlace({
+      climate: makeClimate({
+        tempHighC: month(34), tempLowC: month(26), humidity: month(80),
+        precipMm: month(80), snowCm: month(0),
+      }),
+    });
+    const hotDry = makePlace({
+      climate: makeClimate({
+        tempHighC: month(34), tempLowC: month(18), humidity: month(20),
+        precipMm: month(20), snowCm: month(0), diurnalSummerC: 16,
+      }),
+    });
+
+    const humid = apparentComfortIndex(hotHumid);
+    const dry = apparentComfortIndex(hotDry);
+
+    expect(humid.warmSeasonApparentHighC).toBeGreaterThan(dry.warmSeasonApparentHighC);
+    expect(humid.score).toBeLessThan(dry.score);
+    expect(["strong", "very-strong"]).toContain(humid.band);
+  });
+
+  it("labels a cool-summer maritime place as low strain, not heat strain", () => {
+    const cool = makePlace({
+      climate: makeClimate({
+        tempHighC: month(16), tempLowC: month(9), humidity: month(80),
+        precipMm: month(120), snowCm: month(0),
+      }),
+    });
+    const idx = apparentComfortIndex(cool);
+    expect(["no-strain", "slight"]).toContain(idx.band);
+    expect(idx.score).toBeGreaterThan(70);
+  });
+
+  it("peak apparent high is at least the warm-season mean and output is deterministic", () => {
+    const p = makePlace();
+    const a = apparentComfortIndex(p);
+    const b = apparentComfortIndex(p);
+    expect(a).toEqual(b);
+    expect(a.peakApparentHighC).toBeGreaterThanOrEqual(a.warmSeasonApparentHighC);
+  });
+
+  it("keeps an explicit no-wind / no-radiant honesty caption", () => {
+    const idx = apparentComfortIndex(makePlace());
+    expect(idx.methodNote.toLowerCase()).toContain("wind");
+    expect(idx.methodNote.toLowerCase()).toContain("not a true utci");
   });
 });

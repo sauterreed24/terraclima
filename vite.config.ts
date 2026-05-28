@@ -57,6 +57,19 @@ export default defineConfig({
   server: {
     port: 5173,
     host: true,
+    // Vite 8: forward browser + Web Worker runtime errors and warnings to the
+    // dev-server terminal. Makes climate-processor.worker failures and type
+    // mismatches visible in the CLI (and to coding agents that can't open
+    // DevTools) instead of only in the browser console. Dev-only; no effect on
+    // the production build or `quality:check`.
+    forwardConsole: {
+      unhandledErrors: true,
+      logLevels: ["error", "warn"],
+    },
+    // NB: `resolve.tsconfigPaths` (also new in Vite 8) is intentionally NOT
+    // enabled — this repo uses relative imports with no `compilerOptions.paths`
+    // map, so it would be a no-op. Add it together with a `@/*` alias if path
+    // aliases are introduced later.
     warmup: {
       clientFiles: [
         "./src/main.tsx",

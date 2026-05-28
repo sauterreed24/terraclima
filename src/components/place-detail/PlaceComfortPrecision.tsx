@@ -9,6 +9,7 @@
  */
 import { Thermometer } from "lucide-react";
 import type { ComfortPrecisionMonth, ComfortPrecisionProfile } from "../../lib/comfort-precision";
+import { apparentComfortIndexFromProfile } from "../../lib/comfort-precision";
 import { fmtDelta, fmtTemp, useUnits, type TempUnit } from "../../lib/units";
 import { Section } from "./place-detail-ui";
 import { PD } from "./place-detail-nav";
@@ -38,6 +39,7 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
   const { temp } = useUnits();
   const peak = profile.peakMonth;
   const sleep = profile.sleepRecoveryMonth;
+  const utci = apparentComfortIndexFromProfile(profile);
   const confidenceTone =
     profile.confidence === "high" ? "sage" : profile.confidence === "medium" ? "ochre" : "ember";
   const cards = [
@@ -66,6 +68,12 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
       value: `${Math.round(sleep.sleepRecoveryScore)}/100`,
       note: `${sleep.label}: low ${precisionTemp(sleep.lowC, temp)} with ${fmtDelta(sleep.highC - sleep.lowC, temp, { signed: false })} day-night spread.`,
       tone: "aurora",
+    },
+    {
+      label: "Thermal strain (UTCI*)",
+      value: `${utci.score}/100`,
+      note: `${utci.bandLabel}; feels-like JJA ${precisionTemp(utci.warmSeasonApparentHighC, temp)}. *approximation — no wind/radiant inputs.`,
+      tone: "ochre",
     },
   ] as const;
 
@@ -131,6 +139,7 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
         </div>
 
         <p className="comfort-precision-panel__method">{profile.methodNote}</p>
+        <p className="comfort-precision-panel__method">{utci.methodNote}</p>
       </div>
     </Section>
   );

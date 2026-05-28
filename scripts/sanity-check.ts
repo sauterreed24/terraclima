@@ -454,6 +454,36 @@ for (const profile of ["best-for-remote-work", "best-retirement"] as const) {
   }
 }
 
+// --- Climate-projection override integrity (authored Place.projection) ---
+// The default projection is a coarse SOURCED regional table in code; only
+// authored per-place overrides live in the corpus, so validate those here.
+// Plausibility bounds keep a typo from morphing a place into an absurd 2050.
+function checkProjectionDelta(id: string, scen: string, d: { deltaJJAHighC: number; deltaJANLowC: number; deltaPrecipPct: number }): void {
+  const checks: Array<[string, number, number, number]> = [
+    ["deltaJJAHighC", d.deltaJJAHighC, -2, 12],
+    ["deltaJANLowC", d.deltaJANLowC, -2, 12],
+    ["deltaPrecipPct", d.deltaPrecipPct, -60, 80],
+  ];
+  for (const [k, v, lo, hi] of checks) {
+    if (typeof v !== "number" || !Number.isFinite(v)) {
+      report(id, "ERROR", `projection ${scen}.${k} is not a finite number`);
+      continue;
+    }
+    if (v < lo || v > hi) {
+      report(id, "ERROR", `projection ${scen}.${k}=${v} outside plausible ${lo}..${hi}`);
+    }
+  }
+}
+for (const p of PLACES) {
+  const proj = p.projection;
+  if (!proj) continue;
+  if (proj.ssp245) checkProjectionDelta(p.id, "ssp245", proj.ssp245);
+  if (proj.ssp585) checkProjectionDelta(p.id, "ssp585", proj.ssp585);
+  if (proj.ssp245 && proj.ssp585 && proj.ssp585.deltaJJAHighC + 1e-9 < proj.ssp245.deltaJJAHighC) {
+    report(p.id, "WARN", "projection ssp585 summer warming below ssp245 (check pathway ordering)");
+  }
+}
+
 // --- Atlas-wide corpus invariants (percentile arrays) ---
 try {
   assertAtlasCorpusHealthy();

@@ -23,8 +23,11 @@ import {
   isBundleActive,
   lifestyleBundleById,
 } from "./lib/lifestyle-bundles";
-import { applyFilters, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, rankPlaces, scoreLivability, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
-import { assessLiveFit, rankLiveFit } from "./lib/live-fit";
+import { applyFilters, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { assessLiveFit } from "./lib/live-fit";
+import { projectPool } from "./lib/climate-projection";
+import { useClimateProcessor } from "./hooks/use-climate-processor";
+import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-visual-signature";
@@ -72,7 +75,7 @@ import {
   replaceAppUrl,
   validatedStateFromSearch,
 } from "./lib/app-url";
-import type { Country, MicroclimateArchetype, Place } from "./types";
+import type { Country, MicroclimateArchetype, Place, ScenarioId } from "./types";
 import {
   applyTheme,
   persistThemePreference,
@@ -199,6 +202,7 @@ export default function App() {
   const [activeCollection, setActiveCollection] = useState<string | null>(initialAppState.collectionId);
   const [filters, setFilters] = useState<FilterState>(() => filterStateFromValidated(initialAppState));
   const [ranking, setRankingRaw] = useState<RankingProfile>(() => initialAppState.ranking ?? loadPersistedRanking());
+  const [climateScenario, setClimateScenario] = useState<ScenarioId>(() => initialAppState.scenario ?? "now");
   const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
   // Theme preference (auto/light/dark). URL ?theme=... wins on first paint;
@@ -336,6 +340,7 @@ export default function App() {
       temp,
       dist,
       theme: themePreference === "auto" ? null : themePreference,
+      scenario: climateScenario === "now" ? null : climateScenario,
       collectionExists: (id: string) => Boolean(CURATED_SET_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
       placeExists: (id: string) => resolvePlaceId(id) != null,
@@ -370,7 +375,7 @@ export default function App() {
       replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist, themePreference]);
+  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist, themePreference, climateScenario]);
 
   useEffect(() => {
     const onPop = () => {
@@ -387,6 +392,7 @@ export default function App() {
       setFilters(filterStateFromValidated(v));
       setCompareIds(new Set(v.compareIds));
       setRankingRaw(v.ranking ?? loadPersistedRanking());
+      setClimateScenario(v.scenario ?? "now");
       // Units are a sticky global preference persisted by the UnitProvider.
       // Only honour an explicit unit param on the target entry — otherwise
       // Back/Forward to an entry created before a toggle (no temp/dist param)
@@ -433,13 +439,18 @@ export default function App() {
 
   const [showShortcuts, setShowShortcuts] = useState(false);
 
-  const pool = useMemo(() => {
+  const baselinePool = useMemo(() => {
     if (activeCollection) {
       const c = CURATED_SET_BY_ID[activeCollection];
       if (c) return c.placeIds.map(placeForId).filter(isPlace);
     }
     return PLACES;
   }, [activeCollection]);
+  // The active climate-scenario layer reshapes the entire Explorer: ranking,
+  // map, cards, compass, and analogs all run against the projected pool. `now`
+  // returns the baseline pool unchanged (identity), so default behavior and the
+  // bioclim/analog identity caches are untouched.
+  const pool = useMemo(() => projectPool(baselinePool, climateScenario), [baselinePool, climateScenario]);
 
   const applyHeroQuickPick = useCallback((profile: RankingProfile) => {
     const bundleId = HERO_BUNDLE_BY_RANKING[profile];
@@ -471,10 +482,41 @@ export default function App() {
 
   const deferredFilters = useDeferredValue(filters);
   const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
-  const ranked = useMemo(
-    () => ranking === "live-fit" ? rankLiveFit(filtered, deferredFilters) : rankPlaces(ranking, filtered),
-    [ranking, filtered, deferredFilters],
+
+  // Scenario-aware ranking runs through the climate-processor worker subsystem
+  // (with a synchronous fallback). Both paths call the same pure orchestrator,
+  // so the result is identical whether it lands on the worker or the main
+  // thread; `rows` are mapped back onto the projected pool for display.
+  const validatedFilters = useMemo(() => toValidatedFilterInput(deferredFilters), [deferredFilters]);
+  const scenarioPoolIds = useMemo(
+    () => activeCollection ? baselinePool.map(p => p.id) : undefined,
+    [activeCollection, baselinePool],
   );
+  const processor = useClimateProcessor({
+    scenario: climateScenario,
+    ranking,
+    filters: validatedFilters,
+    poolIds: scenarioPoolIds,
+    // Present-day is the default view; only spin up the (corpus-carrying)
+    // worker once the user engages a future-climate layer.
+    disableWorker: climateScenario === "now",
+  });
+  // NB: `Map` is shadowed by the lucide-react `Map` icon imported above, so a
+  // plain record is used to index the projected pool by id.
+  const placesById = useMemo(() => {
+    const rec: Record<string, Place> = {};
+    for (const p of pool) rec[p.id] = p;
+    return rec;
+  }, [pool]);
+  const ranked = useMemo<RankingResult[]>(() => {
+    const out: RankingResult[] = [];
+    for (const row of processor.rows) {
+      const place = placesById[row.id];
+      if (!place) continue;
+      out.push(row.note != null ? { place, score: row.score, note: row.note } : { place, score: row.score });
+    }
+    return out;
+  }, [processor.rows, placesById]);
   // The hero top-ten is decorative (lives below the map + cards). Defer it
   // so React can drop a stale render and let the higher-value updates above
   // commit first when the user is rapidly changing filters.
@@ -802,6 +844,12 @@ export default function App() {
                     <p>Scores are screening signals. Confidence notes, citations, and geospatial methods stay visible so readers and agents can audit the trail.</p>
                   </div>
                 </section>
+
+                <ClimateScenarioControl
+                  scenario={climateScenario}
+                  onChange={setClimateScenario}
+                  projecting={processor.projecting}
+                />
 
                 <div className="panel-thin p-3 flex items-center justify-between flex-wrap gap-2">
                   {/* Visual count is animated via raf-driven textContent mutation,

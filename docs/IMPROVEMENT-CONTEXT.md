@@ -35,6 +35,15 @@ That includes type checking, ESLint, Vitest, prose tests, metadata consistency, 
 - **`hasActiveExplorerFilters()`** / **`countActiveExplorerFilterSignals()`** are the single source for “filters active” in FilterBar and the mobile filter sheet badge.
 - **`npm run playtest:polish`** asserts filter clear restores the full corpus and omits stale live-fit URL params after clear.
 
+## Evolution v4.8 (2026-05)
+
+- **Apparent-comfort (UTCI-style) proxy:** [`apparentComfortIndex`](../src/lib/comfort-precision.ts) reuses the existing heat-index + wet-bulb shade math to report a warm-season thermal-strain band. It is explicitly **not** a true UTCI (the corpus has no wind / solar / mean-radiant inputs); the UI carries that caption. Surfaced in `PlaceComfortPrecision` and a `CompareView` row.
+- **2050 scenario projection:** [`src/lib/climate-projection.ts`](../src/lib/climate-projection.ts) deterministically morphs normals to SSP2-4.5 / SSP5-8.5 mid-century layers from a coarse **sourced regional anomaly table** (country + latitude band; IPCC AR6 Atlas, NASA NEX-GDDP-CMIP6). No per-site fabrication; authored `Place.projection` overrides win. `scn=` URL param; the dossier stays present-day.
+- **Compute worker:** [`src/workers/climate-processor.worker.ts`](../src/workers/climate-processor.worker.ts) + [`use-climate-processor`](../src/hooks/use-climate-processor.ts) run the project→filter→rank pipeline off-thread via the pure [`runScenarioRanking`](../src/lib/climate-processor.ts) orchestrator. HONEST SCALE NOTE: at 226 places the synchronous path is ~1 ms, so the worker is architectural headroom (loaded lazily only when a future scenario is engaged), not a measured win; the sync seed is the source of truth and tests run synchronously.
+- **Native CSS:** Tailwind v4 `@property`-registered animatable accent (motion-gated), container queries on `.place-card` / `.tc-compare-col` / `.tc-card-grid`, `@starting-style` entry. The window virtualizer still drives card column COUNT in JS (it needs it for row math); container queries handle per-card/per-column internals.
+- **Vite 8:** `server.forwardConsole` forwards browser + worker runtime errors to the dev terminal. `resolve.tsconfigPaths` left off (no `paths` map; would be a no-op).
+- **Projection data integrity:** `sanity-check` + `audit-corpus` validate any authored `Place.projection` deltas (finite, plausibility-bounded, pathway ordering) — dormant until per-place overrides are authored.
+
 ## Explorer symbiosis (2026-05)
 
 - **Lifestyle bundles:** [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyle-bundles.ts) — hero quick-picks and FilterBar dock share `applyLifestyleBundle()`; auto **`live-fit`** ranking when constraints are active without a full bundle match.

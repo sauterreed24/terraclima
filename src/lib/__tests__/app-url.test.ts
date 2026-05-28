@@ -56,6 +56,12 @@ describe("parseAppSearch", () => {
     expect(parseAppSearch("?theme=auto")).toEqual({ theme: "auto" });
     expect(parseAppSearch("?theme=nope")).toEqual({});
   });
+  it("parses the climate scenario layer but drops the default and unknowns", () => {
+    expect(parseAppSearch("?scn=ssp245")).toEqual({ scenario: "ssp245" });
+    expect(parseAppSearch("?scn=ssp585")).toEqual({ scenario: "ssp585" });
+    expect(parseAppSearch("?scn=now")).toEqual({}); // implicit default, never written
+    expect(parseAppSearch("?scn=rcp99")).toEqual({});
+  });
 });
 
 describe("validatedStateFromSearch", () => {
@@ -122,6 +128,15 @@ describe("formatAppRelativeUrl", () => {
     expect(
       formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: "trip", collectionExists: ce }),
     ).toBe("/?col=trip");
+  });
+  it("writes ?scn= only for non-default climate scenarios and round-trips", () => {
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, scenario: "now", collectionExists: ce }),
+    ).toBe("/");
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, scenario: "ssp585", collectionExists: ce }),
+    ).toBe("/?scn=ssp585");
+    expect(parseAppSearch("/?scn=ssp245".replace("/", "")).scenario).toBe("ssp245");
   });
   it("preserves order: v then p then col", () => {
     const url = formatAppRelativeUrl({

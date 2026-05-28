@@ -14,6 +14,8 @@ import {
 } from "../src/lib/scoring";
 import { liveFitPresetsPoolPass } from "../src/lib/live-fit";
 import { isBundleActive, lifestyleBundleById } from "../src/lib/lifestyle-bundles";
+import { runScenarioRanking } from "../src/lib/climate-processor";
+import type { ValidatedFilterInput } from "../src/lib/scoring";
 import {
   exportShortlistAsCSV,
   exportShortlistAsGeoJSON,
@@ -185,6 +187,29 @@ async function main(): Promise<void> {
   if (!isBundleActive(remoteWork, remoteWork.ranking, remoteHydrated)) {
     throw new Error("remote-work URL round-trip did not hydrate an active bundle");
   }
+
+  // Climate-scenario ("2050 time machine") URL round-trip + projection recompute.
+  const scnUrl = formatAppRelativeUrl({ view: "explorer", scenario: "ssp585", collectionExists: () => true });
+  if (!scnUrl.includes("scn=ssp585")) throw new Error(`scenario not in URL: ${scnUrl}`);
+  const scnNowUrl = formatAppRelativeUrl({ view: "explorer", scenario: "now", collectionExists: () => true });
+  if (scnNowUrl.includes("scn=")) throw new Error(`'now' scenario must be omitted: ${scnNowUrl}`);
+  const scnParsed = parseAppSearch(new URL(scnUrl, "https://example.com").search);
+  if (scnParsed.scenario !== "ssp585") throw new Error("scenario parse failed");
+
+  const scenarioFilters: ValidatedFilterInput = {
+    countries: [], archetypes: [], fitPresets: [], search: "",
+    maxSummerHighC: null, minWinterLowC: null, minGrowability: null, maxFireRisk: null, maxOverallRisk: null,
+  };
+  const nowRank = runScenarioRanking({ type: "scenario-rank", requestId: 1, scenario: "now", ranking: "coolest-summers", filters: scenarioFilters });
+  const futureRank = runScenarioRanking({ type: "scenario-rank", requestId: 2, scenario: "ssp585", ranking: "coolest-summers", filters: scenarioFilters });
+  if (nowRank.rows.length !== futureRank.rows.length) throw new Error("scenario rank length mismatch");
+  const nowScoreById = new Map(nowRank.rows.map(r => [r.id, r.score]));
+  let warmed = false;
+  for (const row of futureRank.rows) {
+    const baseline = nowScoreById.get(row.id);
+    if (baseline != null && row.score < baseline - 1e-9) { warmed = true; break; }
+  }
+  if (!warmed) throw new Error("SSP5-8.5 should lower at least one coolest-summers score vs now");
 
   console.log("playtest-polish: OK");
 }
