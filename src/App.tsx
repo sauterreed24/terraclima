@@ -24,7 +24,7 @@ import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenar
 import { prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
 import { useProse, useUnits } from "./lib/units";
-import { writeClipboardText } from "./lib/clipboard";
+import { shareUrl } from "./lib/share";
 import { runViewTransition } from "./lib/view-transition";
 import {
   loadClimateTripsView,
@@ -257,8 +257,15 @@ export default function App() {
   const copyCurrentView = useCallback(() => {
     if (typeof window === "undefined") return;
     const url = new URL(window.location.href);
-    void writeClipboardText(url.toString()).then(copied => {
-      setShareStatus(copied ? "copied" : "failed");
+    // Use the native share sheet when available (iOS / Android / modern
+    // Safari). The helper transparently falls back to clipboard so
+    // desktop browsers and older mobile browsers still copy the URL.
+    void shareUrl({
+      title: document.title || "Terraclima",
+      text: "Terraclima view",
+      url: url.toString(),
+    }).then(outcome => {
+      setShareStatus(outcome === "failed" ? "failed" : "copied");
       if (shareResetRef.current !== null) window.clearTimeout(shareResetRef.current);
       shareResetRef.current = window.setTimeout(() => {
         setShareStatus("idle");
