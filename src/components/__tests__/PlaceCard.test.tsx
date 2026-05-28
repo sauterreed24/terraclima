@@ -3,7 +3,7 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { PLACES } from "../../data/places";
 import { UnitProvider } from "../../lib/units";
-import { PlaceCard } from "../PlaceCard";
+import { PlaceCard, getReferenceMonth } from "../PlaceCard";
 
 afterEach(() => cleanup());
 
@@ -50,6 +50,23 @@ describe("PlaceCard overlay warmup", () => {
 
     expect(onPreloadPlaceDetail).toHaveBeenCalledTimes(3);
     expect(onPreloadCompare).not.toHaveBeenCalled();
+  });
+
+  it("highlights the reference month on the climate bar", () => {
+    const place = PLACES[0]!;
+    const month = 4;
+    const { container } = render(
+      <UnitProvider>
+        <PlaceCard place={place} referenceMonth={month} onOpenPlace={() => undefined} />
+      </UnitProvider>,
+    );
+    const segments = container.querySelectorAll(".place-card__climate-bar__segment");
+    expect(segments[month]?.classList.contains("place-card__climate-bar__segment--now")).toBe(true);
+    expect(screen.getByText(/^May$/)).toBeInTheDocument();
+  });
+
+  it("getReferenceMonth returns 0–11", () => {
+    expect(getReferenceMonth(new Date(2026, 4, 15))).toBe(4);
   });
 
   it("preloads the compare chunk from compare-button intent without opening the profile", () => {

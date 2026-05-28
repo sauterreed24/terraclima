@@ -29,7 +29,10 @@ function tempToColor(celsius: number): string {
   return "#d64828";                         // hot red
 }
 
-const CURRENT_MONTH = new Date().getMonth(); // 0-based index, persistent across the session
+/** 0-based month index for deterministic tests; production uses the real calendar. */
+export function getReferenceMonth(now: Date = new Date()): number {
+  return now.getMonth();
+}
 
 interface Props {
   place: Place;
@@ -57,6 +60,8 @@ interface Props {
   rank?: number;
   rankingLabel?: string;
   rankingScore?: number;
+  /** Override calendar month for "This month" chip (tests only). */
+  referenceMonth?: number;
 }
 
 const TONE_ACCENT: Record<string, string> = {
@@ -90,7 +95,7 @@ const TONE_RGB: Record<string, string> = {
  * the interactive render budget dramatically on low-spec hardware.
  */
 export const PlaceCard = memo(function PlaceCard({
-  place, selected, note, onOpenPlace, onClick, onCompareToggle, onPreloadPlaceDetail, onPreloadCompare, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, rank, rankingLabel, rankingScore,
+  place, selected, note, onOpenPlace, onClick, onCompareToggle, onPreloadPlaceDetail, onPreloadCompare, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, rank, rankingLabel, rankingScore, referenceMonth = getReferenceMonth(),
 }: Props) {
   const titleId = useId();
   const rankId = useId();
@@ -180,7 +185,7 @@ export const PlaceCard = memo(function PlaceCard({
         {place.climate.tempHighC.map((tempC, i) => (
           <div
             key={i}
-            className={`place-card__climate-bar__segment${i === CURRENT_MONTH ? " place-card__climate-bar__segment--now" : ""}`}
+            className={`place-card__climate-bar__segment${i === referenceMonth ? " place-card__climate-bar__segment--now" : ""}`}
             style={{ background: tempToColor(tempC) }}
             title={`${MONTH_ABBR[i]}: ${fmtTemp(tempC, temp)}`}
           />
@@ -215,13 +220,13 @@ export const PlaceCard = memo(function PlaceCard({
           </div>
         ) : null}
 
-        <header className="flex items-start justify-between gap-3 pb-3 border-b border-[rgba(71,90,122,0.18)]">
+        <header className="flex items-start justify-between gap-3 pb-3 border-b tc-border-neutral">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 id={titleId} className="font-atlas text-lg text-ice truncate">{place.name}</h3>
               <ArrowRight className="w-3 h-3 text-stone opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity shrink-0" aria-hidden />
             </div>
-            <p className="text-[11px] text-stone mt-1 leading-snug">
+            <p className="text-caption-strong text-stone mt-1 leading-snug">
               {place.region}
               <span className="text-stone/70"> · </span>
               {place.country === "USA" ? "United States" : place.country === "Canada" ? "Canada" : "Mexico"}
@@ -286,16 +291,16 @@ export const PlaceCard = memo(function PlaceCard({
 
         {!compact && (
           <div className="pt-3">
-            <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Year at a glance</div>
-            <div className="rounded-lg overflow-hidden border border-[rgba(71,90,122,0.2)] bg-[rgba(255,253,248,0.5)]" style={{ filter: "saturate(1.05)" }}>
+            <div className="text-caption mb-1.5">Year at a glance</div>
+            <div className="place-card__inset-panel rounded-lg overflow-hidden" style={{ filter: "saturate(1.05)" }}>
               <MiniClimateStrip place={place} />
             </div>
           </div>
         )}
 
         <div className="pt-3">
-          <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Core numbers</div>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 rounded-lg border border-[rgba(71,90,122,0.15)] bg-[rgba(255,253,248,0.45)] px-2 py-2">
+          <div className="text-caption mb-1.5">Core numbers</div>
+          <div className="place-card__inset-panel grid grid-cols-2 sm:grid-cols-4 gap-2 rounded-lg px-2 py-2">
             <Stat label="JJA high" value={fmtTemp(summerHighC, temp)} tone="ochre" />
             <Stat label="Jan low" value={fmtTemp(janLowC, temp)} tone="glacier" />
             <Stat label="Annual precip" value={fmtPrecip(annualP, dist)} tone="sage" />
@@ -340,16 +345,19 @@ export const PlaceCard = memo(function PlaceCard({
 
           {/* "This Month" live chip */}
           {!compact && (() => {
-            const monthHigh = place.climate.tempHighC[CURRENT_MONTH];
-            const monthPrecip = place.climate.precipMm[CURRENT_MONTH];
-            const monthSnow = place.climate.snowCm?.[CURRENT_MONTH];
+            const monthHigh = place.climate.tempHighC[referenceMonth];
+            const monthPrecip = place.climate.precipMm[referenceMonth];
+            const monthSnow = place.climate.snowCm?.[referenceMonth];
             const MONTH_NAMES = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"] as const;
             const currentColor = tempToColor(monthHigh);
             return (
-              <div className="place-card__this-month" style={{ borderColor: `${currentColor}55` }}>
+              <div
+                className="place-card__this-month"
+                style={{ ["--month-accent" as string]: currentColor, borderColor: `color-mix(in srgb, ${currentColor} 33%, transparent)` }}
+              >
                 <span className="place-card__this-month__dot" style={{ background: currentColor }} aria-hidden />
                 <span className="place-card__this-month__label">
-                  <strong>{MONTH_NAMES[CURRENT_MONTH]}</strong>
+                  <strong>{MONTH_NAMES[referenceMonth]}</strong>
                   {" "}
                   <span className="font-mono-num">{fmtTemp(monthHigh, temp)}</span>
                   <span className="text-stone-readable/70"> highs · </span>
@@ -371,7 +379,7 @@ export const PlaceCard = memo(function PlaceCard({
         {!compact && livabilityResult ? (
           <div className="place-card__livability-bar mt-3">
             <div className="flex items-center justify-between gap-2 mb-1">
-              <span className="text-[10px] uppercase tracking-wider text-stone-readable">Livability</span>
+              <span className="text-caption">Livability</span>
               <span className="font-mono-num text-xs text-frost">{Math.round(livabilityResult.score)}<span className="text-stone-readable/60">/100</span></span>
             </div>
             <div className="place-card__livability-bar__track">
@@ -426,9 +434,9 @@ export const PlaceCard = memo(function PlaceCard({
         ) : null}
 
         {liveFit ? (
-          <div className="mt-3 rounded-lg border border-[rgba(26,143,168,0.22)] bg-[rgba(232,248,251,0.55)] px-3 py-2">
+          <div className="place-card__live-fit-panel mt-3 rounded-lg px-3 py-2">
             <div className="flex items-center justify-between gap-2">
-              <span className="text-[10px] uppercase tracking-wider text-stone-readable">Live-here fit</span>
+              <span className="text-caption">Live-here fit</span>
               <span className="font-mono-num text-sm text-ice">{liveFit.score}/100</span>
             </div>
             <p className="text-[11px] leading-snug text-frost mt-1">{prose(liveFit.reasons[0] ?? "Balanced scouting signal.")}</p>
@@ -499,16 +507,10 @@ export const PlaceCard = memo(function PlaceCard({
 });
 
 function Stat({ label, value, tone }: { label: string; value: string; tone: string }) {
-  const color: Record<string, string> = {
-    ochre: "#c17d0a",
-    glacier: "#1a8fa8",
-    sage: "#3d8f55",
-    ice: "#2491b8",
-  };
   return (
     <div className="flex flex-col">
-      <span className="text-[10px] uppercase tracking-wider text-stone-readable">{label}</span>
-      <span className="font-mono-num text-sm" style={{ color: color[tone] ?? "#2a4a58" }}>{value}</span>
+      <span className="text-caption">{label}</span>
+      <span className="font-mono-num text-sm place-card__stat-value" data-tone={tone}>{value}</span>
     </div>
   );
 }

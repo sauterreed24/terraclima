@@ -39,6 +39,7 @@ import { SEARCH_INPUT_ID, SHORTCUTS_SEEN_KEY, type ShareStatus } from "./lib/app
 import { LogoMark } from "./components/chrome/LogoMark";
 import { Footer } from "./components/chrome/Footer";
 import { ShortcutsOverlay } from "./components/chrome/ShortcutsOverlay";
+import { ShortlistExportMenu } from "./components/chrome/ShortlistExportMenu";
 import {
   DEFAULT_RANKING,
   loadPersistedRanking,
@@ -1819,11 +1820,12 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
       {pinnedPlaces.length > 0 ? (
         <section aria-labelledby="hero-pinned-title">
-          <div className="hero-mini-rail__header">
+          <div className="hero-mini-rail__header flex items-center justify-between gap-2">
             <span id="hero-pinned-title" className="hero-mini-rail__title flex items-center gap-1.5">
               <BookmarkCheck className="w-3 h-3 text-ochre-700" aria-hidden />
               Your shortlist · {pinnedPlaces.length}
             </span>
+            <ShortlistExportMenu places={pinnedPlaces} />
           </div>
           <ul
             className="hero-mini-rail"
