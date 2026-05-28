@@ -15,7 +15,7 @@ import { COLLECTION_BY_ID } from "./data/collections";
 import { CLIMATE_TRIP_THEME_BY_ID } from "./data/climate-trip-themes";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
-import { applyFilters, rankLivabilityPreview, rankPlaces, scoreLivability, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { applyFilters, createEmptyFilterState, rankLivabilityPreview, rankPlaces, scoreLivability, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit, rankLiveFit } from "./lib/live-fit";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
@@ -610,7 +610,7 @@ export default function App() {
   const clearCollection = useCallback(() => setActiveCollection(null), []);
   const clearArchetypes = useCallback(() => setFilters(f => ({ ...f, archetypes: new Set() })), []);
   const clearAllFilters = useCallback(() => {
-    setFilters({ countries: new Set(), archetypes: new Set(), fitPresets: new Set(), search: "" });
+    setFilters(createEmptyFilterState());
     setActiveCollection(null);
   }, []);
   const closeCompare = useCallback(() => setCompareOpen(false), []);

@@ -410,6 +410,31 @@ describe("App shell", () => {
     await waitFor(() => expect(screen.getAllByText("Link copied").length).toBeGreaterThan(0));
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("clears all filters from URL and restores results after empty-results clear", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/?r=live-fit&fit=cool-summers&sh=22&wl=2&grow=75&fire=low&risk=moderate&q=zzzznonexistent",
+    );
+
+    renderApp();
+
+    expect(screen.getByText("Nothing matches all those filters at once")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Clear all filters" }));
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("fit")).toBeNull();
+      expect(params.get("sh")).toBeNull();
+      expect(params.get("wl")).toBeNull();
+      expect(params.get("grow")).toBeNull();
+      expect(params.get("fire")).toBeNull();
+      expect(params.get("risk")).toBeNull();
+      expect(params.get("q")).toBeNull();
+      expect(screen.queryByText("Nothing matches all those filters at once")).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("passes active Live Finder filters into shared compare views", async () => {
     window.history.replaceState(null, "", "/?cmp=sequim-wa,portal-az&r=live-fit&fit=cool-summers&sh=22");
 

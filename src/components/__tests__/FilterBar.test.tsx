@@ -5,19 +5,20 @@ import type { ComponentProps } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { FilterBar } from "../FilterBar";
 import { UnitContext, type UnitState } from "../../lib/units";
-import type { FilterState, RankingProfile } from "../../lib/scoring";
+import { createEmptyFilterState, type FilterState, type RankingProfile } from "../../lib/scoring";
 
 afterEach(() => cleanup());
 
 const DEG = "\u00b0";
 
-function emptyFilters(): FilterState {
-  return {
-    countries: new Set(),
-    archetypes: new Set(),
-    fitPresets: new Set(),
-    search: "",
-  };
+function assertNoStaleConstraints(state: FilterState): void {
+  expect(state.maxSummerHighC).toBeUndefined();
+  expect(state.minWinterLowC).toBeUndefined();
+  expect(state.minGrowability).toBeUndefined();
+  expect(state.maxFireRisk).toBeUndefined();
+  expect(state.maxOverallRisk).toBeUndefined();
+  expect(state.minElevation).toBeUndefined();
+  expect(state.maxElevation).toBeUndefined();
 }
 
 function renderFilterBar(
@@ -39,7 +40,7 @@ function renderFilterBar(
   return render(
     <UnitContext.Provider value={units}>
       <FilterBar
-        filters={opts.filters ?? emptyFilters()}
+        filters={opts.filters ?? createEmptyFilterState()}
         setFilters={opts.setFilters ?? vi.fn()}
         ranking={opts.ranking ?? "hidden-gems"}
         setRanking={opts.setRanking ?? vi.fn()}
@@ -50,7 +51,7 @@ function renderFilterBar(
 
 describe("FilterBar Live Finder temperature constraints", () => {
   it("summarizes the active Explorer lens before the control groups", () => {
-    const filters = emptyFilters();
+    const filters = createEmptyFilterState();
     filters.fitPresets = new Set(["gardenable"]);
     filters.minGrowability = 65;
 
@@ -93,7 +94,7 @@ describe("FilterBar Live Finder temperature constraints", () => {
 
 describe("FilterBar lifestyle bundles", () => {
   it("uses the active bundle as the current lens receipt when all bundle controls match", () => {
-    const exactGarden = emptyFilters();
+    const exactGarden = createEmptyFilterState();
     exactGarden.fitPresets = new Set(["gardenable"]);
     exactGarden.minGrowability = 65;
 
@@ -109,7 +110,7 @@ describe("FilterBar lifestyle bundles", () => {
   });
 
   it("only marks a lifestyle bundle active when all bundle-owned live filters match", () => {
-    const exactRemote = emptyFilters();
+    const exactRemote = createEmptyFilterState();
     exactRemote.fitPresets = new Set(["cool-summers", "low-fire-smoke"]);
     exactRemote.maxSummerHighC = 26;
 
@@ -122,7 +123,7 @@ describe("FilterBar lifestyle bundles", () => {
 
     cleanup();
 
-    const staleRemote = emptyFilters();
+    const staleRemote = createEmptyFilterState();
     staleRemote.fitPresets = new Set(["cool-summers", "low-fire-smoke"]);
     staleRemote.maxSummerHighC = 22;
 
@@ -143,7 +144,7 @@ describe("FilterBar lifestyle bundles", () => {
 
     expect(setRanking).toHaveBeenCalledWith("best-growability");
     const updater = setFilters.mock.calls[0][0] as (filters: FilterState) => FilterState;
-    const previous = emptyFilters();
+    const previous = createEmptyFilterState();
     previous.fitPresets = new Set(["cool-summers", "low-fire-smoke"]);
     previous.maxSummerHighC = 26;
     previous.minWinterLowC = 0;
@@ -159,5 +160,32 @@ describe("FilterBar lifestyle bundles", () => {
     expect(next.minGrowability).toBe(65);
     expect(next.maxFireRisk).toBeUndefined();
     expect(next.maxOverallRisk).toBeUndefined();
+  });
+});
+
+describe("FilterBar clear all filters", () => {
+  it("clears search, geography, presets, and Live Finder constraints", () => {
+    const setFilters = vi.fn();
+    const polluted = createEmptyFilterState();
+    polluted.countries = new Set(["USA"]);
+    polluted.archetypes = new Set(["mediterranean-pocket"]);
+    polluted.fitPresets = new Set(["cool-summers"]);
+    polluted.search = "garden";
+    polluted.maxSummerHighC = 22;
+    polluted.minWinterLowC = 2;
+    polluted.minGrowability = 75;
+    polluted.maxFireRisk = "low";
+    polluted.maxOverallRisk = "moderate";
+    polluted.minElevation = 500;
+    polluted.maxElevation = 3000;
+
+    renderFilterBar("F", { filters: polluted, setFilters });
+
+    fireEvent.click(screen.getByRole("button", { name: "Clear all filters" }));
+
+    expect(setFilters).toHaveBeenCalledTimes(1);
+    const next = setFilters.mock.calls[0][0] as FilterState;
+    expect(next).toEqual(createEmptyFilterState());
+    assertNoStaleConstraints(next);
   });
 });

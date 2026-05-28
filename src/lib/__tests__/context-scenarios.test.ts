@@ -1,16 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows } from "../context-scenarios";
-import { rankPlaces, type FilterState } from "../scoring";
+import { createEmptyFilterState, rankPlaces, type FilterState } from "../scoring";
 import { makeClimate, makePlace } from "./test-fixtures";
-
-function emptyFilters(): FilterState {
-  return {
-    countries: new Set(),
-    archetypes: new Set(),
-    fitPresets: new Set(),
-    search: "",
-  };
-}
 
 describe("context scenarios", () => {
   it("preserves text and geography filters while replacing stale live-fit state", () => {
@@ -61,7 +52,7 @@ describe("context scenarios", () => {
     const rows = buildContextStressRows({
       pool,
       currentRanked,
-      currentFilters: emptyFilters(),
+      currentFilters: createEmptyFilterState(),
       currentRanking: "hidden-gems",
       currentRankingLabel: "Hidden gems",
     });
@@ -100,7 +91,7 @@ describe("context scenarios", () => {
     const rows = buildContextStressRows({
       pool,
       currentRanked: rankPlaces("hidden-gems", pool),
-      currentFilters: emptyFilters(),
+      currentFilters: createEmptyFilterState(),
       currentRanking: "hidden-gems",
       currentRankingLabel: "Hidden gems",
     });

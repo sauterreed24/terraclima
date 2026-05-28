@@ -1,6 +1,6 @@
 import { memo, useCallback, type Dispatch, type SetStateAction } from "react";
 import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
-import type { FilterState } from "../lib/scoring";
+import { createEmptyFilterState, type FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
 import { RANKING_OPTIONS } from "../lib/ranking-options";
@@ -197,7 +197,7 @@ export const FilterBar = memo(function FilterBar({
     filters.minGrowability != null ||
     filters.maxFireRisk != null ||
     filters.maxOverallRisk != null;
-  const clearAll = useCallback(() => setFilters({ countries: new Set(), archetypes: new Set(), fitPresets: new Set(), search: "" }), [setFilters]);
+  const clearAll = useCallback(() => setFilters(createEmptyFilterState()), [setFilters]);
 
   return (
     <div className="panel contour-bg atlas-filter-dock p-3 space-y-3">
@@ -249,8 +249,9 @@ export const FilterBar = memo(function FilterBar({
               type="button"
               onClick={() => setFilters(f => ({ ...f, fitPresets: new Set() }))}
               className="text-stone hover:text-ice normal-case text-[11px] tracking-normal shrink-0"
+              aria-label="Clear Live Finder presets"
             >
-              clear
+              Clear presets
             </button>
           ) : null}
         </div>

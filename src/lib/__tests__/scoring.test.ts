@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { avgRisk, meanSummerHigh, meanJanLow, applyFilters, rankPlaces, RISK_VALUE } from "../scoring";
-import type { FilterState } from "../scoring";
+import { avgRisk, meanSummerHigh, meanJanLow, applyFilters, createEmptyFilterState, rankPlaces, RISK_VALUE, type FilterState } from "../scoring";
 import { PLACES } from "../../data/places";
 import { makePlace, makeClimate } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
@@ -102,6 +101,22 @@ describe("applyFilters", () => {
 
   it("returns all places with empty filter sets", () => {
     expect(applyFilters(pool, f()).map(p => p.id)).toEqual(["a", "b", "c"]);
+  });
+
+  it("createEmptyFilterState drops stale constraints so applyFilters matches an unfiltered pool", () => {
+    const polluted: FilterState = {
+      ...createEmptyFilterState(),
+      countries: new Set(["Mexico"]),
+      maxSummerHighC: 22,
+      minWinterLowC: 2,
+      minGrowability: 75,
+      maxFireRisk: "low",
+      maxOverallRisk: "moderate",
+      minElevation: 1000,
+      maxElevation: 2000,
+    };
+    expect(applyFilters(pool, polluted).length).toBeLessThan(pool.length);
+    expect(applyFilters(pool, createEmptyFilterState()).map(p => p.id)).toEqual(["a", "b", "c"]);
   });
   it("filters by country", () => {
     expect(applyFilters(pool, f({ countries: new Set(["Canada"]) })).map(p => p.id)).toEqual(["b"]);

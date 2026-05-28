@@ -391,6 +391,16 @@ export interface FilterState {
   search?: string;
 }
 
+/** Canonical empty filter state — omits optional constraint fields so clears cannot leave stale limits. */
+export function createEmptyFilterState(): FilterState {
+  return {
+    countries: new Set(),
+    archetypes: new Set(),
+    fitPresets: new Set(),
+    search: "",
+  };
+}
+
 export function applyFilters(places: Place[], f: FilterState): Place[] {
   // Precompute the diacritic-folded query once, not per-place. The search
   // index is built with the same fold so "san jose" matches "San José".

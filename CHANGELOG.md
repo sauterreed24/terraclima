@@ -4,6 +4,11 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Playtest hardening
+
+- **Clear all filters (`src/lib/scoring.ts`, `FilterBar`, `App`):** `createEmptyFilterState()` is the single reset shape; clears Live Finder numeric/risk constraints and elevation limits, not only search/country/archetype/presets. Live Finder inline control renamed to **Clear presets**.
+- **Place profile copy link (`src/components/place-detail/CopyPlaceLink.tsx`):** uses `writeClipboardText` with Copied / Copy failed feedback and unmount-safe status reset.
+
 ### UI & visual quality pass (deterministic stability)
 
 - **Semantic tokens (`src/lib/theme-tokens.ts` new, `src/styles.css`):** `--tc-surface-*`, `--tc-border-*`, `--tc-scrim`, `--tc-chip-*` custom properties remapped in dark mode; mirrored in TypeScript for Vitest.

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useState, useEffect, useMemo, useRef, useId, useCallback } from "react";
+import { useState, useEffect, useMemo, useRef, useId } from "react";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
 import type { Place, MicroclimateArchetype, TopographicDriver } from "../types";
@@ -18,6 +18,7 @@ import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtDelta, useProse } from "../lib/units";
 import { getBestMonths } from "../lib/best-months";
+import { CopyPlaceLink } from "./place-detail/CopyPlaceLink";
 import { PlaceClimateTwins } from "./place-detail/PlaceClimateTwins";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
@@ -290,30 +291,6 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
         </>
       )}
     </AnimatePresence>
-  );
-}
-
-function CopyPlaceLink({ placeId }: { placeId: string }) {
-  const [copied, setCopied] = useState(false);
-  const onCopy = useCallback(() => {
-    const u = new URL(window.location.href);
-    u.searchParams.set("p", placeId);
-    void navigator.clipboard.writeText(u.toString()).then(() => {
-      setCopied(true);
-      window.setTimeout(() => setCopied(false), 2000);
-    });
-  }, [placeId]);
-  return (
-    <button
-      type="button"
-      onClick={onCopy}
-      className="btn-ghost !text-xs"
-      title="Copy URL to this place"
-      aria-label={copied ? "Copied link to this place" : "Copy link to this place"}
-    >
-      <Link2 className="w-3 h-3" aria-hidden />
-      <span aria-live="polite">{copied ? "Copied" : "Copy link"}</span>
-    </button>
   );
 }
 

@@ -176,6 +176,31 @@ describe("formatAppRelativeUrl", () => {
       }),
     ).toBe("/?r=hidden-gems");
   });
+  it("omits live-fit URL params when explorer state has no live-fit signals", () => {
+    const url = formatAppRelativeUrl({
+      view: "explorer",
+      placeId: null,
+      collectionId: null,
+      ranking: "live-fit",
+      fitPresets: [],
+      maxSummerHighC: null,
+      minWinterLowC: null,
+      minGrowability: null,
+      maxFireRisk: null,
+      maxOverallRisk: null,
+      search: "",
+      collectionExists: ce,
+    });
+    expect(url).toBe("/");
+    expect(url).not.toContain("fit=");
+    expect(url).not.toContain("sh=");
+    expect(url).not.toContain("wl=");
+    expect(url).not.toContain("grow=");
+    expect(url).not.toContain("fire=");
+    expect(url).not.toContain("risk=");
+    expect(url).not.toContain("q=");
+  });
+
   it("omits Live Finder constraints the UI cannot represent", () => {
     const url = formatAppRelativeUrl({
       view: "explorer",
