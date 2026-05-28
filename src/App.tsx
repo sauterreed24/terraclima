@@ -50,6 +50,16 @@ import {
   validatedStateFromSearch,
 } from "./lib/app-url";
 import type { Country, MicroclimateArchetype, Place } from "./types";
+import {
+  applyTheme,
+  persistThemePreference,
+  prefersDarkScheme,
+  resolveInitialTheme,
+  resolveTheme,
+  THEME_STORAGE_KEY,
+  type ThemePreference,
+} from "./lib/theme";
+import { ThemeToggle } from "./components/chrome/ThemeToggle";
 
 const SEARCH_INPUT_ID = "terraclima-place-search";
 const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
@@ -278,6 +288,17 @@ export default function App() {
   const [ranking, setRankingRaw] = useState<RankingProfile>(() => initialAppState.ranking ?? loadPersistedRanking());
   const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
+  // Theme preference (auto/light/dark). URL ?theme=... wins on first paint;
+  // otherwise we read the last explicit choice from localStorage; otherwise
+  // default to "auto" so the OS preference drives the resolved theme.
+  const [themePreference, setThemePreference] = useState<ThemePreference>(() => {
+    if (typeof window === "undefined") return initialAppState.theme ?? "auto";
+    if (initialAppState.theme) return initialAppState.theme;
+    let persisted: string | null = null;
+    try { persisted = window.localStorage.getItem(THEME_STORAGE_KEY); }
+    catch { /* ignore */ }
+    return resolveInitialTheme(window.location.search, persisted);
+  });
   /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
   const [transientFeedback, setTransientFeedback] = useState<string | null>(null);
   const [shareStatus, setShareStatus] = useState<ShareStatus>("idle");
@@ -298,6 +319,35 @@ export default function App() {
 
   useEffect(() => () => {
     if (shareResetRef.current !== null) window.clearTimeout(shareResetRef.current);
+  }, []);
+
+  // Apply theme on mount and whenever the preference changes. When the
+  // preference is "auto" we also subscribe to prefers-color-scheme changes
+  // so the page tracks system Dark Mode toggles without a reload.
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof document === "undefined") return;
+    const apply = () => applyTheme(document, themePreference, resolveTheme(themePreference, prefersDarkScheme(window)));
+    apply();
+    if (themePreference !== "auto" || typeof window.matchMedia !== "function") {
+      return;
+    }
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => apply();
+    if (typeof mql.addEventListener === "function") {
+      mql.addEventListener("change", onChange);
+      return () => mql.removeEventListener("change", onChange);
+    }
+    // Legacy fallback (Safari < 14).
+    mql.addListener(onChange);
+    return () => mql.removeListener(onChange);
+  }, [themePreference]);
+
+  const setTheme = useCallback((next: ThemePreference) => {
+    setThemePreference(next);
+    if (typeof window !== "undefined") {
+      try { persistThemePreference(window.localStorage, next); }
+      catch { /* private browsing — runtime + URL still work */ }
+    }
   }, []);
 
   const copyCurrentView = useCallback(() => {
@@ -365,6 +415,7 @@ export default function App() {
       maxOverallRisk: filters.maxOverallRisk ?? null,
       temp,
       dist,
+      theme: themePreference === "auto" ? null : themePreference,
       collectionExists: (id: string) => Boolean(CURATED_SET_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
       placeExists: (id: string) => resolvePlaceId(id) != null,
@@ -399,7 +450,7 @@ export default function App() {
       replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist]);
+  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist, themePreference]);
 
   useEffect(() => {
     const onPop = () => {
@@ -432,12 +483,23 @@ export default function App() {
       // would silently revert the user's choice and overwrite the saved value.
       if (v.temp) setTemp(v.temp);
       if (v.dist) setDist(v.dist);
+      // Theme: an explicit ?theme= on the target entry wins. When the entry
+      // doesn't carry one, fall back to localStorage / auto, mirroring the
+      // first-paint resolution.
+      if (v.theme) {
+        setTheme(v.theme);
+      } else {
+        let persisted: string | null = null;
+        try { persisted = window.localStorage.getItem(THEME_STORAGE_KEY); }
+        catch { /* ignore */ }
+        setTheme(resolveInitialTheme("", persisted));
+      }
       setCompareOpen(v.compareIds.length >= 2);
       prevPlaceIdRef.current = v.placeId;
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
-  }, [setTemp, setDist]);
+  }, [setTemp, setDist, setTheme]);
 
   // Pause expensive CSS animations while the tab is backgrounded (battery / CPU).
   useEffect(() => {
@@ -732,6 +794,8 @@ export default function App() {
         onOpenCompare={openCompare}
         onPreloadCompare={preloadCompareView}
         compareCount={compareIds.size}
+        themePreference={themePreference}
+        onThemeChange={setTheme}
       />
 
       <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1600px] w-full mx-auto">
@@ -1123,12 +1187,16 @@ const TopBar = memo(function TopBar({
   onOpenCompare,
   onPreloadCompare,
   compareCount,
+  themePreference,
+  onThemeChange,
 }: {
   view: View;
   setView: (v: View) => void;
   onOpenCompare: () => void;
   onPreloadCompare: () => void;
   compareCount: number;
+  themePreference: ThemePreference;
+  onThemeChange: (next: ThemePreference) => void;
 }) {
   const menuRef = useRef<HTMLDialogElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
@@ -1218,6 +1286,7 @@ const TopBar = memo(function TopBar({
           <NavBtn active={view === "learn"} onClick={() => setView("learn")} icon={<Compass className="w-3.5 h-3.5" />} label="Learn" />
 
           <TempToggle className="ml-1" />
+          <ThemeToggle preference={themePreference} onChange={onThemeChange} compact />
 
           {compareCount > 0 && (
             <button
@@ -1265,6 +1334,11 @@ const TopBar = memo(function TopBar({
               <div className="pt-1">
                 <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 px-0.5">Units</div>
                 <TempToggle stretch onAfterChange={closeMenu} />
+              </div>
+
+              <div className="pt-1">
+                <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 px-0.5">Theme</div>
+                <ThemeToggle preference={themePreference} onChange={onThemeChange} />
               </div>
 
               {compareCount > 0 ? (

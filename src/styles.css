@@ -385,6 +385,67 @@
     font-size: 0.875rem;
   }
 
+  /** Three-state theme control (Auto / Light / Dark) — shared by header and mobile menu. */
+  .tc-theme-toggle {
+    display: inline-flex;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(180, 150, 120, 0.5);
+    overflow: hidden;
+    background: rgba(255, 253, 248, 0.72);
+  }
+  .tc-theme-toggle__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.375rem 0.55rem;
+    font-size: 0.72rem;
+    font-family: var(--font-sans);
+    color: var(--color-stone-readable);
+    transition: background 140ms ease, color 140ms ease;
+  }
+  .tc-theme-toggle__btn:hover {
+    color: var(--color-ice);
+  }
+  .tc-theme-toggle__btn[aria-pressed="true"] {
+    background: rgba(94, 196, 220, 0.22);
+    color: var(--color-ice);
+  }
+  .tc-theme-toggle__btn + .tc-theme-toggle__btn {
+    border-left: 1px solid rgba(180, 150, 120, 0.5);
+  }
+  .tc-theme-toggle__btn:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
+  }
+  .tc-theme-toggle__icon {
+    width: 0.9rem;
+    height: 0.9rem;
+    flex-shrink: 0;
+  }
+  .tc-theme-toggle__label {
+    line-height: 1;
+  }
+  /* Compact form (icons only) keeps the header from getting crowded. */
+  .tc-theme-toggle--compact .tc-theme-toggle__btn {
+    padding: 0.375rem 0.5rem;
+  }
+  /* Stretch in the mobile menu like TempToggle does. */
+  .tc-site-menu-dialog__inner .tc-theme-toggle {
+    width: 100%;
+  }
+  .tc-site-menu-dialog__inner .tc-theme-toggle__btn {
+    flex: 1;
+    justify-content: center;
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+    font-size: 0.84rem;
+  }
+  @media (pointer: coarse) {
+    .tc-theme-toggle__btn {
+      min-height: 44px;
+    }
+  }
+
   /* Primary nav modal — glass card over blurred scrim */
   .tc-site-menu-dialog {
     margin: auto;
@@ -5826,6 +5887,240 @@
    (Windows "Show animations off"), we skip the fade-in / shimmer entirely
    rather than queue them up. This also trims a little GPU work on older
    hardware when the user has indicated they don't care about motion. */
+
+/* =========================================================
+   Dark theme — applied when `<html data-theme="dark">`.
+   The atlas map shell stays its existing dark instrument look; these
+   rules cover the paper-light app chrome (body, header, panels, hero,
+   cards, scout/compass/context widgets, place detail, compare).
+   The light defaults stay in `:root`/`@layer base`; we *only* override
+   here so toggling back to light reverts cleanly with no leak.
+   ========================================================= */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  /* Re-map the warm-ink text scale to a high-contrast moonlit palette. */
+  --color-abyss: #0d1320;
+  --color-midnight: #121a2a;
+  --color-ink: #1b243a;
+  --color-slate-1: #2a3552;
+  --color-slate-2: #3a4663;
+  --color-slate-3: #58668a;
+  --color-slate-4: #8b9ab8;
+  --color-ice: #f2f5fb;
+  --color-frost: #d6dcea;
+  --color-frost-strong: #eef1f8;
+  --color-stone: #aab4c8;
+  --color-stone-readable: #c4ccdb;
+  --color-shadow: #94a0ba;
+}
+
+:root[data-theme="dark"] html,
+:root[data-theme="dark"] body,
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+  background: #0d1320;
+  color: var(--color-ice);
+}
+
+html[data-theme="dark"] body {
+  background:
+    radial-gradient(120% 80% at 22% 8%, rgba(26, 70, 110, 0.32) 0%, transparent 60%),
+    radial-gradient(120% 80% at 84% 16%, rgba(60, 30, 90, 0.28) 0%, transparent 62%),
+    linear-gradient(180deg, #0e1422 0%, #0a1120 60%, #0c1326 100%);
+}
+
+html[data-theme="dark"] body::after {
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(232, 155, 32, 0.025) 100%),
+    repeating-linear-gradient(90deg, transparent 0 13px, rgba(180, 200, 230, 0.018) 13px 14px, transparent 14px 42px);
+}
+
+/* Sticky header — switch the bright glass for a deep glass. */
+html[data-theme="dark"] .tc-header-bar {
+  background: linear-gradient(180deg, rgba(17, 23, 40, 0.86) 0%, rgba(15, 20, 36, 0.82) 100%);
+  border-bottom-color: rgba(120, 138, 178, 0.22);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 12px 36px -20px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="dark"] .tc-header-menu-trigger {
+  background: linear-gradient(180deg, rgba(28, 38, 60, 0.9) 0%, rgba(22, 30, 50, 0.85) 100%);
+  border-color: rgba(120, 138, 178, 0.36);
+  color: var(--color-frost);
+}
+html[data-theme="dark"] .tc-header-menu-trigger:hover {
+  color: var(--color-ice);
+  border-color: rgba(140, 200, 230, 0.5);
+}
+
+/* Unit + theme toggles — preserve the segmented look with the dark palette. */
+html[data-theme="dark"] .tc-temp-toggle,
+html[data-theme="dark"] .tc-theme-toggle {
+  background: rgba(22, 30, 50, 0.7);
+  border-color: rgba(120, 138, 178, 0.36);
+}
+html[data-theme="dark"] .tc-temp-toggle__btn,
+html[data-theme="dark"] .tc-theme-toggle__btn {
+  color: var(--color-frost);
+}
+html[data-theme="dark"] .tc-temp-toggle__btn[aria-pressed="true"],
+html[data-theme="dark"] .tc-theme-toggle__btn[aria-pressed="true"] {
+  background: rgba(94, 196, 220, 0.32);
+  color: var(--color-ice);
+}
+html[data-theme="dark"] .tc-temp-toggle__btn + .tc-temp-toggle__btn,
+html[data-theme="dark"] .tc-theme-toggle__btn + .tc-theme-toggle__btn {
+  border-left-color: rgba(120, 138, 178, 0.36);
+}
+
+/* Generic panels (.panel, .panel-thin, .panel-warm) all light the same
+   "paper" surface. Recolor with the deep-glass equivalent and lift borders
+   so the panel boundary still reads on the dark wash. */
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .panel-thin,
+html[data-theme="dark"] .panel-warm {
+  background: linear-gradient(180deg, rgba(28, 38, 60, 0.92) 0%, rgba(22, 30, 50, 0.88) 100%);
+  border-color: rgba(120, 138, 178, 0.28);
+  color: var(--color-frost-strong);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 12px 36px -22px rgba(0, 0, 0, 0.55);
+}
+
+html[data-theme="dark"] .panel-hero {
+  background:
+    linear-gradient(155deg, rgba(28, 38, 60, 0.96) 0%, rgba(22, 30, 50, 0.94) 36%, rgba(20, 26, 44, 0.92) 100%),
+    linear-gradient(92deg, rgba(var(--hero-accent-rgb, 94 196 220), 0.16), transparent 34%, rgba(232, 155, 32, 0.08) 100%);
+  border-color: rgba(120, 138, 178, 0.32);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 18px 48px -20px rgba(0, 0, 0, 0.55),
+    0 28px 62px -28px rgba(var(--hero-accent-rgb, 94 196 220), 0.22);
+}
+
+/* Buttons — keep the brand glacier accent, dark surfaces for ghost. */
+html[data-theme="dark"] .btn-ghost {
+  background: rgba(28, 38, 60, 0.7);
+  border-color: rgba(120, 138, 178, 0.4);
+  color: var(--color-frost);
+}
+html[data-theme="dark"] .btn-ghost:hover {
+  color: var(--color-ice);
+  border-color: rgba(140, 200, 230, 0.55);
+}
+
+/* Place cards in the grid. */
+html[data-theme="dark"] .place-card {
+  background: linear-gradient(180deg, rgba(28, 38, 60, 0.94) 0%, rgba(22, 30, 50, 0.9) 100%);
+  border-color: rgba(120, 138, 178, 0.3);
+  color: var(--color-frost);
+}
+html[data-theme="dark"] .place-card--tinted,
+html[data-theme="dark"] .place-card--selected {
+  background: linear-gradient(180deg, rgba(36, 48, 76, 0.96) 0%, rgba(24, 32, 54, 0.94) 100%);
+  border-color: rgba(140, 200, 230, 0.5);
+}
+
+/* Chips — lift the contrast on dark for both default and pressed states. */
+html[data-theme="dark"] .chip,
+html[data-theme="dark"] .chip-btn {
+  background: rgba(28, 38, 60, 0.82);
+  border-color: rgba(120, 138, 178, 0.36);
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .chip-btn[data-active="true"],
+html[data-theme="dark"] .chip-btn[aria-pressed="true"] {
+  background: rgba(94, 196, 220, 0.3);
+  color: var(--color-ice);
+  border-color: rgba(140, 200, 230, 0.55);
+}
+
+/* PlaceDetail drawer — keep the dossier readable on a dark scrim. */
+html[data-theme="dark"] [data-place-detail] {
+  background: linear-gradient(180deg, #121a2a 0%, #0f1626 100%);
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .detail-drawer-header {
+  background: linear-gradient(180deg, rgba(20, 28, 48, 0.97), rgba(16, 22, 38, 0.95));
+  border-bottom-color: rgba(120, 138, 178, 0.28);
+}
+html[data-theme="dark"] .tc-detail-progress-track {
+  background: rgba(120, 138, 178, 0.14);
+}
+
+/* Compare overlay scrim is intentionally still slightly warm so the dialog
+   pops; just deepen its base. */
+html[data-theme="dark"] .compare-dialog__head,
+html[data-theme="dark"] .compare-decision-read,
+html[data-theme="dark"] .compare-insight-strip {
+  background: rgba(20, 28, 48, 0.78);
+  border-color: rgba(120, 138, 178, 0.28);
+  color: var(--color-frost-strong);
+}
+
+/* Scout / context / compass widgets — same deep-glass treatment. */
+html[data-theme="dark"] .scout-brief,
+html[data-theme="dark"] .desktop-scout-board,
+html[data-theme="dark"] .context-stress,
+html[data-theme="dark"] .living-compass,
+html[data-theme="dark"] .climate-signal-rail,
+html[data-theme="dark"] .residency-brief,
+html[data-theme="dark"] .comfort-precision-panel,
+html[data-theme="dark"] .hero-top-ten,
+html[data-theme="dark"] .hero-mini-rail {
+  background: linear-gradient(180deg, rgba(28, 38, 60, 0.92) 0%, rgba(22, 30, 50, 0.88) 100%);
+  border-color: rgba(120, 138, 178, 0.28);
+  color: var(--color-frost-strong);
+}
+
+/* Reading nav strip in dossier. */
+html[data-theme="dark"] .place-detail-reading-nav,
+html[data-theme="dark"] .detail-doc-section {
+  background: transparent;
+  color: var(--color-frost-strong);
+}
+
+/* Footer band. */
+html[data-theme="dark"] .tc-footer {
+  background: linear-gradient(180deg, rgba(20, 28, 48, 0.9) 0%, rgba(16, 22, 38, 0.88) 100%);
+  border-top-color: rgba(120, 138, 178, 0.22);
+  color: var(--color-stone-readable);
+}
+
+/* Mobile filter sheet + site menu. */
+html[data-theme="dark"] .tc-filter-sheet-dialog,
+html[data-theme="dark"] .tc-site-menu-dialog__inner {
+  background: linear-gradient(180deg, #1a2238 0%, #131a2b 100%);
+  border-color: rgba(120, 138, 178, 0.32);
+  color: var(--color-frost-strong);
+}
+
+/* Selection accent on dark — keep the warm pink so brand carries across. */
+html[data-theme="dark"] ::selection {
+  background: rgba(255, 196, 214, 0.32);
+  color: var(--color-ice);
+}
+
+/* Scrollbar contrast for dark. */
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(180, 200, 230, 0.22);
+  background-clip: padding-box;
+}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(180, 200, 230, 0.4);
+  background-clip: padding-box;
+}
+
+/* OS dark mode reaches through `auto` preference via the same overrides
+   when the user hasn't picked an explicit theme. We pair these rules with
+   `data-theme-preference="auto"` so a deliberate light choice always wins. */
+@media (prefers-color-scheme: dark) {
+  :root[data-theme-preference="auto"] {
+    color-scheme: dark;
+  }
+}
+
 /* =========================================================
    Print stylesheet — readable, paperboard-friendly profiles.
    When a place detail is open, print only that panel so a user

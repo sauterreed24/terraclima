@@ -50,6 +50,12 @@ describe("parseAppSearch", () => {
   it("tolerates a missing leading ?", () => {
     expect(parseAppSearch("p=foo")).toEqual({ placeId: "foo" });
   });
+  it("parses an explicit ?theme= but ignores invalid values", () => {
+    expect(parseAppSearch("?theme=dark")).toEqual({ theme: "dark" });
+    expect(parseAppSearch("?theme=light")).toEqual({ theme: "light" });
+    expect(parseAppSearch("?theme=auto")).toEqual({ theme: "auto" });
+    expect(parseAppSearch("?theme=nope")).toEqual({});
+  });
 });
 
 describe("validatedStateFromSearch", () => {
@@ -183,6 +189,17 @@ describe("formatAppRelativeUrl", () => {
       collectionExists: ce,
     });
     expect(url).toBe("/");
+  });
+  it("emits ?theme= for explicit light/dark but omits auto (the implicit default)", () => {
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, theme: "dark", collectionExists: ce }),
+    ).toBe("/?theme=dark");
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, theme: "light", collectionExists: ce }),
+    ).toBe("/?theme=light");
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, theme: "auto", collectionExists: ce }),
+    ).toBe("/");
   });
 });
 

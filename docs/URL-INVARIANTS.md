@@ -13,6 +13,7 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 | `a` | Archetype ids, comma-separated | Filtered to known archetypes when validator provided |
 | `q` | Search string | Trimmed for round-trip |
 | `cmp` | Compare set, comma-separated place ids | Only known ids; **max 4** (`COMPARE_LIMIT`) |
+| `theme` | Color theme override: `light`, `dark` | `auto` (the implicit default) is never written; unknown values dropped |
 
 ## Formatting rules
 

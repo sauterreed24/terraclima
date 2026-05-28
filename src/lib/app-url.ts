@@ -19,6 +19,7 @@
  *   risk    max average risk level
  *   temp    temperature unit: "F" (default) | "C"
  *   dist    distance unit: "imperial" (default) | "metric"
+ *   theme   color theme: "auto" (default) | "light" | "dark"
  */
 
 import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
@@ -26,6 +27,8 @@ import type { RankingProfile } from "./scoring";
 import type { DistUnit, TempUnit } from "./units";
 import { DEFAULT_RANKING } from "./app-ranking-preference";
 import { ALL_RANKING_PROFILES } from "./ranking-options";
+import type { ThemePreference } from "./theme";
+import { isThemePreference } from "./theme";
 import {
   LIVE_FIT_GROWABILITY_FLOORS,
   LIVE_FIT_PRESET_BY_ID,
@@ -57,6 +60,7 @@ export interface ParsedAppUrl {
   maxOverallRisk: RiskLevel | null;
   temp: TempUnit | null;
   dist: DistUnit | null;
+  theme: ThemePreference | null;
 }
 
 const VIEWS = new Set<AppView>(["explorer", "trips", "collections", "learn"]);
@@ -140,6 +144,8 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
   if (temp === "F" || temp === "C") out.temp = temp;
   const dist = params.get("dist");
   if (dist === "imperial" || dist === "metric") out.dist = dist;
+  const theme = params.get("theme");
+  if (isThemePreference(theme)) out.theme = theme;
   return out;
 }
 
@@ -170,6 +176,7 @@ export interface AppUrlState {
   maxOverallRisk?: RiskLevel | null;
   temp?: TempUnit | null;
   dist?: DistUnit | null;
+  theme?: ThemePreference | null;
   collectionExists: (id: string) => boolean;
   archetypeExists?: (id: string) => boolean;
   placeExists?: (id: string) => boolean;
@@ -220,6 +227,10 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
   if (isLiveFitRiskCeiling(state.maxOverallRisk)) params.set("risk", state.maxOverallRisk);
   if (state.temp === "C") params.set("temp", state.temp);
   if (state.dist === "metric") params.set("dist", state.dist);
+  if (state.theme === "light" || state.theme === "dark") {
+    // "auto" is the implicit default; omit so a link doesn't force a theme.
+    params.set("theme", state.theme);
+  }
   const compareIds = state.compareIds ?? [];
   if (compareIds.length > 0) {
     const validate = state.placeExists ?? (() => true);
@@ -272,6 +283,7 @@ export interface ValidatedAppState {
   maxOverallRisk: RiskLevel | null;
   temp: TempUnit | null;
   dist: DistUnit | null;
+  theme: ThemePreference | null;
 }
 
 export function validatedStateFromSearch(
@@ -313,6 +325,7 @@ export function validatedStateFromSearch(
     maxOverallRisk: p.maxOverallRisk ?? null,
     temp: p.temp ?? null,
     dist: p.dist ?? null,
+    theme: p.theme ?? null,
   };
 }
 
@@ -341,6 +354,7 @@ export function readInitialAppState(
       maxOverallRisk: null,
       temp: null,
       dist: null,
+      theme: null,
     };
   }
   return validatedStateFromSearch(window.location.search, placesById, collectionById, archetypesById, resolvePlaceId);

@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="color-scheme" content="light" />
-    <meta name="theme-color" content="#fffefb" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fffefb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d1320" media="(prefers-color-scheme: dark)" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -88,11 +89,20 @@
       rel="stylesheet"
     />
 
-    <!-- Inline critical colour tokens so the warm paper background paints
-         instantly while the bundle is fetched. -->
+    <!-- Inline critical colour tokens so the right background paints instantly
+         while the bundle is fetched. Pairs the light default with a dark
+         match for `prefers-color-scheme: dark` users so we don't flash the
+         bright paper before the React app applies their theme. The runtime
+         theme module (src/lib/theme.ts) overrides this on mount when the
+         user has an explicit preference saved. -->
     <style>
       html, body { background: #fffefb; color: #221a14; }
       #root { min-height: 100vh; }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]), html:not([data-theme="light"]) body {
+          background: #0d1320; color: #f2f5fb;
+        }
+      }
     </style>
 
     <title>Terraclima — North American Microclimate Atlas</title>
