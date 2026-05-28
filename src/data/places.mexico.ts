@@ -1534,6 +1534,16 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Cloud-forest band shifting upslope as the lifting condensation level rises; some loss of the characteristic mist regime.", outlook2100: "Significant biogeographic displacement possible — Xalapa may become drier and more subtropical.", keyShifts: [{ variable: "Fog frequency", direction: "down" }, { variable: "Upslope shift of cloud-forest", direction: "up" }, { variable: "Extreme rainfall", direction: "up" }], resilienceNote: "Cloud forests are among the ecosystems most threatened by warming; protecting the gradient is critical." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "worsening" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening", note: "Saturated slopes, intense rain events." }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 76, microclimateUniqueness: 86, comfort: 74, resilience: 58, growability: 78, tradeoff: 34 },
+    liveSignals: {
+      costPressure: 44,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "University-town housing is moderate for Mexico but persistent drizzle and Veracruz-port logistics shape daily friction for remote workers.",
+      sources: [
+        { label: "SMN — Xalapa station 1991–2020", url: "https://smn.conagua.gob.mx/es/" },
+        { label: "INECOL — Cloud forest ecology research", url: "https://www.inecol.mx/" },
+      ],
+    },
     relocationFit: ["mist lovers", "coffee growers", "Mexican-highland expats"], travelFit: ["cloud-forest hikes", "coffee tours", "Instituto de Ecología"],
     whoWouldLove: "Readers, mossy-path walkers, anyone who thinks cool and misty is the correct climate.", whoMightNot: "Sun-seekers; anyone with damp-aggravated joints.",
     confidence: "high",

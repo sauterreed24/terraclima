@@ -69,6 +69,24 @@ describe("PlaceCard overlay warmup", () => {
     expect(getReferenceMonth(new Date(2026, 4, 15))).toBe(4);
   });
 
+  it("keeps the bookmark control outside the card open button (no nested buttons)", () => {
+    const onBookmarkToggle = vi.fn();
+    const { container } = render(
+      <UnitProvider>
+        <PlaceCard
+          place={PLACES[0]!}
+          onOpenPlace={() => undefined}
+          onBookmarkToggle={onBookmarkToggle}
+        />
+      </UnitProvider>,
+    );
+    const openTarget = container.querySelector(".place-card__open-target");
+    const bookmark = container.querySelector(".place-card__bookmark-btn");
+    expect(openTarget).not.toBeNull();
+    expect(bookmark).not.toBeNull();
+    expect(openTarget!.contains(bookmark)).toBe(false);
+  });
+
   it("preloads the compare chunk from compare-button intent without opening the profile", () => {
     const onPreloadPlaceDetail = vi.fn();
     const onPreloadCompare = vi.fn();

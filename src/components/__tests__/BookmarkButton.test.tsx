@@ -42,11 +42,12 @@ describe("BookmarkButton — click", () => {
     const onToggle = vi.fn();
     const parentClick = vi.fn();
     render(
-      // role="button" / keyboard handler on the wrapper to satisfy jsx-a11y;
-      // the real production wrapper is a <button> for the place card.
-      <button type="button" onClick={parentClick} aria-label="open place">
+      <>
+        <button type="button" onClick={parentClick} aria-label="open place">
+          Open
+        </button>
         <BookmarkButton pinned={false} placeName="Atlin" onToggle={onToggle} />
-      </button>,
+      </>,
     );
     // Click only the bookmark child, not the outer open-place button.
     fireEvent.click(screen.getByRole("button", { name: /Pin Atlin/ }));
