@@ -2809,7 +2809,7 @@
     color: var(--color-ice);
   }
   .compare-insight-strip__place--link:focus-visible {
-    outline: 2px solid rgba(26, 143, 168, 0.7);
+    outline: 2px solid var(--tc-focus-ring);
     outline-offset: 2px;
   }
   .tc-explorer-dock {
@@ -5075,7 +5075,7 @@
     pointer-events: none;
     stroke-width: 2.25;
   }
-  .map-btn:hover {
+  .map-btn:not(:disabled):hover {
     border-color: rgba(140, 200, 224, 0.85);
     background: rgba(24, 35, 57, 0.88);
     color: #ffffff;
@@ -5086,18 +5086,12 @@
     outline-offset: 2px;
   }
   .map-btn:active { transform: translateY(0); }
-  /* Zoom button at a hard zoom limit: dim, non-interactive, and no hover lift so
-     users get clear feedback instead of mashing a button that does nothing. */
+  /* Zoom button at a hard zoom limit: dim + non-interactive so users get clear
+     feedback instead of mashing a button that does nothing. The hover lift is
+     already scoped to :not(:disabled), so no reset block is needed. */
   .map-btn:disabled {
     opacity: 0.38;
     cursor: not-allowed;
-    transform: none;
-  }
-  .map-btn:disabled:hover {
-    background: rgba(13, 20, 32, 0.78);
-    border-color: rgba(155, 178, 205, 0.45);
-    color: rgba(245, 250, 255, 0.96);
-    transform: none;
   }
 
   /* Map empty state — shown over the (intentionally dark) atlas shell when the

@@ -13,5 +13,15 @@ export const SEARCH_INPUT_ID = "terraclima-place-search";
  *  shortcuts overlay. Used to suppress the first-run "?" pulse. */
 export const SHORTCUTS_SEEN_KEY = "terraclima.shortcuts-seen.v1";
 
+/** Mac shows ⌘; every other platform shows Ctrl. Detected once so keyboard-shortcut
+ *  hints stay consistent across the inline tips and the shortcuts overlay. */
+export const IS_MAC =
+  typeof navigator !== "undefined" &&
+  /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent || "");
+/** Label for the Cmd/Ctrl modifier key on this platform (for shortcut keycaps). */
+export const CMD_KEY_LABEL = IS_MAC ? "⌘" : "Ctrl";
+/** Compact one-pill hint for the global search shortcut, e.g. "⌘K" / "Ctrl K". */
+export const SEARCH_SHORTCUT_HINT = IS_MAC ? "⌘K" : "Ctrl K";
+
 /** State of the "copy current view" UX. */
 export type ShareStatus = "idle" | "copied" | "failed";

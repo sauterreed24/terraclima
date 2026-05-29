@@ -46,7 +46,7 @@ import {
   preloadCompareView,
   preloadPlaceDetail,
 } from "./lib/lazy-views";
-import { SEARCH_INPUT_ID, SHORTCUTS_SEEN_KEY, type ShareStatus } from "./lib/app-constants";
+import { SEARCH_INPUT_ID, SEARCH_SHORTCUT_HINT, SHORTCUTS_SEEN_KEY, type ShareStatus } from "./lib/app-constants";
 import { LogoMark } from "./components/chrome/LogoMark";
 import { Footer } from "./components/chrome/Footer";
 import { ShortcutsOverlay } from "./components/chrome/ShortcutsOverlay";
@@ -91,12 +91,6 @@ const CURATED_SET_BY_ID = {
   ...Object.fromEntries(Object.entries(COLLECTION_BY_ID).map(([id, c]) => [id, { ...c, kind: "collection" as const }])),
   ...Object.fromEntries(Object.entries(CLIMATE_TRIP_THEME_BY_ID).map(([id, t]) => [id, { ...t, kind: "trip" as const }])),
 };
-
-/** Mac shows ⌘; every other platform sees Ctrl. Detected once for the search shortcut hint. */
-const IS_MAC =
-  typeof navigator !== "undefined" &&
-  /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent || "");
-const SEARCH_SHORTCUT_HINT = IS_MAC ? "⌘K" : "Ctrl K";
 
 function placeForId(id: string): Place | undefined {
   const canonical = resolvePlaceId(id);
