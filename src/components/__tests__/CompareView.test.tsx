@@ -148,4 +148,35 @@ describe("CompareView", () => {
     expect(liveFitHighlight).not.toBeNull();
     expect(within(liveFitHighlight as HTMLElement).getByText("92/100")).toBeInTheDocument();
   });
+
+  it("shows a scenario honesty banner when comparing under a future climate layer", () => {
+    render(
+      <UnitProvider>
+        <CompareView
+          places={PLACES.slice(0, 2)}
+          open
+          onClose={() => undefined}
+          onRemove={() => undefined}
+          scenario="ssp585"
+        />
+      </UnitProvider>,
+    );
+    expect(screen.getByRole("note")).toHaveTextContent(/SSP5-8.5/);
+    expect(screen.getByRole("note")).toHaveTextContent(/Place dossiers still show present-day normals/);
+  });
+
+  it("omits the scenario banner for present-day compare", () => {
+    render(
+      <UnitProvider>
+        <CompareView
+          places={PLACES.slice(0, 2)}
+          open
+          onClose={() => undefined}
+          onRemove={() => undefined}
+          scenario="now"
+        />
+      </UnitProvider>,
+    );
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
+  });
 });

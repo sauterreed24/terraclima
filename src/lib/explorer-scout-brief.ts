@@ -1,4 +1,5 @@
-import type { Place } from "../types";
+import type { Place, ScenarioId } from "../types";
+import { scenarioMeta } from "./climate-projection";
 import { ARCHETYPE_LABELS } from "../types";
 import {
   annualComfortMonthCount,
@@ -159,6 +160,7 @@ export function buildExplorerScoutBrief(
   ranked: RankingResult[],
   rankingLabel: string,
   liveFitFilters: LiveFitFilters = {},
+  scenario: ScenarioId = "now",
 ): ExplorerScoutBrief | null {
   if (ranked.length === 0) return null;
 
@@ -172,10 +174,14 @@ export function buildExplorerScoutBrief(
   const decisionSignals = buildDecisionSignals(places);
   const decisionRows = buildShortlistDecisionRows(shortlist, liveFitFilters);
 
+  const scenarioClause = scenario === "now"
+    ? ""
+    : ` under ${scenarioMeta(scenario).label} (illustrative regional projection)`;
+
   return {
     leader,
     compareIds,
-    summary: `${leader.place.name} leads this view by ${rankingLabel}; the top ${shortlist.length} span ${countries.join(", ")} and ${archetypes.size} microclimate families.`,
+    summary: `${leader.place.name} leads this view by ${rankingLabel}${scenarioClause}; the top ${shortlist.length} span ${countries.join(", ")} and ${archetypes.size} microclimate families.`,
     fitLine: leaderNote ? leaderNote : `${leader.place.koppen} climate signal with ${Math.round(leader.score)} score.`,
     decisionLine: decisionLine(decisionSignals),
     cautionLine: topRiskLine(leader.place),

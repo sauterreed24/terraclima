@@ -15,6 +15,7 @@
 // ============================================================
 
 import type { Place } from "../types";
+import { DRIVER_LABELS } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import {
   RISK_VALUE,
@@ -251,6 +252,15 @@ function dequote(text: string): string {
   return text.replace(/^["“”']+|["“”']+$/g, "").trim();
 }
 
+function terrainSeasonContext(place: Place, key: SeasonKey): string | null {
+  if (key !== "spring" && key !== "summer") return null;
+  const relief = place.reliefContext?.trim();
+  if (relief) return firstSentence(relief);
+  const contrast = place.localContrast?.[0]?.note?.trim();
+  if (contrast) return firstSentence(contrast);
+  return null;
+}
+
 function buildSeason(place: Place, def: SeasonDef): SeasonReading {
   const highC = meanOf(place.climate.tempHighC, def.idx) ?? 0;
   const lowC = meanOf(place.climate.tempLowC, def.idx) ?? 0;
@@ -266,6 +276,8 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
     `${dayPhrase(tone)}, ${nightPhrase(lowC, humidityMean)}.`,
     `${weatherPhrase(conditions, precipMean, snowMean)}.`,
   ];
+  const terrain = terrainSeasonContext(place, def.key);
+  if (terrain) sentences.push(terrain.endsWith(".") ? terrain : `${terrain}.`);
   const risk = seasonRiskPhrase(place, def.key);
   if (risk) sentences.push(`${risk}.`);
 
@@ -318,13 +330,16 @@ function deriveFeelLine(place: Place): string {
   const sh = meanSummerHigh(place);
   const jl = meanJanLow(place);
   const hook = ARCHETYPE_BY_ID[place.archetypes[0]]?.label?.toLowerCase() ?? "distinct microclimate";
+  const driverId = place.drivers[0];
+  const driverLabel = driverId ? DRIVER_LABELS[driverId]?.toLowerCase() : null;
+  const shapeClause = driverLabel ? `, shaped mainly by ${driverLabel}` : "";
   const easyClause =
     easy >= 12 ? `Nearly every month of the year lands in the easy-comfort zone`
     : easy >= 9 ? `Most of the year — about ${easy} months in 12 — sits in the easy-comfort zone`
     : easy >= 5 ? `Roughly ${easy} of the year's 12 months land in the easy-comfort zone`
     : easy >= 2 ? `Only about ${easy} months a year sit squarely in the easy-comfort zone`
     : `Genuine comfort is a short window here — barely ${easy} month${easy === 1 ? "" : "s"} a year`;
-  return `${easyClause}. Summers run ${summerWord(sh)}, winters ${winterWord(jl)}, and the air tends ${airWord(place)} — textbook ${hook}.`;
+  return `${easyClause}. Summers run ${summerWord(sh)}, winters ${winterWord(jl)}, and the air tends ${airWord(place)} — textbook ${hook}${shapeClause}.`;
 }
 
 /** Cadence-only travel tags ("year-round", "summer") don't read as draws. */
@@ -366,6 +381,10 @@ function deriveTexture(place: Place): string {
     if ((ls.costPressure ?? 0) >= 70) livedCue = " Housing runs expensive, so budget is part of the calculus.";
     else if ((ls.accessFriction ?? 0) >= 65) livedCue = " Day-to-day services sit a real drive away.";
     else if ((ls.socialStress ?? 0) >= 65) livedCue = " Local social-fabric stress is worth checking in person.";
+    if (ls.note?.trim()) {
+      const note = firstSentence(ls.note);
+      livedCue += livedCue ? ` ${note}` : ` ${note}`;
+    }
   }
 
   return `${base}: ${riskClause}.${livedCue}`;

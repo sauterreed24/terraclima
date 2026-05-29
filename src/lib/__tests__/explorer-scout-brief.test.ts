@@ -127,6 +127,13 @@ describe("buildExplorerScoutBrief", () => {
     expect(buildExplorerScoutBrief([], "Hidden gems")).toBeNull();
   });
 
+  it("annotates the summary when a future climate scenario is active", () => {
+    const ranked = rankPlaces("hidden-gems", PLACES).slice(0, 5);
+    const brief = buildExplorerScoutBrief(ranked, "Hidden gems", {}, "ssp585");
+    expect(brief!.summary).toContain("SSP5-8.5");
+    expect(brief!.summary).toContain("illustrative regional projection");
+  });
+
   it("names the same top risk as the decision matrix when risk levels tie", () => {
     // wildfire + coastal both peak at "high". Their labels (Wildfire vs Coastal)
     // sort opposite to the corpus field order, so without a shared tiebreaker the

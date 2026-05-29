@@ -64,6 +64,9 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
           <p>
             Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The URL encodes the place and view. Surprise uses the same filtered pool as the cards.
           </p>
+          <p>
+            Climate layer: use the <strong className="text-frost font-normal">Climate layer</strong> control below the map to flip the Explorer (and Compare) between present-day normals and illustrative 2050 SSP2-4.5 / SSP5-8.5 projections. Place dossiers stay on present-day data.
+          </p>
         </div>
       </div>
     </div>

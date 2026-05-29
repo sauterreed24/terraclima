@@ -4,6 +4,15 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Scenario/compare symbiosis + experience engine uplift
+
+- **Compare under climate scenarios (`src/App.tsx`, `src/components/CompareView.tsx`):** when `scn≠now`, Compare now receives projected places from the Explorer pool (not present-day baseline) and shows an honesty banner; PlaceDetail dossiers stay present-day per URL invariants.
+- **Scout brief scenario label (`src/lib/explorer-scout-brief.ts`):** leader summary annotates the active SSP layer when a future scenario is engaged.
+- **Shortcuts climate-layer tip (`src/components/chrome/ShortcutsOverlay.tsx`):** documents the Climate layer control for discoverability.
+- **Derived experience enrichment (`src/lib/place-overview.ts`):** non-authored reads weave primary driver labels into the feel line, relief/local-contrast snippets into spring/summer detail, and `liveSignals.note` into texture.
+- **Tier C experience batch 2 (`src/data/places.usa.ts`):** hand-written `experience` overrides for Forks, Astoria, Point Reyes, Port Townsend, Grand Marais (MI), Cloudcroft, Crested Butte, and Marfa; sunshinePct + humidity where missing.
+- **Regression hardening:** `ClimateScenarioControl` smoke test, Compare scenario banner tests, scout-brief scenario annotation, place-overview driver/relief tests; `playtest-polish` projected-compare + batch-2 anchors.
+
 ### Map affordances + discoverability
 
 - **Map empty state (`src/components/AtlasMap.tsx`, `src/styles.css`):** when the current filters/search leave zero pins, the atlas now shows a clear "No places on the map" card (and an empty-aware `aria-label` / `role="status"` live region) instead of a blank, seemingly-broken canvas.

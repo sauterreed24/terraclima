@@ -535,8 +535,8 @@ export default function App() {
     [ranking],
   );
   const scoutBrief = useMemo(
-    () => buildExplorerScoutBrief(ranked, rankingLabel, deferredFilters),
-    [ranked, rankingLabel, deferredFilters],
+    () => buildExplorerScoutBrief(ranked, rankingLabel, deferredFilters, climateScenario),
+    [ranked, rankingLabel, deferredFilters, climateScenario],
   );
   const contextStressRows = useMemo(
     () => buildContextStressRows({
@@ -1045,7 +1045,7 @@ export default function App() {
       {compareOpen ? (
         <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
           <CompareView
-            places={[...compareIds].map(placeForId).filter(isPlace)}
+            places={[...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace)}
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
@@ -1056,6 +1056,7 @@ export default function App() {
             onCopyView={copyCurrentView}
             shareStatus={shareStatus}
             liveFitFilters={filters}
+            scenario={climateScenario}
             occluded={compareViewOccluded}
           />
         </Suspense>

@@ -46,6 +46,7 @@ The "2050 time machine" ([`src/lib/climate-projection.ts`](../src/lib/climate-pr
 - `scn=ssp245` (SSP2-4.5 "middle of the road") and `scn=ssp585` (SSP5-8.5 "high emissions"); `now` is the default and is never written.
 - The projection is an **illustrative coarse regional anomaly** (sourced country + latitude-band table; IPCC AR6 Atlas / NASA NEX-GDDP-CMIP6), not a downscaled per-site forecast. A place may carry an authored, cited `Place.projection` override.
 - The place **dossier still shows present-day normals**; only the Explorer aggregate views project.
+- **Compare** uses the same projected normals as the active Explorer layer when `scn≠now` (charts, ribbons, and screening scores). Opening a place profile from Compare still loads present-day dossier data.
 - Ranking under a scenario flows through the climate-processor worker subsystem ([`src/hooks/use-climate-processor.ts`](../src/hooks/use-climate-processor.ts)); a synchronous fallback keeps the result identical when no worker is available.
 
 ## Formatting rules

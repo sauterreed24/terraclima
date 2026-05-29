@@ -64,4 +64,19 @@ describe("composePlaceExperience", () => {
   it("does not mark a place authored when no experience override is present", () => {
     expect(composePlaceExperience(PLACES_BY_ID["yuma-az"]).authored).toBe(false);
   });
+
+  it("weaves the primary driver into the derived feel line", () => {
+    const base = PLACES_BY_ID["bishop-ca"];
+    const exp = composePlaceExperience({ ...base, experience: undefined });
+    expect(exp.feelLine).toContain("shaped mainly by");
+    expect(exp.feelLine).toContain("rain shadow");
+  });
+
+  it("enriches spring/summer season detail with relief context when not authored", () => {
+    const forks = PLACES_BY_ID["forks-wa"];
+    const exp = composePlaceExperience({ ...forks, experience: undefined });
+    const summer = exp.seasons.find(s => s.key === "summer")!;
+    expect(summer.detail).toContain("Olympic Peninsula west slope");
+    expect(summer.authored).toBe(false);
+  });
 });

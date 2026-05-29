@@ -30,6 +30,8 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { buildComfortPrecisionProfile, apparentComfortIndexFromProfile } from "../src/lib/comfort-precision";
 import { composePlaceExperience } from "../src/lib/place-overview";
+import { projectPlace } from "../src/lib/climate-projection";
+import { meanSummerHigh } from "../src/lib/climate-metrics";
 
 async function main(): Promise<void> {
   const validatePlaceId = (id: string) => PLACES.some((p) => p.id === id);
@@ -216,6 +218,13 @@ async function main(): Promise<void> {
   }
   if (!warmed) throw new Error("SSP5-8.5 should lower at least one coolest-summers score vs now");
 
+  const baselinePlace = PLACES.find(p => p.id === "yuma-az");
+  if (!baselinePlace) throw new Error("yuma-az missing for projected compare smoke");
+  const projectedYuma = projectPlace(baselinePlace, "ssp585");
+  if (meanSummerHigh(projectedYuma) <= meanSummerHigh(baselinePlace)) {
+    throw new Error("ssp585 should warm yuma-az summer high for compare projection path");
+  }
+
   const ssp245Url = formatAppRelativeUrl({ view: "explorer", scenario: "ssp245", collectionExists: () => true });
   if (!ssp245Url.includes("scn=ssp245")) throw new Error(`ssp245 not in URL: ${ssp245Url}`);
   const ssp245Parsed = parseAppSearch(new URL(ssp245Url, "https://example.com").search);
@@ -228,6 +237,7 @@ async function main(): Promise<void> {
     "container-name: tc-comfort-precision",
     "grid-template-columns: repeat(5, minmax(0, 1fr))",
     'html[data-theme="dark"] .climate-scenario',
+    'html[data-theme="dark"] .compare-scenario-banner',
     "@container tc-comfort-precision",
   ]) {
     if (!styles.includes(needle)) throw new Error(`styles.css missing post-v4.8 polish: ${needle}`);
@@ -272,6 +282,22 @@ async function main(): Promise<void> {
     const place = PLACES.find(p => p.id === id);
     if (!place) throw new Error(`tier C live anchor missing: ${id}`);
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after Tier C polish pass`);
+  }
+
+  const tierCExperienceBatch2 = [
+    "forks-wa", "astoria-or", "point-reyes-ca", "port-townsend-wa",
+    "grand-marais-mi", "cloudcroft-nm", "crested-butte-co", "marfa-tx",
+  ];
+  for (const id of tierCExperienceBatch2) {
+    const place = PLACES.find(p => p.id === id);
+    if (!place) throw new Error(`tier C experience batch 2 missing: ${id}`);
+    if (!place.experience?.feel) throw new Error(`${id} missing authored experience.feel`);
+    for (const key of ["winter", "spring", "summer", "autumn"] as const) {
+      const detail = place.experience.seasons?.[key];
+      if (!detail || detail.length < 24) throw new Error(`${id} missing authored ${key} season detail`);
+    }
+    if (!place.climate.sunshinePct) throw new Error(`${id} missing sunshinePct after batch 2`);
+    if (!place.liveSignals) throw new Error(`${id} missing liveSignals after batch 2`);
   }
 
   const lethbridge = PLACES.find(p => p.id === "lethbridge-ab");

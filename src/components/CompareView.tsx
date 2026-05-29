@@ -1,7 +1,8 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MOTION_DURATION_BASE_S, scrimFadeTransition } from "../lib/device-profile";
 import { useEffect, useId, useMemo, useRef } from "react";
-import type { Place } from "../types";
+import type { Place, ScenarioId } from "../types";
+import { scenarioMeta } from "../lib/climate-projection";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
 import { annualComfortMonthCount, avgRisk, meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
@@ -13,7 +14,7 @@ import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { apparentComfortIndex } from "../lib/comfort-precision";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
-import { ChevronRight, Link2, X } from "lucide-react";
+import { ChevronRight, Clock3, Link2, X } from "lucide-react";
 
 type CompareShareStatus = "idle" | "copied" | "failed";
 
@@ -36,6 +37,7 @@ interface Props {
   onCopyView?: () => void;
   shareStatus?: CompareShareStatus;
   liveFitFilters?: LiveFitFilters;
+  scenario?: ScenarioId;
   occluded?: boolean;
 }
 
@@ -48,6 +50,7 @@ export function CompareView({
   onCopyView,
   shareStatus = "idle",
   liveFitFilters,
+  scenario = "now",
   occluded = false,
 }: Props) {
   const { temp, dist } = useUnits();
@@ -190,6 +193,15 @@ export function CompareView({
                 <button ref={closeBtnRef} type="button" onClick={onClose} className="btn-ghost"><X className="w-4 h-4" /> Close</button>
               </div>
             </div>
+
+            {scenario !== "now" ? (
+              <div className="compare-scenario-banner" role="note">
+                <Clock3 className="w-3.5 h-3.5 shrink-0" aria-hidden />
+                <span>
+                  Climate charts and scores use the <strong>{scenarioMeta(scenario).label}</strong> illustrative regional projection — the same layer as the Explorer. Place dossiers still show present-day normals.
+                </span>
+              </div>
+            ) : null}
 
             {decisionRead ? (
               <section className="compare-decision-read" aria-label="Comparison decision read">
