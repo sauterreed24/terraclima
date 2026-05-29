@@ -106,13 +106,13 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "World-famous wine valley where gap flow and fog delay ripening — Cabernet country built on nightly cooling.",
     summaryImmersive: "The valley floor heats by day; cool air drains from the Petaluma Gap and marine layer spills east, wrapping benchlands in fog until mid-morning. Bench elevation differences of only tens of meters reorder frost risk and hang time — the entire AVA system is a map of microclimate.",
     whyDistinct: "Complex terrain channels + fog penetration + inland heat produce one of the steepest wine mesoclimates in the New World in a narrow corridor.",
-    experience: {
+        experience: {
       feel: "Napa Valley Floor — the valley floor heats by day; cool air drains from the Petaluma Gap and marine layer spills east, wrapping benchlands in fog until mid-morning. Bench elevation differences of only tens of meters reorder frost risk and hang time — the entire AVA system is a map of microclimate.",
       seasons: {
-        winter: "Winter runs with afternoons near 14.7°C and nights near 4.3°C — rain is frequent and can be heavy. Winter rewards wine industry who accept the cold season.",
-        spring: "As spring builds with afternoons near 21°C and nights near 7.3°C — showers pass through regularly. Spring is when gap winds and marine layer is easiest to read on the ground.",
-        summer: "The warm months with afternoons near 29.3°C and nights near 11.7°C — skies stay mostly dry. Napa Valley Floor is at its most kinetic for wine tasting. Wildfire and smoke are summer wildcards.",
-        autumn: "The shoulder season with afternoons near 23.3°C and nights near 8.3°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for mediterranean pocket. Fire season lingers into shoulder months.",
+        winter: "Mild and workable — afternoons near 14.7°C, nights near 4.3°C — rain is frequent and can be heavy. Winter rewards wine industry who accept the cold season.",
+        spring: "Spring opens — afternoons near 21°C, nights near 7.3°C — showers pass through regularly. Spring is when gap winds and marine layer is easiest to read on the ground.",
+        summer: "Warm season peak — afternoons near 29.3°C, nights near 11.7°C — skies stay relentlessly clear and dry. Napa Valley Floor is at its most kinetic for wine tasting. Wildfire and smoke are summer wildcards.",
+        autumn: "Shoulder season — afternoons near 23.3°C, nights near 8.3°C — weather stays moderate and changeable. Clear light returns as humidity eases. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for wine tasting and hot-air balloons — the practical way to experience mediterranean pocket terrain in California.",
       residentFit: "It rewards viticulture and Mediterranean gardening devotees — especially wine industry — if the local tradeoffs still feel acceptable after a full season in Napa.",
@@ -147,12 +147,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["wine industry", "retirees"], travelFit: ["wine tasting", "hot-air balloons"],
     whoWouldLove: "Viticulture and Mediterranean gardening devotees.", whoMightNot: "Budget shoppers; fire-smoke sensitive.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "napa-ca-mechanism",
         title: "Mediterranean Pocket at work",
         paragraphs: [
-          "Napa Valley Floor sits where north-south alluvial trough between the mayacamas and vaca ranges; cool marine air intrudes through petaluma gap. The atlas tags this as mediterranean pocket (Csa, roughly 603 mm/yr in these normals), and the dominant spatial engines are Gap winds and Marine layer — with Slope / aspect also in play.",
+          "Napa Valley Floor sits where north-south alluvial trough between the Mayacamas and Vaca ranges; cool marine air intrudes through Petaluma Gap. The atlas tags this as mediterranean pocket (Csa, roughly 603 mm/yr in these normals), and the dominant spatial engines are Gap winds and Marine layer — with Slope / aspect also in play.",
           "Complex terrain channels + fog penetration + inland heat produce one of the steepest wine mesoclimates in the New World in a narrow corridor. That mechanism is why two map dots in California can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -187,13 +187,13 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Desert resort climate famous for winter sun — summer heat moderated slightly by elevation vs the Imperial Valley floor.",
     summaryImmersive: "Palm Springs sits in the venturi of the San Gorgonio Pass where pressure gradients translate into strong winds; winter attracts snowbirds for reliable warmth; summer pushes human activity into pools and evenings. Palm oases exploit groundwater; the surrounding desert is hyperarid.",
     whyDistinct: "Pass wind regime + mountain backdrop + irrigation oasis — a recreational microclimate layered on extreme desert.",
-    experience: {
+        experience: {
       feel: "Palm Springs sits in the venturi of the San Gorgonio Pass where pressure gradients translate into strong winds; winter attracts snowbirds for reliable warmth; summer pushes human activity into pools and evenings. Palm oases exploit groundwater; the surrounding desert is hyperarid.",
       seasons: {
-        winter: "Winter runs with afternoons near 22.3°C and nights near 9.3°C — weather stays moderate and changeable. Winter rewards retirees who accept the cold season.",
-        spring: "As spring builds with afternoons near 32.3°C and nights near 17.3°C — skies stay mostly dry with intense sun. Spring is when gap winds and rain shadow is easiest to read on the ground.",
-        summer: "The warm months with afternoons near 43°C and nights near 26.7°C — skies stay mostly dry with intense sun. Palm Springs is at its most kinetic for modernism week. Plan around heat that can turn genuinely dangerous.",
-        autumn: "The shoulder season with afternoons near 33.3°C and nights near 17.7°C — skies stay mostly dry with intense sun. Autumn often brings the clearest light and the most honest tradeoffs for high-desert escape. Fire season lingers into shoulder months.",
+        winter: "Warm winter window — afternoons near 22.3°C, nights near 9.3°C — weather stays moderate and changeable. Winter rewards retirees who accept the cold season.",
+        spring: "Heating up fast — afternoons near 32.3°C, nights near 17.3°C — skies stay relentlessly clear and dry. Spring is when gap winds and rain shadow is easiest to read on the ground.",
+        summer: "Peak desert heat — afternoons near 43°C, nights near 26.7°C — skies stay relentlessly clear and dry. Palm Springs is at its most kinetic for modernism week. Plan around heat that can turn genuinely dangerous.",
+        autumn: "Shoulder season — afternoons near 33.3°C, nights near 17.7°C — skies stay relentlessly clear and dry. Clear light returns as humidity eases. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for modernism week and Joshua Tree day trips — the practical way to experience high-desert escape terrain in California.",
       residentFit: "It rewards dry heat and winter sun seekers — especially retirees — if the local tradeoffs still feel acceptable after a full season in Palm Springs.",
@@ -228,12 +228,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "hospitality"], travelFit: ["modernism week", "Joshua Tree day trips"],
     whoWouldLove: "Dry heat and winter sun seekers.", whoMightNot: "Summer heat–sensitive visitors.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "palm-springs-ca-mechanism",
         title: "High-Desert Escape at work",
         paragraphs: [
-          "Palm Springs sits where coachella valley wind corridor north of the salton sea; san jacinto massif rises >3000 m to the west. The atlas tags this as high-desert escape (BWh, roughly 122 mm/yr in these normals), and the dominant spatial engines are Gap winds and Rain shadow — with Elevation lapse rate also in play.",
+          "Palm Springs sits where coachella Valley wind corridor north of the Salton Sea; San Jacinto massif rises >3000 m to the west. The atlas tags this as high-desert escape (BWh, roughly 122 mm/yr in these normals), and the dominant spatial engines are Gap winds and Rain shadow — with Elevation lapse rate also in play.",
           "Pass wind regime + mountain backdrop + irrigation oasis — a recreational microclimate layered on extreme desert. That mechanism is why two map dots in California can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -349,13 +349,13 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Gulf-side luxury microclimate — warm wet summers, mild dry winters, and sea-breeze caps on peak heat.",
     summaryImmersive: "Naples trades Atlantic surf for Gulf shallows: water temperatures seasonally warm, supporting humid tropical-feeling nights. Cold fronts are brief; sea breezes organize summer convection inland.",
     whyDistinct: "Gulf bathymetry and low latitude yield narrow annual range relative to interior Florida.",
-    experience: {
+        experience: {
       feel: "Naples trades Atlantic surf for Gulf shallows: water temperatures seasonally warm, supporting humid tropical-feeling nights. Cold fronts are brief; sea breezes organize summer convection inland.",
       seasons: {
-        winter: "The cold season with afternoons near 24.7°C and nights near 14°C — showers pass through regularly. Winter rewards retirees who accept the cold season. Storm systems roll through with real force.",
-        spring: "The thaw season with afternoons near 28.7°C and nights near 18.3°C — showers pass through regularly. Spring green-up arrives against a wet 1435 mm annual backdrop. Spring rains can swell rivers and arroyos quickly.",
-        summer: "High season with afternoons near 32.7°C and nights near 23.7°C — rain is frequent and can be heavy. Naples is at its most kinetic for Everglades. Afternoon convection and storms build often.",
-        autumn: "Fall shoulder with afternoons near 29.7°C and nights near 20.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for hurricane-exposed coast. Storm systems roll through with real force.",
+        winter: "Warm winter window — afternoons near 24.7°C, nights near 14°C — showers pass through regularly. Winter rewards retirees who accept the cold season. Storm systems roll through with real force.",
+        spring: "Heating up fast — afternoons near 28.7°C, nights near 18.3°C — showers pass through regularly. Spring green-up arrives against a wet 1435 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Hot and humid — afternoons near 32.7°C, nights near 23.7°C — rain is frequent and can be heavy. Naples is at its most kinetic for Everglades. Afternoon convection and storms build often.",
+        autumn: "Hurricane-season tail — afternoons near 29.7°C, nights near 20.3°C — rain is frequent and can be heavy. Tropical systems can still shape the calendar deep into fall. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Everglades and beaches — the practical way to experience hurricane-exposed coast terrain in Florida.",
       residentFit: "It rewards gulf-coast warmth without Atlantic surf culture — especially retirees — if the local tradeoffs still feel acceptable after a full season in Naples.",
@@ -390,12 +390,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "second-home owners"], travelFit: ["Everglades", "beaches"],
     whoWouldLove: "Gulf-coast warmth without Atlantic surf culture.", whoMightNot: "Hurricane-averse; flood-risk skeptics.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "naples-fl-mechanism",
         title: "Hurricane-Exposed Coast at work",
         paragraphs: [
-          "Naples sits where collier county barrier islands and mangrove-lined estuaries; gentle continental shelf. The atlas tags this as hurricane-exposed coast (Aw border, roughly 1435 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
+          "Naples sits where collier County barrier islands and mangrove-lined estuaries; gentle continental shelf. The atlas tags this as hurricane-exposed coast (Aw border, roughly 1435 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
           "Gulf bathymetry and low latitude yield narrow annual range relative to interior Florida. That mechanism is why two map dots in Florida can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -512,13 +512,13 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "High Plains river town — windy, sunny, and prone to rapid winter warm-ups when downslope flow replaces Arctic air.",
     summaryImmersive: "Scottsbluff sits where irrigation from the North Platte meets semi-arid steppe. Summer brings dryline thunderstorms; winter alternates between bitter cold and chinook relief.",
     whyDistinct: "Elevation and escarpment proximity add mesoscale wind and temperature volatility rare on the flat Plains.",
-    experience: {
+        experience: {
       feel: "Scottsbluff sits where irrigation from the North Platte meets semi-arid steppe. Summer brings dryline thunderstorms; winter alternates between bitter cold and chinook relief.",
       seasons: {
-        winter: "Deep winter with afternoons near 3.3°C and nights near -9°C — skies stay mostly dry with intense sun. Winter rewards ag workers who accept the cold season. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens with afternoons near 16.7°C and nights near 1.7°C — showers pass through regularly. Spring is when continental extremity and chinook / foehn downslope is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Summer settles with afternoons near 30.3°C and nights near 12.7°C — showers pass through regularly. Scottsbluff is at its most kinetic for Scotts Bluff NM. Water supply and irrigation stress matter.",
-        autumn: "Autumn light with afternoons near 17°C and nights near 0.7°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for high-desert escape. Storm systems roll through with real force.",
+        winter: "Cold and sharp — afternoons near 3.3°C, nights near -9°C — skies stay mostly dry with intense sun. Winter rewards ag workers who accept the cold season. Arctic outbreaks can still bite hard.",
+        spring: "Spring opens — afternoons near 16.7°C, nights near 1.7°C — showers pass through regularly. Spring is when continental extremity and chinook / foehn downslope is easiest to read on the ground. Storm systems roll through with real force.",
+        summer: "Warm season peak — afternoons near 30.3°C, nights near 12.7°C — showers pass through regularly. Scottsbluff is at its most kinetic for Scotts Bluff NM. Water supply and irrigation stress matter.",
+        autumn: "Shoulder season — afternoons near 17°C, nights near 0.7°C — weather stays moderate and changeable. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Scotts Bluff NM and Oregon Trail history — the practical way to experience high-desert escape terrain in Nebraska.",
       residentFit: "It rewards wide-open Plains people — especially ag workers — if the local tradeoffs still feel acceptable after a full season in Scottsbluff.",
@@ -553,12 +553,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["ag workers", "remote workers"], travelFit: ["Scotts Bluff NM", "Oregon Trail history"],
     whoWouldLove: "Wide-open Plains people.", whoMightNot: "Tree-seekers; humidity lovers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "scottsbluff-ne-mechanism",
         title: "High-Desert Escape at work",
         paragraphs: [
-          "Scottsbluff sits where north platte river at the wildcat hills — plains edge with pine ridge scarp to the north. The atlas tags this as high-desert escape (BSk, roughly 471 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Chinook / foehn downslope — with River-valley moderation also in play.",
+          "Scottsbluff at roughly 1189 m elevation sits where north Platte River at the Wildcat Hills — Plains edge with Pine Ridge scarp to the north. The atlas tags this as high-desert escape (BSk, roughly 471 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Chinook / foehn downslope — with River-valley moderation also in play.",
           "Elevation and escarpment proximity add mesoscale wind and temperature volatility rare on the flat Plains. That mechanism is why two map dots in Nebraska can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -836,13 +836,13 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Classic New England shore — delayed spring, milder peaks than Hartford, nor’easter surf in winter.",
     summaryImmersive: "Mystic’s climate is paced by water: fog, drizzle, and moderate summer heat. Tropical systems occasionally brush the coast with surge and wind.",
     whyDistinct: "Dual-sound exposure tightens maritime influence vs inland Connecticut.",
-    experience: {
+        experience: {
       feel: "Mystic’s climate is paced by water: fog, drizzle, and moderate summer heat. Tropical systems occasionally brush the coast with surge and wind.",
       seasons: {
-        winter: "The cold season with afternoons near 4.3°C and nights near -2.7°C — rain is frequent and can be heavy. Winter rewards maritime retirees who accept the cold season. Coastal surge and wind events belong in the planning stack.",
-        spring: "The thaw season with afternoons near 12°C and nights near 5°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1200 mm annual backdrop. Spring rains can swell rivers and arroyos quickly.",
-        summer: "High season with afternoons near 24.7°C and nights near 17°C — rain is frequent and can be heavy. Mystic is at its most kinetic for seaport museum. Afternoon convection and storms build often.",
-        autumn: "Fall shoulder with afternoons near 16.3°C and nights near 8.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for cool-summer maritime. Hurricane and coastal surge exposure shapes fall planning.",
+        winter: "Cold and sharp — afternoons near 4.3°C, nights near -2.7°C — rain is frequent and can be heavy. Winter rewards maritime retirees who accept the cold season. Coastal surge and wind events belong in the planning stack.",
+        spring: "Green-up and storms — afternoons near 12°C, nights near 5°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1200 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Cool summer by latitude — afternoons near 24.7°C, nights near 17°C — rain is frequent and can be heavy. Mystic is at its most kinetic for seaport museum. Afternoon convection and storms build often.",
+        autumn: "Hurricane-season tail — afternoons near 16.3°C, nights near 8.3°C — rain is frequent and can be heavy. Tropical systems can still shape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
       },
       travelerFit: "Visitors come for seaport museum and sailing — the practical way to experience cool-summer maritime terrain in Connecticut.",
       residentFit: "It rewards coastal New England without big-city scale — especially maritime retirees — if the local tradeoffs still feel acceptable after a full season in Mystic.",
@@ -876,12 +876,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["maritime retirees", "museum-goers"], travelFit: ["seaport museum", "sailing"],
     whoWouldLove: "Coastal New England without big-city scale.", whoMightNot: "Budget retirees; sun-belt seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "mystic-ct-mechanism",
         title: "Cool-Summer Maritime at work",
         paragraphs: [
-          "Mystic sits where estuarine village between long island sound and block island sound — persistent maritime air. The atlas tags this as cool-summer maritime (Dfb, roughly 1200 mm/yr in these normals), and the dominant spatial engines are Marine layer and Diurnal sea breeze — with Tropical-cyclone exposure also in play.",
+          "Mystic sits where estuarine village between Long Island Sound and Block Island Sound — persistent maritime air. The atlas tags this as cool-summer maritime (Dfb, roughly 1200 mm/yr in these normals), and the dominant spatial engines are Marine layer and Diurnal sea breeze — with Tropical-cyclone exposure also in play.",
           "Dual-sound exposure tightens maritime influence vs inland Connecticut. That mechanism is why two map dots in Connecticut can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -916,13 +916,13 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Central PA university town where valley geometry sharpens frost and lake-enhanced snow reaches west of the main Allegheny crest.",
     summaryImmersive: "State College sits in a valley between long parallel ridges; radiative nights run cold; spring green-up can lag neighboring ridges. Winter storms pick up moisture from the Great Lakes in northwesterly flow.",
     whyDistinct: "Ridge-and-valley terrain at latitude where lake-effect and synoptic snow overlap.",
-    experience: {
+        experience: {
       feel: "State College sits in a valley between long parallel ridges; radiative nights run cold; spring green-up can lag neighboring ridges. Winter storms pick up moisture from the Great Lakes in northwesterly flow.",
       seasons: {
-        winter: "Winter settles in with afternoons near 2.7°C and nights near -6.3°C — showers pass through regularly. Winter rewards academics who accept the cold season. Storm systems roll through with real force.",
-        spring: "Spring arrives with afternoons near 14.7°C and nights near 3.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1110 mm annual backdrop. Spring rains can swell rivers and arroyos quickly.",
-        summer: "Summer peaks with afternoons near 26.7°C and nights near 15°C — rain is frequent and can be heavy. State College is at its most kinetic for Penn State sports. Afternoon convection and storms build often.",
-        autumn: "Autumn turns with afternoons near 16.3°C and nights near 5.3°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for cold-air pool. Storm systems roll through with real force.",
+        winter: "Cold and sharp — afternoons near 2.7°C, nights near -6.3°C — showers pass through regularly. Winter rewards academics who accept the cold season. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 14.7°C, nights near 3.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1110 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Warm season peak — afternoons near 26.7°C, nights near 15°C — rain is frequent and can be heavy. State College is at its most kinetic for Penn State sports. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 16.3°C, nights near 5.3°C — showers pass through regularly. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Penn State sports and Rothrock SF — the practical way to experience cold-air pool terrain in Pennsylvania.",
       residentFit: "It rewards appalachian foothills with college-town amenities — especially academics — if the local tradeoffs still feel acceptable after a full season in State College.",
@@ -957,12 +957,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["academics", "families"], travelFit: ["Penn State sports", "Rothrock SF"],
     whoWouldLove: "Appalachian foothills with college-town amenities.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "state-college-pa-mechanism",
         title: "Cold-Air Pool at work",
         paragraphs: [
-          "State College sits where nittany valley in the appalachian ridge and valley — enclosed basins with cold-air pooling. The atlas tags this as cold-air pool (Dfb, roughly 1110 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Slope / aspect — with Lake effect also in play.",
+          "State College sits where nittany Valley in the Appalachian Ridge and Valley — enclosed basins with cold-air pooling. The atlas tags this as cold-air pool (Dfb, roughly 1110 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Slope / aspect — with Lake effect also in play.",
           "Ridge-and-valley terrain at latitude where lake-effect and synoptic snow overlap. That mechanism is why two map dots in Pennsylvania can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -1402,13 +1402,13 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "High-plains city famous for skies — summer thunderstorms, hail, and huge diurnal swings.",
     summaryImmersive: "Roswell sits in a wide valley where dryline and monsoon moisture meet; spring wind and dust are notorious. Irrigation from the Pecos supports pockets of agriculture.",
     whyDistinct: "Classic southern High Plains synoptic environment with monsoon overlay.",
-    experience: {
+        experience: {
       feel: "Roswell sits in a wide valley where dryline and monsoon moisture meet; spring wind and dust are notorious. Irrigation from the Pecos supports pockets of agriculture.",
       seasons: {
-        winter: "Deep winter with afternoons near 13°C and nights near -2.3°C — skies stay mostly dry with intense sun. Winter rewards aviation who accept the cold season. Storm systems roll through with real force.",
-        spring: "Spring opens with afternoons near 25°C and nights near 8°C — skies stay relentlessly clear and dry. Spring is when monsoon convective lift and continental extremity is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Summer settles with afternoons near 34.7°C and nights near 19°C — showers pass through regularly. Roswell is at its most kinetic for aliens museum. Water supply and irrigation stress matter.",
-        autumn: "Autumn light with afternoons near 23.7°C and nights near 7°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for monsoon-edge zone. Storm systems roll through with real force.",
+        winter: "Mild and workable — afternoons near 13°C, nights near -2.3°C — skies stay mostly dry with intense sun. Winter rewards aviation who accept the cold season. Storm systems roll through with real force.",
+        spring: "Spring opens — afternoons near 25°C, nights near 8°C — skies stay relentlessly clear and dry. Spring is when monsoon convective lift and continental extremity is easiest to read on the ground. Storm systems roll through with real force.",
+        summer: "Hot and humid — afternoons near 34.7°C, nights near 19°C — showers pass through regularly. Roswell is at its most kinetic for aliens museum. Water supply and irrigation stress matter.",
+        autumn: "Shoulder season — afternoons near 23.7°C, nights near 7°C — weather stays moderate and changeable. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for aliens museum and Bottomless Lakes — the practical way to experience monsoon-edge zone terrain in New Mexico.",
       residentFit: "It rewards high-plains sky watchers — especially aviation — if the local tradeoffs still feel acceptable after a full season in Roswell.",
@@ -1443,12 +1443,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["aviation", "ranching"], travelFit: ["aliens museum", "Bottomless Lakes"],
     whoWouldLove: "High-plains sky watchers.", whoMightNot: "Humidity lovers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "roswell-nm-mechanism",
         title: "Monsoon-Edge Zone at work",
         paragraphs: [
-          "Roswell sits where broad pecos river valley on the llano estacado margin — high plains dryness with summer monsoon convection. The atlas tags this as monsoon-edge zone (BSk, roughly 314 mm/yr in these normals), and the dominant spatial engines are Monsoon convective lift and Continental extremity — with River-valley moderation also in play.",
+          "Roswell at roughly 1087 m elevation sits where broad Pecos River valley on the Llano Estacado margin — high plains dryness with summer monsoon convection. The atlas tags this as monsoon-edge zone (BSk, roughly 314 mm/yr in these normals), and the dominant spatial engines are Monsoon convective lift and Continental extremity — with River-valley moderation also in play.",
           "Classic southern High Plains synoptic environment with monsoon overlay. That mechanism is why two map dots in New Mexico can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -1483,13 +1483,13 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Gateway city where chinook warmings and summer thunderstorms both make headlines — quick transitions at the Hills’ edge.",
     summaryImmersive: "Rapid City sits where Great Plains simplicity meets orographic complexity; winter can flip from arctic to spring-like in hours when downslope winds arrive.",
     whyDistinct: "Black Hills frontal position amplifies mesoscale wind and temperature volatility.",
-    experience: {
+        experience: {
       feel: "Rapid City sits where Great Plains simplicity meets orographic complexity; winter can flip from arctic to spring-like in hours when downslope winds arrive.",
       seasons: {
-        winter: "The cold season with afternoons near 3°C and nights near -9°C — skies stay mostly dry. Winter rewards tourism who accept the cold season. Arctic outbreaks can still bite hard.",
-        spring: "The thaw season with afternoons near 15°C and nights near 1.3°C — showers pass through regularly. Spring is when chinook / foehn downslope and polar jet / arctic front is easiest to read on the ground. Snowmelt and spring rain can swell rivers fast.",
-        summer: "High season with afternoons near 29.3°C and nights near 13.7°C — showers pass through regularly. Rapid City is at its most kinetic for Mount Rushmore. Wildfire and smoke are summer wildcards.",
-        autumn: "Fall shoulder with afternoons near 16.3°C and nights near 1.3°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for chinook corridor. Storm systems roll through with real force.",
+        winter: "Cold and sharp — afternoons near 3°C, nights near -9°C — skies stay mostly dry. Winter rewards tourism who accept the cold season. Arctic outbreaks can still bite hard.",
+        spring: "Spring opens — afternoons near 15°C, nights near 1.3°C — showers pass through regularly. Spring is when chinook / foehn downslope and polar jet / arctic front is easiest to read on the ground. Snowmelt and spring rain can swell rivers fast.",
+        summer: "Warm season peak — afternoons near 29.3°C, nights near 13.7°C — showers pass through regularly. Rapid City is at its most kinetic for Mount Rushmore. Wildfire and smoke are summer wildcards.",
+        autumn: "Shoulder season — afternoons near 16.3°C, nights near 1.3°C — weather stays moderate and changeable. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Mount Rushmore and Badlands — the practical way to experience chinook corridor terrain in South Dakota.",
       residentFit: "It rewards black Hills access with city services — especially tourism — if the local tradeoffs still feel acceptable after a full season in Rapid City.",
@@ -1524,12 +1524,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["tourism", "healthcare"], travelFit: ["Mount Rushmore", "Badlands"],
     whoWouldLove: "Black Hills access with city services.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "rapid-city-sd-mechanism",
         title: "Chinook Corridor at work",
         paragraphs: [
-          "Rapid City sits where prairie edge at the black hills front — rapid weather changes when pacific systems meet continental air. The atlas tags this as chinook corridor (Dwb, roughly 565 mm/yr in these normals), and the dominant spatial engines are Chinook / foehn downslope and Polar jet / arctic front — with Continental extremity also in play.",
+          "Rapid City at roughly 966 m elevation sits where prairie edge at the Black Hills front — rapid weather changes when Pacific systems meet continental air. The atlas tags this as chinook corridor (Dwb, roughly 565 mm/yr in these normals), and the dominant spatial engines are Chinook / foehn downslope and Polar jet / arctic front — with Continental extremity also in play.",
           "Black Hills frontal position amplifies mesoscale wind and temperature volatility. That mechanism is why two map dots in South Dakota can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -1564,13 +1564,13 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "World-famous ski basin — deep snow, strong inversions, and summer perfection at altitude.",
     summaryImmersive: "Jackson Hole traps cold air and captures Pacific moisture lifted by the Tetons; snowpack feeds the Snake River system that defines the ecosystem.",
     whyDistinct: "High-elevation enclosed basin with extreme vertical relief nearby — a textbook mountain meteorology classroom.",
-    experience: {
+        experience: {
       feel: "Jackson Hole traps cold air and captures Pacific moisture lifted by the Tetons; snowpack feeds the Snake River system that defines the ecosystem.",
       seasons: {
-        winter: "Deep winter with afternoons near -1.3°C and nights near -14°C — showers pass through regularly. Winter rewards hospitality who accept the cold season. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens with afternoons near 11°C and nights near -3°C — showers pass through regularly. Spring is when cold-air drainage and orographic lift is easiest to read on the ground.",
-        summer: "Summer settles with afternoons near 25°C and nights near 6°C — showers pass through regularly. Jackson is at its most kinetic for Grand Teton NP. Wildfire and smoke are summer wildcards.",
-        autumn: "Autumn light with afternoons near 12.7°C and nights near -4°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for cold-air pool. Fire season lingers into shoulder months.",
+        winter: "Cold and sharp — afternoons near -1.3°C, nights near -14°C — showers pass through regularly. Winter rewards hospitality who accept the cold season. Arctic outbreaks can still bite hard.",
+        spring: "Spring opens — afternoons near 11°C, nights near -3°C — showers pass through regularly. Spring is when cold-air drainage and orographic lift is easiest to read on the ground.",
+        summer: "Cool summer by latitude — afternoons near 25°C, nights near 6°C — showers pass through regularly. Jackson is at its most kinetic for Grand Teton NP. Wildfire and smoke are summer wildcards.",
+        autumn: "Shoulder season — afternoons near 12.7°C, nights near -4°C — showers pass through regularly. Clear light returns as humidity eases. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Grand Teton NP and skiing — the practical way to experience cold-air pool terrain in Wyoming.",
       residentFit: "It rewards mountain-town life with global name recognition — especially hospitality — if the local tradeoffs still feel acceptable after a full season in Jackson.",
@@ -1605,12 +1605,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["hospitality", "outdoor industry"], travelFit: ["Grand Teton NP", "skiing"],
     whoWouldLove: "Mountain-town life with global name recognition.", whoMightNot: "Affordable-housing seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "jackson-wy-mechanism",
         title: "Cold-Air Pool at work",
         paragraphs: [
-          "Jackson sits where flat-floored valley between the tetons and gros ventre — iconic cold pool and orographic snow. The atlas tags this as cold-air pool (Dfc, roughly 640 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Orographic lift — with Temperature inversion and Elevation lapse rate also in play.",
+          "Jackson at roughly 1901 m elevation sits where flat-floored valley between the Tetons and Gros Ventre — iconic cold pool and orographic snow. The atlas tags this as cold-air pool (Dfc, roughly 640 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Orographic lift — with Temperature inversion and Elevation lapse rate also in play.",
           "High-elevation enclosed basin with extreme vertical relief nearby — a textbook mountain meteorology classroom. That mechanism is why two map dots in Wyoming can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },

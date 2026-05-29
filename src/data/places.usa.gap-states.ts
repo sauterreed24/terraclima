@@ -27,13 +27,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Alabama’s coolest summer afternoons outside the highest Smokies — a plateau town where elevation buys genuine relief from Gulf humidity below.",
     summaryImmersive: "Mentone sits on the same Appalachian escarpment that runs into Georgia and Tennessee, but here the state’s stereotypical swelter finally breaks. Westerly storm systems ride the plateau edge; thermal belts and coves on the scarp produce sharp spring frost contrasts that orchardists still map by hand. It is one of the few places in Alabama where true four-season gardening feels honest.",
     whyDistinct: "Plateau elevation (~550 m) in the subtropical Gulf air mass produces lapse-rate cooling and orographic cloud caps on moist flow — a discrete mountain microclimate inside a state better known for torrid lowlands.",
-    experience: {
+        experience: {
       feel: "Mentone sits on the same Appalachian escarpment that runs into Georgia and Tennessee, but here the state’s stereotypical swelter finally breaks. Westerly storm systems ride the plateau edge;.",
       seasons: {
-        winter: "Deep winter with afternoons near 10.3°C and nights near -0.3°C — rain is frequent and can be heavy. Winter rewards retirees who accept the cold season. Storm systems roll through with real force.",
-        spring: "Spring opens with afternoons near 20.7°C and nights near 8.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1375 mm annual backdrop. Spring rains can swell rivers and arroyos quickly.",
-        summer: "Summer settles with afternoons near 28.7°C and nights near 17.3°C — rain is frequent and can be heavy. Mentone is at its most kinetic for DeSoto State Park. Afternoon convection and storms build often.",
-        autumn: "Autumn light with afternoons near 20.7°C and nights near 8.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for thermal belt. Storm systems roll through with real force.",
+        winter: "Mild by northern standards — afternoons near 10.3°C, nights near -0.3°C — rain is frequent and can be heavy. Winter rewards retirees who accept the cold season. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 20.7°C, nights near 8.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1375 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Warm season peak — afternoons near 28.7°C, nights near 17.3°C — rain is frequent and can be heavy. Mentone is at its most kinetic for DeSoto State Park. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 20.7°C, nights near 8.3°C — rain is frequent and can be heavy. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for DeSoto State Park and hang gliding ridge — the practical way to experience thermal belt terrain in Alabama.",
       residentFit: "It rewards southerners who want mountain air without leaving the state — especially retirees — if the local tradeoffs still feel acceptable after a full season in Mentone.",
@@ -69,12 +69,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-    deepSections: [
+        deepSections: [
       {
         id: "mentone-al-mechanism",
         title: "Thermal Belt at work",
         paragraphs: [
-          "Mentone sits where village on the cumberland plateau / lookout mountain scarp — roughly 550 m above the tennessee valley floor to the west. The atlas tags this as thermal belt (Cfa, roughly 1375 mm/yr in these normals), and the dominant spatial engines are Elevation lapse rate and Slope / aspect — with Cold-air drainage also in play.",
+          "Mentone sits where village on the Cumberland Plateau / Lookout Mountain scarp — roughly 550 m above the Tennessee Valley floor to the west. The atlas tags this as thermal belt (Cfa, roughly 1375 mm/yr in these normals), and the dominant spatial engines are Elevation lapse rate and Slope / aspect — with Cold-air drainage also in play.",
           "Plateau elevation (~550 m) in the subtropical Gulf air mass produces lapse-rate cooling and orographic cloud caps on moist flow — a discrete mountain microclimate inside a state better known for torrid lowlands. That mechanism is why two map dots in Alabama can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -111,13 +111,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Connecticut’s unofficial cold pole — deep winter snow and spring frosts that arrive later than along I-91.",
     summaryImmersive: "Norfolk collects cold air on clear nights the way a bowl collects water. Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure. Summers are mild and short; the town is a cultural bridge between New England ski country and the Hudson Valley.",
     whyDistinct: "High elevation + inland position + enclosed topography = systematically colder minima than coastal Connecticut or the Hartford basin — a textbook small-scale cold pool.",
-    experience: {
+        experience: {
       feel: "Norfolk collects cold air on clear nights the way a bowl collects water. Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure. Summers are mild and short;.",
       seasons: {
-        winter: "Deep winter with afternoons near 1.7°C and nights near -9°C — heavy snow defines the rhythm. Winter is when Connecticut's northern hardwoods and hemlock ravines shows its teeth. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens with afternoons near 13°C and nights near 1°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1175 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Summer settles with afternoons near 24.7°C and nights near 13°C — rain is frequent and can be heavy. Norfolk is at its most kinetic for fall color. Afternoon convection and storms build often.",
-        autumn: "Autumn light with afternoons near 14.3°C and nights near 3°C — snow is a regular part of the picture. Autumn often brings the clearest light and the most honest tradeoffs for cold-air pool. Storm systems roll through with real force.",
+        winter: "Cold and snowy — afternoons near 1.7°C, nights near -9°C — heavy snow defines the rhythm. Winter is when Connecticut's northern hardwoods and hemlock ravines shows its teeth. Arctic outbreaks can still bite hard.",
+        spring: "Late thaw — afternoons near 13°C, nights near 1°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1175 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 24.7°C, nights near 13°C — rain is frequent and can be heavy. Norfolk is at its most kinetic for fall color. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 14.3°C, nights near 3°C — snow is a regular part of the picture. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for fall color and cross-country skiing — the practical way to experience cold-air pool terrain in Connecticut.",
       residentFit: "It rewards new England maximalists who want real winter — especially second-home owners — if the local tradeoffs still feel acceptable after a full season in Norfolk.",
@@ -153,12 +153,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "norfolk-ct-mechanism",
         title: "Cold-Air Pool at work",
         paragraphs: [
-          "Norfolk sits where highest-incorporated town in connecticut; rolling taconic/berkshire foothills with frequent radiative cold. The atlas tags this as cold-air pool (Dfb, roughly 1175 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Lake effect — with Polar jet / arctic front also in play.",
+          "Norfolk sits where highest-incorporated town in Connecticut; rolling Taconic/Berkshire foothills with frequent radiative cold. The atlas tags this as cold-air pool (Dfb, roughly 1175 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Lake effect — with Polar jet / arctic front also in play.",
           "High elevation + inland position + enclosed topography = systematically colder minima than coastal Connecticut or the Hartford basin — a textbook small-scale cold pool. That mechanism is why two map dots in Connecticut can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -195,13 +195,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Delaware’s gentlest summers — bay and ocean breezes cap heat while humidity stays classically Mid-Atlantic.",
     summaryImmersive: "Lewes sits where the bay’s huge tidal prism organizes daily wind: onshore flow on warm afternoons, land breezes at night, and periodic nor’easters that reshape coastal dunes. It lacks the elevation microclimates of the Appalachians but exemplifies estuarine moderation in a mostly flat state.",
     whyDistinct: "Shallow-mixed Delaware Bay + Atlantic fetch produces a hybrid maritime regime rare inland on the Delmarva Peninsula.",
-    experience: {
+        experience: {
       feel: "Lewes sits where the bay’s huge tidal prism organizes daily wind: onshore flow on warm afternoons, land breezes at night, and periodic nor’easters that reshape coastal dunes. It lacks the elevation microclimates of the Appalachians but exemplifies estuarine moderation in a mostly flat state.",
       seasons: {
-        winter: "Winter settles in with afternoons near 7.3°C and nights near -0.7°C — snow is a regular part of the picture. Winter rewards coastal retirees who accept the cold season. Coastal surge and wind events belong in the planning stack.",
-        spring: "Spring arrives with afternoons near 16°C and nights near 7.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1145 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Summer peaks with afternoons near 27.7°C and nights near 19.7°C — rain is frequent and can be heavy. Lewes is at its most kinetic for Cape Henlopen. Afternoon convection and storms build often.",
-        autumn: "Autumn turns with afternoons near 19.3°C and nights near 10.7°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for lake-moderated. Hurricane and coastal surge exposure shapes fall planning.",
+        winter: "Mild by northern standards — afternoons near 7.3°C, nights near -0.7°C — snow is a regular part of the picture. Winter rewards coastal retirees who accept the cold season. Coastal surge and wind events belong in the planning stack.",
+        spring: "Green-up and storms — afternoons near 16°C, nights near 7.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1145 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
+        summer: "Warm season peak — afternoons near 27.7°C, nights near 19.7°C — rain is frequent and can be heavy. Lewes is at its most kinetic for Cape Henlopen. Afternoon convection and storms build often.",
+        autumn: "Hurricane-season tail — afternoons near 19.3°C, nights near 10.7°C — showers pass through regularly. Tropical systems can still shape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
       },
       travelerFit: "Visitors come for Cape Henlopen and ferry to Cape May — the practical way to experience lake-moderated terrain in Delaware.",
       residentFit: "It rewards bay-and-beach people who prefer small-town scale — especially coastal retirees — if the local tradeoffs still feel acceptable after a full season in Lewes.",
@@ -237,12 +237,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "lewes-de-mechanism",
         title: "Lake-Moderated at work",
         paragraphs: [
-          "Lewes sits where historic baymouth settlement where delaware bay narrows toward the atlantic; strong sea-breeze and nor’easter exposure. The atlas tags this as lake-moderated (Cfa, roughly 1145 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
+          "Lewes sits where historic baymouth settlement where Delaware Bay narrows toward the Atlantic; strong sea-breeze and nor’easter exposure. The atlas tags this as lake-moderated (Cfa, roughly 1145 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
           "Shallow-mixed Delaware Bay + Atlantic fetch produces a hybrid maritime regime rare inland on the Delmarva Peninsula. That mechanism is why two map dots in Delaware can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -279,13 +279,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "A Georgia mountain town where July afternoons stay closer to the upper 20s than the low 30s — rare in the Deep South.",
     summaryImmersive: "Clayton is far enough south to feel subtropical in spring, but elevation and orographic cloudiness on moist southerly flow keep midsummer heat human. Waterfalls and north-facing coves stay shockingly cool; south-facing ridges open to sun for viticulture experiments. The contrast with Atlanta’s heat island is not subtle — it is a different regional climate at the same latitude band.",
     whyDistinct: "Orographic enhancement + escarpment elevation produces a montane island climate inside the humid subtropical belt — one of the strongest latitude–elevation decouplings in the Southeast.",
-    experience: {
+        experience: {
       feel: "Clayton is far enough south to feel subtropical in spring, but elevation and orographic cloudiness on moist southerly flow keep midsummer heat human. Waterfalls and north-facing coves stay shockingly cool; south-facing ridges open to sun for viticulture experiments.",
       seasons: {
-        winter: "Deep winter with afternoons near 12°C and nights near 0.7°C — snow is a regular part of the picture. Winter rewards remote workers who accept the cold season. Storm systems roll through with real force.",
-        spring: "Spring opens with afternoons near 21.7°C and nights near 9.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1520 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Summer settles with afternoons near 29.3°C and nights near 17.7°C — rain is frequent and can be heavy. Clayton is at its most kinetic for Bartram Trail. Afternoon convection and storms build often.",
-        autumn: "Autumn light with afternoons near 21.3°C and nights near 9.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for mild-winter foothills. Storm systems roll through with real force.",
+        winter: "Mild by northern standards — afternoons near 12°C, nights near 0.7°C — snow is a regular part of the picture. Winter rewards remote workers who accept the cold season. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 21.7°C, nights near 9.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1520 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
+        summer: "Warm season peak — afternoons near 29.3°C, nights near 17.7°C — rain is frequent and can be heavy. Clayton is at its most kinetic for Bartram Trail. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 21.3°C, nights near 9.3°C — rain is frequent and can be heavy. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Bartram Trail and waterfalls — the practical way to experience mild-winter foothills terrain in Georgia.",
       residentFit: "It rewards southerners who want mountain climate without West Coast prices — especially remote workers — if the local tradeoffs still feel acceptable after a full season in Clayton.",
@@ -321,12 +321,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "clayton-ga-mechanism",
         title: "Mild-Winter Foothills at work",
         paragraphs: [
-          "Clayton sits where northeast georgia mountains at the blue ridge escarpment; sharp relief toward the piedmont. The atlas tags this as mild-winter foothills (Cfb, roughly 1520 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Elevation lapse rate — with Slope / aspect also in play.",
+          "Clayton sits where northeast Georgia mountains at the Blue Ridge escarpment; sharp relief toward the Piedmont. The atlas tags this as mild-winter foothills (Cfb, roughly 1520 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Elevation lapse rate — with Slope / aspect also in play.",
           "Orographic enhancement + escarpment elevation produces a montane island climate inside the humid subtropical belt — one of the strongest latitude–elevation decouplings in the Southeast. That mechanism is why two map dots in Georgia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -363,13 +363,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Steep bluffs and coulees in a corner of Illinois that glaciers missed — sharp frost and microclimates on a few miles’ scale.",
     summaryImmersive: "Galena’s postcard hills are not decorative; they organize cold drainage, spring phenology, and wind exposure in ways flat corn country cannot. The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns. It is a microclimate laboratory squeezed into a tourist town.",
     whyDistinct: "Driftless topography inside Illinois’ glaciated plain is geographically rare; elevation + aspect produce repeatable local climate gradients documented in Midwest agronomy literature.",
-    experience: {
+        experience: {
       feel: "Galena’s postcard hills are not decorative; they organize cold drainage, spring phenology, and wind exposure in ways flat corn country cannot. The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns.",
       seasons: {
-        winter: "The cold season with afternoons near -0.3°C and nights near -10°C — snow is a regular part of the picture. Winter is when Illinois's oak savanna and prairie openings shows its teeth. Storm systems roll through with real force.",
-        spring: "The thaw season with afternoons near 13.3°C and nights near 3°C — showers pass through regularly. Spring is when slope / aspect and river-valley moderation is easiest to read on the ground. Snowmelt and spring rain can swell rivers fast.",
-        summer: "High season with afternoons near 27°C and nights near 16°C — rain is frequent and can be heavy. Galena is at its most kinetic for Mississippi Palisades. Afternoon convection and storms build often.",
-        autumn: "Fall shoulder with afternoons near 15.7°C and nights near 4.3°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for driftless relief pocket. Storm systems roll through with real force.",
+        winter: "Cold and snowy — afternoons near -0.3°C, nights near -10°C — snow is a regular part of the picture. Winter is when Illinois's oak savanna and prairie openings shows its teeth. Storm systems roll through with real force.",
+        spring: "Spring opens — afternoons near 13.3°C, nights near 3°C — showers pass through regularly. Spring is when slope / aspect and river-valley moderation is easiest to read on the ground. Snowmelt and spring rain can swell rivers fast.",
+        summer: "Warm season peak — afternoons near 27°C, nights near 16°C — rain is frequent and can be heavy. Galena is at its most kinetic for Mississippi Palisades. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 15.7°C, nights near 4.3°C — showers pass through regularly. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Mississippi Palisades and architecture — the practical way to experience driftless relief pocket terrain in Illinois.",
       residentFit: "It rewards midwest topography fans who still want seasons — especially historic-town lovers — if the local tradeoffs still feel acceptable after a full season in Galena.",
@@ -405,12 +405,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-town lovers", "remote workers"], travelFit: ["Mississippi Palisades", "architecture"],
     whoWouldLove: "Midwest topography fans who still want seasons.", whoMightNot: "Those avoiding cold winters or steep drives.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "galena-il-mechanism",
         title: "Driftless Relief Pocket at work",
         paragraphs: [
-          "Galena sits where mississippi river bluffs and dissected uplands at the illinois edge of the driftless area — unglaciated terrain in a glaciated state. The atlas tags this as driftless relief pocket (Dfa, roughly 886 mm/yr in these normals), and the dominant spatial engines are Slope / aspect and River-valley moderation — with Cold-air drainage also in play.",
+          "Galena sits where mississippi River bluffs and dissected uplands at the Illinois edge of the Driftless Area — unglaciated terrain in a glaciated state. The atlas tags this as driftless relief pocket (Dfa, roughly 886 mm/yr in these normals), and the dominant spatial engines are Slope / aspect and River-valley moderation — with Cold-air drainage also in play.",
           "Driftless topography inside Illinois’ glaciated plain is geographically rare; elevation + aspect produce repeatable local climate gradients documented in Midwest agronomy literature. That mechanism is why two map dots in Illinois can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -447,13 +447,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Chicago’s breezy eastern cousin — lake-effect snow in winter, sweater-weather June, and moderated midsummer peaks.",
     summaryImmersive: "Beverly Shores is where continental air masses first feel the thermal mass of Lake Michigan: delayed spring warming, abundant winter cloud when cold air crosses open water, and frequent afternoon wind shifts on stable summer days. The microclimate supports boreal relicts and rare orchids in protected swales — a biogeographic fingerprint of the lake.",
     whyDistinct: "Southern-lake snowbelt + dune topography creates sharp local contrasts between exposed dunes, sheltered swales, and backshore forest within walking distance.",
-    experience: {
+        experience: {
       feel: "Beverly Shores is where continental air masses first feel the thermal mass of Lake Michigan: delayed spring warming, abundant winter cloud when cold air crosses open water, and frequent afternoon wind shifts on stable summer days.",
       seasons: {
-        winter: "The cold season with afternoons near 2°C and nights near -6.7°C — heavy snow defines the rhythm. Winter is when Indiana's great lakes beachgrass and oak savanna shows its teeth. Storm systems roll through with real force.",
-        spring: "The thaw season with afternoons near 12°C and nights near 3.3°C — snow is a regular part of the picture. Spring green-up arrives against a wet 945 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "High season with afternoons near 25.7°C and nights near 15.7°C — rain is frequent and can be heavy. Beverly Shores is at its most kinetic for Indiana Dunes trails. Afternoon convection and storms build often.",
-        autumn: "Fall shoulder with afternoons near 15°C and nights near 5.3°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for lake-effect snowbelt. Storm systems roll through with real force.",
+        winter: "Cold and snowy — afternoons near 2°C, nights near -6.7°C — heavy snow defines the rhythm. Winter is when Indiana's great lakes beachgrass and oak savanna shows its teeth. Storm systems roll through with real force.",
+        spring: "Late thaw — afternoons near 12°C, nights near 3.3°C — snow is a regular part of the picture. Spring green-up arrives against a wet 945 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 25.7°C, nights near 15.7°C — rain is frequent and can be heavy. Beverly Shores is at its most kinetic for Indiana Dunes trails. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 15°C, nights near 5.3°C — showers pass through regularly. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Indiana Dunes trails and bird migration — the practical way to experience lake-effect snowbelt terrain in Indiana.",
       residentFit: "It rewards great Lakes beach people who want dunes, not crowds — especially Chicago commuters — if the local tradeoffs still feel acceptable after a full season in Beverly Shores.",
@@ -489,12 +489,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "beverly-shores-in-mechanism",
         title: "Lake-Effect Snowbelt at work",
         paragraphs: [
-          "Beverly Shores sits where dune-and-swale coast on southern lake michigan; part of the indiana dunes national park ecosystem. The atlas tags this as lake-effect snowbelt (Dfa, roughly 945 mm/yr in these normals), and the dominant spatial engines are Lake effect and Diurnal sea breeze — with Continental extremity also in play.",
+          "Beverly Shores sits where dune-and-swale coast on southern Lake Michigan; part of the Indiana Dunes National Park ecosystem. The atlas tags this as lake-effect snowbelt (Dfa, roughly 945 mm/yr in these normals), and the dominant spatial engines are Lake effect and Diurnal sea breeze — with Continental extremity also in play.",
           "Southern-lake snowbelt + dune topography creates sharp local contrasts between exposed dunes, sheltered swales, and backshore forest within walking distance. That mechanism is why two map dots in Indiana can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -531,13 +531,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Maryland’s winter — snowier and colder than Baltimore imagines — with ridge-valley frost contrasts that rival West Virginia.",
     summaryImmersive: "Oakland is the anchor of Garrett County, where Pittsburgh television markets and lake-effect snow belts overlap. Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow. Summer is mild and prized by Mid-Atlantic escapees; spring is late and fickle for growers.",
     whyDistinct: "High elevation + Great Lakes moisture channel + enclosed valleys = disproportionate snow and cold for the Mid-Atlantic seaboard.",
-    experience: {
+        experience: {
       feel: "Oakland is the anchor of Garrett County, where Pittsburgh television markets and lake-effect snow belts overlap. Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow. Summer is mild and prized by Mid-Atlantic escapees;.",
       seasons: {
-        winter: "Deep winter with afternoons near 2.7°C and nights near -7.3°C — heavy snow defines the rhythm. Winter is when Maryland's northern hardwoods and hay meadows shows its teeth. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens with afternoons near 13.7°C and nights near 2.3°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1185 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Summer settles with afternoons near 24°C and nights near 13°C — rain is frequent and can be heavy. Oakland is at its most kinetic for Wisp Resort. Afternoon convection and storms build often.",
-        autumn: "Autumn light with afternoons near 14°C and nights near 3.7°C — snow is a regular part of the picture. Autumn often brings the clearest light and the most honest tradeoffs for cold-air pool. Storm systems roll through with real force.",
+        winter: "Cold and sharp — afternoons near 2.7°C, nights near -7.3°C — heavy snow defines the rhythm. Winter is when Maryland's northern hardwoods and hay meadows shows its teeth. Arctic outbreaks can still bite hard.",
+        spring: "Late thaw — afternoons near 13.7°C, nights near 2.3°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1185 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 24°C, nights near 13°C — rain is frequent and can be heavy. Oakland is at its most kinetic for Wisp Resort. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 14°C, nights near 3.7°C — snow is a regular part of the picture. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Wisp Resort and Autumn Glory — the practical way to experience cold-air pool terrain in Maryland.",
       residentFit: "It rewards mid-Atlantic residents who want real ski-adjacent winters — especially lake-house buyers — if the local tradeoffs still feel acceptable after a full season in Oakland.",
@@ -573,12 +573,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "oakland-md-mechanism",
         title: "Cold-Air Pool at work",
         paragraphs: [
-          "Oakland sits where highest elevation county in maryland; plateau terrain with lake-effect spillover and appalachian cold pools. The atlas tags this as cold-air pool (Dfb, roughly 1185 mm/yr in these normals), and the dominant spatial engines are Lake effect and Elevation lapse rate — with Cold-air drainage also in play.",
+          "Oakland sits where highest elevation county in Maryland; plateau terrain with lake-effect spillover and Appalachian cold pools. The atlas tags this as cold-air pool (Dfb, roughly 1185 mm/yr in these normals), and the dominant spatial engines are Lake effect and Elevation lapse rate — with Cold-air drainage also in play.",
           "High elevation + Great Lakes moisture channel + enclosed valleys = disproportionate snow and cold for the Mid-Atlantic seaboard. That mechanism is why two map dots in Maryland can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -615,13 +615,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Cool summers and crisp winters west of Boston’s marine bubble — elevation and inland position create a continental Berkshires climate.",
     summaryImmersive: "Pittsfield sits in a valley network that channels winter cold and summer thunderstorms along frontal boundaries. It is not as harsh as Vermont’s Northeast Kingdom, but it is dramatically different from Cape Cod on the same state license plate. Fall color and spring mud season are serious social calendars.",
     whyDistinct: "Inland elevation + New England storm-track dynamics = stronger seasonality than coastal Massachusetts, with occasional lake-enhanced snow on northwesterly flow.",
-    experience: {
+        experience: {
       feel: "Pittsfield sits in a valley network that channels winter cold and summer thunderstorms along frontal boundaries. It is not as harsh as Vermont’s Northeast Kingdom, but it is dramatically different from Cape Cod on the same state license plate.",
       seasons: {
-        winter: "The cold season with afternoons near 1.7°C and nights near -9.3°C — heavy snow defines the rhythm. Winter is when Massachusetts's northern hardwoods and hemlock shows its teeth. Storm systems roll through with real force.",
-        spring: "The thaw season with afternoons near 12.7°C and nights near 1°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1100 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "High season with afternoons near 25.3°C and nights near 13°C — rain is frequent and can be heavy. Pittsfield is at its most kinetic for Tanglewood. Afternoon convection and storms build often.",
-        autumn: "Fall shoulder with afternoons near 14.3°C and nights near 2.3°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for cold-air pool. Storm systems roll through with real force.",
+        winter: "Cold and snowy — afternoons near 1.7°C, nights near -9.3°C — heavy snow defines the rhythm. Winter is when Massachusetts's northern hardwoods and hemlock shows its teeth. Storm systems roll through with real force.",
+        spring: "Late thaw — afternoons near 12.7°C, nights near 1°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1100 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 25.3°C, nights near 13°C — rain is frequent and can be heavy. Pittsfield is at its most kinetic for Tanglewood. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 14.3°C, nights near 2.3°C — showers pass through regularly. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Tanglewood and ski areas — the practical way to experience cold-air pool terrain in Massachusetts.",
       residentFit: "It rewards new England culture without Boston housing costs — especially culture seekers — if the local tradeoffs still feel acceptable after a full season in Pittsfield.",
@@ -657,12 +657,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "pittsfield-ma-mechanism",
         title: "Cold-Air Pool at work",
         paragraphs: [
-          "Pittsfield sits where hudson/housatonic watershed uplands between the taconic range and green mountains — interior new england with continentality. The atlas tags this as cold-air pool (Dfb, roughly 1100 mm/yr in these normals), and the dominant spatial engines are Polar jet / arctic front and Lake effect — with Orographic lift and Cold-air drainage also in play.",
+          "Pittsfield sits where hudson/Housatonic watershed uplands between the Taconic Range and Green Mountains — interior New England with continentality. The atlas tags this as cold-air pool (Dfb, roughly 1100 mm/yr in these normals), and the dominant spatial engines are Polar jet / arctic front and Lake effect — with Orographic lift and Cold-air drainage also in play.",
           "Inland elevation + New England storm-track dynamics = stronger seasonality than coastal Massachusetts, with occasional lake-enhanced snow on northwesterly flow. That mechanism is why two map dots in Massachusetts can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -699,13 +699,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Live oaks and sea breezes — the gentlest heat in Mississippi, traded for humidity and hurricane exposure.",
     summaryImmersive: "Ocean Springs inherits the same humid subtropical core as the Deep South, but the Sound’s daily heat capacity knocks a few degrees off afternoon peaks relative to inland Hattiesburg. Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow. It is not a dry climate — it is a maritime one.",
     whyDistinct: "Shallow shelf water + urban tree canopy + lower inland elevation buffering = measurably milder frost regime than counties 30 km north.",
-    experience: {
+        experience: {
       feel: "Ocean Springs inherits the same humid subtropical core as the Deep South, but the Sound’s daily heat capacity knocks a few degrees off afternoon peaks relative to inland Hattiesburg. Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow.",
       seasons: {
-        winter: "Winter settles in with afternoons near 16.7°C and nights near 6.7°C — rain is frequent and can be heavy. Winter rewards coastal retirees who accept the cold season. Storm systems roll through with real force.",
-        spring: "Spring arrives with afternoons near 24°C and nights near 14.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1510 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Summer peaks with afternoons near 31.7°C and nights near 22.7°C — rain is frequent and can be heavy. Ocean Springs is at its most kinetic for Gulf Islands NS. Afternoon convection and storms build often.",
-        autumn: "Autumn turns with afternoons near 25.7°C and nights near 15.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for hurricane-exposed coast. Storm systems roll through with real force.",
+        winter: "Mild and workable — afternoons near 16.7°C, nights near 6.7°C — rain is frequent and can be heavy. Winter rewards coastal retirees who accept the cold season. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 24°C, nights near 14.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1510 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Warm season peak — afternoons near 31.7°C, nights near 22.7°C — rain is frequent and can be heavy. Ocean Springs is at its most kinetic for Gulf Islands NS. Afternoon convection and storms build often.",
+        autumn: "Hurricane-season tail — afternoons near 25.7°C, nights near 15.3°C — rain is frequent and can be heavy. Tropical systems can still shape the calendar deep into fall. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Gulf Islands NS and seafood — the practical way to experience hurricane-exposed coast terrain in Mississippi.",
       residentFit: "It rewards humid subtropical coastal life with arts-town flavor — especially coastal retirees — if the local tradeoffs still feel acceptable after a full season in Ocean Springs.",
@@ -740,12 +740,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "ocean-springs-ms-mechanism",
         title: "Hurricane-Exposed Coast at work",
         paragraphs: [
-          "Ocean Springs sits where live-oak maritime fringe on mississippi sound; fetch limited compared to open gulf but still strongly marine-influenced. The atlas tags this as hurricane-exposed coast (Cfa, roughly 1510 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
+          "Ocean Springs sits where live-oak maritime fringe on Mississippi Sound; fetch limited compared to open Gulf but still strongly marine-influenced. The atlas tags this as hurricane-exposed coast (Cfa, roughly 1510 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
           "Shallow shelf water + urban tree canopy + lower inland elevation buffering = measurably milder frost regime than counties 30 km north. That mechanism is why two map dots in Mississippi can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -782,13 +782,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Spring water at near-constant temperatures threads through humid Ozark summers — a natural cooling network in dissected terrain.",
     summaryImmersive: "Eminence is the gateway to some of the clearest spring rivers in the Lower 48. Groundwater upwelling holds near-stable temperatures year-round; in summer, paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape. The hills are modest in elevation but enormous in hydrologic complexity.",
     whyDistinct: "Large spring discharge and karst topography create localized cold-air pooling and persistent riparian humidity — a hydrogeologic microclimate superimposed on humid continental summers.",
-    experience: {
+        experience: {
       feel: "Eminence is the gateway to some of the clearest spring rivers in the Lower 48. Groundwater upwelling holds near-stable temperatures year-round; in summer, paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape.",
       seasons: {
-        winter: "Winter runs with afternoons near 7.7°C and nights near -3.3°C — showers pass through regularly. Winter rewards paddlers who accept the cold season. Storm systems roll through with real force.",
-        spring: "As spring builds with afternoons near 20.7°C and nights near 8.7°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1145 mm annual backdrop. Spring rains can swell rivers and arroyos quickly.",
-        summer: "The warm months with afternoons near 31.3°C and nights near 19°C — rain is frequent and can be heavy. Eminence is at its most kinetic for Ozark NS rivers. Afternoon convection and storms build often.",
-        autumn: "The shoulder season with afternoons near 21.3°C and nights near 8.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for limestone / karst pocket. Storm systems roll through with real force.",
+        winter: "Mild by northern standards — afternoons near 7.7°C, nights near -3.3°C — showers pass through regularly. Winter rewards paddlers who accept the cold season. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 20.7°C, nights near 8.7°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1145 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Warm season peak — afternoons near 31.3°C, nights near 19°C — rain is frequent and can be heavy. Eminence is at its most kinetic for Ozark NS rivers. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 21.3°C, nights near 8.3°C — rain is frequent and can be heavy. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Ozark NS rivers and caving — the practical way to experience limestone / karst pocket terrain in Missouri.",
       residentFit: "It rewards river people who want geology and misty mornings — especially paddlers — if the local tradeoffs still feel acceptable after a full season in Eminence.",
@@ -822,12 +822,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "eminence-mo-mechanism",
         title: "Limestone / Karst Pocket at work",
         paragraphs: [
-          "Eminence sits where dissected ozark plateau on the jacks fork / current river — spring-fed corridors with groundwater-dominated microclimates. The atlas tags this as limestone / karst pocket (Cfa, roughly 1145 mm/yr in these normals), and the dominant spatial engines are Karst infiltration and River-valley moderation — with Cold-air drainage also in play.",
+          "Eminence sits where dissected Ozark plateau on the Jacks Fork / Current River — spring-fed corridors with groundwater-dominated microclimates. The atlas tags this as limestone / karst pocket (Cfa, roughly 1145 mm/yr in these normals), and the dominant spatial engines are Karst infiltration and River-valley moderation — with Cold-air drainage also in play.",
           "Large spring discharge and karst topography create localized cold-air pooling and persistent riparian humidity — a hydrogeologic microclimate superimposed on humid continental summers. That mechanism is why two map dots in Missouri can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -952,13 +952,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "The Mid-Atlantic’s most maritime resort climate — moderated peaks, persistent humidity, and nor’easter drama.",
     summaryImmersive: "Cape May is a classic barrier-style energy balance problem: water on three sides, low elevation, and tree canopy that knits humidity into every summer afternoon. Autumn can deliver warm ocean swimming while inland New Jersey cools; winter alternates between mild marine air and biting Arctic outbreaks when continental highs wedge behind the Appalachians.",
     whyDistinct: "Triple-water exposure + narrow landmass = stronger diurnal sea-breeze modulation than mainland New Jersey at the same latitude.",
-    experience: {
+        experience: {
       feel: "Cape May is a classic barrier-style energy balance problem: water on three sides, low elevation, and tree canopy that knits humidity into every summer afternoon. Autumn can deliver warm ocean swimming while inland New Jersey cools;.",
       seasons: {
-        winter: "Winter runs with afternoons near 6.3°C and nights near -0.7°C — showers pass through regularly. Winter rewards historic-home restorers who accept the cold season. Coastal surge and wind events belong in the planning stack.",
-        spring: "As spring builds with afternoons near 14°C and nights near 7°C — showers pass through regularly. Spring green-up arrives against a wet 1150 mm annual backdrop. Spring rains can swell rivers and arroyos quickly.",
-        summer: "The warm months with afternoons near 26.3°C and nights near 19°C — rain is frequent and can be heavy. Cape May is at its most kinetic for Victorian architecture. Afternoon convection and storms build often.",
-        autumn: "The shoulder season with afternoons near 18°C and nights near 10.3°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for hurricane-exposed coast. Hurricane and coastal surge exposure shapes fall planning.",
+        winter: "Mild by northern standards — afternoons near 6.3°C, nights near -0.7°C — showers pass through regularly. Winter rewards historic-home restorers who accept the cold season. Coastal surge and wind events belong in the planning stack.",
+        spring: "Green-up and storms — afternoons near 14°C, nights near 7°C — showers pass through regularly. Spring green-up arrives against a wet 1150 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Warm season peak — afternoons near 26.3°C, nights near 19°C — rain is frequent and can be heavy. Cape May is at its most kinetic for Victorian architecture. Afternoon convection and storms build often.",
+        autumn: "Hurricane-season tail — afternoons near 18°C, nights near 10.3°C — showers pass through regularly. Tropical systems can still shape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
       },
       travelerFit: "Visitors come for Victorian architecture and bird migration — the practical way to experience hurricane-exposed coast terrain in New Jersey.",
       residentFit: "It rewards beach-town people who want walkable scale — especially historic-home restorers — if the local tradeoffs still feel acceptable after a full season in Cape May.",
@@ -992,12 +992,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-home restorers", "retirees"], travelFit: ["Victorian architecture", "bird migration"],
     whoWouldLove: "Beach-town people who want walkable scale.", whoMightNot: "Dry-air or mountain-climate seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "cape-may-nj-mechanism",
         title: "Hurricane-Exposed Coast at work",
         paragraphs: [
-          "Cape May sits where peninsula tip between delaware bay and open atlantic; convergent sea breezes and tropical cyclone recurvature exposure. The atlas tags this as hurricane-exposed coast (Cfa, roughly 1150 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
+          "Cape May sits where peninsula tip between Delaware Bay and open Atlantic; convergent sea breezes and tropical cyclone recurvature exposure. The atlas tags this as hurricane-exposed coast (Cfa, roughly 1150 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
           "Triple-water exposure + narrow landmass = stronger diurnal sea-breeze modulation than mainland New Jersey at the same latitude. That mechanism is why two map dots in New Jersey can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -1034,13 +1034,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Ohio’s snowiest shoreline resorts — June can feel like the Pacific Northwest until lake heat builds.",
     summaryImmersive: "Geneva-on-the-Lake inherits the full Great Lakes curriculum: delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands that can bury the strip while Columbus stays dry. Summer is warm and humid with lake breezes; thunderstorms propagate along lake-outflow boundaries.",
     whyDistinct: "Eastern Erie fetch orientation + land-lake temperature contrast = maximized lake-effect potential for Ohio’s north coast.",
-    experience: {
+        experience: {
       feel: "Geneva-on-the-Lake inherits the full Great Lakes curriculum: delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands that can bury the strip while Columbus stays dry. Summer is warm and humid with lake breezes; thunderstorms propagate along lake-outflow boundaries.",
       seasons: {
-        winter: "The cold season with afternoons near 2.3°C and nights near -5.7°C — heavy snow defines the rhythm. Winter is when Ohio's beachgrass and lakeshore deciduous forest shows its teeth. Storm systems roll through with real force.",
-        spring: "The thaw season with afternoons near 12°C and nights near 3.3°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1020 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "High season with afternoons near 25°C and nights near 15.7°C — rain is frequent and can be heavy. Geneva-on-the-Lake is at its most kinetic for wine trail. Afternoon convection and storms build often.",
-        autumn: "Fall shoulder with afternoons near 15.3°C and nights near 6.3°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for lake-effect snowbelt. Storm systems roll through with real force.",
+        winter: "Cold and sharp — afternoons near 2.3°C, nights near -5.7°C — heavy snow defines the rhythm. Winter is when Ohio's beachgrass and lakeshore deciduous forest shows its teeth. Storm systems roll through with real force.",
+        spring: "Late thaw — afternoons near 12°C, nights near 3.3°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1020 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 25°C, nights near 15.7°C — rain is frequent and can be heavy. Geneva-on-the-Lake is at its most kinetic for wine trail. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 15.3°C, nights near 6.3°C — showers pass through regularly. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for wine trail and winter storm watching — the practical way to experience lake-effect snowbelt terrain in Ohio.",
       residentFit: "It rewards great Lakes maximalists — especially lake-house buyers — if the local tradeoffs still feel acceptable after a full season in Geneva-on-the-Lake.",
@@ -1076,12 +1076,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "geneva-on-the-lake-oh-mechanism",
         title: "Lake-Effect Snowbelt at work",
         paragraphs: [
-          "Geneva-on-the-Lake sits where lake erie shoreline east of cleveland where westerly flow produces long-fetch lake-effect streamers. The atlas tags this as lake-effect snowbelt (Dfa, roughly 1020 mm/yr in these normals), and the dominant spatial engines are Lake effect and Diurnal sea breeze — with Continental extremity also in play.",
+          "Geneva-on-the-Lake sits where lake Erie shoreline east of Cleveland where westerly flow produces long-fetch lake-effect streamers. The atlas tags this as lake-effect snowbelt (Dfa, roughly 1020 mm/yr in these normals), and the dominant spatial engines are Lake effect and Diurnal sea breeze — with Continental extremity also in play.",
           "Eastern Erie fetch orientation + land-lake temperature contrast = maximized lake-effect potential for Ohio’s north coast. That mechanism is why two map dots in Ohio can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -1118,13 +1118,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Wetter, hillier, and more forested than almost anywhere else in Oklahoma — a southeastern climate island in the Plains.",
     summaryImmersive: "Broken Bow and the Mountain Fork corridor punch above the surrounding plains in annual precipitation and forest cover. Upslope flow ahead of Gulf lows enhances rainfall; reservoirs and rivers add local moisture. Summers remain hot, but canopy and shade produce perceptible relief compared to open pasture.",
     whyDistinct: "Ouachita topography in a predominantly flat state creates orographic and land-cover feedbacks that are climatologically distinct from Oklahoma City or the Panhandle.",
-    experience: {
+        experience: {
       feel: "Broken Bow and the Mountain Fork corridor punch above the surrounding plains in annual precipitation and forest cover. Upslope flow ahead of Gulf lows enhances rainfall; reservoirs and rivers add local moisture.",
       seasons: {
-        winter: "The cold season with afternoons near 13°C and nights near 1°C — rain is frequent and can be heavy. Winter rewards outdoor families who accept the cold season. Storm systems roll through with real force.",
-        spring: "The thaw season with afternoons near 22.7°C and nights near 11°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1345 mm annual backdrop. Spring rains can swell rivers and arroyos quickly.",
-        summer: "High season with afternoons near 33°C and nights near 21.3°C — rain is frequent and can be heavy. Broken Bow is at its most kinetic for Beavers Bend SP. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Fall shoulder with afternoons near 23.7°C and nights near 11.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for piedmont transition. Storm systems roll through with real force.",
+        winter: "Mild and workable — afternoons near 13°C, nights near 1°C — rain is frequent and can be heavy. Winter rewards outdoor families who accept the cold season. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 22.7°C, nights near 11°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1345 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Hot and humid — afternoons near 33°C, nights near 21.3°C — rain is frequent and can be heavy. Broken Bow is at its most kinetic for Beavers Bend SP. Plan around heat that can turn genuinely dangerous.",
+        autumn: "Shoulder season — afternoons near 23.7°C, nights near 11.3°C — rain is frequent and can be heavy. Clear light returns as humidity eases. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Beavers Bend SP and fishing — the practical way to experience piedmont transition terrain in Oklahoma.",
       residentFit: "It rewards oklahoma residents who want forest and water — especially outdoor families — if the local tradeoffs still feel acceptable after a full season in Broken Bow.",
@@ -1159,12 +1159,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "broken-bow-ok-mechanism",
         title: "Piedmont Transition at work",
         paragraphs: [
-          "Broken Bow sits where ouachita mountains foothills — rare forested hills and mesic pockets in a state dominated by plains. The atlas tags this as piedmont transition (Cfa, roughly 1345 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Slope / aspect — with Continental extremity and River-valley moderation also in play.",
+          "Broken Bow sits where ouachita Mountains foothills — rare forested hills and mesic pockets in a state dominated by plains. The atlas tags this as piedmont transition (Cfa, roughly 1345 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Slope / aspect — with Continental extremity and River-valley moderation also in play.",
           "Ouachita topography in a predominantly flat state creates orographic and land-cover feedbacks that are climatologically distinct from Oklahoma City or the Panhandle. That mechanism is why two map dots in Oklahoma can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },
@@ -1201,13 +1201,13 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Narrow annual temperature range for the latitude — fog, wind, and moderate summers that feel more maritime than mainland Rhode Island.",
     summaryImmersive: "Block Island is small enough that every road is within a mile of water. That geometry means marine air dominates; heat waves are muted relative to Hartford or even Providence. Winter storms are oceanic and windy; summer is mild with persistent humidity. The island’s conservation lands preserve a rare Atlantic coastal grassland–heath mosaic tuned to salt spray.",
     whyDistinct: "Complete island exposure + low relief = maximized maritime moderation within southern New England — a classic case study in coastal boundary-layer climate.",
-    experience: {
+        experience: {
       feel: "Block Island is small enough that every road is within a mile of water. That geometry means marine air dominates; heat waves are muted relative to Hartford or even Providence. Winter storms are oceanic and windy; summer is mild with persistent humidity.",
       seasons: {
-        winter: "Winter runs with afternoons near 5°C and nights near -1°C — rain is frequent and can be heavy. Winter rewards seasonal residents who accept the cold season. Coastal surge and wind events belong in the planning stack.",
-        spring: "As spring builds with afternoons near 11.3°C and nights near 5.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1180 mm annual backdrop. Spring rains can swell rivers and arroyos quickly.",
-        summer: "The warm months with afternoons near 23°C and nights near 17°C — showers pass through regularly. Block Island is at its most kinetic for bluffs. Afternoon convection and storms build often.",
-        autumn: "The shoulder season with afternoons near 15.3°C and nights near 9°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for hyper-maritime. Hurricane and coastal surge exposure shapes fall planning.",
+        winter: "Cold and sharp — afternoons near 5°C, nights near -1°C — rain is frequent and can be heavy. Winter rewards seasonal residents who accept the cold season. Coastal surge and wind events belong in the planning stack.",
+        spring: "Green-up and storms — afternoons near 11.3°C, nights near 5.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1180 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Cool summer by latitude — afternoons near 23°C, nights near 17°C — showers pass through regularly. Block Island is at its most kinetic for bluffs. Afternoon convection and storms build often.",
+        autumn: "Hurricane-season tail — afternoons near 15.3°C, nights near 9°C — rain is frequent and can be heavy. Tropical systems can still shape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
       },
       travelerFit: "Visitors come for bluffs and biking — the practical way to experience hyper-maritime terrain in Rhode Island.",
       residentFit: "It rewards cool-summer island people who tolerate ferry logistics — especially seasonal residents — if the local tradeoffs still feel acceptable after a full season in New Shoreham.",
@@ -1241,12 +1241,12 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["seasonal residents", "fishermen"], travelFit: ["bluffs", "biking"],
     whoWouldLove: "Cool-summer island people who tolerate ferry logistics.", whoMightNot: "Heat seekers; budget shoppers; anyone unwilling to plan groceries and care around the ferry schedule.",
     confidence: "high",
-    deepSections: [
+        deepSections: [
       {
         id: "block-island-ri-mechanism",
         title: "Hyper-Maritime at work",
         paragraphs: [
-          "Block Island sits where outer-island microclimate in block island sound; persistent maritime influence and limited landmass. The atlas tags this as hyper-maritime (Cfb, roughly 1180 mm/yr in these normals), and the dominant spatial engines are Marine layer and Diurnal sea breeze — with Tropical-cyclone exposure also in play.",
+          "Block Island sits where outer-island microclimate in Block Island Sound; persistent maritime influence and limited landmass. The atlas tags this as hyper-maritime (Cfb, roughly 1180 mm/yr in these normals), and the dominant spatial engines are Marine layer and Diurnal sea breeze — with Tropical-cyclone exposure also in play.",
           "Complete island exposure + low relief = maximized maritime moderation within southern New England — a classic case study in coastal boundary-layer climate. That mechanism is why two map dots in Rhode Island can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
         ],
       },

@@ -24,7 +24,10 @@ function isGenericBackfill(sections: { id: string }[]): boolean {
 function replaceDeepSections(src: string, id: string, block: string): string | null {
   const win = placeBlockWindow(src, id);
   if (!win) return null;
-  const match = /\bdeepSections:\s*\[[\s\S]*?\n\s*\],/.exec(win.block);
+  const match =
+    /\bdeepSections:\s*\[[\s\S]*?\n\s{4}\],\s*\n(?=\s{4}[a-zA-Z]+:)/.exec(
+      win.block,
+    );
   if (!match || match.index == null) return null;
   const absStart = win.start + match.index;
   const absEnd = absStart + match[0].length;

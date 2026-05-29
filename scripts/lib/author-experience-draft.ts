@@ -17,13 +17,6 @@ const SEASON_IDX: Record<SeasonKey, readonly [number, number, number]> = {
   autumn: [8, 9, 10],
 };
 
-const SEASON_OPENERS: Record<SeasonKey, readonly string[]> = {
-  winter: ["Winter settles in", "The cold season", "Deep winter", "Winter runs"],
-  spring: ["Spring arrives", "The thaw season", "Spring opens", "As spring builds"],
-  summer: ["Summer peaks", "High season", "Summer settles", "The warm months"],
-  autumn: ["Autumn turns", "Fall shoulder", "Autumn light", "The shoulder season"],
-};
-
 function meanOf(values: readonly number[] | undefined, idx: readonly number[]): number | null {
   if (!values) return null;
   let sum = 0;
