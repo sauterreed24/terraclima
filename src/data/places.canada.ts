@@ -925,7 +925,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "retirees"], travelFit: ["Pacific shoulder-season"],
     whoWouldLove: "BC coastal dreamers.", whoMightNot: "Those needing heat or urban services.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "sunshine-coast-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -988,7 +988,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["artist-farmers", "off-grid"], travelFit: ["island farm tour"],
     whoWouldLove: "Slow-island small-farm romantics.", whoMightNot: "Those needing services.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "salt-spring-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -1052,7 +1052,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulturalists", "orchardists"], travelFit: ["wine tours"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "summerland-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1179,7 +1179,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families"], travelFit: ["wildlife area", "orchards"],
     whoWouldLove: "Quiet Kootenay folk.", whoMightNot: "Urbanites.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "creston-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1248,7 +1248,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers", "orchardists", "retirees"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Sun-desiring Canadians.", whoMightNot: "Fire-averse.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "penticton-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -1313,7 +1313,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seeking Canadians"], travelFit: ["desert hiking", "fly-fishing"],
     whoWouldLove: "Dry-climate-loving British Columbians.", whoMightNot: "Fire-smoke-sensitive.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "kamloops-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -1457,7 +1457,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["serious skiers", "snow-loving families"], travelFit: ["ski", "powder tourism"],
     whoWouldLove: "Committed winter people.", whoMightNot: "Anyone expecting summer heat.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "revelstoke-bc-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -1521,7 +1521,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["storm-coast romantics"], travelFit: ["surfing", "storm watching"],
     whoWouldLove: "Those who want Tofino's climate at half the tourism intensity.", whoMightNot: "Sun-seekers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "tofino-ucluelet-corridor-mechanism",
         title: "Hyper-Maritime mechanics",
@@ -1649,7 +1649,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hyper-maritime devotees"], travelFit: ["Skeena fishing", "BC Ferries terminus"],
     whoWouldLove: "Those who want to live in a coastal cloud.", whoMightNot: "Sun-needing humans.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "prince-rupert-bc-mechanism",
         title: "Hyper-Maritime mechanics",
@@ -1717,7 +1717,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["ranchers", "wind-tolerant"], travelFit: ["Waterton gateway"],
     whoWouldLove: "Chinook romantics.", whoMightNot: "Wind-averse.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "pincher-creek-ab-mechanism",
         title: "Chinook Corridor mechanics",
@@ -1851,7 +1851,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["greenhouse farmers"], travelFit: ["Point Pelee birding"],
     whoWouldLove: "Those drawn to Canada's longest growing season.", whoMightNot: "Mountain-lovers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "leamington-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -1915,7 +1915,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["boreal families"], travelFit: ["Sleeping Giant Park"],
     whoWouldLove: "Boreal-lake devotees.", whoMightNot: "Heat-needing.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "thunder-bay-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -1952,17 +1952,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Where the Appalachians meet the Gulf — a maritime peninsula with cool foggy summers and hard Atlantic winters.",
     summaryImmersive: "The Gaspé's eastern tip plunges into the Gulf of St. Lawrence, which is cold for much of the year. Summers stay cool and frequently foggy; winter is long and stormy with wind-driven snow. The maritime modification softens what at 48° latitude inland would be brutally continental — making this one of Eastern Canada's most dramatic land-sea climate transitions.",
     whyDistinct: "Maritime modification of otherwise boreal climate produces an Atlantic-temperate character with cool-summer signature.",
-                experience: {
-      feel: "Gaspé Peninsula Tip — the Gaspé's eastern tip plunges into the Gulf of St. Lawrence, which is cold for much of the year. Summers stay cool and frequently foggy; winter is long and stormy with wind-driven snow.",
+    experience: {
+      feel: "Gaspé feels like where the Appalachians meet the Gulf — cool foggy summers at 48°N softened by maritime air, long stormy winters with wind-driven snow, and Forillon cliffs as the daily weather backdrop on Québec's eastern tip.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -3.9°C, nights near -13°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
-        spring: "Late thaw — afternoons near 6.4°C, nights near -2.8°C — snow is a regular part of the picture. Green-up arrives against a wet 1086 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 20°C, nights near 10.1°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 9.4°C, nights near 1.7°C — snow is a regular part of the picture. Storm systems roll through with real force.",
+        winter: "Long and stormy — afternoons near −4°C, nights near −13°C, wind-driven snow off the cold Gulf, and snow removal as civic infrastructure on the peninsula roads.",
+        spring: "Late thaw — afternoons climbing through 6°C, ice lingering in coves, and green-up racing against another wet 1,086 mm annual backdrop.",
+        summer: "Cool and fog-prone — afternoons near 20°C feel mild for the latitude because the Gulf stays cold; hiking Forillon and Percé Rock rewards layers and rain gear.",
+        autumn: "Hurricane-season tail — afternoons falling through 9°C, first snow on the highlands, and storm tracks that can still push surge into fishing villages.",
       },
-      travelerFit: "Visitors come for Forillon and fishing villages.",
-      residentFit: "It rewards those who want wild Atlantic Canada — especially maritime romantics — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Specialty care and major-airport access require real planning.",
+      travelerFit: "Visitors come for Forillon National Park, Percé Rock, and fishing-village culture — summer warmth is not the draw.",
+      residentFit: "It rewards maritime romantics who accept peninsula isolation, high storm exposure, and Gaspé airport or Québec City drives for specialty care.",
+      texture: "A dramatic land-sea transition — weigh coastal storm risk, fog, and access friction against wild Atlantic scenery and Acadian-boreal ecology.",
     },
     climate: { tempHighC: [-5.3, -4.1, 0.4, 6.1, 12.8, 18.1, 21.4, 20.6, 15.8, 9.4, 3.1, -2.4], tempLowC: [-14.9, -13.9, -9.1, -2.4, 3.1, 7.8, 11.4, 11.1, 6.8, 1.8, -3.6, -10.1], precipMm: [82, 64, 68, 72, 90, 96, 98, 92, 110, 108, 110, 96], snowCm: [72, 54, 48, 24, 2, 0, 0, 0, 0, 6, 40, 74], humidity: [80, 80, 80, 78, 78, 80, 82, 84, 84, 82, 82, 82], annualPrecipMm: 1086, frostFreeDays: 120, hardinessZone: "4b", sunshinePct: [39, 45, 48, 56, 49, 53, 46, 43, 34, 41, 37, 34] },
     soil: { texture: "Thin till over sedimentary bedrock", drainage: "moderate", phRange: [5.2, 6.4], waterHolding: "moderate" },
@@ -1984,21 +1984,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["maritime romantics"], travelFit: ["Forillon", "fishing villages"],
     whoWouldLove: "Those who want wild Atlantic Canada.", whoMightNot: "Anyone needing warmth.",
     confidence: "high",
-                deepSections: [
+    deepSections: [
       {
-        id: "gaspe-qc-mechanism",
-        title: "Cool-Summer Maritime mechanics",
+        id: "gaspe-appalachian-gulf",
+        title: "Appalachian ridges and Gulf moderation",
         paragraphs: [
-          "Gaspé Peninsula Tip sits where tip of the Gaspé Peninsula, where Appalachian ridges drop into the Gulf of St. Lawrence. Dfb (maritime-modified) normals and roughly 1086 mm/yr frame the regional baseline, but Marine layer and Orographic lift re-weight what any single forecast means block by block.",
-          "Maritime modification of otherwise boreal climate produces an Atlantic-temperate character with cool-summer signature. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "The Gaspé's eastern tip plunges Appalachian ridges into the cold Gulf of St. Lawrence — maritime modification that at 48°N inland would be brutally continental produces cool foggy summers near 20°C and long stormy winters with wind-driven snow. Marine layer and orographic lift on the highlands re-weight forecasts block by block along the peninsula spine.",
+          "Salt-spray flora and boreal-Acadian transition ecology mark the land-sea boundary. Two fishing villages ten kilometres apart can differ on fog persistence, wind fetch, and frost dates depending on whether they face the open Gulf or a sheltered cove.",
         ],
       },
       {
-        id: "gaspe-qc-field-read",
-        title: "On-the-ground read",
+        id: "gaspe-peninsula-storm",
+        title: "Peninsula storms and coastal exposure",
         paragraphs: [
-          "Where the Appalachians meet the Gulf — a maritime peninsula with cool foggy summers and hard Atlantic winters. Soils read as thin till over sedimentary bedrock with moderate drainage (pH 5.2–6.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Berries, Potatoes, Short-season veg. Anyone needing warmth should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High coastal and storm risk registers here — verify parcel elevation, storm-surge exposure, and winter road maintenance before committing. Thin till over sedimentary bedrock supports berries, potatoes, and short-season vegetables in sheltered pockets; heat-loving crops fail in the cool maritime envelope.",
+          "Gaspé airport and Québec City drives anchor specialty care — peninsula isolation is real for newcomers expecting metro-grade services. Anyone needing warmth or low-maintenance winters should confirm insurance and evacuation access on the ground, not from atlas normals alone.",
         ],
       },
     ],
@@ -2204,7 +2204,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["aurora-centric life", "northern service workers"], travelFit: ["aurora", "ice road"],
     whoWouldLove: "Northern dreamers.", whoMightNot: "Cold-sensitive anyone.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "yellowknife-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2333,7 +2333,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Cool-climate wine people.", whoMightNot: "Those wanting mild winters.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "prince-edward-co-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2406,7 +2406,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "iqaluit-nu-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2477,7 +2477,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "inuvik-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2511,17 +2511,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "An archipelago in the Gulf of Alaska where July highs rarely exceed 17°C and winter rarely freezes — one of the most climatologically moderated places in Canada.",
     summaryImmersive: "Haida Gwaii (the Queen Charlotte Islands) sits in the open Pacific 100 km west of the British Columbia mainland, and the ocean fully owns the climate. Summers never warm past the mid-teens on the west coast; winters rarely freeze on the east. Fog, swell, and Sitka spruce rainforest define everyday life. The west coast receives more than 4,000 mm of rain annually — among the wettest places in Canada. The east coast, in the islands' own rain shadow, receives closer to 1,300 mm. The islands are home to unique subspecies found nowhere else, the product of post-glacial refugium isolation.",
     whyDistinct: "Deeply oceanic position + Queen Charlotte Mountains creating a strong internal rain shadow. The Sitka-spruce rainforests on the west coast are among the wettest and most intact on the continent.",
-                experience: {
-      feel: "Haida Gwaii (the Queen Charlotte Islands) sits in the open Pacific 100 km west of the British Columbia mainland, and the ocean fully owns the climate. Summers never warm past the mid-teens on the west coast; winters rarely freeze on the east.",
+    experience: {
+      feel: "Haida Gwaii feels like open Pacific ownership of the climate — July highs rarely break the mid-teens on the west coast, east-shore blocks rarely freeze, and fog, swell, and Sitka spruce rainforest define daily life between Gwaii Haanas and the Queen Charlotte Mountains.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 5.3°C, nights near 1°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 10°C, nights near 4°C — rain is frequent and can be heavy. Green-up arrives against a wet 2165 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 16.3°C, nights near 10.7°C — showers pass through regularly. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 11°C, nights near 6°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Mild by Canadian standards — afternoons near 5°C, nights near 1°C, and storm after storm crossing the Gulf of Alaska. West-coast blocks can see 4,000 mm annually; the east-shore rain shadow is drier but still wet.",
+        spring: "Green-up under persistent cloud — afternoons climbing through 10°C, Sitka spruce flushing, and ferry windows that close when swell builds on Hecate Strait.",
+        summer: "The cool payoff — afternoons near 16°C, long twilight, and the briefest window for Gwaii Haanas paddling before autumn gales return.",
+        autumn: "Storm season returns — afternoons falling back through 11°C, salmon runs in the rivers, and the islands' post-glacial refugium ecology on full display.",
       },
-      travelerFit: "Visitors come for Gwaii Haanas National Park, Haida cultural tourism, and ancient cedar forests.",
-      residentFit: "It rewards those who love cool, wet, remote rainforest country — especially rainforest residents — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place at sea level — the main things to weigh are storm exposure. Specialty care and major-airport access require real planning.",
+      travelerFit: "Visitors come for Gwaii Haanas National Park, Haida cultural tourism, and ancient cedar forests — plan around ferry and weather windows.",
+      residentFit: "It rewards those who love cool, wet, remote rainforest country — if they accept island supply chains, limited specialty care, and Sandspit/YVR air access as daily logistics.",
+      texture: "A real-tradeoff archipelago — weigh storm exposure, fetch-side rainfall gradients, and access friction against one of Canada's most intact temperate rainforests.",
     },
     climate: {
       tempHighC: [5, 6, 7, 10, 13, 15, 17, 17, 15, 11, 7, 5], tempLowC: [1, 1, 2, 4, 6, 9, 11, 12, 9, 6, 3, 1],
@@ -2547,21 +2547,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["rainforest residents", "Haida Nation community", "cool-climate purists"], travelFit: ["Gwaii Haanas National Park", "Haida cultural tourism", "ancient cedar forests"],
     whoWouldLove: "Those who love cool, wet, remote rainforest country.", whoMightNot: "Anyone requiring sun, warmth, or easy travel.",
     confidence: "high",
-                deepSections: [
+    deepSections: [
       {
-        id: "haida-gwaii-bc-mechanism",
-        title: "Hyper-Maritime mechanics",
+        id: "haida-pacific-rain-shadow",
+        title: "Pacific archipelago and internal rain shadow",
         paragraphs: [
-          "Haida Gwaii sits where archipelago 100+ km off the BC mainland; exposed to North Pacific, with the Queen Charlotte Mountains rising to 1,100 m on the west coast. Cfb normals and roughly 2165 mm/yr frame the regional baseline, but Marine layer and Orographic lift re-weight what any single forecast means block by block.",
-          "Deeply oceanic position + Queen Charlotte Mountains creating a strong internal rain shadow. The Sitka-spruce rainforests on the west coast are among the wettest and most intact on the continent. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Haida Gwaii sits 100+ km off the BC mainland in the Gulf of Alaska current — deeply oceanic position that keeps July highs near 17°C and winter lows above freezing on many east-shore blocks. The Queen Charlotte Mountains on the west coast force orographic lift that produces among the wettest Sitka-spruce rainforests in Canada, while the islands' own rain shadow drops annual totals toward 1,300 mm on leeward shores.",
+          "Two blocks on the same island can differ by a metre of rain and weeks of sunshine — fetch exposure and slope aspect matter more than the Sandspit normals suggest. Post-glacial refugium isolation produced unique subspecies; the climate that preserved them is still hyper-maritime and storm-driven.",
         ],
       },
       {
-        id: "haida-gwaii-bc-field-read",
-        title: "On-the-ground read",
+        id: "haida-island-services",
+        title: "Island logistics and storm exposure",
         paragraphs: [
-          "An archipelago in the Gulf of Alaska where July highs rarely exceed 17°C and winter rarely freezes — one of the most climatologically moderated places in Canada. Soils read as podzolic forest soils over glacial till with imperfect drainage (pH 4.5–5.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Potatoes, Greens, Berries. Anyone requiring sun, warmth, or easy travel should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Access is ferry via the Inside Passage or air to Sandspit — medical evacuations and supply runs are defining daily realities, not edge cases. Podzolic forest soils over glacial till drain imperfectly; gardening favors potatoes, greens, and berries in sheltered pockets with wind protection.",
+          "Elevated storm risk registers on exposed west-coast parcels — verify roof engineering, insurance, and Hecate Strait crossing windows before committing. Anyone requiring sun, warmth, or easy mainland travel should spend a full winter season here before treating atlas scores as livability certainty.",
         ],
       },
     ],
@@ -2619,7 +2619,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seekers in Canada", "retirees", "drought-tolerant gardeners"], travelFit: ["badlands tours", "South Saskatchewan River", "dark-sky observers"],
     whoWouldLove: "Anyone who wants a Colorado-style Canadian climate: sunny, dry, and chinook-warmed.", whoMightNot: "Those who expect reliably cold Canadian winters.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "medicine-hat-ab-mechanism",
         title: "Chinook Corridor mechanics",
@@ -2755,7 +2755,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulture workers", "remote tech"], travelFit: ["wine routes", "skiing Big White"],
     whoWouldLove: "Sun-seekers who want Canadian healthcare and mountain-lake scenery.", whoMightNot: "Rainforest lovers; smoke-sensitive lungs.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "kelowna-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -2820,7 +2820,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["climbers", "wind-sport athletes"], travelFit: ["Stawamus Chief", "Sea to Sky Gondola"],
     whoWouldLove: "Mountain–ocean people who commute to Vancouver occasionally.", whoMightNot: "Budget renters; sun-belt seekers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "squamish-bc-mechanism",
         title: "Fjord / Inlet Coast mechanics",
@@ -2885,7 +2885,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hospitality seasonal workers", "park staff"], travelFit: ["Lake Louise", "skiing", "hiking"],
     whoWouldLove: "Rocky Mountain purists.", whoMightNot: "Affordable-housing seekers; warm-winter lovers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "banff-ab-mechanism",
         title: "Chinook Corridor mechanics",
@@ -3025,7 +3025,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "charlottetown-pei-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -3239,7 +3239,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "morden-mb-mechanism",
         title: "Orchard Valley mechanics",
@@ -3304,7 +3304,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "sutton-qc-mechanism",
         title: "Piedmont Transition mechanics",

@@ -56,7 +56,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 60,
       socialStress: 34,
       accessFriction: 24,
-      note: "Spokane screening: cost sits in a middle band — verify rents and insurance locally; Spokane anchors daily services within reasonable reach. Atlas-grade read — confirm on the ground before committing.",
+      note: "Inland Northwest housing sits below coastal Washington medians; MultiCare and GEG access are solid, but valley inversions, spring Spokane River flooding, and summer wildfire smoke episodes define seasonal friction for newcomers from the wet side.",
       sources: [
       { label: "NOAA — Spokane Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Spokane", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -147,7 +147,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["wine industry", "retirees"], travelFit: ["wine tasting", "hot-air balloons"],
     whoWouldLove: "Viticulture and Mediterranean gardening devotees.", whoMightNot: "Budget shoppers; fire-smoke sensitive.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "napa-ca-mechanism",
         title: "Mediterranean Pocket mechanics",
@@ -228,7 +228,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "hospitality"], travelFit: ["modernism week", "Joshua Tree day trips"],
     whoWouldLove: "Dry heat and winter sun seekers.", whoMightNot: "Summer heat–sensitive visitors.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "palm-springs-ca-mechanism",
         title: "High-Desert Escape mechanics",
@@ -299,7 +299,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 70,
       socialStress: 48,
       accessFriction: 24,
-      note: "Austin screening: housing runs expensive relative to regional medians; Austin anchors daily services within reasonable reach. Atlas-grade read — confirm on the ground before committing.",
+      note: "Fast-growing Texas metro with housing pressure well above state medians; Dell Seton and AUS access are strong downtown, but Hill Country flash floods, cedar fever, and UHI-warmed summer nights shape block-by-block comfort beyond atlas normals.",
       sources: [
       { label: "NOAA — Camp Mabry", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Austin", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -390,7 +390,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "second-home owners"], travelFit: ["Everglades", "beaches"],
     whoWouldLove: "Gulf-coast warmth without Atlantic surf culture.", whoMightNot: "Hurricane-averse; flood-risk skeptics.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "naples-fl-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -462,7 +462,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 88,
       socialStress: 48,
       accessFriction: 24,
-      note: "Buffalo screening: housing runs expensive relative to regional medians; Buffalo anchors daily services within reasonable reach. Atlas-grade read — confirm on the ground before committing.",
+      note: "Rust Belt affordability with lake-effect winter infrastructure costs; Buffalo General and BUF anchor services — snow-clearance culture and a declining-population tax base create a different live-here calculus than Sun Belt metros at similar comfort scores.",
       sources: [
       { label: "NOAA — Buffalo Niagara Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Buffalo", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -553,7 +553,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["ag workers", "remote workers"], travelFit: ["Scotts Bluff NM", "Oregon Trail history"],
     whoWouldLove: "Wide-open Plains people.", whoMightNot: "Tree-seekers; humidity lovers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "scottsbluff-ne-mechanism",
         title: "High-Desert Escape mechanics",
@@ -624,7 +624,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 48,
       socialStress: 46,
       accessFriction: 24,
-      note: "Mobile screening: cost sits in a middle band — verify rents and insurance locally; Mobile anchors daily services within reasonable reach. Atlas-grade read — confirm on the ground before committing.",
+      note: "Gulf Coast housing at mid-band with hurricane-exposure insurance friction; USA Health and MOB provide regional care — Mobile Bay humidity, storm surge, and sea-level rise on low blocks matter more than summer heat index alone.",
       sources: [
       { label: "NOAA — Mobile Regional AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Mobile", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -705,7 +705,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Savannah screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: low-humidity devotees. Atlas-grade read — confirm on the ground before committing.",
+      note: "Historic district housing runs above regional medians; Memorial Health and SAV serve the metro — king tides on the coast, summer humidity, and flood-zone diligence on the marsh side define relocation reality beyond porch-season charm.",
       sources: [
       { label: "NOAA — Savannah Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Savannah", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -786,7 +786,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 70,
       socialStress: 48,
       accessFriction: 24,
-      note: "Wilmington screening: housing runs expensive relative to regional medians; Wilmington anchors daily services within reasonable reach. Atlas-grade read — confirm on the ground before committing.",
+      note: "Mid-Atlantic corporate corridor with above-average housing; ChristianaCare and ILG/PHL access are regional strengths — Brandywine flooding, I-95 commute friction, and humid summer nights shape suburban block choice more than atlas scores.",
       sources: [
       { label: "NOAA — New Castle County AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Wilmington", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -876,7 +876,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["maritime retirees", "museum-goers"], travelFit: ["seaport museum", "sailing"],
     whoWouldLove: "Coastal New England without big-city scale.", whoMightNot: "Budget retirees; sun-belt seekers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "mystic-ct-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -957,7 +957,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["academics", "families"], travelFit: ["Penn State sports", "Rothrock SF"],
     whoWouldLove: "Appalachian foothills with college-town amenities.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "state-college-pa-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -1028,7 +1028,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 70,
       socialStress: 48,
       accessFriction: 24,
-      note: "Columbia screening: housing runs expensive relative to regional medians; Columbia anchors daily services within reasonable reach; Poor fit if: dry-climate or cool-summer seekers. Atlas-grade read — confirm on the ground before committing.",
+      note: "State capital with moderate housing and strong Prisma Health access; CAE airport is local — Congaree River flooding, summer humidity, and pine-pollen season are the honest seasonal relocation filters beyond mild-winter appeal.",
       sources: [
       { label: "NOAA — Columbia Metro AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Columbia", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1109,7 +1109,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 58,
       socialStress: 48,
       accessFriction: 24,
-      note: "Des Moines screening: cost sits in a middle band — verify rents and insurance locally; Des Moines anchors daily services within reasonable reach; Poor fit if: mountain or ocean proximity seekers. Atlas-grade read — confirm on the ground before committing.",
+      note: "Midwest affordability with stable metro services at Broadlawns and DSM airport; tornado-season awareness and winter ice storms are honest tradeoffs — functional daily care without mountain or ocean proximity, but not a mild-climate escape.",
       sources: [
       { label: "NOAA — Des Moines Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Des Moines", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1190,7 +1190,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 70,
       socialStress: 54,
       accessFriction: 24,
-      note: "Tucson screening: housing runs expensive relative to regional medians; Tucson anchors daily services within reasonable reach; Poor fit if: humidity-seekers; water-abundance expecters. Atlas-grade read — confirm on the ground before committing.",
+      note: "Sonoran basin housing runs above Arizona medians in desirable Foothills blocks; Banner-UMC and TUS anchor care — monsoon flash floods in washes, water-right politics, and pre-monsoon heat define the live-here feel beyond dry-air comfort scores.",
       sources: [
       { label: "NOAA — Tucson Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Tucson", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1271,7 +1271,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 60,
       socialStress: 34,
       accessFriction: 30,
-      note: "Anchorage screening: cost sits in a middle band — verify rents and insurance locally; Anchorage anchors daily services within reasonable reach; Poor fit if: dark-winter–averse newcomers. Atlas-grade read — confirm on the ground before committing.",
+      note: "Alaska's largest metro with mid-band housing by state standards; Providence and ANC provide full services — winter darkness, Chugach avalanche zones, and interior wildfire smoke pooling are seasonal realities newcomers often underestimate.",
       sources: [
       { label: "NOAA — Anchorage Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Anchorage", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1352,7 +1352,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 88,
       socialStress: 48,
       accessFriction: 26,
-      note: "Honolulu screening: housing runs expensive relative to regional medians; Honolulu anchors daily services within reasonable reach; Poor fit if: affordable-housing seekers; tsunami-anxious. Atlas-grade read — confirm on the ground before committing.",
+      note: "Island housing among the nation's most expensive; Queen's and HNL anchor urban life — tsunami evacuation zones, UHI-warmed nights downtown, and leeward-versus-windward rain if you leave Honolulu shape daily logistics beyond trade-wind comfort.",
       sources: [
       { label: "NOAA — Honolulu Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Honolulu", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1443,7 +1443,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["aviation", "ranching"], travelFit: ["aliens museum", "Bottomless Lakes"],
     whoWouldLove: "High-plains sky watchers.", whoMightNot: "Humidity lovers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "roswell-nm-mechanism",
         title: "Monsoon-Edge Zone mechanics",
@@ -1524,7 +1524,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["tourism", "healthcare"], travelFit: ["Mount Rushmore", "Badlands"],
     whoWouldLove: "Black Hills access with city services.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "rapid-city-sd-mechanism",
         title: "Chinook Corridor mechanics",
@@ -1605,7 +1605,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["hospitality", "outdoor industry"], travelFit: ["Grand Teton NP", "skiing"],
     whoWouldLove: "Mountain-town life with global name recognition.", whoMightNot: "Affordable-housing seekers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "jackson-wy-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -1676,7 +1676,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 88,
       socialStress: 48,
       accessFriction: 24,
-      note: "Washington, D.C. screening: housing runs expensive relative to regional medians; Washington anchors daily services within reasonable reach; Poor fit if: dry-climate or cool-summer devotees. Atlas-grade read — confirm on the ground before committing.",
+      note: "Capital-region housing runs well above national medians; MedStar/George Washington and DCA access are strong — Potomac flooding on low blocks, Metro reliability, and humid summer heat indices shape neighborhood choice more than cherry-blossom springs.",
       sources: [
       { label: "NOAA — Reagan National AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Washington", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },

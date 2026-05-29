@@ -2619,7 +2619,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["maritime-loving remote workers"], travelFit: ["Goonies tourism", "Columbia bar", "port food"],
     whoWouldLove: "People who romanticize storm-coast ports.", whoMightNot: "Sun-seekers; relocators reliant on metro-scale services or a major airport at the door.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "astoria-or-mechanism",
         title: "Hyper-Maritime mechanics",
@@ -2682,7 +2682,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["creative remote workers", "retirees"], travelFit: ["Victorian architecture", "wooden boat culture"],
     whoWouldLove: "Anyone who wants Pacific Northwest life with fewer gray days.", whoMightNot: "Housing-price-sensitive — Jefferson-County medians track the Olympic Peninsula migration boom.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "port-townsend-wa-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -3814,7 +3814,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Yellowstone-adjacent lifestyle"], travelFit: ["Yellowstone gate"],
     whoWouldLove: "Dry sun lovers.", whoMightNot: "Those put off by wind.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "cody-wy-mechanism",
         title: "Chinook Corridor mechanics",
@@ -3878,7 +3878,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor culture seekers", "mountain town romantics"], travelFit: ["river access"],
     whoWouldLove: "Rocky-valley outdoor people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "missoula-mt-mechanism",
         title: "Basin Inversion mechanics",
@@ -3942,7 +3942,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski-town commuters", "tech remotes"], travelFit: ["Yellowstone north"],
     whoWouldLove: "Outdoor people wanting four real seasons.", whoMightNot: "Budget-constrained.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "bozeman-mt-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -4069,7 +4069,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["adventure sports"], travelFit: ["Arches", "Canyonlands", "mountain biking"],
     whoWouldLove: "Climbers and mountain bikers.", whoMightNot: "Heat-intolerant.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "moab-ut-mechanism",
         title: "Desert Oasis mechanics",
@@ -4267,7 +4267,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snow-resilient families"], travelFit: ["Finger Lakes gateway"],
     whoWouldLove: "Snow-happy city folk.", whoMightNot: "Sun-dependent.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "syracuse-ny-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -4431,17 +4431,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The Driftless Area's organic-farming heartland — a landscape of deep dissected coulees producing dense microclimate variety on small farms.",
     summaryImmersive: "The Driftless Area escaped continental glaciation; the result is a countryside with real topography, deep valleys, and ridge-valley microclimate contrasts that are rare elsewhere in the Upper Midwest. Viroqua has become the de facto center of the country's organic and cooperative farming movement — a cultural result of the climate/soil/topography permutation. Spring creeks hold water; ridgetops shed frost; south-facing slopes warm weeks ahead of north faces.",
     whyDistinct: "Unglaciated relief produces steep, complex terrain with sharp local climate gradients — unusual in the Midwest.",
-                experience: {
-      feel: "Viroqua — the Driftless Area escaped continental glaciation; the result is a countryside with real topography, deep valleys, and ridge-valley microclimate contrasts that are rare elsewhere in the Upper Midwest.",
+    experience: {
+      feel: "Viroqua feels like Driftless coulee country — unglaciated ridges and spring creeks where two blocks can differ by weeks on frost dates, and the de facto center of the Upper Midwest organic-farming movement.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -2.3°C, nights near -12.7°C — snow is a regular part of the picture.",
-        spring: "Late thaw — afternoons near 13°C, nights near 0.7°C — showers pass through regularly. Green-up arrives against a wet 924 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Warm season peak — afternoons near 26.4°C, nights near 14.2°C — rain is frequent and can be heavy.",
-        autumn: "Shoulder season — afternoons near 14.2°C, nights near 2.8°C — showers pass through regularly. Flash-flood and surge diligence is part of daily life.",
+        winter: "Cold and snowy — afternoons near −2°C, nights near −13°C, cold air pooling in coulee bottoms while south-facing ridgetops shed snow faster than the valley floor.",
+        spring: "Late thaw with flash-flood risk — afternoons climbing through 13°C, snowmelt and spring rain swelling Kickapoo tributaries, and green-up racing up north faces.",
+        summer: "Warm and stormy — afternoons near 26°C, humid thunderstorm afternoons, and ridge-valley contrasts that make the same forecast mean different things on adjacent farms.",
+        autumn: "Crisp and soggy — afternoons falling through 14°C, hardwood color in the coves, and coulee flooding diligence before winter sets in.",
       },
-      travelerFit: "Visitors come for trout fishing and Amish country.",
-      residentFit: "It rewards small-farm idealists — especially organic farmers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are flood and surge risk.",
+      travelerFit: "Visitors come for trout fishing, Amish country, and Driftless scenery — spring and fall reward topography-aware planning.",
+      residentFit: "It rewards small-farm idealists and homesteaders who accept real winters and coulee flood exposure — not mild-climate seekers.",
+      texture: "Topography-rich farming country — weigh flash flooding in coulees, smoke from regional fires, and frost-hollow drainage against deep loess soils and cooperative-farm culture.",
     },
     climate: { tempHighC: [-3.4, -1.6, 4.8, 13.6, 20.6, 25.4, 27.4, 26.4, 22.1, 14.8, 5.6, -1.8], tempLowC: [-14.4, -12.6, -6.4, 0.8, 7.6, 13.2, 15.3, 14.2, 9.4, 2.8, -3.8, -11.2], precipMm: [28, 30, 60, 90, 112, 130, 118, 112, 92, 70, 48, 34], snowCm: [24, 22, 20, 6, 0, 0, 0, 0, 0, 2, 12, 24], annualPrecipMm: 924, frostFreeDays: 140, hardinessZone: "5a", humidity: [85, 85, 77, 74, 73, 70, 65, 64, 66, 72, 79, 81], sunshinePct: [37, 43, 46, 54, 60, 63, 57, 53, 44, 39, 35, 32] },
     soil: { texture: "Deep loess / Fayette silt loam", drainage: "good", phRange: [6.0, 7.0], waterHolding: "high" },
@@ -4462,21 +4462,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["organic farmers", "homesteaders"], travelFit: ["trout fishing", "Amish country"],
     whoWouldLove: "Small-farm idealists.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                deepSections: [
+    deepSections: [
       {
-        id: "viroqua-wi-mechanism",
-        title: "Driftless Relief Pocket mechanics",
+        id: "viroqua-driftless-microclimate",
+        title: "Driftless relief and ridge-valley gradients",
         paragraphs: [
-          "Viroqua sits where driftless Area — unglaciated uplands with deep valleys, spring creeks, and sharp ridge-valley microclimates. Dfb normals and roughly 924 mm/yr frame the regional baseline, but Slope / aspect and Cold-air drainage re-weight what any single forecast means block by block.",
-          "Unglaciated relief produces steep, complex terrain with sharp local climate gradients — unusual in the Midwest. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "The Driftless Area escaped continental glaciation — deep dissected coulees, spring creeks, and sharp ridge-valley microclimates rare elsewhere in the Upper Midwest. Cold-air drainage pools in valley bottoms while south-facing slopes warm weeks ahead of north faces; aspect and elevation matter more than the Viroqua coop normals suggest.",
+          "Deep loess and Fayette silt loam with good drainage support organic vegetables, orchard fruit, and dairy pasture — the soil-topography combination that built the region's cooperative-farming identity. Two adjacent quarter-sections can differ materially on frost dates and spring flood exposure.",
         ],
       },
       {
-        id: "viroqua-wi-field-read",
-        title: "On-the-ground read",
+        id: "viroqua-coulee-flood",
+        title: "Coulee flooding and farm logistics",
         paragraphs: [
-          "The Driftless Area's organic-farming heartland — a landscape of deep dissected coulees producing dense microclimate variety on small farms. Soils read as deep loess / fayette silt loam with good drainage (pH 6–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Organic vegetables, Orchard fruit, Dairy pasture. Mild-winter seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated flash-flood risk in coulees registers here — verify parcel elevation, drainage geometry, and spring runoff paths before committing. Growability favors organic vegetables, cider apples, and cool-season crops; long-season heat-lovers struggle without thermal-belt siting.",
+          "Housing sits in a middle band for rural Wisconsin — Gundersen Lutheran in La Crosse anchors specialty care within an hour. Mild-winter seekers and flat-country farmers should scout frost hollows and flood zones on the ground, not from atlas scores alone.",
         ],
       },
     ],
@@ -4524,7 +4524,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["creative remotes", "retirees"], travelFit: ["Biltmore", "Blue Ridge Parkway"],
     whoWouldLove: "Those wanting Southern mild with real summer relief.", whoMightNot: "Flood-averse post-Helene.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "asheville-nc-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -4587,7 +4587,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["summer-heat refugees"], travelFit: ["Appalachian Trail", "ski"],
     whoWouldLove: "People who want New-England feel in the South.", whoMightNot: "Flood-averse.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "boone-nc-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -4710,7 +4710,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 38,
-      note: "Charleston screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: hurricane- or SLR-averse. Atlas-grade read — confirm on the ground before committing.",
+      note: "Historic peninsula housing runs well above regional medians after post-storm insurance tightening; MUSC and Charleston International anchor daily care, but tidal flooding, king tides, and hurricane deductibles shape parcel-level costs more than climate comfort scores alone.",
       sources: [
       { label: "NOAA — Charleston Int'l AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "PRISM Climate Group — gridded 1991–2020 normals", url: "https://prism.oregonstate.edu/" },
@@ -5381,7 +5381,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["winter-residents", "surfers", "subtropical-coast lovers"], travelFit: ["spring break", "sea turtle nesting (Kemp's ridley)", "birding"],
     whoWouldLove: "Anyone who wants Florida-like mildness without humidity maximum; anglers and surfers.", whoMightNot: "Hurricane-averse; storm-anxious; those who need seasons.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "south-padre-tx-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -5414,17 +5414,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Arguably the coldest town in the Lower 48 most winters — regularly registering the US's lowest temperature outside the mountain West.",
     summaryImmersive: "Ely sits where the Canadian Shield reaches into Minnesota: thin soils over granite, thousands of glacier-carved lakes, and a boreal forest climate unlike anywhere else in the contiguous US. On radiative winter nights — still, clear, fresh snow cover — temperatures routinely bottom out near −40°C. Ely and the nearby airport at Embarrass frequently tie for the coldest temperature in the Lower 48. Summers are short but intense, with long daylight, active thunderstorms, and the long twilight characteristic of 48°N. This is the gateway to the Boundary Waters — a million-acre wilderness of lakes and boreal forest where paddling is the only practical travel.",
     whyDistinct: "Deep continental interior + boreal forest snow-covered surface + lack of significant terrain to mix the lower atmosphere + proximity to the polar jet's winter position = extreme winter cold. The innumerable lakes moderate summer somewhat but freeze solid from December to April.",
-                experience: {
-      feel: "Ely sits where the Canadian Shield reaches into Minnesota: thin soils over granite, thousands of glacier-carved lakes, and a boreal forest climate unlike anywhere else in the contiguous US. On radiative winter nights — still, clear, fresh snow cover — temperatures routinely bottom out near −40°C.",
+    experience: {
+      feel: "Ely feels like Canadian Shield boreal at the edge of a million-acre canoe wilderness — radiative winter nights that routinely hit −40°C on still, clear evenings, short intense summers, and thousands of lakes that freeze solid from December to April.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -5.3°C, nights near -18.7°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near 9.7°C, nights near -3.7°C — snow is a regular part of the picture.",
-        summer: "Cool summer by latitude — afternoons near 23.3°C, nights near 11.7°C — rain is frequent and can be heavy. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 9.7°C, nights near 0.3°C — snow is a regular part of the picture. Fire season lingers into shoulder months.",
+        winter: "Defining and brutal — afternoons near −5°C, nights near −19°C, and Embarrass nearby often tying for the coldest reading in the Lower 48. Snow defines mobility; BWCAW gates close to motorized access.",
+        spring: "Late and explosive — ice-out on innumerable lakes, afternoons climbing through 10°C, and a brief green rush before summer thunderstorms build.",
+        summer: "Short and intense — afternoons near 23°C, long daylight, active convection, and Pagami Creek-era wildfire smoke as the summer wildcard.",
+        autumn: "Golden and smoky — hardwood color on the Shield, first frosts in September, and fire season lingering into October before the long heating season returns.",
       },
-      travelerFit: "Visitors come for Boundary Waters canoe trips, winter sled-dog training, aurora, and wolf howls.",
-      residentFit: "It rewards paddlers, hardy winter-sport people, those who feel at home in silent boreal forest — especially wilderness-oriented — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place — the main things to weigh are deep winter cold and wildfire exposure.",
+      travelerFit: "Visitors come for Boundary Waters canoe trips, winter sled-dog training, aurora, and wolf howls — plan around ice and fire seasons.",
+      residentFit: "It rewards paddlers and hardy winter-sport people who accept seven-month heating bills, limited grow seasons, and wilderness-oriented daily logistics.",
+      texture: "A real-tradeoff boreal gateway — weigh deep winter cold, wildfire smoke, and short frost-free days against silent forest country unlike anywhere else in the contiguous US.",
     },
     climate: {
       tempHighC: [-7, -4, 2, 10, 17, 22, 25, 23, 18, 10, 1, -5], tempLowC: [-21, -19, -12, -3, 4, 10, 13, 12, 7, 1, -7, -16],
@@ -5453,21 +5453,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wilderness-oriented", "winter-sport enthusiasts", "off-grid"], travelFit: ["Boundary Waters canoe trips", "winter sled-dog training", "aurora", "wolf howls"],
     whoWouldLove: "Paddlers, hardy winter-sport people, those who feel at home in silent boreal forest.", whoMightNot: "Anyone unwilling to heat for 7 months; gardeners; humidity-lovers in summer.",
     confidence: "high",
-                deepSections: [
+    deepSections: [
       {
-        id: "ely-mn-mechanism",
-        title: "Lake-Moderated mechanics",
+        id: "ely-boreal-cold-pool",
+        title: "Boreal cold pool and Shield lakes",
         paragraphs: [
-          "Ely sits where edge of the Boundary Waters Canoe Area Wilderness; Canadian Shield bedrock with innumerable lakes. Dfb normals and roughly 733 mm/yr frame the regional baseline, but Continental extremity and Lake effect re-weight what any single forecast means block by block.",
-          "Deep continental interior + boreal forest snow-covered surface + lack of significant terrain to mix the lower atmosphere + proximity to the polar jet's winter position = extreme winter cold. The innumerable lakes moderate summer somewhat but freeze solid from December to April. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Ely sits where the Canadian Shield reaches into Minnesota — thin organics over granite, thousands of glacier-carved lakes, and a boreal forest climate that produces among the Lower 48's lowest radiative winter minimums when snow cover, clear skies, and calm winds align. Embarrass, 20 km west, often records slightly colder lows in a more enclosed basin.",
+          "Deep continental interior position and proximity to the polar jet's winter track create extreme cold without significant terrain to mix the lower atmosphere. Innumerable lakes moderate summer somewhat but freeze solid December through April — ice duration is a defining relocation variable.",
         ],
       },
       {
-        id: "ely-mn-field-read",
-        title: "On-the-ground read",
+        id: "ely-boundary-waters",
+        title: "Boundary Waters gateway and fire edge",
         paragraphs: [
-          "Arguably the coldest town in the Lower 48 most winters — regularly registering the US's lowest temperature outside the mountain West. Soils read as sandy loam on glacial till; thin organics over granite with moderate drainage (pH 5–6.2). Season too short and cold for most commercial crops; home gardens thrive with season extension.",
-          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy apples (Honeycrisp heritage), Potatoes, Berries. Anyone unwilling to heat for 7 months; gardeners; humidity-lovers in summer should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "The BWCAW gateway economy shapes daily life — paddling season, ice-out dates, and winter sled-dog culture are infrastructure, not recreation. Pagami Creek (2011) and Greenwood (2021) remind that wildfire registers elevated on the forest edge — verify parcel exposure and evacuation routes.",
+          "Sandy loam on glacial till supports hardy apples and cool-season greens with season extension; commercial crops struggle on 110 frost-free days. Anyone unwilling to heat for seven months or expecting garden-scale self-sufficiency should confirm services in Ely and Virginia before committing.",
         ],
       },
     ],
@@ -6217,7 +6217,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["storm watchers", "coastal gardeners"], travelFit: ["winter banana-belt days", "Samuel Boardman corridor"],
     whoWouldLove: "Anyone fascinated by micro-scale winter warm bursts on a cold ocean.", whoMightNot: "Those who need predictable dry summers inland-style.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "brookings-or-mechanism",
         title: "Gap / Gorge Wind Corridor mechanics",
@@ -6287,7 +6287,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["orchardists", "remote workers"], travelFit: ["Crater Lake", "Rogue River rafting", "pear harvest"],
     whoWouldLove: "Sun-seekers who still want Oregon scenery.", whoMightNot: "Fog-haters in winter; smoke-sensitive lungs.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "medford-or-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -6355,7 +6355,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["sailors", "remote creatives"], travelFit: ["orca watching", "island hopping"],
     whoWouldLove: "Maritime-climate fans who want fewer dreary winters than Seattle proper.", whoMightNot: "Budget shoppers — island cost of living is steep.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "friday-harbor-wa-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -6389,17 +6389,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Sunny and dry for western Washington — bitter inversions in winter, but summers are warm and star-filled.",
     summaryImmersive: "The Methow sits in one of the deepest rain shadows in the Pacific Northwest: storms unload on the Cascades to the west, leaving Winthrop with high-desert sunshine and cold, stagnant air in the valley floor during Arctic outbreaks. Cross-country skiing and dark-sky stargazing are world-class; smoke from regional fires is the summer tradeoff.",
     whyDistinct: "Combination of interior rain shadow + north-south valley geometry that traps cold air and smoke alike.",
-                experience: {
-      feel: "The Methow sits in one of the deepest rain shadows in the Pacific Northwest: storms unload on the Cascades to the west, leaving Winthrop with high-desert sunshine and cold, stagnant air in the valley floor during Arctic outbreaks. Cross-country skiing and dark-sky stargazing are world-class;.",
+    experience: {
+      feel: "Winthrop feels like the Methow rain shadow made habitable — Cascades unload storms to the west, leaving high-desert sunshine, bitter valley inversions during Arctic outbreaks, and world-class Nordic trails under some of the darkest skies in the Lower 48.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 0°C, nights near -8°C — showers pass through regularly. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 14°C, nights near 1°C — weather stays moderate and changeable.",
-        summer: "Warm season peak — afternoons near 27°C, nights near 9°C — weather stays moderate and changeable. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 14°C, nights near 0.3°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
+        winter: "Cold and inverted — afternoons near 0°C, nights near −8°C, stagnant cold pooling on the valley floor while Sun Mountain collects snow for Nordic skiing above the pool.",
+        spring: "Opening window — afternoons climbing through 14°C, Methow Trails reopening, and the last comfortable hiking before summer heat and smoke arrive.",
+        summer: "Dry and warm — afternoons near 27°C, relentless sun compared with Seattle, and regional wildfire smoke that can flatten air quality for weeks.",
+        autumn: "Crisp and smoky — highs sliding through 14°C, first frosts in October, and fire season lingering until Pacific storms finally break the ridge.",
       },
-      travelerFit: "Visitors come for North Cascades Highway and Methow Trails.",
-      residentFit: "It rewards dry-side Washington seekers who want alpine access without Seattle drizzle — especially Nordic skiers — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and smoke-season air quality.",
+      travelerFit: "Visitors come for Methow Trails, North Cascades Highway access, and dark-sky stargazing — winter rewards inversion-aware layering.",
+      residentFit: "It rewards dry-side Washington seekers who accept valley cold pools, summer smoke, and Wenatchee or Omak drives for specialty care.",
+      texture: "Rain-shadow compromise — weigh wildfire smoke, winter inversions, and irrigation limits against alpine access without Seattle drizzle.",
     },
     climate: { tempHighC: [-1, 2, 8, 14, 20, 24, 29, 28, 23, 14, 5, -1], tempLowC: [-9, -7, -3, 1, 5, 8, 10, 9, 5, 0, -4, -8], precipMm: [45, 35, 25, 20, 25, 25, 15, 18, 20, 35, 50, 55], annualPrecipMm: 368, frostFreeDays: 120, hardinessZone: "5b", humidity: [59, 57, 57, 64, 69, 65, 63, 63, 58, 62, 63, 58], sunshinePct: [48, 51, 50, 57, 72, 77, 74, 74, 69, 65, 52, 47] },
     soil: { texture: "Glacial outwash and loess over valley floor", drainage: "good", phRange: [6.2, 7.4], waterHolding: "moderate" },
@@ -6421,21 +6421,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Nordic skiers", "dark-sky photographers"], travelFit: ["North Cascades Highway", "Methow Trails"],
     whoWouldLove: "Dry-side Washington seekers who want alpine access without Seattle drizzle.", whoMightNot: "Those needing mild winters or humidity.",
     confidence: "high",
-                deepSections: [
+    deepSections: [
       {
-        id: "winthrop-wa-mechanism",
-        title: "Rain-Shadow Sanctuary mechanics",
+        id: "winthrop-rain-shadow-inversion",
+        title: "Cascade rain shadow and valley inversions",
         paragraphs: [
-          "Winthrop sits where methow River trench east of the North Cascades crest; deep rain shadow of the Pacific. Dsb normals and roughly 368 mm/yr frame the regional baseline, but Rain shadow and Temperature inversion re-weight what any single forecast means block by block.",
-          "Combination of interior rain shadow + north-south valley geometry that traps cold air and smoke alike. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "The Methow River trench sits in one of the deepest rain shadows in the Pacific Northwest — roughly 368 mm annually while the west slope collects metres of snow. North-south valley geometry traps cold air during Arctic outbreaks and pools smoke during regional fire events; floor blocks can run 5–10°C colder than ridgetops on stagnant mornings.",
+          "Chinook intrusions occasionally chew mid-winter snowpack, but the default is dry, sunny, and cold — a Dsb character rare in western Washington. Compare elevation band before assuming town normals describe a hillside parcel.",
         ],
       },
       {
-        id: "winthrop-wa-field-read",
-        title: "On-the-ground read",
+        id: "winthrop-smoke-winter",
+        title: "Smoke season and winter recreation",
         paragraphs: [
-          "Sunny and dry for western Washington — bitter inversions in winter, but summers are warm and star-filled. Soils read as glacial outwash and loess over valley floor with good drainage (pH 6.2–7.4). Short season; favor cold-hardy fruit and quick greens.",
-          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples on slopes, Native dryland perennials. Those needing mild winters or humidity should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High wildfire and smoke risk registers here — verify defensible space, insurance, and air-filtration plans before committing. Glacial outwash and loess support apples on slopes and dryland perennials; the short season favors cold-hardy fruit and quick greens over frost-tender crops.",
+          "Methow Trails and Sun Mountain anchor a Nordic economy that makes winter inversions tolerable for the right resident — miserable for anyone needing mild winters or coastal humidity. Central Washington Hospital in Wenatchee anchors specialty care within an hour's drive.",
         ],
       },
     ],
@@ -6486,7 +6486,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski families", "orchardists"], travelFit: ["Oktoberfest", "Enchantment peaks"],
     whoWouldLove: "Four-season mountain-town lovers without Colorado altitude.", whoMightNot: "Cool-summer maritime purists.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "leavenworth-wa-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -6519,17 +6519,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Sierra front-row seats — howling easterlies, blazing sun, and the tallest escarpment in the Lower 48 looming west.",
     summaryImmersive: "Lone Pine lives in the hydraulic shadow of the Sierra: dry, windy, and often hazy from Owens Lake dust and seasonal smoke. Winter cold pools in the valley; summer convection builds over the peaks while the floor bakes. It is the gateway climate for Whitney Portal — a vertical kilometer of lapse-rate cooling in minutes of driving.",
     whyDistinct: "Extreme rain shadow plus basin geometry yields persistent inversions and frequent gap winds through passes.",
-                experience: {
-      feel: "Lone Pine lives in the hydraulic shadow of the Sierra: dry, windy, and often hazy from Owens Lake dust and seasonal smoke. Winter cold pools in the valley; summer convection builds over the peaks while the floor bakes.",
+    experience: {
+      feel: "Lone Pine feels like Sierra front-row desert — Owens Valley inversions, gap winds through the passes, blazing sun on alkaline alluvium, and Whitney Portal a vertical kilometre of lapse-rate cooling away.",
       seasons: {
-        winter: "Mild and workable — afternoons near 12.7°C, nights near -2.3°C — weather stays moderate and changeable.",
-        spring: "Spring opens — afternoons near 22.3°C, nights near 5.3°C — skies stay relentlessly clear and dry.",
-        summer: "Hot and humid — afternoons near 35.3°C, nights near 14.7°C — skies stay relentlessly clear and dry. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Shoulder season — afternoons near 23.7°C, nights near 4.3°C — skies stay relentlessly clear and dry. Fire season lingers into shoulder months.",
+        winter: "Inversion country — afternoons near 13°C on sunny days, nights near −2°C when cold pools in the basin, and howling easterlies when gaps open in the Inyo/White range.",
+        spring: "Windy and warming — afternoons climbing through 22°C, Owens Lake dust and haze on dry afternoons, and the Alabama Hills drawing photographers before summer heat.",
+        summer: "Blazing and dry — afternoons above 35°C on the valley floor while Whitney Portal stays cooler; convection builds over the Sierra crest as the floor bakes.",
+        autumn: "Shoulder clarity — highs falling through the mid-20s, fire smoke from surrounding ranges, and the year's best climbing weather before winter inversions return.",
       },
-      travelerFit: "Visitors come for Alabama Hills and Whitney.",
-      residentFit: "It rewards high-desert aesthetes and peak baggers — especially climbers — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place — the main things to weigh are long-run drought and extreme summer heat. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Alabama Hills film history, Whitney Portal access, and high-desert photography — summer demands heat strategy.",
+      residentFit: "It rewards climbers and high-desert aesthetes who accept freight-train noise, alkaline water, Owens Lake dust, and Inyo County housing pressure.",
+      texture: "Basin-inversion tradeoff — weigh extreme summer heat, drought, dust, and smoke against the tallest escarpment in the Lower 48 as your western skyline.",
     },
     climate: { tempHighC: [12, 14, 18, 22, 27, 33, 37, 36, 31, 24, 16, 12], tempLowC: [-3, -1, 2, 5, 9, 13, 16, 15, 10, 4, -1, -3], precipMm: [28, 25, 20, 8, 6, 3, 8, 10, 8, 10, 12, 22], annualPrecipMm: 159, frostFreeDays: 200, hardinessZone: "7b", humidity: [40, 40, 34, 38, 42, 39, 39, 41, 39, 45, 42, 41], sunshinePct: [75, 79, 79, 84, 92, 92, 92, 92, 87, 85, 73, 71] },
     soil: { texture: "Sandy alkaline alluvium", drainage: "excessive", phRange: [7.5, 8.5], waterHolding: "low" },
@@ -6551,21 +6551,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["climbers", "desert photographers"], travelFit: ["Alabama Hills", "Whitney"],
     whoWouldLove: "High-desert aesthetes and peak baggers.", whoMightNot: "Humidity seekers; noise-sensitive — freight trains run the valley.",
     confidence: "high",
-                deepSections: [
+    deepSections: [
       {
-        id: "lone-pine-ca-mechanism",
-        title: "Basin Inversion mechanics",
+        id: "lone-pine-owens-basin",
+        title: "Owens Valley basin and gap winds",
         paragraphs: [
-          "Lone Pine sits where owens Valley floor between the Sierra Nevada and Inyo/White mountains; one of the deepest continental basins in North America. At roughly 1130 m, elevation bands matter as much as latitude. BWk normals and roughly 159 mm/yr frame the regional baseline, but Temperature inversion and Gap winds re-weight what any single forecast means block by block.",
-          "Extreme rain shadow plus basin geometry yields persistent inversions and frequent gap winds through passes. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Lone Pine sits on the Owens Valley floor between the Sierra Nevada and Inyo/White mountains — one of the deepest continental basins in North America, with persistent inversions and gap winds through passes that can howl for days. Extreme rain shadow yields roughly 159 mm annually; Owens Lake dust and seasonal smoke add haze the atlas temperature curve does not capture.",
+          "Elevation at 1,130 m tempers summer slightly compared with Death Valley blocks to the south, but basin geometry still produces blazing afternoons and cold pooled nights. Whitney Portal climbs a vertical kilometre of lapse-rate cooling within minutes of driving — the climate diversity is vertical, not horizontal.",
         ],
       },
       {
-        id: "lone-pine-ca-field-read",
-        title: "On-the-ground read",
+        id: "lone-pine-sierra-access",
+        title: "Sierra gateway and desert logistics",
         paragraphs: [
-          "Sierra front-row seats — howling easterlies, blazing sun, and the tallest escarpment in the Lower 48 looming west. Soils read as sandy alkaline alluvium with excessive drainage (pH 7.5–8.5). Windbreaks essential; alkaline water common.",
-          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Native desert perennials with drip. Humidity seekers; noise-sensitive — freight trains run the valley should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy alkaline alluvium with excessive drainage demands windbreaks and drip for any garden; most fruit needs heavy amendment. Wildfire and drought register elevated — verify insurance, water rights, and dust-exposure on west-facing parcels before committing.",
+          "Inyo County housing runs above regional medians for a town of Lone Pine's size; Southern Inyo Hospital in Bishop anchors care 90 km north. Freight trains through the valley and alkaline groundwater are daily realities — noise-sensitive or humidity-seeking relocators should scout on the ground, not from atlas scores.",
         ],
       },
     ],
@@ -6616,7 +6616,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["river guides", "remote workers"], travelFit: ["Antelope Canyon", "Horseshoe Bend"],
     whoWouldLove: "Canyon-country obsessives.", whoMightNot: "Anyone who needs greenery without irrigation.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "page-az-mechanism",
         title: "High-Desert Escape mechanics",
@@ -6681,7 +6681,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snowmobilers", "boreal researchers"], travelFit: ["Voyageurs NP", "ice fishing"],
     whoWouldLove: "Hardy winter people who want true northern seasons.", whoMightNot: "Heat-lovers; thin-blood snowbirds.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "international-falls-mn-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -6746,7 +6746,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor enthusiasts", "remote workers"], travelFit: ["tall ships", "fall color", "skiing"],
     whoWouldLove: "Cool-summer lovers who still want real winter.", whoMightNot: "Sun-belt retirees seeking warmth.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "duluth-mn-mechanism",
         title: "Lake-Moderated mechanics",
@@ -6811,7 +6811,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["lake-house seekers"], travelFit: ["Presque Isle beaches", "winter storm chasing"],
     whoWouldLove: "Great Lakes culture and dramatic snow.", whoMightNot: "Snow shovel haters.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "erie-pa-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -6866,7 +6866,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 70,
       socialStress: 48,
       accessFriction: 24,
-      note: "Chattanooga screening: housing runs expensive relative to regional medians; Chattanooga anchors daily services within reasonable reach. Atlas-grade read — confirm on the ground before committing.",
+      note: "River-gorge city with mid-band housing and strong Erlanger/Market Street walkability; Lookout Mountain elevation splits flood and insurance exposure — valley blocks and ridge subdivisions face different storm and tornado-alley realities.",
       sources: [
       { label: "NOAA — Chattanooga AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "PRISM Climate Group — gridded 1991–2020 normals", url: "https://prism.oregonstate.edu/" },
@@ -6938,7 +6938,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Smokies trails", "autumn color"],
     whoWouldLove: "Misty-mountain hikers and waterfall chasers.", whoMightNot: "Crowd-averse visitors in October weekends.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "gatlinburg-tn-mechanism",
         title: "Thermal Belt mechanics",
@@ -7002,7 +7002,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote coastal workers"], travelFit: ["Wright Brothers", "wild horses", "surf"],
     whoWouldLove: "Beach people who accept hurricane season soberly.", whoMightNot: "Evacuation-averse; flood-insurance skeptics.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "nags-head-nc-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -7067,7 +7067,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote tech workers", "ski commuters"], travelFit: ["Champlain Islands", "ski resorts"],
     whoWouldLove: "Small-city New England with lake recreation.", whoMightNot: "Those who need warm winters.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "burlington-vt-mechanism",
         title: "Lake-Moderated mechanics",
@@ -7139,7 +7139,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Acadia", "whale watching"],
     whoWouldLove: "Granite-coast hikers and blueberry fans.", whoMightNot: "Budget travelers in peak July.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "bar-harbor-me-mechanism",
         title: "Fjord / Inlet Coast mechanics",
@@ -7204,7 +7204,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ag researchers", "storm chasers"], travelFit: ["Palo Duro", "wine country nearby"],
     whoWouldLove: "Big-sky storm watchers.", whoMightNot: "Humidity lovers; tree-huggers seeking forests.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "lubbock-tx-mechanism",
         title: "Badland / Steppe Pocket mechanics",
@@ -7259,7 +7259,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 70,
       socialStress: 66,
       accessFriction: 24,
-      note: "New Orleans screening: housing runs expensive relative to regional medians; New Orleans anchors daily services within reasonable reach; visible civic or tourism stress shows up in resident reviews. Atlas-grade read — confirm on the ground before committing.",
+      note: "Below-grade housing and flood-insurance math dominate relocation; LCMC Health and Louis Armstrong International provide services, but pump failures, mold remediation, and rising premiums are daily civic reality rather than edge-case hazards.",
       sources: [
       { label: "NOAA — New Orleans Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "PRISM Climate Group — gridded 1991–2020 normals", url: "https://prism.oregonstate.edu/" },
@@ -7330,7 +7330,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wellness retreat life"], travelFit: ["citrus farms", "sunset chasers"],
     whoWouldLove: "Mediterranean-light obsessives.", whoMightNot: "Fire-averse; seekers of seasonal drama.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "ojai-ca-mechanism",
         title: "Mediterranean Pocket mechanics",

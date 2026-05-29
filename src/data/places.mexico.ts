@@ -782,17 +782,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "One of Mexico's great coffee belts — mist-fed montane cloud forest between lowland Veracruz and the volcanic highlands.",
     summaryImmersive: "Coatepec sits on the windward Gulf slope of the Sierra Madre Oriental at 1250 m, where Atlantic moisture condenses reliably on hillside slopes. Coffee was introduced in the early 1800s and the town developed around an exceptional climate — cool, humid, mild, and perpetually misty.",
     whyDistinct: "Gulf moisture + windward slope + elevation produces reliable fog/drizzle and cool temperatures — genuine montane cloud-forest character.",
-                experience: {
-      feel: "Coatepec sits on the windward Gulf slope of the Sierra Madre Oriental at 1250 m, where Atlantic moisture condenses reliably on hillside slopes. Coffee was introduced in the early 1800s and the town developed around an exceptional climate — cool, humid, mild, and perpetually misty.",
+    experience: {
+      feel: "Coatepec feels like Mexico's coffee cloud belt — Atlantic moisture condensing on the Gulf windward slope at 1,250 m, cool humid air, perpetual mist, and a town built around beans that need exactly this weather since the early 1800s.",
       seasons: {
-        winter: "Warm winter window — afternoons near 20.6°C, nights near 11.1°C — showers pass through regularly.",
-        spring: "Green-up and storms — afternoons near 24.6°C, nights near 14.7°C — showers pass through regularly. Green-up arrives against a wet 1834 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Cool summer by latitude — afternoons near 24.2°C, nights near 15.7°C — rain is frequent and can be heavy.",
-        autumn: "Shoulder season — afternoons near 22.2°C, nights near 14°C — rain is frequent and can be heavy. Flash-flood and surge diligence is part of daily life.",
+        winter: "Mild and misty — afternoons near 20°C, nights near 11°C, drizzle threading through cloud-forest canopy, and the steadiest window for coffee-farm visits.",
+        spring: "Green and wet — afternoons near 25°C, orographic lift intensifying, and spring rains that can swell rivers through hillside districts quickly.",
+        summer: "Cloud-fed and cool — afternoons near 24°C despite tropical latitude, heavy wet-season rain near 1,834 mm annually, and humidity that keeps everything soft and close.",
+        autumn: "Shoulder storms — afternoons near 22°C, flash-flood diligence on slope roads, and mist returning as the wet season tapers.",
       },
-      travelerFit: "Visitors come for coffee tourism.",
-      residentFit: "It rewards misty-mountain romantics — especially coffee people — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are flood and surge risk and slope stability. Coffee-cloud-belt town with strong cost-of-living advantage; Xalapa and Veracruz are short drives away for full services.",
+      travelerFit: "Visitors come for coffee tourism, cloud-forest walks, and Veracruz highland culture — pack for drizzle, not sunscreen.",
+      residentFit: "It rewards misty-mountain romantics who accept landslide diligence on windward slopes and short drives to Xalapa for full services.",
+      texture: "Coffee-cloud-belt settlement — weigh flood and slope stability against low cost-of-living and genuine montane cloud-forest character.",
     },
     climate: { tempHighC: [20.1, 21.6, 23.4, 24.9, 25.4, 24.6, 23.8, 24.1, 23.2, 22.3, 21.1, 20.0], tempLowC: [10.9, 11.6, 13.4, 14.9, 15.8, 15.9, 15.6, 15.7, 15.4, 14.2, 12.4, 10.8], precipMm: [56, 38, 40, 68, 132, 284, 278, 262, 306, 212, 96, 62], annualPrecipMm: 1834, frostFreeDays: 365, hardinessZone: "11b equiv.", humidity: [89, 89, 82, 80, 76, 78, 73, 71, 77, 78, 84, 85], sunshinePct: [32, 35, 34, 41, 46, 51, 48, 48, 43, 39, 36, 31] },
     soil: { texture: "Andisol", drainage: "moderate", phRange: [5.0, 6.0], waterHolding: "high" },
@@ -813,21 +813,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["coffee people", "cloud-forest lovers"], travelFit: ["coffee tourism"],
     whoWouldLove: "Misty-mountain romantics.", whoMightNot: "Those wanting sun.",
     confidence: "moderate",
-                deepSections: [
+    deepSections: [
       {
-        id: "coatepec-mx-mechanism",
-        title: "Cloud Forest mechanics",
+        id: "coatepec-cloud-coffee",
+        title: "Cloud forest and coffee orography",
         paragraphs: [
-          "Coatepec sits where windward Gulf slope of the Sierra Madre Oriental; perpetually cloud-fed. At roughly 1250 m, elevation bands matter as much as latitude. Cfb normals and roughly 1834 mm/yr frame the regional baseline, but Orographic lift re-weight what any single forecast means block by block.",
-          "Gulf moisture + windward slope + elevation produces reliable fog/drizzle and cool temperatures — genuine montane cloud-forest character. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Coatepec sits on the windward Gulf slope of the Sierra Madre Oriental at 1,250 m — Atlantic moisture condenses reliably on hillside slopes, producing genuine montane cloud-forest character with roughly 1,834 mm annually and Cfb-like mildness despite tropical latitude. Coffee introduced in the early 1800s shaped the town around a climate that commercial beans still require.",
+          "Orographic lift re-weight forecasts block by block — ridge-top fincas see more cloud and wind than sheltered valley pockets near the municipal center. Andisol soils with moderate drainage support coffee, avocado, and citrus; dry-climate crops fail without irrigation in the persistent mist.",
         ],
       },
       {
-        id: "coatepec-mx-field-read",
-        title: "On-the-ground read",
+        id: "coatepec-slope-flood",
+        title: "Slope stability and highland services",
         paragraphs: [
-          "One of Mexico's great coffee belts — mist-fed montane cloud forest between lowland Veracruz and the volcanic highlands. Soils read as andisol with moderate drainage (pH 5–6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Coffee, Avocado, Citrus. Those wanting sun should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated flood and landslide risk on windward slopes registers here — verify parcel drainage, retaining walls, and rainy-season road access before committing. Low cost-of-living and strong growability scores attract coffee people, but sun-seekers will find the drizzle relentless.",
+          "Xalapa and Veracruz port are short drives for hospitals and international air — Coatepec itself is a coffee-cloud-belt town, not a metro. Confirm elevation and slope exposure on the ground; atlas normals describe the regional belt, not every hillside parcel.",
         ],
       },
     ],
@@ -877,7 +877,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbird winter escape"], travelFit: ["birding", "colonial architecture"],
     whoWouldLove: "Monsoon-edge Sonora romantics.", whoMightNot: "Heat-averse.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "alamos-mx-mechanism",
         title: "Monsoon-Edge Zone mechanics",
@@ -1405,17 +1405,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The unexpected apple capital of Mexico — Mennonite-run orchards at 2060 m on the dry Chihuahuan plateau.",
     summaryImmersive: "Cuauhtémoc sits on the central Chihuahuan plateau at 2060 m. Mennonite settlers from Canada brought their dryland apple expertise here in the 1920s and developed what is now the country's largest apple-growing region. The climate is ideal for the fruit: chill hours are adequate, summers dry and sunny, nights cool enough for skin color development. The winter can bring genuine cold and occasional snow.",
     whyDistinct: "Unusually cold (by Mexican standards) and dry high-plateau climate supports temperate-fruit agriculture unavailable elsewhere in the country.",
-                experience: {
-      feel: "Cuauhtémoc sits on the central Chihuahuan plateau at 2060 m. Mennonite settlers from Canada brought their dryland apple expertise here in the 1920s and developed what is now the country's largest apple-growing region.",
+    experience: {
+      feel: "Cuauhtémoc feels like Mennonite apple country on the Chihuahuan plateau — dry sunny summers at 2,060 m, genuine winter cold and occasional snow, and orchards that need chill hours Mexico's lowlands cannot provide.",
       seasons: {
-        winter: "Mild and workable — afternoons near 16.4°C, nights near -2.7°C — skies stay relentlessly clear and dry.",
-        spring: "Spring opens — afternoons near 25.9°C, nights near 5.5°C — skies stay relentlessly clear and dry.",
-        summer: "Warm season peak — afternoons near 28.7°C, nights near 13.3°C — rain is frequent and can be heavy. Water supply and irrigation stress matter.",
-        autumn: "Shoulder season — afternoons near 22.7°C, nights near 6°C — weather stays moderate and changeable.",
+        winter: "Cold and clear — afternoons near 16°C, nights below freezing, snow on the orchards, and irrigation channels frozen on the coldest mornings.",
+        spring: "Bloom season — afternoons near 26°C, relentless sun on the plateau, and the critical frost window that determines apple set across the Mennonite colonies.",
+        summer: "Warm and dry — afternoons near 29°C, monsoon moisture arriving as afternoon storms, and irrigation demand peaking across the country's largest apple region.",
+        autumn: "Harvest gold — afternoons near 23°C, cool nights for skin color, and the economic rhythm of packing sheds and cold storage across the plateau.",
       },
-      travelerFit: "Visitors come for Mennonite cheese tourism.",
-      residentFit: "It rewards dryland-fruit-country romantics — especially orchard farmers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at 2060 m elevation — the main things to weigh are long-run drought. Cuauhtemoc is a genuine northwest-Chihuahua service and agro-industrial hub rather than just a scenic orchard pocket; the live-here checks are water stress, winter road weather, and northern-Chihuahua security context.",
+      travelerFit: "Visitors come for Mennonite cheese tourism, apple-harvest season, and a Chihuahua high-plateau climate unlike coastal Mexico.",
+      residentFit: "It rewards orchard farmers and dryland-fruit romantics who accept water-right stress, winter road weather, and northern-Chihuahua security context.",
+      texture: "Agro-industrial plateau hub — weigh drought, chill-hour decline, and aquifer pressure against temperate-fruit agriculture unavailable elsewhere in Mexico.",
     },
     climate: { tempHighC: [15.4, 18.1, 22.4, 25.8, 29.4, 30.6, 28.1, 27.4, 25.8, 23.2, 19.1, 15.6], tempLowC: [-3.4, -1.6, 1.6, 5.4, 9.6, 13.1, 13.6, 13.2, 11.2, 6.1, 0.6, -3.1], precipMm: [10, 6, 6, 8, 18, 48, 132, 128, 88, 26, 8, 14], annualPrecipMm: 492, frostFreeDays: 180, hardinessZone: "8a equiv.", chillHours: 900, humidity: [38, 38, 35, 40, 44, 41, 44, 46, 44, 46, 44, 38], sunshinePct: [75, 79, 79, 84, 92, 92, 92, 92, 87, 85, 73, 71] },
     soil: { texture: "Silty loam over caliche", drainage: "good", phRange: [7.0, 7.8], waterHolding: "moderate" },
@@ -1437,21 +1437,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["orchard farmers"], travelFit: ["Mennonite cheese tourism"],
     whoWouldLove: "Dryland-fruit-country romantics.", whoMightNot: "Anyone wanting a Mexican coast.",
     confidence: "moderate",
-                deepSections: [
+    deepSections: [
       {
-        id: "cuauhtemoc-mx-mechanism",
-        title: "High-Desert Escape mechanics",
+        id: "cuauhtemoc-mennonite-orchard",
+        title: "Mennonite orchards and plateau chill",
         paragraphs: [
-          "Cuauhtémoc sits where central Chihuahua high-desert plateau; the Mennonite agricultural heartland. At roughly 2060 m, elevation bands matter as much as latitude. BSk normals and roughly 492 mm/yr frame the regional baseline, but Continental extremity and Elevation lapse rate re-weight what any single forecast means block by block.",
-          "Unusually cold (by Mexican standards) and dry high-plateau climate supports temperate-fruit agriculture unavailable elsewhere in the country. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Cuauhtémoc sits on the central Chihuahuan plateau at 2,060 m — Mennonite settlers from Canada brought dryland apple expertise in the 1920s and built Mexico's largest apple-growing region on a climate with adequate chill hours, dry sunny summers, and cool nights for skin color. BSk normals with roughly 492 mm annually frame a temperate-fruit envelope unavailable at coastal latitudes.",
+          "Continental extremity and elevation lapse rate mean orchard blocks on exposed ridges run colder and windier than sheltered valley parcels — frost timing during bloom is the make-or-break variable every spring.",
         ],
       },
       {
-        id: "cuauhtemoc-mx-field-read",
-        title: "On-the-ground read",
+        id: "cuauhtemoc-plateau-water",
+        title: "Plateau water stress and services",
         paragraphs: [
-          "The unexpected apple capital of Mexico — Mennonite-run orchards at 2060 m on the dry Chihuahuan plateau. Soils read as silty loam over caliche with good drainage (pH 7–7.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Drought registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Pears, Dairy pasture. Anyone wanting a Mexican coast should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated drought risk and declining chill hours under warming register here — verify irrigation rights, well depth, and aquifer access before committing to orchard-scale agriculture. Silty loam over caliche supports apples, pears, and dairy pasture; tropical crops fail in the plateau cold.",
+          "Cuauhtémoc is a genuine northwest-Chihuahua service hub with Hospital Angeles and INEGI-documented municipal infrastructure — not a scenic pocket. Water stress, winter road weather, and northern-Chihuahua security context are honest relocation filters beyond the atlas comfort score.",
         ],
       },
     ],
@@ -1569,7 +1569,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbirds", "marine-adjacent"], travelFit: ["whale sharks", "island tourism"],
     whoWouldLove: "Those wanting winter perfection on clear turquoise water.", whoMightNot: "Year-round heat-averse.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "la-paz-mx-mechanism",
         title: "Desert Oasis mechanics",
@@ -1634,7 +1634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "puerto-escondido-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -1703,7 +1703,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["colonial-city expats"], travelFit: ["Maya sites", "cenotes"],
     whoWouldLove: "Tropical-dry + culture seekers.", whoMightNot: "Summer-heat-averse.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "merida-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -1768,7 +1768,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["tropical expats"], travelFit: ["lagoon tourism", "stromatolites"],
     whoWouldLove: "Caribbean-adjacent freshwater lovers.", whoMightNot: "Hurricane-averse.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "bacalar-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2282,7 +2282,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "artists", "highland-climate seekers"], travelFit: ["colonial architecture", "highland festivals", "walkable mild-weather city breaks"],
     whoWouldLove: "People who want dry sun and cool evenings without truly cold winters.", whoMightNot: "Humidity lovers or those needing lush, high-rain landscapes.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "san-miguel-de-allende-mx-mechanism",
         title: "Eternal-Spring Highland mechanics",
@@ -2390,17 +2390,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Historic high-desert wine valley at ~1,500 m, with strong day-night thermal swing that favors structured reds.",
     summaryImmersive: "Parras de la Fuente occupies a semiarid Coahuila basin where viticulture has persisted since the 16th century. Elevation and dry air produce pronounced diurnal temperature swings: hot afternoons during the growing season followed by cool nights that preserve acidity in grapes. Rainfall is limited and irregular, so irrigation strategy and soil-water timing determine yield quality. The valley is widely cited as home to the oldest continuously operating winery in the Americas, and modern Coahuila wine expansion still leans on this microclimate template.",
     whyDistinct: "Desert-basin aridity plus 1,500 m elevation creates one of Mexico's strongest warm-day/cool-night viticulture envelopes outside Baja.",
-                experience: {
-      feel: "Parras Valley — parras de la Fuente occupies a semiarid Coahuila basin where viticulture has persisted since the 16th century. Elevation and dry air produce pronounced diurnal temperature swings: hot afternoons during the growing season followed by cool nights that preserve acidity in grapes.",
+    experience: {
+      feel: "Parras feels like a 1,520 m desert wine oasis — 16th-century viticulture surviving on irrigation and brutal diurnal swings that structure Cabernet and Tempranillo in one of the Americas' oldest continuously operating winery valleys.",
       seasons: {
-        winter: "Warm winter window — afternoons near 20.6°C, nights near 4.5°C — skies stay mostly dry with intense sun.",
-        spring: "Heating up fast — afternoons near 29.8°C, nights near 11.9°C — skies stay relentlessly clear and dry.",
-        summer: "Hot and humid — afternoons near 34°C, nights near 19.1°C — weather stays moderate and changeable. Water supply and irrigation stress matter.",
-        autumn: "Shoulder season — afternoons near 26.2°C, nights near 11.6°C — weather stays moderate and changeable.",
+        winter: "Mild and sunny — afternoons near 20°C, nights near 4°C, clear skies on the Coahuila basin floor, and the steadiest window for winery visits.",
+        spring: "Heating fast — afternoons climbing through 30°C, irrigation channels running full ahead of bud break, and relentless sun on calcareous slopes.",
+        summer: "Hot days, cool nights — afternoons above 34°C followed by nights near 19°C; the diurnal swing that preserves acidity in structured reds defines the growing season.",
+        autumn: "Harvest rhythm — afternoons falling through the mid-20s, crush season in the historic bodegas, and the year's best light on sierra-ringed vineyards.",
       },
-      travelerFit: "Visitors come for historic wineries and high-desert valley food-and-wine routes.",
-      residentFit: "It rewards wine-focused travelers and residents who prefer dry highland heat over humid climates — especially wine-industry professionals — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at 1520 m elevation — the main things to weigh are long-run drought. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Casa Madero and high-desert valley food-and-wine routes — summer afternoon heat demands planning.",
+      residentFit: "It rewards wine-industry professionals who accept drought, irrigation math, and housing above regional medians for historic-valley parcels.",
+      texture: "Semiarid viticulture oasis — weigh water budgets and heat load against Mexico's strongest warm-day/cool-night wine envelope outside Baja.",
     },
     climate: {
       tempHighC: [19.8, 22.4, 26.4, 30.0, 33.0, 34.8, 34.0, 33.2, 30.2, 26.1, 22.4, 19.6],
@@ -2428,21 +2428,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["wine-industry professionals", "dry-climate growers"], travelFit: ["historic wineries", "high-desert valley food-and-wine routes"],
     whoWouldLove: "Wine-focused travelers and residents who prefer dry highland heat over humid climates.", whoMightNot: "People who need lush landscapes or low-maintenance water budgets.",
     confidence: "moderate",
-                deepSections: [
+    deepSections: [
       {
-        id: "parras-de-la-fuente-mx-mechanism",
-        title: "High-Desert Escape mechanics",
+        id: "parras-diurnal-wine",
+        title: "Diurnal swing and desert viticulture",
         paragraphs: [
-          "Parras Valley sits where high desert valley in southern Coahuila ringed by sierras; irrigated viticulture pockets embedded in semiarid terrain. At roughly 1520 m, elevation bands matter as much as latitude. BSh normals and roughly 251 mm/yr frame the regional baseline, but Rain shadow and Elevation lapse rate re-weight what any single forecast means block by block.",
-          "Desert-basin aridity plus 1,500 m elevation creates one of Mexico's strongest warm-day/cool-night viticulture envelopes outside Baja. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Parras de la Fuente occupies a semiarid Coahuila basin ringed by sierras at roughly 1,520 m — desert-basin aridity plus elevation produces one of Mexico's strongest warm-day/cool-night viticulture envelopes outside Baja, with diurnal swings near 14°C in summer that preserve acidity in Cabernet, Merlot, and Tempranillo. Viticulture has persisted since the 16th century; Casa Madero anchors the oldest continuously operating winery in the Americas narrative.",
+          "Rain-shadow and continental drivers mean roughly 251 mm annually — yield quality tracks irrigation strategy and soil-water timing more than rainfall totals. Calcareous sandy loam on alluvial fans drains fast; low organic matter concentrates grape character under controlled water.",
         ],
       },
       {
-        id: "parras-de-la-fuente-mx-field-read",
-        title: "On-the-ground read",
+        id: "parras-desert-water",
+        title: "Desert water budgets and valley housing",
         paragraphs: [
-          "Historic high-desert wine valley at ~1,500 m, with strong day-night thermal swing that favors structured reds. Soils read as calcareous sandy loam and alluvial fans with good drainage (pH 7.2–8.3). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Drought registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Wine grapes (Cabernet, Merlot, Tempranillo), Olive, Pomegranate. People who need lush landscapes or low-maintenance water budgets should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High drought risk registers here — verify well depth, irrigation allocation, and heat-stress plans before committing to vineyard or orchard parcels. Growability favors wine grapes, olive, and pomegranate; water-intensive annuals fail without heavy infrastructure.",
+          "Housing runs above regional Coahuila medians for historic-valley blocks — wine tourism and industry professionals drive demand. People needing lush landscapes or low-maintenance water budgets should confirm services in Saltillo and Torreón before treating atlas growability scores as daily-life certainty.",
         ],
       },
     ],
@@ -2503,7 +2503,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["altitude-loving urbanites"], travelFit: ["Nevado de Toluca hiking", "colonial architecture", "traditional markets"],
     whoWouldLove: "Altitude enthusiasts, cool-climate seekers in Mexico.", whoMightNot: "Anyone sensitive to thin air or winter cold.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "toluca-mx-mechanism",
         title: "Volcanic Upland mechanics",
@@ -2559,7 +2559,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 70,
       socialStress: 48,
       accessFriction: 24,
-      note: "Monterrey screening: housing runs expensive relative to regional medians; Monterrey anchors daily services within reasonable reach; Poor fit if: clean-air purists on stagnant inversion days. Atlas-grade read — confirm on the ground before committing.",
+      note: "Industrial capital with housing expensive for northern Mexico; HM hospitals and MTY anchor services — Monterrey inversion smog on stagnant days and arroyo flash floods in summer define air-quality diligence beyond comfortable winter afternoons.",
       sources: [
       { label: "SMN — Monterrey / INEGI climate summaries", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -2634,7 +2634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["desert-industry workers"], travelFit: ["Bahía de Kino day trips", "desert ecotours"],
     whoWouldLove: "Dry-heat devotees.", whoMightNot: "Anyone who needs summer air conditioning to be optional.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "hermosillo-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2699,7 +2699,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["hospitality retirees", "remote workers"], travelFit: ["whale watching", "beaches"],
     whoWouldLove: "Tropical beach life with mountain backdrop.", whoMightNot: "Dry-climate seekers; hurricane-anxious buyers.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "puerto-vallarta-mx-mechanism",
         title: "Tropical Isothermal Coast mechanics",
@@ -2764,7 +2764,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
-                deepSections: [
+                    deepSections: [
       {
         id: "mazatlan-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2829,7 +2829,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "campeche-mx-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -2893,7 +2893,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["archaeology guides", "ecotourism"], travelFit: ["ruins", "jungle trails"],
     whoWouldLove: "Jungle climate with Maya history.", whoMightNot: "Anyone who cannot tolerate humidity.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "palenque-mx-mechanism",
         title: "Cloud Forest mechanics",
@@ -2957,7 +2957,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["artisans", "retirees"], travelFit: ["silver markets", "cobblestone walks"],
     whoWouldLove: "Highland colonial towns with tropical latitude.", whoMightNot: "Mobility-limited — steep streets everywhere.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "taxco-mx-mechanism",
         title: "Eternal-Spring Highland mechanics",
@@ -3012,7 +3012,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 70,
       socialStress: 48,
       accessFriction: 44,
-      note: "Puebla screening: housing runs expensive relative to regional medians; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: altitude-sensitive; smog-sensitive winter visitors. Atlas-grade read — confirm on the ground before committing.",
+      note: "Colonial highland city with moderate cost-of-living; IMSS and PBC provide care — 2,135 m elevation means thin-air adjustment, winter basin smog, and occasional Popocatépetl ash as relocation realities beyond mild eternal-spring afternoons.",
       sources: [
       { label: "SMN — Puebla", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -3257,7 +3257,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["dry-climate seekers", "regional professionals"], travelFit: ["Sierra Madre road trips", "historic center"],
     whoWouldLove: "People who like highland sun, cool nights, and monsoon-season drama without lowland humidity.", whoMightNot: "People who want lush wet greenery year-round.",
     confidence: "moderate",
-                deepSections: [
+                    deepSections: [
       {
         id: "durango-mx-mechanism",
         title: "Monsoon-Edge Zone mechanics",
@@ -3291,17 +3291,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A humid highland Veracruz city where Gulf air, volcanic relief, and cloud-forest edges make a green eternal-spring variant.",
     summaryImmersive: "Orizaba sits on the wet side of the Mexican highlands, below the country's highest peak. Gulf moisture rises into the mountains, producing frequent cloud, heavy wet-season rain, and mild temperatures that feel greener and more humid than the drier central plateau. It is a bridge between tropical Veracruz and the cool volcanic highlands.",
     whyDistinct: "Windward slope lift below Pico de Orizaba creates a humid highland climate with cloud-forest character and strong rainfall gradients over short distances.",
-                experience: {
-      feel: "Orizaba sits on the wet side of the Mexican highlands, below the country's highest peak. Gulf moisture rises into the mountains, producing frequent cloud, heavy wet-season rain, and mild temperatures that feel greener and more humid than the drier central plateau.",
+    experience: {
+      feel: "Orizaba feels like Gulf moisture climbing the Sierra Madre below Mexico's highest peak — green eternal-spring highland, heavy wet-season rain, cloud-forest humidity, and a bridge between tropical Veracruz port heat and cool volcanic country.",
       seasons: {
-        winter: "Warm winter window — afternoons near 21.3°C, nights near 10.7°C — showers pass through regularly. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 24.7°C, nights near 14°C — showers pass through regularly. Green-up arrives against a wet 1615 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Cool summer by latitude — afternoons near 23.3°C, nights near 15.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 22.7°C, nights near 13.7°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Mild and misty — afternoons near 21°C, nights near 11°C, orographic drizzle on the windward slopes, and Pico de Orizaba snow visible above the cloud base.",
+        spring: "Green and building — afternoons near 25°C, river swell from spring rains on saturated slopes, and coffee-citrus country waking under persistent cloud.",
+        summer: "Wet-season peak — afternoons near 23°C despite latitude, heavy rain near 1,615 mm annually, afternoon convection, and landslide diligence on hillside roads.",
+        autumn: "Shoulder storms — afternoons near 23°C, wet-season tapering, and the steadiest window for highland walks before winter mist thickens.",
       },
-      travelerFit: "Visitors come for Pico de Orizaba views and green highland walks.",
-      residentFit: "It rewards people who want green mountains, mild temperatures, and Veracruz culture without lowland heat — especially cloud-forest lovers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure. Highland Veracruz town with low cost-of-living; Veracruz international airport ~2 h away.",
+      travelerFit: "Visitors come for Pico de Orizaba views, green highland walks, and Veracruz culture without lowland heat.",
+      residentFit: "It rewards cloud-forest lovers who accept wet-season infrastructure stress and a two-hour drive to Veracruz airport for international access.",
+      texture: "Windward highland compromise — weigh flood, landslide, and storm exposure against low cost-of-living and genuine eternal-spring mildness.",
     },
     climate: { tempHighC: [21, 22, 24, 25, 25, 24, 23, 23, 23, 23, 22, 21], tempLowC: [10, 11, 13, 14, 15, 16, 15, 15, 15, 14, 12, 11], precipMm: [45, 35, 40, 65, 115, 260, 250, 240, 270, 160, 80, 55], annualPrecipMm: 1615, frostFreeDays: 365, hardinessZone: "10b equiv.", humidity: [89, 89, 82, 80, 76, 78, 73, 71, 77, 78, 84, 85], sunshinePct: [31, 34, 33, 40, 45, 50, 47, 47, 42, 38, 35, 29] },
     soil: { texture: "Volcanic and alluvial loam on humid mountain slopes", drainage: "moderate", phRange: [5.5, 6.8], waterHolding: "high" },
@@ -3322,21 +3322,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cloud-forest lovers", "coffee people"], travelFit: ["Pico de Orizaba views", "green highland walks"],
     whoWouldLove: "People who want green mountains, mild temperatures, and Veracruz culture without lowland heat.", whoMightNot: "People seeking dry air and constant sun.",
     confidence: "moderate",
-                deepSections: [
+    deepSections: [
       {
-        id: "orizaba-mx-mechanism",
-        title: "Cloud Forest mechanics",
+        id: "orizaba-windward-pico",
+        title: "Windward lift below Pico de Orizaba",
         paragraphs: [
-          "Orizaba sits where windward mountain city below Pico de Orizaba, where Gulf moisture climbs into the Sierra Madre Oriental. At roughly 1230 m, elevation bands matter as much as latitude. Cfb/Cwb transition normals and roughly 1615 mm/yr frame the regional baseline, but Orographic lift and Elevation lapse rate re-weight what any single forecast means block by block.",
-          "Windward slope lift below Pico de Orizaba creates a humid highland climate with cloud-forest character and strong rainfall gradients over short distances. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Orizaba sits on the wet windward side of the Sierra Madre Oriental below Mexico's highest peak — Gulf moisture climbs into the mountains, producing frequent cloud, heavy wet-season rain near 1,615 mm annually, and Cfb/Cwb transition mildness that feels greener and more humid than the central plateau. Strong rainfall gradients over short distances mean ridge-top blocks can see double valley-floor totals.",
+          "Orographic lift and tropical convection combine to make cloud-forest character persistent, not occasional — coffee, citrus, and avocado thrive on volcanic and alluvial loam with high water-holding capacity. Dry-air seekers will find the humidity relentless year-round.",
         ],
       },
       {
-        id: "orizaba-mx-field-read",
-        title: "On-the-ground read",
+        id: "orizaba-green-highland",
+        title: "Green highland life and slope diligence",
         paragraphs: [
-          "A humid highland Veracruz city where Gulf air, volcanic relief, and cloud-forest edges make a green eternal-spring variant. Soils read as volcanic and alluvial loam on humid mountain slopes with moderate drainage (pH 5.5–6.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Coffee, Citrus, Avocado. People seeking dry air and constant sun should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated flood, storm, and landslide risk on humid mountain slopes registers here — verify parcel drainage, retaining structures, and rainy-season road access before committing. Low cost-of-living and strong growability attract cloud-forest lovers, but infrastructure stress peaks June through September.",
+          "Veracruz international airport sits roughly two hours away — Orizaba is a highland service town, not a port metro. People seeking dry air and constant sun should confirm slope exposure and insurance on the ground; atlas normals describe the windward belt, not every hillside finca.",
         ],
       },
     ],
