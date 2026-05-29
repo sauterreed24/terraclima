@@ -1569,7 +1569,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbirds", "marine-adjacent"], travelFit: ["whale sharks", "island tourism"],
     whoWouldLove: "Those wanting winter perfection on clear turquoise water.", whoMightNot: "Year-round heat-averse.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "la-paz-mx-mechanism",
         title: "Desert Oasis mechanics",
@@ -1634,7 +1634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "puerto-escondido-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -1703,7 +1703,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["colonial-city expats"], travelFit: ["Maya sites", "cenotes"],
     whoWouldLove: "Tropical-dry + culture seekers.", whoMightNot: "Summer-heat-averse.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "merida-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -1736,17 +1736,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A tropical-isothermal freshwater lagoon where limestone chemistry produces seven shades of blue — and the climate barely changes.",
     summaryImmersive: "Bacalar sits on a freshwater lagoon famous for the way karst-leached limestone produces cyan, turquoise, and deep-blue water in distinct layers. The climate is tropical-isothermal: highs 30–33°C, lows 17–23°C, and small annual variation. Dry-season trade winds keep the humidity tolerable; wet season brings afternoon thunderstorms and occasional hurricane remnants from either coast.",
     whyDistinct: "Rare freshwater-stromatolite lagoon in tropical karst; isothermal climate plus trade-wind exposure.",
-                experience: {
-      feel: "Bacalar sits on a freshwater lagoon famous for the way karst-leached limestone produces cyan, turquoise, and deep-blue water in distinct layers. The climate is tropical-isothermal: highs 30–33°C, lows 17–23°C, and small annual variation. Dry-season trade winds keep the humidity tolerable;.",
+    experience: {
+      feel: "Bacalar feels like a tropical-isothermal freshwater lagoon — karst-leached limestone producing cyan-to-deep-blue layers, highs steady near 30–33°C year-round, and dry-season trade winds making humidity tolerable until hurricane tails arrive.",
       seasons: {
-        winter: "Warm winter window — afternoons near 28.8°C, nights near 17.2°C — showers pass through regularly. Storm systems roll through with real force.",
-        spring: "Heating up fast — afternoons near 32.8°C, nights near 21.2°C — showers pass through regularly. Green-up arrives against a wet 1242 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 32°C, nights near 22.6°C — rain is frequent and can be heavy. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Hurricane-season tail — afternoons near 30.5°C, nights near 21.1°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Dry-season paradise — afternoons near 29°C, nights near 17°C, trade winds keeping mornings fresh, and lagoon kayaking in seven-shade blue without summer storm buildup.",
+        spring: "Heating toward peak — afternoons near 33°C, humidity climbing before rains, and the last clear weeks before afternoon convection returns.",
+        summer: "Wet-season heat — highs near 32°C, nights near 23°C, afternoon thunderstorms over the lagoon, and heat that can turn genuinely dangerous without shade discipline.",
+        autumn: "Hurricane watch — highs near 31°C, heavy rains from Caribbean or Gulf systems, and stromatolite-shallow water vulnerable to runoff after tropical downpours.",
       },
-      travelerFit: "Visitors come for lagoon tourism and stromatolites.",
-      residentFit: "It rewards caribbean-adjacent freshwater lovers — especially tropical expats — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at sea level — the main things to weigh are extreme summer heat and storm exposure.",
+      travelerFit: "Visitors come for lagoon swimming, stromatolite ecology, and Caribbean-adjacent freshwater life — wet season demands storm-aware scheduling.",
+      residentFit: "It rewards tropical expats and lagoon lovers who accept hurricane exposure, limited specialty care beyond Chetumal, and Quintana Roo's tourism economy swings.",
+      texture: "Karst lagoon tradeoff — weigh hurricane tails, extreme summer heat, and freshwater ecosystem fragility against isothermal comfort and seven-color water.",
     },
     climate: { tempHighC: [28.4, 29.4, 31.6, 33.2, 33.6, 32.1, 32.1, 31.9, 31.4, 30.6, 29.4, 28.6], tempLowC: [16.8, 17.4, 19.2, 21.6, 22.8, 22.9, 22.4, 22.6, 22.6, 21.2, 19.6, 17.4], precipMm: [52, 38, 32, 38, 78, 176, 164, 172, 202, 146, 82, 62], annualPrecipMm: 1242, frostFreeDays: 365, hardinessZone: "12 equiv.", humidity: [76, 75, 70, 72, 75, 83, 78, 85, 85, 81, 81, 76], sunshinePct: [69, 73, 70, 70, 67, 65, 56, 55, 52, 55, 59, 62] },
     soil: { texture: "Thin rendzina over karst", drainage: "excessive", phRange: [7.6, 8.2], waterHolding: "low" },
@@ -1758,7 +1758,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for hurricane-averse.",
+      note: "Bacalar expat housing at mid-band; Chetumal Hospital and CTM airport anchor care — hurricane tails from Caribbean or Gulf coasts, lagoon stromatolite sensitivity, and wet-season heat above 32°C define daily logistics beyond seven-color tourism appeal.",
       sources: [
       { label: "SMN — Chetumal (nearest station)", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -1768,21 +1768,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["tropical expats"], travelFit: ["lagoon tourism", "stromatolites"],
     whoWouldLove: "Caribbean-adjacent freshwater lovers.", whoMightNot: "Hurricane-averse.",
     confidence: "moderate",
-                        deepSections: [
+    deepSections: [
       {
-        id: "bacalar-mx-mechanism",
-        title: "Tropical Wet-Dry mechanics",
+        id: "bacalar-karst-lagoon",
+        title: "Karst lagoon and isothermal climate",
         paragraphs: [
-          "Bacalar sits where freshwater-stromatolite lagoon on the Yucatán Caribbean slope. Aw normals and roughly 1242 mm/yr frame the regional baseline, but Karst infiltration and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Rare freshwater-stromatolite lagoon in tropical karst; isothermal climate plus trade-wind exposure. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Bacalar sits on a rare freshwater-stromatolite lagoon on the Yucatán Caribbean slope — Aw tropical wet-dry with roughly 1,242 mm annually and isothermal highs between 30–33°C year-round. Karst-leached limestone produces distinct cyan, turquoise, and deep-blue water layers visible from shore.",
+          "Dry-season trade winds keep humidity tolerable November through April; wet-season afternoon convection and hurricane remnants from either coast are the binding hazards.",
         ],
       },
       {
-        id: "bacalar-mx-field-read",
-        title: "On-the-ground read",
+        id: "bacalar-storm-ecology",
+        title: "Hurricane exposure and lagoon fragility",
         paragraphs: [
-          "A tropical-isothermal freshwater lagoon where limestone chemistry produces seven shades of blue — and the climate barely changes. Soils read as thin rendzina over karst with excessive drainage (pH 7.6–8.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Tropical fruit, Cacao, Vanilla. Hurricane-averse should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated storm risk registers here — verify elevation certificates, lagoon runoff after tropical downpours, and evacuation routes before committing. Thin rendzina over karst supports tropical fruit, cacao, and vanilla with irrigation.",
+          "Hurricane-averse relocators should confirm Chetumal specialist access and spend a wet-season September here before treating isothermal comfort as balance for Quintana Roo cyclone exposure.",
         ],
       },
     ],
@@ -2282,7 +2282,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "artists", "highland-climate seekers"], travelFit: ["colonial architecture", "highland festivals", "walkable mild-weather city breaks"],
     whoWouldLove: "People who want dry sun and cool evenings without truly cold winters.", whoMightNot: "Humidity lovers or those needing lush, high-rain landscapes.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "san-miguel-de-allende-mx-mechanism",
         title: "Eternal-Spring Highland mechanics",
@@ -2634,7 +2634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["desert-industry workers"], travelFit: ["Bahía de Kino day trips", "desert ecotours"],
     whoWouldLove: "Dry-heat devotees.", whoMightNot: "Anyone who needs summer air conditioning to be optional.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "hermosillo-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2699,7 +2699,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["hospitality retirees", "remote workers"], travelFit: ["whale watching", "beaches"],
     whoWouldLove: "Tropical beach life with mountain backdrop.", whoMightNot: "Dry-climate seekers; hurricane-anxious buyers.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "puerto-vallarta-mx-mechanism",
         title: "Tropical Isothermal Coast mechanics",
@@ -2764,7 +2764,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "mazatlan-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2829,7 +2829,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "campeche-mx-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -2893,7 +2893,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["archaeology guides", "ecotourism"], travelFit: ["ruins", "jungle trails"],
     whoWouldLove: "Jungle climate with Maya history.", whoMightNot: "Anyone who cannot tolerate humidity.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "palenque-mx-mechanism",
         title: "Cloud Forest mechanics",
@@ -2925,17 +2925,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Silver-city balconies perched at 1,773 m — spring-like temperatures while Acapulco swelters at sea level.",
     summaryImmersive: "Taxco demonstrates pure lapse-rate magic: tropical latitude but high enough for cool nights and bougainvillea draped over stone streets. Afternoon thunderstorms arrive in summer with theatrical lightning over ridges.",
     whyDistinct: "Extreme local relief within kilometers creates micro-wind patterns and rainfall gradients on windward slopes.",
-                experience: {
-      feel: "Taxco demonstrates pure lapse-rate magic: tropical latitude but high enough for cool nights and bougainvillea draped over stone streets. Afternoon thunderstorms arrive in summer with theatrical lightning over ridges.",
+    experience: {
+      feel: "Taxco feels like a silver-city balcony at 1,773 m — tropical latitude with spring-like days near 25°C, cool nights near 11°C, bougainvillea over cobblestone, and summer lightning theatrics over Sierra Madre del Sur ridges while Acapulco swelters at sea level.",
       seasons: {
-        winter: "Warm winter window — afternoons near 24.3°C, nights near 10.7°C — skies stay mostly dry. Storm systems roll through with real force.",
-        spring: "Heating up fast — afternoons near 28.3°C, nights near 13.7°C — weather stays moderate and changeable. Green-up arrives against a wet 925 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Cool summer by latitude — afternoons near 25°C, nights near 14.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 24.7°C, nights near 13°C — showers pass through regularly. Storm systems roll through with real force.",
+        winter: "Dry-season clarity — afternoons near 24°C, nights near 11°C, cobalt skies, and silver-market crowds filling steep colonial streets without summer storm interruption.",
+        spring: "Heating before rains — afternoons climbing through 28°C, first afternoon buildups on windward slopes, and barrio water stress visible on upper hillsides.",
+        summer: "Monsoon drama — highs near 25°C cooled by rain, nights near 14°C, daily thunderstorms with theatrical ridge lightning, and cobblestone runoff straining steep drainage.",
+        autumn: "Rains tapering — highs near 25°C, landslide awareness on saturated slopes, and the clearest volcano-view windows returning as storms ease.",
       },
-      travelerFit: "Visitors come for silver markets and cobblestone walks.",
-      residentFit: "It rewards highland colonial towns with tropical latitude — especially artisans — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at 1773 m elevation — the main things to weigh are slope stability and flood and surge risk.",
+      travelerFit: "Visitors come for silver markets, cobblestone walks, and highland Guerrero life — summer rewards storm watchers who plan around afternoon downpours.",
+      residentFit: "It rewards artisans and retirees who want colonial highland character at tropical latitude — if they accept steep streets, landslide pockets, and limited specialty care beyond Cuernavaca.",
+      texture: "Steep highland tradeoff — weigh slope stability, monsoon runoff, and mobility limits against eternal-spring temperatures and silver-town culture.",
     },
     climate: { tempHighC: [24, 25, 27, 29, 29, 26, 24, 25, 24, 25, 25, 24], tempLowC: [10, 11, 12, 14, 15, 15, 14, 14, 14, 13, 12, 11], precipMm: [18, 12, 10, 15, 55, 165, 180, 175, 160, 75, 35, 15], annualPrecipMm: 925, frostFreeDays: 365, hardinessZone: "10a", humidity: [57, 60, 60, 66, 71, 80, 78, 77, 69, 65, 61, 56], sunshinePct: [47, 49, 49, 55, 60, 65, 62, 62, 57, 54, 50, 45] },
     soil: { texture: "Thin residual soil on volcanic and limestone", drainage: "good", phRange: [6.0, 7.5], waterHolding: "low" },
@@ -2947,7 +2947,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for mobility-limited — steep streets everywhere.",
+      note: "Taxco artisan housing at mid-band; IMSS Cuernavaca and Mexico City specialists anchor care — steep cobblestone streets, monsoon landslide pockets, and hillside barrio water stress define daily logistics beyond silver-market tourism appeal.",
       sources: [
       { label: "SMN — Taxco region", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -2957,21 +2957,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["artisans", "retirees"], travelFit: ["silver markets", "cobblestone walks"],
     whoWouldLove: "Highland colonial towns with tropical latitude.", whoMightNot: "Mobility-limited — steep streets everywhere.",
     confidence: "moderate",
-                        deepSections: [
+    deepSections: [
       {
-        id: "taxco-mx-mechanism",
-        title: "Eternal-Spring Highland mechanics",
+        id: "taxco-lapse-rate",
+        title: "Lapse-rate magic on a mining hillside",
         paragraphs: [
-          "Taxco sits where steep hillside mining town on the southern flank of the Mexican Plateau edge. At roughly 1773 m, elevation bands matter as much as latitude. Cwb normals and roughly 925 mm/yr frame the regional baseline, but Elevation lapse rate and Slope / aspect re-weight what any single forecast means block by block.",
-          "Extreme local relief within kilometers creates micro-wind patterns and rainfall gradients on windward slopes. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Taxco sits at 1,773 m on the southern flank of the Mexican Plateau edge — Cwb eternal-spring highland with roughly 925 mm concentrated in summer monsoon. Tropical latitude yields spring-like days near 25°C while Acapulco swelters two hours south at sea level.",
+          "Extreme local relief within kilometers creates micro-wind patterns and rainfall gradients — windward slopes above the colonial core catch heavier convection than sheltered downtown balconies.",
         ],
       },
       {
-        id: "taxco-mx-field-read",
-        title: "On-the-ground read",
+        id: "taxco-steep-streets",
+        title: "Steep terrain and monsoon runoff",
         paragraphs: [
-          "Silver-city balconies perched at 1,773 m — spring-like temperatures while Acapulco swelters at sea level. Soils read as thin residual soil on volcanic and limestone with good drainage (pH 6–7.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Temperate flowers, Avocado, Coffee nearby. Mobility-limited — steep streets everywhere should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Thin residual soil on volcanic and limestone supports temperate flowers, avocado, and nearby coffee at lower elevations — mobility on cobblestone grades is the daily constraint. Elevated flood and high landslide risk register on saturated summer slopes.",
+          "Mobility-limited relocators should walk the steepest barrio routes before committing — monsoon runoff strains hillside drainage and IMSS access runs through Cuernavaca or Mexico City for specialty care.",
         ],
       },
     ],
@@ -3257,7 +3257,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["dry-climate seekers", "regional professionals"], travelFit: ["Sierra Madre road trips", "historic center"],
     whoWouldLove: "People who like highland sun, cool nights, and monsoon-season drama without lowland humidity.", whoMightNot: "People who want lush wet greenery year-round.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "durango-mx-mechanism",
         title: "Monsoon-Edge Zone mechanics",

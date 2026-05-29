@@ -925,7 +925,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "retirees"], travelFit: ["Pacific shoulder-season"],
     whoWouldLove: "BC coastal dreamers.", whoMightNot: "Those needing heat or urban services.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "sunshine-coast-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -957,17 +957,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Rain-shadow Gulf Island with a Mediterranean microclimate and slow island culture.",
     summaryImmersive: "The Southern Gulf Islands receive roughly half of Vancouver's precipitation — the Olympic rain shadow extends this far north and east. Salt Spring's sheltered bays and Garry oak meadows reveal a climate more Mediterranean than most of coastal BC.",
     whyDistinct: "Olympic rain shadow + Gulf Island shelter + marine moderation.",
-                experience: {
-      feel: "Salt Spring Island — the Southern Gulf Islands receive roughly half of Vancouver's precipitation — the Olympic rain shadow extends this far north and east. Salt Spring's sheltered bays and Garry oak meadows reveal a climate more Mediterranean than most of coastal BC.",
+    experience: {
+      feel: "Salt Spring feels like a Gulf Islands rain-shadow pocket — roughly half Vancouver's rainfall, Garry oak meadows drying in summer sun, and a Csb microclimate where olives and figs are plausible at 49° north.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7.3°C, nights near 1.9°C — rain is frequent and can be heavy.",
-        spring: "Spring opens — afternoons near 13.9°C, nights near 5.1°C — showers pass through regularly.",
-        summer: "Cool summer by latitude — afternoons near 21.4°C, nights near 11.3°C — cool, changeable marine-influenced weather.",
-        autumn: "Shoulder season — afternoons near 14.3°C, nights near 6.8°C — showers pass through regularly.",
+        winter: "Mild and wet — afternoons near 7°C, nights near 2°C, and the Olympic shadow keeping storms lighter than the mainland while ferry cancellations still define bad weeks.",
+        spring: "Green awakening — afternoons climbing through the low teens, wildflowers in oak openings, and the first dry windows that make island farm stands feel like the Mediterranean.",
+        summer: "The payoff season — highs near 22°C, long evenings, marine layer mornings burning off by noon, and irrigation becoming the gardener's daily ritual.",
+        autumn: "Crisp and golden — highs easing through the mid-teens, first rains returning, and harvest markets before winter ferry schedules tighten.",
       },
-      travelerFit: "Visitors come for island farm tour.",
-      residentFit: "It rewards slow-island small-farm romantics — especially artist-farmers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — no single hazard dominates the picture. Gulf-Islands ferry schedule and tourism-tightened housing shape day-to-day logistics; Saanich and Victoria are an hour-plus ferry+drive away.",
+      travelerFit: "Visitors come for farm tours, Saturday Market, and Gulf Islands life with real summer sun — not Vancouver gray.",
+      residentFit: "It rewards slow-island small-farm romantics and artist-farmers who accept ferry logistics and tourism-tightened housing.",
+      texture: "An easier Gulf Islands settle — weigh ferry access and seasonal housing pressure against rain-shadow mildness and strong growability.",
     },
     climate: { tempHighC: [6.9, 8.2, 10.8, 13.7, 17.1, 19.5, 22.3, 22.5, 19.6, 13.9, 9.3, 6.8], tempLowC: [1.8, 1.9, 3.1, 4.7, 7.6, 10.2, 11.8, 12.0, 9.9, 6.6, 3.9, 2.1], precipMm: [130, 92, 74, 45, 32, 28, 18, 22, 32, 70, 136, 144], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 823, frostFreeDays: 230, hardinessZone: "8b", sunshinePct: [53, 56, 57, 66, 71, 77, 75, 74, 68, 74, 59, 52] },
     soil: { texture: "Sandy loam", drainage: "good", phRange: [5.8, 6.6], waterHolding: "moderate" },
@@ -988,21 +988,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["artist-farmers", "off-grid"], travelFit: ["island farm tour"],
     whoWouldLove: "Slow-island small-farm romantics.", whoMightNot: "Those needing services.",
     confidence: "moderate",
-                        deepSections: [
+    deepSections: [
       {
-        id: "salt-spring-bc-mechanism",
-        title: "Rain-Shadow Sanctuary mechanics",
+        id: "salt-spring-rain-shadow",
+        title: "Olympic rain shadow on the Gulf Islands",
         paragraphs: [
-          "Salt Spring Island sits where southern Gulf Islands in the Olympic rain shadow. Csb normals and roughly 823 mm/yr frame the regional baseline, but Rain shadow and Marine layer re-weight what any single forecast means block by block.",
-          "Olympic rain shadow + Gulf Island shelter + marine moderation. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Salt Spring sits in the southern Gulf Islands where the Olympic rain shadow cuts precipitation to roughly 823 mm — about half Vancouver's — while marine moderation keeps winters mild. Csb normals and sheltered bays produce a Mediterranean pocket rare at this latitude on the BC coast.",
+          "Garry oak meadows on south-facing slopes run drier and sunnier than cedar-shaded north aspects; fetch exposure to Georgia Strait versus Saanich Inlet shifts wind and fog block by block within a few kilometers.",
         ],
       },
       {
-        id: "salt-spring-bc-field-read",
-        title: "On-the-ground read",
+        id: "salt-spring-island-life",
+        title: "Island logistics and growability",
         paragraphs: [
-          "Rain-shadow Gulf Island with a Mediterranean microclimate and slow island culture. Soils read as sandy loam with good drainage (pH 5.8–6.6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Grapes, Olives (marginal), Figs. Those needing services should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy loam with good drainage supports grapes, marginal olives, figs, and Mediterranean herbs — but summer irrigation is non-negotiable on exposed benches. Growability scores high; ferry schedule and tourism-tightened housing define daily logistics more than climate hazard.",
+          "Those needing metro-scale services should confirm Victoria or Saanich access — an hour-plus ferry plus drive on good days. Artist-farmers who accept island isolation get one of coastal BC's most forgiving microclimates.",
         ],
       },
     ],
@@ -1052,7 +1052,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulturalists", "orchardists"], travelFit: ["wine tours"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "summerland-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1179,7 +1179,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families"], travelFit: ["wildlife area", "orchards"],
     whoWouldLove: "Quiet Kootenay folk.", whoMightNot: "Urbanites.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "creston-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1248,7 +1248,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers", "orchardists", "retirees"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Sun-desiring Canadians.", whoMightNot: "Fire-averse.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "penticton-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -1313,7 +1313,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seeking Canadians"], travelFit: ["desert hiking", "fly-fishing"],
     whoWouldLove: "Dry-climate-loving British Columbians.", whoMightNot: "Fire-smoke-sensitive.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "kamloops-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -1649,7 +1649,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hyper-maritime devotees"], travelFit: ["Skeena fishing", "BC Ferries terminus"],
     whoWouldLove: "Those who want to live in a coastal cloud.", whoMightNot: "Sun-needing humans.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "prince-rupert-bc-mechanism",
         title: "Hyper-Maritime mechanics",
@@ -1851,7 +1851,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["greenhouse farmers"], travelFit: ["Point Pelee birding"],
     whoWouldLove: "Those drawn to Canada's longest growing season.", whoMightNot: "Mountain-lovers.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "leamington-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -1915,7 +1915,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["boreal families"], travelFit: ["Sleeping Giant Park"],
     whoWouldLove: "Boreal-lake devotees.", whoMightNot: "Heat-needing.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "thunder-bay-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2333,7 +2333,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Cool-climate wine people.", whoMightNot: "Those wanting mild winters.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "prince-edward-co-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2406,7 +2406,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "iqaluit-nu-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2477,7 +2477,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "inuvik-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2723,17 +2723,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's fastest-growing wine and fruit city — hot, dry summers moderated by deep lake water and cold-air drainage off east-bench slopes.",
     summaryImmersive: "Kelowna combines interior sunshine with lake thermal inertia: July afternoons are warm enough for Syrah and Merlot, but lake breezes knock the edge off heat domes. Winter inversions trap smog and moisture in the valley; spring frost fights are a viticulture ritual.",
     whyDistinct: "Large lake + rain-shadow dryness + north–south valley alignment = sharp gradient from lakeshore to bench-top within a few kilometers.",
-                experience: {
-      feel: "Kelowna combines interior sunshine with lake thermal inertia: July afternoons are warm enough for Syrah and Merlot, but lake breezes knock the edge off heat domes. Winter inversions trap smog and moisture in the valley; spring frost fights are a viticulture ritual.",
+    experience: {
+      feel: "Kelowna feels like Canada's fastest-growing wine city — July afternoons warm enough for Syrah, lake breezes breaking heat domes, and winter inversions trapping smog in the Okanagan bowl while bench-top vineyards fight spring frost.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 0.7°C, nights near -6.7°C — humid air keeps everything soft and close.",
-        spring: "Spring opens — afternoons near 16°C, nights near 3.3°C — weather stays moderate and changeable.",
-        summer: "Warm season peak — afternoons near 28.3°C, nights near 12°C — weather stays moderate and changeable. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 14°C, nights near 2.3°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
+        winter: "Inversion-prone — afternoons near 1°C, nights near −7°C, gray valley fog pooling under clear ridgetops, and Big White snowpack visible above the haze.",
+        spring: "Frost-watch season — afternoons climbing through 16°C, bud break on east benches, and viticulturists running wind machines on the coldest April nights.",
+        summer: "Hot and dry — highs near 28°C, lake swimming, and wildfire smoke drifting from surrounding slopes on bad years as the defining summer wildcard.",
+        autumn: "Harvest gold — highs near 14°C, crush season in full swing, and fire smoke sometimes lingering into October before inversion season returns.",
       },
-      travelerFit: "Visitors come for wine routes and skiing Big White.",
-      residentFit: "It rewards sun-seekers who want Canadian healthcare and mountain-lake scenery — especially viticulture workers — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and smoke-season air quality. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for wine routes, lake beaches, and Big White skiing — summer demands smoke-aware planning.",
+      residentFit: "It rewards sun-seekers who want Canadian healthcare and mountain-lake scenery — especially viticulture workers — if they accept smoke seasons and expensive housing.",
+      texture: "Okanagan tradeoff — weigh high wildfire and smoke exposure against interior sunshine, lake recreation, and a booming wine economy.",
     },
     climate: { tempHighC: [-1, 3, 10, 16, 22, 26, 30, 29, 23, 14, 5, 0], tempLowC: [-8, -6, -1, 3, 8, 11, 13, 12, 7, 2, -2, -6], precipMm: [28, 20, 22, 28, 38, 42, 35, 30, 28, 25, 35, 40], humidity: [80, 72, 62, 52, 50, 50, 46, 48, 54, 66, 78, 82], sunshinePct: [26, 40, 52, 60, 66, 68, 78, 76, 66, 46, 28, 22], annualPrecipMm: 351, frostFreeDays: 165, hardinessZone: "6b" },
     soil: { texture: "Glacial lacustrine and sandy loam benches", drainage: "good", phRange: [6.5, 7.8], waterHolding: "moderate" },
@@ -2745,7 +2745,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Housing runs above regional medians; A poor fit for rainforest lovers; smoke-sensitive lungs.",
+      note: "Kelowna housing runs above regional medians; KGH and YLW anchor care — Okanagan wildfire smoke, valley inversions, and water-governance stress define daily logistics beyond lake-and-vineyard appeal.",
       sources: [
       { label: "ECCC — Kelowna UBC Okanagan / airport", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2755,21 +2755,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulture workers", "remote tech"], travelFit: ["wine routes", "skiing Big White"],
     whoWouldLove: "Sun-seekers who want Canadian healthcare and mountain-lake scenery.", whoMightNot: "Rainforest lovers; smoke-sensitive lungs.",
     confidence: "high",
-                        deepSections: [
+    deepSections: [
       {
-        id: "kelowna-bc-mechanism",
-        title: "Rain-Shadow Sanctuary mechanics",
+        id: "kelowna-lake-shadow",
+        title: "Lake moderation and rain-shadow dryness",
         paragraphs: [
-          "Kelowna sits where east shore of Okanagan Lake; lee of the Coast Mountains with strong summer dryness north of Osoyoos. BSk normals and roughly 351 mm/yr frame the regional baseline, but Rain shadow and Lake effect re-weight what any single forecast means block by block.",
-          "Large lake + rain-shadow dryness + north–south valley alignment = sharp gradient from lakeshore to bench-top within a few kilometers. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Kelowna sits on Okanagan Lake's east shore in the lee of the Coast Mountains — BSk dryness with roughly 351 mm annually, yet deep lake water moderates winter cold and summer heat domes. Lakeshore blocks run milder; east benches above 400 m catch cold-air drainage and spring frost.",
+          "The north–south valley alignment creates sharp microclimate gradients within kilometers — a Syrah block on a south-facing bench can differ materially from lakeshore condos on the same forecast.",
         ],
       },
       {
-        id: "kelowna-bc-field-read",
-        title: "On-the-ground read",
+        id: "kelowna-fire-smoke",
+        title: "Wildfire smoke and valley inversions",
         paragraphs: [
-          "Canada's fastest-growing wine and fruit city — hot, dry summers moderated by deep lake water and cold-air drainage off east-bench slopes. Soils read as glacial lacustrine and sandy loam benches with good drainage (pH 6.5–7.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Wine grapes, Cherries, Apples. Rainforest lovers; smoke-sensitive lungs should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High wildfire and smoke risk registers here — verify parcel exposure, evacuation routes, and air-filtration plans before committing. Glacial lacustrine and sandy loam benches support wine grapes, cherries, and apples with irrigation.",
+          "Winter inversions trap particulates in the valley bowl; smoke-sensitive lungs and rainforest lovers should spend a full August here before treating lake sunshine as balance for fire-season air quality.",
         ],
       },
     ],
@@ -2820,7 +2820,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["climbers", "wind-sport athletes"], travelFit: ["Stawamus Chief", "Sea to Sky Gondola"],
     whoWouldLove: "Mountain–ocean people who commute to Vancouver occasionally.", whoMightNot: "Budget renters; sun-belt seekers.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "squamish-bc-mechanism",
         title: "Fjord / Inlet Coast mechanics",
@@ -2853,17 +2853,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "A tourist town at 1,383 m where chinooks can swing winter from −30°C to thaw in hours, framed by glacier peaks.",
     summaryImmersive: "Banff's climate is mountain continental: long cold winters, mild short summers, and dramatic chinook warm spells that erase snowpack overnight. Precipitation is moderate and favors summer convection; shoulder seasons are crisp and dry.",
     whyDistinct: "High elevation + valley geometry + national-park land cover creates clean air and strong nocturnal cooling.",
-                experience: {
-      feel: "Banff's climate is mountain continental: long cold winters, mild short summers, and dramatic chinook warm spells that erase snowpack overnight. Precipitation is moderate and favors summer convection; shoulder seasons are crisp and dry.",
+    experience: {
+      feel: "Banff feels like a 1,383 m Bow Valley park town — long cold winters interrupted by chinooks that erase snowpack overnight, crisp dry shoulders, and summer afternoons near 21°C framed by glacier peaks.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -3.3°C, nights near -13.7°C — humid air keeps everything soft and close. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 9.3°C, nights near -3°C — humid air keeps everything soft and close.",
-        summer: "Cool summer by latitude — afternoons near 21°C, nights near 7°C — showers pass through regularly. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 9°C, nights near -3°C — gray skies dominate. Fire season lingers into shoulder months.",
+        winter: "Mountain cold with chinook drama — baseline afternoons near −3°C and nights near −14°C, but foehn events can swing from −30°C to thaw in hours.",
+        spring: "Slow melt — afternoons climbing through 9°C, avalanche paths closing trails, and the first hiking windows opening as valley snow retreats up the walls.",
+        summer: "Short alpine summer — highs near 21°C, cool nights near 7°C, afternoon convection on the peaks, and wildfire smoke drifting from surrounding park forest on bad years.",
+        autumn: "Golden larch and tightening — highs near 9°C, first snow on the peaks by October, and tourism thinning as seasonal workers depart.",
       },
-      travelerFit: "Visitors come for Lake Louise, skiing, and hiking.",
-      residentFit: "It rewards rocky Mountain purists — especially hospitality seasonal workers — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and deep winter cold.",
+      travelerFit: "Visitors come for Lake Louise, skiing, and alpine hiking — shoulder seasons reward dry crisp weather.",
+      residentFit: "It rewards Rocky Mountain purists and hospitality seasonal workers who accept park-town housing costs and deep winter cold.",
+      texture: "Park-town tradeoff — weigh wildfire smoke, seasonal housing scarcity, and winter severity against clean mountain air and world-class scenery.",
     },
     climate: { tempHighC: [-5, -1, 4, 9, 15, 19, 22, 22, 16, 10, 1, -4], tempLowC: [-15, -12, -8, -3, 2, 6, 8, 7, 3, -2, -10, -14], precipMm: [20, 18, 25, 38, 55, 70, 65, 60, 45, 35, 28, 22], annualPrecipMm: 481, frostFreeDays: 90, hardinessZone: "3a", humidity: [84, 84, 76, 73, 68, 69, 64, 67, 65, 71, 78, 80], sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34] },
     soil: { texture: "Thin rocky brunisol on limestone", drainage: "excessive", phRange: [6.8, 7.8], waterHolding: "low" },
@@ -2875,7 +2875,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 46,
       socialStress: 30,
       accessFriction: 60,
-      note: "A poor fit for affordable-housing seekers; warm-winter lovers.",
+      note: "Banff park-town housing is scarce and expensive; Mineral Springs Hospital anchors local care — chinook swings, wildfire smoke, and seasonal-worker turnover define daily logistics beyond postcard mountain scenery.",
       sources: [
       { label: "ECCC — Banff CS", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2885,21 +2885,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hospitality seasonal workers", "park staff"], travelFit: ["Lake Louise", "skiing", "hiking"],
     whoWouldLove: "Rocky Mountain purists.", whoMightNot: "Affordable-housing seekers; warm-winter lovers.",
     confidence: "high",
-                        deepSections: [
+    deepSections: [
       {
-        id: "banff-ab-mechanism",
-        title: "Chinook Corridor mechanics",
+        id: "banff-chinook-valley",
+        title: "Chinook corridor at elevation",
         paragraphs: [
-          "Banff sits where bow River valley inside Banff National Park; Rocky Mountain front range. At roughly 1383 m, elevation bands matter as much as latitude. Dfc normals and roughly 481 mm/yr frame the regional baseline, but Chinook / foehn downslope and Elevation lapse rate re-weight what any single forecast means block by block.",
-          "High elevation + valley geometry + national-park land cover creates clean air and strong nocturnal cooling. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Banff sits at 1,383 m in the Bow River valley inside Banff National Park — Dfc mountain continental with roughly 481 mm annually, but chinook foehn events descending the front range can erase snowpack overnight and swing temperatures 20°C in a day.",
+          "Valley geometry and national-park land cover produce clean air and strong nocturnal cooling; south-facing slopes above town run several degrees warmer than shaded valley-bottom blocks on the same forecast.",
         ],
       },
       {
-        id: "banff-ab-field-read",
-        title: "On-the-ground read",
+        id: "banff-park-town",
+        title: "Park-town constraints and wildfire",
         paragraphs: [
-          "A tourist town at 1,383 m where chinooks can swing winter from −30°C to thaw in hours, framed by glacier peaks. Soils read as thin rocky brunisol on limestone with excessive drainage (pH 6.8–7.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy native conifers. Affordable-housing seekers; warm-winter lovers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Thin rocky brunisol on limestone limits gardening to hardy native conifers and brief-season vegetables. Elevated wildfire and smoke risk registers in surrounding park forest — verify evacuation routes and air-quality plans before committing.",
+          "Affordable-housing seekers and warm-winter lovers should confirm park-town lease rules and winter severity on the ground — seasonal hospitality turnover and housing scarcity are daily realities beyond tourist-season appeal.",
         ],
       },
     ],
@@ -3025,7 +3025,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "charlottetown-pei-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -3239,7 +3239,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "morden-mb-mechanism",
         title: "Orchard Valley mechanics",
@@ -3304,7 +3304,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "sutton-qc-mechanism",
         title: "Piedmont Transition mechanics",

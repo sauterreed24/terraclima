@@ -2619,21 +2619,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["maritime-loving remote workers"], travelFit: ["Goonies tourism", "Columbia bar", "port food"],
     whoWouldLove: "People who romanticize storm-coast ports.", whoMightNot: "Sun-seekers; relocators reliant on metro-scale services or a major airport at the door.",
     confidence: "high",
-                        deepSections: [
+    deepSections: [
       {
-        id: "astoria-or-mechanism",
-        title: "Hyper-Maritime mechanics",
+        id: "astoria-columbia-mouth",
+        title: "River-mouth hyper-maritime climate",
         paragraphs: [
-          "Astoria sits where southern lip of the Columbia River estuary; mouth of the great river corridor. Cfb normals and roughly 1890 mm/yr frame the regional baseline, but Marine layer and River-valley moderation re-weight what any single forecast means block by block.",
-          "River-mouth exposure to Pacific storms combined with marine layer and Coast Range orographic lift produces sustained cool wetness. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Astoria perches at the Columbia's mouth where river, ocean, and Coast Range orographic lift collide — Cfb normals with roughly 1,890 mm annually and among the narrowest annual temperature ranges on the continent. Winter highs near 9°C and summer highs near 21°C with fewer than 70 sunny days a year.",
+          "Marine layer and river-valley moderation produce sustained cool wetness; hillside blocks above the estuary fog line can run noticeably brighter than waterfront districts on the same regional forecast.",
         ],
       },
       {
-        id: "astoria-or-field-read",
-        title: "On-the-ground read",
+        id: "astoria-port-economy",
+        title: "Storm coast livability and access",
         paragraphs: [
-          "The cloudiest major US city — a cool, misty, river-mouth port with an astonishingly narrow annual temperature range. Soils read as silty loam over marine sediments with moderate drainage (pH 5–6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cool-maritime berries, Brassicas, Rhododendrons. Sun-seekers; relocators reliant on metro-scale services or a major airport at the door should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Silty loam over marine sediments supports cool-maritime berries, brassicas, and rhododendrons — heat-loving crops fail here by design. High coastal exposure registers for flood and landslide on steep slopes above the working waterfront.",
+          "Sun-seekers and relocators needing metro-scale services should confirm Portland International is a 100-mile drive — the local economy still leans on a thinning port base and tourism beyond Goonies nostalgia.",
         ],
       },
     ],
@@ -2682,21 +2682,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["creative remote workers", "retirees"], travelFit: ["Victorian architecture", "wooden boat culture"],
     whoWouldLove: "Anyone who wants Pacific Northwest life with fewer gray days.", whoMightNot: "Housing-price-sensitive — Jefferson-County medians track the Olympic Peninsula migration boom.",
     confidence: "high",
-                        deepSections: [
+    deepSections: [
       {
-        id: "port-townsend-wa-mechanism",
-        title: "Rain-Shadow Sanctuary mechanics",
+        id: "port-townsend-strait-shadow",
+        title: "Olympic rain shadow at the Strait hinge",
         paragraphs: [
-          "Port Townsend sits where northeast tip of the Olympic Peninsula, at the hinge between Puget Sound and the Strait of Juan de Fuca. Csb / Cfb margin normals and roughly 668 mm/yr frame the regional baseline, but Rain shadow and Marine layer re-weight what any single forecast means block by block.",
-          "Double geography — Olympic rain shadow plus Strait gap — produces unusual mildness and relative sun for 48° north latitude. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Port Townsend sits at the northeast tip of the Olympic Peninsula where rain shadow and Strait of Juan de Fuca gap winds combine — roughly 668 mm annually, about half Seattle's rainfall only 60 km south, with 16-hour solstice days at 48° north.",
+          "Csb/Cfb margin normals produce real summer warmth rare for this latitude; exposed waterfront blocks catch Strait gales while sheltered downtown gardens thrive in maritime mildness.",
         ],
       },
       {
-        id: "port-townsend-wa-field-read",
-        title: "On-the-ground read",
+        id: "port-townsend-victorian",
+        title: "Victorian port housing and smoke intrusions",
         paragraphs: [
-          "Sequim's Victorian cousin — a rain-shadow port where summer actually arrives, with 16-hour solstice days. Soils read as glacial till over outwash gravel with good drainage (pH 5.6–6.6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Lavender, Cool-climate wine grapes (marginal), Berries. Housing-price-sensitive — Jefferson-County medians track the Olympic Peninsula migration boom should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Glacial till over outwash gravel supports lavender, marginal cool-climate wine grapes, berries, and herbs — long-season heat crops struggle without protection. Jefferson County housing tracks the Olympic Peninsula migration boom.",
+          "Kingston and Edmonds ferries plus the 101 drive to Sea-Tac shape daily logistics; east-side wildfire smoke increasingly intrudes on summer weeks that otherwise feel like the rain-shadow payoff season.",
         ],
       },
     ],
@@ -3804,7 +3804,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 50,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for those put off by wind.",
+      note: "Cody gateway housing at mid-band; West Park Hospital and Yellowstone Regional anchor care — persistent Bighorn Basin wind, chinook volatility, and drought pressure on surrounding ranges define daily logistics beyond rodeo-and-park appeal.",
       sources: [
       { label: "NOAA — Cody WY", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Cody", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -3814,21 +3814,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Yellowstone-adjacent lifestyle"], travelFit: ["Yellowstone gate"],
     whoWouldLove: "Dry sun lovers.", whoMightNot: "Those put off by wind.",
     confidence: "high",
-                        deepSections: [
+    deepSections: [
       {
-        id: "cody-wy-mechanism",
-        title: "Chinook Corridor mechanics",
+        id: "cody-chinook-basin",
+        title: "Bighorn Basin chinook regime",
         paragraphs: [
-          "Cody sits where bighorn Basin east of the Absarokas; a classic chinook-swept foothill city. At roughly 1555 m, elevation bands matter as much as latitude. BSk normals and roughly 308 mm/yr frame the regional baseline, but Chinook / foehn downslope and Rain shadow re-weight what any single forecast means block by block.",
-          "Deep rain-shadow position plus persistent chinook regime produces warm, dry, sun-drenched winter. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Cody sits at 1,555 m east of the Absarokas in the Bighorn Basin rain shadow — BSk dryness with roughly 308 mm annually and winter interrupted 30+ times a year by chinook foehn events that can lift temperatures 25°C in a day.",
+          "Westerlies descending the Absarokas produce warm, sun-drenched winter between cold snaps; the Shoshone River corridor moderates immediate riparian blocks while open basin flats catch persistent wind.",
         ],
       },
       {
-        id: "cody-wy-field-read",
-        title: "On-the-ground read",
+        id: "cody-yellowstone-gate",
+        title: "Gateway economy and drought pressure",
         paragraphs: [
-          "The northern Rockies' driest chinook city — Yellowstone's east gate where winter gets interrupted 30+ times a year. Soils read as sandy loam over clay with good drainage (pH 7.2–8.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Drought registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy fruit, Cold-tolerant cultivars. Those put off by wind should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy loam over clay supports hardy fruit and cold-tolerant cultivars with irrigation; elevated drought risk registers across the basin — verify water rights and parcel exposure before committing.",
+          "Those put off by wind should spend a windy March week here before treating Yellowstone proximity as balance for daily gusts — West Park Hospital anchors specialty care beyond the Buffalo Bill Center tourist base.",
         ],
       },
     ],
@@ -3868,7 +3868,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 60,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for smoke-sensitive.",
+      note: "Missoula housing pressure tracks remote-work migration; St. Patrick Hospital and MSO anchor care — among the inland West's worst smoke climates and stubborn winter PM inversions define daily logistics beyond river-valley outdoor appeal.",
       sources: [
       { label: "NOAA — Missoula AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Missoula", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -3878,21 +3878,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor culture seekers", "mountain town romantics"], travelFit: ["river access"],
     whoWouldLove: "Rocky-valley outdoor people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-                        deepSections: [
+    deepSections: [
       {
-        id: "missoula-mt-mechanism",
-        title: "Basin Inversion mechanics",
+        id: "missoula-inversion-geometry",
+        title: "Five-river valley inversion mechanics",
         paragraphs: [
-          "Missoula sits where five-river confluence in a broad valley of northern Rockies — a textbook mountain-valley inversion setting. At roughly 975 m, elevation bands matter as much as latitude. Dfb / BSk margin normals and roughly 388 mm/yr frame the regional baseline, but Temperature inversion and Cold-air drainage re-weight what any single forecast means block by block.",
-          "Ideal inversion geometry — multi-river valley between significant ranges — produces strong cold-air pooling and persistent air-quality events. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Missoula sits at 975 m where five rivers converge in a broad northern Rockies valley — textbook inversion geometry that pools stagnant cold air to 400 m depth on calm winter weeks while ridgetops bask 15°C warmer.",
+          "Dfb/BSk margin normals with roughly 388 mm annually; ideal multi-river valley between significant ranges produces among the inland West's most stubborn air-quality stagnation events.",
         ],
       },
       {
-        id: "missoula-mt-field-read",
-        title: "On-the-ground read",
+        id: "missoula-smoke-season",
+        title: "Wildfire smoke and valley air quality",
         paragraphs: [
-          "A river-valley city defined by its winter inversions — fog-trapped cold below, sunny warmth on the ridges above. Soils read as silt loam with good drainage (pH 6.4–7.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Stone fruit, Hardy apples, Cool veg. Smoke-sensitive should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Very-high smoke risk registers here — regional wildfires climb nearby canyons on bad summers, amplifying inversion-trapped particulates below. Silt loam supports stone fruit, hardy apples, and cool-season vegetables on sheltered blocks.",
+          "Smoke-sensitive relocators should verify HEPA filtration and spend a full fire-season August before treating river access and university-town culture as balance for PM buildup — housing pressure from remote-work migration is tightening fast.",
         ],
       },
     ],
@@ -3942,7 +3942,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski-town commuters", "tech remotes"], travelFit: ["Yellowstone north"],
     whoWouldLove: "Outdoor people wanting four real seasons.", whoMightNot: "Budget-constrained.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "bozeman-mt-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -4069,7 +4069,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["adventure sports"], travelFit: ["Arches", "Canyonlands", "mountain biking"],
     whoWouldLove: "Climbers and mountain bikers.", whoMightNot: "Heat-intolerant.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "moab-ut-mechanism",
         title: "Desert Oasis mechanics",
@@ -4267,7 +4267,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snow-resilient families"], travelFit: ["Finger Lakes gateway"],
     whoWouldLove: "Snow-happy city folk.", whoMightNot: "Sun-dependent.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "syracuse-ny-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -4587,7 +4587,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["summer-heat refugees"], travelFit: ["Appalachian Trail", "ski"],
     whoWouldLove: "People who want New-England feel in the South.", whoMightNot: "Flood-averse.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "boone-nc-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -5381,7 +5381,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["winter-residents", "surfers", "subtropical-coast lovers"], travelFit: ["spring break", "sea turtle nesting (Kemp's ridley)", "birding"],
     whoWouldLove: "Anyone who wants Florida-like mildness without humidity maximum; anglers and surfers.", whoMightNot: "Hurricane-averse; storm-anxious; those who need seasons.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "south-padre-tx-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -6217,7 +6217,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["storm watchers", "coastal gardeners"], travelFit: ["winter banana-belt days", "Samuel Boardman corridor"],
     whoWouldLove: "Anyone fascinated by micro-scale winter warm bursts on a cold ocean.", whoMightNot: "Those who need predictable dry summers inland-style.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "brookings-or-mechanism",
         title: "Gap / Gorge Wind Corridor mechanics",
@@ -6287,7 +6287,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["orchardists", "remote workers"], travelFit: ["Crater Lake", "Rogue River rafting", "pear harvest"],
     whoWouldLove: "Sun-seekers who still want Oregon scenery.", whoMightNot: "Fog-haters in winter; smoke-sensitive lungs.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "medford-or-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -6355,7 +6355,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["sailors", "remote creatives"], travelFit: ["orca watching", "island hopping"],
     whoWouldLove: "Maritime-climate fans who want fewer dreary winters than Seattle proper.", whoMightNot: "Budget shoppers — island cost of living is steep.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "friday-harbor-wa-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -6681,7 +6681,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snowmobilers", "boreal researchers"], travelFit: ["Voyageurs NP", "ice fishing"],
     whoWouldLove: "Hardy winter people who want true northern seasons.", whoMightNot: "Heat-lovers; thin-blood snowbirds.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "international-falls-mn-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -6746,7 +6746,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor enthusiasts", "remote workers"], travelFit: ["tall ships", "fall color", "skiing"],
     whoWouldLove: "Cool-summer lovers who still want real winter.", whoMightNot: "Sun-belt retirees seeking warmth.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "duluth-mn-mechanism",
         title: "Lake-Moderated mechanics",
@@ -6811,7 +6811,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["lake-house seekers"], travelFit: ["Presque Isle beaches", "winter storm chasing"],
     whoWouldLove: "Great Lakes culture and dramatic snow.", whoMightNot: "Snow shovel haters.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "erie-pa-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -6938,7 +6938,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Smokies trails", "autumn color"],
     whoWouldLove: "Misty-mountain hikers and waterfall chasers.", whoMightNot: "Crowd-averse visitors in October weekends.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "gatlinburg-tn-mechanism",
         title: "Thermal Belt mechanics",
@@ -7002,7 +7002,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote coastal workers"], travelFit: ["Wright Brothers", "wild horses", "surf"],
     whoWouldLove: "Beach people who accept hurricane season soberly.", whoMightNot: "Evacuation-averse; flood-insurance skeptics.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "nags-head-nc-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -7067,7 +7067,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote tech workers", "ski commuters"], travelFit: ["Champlain Islands", "ski resorts"],
     whoWouldLove: "Small-city New England with lake recreation.", whoMightNot: "Those who need warm winters.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "burlington-vt-mechanism",
         title: "Lake-Moderated mechanics",
@@ -7139,7 +7139,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Acadia", "whale watching"],
     whoWouldLove: "Granite-coast hikers and blueberry fans.", whoMightNot: "Budget travelers in peak July.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "bar-harbor-me-mechanism",
         title: "Fjord / Inlet Coast mechanics",
@@ -7204,7 +7204,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ag researchers", "storm chasers"], travelFit: ["Palo Duro", "wine country nearby"],
     whoWouldLove: "Big-sky storm watchers.", whoMightNot: "Humidity lovers; tree-huggers seeking forests.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "lubbock-tx-mechanism",
         title: "Badland / Steppe Pocket mechanics",
@@ -7330,7 +7330,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wellness retreat life"], travelFit: ["citrus farms", "sunset chasers"],
     whoWouldLove: "Mediterranean-light obsessives.", whoMightNot: "Fire-averse; seekers of seasonal drama.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "ojai-ca-mechanism",
         title: "Mediterranean Pocket mechanics",

@@ -69,7 +69,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-                        deepSections: [
+                            deepSections: [
       {
         id: "mentone-al-mechanism",
         title: "Thermal Belt mechanics",
@@ -153,7 +153,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "norfolk-ct-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -237,7 +237,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "lewes-de-mechanism",
         title: "Lake-Moderated mechanics",
@@ -321,7 +321,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "clayton-ga-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -405,7 +405,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-town lovers", "remote workers"], travelFit: ["Mississippi Palisades", "architecture"],
     whoWouldLove: "Midwest topography fans who still want seasons.", whoMightNot: "Those avoiding cold winters or steep drives.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "galena-il-mechanism",
         title: "Driftless Relief Pocket mechanics",
@@ -489,7 +489,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "beverly-shores-in-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -573,7 +573,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "oakland-md-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -657,7 +657,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "pittsfield-ma-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -740,7 +740,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "ocean-springs-ms-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -822,7 +822,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "eminence-mo-mechanism",
         title: "Limestone / Karst Pocket mechanics",
@@ -952,17 +952,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "The Mid-Atlantic’s most maritime resort climate — moderated peaks, persistent humidity, and nor’easter drama.",
     summaryImmersive: "Cape May is a classic barrier-style energy balance problem: water on three sides, low elevation, and tree canopy that knits humidity into every summer afternoon. Autumn can deliver warm ocean swimming while inland New Jersey cools; winter alternates between mild marine air and biting Arctic outbreaks when continental highs wedge behind the Appalachians.",
     whyDistinct: "Triple-water exposure + narrow landmass = stronger diurnal sea-breeze modulation than mainland New Jersey at the same latitude.",
-                experience: {
-      feel: "Cape May is a classic barrier-style energy balance problem: water on three sides, low elevation, and tree canopy that knits humidity into every summer afternoon. Autumn can deliver warm ocean swimming while inland New Jersey cools;.",
+    experience: {
+      feel: "Cape May feels like a triple-water peninsula resort — Delaware Bay on one side, open Atlantic on the other, summer humidity knitted into every afternoon by holly forest canopy, and autumn ocean swimming when inland New Jersey has already cooled.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 6.3°C, nights near -0.7°C — showers pass through regularly. Coastal surge and wind events belong in the planning stack.",
-        spring: "Green-up and storms — afternoons near 14°C, nights near 7°C — showers pass through regularly. Green-up arrives against a wet 1150 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Warm season peak — afternoons near 26.3°C, nights near 19°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 18°C, nights near 10.3°C — showers pass through regularly. Tropical systems can still reshape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
+        winter: "Marine-mild with Arctic intrusions — afternoons near 6°C, nights near −1°C, nor'easter wind and coastal surge on the planning stack when continental highs wedge behind the Appalachians.",
+        spring: "Slow green-up — afternoons climbing through 14°C, migratory bird traffic peaking, and sea-breeze afternoons that stay cooler than Philadelphia only 160 km northwest.",
+        summer: "Resort humidity — highs near 26°C, nights near 19°C sticky with persistent moisture, afternoon convection building over the warm bay, and Victorian porches as the only refuge.",
+        autumn: "Hurricane-season tail — highs near 18°C, warm ocean swims into October, and tropical recurvature tracks that can reshape the calendar deep into fall.",
       },
-      travelerFit: "Visitors come for Victorian architecture and bird migration.",
-      residentFit: "It rewards beach-town people who want walkable scale — especially historic-home restorers — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are coastal and sea-level pressure and flood and surge risk. Cape May County housing tightens in summer but stays below Northeast metro medians; Philadelphia and Atlantic City are the usual specialist and airport anchors.",
+      travelerFit: "Visitors come for Victorian architecture, bird migration, and Mid-Atlantic beach life with stronger maritime moderation than mainland Jersey.",
+      residentFit: "It rewards beach-town people and historic-home restorers who accept flood risk, seasonal housing pressure, and persistent humidity.",
+      texture: "Sea-level resort tradeoff — weigh coastal surge, hurricane exposure, and flood insurance against walkable Victorian scale and maritime mildness.",
     },
     climate: {
       tempHighC: [5, 6, 9, 14, 19, 24, 28, 27, 24, 18, 12, 8],
@@ -992,21 +992,21 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-home restorers", "retirees"], travelFit: ["Victorian architecture", "bird migration"],
     whoWouldLove: "Beach-town people who want walkable scale.", whoMightNot: "Dry-air or mountain-climate seekers.",
     confidence: "high",
-                        deepSections: [
+    deepSections: [
       {
-        id: "cape-may-nj-mechanism",
-        title: "Hurricane-Exposed Coast mechanics",
+        id: "cape-may-triple-water",
+        title: "Triple-water maritime energy balance",
         paragraphs: [
-          "Cape May sits where peninsula tip between Delaware Bay and open Atlantic; convergent sea breezes and tropical cyclone recurvature exposure. Cfa normals and roughly 1150 mm/yr frame the regional baseline, but Diurnal sea breeze and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Triple-water exposure + narrow landmass = stronger diurnal sea-breeze modulation than mainland New Jersey at the same latitude. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Cape May sits at the peninsula tip between Delaware Bay and open Atlantic — Cfa normals with roughly 1,150 mm annually and stronger diurnal sea-breeze modulation than mainland New Jersey at the same latitude. Water on three sides and low elevation keep summer peaks moderated but humidity persistent.",
+          "Convergent sea breezes and tropical cyclone recurvature exposure produce nor'easter drama in winter and hurricane-season tails into fall — autumn can deliver warm ocean swimming while Philadelphia cools.",
         ],
       },
       {
-        id: "cape-may-nj-field-read",
-        title: "On-the-ground read",
+        id: "cape-may-resort-risk",
+        title: "Resort housing and coastal exposure",
         paragraphs: [
-          "The Mid-Atlantic’s most maritime resort climate — moderated peaks, persistent humidity, and nor’easter drama. Soils read as sandy dune soils with peat in swales with excessive drainage (pH 4.8–6.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Beach plum, Hydrangea, Irrigated perennials. Dry-air or mountain-climate seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy dune soils with peat in swales support beach plum, hydrangea, and irrigated perennials — drought herbs fail without watering on exposed dunes. High coastal exposure registers for surge and flood at sea level.",
+          "Cape May County housing tightens in summer but stays below Northeast metro medians; Philadelphia and Atlantic City anchor specialists and airports. Dry-air or mountain-climate seekers should confirm flood insurance and elevation certificates before committing.",
         ],
       },
     ],
@@ -1076,7 +1076,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "geneva-on-the-lake-oh-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -1159,7 +1159,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "broken-bow-ok-mechanism",
         title: "Piedmont Transition mechanics",
@@ -1241,7 +1241,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["seasonal residents", "fishermen"], travelFit: ["bluffs", "biking"],
     whoWouldLove: "Cool-summer island people who tolerate ferry logistics.", whoMightNot: "Heat seekers; budget shoppers; anyone unwilling to plan groceries and care around the ferry schedule.",
     confidence: "high",
-                        deepSections: [
+                            deepSections: [
       {
         id: "block-island-ri-mechanism",
         title: "Hyper-Maritime mechanics",
