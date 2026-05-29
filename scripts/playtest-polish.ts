@@ -264,6 +264,8 @@ async function main(): Promise<void> {
   const tierCLiveIds = [
     "grand-marais-mi", "apalachicola-fl", "santa-cruz-felton-ca",
     "ellensburg-wa", "hood-river-gorge", "truckee-ca", "mammoth-lakes-ca",
+    "borrego-springs-ca", "sedona-az", "prescott-az", "cloudcroft-nm",
+    "taos-nm", "crested-butte-co", "leadville-co", "durango-co",
   ];
   for (const id of tierCLiveIds) {
     const place = PLACES.find(p => p.id === id);
