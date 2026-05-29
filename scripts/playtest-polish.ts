@@ -280,13 +280,23 @@ async function main(): Promise<void> {
     "new-orleans-la", "charleston-sc", "tucson-az", "anchorage-ak",
     "mobile-al", "savannah-ga", "buffalo-ny", "chattanooga-tn",
     "monterrey-mx", "puebla-mx", "queretaro-mx", "des-moines-ia",
-    "columbia-sc", "wilmington-de",
+    "columbia-sc", "wilmington-de", "boulder-co",
   ];
+
+  function isGenericDeepSections(sections: { id: string }[] | undefined): boolean {
+    if (!sections || sections.length !== 2) return false;
+    const ids = sections.map(s => s.id);
+    return ids.some(id => id.endsWith("-mechanism")) && ids.some(id => id.endsWith("-field-read"));
+  }
+
   for (const id of tierCLiveIds) {
     const place = PLACES.find(p => p.id === id);
     if (!place) throw new Error(`tier C live anchor missing: ${id}`);
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after Tier C polish pass`);
-    if (isAutoDraftedExperience(place)) throw new Error(`${id} still has auto-drafted experience after batch 6`);
+    if (isAutoDraftedExperience(place)) throw new Error(`${id} still has auto-drafted experience (playtest anchor)`);
+    if (isGenericDeepSections(place.deepSections)) {
+      throw new Error(`${id} still has generic -mechanism/-field-read deepSections (playtest anchor)`);
+    }
   }
 
   const lethbridge = PLACES.find(p => p.id === "lethbridge-ab");
