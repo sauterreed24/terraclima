@@ -615,17 +615,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Cool summers and crisp winters west of Boston’s marine bubble — elevation and inland position create a continental Berkshires climate.",
     summaryImmersive: "Pittsfield sits in a valley network that channels winter cold and summer thunderstorms along frontal boundaries. It is not as harsh as Vermont’s Northeast Kingdom, but it is dramatically different from Cape Cod on the same state license plate. Fall color and spring mud season are serious social calendars.",
     whyDistinct: "Inland elevation + New England storm-track dynamics = stronger seasonality than coastal Massachusetts, with occasional lake-enhanced snow on northwesterly flow.",
-                experience: {
-      feel: "Pittsfield sits in a valley network that channels winter cold and summer thunderstorms along frontal boundaries. It is not as harsh as Vermont’s Northeast Kingdom, but it is dramatically different from Cape Cod on the same state license plate.",
+                                experience: {
+      feel: "Pittsfield feels like interior Berkshires valley country west of Boston's marine bubble — Hudson and Housatonic watersheds channel winter cold and summer thunderstorms, with fall color and mud season as serious social calendars on the same Massachusetts license plate as Cape Cod.",
       seasons: {
-        winter: "Cold and snowy — afternoons near 1.7°C, nights near -9.3°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
-        spring: "Late thaw — afternoons near 12.7°C, nights near 1°C — snow is a regular part of the picture. Green-up arrives against a wet 1100 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 25.3°C, nights near 13°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 14.3°C, nights near 2.3°C — showers pass through regularly. Storm systems roll through with real force.",
+        winter: "Berkshires snow — afternoons near 2°C, nights near −9°C, lake-enhanced bands on NW flow, and Tanglewood quiet under snow.",
+        spring: "Mud season — afternoons climbing toward 13°C, late green-up in valley bottoms, maple sap finishing, and frost nights lingering on clear April mornings.",
+        summer: "Cool by Massachusetts standards — highs near 25°C, thunderstorms along frontal boundaries, Jacob's Pillow season, and comfortable nights compared to Boston humidity.",
+        autumn: "Tanglewood foliage — highs falling through 14°C, hardwood color at peak, the year's best hiking weather, and ski areas prepping for opening.",
       },
-      travelerFit: "Visitors come for Tanglewood and ski areas.",
-      residentFit: "It rewards new England culture without Boston housing costs — especially culture seekers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are storm exposure.",
+      travelerFit: "Visitors come for Tanglewood, Jacob's Pillow, Berkshires ski areas, and New England culture without Boston housing costs.",
+      residentFit: "It rewards culture seekers and second-home owners who accept real winter snow and mud season in exchange for Berkshires arts infrastructure.",
+      texture: "A Berkshires tradeoff — weigh lake-enhanced snow, mud-season road damage, and Albany/Boston specialist distance against Tanglewood, affordable housing versus Boston, and stronger seasonality than coastal Massachusetts.",
     },
     climate: {
       tempHighC: [0, 2, 6, 13, 19, 24, 27, 25, 21, 14, 8, 3],
@@ -647,7 +647,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 60,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
+      note: "Berkshire Medical Center anchors care and Albany International Airport is the usual specialist gateway — mild-winter seekers should visit in January before committing to Berkshires snow totals and mud season.",
       sources: [
       { label: "NOAA — Pittsfield Airport", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Pittsfield", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -659,19 +659,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                                     deepSections: [
       {
-        id: "pittsfield-ma-mechanism",
-        title: "Cold-Air Pool mechanics",
+        id: "pittsfield-berkshires-valley",
+        title: "Housatonic valley cold and lake-enhanced snow",
         paragraphs: [
-          "Pittsfield sits where hudson/Housatonic watershed uplands between the Taconic Range and Green Mountains — interior New England with continentality. Dfb normals and roughly 1100 mm/yr frame the regional baseline, but Polar jet / arctic front and Lake effect re-weight what any single forecast means block by block.",
-          "Inland elevation + New England storm-track dynamics = stronger seasonality than coastal Massachusetts, with occasional lake-enhanced snow on northwesterly flow. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Pittsfield sits in Hudson/Housatonic watershed uplands between the Taconic Range and Green Mountains — Dfb normals with roughly 1100 mm annually, where inland elevation and New England storm-track dynamics create stronger seasonality than coastal Massachusetts.",
+          "Valley networks channel winter cold and summer thunderstorms along frontal boundaries; occasional lake-enhanced snow arrives on northwesterly flow from the Great Lakes.",
         ],
       },
       {
-        id: "pittsfield-ma-field-read",
-        title: "On-the-ground read",
+        id: "pittsfield-tanglewood-culture",
+        title: "Tanglewood season and maple sap windows",
         paragraphs: [
-          "Cool summers and crisp winters west of Boston’s marine bubble — elevation and inland position create a continental Berkshires climate. Soils read as stony loam on schist with good drainage (pH 5.2–6.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Berries, Cool greens. Mild-winter seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Stony loam on schist supports apples, berries, cool greens, and hay on sheltered blocks — not as harsh as Vermont's Northeast Kingdom but dramatically different from Cape Cod on the same state license plate.",
+          "Mild-winter seekers should confirm Berkshire Medical Center access before committing — severe storm exposure is elevated and maple sap windows are shifting under intensifying freeze-thaw cycles.",
         ],
       },
     ],
@@ -699,17 +699,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Live oaks and sea breezes — the gentlest heat in Mississippi, traded for humidity and hurricane exposure.",
     summaryImmersive: "Ocean Springs inherits the same humid subtropical core as the Deep South, but the Sound’s daily heat capacity knocks a few degrees off afternoon peaks relative to inland Hattiesburg. Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow. It is not a dry climate — it is a maritime one.",
     whyDistinct: "Shallow shelf water + urban tree canopy + lower inland elevation buffering = measurably milder frost regime than counties 30 km north.",
-                experience: {
-      feel: "Ocean Springs inherits the same humid subtropical core as the Deep South, but the Sound’s daily heat capacity knocks a few degrees off afternoon peaks relative to inland Hattiesburg. Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow.",
+                                experience: {
+      feel: "Ocean Springs feels like live-oak maritime Mississippi on the Sound — humid subtropical at the core, but shallow shelf water knocks a few degrees off afternoon peaks versus inland Hattiesburg, with brief winter cold fronts often moderated by returning onshore flow and an arts-town flavor along the coast.",
       seasons: {
-        winter: "Mild and workable — afternoons near 16.7°C, nights near 6.7°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 24°C, nights near 14.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1510 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Warm season peak — afternoons near 31.7°C, nights near 22.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 25.7°C, nights near 15.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Mild Sound winter — afternoons near 17°C, nights near 7°C, brief cold fronts, and live oaks keeping their leaves while inland counties frost harder.",
+        spring: "Azalea and art season — afternoons climbing toward 24°C, Walter Anderson Museum busy, and humidity building ahead of hurricane watch season.",
+        summer: "Steam and sea breeze — highs near 32°C, afternoon convection, Gulf Islands National Seashore at peak, and the gentlest heat in Mississippi traded for persistent humidity.",
+        autumn: "Hurricane watch — highs falling through 26°C, tropical systems brushing the Sound, seafood season peak, and arts-festival calendar winding down.",
       },
-      travelerFit: "Visitors come for Gulf Islands NS and seafood.",
-      residentFit: "It rewards humid subtropical coastal life with arts-town flavor — especially coastal retirees — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
+      travelerFit: "Visitors come for Gulf Islands National Seashore, Walter Anderson arts heritage, and seafood in Mississippi's most maritime town.",
+      residentFit: "It rewards coastal retirees and artists who accept hurricane exposure, humidity, and very-high storm risk in exchange for live-oak shade and Sound moderation.",
+      texture: "A Mississippi Sound tradeoff — weigh very-high hurricane and surge risk, humidity, and flood insurance against the state's gentlest heat, arts-town culture, and measurably milder frost than counties 30 km inland.",
     },
     climate: {
       tempHighC: [16, 17, 20, 24, 28, 31, 32, 32, 30, 26, 21, 17],
@@ -730,7 +730,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 40,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for hurricane-averse; dry-air seekers.",
+      note: "Memorial Hospital Gulfport anchors regional care — verify FEMA flood panels and wind-rated construction before committing; hurricane-averse and dry-air seekers should review Katrina-era surge history on the Sound.",
       sources: [
       { label: "NOAA — Biloxi MS (proxy sound)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Ocean Springs", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -742,19 +742,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                                     deepSections: [
       {
-        id: "ocean-springs-ms-mechanism",
-        title: "Hurricane-Exposed Coast mechanics",
+        id: "ocean-springs-sound-breeze",
+        title: "Mississippi Sound moderation and live-oak canopy",
         paragraphs: [
-          "Ocean Springs sits where live-oak maritime fringe on Mississippi Sound; fetch limited compared to open Gulf but still strongly marine-influenced. Cfa normals and roughly 1510 mm/yr frame the regional baseline, but Diurnal sea breeze and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Shallow shelf water + urban tree canopy + lower inland elevation buffering = measurably milder frost regime than counties 30 km north. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Ocean Springs sits on a live-oak maritime fringe on Mississippi Sound — Cfa normals with roughly 1510 mm annually, where shallow shelf water and urban tree canopy knock a few degrees off afternoon peaks relative to inland Hattiesburg.",
+          "Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow — measurably milder frost regime than counties 30 km north.",
         ],
       },
       {
-        id: "ocean-springs-ms-field-read",
-        title: "On-the-ground read",
+        id: "ocean-springs-hurricane-arts",
+        title: "Hurricane exposure and Walter Anderson arts town",
         paragraphs: [
-          "Live oaks and sea breezes — the gentlest heat in Mississippi, traded for humidity and hurricane exposure. Soils read as sandy loam over coastal plain sediments with moderate drainage (pH 5–6.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Live oak, Satsuma, Camellias. Hurricane-averse; dry-air seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy loam over coastal plain sediments supports live oak, satsuma, camellias, and subtropical ornamentals — garden success tracks elevation above surge reach more than hardiness zone.",
+          "Hurricane-averse and dry-air seekers should confirm Memorial Hospital Gulfport access and NFIP premiums before committing — coastal exposure is very-high and wind and storm surge dominate long-term planning.",
         ],
       },
     ],
@@ -782,17 +782,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Spring water at near-constant temperatures threads through humid Ozark summers — a natural cooling network in dissected terrain.",
     summaryImmersive: "Eminence is the gateway to some of the clearest spring rivers in the Lower 48. Groundwater upwelling holds near-stable temperatures year-round; in summer, paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape. The hills are modest in elevation but enormous in hydrologic complexity.",
     whyDistinct: "Large spring discharge and karst topography create localized cold-air pooling and persistent riparian humidity — a hydrogeologic microclimate superimposed on humid continental summers.",
-                experience: {
-      feel: "Eminence is the gateway to some of the clearest spring rivers in the Lower 48. Groundwater upwelling holds near-stable temperatures year-round; in summer, paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape.",
+                                experience: {
+      feel: "Eminence feels like the gateway to the clearest spring rivers in the Lower 48 — groundwater upwelling holds near-stable temperatures year-round on the Jacks Fork and Current River, where paddlers find cold pools and fog banks at karst confluences that would not exist outside Ozark limestone country.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7.7°C, nights near -3.3°C — showers pass through regularly. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 20.7°C, nights near 8.7°C — rain is frequent and can be heavy. Green-up arrives against a wet 1145 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Warm season peak — afternoons near 31.3°C, nights near 19°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 21.3°C, nights near 8.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Ozark mild — afternoons near 8°C, nights near −3°C, spring-fed rivers staying open, and caving season when water tables are visible.",
+        spring: "River rise — afternoons climbing toward 21°C, Jacks Fork and Current swelling with rain, wildflower season in dissected hills, and float season opening.",
+        summer: "Karst-cooled humidity — highs near 31°C in the hills but cold spring water at confluences, paddlers seeking shade in riparian corridors, and afternoon convection over the plateau.",
+        autumn: "Float season peak — highs falling through 21°C, Ozark National Scenic Riverways at its best, misty mornings over spring-fed water, and hunting season in the hills.",
       },
-      travelerFit: "Visitors come for Ozark NS rivers and caving.",
-      residentFit: "It rewards river people who want geology and misty mornings — especially paddlers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
+      travelerFit: "Visitors come for Ozark National Scenic Riverways, Current River floating, and karst caving in one of America's clearest spring-river corridors.",
+      residentFit: "It rewards paddlers and remote workers who want Ozark geology and misty river mornings but accept flash-flood risk and limited flat farmland.",
+      texture: "An Ozark karst tradeoff — weigh Current River flash flooding, groundwater sensitivity, and humid summers against spring-fed cold pools, caving country, and a hydrogeologic microclimate unlike anywhere else in Missouri.",
     },
     climate: {
       tempHighC: [6, 9, 15, 21, 26, 30, 32, 32, 28, 22, 14, 8],
@@ -813,7 +813,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for those needing dry air or flat farmland.",
+      note: "Texas County Memorial Hospital in Houston MO is the nearest regional anchor — paddlers should confirm Current River flood stages and parcel elevation above spring corridors before committing; dry-air and flat-farmland seekers will find the Plains more comfortable.",
       sources: [
       { label: "NOAA — Eminence", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "USGS — Ozark Plateau springs", url: "https://www.usgs.gov/" },
@@ -824,19 +824,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                                     deepSections: [
       {
-        id: "eminence-mo-mechanism",
-        title: "Limestone / Karst Pocket mechanics",
+        id: "eminence-current-springs",
+        title: "Current River springs and karst cold pools",
         paragraphs: [
-          "Eminence sits where dissected Ozark plateau on the Jacks Fork / Current River — spring-fed corridors with groundwater-dominated microclimates. Cfa normals and roughly 1145 mm/yr frame the regional baseline, but Karst infiltration and River-valley moderation re-weight what any single forecast means block by block.",
-          "Large spring discharge and karst topography create localized cold-air pooling and persistent riparian humidity — a hydrogeologic microclimate superimposed on humid continental summers. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Eminence sits on the dissected Ozark plateau at the Jacks Fork and Current River — Cfa normals with roughly 1145 mm annually, where large spring discharge and karst topography create localized cold-air pooling and persistent riparian humidity.",
+          "Groundwater upwelling holds near-stable temperatures year-round; in summer paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape.",
         ],
       },
       {
-        id: "eminence-mo-field-read",
-        title: "On-the-ground read",
+        id: "eminence-ozark-float",
+        title: "Ozark float season and flash-flood corridors",
         paragraphs: [
-          "Spring water at near-constant temperatures threads through humid Ozark summers — a natural cooling network in dissected terrain. Soils read as cherty limestone residuum; thin upland soils with excessive drainage (pH 5–6.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Pasture, Cool greens, Blackberries. Those needing dry air or flat farmland should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Cherty limestone residuum supports pasture, cool greens, and blackberries where groundwater allows — upland soils drain excessively without spring access.",
+          "Those needing dry air or flat farmland should confirm Texas County Memorial Hospital access before committing — flash flood frequency is rising along spring-fed river corridors during heavy convective rain.",
         ],
       },
     ],
@@ -1034,17 +1034,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Ohio’s snowiest shoreline resorts — June can feel like the Pacific Northwest until lake heat builds.",
     summaryImmersive: "Geneva-on-the-Lake inherits the full Great Lakes curriculum: delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands that can bury the strip while Columbus stays dry. Summer is warm and humid with lake breezes; thunderstorms propagate along lake-outflow boundaries.",
     whyDistinct: "Eastern Erie fetch orientation + land-lake temperature contrast = maximized lake-effect potential for Ohio’s north coast.",
-                experience: {
-      feel: "Geneva-on-the-Lake inherits the full Great Lakes curriculum: delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands that can bury the strip while Columbus stays dry. Summer is warm and humid with lake breezes; thunderstorms propagate along lake-outflow boundaries.",
+                                experience: {
+      feel: "Geneva-on-the-Lake feels like Ohio's snowiest shoreline resort strip — full Great Lakes curriculum with delayed leaf-out, abundant winter cloud, and mesoscale snow bands that can bury the strip while Columbus stays dry, then warm humid summers with lake breezes and thunderstorms on outflow boundaries.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 2.3°C, nights near -5.7°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
-        spring: "Late thaw — afternoons near 12°C, nights near 3.3°C — snow is a regular part of the picture. Green-up arrives against a wet 1020 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 25°C, nights near 15.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 15.3°C, nights near 6.3°C — showers pass through regularly. Storm systems roll through with real force.",
+        winter: "Lake-effect snowbelt — afternoons near 2°C, nights near −6°C, streamers burying the strip, and storm watching from lakefront cottages.",
+        spring: "Delayed green-up — afternoons climbing toward 12°C, June can feel Pacific Northwest until lake heat builds, and Concord grape buds late on lakeshore blocks.",
+        summer: "Resort season — highs near 25°C, humid lake breezes, amusement strip busy, and thunderstorms propagating along lake-outflow boundaries.",
+        autumn: "Wine trail shoulder — highs falling through 15°C, Ashtabula County color, harvest season, and first lake-effect dusting by November.",
       },
-      travelerFit: "Visitors come for wine trail and winter storm watching.",
-      residentFit: "It rewards great Lakes maximalists — especially lake-house buyers — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are storm exposure.",
+      travelerFit: "Visitors come for the lakefront resort strip, Ashtabula wine trail, and winter storm watching on Ohio's snowiest shoreline.",
+      residentFit: "It rewards Great Lakes maximalists and lake-house buyers who accept snow removal, delayed spring, and lake-effect cloud.",
+      texture: "An eastern Erie tradeoff — weigh lake-effect snow totals, declining lake ice shifting snow bands, and shoreline erosion against wine-country access, resort nostalgia, and summer lake recreation.",
     },
     climate: {
       tempHighC: [1, 2, 6, 12, 18, 24, 26, 25, 22, 15, 9, 4],
@@ -1066,7 +1066,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for sunbelt retirees.",
+      note: "UH Geneva and Cleveland Clinic anchors are within an hour — Great Lakes maximalists should confirm snow-removal costs and lakeshore flood exposure before committing; sunbelt retirees will find southern Ohio more comfortable.",
       sources: [
       { label: "NOAA — Geneva", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Geneva-on-the-Lake", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1078,19 +1078,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                                     deepSections: [
       {
-        id: "geneva-on-the-lake-oh-mechanism",
-        title: "Lake-Effect Snowbelt mechanics",
+        id: "geneva-erie-snowbelt",
+        title: "Eastern Lake Erie fetch and mesoscale streamers",
         paragraphs: [
-          "Geneva-on-the-Lake sits where lake Erie shoreline east of Cleveland where westerly flow produces long-fetch lake-effect streamers. Dfa normals and roughly 1020 mm/yr frame the regional baseline, but Lake effect and Diurnal sea breeze re-weight what any single forecast means block by block.",
-          "Eastern Erie fetch orientation + land-lake temperature contrast = maximized lake-effect potential for Ohio’s north coast. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Geneva-on-the-Lake sits on the Lake Erie shoreline east of Cleveland where westerly flow produces long-fetch lake-effect streamers — Dfa normals with roughly 1020 mm annually and eastern Erie orientation maximizing lake-effect potential for Ohio's north coast.",
+          "Delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands can bury the strip while Columbus stays dry — June can feel like the Pacific Northwest until lake heat builds.",
         ],
       },
       {
-        id: "geneva-on-the-lake-oh-field-read",
-        title: "On-the-ground read",
+        id: "geneva-wine-resort",
+        title: "Ashtabula wine trail and resort-strip nostalgia",
         paragraphs: [
-          "Ohio’s snowiest shoreline resorts — June can feel like the Pacific Northwest until lake heat builds. Soils read as clay loam on lake plain with sandy strips with imperfect drainage (pH 6–7.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Concord grapes, Apples, Cool greens. Sunbelt retirees should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Clay loam on lake plain with sandy strips supports Concord grapes, apples, and cool greens on sheltered blocks — late frost remains a risk for peaches on exposed lakeshore parcels.",
+          "Sunbelt retirees should confirm UH Geneva access and snow-removal infrastructure before committing — severe storm exposure is elevated and declining lake ice will shift snow-band behavior over coming decades.",
         ],
       },
     ],
@@ -1118,17 +1118,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Wetter, hillier, and more forested than almost anywhere else in Oklahoma — a southeastern climate island in the Plains.",
     summaryImmersive: "Broken Bow and the Mountain Fork corridor punch above the surrounding plains in annual precipitation and forest cover. Upslope flow ahead of Gulf lows enhances rainfall; reservoirs and rivers add local moisture. Summers remain hot, but canopy and shade produce perceptible relief compared to open pasture.",
     whyDistinct: "Ouachita topography in a predominantly flat state creates orographic and land-cover feedbacks that are climatologically distinct from Oklahoma City or the Panhandle.",
-                experience: {
-      feel: "Broken Bow and the Mountain Fork corridor punch above the surrounding plains in annual precipitation and forest cover. Upslope flow ahead of Gulf lows enhances rainfall; reservoirs and rivers add local moisture.",
+                                experience: {
+      feel: "Broken Bow feels like Oklahoma's southeastern climate island — the Ouachita foothills and Mountain Fork corridor punch above surrounding plains in precipitation and forest cover, where upslope Gulf lows enhance rainfall and pine-oak canopy provides perceptible summer relief compared to open pasture.",
       seasons: {
-        winter: "Mild and workable — afternoons near 13°C, nights near 1°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 22.7°C, nights near 11°C — rain is frequent and can be heavy. Green-up arrives against a wet 1345 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Hot and humid — afternoons near 33°C, nights near 21.3°C — rain is frequent and can be heavy. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Shoulder season — afternoons near 23.7°C, nights near 11.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Ouachita mild — afternoons near 13°C, nights near 1°C, shortleaf pine green year-round, and ice storms occasionally glazing the hills.",
+        spring: "Upslope green-up — afternoons climbing toward 23°C, Mountain Fork swelling with Gulf moisture, wildflower season in mesic pockets, and tornado season awareness on the Plains margin.",
+        summer: "Canopy-shaded heat — highs near 33°C but forest cover softening afternoon peaks, Beavers Bend State Park at peak, and afternoon convection over reservoirs.",
+        autumn: "Beavers Bend peak — highs falling through 24°C, fall color in shortleaf pine-oak forest, fishing season on Broken Bow Lake, and the year's best hiking weather.",
       },
-      travelerFit: "Visitors come for Beavers Bend SP and fishing.",
-      residentFit: "It rewards oklahoma residents who want forest and water — especially outdoor families — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are flood and surge risk and extreme summer heat.",
+      travelerFit: "Visitors come for Beavers Bend State Park, Mountain Fork trout fishing, and Oklahoma's rare forested-hill landscape.",
+      residentFit: "It rewards outdoor families and remote workers who want forest and water inside Oklahoma but accept humid summers and flash-flood risk on river corridors.",
+      texture: "An Ouachita uplift tradeoff — weigh convective flood risk, reservoir-dependent water supply, and humid heat against Oklahoma's wettest forest country, Beavers Bend recreation, and climate distinct from OKC or the Panhandle.",
     },
     climate: {
       tempHighC: [12, 14, 18, 23, 27, 31, 34, 34, 30, 24, 17, 13],
@@ -1149,7 +1149,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 40,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for dry-climate seekers.",
+      note: "McCurtain Memorial Hospital in Idabel anchors care — outdoor families should confirm Mountain Fork flood stages and wildfire insurance before committing; dry-climate seekers will find western Oklahoma more comfortable.",
       sources: [
       { label: "NOAA — Broken Bow", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Broken Bow", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1161,19 +1161,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                                     deepSections: [
       {
-        id: "broken-bow-ok-mechanism",
-        title: "Piedmont Transition mechanics",
+        id: "broken-bow-ouachita",
+        title: "Ouachita orographic lift and forest island",
         paragraphs: [
-          "Broken Bow sits where ouachita Mountains foothills — rare forested hills and mesic pockets in a state dominated by plains. Cfa normals and roughly 1345 mm/yr frame the regional baseline, but Orographic lift and Slope / aspect re-weight what any single forecast means block by block.",
-          "Ouachita topography in a predominantly flat state creates orographic and land-cover feedbacks that are climatologically distinct from Oklahoma City or the Panhandle. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Broken Bow sits in the Ouachita Mountains foothills — rare forested hills in a state dominated by plains — Cfa normals with roughly 1345 mm annually, where upslope flow ahead of Gulf lows enhances rainfall and reservoirs add local moisture.",
+          "Summers remain hot, but canopy and shade produce perceptible relief compared to open pasture — climatologically distinct from Oklahoma City or the Panhandle.",
         ],
       },
       {
-        id: "broken-bow-ok-field-read",
-        title: "On-the-ground read",
+        id: "broken-bow-beavers-bend",
+        title: "Beavers Bend and Mountain Fork flood corridors",
         paragraphs: [
-          "Wetter, hillier, and more forested than almost anywhere else in Oklahoma — a southeastern climate island in the Plains. Soils read as acidic sandy loam on sandstone and shale with moderate drainage (pH 4.8–6.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Pine timber, Warm-season vegetables, Peaches (with frost management). Dry-climate seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Acidic sandy loam on sandstone and shale supports pine timber, warm-season vegetables, and peaches with frost management on sheltered blocks — mesic pockets punch above surrounding plains in growability.",
+          "Dry-climate seekers should confirm McCurtain Memorial Hospital access before committing — flood exposure is elevated on river corridors and water resources remain reservoir-dependent during drought cycles.",
         ],
       },
     ],
