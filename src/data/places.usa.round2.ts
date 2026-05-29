@@ -43,7 +43,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       snowCm: [35, 25, 15, 5, 0, 0, 0, 0, 0, 0, 20, 35],
       annualPrecipMm: 530,
       frostFreeDays: 165,
-      hardinessZone: "6b",
+      hardinessZone: "6b",    humidity: [62, 60, 60, 67, 72, 76, 74, 74, 69, 65, 66, 61],    sunshinePct: [48, 51, 50, 56, 61, 66, 63, 63, 58, 55, 51, 46],
+
+
     },
     soil: { texture: "Loess and glacial outwash over basalt", drainage: "good", phRange: [6.0, 7.4], waterHolding: "moderate" },
     growability: { score: 68, hardinessZone: "6b", growsWell: ["Apples", "Cherries", "Cool greens", "Lilacs"], tricky: ["Citrus"] },
@@ -64,8 +66,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["families", "remote workers"], travelFit: ["Riverfront Park", "ski within 2 hrs"],
     whoWouldLove: "Those wanting dry-summer four-season life without Seattle gloom.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "spokane-wa-mechanism",
+        title: "Chinook Corridor at work",
+        paragraphs: [
+          "Spokane sits where spokane river valley on the columbia plateau east of the cascades; lee of the range with occasional chinook intrusions. The atlas tags this as chinook corridor (Dsb, roughly 530 mm/yr in these normals), and the dominant spatial engines are Chinook / foehn downslope and River-valley moderation — with Continental extremity also in play.",
+          "Mid-latitude interior position + rain-shadow dryness + episodic chinook warming produces larger winter temperature swings than coastal Washington at the same latitude. That mechanism is why two map dots in Washington can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "spokane-wa-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Spokane screening: Inland Northwest hub where Cascade rain shadow meets occasional warm downslope winds — four sharp seasons and dry summer afternoons. Soil reads as loess and glacial outwash over basalt with good drainage and pH 6–7.4 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Apples, Cherries, Cool greens, Lilacs; Citrus tend to struggle without intervention. Mild-winter seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Spokane Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Spokane Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "napa-ca",
@@ -103,7 +124,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [120, 110, 90, 35, 15, 5, 0, 2, 10, 35, 70, 110],
       annualPrecipMm: 603,
       frostFreeDays: 300,
-      hardinessZone: "10a",
+      hardinessZone: "10a",    humidity: [86, 85, 73, 69, 63, 59, 54, 57, 60, 67, 75, 82],    sunshinePct: [55, 58, 59, 67, 74, 81, 78, 78, 71, 66, 60, 54],
+
+
     },
     soil: { texture: "Alluvial gravel and volcanic fans", drainage: "good", phRange: [5.8, 6.8], waterHolding: "moderate" },
     growability: { score: 88, hardinessZone: "10a", growsWell: ["Wine grapes", "Olives", "Stone fruit", "Market vegetables"], tricky: ["Cool-climate brassicas in summer heat"] },
@@ -124,8 +147,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["wine industry", "retirees"], travelFit: ["wine tasting", "hot-air balloons"],
     whoWouldLove: "Viticulture and Mediterranean gardening devotees.", whoMightNot: "Budget shoppers; fire-smoke sensitive.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "napa-ca-mechanism",
+        title: "Mediterranean Pocket at work",
+        paragraphs: [
+          "Napa Valley Floor sits where north-south alluvial trough between the mayacamas and vaca ranges; cool marine air intrudes through petaluma gap. The atlas tags this as mediterranean pocket (Csa, roughly 603 mm/yr in these normals), and the dominant spatial engines are Gap winds and Marine layer — with Slope / aspect also in play.",
+          "Complex terrain channels + fog penetration + inland heat produce one of the steepest wine mesoclimates in the New World in a narrow corridor. That mechanism is why two map dots in California can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "napa-ca-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Napa Valley Floor screening: World-famous wine valley where gap flow and fog delay ripening — Cabernet country built on nightly cooling. Soil reads as alluvial gravel and volcanic fans with good drainage and pH 5.8–6.8 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Wine grapes, Olives, Stone fruit, Market vegetables; Cool-climate brassicas in summer heat tend to struggle without intervention. Budget shoppers; fire-smoke sensitive — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Napa County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Napa County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "palm-springs-ca",
@@ -163,7 +205,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [22, 20, 12, 4, 2, 0, 8, 12, 8, 6, 8, 20],
       annualPrecipMm: 122,
       frostFreeDays: 350,
-      hardinessZone: "9b",
+      hardinessZone: "9b",    humidity: [41, 41, 35, 39, 43, 40, 40, 42, 40, 46, 43, 42],    sunshinePct: [73, 78, 77, 83, 92, 92, 92, 91, 86, 83, 72, 69],
+
+
     },
     soil: { texture: "Sandy desert wash and blown sand", drainage: "excessive", phRange: [7.5, 8.5], waterHolding: "low" },
     growability: { score: 52, hardinessZone: "9b", growsWell: ["Date palms", "Citrus", "Desert natives"], tricky: ["Cool-season vegetables in summer"] },
@@ -184,8 +228,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "hospitality"], travelFit: ["modernism week", "Joshua Tree day trips"],
     whoWouldLove: "Dry heat and winter sun seekers.", whoMightNot: "Summer heat–sensitive visitors.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "palm-springs-ca-mechanism",
+        title: "High-Desert Escape at work",
+        paragraphs: [
+          "Palm Springs sits where coachella valley wind corridor north of the salton sea; san jacinto massif rises >3000 m to the west. The atlas tags this as high-desert escape (BWh, roughly 122 mm/yr in these normals), and the dominant spatial engines are Gap winds and Rain shadow — with Elevation lapse rate also in play.",
+          "Pass wind regime + mountain backdrop + irrigation oasis — a recreational microclimate layered on extreme desert. That mechanism is why two map dots in California can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "palm-springs-ca-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Palm Springs screening: Desert resort climate famous for winter sun — summer heat moderated slightly by elevation vs the Imperial Valley floor. Soil reads as sandy desert wash and blown sand with excessive drainage and pH 7.5–8.5 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Date palms, Citrus, Desert natives; Cool-season vegetables in summer tend to struggle without intervention. Summer heat–sensitive visitors — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Palm Springs", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Palm Springs", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "austin-tx",
@@ -223,7 +286,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [60, 55, 80, 75, 120, 90, 50, 65, 90, 100, 70, 70],
       annualPrecipMm: 925,
       frostFreeDays: 280,
-      hardinessZone: "9a",
+      hardinessZone: "9a",    humidity: [68, 68, 66, 71, 80, 90, 96, 98, 96, 83, 76, 69],    sunshinePct: [50, 53, 52, 59, 64, 65, 62, 62, 61, 57, 54, 48],
+
+
     },
     soil: { texture: "Clay over limestone", drainage: "moderate", phRange: [7.0, 8.4], waterHolding: "moderate" },
     growability: { score: 74, hardinessZone: "9a", growsWell: ["Live oak", "Pecan", "Vegetables (spring/fall)"], tricky: ["Cool-climate fruit"] },
@@ -244,8 +309,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["tech workers", "students"], travelFit: ["live music", "swimming holes"],
     whoWouldLove: "Those who embrace hot summers and mild winters.", whoMightNot: "Cool-summer seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "austin-tx-mechanism",
+        title: "River-Valley Moderation at work",
+        paragraphs: [
+          "Austin sits where colorado river corridor at the balcones escarpment — hill country to the west, coastal plain humidity to the east. The atlas tags this as river-valley moderation (Cfa, roughly 925 mm/yr in these normals), and the dominant spatial engines are River-valley moderation and Monsoon convective lift — with Continental extremity also in play.",
+          "Escarpment proximity + river + fast-growing UHI — meteorologically busy summers and warming nights. That mechanism is why two map dots in Texas can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "austin-tx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Austin screening: Central Texas heat island wrapped around a river corridor — humid subtropical with violent convective peaks and increasingly long warm seasons. Soil reads as clay over limestone with moderate drainage and pH 7–8.4 — garden success tracks micro-shelter and water timing.",
+          "Flood registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Live oak, Pecan, Vegetables (spring/fall); Cool-climate fruit tend to struggle without intervention. Cool-summer seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Camp Mabry", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Camp Mabry", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "naples-fl",
@@ -283,7 +367,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [45, 48, 62, 72, 110, 220, 230, 235, 210, 100, 55, 48],
       annualPrecipMm: 1435,
       frostFreeDays: 365,
-      hardinessZone: "10b",
+      hardinessZone: "10b",    humidity: [75, 74, 69, 71, 74, 82, 81, 84, 80, 80, 80, 75],    sunshinePct: [67, 71, 68, 68, 65, 63, 54, 53, 50, 53, 57, 60],
+
+
     },
     soil: { texture: "Sandy marl and mangrove peat", drainage: "poor", phRange: [7.0, 8.5], waterHolding: "high" },
     growability: { score: 78, hardinessZone: "10b", growsWell: ["Coconut", "Mangrove restoration species", "Tropical ornamentals"], tricky: ["Temperate bulbs"] },
@@ -304,8 +390,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "second-home owners"], travelFit: ["Everglades", "beaches"],
     whoWouldLove: "Gulf-coast warmth without Atlantic surf culture.", whoMightNot: "Hurricane-averse; flood-risk skeptics.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "naples-fl-mechanism",
+        title: "Hurricane-Exposed Coast at work",
+        paragraphs: [
+          "Naples sits where collier county barrier islands and mangrove-lined estuaries; gentle continental shelf. The atlas tags this as hurricane-exposed coast (Aw border, roughly 1435 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
+          "Gulf bathymetry and low latitude yield narrow annual range relative to interior Florida. That mechanism is why two map dots in Florida can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "naples-fl-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Naples screening: Gulf-side luxury microclimate — warm wet summers, mild dry winters, and sea-breeze caps on peak heat. Soil reads as sandy marl and mangrove peat with poor drainage and pH 7–8.5 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Coconut, Mangrove restoration species, Tropical ornamentals; Temperate bulbs tend to struggle without intervention. Hurricane-averse; flood-risk skeptics — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Naples", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Naples", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "buffalo-ny",
@@ -344,7 +449,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       snowCm: [70, 55, 40, 12, 0, 0, 0, 0, 0, 0, 25, 65],
       annualPrecipMm: 1125,
       frostFreeDays: 180,
-      hardinessZone: "6b",
+      hardinessZone: "6b",    humidity: [61, 61, 59, 65, 71, 82, 82, 85, 86, 79, 75, 63],    sunshinePct: [45, 48, 48, 56, 62, 63, 61, 60, 59, 54, 50, 44],
+
+
     },
     soil: { texture: "Clay loam on lake plain", drainage: "imperfect", phRange: [6.0, 7.5], waterHolding: "high" },
     growability: { score: 62, hardinessZone: "6b", growsWell: ["Concord grapes", "Apples", "Cool greens"], tricky: ["Peaches without site selection"] },
@@ -365,8 +472,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["urban families", "lake-house seekers"], travelFit: ["Niagara", "wing trails"],
     whoWouldLove: "Great Lakes city people who own a good shovel.", whoMightNot: "Sun-belt retirees.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "buffalo-ny-mechanism",
+        title: "Lake-Effect Snowbelt at work",
+        paragraphs: [
+          "Buffalo sits where eastern end of lake erie — long fetch for lake-effect snowbands; urban heat modest relative to storm energy. The atlas tags this as lake-effect snowbelt (Dfa, roughly 1125 mm/yr in these normals), and the dominant spatial engines are Lake effect and Polar jet / arctic front — with Continental extremity also in play.",
+          "Erie’s east-basin geometry maximizes banding events on westerly flow. That mechanism is why two map dots in New York can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "buffalo-ny-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Buffalo screening: Lake-effect capital of the eastern lakes — summer lake breezes, winter streamers measured in feet. Soil reads as clay loam on lake plain with imperfect drainage and pH 6–7.5 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Concord grapes, Apples, Cool greens; Peaches without site selection tend to struggle without intervention. Sun-belt retirees — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Buffalo Niagara Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Buffalo Niagara Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "scottsbluff-ne",
@@ -427,8 +553,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["ag workers", "remote workers"], travelFit: ["Scotts Bluff NM", "Oregon Trail history"],
     whoWouldLove: "Wide-open Plains people.", whoMightNot: "Tree-seekers; humidity lovers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "scottsbluff-ne-mechanism",
+        title: "High-Desert Escape at work",
+        paragraphs: [
+          "Scottsbluff sits where north platte river at the wildcat hills — plains edge with pine ridge scarp to the north. The atlas tags this as high-desert escape (BSk, roughly 471 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Chinook / foehn downslope — with River-valley moderation also in play.",
+          "Elevation and escarpment proximity add mesoscale wind and temperature volatility rare on the flat Plains. That mechanism is why two map dots in Nebraska can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "scottsbluff-ne-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Scottsbluff screening: High Plains river town — windy, sunny, and prone to rapid winter warm-ups when downslope flow replaces Arctic air. Soil reads as silt loam on alluvium with good drainage and pH 6.5–8 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Sugar beets, Dryland wheat, Windbreak trees; Long-season corn tend to struggle without intervention. Tree-seekers; humidity lovers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Scottsbluff", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Scottsbluff", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "mobile-al",
@@ -466,7 +611,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [150, 120, 160, 130, 140, 180, 200, 190, 150, 90, 120, 140],
       annualPrecipMm: 1770,
       frostFreeDays: 300,
-      hardinessZone: "9a",
+      hardinessZone: "9a",    humidity: [67, 66, 64, 69, 74, 84, 84, 87, 80, 78, 74, 68],    sunshinePct: [47, 50, 49, 56, 61, 66, 63, 63, 58, 54, 51, 45],
+
+
     },
     soil: { texture: "Sandy coastal plain", drainage: "moderate", phRange: [4.8, 6.5], waterHolding: "moderate" },
     growability: { score: 76, hardinessZone: "9a", growsWell: ["Live oak", "Camellia", "Citrus (marginal)"], tricky: ["Dry herbs"] },
@@ -487,8 +634,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["port workers", "families"], travelFit: ["Mardi Gras", "delta wetlands"],
     whoWouldLove: "Humid subtropical coastal life with Deep South culture.", whoMightNot: "Dry-air seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "mobile-al-mechanism",
+        title: "Hurricane-Exposed Coast at work",
+        paragraphs: [
+          "Mobile sits where mobile bay and mississippi sound — warm shelf water and frequent gulf moisture influx. The atlas tags this as hurricane-exposed coast (Cfa, roughly 1770 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with River-valley moderation also in play.",
+          "Estuary + Gulf fetch + low latitude = among the highest annual precipitation totals for a US city. That mechanism is why two map dots in Alabama can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "mobile-al-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Mobile screening: America’s rainiest major coastal city — Gulf moisture on tap, summer thunderstorms, and tropical cyclone risk. Soil reads as sandy coastal plain with moderate drainage and pH 4.8–6.5 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Live oak, Camellia, Citrus (marginal); Dry herbs tend to struggle without intervention. Dry-air seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Mobile Regional AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Mobile Regional AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "savannah-ga",
@@ -526,7 +692,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [90, 85, 100, 85, 100, 150, 165, 160, 110, 85, 75, 95],
       annualPrecipMm: 1300,
       frostFreeDays: 300,
-      hardinessZone: "9a",
+      hardinessZone: "9a",    humidity: [68, 67, 65, 70, 75, 85, 85, 88, 81, 79, 75, 69],    sunshinePct: [51, 54, 53, 60, 65, 70, 67, 67, 62, 58, 55, 50],
+
+
     },
     soil: { texture: "Marine terrace sand and organic histosols", drainage: "imperfect", phRange: [4.5, 6.5], waterHolding: "high" },
     growability: { score: 78, hardinessZone: "9a", growsWell: ["Azaleas", "Palms", "Subtropical fruit"], tricky: ["Cool-climate stone fruit"] },
@@ -547,8 +715,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["historic squares", "Tybee Island"],
     whoWouldLove: "Southern coastal charm with real seasons (mild).", whoMightNot: "Low-humidity devotees.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "savannah-ga-mechanism",
+        title: "Hurricane-Exposed Coast at work",
+        paragraphs: [
+          "Savannah sits where estuarine port on the savannah river near the georgia bight — broad shelf and warm gulf stream eddies offshore. The atlas tags this as hurricane-exposed coast (Cfa, roughly 1300 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with River-valley moderation also in play.",
+          "Estuary + Atlantic fetch + urban canopy creates a distinct thermal and humidity regime vs Atlanta. That mechanism is why two map dots in Georgia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "savannah-ga-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Savannah screening: Historic port with long warm seasons — summer humidity and sea-breeze moderation competing for comfort. Soil reads as marine terrace sand and organic histosols with imperfect drainage and pH 4.5–6.5 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Azaleas, Palms, Subtropical fruit; Cool-climate stone fruit tend to struggle without intervention. Low-humidity devotees — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Savannah Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Savannah Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "wilmington-de",
@@ -586,7 +773,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [85, 75, 100, 95, 95, 110, 120, 110, 105, 90, 85, 95],
       annualPrecipMm: 1165,
       frostFreeDays: 200,
-      hardinessZone: "7a",
+      hardinessZone: "7a",    humidity: [67, 66, 64, 69, 74, 88, 88, 91, 84, 78, 74, 68],    sunshinePct: [48, 51, 50, 57, 62, 63, 60, 60, 59, 55, 52, 47],
+
+
     },
     soil: { texture: "Schist residuum and floodplain silt", drainage: "moderate", phRange: [5.5, 7.0], waterHolding: "moderate" },
     growability: { score: 70, hardinessZone: "7a", growsWell: ["Native woodland plants", "Cool greens", "Dogwood"], tricky: ["Mediterranean drought herbs"] },
@@ -607,8 +796,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["commuters to Philly", "families"], travelFit: ["Nemours", "Longwood nearby"],
     whoWouldLove: "Mid-Atlantic suburban life with nearby gorge parks.", whoMightNot: "Mountain-air seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "wilmington-de-mechanism",
+        title: "Piedmont Transition at work",
+        paragraphs: [
+          "Wilmington sits where fall-line zone where piedmont meets coastal plain; brandywine creek gorge adds local relief. The atlas tags this as piedmont transition (Cfa, roughly 1165 mm/yr in these normals), and the dominant spatial engines are River-valley moderation and Continental extremity — with Slope / aspect also in play.",
+          "Small elevation changes and urban fabric interact with Chesapeake–Delaware moisture sources. That mechanism is why two map dots in Delaware can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "wilmington-de-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Wilmington screening: Corporate capital on a humid-subtropical margin — hotter summers than Philadelphia shore, cooler than DC on some synoptic days. Soil reads as schist residuum and floodplain silt with moderate drainage and pH 5.5–7 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Native woodland plants, Cool greens, Dogwood; Mediterranean drought herbs tend to struggle without intervention. Mountain-air seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — New Castle County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — New Castle County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "mystic-ct",
@@ -647,7 +855,8 @@ export const PLACES_USA_ROUND2: Place[] = [
       humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74],
       annualPrecipMm: 1200,
       frostFreeDays: 190,
-      hardinessZone: "7a",
+      hardinessZone: "7a",    sunshinePct: [39, 45, 48, 56, 49, 53, 46, 43, 34, 41, 37, 34],
+
     },
     soil: { texture: "Sandy glacial outwash near shore", drainage: "excessive", phRange: [5.0, 6.5], waterHolding: "low" },
     growability: { score: 58, hardinessZone: "7a", growsWell: ["Hydrangea", "Rosa rugosa", "Salt-tolerant shrubs"], tricky: ["Dry lavender"] },
@@ -667,8 +876,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["maritime retirees", "museum-goers"], travelFit: ["seaport museum", "sailing"],
     whoWouldLove: "Coastal New England without big-city scale.", whoMightNot: "Budget retirees; sun-belt seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "mystic-ct-mechanism",
+        title: "Cool-Summer Maritime at work",
+        paragraphs: [
+          "Mystic sits where estuarine village between long island sound and block island sound — persistent maritime air. The atlas tags this as cool-summer maritime (Dfb, roughly 1200 mm/yr in these normals), and the dominant spatial engines are Marine layer and Diurnal sea breeze — with Tropical-cyclone exposure also in play.",
+          "Dual-sound exposure tightens maritime influence vs inland Connecticut. That mechanism is why two map dots in Connecticut can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "mystic-ct-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Mystic screening: Classic New England shore — delayed spring, milder peaks than Hartford, nor’easter surf in winter. Soil reads as sandy glacial outwash near shore with excessive drainage and pH 5–6.5 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hydrangea, Rosa rugosa, Salt-tolerant shrubs; Dry lavender tend to struggle without intervention. Budget retirees; sun-belt seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Groton/New London", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Groton/New London", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "state-college-pa",
@@ -706,7 +934,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [75, 70, 95, 95, 100, 110, 115, 100, 95, 90, 85, 85],
       annualPrecipMm: 1110,
       frostFreeDays: 165,
-      hardinessZone: "6b",
+      hardinessZone: "6b",    humidity: [82, 82, 74, 71, 70, 67, 62, 61, 63, 69, 76, 78],    sunshinePct: [35, 42, 44, 53, 58, 61, 55, 51, 43, 37, 33, 30],
+
+
     },
     soil: { texture: "Shaley silt loam", drainage: "moderate", phRange: [5.5, 6.8], waterHolding: "moderate" },
     growability: { score: 66, hardinessZone: "6b", growsWell: ["Maple", "Apples", "Cool greens"], tricky: ["Heat-loving melons"] },
@@ -727,8 +957,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["academics", "families"], travelFit: ["Penn State sports", "Rothrock SF"],
     whoWouldLove: "Appalachian foothills with college-town amenities.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "state-college-pa-mechanism",
+        title: "Cold-Air Pool at work",
+        paragraphs: [
+          "State College sits where nittany valley in the appalachian ridge and valley — enclosed basins with cold-air pooling. The atlas tags this as cold-air pool (Dfb, roughly 1110 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Slope / aspect — with Lake effect also in play.",
+          "Ridge-and-valley terrain at latitude where lake-effect and synoptic snow overlap. That mechanism is why two map dots in Pennsylvania can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "state-college-pa-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "State College screening: Central PA university town where valley geometry sharpens frost and lake-enhanced snow reaches west of the main Allegheny crest. Soil reads as shaley silt loam with moderate drainage and pH 5.5–6.8 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Maple, Apples, Cool greens; Heat-loving melons tend to struggle without intervention. Mild-winter seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — University Park", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — University Park", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "columbia-sc",
@@ -766,7 +1015,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [95, 90, 110, 85, 90, 115, 130, 120, 100, 80, 85, 100],
       annualPrecipMm: 1200,
       frostFreeDays: 240,
-      hardinessZone: "8a",
+      hardinessZone: "8a",    humidity: [66, 66, 64, 69, 74, 88, 88, 90, 84, 77, 74, 67],    sunshinePct: [52, 55, 54, 60, 65, 67, 63, 64, 62, 59, 55, 50],
+
+
     },
     soil: { texture: "Sandy loam on coastal plain", drainage: "moderate", phRange: [5.0, 6.5], waterHolding: "moderate" },
     growability: { score: 72, hardinessZone: "8a", growsWell: ["Azaleas", "Dogwood", "Warm-season turf"], tricky: ["Cool-season lawns in summer"] },
@@ -787,8 +1038,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["government workers", "families"], travelFit: ["Congaree NP", "college sports"],
     whoWouldLove: "Southern city life with real winter light.", whoMightNot: "Dry-climate or cool-summer seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "columbia-sc-mechanism",
+        title: "River-Valley Moderation at work",
+        paragraphs: [
+          "Columbia sits where congaree river at the sandhills–coastal plain transition; inland heat pool west of maritime moderation. The atlas tags this as river-valley moderation (Cfa, roughly 1200 mm/yr in these normals), and the dominant spatial engines are River-valley moderation and Tropical-cyclone exposure — with Continental extremity also in play.",
+          "Inland position at low elevation in the Southeast heat-pool regime. That mechanism is why two map dots in South Carolina can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "columbia-sc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Columbia screening: State capital in the humid subtropical belt — summer heat indices among the South’s more oppressive without ocean breeze. Soil reads as sandy loam on coastal plain with moderate drainage and pH 5–6.5 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Azaleas, Dogwood, Warm-season turf; Cool-season lawns in summer tend to struggle without intervention. Dry-climate or cool-summer seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Columbia Metro AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Columbia Metro AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "des-moines-ia",
@@ -826,7 +1096,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [28, 38, 58, 98, 115, 130, 110, 110, 90, 78, 58, 42],
       annualPrecipMm: 955,
       frostFreeDays: 175,
-      hardinessZone: "5b",
+      hardinessZone: "5b",    humidity: [60, 60, 58, 64, 74, 85, 85, 84, 81, 74, 70, 62],    sunshinePct: [49, 52, 52, 60, 66, 68, 65, 65, 63, 58, 54, 48],
+
+
     },
     soil: { texture: "Mollisols on glacial till", drainage: "moderate", phRange: [6.0, 7.5], waterHolding: "high" },
     growability: { score: 80, hardinessZone: "5b", growsWell: ["Corn", "Soybeans", "Tomatoes", "Apples"], tricky: ["Dry Mediterranean herbs"] },
@@ -847,8 +1119,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["insurance", "ag business"], travelFit: ["state fair", "cycling trails"],
     whoWouldLove: "Heartland four-season living.", whoMightNot: "Mountain or ocean proximity seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "des-moines-ia-mechanism",
+        title: "River-Valley Moderation at work",
+        paragraphs: [
+          "Des Moines sits where raccoon and des moines rivers confluence on rolling till plain — classic midwest convective regime. The atlas tags this as river-valley moderation (Dfa, roughly 955 mm/yr in these normals), and the dominant spatial engines are River-valley moderation and Polar jet / arctic front — with Continental extremity also in play.",
+          "Central US latitude without Great Lakes moderation — sharp seasonality. That mechanism is why two map dots in Iowa can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "des-moines-ia-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Des Moines screening: Continental humid climate with warm muggy summers, cold winters, and mesoscale convective systems along moisture tongues. Soil reads as mollisols on glacial till with moderate drainage and pH 6–7.5 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Corn, Soybeans, Tomatoes, Apples; Dry Mediterranean herbs tend to struggle without intervention. Mountain or ocean proximity seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Des Moines Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Des Moines Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "tucson-az",
@@ -886,7 +1177,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [22, 22, 18, 8, 5, 8, 120, 130, 45, 20, 18, 28],
       annualPrecipMm: 444,
       frostFreeDays: 300,
-      hardinessZone: "9b",
+      hardinessZone: "9b",    humidity: [35, 35, 32, 37, 41, 42, 55, 57, 55, 43, 41, 35],    sunshinePct: [74, 78, 78, 83, 92, 88, 88, 88, 86, 84, 72, 70],
+
+
     },
     soil: { texture: "Desert alluvium and caliche", drainage: "excessive", phRange: [7.5, 8.5], waterHolding: "low" },
     growability: { score: 62, hardinessZone: "9b", growsWell: ["Citrus (protected)", "Desert natives", "Mesquite"], tricky: ["Cool-climate berries"] },
@@ -907,8 +1200,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "remote workers"], travelFit: ["Saguaro NP", "Kitt Peak"],
     whoWouldLove: "Desert–mountain contrast lovers.", whoMightNot: "Humidity-seekers; water-abundance expecters.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "tucson-az-mechanism",
+        title: "Monsoon-Edge Zone at work",
+        paragraphs: [
+          "Tucson sits where santa cruz river basin ringed by sky-island ranges — core north american monsoon convection zone. The atlas tags this as monsoon-edge zone (BWh, roughly 444 mm/yr in these normals), and the dominant spatial engines are Monsoon convective lift and Elevation lapse rate — with Slope / aspect also in play.",
+          "Basin geometry + monsoon + 900 m+ mountains within minutes’ drive equals extreme vertical climate diversity. That mechanism is why two map dots in Arizona can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "tucson-az-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Tucson screening: Lower-elevation desert city with dramatic monsoon storms and winter snow visible on the Catalina crest above town. Soil reads as desert alluvium and caliche with excessive drainage and pH 7.5–8.5 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Citrus (protected), Desert natives, Mesquite; Cool-climate berries tend to struggle without intervention. Humidity-seekers; water-abundance expecters — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Tucson Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Tucson Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "anchorage-ak",
@@ -946,7 +1258,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [18, 20, 18, 15, 22, 38, 58, 82, 78, 50, 28, 24],
       annualPrecipMm: 451,
       frostFreeDays: 120,
-      hardinessZone: "4a",
+      hardinessZone: "4a",    humidity: [83, 83, 76, 72, 67, 65, 64, 66, 69, 71, 77, 79],    sunshinePct: [39, 46, 48, 57, 62, 65, 59, 55, 47, 41, 38, 34],
+
+
     },
     soil: { texture: "Glacial till and alluvium", drainage: "moderate", phRange: [5.5, 7.0], waterHolding: "moderate" },
     growability: { score: 48, hardinessZone: "4a", growsWell: ["Cool greens", "Potatoes", "Birch"], tricky: ["Tree fruit"] },
@@ -967,8 +1281,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["logistics", "outdoor workers"], travelFit: ["Chugach access", "flightseeing"],
     whoWouldLove: "Subarctic life with city services.", whoMightNot: "Dark-winter–averse newcomers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "anchorage-ak-mechanism",
+        title: "Subarctic Continental at work",
+        paragraphs: [
+          "Anchorage sits where head of cook inlet with chugach mountains to the east — marine-modified subarctic. The atlas tags this as subarctic continental (Dfc, roughly 451 mm/yr in these normals), and the dominant spatial engines are Marine layer and Orographic lift — with Polar jet / arctic front also in play.",
+          "Maritime subarctic at population scale — rare globally. That mechanism is why two map dots in Alaska can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "anchorage-ak-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Anchorage screening: Alaska’s largest city — colder than Juneau in winter but milder than Fairbanks; mountain–inlet geometry organizes wind and snow. Soil reads as glacial till and alluvium with moderate drainage and pH 5.5–7 — garden success tracks micro-shelter and water timing.",
+          "Smoke / air quality registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cool greens, Potatoes, Birch; Tree fruit tend to struggle without intervention. Dark-winter–averse newcomers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Anchorage Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Anchorage Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "honolulu-hi",
@@ -1006,7 +1339,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [60, 50, 55, 20, 25, 12, 15, 18, 20, 55, 65, 85],
       annualPrecipMm: 500,
       frostFreeDays: 365,
-      hardinessZone: "12b",
+      hardinessZone: "12b",    humidity: [80, 75, 71, 73, 75, 75, 75, 78, 78, 82, 85, 81],    sunshinePct: [66, 70, 67, 67, 74, 68, 59, 58, 59, 62, 56, 59],
+
+
     },
     soil: { texture: "Andisols and reef limestone near shore", drainage: "moderate", phRange: [6.0, 7.5], waterHolding: "moderate" },
     growability: { score: 82, hardinessZone: "12b", growsWell: ["Tropical fruit", "Palms", "Vegetables year-round"], tricky: ["Temperate bulbs"] },
@@ -1027,8 +1362,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["military families", "tourism workers"], travelFit: ["surf", "Pearl Harbor"],
     whoWouldLove: "Urban tropical with American infrastructure.", whoMightNot: "Affordable-housing seekers; tsunami-anxious.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "honolulu-hi-mechanism",
+        title: "Tropical Isothermal Coast at work",
+        paragraphs: [
+          "Honolulu sits where south shore of oʻahu — lee of the koʻolau range with trade-wind showers on windward coasts nearby. The atlas tags this as tropical isothermal coast (As / Aw, roughly 500 mm/yr in these normals), and the dominant spatial engines are Trade-wind regime and Orographic lift — with Diurnal sea breeze and Rain shadow also in play.",
+          "Island chain windward/leeward asymmetry at trade latitude with strong UHI. That mechanism is why two map dots in Hawaii can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "honolulu-hi-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Honolulu screening: Trade-wind lee city — drier than windward Kaneʻohe, warmer nights downtown, hurricane rarity but tsunami vigilance. Soil reads as andisols and reef limestone near shore with moderate drainage and pH 6–7.5 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Tropical fruit, Palms, Vegetables year-round; Temperate bulbs tend to struggle without intervention. Affordable-housing seekers; tsunami-anxious — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Honolulu Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Honolulu Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "roswell-nm",
@@ -1089,8 +1443,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["aviation", "ranching"], travelFit: ["aliens museum", "Bottomless Lakes"],
     whoWouldLove: "High-plains sky watchers.", whoMightNot: "Humidity lovers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "roswell-nm-mechanism",
+        title: "Monsoon-Edge Zone at work",
+        paragraphs: [
+          "Roswell sits where broad pecos river valley on the llano estacado margin — high plains dryness with summer monsoon convection. The atlas tags this as monsoon-edge zone (BSk, roughly 314 mm/yr in these normals), and the dominant spatial engines are Monsoon convective lift and Continental extremity — with River-valley moderation also in play.",
+          "Classic southern High Plains synoptic environment with monsoon overlay. That mechanism is why two map dots in New Mexico can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "roswell-nm-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Roswell screening: High-plains city famous for skies — summer thunderstorms, hail, and huge diurnal swings. Soil reads as fine sandy loam over caliche with good drainage and pH 7.5–8.5 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Pecans (irrigated), Chile, Cotton; Dry-farmed corn tend to struggle without intervention. Humidity lovers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Roswell Industrial AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Roswell Industrial AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "rapid-city-sd",
@@ -1128,7 +1501,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [12, 18, 35, 55, 85, 90, 75, 65, 50, 40, 22, 15],
       annualPrecipMm: 565,
       frostFreeDays: 150,
-      hardinessZone: "5a",
+      hardinessZone: "5a",    humidity: [57, 59, 59, 66, 75, 71, 69, 65, 60, 64, 61, 56],    sunshinePct: [47, 50, 49, 56, 71, 76, 73, 73, 68, 64, 51, 45],
+
+
     },
     soil: { texture: "Clay loam on Pierre shale margin", drainage: "moderate", phRange: [6.0, 7.5], waterHolding: "moderate" },
     growability: { score: 58, hardinessZone: "5a", growsWell: ["Cool-season vegetables", "Hardy fruit"], tricky: ["Long-season crops"] },
@@ -1149,8 +1524,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["tourism", "healthcare"], travelFit: ["Mount Rushmore", "Badlands"],
     whoWouldLove: "Black Hills access with city services.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "rapid-city-sd-mechanism",
+        title: "Chinook Corridor at work",
+        paragraphs: [
+          "Rapid City sits where prairie edge at the black hills front — rapid weather changes when pacific systems meet continental air. The atlas tags this as chinook corridor (Dwb, roughly 565 mm/yr in these normals), and the dominant spatial engines are Chinook / foehn downslope and Polar jet / arctic front — with Continental extremity also in play.",
+          "Black Hills frontal position amplifies mesoscale wind and temperature volatility. That mechanism is why two map dots in South Dakota can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "rapid-city-sd-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Rapid City screening: Gateway city where chinook warmings and summer thunderstorms both make headlines — quick transitions at the Hills’ edge. Soil reads as clay loam on pierre shale margin with moderate drainage and pH 6–7.5 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cool-season vegetables, Hardy fruit; Long-season crops tend to struggle without intervention. Mild-winter seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Rapid City Regional", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Rapid City Regional", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "jackson-wy",
@@ -1188,7 +1582,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [55, 50, 55, 45, 65, 55, 40, 45, 45, 50, 55, 60],
       annualPrecipMm: 640,
       frostFreeDays: 90,
-      hardinessZone: "4b",
+      hardinessZone: "4b",    humidity: [88, 84, 77, 73, 72, 66, 61, 63, 66, 72, 78, 84],    sunshinePct: [39, 46, 48, 57, 62, 65, 59, 55, 47, 41, 38, 34],
+
+
     },
     soil: { texture: "Alluvium and glacial outwash", drainage: "good", phRange: [6.0, 7.2], waterHolding: "moderate" },
     growability: { score: 42, hardinessZone: "4b", growsWell: ["Short-season greens", "Hay"], tricky: ["Tree fruit"] },
@@ -1209,8 +1605,27 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["hospitality", "outdoor industry"], travelFit: ["Grand Teton NP", "skiing"],
     whoWouldLove: "Mountain-town life with global name recognition.", whoMightNot: "Affordable-housing seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "jackson-wy-mechanism",
+        title: "Cold-Air Pool at work",
+        paragraphs: [
+          "Jackson sits where flat-floored valley between the tetons and gros ventre — iconic cold pool and orographic snow. The atlas tags this as cold-air pool (Dfc, roughly 640 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Orographic lift — with Temperature inversion and Elevation lapse rate also in play.",
+          "High-elevation enclosed basin with extreme vertical relief nearby — a textbook mountain meteorology classroom. That mechanism is why two map dots in Wyoming can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "jackson-wy-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Jackson screening: World-famous ski basin — deep snow, strong inversions, and summer perfection at altitude. Soil reads as alluvium and glacial outwash with good drainage and pH 6–7.2 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Short-season greens, Hay; Tree fruit tend to struggle without intervention. Affordable-housing seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Jackson AWOS", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Jackson AWOS", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "washington-dc",
@@ -1248,7 +1663,9 @@ export const PLACES_USA_ROUND2: Place[] = [
       precipMm: [75, 70, 100, 85, 100, 110, 115, 105, 100, 85, 80, 90],
       annualPrecipMm: 1115,
       frostFreeDays: 220,
-      hardinessZone: "7b",
+      hardinessZone: "7b",    humidity: [67, 67, 65, 70, 75, 89, 89, 91, 85, 78, 75, 68],    sunshinePct: [49, 52, 51, 57, 62, 64, 60, 61, 59, 56, 52, 47],
+
+
     },
     soil: { texture: "Silty coastal plain and urban fill", drainage: "imperfect", phRange: [5.5, 7.5], waterHolding: "moderate" },
     growability: { score: 68, hardinessZone: "7b", growsWell: ["Cherry trees", "Dogwood", "Warm-season turf"], tricky: ["Cool-climate small fruit"] },
@@ -1269,7 +1686,26 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["policy workers", "students"], travelFit: ["monuments", "museums"],
     whoWouldLove: "East Coast urbanism with real seasons.", whoMightNot: "Dry-climate or cool-summer devotees.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "washington-dc-mechanism",
+        title: "Urban Heat Contrast at work",
+        paragraphs: [
+          "Washington, D.C. sits where potomac river fall-line city on the atlantic coastal plain — heat island + chesapeake moisture. The atlas tags this as urban heat contrast (Cfa, roughly 1115 mm/yr in these normals), and the dominant spatial engines are Continental extremity and River-valley moderation — with Tropical-cyclone exposure also in play.",
+          "Urban core on a humidity-rich latitude with Chesapeake–Atlantic moisture pathways. That mechanism is why two map dots in District of Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "washington-dc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Washington, D.C. screening: Mid-Atlantic humid subtropical capital — sultry summers, irregular Arctic outbreaks, and remnant tropical moisture. Soil reads as silty coastal plain and urban fill with imperfect drainage and pH 5.5–7.5 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cherry trees, Dogwood, Warm-season turf; Cool-climate small fruit tend to struggle without intervention. Dry-climate or cool-summer devotees — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Reagan National AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Reagan National AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 ];

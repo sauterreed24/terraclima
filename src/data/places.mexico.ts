@@ -116,7 +116,8 @@ export const PLACES_MEXICO: Place[] = [
       note: "Affordable for relocators on USD/CAD incomes but rapid tourism-driven gentrification has tightened the historic centre; OAX airport links Mexico City and US gateways.",
       sources: [
       { label: "INEGI — Oaxaca de Juárez urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      
+        { label: "Servicio Meteorológico Nacional — Oaxaca Observatorio", url: "https://smn.conagua.gob.mx/es/" },],
     },
 
     relocationFit: ["creatives", "writers", "families wanting mild year-round", "digital nomads", "food-culture lovers"],
@@ -265,7 +266,8 @@ export const PLACES_MEXICO: Place[] = [
       note: "Cool-highland Chiapas cost-of-living remains low; political tensions surface periodically, and Tuxtla airport is a 70-minute drive.",
       sources: [
       { label: "INEGI — San Cristóbal de las Casas urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      
+        { label: "SMN — San Cristóbal station", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },],
     },
 
     relocationFit: ["creatives", "cool-climate seekers in the tropics", "cultural immersion"],
@@ -375,7 +377,8 @@ export const PLACES_MEXICO: Place[] = [
       note: "Mexico-City weekend hub keeps housing tighter than other Mexico highland towns; Morelos has ranked higher on Mexican-government safety advisories than Oaxaca or Querétaro.",
       sources: [
       { label: "INEGI — Cuernavaca city profile", url: "https://www.inegi.org.mx/" },
-      ],
+      
+        { label: "SMN — Cuernavaca station", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },],
     },
     relocationFit: ["retirees", "families"], travelFit: ["year-round"],
     whoWouldLove: "Those wanting year-round bougainvillea.", whoMightNot: "Cool-climate seekers.",
@@ -738,7 +741,8 @@ export const PLACES_MEXICO: Place[] = [
       note: "Sierra Norte de Puebla orchard town with low cost-of-living and quiet civic life; nearest commercial airport is Puebla, ~2.5 h south.",
       sources: [
       { label: "INEGI — Zacatlán urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      
+        { label: "SMN/CONAGUA climate data bank", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },],
     },
     relocationFit: ["orchard people", "mist-loving remote workers", "cool highland families", "cloud-forest romantics"],
     travelFit: ["apple festivals", "waterfall walks", "Sierra Norte viewpoints", "historic center"],
@@ -790,7 +794,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards misty-mountain romantics — especially coffee people — if the local tradeoffs still feel acceptable after a full season in Coatepec.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and slope stability. Coffee-cloud-belt town with strong cost-of-living advantage; Xalapa and Veracruz are short drives away for full services.",
     },
-    climate: { tempHighC: [20.1, 21.6, 23.4, 24.9, 25.4, 24.6, 23.8, 24.1, 23.2, 22.3, 21.1, 20.0], tempLowC: [10.9, 11.6, 13.4, 14.9, 15.8, 15.9, 15.6, 15.7, 15.4, 14.2, 12.4, 10.8], precipMm: [56, 38, 40, 68, 132, 284, 278, 262, 306, 212, 96, 62], annualPrecipMm: 1834, frostFreeDays: 365, hardinessZone: "11b equiv." },
+    climate: { tempHighC: [20.1, 21.6, 23.4, 24.9, 25.4, 24.6, 23.8, 24.1, 23.2, 22.3, 21.1, 20.0], tempLowC: [10.9, 11.6, 13.4, 14.9, 15.8, 15.9, 15.6, 15.7, 15.4, 14.2, 12.4, 10.8], precipMm: [56, 38, 40, 68, 132, 284, 278, 262, 306, 212, 96, 62], annualPrecipMm: 1834, frostFreeDays: 365, hardinessZone: "11b equiv.", humidity: [89, 89, 82, 80, 76, 78, 73, 71, 77, 78, 84, 85], sunshinePct: [32, 35, 34, 41, 46, 51, 48, 48, 43, 39, 36, 31] },
     soil: { texture: "Andisol", drainage: "moderate", phRange: [5.0, 6.0], waterHolding: "high" },
     growability: { score: 80, growsWell: ["Coffee", "Avocado", "Citrus", "Mango", "Sugarcane"], tricky: ["Dry-climate crops"] },
     climateChange: { outlook2050: "Warming threatens optimum coffee elevation.", outlook2100: "Coffee belts retreat upslope.", keyShifts: [{variable: "Cloud base", direction: "up"}], resilienceNote: "Coffee culture must adapt upward." },
@@ -803,13 +807,33 @@ export const PLACES_MEXICO: Place[] = [
       note: "Coffee-cloud-belt town with strong cost-of-living advantage; Xalapa and Veracruz are short drives away for full services.",
       sources: [
         { label: "INEGI — Coatepec urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      
+        { label: "SMN — Coatepec station", url: "https://smn.conagua.gob.mx/es/" },],
     },
     relocationFit: ["coffee people", "cloud-forest lovers"], travelFit: ["coffee tourism"],
     whoWouldLove: "Misty-mountain romantics.", whoMightNot: "Those wanting sun.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "coatepec-mx-mechanism",
+        title: "Cloud Forest at work",
+        paragraphs: [
+          "Coatepec sits where windward gulf slope of the sierra madre oriental; perpetually cloud-fed. The atlas tags this as cloud forest (Cfb, roughly 1834 mm/yr in these normals), and the dominant spatial engines are Orographic lift.",
+          "Gulf moisture + windward slope + elevation produces reliable fog/drizzle and cool temperatures — genuine montane cloud-forest character. That mechanism is why two map dots in Veracruz can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "coatepec-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Coatepec screening: One of Mexico's great coffee belts — mist-fed montane cloud forest between lowland Veracruz and the volcanic highlands. Soil reads as andisol with moderate drainage and pH 5–6 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Coffee, Avocado, Citrus, Mango; Dry-climate crops tend to struggle without intervention. Those wanting sun — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Coatepec station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Coatepec station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -833,7 +857,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards monsoon-edge Sonora romantics — especially snowbird winter escape — if the local tradeoffs still feel acceptable after a full season in Álamos.",
       texture: "A place that asks for a few compromises — the main things to weigh are long-run drought and extreme summer heat.",
     },
-    climate: { tempHighC: [26.9, 28.7, 32.0, 34.8, 37.4, 38.1, 33.4, 32.1, 32.6, 33.1, 29.9, 26.6], tempLowC: [8.4, 9.6, 12.1, 15.3, 19.1, 22.3, 22.8, 22.6, 22.0, 18.1, 12.9, 9.1], precipMm: [28, 18, 8, 6, 4, 22, 208, 196, 110, 36, 22, 40], annualPrecipMm: 698, frostFreeDays: 365, hardinessZone: "10b equiv." },
+    climate: { tempHighC: [26.9, 28.7, 32.0, 34.8, 37.4, 38.1, 33.4, 32.1, 32.6, 33.1, 29.9, 26.6], tempLowC: [8.4, 9.6, 12.1, 15.3, 19.1, 22.3, 22.8, 22.6, 22.0, 18.1, 12.9, 9.1], precipMm: [28, 18, 8, 6, 4, 22, 208, 196, 110, 36, 22, 40], annualPrecipMm: 698, frostFreeDays: 365, hardinessZone: "10b equiv.", humidity: [76, 75, 70, 72, 75, 79, 92, 95, 95, 81, 81, 76], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Sandy loam", drainage: "good", phRange: [6.8, 7.6], waterHolding: "low" },
     growability: { score: 64, growsWell: ["Citrus", "Mango", "Sugarcane", "Drought-tolerant natives"], tricky: ["Cool-climate fruit"] },
     climateChange: { outlook2050: "Hotter summers, more erratic monsoon.", outlook2100: "Pre-monsoon heat extremes intensify.", keyShifts: [{variable: "Pre-monsoon heat", direction: "up"}], resilienceNote: "Heat-sensitive." },
@@ -853,8 +877,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbird winter escape"], travelFit: ["birding", "colonial architecture"],
     whoWouldLove: "Monsoon-edge Sonora romantics.", whoMightNot: "Heat-averse.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "alamos-mx-mechanism",
+        title: "Monsoon-Edge Zone at work",
+        paragraphs: [
+          "Álamos sits where foothills of the sierra madre occidental; monsoon moisture arrives reliably each summer. The atlas tags this as monsoon-edge zone (Aw, roughly 698 mm/yr in these normals), and the dominant spatial engines are Monsoon convective lift.",
+          "Reliable monsoon arrival at lower elevation than most NAM stations; dramatic dry-wet seasonality. That mechanism is why two map dots in Sonora can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "alamos-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Álamos screening: A silver-mining colonial town on the monsoon edge — dry winters, thunderous summers. Soil reads as sandy loam with good drainage and pH 6.8–7.6 — garden success tracks micro-shelter and water timing.",
+          "Drought registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Citrus, Mango, Sugarcane, Drought-tolerant natives; Cool-climate fruit tend to struggle without intervention. Heat-averse — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Álamos station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Álamos station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1005,7 +1048,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards cloud-forest dreamers — especially cloud-forest dwellers — if the local tradeoffs still feel acceptable after a full season in Xilitla.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and slope stability.",
     },
-    climate: { tempHighC: [21.6, 23.4, 26.1, 28.4, 29.6, 29.0, 28.3, 28.8, 28.2, 26.9, 24.4, 22.0], tempLowC: [12.3, 13.6, 15.6, 17.8, 19.2, 19.6, 19.1, 19.1, 19.0, 17.8, 15.4, 13.1], precipMm: [78, 56, 52, 86, 162, 330, 298, 286, 342, 248, 142, 96], annualPrecipMm: 2176, frostFreeDays: 365, hardinessZone: "12a equiv." },
+    climate: { tempHighC: [21.6, 23.4, 26.1, 28.4, 29.6, 29.0, 28.3, 28.8, 28.2, 26.9, 24.4, 22.0], tempLowC: [12.3, 13.6, 15.6, 17.8, 19.2, 19.6, 19.1, 19.1, 19.0, 17.8, 15.4, 13.1], precipMm: [78, 56, 52, 86, 162, 330, 298, 286, 342, 248, 142, 96], annualPrecipMm: 2176, frostFreeDays: 365, hardinessZone: "12a equiv.", humidity: [68, 68, 66, 71, 76, 86, 86, 84, 86, 79, 76, 69], sunshinePct: [49, 52, 51, 57, 62, 68, 64, 65, 59, 56, 52, 47] },
     soil: { texture: "Leached forest loam on karst limestone", drainage: "moderate", phRange: [5.0, 6.0], waterHolding: "high" },
     growability: { score: 68, growsWell: ["Coffee", "Citrus", "Sugarcane", "Tropical fruit"], tricky: ["Cool-season crops"] },
     climateChange: { outlook2050: "Warming; cloud base rises.", outlook2100: "Cloud-forest stress.", keyShifts: [{variable: "Cloud base", direction: "up"}], resilienceNote: "Cloud ecosystems vulnerable." },
@@ -1025,8 +1068,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cloud-forest dwellers"], travelFit: ["Las Pozas", "cascades"],
     whoWouldLove: "Cloud-forest dreamers.", whoMightNot: "Those wanting sunshine.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "xilitla-mx-mechanism",
+        title: "Cloud Forest at work",
+        paragraphs: [
+          "Xilitla sits where windward sierra madre oriental; reliably cloud-fed. The atlas tags this as cloud forest (Cfa, roughly 2176 mm/yr in these normals), and the dominant spatial engines are Orographic lift.",
+          "Gulf moisture + windward slope = reliable cloud forest. That mechanism is why two map dots in San Luis Potosí can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "xilitla-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Xilitla screening: Cloud-forest refuge in the Huasteca Potosina — eternally green, eternally wet. Soil reads as leached forest loam on karst limestone with moderate drainage and pH 5–6 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Coffee, Citrus, Sugarcane, Tropical fruit; Cool-season crops tend to struggle without intervention. Those wanting sunshine — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Xilitla station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Xilitla station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -1054,7 +1116,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards eternal-spring seekers who also want urban amenities — especially Latin-American urbanites — if the local tradeoffs still feel acceptable after a full season in Morelia.",
       texture: "An easier place to settle into at 1920 m elevation — no single hazard dominates the picture. Full-service state capital with airport, universities, hospitals, and a colonial core; neighborhood selection matters more than the climate grid suggests.",
     },
-    climate: { tempHighC: [22.8, 24.6, 27.2, 28.6, 28.3, 25.6, 23.4, 23.4, 23.2, 23.8, 23.6, 22.4], tempLowC: [5.6, 7.1, 9.2, 11.6, 12.9, 13.1, 12.4, 12.4, 12.2, 10.6, 7.9, 6.1], precipMm: [10, 8, 10, 20, 52, 148, 178, 168, 146, 64, 18, 10], annualPrecipMm: 832, frostFreeDays: 340, hardinessZone: "9b equiv.", diurnalSummerC: 14 },
+    climate: { tempHighC: [22.8, 24.6, 27.2, 28.6, 28.3, 25.6, 23.4, 23.4, 23.2, 23.8, 23.6, 22.4], tempLowC: [5.6, 7.1, 9.2, 11.6, 12.9, 13.1, 12.4, 12.4, 12.2, 10.6, 7.9, 6.1], precipMm: [10, 8, 10, 20, 52, 148, 178, 168, 146, 64, 18, 10], annualPrecipMm: 832, frostFreeDays: 340, hardinessZone: "9b equiv.", diurnalSummerC: 14, humidity: [58, 60, 60, 67, 72, 80, 78, 78, 69, 65, 62, 57], sunshinePct: [45, 48, 47, 54, 59, 64, 61, 61, 56, 52, 49, 44] },
     soil: { texture: "Volcanic andisol", drainage: "good", phRange: [6.2, 7.0], waterHolding: "high", notes: "Deep, fertile volcanic soils characteristic of the Bajío." },
     growability: { score: 82, hardinessZone: "9b equiv.", growsWell: ["Avocado", "Stone fruit", "Berries", "Greens year-round"], tricky: ["Tropical lowland crops"] },
     climateChange: { outlook2050: "Warmer; more variable monsoon.", outlook2100: "Drying concern on dry-side flanks.", keyShifts: [{variable: "Rainfall variability", direction: "up"}], resilienceNote: "Elevation-based climate signature is geographically stable." },
@@ -1103,7 +1165,8 @@ export const PLACES_MEXICO: Place[] = [
     whoWouldLove: "Eternal-spring seekers who also want urban amenities.", whoMightNot: "Anyone seeking seasonal drama.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Morelia 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Morelia 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1176,7 +1239,8 @@ export const PLACES_MEXICO: Place[] = [
     whoWouldLove: "Those who love stone cities at altitude.", whoMightNot: "Anyone with mobility limitations.",
     confidence: "moderate",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Guanajuato station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Guanajuato station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1196,12 +1260,14 @@ export const PLACES_MEXICO: Place[] = [
         spring: "Spring arrives with afternoons near 24.8°C and nights near 9.1°C — skies stay mostly dry with intense sun. Spring is when elevation lapse rate and continental extremity is easiest to read on the ground.",
         summer: "Summer peaks with afternoons near 23.1°C and nights near 11.7°C — showers pass through regularly. Zacatecas is at its most kinetic for UNESCO architecture. Water supply and irrigation stress matter.",
         autumn: "Autumn turns with afternoons near 21.2°C and nights near 7.6°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for eternal-spring highland.",
+
+
       },
       travelerFit: "Visitors come for UNESCO architecture and silver-mine tourism — the practical way to experience eternal-spring highland terrain in Zacatecas.",
       residentFit: "It rewards those who want Mexican eternal spring with a colder twist — especially historic-city expats — if the local tradeoffs still feel acceptable after a full season in Zacatecas.",
       texture: "An easier place to settle into at 2440 m elevation — the main things to weigh are long-run drought. Cool, walkable, and comparatively affordable for a historic capital, but water stress, thin air-service depth, and winter cold are real daily filters.",
     },
-    climate: { tempHighC: [18.6, 20.4, 23.1, 25.2, 26.2, 24.8, 22.4, 22.1, 21.6, 21.4, 20.6, 18.4], tempLowC: [2.4, 3.8, 6.2, 9.4, 11.6, 12.4, 11.6, 11.1, 10.4, 7.6, 4.8, 3.1], precipMm: [10, 6, 4, 8, 18, 62, 86, 78, 64, 22, 8, 10], annualPrecipMm: 376, frostFreeDays: 260, hardinessZone: "8b equiv." },
+    climate: { tempHighC: [18.6, 20.4, 23.1, 25.2, 26.2, 24.8, 22.4, 22.1, 21.6, 21.4, 20.6, 18.4], tempLowC: [2.4, 3.8, 6.2, 9.4, 11.6, 12.4, 11.6, 11.1, 10.4, 7.6, 4.8, 3.1], precipMm: [10, 6, 4, 8, 18, 62, 86, 78, 64, 22, 8, 10], humidity: [37, 37, 34, 39, 43, 40, 43, 45, 43, 45, 43, 37], sunshinePct: [71, 76, 75, 81, 92, 92, 91, 89, 84, 81, 70, 67], annualPrecipMm: 376, frostFreeDays: 260, hardinessZone: "8b equiv." },
     soil: { texture: "Stony calcareous loam", drainage: "good", phRange: [7.2, 8.0], waterHolding: "low" },
     growability: { score: 58, hardinessZone: "8b equiv.", growsWell: ["Cold-hardy fruit", "Nopal", "Grapes (at lower elev.)"], tricky: ["Heat-tropical crops"] },
     climateChange: { outlook2050: "Warmer; drought intensifying.", outlook2100: "Water-constrained.", keyShifts: [{variable: "Drought", direction: "up"}], resilienceNote: "Elevation buffers temperature; water is limiting." },
@@ -1250,7 +1316,8 @@ export const PLACES_MEXICO: Place[] = [
     whoWouldLove: "Those who want Mexican eternal spring with a colder twist.", whoMightNot: "Tropical-seeking.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Zacatecas 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Zacatecas 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -1278,7 +1345,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards those needing an escape from Monterrey heat — especially northern-Mexico expats — if the local tradeoffs still feel acceptable after a full season in Saltillo.",
       texture: "An easier place to settle into at 1600 m elevation — the main things to weigh are long-run drought. A real industrial and university city with Monterrey access; dry highland comfort is easier to live with because services are broad and daily logistics are normal.",
     },
-    climate: { tempHighC: [16.8, 19.4, 22.9, 25.8, 28.1, 29.1, 28.2, 28.4, 26.4, 23.4, 19.6, 17.1], tempLowC: [3.4, 5.2, 8.1, 11.8, 14.9, 16.4, 16.1, 16.0, 14.6, 10.8, 6.4, 4.1], precipMm: [10, 10, 14, 22, 42, 58, 46, 58, 98, 36, 12, 10], annualPrecipMm: 416, frostFreeDays: 280, hardinessZone: "9a equiv." },
+    climate: { tempHighC: [16.8, 19.4, 22.9, 25.8, 28.1, 29.1, 28.2, 28.4, 26.4, 23.4, 19.6, 17.1], tempLowC: [3.4, 5.2, 8.1, 11.8, 14.9, 16.4, 16.1, 16.0, 14.6, 10.8, 6.4, 4.1], precipMm: [10, 10, 14, 22, 42, 58, 46, 58, 98, 36, 12, 10], annualPrecipMm: 416, frostFreeDays: 280, hardinessZone: "9a equiv.", humidity: [37, 37, 35, 39, 43, 44, 40, 46, 44, 46, 43, 38], sunshinePct: [72, 76, 76, 81, 92, 92, 91, 90, 84, 82, 70, 68] },
     soil: { texture: "Calcareous loam", drainage: "good", phRange: [7.4, 8.2], waterHolding: "moderate" },
     growability: { score: 60, hardinessZone: "9a equiv.", growsWell: ["Drought-tolerant fruit", "Nopal", "Grapes"], tricky: ["Humidity crops"] },
     climateChange: { outlook2050: "Warmer; water stress.", outlook2100: "Drying.", keyShifts: [{variable: "Heat waves", direction: "up"}], resilienceNote: "Elevation buffer holds; water supply tight." },
@@ -1327,7 +1394,8 @@ export const PLACES_MEXICO: Place[] = [
     whoWouldLove: "Those needing an escape from Monterrey heat.", whoMightNot: "Tropical-seekers.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Saltillo 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Saltillo 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1351,7 +1419,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards dryland-fruit-country romantics — especially orchard farmers — if the local tradeoffs still feel acceptable after a full season in Cuauhtémoc.",
       texture: "An easier place to settle into at 2060 m elevation — the main things to weigh are long-run drought. Cuauhtemoc is a genuine northwest-Chihuahua service and agro-industrial hub rather than just a scenic orchard pocket; the live-here checks are water stress, winter road weather, and northern-Chihuahua security context.",
     },
-    climate: { tempHighC: [15.4, 18.1, 22.4, 25.8, 29.4, 30.6, 28.1, 27.4, 25.8, 23.2, 19.1, 15.6], tempLowC: [-3.4, -1.6, 1.6, 5.4, 9.6, 13.1, 13.6, 13.2, 11.2, 6.1, 0.6, -3.1], precipMm: [10, 6, 6, 8, 18, 48, 132, 128, 88, 26, 8, 14], annualPrecipMm: 492, frostFreeDays: 180, hardinessZone: "8a equiv.", chillHours: 900 },
+    climate: { tempHighC: [15.4, 18.1, 22.4, 25.8, 29.4, 30.6, 28.1, 27.4, 25.8, 23.2, 19.1, 15.6], tempLowC: [-3.4, -1.6, 1.6, 5.4, 9.6, 13.1, 13.6, 13.2, 11.2, 6.1, 0.6, -3.1], precipMm: [10, 6, 6, 8, 18, 48, 132, 128, 88, 26, 8, 14], annualPrecipMm: 492, frostFreeDays: 180, hardinessZone: "8a equiv.", chillHours: 900, humidity: [38, 38, 35, 40, 44, 41, 44, 46, 44, 46, 44, 38], sunshinePct: [75, 79, 79, 84, 92, 92, 92, 92, 87, 85, 73, 71] },
     soil: { texture: "Silty loam over caliche", drainage: "good", phRange: [7.0, 7.8], waterHolding: "moderate" },
     growability: { score: 82, hardinessZone: "8a equiv.", growsWell: ["Apples", "Pears", "Dairy pasture", "Wheat"], tricky: ["Tropical crops"] },
     climateChange: { outlook2050: "Chill hours declining; heat stress rising.", outlook2100: "Apple viability pressure.", keyShifts: [{variable: "Chill hours", direction: "down"}], resilienceNote: "Water-supply is long-term pressure." },
@@ -1371,6 +1439,24 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["orchard farmers"], travelFit: ["Mennonite cheese tourism"],
     whoWouldLove: "Dryland-fruit-country romantics.", whoMightNot: "Anyone wanting a Mexican coast.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "cuauhtemoc-mx-mechanism",
+        title: "High-Desert Escape at work",
+        paragraphs: [
+          "Cuauhtémoc sits where central chihuahua high-desert plateau; the mennonite agricultural heartland. The atlas tags this as high-desert escape (BSk, roughly 492 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Elevation lapse rate.",
+          "Unusually cold (by Mexican standards) and dry high-plateau climate supports temperate-fruit agriculture unavailable elsewhere in the country. That mechanism is why two map dots in Chihuahua can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "cuauhtemoc-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Cuauhtémoc screening: The unexpected apple capital of Mexico — Mennonite-run orchards at 2060 m on the dry Chihuahuan plateau. Soil reads as silty loam over caliche with good drainage and pH 7–7.8 — garden success tracks micro-shelter and water timing.",
+          "Drought registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Apples, Pears, Dairy pasture, Wheat; Tropical crops tend to struggle without intervention. Anyone wanting a Mexican coast — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [{ label: "SMN — Cuauhtémoc station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INIFAP orchard data", kind: "inecc", url: "https://www.gob.mx/inecc" }],
   },
@@ -1397,7 +1483,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards travelers drawn to remote, thin-air silence — especially artists — if the local tradeoffs still feel acceptable after a full season in Real de Catorce.",
       texture: "A place that asks for a few compromises at 2756 m elevation — the main things to weigh are long-run drought. Specialty care and major-airport access require real planning.",
     },
-    climate: { tempHighC: [14.8, 16.1, 18.4, 20.6, 21.1, 20.1, 19.1, 19.2, 18.4, 18.1, 16.8, 14.9], tempLowC: [0.4, 1.4, 3.6, 6.2, 8.1, 9.4, 9.1, 8.8, 8.6, 6.1, 3.1, 1.2], precipMm: [8, 6, 6, 8, 16, 48, 58, 52, 44, 18, 8, 10], annualPrecipMm: 282, frostFreeDays: 240, hardinessZone: "9a equiv." },
+    climate: { tempHighC: [14.8, 16.1, 18.4, 20.6, 21.1, 20.1, 19.1, 19.2, 18.4, 18.1, 16.8, 14.9], tempLowC: [0.4, 1.4, 3.6, 6.2, 8.1, 9.4, 9.1, 8.8, 8.6, 6.1, 3.1, 1.2], precipMm: [8, 6, 6, 8, 16, 48, 58, 52, 44, 18, 8, 10], annualPrecipMm: 282, frostFreeDays: 240, hardinessZone: "9a equiv.", humidity: [35, 35, 33, 37, 41, 42, 42, 44, 38, 44, 41, 36], sunshinePct: [75, 79, 79, 84, 92, 92, 92, 92, 87, 85, 73, 71] },
     soil: { texture: "Stony thin loam", drainage: "excessive", phRange: [7.0, 8.0], waterHolding: "low" },
     growability: { score: 28, hardinessZone: "9a equiv.", growsWell: ["Desert natives", "Nopal"], tricky: ["Almost everything cultivated"] },
     climateChange: { outlook2050: "Warmer; water stress.", outlook2100: "Drying.", keyShifts: [{variable: "Water stress", direction: "up"}], resilienceNote: "Elevation provides some buffer." },
@@ -1416,8 +1502,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["artists", "pilgrims"], travelFit: ["Wirikuta pilgrimage", "ghost-town tourism"],
     whoWouldLove: "Travelers drawn to remote, thin-air silence.", whoMightNot: "Services-dependent.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "real-catorce-mx-mechanism",
+        title: "Sky-Island Refuge at work",
+        paragraphs: [
+          "Real de Catorce sits where mining ghost-town on the sierra de catorce, a chihuahuan-steppe mountain refuge. The atlas tags this as sky-island refuge (BSk (high montane), roughly 282 mm/yr in these normals), and the dominant spatial engines are Elevation lapse rate and Continental extremity.",
+          "Extreme elevation combined with deep Chihuahuan steppe surround creates a mountain-refuge climate on a desert island. That mechanism is why two map dots in San Luis Potosí can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "real-catorce-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Real de Catorce screening: A silver ghost-town at 2756 m in the deep Chihuahuan steppe — cool, thin air and otherworldly desert stillness. Soil reads as stony thin loam with excessive drainage and pH 7–8 — garden success tracks micro-shelter and water timing.",
+          "Drought registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Desert natives, Nopal; Almost everything cultivated tend to struggle without intervention. Services-dependent — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Catorce station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Catorce station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -1446,7 +1551,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards those wanting winter perfection on clear turquoise water — especially snowbirds — if the local tradeoffs still feel acceptable after a full season in La Paz.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are long-run drought and extreme summer heat. Housing runs expensive relative to regional medians.",
     },
-    climate: { tempHighC: [23.6, 25.1, 27.4, 29.8, 32.4, 34.6, 34.4, 34.8, 34.1, 31.6, 27.9, 24.8], tempLowC: [12.4, 12.6, 14.1, 16.4, 19.1, 22.1, 24.4, 24.8, 23.8, 20.1, 16.1, 13.4], precipMm: [14, 6, 2, 1, 1, 4, 20, 30, 48, 12, 6, 14], annualPrecipMm: 158, frostFreeDays: 365, hardinessZone: "11 equiv." },
+    climate: { tempHighC: [23.6, 25.1, 27.4, 29.8, 32.4, 34.6, 34.4, 34.8, 34.1, 31.6, 27.9, 24.8], tempLowC: [12.4, 12.6, 14.1, 16.4, 19.1, 22.1, 24.4, 24.8, 23.8, 20.1, 16.1, 13.4], precipMm: [14, 6, 2, 1, 1, 4, 20, 30, 48, 12, 6, 14], annualPrecipMm: 158, frostFreeDays: 365, hardinessZone: "11 equiv.", humidity: [37, 37, 35, 39, 43, 48, 52, 54, 52, 46, 43, 38], sunshinePct: [70, 75, 74, 80, 83, 85, 80, 78, 73, 70, 69, 66] },
     soil: { texture: "Sandy alluvial / coastal", drainage: "excessive", phRange: [7.4, 8.2], waterHolding: "low" },
     growability: { score: 46, hardinessZone: "11 equiv.", growsWell: ["Date palms", "Mango", "Citrus"], tricky: ["Temperate crops"] },
     climateChange: { outlook2050: "Intensifying heat; stronger hurricanes.", outlook2100: "Habitability constrained in summer.", keyShifts: [{variable: "Heat", direction: "up"}, {variable: "Hurricane intensity", direction: "up"}], resilienceNote: "Winter climate stable; summer pressure mounting." },
@@ -1466,8 +1571,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbirds", "marine-adjacent"], travelFit: ["whale sharks", "island tourism"],
     whoWouldLove: "Those wanting winter perfection on clear turquoise water.", whoMightNot: "Year-round heat-averse.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "la-paz-mx-mechanism",
+        title: "Desert Oasis at work",
+        paragraphs: [
+          "La Paz sits where sheltered bahía de la paz on the sea of cortez side of baja sur. The atlas tags this as desert oasis (BWh, roughly 158 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Continental extremity also in play.",
+          "Cortez warm-water surround produces a distinctly humid summer signature not found on the Pacific-facing Baja coast. That mechanism is why two map dots in Baja California Sur can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "la-paz-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "La Paz screening: A warm desert coast facing the Sea of Cortez — winter perfection, hurricane-season heat, and clear turquoise water. Soil reads as sandy alluvial / coastal with excessive drainage and pH 7.4–8.2 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Date palms, Mango, Citrus; Temperate crops tend to struggle without intervention. Year-round heat-averse — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — La Paz 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — La Paz 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1492,7 +1616,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards pacific-coast surf pilgrims — especially surfers — if the local tradeoffs still feel acceptable after a full season in Puerto Escondido.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
     },
-    climate: { tempHighC: [30.4, 30.8, 31.4, 32.1, 32.6, 31.4, 31.1, 31.2, 30.6, 31.1, 31.1, 30.6], tempLowC: [19.1, 19.4, 20.4, 21.8, 23.4, 23.6, 23.1, 23.1, 23.0, 22.1, 20.6, 19.3], precipMm: [2, 1, 1, 6, 42, 276, 156, 198, 280, 126, 20, 4], annualPrecipMm: 1112, frostFreeDays: 365, hardinessZone: "12 equiv." },
+    climate: { tempHighC: [30.4, 30.8, 31.4, 32.1, 32.6, 31.4, 31.1, 31.2, 30.6, 31.1, 31.1, 30.6], tempLowC: [19.1, 19.4, 20.4, 21.8, 23.4, 23.6, 23.1, 23.1, 23.0, 22.1, 20.6, 19.3], precipMm: [2, 1, 1, 6, 42, 276, 156, 198, 280, 126, 20, 4], annualPrecipMm: 1112, frostFreeDays: 365, hardinessZone: "12 equiv.", humidity: [75, 74, 69, 71, 74, 82, 77, 84, 84, 80, 80, 75], sunshinePct: [69, 73, 70, 70, 67, 65, 56, 55, 52, 55, 59, 62] },
     soil: { texture: "Sandy loam / coastal alluvium", drainage: "good", phRange: [6.2, 7.2], waterHolding: "low" },
     growability: { score: 62, hardinessZone: "12 equiv.", growsWell: ["Mango", "Papaya", "Coconut", "Banana"], tricky: ["Temperate crops"] },
     climateChange: { outlook2050: "Warmer; stronger hurricanes; less predictable rainy season.", outlook2100: "Coastal stress.", keyShifts: [{variable: "Hurricane intensity", direction: "up"}, {variable: "Heat", direction: "up"}], resilienceNote: "Isothermal regime is stable; storm exposure is rising." },
@@ -1512,8 +1636,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "puerto-escondido-mx-mechanism",
+        title: "Tropical Wet-Dry at work",
+        paragraphs: [
+          "Puerto Escondido sits where pacific coast of oaxaca at the eastern edge of the tropical-dry zone. The atlas tags this as tropical wet-dry (Aw, roughly 1112 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Tropical convective regime also in play.",
+          "Southern Mexican Pacific coastal position produces a mirror-image dry/wet seasonal cycle; hurricane-track exposure is real. That mechanism is why two map dots in Oaxaca can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "puerto-escondido-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Puerto Escondido screening: Oaxaca's surf coast — a tropical-dry climate with massive Pacific swell, warm water year-round, and an intense summer rainy season. Soil reads as sandy loam / coastal alluvium with good drainage and pH 6.2–7.2 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Mango, Papaya, Coconut, Banana; Temperate crops tend to struggle without intervention. Humidity-averse — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Puerto Escondido", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Puerto Escondido", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -1542,7 +1685,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards tropical-dry + culture seekers — especially colonial-city expats — if the local tradeoffs still feel acceptable after a full season in Mérida.",
       texture: "An easier place to settle into at sea level — the main things to weigh are extreme summer heat and storm exposure.",
     },
-    climate: { tempHighC: [28.8, 30.4, 33.1, 34.8, 35.8, 34.1, 33.4, 33.4, 32.4, 31.2, 29.9, 28.8], tempLowC: [16.8, 17.9, 20.1, 22.6, 23.8, 23.6, 22.9, 22.9, 22.8, 21.4, 19.4, 17.4], precipMm: [24, 18, 22, 32, 82, 156, 144, 158, 178, 108, 44, 30], annualPrecipMm: 996, frostFreeDays: 365, hardinessZone: "12 equiv." },
+    climate: { tempHighC: [28.8, 30.4, 33.1, 34.8, 35.8, 34.1, 33.4, 33.4, 32.4, 31.2, 29.9, 28.8], tempLowC: [16.8, 17.9, 20.1, 22.6, 23.8, 23.6, 22.9, 22.9, 22.8, 21.4, 19.4, 17.4], precipMm: [24, 18, 22, 32, 82, 156, 144, 158, 178, 108, 44, 30], annualPrecipMm: 996, frostFreeDays: 365, hardinessZone: "12 equiv.", humidity: [75, 74, 70, 72, 74, 82, 78, 85, 85, 81, 80, 76], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Thin rendzina over limestone", drainage: "excessive", phRange: [7.4, 8.2], waterHolding: "low" },
     growability: { score: 58, hardinessZone: "12 equiv.", growsWell: ["Henequen (agave)", "Citrus", "Mango", "Papaya"], tricky: ["Temperate crops", "Water-needy plants without irrigation"] },
     climateChange: { outlook2050: "Warmer; stronger hurricanes; rainfall volatility.", outlook2100: "Heat-stress on habitability.", keyShifts: [{variable: "Hurricane intensity", direction: "up"}, {variable: "Heat stress", direction: "up"}], resilienceNote: "Inland position gives some hurricane buffer; heat is the concern." },
@@ -1562,8 +1705,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["colonial-city expats"], travelFit: ["Maya sites", "cenotes"],
     whoWouldLove: "Tropical-dry + culture seekers.", whoMightNot: "Summer-heat-averse.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "merida-mx-mechanism",
+        title: "Tropical Wet-Dry at work",
+        paragraphs: [
+          "Mérida sits where central yucatán limestone plateau; a karst tropical lowland. The atlas tags this as tropical wet-dry (Aw, roughly 996 mm/yr in these normals), and the dominant spatial engines are Karst infiltration and Tropical-cyclone exposure — with Trade-wind regime also in play.",
+          "Karst limestone geology produces unique hydrology; inland-tropical position softens but doesn't eliminate hurricane exposure. That mechanism is why two map dots in Yucatán can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "merida-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Mérida screening: The colonial capital of the Yucatán limestone plateau — hot, dry-winter, wet-summer tropical with cenote-karst hydrology. Soil reads as thin rendzina over limestone with excessive drainage and pH 7.4–8.2 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Henequen (agave), Citrus, Mango, Papaya; Temperate crops, Water-needy plants without irrigation tend to struggle without intervention. Summer-heat-averse — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Mérida 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Mérida 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1588,7 +1750,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards caribbean-adjacent freshwater lovers — especially tropical expats — if the local tradeoffs still feel acceptable after a full season in Bacalar.",
       texture: "An easier place to settle into at sea level — the main things to weigh are extreme summer heat and storm exposure.",
     },
-    climate: { tempHighC: [28.4, 29.4, 31.6, 33.2, 33.6, 32.1, 32.1, 31.9, 31.4, 30.6, 29.4, 28.6], tempLowC: [16.8, 17.4, 19.2, 21.6, 22.8, 22.9, 22.4, 22.6, 22.6, 21.2, 19.6, 17.4], precipMm: [52, 38, 32, 38, 78, 176, 164, 172, 202, 146, 82, 62], annualPrecipMm: 1242, frostFreeDays: 365, hardinessZone: "12 equiv." },
+    climate: { tempHighC: [28.4, 29.4, 31.6, 33.2, 33.6, 32.1, 32.1, 31.9, 31.4, 30.6, 29.4, 28.6], tempLowC: [16.8, 17.4, 19.2, 21.6, 22.8, 22.9, 22.4, 22.6, 22.6, 21.2, 19.6, 17.4], precipMm: [52, 38, 32, 38, 78, 176, 164, 172, 202, 146, 82, 62], annualPrecipMm: 1242, frostFreeDays: 365, hardinessZone: "12 equiv.", humidity: [76, 75, 70, 72, 75, 83, 78, 85, 85, 81, 81, 76], sunshinePct: [69, 73, 70, 70, 67, 65, 56, 55, 52, 55, 59, 62] },
     soil: { texture: "Thin rendzina over karst", drainage: "excessive", phRange: [7.6, 8.2], waterHolding: "low" },
     growability: { score: 56, hardinessZone: "12 equiv.", growsWell: ["Tropical fruit", "Cacao", "Vanilla"], tricky: ["Temperate"] },
     climateChange: { outlook2050: "Warmer; more hurricane stress.", outlook2100: "Lagoon salinization risk.", keyShifts: [{variable: "Hurricane intensity", direction: "up"}, {variable: "Sea level", direction: "up"}], resilienceNote: "Freshwater ecosystem is hurricane-vulnerable." },
@@ -1608,8 +1770,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["tropical expats"], travelFit: ["lagoon tourism", "stromatolites"],
     whoWouldLove: "Caribbean-adjacent freshwater lovers.", whoMightNot: "Hurricane-averse.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "bacalar-mx-mechanism",
+        title: "Tropical Wet-Dry at work",
+        paragraphs: [
+          "Bacalar sits where freshwater-stromatolite lagoon on the yucatán caribbean slope. The atlas tags this as tropical wet-dry (Aw, roughly 1242 mm/yr in these normals), and the dominant spatial engines are Karst infiltration and Tropical-cyclone exposure — with Trade-wind regime also in play.",
+          "Rare freshwater-stromatolite lagoon in tropical karst; isothermal climate plus trade-wind exposure. That mechanism is why two map dots in Quintana Roo can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "bacalar-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Bacalar screening: A tropical-isothermal freshwater lagoon where limestone chemistry produces seven shades of blue — and the climate barely changes. Soil reads as thin rendzina over karst with excessive drainage and pH 7.6–8.2 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Tropical fruit, Cacao, Vanilla; Temperate tend to struggle without intervention. Hurricane-averse — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Chetumal (nearest station)", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Chetumal (nearest station)", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -1638,7 +1819,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards terroir-obsessed travelers — especially agrotourism — if the local tradeoffs still feel acceptable after a full season in Tequila.",
       texture: "An easier place to settle into — no single hazard dominates the picture. Close to Guadalajara and highly legible for visitors; tourism demand and harvest/distillery traffic matter more than service scarcity.",
     },
-    climate: { tempHighC: [26.1, 27.9, 30.2, 31.4, 30.9, 28.1, 25.6, 25.8, 25.9, 26.6, 26.2, 25.3], tempLowC: [10.2, 11.4, 13.6, 15.6, 16.8, 16.8, 16.1, 16.1, 16.0, 14.4, 12.1, 10.4], precipMm: [8, 4, 4, 8, 32, 186, 242, 220, 154, 38, 10, 8], annualPrecipMm: 914, frostFreeDays: 360, hardinessZone: "10b equiv." },
+    climate: { tempHighC: [26.1, 27.9, 30.2, 31.4, 30.9, 28.1, 25.6, 25.8, 25.9, 26.6, 26.2, 25.3], tempLowC: [10.2, 11.4, 13.6, 15.6, 16.8, 16.8, 16.1, 16.1, 16.0, 14.4, 12.1, 10.4], precipMm: [8, 4, 4, 8, 32, 186, 242, 220, 154, 38, 10, 8], annualPrecipMm: 914, frostFreeDays: 360, hardinessZone: "10b equiv.", humidity: [75, 74, 69, 71, 74, 82, 91, 94, 90, 80, 80, 75], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Volcanic tepetate / andisol", drainage: "good", phRange: [6.2, 7.0], waterHolding: "moderate", notes: "Mineral-rich red volcanic soil — the specific terroir of tequila." },
     growability: { score: 76, hardinessZone: "10b equiv.", growsWell: ["Blue agave (of course)", "Citrus", "Stone fruit at higher elevations"], tricky: ["Cool-climate crops"] },
     climateChange: { outlook2050: "Warmer; water-stressed summers.", outlook2100: "Agave cultivation range shifting.", keyShifts: [{variable: "Heat", direction: "up"}], resilienceNote: "Agave is drought-resilient; the cultural infrastructure is the asset." },
@@ -1687,7 +1868,8 @@ export const PLACES_MEXICO: Place[] = [
     whoWouldLove: "Terroir-obsessed travelers.", whoMightNot: "Cool-climate seekers.",
     confidence: "moderate",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Tequila station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "UNESCO agave landscape", kind: "other" }],
+    citations: [{ label: "SMN — Tequila station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "UNESCO agave landscape", kind: "other" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1781,7 +1963,8 @@ export const PLACES_MEXICO: Place[] = [
     climate: {
       tempHighC: [30.4, 31.2, 33.4, 34.8, 34.5, 33.1, 32.2, 32.1, 31.6, 31.6, 31.2, 30.6], tempLowC: [20.1, 20.4, 22.1, 23.8, 24.8, 24.2, 23.4, 23.2, 23.1, 22.6, 21.4, 20.4],
       precipMm: [4, 2, 4, 8, 38, 158, 142, 148, 190, 98, 18, 6], humidity: [60, 58, 56, 60, 70, 78, 78, 78, 80, 75, 65, 60],
-      annualPrecipMm: 816, frostFreeDays: 365, hardinessZone: "11b equiv.",
+      annualPrecipMm: 816, frostFreeDays: 365, hardinessZone: "11b equiv.",    sunshinePct: [66, 70, 67, 67, 64, 62, 53, 52, 49, 52, 56, 59],
+
     },
     soil: { texture: "Sandy loam over alluvium", drainage: "good", phRange: [6.5, 7.8], waterHolding: "moderate", notes: "Wind-eroded in many places; irrigation-dependent in dry season." },
     growability: { score: 48, growsWell: ["Mango", "Tropical crops adapted to wind", "Sorghum"], tricky: ["Tall or tender crops vulnerable to wind"], homeGarden: "Anything taller than a person needs a windbreak." },
@@ -1804,8 +1987,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["wind energy workers", "meteorology enthusiasts"], travelFit: ["wind farms", "kite/windsurfing", "Zapotec cultural tours"],
     whoWouldLove: "Meteorologists, kite sportspeople, anyone who likes feeling the planet's weather machinery at work.", whoMightNot: "Anyone whose hat would fly off.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "la-ventosa-mx-mechanism",
+        title: "Gap / Gorge Wind Corridor at work",
+        paragraphs: [
+          "La Ventosa sits where the low-elevation gap at the isthmus of tehuantepec — the narrowest and lowest crossing between the sierra madre de chiapas and the sierra madre de oaxaca. The atlas tags this as gap / gorge wind corridor (Aw, roughly 816 mm/yr in these normals), and the dominant spatial engines are Gap winds and Trade-wind regime — with Continental extremity and Tropical-cyclone exposure also in play.",
+          "Tehuano gap wind is one of only four major gap-wind regimes on Earth (the others being the Papagayo Gulf, the Panama Gulf, and the Columbia Gorge). Cross-isthmus pressure differences combined with the constrictive gap geometry create some of the most intense sustained winds on the continent. That mechanism is why two map dots in Oaxaca can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "la-ventosa-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "La Ventosa screening: The windiest place in the Americas — a narrow mountain gap where Caribbean pressure forces air through to the Pacific at sustained 40–70 km/h for months at a time. Soil reads as sandy loam over alluvium with good drainage and pH 6.5–7.8 — Anything taller than a person needs a windbreak.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Mango, Tropical crops adapted to wind, Sorghum; Tall or tender crops vulnerable to wind tend to struggle without intervention. Anyone whose hat would fly off — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — La Ventosa / Salina Cruz stations", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "Academic: Chelton et al. on Tehuantepec wind jets", kind: "academic" }],
+    citations: [{ label: "SMN — La Ventosa / Salina Cruz stations", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "Academic: Chelton et al. on Tehuantepec wind jets", kind: "academic" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1940,8 +2142,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["winemakers", "cool-Mediterranean lovers", "retirees seeking a California-South alternative"], travelFit: ["wine country tours", "seafood cuisine", "whale watching"],
     whoWouldLove: "Anyone who loves Napa/Sonoma but wants a Mexican spin — and better prices.", whoMightNot: "Water-supply worriers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "ensenada-mx-mechanism",
+        title: "Cool-Summer Maritime at work",
+        paragraphs: [
+          "Ensenada sits where pacific coast of northern baja california; valle de guadalupe inland 30 km at 350 m elevation. The atlas tags this as cool-summer maritime (Csb, roughly 292 mm/yr in these normals), and the dominant spatial engines are Coastal upwelling and Marine layer — with Diurnal sea breeze also in play.",
+          "The southernmost extent of the California Current upwelling + Mediterranean rainfall pattern. This is the only place in Mexico where a cool-summer maritime and summer-dry climate coincide. That mechanism is why two map dots in Baja California can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "ensenada-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Ensenada screening: The only true Mediterranean climate in Mexico — cool, fog-buffered summers produced by upwelling, feeding Mexico's premier wine region just inland. Soil reads as sandy-loam alluvium in the valleys; granitic uplands with good drainage and pH 6.8–7.8 — Mediterranean gardens work beautifully; drought is the ceiling.",
+          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cabernet Sauvignon, Tempranillo, Nebbiolo, Olives; Tropical crops tend to struggle without intervention. Water-supply worriers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Ensenada / El Ciprés", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INIFAP — Valle de Guadalupe viticulture studies", kind: "academic" }],
+    citations: [{ label: "SMN — Ensenada / El Ciprés", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INIFAP — Valle de Guadalupe viticulture studies", kind: "academic" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1991,8 +2212,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["mist lovers", "coffee growers", "Mexican-highland expats"], travelFit: ["cloud-forest hikes", "coffee tours", "Instituto de Ecología"],
     whoWouldLove: "Readers, mossy-path walkers, anyone who thinks cool and misty is the correct climate.", whoMightNot: "Sun-seekers; anyone with damp-aggravated joints.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "xalapa-mx-mechanism",
+        title: "Cloud Forest at work",
+        paragraphs: [
+          "Xalapa sits where eastern escarpment of the sierra madre oriental, where moisture from the gulf of mexico rises into the cloud forest band. The atlas tags this as cloud forest (Cfb, roughly 1518 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Marine layer — with Elevation lapse rate also in play.",
+          "Eastern escarpment of the Sierra Madre Oriental + Gulf moisture + cloud-forest elevation band. A precise combination of latitude, distance from the coast, and elevation puts Xalapa in the global 'cloud-forest isohypse' — a thin belt where persistent cloud contact defines the ecosystem. That mechanism is why two map dots in Veracruz can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "xalapa-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Xalapa screening: The 'Athens of Veracruz' — a cloud-forest highland where eternal mist, 1,500 mm of rain, and mild 22°C afternoons create one of Mexico's greenest and most literary climates. Soil reads as deep andisol from volcanic ash with good drainage and pH 5.2–6.2 — garden success tracks micro-shelter and water timing.",
+          "Landslide registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Coffee (world-class), Tropical fruit, Citrus, Cloud-forest species; Dry-land crops tend to struggle without intervention. Sun-seekers; anyone with damp-aggravated joints — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Xalapa station 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INECOL — Cloud forest ecology research", kind: "academic" }],
+    citations: [{ label: "SMN — Xalapa station 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INECOL — Cloud forest ecology research", kind: "academic" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -2022,7 +2262,8 @@ export const PLACES_MEXICO: Place[] = [
       tempLowC: [6.0, 6.8, 8.7, 10.7, 12.2, 13.2, 12.6, 12.4, 11.6, 9.4, 7.4, 6.2],
       precipMm: [12, 8, 6, 12, 36, 120, 138, 126, 98, 42, 14, 10],
       humidity: [45, 42, 38, 38, 44, 58, 66, 68, 66, 58, 50, 46],
-      annualPrecipMm: 622, frostFreeDays: 300, hardinessZone: "9b/10a", diurnalSummerC: 12, diurnalWinterC: 17,
+      annualPrecipMm: 622, frostFreeDays: 300, hardinessZone: "9b/10a", diurnalSummerC: 12, diurnalWinterC: 17,    sunshinePct: [46, 49, 48, 54, 59, 65, 61, 62, 56, 53, 49, 44],
+
     },
     soil: { texture: "Volcanic loam to clay loam", drainage: "good", phRange: [6.6, 7.8], waterHolding: "moderate", notes: "Highland agricultural soils are fertile but increasingly water-constrained." },
     growability: { score: 68, growsWell: ["Olive", "Pomegranate", "Herbs", "Stone fruit (cool pockets)", "Cool-season vegetables"], tricky: ["Water-intensive tropical crops"], homeGarden: "Great shoulder-season gardening; irrigation planning is now essential in spring dry-down." },
@@ -2043,6 +2284,24 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "artists", "highland-climate seekers"], travelFit: ["colonial architecture", "highland festivals", "walkable mild-weather city breaks"],
     whoWouldLove: "People who want dry sun and cool evenings without truly cold winters.", whoMightNot: "Humidity lovers or those needing lush, high-rain landscapes.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "san-miguel-de-allende-mx-mechanism",
+        title: "Eternal-Spring Highland at work",
+        paragraphs: [
+          "San Miguel de Allende sits where central mexican highland plateau in the bajío transition, with rolling volcanic uplands and broad valleys. The atlas tags this as eternal-spring highland (Cwb/BSk transition, roughly 622 mm/yr in these normals), and the dominant spatial engines are Elevation lapse rate and Continental extremity — with Monsoon convective lift also in play.",
+          "High elevation at subtropical latitude compresses thermal stress. Pre-monsoon heat is quickly tempered once summer rainfall arrives, and low humidity outside the rainy season amplifies night cooling. That mechanism is why two map dots in Guanajuato can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "san-miguel-de-allende-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "San Miguel de Allende screening: A high-desert colonial city at ~1,900 m where springlike afternoons and cool nights persist most of the year. Soil reads as volcanic loam to clay loam with good drainage and pH 6.6–7.8 — Great shoulder-season gardening; irrigation planning is now essential in spring dry-down.",
+          "Drought registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Olive, Pomegranate, Herbs, Stone fruit (cool pockets); Water-intensive tropical crops tend to struggle without intervention. Humidity lovers or those needing lush, high-rain landscapes — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [
       { label: "WeatherSpark — San Miguel de Allende climate profile", kind: "oss-data", url: "https://weatherspark.com/y/4978/Average-Weather-in-San-Miguel-de-Allende-Mexico-Year-Round" },
@@ -2077,7 +2336,8 @@ export const PLACES_MEXICO: Place[] = [
       tempLowC: [5.2, 7.4, 10.8, 14.8, 19.2, 22.1, 22.0, 21.6, 18.8, 14.6, 9.2, 6.0],
       precipMm: [12, 10, 9, 14, 22, 42, 58, 64, 52, 24, 12, 10],
       humidity: [44, 40, 34, 32, 34, 42, 50, 54, 52, 46, 44, 44],
-      annualPrecipMm: 329, frostFreeDays: 290, hardinessZone: "9a", diurnalSummerC: 13, diurnalWinterC: 15,
+      annualPrecipMm: 329, frostFreeDays: 290, hardinessZone: "9a", diurnalSummerC: 13, diurnalWinterC: 15,    sunshinePct: [72, 76, 76, 81, 92, 92, 91, 90, 84, 82, 70, 68],
+
     },
     soil: { texture: "Calcareous alluvium with gypsum-rich patches", drainage: "good", phRange: [7.6, 8.6], waterHolding: "low", notes: "Hydrology and salinity gradients create highly specialized ecological niches." },
     growability: { score: 44, growsWell: ["Date palm (irrigated)", "Drought-adapted fruit", "Native desert species"], tricky: ["Rainfed intensive crops"], homeGarden: "Desert gardening works only with controlled irrigation and salinity management." },
@@ -2097,6 +2357,24 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["desert ecologists", "conservation-oriented residents"], travelFit: ["oasis springs", "gypsum dunes", "desert biodiversity expeditions"],
     whoWouldLove: "People fascinated by rare desert-water systems and biological oddities.", whoMightNot: "Anyone seeking lush, low-maintenance living conditions.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "cuatrocienegas-mx-mechanism",
+        title: "Desert Oasis at work",
+        paragraphs: [
+          "Cuatro Ciénegas Basin sits where intermontane desert basin enclosed by sierra madre oriental ranges; gypsum dunes and spring-fed wetlands form a rare oasis mosaic. The atlas tags this as desert oasis (BSh, roughly 329 mm/yr in these normals), and the dominant spatial engines are Karst infiltration and Rain shadow — with Continental extremity also in play.",
+          "Closed-basin hydrogeology concentrates groundwater-fed springs inside a rain-shadow desert. Local biodiversity is controlled less by rainfall totals and more by aquifer connectivity and extraction pressure. That mechanism is why two map dots in Coahuila can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "cuatrocienegas-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Cuatro Ciénegas Basin screening: A desert basin where spring-fed pools sustain globally unique aquatic ecosystems amid surrounding semiarid scrub. Soil reads as calcareous alluvium with gypsum-rich patches with good drainage and pH 7.6–8.6 — Desert gardening works only with controlled irrigation and salinity management.",
+          "Drought registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Date palm (irrigated), Drought-adapted fruit, Native desert species; Rainfed intensive crops tend to struggle without intervention. Anyone seeking lush, low-maintenance living conditions — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [
       { label: "ResearchGate summary — Climate of Cuatro Ciénegas Basin", kind: "academic", url: "https://www.researchgate.net/publication/325428359_The_Climate_of_Cuatro_Cienegas_Basin_Drivers_and_Temporal_Patterns" },
@@ -2131,7 +2409,8 @@ export const PLACES_MEXICO: Place[] = [
       tempLowC: [3.8, 5.4, 8.6, 11.8, 15.4, 18.8, 19.6, 19.0, 16.2, 11.6, 7.0, 4.4],
       precipMm: [8, 6, 5, 8, 18, 34, 48, 52, 36, 18, 10, 8],
       humidity: [42, 38, 34, 32, 34, 40, 48, 50, 48, 44, 42, 42],
-      annualPrecipMm: 251, frostFreeDays: 270, hardinessZone: "9a/9b", diurnalSummerC: 14, diurnalWinterC: 16,
+      annualPrecipMm: 251, frostFreeDays: 270, hardinessZone: "9a/9b", diurnalSummerC: 14, diurnalWinterC: 16,    sunshinePct: [71, 76, 75, 81, 92, 92, 91, 89, 84, 81, 70, 67],
+
     },
     soil: { texture: "Calcareous sandy loam and alluvial fans", drainage: "good", phRange: [7.2, 8.3], waterHolding: "low", notes: "Low organic matter and high drainage support concentrated grape profiles under controlled irrigation." },
     growability: { score: 62, growsWell: ["Wine grapes (Cabernet, Merlot, Tempranillo)", "Olive", "Pomegranate"], tricky: ["Water-intensive annuals"], orchard: "High-quality vineyards rely on drought management and careful canopy control." },
@@ -2151,6 +2430,24 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["wine-industry professionals", "dry-climate growers"], travelFit: ["historic wineries", "high-desert valley food-and-wine routes"],
     whoWouldLove: "Wine-focused travelers and residents who prefer dry highland heat over humid climates.", whoMightNot: "People who need lush landscapes or low-maintenance water budgets.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "parras-de-la-fuente-mx-mechanism",
+        title: "High-Desert Escape at work",
+        paragraphs: [
+          "Parras Valley sits where high desert valley in southern coahuila ringed by sierras; irrigated viticulture pockets embedded in semiarid terrain. The atlas tags this as high-desert escape (BSh, roughly 251 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Elevation lapse rate — with Continental extremity also in play.",
+          "Desert-basin aridity plus 1,500 m elevation creates one of Mexico's strongest warm-day/cool-night viticulture envelopes outside Baja. That mechanism is why two map dots in Coahuila can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "parras-de-la-fuente-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Parras Valley screening: Historic high-desert wine valley at ~1,500 m, with strong day-night thermal swing that favors structured reds. Soil reads as calcareous sandy loam and alluvial fans with good drainage and pH 7.2–8.3 — garden success tracks micro-shelter and water timing.",
+          "Drought registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Wine grapes (Cabernet, Merlot, Tempranillo), Olive, Pomegranate; Water-intensive annuals tend to struggle without intervention. People who need lush landscapes or low-maintenance water budgets — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [
       { label: "Wikipedia — Parras (historic viticulture context)", kind: "other", url: "https://en.wikipedia.org/wiki/Parras" },
@@ -2185,7 +2482,8 @@ export const PLACES_MEXICO: Place[] = [
       tempHighC: [19.8, 21.4, 23.4, 24.6, 24.8, 22.8, 21.4, 21.4, 21.2, 21.1, 20.8, 19.6], tempLowC: [-0.4, 1.2, 3.8, 6.6, 8.4, 10.2, 9.8, 9.6, 9.2, 6.4, 2.6, 0.2],
       precipMm: [12, 6, 10, 22, 62, 140, 176, 168, 142, 56, 18, 8], snowCm: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
       humidity: [60, 55, 50, 48, 54, 68, 74, 74, 72, 66, 62, 60],
-      annualPrecipMm: 820, frostFreeDays: 200, hardinessZone: "9b", diurnalSummerC: 12, diurnalWinterC: 20,
+      annualPrecipMm: 820, frostFreeDays: 200, hardinessZone: "9b", diurnalSummerC: 12, diurnalWinterC: 20,    sunshinePct: [46, 49, 48, 54, 59, 65, 61, 62, 56, 53, 49, 44],
+
     },
     soil: { texture: "Volcanic andisol, deep", drainage: "good", phRange: [5.6, 6.8], waterHolding: "moderate", notes: "Fertile volcanic soils supporting some of Mexico's most productive agriculture." },
     growability: { score: 58, growsWell: ["Maize", "Potatoes", "Oats", "Stone fruit", "Mexican highland vegetables"], tricky: ["Heat-loving crops", "Frost-tender perennials in open valleys"], homeGarden: "Cool-season gardening year-round with frost protection December–February." },
@@ -2207,8 +2505,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["altitude-loving urbanites"], travelFit: ["Nevado de Toluca hiking", "colonial architecture", "traditional markets"],
     whoWouldLove: "Altitude enthusiasts, cool-climate seekers in Mexico.", whoMightNot: "Anyone sensitive to thin air or winter cold.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "toluca-mx-mechanism",
+        title: "Volcanic Upland at work",
+        paragraphs: [
+          "Toluca sits where valley of toluca at 2,663 m, the highest major valley in mexico; nevado de toluca volcano (4,680 m) rises 15 km south. The atlas tags this as volcanic upland (Cwb, roughly 820 mm/yr in these normals), and the dominant spatial engines are Elevation lapse rate and Cold-air drainage — with Temperature inversion also in play.",
+          "Extreme elevation (one of the highest major cities on Earth) + basin geometry + tropical latitude = the coldest-feeling city in Mexico despite its subtropical position. That mechanism is why two map dots in Estado de México can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "toluca-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Toluca screening: At 2,663 m, the highest large city in North America — where winter nights commonly drop below freezing and summer afternoons rarely pass 23°C, even at 19°N. Soil reads as volcanic andisol, deep with good drainage and pH 5.6–6.8 — Cool-season gardening year-round with frost protection December–February.",
+          "Smoke / air quality registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Maize, Potatoes, Oats, Stone fruit; Heat-loving crops, Frost-tender perennials in open valleys tend to struggle without intervention. Anyone sensitive to thin air or winter cold — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Toluca observatory 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Toluca observatory 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -2234,7 +2551,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards business travelers who want mountain access near a major hub — especially manufacturing — if the local tradeoffs still feel acceptable after a full season in Monterrey.",
       texture: "A place that asks for a few compromises — the main things to weigh are extreme summer heat and flood and surge risk. Housing runs expensive relative to regional medians.",
     },
-    climate: { tempHighC: [20, 22, 26, 29, 32, 34, 35, 35, 31, 28, 24, 21], tempLowC: [8, 10, 13, 16, 19, 21, 22, 22, 19, 16, 11, 9], precipMm: [18, 18, 22, 35, 70, 95, 80, 85, 120, 55, 25, 20], annualPrecipMm: 643, frostFreeDays: 365, hardinessZone: "10a" },
+    climate: { tempHighC: [20, 22, 26, 29, 32, 34, 35, 35, 31, 28, 24, 21], tempLowC: [8, 10, 13, 16, 19, 21, 22, 22, 19, 16, 11, 9], precipMm: [18, 18, 22, 35, 70, 95, 80, 85, 120, 55, 25, 20], annualPrecipMm: 643, frostFreeDays: 365, hardinessZone: "10a", humidity: [37, 37, 34, 39, 43, 56, 61, 67, 65, 45, 43, 37], sunshinePct: [73, 78, 77, 83, 86, 84, 79, 77, 76, 73, 72, 69] },
     soil: { texture: "Alluvium and limestone residuum", drainage: "good", phRange: [7.0, 8.2], waterHolding: "low" },
     growability: { score: 58, growsWell: ["Citrus (protected)", "Agave", "Xeriscape natives"], tricky: ["Cool-climate fruit"] },
     climateChange: { outlook2050: "More heat-wave days; variable monsoon.", outlook2100: "Water stress dominates regional planning.", keyShifts: [{ variable: "Urban heat", direction: "up" }], resilienceNote: "Sierra reservoirs buffer but compete with growth." },
@@ -2254,8 +2571,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["manufacturing", "startup scene"], travelFit: ["Chipinque", "Cola de Caballo"],
     whoWouldLove: "Business travelers who want mountain access near a major hub.", whoMightNot: "Clean-air purists on stagnant inversion days.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "monterrey-mx-mechanism",
+        title: "Monsoon-Edge Zone at work",
+        paragraphs: [
+          "Monterrey sits where northeastern mexico at the foot of the sierra madre oriental; semi-arid basin opening to gulf moisture. The atlas tags this as monsoon-edge zone (BSh, roughly 643 mm/yr in these normals), and the dominant spatial engines are Monsoon convective lift and Continental extremity — with Elevation lapse rate and Temperature inversion also in play.",
+          "Strong elevation contrast between basin floor and summits within a one-hour drive creates tourist-popular microclimates (Chipinque, Garcia). That mechanism is why two map dots in Nuevo León can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "monterrey-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Monterrey screening: Hot continental city where summer monsoon storms break afternoon heat and winter cold fronts occasionally reach the tropics of Cancer. Soil reads as alluvium and limestone residuum with good drainage and pH 7–8.2 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Citrus (protected), Agave, Xeriscape natives; Cool-climate fruit tend to struggle without intervention. Clean-air purists on stagnant inversion days — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Monterrey / INEGI climate summaries", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Monterrey / INEGI climate summaries", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "hermosillo-mx", tier: "C", country: "Mexico", region: "Sonora", municipality: "Hermosillo", name: "Hermosillo (Sonoran Desert)",
@@ -2280,7 +2616,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards dry-heat devotees — especially desert-industry workers — if the local tradeoffs still feel acceptable after a full season in Hermosillo.",
       texture: "A real-tradeoff place — the main things to weigh are extreme summer heat and long-run drought.",
     },
-    climate: { tempHighC: [24, 26, 30, 34, 37, 40, 41, 40, 38, 34, 29, 25], tempLowC: [8, 9, 11, 14, 18, 22, 25, 25, 22, 16, 11, 8], precipMm: [18, 18, 12, 4, 3, 15, 105, 120, 55, 22, 12, 22], annualPrecipMm: 406, frostFreeDays: 365, hardinessZone: "10b" },
+    climate: { tempHighC: [24, 26, 30, 34, 37, 40, 41, 40, 38, 34, 29, 25], tempLowC: [8, 9, 11, 14, 18, 22, 25, 25, 22, 16, 11, 8], precipMm: [18, 18, 12, 4, 3, 15, 105, 120, 55, 22, 12, 22], annualPrecipMm: 406, frostFreeDays: 365, hardinessZone: "10b", humidity: [37, 37, 35, 39, 43, 40, 54, 56, 54, 46, 43, 38], sunshinePct: [70, 75, 74, 80, 92, 92, 90, 88, 83, 80, 69, 66] },
     soil: { texture: "Desert alluvium and sand", drainage: "excessive", phRange: [7.5, 8.5], waterHolding: "low" },
     growability: { score: 40, growsWell: ["Date palm", "Citrus with irrigation", "Vegetables under drip"], tricky: ["Dry farming"] },
     climateChange: { outlook2050: "More extreme heat days.", outlook2100: "Water availability for agriculture tightens.", keyShifts: [{ variable: "Heat extremes", direction: "up" }], resilienceNote: "Colorado River-linked policy debates ripple culturally." },
@@ -2300,8 +2636,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["desert-industry workers"], travelFit: ["Bahía de Kino day trips", "desert ecotours"],
     whoWouldLove: "Dry-heat devotees.", whoMightNot: "Anyone who needs summer air conditioning to be optional.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "hermosillo-mx-mechanism",
+        title: "Tropical Wet-Dry at work",
+        paragraphs: [
+          "Hermosillo sits where central sonoran desert basin; low latitude and minimal maritime influence. The atlas tags this as tropical wet-dry (BWh, roughly 406 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Monsoon convective lift — with Slope / aspect also in play.",
+          "Gulf of California proximity adds a humidity gradient westward toward coastal Bahía de Kino without fully maritime conditions in town. That mechanism is why two map dots in Sonora can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "hermosillo-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Hermosillo screening: One of North America's hottest state capitals — dry heat, intense sun, and a summer monsoon that arrives as isolated convective bombs. Soil reads as desert alluvium and sand with excessive drainage and pH 7.5–8.5 — garden success tracks micro-shelter and water timing.",
+          "Drought registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Date palm, Citrus with irrigation, Vegetables under drip; Dry farming tend to struggle without intervention. Anyone who needs summer air conditioning to be optional — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Hermosillo", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Hermosillo", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "puerto-vallarta-mx", tier: "C", country: "Mexico", region: "Jalisco", municipality: "Puerto Vallarta", name: "Puerto Vallarta (Banderas Bay)",
@@ -2326,7 +2681,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards tropical beach life with mountain backdrop — especially hospitality retirees — if the local tradeoffs still feel acceptable after a full season in Puerto Vallarta.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
     },
-    climate: { tempHighC: [29, 29, 30, 31, 32, 33, 33, 33, 33, 32, 31, 29], tempLowC: [16, 16, 17, 18, 20, 22, 23, 23, 23, 22, 20, 17], precipMm: [25, 15, 8, 5, 15, 180, 220, 240, 280, 110, 35, 25], annualPrecipMm: 1161, frostFreeDays: 365, hardinessZone: "11" },
+    climate: { tempHighC: [29, 29, 30, 31, 32, 33, 33, 33, 33, 32, 31, 29], tempLowC: [16, 16, 17, 18, 20, 22, 23, 23, 23, 22, 20, 17], precipMm: [25, 15, 8, 5, 15, 180, 220, 240, 280, 110, 35, 25], annualPrecipMm: 1161, frostFreeDays: 365, hardinessZone: "11", humidity: [76, 75, 71, 73, 75, 79, 83, 86, 86, 82, 81, 77], sunshinePct: [69, 73, 70, 70, 67, 65, 56, 55, 52, 55, 59, 62] },
     soil: { texture: "Coastal sand and tropical alfisol", drainage: "good", phRange: [6.0, 7.5], waterHolding: "moderate" },
     growability: { score: 72, growsWell: ["Coconut", "Tropical ornamentals", "Chile peppers"], tricky: ["Temperate bulbs"] },
     climateChange: { outlook2050: "Stronger hurricane rain rates; coral bleaching stress.", outlook2100: "Coastal tourism infrastructure at surge risk.", keyShifts: [{ variable: "Hurricane intensity", direction: "up" }], resilienceNote: "Tourism economy is storm-exposed." },
@@ -2346,8 +2701,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["hospitality retirees", "remote workers"], travelFit: ["whale watching", "beaches"],
     whoWouldLove: "Tropical beach life with mountain backdrop.", whoMightNot: "Dry-climate seekers; hurricane-anxious buyers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "puerto-vallarta-mx-mechanism",
+        title: "Tropical Isothermal Coast at work",
+        paragraphs: [
+          "Puerto Vallarta sits where banderas bay south shore; sierra madre inlandshed with sea-breeze modulation. The atlas tags this as tropical isothermal coast (Aw, roughly 1161 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Orographic lift also in play.",
+          "Bay geometry + tropical cyclone recurvature zone + strong vertical relief just inland. That mechanism is why two map dots in Jalisco can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "puerto-vallarta-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Puerto Vallarta screening: Pacific resort climate — warm winter escape, humid summer with tropical cyclone watches. Soil reads as coastal sand and tropical alfisol with good drainage and pH 6–7.5 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Coconut, Tropical ornamentals, Chile peppers; Temperate bulbs tend to struggle without intervention. Dry-climate seekers; hurricane-anxious buyers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Puerto Vallarta", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Puerto Vallarta", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "mazatlan-mx", tier: "C", country: "Mexico", region: "Sinaloa", municipality: "Mazatlán", name: "Mazatlán (Pacific Humid Tropical)",
@@ -2372,7 +2746,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards winter sunbirds on a budget relative to Cabo — especially retirees — if the local tradeoffs still feel acceptable after a full season in Mazatlán.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
     },
-    climate: { tempHighC: [26, 26, 27, 28, 30, 31, 32, 32, 32, 31, 29, 27], tempLowC: [12, 12, 13, 15, 18, 22, 24, 24, 24, 21, 16, 14], precipMm: [20, 8, 5, 3, 5, 40, 150, 220, 200, 85, 25, 22], annualPrecipMm: 783, frostFreeDays: 365, hardinessZone: "11" },
+    climate: { tempHighC: [26, 26, 27, 28, 30, 31, 32, 32, 32, 31, 29, 27], tempLowC: [12, 12, 13, 15, 18, 22, 24, 24, 24, 21, 16, 14], precipMm: [20, 8, 5, 3, 5, 40, 150, 220, 200, 85, 25, 22], annualPrecipMm: 783, frostFreeDays: 365, hardinessZone: "11", humidity: [77, 76, 71, 73, 76, 80, 83, 86, 86, 82, 82, 77], sunshinePct: [66, 71, 67, 68, 65, 62, 54, 52, 50, 52, 57, 59] },
     soil: { texture: "Sandy beach and dune", drainage: "excessive", phRange: [7.0, 8.0], waterHolding: "low" },
     growability: { score: 68, growsWell: ["Palms", "Tropical fruit with irrigation"], tricky: ["Cool-season vegetables in summer"] },
     climateChange: { outlook2050: "Wet-season intensification.", outlook2100: "Coastal squeeze from tourism and storms.", keyShifts: [{ variable: "Extreme rain", direction: "up" }], resilienceNote: "Beach nourishment cycles ongoing." },
@@ -2392,8 +2766,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "mazatlan-mx-mechanism",
+        title: "Tropical Wet-Dry at work",
+        paragraphs: [
+          "Mazatlán sits where long sandy beach on gulf of california opening; tropical wet-dry with summer monsoon. The atlas tags this as tropical wet-dry (Aw, roughly 783 mm/yr in these normals), and the dominant spatial engines are Tropical convective regime and Tropical-cyclone exposure — with Diurnal sea breeze also in play.",
+          "Long straight Pacific fetch with tropical cyclone history distinct from Baja's desert shores. That mechanism is why two map dots in Sinaloa can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "mazatlan-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Mazatlán screening: Classic wet-dry tropics at latitude 23°N — reliable winter sun for snowbirds, humid summer monsoon. Soil reads as sandy beach and dune with excessive drainage and pH 7–8 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Palms, Tropical fruit with irrigation; Cool-season vegetables in summer tend to struggle without intervention. Summer humidity haters — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Mazatlán", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Mazatlán", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "campeche-mx", tier: "C", country: "Mexico", region: "Campeche", municipality: "San Francisco de Campeche", name: "Campeche (Gulf Coast Fort)",
@@ -2418,7 +2811,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards gulf tropical life with colonial architecture — especially remote workers — if the local tradeoffs still feel acceptable after a full season in San Francisco de Campeche.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
     },
-    climate: { tempHighC: [28, 29, 31, 32, 34, 33, 33, 33, 32, 31, 30, 28], tempLowC: [18, 18, 20, 22, 23, 23, 22, 22, 22, 21, 20, 19], precipMm: [45, 30, 25, 25, 75, 200, 180, 195, 210, 180, 80, 55], annualPrecipMm: 1320, frostFreeDays: 365, hardinessZone: "11" },
+    climate: { tempHighC: [28, 29, 31, 32, 34, 33, 33, 33, 32, 31, 30, 28], tempLowC: [18, 18, 20, 22, 23, 23, 22, 22, 22, 21, 20, 19], precipMm: [45, 30, 25, 25, 75, 200, 180, 195, 210, 180, 80, 55], annualPrecipMm: 1320, frostFreeDays: 365, hardinessZone: "11", humidity: [76, 75, 70, 72, 75, 83, 78, 85, 85, 81, 81, 76], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Coastal alluvium and limestone", drainage: "imperfect", phRange: [7.0, 8.2], waterHolding: "high" },
     growability: { score: 70, growsWell: ["Coconut", "Citrus", "Chile"], tricky: ["Cool-climate perennials"] },
     climateChange: { outlook2050: "Heavier hurricane rain rates.", outlook2100: "Coastal mangrove squeeze.", keyShifts: [{ variable: "Sea level", direction: "up" }], resilienceNote: "Historic core elevation modest; drainage is key." },
@@ -2438,8 +2831,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "campeche-mx-mechanism",
+        title: "Hurricane-Exposed Coast at work",
+        paragraphs: [
+          "Campeche sits where walled colonial port on the gulf of mexico; flat coastal plain with tropical wet-dry regime. The atlas tags this as hurricane-exposed coast (Aw, roughly 1320 mm/yr in these normals), and the dominant spatial engines are Tropical-cyclone exposure and Tropical convective regime — with Diurnal sea breeze also in play.",
+          "Western Gulf track exposure differs from Caribbean Yucatán resorts; rainfall seasonality still monsoon-like. That mechanism is why two map dots in Campeche can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "campeche-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Campeche screening: Gulf humidity, tropical cyclone exposure, and a UNESCO fort city — slower pace than Cancún with real storm history. Soil reads as coastal alluvium and limestone with imperfect drainage and pH 7–8.2 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Coconut, Citrus, Chile; Cool-climate perennials tend to struggle without intervention. Hurricane-risk averse — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Campeche", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Campeche", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "palenque-mx", tier: "C", country: "Mexico", region: "Chiapas", municipality: "Palenque", name: "Palenque (Lacandon Jungle Edge)",
@@ -2464,7 +2876,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards jungle climate with Maya history — especially archaeology guides — if the local tradeoffs still feel acceptable after a full season in Palenque.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
     },
-    climate: { tempHighC: [26, 28, 30, 32, 33, 31, 30, 31, 30, 29, 28, 26], tempLowC: [16, 17, 18, 20, 21, 21, 20, 20, 20, 19, 18, 17], precipMm: [80, 65, 55, 65, 120, 280, 220, 260, 280, 220, 120, 95], annualPrecipMm: 1860, frostFreeDays: 365, hardinessZone: "12" },
+    climate: { tempHighC: [26, 28, 30, 32, 33, 31, 30, 31, 30, 29, 28, 26], tempLowC: [16, 17, 18, 20, 21, 21, 20, 20, 20, 19, 18, 17], precipMm: [80, 65, 55, 65, 120, 280, 220, 260, 280, 220, 120, 95], annualPrecipMm: 1860, frostFreeDays: 365, hardinessZone: "12", humidity: [75, 74, 70, 72, 74, 82, 88, 95, 95, 81, 80, 76], sunshinePct: [66, 71, 67, 68, 65, 62, 54, 52, 50, 52, 57, 59] },
     soil: { texture: "Deep tropical alfisol", drainage: "moderate", phRange: [5.5, 6.8], waterHolding: "high" },
     growability: { score: 76, growsWell: ["Cacao", "Banana", "Tropical spices"], tricky: ["Temperate fruit"] },
     climateChange: { outlook2050: "Shifts in cloud timing affect ecotourism.", outlook2100: "Species migration upslope.", keyShifts: [{ variable: "Heavy rain", direction: "up" }], resilienceNote: "Jaguar reserve connectivity matters ecologically." },
@@ -2483,6 +2895,24 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["archaeology guides", "ecotourism"], travelFit: ["ruins", "jungle trails"],
     whoWouldLove: "Jungle climate with Maya history.", whoMightNot: "Anyone who cannot tolerate humidity.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "palenque-mx-mechanism",
+        title: "Cloud Forest at work",
+        paragraphs: [
+          "Palenque sits where northern chiapas foothills; transition from lowland jungle to cooler uplands toward san cristóbal. The atlas tags this as cloud forest (Af, roughly 1860 mm/yr in these normals), and the dominant spatial engines are Tropical convective regime and Orographic lift — with Monsoon convective lift also in play.",
+          "Archaeological site + reserve microclimate attracts swallows and parrots; canopy buffers radiation below treeline. That mechanism is why two map dots in Chiapas can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "palenque-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Palenque screening: Hot, humid gateway to Maya ruins where afternoon convection builds explosively over rainforest. Soil reads as deep tropical alfisol with moderate drainage and pH 5.5–6.8 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cacao, Banana, Tropical spices; Temperate fruit tend to struggle without intervention. Anyone who cannot tolerate humidity — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [{ label: "SMN — Palenque", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INECC — Chiapas biodiversity notes", kind: "inecc", url: "https://www.gob.mx/inecc" }],
   },
@@ -2509,7 +2939,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards highland colonial towns with tropical latitude — especially artisans — if the local tradeoffs still feel acceptable after a full season in Taxco de Alarcón.",
       texture: "An easier place to settle into at 1773 m elevation — the main things to weigh are slope stability and flood and surge risk.",
     },
-    climate: { tempHighC: [24, 25, 27, 29, 29, 26, 24, 25, 24, 25, 25, 24], tempLowC: [10, 11, 12, 14, 15, 15, 14, 14, 14, 13, 12, 11], precipMm: [18, 12, 10, 15, 55, 165, 180, 175, 160, 75, 35, 15], annualPrecipMm: 925, frostFreeDays: 365, hardinessZone: "10a" },
+    climate: { tempHighC: [24, 25, 27, 29, 29, 26, 24, 25, 24, 25, 25, 24], tempLowC: [10, 11, 12, 14, 15, 15, 14, 14, 14, 13, 12, 11], precipMm: [18, 12, 10, 15, 55, 165, 180, 175, 160, 75, 35, 15], annualPrecipMm: 925, frostFreeDays: 365, hardinessZone: "10a", humidity: [57, 60, 60, 66, 71, 80, 78, 77, 69, 65, 61, 56], sunshinePct: [47, 49, 49, 55, 60, 65, 62, 62, 57, 54, 50, 45] },
     soil: { texture: "Thin residual soil on volcanic and limestone", drainage: "good", phRange: [6.0, 7.5], waterHolding: "low" },
     growability: { score: 64, growsWell: ["Temperate flowers", "Avocado", "Coffee nearby"], tricky: ["Low-oxygen exertion for some visitors"] },
     climateChange: { outlook2050: "Shifts in monsoon onset.", outlook2100: "Water for hillside barrios stressed.", keyShifts: [{ variable: "Landslide risk", direction: "up" }], resilienceNote: "Steep terrain amplifies storm impacts." },
@@ -2529,8 +2959,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["artisans", "retirees"], travelFit: ["silver markets", "cobblestone walks"],
     whoWouldLove: "Highland colonial towns with tropical latitude.", whoMightNot: "Mobility-limited — steep streets everywhere.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "taxco-mx-mechanism",
+        title: "Eternal-Spring Highland at work",
+        paragraphs: [
+          "Taxco sits where steep hillside mining town on the southern flank of the mexican plateau edge. The atlas tags this as eternal-spring highland (Cwb, roughly 925 mm/yr in these normals), and the dominant spatial engines are Elevation lapse rate and Slope / aspect — with Orographic lift and Karst infiltration also in play.",
+          "Extreme local relief within kilometers creates micro-wind patterns and rainfall gradients on windward slopes. That mechanism is why two map dots in Guerrero can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "taxco-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Taxco screening: Silver-city balconies perched at 1,773 m — spring-like temperatures while Acapulco swelters at sea level. Soil reads as thin residual soil on volcanic and limestone with good drainage and pH 6–7.5 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Temperate flowers, Avocado, Coffee nearby; Low-oxygen exertion for some visitors tend to struggle without intervention. Mobility-limited — steep streets everywhere — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Taxco region", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Taxco region", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "puebla-mx", tier: "C", country: "Mexico", region: "Puebla", municipality: "Puebla", name: "Puebla (Trans-Mexican Volcanic Belt)",
@@ -2555,7 +3004,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards highland Mexican urban culture with volcano views — especially students — if the local tradeoffs still feel acceptable after a full season in Puebla.",
       texture: "A place that asks for a few compromises at 2150 m elevation — the main things to weigh are flood and surge risk and smoke-season air quality. Housing runs expensive relative to regional medians.",
     },
-    climate: { tempHighC: [22, 24, 26, 27, 27, 25, 23, 24, 23, 23, 23, 22], tempLowC: [6, 7, 9, 11, 12, 12, 11, 11, 11, 9, 8, 6], precipMm: [12, 10, 14, 35, 80, 155, 160, 155, 140, 70, 25, 10], annualPrecipMm: 876, frostFreeDays: 365, hardinessZone: "10a" },
+    climate: { tempHighC: [22, 24, 26, 27, 27, 25, 23, 24, 23, 23, 23, 22], tempLowC: [6, 7, 9, 11, 12, 12, 11, 11, 11, 9, 8, 6], precipMm: [12, 10, 14, 35, 80, 155, 160, 155, 140, 70, 25, 10], annualPrecipMm: 876, frostFreeDays: 365, hardinessZone: "10a", humidity: [55, 58, 58, 64, 69, 82, 80, 79, 71, 63, 59, 54], sunshinePct: [47, 49, 49, 55, 60, 61, 58, 58, 57, 54, 50, 45] },
     soil: { texture: "Andisol on volcanic ash", drainage: "good", phRange: [6.0, 7.2], waterHolding: "moderate" },
     growability: { score: 72, growsWell: ["Maize", "Flowers", "Avocado"], tricky: ["Chill apples"] },
     climateChange: { outlook2050: "Air quality and heat stress in basin.", outlook2100: "Glacier loss on volcanoes symbolic of change.", keyShifts: [{ variable: "Ozone", direction: "up" }], resilienceNote: "Inversion trapping worsens particulates." },
@@ -2575,8 +3024,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["students", "manufacturing"], travelFit: ["Talavera", "volcano viewpoints"],
     whoWouldLove: "Highland Mexican urban culture with volcano views.", whoMightNot: "Altitude-sensitive; smog-sensitive winter visitors.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "puebla-mx-mechanism",
+        title: "Volcanic Upland at work",
+        paragraphs: [
+          "Puebla sits where high basin east of popocatépetl and iztaccíhuatl; urban heat over volcanic soils. The atlas tags this as volcanic upland (Cwb, roughly 876 mm/yr in these normals), and the dominant spatial engines are Elevation lapse rate and Temperature inversion — with Slope / aspect also in play.",
+          "Twin stratovolcanoes dominate the western horizon; ash fall is episodic but real. That mechanism is why two map dots in Puebla can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "puebla-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Puebla screening: Colonial megacity at 2,150 m — mild year-round with cool nights and Popocatépetl snow on the horizon. Soil reads as andisol on volcanic ash with good drainage and pH 6–7.2 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Maize, Flowers, Avocado; Chill apples tend to struggle without intervention. Altitude-sensitive; smog-sensitive winter visitors — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Puebla", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    citations: [{ label: "SMN — Puebla", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -2772,7 +3240,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards people who like highland sun, cool nights, and monsoon-season drama without lowland humidity — especially dry-climate seekers — if the local tradeoffs still feel acceptable after a full season in Victoria de Durango.",
       texture: "An easier place to settle into at 1880 m elevation — the main things to weigh are long-run drought.",
     },
-    climate: { tempHighC: [20, 22, 25, 28, 31, 31, 29, 28, 27, 26, 23, 20], tempLowC: [1, 3, 6, 9, 12, 15, 14, 14, 12, 8, 4, 2], precipMm: [10, 8, 6, 8, 18, 75, 140, 135, 90, 30, 10, 8], annualPrecipMm: 538, frostFreeDays: 285, hardinessZone: "9b equiv." },
+    climate: { tempHighC: [20, 22, 25, 28, 31, 31, 29, 28, 27, 26, 23, 20], tempLowC: [1, 3, 6, 9, 12, 15, 14, 14, 12, 8, 4, 2], precipMm: [10, 8, 6, 8, 18, 75, 140, 135, 90, 30, 10, 8], annualPrecipMm: 538, frostFreeDays: 285, hardinessZone: "9b equiv.", humidity: [38, 38, 35, 40, 44, 41, 54, 56, 54, 46, 44, 38], sunshinePct: [74, 78, 78, 83, 92, 92, 92, 92, 86, 84, 72, 70] },
     soil: { texture: "Alluvial clay loam and volcanic-influenced upland soils", drainage: "moderate", phRange: [6.8, 8.0], waterHolding: "moderate" },
     growability: { score: 66, growsWell: ["Beans", "Maize", "Apples in nearby highlands", "Agave", "Drought-tolerant gardens"], tricky: ["Tropical fruit", "Humid-climate crops"] },
     climateChange: { outlook2050: "Higher dry-season heat and more variable monsoon timing.", outlook2100: "Water storage and forest-fire pressure become central.", keyShifts: [{ variable: "Dry-season heat", direction: "up" }, { variable: "Monsoon timing", direction: "mixed" }], resilienceNote: "Elevation is a buffer, but water volatility is material." },
@@ -2791,6 +3259,24 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["dry-climate seekers", "regional professionals"], travelFit: ["Sierra Madre road trips", "historic center"],
     whoWouldLove: "People who like highland sun, cool nights, and monsoon-season drama without lowland humidity.", whoMightNot: "People who want lush wet greenery year-round.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "durango-mx-mechanism",
+        title: "Monsoon-Edge Zone at work",
+        paragraphs: [
+          "Durango sits where high interior basin east of the sierra madre occidental, with dry plateau air and summer monsoon influence. The atlas tags this as monsoon-edge zone (BSk/Cwb transition, roughly 538 mm/yr in these normals), and the dominant spatial engines are Monsoon convective lift and Elevation lapse rate — with Continental extremity and Temperature inversion also in play.",
+          "Interior elevation and monsoon-edge exposure create a highland dry climate with stronger summer thunderstorm seasonality than the Bajío. That mechanism is why two map dots in Durango can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "durango-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Durango screening: A dry highland capital where Sierra Madre monsoon storms interrupt bright, cool-night plateau weather. Soil reads as alluvial clay loam and volcanic-influenced upland soils with moderate drainage and pH 6.8–8 — garden success tracks micro-shelter and water timing.",
+          "Drought registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Beans, Maize, Apples in nearby highlands, Agave; Tropical fruit, Humid-climate crops tend to struggle without intervention. People who want lush wet greenery year-round — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — city station context is useful, but Sierra-side gradients around Durango are stronger than one urban normal can show.",
     citations: [
       { label: "SMN — Durango normals", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
@@ -2819,7 +3305,7 @@ export const PLACES_MEXICO: Place[] = [
       residentFit: "It rewards people who want green mountains, mild temperatures, and Veracruz culture without lowland heat — especially cloud-forest lovers — if the local tradeoffs still feel acceptable after a full season in Orizaba.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure. Highland Veracruz town with low cost-of-living; Veracruz international airport ~2 h away.",
     },
-    climate: { tempHighC: [21, 22, 24, 25, 25, 24, 23, 23, 23, 23, 22, 21], tempLowC: [10, 11, 13, 14, 15, 16, 15, 15, 15, 14, 12, 11], precipMm: [45, 35, 40, 65, 115, 260, 250, 240, 270, 160, 80, 55], annualPrecipMm: 1615, frostFreeDays: 365, hardinessZone: "10b equiv." },
+    climate: { tempHighC: [21, 22, 24, 25, 25, 24, 23, 23, 23, 23, 22, 21], tempLowC: [10, 11, 13, 14, 15, 16, 15, 15, 15, 14, 12, 11], precipMm: [45, 35, 40, 65, 115, 260, 250, 240, 270, 160, 80, 55], annualPrecipMm: 1615, frostFreeDays: 365, hardinessZone: "10b equiv.", humidity: [89, 89, 82, 80, 76, 78, 73, 71, 77, 78, 84, 85], sunshinePct: [31, 34, 33, 40, 45, 50, 47, 47, 42, 38, 35, 29] },
     soil: { texture: "Volcanic and alluvial loam on humid mountain slopes", drainage: "moderate", phRange: [5.5, 6.8], waterHolding: "high" },
     growability: { score: 78, growsWell: ["Coffee", "Citrus", "Avocado", "Banana in lower pockets", "Ornamentals"], tricky: ["Dryland crops", "High-chill fruit"] },
     climateChange: { outlook2050: "Cloud-base and rainfall timing shifts affect coffee and slope stability.", outlook2100: "Cloud-forest bands move upslope while heavy-rain risk increases.", keyShifts: [{ variable: "Cloud base", direction: "up" }, { variable: "Heavy rain", direction: "up" }], resilienceNote: "Moisture buffers heat but increases landslide and infrastructure diligence." },
@@ -2832,11 +3318,30 @@ export const PLACES_MEXICO: Place[] = [
       note: "Highland Veracruz town with low cost-of-living; Veracruz international airport ~2 h away.",
       sources: [
         { label: "INEGI — Orizaba urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      
+        { label: "SMN — Orizaba and Veracruz highland normals", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },],
     },
     relocationFit: ["cloud-forest lovers", "coffee people"], travelFit: ["Pico de Orizaba views", "green highland walks"],
     whoWouldLove: "People who want green mountains, mild temperatures, and Veracruz culture without lowland heat.", whoMightNot: "People seeking dry air and constant sun.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "orizaba-mx-mechanism",
+        title: "Cloud Forest at work",
+        paragraphs: [
+          "Orizaba sits where windward mountain city below pico de orizaba, where gulf moisture climbs into the sierra madre oriental. The atlas tags this as cloud forest (Cfb/Cwb transition, roughly 1615 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Elevation lapse rate — with Tropical convective regime also in play.",
+          "Windward slope lift below Pico de Orizaba creates a humid highland climate with cloud-forest character and strong rainfall gradients over short distances. That mechanism is why two map dots in Veracruz can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "orizaba-mx-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Orizaba screening: A humid highland Veracruz city where Gulf air, volcanic relief, and cloud-forest edges make a green eternal-spring variant. Soil reads as volcanic and alluvial loam on humid mountain slopes with moderate drainage and pH 5.5–6.8 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Coffee, Citrus, Avocado, Banana in lower pockets; Dryland crops, High-chill fruit tend to struggle without intervention. People seeking dry air and constant sun — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — windward mountain gradients are strong; use the numbers as conservative regional guidance rather than parcel-grade normals.",
     citations: [
       { label: "SMN — Orizaba and Veracruz highland normals", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },

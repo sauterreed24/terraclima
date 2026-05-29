@@ -398,7 +398,8 @@ export const PLACES_CANADA: Place[] = [
       note: "Capital-region housing market has tightened sharply since 2020; major airport and BC Ferries integrate Victoria into the south-coast services hub.",
       sources: [
       { label: "CMHC — Victoria housing market report", url: "https://www.cmhc-schl.gc.ca/" },
-      ],
+      
+        { label: "ECCC — Victoria Gonzales Heights 1991–2020", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },],
     },
     relocationFit: ["retirees", "climate refugees", "heat-averse"],
     travelFit: ["gardens", "cool-summer escape"],
@@ -495,7 +496,8 @@ export const PLACES_CANADA: Place[] = [
       note: "Tofino housing has been one of BC's most extreme tourism-driven markets; only Highway 4 in (frequent washouts), no major airport, full-service medical on the mainland.",
       sources: [
       { label: "BC Stats — Alberni-Clayoquot housing", url: "https://www2.gov.bc.ca/gov/content/data/statistics" },
-      ],
+      
+        { label: "ECCC — Tofino A 1991–2020", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },],
     },
     relocationFit: ["surfers", "rainforest people"], travelFit: ["storm watching", "surfing"],
     whoWouldLove: "Ocean-obsessed souls.", whoMightNot: "Sun lovers; cost-sensitive relocators; anyone whose work or family logistics cannot survive a Highway-4 closure.",
@@ -904,7 +906,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards bC coastal dreamers — especially remote workers — if the local tradeoffs still feel acceptable after a full season in Sechelt.",
       texture: "An easier place to settle into — no single hazard dominates the picture. Ferry-linked Sunshine Coast housing runs below Metro Vancouver but still tight; Gibsons/Sechelt groceries and specialist care often mean a Vancouver-bound trip.",
     },
-    climate: { tempHighC: [6.6, 7.8, 10.3, 13.4, 17.1, 19.5, 22.4, 22.6, 19.6, 14.0, 9.2, 6.6], tempLowC: [1.3, 1.4, 2.8, 4.7, 8.0, 10.9, 12.4, 12.5, 10.1, 6.7, 3.6, 1.6], precipMm: [180, 135, 110, 75, 50, 40, 25, 30, 50, 130, 220, 200], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 1245, frostFreeDays: 220, hardinessZone: "8a" },
+    climate: { tempHighC: [6.6, 7.8, 10.3, 13.4, 17.1, 19.5, 22.4, 22.6, 19.6, 14.0, 9.2, 6.6], tempLowC: [1.3, 1.4, 2.8, 4.7, 8.0, 10.9, 12.4, 12.5, 10.1, 6.7, 3.6, 1.6], precipMm: [180, 135, 110, 75, 50, 40, 25, 30, 50, 130, 220, 200], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 1245, frostFreeDays: 220, hardinessZone: "8a", sunshinePct: [55, 58, 59, 67, 72, 79, 76, 76, 69, 76, 60, 54] },
     soil: { texture: "Sandy loam", drainage: "good", phRange: [5.6, 6.4], waterHolding: "moderate" },
     growability: { score: 72, growsWell: ["Apples", "Pears", "Grapes", "Mediterranean herbs"], tricky: ["Heat lovers"] },
     climateChange: { outlook2050: "Warmer, drier summers; irrigation demand up.", outlook2100: "Mediterranean drift.", keyShifts: [{variable: "Summer drought", direction: "up"}], resilienceNote: "Moderate resilience." },
@@ -923,8 +925,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "retirees"], travelFit: ["Pacific shoulder-season"],
     whoWouldLove: "BC coastal dreamers.", whoMightNot: "Those needing heat or urban services.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "sunshine-coast-bc-mechanism",
+        title: "Rain-Shadow Sanctuary at work",
+        paragraphs: [
+          "Sunshine Coast sits where strait of georgia coast, partially rain-shadowed by vancouver island's central range. The atlas tags this as rain-shadow sanctuary (Csb, roughly 1245 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Marine layer.",
+          "Vancouver Island's Beaufort Range casts a meaningful rain shadow on the mainland's adjacent coast. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "sunshine-coast-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Sunshine Coast screening: Aptly named — a rain-shadow pocket on mainland BC with ~30% more sun than Vancouver. Soil reads as sandy loam with good drainage and pH 5.6–6.4 — garden success tracks micro-shelter and water timing.",
+          "No single hazard dominates the risk matrix here; the practical read is still parcel-specific for flood, wind, and access. Growability favors Apples, Pears, Grapes, Mediterranean herbs; Heat lovers tend to struggle without intervention. Those needing heat or urban services — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Sechelt", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Sechelt", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -948,7 +969,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards slow-island small-farm romantics — especially artist-farmers — if the local tradeoffs still feel acceptable after a full season in Salt Spring Island.",
       texture: "An easier place to settle into — no single hazard dominates the picture. Gulf-Islands ferry schedule and tourism-tightened housing shape day-to-day logistics; Saanich and Victoria are an hour-plus ferry+drive away.",
     },
-    climate: { tempHighC: [6.9, 8.2, 10.8, 13.7, 17.1, 19.5, 22.3, 22.5, 19.6, 13.9, 9.3, 6.8], tempLowC: [1.8, 1.9, 3.1, 4.7, 7.6, 10.2, 11.8, 12.0, 9.9, 6.6, 3.9, 2.1], precipMm: [130, 92, 74, 45, 32, 28, 18, 22, 32, 70, 136, 144], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 823, frostFreeDays: 230, hardinessZone: "8b" },
+    climate: { tempHighC: [6.9, 8.2, 10.8, 13.7, 17.1, 19.5, 22.3, 22.5, 19.6, 13.9, 9.3, 6.8], tempLowC: [1.8, 1.9, 3.1, 4.7, 7.6, 10.2, 11.8, 12.0, 9.9, 6.6, 3.9, 2.1], precipMm: [130, 92, 74, 45, 32, 28, 18, 22, 32, 70, 136, 144], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 823, frostFreeDays: 230, hardinessZone: "8b", sunshinePct: [53, 56, 57, 66, 71, 77, 75, 74, 68, 74, 59, 52] },
     soil: { texture: "Sandy loam", drainage: "good", phRange: [5.8, 6.6], waterHolding: "moderate" },
     growability: { score: 80, growsWell: ["Grapes", "Olives (marginal)", "Figs", "Apples", "Mediterranean herbs"], tricky: ["Summer irrigation required"] },
     climateChange: { outlook2050: "Warmer drier summers.", outlook2100: "Mediterranean climate deepens.", keyShifts: [{variable: "Summer drought", direction: "up"}], resilienceNote: "Relatively resilient." },
@@ -961,13 +982,33 @@ export const PLACES_CANADA: Place[] = [
       note: "Gulf-Islands ferry schedule and tourism-tightened housing shape day-to-day logistics; Saanich and Victoria are an hour-plus ferry+drive away.",
       sources: [
         { label: "Capital Regional District — Salt Spring profile", url: "https://www.crd.bc.ca/" },
-      ],
+      
+        { label: "ECCC — Salt Spring Island St Mary Lake", url: "https://climate.weather.gc.ca/" },],
     },
     relocationFit: ["artist-farmers", "off-grid"], travelFit: ["island farm tour"],
     whoWouldLove: "Slow-island small-farm romantics.", whoMightNot: "Those needing services.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "salt-spring-bc-mechanism",
+        title: "Rain-Shadow Sanctuary at work",
+        paragraphs: [
+          "Salt Spring Island sits where southern gulf islands in the olympic rain shadow. The atlas tags this as rain-shadow sanctuary (Csb, roughly 823 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Marine layer.",
+          "Olympic rain shadow + Gulf Island shelter + marine moderation. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "salt-spring-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Salt Spring Island screening: Rain-shadow Gulf Island with a Mediterranean microclimate and slow island culture. Soil reads as sandy loam with good drainage and pH 5.8–6.6 — garden success tracks micro-shelter and water timing.",
+          "No single hazard dominates the risk matrix here; the practical read is still parcel-specific for flood, wind, and access. Growability favors Grapes, Olives (marginal), Figs, Apples; Summer irrigation required tend to struggle without intervention. Those needing services — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Salt Spring Island St Mary Lake", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Salt Spring Island St Mary Lake", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1011,8 +1052,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulturalists", "orchardists"], travelFit: ["wine tours"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "summerland-bc-mechanism",
+        title: "Orchard Valley at work",
+        paragraphs: [
+          "Summerland sits where mid-okanagan lakeside; orchard-and-vineyard terraces on benches above okanagan lake. The atlas tags this as orchard valley (BSk, roughly 333 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Lake effect — with Slope / aspect also in play.",
+          "Combination of deep-lake moderation and rain-shadow aridity; south-facing benches enjoy thermal-belt advantages. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "summerland-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Summerland screening: Okanagan Lake thermal moderation plus rain-shadow dryness — the heart of BC wine country. Soil reads as sandy loam on glacial benches with excessive drainage and pH 6.8–7.6 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Apples (heritage), Cherries, Wine grapes (cool-climate), Pears; Humidity lovers tend to struggle without intervention. Smoke-sensitive — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Summerland CDA", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Summerland CDA", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1031,12 +1091,14 @@ export const PLACES_CANADA: Place[] = [
         spring: "Spring opens with afternoons near 7.6°C and nights near 0.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1184 mm annual backdrop. Storm systems roll through with real force.",
         summer: "Summer settles with afternoons near 20.5°C and nights near 12.5°C — showers pass through regularly. Grand Manan Island is at its most kinetic for whales. Afternoon convection and storms build often.",
         autumn: "Autumn light with afternoons near 12.8°C and nights near 5.7°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for hyper-maritime. Storm systems roll through with real force.",
+
+
       },
       travelerFit: "Visitors come for whales and puffins — the practical way to experience hyper-maritime terrain in New Brunswick.",
       residentFit: "It rewards deep-Fundy lovers — especially hardy maritime families — if the local tradeoffs still feel acceptable after a full season in Grand Manan.",
       texture: "An easier place to settle into at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Island groceries and year-round services are limited; Saint John and Calais are the usual ferry-linked anchors for specialists and flights.",
     },
-    climate: { tempHighC: [-1.4, -1.1, 2.1, 7.4, 13.4, 18.1, 21.6, 21.8, 18.4, 12.9, 7.1, 1.9], tempLowC: [-7.6, -7.9, -4.3, 0.3, 5.0, 10.1, 13.6, 13.7, 10.3, 5.6, 1.1, -4.6], precipMm: [110, 92, 100, 92, 94, 82, 78, 78, 98, 112, 122, 126], annualPrecipMm: 1184, frostFreeDays: 170, hardinessZone: "6a" },
+    climate: { tempHighC: [-1.4, -1.1, 2.1, 7.4, 13.4, 18.1, 21.6, 21.8, 18.4, 12.9, 7.1, 1.9], tempLowC: [-7.6, -7.9, -4.3, 0.3, 5.0, 10.1, 13.6, 13.7, 10.3, 5.6, 1.1, -4.6], precipMm: [110, 92, 100, 92, 94, 82, 78, 78, 98, 112, 122, 126], humidity: [87, 87, 76, 72, 73, 71, 66, 68, 71, 75, 81, 87], sunshinePct: [39, 45, 48, 56, 49, 53, 46, 43, 34, 41, 37, 34], annualPrecipMm: 1184, frostFreeDays: 170, hardinessZone: "6a" },
     soil: { texture: "Thin sandy loam on metamorphic bedrock", drainage: "good", phRange: [5.2, 6.0], waterHolding: "low" },
     growability: { score: 56, growsWell: ["Native perennials", "Cool-season vegetables", "Berries"], tricky: ["Long-season fruit"] },
     climateChange: { outlook2050: "Warmer, wetter, stormier.", outlook2100: "SLR and storm exposure rise.", keyShifts: [{variable: "Sea level", direction: "up"}, {variable: "Storms", direction: "up"}], resilienceNote: "Maritime moderation persists; storms intensify." },
@@ -1049,13 +1111,33 @@ export const PLACES_CANADA: Place[] = [
       note: "Island groceries and year-round services are limited; Saint John and Calais are the usual ferry-linked anchors for specialists and flights.",
       sources: [
         { label: "ECCC — Grand Manan climate data", url: "https://climate.weather.gc.ca/" },
-      ],
+      
+        { label: "Climate Atlas of Canada — regional context", url: "https://climateatlas.ca/" },],
     },
     relocationFit: ["hardy maritime families"], travelFit: ["whales", "puffins"],
     whoWouldLove: "Deep-Fundy lovers.", whoMightNot: "Fog-intolerant.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "grand-manan-nb-mechanism",
+        title: "Hyper-Maritime at work",
+        paragraphs: [
+          "Grand Manan Island sits where island in the bay of fundy; extreme tidal moderation. The atlas tags this as hyper-maritime (Dfb / Cfb transition, roughly 1184 mm/yr in these normals), and the dominant spatial engines are Marine layer.",
+          "The Fundy tidal engine keeps local SSTs cool in summer and warm(er) than air in winter. That mechanism is why two map dots in New Brunswick can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "grand-manan-nb-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Grand Manan Island screening: Bay of Fundy tides create one of the Maritimes' most moderated climates. Soil reads as thin sandy loam on metamorphic bedrock with good drainage and pH 5.2–6 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Native perennials, Cool-season vegetables, Berries; Long-season fruit tend to struggle without intervention. Fog-intolerant — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Grand Manan", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Grand Manan", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1079,7 +1161,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards quiet Kootenay folk — especially small-farm families — if the local tradeoffs still feel acceptable after a full season in Creston.",
       texture: "An easier place to settle into — the main things to weigh are wildfire exposure and smoke-season air quality. Housing runs expensive relative to regional medians.",
     },
-    climate: { tempHighC: [-1.2, 2.4, 8.4, 14.6, 19.8, 23.4, 27.2, 26.8, 21.2, 13.2, 4.2, -1.6], tempLowC: [-7.8, -5.3, -1.9, 2.1, 6.4, 10.2, 12.4, 12.0, 7.8, 2.8, -2.6, -6.9], precipMm: [36, 26, 30, 36, 52, 62, 42, 36, 36, 46, 50, 50], annualPrecipMm: 502, frostFreeDays: 155, hardinessZone: "5b" },
+    climate: { tempHighC: [-1.2, 2.4, 8.4, 14.6, 19.8, 23.4, 27.2, 26.8, 21.2, 13.2, 4.2, -1.6], tempLowC: [-7.8, -5.3, -1.9, 2.1, 6.4, 10.2, 12.4, 12.0, 7.8, 2.8, -2.6, -6.9], precipMm: [36, 26, 30, 36, 52, 62, 42, 36, 36, 46, 50, 50], annualPrecipMm: 502, frostFreeDays: 155, hardinessZone: "5b", humidity: [85, 85, 77, 74, 73, 70, 61, 64, 66, 72, 83, 81], sunshinePct: [37, 44, 47, 55, 60, 64, 57, 54, 45, 40, 36, 33] },
     soil: { texture: "Silt loam on lake-bottom deposits", drainage: "moderate", phRange: [6.2, 7.0], waterHolding: "high" },
     growability: { score: 80, growsWell: ["Apples (heritage)", "Cherries", "Hardy grapes", "Grain"], tricky: ["Heat lovers"] },
     climateChange: { outlook2050: "Warmer, drier summers.", outlook2100: "More fire.", keyShifts: [{variable: "Fire", direction: "up"}], resilienceNote: "Agricultural valley with good adaptation options." },
@@ -1099,8 +1181,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families"], travelFit: ["wildlife area", "orchards"],
     whoWouldLove: "Quiet Kootenay folk.", whoMightNot: "Urbanites.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "creston-bc-mechanism",
+        title: "Orchard Valley at work",
+        paragraphs: [
+          "Creston Valley sits where broad valley between the selkirks and purcells; fertile floor with wetland complex. The atlas tags this as orchard valley (Dfb / BSk transition, roughly 502 mm/yr in these normals), and the dominant spatial engines are River-valley moderation and Rain shadow.",
+          "Valley position between Selkirks and Purcells provides partial shelter and fertile alluvial soils. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "creston-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Creston Valley screening: A quiet BC orchard valley with fertile soils and protected climate — Kootenay fruit country. Soil reads as silt loam on lake-bottom deposits with moderate drainage and pH 6.2–7 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Apples (heritage), Cherries, Hardy grapes, Grain; Heat lovers tend to struggle without intervention. Urbanites — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Creston CDA", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Creston CDA", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   // ====================================================================
@@ -1149,8 +1250,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers", "orchardists", "retirees"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Sun-desiring Canadians.", whoMightNot: "Fire-averse.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "penticton-bc-mechanism",
+        title: "Rain-Shadow Sanctuary at work",
+        paragraphs: [
+          "Penticton sits where isthmus between skaha and okanagan lakes in the deep okanagan rain-shadow valley. The atlas tags this as rain-shadow sanctuary (BSk / Dfb margin, roughly 302 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Lake effect — with River-valley moderation also in play.",
+          "Interior rain-shadow produces true semi-desert conditions; deep lakes moderate and extend the growing season; the combination is unique north of the US border. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "penticton-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Penticton screening: Canada's only desert-adjacent fruit region — hot dry summers, two big lakes, and a full four-season climate. Soil reads as silt loam over glaciolacustrine sediment with good drainage and pH 6.8–7.6 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Wine grapes, Peaches, Apples, Apricots; Humidity lovers tend to struggle without intervention. Fire-averse — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Penticton 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "BCMAF terroir reports", kind: "other" }],
+    citations: [{ label: "ECCC — Penticton 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "BCMAF terroir reports", kind: "other" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1195,8 +1315,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seeking Canadians"], travelFit: ["desert hiking", "fly-fishing"],
     whoWouldLove: "Dry-climate-loving British Columbians.", whoMightNot: "Fire-smoke-sensitive.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "kamloops-bc-mechanism",
+        title: "Rain-Shadow Sanctuary at work",
+        paragraphs: [
+          "Kamloops sits where confluence of thompson rivers in the bc interior plateau — one of canada's driest climates. The atlas tags this as rain-shadow sanctuary (BSk, roughly 286 mm/yr in these normals), and the dominant spatial engines are Rain shadow and River-valley moderation.",
+          "Double rain-shadow (Coast Range + southern Interior Plateau) produces one of Canada's most arid climates; river confluence concentrates settlement and farming. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "kamloops-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Kamloops screening: The Thompson River's 'Canada's semi-desert' — sagebrush slopes, hot dry summers, and genuine four-season character. Soil reads as silt loam on glacio-lacustrine with good drainage and pH 7–7.8 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy fruit, Tomatoes (with water), Hay; Acid-loving plants tend to struggle without intervention. Fire-smoke-sensitive — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Kamloops AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Kamloops AP", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1300,7 +1439,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards committed winter people — especially serious skiers — if the local tradeoffs still feel acceptable after a full season in Revelstoke.",
       texture: "A place that asks for a few compromises — the main things to weigh are storm exposure and slope stability.",
     },
-    climate: { tempHighC: [-2.1, 1.4, 6.8, 12.8, 18.4, 22.1, 25.4, 25.1, 19.1, 11.1, 3.2, -2.4], tempLowC: [-8.6, -6.1, -2.4, 1.4, 5.6, 9.4, 11.8, 11.1, 7.1, 2.1, -3.2, -7.6], precipMm: [94, 66, 64, 60, 70, 76, 62, 62, 64, 108, 128, 118], snowCm: [160, 94, 64, 16, 0, 0, 0, 0, 0, 14, 90, 170], annualPrecipMm: 972, frostFreeDays: 140, hardinessZone: "5b" },
+    climate: { tempHighC: [-2.1, 1.4, 6.8, 12.8, 18.4, 22.1, 25.4, 25.1, 19.1, 11.1, 3.2, -2.4], tempLowC: [-8.6, -6.1, -2.4, 1.4, 5.6, 9.4, 11.8, 11.1, 7.1, 2.1, -3.2, -7.6], precipMm: [94, 66, 64, 60, 70, 76, 62, 62, 64, 108, 128, 118], snowCm: [160, 94, 64, 16, 0, 0, 0, 0, 0, 14, 90, 170], annualPrecipMm: 972, frostFreeDays: 140, hardinessZone: "5b", humidity: [86, 86, 75, 71, 72, 70, 65, 67, 70, 74, 80, 86], sunshinePct: [38, 45, 47, 56, 49, 52, 46, 42, 34, 40, 36, 33] },
     soil: { texture: "Silt loam / sandy loam", drainage: "moderate", phRange: [5.2, 6.4], waterHolding: "moderate" },
     growability: { score: 48, hardinessZone: "5b", growsWell: ["Short-season crops", "Berries"], tricky: ["Heat crops"] },
     climateChange: { outlook2050: "Snow-line rising; rainier winters.", outlook2100: "Potential significant snow loss.", keyShifts: [{variable: "Snowpack", direction: "down"}], resilienceNote: "Snow-economy at risk." },
@@ -1320,8 +1459,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["serious skiers", "snow-loving families"], travelFit: ["ski", "powder tourism"],
     whoWouldLove: "Committed winter people.", whoMightNot: "Anyone expecting summer heat.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "revelstoke-bc-mechanism",
+        title: "Lake-Effect Snowbelt at work",
+        paragraphs: [
+          "Revelstoke sits where columbia river valley deep within the selkirks; maximal orographic snowfall zone. The atlas tags this as lake-effect snowbelt (Dfb (humid), roughly 972 mm/yr in these normals), and the dominant spatial engines are Orographic lift and River-valley moderation.",
+          "Convergence of Pacific moisture onto Selkirk range after initial Coast-Mountain passage produces exceptional snowfall. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "revelstoke-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Revelstoke screening: Canada's snow capital — over 10 m of annual snowfall on the surrounding peaks, with the town itself deeply snowbound every winter. Soil reads as silt loam / sandy loam with moderate drainage and pH 5.2–6.4 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Short-season crops, Berries; Heat crops tend to struggle without intervention. Anyone expecting summer heat — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Revelstoke 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Revelstoke 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1346,7 +1504,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards those who want Tofino's climate at half the tourism intensity — especially storm-coast romantics — if the local tradeoffs still feel acceptable after a full season in Ucluelet.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Housing runs expensive relative to regional medians.",
     },
-    climate: { tempHighC: [7.6, 8.4, 9.3, 11.1, 13.8, 16.1, 18.1, 18.6, 17.6, 13.9, 9.8, 7.6], tempLowC: [2.8, 2.8, 3.4, 4.7, 7.4, 9.8, 11.4, 11.6, 10.4, 7.9, 5.1, 3.1], precipMm: [466, 386, 366, 244, 158, 114, 70, 84, 148, 404, 540, 552], humidity: [82, 80, 78, 77, 78, 80, 82, 83, 84, 85, 83, 82], annualPrecipMm: 3532, frostFreeDays: 320, hardinessZone: "8b" },
+    climate: { tempHighC: [7.6, 8.4, 9.3, 11.1, 13.8, 16.1, 18.1, 18.6, 17.6, 13.9, 9.8, 7.6], tempLowC: [2.8, 2.8, 3.4, 4.7, 7.4, 9.8, 11.4, 11.6, 10.4, 7.9, 5.1, 3.1], precipMm: [466, 386, 366, 244, 158, 114, 70, 84, 148, 404, 540, 552], humidity: [82, 80, 78, 77, 78, 80, 82, 83, 84, 85, 83, 82], annualPrecipMm: 3532, frostFreeDays: 320, hardinessZone: "8b", sunshinePct: [35, 38, 37, 44, 37, 42, 39, 39, 34, 42, 39, 34] },
     soil: { texture: "Organic over glacial till", drainage: "moderate", phRange: [4.8, 5.8], waterHolding: "high" },
     growability: { score: 44, hardinessZone: "8b", growsWell: ["Salal", "Ferns", "Moss-tolerant greens"], tricky: ["Tomatoes", "Stone fruit"] },
     climateChange: { outlook2050: "Sea-level rise; storm intensity uncertain.", outlook2100: "Continued moderation with rising sea.", keyShifts: [{variable: "Sea level", direction: "up"}, {variable: "Storm intensity", direction: "mixed"}], resilienceNote: "Temperature regime extraordinarily resilient." },
@@ -1359,13 +1517,33 @@ export const PLACES_CANADA: Place[] = [
       note: "Outer-coast Pacific Rim corridor with limited Highway-4 access and tourism-inflated housing; daily services depend on Port Alberni and Nanaimo.",
       sources: [
         { label: "Pacific Rim regional housing notes", url: "https://www.acrd.bc.ca/" },
-      ],
+      
+        { label: "ECCC — Tofino AP", url: "https://climate.weather.gc.ca/" },],
     },
     relocationFit: ["storm-coast romantics"], travelFit: ["surfing", "storm watching"],
     whoWouldLove: "Those who want Tofino's climate at half the tourism intensity.", whoMightNot: "Sun-seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "tofino-ucluelet-corridor-mechanism",
+        title: "Hyper-Maritime at work",
+        paragraphs: [
+          "Ucluelet sits where outer west coast of vancouver island, facing the open north pacific. The atlas tags this as hyper-maritime (Cfb, roughly 3532 mm/yr in these normals), and the dominant spatial engines are Marine layer and Orographic lift.",
+          "Direct North Pacific exposure with no significant upwind land produces extreme maritime moderation. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "tofino-ucluelet-corridor-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Ucluelet screening: Tofino's quieter, equally hyper-maritime twin — storm-watching headquarters on Vancouver Island's exposed outer coast. Soil reads as organic over glacial till with moderate drainage and pH 4.8–5.8 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Salal, Ferns, Moss-tolerant greens; Tomatoes, Stone fruit tend to struggle without intervention. Sun-seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Tofino AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Tofino AP", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1390,7 +1568,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards those chasing Mediterranean mild at a Canadian latitude — especially retirees — if the local tradeoffs still feel acceptable after a full season in Qualicum Beach.",
       texture: "An easier place to settle into at sea level — no single hazard dominates the picture. Island-East retirement belt with Nanaimo / YYJ access via the E&N corridor; cost has tightened with retiree migration but remains below Greater Vancouver.",
     },
-    climate: { tempHighC: [6.8, 8.9, 11.4, 14.1, 17.6, 20.2, 22.9, 22.8, 20.1, 14.8, 9.4, 7.0], tempLowC: [1.4, 1.8, 3.1, 4.9, 7.6, 10.1, 11.9, 12.0, 10.1, 6.9, 3.8, 1.6], precipMm: [130, 96, 90, 64, 56, 44, 22, 24, 42, 104, 156, 142], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 970, frostFreeDays: 260, hardinessZone: "8b" },
+    climate: { tempHighC: [6.8, 8.9, 11.4, 14.1, 17.6, 20.2, 22.9, 22.8, 20.1, 14.8, 9.4, 7.0], tempLowC: [1.4, 1.8, 3.1, 4.9, 7.6, 10.1, 11.9, 12.0, 10.1, 6.9, 3.8, 1.6], precipMm: [130, 96, 90, 64, 56, 44, 22, 24, 42, 104, 156, 142], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 970, frostFreeDays: 260, hardinessZone: "8b", sunshinePct: [58, 61, 62, 70, 75, 82, 79, 79, 72, 79, 63, 57] },
     soil: { texture: "Glacial gravels / sandy loam", drainage: "good", phRange: [5.6, 6.6], waterHolding: "moderate" },
     growability: { score: 78, hardinessZone: "8b", growsWell: ["Grapes (cool-climate)", "Apples", "Berries", "Garry oak natives", "Figs"], tricky: ["Long-season heat crops"] },
     climateChange: { outlook2050: "Warmer, slightly drier summers.", outlook2100: "Mediterranean character intensifying.", keyShifts: [{variable: "Summer dry season", direction: "up"}], resilienceNote: "Among Canada's most climate-resilient regions." },
@@ -1403,7 +1581,8 @@ export const PLACES_CANADA: Place[] = [
       note: "Island-East retirement belt with Nanaimo / YYJ access via the E&N corridor; cost has tightened with retiree migration but remains below Greater Vancouver.",
       sources: [
         { label: "Niche / RDN housing context", url: "https://www.rdn.bc.ca/" },
-      ],
+      
+        { label: "ECCC — Qualicum Beach AWS", url: "https://climate.weather.gc.ca/" },],
     },
     relocationFit: ["retirees", "mild-climate seekers"], travelFit: ["beaches", "Pacific Rim gateway"],
     whoWouldLove: "Those chasing Mediterranean mild at a Canadian latitude.", whoMightNot: "Budget-constrained.",
@@ -1427,7 +1606,8 @@ export const PLACES_CANADA: Place[] = [
         ],
       },
     ],
-    citations: [{ label: "ECCC — Qualicum Beach AWS", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Qualicum Beach AWS", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1452,7 +1632,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards those who want to live in a coastal cloud — especially hyper-maritime devotees — if the local tradeoffs still feel acceptable after a full season in Prince Rupert.",
       texture: "A real-tradeoff place — the main things to weigh are storm exposure and flood and surge risk. Specialty care and major-airport access require real planning.",
     },
-    climate: { tempHighC: [4.6, 6.1, 7.4, 9.4, 12.3, 14.8, 16.6, 17.1, 14.9, 11.4, 7.4, 5.2], tempLowC: [-0.4, 0.1, 1.1, 2.9, 5.4, 8.4, 10.4, 11.0, 9.1, 5.8, 2.4, 0.8], precipMm: [254, 192, 204, 186, 148, 120, 116, 138, 240, 380, 294, 286], humidity: [82, 80, 78, 77, 78, 80, 82, 83, 84, 85, 83, 82], annualPrecipMm: 2618, frostFreeDays: 220, hardinessZone: "7b" },
+    climate: { tempHighC: [4.6, 6.1, 7.4, 9.4, 12.3, 14.8, 16.6, 17.1, 14.9, 11.4, 7.4, 5.2], tempLowC: [-0.4, 0.1, 1.1, 2.9, 5.4, 8.4, 10.4, 11.0, 9.1, 5.8, 2.4, 0.8], precipMm: [254, 192, 204, 186, 148, 120, 116, 138, 240, 380, 294, 286], humidity: [82, 80, 78, 77, 78, 80, 82, 83, 84, 85, 83, 82], annualPrecipMm: 2618, frostFreeDays: 220, hardinessZone: "7b", sunshinePct: [32, 35, 34, 40, 33, 38, 35, 35, 30, 39, 35, 30] },
     soil: { texture: "Organic over bedrock / thin till", drainage: "poor", phRange: [4.4, 5.4], waterHolding: "high" },
     growability: { score: 30, hardinessZone: "7b", growsWell: ["Moss-tolerant", "Cool brassicas"], tricky: ["Almost everything heat-loving"] },
     climateChange: { outlook2050: "Slightly warmer, more erratic.", outlook2100: "Sea level pressing harbor.", keyShifts: [{variable: "Sea level", direction: "up"}], resilienceNote: "Temperature regime remarkably stable." },
@@ -1465,13 +1645,33 @@ export const PLACES_CANADA: Place[] = [
       note: "Skeena-end port with notoriously dark, wet weather (>2,500 mm/yr, ~110 sun-days), small economy, and limited specialty-medical access — care often requires Terrace or Vancouver.",
       sources: [
         { label: "ECCC normals — Prince Rupert", url: "https://climate.weather.gc.ca/" },
-      ],
+      
+        { label: "Climate Atlas of Canada — regional context", url: "https://climateatlas.ca/" },],
     },
     relocationFit: ["hyper-maritime devotees"], travelFit: ["Skeena fishing", "BC Ferries terminus"],
     whoWouldLove: "Those who want to live in a coastal cloud.", whoMightNot: "Sun-needing humans.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "prince-rupert-bc-mechanism",
+        title: "Hyper-Maritime at work",
+        paragraphs: [
+          "Prince Rupert sits where kaien island at the foot of the coast mountains' fjord country; one of the wettest places in north america. The atlas tags this as hyper-maritime (Cfb (hyper-oceanic), roughly 2618 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Marine layer.",
+          "Direct Pacific exposure plus Coast Mountain orographic lift produces extreme precipitation; fjord positions buffer temperature. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "prince-rupert-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Prince Rupert screening: Canada's rainiest city — 2600 mm of annual precipitation and a fjord-harbor climate that stays between 2 and 16°C year-round. Soil reads as organic over bedrock / thin till with poor drainage and pH 4.4–5.4 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Moss-tolerant, Cool brassicas; Almost everything heat-loving tend to struggle without intervention. Sun-needing humans — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Prince Rupert 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Prince Rupert 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   // ====================================================================
@@ -1499,7 +1699,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards chinook romantics — especially ranchers — if the local tradeoffs still feel acceptable after a full season in Pincher Creek.",
       texture: "A place that asks for a few compromises — the main things to weigh are deep winter cold and storm exposure.",
     },
-    climate: { tempHighC: [-0.9, 1.3, 5.8, 11.4, 16.8, 21.3, 24.6, 24.3, 19.1, 12.6, 3.8, -1.2], tempLowC: [-11.4, -10.3, -6.4, -1.8, 2.6, 6.6, 9.3, 8.8, 4.4, -0.8, -6.3, -10.6], precipMm: [26, 20, 28, 42, 66, 84, 58, 52, 44, 28, 24, 28], snowCm: [30, 25, 32, 24, 6, 0, 0, 0, 2, 12, 30, 36], annualPrecipMm: 500, frostFreeDays: 105, hardinessZone: "3b" },
+    climate: { tempHighC: [-0.9, 1.3, 5.8, 11.4, 16.8, 21.3, 24.6, 24.3, 19.1, 12.6, 3.8, -1.2], tempLowC: [-11.4, -10.3, -6.4, -1.8, 2.6, 6.6, 9.3, 8.8, 4.4, -0.8, -6.3, -10.6], precipMm: [26, 20, 28, 42, 66, 84, 58, 52, 44, 28, 24, 28], snowCm: [30, 25, 32, 24, 6, 0, 0, 0, 2, 12, 30, 36], annualPrecipMm: 500, frostFreeDays: 105, hardinessZone: "3b", humidity: [84, 84, 77, 73, 72, 70, 65, 63, 66, 72, 78, 80], sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34] },
     soil: { texture: "Dark brown chernozem", drainage: "good", phRange: [6.8, 7.6], waterHolding: "moderate" },
     growability: { score: 52, hardinessZone: "3b", growsWell: ["Cold-hardy crops", "Hay", "Wind-tolerant perennials"], tricky: ["Wind-sensitive crops"] },
     climateChange: { outlook2050: "Warmer; drier summers possible.", outlook2100: "Continued warming.", keyShifts: [{variable: "Extreme cold", direction: "down"}], resilienceNote: "Chinook regime is geographically anchored." },
@@ -1519,8 +1719,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["ranchers", "wind-tolerant"], travelFit: ["Waterton gateway"],
     whoWouldLove: "Chinook romantics.", whoMightNot: "Wind-averse.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "pincher-creek-ab-mechanism",
+        title: "Chinook Corridor at work",
+        paragraphs: [
+          "Pincher Creek sits where foothills immediately east of the rockies at the crowsnest pass outflow. The atlas tags this as chinook corridor (Dfb, roughly 500 mm/yr in these normals), and the dominant spatial engines are Chinook / foehn downslope.",
+          "Crowsnest gap funnels westerly flow into strong, frequent chinook events; the geographic setup is Canada's most pronounced chinook signature. That mechanism is why two map dots in Alberta can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "pincher-creek-ab-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Pincher Creek screening: Ground zero for Alberta chinooks — winters punctuated by 25°C warm-ups in hours, and some of Canada's strongest sustained winds. Soil reads as dark brown chernozem with good drainage and pH 6.8–7.6 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cold-hardy crops, Hay, Wind-tolerant perennials; Wind-sensitive crops tend to struggle without intervention. Wind-averse — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Pincher Creek 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Pincher Creek 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1545,7 +1764,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards those who love an ecological anomaly — especially prairie ranchers — if the local tradeoffs still feel acceptable after a full season in Maple Creek / Cypress Hills.",
       texture: "An easier place to settle into — the main things to weigh are deep winter cold.",
     },
-    climate: { tempHighC: [-5.1, -2.8, 2.4, 9.4, 15.8, 19.9, 23.4, 22.8, 17.2, 10.2, 1.6, -4.4], tempLowC: [-14.6, -12.4, -7.9, -2.8, 2.6, 7.1, 9.8, 9.1, 4.2, -1.8, -8.4, -13.4], precipMm: [18, 16, 24, 32, 64, 82, 66, 48, 34, 20, 16, 18], snowCm: [20, 16, 24, 18, 3, 0, 0, 0, 0, 6, 20, 22], annualPrecipMm: 438, frostFreeDays: 90, hardinessZone: "3a" },
+    climate: { tempHighC: [-5.1, -2.8, 2.4, 9.4, 15.8, 19.9, 23.4, 22.8, 17.2, 10.2, 1.6, -4.4], tempLowC: [-14.6, -12.4, -7.9, -2.8, 2.6, 7.1, 9.8, 9.1, 4.2, -1.8, -8.4, -13.4], precipMm: [18, 16, 24, 32, 64, 82, 66, 48, 34, 20, 16, 18], snowCm: [20, 16, 24, 18, 3, 0, 0, 0, 0, 6, 20, 22], annualPrecipMm: 438, frostFreeDays: 90, hardinessZone: "3a", humidity: [83, 83, 76, 72, 71, 61, 56, 54, 57, 71, 77, 79], sunshinePct: [38, 45, 47, 56, 61, 64, 58, 54, 46, 40, 36, 33] },
     soil: { texture: "Dark brown chernozem with wooded pockets", drainage: "good", phRange: [6.4, 7.4], waterHolding: "moderate" },
     growability: { score: 48, hardinessZone: "3a", growsWell: ["Cold-hardy perennials", "Short-season crops"], tricky: ["Warm-season crops"] },
     climateChange: { outlook2050: "Warmer; forest stress possible.", outlook2100: "Island-refuge character potentially eroding.", keyShifts: [{variable: "Forest ecosystem", direction: "mixed"}], resilienceNote: "Elevation provides climatic buffer." },
@@ -1566,8 +1785,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["prairie ranchers"], travelFit: ["dark-sky preserve", "boreal surprise"],
     whoWouldLove: "Those who love an ecological anomaly.", whoMightNot: "Service-dependent.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "cypress-hills-sk-mechanism",
+        title: "Sky-Island Refuge at work",
+        paragraphs: [
+          "Cypress Hills sits where island-mountain plateau rising 700 m above the surrounding prairie — the highest point between the rockies and labrador. The atlas tags this as sky-island refuge (Dfb (island), roughly 438 mm/yr in these normals), and the dominant spatial engines are Elevation lapse rate and Continental extremity — with Cold-air drainage also in play.",
+          "Isolated island-mountain plateau rising above surrounding prairie produces a distinctive climatic and ecological refugium. That mechanism is why two map dots in Saskatchewan can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "cypress-hills-sk-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Cypress Hills screening: The prairie's surprise — a forested plateau 700 m above the surrounding plains, a sky-island oasis in the Canadian steppe. Soil reads as dark brown chernozem with wooded pockets with good drainage and pH 6.4–7.4 — garden success tracks micro-shelter and water timing.",
+          "Extreme cold registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cold-hardy perennials, Short-season crops; Warm-season crops tend to struggle without intervention. Service-dependent — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Cypress Hills 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Parks Canada Cypress Hills ecosystem", kind: "other" }],
+    citations: [{ label: "ECCC — Cypress Hills 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Parks Canada Cypress Hills ecosystem", kind: "other" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   // ====================================================================
@@ -1595,7 +1833,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards those drawn to Canada's longest growing season — especially greenhouse farmers — if the local tradeoffs still feel acceptable after a full season in Leamington.",
       texture: "An easier place to settle into — the main things to weigh are storm exposure.",
     },
-    climate: { tempHighC: [-0.4, 0.6, 5.8, 13.1, 19.4, 24.6, 26.8, 26.1, 22.6, 15.6, 8.4, 2.4], tempLowC: [-7.9, -8.4, -3.6, 2.8, 8.6, 14.1, 16.8, 16.4, 12.4, 6.4, 1.6, -4.4], precipMm: [62, 52, 68, 82, 82, 80, 70, 78, 92, 78, 86, 76], snowCm: [40, 32, 18, 2, 0, 0, 0, 0, 0, 0, 6, 28], annualPrecipMm: 906, frostFreeDays: 180, hardinessZone: "7a" },
+    climate: { tempHighC: [-0.4, 0.6, 5.8, 13.1, 19.4, 24.6, 26.8, 26.1, 22.6, 15.6, 8.4, 2.4], tempLowC: [-7.9, -8.4, -3.6, 2.8, 8.6, 14.1, 16.8, 16.4, 12.4, 6.4, 1.6, -4.4], precipMm: [62, 52, 68, 82, 82, 80, 70, 78, 92, 78, 86, 76], snowCm: [40, 32, 18, 2, 0, 0, 0, 0, 0, 0, 6, 28], annualPrecipMm: 906, frostFreeDays: 180, hardinessZone: "7a", humidity: [60, 60, 58, 68, 70, 77, 77, 80, 81, 74, 74, 62], sunshinePct: [45, 48, 48, 56, 62, 67, 65, 64, 59, 54, 50, 44] },
     soil: { texture: "Deep clay loam on lakebed sediment", drainage: "moderate", phRange: [6.4, 7.4], waterHolding: "high" },
     growability: { score: 86, hardinessZone: "7a", growsWell: ["Tomatoes (greenhouse)", "Peaches", "Wine grapes", "Peppers"], tricky: ["Short-season cold-adapted"] },
     climateChange: { outlook2050: "Longer growing seasons; more intense rain.", outlook2100: "Continued warming.", keyShifts: [{variable: "Heat waves", direction: "up"}], resilienceNote: "Agricultural advantage may strengthen." },
@@ -1615,8 +1853,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["greenhouse farmers"], travelFit: ["Point Pelee birding"],
     whoWouldLove: "Those drawn to Canada's longest growing season.", whoMightNot: "Mountain-lovers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "leamington-on-mechanism",
+        title: "Lake-Moderated at work",
+        paragraphs: [
+          "Leamington / Pelee sits where canada's southernmost mainland, on lake erie's north shore. The atlas tags this as lake-moderated (Dfa (warmest Dfa in Canada), roughly 906 mm/yr in these normals), and the dominant spatial engines are Lake effect and River-valley moderation.",
+          "Southernmost Canadian latitude plus Lake Erie moderation produces the country's most southerly climate regime. That mechanism is why two map dots in Ontario can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "leamington-on-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Leamington / Pelee screening: Canada's southernmost mainland town — Lake Erie moderation produces hot summers, mild winters, and the country's longest growing season. Soil reads as deep clay loam on lakebed sediment with moderate drainage and pH 6.4–7.4 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Tomatoes (greenhouse), Peaches, Wine grapes, Peppers; Short-season cold-adapted tend to struggle without intervention. Mountain-lovers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Leamington / Harrow AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Leamington / Harrow AP", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1640,7 +1897,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards boreal-lake devotees — especially boreal families — if the local tradeoffs still feel acceptable after a full season in Thunder Bay.",
       texture: "An easier place to settle into — the main things to weigh are deep winter cold and smoke-season air quality.",
     },
-    climate: { tempHighC: [-7.3, -5.0, 0.8, 8.2, 15.4, 20.1, 23.1, 22.1, 16.8, 9.8, 1.2, -5.4], tempLowC: [-18.4, -17.2, -10.1, -2.4, 3.4, 8.6, 11.8, 11.1, 6.4, 0.8, -5.4, -13.6], precipMm: [28, 22, 36, 44, 72, 84, 88, 86, 92, 66, 52, 38], snowCm: [40, 28, 32, 14, 2, 0, 0, 0, 0, 4, 32, 44], annualPrecipMm: 708, frostFreeDays: 110, hardinessZone: "3b" },
+    climate: { tempHighC: [-7.3, -5.0, 0.8, 8.2, 15.4, 20.1, 23.1, 22.1, 16.8, 9.8, 1.2, -5.4], tempLowC: [-18.4, -17.2, -10.1, -2.4, 3.4, 8.6, 11.8, 11.1, 6.4, 0.8, -5.4, -13.6], precipMm: [28, 22, 36, 44, 72, 84, 88, 86, 92, 66, 52, 38], snowCm: [40, 28, 32, 14, 2, 0, 0, 0, 0, 4, 32, 44], annualPrecipMm: 708, frostFreeDays: 110, hardinessZone: "3b", humidity: [82, 82, 74, 71, 66, 63, 62, 65, 67, 69, 76, 78], sunshinePct: [39, 46, 48, 57, 62, 65, 59, 55, 47, 41, 38, 34] },
     soil: { texture: "Sandy loam over glacial till", drainage: "moderate", phRange: [5.4, 6.4], waterHolding: "moderate" },
     growability: { score: 44, hardinessZone: "3b", growsWell: ["Cold-hardy perennials", "Cool-season crops"], tricky: ["Heat crops"] },
     climateChange: { outlook2050: "Less lake ice; more rain, less snow; milder winters.", outlook2100: "Boreal shift.", keyShifts: [{variable: "Lake ice", direction: "down"}], resilienceNote: "Superior buffers extremes." },
@@ -1660,8 +1917,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["boreal families"], travelFit: ["Sleeping Giant Park"],
     whoWouldLove: "Boreal-lake devotees.", whoMightNot: "Heat-needing.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "thunder-bay-on-mechanism",
+        title: "Lake-Moderated at work",
+        paragraphs: [
+          "Thunder Bay sits where north shore of lake superior; port city sheltered by sibley peninsula. The atlas tags this as lake-moderated (Dfb, roughly 708 mm/yr in these normals), and the dominant spatial engines are Lake effect and Continental extremity.",
+          "Lake Superior acts as a thermal flywheel at continental-climate latitude; local shoreline is significantly milder than inland Shield. That mechanism is why two map dots in Ontario can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "thunder-bay-on-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Thunder Bay screening: Lake Superior's port at the boundary of Great Lakes moderation and boreal continentality — some of Ontario's most dramatic climate contrasts. Soil reads as sandy loam over glacial till with moderate drainage and pH 5.4–6.4 — garden success tracks micro-shelter and water timing.",
+          "Smoke / air quality registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cold-hardy perennials, Cool-season crops; Heat crops tend to struggle without intervention. Heat-needing — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Thunder Bay AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Thunder Bay AP", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   // ====================================================================
@@ -1690,7 +1966,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards those who want wild Atlantic Canada — especially maritime romantics — if the local tradeoffs still feel acceptable after a full season in Gaspé.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Specialty care and major-airport access require real planning.",
     },
-    climate: { tempHighC: [-5.3, -4.1, 0.4, 6.1, 12.8, 18.1, 21.4, 20.6, 15.8, 9.4, 3.1, -2.4], tempLowC: [-14.9, -13.9, -9.1, -2.4, 3.1, 7.8, 11.4, 11.1, 6.8, 1.8, -3.6, -10.1], precipMm: [82, 64, 68, 72, 90, 96, 98, 92, 110, 108, 110, 96], snowCm: [72, 54, 48, 24, 2, 0, 0, 0, 0, 6, 40, 74], humidity: [80, 80, 80, 78, 78, 80, 82, 84, 84, 82, 82, 82], annualPrecipMm: 1086, frostFreeDays: 120, hardinessZone: "4b" },
+    climate: { tempHighC: [-5.3, -4.1, 0.4, 6.1, 12.8, 18.1, 21.4, 20.6, 15.8, 9.4, 3.1, -2.4], tempLowC: [-14.9, -13.9, -9.1, -2.4, 3.1, 7.8, 11.4, 11.1, 6.8, 1.8, -3.6, -10.1], precipMm: [82, 64, 68, 72, 90, 96, 98, 92, 110, 108, 110, 96], snowCm: [72, 54, 48, 24, 2, 0, 0, 0, 0, 6, 40, 74], humidity: [80, 80, 80, 78, 78, 80, 82, 84, 84, 82, 82, 82], annualPrecipMm: 1086, frostFreeDays: 120, hardinessZone: "4b", sunshinePct: [39, 45, 48, 56, 49, 53, 46, 43, 34, 41, 37, 34] },
     soil: { texture: "Thin till over sedimentary bedrock", drainage: "moderate", phRange: [5.2, 6.4], waterHolding: "moderate" },
     growability: { score: 44, hardinessZone: "4b", growsWell: ["Berries", "Potatoes", "Short-season veg"], tricky: ["Heat crops"] },
     climateChange: { outlook2050: "Milder winters; stronger storms.", outlook2100: "Sea-level pressure on coast.", keyShifts: [{variable: "Storm intensity", direction: "up"}], resilienceNote: "Wind and storm exposure is primary concern." },
@@ -1710,8 +1986,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["maritime romantics"], travelFit: ["Forillon", "fishing villages"],
     whoWouldLove: "Those who want wild Atlantic Canada.", whoMightNot: "Anyone needing warmth.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "gaspe-qc-mechanism",
+        title: "Cool-Summer Maritime at work",
+        paragraphs: [
+          "Gaspé Peninsula Tip sits where tip of the gaspé peninsula, where appalachian ridges drop into the gulf of st. lawrence. The atlas tags this as cool-summer maritime (Dfb (maritime-modified), roughly 1086 mm/yr in these normals), and the dominant spatial engines are Marine layer and Orographic lift — with Continental extremity also in play.",
+          "Maritime modification of otherwise boreal climate produces an Atlantic-temperate character with cool-summer signature. That mechanism is why two map dots in Québec can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "gaspe-qc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Gaspé Peninsula Tip screening: Where the Appalachians meet the Gulf — a maritime peninsula with cool foggy summers and hard Atlantic winters. Soil reads as thin till over sedimentary bedrock with moderate drainage and pH 5.2–6.4 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Berries, Potatoes, Short-season veg; Heat crops tend to struggle without intervention. Anyone needing warmth — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Gaspé AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Gaspé AP", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1736,7 +2031,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards storm-loving maritime people — especially Atlantic romantics — if the local tradeoffs still feel acceptable after a full season in St. John's.",
       texture: "A place that asks for a few compromises — the main things to weigh are storm exposure and coastal and sea-level pressure. A full regional capital makes the extreme maritime weather more livable, but fog, wind, slope, snow clearing, and storm surge shape daily routines.",
     },
-    climate: { tempHighC: [-1.1, -1.4, 1.9, 6.8, 12.6, 17.4, 20.8, 20.6, 16.4, 11.1, 6.1, 1.4], tempLowC: [-8.3, -8.9, -5.6, -1.4, 2.6, 6.9, 10.9, 11.2, 7.6, 3.6, 0.4, -4.8], precipMm: [132, 108, 112, 96, 100, 92, 82, 96, 102, 124, 134, 136], snowCm: [82, 76, 60, 32, 4, 0, 0, 0, 0, 2, 20, 80], humidity: [80, 80, 80, 78, 78, 80, 82, 84, 84, 82, 82, 82], annualPrecipMm: 1314, frostFreeDays: 150, hardinessZone: "6a" },
+    climate: { tempHighC: [-1.1, -1.4, 1.9, 6.8, 12.6, 17.4, 20.8, 20.6, 16.4, 11.1, 6.1, 1.4], tempLowC: [-8.3, -8.9, -5.6, -1.4, 2.6, 6.9, 10.9, 11.2, 7.6, 3.6, 0.4, -4.8], precipMm: [132, 108, 112, 96, 100, 92, 82, 96, 102, 124, 134, 136], snowCm: [82, 76, 60, 32, 4, 0, 0, 0, 0, 2, 20, 80], humidity: [80, 80, 80, 78, 78, 80, 82, 84, 84, 82, 82, 82], annualPrecipMm: 1314, frostFreeDays: 150, hardinessZone: "6a", sunshinePct: [32, 35, 34, 41, 34, 39, 36, 36, 31, 39, 36, 31] },
     soil: { texture: "Rocky thin till", drainage: "good", phRange: [4.6, 5.6], waterHolding: "low" },
     growability: { score: 34, hardinessZone: "6a", growsWell: ["Berries", "Rhubarb", "Cool-season crops"], tricky: ["Heat crops"] },
     climateChange: { outlook2050: "Warmer winters; storm pattern uncertain.", outlook2100: "Labrador Current changes could reshape climate.", keyShifts: [{variable: "Storm track", direction: "mixed"}], resilienceNote: "Oceanic moderation provides some buffer." },
@@ -1785,7 +2080,8 @@ export const PLACES_CANADA: Place[] = [
     whoWouldLove: "Storm-loving maritime people.", whoMightNot: "Sun-dependent.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — St. John's AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — St. John's AP", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   // ====================================================================
@@ -1890,7 +2186,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards northern dreamers — especially aurora-centric life — if the local tradeoffs still feel acceptable after a full season in Yellowknife.",
       texture: "A real-tradeoff place — the main things to weigh are deep winter cold and wildfire exposure.",
     },
-    climate: { tempHighC: [-21.9, -18.7, -12.1, -1.4, 9.6, 17.8, 21.1, 18.6, 11.1, 1.6, -10.9, -18.6], tempLowC: [-30.1, -28.1, -22.8, -11.1, -0.4, 8.1, 12.4, 10.4, 3.8, -4.8, -18.6, -26.9], precipMm: [16, 14, 14, 10, 18, 26, 38, 37, 38, 34, 23, 21], snowCm: [22, 18, 20, 14, 8, 0, 0, 0, 6, 30, 32, 26], annualPrecipMm: 289, frostFreeDays: 100, hardinessZone: "2a" },
+    climate: { tempHighC: [-21.9, -18.7, -12.1, -1.4, 9.6, 17.8, 21.1, 18.6, 11.1, 1.6, -10.9, -18.6], tempLowC: [-30.1, -28.1, -22.8, -11.1, -0.4, 8.1, 12.4, 10.4, 3.8, -4.8, -18.6, -26.9], precipMm: [16, 14, 14, 10, 18, 26, 38, 37, 38, 34, 23, 21], snowCm: [22, 18, 20, 14, 8, 0, 0, 0, 6, 30, 32, 26], annualPrecipMm: 289, frostFreeDays: 100, hardinessZone: "2a", humidity: [84, 84, 77, 73, 68, 66, 65, 67, 70, 72, 78, 80], sunshinePct: [37, 43, 46, 54, 60, 63, 57, 53, 44, 39, 35, 32] },
     soil: { texture: "Thin till over Shield bedrock", drainage: "moderate", phRange: [5.6, 6.6], waterHolding: "low" },
     growability: { score: 24, hardinessZone: "2a", growsWell: ["Tundra-hardy greens", "Short-season potatoes"], tricky: ["Almost everything"] },
     climateChange: { outlook2050: "Rapid winter warming; permafrost degradation.", outlook2100: "Major ecosystem shifts.", keyShifts: [{variable: "Permafrost", direction: "down"}, {variable: "Winter cold", direction: "down"}], resilienceNote: "Most rapidly warming climate region in North America." },
@@ -1910,8 +2206,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["aurora-centric life", "northern service workers"], travelFit: ["aurora", "ice road"],
     whoWouldLove: "Northern dreamers.", whoMightNot: "Cold-sensitive anyone.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "yellowknife-nt-mechanism",
+        title: "Subarctic Continental at work",
+        paragraphs: [
+          "Yellowknife sits where great slave lake's north shore; on the canadian shield; subarctic continental. The atlas tags this as subarctic continental (Dfc, roughly 289 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Polar jet / arctic front — with Cold-air drainage also in play.",
+          "Deep continental subarctic position with major freshwater lake moderation only during ice-free months. That mechanism is why two map dots in Northwest Territories can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "yellowknife-nt-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Yellowknife screening: One of the coldest capitals in the world — winter means drop to −26°C, summer days reach 22°C, and the aurora runs 240 nights a year. Soil reads as thin till over shield bedrock with moderate drainage and pH 5.6–6.6 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Tundra-hardy greens, Short-season potatoes; Almost everything tend to struggle without intervention. Cold-sensitive anyone — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Yellowknife AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Yellowknife AP", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1931,12 +2246,14 @@ export const PLACES_CANADA: Place[] = [
         spring: "Spring arrives with afternoons near -4.1°C and nights near -13.4°C — snow is a regular part of the picture. Spring is when polar jet / arctic front and continental extremity is easiest to read on the ground. Storm systems roll through with real force.",
         summer: "Summer peaks with afternoons near 16.2°C and nights near 6.9°C — showers pass through regularly. Churchill is at its most kinetic for polar bears. Afternoon convection and storms build often.",
         autumn: "Autumn turns with afternoons near 1.7°C and nights near -4.2°C — snow is a regular part of the picture. Autumn often brings the clearest light and the most honest tradeoffs for subarctic continental. Storm systems roll through with real force.",
+
+
       },
       travelerFit: "Visitors come for polar bears, beluga whales, and aurora — the practical way to experience subarctic continental terrain in Manitoba.",
       residentFit: "It rewards polar-ecosystem pilgrims — especially subarctic researchers — if the local tradeoffs still feel acceptable after a full season in Churchill.",
       texture: "A real-tradeoff place at sea level — the main things to weigh are deep winter cold and storm exposure.",
     },
-    climate: { tempHighC: [-21.2, -19.4, -13.4, -3.6, 4.8, 13.4, 18.1, 17.1, 10.4, 2.4, -7.6, -16.8], tempLowC: [-30.4, -28.8, -23.6, -13.1, -3.4, 3.4, 8.6, 8.8, 3.8, -3.4, -12.9, -24.6], precipMm: [18, 14, 18, 18, 23, 42, 56, 66, 58, 47, 32, 20], snowCm: [20, 16, 20, 16, 14, 2, 0, 0, 8, 34, 32, 24], annualPrecipMm: 412, frostFreeDays: 70, hardinessZone: "1a" },
+    climate: { tempHighC: [-21.2, -19.4, -13.4, -3.6, 4.8, 13.4, 18.1, 17.1, 10.4, 2.4, -7.6, -16.8], tempLowC: [-30.4, -28.8, -23.6, -13.1, -3.4, 3.4, 8.6, 8.8, 3.8, -3.4, -12.9, -24.6], precipMm: [18, 14, 18, 18, 23, 42, 56, 66, 58, 47, 32, 20], snowCm: [20, 16, 20, 16, 14, 2, 0, 0, 8, 34, 32, 24], humidity: [86, 86, 74, 71, 72, 69, 68, 71, 73, 69, 76, 82], sunshinePct: [37, 43, 46, 54, 48, 51, 45, 41, 32, 39, 35, 32], annualPrecipMm: 412, frostFreeDays: 70, hardinessZone: "1a" },
     soil: { texture: "Peat over permafrost", drainage: "poor", phRange: [4.6, 5.8], waterHolding: "high" },
     growability: { score: 14, hardinessZone: "1a", growsWell: ["Arctic-adapted greens"], tricky: ["Almost everything"] },
     climateChange: { outlook2050: "Sea ice decline dramatically reshaping local climate.", outlook2100: "Bay freeze increasingly absent; polar bear habitat collapse.", keyShifts: [{variable: "Sea ice", direction: "down"}], resilienceNote: "Among fastest-changing regimes on Earth." },
@@ -1956,8 +2273,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["subarctic researchers"], travelFit: ["polar bears", "beluga whales", "aurora"],
     whoWouldLove: "Polar-ecosystem pilgrims.", whoMightNot: "Virtually everyone else permanently.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "churchill-mb-mechanism",
+        title: "Subarctic Continental at work",
+        paragraphs: [
+          "Churchill sits where western hudson bay coast; at the subarctic-arctic transition on a fully exposed bay. The atlas tags this as subarctic continental (Dfc / Dfd, roughly 412 mm/yr in these normals), and the dominant spatial engines are Polar jet / arctic front and Continental extremity — with Marine layer also in play.",
+          "Hudson Bay's annual cycle of freeze and open water produces a bimodal climate: continental-extreme in winter, maritime-moderate in autumn. That mechanism is why two map dots in Manitoba can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "churchill-mb-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Churchill screening: The polar-bear capital of the world — where Hudson Bay's open water produces unusually heavy snowfall at a brutally continental subarctic latitude. Soil reads as peat over permafrost with poor drainage and pH 4.6–5.8 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Arctic-adapted greens; Almost everything tend to struggle without intervention. Virtually everyone else permanently — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Churchill AP", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Churchill AP", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -1981,7 +2317,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards cool-climate wine people — especially winemakers — if the local tradeoffs still feel acceptable after a full season in Prince Edward County.",
       texture: "An easier place to settle into — no single hazard dominates the picture.",
     },
-    climate: { tempHighC: [-2.4, -1.4, 3.3, 10.8, 17.6, 23.1, 25.9, 24.9, 20.5, 13.6, 6.4, 0.2], tempLowC: [-10.1, -10.0, -5.2, 1.1, 6.8, 12.0, 14.8, 14.2, 10.1, 4.6, -0.4, -5.8], precipMm: [64, 54, 62, 74, 80, 76, 72, 74, 88, 82, 80, 70], snowCm: [44, 32, 20, 4, 0, 0, 0, 0, 0, 0, 6, 32], annualPrecipMm: 876, frostFreeDays: 170, hardinessZone: "6b" },
+    climate: { tempHighC: [-2.4, -1.4, 3.3, 10.8, 17.6, 23.1, 25.9, 24.9, 20.5, 13.6, 6.4, 0.2], tempLowC: [-10.1, -10.0, -5.2, 1.1, 6.8, 12.0, 14.8, 14.2, 10.1, 4.6, -0.4, -5.8], precipMm: [64, 54, 62, 74, 80, 76, 72, 74, 88, 82, 80, 70], snowCm: [44, 32, 20, 4, 0, 0, 0, 0, 0, 0, 6, 32], annualPrecipMm: 876, frostFreeDays: 170, hardinessZone: "6b", humidity: [85, 85, 77, 74, 73, 66, 61, 64, 70, 76, 79, 81], sunshinePct: [36, 42, 45, 53, 58, 62, 55, 52, 43, 38, 34, 31] },
     soil: { texture: "Thin loam over limestone (Hillier loam)", drainage: "good", phRange: [7.2, 8.1], waterHolding: "low" },
     growability: { score: 78, growsWell: ["Pinot Noir", "Chardonnay", "Riesling", "Stone fruit"], tricky: ["Heat-loving long-season crops"] },
     climateChange: { outlook2050: "Longer growing season; more extreme rain.", outlook2100: "Warmer varietal shift.", keyShifts: [{variable: "Growing season", direction: "up"}], resilienceNote: "Emerging climate advantage for cool-climate wine." },
@@ -2001,8 +2337,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Cool-climate wine people.", whoMightNot: "Those wanting mild winters.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "prince-edward-co-on-mechanism",
+        title: "Lake-Moderated at work",
+        paragraphs: [
+          "Prince Edward County sits where peninsula into lake ontario; near-island status produces strong lake moderation. The atlas tags this as lake-moderated (Dfb, roughly 876 mm/yr in these normals), and the dominant spatial engines are Lake effect and Karst infiltration.",
+          "Peninsula geometry maximizes lake influence; limestone substrate + thin soils accelerate spring warming. That mechanism is why two map dots in Ontario can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "prince-edward-co-on-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Prince Edward County screening: Ontario's fastest-rising wine region, built on lake-moderated microclimate and limestone terroir. Soil reads as thin loam over limestone (hillier loam) with good drainage and pH 7.2–8.1 — garden success tracks micro-shelter and water timing.",
+          "No single hazard dominates the risk matrix here; the practical read is still parcel-specific for flood, wind, and access. Growability favors Pinot Noir, Chardonnay, Riesling, Stone fruit; Heat-loving long-season crops tend to struggle without intervention. Those wanting mild winters — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Point Petre 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Point Petre 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   // =================== NEW ANOMALY SET ===================
@@ -2033,7 +2388,9 @@ export const PLACES_CANADA: Place[] = [
     climate: {
       tempHighC: [-22, -22, -19, -10, -1, 8, 13, 11, 6, -1, -9, -17], tempLowC: [-31, -32, -28, -19, -8, 1, 4, 4, 0, -6, -15, -25],
       precipMm: [22, 15, 22, 28, 30, 38, 58, 62, 62, 44, 30, 22], snowCm: [22, 15, 22, 25, 15, 3, 0, 0, 5, 35, 30, 22],
-      annualPrecipMm: 433, frostFreeDays: 55, hardinessZone: "0a", diurnalSummerC: 8,
+      annualPrecipMm: 433, frostFreeDays: 55, hardinessZone: "0a", diurnalSummerC: 8,    humidity: [86, 86, 80, 79, 76, 75, 74, 76, 77, 77, 82, 82],    sunshinePct: [26, 34, 38, 49, 55, 59, 52, 47, 37, 29, 24, 20],
+
+
     },
     soil: { texture: "Glacial till, thin; permafrost continuous", drainage: "imperfect", phRange: [5.5, 6.5], waterHolding: "moderate", notes: "Permafrost everywhere; active layer thaws to 30–80 cm in summer." },
     growability: { score: 8, growsWell: ["Arctic berries (crowberry, blueberry)", "Hydroponic greens indoors"], tricky: ["Virtually all outdoor agriculture"], homeGarden: "No traditional outdoor gardening. Community-scale greenhouse projects (Iqaluit Greenhouse Society) extend fresh-food options." },
@@ -2053,6 +2410,24 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "iqaluit-nu-mechanism",
+        title: "Subarctic Continental at work",
+        paragraphs: [
+          "Iqaluit sits where head of frobisher bay on southern baffin island; tundra-covered shield bedrock with minimal topographic variation. The atlas tags this as subarctic continental (ET, roughly 433 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Polar jet / arctic front — with Katabatic drainage flow also in play.",
+          "Arctic latitude + continental position on Baffin Island + cold Labrador current offshore + long polar-night/polar-day solar regime. Iqaluit is the largest city in Nunavut and one of the few places where most residents experience 21 hours of summer daylight. That mechanism is why two map dots in Nunavut can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "iqaluit-nu-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Iqaluit screening: The capital of Nunavut sits at 63°N and averages −27°C in January — but summer days stretch to 21 hours and July highs climb above 12°C, producing a short, brilliant Arctic summer. Soil reads as glacial till, thin; permafrost continuous with imperfect drainage and pH 5.5–6.5 — No traditional outdoor gardening. Community-scale greenhouse projects (Iqaluit Greenhouse Society) extend fresh-food options.",
+          "Coastal exposure registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Arctic berries (crowberry, blueberry), Hydroponic greens indoors; Virtually all outdoor agriculture tend to struggle without intervention. Essentially anyone not prepared for extreme remoteness and cost of living — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [{ label: "ECCC — Iqaluit A normal 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Climate Atlas of Canada — Arctic profiles", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }],
   },
@@ -2083,7 +2458,9 @@ export const PLACES_CANADA: Place[] = [
     climate: {
       tempHighC: [-23, -24, -17, -5, 9, 21, 23, 20, 11, -1, -14, -20], tempLowC: [-32, -32, -28, -18, -3, 8, 10, 8, 2, -8, -22, -29],
       precipMm: [16, 10, 11, 12, 18, 30, 40, 42, 30, 24, 20, 17], snowCm: [18, 12, 13, 14, 10, 2, 0, 0, 8, 22, 25, 20],
-      annualPrecipMm: 240, frostFreeDays: 60, hardinessZone: "1a",
+      annualPrecipMm: 240, frostFreeDays: 60, hardinessZone: "1a",    humidity: [82, 82, 74, 71, 66, 67, 62, 65, 63, 69, 76, 78],    sunshinePct: [40, 46, 49, 57, 63, 66, 60, 56, 47, 42, 38, 35],
+
+
     },
     soil: { texture: "Organic soils over permafrost; peat dominant", drainage: "poor", phRange: [4.5, 6.0], waterHolding: "high", notes: "Continuous permafrost at 1–2 m depth." },
     growability: { score: 12, growsWell: ["Hardy greens (short season)", "Some potatoes", "Berries"], tricky: ["Almost everything"], homeGarden: "Community greenhouses operate during the long-daylight growing season." },
@@ -2104,8 +2481,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "inuvik-nt-mechanism",
+        title: "Subarctic Continental at work",
+        paragraphs: [
+          "Inuvik sits where mackenzie river delta, 200 km north of the arctic circle; surrounded by taiga-tundra transition. The atlas tags this as subarctic continental (Dfc, roughly 240 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Polar jet / arctic front.",
+          "Polar latitude + continental position + Mackenzie Delta microenvironment. The delta's innumerable lakes marginally moderate summer; in winter everything is frozen solid for 7 months and continentality dominates fully. That mechanism is why two map dots in Northwest Territories can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "inuvik-nt-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Inuvik screening: North of the Arctic Circle — experiences 56 days of continuous daylight in summer and 30 days of polar night in winter. Soil reads as organic soils over permafrost; peat dominant with poor drainage and pH 4.5–6 — Community greenhouses operate during the long-daylight growing season.",
+          "Extreme cold registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy greens (short season), Some potatoes, Berries; Almost everything tend to struggle without intervention. Almost everyone else — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Inuvik Climate A 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Inuvik Climate A 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -2134,7 +2530,8 @@ export const PLACES_CANADA: Place[] = [
     climate: {
       tempHighC: [5, 6, 7, 10, 13, 15, 17, 17, 15, 11, 7, 5], tempLowC: [1, 1, 2, 4, 6, 9, 11, 12, 9, 6, 3, 1],
       precipMm: [250, 180, 160, 130, 100, 85, 80, 100, 180, 320, 300, 280], humidity: [82, 80, 78, 77, 78, 80, 82, 83, 84, 85, 83, 82],
-      annualPrecipMm: 2165, frostFreeDays: 265, hardinessZone: "8a", diurnalSummerC: 6,
+      annualPrecipMm: 2165, frostFreeDays: 265, hardinessZone: "8a", diurnalSummerC: 6,    sunshinePct: [32, 35, 34, 40, 33, 38, 35, 35, 30, 39, 35, 30],
+
     },
     soil: { texture: "Podzolic forest soils over glacial till", drainage: "imperfect", phRange: [4.5, 5.5], organicMatterPct: [8, 15], waterHolding: "high" },
     growability: { score: 56, growsWell: ["Potatoes", "Greens", "Berries", "Apples (some)"], tricky: ["Heat-loving crops"] },
@@ -2148,13 +2545,33 @@ export const PLACES_CANADA: Place[] = [
       note: "Archipelago accessible only by Inland-Passage ferry or air; medical and supply logistics are a defining daily reality.",
       sources: [
         { label: "BC Stats — North Coast region", url: "https://www2.gov.bc.ca/gov/content/data/statistics" },
-      ],
+      
+        { label: "ECCC — Sandspit A normal 1991–2020", url: "https://climate.weather.gc.ca/" },],
     },
     relocationFit: ["rainforest residents", "Haida Nation community", "cool-climate purists"], travelFit: ["Gwaii Haanas National Park", "Haida cultural tourism", "ancient cedar forests"],
     whoWouldLove: "Those who love cool, wet, remote rainforest country.", whoMightNot: "Anyone requiring sun, warmth, or easy travel.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "haida-gwaii-bc-mechanism",
+        title: "Hyper-Maritime at work",
+        paragraphs: [
+          "Haida Gwaii sits where archipelago 100+ km off the bc mainland; exposed to north pacific, with the queen charlotte mountains rising to 1,100 m on the west coast. The atlas tags this as hyper-maritime (Cfb, roughly 2165 mm/yr in these normals), and the dominant spatial engines are Marine layer and Orographic lift — with Coastal upwelling also in play.",
+          "Deeply oceanic position + Queen Charlotte Mountains creating a strong internal rain shadow. The Sitka-spruce rainforests on the west coast are among the wettest and most intact on the continent. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "haida-gwaii-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Haida Gwaii screening: An archipelago in the Gulf of Alaska where July highs rarely exceed 17°C and winter rarely freezes — one of the most climatologically moderated places in Canada. Soil reads as podzolic forest soils over glacial till with imperfect drainage and pH 4.5–5.5 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Potatoes, Greens, Berries, Apples (some); Heat-loving crops tend to struggle without intervention. Anyone requiring sun, warmth, or easy travel — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Sandspit A normal 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Sandspit A normal 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -2206,6 +2623,24 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seekers in Canada", "retirees", "drought-tolerant gardeners"], travelFit: ["badlands tours", "South Saskatchewan River", "dark-sky observers"],
     whoWouldLove: "Anyone who wants a Colorado-style Canadian climate: sunny, dry, and chinook-warmed.", whoMightNot: "Those who expect reliably cold Canadian winters.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "medicine-hat-ab-mechanism",
+        title: "Chinook Corridor at work",
+        paragraphs: [
+          "Medicine Hat sits where south saskatchewan river valley on the semiarid short-grass prairie of southeastern alberta; lee of the rockies. The atlas tags this as chinook corridor (BSk, roughly 348 mm/yr in these normals), and the dominant spatial engines are Chinook / foehn downslope and Rain shadow — with Continental extremity also in play.",
+          "Double lee effect: behind both the Rockies and the Purcell/Columbia system + dry continental air mass + chinook penetration deep onto the prairie = one of the driest, sunniest climates in Canada. That mechanism is why two map dots in Alberta can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "medicine-hat-ab-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Medicine Hat screening: Canada's 'sunniest city' — averaging 330 sunny days per year in a warm chinook-modulated prairie climate that defies expectations of Canadian winters. Soil reads as dark brown chernozem (short-grass prairie) with good drainage and pH 6.8–8 — Dry and sunny — Mediterranean herbs, hardy perennials, and drought-adapted natives thrive if irrigated in July.",
+          "Drought registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy wheat, Pulse crops, Drought-hardy gardens, Sour cherries; Moisture-loving crops without irrigation tend to struggle without intervention. Those who expect reliably cold Canadian winters — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
     citations: [{ label: "ECCC — Medicine Hat A normal 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/" }, { label: "Climate Atlas of Canada — prairie sunshine statistics", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }],
   },
@@ -2237,7 +2672,8 @@ export const PLACES_CANADA: Place[] = [
       tempHighC: [-3, -4, 0, 5, 11, 16, 20, 19, 15, 9, 4, -1], tempLowC: [-10, -10, -7, -2, 3, 7, 11, 12, 9, 4, 0, -6],
       precipMm: [110, 95, 95, 90, 80, 80, 80, 100, 110, 130, 130, 125], snowCm: [100, 85, 70, 30, 5, 0, 0, 0, 0, 10, 55, 90],
       humidity: [80, 80, 80, 78, 78, 80, 82, 84, 84, 82, 82, 82],
-      annualPrecipMm: 1225, frostFreeDays: 155, hardinessZone: "5a", diurnalSummerC: 7,
+      annualPrecipMm: 1225, frostFreeDays: 155, hardinessZone: "5a", diurnalSummerC: 7,    sunshinePct: [36, 43, 45, 54, 47, 50, 44, 40, 32, 38, 35, 31],
+
     },
     soil: { texture: "Thin podzol over Precambrian rock; rocky", drainage: "good", phRange: [4.8, 5.8], waterHolding: "low" },
     growability: { score: 32, growsWell: ["Hardy berries", "Cool-season greens", "Potatoes (traditional)"], tricky: ["Most warm-season crops"] },
@@ -2257,8 +2693,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["maritime-climate purists", "iceberg obsessives"], travelFit: ["iceberg viewing (May–Jun)", "whale watching (Jun–Aug)", "cod jigging"],
     whoWouldLove: "Anyone who wants to watch icebergs from their porch.", whoMightNot: "Those who need warm summers.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "twillingate-nl-mechanism",
+        title: "Cool-Summer Maritime at work",
+        paragraphs: [
+          "Twillingate sits where notre dame bay on newfoundland's northeast coast; directly exposed to the labrador current. The atlas tags this as cool-summer maritime (Dfb, roughly 1225 mm/yr in these normals), and the dominant spatial engines are Marine layer and Polar jet / arctic front — with Continental extremity also in play.",
+          "Labrador Current + cold-side Gulf Stream boundary position + exposed outer-coast geometry. The annual temperature range is remarkably narrow (~25°C) given the high latitude, and fog/precipitation regimes are fundamentally maritime. That mechanism is why two map dots in Newfoundland and Labrador can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "twillingate-nl-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Twillingate screening: 'Iceberg Alley' — a coast so cooled by the Labrador Current that icebergs drift past in May, and summer highs average just 18°C while winters only dip to −10°C. Soil reads as thin podzol over precambrian rock; rocky with good drainage and pH 4.8–5.8 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy berries, Cool-season greens, Potatoes (traditional); Most warm-season crops tend to struggle without intervention. Those who need warm summers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Gander A / Twillingate climate reference", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Gander A / Twillingate climate reference", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -2304,8 +2759,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulture workers", "remote tech"], travelFit: ["wine routes", "skiing Big White"],
     whoWouldLove: "Sun-seekers who want Canadian healthcare and mountain-lake scenery.", whoMightNot: "Rainforest lovers; smoke-sensitive lungs.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "kelowna-bc-mechanism",
+        title: "Rain-Shadow Sanctuary at work",
+        paragraphs: [
+          "Kelowna sits where east shore of okanagan lake; lee of the coast mountains with strong summer dryness north of osoyoos. The atlas tags this as rain-shadow sanctuary (BSk, roughly 351 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Lake effect — with River-valley moderation also in play.",
+          "Large lake + rain-shadow dryness + north–south valley alignment = sharp gradient from lakeshore to bench-top within a few kilometers. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "kelowna-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Kelowna screening: Canada's fastest-growing wine and fruit city — hot, dry summers moderated by deep lake water and cold-air drainage off east-bench slopes. Soil reads as glacial lacustrine and sandy loam benches with good drainage and pH 6.5–7.8 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Wine grapes, Cherries, Apples, Soft fruit; Dryland without irrigation tend to struggle without intervention. Rainforest lovers; smoke-sensitive lungs — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Kelowna UBC Okanagan / airport", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Kelowna UBC Okanagan / airport", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
   {
     id: "squamish-bc", tier: "C", country: "Canada", region: "British Columbia", municipality: "Squamish", name: "Squamish (Howe Sound)",
@@ -2330,7 +2804,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards mountain–ocean people who commute to Vancouver occasionally — especially climbers — if the local tradeoffs still feel acceptable after a full season in Squamish.",
       texture: "An easier place to settle into at sea level — the main things to weigh are flood and surge risk and smoke-season air quality. Housing runs expensive relative to regional medians.",
     },
-    climate: { tempHighC: [5, 7, 10, 13, 17, 20, 23, 23, 19, 14, 8, 5], tempLowC: [0, 1, 3, 5, 8, 11, 13, 13, 10, 6, 2, 0], precipMm: [280, 220, 200, 150, 120, 95, 60, 70, 110, 220, 320, 310], humidity: [82, 80, 78, 76, 76, 78, 80, 82, 82, 82, 84, 84], annualPrecipMm: 2155, frostFreeDays: 240, hardinessZone: "8b" },
+    climate: { tempHighC: [5, 7, 10, 13, 17, 20, 23, 23, 19, 14, 8, 5], tempLowC: [0, 1, 3, 5, 8, 11, 13, 13, 10, 6, 2, 0], precipMm: [280, 220, 200, 150, 120, 95, 60, 70, 110, 220, 320, 310], humidity: [82, 80, 78, 76, 76, 78, 80, 82, 82, 82, 84, 84], annualPrecipMm: 2155, frostFreeDays: 240, hardinessZone: "8b", sunshinePct: [34, 36, 36, 42, 35, 40, 37, 37, 32, 41, 37, 32] },
     soil: { texture: "Alluvium and glacial outwash near river; thin podzols upslope", drainage: "good", phRange: [5.2, 6.5], waterHolding: "moderate" },
     growability: { score: 58, growsWell: ["Cool brassicas", "Berries", "Hemlock-shade natives"], tricky: ["Heat crops"] },
     climateChange: { outlook2050: "Warmer storms; landslide risk increases on saturated slopes.", outlook2100: "Snowline rises; rain-on-snow events more frequent.", keyShifts: [{ variable: "Pine beetle pressure", direction: "up" }], resilienceNote: "Terrain-focused hazards dominate." },
@@ -2350,8 +2824,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["climbers", "wind-sport athletes"], travelFit: ["Stawamus Chief", "Sea to Sky Gondola"],
     whoWouldLove: "Mountain–ocean people who commute to Vancouver occasionally.", whoMightNot: "Budget renters; sun-belt seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "squamish-bc-mechanism",
+        title: "Fjord / Inlet Coast at work",
+        paragraphs: [
+          "Squamish sits where head of howe sound fjord where squamish river fresh water meets georgia strait marine air. The atlas tags this as fjord / inlet coast (Cfb, roughly 2155 mm/yr in these normals), and the dominant spatial engines are Marine layer and Orographic lift — with Gap winds also in play.",
+          "Fjord head + narrow valley alignment creates focused gap winds and cloud transitions unlike open coast or interior. That mechanism is why two map dots in British Columbia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "squamish-bc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Squamish screening: Wet Coast winters, mild summers, and notorious Squamish Valley outflow winds when interior high pressure builds. Soil reads as alluvium and glacial outwash near river; thin podzols upslope with good drainage and pH 5.2–6.5 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cool brassicas, Berries, Hemlock-shade natives; Heat crops tend to struggle without intervention. Budget renters; sun-belt seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Squamish Airport", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Squamish Airport", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
   {
     id: "banff-ab", tier: "C", country: "Canada", region: "Alberta", municipality: "Banff", name: "Banff (Bow Valley)",
@@ -2376,7 +2869,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards rocky Mountain purists — especially hospitality seasonal workers — if the local tradeoffs still feel acceptable after a full season in Banff.",
       texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and deep winter cold.",
     },
-    climate: { tempHighC: [-5, -1, 4, 9, 15, 19, 22, 22, 16, 10, 1, -4], tempLowC: [-15, -12, -8, -3, 2, 6, 8, 7, 3, -2, -10, -14], precipMm: [20, 18, 25, 38, 55, 70, 65, 60, 45, 35, 28, 22], annualPrecipMm: 481, frostFreeDays: 90, hardinessZone: "3a" },
+    climate: { tempHighC: [-5, -1, 4, 9, 15, 19, 22, 22, 16, 10, 1, -4], tempLowC: [-15, -12, -8, -3, 2, 6, 8, 7, 3, -2, -10, -14], precipMm: [20, 18, 25, 38, 55, 70, 65, 60, 45, 35, 28, 22], annualPrecipMm: 481, frostFreeDays: 90, hardinessZone: "3a", humidity: [84, 84, 76, 73, 68, 69, 64, 67, 65, 71, 78, 80], sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34] },
     soil: { texture: "Thin rocky brunisol on limestone", drainage: "excessive", phRange: [6.8, 7.8], waterHolding: "low" },
     growability: { score: 28, growsWell: ["Hardy native conifers"], tricky: ["Vegetable season very short"] },
     climateChange: { outlook2050: "Earlier spring melt; glacial retreat visible from town.", outlook2100: "Alpine ecosystem stress.", keyShifts: [{ variable: "Wildfire", direction: "up" }], resilienceNote: "Tourism economy is climate-exposed to wildfire smoke." },
@@ -2396,8 +2889,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hospitality seasonal workers", "park staff"], travelFit: ["Lake Louise", "skiing", "hiking"],
     whoWouldLove: "Rocky Mountain purists.", whoMightNot: "Affordable-housing seekers; warm-winter lovers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "banff-ab-mechanism",
+        title: "Chinook Corridor at work",
+        paragraphs: [
+          "Banff sits where bow river valley inside banff national park; rocky mountain front range. The atlas tags this as chinook corridor (Dfc, roughly 481 mm/yr in these normals), and the dominant spatial engines are Chinook / foehn downslope and Elevation lapse rate — with Rain shadow also in play.",
+          "High elevation + valley geometry + national-park land cover creates clean air and strong nocturnal cooling. That mechanism is why two map dots in Alberta can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "banff-ab-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Banff screening: A tourist town at 1,383 m where chinooks can swing winter from −30°C to thaw in hours, framed by glacier peaks. Soil reads as thin rocky brunisol on limestone with excessive drainage and pH 6.8–7.8 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy native conifers; Vegetable season very short tend to struggle without intervention. Affordable-housing seekers; warm-winter lovers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Banff CS", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Banff CS", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
   {
     id: "halifax-ns", tier: "C", country: "Canada", region: "Nova Scotia", municipality: "Halifax", name: "Halifax",
@@ -2422,7 +2934,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards atlantic Canada urban life without Montreal cold — especially students — if the local tradeoffs still feel acceptable after a full season in Halifax.",
       texture: "An easier place to settle into at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Halifax has the easiest service base in Atlantic Canada, but housing pressure, harbour weather, fog, and coastal storm exposure keep the lived score grounded.",
     },
-    climate: { tempHighC: [0, 0, 4, 9, 14, 19, 23, 23, 19, 14, 9, 4], tempLowC: [-8, -7, -3, 2, 7, 12, 15, 15, 11, 6, 1, -3], precipMm: [150, 120, 130, 120, 120, 110, 105, 115, 120, 140, 150, 160], humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74], annualPrecipMm: 1520, frostFreeDays: 165, hardinessZone: "6b" },
+    climate: { tempHighC: [0, 0, 4, 9, 14, 19, 23, 23, 19, 14, 9, 4], tempLowC: [-8, -7, -3, 2, 7, 12, 15, 15, 11, 6, 1, -3], precipMm: [150, 120, 130, 120, 120, 110, 105, 115, 120, 140, 150, 160], humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74], annualPrecipMm: 1520, frostFreeDays: 165, hardinessZone: "6b", sunshinePct: [35, 42, 44, 53, 46, 49, 43, 39, 31, 37, 33, 30] },
     soil: { texture: "Glacial till and podzol", drainage: "moderate", phRange: [5.0, 6.5], waterHolding: "moderate" },
     growability: { score: 54, growsWell: ["Hardy apples", "Berries", "Cool greens"], tricky: ["Heat-loving crops"] },
     climateChange: { outlook2050: "Sea-level and surge risk for waterfront; more intense precipitation.", outlook2100: "Hurricane decay tracks may shift.", keyShifts: [{ variable: "Sea level", direction: "up" }], resilienceNote: "Coastal infrastructure is the front line." },
@@ -2471,7 +2983,8 @@ export const PLACES_CANADA: Place[] = [
     whoWouldLove: "Atlantic Canada urban life without Montreal cold.", whoMightNot: "Drought-climate seekers.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Halifax Stanfield Intl", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Halifax Stanfield Intl", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
   {
     id: "charlottetown-pei", tier: "C", country: "Canada", region: "Prince Edward Island", municipality: "Charlottetown", name: "Charlottetown",
@@ -2496,7 +3009,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards quiet island life with maritime seasons — especially small-town families — if the local tradeoffs still feel acceptable after a full season in Charlottetown.",
       texture: "An easier place to settle into at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
     },
-    climate: { tempHighC: [-3, -3, 1, 7, 14, 19, 24, 24, 19, 13, 7, 1], tempLowC: [-12, -11, -6, 0, 6, 11, 15, 15, 10, 4, 0, -6], precipMm: [110, 90, 100, 95, 95, 95, 100, 95, 105, 120, 130, 130], humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74], annualPrecipMm: 1265, frostFreeDays: 150, hardinessZone: "5b" },
+    climate: { tempHighC: [-3, -3, 1, 7, 14, 19, 24, 24, 19, 13, 7, 1], tempLowC: [-12, -11, -6, 0, 6, 11, 15, 15, 10, 4, 0, -6], precipMm: [110, 90, 100, 95, 95, 95, 100, 95, 105, 120, 130, 130], humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74], annualPrecipMm: 1265, frostFreeDays: 150, hardinessZone: "5b", sunshinePct: [39, 45, 48, 56, 49, 53, 46, 43, 34, 41, 37, 34] },
     soil: { texture: "Iron-rich red sandstone-derived loam", drainage: "moderate", phRange: [5.5, 6.5], waterHolding: "moderate" },
     growability: { score: 62, growsWell: ["Potatoes", "Grains", "Brassicas"], tricky: ["Long-season corn"] },
     climateChange: { outlook2050: "Coastal erosion on north shore; warmer Gulf waters.", outlook2100: "Sea-level rise threatens low-lying farms.", keyShifts: [{ variable: "Ice duration", direction: "down" }], resilienceNote: "Island infrastructure is exposed to storms." },
@@ -2516,8 +3029,27 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "charlottetown-pei-mechanism",
+        title: "Cool-Summer Maritime at work",
+        paragraphs: [
+          "Charlottetown sits where island capital on gulf of st. lawrence; surrounded by warming water in summer, ice in winter. The atlas tags this as cool-summer maritime (Dfb, roughly 1265 mm/yr in these normals), and the dominant spatial engines are Marine layer and Tropical-cyclone exposure — with Diurnal sea breeze also in play.",
+          "Island geography with Gulf ice and melt strongly modulates seasonal lag versus mainland New Brunswick. That mechanism is why two map dots in Prince Edward Island can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "charlottetown-pei-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Charlottetown screening: Canada's smallest province — red soil, potatoes, and breezy summers that rarely exceed 27°C. Soil reads as iron-rich red sandstone-derived loam with moderate drainage and pH 5.5–6.5 — garden success tracks micro-shelter and water timing.",
+          "Coastal exposure registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Potatoes, Grains, Brassicas; Long-season corn tend to struggle without intervention. Urban nightlife seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Charlottetown", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [{ label: "ECCC — Charlottetown", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "Climate Atlas of Canada — regional context", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },],
   },
 
   {
@@ -2627,7 +3159,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards people who want northern history and can treat winter as a serious lifestyle commitment — especially northern history workers — if the local tradeoffs still feel acceptable after a full season in Dawson City.",
       texture: "A real-tradeoff place — the main things to weigh are deep winter cold and wildfire exposure. Specialty care and major-airport access require real planning.",
     },
-    climate: { tempHighC: [-22, -16, -5, 6, 15, 21, 23, 19, 11, -1, -14, -20], tempLowC: [-31, -28, -19, -7, 1, 7, 10, 7, 1, -7, -22, -29], precipMm: [18, 14, 12, 10, 18, 38, 55, 45, 35, 25, 20, 18], snowCm: [24, 18, 14, 6, 2, 0, 0, 0, 4, 16, 28, 26], annualPrecipMm: 308, frostFreeDays: 70, hardinessZone: "1b" },
+    climate: { tempHighC: [-22, -16, -5, 6, 15, 21, 23, 19, 11, -1, -14, -20], tempLowC: [-31, -28, -19, -7, 1, 7, 10, 7, 1, -7, -22, -29], precipMm: [18, 14, 12, 10, 18, 38, 55, 45, 35, 25, 20, 18], snowCm: [24, 18, 14, 6, 2, 0, 0, 0, 4, 16, 28, 26], annualPrecipMm: 308, frostFreeDays: 70, hardinessZone: "1b", humidity: [82, 82, 74, 71, 66, 67, 62, 65, 63, 69, 76, 78], sunshinePct: [36, 42, 45, 53, 58, 62, 55, 52, 43, 38, 34, 31] },
     soil: { texture: "River alluvium and silty loam over discontinuous permafrost", drainage: "moderate", phRange: [5.8, 7.0], waterHolding: "moderate" },
     growability: { score: 28, growsWell: ["Potatoes", "Hardy greens", "Rhubarb", "Short-season peas"], tricky: ["Tree fruit", "Warm-season crops"] },
     climateChange: { outlook2050: "Rapid winter warming and permafrost stress.", outlook2100: "Major boreal ecosystem shift; river ice and ground stability change.", keyShifts: [{ variable: "Permafrost", direction: "down" }, { variable: "Fire weather", direction: "up" }], resilienceNote: "Heat refuge value exists, but infrastructure is ground-ice exposed." },
@@ -2646,6 +3178,24 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["northern history workers", "aurora seekers"], travelFit: ["Klondike history", "midnight sun", "aurora"],
     whoWouldLove: "People who want northern history and can treat winter as a serious lifestyle commitment.", whoMightNot: "Anyone needing easy logistics or mild dark-season weather.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "dawson-city-yt-mechanism",
+        title: "Subarctic Continental at work",
+        paragraphs: [
+          "Dawson City sits where yukon river and klondike river confluence in a cold interior basin under long subarctic daylight. The atlas tags this as subarctic continental (Dfc, roughly 308 mm/yr in these normals), and the dominant spatial engines are Continental extremity and River-valley moderation — with Cold-air drainage and Polar jet / arctic front also in play.",
+          "Interior continentality, river valley cold pooling, and extreme daylight seasonality combine into a highly legible subarctic settlement climate. That mechanism is why two map dots in Yukon can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "dawson-city-yt-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Dawson City screening: Klondike gold-rush town with one of Canada's clearest continental subarctic signals: deep winter, bright dry air, and explosive short summers. Soil reads as river alluvium and silty loam over discontinuous permafrost with moderate drainage and pH 5.8–7 — garden success tracks micro-shelter and water timing.",
+          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Potatoes, Hardy greens, Rhubarb, Short-season peas; Tree fruit, Warm-season crops tend to struggle without intervention. Anyone needing easy logistics or mild dark-season weather — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — regional station coverage is strong enough for settlement-scale climate screening, but permafrost and flood diligence are parcel-specific.",
     citations: [
       { label: "ECCC Canadian Climate Normals — Dawson station context", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
@@ -2674,7 +3224,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find — especially gardeners — if the local tradeoffs still feel acceptable after a full season in Morden.",
       texture: "A place that asks for a few compromises — the main things to weigh are deep winter cold and long-run drought.",
     },
-    climate: { tempHighC: [-10, -7, 0, 11, 19, 24, 26, 26, 20, 11, 0, -7], tempLowC: [-19, -17, -9, -1, 6, 12, 14, 13, 7, 0, -8, -16], precipMm: [18, 15, 25, 40, 70, 90, 80, 65, 55, 35, 25, 20], snowCm: [24, 18, 16, 6, 1, 0, 0, 0, 0, 4, 14, 22], annualPrecipMm: 538, frostFreeDays: 155, hardinessZone: "4a" },
+    climate: { tempHighC: [-10, -7, 0, 11, 19, 24, 26, 26, 20, 11, 0, -7], tempLowC: [-19, -17, -9, -1, 6, 12, 14, 13, 7, 0, -8, -16], precipMm: [18, 15, 25, 40, 70, 90, 80, 65, 55, 35, 25, 20], snowCm: [24, 18, 16, 6, 1, 0, 0, 0, 0, 4, 14, 22], annualPrecipMm: 538, frostFreeDays: 155, hardinessZone: "4a", humidity: [82, 82, 75, 71, 70, 68, 63, 61, 64, 70, 76, 78], sunshinePct: [38, 45, 47, 56, 61, 64, 58, 54, 46, 40, 36, 33] },
     soil: { texture: "Prairie loam and clay loam", drainage: "good", phRange: [6.8, 8.0], organicMatterPct: [3, 6], waterHolding: "moderate" },
     growability: { score: 72, growsWell: ["Prairie grapes", "Apples", "Corn", "Beans", "Vegetable gardens"], tricky: ["Tender perennials", "Wet-foot crops"] },
     climateChange: { outlook2050: "Longer growing season and more heat, with spring flood and drought volatility.", outlook2100: "Prairie crop envelope shifts north, but water extremes intensify.", keyShifts: [{ variable: "Heat units", direction: "up" }, { variable: "Drought", direction: "up" }], resilienceNote: "Good agricultural adaptability, but still exposed to prairie extremes." },
@@ -2693,6 +3243,24 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "morden-mb-mechanism",
+        title: "Orchard Valley at work",
+        paragraphs: [
+          "Morden & the Pembina Escarpment sits where southern manitoba warm pocket near the pembina escarpment, west of the red river valley. The atlas tags this as orchard valley (Dfb, roughly 538 mm/yr in these normals), and the dominant spatial engines are Slope / aspect and Continental extremity.",
+          "Southern latitude for Manitoba, lee-side dryness, and modest escarpment relief produce one of the province's stronger garden and orchard climates. That mechanism is why two map dots in Manitoba can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "morden-mb-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Morden & the Pembina Escarpment screening: A surprisingly productive prairie garden pocket in southern Manitoba, with warm summers, severe winters, and escarpment-scale siting effects. Soil reads as prairie loam and clay loam with good drainage and pH 6.8–8 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Prairie grapes, Apples, Corn, Beans; Tender perennials, Wet-foot crops tend to struggle without intervention. Mild-winter seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — station and agricultural context support the warm-pocket read, but escarpment-scale effects need site verification.",
     citations: [
       { label: "ECCC Canadian Climate Normals — Morden and southern Manitoba station context", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
@@ -2721,7 +3289,7 @@ export const PLACES_CANADA: Place[] = [
       residentFit: "It rewards people who want village-scale Quebec Appalachians with real snow and orchard-maple culture — especially remote workers — if the local tradeoffs still feel acceptable after a full season in Sutton.",
       texture: "An easier place to settle into — the main things to weigh are deep winter cold and storm exposure.",
     },
-    climate: { tempHighC: [-6, -4, 2, 10, 17, 22, 25, 24, 19, 12, 5, -2], tempLowC: [-16, -15, -9, -2, 4, 9, 12, 11, 7, 1, -4, -12], precipMm: [75, 65, 75, 85, 95, 110, 120, 105, 100, 95, 85, 80], snowCm: [60, 50, 40, 12, 1, 0, 0, 0, 0, 6, 28, 55], annualPrecipMm: 1090, frostFreeDays: 140, hardinessZone: "5a" },
+    climate: { tempHighC: [-6, -4, 2, 10, 17, 22, 25, 24, 19, 12, 5, -2], tempLowC: [-16, -15, -9, -2, 4, 9, 12, 11, 7, 1, -4, -12], precipMm: [75, 65, 75, 85, 95, 110, 120, 105, 100, 95, 85, 80], snowCm: [60, 50, 40, 12, 1, 0, 0, 0, 0, 6, 28, 55], annualPrecipMm: 1090, frostFreeDays: 140, hardinessZone: "5a", humidity: [82, 82, 75, 71, 66, 68, 63, 65, 64, 70, 76, 78], sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34] },
     soil: { texture: "Stony loam and glacial till on Appalachian slopes", drainage: "good", phRange: [5.3, 6.6], organicMatterPct: [3, 7], waterHolding: "moderate" },
     growability: { score: 60, growsWell: ["Apples", "Cold-hardy grapes", "Maple", "Berries", "Cool greens"], tricky: ["Tender stone fruit", "Warm-season crops without protection"] },
     climateChange: { outlook2050: "Longer shoulder seasons; more freeze-thaw and heavier rain.", outlook2100: "Hardiness improves, but snow reliability and forest composition shift.", keyShifts: [{ variable: "Freeze-thaw", direction: "up" }, { variable: "Snowpack", direction: "down" }], resilienceNote: "Topographic options help, but winter recreation and forest health are climate-exposed." },
@@ -2740,6 +3308,24 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
+    deepSections: [
+      {
+        id: "sutton-qc-mechanism",
+        title: "Piedmont Transition at work",
+        paragraphs: [
+          "Sutton & the Eastern Townships sits where village at the foot of the sutton mountains in quebec's appalachian uplands. The atlas tags this as piedmont transition (Dfb, roughly 1090 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Cold-air drainage — with Slope / aspect also in play.",
+          "Modest Appalachian relief creates a dense pattern of frost pockets, snowier uplands, and protected agricultural slopes in a compact settlement landscape. That mechanism is why two map dots in Quebec can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "sutton-qc-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Sutton & the Eastern Townships screening: An Eastern Townships hill-and-valley climate where maple slopes, ski snow, and orchard pockets sit within a few minutes of each other. Soil reads as stony loam and glacial till on appalachian slopes with good drainage and pH 5.3–6.6 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Apples, Cold-hardy grapes, Maple, Berries; Tender stone fruit, Warm-season crops without protection tend to struggle without intervention. People seeking low-maintenance winter or hot summers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — local topography creates strong site effects; use ECCC and Climate Atlas as regional scaffolding, then verify parcel exposure.",
     citations: [
       { label: "ECCC Canadian Climate Normals — Eastern Townships station context", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },

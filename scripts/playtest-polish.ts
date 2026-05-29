@@ -322,13 +322,26 @@ async function main(): Promise<void> {
   if (missingLive.length > 0) {
     throw new Error(`liveSignals coverage incomplete: ${PLACES.length - missingLive.length}/${PLACES.length}`);
   }
-  for (const place of PLACES.slice(0, 20)) {
+  for (const place of PLACES) {
     const ls = place.liveSignals!;
     if (ls.costPressure == null || ls.socialStress == null || ls.accessFriction == null) {
       throw new Error(`${place.id} liveSignals: missing axis scores`);
     }
     if (!ls.note || ls.note.length < 48) throw new Error(`${place.id} liveSignals: thin note`);
+    const httpsSources = (ls.sources ?? []).filter(s => s.url?.startsWith("https://")).length;
+    if (httpsSources < 2) throw new Error(`${place.id} liveSignals: need ≥2 HTTPS sources (${httpsSources})`);
   }
+
+  // Tier C complete block gate — humidity, sunshine, deepSections, citations.
+  const tierC = PLACES.filter(p => p.tier === "C");
+  for (const place of tierC) {
+    if (!place.climate.humidity) throw new Error(`${place.id} Tier C missing humidity`);
+    if (!place.climate.sunshinePct) throw new Error(`${place.id} Tier C missing sunshinePct`);
+    if (!place.deepSections?.length) throw new Error(`${place.id} Tier C missing deepSections`);
+    const httpsCites = (place.citations ?? []).filter(c => c.url?.startsWith("https://")).length;
+    if (httpsCites < 2) throw new Error(`${place.id} Tier C needs ≥2 HTTPS citations (${httpsCites})`);
+  }
+  if (tierC.length !== 164) throw new Error(`expected 164 Tier C places, got ${tierC.length}`);
 
   // Authored override precedence
   const overrideProbe = PLACES[0]!;

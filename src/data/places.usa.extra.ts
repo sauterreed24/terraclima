@@ -119,7 +119,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       residentFit: "It rewards arctic coastal culture and long-light summers — especially mining logistics — if the local tradeoffs still feel acceptable after a full season in Nome.",
       texture: "A real-tradeoff place at sea level — the main things to weigh are deep winter cold and storm exposure. Specialty care and major-airport access require real planning.",
     },
-    climate: { tempHighC: [-13, -11, -6, 1, 7, 12, 14, 13, 8, 1, -6, -10], tempLowC: [-20, -19, -15, -8, -1, 4, 6, 5, 0, -8, -14, -18], precipMm: [18, 16, 14, 18, 22, 28, 50, 65, 48, 32, 24, 20], snowCm: [38, 32, 28, 20, 8, 0, 0, 0, 5, 22, 35, 40], humidity: [78, 76, 74, 72, 74, 76, 78, 80, 80, 78, 76, 74], annualPrecipMm: 355, frostFreeDays: 85, hardinessZone: "2b" },
+    climate: { tempHighC: [-13, -11, -6, 1, 7, 12, 14, 13, 8, 1, -6, -10], tempLowC: [-20, -19, -15, -8, -1, 4, 6, 5, 0, -8, -14, -18], precipMm: [18, 16, 14, 18, 22, 28, 50, 65, 48, 32, 24, 20], snowCm: [38, 32, 28, 20, 8, 0, 0, 0, 5, 22, 35, 40], humidity: [78, 76, 74, 72, 74, 76, 78, 80, 80, 78, 76, 74], annualPrecipMm: 355, frostFreeDays: 85, hardinessZone: "2b", sunshinePct: [36, 42, 45, 53, 46, 50, 43, 40, 31, 38, 34, 31] },
     soil: { texture: "Permafrost-influenced silts and organic soils near coast; rocky inland", drainage: "imperfect", phRange: [5.0, 7.0], waterHolding: "moderate" },
     growability: { score: 28, growsWell: ["Cool-season greenhouse crops", "Berry picking (wild)"], tricky: ["Tree fruit", "Field crops without season extension", "Dry-farmed row crops"] },
     climateChange: { outlook2050: "Later freeze-up and earlier break-up; more open-water storms.", outlook2100: "Coastal erosion accelerates; ice road season shortens.", keyShifts: [{ variable: "Sea ice duration", direction: "down" }], resilienceNote: "Subsistence and transport systems tightly coupled to ice timing." },
@@ -140,7 +140,8 @@ export const PLACES_USA_EXTRA: Place[] = [
     whoWouldLove: "Arctic coastal culture and long-light summers.", whoMightNot: "Anyone needing mild winters or tree cover.",
     confidence: "moderate",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Nome Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Nome Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
     deepSections: [
       {
         id: "nome-ice-season",
@@ -190,7 +191,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       residentFit: "It rewards gulf coast life with strong Hispanic cultural ties — especially port workers — if the local tradeoffs still feel acceptable after a full season in Corpus Christi.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
     },
-    climate: { tempHighC: [17, 19, 22, 25, 29, 32, 33, 34, 32, 28, 23, 19], tempLowC: [8, 10, 14, 18, 22, 24, 25, 25, 23, 19, 13, 9], precipMm: [35, 40, 55, 50, 85, 90, 95, 75, 120, 95, 55, 45], annualPrecipMm: 820, frostFreeDays: 300, hardinessZone: "9b" },
+    climate: { tempHighC: [17, 19, 22, 25, 29, 32, 33, 34, 32, 28, 23, 19], tempLowC: [8, 10, 14, 18, 22, 24, 25, 25, 23, 19, 13, 9], precipMm: [35, 40, 55, 50, 85, 90, 95, 75, 120, 95, 55, 45], annualPrecipMm: 820, frostFreeDays: 300, hardinessZone: "9b", humidity: [65, 65, 63, 68, 73, 79, 83, 81, 83, 80, 73, 66], sunshinePct: [51, 54, 53, 59, 64, 69, 66, 66, 61, 58, 54, 49] },
     soil: { texture: "Sandy coastal plain and saline clays", drainage: "moderate", phRange: [7.0, 8.4], waterHolding: "low" },
     growability: { score: 70, growsWell: ["Citrus (protected)", "Palms", "Subtropical ornamentals"], tricky: ["Cool-climate fruit"] },
     climateChange: { outlook2050: "Higher baseline sea level and wetter hurricanes.", outlook2100: "Surge reach expands in bay networks.", keyShifts: [{ variable: "Hurricane rainfall", direction: "up" }], resilienceNote: "Windstorm building codes have tightened post-Harvey era." },
@@ -211,7 +212,8 @@ export const PLACES_USA_EXTRA: Place[] = [
     whoWouldLove: "Gulf coast life with strong Hispanic cultural ties.", whoMightNot: "Dry-climate seekers; hurricane-averse.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Corpus Christi Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Corpus Christi Intl", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
     deepSections: [
       {
         id: "corpus-surge-bay",
@@ -261,7 +263,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       residentFit: "It rewards river-town Midwesterners who tolerate humidity — especially logistics — if the local tradeoffs still feel acceptable after a full season in Paducah.",
       texture: "A place that asks for a few compromises — the main things to weigh are flood and surge risk and extreme summer heat.",
     },
-    climate: { tempHighC: [5, 8, 14, 20, 26, 30, 32, 31, 28, 22, 14, 8], tempLowC: [-4, -2, 3, 9, 15, 19, 21, 20, 16, 9, 3, -1], precipMm: [90, 95, 120, 120, 130, 110, 115, 95, 95, 100, 110, 115], annualPrecipMm: 1315, frostFreeDays: 200, hardinessZone: "7a" },
+    climate: { tempHighC: [5, 8, 14, 20, 26, 30, 32, 31, 28, 22, 14, 8], tempLowC: [-4, -2, 3, 9, 15, 19, 21, 20, 16, 9, 3, -1], precipMm: [90, 95, 120, 120, 130, 110, 115, 95, 95, 100, 110, 115], annualPrecipMm: 1315, frostFreeDays: 200, hardinessZone: "7a", humidity: [68, 67, 69, 74, 79, 81, 81, 84, 81, 79, 75, 69], sunshinePct: [48, 51, 50, 57, 62, 67, 64, 64, 59, 55, 52, 47] },
     soil: { texture: "Mississippi embayment silty loams", drainage: "moderate", phRange: [5.5, 6.8], waterHolding: "high" },
     growability: { score: 76, growsWell: ["Soybeans", "Corn", "Tobacco heritage", "Oak shade trees"], tricky: ["Dry lavender"] },
     climateChange: { outlook2050: "Heavier spring rain; more high-CAPE nights.", outlook2100: "Mississippi basin flooding teleconnections intensify.", keyShifts: [{ variable: "Warm-season humidity", direction: "up" }], resilienceNote: "Floodplain management is central." },
@@ -281,8 +283,27 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["logistics", "healthcare"], travelFit: ["quilt museum", "riverfront"],
     whoWouldLove: "River-town Midwesterners who tolerate humidity.", whoMightNot: "Mountain-air seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "paducah-ky-mechanism",
+        title: "River-Valley Moderation at work",
+        paragraphs: [
+          "Paducah sits where alluvial plain at the confluence of the tennessee and ohio rivers; frequent spring flooding; weak local relief. The atlas tags this as river-valley moderation (Cfa, roughly 1315 mm/yr in these normals), and the dominant spatial engines are River-valley moderation and Tropical-cyclone exposure — with Continental extremity also in play.",
+          "Large-river confluence zones concentrate moisture and serve as preferential corridors for nocturnal convection and flooding — hydroclimate is as important as latitude here. That mechanism is why two map dots in Kentucky can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "paducah-ky-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Paducah screening: Humid subtropical inland — river fog, summer convection, and remnant tropical moisture. Soil reads as mississippi embayment silty loams with moderate drainage and pH 5.5–6.8 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Soybeans, Corn, Tobacco heritage, Oak shade trees; Dry lavender tend to struggle without intervention. Mountain-air seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Barkley Regional", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Barkley Regional", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "bismarck-nd",
@@ -314,7 +335,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       residentFit: "It rewards wide-open plains people who own a good parka — especially energy sector — if the local tradeoffs still feel acceptable after a full season in Bismarck.",
       texture: "A place that asks for a few compromises — the main things to weigh are deep winter cold and long-run drought.",
     },
-    climate: { tempHighC: [-5, -2, 4, 13, 20, 26, 30, 29, 23, 14, 4, -4], tempLowC: [-16, -14, -7, 1, 7, 12, 15, 14, 7, 0, -7, -14], precipMm: [12, 12, 22, 45, 65, 95, 75, 60, 45, 35, 18, 15], annualPrecipMm: 474, frostFreeDays: 145, hardinessZone: "4b" },
+    climate: { tempHighC: [-5, -2, 4, 13, 20, 26, 30, 29, 23, 14, 4, -4], tempLowC: [-16, -14, -7, 1, 7, 12, 15, 14, 7, 0, -7, -14], precipMm: [12, 12, 22, 45, 65, 95, 75, 60, 45, 35, 18, 15], annualPrecipMm: 474, frostFreeDays: 145, hardinessZone: "4b", humidity: [82, 82, 74, 71, 70, 67, 62, 61, 63, 69, 76, 78], sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34] },
     soil: { texture: "Mollisols and glacial till loams", drainage: "good", phRange: [6.0, 8.0], waterHolding: "moderate" },
     growability: { score: 68, growsWell: ["Hard red spring wheat", "Soybeans", "Sunflowers"], tricky: ["Long-season corn without heat units"] },
     climateChange: { outlook2050: "Wetter springs; more crop-damaging hail days.", outlook2100: "Winter warming faster than summer.", keyShifts: [{ variable: "Frost-free season", direction: "up" }], resilienceNote: "Agriculture adapts via cultivar shifts." },
@@ -334,8 +355,27 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["energy sector", "remote workers"], travelFit: ["Lewis & Clark", "prairie reserves"],
     whoWouldLove: "Wide-open plains people who own a good parka.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "bismarck-nd-mechanism",
+        title: "Subarctic Continental at work",
+        paragraphs: [
+          "Bismarck sits where missouri river valley cut through rolling high plains; open to arctic outbreaks and dryline storms. The atlas tags this as subarctic continental (Dfb, roughly 474 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Polar jet / arctic front — with Lake effect and Chinook / foehn downslope also in play.",
+          "Central position in North America maximizes contrast between maritime air masses — rarely seen — and dry continental polar or tropical air advected from the Gulf in summer. That mechanism is why two map dots in North Dakota can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "bismarck-nd-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Bismarck screening: Cold, sunny, windy continental climate — scorching summer days and bitter subzero winter nights both occur. Soil reads as mollisols and glacial till loams with good drainage and pH 6–8 — garden success tracks micro-shelter and water timing.",
+          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hard red spring wheat, Soybeans, Sunflowers; Long-season corn without heat units tend to struggle without intervention. Mild-winter seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Bismarck Municipal", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Bismarck Municipal", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "morgantown-wv",
@@ -367,7 +407,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       residentFit: "It rewards appalachian foothills without deep South heat — especially university families — if the local tradeoffs still feel acceptable after a full season in Morgantown.",
       texture: "A place that asks for a few compromises — the main things to weigh are flood and surge risk.",
     },
-    climate: { tempHighC: [3, 5, 11, 18, 23, 27, 29, 28, 24, 18, 11, 5], tempLowC: [-5, -4, 1, 6, 11, 16, 18, 17, 13, 7, 2, -2], precipMm: [75, 70, 95, 100, 110, 115, 120, 100, 95, 85, 80, 80], annualPrecipMm: 1125, frostFreeDays: 175, hardinessZone: "6b" },
+    climate: { tempHighC: [3, 5, 11, 18, 23, 27, 29, 28, 24, 18, 11, 5], tempLowC: [-5, -4, 1, 6, 11, 16, 18, 17, 13, 7, 2, -2], precipMm: [75, 70, 95, 100, 110, 115, 120, 100, 95, 85, 80, 80], annualPrecipMm: 1125, frostFreeDays: 175, hardinessZone: "6b", humidity: [66, 65, 63, 68, 77, 83, 83, 82, 79, 77, 73, 67], sunshinePct: [51, 54, 53, 60, 65, 70, 67, 67, 62, 58, 55, 50] },
     soil: { texture: "Acidic shaly silt loams", drainage: "moderate", phRange: [4.8, 6.2], waterHolding: "moderate" },
     growability: { score: 72, growsWell: ["Maple", "Apples", "Brassicas", "Cool-season turf"], tricky: ["Drought-tolerant xeriscape without irrigation"] },
     climateChange: { outlook2050: "Heavier convective rain; longer pollen seasons.", outlook2100: "Species migration on slopes.", keyShifts: [{ variable: "Flash flood frequency", direction: "up" }], resilienceNote: "Forested slopes buffer some erosion." },
@@ -387,8 +427,27 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["university families", "healthcare"], travelFit: ["fall color", "whitewater"],
     whoWouldLove: "Appalachian foothills without deep South heat.", whoMightNot: "Sun-belt retirees seeking dry air.",
     confidence: "high",
+    deepSections: [
+      {
+        id: "morgantown-wv-mechanism",
+        title: "River-Valley Moderation at work",
+        paragraphs: [
+          "Morgantown sits where dissected allegheny plateau; monongahela river valley; frequent valley fog and upslope enhancement on sw flow. The atlas tags this as river-valley moderation (Cfa / Dfb transition, roughly 1125 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Cold-air drainage — with River-valley moderation also in play.",
+          "Plateau dissected by tight river networks produces high spatial variability in frost, fog, and snowfall totals within a 20 km radius. That mechanism is why two map dots in West Virginia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+        ],
+      },
+      {
+        id: "morgantown-wv-field-read",
+        title: "Scouting and on-the-ground read",
+        paragraphs: [
+          "Morgantown screening: Humid continental–subtropical transition — wet, cloudy, and hilly with sharp microclimates between ridges and valleys. Soil reads as acidic shaly silt loams with moderate drainage and pH 4.8–6.2 — garden success tracks micro-shelter and water timing.",
+          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Maple, Apples, Brassicas, Cool-season turf; Drought-tolerant xeriscape without irrigation tend to struggle without intervention. Sun-belt retirees seeking dry air — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+        ],
+      },
+    ],
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Morgantown Municipal", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Morgantown Municipal", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
   {
     id: "port-orford-cape-blanco-or",
@@ -446,7 +505,8 @@ export const PLACES_USA_EXTRA: Place[] = [
       note: "Cape Blanco is the windiest US headland; Curry County services are thin and Eugene / Medford are 2.5–3 h away on US-101.",
       sources: [
         { label: "Niche — Port Orford OR", url: "https://www.niche.com/places-to-live/port-orford-curry-or/" },
-      ],
+      
+        { label: "NOAA NCEI Port Orford monthly 1991-2020 normals service", url: "https://www.ncei.noaa.gov/access/services/data/v1?dataTypes=MLY-TMAX-NORMAL%2CMLY-TMIN-NORMAL%2CMLY-TAVG-NORMAL%2CMLY-PRCP-NORMAL%2CMLY-SNOW-NORMAL&dataset=normals-monthly-1991-2020&format=pdf&stations=USC00356784" },],
     },
     relocationFit: ["heat-averse remote workers", "storm-coast romantics", "small-town ocean people"],
     travelFit: ["Cape Blanco headlands", "working harbor", "coastal trails", "storm watching"],
