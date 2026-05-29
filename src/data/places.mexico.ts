@@ -421,6 +421,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Mexico's finest wine valley — a Mediterranean pocket cooled by marine intrusion off the Ensenada coast.",
     summaryImmersive: "Valle de Guadalupe is a narrow granitic valley 25 km inland from Ensenada, receiving enough marine cooling most mornings to preserve Mediterranean character despite the high latitude for Mexico. Warm sunny summer afternoons give way to cool nights as marine fog creeps up the valley. Wine production — Nebbiolo, Tempranillo, Grenache, and increasingly Mediterranean whites — has made the valley one of Mexico's defining viticultural regions.",
     whyDistinct: "Marine cooling intrudes on morning and evening through coastal passes; inland latitude provides long sunny afternoons; granitic soils drain fast.",
+    experience: {
+      feel: "Valle de Guadalupe feels like a Mexican Tuscany cooled by the Pacific. Twenty-five kilometres inland from Ensenada's cold coast, marine air slips up the valley most mornings and evenings, so warm sunny afternoons give way to cool nights — exactly the rhythm that built Mexico's finest wine country.",
+      seasons: {
+        winter: "Mild and green — afternoons near 18°C, cool nights, and the year's modest rain arriving in soft Pacific pulses to wake the chaparral.",
+        spring: "Bright and warming — afternoons climbing through the 20s, the vines budding, and the dry season settling in with long sunny days.",
+        summer: "Warm, dry, and sun-soaked — afternoons near 31°C tempered by cool marine nights and morning fog creeping up the valley, the diurnal swing that ripens the grapes.",
+        autumn: "Harvest and gold — warm days easing into cool nights, the crush underway, and the first rains still weeks off.",
+      },
+      travelerFit: "Visitors come for the wineries and farm-to-table cuisine, the Baja wine-country scene, and easy Ensenada and Pacific access.",
+      residentFit: "It rewards vintners, food-and-wine people, and Mediterranean-climate seekers who want a rural Baja base near the coast.",
+      texture: "An easy Mediterranean climate with desert realities: the main things to weigh are scarce water in a dry valley, wildfire risk, and a rural service base.",
+    },
     climate: {
       tempHighC: [18.3, 19.1, 20.6, 23.1, 25.4, 27.9, 30.8, 31.2, 29.7, 26.2, 22.3, 18.7],
       tempLowC:  [4.2, 4.9, 6.4, 8.2, 10.9, 13.4, 15.8, 16.1, 14.3, 10.7, 6.9, 4.6],
@@ -508,6 +520,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A sacred lake at 2140 m, surrounded by volcanoes and Purépecha villages — mild year-round highland climate.",
     summaryImmersive: "Pátzcuaro's climate is shaped by altitude and by the great lake at its center. Daytime highs hover in the low-to-mid 20s year-round; nights cool into the single digits in winter, low teens in summer. The wet season brings afternoon storms that build on the volcanic rim and roll across the lake. The Meseta Tarasca — the Purépecha highlands — remains one of the most culturally vibrant and climatically mild regions in Mexico.",
     whyDistinct: "Highland volcanic plateau + large lake moderation + orographic rainfall enhancement from surrounding peaks.",
+    experience: {
+      feel: "Pátzcuaro feels like a cool, sacred highland that barely changes. At 2,140 m around its great lake, daytime highs sit in the low-to-mid 20s essentially all year, the Purépecha villages ringing the water, and the volcanic rim catching the afternoon storms of the wet season.",
+      seasons: {
+        winter: "Dry-season bright and crisp — afternoons near 21°C, mornings dropping into the single digits, and clear highland light over the lake.",
+        spring: "The warmest, driest stretch — afternoons near 26°C, dusty and bright, the lake basin waiting for the rains to break the heat.",
+        summer: "Mild and green under the wet season — afternoons in the low 20s, storms building on the volcanic rim and rolling across the lake, then clearing by evening.",
+        autumn: "Rains tapering into golden light — mild afternoons near 22°C, the countryside lush, and Day of the Dead drawing the lake villages together.",
+      },
+      travelerFit: "Visitors come for the lake and Purépecha villages, the famous Day of the Dead vigils on Janitzio, and the cool highland pace.",
+      residentFit: "It rewards culture-seekers and quiet-living highlanders who want mild, lake-tempered weather and a deeply rooted Indigenous landscape.",
+      texture: "An easy, mild highland climate; the things to weigh are lake-watershed health, altitude, and the services of a small highland region rather than the weather.",
+    },
     climate: {
       tempHighC: [21.2, 22.7, 25.1, 26.2, 25.8, 23.7, 22.6, 22.8, 22.4, 22.1, 21.8, 21.2],
       tempLowC:  [3.7, 4.6, 6.7, 8.9, 10.4, 11.6, 11.1, 11.0, 11.2, 8.4, 5.6, 4.1],
@@ -1958,6 +1982,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Mexico's classic lake-tempered expat climate: highland spring temperatures, a large water body, and mountain-backed afternoon airflow.",
     summaryImmersive: "Ajijic sits on Lake Chapala's north shore at a highland elevation that trims tropical heat while the lake softens daily extremes. The dry season is bright and warm; the wet season arrives with afternoon storms that green the surrounding slopes. Compared with Guadalajara, the lakeshore is smaller, breezier, and more temperature-stable, which is why it has become one of Mexico's best-known year-round comfort climates.",
     whyDistinct: "Large-lake thermal inertia, highland elevation, and mountain slope exposure combine to produce a lived climate that is warmer than San Cristóbal, less urban than Guadalajara, and less dry than the interior Bajío.",
+    experience: {
+      feel: "Ajijic feels like the climate so many people retire for. On Lake Chapala's north shore at 1,530 m, Mexico's largest lake and a highland elevation hold the temperature remarkably steady — bright warm dry seasons, green wet-season afternoons, and one of the country's best-known year-round comfort climates.",
+      seasons: {
+        winter: "Dry-season near-perfection — warm, sunny afternoons near 24°C, cool nights near 8°C, and clear lake light day after day.",
+        spring: "The warmest, driest stretch — afternoons near 31°C, the slopes browning, and the lake basin awaiting the rains.",
+        summer: "Mild and green under the wet season — afternoons easing to near 27°C, humid air, and reliable late-afternoon storms that green the surrounding sierras before clearing.",
+        autumn: "Rains tapering into bright warm days — afternoons near 27°C, the countryside lush, and the comfortable dry season returning.",
+      },
+      travelerFit: "Visitors come for the lakeshore arts-and-expat town, the malecón and village markets, and easy Guadalajara access.",
+      residentFit: "It rewards retirees and remote workers who want one of Mexico's most temperature-stable, lake-tempered comfort climates with a large established community.",
+      texture: "An exceptionally comfortable climate; the things to weigh are lake-watershed and water-quality stress, rising cost pressure from its popularity, and wet-season humidity.",
+    },
     climate: { tempHighC: [24, 26, 29, 31, 31, 29, 27, 27, 27, 27, 26, 24], tempLowC: [8, 9, 11, 14, 16, 17, 16, 16, 16, 14, 11, 8], precipMm: [8, 5, 4, 8, 28, 180, 230, 210, 170, 60, 15, 8], sunshinePct: [70, 72, 74, 76, 72, 62, 66, 68, 64, 70, 72, 70], humidity: [55, 52, 48, 50, 58, 78, 82, 80, 75, 62, 55, 52], annualPrecipMm: 926, frostFreeDays: 365, hardinessZone: "10b equiv.", chillHours: 80, diurnalSummerC: 11, diurnalWinterC: 16 },
     soil: { texture: "Volcanic loam and lake-basin alluvium", drainage: "moderate", phRange: [6.4, 7.6], organicMatterPct: [2, 5], waterHolding: "moderate" },
     growability: { score: 84, growsWell: ["Avocado", "Citrus", "Mango in protected spots", "Bougainvillea", "Herbs", "Maize"], tricky: ["High-chill fruit", "Wet-foot crops"], homeGarden: "A highly forgiving home-garden climate if drainage and water supply are handled well." },

@@ -1306,6 +1306,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Oregon's sunniest valley — a Mediterranean pocket between the Siskiyous and the Cascades.",
     summaryImmersive: "The Rogue Valley tilts south and catches light the way few other Oregon places do. Summer afternoons are warm and long, winters are mild with occasional snow, and the rain shadow off the Siskiyous keeps annual precipitation under 800 mm. Ashland itself sits at 600 m in a south-facing alcove — just high enough for breezes, just low enough for a real growing season. Pears, wine grapes, and heritage apple orchards define the agricultural landscape. The microclimate is one reason the Oregon Shakespeare Festival could thrive here for decades: outdoor summer evenings are comfortable in a way they are almost nowhere else in western Oregon.",
     whyDistinct: "The Siskiyous shelter the Rogue Valley from winter Pacific systems; summer high pressure settles for weeks. The valley floor develops a notable diurnal swing — hot afternoons, cool nights — rewarding both tree fruit and vineyard work.",
+    experience: {
+      feel: "Ashland feels like California's Mediterranean climate slipped north into Oregon. The Rogue Valley tilts south behind the Siskiyous, banking sun and warmth where the rest of western Oregon stays gray — warm dry summers and mild winters that let outdoor Shakespeare thrive for decades.",
+      seasons: {
+        winter: "Mild and damp — afternoons near 9°C, light valley snow now and then, and the year's rain arriving in soft Pacific spells between sunbreaks.",
+        spring: "Green and brightening — afternoons climbing through the teens into the 20s, orchards and vineyards blossoming, and the rain easing toward the long dry summer.",
+        summer: "Warm, dry, and brilliantly sunny — afternoons near 32°C with cool nights from the big diurnal swing, ideal for tree fruit, wine, and open-air evenings. Wildfire smoke is the season's recurring intruder.",
+        autumn: "Long and golden — warm days easing into crisp nights, the vineyards harvesting, and the rains holding off well into October.",
+      },
+      travelerFit: "Visitors come for the Oregon Shakespeare Festival, Rogue Valley wine and pears, and Siskiyou and Cascade outdoor access.",
+      residentFit: "It rewards arts-minded retirees, gardeners, and remote workers who want Mediterranean sun and a walkable town on Oregon's sunniest side.",
+      texture: "An easy, sunny valley life with one big caveat: wildfire and smoke have become the defining summer risk, alongside a long-run drought trend and tight housing.",
+    },
     climate: {
       tempHighC: [8.9, 11.9, 15.2, 18.4, 23.0, 27.9, 32.2, 31.8, 27.3, 19.6, 11.8, 8.1],
       tempLowC:  [-0.6, 1.0, 2.7, 4.3, 7.3, 10.6, 13.1, 12.7, 9.2, 5.1, 1.3, -0.7],
@@ -3572,6 +3584,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "One of the most extreme annual temperature swings on the continent — summer highs near 23°C, winter lows near −27°C, with ice fog when inversions lock in.",
     summaryImmersive: "Fairbanks sits 200 km south of the Arctic Circle in the trapped bowl of the Tanana Valley, and the Tanana Valley does things to air. In summer, nearly 22 hours of daylight drive highs into the low 70s °F; gardens explode, cabbages reach absurd sizes, and midnight softball is a civic fixture. In winter, the valley fills with air that has radiated heat to space for months — persistent inversions clamp temperatures near −40 °C under a ceiling of ice fog that forms above the river and along arterial roads. A drive from the valley floor to the top of Chena Ridge can move you 15 °C warmer in 10 minutes. Aurora dances overhead an average 200+ nights per year.",
     whyDistinct: "Deep-interior continentality + basin geometry + polar-jet positioning. Far from any moderating ocean, with the Alaska Range blocking Pacific moisture and the Brooks Range blocking Arctic storms, the valley radiates heat freely and stratifies strongly. The diurnal sun-latitude flip (21 hrs daylight → 4 hrs daylight) amplifies both extremes.",
+    experience: {
+      feel: "Fairbanks feels like climatic extremes pressed into one valley. Two hundred kilometres south of the Arctic Circle, the trapped Tanana basin swings from near-endless summer daylight to deep, ice-fog winter cold — and throws the aurora overhead more than 200 nights a year.",
+      seasons: {
+        winter: "Severe and still — afternoons far below freezing, lows near −27°C and often plunging toward −40°C as inversions clamp ice fog over the valley for days. The cold is dry and defining; a short drive uphill can be far warmer.",
+        spring: "A fast, dramatic break-up — the river ice goes out, daylight balloons, and afternoons climb from frozen to mild over a few exuberant weeks.",
+        summer: "Brief and almost manic — nearly 22 hours of daylight drive afternoons near 23°C, gardens and cabbages explode, midnight softball is a civic fixture, and wildfire smoke can drift in for stretches.",
+        autumn: "Short and luminous — birches turning gold, the first hard frosts arriving early, and the aurora season ramping back up under lengthening nights.",
+      },
+      travelerFit: "Visitors come for the aurora, the midnight-sun summer, hot springs, and a true Interior-Alaska basecamp.",
+      residentFit: "It rewards genuinely cold-hardy, self-reliant northerners who treasure long summer light and deep winter dark in equal measure.",
+      texture: "An extreme northern life: the main things to weigh are brutal, prolonged winter cold and ice fog, summer wildfire smoke, and deep subarctic isolation.",
+    },
     climate: {
       tempHighC: [-16, -10, -2, 7, 16, 22, 23, 20, 13, 2, -10, -15],
       tempLowC: [-27, -23, -17, -6, 3, 10, 11, 8, 2, -7, -19, -24],

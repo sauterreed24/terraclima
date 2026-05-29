@@ -1416,6 +1416,18 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "The driest subarctic capital in North America — a rain-shadow Yukon valley with sun-drenched winter cold and near-midnight-sun summers.",
     summaryImmersive: "Whitehorse sits at 60.7° latitude but in the deep rain shadow of the Coast Mountains, making it one of the driest subarctic climates on the continent — under 260 mm annual precipitation. Winters are long and cold (January lows near −24°C) but also sunny and strikingly dry. Summer daylight approaches 20 hours; afternoon highs reach the low 20s. The dryness produces clearer winter skies than most Canadian north, contributing to exceptional aurora conditions.",
     whyDistinct: "Rain shadow transforms typical subarctic wetness into aridity, producing a unique cold-dry-sunny regime unusual for the latitude.",
+    experience: {
+      feel: "Whitehorse feels like the sunny, dry exception to the subarctic. In the Coast Mountains' rain shadow it gets under 260 mm a year, so its winters are cold but bright and crisp rather than dreary — and the dry, clear skies make it one of the continent's great aurora towns.",
+      seasons: {
+        winter: "Long, cold, and strikingly sunny — afternoons well below freezing, lows near −24°C, but dry, clear skies and short brilliant days, with the aurora a regular companion.",
+        spring: "A slow northern thaw — daylight surging back, the Yukon River breaking up, and afternoons climbing out of the cold into the first real warmth.",
+        summer: "Mild and almost endless — afternoons in the low 20s under nearly 20 hours of daylight, dry and pleasant, the boreal forest and rivers at their best.",
+        autumn: "Brief and golden — the taiga turning, frosts arriving early, and the dark returning fast to reopen the aurora season.",
+      },
+      travelerFit: "Visitors come for the aurora, the Yukon River and Klondike history, and a wilderness-capital basecamp under the midnight sun.",
+      residentFit: "It rewards independent northerners who want a dry, sunny subarctic with real services and wilderness at the doorstep.",
+      texture: "A bright but demanding north: the main things to weigh are long, cold winters and short growing seasons, plus the isolation of a small northern capital.",
+    },
     climate: { tempHighC: [-11.4, -7.1, -1.1, 6.8, 14.2, 19.3, 20.9, 19.1, 12.8, 3.4, -6.1, -10.4], tempLowC: [-24.0, -20.8, -14.6, -5.9, 0.6, 5.8, 8.1, 6.6, 2.1, -4.4, -14.8, -21.6], precipMm: [14, 11, 10, 9, 18, 31, 36, 35, 31, 23, 20, 22], snowCm: [20, 14, 10, 4, 2, 0, 0, 0, 2, 14, 26, 28], sunshinePct: [22, 32, 48, 58, 62, 68, 70, 62, 48, 32, 20, 14], humidity: [78, 72, 62, 52, 48, 45, 48, 52, 55, 62, 72, 80], annualPrecipMm: 260, frostFreeDays: 70, hardinessZone: "2b" },
     soil: { texture: "Sandy loam over permafrost / gravel", drainage: "good", phRange: [6.2, 7.2], waterHolding: "low" },
     growability: { score: 30, hardinessZone: "2b", growsWell: ["Short-season crops", "Potatoes", "Cold-hardy greens"], tricky: ["Most fruit"] },

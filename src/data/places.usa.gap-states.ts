@@ -426,6 +426,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "A dramatic summer swing away from the Las Vegas heat island — conifer forest and snow at Mojave Desert latitudes.",
     summaryImmersive: "The Spring Mountains rise abruptly from the basin floor where subsidence and dryness dominate. Upslope flow brings cloud and occasional thunderstorms; winter storms deliver real snowpack. The inversion that traps smog and heat below also isolates the high elevations as a climatic refuge — a pattern documented in mountain–basin meteorology worldwide.",
     whyDistinct: "Extreme vertical climate gradient across a short horizontal distance: Mojave desert basins to subalpine forest in tens of kilometres — one of the steepest usable lapse-rate transects in the US.",
+    experience: {
+      feel: "Mount Charleston feels like an impossible cool island floating above Las Vegas. Drive 45 minutes and 2,000 m up from the Mojave furnace and you reach conifer forest, bristlecones, and snow — summer afternoons near 25°C while the basin below bakes past 40°C.",
+      seasons: {
+        winter: "Genuinely alpine — afternoons near freezing, nights near −12°C, and real snowpack stacking up for skiing while the desert below stays warm and dry.",
+        spring: "Slow to melt out — snow lingering on the high country, afternoons climbing through the teens, and the forest greening weeks behind the basin.",
+        summer: "The whole point — afternoons near 25°C with cool, often-frosty nights, a startling escape from Las Vegas heat, and occasional upslope thunderstorms building on the crest.",
+        autumn: "Crisp and quiet — aspens turning, frosty mornings returning early, and the first snows reclaiming the summits while the valley stays warm.",
+      },
+      travelerFit: "Visitors come for a summer cool-down from Las Vegas, winter skiing and snow play, and bristlecone-pine high country.",
+      residentFit: "It rewards a small mountain community and second-home owners who want forest and snow within reach of a major city.",
+      texture: "A dramatic sky-island life: the main things to weigh are a short, snowy season and a tiny service base, wildfire in the forest, and the steep road down to everything else.",
+    },
     climate: {
       tempHighC: [-1, 0, 4, 9, 15, 21, 25, 24, 19, 12, 5, 0],
       tempLowC: [-12, -10, -6, -1, 4, 9, 12, 11, 6, 0, -6, -11],
