@@ -70,6 +70,7 @@ function seasonWeather(
   snowMean: number | null,
   humidityMean: number | null,
   sunshineMean: number | null,
+  koppen: string,
 ): string {
   if ((snowMean ?? 0) >= 28) return "heavy snow defines the rhythm";
   if ((snowMean ?? 0) >= 10) return "snow is a regular part of the picture";
@@ -77,15 +78,20 @@ function seasonWeather(
   if (precipMean >= 45) return "showers pass through regularly";
   if (precipMean < 18) {
     if (sunshineMean != null && sunshineMean >= 75) return "skies stay relentlessly clear and dry";
+    if (/^B/.test(koppen)) return "skies stay mostly dry with intense sun";
     return "skies stay mostly dry";
   }
   if (humidityMean != null && humidityMean >= 72) return "humid air keeps everything soft and close";
   if (sunshineMean != null && sunshineMean < 42) return "gray skies dominate";
+  if (/^Cfa|^Cwa|^Am|^Af/.test(koppen) && precipMean >= 35) return "humid showers and convection pass through";
+  if (/^Csb|^Csc|^Cfb/.test(koppen)) return "cool, changeable marine-influenced weather";
   return "weather stays moderate and changeable";
 }
 
 function topRiskPhrase(place: Place, season: SeasonKey): string | null {
   const r = place.risks;
+  const winterSnow = meanOf(place.climate.snowCm, SEASON_IDX.winter) ?? 0;
+  const hasSnowSeason = winterSnow >= 8 || (place.climate.frostFreeDays ?? 200) < 160;
   const keys: Array<keyof typeof r> =
     season === "summer" ? ["extremeHeat", "wildfire", "smoke", "drought", "storm"]
     : season === "winter" ? ["extremeCold", "storm", "coastal"]
@@ -106,9 +112,12 @@ function topRiskPhrase(place: Place, season: SeasonKey): string | null {
     case "smoke": return "Wildfire smoke can settle in for stretches";
     case "extremeCold": return "Arctic outbreaks can still bite hard";
     case "drought": return "Water supply and irrigation stress matter";
-    case "flood": return season === "spring" ? "Snowmelt and spring rain can swell rivers fast" : "Flash-flood and surge diligence is part of daily life";
+    case "flood":
+      if (season === "spring" && hasSnowSeason) return "Snowmelt and spring rain can swell rivers fast";
+      if (season === "spring") return "Spring rains can swell rivers and arroyos quickly";
+      return "Flash-flood and surge diligence is part of daily life";
     case "storm": return season === "summer" ? "Afternoon convection and storms build often" : "Storm systems roll through with real force";
-    case "coastal": return "Hurricane and coastal surge exposure shapes fall planning";
+    case "coastal": return season === "autumn" ? "Hurricane and coastal surge exposure shapes fall planning" : "Coastal surge and wind events belong in the planning stack";
     default: return null;
   }
 }
@@ -148,7 +157,7 @@ function buildSeasonDetail(place: Place, key: SeasonKey): string {
   const humidityMean = meanOf(place.climate.humidity, idx);
   const sunshineMean = meanOf(place.climate.sunshinePct, idx);
 
-  const weather = seasonWeather(precipMean, snowMean, humidityMean, sunshineMean);
+  const weather = seasonWeather(precipMean, snowMean, humidityMean, sunshineMean, place.koppen);
   const risk = topRiskPhrase(place, key);
   const context = seasonContext(place, key);
   const opener = SEASON_OPENERS[key][place.id.length % SEASON_OPENERS[key].length]!;
@@ -245,7 +254,7 @@ function buildTexture(place: Place): string {
     if ((ls.costPressure ?? 0) >= 70) lived = " Housing runs expensive relative to regional medians.";
     else if ((ls.accessFriction ?? 0) >= 65) lived = " Specialty care and major-airport access require real planning.";
     else if ((ls.socialStress ?? 0) >= 65) lived = " Local social-fabric stress is worth checking in person.";
-    else if (ls.note) lived = ` ${firstSentence(ls.note)}`;
+    else if (ls.note && !/\bscreening\b/i.test(ls.note)) lived = ` ${firstSentence(ls.note)}`;
   }
 
   const riskClause = ranked.length

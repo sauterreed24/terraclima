@@ -54,7 +54,7 @@ import { Section, KeyValue, LabelRow, Legend, ScorePill, ZoneDivider, titleCaseL
 import { synthesizePlaceSignals } from "../lib/place-signals";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
 import { buildGrowabilityRationale } from "../lib/growability-score";
-import { composeAgricultureIntro, composeAtAGlanceIntro, composeBioclimIntro, composeClimateIntro, composeCorpusIntro, composeDeepDossierIntro, composeGeospatialIntro, composeLiveSignalsIntro, composeLivabilityIntro, composePracticalReadIntro, composeRiskIntro, composeTourismIntro } from "../lib/dossier-intros";
+import { composeAgricultureIntro, composeAtAGlanceIntro, composeBioclimIntro, composeClimateIntro, composeCorpusIntro, composeDeepDossierIntro, composeGeospatialIntro, composeLiveSignalsIntro, composeLivabilityIntro, composeLivabilityMethodNote, composePracticalReadIntro, composeRiskIntro, composeTourismIntro } from "../lib/dossier-intros";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
@@ -547,6 +547,7 @@ function DetailBody({
   const practicalIntro = useMemo(() => composePracticalReadIntro(place, geospatial), [place, geospatial]);
   const tourismIntro = useMemo(() => composeTourismIntro(place), [place]);
   const livabilityIntro = useMemo(() => composeLivabilityIntro(place, livability), [place, livability]);
+  const livabilityMethodNote = useMemo(() => composeLivabilityMethodNote(), []);
   const liveSignalsIntro = useMemo(
     () => (place.liveSignals ? composeLiveSignalsIntro(place) : undefined),
     [place],
@@ -615,7 +616,7 @@ function DetailBody({
               </div>
             </div>
             <div className="text-[11px] text-stone-readable max-w-lg leading-snug">
-              Human-felt thermal comfort, atmosphere (sky, wind, humidity, smoke, and solar load), tail-risk-aware hazard cushion, U-shaped precip moderation, curated lived friction, and derived place feel. Hover a row for its formula.
+              {livabilityMethodNote}
             </div>
           </div>
           <div className="divider-contour my-3" />

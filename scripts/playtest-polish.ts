@@ -275,6 +275,7 @@ async function main(): Promise<void> {
     "ellensburg-wa", "hood-river-gorge", "truckee-ca", "mammoth-lakes-ca",
     "borrego-springs-ca", "sedona-az", "prescott-az", "cloudcroft-nm",
     "taos-nm", "crested-butte-co", "leadville-co", "durango-co",
+    "spokane-wa", "austin-tx", "washington-dc", "honolulu-hi",
   ];
   for (const id of tierCLiveIds) {
     const place = PLACES.find(p => p.id === id);
@@ -316,7 +317,20 @@ async function main(): Promise<void> {
   if (authoredCount !== PLACES.length) {
     throw new Error(`experience coverage incomplete: ${authoredCount}/${PLACES.length}`);
   }
-  // Authored override precedence: a synthetic experience overrides derived fields.
+
+  const missingLive = PLACES.filter(p => !p.liveSignals);
+  if (missingLive.length > 0) {
+    throw new Error(`liveSignals coverage incomplete: ${PLACES.length - missingLive.length}/${PLACES.length}`);
+  }
+  for (const place of PLACES.slice(0, 20)) {
+    const ls = place.liveSignals!;
+    if (ls.costPressure == null || ls.socialStress == null || ls.accessFriction == null) {
+      throw new Error(`${place.id} liveSignals: missing axis scores`);
+    }
+    if (!ls.note || ls.note.length < 48) throw new Error(`${place.id} liveSignals: thin note`);
+  }
+
+  // Authored override precedence
   const overrideProbe = PLACES[0]!;
   const probe = composePlaceExperience({ ...overrideProbe, experience: { feel: "PROBE feel line over the derived read." } });
   if (probe.feelLine !== "PROBE feel line over the derived read.") {

@@ -186,3 +186,7 @@ export function composeDeepDossierIntro(place: Place, sectionCount: number, hasB
   const calendar = hasBestMonthsGuide ? " Best months for… handles calendars below;" : "";
   return `Field dossier for ${shortName(place)} — ${sectionCount} curated ${sectionCount === 1 ? "essay" : "essays"} on ${place.region} mechanisms, hydrology, gardens, and long-stay fit.${calendar} Read this as the atlas field notebook after the overview spotlight: authored depth first, then derived backbone sections where the corpus has them.`;
 }
+
+export function composeLivabilityMethodNote(): string {
+  return "Human-felt thermal comfort, atmosphere (sky, wind, humidity, smoke, and solar load), tail-risk-aware hazard cushion, U-shaped precip moderation, curated lived friction, and derived place feel. Hover a row for its formula.";
+}
