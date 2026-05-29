@@ -3210,7 +3210,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["professionals", "families"], travelFit: ["historic center", "wine route"],
     whoWouldLove: "People who want a dry highland Mexican city with strong services and broad mobility.", whoMightNot: "People seeking lush scenery or low-growth quiet.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — city-scale climate is well supported; neighborhood heat and flood exposure vary strongly.",
+    confidenceNotes: "Compare the walkable centro against Juriquilla and El Marques separately — new districts can run hotter, more car-dependent, and more water-stressed than historic shaded neighborhoods.",
     citations: [
       { label: "SMN — Querétaro normals", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
       { label: "INEGI digital map — Querétaro basin relief and urban context", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
@@ -3275,7 +3275,7 @@ export const PLACES_MEXICO: Place[] = [
         ],
       },
     ],
-    confidenceNotes: "Tier C entry — city station context is useful, but Sierra-side gradients around Durango are stronger than one urban normal can show.",
+    confidenceNotes: "City station context is useful, but Sierra-side gradients run wetter and cooler than urban normals suggest — basin inversions and drought volatility need separate parcel diligence.",
     citations: [
       { label: "SMN — Durango normals", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
       { label: "WorldClim 2.1 — Durango highland gridded climate", kind: "worldclim", url: "https://www.worldclim.org/" },
@@ -3340,7 +3340,7 @@ export const PLACES_MEXICO: Place[] = [
         ],
       },
     ],
-    confidenceNotes: "Tier C entry — windward mountain gradients are strong; use the numbers as conservative regional guidance rather than parcel-grade normals.",
+    confidenceNotes: "Elevated flood, storm, and landslide risk on humid mountain slopes registers here — verify parcel drainage, retaining structures, and rainy-season road access before committing.",
     citations: [
       { label: "SMN — Orizaba and Veracruz highland normals", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
       { label: "INEGI digital map — Pico de Orizaba relief context", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },

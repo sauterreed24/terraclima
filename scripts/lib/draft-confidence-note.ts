@@ -56,6 +56,15 @@ function riskSpecificNote(place: Place): string | null {
   const riskOrder = { "very-low": 1, low: 2, moderate: 3, elevated: 4, high: 5, "very-high": 6 } as const;
   const lvl = (k: keyof typeof r) => riskOrder[r[k].level as keyof typeof riskOrder] ?? 0;
 
+  if (
+    place.archetypes.some(a => ["subarctic-continental", "alpine-tundra"].includes(a))
+    || place.koppen.startsWith("ET")
+    || place.koppen.includes("Dfd")
+    || lvl("extremeCold") >= 5
+  ) {
+    return `${name} station normals understate permafrost, river-flood, and winter-cold exposure — confirm ground-ice history, break-up flood zones, and specialty-care access via the nearest regional hub before committing.`;
+  }
+
   if (lvl("coastal") >= 5 || lvl("storm") >= 5) {
     return `${name} coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.`;
   }
@@ -88,7 +97,7 @@ export function isGenericConfidenceNote(note: string | undefined): boolean {
     || n.includes("editorial screening grounded in published normals")
     || n.includes("screening uses published normals and atlas archetypes")
     || n.includes("atlas entry is regional context")
-    || /^City-scale normals for .+ are useful; neighborhood heat island/.test(n)
+    || /^Tier C entry —/.test(n)
   );
 }
 

@@ -3192,7 +3192,7 @@ export const PLACES_CANADA: Place[] = [
         ],
       },
     ],
-    confidenceNotes: "Tier C entry — regional station coverage is strong enough for settlement-scale climate screening, but permafrost and flood diligence are parcel-specific.",
+    confidenceNotes: "Discontinuous permafrost underlies much of Dawson — confirm ground-ice exposure, Yukon River break-up flood history, and Whitehorse specialty-care access before treating station normals as parcel-grade.",
     citations: [
       { label: "ECCC Canadian Climate Normals — Dawson station context", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "Government of Yukon — Climate change in Yukon", kind: "other", url: "https://yukon.ca/en/climate-change-yukon" },
@@ -3257,7 +3257,7 @@ export const PLACES_CANADA: Place[] = [
         ],
       },
     ],
-    confidenceNotes: "Tier C entry — station and agricultural context support the warm-pocket read, but escarpment-scale effects need site verification.",
+    confidenceNotes: "ECCC station context supports the warm-pocket read; escarpment frost drainage, drought cycles on the dry western Red River margin, and prairie storm exposure vary sharply block by block.",
     citations: [
       { label: "ECCC Canadian Climate Normals — Morden and southern Manitoba station context", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/" },
@@ -3322,7 +3322,7 @@ export const PLACES_CANADA: Place[] = [
         ],
       },
     ],
-    confidenceNotes: "Tier C entry — local topography creates strong site effects; use ECCC and Climate Atlas as regional scaffolding, then verify parcel exposure.",
+    confidenceNotes: "Eastern Townships normals describe the village envelope; valley frost pockets, orographic rain on slopes, and ski-upland snow totals can diverge within minutes — scout slope aspect and cold-air drainage before committing.",
     citations: [
       { label: "ECCC Canadian Climate Normals — Eastern Townships station context", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "Climate Atlas of Canada — southern Quebec projections", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
