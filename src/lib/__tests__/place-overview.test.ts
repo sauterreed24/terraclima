@@ -62,6 +62,7 @@ describe("composePlaceExperience", () => {
   });
 
   it("does not mark a place authored when no experience override is present", () => {
-    expect(composePlaceExperience(PLACES_BY_ID["houghton-mi"]).authored).toBe(false);
+    const base = PLACES_BY_ID["houghton-mi"];
+    expect(composePlaceExperience({ ...base, experience: undefined }).authored).toBe(false);
   });
 });

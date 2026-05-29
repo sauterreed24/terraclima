@@ -28,6 +28,7 @@ import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
+import { computeBioclim } from "../lib/bioclim";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { formatLivedSources } from "../lib/lived-sources";
 import { buildComfortPrecisionProfile } from "../lib/comfort-precision";
@@ -53,6 +54,7 @@ import { Section, KeyValue, LabelRow, Legend, ScorePill, ZoneDivider, titleCaseL
 import { synthesizePlaceSignals } from "../lib/place-signals";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
 import { buildGrowabilityRationale } from "../lib/growability-score";
+import { composeAgricultureIntro, composeBioclimIntro, composeClimateIntro, composeCorpusIntro, composeGeospatialIntro, composeRiskIntro } from "../lib/dossier-intros";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
@@ -535,6 +537,15 @@ function DetailBody({
   const bestMonths = useMemo(() => getBestMonths(place, temp), [place, temp]);
   const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
+  const agricultureIntro = useMemo(() => composeAgricultureIntro(place), [place]);
+  const geospatialIntro = useMemo(() => composeGeospatialIntro(place, geospatial), [place, geospatial]);
+  const climateIntro = useMemo(() => composeClimateIntro(place), [place]);
+  const bioclimIntro = useMemo(() => {
+    const bio = computeBioclim(place);
+    return bio ? composeBioclimIntro(place, bio) : undefined;
+  }, [place]);
+  const corpusIntro = useMemo(() => composeCorpusIntro(place, PLACE_COUNTS.total), [place]);
+  const riskIntro = useMemo(() => composeRiskIntro(place), [place]);
   const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
   const livability = useMemo(() => scoreLivability(place), [place]);
   const livedSources = useMemo(() => formatLivedSources(place.liveSignals?.sources), [place.liveSignals?.sources]);
@@ -579,7 +590,7 @@ function DetailBody({
 
       <PlaceComfortPrecision profile={comfortPrecision} />
 
-      <PlaceBioclimaticIndices place={place} anchorId={PD.bioclimaticIndices} />
+      <PlaceBioclimaticIndices place={place} anchorId={PD.bioclimaticIndices} intro={bioclimIntro} />
 
       <Section title="Livability lens v3" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="panel-thin p-4">
@@ -825,6 +836,7 @@ function DetailBody({
       </Section>
 
       <Section anchorId={PD.rhythm} icon={<Wind className="w-4 h-4" style={{ color: "#8cc8e0" }} />} title="Seasonal rhythm">
+        <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">{prose(climateIntro)}</p>
         <div className="space-y-4">
           <div>
             <LabelRow label={`Monthly highs & lows (°${temp})`} />
@@ -891,7 +903,7 @@ function DetailBody({
 
       <Section anchorId={PD.corpus} title="How this place sits in the full atlas" icon={<Scale className="w-4 h-4" style={{ color: "var(--color-glacier-500)" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          Every row compares this stop to the other <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated places on the same map — same fields as the header stats and comfort matrix. A high &ldquo;wetter than&rdquo; share means annual totals here beat most other entries, not that more rain is intrinsically &ldquo;better.&rdquo;
+          {prose(corpusIntro)}
         </p>
         <div className="atlas-corpus-matrix panel-thin overflow-hidden p-0">
           <div className="atlas-corpus-matrix__head grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1.15fr)] gap-x-2 gap-y-1 px-3 py-2.5 text-[10px] uppercase tracking-wider text-stone bg-[linear-gradient(90deg,rgba(94,196,220,0.14),rgba(255,196,214,0.08))] border-b border-[rgba(200,160,120,0.3)]">
@@ -917,7 +929,7 @@ function DetailBody({
 
       <Section anchorId={PD.geospatial} title="Geospatial analysis" icon={<Satellite className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          Screening blends atlas terrain, climate seasonality, risks, and corpus ranks. Sentinel-2 and Landsat appear below as <span className="text-frost font-medium">reference</span> sensor families for the spectral checks a field analyst would queue — not live scenes from this app. Relief texture is a separate atlas proxy for where fine-scale topography would usually matter.
+          {prose(geospatialIntro)} Sentinel-2 and Landsat below are <span className="text-frost font-medium">reference</span> sensor families for the spectral checks a field analyst would queue — not live scenes from this app.
         </p>
         <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-3">
           <div className="panel-thin p-4 space-y-2">
@@ -1054,7 +1066,7 @@ function DetailBody({
 
       <Section anchorId={PD.soil} title="Agriculture & soil" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          The growing read pairs the soil profile with what the climate envelope rewards or fights. Hardiness, frost-free runway, and chill hours sit in the climate signature below; here the focus is dirt, drainage, and what actually thrives.
+          {prose(agricultureIntro)} Hardiness, frost-free runway, and chill hours sit in the climate signature above; below is the soil profile, growability score, and what actually thrives or struggles here.
         </p>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="panel-thin p-4">
@@ -1098,6 +1110,7 @@ function DetailBody({
       </Section>
 
       <Section anchorId={PD.risk} title="Climate risk" icon={<CloudRain className="w-4 h-4" style={{ color: "#d37c5b" }} />}>
+        <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">{prose(riskIntro)}</p>
         <RiskProfile place={place} />
       </Section>
 

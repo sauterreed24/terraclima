@@ -142,7 +142,7 @@ function petBand(pet: number): string {
   return "Very high demand";
 }
 
-export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ place, anchorId }: { place: Place; anchorId: string }) {
+export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ place, anchorId, intro }: { place: Place; anchorId: string; intro?: string }) {
   const bio = useMemo(() => computeBioclim(place), [place]);
   const ranks = useMemo(() => getPlaceBioclimRanks(place), [place]);
   if (!bio) return null;
@@ -155,7 +155,7 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
         Bioclimatic indices
       </h3>
       <p className="text-sm text-stone mb-3 max-w-2xl">
-        Five standard climate-science indices computed directly from this place's monthly temperature and precipitation normals — independent of the authored Köppen label, citable to original sources, comparable across the atlas.
+        {intro ?? "Five standard climate-science indices computed directly from this place's monthly temperature and precipitation normals — independent of the authored Köppen label, citable to original sources, comparable across the atlas."}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
         {cards.map(card => {
