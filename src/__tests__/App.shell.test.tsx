@@ -435,7 +435,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    expect(screen.getByText("Nothing matches all those filters at once")).toBeInTheDocument();
+    expect(screen.getByText("Nothing matches that search and those filters")).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: "Clear all filters" }));
 
     await waitFor(() => {
@@ -447,8 +447,18 @@ describe("App shell", () => {
       expect(params.get("fire")).toBeNull();
       expect(params.get("risk")).toBeNull();
       expect(params.get("q")).toBeNull();
-      expect(screen.queryByText("Nothing matches all those filters at once")).not.toBeInTheDocument();
+      expect(screen.queryByText("Nothing matches that search and those filters")).not.toBeInTheDocument();
     }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("shows a search-specific empty state when only a search is active", async () => {
+    window.history.replaceState(null, "", "/?q=zzzznonexistent");
+
+    renderApp();
+
+    // Search-only: blame the query, not "filters", and offer to clear the search.
+    expect(screen.getByText("No places match “zzzznonexistent”")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Clear search" })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("passes active Live Finder filters into shared compare views", async () => {

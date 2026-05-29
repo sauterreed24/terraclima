@@ -462,6 +462,26 @@ export function hasActiveExplorerFilters(filters: FilterState): boolean {
   return countActiveExplorerFilterSignals(filters) > 0;
 }
 
+/**
+ * True when any non-search Explorer filter is active — country, archetype,
+ * Live-Finder preset, or a hard constraint (summer high / winter low /
+ * growability / fire / overall risk). Keeps the "what counts as a filter vs. a
+ * search" rule beside {@link countActiveExplorerFilterSignals} so callers (e.g.
+ * the empty-results message) don't re-derive it by subtracting the search term.
+ */
+export function hasNonSearchExplorerFilters(filters: FilterState): boolean {
+  return (
+    filters.countries.size > 0 ||
+    filters.archetypes.size > 0 ||
+    (filters.fitPresets?.size ?? 0) > 0 ||
+    filters.maxSummerHighC != null ||
+    filters.minWinterLowC != null ||
+    filters.minGrowability != null ||
+    filters.maxFireRisk != null ||
+    filters.maxOverallRisk != null
+  );
+}
+
 export function applyFilters(places: Place[], f: FilterState): Place[] {
   // Precompute the diacritic-folded query once, not per-place. The search
   // index is built with the same fold so "san jose" matches "San José".

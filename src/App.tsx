@@ -23,7 +23,7 @@ import {
   isBundleActive,
   lifestyleBundleById,
 } from "./lib/lifestyle-bundles";
-import { applyFilters, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit } from "./lib/live-fit";
 import { projectPool } from "./lib/climate-projection";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
@@ -901,7 +901,11 @@ export default function App() {
 
                 {ranked.length === 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <EmptyResults onClear={clearAllFilters} />
+                    <EmptyResults
+                      onClear={clearAllFilters}
+                      searchTerm={(filters.search ?? "").trim()}
+                      hasOtherFilters={hasNonSearchExplorerFilters(filters)}
+                    />
                   </div>
                 ) : (
                   <section className="flex flex-col gap-3 min-w-0" aria-labelledby="ranked-places-heading">
@@ -1080,21 +1084,44 @@ function OverlayLoadingFallback({ label }: { label: string }) {
   );
 }
 
-const EmptyResults = memo(function EmptyResults({ onClear }: { onClear: () => void }) {
+const EmptyResults = memo(function EmptyResults({
+  onClear,
+  searchTerm,
+  hasOtherFilters,
+}: {
+  onClear: () => void;
+  searchTerm: string;
+  hasOtherFilters: boolean;
+}) {
+  // Tailor the message to what is actually narrowing the set so the guidance
+  // points at the right control instead of always blaming "filters".
+  const searchOnly = searchTerm.length > 0 && !hasOtherFilters;
+  const filtersOnly = searchTerm.length === 0 && hasOtherFilters;
+
+  const heading = searchOnly
+    ? `No places match “${searchTerm}”`
+    : filtersOnly
+      ? "Nothing matches those filters at once"
+      : "Nothing matches that search and those filters";
+
+  const body = searchOnly
+    ? "Try a shorter or different term — names, regions, archetypes, and Köppen codes all match, and accents are forgiving (“san jose” finds San José)."
+    : filtersOnly
+      ? "That's a tight intersection — try loosening one. Drop a country, drop one of the archetypes, or relax a Live-Finder limit."
+      : "That's a tight combination — try shortening the search or loosening one filter. Names, regions, archetypes, and Köppen codes all match.";
+
   return (
     <div className="col-span-full panel-warm tc-empty-results p-6 sm:p-7 text-center anim-fade-in">
       <div className="tc-empty-results__icon">
         <Search className="w-4 h-4 tc-icon-ochre" aria-hidden />
       </div>
-      <h3 className="font-atlas text-lg text-ice mb-1">Nothing matches all those filters at once</h3>
-      <p className="text-sm text-frost mb-2 max-w-md mx-auto">
-        That's a tight intersection — try loosening one. Drop a country, drop one of the archetypes, or shorten the search. Names, regions, archetypes, and Köppen codes all match.
-      </p>
+      <h3 className="font-atlas text-lg text-ice mb-1">{heading}</h3>
+      <p className="text-sm text-frost mb-2 max-w-md mx-auto">{body}</p>
       <p className="text-xs text-stone mb-4 max-w-md mx-auto">
         Nothing is broken: the atlas still holds <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated stops behind the filters.
       </p>
       <button type="button" onClick={onClear} className="btn-primary !text-xs">
-        <X className="w-3.5 h-3.5" aria-hidden /> Clear all filters
+        <X className="w-3.5 h-3.5" aria-hidden /> {searchOnly ? "Clear search" : "Clear all filters"}
       </button>
     </div>
   );

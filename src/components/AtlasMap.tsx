@@ -1294,6 +1294,11 @@ export function AtlasMap({
 
     setClusterPicker(null);
     setView(next);
+    // Activating a cluster unmounts the focused cluster <g> as it separates
+    // into individual pins. Without this, keyboard/AT users would be dropped to
+    // <body> and lose arrow-key map navigation. Returning focus to the map SVG
+    // keeps the roving-tabindex context alive (preventScroll avoids a jump).
+    svgRef.current?.focus({ preventScroll: true });
   }, [width, height, coarsePointer, clusterRadiusPx, openClusterPicker]);
 
   const topoLoading = topo === null && !topoError;

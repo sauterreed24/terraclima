@@ -4,6 +4,16 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Deterministic stability + map & UI polish
+
+- **Stable livability ranking (`src/lib/livability-score.ts`):** `rankLivabilityWithBreakdown` now applies the documented name tiebreaker, so tied livability scores order identically regardless of corpus insertion order — keeping the hero top-ten preview stable as the atlas grows. It previously relied only on the engine's stable-sort-by-insertion order, unlike `rankLaces` (`scoring.ts`) and `rankLiveFit` (`live-fit.ts`).
+- **Order-independent live-fit (`src/lib/live-fit.ts`):** a new `canonicalPresetOrder` sorts a `fitPresets` set by its position in `LIVE_FIT_PRESETS` before it feeds both the assessment cache key and the surfaced badges (`presets.slice(0, 3)`). A preset set built from a URL `fit=`, a lifestyle bundle, or chip toggles now yields the same cache hit and the same badge order — making the assessment a pure function of the set's contents.
+- **Explicit comfort-month tiebreaks (`src/lib/comfort-precision.ts`):** the peak / sleep-recovery / easiest / hardest month picks break ties on calendar order rather than leaning on sort stability.
+- **Determinism regression suite (`src/lib/__tests__/ranking-determinism.test.ts` new):** asserts corpus-wide order-independence of the livability ranking, its name-tiebreak resolution, preset-order independence of live-fit (cache key + computation), and calendar-order comfort-month resolution.
+- **Map cluster keyboard focus (`src/components/AtlasMap.tsx`):** activating a cluster that zooms apart now returns focus to the map SVG, so keyboard / assistive-tech users keep arrow-key pin navigation instead of being dropped to `<body>`.
+- **Dark back-to-top control (`src/styles.css`):** the place-dossier back-to-top pill gets a deep-glass dark-theme treatment instead of flashing the light-courtyard paper-white disc on the moonlit drawer.
+- **Context-aware empty state (`src/App.tsx`):** the no-results panel now distinguishes a too-narrow search from a too-tight filter set (and the two combined), points at the control that is actually narrowing the list, and offers "Clear search" when only a query is active.
+
 ### Terraclima evolution v4.8
 
 - **Apparent-comfort (UTCI-style) proxy (`src/lib/comfort-precision.ts`):** `apparentComfortIndex` reports a warm-season thermal-strain band (mirroring UTCI's 26/32/38 °C heat breakpoints) from air temperature + relative humidity and the wet-bulb shade proxy — **explicitly not a true UTCI** (no wind / solar / mean-radiant inputs, which the corpus does not carry). Surfaced in the place dossier comfort section and a `CompareView` row, each with an honesty caption.
