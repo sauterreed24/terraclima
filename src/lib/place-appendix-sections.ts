@@ -6,7 +6,16 @@
 
 import type { Place, PlaceDeepSection, RiskLevel } from "../types";
 import { DRIVER_LABELS } from "../types";
+import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { getBestMonths } from "./best-months";
+import { getAnnualPrecipMm } from "./climate-metrics";
+
+const GENERIC_CONFIDENCE_NOTE =
+  "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.";
+
+function shortName(place: Place): string {
+  return place.name.split("(")[0]!.trim();
+}
 
 const RISK_KEYS = [
   "wildfire",
@@ -111,24 +120,25 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
       : "The monthly precipitation strip lives in Seasonal rhythm a little farther down this page — read narrative here first, then line it up against the bars.";
 
     let lead: string;
+    const placeLead = `${shortName(place)} (${place.koppen}, ${Math.round(getAnnualPrecipMm(place))} mm/yr) — `;
     if (precipAllEqual(precip) || Math.max(...precip) <= 0) {
       lead =
-        `Monthly precipitation normals are effectively even across the year — seasonal planning leans more on temperature, humidity, and wind than on a single rainy season. ${chartHint}`;
+        `${placeLead}monthly precipitation normals are effectively even across the year — seasonal planning leans more on temperature, humidity, and wind than on a single rainy season. ${chartHint}`;
     } else if (flat) {
       const mid = hasCalendarWindows
         ? "Irrigation, drainage, and storm cadence still move month to month, but the calendar is gentler than in strongly seasonal climates."
         : "Irrigation, drainage, and travel timing still move month to month, but the calendar is gentler than in strongly seasonal climates.";
-      lead = `Monthly precipitation stays in a fairly tight band — no sharp monsoon–dry split. ${mid} ${chartHint}`;
+      lead = `${placeLead}monthly precipitation stays in a fairly tight band — no sharp monsoon–dry split. ${mid} ${chartHint}`;
     } else if (mild) {
       const mid = hasCalendarWindows
         ? "Roof work, irrigation, and canopy management still track that rhythm."
         : "Roof work, travel windows, and how hard you lean on irrigation still track that rhythm.";
-      lead = `Wettest pool toward ${wetM} and the lightest stretch around ${dryM}, but the wet–dry swing is moderate. ${mid} ${chartHint}`;
+      lead = `${placeLead}wettest pool toward ${wetM} and the lightest stretch around ${dryM}, but the wet–dry swing is moderate. ${mid} ${chartHint}`;
     } else {
       const mid = hasCalendarWindows
         ? "That rhythm shapes roof work, stormwater design, and how aggressively you need irrigation or drainage on a parcel."
         : "That rhythm shapes roof work, travel timing, and how aggressively you need irrigation or drainage on a parcel.";
-      lead = `Monthly normals concentrate the wettest signal in ${wetM} and the driest stretch around ${dryM}. ${mid} ${chartHint}`;
+      lead = `${placeLead}monthly normals concentrate the wettest signal in ${wetM} and the driest stretch around ${dryM}. ${mid} ${chartHint}`;
     }
 
     const paras: string[] = [lead];
@@ -169,11 +179,12 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
       more > 0
         ? `${head.join(" · ")} — plus ${more} more in the same chip row.`
         : head.join(" · ");
+    const archetype = ARCHETYPE_BY_ID[place.archetypes[0]]?.label ?? place.biome;
     out.push({
       id: "appendix-forces-atlas",
       title: "Spatial logic and terrain engines",
       paragraphs: [
-        `${list} Use these as the spatial grammar for the profile: slope, exposure, water, elevation, and air-mass pathways explain why one map dot can feel unlike the surrounding region. Tap the matching chips under "Why this climate is different here" for glossary definitions.`,
+        `${shortName(place)} sits where ${place.reliefContext.replace(/\.$/, "").toLowerCase()}. Mechanisms flagged here: ${list} Use these as the spatial grammar for the profile — ${archetype.toLowerCase()} explains why one map dot can feel unlike ${place.region}. Tap the matching chips under "Why this climate is different here" for glossary definitions.`,
       ],
     });
   }
@@ -242,15 +253,22 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     });
     const riskBits = riskRows.slice(0, 5).map(r => r.line);
 
+    const confidenceTail =
+      place.confidenceNotes && place.confidenceNotes.trim() !== GENERIC_CONFIDENCE_NOTE
+        ? ` — ${place.confidenceNotes}`
+        : place.experience?.texture
+          ? ` — ${place.experience.texture.replace(/\.$/, "")}`
+          : "";
+
     out.push({
       id: "appendix-scouting-diligence",
       title: "Homes, land, and long-term fit",
       paragraphs: [
-        `If you are scouting a home or small land parcel, start with who already thrives here: ${place.whoWouldLove} Relocation tags we attach include ${rel} — they are editorial shorthand, not census demographics.`,
+        `If you are scouting a home or small land parcel in ${shortName(place)}, start with who already thrives here: ${place.whoWouldLove} Relocation tags we attach include ${rel} — they are editorial shorthand, not census demographics.`,
         `Be equally clear on poor fit so you do not waste a site visit: ${place.whoMightNot} Travel-wise, people often show up for ${travel}.`,
         `Comfort (${place.scores.comfort}/100), resilience (${place.scores.resilience}/100), and growability (${place.scores.growability}/100) summarize habitability, climate-change positioning, and yard or orchard potential inside this atlas — not appraisal or lending rules. ${trade}`,
         `Risk diligence (always verify locally): ${riskBits.join(" · ")}.`,
-        `Confidence here is ${place.confidence}${place.confidenceNotes ? ` — ${place.confidenceNotes}` : ""}. Use citations at the end of this sheet as your jump-off for primary sources.`,
+        `Confidence here is ${place.confidence}${confidenceTail}. Use citations at the end of this sheet as your jump-off for primary sources.`,
       ],
     });
   }

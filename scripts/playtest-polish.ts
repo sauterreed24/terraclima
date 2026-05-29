@@ -30,6 +30,15 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { buildComfortPrecisionProfile, apparentComfortIndexFromProfile } from "../src/lib/comfort-precision";
 import { composePlaceExperience } from "../src/lib/place-overview";
+import {
+  composeAtAGlanceIntro,
+  composeClimateIntro,
+  composeGeospatialIntro,
+  composePracticalReadIntro,
+  composeTourismIntro,
+} from "../src/lib/dossier-intros";
+import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
+import { isAutoDraftedExperience } from "./lib/author-experience-draft";
 
 async function main(): Promise<void> {
   const validatePlaceId = (id: string) => PLACES.some((p) => p.id === id);
@@ -267,11 +276,27 @@ async function main(): Promise<void> {
     "ellensburg-wa", "hood-river-gorge", "truckee-ca", "mammoth-lakes-ca",
     "borrego-springs-ca", "sedona-az", "prescott-az", "cloudcroft-nm",
     "taos-nm", "crested-butte-co", "leadville-co", "durango-co",
+    "spokane-wa", "austin-tx", "washington-dc", "honolulu-hi",
+    "new-orleans-la", "charleston-sc", "tucson-az", "anchorage-ak",
+    "mobile-al", "savannah-ga", "buffalo-ny", "chattanooga-tn",
+    "monterrey-mx", "puebla-mx", "queretaro-mx", "des-moines-ia",
+    "columbia-sc", "wilmington-de", "boulder-co",
   ];
+
+  function isGenericDeepSections(sections: { id: string }[] | undefined): boolean {
+    if (!sections || sections.length !== 2) return false;
+    const ids = sections.map(s => s.id);
+    return ids.some(id => id.endsWith("-mechanism")) && ids.some(id => id.endsWith("-field-read"));
+  }
+
   for (const id of tierCLiveIds) {
     const place = PLACES.find(p => p.id === id);
     if (!place) throw new Error(`tier C live anchor missing: ${id}`);
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after Tier C polish pass`);
+    if (isAutoDraftedExperience(place)) throw new Error(`${id} still has auto-drafted experience (playtest anchor)`);
+    if (isGenericDeepSections(place.deepSections)) {
+      throw new Error(`${id} still has generic -mechanism/-field-read deepSections (playtest anchor)`);
+    }
   }
 
   const lethbridge = PLACES.find(p => p.id === "lethbridge-ab");
@@ -279,29 +304,82 @@ async function main(): Promise<void> {
 
   // Overview spotlight engine — every place gets a complete, humanistic read.
   const SEASON_ORDER = ["winter", "spring", "summer", "autumn"] as const;
+  let authoredCount = 0;
   for (const place of PLACES) {
+    if (!place.experience) throw new Error(`${place.id} missing corpus experience block`);
     const exp = composePlaceExperience(place);
+    if (!exp.authored) throw new Error(`${place.id} experience: expected authored=true`);
+    authoredCount += 1;
     if (!exp.lede.trim()) throw new Error(`${place.id} experience: empty lede`);
     if (!exp.immersive.trim()) throw new Error(`${place.id} experience: empty immersive`);
-    if (exp.feelLine.length < 24) throw new Error(`${place.id} experience: thin feelLine`);
+    if (exp.feelLine.length < 48) throw new Error(`${place.id} experience: thin feelLine (${exp.feelLine.length})`);
     if (!exp.travelerFit.trim() || !exp.residentFit.trim() || !exp.wouldNotFit.trim()) {
       throw new Error(`${place.id} experience: missing fit framing`);
     }
     if (!exp.texture.trim()) throw new Error(`${place.id} experience: empty texture`);
     if (exp.seasons.length !== 4) throw new Error(`${place.id} experience: expected 4 seasons, got ${exp.seasons.length}`);
+    const proseBlob = [exp.feelLine, exp.texture, ...exp.seasons.map(s => s.detail)].join(" ");
+    if (/single-digit\s+humidity/i.test(proseBlob)) {
+      throw new Error(`${place.id} experience: 'single-digit humidity' localization hazard`);
+    }
     exp.seasons.forEach((s, i) => {
       if (s.key !== SEASON_ORDER[i]) throw new Error(`${place.id} experience: season order drift at ${i}`);
-      if (s.detail.length < 24) throw new Error(`${place.id} experience: thin ${s.key} detail`);
+      if (s.detail.length < 48) throw new Error(`${place.id} experience: thin ${s.key} detail (${s.detail.length})`);
       if (!s.headline.includes("&")) throw new Error(`${place.id} experience: malformed ${s.key} headline`);
       if (!Number.isFinite(s.highC) || !Number.isFinite(s.lowC)) throw new Error(`${place.id} experience: non-finite ${s.key} temps`);
+      if (!s.authored) throw new Error(`${place.id} experience: ${s.key} season not authored`);
     });
   }
-  // Authored override precedence: a synthetic experience overrides derived fields.
+  if (authoredCount !== PLACES.length) {
+    throw new Error(`experience coverage incomplete: ${authoredCount}/${PLACES.length}`);
+  }
+
+  const missingLive = PLACES.filter(p => !p.liveSignals);
+  if (missingLive.length > 0) {
+    throw new Error(`liveSignals coverage incomplete: ${PLACES.length - missingLive.length}/${PLACES.length}`);
+  }
+  for (const place of PLACES) {
+    const ls = place.liveSignals!;
+    if (ls.costPressure == null || ls.socialStress == null || ls.accessFriction == null) {
+      throw new Error(`${place.id} liveSignals: missing axis scores`);
+    }
+    if (!ls.note || ls.note.length < 48) throw new Error(`${place.id} liveSignals: thin note`);
+    const httpsSources = (ls.sources ?? []).filter(s => s.url?.startsWith("https://")).length;
+    if (httpsSources < 2) throw new Error(`${place.id} liveSignals: need ≥2 HTTPS sources (${httpsSources})`);
+  }
+
+  // Tier C complete block gate — humidity, sunshine, deepSections, citations.
+  const tierC = PLACES.filter(p => p.tier === "C");
+  for (const place of tierC) {
+    if (!place.climate.humidity) throw new Error(`${place.id} Tier C missing humidity`);
+    if (!place.climate.sunshinePct) throw new Error(`${place.id} Tier C missing sunshinePct`);
+    if (!place.deepSections?.length) throw new Error(`${place.id} Tier C missing deepSections`);
+    const httpsCites = (place.citations ?? []).filter(c => c.url?.startsWith("https://")).length;
+    if (httpsCites < 2) throw new Error(`${place.id} Tier C needs ≥2 HTTPS citations (${httpsCites})`);
+  }
+  if (tierC.length !== 164) throw new Error(`expected 164 Tier C places, got ${tierC.length}`);
+
+  // Authored override precedence
   const overrideProbe = PLACES[0]!;
   const probe = composePlaceExperience({ ...overrideProbe, experience: { feel: "PROBE feel line over the derived read." } });
   if (probe.feelLine !== "PROBE feel line over the derived read.") {
     // composePlaceExperience caches by identity; a fresh object must bypass the cache.
     throw new Error("experience: authored feel override did not take precedence");
+  }
+
+  // Dossier intros — every place gets localized section leads.
+  const introSample = PLACES.slice(0, 12);
+  for (const place of introSample) {
+    const geo = buildGeospatialAnalysis(place);
+    for (const [label, intro] of [
+      ["atAGlance", composeAtAGlanceIntro(place)],
+      ["climate", composeClimateIntro(place)],
+      ["geospatial", composeGeospatialIntro(place, geo)],
+      ["practical", composePracticalReadIntro(place, geo)],
+      ["tourism", composeTourismIntro(place)],
+    ] as const) {
+      if (intro.length < 48) throw new Error(`${place.id} dossier ${label} intro too thin (${intro.length})`);
+    }
   }
 
   console.log("playtest-polish: OK");

@@ -4,7 +4,7 @@ import type { Place } from "../../types";
 import { getClimateTourismProfile } from "../../lib/climate-tourism";
 import { useProse } from "../../lib/units";
 
-export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: string }) {
+export function PlaceTourismRead({ place, anchorId, intro }: { place: Place; anchorId: string; intro?: string }) {
   const prose = useProse();
   const profile = useMemo(() => getClimateTourismProfile(place), [place]);
 
@@ -15,7 +15,7 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
         Climate tourism
       </h3>
       <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
-        Want to test this place in person? Use this as a scouting itinerary, not a booking engine.
+        {prose(intro ?? "Want to test this place in person? Use this as a scouting itinerary, not a booking engine.")}
       </p>
 
       <div className="grid md:grid-cols-3 gap-2 mb-4">

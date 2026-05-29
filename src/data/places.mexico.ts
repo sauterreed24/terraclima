@@ -29,12 +29,12 @@ export const PLACES_MEXICO: Place[] = [
     whyDistinct: "Tropical latitude (17°N) combined with 1555 m elevation produces a climate that is effectively 'perpetual spring.' The surrounding sierras both protect the valleys from Gulf/Pacific moisture extremes and enhance convective rainfall in the wet season.",
 
     experience: {
-      feel: "Oaxaca feels like the calendar barely moves. At 1,555 m the city sits exactly where subtropical heat yields to temperate ease — afternoons near 22 to 26°C month after month, golden dry-season light most of the year, and ten months when eating outdoors is simply the default.",
+    feel: "Oaxaca feels like the calendar barely moves. At 1,555 m the city sits exactly where subtropical heat yields to temperate ease — afternoons near 22 to 26°C month after month, golden dry-season light most of the year, and ten months when eating outdoors is simply the default.",
       seasons: {
-        winter: "The heart of the dry season — warm, brilliant afternoons near 25°C, crisp mornings dipping toward 8°C, and skies so clear the surrounding sierras stand sharp on the horizon.",
-        spring: "The warmest, driest stretch before the rains — afternoons climbing near 30°C through April and May, dusty and bright, the valleys waiting for the first storms to break the heat.",
-        summer: "The wet-season rhythm sets in: warm mornings give way to afternoon thunderstorms that build over the sierras and clear by evening, holding highs near a comfortable 25°C and greening the whole valley.",
-        autumn: "Rains taper through September and October back into golden dry-season light — mild afternoons near 25°C, freshening nights, and the valleys at their most lush before the dust returns.",
+      winter: "The heart of the dry season — warm, brilliant afternoons near 25°C, crisp mornings dipping toward 8°C, and skies so clear the surrounding sierras stand sharp on the horizon.",
+      spring: "The warmest, driest stretch before the rains — afternoons climbing near 30°C through April and May, dusty and bright, the valleys waiting for the first storms to break the heat.",
+      summer: "The wet-season rhythm sets in: warm mornings give way to afternoon thunderstorms that build over the sierras and clear by evening, holding highs near a comfortable 25°C and greening the whole valley.",
+      autumn: "Rains taper through September and October back into golden dry-season light — mild afternoons near 25°C, freshening nights, and the valleys at their most lush before the dust returns.",
       },
       travelerFit: "Visitors come for the food and mezcal, Monte Albán and the craft villages, and Day of the Dead — all under a near-perfect highland sky.",
       residentFit: "It rewards remote workers, retirees, and culture-seekers who want perpetual spring, deep food and arts traditions, and a walkable historic core.",
@@ -78,10 +78,10 @@ export const PLACES_MEXICO: Place[] = [
       outlook2050: "Warmer, with heat stress especially in the pre-monsoon May–June window. Monsoon timing increasingly variable; some projections show later onset.",
       outlook2100: "Significant drying in some scenarios threatens milpa-scale agriculture. Coffee on the sierras under pressure from warming.",
       keyShifts: [
-        { variable: "Pre-monsoon heat", direction: "up" },
-        { variable: "Monsoon timing", direction: "mixed" },
-        { variable: "Dry-season dryness", direction: "up" },
-        { variable: "Mountain cloud base", direction: "up" },
+      { variable: "Pre-monsoon heat", direction: "up" },
+      { variable: "Monsoon timing", direction: "mixed" },
+      { variable: "Dry-season dryness", direction: "up" },
+      { variable: "Mountain cloud base", direction: "up" },
       ],
       resilienceNote: "Elevation buffers extreme heat well by North American standards; water availability is the primary vulnerability.",
     },
@@ -115,8 +115,9 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 26,
       note: "Affordable for relocators on USD/CAD incomes but rapid tourism-driven gentrification has tightened the historic centre; OAX airport links Mexico City and US gateways.",
       sources: [
-        { label: "INEGI — Oaxaca de Juárez urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      { label: "INEGI — Oaxaca de Juárez urban profile", url: "https://www.inegi.org.mx/" },
+      
+        { label: "Servicio Meteorológico Nacional — Oaxaca Observatorio", url: "https://smn.conagua.gob.mx/es/" },],
     },
 
     relocationFit: ["creatives", "writers", "families wanting mild year-round", "digital nomads", "food-culture lovers"],
@@ -128,28 +129,28 @@ export const PLACES_MEXICO: Place[] = [
     confidenceNotes: "SMN station coverage at Oaxaca is strong; WorldClim downscaling agrees with station means.",
     deepSections: [
       {
-        id: "oaxaca-dry-wet-rhythm",
-        title: "Dry season vs wet season — how the year actually feels",
-        paragraphs: [
-          "From November into May the valleys sit under dry, stable air most afternoons. Rain is rare; dust picks up on windier days; irrigation and municipal water planning dominate conversation. This is when outdoor markets, rooftop dining, and festival calendars concentrate — the city feels like perpetual spring because humidity is moderate and skies are reliably clear.",
-          "June opens the monsoon gate: convection builds over the sierras first, then cells drift across the valles. Rain tends to arrive mid-afternoon to evening, often intense but short; mornings can still be bright. September is usually the wettest month emotionally as well as hydrologically — roads cut by arroyos, hillside communities watch for debris flows. Anyone scouting property should ask where stormwater goes, not only what the view looks like in February.",
-        ],
+      id: "oaxaca-dry-wet-rhythm",
+      title: "Dry season vs wet season — how the year actually feels",
+      paragraphs: [
+      "From November into May the valleys sit under dry, stable air most afternoons. Rain is rare; dust picks up on windier days; irrigation and municipal water planning dominate conversation. This is when outdoor markets, rooftop dining, and festival calendars concentrate — the city feels like perpetual spring because humidity is moderate and skies are reliably clear.",
+      "June opens the monsoon gate: convection builds over the sierras first, then cells drift across the valles. Rain tends to arrive mid-afternoon to evening, often intense but short; mornings can still be bright. September is usually the wettest month emotionally as well as hydrologically — roads cut by arroyos, hillside communities watch for debris flows. Anyone scouting property should ask where stormwater goes, not only what the view looks like in February.",
+      ],
       },
       {
-        id: "oaxaca-valley-wind-light",
-        title: "Valley breezes, smoke, and air you can plan around",
-        paragraphs: [
-          "East–west valley orientation channels easterly flow in some regimes and blocks it in others, so micro-variation block-to-block is real: a courtyard with tall walls may feel still while a rooftop two streets over catches a steady draft.",
-          "Late dry season agricultural burns and occasional forest-fire smoke can degrade air quality for days at a time — less a surprise than a calendar item for sensitive households. The atlas treats smoke as a seasonal risk; locals often track visibility toward Monte Albán as an informal index.",
-        ],
+      id: "oaxaca-valley-wind-light",
+      title: "Valley breezes, smoke, and air you can plan around",
+      paragraphs: [
+      "East–west valley orientation channels easterly flow in some regimes and blocks it in others, so micro-variation block-to-block is real: a courtyard with tall walls may feel still while a rooftop two streets over catches a steady draft.",
+      "Late dry season agricultural burns and occasional forest-fire smoke can degrade air quality for days at a time — less a surprise than a calendar item for sensitive households. The atlas treats smoke as a seasonal risk; locals often track visibility toward Monte Albán as an informal index.",
+      ],
       },
       {
-        id: "oaxaca-elevation-pocket",
-        title: "Why this valley elevation reads cooler than the map latitude suggests",
-        paragraphs: [
-          "Free-air lapse rates mean each ~100 m of lift knocks roughly half a degree off afternoon potential temperature — stack that across 1500 m above sea level and tropical latitude stops meaning tropical heat. Add valley shelter from the hottest maritime air masses and you get a climate tourists describe as 'perfect' and agronomists describe as 'carefully scheduled around the rains'.",
-          "Small elevation differences within the valles (ridge toes vs basin floor) can separate frost pockets from frost-free gardens. If you are buying land for trees or citrus, walk the parcel at dawn in January, not only at noon in April.",
-        ],
+      id: "oaxaca-elevation-pocket",
+      title: "Why this valley elevation reads cooler than the map latitude suggests",
+      paragraphs: [
+      "Free-air lapse rates mean each ~100 m of lift knocks roughly half a degree off afternoon potential temperature — stack that across 1500 m above sea level and tropical latitude stops meaning tropical heat. Add valley shelter from the hottest maritime air masses and you get a climate tourists describe as 'perfect' and agronomists describe as 'carefully scheduled around the rains'.",
+      "Small elevation differences within the valles (ridge toes vs basin floor) can separate frost pockets from frost-free gardens. If you are buying land for trees or citrus, walk the parcel at dawn in January, not only at noon in April.",
+      ],
       },
     ],
     citations: [
@@ -185,10 +186,10 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "San Cristóbal feels less like tropical Mexico than a Scottish highland that wandered south. At 2,200 m the basin wakes under a low stratus deck most mornings, the cloud-forest ridges wrapped in mist, and even July afternoons rarely top 23°C — a cooler, stranger 'eternal spring' than the postcard version.",
       seasons: {
-        winter: "Clear, calm nights drain cold air onto the basin floor, dropping mornings near freezing while the ridges above stay milder — then afternoons recover to a bright, woodsmoke-scented 19°C.",
-        spring: "The warmest, driest window — afternoons near 24°C, mornings still crisp, and the dry-season light at its sharpest before the rains gather in May.",
-        summer: "Cool and wet: mist-draped mornings burn off slowly, afternoons hold near 21°C, and heavy highland rains build daily over the surrounding cloud forest.",
-        autumn: "September is the wettest month before the skies begin to clear — cool afternoons near 21°C, saturated green ridges, and lengthening, crisp nights as the dry season returns.",
+      winter: "Clear, calm nights drain cold air onto the basin floor, dropping mornings near freezing while the ridges above stay milder — then afternoons recover to a bright, woodsmoke-scented 19°C.",
+      spring: "The warmest, driest window — afternoons near 24°C, mornings still crisp, and the dry-season light at its sharpest before the rains gather in May.",
+      summer: "Cool and wet: mist-draped mornings burn off slowly, afternoons hold near 21°C, and heavy highland rains build daily over the surrounding cloud forest.",
+      autumn: "September is the wettest month before the skies begin to clear — cool afternoons near 21°C, saturated green ridges, and lengthening, crisp nights as the dry season returns.",
       },
       travelerFit: "Visitors come for the colonial highland streets, Tzotzil and Tzeltal Maya markets and villages, and the cool cloud-forest country of the Chiapas plateau.",
       residentFit: "It rewards travelers-turned-residents who love cool, misty highland air, a deep Indigenous cultural fabric, and a slower, layered mountain-town life.",
@@ -230,9 +231,9 @@ export const PLACES_MEXICO: Place[] = [
       outlook2050: "Warming ~1.5°C; cloud-forest cloud base rises, stressing montane ecosystems.",
       outlook2100: "Cloud-forest retreat on ridges; warmer basin; rain-season intensification.",
       keyShifts: [
-        { variable: "Cloud base elevation", direction: "up", note: "Cloud forests retreat upslope." },
-        { variable: "Wet-season intensity", direction: "up" },
-        { variable: "Winter cold nights", direction: "down" },
+      { variable: "Cloud base elevation", direction: "up", note: "Cloud forests retreat upslope." },
+      { variable: "Wet-season intensity", direction: "up" },
+      { variable: "Winter cold nights", direction: "down" },
       ],
       resilienceNote: "Elevation provides thermal resilience; ecosystem pressure on the surrounding ridges is the key concern.",
     },
@@ -264,8 +265,9 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 38,
       note: "Cool-highland Chiapas cost-of-living remains low; political tensions surface periodically, and Tuxtla airport is a 70-minute drive.",
       sources: [
-        { label: "INEGI — San Cristóbal de las Casas urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      { label: "INEGI — San Cristóbal de las Casas urban profile", url: "https://www.inegi.org.mx/" },
+      
+        { label: "SMN — San Cristóbal station", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },],
     },
 
     relocationFit: ["creatives", "cool-climate seekers in the tropics", "cultural immersion"],
@@ -277,36 +279,36 @@ export const PLACES_MEXICO: Place[] = [
     confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because SMN/CONAGUA normals, INEGI relief context, and atlas elevation reasoning agree; neighborhood water, slope, and storm exposure still need local checks.",
     deepSections: [
       {
-        id: "san-cristobal-basin-cold",
-        title: "Tropical latitude, basin cold",
-        paragraphs: [
-          "San Cristóbal is a reminder that elevation can dominate latitude. The city sits in a highland basin where dense air drains off surrounding slopes at night, so mornings can feel almost temperate-mountain despite the tropical sun angle.",
-          "That basin geometry also means pollution, fog, and cold air can linger until daytime mixing breaks the layer. The comfort is real, but the microclimate is more complex than a simple eternal-spring label.",
-        ],
+      id: "san-cristobal-basin-cold",
+      title: "Tropical latitude, basin cold",
+      paragraphs: [
+      "San Cristóbal is a reminder that elevation can dominate latitude. The city sits in a highland basin where dense air drains off surrounding slopes at night, so mornings can feel almost temperate-mountain despite the tropical sun angle.",
+      "That basin geometry also means pollution, fog, and cold air can linger until daytime mixing breaks the layer. The comfort is real, but the microclimate is more complex than a simple eternal-spring label.",
+      ],
       },
       {
-        id: "san-cristobal-cloud-forest-rim",
-        title: "Cloud-forest rim and wet-season pulse",
-        paragraphs: [
-          "The surrounding Chiapas highlands lift moist air from the Gulf and Caribbean side of Mexico. During the wet season, ridges collect cloud and rain while the basin cycles through misty mornings and afternoon convection.",
-          "This is why the region supports pine-oak, cloud-forest fragments, maize fields, and cool-weather crops in close proximity. Small changes in exposure and elevation produce visible ecological changes.",
-        ],
+      id: "san-cristobal-cloud-forest-rim",
+      title: "Cloud-forest rim and wet-season pulse",
+      paragraphs: [
+      "The surrounding Chiapas highlands lift moist air from the Gulf and Caribbean side of Mexico. During the wet season, ridges collect cloud and rain while the basin cycles through misty mornings and afternoon convection.",
+      "This is why the region supports pine-oak, cloud-forest fragments, maize fields, and cool-weather crops in close proximity. Small changes in exposure and elevation produce visible ecological changes.",
+      ],
       },
       {
-        id: "san-cristobal-cultural-climate",
-        title: "A climate people organize around",
-        paragraphs: [
-          "Markets, weaving villages, and highland agriculture all use the cool basin setting. The climate makes long walking days possible in a part of Mexico where nearby lowlands can be oppressive in heat and humidity.",
-          "For travelers, the best read is seasonal rhythm: dry season brings brighter walking weather; wet season brings lush hillsides, road-risk tradeoffs, and more persistent cloud.",
-        ],
+      id: "san-cristobal-cultural-climate",
+      title: "A climate people organize around",
+      paragraphs: [
+      "Markets, weaving villages, and highland agriculture all use the cool basin setting. The climate makes long walking days possible in a part of Mexico where nearby lowlands can be oppressive in heat and humidity.",
+      "For travelers, the best read is seasonal rhythm: dry season brings brighter walking weather; wet season brings lush hillsides, road-risk tradeoffs, and more persistent cloud.",
+      ],
       },
       {
-        id: "san-cristobal-warming-ridge-risk",
-        title: "Warming pressure on a cloud-dependent landscape",
-        paragraphs: [
-          "The main climate-change concern is not only warmer afternoons. Rising cloud bases, altered wet-season intensity, and forest fragmentation can move the ecological band upslope and stress water reliability.",
-          "Because the station picture is partly basin-specific, confidence is high on the mechanism but local parcel decisions still need slope, drainage, and landslide diligence.",
-        ],
+      id: "san-cristobal-warming-ridge-risk",
+      title: "Warming pressure on a cloud-dependent landscape",
+      paragraphs: [
+      "The main climate-change concern is not only warmer afternoons. Rising cloud bases, altered wet-season intensity, and forest fragmentation can move the ecological band upslope and stress water reliability.",
+      "Because the station picture is partly basin-specific, confidence is high on the mechanism but local parcel decisions still need slope, drainage, and landslide diligence.",
+      ],
       },
     ],
     citations: [
@@ -339,10 +341,10 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "Cuernavaca feels like eternal spring made official — bougainvillea spilling off every wall at 1500 m, afternoons in the mid-to-high 20s year-round, and the volcanic belt's south-facing bench catching warmth that Mexico City, higher and grayer, never quite matches.",
       seasons: {
-        winter: "Dry, bright, and warm — afternoons near 26°C, nights near 12°C, and the jacarandas starting to purple while the rest of North America shivers.",
-        spring: "The hottest stretch before the rains — afternoons pushing toward 30°C, dust in the air, and water anxiety building until June convection arrives.",
-        summer: "Monsoon season — afternoon storms rolling off Popocatépetl and Iztaccíhuatl, rain washing the air clean by evening, and humidity climbing into the 80% range without ever feeling tropical.",
-        autumn: "The sweet return to dry clarity — rains tapering in October, bougainvillea and citrus back in full sun, and evenings cool enough for open-air dining every night.",
+      winter: "Dry, bright, and warm — afternoons near 26°C, nights near 12°C, and the jacarandas starting to purple while the rest of North America shivers.",
+      spring: "The hottest stretch before the rains — afternoons pushing toward 30°C, dust in the air, and water anxiety building until June convection arrives.",
+      summer: "Monsoon season — afternoon storms rolling off Popocatépetl and Iztaccíhuatl, rain washing the air clean by evening, and humidity climbing into the 80% range without ever feeling tropical.",
+      autumn: "The sweet return to dry clarity — rains tapering in October, bougainvillea and citrus back in full sun, and evenings cool enough for open-air dining every night.",
       },
       travelerFit: "Visitors come for year-round outdoor life, colonial architecture, volcano views, and a climate that drew Aztec emperors and Spanish viceroys for centuries.",
       residentFit: "It rewards retirees and families who want lush subtropical gardens, mild nights, and Mexico-City weekend proximity — if they accept urban water stress and regional security context.",
@@ -374,8 +376,9 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 22,
       note: "Mexico-City weekend hub keeps housing tighter than other Mexico highland towns; Morelos has ranked higher on Mexican-government safety advisories than Oaxaca or Querétaro.",
       sources: [
-        { label: "INEGI — Cuernavaca city profile", url: "https://www.inegi.org.mx/" },
-      ],
+      { label: "INEGI — Cuernavaca city profile", url: "https://www.inegi.org.mx/" },
+      
+        { label: "SMN — Cuernavaca station", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },],
     },
     relocationFit: ["retirees", "families"], travelFit: ["year-round"],
     whoWouldLove: "Those wanting year-round bougainvillea.", whoMightNot: "Cool-climate seekers.",
@@ -383,28 +386,28 @@ export const PLACES_MEXICO: Place[] = [
     confidenceNotes: "This high-confidence profile is grounded in SMN/CONAGUA, INEGI lake-basin context, and strong lived settlement anchors; lake health, drainage, and neighborhood water access still need local checks.",
     deepSections: [
       {
-        id: "cuernavaca-slope-bench",
-        title: "The south-facing volcanic bench",
-        paragraphs: [
-          "Cuernavaca is warmer than higher central-Mexican basins because it sits lower and leans south toward tropical lowlands. Elevation still trims heat enough to keep nights comfortable, but the daytime character is lush and subtropical rather than cool highland.",
-          "That slope position is why the city can host bougainvillea, citrus, palms, and year-round outdoor life while Mexico City, above it, keeps a cooler and more inversion-prone profile.",
-        ],
+      id: "cuernavaca-slope-bench",
+      title: "The south-facing volcanic bench",
+      paragraphs: [
+      "Cuernavaca is warmer than higher central-Mexican basins because it sits lower and leans south toward tropical lowlands. Elevation still trims heat enough to keep nights comfortable, but the daytime character is lush and subtropical rather than cool highland.",
+      "That slope position is why the city can host bougainvillea, citrus, palms, and year-round outdoor life while Mexico City, above it, keeps a cooler and more inversion-prone profile.",
+      ],
       },
       {
-        id: "cuernavaca-rain-season",
-        title: "Rain-season cleaning and dry-season stress",
-        paragraphs: [
-          "The wet season arrives as afternoon storms built over volcanic slopes. Rain often cleans smoke and dust from the air by evening, then the dry season returns with strong sun and increasing water stress.",
-          "For residents, the comfort pattern depends on that alternation: bright dry winters, fragrant wet-season evenings, and late-dry-season heat before the rains settle in.",
-        ],
+      id: "cuernavaca-rain-season",
+      title: "Rain-season cleaning and dry-season stress",
+      paragraphs: [
+      "The wet season arrives as afternoon storms built over volcanic slopes. Rain often cleans smoke and dust from the air by evening, then the dry season returns with strong sun and increasing water stress.",
+      "For residents, the comfort pattern depends on that alternation: bright dry winters, fragrant wet-season evenings, and late-dry-season heat before the rains settle in.",
+      ],
       },
       {
-        id: "cuernavaca-urban-water",
-        title: "Urban growth is the climate constraint",
-        paragraphs: [
-          "Cuernavaca's climate advantage has drawn people for centuries, and that demand is now part of the risk profile. Water supply, hillside development, and urban heat matter as much as the regional normals.",
-          "The place still deserves its eternal-spring reputation, but the best version of it is parcel-specific: shade, airflow, reliable water, and slope stability are the practical checks.",
-        ],
+      id: "cuernavaca-urban-water",
+      title: "Urban growth is the climate constraint",
+      paragraphs: [
+      "Cuernavaca's climate advantage has drawn people for centuries, and that demand is now part of the risk profile. Water supply, hillside development, and urban heat matter as much as the regional normals.",
+      "The place still deserves its eternal-spring reputation, but the best version of it is parcel-specific: shade, airflow, reliable water, and slope stability are the practical checks.",
+      ],
       },
     ],
     citations: [
@@ -436,10 +439,10 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "Valle de Guadalupe feels like a Mexican Tuscany cooled by the Pacific. Twenty-five kilometres inland from Ensenada's cold coast, marine air slips up the valley most mornings and evenings, so warm sunny afternoons give way to cool nights — exactly the rhythm that built Mexico's finest wine country.",
       seasons: {
-        winter: "Mild and green — afternoons near 18°C, cool nights, and the year's modest rain arriving in soft Pacific pulses to wake the chaparral.",
-        spring: "Bright and warming — afternoons climbing through the 20s, the vines budding, and the dry season settling in with long sunny days.",
-        summer: "Warm, dry, and sun-soaked — afternoons near 31°C tempered by cool marine nights and morning fog creeping up the valley, the diurnal swing that ripens the grapes.",
-        autumn: "Harvest and gold — warm days easing into cool nights, the crush underway, and the first rains still weeks off.",
+      winter: "Mild and green — afternoons near 18°C, cool nights, and the year's modest rain arriving in soft Pacific pulses to wake the chaparral.",
+      spring: "Bright and warming — afternoons climbing through the 20s, the vines budding, and the dry season settling in with long sunny days.",
+      summer: "Warm, dry, and sun-soaked — afternoons near 31°C tempered by cool marine nights and morning fog creeping up the valley, the diurnal swing that ripens the grapes.",
+      autumn: "Harvest and gold — warm days easing into cool nights, the crush underway, and the first rains still weeks off.",
       },
       travelerFit: "Visitors come for the wineries and farm-to-table cuisine, the Baja wine-country scene, and easy Ensenada and Pacific access.",
       residentFit: "It rewards vintners, food-and-wine people, and Mediterranean-climate seekers who want a rural Baja base near the coast.",
@@ -471,9 +474,9 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 44,
       note: "Valle de Guadalupe's wine tourism keeps housing pressure rising, but groundwater limits, Ensenada specialty backup, and drought-driven irrigation conflict are the live-here filter behind the Mediterranean comfort.",
       sources: [
-        { label: "SMN/CONAGUA — Baja California climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
-        { label: "CONAGUA — Baja California water context", url: "https://www.gob.mx/conagua" },
-        { label: "INEGI — Ensenada municipal context", url: "https://www.inegi.org.mx/" },
+      { label: "SMN/CONAGUA — Baja California climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
+      { label: "CONAGUA — Baja California water context", url: "https://www.gob.mx/conagua" },
+      { label: "INEGI — Ensenada municipal context", url: "https://www.inegi.org.mx/" },
       ],
     },
     relocationFit: ["winemakers"], travelFit: ["wine country"],
@@ -482,28 +485,28 @@ export const PLACES_MEXICO: Place[] = [
     confidenceNotes: "This moderate-confidence profile is reliable at microclimate-zone scale because SMN/CONAGUA normals, INEGI relief context, and atlas elevation reasoning agree; neighborhood water, slope, and storm exposure still need local checks.",
     deepSections: [
       {
-        id: "valle-guadalupe-marine-intrusion",
-        title: "Marine air without full coastal fog",
-        paragraphs: [
-          "Valle de Guadalupe is inland enough to warm strongly by afternoon but close enough to the Pacific to receive marine cooling through passes and nighttime drainage. That compromise is the wine climate.",
-          "Compared with Ensenada, it is warmer and drier; compared with Mexicali, it is radically cooled by ocean influence.",
-        ],
+      id: "valle-guadalupe-marine-intrusion",
+      title: "Marine air without full coastal fog",
+      paragraphs: [
+      "Valle de Guadalupe is inland enough to warm strongly by afternoon but close enough to the Pacific to receive marine cooling through passes and nighttime drainage. That compromise is the wine climate.",
+      "Compared with Ensenada, it is warmer and drier; compared with Mexicali, it is radically cooled by ocean influence.",
+      ],
       },
       {
-        id: "valle-guadalupe-water-limit",
-        title: "Water sets the ceiling",
-        paragraphs: [
-          "The valley's appeal can hide the hard constraint: summer rain is negligible and groundwater is finite. Vineyard expansion, tourism, and residential demand all compete with a dry Mediterranean baseline.",
-          "Any relocation or land investment should treat water security and irrigation legality as first-order climate data.",
-        ],
+      id: "valle-guadalupe-water-limit",
+      title: "Water sets the ceiling",
+      paragraphs: [
+      "The valley's appeal can hide the hard constraint: summer rain is negligible and groundwater is finite. Vineyard expansion, tourism, and residential demand all compete with a dry Mediterranean baseline.",
+      "Any relocation or land investment should treat water security and irrigation legality as first-order climate data.",
+      ],
       },
       {
-        id: "valle-guadalupe-soil-wine",
-        title: "Granitic soils and diurnal swing",
-        paragraphs: [
-          "Fast-draining granitic and alluvial soils help vines avoid wet feet, while warm afternoons build ripeness and cool nights protect acidity. The climate favors Mediterranean grapes and drought-adapted orchard crops more than humid-climate fruit.",
-          "The profile is intentionally marked moderate confidence because station coverage and vineyard-level microclimates vary across a valley that is small but climatically uneven.",
-        ],
+      id: "valle-guadalupe-soil-wine",
+      title: "Granitic soils and diurnal swing",
+      paragraphs: [
+      "Fast-draining granitic and alluvial soils help vines avoid wet feet, while warm afternoons build ripeness and cool nights protect acidity. The climate favors Mediterranean grapes and drought-adapted orchard crops more than humid-climate fruit.",
+      "The profile is intentionally marked moderate confidence because station coverage and vineyard-level microclimates vary across a valley that is small but climatically uneven.",
+      ],
       },
     ],
     citations: [
@@ -535,10 +538,10 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "Pátzcuaro feels like a cool, sacred highland that barely changes. At 2,140 m around its great lake, daytime highs sit in the low-to-mid 20s essentially all year, the Purépecha villages ringing the water, and the volcanic rim catching the afternoon storms of the wet season.",
       seasons: {
-        winter: "Dry-season bright and crisp — afternoons near 21°C, mornings dropping into the single digits, and clear highland light over the lake.",
-        spring: "The warmest, driest stretch — afternoons near 26°C, dusty and bright, the lake basin waiting for the rains to break the heat.",
-        summer: "Mild and green under the wet season — afternoons in the low 20s, storms building on the volcanic rim and rolling across the lake, then clearing by evening.",
-        autumn: "Rains tapering into golden light — mild afternoons near 22°C, the countryside lush, and Day of the Dead drawing the lake villages together.",
+      winter: "Dry-season bright and crisp — afternoons near 21°C, mornings dropping into the single digits, and clear highland light over the lake.",
+      spring: "The warmest, driest stretch — afternoons near 26°C, dusty and bright, the lake basin waiting for the rains to break the heat.",
+      summer: "Mild and green under the wet season — afternoons in the low 20s, storms building on the volcanic rim and rolling across the lake, then clearing by evening.",
+      autumn: "Rains tapering into golden light — mild afternoons near 22°C, the countryside lush, and Day of the Dead drawing the lake villages together.",
       },
       travelerFit: "Visitors come for the lake and Purépecha villages, the famous Day of the Dead vigils on Janitzio, and the cool highland pace.",
       residentFit: "It rewards culture-seekers and quiet-living highlanders who want mild, lake-tempered weather and a deeply rooted Indigenous landscape.",
@@ -566,8 +569,8 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 34,
       note: "A real regional town with groceries, clinics, schools, and Morelia backup; lake health, older housing, and tourist-season pressure are the practical checks.",
       sources: [
-        { label: "INEGI - Patzcuaro municipal context", url: "https://www.inegi.org.mx/" },
-        { label: "Municipio de Patzcuaro - local services", url: "https://www.patzcuaro.gob.mx/" },
+      { label: "INEGI - Patzcuaro municipal context", url: "https://www.inegi.org.mx/" },
+      { label: "Municipio de Patzcuaro - local services", url: "https://www.patzcuaro.gob.mx/" },
       ],
     },
     relocationFit: ["cultural immersion", "highland dreamers"], travelFit: ["Día de Muertos", "lake villages"],
@@ -576,28 +579,28 @@ export const PLACES_MEXICO: Place[] = [
     confidenceNotes: "This high-confidence profile is grounded in SMN/CONAGUA, INEGI lake-basin context, and strong lived settlement anchors; lake health, drainage, and neighborhood water access still need local checks.",
     deepSections: [
       {
-        id: "patzcuaro-lake-basin",
-        title: "High lake basin moderation",
-        paragraphs: [
-          "Pátzcuaro's lake does not create a coastal climate, but it does soften local extremes and adds moisture to a high volcanic basin. Nights remain cool, afternoons stay mild, and wet-season storms often organize around the surrounding rim.",
-          "The lake also makes the climate legible to visitors: villages, reeds, fisheries, and fields all sit inside the same basin-scale moisture system.",
-        ],
+      id: "patzcuaro-lake-basin",
+      title: "High lake basin moderation",
+      paragraphs: [
+      "Pátzcuaro's lake does not create a coastal climate, but it does soften local extremes and adds moisture to a high volcanic basin. Nights remain cool, afternoons stay mild, and wet-season storms often organize around the surrounding rim.",
+      "The lake also makes the climate legible to visitors: villages, reeds, fisheries, and fields all sit inside the same basin-scale moisture system.",
+      ],
       },
       {
-        id: "patzcuaro-volcanic-soils",
-        title: "Volcanic soils and highland crops",
-        paragraphs: [
-          "The Meseta Tarasca's volcanic soils support maize, beans, fruit trees, and avocado districts nearby. The climate is cool enough for temperate crops yet mild enough to avoid harsh winter shutdown.",
-          "That mix makes Pátzcuaro more agriculturally flexible than drier high-desert towns, while still avoiding the heat of lower Michoacán.",
-        ],
+      id: "patzcuaro-volcanic-soils",
+      title: "Volcanic soils and highland crops",
+      paragraphs: [
+      "The Meseta Tarasca's volcanic soils support maize, beans, fruit trees, and avocado districts nearby. The climate is cool enough for temperate crops yet mild enough to avoid harsh winter shutdown.",
+      "That mix makes Pátzcuaro more agriculturally flexible than drier high-desert towns, while still avoiding the heat of lower Michoacán.",
+      ],
       },
       {
-        id: "patzcuaro-lake-risk",
-        title: "Lake health is climate resilience",
-        paragraphs: [
-          "The long-term risk is tied to water quality, lake level, and watershed management. Warming and land-use pressure can reduce the lake's buffering role even if air temperatures remain comfortable for people.",
-          "For this atlas, Pátzcuaro's beauty and comfort are inseparable from watershed governance.",
-        ],
+      id: "patzcuaro-lake-risk",
+      title: "Lake health is climate resilience",
+      paragraphs: [
+      "The long-term risk is tied to water quality, lake level, and watershed management. Warming and land-use pressure can reduce the lake's buffering role even if air temperatures remain comfortable for people.",
+      "For this atlas, Pátzcuaro's beauty and comfort are inseparable from watershed governance.",
+      ],
       },
     ],
     citations: [
@@ -639,10 +642,10 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "Valle de Bravo feels like Mexico City's weekend climate made permanent — a pine-ringed lake at 1850 m where afternoons stay in the low-to-mid 20s, stone terraces catch warm dry-season light, and wet-season storms build against the volcanic rim before washing the air clean each evening.",
       seasons: {
-        winter: "Dry and luminous — afternoons near 21°C, nights near 6°C, and the lake reflecting clear highland sun while Mexico City shivers in inversion fog above.",
-        spring: "Warming toward the rains — afternoons climbing through the mid-20s, the lake greening, and weekend traffic building as capital-city escapees arrive for the dry-season window.",
-        summer: "Monsoon drama — afternoon storms off the surrounding rim, humidity climbing, and the lake basin at its most lush and water-shaped.",
-        autumn: "The sweet dry return — rains tapering in October, paragliders over the lake, and terrace evenings cool enough for fireplaces without ever needing heat during the day.",
+      winter: "Dry and luminous — afternoons near 21°C, nights near 6°C, and the lake reflecting clear highland sun while Mexico City shivers in inversion fog above.",
+      spring: "Warming toward the rains — afternoons climbing through the mid-20s, the lake greening, and weekend traffic building as capital-city escapees arrive for the dry-season window.",
+      summer: "Monsoon drama — afternoon storms off the surrounding rim, humidity climbing, and the lake basin at its most lush and water-shaped.",
+      autumn: "The sweet dry return — rains tapering in October, paragliders over the lake, and terrace evenings cool enough for fireplaces without ever needing heat during the day.",
       },
       travelerFit: "Visitors come for Lake Avandaro sailing, paragliding, pine-forest hikes, and a highland lake town an easy drive from Mexico City.",
       residentFit: "It rewards lake-town remote workers and capital-city weekenders going permanent who want terraces, forest, and outdoor life nearly every month — if they accept slope diligence and weekend congestion.",
@@ -662,8 +665,8 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 38,
       note: "Excellent climate with weekend-home economics: housing pressure, traffic surges, slope diligence, and lake access can dominate the lived experience.",
       sources: [
-        { label: "INEGI - Valle de Bravo municipal context", url: "https://www.inegi.org.mx/" },
-        { label: "Municipio de Valle de Bravo - local government", url: "https://valledebravo.gob.mx/" },
+      { label: "INEGI - Valle de Bravo municipal context", url: "https://www.inegi.org.mx/" },
+      { label: "Municipio de Valle de Bravo - local government", url: "https://valledebravo.gob.mx/" },
       ],
     },
     relocationFit: ["lake-town remote workers", "Mexico City weekenders going permanent", "highland gardeners"],
@@ -714,10 +717,10 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "Zacatlan feels like apple country wrapped in Gulf moisture — a 2040 m Sierra Norte town where elevation cools a tropical latitude but orographic lift keeps the landscape green, misty, and smelling of wet pine and ripening fruit.",
       seasons: {
-        winter: "Cool and damp — afternoons near 19°C, nights near 6°C, fog and drizzle threading through the orchards, and a lived apple identity rather than a decorative mountain label.",
-        spring: "Green and building — bloom in the orchards, afternoons climbing through the low 20s, and the wet season approaching with clouds stacking against the Sierra Norte.",
-        summer: "Mild and wet — highs near 20°C, humidity often above 80%, afternoon storms off the Gulf-facing slopes, and apple country at its most lush and fungal-pressure-aware.",
-        autumn: "Harvest season — apple festivals, cider makers, mist lifting on clear mornings, and the sweet return to drier air as the wet season retreats.",
+      winter: "Cool and damp — afternoons near 19°C, nights near 6°C, fog and drizzle threading through the orchards, and a lived apple identity rather than a decorative mountain label.",
+      spring: "Green and building — bloom in the orchards, afternoons climbing through the low 20s, and the wet season approaching with clouds stacking against the Sierra Norte.",
+      summer: "Mild and wet — highs near 20°C, humidity often above 80%, afternoon storms off the Gulf-facing slopes, and apple country at its most lush and fungal-pressure-aware.",
+      autumn: "Harvest season — apple festivals, cider makers, mist lifting on clear mornings, and the sweet return to drier air as the wet season retreats.",
       },
       travelerFit: "Visitors come for apple festivals, waterfall walks, Sierra Norte viewpoints, and a green Mexican highland that smells like wet pine and fruit.",
       residentFit: "It rewards orchard people, mist-loving remote workers, and cool-highland families who accept dampness, slope diligence, and Puebla as the nearest commercial airport (~2.5 h).",
@@ -737,8 +740,9 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 42,
       note: "Sierra Norte de Puebla orchard town with low cost-of-living and quiet civic life; nearest commercial airport is Puebla, ~2.5 h south.",
       sources: [
-        { label: "INEGI — Zacatlán urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      { label: "INEGI — Zacatlán urban profile", url: "https://www.inegi.org.mx/" },
+      
+        { label: "SMN/CONAGUA climate data bank", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },],
     },
     relocationFit: ["orchard people", "mist-loving remote workers", "cool highland families", "cloud-forest romantics"],
     travelFit: ["apple festivals", "waterfall walks", "Sierra Norte viewpoints", "historic center"],
@@ -778,7 +782,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "One of Mexico's great coffee belts — mist-fed montane cloud forest between lowland Veracruz and the volcanic highlands.",
     summaryImmersive: "Coatepec sits on the windward Gulf slope of the Sierra Madre Oriental at 1250 m, where Atlantic moisture condenses reliably on hillside slopes. Coffee was introduced in the early 1800s and the town developed around an exceptional climate — cool, humid, mild, and perpetually misty.",
     whyDistinct: "Gulf moisture + windward slope + elevation produces reliable fog/drizzle and cool temperatures — genuine montane cloud-forest character.",
-    climate: { tempHighC: [20.1, 21.6, 23.4, 24.9, 25.4, 24.6, 23.8, 24.1, 23.2, 22.3, 21.1, 20.0], tempLowC: [10.9, 11.6, 13.4, 14.9, 15.8, 15.9, 15.6, 15.7, 15.4, 14.2, 12.4, 10.8], precipMm: [56, 38, 40, 68, 132, 284, 278, 262, 306, 212, 96, 62], annualPrecipMm: 1834, frostFreeDays: 365, hardinessZone: "11b equiv." },
+    experience: {
+      feel: "Coatepec feels like Mexico's coffee cloud belt — Atlantic moisture condensing on the Gulf windward slope at 1,250 m, cool humid air, perpetual mist, and a town built around beans that need exactly this weather since the early 1800s.",
+      seasons: {
+        winter: "Mild and misty — afternoons near 20°C, nights near 11°C, drizzle threading through cloud-forest canopy, and the steadiest window for coffee-farm visits.",
+        spring: "Green and wet — afternoons near 25°C, orographic lift intensifying, and spring rains that can swell rivers through hillside districts quickly.",
+        summer: "Cloud-fed and cool — afternoons near 24°C despite tropical latitude, heavy wet-season rain near 1,834 mm annually, and humidity that keeps everything soft and close.",
+        autumn: "Shoulder storms — afternoons near 22°C, flash-flood diligence on slope roads, and mist returning as the wet season tapers.",
+      },
+      travelerFit: "Visitors come for coffee tourism, cloud-forest walks, and Veracruz highland culture — pack for drizzle, not sunscreen.",
+      residentFit: "It rewards misty-mountain romantics who accept landslide diligence on windward slopes and short drives to Xalapa for full services.",
+      texture: "Coffee-cloud-belt settlement — weigh flood and slope stability against low cost-of-living and genuine montane cloud-forest character.",
+    },
+    climate: { tempHighC: [20.1, 21.6, 23.4, 24.9, 25.4, 24.6, 23.8, 24.1, 23.2, 22.3, 21.1, 20.0], tempLowC: [10.9, 11.6, 13.4, 14.9, 15.8, 15.9, 15.6, 15.7, 15.4, 14.2, 12.4, 10.8], precipMm: [56, 38, 40, 68, 132, 284, 278, 262, 306, 212, 96, 62], annualPrecipMm: 1834, frostFreeDays: 365, hardinessZone: "11b equiv.", humidity: [89, 89, 82, 80, 76, 78, 73, 71, 77, 78, 84, 85], sunshinePct: [32, 35, 34, 41, 46, 51, 48, 48, 43, 39, 36, 31] },
     soil: { texture: "Andisol", drainage: "moderate", phRange: [5.0, 6.0], waterHolding: "high" },
     growability: { score: 80, growsWell: ["Coffee", "Avocado", "Citrus", "Mango", "Sugarcane"], tricky: ["Dry-climate crops"] },
     climateChange: { outlook2050: "Warming threatens optimum coffee elevation.", outlook2100: "Coffee belts retreat upslope.", keyShifts: [{variable: "Cloud base", direction: "up"}], resilienceNote: "Coffee culture must adapt upward." },
@@ -791,13 +807,33 @@ export const PLACES_MEXICO: Place[] = [
       note: "Coffee-cloud-belt town with strong cost-of-living advantage; Xalapa and Veracruz are short drives away for full services.",
       sources: [
         { label: "INEGI — Coatepec urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      
+        { label: "SMN — Coatepec station", url: "https://smn.conagua.gob.mx/es/" },],
     },
     relocationFit: ["coffee people", "cloud-forest lovers"], travelFit: ["coffee tourism"],
     whoWouldLove: "Misty-mountain romantics.", whoMightNot: "Those wanting sun.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Coatepec station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "coatepec-cloud-coffee",
+        title: "Cloud forest and coffee orography",
+        paragraphs: [
+          "Coatepec sits on the windward Gulf slope of the Sierra Madre Oriental at 1,250 m — Atlantic moisture condenses reliably on hillside slopes, producing genuine montane cloud-forest character with roughly 1,834 mm annually and Cfb-like mildness despite tropical latitude. Coffee introduced in the early 1800s shaped the town around a climate that commercial beans still require.",
+          "Orographic lift re-weight forecasts block by block — ridge-top fincas see more cloud and wind than sheltered valley pockets near the municipal center. Andisol soils with moderate drainage support coffee, avocado, and citrus; dry-climate crops fail without irrigation in the persistent mist.",
+        ],
+      },
+      {
+        id: "coatepec-slope-flood",
+        title: "Slope stability and highland services",
+        paragraphs: [
+          "Elevated flood and landslide risk on windward slopes registers here — verify parcel drainage, retaining walls, and rainy-season road access before committing. Low cost-of-living and strong growability scores attract coffee people, but sun-seekers will find the drizzle relentless.",
+          "Xalapa and Veracruz port are short drives for hospitals and international air — Coatepec itself is a coffee-cloud-belt town, not a metro. Confirm elevation and slope exposure on the ground; atlas normals describe the regional belt, not every hillside parcel.",
+        ],
+      },
+    ],
+    confidenceNotes: "Orographic lift re-weight forecasts block by block — ridge-top fincas see more cloud and wind than sheltered valley pockets near the municipal center.",
+    citations: [{ label: "SMN — Coatepec station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -809,17 +845,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A silver-mining colonial town on the monsoon edge — dry winters, thunderous summers.",
     summaryImmersive: "Álamos sits in the foothills of the Sierra Madre Occidental at 406 m. The North American Monsoon pushes moisture here reliably from July through September, transforming the dry thornscrub into luxuriant green. Winters are warm, dry, and bright — one of the mildest winter climates in northern Mexico.",
     whyDistinct: "Reliable monsoon arrival at lower elevation than most NAM stations; dramatic dry-wet seasonality.",
-    climate: { tempHighC: [26.9, 28.7, 32.0, 34.8, 37.4, 38.1, 33.4, 32.1, 32.6, 33.1, 29.9, 26.6], tempLowC: [8.4, 9.6, 12.1, 15.3, 19.1, 22.3, 22.8, 22.6, 22.0, 18.1, 12.9, 9.1], precipMm: [28, 18, 8, 6, 4, 22, 208, 196, 110, 36, 22, 40], annualPrecipMm: 698, frostFreeDays: 365, hardinessZone: "10b equiv." },
+    experience: {
+      feel: "Álamos feels like colonial Sonora on the monsoon edge — dry bright winters near 27°C, thornscrub turning luxuriant green when North American Monsoon moisture arrives July through September, and one of northern Mexico's mildest winter envelopes at 406 m.",
+      seasons: {
+        winter: "Snowbird season — afternoons near 27°C, nights near 9°C, relentless sun on cobblestone streets, and the steadiest window for birding and architecture walks.",
+        spring: "Heating toward furnace — afternoons climbing through the mid-30s, dry thornscrub, and pre-monsoon stress before July relief.",
+        summer: "Monsoon transformation — afternoons near 34°C with humid spikes, daily convection, and the landscape shifting from brown to green within weeks.",
+        autumn: "Shoulder clarity — highs falling through the low 30s, storms tapering, and harvest weather returning to dry bright afternoons.",
+      },
+      travelerFit: "Visitors come for colonial architecture, tropical deciduous forest birding, and winter escape from northern cold.",
+      residentFit: "It rewards monsoon-edge Sonora romantics who accept pre-monsoon heat extremes and elevated drought between storms.",
+      texture: "Colonial foothill compromise — weigh long-run drought, June furnace heat, and wildfire smoke against dramatic dry-wet seasonality.",
+    },
+    climate: { tempHighC: [26.9, 28.7, 32.0, 34.8, 37.4, 38.1, 33.4, 32.1, 32.6, 33.1, 29.9, 26.6], tempLowC: [8.4, 9.6, 12.1, 15.3, 19.1, 22.3, 22.8, 22.6, 22.0, 18.1, 12.9, 9.1], precipMm: [28, 18, 8, 6, 4, 22, 208, 196, 110, 36, 22, 40], annualPrecipMm: 698, frostFreeDays: 365, hardinessZone: "10b equiv.", humidity: [76, 75, 70, 72, 75, 79, 92, 95, 95, 81, 81, 76], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Sandy loam", drainage: "good", phRange: [6.8, 7.6], waterHolding: "low" },
     growability: { score: 64, growsWell: ["Citrus", "Mango", "Sugarcane", "Drought-tolerant natives"], tricky: ["Cool-climate fruit"] },
     climateChange: { outlook2050: "Hotter summers, more erratic monsoon.", outlook2100: "Pre-monsoon heat extremes intensify.", keyShifts: [{variable: "Pre-monsoon heat", direction: "up"}], resilienceNote: "Heat-sensitive." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "elevated", trend: "worsening"}, extremeHeat: {level: "elevated", trend: "worsening"}, extremeCold: {level: "very-low", trend: "stable"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "moderate", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 80, microclimateUniqueness: 68, comfort: 54, resilience: 46, growability: 64, tradeoff: 52 },
+    liveSignals: {
+      costPressure: 58,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Colonial-town housing at mid-band for Sonora; IMSS and Ciudad Obregón/Hermosillo drives anchor care — pre-monsoon May–June heat above 37°C and erratic monsoon timing define seasonal friction beyond mild winter appeal.",
+      sources: [
+      { label: "SMN — Álamos station", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["snowbird winter escape"], travelFit: ["birding", "colonial architecture"],
     whoWouldLove: "Monsoon-edge Sonora romantics.", whoMightNot: "Heat-averse.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Álamos station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "alamos-monsoon-colonial",
+        title: "Monsoon edge and colonial foothills",
+        paragraphs: [
+          "Álamos sits in Sierra Madre Occidental foothills at 406 m where North American Monsoon moisture arrives reliably July through September — transforming dry thornscrub into luxuriant tropical deciduous forest while winters stay warm, dry, and bright near 27°C afternoons. Dramatic dry-wet seasonality at lower elevation than most NAM stations is the defining character.",
+          "Monsoon convective lift re-weight forecasts block by block — arroyo-bottom parcels flood while ridge-top fincas see less rain. Sandy loam with good drainage supports citrus and drought-tolerant natives once storms arrive.",
+        ],
+      },
+      {
+        id: "alamos-drought-heat",
+        title: "Pre-monsoon furnace and water stress",
+        paragraphs: [
+          "Elevated drought and extreme heat register here — verify water storage, shade infrastructure, and pre-monsoon May–June plans before committing. Roughly 698 mm annually arrives mostly in three months; the long dry window demands irrigation discipline.",
+          "Colonial-town housing attracts snowbirds, but heat-averse relocators should experience June before committing. Ciudad Obregón and Navojoa anchor specialty care within a few hours' drive.",
+        ],
+      },
+    ],
+    confidenceNotes: "Monsoon convective lift re-weight forecasts block by block — arroyo-bottom parcels flood while ridge-top fincas see less rain.",
+    citations: [{ label: "SMN — Álamos station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -832,12 +910,12 @@ export const PLACES_MEXICO: Place[] = [
     summaryImmersive: "Todos Santos sits in a freshwater oasis on the Pacific coast of Baja Sur. The cold Pacific keeps summers several degrees cooler than the Sea of Cortez side. Winters are perfect — warm days, cool nights, sunny.",
     whyDistinct: "Pacific coolness + freshwater spring oasis + desert surroundings.",
     experience: {
-      feel: "Todos Santos feels like the desert and the cool Pacific made a truce. A freshwater oasis on Baja's Pacific side, it stays several degrees cooler than the Cortez coast, so winters are near-perfect and even summers stay tolerable under a steady marine influence.",
+    feel: "Todos Santos feels like the desert and the cool Pacific made a truce. A freshwater oasis on Baja's Pacific side, it stays several degrees cooler than the Cortez coast, so winters are near-perfect and even summers stay tolerable under a steady marine influence.",
       seasons: {
-        winter: "Just about ideal — warm, sunny afternoons near 24°C, cool nights, almost no rain, and the Pacific keeping the air fresh. This is the season the town fills up for.",
-        spring: "Warm, dry, and breezy — afternoons climbing through the 20s, the surf consistent, and the desert in bloom after any winter rain.",
-        summer: "Warm and humid rather than scorching — afternoons near 31°C tempered by the cool current, with the year's rain arriving as late-summer chubasco storms off the south.",
-        autumn: "The wettest, most storm-aware stretch through September — warm, humid days, occasional tropical moisture, then a return to dry, golden weather by November.",
+      winter: "Just about ideal — warm, sunny afternoons near 24°C, cool nights, almost no rain, and the Pacific keeping the air fresh. This is the season the town fills up for.",
+      spring: "Warm, dry, and breezy — afternoons climbing through the 20s, the surf consistent, and the desert in bloom after any winter rain.",
+      summer: "Warm and humid rather than scorching — afternoons near 31°C tempered by the cool current, with the year's rain arriving as late-summer chubasco storms off the south.",
+      autumn: "The wettest, most storm-aware stretch through September — warm, humid days, occasional tropical moisture, then a return to dry, golden weather by November.",
       },
       travelerFit: "Visitors come for the surf and Pacific beaches, the arts-town galleries and food, and a mellow alternative to Cabo an hour south.",
       residentFit: "It rewards surfers, artists, and snowbirds who want a laid-back Pacific-Baja base with mild winters and an oasis-town pace.",
@@ -855,9 +933,9 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 46,
       note: "Todos Santos art-and-surf tourism keeps the town lively, but oasis water rights, tropical-storm drainage, and La Paz specialty backup are the lived-friction story behind the Pacific-side comfort.",
       sources: [
-        { label: "SMN/CONAGUA — Baja California Sur climate data", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },
-        { label: "CONAGUA — Baja California Sur water context", url: "https://www.gob.mx/conagua" },
-        { label: "INEGI — Todos Santos municipal context", url: "https://www.inegi.org.mx/" },
+      { label: "SMN/CONAGUA — Baja California Sur climate data", url: "https://www.gob.mx/smn/acciones-y-programas/banco-nacional-de-datos-climatologicos-del-smn" },
+      { label: "CONAGUA — Baja California Sur water context", url: "https://www.gob.mx/conagua" },
+      { label: "INEGI — Todos Santos municipal context", url: "https://www.inegi.org.mx/" },
       ],
     },
     relocationFit: ["surfers", "retirees"], travelFit: ["art scene", "surfing"],
@@ -898,10 +976,10 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "Tapalpa feels like Jalisco's cool pine plateau — 2020 m of volcanic highland where summer afternoons rarely exceed 25°C, wet-season storms keep the forest green, and nights carry a mountain chill that makes open-window sleeping possible year-round.",
       seasons: {
-        winter: "Dry and cool — afternoons near 20°C, nights near 4°C, pine forest quiet, and Guadalajara's heat a world away below the rim.",
-        spring: "Warming toward the rains — afternoons climbing through the low 20s, the dry season ending, and weekend traffic building from the lowlands.",
-        summer: "Monsoon green — afternoon storms, humidity climbing, forest trails at their most lush, and afternoons that stay usable without lowland heat load.",
-        autumn: "The sweet dry return — rains tapering in October, Las Piedrotas open plateau exposure, and terrace evenings cool enough for a sweater without ever needing daytime heat.",
+      winter: "Dry and cool — afternoons near 20°C, nights near 4°C, pine forest quiet, and Guadalajara's heat a world away below the rim.",
+      spring: "Warming toward the rains — afternoons climbing through the low 20s, the dry season ending, and weekend traffic building from the lowlands.",
+      summer: "Monsoon green — afternoon storms, humidity climbing, forest trails at their most lush, and afternoons that stay usable without lowland heat load.",
+      autumn: "The sweet dry return — rains tapering in October, Las Piedrotas open plateau exposure, and terrace evenings cool enough for a sweater without ever needing daytime heat.",
       },
       travelerFit: "Visitors come for Las Piedrotas, pine-forest cabin country, Salto del Nogal trails, and a cool highland escape from lowland Jalisco heat.",
       residentFit: "It rewards cool-climate retreat seekers who want Mexico without lowland heat — if they accept weekend crowding, damp-season roads, and Sayula/Guadalajara for full services.",
@@ -919,8 +997,8 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 48,
       note: "A cool, appealing cabin-and-weekend town, but full-service life leans on Sayula/Guadalajara and forest-edge roads are part of the daily calculus.",
       sources: [
-        { label: "INEGI - Tapalpa municipal context", url: "https://www.inegi.org.mx/" },
-        { label: "Gobierno de Jalisco - municipal services context", url: "https://www.jalisco.gob.mx/" },
+      { label: "INEGI - Tapalpa municipal context", url: "https://www.inegi.org.mx/" },
+      { label: "Gobierno de Jalisco - municipal services context", url: "https://www.jalisco.gob.mx/" },
       ],
     },
     relocationFit: ["cool-climate retreat"], travelFit: ["pine forest", "mountain retreat"],
@@ -958,17 +1036,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Cloud-forest refuge in the Huasteca Potosina — eternally green, eternally wet.",
     summaryImmersive: "Xilitla sits on the windward Gulf slope of the Sierra Madre Oriental at 600 m. Moist Gulf air rises here and drips onto the forest almost continuously. The result is one of Mexico's lushest cloud forests, famous for the surreal sculpture garden Las Pozas.",
     whyDistinct: "Gulf moisture + windward slope = reliable cloud forest.",
-    climate: { tempHighC: [21.6, 23.4, 26.1, 28.4, 29.6, 29.0, 28.3, 28.8, 28.2, 26.9, 24.4, 22.0], tempLowC: [12.3, 13.6, 15.6, 17.8, 19.2, 19.6, 19.1, 19.1, 19.0, 17.8, 15.4, 13.1], precipMm: [78, 56, 52, 86, 162, 330, 298, 286, 342, 248, 142, 96], annualPrecipMm: 2176, frostFreeDays: 365, hardinessZone: "12a equiv." },
+            experience: {
+      feel: "Xilitla feels like perpetual Huasteca green — Gulf moisture rising on the windward Sierra Madre at 600 m, dripping onto cloud forest where Las Pozas turns surreal sculpture gardens into a rain-slicked cathedral.",
+      seasons: {
+      winter: "Warm and damp — afternoons near 22°C, showers passing through, and the forest never fully dry even in the coolest months.",
+      spring: "Green-up and storms — afternoons climbing toward 28°C, rivers swelling, and cascades at their most dramatic before peak summer rain.",
+      summer: "Peak wet — highs near 29°C, humidity above 80%, daily convection, and landslide diligence on saturated karst slopes.",
+      autumn: "Still wet, slowly easing — afternoon highs near 27°C, hurricane remnants occasionally brushing the Gulf slope, and cloud base lifting on the best days.",
+      },
+      travelerFit: "Visitors come for Las Pozas, Huasteca cascades, and cloud-forest trails.",
+      residentFit: "It rewards cloud-forest dreamers who find drizzle meditative — not those wanting reliable sunshine.",
+      texture: "An easier cloud-forest pocket — weigh flood exposure, landslide risk on steep slopes, and persistent damp against distinct microclimate character worth the tradeoffs.",
+    },
+    climate: { tempHighC: [21.6, 23.4, 26.1, 28.4, 29.6, 29.0, 28.3, 28.8, 28.2, 26.9, 24.4, 22.0], tempLowC: [12.3, 13.6, 15.6, 17.8, 19.2, 19.6, 19.1, 19.1, 19.0, 17.8, 15.4, 13.1], precipMm: [78, 56, 52, 86, 162, 330, 298, 286, 342, 248, 142, 96], annualPrecipMm: 2176, frostFreeDays: 365, hardinessZone: "12a equiv.", humidity: [68, 68, 66, 71, 76, 86, 86, 84, 86, 79, 76, 69], sunshinePct: [49, 52, 51, 57, 62, 68, 64, 65, 59, 56, 52, 47] },
     soil: { texture: "Leached forest loam on karst limestone", drainage: "moderate", phRange: [5.0, 6.0], waterHolding: "high" },
     growability: { score: 68, growsWell: ["Coffee", "Citrus", "Sugarcane", "Tropical fruit"], tricky: ["Cool-season crops"] },
     climateChange: { outlook2050: "Warming; cloud base rises.", outlook2100: "Cloud-forest stress.", keyShifts: [{variable: "Cloud base", direction: "up"}], resilienceNote: "Cloud ecosystems vulnerable." },
     risks: { wildfire: {level: "low", trend: "stable"}, flood: {level: "elevated", trend: "worsening"}, drought: {level: "low", trend: "stable"}, extremeHeat: {level: "low", trend: "worsening"}, extremeCold: {level: "very-low", trend: "stable"}, smoke: {level: "low", trend: "stable"}, storm: {level: "moderate", trend: "worsening"}, landslide: {level: "elevated", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 80, microclimateUniqueness: 82, comfort: 68, resilience: 60, growability: 68, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 58,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Hospital General de Xilitla and San Luis Potosí city anchor care — cloud-forest dreamers should confirm wet-season road reliability and landslide exposure on karst ridges before committing; sun-seekers will struggle with persistent drizzle.",
+      sources: [
+      { label: "SMN — Xilitla station", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["cloud-forest dwellers"], travelFit: ["Las Pozas", "cascades"],
     whoWouldLove: "Cloud-forest dreamers.", whoMightNot: "Those wanting sunshine.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Xilitla station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+            deepSections: [
+      {
+        id: "xilitla-huasteca-cloud",
+        title: "Gulf windward cloud forest",
+        paragraphs: [
+          "Xilitla sits on the windward Gulf slope of the Sierra Madre Oriental at roughly 600 m where moist air rises almost continuously — roughly 2,180 mm annually drips onto montane cloud forest and karst limestone, producing one of Mexico's lushest Huasteca landscapes.",
+          "Las Pozas and the cascade network are direct consequences of orographic lift, not tourist accident. Cloud-base rise under warming is the long-run relocation variable as much as today's drizzle.",
+        ],
+      },
+      {
+        id: "xilitla-karst-flood",
+        title: "Karst slopes and wet-season access",
+        paragraphs: [
+          "Leached forest loam on karst with moderate drainage suits coffee, citrus, and tropical fruit; cool-season crops struggle without intervention. Flood and landslide exposure register elevated on saturated slopes — verify drainage geometry before buying on a scenic ridge.",
+          "Sun-seekers should expect persistent damp and low sunshine percentages through the wet core of the year. Confirm road reliability during peak summer rain before treating cascade tourism as a year-round commute.",
+        ],
+      },
+    ],
+    confidenceNotes: "Flood and landslide exposure register elevated on saturated slopes — verify drainage geometry before buying on a scenic ridge.",
+    citations: [{ label: "SMN — Xilitla station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -984,7 +1104,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Michoacán's colonial capital at 1920 m — a classic Mexican eternal-spring climate with distinct wet/dry seasons.",
     summaryImmersive: "Morelia sits at 1920 m in the Bajío highlands. Temperatures stay within a narrow band year-round: afternoon highs 24–28°C, nights 7–13°C. The climate is defined not by temperature swings but by the rainy season — June through September delivers dramatic afternoon thunderstorms; the rest of the year is bone-dry and brilliantly sunny. The colonial cantera-pink stone architecture glows in that high-altitude light.",
     whyDistinct: "Trans-Volcanic Belt elevation plus subtropical latitude produces the signature Mexican highland climate; surrounded by significant relief amplifies local variation.",
-    climate: { tempHighC: [22.8, 24.6, 27.2, 28.6, 28.3, 25.6, 23.4, 23.4, 23.2, 23.8, 23.6, 22.4], tempLowC: [5.6, 7.1, 9.2, 11.6, 12.9, 13.1, 12.4, 12.4, 12.2, 10.6, 7.9, 6.1], precipMm: [10, 8, 10, 20, 52, 148, 178, 168, 146, 64, 18, 10], annualPrecipMm: 832, frostFreeDays: 340, hardinessZone: "9b equiv.", diurnalSummerC: 14 },
+    experience: {
+      feel: "Morelia feels like Michoacán's eternal-spring capital at 1,920 m — cantera-pink colonial streets under a narrow 24–28°C band where June–September thunderstorms, not temperature swings, define the calendar.",
+      seasons: {
+        winter: "Dry-season clarity — afternoons near 23°C, nights near 6°C, brilliant high-altitude sun, and the Monarch reserve gateway at its coldest before spring rains.",
+        spring: "Heating and first storms — afternoons climbing toward 29°C, dry weeks punctuated by building convection, and avocado orchards greening on volcanic slopes.",
+        summer: "Monsoon theatre — afternoons near 24°C, nights near 13°C, dramatic afternoon thunderstorms June through September, and arroyo diligence after dry-day build-up.",
+        autumn: "Rains easing — afternoons near 24°C, nights falling toward 10°C, last heavy showers in September–October, then bone-dry skies returning for plaza evenings.",
+      },
+      travelerFit: "Visitors come for cantera-pink centro walks, Patzcuaro day trips, Monarch reserve gateway runs, and dry-season plaza evenings.",
+      residentFit: "It rewards state-capital relocators and eternal-spring families who want airport, hospitals, and universities — if they accept monsoon-season traffic and neighborhood growth pressure.",
+      texture: "A full-service Bajío capital with genuine eternal-spring comfort — weigh monsoon drainage, hillside smoke, and tourist-economy growth against deep volcanic soils and one of Mexico's easiest highland livability profiles.",
+    },
+    climate: { tempHighC: [22.8, 24.6, 27.2, 28.6, 28.3, 25.6, 23.4, 23.4, 23.2, 23.8, 23.6, 22.4], tempLowC: [5.6, 7.1, 9.2, 11.6, 12.9, 13.1, 12.4, 12.4, 12.2, 10.6, 7.9, 6.1], precipMm: [10, 8, 10, 20, 52, 148, 178, 168, 146, 64, 18, 10], annualPrecipMm: 832, frostFreeDays: 340, hardinessZone: "9b equiv.", diurnalSummerC: 14, humidity: [58, 60, 60, 67, 72, 80, 78, 78, 69, 65, 62, 57], sunshinePct: [45, 48, 47, 54, 59, 64, 61, 61, 56, 52, 49, 44] },
     soil: { texture: "Volcanic andisol", drainage: "good", phRange: [6.2, 7.0], waterHolding: "high", notes: "Deep, fertile volcanic soils characteristic of the Bajío." },
     growability: { score: 82, hardinessZone: "9b equiv.", growsWell: ["Avocado", "Stone fruit", "Berries", "Greens year-round"], tricky: ["Tropical lowland crops"] },
     climateChange: { outlook2050: "Warmer; more variable monsoon.", outlook2100: "Drying concern on dry-side flanks.", keyShifts: [{variable: "Rainfall variability", direction: "up"}], resilienceNote: "Elevation-based climate signature is geographically stable." },
@@ -1032,8 +1164,9 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["Latin-American urbanites", "retirees"], travelFit: ["colonial architecture", "Monarch reserve gateway"],
     whoWouldLove: "Eternal-spring seekers who also want urban amenities.", whoMightNot: "Anyone seeking seasonal drama.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Morelia 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    confidenceNotes: "Highland normals (1920 m) understate frost, wind, and aspect differences between ridge, slope, and valley floor — scout elevation bands on the ground.",
+    citations: [{ label: "SMN — Morelia 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1045,6 +1178,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A steep colonial silver-mining canyon town at 2000 m — mild year-round, dry, and photogenic.",
     summaryImmersive: "Guanajuato is built into a steep canyon at 2000 m in the Sierra de Guanajuato. Its geography produces fascinating microclimate variation along the canyon walls — sun-facing slopes warm quickly while shaded ones stay cool. The general climate is cool-dry eternal-spring: afternoon highs 22–27°C, dry most of the year with a June–September rainy season. The colorful terraced houses catch the high-altitude sun from every angle.",
     whyDistinct: "Steep canyon geometry produces dramatic local variation in sun exposure and temperature at small scales; highland elevation governs overall regime.",
+    experience: {
+      feel: "Guanajuato feels like a silver-mining canyon city at 2,000 m — sun-facing terrace walls warm in minutes while shaded callejones hold cool air, with dry eternal-spring afternoons and a June–September arroyo season.",
+      seasons: {
+        winter: "Dry highland sun — afternoons near 23°C, nights near 7°C, relentlessly clear skies, and intense UV on rose-stone terraces.",
+        spring: "Heating before monsoon — afternoons near 27°C, still mostly dry, spring storms swelling rivers in the canyon floor.",
+        summer: "Rainy-season afternoons — highs near 25°C, frequent evening thunderstorms, flash-flood diligence in tunnels and steep lanes.",
+        autumn: "Storm tail and color — highs falling through 23°C, September rains tapering, UNESCO crowds thinning, and drainage routes worth re-walking after wet months.",
+      },
+      travelerFit: "Visitors come for canyon-stair walks, tunnel-and-drainage history, Cervantino festival season, and UNESCO silver-mining streets.",
+      residentFit: "It rewards cultural expats who love stone cities at altitude — if they accept steep lanes, tourist crowds, canyon flash-flood exposure, and limited flat parking.",
+      texture: "A canyon-city tradeoff — weigh elevated arroyo flood risk, tourist pressure, and stair-heavy daily movement against cool-dry eternal spring and a real university-town culture scene.",
+    },
     climate: { tempHighC: [22.1, 24.1, 26.4, 27.8, 28.1, 25.9, 23.8, 23.9, 23.4, 23.4, 22.8, 21.6], tempLowC: [6.4, 7.8, 9.4, 11.8, 12.9, 13.1, 12.4, 12.1, 11.9, 10.4, 8.1, 6.8], precipMm: [12, 8, 8, 14, 28, 118, 146, 138, 110, 44, 14, 10], humidity: [52, 46, 42, 44, 52, 64, 70, 70, 66, 58, 52, 52], sunshinePct: [74, 76, 78, 74, 68, 58, 56, 58, 62, 70, 74, 74], annualPrecipMm: 650, frostFreeDays: 330, hardinessZone: "9b equiv." },
     soil: { texture: "Rocky loam over volcanic tuff", drainage: "good", phRange: [6.6, 7.4], waterHolding: "low" },
     growability: { score: 70, hardinessZone: "9b equiv.", growsWell: ["Nopal", "Agaves", "Hardy fruit"], tricky: ["Humidity lovers"] },
@@ -1093,8 +1238,9 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["cultural expats"], travelFit: ["colonial sightseeing"],
     whoWouldLove: "Those who love stone cities at altitude.", whoMightNot: "Anyone with mobility limitations.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Guanajuato station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    confidenceNotes: "Canyon-wall exposure varies block by block — sun-facing terraces, tunnel drainage, and arroyo proximity matter more than the 2,000 m station normal suggests.",
+    citations: [{ label: "SMN — Guanajuato station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1107,7 +1253,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Mexico's 'cool' colonial city — at 2440 m, summers cap at 25°C and winter frosts are routine.",
     summaryImmersive: "Zacatecas perches at 2440 m — 500 m higher than Morelia and in a more continental interior position. The result is a colder, drier eternal-spring climate: summer highs in the low 20s, winter lows that can reach −4°C, and annual precipitation under 500 mm. It's Mexico's most genuinely cool major historic city. The rose-pink stone, silver-mining history, and cultural intensity are all at altitude.",
     whyDistinct: "Higher interior-highland position produces colder eternal-spring than the Bajío; real frost and dry cold distinguish it.",
-    climate: { tempHighC: [18.6, 20.4, 23.1, 25.2, 26.2, 24.8, 22.4, 22.1, 21.6, 21.4, 20.6, 18.4], tempLowC: [2.4, 3.8, 6.2, 9.4, 11.6, 12.4, 11.6, 11.1, 10.4, 7.6, 4.8, 3.1], precipMm: [10, 6, 4, 8, 18, 62, 86, 78, 64, 22, 8, 10], annualPrecipMm: 376, frostFreeDays: 260, hardinessZone: "8b equiv." },
+    experience: {
+      feel: "Zacatecas feels like Mexico's genuinely cool colonial capital at 2,440 m — summer highs in the low 20s, winter frost on mesquite steppe, under 400 mm annual rain, and rose-pink stone under relentless highland sun.",
+      seasons: {
+        winter: "Dry cold — afternoons near 19°C, nights near 3°C with routine frost, crisp air on Cerro de la Bufa, and unheated-stone interior reality.",
+        spring: "Clear heating — afternoons climbing toward 25°C, relentlessly dry winds, and water-supply planning before summer rains.",
+        summer: "Brief monsoon window — highs near 23°C, concentrated July–August showers, cooler than any Bajío city, and irrigation stress on exposed slopes.",
+        autumn: "Golden dry return — highs falling through 21°C, rains ending, UNESCO nights cooling fast, and mesquite country returning to dust.",
+      },
+      travelerFit: "Visitors come for Cerro de la Bufa ridge views, Mina El Edén, UNESCO night walks, and Mexico's coldest major colonial climate.",
+      residentFit: "It rewards historic-city expats who want genuine highland frost and dry air — not tropical-seekers or anyone unwilling to plan around water supply.",
+      texture: "A cool highland capital tradeoff — weigh drought, winter cold in unheated stone, and thin air-service depth against walkable UNESCO streets and comparatively affordable historic-core living.",
+    },
+    climate: { tempHighC: [18.6, 20.4, 23.1, 25.2, 26.2, 24.8, 22.4, 22.1, 21.6, 21.4, 20.6, 18.4], tempLowC: [2.4, 3.8, 6.2, 9.4, 11.6, 12.4, 11.6, 11.1, 10.4, 7.6, 4.8, 3.1], precipMm: [10, 6, 4, 8, 18, 62, 86, 78, 64, 22, 8, 10], humidity: [37, 37, 34, 39, 43, 40, 43, 45, 43, 45, 43, 37], sunshinePct: [71, 76, 75, 81, 92, 92, 91, 89, 84, 81, 70, 67], annualPrecipMm: 376, frostFreeDays: 260, hardinessZone: "8b equiv." },
     soil: { texture: "Stony calcareous loam", drainage: "good", phRange: [7.2, 8.0], waterHolding: "low" },
     growability: { score: 58, hardinessZone: "8b equiv.", growsWell: ["Cold-hardy fruit", "Nopal", "Grapes (at lower elev.)"], tricky: ["Heat-tropical crops"] },
     climateChange: { outlook2050: "Warmer; drought intensifying.", outlook2100: "Water-constrained.", keyShifts: [{variable: "Drought", direction: "up"}], resilienceNote: "Elevation buffers temperature; water is limiting." },
@@ -1155,8 +1313,9 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["historic-city expats"], travelFit: ["UNESCO architecture", "silver-mine tourism"],
     whoWouldLove: "Those who want Mexican eternal spring with a colder twist.", whoMightNot: "Tropical-seeking.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Zacatecas 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    confidenceNotes: "Zacatecas station normals capture the historic core; Guadalupe flats and Vetagrande ridge blocks differ on frost, wind, and water reliability — confirm neighborhood elevation and supply before committing.",
+    citations: [{ label: "SMN — Zacatecas 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -1172,7 +1331,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Northern Mexico's dry, elevation-tempered urban alternative to the deep-desert heat of Monterrey — 8°C cooler on summer afternoons.",
     summaryImmersive: "Saltillo sits at 1600 m in the Chihuahuan high desert, only 85 km west of Monterrey — but the elevation delivers an 8°C cooler summer afternoon on average. Winters are clear, dry, and can produce occasional frost. The altitude-tempered climate shaped the colonial founding; the city's historic position as the Camino Real's northern hub reflects the rare oasis of livable climate in a vast dry region.",
     whyDistinct: "Significant elevation gain above Monterrey's lowland basin produces a strikingly different summer climate in a short geographic distance.",
-    climate: { tempHighC: [16.8, 19.4, 22.9, 25.8, 28.1, 29.1, 28.2, 28.4, 26.4, 23.4, 19.6, 17.1], tempLowC: [3.4, 5.2, 8.1, 11.8, 14.9, 16.4, 16.1, 16.0, 14.6, 10.8, 6.4, 4.1], precipMm: [10, 10, 14, 22, 42, 58, 46, 58, 98, 36, 12, 10], annualPrecipMm: 416, frostFreeDays: 280, hardinessZone: "9a equiv." },
+    experience: {
+      feel: "Saltillo feels like the Chihuahuan high-desert oasis 85 km from Monterrey — 1,600 m elevation trimming eight degrees off basin heat, clear dry winters with occasional frost, and a Camino Real city that works year-round.",
+      seasons: {
+        winter: "Mild and workable — afternoons near 18°C, nights near 4°C, dry intense sun, and frost possible on clear mornings.",
+        spring: "Clear heating — afternoons climbing toward 26°C, relentless dry winds, and Sierra Madre foothill escapes before peak summer.",
+        summer: "Monsoon peak — highs near 29°C still cooler than Monterrey basin, concentrated July–September storms, and water discipline on calcareous soils.",
+        autumn: "Storm taper — highs falling through 23°C, September rains easing, harvest dust in the industrial corridor, and dry nights returning.",
+      },
+      travelerFit: "Visitors come for colonial centro dry-season walks, Arteaga foothill loops, and the simplest proof of Monterrey heat relief over 85 km.",
+      residentFit: "It rewards northern-Mexico relocators and Monterrey commuters who want industrial-city services with eight degrees less summer heat — if they accept long-run drought planning.",
+      texture: "A Monterrey-adjacent high-desert city — weigh calcareous-soil water stress, manufacturing-corridor growth, and dry-season dust against broad hospitals, universities, and Chihuahuan highland comfort.",
+    },
+    climate: { tempHighC: [16.8, 19.4, 22.9, 25.8, 28.1, 29.1, 28.2, 28.4, 26.4, 23.4, 19.6, 17.1], tempLowC: [3.4, 5.2, 8.1, 11.8, 14.9, 16.4, 16.1, 16.0, 14.6, 10.8, 6.4, 4.1], precipMm: [10, 10, 14, 22, 42, 58, 46, 58, 98, 36, 12, 10], annualPrecipMm: 416, frostFreeDays: 280, hardinessZone: "9a equiv.", humidity: [37, 37, 35, 39, 43, 44, 40, 46, 44, 46, 43, 38], sunshinePct: [72, 76, 76, 81, 92, 92, 91, 90, 84, 82, 70, 68] },
     soil: { texture: "Calcareous loam", drainage: "good", phRange: [7.4, 8.2], waterHolding: "moderate" },
     growability: { score: 60, hardinessZone: "9a equiv.", growsWell: ["Drought-tolerant fruit", "Nopal", "Grapes"], tricky: ["Humidity crops"] },
     climateChange: { outlook2050: "Warmer; water stress.", outlook2100: "Drying.", keyShifts: [{variable: "Heat waves", direction: "up"}], resilienceNote: "Elevation buffer holds; water supply tight." },
@@ -1220,8 +1391,9 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["northern-Mexico expats"], travelFit: ["colonial center"],
     whoWouldLove: "Those needing an escape from Monterrey heat.", whoMightNot: "Tropical-seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Saltillo 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    confidenceNotes: "Saltillo station normals capture the urban basin; Arteaga foothills and Ramos corridor blocks run cooler, wetter, or more exposed — confirm elevation and water access before committing.",
+    citations: [{ label: "SMN — Saltillo 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1233,7 +1405,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The unexpected apple capital of Mexico — Mennonite-run orchards at 2060 m on the dry Chihuahuan plateau.",
     summaryImmersive: "Cuauhtémoc sits on the central Chihuahuan plateau at 2060 m. Mennonite settlers from Canada brought their dryland apple expertise here in the 1920s and developed what is now the country's largest apple-growing region. The climate is ideal for the fruit: chill hours are adequate, summers dry and sunny, nights cool enough for skin color development. The winter can bring genuine cold and occasional snow.",
     whyDistinct: "Unusually cold (by Mexican standards) and dry high-plateau climate supports temperate-fruit agriculture unavailable elsewhere in the country.",
-    climate: { tempHighC: [15.4, 18.1, 22.4, 25.8, 29.4, 30.6, 28.1, 27.4, 25.8, 23.2, 19.1, 15.6], tempLowC: [-3.4, -1.6, 1.6, 5.4, 9.6, 13.1, 13.6, 13.2, 11.2, 6.1, 0.6, -3.1], precipMm: [10, 6, 6, 8, 18, 48, 132, 128, 88, 26, 8, 14], annualPrecipMm: 492, frostFreeDays: 180, hardinessZone: "8a equiv.", chillHours: 900 },
+    experience: {
+      feel: "Cuauhtémoc feels like Mennonite apple country on the Chihuahuan plateau — dry sunny summers at 2,060 m, genuine winter cold and occasional snow, and orchards that need chill hours Mexico's lowlands cannot provide.",
+      seasons: {
+        winter: "Cold and clear — afternoons near 16°C, nights below freezing, snow on the orchards, and irrigation channels frozen on the coldest mornings.",
+        spring: "Bloom season — afternoons near 26°C, relentless sun on the plateau, and the critical frost window that determines apple set across the Mennonite colonies.",
+        summer: "Warm and dry — afternoons near 29°C, monsoon moisture arriving as afternoon storms, and irrigation demand peaking across the country's largest apple region.",
+        autumn: "Harvest gold — afternoons near 23°C, cool nights for skin color, and the economic rhythm of packing sheds and cold storage across the plateau.",
+      },
+      travelerFit: "Visitors come for Mennonite cheese tourism, apple-harvest season, and a Chihuahua high-plateau climate unlike coastal Mexico.",
+      residentFit: "It rewards orchard farmers and dryland-fruit romantics who accept water-right stress, winter road weather, and northern-Chihuahua security context.",
+      texture: "Agro-industrial plateau hub — weigh drought, chill-hour decline, and aquifer pressure against temperate-fruit agriculture unavailable elsewhere in Mexico.",
+    },
+    climate: { tempHighC: [15.4, 18.1, 22.4, 25.8, 29.4, 30.6, 28.1, 27.4, 25.8, 23.2, 19.1, 15.6], tempLowC: [-3.4, -1.6, 1.6, 5.4, 9.6, 13.1, 13.6, 13.2, 11.2, 6.1, 0.6, -3.1], precipMm: [10, 6, 6, 8, 18, 48, 132, 128, 88, 26, 8, 14], annualPrecipMm: 492, frostFreeDays: 180, hardinessZone: "8a equiv.", chillHours: 900, humidity: [38, 38, 35, 40, 44, 41, 44, 46, 44, 46, 44, 38], sunshinePct: [75, 79, 79, 84, 92, 92, 92, 92, 87, 85, 73, 71] },
     soil: { texture: "Silty loam over caliche", drainage: "good", phRange: [7.0, 7.8], waterHolding: "moderate" },
     growability: { score: 82, hardinessZone: "8a equiv.", growsWell: ["Apples", "Pears", "Dairy pasture", "Wheat"], tricky: ["Tropical crops"] },
     climateChange: { outlook2050: "Chill hours declining; heat stress rising.", outlook2100: "Apple viability pressure.", keyShifts: [{variable: "Chill hours", direction: "down"}], resilienceNote: "Water-supply is long-term pressure." },
@@ -1253,7 +1437,25 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["orchard farmers"], travelFit: ["Mennonite cheese tourism"],
     whoWouldLove: "Dryland-fruit-country romantics.", whoMightNot: "Anyone wanting a Mexican coast.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    deepSections: [
+      {
+        id: "cuauhtemoc-mennonite-orchard",
+        title: "Mennonite orchards and plateau chill",
+        paragraphs: [
+          "Cuauhtémoc sits on the central Chihuahuan plateau at 2,060 m — Mennonite settlers from Canada brought dryland apple expertise in the 1920s and built Mexico's largest apple-growing region on a climate with adequate chill hours, dry sunny summers, and cool nights for skin color. BSk normals with roughly 492 mm annually frame a temperate-fruit envelope unavailable at coastal latitudes.",
+          "Continental extremity and elevation lapse rate mean orchard blocks on exposed ridges run colder and windier than sheltered valley parcels — frost timing during bloom is the make-or-break variable every spring.",
+        ],
+      },
+      {
+        id: "cuauhtemoc-plateau-water",
+        title: "Plateau water stress and services",
+        paragraphs: [
+          "Elevated drought risk and declining chill hours under warming register here — verify irrigation rights, well depth, and aquifer access before committing to orchard-scale agriculture. Silty loam over caliche supports apples, pears, and dairy pasture; tropical crops fail in the plateau cold.",
+          "Cuauhtémoc is a genuine northwest-Chihuahua service hub with Hospital Angeles and INEGI-documented municipal infrastructure — not a scenic pocket. Water stress, winter road weather, and northern-Chihuahua security context are honest relocation filters beyond the atlas comfort score.",
+        ],
+      },
+    ],
+    confidenceNotes: "Continental extremity and elevation lapse rate mean orchard blocks on exposed ridges run colder and windier than sheltered valley parcels — frost timing during bloom is the make-or-break variable every spring.",
     citations: [{ label: "SMN — Cuauhtémoc station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INIFAP orchard data", kind: "inecc", url: "https://www.gob.mx/inecc" }],
   },
 
@@ -1267,7 +1469,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A silver ghost-town at 2756 m in the deep Chihuahuan steppe — cool, thin air and otherworldly desert stillness.",
     summaryImmersive: "Real de Catorce sits at 2756 m on a mountain above a vast Chihuahuan steppe. The old silver-mining town was largely abandoned after ore played out; elevation and aridity have preserved the ruins. The climate is cool year-round (highs 20°C, lows near freezing in winter), with minimal precipitation and crystal-clear skies. Access is via a 2.3-km historic tunnel drilled through the mountain — one of Mexico's most memorable arrivals.",
     whyDistinct: "Extreme elevation combined with deep Chihuahuan steppe surround creates a mountain-refuge climate on a desert island.",
-    climate: { tempHighC: [14.8, 16.1, 18.4, 20.6, 21.1, 20.1, 19.1, 19.2, 18.4, 18.1, 16.8, 14.9], tempLowC: [0.4, 1.4, 3.6, 6.2, 8.1, 9.4, 9.1, 8.8, 8.6, 6.1, 3.1, 1.2], precipMm: [8, 6, 6, 8, 16, 48, 58, 52, 44, 18, 8, 10], annualPrecipMm: 282, frostFreeDays: 240, hardinessZone: "9a equiv." },
+            experience: {
+      feel: "Real de Catorce feels like a silver ghost town suspended at 2,756 m above the Chihuahuan steppe — cool thin air, crystal-clear skies, minimal rain, and arrival through a 2.3 km tunnel drilled straight through the mountain.",
+      seasons: {
+      winter: "Cool and crisp — afternoons near 15°C, nights near 1°C, dry air, and Wirikuta pilgrimage traffic crossing the steppe below.",
+      spring: "Dry and warming — afternoons near 20°C, wildflowers on the lower slopes, and the briefest comfortable window before summer storms.",
+      summer: "Monsoon punctuates aridity — afternoons near 20°C with humid spikes when convection fires, most annual rain falling in a short burst.",
+      autumn: "Clear and quiet — afternoons falling back through the high teens, tourist traffic thinning, and the steppe turning gold below the ridge.",
+      },
+      travelerFit: "Visitors come for Wirikuta pilgrimage routes, ghost-town ruins, and one of Mexico's most memorable mountain arrivals.",
+      residentFit: "It rewards travelers drawn to remote thin-air silence — especially artists — who accept Matehuala or Saltillo drives for groceries and care.",
+      texture: "A place that asks for a few compromises at 2756 m elevation — weigh drought, minimal services, and tunnel access as the only road link against distinct microclimate character worth the tradeoffs.",
+    },
+    climate: { tempHighC: [14.8, 16.1, 18.4, 20.6, 21.1, 20.1, 19.1, 19.2, 18.4, 18.1, 16.8, 14.9], tempLowC: [0.4, 1.4, 3.6, 6.2, 8.1, 9.4, 9.1, 8.8, 8.6, 6.1, 3.1, 1.2], precipMm: [8, 6, 6, 8, 16, 48, 58, 52, 44, 18, 8, 10], annualPrecipMm: 282, frostFreeDays: 240, hardinessZone: "9a equiv.", humidity: [35, 35, 33, 37, 41, 42, 42, 44, 38, 44, 41, 36], sunshinePct: [75, 79, 79, 84, 92, 92, 92, 92, 87, 85, 73, 71] },
     soil: { texture: "Stony thin loam", drainage: "excessive", phRange: [7.0, 8.0], waterHolding: "low" },
     growability: { score: 28, hardinessZone: "9a equiv.", growsWell: ["Desert natives", "Nopal"], tricky: ["Almost everything cultivated"] },
     climateChange: { outlook2050: "Warmer; water stress.", outlook2100: "Drying.", keyShifts: [{variable: "Water stress", direction: "up"}], resilienceNote: "Elevation provides some buffer." },
@@ -1286,8 +1500,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["artists", "pilgrims"], travelFit: ["Wirikuta pilgrimage", "ghost-town tourism"],
     whoWouldLove: "Travelers drawn to remote, thin-air silence.", whoMightNot: "Services-dependent.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Catorce station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+            deepSections: [
+      {
+        id: "real-catorce-sky-island",
+        title: "Chihuahuan sky-island at 2,756 m",
+        paragraphs: [
+          "Real de Catorce sits on the Sierra de Catorce above vast Chihuahuan steppe — extreme elevation on a desert island produces cool year-round highs near 20°C, minimal precipitation near 280 mm annually, and crystal-clear skies that preserved the mining ruins after ore played out.",
+          "The 2.3 km Ogarrio tunnel is the only road link — a memorable arrival that also defines winter isolation and emergency access. Compare ridge-top exposure to sheltered canyon pockets before assuming town normals describe your parcel.",
+        ],
+      },
+      {
+        id: "real-catorce-ghost-services",
+        title: "Ghost-town services and steppe exposure",
+        paragraphs: [
+          "Housing in the ghost town is cheap but groceries, fuel, and staffed care require Matehuala or Saltillo drives — services-dependent relocators should plan logistics, not scenery. Stony thin loam with excessive drainage limits gardening to desert natives and nopal without water haulage.",
+          "Wirikuta pilgrimage traffic and tourism sustain the local economy more than year-round residency. Drought and wildfire exposure register on the surrounding steppe — verify water supply and winter tunnel reliability.",
+        ],
+      },
+    ],
+    confidenceNotes: "Compare ridge-top exposure to sheltered canyon pockets before assuming town normals describe your parcel.",
+    citations: [{ label: "SMN — Catorce station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -1304,17 +1537,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A warm desert coast facing the Sea of Cortez — winter perfection, hurricane-season heat, and clear turquoise water.",
     summaryImmersive: "La Paz sits on a sheltered bay of the Sea of Cortez, where the desert coast meets some of the world's clearest water. Winters are nearly ideal — 26°C days, 14°C nights, constant sun. Summers are brutal: 35°C afternoons, humidity rising in the wet season, and hurricane season from August through October. The warm Cortez moderates summer heat compared to the interior but raises humidity.",
     whyDistinct: "Cortez warm-water surround produces a distinctly humid summer signature not found on the Pacific-facing Baja coast.",
-    climate: { tempHighC: [23.6, 25.1, 27.4, 29.8, 32.4, 34.6, 34.4, 34.8, 34.1, 31.6, 27.9, 24.8], tempLowC: [12.4, 12.6, 14.1, 16.4, 19.1, 22.1, 24.4, 24.8, 23.8, 20.1, 16.1, 13.4], precipMm: [14, 6, 2, 1, 1, 4, 20, 30, 48, 12, 6, 14], annualPrecipMm: 158, frostFreeDays: 365, hardinessZone: "11 equiv." },
+    experience: {
+      feel: "La Paz feels like winter perfection on the Sea of Cortez — sheltered Bahía de La Paz where desert coast meets some of the world's clearest water, 26°C dry-season days, and warm Cortez water moderating summer heat while raising humidity compared to Pacific Baja.",
+      seasons: {
+        winter: "Dry-season paradise — afternoons near 25°C, nights near 13°C, constant sun, whale-shark season, and the snowbird window at its peak.",
+        spring: "Heating toward peak — afternoons climbing through the high 20s, humidity still tolerable, and the last clear weeks before wet-season convection returns.",
+        summer: "Brutal wet-season heat — highs near 35°C, nights near 24°C, humidity rising, and hurricane watches from August through October.",
+        autumn: "Hurricane tail — highs near 31°C, heavy rains from Gulf of California systems, and the transition back toward dry-season perfection.",
+      },
+      travelerFit: "Visitors come for whale sharks, Espíritu Santo island tours, and a BWh desert coast with Cortez-clear water — dry season is the comfort window.",
+      residentFit: "It rewards snowbirds and marine-adjacent relocators wanting winter perfection — if they accept summer heat above 35°C, high drought risk, and hurricane-season logistics.",
+      texture: "A Cortez-coast tradeoff — weigh extreme summer heat, hurricane exposure, and housing above regional medians against nearly ideal dry-season comfort and turquoise water.",
+    },
+    climate: { tempHighC: [23.6, 25.1, 27.4, 29.8, 32.4, 34.6, 34.4, 34.8, 34.1, 31.6, 27.9, 24.8], tempLowC: [12.4, 12.6, 14.1, 16.4, 19.1, 22.1, 24.4, 24.8, 23.8, 20.1, 16.1, 13.4], precipMm: [14, 6, 2, 1, 1, 4, 20, 30, 48, 12, 6, 14], annualPrecipMm: 158, frostFreeDays: 365, hardinessZone: "11 equiv.", humidity: [37, 37, 35, 39, 43, 48, 52, 54, 52, 46, 43, 38], sunshinePct: [70, 75, 74, 80, 83, 85, 80, 78, 73, 70, 69, 66] },
     soil: { texture: "Sandy alluvial / coastal", drainage: "excessive", phRange: [7.4, 8.2], waterHolding: "low" },
     growability: { score: 46, hardinessZone: "11 equiv.", growsWell: ["Date palms", "Mango", "Citrus"], tricky: ["Temperate crops"] },
     climateChange: { outlook2050: "Intensifying heat; stronger hurricanes.", outlook2100: "Habitability constrained in summer.", keyShifts: [{variable: "Heat", direction: "up"}, {variable: "Hurricane intensity", direction: "up"}], resilienceNote: "Winter climate stable; summer pressure mounting." },
     risks: { wildfire: {level: "low", trend: "stable"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "high", trend: "worsening"}, extremeHeat: {level: "elevated", trend: "worsening"}, extremeCold: {level: "very-low", trend: "stable"}, smoke: {level: "low", trend: "stable"}, storm: {level: "elevated", trend: "worsening"}, landslide: {level: "low", trend: "stable"}, coastal: {level: "elevated", trend: "worsening"} },
     scores: { hiddenGem: 38, microclimateUniqueness: 62, comfort: 72, resilience: 44, growability: 46, tradeoff: 48 },
+    liveSignals: {
+      costPressure: 70,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "La Paz expat housing runs above regional medians; Hospital Ángeles and LAP anchor care — summer heat above 35°C, high drought risk, and hurricane-season logistics define daily life beyond dry-season Cortez perfection.",
+      sources: [
+      { label: "SMN — La Paz 1991–2020", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["snowbirds", "marine-adjacent"], travelFit: ["whale sharks", "island tourism"],
     whoWouldLove: "Those wanting winter perfection on clear turquoise water.", whoMightNot: "Year-round heat-averse.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — La Paz 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "la-paz-cortez-desert",
+        title: "Sea of Cortez desert coast and winter perfection",
+        paragraphs: [
+          "La Paz sits on sheltered Bahía de La Paz on the Sea of Cortez side of Baja Sur — BWh normals with roughly 158 mm annually, where warm Cortez water surround produces a distinctly humid summer signature not found on Pacific-facing Baja coast.",
+          "Winters are nearly ideal — 26°C days, 14°C nights, constant sun — making La Paz a snowbird capital while summers push brutal heat and hurricane watches from August through October.",
+        ],
+      },
+      {
+        id: "la-paz-hurricane-drought",
+        title: "Hurricane exposure and drought stress",
+        paragraphs: [
+          "High drought risk registers here — sandy alluvial coastal soils with excessive drainage support date palms, mango, and citrus with irrigation planning essential in one of Mexico's driest populated coasts.",
+          "Year-round heat-averse relocators should spend an August week here before treating winter perfection as balance for 35°C humid summers — verify flood exposure on low-lying bay blocks and hurricane insurance before committing.",
+        ],
+      },
+    ],
+    confidenceNotes: "La Paz coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.",
+    citations: [{ label: "SMN — La Paz 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1327,17 +1602,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Oaxaca's surf coast — a tropical-dry climate with massive Pacific swell, warm water year-round, and an intense summer rainy season.",
     summaryImmersive: "Puerto Escondido is the Pacific-coast capital of Mexican tropical-dry climate. The annual temperature range is narrow — highs 29–33°C, lows 18–24°C — but rainfall is highly seasonal. November through April is bone-dry, brown-landscape weather; May through October is a green explosion fed by mesoscale convective systems and occasional hurricanes. The famous surf break is partly a product of the offshore bathymetry but also of the steady trade-wind regime.",
     whyDistinct: "Southern Mexican Pacific coastal position produces a mirror-image dry/wet seasonal cycle; hurricane-track exposure is real.",
-    climate: { tempHighC: [30.4, 30.8, 31.4, 32.1, 32.6, 31.4, 31.1, 31.2, 30.6, 31.1, 31.1, 30.6], tempLowC: [19.1, 19.4, 20.4, 21.8, 23.4, 23.6, 23.1, 23.1, 23.0, 22.1, 20.6, 19.3], precipMm: [2, 1, 1, 6, 42, 276, 156, 198, 280, 126, 20, 4], annualPrecipMm: 1112, frostFreeDays: 365, hardinessZone: "12 equiv." },
+                experience: {
+      feel: "Puerto Escondido feels like Oaxaca's surf-coast capital — narrow annual temperature range with highs near 30–33°C year-round, but rainfall splits the calendar sharply. November through April is bone-dry brown-landscape weather; May through October turns the hills green under mesoscale convection and Pacific tropical systems.",
+      seasons: {
+        winter: "Dry-season surf — afternoons near 31°C, nights near 19°C, offshore mornings at Zicatela and Carrizalillo, and turtle-nesting beaches under clear skies.",
+        spring: "Pre-monsoon heat — afternoons climbing toward 32°C, landscape still dry until late May, and swell windows that draw international surf crews before rainy season.",
+        summer: "Green explosion — afternoons near 31°C, nights near 23°C, afternoon convection and tropical waves bringing 276 mm in peak months, and surf breaks that shift with wind and swell direction.",
+        autumn: "Hurricane tail — afternoons near 31°C, nights cooling toward 20°C, September–October still wet with tropical cyclone tracks offshore, then dry season returning by November.",
+      },
+      travelerFit: "Visitors come for world-class Pacific surf, sea-turtle nesting, and a tropical-dry coast without Cancún-scale development.",
+      residentFit: "It rewards surf pilgrims and remote workers who accept humid nights, seasonal road washouts, and limited specialist healthcare outside Oaxaca City.",
+      texture: "A Pacific-coast tradeoff — weigh hurricane exposure, flood-prone arroyos, and humidity against warm water, low winter heating costs, and a surf culture that runs year-round.",
+    },
+    climate: { tempHighC: [30.4, 30.8, 31.4, 32.1, 32.6, 31.4, 31.1, 31.2, 30.6, 31.1, 31.1, 30.6], tempLowC: [19.1, 19.4, 20.4, 21.8, 23.4, 23.6, 23.1, 23.1, 23.0, 22.1, 20.6, 19.3], precipMm: [2, 1, 1, 6, 42, 276, 156, 198, 280, 126, 20, 4], annualPrecipMm: 1112, frostFreeDays: 365, hardinessZone: "12 equiv.", humidity: [75, 74, 69, 71, 74, 82, 77, 84, 84, 80, 80, 75], sunshinePct: [69, 73, 70, 70, 67, 65, 56, 55, 52, 55, 59, 62] },
     soil: { texture: "Sandy loam / coastal alluvium", drainage: "good", phRange: [6.2, 7.2], waterHolding: "low" },
     growability: { score: 62, hardinessZone: "12 equiv.", growsWell: ["Mango", "Papaya", "Coconut", "Banana"], tricky: ["Temperate crops"] },
     climateChange: { outlook2050: "Warmer; stronger hurricanes; less predictable rainy season.", outlook2100: "Coastal stress.", keyShifts: [{variable: "Hurricane intensity", direction: "up"}, {variable: "Heat", direction: "up"}], resilienceNote: "Isothermal regime is stable; storm exposure is rising." },
     risks: { wildfire: {level: "low", trend: "stable"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "moderate", trend: "stable"}, extremeHeat: {level: "moderate", trend: "worsening"}, extremeCold: {level: "very-low", trend: "stable"}, smoke: {level: "low", trend: "stable"}, storm: {level: "high", trend: "worsening"}, landslide: {level: "moderate", trend: "worsening"}, coastal: {level: "high", trend: "worsening"} },
     scores: { hiddenGem: 36, microclimateUniqueness: 64, comfort: 66, resilience: 42, growability: 62, tradeoff: 48 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Puerto Escondido's surf economy drives seasonal rent swings; Huatulco airport is the usual gateway and Oaxaca City holds specialist care — humidity-averse visitors should confirm clinic access before committing.",
+      sources: [
+      { label: "SMN — Puerto Escondido", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Puerto Escondido", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+                                            deepSections: [
+      {
+        id: "puerto-escondido-swell-zicatela",
+        title: "Pacific swell and the Aw dry-wet split",
+        paragraphs: [
+          "Puerto Escondido sits on the Pacific coast of Oaxaca at the eastern edge of the tropical-dry zone — Aw normals with roughly 1112 mm annually, where offshore bathymetry at Zicatela produces world-class swell and diurnal sea breezes organize afternoon convection inland.",
+          "Southern Mexican Pacific position produces a mirror-image dry/wet cycle: November–April bone-dry surf season, May–October green explosion under mesoscale systems and hurricane tracks that can reshape travel calendars block by block.",
+        ],
+      },
+      {
+        id: "puerto-escondido-storm-arroyos",
+        title: "Hurricane tracks and arroyo flood risk",
+        paragraphs: [
+          "Sandy loam coastal alluvium supports mango, papaya, and coconut on sheltered blocks, but arroyo drainage and elevation above sea level matter more than regional comfort scores for parcel-level reads.",
+          "Humidity-averse visitors should confirm Huatulco airport access and Oaxaca City healthcare before committing — coastal storm exposure is high and seasonal road washouts are part of the local rhythm, not atlas outliers.",
+        ],
+      },
+    ],
+    confidenceNotes: "Puerto Escondido coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.",
+    citations: [{ label: "SMN — Puerto Escondido", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -1354,17 +1671,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The colonial capital of the Yucatán limestone plateau — hot, dry-winter, wet-summer tropical with cenote-karst hydrology.",
     summaryImmersive: "Mérida sits on the Yucatán's flat limestone plateau, where cenotes (collapsed karst sinkholes) provide the region's only surface water. Winters are warm-dry-sunny (highs 30°C, low humidity); summers are hotter and humid with afternoon downpours from May through October. Hurricane exposure is real but the inland position dampens the worst direct impacts compared to Cancún or Campeche on the coast.",
     whyDistinct: "Karst limestone geology produces unique hydrology; inland-tropical position softens but doesn't eliminate hurricane exposure.",
-    climate: { tempHighC: [28.8, 30.4, 33.1, 34.8, 35.8, 34.1, 33.4, 33.4, 32.4, 31.2, 29.9, 28.8], tempLowC: [16.8, 17.9, 20.1, 22.6, 23.8, 23.6, 22.9, 22.9, 22.8, 21.4, 19.4, 17.4], precipMm: [24, 18, 22, 32, 82, 156, 144, 158, 178, 108, 44, 30], annualPrecipMm: 996, frostFreeDays: 365, hardinessZone: "12 equiv." },
+    experience: {
+      feel: "Mérida feels like the colonial capital of the Yucatán limestone plateau — flat karst lowland where cenotes provide the region's only surface water, winters warm-dry-sunny near 30°C with low humidity, and summers hotter and stickier with afternoon downpours from May through October.",
+      seasons: {
+        winter: "Dry-season paradise — afternoons near 29°C, nights near 17°C, trade winds keeping humidity tolerable, and the best window for Uxmal day trips and cenote swimming without summer storm buildup.",
+        spring: "Heating toward peak — afternoons climbing through the mid-30s, humidity rising before rains, and the last clear weeks before afternoon convection returns in May.",
+        summer: "Wet-season heat — highs near 34°C, nights near 23°C, daily afternoon downpours, and heat that can turn genuinely dangerous without shade discipline and siesta culture.",
+        autumn: "Hurricane watch — highs near 31°C, heavy rains from Caribbean or Gulf systems, and inland position softening but not eliminating tropical-storm impacts compared to Cancún.",
+      },
+      travelerFit: "Visitors come for colonial centro walks, Maya sites, and cenote swimming — dry season is the comfort window; wet season demands storm-aware scheduling.",
+      residentFit: "It rewards tropical-dry culture seekers and colonial-city expats who accept summer heat above 34°C, karst hydrology quirks, and hurricane-season logistics.",
+      texture: "A karst-plateau tradeoff — weigh extreme summer heat, hurricane exposure, and excessive-drainage soils against warm-dry winters and one of Mexico's most walkable historic cores.",
+    },
+    climate: { tempHighC: [28.8, 30.4, 33.1, 34.8, 35.8, 34.1, 33.4, 33.4, 32.4, 31.2, 29.9, 28.8], tempLowC: [16.8, 17.9, 20.1, 22.6, 23.8, 23.6, 22.9, 22.9, 22.8, 21.4, 19.4, 17.4], precipMm: [24, 18, 22, 32, 82, 156, 144, 158, 178, 108, 44, 30], annualPrecipMm: 996, frostFreeDays: 365, hardinessZone: "12 equiv.", humidity: [75, 74, 70, 72, 74, 82, 78, 85, 85, 81, 80, 76], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Thin rendzina over limestone", drainage: "excessive", phRange: [7.4, 8.2], waterHolding: "low" },
     growability: { score: 58, hardinessZone: "12 equiv.", growsWell: ["Henequen (agave)", "Citrus", "Mango", "Papaya"], tricky: ["Temperate crops", "Water-needy plants without irrigation"] },
     climateChange: { outlook2050: "Warmer; stronger hurricanes; rainfall volatility.", outlook2100: "Heat-stress on habitability.", keyShifts: [{variable: "Hurricane intensity", direction: "up"}, {variable: "Heat stress", direction: "up"}], resilienceNote: "Inland position gives some hurricane buffer; heat is the concern." },
     risks: { wildfire: {level: "low", trend: "stable"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "moderate", trend: "mixed"}, extremeHeat: {level: "elevated", trend: "worsening"}, extremeCold: {level: "very-low", trend: "stable"}, smoke: {level: "low", trend: "stable"}, storm: {level: "elevated", trend: "worsening"}, landslide: {level: "very-low", trend: "stable"}, coastal: {level: "moderate", trend: "worsening"} },
     scores: { hiddenGem: 30, microclimateUniqueness: 52, comfort: 62, resilience: 50, growability: 58, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Mérida expat housing at mid-band; Hospital Star Médica and MID anchor care — summer heat above 34°C, karst cenote hydrology, and hurricane-season logistics define daily life beyond colonial-centro walkability.",
+      sources: [
+      { label: "SMN — Mérida 1991–2020", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["colonial-city expats"], travelFit: ["Maya sites", "cenotes"],
     whoWouldLove: "Tropical-dry + culture seekers.", whoMightNot: "Summer-heat-averse.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Mérida 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "merida-karst-cenote",
+        title: "Karst hydrology and cenote water",
+        paragraphs: [
+          "Mérida sits on the central Yucatán limestone plateau — Aw tropical wet-dry normals with roughly 996 mm annually, where karst infiltration means almost no surface rivers and cenotes provide the region's only accessible groundwater.",
+          "Thin rendzina over limestone with excessive drainage (pH 7.4–8.2) supports henequen, citrus, mango, and papaya with irrigation planning — temperate crops fail without engineered water.",
+        ],
+      },
+      {
+        id: "merida-hurricane-inland",
+        title: "Inland hurricane buffer and wet-season heat",
+        paragraphs: [
+          "Roughly 30 km from the Gulf coast, Mérida's inland position dampens the worst direct hurricane impacts compared to Cancún or Campeche — but storm tracks still deliver heavy rain, wind, and power outages from May through November.",
+          "Summer-heat-averse relocators should spend an August week here before treating warm-dry winters as balance for afternoons above 34°C with humid downpours — verify flood exposure on low-lying blocks where karst drainage fails.",
+        ],
+      },
+    ],
+    confidenceNotes: "Mérida coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.",
+    citations: [{ label: "SMN — Mérida 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1377,17 +1736,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A tropical-isothermal freshwater lagoon where limestone chemistry produces seven shades of blue — and the climate barely changes.",
     summaryImmersive: "Bacalar sits on a freshwater lagoon famous for the way karst-leached limestone produces cyan, turquoise, and deep-blue water in distinct layers. The climate is tropical-isothermal: highs 30–33°C, lows 17–23°C, and small annual variation. Dry-season trade winds keep the humidity tolerable; wet season brings afternoon thunderstorms and occasional hurricane remnants from either coast.",
     whyDistinct: "Rare freshwater-stromatolite lagoon in tropical karst; isothermal climate plus trade-wind exposure.",
-    climate: { tempHighC: [28.4, 29.4, 31.6, 33.2, 33.6, 32.1, 32.1, 31.9, 31.4, 30.6, 29.4, 28.6], tempLowC: [16.8, 17.4, 19.2, 21.6, 22.8, 22.9, 22.4, 22.6, 22.6, 21.2, 19.6, 17.4], precipMm: [52, 38, 32, 38, 78, 176, 164, 172, 202, 146, 82, 62], annualPrecipMm: 1242, frostFreeDays: 365, hardinessZone: "12 equiv." },
+    experience: {
+      feel: "Bacalar feels like a tropical-isothermal freshwater lagoon — karst-leached limestone producing cyan-to-deep-blue layers, highs steady near 30–33°C year-round, and dry-season trade winds making humidity tolerable until hurricane tails arrive.",
+      seasons: {
+        winter: "Dry-season paradise — afternoons near 29°C, nights near 17°C, trade winds keeping mornings fresh, and lagoon kayaking in seven-shade blue without summer storm buildup.",
+        spring: "Heating toward peak — afternoons near 33°C, humidity climbing before rains, and the last clear weeks before afternoon convection returns.",
+        summer: "Wet-season heat — highs near 32°C, nights near 23°C, afternoon thunderstorms over the lagoon, and heat that can turn genuinely dangerous without shade discipline.",
+        autumn: "Hurricane watch — highs near 31°C, heavy rains from Caribbean or Gulf systems, and stromatolite-shallow water vulnerable to runoff after tropical downpours.",
+      },
+      travelerFit: "Visitors come for lagoon swimming, stromatolite ecology, and Caribbean-adjacent freshwater life — wet season demands storm-aware scheduling.",
+      residentFit: "It rewards tropical expats and lagoon lovers who accept hurricane exposure, limited specialty care beyond Chetumal, and Quintana Roo's tourism economy swings.",
+      texture: "Karst lagoon tradeoff — weigh hurricane tails, extreme summer heat, and freshwater ecosystem fragility against isothermal comfort and seven-color water.",
+    },
+    climate: { tempHighC: [28.4, 29.4, 31.6, 33.2, 33.6, 32.1, 32.1, 31.9, 31.4, 30.6, 29.4, 28.6], tempLowC: [16.8, 17.4, 19.2, 21.6, 22.8, 22.9, 22.4, 22.6, 22.6, 21.2, 19.6, 17.4], precipMm: [52, 38, 32, 38, 78, 176, 164, 172, 202, 146, 82, 62], annualPrecipMm: 1242, frostFreeDays: 365, hardinessZone: "12 equiv.", humidity: [76, 75, 70, 72, 75, 83, 78, 85, 85, 81, 81, 76], sunshinePct: [69, 73, 70, 70, 67, 65, 56, 55, 52, 55, 59, 62] },
     soil: { texture: "Thin rendzina over karst", drainage: "excessive", phRange: [7.6, 8.2], waterHolding: "low" },
     growability: { score: 56, hardinessZone: "12 equiv.", growsWell: ["Tropical fruit", "Cacao", "Vanilla"], tricky: ["Temperate"] },
     climateChange: { outlook2050: "Warmer; more hurricane stress.", outlook2100: "Lagoon salinization risk.", keyShifts: [{variable: "Hurricane intensity", direction: "up"}, {variable: "Sea level", direction: "up"}], resilienceNote: "Freshwater ecosystem is hurricane-vulnerable." },
     risks: { wildfire: {level: "low", trend: "stable"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "low", trend: "stable"}, extremeHeat: {level: "elevated", trend: "worsening"}, extremeCold: {level: "very-low", trend: "stable"}, smoke: {level: "low", trend: "stable"}, storm: {level: "elevated", trend: "worsening"}, landslide: {level: "very-low", trend: "stable"}, coastal: {level: "moderate", trend: "worsening"} },
     scores: { hiddenGem: 70, microclimateUniqueness: 78, comfort: 68, resilience: 44, growability: 56, tradeoff: 40 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Bacalar expat housing at mid-band; Chetumal Hospital and CTM airport anchor care — hurricane tails from Caribbean or Gulf coasts, lagoon stromatolite sensitivity, and wet-season heat above 32°C define daily logistics beyond seven-color tourism appeal.",
+      sources: [
+      { label: "SMN — Chetumal (nearest station)", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["tropical expats"], travelFit: ["lagoon tourism", "stromatolites"],
     whoWouldLove: "Caribbean-adjacent freshwater lovers.", whoMightNot: "Hurricane-averse.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Chetumal (nearest station)", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "bacalar-karst-lagoon",
+        title: "Karst lagoon and isothermal climate",
+        paragraphs: [
+          "Bacalar sits on a rare freshwater-stromatolite lagoon on the Yucatán Caribbean slope — Aw tropical wet-dry with roughly 1,242 mm annually and isothermal highs between 30–33°C year-round. Karst-leached limestone produces distinct cyan, turquoise, and deep-blue water layers visible from shore.",
+          "Dry-season trade winds keep humidity tolerable November through April; wet-season afternoon convection and hurricane remnants from either coast are the binding hazards.",
+        ],
+      },
+      {
+        id: "bacalar-storm-ecology",
+        title: "Hurricane exposure and lagoon fragility",
+        paragraphs: [
+          "Elevated storm risk registers here — verify elevation certificates, lagoon runoff after tropical downpours, and evacuation routes before committing. Thin rendzina over karst supports tropical fruit, cacao, and vanilla with irrigation.",
+          "Hurricane-averse relocators should confirm Chetumal specialist access and spend a wet-season September here before treating isothermal comfort as balance for Quintana Roo cyclone exposure.",
+        ],
+      },
+    ],
+    confidenceNotes: "Bacalar coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.",
+    citations: [{ label: "SMN — Chetumal (nearest station)", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   // ====================================================================
@@ -1404,7 +1805,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The blue-agave heartland — a volcanic highland where a specific combination of sun, soil, and altitude makes tequila possible.",
     summaryImmersive: "The Tequila region sits at 1000–1500 m on the flanks of the Tequila Volcano, with volcanic soils rich in minerals and a climate of warm days, cool nights, and concentrated summer rains. Blue agave thrives in this specific combination — and nowhere else at meaningful scale. The 60,000-hectare agave landscape is a UNESCO World Heritage cultural site precisely because the climate-soil combination is irreplaceable.",
     whyDistinct: "Volcanic-upland climate with strong diurnal swing and distinct monsoon rhythm enables blue-agave cultivation at scale.",
-    climate: { tempHighC: [26.1, 27.9, 30.2, 31.4, 30.9, 28.1, 25.6, 25.8, 25.9, 26.6, 26.2, 25.3], tempLowC: [10.2, 11.4, 13.6, 15.6, 16.8, 16.8, 16.1, 16.1, 16.0, 14.4, 12.1, 10.4], precipMm: [8, 4, 4, 8, 32, 186, 242, 220, 154, 38, 10, 8], annualPrecipMm: 914, frostFreeDays: 360, hardinessZone: "10b equiv." },
+    experience: {
+      feel: "Tequila feels like UNESCO agave country on volcanic slopes at 1,180 m — warm days, cool nights, concentrated summer rains on mineral-rich tepetate, and blue agave fields that only make sense in this exact terroir.",
+      seasons: {
+        winter: "Dry harvest season — afternoons near 26°C, nights near 11°C, clear skies, and jimador work at peak before spring heat.",
+        spring: "Heating before monsoon — highs climbing toward 31°C, still dry, agave fields turning silver-green under strong sun.",
+        summer: "Monsoon peak — highs near 27°C despite latitude, heavy July–August rains on volcanic slopes, and field access complicated by runoff.",
+        autumn: "Rains easing — highs near 26°C, distillery traffic and tour buses peaking, last storms in September, and dry relief returning.",
+      },
+      travelerFit: "Visitors come for dawn agave-field checks, UNESCO distillery tours, volcano-slope drives, and harvest-window jimador culture.",
+      residentFit: "It rewards agrotourism operators and terroir obsessives near Guadalajara — if they accept harvest-truck traffic, monsoon field access, and tourism-season town rhythm.",
+      texture: "UNESCO agave terroir with Guadalajara proximity — weigh monsoon runoff on volcanic slopes, distillery tourism pressure, and summer humidity against irreplaceable tepetate soils and warm-day/cool-night cultivation logic.",
+    },
+    climate: { tempHighC: [26.1, 27.9, 30.2, 31.4, 30.9, 28.1, 25.6, 25.8, 25.9, 26.6, 26.2, 25.3], tempLowC: [10.2, 11.4, 13.6, 15.6, 16.8, 16.8, 16.1, 16.1, 16.0, 14.4, 12.1, 10.4], precipMm: [8, 4, 4, 8, 32, 186, 242, 220, 154, 38, 10, 8], annualPrecipMm: 914, frostFreeDays: 360, hardinessZone: "10b equiv.", humidity: [75, 74, 69, 71, 74, 82, 91, 94, 90, 80, 80, 75], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Volcanic tepetate / andisol", drainage: "good", phRange: [6.2, 7.0], waterHolding: "moderate", notes: "Mineral-rich red volcanic soil — the specific terroir of tequila." },
     growability: { score: 76, hardinessZone: "10b equiv.", growsWell: ["Blue agave (of course)", "Citrus", "Stone fruit at higher elevations"], tricky: ["Cool-climate crops"] },
     climateChange: { outlook2050: "Warmer; water-stressed summers.", outlook2100: "Agave cultivation range shifting.", keyShifts: [{variable: "Heat", direction: "up"}], resilienceNote: "Agave is drought-resilient; the cultural infrastructure is the asset." },
@@ -1452,8 +1865,9 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["agrotourism"], travelFit: ["agave fields", "distillery tours"],
     whoWouldLove: "Terroir-obsessed travelers.", whoMightNot: "Cool-climate seekers.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Tequila station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "UNESCO agave landscape", kind: "other" }],
+    confidenceNotes: "Tequila entry uses NOAA / ECCC / SMN normals and PRISM / WorldClim grids for screening; local terrain can re-weight the same forecast — confirm on the ground before committing.",
+    citations: [{ label: "SMN — Tequila station", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "UNESCO agave landscape", kind: "other" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1466,12 +1880,12 @@ export const PLACES_MEXICO: Place[] = [
     summaryImmersive: "Mazamitla sits at 2220 m in the Sierra del Tigre. The climate is cool year-round; winter nights can approach freezing, summer afternoons rarely exceed 22°C.",
     whyDistinct: "Elevation-driven cool climate on a subtropical latitude.",
     experience: {
-      feel: "Mazamitla feels like Jalisco's little Switzerland — 2220 m in the Sierra del Tigre where pine scent, cool evenings, and mist after storms make sweater weather normal even when the lowlands swelter.",
+    feel: "Mazamitla feels like Jalisco's little Switzerland — 2220 m in the Sierra del Tigre where pine scent, cool evenings, and mist after storms make sweater weather normal even when the lowlands swelter.",
       seasons: {
-        winter: "Cool and dry — afternoons near 18°C, nights near 4°C and sometimes approaching freezing, cabin fireplaces lit, and forest quiet between weekend visitors.",
-        spring: "Dry and bright — afternoons climbing through the low 20s, the last comfortable window before monsoon humidity arrives.",
-        summer: "Wet and green — afternoon storms, humidity often above 80%, Cascada El Salto running full, and afternoons that rarely exceed 22°C even at peak sun.",
-        autumn: "Crisp return to dry clarity — rains tapering in October, cabin-belt scouting season, and terrace evenings that confirm why the resort nickname stuck.",
+      winter: "Cool and dry — afternoons near 18°C, nights near 4°C and sometimes approaching freezing, cabin fireplaces lit, and forest quiet between weekend visitors.",
+      spring: "Dry and bright — afternoons climbing through the low 20s, the last comfortable window before monsoon humidity arrives.",
+      summer: "Wet and green — afternoon storms, humidity often above 80%, Cascada El Salto running full, and afternoons that rarely exceed 22°C even at peak sun.",
+      autumn: "Crisp return to dry clarity — rains tapering in October, cabin-belt scouting season, and terrace evenings that confirm why the resort nickname stuck.",
       },
       travelerFit: "Visitors come for Sierra del Tigre forest roads, cabin tourism, Cascada El Salto, and cool mountain air an easy drive from hot Jalisco valleys.",
       residentFit: "It rewards cool mountain retreat seekers who want outdoor life without lowland heat — if they accept limited services, weekend traffic, and forest-fire homework on cabin lots.",
@@ -1489,8 +1903,8 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 50,
       note: "Cool forest comfort is strong, but it is a small tourism/cabin market with limited services, weekend traffic, road exposure, and forest-fire homework.",
       sources: [
-        { label: "INEGI - Mazamitla municipal context", url: "https://www.inegi.org.mx/" },
-        { label: "Gobierno de Jalisco - municipal services context", url: "https://www.jalisco.gob.mx/" },
+      { label: "INEGI - Mazamitla municipal context", url: "https://www.inegi.org.mx/" },
+      { label: "Gobierno de Jalisco - municipal services context", url: "https://www.jalisco.gob.mx/" },
       ],
     },
     relocationFit: ["cool mountain retreat"], travelFit: ["cabin tourism"],
@@ -1532,10 +1946,23 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The windiest place in the Americas — a narrow mountain gap where Caribbean pressure forces air through to the Pacific at sustained 40–70 km/h for months at a time.",
     summaryImmersive: "La Ventosa sits in the Isthmus of Tehuantepec, the one spot where the continental mountain chain flattens to a pass only 250 m high. Whenever the Caribbean's pressure rises above the Pacific's — which is most of the time from October through February — air accelerates through this gap in a fierce northerly wind called the Tehuano. Sustained winds regularly reach 60 km/h with gusts over 100 km/h; at peak events truck traffic is shut down. The wind is so reliable that this region hosts the densest concentration of wind farms in Latin America (over 2,000 MW installed). The gap-wind corridor also strips moisture and sun from the land; La Ventosa is tropical-dry where the rest of Oaxaca is tropical-wet.",
     whyDistinct: "Tehuano gap wind is one of only four major gap-wind regimes on Earth (the others being the Papagayo Gulf, the Panama Gulf, and the Columbia Gorge). Cross-isthmus pressure differences combined with the constrictive gap geometry create some of the most intense sustained winds on the continent.",
+            experience: {
+      feel: "La Ventosa feels like the planet's weather machinery laid bare — the Isthmus of Tehuantepec flattened to a 250 m pass where Caribbean–Pacific pressure differences drive Tehuano winds at 60–100 km/h for months, powering Latin America's densest wind-farm corridor.",
+      seasons: {
+      winter: "Tehuano season — afternoons near 31°C, sustained northerlies often 60 km/h, truck closures on peak events, and the driest months under gap-wind stripping.",
+      spring: "Heating before monsoon — highs climbing through the mid-30s, winds easing slightly, and dust rising on the thorn forest.",
+      summer: "Humid and stormy — highs near 33°C, heavy rains when monsoon arrives, and hurricane tracks adding surge exposure on both coasts within two hours.",
+      autumn: "Hurricane tail and wind return — tropical systems can reshape the calendar deep into fall as Tehuano events rebuild by October.",
+      },
+      travelerFit: "Visitors come for wind farms, kite and windsurfing, and Zapotec cultural tours on the isthmus.",
+      residentFit: "It rewards meteorologists and wind-energy workers who treat sustained gale as feature — not anyone whose hat would fly off.",
+      texture: "A real-tradeoff gap-wind corridor — weigh extreme summer heat, structural wind load, and hurricane exposure against distinct microclimate character worth the tradeoffs.",
+    },
     climate: {
       tempHighC: [30.4, 31.2, 33.4, 34.8, 34.5, 33.1, 32.2, 32.1, 31.6, 31.6, 31.2, 30.6], tempLowC: [20.1, 20.4, 22.1, 23.8, 24.8, 24.2, 23.4, 23.2, 23.1, 22.6, 21.4, 20.4],
       precipMm: [4, 2, 4, 8, 38, 158, 142, 148, 190, 98, 18, 6], humidity: [60, 58, 56, 60, 70, 78, 78, 78, 80, 75, 65, 60],
-      annualPrecipMm: 816, frostFreeDays: 365, hardinessZone: "11b equiv.",
+      annualPrecipMm: 816, frostFreeDays: 365, hardinessZone: "11b equiv.",    sunshinePct: [66, 70, 67, 67, 64, 62, 53, 52, 49, 52, 56, 59],
+
     },
     soil: { texture: "Sandy loam over alluvium", drainage: "good", phRange: [6.5, 7.8], waterHolding: "moderate", notes: "Wind-eroded in many places; irrigation-dependent in dry season." },
     growability: { score: 48, growsWell: ["Mango", "Tropical crops adapted to wind", "Sorghum"], tricky: ["Tall or tender crops vulnerable to wind"], homeGarden: "Anything taller than a person needs a windbreak." },
@@ -1544,11 +1971,41 @@ export const PLACES_MEXICO: Place[] = [
     localContrast: [{ radiusKm: 60, summerHighDeltaC: 1, winterLowDeltaC: -2, note: "Gap-wind acceleration changes the felt climate more than the monthly mean: Tehuano events can feel sharply cooler than surrounding lowlands even though seasonal averages stay similar." }],
     nearbyContrasts: [{ placeId: "oaxaca-mx", label: "Oaxaca City", note: "100 km north across the sierra — cool, calm, spring-like compared to windswept-tropical La Ventosa." }],
     scores: { hiddenGem: 78, microclimateUniqueness: 94, comfort: 40, resilience: 48, growability: 48, tradeoff: 74 },
+    liveSignals: {
+      costPressure: 58,
+      socialStress: 40,
+      accessFriction: 38,
+      note: "IMSS Salina Cruz and wind-farm corridor jobs anchor the economy — verify roof and fence ratings for Tehuano gusts over 100 km/h and hurricane exposure on the isthmus before committing.",
+      sources: [
+      { label: "SMN — La Ventosa / Salina Cruz stations", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["wind energy workers", "meteorology enthusiasts"], travelFit: ["wind farms", "kite/windsurfing", "Zapotec cultural tours"],
     whoWouldLove: "Meteorologists, kite sportspeople, anyone who likes feeling the planet's weather machinery at work.", whoMightNot: "Anyone whose hat would fly off.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — La Ventosa / Salina Cruz stations", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "Academic: Chelton et al. on Tehuantepec wind jets", kind: "academic" }],
+            deepSections: [
+      {
+        id: "la-ventosa-tehuano-gap",
+        title: "Tehuano gap-wind mechanics",
+        paragraphs: [
+          "La Ventosa occupies the Isthmus of Tehuantepec where the Sierra Madre chain drops to roughly 250 m — among Earth's major gap-wind regimes, Caribbean high pressure forcing air through to the Pacific produces sustained 40–70 km/h winds and gusts over 100 km/h from October through February.",
+          "Cross-isthmus pressure differences strip moisture and sun from the land, making this tropical-dry where surrounding Oaxaca is tropical-wet. Over 2,000 MW of installed wind capacity is the economic signature of a hazard that shuts truck traffic on peak events.",
+        ],
+      },
+      {
+        id: "la-ventosa-wind-load",
+        title: "Wind load, hurricanes, and siting",
+        paragraphs: [
+          "Anything taller than a person needs a windbreak; mango and sorghum succeed where tender crops fail. Storm and hurricane tracks converge on the isthmus — verify structure rating and surge exposure, not just monthly means.",
+          "Gap-wind events can feel sharply cooler than surrounding lowlands even when seasonal averages stay similar — parcel scouting means reading Tehuano exposure, not airport calm.",
+        ],
+      },
+    ],
+    confidenceNotes: "La Ventosa averages a steep gorge transect — west-rim, east-bench, and wind-exposed river parcels can differ on rain, fire, and frost more than regional scores suggest.",
+    citations: [{ label: "SMN — La Ventosa / Salina Cruz stations", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "Academic: Chelton et al. on Tehuantepec wind jets", kind: "academic" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1563,12 +2020,12 @@ export const PLACES_MEXICO: Place[] = [
     summaryImmersive: "Creel is the highest significant settlement in Chihuahua, at 2,338 m on the Tarahumara plateau. The thin, dry air produces dramatic diurnal swings: January afternoons around 15°C, January nights regularly −10 to −15°C. Light snow falls most winters — a rarity for Mexico. Yet the Copper Canyon (Barrancas del Cobre) system drops more than 1,800 m directly off the plateau into subtropical microclimates where bananas and citrus grow just 25 km away horizontally. This vertical zonation is among the steepest in North America; the Tarahumara (Rarámuri) people have exploited it for centuries, moving between the plateau in summer and the canyon floor in winter.",
     whyDistinct: "High-elevation pine-oak plateau on a dry subtropical latitude + immediate vertical collapse into subtropical canyons = one of the most dramatic climate gradients in North America.",
     experience: {
-      feel: "Creel feels like Mexico's altitude surprise — a pine-oak plateau at 2338 m where January nights drop to −4°C and light snow falls, while subtropical canyon bottoms with bananas and citrus sit just 25 km away and 1800 m below.",
+    feel: "Creel feels like Mexico's altitude surprise — a pine-oak plateau at 2338 m where January nights drop to −4°C and light snow falls, while subtropical canyon bottoms with bananas and citrus sit just 25 km away and 1800 m below.",
       seasons: {
-        winter: "Cold and clear — afternoons near 15°C, nights regularly below freezing, light snow most winters, and the Copper Canyon railway running through a landscape that feels more Colorado than Chihuahua.",
-        spring: "Dry and warming fast — afternoons climbing through the low 20s, the last frost risk in April, and the plateau greening before monsoon arrives.",
-        summer: "Monsoon relief — afternoon highs near 26°C, dramatic July-August storms off the Sierra Madre, and the Tarahumara highland country at its most accessible.",
-        autumn: "Crisp and golden — pine-oak slopes turning, the dry season returning in October, and canyon-edge views that compress an entire continent's climate zones into one horizon.",
+      winter: "Cold and clear — afternoons near 15°C, nights regularly below freezing, light snow most winters, and the Copper Canyon railway running through a landscape that feels more Colorado than Chihuahua.",
+      spring: "Dry and warming fast — afternoons climbing through the low 20s, the last frost risk in April, and the plateau greening before monsoon arrives.",
+      summer: "Monsoon relief — afternoon highs near 26°C, dramatic July-August storms off the Sierra Madre, and the Tarahumara highland country at its most accessible.",
+      autumn: "Crisp and golden — pine-oak slopes turning, the dry season returning in October, and canyon-edge views that compress an entire continent's climate zones into one horizon.",
       },
       travelerFit: "Visitors come for the Copper Canyon railway, Tarahumara cultural country, and one of North America's steepest vertical climate gradients.",
       residentFit: "It rewards highland retreat seekers and canyon-country explorers who want genuine cold winters in Mexico and accept rural infrastructure and Indigenous-region due diligence.",
@@ -1593,9 +2050,9 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 66,
       note: "Creel is not an expat-cost outlier, but winter-ready housing, Indigenous-region due diligence, rural poverty, and long mountain travel make the lived read materially harder than the climate score alone.",
       sources: [
-        { label: "Data Mexico - Bocoyna demographic and poverty profile", url: "https://www.economia.gob.mx/datamexico/en/profile/geo/bocoyna?redirect=true" },
-        { label: "SECTUR - Creel Pueblo Magico profile", url: "https://www.sectur.gob.mx/gobmx/pueblos-magicos/creel-chihuahua/" },
-        { label: "Chihuahua state - Creel tourism and Raramuri context", url: "https://chihuahua.gob.mx/index.php/prensa/celebra-creel-xv-aniversario-como-pueblo-magico" },
+      { label: "Data Mexico - Bocoyna demographic and poverty profile", url: "https://www.economia.gob.mx/datamexico/en/profile/geo/bocoyna?redirect=true" },
+      { label: "SECTUR - Creel Pueblo Magico profile", url: "https://www.sectur.gob.mx/gobmx/pueblos-magicos/creel-chihuahua/" },
+      { label: "Chihuahua state - Creel tourism and Raramuri context", url: "https://chihuahua.gob.mx/index.php/prensa/celebra-creel-xv-aniversario-como-pueblo-magico" },
       ],
     },
     relocationFit: ["highland retreat", "Tarahumara-country residents"], travelFit: ["Copper Canyon railway", "Tarahumara cultural tourism", "vertical climate gradients"],
@@ -1604,28 +2061,28 @@ export const PLACES_MEXICO: Place[] = [
     confidenceNotes: "This moderate-confidence profile is reliable at microclimate-zone scale because SMN/CONAGUA normals, INEGI relief context, and atlas elevation reasoning agree; neighborhood water, slope, and storm exposure still need local checks.",
     deepSections: [
       {
-        id: "creel-vertical-gradient",
-        title: "The canyon drops into a different climate",
-        paragraphs: [
-          "Creel's defining feature is not just that it is high. It sits near a canyon system where the land falls into much warmer zones over short horizontal distance, making vertical climate change obvious in a single trip.",
-          "That gradient is why plateau pine, cold nights, canyon fruit, and subtropical bottoms all belong to the same regional story.",
-        ],
+      id: "creel-vertical-gradient",
+      title: "The canyon drops into a different climate",
+      paragraphs: [
+      "Creel's defining feature is not just that it is high. It sits near a canyon system where the land falls into much warmer zones over short horizontal distance, making vertical climate change obvious in a single trip.",
+      "That gradient is why plateau pine, cold nights, canyon fruit, and subtropical bottoms all belong to the same regional story.",
+      ],
       },
       {
-        id: "creel-dry-cold-air",
-        title: "Dry cold and large day-night swing",
-        paragraphs: [
-          "The Sierra Tarahumara plateau holds clear, dry winter air. Nights can fall well below freezing while afternoons recover quickly in strong sun, so human comfort depends heavily on building insulation, solar exposure, and wind shelter.",
-          "The same diurnal swing helps some fruit and staple crops, but it limits tender plants and surprises travelers expecting only warm Mexico.",
-        ],
+      id: "creel-dry-cold-air",
+      title: "Dry cold and large day-night swing",
+      paragraphs: [
+      "The Sierra Tarahumara plateau holds clear, dry winter air. Nights can fall well below freezing while afternoons recover quickly in strong sun, so human comfort depends heavily on building insulation, solar exposure, and wind shelter.",
+      "The same diurnal swing helps some fruit and staple crops, but it limits tender plants and surprises travelers expecting only warm Mexico.",
+      ],
       },
       {
-        id: "creel-fire-monsoon",
-        title: "Monsoon relief, fire-season concern",
-        paragraphs: [
-          "Summer rains support pine-oak forest and Rarámuri agriculture, but the dry season can leave fuels receptive to fire. Climate change raises concern for longer dry spells, hotter fire weather, and shifting pine health.",
-          "This is a high-value Tier B entry precisely because it compresses forest, canyon, Indigenous land use, and climate risk into a terrain system that is easy to understand but hard to reduce to one station.",
-        ],
+      id: "creel-fire-monsoon",
+      title: "Monsoon relief, fire-season concern",
+      paragraphs: [
+      "Summer rains support pine-oak forest and Rarámuri agriculture, but the dry season can leave fuels receptive to fire. Climate change raises concern for longer dry spells, hotter fire weather, and shifting pine health.",
+      "This is a high-value Tier B entry precisely because it compresses forest, canyon, Indigenous land use, and climate risk into a terrain system that is easy to understand but hard to reduce to one station.",
+      ],
       },
     ],
     citations: [
@@ -1646,6 +2103,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The only true Mediterranean climate in Mexico — cool, fog-buffered summers produced by upwelling, feeding Mexico's premier wine region just inland.",
     summaryImmersive: "Ensenada sits on the Pacific coast at 32°N, where the California Current's cold upwelling extends a narrow strip of Mediterranean climate south from the border. Summer highs remain around 24°C on the coast; the marine layer burns off by noon most days. Thirty kilometers inland, the Valle de Guadalupe warms to 32°C summer afternoons with cool nights — the ideal diurnal swing for viticulture. Mexico's premier wine region (over 100 wineries) sits here precisely because this is the warmest/driest edge of the cool-summer Mediterranean climate. Winter rains of 300 mm support dryland Cabernet and Tempranillo; summers are essentially rainless.",
     whyDistinct: "The southernmost extent of the California Current upwelling + Mediterranean rainfall pattern. This is the only place in Mexico where a cool-summer maritime and summer-dry climate coincide.",
+    experience: {
+      feel: "Ensenada feels like Mexico's only cool-summer Mediterranean coast — California Current upwelling keeping summer highs near 25°C under marine layer, with Valle de Guadalupe 30 km inland offering the diurnal swing that built wine country.",
+      seasons: {
+        winter: "Rainy Mediterranean winter — afternoons near 19°C, nights near 8°C, Pacific showers, and whale migration off the coast.",
+        spring: "Marine layer and green-up — afternoons near 21°C, fog burning off by noon, Valle vineyards leafing out.",
+        summer: "Dry coastal peak — highs near 25°C, essentially rainless June–August, marine layer mornings, wildfire smoke a summer wildcard inland.",
+        autumn: "Fire-season tail — highs near 23°C, first returning rains in October, harvest traffic in Valle de Guadalupe, and smoke clearing on the best days.",
+      },
+      travelerFit: "Visitors come for Valle de Guadalupe wine routes, Ensenada seafood and malecón, whale watching, and a Napa-like Mediterranean climate at lower prices.",
+      residentFit: "It rewards winemakers, cool-Mediterranean retirees, and border-region relocators who accept water stress, wildfire smoke inland, and San Diego specialist runs.",
+      texture: "Mexico's only Csb pocket — weigh scarce valley water, elevated wildfire risk, and border logistics against marine-layer summers, winter rains that support dryland vines, and coastal-afternoon stability.",
+    },
     climate: {
       tempHighC: [18.8, 19.4, 20.1, 21.2, 22.4, 23.4, 24.9, 25.4, 24.8, 23.4, 21.1, 19.2], tempLowC: [8.2, 8.9, 10.1, 11.6, 13.4, 15.1, 16.6, 17.4, 16.1, 13.6, 10.4, 8.2],
       precipMm: [62, 58, 44, 20, 4, 1, 0, 1, 2, 12, 30, 58], humidity: [72, 72, 74, 74, 78, 80, 80, 80, 78, 74, 70, 70],
@@ -1671,8 +2140,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["winemakers", "cool-Mediterranean lovers", "retirees seeking a California-South alternative"], travelFit: ["wine country tours", "seafood cuisine", "whale watching"],
     whoWouldLove: "Anyone who loves Napa/Sonoma but wants a Mexican spin — and better prices.", whoMightNot: "Water-supply worriers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Ensenada / El Ciprés", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INIFAP — Valle de Guadalupe viticulture studies", kind: "academic" }],
+    deepSections: [
+      {
+        id: "ensenada-upwelling",
+        title: "California Current upwelling and marine layer",
+        paragraphs: [
+          "Ensenada sits on the Pacific coast at roughly 15 m elevation where the California Current drives coastal upwelling — cool offshore water stabilizes summer air and feeds the marine layer that buffers peak heat compared with inland Baja.",
+          "Valle de Guadalupe wine country lies about 30 km inland and 350 m higher, where the same maritime influence weakens and summer dryness intensifies. Coastal Ensenada and inland valley parcels should not be treated as one climate.",
+        ],
+      },
+      {
+        id: "ensenada-water-wine",
+        title: "Water stress and wine-country scouting",
+        paragraphs: [
+          "This is Mexico's only cool-summer Mediterranean pocket — fog-buffered summers and a summer-dry rhythm that supports premium viticulture inland, but water supply is the long-run constraint for both city growth and vineyard expansion.",
+          "Scouting should separate Ensenada port exposure from Valle elevation, aspect, and irrigation rights — wildfire and drought register elevated in the regional matrix even when coastal afternoons feel mild.",
+        ],
+      },
+    ],
+    confidenceNotes: "Ensenada port normals differ materially from Valle de Guadalupe at 350 m — coastal marine layer, inland heat, and irrigation rights should be scouted as separate climates within 30 km.",
+    citations: [{ label: "SMN — Ensenada / El Ciprés", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INIFAP — Valle de Guadalupe viticulture studies", kind: "academic" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1686,6 +2174,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The 'Athens of Veracruz' — a cloud-forest highland where eternal mist, 1,500 mm of rain, and mild 22°C afternoons create one of Mexico's greenest and most literary climates.",
     summaryImmersive: "Xalapa sits at 1,427 m on the eastern slope of Mexico's continental divide, the spot where warm Gulf air is forced upslope and condensed into near-permanent mist. The result is a cloud-forest climate — called bosque mesófilo de montaña — one of the rarest and most biodiverse ecosystems in the Americas. Days average 22°C year-round; nights drop to 12–15°C; humidity rarely falls below 70%. Rainfall is heavy and persistent (1,500 mm annually) with drizzle possible in any month. The city's mossy walls, mist-filled mornings, and coffee plantations that creep up from the lowlands give Xalapa its reputation as a cultural and climatic refuge.",
     whyDistinct: "Eastern escarpment of the Sierra Madre Oriental + Gulf moisture + cloud-forest elevation band. A precise combination of latitude, distance from the coast, and elevation puts Xalapa in the global 'cloud-forest isohypse' — a thin belt where persistent cloud contact defines the ecosystem.",
+    experience: {
+      feel: "Xalapa feels like the 'Athens of Veracruz' at 1,427 m — Gulf moisture forced upslope into near-permanent cloud-forest mist, 22°C afternoons year-round, 1,500 mm of drizzle, and moss on every wall.",
+      seasons: {
+        winter: "Mist and drizzle — afternoons near 21°C, nights near 12°C, humidity rarely below 70%, and the softest light on coffee slopes.",
+        spring: "Green-up in fog — afternoons climbing toward 25°C, orchids and cloud forest at peak, building toward June monsoon core.",
+        summer: "Peak wet — highs near 23°C, 200+ mm monthly totals June–September, landslide diligence on saturated slopes, and sunshine percentages at their annual low.",
+        autumn: "Still wet, slowly easing — highs near 22°C, October rains tapering, university-town rhythm returning, and mossy paths at their most literary.",
+      },
+      travelerFit: "Visitors come for cloud-forest hikes, INECOL ecology, coffee-farm trails, and literary café culture under persistent mist.",
+      residentFit: "It rewards mist lovers, university-town remote workers, and coffee growers — not sun-seekers or anyone with damp-aggravated mobility limits.",
+      texture: "A cloud-forest university town — weigh 1,500 mm annual drizzle, landslide diligence on saturated slopes, and low sunshine against mild 22°C afternoons and genuine bosque mesófilo character.",
+    },
     climate: {
       tempHighC: [20.1, 21.2, 22.8, 24.4, 24.9, 23.6, 22.4, 22.9, 22.6, 22.1, 21.2, 20.4], tempLowC: [11.2, 11.8, 13.2, 14.6, 15.4, 15.8, 15.2, 15.2, 14.9, 14.1, 12.9, 11.6],
       precipMm: [36, 28, 38, 62, 110, 240, 228, 232, 286, 158, 62, 38], humidity: [76, 75, 74, 76, 80, 84, 86, 86, 86, 82, 78, 76],
@@ -1710,8 +2210,27 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["mist lovers", "coffee growers", "Mexican-highland expats"], travelFit: ["cloud-forest hikes", "coffee tours", "Instituto de Ecología"],
     whoWouldLove: "Readers, mossy-path walkers, anyone who thinks cool and misty is the correct climate.", whoMightNot: "Sun-seekers; anyone with damp-aggravated joints.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Xalapa station 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INECOL — Cloud forest ecology research", kind: "academic" }],
+            deepSections: [
+      {
+        id: "xalapa-cloud-isohypse",
+        title: "Cloud-forest isohypse on the Gulf escarpment",
+        paragraphs: [
+          "Xalapa at 1,427 m sits where Gulf moisture is forced upslope into the global cloud-forest band — bosque mesófilo de montaña — producing near-permanent mist, roughly 1,520 mm of rain, and afternoons averaging 22°C year-round with humidity rarely below 70%.",
+          "The eastern escarpment of the Sierra Madre Oriental plus latitude and distance from coast place Xalapa in a thin isohypse where persistent cloud contact defines the ecosystem. Lifting condensation level rise under warming threatens the mist regime that makes the city legible.",
+        ],
+      },
+      {
+        id: "xalapa-literary-rain",
+        title: "Literary rain, coffee slopes, and landslides",
+        paragraphs: [
+          "Deep andisol from volcanic ash supports world-class coffee, citrus, and cloud-forest species on well-drained slopes; dry-land crops fail without irrigation. Landslide exposure registers elevated on saturated escarpment parcels — university-town housing is moderate but Veracruz-port logistics shape remote-worker friction.",
+          "Sun-seekers and damp-sensitive joints should expect drizzle in any month. Mossy walls and mist-filled mornings are the product, not a bug — confirm slope stability and drainage before committing to a hillside lot.",
+        ],
+      },
+    ],
+    confidenceNotes: "Cloud-forest normals capture the city envelope, but slope, drainage, and saturated-soil landslide exposure vary sharply between ridge crest, campus flats, and escarpment-adjacent blocks — scout in wet season.",
+    citations: [{ label: "SMN — Xalapa station 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INECOL — Cloud forest ecology research", kind: "academic" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1724,12 +2243,25 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A high-desert colonial city at ~1,900 m where springlike afternoons and cool nights persist most of the year.",
     summaryImmersive: "San Miguel de Allende sits high on the Mexican plateau, roughly 1,900 m above sea level, and altitude defines everything: sun-warmed afternoons in the low-to-mid 20s through much of the year, then sharp evening cooldown once the dry air decouples after sunset. The warm season peaks before monsoon onset in May–June; summer rain then cools afternoons and greens the hills. Winter days stay pleasant while nights can drop near freezing. The result is one of Mexico's most migration-attractive climates: bright, dry, walkable, and rarely oppressive in either direction.",
     whyDistinct: "High elevation at subtropical latitude compresses thermal stress. Pre-monsoon heat is quickly tempered once summer rainfall arrives, and low humidity outside the rainy season amplifies night cooling.",
+    experience: {
+      feel: "San Miguel de Allende feels like eternal spring at 1,910 m — sun-warmed afternoons in the low-to-mid 20s through much of the year, sharp evening cooldown as dry air decouples after sunset, and altitude compressing thermal stress at subtropical latitude.",
+      seasons: {
+        winter: "Dry and walkable — afternoons near 23°C, nights near 6°C, clear skies, and the expat social season at its peak without summer rain or pre-monsoon heat.",
+        spring: "Heating before monsoon — afternoons climbing toward 29°C, water rationing visible in dry springs, and the last comfortable weeks before May–June pre-monsoon stress arrives.",
+        summer: "Monsoon-cooled — highs near 26°C, afternoon thunderstorms greening the volcanic hills, humid spikes when convection fires, and irrigation channels running full across the Bajío.",
+        autumn: "Golden shoulder — highs falling through the mid-20s, festival season in the colonial centro, and dry air returning as nights drop toward freezing on exposed ridges.",
+      },
+      travelerFit: "Visitors come for colonial architecture, highland festivals, and walkable mild-weather city breaks — dry season is the comfort window.",
+      residentFit: "It rewards remote workers and artists wanting dry sun and cool evenings without truly cold winters — if they accept water rationing, seasonal tourism crowds, and León specialist trips.",
+      texture: "A highland-plateau tradeoff — weigh long-run drought, pre-monsoon heat spikes, and expat-housing pressure against one of Mexico's most migration-attractive climate envelopes.",
+    },
     climate: {
       tempHighC: [23.0, 24.5, 27.2, 29.0, 30.1, 28.1, 25.9, 25.6, 24.8, 24.1, 23.3, 22.6],
       tempLowC: [6.0, 6.8, 8.7, 10.7, 12.2, 13.2, 12.6, 12.4, 11.6, 9.4, 7.4, 6.2],
       precipMm: [12, 8, 6, 12, 36, 120, 138, 126, 98, 42, 14, 10],
       humidity: [45, 42, 38, 38, 44, 58, 66, 68, 66, 58, 50, 46],
-      annualPrecipMm: 622, frostFreeDays: 300, hardinessZone: "9b/10a", diurnalSummerC: 12, diurnalWinterC: 17,
+      annualPrecipMm: 622, frostFreeDays: 300, hardinessZone: "9b/10a", diurnalSummerC: 12, diurnalWinterC: 17,    sunshinePct: [46, 49, 48, 54, 59, 65, 61, 62, 56, 53, 49, 44],
+
     },
     soil: { texture: "Volcanic loam to clay loam", drainage: "good", phRange: [6.6, 7.8], waterHolding: "moderate", notes: "Highland agricultural soils are fertile but increasingly water-constrained." },
     growability: { score: 68, growsWell: ["Olive", "Pomegranate", "Herbs", "Stone fruit (cool pockets)", "Cool-season vegetables"], tricky: ["Water-intensive tropical crops"], homeGarden: "Great shoulder-season gardening; irrigation planning is now essential in spring dry-down." },
@@ -1750,7 +2282,25 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "artists", "highland-climate seekers"], travelFit: ["colonial architecture", "highland festivals", "walkable mild-weather city breaks"],
     whoWouldLove: "People who want dry sun and cool evenings without truly cold winters.", whoMightNot: "Humidity lovers or those needing lush, high-rain landscapes.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    deepSections: [
+      {
+        id: "san-miguel-eternal-spring",
+        title: "Eternal-spring elevation and diurnal cooling",
+        paragraphs: [
+          "San Miguel de Allende sits at roughly 1,910 m on the central Mexican highland plateau — Cwb/BSk transition normals with roughly 622 mm annually, where elevation at subtropical latitude compresses thermal stress and low humidity outside the rainy season amplifies night cooling.",
+          "Pre-monsoon May–June heat peaks before summer rainfall arrives; once monsoon convection fires, afternoon thunderstorms cool the volcanic hills and green the oak-grassland scrub surrounding the colonial centro.",
+        ],
+      },
+      {
+        id: "san-miguel-water-drought",
+        title: "Water rationing and expat housing pressure",
+        paragraphs: [
+          "Elevated drought risk registers here — volcanic loam to clay loam supports olive, pomegranate, herbs, and cool-pocket stone fruit, but irrigation planning is now essential in spring dry-down as aquifer extraction rises with expat migration.",
+          "Humidity lovers or those needing lush high-rain landscapes should confirm water availability before committing — seasonal tourism, centro housing pressure, and León/Querétaro specialist trips define daily logistics beyond walkable mild-weather appeal.",
+        ],
+      },
+    ],
+    confidenceNotes: "San Miguel de Allende drought and water supply vary by parcel and metering — confirm well rights, irrigation access, and reservoir context before committing.",
     citations: [
       { label: "WeatherSpark — San Miguel de Allende climate profile", kind: "oss-data", url: "https://weatherspark.com/y/4978/Average-Weather-in-San-Miguel-de-Allende-Mexico-Year-Round" },
       { label: "SMN / CONAGUA station network (Guanajuato highlands)", kind: "smn", url: "https://smn.conagua.gob.mx/" },
@@ -1767,22 +2317,63 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A desert basin where spring-fed pools sustain globally unique aquatic ecosystems amid surrounding semiarid scrub.",
     summaryImmersive: "Cuatro Ciénegas is one of North America's most biologically unusual basins: in a semiarid Coahuila valley with low rainfall, dozens of spring-fed pools and marshes support endemic species and microbial communities with analog value for early-Earth biology. Days are hot and bright in late spring, summers are storm-driven but still dry by humid-region standards, and nights cool rapidly under clear skies. The juxtaposition — water-rich wetlands in a desert enclosure — is precisely what makes the basin exceptional and ecologically fragile.",
     whyDistinct: "Closed-basin hydrogeology concentrates groundwater-fed springs inside a rain-shadow desert. Local biodiversity is controlled less by rainfall totals and more by aquifer connectivity and extraction pressure.",
+            experience: {
+      feel: "Cuatro Ciénegas feels like a desert paradox — spring-fed pools and gypsum dunes sustaining globally unique aquatic life in a Coahuila basin that receives barely 330 mm of rain, where water chemistry matters more than temperature for what survives.",
+      seasons: {
+      winter: "Mild and bright — afternoons near 21°C, nights near 6°C, relentless sun on gypsum scrub, and the clearest window for exploring pozas before spring heat builds.",
+      spring: "Heating fast — afternoons climbing through the low 30s, transparent air, and irrigation channels running full as agricultural demand rises ahead of monsoon.",
+      summer: "Storm-driven but still arid — highs near 36°C, humid spikes when convection fires, and aquifer stress visible in dropping spring flows on bad years.",
+      autumn: "The furnace eases — highs falling back through the high 20s, planting crews returning, and the best light for dune photography before winter.",
+      },
+      travelerFit: "Visitors come for oasis springs, gypsum dunes, and desert biodiversity expeditions.",
+      residentFit: "It rewards people fascinated by rare desert-water systems — especially desert ecologists — who accept aquifer politics and summer heat.",
+      texture: "A real-tradeoff place — weigh long-run drought, extreme summer heat, and ecosystem fragility under extraction pressure against distinct microclimate character worth the tradeoffs.",
+    },
     climate: {
       tempHighC: [20.6, 23.4, 27.8, 31.6, 35.2, 36.8, 35.4, 34.6, 31.8, 28.2, 23.6, 20.4],
       tempLowC: [5.2, 7.4, 10.8, 14.8, 19.2, 22.1, 22.0, 21.6, 18.8, 14.6, 9.2, 6.0],
       precipMm: [12, 10, 9, 14, 22, 42, 58, 64, 52, 24, 12, 10],
       humidity: [44, 40, 34, 32, 34, 42, 50, 54, 52, 46, 44, 44],
-      annualPrecipMm: 329, frostFreeDays: 290, hardinessZone: "9a", diurnalSummerC: 13, diurnalWinterC: 15,
+      annualPrecipMm: 329, frostFreeDays: 290, hardinessZone: "9a", diurnalSummerC: 13, diurnalWinterC: 15,    sunshinePct: [72, 76, 76, 81, 92, 92, 91, 90, 84, 82, 70, 68],
+
     },
     soil: { texture: "Calcareous alluvium with gypsum-rich patches", drainage: "good", phRange: [7.6, 8.6], waterHolding: "low", notes: "Hydrology and salinity gradients create highly specialized ecological niches." },
     growability: { score: 44, growsWell: ["Date palm (irrigated)", "Drought-adapted fruit", "Native desert species"], tricky: ["Rainfed intensive crops"], homeGarden: "Desert gardening works only with controlled irrigation and salinity management." },
     climateChange: { outlook2050: "Hotter warm season and higher evaporative stress; groundwater pressure expected to increase.", outlook2100: "Oasis persistence depends heavily on aquifer governance under warming and extraction.", keyShifts: [{ variable: "Heat stress", direction: "up" }, { variable: "Aquifer pressure", direction: "up" }, { variable: "Wetland permanence", direction: "down" }], resilienceNote: "The climate signal matters, but water management is the decisive variable for ecosystem survival." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "low", trend: "stable" }, drought: { level: "high", trend: "worsening" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "stable" }, storm: { level: "low", trend: "stable" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 84, microclimateUniqueness: 96, comfort: 42, resilience: 38, growability: 44, tradeoff: 76 },
+    liveSignals: {
+      costPressure: 76,
+      socialStress: 40,
+      accessFriction: 44,
+      note: "Housing runs above regional medians; A poor fit for anyone seeking lush, low-maintenance living conditions.",
+      sources: [
+      { label: "ResearchGate summary — Climate of Cuatro Ciénegas Basin", url: "https://www.researchgate.net/publication/325428359_The_Climate_of_Cuatro_Cienegas_Basin_Drivers_and_Temporal_Patterns" },
+      { label: "Ramsar profile — Área de Protección de Flora y Fauna Cuatrociénegas", url: "https://rsis.ramsar.org/" },
+      ],
+    },
     relocationFit: ["desert ecologists", "conservation-oriented residents"], travelFit: ["oasis springs", "gypsum dunes", "desert biodiversity expeditions"],
     whoWouldLove: "People fascinated by rare desert-water systems and biological oddities.", whoMightNot: "Anyone seeking lush, low-maintenance living conditions.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+            deepSections: [
+      {
+        id: "cuatrocienegas-karst-springs",
+        title: "Closed-basin karst and spring-fed pozas",
+        paragraphs: [
+          "Cuatro Ciénegas sits in an intermontane Coahuila basin where closed-basin hydrogeology concentrates groundwater into dozens of spring-fed pools amid surrounding Chihuahuan scrub — rainfall totals barely 330 mm annually, yet endemic fish, stromatolites, and microbial mats persist because aquifer connectivity, not precipitation, controls the water budget.",
+          "Gypsum dunes and calcareous alluvium create sharp salinity and drainage gradients block by block. Ramsar protection and extraction limits are as much a climate story as temperature — the oasis persists only while pumping stays disciplined.",
+        ],
+      },
+      {
+        id: "cuatrocienegas-desert-water",
+        title: "Desert heat and aquifer diligence",
+        paragraphs: [
+          "Summer afternoons routinely exceed 35°C under clear skies; gardening is irrigation-only with salinity management on alluvial soils. Drought registers high across the basin megadrought context even where local springs still flow.",
+          "Date palms and drought-adapted fruit succeed with controlled water; lush low-maintenance living is not the regional offer. Verify water rights, spring proximity, and summer heat exposure before treating poza tourism as a relocation template.",
+        ],
+      },
+    ],
+    confidenceNotes: "Gypsum dunes and calcareous alluvium create sharp salinity and drainage gradients block by block.",
     citations: [
       { label: "ResearchGate summary — Climate of Cuatro Ciénegas Basin", kind: "academic", url: "https://www.researchgate.net/publication/325428359_The_Climate_of_Cuatro_Cienegas_Basin_Drivers_and_Temporal_Patterns" },
       { label: "Ramsar profile — Área de Protección de Flora y Fauna Cuatrociénegas", kind: "other", url: "https://rsis.ramsar.org/" },
@@ -1799,22 +2390,63 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Historic high-desert wine valley at ~1,500 m, with strong day-night thermal swing that favors structured reds.",
     summaryImmersive: "Parras de la Fuente occupies a semiarid Coahuila basin where viticulture has persisted since the 16th century. Elevation and dry air produce pronounced diurnal temperature swings: hot afternoons during the growing season followed by cool nights that preserve acidity in grapes. Rainfall is limited and irregular, so irrigation strategy and soil-water timing determine yield quality. The valley is widely cited as home to the oldest continuously operating winery in the Americas, and modern Coahuila wine expansion still leans on this microclimate template.",
     whyDistinct: "Desert-basin aridity plus 1,500 m elevation creates one of Mexico's strongest warm-day/cool-night viticulture envelopes outside Baja.",
+    experience: {
+      feel: "Parras feels like a 1,520 m desert wine oasis — 16th-century viticulture surviving on irrigation and brutal diurnal swings that structure Cabernet and Tempranillo in one of the Americas' oldest continuously operating winery valleys.",
+      seasons: {
+        winter: "Mild and sunny — afternoons near 20°C, nights near 4°C, clear skies on the Coahuila basin floor, and the steadiest window for winery visits.",
+        spring: "Heating fast — afternoons climbing through 30°C, irrigation channels running full ahead of bud break, and relentless sun on calcareous slopes.",
+        summer: "Hot days, cool nights — afternoons above 34°C followed by nights near 19°C; the diurnal swing that preserves acidity in structured reds defines the growing season.",
+        autumn: "Harvest rhythm — afternoons falling through the mid-20s, crush season in the historic bodegas, and the year's best light on sierra-ringed vineyards.",
+      },
+      travelerFit: "Visitors come for Casa Madero and high-desert valley food-and-wine routes — summer afternoon heat demands planning.",
+      residentFit: "It rewards wine-industry professionals who accept drought, irrigation math, and housing above regional medians for historic-valley parcels.",
+      texture: "Semiarid viticulture oasis — weigh water budgets and heat load against Mexico's strongest warm-day/cool-night wine envelope outside Baja.",
+    },
     climate: {
       tempHighC: [19.8, 22.4, 26.4, 30.0, 33.0, 34.8, 34.0, 33.2, 30.2, 26.1, 22.4, 19.6],
       tempLowC: [3.8, 5.4, 8.6, 11.8, 15.4, 18.8, 19.6, 19.0, 16.2, 11.6, 7.0, 4.4],
       precipMm: [8, 6, 5, 8, 18, 34, 48, 52, 36, 18, 10, 8],
       humidity: [42, 38, 34, 32, 34, 40, 48, 50, 48, 44, 42, 42],
-      annualPrecipMm: 251, frostFreeDays: 270, hardinessZone: "9a/9b", diurnalSummerC: 14, diurnalWinterC: 16,
+      annualPrecipMm: 251, frostFreeDays: 270, hardinessZone: "9a/9b", diurnalSummerC: 14, diurnalWinterC: 16,    sunshinePct: [71, 76, 75, 81, 92, 92, 91, 89, 84, 81, 70, 67],
+
     },
     soil: { texture: "Calcareous sandy loam and alluvial fans", drainage: "good", phRange: [7.2, 8.3], waterHolding: "low", notes: "Low organic matter and high drainage support concentrated grape profiles under controlled irrigation." },
     growability: { score: 62, growsWell: ["Wine grapes (Cabernet, Merlot, Tempranillo)", "Olive", "Pomegranate"], tricky: ["Water-intensive annuals"], orchard: "High-quality vineyards rely on drought management and careful canopy control." },
     climateChange: { outlook2050: "Higher heat load during ripening and more variable precipitation.", outlook2100: "Heat and water stress likely push harvest timing earlier and increase irrigation demand.", keyShifts: [{ variable: "Heat extremes", direction: "up" }, { variable: "Irrigation demand", direction: "up" }, { variable: "Harvest timing", direction: "down" }], resilienceNote: "Viticulture remains viable but increasingly management-intensive under hotter summers." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "low", trend: "stable" }, drought: { level: "high", trend: "worsening" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "low", trend: "stable" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 72, microclimateUniqueness: 80, comfort: 58, resilience: 46, growability: 62, tradeoff: 58 },
+    liveSignals: {
+      costPressure: 70,
+      socialStress: 40,
+      accessFriction: 44,
+      note: "Housing runs above regional medians; A poor fit for people who need lush landscapes or low-maintenance water budgets.",
+      sources: [
+      { label: "Wikipedia — Parras (historic viticulture context)", url: "https://en.wikipedia.org/wiki/Parras" },
+      { label: "Wine-Searcher — Parras Valley regional profile", url: "https://www.wine-searcher.com/regions-parras+valley" },
+      ],
+    },
     relocationFit: ["wine-industry professionals", "dry-climate growers"], travelFit: ["historic wineries", "high-desert valley food-and-wine routes"],
     whoWouldLove: "Wine-focused travelers and residents who prefer dry highland heat over humid climates.", whoMightNot: "People who need lush landscapes or low-maintenance water budgets.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    deepSections: [
+      {
+        id: "parras-diurnal-wine",
+        title: "Diurnal swing and desert viticulture",
+        paragraphs: [
+          "Parras de la Fuente occupies a semiarid Coahuila basin ringed by sierras at roughly 1,520 m — desert-basin aridity plus elevation produces one of Mexico's strongest warm-day/cool-night viticulture envelopes outside Baja, with diurnal swings near 14°C in summer that preserve acidity in Cabernet, Merlot, and Tempranillo. Viticulture has persisted since the 16th century; Casa Madero anchors the oldest continuously operating winery in the Americas narrative.",
+          "Rain-shadow and continental drivers mean roughly 251 mm annually — yield quality tracks irrigation strategy and soil-water timing more than rainfall totals. Calcareous sandy loam on alluvial fans drains fast; low organic matter concentrates grape character under controlled water.",
+        ],
+      },
+      {
+        id: "parras-desert-water",
+        title: "Desert water budgets and valley housing",
+        paragraphs: [
+          "High drought risk registers here — verify well depth, irrigation allocation, and heat-stress plans before committing to vineyard or orchard parcels. Growability favors wine grapes, olive, and pomegranate; water-intensive annuals fail without heavy infrastructure.",
+          "Housing runs above regional Coahuila medians for historic-valley blocks — wine tourism and industry professionals drive demand. People needing lush landscapes or low-maintenance water budgets should confirm services in Saltillo and Torreón before treating atlas growability scores as daily-life certainty.",
+        ],
+      },
+    ],
+    confidenceNotes: "High drought risk registers here — verify well depth, irrigation allocation, and heat-stress plans before committing to vineyard or orchard parcels.",
     citations: [
       { label: "Wikipedia — Parras (historic viticulture context)", kind: "other", url: "https://en.wikipedia.org/wiki/Parras" },
       { label: "Wine-Searcher — Parras Valley regional profile", kind: "oss-data", url: "https://www.wine-searcher.com/regions-parras+valley" },
@@ -1832,11 +2464,24 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "At 2,663 m, the highest large city in North America — where winter nights commonly drop below freezing and summer afternoons rarely pass 23°C, even at 19°N.",
     summaryImmersive: "Toluca sits in one of the highest basins on Earth with a population over a million, 800 m higher than Denver and 400 m higher than Mexico City. The elevation alone strips nearly 20°C from what the tropical latitude would otherwise suggest. Afternoons rarely exceed 23°C even at peak sun; winter nights regularly drop to −4°C, with frost on car windows 30–60 mornings per year. Despite the latitude, snow falls lightly on some winter days. On clear mornings, the snow-capped Nevado de Toluca volcano looms over the valley. The basin geometry creates pronounced nocturnal inversions that trap cold air and urban emissions.",
     whyDistinct: "Extreme elevation (one of the highest major cities on Earth) + basin geometry + tropical latitude = the coldest-feeling city in Mexico despite its subtropical position.",
+    experience: {
+      feel: "Toluca feels like one of the highest major cities on Earth — 2,663 m in the Valley of Mexico where elevation strips nearly 20°C from tropical latitude, summer afternoons rarely exceed 23°C, and winter nights regularly frost car windows 30–60 mornings per year.",
+      seasons: {
+        winter: "Cool and frosty — afternoons near 20°C, nights below freezing, light snow on some days, and Nevado de Toluca snow-capped on clear mornings.",
+        spring: "Dry and warming — afternoons near 24°C, the steadiest hiking window on the volcano, and basin inversions trapping cold air and emissions on stagnant mornings.",
+        summer: "Wet-season cool — afternoons near 22°C despite 19°N latitude, heavy monsoon rain near 820 mm annually, and wildfire smoke pooling in the basin.",
+        autumn: "Shoulder clarity — highs falling through 21°C, storms tapering, and the return of nocturnal frost in open valley pockets.",
+      },
+      travelerFit: "Visitors come for Nevado de Toluca hiking, colonial architecture, and traditional markets in Mexico's coolest major metro.",
+      residentFit: "It rewards altitude enthusiasts who accept basin smog, thin-air adjustment, and Mexico City proximity for airport access.",
+      texture: "High-basin urban compromise — weigh inversion pollution, frost, and smoke against cool-climate livability unavailable at coastal latitudes.",
+    },
     climate: {
       tempHighC: [19.8, 21.4, 23.4, 24.6, 24.8, 22.8, 21.4, 21.4, 21.2, 21.1, 20.8, 19.6], tempLowC: [-0.4, 1.2, 3.8, 6.6, 8.4, 10.2, 9.8, 9.6, 9.2, 6.4, 2.6, 0.2],
       precipMm: [12, 6, 10, 22, 62, 140, 176, 168, 142, 56, 18, 8], snowCm: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
       humidity: [60, 55, 50, 48, 54, 68, 74, 74, 72, 66, 62, 60],
-      annualPrecipMm: 820, frostFreeDays: 200, hardinessZone: "9b", diurnalSummerC: 12, diurnalWinterC: 20,
+      annualPrecipMm: 820, frostFreeDays: 200, hardinessZone: "9b", diurnalSummerC: 12, diurnalWinterC: 20,    sunshinePct: [46, 49, 48, 54, 59, 65, 61, 62, 56, 53, 49, 44],
+
     },
     soil: { texture: "Volcanic andisol, deep", drainage: "good", phRange: [5.6, 6.8], waterHolding: "moderate", notes: "Fertile volcanic soils supporting some of Mexico's most productive agriculture." },
     growability: { score: 58, growsWell: ["Maize", "Potatoes", "Oats", "Stone fruit", "Mexican highland vegetables"], tricky: ["Heat-loving crops", "Frost-tender perennials in open valleys"], homeGarden: "Cool-season gardening year-round with frost protection December–February." },
@@ -1844,11 +2489,41 @@ export const PLACES_MEXICO: Place[] = [
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "moderate", trend: "worsening" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "elevated", trend: "worsening", note: "Basin traps urban emissions and regional smoke; frequent PM2.5 peaks." }, storm: { level: "moderate", trend: "stable" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     nearbyContrasts: [{ label: "Mexico City (2,240 m)", note: "Toluca is 400 m higher — 2–3°C cooler year-round and noticeably frostier in winter." }],
     scores: { hiddenGem: 48, microclimateUniqueness: 74, comfort: 62, resilience: 52, growability: 58, tradeoff: 46 },
+    liveSignals: {
+      costPressure: 46,
+      socialStress: 24,
+      accessFriction: 68,
+      note: "Specialty care and major-airport access need real planning; A poor fit for anyone sensitive to thin air or winter cold.",
+      sources: [
+      { label: "SMN — Toluca observatory 1991–2020", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["altitude-loving urbanites"], travelFit: ["Nevado de Toluca hiking", "colonial architecture", "traditional markets"],
     whoWouldLove: "Altitude enthusiasts, cool-climate seekers in Mexico.", whoMightNot: "Anyone sensitive to thin air or winter cold.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Toluca observatory 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "toluca-high-basin",
+        title: "Highest major valley in Mexico",
+        paragraphs: [
+          "Toluca sits at 2,663 m in the Valley of Toluca — 800 m higher than Denver, 400 m above Mexico City, and among the highest major basins on Earth with over a million residents. Elevation lapse rate strips nearly 20°C from tropical latitude expectations: summer afternoons rarely exceed 23°C, winter nights regularly reach −4°C with frost 30–60 mornings annually.",
+          "Nevado de Toluca volcano rises 15 km south to 4,680 m — snow-capped on clear mornings and a vertical climate laboratory within minutes of the metro. Basin geometry traps cold air and urban emissions in nocturnal inversions.",
+        ],
+      },
+      {
+        id: "toluca-inversion-smoke",
+        title: "Basin inversions and air quality",
+        paragraphs: [
+          "Elevated smoke and air-quality risk registers here — basin inversions pool PM2.5 and regional wildfire smoke; verify neighborhood elevation and ventilation before committing. Deep volcanic andisol supports maize, potatoes, and cool-season vegetables with frost protection December through February.",
+          "Specialty care is local but AICM in Mexico City anchors international access roughly 90 minutes away. Anyone sensitive to thin air or winter cold should scout valley-floor versus hillside blocks — atlas normals describe the basin, not every colonia's frost exposure.",
+        ],
+      },
+    ],
+    confidenceNotes: "Highland normals (2663 m) understate frost, wind, and aspect differences between ridge, slope, and valley floor — scout elevation bands on the ground.",
+    citations: [{ label: "SMN — Toluca observatory 1991–2020", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -1862,17 +2537,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Hot continental city where summer monsoon storms break afternoon heat and winter cold fronts occasionally reach the tropics of Cancer.",
     summaryImmersive: "Monterrey mixes high-insolation semi-arid baseline with summer convection that builds against the eastern sierra. Urban expansion amplifies nocturnal heat; industrial air quality interacts with basin geometry. When Gulf moisture taps in, thunderstorms can drop localized hail.",
     whyDistinct: "Strong elevation contrast between basin floor and summits within a one-hour drive creates tourist-popular microclimates (Chipinque, Garcia).",
-    climate: { tempHighC: [20, 22, 26, 29, 32, 34, 35, 35, 31, 28, 24, 21], tempLowC: [8, 10, 13, 16, 19, 21, 22, 22, 19, 16, 11, 9], precipMm: [18, 18, 22, 35, 70, 95, 80, 85, 120, 55, 25, 20], annualPrecipMm: 643, frostFreeDays: 365, hardinessZone: "10a" },
+    experience: {
+      feel: "Monterrey feels like a semi-arid basin ringed by the Sierra Madre Oriental — relentless sun and dry-season dust, then summer afternoons when Gulf moisture fires convection against the eastern ridges. Urban sprawl holds heat at night; when storms hit, hail and flash runoff in arroyos are local headlines.",
+      seasons: {
+        winter: "The comfortable window — mild afternoons, cool nights, and norte cold fronts that can drop temperatures fast. Chipinque and Garcia offer mountain contrast within an hour; basin-floor smog can pool on stagnant mornings.",
+        spring: "Dry heat builds through the 30s before the monsoon gate opens — intense sun, browning hillsides, and fire risk on surrounding slopes. Afternoon breezes off the sierra hint at the convection season ahead.",
+        summer: "Monsoon drama at basin scale — afternoons above 35°C, humidity climbing, and localized thunderstorms that can drop hail or flood an arroyo in minutes. Pre-storm heat indices are the planning constraint, not the average.",
+        autumn: "Relief arrives unevenly — storm frequency drops, skies clear, and hiking returns before winter guests discover how mild December can feel on the floor while summits run cold.",
+      },
+      travelerFit: "Visitors come for Chipinque, Garcia, and Cola de Caballo — summer is for early-morning mountain people; winter is the basin's easiest season.",
+      residentFit: "It rewards manufacturing and business travelers who want Sierra access from a major hub — if you accept heat, water stress, and occasional air-quality inversions.",
+      texture: "A real-tradeoff industrial metro — weigh extreme summer heat, arroyo flooding, and housing cost against mountain day trips and a strong job market.",
+    },
+    climate: { tempHighC: [20, 22, 26, 29, 32, 34, 35, 35, 31, 28, 24, 21], tempLowC: [8, 10, 13, 16, 19, 21, 22, 22, 19, 16, 11, 9], precipMm: [18, 18, 22, 35, 70, 95, 80, 85, 120, 55, 25, 20], annualPrecipMm: 643, frostFreeDays: 365, hardinessZone: "10a", humidity: [37, 37, 34, 39, 43, 56, 61, 67, 65, 45, 43, 37], sunshinePct: [73, 78, 77, 83, 86, 84, 79, 77, 76, 73, 72, 69] },
     soil: { texture: "Alluvium and limestone residuum", drainage: "good", phRange: [7.0, 8.2], waterHolding: "low" },
     growability: { score: 58, growsWell: ["Citrus (protected)", "Agave", "Xeriscape natives"], tricky: ["Cool-climate fruit"] },
     climateChange: { outlook2050: "More heat-wave days; variable monsoon.", outlook2100: "Water stress dominates regional planning.", keyShifts: [{ variable: "Urban heat", direction: "up" }], resilienceNote: "Sierra reservoirs buffer but compete with growth." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "high", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 32, microclimateUniqueness: 64, comfort: 52, growability: 58, resilience: 44, tradeoff: 56 },
+    liveSignals: {
+      costPressure: 70,
+      socialStress: 48,
+      accessFriction: 24,
+      note: "Industrial capital with housing expensive for northern Mexico; HM hospitals and MTY anchor services — Monterrey inversion smog on stagnant days and arroyo flash floods in summer define air-quality diligence beyond comfortable winter afternoons.",
+      sources: [
+      { label: "SMN — Monterrey / INEGI climate summaries", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["manufacturing", "startup scene"], travelFit: ["Chipinque", "Cola de Caballo"],
     whoWouldLove: "Business travelers who want mountain access near a major hub.", whoMightNot: "Clean-air purists on stagnant inversion days.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Monterrey / INEGI climate summaries", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "monterrey-monsoon-basin",
+        title: "Basin monsoon and sierra lift",
+        paragraphs: [
+          "Monterrey opens northeast toward Gulf moisture while the Sierra Madre Oriental blocks and lifts it — summer convection builds on basin heating, urban triggers, and orographic lift against Chipinque and Garcia. A single cell can drop hail on one colonia while the next stays dry.",
+          "Elevation contrast within a one-hour drive is extreme: tourists routinely escape 35°C basin afternoons for pine forest above 1,500 m. The atlas normals describe the floor; scouting should always ask which band you are in.",
+        ],
+      },
+      {
+        id: "monterrey-heat-flood",
+        title: "Urban heat, arroyos, and air quality",
+        paragraphs: [
+          "Industrial growth and basin geometry trap nocturnal heat and particulates — stagnant winter mornings and pre-monsoon ozone are real comfort factors, not footnotes. Arroyo flood pulses during summer storms can strand traffic in minutes on routes that look dry at noon.",
+          "Parcel diligence means reading arroyo proximity, elevation band, and exposure to downburst winds — not just distance to downtown. Water supply and reservoir levels track growth as closely as temperature in this metro.",
+        ],
+      },
+    ],
+    confidenceNotes: "Airport and city-scale normals capture basin-floor conditions; foothill parcels, arroyo-adjacent blocks, and Chipinque-side neighborhoods can run cooler, wetter, or more flood-prone — confirm elevation and drainage.",
+    citations: [{ label: "SMN — Monterrey / INEGI climate summaries", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "hermosillo-mx", tier: "C", country: "Mexico", region: "Sonora", municipality: "Hermosillo", name: "Hermosillo (Sonoran Desert)",
@@ -1885,17 +2602,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "One of North America's hottest state capitals — dry heat, intense sun, and a summer monsoon that arrives as isolated convective bombs.",
     summaryImmersive: "Hermosillo is core desert: triple-digit afternoon heat indices for months, cooling at night when skies clear. July–August storms bring drama — virga, dust, localized downpours — but annual totals stay low. Winter is the pleasant season outsiders underestimate.",
     whyDistinct: "Gulf of California proximity adds a humidity gradient westward toward coastal Bahía de Kino without fully maritime conditions in town.",
-    climate: { tempHighC: [24, 26, 30, 34, 37, 40, 41, 40, 38, 34, 29, 25], tempLowC: [8, 9, 11, 14, 18, 22, 25, 25, 22, 16, 11, 8], precipMm: [18, 18, 12, 4, 3, 15, 105, 120, 55, 22, 12, 22], annualPrecipMm: 406, frostFreeDays: 365, hardinessZone: "10b" },
+    experience: {
+      feel: "Hermosillo feels like core Sonoran desert government — triple-digit afternoon heat indices for months, clear-night cooling, July–August monsoon virga and dust, and winter afternoons outsiders underestimate at 25°C.",
+      seasons: {
+        winter: "Pleasant-season peak — afternoons near 25°C, nights near 8°C, clear skies, and the comfortable window snowbirds miss.",
+        spring: "Heating toward danger — highs climbing through the mid-30s, relentless dry sun, and outdoor life shifting to dawn and dusk by May.",
+        summer: "Extreme heat and monsoon — highs near 40°C, nights near 24°C, isolated convective bombs with virga and dust, midday outdoor life impractical without shade.",
+        autumn: "Heat lingering — highs still near 34°C through October, storm activity easing, and dry heat returning before mild winter.",
+      },
+      travelerFit: "Visitors come for Bahía de Kino winter escapes, desert ecotours, and the pleasant-season window outsiders underestimate.",
+      residentFit: "It rewards Sonoran capital workers and dry-heat devotees who treat July as optional air conditioning — not anyone who needs mild summers to live comfortably.",
+      texture: "A Sonoran capital tradeoff — weigh very-high summer heat, high drought risk, and Colorado River-linked water politics against mild dry winters and state-government service depth.",
+    },
+    climate: { tempHighC: [24, 26, 30, 34, 37, 40, 41, 40, 38, 34, 29, 25], tempLowC: [8, 9, 11, 14, 18, 22, 25, 25, 22, 16, 11, 8], precipMm: [18, 18, 12, 4, 3, 15, 105, 120, 55, 22, 12, 22], annualPrecipMm: 406, frostFreeDays: 365, hardinessZone: "10b", humidity: [37, 37, 35, 39, 43, 40, 54, 56, 54, 46, 43, 38], sunshinePct: [70, 75, 74, 80, 92, 92, 90, 88, 83, 80, 69, 66] },
     soil: { texture: "Desert alluvium and sand", drainage: "excessive", phRange: [7.5, 8.5], waterHolding: "low" },
     growability: { score: 40, growsWell: ["Date palm", "Citrus with irrigation", "Vegetables under drip"], tricky: ["Dry farming"] },
     climateChange: { outlook2050: "More extreme heat days.", outlook2100: "Water availability for agriculture tightens.", keyShifts: [{ variable: "Heat extremes", direction: "up" }], resilienceNote: "Colorado River-linked policy debates ripple culturally." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "high", trend: "worsening" }, extremeHeat: { level: "very-high", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 28, microclimateUniqueness: 62, comfort: 35, growability: 40, resilience: 38, tradeoff: 72 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 40,
+      accessFriction: 38,
+      note: "Hermosillo capital housing at mid-band; HGM and HMO anchor care — July highs above 40°C, Sonoran monsoon virga, and Colorado River-linked water politics define daily logistics beyond winter pleasant-season appeal.",
+      sources: [
+      { label: "SMN — Hermosillo", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["desert-industry workers"], travelFit: ["Bahía de Kino day trips", "desert ecotours"],
     whoWouldLove: "Dry-heat devotees.", whoMightNot: "Anyone who needs summer air conditioning to be optional.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Hermosillo", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "hermosillo-sonoran-heat",
+        title: "Sonoran desert basin and monsoon bombs",
+        paragraphs: [
+          "Hermosillo sits at 200 m in the central Sonoran desert basin — BWh core desert with roughly 406 mm annually, one of North America's hottest state capitals where afternoon heat indices stay triple-digit for months.",
+          "Gulf of California proximity adds a humidity gradient westward toward Bahía de Kino without fully maritime conditions in town; July–August monsoon arrives as isolated convective bombs with virga, dust, and localized downpours.",
+        ],
+      },
+      {
+        id: "hermosillo-water-heat",
+        title: "Extreme heat and agricultural water stress",
+        paragraphs: [
+          "Very-high extreme-heat and high drought risk registers here — verify cooling costs and water access before committing. Desert alluvium supports date palm, drip-irrigated citrus, and vegetables — dry farming fails.",
+          "Anyone who needs optional summer air conditioning should spend a July here before treating pleasant winters as balance for 40°C afternoons — Colorado River-linked policy debates ripple culturally across Sonora.",
+        ],
+      },
+    ],
+    confidenceNotes: "Hermosillo basin normals understate July heat-index severity and irrigation dependence — verify cooling costs, water metering, and Bahía de Kino exposure separately from downtown parcels.",
+    citations: [{ label: "SMN — Hermosillo", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "puerto-vallarta-mx", tier: "C", country: "Mexico", region: "Jalisco", municipality: "Puerto Vallarta", name: "Puerto Vallarta (Banderas Bay)",
@@ -1908,17 +2667,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Pacific resort climate — warm winter escape, humid summer with tropical cyclone watches.",
     summaryImmersive: "Puerto Vallarta sits where bay curvature and sierra slopes focus afternoon convection. Winter is the dry, golden high season; summer brings muggy heat and Pacific storms. Sea breezes keep beaches cooler than inland Guadalajara by a wide margin.",
     whyDistinct: "Bay geometry + tropical cyclone recurvature zone + strong vertical relief just inland.",
-    climate: { tempHighC: [29, 29, 30, 31, 32, 33, 33, 33, 33, 32, 31, 29], tempLowC: [16, 16, 17, 18, 20, 22, 23, 23, 23, 22, 20, 17], precipMm: [25, 15, 8, 5, 15, 180, 220, 240, 280, 110, 35, 25], annualPrecipMm: 1161, frostFreeDays: 365, hardinessZone: "11" },
+    experience: {
+      feel: "Puerto Vallarta feels like Pacific resort life with Sierra Madre backdrop — Banderas Bay curvature and slope-driven afternoon convection, dry golden winter high season, muggy summer with Pacific storm watches, and sea breezes keeping beaches cooler than Guadalajara.",
+      seasons: {
+        winter: "Dry-season high season — afternoons near 29°C, nights near 16°C, golden light, whale watching, and trade winds keeping humidity tolerable on the malecón.",
+        spring: "Heating before rains — afternoons climbing toward 31°C, humidity rising, and the last clear weeks before afternoon convection and hurricane season arrive.",
+        summer: "Wet and stormy — highs near 33°C, nights near 23°C, daily afternoon thunderstorms, and Pacific tropical cyclone watches from June through October.",
+        autumn: "Hurricane peak — highs near 32°C, heavy rains from recurving Pacific systems, and landslide exposure on sierra slopes above the bay.",
+      },
+      travelerFit: "Visitors come for whale watching, beaches, and a tropical resort climate where dry season is the comfort window — wet season demands storm-aware scheduling.",
+      residentFit: "It rewards hospitality retirees and remote workers wanting tropical beach life with mountain backdrop — if they accept very-high storm and coastal surge risk.",
+      texture: "A Banderas Bay tradeoff — weigh hurricane exposure, coastal surge, and landslide risk on sierra slopes against dry-season golden weather and walkable beach-town life.",
+    },
+    climate: { tempHighC: [29, 29, 30, 31, 32, 33, 33, 33, 33, 32, 31, 29], tempLowC: [16, 16, 17, 18, 20, 22, 23, 23, 23, 22, 20, 17], precipMm: [25, 15, 8, 5, 15, 180, 220, 240, 280, 110, 35, 25], annualPrecipMm: 1161, frostFreeDays: 365, hardinessZone: "11", humidity: [76, 75, 71, 73, 75, 79, 83, 86, 86, 82, 81, 77], sunshinePct: [69, 73, 70, 70, 67, 65, 56, 55, 52, 55, 59, 62] },
     soil: { texture: "Coastal sand and tropical alfisol", drainage: "good", phRange: [6.0, 7.5], waterHolding: "moderate" },
     growability: { score: 72, growsWell: ["Coconut", "Tropical ornamentals", "Chile peppers"], tricky: ["Temperate bulbs"] },
     climateChange: { outlook2050: "Stronger hurricane rain rates; coral bleaching stress.", outlook2100: "Coastal tourism infrastructure at surge risk.", keyShifts: [{ variable: "Hurricane intensity", direction: "up" }], resilienceNote: "Tourism economy is storm-exposed." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "stable" }, storm: { level: "very-high", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-high", trend: "worsening" } },
     scores: { hiddenGem: 22, microclimateUniqueness: 58, comfort: 62, growability: 72, resilience: 36, tradeoff: 52 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Puerto Vallarta expat housing at mid-band; Hospital CMQ and PVR anchor care — very-high hurricane and coastal surge risk, sierra landslide exposure, and wet-season humidity define daily logistics beyond dry-season resort appeal.",
+      sources: [
+      { label: "SMN — Puerto Vallarta", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["hospitality retirees", "remote workers"], travelFit: ["whale watching", "beaches"],
     whoWouldLove: "Tropical beach life with mountain backdrop.", whoMightNot: "Dry-climate seekers; hurricane-anxious buyers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Puerto Vallarta", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "pv-banderas-bay",
+        title: "Banderas Bay geometry and sea-breeze moderation",
+        paragraphs: [
+          "Puerto Vallarta sits on the Banderas Bay south shore where Sierra Madre inlandshed and bay curvature focus afternoon convection — Aw tropical normals with roughly 1,161 mm annually concentrated in wet season.",
+          "Sea breezes keep beaches cooler than inland Guadalajara by a wide margin — dry golden winter high season contrasts sharply with muggy summer and Pacific tropical cyclone recurvature zone exposure.",
+        ],
+      },
+      {
+        id: "pv-hurricane-surge",
+        title: "Hurricane surge and sierra landslide risk",
+        paragraphs: [
+          "Very-high coastal and storm risk registers here — verify elevation certificates, flood panels, and hurricane insurance before committing. Coastal sand and tropical alfisol supports coconut, tropical ornamentals, and chile peppers with good drainage.",
+          "Dry-climate seekers and hurricane-anxious buyers should confirm storm history on their block before committing — Hospital CMQ anchors care but landslide exposure on sierra slopes and surge risk on low malecón parcels define the lived filter.",
+        ],
+      },
+    ],
+    confidenceNotes: "Puerto Vallarta coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.",
+    citations: [{ label: "SMN — Puerto Vallarta", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "mazatlan-mx", tier: "C", country: "Mexico", region: "Sinaloa", municipality: "Mazatlán", name: "Mazatlán (Pacific Humid Tropical)",
@@ -1931,17 +2732,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Classic wet-dry tropics at latitude 23°N — reliable winter sun for snowbirds, humid summer monsoon.",
     summaryImmersive: "Mazatlán delivers postcard winters and steamy summers when the ITCZ influence returns. Pacific storms occasionally send swell and humidity; inland sierras wring rain that rarely reaches the beach uniformly.",
     whyDistinct: "Long straight Pacific fetch with tropical cyclone history distinct from Baja's desert shores.",
-    climate: { tempHighC: [26, 26, 27, 28, 30, 31, 32, 32, 32, 31, 29, 27], tempLowC: [12, 12, 13, 15, 18, 22, 24, 24, 24, 21, 16, 14], precipMm: [20, 8, 5, 3, 5, 40, 150, 220, 200, 85, 25, 22], annualPrecipMm: 783, frostFreeDays: 365, hardinessZone: "11" },
+    experience: {
+      feel: "Mazatlán feels like classic Pacific wet-dry tropics at 23°N — long sandy beach on the Gulf of California opening where postcard dry winters draw snowbirds and steamy summer monsoon brings ITCZ humidity and tropical cyclone watches.",
+      seasons: {
+        winter: "Dry-season paradise — afternoons near 26°C, nights near 13°C, reliable sun for snowbirds, historic centro walks, and carnival season building toward spring.",
+        spring: "Heating before rains — afternoons climbing toward 28°C, humidity rising, and the last clear weeks before summer convection returns.",
+        summer: "Monsoon steam — highs near 32°C, nights near 24°C, afternoon thunderstorms, and Pacific tropical cyclone watches from August through October.",
+        autumn: "Hurricane tail — highs near 31°C, heavy rains from recurving Pacific systems, and beach nourishment cycles visible after storm seasons.",
+      },
+      travelerFit: "Visitors come for historic centro, carnival, and winter sun on a budget relative to Cabo — wet season demands storm-aware scheduling.",
+      residentFit: "It rewards winter sunbirds and fishing-industry retirees who accept very-high coastal storm exposure and summer humidity.",
+      texture: "A Pacific wet-dry tradeoff — weigh very-high hurricane and coastal surge risk against reliable dry-season sun and lower cost than Baja resort towns.",
+    },
+    climate: { tempHighC: [26, 26, 27, 28, 30, 31, 32, 32, 32, 31, 29, 27], tempLowC: [12, 12, 13, 15, 18, 22, 24, 24, 24, 21, 16, 14], precipMm: [20, 8, 5, 3, 5, 40, 150, 220, 200, 85, 25, 22], annualPrecipMm: 783, frostFreeDays: 365, hardinessZone: "11", humidity: [77, 76, 71, 73, 76, 80, 83, 86, 86, 82, 82, 77], sunshinePct: [66, 71, 67, 68, 65, 62, 54, 52, 50, 52, 57, 59] },
     soil: { texture: "Sandy beach and dune", drainage: "excessive", phRange: [7.0, 8.0], waterHolding: "low" },
     growability: { score: 68, growsWell: ["Palms", "Tropical fruit with irrigation"], tricky: ["Cool-season vegetables in summer"] },
     climateChange: { outlook2050: "Wet-season intensification.", outlook2100: "Coastal squeeze from tourism and storms.", keyShifts: [{ variable: "Extreme rain", direction: "up" }], resilienceNote: "Beach nourishment cycles ongoing." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "stable" }, storm: { level: "very-high", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-high", trend: "worsening" } },
     scores: { hiddenGem: 34, microclimateUniqueness: 56, comfort: 58, growability: 68, resilience: 38, tradeoff: 50 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Mazatlán expat housing at mid-band; Hospital Sharp Mazatlán and MZT anchor care — very-high hurricane and coastal surge risk, summer monsoon humidity, and beach erosion define daily logistics beyond dry-season snowbird appeal.",
+      sources: [
+      { label: "SMN — Mazatlán", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Mazatlán", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "mazatlan-wet-dry-tropics",
+        title: "Pacific wet-dry tropics and winter sun",
+        paragraphs: [
+          "Mazatlán sits on a long sandy beach at the Gulf of California opening — Aw normals with roughly 783 mm annually concentrated in summer monsoon, where postcard dry winters draw snowbirds at lower cost than Cabo.",
+          "Long straight Pacific fetch with tropical cyclone history distinct from Baja desert shores — inland sierras wring rain that rarely reaches the beach uniformly on any given afternoon.",
+        ],
+      },
+      {
+        id: "mazatlan-hurricane-surge",
+        title: "Hurricane exposure and coastal surge",
+        paragraphs: [
+          "Very-high coastal and storm risk registers here — verify elevation certificates and hurricane insurance before committing on low beach blocks. Sandy dune soils support palms and irrigated tropical fruit with excessive drainage.",
+          "Summer humidity haters should spend an August week here before treating dry winters as balance for 32°C muggy afternoons — Hospital Sharp Mazatlán anchors care but storm surge and beach nourishment cycles define long-run coastal logistics.",
+        ],
+      },
+    ],
+    confidenceNotes: "Mazatlán coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.",
+    citations: [{ label: "SMN — Mazatlán", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "campeche-mx", tier: "C", country: "Mexico", region: "Campeche", municipality: "San Francisco de Campeche", name: "Campeche (Gulf Coast Fort)",
@@ -1954,17 +2797,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Gulf humidity, tropical cyclone exposure, and a UNESCO fort city — slower pace than Cancún with real storm history.",
     summaryImmersive: "Campeche receives summer deluges from tropical waves and autumn hurricanes; winter is warm and pleasant. Sea breezes moderate the heat but not the humidity. The low flat plain means surge and flood risk during strong storms.",
     whyDistinct: "Western Gulf track exposure differs from Caribbean Yucatán resorts; rainfall seasonality still monsoon-like.",
-    climate: { tempHighC: [28, 29, 31, 32, 34, 33, 33, 33, 32, 31, 30, 28], tempLowC: [18, 18, 20, 22, 23, 23, 22, 22, 22, 21, 20, 19], precipMm: [45, 30, 25, 25, 75, 200, 180, 195, 210, 180, 80, 55], annualPrecipMm: 1320, frostFreeDays: 365, hardinessZone: "11" },
+    experience: {
+      feel: "Campeche feels like a UNESCO Gulf fort city — walled colonial port on a flat coastal plain where summer deluges from tropical waves meet autumn hurricanes, winter stays warm and pleasant, and sea breezes moderate heat but not humidity.",
+      seasons: {
+        winter: "Dry-season comfort — afternoons near 28°C, nights near 18°C, walkable fort walls, and the best window for Gulf beaches without monsoon buildup.",
+        spring: "Heating before rains — afternoons climbing through the low 30s, humidity rising, and the last clear weeks before summer convection returns.",
+        summer: "Monsoon deluges — highs near 33°C, nights near 22°C, daily tropical waves, and western Gulf hurricane tracks demanding evacuation planning.",
+        autumn: "Hurricane peak — highs near 31°C, heavy rains and surge risk on the low flat plain, and mangrove margins absorbing storm energy until they cannot.",
+      },
+      travelerFit: "Visitors come for UNESCO fort walls, Gulf beaches, and colonial architecture at slower pace than Cancún — storm season requires sober scheduling.",
+      residentFit: "It rewards remote workers and history buffs wanting Gulf tropical life with colonial character — if they accept very-high hurricane and coastal surge risk.",
+      texture: "A Gulf fort tradeoff — weigh very-high storm and flood exposure on a flat plain against warm winters and UNESCO historic-core walkability.",
+    },
+    climate: { tempHighC: [28, 29, 31, 32, 34, 33, 33, 33, 32, 31, 30, 28], tempLowC: [18, 18, 20, 22, 23, 23, 22, 22, 22, 21, 20, 19], precipMm: [45, 30, 25, 25, 75, 200, 180, 195, 210, 180, 80, 55], annualPrecipMm: 1320, frostFreeDays: 365, hardinessZone: "11", humidity: [76, 75, 70, 72, 75, 83, 78, 85, 85, 81, 81, 76], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Coastal alluvium and limestone", drainage: "imperfect", phRange: [7.0, 8.2], waterHolding: "high" },
     growability: { score: 70, growsWell: ["Coconut", "Citrus", "Chile"], tricky: ["Cool-climate perennials"] },
     climateChange: { outlook2050: "Heavier hurricane rain rates.", outlook2100: "Coastal mangrove squeeze.", keyShifts: [{ variable: "Sea level", direction: "up" }], resilienceNote: "Historic core elevation modest; drainage is key." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "high", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "stable" }, storm: { level: "very-high", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-high", trend: "worsening" } },
     scores: { hiddenGem: 58, microclimateUniqueness: 60, comfort: 54, growability: 70, resilience: 34, tradeoff: 56 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Campeche colonial housing at mid-band; Hospital General Campeche and CPE anchor care — very-high hurricane and coastal surge on a flat Gulf plain, summer monsoon deluges, and imperfect drainage define daily logistics beyond UNESCO fort appeal.",
+      sources: [
+      { label: "SMN — Campeche", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Campeche", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "campeche-gulf-fort",
+        title: "Western Gulf fort city and monsoon rhythm",
+        paragraphs: [
+          "Campeche sits on a walled colonial port on the Gulf of Mexico flat plain — Aw normals with roughly 1,320 mm annually, where western Gulf hurricane tracks differ from Caribbean Yucatán resorts but rainfall seasonality stays monsoon-like.",
+          "Winter is warm and pleasant with walkable UNESCO fort walls; summer brings tropical-wave deluges and sea breezes that moderate heat but not humidity on the low coastal plain.",
+        ],
+      },
+      {
+        id: "campeche-surge-flood",
+        title: "Surge risk and historic-core drainage",
+        paragraphs: [
+          "Very-high coastal and storm risk registers here — verify flood panels and surge history before committing; historic core elevation is modest and drainage is key. Coastal alluvium and limestone supports coconut, citrus, and chile with imperfect drainage.",
+          "Hurricane-risk-averse relocators should confirm evacuation routes and insurance before committing — Hospital General Campeche anchors care but flat-plain surge and flood exposure define the lived filter beyond colonial Gulf appeal.",
+        ],
+      },
+    ],
+    confidenceNotes: "Campeche coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.",
+    citations: [{ label: "SMN — Campeche", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "palenque-mx", tier: "C", country: "Mexico", region: "Chiapas", municipality: "Palenque", name: "Palenque (Lacandon Jungle Edge)",
@@ -1977,16 +2862,56 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Hot, humid gateway to Maya ruins where afternoon convection builds explosively over rainforest.",
     summaryImmersive: "Palenque sits at the jungle edge: mornings can be misty; afternoons turn steamy with thunder. Rainfall is abundant year-round with a drier winter window favored by tourists. Elevation is low enough that heat never fully disappears.",
     whyDistinct: "Archaeological site + reserve microclimate attracts swallows and parrots; canopy buffers radiation below treeline.",
-    climate: { tempHighC: [26, 28, 30, 32, 33, 31, 30, 31, 30, 29, 28, 26], tempLowC: [16, 17, 18, 20, 21, 21, 20, 20, 20, 19, 18, 17], precipMm: [80, 65, 55, 65, 120, 280, 220, 260, 280, 220, 120, 95], annualPrecipMm: 1860, frostFreeDays: 365, hardinessZone: "12" },
+    experience: {
+      feel: "Palenque feels like the Lacandon jungle edge at 150 m — misty mornings, steamy afternoon thunder over rainforest canopy, abundant year-round rain with a drier winter tourist window, and heat that never fully disappears even under archaeological shade.",
+      seasons: {
+        winter: "Dry-ish tourist window — afternoons near 27°C, nights near 17°C, Maya ruins in relative comfort, and mornings still misty over the reserve.",
+        spring: "Green-up and buildup — afternoons climbing toward 32°C, rivers swelling, howler monkeys active, and convection building before monsoon peak.",
+        summer: "Monsoon steam — highs near 31°C, nights near 20°C, daily thunderstorms, landslide diligence on saturated slopes, and canopy-buffered radiation below treeline.",
+        autumn: "Still wet, easing — highs near 29°C, hurricane remnants occasionally brushing Chiapas, and the year's last comfortable ruin-visiting weeks.",
+      },
+      travelerFit: "Visitors come for Palenque ruins, jungle trails, and Lacandon reserve ecology.",
+      residentFit: "It rewards archaeology guides and ecotourism workers who accept humidity, arroyo flash floods, and Villahermosa specialist drives.",
+      texture: "A Lacandon jungle tradeoff — weigh 1860 mm annual rain, humidity, arroyo flash floods, and landslide risk against Maya ruins, cacao country, and a drier winter tourism window.",
+    },
+    climate: { tempHighC: [26, 28, 30, 32, 33, 31, 30, 31, 30, 29, 28, 26], tempLowC: [16, 17, 18, 20, 21, 21, 20, 20, 20, 19, 18, 17], precipMm: [80, 65, 55, 65, 120, 280, 220, 260, 280, 220, 120, 95], annualPrecipMm: 1860, frostFreeDays: 365, hardinessZone: "12", humidity: [75, 74, 70, 72, 74, 82, 88, 95, 95, 81, 80, 76], sunshinePct: [66, 71, 67, 68, 65, 62, 54, 52, 50, 52, 57, 59] },
     soil: { texture: "Deep tropical alfisol", drainage: "moderate", phRange: [5.5, 6.8], waterHolding: "high" },
     growability: { score: 76, growsWell: ["Cacao", "Banana", "Tropical spices"], tricky: ["Temperate fruit"] },
     climateChange: { outlook2050: "Shifts in cloud timing affect ecotourism.", outlook2100: "Species migration upslope.", keyShifts: [{ variable: "Heavy rain", direction: "up" }], resilienceNote: "Jaguar reserve connectivity matters ecologically." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "stable" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 62, microclimateUniqueness: 72, comfort: 48, growability: 76, resilience: 48, tradeoff: 44 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Palenque tourism housing at mid-band; IMSS Palenque and Villahermosa specialists anchor care — 1,860 mm annual rain, jungle humidity, and arroyo flash-flood risk define daily logistics beyond Maya ruins appeal.",
+      sources: [
+      { label: "SMN — Palenque", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "INECC — Chiapas biodiversity notes", url: "https://www.gob.mx/inecc" },
+      ],
+    },
     relocationFit: ["archaeology guides", "ecotourism"], travelFit: ["ruins", "jungle trails"],
     whoWouldLove: "Jungle climate with Maya history.", whoMightNot: "Anyone who cannot tolerate humidity.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+    deepSections: [
+      {
+        id: "palenque-jungle-convection",
+        title: "Lacandon jungle edge and afternoon convection",
+        paragraphs: [
+          "Palenque sits at 150 m on the northern Chiapas foothills where lowland jungle transitions toward cooler uplands — Af tropical moist forest with roughly 1,860 mm annually and explosive afternoon convection over rainforest canopy.",
+          "Archaeological site and reserve microclimate attracts swallows and parrots; canopy buffers radiation below treeline while mornings stay misty and afternoons turn steamy with thunder.",
+        ],
+      },
+      {
+        id: "palenque-humidity-flood",
+        title: "Humidity, ruins tourism, and flash floods",
+        paragraphs: [
+          "Deep tropical alfisol supports cacao, banana, and tropical spices at high growability — humidity never fully disappears at this elevation. Elevated flood and landslide risk registers when monsoon rains swell rivers and arroyos.",
+          "Humidity-intolerant relocators should walk jungle trails in April before committing — archaeology guides who accept steamy afternoons get Maya ruins and reserve ecology at the doorstep.",
+        ],
+      },
+    ],
+    confidenceNotes: "Humidity-intolerant relocators should walk jungle trails in April before committing — archaeology guides who accept steamy afternoons get Maya ruins and reserve ecology at the doorstep.",
     citations: [{ label: "SMN — Palenque", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }, { label: "INECC — Chiapas biodiversity notes", kind: "inecc", url: "https://www.gob.mx/inecc" }],
   },
   {
@@ -2000,17 +2925,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Silver-city balconies perched at 1,773 m — spring-like temperatures while Acapulco swelters at sea level.",
     summaryImmersive: "Taxco demonstrates pure lapse-rate magic: tropical latitude but high enough for cool nights and bougainvillea draped over stone streets. Afternoon thunderstorms arrive in summer with theatrical lightning over ridges.",
     whyDistinct: "Extreme local relief within kilometers creates micro-wind patterns and rainfall gradients on windward slopes.",
-    climate: { tempHighC: [24, 25, 27, 29, 29, 26, 24, 25, 24, 25, 25, 24], tempLowC: [10, 11, 12, 14, 15, 15, 14, 14, 14, 13, 12, 11], precipMm: [18, 12, 10, 15, 55, 165, 180, 175, 160, 75, 35, 15], annualPrecipMm: 925, frostFreeDays: 365, hardinessZone: "10a" },
+    experience: {
+      feel: "Taxco feels like a silver-city balcony at 1,773 m — tropical latitude with spring-like days near 25°C, cool nights near 11°C, bougainvillea over cobblestone, and summer lightning theatrics over Sierra Madre del Sur ridges while Acapulco swelters at sea level.",
+      seasons: {
+        winter: "Dry-season clarity — afternoons near 24°C, nights near 11°C, cobalt skies, and silver-market crowds filling steep colonial streets without summer storm interruption.",
+        spring: "Heating before rains — afternoons climbing through 28°C, first afternoon buildups on windward slopes, and barrio water stress visible on upper hillsides.",
+        summer: "Monsoon drama — highs near 25°C cooled by rain, nights near 14°C, daily thunderstorms with theatrical ridge lightning, and cobblestone runoff straining steep drainage.",
+        autumn: "Rains tapering — highs near 25°C, landslide awareness on saturated slopes, and the clearest volcano-view windows returning as storms ease.",
+      },
+      travelerFit: "Visitors come for silver markets, cobblestone walks, and highland Guerrero life — summer rewards storm watchers who plan around afternoon downpours.",
+      residentFit: "It rewards artisans and retirees who want colonial highland character at tropical latitude — if they accept steep streets, landslide pockets, and limited specialty care beyond Cuernavaca.",
+      texture: "Steep highland tradeoff — weigh slope stability, monsoon runoff, and mobility limits against eternal-spring temperatures and silver-town culture.",
+    },
+    climate: { tempHighC: [24, 25, 27, 29, 29, 26, 24, 25, 24, 25, 25, 24], tempLowC: [10, 11, 12, 14, 15, 15, 14, 14, 14, 13, 12, 11], precipMm: [18, 12, 10, 15, 55, 165, 180, 175, 160, 75, 35, 15], annualPrecipMm: 925, frostFreeDays: 365, hardinessZone: "10a", humidity: [57, 60, 60, 66, 71, 80, 78, 77, 69, 65, 61, 56], sunshinePct: [47, 49, 49, 55, 60, 65, 62, 62, 57, 54, 50, 45] },
     soil: { texture: "Thin residual soil on volcanic and limestone", drainage: "good", phRange: [6.0, 7.5], waterHolding: "low" },
     growability: { score: 64, growsWell: ["Temperate flowers", "Avocado", "Coffee nearby"], tricky: ["Low-oxygen exertion for some visitors"] },
     climateChange: { outlook2050: "Shifts in monsoon onset.", outlook2100: "Water for hillside barrios stressed.", keyShifts: [{ variable: "Landslide risk", direction: "up" }], resilienceNote: "Steep terrain amplifies storm impacts." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "moderate", trend: "worsening" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "high", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 68, microclimateUniqueness: 74, comfort: 72, growability: 64, resilience: 50, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Taxco artisan housing at mid-band; IMSS Cuernavaca and Mexico City specialists anchor care — steep cobblestone streets, monsoon landslide pockets, and hillside barrio water stress define daily logistics beyond silver-market tourism appeal.",
+      sources: [
+      { label: "SMN — Taxco region", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["artisans", "retirees"], travelFit: ["silver markets", "cobblestone walks"],
     whoWouldLove: "Highland colonial towns with tropical latitude.", whoMightNot: "Mobility-limited — steep streets everywhere.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Taxco region", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "taxco-lapse-rate",
+        title: "Lapse-rate magic on a mining hillside",
+        paragraphs: [
+          "Taxco sits at 1,773 m on the southern flank of the Mexican Plateau edge — Cwb eternal-spring highland with roughly 925 mm concentrated in summer monsoon. Tropical latitude yields spring-like days near 25°C while Acapulco swelters two hours south at sea level.",
+          "Extreme local relief within kilometers creates micro-wind patterns and rainfall gradients — windward slopes above the colonial core catch heavier convection than sheltered downtown balconies.",
+        ],
+      },
+      {
+        id: "taxco-steep-streets",
+        title: "Steep terrain and monsoon runoff",
+        paragraphs: [
+          "Thin residual soil on volcanic and limestone supports temperate flowers, avocado, and nearby coffee at lower elevations — mobility on cobblestone grades is the daily constraint. Elevated flood and high landslide risk register on saturated summer slopes.",
+          "Mobility-limited relocators should walk the steepest barrio routes before committing — monsoon runoff strains hillside drainage and IMSS access runs through Cuernavaca or Mexico City for specialty care.",
+        ],
+      },
+    ],
+    confidenceNotes: "Mobility-limited relocators should walk the steepest barrio routes before committing — monsoon runoff strains hillside drainage and IMSS access runs through Cuernavaca or Mexico City for specialty care.",
+    citations: [{ label: "SMN — Taxco region", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
   {
     id: "puebla-mx", tier: "C", country: "Mexico", region: "Puebla", municipality: "Puebla", name: "Puebla (Trans-Mexican Volcanic Belt)",
@@ -2023,17 +2990,59 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Colonial megacity at 2,150 m — mild year-round with cool nights and Popocatépetl snow on the horizon.",
     summaryImmersive: "Puebla blends highland spring climate with serious urban pollution in winter inversions. Rain is concentrated summer–monsoon; dry season skies are cobalt. Volcanic ash soils support floriculture and maize.",
     whyDistinct: "Twin stratovolcanoes dominate the western horizon; ash fall is episodic but real.",
-    climate: { tempHighC: [22, 24, 26, 27, 27, 25, 23, 24, 23, 23, 23, 22], tempLowC: [6, 7, 9, 11, 12, 12, 11, 11, 11, 9, 8, 6], precipMm: [12, 10, 14, 35, 80, 155, 160, 155, 140, 70, 25, 10], annualPrecipMm: 876, frostFreeDays: 365, hardinessZone: "10a" },
+    experience: {
+      feel: "Puebla sits at 2,150 m with Popocatépetl and Iztaccíhuatl on the western skyline — mild year-round highland air, cobalt dry-season skies, and summer afternoons when monsoon storms roll off the volcanoes. Winter inversions trap smog in the basin; ash fall is episodic but real.",
+      seasons: {
+        winter: "Dry and bright — afternoons in the low 20s, nights that dip to single digits, and morning inversions that can choke the basin with particulates. Volcano snow on the horizon is the postcard; air quality is the tradeoff.",
+        spring: "Warming fast through the mid-20s with dry winds and dust before the rains — wildfire smoke from surrounding slopes can drift in, and ash awareness returns as Popocatépetl activity waxes.",
+        summer: "The wet season cools afternoons into the low 20s while humidity climbs — daily storms green the slopes, strain drainage in low spots, and make Talavera rooftops slick. This is not a dry highland summer.",
+        autumn: "Rains taper into crisp mornings and clear afternoons — the best volcano-view window, with nights cooling fast and inversion season building toward winter.",
+      },
+      travelerFit: "Visitors come for Talavera, colonial architecture, and volcano viewpoints — dry season is clearest; summer rewards storm watchers who plan around afternoon downpours.",
+      residentFit: "It rewards students and manufacturing workers who want highland Mexican city life with serious culture — if you accept altitude, smog-sensitive winters, and flood pockets in expanding districts.",
+      texture: "A volcanic-basin compromise at elevation — weigh winter air quality, storm drainage, and housing cost against mild temperatures and one of Mexico's great urban food scenes.",
+    },
+    climate: { tempHighC: [22, 24, 26, 27, 27, 25, 23, 24, 23, 23, 23, 22], tempLowC: [6, 7, 9, 11, 12, 12, 11, 11, 11, 9, 8, 6], precipMm: [12, 10, 14, 35, 80, 155, 160, 155, 140, 70, 25, 10], annualPrecipMm: 876, frostFreeDays: 365, hardinessZone: "10a", humidity: [55, 58, 58, 64, 69, 82, 80, 79, 71, 63, 59, 54], sunshinePct: [47, 49, 49, 55, 60, 61, 58, 58, 57, 54, 50, 45] },
     soil: { texture: "Andisol on volcanic ash", drainage: "good", phRange: [6.0, 7.2], waterHolding: "moderate" },
     growability: { score: 72, growsWell: ["Maize", "Flowers", "Avocado"], tricky: ["Chill apples"] },
     climateChange: { outlook2050: "Air quality and heat stress in basin.", outlook2100: "Glacier loss on volcanoes symbolic of change.", keyShifts: [{ variable: "Ozone", direction: "up" }], resilienceNote: "Inversion trapping worsens particulates." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "moderate", trend: "worsening" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "elevated", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 36, microclimateUniqueness: 68, comfort: 66, growability: 72, resilience: 44, tradeoff: 48 },
+    liveSignals: {
+      costPressure: 70,
+      socialStress: 48,
+      accessFriction: 44,
+      note: "Colonial highland city with moderate cost-of-living; IMSS and PBC provide care — 2,135 m elevation means thin-air adjustment, winter basin smog, and occasional Popocatépetl ash as relocation realities beyond mild eternal-spring afternoons.",
+      sources: [
+      { label: "SMN — Puebla", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
+      { label: "INEGI — municipal indicators", url: "https://www.inegi.org.mx/" },
+      ],
+    },
     relocationFit: ["students", "manufacturing"], travelFit: ["Talavera", "volcano viewpoints"],
     whoWouldLove: "Highland Mexican urban culture with volcano views.", whoMightNot: "Altitude-sensitive; smog-sensitive winter visitors.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "SMN — Puebla", kind: "smn", url: "https://smn.conagua.gob.mx/es/" }],
+    deepSections: [
+      {
+        id: "puebla-volcano-basin",
+        title: "Volcanic basin and monsoon lift",
+        paragraphs: [
+          "Puebla's basin sits east of twin stratovolcanoes that dominate moisture, ash, and orographic lift — summer storms often build on the western slopes before rolling across the city. Elevation keeps nights cool year-round, but the enclosed geometry traps winter inversions and concentrates particulates.",
+          "Ash fall is episodic rather than constant, yet it belongs in any long-term read of the place. Neighborhoods on slopes above the basin floor can run cleaner and cooler than valley-bottom blocks only kilometers away.",
+        ],
+      },
+      {
+        id: "puebla-inversion-flood",
+        title: "Inversion smog and storm drainage",
+        paragraphs: [
+          "Dry-season mornings can look glorious from a rooftop and feel harsh at street level when inversion layers hold industrial and traffic emissions in the bowl. Scouting means comparing morning air on the historic center versus peripheral growth corridors.",
+          "Summer storms test expanding urban drainage — low spots near the Rio Atoyac floodplain and newer districts on filled land are the diligence targets. Volcanic andisol soils grow floriculture and maize well, but parcel exposure matters more than regional growability scores.",
+        ],
+      },
+    ],
+    confidenceNotes: "City normals describe the basin floor at roughly 2,150 m; slope neighborhoods, floodplain parcels, and blocks downwind of industrial corridors can diverge sharply — verify elevation and drainage.",
+    citations: [{ label: "SMN — Puebla", kind: "smn", url: "https://smn.conagua.gob.mx/es/" },
+      { label: "WorldClim — bioclimatic grids", kind: "worldclim", url: "https://www.worldclim.org/" },],
   },
 
   {
@@ -2055,12 +3064,12 @@ export const PLACES_MEXICO: Place[] = [
     summaryImmersive: "Ajijic sits on Lake Chapala's north shore at a highland elevation that trims tropical heat while the lake softens daily extremes. The dry season is bright and warm; the wet season arrives with afternoon storms that green the surrounding slopes. Compared with Guadalajara, the lakeshore is smaller, breezier, and more temperature-stable, which is why it has become one of Mexico's best-known year-round comfort climates.",
     whyDistinct: "Large-lake thermal inertia, highland elevation, and mountain slope exposure combine to produce a lived climate that is warmer than San Cristóbal, less urban than Guadalajara, and less dry than the interior Bajío.",
     experience: {
-      feel: "Ajijic feels like the climate so many people retire for. On Lake Chapala's north shore at 1,530 m, Mexico's largest lake and a highland elevation hold the temperature remarkably steady — bright warm dry seasons, green wet-season afternoons, and one of the country's best-known year-round comfort climates.",
+    feel: "Ajijic feels like the climate so many people retire for. On Lake Chapala's north shore at 1,530 m, Mexico's largest lake and a highland elevation hold the temperature remarkably steady — bright warm dry seasons, green wet-season afternoons, and one of the country's best-known year-round comfort climates.",
       seasons: {
-        winter: "Dry-season near-perfection — warm, sunny afternoons near 24°C, cool nights near 8°C, and clear lake light day after day.",
-        spring: "The warmest, driest stretch — afternoons near 31°C, the slopes browning, and the lake basin awaiting the rains.",
-        summer: "Mild and green under the wet season — afternoons easing to near 27°C, humid air, and reliable late-afternoon storms that green the surrounding sierras before clearing.",
-        autumn: "Rains tapering into bright warm days — afternoons near 27°C, the countryside lush, and the comfortable dry season returning.",
+      winter: "Dry-season near-perfection — warm, sunny afternoons near 24°C, cool nights near 8°C, and clear lake light day after day.",
+      spring: "The warmest, driest stretch — afternoons near 31°C, the slopes browning, and the lake basin awaiting the rains.",
+      summer: "Mild and green under the wet season — afternoons easing to near 27°C, humid air, and reliable late-afternoon storms that green the surrounding sierras before clearing.",
+      autumn: "Rains tapering into bright warm days — afternoons near 27°C, the countryside lush, and the comfortable dry season returning.",
       },
       travelerFit: "Visitors come for the lakeshore arts-and-expat town, the malecón and village markets, and easy Guadalajara access.",
       residentFit: "It rewards retirees and remote workers who want one of Mexico's most temperature-stable, lake-tempered comfort climates with a large established community.",
@@ -2079,8 +3088,8 @@ export const PLACES_MEXICO: Place[] = [
       accessFriction: 24,
       note: "The service base is unusually easy for a lake village, but expat demand, traffic, water quality, and hillside drainage keep the live-here score grounded.",
       sources: [
-        { label: "INEGI - Chapala municipal context", url: "https://www.inegi.org.mx/" },
-        { label: "Municipio de Chapala - local services", url: "https://www.chapala.gob.mx/" },
+      { label: "INEGI - Chapala municipal context", url: "https://www.inegi.org.mx/" },
+      { label: "Municipio de Chapala - local services", url: "https://www.chapala.gob.mx/" },
       ],
     },
     settlementsWithinZone: [
@@ -2101,28 +3110,28 @@ export const PLACES_MEXICO: Place[] = [
     confidenceNotes: "Ajijic itself is lake- and slope-specific; normals rely on Chapala/Guadalajara regional station context plus gridded climate and terrain sources.",
     deepSections: [
       {
-        id: "ajijic-lake-moderation",
-        title: "Lake Chapala as a thermal flywheel",
-        paragraphs: [
-          "Lake Chapala is large enough to matter at daily scale. It softens nighttime cold, limits some dry-season heat at the shore, and helps organize local breezes against the north-shore slopes.",
-          "The moderation is strongest near the water and weakens into surrounding hills and urbanized corridors, so neighborhood selection can change the lived climate more than the regional average suggests.",
-        ],
+      id: "ajijic-lake-moderation",
+      title: "Lake Chapala as a thermal flywheel",
+      paragraphs: [
+      "Lake Chapala is large enough to matter at daily scale. It softens nighttime cold, limits some dry-season heat at the shore, and helps organize local breezes against the north-shore slopes.",
+      "The moderation is strongest near the water and weakens into surrounding hills and urbanized corridors, so neighborhood selection can change the lived climate more than the regional average suggests.",
+      ],
       },
       {
-        id: "ajijic-expat-comfort",
-        title: "Why this became a comfort-climate magnet",
-        paragraphs: [
-          "Ajijic offers a rare mix: walkable village life, warm dry-season days, cool nights, lush wet-season renewal, and limited need for heating or cooling in well-designed homes.",
-          "That comfort has a social footprint. Popularity brings traffic, housing pressure, and service strain, so the atlas treats it as a high-comfort place rather than a hidden gem.",
-        ],
+      id: "ajijic-expat-comfort",
+      title: "Why this became a comfort-climate magnet",
+      paragraphs: [
+      "Ajijic offers a rare mix: walkable village life, warm dry-season days, cool nights, lush wet-season renewal, and limited need for heating or cooling in well-designed homes.",
+      "That comfort has a social footprint. Popularity brings traffic, housing pressure, and service strain, so the atlas treats it as a high-comfort place rather than a hidden gem.",
+      ],
       },
       {
-        id: "ajijic-watershed-risk",
-        title: "The lake is also the risk register",
-        paragraphs: [
-          "Lake health, wastewater, algal blooms, and watershed demand are not side issues; they are the core long-term resilience question for the Chapala basin.",
-          "A move or investment here should verify water source, drainage, shade, and slope stability. The climate is generous, but the basin is under pressure.",
-        ],
+      id: "ajijic-watershed-risk",
+      title: "The lake is also the risk register",
+      paragraphs: [
+      "Lake health, wastewater, algal blooms, and watershed demand are not side issues; they are the core long-term resilience question for the Chapala basin.",
+      "A move or investment here should verify water source, drainage, shade, and slope stability. The climate is generous, but the basin is under pressure.",
+      ],
       },
     ],
     citations: [
@@ -2141,6 +3150,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A fast-growing Bajío highland city with dry bright winters, summer thunderstorms, and cool nights at elevation.",
     summaryImmersive: "Querétaro is a comfort-climate compromise: warmer and drier than Mexico City, less humid than lowland tropics, and increasingly urban. The dry season brings clear light and large day-night swings; the wet season arrives through afternoon storms that break heat but strain drainage in expanding districts.",
     whyDistinct: "Highland elevation moderates a semiarid interior basin while urban growth amplifies nighttime heat and air-quality concerns.",
+    experience: {
+      feel: "Querétaro is a Bajío highland compromise — warmer and drier than Mexico City, less humid than coastal Mexico, with clear dry-season light and afternoon storms that break summer heat. Growth is rewriting the feel: the historic center stays walkable while northern districts run hotter and more car-dependent.",
+      seasons: {
+        winter: "Dry-season perfection for walking — sunny afternoons in the low 20s, nights near single digits, and cobalt skies that make the centro histórico glow. This is the scouting season for professionals weighing a move.",
+        spring: "The warmest dry stretch — highs pushing toward 30°C, dust on the semiarid fringe, and the wine route near Bernal showing how quickly the basin gives way to scrubland.",
+        summer: "Afternoon storms cool the city into the mid-20s while humidity climbs — drainage in expanding districts matters as much as temperature. Water stress shows up in landscaping choices before it shows up in headlines.",
+        autumn: "Rains taper into crisp mornings and golden afternoons — the second comfortable window before inversion season, with nights cooling fast toward winter.",
+      },
+      travelerFit: "Visitors come for the historic center, Bernal, and the wine route — dry season is the easy window; summer storms are brief but can flood low spots.",
+      residentFit: "It rewards professionals and families who want highland comfort with airport, hospitals, and industry nearby — if you compare the walkable core against Juriquilla and El Marques before choosing a neighborhood.",
+      texture: "One of the Bajío's easiest service bases — weigh long-run drought, fringe heat, and growth pressure against mild highland weather and unusually strong daily infrastructure.",
+    },
     climate: { tempHighC: [22, 25, 28, 30, 30, 28, 26, 26, 25, 25, 24, 22], tempLowC: [6, 7, 9, 12, 14, 15, 14, 14, 13, 11, 8, 6], precipMm: [8, 5, 5, 15, 45, 110, 135, 120, 95, 35, 10, 8], humidity: [54, 48, 44, 46, 54, 66, 70, 70, 68, 60, 56, 54], sunshinePct: [72, 74, 76, 72, 68, 58, 56, 58, 60, 68, 72, 72], annualPrecipMm: 591, frostFreeDays: 350, hardinessZone: "10a equiv." },
     soil: { texture: "Clay loam and volcanic alluvium", drainage: "moderate", phRange: [6.8, 8.0], waterHolding: "moderate" },
     growability: { score: 70, growsWell: ["Drought-tolerant herbs", "Agave", "Grapes nearby", "Vegetables with irrigation"], tricky: ["High-chill fruit", "Unirrigated gardens"] },
@@ -2189,7 +3210,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["professionals", "families"], travelFit: ["historic center", "wine route"],
     whoWouldLove: "People who want a dry highland Mexican city with strong services and broad mobility.", whoMightNot: "People seeking lush scenery or low-growth quiet.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — city-scale climate is well supported; neighborhood heat and flood exposure vary strongly.",
+    confidenceNotes: "Compare the walkable centro against Juriquilla and El Marques separately — new districts can run hotter, more car-dependent, and more water-stressed than historic shaded neighborhoods.",
     citations: [
       { label: "SMN — Querétaro normals", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
       { label: "INEGI digital map — Querétaro basin relief and urban context", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
@@ -2205,16 +3226,56 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A dry highland capital where Sierra Madre monsoon storms interrupt bright, cool-night plateau weather.",
     summaryImmersive: "Durango is not tropical Mexico. Its elevation keeps nights crisp, the dry season is bright and dusty, and summer storms build off the Sierra Madre Occidental. The city sits in a broad basin, so stagnant winter mornings and strong day-night swings both belong to the lived climate.",
     whyDistinct: "Interior elevation and monsoon-edge exposure create a highland dry climate with stronger summer thunderstorm seasonality than the Bajío.",
-    climate: { tempHighC: [20, 22, 25, 28, 31, 31, 29, 28, 27, 26, 23, 20], tempLowC: [1, 3, 6, 9, 12, 15, 14, 14, 12, 8, 4, 2], precipMm: [10, 8, 6, 8, 18, 75, 140, 135, 90, 30, 10, 8], annualPrecipMm: 538, frostFreeDays: 285, hardinessZone: "9b equiv." },
+    experience: {
+      feel: "Durango feels like a high interior basin at 1,880 m — not tropical Mexico, with crisp nights, bright dusty dry seasons, Sierra Madre monsoon storms in summer, and winter basin inversions pooling cold air.",
+      seasons: {
+        winter: "Basin inversion season — afternoons near 21°C, nights near 2°C, stagnant cold mornings, and dry intense plateau sun.",
+        spring: "Dust and heat — afternoons climbing toward 28°C, relentlessly clear before monsoon build-up, and wind-blown highland grassland.",
+        summer: "Monsoon drama — highs near 29°C, concentrated July–August storms off the Sierra Madre, arroyo pulses, and cooler nights than lowland Mexico.",
+        autumn: "Storm taper — highs falling through 25°C, September rains easing, historic-center evenings cooling fast, and dry clarity returning.",
+      },
+      travelerFit: "Visitors come for Sierra Madre road trips, historic-center film-country streets, and monsoon-season storm photography in a true highland basin.",
+      residentFit: "It rewards highland sun lovers and dry-climate professionals who accept basin winter inversions, dusty dry seasons, and water volatility without lowland humidity.",
+      texture: "A high plateau capital — weigh elevated drought, dry-season dust, basin cold-pool mornings, and wildfire smoke against crisp monsoon nights and Sierra-side gradients within an hour's drive.",
+    },
+    climate: { tempHighC: [20, 22, 25, 28, 31, 31, 29, 28, 27, 26, 23, 20], tempLowC: [1, 3, 6, 9, 12, 15, 14, 14, 12, 8, 4, 2], precipMm: [10, 8, 6, 8, 18, 75, 140, 135, 90, 30, 10, 8], annualPrecipMm: 538, frostFreeDays: 285, hardinessZone: "9b equiv.", humidity: [38, 38, 35, 40, 44, 41, 54, 56, 54, 46, 44, 38], sunshinePct: [74, 78, 78, 83, 92, 92, 92, 92, 86, 84, 72, 70] },
     soil: { texture: "Alluvial clay loam and volcanic-influenced upland soils", drainage: "moderate", phRange: [6.8, 8.0], waterHolding: "moderate" },
     growability: { score: 66, growsWell: ["Beans", "Maize", "Apples in nearby highlands", "Agave", "Drought-tolerant gardens"], tricky: ["Tropical fruit", "Humid-climate crops"] },
     climateChange: { outlook2050: "Higher dry-season heat and more variable monsoon timing.", outlook2100: "Water storage and forest-fire pressure become central.", keyShifts: [{ variable: "Dry-season heat", direction: "up" }, { variable: "Monsoon timing", direction: "mixed" }], resilienceNote: "Elevation is a buffer, but water volatility is material." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "low", trend: "mixed" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 64, microclimateUniqueness: 66, comfort: 68, growability: 66, resilience: 54, tradeoff: 44 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 46,
+      note: "Durango highland housing at mid-band; IMSS Durango anchors care — 1,880 m basin inversions, dry-season dust, and Sierra Madre monsoon storms define daily logistics beyond cool-night plateau appeal.",
+      sources: [
+      { label: "SMN — Durango normals", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
+      { label: "WorldClim 2.1 — Durango highland gridded climate", url: "https://www.worldclim.org/" },
+      ],
+    },
     relocationFit: ["dry-climate seekers", "regional professionals"], travelFit: ["Sierra Madre road trips", "historic center"],
     whoWouldLove: "People who like highland sun, cool nights, and monsoon-season drama without lowland humidity.", whoMightNot: "People who want lush wet greenery year-round.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — city station context is useful, but Sierra-side gradients around Durango are stronger than one urban normal can show.",
+    deepSections: [
+      {
+        id: "durango-highland-basin",
+        title: "High interior basin and monsoon edge",
+        paragraphs: [
+          "Durango sits at 1,880 m in a broad interior basin east of the Sierra Madre Occidental — BSk/Cwb transition with roughly 538 mm annually, dry plateau air with crisp nights and bright dusty dry seasons.",
+          "Summer monsoon storms build off the Sierra Madre Occidental with stronger thunderstorm seasonality than the Bajío; basin geometry produces stagnant winter mornings and strong day-night swings.",
+        ],
+      },
+      {
+        id: "durango-drought-monsoon",
+        title: "Drought volatility and highland gardening",
+        paragraphs: [
+          "Alluvial clay loam supports beans, maize, agave, and drought-tolerant gardens — elevated drought risk registers across the plateau. Sierra-side gradients around the city run wetter and cooler than urban normals suggest.",
+          "Relocators wanting lush wet greenery year-round should confirm they accept dry-season dust and monsoon drama — highland sun and cool nights without lowland humidity define Durango's appeal.",
+        ],
+      },
+    ],
+    confidenceNotes: "City station context is useful, but Sierra-side gradients run wetter and cooler than urban normals suggest — basin inversions and drought volatility need separate parcel diligence.",
     citations: [
       { label: "SMN — Durango normals", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
       { label: "WorldClim 2.1 — Durango highland gridded climate", kind: "worldclim", url: "https://www.worldclim.org/" },
@@ -2230,7 +3291,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A humid highland Veracruz city where Gulf air, volcanic relief, and cloud-forest edges make a green eternal-spring variant.",
     summaryImmersive: "Orizaba sits on the wet side of the Mexican highlands, below the country's highest peak. Gulf moisture rises into the mountains, producing frequent cloud, heavy wet-season rain, and mild temperatures that feel greener and more humid than the drier central plateau. It is a bridge between tropical Veracruz and the cool volcanic highlands.",
     whyDistinct: "Windward slope lift below Pico de Orizaba creates a humid highland climate with cloud-forest character and strong rainfall gradients over short distances.",
-    climate: { tempHighC: [21, 22, 24, 25, 25, 24, 23, 23, 23, 23, 22, 21], tempLowC: [10, 11, 13, 14, 15, 16, 15, 15, 15, 14, 12, 11], precipMm: [45, 35, 40, 65, 115, 260, 250, 240, 270, 160, 80, 55], annualPrecipMm: 1615, frostFreeDays: 365, hardinessZone: "10b equiv." },
+    experience: {
+      feel: "Orizaba feels like Gulf moisture climbing the Sierra Madre below Mexico's highest peak — green eternal-spring highland, heavy wet-season rain, cloud-forest humidity, and a bridge between tropical Veracruz port heat and cool volcanic country.",
+      seasons: {
+        winter: "Mild and misty — afternoons near 21°C, nights near 11°C, orographic drizzle on the windward slopes, and Pico de Orizaba snow visible above the cloud base.",
+        spring: "Green and building — afternoons near 25°C, river swell from spring rains on saturated slopes, and coffee-citrus country waking under persistent cloud.",
+        summer: "Wet-season peak — afternoons near 23°C despite latitude, heavy rain near 1,615 mm annually, afternoon convection, and landslide diligence on hillside roads.",
+        autumn: "Shoulder storms — afternoons near 23°C, wet-season tapering, and the steadiest window for highland walks before winter mist thickens.",
+      },
+      travelerFit: "Visitors come for Pico de Orizaba views, green highland walks, and Veracruz culture without lowland heat.",
+      residentFit: "It rewards cloud-forest lovers who accept wet-season infrastructure stress and a two-hour drive to Veracruz airport for international access.",
+      texture: "Windward highland compromise — weigh flood, landslide, and storm exposure against low cost-of-living and genuine eternal-spring mildness.",
+    },
+    climate: { tempHighC: [21, 22, 24, 25, 25, 24, 23, 23, 23, 23, 22, 21], tempLowC: [10, 11, 13, 14, 15, 16, 15, 15, 15, 14, 12, 11], precipMm: [45, 35, 40, 65, 115, 260, 250, 240, 270, 160, 80, 55], annualPrecipMm: 1615, frostFreeDays: 365, hardinessZone: "10b equiv.", humidity: [89, 89, 82, 80, 76, 78, 73, 71, 77, 78, 84, 85], sunshinePct: [31, 34, 33, 40, 45, 50, 47, 47, 42, 38, 35, 29] },
     soil: { texture: "Volcanic and alluvial loam on humid mountain slopes", drainage: "moderate", phRange: [5.5, 6.8], waterHolding: "high" },
     growability: { score: 78, growsWell: ["Coffee", "Citrus", "Avocado", "Banana in lower pockets", "Ornamentals"], tricky: ["Dryland crops", "High-chill fruit"] },
     climateChange: { outlook2050: "Cloud-base and rainfall timing shifts affect coffee and slope stability.", outlook2100: "Cloud-forest bands move upslope while heavy-rain risk increases.", keyShifts: [{ variable: "Cloud base", direction: "up" }, { variable: "Heavy rain", direction: "up" }], resilienceNote: "Moisture buffers heat but increases landslide and infrastructure diligence." },
@@ -2243,12 +3316,31 @@ export const PLACES_MEXICO: Place[] = [
       note: "Highland Veracruz town with low cost-of-living; Veracruz international airport ~2 h away.",
       sources: [
         { label: "INEGI — Orizaba urban profile", url: "https://www.inegi.org.mx/" },
-      ],
+      
+        { label: "SMN — Orizaba and Veracruz highland normals", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },],
     },
     relocationFit: ["cloud-forest lovers", "coffee people"], travelFit: ["Pico de Orizaba views", "green highland walks"],
     whoWouldLove: "People who want green mountains, mild temperatures, and Veracruz culture without lowland heat.", whoMightNot: "People seeking dry air and constant sun.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — windward mountain gradients are strong; use the numbers as conservative regional guidance rather than parcel-grade normals.",
+    deepSections: [
+      {
+        id: "orizaba-windward-pico",
+        title: "Windward lift below Pico de Orizaba",
+        paragraphs: [
+          "Orizaba sits on the wet windward side of the Sierra Madre Oriental below Mexico's highest peak — Gulf moisture climbs into the mountains, producing frequent cloud, heavy wet-season rain near 1,615 mm annually, and Cfb/Cwb transition mildness that feels greener and more humid than the central plateau. Strong rainfall gradients over short distances mean ridge-top blocks can see double valley-floor totals.",
+          "Orographic lift and tropical convection combine to make cloud-forest character persistent, not occasional — coffee, citrus, and avocado thrive on volcanic and alluvial loam with high water-holding capacity. Dry-air seekers will find the humidity relentless year-round.",
+        ],
+      },
+      {
+        id: "orizaba-green-highland",
+        title: "Green highland life and slope diligence",
+        paragraphs: [
+          "Elevated flood, storm, and landslide risk on humid mountain slopes registers here — verify parcel drainage, retaining structures, and rainy-season road access before committing. Low cost-of-living and strong growability attract cloud-forest lovers, but infrastructure stress peaks June through September.",
+          "Veracruz international airport sits roughly two hours away — Orizaba is a highland service town, not a port metro. People seeking dry air and constant sun should confirm slope exposure and insurance on the ground; atlas normals describe the windward belt, not every hillside finca.",
+        ],
+      },
+    ],
+    confidenceNotes: "Elevated flood, storm, and landslide risk on humid mountain slopes registers here — verify parcel drainage, retaining structures, and rainy-season road access before committing.",
     citations: [
       { label: "SMN — Orizaba and Veracruz highland normals", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
       { label: "INEGI digital map — Pico de Orizaba relief context", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
