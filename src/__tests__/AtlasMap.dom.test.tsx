@@ -133,6 +133,27 @@ describe("AtlasMap DOM controls", () => {
     expect(zoomIn).not.toBeDisabled();
   });
 
+  it("announces the top/bottom edge when arrow-key pin nav cannot move further", () => {
+    setCoarsePointer(false);
+    // A single pin means any up/down press is a boundary (no adjacent row).
+    const single = [makePlace({ id: "solo", name: "Solo Peak", lat: 40, lon: -100, tier: "A" })];
+    renderMap(vi.fn(), [], single);
+
+    const marker = document.querySelector('[data-marker-id="solo"]') as SVGGElement | null;
+    expect(marker).toBeTruthy();
+    marker!.focus();
+
+    // Left/Right wrap (here onto the lone pin) and must NOT mislabel as a row edge.
+    fireEvent.keyDown(marker!, { key: "ArrowRight" });
+    expect(screen.queryByText(/row of the visible pins/)).toBeNull();
+
+    fireEvent.keyDown(marker!, { key: "ArrowDown" });
+    expect(screen.getByText("Bottom row of the visible pins.")).toBeInTheDocument();
+
+    fireEvent.keyDown(marker!, { key: "ArrowUp" });
+    expect(screen.getByText("Top row of the visible pins.")).toBeInTheDocument();
+  });
+
   it("opens dense clusters into a sorted picker with tier and lived-coverage context", () => {
     setCoarsePointer(true);
     const onSelect = vi.fn();
