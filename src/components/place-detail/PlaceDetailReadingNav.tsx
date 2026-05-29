@@ -91,10 +91,14 @@ export function PlaceDetailReadingNav({
       >
         <div className="text-[10px] uppercase tracking-[0.18em] text-stone mb-2.5 px-1">On this page</div>
         <ul className="space-y-0.5">
-          {items.map(it => {
+          {items.map((it, idx) => {
             const isActive = activeAnchorId != null && activeAnchorId === it.id;
+            const showGroup = idx === 0 || items[idx - 1]?.group !== it.group;
             return (
               <li key={it.id}>
+                {showGroup ? (
+                  <div className="tc-reading-nav-group" aria-hidden>{it.group}</div>
+                ) : null}
                 <a
                   href={`#${it.id}`}
                   className={`${desktopLink}${isActive ? " tc-reading-nav-link--active" : ""}`}

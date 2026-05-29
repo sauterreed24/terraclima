@@ -36,9 +36,19 @@ import { mergeDeepSections } from "../../lib/place-appendix-sections";
 import { getBestMonths } from "../../lib/best-months";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../../lib/practical-read";
 
+/** Reading-nav acts — mirror the in-dossier ZoneDividers. */
+export const PD_NAV_GROUP = {
+  lived: "The lived read",
+  data: "The data lab",
+  land: "Land & growing",
+  fit: "Fit & sources",
+} as const;
+
 export interface PlaceNavItem {
   id: string;
   label: string;
+  /** Act this item belongs to (renders as a group header in the desktop nav). */
+  group: string;
 }
 
 /** Builds the table of contents for the current place (conditional sections omitted). */
@@ -47,57 +57,57 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   const settlementAnchors = buildSettlementAnchors(place);
   const activities = buildPracticalActivities(place);
   const items: PlaceNavItem[] = [
-    { id: PD.overview, label: "Overview" },
-    { id: PD.seasons, label: "Season by season" },
-    { id: PD.atAGlance, label: "At a glance" },
-    { id: PD.placeFeel, label: "Place feel" },
-    { id: PD.comfortPrecision, label: "Comfort precision" },
-    { id: PD.bioclimaticIndices, label: "Bioclimatic indices" },
-    { id: PD.practical, label: "Practical read" },
-    { id: PD.tourism, label: "Climate tourism" },
-    { id: PD.fieldStory, label: "Field story" },
+    { id: PD.overview, label: "Overview", group: PD_NAV_GROUP.lived },
+    { id: PD.seasons, label: "Season by season", group: PD_NAV_GROUP.lived },
+    { id: PD.atAGlance, label: "At a glance", group: PD_NAV_GROUP.lived },
+    { id: PD.placeFeel, label: "Place feel", group: PD_NAV_GROUP.lived },
+    { id: PD.comfortPrecision, label: "Comfort precision", group: PD_NAV_GROUP.lived },
+    { id: PD.bioclimaticIndices, label: "Bioclimatic indices", group: PD_NAV_GROUP.lived },
+    { id: PD.practical, label: "Practical read", group: PD_NAV_GROUP.lived },
+    { id: PD.tourism, label: "Climate tourism", group: PD_NAV_GROUP.lived },
+    { id: PD.fieldStory, label: "Field story", group: PD_NAV_GROUP.lived },
   ];
 
   if (mergeDeepSections(place).length > 0) {
-    items.push({ id: PD.deepDives, label: "Field dossier" });
+    items.push({ id: PD.deepDives, label: "Field dossier", group: PD_NAV_GROUP.lived });
   }
 
   items.push(
-    { id: PD.whyHere, label: "Why it differs" },
-    { id: PD.rhythm, label: "Seasonal rhythm" },
+    { id: PD.whyHere, label: "Why it differs", group: PD_NAV_GROUP.data },
+    { id: PD.rhythm, label: "Seasonal rhythm", group: PD_NAV_GROUP.data },
   );
 
   if (getBestMonths(place).length > 0) {
-    items.push({ id: PD.bestMonths, label: "Best months" });
+    items.push({ id: PD.bestMonths, label: "Best months", group: PD_NAV_GROUP.data });
   }
 
   items.push(
-    { id: PD.numbersTogether, label: "Numbers together" },
-    { id: PD.corpus, label: "Full atlas context" },
-    { id: PD.geospatial, label: "Geospatial analysis" },
-    { id: PD.signature, label: "Climate signature" },
+    { id: PD.numbersTogether, label: "Numbers together", group: PD_NAV_GROUP.data },
+    { id: PD.corpus, label: "Full atlas context", group: PD_NAV_GROUP.data },
+    { id: PD.geospatial, label: "Geospatial analysis", group: PD_NAV_GROUP.data },
+    { id: PD.signature, label: "Climate signature", group: PD_NAV_GROUP.data },
   );
 
   if (nearbyRows.length) {
-    items.push({ id: PD.contrast, label: "Local contrast" });
+    items.push({ id: PD.contrast, label: "Local contrast", group: PD_NAV_GROUP.data });
   }
 
   items.push(
-    { id: PD.soil, label: "Soil & growability" },
-    { id: PD.risk, label: "Risk" },
-    { id: PD.outlook, label: "Climate outlook" },
-    { id: PD.who, label: "Who fits" },
+    { id: PD.soil, label: "Agriculture & soil", group: PD_NAV_GROUP.land },
+    { id: PD.risk, label: "Climate risk", group: PD_NAV_GROUP.land },
+    { id: PD.outlook, label: "Climate outlook", group: PD_NAV_GROUP.land },
+    { id: PD.who, label: "Who fits", group: PD_NAV_GROUP.fit },
   );
 
   if (settlementAnchors.length) {
-    items.push({ id: PD.settlements, label: "Scouting bases" });
+    items.push({ id: PD.settlements, label: "Scouting bases", group: PD_NAV_GROUP.fit });
   }
   if (activities.length) {
-    items.push({ id: PD.activities, label: "Things to do" });
+    items.push({ id: PD.activities, label: "Things to do", group: PD_NAV_GROUP.fit });
   }
 
-  items.push({ id: PD.similar, label: "Climate twins" });
-  items.push({ id: PD.verdict, label: "Scores & sources" });
+  items.push({ id: PD.similar, label: "Climate twins", group: PD_NAV_GROUP.fit });
+  items.push({ id: PD.verdict, label: "Scores & sources", group: PD_NAV_GROUP.fit });
 
   return items;
 }
