@@ -23,6 +23,7 @@ All notable changes to Terraclima are tracked here.
 - **Round 3 corpus (`src/data/places.usa.ts`, `places.usa.extra.ts`, `places.usa.gap-states.ts`):** `sunshinePct` + `liveSignals` for canaan-valley-wv, redfield-ny, key-west-fl, klamath-falls-upper-klamath-basin-or, lander-sinks-canyon-wy, mount-charleston-nv, spearfish-sd, burkes-garden-va; `liveSignals` only for death-valley-ca (sunshine already present).
 - **Round 4 corpus (`src/data/places.usa.ts`, `places.usa.extra.ts`, `places.canada.ts`, `places.mexico.ts`):** completes Tier B `liveSignals` coverage — valentine-ne, loess-hills-ia, flint-hills-ks, eureka-springs-ar (liveSignals only); hilo-hi, wolfville-ns, atlin-lake-bc, fernie-elk-valley-bc, baie-saint-paul-qc, valle-guadalupe-mx, todos-santos-mx (sunshinePct + liveSignals).
 - **Round 5 corpus (`src/data/places.usa.ts`, `places.usa.extra.ts`, `places.canada.ts`, `places.mexico.ts`):** `sunshinePct` for silver-city-nm, ashland-or, fort-davis-tx, port-orford-cape-blanco-or, los-alamos-pajarito-plateau-nm, niagara-on-the-lake, cuernavaca-mx.
+- **Round 6 corpus (`src/data/places.mexico.ts`):** completes Tier B `sunshinePct` — patzcuaro-mx, valle-de-bravo-mx, zacatlan-de-las-manzanas-mx, tapalpa-mx, mazamitla-mx, creel-mx, ajijic-lake-chapala-mx.
 - **Playtest hardening (`scripts/playtest-polish.ts`):** SSP2-4.5 URL round-trip, post-v4.8 CSS regression needles, flagship sunshine/liveSignals anchors, UTCI* smoke on santa-barbara-ca.
 
 ### Maximum-effort symbiosis
