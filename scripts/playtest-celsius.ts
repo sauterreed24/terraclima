@@ -25,6 +25,7 @@ import { ALL_RANKING_PROFILES } from "../src/lib/ranking-options";
 import { rankPlaces } from "../src/lib/scoring";
 import { describeHumanComfort, scoreLivability } from "../src/lib/livability-score";
 import { scorePlaceFeel } from "../src/lib/place-feel";
+import { composePlaceExperience } from "../src/lib/place-overview";
 import { buildExplorerScoutBrief } from "../src/lib/explorer-scout-brief";
 
 const RANKINGS = ALL_RANKING_PROFILES;
@@ -138,6 +139,20 @@ for (const p of PLACES) {
   for (const c of feel.components) expectNoCelsiusInF(`feel.rationale[${c.key}] ${p.id}`, c.rationale);
   for (const s of feel.strengths) expectNoCelsiusInF(`feel.strength ${p.id}`, s);
   for (const f of feel.frictions) expectNoCelsiusInF(`feel.friction ${p.id}`, f);
+
+  // Overview spotlight engine — feel line, season detail, fit, texture.
+  const exp = composePlaceExperience(p);
+  expectNoCelsiusInF(`experience.feelLine ${p.id}`, exp.feelLine);
+  expectNoCelsiusInF(`experience.travelerFit ${p.id}`, exp.travelerFit);
+  expectNoCelsiusInF(`experience.residentFit ${p.id}`, exp.residentFit);
+  expectNoCelsiusInF(`experience.wouldNotFit ${p.id}`, exp.wouldNotFit);
+  expectNoCelsiusInF(`experience.texture ${p.id}`, exp.texture);
+  expectCelsiusPreservedInC(`experience.feelLine ${p.id}`, exp.feelLine);
+  for (const s of exp.seasons) {
+    expectNoCelsiusInF(`experience.season[${s.key}].detail ${p.id}`, s.detail);
+    expectNoCelsiusInF(`experience.season[${s.key}].headline ${p.id}`, s.headline);
+    expectCelsiusPreservedInC(`experience.season[${s.key}].detail ${p.id}`, s.detail);
+  }
 }
 
 console.log(

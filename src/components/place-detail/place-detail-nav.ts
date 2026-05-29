@@ -4,6 +4,7 @@
  */
 export const PD = {
   overview: "pd-overview",
+  seasons: "pd-seasons",
   atAGlance: "pd-at-a-glance",
   placeFeel: "pd-place-feel",
   comfortPrecision: "pd-comfort-precision",
@@ -46,7 +47,8 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   const settlementAnchors = buildSettlementAnchors(place);
   const activities = buildPracticalActivities(place);
   const items: PlaceNavItem[] = [
-    { id: PD.overview, label: "Opening" },
+    { id: PD.overview, label: "Overview" },
+    { id: PD.seasons, label: "Season by season" },
     { id: PD.atAGlance, label: "At a glance" },
     { id: PD.placeFeel, label: "Place feel" },
     { id: PD.comfortPrecision, label: "Comfort precision" },

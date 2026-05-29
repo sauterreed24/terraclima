@@ -4341,6 +4341,262 @@
     }
   }
 
+  /* ============================================================ */
+  /* Overview spotlight — "what it actually feels like" lead      */
+  /* ============================================================ */
+  .place-overview {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+  .place-overview__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #b07d2b;
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .place-overview__lede {
+    margin-top: 0.5rem;
+    color: var(--color-ice);
+    font-family: var(--font-serif);
+    font-size: clamp(1.35rem, 3.4vw, 1.95rem);
+    font-weight: 600;
+    line-height: 1.22;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+  .place-overview__immersive {
+    margin: 0;
+    color: var(--color-frost-strong);
+    font-size: 1.04rem;
+    line-height: 1.78;
+    letter-spacing: 0.011em;
+    text-wrap: pretty;
+  }
+  /* Drop-cap on the immersive read for an editorial "feature" feel. */
+  .place-overview__immersive::first-letter {
+    float: left;
+    margin: 0.32rem 0.55rem 0 0;
+    color: #b07d2b;
+    font-family: var(--font-serif);
+    font-size: 3.1rem;
+    font-weight: 700;
+    line-height: 0.78;
+  }
+  .place-overview__feel {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(227, 166, 59, 0.34);
+    border-left: 3px solid rgba(227, 166, 59, 0.78);
+    background: linear-gradient(135deg, rgba(255, 244, 224, 0.92), rgba(255, 253, 248, 0.86));
+    padding: 0.8rem 0.95rem;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
+  }
+  .place-overview__feel svg {
+    margin-top: 0.18rem;
+    color: #b07d2b;
+  }
+  .place-overview__feel p {
+    margin: 0;
+    color: var(--color-frost-strong);
+    font-size: 0.96rem;
+    line-height: 1.6;
+  }
+  .place-overview__seasons-label {
+    margin-bottom: 0.55rem;
+    color: var(--color-stone-readable);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .place-overview__season-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+  .place-overview__season {
+    --season-accent: 140, 200, 224;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(200, 170, 140, 0.3);
+    border-top: 3px solid rgb(var(--season-accent));
+    background: rgba(255, 253, 248, 0.78);
+    padding: 0.7rem 0.78rem 0.8rem;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+  .place-overview__season[data-tone="frigid"] { --season-accent: 122, 168, 214; }
+  .place-overview__season[data-tone="cold"]   { --season-accent: 140, 200, 224; }
+  .place-overview__season[data-tone="cool"]   { --season-accent: 110, 190, 178; }
+  .place-overview__season[data-tone="mild"]   { --season-accent: 137, 175, 136; }
+  .place-overview__season[data-tone="warm"]   { --season-accent: 224, 178, 96; }
+  .place-overview__season[data-tone="hot"]    { --season-accent: 216, 124, 91; }
+  .place-overview__season-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .place-overview__season-glyph {
+    display: grid;
+    place-items: center;
+    width: 1.85rem;
+    height: 1.85rem;
+    flex: 0 0 auto;
+    border-radius: 0.6rem;
+    background: rgba(var(--season-accent), 0.16);
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .place-overview__season-name {
+    color: var(--color-ice);
+    font-weight: 650;
+    font-size: 0.92rem;
+    line-height: 1.1;
+  }
+  .place-overview__season-months {
+    color: var(--color-stone-readable);
+    font-size: 0.66rem;
+    letter-spacing: 0.02em;
+  }
+  .place-overview__season-temps {
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    line-height: 1.05;
+  }
+  .place-overview__season-high {
+    color: var(--color-ice);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+  .place-overview__season-low {
+    color: var(--color-stone-readable);
+    font-size: 0.72rem;
+  }
+  .place-overview__season-headline {
+    color: rgb(var(--season-accent));
+    filter: saturate(1.15) brightness(0.82);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+  .place-overview__season-detail {
+    margin: 0;
+    color: var(--color-frost);
+    font-size: 0.82rem;
+    line-height: 1.48;
+    text-wrap: pretty;
+  }
+  .place-overview__fit {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+  .place-overview__fit-card {
+    min-width: 0;
+    border-radius: 0.8rem;
+    border: 1px solid rgba(200, 170, 140, 0.3);
+    border-left: 3px solid rgba(140, 200, 224, 0.7);
+    background: rgba(255, 253, 248, 0.74);
+    padding: 0.72rem 0.82rem;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+  .place-overview__fit-card[data-kind="travel"]   { border-left-color: rgba(94, 196, 220, 0.78); }
+  .place-overview__fit-card[data-kind="resident"] { border-left-color: rgba(103, 185, 111, 0.78); }
+  .place-overview__fit-card[data-kind="caution"]  { border-left-color: rgba(216, 124, 91, 0.78); }
+  .place-overview__fit-label {
+    display: flex;
+    align-items: center;
+    gap: 0.38rem;
+    margin-bottom: 0.35rem;
+    color: var(--color-stone-readable);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .place-overview__fit-card p {
+    margin: 0;
+    color: var(--color-frost);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  .place-overview__texture {
+    margin: 0;
+    padding-top: 0.15rem;
+    color: var(--color-stone-readable);
+    font-size: 0.85rem;
+    font-style: italic;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+  @media (max-width: 820px) {
+    .place-overview__season-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .place-overview__fit {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 460px) {
+    .place-overview__season-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---- Act dividers: separate lived read / data lab / land ---------- */
+  .detail-zone-divider {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin: 0.35rem 0 -0.4rem;
+  }
+  .detail-zone-divider__rule {
+    flex: 0 0 auto;
+    width: 3px;
+    align-self: stretch;
+    min-height: 2.4rem;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(227, 166, 59, 0.85), rgba(94, 196, 220, 0.4));
+  }
+  .detail-zone-divider__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #b07d2b;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .detail-zone-divider__title {
+    margin-top: 0.2rem;
+    color: var(--color-ice);
+    font-family: var(--font-serif);
+    font-size: clamp(1.05rem, 2.6vw, 1.32rem);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .detail-zone-divider__blurb {
+    margin: 0.3rem 0 0;
+    max-width: 60ch;
+    color: var(--color-stone-readable);
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+
   .comfort-precision-panel {
     container-type: inline-size;
     container-name: tc-comfort-precision;
@@ -6373,6 +6629,25 @@ html[data-theme="dark"] .hero-mini-rail {
   background: linear-gradient(180deg, rgba(28, 38, 60, 0.92) 0%, rgba(22, 30, 50, 0.88) 100%);
   border-color: rgba(120, 138, 178, 0.28);
   color: var(--color-frost-strong);
+}
+
+/* Overview spotlight — deep-glass panels in dark. */
+html[data-theme="dark"] .place-overview__feel {
+  background: linear-gradient(135deg, rgba(54, 42, 20, 0.55), rgba(22, 30, 50, 0.85));
+  border-color: rgba(227, 166, 59, 0.4);
+  border-left-color: rgba(227, 166, 59, 0.85);
+}
+html[data-theme="dark"] .place-overview__season,
+html[data-theme="dark"] .place-overview__fit-card {
+  background: rgba(18, 26, 44, 0.72);
+  border-color: rgba(120, 138, 178, 0.24);
+  box-shadow: var(--tc-shadow-inset);
+}
+html[data-theme="dark"] .place-overview__season-glyph {
+  background: rgba(var(--season-accent), 0.22);
+}
+html[data-theme="dark"] .place-overview__season-headline {
+  filter: saturate(1.1) brightness(1.18);
 }
 
 /* v4.8 climate-scenario control — match deep-glass explorer chrome in dark. */

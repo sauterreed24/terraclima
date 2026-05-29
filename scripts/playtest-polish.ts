@@ -29,6 +29,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { buildComfortPrecisionProfile, apparentComfortIndexFromProfile } from "../src/lib/comfort-precision";
+import { composePlaceExperience } from "../src/lib/place-overview";
 
 async function main(): Promise<void> {
   const validatePlaceId = (id: string) => PLACES.some((p) => p.id === id);
@@ -275,6 +276,33 @@ async function main(): Promise<void> {
 
   const lethbridge = PLACES.find(p => p.id === "lethbridge-ab");
   if (!lethbridge?.climate.humidity) throw new Error("lethbridge-ab missing humidity (Tier A)");
+
+  // Overview spotlight engine — every place gets a complete, humanistic read.
+  const SEASON_ORDER = ["winter", "spring", "summer", "autumn"] as const;
+  for (const place of PLACES) {
+    const exp = composePlaceExperience(place);
+    if (!exp.lede.trim()) throw new Error(`${place.id} experience: empty lede`);
+    if (!exp.immersive.trim()) throw new Error(`${place.id} experience: empty immersive`);
+    if (exp.feelLine.length < 24) throw new Error(`${place.id} experience: thin feelLine`);
+    if (!exp.travelerFit.trim() || !exp.residentFit.trim() || !exp.wouldNotFit.trim()) {
+      throw new Error(`${place.id} experience: missing fit framing`);
+    }
+    if (!exp.texture.trim()) throw new Error(`${place.id} experience: empty texture`);
+    if (exp.seasons.length !== 4) throw new Error(`${place.id} experience: expected 4 seasons, got ${exp.seasons.length}`);
+    exp.seasons.forEach((s, i) => {
+      if (s.key !== SEASON_ORDER[i]) throw new Error(`${place.id} experience: season order drift at ${i}`);
+      if (s.detail.length < 24) throw new Error(`${place.id} experience: thin ${s.key} detail`);
+      if (!s.headline.includes("&")) throw new Error(`${place.id} experience: malformed ${s.key} headline`);
+      if (!Number.isFinite(s.highC) || !Number.isFinite(s.lowC)) throw new Error(`${place.id} experience: non-finite ${s.key} temps`);
+    });
+  }
+  // Authored override precedence: a synthetic experience overrides derived fields.
+  const overrideProbe = PLACES[0]!;
+  const probe = composePlaceExperience({ ...overrideProbe, experience: { feel: "PROBE feel line over the derived read." } });
+  if (probe.feelLine !== "PROBE feel line over the derived read.") {
+    // composePlaceExperience caches by identity; a fresh object must bypass the cache.
+    throw new Error("experience: authored feel override did not take precedence");
+  }
 
   console.log("playtest-polish: OK");
 }
