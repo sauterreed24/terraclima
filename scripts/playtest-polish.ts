@@ -251,6 +251,7 @@ async function main(): Promise<void> {
     "valle-guadalupe-mx", "todos-santos-mx",
     "silver-city-nm", "ashland-or", "fort-davis-tx", "niagara-on-the-lake",
     "patzcuaro-mx", "ajijic-lake-chapala-mx",
+    "boulder-co",
   ];
   for (const id of polishIds) {
     const place = PLACES.find(p => p.id === id);
@@ -259,6 +260,19 @@ async function main(): Promise<void> {
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after polish pass`);
     if (!place.climate.humidity) throw new Error(`${id} missing humidity after Tier B polish pass`);
   }
+
+  const tierCLiveIds = [
+    "grand-marais-mi", "apalachicola-fl", "santa-cruz-felton-ca",
+    "ellensburg-wa", "hood-river-gorge", "truckee-ca", "mammoth-lakes-ca",
+  ];
+  for (const id of tierCLiveIds) {
+    const place = PLACES.find(p => p.id === id);
+    if (!place) throw new Error(`tier C live anchor missing: ${id}`);
+    if (!place.liveSignals) throw new Error(`${id} missing liveSignals after Tier C polish pass`);
+  }
+
+  const lethbridge = PLACES.find(p => p.id === "lethbridge-ab");
+  if (!lethbridge?.climate.humidity) throw new Error("lethbridge-ab missing humidity (Tier A)");
 
   console.log("playtest-polish: OK");
 }
