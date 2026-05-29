@@ -62,6 +62,6 @@ describe("composePlaceExperience", () => {
   });
 
   it("does not mark a place authored when no experience override is present", () => {
-    expect(composePlaceExperience(PLACES_BY_ID["yuma-az"]).authored).toBe(false);
+    expect(composePlaceExperience(PLACES_BY_ID["houghton-mi"]).authored).toBe(false);
   });
 });
