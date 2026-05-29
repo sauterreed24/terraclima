@@ -50,7 +50,7 @@ describe("PlaceDetail growability rationale", () => {
       </UnitProvider>,
     );
 
-    expect(screen.getByRole("heading", { name: "Soil & growability" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Agriculture & soil" })).toBeInTheDocument();
     expect(screen.getByText("Why this score?")).toBeInTheDocument();
     expect(screen.getByText(/^Bioclim basis: Selianinov HTC/)).toBeInTheDocument();
     expect(screen.getByText(/Thornthwaite PET .* frame this 74\/100 score/)).toBeInTheDocument();

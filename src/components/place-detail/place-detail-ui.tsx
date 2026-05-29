@@ -31,6 +31,35 @@ export function Section({
   );
 }
 
+/**
+ * Act divider used to separate the dossier into readable zones — e.g. the
+ * humanistic "lived read" from the measurement-heavy "data lab" and the
+ * land/agriculture sections. Keeps the long dossier legible without forcing a
+ * structural reorder of every section.
+ */
+export function ZoneDivider({
+  eyebrow,
+  title,
+  blurb,
+  icon,
+}: {
+  eyebrow: string;
+  title: string;
+  blurb?: string;
+  icon?: ReactNode;
+}) {
+  return (
+    <div className="detail-zone-divider" role="separator" aria-label={title}>
+      <div className="detail-zone-divider__rule" aria-hidden />
+      <div className="detail-zone-divider__body">
+        <span className="detail-zone-divider__eyebrow">{icon}{eyebrow}</span>
+        <div className="detail-zone-divider__title">{title}</div>
+        {blurb ? <p className="detail-zone-divider__blurb">{blurb}</p> : null}
+      </div>
+    </div>
+  );
+}
+
 export function KeyValue({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-baseline justify-between gap-4 py-1 text-sm border-b last:border-0 border-[rgba(200,160,120,0.28)]">

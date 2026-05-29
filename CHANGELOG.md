@@ -13,6 +13,15 @@ All notable changes to Terraclima are tracked here.
 - **Vite 8 (`vite.config.ts`):** `server.forwardConsole` forwards browser + Web Worker runtime errors/warnings to the dev terminal.
 - **Pipeline guards (`scripts/sanity-check.ts`, `scripts/audit-corpus.ts`):** validate authored `Place.projection` deltas (finite, plausibility-bounded, SSP pathway ordering).
 
+### Overview spotlight — "what it actually feels like"
+
+- **Humanistic overview spotlight (`src/lib/place-overview.ts`, `src/components/place-detail/PlaceOverviewSpotlight.tsx` new):** every dossier now leads with a vivid, season-by-season read of what the place actually feels like — an evocative lede + drop-capped immersive paragraph, a derived skin-level "feel line," a four-season walkthrough (Winter→Autumn, each with localized highs/lows, a 2–4 word headline, and a sensory detail), and traveler / resident / "who might not" framing. The `composePlaceExperience` engine derives this for all 226 places from the structured climate record; optional authored `Place.experience` fields override any part for flagship depth.
+- **Dossier acts (`src/components/place-detail/place-detail-ui.tsx` `ZoneDivider`):** the long dossier is now segmented into readable zones — the lived read, "the data lab" (climate/terrain/measurements), "land & growing" (agriculture, soil, risk), and "fit, neighbors & sources" — so the geospatial analysis and agricultural data sit in their own clearly-labeled, well-crafted sections instead of interleaving with the human read.
+- **Agriculture section (`src/components/PlaceDetail.tsx`):** "Soil & growability" reframed as "Agriculture & soil" with a crafted intro.
+- **Reading nav (`place-detail-nav.ts`):** "Overview" + "Season by season" anchors lead the table of contents.
+- **Schema (`src/types.ts`):** new optional `AuthoredExperience` (`Place.experience`).
+- **Playtests:** `playtest-polish` asserts a complete experience read (4 ordered seasons, non-empty feel/fit/texture) for every place + authored-override precedence; `playtest-celsius` proves the engine is leak-free in °F and round-trips in °C.
+
 ### Post–v4.8 look + corpus polish
 
 - **Comfort precision grid (`src/styles.css`):** five-card summary layout (UTCI* included) with `@container tc-comfort-precision` breakpoints; dark-theme card/month insets.

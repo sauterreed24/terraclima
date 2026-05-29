@@ -292,6 +292,32 @@ export interface PlaceDeepSection {
   paragraphs: string[];
 }
 
+/**
+ * Optional hand-authored "what it actually feels like" overrides for the
+ * overview spotlight. When absent (the default for most of the corpus), the
+ * `composePlaceExperience` engine derives a rich, season-by-season read from
+ * the structured climate record so every place still gets a humanistic
+ * overview. Authored fields win over the derived equivalents field-by-field,
+ * letting flagship places carry deeper, voice-driven prose without forcing
+ * every entry to be written by hand.
+ *
+ * Prose convention matches the rest of the corpus: temperatures are written in
+ * °C and localized at render by `localizeProse`. Keep each field a tight,
+ * readable unit (one to three sentences) — the spotlight handles layout.
+ */
+export interface AuthoredExperience {
+  /** One vivid line: the skin-level "what it feels like" headline. */
+  feel?: string;
+  /** Per-season sensory detail overrides (1–2 sentences each). */
+  seasons?: Partial<Record<"winter" | "spring" | "summer" | "autumn", string>>;
+  /** What draws travelers here, in human terms. */
+  travelerFit?: string;
+  /** What full-time residency rewards, in human terms. */
+  residentFit?: string;
+  /** Honest "what to expect / what to weigh" texture line. */
+  texture?: string;
+}
+
 export interface ZoneActivity {
   label: string;
   /** Functional category — UI chip + future filtering. */
@@ -407,6 +433,12 @@ export interface Place {
    * see `livedFrictionScore` in `src/lib/livability-score.ts`.
    */
   liveSignals?: LivedSignals;
+
+  /**
+   * Optional hand-authored overrides for the overview spotlight. Layered over
+   * the always-on derived experience read (`composePlaceExperience`).
+   */
+  experience?: AuthoredExperience;
 }
 
 /** Derived helpers. */

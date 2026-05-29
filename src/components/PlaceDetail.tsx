@@ -40,6 +40,7 @@ import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
 import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
 import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
 import { PlaceAtAGlance } from "./place-detail/PlaceAtAGlance";
+import { PlaceOverviewSpotlight } from "./place-detail/PlaceOverviewSpotlight";
 import { PlaceFeelRead } from "./place-detail/PlaceFeelRead";
 import { PlaceBioclimaticIndices } from "./place-detail/PlaceBioclimaticIndices";
 import { PlacePracticalRead } from "./place-detail/PlacePracticalRead";
@@ -48,7 +49,7 @@ import { PlaceResidencyBrief } from "./place-detail/PlaceResidencyBrief";
 import { PlaceComfortPrecision } from "./place-detail/PlaceComfortPrecision";
 import { PlaceBackToTop } from "./place-detail/PlaceBackToTop";
 import { PlaceReadingProgress } from "./place-detail/PlaceReadingProgress";
-import { Section, KeyValue, LabelRow, Legend, ScorePill, titleCaseLocal } from "./place-detail/place-detail-ui";
+import { Section, KeyValue, LabelRow, Legend, ScorePill, ZoneDivider, titleCaseLocal } from "./place-detail/place-detail-ui";
 import { synthesizePlaceSignals } from "../lib/place-signals";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
 import { buildGrowabilityRationale } from "../lib/growability-score";
@@ -562,15 +563,7 @@ function DetailBody({
     <div className="detail-body-shell mx-auto w-full px-4 py-6 md:px-7 md:py-8 lg:grid lg:grid-cols-[11.25rem_minmax(0,1fr)] lg:gap-x-10 lg:px-8">
       <PlaceDetailReadingNav items={navItems} activeAnchorId={readingActiveAnchor} />
       <div className="min-w-0 space-y-10 tc-detail-prose">
-      <Section anchorId={PD.overview}>
-        <p className="font-atlas text-lg text-ice/95 leading-relaxed italic">
-          <span aria-hidden="true" className="text-ochre-500">&ldquo;</span>
-          {prose(place.summaryShort)}
-          <span aria-hidden="true" className="text-ochre-500">&rdquo;</span>
-        </p>
-        <div className="divider-contour my-4" />
-        <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.summaryImmersive)}</p>
-      </Section>
+      <PlaceOverviewSpotlight place={place} anchorId={PD.overview} seasonsAnchorId={PD.seasons} />
 
       <PlaceResidencyBrief
         place={place}
@@ -750,6 +743,13 @@ function DetailBody({
           />
         </div>
       ) : null}
+
+      <ZoneDivider
+        eyebrow="The data lab"
+        title="Climate, terrain & measurements"
+        blurb="Everything above is the lived read. From here down the dossier turns analytical — the mechanisms, monthly numbers, atlas-wide context, and remote-sensing checks behind the feel."
+        icon={<TrendingUp className="w-3.5 h-3.5" aria-hidden />}
+      />
 
       <Section anchorId={PD.whyHere} icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="Why this climate is different here">
         <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.whyDistinct)}</p>
@@ -1045,7 +1045,17 @@ function DetailBody({
         </Section>
       ) : null}
 
-      <Section anchorId={PD.soil} title="Soil & growability" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+      <ZoneDivider
+        eyebrow="Land & growing"
+        title="Agriculture, soil & climate risk"
+        blurb="What the ground itself offers — soil, what grows well, and the hazard and long-range outlook a grower or resident plans around."
+        icon={<Leaf className="w-3.5 h-3.5" aria-hidden />}
+      />
+
+      <Section anchorId={PD.soil} title="Agriculture & soil" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+        <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
+          The growing read pairs the soil profile with what the climate envelope rewards or fights. Hardiness, frost-free runway, and chill hours sit in the climate signature below; here the focus is dirt, drainage, and what actually thrives.
+        </p>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="panel-thin p-4">
             <div className="text-[10px] uppercase tracking-wider text-stone mb-2">Soil profile</div>
@@ -1094,6 +1104,13 @@ function DetailBody({
       <Section anchorId={PD.outlook} title="Climate-change outlook">
         <ClimateChangeDelta place={place} />
       </Section>
+
+      <ZoneDivider
+        eyebrow="Fit, neighbors & sources"
+        title="Who it suits, what's nearby & where the numbers come from"
+        blurb="Back to the human scale — the people who thrive here, the settlements and outings that anchor the zone, climate twins elsewhere, and the citations behind every figure."
+        icon={<Users className="w-3.5 h-3.5" aria-hidden />}
+      />
 
       <Section anchorId={PD.who} title="Who would love this · who might not">
         <div className="grid md:grid-cols-2 gap-3">
