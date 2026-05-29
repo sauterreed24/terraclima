@@ -38,7 +38,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for hot-climate wineries, the warmest swimming lake in Canada, and desert ecology found nowhere else in the country.",
       residentFit: "It rewards sun-seekers, vintners, and retirees who want a genuine hot-dry summer and a short, manageable winter without leaving Canada.",
-      texture: "Easy-living summers with a catch: the main things to weigh are intense heat and a long-run drought trend, wildfire in the surrounding hills, and irrigation-dependent water in a desert valley.",
+      texture: "Easy-living summers with a catch — weigh intense heat and a long-run drought trend, wildfire in the surrounding hills, and irrigation-dependent water in a desert valley against excellent growability and outdoor rhythm.",
     },
 
     climate: {
@@ -204,7 +204,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for Waterton Lakes, the dinosaur badlands, and the spectacle of chinook-arch skies stacked over the foothills.",
       residentFit: "It rewards dryland farmers, big-sky people, and anyone who finds warm January winds romantic rather than maddening.",
-      texture: "A bracing place to settle: the main things to weigh are relentless wind, summer hail and storms, and a long-run drought trend on the southern prairie.",
+      texture: "A bracing place to settle — weigh relentless wind, summer hail and storms, and a long-run drought trend on the southern prairie against the place-specific comfort case that drew you to scout it.",
     },
 
     climate: {
@@ -367,7 +367,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for the Inner Harbour and Butchart Gardens, whale watching, and Vancouver Island's mild outdoor life.",
       residentFit: "It rewards retirees, gardeners, and mild-weather seekers who want walkable city life with the gentlest winter in Canada.",
-      texture: "An easy maritime life with a catch: the main things to weigh are gray, wet winters, island access and ferry logistics, and high coastal housing costs.",
+      texture: "An easy maritime life with a catch — weigh gray, wet winters, island access and ferry logistics, and high coastal housing costs against strong highland comfort and daily livability.",
     },
     climate: {
       tempHighC: [7.6, 9.1, 11.2, 13.6, 16.5, 18.9, 21.4, 21.6, 19.7, 14.6, 9.9, 7.1],
@@ -468,7 +468,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for storm-watching, surfing, whale watching, and the raw outer-coast experience that no sheltered inner-coast town can replicate.",
       residentFit: "It rewards surfers, rainforest people, and ocean-obsessed souls who can tolerate Highway 4 washouts, tourism-driven housing costs, and mainland medical access.",
-      texture: "A genuine hyper-maritime life on the edge of the continent — the main things to weigh are relentless rain, extreme housing pressure, and a single road in that closes when the coast erodes.",
+      texture: "A genuine hyper-maritime life on the edge of the continent — weigh relentless rain, extreme housing pressure, and a single road in that closes when the coast erodes against solid climate resilience relative to the region.",
     },
     climate: {
       tempHighC: [7.1, 7.7, 8.7, 10.2, 12.4, 14.5, 16.6, 17.2, 16.1, 13.2, 9.7, 7.4],
@@ -565,7 +565,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for the Annapolis Valley wine trail, apple orchards, Acadia University culture, and Fundy tide watching.",
       residentFit: "It rewards fruit growers, winemakers, and families who want a sheltered maritime valley with walkable town life and Acadia's cultural anchor.",
-      texture: "Canada's oldest orchard region in a fog-sheltered valley — the main things to weigh are hurricane and tropical-remnant storm exposure, Fundy fog on exposed sites, and Halifax as the specialty-care backup.",
+      texture: "Canada's oldest orchard region in a fog-sheltered valley — weigh hurricane and tropical-remnant storm exposure, Fundy fog on exposed sites, and Halifax as the specialty-care backup against excellent growability and outdoor rhythm.",
     },
     climate: {
       tempHighC: [-1.6, -0.8, 3.9, 11.4, 18.1, 22.7, 25.3, 24.9, 20.5, 14.1, 7.4, 1.6],
@@ -663,7 +663,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for the Niagara wine trail, Shaw Festival, tender-fruit orchards, and Canada's premier ice-wine country.",
       residentFit: "It rewards winemakers, food-focused families, and wine-country people who accept humid summers and heritage-tourism housing pressure.",
-      texture: "Canada's premier tender-fruit and wine region — the main things to weigh are humid summer heat load, attainable-housing pressure, and traditional ice-wine climate eroding with warming.",
+      texture: "Canada's premier tender-fruit and wine region — weigh humid summer heat load, attainable-housing pressure, and traditional ice-wine climate eroding with warming against excellent growability and outdoor rhythm.",
     },
     climate: {
       tempHighC: [-0.4, 0.5, 5.6, 12.8, 19.5, 24.5, 27.1, 26.1, 22.2, 15.1, 8.1, 2.2],
@@ -759,7 +759,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for Atlin Lake paddling, glacier views, aurora, and long-day summer light in one of BC's most remote lake villages.",
       residentFit: "It rewards remote artists, northern lake people, and heat-refuge absolutists who accept ~400-person isolation, severe winter darkness, and no mild-season guarantee.",
-      texture: "A dry lake-moderated subarctic settlement — the main things to weigh are remoteness, severe winter, limited healthcare, and wildfire smoke reaching northern basins.",
+      texture: "A dry lake-moderated subarctic settlement — weigh remoteness, severe winter, limited healthcare, and wildfire smoke reaching northern basins against distinct microclimate character worth the tradeoffs.",
     },
     climate: { tempHighC: [-8, -4, 1, 7, 13, 17, 20, 19, 13, 5, -3, -7], tempLowC: [-17, -15, -10, -4, 1, 6, 8, 7, 3, -3, -10, -15], precipMm: [28, 22, 20, 18, 24, 38, 55, 50, 45, 40, 34, 30], snowCm: [35, 28, 20, 8, 1, 0, 0, 0, 3, 12, 28, 35], sunshinePct: [52, 58, 62, 68, 72, 76, 78, 74, 64, 52, 42, 38], humidity: [72, 68, 58, 48, 45, 48, 55, 58, 55, 52, 65, 72], annualPrecipMm: 404, frostFreeDays: 90, hardinessZone: "3a", diurnalSummerC: 12, diurnalWinterC: 9 },
     soil: { texture: "Glacial till, gravelly loam, and lake alluvium", drainage: "good", phRange: [5.8, 7.0], organicMatterPct: [2, 6], waterHolding: "moderate", notes: "Cold soils, slope, and drainage determine usable garden pockets." },
@@ -835,7 +835,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for Fernie Alpine Resort, Elk River fishing, mountain biking, and a true working mountain town with deep snow culture.",
       residentFit: "It rewards ski families, mountain remote workers, and cool-summer seekers who accept steep hazard homework, winter maintenance, and regional smoke seasons.",
-      texture: "A genuine Rocky Mountain town climate — the main things to weigh are avalanche terrain, floodplain siting, wildfire smoke, and Cranbrook as specialty-care backup.",
+      texture: "A genuine Rocky Mountain town climate — weigh avalanche terrain, floodplain siting, wildfire smoke, and Cranbrook as specialty-care backup against the place-specific comfort case that drew you to scout it.",
     },
     climate: { tempHighC: [-2, 1, 6, 12, 17, 21, 25, 24, 18, 10, 2, -2], tempLowC: [-9, -7, -3, 1, 5, 9, 11, 10, 6, 1, -4, -8], precipMm: [70, 55, 60, 65, 75, 85, 65, 55, 60, 65, 70, 75], snowCm: [100, 70, 45, 15, 2, 0, 0, 0, 2, 18, 55, 95], sunshinePct: [38, 42, 48, 54, 58, 62, 68, 66, 58, 48, 36, 34], humidity: [75, 72, 65, 58, 55, 58, 55, 52, 55, 62, 72, 78], annualPrecipMm: 800, frostFreeDays: 130, hardinessZone: "5a", diurnalSummerC: 14, diurnalWinterC: 7 },
     soil: { texture: "Alluvial loam, glacial till, and stony colluvium", drainage: "imperfect", phRange: [5.5, 7.0], organicMatterPct: [3, 7], waterHolding: "moderate", notes: "Floodplain parcels, benches, and shaded slopes differ sharply." },
@@ -1356,7 +1356,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for heritage Baker Street, Kootenay Lake paddling, nearby ski terrain, and one of Canada's most walkable mountain-town cores.",
       residentFit: "It rewards creative mountain-town lovers who want lake views, cool summer nights, and a real community — if they accept small-town services and regional smoke seasons.",
-      texture: "Canada's most climate-moderate interior mountain town — the main things to weigh are regional wildfire smoke, steep-lot winter maintenance, and housing above interior BC norms.",
+      texture: "Canada's most climate-moderate interior mountain town — weigh regional wildfire smoke, steep-lot winter maintenance, and housing above interior BC norms against the place-specific comfort case that drew you to scout it.",
     },
     climate: { tempHighC: [-0.8, 2.6, 8.4, 14.1, 19.1, 22.8, 26.4, 26.2, 20.4, 12.1, 4.2, -1.1], tempLowC: [-6.1, -4.4, -1.1, 2.3, 6.4, 9.8, 12.1, 11.6, 7.6, 2.8, -1.9, -5.4], precipMm: [68, 46, 46, 42, 58, 62, 48, 48, 50, 58, 80, 86], snowCm: [80, 45, 18, 2, 0, 0, 0, 0, 0, 2, 32, 74], sunshinePct: [32, 38, 45, 52, 58, 65, 72, 70, 58, 45, 32, 28], humidity: [78, 72, 62, 52, 48, 48, 42, 42, 48, 62, 78, 82], annualPrecipMm: 692, frostFreeDays: 160, hardinessZone: "6a" },
     soil: { texture: "Silt loam over till", drainage: "moderate", phRange: [5.4, 6.6], waterHolding: "moderate" },
@@ -2106,7 +2106,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for the aurora, the Yukon River and Klondike history, and a wilderness-capital basecamp under the midnight sun.",
       residentFit: "It rewards independent northerners who want a dry, sunny subarctic with real services and wilderness at the doorstep.",
-      texture: "A bright but demanding north: the main things to weigh are long, cold winters and short growing seasons, plus the isolation of a small northern capital.",
+      texture: "A bright but demanding north — weigh long, cold winters and short growing seasons, plus the isolation of a small northern capital against rain-shadow comfort and strong seasonal clarity.",
     },
     climate: { tempHighC: [-11.4, -7.1, -1.1, 6.8, 14.2, 19.3, 20.9, 19.1, 12.8, 3.4, -6.1, -10.4], tempLowC: [-24.0, -20.8, -14.6, -5.9, 0.6, 5.8, 8.1, 6.6, 2.1, -4.4, -14.8, -21.6], precipMm: [14, 11, 10, 9, 18, 31, 36, 35, 31, 23, 20, 22], snowCm: [20, 14, 10, 4, 2, 0, 0, 0, 2, 14, 26, 28], sunshinePct: [22, 32, 48, 58, 62, 68, 70, 62, 48, 32, 20, 14], humidity: [78, 72, 62, 52, 48, 45, 48, 52, 55, 62, 72, 80], annualPrecipMm: 260, frostFreeDays: 70, hardinessZone: "2b" },
     soil: { texture: "Sandy loam over permafrost / gravel", drainage: "good", phRange: [6.2, 7.2], waterHolding: "low" },
@@ -3076,7 +3076,7 @@ export const PLACES_CANADA: Place[] = [
       },
       travelerFit: "Visitors come for fall color, food tourism, St. Lawrence viewpoints, and a real Quebec arts town with estuary light.",
       residentFit: "It rewards artists, cold-coast small-town seekers, and orchard hobbyists who accept snowy winters and Quebec City as specialty-care backup.",
-      texture: "A sheltered estuary arts pocket inside harsher regional climate — the main things to weigh are estuary storm exposure, Charlevoix slope hazards, and cold winters that estuary air does not erase.",
+      texture: "A sheltered estuary arts pocket inside harsher regional climate — weigh estuary storm exposure, Charlevoix slope hazards, and cold winters that estuary air does not erase against mild summers and a walkable climate signature.",
     },
     climate: { tempHighC: [-7, -5, 1, 8, 16, 21, 24, 23, 18, 10, 3, -4], tempLowC: [-17, -16, -10, -2, 4, 9, 12, 11, 6, 0, -5, -13], precipMm: [75, 60, 70, 75, 90, 95, 105, 95, 95, 100, 90, 85], snowCm: [65, 55, 45, 15, 2, 0, 0, 0, 0, 5, 30, 60], humidity: [76, 74, 74, 72, 74, 78, 80, 80, 78, 76, 76, 76], sunshinePct: [42, 46, 50, 54, 58, 62, 64, 62, 56, 48, 40, 36], annualPrecipMm: 1035, frostFreeDays: 135, hardinessZone: "4b", chillHours: 2600 },
     soil: { texture: "Alluvial loam on river flats with stony podzols upslope", drainage: "moderate", phRange: [5.4, 6.7], organicMatterPct: [3, 7], waterHolding: "moderate" },

@@ -1,18 +1,21 @@
 /**
- * Refresh generic `experience.texture` lines on Tier C places without
- * touching hand-authored seasons, feel, or fit fields.
+ * Refresh generic `experience.texture` lines without touching hand-authored
+ * seasons, feel, or fit fields.
  *
  * Run: `tsx scripts/refresh-texture-corpus.ts`
+ * Optional: `TIER=A|B|C` to limit scope (default: all tiers with generic texture).
  */
 import { PLACES } from "../src/data/places";
 import { draftTexture, isGenericTexture } from "./lib/author-experience-draft";
 import { findFileForPlace, placeBlockWindow, readCorpusFile, writeCorpusFile } from "./lib/corpus-place-io";
 
+const tierFilter = process.env.TIER?.trim();
 const fileCache = new Map<string, string>();
 let refreshed = 0;
 let skipped = 0;
 
-for (const place of PLACES.filter(p => p.tier === "C")) {
+for (const place of PLACES) {
+  if (tierFilter && place.tier !== tierFilter) continue;
   const texture = place.experience?.texture;
   if (!texture || !isGenericTexture(texture)) {
     skipped += 1;

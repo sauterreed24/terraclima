@@ -45,7 +45,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for lavender bloom (July), Olympic NP gateway, dark-sky observers, and low-crowd Pacific NW.",
       residentFit: "It rewards anyone who wants Pacific Northwest proximity without Pacific Northwest drizzle. Gardeners chasing Mediterranean-style perennials. Those allergic to both heat and humidity — especially retirees — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — no single hazard dominates the picture. Clallam-County housing has tightened with retirees but remains well below Bay Area / Marin levels; Port Angeles serves daily needs and Sea-Tac is a 2.",
+      texture: "A genuinely easy rain-shadow life — no single hazard dominates the picture. Clallam-County housing has tightened with retirees but remains well below Bay Area / Marin levels; Port Angeles serves daily needs and Sea-Tac is a 2.",
     },
     climate: {
       tempHighC: [7.8, 9.2, 11.1, 13.4, 16.3, 18.8, 21.6, 21.8, 19.6, 14.8, 10.3, 7.9],
@@ -216,7 +216,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for world-famous birding — the elegant trogon among them — Cave Creek Canyon's rhyolite cliffs, and dark-sky nights at the wilderness edge.",
       residentFit: "It rewards naturalists, astronomers, and self-reliant desert-mountain people who are comfortable far from services in one of the continent's great biological crossroads.",
-      texture: "This is a remote, self-sufficient life: the main things to weigh are summer heat on the basin floor, wildfire in the range, and a long drive to the nearest town for anything beyond the basics.",
+      texture: "This is a remote, self-sufficient life — weigh summer heat on the basin floor, wildfire in the range, and a long drive to the nearest town for anything beyond the basics against distinct microclimate character worth the tradeoffs.",
     },
 
     climate: {
@@ -398,7 +398,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for world-class birding, sky-island hiking, Kartchner Caverns, and the most accessible Madrean highland on the US side of the border.",
       residentFit: "It rewards birders, monsoon lovers, and southeast-Arizona transplants who want elevation relief, a real hospital town, and Mexican biogeographic continuity — if they accept water diligence and wildfire planning.",
-      texture: "The richest US sky island for biodiversity — the main things to weigh are pre-monsoon drought, San Pedro aquifer drawdown, and post-fire debris flows in canyon washes.",
+      texture: "The richest US sky island for biodiversity — weigh pre-monsoon drought, San Pedro aquifer drawdown, and post-fire debris flows in canyon washes against the place-specific comfort case that drew you to scout it.",
     },
 
     climate: {
@@ -566,7 +566,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the aquarium and Cannery Row, Big Sur and 17-Mile Drive, and a cool-summer refuge when the rest of California swelters.",
       residentFit: "It rewards anyone who treasures cool, stable, fog-washed air year-round — heat-averse remote workers, retirees, and gardeners of cool-climate plants.",
-      texture: "An easy climate to live in, with real costs attached: the main things to weigh are Bay-Area-adjacent housing prices and long, sunless summer fog stretches on the immediate coast.",
+      texture: "An easy climate to live in, with real costs attached — weigh Bay-Area-adjacent housing prices and long, sunless summer fog stretches on the immediate coast against mild summers and a walkable climate signature.",
     },
 
     climate: {
@@ -739,7 +739,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for Blue Ridge leaf season, Mount Mitchell and the Black Mountains, and an easy mountain-town base just east of Asheville.",
       residentFit: "It rewards four-season people, gardeners, and retirees who want genuine mountain living with a long growing season and a merciful winter.",
-      texture: "A gentle, well-watered place to settle: the main things to weigh are humid, wet stretches, occasional Appalachian flooding and slope failure after big rains, and rising newcomer demand around Asheville.",
+      texture: "A gentle, well-watered place to settle — weigh humid, wet stretches, occasional Appalachian flooding and slope failure after big rains, and rising newcomer demand around Asheville against excellent growability and outdoor rhythm.",
     },
 
     climate: {
@@ -908,7 +908,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for Sierra eastside climbing and skiing, the ancient bristlecone pines, and some of the darkest skies in California.",
       residentFit: "It rewards climbers, anglers, and high-desert people who want big-mountain access without mountain-town prices.",
-      texture: "A spare, spectacular place to live: the main things to weigh are intense summer heat and aridity, Sierra wildfire smoke, and water that depends entirely on the snowpack above.",
+      texture: "A spare, spectacular place to live — weigh intense summer heat and aridity, Sierra wildfire smoke, and water that depends entirely on the snowpack above against rain-shadow comfort and strong seasonal clarity.",
     },
     climate: {
       tempHighC: [8.6, 11.8, 15.7, 20.6, 25.9, 31.6, 35.2, 34.1, 29.3, 22.4, 14.3, 9.1],
@@ -1008,7 +1008,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for Grand Canyon access, San Francisco Peaks skiing and hiking, Route 66, and dark-sky observing.",
       residentFit: "It rewards four-season mountain people, outdoor families, and anyone who wants cool-pine living within reach of the Southwest's red-rock country.",
-      texture: "A genuine high-country life: the main things to weigh are a long, snowy winter, fire and smoke in the surrounding forest, and thin-air altitude at 2,100 m.",
+      texture: "A genuine high-country life — weigh a long, snowy winter, fire and smoke in the surrounding forest, and thin-air altitude at 2,100 m against the place-specific comfort case that drew you to scout it.",
     },
     climate: {
       tempHighC: [7.8, 9.1, 11.6, 15.7, 21.1, 26.7, 27.9, 26.3, 23.1, 18.1, 12.2, 7.8],
@@ -1107,7 +1107,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the Gila Wilderness and cliff dwellings, a walkable arts-and-mining historic downtown, and dark-sky high country.",
       residentFit: "It rewards artists, retirees, and high-desert people who want a mild, sunny, four-season climate well off the beaten path.",
-      texture: "A gentle sky-country life with real edges: the main things to weigh are wildfire and smoke in the Gila, a long-run drought trend, and a small, remote service base.",
+      texture: "A gentle sky-country life with real edges — weigh wildfire and smoke in the Gila, a long-run drought trend, and a small, remote service base against distinct microclimate character worth the tradeoffs.",
     },
     climate: {
       tempHighC: [10.9, 12.6, 16.0, 20.6, 25.7, 30.3, 30.1, 28.7, 26.7, 22.1, 15.9, 11.3],
@@ -1218,7 +1218,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for windsurfing and kiteboarding, the Fruit Loop orchards and cideries, and Mt. Hood and Gorge waterfalls.",
       residentFit: "It rewards orchardists, kinetic outdoor people, and remote workers who want sun, wind, and Pacific access on the dry edge of the Cascades.",
-      texture: "A sunny, active gorge life with caveats: the main things to weigh are relentless summer wind, wildfire smoke, and tight, tourism-driven housing.",
+      texture: "A sunny, active gorge life with caveats — weigh relentless summer wind, wildfire smoke, and tight, tourism-driven housing against excellent growability and outdoor rhythm.",
     },
     climate: {
       tempHighC: [6.4, 9.2, 13.0, 16.6, 20.9, 24.8, 29.4, 29.1, 24.7, 17.2, 10.4, 6.1],
@@ -1438,7 +1438,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for art markets, adobe architecture, high-desert light, Rio Grande rafting, and ski country an hour from the plaza.",
       residentFit: "It rewards artists, retirees, and remote workers who want four true seasons, strong culture, and altitude without brutal humidity — if they accept water limits.",
-      texture: "One of North America's most culturally rich high-desert cities — the main things to weigh are water scarcity, wildfire and smoke on surrounding slopes, and housing pressure.",
+      texture: "One of North America's most culturally rich high-desert cities — weigh water scarcity, wildfire and smoke on surrounding slopes, and housing pressure against the place-specific comfort case that drew you to scout it.",
     },
     climate: {
       tempHighC: [6.7, 8.9, 12.9, 17.4, 22.6, 28.1, 29.4, 28.1, 25.1, 19.3, 12.2, 7.3],
@@ -1657,7 +1657,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the quiet back side of the Tetons, Grand Targhee powder, and summer hiking and fly-fishing without the Jackson crowds.",
       residentFit: "It rewards skiers, anglers, and cold-hardy mountain people who will trade a brutal winter for big-peak summers and small-town quiet.",
-      texture: "A demanding winter climate to settle into: the main things to weigh are deep, persistent cold and inversions, a short growing season, and snow-country isolation.",
+      texture: "A demanding winter climate to settle into — weigh deep, persistent cold and inversions, a short growing season, and snow-country isolation against the place-specific comfort case that drew you to scout it.",
     },
     climate: {
       tempHighC: [-2.4, 0.1, 5.8, 11.6, 16.9, 21.7, 26.7, 26.1, 21.2, 13.8, 4.3, -2.1],
@@ -1756,7 +1756,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for cherry blossom, the Leelanau wine trail, summer lake season, and North America's most famous tart-cherry country.",
       residentFit: "It rewards fruit growers, winemakers, and families who want four real seasons with unusually strong regional services for a small northern town.",
-      texture: "Working fruit country with resort-town energy — the main things to weigh are serious lake-effect winter, housing pressure, and declining lake ice shifting bloom timing.",
+      texture: "Working fruit country with resort-town energy — weigh serious lake-effect winter, housing pressure, and declining lake ice shifting bloom timing against excellent growability and outdoor rhythm.",
     },
     climate: {
       tempHighC: [-2.8, -1.3, 3.9, 11.1, 17.8, 22.9, 25.3, 24.4, 20.1, 13.3, 5.7, -0.4],
@@ -1855,7 +1855,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for waterfall gorges, Finger Lakes wine trails, Cornell culture, and fall color above deep glacial lakes.",
       residentFit: "It rewards academics, winemakers, and cool-climate gardeners who want cultural depth and four real seasons — if they accept gray winters and housing pressure.",
-      texture: "Elegant cold-climate wine country with university services — the main things to weigh are gorge-country cloud cover, student-market housing competition, and lake ice decline shifting bloom timing.",
+      texture: "Elegant cold-climate wine country with university services — weigh gorge-country cloud cover, student-market housing competition, and lake ice decline shifting bloom timing against the place-specific comfort case that drew you to scout it.",
     },
     climate: {
       tempHighC: [-2.0, -0.8, 4.8, 12.2, 19.1, 23.7, 26.3, 25.4, 21.4, 14.7, 7.6, 1.3],
@@ -1953,7 +1953,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the North Shore drive, boreal fall color, storm-watching on Superior, and a cool summer escape from the Midwest heat.",
       residentFit: "It rewards writers, artists, and boreal enthusiasts who want a genuine lake-shore life — cool summers, strong community, and wilderness at the doorstep.",
-      texture: "A rare cool-summer maritime pocket in the interior — the main things to weigh are a long, hard winter, limited growing warmth, and the remoteness of full-service care.",
+      texture: "A rare cool-summer maritime pocket in the interior — weigh a long, hard winter, limited growing warmth, and the remoteness of full-service care against mild summers and a walkable climate signature.",
     },
     climate: {
       tempHighC: [-6.6, -4.2, 0.9, 7.3, 13.2, 17.8, 21.2, 20.7, 16.8, 10.4, 2.9, -3.7],
@@ -2054,7 +2054,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for waterfall hikes, fall color, a cool summer escape from Piedmont heat, and one of the wettest temperate-rainforest pockets in eastern North America.",
       residentFit: "It rewards naturalists, cool-summer retirees, and writers who want a deeply wooded mountain retreat without Rocky Mountain isolation.",
-      texture: "A genuine cloud-forest climate in the eastern US — the main things to weigh are persistent rain and fog, limited sun for gardening, and among the highest landslide risk in the Southeast.",
+      texture: "A genuine cloud-forest climate in the eastern US — weigh persistent rain and fog, limited sun for gardening, and among the highest landslide risk in the Southeast against mild summers and a walkable climate signature.",
     },
     climate: {
       tempHighC: [4.9, 6.4, 10.6, 15.8, 20.0, 23.4, 24.6, 24.1, 21.3, 16.4, 11.1, 6.4],
@@ -2400,7 +2400,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for orchard and wine country, Lake Chelan, and a sunny basecamp on the dry side of the Cascades.",
       residentFit: "It rewards orchardists, dry-climate seekers, and outdoor families who want four real seasons with far more sun than the coast.",
-      texture: "A sunny, four-season life with caveats: the main things to weigh are hot summers and wildfire smoke, winter valley inversions, and irrigation-dependent water.",
+      texture: "A sunny, four-season life with caveats — weigh hot summers and wildfire smoke, winter valley inversions, and irrigation-dependent water against excellent growability and outdoor rhythm.",
     },
     climate: { tempHighC: [1.6, 5.9, 12.3, 17.8, 23.4, 27.9, 31.8, 30.9, 25.4, 17.2, 8.1, 2.3], tempLowC: [-4.8, -2.6, 0.9, 4.5, 9.1, 12.9, 15.8, 15.1, 10.9, 5.2, 0.4, -3.9], precipMm: [28, 20, 18, 16, 18, 18, 10, 12, 14, 20, 32, 34], snowCm: [22, 10, 4, 0, 0, 0, 0, 0, 0, 0, 8, 22], humidity: [80, 72, 60, 50, 48, 46, 38, 40, 48, 60, 76, 82], sunshinePct: [30, 44, 58, 66, 72, 72, 84, 82, 72, 52, 32, 26], annualPrecipMm: 240, frostFreeDays: 180, hardinessZone: "6b", chillHours: 1400, diurnalSummerC: 16 },
     soil: { texture: "Deep loess over glaciofluvial gravels", drainage: "good", phRange: [6.4, 7.8], waterHolding: "moderate", notes: "Iconic 'Wenatchee Heights' orchard soils." },
@@ -2792,7 +2792,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the redwood parks, the Lost Coast, and Humboldt Bay's Victorian port towns.",
       residentFit: "It rewards heat-averse people, writers, and redwood-forest lovers who want cool, even, maritime air year-round.",
-      texture: "An extraordinarily stable climate with real frictions: the main things to weigh are gray, sunless stretches, coastal and tsunami exposure on the bay, and documented local social-fabric stress.",
+      texture: "An extraordinarily stable climate with real frictions — weigh gray, sunless stretches, coastal and tsunami exposure on the bay, and documented local social-fabric stress against mild summers and a walkable climate signature.",
     },
     climate: { tempHighC: [12.1, 12.6, 13.3, 13.9, 15.1, 16.4, 16.8, 17.3, 17.9, 16.4, 14.0, 12.0], tempLowC: [5.4, 5.7, 6.2, 6.9, 8.6, 10.2, 10.8, 10.9, 10.2, 8.7, 6.7, 5.1], precipMm: [186, 160, 154, 72, 42, 22, 6, 10, 24, 66, 168, 182], humidity: [78, 78, 78, 77, 79, 82, 84, 85, 82, 78, 75, 76], sunshinePct: [48, 52, 55, 58, 60, 52, 48, 52, 58, 55, 48, 45], annualPrecipMm: 1092, frostFreeDays: 320, hardinessZone: "9b", diurnalSummerC: 6 },
     soil: { texture: "Sandy loam / alluvium over marine terrace", drainage: "moderate", phRange: [5.4, 6.4], waterHolding: "moderate" },
@@ -3124,7 +3124,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for McDonald Observatory's star parties, the Davis Mountains scenic loop, and Big Bend country access.",
       residentFit: "It rewards astronomers, dark-sky devotees, and heat-averse West Texans who want sky, silence, and a mountain island above the desert.",
-      texture: "A remote, sky-first life: the main things to weigh are a very small service base, wildfire in the grasslands, and water in dry country.",
+      texture: "A remote, sky-first life — weigh a very small service base, wildfire in the grasslands, and water in dry country against distinct microclimate character worth the tradeoffs.",
     },
     climate: { tempHighC: [14.9, 17.6, 21.4, 25.1, 28.9, 30.2, 29.1, 28.3, 26.2, 23.3, 18.4, 14.8], tempLowC: [-1.4, 0.6, 3.9, 7.8, 12.1, 15.1, 16.2, 15.4, 12.6, 7.4, 2.1, -1.0], precipMm: [14, 14, 10, 16, 38, 64, 82, 80, 72, 38, 16, 18], sunshinePct: [72, 74, 76, 80, 82, 84, 82, 80, 78, 76, 72, 70], humidity: [50, 48, 42, 38, 42, 45, 52, 55, 48, 42, 48, 52], annualPrecipMm: 462, frostFreeDays: 200, hardinessZone: "7b", diurnalSummerC: 15 },
     soil: { texture: "Volcanic loam", drainage: "good", phRange: [6.8, 7.8], waterHolding: "moderate" },
@@ -3537,7 +3537,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for Crested Butte and the upper Gunnison, Black Canyon access, and big-mountain hiking, fishing, and powder.",
       residentFit: "It rewards college-town and ranching folk and cold-hardy outdoor people who treat a fierce winter as the price of a spectacular valley.",
-      texture: "One of the most demanding winter climates in the corpus: the main things to weigh are extreme cold and a very short frost-free season, plus snow-country isolation.",
+      texture: "One of the most demanding winter climates in the corpus — weigh extreme cold and a very short frost-free season, plus snow-country isolation against distinct microclimate character worth the tradeoffs.",
     },
     climate: { tempHighC: [0.6, 3.2, 8.2, 13.6, 19.4, 25.1, 27.4, 26.2, 22.6, 15.8, 6.9, 0.4], tempLowC: [-21.8, -17.9, -11.4, -5.4, 0.4, 4.8, 8.1, 7.2, 2.2, -3.4, -11.2, -20.4], precipMm: [24, 18, 22, 22, 28, 26, 48, 44, 28, 28, 18, 22], snowCm: [24, 18, 22, 16, 4, 0, 0, 0, 0, 5, 18, 22], sunshinePct: [62, 68, 72, 76, 78, 82, 84, 82, 78, 72, 58, 55], humidity: [72, 68, 58, 48, 45, 40, 38, 40, 42, 50, 62, 70], annualPrecipMm: 328, frostFreeDays: 70, hardinessZone: "4a", diurnalSummerC: 20 },
     soil: { texture: "Sandy loam over glacial till", drainage: "good", phRange: [6.4, 7.4], waterHolding: "low" },
@@ -3984,7 +3984,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the Utah State University campus, nearby ski access, the Cache Valley cheese trail, and a textbook inversion basin seen from the surrounding ridges.",
       residentFit: "It rewards agricultural families and university-affiliated residents who can tolerate winter air-quality episodes and value exceptional orchard soils.",
-      texture: "A four-season fruit belt inside an inversion bowl — the main things to weigh are winter PM2.5 that can persist for weeks, summer wildfire smoke, and Wasatch snowpack water supply.",
+      texture: "A four-season fruit belt inside an inversion bowl — weigh winter PM2.5 that can persist for weeks, summer wildfire smoke, and Wasatch snowpack water supply against the place-specific comfort case that drew you to scout it.",
     },
     climate: { tempHighC: [0.4, 3.6, 10.4, 15.6, 21.2, 27.1, 31.9, 30.6, 24.8, 16.2, 7.2, 0.8], tempLowC: [-10.2, -8.1, -3.8, -0.1, 4.8, 9.6, 13.4, 12.4, 7.1, 0.8, -4.4, -9.2], precipMm: [32, 30, 46, 54, 62, 36, 14, 18, 30, 36, 40, 40], snowCm: [30, 28, 22, 10, 2, 0, 0, 0, 0, 4, 20, 32], sunshinePct: [42, 48, 55, 62, 68, 78, 84, 82, 76, 62, 48, 38], humidity: [82, 78, 68, 58, 52, 38, 32, 35, 42, 58, 72, 80], annualPrecipMm: 438, frostFreeDays: 140, hardinessZone: "5b" },
     soil: { texture: "Deep silt loam (Lake Bonneville sediments)", drainage: "moderate", phRange: [7.0, 8.0], waterHolding: "high" },
@@ -4111,7 +4111,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for Blackwater Falls, Canaan Valley Resort cross-country skiing, and one of the most ecologically rare cold-pool basins in eastern North America.",
       residentFit: "It rewards boreal-ecosystem lovers and solitude seekers who accept a 95-day frost-free season and remote Allegheny plateau logistics.",
-      texture: "An Appalachian climate anomaly of global conservation value — the main things to weigh are brutal winter cold, a very short growing season, and limited specialty care beyond Elkins.",
+      texture: "An Appalachian climate anomaly of global conservation value — weigh brutal winter cold, a very short growing season, and limited specialty care beyond Elkins against distinct microclimate character worth the tradeoffs.",
     },
     climate: { tempHighC: [-0.4, 0.8, 6.4, 13.1, 19.1, 22.6, 24.4, 23.4, 19.4, 13.2, 7.4, 2.4], tempLowC: [-11.3, -11.1, -6.6, -2.0, 3.6, 8.1, 10.6, 9.8, 5.8, 0.1, -4.6, -9.1], precipMm: [100, 88, 108, 102, 108, 110, 120, 112, 88, 94, 102, 100], snowCm: [60, 60, 50, 18, 2, 0, 0, 0, 0, 4, 28, 56], sunshinePct: [32, 38, 44, 50, 54, 58, 62, 60, 52, 42, 30, 28], humidity: [82, 78, 72, 68, 72, 75, 78, 76, 72, 68, 75, 82], annualPrecipMm: 1232, frostFreeDays: 95, hardinessZone: "4b", diurnalSummerC: 15 },
     soil: { texture: "Peaty histosols over sandstone", drainage: "poor", phRange: [4.2, 5.4], waterHolding: "high", notes: "Cranberry bog muck; strongly acid." },
@@ -4179,7 +4179,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for snowmobiling, snow-record chasing, and one of the continent's most extreme lake-effect snow climates outside the Pacific ranges.",
       residentFit: "It rewards serious winter people and snowmobilers who find 6 m of annual snow romantic rather than punishing — and almost no one else.",
-      texture: "A snow superlative with a volatile future — the main things to weigh are roof-load winters, remote plateau roads, and lake-ice decline shifting snow toward rain-on-snow.",
+      texture: "A snow superlative with a volatile future — weigh roof-load winters, remote plateau roads, and lake-ice decline shifting snow toward rain-on-snow against distinct microclimate character worth the tradeoffs.",
     },
     climate: { tempHighC: [-3.1, -2.4, 2.4, 9.6, 16.4, 21.8, 24.4, 23.6, 19.4, 12.8, 5.4, -1.2], tempLowC: [-11.2, -11.8, -7.6, -1.8, 3.4, 8.6, 11.4, 10.8, 7.1, 1.8, -3.4, -8.6], precipMm: [86, 66, 78, 82, 96, 96, 104, 102, 108, 112, 112, 96], snowCm: [160, 130, 108, 40, 4, 0, 0, 0, 0, 12, 90, 160], sunshinePct: [32, 36, 42, 48, 52, 56, 58, 56, 50, 42, 28, 26], humidity: [78, 76, 72, 68, 70, 72, 74, 76, 78, 80, 82, 80], annualPrecipMm: 1138, frostFreeDays: 120, hardinessZone: "4b" },
     soil: { texture: "Glacial till over shale", drainage: "moderate", phRange: [5.4, 6.4], waterHolding: "moderate" },
@@ -4634,7 +4634,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the reef and the water, Old Town's Conch architecture and nightlife, and the end-of-the-road sense of the southernmost point.",
       residentFit: "It rewards water-lovers and heat-tolerant island people who want a genuinely tropical, walkable life and can plan around storm season.",
-      texture: "An easy, frost-free climate with serious tails: the main things to weigh are hurricanes and storm surge, flooding, and some of the highest costs and insurance pressure in Florida.",
+      texture: "An easy, frost-free climate with serious tails — weigh hurricanes and storm surge, flooding, and some of the highest costs and insurance pressure in Florida against the place-specific comfort case that drew you to scout it.",
     },
     climate: { tempHighC: [25.2, 25.6, 26.8, 28.2, 29.8, 30.9, 31.7, 31.9, 31.2, 29.8, 27.6, 25.8], tempLowC: [19.6, 19.9, 21.1, 22.6, 24.6, 25.9, 26.6, 26.6, 26.1, 24.9, 22.4, 20.3], precipMm: [52, 40, 42, 54, 80, 120, 98, 142, 170, 112, 68, 48], sunshinePct: [72, 74, 76, 80, 78, 68, 72, 74, 70, 72, 70, 68], humidity: [72, 72, 74, 76, 78, 80, 82, 82, 80, 78, 76, 74], annualPrecipMm: 1026, frostFreeDays: 365, hardinessZone: "12a", diurnalSummerC: 5 },
     soil: { texture: "Shallow marl / limestone karst", drainage: "excessive", phRange: [7.2, 8.2], waterHolding: "low", notes: "Coral-derived soils; alkaline." },
@@ -4832,7 +4832,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the aurora, the midnight-sun summer, hot springs, and a true Interior-Alaska basecamp.",
       residentFit: "It rewards genuinely cold-hardy, self-reliant northerners who treasure long summer light and deep winter dark in equal measure.",
-      texture: "An extreme northern life: the main things to weigh are brutal, prolonged winter cold and ice fog, summer wildfire smoke, and deep subarctic isolation.",
+      texture: "An extreme northern life — weigh brutal, prolonged winter cold and ice fog, summer wildfire smoke, and deep subarctic isolation against the place-specific comfort case that drew you to scout it.",
     },
     climate: {
       tempHighC: [-16, -10, -2, 7, 16, 22, 23, 20, 13, 2, -10, -15],
@@ -5066,7 +5066,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the dunes, salt flats, and badlands, the dark-sky parks, and the sheer superlative of the lowest, hottest, driest ground in North America.",
       residentFit: "Full-time living is for a tiny, hardy service community; the valley rewards visitors far more than residents, and summer is a genuine hazard.",
-      texture: "An extreme-environment place: the main things to weigh are life-threatening summer heat, near-total aridity, flash flooding in rare storms, and deep remoteness.",
+      texture: "An extreme-environment place — weigh life-threatening summer heat, near-total aridity, flash flooding in rare storms, and deep remoteness against the place-specific comfort case that drew you to scout it.",
     },
     climate: {
       tempHighC: [19, 23, 27, 31, 37, 42, 47, 46, 41, 34, 25, 19], tempLowC: [4, 7, 11, 15, 21, 26, 31, 30, 25, 17, 9, 4],
@@ -5588,7 +5588,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the Niobrara River canyon, dark-sky stargazing, Sandhills prairie ecology, and one of North America's great hidden landscapes.",
       residentFit: "It rewards solitude seekers, prairie ecologists, and outdoor workers who accept semi-arid continental extremes and Cherry County's ~1 person/km² isolation.",
-      texture: "A nationally rare stabilized dune landscape — the main things to weigh are Ogallala aquifer drawdown, wind-exposed gardening, and long drives to specialty care.",
+      texture: "A nationally rare stabilized dune landscape — weigh Ogallala aquifer drawdown, wind-exposed gardening, and long drives to specialty care against distinct microclimate character worth the tradeoffs.",
     },
 
     climate: {
@@ -5740,7 +5740,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the Loess Hills Scenic Byway, globally rare loess topography, and dry-prairie refugia that exist nowhere else in the Corn Belt.",
       residentFit: "It rewards prairie restorationists and gardeners who understand aspect — south slopes for fruit, north slopes for shade crops — and accept loess erosion risk on disturbed slopes.",
-      texture: "A globally rare landform in the middle of Iowa — the main things to weigh are slope erosion on disturbed loess, extreme aspect microclimates, and limited services outside Missouri Valley.",
+      texture: "A globally rare landform in the middle of Iowa — weigh slope erosion on disturbed loess, extreme aspect microclimates, and limited services outside Missouri Valley against distinct microclimate character worth the tradeoffs.",
     },
 
     climate: {
@@ -5892,7 +5892,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for the Tallgrass Prairie Preserve, spring range-burning spectacle, and the largest intact tallgrass prairie on the continent.",
       residentFit: "It rewards ranching families, prairie ecologists, and people who want continental humid-subtropical seasons tied to a working grassland economy.",
-      texture: "A landscape-scale prairie survivor — the main things to weigh are hot humid summers, declining chill hours for fruit, and fire-weather windows shifting earlier in spring.",
+      texture: "A landscape-scale prairie survivor — weigh hot humid summers, declining chill hours for fruit, and fire-weather windows shifting earlier in spring against distinct microclimate character worth the tradeoffs.",
     },
 
     climate: {
@@ -6046,7 +6046,7 @@ export const PLACES_USA: Place[] = [
       },
       travelerFit: "Visitors come for Victorian architecture, mineral springs, the Buffalo National River, and an Ozark escarpment where karst terrain creates block-scale microclimate variety.",
       residentFit: "It rewards artists, retirees, and gardeners who understand slope — south benches for stone fruit, hollow bottoms for cool-season greens — and accept tourist-town energy.",
-      texture: "A geomorphically improbable spa town — the main things to weigh are thin ridge soils, tourist-season congestion, and karst runoff routing extra rainfall through spring systems.",
+      texture: "A geomorphically improbable spa town — weigh thin ridge soils, tourist-season congestion, and karst runoff routing extra rainfall through spring systems against distinct microclimate character worth the tradeoffs.",
     },
 
     climate: {

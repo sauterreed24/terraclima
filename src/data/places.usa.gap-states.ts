@@ -873,7 +873,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       },
       travelerFit: "Visitors come for a summer cool-down from Las Vegas, winter skiing and snow play, and bristlecone-pine high country.",
       residentFit: "It rewards a small mountain community and second-home owners who want forest and snow within reach of a major city.",
-      texture: "A dramatic sky-island life: the main things to weigh are a short, snowy season and a tiny service base, wildfire in the forest, and the steep road down to everything else.",
+      texture: "A dramatic sky-island life — weigh a short, snowy season and a tiny service base, wildfire in the forest, and the steep road down to everything else against distinct microclimate character worth the tradeoffs.",
     },
     climate: {
       tempHighC: [-1, 0, 4, 9, 15, 21, 25, 24, 19, 12, 5, 0],
@@ -1293,7 +1293,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       },
       travelerFit: "Visitors come for Spearfish Canyon, Black Hills access, and a front-row seat to one of the continent's most readable foehn-wind climates.",
       residentFit: "It rewards outdoor workers and remote workers who want Plains–mountain ecotone life with a university town anchor — if they respect wind volatility and wildfire exposure.",
-      texture: "A meteorologically famous Plains–mountain gateway — the main things to weigh are chinook-driven temperature whiplash, ecotone wildfire risk, and Rapid City as the specialty-care backup.",
+      texture: "A meteorologically famous Plains–mountain gateway — weigh chinook-driven temperature whiplash, ecotone wildfire risk, and Rapid City as the specialty-care backup against the place-specific comfort case that drew you to scout it.",
     },
     climate: {
       tempHighC: [4, 6, 10, 15, 20, 26, 30, 29, 24, 16, 8, 4],
@@ -1376,7 +1376,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       },
       travelerFit: "Visitors come for ridge vistas, spring frost photography, and one of the best-documented cold-air pools in the eastern United States.",
       residentFit: "It rewards ranching families and remote workers who accept a single-road agricultural bowl with almost no commercial core and treat floor-vs-rim as different farms.",
-      texture: "A meteorological celebrity in a pastoral bowl — the main things to weigh are extreme nocturnal cold on the floor, a 14-day-shorter growing season than the rim, and Tazewell County remoteness.",
+      texture: "A meteorological celebrity in a pastoral bowl — weigh extreme nocturnal cold on the floor, a 14-day-shorter growing season than the rim, and Tazewell County remoteness against distinct microclimate character worth the tradeoffs.",
     },
     climate: {
       tempHighC: [4, 6, 11, 17, 22, 25, 27, 26, 22, 16, 10, 6],

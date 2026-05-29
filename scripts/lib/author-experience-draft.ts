@@ -263,11 +263,25 @@ function rankedRiskLabels(place: Place, max = 3): string[] {
     .map(r => riskLabels[r.k]!);
 }
 
+const WEIGH_PHRASE = /(?: —|:)\s*the main things to weigh are\s+/i;
+
+function existingTextureHead(texture: string): string | null {
+  if (WEIGH_PHRASE.test(texture)) {
+    const head = texture.split(WEIGH_PHRASE)[0]!.trim();
+    if (head.length >= 24 && !/^An easier place to settle into/i.test(head)) return head;
+  }
+  if (texture.includes(" — ")) {
+    const head = texture.split(" — ")[0]!.trim();
+    if (head.length >= 24 && !/^An easier place to settle into/i.test(head)) return head;
+  }
+  return null;
+}
+
 function textureDescriptor(place: Place): string {
   const existing = place.experience?.texture;
-  if (existing?.includes(" — ")) {
-    const head = existing.split(" — ")[0]!.trim();
-    if (head.length >= 24 && !/^An easier place to settle into/i.test(head)) return head;
+  if (existing) {
+    const head = existingTextureHead(existing);
+    if (head) return head;
   }
   const tradeoff = place.scores.tradeoff;
   const base =
@@ -283,8 +297,9 @@ function textureDescriptor(place: Place): string {
 
 export function isGenericTexture(texture: string | undefined): boolean {
   if (!texture?.trim()) return true;
-  return /the main things to weigh are/i.test(texture)
-    || /^An easier place to settle into/i.test(texture);
+  if (/the main things to weigh are/i.test(texture)) return true;
+  if (/^An easier place to settle into — weigh /i.test(texture)) return true;
+  return /^An easier place to settle into — no single hazard dominates, but confirm services and exposure on the ground\.$/i.test(texture);
 }
 
 export function draftTexture(place: Place): string {
@@ -293,8 +308,8 @@ export function draftTexture(place: Place): string {
   const ranked = rankedRiskLabels(place, 3);
   const positive = buildPositiveClause(place);
 
-  if (existing && / — the main things to weigh are /i.test(existing)) {
-    const tail = existing.split(/ — the main things to weigh are /i)[1]?.replace(/\.$/, "").trim();
+  if (existing && WEIGH_PHRASE.test(existing)) {
+    const tail = existing.split(WEIGH_PHRASE)[1]?.replace(/\.$/, "").trim();
     if (tail) {
       return `${descriptor} — weigh ${tail} against ${positive}.`;
     }
