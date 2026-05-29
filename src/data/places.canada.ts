@@ -951,6 +951,17 @@ export const PLACES_CANADA: Place[] = [
     climateChange: { outlook2050: "Warmer; more summer fire smoke.", outlook2100: "Glacier loss affecting summer river flow.", keyShifts: [{variable: "Glacier melt", direction: "up"}], resilienceNote: "Good natural climate buffering." },
     risks: { wildfire: {level: "elevated", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "moderate", trend: "worsening"}, extremeCold: {level: "moderate", trend: "improving"}, smoke: {level: "high", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "moderate", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 68, microclimateUniqueness: 64, comfort: 68, resilience: 56, growability: 68, tradeoff: 40 },
+    liveSignals: {
+      costPressure: 58,
+      socialStress: 22,
+      accessFriction: 48,
+      note: "Nelson's arts-town housing runs above interior BC norms; Castlegar/West Kootenay Regional Airport covers most air links while regional wildfire smoke and steep winter lots are part of the lived filter.",
+      sources: [
+        { label: "City of Nelson — municipal services", url: "https://www.nelson.ca/" },
+        { label: "CMHC — West Kootenay housing market context", url: "https://www.cmhc-schl.gc.ca/" },
+        { label: "West Kootenay Regional Airport — Castlegar services", url: "https://www.westkootenayairport.com/" },
+      ],
+    },
     relocationFit: ["mountain-arts community"], travelFit: ["heritage town", "ski"],
     whoWouldLove: "Creative mountain-town lovers.", whoMightNot: "Services-demanding.",
     confidence: "high",
