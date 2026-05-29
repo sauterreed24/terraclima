@@ -4,8 +4,7 @@
  *
  * Run: `tsx scripts/refresh-experience-corpus.ts`
  */
-import { readFileSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { findFileForPlace, placeBlockWindow, readCorpusFile, writeCorpusFile } from "./lib/corpus-place-io";
 import { PLACES } from "../src/data/places";
 import {
   draftAuthoredExperience,
@@ -13,41 +12,18 @@ import {
   isAutoDraftedExperience,
 } from "./lib/author-experience-draft";
 
-const CORPUS_FILES = [
-  "src/data/places.usa.ts",
-  "src/data/places.usa.extra.ts",
-  "src/data/places.usa.round2.ts",
-  "src/data/places.usa.gap-states.ts",
-  "src/data/places.canada.ts",
-  "src/data/places.mexico.ts",
-];
-
-function findFileForPlace(id: string): string | null {
-  const needle = `id: "${id}"`;
-  for (const rel of CORPUS_FILES) {
-    const src = readFileSync(resolve(process.cwd(), rel), "utf8");
-    if (src.includes(needle)) return rel;
-  }
-  return null;
-}
-
 function replaceExperience(rel: string, id: string, block: string): boolean {
-  const path = resolve(process.cwd(), rel);
-  let src = readFileSync(path, "utf8");
-  const idIdx = src.indexOf(`id: "${id}"`);
-  if (idIdx < 0) return false;
+  let src = readCorpusFile(rel);
+  const win = placeBlockWindow(src, id);
+  if (!win) return false;
 
-  const citationsIdx = src.indexOf("citations:", idIdx);
-  if (citationsIdx < 0) return false;
+  const expMatch = /\bexperience:\s*\{[\s\S]*?\n\s*\},\s*\n\s*climate:\s*\{/.exec(win.block);
+  if (!expMatch || expMatch.index == null) return false;
 
-  const placeBlock = src.slice(idIdx, citationsIdx);
-  const expMatch = /\bexperience:\s*\{[\s\S]*?\n\s*\},\s*\n\s*climate:\s*\{/.exec(placeBlock);
-  if (!expMatch) return false;
-
-  const start = idIdx + expMatch.index;
+  const start = win.start + expMatch.index;
   const end = start + expMatch[0].length - "climate: {".length;
   src = `${src.slice(0, start)}${block}\n    climate: {${src.slice(end + "climate: {".length)}`;
-  writeFileSync(path, src, "utf8");
+  writeCorpusFile(rel, src);
   return true;
 }
 

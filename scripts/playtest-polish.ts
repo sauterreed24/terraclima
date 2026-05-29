@@ -38,6 +38,7 @@ import {
   composeTourismIntro,
 } from "../src/lib/dossier-intros";
 import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
+import { isAutoDraftedExperience } from "./lib/author-experience-draft";
 
 async function main(): Promise<void> {
   const validatePlaceId = (id: string) => PLACES.some((p) => p.id === id);
@@ -276,11 +277,14 @@ async function main(): Promise<void> {
     "borrego-springs-ca", "sedona-az", "prescott-az", "cloudcroft-nm",
     "taos-nm", "crested-butte-co", "leadville-co", "durango-co",
     "spokane-wa", "austin-tx", "washington-dc", "honolulu-hi",
+    "new-orleans-la", "charleston-sc", "tucson-az", "anchorage-ak",
+    "mobile-al", "savannah-ga", "buffalo-ny", "chattanooga-tn",
   ];
   for (const id of tierCLiveIds) {
     const place = PLACES.find(p => p.id === id);
     if (!place) throw new Error(`tier C live anchor missing: ${id}`);
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after Tier C polish pass`);
+    if (isAutoDraftedExperience(place)) throw new Error(`${id} still has auto-drafted experience after batch 6`);
   }
 
   const lethbridge = PLACES.find(p => p.id === "lethbridge-ab");

@@ -37,6 +37,12 @@ function topRisk(place: Place): { label: string; level: string } | null {
   return null;
 }
 
+function reliefLead(place: Place): string {
+  const rc = place.reliefContext.replace(/\.$/, "").trim();
+  // Preserve proper nouns and numbers from corpus — do not force lowercase.
+  return rc.charAt(0).toUpperCase() + rc.slice(1);
+}
+
 function mechanismSection(place: Place): PlaceDeepSection {
   const name = shortName(place);
   const arch = ARCHETYPE_BY_ID[place.archetypes[0]]?.label ?? place.biome;
@@ -44,11 +50,12 @@ function mechanismSection(place: Place): PlaceDeepSection {
   const driverList = drivers.length >= 2 ? `${drivers[0]} and ${drivers[1]}` : drivers[0] ?? "local terrain";
   const extra = drivers.length > 2 ? ` — with ${drivers.slice(2).join(" and ")} also in play.` : ".";
   const annual = Math.round(getAnnualPrecipMm(place));
+  const elevNote = place.elevationM >= 800 ? ` at roughly ${place.elevationM} m elevation` : "";
   return {
     id: slugId(place, "mechanism"),
     title: `${arch} at work`,
     paragraphs: [
-      `${name} sits where ${place.reliefContext.replace(/\.$/, "").toLowerCase()}. The atlas tags this as ${arch.toLowerCase()} (${place.koppen}, roughly ${annual} mm/yr in these normals), and the dominant spatial engines are ${driverList}${extra}`,
+      `${name}${elevNote} sits where ${reliefLead(place).charAt(0).toLowerCase()}${reliefLead(place).slice(1)}. The atlas tags this as ${arch.toLowerCase()} (${place.koppen}, roughly ${annual} mm/yr in these normals), and the dominant spatial engines are ${driverList}${extra}`,
       `${place.whyDistinct.replace(/\.$/, "")}. That mechanism is why two map dots in ${place.region} can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.`,
     ],
   };

@@ -114,7 +114,10 @@ function topRiskPhrase(place: Place, season: SeasonKey): string | null {
     case "drought": return "Water supply and irrigation stress matter";
     case "flood":
       if (season === "spring" && hasSnowSeason) return "Snowmelt and spring rain can swell rivers fast";
-      if (season === "spring") return "Spring rains can swell rivers and arroyos quickly";
+      if (season === "spring") {
+        const arid = /^(B|Csa|Csb)/.test(place.koppen) || place.archetypes.some(a => ["high-desert-escape", "monsoon-edge", "rain-shadow-sanctuary"].includes(a));
+        return arid ? "Spring rains can swell rivers and arroyos quickly" : "Spring rains can swell rivers and low districts quickly";
+      }
       return "Flash-flood and surge diligence is part of daily life";
     case "storm": return season === "summer" ? "Afternoon convection and storms build often" : "Storm systems roll through with real force";
     case "coastal": return season === "autumn" ? "Hurricane and coastal surge exposure shapes fall planning" : "Coastal surge and wind events belong in the planning stack";
@@ -294,8 +297,11 @@ export function draftAuthoredExperience(place: Place): AuthoredExperienceDraft {
 
 /** Detect auto-drafted blocks (safe to refresh without touching hand-authored prose). */
 export function isAutoDraftedExperience(place: Place): boolean {
-  const w = place.experience?.seasons.winter ?? "";
-  return w.startsWith("Afternoons near") || w.startsWith("Winter settles in") || w.startsWith("The cold season") || w.startsWith("Deep winter") || w.startsWith("Winter runs");
+  const exp = place.experience;
+  if (!exp) return false;
+  const seasons = Object.values(exp.seasons ?? {}).join(" ");
+  // Hand-authored batch metros use qualitative bands; auto-drafts embed "afternoons near N°C".
+  return /with afternoons near [-−]?\d/.test(seasons);
 }
 
 export function formatExperienceBlock(draft: AuthoredExperienceDraft, indent = "    "): string {
