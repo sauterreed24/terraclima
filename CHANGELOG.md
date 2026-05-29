@@ -15,6 +15,7 @@ All notable changes to Terraclima are tracked here.
 
 ### Overview spotlight — "what it actually feels like"
 
+- **Authored Tier B overviews (batch 3):** hand-written `experience` overrides for seven more anchors — Fairbanks, Whitehorse, Ashland, Mount Charleston, Valle de Guadalupe, Pátzcuaro, and Ajijic — spanning subarctic interiors, a dry aurora capital, Mediterranean valleys, a Mojave sky island, and lake-tempered Mexican highlands.
 - **Authored Tier B overviews (batch 2):** hand-written `experience` overrides for eight more anchors — Driggs (Teton Valley), Gunnison, Death Valley, Hood River, Silver City, Todos Santos, Fort Davis, and (batch 1's) set — covering cold-pool basins, the continent's hottest desert, gorge orchard belt, sky islands, and Baja's Pacific oasis.
 - **Authored Tier B overviews (batch 1):** hand-written `experience` overrides for eight high-signal Tier B anchors — Santa Barbara, Flagstaff, Victoria, Key West, Hilo, Bishop, Wenatchee, and Eureka — plus a localization fix where "single-digit … humidity" was wrongly rendered as a temperature band (Osoyoos, Bishop, and the pre-existing Yuma immersive now read in % terms).
 - **Authored flagship overviews (`src/data/places.usa.ts`, `places.canada.ts`, `places.mexico.ts`):** hand-written `experience` overrides for all eight Tier A flagships — Sequim, Portal, Monterey, Black Mountain, Osoyoos, Lethbridge, Oaxaca City, and San Cristóbal de las Casas — with voice-driven feel lines, four bespoke season reads each, and traveler/resident/texture framing layered over the derived engine.
