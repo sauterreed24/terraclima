@@ -1084,6 +1084,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A 'Goldilocks' desert highland: sunny, mild, dry, with reliable monsoon afternoons all summer.",
     summaryImmersive: "Silver City is one of the most underappreciated sky-country climates in the American West. At 1800 m on the edge of the Gila Wilderness, it enjoys four genuine seasons in compressed form: cool sunny winters with occasional snow, bright dry springs, monsoonal summers with big afternoon thunderstorms, and golden autumns lasting weeks. Summer highs routinely top out in the high 20s, nights cool to the mid-teens, and the air is dry enough that 30°C feels pleasant rather than oppressive. Walk through town on an August afternoon and you can watch a thunderstorm build against the Mogollons ten kilometers east while you stay dry in the sun.",
     whyDistinct: "Elevation provides ~10°C of cooling relative to the Chihuahuan basin. The Gila–Mogollon uplift intercepts both winter Pacific storms and summer monsoon, producing 440 mm/year — enough for piñon-juniper savanna and, with care, real gardens.",
+    experience: {
+      feel: "Silver City feels like the desert's most underrated 'just right.' At 1,800 m on the edge of the Gila, elevation files down the heat, the monsoon delivers reliable afternoon storms, and the air stays dry enough that even a 30°C afternoon feels easy.",
+      seasons: {
+        winter: "Cool, sunny, and four-season-real — afternoons near 11°C, frosty nights near −5°C, and occasional snow that melts fast under intense high-desert sun.",
+        spring: "Bright, dry, and windy — afternoons climbing through the teens into the 20s, the fore-monsoon fire-watch season on, and the Gila greening along its creeks.",
+        summer: "Warm rather than brutal — afternoons near 30°C with low humidity, then the monsoon's big afternoon thunderstorms building against the Mogollons through July and August.",
+        autumn: "Golden and long — warm days, crisp nights, and weeks of clear, calm weather as the monsoon fades and the cottonwoods turn.",
+      },
+      travelerFit: "Visitors come for the Gila Wilderness and cliff dwellings, a walkable arts-and-mining historic downtown, and dark-sky high country.",
+      residentFit: "It rewards artists, retirees, and high-desert people who want a mild, sunny, four-season climate well off the beaten path.",
+      texture: "A gentle sky-country life with real edges: the main things to weigh are wildfire and smoke in the Gila, a long-run drought trend, and a small, remote service base.",
+    },
     climate: {
       tempHighC: [10.9, 12.6, 16.0, 20.6, 25.7, 30.3, 30.1, 28.7, 26.7, 22.1, 15.9, 11.3],
       tempLowC:  [-5.4, -3.6, -1.0, 2.4, 6.6, 11.4, 14.6, 13.8, 10.3, 4.2, -1.3, -4.8],
@@ -1183,6 +1195,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "One of North America's finest fruit belts, on the east-of-crest edge of the Cascades.",
     summaryImmersive: "The Columbia River carves the only sea-level gap through the Cascades, and climate tags along. On the west side of the crest, Portland sits in drizzly Pacific maritime. Sixty miles east, Hood River sees more sun, warmer summers, and reliable cold winter nights — perfect for pears, apples, and cherries. Orchards climb the south-facing Hood River Valley slope for miles, each bench a different thermal belt. Mt. Hood stands cloud-capped south; summer winds roar through the Gorge at 30 knots; winters are crisp, dry, and bright.",
     whyDistinct: "The Cascade rain shadow begins right at Hood River — rainfall drops from ~1100 mm at Cascade Locks to ~800 mm at Hood River to ~300 mm at The Dalles, 30 km east. Meanwhile, river-valley moderation, gap winds, and mid-slope thermal belts all converge on a small, famous orchard landscape.",
+    experience: {
+      feel: "Hood River feels like the exact seam where wet Oregon becomes dry Oregon. The Columbia cuts the only sea-level gap through the Cascades, so the town banks more sun and warmer summers than Portland just upriver — a world-class pear-and-cherry belt under a cloud-capped Mt. Hood, with gorge winds that built a windsurfing culture.",
+      seasons: {
+        winter: "Crisp and dry by Northwest standards — afternoons near 6°C, frosty nights, modest valley snow, and an often-clear sky over dormant orchards while the coast drowns.",
+        spring: "Blossom season in the orchard benches — afternoons climbing through the teens, the gorge greening, and the famous winds picking back up as the pressure gradient builds.",
+        summer: "Warm, dry, and breezy — afternoons near 29°C, low humidity, and relentless gorge wind that draws windsurfers from everywhere. Wildfire smoke is the season's wildcard.",
+        autumn: "Harvest and gold — warm days easing through the 20s into the teens, cool nights setting the fruit, and the rains returning in earnest by November.",
+      },
+      travelerFit: "Visitors come for windsurfing and kiteboarding, the Fruit Loop orchards and cideries, and Mt. Hood and Gorge waterfalls.",
+      residentFit: "It rewards orchardists, kinetic outdoor people, and remote workers who want sun, wind, and Pacific access on the dry edge of the Cascades.",
+      texture: "A sunny, active gorge life with caveats: the main things to weigh are relentless summer wind, wildfire smoke, and tight, tourism-driven housing.",
+    },
     climate: {
       tempHighC: [6.4, 9.2, 13.0, 16.6, 20.9, 24.8, 29.4, 29.1, 24.7, 17.2, 10.4, 6.1],
       tempLowC:  [-1.2, 0.4, 2.6, 4.7, 8.2, 11.6, 13.9, 13.6, 10.6, 6.1, 2.4, -0.8],
@@ -1586,6 +1610,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "One of the coldest winter basins in the lower 48 — by topographic design.",
     summaryImmersive: "Teton Valley is a lesson in cold-air pooling written in capital letters. Enclosed by the Tetons to the east and the Big Hole Mountains west, the basin traps dense cold air on every clear calm winter night. Morning lows of −30°C happen without even a cold snap. Daytime sun partially warms the valley, but inversions can linger for days, leaving the basin floor a gray freezer while Grand Targhee, 1000 m higher, bakes in February sunshine. Summers are glorious — mild, dry, and long-lit — with July highs in the mid-20s and wildflower meadows that rival anywhere in the Rockies.",
     whyDistinct: "Cold air drains off the Tetons and Big Hole range into a closed basin; there is no outlet for it to escape. Winter inversions are among the most reliable in North America.",
+    experience: {
+      feel: "Driggs feels like the cold-air bottom of the Tetons. On the quiet back side of the range the valley is a closed bowl, so still winter nights pour dense cold onto the floor — −30°C without even a cold snap — while summers turn glorious: mild, dry, long-lit, and wildflowered.",
+      seasons: {
+        winter: "Reliably, architecturally cold — afternoons struggling near freezing, mornings near −15°C and often far colder as the basin pools air, with deep snow and inversions that can gray the valley for days while the ski hill above bakes in sun.",
+        spring: "Late and muddy — snow lingers through April, afternoons finally climbing through the teens, and the Tetons holding white well into the green-up.",
+        summer: "The payoff season — warm, dry afternoons near 26°C, cool nights, endless evening light, and wildflower meadows that rival anywhere in the Rockies.",
+        autumn: "Short, crisp, and golden — aspens turning under the peaks, frosty mornings arriving early, and the first snows dusting the high country by October.",
+      },
+      travelerFit: "Visitors come for the quiet back side of the Tetons, Grand Targhee powder, and summer hiking and fly-fishing without the Jackson crowds.",
+      residentFit: "It rewards skiers, anglers, and cold-hardy mountain people who will trade a brutal winter for big-peak summers and small-town quiet.",
+      texture: "A demanding winter climate to settle into: the main things to weigh are deep, persistent cold and inversions, a short growing season, and snow-country isolation.",
+    },
     climate: {
       tempHighC: [-2.4, 0.1, 5.8, 11.6, 16.9, 21.7, 26.7, 26.1, 21.2, 13.8, 4.3, -2.1],
       tempLowC:  [-16.4, -14.8, -9.7, -4.6, -0.4, 3.3, 6.6, 5.8, 1.4, -3.8, -8.9, -15.2],
@@ -2589,6 +2625,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "West Texas's cool island in the sky — a volcanic range with oak forest, McDonald Observatory, and 30°C summers at 1500 m.",
     summaryImmersive: "Fort Davis sits in a volcanic massif that rises 800 m above the Chihuahuan Desert floor, carrying pine-oak forest and genuine winter into a region where 43°C days are the lowland norm. McDonald Observatory, perched on nearby Mount Locke, chose the site for exceptional dark skies — among the darkest in the continental US. Summer afternoon highs stay near 30°C rather than the desert's 40°C; nights drop to 12°C. The North American monsoon reaches here reliably, producing dramatic August thunderstorms.",
     whyDistinct: "Volcanic uplift lifts the Davis Mountains into a cooler, moister microclimate; the range is effectively a Madrean archipelago island; exceptional atmospheric transparency enables world-class astronomy.",
+    experience: {
+      feel: "Fort Davis feels like West Texas with the heat turned down and the stars turned up. The volcanic Davis Mountains lift the town nearly a kilometre above the Chihuahuan floor, so summer afternoons hold near 29°C instead of the desert's 40s, and the dark skies drew an observatory to the ridge above.",
+      seasons: {
+        winter: "Sunny and sharply diurnal — afternoons near 15°C, frosty nights near −1°C, and the rare dusting of snow under brilliant, transparent high-desert skies.",
+        spring: "Dry, bright, and windy — afternoons climbing through the 20s, the grasslands waiting on the monsoon, and the fire-watch season at its peak.",
+        summer: "Mild for West Texas — afternoons near 29°C rather than the basin's 40s, with the North American monsoon building dramatic August thunderstorms against the range and cooling the nights.",
+        autumn: "Golden and calm — warm days, crisp nights, the monsoon fading, and some of the year's clearest skies over McDonald Observatory.",
+      },
+      travelerFit: "Visitors come for McDonald Observatory's star parties, the Davis Mountains scenic loop, and Big Bend country access.",
+      residentFit: "It rewards astronomers, dark-sky devotees, and heat-averse West Texans who want sky, silence, and a mountain island above the desert.",
+      texture: "A remote, sky-first life: the main things to weigh are a very small service base, wildfire in the grasslands, and water in dry country.",
+    },
     climate: { tempHighC: [14.9, 17.6, 21.4, 25.1, 28.9, 30.2, 29.1, 28.3, 26.2, 23.3, 18.4, 14.8], tempLowC: [-1.4, 0.6, 3.9, 7.8, 12.1, 15.1, 16.2, 15.4, 12.6, 7.4, 2.1, -1.0], precipMm: [14, 14, 10, 16, 38, 64, 82, 80, 72, 38, 16, 18], sunshinePct: [72, 74, 76, 80, 82, 84, 82, 80, 78, 76, 72, 70], humidity: [50, 48, 42, 38, 42, 45, 52, 55, 48, 42, 48, 52], annualPrecipMm: 462, frostFreeDays: 200, hardinessZone: "7b", diurnalSummerC: 15 },
     soil: { texture: "Volcanic loam", drainage: "good", phRange: [6.8, 7.8], waterHolding: "moderate" },
     growability: { score: 54, hardinessZone: "7b", growsWell: ["Drought-tolerant stone fruit", "Agave cultivars", "Xeric perennials"], tricky: ["Water-demanding crops"] },
@@ -2856,6 +2904,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "One of the coldest regularly-inhabited valleys in the Lower 48 — Gunnison's winter inversion pools air to −40°C.",
     summaryImmersive: "Gunnison's upper basin is a textbook cold pool: high elevation, closed topography, clear Rocky Mountain skies, and light winds that allow cold air to drain from surrounding peaks and settle against the valley floor. Winter mornings of −35°C are normal; the US record low for that month's date has been set here repeatedly. Ridgetops above can be 20°C warmer. The ecological and human consequences are everywhere — from the lack of deciduous trees to the insulation of every wall in town. Summers are brief, brilliant, and punctuated by monsoon storms.",
     whyDistinct: "Closed high-elevation basin geometry produces some of the most intense winter inversions in North America; clear-sky radiative cooling builds −30°C layers over weeks.",
+    experience: {
+      feel: "Gunnison feels like one of the coldest addresses in the Lower 48 — by design. High, closed, and clear, the basin drains mountain cold onto its floor until −35°C mornings are simply winter, while ridgetops a few hundred metres up sit far warmer.",
+      seasons: {
+        winter: "Severely, famously cold — afternoons barely above freezing, mornings near −18°C and routinely far lower in the pooled basin air, under brilliant, bone-dry Rocky Mountain sun. The cold is the town's defining fact.",
+        spring: "Slow and brown before the green — afternoons climbing through the teens, snow receding from the sage, and the valley waking for raft and ranch season.",
+        summer: "Brief and brilliant — warm afternoons near 26°C, crisp nights that can still frost, and monsoon thunderstorms building over the surrounding peaks most July afternoons.",
+        autumn: "A fast, golden turn — aspens blazing, hard frosts arriving early, and the first snows reclaiming the high country by October.",
+      },
+      travelerFit: "Visitors come for Crested Butte and the upper Gunnison, Black Canyon access, and big-mountain hiking, fishing, and powder.",
+      residentFit: "It rewards college-town and ranching folk and cold-hardy outdoor people who treat a fierce winter as the price of a spectacular valley.",
+      texture: "One of the most demanding winter climates in the corpus: the main things to weigh are extreme cold and a very short frost-free season, plus snow-country isolation.",
+    },
     climate: { tempHighC: [0.6, 3.2, 8.2, 13.6, 19.4, 25.1, 27.4, 26.2, 22.6, 15.8, 6.9, 0.4], tempLowC: [-21.8, -17.9, -11.4, -5.4, 0.4, 4.8, 8.1, 7.2, 2.2, -3.4, -11.2, -20.4], precipMm: [24, 18, 22, 22, 28, 26, 48, 44, 28, 28, 18, 22], snowCm: [24, 18, 22, 16, 4, 0, 0, 0, 0, 5, 18, 22], sunshinePct: [62, 68, 72, 76, 78, 82, 84, 82, 78, 72, 58, 55], humidity: [72, 68, 58, 48, 45, 40, 38, 40, 42, 50, 62, 70], annualPrecipMm: 328, frostFreeDays: 70, hardinessZone: "4a", diurnalSummerC: 20 },
     soil: { texture: "Sandy loam over glacial till", drainage: "good", phRange: [6.4, 7.4], waterHolding: "low" },
     growability: { score: 20, hardinessZone: "4a", growsWell: ["Hardiest perennials", "Season-extended greens"], tricky: ["Virtually all fruit and warm-season vegetables"] },
@@ -3668,6 +3728,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The hottest reliably-measured place on Earth — 56.7°C (134°F) on record — where rain-shadow geometry meets a sub-sea-level heat sink.",
     summaryImmersive: "Death Valley concentrates heat the way a parabolic dish concentrates light. Pacific storms lose their moisture climbing four successive ranges before reaching here, so annual precipitation averages 50 mm — less than most city parks receive in a thunderstorm. The basin floor sits 86 m below sea level, with peaks rising 3,000 m on both sides. When the sun heats dense air in that bowl, it cannot escape by lifting; it just heats more. The official world high temperature record, 56.7°C, was set at Furnace Creek on July 10, 1913. Modern summers routinely exceed 50°C for multi-day stretches. Winters, by contrast, are superb — mild days, cool nights, brilliant dark skies, and the occasional wildflower superbloom after rare rain events.",
     whyDistinct: "Four-range rain shadow from the Pacific + sub-sea-level basin geometry + radiative heating of dry air + subsidence under a summer thermal low. These all reinforce each other.",
+    experience: {
+      feel: "Death Valley feels like a furnace with a view. Four mountain ranges wring out every Pacific storm, and the sub-sea-level basin traps and re-heats the dry air, making this the hottest reliably-measured place on Earth — yet its winters are some of the finest desert weather anywhere.",
+      seasons: {
+        winter: "Superb — mild, calm afternoons near 19°C, cool nights, brilliant dark skies, and the rare chance of a wildflower superbloom after a wet storm. This is the season the valley is built for.",
+        spring: "Warming fast — afternoons climbing through the 20s into the 30s, wildflowers fading as the heat builds, and the last comfortable window before summer slams shut.",
+        summer: "Apocalyptic by design — afternoons near 47°C and pushing past 50°C in heat waves, nights that barely cool, and a basin floor that turns genuinely dangerous at midday. Travel becomes a dawn-and-dusk affair.",
+        autumn: "The furnace relents — afternoons easing back through the 30s into the 20s, nights cooling, and the dark-sky season returning as the crowds thin.",
+      },
+      travelerFit: "Visitors come for the dunes, salt flats, and badlands, the dark-sky parks, and the sheer superlative of the lowest, hottest, driest ground in North America.",
+      residentFit: "Full-time living is for a tiny, hardy service community; the valley rewards visitors far more than residents, and summer is a genuine hazard.",
+      texture: "An extreme-environment place: the main things to weigh are life-threatening summer heat, near-total aridity, flash flooding in rare storms, and deep remoteness.",
+    },
     climate: {
       tempHighC: [19, 23, 27, 31, 37, 42, 47, 46, 41, 34, 25, 19], tempLowC: [4, 7, 11, 15, 21, 26, 31, 30, 25, 17, 9, 4],
       precipMm: [10, 10, 8, 4, 2, 1, 3, 4, 5, 3, 5, 8], humidity: [40, 35, 28, 22, 18, 15, 18, 20, 22, 28, 36, 42],

@@ -771,6 +771,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Pacific-side Baja oasis with mild winters and surprisingly tolerable summers.",
     summaryImmersive: "Todos Santos sits in a freshwater oasis on the Pacific coast of Baja Sur. The cold Pacific keeps summers several degrees cooler than the Sea of Cortez side. Winters are perfect — warm days, cool nights, sunny.",
     whyDistinct: "Pacific coolness + freshwater spring oasis + desert surroundings.",
+    experience: {
+      feel: "Todos Santos feels like the desert and the cool Pacific made a truce. A freshwater oasis on Baja's Pacific side, it stays several degrees cooler than the Cortez coast, so winters are near-perfect and even summers stay tolerable under a steady marine influence.",
+      seasons: {
+        winter: "Just about ideal — warm, sunny afternoons near 24°C, cool nights, almost no rain, and the Pacific keeping the air fresh. This is the season the town fills up for.",
+        spring: "Warm, dry, and breezy — afternoons climbing through the 20s, the surf consistent, and the desert in bloom after any winter rain.",
+        summer: "Warm and humid rather than scorching — afternoons near 31°C tempered by the cool current, with the year's rain arriving as late-summer chubasco storms off the south.",
+        autumn: "The wettest, most storm-aware stretch through September — warm, humid days, occasional tropical moisture, then a return to dry, golden weather by November.",
+      },
+      travelerFit: "Visitors come for the surf and Pacific beaches, the arts-town galleries and food, and a mellow alternative to Cabo an hour south.",
+      residentFit: "It rewards surfers, artists, and snowbirds who want a laid-back Pacific-Baja base with mild winters and an oasis-town pace.",
+      texture: "An easy coastal climate with desert realities: the main things to weigh are scarce fresh water, late-summer storm and flash-flood risk, and a remote-peninsula service base.",
+    },
     climate: { tempHighC: [24.3, 24.5, 25.2, 26.4, 27.6, 29.8, 31.2, 31.4, 31.0, 29.6, 27.2, 24.9], tempLowC: [11.8, 11.6, 12.6, 14.2, 16.6, 19.4, 21.2, 21.8, 21.0, 18.4, 14.8, 12.3], precipMm: [14, 6, 2, 0, 1, 4, 22, 56, 74, 22, 8, 16], sunshinePct: [78, 80, 82, 86, 88, 90, 88, 86, 84, 82, 78, 76], humidity: [62, 60, 58, 55, 58, 65, 72, 75, 78, 72, 65, 62], annualPrecipMm: 225, frostFreeDays: 365, hardinessZone: "11b equiv." },
     soil: { texture: "Sandy alluvium around the oasis; rocky elsewhere", drainage: "good", phRange: [7.0, 8.0], waterHolding: "low" },
     growability: { score: 62, growsWell: ["Citrus", "Mango", "Papaya", "Palms"], tricky: ["Chill-hour crops"] },
