@@ -3370,6 +3370,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The snowiest place east of the Rockies — the Tug Hill plateau routinely receives over 6 meters of snow a winter.",
     summaryImmersive: "Tug Hill is the textbook lake-effect amplifier. Cold continental air sweeps southeast across 250 km of unfrozen Lake Ontario, picks up moisture and heat from the relatively warm water, then is forced to rise over the plateau's 500 m uplift. The result: among the heaviest snowfalls in North America outside of the Pacific mountain ranges. Redfield and Boylston routinely record 6 m of annual snowfall; single storms of 1.5 m are not unusual. Summers are mild and wet.",
     whyDistinct: "Combination of long water fetch (Lake Ontario), cold continental outbreaks, and Tug Hill orographic lift produces prodigious, persistent lake-effect snow.",
+    experience: {
+      feel: "Tug Hill feels like the snowiest place east of the Rockies — a 540 m plateau where cold air crosses 250 km of open Lake Ontario, picks up moisture, then gets forced upward into bands that routinely bury Redfield under 6 m of snow a winter.",
+      seasons: {
+        winter: "The defining season — afternoons near −3°C, nights near −11°C, and lake-effect bands that can drop 1.5 m in a single storm. Roof loads, snowmobile trails, and plow schedules are the rhythm of life.",
+        spring: "Slow and soggy — snowpack lingers into April, then the plateau greens in a rush as afternoons climb through the low teens.",
+        summer: "Mild and wet by eastern standards — highs near 24°C, humid afternoons, and a brief window when the snow machine finally stops.",
+        autumn: "Lake-effect ramps back up — the first heavy bands in November, hardwood color on the plateau, and a crisp return to single-digit afternoons by December.",
+      },
+      travelerFit: "Visitors come for snowmobiling, snow-record chasing, and one of the continent's most extreme lake-effect snow climates outside the Pacific ranges.",
+      residentFit: "It rewards serious winter people and snowmobilers who find 6 m of annual snow romantic rather than punishing — and almost no one else.",
+      texture: "A snow superlative with a volatile future — the main things to weigh are roof-load winters, remote plateau roads, and lake-ice decline shifting snow toward rain-on-snow.",
+    },
     climate: { tempHighC: [-3.1, -2.4, 2.4, 9.6, 16.4, 21.8, 24.4, 23.6, 19.4, 12.8, 5.4, -1.2], tempLowC: [-11.2, -11.8, -7.6, -1.8, 3.4, 8.6, 11.4, 10.8, 7.1, 1.8, -3.4, -8.6], precipMm: [86, 66, 78, 82, 96, 96, 104, 102, 108, 112, 112, 96], snowCm: [160, 130, 108, 40, 4, 0, 0, 0, 0, 12, 90, 160], sunshinePct: [32, 36, 42, 48, 52, 56, 58, 56, 50, 42, 28, 26], humidity: [78, 76, 72, 68, 70, 72, 74, 76, 78, 80, 82, 80], annualPrecipMm: 1138, frostFreeDays: 120, hardinessZone: "4b" },
     soil: { texture: "Glacial till over shale", drainage: "moderate", phRange: [5.4, 6.4], waterHolding: "moderate" },
     growability: { score: 36, hardinessZone: "4b", growsWell: ["Cool-tolerant crops", "Maple syrup"], tricky: ["Warm-season crops"] },
@@ -4147,6 +4159,19 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "The Sandhills are one of North America's great hidden landscapes — roughly 50,000 square kilometers of late-Pleistocene dunes held in place by a thin skin of prairie grass. Ride north out of Valentine and the topography keeps unfolding: rolling 40–90 m dunes, hundreds of interdune lakes fed by the Ogallala Aquifer, and almost no people. The Niobrara River has carved a steep-walled canyon across the region's northern edge, producing a remarkable biological crossroads where six distinct biomes meet — eastern deciduous, northern boreal, Rocky Mountain coniferous, and three prairie types. Climate is semi-arid continental: hot windy summers, cold dry winters with Colorado-low snowstorms, and cobalt-clear nights most of the year.",
     whyDistinct: "Stabilized dune topography is nationally rare and produces the strongest topographic relief in the central Plains. Interdune blowouts trap cold air in winter and create strong micro-scale thermal differences. The Ogallala Aquifer surfaces as springs and lakes, supporting wetland mosaics inside an otherwise dry grassland. Skies are among the darkest in the Lower 48 thanks to sparse settlement (Cherry County has ~1 person/km²).",
 
+    experience: {
+      feel: "Valentine feels like a grass-anchored dune sea the size of Ireland — rolling 40–90 m dunes held in place by prairie grass, interdune lakes fed by the Ogallala Aquifer, and cobalt-clear nights under some of the darkest skies in the Lower 48.",
+      seasons: {
+        winter: "Cold and dry — afternoons near 1°C, nights near −15°C, Colorado-low snowstorms punctuating long clear stretches, and blowouts trapping cold air in interdune hollows.",
+        spring: "Windy and awakening — the Niobrara canyon greening, prairie birds returning, and afternoons climbing through the teens as the dune sea turns gold.",
+        summer: "Hot, windy, and bright — highs near 31°C, dry continental air, and the biological crossroads of the Niobrara canyon where six biomes meet within a short drive.",
+        autumn: "Crisp and empty — cottonwoods along the Niobrara turning, the first hard frosts in October, and a landscape so sparsely settled the Milky Way dominates most nights.",
+      },
+      travelerFit: "Visitors come for the Niobrara River canyon, dark-sky stargazing, Sandhills prairie ecology, and one of North America's great hidden landscapes.",
+      residentFit: "It rewards solitude seekers, prairie ecologists, and outdoor workers who accept semi-arid continental extremes and Cherry County's ~1 person/km² isolation.",
+      texture: "A nationally rare stabilized dune landscape — the main things to weigh are Ogallala aquifer drawdown, wind-exposed gardening, and long drives to specialty care.",
+    },
+
     climate: {
       tempHighC: [0.6, 3.1, 9.4, 16.2, 22.0, 28.2, 31.4, 30.6, 25.8, 18.4, 8.8, 1.9],
       tempLowC: [-15.1, -12.3, -6.8, -0.4, 6.3, 12.1, 14.8, 13.6, 7.4, 0.3, -6.6, -12.8],
@@ -4286,6 +4311,19 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "The Loess Hills rise abruptly from the Missouri River's flat floodplain like a wrinkled spine running from Sioux City south to the Missouri state line. The loess — silt blown off the dry glacial-outwash plain during the late Pleistocene — piled deep enough here (up to 60 m) that even gentle streams cut astonishingly steep, angular ridges and 'peaks' called catsteps and razor-backs. The result is a topographic anomaly surrounded by flat corn country. South-facing bluff crests host dry-prairie species (yucca, prickly pear) normally found hundreds of kilometers southwest, while cool north-facing coves shelter mesic hardwood forest. The climate is squarely Upper Midwestern continental, but the hills themselves create exaggerated aspect-driven microclimates that are rare at this latitude.",
     whyDistinct: "Loess deposits this thick, this steeply dissected, and this linear exist in only two places globally (here and the Loess Plateau of China). The result is a string of dry-prairie refugia in the middle of the rain-soaked Corn Belt — and micro-scale climate contrasts of 4–7°C between adjacent north and south slopes in summer.",
 
+    experience: {
+      feel: "The Loess Hills feel like a geomorphological anomaly in flat corn country — a 320 km ribbon of wind-deposited silt forming razor-back ridges where south-facing crests host yucca and prickly pear while north-facing coves shelter mesic hardwood forest, all within a few meters of each other.",
+      seasons: {
+        winter: "Classic Upper Midwest — afternoons near freezing, nights near −12°C, and the Missouri River floodplain visible from bluff crests that stay colder on north slopes.",
+        spring: "Late green-up on north slopes, early ephemerals on south-facing catsteps, and afternoons climbing through the teens as the bluffs wake before the surrounding flatland.",
+        summer: "Aspect-driven microclimates at full expression — south crests running 4–7°C warmer than north coves, peaches and grapes ripening unusually well for the latitude on sun-facing benches.",
+        autumn: "Golden bluff country — prairie grasses turning on south slopes, hardwood color in north coves, and a crisp return to single-digit afternoons by November.",
+      },
+      travelerFit: "Visitors come for the Loess Hills Scenic Byway, globally rare loess topography, and dry-prairie refugia that exist nowhere else in the Corn Belt.",
+      residentFit: "It rewards prairie restorationists and gardeners who understand aspect — south slopes for fruit, north slopes for shade crops — and accept loess erosion risk on disturbed slopes.",
+      texture: "A globally rare landform in the middle of Iowa — the main things to weigh are slope erosion on disturbed loess, extreme aspect microclimates, and limited services outside Missouri Valley.",
+    },
+
     climate: {
       tempHighC: [-1.2, 2.1, 9.8, 17.4, 23.1, 28.6, 30.8, 29.8, 25.4, 17.8, 8.1, 0.8],
       tempLowC: [-11.8, -8.9, -2.8, 4.3, 11.2, 16.8, 18.9, 17.6, 12.1, 4.6, -2.8, -9.4],
@@ -4424,6 +4462,19 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The last great tallgrass prairie — 1.6 million hectares of chert-uplifted limestone that plow-and-cornfield agriculture could not conquer.",
     summaryImmersive: "The Flint Hills exist because the rock beneath them won. When 19th-century settlers tried to break the sod, their plows broke instead — the Permian limestone here is shot through with chert nodules that shatter steel. So one of the continent's great ecosystems survived almost by accident: roughly 1.6 million hectares of unbroken tallgrass prairie, the single largest remnant of what once covered 170 million hectares of mid-North America. Climate is continental humid subtropical, on the cusp of Dfa territory to the north — hot muggy summers, mild sunny winters broken by periodic arctic outbreaks, and a spring wildfire season that the ranching community has turned into a cultural event. Ride the Tallgrass Prairie Preserve at dawn in June and the grass is already chest-high; by September it's taller than a person on horseback.",
     whyDistinct: "The Flint Hills preserve the only remaining tallgrass prairie of landscape scale — the ecosystem, the deep-rooted soil, and the Permian-limestone topographic break that drives steep aspect-driven contrasts at fine scale. Fire is part of the climate: the April–May 'range burning' window produces some of the most intense managed-fire atmospheric signatures observed in North America.",
+
+    experience: {
+      feel: "The Flint Hills feel like the last great tallgrass prairie that geology saved — 1.6 million hectares of chert-studded limestone that broke settlers' plows, leaving big bluestem and Indiangrass standing taller than a person on horseback by September.",
+      seasons: {
+        winter: "Mild by Plains standards — afternoons near 6°C, nights near −7°C, periodic arctic outbreaks, and the range waiting for the April burning window.",
+        spring: "Fire season — the managed range-burning window in April and May producing some of the continent's most intense fire atmospheric signatures, then grass greening fast as afternoons climb through the 20s.",
+        summer: "Hot and humid — highs near 33°C, muggy afternoons, and chest-high prairie grass on the largest intact tallgrass remnant in North America.",
+        autumn: "Golden and wind-scoured — bluestem turning, the first hard frosts in October, and a landscape that reads as timeless because the rock beneath it refused to be plowed.",
+      },
+      travelerFit: "Visitors come for the Tallgrass Prairie Preserve, spring range-burning spectacle, and the largest intact tallgrass prairie on the continent.",
+      residentFit: "It rewards ranching families, prairie ecologists, and people who want continental humid-subtropical seasons tied to a working grassland economy.",
+      texture: "A landscape-scale prairie survivor — the main things to weigh are hot humid summers, declining chill hours for fruit, and fire-weather windows shifting earlier in spring.",
+    },
 
     climate: {
       tempHighC: [5.6, 8.4, 14.3, 20.2, 25.1, 30.4, 33.2, 32.6, 28.2, 21.0, 13.2, 7.2],
@@ -4565,6 +4616,19 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A Victorian spa town stitched into an Ozark karst maze — steep enough that roofs in one block sit level with the foundations of the next.",
     summaryImmersive: "Eureka Springs is geomorphically improbable. Sixty-plus mineralized springs emerge from the Ordovician carbonate at the northern escarpment of the Springfield Plateau, and the town grew in the 1880s as a Victorian health resort oriented around bathing in them. The result is a street grid that bends, forks, and occasionally switches back — Gilded-Age hotels lean into the hillside, and trolley tours require practiced drivers. Climate is humid subtropical, solidly Cfa, but the karst terrain produces micro-scale variety: north-facing limestone slots stay 3–5°C cooler in summer, cold-air drains into the deeper hollows at night, and protected south-facing benches carry the earliest spring ephemerals in the region. Lake Beaver and the Buffalo National River lie within a short drive, adding clean-water recreation to a landscape otherwise defined by stone and spring water.",
     whyDistinct: "Few places in the humid eastern US display Ozark karst relief at this density and verticality. The combination of escarpment position, carbonate bedrock, and spring-line hydrology produces a place where microclimate changes meaningfully at the scale of a city block — unusual for the humid subtropics.",
+
+    experience: {
+      feel: "Eureka Springs feels like a Victorian spa town stitched into an Ozark karst maze — steep enough that roofs in one block sit level with the foundations of the next, with sixty mineral springs emerging from Ordovician limestone and microclimate shifting at the scale of a city block.",
+      seasons: {
+        winter: "Mild Ozark winter — afternoons near 9°C, nights near −4°C, occasional light snow, and north-facing limestone slots staying 3–5°C cooler than south benches.",
+        spring: "Ephemeral season — dogwoods and redbuds in the hollows, the earliest spring flowers on protected south-facing benches, and afternoons climbing through the teens.",
+        summer: "Humid subtropical but karst-modulated — highs near 33°C in the open, cooler in north-facing slots, cold-air draining into deeper hollows at night.",
+        autumn: "Long and gentle — hardwood color on the escarpment, Buffalo National River within a short drive, and a crisp return to single-digit afternoons by November.",
+      },
+      travelerFit: "Visitors come for Victorian architecture, mineral springs, the Buffalo National River, and an Ozark escarpment where karst terrain creates block-scale microclimate variety.",
+      residentFit: "It rewards artists, retirees, and gardeners who understand slope — south benches for stone fruit, hollow bottoms for cool-season greens — and accept tourist-town energy.",
+      texture: "A geomorphically improbable spa town — the main things to weigh are thin ridge soils, tourist-season congestion, and karst runoff routing extra rainfall through spring systems.",
+    },
 
     climate: {
       tempHighC: [8.4, 11.2, 16.3, 21.4, 25.8, 30.2, 32.6, 32.1, 28.2, 22.0, 14.6, 9.6],
