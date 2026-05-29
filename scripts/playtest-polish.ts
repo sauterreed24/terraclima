@@ -257,9 +257,7 @@ async function main(): Promise<void> {
     if (!place) throw new Error(`polish anchor missing: ${id}`);
     if (!place.climate.sunshinePct) throw new Error(`${id} missing sunshinePct after polish pass`);
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after polish pass`);
-    if (!place.climate.humidity && ["bishop-ca", "hood-river-or", "flagstaff-az"].includes(id)) {
-      throw new Error(`${id} missing humidity after Tier B polish pass`);
-    }
+    if (!place.climate.humidity) throw new Error(`${id} missing humidity after Tier B polish pass`);
   }
 
   console.log("playtest-polish: OK");

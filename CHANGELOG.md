@@ -26,7 +26,8 @@ All notable changes to Terraclima are tracked here.
 - **Round 6 corpus (`src/data/places.mexico.ts`):** completes Tier B `sunshinePct` — patzcuaro-mx, valle-de-bravo-mx, zacatlan-de-las-manzanas-mx, tapalpa-mx, mazamitla-mx, creel-mx, ajijic-lake-chapala-mx.
 - **Round 7 corpus (`src/data/places.usa.ts`):** `climate.humidity` for bishop-ca, flagstaff-az, silver-city-nm, hood-river-or, ashland-or, driggs-id, fort-davis-tx, gunnison-co.
 - **Round 8 corpus (`src/data/places.usa.ts`, `places.usa.gap-states.ts`, `places.canada.ts`):** `climate.humidity` for logan-ut, canaan-valley-wv, redfield-ny, key-west-fl, mount-charleston-nv, spearfish-sd, burkes-garden-va, wolfville-ns.
-- **Playtest hardening (`scripts/playtest-polish.ts`):** SSP2-4.5 URL round-trip, post-v4.8 CSS regression needles, flagship sunshine/liveSignals anchors, UTCI* smoke on santa-barbara-ca.
+- **Rounds 9–10 corpus (`src/data/places.canada.ts`, `places.mexico.ts`):** completes Tier B `climate.humidity` — niagara-on-the-lake, atlin-lake-bc, fernie-elk-valley-bc, nelson-bc, whitehorse-yt, cuernavaca-mx, valle-guadalupe-mx, patzcuaro-mx, valle-de-bravo-mx, zacatlan-de-las-manzanas-mx, todos-santos-mx, tapalpa-mx, mazamitla-mx, ajijic-lake-chapala-mx.
+- **Playtest hardening (`scripts/playtest-polish.ts`):** all polish anchors now require sunshinePct, liveSignals, and humidity.
 
 ### Maximum-effort symbiosis
 
