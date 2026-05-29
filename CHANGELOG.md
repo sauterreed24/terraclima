@@ -13,6 +13,13 @@ All notable changes to Terraclima are tracked here.
 - **Vite 8 (`vite.config.ts`):** `server.forwardConsole` forwards browser + Web Worker runtime errors/warnings to the dev terminal.
 - **Pipeline guards (`scripts/sanity-check.ts`, `scripts/audit-corpus.ts`):** validate authored `Place.projection` deltas (finite, plausibility-bounded, SSP pathway ordering).
 
+### Post–v4.8 look + corpus polish
+
+- **Comfort precision grid (`src/styles.css`):** five-card summary layout (UTCI* included) with `@container tc-comfort-precision` breakpoints; dark-theme card/month insets.
+- **Climate scenario control (`src/styles.css`, `CompareView.tsx`):** deep-glass dark overrides for the v4.8 scenario layer switch; Compare UTCI* footnote uses semantic caption tokens.
+- **Corpus sunshine (`src/data/places.usa.ts`, `places.canada.ts`):** monthly `sunshinePct` for eight flagship Tier B places (santa-barbara-ca, driggs-id, grand-marais-mn, highlands-nc, eureka-ca, victoria-bc, tofino-bc, nelson-bc).
+- **Corpus lived friction (`src/data/places.usa.ts`, `places.canada.ts`):** `liveSignals` for driggs-id, grand-marais-mn, and nelson-bc with cited municipal/regional sources.
+
 ### Maximum-effort symbiosis
 
 - **Lifestyle lens parity:** [`src/lib/lifestyle-bundles.ts`](src/lib/lifestyle-bundles.ts) centralizes dock + hero bundles; auto-switch to **`live-fit`** ranking when Live Finder constraints are active without a full bundle match; dismissible Lens Receipt chips with `aria-live="polite"`.
