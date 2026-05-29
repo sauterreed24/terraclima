@@ -2302,16 +2302,16 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "A near-island jutting into Lake Ontario, PEC enjoys measurable lake moderation and sits on a limestone plateau that drains fast and warms quickly in spring. Cool-climate wine — Pinot Noir, Chardonnay, Riesling — has flourished here since 2000.",
     whyDistinct: "Peninsula geometry maximizes lake influence; limestone substrate + thin soils accelerate spring warming.",
                 experience: {
-      feel: "Prince Edward County — a near-island jutting into Lake Ontario, PEC enjoys measurable lake moderation and sits on a limestone plateau that drains fast and warms quickly in spring. Cool-climate wine — Pinot Noir, Chardonnay, Riesling — has flourished here since 2000.",
+      feel: "Prince Edward County feels like a near-island wine peninsula jutting into Lake Ontario — measurable lake moderation on a limestone plateau that drains fast and warms quickly in spring, supporting cool-climate Pinot Noir, Chardonnay, and Riesling since 2000.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -1.2°C, nights near -8.6°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings.",
-        spring: "Late thaw — afternoons near 10.6°C, nights near 0.9°C — showers pass through regularly.",
-        summer: "Cool summer by latitude — afternoons near 24.6°C, nights near 13.7°C — showers pass through regularly.",
-        autumn: "Shoulder season — afternoons near 13.5°C, nights near 4.8°C — showers pass through regularly.",
+        winter: "Lake-moderated cold — afternoons near −1°C, nights near −9°C, lake-effect snow on open-water days, and vineyard crews pruning while Sandbanks ice forms.",
+        spring: "Limestone warm-up — afternoons climbing through 11°C, frost nights still possible into May, and bud break racing ahead of inland Ontario thanks to thin soils and lake delay.",
+        summer: "Wine-country peak — highs near 25°C, cooler than Toronto for latitude, lake breezes on vineyard rows, and beach traffic at Sandbanks and Wellington.",
+        autumn: "Harvest shoulder — highs falling through 14°C, fall color on county roads, crush season in Hillier and Wellington, and lake fog on early October mornings.",
       },
-      travelerFit: "Visitors come for wine trail and beaches.",
-      residentFit: "It rewards cool-climate wine people — especially winemakers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — no single hazard dominates the picture.",
+      travelerFit: "Visitors come for the wine trail, Sandbanks beaches, and a lake-moderated Ontario escape without Niagara Falls crowds.",
+      residentFit: "It rewards winemakers and remote workers who accept real winters, seasonal tourism housing pressure, and Toronto-weekender rent dynamics.",
+      texture: "A limestone peninsula tradeoff — weigh cold winters and rising wine-country housing costs against lake beaches, emerging cool-climate terroir, and a slower pace than the GTA.",
     },
     climate: { tempHighC: [-2.4, -1.4, 3.3, 10.8, 17.6, 23.1, 25.9, 24.9, 20.5, 13.6, 6.4, 0.2], tempLowC: [-10.1, -10.0, -5.2, 1.1, 6.8, 12.0, 14.8, 14.2, 10.1, 4.6, -0.4, -5.8], precipMm: [64, 54, 62, 74, 80, 76, 72, 74, 88, 82, 80, 70], snowCm: [44, 32, 20, 4, 0, 0, 0, 0, 0, 0, 6, 32], annualPrecipMm: 876, frostFreeDays: 170, hardinessZone: "6b", humidity: [85, 85, 77, 74, 73, 66, 61, 64, 70, 76, 79, 81], sunshinePct: [36, 42, 45, 53, 58, 62, 55, 52, 43, 38, 34, 31] },
     soil: { texture: "Thin loam over limestone (Hillier loam)", drainage: "good", phRange: [7.2, 8.1], waterHolding: "low" },
@@ -2323,7 +2323,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for those wanting mild winters.",
+      note: "PEC's wine-country boom drives seasonal housing pressure — Kingston and Belleville anchor healthcare, and winter snow removal on county roads matters as much as vineyard frost risk for year-round residents.",
       sources: [
       { label: "ECCC — Point Petre 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2335,19 +2335,19 @@ export const PLACES_CANADA: Place[] = [
     confidence: "moderate",
                                             deepSections: [
       {
-        id: "prince-edward-co-on-mechanism",
-        title: "Lake-Moderated mechanics",
+        id: "pec-limestone-wine",
+        title: "Limestone terroir and lake-moderated bud break",
         paragraphs: [
-          "Prince Edward County sits where peninsula into Lake Ontario; near-island status produces strong lake moderation. Dfb normals and roughly 876 mm/yr frame the regional baseline, but Lake effect and Karst infiltration re-weight what any single forecast means block by block.",
-          "Peninsula geometry maximizes lake influence; limestone substrate + thin soils accelerate spring warming. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Prince Edward County is a peninsula into Lake Ontario where near-island geometry maximizes lake influence — Dfb normals with roughly 876 mm annually on thin Hillier loam over limestone that drains fast and warms quickly in spring.",
+          "Cool-climate Pinot Noir, Chardonnay, and Riesling have flourished here since 2000 because peninsula fetch and karst infiltration accelerate spring warming while lake moderation softens summer peaks relative to inland Ontario.",
         ],
       },
       {
-        id: "prince-edward-co-on-field-read",
-        title: "On-the-ground read",
+        id: "pec-sandbanks-winter",
+        title: "Sandbanks beaches and winter lake effect",
         paragraphs: [
-          "Ontario's fastest-rising wine region, built on lake-moderated microclimate and limestone terroir. Soils read as thin loam over limestone (hillier loam) with good drainage (pH 7.2–8.1). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Pinot Noir, Chardonnay, Riesling. Those wanting mild winters should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandbanks Provincial Park and Wellington harbor anchor tourism, but winter lake-effect snow and county-road maintenance define year-round logistics as much as harvest season.",
+          "Those wanting mild winters should confirm heating costs and Kingston healthcare access before committing — no single hazard dominates, but flood risk on low limestone blocks and rising wine-country housing costs are the central 2026 tradeoffs.",
         ],
       },
     ],
@@ -2370,16 +2370,16 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Iqaluit, at the head of Frobisher Bay, experiences one of North America's purest Arctic climates. The sea freezes from November through June, eliminating most maritime moderation during the coldest half of the year. Winter lows below −40°C occur in most years; windchills near −60°C are normal. Summer is short but remarkable — nearly four months of very long days, peak July highs in the mid-teens, persistent daylight that allows berries and tundra flowers to complete their cycle in weeks. The community is entirely supplied by sealift, cargo flights, and annual sealift barges; the climate shapes everything.",
     whyDistinct: "Arctic latitude + continental position on Baffin Island + cold Labrador current offshore + long polar-night/polar-day solar regime. Iqaluit is the largest city in Nunavut and one of the few places where most residents experience 21 hours of summer daylight.",
                 experience: {
-      feel: "Iqaluit, at the head of Frobisher Bay, experiences one of North America's purest Arctic climates. The sea freezes from November through June, eliminating most maritime moderation during the coldest half of the year. Winter lows below −40°C occur in most years; windchills near −60°C are normal.",
+      feel: "Iqaluit feels like one of North America's purest Arctic climates at the head of Frobisher Bay — sea ice from November through June eliminates maritime moderation in deep winter, windchills near −60°C are normal, yet summer brings 21-hour days and July highs in the mid-teens where tundra flowers complete their cycle in weeks.",
       seasons: {
-        winter: "Deep freeze — afternoons near -20.3°C, nights near -29.3°C — snow is a regular part of the picture. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near -10°C, nights near -18.3°C — snow is a regular part of the picture.",
-        summer: "Cool summer by latitude — afternoons near 10.7°C, nights near 3°C — showers pass through regularly.",
-        autumn: "Autumn fade — afternoons near -1.3°C, nights near -7°C — snow is a regular part of the picture. Hurricane and coastal surge exposure shapes fall planning.",
+        winter: "Polar night deep freeze — afternoons near −20°C, nights near −29°C, sea ice locking Frobisher Bay, and windchills that make outdoor work a calculated risk.",
+        spring: "Break-up tension — afternoons climbing toward −10°C, 24-hour daylight returning by May, sea ice retreating, and hunting routes shifting as the active layer thaws.",
+        summer: "Midnight sun brilliance — highs near 11°C, persistent daylight through July, berry picking on tundra slopes, and the year's brief window for outdoor construction and tourism.",
+        autumn: "Darkness returns — highs falling toward −1°C, first snow by October, polar night approaching, and sealift cargo deadlines dominating community planning.",
       },
-      travelerFit: "Visitors come for Inuit cultural tourism, Arctic wildlife, and polar nights / midnight sun.",
-      residentFit: "It rewards people deeply drawn to the Arctic; Inuit residents with cultural/land ties — especially Nunavut government workers — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place — the main things to weigh are deep winter cold and coastal and sea-level pressure.",
+      travelerFit: "Visitors come for Inuit cultural tourism, Arctic wildlife, and the polar-night / midnight-sun experience at Nunavut's capital.",
+      residentFit: "It rewards Nunavut government workers, Arctic researchers, and people deeply drawn to the North who accept sealift food costs, extreme remoteness, and permafrost constraints.",
+      texture: "An Arctic tradeoff — weigh −40°C winters, sealift-only supply chains, and among the fastest warming places on Earth against Inuit cultural depth, midnight-sun summers, and a capital city with real services for 63°N.",
     },
     climate: {
       tempHighC: [-22, -22, -19, -10, -1, 8, 13, 11, 6, -1, -9, -17], tempLowC: [-31, -32, -28, -19, -8, 1, 4, 4, 0, -6, -15, -25],
@@ -2397,7 +2397,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 46,
       socialStress: 30,
       accessFriction: 60,
-      note: "A poor fit for essentially anyone not prepared for extreme remoteness and cost of living.",
+      note: "Iqaluit is among Canada's most expensive and remote capitals — food arrives by sealift and cargo flights, Qikiqtani General Hospital anchors care, and anyone not prepared for polar-night isolation should visit before committing.",
       sources: [
       { label: "ECCC — Iqaluit A normal 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Climate Atlas of Canada — Arctic profiles", url: "https://climateatlas.ca/" },
@@ -2408,19 +2408,19 @@ export const PLACES_CANADA: Place[] = [
     confidence: "high",
                                             deepSections: [
       {
-        id: "iqaluit-nu-mechanism",
-        title: "Subarctic Continental mechanics",
+        id: "iqaluit-frobisher-arctic",
+        title: "Frobisher Bay ice and polar light regime",
         paragraphs: [
-          "Iqaluit sits where head of Frobisher Bay on southern Baffin Island; tundra-covered shield bedrock with minimal topographic variation. ET normals and roughly 433 mm/yr frame the regional baseline, but Continental extremity and Polar jet / arctic front re-weight what any single forecast means block by block.",
-          "Arctic latitude + continental position on Baffin Island + cold Labrador current offshore + long polar-night/polar-day solar regime. Iqaluit is the largest city in Nunavut and one of the few places where most residents experience 21 hours of summer daylight. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Iqaluit sits at the head of Frobisher Bay on southern Baffin Island — ET normals with roughly 433 mm annually, where sea ice from November through June eliminates maritime moderation and the polar-night / midnight-sun solar regime shapes every daily rhythm.",
+          "Winter lows below −40°C occur in most years with windchills near −60°C; summer brings nearly four months of very long days and July highs in the mid-teens where Arctic berries complete their cycle in weeks.",
         ],
       },
       {
-        id: "iqaluit-nu-field-read",
-        title: "On-the-ground read",
+        id: "iqaluit-sealift-permafrost",
+        title: "Sealift supply and permafrost constraints",
         paragraphs: [
-          "The capital of Nunavut sits at 63°N and averages −27°C in January — but summer days stretch to 21 hours and July highs climb above 12°C, producing a short, brilliant Arctic summer. Soils read as glacial till, thin; permafrost continuous with imperfect drainage (pH 5.5–6.5). No traditional outdoor gardening. Community-scale greenhouse projects (Iqaluit Greenhouse Society) extend fresh-food options.",
-          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Arctic berries (crowberry, blueberry), Hydroponic greens indoors. Essentially anyone not prepared for extreme remoteness and cost of living should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Continuous permafrost limits outdoor agriculture to community greenhouse projects; food security depends on annual sealift barges, cargo flights, and hunting on sea ice that is shortening dramatically under among the fastest Arctic warming on Earth.",
+          "Coastal erosion and thaw-induced landslide risk are rising — verify parcel exposure and evacuation access before committing. Essentially anyone not prepared for extreme remoteness and cost of living should confirm Qikiqtani General Hospital access and heating costs on the ground.",
         ],
       },
     ],
@@ -2477,7 +2477,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "inuvik-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -3025,7 +3025,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "charlottetown-pei-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -3239,7 +3239,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "morden-mb-mechanism",
         title: "Orchard Valley mechanics",
@@ -3304,7 +3304,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "sutton-qc-mechanism",
         title: "Piedmont Transition mechanics",

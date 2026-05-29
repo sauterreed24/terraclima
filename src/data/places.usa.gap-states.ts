@@ -69,7 +69,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "mentone-al-mechanism",
         title: "Thermal Belt mechanics",
@@ -153,7 +153,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "norfolk-ct-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -237,7 +237,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "lewes-de-mechanism",
         title: "Lake-Moderated mechanics",
@@ -321,7 +321,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "clayton-ga-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -448,16 +448,16 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryImmersive: "Beverly Shores is where continental air masses first feel the thermal mass of Lake Michigan: delayed spring warming, abundant winter cloud when cold air crosses open water, and frequent afternoon wind shifts on stable summer days. The microclimate supports boreal relicts and rare orchids in protected swales — a biogeographic fingerprint of the lake.",
     whyDistinct: "Southern-lake snowbelt + dune topography creates sharp local contrasts between exposed dunes, sheltered swales, and backshore forest within walking distance.",
                 experience: {
-      feel: "Beverly Shores is where continental air masses first feel the thermal mass of Lake Michigan: delayed spring warming, abundant winter cloud when cold air crosses open water, and frequent afternoon wind shifts on stable summer days.",
+      feel: "Beverly Shores feels like Chicago's breezy eastern cousin on southern Lake Michigan dunes — continental air masses first feel the lake's thermal mass here, delaying spring warming, feeding lake-effect snow when cold air crosses open water, and shifting afternoon winds on stable summer days.",
       seasons: {
-        winter: "Cold and snowy — afternoons near 2°C, nights near -6.7°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
-        spring: "Late thaw — afternoons near 12°C, nights near 3.3°C — snow is a regular part of the picture. Green-up arrives against a wet 945 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 25.7°C, nights near 15.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 15°C, nights near 5.3°C — showers pass through regularly. Storm systems roll through with real force.",
+        winter: "Lake-effect snowbelt — afternoons near 2°C, nights near −7°C, heavy snow when cold air crosses open Lake Michigan, and dune exposure that strips wind chill on exposed ridges.",
+        spring: "Late lake thaw — afternoons climbing through 12°C, snow still possible into April on exposed dunes, and rare orchids emerging in protected swales before Chicago warms.",
+        summer: "Sweater-weather June — highs near 26°C, moderated midsummer peaks thanks to lake breeze, Indiana Dunes trails busy, and afternoon wind shifts on stable days.",
+        autumn: "Migration shoulder — highs falling through 15°C, bird migration through duneland, and lake-effect cloud returning as water cools.",
       },
-      travelerFit: "Visitors come for Indiana Dunes trails and bird migration.",
-      residentFit: "It rewards great Lakes beach people who want dunes, not crowds — especially Chicago commuters — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are storm exposure.",
+      travelerFit: "Visitors come for Indiana Dunes National Park trails, bird migration, and a Lake Michigan beach without Chicago crowds.",
+      residentFit: "It rewards Chicago commuters and park lovers who accept lake-effect snow, dune exposure contrasts, and seasonal tourism on the lakeshore.",
+      texture: "A southern-lake tradeoff — weigh lake-effect snow removal, dune-vs-swale microclimate swings, and sun-belt warmth expectations against duneland ecology, Michigan City access, and Chicago commuter reach.",
     },
     climate: {
       tempHighC: [1, 2, 6, 12, 18, 24, 27, 26, 22, 15, 8, 3],
@@ -479,7 +479,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for sun-belt warmth seekers.",
+      note: "Chicago commuter housing in Beverly Shores and Michigan City runs above inland Indiana norms — confirm lake-effect snow removal costs and South Shore Line access before committing; sun-belt warmth seekers should visit in February.",
       sources: [
       { label: "NOAA — Michigan City IN", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Beverly Shores", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -491,19 +491,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                             deepSections: [
       {
-        id: "beverly-shores-in-mechanism",
-        title: "Lake-Effect Snowbelt mechanics",
+        id: "beverly-shores-dune-lake",
+        title: "Indiana Dunes and southern-lake snowbelt",
         paragraphs: [
-          "Beverly Shores sits where dune-and-swale coast on southern Lake Michigan; part of the Indiana Dunes National Park ecosystem. Dfa normals and roughly 945 mm/yr frame the regional baseline, but Lake effect and Diurnal sea breeze re-weight what any single forecast means block by block.",
-          "Southern-lake snowbelt + dune topography creates sharp local contrasts between exposed dunes, sheltered swales, and backshore forest within walking distance. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Beverly Shores sits on a dune-and-swale coast on southern Lake Michigan within Indiana Dunes National Park — Dfa normals with roughly 945 mm annually, where continental air masses first feel the lake's thermal mass and lake-effect snow arrives when cold air crosses open water.",
+          "Southern-lake snowbelt plus dune topography creates sharp local contrasts between exposed dunes, sheltered swales, and backshore forest within walking distance — boreal relicts and rare orchids mark the biogeographic fingerprint.",
         ],
       },
       {
-        id: "beverly-shores-in-field-read",
-        title: "On-the-ground read",
+        id: "beverly-shores-commuter-winter",
+        title: "Chicago commuter reach and lake-effect logistics",
         paragraphs: [
-          "Chicago’s breezy eastern cousin — lake-effect snow in winter, sweater-weather June, and moderated midsummer peaks. Soils read as sandy dune soils with organics in swales with excessive drainage (pH 5.5–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Beachgrass stabilization plantings, Prairie natives, Cool greens. Sun-belt warmth seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy dune soils with organics in swales drain excessively — beachgrass, prairie natives, and blueberries succeed in sheltered swales while exposed ridges face wind and snow load.",
+          "Sun-belt warmth seekers should confirm lake-effect snow removal and South Shore Line commuter access before committing — severe storm exposure is elevated on exposed duneland blocks.",
         ],
       },
     ],
@@ -573,7 +573,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "oakland-md-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -657,7 +657,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "pittsfield-ma-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -740,7 +740,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "ocean-springs-ms-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -822,7 +822,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "eminence-mo-mechanism",
         title: "Limestone / Karst Pocket mechanics",
@@ -1076,7 +1076,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "geneva-on-the-lake-oh-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -1159,7 +1159,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "broken-bow-ok-mechanism",
         title: "Piedmont Transition mechanics",

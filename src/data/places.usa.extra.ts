@@ -251,17 +251,17 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid subtropical inland — river fog, summer convection, and remnant tropical moisture.",
     summaryImmersive: "Paducah’s climate is classically mid-South: hot, humid summers with afternoon thunderstorms; mild winters punctuated by Arctic outbreaks and freezing rain when warm Gulf air overrides cold domes at the surface. The Ohio and Tennessee rivers moderate temperatures slightly and provide moisture for fog banks in spring and fall. Convective available potential energy is high in June ahead of mesoscale convective systems that track along the river valleys.",
     whyDistinct: "Large-river confluence zones concentrate moisture and serve as preferential corridors for nocturnal convection and flooding — hydroclimate is as important as latitude here.",
-                experience: {
-      feel: "Paducah’s climate is classically mid-South: hot, humid summers with afternoon thunderstorms; mild winters punctuated by Arctic outbreaks and freezing rain when warm Gulf air overrides cold domes at the surface.",
+                                experience: {
+      feel: "Paducah feels like classic mid-South river confluence country — hot humid summers with afternoon thunderstorms, mild winters punctuated by Arctic outbreaks and freezing rain when Gulf air overrides cold domes, and Ohio–Tennessee river fog banks that concentrate nocturnal convection.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7°C, nights near -2.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 20°C, nights near 9°C — rain is frequent and can be heavy. Green-up arrives against a wet 1315 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Warm season peak — afternoons near 31°C, nights near 20°C — rain is frequent and can be heavy. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Hurricane-season tail — afternoons near 21.3°C, nights near 9.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Arctic override risk — afternoons near 7°C, nights near −2°C, freezing rain when warm Gulf air meets cold domes, and river fog on calm mornings.",
+        spring: "Flood season — afternoons climbing toward 20°C, Ohio and Tennessee rivers swelling with rain and upstream melt, and mesoscale convective systems tracking along river valleys.",
+        summer: "Humid subtropical peak — highs near 31°C, afternoon thunderstorms with high CAPE, heat indices that demand shade planning, and river barge traffic at full capacity.",
+        autumn: "Remnant tropical moisture — highs falling through 21°C, Gulf hurricane remnants occasionally pushing heavy rain up the Mississippi basin, and quilt-museum tourism on the riverfront.",
       },
-      travelerFit: "Visitors come for quilt museum and riverfront.",
-      residentFit: "It rewards river-town Midwesterners who tolerate humidity — especially logistics — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are flood and surge risk and extreme summer heat.",
+      travelerFit: "Visitors come for the National Quilt Museum, Ohio River frontage, and a mid-South river town with UNESCO Creative City credentials.",
+      residentFit: "It rewards logistics and healthcare workers who accept humidity, spring flood risk, and flat alluvial geography in exchange for river-town affordability.",
+      texture: "A confluence tradeoff — weigh Ohio–Tennessee floodplain exposure, remnant tropical moisture, and summer heat against riverfront culture, Barkley Regional Airport access, and lower cost than Nashville.",
     },
     climate: { tempHighC: [5, 8, 14, 20, 26, 30, 32, 31, 28, 22, 14, 8], tempLowC: [-4, -2, 3, 9, 15, 19, 21, 20, 16, 9, 3, -1], precipMm: [90, 95, 120, 120, 130, 110, 115, 95, 95, 100, 110, 115], annualPrecipMm: 1315, frostFreeDays: 200, hardinessZone: "7a", humidity: [68, 67, 69, 74, 79, 81, 81, 84, 81, 79, 75, 69], sunshinePct: [48, 51, 50, 57, 62, 67, 64, 64, 59, 55, 52, 47] },
     soil: { texture: "Mississippi embayment silty loams", drainage: "moderate", phRange: [5.5, 6.8], waterHolding: "high" },
@@ -273,7 +273,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mountain-air seekers.",
+      note: "Baptist Health Paducah anchors care and Barkley Regional Airport connects to Nashville and St. Louis — verify FEMA flood panels on Ohio–Tennessee confluence parcels before committing; mountain-air seekers should visit during July humidity first.",
       sources: [
       { label: "NOAA — Barkley Regional", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Paducah", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -285,23 +285,23 @@ export const PLACES_USA_EXTRA: Place[] = [
     confidence: "high",
                                             deepSections: [
       {
-        id: "paducah-ky-mechanism",
-        title: "River-Valley Moderation mechanics",
+        id: "paducah-river-confluence",
+        title: "Ohio–Tennessee confluence and nocturnal convection",
         paragraphs: [
-          "Paducah sits where alluvial plain at the confluence of the Tennessee and Ohio Rivers; frequent spring flooding; weak local relief. Cfa normals and roughly 1315 mm/yr frame the regional baseline, but River-valley moderation and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Large-river confluence zones concentrate moisture and serve as preferential corridors for nocturnal convection and flooding — hydroclimate is as important as latitude here. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Paducah sits on an alluvial plain at the confluence of the Tennessee and Ohio Rivers — Cfa normals with roughly 1315 mm annually, where large-river geometry concentrates moisture and serves as a preferential corridor for nocturnal convection and spring flooding.",
+          "River-valley moderation softens temperature extremes slightly while providing moisture for fog banks in spring and fall — hydroclimate matters as much as latitude here.",
         ],
       },
       {
-        id: "paducah-ky-field-read",
-        title: "On-the-ground read",
+        id: "paducah-flood-plain",
+        title: "Mississippi embayment floodplain and logistics hub",
         paragraphs: [
-          "Humid subtropical inland — river fog, summer convection, and remnant tropical moisture. Soils read as mississippi embayment silty loams with moderate drainage (pH 5.5–6.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Soybeans, Corn, Tobacco heritage. Mountain-air seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Mississippi embayment silty loams hold water well — soybeans, corn, and oak shade trees succeed on elevated blocks while low parcels face elevated flood risk during spring MCS events.",
+          "Mountain-air seekers should confirm Baptist Health Paducah access and FEMA flood panels before committing — floodplain management is central to long-term livability, not an atlas footnote.",
         ],
       },
     ],
-    confidenceNotes: "Paducah coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.",
+    confidenceNotes: "Paducah flood exposure varies sharply by parcel elevation above the Ohio–Tennessee confluence — FEMA panels and spring MCS history matter more than regional comfort scores.",
     citations: [{ label: "NOAA — Barkley Regional", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
@@ -355,7 +355,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["energy sector", "remote workers"], travelFit: ["Lewis & Clark", "prairie reserves"],
     whoWouldLove: "Wide-open plains people who own a good parka.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "bismarck-nd-mechanism",
         title: "Subarctic Continental mechanics",
@@ -427,7 +427,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["university families", "healthcare"], travelFit: ["fall color", "whitewater"],
     whoWouldLove: "Appalachian foothills without deep South heat.", whoMightNot: "Sun-belt retirees seeking dry air.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "morgantown-wv-mechanism",
         title: "River-Valley Moderation mechanics",

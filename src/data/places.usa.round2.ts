@@ -350,16 +350,16 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryImmersive: "Naples trades Atlantic surf for Gulf shallows: water temperatures seasonally warm, supporting humid tropical-feeling nights. Cold fronts are brief; sea breezes organize summer convection inland.",
     whyDistinct: "Gulf bathymetry and low latitude yield narrow annual range relative to interior Florida.",
                 experience: {
-      feel: "Naples trades Atlantic surf for Gulf shallows: water temperatures seasonally warm, supporting humid tropical-feeling nights. Cold fronts are brief; sea breezes organize summer convection inland.",
+      feel: "Naples feels like Gulf-side subtropical luxury — shallow bathymetry keeps water warm, humid tropical-feeling nights, brief cold fronts in winter, and sea breezes that organize summer convection inland away from the barrier islands.",
       seasons: {
-        winter: "Warm winter window — afternoons near 24.7°C, nights near 14°C — showers pass through regularly. Storm systems roll through with real force.",
-        spring: "Heating up fast — afternoons near 28.7°C, nights near 18.3°C — showers pass through regularly. Green-up arrives against a wet 1435 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Hot and humid — afternoons near 32.7°C, nights near 23.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 29.7°C, nights near 20.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Dry-season comfort — afternoons near 25°C, nights near 14°C, snowbird season peak, and brief cold fronts that rarely drop below 10°C.",
+        spring: "Heating up — afternoons climbing toward 29°C, humidity building before rainy season, and Everglades wildlife viewing before summer heat peaks.",
+        summer: "Wet and steamy — highs near 33°C, afternoon sea-breeze storms, hurricane watch season, and inland heat that pushes activity to Gulf beaches.",
+        autumn: "Hurricane tail — highs near 30°C, October still wet with tropical systems brushing the Gulf coast, then dry season returning by November.",
       },
-      travelerFit: "Visitors come for Everglades and beaches.",
-      residentFit: "It rewards gulf-coast warmth without Atlantic surf culture — especially retirees — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are flood and surge risk and storm exposure.",
+      travelerFit: "Visitors come for Everglades access, Gulf beaches, and a subtropical winter escape without Atlantic surf culture.",
+      residentFit: "It rewards retirees and second-home owners who accept flood insurance costs, hurricane evacuation planning, and Collier County luxury-market pricing.",
+      texture: "A Gulf-barrier tradeoff — weigh very-high flood and surge risk, hurricane exposure, and insurance premiums against warm dry winters, sea-breeze moderation, and proximity to the Ten Thousand Islands.",
     },
     climate: {
       tempHighC: [24, 25, 27, 28, 31, 32, 33, 33, 32, 30, 27, 25],
@@ -380,7 +380,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 38,
-      note: "A poor fit for hurricane-averse; flood-risk skeptics.",
+      note: "Collier County flood insurance and elevation certificates dominate parcel-level livability — NCH Healthcare anchors care, and hurricane-averse buyers should confirm FEMA flood panels and evacuation routes before committing.",
       sources: [
       { label: "NOAA — Naples", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Naples", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -392,19 +392,19 @@ export const PLACES_USA_ROUND2: Place[] = [
     confidence: "high",
                                             deepSections: [
       {
-        id: "naples-fl-mechanism",
-        title: "Hurricane-Exposed Coast mechanics",
+        id: "naples-gulf-shallow",
+        title: "Gulf shallows and sea-breeze caps",
         paragraphs: [
-          "Naples sits where collier County barrier islands and mangrove-lined estuaries; gentle continental shelf. Aw border normals and roughly 1435 mm/yr frame the regional baseline, but Diurnal sea breeze and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Gulf bathymetry and low latitude yield narrow annual range relative to interior Florida. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Naples sits on Collier County barrier islands and mangrove estuaries where gentle Gulf bathymetry and low latitude yield a narrow annual temperature range — Aw-border normals with roughly 1435 mm annually and diurnal sea breezes that cap peak summer heat relative to interior Florida.",
+          "Shallow Gulf water supports humid tropical-feeling nights; cold fronts are brief in winter and summer convection organizes inland away from the immediate coast.",
         ],
       },
       {
-        id: "naples-fl-field-read",
-        title: "On-the-ground read",
+        id: "naples-surge-flood",
+        title: "Surge reach and mangrove peat drainage",
         paragraphs: [
-          "Gulf-side luxury microclimate — warm wet summers, mild dry winters, and sea-breeze caps on peak heat. Soils read as sandy marl and mangrove peat with poor drainage (pH 7–8.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Coconut, Mangrove restoration species, Tropical ornamentals. Hurricane-averse; flood-risk skeptics should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy marl and mangrove peat soils drain poorly — garden success tracks elevation above base flood level more than hardiness zone. Coconut and tropical ornamentals thrive on elevated blocks; low parcels face very-high flood and coastal exposure.",
+          "Hurricane-averse and flood-risk skeptics should confirm elevation certificates, NFIP premiums, and Lee/Collier evacuation routes before committing — insurance and drainage define livability here more than regional comfort scores.",
         ],
       },
     ],
@@ -513,16 +513,16 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryImmersive: "Scottsbluff sits where irrigation from the North Platte meets semi-arid steppe. Summer brings dryline thunderstorms; winter alternates between bitter cold and chinook relief.",
     whyDistinct: "Elevation and escarpment proximity add mesoscale wind and temperature volatility rare on the flat Plains.",
                 experience: {
-      feel: "Scottsbluff sits where irrigation from the North Platte meets semi-arid steppe. Summer brings dryline thunderstorms; winter alternates between bitter cold and chinook relief.",
+      feel: "Scottsbluff feels like a High Plains river town at the Wildcat Hills escarpment — irrigation from the North Platte meets semi-arid steppe, summer dryline thunderstorms roll off the Pine Ridge, and winter alternates between bitter Arctic air and chinook warm-ups that can flip temperatures 20°C in hours.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 3.3°C, nights near -9°C — skies stay mostly dry with intense sun. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 16.7°C, nights near 1.7°C — showers pass through regularly. Storm systems roll through with real force.",
-        summer: "Warm season peak — afternoons near 30.3°C, nights near 12.7°C — showers pass through regularly. Water supply and irrigation stress matter.",
-        autumn: "Shoulder season — afternoons near 17°C, nights near 0.7°C — weather stays moderate and changeable. Storm systems roll through with real force.",
+        winter: "Chinook roulette — afternoons near 3°C but Arctic outbreaks dropping nights to −9°C, downslope warmings that melt snow overnight, and dryline wind that strips moisture from skin.",
+        spring: "Dryline season — afternoons climbing toward 17°C, severe thunderstorm watches on the Plains edge, and irrigation canals filling as Platte storage releases begin.",
+        summer: "Hot steppe peak — highs near 30°C, dryline storms with hail, intense sun on shortgrass prairie, and water-rights stress visible in field margins.",
+        autumn: "Harvest shoulder — highs near 17°C, first frost by October, Oregon Trail history sites quieting, and chinook previews ahead of winter.",
       },
-      travelerFit: "Visitors come for Scotts Bluff NM and Oregon Trail history.",
-      residentFit: "It rewards wide-open Plains people — especially ag workers — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are long-run drought and deep winter cold.",
+      travelerFit: "Visitors come for Scotts Bluff National Monument, Oregon Trail history, and a window into High Plains ag culture at the escarpment edge.",
+      residentFit: "It rewards ag workers and remote workers who accept wind, drought cycles, and limited tree cover in exchange for wide-open skies and low cost of living.",
+      texture: "A Platte Valley tradeoff — weigh long-run drought, Platte aquifer contention, and deep winter cold against chinook relief, Oregon Trail landscape, and Nebraska Panhandle affordability.",
     },
     climate: {
       tempHighC: [2, 5, 11, 17, 22, 28, 32, 31, 25, 17, 9, 3],
@@ -543,7 +543,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 40,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for tree-seekers; humidity lovers.",
+      note: "Regional Medical Center anchors care in the Panhandle — ag-economy housing stays affordable but tree-seekers and humidity lovers should visit in January before committing to chinook-and-wind winters.",
       sources: [
       { label: "NOAA — Scottsbluff", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Scottsbluff", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -555,19 +555,19 @@ export const PLACES_USA_ROUND2: Place[] = [
     confidence: "high",
                                             deepSections: [
       {
-        id: "scottsbluff-ne-mechanism",
-        title: "High-Desert Escape mechanics",
+        id: "scottsbluff-platte-chinook",
+        title: "North Platte irrigation and chinook warm-ups",
         paragraphs: [
-          "Scottsbluff sits where north Platte River at the Wildcat Hills — Plains edge with Pine Ridge scarp to the north. At roughly 1189 m, elevation bands matter as much as latitude. BSk normals and roughly 471 mm/yr frame the regional baseline, but Continental extremity and Chinook / foehn downslope re-weight what any single forecast means block by block.",
-          "Elevation and escarpment proximity add mesoscale wind and temperature volatility rare on the flat Plains. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Scottsbluff sits where the North Platte River meets the Wildcat Hills escarpment at roughly 1189 m — BSk normals with roughly 471 mm annually, where irrigation from Platte storage meets semi-arid steppe and chinook downslope flow can replace Arctic air with spring-like warmth in hours.",
+          "Elevation and Pine Ridge scarp proximity add mesoscale wind and temperature volatility rare on the flat Plains — summer dryline thunderstorms and hail are headline events.",
         ],
       },
       {
-        id: "scottsbluff-ne-field-read",
-        title: "On-the-ground read",
+        id: "scottsbluff-wildcat-hills",
+        title: "Wildcat Hills escarpment and aquifer stress",
         paragraphs: [
-          "High Plains river town — windy, sunny, and prone to rapid winter warm-ups when downslope flow replaces Arctic air. Soils read as silt loam on alluvium with good drainage (pH 6.5–8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Sugar beets, Dryland wheat, Windbreak trees. Tree-seekers; humidity lovers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Silt loam on alluvium supports sugar beets, dryland wheat, and windbreak trees where water rights allow — garden success tracks irrigation access more than hardiness zone.",
+          "Tree-seekers and humidity lovers should confirm Regional Medical Center access and heating costs before committing — long-run drought and contested Platte aquifer storage define planning here more than city-scale comfort scores.",
         ],
       },
     ],
@@ -836,17 +836,17 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Classic New England shore — delayed spring, milder peaks than Hartford, nor’easter surf in winter.",
     summaryImmersive: "Mystic’s climate is paced by water: fog, drizzle, and moderate summer heat. Tropical systems occasionally brush the coast with surge and wind.",
     whyDistinct: "Dual-sound exposure tightens maritime influence vs inland Connecticut.",
-                experience: {
-      feel: "Mystic’s climate is paced by water: fog, drizzle, and moderate summer heat. Tropical systems occasionally brush the coast with surge and wind.",
+                                experience: {
+      feel: "Mystic feels like classic New England shore paced by water — fog and drizzle on Fishers Island Sound, summer heat moderated by dual-sound exposure, and nor'easter surf in winter that keeps the village quieter than Newport.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 4.3°C, nights near -2.7°C — rain is frequent and can be heavy. Coastal surge and wind events belong in the planning stack.",
-        spring: "Green-up and storms — afternoons near 12°C, nights near 5°C — rain is frequent and can be heavy. Green-up arrives against a wet 1200 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Cool summer by latitude — afternoons near 24.7°C, nights near 17°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 16.3°C, nights near 8.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
+        winter: "Nor'easter coast — afternoons near 4°C, nights near −3°C, mixed precipitation, and maritime cold that runs milder than Hartford inland.",
+        spring: "Delayed green-up — afternoons climbing through 12°C, fog banks on the Mystic River, and sailing season prep while inland Connecticut warms faster.",
+        summer: "Maritime moderation — highs near 25°C, cooler peaks than Hartford, afternoon sea breezes, and Mystic Seaport at full tourist season.",
+        autumn: "Hurricane brush season — highs falling through 16°C, tropical systems occasionally bringing surge and wind, and the year's best sailing weather in September.",
       },
-      travelerFit: "Visitors come for seaport museum and sailing.",
-      residentFit: "It rewards coastal New England without big-city scale — especially maritime retirees — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at sea level — the main things to weigh are coastal and sea-level pressure and flood and surge risk. Tourism-season housing in Mystic/ Stonington runs above inland Connecticut norms; New Haven and Providence are the usual specialist and airport anchors.",
+      travelerFit: "Visitors come for Mystic Seaport, sailing on Fishers Island Sound, and coastal New England without big-city scale.",
+      residentFit: "It rewards maritime retirees and museum-goers who accept tourism-season housing costs above inland Connecticut norms.",
+      texture: "A dual-sound tradeoff — weigh coastal surge exposure, nor'easter wind, and Stonington/Mystic housing premiums against moderated summer heat, seaport culture, and New Haven/Providence specialist access.",
     },
     climate: {
       tempHighC: [3, 4, 7, 12, 17, 22, 26, 26, 22, 16, 11, 6],
@@ -878,19 +878,19 @@ export const PLACES_USA_ROUND2: Place[] = [
     confidence: "high",
                                             deepSections: [
       {
-        id: "mystic-ct-mechanism",
-        title: "Cool-Summer Maritime mechanics",
+        id: "mystic-dual-sound",
+        title: "Fishers Island and Block Island Sound exposure",
         paragraphs: [
-          "Mystic sits where estuarine village between Long Island Sound and Block Island Sound — persistent maritime air. Dfb normals and roughly 1200 mm/yr frame the regional baseline, but Marine layer and Diurnal sea breeze re-weight what any single forecast means block by block.",
-          "Dual-sound exposure tightens maritime influence vs inland Connecticut. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Mystic sits between Long Island Sound and Block Island Sound where persistent maritime air delays spring and softens summer peaks — Dfb normals with roughly 1200 mm annually and dual-sound fetch that tightens maritime influence versus inland Connecticut.",
+          "Fog, drizzle, and moderate summer heat define daily rhythm; tropical systems occasionally brush the coast with surge and wind in autumn.",
         ],
       },
       {
-        id: "mystic-ct-field-read",
-        title: "On-the-ground read",
+        id: "mystic-maritime-housing",
+        title: "Seaport tourism and coastal infrastructure",
         paragraphs: [
-          "Classic New England shore — delayed spring, milder peaks than Hartford, nor’easter surf in winter. Soils read as sandy glacial outwash near shore with excessive drainage (pH 5–6.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hydrangea, Rosa rugosa, Salt-tolerant shrubs. Budget retirees; sun-belt seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy glacial outwash near shore drains excessively — hydrangea, Rosa rugosa, and salt-tolerant shrubs succeed on sheltered blocks while historic port infrastructure faces rising surge reach.",
+          "Budget retirees and sun-belt seekers should confirm flood panels and tourism-season rent before committing — New Haven and Providence anchor specialist care but Mystic/Stonington housing runs above inland Connecticut norms.",
         ],
       },
     ],
@@ -957,7 +957,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["academics", "families"], travelFit: ["Penn State sports", "Rothrock SF"],
     whoWouldLove: "Appalachian foothills with college-town amenities.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                            deepSections: [
+                                                deepSections: [
       {
         id: "state-college-pa-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -1403,16 +1403,16 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryImmersive: "Roswell sits in a wide valley where dryline and monsoon moisture meet; spring wind and dust are notorious. Irrigation from the Pecos supports pockets of agriculture.",
     whyDistinct: "Classic southern High Plains synoptic environment with monsoon overlay.",
                 experience: {
-      feel: "Roswell sits in a wide valley where dryline and monsoon moisture meet; spring wind and dust are notorious. Irrigation from the Pecos supports pockets of agriculture.",
+      feel: "Roswell feels like a wide Pecos Valley under big High Plains skies — dryline and monsoon moisture meet over caliche soils, spring wind and dust are notorious, and summer thunderstorms bring hail with 15°C diurnal swings between blazing afternoons and cool nights.",
       seasons: {
-        winter: "Mild and workable — afternoons near 13°C, nights near -2.3°C — skies stay mostly dry with intense sun. Storm systems roll through with real force.",
-        spring: "Spring opens — afternoons near 25°C, nights near 8°C — skies stay relentlessly clear and dry. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 34.7°C, nights near 19°C — showers pass through regularly. Water supply and irrigation stress matter.",
-        autumn: "Shoulder season — afternoons near 23.7°C, nights near 7°C — weather stays moderate and changeable. Storm systems roll through with real force.",
+        winter: "Mild and sunny — afternoons near 13°C, nights near −2°C, dry clear days with intense sun, and occasional Arctic dips that freeze irrigation lines.",
+        spring: "Wind and dust — afternoons climbing toward 25°C, dryline storms building on the Llano Estacado margin, and notorious spring gusts that strip topsoil from exposed fields.",
+        summer: "Monsoon peak — highs near 35°C, afternoon convection with hail risk, humidity spikes when Gulf moisture surges, and Pecos irrigation running at full capacity.",
+        autumn: "Dry shoulder — highs near 24°C, monsoon retreating, chile harvest and pecan groves along the river, and the year's best stargazing before winter.",
       },
-      travelerFit: "Visitors come for aliens museum and Bottomless Lakes.",
-      residentFit: "It rewards high-plains sky watchers — especially aviation — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are long-run drought and extreme summer heat.",
+      travelerFit: "Visitors come for the International UFO Museum, Bottomless Lakes, and some of the clearest High Plains night skies in the Southwest.",
+      residentFit: "It rewards aviation enthusiasts and ranching families who accept water-rights politics, dust, and low humidity in exchange for affordable land and huge skies.",
+      texture: "A Pecos Valley tradeoff — weigh aquifer stress, drought cycles, and hail risk against low cost of living, aviation culture, and monsoon-greened desert margins.",
     },
     climate: {
       tempHighC: [12, 15, 20, 25, 30, 35, 35, 34, 30, 24, 17, 12],
@@ -1433,7 +1433,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for humidity lovers.",
+      note: "Eastern New Mexico Regional Medical Center anchors care — water rights and Pecos aquifer stress dominate long-term planning, and humidity lovers should visit during monsoon season before committing.",
       sources: [
       { label: "NOAA — Roswell Industrial AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Roswell", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1445,19 +1445,19 @@ export const PLACES_USA_ROUND2: Place[] = [
     confidence: "high",
                                             deepSections: [
       {
-        id: "roswell-nm-mechanism",
-        title: "Monsoon-Edge Zone mechanics",
+        id: "roswell-pecos-monsoon",
+        title: "Pecos Valley dryline and monsoon overlay",
         paragraphs: [
-          "Roswell sits where broad Pecos River valley on the Llano Estacado margin — high plains dryness with summer monsoon convection. At roughly 1087 m, elevation bands matter as much as latitude. BSk normals and roughly 314 mm/yr frame the regional baseline, but Monsoon convective lift and Continental extremity re-weight what any single forecast means block by block.",
-          "Classic southern High Plains synoptic environment with monsoon overlay. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Roswell sits in the broad Pecos River valley on the Llano Estacado margin at roughly 1087 m — BSk normals with roughly 314 mm annually, where dryline and monsoon moisture meet over caliche-backed soils and summer thunderstorms bring hail with huge diurnal swings.",
+          "Classic southern High Plains synoptic environment: spring wind and dust are notorious, then July–August monsoon convection delivers most annual precipitation in brief intense bursts.",
         ],
       },
       {
-        id: "roswell-nm-field-read",
-        title: "On-the-ground read",
+        id: "roswell-sky-aquifer",
+        title: "High Plains skies and Pecos water rights",
         paragraphs: [
-          "High-plains city famous for skies — summer thunderstorms, hail, and huge diurnal swings. Soils read as fine sandy loam over caliche with good drainage (pH 7.5–8.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Pecans (irrigated), Chile, Cotton. Humidity lovers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Fine sandy loam over caliche supports irrigated pecans, chile, and cotton where water rights allow — dry-farmed corn fails without reliable Pecos storage.",
+          "Humidity lovers should confirm Eastern New Mexico Regional Medical Center access before committing — aquifer stress and contested water rights define long-term livability more than city-scale comfort scores.",
         ],
       },
     ],
@@ -1484,16 +1484,16 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryImmersive: "Rapid City sits where Great Plains simplicity meets orographic complexity; winter can flip from arctic to spring-like in hours when downslope winds arrive.",
     whyDistinct: "Black Hills frontal position amplifies mesoscale wind and temperature volatility.",
                 experience: {
-      feel: "Rapid City sits where Great Plains simplicity meets orographic complexity; winter can flip from arctic to spring-like in hours when downslope winds arrive.",
+      feel: "Rapid City feels like Great Plains simplicity meeting Black Hills orographic complexity — chinook downslope can flip winter from arctic to spring-like in hours, summer thunderstorms build fast at the Hills' front, and the 1972 flood remains in civic memory.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 3°C, nights near -9°C — skies stay mostly dry. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 15°C, nights near 1.3°C — showers pass through regularly. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Warm season peak — afternoons near 29.3°C, nights near 13.7°C — showers pass through regularly. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 16.3°C, nights near 1.3°C — weather stays moderate and changeable. Storm systems roll through with real force.",
+        winter: "Chinook swings — afternoons near 3°C but nights near −9°C, downslope warmings that melt January snow overnight, and Arctic outbreaks between foehn events.",
+        spring: "Snowmelt rush — afternoons climbing toward 15°C, Rapid Creek swelling with melt and rain, Black Hills wildfire prep beginning, and tourism season ramping for Mount Rushmore.",
+        summer: "Storm and fire season — highs near 29°C, afternoon thunderstorms with hail, wildfire smoke from Hills forests, and Canyon Lake recreation at peak.",
+        autumn: "Shoulder clarity — highs near 16°C, first frost by October, Custer State Park bison rut, and the year's best hiking weather before winter returns.",
       },
-      travelerFit: "Visitors come for Mount Rushmore and Badlands.",
-      residentFit: "It rewards black Hills access with city services — especially tourism — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and flood and surge risk.",
+      travelerFit: "Visitors come for Mount Rushmore, Badlands proximity, and Black Hills access with full city services.",
+      residentFit: "It rewards tourism and healthcare workers who accept volatile winter weather, wildfire smoke, and flash-flood risk in creek corridors.",
+      texture: "A Black Hills gateway tradeoff — weigh chinook-masked winter cold, Rapid Creek flash-flood history, and wildfire smoke against national-monument access, Monument Health, and Hills recreation.",
     },
     climate: {
       tempHighC: [2, 4, 9, 15, 21, 27, 31, 30, 25, 16, 8, 3],
@@ -1514,7 +1514,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
+      note: "Monument Health anchors regional care and Rapid City Regional Airport connects to Denver — verify parcel elevation above Rapid Creek flood corridors and wildfire insurance before committing; mild-winter seekers should visit in January.",
       sources: [
       { label: "NOAA — Rapid City Regional", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Rapid City", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1526,19 +1526,19 @@ export const PLACES_USA_ROUND2: Place[] = [
     confidence: "high",
                                             deepSections: [
       {
-        id: "rapid-city-sd-mechanism",
-        title: "Chinook Corridor mechanics",
+        id: "rapid-city-chinook-hills",
+        title: "Black Hills front and chinook volatility",
         paragraphs: [
-          "Rapid City sits where prairie edge at the Black Hills front — rapid weather changes when Pacific systems meet continental air. At roughly 966 m, elevation bands matter as much as latitude. Dwb normals and roughly 565 mm/yr frame the regional baseline, but Chinook / foehn downslope and Polar jet / arctic front re-weight what any single forecast means block by block.",
-          "Black Hills frontal position amplifies mesoscale wind and temperature volatility. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Rapid City sits at the prairie edge of the Black Hills at roughly 966 m — Dwb normals with roughly 565 mm annually, where Pacific systems meet continental air and chinook downslope can flip winter from arctic to spring-like in hours.",
+          "Black Hills frontal position amplifies mesoscale wind and temperature volatility — summer thunderstorms with hail and wildfire smoke from ponderosa forests are both headline events.",
         ],
       },
       {
-        id: "rapid-city-sd-field-read",
-        title: "On-the-ground read",
+        id: "rapid-city-creek-flood",
+        title: "Rapid Creek flash flood and 1972 memory",
         paragraphs: [
-          "Gateway city where chinook warmings and summer thunderstorms both make headlines — quick transitions at the Hills’ edge. Soils read as clay loam on pierre shale margin with moderate drainage (pH 6–7.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cool-season vegetables, Hardy fruit. Mild-winter seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Clay loam on Pierre shale margin supports cool-season vegetables and hardy fruit on sheltered blocks — garden success tracks creek-corridor elevation more than hardiness zone.",
+          "The 1972 Rapid Creek flood remains in civic memory — mild-winter seekers should confirm heating costs between chinook events, and verify parcel elevation above flood corridors and wildfire interface before committing.",
         ],
       },
     ],
