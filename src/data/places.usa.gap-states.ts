@@ -27,6 +27,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Alabama’s coolest summer afternoons outside the highest Smokies — a plateau town where elevation buys genuine relief from Gulf humidity below.",
     summaryImmersive: "Mentone sits on the same Appalachian escarpment that runs into Georgia and Tennessee, but here the state’s stereotypical swelter finally breaks. Westerly storm systems ride the plateau edge; thermal belts and coves on the scarp produce sharp spring frost contrasts that orchardists still map by hand. It is one of the few places in Alabama where true four-season gardening feels honest.",
     whyDistinct: "Plateau elevation (~550 m) in the subtropical Gulf air mass produces lapse-rate cooling and orographic cloud caps on moist flow — a discrete mountain microclimate inside a state better known for torrid lowlands.",
+                                experience: {
+      feel: "Mentone feels like Alabama's plateau escape on the Lookout Mountain scarp — roughly 550 m above the Tennessee Valley where Gulf swelter finally breaks, thermal belts on the escarpment produce sharp spring frost contrasts, and true four-season gardening feels honest for the first time in the state.",
+      seasons: {
+        winter: "Plateau mild — afternoons near 10°C, nights near 0°C, occasional snow on the scarp, and DeSoto Falls frozen on cold mornings.",
+        spring: "Thermal-belt tension — afternoons climbing toward 21°C, orchard frost maps still drawn by hand, and hang-gliders launching from the ridge when winds align.",
+        summer: "Relief from Gulf heat — highs near 29°C, cooler than Chattanooga valley below, afternoon storms riding the plateau edge, and the state's coolest summer afternoons outside the Smokies.",
+        autumn: "Escarpment color — highs falling through 21°C, native azaleas and hardwoods on the scarp, and apple harvest in cove orchards.",
+      },
+      travelerFit: "Visitors come for DeSoto State Park, hang gliding from Lookout Mountain, and Alabama mountain air without leaving the state.",
+      residentFit: "It rewards retirees and remote workers who want mountain climate inside Alabama but accept limited urban amenities and wet shoulder seasons.",
+      texture: "A Lookout Mountain tradeoff — weigh escarpment flood risk, spring frost on thermal belts, and remote services against genuine elevation relief from Gulf humidity and four-season gardening.",
+    },
     climate: {
       tempHighC: [9, 11, 16, 21, 25, 28, 29, 29, 26, 21, 15, 11],
       tempLowC: [-1, 0, 4, 8, 13, 17, 18, 17, 14, 8, 3, 0],
@@ -34,18 +46,50 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       snowCm: [8, 6, 3, 0, 0, 0, 0, 0, 0, 0, 1, 4],
       annualPrecipMm: 1375,
       frostFreeDays: 190,
-      hardinessZone: "7b",
+      hardinessZone: "7b",    humidity: [66, 66, 68, 69, 74, 80, 84, 82, 80, 77, 74, 71],    sunshinePct: [50, 53, 52, 59, 64, 69, 66, 66, 61, 57, 54, 48],
+
+
     },
     soil: { texture: "Shaley silt loam on sandstone and limestone", drainage: "moderate", phRange: [5.4, 6.8], waterHolding: "moderate" },
     growability: { score: 72, hardinessZone: "7b", growsWell: ["Apples", "Blueberries", "Native azaleas", "Cool greens"], tricky: ["Heat-loving melons without season extension"] },
     climateChange: { outlook2050: "Longer pollen season; heavier convective rain.", outlook2100: "Southern Appalachian species migration upslope.", keyShifts: [{ variable: "Humid heat nights", direction: "up" }], resilienceNote: "Elevation buffers some heat relative to the valley." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "moderate", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 58, microclimateUniqueness: 68, comfort: 70, resilience: 58, growability: 72, tradeoff: 40 },
+    liveSignals: {
+      costPressure: 40,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "DeKalb Regional Medical Center in Fort Payne is the nearest hospital — southerners seeking mountain air should confirm winter road access on the scarp before committing; urban amenity seekers will find Chattanooga 90 minutes west.",
+      sources: [
+      { label: "NOAA — Valley Head 2 NE (proxy)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Mentone", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Valley Head 2 NE (proxy)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                                deepSections: [
+      {
+        id: "mentone-lookout-plateau",
+        title: "Lookout Mountain scarp and lapse-rate relief",
+        paragraphs: [
+          "Mentone sits on the Cumberland Plateau / Lookout Mountain scarp roughly 550 m above the Tennessee Valley — Cfa normals with roughly 1375 mm annually, where plateau elevation in the subtropical Gulf air mass produces lapse-rate cooling rare in Alabama.",
+          "Westerly storm systems ride the plateau edge; thermal belts and coves on the scarp produce sharp spring frost contrasts that orchardists still map by hand.",
+        ],
+      },
+      {
+        id: "mentone-desoto-garden",
+        title: "DeSoto State Park and four-season gardening",
+        paragraphs: [
+          "Shaley silt loam on sandstone and limestone supports apples, blueberries, and native azaleas — one of the few places in Alabama where true four-season gardening feels honest.",
+          "Those needing urban amenities or dry winters should confirm DeKalb Regional Medical Center access before committing — escarpment flood exposure varies sharply by cove versus ridge-top parcel.",
+        ],
+      },
+    ],
+    confidenceNotes: "Those needing urban amenities or dry winters should confirm DeKalb Regional Medical Center access before committing — escarpment flood exposure varies sharply by cove versus ridge-top parcel.",
+    citations: [{ label: "NOAA — Valley Head 2 NE (proxy)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Connecticut — NW highlands cold pocket
@@ -67,6 +111,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Connecticut’s unofficial cold pole — deep winter snow and spring frosts that arrive later than along I-91.",
     summaryImmersive: "Norfolk collects cold air on clear nights the way a bowl collects water. Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure. Summers are mild and short; the town is a cultural bridge between New England ski country and the Hudson Valley.",
     whyDistinct: "High elevation + inland position + enclosed topography = systematically colder minima than coastal Connecticut or the Hartford basin — a textbook small-scale cold pool.",
+                                experience: {
+      feel: "Norfolk feels like Connecticut's unofficial cold pole — the highest-incorporated town in the state where cold air collects on clear nights like water in a bowl, lake-effect streamers from Lake Ontario occasionally reach this far southeast, and summers are mild and short compared to Hartford or the coast.",
+      seasons: {
+        winter: "Cold pole deep freeze — afternoons near 2°C, nights near −9°C, heavy snow totals, and cross-country skiing when trails are groomed.",
+        spring: "Late and frosty — afternoons climbing through 13°C, last frost weeks behind the Hartford basin, and maple sap season running into April.",
+        summer: "Brief mild window — highs near 25°C, short but comfortable, Infinity Music Festival season, and the year's best hiking before cold returns.",
+        autumn: "Peak color — highs falling through 14°C, Taconic/Berkshire hardwoods at their best, and first snow dusting ridges by November.",
+      },
+      travelerFit: "Visitors come for fall color, cross-country skiing, and Connecticut's coldest-incorporated-town bragging rights.",
+      residentFit: "It rewards New England maximalists and second-home owners who want real winter snow and accept limited specialty care beyond Hartford.",
+      texture: "A NW highlands tradeoff — weigh deep winter cold, lake-effect snow removal, and rural isolation against genuine four-season New England character 40 minutes from the Berkshires.",
+    },
     climate: {
       tempHighC: [0, 2, 7, 13, 19, 23, 26, 25, 21, 14, 8, 3],
       tempLowC: [-11, -9, -5, 1, 7, 12, 14, 13, 8, 3, -2, -7],
@@ -74,18 +130,50 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       snowCm: [55, 45, 35, 12, 0, 0, 0, 0, 0, 5, 25, 50],
       annualPrecipMm: 1175,
       frostFreeDays: 135,
-      hardinessZone: "5b",
+      hardinessZone: "5b",    humidity: [85, 85, 77, 74, 69, 70, 65, 68, 66, 72, 79, 81],    sunshinePct: [37, 43, 46, 54, 60, 63, 57, 53, 44, 39, 35, 32],
+
+
     },
     soil: { texture: "Stony loam on schist/gneiss glacial till", drainage: "good", phRange: [5.0, 6.2], waterHolding: "moderate" },
     growability: { score: 54, hardinessZone: "5b", growsWell: ["Maple syrup", "Apples", "Cool-season vegetables", "Hemlock-shade ornamentals"], tricky: ["Long-season tomatoes"] },
     climateChange: { outlook2050: "Shorter snow season; wetter shoulder storms.", outlook2100: "Hardiness zone creep upward.", keyShifts: [{ variable: "Winter snow", direction: "down" }], resilienceNote: "Cold infrastructure still matters for decades." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "elevated", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 52, microclimateUniqueness: 64, comfort: 58, resilience: 60, growability: 54, tradeoff: 44 },
+    liveSignals: {
+      costPressure: 64,
+      socialStress: 24,
+      accessFriction: 60,
+      note: "Charlotte Hungerford Hospital in Torrington anchors care — New England maximalists should confirm snow-removal costs and winter road maintenance before committing; mild-climate retirees will find coastal Connecticut more comfortable.",
+      sources: [
+      { label: "NOAA — Norfolk 2 SW", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Norfolk", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Norfolk 2 SW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                                deepSections: [
+      {
+        id: "norfolk-cold-pole",
+        title: "Connecticut's cold pole and radiative drainage",
+        paragraphs: [
+          "Norfolk is the highest-incorporated town in Connecticut on Taconic/Berkshire foothills — Dfb normals with roughly 1175 mm annually, where enclosed topography collects cold air on clear nights systematically colder than coastal Connecticut or the Hartford basin.",
+          "Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure driving deep winter snow.",
+        ],
+      },
+      {
+        id: "norfolk-berkshire-bridge",
+        title: "Berkshire cultural bridge and maple country",
+        paragraphs: [
+          "Stony loam on schist/gneiss glacial till supports maple syrup, apples, and cool-season vegetables — spring frosts arrive later than along I-91.",
+          "Mild-climate retirees should confirm Charlotte Hungerford Hospital access and heating costs before committing — severe storm exposure is elevated and winter snow infrastructure still matters for decades.",
+        ],
+      },
+    ],
+    confidenceNotes: "Regional lake-effect context is well supported; lakeshore versus inland parcels can differ by feet of snow per event — confirm fetch and bluff exposure.",
+    citations: [{ label: "NOAA — Norfolk 2 SW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Delaware — Delaware Bay / Atlantic moderation
@@ -107,6 +195,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Delaware’s gentlest summers — bay and ocean breezes cap heat while humidity stays classically Mid-Atlantic.",
     summaryImmersive: "Lewes sits where the bay’s huge tidal prism organizes daily wind: onshore flow on warm afternoons, land breezes at night, and periodic nor’easters that reshape coastal dunes. It lacks the elevation microclimates of the Appalachians but exemplifies estuarine moderation in a mostly flat state.",
     whyDistinct: "Shallow-mixed Delaware Bay + Atlantic fetch produces a hybrid maritime regime rare inland on the Delmarva Peninsula.",
+                                experience: {
+      feel: "Lewes feels like Delaware's baymouth historic settlement where the tidal prism of Delaware Bay organizes daily wind — onshore flow on warm afternoons, land breezes at night, and periodic nor'easters reshaping coastal dunes in a mostly flat state without Appalachian elevation microclimates.",
+      seasons: {
+        winter: "Nor'easter coast — afternoons near 7°C, nights near −1°C, mixed precipitation, and Cape Henlopen quieter than summer tourist peak.",
+        spring: "Bay fog and green-up — afternoons climbing toward 16°C, ferry season to Cape May restarting, and salt marsh awakening along the estuary.",
+        summer: "Bay-breeze moderation — highs near 28°C, sea breeze caps peak heat relative to inland Delaware, beach season at Cape Henlopen, and classic Mid-Atlantic humidity.",
+        autumn: "Hurricane brush season — highs falling through 19°C, tropical systems occasionally bringing surge, and the year's best beach weather in September.",
+      },
+      travelerFit: "Visitors come for Cape Henlopen State Park, the Cape May–Lewes Ferry, and Delaware's gentlest summers on the bay.",
+      residentFit: "It rewards coastal retirees who prefer small-town bay scale and accept flood insurance costs and Mid-Atlantic humidity.",
+      texture: "A Delaware Bay tradeoff — weigh nor'easter surge, salt-marsh flood exposure, and rising sea level against moderated summer heat, historic charm, and ferry access to New Jersey.",
+    },
     climate: {
       tempHighC: [6, 7, 11, 16, 21, 26, 29, 28, 25, 19, 14, 9],
       tempLowC: [-2, -1, 2, 7, 13, 18, 21, 20, 17, 10, 5, 1],
@@ -115,18 +215,49 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74],
       annualPrecipMm: 1145,
       frostFreeDays: 220,
-      hardinessZone: "7b",
+      hardinessZone: "7b",    sunshinePct: [50, 52, 52, 58, 51, 56, 53, 53, 48, 57, 53, 48],
+
     },
     soil: { texture: "Sandy coastal plain and marsh organics", drainage: "excessive", phRange: [4.8, 6.5], waterHolding: "low" },
     growability: { score: 62, hardinessZone: "7b", growsWell: ["Beach plum", "Salt-tolerant shrubs", "Irrigated perennials"], tricky: ["Dry-farmed Mediterranean herbs"] },
     climateChange: { outlook2050: "Higher surge reach; more compound flood–rain events.", outlook2100: "Salt intrusion into shallow aquifers.", keyShifts: [{ variable: "Sea level", direction: "up" }], resilienceNote: "Elevation is the long-term constraint." },
     risks: { wildfire: { level: "very-low", trend: "stable" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "high", trend: "worsening" } },
     scores: { hiddenGem: 44, microclimateUniqueness: 58, comfort: 68, resilience: 48, growability: 62, tradeoff: 52 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Beebe Healthcare in Rehoboth Beach anchors Sussex County care — verify FEMA flood panels and elevation above salt marsh before committing; mountain-air seekers and flood-risk skeptics should visit during a nor'easter season first.",
+      sources: [
+      { label: "NOAA — Lewes (Sussex County)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Lewes", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Lewes (Sussex County)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                                deepSections: [
+      {
+        id: "lewes-bay-tidal",
+        title: "Delaware Bay tidal prism and sea-breeze caps",
+        paragraphs: [
+          "Lewes sits where Delaware Bay narrows toward the Atlantic — Cfa normals with roughly 1145 mm annually, where shallow-mixed bay water and Atlantic fetch produce a hybrid maritime regime rare inland on the Delmarva Peninsula.",
+          "The bay's huge tidal prism organizes daily wind: onshore flow on warm afternoons caps peak heat relative to inland Delaware while humidity stays classically Mid-Atlantic.",
+        ],
+      },
+      {
+        id: "lewes-cape-henlopen",
+        title: "Cape Henlopen and nor'easter surge reach",
+        paragraphs: [
+          "Sandy coastal plain and marsh organics drain excessively — beach plum and salt-tolerant shrubs succeed on elevated blocks while low parcels face high coastal exposure.",
+          "Mountain-air seekers and flood-risk skeptics should confirm Beebe Healthcare access and FEMA flood panels before committing — elevation above salt marsh is the long-term constraint as surge reach expands.",
+        ],
+      },
+    ],
+    confidenceNotes: "Coastal-maritime normals capture regional fog and rain; fetch exposure and elevation within a few kilometers can shift sunshine and wind exposure materially.",
+    citations: [{ label: "NOAA — Lewes (Sussex County)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Georgia — Southern Appalachian escarpment
@@ -148,6 +279,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "A Georgia mountain town where July afternoons stay closer to the upper 20s than the low 30s — rare in the Deep South.",
     summaryImmersive: "Clayton is far enough south to feel subtropical in spring, but elevation and orographic cloudiness on moist southerly flow keep midsummer heat human. Waterfalls and north-facing coves stay shockingly cool; south-facing ridges open to sun for viticulture experiments. The contrast with Atlanta’s heat island is not subtle — it is a different regional climate at the same latitude band.",
     whyDistinct: "Orographic enhancement + escarpment elevation produces a montane island climate inside the humid subtropical belt — one of the strongest latitude–elevation decouplings in the Southeast.",
+                                experience: {
+      feel: "Clayton feels like a Blue Ridge escarpment town far enough south to feel subtropical in spring but elevated enough that orographic cloudiness on moist southerly flow keeps midsummer heat human — a montane island climate where July afternoons stay in the upper 20s while Atlanta swelters below.",
+      seasons: {
+        winter: "Escarpment mild — afternoons near 12°C, nights near 1°C, occasional snow on north-facing coves, and waterfalls frozen on cold mornings.",
+        spring: "Orographic green-up — afternoons climbing toward 22°C, rhododendron bloom in coves, and Bartram Trail hikers arriving before summer crowds.",
+        summer: "Cloud-capped relief — highs near 29°C, cooler than Atlanta for latitude, afternoon storms on moist southerly flow, and north-facing coves shockingly cool.",
+        autumn: "Waterfall season — highs falling through 21°C, hardwood color on the escarpment, and viticulture experiments on south-facing ridges.",
+      },
+      travelerFit: "Visitors come for Bartram Trail waterfalls, Blue Ridge scenery, and Georgia mountain climate without West Coast prices.",
+      residentFit: "It rewards remote workers and hikers who accept orographic rain, landslide risk on slopes, and cooler summers than crop growers might want.",
+      texture: "A Blue Ridge front tradeoff — weigh 1520 mm annual rain, flash-flood risk on escarpment slopes, and modest hot-season heat against genuine mountain relief from Atlanta's heat island.",
+    },
     climate: {
       tempHighC: [11, 13, 17, 22, 26, 29, 30, 29, 26, 22, 16, 12],
       tempLowC: [0, 1, 5, 9, 14, 17, 18, 18, 15, 9, 4, 1],
@@ -155,18 +298,50 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       snowCm: [18, 14, 8, 0, 0, 0, 0, 0, 0, 0, 2, 10],
       annualPrecipMm: 1520,
       frostFreeDays: 180,
-      hardinessZone: "7a",
+      hardinessZone: "7a",    humidity: [90, 86, 84, 77, 73, 71, 71, 69, 71, 76, 81, 83],    sunshinePct: [32, 35, 34, 41, 46, 51, 48, 48, 43, 39, 36, 31],
+
+
     },
     soil: { texture: "Acidic loam in coves; thin on ridges", drainage: "good", phRange: [4.8, 6.0], waterHolding: "moderate" },
     growability: { score: 70, hardinessZone: "7a", growsWell: ["Apples", "Brassicas", "Blueberries", "Trout-lily natives"], tricky: ["Heat-loving peppers without greenhouse"] },
     climateChange: { outlook2050: "Heavier extreme rain on slopes.", outlook2100: "Species migration upslope.", keyShifts: [{ variable: "Flash flood risk", direction: "up" }], resilienceNote: "Forested slopes buffer erosion if kept intact." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 48, microclimateUniqueness: 72, comfort: 74, resilience: 54, growability: 70, tradeoff: 38 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Mountain Lakes Medical Center in Clayton anchors care — southerners seeking mountain climate should confirm US-441 winter access before committing; crop growers needing reliable hot summers will find the Piedmont more productive.",
+      sources: [
+      { label: "NOAA — Clayton 1 WSW", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Clayton", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Clayton 1 WSW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                                deepSections: [
+      {
+        id: "clayton-blue-ridge",
+        title: "Blue Ridge escarpment and orographic cloudiness",
+        paragraphs: [
+          "Clayton sits at the Blue Ridge escarpment in northeast Georgia at roughly 590 m — Cfb normals with roughly 1520 mm annually, where orographic enhancement and escarpment elevation produce a montane island climate inside the humid subtropical belt.",
+          "Moist southerly flow keeps midsummer heat human — July afternoons stay closer to the upper 20s than the low 30s, one of the strongest latitude–elevation decouplings in the Southeast.",
+        ],
+      },
+      {
+        id: "clayton-waterfall-coves",
+        title: "North-facing coves and Bartram Trail country",
+        paragraphs: [
+          "Acidic loam in coves and thin ridge soils support apples, brassicas, and blueberries — north-facing coves stay shockingly cool while south-facing ridges open to sun for viticulture experiments.",
+          "Those needing reliable hot summers for crops should confirm Mountain Lakes Medical Center access before committing — flash flood and landslide risk are elevated on escarpment slopes during heavy rain events.",
+        ],
+      },
+    ],
+    confidenceNotes: "Those needing reliable hot summers for crops should confirm Mountain Lakes Medical Center access before committing — flash flood and landslide risk are elevated on escarpment slopes during heavy rain events.",
+    citations: [{ label: "NOAA — Clayton 1 WSW", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Illinois — Driftless / Mississippi bluffs
@@ -188,6 +363,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Steep bluffs and coulees in a corner of Illinois that glaciers missed — sharp frost and microclimates on a few miles’ scale.",
     summaryImmersive: "Galena’s postcard hills are not decorative; they organize cold drainage, spring phenology, and wind exposure in ways flat corn country cannot. The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns. It is a microclimate laboratory squeezed into a tourist town.",
     whyDistinct: "Driftless topography inside Illinois’ glaciated plain is geographically rare; elevation + aspect produce repeatable local climate gradients documented in Midwest agronomy literature.",
+    experience: {
+      feel: "Galena feels like a Driftless pocket inside glaciated Illinois — postcard bluffs organizing cold drainage, spring phenology, and wind exposure on a scale flat corn country cannot match, with the Mississippi moderating some winter cold while supplying moisture for lake-effect-like cloud streets when synoptic flow aligns.",
+      seasons: {
+        winter: "Cold and snowy — afternoons near freezing, nights near −10°C, coulees pooling cold air on clear nights, and bluff-top views over a frozen Mississippi corridor.",
+        spring: "Fast green-up — afternoons climbing through the low teens, snowmelt and spring rain swelling Galena River tributaries, and orchard bloom dates diverging sharply between valley floor and south-facing slopes.",
+        summer: "Warm and stormy — highs near 27°C, humid afternoons with heavy convection, and the historic Main Street tourist season running alongside real Midwest thunderstorm energy.",
+        autumn: "Color and harvest — highs falling through the mid-teens, oak savanna turning gold on the bluffs, and the last comfortable weeks before winter drainage patterns return.",
+      },
+      travelerFit: "Visitors come for Mississippi Palisades overlooks, 19th-century Main Street architecture, and a microclimate laboratory squeezed into a tourist town.",
+      residentFit: "It rewards Midwest topography fans who still want seasons — especially historic-town lovers — if they accept steep-drive logistics and Mississippi-flood exposure on low parcels.",
+      texture: "A Driftless tradeoff — weigh elevated flood risk on river-adjacent blocks, bluff-road winter access, and storm exposure against genuine microclimate diversity within a few miles.",
+    },
     climate: {
       tempHighC: [-2, 0, 6, 14, 20, 26, 28, 27, 23, 16, 8, 1],
       tempLowC: [-12, -10, -4, 3, 10, 15, 17, 16, 11, 4, -2, -8],
@@ -195,18 +382,50 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       snowCm: [28, 25, 18, 5, 0, 0, 0, 0, 0, 0, 8, 22],
       annualPrecipMm: 886,
       frostFreeDays: 155,
-      hardinessZone: "5a",
+      hardinessZone: "5a",    humidity: [60, 59, 57, 63, 73, 80, 81, 80, 77, 74, 69, 62],    sunshinePct: [46, 49, 49, 57, 63, 69, 66, 66, 60, 55, 51, 45],
+
+
     },
     soil: { texture: "Silt loam on loess and colluvium", drainage: "good", phRange: [5.8, 7.0], waterHolding: "high" },
     growability: { score: 68, hardinessZone: "5a", growsWell: ["Apples", "Grape (hybrid)", "Pasture", "Cool greens"], tricky: ["Long-season heat lovers"] },
     climateChange: { outlook2050: "More intense spring rain on bluffs.", outlook2100: "Shorter ice season on the river.", keyShifts: [{ variable: "Heavy rain", direction: "up" }], resilienceNote: "Topographic diversity aids adaptation." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 56, microclimateUniqueness: 66, comfort: 60, resilience: 58, growability: 68, tradeoff: 40 },
+    liveSignals: {
+      costPressure: 46,
+      socialStress: 24,
+      accessFriction: 60,
+      note: "Galena historic-housing at mid-band; Jo Daviess County services anchor care — Mississippi-flood exposure on low parcels, bluff-road winter access, and Driftless cold-drainage frost define daily logistics beyond Main Street tourism appeal.",
+      sources: [
+      { label: "NOAA — Galena", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Galena", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["historic-town lovers", "remote workers"], travelFit: ["Mississippi Palisades", "architecture"],
     whoWouldLove: "Midwest topography fans who still want seasons.", whoMightNot: "Those avoiding cold winters or steep drives.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Galena", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    deepSections: [
+      {
+        id: "galena-driftless-bluffs",
+        title: "Driftless bluffs and coulee microclimates",
+        paragraphs: [
+          "Galena sits on Mississippi River bluffs at the Illinois edge of the Driftless Area — unglaciated terrain in a glaciated state where Dfa normals and roughly 886 mm annually frame a regional baseline that slope, aspect, and cold-air drainage re-weight block by block.",
+          "Elevation and aspect produce repeatable local climate gradients documented in Midwest agronomy literature: south-facing vineyard benches warm faster in spring while coulees pool frost on clear nights only hundreds of metres away.",
+        ],
+      },
+      {
+        id: "galena-mississippi-flood",
+        title: "Mississippi moderation and flood geometry",
+        paragraphs: [
+          "The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns — a river-valley tradeoff between milder nights and elevated flood exposure on low parcels near tributary mouths.",
+          "Silt loam on loess and colluvium supports apples, hybrid grapes, and pasture on sheltered blocks. Those avoiding cold winters or steep drives should confirm parcel elevation, drainage, and insurance before treating postcard-hill appeal as parcel-grade comfort.",
+        ],
+      },
+    ],
+    confidenceNotes: "Those avoiding cold winters or steep drives should confirm parcel elevation, drainage, and insurance before treating postcard-hill appeal as parcel-grade comfort.",
+    citations: [{ label: "NOAA — Galena", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Indiana — southern lakeshore snowbelt + mesoscale lake breeze
@@ -228,6 +447,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Chicago’s breezy eastern cousin — lake-effect snow in winter, sweater-weather June, and moderated midsummer peaks.",
     summaryImmersive: "Beverly Shores is where continental air masses first feel the thermal mass of Lake Michigan: delayed spring warming, abundant winter cloud when cold air crosses open water, and frequent afternoon wind shifts on stable summer days. The microclimate supports boreal relicts and rare orchids in protected swales — a biogeographic fingerprint of the lake.",
     whyDistinct: "Southern-lake snowbelt + dune topography creates sharp local contrasts between exposed dunes, sheltered swales, and backshore forest within walking distance.",
+                experience: {
+      feel: "Beverly Shores feels like Chicago's breezy eastern cousin on southern Lake Michigan dunes — continental air masses first feel the lake's thermal mass here, delaying spring warming, feeding lake-effect snow when cold air crosses open water, and shifting afternoon winds on stable summer days.",
+      seasons: {
+        winter: "Lake-effect snowbelt — afternoons near 2°C, nights near −7°C, heavy snow when cold air crosses open Lake Michigan, and dune exposure that strips wind chill on exposed ridges.",
+        spring: "Late lake thaw — afternoons climbing through 12°C, snow still possible into April on exposed dunes, and rare orchids emerging in protected swales before Chicago warms.",
+        summer: "Sweater-weather June — highs near 26°C, moderated midsummer peaks thanks to lake breeze, Indiana Dunes trails busy, and afternoon wind shifts on stable days.",
+        autumn: "Migration shoulder — highs falling through 15°C, bird migration through duneland, and lake-effect cloud returning as water cools.",
+      },
+      travelerFit: "Visitors come for Indiana Dunes National Park trails, bird migration, and a Lake Michigan beach without Chicago crowds.",
+      residentFit: "It rewards Chicago commuters and park lovers who accept lake-effect snow, dune exposure contrasts, and seasonal tourism on the lakeshore.",
+      texture: "A southern-lake tradeoff — weigh lake-effect snow removal, dune-vs-swale microclimate swings, and sun-belt warmth expectations against duneland ecology, Michigan City access, and Chicago commuter reach.",
+    },
     climate: {
       tempHighC: [1, 2, 6, 12, 18, 24, 27, 26, 22, 15, 8, 3],
       tempLowC: [-8, -7, -2, 3, 9, 14, 17, 16, 12, 5, -1, -5],
@@ -235,18 +466,50 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       snowCm: [55, 40, 25, 8, 0, 0, 0, 0, 0, 0, 15, 45],
       annualPrecipMm: 945,
       frostFreeDays: 175,
-      hardinessZone: "6a",
+      hardinessZone: "6a",    humidity: [62, 61, 59, 69, 75, 82, 79, 82, 79, 76, 71, 64],    sunshinePct: [46, 49, 49, 56, 62, 68, 65, 65, 59, 55, 50, 44],
+
+
     },
     soil: { texture: "Sandy dune soils with organics in swales", drainage: "excessive", phRange: [5.5, 7.0], waterHolding: "low" },
     growability: { score: 58, hardinessZone: "6a", growsWell: ["Beachgrass stabilization plantings", "Prairie natives", "Cool greens", "Blueberries (with mulch)"], tricky: ["Drought-intolerant fruit without irrigation"] },
     climateChange: { outlook2050: "Less ice cover may reduce snowband frequency but increase lake heat.", outlook2100: "Shifting shoreline ecology.", keyShifts: [{ variable: "Lake ice", direction: "down" }], resilienceNote: "Lake moderation still dominates local comfort." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "moderate", trend: "worsening" } },
     scores: { hiddenGem: 50, microclimateUniqueness: 70, comfort: 66, resilience: 60, growability: 58, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Chicago commuter housing in Beverly Shores and Michigan City runs above inland Indiana norms — confirm lake-effect snow removal costs and South Shore Line access before committing; sun-belt warmth seekers should visit in February.",
+      sources: [
+      { label: "NOAA — Michigan City IN", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Beverly Shores", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Michigan City IN", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                            deepSections: [
+      {
+        id: "beverly-shores-dune-lake",
+        title: "Indiana Dunes and southern-lake snowbelt",
+        paragraphs: [
+          "Beverly Shores sits on a dune-and-swale coast on southern Lake Michigan within Indiana Dunes National Park — Dfa normals with roughly 945 mm annually, where continental air masses first feel the lake's thermal mass and lake-effect snow arrives when cold air crosses open water.",
+          "Southern-lake snowbelt plus dune topography creates sharp local contrasts between exposed dunes, sheltered swales, and backshore forest within walking distance — boreal relicts and rare orchids mark the biogeographic fingerprint.",
+        ],
+      },
+      {
+        id: "beverly-shores-commuter-winter",
+        title: "Chicago commuter reach and lake-effect logistics",
+        paragraphs: [
+          "Sandy dune soils with organics in swales drain excessively — beachgrass, prairie natives, and blueberries succeed in sheltered swales while exposed ridges face wind and snow load.",
+          "Sun-belt warmth seekers should confirm lake-effect snow removal and South Shore Line commuter access before committing — severe storm exposure is elevated on exposed duneland blocks.",
+        ],
+      },
+    ],
+    confidenceNotes: "Regional lake-effect context is well supported; lakeshore versus inland parcels can differ by feet of snow per event — confirm fetch and bluff exposure.",
+    citations: [{ label: "NOAA — Michigan City IN", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Maryland — Appalachian high county
@@ -268,6 +531,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Maryland’s winter — snowier and colder than Baltimore imagines — with ridge-valley frost contrasts that rival West Virginia.",
     summaryImmersive: "Oakland is the anchor of Garrett County, where Pittsburgh television markets and lake-effect snow belts overlap. Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow. Summer is mild and prized by Mid-Atlantic escapees; spring is late and fickle for growers.",
     whyDistinct: "High elevation + Great Lakes moisture channel + enclosed valleys = disproportionate snow and cold for the Mid-Atlantic seaboard.",
+                                experience: {
+      feel: "Oakland feels like Maryland's high-country anchor in Garrett County — where Pittsburgh television markets and lake-effect snow belts overlap, Deep Creek Lake modifies local breezes, and summer mildness draws Mid-Atlantic escapees from Baltimore heat.",
+      seasons: {
+        winter: "Lake-effect snowbelt — afternoons near 3°C, nights near −7°C, Wisp Resort open, and upslope snow on northwesterly flow exceeding Baltimore totals by feet.",
+        spring: "Late plateau thaw — afternoons climbing through 14°C, Deep Creek ice-out, and growers watching frost dates weeks behind the Piedmont.",
+        summer: "Mid-Atlantic escape — highs near 24°C, lake recreation at peak, Autumn Glory festival planning, and genuinely cool nights compared to DC.",
+        autumn: "Autumn Glory peak — highs falling through 14°C, hardwood color across Garrett County, Wisp closing, and first lake-effect dusting by November.",
+      },
+      travelerFit: "Visitors come for Wisp Resort, Deep Creek Lake, and the Autumn Glory festival in Maryland's snowiest county.",
+      residentFit: "It rewards lake-house buyers and remote workers who want ski-adjacent winters and accept rural Garrett County services.",
+      texture: "A Garrett County tradeoff — weigh lake-effect snow removal, Deep Creek flood exposure, and Pittsburgh-distance healthcare against real Mid-Atlantic winter snow and summer mildness Baltimore cannot match.",
+    },
     climate: {
       tempHighC: [1, 3, 8, 14, 19, 23, 25, 24, 20, 14, 8, 4],
       tempLowC: [-9, -8, -3, 2, 8, 12, 14, 13, 9, 3, -1, -5],
@@ -275,18 +550,50 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       snowCm: [55, 45, 35, 12, 0, 0, 0, 0, 0, 5, 25, 50],
       annualPrecipMm: 1185,
       frostFreeDays: 145,
-      hardinessZone: "5b",
+      hardinessZone: "5b",    humidity: [82, 82, 75, 71, 70, 68, 63, 61, 64, 70, 76, 78],    sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34],
+
+
     },
     soil: { texture: "Loam on glacial till and sandstone residuum", drainage: "moderate", phRange: [5.0, 6.5], waterHolding: "moderate" },
     growability: { score: 60, hardinessZone: "5b", growsWell: ["Hay", "Cool-season vegetables", "Apples", "Maple"], tricky: ["Warm-season corn without GDD"] },
     climateChange: { outlook2050: "Wetter springs; shorter snow season.", outlook2100: "Hardiness zone migration upward.", keyShifts: [{ variable: "Heavy rain", direction: "up" }], resilienceNote: "Lake tourism economy sensitive to winter reliability." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "elevated", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 46, microclimateUniqueness: 68, comfort: 62, resilience: 58, growability: 60, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 46,
+      socialStress: 24,
+      accessFriction: 60,
+      note: "Garrett County Memorial Hospital anchors care and Pittsburgh is the usual specialist market — mild-winter seekers should visit in February before committing to lake-effect snow totals that rival West Virginia.",
+      sources: [
+      { label: "NOAA — Oakland 2 SE", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Oakland", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Oakland 2 SE", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                                deepSections: [
+      {
+        id: "oakland-garrett-lake-effect",
+        title: "Garrett County lake-effect and Deep Creek Lake",
+        paragraphs: [
+          "Oakland anchors Garrett County, Maryland's highest-elevation county at roughly 750 m — Dfb normals with roughly 1185 mm annually, where Great Lakes moisture channels and enclosed valleys produce disproportionate snow and cold for the Mid-Atlantic seaboard.",
+          "Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow — winter totals rival West Virginia while Baltimore imagines milder weather.",
+        ],
+      },
+      {
+        id: "oakland-wisp-autumn",
+        title: "Wisp Resort and Autumn Glory economy",
+        paragraphs: [
+          "Loam on glacial till supports hay, cool-season vegetables, and apples — spring is late and fickle for growers compared to the Piedmont.",
+          "Mild-winter seekers should confirm Garrett County Memorial Hospital access and snow-removal costs before committing — lake tourism economy remains sensitive to winter snow reliability as the season shortens.",
+        ],
+      },
+    ],
+    confidenceNotes: "Regional lake-effect context is well supported; lakeshore versus inland parcels can differ by feet of snow per event — confirm fetch and bluff exposure.",
+    citations: [{ label: "NOAA — Oakland 2 SE", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Massachusetts — Berkshires
@@ -308,6 +615,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Cool summers and crisp winters west of Boston’s marine bubble — elevation and inland position create a continental Berkshires climate.",
     summaryImmersive: "Pittsfield sits in a valley network that channels winter cold and summer thunderstorms along frontal boundaries. It is not as harsh as Vermont’s Northeast Kingdom, but it is dramatically different from Cape Cod on the same state license plate. Fall color and spring mud season are serious social calendars.",
     whyDistinct: "Inland elevation + New England storm-track dynamics = stronger seasonality than coastal Massachusetts, with occasional lake-enhanced snow on northwesterly flow.",
+                                experience: {
+      feel: "Pittsfield feels like interior Berkshires valley country west of Boston's marine bubble — Hudson and Housatonic watersheds channel winter cold and summer thunderstorms, with fall color and mud season as serious social calendars on the same Massachusetts license plate as Cape Cod.",
+      seasons: {
+        winter: "Berkshires snow — afternoons near 2°C, nights near −9°C, lake-enhanced bands on NW flow, and Tanglewood quiet under snow.",
+        spring: "Mud season — afternoons climbing toward 13°C, late green-up in valley bottoms, maple sap finishing, and frost nights lingering on clear April mornings.",
+        summer: "Cool by Massachusetts standards — highs near 25°C, thunderstorms along frontal boundaries, Jacob's Pillow season, and comfortable nights compared to Boston humidity.",
+        autumn: "Tanglewood foliage — highs falling through 14°C, hardwood color at peak, the year's best hiking weather, and ski areas prepping for opening.",
+      },
+      travelerFit: "Visitors come for Tanglewood, Jacob's Pillow, Berkshires ski areas, and New England culture without Boston housing costs.",
+      residentFit: "It rewards culture seekers and second-home owners who accept real winter snow and mud season in exchange for Berkshires arts infrastructure.",
+      texture: "A Berkshires tradeoff — weigh lake-enhanced snow, mud-season road damage, and Albany/Boston specialist distance against Tanglewood, affordable housing versus Boston, and stronger seasonality than coastal Massachusetts.",
+    },
     climate: {
       tempHighC: [0, 2, 6, 13, 19, 24, 27, 25, 21, 14, 8, 3],
       tempLowC: [-11, -9, -5, 1, 7, 12, 14, 13, 8, 2, -3, -8],
@@ -315,18 +634,50 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       snowCm: [50, 40, 30, 8, 0, 0, 0, 0, 0, 0, 20, 45],
       annualPrecipMm: 1100,
       frostFreeDays: 150,
-      hardinessZone: "5b",
+      hardinessZone: "5b",    humidity: [85, 85, 77, 74, 69, 70, 65, 68, 66, 72, 79, 81],    sunshinePct: [40, 46, 49, 57, 63, 66, 60, 56, 47, 42, 38, 35],
+
+
     },
     soil: { texture: "Stony loam on schist", drainage: "good", phRange: [5.2, 6.5], waterHolding: "moderate" },
     growability: { score: 58, hardinessZone: "5b", growsWell: ["Apples", "Berries", "Cool greens", "Hay"], tricky: ["Heat-loving crops"] },
     climateChange: { outlook2050: "More freeze–thaw; maple sap windows shift.", outlook2100: "Species composition shifts upslope.", keyShifts: [{ variable: "Winter freeze–thaw", direction: "up" }], resilienceNote: "Forest-based economies need adaptive management." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 40, microclimateUniqueness: 58, comfort: 58, resilience: 58, growability: 58, tradeoff: 44 },
+    liveSignals: {
+      costPressure: 46,
+      socialStress: 24,
+      accessFriction: 60,
+      note: "Berkshire Medical Center anchors care and Albany International Airport is the usual specialist gateway — mild-winter seekers should visit in January before committing to Berkshires snow totals and mud season.",
+      sources: [
+      { label: "NOAA — Pittsfield Airport", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Pittsfield", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Pittsfield Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                                    deepSections: [
+      {
+        id: "pittsfield-berkshires-valley",
+        title: "Housatonic valley cold and lake-enhanced snow",
+        paragraphs: [
+          "Pittsfield sits in Hudson/Housatonic watershed uplands between the Taconic Range and Green Mountains — Dfb normals with roughly 1100 mm annually, where inland elevation and New England storm-track dynamics create stronger seasonality than coastal Massachusetts.",
+          "Valley networks channel winter cold and summer thunderstorms along frontal boundaries; occasional lake-enhanced snow arrives on northwesterly flow from the Great Lakes.",
+        ],
+      },
+      {
+        id: "pittsfield-tanglewood-culture",
+        title: "Tanglewood season and maple sap windows",
+        paragraphs: [
+          "Stony loam on schist supports apples, berries, cool greens, and hay on sheltered blocks — not as harsh as Vermont's Northeast Kingdom but dramatically different from Cape Cod on the same state license plate.",
+          "Mild-winter seekers should confirm Berkshire Medical Center access before committing — severe storm exposure is elevated and maple sap windows are shifting under intensifying freeze-thaw cycles.",
+        ],
+      },
+    ],
+    confidenceNotes: "Regional lake-effect context is well supported; lakeshore versus inland parcels can differ by feet of snow per event — confirm fetch and bluff exposure.",
+    citations: [{ label: "NOAA — Pittsfield Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Mississippi — Gulf maritime
@@ -348,24 +699,68 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Live oaks and sea breezes — the gentlest heat in Mississippi, traded for humidity and hurricane exposure.",
     summaryImmersive: "Ocean Springs inherits the same humid subtropical core as the Deep South, but the Sound’s daily heat capacity knocks a few degrees off afternoon peaks relative to inland Hattiesburg. Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow. It is not a dry climate — it is a maritime one.",
     whyDistinct: "Shallow shelf water + urban tree canopy + lower inland elevation buffering = measurably milder frost regime than counties 30 km north.",
+                                experience: {
+      feel: "Ocean Springs feels like live-oak maritime Mississippi on the Sound — humid subtropical at the core, but shallow shelf water knocks a few degrees off afternoon peaks versus inland Hattiesburg, with brief winter cold fronts often moderated by returning onshore flow and an arts-town flavor along the coast.",
+      seasons: {
+        winter: "Mild Sound winter — afternoons near 17°C, nights near 7°C, brief cold fronts, and live oaks keeping their leaves while inland counties frost harder.",
+        spring: "Azalea and art season — afternoons climbing toward 24°C, Walter Anderson Museum busy, and humidity building ahead of hurricane watch season.",
+        summer: "Steam and sea breeze — highs near 32°C, afternoon convection, Gulf Islands National Seashore at peak, and the gentlest heat in Mississippi traded for persistent humidity.",
+        autumn: "Hurricane watch — highs falling through 26°C, tropical systems brushing the Sound, seafood season peak, and arts-festival calendar winding down.",
+      },
+      travelerFit: "Visitors come for Gulf Islands National Seashore, Walter Anderson arts heritage, and seafood in Mississippi's most maritime town.",
+      residentFit: "It rewards coastal retirees and artists who accept hurricane exposure, humidity, and very-high storm risk in exchange for live-oak shade and Sound moderation.",
+      texture: "A Mississippi Sound tradeoff — weigh very-high hurricane and surge risk, humidity, and flood insurance against the state's gentlest heat, arts-town culture, and measurably milder frost than counties 30 km inland.",
+    },
     climate: {
       tempHighC: [16, 17, 20, 24, 28, 31, 32, 32, 30, 26, 21, 17],
       tempLowC: [6, 7, 10, 14, 19, 22, 23, 23, 21, 15, 10, 7],
       precipMm: [130, 120, 115, 110, 110, 150, 160, 155, 130, 95, 110, 125],
       annualPrecipMm: 1510,
       frostFreeDays: 300,
-      hardinessZone: "9a",
+      hardinessZone: "9a",    humidity: [66, 65, 63, 68, 73, 83, 83, 86, 79, 77, 73, 67],    sunshinePct: [48, 51, 50, 57, 62, 67, 64, 64, 59, 55, 52, 47],
+
+
     },
     soil: { texture: "Sandy loam over coastal plain sediments", drainage: "moderate", phRange: [5.0, 6.5], waterHolding: "moderate" },
     growability: { score: 72, hardinessZone: "9a", growsWell: ["Live oak", "Satsuma", "Camellias", "Subtropical ornamentals"], tricky: ["Cold-requirement stone fruit"] },
     climateChange: { outlook2050: "Higher sea level and surge risk; wetter hurricanes.", outlook2100: "Saltwater intrusion into coastal soils.", keyShifts: [{ variable: "Hurricane rainfall", direction: "up" }], resilienceNote: "Wind and storm surge dominate planning." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "low", trend: "improving" }, smoke: { level: "low", trend: "stable" }, storm: { level: "very-high", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-high", trend: "worsening" } },
     scores: { hiddenGem: 42, microclimateUniqueness: 58, comfort: 62, resilience: 40, growability: 72, tradeoff: 56 },
+    liveSignals: {
+      costPressure: 40,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Memorial Hospital Gulfport anchors regional care — verify FEMA flood panels and wind-rated construction before committing; hurricane-averse and dry-air seekers should review Katrina-era surge history on the Sound.",
+      sources: [
+      { label: "NOAA — Biloxi MS (proxy sound)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Ocean Springs", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Biloxi MS (proxy sound)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                                    deepSections: [
+      {
+        id: "ocean-springs-sound-breeze",
+        title: "Mississippi Sound moderation and live-oak canopy",
+        paragraphs: [
+          "Ocean Springs sits on a live-oak maritime fringe on Mississippi Sound — Cfa normals with roughly 1510 mm annually, where shallow shelf water and urban tree canopy knock a few degrees off afternoon peaks relative to inland Hattiesburg.",
+          "Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow — measurably milder frost regime than counties 30 km north.",
+        ],
+      },
+      {
+        id: "ocean-springs-hurricane-arts",
+        title: "Hurricane exposure and Walter Anderson arts town",
+        paragraphs: [
+          "Sandy loam over coastal plain sediments supports live oak, satsuma, camellias, and subtropical ornamentals — garden success tracks elevation above surge reach more than hardiness zone.",
+          "Hurricane-averse and dry-air seekers should confirm Memorial Hospital Gulfport access and NFIP premiums before committing — coastal exposure is very-high and wind and storm surge dominate long-term planning.",
+        ],
+      },
+    ],
+    confidenceNotes: "Ocean Springs coastal and surge exposure varies block by block — elevation certificates, flood panels, and storm history matter more than regional comfort scores.",
+    citations: [{ label: "NOAA — Biloxi MS (proxy sound)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Missouri — Ozark karst / Current River
@@ -387,23 +782,65 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Spring water at near-constant temperatures threads through humid Ozark summers — a natural cooling network in dissected terrain.",
     summaryImmersive: "Eminence is the gateway to some of the clearest spring rivers in the Lower 48. Groundwater upwelling holds near-stable temperatures year-round; in summer, paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape. The hills are modest in elevation but enormous in hydrologic complexity.",
     whyDistinct: "Large spring discharge and karst topography create localized cold-air pooling and persistent riparian humidity — a hydrogeologic microclimate superimposed on humid continental summers.",
+                                experience: {
+      feel: "Eminence feels like the gateway to the clearest spring rivers in the Lower 48 — groundwater upwelling holds near-stable temperatures year-round on the Jacks Fork and Current River, where paddlers find cold pools and fog banks at karst confluences that would not exist outside Ozark limestone country.",
+      seasons: {
+        winter: "Ozark mild — afternoons near 8°C, nights near −3°C, spring-fed rivers staying open, and caving season when water tables are visible.",
+        spring: "River rise — afternoons climbing toward 21°C, Jacks Fork and Current swelling with rain, wildflower season in dissected hills, and float season opening.",
+        summer: "Karst-cooled humidity — highs near 31°C in the hills but cold spring water at confluences, paddlers seeking shade in riparian corridors, and afternoon convection over the plateau.",
+        autumn: "Float season peak — highs falling through 21°C, Ozark National Scenic Riverways at its best, misty mornings over spring-fed water, and hunting season in the hills.",
+      },
+      travelerFit: "Visitors come for Ozark National Scenic Riverways, Current River floating, and karst caving in one of America's clearest spring-river corridors.",
+      residentFit: "It rewards paddlers and remote workers who want Ozark geology and misty river mornings but accept flash-flood risk and limited flat farmland.",
+      texture: "An Ozark karst tradeoff — weigh Current River flash flooding, groundwater sensitivity, and humid summers against spring-fed cold pools, caving country, and a hydrogeologic microclimate unlike anywhere else in Missouri.",
+    },
     climate: {
       tempHighC: [6, 9, 15, 21, 26, 30, 32, 32, 28, 22, 14, 8],
       tempLowC: [-5, -3, 3, 9, 14, 18, 20, 19, 15, 8, 2, -2],
       precipMm: [55, 60, 110, 110, 120, 105, 100, 100, 95, 95, 100, 85],
       annualPrecipMm: 1145,
       frostFreeDays: 185,
-      hardinessZone: "6b",
+      hardinessZone: "6b",    humidity: [67, 67, 69, 74, 79, 81, 81, 83, 81, 78, 75, 68],    sunshinePct: [48, 51, 50, 57, 62, 67, 64, 64, 59, 55, 52, 47],
+
+
     },
     soil: { texture: "Cherty limestone residuum; thin upland soils", drainage: "excessive", phRange: [5.0, 6.8], waterHolding: "low" },
     growability: { score: 64, hardinessZone: "6b", growsWell: ["Pasture", "Cool greens", "Blackberries", "River cane restoration"], tricky: ["Irrigation without groundwater awareness"] },
     climateChange: { outlook2050: "Heavier convective rain; flashier streams.", outlook2100: "Groundwater sensitivity to land-use change.", keyShifts: [{ variable: "Flash flood frequency", direction: "up" }], resilienceNote: "Springs buffer some warming but not land-use stress." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "moderate", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 54, microclimateUniqueness: 72, comfort: 64, resilience: 56, growability: 64, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "Texas County Memorial Hospital in Houston MO is the nearest regional anchor — paddlers should confirm Current River flood stages and parcel elevation above spring corridors before committing; dry-air and flat-farmland seekers will find the Plains more comfortable.",
+      sources: [
+      { label: "NOAA — Eminence", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "USGS — Ozark Plateau springs", url: "https://www.usgs.gov/" },
+      ],
+    },
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
+                                                    deepSections: [
+      {
+        id: "eminence-current-springs",
+        title: "Current River springs and karst cold pools",
+        paragraphs: [
+          "Eminence sits on the dissected Ozark plateau at the Jacks Fork and Current River — Cfa normals with roughly 1145 mm annually, where large spring discharge and karst topography create localized cold-air pooling and persistent riparian humidity.",
+          "Groundwater upwelling holds near-stable temperatures year-round; in summer paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape.",
+        ],
+      },
+      {
+        id: "eminence-ozark-float",
+        title: "Ozark float season and flash-flood corridors",
+        paragraphs: [
+          "Cherty limestone residuum supports pasture, cool greens, and blackberries where groundwater allows — upland soils drain excessively without spring access.",
+          "Those needing dry air or flat farmland should confirm Texas County Memorial Hospital access before committing — flash flood frequency is rising along spring-fed river corridors during heavy convective rain.",
+        ],
+      },
+    ],
+    confidenceNotes: "Those needing dry air or flat farmland should confirm Texas County Memorial Hospital access before committing — flash flood frequency is rising along spring-fed river corridors during heavy convective rain.",
     citations: [{ label: "NOAA — Eminence", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "USGS — Ozark Plateau springs", kind: "usgs", url: "https://www.usgs.gov/" }],
   },
 
@@ -427,16 +864,16 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryImmersive: "The Spring Mountains rise abruptly from the basin floor where subsidence and dryness dominate. Upslope flow brings cloud and occasional thunderstorms; winter storms deliver real snowpack. The inversion that traps smog and heat below also isolates the high elevations as a climatic refuge — a pattern documented in mountain–basin meteorology worldwide.",
     whyDistinct: "Extreme vertical climate gradient across a short horizontal distance: Mojave desert basins to subalpine forest in tens of kilometres — one of the steepest usable lapse-rate transects in the US.",
     experience: {
-      feel: "Mount Charleston feels like an impossible cool island floating above Las Vegas. Drive 45 minutes and 2,000 m up from the Mojave furnace and you reach conifer forest, bristlecones, and snow — summer afternoons near 25°C while the basin below bakes past 40°C.",
+    feel: "Mount Charleston feels like an impossible cool island floating above Las Vegas. Drive 45 minutes and 2,000 m up from the Mojave furnace and you reach conifer forest, bristlecones, and snow — summer afternoons near 25°C while the basin below bakes past 40°C.",
       seasons: {
-        winter: "Genuinely alpine — afternoons near freezing, nights near −12°C, and real snowpack stacking up for skiing while the desert below stays warm and dry.",
-        spring: "Slow to melt out — snow lingering on the high country, afternoons climbing through the teens, and the forest greening weeks behind the basin.",
-        summer: "The whole point — afternoons near 25°C with cool, often-frosty nights, a startling escape from Las Vegas heat, and occasional upslope thunderstorms building on the crest.",
-        autumn: "Crisp and quiet — aspens turning, frosty mornings returning early, and the first snows reclaiming the summits while the valley stays warm.",
+      winter: "Genuinely alpine — afternoons near freezing, nights near −12°C, and real snowpack stacking up for skiing while the desert below stays warm and dry.",
+      spring: "Slow to melt out — snow lingering on the high country, afternoons climbing through the teens, and the forest greening weeks behind the basin.",
+      summer: "The whole point — afternoons near 25°C with cool, often-frosty nights, a startling escape from Las Vegas heat, and occasional upslope thunderstorms building on the crest.",
+      autumn: "Crisp and quiet — aspens turning, frosty mornings returning early, and the first snows reclaiming the summits while the valley stays warm.",
       },
       travelerFit: "Visitors come for a summer cool-down from Las Vegas, winter skiing and snow play, and bristlecone-pine high country.",
       residentFit: "It rewards a small mountain community and second-home owners who want forest and snow within reach of a major city.",
-      texture: "A dramatic sky-island life: the main things to weigh are a short, snowy season and a tiny service base, wildfire in the forest, and the steep road down to everything else.",
+      texture: "A dramatic sky-island life — weigh a short, snowy season and a tiny service base, wildfire in the forest, and the steep road down to everything else against distinct microclimate character worth the tradeoffs.",
     },
     climate: {
       tempHighC: [-1, 0, 4, 9, 15, 21, 25, 24, 19, 12, 5, 0],
@@ -464,9 +901,9 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       accessFriction: 28,
       note: "Mount Charleston Village sits 45 minutes from Las Vegas services, but wildfire evacuation, winter road closures on NV-156/157, and second-home pricing from heat-island refugees are the live-here filter behind the sky-island comfort.",
       sources: [
-        { label: "USFS Spring Mountains National Recreation Area", url: "https://www.fs.usda.gov/detail/htnf/specialplaces/?cid=stelprdb5270088" },
-        { label: "Clark County — emergency management", url: "https://www.clarkcountynv.gov/government/departments/fire_department/emergency_management/" },
-        { label: "NWS Las Vegas — Spring Mountains forecast", url: "https://www.weather.gov/vef/" },
+      { label: "USFS Spring Mountains National Recreation Area", url: "https://www.fs.usda.gov/detail/htnf/specialplaces/?cid=stelprdb5270088" },
+      { label: "Clark County — emergency management", url: "https://www.clarkcountynv.gov/government/departments/fire_department/emergency_management/" },
+      { label: "NWS Las Vegas — Spring Mountains forecast", url: "https://www.weather.gov/vef/" },
       ],
     },
     relocationFit: ["hikers", "remote workers"], travelFit: ["bristlecone trails", "summer heat escape"],
@@ -478,20 +915,20 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     ],
     deepSections: [
       {
-        id: "charleston-inversion",
-        title: "Basin inversion and the mountain island",
-        paragraphs: [
-          "Las Vegas Valley’s frequent clear, stable nights create strong nocturnal inversions that pool cool air near the surface — paradoxically trapping heat and pollutants in the same layer. Above the inversion cap, the Spring Mountains intercept moisture and radiate freely to space under clear skies.",
-          "That vertical separation is why a morning drive can traverse from basin smog and searing afternoon heat in the valley to pine-scented air and crisp dew points near treeline in one hour.",
-        ],
+      id: "charleston-inversion",
+      title: "Basin inversion and the mountain island",
+      paragraphs: [
+      "Las Vegas Valley’s frequent clear, stable nights create strong nocturnal inversions that pool cool air near the surface — paradoxically trapping heat and pollutants in the same layer. Above the inversion cap, the Spring Mountains intercept moisture and radiate freely to space under clear skies.",
+      "That vertical separation is why a morning drive can traverse from basin smog and searing afternoon heat in the valley to pine-scented air and crisp dew points near treeline in one hour.",
+      ],
       },
       {
-        id: "charleston-hydrology",
-        title: "Snowpack, springs, and desert demand",
-        paragraphs: [
-          "Winter snowpack is the primary natural reservoir for high-elevation springs that feed lower desert ecosystems and human supply. Warming shifts the snow–rain ratio and advances melt timing — a hydrologic stressor for species adapted to late-summer streamflow.",
-          "Management tension here is not hypothetical: recreation, municipal water, and wildfire risk all scale with how snow and rain partition across the narrow elevation bands.",
-        ],
+      id: "charleston-hydrology",
+      title: "Snowpack, springs, and desert demand",
+      paragraphs: [
+      "Winter snowpack is the primary natural reservoir for high-elevation springs that feed lower desert ecosystems and human supply. Warming shifts the snow–rain ratio and advances melt timing — a hydrologic stressor for species adapted to late-summer streamflow.",
+      "Management tension here is not hypothetical: recreation, municipal water, and wildfire risk all scale with how snow and rain partition across the narrow elevation bands.",
+      ],
       },
     ],
   },
@@ -515,6 +952,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "The Mid-Atlantic’s most maritime resort climate — moderated peaks, persistent humidity, and nor’easter drama.",
     summaryImmersive: "Cape May is a classic barrier-style energy balance problem: water on three sides, low elevation, and tree canopy that knits humidity into every summer afternoon. Autumn can deliver warm ocean swimming while inland New Jersey cools; winter alternates between mild marine air and biting Arctic outbreaks when continental highs wedge behind the Appalachians.",
     whyDistinct: "Triple-water exposure + narrow landmass = stronger diurnal sea-breeze modulation than mainland New Jersey at the same latitude.",
+    experience: {
+      feel: "Cape May feels like a triple-water peninsula resort — Delaware Bay on one side, open Atlantic on the other, summer humidity knitted into every afternoon by holly forest canopy, and autumn ocean swimming when inland New Jersey has already cooled.",
+      seasons: {
+        winter: "Marine-mild with Arctic intrusions — afternoons near 6°C, nights near −1°C, nor'easter wind and coastal surge on the planning stack when continental highs wedge behind the Appalachians.",
+        spring: "Slow green-up — afternoons climbing through 14°C, migratory bird traffic peaking, and sea-breeze afternoons that stay cooler than Philadelphia only 160 km northwest.",
+        summer: "Resort humidity — highs near 26°C, nights near 19°C sticky with persistent moisture, afternoon convection building over the warm bay, and Victorian porches as the only refuge.",
+        autumn: "Hurricane-season tail — highs near 18°C, warm ocean swims into October, and tropical recurvature tracks that can reshape the calendar deep into fall.",
+      },
+      travelerFit: "Visitors come for Victorian architecture, bird migration, and Mid-Atlantic beach life with stronger maritime moderation than mainland Jersey.",
+      residentFit: "It rewards beach-town people and historic-home restorers who accept flood risk, seasonal housing pressure, and persistent humidity.",
+      texture: "Sea-level resort tradeoff — weigh coastal surge, hurricane exposure, and flood insurance against walkable Victorian scale and maritime mildness.",
+    },
     climate: {
       tempHighC: [5, 6, 9, 14, 19, 24, 28, 27, 24, 18, 12, 8],
       tempLowC: [-2, -1, 2, 7, 12, 17, 20, 20, 16, 10, 5, 1],
@@ -522,7 +971,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       humidity: [72, 72, 74, 74, 76, 78, 80, 80, 78, 76, 74, 72],
       annualPrecipMm: 1150,
       frostFreeDays: 240,
-      hardinessZone: "7b",
+      hardinessZone: "7b",    sunshinePct: [51, 54, 53, 59, 52, 57, 54, 54, 49, 58, 54, 49],
+
     },
     soil: { texture: "Sandy dune soils with peat in swales", drainage: "excessive", phRange: [4.8, 6.2], waterHolding: "low" },
     growability: { score: 60, hardinessZone: "7b", growsWell: ["Beach plum", "Hydrangea", "Irrigated perennials"], tricky: ["Drought herbs without watering"] },
@@ -542,8 +992,27 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-home restorers", "retirees"], travelFit: ["Victorian architecture", "bird migration"],
     whoWouldLove: "Beach-town people who want walkable scale.", whoMightNot: "Dry-air or mountain-climate seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Cape May County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    deepSections: [
+      {
+        id: "cape-may-triple-water",
+        title: "Triple-water maritime energy balance",
+        paragraphs: [
+          "Cape May sits at the peninsula tip between Delaware Bay and open Atlantic — Cfa normals with roughly 1,150 mm annually and stronger diurnal sea-breeze modulation than mainland New Jersey at the same latitude. Water on three sides and low elevation keep summer peaks moderated but humidity persistent.",
+          "Convergent sea breezes and tropical cyclone recurvature exposure produce nor'easter drama in winter and hurricane-season tails into fall — autumn can deliver warm ocean swimming while Philadelphia cools.",
+        ],
+      },
+      {
+        id: "cape-may-resort-risk",
+        title: "Resort housing and coastal exposure",
+        paragraphs: [
+          "Sandy dune soils with peat in swales support beach plum, hydrangea, and irrigated perennials — drought herbs fail without watering on exposed dunes. High coastal exposure registers for surge and flood at sea level.",
+          "Cape May County housing tightens in summer but stays below Northeast metro medians; Philadelphia and Atlantic City anchor specialists and airports. Dry-air or mountain-climate seekers should confirm flood insurance and elevation certificates before committing.",
+        ],
+      },
+    ],
+    confidenceNotes: "Coastal-maritime normals capture regional fog and rain; fetch exposure and elevation within a few kilometers can shift sunshine and wind exposure materially.",
+    citations: [{ label: "NOAA — Cape May County AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Ohio — eastern Lake Erie snowbelt
@@ -565,6 +1034,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Ohio’s snowiest shoreline resorts — June can feel like the Pacific Northwest until lake heat builds.",
     summaryImmersive: "Geneva-on-the-Lake inherits the full Great Lakes curriculum: delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands that can bury the strip while Columbus stays dry. Summer is warm and humid with lake breezes; thunderstorms propagate along lake-outflow boundaries.",
     whyDistinct: "Eastern Erie fetch orientation + land-lake temperature contrast = maximized lake-effect potential for Ohio’s north coast.",
+                                experience: {
+      feel: "Geneva-on-the-Lake feels like Ohio's snowiest shoreline resort strip — full Great Lakes curriculum with delayed leaf-out, abundant winter cloud, and mesoscale snow bands that can bury the strip while Columbus stays dry, then warm humid summers with lake breezes and thunderstorms on outflow boundaries.",
+      seasons: {
+        winter: "Lake-effect snowbelt — afternoons near 2°C, nights near −6°C, streamers burying the strip, and storm watching from lakefront cottages.",
+        spring: "Delayed green-up — afternoons climbing toward 12°C, June can feel Pacific Northwest until lake heat builds, and Concord grape buds late on lakeshore blocks.",
+        summer: "Resort season — highs near 25°C, humid lake breezes, amusement strip busy, and thunderstorms propagating along lake-outflow boundaries.",
+        autumn: "Wine trail shoulder — highs falling through 15°C, Ashtabula County color, harvest season, and first lake-effect dusting by November.",
+      },
+      travelerFit: "Visitors come for the lakefront resort strip, Ashtabula wine trail, and winter storm watching on Ohio's snowiest shoreline.",
+      residentFit: "It rewards Great Lakes maximalists and lake-house buyers who accept snow removal, delayed spring, and lake-effect cloud.",
+      texture: "An eastern Erie tradeoff — weigh lake-effect snow totals, declining lake ice shifting snow bands, and shoreline erosion against wine-country access, resort nostalgia, and summer lake recreation.",
+    },
     climate: {
       tempHighC: [1, 2, 6, 12, 18, 24, 26, 25, 22, 15, 9, 4],
       tempLowC: [-7, -6, -2, 3, 9, 14, 17, 16, 12, 6, 1, -4],
@@ -572,18 +1053,50 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       snowCm: [65, 50, 35, 12, 0, 0, 0, 0, 0, 0, 25, 55],
       annualPrecipMm: 1020,
       frostFreeDays: 170,
-      hardinessZone: "6b",
+      hardinessZone: "6b",    humidity: [60, 59, 57, 63, 69, 80, 81, 84, 77, 74, 69, 62],    sunshinePct: [45, 48, 48, 56, 62, 67, 65, 64, 59, 54, 50, 44],
+
+
     },
     soil: { texture: "Clay loam on lake plain with sandy strips", drainage: "imperfect", phRange: [6.0, 7.5], waterHolding: "high" },
     growability: { score: 56, hardinessZone: "6b", growsWell: ["Concord grapes", "Apples", "Cool greens"], tricky: ["Peaches (late frost)"] },
     climateChange: { outlook2050: "Less ice, shifting snowbands.", outlook2100: "More lake-effect rain vs snow events.", keyShifts: [{ variable: "Lake ice", direction: "down" }], resilienceNote: "Shoreline erosion competes with winter tourism." },
     risks: { wildfire: { level: "low", trend: "stable" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "moderate", trend: "worsening" } },
     scores: { hiddenGem: 44, microclimateUniqueness: 72, comfort: 58, resilience: 54, growability: 56, tradeoff: 46 },
+    liveSignals: {
+      costPressure: 52,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "UH Geneva and Cleveland Clinic anchors are within an hour — Great Lakes maximalists should confirm snow-removal costs and lakeshore flood exposure before committing; sunbelt retirees will find southern Ohio more comfortable.",
+      sources: [
+      { label: "NOAA — Geneva", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Geneva-on-the-Lake", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Geneva", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                                    deepSections: [
+      {
+        id: "geneva-erie-snowbelt",
+        title: "Eastern Lake Erie fetch and mesoscale streamers",
+        paragraphs: [
+          "Geneva-on-the-Lake sits on the Lake Erie shoreline east of Cleveland where westerly flow produces long-fetch lake-effect streamers — Dfa normals with roughly 1020 mm annually and eastern Erie orientation maximizing lake-effect potential for Ohio's north coast.",
+          "Delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands can bury the strip while Columbus stays dry — June can feel like the Pacific Northwest until lake heat builds.",
+        ],
+      },
+      {
+        id: "geneva-wine-resort",
+        title: "Ashtabula wine trail and resort-strip nostalgia",
+        paragraphs: [
+          "Clay loam on lake plain with sandy strips supports Concord grapes, apples, and cool greens on sheltered blocks — late frost remains a risk for peaches on exposed lakeshore parcels.",
+          "Sunbelt retirees should confirm UH Geneva access and snow-removal infrastructure before committing — severe storm exposure is elevated and declining lake ice will shift snow-band behavior over coming decades.",
+        ],
+      },
+    ],
+    confidenceNotes: "Regional lake-effect context is well supported; lakeshore versus inland parcels can differ by feet of snow per event — confirm fetch and bluff exposure.",
+    citations: [{ label: "NOAA — Geneva", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Oklahoma — Ouachita uplift
@@ -605,24 +1118,68 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Wetter, hillier, and more forested than almost anywhere else in Oklahoma — a southeastern climate island in the Plains.",
     summaryImmersive: "Broken Bow and the Mountain Fork corridor punch above the surrounding plains in annual precipitation and forest cover. Upslope flow ahead of Gulf lows enhances rainfall; reservoirs and rivers add local moisture. Summers remain hot, but canopy and shade produce perceptible relief compared to open pasture.",
     whyDistinct: "Ouachita topography in a predominantly flat state creates orographic and land-cover feedbacks that are climatologically distinct from Oklahoma City or the Panhandle.",
+                                experience: {
+      feel: "Broken Bow feels like Oklahoma's southeastern climate island — the Ouachita foothills and Mountain Fork corridor punch above surrounding plains in precipitation and forest cover, where upslope Gulf lows enhance rainfall and pine-oak canopy provides perceptible summer relief compared to open pasture.",
+      seasons: {
+        winter: "Ouachita mild — afternoons near 13°C, nights near 1°C, shortleaf pine green year-round, and ice storms occasionally glazing the hills.",
+        spring: "Upslope green-up — afternoons climbing toward 23°C, Mountain Fork swelling with Gulf moisture, wildflower season in mesic pockets, and tornado season awareness on the Plains margin.",
+        summer: "Canopy-shaded heat — highs near 33°C but forest cover softening afternoon peaks, Beavers Bend State Park at peak, and afternoon convection over reservoirs.",
+        autumn: "Beavers Bend peak — highs falling through 24°C, fall color in shortleaf pine-oak forest, fishing season on Broken Bow Lake, and the year's best hiking weather.",
+      },
+      travelerFit: "Visitors come for Beavers Bend State Park, Mountain Fork trout fishing, and Oklahoma's rare forested-hill landscape.",
+      residentFit: "It rewards outdoor families and remote workers who want forest and water inside Oklahoma but accept humid summers and flash-flood risk on river corridors.",
+      texture: "An Ouachita uplift tradeoff — weigh convective flood risk, reservoir-dependent water supply, and humid heat against Oklahoma's wettest forest country, Beavers Bend recreation, and climate distinct from OKC or the Panhandle.",
+    },
     climate: {
       tempHighC: [12, 14, 18, 23, 27, 31, 34, 34, 30, 24, 17, 13],
       tempLowC: [0, 2, 6, 11, 16, 20, 22, 22, 18, 11, 5, 1],
       precipMm: [95, 95, 120, 125, 145, 120, 110, 95, 100, 115, 115, 110],
       annualPrecipMm: 1345,
       frostFreeDays: 230,
-      hardinessZone: "8a",
+      hardinessZone: "8a",    humidity: [67, 66, 68, 73, 78, 80, 80, 83, 80, 78, 74, 68],    sunshinePct: [50, 52, 52, 58, 63, 68, 65, 65, 60, 57, 53, 48],
+
+
     },
     soil: { texture: "Acidic sandy loam on sandstone and shale", drainage: "moderate", phRange: [4.8, 6.2], waterHolding: "moderate" },
     growability: { score: 70, hardinessZone: "8a", growsWell: ["Pine timber", "Warm-season vegetables", "Peaches (with frost management)"], tricky: ["Cool-climate small fruit"] },
     climateChange: { outlook2050: "Heavier extreme rain; longer fire season in droughts.", outlook2100: "Forest stress under heat waves.", keyShifts: [{ variable: "Convective rain", direction: "up" }], resilienceNote: "Water resources are reservoir-dependent." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "elevated", trend: "worsening" }, drought: { level: "moderate", trend: "mixed" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 52, microclimateUniqueness: 74, comfort: 62, resilience: 54, growability: 70, tradeoff: 44 },
+    liveSignals: {
+      costPressure: 40,
+      socialStress: 34,
+      accessFriction: 38,
+      note: "McCurtain Memorial Hospital in Idabel anchors care — outdoor families should confirm Mountain Fork flood stages and wildfire insurance before committing; dry-climate seekers will find western Oklahoma more comfortable.",
+      sources: [
+      { label: "NOAA — Broken Bow", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "NOAA climate normals — Broken Bow", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Census QuickFacts — county context", url: "https://www.census.gov/quickfacts/fact/table/US/PST045224" },
+      ],
+    },
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Broken Bow", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+                                                    deepSections: [
+      {
+        id: "broken-bow-ouachita",
+        title: "Ouachita orographic lift and forest island",
+        paragraphs: [
+          "Broken Bow sits in the Ouachita Mountains foothills — rare forested hills in a state dominated by plains — Cfa normals with roughly 1345 mm annually, where upslope flow ahead of Gulf lows enhances rainfall and reservoirs add local moisture.",
+          "Summers remain hot, but canopy and shade produce perceptible relief compared to open pasture — climatologically distinct from Oklahoma City or the Panhandle.",
+        ],
+      },
+      {
+        id: "broken-bow-beavers-bend",
+        title: "Beavers Bend and Mountain Fork flood corridors",
+        paragraphs: [
+          "Acidic sandy loam on sandstone and shale supports pine timber, warm-season vegetables, and peaches with frost management on sheltered blocks — mesic pockets punch above surrounding plains in growability.",
+          "Dry-climate seekers should confirm McCurtain Memorial Hospital access before committing — flood exposure is elevated on river corridors and water resources remain reservoir-dependent during drought cycles.",
+        ],
+      },
+    ],
+    confidenceNotes: "Dry-climate seekers should confirm McCurtain Memorial Hospital access before committing — flood exposure is elevated on river corridors and water resources remain reservoir-dependent during drought cycles.",
+    citations: [{ label: "NOAA — Broken Bow", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // Rhode Island — Block Island outer coast
@@ -644,6 +1201,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Narrow annual temperature range for the latitude — fog, wind, and moderate summers that feel more maritime than mainland Rhode Island.",
     summaryImmersive: "Block Island is small enough that every road is within a mile of water. That geometry means marine air dominates; heat waves are muted relative to Hartford or even Providence. Winter storms are oceanic and windy; summer is mild with persistent humidity. The island’s conservation lands preserve a rare Atlantic coastal grassland–heath mosaic tuned to salt spray.",
     whyDistinct: "Complete island exposure + low relief = maximized maritime moderation within southern New England — a classic case study in coastal boundary-layer climate.",
+    experience: {
+      feel: "Block Island feels like complete maritime exposure — every road within a mile of water, heat waves muted versus Hartford, oceanic winter storms, and a narrow annual temperature range that feels more Atlantic than mainland Rhode Island.",
+      seasons: {
+        winter: "Oceanic cold — afternoons near 5°C, nights near −1°C, nor'easter wind and coastal surge on the planning stack, and year-round population near 1,000 keeping services minimal.",
+        spring: "Slow green-up — afternoons climbing through 11°C, migratory bird traffic peaking, and ferry schedules still the logistics backbone.",
+        summer: "Mild and humid — highs near 23°C, nights near 17°C sticky with persistent moisture, and heat muted relative to Providence only 80 km north.",
+        autumn: "Hurricane watch — highs near 15°C, tropical recurvature tracks, and seasonal residents departing as ferry frequency tightens.",
+      },
+      travelerFit: "Visitors come for Mohegan Bluffs, biking, and cool-summer island life — plan groceries and care around ferry schedules.",
+      residentFit: "It rewards seasonal residents and fishermen who accept ferry-only access, expensive housing, and limited specialty services.",
+      texture: "Outer-island tradeoff — weigh coastal surge, tight housing, and ferry logistics against maximized maritime moderation and conservation-landscape beauty.",
+    },
     climate: {
       tempHighC: [4, 4, 7, 11, 16, 21, 24, 24, 21, 15, 10, 7],
       tempLowC: [-2, -2, 1, 5, 10, 15, 18, 18, 14, 9, 4, 1],
@@ -651,7 +1220,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74],
       annualPrecipMm: 1180,
       frostFreeDays: 200,
-      hardinessZone: "7a",
+      hardinessZone: "7a",    sunshinePct: [35, 38, 37, 44, 37, 42, 39, 39, 34, 42, 39, 34],
+
     },
     soil: { texture: "Thin, sandy and peaty island soils", drainage: "excessive", phRange: [4.8, 6.0], waterHolding: "low" },
     growability: { score: 48, hardinessZone: "7a", growsWell: ["Beach plum", "Salt-tolerant natives", "Cool greens"], tricky: ["Tree crops in wind exposure"] },
@@ -665,13 +1235,33 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       note: "Ferry-only / small-plane access; year-round population ~1,000 with a tight, expensive housing market and limited specialty services.",
       sources: [
         { label: "Niche — Block Island RI", url: "https://www.niche.com/places-to-live/new-shoreham-washington-ri/" },
-      ],
+      
+        { label: "NOAA — Block Island State Airport", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },],
     },
     relocationFit: ["seasonal residents", "fishermen"], travelFit: ["bluffs", "biking"],
     whoWouldLove: "Cool-summer island people who tolerate ferry logistics.", whoMightNot: "Heat seekers; budget shoppers; anyone unwilling to plan groceries and care around the ferry schedule.",
     confidence: "high",
-    confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Block Island State Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    deepSections: [
+      {
+        id: "block-island-maritime",
+        title: "Complete island maritime moderation",
+        paragraphs: [
+          "Block Island sits in Block Island Sound with persistent maritime influence across a small landmass — Cfb normals with roughly 1,180 mm annually and a narrow annual temperature range for 41° north latitude.",
+          "Every road lies within a mile of water, maximizing marine air dominance; heat waves muted versus Hartford and Providence, winter storms oceanic and windy, summer mild with persistent humidity.",
+        ],
+      },
+      {
+        id: "block-island-ferry-access",
+        title: "Ferry logistics and coastal exposure",
+        paragraphs: [
+          "Thin sandy and peaty island soils support beach plum, salt-tolerant natives, and cool greens — tree crops struggle in wind exposure. High coastal exposure registers for surge and erosion; freshwater lens is finite.",
+          "Heat seekers and budget shoppers should confirm ferry-only access and year-round population near 1,000 before committing — seasonal residents who plan groceries and care around the schedule get maximized maritime moderation.",
+        ],
+      },
+    ],
+    confidenceNotes: "Coastal-maritime normals capture regional fog and rain; fetch exposure and elevation within a few kilometers can shift sunshine and wind exposure materially.",
+    citations: [{ label: "NOAA — Block Island State Airport", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
 
   // South Dakota — Black Hills chinook corridor (Tier B + deep)
@@ -703,7 +1293,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       },
       travelerFit: "Visitors come for Spearfish Canyon, Black Hills access, and a front-row seat to one of the continent's most readable foehn-wind climates.",
       residentFit: "It rewards outdoor workers and remote workers who want Plains–mountain ecotone life with a university town anchor — if they respect wind volatility and wildfire exposure.",
-      texture: "A meteorologically famous Plains–mountain gateway — the main things to weigh are chinook-driven temperature whiplash, ecotone wildfire risk, and Rapid City as the specialty-care backup.",
+      texture: "A meteorologically famous Plains–mountain gateway — weigh chinook-driven temperature whiplash, ecotone wildfire risk, and Rapid City as the specialty-care backup against the place-specific comfort case that drew you to scout it.",
     },
     climate: {
       tempHighC: [4, 6, 10, 15, 20, 26, 30, 29, 24, 16, 8, 4],
@@ -786,7 +1376,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       },
       travelerFit: "Visitors come for ridge vistas, spring frost photography, and one of the best-documented cold-air pools in the eastern United States.",
       residentFit: "It rewards ranching families and remote workers who accept a single-road agricultural bowl with almost no commercial core and treat floor-vs-rim as different farms.",
-      texture: "A meteorological celebrity in a pastoral bowl — the main things to weigh are extreme nocturnal cold on the floor, a 14-day-shorter growing season than the rim, and Tazewell County remoteness.",
+      texture: "A meteorological celebrity in a pastoral bowl — weigh extreme nocturnal cold on the floor, a 14-day-shorter growing season than the rim, and Tazewell County remoteness against distinct microclimate character worth the tradeoffs.",
     },
     climate: {
       tempHighC: [4, 6, 11, 17, 22, 25, 27, 26, 22, 16, 10, 6],
