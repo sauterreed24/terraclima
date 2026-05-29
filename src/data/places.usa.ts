@@ -3932,7 +3932,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for budget-constrained.",
+      note: "Bozeman housing tracks tech-remote migration; Bozeman Health and BZN anchor care — Gallatin Valley wildfire smoke, chinook volatility, and water pressure on the valley floor define daily logistics beyond Bridger Bowl appeal.",
       sources: [
       { label: "NOAA — Bozeman-Belgrade AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Bozeman", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -3942,21 +3942,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski-town commuters", "tech remotes"], travelFit: ["Yellowstone north"],
     whoWouldLove: "Outdoor people wanting four real seasons.", whoMightNot: "Budget-constrained.",
     confidence: "high",
-                                deepSections: [
+    deepSections: [
       {
-        id: "bozeman-mt-mechanism",
-        title: "Mild-Winter Foothills mechanics",
+        id: "bozeman-gallatin-chinook",
+        title: "Gallatin Valley chinook sunshine",
         paragraphs: [
-          "Bozeman sits where gallatin Valley between the Bridgers and the Gallatins. At roughly 1474 m, elevation bands matter as much as latitude. Dfb / BSk normals and roughly 412 mm/yr frame the regional baseline, but Chinook / foehn downslope and River-valley moderation re-weight what any single forecast means block by block.",
-          "Valley position receives chinook moderation and rain-shadow sunshine from surrounding ranges. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Bozeman sits at 1,474 m in the Gallatin Valley between the Bridgers and Gallatins — Dfb/BSk foothill climate with roughly 412 mm annually, chinook foehn events punctuating winters and rain-shadow sunshine drier than Montana's western valleys.",
+          "Summer afternoons reach 27–29°C but seldom higher thanks to elevation; big diurnal swings cool evenings into the low teens while MSU and Bridger Bowl anchor a kinetic four-season town.",
         ],
       },
       {
-        id: "bozeman-mt-field-read",
-        title: "On-the-ground read",
+        id: "bozeman-smoke-housing",
+        title: "Wildfire smoke and migration pressure",
         paragraphs: [
-          "A sunny, chinook-warmed Gallatin Valley city — cool-summer high plains with mountain access. Soils read as silt loam with good drainage (pH 6.4–7.6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy apples, Cool veg. Budget-constrained should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated wildfire and smoke risk registers here — verify evacuation routes and air filtration before committing. Silt loam supports hardy apples and cool-season vegetables on sheltered blocks.",
+          "Budget-constrained relocators should confirm housing costs tracking the remote-work boom — Bozeman Health anchors local care but Yellowstone specialist trips and smoke-season PM define daily logistics beyond sunny valley appeal.",
         ],
       },
     ],
@@ -4059,7 +4059,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for heat-intolerant.",
+      note: "Moab tourism housing at mid-band; Moab Regional Hospital and CNY anchor care — summer heat above 38°C, Colorado River water constraints, and slot-canyon flash-flood risk define daily logistics beyond red-rock climbing appeal.",
       sources: [
       { label: "NOAA — Moab 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Moab", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -4069,21 +4069,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["adventure sports"], travelFit: ["Arches", "Canyonlands", "mountain biking"],
     whoWouldLove: "Climbers and mountain bikers.", whoMightNot: "Heat-intolerant.",
     confidence: "high",
-                                deepSections: [
+    deepSections: [
       {
-        id: "moab-ut-mechanism",
-        title: "Desert Oasis mechanics",
+        id: "moab-canyon-oasis",
+        title: "Colorado River canyon oasis",
         paragraphs: [
-          "Moab sits where colorado River canyon with Arches and Canyonlands national parks adjacent. At roughly 1245 m, elevation bands matter as much as latitude. BWk normals and roughly 252 mm/yr frame the regional baseline, but Rain shadow and River-valley moderation re-weight what any single forecast means block by block.",
-          "Canyon-floor position plus river moderation produces unusually mild winters for the elevation; summer heat is amplified by radiating rock walls. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Moab sits at 1,245 m in a Colorado River canyon walled by red rock — BWk cold desert with roughly 252 mm annually, canyon-floor position plus river moderation producing unusually mild January near 8°C while radiating cliffs amplify summer heat above 38°C.",
+          "Arches and Canyonlands frame a tourism economy built on spring and fall perfection — warm days, cool nights, and an unbeatable rock-climbing climate before summer pushes activity to dawn starts.",
         ],
       },
       {
-        id: "moab-ut-field-read",
-        title: "On-the-ground read",
+        id: "moab-heat-flood",
+        title: "Extreme heat and flash-flood hazard",
         paragraphs: [
-          "Colorado River oasis in red-rock desert — hot summers, mild winters, and perfect spring/fall climate. Soils read as sandy loam over sandstone with good drainage (pH 7.4–8.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Drought registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Stone fruit, Grapes, Drought-adapted. Heat-intolerant should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High drought and extreme-heat risk registers here — Colorado River flow politics dominate regional water more than garden-scale irrigation. Sandy loam over sandstone supports stone fruit and drought-adapted plantings with drip.",
+          "Heat-intolerant relocators should spend a July week here before treating mild winters as balance for radiating-canyon afternoons — slot-canyon flash floods kill tourists most years; verify distance from drainages.",
         ],
       },
     ],
@@ -4267,7 +4267,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snow-resilient families"], travelFit: ["Finger Lakes gateway"],
     whoWouldLove: "Snow-happy city folk.", whoMightNot: "Sun-dependent.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "syracuse-ny-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -4587,7 +4587,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["summer-heat refugees"], travelFit: ["Appalachian Trail", "ski"],
     whoWouldLove: "People who want New-England feel in the South.", whoMightNot: "Flood-averse.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "boone-nc-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -5345,17 +5345,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "One of the mildest subtropical coasts in the continental US — July highs barely reach 32°C and January lows rarely drop below 10°C, moderated by the Gulf on both sides.",
     summaryImmersive: "South Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre. The ocean buffers temperature from both sides: summer highs rarely top 33°C because of reliable afternoon sea breeze, and winter lows rarely approach freezing because Gulf water stays in the mid-20s. The annual range here is remarkably narrow for Texas — about 13°C between coolest and warmest months, versus 21°C in inland San Antonio. The trade-off is hurricane exposure: Padre lies in one of the most active tropical-cyclone corridors in the US, and every few decades a major storm reshapes the entire island.",
     whyDistinct: "Double-water exposure (Gulf + Laguna Madre) compresses the annual temperature range; low latitude + subsidence inversion limits summer heat; Texas gulf upwelling is minimal but marine-layer moderation is still substantial.",
-                experience: {
-      feel: "South Padre Island — south Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre.",
+    experience: {
+      feel: "South Padre feels like Texas's mildest barrier island — Gulf and Laguna Madre on both sides compressing the annual temperature range to roughly 13°C, January lows rarely near freezing, summer highs capped near 33°C by reliable sea breeze, with hurricane corridor exposure as the tradeoff.",
       seasons: {
-        winter: "Warm winter window — afternoons near 21.7°C, nights near 13°C — humid air keeps everything soft and close. Storm systems roll through with real force.",
-        spring: "Spring opens — afternoons near 27.3°C, nights near 20°C — showers pass through regularly. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 32.7°C, nights near 25.7°C — showers pass through regularly. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 28.7°C, nights near 21°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Snowbird mild — afternoons near 22°C, nights near 13°C, Kemp's ridley sea turtle planning season, and the narrowest annual range in Texas.",
+        spring: "Spring break energy — highs near 27°C, bird migration peaks, and the last calm window before hurricane season intensifies.",
+        summer: "Humid subtropical — highs near 33°C, nights near 26°C, afternoon sea breeze, and heat moderated compared to inland Rio Grande Valley.",
+        autumn: "Hurricane watch — highs near 29°C, tropical systems that can reshape the entire island, and Beulah/Dolly-scale memory in local planning.",
       },
-      travelerFit: "Visitors come for spring break, sea turtle nesting (Kemp's ridley), and birding.",
-      residentFit: "It rewards anyone who wants Florida-like mildness without humidity maximum; anglers and surfers — especially winter-residents — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
+      travelerFit: "Visitors come for spring break, sea turtle nesting, birding, and subtropical coast life with Florida-like mildness.",
+      residentFit: "It rewards winter residents, anglers, and surfers who accept very-high hurricane exposure on a low barrier island.",
+      texture: "Double-water barrier tradeoff — weigh very-high storm and sea-level risk against remarkably narrow annual temperature range and mild winters.",
     },
     climate: {
       tempHighC: [21, 22, 25, 27, 30, 32, 33, 33, 32, 29, 25, 22], tempLowC: [12, 14, 17, 20, 23, 25, 26, 26, 25, 21, 17, 13],
@@ -5372,7 +5372,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 38,
-      note: "A poor fit for hurricane-averse; storm-anxious; those who need seasons.",
+      note: "South Padre resort housing at mid-band; Valley Baptist and BRO anchor care — very-high hurricane corridor exposure, low barrier elevation, and sea-level rise define daily logistics beyond subtropical mildness appeal.",
       sources: [
       { label: "NOAA — Brownsville airport normals (nearby)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NHC hurricane climatology", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -5381,21 +5381,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["winter-residents", "surfers", "subtropical-coast lovers"], travelFit: ["spring break", "sea turtle nesting (Kemp's ridley)", "birding"],
     whoWouldLove: "Anyone who wants Florida-like mildness without humidity maximum; anglers and surfers.", whoMightNot: "Hurricane-averse; storm-anxious; those who need seasons.",
     confidence: "moderate",
-                                deepSections: [
+    deepSections: [
       {
-        id: "south-padre-tx-mechanism",
-        title: "Hurricane-Exposed Coast mechanics",
+        id: "south-padre-double-water",
+        title: "Gulf and Laguna Madre moderation",
         paragraphs: [
-          "South Padre Island sits where barrier island on the southern Texas Gulf coast; the climatological boundary between subtropical and tropical regimes. Cfa/BSh normals and roughly 762 mm/yr frame the regional baseline, but Diurnal sea breeze and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Double-water exposure (Gulf + Laguna Madre) compresses the annual temperature range; low latitude + subsidence inversion limits summer heat; Texas gulf upwelling is minimal but marine-layer moderation is still substantial. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "South Padre sits at the southern tip of Texas's barrier-island chain — Cfa/BSh subtropical with roughly 762 mm annually, Gulf of Mexico and Laguna Madre buffering temperature from both sides and compressing the annual range to about 13°C versus 21°C inland at San Antonio.",
+          "Low latitude plus marine-layer moderation keeps July highs near 33°C with reliable afternoon sea breeze; January lows rarely approach freezing because Gulf water stays warm.",
         ],
       },
       {
-        id: "south-padre-tx-field-read",
-        title: "On-the-ground read",
+        id: "south-padre-hurricane-corridor",
+        title: "Hurricane corridor and island vulnerability",
         paragraphs: [
-          "One of the mildest subtropical coasts in the continental US — July highs barely reach 32°C and January lows rarely drop below 10°C, moderated by the Gulf on both sides. Soils read as sandy marine deposits, shelly with excessive drainage (pH 7.5–8.5). A challenging environment — salt, wind, and sand demand specialty plantings.",
-          "Coastal exposure registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Salt-tolerant natives, Sea-oats, Some citrus (inland, not island). Hurricane-averse; storm-anxious; those who need seasons should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Very-high storm and coastal exposure registers here — Beulah 1967, Dolly 2008, Hanna 2020 reshaped local memory; verify elevation, wind insurance, and evacuation routes. Sandy marine deposits support salt-tolerant natives only.",
+          "Hurricane-averse relocators should confirm they accept one of the most active tropical-cyclone corridors in the US — the climate is mild but the island geography is not resilient to major storms.",
         ],
       },
     ],
@@ -6217,7 +6217,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["storm watchers", "coastal gardeners"], travelFit: ["winter banana-belt days", "Samuel Boardman corridor"],
     whoWouldLove: "Anyone fascinated by micro-scale winter warm bursts on a cold ocean.", whoMightNot: "Those who need predictable dry summers inland-style.",
     confidence: "moderate",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "brookings-or-mechanism",
         title: "Gap / Gorge Wind Corridor mechanics",
@@ -6287,7 +6287,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["orchardists", "remote workers"], travelFit: ["Crater Lake", "Rogue River rafting", "pear harvest"],
     whoWouldLove: "Sun-seekers who still want Oregon scenery.", whoMightNot: "Fog-haters in winter; smoke-sensitive lungs.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "medford-or-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -6355,7 +6355,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["sailors", "remote creatives"], travelFit: ["orca watching", "island hopping"],
     whoWouldLove: "Maritime-climate fans who want fewer dreary winters than Seattle proper.", whoMightNot: "Budget shoppers — island cost of living is steep.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "friday-harbor-wa-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -6681,7 +6681,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snowmobilers", "boreal researchers"], travelFit: ["Voyageurs NP", "ice fishing"],
     whoWouldLove: "Hardy winter people who want true northern seasons.", whoMightNot: "Heat-lovers; thin-blood snowbirds.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "international-falls-mn-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -6746,7 +6746,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor enthusiasts", "remote workers"], travelFit: ["tall ships", "fall color", "skiing"],
     whoWouldLove: "Cool-summer lovers who still want real winter.", whoMightNot: "Sun-belt retirees seeking warmth.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "duluth-mn-mechanism",
         title: "Lake-Moderated mechanics",
@@ -6811,7 +6811,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["lake-house seekers"], travelFit: ["Presque Isle beaches", "winter storm chasing"],
     whoWouldLove: "Great Lakes culture and dramatic snow.", whoMightNot: "Snow shovel haters.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "erie-pa-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -6938,7 +6938,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Smokies trails", "autumn color"],
     whoWouldLove: "Misty-mountain hikers and waterfall chasers.", whoMightNot: "Crowd-averse visitors in October weekends.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "gatlinburg-tn-mechanism",
         title: "Thermal Belt mechanics",
@@ -6970,17 +6970,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Humid subtropical island chain — warm Gulf Stream eddies offshore, nor'easters in winter, hurricanes in late summer.",
     summaryImmersive: "The Outer Banks are a lesson in exposure: sea breezes cap summer heat, but humidity stays high; winter storms can overwash Highway 12. Each town along the strand has micro-differences in dune height and fetch that matter during storms.",
     whyDistinct: "Barrier-island dynamics + Gulf Stream proximity + hurricane recurvature zone = high climate volatility on a narrow strip.",
-                experience: {
-      feel: "The Outer Banks are a lesson in exposure: sea breezes cap summer heat, but humidity stays high; winter storms can overwash Highway 12. Each town along the strand has micro-differences in dune height and fetch that matter during storms.",
+    experience: {
+      feel: "The Outer Banks feel like exposure made geography — sea breezes capping summer heat on a narrow barrier strip, humidity staying high, Highway 12 overwash in winter storms, and dune height and fetch shifting storm impact town by town along Nags Head.",
       seasons: {
-        winter: "Mild and workable — afternoons near 13°C, nights near 4°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 18.3°C, nights near 11.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1390 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Warm season peak — afternoons near 28°C, nights near 22.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 22.3°C, nights near 14.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Nor'easter season — afternoons near 13°C, nights near 4°C, Gulf Stream eddies offshore moderating cold but overwash closing Highway 12 on bad systems.",
+        spring: "Awakening — afternoons climbing through 18°C, wild horses on Carova, and the last window before hurricane season planning begins.",
+        summer: "Humid subtropical peak — highs near 28°C, nights near 22°C sticky with sea breeze, afternoon convection, and Wright Brothers tourism at full tilt.",
+        autumn: "Hurricane tail — highs near 22°C, tropical recurvature tracks, and each town's dune geometry determining who gets overwash first.",
       },
-      travelerFit: "Visitors come for Wright Brothers, wild horses, and surf.",
-      residentFit: "It rewards beach people who accept hurricane season soberly — especially remote coastal workers — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
+      travelerFit: "Visitors come for Wright Brothers history, wild horses, surf, and barrier-island life with sober hurricane-season awareness.",
+      residentFit: "It rewards beach people and remote coastal workers who accept very-high storm exposure and mandatory evacuation logic.",
+      texture: "Barrier-island tradeoff — weigh very-high coastal and hurricane risk against Gulf Stream-moderated mild winters and compressed summer heat.",
     },
     climate: { tempHighC: [12, 13, 15, 18, 22, 26, 29, 29, 27, 22, 18, 14], tempLowC: [3, 4, 7, 11, 16, 21, 23, 23, 20, 14, 9, 5], precipMm: [110, 100, 105, 95, 105, 130, 150, 145, 130, 105, 95, 110], annualPrecipMm: 1390, frostFreeDays: 280, hardinessZone: "8a", humidity: [66, 65, 63, 68, 73, 83, 83, 86, 79, 77, 73, 67], sunshinePct: [50, 52, 52, 58, 63, 68, 65, 65, 60, 57, 53, 48] },
     soil: { texture: "Sand over peat in swales", drainage: "excessive", phRange: [5.5, 7.0], waterHolding: "low" },
@@ -6992,7 +6992,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 38,
-      note: "A poor fit for evacuation-averse; flood-insurance skeptics.",
+      note: "Outer Banks housing at mid-band; The Outer Banks Hospital and ECU specialists anchor care — very-high hurricane and flood exposure, Highway 12 overwash, and mandatory evacuation logic define daily logistics beyond beach appeal.",
       sources: [
       { label: "NOAA — Cape Hatteras ASOS", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Nags Head", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -7002,21 +7002,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote coastal workers"], travelFit: ["Wright Brothers", "wild horses", "surf"],
     whoWouldLove: "Beach people who accept hurricane season soberly.", whoMightNot: "Evacuation-averse; flood-insurance skeptics.",
     confidence: "high",
-                                deepSections: [
+    deepSections: [
       {
-        id: "nags-head-nc-mechanism",
-        title: "Hurricane-Exposed Coast mechanics",
+        id: "nags-head-barrier-exposure",
+        title: "Barrier island and Gulf Stream moderation",
         paragraphs: [
-          "Outer Banks sits where barrier island on the Atlantic hurricane track; narrow landform with constant salt-air modification. Cfa normals and roughly 1390 mm/yr frame the regional baseline, but Tropical-cyclone exposure and Diurnal sea breeze re-weight what any single forecast means block by block.",
-          "Barrier-island dynamics + Gulf Stream proximity + hurricane recurvature zone = high climate volatility on a narrow strip. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Nags Head sits on the Outer Banks barrier island on the Atlantic hurricane track — Cfa humid subtropical with roughly 1,390 mm annually, sea breezes capping summer heat while humidity stays high on a narrow landform with constant salt-air modification.",
+          "Gulf Stream proximity and hurricane recurvature zone produce high climate volatility; dune height and fetch differ town by town along the strand and matter during overwash events.",
         ],
       },
       {
-        id: "nags-head-nc-field-read",
-        title: "On-the-ground read",
+        id: "nags-head-hurricane-risk",
+        title: "Hurricane corridor and flood insurance",
         paragraphs: [
-          "Humid subtropical island chain — warm Gulf Stream eddies offshore, nor'easters in winter, hurricanes in late summer. Soils read as sand over peat in swales with excessive drainage (pH 5.5–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Salt-tolerant grasses, Yucca, Irrigated ornamentals. Evacuation-averse; flood-insurance skeptics should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Very-high storm and coastal exposure registers here — verify elevation certificates, flood insurance, and evacuation routes before committing. Sand over peat supports salt-tolerant grasses and irrigated ornamentals only.",
+          "Evacuation-averse relocators and flood-insurance skeptics should confirm they accept mandatory hurricane-season logic — fixed infrastructure on a migrating barrier island is the binding vulnerability.",
         ],
       },
     ],
@@ -7067,7 +7067,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote tech workers", "ski commuters"], travelFit: ["Champlain Islands", "ski resorts"],
     whoWouldLove: "Small-city New England with lake recreation.", whoMightNot: "Those who need warm winters.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "burlington-vt-mechanism",
         title: "Lake-Moderated mechanics",
@@ -7099,17 +7099,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Cool, foggy summers and stormy shoulder seasons — classic Downeast maritime.",
     summaryImmersive: "Bar Harbor sits on Mount Desert Island where sea fog rolls in on summer afternoons and fall colors are electric against dark granite. Winter is cold but moderated relative to interior Maine thanks to water; nor'easters bring heavy mixed precipitation.",
     whyDistinct: "Complex island-interior circulation + Acadia orography creates micro-varies within a few kilometers of coastline.",
-                experience: {
-      feel: "Bar Harbor sits on Mount Desert Island where sea fog rolls in on summer afternoons and fall colors are electric against dark granite. Winter is cold but moderated relative to interior Maine thanks to water; nor'easters bring heavy mixed precipitation.",
+    experience: {
+      feel: "Bar Harbor feels like Downeast granite coast on Mount Desert Island — sea fog rolling in on summer afternoons, electric fall color against dark Acadia granite, winter cold moderated by water but nor'easters bringing heavy mixed precipitation.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 1.3°C, nights near -7.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 9°C, nights near 1°C — rain is frequent and can be heavy. Green-up arrives against a wet 1330 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 20.7°C, nights near 12°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 12.3°C, nights near 4.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Nor'easter cold — afternoons near 1°C, nights near −7°C, mixed precipitation, and Cadillac Mountain snow visible above fog banks.",
+        spring: "Late green-up — afternoons climbing through 9°C, lobster boats returning, and Acadia trails muddy before tourist season peaks.",
+        summer: "Cool and foggy — highs near 21°C, afternoon sea fog, whale-watching season, and hospitality economy at full tilt.",
+        autumn: "Electric color — highs near 12°C, hardwoods against granite, the year's best hiking weather, and housing pressure visible as seasonal workers arrive.",
       },
-      travelerFit: "Visitors come for Acadia and whale watching.",
-      residentFit: "It rewards granite-coast hikers and blueberry fans — especially hospitality workers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Acadia-season housing spikes in summer; year-round services cluster in Bar Harbor with limited winter flights via Bangor.",
+      travelerFit: "Visitors come for Acadia National Park, whale watching, and classic Downeast maritime shoulder seasons.",
+      residentFit: "It rewards granite-coast hikers and hospitality workers who accept Acadia-season housing spikes and Bangor airport logistics for specialists.",
+      texture: "Downeast island tradeoff — weigh storm exposure and seasonal housing against cool foggy summers and blueberry-country culture.",
     },
     climate: {
       tempHighC: [0, 1, 4, 9, 14, 18, 22, 22, 18, 12, 7, 3],
@@ -7139,21 +7139,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Acadia", "whale watching"],
     whoWouldLove: "Granite-coast hikers and blueberry fans.", whoMightNot: "Budget travelers in peak July.",
     confidence: "high",
-                                deepSections: [
+    deepSections: [
       {
-        id: "bar-harbor-me-mechanism",
-        title: "Fjord / Inlet Coast mechanics",
+        id: "bar-harbor-downeast-fog",
+        title: "Downeast fjord coast and Acadia orography",
         paragraphs: [
-          "Bar Harbor sits where east-facing fjord-like coastline near Acadia National Park; cold Labrador Current influence. Dfb normals and roughly 1330 mm/yr frame the regional baseline, but Marine layer and Polar jet / arctic front re-weight what any single forecast means block by block.",
-          "Complex island-interior circulation + Acadia orography creates micro-varies within a few kilometers of coastline. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Bar Harbor sits on Mount Desert Island's east-facing fjord-like coast — Dfb Downeast maritime with roughly 1,330 mm annually, Labrador Current influence and Acadia orography creating micro-variation within kilometers of shoreline.",
+          "Sea fog rolls in on summer afternoons; fall colors run electric against dark granite while winter stays cold but moderated relative to interior Maine thanks to surrounding water.",
         ],
       },
       {
-        id: "bar-harbor-me-field-read",
-        title: "On-the-ground read",
+        id: "bar-harbor-acadia-season",
+        title: "Acadia tourism and seasonal housing",
         paragraphs: [
-          "Cool, foggy summers and stormy shoulder seasons — classic Downeast maritime. Soils read as thin stony podzol on granite with good drainage (pH 4.8–6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Blueberries, Cool greens, Hardy apples. Budget travelers in peak July should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Thin stony podzol on granite supports blueberries, cool greens, and hardy apples — long-season tomatoes struggle. Elevated storm and coastal exposure registers on exposed headlands.",
+          "Acadia-season housing spikes in summer; year-round services cluster in Bar Harbor with limited winter flights via Bangor. Budget travelers in peak July should confirm off-season logistics before committing.",
         ],
       },
     ],
@@ -7204,7 +7204,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ag researchers", "storm chasers"], travelFit: ["Palo Duro", "wine country nearby"],
     whoWouldLove: "Big-sky storm watchers.", whoMightNot: "Humidity lovers; tree-huggers seeking forests.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "lubbock-tx-mechanism",
         title: "Badland / Steppe Pocket mechanics",
@@ -7330,7 +7330,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wellness retreat life"], travelFit: ["citrus farms", "sunset chasers"],
     whoWouldLove: "Mediterranean-light obsessives.", whoMightNot: "Fire-averse; seekers of seasonal drama.",
     confidence: "moderate",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "ojai-ca-mechanism",
         title: "Mediterranean Pocket mechanics",

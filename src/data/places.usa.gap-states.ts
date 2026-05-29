@@ -69,7 +69,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "mentone-al-mechanism",
         title: "Thermal Belt mechanics",
@@ -153,7 +153,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "norfolk-ct-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -237,7 +237,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "lewes-de-mechanism",
         title: "Lake-Moderated mechanics",
@@ -321,7 +321,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "clayton-ga-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -363,17 +363,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Steep bluffs and coulees in a corner of Illinois that glaciers missed — sharp frost and microclimates on a few miles’ scale.",
     summaryImmersive: "Galena’s postcard hills are not decorative; they organize cold drainage, spring phenology, and wind exposure in ways flat corn country cannot. The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns. It is a microclimate laboratory squeezed into a tourist town.",
     whyDistinct: "Driftless topography inside Illinois’ glaciated plain is geographically rare; elevation + aspect produce repeatable local climate gradients documented in Midwest agronomy literature.",
-                experience: {
-      feel: "Galena’s postcard hills are not decorative; they organize cold drainage, spring phenology, and wind exposure in ways flat corn country cannot. The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns.",
+    experience: {
+      feel: "Galena feels like a Driftless pocket inside glaciated Illinois — postcard bluffs organizing cold drainage, spring phenology, and wind exposure on a scale flat corn country cannot match, with the Mississippi moderating some winter cold while supplying moisture for lake-effect-like cloud streets when synoptic flow aligns.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -0.3°C, nights near -10°C — snow is a regular part of the picture. Storm systems roll through with real force.",
-        spring: "Spring opens — afternoons near 13.3°C, nights near 3°C — showers pass through regularly. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Warm season peak — afternoons near 27°C, nights near 16°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 15.7°C, nights near 4.3°C — showers pass through regularly. Storm systems roll through with real force.",
+        winter: "Cold and snowy — afternoons near freezing, nights near −10°C, coulees pooling cold air on clear nights, and bluff-top views over a frozen Mississippi corridor.",
+        spring: "Fast green-up — afternoons climbing through the low teens, snowmelt and spring rain swelling Galena River tributaries, and orchard bloom dates diverging sharply between valley floor and south-facing slopes.",
+        summer: "Warm and stormy — highs near 27°C, humid afternoons with heavy convection, and the historic Main Street tourist season running alongside real Midwest thunderstorm energy.",
+        autumn: "Color and harvest — highs falling through the mid-teens, oak savanna turning gold on the bluffs, and the last comfortable weeks before winter drainage patterns return.",
       },
-      travelerFit: "Visitors come for Mississippi Palisades and architecture.",
-      residentFit: "It rewards midwest topography fans who still want seasons — especially historic-town lovers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
+      travelerFit: "Visitors come for Mississippi Palisades overlooks, 19th-century Main Street architecture, and a microclimate laboratory squeezed into a tourist town.",
+      residentFit: "It rewards Midwest topography fans who still want seasons — especially historic-town lovers — if they accept steep-drive logistics and Mississippi-flood exposure on low parcels.",
+      texture: "A Driftless tradeoff — weigh elevated flood risk on river-adjacent blocks, bluff-road winter access, and storm exposure against genuine microclimate diversity within a few miles.",
     },
     climate: {
       tempHighC: [-2, 0, 6, 14, 20, 26, 28, 27, 23, 16, 8, 1],
@@ -395,7 +395,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 60,
-      note: "A poor fit for those avoiding cold winters or steep drives.",
+      note: "Galena historic-housing at mid-band; Jo Daviess County services anchor care — Mississippi-flood exposure on low parcels, bluff-road winter access, and Driftless cold-drainage frost define daily logistics beyond Main Street tourism appeal.",
       sources: [
       { label: "NOAA — Galena", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Galena", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -405,21 +405,21 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-town lovers", "remote workers"], travelFit: ["Mississippi Palisades", "architecture"],
     whoWouldLove: "Midwest topography fans who still want seasons.", whoMightNot: "Those avoiding cold winters or steep drives.",
     confidence: "high",
-                                deepSections: [
+    deepSections: [
       {
-        id: "galena-il-mechanism",
-        title: "Driftless Relief Pocket mechanics",
+        id: "galena-driftless-bluffs",
+        title: "Driftless bluffs and coulee microclimates",
         paragraphs: [
-          "Galena sits where mississippi River bluffs and dissected uplands at the Illinois edge of the Driftless Area — unglaciated terrain in a glaciated state. Dfa normals and roughly 886 mm/yr frame the regional baseline, but Slope / aspect and River-valley moderation re-weight what any single forecast means block by block.",
-          "Driftless topography inside Illinois’ glaciated plain is geographically rare; elevation + aspect produce repeatable local climate gradients documented in Midwest agronomy literature. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Galena sits on Mississippi River bluffs at the Illinois edge of the Driftless Area — unglaciated terrain in a glaciated state where Dfa normals and roughly 886 mm annually frame a regional baseline that slope, aspect, and cold-air drainage re-weight block by block.",
+          "Elevation and aspect produce repeatable local climate gradients documented in Midwest agronomy literature: south-facing vineyard benches warm faster in spring while coulees pool frost on clear nights only hundreds of metres away.",
         ],
       },
       {
-        id: "galena-il-field-read",
-        title: "On-the-ground read",
+        id: "galena-mississippi-flood",
+        title: "Mississippi moderation and flood geometry",
         paragraphs: [
-          "Steep bluffs and coulees in a corner of Illinois that glaciers missed — sharp frost and microclimates on a few miles’ scale. Soils read as silt loam on loess and colluvium with good drainage (pH 5.8–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Grape (hybrid), Pasture. Those avoiding cold winters or steep drives should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns — a river-valley tradeoff between milder nights and elevated flood exposure on low parcels near tributary mouths.",
+          "Silt loam on loess and colluvium supports apples, hybrid grapes, and pasture on sheltered blocks. Those avoiding cold winters or steep drives should confirm parcel elevation, drainage, and insurance before treating postcard-hill appeal as parcel-grade comfort.",
         ],
       },
     ],
@@ -489,7 +489,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "beverly-shores-in-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -573,7 +573,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "oakland-md-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -657,7 +657,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "pittsfield-ma-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -740,7 +740,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "ocean-springs-ms-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -822,7 +822,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "eminence-mo-mechanism",
         title: "Limestone / Karst Pocket mechanics",
@@ -1076,7 +1076,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "geneva-on-the-lake-oh-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -1159,7 +1159,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "broken-bow-ok-mechanism",
         title: "Piedmont Transition mechanics",

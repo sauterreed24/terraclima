@@ -1569,7 +1569,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbirds", "marine-adjacent"], travelFit: ["whale sharks", "island tourism"],
     whoWouldLove: "Those wanting winter perfection on clear turquoise water.", whoMightNot: "Year-round heat-averse.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "la-paz-mx-mechanism",
         title: "Desert Oasis mechanics",
@@ -1634,7 +1634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "puerto-escondido-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -1671,17 +1671,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The colonial capital of the Yucatán limestone plateau — hot, dry-winter, wet-summer tropical with cenote-karst hydrology.",
     summaryImmersive: "Mérida sits on the Yucatán's flat limestone plateau, where cenotes (collapsed karst sinkholes) provide the region's only surface water. Winters are warm-dry-sunny (highs 30°C, low humidity); summers are hotter and humid with afternoon downpours from May through October. Hurricane exposure is real but the inland position dampens the worst direct impacts compared to Cancún or Campeche on the coast.",
     whyDistinct: "Karst limestone geology produces unique hydrology; inland-tropical position softens but doesn't eliminate hurricane exposure.",
-                experience: {
-      feel: "Mérida sits on the Yucatán's flat limestone plateau, where cenotes (collapsed karst sinkholes) provide the region's only surface water. Winters are warm-dry-sunny (highs 30°C, low humidity); summers are hotter and humid with afternoon downpours from May through October.",
+    experience: {
+      feel: "Mérida feels like the colonial capital of the Yucatán limestone plateau — flat karst lowland where cenotes provide the region's only surface water, winters warm-dry-sunny near 30°C with low humidity, and summers hotter and stickier with afternoon downpours from May through October.",
       seasons: {
-        winter: "Warm winter window — afternoons near 29.3°C, nights near 17.4°C — humid air keeps everything soft and close. Storm systems roll through with real force.",
-        spring: "Heating up fast — afternoons near 34.6°C, nights near 22.2°C — showers pass through regularly. Green-up arrives against a wet 996 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 33.6°C, nights near 23.1°C — rain is frequent and can be heavy. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Hurricane-season tail — afternoons near 31.2°C, nights near 21.2°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Dry-season paradise — afternoons near 29°C, nights near 17°C, trade winds keeping humidity tolerable, and the best window for Uxmal day trips and cenote swimming without summer storm buildup.",
+        spring: "Heating toward peak — afternoons climbing through the mid-30s, humidity rising before rains, and the last clear weeks before afternoon convection returns in May.",
+        summer: "Wet-season heat — highs near 34°C, nights near 23°C, daily afternoon downpours, and heat that can turn genuinely dangerous without shade discipline and siesta culture.",
+        autumn: "Hurricane watch — highs near 31°C, heavy rains from Caribbean or Gulf systems, and inland position softening but not eliminating tropical-storm impacts compared to Cancún.",
       },
-      travelerFit: "Visitors come for Maya sites and cenotes.",
-      residentFit: "It rewards tropical-dry + culture seekers — especially colonial-city expats — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at sea level — the main things to weigh are extreme summer heat and storm exposure.",
+      travelerFit: "Visitors come for colonial centro walks, Maya sites, and cenote swimming — dry season is the comfort window; wet season demands storm-aware scheduling.",
+      residentFit: "It rewards tropical-dry culture seekers and colonial-city expats who accept summer heat above 34°C, karst hydrology quirks, and hurricane-season logistics.",
+      texture: "A karst-plateau tradeoff — weigh extreme summer heat, hurricane exposure, and excessive-drainage soils against warm-dry winters and one of Mexico's most walkable historic cores.",
     },
     climate: { tempHighC: [28.8, 30.4, 33.1, 34.8, 35.8, 34.1, 33.4, 33.4, 32.4, 31.2, 29.9, 28.8], tempLowC: [16.8, 17.9, 20.1, 22.6, 23.8, 23.6, 22.9, 22.9, 22.8, 21.4, 19.4, 17.4], precipMm: [24, 18, 22, 32, 82, 156, 144, 158, 178, 108, 44, 30], annualPrecipMm: 996, frostFreeDays: 365, hardinessZone: "12 equiv.", humidity: [75, 74, 70, 72, 74, 82, 78, 85, 85, 81, 80, 76], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Thin rendzina over limestone", drainage: "excessive", phRange: [7.4, 8.2], waterHolding: "low" },
@@ -1693,7 +1693,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for summer-heat-averse.",
+      note: "Mérida expat housing at mid-band; Hospital Star Médica and MID anchor care — summer heat above 34°C, karst cenote hydrology, and hurricane-season logistics define daily life beyond colonial-centro walkability.",
       sources: [
       { label: "SMN — Mérida 1991–2020", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -1703,21 +1703,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["colonial-city expats"], travelFit: ["Maya sites", "cenotes"],
     whoWouldLove: "Tropical-dry + culture seekers.", whoMightNot: "Summer-heat-averse.",
     confidence: "high",
-                                deepSections: [
+    deepSections: [
       {
-        id: "merida-mx-mechanism",
-        title: "Tropical Wet-Dry mechanics",
+        id: "merida-karst-cenote",
+        title: "Karst hydrology and cenote water",
         paragraphs: [
-          "Mérida sits where central Yucatán limestone plateau; a karst tropical lowland. Aw normals and roughly 996 mm/yr frame the regional baseline, but Karst infiltration and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Karst limestone geology produces unique hydrology; inland-tropical position softens but doesn't eliminate hurricane exposure. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Mérida sits on the central Yucatán limestone plateau — Aw tropical wet-dry normals with roughly 996 mm annually, where karst infiltration means almost no surface rivers and cenotes provide the region's only accessible groundwater.",
+          "Thin rendzina over limestone with excessive drainage (pH 7.4–8.2) supports henequen, citrus, mango, and papaya with irrigation planning — temperate crops fail without engineered water.",
         ],
       },
       {
-        id: "merida-mx-field-read",
-        title: "On-the-ground read",
+        id: "merida-hurricane-inland",
+        title: "Inland hurricane buffer and wet-season heat",
         paragraphs: [
-          "The colonial capital of the Yucatán limestone plateau — hot, dry-winter, wet-summer tropical with cenote-karst hydrology. Soils read as thin rendzina over limestone with excessive drainage (pH 7.4–8.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Henequen (agave), Citrus, Mango. Summer-heat-averse should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Roughly 30 km from the Gulf coast, Mérida's inland position dampens the worst direct hurricane impacts compared to Cancún or Campeche — but storm tracks still deliver heavy rain, wind, and power outages from May through November.",
+          "Summer-heat-averse relocators should spend an August week here before treating warm-dry winters as balance for afternoons above 34°C with humid downpours — verify flood exposure on low-lying blocks where karst drainage fails.",
         ],
       },
     ],
@@ -2243,17 +2243,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A high-desert colonial city at ~1,900 m where springlike afternoons and cool nights persist most of the year.",
     summaryImmersive: "San Miguel de Allende sits high on the Mexican plateau, roughly 1,900 m above sea level, and altitude defines everything: sun-warmed afternoons in the low-to-mid 20s through much of the year, then sharp evening cooldown once the dry air decouples after sunset. The warm season peaks before monsoon onset in May–June; summer rain then cools afternoons and greens the hills. Winter days stay pleasant while nights can drop near freezing. The result is one of Mexico's most migration-attractive climates: bright, dry, walkable, and rarely oppressive in either direction.",
     whyDistinct: "High elevation at subtropical latitude compresses thermal stress. Pre-monsoon heat is quickly tempered once summer rainfall arrives, and low humidity outside the rainy season amplifies night cooling.",
-                experience: {
-      feel: "San Miguel de Allende sits high on the Mexican plateau, roughly 1,900 m above sea level, and altitude defines everything: sun-warmed afternoons in the low-to-mid 20s through much of the year, then sharp evening cooldown once the dry air decouples after sunset.",
+    experience: {
+      feel: "San Miguel de Allende feels like eternal spring at 1,910 m — sun-warmed afternoons in the low-to-mid 20s through much of the year, sharp evening cooldown as dry air decouples after sunset, and altitude compressing thermal stress at subtropical latitude.",
       seasons: {
-        winter: "Warm winter window — afternoons near 23.4°C, nights near 6.3°C — skies stay mostly dry.",
-        spring: "Heating up fast — afternoons near 28.8°C, nights near 10.5°C — weather stays moderate and changeable.",
-        summer: "Warm season peak — afternoons near 26.5°C, nights near 12.7°C — rain is frequent and can be heavy. Water supply and irrigation stress matter.",
-        autumn: "Shoulder season — afternoons near 24.1°C, nights near 9.5°C — showers pass through regularly.",
+        winter: "Dry and walkable — afternoons near 23°C, nights near 6°C, clear skies, and the expat social season at its peak without summer rain or pre-monsoon heat.",
+        spring: "Heating before monsoon — afternoons climbing toward 29°C, water rationing visible in dry springs, and the last comfortable weeks before May–June pre-monsoon stress arrives.",
+        summer: "Monsoon-cooled — highs near 26°C, afternoon thunderstorms greening the volcanic hills, humid spikes when convection fires, and irrigation channels running full across the Bajío.",
+        autumn: "Golden shoulder — highs falling through the mid-20s, festival season in the colonial centro, and dry air returning as nights drop toward freezing on exposed ridges.",
       },
-      travelerFit: "Visitors come for colonial architecture, highland festivals, and walkable mild-weather city breaks.",
-      residentFit: "It rewards people who want dry sun and cool evenings without truly cold winters — especially remote workers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at 1910 m elevation — the main things to weigh are long-run drought. Expat housing and services cluster in the centro but seasonal tourism, water rationing in dry springs, and León/Querétaro specialist trips are part of the lived filter.",
+      travelerFit: "Visitors come for colonial architecture, highland festivals, and walkable mild-weather city breaks — dry season is the comfort window.",
+      residentFit: "It rewards remote workers and artists wanting dry sun and cool evenings without truly cold winters — if they accept water rationing, seasonal tourism crowds, and León specialist trips.",
+      texture: "A highland-plateau tradeoff — weigh long-run drought, pre-monsoon heat spikes, and expat-housing pressure against one of Mexico's most migration-attractive climate envelopes.",
     },
     climate: {
       tempHighC: [23.0, 24.5, 27.2, 29.0, 30.1, 28.1, 25.9, 25.6, 24.8, 24.1, 23.3, 22.6],
@@ -2282,21 +2282,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "artists", "highland-climate seekers"], travelFit: ["colonial architecture", "highland festivals", "walkable mild-weather city breaks"],
     whoWouldLove: "People who want dry sun and cool evenings without truly cold winters.", whoMightNot: "Humidity lovers or those needing lush, high-rain landscapes.",
     confidence: "moderate",
-                                deepSections: [
+    deepSections: [
       {
-        id: "san-miguel-de-allende-mx-mechanism",
-        title: "Eternal-Spring Highland mechanics",
+        id: "san-miguel-eternal-spring",
+        title: "Eternal-spring elevation and diurnal cooling",
         paragraphs: [
-          "San Miguel de Allende sits where central Mexican highland plateau in the Bajío transition, with rolling volcanic uplands and broad valleys. At roughly 1910 m, elevation bands matter as much as latitude. Cwb/BSk transition normals and roughly 622 mm/yr frame the regional baseline, but Elevation lapse rate and Continental extremity re-weight what any single forecast means block by block.",
-          "High elevation at subtropical latitude compresses thermal stress. Pre-monsoon heat is quickly tempered once summer rainfall arrives, and low humidity outside the rainy season amplifies night cooling. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "San Miguel de Allende sits at roughly 1,910 m on the central Mexican highland plateau — Cwb/BSk transition normals with roughly 622 mm annually, where elevation at subtropical latitude compresses thermal stress and low humidity outside the rainy season amplifies night cooling.",
+          "Pre-monsoon May–June heat peaks before summer rainfall arrives; once monsoon convection fires, afternoon thunderstorms cool the volcanic hills and green the oak-grassland scrub surrounding the colonial centro.",
         ],
       },
       {
-        id: "san-miguel-de-allende-mx-field-read",
-        title: "On-the-ground read",
+        id: "san-miguel-water-drought",
+        title: "Water rationing and expat housing pressure",
         paragraphs: [
-          "A high-desert colonial city at ~1,900 m where springlike afternoons and cool nights persist most of the year. Soils read as volcanic loam to clay loam with good drainage (pH 6.6–7.8). Great shoulder-season gardening; irrigation planning is now essential in spring dry-down.",
-          "Drought registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Olive, Pomegranate, Herbs. Humidity lovers or those needing lush, high-rain landscapes should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated drought risk registers here — volcanic loam to clay loam supports olive, pomegranate, herbs, and cool-pocket stone fruit, but irrigation planning is now essential in spring dry-down as aquifer extraction rises with expat migration.",
+          "Humidity lovers or those needing lush high-rain landscapes should confirm water availability before committing — seasonal tourism, centro housing pressure, and León/Querétaro specialist trips define daily logistics beyond walkable mild-weather appeal.",
         ],
       },
     ],
@@ -2699,7 +2699,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["hospitality retirees", "remote workers"], travelFit: ["whale watching", "beaches"],
     whoWouldLove: "Tropical beach life with mountain backdrop.", whoMightNot: "Dry-climate seekers; hurricane-anxious buyers.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "puerto-vallarta-mx-mechanism",
         title: "Tropical Isothermal Coast mechanics",
@@ -2764,7 +2764,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "mazatlan-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2829,7 +2829,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "campeche-mx-mechanism",
         title: "Hurricane-Exposed Coast mechanics",

@@ -1052,7 +1052,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulturalists", "orchardists"], travelFit: ["wine tours"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "summerland-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1179,7 +1179,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families"], travelFit: ["wildlife area", "orchards"],
     whoWouldLove: "Quiet Kootenay folk.", whoMightNot: "Urbanites.",
     confidence: "moderate",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "creston-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1216,17 +1216,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's only desert-adjacent fruit region — hot dry summers, two big lakes, and a full four-season climate.",
     summaryImmersive: "Penticton sits between two lakes in one of Canada's driest valleys. Deep Pacific rain-shadow produces semi-arid summer conditions; Okanagan Lake's thermal mass moderates winter, allowing tender fruit and viable wine grapes at 49° latitude. Ponderosa pines and sagebrush fill the hillsides — a Canadian landscape with genuinely American-Southwest character. The two big lakes are the difference between living here and living in similar-latitude prairie cold.",
     whyDistinct: "Interior rain-shadow produces true semi-desert conditions; deep lakes moderate and extend the growing season; the combination is unique north of the US border.",
-                experience: {
-      feel: "Penticton sits between two lakes in one of Canada's driest valleys. Deep Pacific rain-shadow produces semi-arid summer conditions; Okanagan Lake's thermal mass moderates winter, allowing tender fruit and viable wine grapes at 49° latitude.",
+    experience: {
+      feel: "Penticton feels like Canada's desert-adjacent fruit capital — an isthmus between Skaha and Okanagan Lakes in one of the driest valleys north of the border, where deep Pacific rain-shadow produces semi-arid summers and lake thermal mass extends the growing season to tender fruit and wine grapes at 49° latitude.",
       seasons: {
-        winter: "Cold and snowy — afternoons near 1.3°C, nights near -4.8°C — snow is a regular part of the picture.",
-        spring: "Spring opens — afternoons near 15°C, nights near 2.8°C — weather stays moderate and changeable.",
-        summer: "Warm season peak — afternoons near 27.1°C, nights near 11.9°C — weather stays moderate and changeable. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 13.9°C, nights near 3.2°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
+        winter: "Mild by Canadian interior standards — afternoons near 1°C, nights near −5°C, lake-moderated cold, and vineyard crews pruning while snow dusts the surrounding sagebrush hills.",
+        spring: "Fast awakening — afternoons climbing through the mid-teens, orchard bloom on the benches, and the first beach days on Okanagan Lake before summer heat and fire season arrive.",
+        summer: "Hot and dry — highs near 27°C, afternoons above 35°C in heat-dome years, wildfire smoke the defining summer wildcard, and the wine trail running at full tourist throttle.",
+        autumn: "Harvest gold — highs falling through the low teens, grape crush in full swing, and smoke sometimes lingering into October before winter lake moderation returns.",
       },
-      travelerFit: "Visitors come for wine trail and beaches.",
-      residentFit: "It rewards sun-desiring Canadians — especially winemakers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are wildfire exposure and smoke-season air quality. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Okanagan wine country, twin-lake beaches, and a semi-desert landscape with genuinely four-season character.",
+      residentFit: "It rewards sun-desiring Canadians and winemakers who accept high wildfire smoke exposure, expensive housing, and irrigation dependence in a 302 mm annual-precipitation valley.",
+      texture: "A rain-shadow orchard tradeoff — weigh 2003 and 2023-scale fire seasons, smoke-season air quality, and housing above regional medians against Canada's most productive tender-fruit bench.",
     },
     climate: { tempHighC: [0.2, 3.6, 9.4, 15.1, 20.6, 24.7, 28.4, 28.1, 22.6, 13.8, 5.4, 0.1], tempLowC: [-5.4, -3.8, -0.9, 2.6, 6.8, 10.4, 12.8, 12.4, 8.1, 3.1, -1.6, -5.1], precipMm: [24, 18, 20, 22, 34, 38, 26, 26, 22, 20, 24, 28], snowCm: [18, 8, 2, 0, 0, 0, 0, 0, 0, 0, 6, 20], humidity: [80, 72, 60, 50, 48, 48, 42, 44, 52, 64, 76, 82], sunshinePct: [25, 38, 52, 62, 68, 70, 80, 78, 68, 48, 28, 22], annualPrecipMm: 302, frostFreeDays: 175, hardinessZone: "6b" },
     soil: { texture: "Silt loam over glaciolacustrine sediment", drainage: "good", phRange: [6.8, 7.6], waterHolding: "moderate" },
@@ -1238,7 +1238,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Housing runs above regional medians; Confirm hospital and airport distances for your needs.",
+      note: "Penticton housing runs above regional medians; Penticton Regional Hospital and YLW anchor care — 2003 and 2023-scale wildfire smoke, irrigation dependence in a 302 mm valley, and orchard-bench fire exposure define daily logistics beyond wine-trail appeal.",
       sources: [
       { label: "ECCC — Penticton 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1248,21 +1248,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers", "orchardists", "retirees"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Sun-desiring Canadians.", whoMightNot: "Fire-averse.",
     confidence: "high",
-                                deepSections: [
+    deepSections: [
       {
-        id: "penticton-bc-mechanism",
-        title: "Rain-Shadow Sanctuary mechanics",
+        id: "penticton-twin-lake-rainshadow",
+        title: "Twin-lake rain shadow and orchard terroir",
         paragraphs: [
-          "Penticton sits where isthmus between Skaha and Okanagan Lakes in the deep Okanagan rain-shadow valley. BSk / Dfb margin normals and roughly 302 mm/yr frame the regional baseline, but Rain shadow and Lake effect re-weight what any single forecast means block by block.",
-          "Interior rain-shadow produces true semi-desert conditions; deep lakes moderate and extend the growing season; the combination is unique north of the US border. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Penticton sits on an isthmus between Skaha and Okanagan Lakes in the deep Okanagan rain-shadow — BSk/Dfb margin normals with roughly 302 mm annually, where Pacific moisture wrings out on the Coast Range and Cascades before reaching the interior.",
+          "Okanagan Lake's thermal mass moderates winter cold enough for tender fruit and wine grapes at 49° latitude — a combination unique north of the US border and economically legible in every south-facing bench above the twin lakes.",
         ],
       },
       {
-        id: "penticton-bc-field-read",
-        title: "On-the-ground read",
+        id: "penticton-fire-smoke",
+        title: "Wildfire smoke and irrigation stress",
         paragraphs: [
-          "Canada's only desert-adjacent fruit region — hot dry summers, two big lakes, and a full four-season climate. Soils read as silt loam over glaciolacustrine sediment with good drainage (pH 6.8–7.6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Wine grapes, Peaches, Apples. Fire-averse should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High wildfire and smoke risk registers here — 2003 and 2023 severe seasons are the reference points, not edge cases. Silt loam over glaciolacustrine sediment supports wine grapes, peaches, and apples with irrigation planning essential in a semi-arid valley.",
+          "Fire-averse relocators should confirm evacuation routes and air filtration before committing — smoke-season PM and orchard-bench exposure define daily logistics beyond beach-and-wine tourism appeal.",
         ],
       },
     ],
@@ -1618,17 +1618,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's rainiest city — 2600 mm of annual precipitation and a fjord-harbor climate that stays between 2 and 16°C year-round.",
     summaryImmersive: "Prince Rupert sits at the mouth of the Skeena River, where Pacific storms slam into the Coast Mountains. Annual precipitation averages over 2600 mm; days of sunshine are few. Winter lows rarely drop below freezing; summer highs rarely exceed 18°C. Fog, drizzle, and low cloud define the sensory character. The historic cannery town of the North Coast is hyper-maritime and truly distinct within Canada.",
     whyDistinct: "Direct Pacific exposure plus Coast Mountain orographic lift produces extreme precipitation; fjord positions buffer temperature.",
-                experience: {
-      feel: "Prince Rupert sits at the mouth of the Skeena River, where Pacific storms slam into the Coast Mountains. Annual precipitation averages over 2600 mm; days of sunshine are few. Winter lows rarely drop below freezing; summer highs rarely exceed 18°C.",
+    experience: {
+      feel: "Prince Rupert feels like Canada's rainiest city — Kaien Island at the foot of Coast Mountain fjords where Pacific storms slam into orographic lift, producing over 2,600 mm annually, fog and drizzle defining the sensory character, and temperatures staying between roughly 2 and 16°C year-round.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 5.3°C, nights near 0.2°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 9.7°C, nights near 3.1°C — rain is frequent and can be heavy. Green-up arrives against a wet 2618 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 16.2°C, nights near 9.9°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 11.2°C, nights near 5.8°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Mild and relentless — afternoons near 5°C, nights near freezing, rain instead of snow most days, and roughly 110 sun-days annually making headlamps and vitamin D part of daily life.",
+        spring: "Green-up in the cloud — afternoons climbing toward 10°C, salmon runs beginning on the Skeena, and the wettest months still ahead as Pacific systems train into the fjords.",
+        summer: "Cool maritime peak — highs rarely exceeding 18°C, nights near 10°C, drizzle between sunny breaks, and the brief window when hiking the North Coast trails is actually pleasant.",
+        autumn: "Storm season intensifies — highs falling through the low teens, Skeena fishing at its peak, and the heaviest precipitation months arriving as low cloud caps the harbor.",
       },
-      travelerFit: "Visitors come for Skeena fishing and BC Ferries terminus.",
-      residentFit: "It rewards those who want to live in a coastal cloud — especially hyper-maritime devotees — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place — the main things to weigh are storm exposure and flood and surge risk. Specialty care and major-airport access require real planning.",
+      travelerFit: "Visitors come for Skeena River fishing, BC Ferries gateway access to Haida Gwaii, and a textbook hyper-maritime climate unlike anywhere else in Canada.",
+      residentFit: "It rewards hyper-maritime devotees who accept among the wettest and darkest year-round conditions on the continent plus limited specialty-medical access.",
+      texture: "A fjord-harbor tradeoff — weigh storm exposure, coastal flood risk, small-economy job markets, and Terrace or Vancouver specialist trips against a remarkably stable temperature regime.",
     },
     climate: { tempHighC: [4.6, 6.1, 7.4, 9.4, 12.3, 14.8, 16.6, 17.1, 14.9, 11.4, 7.4, 5.2], tempLowC: [-0.4, 0.1, 1.1, 2.9, 5.4, 8.4, 10.4, 11.0, 9.1, 5.8, 2.4, 0.8], precipMm: [254, 192, 204, 186, 148, 120, 116, 138, 240, 380, 294, 286], humidity: [82, 80, 78, 77, 78, 80, 82, 83, 84, 85, 83, 82], annualPrecipMm: 2618, frostFreeDays: 220, hardinessZone: "7b", sunshinePct: [32, 35, 34, 40, 33, 38, 35, 35, 30, 39, 35, 30] },
     soil: { texture: "Organic over bedrock / thin till", drainage: "poor", phRange: [4.4, 5.4], waterHolding: "high" },
@@ -1649,21 +1649,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hyper-maritime devotees"], travelFit: ["Skeena fishing", "BC Ferries terminus"],
     whoWouldLove: "Those who want to live in a coastal cloud.", whoMightNot: "Sun-needing humans.",
     confidence: "high",
-                                deepSections: [
+    deepSections: [
       {
-        id: "prince-rupert-bc-mechanism",
-        title: "Hyper-Maritime mechanics",
+        id: "prince-rupert-orographic-rain",
+        title: "Orographic rain and hyper-maritime buffering",
         paragraphs: [
-          "Prince Rupert sits where kaien Island at the foot of the Coast Mountains' fjord country; one of the wettest places in North America. Cfb (hyper-oceanic) normals and roughly 2618 mm/yr frame the regional baseline, but Orographic lift and Marine layer re-weight what any single forecast means block by block.",
-          "Direct Pacific exposure plus Coast Mountain orographic lift produces extreme precipitation; fjord positions buffer temperature. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Prince Rupert sits on Kaien Island at the foot of Coast Mountain fjord country — Cfb hyper-oceanic normals with roughly 2,618 mm annually, where direct Pacific exposure plus orographic lift produce among the wettest sustained climates in North America.",
+          "Fjord positions buffer temperature: winter lows rarely drop below freezing and summer highs rarely exceed 18°C — a remarkably stable thermal envelope that trades sunshine for maritime moderation.",
         ],
       },
       {
-        id: "prince-rupert-bc-field-read",
-        title: "On-the-ground read",
+        id: "prince-rupert-skeena-access",
+        title: "Skeena gateway and access friction",
         paragraphs: [
-          "Canada's rainiest city — 2600 mm of annual precipitation and a fjord-harbor climate that stays between 2 and 16°C year-round. Soils read as organic over bedrock / thin till with poor drainage (pH 4.4–5.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Moss-tolerant, Cool brassicas. Sun-needing humans should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "The Skeena River mouth and BC Ferries terminus anchor a small North Coast economy built on fishing, port logistics, and gateway access to Haida Gwaii — but specialty medical care often requires Terrace or Vancouver trips.",
+          "Organic soils over bedrock with poor drainage suit moss-tolerant plantings and cool brassicas at best. Sun-needing humans should spend a November week here before treating stable temperatures as balance for roughly 110 annual sun-days and persistent low cloud.",
         ],
       },
     ],
@@ -1851,7 +1851,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["greenhouse farmers"], travelFit: ["Point Pelee birding"],
     whoWouldLove: "Those drawn to Canada's longest growing season.", whoMightNot: "Mountain-lovers.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "leamington-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -1915,7 +1915,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["boreal families"], travelFit: ["Sleeping Giant Park"],
     whoWouldLove: "Boreal-lake devotees.", whoMightNot: "Heat-needing.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "thunder-bay-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2333,7 +2333,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Cool-climate wine people.", whoMightNot: "Those wanting mild winters.",
     confidence: "moderate",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "prince-edward-co-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2406,7 +2406,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "iqaluit-nu-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2477,7 +2477,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "inuvik-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -3025,7 +3025,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "charlottetown-pei-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -3239,7 +3239,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "morden-mb-mechanism",
         title: "Orchard Valley mechanics",
@@ -3304,7 +3304,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
-                                deepSections: [
+                                    deepSections: [
       {
         id: "sutton-qc-mechanism",
         title: "Piedmont Transition mechanics",
