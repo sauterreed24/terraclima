@@ -4841,6 +4841,21 @@
     border-bottom: 1px solid rgba(200, 175, 150, 0.35);
   }
 
+  /* Act group headers in the desktop reading nav. */
+  .tc-reading-nav-group {
+    margin: 0.6rem 0 0.18rem;
+    padding: 0 0.35rem;
+    color: var(--color-stone-readable);
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    opacity: 0.92;
+  }
+  li:first-child > .tc-reading-nav-group {
+    margin-top: 0;
+  }
+
   /* Field dossier — one shell, chapters as editorial stack */
   .detail-dossier-shell {
     border-radius: 1rem;
