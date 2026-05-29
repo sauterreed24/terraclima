@@ -1569,7 +1569,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbirds", "marine-adjacent"], travelFit: ["whale sharks", "island tourism"],
     whoWouldLove: "Those wanting winter perfection on clear turquoise water.", whoMightNot: "Year-round heat-averse.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "la-paz-mx-mechanism",
         title: "Desert Oasis mechanics",
@@ -1634,7 +1634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "puerto-escondido-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -1703,7 +1703,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["colonial-city expats"], travelFit: ["Maya sites", "cenotes"],
     whoWouldLove: "Tropical-dry + culture seekers.", whoMightNot: "Summer-heat-averse.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "merida-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2282,7 +2282,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "artists", "highland-climate seekers"], travelFit: ["colonial architecture", "highland festivals", "walkable mild-weather city breaks"],
     whoWouldLove: "People who want dry sun and cool evenings without truly cold winters.", whoMightNot: "Humidity lovers or those needing lush, high-rain landscapes.",
     confidence: "moderate",
-                            deepSections: [
+                                deepSections: [
       {
         id: "san-miguel-de-allende-mx-mechanism",
         title: "Eternal-Spring Highland mechanics",
@@ -2624,7 +2624,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 38,
-      note: "A poor fit for anyone who needs summer air conditioning to be optional.",
+      note: "Hermosillo capital housing at mid-band; HGM and HMO anchor care — July highs above 40°C, Sonoran monsoon virga, and Colorado River-linked water politics define daily logistics beyond winter pleasant-season appeal.",
       sources: [
       { label: "SMN — Hermosillo", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -2634,21 +2634,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["desert-industry workers"], travelFit: ["Bahía de Kino day trips", "desert ecotours"],
     whoWouldLove: "Dry-heat devotees.", whoMightNot: "Anyone who needs summer air conditioning to be optional.",
     confidence: "high",
-                            deepSections: [
+    deepSections: [
       {
-        id: "hermosillo-mx-mechanism",
-        title: "Tropical Wet-Dry mechanics",
+        id: "hermosillo-sonoran-heat",
+        title: "Sonoran desert basin and monsoon bombs",
         paragraphs: [
-          "Hermosillo sits where central Sonoran desert basin; low latitude and minimal maritime influence. BWh normals and roughly 406 mm/yr frame the regional baseline, but Continental extremity and Monsoon convective lift re-weight what any single forecast means block by block.",
-          "Gulf of California proximity adds a humidity gradient westward toward coastal Bahía de Kino without fully maritime conditions in town. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Hermosillo sits at 200 m in the central Sonoran desert basin — BWh core desert with roughly 406 mm annually, one of North America's hottest state capitals where afternoon heat indices stay triple-digit for months.",
+          "Gulf of California proximity adds a humidity gradient westward toward Bahía de Kino without fully maritime conditions in town; July–August monsoon arrives as isolated convective bombs with virga, dust, and localized downpours.",
         ],
       },
       {
-        id: "hermosillo-mx-field-read",
-        title: "On-the-ground read",
+        id: "hermosillo-water-heat",
+        title: "Extreme heat and agricultural water stress",
         paragraphs: [
-          "One of North America's hottest state capitals — dry heat, intense sun, and a summer monsoon that arrives as isolated convective bombs. Soils read as desert alluvium and sand with excessive drainage (pH 7.5–8.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Drought registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Date palm, Citrus with irrigation, Vegetables under drip. Anyone who needs summer air conditioning to be optional should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Very-high extreme-heat and high drought risk registers here — verify cooling costs and water access before committing. Desert alluvium supports date palm, drip-irrigated citrus, and vegetables — dry farming fails.",
+          "Anyone who needs optional summer air conditioning should spend a July here before treating pleasant winters as balance for 40°C afternoons — Colorado River-linked policy debates ripple culturally across Sonora.",
         ],
       },
     ],
@@ -2699,7 +2699,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["hospitality retirees", "remote workers"], travelFit: ["whale watching", "beaches"],
     whoWouldLove: "Tropical beach life with mountain backdrop.", whoMightNot: "Dry-climate seekers; hurricane-anxious buyers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "puerto-vallarta-mx-mechanism",
         title: "Tropical Isothermal Coast mechanics",
@@ -2764,7 +2764,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "mazatlan-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2829,7 +2829,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
-                            deepSections: [
+                                deepSections: [
       {
         id: "campeche-mx-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -2884,7 +2884,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for anyone who cannot tolerate humidity.",
+      note: "Palenque tourism housing at mid-band; IMSS Palenque and Villahermosa specialists anchor care — 1,860 mm annual rain, jungle humidity, and arroyo flash-flood risk define daily logistics beyond Maya ruins appeal.",
       sources: [
       { label: "SMN — Palenque", url: "https://smn.conagua.gob.mx/es/" },
       { label: "INECC — Chiapas biodiversity notes", url: "https://www.gob.mx/inecc" },
@@ -2893,21 +2893,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["archaeology guides", "ecotourism"], travelFit: ["ruins", "jungle trails"],
     whoWouldLove: "Jungle climate with Maya history.", whoMightNot: "Anyone who cannot tolerate humidity.",
     confidence: "moderate",
-                            deepSections: [
+    deepSections: [
       {
-        id: "palenque-mx-mechanism",
-        title: "Cloud Forest mechanics",
+        id: "palenque-jungle-convection",
+        title: "Lacandon jungle edge and afternoon convection",
         paragraphs: [
-          "Palenque sits where northern Chiapas foothills; transition from lowland jungle to cooler uplands toward San Cristóbal. Af normals and roughly 1860 mm/yr frame the regional baseline, but Tropical convective regime and Orographic lift re-weight what any single forecast means block by block.",
-          "Archaeological site + reserve microclimate attracts swallows and parrots; canopy buffers radiation below treeline. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Palenque sits at 150 m on the northern Chiapas foothills where lowland jungle transitions toward cooler uplands — Af tropical moist forest with roughly 1,860 mm annually and explosive afternoon convection over rainforest canopy.",
+          "Archaeological site and reserve microclimate attracts swallows and parrots; canopy buffers radiation below treeline while mornings stay misty and afternoons turn steamy with thunder.",
         ],
       },
       {
-        id: "palenque-mx-field-read",
-        title: "On-the-ground read",
+        id: "palenque-humidity-flood",
+        title: "Humidity, ruins tourism, and flash floods",
         paragraphs: [
-          "Hot, humid gateway to Maya ruins where afternoon convection builds explosively over rainforest. Soils read as deep tropical alfisol with moderate drainage (pH 5.5–6.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cacao, Banana, Tropical spices. Anyone who cannot tolerate humidity should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Deep tropical alfisol supports cacao, banana, and tropical spices at high growability — humidity never fully disappears at this elevation. Elevated flood and landslide risk registers when monsoon rains swell rivers and arroyos.",
+          "Humidity-intolerant relocators should walk jungle trails in April before committing — archaeology guides who accept steamy afternoons get Maya ruins and reserve ecology at the doorstep.",
         ],
       },
     ],
@@ -3248,7 +3248,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 46,
-      note: "A poor fit for people who want lush wet greenery year-round.",
+      note: "Durango highland housing at mid-band; IMSS Durango anchors care — 1,880 m basin inversions, dry-season dust, and Sierra Madre monsoon storms define daily logistics beyond cool-night plateau appeal.",
       sources: [
       { label: "SMN — Durango normals", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
       { label: "WorldClim 2.1 — Durango highland gridded climate", url: "https://www.worldclim.org/" },
@@ -3257,21 +3257,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["dry-climate seekers", "regional professionals"], travelFit: ["Sierra Madre road trips", "historic center"],
     whoWouldLove: "People who like highland sun, cool nights, and monsoon-season drama without lowland humidity.", whoMightNot: "People who want lush wet greenery year-round.",
     confidence: "moderate",
-                            deepSections: [
+    deepSections: [
       {
-        id: "durango-mx-mechanism",
-        title: "Monsoon-Edge Zone mechanics",
+        id: "durango-highland-basin",
+        title: "High interior basin and monsoon edge",
         paragraphs: [
-          "Durango sits where high interior basin east of the Sierra Madre Occidental, with dry plateau air and summer monsoon influence. At roughly 1880 m, elevation bands matter as much as latitude. BSk/Cwb transition normals and roughly 538 mm/yr frame the regional baseline, but Monsoon convective lift and Elevation lapse rate re-weight what any single forecast means block by block.",
-          "Interior elevation and monsoon-edge exposure create a highland dry climate with stronger summer thunderstorm seasonality than the Bajío. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Durango sits at 1,880 m in a broad interior basin east of the Sierra Madre Occidental — BSk/Cwb transition with roughly 538 mm annually, dry plateau air with crisp nights and bright dusty dry seasons.",
+          "Summer monsoon storms build off the Sierra Madre Occidental with stronger thunderstorm seasonality than the Bajío; basin geometry produces stagnant winter mornings and strong day-night swings.",
         ],
       },
       {
-        id: "durango-mx-field-read",
-        title: "On-the-ground read",
+        id: "durango-drought-monsoon",
+        title: "Drought volatility and highland gardening",
         paragraphs: [
-          "A dry highland capital where Sierra Madre monsoon storms interrupt bright, cool-night plateau weather. Soils read as alluvial clay loam and volcanic-influenced upland soils with moderate drainage (pH 6.8–8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Drought registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Beans, Maize, Apples in nearby highlands. People who want lush wet greenery year-round should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Alluvial clay loam supports beans, maize, agave, and drought-tolerant gardens — elevated drought risk registers across the plateau. Sierra-side gradients around the city run wetter and cooler than urban normals suggest.",
+          "Relocators wanting lush wet greenery year-round should confirm they accept dry-season dust and monsoon drama — highland sun and cool nights without lowland humidity define Durango's appeal.",
         ],
       },
     ],

@@ -69,7 +69,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-                            deepSections: [
+                                deepSections: [
       {
         id: "mentone-al-mechanism",
         title: "Thermal Belt mechanics",
@@ -153,7 +153,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "norfolk-ct-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -237,7 +237,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "lewes-de-mechanism",
         title: "Lake-Moderated mechanics",
@@ -321,7 +321,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "clayton-ga-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -405,7 +405,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-town lovers", "remote workers"], travelFit: ["Mississippi Palisades", "architecture"],
     whoWouldLove: "Midwest topography fans who still want seasons.", whoMightNot: "Those avoiding cold winters or steep drives.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "galena-il-mechanism",
         title: "Driftless Relief Pocket mechanics",
@@ -489,7 +489,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "beverly-shores-in-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -573,7 +573,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "oakland-md-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -657,7 +657,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "pittsfield-ma-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -740,7 +740,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "ocean-springs-ms-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -822,7 +822,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "eminence-mo-mechanism",
         title: "Limestone / Karst Pocket mechanics",
@@ -1076,7 +1076,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "geneva-on-the-lake-oh-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -1159,7 +1159,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "broken-bow-ok-mechanism",
         title: "Piedmont Transition mechanics",
@@ -1201,17 +1201,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Narrow annual temperature range for the latitude — fog, wind, and moderate summers that feel more maritime than mainland Rhode Island.",
     summaryImmersive: "Block Island is small enough that every road is within a mile of water. That geometry means marine air dominates; heat waves are muted relative to Hartford or even Providence. Winter storms are oceanic and windy; summer is mild with persistent humidity. The island’s conservation lands preserve a rare Atlantic coastal grassland–heath mosaic tuned to salt spray.",
     whyDistinct: "Complete island exposure + low relief = maximized maritime moderation within southern New England — a classic case study in coastal boundary-layer climate.",
-                experience: {
-      feel: "Block Island is small enough that every road is within a mile of water. That geometry means marine air dominates; heat waves are muted relative to Hartford or even Providence. Winter storms are oceanic and windy; summer is mild with persistent humidity.",
+    experience: {
+      feel: "Block Island feels like complete maritime exposure — every road within a mile of water, heat waves muted versus Hartford, oceanic winter storms, and a narrow annual temperature range that feels more Atlantic than mainland Rhode Island.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 5°C, nights near -1°C — rain is frequent and can be heavy. Coastal surge and wind events belong in the planning stack.",
-        spring: "Green-up and storms — afternoons near 11.3°C, nights near 5.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1180 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Cool summer by latitude — afternoons near 23°C, nights near 17°C — showers pass through regularly. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 15.3°C, nights near 9°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
+        winter: "Oceanic cold — afternoons near 5°C, nights near −1°C, nor'easter wind and coastal surge on the planning stack, and year-round population near 1,000 keeping services minimal.",
+        spring: "Slow green-up — afternoons climbing through 11°C, migratory bird traffic peaking, and ferry schedules still the logistics backbone.",
+        summer: "Mild and humid — highs near 23°C, nights near 17°C sticky with persistent moisture, and heat muted relative to Providence only 80 km north.",
+        autumn: "Hurricane watch — highs near 15°C, tropical recurvature tracks, and seasonal residents departing as ferry frequency tightens.",
       },
-      travelerFit: "Visitors come for bluffs and biking.",
-      residentFit: "It rewards cool-summer island people who tolerate ferry logistics — especially seasonal residents — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are coastal and sea-level pressure and flood and surge risk. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Mohegan Bluffs, biking, and cool-summer island life — plan groceries and care around ferry schedules.",
+      residentFit: "It rewards seasonal residents and fishermen who accept ferry-only access, expensive housing, and limited specialty services.",
+      texture: "Outer-island tradeoff — weigh coastal surge, tight housing, and ferry logistics against maximized maritime moderation and conservation-landscape beauty.",
     },
     climate: {
       tempHighC: [4, 4, 7, 11, 16, 21, 24, 24, 21, 15, 10, 7],
@@ -1241,21 +1241,21 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["seasonal residents", "fishermen"], travelFit: ["bluffs", "biking"],
     whoWouldLove: "Cool-summer island people who tolerate ferry logistics.", whoMightNot: "Heat seekers; budget shoppers; anyone unwilling to plan groceries and care around the ferry schedule.",
     confidence: "high",
-                            deepSections: [
+    deepSections: [
       {
-        id: "block-island-ri-mechanism",
-        title: "Hyper-Maritime mechanics",
+        id: "block-island-maritime",
+        title: "Complete island maritime moderation",
         paragraphs: [
-          "Block Island sits where outer-island microclimate in Block Island Sound; persistent maritime influence and limited landmass. Cfb normals and roughly 1180 mm/yr frame the regional baseline, but Marine layer and Diurnal sea breeze re-weight what any single forecast means block by block.",
-          "Complete island exposure + low relief = maximized maritime moderation within southern New England — a classic case study in coastal boundary-layer climate. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Block Island sits in Block Island Sound with persistent maritime influence across a small landmass — Cfb normals with roughly 1,180 mm annually and a narrow annual temperature range for 41° north latitude.",
+          "Every road lies within a mile of water, maximizing marine air dominance; heat waves muted versus Hartford and Providence, winter storms oceanic and windy, summer mild with persistent humidity.",
         ],
       },
       {
-        id: "block-island-ri-field-read",
-        title: "On-the-ground read",
+        id: "block-island-ferry-access",
+        title: "Ferry logistics and coastal exposure",
         paragraphs: [
-          "Narrow annual temperature range for the latitude — fog, wind, and moderate summers that feel more maritime than mainland Rhode Island. Soils read as thin, sandy and peaty island soils with excessive drainage (pH 4.8–6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Beach plum, Salt-tolerant natives, Cool greens. Heat seekers; budget shoppers; anyone unwilling to plan groceries and care around the ferry schedule should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Thin sandy and peaty island soils support beach plum, salt-tolerant natives, and cool greens — tree crops struggle in wind exposure. High coastal exposure registers for surge and erosion; freshwater lens is finite.",
+          "Heat seekers and budget shoppers should confirm ferry-only access and year-round population near 1,000 before committing — seasonal residents who plan groceries and care around the schedule get maximized maritime moderation.",
         ],
       },
     ],

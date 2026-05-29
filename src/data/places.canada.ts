@@ -894,17 +894,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Aptly named — a rain-shadow pocket on mainland BC with ~30% more sun than Vancouver.",
     summaryImmersive: "The Sunshine Coast sits partially in the lee of Vancouver Island's spine, receiving noticeably more sun and less rain than the nearby mainland and the outer island coast. Mild winters, warm-ish summers by Pacific standards, and reliable shoulder seasons.",
     whyDistinct: "Vancouver Island's Beaufort Range casts a meaningful rain shadow on the mainland's adjacent coast.",
-                experience: {
-      feel: "The Sunshine Coast sits partially in the lee of Vancouver Island's spine, receiving noticeably more sun and less rain than the nearby mainland and the outer island coast. Mild winters, warm-ish summers by Pacific standards, and reliable shoulder seasons.",
+    experience: {
+      feel: "The Sunshine Coast feels like mainland BC's rain-shadow pocket — Vancouver Island's Beaufort Range blocking storms so Sechelt gets roughly 30% more sun than Vancouver, mild winters, and warm-ish Pacific summers without the full Gulf Islands ferry hop.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7°C, nights near 1.4°C — rain is frequent and can be heavy.",
-        spring: "Green-up and storms — afternoons near 13.6°C, nights near 5.2°C — showers pass through regularly. Green-up arrives against a wet 1245 mm annual backdrop.",
-        summer: "Cool summer by latitude — afternoons near 21.5°C, nights near 11.9°C — cool, changeable marine-influenced weather.",
-        autumn: "Shoulder season — afternoons near 14.3°C, nights near 6.8°C — rain is frequent and can be heavy.",
+        winter: "Mild and wet — afternoons near 7°C, nights near 1°C, and enough rain to green the Douglas-fir slopes while still brighter than Metro Vancouver most weeks.",
+        spring: "Shoulder awakening — afternoons climbing through the low teens, wildflowers on logged-over blocks, and the first dry windows that justify the coast's name.",
+        summer: "The payoff — highs near 22°C, marine layer mornings burning off, and long evenings on Sechelt Inlet before August smoke occasionally drifts from interior fires.",
+        autumn: "Crisp return — highs easing through the mid-teens, first storms returning, and harvest markets before winter ferry schedules tighten.",
       },
-      travelerFit: "Visitors come for Pacific shoulder-season.",
-      residentFit: "It rewards bC coastal dreamers — especially remote workers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — no single hazard dominates the picture. Ferry-linked Sunshine Coast housing runs below Metro Vancouver but still tight; Gibsons/Sechelt groceries and specialist care often mean a Vancouver-bound trip.",
+      travelerFit: "Visitors come for Pacific shoulder-season kayaking, Sechelt trails, and BC coastal life with more sun than Vancouver.",
+      residentFit: "It rewards BC coastal dreamers and remote workers who accept two-ferry logistics and Gibsons/Sechelt specialist trips to Vancouver.",
+      texture: "Ferry-linked coastal tradeoff — weigh access friction against rain-shadow mildness, moderate housing vs Metro Vancouver, and strong orchard growability.",
     },
     climate: { tempHighC: [6.6, 7.8, 10.3, 13.4, 17.1, 19.5, 22.4, 22.6, 19.6, 14.0, 9.2, 6.6], tempLowC: [1.3, 1.4, 2.8, 4.7, 8.0, 10.9, 12.4, 12.5, 10.1, 6.7, 3.6, 1.6], precipMm: [180, 135, 110, 75, 50, 40, 25, 30, 50, 130, 220, 200], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 1245, frostFreeDays: 220, hardinessZone: "8a", sunshinePct: [55, 58, 59, 67, 72, 79, 76, 76, 69, 76, 60, 54] },
     soil: { texture: "Sandy loam", drainage: "good", phRange: [5.6, 6.4], waterHolding: "moderate" },
@@ -925,21 +925,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "retirees"], travelFit: ["Pacific shoulder-season"],
     whoWouldLove: "BC coastal dreamers.", whoMightNot: "Those needing heat or urban services.",
     confidence: "moderate",
-                            deepSections: [
+    deepSections: [
       {
-        id: "sunshine-coast-bc-mechanism",
-        title: "Rain-Shadow Sanctuary mechanics",
+        id: "sunshine-coast-shadow",
+        title: "Vancouver Island rain shadow on the mainland coast",
         paragraphs: [
-          "Sunshine Coast sits where strait of Georgia coast, partially rain-shadowed by Vancouver Island's central range. Csb normals and roughly 1245 mm/yr frame the regional baseline, but Rain shadow and Marine layer re-weight what any single forecast means block by block.",
-          "Vancouver Island's Beaufort Range casts a meaningful rain shadow on the mainland's adjacent coast. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "The Sunshine Coast sits on the Strait of Georgia partially in the lee of Vancouver Island's Beaufort Range — Csb normals with roughly 1,245 mm annually, about 30% more sunshine than Vancouver and noticeably drier summers than the outer island coast.",
+          "Marine layer still moderates extremes; south-facing benches above Sechelt Inlet run sunnier and drier than north-aspect cedar slopes within a few kilometers.",
         ],
       },
       {
-        id: "sunshine-coast-bc-field-read",
-        title: "On-the-ground read",
+        id: "sunshine-coast-ferry",
+        title: "Ferry logistics and orchard growability",
         paragraphs: [
-          "Aptly named — a rain-shadow pocket on mainland BC with ~30% more sun than Vancouver. Soils read as sandy loam with good drainage (pH 5.6–6.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Apples, Pears, Grapes. Those needing heat or urban services should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy loam supports apples, pears, grapes, and Mediterranean herbs — summer irrigation matters on exposed blocks. Ferry-linked housing runs below Metro Vancouver but still tight; Gibsons and Sechelt groceries cover basics while specialists often mean a Vancouver-bound trip.",
+          "Those needing heat or urban services should confirm two-ferry access schedules before committing — remote workers who accept logistics get one of BC's brighter coastal microclimates.",
         ],
       },
     ],
@@ -1052,7 +1052,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulturalists", "orchardists"], travelFit: ["wine tours"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "summerland-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1179,7 +1179,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families"], travelFit: ["wildlife area", "orchards"],
     whoWouldLove: "Quiet Kootenay folk.", whoMightNot: "Urbanites.",
     confidence: "moderate",
-                            deepSections: [
+                                deepSections: [
       {
         id: "creston-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1248,7 +1248,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers", "orchardists", "retirees"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Sun-desiring Canadians.", whoMightNot: "Fire-averse.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "penticton-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -1281,17 +1281,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "The Thompson River's 'Canada's semi-desert' — sagebrush slopes, hot dry summers, and genuine four-season character.",
     summaryImmersive: "Kamloops sits at the confluence of the North and South Thompson rivers in the deep Coast-Mountains rain shadow. Annual precipitation averages under 300 mm. Summer afternoons push into the 33–36°C range; the hillsides are sagebrush, bunchgrass, and ponderosa pine. Winters are cold-sunny and drier than elsewhere at the latitude. It's Canada's most American-Southwest-feeling small city.",
     whyDistinct: "Double rain-shadow (Coast Range + southern Interior Plateau) produces one of Canada's most arid climates; river confluence concentrates settlement and farming.",
-                experience: {
-      feel: "Kamloops sits at the confluence of the North and South Thompson rivers in the deep Coast-Mountains rain shadow. Annual precipitation averages under 300 mm. Summer afternoons push into the 33–36°C range; the hillsides are sagebrush, bunchgrass, and ponderosa pine.",
+    experience: {
+      feel: "Kamloops feels like Canada's semi-desert city — Thompson River confluence in the deep Coast Mountains rain shadow, sagebrush hillsides, summer afternoons pushing 33–36°C, and under 300 mm of annual precipitation that would look at home in the American Southwest.",
       seasons: {
-        winter: "Cold and snowy — afternoons near 0.6°C, nights near -6.8°C — snow is a regular part of the picture.",
-        spring: "Spring opens — afternoons near 15.8°C, nights near 2.5°C — weather stays moderate and changeable.",
-        summer: "Warm season peak — afternoons near 28.2°C, nights near 12.2°C — weather stays moderate and changeable. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Shoulder season — afternoons near 13.8°C, nights near 2.6°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
+        winter: "Cold and sunny — afternoons near 1°C, nights near −7°C, dry valley snow, and inversions pooling cold in the river bottom while ridgetops stay clear.",
+        spring: "Fast green-up — afternoons climbing through 16°C, first hiking windows on grassland benches, and fire-season awareness building by May.",
+        summer: "Hot and dry — highs near 28°C, afternoons above 40°C possible in heat-dome years like 2021, and wildfire smoke the defining summer wildcard.",
+        autumn: "Golden grassland — highs near 14°C, cottonwoods along the rivers, and smoke sometimes lingering into October before winter returns.",
       },
-      travelerFit: "Visitors come for desert hiking and fly-fishing.",
-      residentFit: "It rewards dry-climate-loving British Columbians — especially sun-seeking Canadians — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and extreme summer heat. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for desert hiking, fly-fishing, and a textbook interior rain-shadow climate an hour from Okanagan wine country.",
+      residentFit: "It rewards dry-climate-loving British Columbians who accept high wildfire smoke exposure and expensive housing relative to interior norms.",
+      texture: "Interior plateau tradeoff — weigh extreme summer heat, 2021-scale heat domes, and fire smoke against genuine four-season sunshine and low precipitation.",
     },
     climate: { tempHighC: [-0.6, 3.4, 10.1, 16.1, 21.1, 25.4, 29.8, 29.4, 22.8, 13.6, 5.1, -0.9], tempLowC: [-7.8, -5.4, -1.6, 2.4, 6.8, 10.6, 13.2, 12.8, 8.1, 2.4, -2.8, -7.2], precipMm: [26, 18, 14, 12, 28, 36, 32, 28, 24, 18, 22, 28], snowCm: [22, 10, 4, 0, 0, 0, 0, 0, 0, 0, 8, 22], humidity: [78, 68, 56, 46, 44, 44, 38, 40, 48, 60, 74, 80], sunshinePct: [28, 42, 56, 62, 66, 68, 78, 76, 66, 48, 30, 24], annualPrecipMm: 286, frostFreeDays: 160, hardinessZone: "6b" },
     soil: { texture: "Silt loam on glacio-lacustrine", drainage: "good", phRange: [7.0, 7.8], waterHolding: "moderate" },
@@ -1303,7 +1303,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Housing runs above regional medians; A poor fit for fire-smoke-sensitive.",
+      note: "Kamloops housing runs above regional medians; RIH and YKA anchor care — 2021 heat-dome extremes, high wildfire smoke, and sagebrush-steppe drought define daily logistics beyond interior sunshine appeal.",
       sources: [
       { label: "ECCC — Kamloops AP", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1313,21 +1313,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seeking Canadians"], travelFit: ["desert hiking", "fly-fishing"],
     whoWouldLove: "Dry-climate-loving British Columbians.", whoMightNot: "Fire-smoke-sensitive.",
     confidence: "high",
-                            deepSections: [
+    deepSections: [
       {
-        id: "kamloops-bc-mechanism",
-        title: "Rain-Shadow Sanctuary mechanics",
+        id: "kamloops-interior-desert",
+        title: "Double rain shadow on the Thompson Plateau",
         paragraphs: [
-          "Kamloops sits where confluence of Thompson rivers in the BC Interior Plateau — one of Canada's driest climates. BSk normals and roughly 286 mm/yr frame the regional baseline, but Rain shadow and River-valley moderation re-weight what any single forecast means block by block.",
-          "Double rain-shadow (Coast Range + southern Interior Plateau) produces one of Canada's most arid climates; river confluence concentrates settlement and farming. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Kamloops sits at the North and South Thompson confluence in one of Canada's driest climates — BSk normals with roughly 286 mm annually, double rain-shadow position behind the Coast Range and southern Interior Plateau geometry.",
+          "Sagebrush, bunchgrass, and ponderosa pine cover hillsides that push summer afternoons into the 33–36°C range; river confluence moderates immediate riparian blocks while bench-top parcels run hotter and drier.",
         ],
       },
       {
-        id: "kamloops-bc-field-read",
-        title: "On-the-ground read",
+        id: "kamloops-fire-heat",
+        title: "Heat domes and wildfire smoke",
         paragraphs: [
-          "The Thompson River's 'Canada's semi-desert' — sagebrush slopes, hot dry summers, and genuine four-season character. Soils read as silt loam on glacio-lacustrine with good drainage (pH 7–7.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy fruit, Tomatoes (with water), Hay. Fire-smoke-sensitive should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High wildfire, smoke, and extreme-heat risk registers here — 2021 hit 47°C; verify evacuation routes, air filtration, and cooling plans before committing. Silt loam on glacio-lacustrine soils supports hardy fruit and hay with irrigation.",
+          "Fire-smoke-sensitive relocators should spend a full August here before treating dry winters as balance for plateau fire seasons — housing runs above regional medians despite the semi-desert setting.",
         ],
       },
     ],
@@ -1649,7 +1649,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hyper-maritime devotees"], travelFit: ["Skeena fishing", "BC Ferries terminus"],
     whoWouldLove: "Those who want to live in a coastal cloud.", whoMightNot: "Sun-needing humans.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "prince-rupert-bc-mechanism",
         title: "Hyper-Maritime mechanics",
@@ -1851,7 +1851,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["greenhouse farmers"], travelFit: ["Point Pelee birding"],
     whoWouldLove: "Those drawn to Canada's longest growing season.", whoMightNot: "Mountain-lovers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "leamington-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -1915,7 +1915,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["boreal families"], travelFit: ["Sleeping Giant Park"],
     whoWouldLove: "Boreal-lake devotees.", whoMightNot: "Heat-needing.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "thunder-bay-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2333,7 +2333,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Cool-climate wine people.", whoMightNot: "Those wanting mild winters.",
     confidence: "moderate",
-                            deepSections: [
+                                deepSections: [
       {
         id: "prince-edward-co-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2406,7 +2406,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "iqaluit-nu-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2477,7 +2477,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "inuvik-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2788,17 +2788,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Wet Coast winters, mild summers, and notorious Squamish Valley outflow winds when interior high pressure builds.",
     summaryImmersive: "Squamish is where the Sea-to-Sky Highway meets the ocean: summer is warm by Vancouver standards but still maritime; winter brings heavy rain and occasional valley snow when Arctic air damps against the Strait. The eponymous wind races south when pressure gradients align — a celebrated kite- and wing-surfing engine.",
     whyDistinct: "Fjord head + narrow valley alignment creates focused gap winds and cloud transitions unlike open coast or interior.",
-                experience: {
-      feel: "Squamish is where the Sea-to-Sky Highway meets the ocean: summer is warm by Vancouver standards but still maritime; winter brings heavy rain and occasional valley snow when Arctic air damps against the Strait.",
+    experience: {
+      feel: "Squamish feels like Howe Sound fjord country at the Sea-to-Sky hinge — wet Coast Range winters with 2,155 mm, summer warm by Vancouver standards, and the eponymous outflow wind racing south when interior high pressure builds over the Fraser.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 5.7°C, nights near 0.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 13.3°C, nights near 5.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 2155 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Cool summer by latitude — afternoons near 22°C, nights near 12.3°C — showers pass through regularly. Wildfire smoke can settle in for stretches.",
-        autumn: "Shoulder season — afternoons near 13.7°C, nights near 6°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Wet and mild — afternoons near 6°C, nights near 0°C, heavy rain on the Chief's granite walls, and occasional valley snow when Arctic air dams against the Strait.",
+        spring: "Green and swollen — afternoons climbing through 13°C, Squamish River flood awareness, and Stawamus Chief climbing before tourist season peaks.",
+        summer: "Maritime warm — highs near 23°C, kite and wing-surfing on the eponymous wind days, and wildfire smoke settling in from interior BC on bad years.",
+        autumn: "Storm return — highs easing through the teens, first atmospheric rivers, and landslide diligence on saturated slopes above the highway.",
       },
-      travelerFit: "Visitors come for Stawamus Chief and Sea to Sky Gondola.",
-      residentFit: "It rewards mountain–ocean people who commute to Vancouver occasionally — especially climbers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at sea level — the main things to weigh are flood and surge risk and smoke-season air quality. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Stawamus Chief, Sea to Sky Gondola, and wind-sport culture where fjord meets Coast Range.",
+      residentFit: "It rewards climbers and mountain-ocean commuters who accept Vancouver-adjacent housing costs and flood risk on the river flats.",
+      texture: "Fjord-head tradeoff — weigh 2,155 mm winter rain, elevated flood and landslide risk, and smoke intrusions against mild summers and world-class climbing access.",
     },
     climate: { tempHighC: [5, 7, 10, 13, 17, 20, 23, 23, 19, 14, 8, 5], tempLowC: [0, 1, 3, 5, 8, 11, 13, 13, 10, 6, 2, 0], precipMm: [280, 220, 200, 150, 120, 95, 60, 70, 110, 220, 320, 310], humidity: [82, 80, 78, 76, 76, 78, 80, 82, 82, 82, 84, 84], annualPrecipMm: 2155, frostFreeDays: 240, hardinessZone: "8b", sunshinePct: [34, 36, 36, 42, 35, 40, 37, 37, 32, 41, 37, 32] },
     soil: { texture: "Alluvium and glacial outwash near river; thin podzols upslope", drainage: "good", phRange: [5.2, 6.5], waterHolding: "moderate" },
@@ -2810,7 +2810,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Housing runs above regional medians; A poor fit for budget renters; sun-belt seekers.",
+      note: "Squamish Sea-to-Sky housing runs above regional medians; Squamish General Hospital anchors local care — 2,155 mm winter rain, Squamish Valley outflow winds, and river-flood risk on flats define daily logistics beyond Chief climbing appeal.",
       sources: [
       { label: "ECCC — Squamish Airport", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2820,21 +2820,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["climbers", "wind-sport athletes"], travelFit: ["Stawamus Chief", "Sea to Sky Gondola"],
     whoWouldLove: "Mountain–ocean people who commute to Vancouver occasionally.", whoMightNot: "Budget renters; sun-belt seekers.",
     confidence: "high",
-                            deepSections: [
+    deepSections: [
       {
-        id: "squamish-bc-mechanism",
-        title: "Fjord / Inlet Coast mechanics",
+        id: "squamish-fjord-wind",
+        title: "Howe Sound fjord and gap-wind corridor",
         paragraphs: [
-          "Squamish sits where head of Howe Sound fjord where Squamish River fresh water meets Georgia Strait marine air. Cfb normals and roughly 2155 mm/yr frame the regional baseline, but Marine layer and Orographic lift re-weight what any single forecast means block by block.",
-          "Fjord head + narrow valley alignment creates focused gap winds and cloud transitions unlike open coast or interior. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Squamish sits at the head of Howe Sound where Squamish River fresh water meets Georgia Strait marine air — Cfb normals with roughly 2,155 mm annually and focused gap winds when interior high pressure builds over the Fraser Valley.",
+          "Narrow valley alignment creates cloud transitions and wind events unlike open coast or Vancouver proper; summer runs warm by Pacific Northwest standards while winter delivers heavy Coast Range rain.",
         ],
       },
       {
-        id: "squamish-bc-field-read",
-        title: "On-the-ground read",
+        id: "squamish-flood-climb",
+        title: "River flood risk and climbing economy",
         paragraphs: [
-          "Wet Coast winters, mild summers, and notorious Squamish Valley outflow winds when interior high pressure builds. Soils read as alluvium and glacial outwash near river; thin podzols upslope with good drainage (pH 5.2–6.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cool brassicas, Berries, Hemlock-shade natives. Budget renters; sun-belt seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Alluvium and glacial outwash near the river supports cool brassicas and berries; elevated flood and landslide risk registers on saturated slopes and river flats — verify parcel elevation before committing.",
+          "Budget renters and sun-belt seekers should confirm Vancouver-commute math and winter rain tolerance — climbers who accept wet winters get Stawamus Chief and Sea to Sky Gondola at the doorstep.",
         ],
       },
     ],
@@ -3025,7 +3025,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "charlottetown-pei-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -3239,7 +3239,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
-                            deepSections: [
+                                deepSections: [
       {
         id: "morden-mb-mechanism",
         title: "Orchard Valley mechanics",
@@ -3304,7 +3304,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
-                            deepSections: [
+                                deepSections: [
       {
         id: "sutton-qc-mechanism",
         title: "Piedmont Transition mechanics",

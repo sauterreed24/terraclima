@@ -106,17 +106,17 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "World-famous wine valley where gap flow and fog delay ripening — Cabernet country built on nightly cooling.",
     summaryImmersive: "The valley floor heats by day; cool air drains from the Petaluma Gap and marine layer spills east, wrapping benchlands in fog until mid-morning. Bench elevation differences of only tens of meters reorder frost risk and hang time — the entire AVA system is a map of microclimate.",
     whyDistinct: "Complex terrain channels + fog penetration + inland heat produce one of the steepest wine mesoclimates in the New World in a narrow corridor.",
-                experience: {
-      feel: "Napa Valley Floor — the valley floor heats by day; cool air drains from the Petaluma Gap and marine layer spills east, wrapping benchlands in fog until mid-morning. Bench elevation differences of only tens of meters reorder frost risk and hang time — the entire AVA system is a map of microclimate.",
+    experience: {
+      feel: "Napa feels like Cabernet country built on nightly cooling — valley floor heats by day, Petaluma Gap marine air and fog spill east wrapping benchlands until mid-morning, and elevation differences of tens of meters reorder frost risk across the AVA map.",
       seasons: {
-        winter: "Mild and workable — afternoons near 14.7°C, nights near 4.3°C — rain is frequent and can be heavy.",
-        spring: "Spring opens — afternoons near 21°C, nights near 7.3°C — showers pass through regularly.",
-        summer: "Warm season peak — afternoons near 29.3°C, nights near 11.7°C — skies stay relentlessly clear and dry. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 23.3°C, nights near 8.3°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
+        winter: "Mild and workable — afternoons near 15°C, nights near 4°C, rain replenishing aquifers, and pruning season in full swing across valley-floor vineyards.",
+        spring: "Frost watch — afternoons climbing through 21°C, bud break on benches, and wind machines standing ready on the coldest April nights.",
+        summer: "Dry heat — highs near 29°C, relentlessly clear skies, harvest stress building, and wildfire smoke drifting from surrounding ranges on bad years.",
+        autumn: "Crush season — highs near 23°C, golden vines, the year's best tourism weather, and fire smoke sometimes lingering into October.",
       },
-      travelerFit: "Visitors come for wine tasting and hot-air balloons.",
-      residentFit: "It rewards viticulture and Mediterranean gardening devotees — especially wine industry — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and long-run drought. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for wine tasting and hot-air balloons — harvest season rewards early-morning scheduling before valley heat builds.",
+      residentFit: "It rewards viticulture devotees and Mediterranean gardeners who accept Napa housing costs, water-right politics, and fire-smoke seasons.",
+      texture: "Wine-valley tradeoff — weigh high wildfire smoke, drought, and expensive housing against world-class growability and mild winters.",
     },
     climate: {
       tempHighC: [14, 16, 18, 21, 24, 28, 30, 30, 28, 24, 18, 14],
@@ -137,7 +137,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Housing runs above regional medians; A poor fit for budget shoppers; fire-smoke sensitive.",
+      note: "Napa Valley housing runs well above regional medians; Queen of the Valley Medical Center anchors care — wildfire smoke, water-right stress, and valley-floor heat above 29°C define daily logistics beyond Cabernet-country appeal.",
       sources: [
       { label: "NOAA — Napa County AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Napa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -147,21 +147,21 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["wine industry", "retirees"], travelFit: ["wine tasting", "hot-air balloons"],
     whoWouldLove: "Viticulture and Mediterranean gardening devotees.", whoMightNot: "Budget shoppers; fire-smoke sensitive.",
     confidence: "high",
-                            deepSections: [
+    deepSections: [
       {
-        id: "napa-ca-mechanism",
-        title: "Mediterranean Pocket mechanics",
+        id: "napa-gap-fog",
+        title: "Petaluma Gap and fog penetration",
         paragraphs: [
-          "Napa Valley Floor sits where north-south alluvial trough between the Mayacamas and Vaca ranges; cool marine air intrudes through Petaluma Gap. Csa normals and roughly 603 mm/yr frame the regional baseline, but Gap winds and Marine layer re-weight what any single forecast means block by block.",
-          "Complex terrain channels + fog penetration + inland heat produce one of the steepest wine mesoclimates in the New World in a narrow corridor. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Napa Valley sits in a north-south alluvial trough between the Mayacamas and Vaca ranges — Csa Mediterranean with roughly 603 mm annually, but cool marine air intrudes through the Petaluma Gap and wraps benchlands in fog until mid-morning.",
+          "Complex terrain channels produce one of the steepest wine mesoclimates in the New World — bench elevation differences of tens of meters reorder frost risk, hang time, and ripening within a narrow corridor.",
         ],
       },
       {
-        id: "napa-ca-field-read",
-        title: "On-the-ground read",
+        id: "napa-fire-water",
+        title: "Wildfire smoke and water rights",
         paragraphs: [
-          "World-famous wine valley where gap flow and fog delay ripening — Cabernet country built on nightly cooling. Soils read as alluvial gravel and volcanic fans with good drainage (pH 5.8–6.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Wine grapes, Olives, Stone fruit. Budget shoppers; fire-smoke sensitive should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High wildfire and drought risk registers here — verify smoke exposure, irrigation access, and insurance before committing. Alluvial gravel and volcanic fans support wine grapes, olives, and stone fruit at world-class growability scores.",
+          "Budget shoppers and fire-smoke-sensitive relocators should confirm water-right status and spend a full September here before treating mild winters as balance for valley heat and fire seasons.",
         ],
       },
     ],
@@ -187,17 +187,17 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Desert resort climate famous for winter sun — summer heat moderated slightly by elevation vs the Imperial Valley floor.",
     summaryImmersive: "Palm Springs sits in the venturi of the San Gorgonio Pass where pressure gradients translate into strong winds; winter attracts snowbirds for reliable warmth; summer pushes human activity into pools and evenings. Palm oases exploit groundwater; the surrounding desert is hyperarid.",
     whyDistinct: "Pass wind regime + mountain backdrop + irrigation oasis — a recreational microclimate layered on extreme desert.",
-                experience: {
-      feel: "Palm Springs sits in the venturi of the San Gorgonio Pass where pressure gradients translate into strong winds; winter attracts snowbirds for reliable warmth; summer pushes human activity into pools and evenings. Palm oases exploit groundwater; the surrounding desert is hyperarid.",
+    experience: {
+      feel: "Palm Springs feels like a Coachella Valley wind corridor oasis — San Gorgonio Pass venturi winds, San Jacinto massif rising 3,000 m to the west, snowbird winter sun, and summer that pushes all human activity into pools and evenings above 43°C.",
       seasons: {
-        winter: "Warm winter window — afternoons near 22.3°C, nights near 9.3°C — weather stays moderate and changeable.",
-        spring: "Heating up fast — afternoons near 32.3°C, nights near 17.3°C — skies stay relentlessly clear and dry.",
-        summer: "Peak desert heat — afternoons near 43°C, nights near 26.7°C — skies stay relentlessly clear and dry. Midday outdoor life often shifts to dawn and dusk. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Shoulder season — afternoons near 33.3°C, nights near 17.7°C — skies stay relentlessly clear and dry. Fire season lingers into shoulder months.",
+        winter: "Snowbird season — afternoons near 22°C, nights near 9°C, Modernism Week crowds, and the reliable warmth that built the resort economy.",
+        spring: "Heating fast — afternoons climbing through 32°C, desert wildflowers on Joshua Tree day trips, and wind events in the pass on pressure-gradient days.",
+        summer: "Extreme desert — highs near 43°C, nights near 27°C, midday life impossible without shade, and pool culture as survival strategy.",
+        autumn: "Slow cool — highs near 33°C easing toward winter, fire season on surrounding slopes, and the second tourism window before heat returns.",
       },
-      travelerFit: "Visitors come for modernism week and Joshua Tree day trips.",
-      residentFit: "It rewards dry heat and winter sun seekers — especially retirees — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place — the main things to weigh are extreme summer heat and long-run drought. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Modernism Week, Joshua Tree day trips, and winter sun — summer demands dawn-and-dusk scheduling.",
+      residentFit: "It rewards dry-heat retirees and hospitality workers who accept extreme summer heat and Coachella Valley drought pressure.",
+      texture: "Desert resort tradeoff — weigh very-high summer heat, high drought, and expensive housing against legendary winter sunshine and mountain backdrop.",
     },
     climate: {
       tempHighC: [22, 24, 28, 32, 37, 42, 44, 43, 40, 33, 27, 21],
@@ -218,7 +218,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 70,
       socialStress: 40,
       accessFriction: 38,
-      note: "Housing runs above regional medians; A poor fit for summer heat–sensitive visitors.",
+      note: "Palm Springs resort housing runs above regional medians; Desert Regional Medical Center anchors care — summer highs above 43°C, San Gorgonio Pass wind events, and Colorado River-linked drought define daily logistics beyond snowbird appeal.",
       sources: [
       { label: "NOAA — Palm Springs", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Palm Springs", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -228,21 +228,21 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "hospitality"], travelFit: ["modernism week", "Joshua Tree day trips"],
     whoWouldLove: "Dry heat and winter sun seekers.", whoMightNot: "Summer heat–sensitive visitors.",
     confidence: "high",
-                            deepSections: [
+    deepSections: [
       {
-        id: "palm-springs-ca-mechanism",
-        title: "High-Desert Escape mechanics",
+        id: "palm-springs-pass-wind",
+        title: "San Gorgonio Pass venturi and desert oasis",
         paragraphs: [
-          "Palm Springs sits where coachella Valley wind corridor north of the Salton Sea; San Jacinto massif rises >3000 m to the west. BWh normals and roughly 122 mm/yr frame the regional baseline, but Gap winds and Rain shadow re-weight what any single forecast means block by block.",
-          "Pass wind regime + mountain backdrop + irrigation oasis — a recreational microclimate layered on extreme desert. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Palm Springs sits in the Coachella Valley wind corridor at 146 m where San Gorgonio Pass channels pressure gradients into strong winds — BWh hyperarid with roughly 122 mm annually, slightly cooler than Imperial Valley floor thanks to elevation.",
+          "San Jacinto massif rises more than 3,000 m to the west; irrigated palm oases exploit groundwater while surrounding desert wash stays bone-dry — a recreational microclimate layered on extreme desert.",
         ],
       },
       {
-        id: "palm-springs-ca-field-read",
-        title: "On-the-ground read",
+        id: "palm-springs-heat-drought",
+        title: "Summer heat and water stress",
         paragraphs: [
-          "Desert resort climate famous for winter sun — summer heat moderated slightly by elevation vs the Imperial Valley floor. Soils read as sandy desert wash and blown sand with excessive drainage (pH 7.5–8.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Date palms, Citrus, Desert natives. Summer heat–sensitive visitors should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Very-high extreme-heat and high drought risk registers here — verify cooling costs, water access, and wildfire exposure before committing. Sandy desert wash supports date palms, citrus, and desert natives with drip irrigation.",
+          "Summer heat-sensitive visitors should spend a July week here before treating winter snowbird appeal as balance for 43°C afternoons — housing runs above regional medians despite the desert setting.",
         ],
       },
     ],
@@ -390,7 +390,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "second-home owners"], travelFit: ["Everglades", "beaches"],
     whoWouldLove: "Gulf-coast warmth without Atlantic surf culture.", whoMightNot: "Hurricane-averse; flood-risk skeptics.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "naples-fl-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -553,7 +553,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["ag workers", "remote workers"], travelFit: ["Scotts Bluff NM", "Oregon Trail history"],
     whoWouldLove: "Wide-open Plains people.", whoMightNot: "Tree-seekers; humidity lovers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "scottsbluff-ne-mechanism",
         title: "High-Desert Escape mechanics",
@@ -876,7 +876,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["maritime retirees", "museum-goers"], travelFit: ["seaport museum", "sailing"],
     whoWouldLove: "Coastal New England without big-city scale.", whoMightNot: "Budget retirees; sun-belt seekers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "mystic-ct-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -957,7 +957,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["academics", "families"], travelFit: ["Penn State sports", "Rothrock SF"],
     whoWouldLove: "Appalachian foothills with college-town amenities.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "state-college-pa-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -1443,7 +1443,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["aviation", "ranching"], travelFit: ["aliens museum", "Bottomless Lakes"],
     whoWouldLove: "High-plains sky watchers.", whoMightNot: "Humidity lovers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "roswell-nm-mechanism",
         title: "Monsoon-Edge Zone mechanics",
@@ -1524,7 +1524,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["tourism", "healthcare"], travelFit: ["Mount Rushmore", "Badlands"],
     whoWouldLove: "Black Hills access with city services.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                            deepSections: [
+                                deepSections: [
       {
         id: "rapid-city-sd-mechanism",
         title: "Chinook Corridor mechanics",
@@ -1564,17 +1564,17 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "World-famous ski basin — deep snow, strong inversions, and summer perfection at altitude.",
     summaryImmersive: "Jackson Hole traps cold air and captures Pacific moisture lifted by the Tetons; snowpack feeds the Snake River system that defines the ecosystem.",
     whyDistinct: "High-elevation enclosed basin with extreme vertical relief nearby — a textbook mountain meteorology classroom.",
-                experience: {
-      feel: "Jackson Hole traps cold air and captures Pacific moisture lifted by the Tetons; snowpack feeds the Snake River system that defines the ecosystem.",
+    experience: {
+      feel: "Jackson Hole feels like a 1,901 m enclosed basin between the Tetons and Gros Ventre — deep orographic snow, stubborn winter cold pools, summer perfection at altitude, and Pacific moisture lifted into one of the world's most famous ski geographies.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -1.3°C, nights near -14°C — showers pass through regularly. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 11°C, nights near -3°C — showers pass through regularly.",
-        summer: "Cool summer by latitude — afternoons near 25°C, nights near 6°C — showers pass through regularly. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 12.7°C, nights near -4°C — showers pass through regularly. Fire season lingers into shoulder months.",
+        winter: "Deep snow and cold — afternoons near −1°C, nights near −14°C, inversions pooling stagnant cold in the flat valley floor while ridgetops stay clear, and powder days defining the economy.",
+        spring: "Muddy breakup — afternoons climbing through 11°C, avalanche paths closing backcountry access, and the brief window before tourist season peaks.",
+        summer: "Alpine perfection — highs near 25°C, cool nights near 6°C, Snake River evenings, and wildfire smoke from surrounding forest on bad years.",
+        autumn: "Golden and tightening — highs near 13°C, elk bugling on the National Elk Refuge, first snow on the Tetons, and seasonal workers departing.",
       },
-      travelerFit: "Visitors come for Grand Teton NP and skiing.",
-      residentFit: "It rewards mountain-town life with global name recognition — especially hospitality — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at 1901 m elevation — the main things to weigh are wildfire exposure and deep winter cold. Specialty care and major-airport access require real planning.",
+      travelerFit: "Visitors come for Grand Teton NP, Jackson Hole skiing, and textbook mountain meteorology seen from the valley floor.",
+      residentFit: "It rewards hospitality and outdoor-industry workers who accept among the most expensive housing in Wyoming and JAC airport logistics for specialists.",
+      texture: "Iconic basin tradeoff — weigh deep winter cold, wildfire smoke, and housing scarcity against world-class scenery and summer alpine weather.",
     },
     climate: {
       tempHighC: [-2, 0, 5, 11, 17, 22, 27, 26, 21, 13, 4, -2],
@@ -1595,7 +1595,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 64,
       socialStress: 24,
       accessFriction: 72,
-      note: "Specialty care and major-airport access need real planning; A poor fit for affordable-housing seekers.",
+      note: "Jackson Hole housing is among Wyoming's most expensive; St. John's Health and JAC anchor care — deep winter cold pools, Teton orographic snow, and specialist trips to Salt Lake or Denver define daily logistics beyond resort-town scenery.",
       sources: [
       { label: "NOAA — Jackson AWOS", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Jackson", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1605,21 +1605,21 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["hospitality", "outdoor industry"], travelFit: ["Grand Teton NP", "skiing"],
     whoWouldLove: "Mountain-town life with global name recognition.", whoMightNot: "Affordable-housing seekers.",
     confidence: "high",
-                            deepSections: [
+    deepSections: [
       {
-        id: "jackson-wy-mechanism",
-        title: "Cold-Air Pool mechanics",
+        id: "jackson-cold-pool",
+        title: "Enclosed basin cold pools and orographic snow",
         paragraphs: [
-          "Jackson sits where flat-floored valley between the Tetons and Gros Ventre — iconic cold pool and orographic snow. At roughly 1901 m, elevation bands matter as much as latitude. Dfc normals and roughly 640 mm/yr frame the regional baseline, but Cold-air drainage and Orographic lift re-weight what any single forecast means block by block.",
-          "High-elevation enclosed basin with extreme vertical relief nearby — a textbook mountain meteorology classroom. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Jackson sits at 1,901 m in a flat-floored valley between the Tetons and Gros Ventre — Dfc mountain climate with roughly 640 mm annually, cold-air drainage pooling stagnant winter cold while Pacific moisture lifts into deep orographic snow on surrounding ranges.",
+          "High-elevation enclosed basin with extreme vertical relief nearby makes this a textbook mountain meteorology classroom — valley floor blocks can run 10°C colder than ridgetops on inversion mornings.",
         ],
       },
       {
-        id: "jackson-wy-field-read",
-        title: "On-the-ground read",
+        id: "jackson-resort-housing",
+        title: "Resort economy and wildfire smoke",
         paragraphs: [
-          "World-famous ski basin — deep snow, strong inversions, and summer perfection at altitude. Soils read as alluvium and glacial outwash with good drainage (pH 6–7.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Short-season greens, Hay. Affordable-housing seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Alluvium and glacial outwash support short-season greens and hay — growability stays limited by frost-free days near 90. Elevated wildfire and smoke risk registers in surrounding Bridger-Teton forest.",
+          "Affordable-housing seekers should confirm seasonal lease rules and winter severity — St. John's Health anchors local care but specialists often require Salt Lake or Denver trips beyond Grand Teton tourism appeal.",
         ],
       },
     ],

@@ -31,6 +31,8 @@ const SKIP_IDS = new Set([
   "alamos-mx", "toluca-mx", "asheville-nc", "leavenworth-wa", "page-az",
   "salt-spring-bc", "banff-ab", "kelowna-bc", "astoria-or", "port-townsend-wa",
   "cody-wy", "missoula-mt", "cape-may-nj", "taxco-mx", "bacalar-mx",
+  "sunshine-coast-bc", "kamloops-bc", "squamish-bc", "napa-ca", "palm-springs-ca",
+  "jackson-wy", "block-island-ri", "hermosillo-mx", "palenque-mx", "durango-mx",
 ]);
 
 const fileCache = new Map<string, string>();
