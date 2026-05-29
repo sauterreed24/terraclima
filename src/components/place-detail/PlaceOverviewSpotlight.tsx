@@ -27,7 +27,7 @@ export function PlaceOverviewSpotlight({
     <section id={anchorId} className="place-overview detail-doc-section anim-fade-in" aria-labelledby={`${anchorId}-title`}>
       <div className="place-overview__head">
         <span className="place-overview__eyebrow">
-          <Compass className="w-3.5 h-3.5" aria-hidden />
+          <Compass className="w-3.5 h-3.5" aria-hidden="true" />
           What it actually feels like
         </span>
         <p id={`${anchorId}-title`} className="place-overview__lede">
@@ -38,7 +38,7 @@ export function PlaceOverviewSpotlight({
       <p className="place-overview__immersive">{prose(exp.immersive)}</p>
 
       <div className="place-overview__feel">
-        <ThermometerSun className="w-4 h-4 shrink-0" aria-hidden />
+        <ThermometerSun className="w-4 h-4 shrink-0" aria-hidden="true" />
         <p>{prose(exp.feelLine)}</p>
       </div>
 
@@ -67,15 +67,15 @@ export function PlaceOverviewSpotlight({
 
       <div className="place-overview__fit">
         <div className="place-overview__fit-card" data-kind="travel">
-          <div className="place-overview__fit-label"><Plane className="w-3.5 h-3.5" aria-hidden /> Why people visit</div>
+          <div className="place-overview__fit-label"><Plane className="w-3.5 h-3.5" aria-hidden="true" /> Why people visit</div>
           <p>{prose(exp.travelerFit)}</p>
         </div>
         <div className="place-overview__fit-card" data-kind="resident">
-          <div className="place-overview__fit-label"><Home className="w-3.5 h-3.5" aria-hidden /> Who lives here happily</div>
+          <div className="place-overview__fit-label"><Home className="w-3.5 h-3.5" aria-hidden="true" /> Who lives here happily</div>
           <p>{prose(exp.residentFit)}</p>
         </div>
         <div className="place-overview__fit-card" data-kind="caution">
-          <div className="place-overview__fit-label"><UserMinus className="w-3.5 h-3.5" aria-hidden /> Who might not</div>
+          <div className="place-overview__fit-label"><UserMinus className="w-3.5 h-3.5" aria-hidden="true" /> Who might not</div>
           <p>{prose(exp.wouldNotFit)}</p>
         </div>
       </div>
