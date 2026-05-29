@@ -187,6 +187,7 @@ export const PLACES_CANADA: Place[] = [
       precipMm:  [14, 12, 18, 28, 58, 78, 44, 40, 36, 24, 14, 16],
       snowCm:    [22, 20, 22, 14, 2, 0, 0, 0, 1, 8, 22, 26],
       sunshinePct: [52, 56, 58, 60, 62, 62, 72, 72, 68, 60, 52, 46],
+      humidity: [72, 68, 62, 52, 52, 55, 50, 50, 58, 60, 68, 74],
       annualPrecipMm: 382,
       frostFreeDays: 122,
       gdd10: 1450,
