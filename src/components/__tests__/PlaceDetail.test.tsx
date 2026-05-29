@@ -58,6 +58,36 @@ describe("PlaceDetail growability rationale", () => {
   });
 });
 
+describe("PlaceDetail overview spotlight", () => {
+  it("leads with the 'what it actually feels like' overview, four seasons, and fit framing", () => {
+    const place = PLACES_BY_ID["bishop-ca"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} />
+      </UnitProvider>,
+    );
+
+    // The humanistic eyebrow + the four-season walkthrough.
+    expect(screen.getByText("What it actually feels like")).toBeInTheDocument();
+    expect(screen.getByText("The year, season by season")).toBeInTheDocument();
+    for (const season of ["Winter", "Spring", "Summer", "Autumn"]) {
+      expect(screen.getByText(season)).toBeInTheDocument();
+    }
+
+    // Who-it-fits framing.
+    expect(screen.getByText("Why people visit")).toBeInTheDocument();
+    expect(screen.getByText("Who lives here happily")).toBeInTheDocument();
+    expect(screen.getByText("Who might not")).toBeInTheDocument();
+
+    // The dossier is segmented into acts — the labels appear both as
+    // reading-nav group headers and as in-body zone dividers.
+    expect(screen.getAllByText("The data lab").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Land & growing").length).toBeGreaterThan(0);
+  });
+});
+
 describe("PlaceDetail header accessibility", () => {
   it("reflects compare membership on the Compare button via aria-pressed", () => {
     const place = PLACES_BY_ID["yuma-az"];
