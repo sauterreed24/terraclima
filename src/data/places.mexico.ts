@@ -636,6 +636,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A lake-and-pine highland escape with warm dry-season light, wet-season storms, and a much more specific climate than generic Mexico City weekend weather.",
     summaryImmersive: "Valle de Bravo wraps a high lake with forested slopes, village streets, and a weekend culture that exists because the climate is so usable. Afternoons are warm but rarely punishing at this elevation; nights cool down enough to make stone houses and terraces comfortable. The wet season is dramatic, with storms building on the surrounding rim and feeding a green pine-oak landscape. It is beautiful, but not carefree: slope stability, holiday congestion, watershed pressure, and wildfire at the dry-season edge all belong in a live-here read.",
     whyDistinct: "Elevation keeps heat in check, the lake damps daily extremes close to shore, and volcanic relief organizes wet-season convection. The result is a highland lake climate that feels more sheltered and water-shaped than drier plateau towns nearby.",
+    experience: {
+      feel: "Valle de Bravo feels like Mexico City's weekend climate made permanent — a pine-ringed lake at 1850 m where afternoons stay in the low-to-mid 20s, stone terraces catch warm dry-season light, and wet-season storms build against the volcanic rim before washing the air clean each evening.",
+      seasons: {
+        winter: "Dry and luminous — afternoons near 21°C, nights near 6°C, and the lake reflecting clear highland sun while Mexico City shivers in inversion fog above.",
+        spring: "Warming toward the rains — afternoons climbing through the mid-20s, the lake greening, and weekend traffic building as capital-city escapees arrive for the dry-season window.",
+        summer: "Monsoon drama — afternoon storms off the surrounding rim, humidity climbing, and the lake basin at its most lush and water-shaped.",
+        autumn: "The sweet dry return — rains tapering in October, paragliders over the lake, and terrace evenings cool enough for fireplaces without ever needing heat during the day.",
+      },
+      travelerFit: "Visitors come for Lake Avandaro sailing, paragliding, pine-forest hikes, and a highland lake town an easy drive from Mexico City.",
+      residentFit: "It rewards lake-town remote workers and capital-city weekenders going permanent who want terraces, forest, and outdoor life nearly every month — if they accept slope diligence and weekend congestion.",
+      texture: "One of Mexico's most usable highland lake climates — the main things to weigh are weekend-home housing pressure, watershed stress, and wildfire at the dry-season edge.",
+    },
     climate: { tempHighC: [21.5, 23.0, 25.0, 26.0, 25.8, 23.8, 22.4, 22.6, 22.0, 22.0, 21.4, 21.1], tempLowC: [6.0, 7.0, 9.0, 11.0, 12.4, 13.0, 12.2, 12.1, 11.8, 10.0, 8.0, 6.2], precipMm: [10, 8, 10, 25, 80, 190, 220, 210, 180, 80, 20, 12], sunshinePct: [68, 70, 72, 74, 70, 60, 64, 66, 62, 68, 70, 68], humidity: [58, 55, 52, 55, 68, 82, 85, 84, 80, 68, 58, 55], annualPrecipMm: 1045, frostFreeDays: 340, hardinessZone: "10a equiv.", diurnalSummerC: 11, diurnalWinterC: 15 },
     soil: { texture: "Volcanic loam and andisol pockets on slopes and lake terraces", drainage: "good", phRange: [5.8, 7.0], organicMatterPct: [3, 7], waterHolding: "moderate", notes: "Slope, drainage, and watershed rules matter more than broad soil labels." },
     growability: { score: 78, growsWell: ["Avocado on warmer slopes", "Maize", "Beans", "Temperate fruit in cooler pockets", "Ornamentals"], tricky: ["Lowland tropical crops", "Water-hungry lawns on slopes"], orchard: "Lake-adjacent gardens can be extremely productive if drainage and water access are sane." },

@@ -389,6 +389,19 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "The Huachuca Mountains punch out of the San Pedro–Sulphur Springs trough abruptly enough that you can stand in a saguaro desert at 1,200 m in the morning and reach subalpine fir near 2,800 meters by afternoon. The range is famous among birders: Ramsey and Miller canyons funnel Mexican species north into the US every spring, producing one of the continent's richest small-area species lists. Monsoon storms build reliably against the range from late June through September, dropping sudden sheets of rain on the high country while the valley floor can stay dry. Winters are mild and sunny in Sierra Vista itself — its elevation (~1,400 m) buffers summer heat that would be oppressive 60 km north on the flats — but morning lows below freezing are routine December through February. The San Pedro River, one of the last free-flowing desert rivers in the Southwest, threads the eastern foot of the range and anchors a cottonwood-willow gallery forest that shelters more than half the bird species known in the entire US.",
     whyDistinct: "The combination of ~1,500 m of vertical relief, monsoon-season orographic lift, and binational biogeographic continuity with Mexico's Sierra Madre produces a compact archive of climate zones unmatched elsewhere on the US side of the border. The San Pedro riparian corridor adds a rare hydrologic exception to an otherwise arid regional baseline.",
 
+    experience: {
+      feel: "The Huachucas feel like a Madrean sky island you can actually live on — 1400 m in Sierra Vista buys real summer relief from the low desert, while Miller Peak's subalpine fir sits just an afternoon's hike above saguaro country, and the San Pedro River anchors a cottonwood corridor that shelters more bird species than almost anywhere in the US.",
+      seasons: {
+        winter: "Mild and sunny by Arizona standards — afternoons near 16°C, nights near freezing, and the range's Mexican-affinity birds starting to arrive in Ramsey and Miller canyons.",
+        spring: "The birder's season — warblers and trogons funneling north through canyon corridors, afternoons climbing through the low 20s, and the pre-monsoon dry stretch building toward June.",
+        summer: "Monsoon country — afternoon highs near 33°C in town but dramatic storms building against the crest from late June, dropping sudden rain on the high country while the valley floor can stay dry.",
+        autumn: "Clear and golden — monsoon retreating, afternoons easing back through the 20s, and the San Pedro cottonwoods turning along the last free-flowing desert river in the Southwest.",
+      },
+      travelerFit: "Visitors come for world-class birding, sky-island hiking, Kartchner Caverns, and the most accessible Madrean highland on the US side of the border.",
+      residentFit: "It rewards birders, monsoon lovers, and southeast-Arizona transplants who want elevation relief, a real hospital town, and Mexican biogeographic continuity — if they accept water diligence and wildfire planning.",
+      texture: "The richest US sky island for biodiversity — the main things to weigh are pre-monsoon drought, San Pedro aquifer drawdown, and post-fire debris flows in canyon washes.",
+    },
+
     climate: {
       tempHighC: [15.6, 17.2, 20.3, 24.4, 28.8, 33.6, 32.8, 31.4, 29.6, 25.1, 19.3, 15.3],
       tempLowC: [-0.8, 0.8, 3.6, 6.8, 10.9, 15.6, 18.4, 17.8, 14.8, 8.4, 2.6, -0.6],
@@ -1733,6 +1746,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "North America's most famous cherry country — Lake Michigan's moderation makes fruit possible this far north.",
     summaryImmersive: "Traverse City's climate is written by Lake Michigan. The deep bay and the open lake to the west delay spring bloom past the last frost, then stretch the autumn into October. This narrow band of lake-moderated shoreline — the Leelanau and Old Mission peninsulas — produces 70% of US tart cherry supply and is quietly becoming one of North America's great cool-climate wine regions. Winters are properly snowy with lake-effect bands, but the lake also pulls winter's cold punch; the coldest nights are never as deep as inland Michigan.",
     whyDistinct: "The lake is the engine — moderating temperature, delaying spring bloom until after frost, lengthening autumn, and producing lake-effect snow that insulates soil in winter.",
+    experience: {
+      feel: "Traverse City feels like cherry country written by Lake Michigan — a deep bay and open lake to the west delay spring bloom past the last frost, stretch autumn into October, and keep July afternoons in the mid-20s while inland Michigan roasts.",
+      seasons: {
+        winter: "Properly snowy but lake-moderated — afternoons near freezing, nights near −11°C, and lake-effect bands that blanket orchards in an insulating snowpack the growers actually depend on.",
+        spring: "Late and deliberate — the lake holds cold until bloom timing is safe, then the Leelanau and Old Mission peninsulas erupt in cherry blossom and the first wine-country patio days.",
+        summer: "The glory season — highs near 25°C, long evenings on the bay, cherry harvest in July, and a tourist town that earns its resort reputation without ever overheating.",
+        autumn: "Extended and golden — lake heat stretching hang-time for wine grapes, hardwood color on the peninsulas, and a crisp return to single-digit afternoons by November.",
+      },
+      travelerFit: "Visitors come for cherry blossom, the Leelanau wine trail, summer lake season, and North America's most famous tart-cherry country.",
+      residentFit: "It rewards fruit growers, winemakers, and families who want four real seasons with unusually strong regional services for a small northern town.",
+      texture: "Working fruit country with resort-town energy — the main things to weigh are serious lake-effect winter, housing pressure, and declining lake ice shifting bloom timing.",
+    },
     climate: {
       tempHighC: [-2.8, -1.3, 3.9, 11.1, 17.8, 22.9, 25.3, 24.4, 20.1, 13.3, 5.7, -0.4],
       tempLowC:  [-10.6, -10.6, -6.2, -0.8, 4.1, 9.3, 12.4, 11.8, 7.9, 2.7, -2.6, -7.8],
@@ -1820,6 +1845,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Eleven long glacial lakes fingering the rolling plateau — each one a fruit-belt climate unto itself.",
     summaryImmersive: "The Finger Lakes were carved by ice into deep narrow troughs oriented roughly north-south. Each lake is 30–50 km long and hundreds of meters deep — enough thermal mass to keep its shores frost-free weeks longer than the surrounding uplands. South-facing slopes on the west sides of the lakes catch afternoon sun; the lakes hold that heat. It's the reason one of North America's premier cool-climate wine regions persists at a latitude that should be too cold. Ithaca itself sits at the south end of Cayuga Lake, with waterfalls, deep gorges, and a climate that swings dramatically between lake-moderated lowland and colder plateau just a few miles up.",
     whyDistinct: "Deep glacial lakes provide year-round thermal buffering; slopes oriented to the winter sun add warmth; the Appalachian plateau above stays colder and snowier.",
+    experience: {
+      feel: "Ithaca feels like eleven glacial fingers holding warmth — deep Finger Lakes that keep shores frost-free weeks longer than the plateau above, south-facing slopes catching afternoon sun, and a university town where waterfalls, gorges, and cool-climate Riesling coexist at a latitude that should be too cold for wine.",
+      seasons: {
+        winter: "Gray but lake-moderated — afternoons near freezing, nights near −11°C, and gorge-country cloud cover that makes the plateau above feel like a different season entirely.",
+        spring: "Late bloom and waterfall season — Cayuga warming slowly, gorges running full, and the first wine-trail weekends when afternoons climb into the low teens.",
+        summer: "Warm lake days — highs near 26°C, cool evenings, long afternoons on the water, and the Finger Lakes viticulture scene at its most accessible.",
+        autumn: "The wine-country payoff — Riesling harvest on sun-warmed slopes, hardwood color above the lakes, and a crisp return to single-digit afternoons by November.",
+      },
+      travelerFit: "Visitors come for waterfall gorges, Finger Lakes wine trails, Cornell culture, and fall color above deep glacial lakes.",
+      residentFit: "It rewards academics, winemakers, and cool-climate gardeners who want cultural depth and four real seasons — if they accept gray winters and housing pressure.",
+      texture: "Elegant cold-climate wine country with university services — the main things to weigh are gorge-country cloud cover, student-market housing competition, and lake ice decline shifting bloom timing.",
+    },
     climate: {
       tempHighC: [-2.0, -0.8, 4.8, 12.2, 19.1, 23.7, 26.3, 25.4, 21.4, 14.7, 7.6, 1.3],
       tempLowC:  [-10.6, -10.2, -5.1, 1.2, 6.7, 11.7, 14.4, 13.7, 9.8, 4.1, -1.3, -7.2],
@@ -3180,6 +3217,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Utah's most notorious inversion basin — winter 'red-air' events trap pollution and cold for weeks at a time.",
     summaryImmersive: "Cache Valley is a closed basin ringed by the Wasatch and Bear River ranges. In winter, the valley becomes a textbook case study in cold-air pooling: dense fog, freezing temperatures, and particulate pollution concentrate under an inversion cap sometimes lasting weeks. Surface air quality during these events ranks among the worst in the US. Summers, by contrast, are warm, sunny, and well-ventilated — the same closed geometry that traps winter air allows summer heat to build in a different way.",
     whyDistinct: "Closed basin geometry produces extreme winter inversions; agricultural and industrial emissions within the valley have no escape; summer patterns reverse entirely.",
+    experience: {
+      feel: "Logan feels like a valley split in two — a closed Cache Valley basin that traps cold air and pollution for weeks in winter under a foggy inversion cap, then opens into warm, sunny, well-ventilated summers above some of Utah's deepest orchard soils.",
+      seasons: {
+        winter: "The notorious season — fog, freezing temperatures, and PM2.5 among the worst in the US as the basin geometry traps emissions with no escape. Red-air days can persist for weeks.",
+        spring: "A sharp break — inversions lifting, bloom timing on the fruit belt, and afternoons climbing from frozen to mild as the valley finally mixes.",
+        summer: "Open and productive — highs near 32°C, sunny irrigation country, cool evenings, and the agricultural floor showing why Lake Bonneville sediments built a fruit belt here.",
+        autumn: "Harvest and inversion return — apples and cherries coming off the trees, the first fog banks forming in October, and the valley preparing for another winter stagnation cycle.",
+      },
+      travelerFit: "Visitors come for the Utah State University campus, nearby ski access, the Cache Valley cheese trail, and a textbook inversion basin seen from the surrounding ridges.",
+      residentFit: "It rewards agricultural families and university-affiliated residents who can tolerate winter air-quality episodes and value exceptional orchard soils.",
+      texture: "A four-season fruit belt inside an inversion bowl — the main things to weigh are winter PM2.5 that can persist for weeks, summer wildfire smoke, and Wasatch snowpack water supply.",
+    },
     climate: { tempHighC: [0.4, 3.6, 10.4, 15.6, 21.2, 27.1, 31.9, 30.6, 24.8, 16.2, 7.2, 0.8], tempLowC: [-10.2, -8.1, -3.8, -0.1, 4.8, 9.6, 13.4, 12.4, 7.1, 0.8, -4.4, -9.2], precipMm: [32, 30, 46, 54, 62, 36, 14, 18, 30, 36, 40, 40], snowCm: [30, 28, 22, 10, 2, 0, 0, 0, 0, 4, 20, 32], sunshinePct: [42, 48, 55, 62, 68, 78, 84, 82, 76, 62, 48, 38], humidity: [82, 78, 68, 58, 52, 38, 32, 35, 42, 58, 72, 80], annualPrecipMm: 438, frostFreeDays: 140, hardinessZone: "5b" },
     soil: { texture: "Deep silt loam (Lake Bonneville sediments)", drainage: "moderate", phRange: [7.0, 8.0], waterHolding: "high" },
     growability: { score: 70, hardinessZone: "5b", growsWell: ["Apples", "Cherries", "Onions", "Alfalfa"], tricky: ["Heat-humid crops"] },
@@ -3253,6 +3302,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The coldest valley east of the Mississippi — a boreal-relict bog basin with January means near −6°C at 39° latitude.",
     summaryImmersive: "Canaan Valley is a geological and climatic anomaly: a 980-meter-high plateau basin in West Virginia that behaves meteorologically like northern Maine or eastern Canada. Summer afternoons rarely exceed 23°C; winter lows routinely fall below −25°C; frost is possible every month. The flora reflects this: red spruce, balsam fir, cranberry bogs, and sphagnum moss — Appalachian remnants of Pleistocene climate. The cold pool forms because the valley is surrounded by higher ridges that trap clear-night radiative cooling, and because the peat soils conduct poorly.",
     whyDistinct: "Combination of high plateau elevation, closed basin geometry, boreal peat soils, and exposure to Canadian air masses produces an anomalously cold climate at southern latitude.",
+    experience: {
+      feel: "Canaan Valley feels like northern Maine dropped into West Virginia — a 980 m plateau basin where summer afternoons rarely exceed 24°C, winter lows routinely plunge below −25°C, and red spruce, balsam fir, and cranberry bogs survive as Pleistocene relicts at 39° north.",
+      seasons: {
+        winter: "Severe and boreal — afternoons near freezing, nights near −11°C and often far colder as cold pools form on clear nights, with cross-country skiing on some of the East's best Nordic terrain.",
+        spring: "Late and cautious — frost possible into May, bogs greening slowly, and the first warm afternoons in June feeling like a gift after a long cold season.",
+        summer: "Cool and lush — highs near 24°C, evenings in the low teens, and a mountain-biking and hiking season that never overheats even in August.",
+        autumn: "Brief and golden — hardwood color on the surrounding ridges, the first hard frosts arriving early, and boreal relict ecosystems preparing for another long winter.",
+      },
+      travelerFit: "Visitors come for Blackwater Falls, Canaan Valley Resort cross-country skiing, and one of the most ecologically rare cold-pool basins in eastern North America.",
+      residentFit: "It rewards boreal-ecosystem lovers and solitude seekers who accept a 95-day frost-free season and remote Allegheny plateau logistics.",
+      texture: "An Appalachian climate anomaly of global conservation value — the main things to weigh are brutal winter cold, a very short growing season, and limited specialty care beyond Elkins.",
+    },
     climate: { tempHighC: [-0.4, 0.8, 6.4, 13.1, 19.1, 22.6, 24.4, 23.4, 19.4, 13.2, 7.4, 2.4], tempLowC: [-11.3, -11.1, -6.6, -2.0, 3.6, 8.1, 10.6, 9.8, 5.8, 0.1, -4.6, -9.1], precipMm: [100, 88, 108, 102, 108, 110, 120, 112, 88, 94, 102, 100], snowCm: [60, 60, 50, 18, 2, 0, 0, 0, 0, 4, 28, 56], sunshinePct: [32, 38, 44, 50, 54, 58, 62, 60, 52, 42, 30, 28], humidity: [82, 78, 72, 68, 72, 75, 78, 76, 72, 68, 75, 82], annualPrecipMm: 1232, frostFreeDays: 95, hardinessZone: "4b", diurnalSummerC: 15 },
     soil: { texture: "Peaty histosols over sandstone", drainage: "poor", phRange: [4.2, 5.4], waterHolding: "high", notes: "Cranberry bog muck; strongly acid." },
     growability: { score: 30, hardinessZone: "4b", growsWell: ["Blueberries", "Cranberries", "Cool-crops", "Boreal natives"], tricky: ["Most conventional crops"] },
