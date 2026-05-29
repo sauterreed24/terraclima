@@ -15,6 +15,7 @@ import { SlidersHorizontal, X } from "lucide-react";
 import { FilterBar } from "./FilterBar";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { countActiveExplorerFilterSignals, type FilterState, type RankingProfile } from "../lib/scoring";
+import type { ScenarioId } from "../types";
 
 export type ExplorerFilterSheetHandle = {
   open: () => void;
@@ -31,11 +32,13 @@ type Props = {
   footer?: ReactNode;
   /** When a place profile opens, the sheet closes so the drawer is unobstructed. */
   detailOpen?: boolean;
+  scenario?: ScenarioId;
+  onScenarioChange?: (next: ScenarioId) => void;
 };
 
 export const ExplorerFilterSheet = memo(
   forwardRef<ExplorerFilterSheetHandle, Props>(function ExplorerFilterSheet(
-    { searchInputId, filters, setFilters, ranking, setRanking, footer, detailOpen },
+    { searchInputId, filters, setFilters, ranking, setRanking, footer, detailOpen, scenario, onScenarioChange },
     ref,
   ) {
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -151,6 +154,8 @@ export const ExplorerFilterSheet = memo(
               setFilters={setFilters}
               ranking={ranking}
               setRanking={setRanking}
+              scenario={scenario}
+              onScenarioChange={onScenarioChange}
             />
             {footer ? <div className="mt-3 space-y-0">{footer}</div> : null}
           </div>

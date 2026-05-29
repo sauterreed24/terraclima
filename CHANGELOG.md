@@ -4,6 +4,12 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Lens Receipt scenario chip + Tier C experience batch 3
+
+- **Lens Receipt scenario chip (`src/components/FilterBar.tsx`, `src/App.tsx`, `src/components/ExplorerFilterSheet.tsx`):** when a future climate layer is active, the Explorer lens receipt shows a dismissible scenario chip and projection-aware summary line; dismissing resets `scn` to present-day.
+- **Tier C experience batch 3 (`src/data/places.usa.ts`):** hand-written `experience` overrides for Apalachicola, Felton, Ellensburg, Joseph, Houghton, Viroqua, Columbia Gorge corridor, and Winthrop; `liveSignals`, humidity, and/or sunshinePct where missing.
+- **Regression hardening:** `FilterBar` scenario-chip test; `playtest-polish` batch-3 anchors.
+
 ### Scenario/compare symbiosis + experience engine uplift
 
 - **Compare under climate scenarios (`src/App.tsx`, `src/components/CompareView.tsx`):** when `scn≠now`, Compare now receives projected places from the Explorer pool (not present-day baseline) and shows an honesty banner; PlaceDetail dossiers stay present-day per URL invariants.

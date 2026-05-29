@@ -1,5 +1,5 @@
 import { memo, useCallback, type Dispatch, type SetStateAction } from "react";
-import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
+import type { Country, MicroclimateArchetype, RiskLevel, ScenarioId } from "../types";
 import {
   applyLifestyleBundle,
   isBundleActive,
@@ -18,6 +18,7 @@ import {
   LIVE_FIT_WINTER_FLOORS_C,
   type LiveFitPresetId,
 } from "../lib/live-fit";
+import { scenarioMeta } from "../lib/climate-projection";
 import {
   CalendarDays,
   Check,
@@ -63,6 +64,8 @@ interface Props {
   setRanking: (r: RankingProfile) => void;
   /** Taller archetype scroller inside the mobile filter dialog. */
   variant?: "dock" | "sheet";
+  scenario?: ScenarioId;
+  onScenarioChange?: (next: ScenarioId) => void;
 }
 
 export const FilterBar = memo(function FilterBar({
@@ -72,6 +75,8 @@ export const FilterBar = memo(function FilterBar({
   ranking,
   setRanking,
   variant = "dock",
+  scenario = "now",
+  onScenarioChange,
 }: Props) {
   const prose = useProse();
   const { temp } = useUnits();
@@ -149,6 +154,8 @@ export const FilterBar = memo(function FilterBar({
         onClearAll={clearAll}
         setFilters={setFilters}
         ranking={ranking}
+        scenario={scenario}
+        onScenarioChange={onScenarioChange}
       />
 
       <div className="tc-accent-panel p-2.5 space-y-2">
@@ -367,6 +374,8 @@ function LensReceipt({
   onClearAll,
   setFilters,
   ranking,
+  scenario = "now",
+  onScenarioChange,
 }: {
   rankingLabel: string;
   filters: FilterState;
@@ -376,6 +385,8 @@ function LensReceipt({
   onClearAll: () => void;
   setFilters: Dispatch<SetStateAction<FilterState>>;
   ranking: RankingProfile;
+  scenario?: ScenarioId;
+  onScenarioChange?: (next: ScenarioId) => void;
 }) {
   const liveSignalCount = countLiveSignals(filters);
   const chips: { key: string; label: string; tone?: string; onDismiss?: () => void }[] = [];
@@ -463,10 +474,20 @@ function LensReceipt({
       onDismiss: () => setFilters(f => ({ ...f, maxOverallRisk: undefined })),
     });
   }
+  if (scenario !== "now" && onScenarioChange) {
+    chips.push({
+      key: "scenario",
+      label: scenarioMeta(scenario).short,
+      tone: "aurora",
+      onDismiss: () => onScenarioChange("now"),
+    });
+  }
 
   const lensLine = activeBundle
     ? activeBundle.description
-    : liveSignalCount > 0
+    : scenario !== "now"
+      ? `${scenarioMeta(scenario).label} — illustrative regional projection reshaping ranks and cards.`
+      : liveSignalCount > 0
       ? sortedByLiveFit
         ? `${liveSignalCount} living signal${liveSignalCount === 1 ? "" : "s"} — sorted by live-fit.`
         : `${liveSignalCount} living signal${liveSignalCount === 1 ? "" : "s"} active — switch ranking to Live-fit for aligned sort.`

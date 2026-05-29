@@ -199,3 +199,34 @@ describe("FilterBar clear all filters", () => {
     expect(setFilters).toHaveBeenCalledWith(createEmptyFilterState());
   });
 });
+
+describe("FilterBar climate scenario chip", () => {
+  it("shows a dismissible chip and projection lens line when scn≠now", () => {
+    const onScenarioChange = vi.fn();
+    const units: UnitState = {
+      temp: "F",
+      dist: "imperial",
+      setTemp: vi.fn(),
+      setDist: vi.fn(),
+      toggle: vi.fn(),
+    };
+    render(
+      <UnitContext.Provider value={units}>
+        <FilterBar
+          filters={createEmptyFilterState()}
+          setFilters={vi.fn()}
+          ranking="hidden-gems"
+          setRanking={vi.fn()}
+          scenario="ssp585"
+          onScenarioChange={onScenarioChange}
+        />
+      </UnitContext.Provider>,
+    );
+
+    const lens = screen.getByRole("region", { name: "Current Explorer lens" });
+    expect(lens).toHaveTextContent("SSP5-8.5");
+    expect(lens).toHaveTextContent("illustrative regional projection");
+    fireEvent.click(screen.getByRole("button", { name: "Remove filter: 2050 high" }));
+    expect(onScenarioChange).toHaveBeenCalledWith("now");
+  });
+});

@@ -945,6 +945,8 @@ export default function App() {
                     setFilters={setFilters}
                     ranking={ranking}
                     setRanking={setRanking}
+                    scenario={climateScenario}
+                    onScenarioChange={setClimateScenario}
                   />
                   <FootprintPanel />
                 </aside>
@@ -1015,6 +1017,8 @@ export default function App() {
             setFilters={setFilters}
             ranking={ranking}
             setRanking={setRanking}
+            scenario={climateScenario}
+            onScenarioChange={setClimateScenario}
             footer={<FootprintPanel />}
             detailOpen={Boolean(selectedId)}
           />

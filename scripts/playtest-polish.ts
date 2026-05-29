@@ -300,6 +300,21 @@ async function main(): Promise<void> {
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after batch 2`);
   }
 
+  const tierCExperienceBatch3 = [
+    "apalachicola-fl", "santa-cruz-felton-ca", "ellensburg-wa",
+    "joseph-or", "houghton-mi", "viroqua-wi", "hood-river-gorge", "winthrop-wa",
+  ];
+  for (const id of tierCExperienceBatch3) {
+    const place = PLACES.find(p => p.id === id);
+    if (!place) throw new Error(`tier C experience batch 3 missing: ${id}`);
+    if (!place.experience?.feel) throw new Error(`${id} missing authored experience.feel`);
+    for (const key of ["winter", "spring", "summer", "autumn"] as const) {
+      const detail = place.experience.seasons?.[key];
+      if (!detail || detail.length < 24) throw new Error(`${id} missing authored ${key} season detail`);
+    }
+    if (!place.liveSignals) throw new Error(`${id} missing liveSignals after batch 3`);
+  }
+
   const lethbridge = PLACES.find(p => p.id === "lethbridge-ab");
   if (!lethbridge?.climate.humidity) throw new Error("lethbridge-ab missing humidity (Tier A)");
 
