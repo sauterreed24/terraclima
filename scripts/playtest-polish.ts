@@ -249,6 +249,7 @@ async function main(): Promise<void> {
     "mount-charleston-nv", "spearfish-sd", "burkes-garden-va",
     "valentine-ne", "hilo-hi", "wolfville-ns", "fernie-elk-valley-bc",
     "valle-guadalupe-mx", "todos-santos-mx",
+    "silver-city-nm", "ashland-or", "fort-davis-tx", "niagara-on-the-lake",
   ];
   for (const id of polishIds) {
     const place = PLACES.find(p => p.id === id);
