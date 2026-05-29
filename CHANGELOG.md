@@ -25,6 +25,7 @@ All notable changes to Terraclima are tracked here.
 - **Round 5 corpus (`src/data/places.usa.ts`, `places.usa.extra.ts`, `places.canada.ts`, `places.mexico.ts`):** `sunshinePct` for silver-city-nm, ashland-or, fort-davis-tx, port-orford-cape-blanco-or, los-alamos-pajarito-plateau-nm, niagara-on-the-lake, cuernavaca-mx.
 - **Round 6 corpus (`src/data/places.mexico.ts`):** completes Tier B `sunshinePct` — patzcuaro-mx, valle-de-bravo-mx, zacatlan-de-las-manzanas-mx, tapalpa-mx, mazamitla-mx, creel-mx, ajijic-lake-chapala-mx.
 - **Round 7 corpus (`src/data/places.usa.ts`):** `climate.humidity` for bishop-ca, flagstaff-az, silver-city-nm, hood-river-or, ashland-or, driggs-id, fort-davis-tx, gunnison-co.
+- **Round 8 corpus (`src/data/places.usa.ts`, `places.usa.gap-states.ts`, `places.canada.ts`):** `climate.humidity` for logan-ut, canaan-valley-wv, redfield-ny, key-west-fl, mount-charleston-nv, spearfish-sd, burkes-garden-va, wolfville-ns.
 - **Playtest hardening (`scripts/playtest-polish.ts`):** SSP2-4.5 URL round-trip, post-v4.8 CSS regression needles, flagship sunshine/liveSignals anchors, UTCI* smoke on santa-barbara-ca.
 
 ### Maximum-effort symbiosis
