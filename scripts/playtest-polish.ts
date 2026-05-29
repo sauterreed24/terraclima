@@ -25,6 +25,10 @@ import {
 import { motionPolicy } from "../src/lib/device-profile";
 import { applyTheme } from "../src/lib/theme";
 import { shareUrl } from "../src/lib/share";
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+import { buildComfortPrecisionProfile, apparentComfortIndexFromProfile } from "../src/lib/comfort-precision";
 
 async function main(): Promise<void> {
   const validatePlaceId = (id: string) => PLACES.some((p) => p.id === id);
@@ -210,6 +214,43 @@ async function main(): Promise<void> {
     if (baseline != null && row.score < baseline - 1e-9) { warmed = true; break; }
   }
   if (!warmed) throw new Error("SSP5-8.5 should lower at least one coolest-summers score vs now");
+
+  const ssp245Url = formatAppRelativeUrl({ view: "explorer", scenario: "ssp245", collectionExists: () => true });
+  if (!ssp245Url.includes("scn=ssp245")) throw new Error(`ssp245 not in URL: ${ssp245Url}`);
+  const ssp245Parsed = parseAppSearch(new URL(ssp245Url, "https://example.com").search);
+  if (ssp245Parsed.scenario !== "ssp245") throw new Error("ssp245 parse failed");
+
+  // Post–v4.8 UI polish: dark-theme scenario control + comfort grid CSS shipped.
+  const stylesPath = join(dirname(fileURLToPath(import.meta.url)), "../src/styles.css");
+  const styles = readFileSync(stylesPath, "utf8");
+  for (const needle of [
+    "container-name: tc-comfort-precision",
+    "grid-template-columns: repeat(5, minmax(0, 1fr))",
+    'html[data-theme="dark"] .climate-scenario',
+    "@container tc-comfort-precision",
+  ]) {
+    if (!styles.includes(needle)) throw new Error(`styles.css missing post-v4.8 polish: ${needle}`);
+  }
+
+  // Corpus sunshine + UTCI* comfort path on a flagship B place.
+  const sb = PLACES.find(p => p.id === "santa-barbara-ca");
+  if (!sb?.climate.sunshinePct) throw new Error("santa-barbara-ca missing sunshinePct");
+  const comfort = buildComfortPrecisionProfile(sb);
+  const utci = apparentComfortIndexFromProfile(comfort);
+  if (!Number.isFinite(utci.score) || utci.score < 0 || utci.score > 100) {
+    throw new Error(`UTCI* proxy invalid for santa-barbara-ca: ${utci.score}`);
+  }
+
+  const polishIds = [
+    "santa-barbara-ca", "driggs-id", "flagstaff-az", "wenatchee-wa", "gunnison-co",
+    "logan-ut", "fairbanks-ak", "whitehorse-yt", "victoria-bc", "hood-river-or",
+  ];
+  for (const id of polishIds) {
+    const place = PLACES.find(p => p.id === id);
+    if (!place) throw new Error(`polish anchor missing: ${id}`);
+    if (!place.climate.sunshinePct) throw new Error(`${id} missing sunshinePct after polish pass`);
+    if (!place.liveSignals) throw new Error(`${id} missing liveSignals after polish pass`);
+  }
 
   console.log("playtest-polish: OK");
 }

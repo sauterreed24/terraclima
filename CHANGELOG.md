@@ -19,6 +19,8 @@ All notable changes to Terraclima are tracked here.
 - **Climate scenario control (`src/styles.css`, `CompareView.tsx`):** deep-glass dark overrides for the v4.8 scenario layer switch; Compare UTCI* footnote uses semantic caption tokens.
 - **Corpus sunshine (`src/data/places.usa.ts`, `places.canada.ts`):** monthly `sunshinePct` for eight flagship Tier B places (santa-barbara-ca, driggs-id, grand-marais-mn, highlands-nc, eureka-ca, victoria-bc, tofino-bc, nelson-bc).
 - **Corpus lived friction (`src/data/places.usa.ts`, `places.canada.ts`):** `liveSignals` for driggs-id, grand-marais-mn, and nelson-bc with cited municipal/regional sources.
+- **Round 2 corpus (`src/data/places.usa.ts`, `places.canada.ts`):** `sunshinePct` + `liveSignals` for flagstaff-az, wenatchee-wa, gunnison-co, logan-ut, fairbanks-ak, bishop-ca, hood-river-or, whitehorse-yt.
+- **Playtest hardening (`scripts/playtest-polish.ts`):** SSP2-4.5 URL round-trip, post-v4.8 CSS regression needles, flagship sunshine/liveSignals anchors, UTCI* smoke on santa-barbara-ca.
 
 ### Maximum-effort symbiosis
 
