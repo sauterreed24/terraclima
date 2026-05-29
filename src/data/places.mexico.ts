@@ -1104,13 +1104,13 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Michoacán's colonial capital at 1920 m — a classic Mexican eternal-spring climate with distinct wet/dry seasons.",
     summaryImmersive: "Morelia sits at 1920 m in the Bajío highlands. Temperatures stay within a narrow band year-round: afternoon highs 24–28°C, nights 7–13°C. The climate is defined not by temperature swings but by the rainy season — June through September delivers dramatic afternoon thunderstorms; the rest of the year is bone-dry and brilliantly sunny. The colonial cantera-pink stone architecture glows in that high-altitude light.",
     whyDistinct: "Trans-Volcanic Belt elevation plus subtropical latitude produces the signature Mexican highland climate; surrounded by significant relief amplifies local variation.",
-                experience: {
-      feel: "Morelia sits at 1920 m in the Bajío highlands. Temperatures stay within a narrow band year-round: afternoon highs 24–28°C, nights 7–13°C. The climate is defined not by temperature swings but by the rainy season — June through September delivers dramatic afternoon thunderstorms;.",
+    experience: {
+      feel: "Morelia feels like Michoacán's eternal-spring capital at 1,920 m — cantera-pink colonial streets under a narrow 24–28°C band where June–September thunderstorms, not temperature swings, define the calendar.",
       seasons: {
-        winter: "Warm winter window — afternoons near 23.3°C, nights near 6.3°C — skies stay mostly dry.",
-        spring: "Heating up fast — afternoons near 28°C, nights near 11.2°C — weather stays moderate and changeable.",
-        summer: "Cool summer by latitude — afternoons near 24.1°C, nights near 12.6°C — rain is frequent and can be heavy.",
-        autumn: "Shoulder season — afternoons near 23.5°C, nights near 10.2°C — showers pass through regularly.",
+        winter: "Dry-season clarity — afternoons near 23°C, nights near 6°C, brilliant high-altitude sun, and the Monarch reserve gateway at its coldest before spring rains.",
+        spring: "Heating and first storms — afternoons climbing toward 29°C, dry weeks punctuated by building convection, and avocado orchards greening on volcanic slopes.",
+        summer: "Monsoon theatre — afternoons near 24°C, nights near 13°C, dramatic afternoon thunderstorms June through September, and arroyo diligence after dry-day build-up.",
+        autumn: "Rains easing — afternoons near 24°C, nights falling toward 10°C, last heavy showers in September–October, then bone-dry skies returning for plaza evenings.",
       },
       travelerFit: "Visitors come for colonial architecture and Monarch reserve gateway.",
       residentFit: "It rewards eternal-spring seekers who also want urban amenities — especially Latin-American urbanites — who can accept the local tradeoffs.",
@@ -1178,13 +1178,13 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A steep colonial silver-mining canyon town at 2000 m — mild year-round, dry, and photogenic.",
     summaryImmersive: "Guanajuato is built into a steep canyon at 2000 m in the Sierra de Guanajuato. Its geography produces fascinating microclimate variation along the canyon walls — sun-facing slopes warm quickly while shaded ones stay cool. The general climate is cool-dry eternal-spring: afternoon highs 22–27°C, dry most of the year with a June–September rainy season. The colorful terraced houses catch the high-altitude sun from every angle.",
     whyDistinct: "Steep canyon geometry produces dramatic local variation in sun exposure and temperature at small scales; highland elevation governs overall regime.",
-                experience: {
-      feel: "Guanajuato is built into a steep canyon at 2000 m in the Sierra de Guanajuato. Its geography produces fascinating microclimate variation along the canyon walls — sun-facing slopes warm quickly while shaded ones stay cool.",
+    experience: {
+      feel: "Guanajuato feels like a silver-mining canyon city at 2,000 m — sun-facing terrace walls warm in minutes while shaded callejones hold cool air, with dry eternal-spring afternoons and a June–September arroyo season.",
       seasons: {
-        winter: "Warm winter window — afternoons near 22.6°C, nights near 7°C — skies stay mostly dry with intense sun.",
-        spring: "Spring opens — afternoons near 27.4°C, nights near 11.4°C — skies stay mostly dry with intense sun. Spring rains can swell rivers and arroyos quickly.",
-        summer: "Cool summer by latitude — afternoons near 24.5°C, nights near 12.5°C — rain is frequent and can be heavy.",
-        autumn: "Shoulder season — afternoons near 23.2°C, nights near 10.1°C — showers pass through regularly. Flash-flood and surge diligence is part of daily life.",
+        winter: "Dry highland sun — afternoons near 23°C, nights near 7°C, relentlessly clear skies, and intense UV on rose-stone terraces.",
+        spring: "Heating before monsoon — afternoons near 27°C, still mostly dry, spring storms swelling rivers in the canyon floor.",
+        summer: "Rainy-season afternoons — highs near 25°C, frequent evening thunderstorms, flash-flood diligence in tunnels and steep lanes.",
+        autumn: "Storm tail and color — highs falling through 23°C, September rains tapering, UNESCO crowds thinning, and drainage routes worth re-walking after wet months.",
       },
       travelerFit: "Visitors come for colonial sightseeing.",
       residentFit: "It rewards those who love stone cities at altitude — especially cultural expats — who can accept the local tradeoffs.",
@@ -1253,13 +1253,13 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Mexico's 'cool' colonial city — at 2440 m, summers cap at 25°C and winter frosts are routine.",
     summaryImmersive: "Zacatecas perches at 2440 m — 500 m higher than Morelia and in a more continental interior position. The result is a colder, drier eternal-spring climate: summer highs in the low 20s, winter lows that can reach −4°C, and annual precipitation under 500 mm. It's Mexico's most genuinely cool major historic city. The rose-pink stone, silver-mining history, and cultural intensity are all at altitude.",
     whyDistinct: "Higher interior-highland position produces colder eternal-spring than the Bajío; real frost and dry cold distinguish it.",
-                experience: {
-      feel: "Zacatecas perches at 2440 m — 500 m higher than Morelia and in a more continental interior position. The result is a colder, drier eternal-spring climate: summer highs in the low 20s, winter lows that can reach −4°C, and annual precipitation under 500 mm.",
+    experience: {
+      feel: "Zacatecas feels like Mexico's genuinely cool colonial capital at 2,440 m — summer highs in the low 20s, winter frost on mesquite steppe, under 400 mm annual rain, and rose-pink stone under relentless highland sun.",
       seasons: {
-        winter: "Warm winter window — afternoons near 19.1°C, nights near 3.1°C — skies stay mostly dry with intense sun.",
-        spring: "Spring opens — afternoons near 24.8°C, nights near 9.1°C — skies stay relentlessly clear and dry.",
-        summer: "Cool summer by latitude — afternoons near 23.1°C, nights near 11.7°C — showers pass through regularly. Water supply and irrigation stress matter.",
-        autumn: "Shoulder season — afternoons near 21.2°C, nights near 7.6°C — weather stays moderate and changeable.",
+        winter: "Dry cold — afternoons near 19°C, nights near 3°C with routine frost, crisp air on Cerro de la Bufa, and unheated-stone interior reality.",
+        spring: "Clear heating — afternoons climbing toward 25°C, relentlessly dry winds, and water-supply planning before summer rains.",
+        summer: "Brief monsoon window — highs near 23°C, concentrated July–August showers, cooler than any Bajío city, and irrigation stress on exposed slopes.",
+        autumn: "Golden dry return — highs falling through 21°C, rains ending, UNESCO nights cooling fast, and mesquite country returning to dust.",
       },
       travelerFit: "Visitors come for UNESCO architecture and silver-mine tourism.",
       residentFit: "It rewards those who want Mexican eternal spring with a colder twist — especially historic-city expats — who can accept the local tradeoffs.",
@@ -1331,13 +1331,13 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Northern Mexico's dry, elevation-tempered urban alternative to the deep-desert heat of Monterrey — 8°C cooler on summer afternoons.",
     summaryImmersive: "Saltillo sits at 1600 m in the Chihuahuan high desert, only 85 km west of Monterrey — but the elevation delivers an 8°C cooler summer afternoon on average. Winters are clear, dry, and can produce occasional frost. The altitude-tempered climate shaped the colonial founding; the city's historic position as the Camino Real's northern hub reflects the rare oasis of livable climate in a vast dry region.",
     whyDistinct: "Significant elevation gain above Monterrey's lowland basin produces a strikingly different summer climate in a short geographic distance.",
-                experience: {
-      feel: "Saltillo sits at 1600 m in the Chihuahuan high desert, only 85 km west of Monterrey — but the elevation delivers an 8°C cooler summer afternoon on average. Winters are clear, dry, and can produce occasional frost. The altitude-tempered climate shaped the colonial founding;.",
+    experience: {
+      feel: "Saltillo feels like the Chihuahuan high-desert oasis 85 km from Monterrey — 1,600 m elevation trimming eight degrees off basin heat, clear dry winters with occasional frost, and a Camino Real city that works year-round.",
       seasons: {
-        winter: "Mild and workable — afternoons near 17.8°C, nights near 4.2°C — skies stay mostly dry with intense sun.",
-        spring: "Spring opens — afternoons near 25.6°C, nights near 11.6°C — weather stays moderate and changeable.",
-        summer: "Warm season peak — afternoons near 28.6°C, nights near 16.2°C — showers pass through regularly. Water supply and irrigation stress matter.",
-        autumn: "Shoulder season — afternoons near 23.1°C, nights near 10.6°C — showers pass through regularly.",
+        winter: "Mild and workable — afternoons near 18°C, nights near 4°C, dry intense sun, and frost possible on clear mornings.",
+        spring: "Clear heating — afternoons climbing toward 26°C, relentless dry winds, and Sierra Madre foothill escapes before peak summer.",
+        summer: "Monsoon peak — highs near 29°C still cooler than Monterrey basin, concentrated July–September storms, and water discipline on calcareous soils.",
+        autumn: "Storm taper — highs falling through 23°C, September rains easing, harvest dust in the industrial corridor, and dry nights returning.",
       },
       travelerFit: "Visitors come for colonial center.",
       residentFit: "It rewards those needing an escape from Monterrey heat — especially northern-Mexico expats — who can accept the local tradeoffs.",
@@ -1805,13 +1805,13 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The blue-agave heartland — a volcanic highland where a specific combination of sun, soil, and altitude makes tequila possible.",
     summaryImmersive: "The Tequila region sits at 1000–1500 m on the flanks of the Tequila Volcano, with volcanic soils rich in minerals and a climate of warm days, cool nights, and concentrated summer rains. Blue agave thrives in this specific combination — and nowhere else at meaningful scale. The 60,000-hectare agave landscape is a UNESCO World Heritage cultural site precisely because the climate-soil combination is irreplaceable.",
     whyDistinct: "Volcanic-upland climate with strong diurnal swing and distinct monsoon rhythm enables blue-agave cultivation at scale.",
-                experience: {
-      feel: "The Tequila region sits at 1000–1500 m on the flanks of the Tequila Volcano, with volcanic soils rich in minerals and a climate of warm days, cool nights, and concentrated summer rains. Blue agave thrives in this specific combination — and nowhere else at meaningful scale.",
+    experience: {
+      feel: "Tequila feels like UNESCO agave country on volcanic slopes at 1,180 m — warm days, cool nights, concentrated summer rains on mineral-rich tepetate, and blue agave fields that only make sense in this exact terroir.",
       seasons: {
-        winter: "Warm winter window — afternoons near 26.4°C, nights near 10.7°C — skies stay mostly dry.",
-        spring: "Heating up fast — afternoons near 30.8°C, nights near 15.3°C — skies stay mostly dry. Green-up arrives against a wet 914 mm annual backdrop.",
-        summer: "Warm season peak — afternoons near 26.5°C, nights near 16.3°C — rain is frequent and can be heavy.",
-        autumn: "Shoulder season — afternoons near 26.2°C, nights near 14.2°C — showers pass through regularly.",
+        winter: "Dry harvest season — afternoons near 26°C, nights near 11°C, clear skies, and jimador work at peak before spring heat.",
+        spring: "Heating before monsoon — highs climbing toward 31°C, still dry, agave fields turning silver-green under strong sun.",
+        summer: "Monsoon peak — highs near 27°C despite latitude, heavy July–August rains on volcanic slopes, and field access complicated by runoff.",
+        autumn: "Rains easing — highs near 26°C, distillery traffic and tour buses peaking, last storms in September, and dry relief returning.",
       },
       travelerFit: "Visitors come for agave fields and distillery tours.",
       residentFit: "It rewards terroir-obsessed travelers — especially agrotourism — who can accept the local tradeoffs.",
@@ -2103,13 +2103,13 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The only true Mediterranean climate in Mexico — cool, fog-buffered summers produced by upwelling, feeding Mexico's premier wine region just inland.",
     summaryImmersive: "Ensenada sits on the Pacific coast at 32°N, where the California Current's cold upwelling extends a narrow strip of Mediterranean climate south from the border. Summer highs remain around 24°C on the coast; the marine layer burns off by noon most days. Thirty kilometers inland, the Valle de Guadalupe warms to 32°C summer afternoons with cool nights — the ideal diurnal swing for viticulture. Mexico's premier wine region (over 100 wineries) sits here precisely because this is the warmest/driest edge of the cool-summer Mediterranean climate. Winter rains of 300 mm support dryland Cabernet and Tempranillo; summers are essentially rainless.",
     whyDistinct: "The southernmost extent of the California Current upwelling + Mediterranean rainfall pattern. This is the only place in Mexico where a cool-summer maritime and summer-dry climate coincide.",
-                experience: {
-      feel: "Ensenada sits on the Pacific coast at 32°N, where the California Current's cold upwelling extends a narrow strip of Mediterranean climate south from the border. Summer highs remain around 24°C on the coast; the marine layer burns off by noon most days.",
+    experience: {
+      feel: "Ensenada feels like Mexico's only cool-summer Mediterranean coast — California Current upwelling keeping summer highs near 25°C under marine layer, with Valle de Guadalupe 30 km inland offering the diurnal swing that built wine country.",
       seasons: {
-        winter: "Warm winter window — afternoons near 19.1°C, nights near 8.4°C — showers pass through regularly.",
-        spring: "Spring opens — afternoons near 21.2°C, nights near 11.7°C — humid air keeps everything soft and close.",
-        summer: "Cool summer by latitude — afternoons near 24.6°C, nights near 16.4°C — skies stay mostly dry. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 23.1°C, nights near 13.4°C — skies stay mostly dry. Fire season lingers into shoulder months.",
+        winter: "Rainy Mediterranean winter — afternoons near 19°C, nights near 8°C, Pacific showers, and whale migration off the coast.",
+        spring: "Marine layer and green-up — afternoons near 21°C, fog burning off by noon, Valle vineyards leafing out.",
+        summer: "Dry coastal peak — highs near 25°C, essentially rainless June–August, marine layer mornings, wildfire smoke a summer wildcard inland.",
+        autumn: "Fire-season tail — highs near 23°C, first returning rains in October, harvest traffic in Valle de Guadalupe, and smoke clearing on the best days.",
       },
       travelerFit: "Visitors come for wine country tours, seafood cuisine, and whale watching.",
       residentFit: "It rewards anyone who loves Napa/Sonoma but wants a Mexican spin — and better prices — especially winemakers — who can accept the local tradeoffs.",
@@ -2174,13 +2174,13 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The 'Athens of Veracruz' — a cloud-forest highland where eternal mist, 1,500 mm of rain, and mild 22°C afternoons create one of Mexico's greenest and most literary climates.",
     summaryImmersive: "Xalapa sits at 1,427 m on the eastern slope of Mexico's continental divide, the spot where warm Gulf air is forced upslope and condensed into near-permanent mist. The result is a cloud-forest climate — called bosque mesófilo de montaña — one of the rarest and most biodiverse ecosystems in the Americas. Days average 22°C year-round; nights drop to 12–15°C; humidity rarely falls below 70%. Rainfall is heavy and persistent (1,500 mm annually) with drizzle possible in any month. The city's mossy walls, mist-filled mornings, and coffee plantations that creep up from the lowlands give Xalapa its reputation as a cultural and climatic refuge.",
     whyDistinct: "Eastern escarpment of the Sierra Madre Oriental + Gulf moisture + cloud-forest elevation band. A precise combination of latitude, distance from the coast, and elevation puts Xalapa in the global 'cloud-forest isohypse' — a thin belt where persistent cloud contact defines the ecosystem.",
-                experience: {
-      feel: "Xalapa sits at 1,427 m on the eastern slope of Mexico's continental divide, the spot where warm Gulf air is forced upslope and condensed into near-permanent mist.",
+    experience: {
+      feel: "Xalapa feels like the 'Athens of Veracruz' at 1,427 m — Gulf moisture forced upslope into near-permanent cloud-forest mist, 22°C afternoons year-round, 1,500 mm of drizzle, and moss on every wall.",
       seasons: {
-        winter: "Warm winter window — afternoons near 20.6°C, nights near 11.5°C — humid air keeps everything soft and close.",
-        spring: "Green-up and storms — afternoons near 24°C, nights near 14.4°C — showers pass through regularly. Green-up arrives against a wet 1518 mm annual backdrop.",
-        summer: "Cool summer by latitude — afternoons near 23°C, nights near 15.4°C — rain is frequent and can be heavy.",
-        autumn: "Shoulder season — afternoons near 22°C, nights near 14°C — rain is frequent and can be heavy.",
+        winter: "Mist and drizzle — afternoons near 21°C, nights near 12°C, humidity rarely below 70%, and the softest light on coffee slopes.",
+        spring: "Green-up in fog — afternoons climbing toward 25°C, orchids and cloud forest at peak, building toward June monsoon core.",
+        summer: "Peak wet — highs near 23°C, 200+ mm monthly totals June–September, landslide diligence on saturated slopes, and sunshine percentages at their annual low.",
+        autumn: "Still wet, slowly easing — highs near 22°C, October rains tapering, university-town rhythm returning, and mossy paths at their most literary.",
       },
       travelerFit: "Visitors come for cloud-forest hikes, coffee tours, and Instituto de Ecología.",
       residentFit: "It rewards readers, mossy-path walkers, anyone who thinks cool and misty is the correct climate — especially mist lovers — who can accept the local tradeoffs.",
@@ -2602,13 +2602,13 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "One of North America's hottest state capitals — dry heat, intense sun, and a summer monsoon that arrives as isolated convective bombs.",
     summaryImmersive: "Hermosillo is core desert: triple-digit afternoon heat indices for months, cooling at night when skies clear. July–August storms bring drama — virga, dust, localized downpours — but annual totals stay low. Winter is the pleasant season outsiders underestimate.",
     whyDistinct: "Gulf of California proximity adds a humidity gradient westward toward coastal Bahía de Kino without fully maritime conditions in town.",
-                experience: {
-      feel: "Hermosillo is core desert: triple-digit afternoon heat indices for months, cooling at night when skies clear. July–August storms bring drama — virga, dust, localized downpours — but annual totals stay low. Winter is the pleasant season outsiders underestimate.",
+    experience: {
+      feel: "Hermosillo feels like core Sonoran desert government — triple-digit afternoon heat indices for months, clear-night cooling, July–August monsoon virga and dust, and winter afternoons outsiders underestimate at 25°C.",
       seasons: {
-        winter: "Warm winter window — afternoons near 25°C, nights near 8.3°C — weather stays moderate and changeable.",
-        spring: "Heating up fast — afternoons near 33.7°C, nights near 14.3°C — skies stay relentlessly clear and dry.",
-        summer: "Peak desert heat — afternoons near 40.3°C, nights near 24°C — showers pass through regularly. Midday outdoor life often shifts to dawn and dusk. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Shoulder season — afternoons near 33.7°C, nights near 16.3°C — weather stays moderate and changeable.",
+        winter: "Pleasant-season peak — afternoons near 25°C, nights near 8°C, clear skies, and the comfortable window snowbirds miss.",
+        spring: "Heating toward danger — highs climbing through the mid-30s, relentless dry sun, and outdoor life shifting to dawn and dusk by May.",
+        summer: "Extreme heat and monsoon — highs near 40°C, nights near 24°C, isolated convective bombs with virga and dust, midday outdoor life impractical without shade.",
+        autumn: "Heat lingering — highs still near 34°C through October, storm activity easing, and dry heat returning before mild winter.",
       },
       travelerFit: "Visitors come for Bahía de Kino day trips and desert ecotours.",
       residentFit: "It rewards dry-heat devotees — especially desert-industry workers — who can accept the local tradeoffs.",
@@ -3226,13 +3226,13 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A dry highland capital where Sierra Madre monsoon storms interrupt bright, cool-night plateau weather.",
     summaryImmersive: "Durango is not tropical Mexico. Its elevation keeps nights crisp, the dry season is bright and dusty, and summer storms build off the Sierra Madre Occidental. The city sits in a broad basin, so stagnant winter mornings and strong day-night swings both belong to the lived climate.",
     whyDistinct: "Interior elevation and monsoon-edge exposure create a highland dry climate with stronger summer thunderstorm seasonality than the Bajío.",
-                experience: {
-      feel: "Durango is not tropical Mexico. Its elevation keeps nights crisp, the dry season is bright and dusty, and summer storms build off the Sierra Madre Occidental. The city sits in a broad basin, so stagnant winter mornings and strong day-night swings both belong to the lived climate.",
+    experience: {
+      feel: "Durango feels like a high interior basin at 1,880 m — not tropical Mexico, with crisp nights, bright dusty dry seasons, Sierra Madre monsoon storms in summer, and winter basin inversions pooling cold air.",
       seasons: {
-        winter: "Warm winter window — afternoons near 20.7°C, nights near 2°C — skies stay mostly dry with intense sun.",
-        spring: "Heating up fast — afternoons near 28°C, nights near 9°C — skies stay relentlessly clear and dry.",
-        summer: "Warm season peak — afternoons near 29.3°C, nights near 14.3°C — rain is frequent and can be heavy. Water supply and irrigation stress matter.",
-        autumn: "Shoulder season — afternoons near 25.3°C, nights near 8°C — weather stays moderate and changeable.",
+        winter: "Basin inversion season — afternoons near 21°C, nights near 2°C, stagnant cold mornings, and dry intense plateau sun.",
+        spring: "Dust and heat — afternoons climbing toward 28°C, relentlessly clear before monsoon build-up, and wind-blown highland grassland.",
+        summer: "Monsoon drama — highs near 29°C, concentrated July–August storms off the Sierra Madre, arroyo pulses, and cooler nights than lowland Mexico.",
+        autumn: "Storm taper — highs falling through 25°C, September rains easing, historic-center evenings cooling fast, and dry clarity returning.",
       },
       travelerFit: "Visitors come for Sierra Madre road trips and historic center.",
       residentFit: "It rewards people who like highland sun, cool nights, and monsoon-season drama without lowland humidity — especially dry-climate seekers — who can accept the local tradeoffs.",

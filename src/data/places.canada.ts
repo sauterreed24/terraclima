@@ -1554,13 +1554,13 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Vancouver Island's east-side rain shadow — Canada's closest climate analog to coastal California's Mediterranean pocket.",
     summaryImmersive: "Qualicum Beach and the mid-island east coast lie in the rain shadow of Vancouver Island's mountain spine. Annual precipitation (~960 mm) is less than half of Tofino's 3500 mm across the island. Summers are dry, sunny, and mild (highs 22°C, lows 12°C); winters are wetter but still mild. The climate supports Garry oak savanna — a Mediterranean-affiliated ecosystem rare in Canada — and the retirement-town character of the coast reflects the unusually pleasant climate.",
     whyDistinct: "Island-spine rain shadow plus Salish Sea moderation produces a rare Mediterranean-type climate in Canada.",
-                experience: {
-      feel: "Qualicum Beach and the mid-island east coast lie in the rain shadow of Vancouver Island's mountain spine. Annual precipitation (~960 mm) is less than half of Tofino's 3500 mm across the island. Summers are dry, sunny, and mild (highs 22°C, lows 12°C); winters are wetter but still mild.",
+    experience: {
+      feel: "Qualicum Beach feels like Canada's Mediterranean pocket — east-side Vancouver Island rain shadow dropping annual rain below 1,000 mm, dry sunny summers near 23°C, Garry oak savanna, and retirement-town mildness with Salish Sea air capping heat spikes.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7.6°C, nights near 1.6°C — rain is frequent and can be heavy.",
-        spring: "Green-up and storms — afternoons near 14.4°C, nights near 5.2°C — showers pass through regularly. Green-up arrives against a wet 970 mm annual backdrop.",
-        summer: "Cool summer by latitude — afternoons near 22°C, nights near 11.3°C — cool, changeable marine-influenced weather.",
-        autumn: "Shoulder season — afternoons near 14.8°C, nights near 6.9°C — rain is frequent and can be heavy.",
+        winter: "Wet but mild — afternoons near 8°C, nights near 2°C, frequent Pacific rain unlike the outer west coast, and short daylight on the Strait side.",
+        spring: "Rain-shadow green-up — afternoons climbing toward 14°C, Garry oaks leafing, last heavy showers in April, and island-spine contrast sharpening.",
+        summer: "Dry peak — highs near 23°C, nights near 12°C, Canada's clearest summer window, beaches and vineyards in full sun.",
+        autumn: "Returning rains — highs falling through 15°C, October storms returning, second-home owners leaving, and mushroom season in Douglas-fir.",
       },
       travelerFit: "Visitors come for beaches and Pacific Rim gateway.",
       residentFit: "It rewards those chasing Mediterranean mild at a Canadian latitude — especially retirees — who can accept the local tradeoffs.",
