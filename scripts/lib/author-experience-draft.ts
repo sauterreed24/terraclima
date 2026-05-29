@@ -143,12 +143,43 @@ function seasonContext(place: Place, key: SeasonKey): string {
     return `Spring is when ${driverPhrase(place).toLowerCase()} is easiest to read on the ground`;
   }
   if (key === "autumn") {
-    return `Autumn often brings the clearest light and the most honest tradeoffs for ${archetypeLabel(place)}`;
+    if (place.archetypes.includes("hurricane-coast")) {
+      return "Tropical systems can still shape the calendar deep into fall";
+    }
+    return "Clear light returns as humidity eases";
   }
   if (key === "winter" && place.relocationFit[0]) {
     return `Winter rewards ${place.relocationFit[0]} who accept the cold season`;
   }
   return `${place.biome} defines the daily backdrop`;
+}
+
+function seasonHeadline(place: Place, key: SeasonKey, highC: number, snowMean: number | null): string {
+  if (key === "winter") {
+    if (highC <= -8) return "Deep freeze";
+    if (highC <= 2 && (snowMean ?? 0) >= 12) return "Cold and snowy";
+    if (highC <= 5) return "Cold and sharp";
+    if (highC <= 12) return "Mild by northern standards";
+    if (highC <= 18) return "Mild and workable";
+    return "Warm winter window";
+  }
+  if (key === "spring") {
+    if ((snowMean ?? 0) >= 8) return "Late thaw";
+    if (highC >= 28) return "Heating up fast";
+    if (getAnnualPrecipMm(place) >= 900) return "Green-up and storms";
+    return "Spring opens";
+  }
+  if (key === "summer") {
+    if (highC >= 36) return "Peak desert heat";
+    if (highC >= 32) return "Hot and humid";
+    if (highC >= 26) return "Warm season peak";
+    return "Cool summer by latitude";
+  }
+  if (highC <= 8) return "Autumn fade";
+  if (place.archetypes.includes("hurricane-coast") || place.risks.coastal.level === "high" || place.risks.coastal.level === "very-high") {
+    return "Hurricane-season tail";
+  }
+  return "Shoulder season";
 }
 
 function buildSeasonDetail(place: Place, key: SeasonKey): string {
@@ -163,10 +194,10 @@ function buildSeasonDetail(place: Place, key: SeasonKey): string {
   const weather = seasonWeather(precipMean, snowMean, humidityMean, sunshineMean, place.koppen);
   const risk = topRiskPhrase(place, key);
   const context = seasonContext(place, key);
-  const opener = SEASON_OPENERS[key][place.id.length % SEASON_OPENERS[key].length]!;
+  const headline = seasonHeadline(place, key, highC, snowMean);
 
   const parts = [
-    `${opener} with afternoons near ${highC}°C and nights near ${lowC}°C — ${weather}.`,
+    `${headline} — afternoons near ${highC}°C, nights near ${lowC}°C — ${weather}.`,
     context.endsWith(".") ? context : `${context}.`,
   ];
   if (risk) parts.push(`${risk}.`);
@@ -300,8 +331,10 @@ export function isAutoDraftedExperience(place: Place): boolean {
   const exp = place.experience;
   if (!exp) return false;
   const seasons = Object.values(exp.seasons ?? {}).join(" ");
-  // Hand-authored batch metros use qualitative bands; auto-drafts embed "afternoons near N°C".
-  return /with afternoons near [-−]?\d/.test(seasons);
+  // Legacy template: "Winter settles in with afternoons near…"
+  if (/with afternoons near [-−]?\d/.test(seasons)) return true;
+  // Older openers before headline rewrite
+  return /^(Winter settles in|The cold season|Deep winter|Winter runs|The thaw season|Spring opens|Spring arrives|High season|Summer peaks|Summer settles|Autumn turns|Autumn light|Fall shoulder|The warm months|As spring builds)/.test(seasons);
 }
 
 export function formatExperienceBlock(draft: AuthoredExperienceDraft, indent = "    "): string {

@@ -1,0 +1,56 @@
+/**
+ * Refresh generic backfill deepSections (-mechanism / -field-read) with the
+ * latest draft generator. Skips hand-authored metros and custom section ids.
+ *
+ * Run: `tsx scripts/refresh-deep-sections-corpus.ts`
+ */
+import { PLACES } from "../src/data/places";
+import { draftDeepSections, formatDeepSectionsBlock } from "./lib/draft-deep-section";
+import { findFileForPlace, placeBlockWindow, readCorpusFile, writeCorpusFile } from "./lib/corpus-place-io";
+
+const SKIP_IDS = new Set([
+  "new-orleans-la", "charleston-sc", "tucson-az", "anchorage-ak", "mobile-al",
+  "savannah-ga", "buffalo-ny", "chattanooga-tn", "spokane-wa", "austin-tx",
+  "washington-dc", "honolulu-hi", "monterrey-mx", "puebla-mx", "queretaro-mx",
+  "des-moines-ia", "columbia-sc", "wilmington-de", "ensenada-mx", "zacatecas-mx",
+]);
+
+function isGenericBackfill(sections: { id: string }[]): boolean {
+  if (sections.length !== 2) return false;
+  const ids = sections.map(s => s.id);
+  return ids.some(id => id.endsWith("-mechanism")) && ids.some(id => id.endsWith("-field-read"));
+}
+
+function replaceDeepSections(src: string, id: string, block: string): string | null {
+  const win = placeBlockWindow(src, id);
+  if (!win) return null;
+  const match = /\bdeepSections:\s*\[[\s\S]*?\n\s*\],/.exec(win.block);
+  if (!match || match.index == null) return null;
+  const absStart = win.start + match.index;
+  const absEnd = absStart + match[0].length;
+  return `${src.slice(0, absStart)}${block}\n${src.slice(absEnd)}`;
+}
+
+const fileCache = new Map<string, string>();
+let refreshed = 0;
+let skipped = 0;
+
+for (const place of PLACES) {
+  if (SKIP_IDS.has(place.id) || !place.deepSections?.length) continue;
+  if (!isGenericBackfill(place.deepSections)) {
+    skipped += 1;
+    continue;
+  }
+  const file = findFileForPlace(place.id);
+  if (!file) continue;
+  const src = fileCache.get(file) ?? readCorpusFile(file);
+  const block = formatDeepSectionsBlock(draftDeepSections(place));
+  const next = replaceDeepSections(src, place.id, block);
+  if (next && next !== src) {
+    fileCache.set(file, next);
+    refreshed += 1;
+  }
+}
+
+for (const [rel, src] of fileCache) writeCorpusFile(rel, src);
+console.log(`refresh-deep-sections-corpus: refreshed ${refreshed}, skipped ${skipped} custom sets.`);

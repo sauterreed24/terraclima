@@ -279,6 +279,8 @@ async function main(): Promise<void> {
     "spokane-wa", "austin-tx", "washington-dc", "honolulu-hi",
     "new-orleans-la", "charleston-sc", "tucson-az", "anchorage-ak",
     "mobile-al", "savannah-ga", "buffalo-ny", "chattanooga-tn",
+    "monterrey-mx", "puebla-mx", "queretaro-mx", "des-moines-ia",
+    "columbia-sc", "wilmington-de",
   ];
   for (const id of tierCLiveIds) {
     const place = PLACES.find(p => p.id === id);
