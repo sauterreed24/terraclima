@@ -44,6 +44,7 @@ describe("theme-tokens", () => {
       "html[data-theme=\"dark\"] .living-compass__rank-row",
       "html[data-theme=\"dark\"] .lens-receipt",
       "html[data-theme=\"dark\"] .tc-accent-panel",
+      "html[data-theme=\"dark\"] .climate-scenario",
       ".tc-modal-scrim",
       ".tc-nav-btn--active",
     ];

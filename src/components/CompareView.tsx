@@ -308,7 +308,7 @@ export function CompareView({
               })}
               </div>
             </div>
-            <p className="text-[11px] text-stone mt-2 px-1 leading-snug">
+            <p className="text-caption text-stone-readable mt-2 px-1 leading-snug">
               * Feels-like (UTCI-style) is a warm-season heat-and-humidity strain screen from air temperature and relative humidity only — no wind, solar, or radiant-temperature inputs. Not a true UTCI value.
             </p>
             </div>

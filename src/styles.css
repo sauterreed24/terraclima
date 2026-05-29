@@ -6400,6 +6400,12 @@ html[data-theme="dark"] .climate-scenario__opt[data-active="true"] {
   background: rgba(18, 26, 44, 0.96);
   box-shadow: var(--tc-shadow-inset);
 }
+html[data-theme="dark"] .comfort-precision-card,
+html[data-theme="dark"] .comfort-precision-month {
+  background: rgba(18, 26, 44, 0.72);
+  border-color: rgba(120, 138, 178, 0.24);
+  box-shadow: var(--tc-shadow-inset);
+}
 
 /* Reading nav strip in dossier. */
 html[data-theme="dark"] .place-detail-reading-nav,
