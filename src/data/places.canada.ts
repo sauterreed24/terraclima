@@ -33,7 +33,7 @@ export const PLACES_CANADA: Place[] = [
       seasons: {
         winter: "Short and cold by valley standards — afternoons hovering near freezing, nights near −6°C, a little snow that comes and goes. The desert sleeps under low, often-gray skies.",
         spring: "The valley wakes fast: orchards and vineyards blossom, afternoons climb through the teens into the 20s, and the sun returns in force while the benches stay dry.",
-        summer: "Among the hottest summers in Canada outside the deep interior — afternoons near 31°C under blazing sun, single-digit-humidity dry, with the warm lake softening mild evenings. Beach-and-vineyard weather at 49° north.",
+        summer: "Among the hottest summers in Canada outside the deep interior — afternoons near 31°C under blazing sun, the air tinder-dry, with the warm lake softening mild evenings. Beach-and-vineyard weather at 49° north.",
         autumn: "Harvest light: warm, golden days easing through the 20s into the teens, cool nights firming up the wine grapes, and dry skies holding well into October.",
       },
       travelerFit: "Visitors come for hot-climate wineries, the warmest swimming lake in Canada, and desert ecology found nowhere else in the country.",
@@ -357,6 +357,18 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's mildest major city — a Mediterranean-leaning rain-shadow pocket on the Pacific.",
     summaryImmersive: "Victoria sits in the rain shadow of the Olympic Mountains, 60 km south across the Strait of Juan de Fuca. Annual precipitation is roughly half of Vancouver's across the strait. Summers are dry and mild; winters are the softest in Canada — rare freezes, almost no snow, daffodils in February. The Garry oak meadows and arbutus on southern Vancouver Island are the northernmost examples of a Mediterranean-adjacent plant community in North America.",
     whyDistinct: "The Olympic rain shadow extends across the Strait of Juan de Fuca and up onto the Saanich Peninsula. Marine influence moderates temperature in every season.",
+    experience: {
+      feel: "Victoria feels like the softest corner of Canada. Tucked in the Olympic rain shadow across the strait, it gets roughly half of Vancouver's rain, almost no snow, and daffodils in February — a Garry-oak, Mediterranean-leaning pocket on the Pacific.",
+      seasons: {
+        winter: "The mildest in the country — afternoons near 8°C, frost rare, snow rarer still, and the rain arriving soft and gray rather than harsh. Gardens never fully shut down.",
+        spring: "Famously early: blossoms by February, afternoons climbing through the teens, and the rain easing as the dry season builds while the rest of Canada thaws.",
+        summer: "Dry, mild, and bright — afternoons near 21°C with low humidity and long northern daylight. Air conditioning is an afterthought; the sea keeps the heat honest.",
+        autumn: "Gentle and golden before the wet returns — mild afternoons, the arbutus peeling, and the first big Pacific fronts rolling in by November.",
+      },
+      travelerFit: "Visitors come for the Inner Harbour and Butchart Gardens, whale watching, and Vancouver Island's mild outdoor life.",
+      residentFit: "It rewards retirees, gardeners, and mild-weather seekers who want walkable city life with the gentlest winter in Canada.",
+      texture: "An easy maritime life with a catch: the main things to weigh are gray, wet winters, island access and ferry logistics, and high coastal housing costs.",
+    },
     climate: {
       tempHighC: [7.6, 9.1, 11.2, 13.6, 16.5, 18.9, 21.4, 21.6, 19.7, 14.6, 9.9, 7.1],
       tempLowC:  [1.4, 1.8, 3.1, 4.7, 7.3, 9.8, 11.6, 11.7, 9.8, 7.0, 3.8, 1.6],
