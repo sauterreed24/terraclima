@@ -23,6 +23,8 @@ const SKIP_IDS = new Set([
   "prescott-az", "cloudcroft-nm", "crested-butte-co", "leadville-co",
   "forks-wa", "point-reyes-ca", "marquette-mi", "houghton-mi", "joseph-or",
   "sitka-ak", "valdez-ak", "stanley-id", "mount-washington-nh", "yuma-az",
+  "cuatrocienegas-mx", "real-catorce-mx", "la-ventosa-mx", "cypress-hills-sk",
+  "dawson-city-yt", "churchill-mb", "twillingate-nl", "xilitla-mx", "xalapa-mx", "grand-manan-nb",
 ]);
 
 const fileCache = new Map<string, string>();

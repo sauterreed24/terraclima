@@ -82,25 +82,35 @@ function draftAccessFriction(place: Place): number {
   return clamp(score);
 }
 
+export function isGenericLiveSignalsNote(note: string | undefined): boolean {
+  if (!note?.trim()) return true;
+  if (note.trim().length < 48) return true;
+  return /\bscreening:\b|Atlas-grade read — confirm on the ground/.test(note);
+}
+
 function buildNote(place: Place, cost: number, social: number, access: number): string {
-  const name = shortName(place);
   const parts: string[] = [];
 
-  if (cost >= 68) parts.push("housing runs expensive relative to regional medians");
-  else if (cost <= 38) parts.push("cost pressure is relatively modest for the region");
-  else parts.push("cost sits in a middle band — verify rents and insurance locally");
+  if (cost >= 68) parts.push("Housing runs above regional medians");
+  else if (cost <= 38) parts.push("Housing pressure is relatively modest for the region");
+  else parts.push("Verify rents and insurance locally before committing");
 
-  if (access >= 65) parts.push("specialty care, major airports, or all-weather road access need real planning");
-  else if (access <= 35) parts.push(`${place.municipality ?? name} anchors daily services within reasonable reach`);
-  else parts.push("service access is workable but not metro-dense — confirm hospital and airport distances");
+  if (access >= 65) parts.push("Specialty care and major-airport access need real planning");
+  else if (access <= 35) {
+    parts.push(`${place.municipality ?? shortName(place)} anchors daily services within reasonable reach`);
+  } else parts.push("Confirm hospital and airport distances for your needs");
 
-  if (social >= 55) parts.push("visible civic or tourism stress shows up in resident reviews");
-  else if (social <= 28) parts.push("community fabric reads quieter than larger regional hubs");
+  if (social >= 55) parts.push("Visible civic or tourism stress shows up in resident reviews");
 
-  const hook = place.whoMightNot.replace(/\.$/, "").slice(0, 90);
-  if (hook.length > 20) parts.push(`Poor fit if: ${hook.charAt(0).toLowerCase()}${hook.slice(1)}`);
+  const hook = place.whoMightNot.replace(/\.$/, "");
+  if (hook.length > 12 && hook.length < 100) {
+    parts.push(`A poor fit for ${hook.charAt(0).toLowerCase()}${hook.slice(1)}`);
+  }
 
-  return `${name} screening: ${parts.slice(0, 3).join("; ")}. Atlas-grade read — confirm on the ground before committing.`;
+  if (parts.length === 0) {
+    return "Confirm rents, insurance, and seasonal access on the ground before treating atlas normals as daily-life certainty.";
+  }
+  return `${parts.slice(0, 3).join("; ")}.`;
 }
 
 function buildSources(place: Place): { label: string; url?: string }[] {

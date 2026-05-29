@@ -894,7 +894,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Aptly named — a rain-shadow pocket on mainland BC with ~30% more sun than Vancouver.",
     summaryImmersive: "The Sunshine Coast sits partially in the lee of Vancouver Island's spine, receiving noticeably more sun and less rain than the nearby mainland and the outer island coast. Mild winters, warm-ish summers by Pacific standards, and reliable shoulder seasons.",
     whyDistinct: "Vancouver Island's Beaufort Range casts a meaningful rain shadow on the mainland's adjacent coast.",
-            experience: {
+                experience: {
       feel: "The Sunshine Coast sits partially in the lee of Vancouver Island's spine, receiving noticeably more sun and less rain than the nearby mainland and the outer island coast. Mild winters, warm-ish summers by Pacific standards, and reliable shoulder seasons.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 7°C, nights near 1.4°C — rain is frequent and can be heavy.",
@@ -902,8 +902,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 21.5°C, nights near 11.9°C — cool, changeable marine-influenced weather.",
         autumn: "Shoulder season — afternoons near 14.3°C, nights near 6.8°C — rain is frequent and can be heavy.",
       },
-      travelerFit: "Visitors come for Pacific shoulder-season — the practical way to experience rain-shadow sanctuary terrain in British Columbia.",
-      residentFit: "It rewards bC coastal dreamers — especially remote workers — if the local tradeoffs still feel acceptable after a full season in Sechelt.",
+      travelerFit: "Visitors come for Pacific shoulder-season.",
+      residentFit: "It rewards bC coastal dreamers — especially remote workers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — no single hazard dominates the picture. Ferry-linked Sunshine Coast housing runs below Metro Vancouver but still tight; Gibsons/Sechelt groceries and specialist care often mean a Vancouver-bound trip.",
     },
     climate: { tempHighC: [6.6, 7.8, 10.3, 13.4, 17.1, 19.5, 22.4, 22.6, 19.6, 14.0, 9.2, 6.6], tempLowC: [1.3, 1.4, 2.8, 4.7, 8.0, 10.9, 12.4, 12.5, 10.1, 6.7, 3.6, 1.6], precipMm: [180, 135, 110, 75, 50, 40, 25, 30, 50, 130, 220, 200], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 1245, frostFreeDays: 220, hardinessZone: "8a", sunshinePct: [55, 58, 59, 67, 72, 79, 76, 76, 69, 76, 60, 54] },
@@ -925,7 +925,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "retirees"], travelFit: ["Pacific shoulder-season"],
     whoWouldLove: "BC coastal dreamers.", whoMightNot: "Those needing heat or urban services.",
     confidence: "moderate",
-            deepSections: [
+                deepSections: [
       {
         id: "sunshine-coast-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -957,7 +957,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Rain-shadow Gulf Island with a Mediterranean microclimate and slow island culture.",
     summaryImmersive: "The Southern Gulf Islands receive roughly half of Vancouver's precipitation — the Olympic rain shadow extends this far north and east. Salt Spring's sheltered bays and Garry oak meadows reveal a climate more Mediterranean than most of coastal BC.",
     whyDistinct: "Olympic rain shadow + Gulf Island shelter + marine moderation.",
-            experience: {
+                experience: {
       feel: "Salt Spring Island — the Southern Gulf Islands receive roughly half of Vancouver's precipitation — the Olympic rain shadow extends this far north and east. Salt Spring's sheltered bays and Garry oak meadows reveal a climate more Mediterranean than most of coastal BC.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 7.3°C, nights near 1.9°C — rain is frequent and can be heavy.",
@@ -965,8 +965,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 21.4°C, nights near 11.3°C — cool, changeable marine-influenced weather.",
         autumn: "Shoulder season — afternoons near 14.3°C, nights near 6.8°C — showers pass through regularly.",
       },
-      travelerFit: "Visitors come for island farm tour — the practical way to experience rain-shadow sanctuary terrain in British Columbia.",
-      residentFit: "It rewards slow-island small-farm romantics — especially artist-farmers — if the local tradeoffs still feel acceptable after a full season in Salt Spring Island.",
+      travelerFit: "Visitors come for island farm tour.",
+      residentFit: "It rewards slow-island small-farm romantics — especially artist-farmers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — no single hazard dominates the picture. Gulf-Islands ferry schedule and tourism-tightened housing shape day-to-day logistics; Saanich and Victoria are an hour-plus ferry+drive away.",
     },
     climate: { tempHighC: [6.9, 8.2, 10.8, 13.7, 17.1, 19.5, 22.3, 22.5, 19.6, 13.9, 9.3, 6.8], tempLowC: [1.8, 1.9, 3.1, 4.7, 7.6, 10.2, 11.8, 12.0, 9.9, 6.6, 3.9, 2.1], precipMm: [130, 92, 74, 45, 32, 28, 18, 22, 32, 70, 136, 144], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 823, frostFreeDays: 230, hardinessZone: "8b", sunshinePct: [53, 56, 57, 66, 71, 77, 75, 74, 68, 74, 59, 52] },
@@ -988,7 +988,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["artist-farmers", "off-grid"], travelFit: ["island farm tour"],
     whoWouldLove: "Slow-island small-farm romantics.", whoMightNot: "Those needing services.",
     confidence: "moderate",
-            deepSections: [
+                deepSections: [
       {
         id: "salt-spring-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -1020,7 +1020,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Okanagan Lake thermal moderation plus rain-shadow dryness — the heart of BC wine country.",
     summaryImmersive: "Summerland sits mid-Okanagan on benches above the lake. Lake moderation buffers winter; rain-shadow dryness and long summer sun power one of Canada's finest orchard-vineyard climates.",
     whyDistinct: "Combination of deep-lake moderation and rain-shadow aridity; south-facing benches enjoy thermal-belt advantages.",
-            experience: {
+                experience: {
       feel: "Summerland sits mid-Okanagan on benches above the lake. Lake moderation buffers winter; rain-shadow dryness and long summer sun power one of Canada's finest orchard-vineyard climates.",
       seasons: {
         winter: "Cold and snowy — afternoons near 0.4°C, nights near -6°C — snow is a regular part of the picture.",
@@ -1028,8 +1028,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Warm season peak — afternoons near 27.2°C, nights near 12.2°C — weather stays moderate and changeable. Wildfire and smoke are summer wildcards.",
         autumn: "Shoulder season — afternoons near 13.7°C, nights near 3.2°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for wine tours — the practical way to experience orchard valley terrain in British Columbia.",
-      residentFit: "It rewards wine-country people — especially viticulturalists — if the local tradeoffs still feel acceptable after a full season in Summerland.",
+      travelerFit: "Visitors come for wine tours.",
+      residentFit: "It rewards wine-country people — especially viticulturalists — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are wildfire exposure and smoke-season air quality. Housing runs expensive relative to regional medians.",
     },
     climate: { tempHighC: [-0.8, 2.4, 9.6, 15.4, 20.3, 24.6, 28.6, 28.3, 22.7, 13.6, 4.9, -0.5], tempLowC: [-6.8, -5.2, -1.1, 2.8, 7.0, 10.7, 13.1, 12.7, 8.4, 3.2, -2.1, -5.9], precipMm: [26, 18, 20, 24, 35, 44, 32, 28, 24, 22, 28, 30], snowCm: [25, 12, 4, 0, 0, 0, 0, 0, 0, 1, 8, 22], humidity: [80, 72, 62, 52, 50, 50, 46, 48, 54, 66, 78, 82], sunshinePct: [25, 38, 52, 60, 66, 70, 80, 78, 66, 46, 28, 22], annualPrecipMm: 333, frostFreeDays: 170, hardinessZone: "6a" },
@@ -1042,7 +1042,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Summerland screening: housing runs expensive relative to regional medians; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing runs above regional medians; A poor fit for smoke-sensitive.",
       sources: [
       { label: "ECCC — Summerland CDA", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1052,7 +1052,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulturalists", "orchardists"], travelFit: ["wine tours"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "summerland-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1085,16 +1085,16 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Twelve-meter Fundy tides cycle enormous volumes of cold water past the island, producing a dramatically moderated maritime climate: cool wet summers, mild winters, relentless fog, and a salt-scrubbed plant community.",
     whyDistinct: "The Fundy tidal engine keeps local SSTs cool in summer and warm(er) than air in winter.",
             experience: {
-      feel: "Grand Manan Island — twelve-meter Fundy tides cycle enormous volumes of cold water past the island, producing a dramatically moderated maritime climate: cool wet summers, mild winters, relentless fog, and a salt-scrubbed plant community.",
+      feel: "Grand Manan feels like Fundy's tidal engine made habitable — twelve-metre tides cycling cold water past the island, producing cool wet summers, mild winters, relentless fog, and a salt-scrubbed plant community on one of the Maritimes' most moderated coasts.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -0.2°C, nights near -6.7°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 7.6°C, nights near 0.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1184 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 20.5°C, nights near 12.5°C — showers pass through regularly. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 12.8°C, nights near 5.7°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+      winter: "Mild for latitude — afternoons near 0°C, nights near −7°C, storm fronts stacking in the Bay, and ferry schedules dictating daily life.",
+      spring: "Slow green-up — afternoons climbing through single digits, seabird colonies returning, and fog still dominating most mornings.",
+      summer: "Cool and wet — highs near 21°C, puffin and whale season, and the payoff for fog-tolerant residents in deep-Fundy light.",
+      autumn: "Storm season — October gales on Fundy, hardwood color on the headlands, and the last ferry windows before winter tightens.",
       },
-      travelerFit: "Visitors come for whales and puffins — the practical way to experience hyper-maritime terrain in New Brunswick.",
-      residentFit: "It rewards deep-Fundy lovers — especially hardy maritime families — if the local tradeoffs still feel acceptable after a full season in Grand Manan.",
-      texture: "An easier place to settle into at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Island groceries and year-round services are limited; Saint John and Calais are the usual ferry-linked anchors for specialists and flights.",
+      travelerFit: "Visitors come for whales, puffins, and Bay of Fundy tide watching.",
+      residentFit: "It rewards deep-Fundy lovers and hardy maritime families who accept island grocery limits and fog.",
+      texture: "An easier maritime island — the main things to weigh are storm exposure, coastal pressure, and ferry-linked access to Saint John and Calais for specialists.",
     },
     climate: { tempHighC: [-1.4, -1.1, 2.1, 7.4, 13.4, 18.1, 21.6, 21.8, 18.4, 12.9, 7.1, 1.9], tempLowC: [-7.6, -7.9, -4.3, 0.3, 5.0, 10.1, 13.6, 13.7, 10.3, 5.6, 1.1, -4.6], precipMm: [110, 92, 100, 92, 94, 82, 78, 78, 98, 112, 122, 126], humidity: [87, 87, 76, 72, 73, 71, 66, 68, 71, 75, 81, 87], sunshinePct: [39, 45, 48, 56, 49, 53, 46, 43, 34, 41, 37, 34], annualPrecipMm: 1184, frostFreeDays: 170, hardinessZone: "6a" },
     soil: { texture: "Thin sandy loam on metamorphic bedrock", drainage: "good", phRange: [5.2, 6.0], waterHolding: "low" },
@@ -1117,19 +1117,19 @@ export const PLACES_CANADA: Place[] = [
     confidence: "moderate",
             deepSections: [
       {
-        id: "grand-manan-nb-mechanism",
-        title: "Hyper-Maritime mechanics",
+        id: "grand-manan-fundy-tides",
+        title: "Fundy tidal moderation",
         paragraphs: [
-          "Grand Manan Island sits where island in the Bay of Fundy; extreme tidal moderation. Dfb / Cfb transition normals and roughly 1184 mm/yr frame the regional baseline, but Marine layer re-weight what any single forecast means block by block.",
-          "The Fundy tidal engine keeps local SSTs cool in summer and warm(er) than air in winter. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Grand Manan sits in the Bay of Fundy where twelve-metre tides cycle enormous volumes of cold water past the island — local sea-surface temperatures stay cool in summer and warm relative to air in winter, producing one of the Maritimes' most moderated maritime climates at roughly 1,180 mm annually.",
+          "Fog and salt exposure shape the Acadian coastal forest community as much as latitude. Two coves on the same island can differ sharply on wind fetch and spray load.",
         ],
       },
       {
-        id: "grand-manan-nb-field-read",
-        title: "On-the-ground read",
+        id: "grand-manan-island-access",
+        title: "Island logistics and storm exposure",
         paragraphs: [
-          "Bay of Fundy tides create one of the Maritimes' most moderated climates. Soils read as thin sandy loam on metamorphic bedrock with good drainage (pH 5.2–6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Native perennials, Cool-season vegetables, Berries. Fog-intolerant should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Thin sandy loam on metamorphic bedrock suits native perennials and cool-season vegetables; long-season fruit struggles. Storm and coastal exposure register elevated — verify bluff and wharf parcel history.",
+          "Island groceries and year-round services are limited; Saint John and Calais are the usual ferry-linked anchors for specialists and flights. Fog-intolerant residents should trial a full shoulder season before committing.",
         ],
       },
     ],
@@ -1147,7 +1147,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "A quiet BC orchard valley with fertile soils and protected climate — Kootenay fruit country.",
     summaryImmersive: "Creston sits in a broad valley between two great ranges. Partial rain shadow, long summer days, fertile silt soils, and extensive wetlands support a steady fruit and grain economy.",
     whyDistinct: "Valley position between Selkirks and Purcells provides partial shelter and fertile alluvial soils.",
-            experience: {
+                experience: {
       feel: "Creston Valley — creston sits in a broad valley between two great ranges. Partial rain shadow, long summer days, fertile silt soils, and extensive wetlands support a steady fruit and grain economy.",
       seasons: {
         winter: "Cold and sharp — afternoons near -0.1°C, nights near -6.7°C — humid air keeps everything soft and close.",
@@ -1155,8 +1155,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 25.8°C, nights near 11.5°C — showers pass through regularly. Wildfire and smoke are summer wildcards.",
         autumn: "Shoulder season — afternoons near 12.9°C, nights near 2.7°C — humid air keeps everything soft and close. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for wildlife area and orchards — the practical way to experience orchard valley terrain in British Columbia.",
-      residentFit: "It rewards quiet Kootenay folk — especially small-farm families — if the local tradeoffs still feel acceptable after a full season in Creston.",
+      travelerFit: "Visitors come for wildlife area and orchards.",
+      residentFit: "It rewards quiet Kootenay folk — especially small-farm families — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are wildfire exposure and smoke-season air quality. Housing runs expensive relative to regional medians.",
     },
     climate: { tempHighC: [-1.2, 2.4, 8.4, 14.6, 19.8, 23.4, 27.2, 26.8, 21.2, 13.2, 4.2, -1.6], tempLowC: [-7.8, -5.3, -1.9, 2.1, 6.4, 10.2, 12.4, 12.0, 7.8, 2.8, -2.6, -6.9], precipMm: [36, 26, 30, 36, 52, 62, 42, 36, 36, 46, 50, 50], annualPrecipMm: 502, frostFreeDays: 155, hardinessZone: "5b", humidity: [85, 85, 77, 74, 73, 70, 61, 64, 66, 72, 83, 81], sunshinePct: [37, 44, 47, 55, 60, 64, 57, 54, 45, 40, 36, 33] },
@@ -1169,7 +1169,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Creston Valley screening: housing runs expensive relative to regional medians; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing runs above regional medians; Confirm hospital and airport distances for your needs.",
       sources: [
       { label: "ECCC — Creston CDA", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1179,7 +1179,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families"], travelFit: ["wildlife area", "orchards"],
     whoWouldLove: "Quiet Kootenay folk.", whoMightNot: "Urbanites.",
     confidence: "moderate",
-            deepSections: [
+                deepSections: [
       {
         id: "creston-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1216,7 +1216,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's only desert-adjacent fruit region — hot dry summers, two big lakes, and a full four-season climate.",
     summaryImmersive: "Penticton sits between two lakes in one of Canada's driest valleys. Deep Pacific rain-shadow produces semi-arid summer conditions; Okanagan Lake's thermal mass moderates winter, allowing tender fruit and viable wine grapes at 49° latitude. Ponderosa pines and sagebrush fill the hillsides — a Canadian landscape with genuinely American-Southwest character. The two big lakes are the difference between living here and living in similar-latitude prairie cold.",
     whyDistinct: "Interior rain-shadow produces true semi-desert conditions; deep lakes moderate and extend the growing season; the combination is unique north of the US border.",
-            experience: {
+                experience: {
       feel: "Penticton sits between two lakes in one of Canada's driest valleys. Deep Pacific rain-shadow produces semi-arid summer conditions; Okanagan Lake's thermal mass moderates winter, allowing tender fruit and viable wine grapes at 49° latitude.",
       seasons: {
         winter: "Cold and snowy — afternoons near 1.3°C, nights near -4.8°C — snow is a regular part of the picture.",
@@ -1224,8 +1224,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Warm season peak — afternoons near 27.1°C, nights near 11.9°C — weather stays moderate and changeable. Wildfire and smoke are summer wildcards.",
         autumn: "Shoulder season — afternoons near 13.9°C, nights near 3.2°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for wine trail and beaches — the practical way to experience rain-shadow sanctuary terrain in British Columbia.",
-      residentFit: "It rewards sun-desiring Canadians — especially winemakers — if the local tradeoffs still feel acceptable after a full season in Penticton.",
+      travelerFit: "Visitors come for wine trail and beaches.",
+      residentFit: "It rewards sun-desiring Canadians — especially winemakers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are wildfire exposure and smoke-season air quality. Housing runs expensive relative to regional medians.",
     },
     climate: { tempHighC: [0.2, 3.6, 9.4, 15.1, 20.6, 24.7, 28.4, 28.1, 22.6, 13.8, 5.4, 0.1], tempLowC: [-5.4, -3.8, -0.9, 2.6, 6.8, 10.4, 12.8, 12.4, 8.1, 3.1, -1.6, -5.1], precipMm: [24, 18, 20, 22, 34, 38, 26, 26, 22, 20, 24, 28], snowCm: [18, 8, 2, 0, 0, 0, 0, 0, 0, 0, 6, 20], humidity: [80, 72, 60, 50, 48, 48, 42, 44, 52, 64, 76, 82], sunshinePct: [25, 38, 52, 62, 68, 70, 80, 78, 68, 48, 28, 22], annualPrecipMm: 302, frostFreeDays: 175, hardinessZone: "6b" },
@@ -1238,7 +1238,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Penticton screening: housing runs expensive relative to regional medians; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing runs above regional medians; Confirm hospital and airport distances for your needs.",
       sources: [
       { label: "ECCC — Penticton 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1248,7 +1248,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers", "orchardists", "retirees"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Sun-desiring Canadians.", whoMightNot: "Fire-averse.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "penticton-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -1281,7 +1281,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "The Thompson River's 'Canada's semi-desert' — sagebrush slopes, hot dry summers, and genuine four-season character.",
     summaryImmersive: "Kamloops sits at the confluence of the North and South Thompson rivers in the deep Coast-Mountains rain shadow. Annual precipitation averages under 300 mm. Summer afternoons push into the 33–36°C range; the hillsides are sagebrush, bunchgrass, and ponderosa pine. Winters are cold-sunny and drier than elsewhere at the latitude. It's Canada's most American-Southwest-feeling small city.",
     whyDistinct: "Double rain-shadow (Coast Range + southern Interior Plateau) produces one of Canada's most arid climates; river confluence concentrates settlement and farming.",
-            experience: {
+                experience: {
       feel: "Kamloops sits at the confluence of the North and South Thompson rivers in the deep Coast-Mountains rain shadow. Annual precipitation averages under 300 mm. Summer afternoons push into the 33–36°C range; the hillsides are sagebrush, bunchgrass, and ponderosa pine.",
       seasons: {
         winter: "Cold and snowy — afternoons near 0.6°C, nights near -6.8°C — snow is a regular part of the picture.",
@@ -1289,8 +1289,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Warm season peak — afternoons near 28.2°C, nights near 12.2°C — weather stays moderate and changeable. Plan around heat that can turn genuinely dangerous.",
         autumn: "Shoulder season — afternoons near 13.8°C, nights near 2.6°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for desert hiking and fly-fishing — the practical way to experience rain-shadow sanctuary terrain in British Columbia.",
-      residentFit: "It rewards dry-climate-loving British Columbians — especially sun-seeking Canadians — if the local tradeoffs still feel acceptable after a full season in Kamloops.",
+      travelerFit: "Visitors come for desert hiking and fly-fishing.",
+      residentFit: "It rewards dry-climate-loving British Columbians — especially sun-seeking Canadians — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and extreme summer heat. Housing runs expensive relative to regional medians.",
     },
     climate: { tempHighC: [-0.6, 3.4, 10.1, 16.1, 21.1, 25.4, 29.8, 29.4, 22.8, 13.6, 5.1, -0.9], tempLowC: [-7.8, -5.4, -1.6, 2.4, 6.8, 10.6, 13.2, 12.8, 8.1, 2.4, -2.8, -7.2], precipMm: [26, 18, 14, 12, 28, 36, 32, 28, 24, 18, 22, 28], snowCm: [22, 10, 4, 0, 0, 0, 0, 0, 0, 0, 8, 22], humidity: [78, 68, 56, 46, 44, 44, 38, 40, 48, 60, 74, 80], sunshinePct: [28, 42, 56, 62, 66, 68, 78, 76, 66, 48, 30, 24], annualPrecipMm: 286, frostFreeDays: 160, hardinessZone: "6b" },
@@ -1303,7 +1303,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Kamloops screening: housing runs expensive relative to regional medians; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing runs above regional medians; A poor fit for fire-smoke-sensitive.",
       sources: [
       { label: "ECCC — Kamloops AP", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1313,7 +1313,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seeking Canadians"], travelFit: ["desert hiking", "fly-fishing"],
     whoWouldLove: "Dry-climate-loving British Columbians.", whoMightNot: "Fire-smoke-sensitive.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "kamloops-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -1425,7 +1425,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's snow capital — over 10 m of annual snowfall on the surrounding peaks, with the town itself deeply snowbound every winter.",
     summaryImmersive: "Revelstoke lies on the Columbia River directly between the Selkirks and Monashees. Pacific moisture that hasn't already rained out on the Coast Range is wrung out here by successive orographic barriers — producing some of the continent's heaviest snowfall zones. The town receives about 4.5 m of annual snowfall at valley level; the ski area on Mount Mackenzie averages 10 m. Summers are mild and green.",
     whyDistinct: "Convergence of Pacific moisture onto Selkirk range after initial Coast-Mountain passage produces exceptional snowfall.",
-            experience: {
+                experience: {
       feel: "Revelstoke lies on the Columbia River directly between the Selkirks and Monashees. Pacific moisture that hasn't already rained out on the Coast Range is wrung out here by successive orographic barriers — producing some of the continent's heaviest snowfall zones.",
       seasons: {
         winter: "Cold and snowy — afternoons near -1°C, nights near -7.4°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
@@ -1433,8 +1433,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 24.2°C, nights near 10.8°C — showers pass through regularly. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 11.1°C, nights near 2°C — heavy snow defines the rhythm. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for ski and powder tourism — the practical way to experience lake-effect snowbelt terrain in British Columbia.",
-      residentFit: "It rewards committed winter people — especially serious skiers — if the local tradeoffs still feel acceptable after a full season in Revelstoke.",
+      travelerFit: "Visitors come for ski and powder tourism.",
+      residentFit: "It rewards committed winter people — especially serious skiers — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are storm exposure and slope stability.",
     },
     climate: { tempHighC: [-2.1, 1.4, 6.8, 12.8, 18.4, 22.1, 25.4, 25.1, 19.1, 11.1, 3.2, -2.4], tempLowC: [-8.6, -6.1, -2.4, 1.4, 5.6, 9.4, 11.8, 11.1, 7.1, 2.1, -3.2, -7.6], precipMm: [94, 66, 64, 60, 70, 76, 62, 62, 64, 108, 128, 118], snowCm: [160, 94, 64, 16, 0, 0, 0, 0, 0, 14, 90, 170], annualPrecipMm: 972, frostFreeDays: 140, hardinessZone: "5b", humidity: [86, 86, 75, 71, 72, 70, 65, 67, 70, 74, 80, 86], sunshinePct: [38, 45, 47, 56, 49, 52, 46, 42, 34, 40, 36, 33] },
@@ -1447,7 +1447,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 64,
       socialStress: 24,
       accessFriction: 60,
-      note: "Revelstoke screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; community fabric reads quieter than larger regional hubs. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for anyone expecting summer heat.",
       sources: [
       { label: "ECCC — Revelstoke 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1457,7 +1457,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["serious skiers", "snow-loving families"], travelFit: ["ski", "powder tourism"],
     whoWouldLove: "Committed winter people.", whoMightNot: "Anyone expecting summer heat.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "revelstoke-bc-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -1490,7 +1490,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Tofino's quieter, equally hyper-maritime twin — storm-watching headquarters on Vancouver Island's exposed outer coast.",
     summaryImmersive: "Ucluelet shares its climate with Tofino — hyper-maritime, cool-summer, intensely wet. Annual precipitation exceeds 3300 mm; winter storms arrive as Pacific gales. Summer highs rarely exceed 19°C; winter lows rarely below 2°C. The temperature range over a year is only about 10°C — practically tropical in variability. Storm-watching as tourism emerged here for a reason.",
     whyDistinct: "Direct North Pacific exposure with no significant upwind land produces extreme maritime moderation.",
-            experience: {
+                experience: {
       feel: "Ucluelet shares its climate with Tofino — hyper-maritime, cool-summer, intensely wet. Annual precipitation exceeds 3300 mm; winter storms arrive as Pacific gales. Summer highs rarely exceed 19°C; winter lows rarely below 2°C.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 7.9°C, nights near 2.9°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -1498,8 +1498,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 17.6°C, nights near 10.9°C — showers pass through regularly. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 13.8°C, nights near 7.8°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for surfing and storm watching — the practical way to experience hyper-maritime terrain in British Columbia.",
-      residentFit: "It rewards those who want Tofino's climate at half the tourism intensity — especially storm-coast romantics — if the local tradeoffs still feel acceptable after a full season in Ucluelet.",
+      travelerFit: "Visitors come for surfing and storm watching.",
+      residentFit: "It rewards those who want Tofino's climate at half the tourism intensity — especially storm-coast romantics — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Housing runs expensive relative to regional medians.",
     },
     climate: { tempHighC: [7.6, 8.4, 9.3, 11.1, 13.8, 16.1, 18.1, 18.6, 17.6, 13.9, 9.8, 7.6], tempLowC: [2.8, 2.8, 3.4, 4.7, 7.4, 9.8, 11.4, 11.6, 10.4, 7.9, 5.1, 3.1], precipMm: [466, 386, 366, 244, 158, 114, 70, 84, 148, 404, 540, 552], humidity: [82, 80, 78, 77, 78, 80, 82, 83, 84, 85, 83, 82], annualPrecipMm: 3532, frostFreeDays: 320, hardinessZone: "8b", sunshinePct: [35, 38, 37, 44, 37, 42, 39, 39, 34, 42, 39, 34] },
@@ -1521,7 +1521,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["storm-coast romantics"], travelFit: ["surfing", "storm watching"],
     whoWouldLove: "Those who want Tofino's climate at half the tourism intensity.", whoMightNot: "Sun-seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "tofino-ucluelet-corridor-mechanism",
         title: "Hyper-Maritime mechanics",
@@ -1554,7 +1554,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Vancouver Island's east-side rain shadow — Canada's closest climate analog to coastal California's Mediterranean pocket.",
     summaryImmersive: "Qualicum Beach and the mid-island east coast lie in the rain shadow of Vancouver Island's mountain spine. Annual precipitation (~960 mm) is less than half of Tofino's 3500 mm across the island. Summers are dry, sunny, and mild (highs 22°C, lows 12°C); winters are wetter but still mild. The climate supports Garry oak savanna — a Mediterranean-affiliated ecosystem rare in Canada — and the retirement-town character of the coast reflects the unusually pleasant climate.",
     whyDistinct: "Island-spine rain shadow plus Salish Sea moderation produces a rare Mediterranean-type climate in Canada.",
-            experience: {
+                experience: {
       feel: "Qualicum Beach and the mid-island east coast lie in the rain shadow of Vancouver Island's mountain spine. Annual precipitation (~960 mm) is less than half of Tofino's 3500 mm across the island. Summers are dry, sunny, and mild (highs 22°C, lows 12°C); winters are wetter but still mild.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 7.6°C, nights near 1.6°C — rain is frequent and can be heavy.",
@@ -1562,8 +1562,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 22°C, nights near 11.3°C — cool, changeable marine-influenced weather.",
         autumn: "Shoulder season — afternoons near 14.8°C, nights near 6.9°C — rain is frequent and can be heavy.",
       },
-      travelerFit: "Visitors come for beaches and Pacific Rim gateway — the practical way to experience rain-shadow sanctuary terrain in British Columbia.",
-      residentFit: "It rewards those chasing Mediterranean mild at a Canadian latitude — especially retirees — if the local tradeoffs still feel acceptable after a full season in Qualicum Beach.",
+      travelerFit: "Visitors come for beaches and Pacific Rim gateway.",
+      residentFit: "It rewards those chasing Mediterranean mild at a Canadian latitude — especially retirees — who can accept the local tradeoffs.",
       texture: "An easier place to settle into at sea level — no single hazard dominates the picture. Island-East retirement belt with Nanaimo / YYJ access via the E&N corridor; cost has tightened with retiree migration but remains below Greater Vancouver.",
     },
     climate: { tempHighC: [6.8, 8.9, 11.4, 14.1, 17.6, 20.2, 22.9, 22.8, 20.1, 14.8, 9.4, 7.0], tempLowC: [1.4, 1.8, 3.1, 4.9, 7.6, 10.1, 11.9, 12.0, 10.1, 6.9, 3.8, 1.6], precipMm: [130, 96, 90, 64, 56, 44, 22, 24, 42, 104, 156, 142], humidity: [78, 72, 66, 58, 56, 56, 54, 56, 62, 72, 78, 80], annualPrecipMm: 970, frostFreeDays: 260, hardinessZone: "8b", sunshinePct: [58, 61, 62, 70, 75, 82, 79, 79, 72, 79, 63, 57] },
@@ -1618,7 +1618,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's rainiest city — 2600 mm of annual precipitation and a fjord-harbor climate that stays between 2 and 16°C year-round.",
     summaryImmersive: "Prince Rupert sits at the mouth of the Skeena River, where Pacific storms slam into the Coast Mountains. Annual precipitation averages over 2600 mm; days of sunshine are few. Winter lows rarely drop below freezing; summer highs rarely exceed 18°C. Fog, drizzle, and low cloud define the sensory character. The historic cannery town of the North Coast is hyper-maritime and truly distinct within Canada.",
     whyDistinct: "Direct Pacific exposure plus Coast Mountain orographic lift produces extreme precipitation; fjord positions buffer temperature.",
-            experience: {
+                experience: {
       feel: "Prince Rupert sits at the mouth of the Skeena River, where Pacific storms slam into the Coast Mountains. Annual precipitation averages over 2600 mm; days of sunshine are few. Winter lows rarely drop below freezing; summer highs rarely exceed 18°C.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 5.3°C, nights near 0.2°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -1626,8 +1626,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 16.2°C, nights near 9.9°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 11.2°C, nights near 5.8°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Skeena fishing and BC Ferries terminus — the practical way to experience hyper-maritime terrain in British Columbia.",
-      residentFit: "It rewards those who want to live in a coastal cloud — especially hyper-maritime devotees — if the local tradeoffs still feel acceptable after a full season in Prince Rupert.",
+      travelerFit: "Visitors come for Skeena fishing and BC Ferries terminus.",
+      residentFit: "It rewards those who want to live in a coastal cloud — especially hyper-maritime devotees — who can accept the local tradeoffs.",
       texture: "A real-tradeoff place — the main things to weigh are storm exposure and flood and surge risk. Specialty care and major-airport access require real planning.",
     },
     climate: { tempHighC: [4.6, 6.1, 7.4, 9.4, 12.3, 14.8, 16.6, 17.1, 14.9, 11.4, 7.4, 5.2], tempLowC: [-0.4, 0.1, 1.1, 2.9, 5.4, 8.4, 10.4, 11.0, 9.1, 5.8, 2.4, 0.8], precipMm: [254, 192, 204, 186, 148, 120, 116, 138, 240, 380, 294, 286], humidity: [82, 80, 78, 77, 78, 80, 82, 83, 84, 85, 83, 82], annualPrecipMm: 2618, frostFreeDays: 220, hardinessZone: "7b", sunshinePct: [32, 35, 34, 40, 33, 38, 35, 35, 30, 39, 35, 30] },
@@ -1649,7 +1649,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hyper-maritime devotees"], travelFit: ["Skeena fishing", "BC Ferries terminus"],
     whoWouldLove: "Those who want to live in a coastal cloud.", whoMightNot: "Sun-needing humans.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "prince-rupert-bc-mechanism",
         title: "Hyper-Maritime mechanics",
@@ -1685,7 +1685,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Ground zero for Alberta chinooks — winters punctuated by 25°C warm-ups in hours, and some of Canada's strongest sustained winds.",
     summaryImmersive: "Pincher Creek sits directly east of Crowsnest Pass, one of the strongest chinook outflow channels in North America. Winters here are wild, windy, and intermittent rather than continuous: two-day thaws to 15°C separate weeks of prairie cold. Wind gusts of 120+ km/h are recorded most winters. The landscape (fescue prairie, cottonwood riparian) reflects the chinook regime — and so do Alberta's world-leading wind-energy installations nearby.",
     whyDistinct: "Crowsnest gap funnels westerly flow into strong, frequent chinook events; the geographic setup is Canada's most pronounced chinook signature.",
-            experience: {
+                experience: {
       feel: "Pincher Creek sits directly east of Crowsnest Pass, one of the strongest chinook outflow channels in North America. Winters here are wild, windy, and intermittent rather than continuous: two-day thaws to 15°C separate weeks of prairie cold. Wind gusts of 120+ km/h are recorded most winters.",
       seasons: {
         winter: "Cold and snowy — afternoons near -0.3°C, nights near -10.8°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
@@ -1693,8 +1693,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 23.4°C, nights near 8.2°C — showers pass through regularly. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 11.8°C, nights near -0.9°C — snow is a regular part of the picture. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Waterton gateway — the practical way to experience chinook corridor terrain in Alberta.",
-      residentFit: "It rewards chinook romantics — especially ranchers — if the local tradeoffs still feel acceptable after a full season in Pincher Creek.",
+      travelerFit: "Visitors come for Waterton gateway.",
+      residentFit: "It rewards chinook romantics — especially ranchers — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are deep winter cold and storm exposure.",
     },
     climate: { tempHighC: [-0.9, 1.3, 5.8, 11.4, 16.8, 21.3, 24.6, 24.3, 19.1, 12.6, 3.8, -1.2], tempLowC: [-11.4, -10.3, -6.4, -1.8, 2.6, 6.6, 9.3, 8.8, 4.4, -0.8, -6.3, -10.6], precipMm: [26, 20, 28, 42, 66, 84, 58, 52, 44, 28, 24, 28], snowCm: [30, 25, 32, 24, 6, 0, 0, 0, 2, 12, 30, 36], annualPrecipMm: 500, frostFreeDays: 105, hardinessZone: "3b", humidity: [84, 84, 77, 73, 72, 70, 65, 63, 66, 72, 78, 80], sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34] },
@@ -1707,7 +1707,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Pincher Creek screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Confirm rents, insurance, and seasonal access on the ground before treating atlas normals as daily-life certainty.",
       sources: [
       { label: "ECCC — Pincher Creek 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1717,7 +1717,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["ranchers", "wind-tolerant"], travelFit: ["Waterton gateway"],
     whoWouldLove: "Chinook romantics.", whoMightNot: "Wind-averse.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "pincher-creek-ab-mechanism",
         title: "Chinook Corridor mechanics",
@@ -1751,16 +1751,16 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Cypress Hills rises abruptly from the Saskatchewan prairie, reaching 1460 m — higher than Banff. The elevation produces a cool island of lodgepole pine and aspen in a sea of short-grass prairie. Summer afternoons top out around 22°C on the plateau while the plain below bakes at 32°C. Winters can be cold but are sheltered from the worst prairie winds. Ecologically, it's a textbook island refuge: species present here and nowhere else for hundreds of kilometers.",
     whyDistinct: "Isolated island-mountain plateau rising above surrounding prairie produces a distinctive climatic and ecological refugium.",
             experience: {
-      feel: "Cypress Hills rises abruptly from the Saskatchewan prairie, reaching 1460 m — higher than Banff. The elevation produces a cool island of lodgepole pine and aspen in a sea of short-grass prairie. Summer afternoons top out around 22°C on the plateau while the plain below bakes at 32°C.",
+      feel: "Cypress Hills feels like the prairie's ecological surprise — a forested plateau at 1,460 m, higher than Banff, where lodgepole pine and aspen form a sky island 700 m above short-grass steppe with summer highs near 22°C while the plain below bakes at 32°C.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -4.1°C, nights near -13.5°C — snow is a regular part of the picture. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near 9.2°C, nights near -2.7°C — snow is a regular part of the picture.",
-        summer: "Cool summer by latitude — afternoons near 22°C, nights near 8.7°C — showers pass through regularly.",
-        autumn: "Shoulder season — afternoons near 9.7°C, nights near -2°C — gray skies dominate.",
+      winter: "Cold and snowy — afternoons near −4°C, nights near −14°C, sheltered from the worst prairie winds but still fully continental.",
+      spring: "Late thaw — snow retreating up the plateau, afternoons climbing through single digits, and ranch country greening in a brief window.",
+      summer: "Cool plateau peak — highs near 23°C, dark-sky preserve nights, and the starkest local contrast with baking plains below.",
+      autumn: "Golden and early — cottonwoods turning, first hard frosts in September, and tourist traffic thinning before pass closure.",
       },
-      travelerFit: "Visitors come for dark-sky preserve and boreal surprise — the practical way to experience sky-island refuge terrain in Saskatchewan.",
-      residentFit: "It rewards those who love an ecological anomaly — especially prairie ranchers — if the local tradeoffs still feel acceptable after a full season in Maple Creek / Cypress Hills.",
-      texture: "An easier place to settle into — the main things to weigh are deep winter cold.",
+      travelerFit: "Visitors come for the dark-sky preserve, boreal forest surprise, and prairie–plateau contrast.",
+      residentFit: "It rewards those who love an ecological anomaly — especially prairie ranchers — who accept Maple Creek drives for specialty care.",
+      texture: "A sky-island refuge on the steppe — the main things to weigh are deep winter cold and limited year-round services at plateau elevation.",
     },
     climate: { tempHighC: [-5.1, -2.8, 2.4, 9.4, 15.8, 19.9, 23.4, 22.8, 17.2, 10.2, 1.6, -4.4], tempLowC: [-14.6, -12.4, -7.9, -2.8, 2.6, 7.1, 9.8, 9.1, 4.2, -1.8, -8.4, -13.4], precipMm: [18, 16, 24, 32, 64, 82, 66, 48, 34, 20, 16, 18], snowCm: [20, 16, 24, 18, 3, 0, 0, 0, 0, 6, 20, 22], annualPrecipMm: 438, frostFreeDays: 90, hardinessZone: "3a", humidity: [83, 83, 76, 72, 71, 61, 56, 54, 57, 71, 77, 79], sunshinePct: [38, 45, 47, 56, 61, 64, 58, 54, 46, 40, 36, 33] },
     soil: { texture: "Dark brown chernozem with wooded pockets", drainage: "good", phRange: [6.4, 7.4], waterHolding: "moderate" },
@@ -1773,7 +1773,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 46,
       socialStress: 34,
       accessFriction: 38,
-      note: "Cypress Hills screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for service-dependent.",
       sources: [
       { label: "ECCC — Cypress Hills 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1785,19 +1785,19 @@ export const PLACES_CANADA: Place[] = [
     confidence: "high",
             deepSections: [
       {
-        id: "cypress-hills-sk-mechanism",
-        title: "Sky-Island Refuge mechanics",
+        id: "cypress-hills-sky-island",
+        title: "Prairie sky-island plateau",
         paragraphs: [
-          "Cypress Hills sits where island-mountain plateau rising 700 m above the surrounding prairie — the highest point between the Rockies and Labrador. At roughly 1460 m, elevation bands matter as much as latitude. Dfb (island) normals and roughly 438 mm/yr frame the regional baseline, but Elevation lapse rate and Continental extremity re-weight what any single forecast means block by block.",
-          "Isolated island-mountain plateau rising above surrounding prairie produces a distinctive climatic and ecological refugium. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Cypress Hills rises 700 m above the Saskatchewan prairie to 1,460 m — higher than Banff — producing a cool lodgepole-aspen island in short-grass steppe. Summer afternoons top out near 22°C on the plateau while the plain below can run 8°C hotter on the same afternoon.",
+          "Isolated island-mountain geometry creates a climatic and ecological refugium with species present here and nowhere else for hundreds of kilometres. Cold-air drainage on the plateau floor adds frost variance beyond headline normals.",
         ],
       },
       {
-        id: "cypress-hills-sk-field-read",
-        title: "On-the-ground read",
+        id: "cypress-hills-plateau-life",
+        title: "Plateau life and prairie contrast",
         paragraphs: [
-          "The prairie's surprise — a forested plateau 700 m above the surrounding plains, a sky-island oasis in the Canadian steppe. Soils read as dark brown chernozem with wooded pockets with good drainage (pH 6.4–7.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Extreme cold registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cold-hardy perennials, Short-season crops. Service-dependent should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Dark brown chernozem with wooded pockets supports cold-hardy perennials and short-season crops; warm-season vegetables need intervention. Extreme cold registers high — verify wind exposure on open plateau ridges.",
+          "Maple Creek anchors daily services within reasonable reach but specialty care may mean Medicine Hat or Swift Current drives. The ecological anomaly is the draw; service density is not.",
         ],
       },
     ],
@@ -1819,7 +1819,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's southernmost mainland town — Lake Erie moderation produces hot summers, mild winters, and the country's longest growing season.",
     summaryImmersive: "Leamington sits at 42° latitude — south of the northern California border — on Lake Erie's north shore. The combination of low latitude and lake moderation produces Canada's longest frost-free season (~180 days) and warmest summers. The town has been the country's tomato-growing capital for generations; massive greenhouse complexes now dominate, leveraging both the climate and lake-sourced cooling/heating.",
     whyDistinct: "Southernmost Canadian latitude plus Lake Erie moderation produces the country's most southerly climate regime.",
-            experience: {
+                experience: {
       feel: "Leamington / Pelee — leamington sits at 42° latitude — south of the northern California border — on Lake Erie's north shore. The combination of low latitude and lake moderation produces Canada's longest frost-free season (~180 days) and warmest summers.",
       seasons: {
         winter: "Cold and snowy — afternoons near 0.9°C, nights near -6.9°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
@@ -1827,8 +1827,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 25.8°C, nights near 15.8°C — showers pass through regularly. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 15.5°C, nights near 6.8°C — showers pass through regularly. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Point Pelee birding — the practical way to experience lake-moderated terrain in Ontario.",
-      residentFit: "It rewards those drawn to Canada's longest growing season — especially greenhouse farmers — if the local tradeoffs still feel acceptable after a full season in Leamington.",
+      travelerFit: "Visitors come for Point Pelee birding.",
+      residentFit: "It rewards those drawn to Canada's longest growing season — especially greenhouse farmers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are storm exposure.",
     },
     climate: { tempHighC: [-0.4, 0.6, 5.8, 13.1, 19.4, 24.6, 26.8, 26.1, 22.6, 15.6, 8.4, 2.4], tempLowC: [-7.9, -8.4, -3.6, 2.8, 8.6, 14.1, 16.8, 16.4, 12.4, 6.4, 1.6, -4.4], precipMm: [62, 52, 68, 82, 82, 80, 70, 78, 92, 78, 86, 76], snowCm: [40, 32, 18, 2, 0, 0, 0, 0, 0, 0, 6, 28], annualPrecipMm: 906, frostFreeDays: 180, hardinessZone: "7a", humidity: [60, 60, 58, 68, 70, 77, 77, 80, 81, 74, 74, 62], sunshinePct: [45, 48, 48, 56, 62, 67, 65, 64, 59, 54, 50, 44] },
@@ -1841,7 +1841,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Leamington / Pelee screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mountain-lovers.",
       sources: [
       { label: "ECCC — Leamington / Harrow AP", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1851,7 +1851,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["greenhouse farmers"], travelFit: ["Point Pelee birding"],
     whoWouldLove: "Those drawn to Canada's longest growing season.", whoMightNot: "Mountain-lovers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "leamington-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -1883,7 +1883,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Lake Superior's port at the boundary of Great Lakes moderation and boreal continentality — some of Ontario's most dramatic climate contrasts.",
     summaryImmersive: "Thunder Bay sits on Lake Superior's north shore where Great Lakes moderation bumps into true boreal continental climate. The lake delays both winter freeze and spring warmth, keeping lakeshore milder than the Shield just inland. Summers are cool; winters long. Lake-effect snow from Superior is substantial when winds are right. The city's character — boreal forest at the back door, cold freshwater sea at the front — is distinctive.",
     whyDistinct: "Lake Superior acts as a thermal flywheel at continental-climate latitude; local shoreline is significantly milder than inland Shield.",
-            experience: {
+                experience: {
       feel: "Thunder Bay sits on Lake Superior's north shore where Great Lakes moderation bumps into true boreal continental climate. The lake delays both winter freeze and spring warmth, keeping lakeshore milder than the Shield just inland. Summers are cool; winters long.",
       seasons: {
         winter: "Cold and snowy — afternoons near -5.9°C, nights near -16.4°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
@@ -1891,8 +1891,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 21.8°C, nights near 10.5°C — showers pass through regularly. Wildfire smoke can settle in for stretches.",
         autumn: "Shoulder season — afternoons near 9.3°C, nights near 0.6°C — snow is a regular part of the picture.",
       },
-      travelerFit: "Visitors come for Sleeping Giant Park — the practical way to experience lake-moderated terrain in Ontario.",
-      residentFit: "It rewards boreal-lake devotees — especially boreal families — if the local tradeoffs still feel acceptable after a full season in Thunder Bay.",
+      travelerFit: "Visitors come for Sleeping Giant Park.",
+      residentFit: "It rewards boreal-lake devotees — especially boreal families — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are deep winter cold and smoke-season air quality.",
     },
     climate: { tempHighC: [-7.3, -5.0, 0.8, 8.2, 15.4, 20.1, 23.1, 22.1, 16.8, 9.8, 1.2, -5.4], tempLowC: [-18.4, -17.2, -10.1, -2.4, 3.4, 8.6, 11.8, 11.1, 6.4, 0.8, -5.4, -13.6], precipMm: [28, 22, 36, 44, 72, 84, 88, 86, 92, 66, 52, 38], snowCm: [40, 28, 32, 14, 2, 0, 0, 0, 0, 4, 32, 44], annualPrecipMm: 708, frostFreeDays: 110, hardinessZone: "3b", humidity: [82, 82, 74, 71, 66, 63, 62, 65, 67, 69, 76, 78], sunshinePct: [39, 46, 48, 57, 62, 65, 59, 55, 47, 41, 38, 34] },
@@ -1905,7 +1905,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Thunder Bay screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Confirm rents, insurance, and seasonal access on the ground before treating atlas normals as daily-life certainty.",
       sources: [
       { label: "ECCC — Thunder Bay AP", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1915,7 +1915,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["boreal families"], travelFit: ["Sleeping Giant Park"],
     whoWouldLove: "Boreal-lake devotees.", whoMightNot: "Heat-needing.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "thunder-bay-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -1952,7 +1952,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Where the Appalachians meet the Gulf — a maritime peninsula with cool foggy summers and hard Atlantic winters.",
     summaryImmersive: "The Gaspé's eastern tip plunges into the Gulf of St. Lawrence, which is cold for much of the year. Summers stay cool and frequently foggy; winter is long and stormy with wind-driven snow. The maritime modification softens what at 48° latitude inland would be brutally continental — making this one of Eastern Canada's most dramatic land-sea climate transitions.",
     whyDistinct: "Maritime modification of otherwise boreal climate produces an Atlantic-temperate character with cool-summer signature.",
-            experience: {
+                experience: {
       feel: "Gaspé Peninsula Tip — the Gaspé's eastern tip plunges into the Gulf of St. Lawrence, which is cold for much of the year. Summers stay cool and frequently foggy; winter is long and stormy with wind-driven snow.",
       seasons: {
         winter: "Cold and snowy — afternoons near -3.9°C, nights near -13°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
@@ -1960,8 +1960,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 20°C, nights near 10.1°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 9.4°C, nights near 1.7°C — snow is a regular part of the picture. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Forillon and fishing villages — the practical way to experience cool-summer maritime terrain in Québec.",
-      residentFit: "It rewards those who want wild Atlantic Canada — especially maritime romantics — if the local tradeoffs still feel acceptable after a full season in Gaspé.",
+      travelerFit: "Visitors come for Forillon and fishing villages.",
+      residentFit: "It rewards those who want wild Atlantic Canada — especially maritime romantics — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Specialty care and major-airport access require real planning.",
     },
     climate: { tempHighC: [-5.3, -4.1, 0.4, 6.1, 12.8, 18.1, 21.4, 20.6, 15.8, 9.4, 3.1, -2.4], tempLowC: [-14.9, -13.9, -9.1, -2.4, 3.1, 7.8, 11.4, 11.1, 6.8, 1.8, -3.6, -10.1], precipMm: [82, 64, 68, 72, 90, 96, 98, 92, 110, 108, 110, 96], snowCm: [72, 54, 48, 24, 2, 0, 0, 0, 0, 6, 40, 74], humidity: [80, 80, 80, 78, 78, 80, 82, 84, 84, 82, 82, 82], annualPrecipMm: 1086, frostFreeDays: 120, hardinessZone: "4b", sunshinePct: [39, 45, 48, 56, 49, 53, 46, 43, 34, 41, 37, 34] },
@@ -1974,7 +1974,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 88,
-      note: "Gaspé Peninsula Tip screening: cost sits in a middle band — verify rents and insurance locally; specialty care, major airports, or all-weather road access need real planning; community fabric reads quieter than larger regional hubs. Atlas-grade read — confirm on the ground before committing.",
+      note: "Specialty care and major-airport access need real planning; A poor fit for anyone needing warmth.",
       sources: [
       { label: "ECCC — Gaspé AP", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1984,7 +1984,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["maritime romantics"], travelFit: ["Forillon", "fishing villages"],
     whoWouldLove: "Those who want wild Atlantic Canada.", whoMightNot: "Anyone needing warmth.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "gaspe-qc-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -2017,7 +2017,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "North America's foggiest and windiest major city — where the Labrador Current meets the Atlantic and every storm arrives first.",
     summaryImmersive: "St. John's holds the distinction of being North America's foggiest, cloudiest, wettest, windiest, and snowiest major city all at once — a consequence of its position on the Avalon Peninsula at the boundary of the cold Labrador Current and the North Atlantic storm track. Summers are cool (highs around 20°C); winters mild by Canadian standards but relentlessly stormy. Annual sunshine is among the lowest on the continent.",
     whyDistinct: "Avalon's position in the Labrador Current produces intense fog and cool summers; exposure to Atlantic storm track makes the city the first/last stop for transatlantic weather.",
-            experience: {
+                experience: {
       feel: "St. John's holds the distinction of being North America's foggiest, cloudiest, wettest, windiest, and snowiest major city all at once — a consequence of its position on the Avalon Peninsula at the boundary of the cold Labrador Current and the North Atlantic storm track.",
       seasons: {
         winter: "Cold and snowy — afternoons near -0.4°C, nights near -7.3°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
@@ -2025,8 +2025,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 19.6°C, nights near 9.7°C — showers pass through regularly. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 11.2°C, nights near 3.9°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for iceberg watching and Jellybean Row — the practical way to experience hyper-maritime terrain in Newfoundland and Labrador.",
-      residentFit: "It rewards storm-loving maritime people — especially Atlantic romantics — if the local tradeoffs still feel acceptable after a full season in St. John's.",
+      travelerFit: "Visitors come for iceberg watching and Jellybean Row.",
+      residentFit: "It rewards storm-loving maritime people — especially Atlantic romantics — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are storm exposure and coastal and sea-level pressure. A full regional capital makes the extreme maritime weather more livable, but fog, wind, slope, snow clearing, and storm surge shape daily routines.",
     },
     climate: { tempHighC: [-1.1, -1.4, 1.9, 6.8, 12.6, 17.4, 20.8, 20.6, 16.4, 11.1, 6.1, 1.4], tempLowC: [-8.3, -8.9, -5.6, -1.4, 2.6, 6.9, 10.9, 11.2, 7.6, 3.6, 0.4, -4.8], precipMm: [132, 108, 112, 96, 100, 92, 82, 96, 102, 124, 134, 136], snowCm: [82, 76, 60, 32, 4, 0, 0, 0, 0, 2, 20, 80], humidity: [80, 80, 80, 78, 78, 80, 82, 84, 84, 82, 82, 82], annualPrecipMm: 1314, frostFreeDays: 150, hardinessZone: "6a", sunshinePct: [32, 35, 34, 41, 34, 39, 36, 36, 31, 39, 36, 31] },
@@ -2172,7 +2172,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "One of the coldest capitals in the world — winter means drop to −26°C, summer days reach 22°C, and the aurora runs 240 nights a year.",
     summaryImmersive: "Yellowknife sits on Great Slave Lake's rocky north shore at 62.5° latitude. Winters are dark, dry, and brutal: January mean lows of −30°C, February sometimes colder. Great Slave Lake tempers the shore but freezes for half the year anyway. Summers are short, warm, and mosquito-saturated. The aurora is statistically the best in North America here.",
     whyDistinct: "Deep continental subarctic position with major freshwater lake moderation only during ice-free months.",
-            experience: {
+                experience: {
       feel: "Yellowknife sits on Great Slave Lake's rocky north shore at 62.5° latitude. Winters are dark, dry, and brutal: January mean lows of −30°C, February sometimes colder. Great Slave Lake tempers the shore but freezes for half the year anyway. Summers are short, warm, and mosquito-saturated.",
       seasons: {
         winter: "Deep freeze — afternoons near -19.7°C, nights near -28.4°C — snow is a regular part of the picture. Arctic outbreaks can still bite hard.",
@@ -2180,8 +2180,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 19.2°C, nights near 10.3°C — weather stays moderate and changeable. Wildfire and smoke are summer wildcards.",
         autumn: "Autumn fade — afternoons near 0.6°C, nights near -6.5°C — snow is a regular part of the picture. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for aurora and ice road — the practical way to experience subarctic continental terrain in Northwest Territories.",
-      residentFit: "It rewards northern dreamers — especially aurora-centric life — if the local tradeoffs still feel acceptable after a full season in Yellowknife.",
+      travelerFit: "Visitors come for aurora and ice road.",
+      residentFit: "It rewards northern dreamers — especially aurora-centric life — who can accept the local tradeoffs.",
       texture: "A real-tradeoff place — the main things to weigh are deep winter cold and wildfire exposure.",
     },
     climate: { tempHighC: [-21.9, -18.7, -12.1, -1.4, 9.6, 17.8, 21.1, 18.6, 11.1, 1.6, -10.9, -18.6], tempLowC: [-30.1, -28.1, -22.8, -11.1, -0.4, 8.1, 12.4, 10.4, 3.8, -4.8, -18.6, -26.9], precipMm: [16, 14, 14, 10, 18, 26, 38, 37, 38, 34, 23, 21], snowCm: [22, 18, 20, 14, 8, 0, 0, 0, 6, 30, 32, 26], annualPrecipMm: 289, frostFreeDays: 100, hardinessZone: "2a", humidity: [84, 84, 77, 73, 68, 66, 65, 67, 70, 72, 78, 80], sunshinePct: [37, 43, 46, 54, 60, 63, 57, 53, 44, 39, 35, 32] },
@@ -2194,7 +2194,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 44,
-      note: "Yellowknife screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: cold-sensitive anyone. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for cold-sensitive anyone.",
       sources: [
       { label: "ECCC — Yellowknife AP", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2204,7 +2204,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["aurora-centric life", "northern service workers"], travelFit: ["aurora", "ice road"],
     whoWouldLove: "Northern dreamers.", whoMightNot: "Cold-sensitive anyone.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "yellowknife-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2238,16 +2238,16 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Churchill sits on Hudson Bay's west shore at 58.8° latitude. Hudson Bay freezes fully in winter, producing continental-cold conditions with lows below −30°C; during the open-water season (July–November), it acts as a heat-and-moisture source, moderating autumn temperatures and generating lake-effect-style snow. Polar bears gather here in October, waiting for the bay to re-freeze. Summer is brief, cool, and buggy.",
     whyDistinct: "Hudson Bay's annual cycle of freeze and open water produces a bimodal climate: continental-extreme in winter, maritime-moderate in autumn.",
             experience: {
-      feel: "Churchill sits on Hudson Bay's west shore at 58.8° latitude. Hudson Bay freezes fully in winter, producing continental-cold conditions with lows below −30°C;.",
+      feel: "Churchill feels like Hudson Bay's bimodal climate made visible — polar-bear capital at 58.8°N where the bay freezes into −30°C continental winter, then open water from July through November moderates autumn and feeds lake-effect-style snow.",
       seasons: {
-        winter: "Deep freeze — afternoons near -19.1°C, nights near -27.9°C — snow is a regular part of the picture. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near -4.1°C, nights near -13.4°C — snow is a regular part of the picture. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 16.2°C, nights near 6.9°C — showers pass through regularly. Afternoon convection and storms build often.",
-        autumn: "Autumn fade — afternoons near 1.7°C, nights near -4.2°C — snow is a regular part of the picture. Storm systems roll through with real force.",
+      winter: "Continental brutal — afternoons near −19°C, nights near −28°C, bay ice complete, aurora season, and logistics defined by rail and air only.",
+      spring: "Late break-up — ice leaving the bay in June, then a brief rush of green as tundra wakes under exploding daylight.",
+      summer: "Short and buggy — highs near 16°C, beluga whales in the Churchill River, midnight-sun hiking, and the only comfortable window for most visitors.",
+      autumn: "Polar-bear season — bears waiting for refreeze, open water still moderating temperatures, heavy snow when cold air crosses warm bay, and tourism at its peak.",
       },
-      travelerFit: "Visitors come for polar bears, beluga whales, and aurora — the practical way to experience subarctic continental terrain in Manitoba.",
-      residentFit: "It rewards polar-ecosystem pilgrims — especially subarctic researchers — if the local tradeoffs still feel acceptable after a full season in Churchill.",
-      texture: "A real-tradeoff place at sea level — the main things to weigh are deep winter cold and storm exposure.",
+      travelerFit: "Visitors come for polar bears, beluga whales, and aurora.",
+      residentFit: "It rewards polar-ecosystem pilgrims and subarctic researchers — not virtually anyone seeking ordinary permanent life.",
+      texture: "A real-tradeoff subarctic coast — the main things to weigh are very-high winter cold, storm exposure, and among the fastest-changing sea-ice regimes on Earth.",
     },
     climate: { tempHighC: [-21.2, -19.4, -13.4, -3.6, 4.8, 13.4, 18.1, 17.1, 10.4, 2.4, -7.6, -16.8], tempLowC: [-30.4, -28.8, -23.6, -13.1, -3.4, 3.4, 8.6, 8.8, 3.8, -3.4, -12.9, -24.6], precipMm: [18, 14, 18, 18, 23, 42, 56, 66, 58, 47, 32, 20], snowCm: [20, 16, 20, 16, 14, 2, 0, 0, 8, 34, 32, 24], humidity: [86, 86, 74, 71, 72, 69, 68, 71, 73, 69, 76, 82], sunshinePct: [37, 43, 46, 54, 48, 51, 45, 41, 32, 39, 35, 32], annualPrecipMm: 412, frostFreeDays: 70, hardinessZone: "1a" },
     soil: { texture: "Peat over permafrost", drainage: "poor", phRange: [4.6, 5.8], waterHolding: "high" },
@@ -2259,7 +2259,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 34,
       socialStress: 30,
       accessFriction: 60,
-      note: "Churchill screening: cost pressure is relatively modest for the region; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: virtually everyone else permanently. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing pressure is relatively modest for the region; A poor fit for virtually everyone else permanently.",
       sources: [
       { label: "ECCC — Churchill AP", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2271,19 +2271,19 @@ export const PLACES_CANADA: Place[] = [
     confidence: "high",
             deepSections: [
       {
-        id: "churchill-mb-mechanism",
-        title: "Subarctic Continental mechanics",
+        id: "churchill-hudson-bay-cycle",
+        title: "Hudson Bay freeze–open-water cycle",
         paragraphs: [
-          "Churchill sits where western Hudson Bay coast; at the subarctic-Arctic transition on a fully exposed bay. Dfc / Dfd normals and roughly 412 mm/yr frame the regional baseline, but Polar jet / arctic front and Continental extremity re-weight what any single forecast means block by block.",
-          "Hudson Bay's annual cycle of freeze and open water produces a bimodal climate: continental-extreme in winter, maritime-moderate in autumn. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Churchill sits on Hudson Bay's west shore where the bay's annual freeze–thaw cycle dominates local climate — fully frozen winter produces continental lows below −30°C; open water from roughly July through November moderates autumn and generates heavy snow when cold air crosses warm water.",
+          "Polar bears gather in October waiting for refreeze; belugas arrive in summer — the tourism calendar is the climate calendar. Declining sea ice is reshaping this regime faster than almost anywhere inhabited.",
         ],
       },
       {
-        id: "churchill-mb-field-read",
-        title: "On-the-ground read",
+        id: "churchill-subarctic-access",
+        title: "Subarctic access and peat soils",
         paragraphs: [
-          "The polar-bear capital of the world — where Hudson Bay's open water produces unusually heavy snowfall at a brutally continental subarctic latitude. Soils read as peat over permafrost with poor drainage (pH 4.6–5.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Arctic-adapted greens. Virtually everyone else permanently should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Peat over permafrost with poor drainage limits growability to Arctic-adapted greens — virtually no ordinary gardening. Rail and air are the lifelines; storm and coastal exposure register high on the exposed bay shore.",
+          "Virtually everyone else should treat Churchill as expedition base, not permanent home — verify heating cost, food freight, and polar-bear safety protocols before any relocation fantasy.",
         ],
       },
     ],
@@ -2301,7 +2301,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Ontario's fastest-rising wine region, built on lake-moderated microclimate and limestone terroir.",
     summaryImmersive: "A near-island jutting into Lake Ontario, PEC enjoys measurable lake moderation and sits on a limestone plateau that drains fast and warms quickly in spring. Cool-climate wine — Pinot Noir, Chardonnay, Riesling — has flourished here since 2000.",
     whyDistinct: "Peninsula geometry maximizes lake influence; limestone substrate + thin soils accelerate spring warming.",
-            experience: {
+                experience: {
       feel: "Prince Edward County — a near-island jutting into Lake Ontario, PEC enjoys measurable lake moderation and sits on a limestone plateau that drains fast and warms quickly in spring. Cool-climate wine — Pinot Noir, Chardonnay, Riesling — has flourished here since 2000.",
       seasons: {
         winter: "Cold and snowy — afternoons near -1.2°C, nights near -8.6°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings.",
@@ -2309,8 +2309,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 24.6°C, nights near 13.7°C — showers pass through regularly.",
         autumn: "Shoulder season — afternoons near 13.5°C, nights near 4.8°C — showers pass through regularly.",
       },
-      travelerFit: "Visitors come for wine trail and beaches — the practical way to experience lake-moderated terrain in Ontario.",
-      residentFit: "It rewards cool-climate wine people — especially winemakers — if the local tradeoffs still feel acceptable after a full season in Prince Edward County.",
+      travelerFit: "Visitors come for wine trail and beaches.",
+      residentFit: "It rewards cool-climate wine people — especially winemakers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — no single hazard dominates the picture.",
     },
     climate: { tempHighC: [-2.4, -1.4, 3.3, 10.8, 17.6, 23.1, 25.9, 24.9, 20.5, 13.6, 6.4, 0.2], tempLowC: [-10.1, -10.0, -5.2, 1.1, 6.8, 12.0, 14.8, 14.2, 10.1, 4.6, -0.4, -5.8], precipMm: [64, 54, 62, 74, 80, 76, 72, 74, 88, 82, 80, 70], snowCm: [44, 32, 20, 4, 0, 0, 0, 0, 0, 0, 6, 32], annualPrecipMm: 876, frostFreeDays: 170, hardinessZone: "6b", humidity: [85, 85, 77, 74, 73, 66, 61, 64, 70, 76, 79, 81], sunshinePct: [36, 42, 45, 53, 58, 62, 55, 52, 43, 38, 34, 31] },
@@ -2323,7 +2323,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Prince Edward County screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: those wanting mild winters. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for those wanting mild winters.",
       sources: [
       { label: "ECCC — Point Petre 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2333,7 +2333,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Cool-climate wine people.", whoMightNot: "Those wanting mild winters.",
     confidence: "moderate",
-            deepSections: [
+                deepSections: [
       {
         id: "prince-edward-co-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2369,7 +2369,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "The capital of Nunavut sits at 63°N and averages −27°C in January — but summer days stretch to 21 hours and July highs climb above 12°C, producing a short, brilliant Arctic summer.",
     summaryImmersive: "Iqaluit, at the head of Frobisher Bay, experiences one of North America's purest Arctic climates. The sea freezes from November through June, eliminating most maritime moderation during the coldest half of the year. Winter lows below −40°C occur in most years; windchills near −60°C are normal. Summer is short but remarkable — nearly four months of very long days, peak July highs in the mid-teens, persistent daylight that allows berries and tundra flowers to complete their cycle in weeks. The community is entirely supplied by sealift, cargo flights, and annual sealift barges; the climate shapes everything.",
     whyDistinct: "Arctic latitude + continental position on Baffin Island + cold Labrador current offshore + long polar-night/polar-day solar regime. Iqaluit is the largest city in Nunavut and one of the few places where most residents experience 21 hours of summer daylight.",
-            experience: {
+                experience: {
       feel: "Iqaluit, at the head of Frobisher Bay, experiences one of North America's purest Arctic climates. The sea freezes from November through June, eliminating most maritime moderation during the coldest half of the year. Winter lows below −40°C occur in most years; windchills near −60°C are normal.",
       seasons: {
         winter: "Deep freeze — afternoons near -20.3°C, nights near -29.3°C — snow is a regular part of the picture. Arctic outbreaks can still bite hard.",
@@ -2377,8 +2377,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 10.7°C, nights near 3°C — showers pass through regularly.",
         autumn: "Autumn fade — afternoons near -1.3°C, nights near -7°C — snow is a regular part of the picture. Hurricane and coastal surge exposure shapes fall planning.",
       },
-      travelerFit: "Visitors come for Inuit cultural tourism, Arctic wildlife, and polar nights / midnight sun — the practical way to experience subarctic continental terrain in Nunavut.",
-      residentFit: "It rewards people deeply drawn to the Arctic; Inuit residents with cultural/land ties — especially Nunavut government workers — if the local tradeoffs still feel acceptable after a full season in Iqaluit.",
+      travelerFit: "Visitors come for Inuit cultural tourism, Arctic wildlife, and polar nights / midnight sun.",
+      residentFit: "It rewards people deeply drawn to the Arctic; Inuit residents with cultural/land ties — especially Nunavut government workers — who can accept the local tradeoffs.",
       texture: "A real-tradeoff place — the main things to weigh are deep winter cold and coastal and sea-level pressure.",
     },
     climate: {
@@ -2397,7 +2397,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 46,
       socialStress: 30,
       accessFriction: 60,
-      note: "Iqaluit screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: essentially anyone not prepared for extreme remoteness and cost of living. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for essentially anyone not prepared for extreme remoteness and cost of living.",
       sources: [
       { label: "ECCC — Iqaluit A normal 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Climate Atlas of Canada — Arctic profiles", url: "https://climateatlas.ca/" },
@@ -2406,7 +2406,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "iqaluit-nu-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2439,7 +2439,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "North of the Arctic Circle — experiences 56 days of continuous daylight in summer and 30 days of polar night in winter.",
     summaryImmersive: "Inuvik, the largest Canadian community north of the Arctic Circle, sits in the great northern swampland of the Mackenzie River Delta. Summer here brings 56 consecutive days of sun above the horizon — by late June, direct midnight sunlight streams into kitchens. Winter reverses entirely: from early December to early January, the sun does not rise at all, though twilight persists at midday. Winter temperatures drop below −40°C routinely; summer highs can reach 28°C on the warmest days. The annual temperature range is among the largest on the planet — roughly 70°C between summer maxima and winter minima.",
     whyDistinct: "Polar latitude + continental position + Mackenzie Delta microenvironment. The delta's innumerable lakes marginally moderate summer; in winter everything is frozen solid for 7 months and continentality dominates fully.",
-            experience: {
+                experience: {
       feel: "Inuvik, the largest Canadian community north of the Arctic Circle, sits in the great northern swampland of the Mackenzie River Delta. Summer here brings 56 consecutive days of sun above the horizon — by late June, direct midnight sunlight streams into kitchens.",
       seasons: {
         winter: "Deep freeze — afternoons near -22.3°C, nights near -31°C — snow is a regular part of the picture. Arctic outbreaks can still bite hard.",
@@ -2447,8 +2447,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 21.3°C, nights near 8.7°C — weather stays moderate and changeable.",
         autumn: "Autumn fade — afternoons near -1.3°C, nights near -9.3°C — snow is a regular part of the picture.",
       },
-      travelerFit: "Visitors come for midnight-sun photography, aurora (Aug–Apr), and Dempster Highway journey — the practical way to experience subarctic continental terrain in Northwest Territories.",
-      residentFit: "It rewards arctic enthusiasts willing to embrace both extremes — especially Arctic researchers — if the local tradeoffs still feel acceptable after a full season in Inuvik.",
+      travelerFit: "Visitors come for midnight-sun photography, aurora (Aug–Apr), and Dempster Highway journey.",
+      residentFit: "It rewards arctic enthusiasts willing to embrace both extremes — especially Arctic researchers — who can accept the local tradeoffs.",
       texture: "A real-tradeoff place — the main things to weigh are deep winter cold. Specialty care and major-airport access require real planning.",
     },
     climate: {
@@ -2467,7 +2467,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 72,
-      note: "Inuvik screening: cost sits in a middle band — verify rents and insurance locally; specialty care, major airports, or all-weather road access need real planning. Atlas-grade read — confirm on the ground before committing.",
+      note: "Specialty care and major-airport access need real planning; A poor fit for almost everyone else.",
       sources: [
       { label: "ECCC — Inuvik Climate A 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2477,7 +2477,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "inuvik-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2511,7 +2511,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "An archipelago in the Gulf of Alaska where July highs rarely exceed 17°C and winter rarely freezes — one of the most climatologically moderated places in Canada.",
     summaryImmersive: "Haida Gwaii (the Queen Charlotte Islands) sits in the open Pacific 100 km west of the British Columbia mainland, and the ocean fully owns the climate. Summers never warm past the mid-teens on the west coast; winters rarely freeze on the east. Fog, swell, and Sitka spruce rainforest define everyday life. The west coast receives more than 4,000 mm of rain annually — among the wettest places in Canada. The east coast, in the islands' own rain shadow, receives closer to 1,300 mm. The islands are home to unique subspecies found nowhere else, the product of post-glacial refugium isolation.",
     whyDistinct: "Deeply oceanic position + Queen Charlotte Mountains creating a strong internal rain shadow. The Sitka-spruce rainforests on the west coast are among the wettest and most intact on the continent.",
-            experience: {
+                experience: {
       feel: "Haida Gwaii (the Queen Charlotte Islands) sits in the open Pacific 100 km west of the British Columbia mainland, and the ocean fully owns the climate. Summers never warm past the mid-teens on the west coast; winters rarely freeze on the east.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 5.3°C, nights near 1°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -2519,8 +2519,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 16.3°C, nights near 10.7°C — showers pass through regularly. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 11°C, nights near 6°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Gwaii Haanas National Park, Haida cultural tourism, and ancient cedar forests — the practical way to experience hyper-maritime terrain in British Columbia.",
-      residentFit: "It rewards those who love cool, wet, remote rainforest country — especially rainforest residents — if the local tradeoffs still feel acceptable after a full season in Queen Charlotte / Skidegate.",
+      travelerFit: "Visitors come for Gwaii Haanas National Park, Haida cultural tourism, and ancient cedar forests.",
+      residentFit: "It rewards those who love cool, wet, remote rainforest country — especially rainforest residents — who can accept the local tradeoffs.",
       texture: "A real-tradeoff place at sea level — the main things to weigh are storm exposure. Specialty care and major-airport access require real planning.",
     },
     climate: {
@@ -2547,7 +2547,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["rainforest residents", "Haida Nation community", "cool-climate purists"], travelFit: ["Gwaii Haanas National Park", "Haida cultural tourism", "ancient cedar forests"],
     whoWouldLove: "Those who love cool, wet, remote rainforest country.", whoMightNot: "Anyone requiring sun, warmth, or easy travel.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "haida-gwaii-bc-mechanism",
         title: "Hyper-Maritime mechanics",
@@ -2581,7 +2581,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's 'sunniest city' — averaging 330 sunny days per year in a warm chinook-modulated prairie climate that defies expectations of Canadian winters.",
     summaryImmersive: "Medicine Hat sits in the South Saskatchewan River valley on Alberta's dry plains, and the Rockies' rain shadow combined with frequent chinook breakthroughs produce a climate unlike anywhere else in Canada. It averages more hours of bright sunshine per year (around 2,500) than any other Canadian city — more than Los Angeles receives. Winters remain cold but are punctuated by chinook events that can lift January temperatures to +15°C for days at a time. Summer brings hot, dry days with abundant sun; July highs regularly exceed 30°C. Precipitation is scarce — 350 mm annually — producing a climate closer to Denver than to the stereotypical 'Canadian prairie.'",
     whyDistinct: "Double lee effect: behind both the Rockies and the Purcell/Columbia system + dry continental air mass + chinook penetration deep onto the prairie = one of the driest, sunniest climates in Canada.",
-            experience: {
+                experience: {
       feel: "Medicine Hat sits in the South Saskatchewan River valley on Alberta's dry plains, and the Rockies' rain shadow combined with frequent chinook breakthroughs produce a climate unlike anywhere else in Canada.",
       seasons: {
         winter: "Cold and snowy — afternoons near -2°C, nights near -12°C — snow is a regular part of the picture.",
@@ -2589,8 +2589,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Warm season peak — afternoons near 26.3°C, nights near 11°C — showers pass through regularly. Water supply and irrigation stress matter.",
         autumn: "Shoulder season — afternoons near 13°C, nights near 0°C — weather stays moderate and changeable.",
       },
-      travelerFit: "Visitors come for badlands tours, South Saskatchewan River, and dark-sky observers — the practical way to experience chinook corridor terrain in Alberta.",
-      residentFit: "It rewards anyone who wants a Colorado-style Canadian climate: sunny, dry, and chinook-warmed — especially sun-seekers in Canada — if the local tradeoffs still feel acceptable after a full season in Medicine Hat.",
+      travelerFit: "Visitors come for badlands tours, South Saskatchewan River, and dark-sky observers.",
+      residentFit: "It rewards anyone who wants a Colorado-style Canadian climate: sunny, dry, and chinook-warmed — especially sun-seekers in Canada — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are long-run drought.",
     },
     climate: {
@@ -2610,7 +2610,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Medicine Hat screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: those who expect reliably cold Canadian winters. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for those who expect reliably cold Canadian winters.",
       sources: [
       { label: "ECCC — Medicine Hat A normal 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Climate Atlas of Canada — prairie sunshine statistics", url: "https://climateatlas.ca/" },
@@ -2619,7 +2619,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["sun-seekers in Canada", "retirees", "drought-tolerant gardeners"], travelFit: ["badlands tours", "South Saskatchewan River", "dark-sky observers"],
     whoWouldLove: "Anyone who wants a Colorado-style Canadian climate: sunny, dry, and chinook-warmed.", whoMightNot: "Those who expect reliably cold Canadian winters.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "medicine-hat-ab-mechanism",
         title: "Chinook Corridor mechanics",
@@ -2653,16 +2653,16 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Twillingate sits on the northeast coast of Newfoundland directly in the path of the Labrador Current, which carries Arctic water — and icebergs calved from Greenland — southward every spring. The current keeps coastal waters near freezing into June, making this one of the coolest-summer coasts in eastern North America. Fog is chronic in early summer as warm air meets the cold sea. Winters, paradoxically, are relatively mild for the latitude because the sea (though cold) never freezes. Iceberg viewing is so reliable in May and June that 'Iceberg Alley' is now a local brand. Whale encounters — humpbacks, minkes, fin whales — are the summer counterpart.",
     whyDistinct: "Labrador Current + cold-side Gulf Stream boundary position + exposed outer-coast geometry. The annual temperature range is remarkably narrow (~25°C) given the high latitude, and fog/precipitation regimes are fundamentally maritime.",
             experience: {
-      feel: "Twillingate sits on the northeast coast of Newfoundland directly in the path of the Labrador Current, which carries Arctic water — and icebergs calved from Greenland — southward every spring.",
+      feel: "Twillingate feels like Iceberg Alley made habitable — Labrador Current carrying Arctic water and Greenland icebergs past Newfoundland's northeast coast, keeping summer highs near 18°C while fog chronic through June and whales replacing ice as the summer spectacle.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -2.7°C, nights near -8.7°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
-        spring: "Late thaw — afternoons near 5.3°C, nights near -2°C — heavy snow defines the rhythm. Green-up arrives against a wet 1225 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 18.3°C, nights near 10°C — showers pass through regularly. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 9.3°C, nights near 4.3°C — snow is a regular part of the picture. Storm systems roll through with real force.",
+      winter: "Relatively mild for latitude — afternoons near −3°C, storms stacking on Notre Dame Bay, and the sea never fully freezing.",
+      spring: "Iceberg season — May and June bringing cathedral ice past the porch, coastal waters near freezing into June, and fog as warm air meets cold sea.",
+      summer: "Cool and maritime — highs near 18°C, humpbacks and fin whales, cod jigging culture, and the narrowest annual range for this latitude.",
+      autumn: "Storm return — gales on the outer coast, first heavy snow bands in November, and tourist traffic gone by October.",
       },
-      travelerFit: "Visitors come for iceberg viewing (May–Jun), whale watching (Jun–Aug), and cod jigging — the practical way to experience cool-summer maritime terrain in Newfoundland and Labrador.",
-      residentFit: "It rewards anyone who wants to watch icebergs from their porch — especially maritime-climate purists — if the local tradeoffs still feel acceptable after a full season in Twillingate.",
-      texture: "A real-tradeoff place at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Specialty care and major-airport access require real planning.",
+      travelerFit: "Visitors come for iceberg viewing in May–June, whale watching through August, and cod-jigging culture.",
+      residentFit: "It rewards iceberg obsessives and maritime purists who accept cool summers and Gander-linked logistics.",
+      texture: "A real-tradeoff outer coast — the main things to weigh are storm exposure, coastal pressure, and thin year-round work outside tourism.",
     },
     climate: {
       tempHighC: [-3, -4, 0, 5, 11, 16, 20, 19, 15, 9, 4, -1], tempLowC: [-10, -10, -7, -2, 3, 7, 11, 12, 9, 4, 0, -6],
@@ -2691,19 +2691,19 @@ export const PLACES_CANADA: Place[] = [
     confidence: "moderate",
             deepSections: [
       {
-        id: "twillingate-nl-mechanism",
-        title: "Cool-Summer Maritime mechanics",
+        id: "twillingate-labrador-current",
+        title: "Labrador Current and Iceberg Alley",
         paragraphs: [
-          "Twillingate sits where notre Dame Bay on Newfoundland's northeast coast; directly exposed to the Labrador Current. Dfb normals and roughly 1225 mm/yr frame the regional baseline, but Marine layer and Polar jet / arctic front re-weight what any single forecast means block by block.",
-          "Labrador Current + cold-side Gulf Stream boundary position + exposed outer-coast geometry. The annual temperature range is remarkably narrow (~25°C) given the high latitude, and fog/precipitation regimes are fundamentally maritime. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Twillingate sits on Newfoundland's northeast coast directly in the Labrador Current path — Arctic water and Greenland icebergs drift south each spring, keeping coastal SSTs near freezing into June and summer highs averaging just 18°C despite the latitude.",
+          "Fog is chronic in early summer as warm air meets the cold sea; winters stay relatively mild because the ocean never fully freezes. The annual temperature range near 25°C is remarkably narrow for this latitude.",
         ],
       },
       {
-        id: "twillingate-nl-field-read",
-        title: "On-the-ground read",
+        id: "twillingate-outer-coast",
+        title: "Outer-coast life and iceberg economy",
         paragraphs: [
-          "'Iceberg Alley' — a coast so cooled by the Labrador Current that icebergs drift past in May, and summer highs average just 18°C while winters only dip to −10°C. Soils read as thin podzol over precambrian rock; rocky with good drainage (pH 4.8–5.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy berries, Cool-season greens, Potatoes (traditional). Those who need warm summers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Thin podzol on Precambrian rock suits hardy berries and potatoes; most warm-season crops fail. Storm and coastal exposure register elevated — verify wharf and cliff parcel history.",
+          "Housing is modest but year-round work is thin outside tourism; Gander flights and Marine Atlantic ferries anchor groceries and specialists. Those needing warm summers should not relocate here — visit in iceberg season instead.",
         ],
       },
     ],
@@ -2723,7 +2723,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's fastest-growing wine and fruit city — hot, dry summers moderated by deep lake water and cold-air drainage off east-bench slopes.",
     summaryImmersive: "Kelowna combines interior sunshine with lake thermal inertia: July afternoons are warm enough for Syrah and Merlot, but lake breezes knock the edge off heat domes. Winter inversions trap smog and moisture in the valley; spring frost fights are a viticulture ritual.",
     whyDistinct: "Large lake + rain-shadow dryness + north–south valley alignment = sharp gradient from lakeshore to bench-top within a few kilometers.",
-            experience: {
+                experience: {
       feel: "Kelowna combines interior sunshine with lake thermal inertia: July afternoons are warm enough for Syrah and Merlot, but lake breezes knock the edge off heat domes. Winter inversions trap smog and moisture in the valley; spring frost fights are a viticulture ritual.",
       seasons: {
         winter: "Cold and sharp — afternoons near 0.7°C, nights near -6.7°C — humid air keeps everything soft and close.",
@@ -2731,8 +2731,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Warm season peak — afternoons near 28.3°C, nights near 12°C — weather stays moderate and changeable. Wildfire and smoke are summer wildcards.",
         autumn: "Shoulder season — afternoons near 14°C, nights near 2.3°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for wine routes and skiing Big White — the practical way to experience rain-shadow sanctuary terrain in British Columbia.",
-      residentFit: "It rewards sun-seekers who want Canadian healthcare and mountain-lake scenery — especially viticulture workers — if the local tradeoffs still feel acceptable after a full season in Kelowna.",
+      travelerFit: "Visitors come for wine routes and skiing Big White.",
+      residentFit: "It rewards sun-seekers who want Canadian healthcare and mountain-lake scenery — especially viticulture workers — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and smoke-season air quality. Housing runs expensive relative to regional medians.",
     },
     climate: { tempHighC: [-1, 3, 10, 16, 22, 26, 30, 29, 23, 14, 5, 0], tempLowC: [-8, -6, -1, 3, 8, 11, 13, 12, 7, 2, -2, -6], precipMm: [28, 20, 22, 28, 38, 42, 35, 30, 28, 25, 35, 40], humidity: [80, 72, 62, 52, 50, 50, 46, 48, 54, 66, 78, 82], sunshinePct: [26, 40, 52, 60, 66, 68, 78, 76, 66, 46, 28, 22], annualPrecipMm: 351, frostFreeDays: 165, hardinessZone: "6b" },
@@ -2745,7 +2745,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Kelowna screening: housing runs expensive relative to regional medians; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: rainforest lovers; smoke-sensitive lungs. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing runs above regional medians; A poor fit for rainforest lovers; smoke-sensitive lungs.",
       sources: [
       { label: "ECCC — Kelowna UBC Okanagan / airport", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2755,7 +2755,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulture workers", "remote tech"], travelFit: ["wine routes", "skiing Big White"],
     whoWouldLove: "Sun-seekers who want Canadian healthcare and mountain-lake scenery.", whoMightNot: "Rainforest lovers; smoke-sensitive lungs.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "kelowna-bc-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -2788,7 +2788,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Wet Coast winters, mild summers, and notorious Squamish Valley outflow winds when interior high pressure builds.",
     summaryImmersive: "Squamish is where the Sea-to-Sky Highway meets the ocean: summer is warm by Vancouver standards but still maritime; winter brings heavy rain and occasional valley snow when Arctic air damps against the Strait. The eponymous wind races south when pressure gradients align — a celebrated kite- and wing-surfing engine.",
     whyDistinct: "Fjord head + narrow valley alignment creates focused gap winds and cloud transitions unlike open coast or interior.",
-            experience: {
+                experience: {
       feel: "Squamish is where the Sea-to-Sky Highway meets the ocean: summer is warm by Vancouver standards but still maritime; winter brings heavy rain and occasional valley snow when Arctic air damps against the Strait.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 5.7°C, nights near 0.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -2796,8 +2796,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 22°C, nights near 12.3°C — showers pass through regularly. Wildfire smoke can settle in for stretches.",
         autumn: "Shoulder season — afternoons near 13.7°C, nights near 6°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Stawamus Chief and Sea to Sky Gondola — the practical way to experience fjord / inlet coast terrain in British Columbia.",
-      residentFit: "It rewards mountain–ocean people who commute to Vancouver occasionally — especially climbers — if the local tradeoffs still feel acceptable after a full season in Squamish.",
+      travelerFit: "Visitors come for Stawamus Chief and Sea to Sky Gondola.",
+      residentFit: "It rewards mountain–ocean people who commute to Vancouver occasionally — especially climbers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into at sea level — the main things to weigh are flood and surge risk and smoke-season air quality. Housing runs expensive relative to regional medians.",
     },
     climate: { tempHighC: [5, 7, 10, 13, 17, 20, 23, 23, 19, 14, 8, 5], tempLowC: [0, 1, 3, 5, 8, 11, 13, 13, 10, 6, 2, 0], precipMm: [280, 220, 200, 150, 120, 95, 60, 70, 110, 220, 320, 310], humidity: [82, 80, 78, 76, 76, 78, 80, 82, 82, 82, 84, 84], annualPrecipMm: 2155, frostFreeDays: 240, hardinessZone: "8b", sunshinePct: [34, 36, 36, 42, 35, 40, 37, 37, 32, 41, 37, 32] },
@@ -2810,7 +2810,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Squamish screening: housing runs expensive relative to regional medians; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: budget renters; sun-belt seekers. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing runs above regional medians; A poor fit for budget renters; sun-belt seekers.",
       sources: [
       { label: "ECCC — Squamish Airport", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2820,7 +2820,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["climbers", "wind-sport athletes"], travelFit: ["Stawamus Chief", "Sea to Sky Gondola"],
     whoWouldLove: "Mountain–ocean people who commute to Vancouver occasionally.", whoMightNot: "Budget renters; sun-belt seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "squamish-bc-mechanism",
         title: "Fjord / Inlet Coast mechanics",
@@ -2853,7 +2853,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "A tourist town at 1,383 m where chinooks can swing winter from −30°C to thaw in hours, framed by glacier peaks.",
     summaryImmersive: "Banff's climate is mountain continental: long cold winters, mild short summers, and dramatic chinook warm spells that erase snowpack overnight. Precipitation is moderate and favors summer convection; shoulder seasons are crisp and dry.",
     whyDistinct: "High elevation + valley geometry + national-park land cover creates clean air and strong nocturnal cooling.",
-            experience: {
+                experience: {
       feel: "Banff's climate is mountain continental: long cold winters, mild short summers, and dramatic chinook warm spells that erase snowpack overnight. Precipitation is moderate and favors summer convection; shoulder seasons are crisp and dry.",
       seasons: {
         winter: "Cold and sharp — afternoons near -3.3°C, nights near -13.7°C — humid air keeps everything soft and close. Arctic outbreaks can still bite hard.",
@@ -2861,8 +2861,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 21°C, nights near 7°C — showers pass through regularly. Wildfire and smoke are summer wildcards.",
         autumn: "Shoulder season — afternoons near 9°C, nights near -3°C — gray skies dominate. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for Lake Louise, skiing, and hiking — the practical way to experience chinook corridor terrain in Alberta.",
-      residentFit: "It rewards rocky Mountain purists — especially hospitality seasonal workers — if the local tradeoffs still feel acceptable after a full season in Banff.",
+      travelerFit: "Visitors come for Lake Louise, skiing, and hiking.",
+      residentFit: "It rewards rocky Mountain purists — especially hospitality seasonal workers — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and deep winter cold.",
     },
     climate: { tempHighC: [-5, -1, 4, 9, 15, 19, 22, 22, 16, 10, 1, -4], tempLowC: [-15, -12, -8, -3, 2, 6, 8, 7, 3, -2, -10, -14], precipMm: [20, 18, 25, 38, 55, 70, 65, 60, 45, 35, 28, 22], annualPrecipMm: 481, frostFreeDays: 90, hardinessZone: "3a", humidity: [84, 84, 76, 73, 68, 69, 64, 67, 65, 71, 78, 80], sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34] },
@@ -2875,7 +2875,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 46,
       socialStress: 30,
       accessFriction: 60,
-      note: "Banff screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: affordable-housing seekers; warm-winter lovers. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for affordable-housing seekers; warm-winter lovers.",
       sources: [
       { label: "ECCC — Banff CS", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2885,7 +2885,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["hospitality seasonal workers", "park staff"], travelFit: ["Lake Louise", "skiing", "hiking"],
     whoWouldLove: "Rocky Mountain purists.", whoMightNot: "Affordable-housing seekers; warm-winter lovers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "banff-ab-mechanism",
         title: "Chinook Corridor mechanics",
@@ -2918,7 +2918,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Cool, humid maritime city where winter storms are nor'easters and late summer watches tropical systems.",
     summaryImmersive: "Halifax mixes Gulf Stream–influenced mild winters with foggy springs and crisp autumns. Summer heat is moderated by onshore flow; winter snowfall is modest but blizzards can roar off the Atlantic. Hurricane remnants occasionally bring heavy rain.",
     whyDistinct: "Southward-facing Atlantic coast at mid-latitude with frequent hybrid storms.",
-            experience: {
+                experience: {
       feel: "Halifax mixes Gulf Stream–influenced mild winters with foggy springs and crisp autumns. Summer heat is moderated by onshore flow; winter snowfall is modest but blizzards can roar off the Atlantic. Hurricane remnants occasionally bring heavy rain.",
       seasons: {
         winter: "Cold and sharp — afternoons near 1.3°C, nights near -6°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -2926,8 +2926,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 21.7°C, nights near 14°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 14°C, nights near 6°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Peggy's Cove and tidal bore — the practical way to experience cool-summer maritime terrain in Nova Scotia.",
-      residentFit: "It rewards atlantic Canada urban life without Montreal cold — especially students — if the local tradeoffs still feel acceptable after a full season in Halifax.",
+      travelerFit: "Visitors come for Peggy's Cove and tidal bore.",
+      residentFit: "It rewards atlantic Canada urban life without Montreal cold — especially students — who can accept the local tradeoffs.",
       texture: "An easier place to settle into at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Halifax has the easiest service base in Atlantic Canada, but housing pressure, harbour weather, fog, and coastal storm exposure keep the lived score grounded.",
     },
     climate: { tempHighC: [0, 0, 4, 9, 14, 19, 23, 23, 19, 14, 9, 4], tempLowC: [-8, -7, -3, 2, 7, 12, 15, 15, 11, 6, 1, -3], precipMm: [150, 120, 130, 120, 120, 110, 105, 115, 120, 140, 150, 160], humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74], annualPrecipMm: 1520, frostFreeDays: 165, hardinessZone: "6b", sunshinePct: [35, 42, 44, 53, 46, 49, 43, 39, 31, 37, 33, 30] },
@@ -2993,7 +2993,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's smallest province — red soil, potatoes, and breezy summers that rarely exceed 27°C.",
     summaryImmersive: "PEI is a sandbar in the Gulf: winters are snowy and windy; summers are mild with persistent breezes that keep beaches comfortable. Spring fog is common; fall is peak tourism for harvest and lighthouses.",
     whyDistinct: "Island geography with Gulf ice and melt strongly modulates seasonal lag versus mainland New Brunswick.",
-            experience: {
+                experience: {
       feel: "Charlottetown — pEI is a sandbar in the Gulf: winters are snowy and windy; summers are mild with persistent breezes that keep beaches comfortable. Spring fog is common; fall is peak tourism for harvest and lighthouses.",
       seasons: {
         winter: "Cold and sharp — afternoons near -1.7°C, nights near -9.7°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -3001,8 +3001,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 22.3°C, nights near 13.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 13°C, nights near 4.7°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Green Gables, beaches, and lobster — the practical way to experience cool-summer maritime terrain in Prince Edward Island.",
-      residentFit: "It rewards quiet island life with maritime seasons — especially small-town families — if the local tradeoffs still feel acceptable after a full season in Charlottetown.",
+      travelerFit: "Visitors come for Green Gables, beaches, and lobster.",
+      residentFit: "It rewards quiet island life with maritime seasons — especially small-town families — who can accept the local tradeoffs.",
       texture: "An easier place to settle into at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
     },
     climate: { tempHighC: [-3, -3, 1, 7, 14, 19, 24, 24, 19, 13, 7, 1], tempLowC: [-12, -11, -6, 0, 6, 11, 15, 15, 10, 4, 0, -6], precipMm: [110, 90, 100, 95, 95, 95, 100, 95, 105, 120, 130, 130], humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74], annualPrecipMm: 1265, frostFreeDays: 150, hardinessZone: "5b", sunshinePct: [39, 45, 48, 56, 49, 53, 46, 43, 34, 41, 37, 34] },
@@ -3015,7 +3015,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Charlottetown screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: urban nightlife seekers. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for urban nightlife seekers.",
       sources: [
       { label: "ECCC — Charlottetown", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -3025,7 +3025,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "charlottetown-pei-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -3144,16 +3144,16 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Dawson City sits far inland near the Arctic Circle, where winter cold pools along the Yukon River and summer daylight runs long enough to push gardens fast. It is drier than many coastal northern places and much more seasonal: dark severe winters, dusty thaw, mosquito-rich green-up, and a brilliant fall that arrives early.",
     whyDistinct: "Interior continentality, river valley cold pooling, and extreme daylight seasonality combine into a highly legible subarctic settlement climate.",
             experience: {
-      feel: "Dawson City sits far inland near the Arctic Circle, where winter cold pools along the Yukon River and summer daylight runs long enough to push gardens fast.",
+      feel: "Dawson City feels like Klondike history pressed into a continental subarctic basin — winter cold pooling along the Yukon River, explosive short summers under near-endless daylight, and dusty thaw giving way to mosquito-rich green-up before an early brilliant fall.",
       seasons: {
-        winter: "Deep freeze — afternoons near -19.3°C, nights near -29.3°C — snow is a regular part of the picture. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 5.3°C, nights near -8.3°C — skies stay mostly dry.",
-        summer: "Cool summer by latitude — afternoons near 21°C, nights near 8°C — showers pass through regularly. Wildfire and smoke are summer wildcards.",
-        autumn: "Autumn fade — afternoons near -1.3°C, nights near -9.3°C — snow is a regular part of the picture. Fire season lingers into shoulder months.",
+      winter: "Deep and dark — afternoons near −19°C, nights near −29°C, ice-road logistics, aurora overhead, and cold that defines daily routine.",
+      spring: "Fast break-up — river ice going out, daylight ballooning, and afternoons climbing from frozen to mild over a few exuberant weeks.",
+      summer: "Brief and manic — highs near 21°C under long photoperiod, gardens exploding in alluvial soil, midnight-sun festivals, and wildfire smoke on bad years.",
+      autumn: "Short and gold — birches turning, first hard frosts in September, aurora returning, and tourism thinning before winter closes the Klondike loop.",
       },
-      travelerFit: "Visitors come for Klondike history, midnight sun, and aurora — the practical way to experience subarctic continental terrain in Yukon.",
-      residentFit: "It rewards people who want northern history and can treat winter as a serious lifestyle commitment — especially northern history workers — if the local tradeoffs still feel acceptable after a full season in Dawson City.",
-      texture: "A real-tradeoff place — the main things to weigh are deep winter cold and wildfire exposure. Specialty care and major-airport access require real planning.",
+      travelerFit: "Visitors come for Klondike history, midnight sun, and aurora.",
+      residentFit: "It rewards northern history workers and aurora seekers who treat winter as a serious lifestyle commitment.",
+      texture: "A real-tradeoff subarctic town — the main things to weigh are very-high winter cold, wildfire smoke, permafrost infrastructure, and Whitehorse drives for specialty care.",
     },
     climate: { tempHighC: [-22, -16, -5, 6, 15, 21, 23, 19, 11, -1, -14, -20], tempLowC: [-31, -28, -19, -7, 1, 7, 10, 7, 1, -7, -22, -29], precipMm: [18, 14, 12, 10, 18, 38, 55, 45, 35, 25, 20, 18], snowCm: [24, 18, 14, 6, 2, 0, 0, 0, 4, 16, 28, 26], annualPrecipMm: 308, frostFreeDays: 70, hardinessZone: "1b", humidity: [82, 82, 74, 71, 66, 67, 62, 65, 63, 69, 76, 78], sunshinePct: [36, 42, 45, 53, 58, 62, 55, 52, 43, 38, 34, 31] },
     soil: { texture: "River alluvium and silty loam over discontinuous permafrost", drainage: "moderate", phRange: [5.8, 7.0], waterHolding: "moderate" },
@@ -3165,7 +3165,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 58,
       socialStress: 40,
       accessFriction: 72,
-      note: "Dawson City screening: cost sits in a middle band — verify rents and insurance locally; specialty care, major airports, or all-weather road access need real planning; Poor fit if: anyone needing easy logistics or mild dark-season weather. Atlas-grade read — confirm on the ground before committing.",
+      note: "Specialty care and major-airport access need real planning; A poor fit for anyone needing easy logistics or mild dark-season weather.",
       sources: [
       { label: "ECCC Canadian Climate Normals — Dawson station context", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "Government of Yukon — Climate change in Yukon", url: "https://yukon.ca/en/climate-change-yukon" },
@@ -3176,19 +3176,19 @@ export const PLACES_CANADA: Place[] = [
     confidence: "high",
             deepSections: [
       {
-        id: "dawson-city-yt-mechanism",
-        title: "Subarctic Continental mechanics",
+        id: "dawson-yukon-continental",
+        title: "Yukon interior continentality",
         paragraphs: [
-          "Dawson City sits where yukon River and Klondike River confluence in a cold interior basin under long subarctic daylight. Dfc normals and roughly 308 mm/yr frame the regional baseline, but Continental extremity and River-valley moderation re-weight what any single forecast means block by block.",
-          "Interior continentality, river valley cold pooling, and extreme daylight seasonality combine into a highly legible subarctic settlement climate. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Dawson City sits far inland near the Arctic Circle where the Yukon and Klondike rivers meet — winter cold pools in the basin while summer daylight runs long enough to push gardens fast on river alluvium. Roughly 308 mm annually makes it drier than many coastal northern places and more legibly continental.",
+          "Extreme daylight seasonality amplifies both winter severity and summer exuberance — one of Canada's clearest subarctic settlement signals outside the territories' capital hubs.",
         ],
       },
       {
-        id: "dawson-city-yt-field-read",
-        title: "On-the-ground read",
+        id: "dawson-klondike-life",
+        title: "Klondike life, permafrost, and smoke",
         paragraphs: [
-          "Klondike gold-rush town with one of Canada's clearest continental subarctic signals: deep winter, bright dry air, and explosive short summers. Soils read as river alluvium and silty loam over discontinuous permafrost with moderate drainage (pH 5.8–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Potatoes, Hardy greens, Rhubarb. Anyone needing easy logistics or mild dark-season weather should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Discontinuous permafrost underlies much of the area — infrastructure built on frozen ground faces thaw consolidation. Wildfire and smoke register elevated in summer; potatoes and hardy greens succeed in the brief frost-free window.",
+          "Whitehorse anchors specialty care and major-airport access. Anyone needing easy logistics or mild dark-season weather should visit for history and aurora, not relocate permanently without a full winter trial.",
         ],
       },
     ],
@@ -3208,7 +3208,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "A surprisingly productive prairie garden pocket in southern Manitoba, with warm summers, severe winters, and escarpment-scale siting effects.",
     summaryImmersive: "Morden sits in one of Manitoba's warmer growing-season pockets, close to the Pembina Escarpment and the dry western edge of the Red River lowland. Summers can be hot enough for corn, grapes, and long-season gardens; winters are still fully prairie. The microclimate value lies in heat units and sun, not mildness.",
     whyDistinct: "Southern latitude for Manitoba, lee-side dryness, and modest escarpment relief produce one of the province's stronger garden and orchard climates.",
-            experience: {
+                experience: {
       feel: "Morden & the Pembina Escarpment — morden sits in one of Manitoba's warmer growing-season pockets, close to the Pembina Escarpment and the dry western edge of the Red River lowland. Summers can be hot enough for corn, grapes, and long-season gardens; winters are still fully prairie.",
       seasons: {
         winter: "Deep freeze — afternoons near -8°C, nights near -17.3°C — snow is a regular part of the picture. Arctic outbreaks can still bite hard.",
@@ -3216,8 +3216,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 25.3°C, nights near 13°C — showers pass through regularly. Water supply and irrigation stress matter.",
         autumn: "Shoulder season — afternoons near 10.3°C, nights near -0.3°C — gray skies dominate. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Morden research station heritage and prairie fall — the practical way to experience orchard valley terrain in Manitoba.",
-      residentFit: "It rewards prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find — especially gardeners — if the local tradeoffs still feel acceptable after a full season in Morden.",
+      travelerFit: "Visitors come for Morden research station heritage and prairie fall.",
+      residentFit: "It rewards prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find — especially gardeners — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are deep winter cold and long-run drought.",
     },
     climate: { tempHighC: [-10, -7, 0, 11, 19, 24, 26, 26, 20, 11, 0, -7], tempLowC: [-19, -17, -9, -1, 6, 12, 14, 13, 7, 0, -8, -16], precipMm: [18, 15, 25, 40, 70, 90, 80, 65, 55, 35, 25, 20], snowCm: [24, 18, 16, 6, 1, 0, 0, 0, 0, 4, 14, 22], annualPrecipMm: 538, frostFreeDays: 155, hardinessZone: "4a", humidity: [82, 82, 75, 71, 70, 68, 63, 61, 64, 70, 76, 78], sunshinePct: [38, 45, 47, 56, 61, 64, 58, 54, 46, 40, 36, 33] },
@@ -3230,7 +3230,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 40,
       socialStress: 34,
       accessFriction: 38,
-      note: "Morden & the Pembina Escarpment screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
       sources: [
       { label: "ECCC Canadian Climate Normals — Morden and southern Manitoba station context", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/" },
@@ -3239,7 +3239,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
-            deepSections: [
+                deepSections: [
       {
         id: "morden-mb-mechanism",
         title: "Orchard Valley mechanics",
@@ -3273,7 +3273,7 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "An Eastern Townships hill-and-valley climate where maple slopes, ski snow, and orchard pockets sit within a few minutes of each other.",
     summaryImmersive: "Sutton occupies the Appalachian side of southern Quebec: wetter and hillier than Montreal, less severe than the deep north, and full of small frost and slope contrasts. Valley floors cool quickly on clear nights, while south-facing slopes and village benches carry orchards, vineyards, and maple woods.",
     whyDistinct: "Modest Appalachian relief creates a dense pattern of frost pockets, snowier uplands, and protected agricultural slopes in a compact settlement landscape.",
-            experience: {
+                experience: {
       feel: "Sutton & the Eastern Townships — sutton occupies the Appalachian side of southern Quebec: wetter and hillier than Montreal, less severe than the deep north, and full of small frost and slope contrasts.",
       seasons: {
         winter: "Cold and snowy — afternoons near -4°C, nights near -14.3°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
@@ -3281,8 +3281,8 @@ export const PLACES_CANADA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 23.7°C, nights near 10.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 12°C, nights near 1.3°C — snow is a regular part of the picture. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for fall color, ski weekends, and wine routes — the practical way to experience piedmont transition terrain in Quebec.",
-      residentFit: "It rewards people who want village-scale Quebec Appalachians with real snow and orchard-maple culture — especially remote workers — if the local tradeoffs still feel acceptable after a full season in Sutton.",
+      travelerFit: "Visitors come for fall color, ski weekends, and wine routes.",
+      residentFit: "It rewards people who want village-scale Quebec Appalachians with real snow and orchard-maple culture — especially remote workers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are deep winter cold and storm exposure.",
     },
     climate: { tempHighC: [-6, -4, 2, 10, 17, 22, 25, 24, 19, 12, 5, -2], tempLowC: [-16, -15, -9, -2, 4, 9, 12, 11, 7, 1, -4, -12], precipMm: [75, 65, 75, 85, 95, 110, 120, 105, 100, 95, 85, 80], snowCm: [60, 50, 40, 12, 1, 0, 0, 0, 0, 6, 28, 55], annualPrecipMm: 1090, frostFreeDays: 140, hardinessZone: "5a", humidity: [82, 82, 75, 71, 66, 68, 63, 65, 64, 70, 76, 78], sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34] },
@@ -3295,7 +3295,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Sutton & the Eastern Townships screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: people seeking low-maintenance winter or hot summers. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for people seeking low-maintenance winter or hot summers.",
       sources: [
       { label: "ECCC Canadian Climate Normals — Eastern Townships station context", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "Climate Atlas of Canada — southern Quebec projections", url: "https://climateatlas.ca/" },
@@ -3304,7 +3304,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
-            deepSections: [
+                deepSections: [
       {
         id: "sutton-qc-mechanism",
         title: "Piedmont Transition mechanics",

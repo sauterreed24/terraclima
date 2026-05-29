@@ -27,7 +27,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Alabama’s coolest summer afternoons outside the highest Smokies — a plateau town where elevation buys genuine relief from Gulf humidity below.",
     summaryImmersive: "Mentone sits on the same Appalachian escarpment that runs into Georgia and Tennessee, but here the state’s stereotypical swelter finally breaks. Westerly storm systems ride the plateau edge; thermal belts and coves on the scarp produce sharp spring frost contrasts that orchardists still map by hand. It is one of the few places in Alabama where true four-season gardening feels honest.",
     whyDistinct: "Plateau elevation (~550 m) in the subtropical Gulf air mass produces lapse-rate cooling and orographic cloud caps on moist flow — a discrete mountain microclimate inside a state better known for torrid lowlands.",
-            experience: {
+                experience: {
       feel: "Mentone sits on the same Appalachian escarpment that runs into Georgia and Tennessee, but here the state’s stereotypical swelter finally breaks. Westerly storm systems ride the plateau edge;.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 10.3°C, nights near -0.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -35,8 +35,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Warm season peak — afternoons near 28.7°C, nights near 17.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 20.7°C, nights near 8.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for DeSoto State Park and hang gliding ridge — the practical way to experience thermal belt terrain in Alabama.",
-      residentFit: "It rewards southerners who want mountain air without leaving the state — especially retirees — if the local tradeoffs still feel acceptable after a full season in Mentone.",
+      travelerFit: "Visitors come for DeSoto State Park and hang gliding ridge.",
+      residentFit: "It rewards southerners who want mountain air without leaving the state — especially retirees — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
     },
     climate: {
@@ -59,7 +59,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 40,
       socialStress: 34,
       accessFriction: 38,
-      note: "Mentone screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: those needing urban amenities or dry winters. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for those needing urban amenities or dry winters.",
       sources: [
       { label: "NOAA — Valley Head 2 NE (proxy)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Mentone", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -69,7 +69,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-            deepSections: [
+                deepSections: [
       {
         id: "mentone-al-mechanism",
         title: "Thermal Belt mechanics",
@@ -111,7 +111,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Connecticut’s unofficial cold pole — deep winter snow and spring frosts that arrive later than along I-91.",
     summaryImmersive: "Norfolk collects cold air on clear nights the way a bowl collects water. Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure. Summers are mild and short; the town is a cultural bridge between New England ski country and the Hudson Valley.",
     whyDistinct: "High elevation + inland position + enclosed topography = systematically colder minima than coastal Connecticut or the Hartford basin — a textbook small-scale cold pool.",
-            experience: {
+                experience: {
       feel: "Norfolk collects cold air on clear nights the way a bowl collects water. Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure. Summers are mild and short;.",
       seasons: {
         winter: "Cold and snowy — afternoons near 1.7°C, nights near -9°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
@@ -119,8 +119,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Cool summer by latitude — afternoons near 24.7°C, nights near 13°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 14.3°C, nights near 3°C — snow is a regular part of the picture. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for fall color and cross-country skiing — the practical way to experience cold-air pool terrain in Connecticut.",
-      residentFit: "It rewards new England maximalists who want real winter — especially second-home owners — if the local tradeoffs still feel acceptable after a full season in Norfolk.",
+      travelerFit: "Visitors come for fall color and cross-country skiing.",
+      residentFit: "It rewards new England maximalists who want real winter — especially second-home owners — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are deep winter cold and storm exposure.",
     },
     climate: {
@@ -143,7 +143,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 64,
       socialStress: 24,
       accessFriction: 60,
-      note: "Norfolk screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; community fabric reads quieter than larger regional hubs. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-climate retirees.",
       sources: [
       { label: "NOAA — Norfolk 2 SW", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Norfolk", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -153,7 +153,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "norfolk-ct-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -195,7 +195,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Delaware’s gentlest summers — bay and ocean breezes cap heat while humidity stays classically Mid-Atlantic.",
     summaryImmersive: "Lewes sits where the bay’s huge tidal prism organizes daily wind: onshore flow on warm afternoons, land breezes at night, and periodic nor’easters that reshape coastal dunes. It lacks the elevation microclimates of the Appalachians but exemplifies estuarine moderation in a mostly flat state.",
     whyDistinct: "Shallow-mixed Delaware Bay + Atlantic fetch produces a hybrid maritime regime rare inland on the Delmarva Peninsula.",
-            experience: {
+                experience: {
       feel: "Lewes sits where the bay’s huge tidal prism organizes daily wind: onshore flow on warm afternoons, land breezes at night, and periodic nor’easters that reshape coastal dunes. It lacks the elevation microclimates of the Appalachians but exemplifies estuarine moderation in a mostly flat state.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 7.3°C, nights near -0.7°C — snow is a regular part of the picture. Coastal surge and wind events belong in the planning stack.",
@@ -203,8 +203,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Warm season peak — afternoons near 27.7°C, nights near 19.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 19.3°C, nights near 10.7°C — showers pass through regularly. Tropical systems can still reshape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
       },
-      travelerFit: "Visitors come for Cape Henlopen and ferry to Cape May — the practical way to experience lake-moderated terrain in Delaware.",
-      residentFit: "It rewards bay-and-beach people who prefer small-town scale — especially coastal retirees — if the local tradeoffs still feel acceptable after a full season in Lewes.",
+      travelerFit: "Visitors come for Cape Henlopen and ferry to Cape May.",
+      residentFit: "It rewards bay-and-beach people who prefer small-town scale — especially coastal retirees — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are coastal and sea-level pressure and flood and surge risk.",
     },
     climate: {
@@ -227,7 +227,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Lewes screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: mountain-air seekers; flood-risk skeptics. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for mountain-air seekers; flood-risk skeptics.",
       sources: [
       { label: "NOAA — Lewes (Sussex County)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Lewes", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -237,7 +237,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "lewes-de-mechanism",
         title: "Lake-Moderated mechanics",
@@ -279,7 +279,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "A Georgia mountain town where July afternoons stay closer to the upper 20s than the low 30s — rare in the Deep South.",
     summaryImmersive: "Clayton is far enough south to feel subtropical in spring, but elevation and orographic cloudiness on moist southerly flow keep midsummer heat human. Waterfalls and north-facing coves stay shockingly cool; south-facing ridges open to sun for viticulture experiments. The contrast with Atlanta’s heat island is not subtle — it is a different regional climate at the same latitude band.",
     whyDistinct: "Orographic enhancement + escarpment elevation produces a montane island climate inside the humid subtropical belt — one of the strongest latitude–elevation decouplings in the Southeast.",
-            experience: {
+                experience: {
       feel: "Clayton is far enough south to feel subtropical in spring, but elevation and orographic cloudiness on moist southerly flow keep midsummer heat human. Waterfalls and north-facing coves stay shockingly cool; south-facing ridges open to sun for viticulture experiments.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 12°C, nights near 0.7°C — snow is a regular part of the picture. Storm systems roll through with real force.",
@@ -287,8 +287,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Warm season peak — afternoons near 29.3°C, nights near 17.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 21.3°C, nights near 9.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Bartram Trail and waterfalls — the practical way to experience mild-winter foothills terrain in Georgia.",
-      residentFit: "It rewards southerners who want mountain climate without West Coast prices — especially remote workers — if the local tradeoffs still feel acceptable after a full season in Clayton.",
+      travelerFit: "Visitors come for Bartram Trail and waterfalls.",
+      residentFit: "It rewards southerners who want mountain climate without West Coast prices — especially remote workers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
     },
     climate: {
@@ -311,7 +311,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Clayton screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: those who need reliable hot summers for crops. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for those who need reliable hot summers for crops.",
       sources: [
       { label: "NOAA — Clayton 1 WSW", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Clayton", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -321,7 +321,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "clayton-ga-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -363,7 +363,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Steep bluffs and coulees in a corner of Illinois that glaciers missed — sharp frost and microclimates on a few miles’ scale.",
     summaryImmersive: "Galena’s postcard hills are not decorative; they organize cold drainage, spring phenology, and wind exposure in ways flat corn country cannot. The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns. It is a microclimate laboratory squeezed into a tourist town.",
     whyDistinct: "Driftless topography inside Illinois’ glaciated plain is geographically rare; elevation + aspect produce repeatable local climate gradients documented in Midwest agronomy literature.",
-            experience: {
+                experience: {
       feel: "Galena’s postcard hills are not decorative; they organize cold drainage, spring phenology, and wind exposure in ways flat corn country cannot. The Mississippi moderates some winter cold but also supplies moisture for lake-effect-like cloud streets when synoptic flow aligns.",
       seasons: {
         winter: "Cold and snowy — afternoons near -0.3°C, nights near -10°C — snow is a regular part of the picture. Storm systems roll through with real force.",
@@ -371,8 +371,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Warm season peak — afternoons near 27°C, nights near 16°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 15.7°C, nights near 4.3°C — showers pass through regularly. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Mississippi Palisades and architecture — the practical way to experience driftless relief pocket terrain in Illinois.",
-      residentFit: "It rewards midwest topography fans who still want seasons — especially historic-town lovers — if the local tradeoffs still feel acceptable after a full season in Galena.",
+      travelerFit: "Visitors come for Mississippi Palisades and architecture.",
+      residentFit: "It rewards midwest topography fans who still want seasons — especially historic-town lovers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
     },
     climate: {
@@ -395,7 +395,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 60,
-      note: "Galena screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; community fabric reads quieter than larger regional hubs. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for those avoiding cold winters or steep drives.",
       sources: [
       { label: "NOAA — Galena", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Galena", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -405,7 +405,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-town lovers", "remote workers"], travelFit: ["Mississippi Palisades", "architecture"],
     whoWouldLove: "Midwest topography fans who still want seasons.", whoMightNot: "Those avoiding cold winters or steep drives.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "galena-il-mechanism",
         title: "Driftless Relief Pocket mechanics",
@@ -447,7 +447,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Chicago’s breezy eastern cousin — lake-effect snow in winter, sweater-weather June, and moderated midsummer peaks.",
     summaryImmersive: "Beverly Shores is where continental air masses first feel the thermal mass of Lake Michigan: delayed spring warming, abundant winter cloud when cold air crosses open water, and frequent afternoon wind shifts on stable summer days. The microclimate supports boreal relicts and rare orchids in protected swales — a biogeographic fingerprint of the lake.",
     whyDistinct: "Southern-lake snowbelt + dune topography creates sharp local contrasts between exposed dunes, sheltered swales, and backshore forest within walking distance.",
-            experience: {
+                experience: {
       feel: "Beverly Shores is where continental air masses first feel the thermal mass of Lake Michigan: delayed spring warming, abundant winter cloud when cold air crosses open water, and frequent afternoon wind shifts on stable summer days.",
       seasons: {
         winter: "Cold and snowy — afternoons near 2°C, nights near -6.7°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
@@ -455,8 +455,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Cool summer by latitude — afternoons near 25.7°C, nights near 15.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 15°C, nights near 5.3°C — showers pass through regularly. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Indiana Dunes trails and bird migration — the practical way to experience lake-effect snowbelt terrain in Indiana.",
-      residentFit: "It rewards great Lakes beach people who want dunes, not crowds — especially Chicago commuters — if the local tradeoffs still feel acceptable after a full season in Beverly Shores.",
+      travelerFit: "Visitors come for Indiana Dunes trails and bird migration.",
+      residentFit: "It rewards great Lakes beach people who want dunes, not crowds — especially Chicago commuters — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are storm exposure.",
     },
     climate: {
@@ -479,7 +479,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Beverly Shores screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: sun-belt warmth seekers. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for sun-belt warmth seekers.",
       sources: [
       { label: "NOAA — Michigan City IN", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Beverly Shores", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -489,7 +489,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "beverly-shores-in-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -531,7 +531,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Maryland’s winter — snowier and colder than Baltimore imagines — with ridge-valley frost contrasts that rival West Virginia.",
     summaryImmersive: "Oakland is the anchor of Garrett County, where Pittsburgh television markets and lake-effect snow belts overlap. Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow. Summer is mild and prized by Mid-Atlantic escapees; spring is late and fickle for growers.",
     whyDistinct: "High elevation + Great Lakes moisture channel + enclosed valleys = disproportionate snow and cold for the Mid-Atlantic seaboard.",
-            experience: {
+                experience: {
       feel: "Oakland is the anchor of Garrett County, where Pittsburgh television markets and lake-effect snow belts overlap. Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow. Summer is mild and prized by Mid-Atlantic escapees;.",
       seasons: {
         winter: "Cold and sharp — afternoons near 2.7°C, nights near -7.3°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
@@ -539,8 +539,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Cool summer by latitude — afternoons near 24°C, nights near 13°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 14°C, nights near 3.7°C — snow is a regular part of the picture. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Wisp Resort and Autumn Glory — the practical way to experience cold-air pool terrain in Maryland.",
-      residentFit: "It rewards mid-Atlantic residents who want real ski-adjacent winters — especially lake-house buyers — if the local tradeoffs still feel acceptable after a full season in Oakland.",
+      travelerFit: "Visitors come for Wisp Resort and Autumn Glory.",
+      residentFit: "It rewards mid-Atlantic residents who want real ski-adjacent winters — especially lake-house buyers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are deep winter cold and storm exposure.",
     },
     climate: {
@@ -563,7 +563,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 60,
-      note: "Oakland screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; community fabric reads quieter than larger regional hubs. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
       sources: [
       { label: "NOAA — Oakland 2 SE", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Oakland", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -573,7 +573,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "oakland-md-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -615,7 +615,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Cool summers and crisp winters west of Boston’s marine bubble — elevation and inland position create a continental Berkshires climate.",
     summaryImmersive: "Pittsfield sits in a valley network that channels winter cold and summer thunderstorms along frontal boundaries. It is not as harsh as Vermont’s Northeast Kingdom, but it is dramatically different from Cape Cod on the same state license plate. Fall color and spring mud season are serious social calendars.",
     whyDistinct: "Inland elevation + New England storm-track dynamics = stronger seasonality than coastal Massachusetts, with occasional lake-enhanced snow on northwesterly flow.",
-            experience: {
+                experience: {
       feel: "Pittsfield sits in a valley network that channels winter cold and summer thunderstorms along frontal boundaries. It is not as harsh as Vermont’s Northeast Kingdom, but it is dramatically different from Cape Cod on the same state license plate.",
       seasons: {
         winter: "Cold and snowy — afternoons near 1.7°C, nights near -9.3°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
@@ -623,8 +623,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Cool summer by latitude — afternoons near 25.3°C, nights near 13°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 14.3°C, nights near 2.3°C — showers pass through regularly. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Tanglewood and ski areas — the practical way to experience cold-air pool terrain in Massachusetts.",
-      residentFit: "It rewards new England culture without Boston housing costs — especially culture seekers — if the local tradeoffs still feel acceptable after a full season in Pittsfield.",
+      travelerFit: "Visitors come for Tanglewood and ski areas.",
+      residentFit: "It rewards new England culture without Boston housing costs — especially culture seekers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are storm exposure.",
     },
     climate: {
@@ -647,7 +647,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 60,
-      note: "Pittsfield screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; community fabric reads quieter than larger regional hubs. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
       sources: [
       { label: "NOAA — Pittsfield Airport", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Pittsfield", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -657,7 +657,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "pittsfield-ma-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -699,7 +699,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Live oaks and sea breezes — the gentlest heat in Mississippi, traded for humidity and hurricane exposure.",
     summaryImmersive: "Ocean Springs inherits the same humid subtropical core as the Deep South, but the Sound’s daily heat capacity knocks a few degrees off afternoon peaks relative to inland Hattiesburg. Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow. It is not a dry climate — it is a maritime one.",
     whyDistinct: "Shallow shelf water + urban tree canopy + lower inland elevation buffering = measurably milder frost regime than counties 30 km north.",
-            experience: {
+                experience: {
       feel: "Ocean Springs inherits the same humid subtropical core as the Deep South, but the Sound’s daily heat capacity knocks a few degrees off afternoon peaks relative to inland Hattiesburg. Summer nights stay warm; winter cold fronts are brief and often moderated by returning onshore flow.",
       seasons: {
         winter: "Mild and workable — afternoons near 16.7°C, nights near 6.7°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -707,8 +707,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Warm season peak — afternoons near 31.7°C, nights near 22.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 25.7°C, nights near 15.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Gulf Islands NS and seafood — the practical way to experience hurricane-exposed coast terrain in Mississippi.",
-      residentFit: "It rewards humid subtropical coastal life with arts-town flavor — especially coastal retirees — if the local tradeoffs still feel acceptable after a full season in Ocean Springs.",
+      travelerFit: "Visitors come for Gulf Islands NS and seafood.",
+      residentFit: "It rewards humid subtropical coastal life with arts-town flavor — especially coastal retirees — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
     },
     climate: {
@@ -730,7 +730,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 40,
       socialStress: 34,
       accessFriction: 38,
-      note: "Ocean Springs screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: hurricane-averse; dry-air seekers. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for hurricane-averse; dry-air seekers.",
       sources: [
       { label: "NOAA — Biloxi MS (proxy sound)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Ocean Springs", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -740,7 +740,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "ocean-springs-ms-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -782,7 +782,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Spring water at near-constant temperatures threads through humid Ozark summers — a natural cooling network in dissected terrain.",
     summaryImmersive: "Eminence is the gateway to some of the clearest spring rivers in the Lower 48. Groundwater upwelling holds near-stable temperatures year-round; in summer, paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape. The hills are modest in elevation but enormous in hydrologic complexity.",
     whyDistinct: "Large spring discharge and karst topography create localized cold-air pooling and persistent riparian humidity — a hydrogeologic microclimate superimposed on humid continental summers.",
-            experience: {
+                experience: {
       feel: "Eminence is the gateway to some of the clearest spring rivers in the Lower 48. Groundwater upwelling holds near-stable temperatures year-round; in summer, paddlers experience cold pools and fog banks at confluences that would not exist in a non-karst landscape.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 7.7°C, nights near -3.3°C — showers pass through regularly. Storm systems roll through with real force.",
@@ -790,8 +790,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Warm season peak — afternoons near 31.3°C, nights near 19°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 21.3°C, nights near 8.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Ozark NS rivers and caving — the practical way to experience limestone / karst pocket terrain in Missouri.",
-      residentFit: "It rewards river people who want geology and misty mornings — especially paddlers — if the local tradeoffs still feel acceptable after a full season in Eminence.",
+      travelerFit: "Visitors come for Ozark NS rivers and caving.",
+      residentFit: "It rewards river people who want geology and misty mornings — especially paddlers — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
     },
     climate: {
@@ -813,7 +813,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Eminence screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: those needing dry air or flat farmland. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for those needing dry air or flat farmland.",
       sources: [
       { label: "NOAA — Eminence", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "USGS — Ozark Plateau springs", url: "https://www.usgs.gov/" },
@@ -822,7 +822,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "eminence-mo-mechanism",
         title: "Limestone / Karst Pocket mechanics",
@@ -952,7 +952,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "The Mid-Atlantic’s most maritime resort climate — moderated peaks, persistent humidity, and nor’easter drama.",
     summaryImmersive: "Cape May is a classic barrier-style energy balance problem: water on three sides, low elevation, and tree canopy that knits humidity into every summer afternoon. Autumn can deliver warm ocean swimming while inland New Jersey cools; winter alternates between mild marine air and biting Arctic outbreaks when continental highs wedge behind the Appalachians.",
     whyDistinct: "Triple-water exposure + narrow landmass = stronger diurnal sea-breeze modulation than mainland New Jersey at the same latitude.",
-            experience: {
+                experience: {
       feel: "Cape May is a classic barrier-style energy balance problem: water on three sides, low elevation, and tree canopy that knits humidity into every summer afternoon. Autumn can deliver warm ocean swimming while inland New Jersey cools;.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 6.3°C, nights near -0.7°C — showers pass through regularly. Coastal surge and wind events belong in the planning stack.",
@@ -960,8 +960,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Warm season peak — afternoons near 26.3°C, nights near 19°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 18°C, nights near 10.3°C — showers pass through regularly. Tropical systems can still reshape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
       },
-      travelerFit: "Visitors come for Victorian architecture and bird migration — the practical way to experience hurricane-exposed coast terrain in New Jersey.",
-      residentFit: "It rewards beach-town people who want walkable scale — especially historic-home restorers — if the local tradeoffs still feel acceptable after a full season in Cape May.",
+      travelerFit: "Visitors come for Victorian architecture and bird migration.",
+      residentFit: "It rewards beach-town people who want walkable scale — especially historic-home restorers — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are coastal and sea-level pressure and flood and surge risk. Cape May County housing tightens in summer but stays below Northeast metro medians; Philadelphia and Atlantic City are the usual specialist and airport anchors.",
     },
     climate: {
@@ -992,7 +992,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-home restorers", "retirees"], travelFit: ["Victorian architecture", "bird migration"],
     whoWouldLove: "Beach-town people who want walkable scale.", whoMightNot: "Dry-air or mountain-climate seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "cape-may-nj-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -1034,7 +1034,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Ohio’s snowiest shoreline resorts — June can feel like the Pacific Northwest until lake heat builds.",
     summaryImmersive: "Geneva-on-the-Lake inherits the full Great Lakes curriculum: delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands that can bury the strip while Columbus stays dry. Summer is warm and humid with lake breezes; thunderstorms propagate along lake-outflow boundaries.",
     whyDistinct: "Eastern Erie fetch orientation + land-lake temperature contrast = maximized lake-effect potential for Ohio’s north coast.",
-            experience: {
+                experience: {
       feel: "Geneva-on-the-Lake inherits the full Great Lakes curriculum: delayed leaf-out, abundant winter cloud, and sharp mesoscale snow bands that can bury the strip while Columbus stays dry. Summer is warm and humid with lake breezes; thunderstorms propagate along lake-outflow boundaries.",
       seasons: {
         winter: "Cold and sharp — afternoons near 2.3°C, nights near -5.7°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
@@ -1042,8 +1042,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Cool summer by latitude — afternoons near 25°C, nights near 15.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 15.3°C, nights near 6.3°C — showers pass through regularly. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for wine trail and winter storm watching — the practical way to experience lake-effect snowbelt terrain in Ohio.",
-      residentFit: "It rewards great Lakes maximalists — especially lake-house buyers — if the local tradeoffs still feel acceptable after a full season in Geneva-on-the-Lake.",
+      travelerFit: "Visitors come for wine trail and winter storm watching.",
+      residentFit: "It rewards great Lakes maximalists — especially lake-house buyers — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are storm exposure.",
     },
     climate: {
@@ -1066,7 +1066,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Geneva-on-the-Lake screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for sunbelt retirees.",
       sources: [
       { label: "NOAA — Geneva", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Geneva-on-the-Lake", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1076,7 +1076,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "geneva-on-the-lake-oh-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -1118,7 +1118,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Wetter, hillier, and more forested than almost anywhere else in Oklahoma — a southeastern climate island in the Plains.",
     summaryImmersive: "Broken Bow and the Mountain Fork corridor punch above the surrounding plains in annual precipitation and forest cover. Upslope flow ahead of Gulf lows enhances rainfall; reservoirs and rivers add local moisture. Summers remain hot, but canopy and shade produce perceptible relief compared to open pasture.",
     whyDistinct: "Ouachita topography in a predominantly flat state creates orographic and land-cover feedbacks that are climatologically distinct from Oklahoma City or the Panhandle.",
-            experience: {
+                experience: {
       feel: "Broken Bow and the Mountain Fork corridor punch above the surrounding plains in annual precipitation and forest cover. Upslope flow ahead of Gulf lows enhances rainfall; reservoirs and rivers add local moisture.",
       seasons: {
         winter: "Mild and workable — afternoons near 13°C, nights near 1°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -1126,8 +1126,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Hot and humid — afternoons near 33°C, nights near 21.3°C — rain is frequent and can be heavy. Plan around heat that can turn genuinely dangerous.",
         autumn: "Shoulder season — afternoons near 23.7°C, nights near 11.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Beavers Bend SP and fishing — the practical way to experience piedmont transition terrain in Oklahoma.",
-      residentFit: "It rewards oklahoma residents who want forest and water — especially outdoor families — if the local tradeoffs still feel acceptable after a full season in Broken Bow.",
+      travelerFit: "Visitors come for Beavers Bend SP and fishing.",
+      residentFit: "It rewards oklahoma residents who want forest and water — especially outdoor families — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and extreme summer heat.",
     },
     climate: {
@@ -1149,7 +1149,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 40,
       socialStress: 34,
       accessFriction: 38,
-      note: "Broken Bow screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for dry-climate seekers.",
       sources: [
       { label: "NOAA — Broken Bow", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Broken Bow", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1159,7 +1159,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "broken-bow-ok-mechanism",
         title: "Piedmont Transition mechanics",
@@ -1201,7 +1201,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Narrow annual temperature range for the latitude — fog, wind, and moderate summers that feel more maritime than mainland Rhode Island.",
     summaryImmersive: "Block Island is small enough that every road is within a mile of water. That geometry means marine air dominates; heat waves are muted relative to Hartford or even Providence. Winter storms are oceanic and windy; summer is mild with persistent humidity. The island’s conservation lands preserve a rare Atlantic coastal grassland–heath mosaic tuned to salt spray.",
     whyDistinct: "Complete island exposure + low relief = maximized maritime moderation within southern New England — a classic case study in coastal boundary-layer climate.",
-            experience: {
+                experience: {
       feel: "Block Island is small enough that every road is within a mile of water. That geometry means marine air dominates; heat waves are muted relative to Hartford or even Providence. Winter storms are oceanic and windy; summer is mild with persistent humidity.",
       seasons: {
         winter: "Cold and sharp — afternoons near 5°C, nights near -1°C — rain is frequent and can be heavy. Coastal surge and wind events belong in the planning stack.",
@@ -1209,8 +1209,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
         summer: "Cool summer by latitude — afternoons near 23°C, nights near 17°C — showers pass through regularly. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 15.3°C, nights near 9°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
       },
-      travelerFit: "Visitors come for bluffs and biking — the practical way to experience hyper-maritime terrain in Rhode Island.",
-      residentFit: "It rewards cool-summer island people who tolerate ferry logistics — especially seasonal residents — if the local tradeoffs still feel acceptable after a full season in New Shoreham.",
+      travelerFit: "Visitors come for bluffs and biking.",
+      residentFit: "It rewards cool-summer island people who tolerate ferry logistics — especially seasonal residents — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are coastal and sea-level pressure and flood and surge risk. Housing runs expensive relative to regional medians.",
     },
     climate: {
@@ -1241,7 +1241,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["seasonal residents", "fishermen"], travelFit: ["bluffs", "biking"],
     whoWouldLove: "Cool-summer island people who tolerate ferry logistics.", whoMightNot: "Heat seekers; budget shoppers; anyone unwilling to plan groceries and care around the ferry schedule.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "block-island-ri-mechanism",
         title: "Hyper-Maritime mechanics",

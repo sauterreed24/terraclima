@@ -219,17 +219,17 @@ function buildFeel(place: Place): string {
 function buildTravelerFit(place: Place): string {
   const draws = place.travelFit.filter(t => !/^(year-round|summer|winter|spring|fall|autumn|shoulder seasons?)$/i.test(t.trim()));
   if (draws.length) {
-    return `Visitors come for ${joinHumanList(draws, 4)} — the practical way to experience ${archetypeLabel(place)} terrain in ${place.region}.`;
+    return `Visitors come for ${joinHumanList(draws, 4)}.`;
   }
   const hook = truncateImmersive(place.summaryImmersive, 160).replace(/\.$/, "");
-  return `Visitors come to experience ${archetypeLabel(place)} firsthand — ${hook.charAt(0).toLowerCase()}${hook.slice(1)}.`;
+  return `Visitors come for ${archetypeLabel(place)} firsthand — ${hook.charAt(0).toLowerCase()}${hook.slice(1)}.`;
 }
 
 function buildResidentFit(place: Place): string {
   const who = place.whoWouldLove.replace(/\.$/, "");
   const fit = place.relocationFit[0];
   if (fit) {
-    return `It rewards ${who.charAt(0).toLowerCase()}${who.slice(1)} — especially ${fit} — if the local tradeoffs still feel acceptable after a full season in ${place.municipality ?? place.region}.`;
+    return `It rewards ${who.charAt(0).toLowerCase()}${who.slice(1)} — especially ${fit} — who can accept the local tradeoffs.`;
   }
   return `It rewards ${who.charAt(0).toLowerCase()}${who.slice(1)} who can live with the hazards and service map that come with ${place.region}.`;
 }

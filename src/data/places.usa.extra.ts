@@ -107,7 +107,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Subarctic maritime — bitter cold when Siberian highs meet Bering ice; brief cool summers with midnight sun.",
     summaryImmersive: "Nome is where North America’s cold air masses exit toward the Bering Sea. Winter is long and dark: sea ice damps temperature extremes near shore but storms still rake the coast with wind-driven snow. Spring break-up turns rivers to slush highways; summer brings fog, berries, and cool but pleasant afternoons — t-shirt weather by local standards. The Bering Strait’s proximity means climate teleconnections to both the Pacific and Arctic oscillations show up in storm tracks.",
     whyDistinct: "Coastal subarctic with seasonal sea-ice cover creates a narrower annual temperature range than interior Alaska at the same latitude, but still delivers extreme wind chill when continental air crosses open leads in the ice.",
-            experience: {
+                experience: {
       feel: "Nome is where North America’s cold air masses exit toward the Bering Sea. Winter is long and dark: sea ice damps temperature extremes near shore but storms still rake the coast with wind-driven snow. Spring break-up turns rivers to slush highways;.",
       seasons: {
         winter: "Deep freeze — afternoons near -11.3°C, nights near -19°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
@@ -115,8 +115,8 @@ export const PLACES_USA_EXTRA: Place[] = [
         summer: "Cool summer by latitude — afternoons near 13°C, nights near 5°C — showers pass through regularly. Afternoon convection and storms build often.",
         autumn: "Autumn fade — afternoons near 1°C, nights near -7.3°C — snow is a regular part of the picture. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Iditarod finish and Bering land bridge archaeology — the practical way to experience subarctic continental terrain in Alaska.",
-      residentFit: "It rewards arctic coastal culture and long-light summers — especially mining logistics — if the local tradeoffs still feel acceptable after a full season in Nome.",
+      travelerFit: "Visitors come for Iditarod finish and Bering land bridge archaeology.",
+      residentFit: "It rewards arctic coastal culture and long-light summers — especially mining logistics — who can accept the local tradeoffs.",
       texture: "A real-tradeoff place at sea level — the main things to weigh are deep winter cold and storm exposure. Specialty care and major-airport access require real planning.",
     },
     climate: { tempHighC: [-13, -11, -6, 1, 7, 12, 14, 13, 8, 1, -6, -10], tempLowC: [-20, -19, -15, -8, -1, 4, 6, 5, 0, -8, -14, -18], precipMm: [18, 16, 14, 18, 22, 28, 50, 65, 48, 32, 24, 20], snowCm: [38, 32, 28, 20, 8, 0, 0, 0, 5, 22, 35, 40], humidity: [78, 76, 74, 72, 74, 76, 78, 80, 80, 78, 76, 74], annualPrecipMm: 355, frostFreeDays: 85, hardinessZone: "2b", sunshinePct: [36, 42, 45, 53, 46, 50, 43, 40, 31, 38, 34, 31] },
@@ -129,7 +129,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 72,
-      note: "Nome screening: cost sits in a middle band — verify rents and insurance locally; specialty care, major airports, or all-weather road access need real planning; Poor fit if: anyone needing mild winters or tree cover. Atlas-grade read — confirm on the ground before committing.",
+      note: "Specialty care and major-airport access need real planning; A poor fit for anyone needing mild winters or tree cover.",
       sources: [
       { label: "NOAA — Nome Airport", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Nome", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -179,7 +179,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid subtropical Gulf city — sea breezes cap summer heat until offshore flow fails ahead of hurricanes.",
     summaryImmersive: "Corpus Christi sits where continental heat meets Gulf moisture. Summer heat indices routinely reach dangerous levels; afternoon sea breezes bring short relief. Tropical storms and hurricanes are the dominant extreme hazard — storm surge into Corpus Christi Bay and Aransas Pass is a recurring engineering problem. Winters are mild; freezes are rare but damaging to citrus when they occur. The Laguna Madre — one of North America’s few hypersaline lagoons — creates unique wind and humidity patterns west of the city.",
     whyDistinct: "Shallow lagoon + barrier island + Gulf fetch produces stronger diurnal sea-breeze modulation than open flat coasts, and hurricane surge risk is amplified by bay geometry.",
-            experience: {
+                experience: {
       feel: "Corpus Christi sits where continental heat meets Gulf moisture. Summer heat indices routinely reach dangerous levels; afternoon sea breezes bring short relief.",
       seasons: {
         winter: "Warm winter window — afternoons near 18.3°C, nights near 9°C — humid showers and convection pass through. Storm systems roll through with real force.",
@@ -187,8 +187,8 @@ export const PLACES_USA_EXTRA: Place[] = [
         summer: "Hot and humid — afternoons near 33°C, nights near 24.7°C — showers pass through regularly. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 27.7°C, nights near 18.3°C — showers pass through regularly. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Padre Island and birding — the practical way to experience hurricane-exposed coast terrain in Texas.",
-      residentFit: "It rewards gulf coast life with strong Hispanic cultural ties — especially port workers — if the local tradeoffs still feel acceptable after a full season in Corpus Christi.",
+      travelerFit: "Visitors come for Padre Island and birding.",
+      residentFit: "It rewards gulf coast life with strong Hispanic cultural ties — especially port workers — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
     },
     climate: { tempHighC: [17, 19, 22, 25, 29, 32, 33, 34, 32, 28, 23, 19], tempLowC: [8, 10, 14, 18, 22, 24, 25, 25, 23, 19, 13, 9], precipMm: [35, 40, 55, 50, 85, 90, 95, 75, 120, 95, 55, 45], annualPrecipMm: 820, frostFreeDays: 300, hardinessZone: "9b", humidity: [65, 65, 63, 68, 73, 79, 83, 81, 83, 80, 73, 66], sunshinePct: [51, 54, 53, 59, 64, 69, 66, 66, 61, 58, 54, 49] },
@@ -201,7 +201,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 38,
-      note: "Corpus Christi screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: dry-climate seekers; hurricane-averse. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for dry-climate seekers; hurricane-averse.",
       sources: [
       { label: "NOAA — Corpus Christi Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Corpus Christi", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -251,7 +251,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid subtropical inland — river fog, summer convection, and remnant tropical moisture.",
     summaryImmersive: "Paducah’s climate is classically mid-South: hot, humid summers with afternoon thunderstorms; mild winters punctuated by Arctic outbreaks and freezing rain when warm Gulf air overrides cold domes at the surface. The Ohio and Tennessee rivers moderate temperatures slightly and provide moisture for fog banks in spring and fall. Convective available potential energy is high in June ahead of mesoscale convective systems that track along the river valleys.",
     whyDistinct: "Large-river confluence zones concentrate moisture and serve as preferential corridors for nocturnal convection and flooding — hydroclimate is as important as latitude here.",
-            experience: {
+                experience: {
       feel: "Paducah’s climate is classically mid-South: hot, humid summers with afternoon thunderstorms; mild winters punctuated by Arctic outbreaks and freezing rain when warm Gulf air overrides cold domes at the surface.",
       seasons: {
         winter: "Mild by northern standards — afternoons near 7°C, nights near -2.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
@@ -259,8 +259,8 @@ export const PLACES_USA_EXTRA: Place[] = [
         summer: "Warm season peak — afternoons near 31°C, nights near 20°C — rain is frequent and can be heavy. Plan around heat that can turn genuinely dangerous.",
         autumn: "Hurricane-season tail — afternoons near 21.3°C, nights near 9.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for quilt museum and riverfront — the practical way to experience river-valley moderation terrain in Kentucky.",
-      residentFit: "It rewards river-town Midwesterners who tolerate humidity — especially logistics — if the local tradeoffs still feel acceptable after a full season in Paducah.",
+      travelerFit: "Visitors come for quilt museum and riverfront.",
+      residentFit: "It rewards river-town Midwesterners who tolerate humidity — especially logistics — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are flood and surge risk and extreme summer heat.",
     },
     climate: { tempHighC: [5, 8, 14, 20, 26, 30, 32, 31, 28, 22, 14, 8], tempLowC: [-4, -2, 3, 9, 15, 19, 21, 20, 16, 9, 3, -1], precipMm: [90, 95, 120, 120, 130, 110, 115, 95, 95, 100, 110, 115], annualPrecipMm: 1315, frostFreeDays: 200, hardinessZone: "7a", humidity: [68, 67, 69, 74, 79, 81, 81, 84, 81, 79, 75, 69], sunshinePct: [48, 51, 50, 57, 62, 67, 64, 64, 59, 55, 52, 47] },
@@ -273,7 +273,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Paducah screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mountain-air seekers.",
       sources: [
       { label: "NOAA — Barkley Regional", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Paducah", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -283,7 +283,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["logistics", "healthcare"], travelFit: ["quilt museum", "riverfront"],
     whoWouldLove: "River-town Midwesterners who tolerate humidity.", whoMightNot: "Mountain-air seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "paducah-ky-mechanism",
         title: "River-Valley Moderation mechanics",
@@ -323,7 +323,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Cold, sunny, windy continental climate — scorching summer days and bitter subzero winter nights both occur.",
     summaryImmersive: "Bismarck sits in one of the continent’s starkest annual temperature ranges. Arctic highs in winter deliver brilliant cold and dry air; summer opens to dryline thunderstorms and occasional severe hail. Chinook warming on eastern Rocky lee slopes occasionally interrupts mid-winter cold. Lake Sakakawea moderates lee-side microclimates only slightly — continentality dominates.",
     whyDistinct: "Central position in North America maximizes contrast between maritime air masses — rarely seen — and dry continental polar or tropical air advected from the Gulf in summer.",
-            experience: {
+                experience: {
       feel: "Bismarck sits in one of the continent’s starkest annual temperature ranges. Arctic highs in winter deliver brilliant cold and dry air; summer opens to dryline thunderstorms and occasional severe hail. Chinook warming on eastern Rocky lee slopes occasionally interrupts mid-winter cold.",
       seasons: {
         winter: "Cold and sharp — afternoons near -3.7°C, nights near -14.7°C — skies stay mostly dry. Arctic outbreaks can still bite hard.",
@@ -331,8 +331,8 @@ export const PLACES_USA_EXTRA: Place[] = [
         summer: "Warm season peak — afternoons near 28.3°C, nights near 13.7°C — showers pass through regularly. Water supply and irrigation stress matter.",
         autumn: "Shoulder season — afternoons near 13.7°C, nights near 0°C — gray skies dominate. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Lewis & Clark and prairie reserves — the practical way to experience subarctic continental terrain in North Dakota.",
-      residentFit: "It rewards wide-open plains people who own a good parka — especially energy sector — if the local tradeoffs still feel acceptable after a full season in Bismarck.",
+      travelerFit: "Visitors come for Lewis & Clark and prairie reserves.",
+      residentFit: "It rewards wide-open plains people who own a good parka — especially energy sector — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are deep winter cold and long-run drought.",
     },
     climate: { tempHighC: [-5, -2, 4, 13, 20, 26, 30, 29, 23, 14, 4, -4], tempLowC: [-16, -14, -7, 1, 7, 12, 15, 14, 7, 0, -7, -14], precipMm: [12, 12, 22, 45, 65, 95, 75, 60, 45, 35, 18, 15], annualPrecipMm: 474, frostFreeDays: 145, hardinessZone: "4b", humidity: [82, 82, 74, 71, 70, 67, 62, 61, 63, 69, 76, 78], sunshinePct: [39, 45, 48, 56, 61, 65, 58, 55, 46, 41, 37, 34] },
@@ -345,7 +345,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Bismarck screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
       sources: [
       { label: "NOAA — Bismarck Municipal", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Bismarck", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -355,7 +355,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["energy sector", "remote workers"], travelFit: ["Lewis & Clark", "prairie reserves"],
     whoWouldLove: "Wide-open plains people who own a good parka.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "bismarck-nd-mechanism",
         title: "Subarctic Continental mechanics",
@@ -395,7 +395,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid continental–subtropical transition — wet, cloudy, and hilly with sharp microclimates between ridges and valleys.",
     summaryImmersive: "Morgantown’s ridges catch moisture on southwesterly flow ahead of coastal lows; valleys pool cold air and fog on still nights. Snowfall is moderate but elevation within the county varies enough for 200 m to separate rain from heavy snow. Summers are warm and humid — not coastal, not deep South, but persistently sticky. The university town sits at a climate crossroads between mid-Atlantic storms and Ohio Valley convection.",
     whyDistinct: "Plateau dissected by tight river networks produces high spatial variability in frost, fog, and snowfall totals within a 20 km radius.",
-            experience: {
+                experience: {
       feel: "Morgantown’s ridges catch moisture on southwesterly flow ahead of coastal lows; valleys pool cold air and fog on still nights. Snowfall is moderate but elevation within the county varies enough for 200 m to separate rain from heavy snow.",
       seasons: {
         winter: "Cold and sharp — afternoons near 4.3°C, nights near -3.7°C — showers pass through regularly.",
@@ -403,8 +403,8 @@ export const PLACES_USA_EXTRA: Place[] = [
         summer: "Warm season peak — afternoons near 28°C, nights near 17°C — rain is frequent and can be heavy.",
         autumn: "Shoulder season — afternoons near 17.7°C, nights near 7.3°C — showers pass through regularly. Flash-flood and surge diligence is part of daily life.",
       },
-      travelerFit: "Visitors come for fall color and whitewater — the practical way to experience river-valley moderation terrain in West Virginia.",
-      residentFit: "It rewards appalachian foothills without deep South heat — especially university families — if the local tradeoffs still feel acceptable after a full season in Morgantown.",
+      travelerFit: "Visitors come for fall color and whitewater.",
+      residentFit: "It rewards appalachian foothills without deep South heat — especially university families — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are flood and surge risk.",
     },
     climate: { tempHighC: [3, 5, 11, 18, 23, 27, 29, 28, 24, 18, 11, 5], tempLowC: [-5, -4, 1, 6, 11, 16, 18, 17, 13, 7, 2, -2], precipMm: [75, 70, 95, 100, 110, 115, 120, 100, 95, 85, 80, 80], annualPrecipMm: 1125, frostFreeDays: 175, hardinessZone: "6b", humidity: [66, 65, 63, 68, 77, 83, 83, 82, 79, 77, 73, 67], sunshinePct: [51, 54, 53, 60, 65, 70, 67, 67, 62, 58, 55, 50] },
@@ -417,7 +417,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       costPressure: 34,
       socialStress: 24,
       accessFriction: 60,
-      note: "Morgantown screening: cost pressure is relatively modest for the region; service access is workable but not metro-dense — confirm hospital and airport distances; community fabric reads quieter than larger regional hubs. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing pressure is relatively modest for the region; A poor fit for sun-belt retirees seeking dry air.",
       sources: [
       { label: "NOAA — Morgantown Municipal", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Morgantown", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -427,7 +427,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["university families", "healthcare"], travelFit: ["fall color", "whitewater"],
     whoWouldLove: "Appalachian foothills without deep South heat.", whoMightNot: "Sun-belt retirees seeking dry air.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "morgantown-wv-mechanism",
         title: "River-Valley Moderation mechanics",

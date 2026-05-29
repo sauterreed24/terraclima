@@ -106,7 +106,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "World-famous wine valley where gap flow and fog delay ripening — Cabernet country built on nightly cooling.",
     summaryImmersive: "The valley floor heats by day; cool air drains from the Petaluma Gap and marine layer spills east, wrapping benchlands in fog until mid-morning. Bench elevation differences of only tens of meters reorder frost risk and hang time — the entire AVA system is a map of microclimate.",
     whyDistinct: "Complex terrain channels + fog penetration + inland heat produce one of the steepest wine mesoclimates in the New World in a narrow corridor.",
-            experience: {
+                experience: {
       feel: "Napa Valley Floor — the valley floor heats by day; cool air drains from the Petaluma Gap and marine layer spills east, wrapping benchlands in fog until mid-morning. Bench elevation differences of only tens of meters reorder frost risk and hang time — the entire AVA system is a map of microclimate.",
       seasons: {
         winter: "Mild and workable — afternoons near 14.7°C, nights near 4.3°C — rain is frequent and can be heavy.",
@@ -114,8 +114,8 @@ export const PLACES_USA_ROUND2: Place[] = [
         summer: "Warm season peak — afternoons near 29.3°C, nights near 11.7°C — skies stay relentlessly clear and dry. Wildfire and smoke are summer wildcards.",
         autumn: "Shoulder season — afternoons near 23.3°C, nights near 8.3°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for wine tasting and hot-air balloons — the practical way to experience mediterranean pocket terrain in California.",
-      residentFit: "It rewards viticulture and Mediterranean gardening devotees — especially wine industry — if the local tradeoffs still feel acceptable after a full season in Napa.",
+      travelerFit: "Visitors come for wine tasting and hot-air balloons.",
+      residentFit: "It rewards viticulture and Mediterranean gardening devotees — especially wine industry — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and long-run drought. Housing runs expensive relative to regional medians.",
     },
     climate: {
@@ -137,7 +137,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Napa Valley Floor screening: housing runs expensive relative to regional medians; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: budget shoppers; fire-smoke sensitive. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing runs above regional medians; A poor fit for budget shoppers; fire-smoke sensitive.",
       sources: [
       { label: "NOAA — Napa County AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Napa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -147,7 +147,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["wine industry", "retirees"], travelFit: ["wine tasting", "hot-air balloons"],
     whoWouldLove: "Viticulture and Mediterranean gardening devotees.", whoMightNot: "Budget shoppers; fire-smoke sensitive.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "napa-ca-mechanism",
         title: "Mediterranean Pocket mechanics",
@@ -187,7 +187,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Desert resort climate famous for winter sun — summer heat moderated slightly by elevation vs the Imperial Valley floor.",
     summaryImmersive: "Palm Springs sits in the venturi of the San Gorgonio Pass where pressure gradients translate into strong winds; winter attracts snowbirds for reliable warmth; summer pushes human activity into pools and evenings. Palm oases exploit groundwater; the surrounding desert is hyperarid.",
     whyDistinct: "Pass wind regime + mountain backdrop + irrigation oasis — a recreational microclimate layered on extreme desert.",
-            experience: {
+                experience: {
       feel: "Palm Springs sits in the venturi of the San Gorgonio Pass where pressure gradients translate into strong winds; winter attracts snowbirds for reliable warmth; summer pushes human activity into pools and evenings. Palm oases exploit groundwater; the surrounding desert is hyperarid.",
       seasons: {
         winter: "Warm winter window — afternoons near 22.3°C, nights near 9.3°C — weather stays moderate and changeable.",
@@ -195,8 +195,8 @@ export const PLACES_USA_ROUND2: Place[] = [
         summer: "Peak desert heat — afternoons near 43°C, nights near 26.7°C — skies stay relentlessly clear and dry. Midday outdoor life often shifts to dawn and dusk. Plan around heat that can turn genuinely dangerous.",
         autumn: "Shoulder season — afternoons near 33.3°C, nights near 17.7°C — skies stay relentlessly clear and dry. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for modernism week and Joshua Tree day trips — the practical way to experience high-desert escape terrain in California.",
-      residentFit: "It rewards dry heat and winter sun seekers — especially retirees — if the local tradeoffs still feel acceptable after a full season in Palm Springs.",
+      travelerFit: "Visitors come for modernism week and Joshua Tree day trips.",
+      residentFit: "It rewards dry heat and winter sun seekers — especially retirees — who can accept the local tradeoffs.",
       texture: "A real-tradeoff place — the main things to weigh are extreme summer heat and long-run drought. Housing runs expensive relative to regional medians.",
     },
     climate: {
@@ -218,7 +218,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 70,
       socialStress: 40,
       accessFriction: 38,
-      note: "Palm Springs screening: housing runs expensive relative to regional medians; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: summer heat–sensitive visitors. Atlas-grade read — confirm on the ground before committing.",
+      note: "Housing runs above regional medians; A poor fit for summer heat–sensitive visitors.",
       sources: [
       { label: "NOAA — Palm Springs", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Palm Springs", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -228,7 +228,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "hospitality"], travelFit: ["modernism week", "Joshua Tree day trips"],
     whoWouldLove: "Dry heat and winter sun seekers.", whoMightNot: "Summer heat–sensitive visitors.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "palm-springs-ca-mechanism",
         title: "High-Desert Escape mechanics",
@@ -349,7 +349,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Gulf-side luxury microclimate — warm wet summers, mild dry winters, and sea-breeze caps on peak heat.",
     summaryImmersive: "Naples trades Atlantic surf for Gulf shallows: water temperatures seasonally warm, supporting humid tropical-feeling nights. Cold fronts are brief; sea breezes organize summer convection inland.",
     whyDistinct: "Gulf bathymetry and low latitude yield narrow annual range relative to interior Florida.",
-            experience: {
+                experience: {
       feel: "Naples trades Atlantic surf for Gulf shallows: water temperatures seasonally warm, supporting humid tropical-feeling nights. Cold fronts are brief; sea breezes organize summer convection inland.",
       seasons: {
         winter: "Warm winter window — afternoons near 24.7°C, nights near 14°C — showers pass through regularly. Storm systems roll through with real force.",
@@ -357,8 +357,8 @@ export const PLACES_USA_ROUND2: Place[] = [
         summer: "Hot and humid — afternoons near 32.7°C, nights near 23.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 29.7°C, nights near 20.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Everglades and beaches — the practical way to experience hurricane-exposed coast terrain in Florida.",
-      residentFit: "It rewards gulf-coast warmth without Atlantic surf culture — especially retirees — if the local tradeoffs still feel acceptable after a full season in Naples.",
+      travelerFit: "Visitors come for Everglades and beaches.",
+      residentFit: "It rewards gulf-coast warmth without Atlantic surf culture — especially retirees — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises at sea level — the main things to weigh are flood and surge risk and storm exposure.",
     },
     climate: {
@@ -380,7 +380,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 38,
-      note: "Naples screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: hurricane-averse; flood-risk skeptics. Atlas-grade read — confirm on the ground before committing.",
+      note: "A poor fit for hurricane-averse; flood-risk skeptics.",
       sources: [
       { label: "NOAA — Naples", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Naples", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -390,7 +390,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "second-home owners"], travelFit: ["Everglades", "beaches"],
     whoWouldLove: "Gulf-coast warmth without Atlantic surf culture.", whoMightNot: "Hurricane-averse; flood-risk skeptics.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "naples-fl-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -512,7 +512,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "High Plains river town — windy, sunny, and prone to rapid winter warm-ups when downslope flow replaces Arctic air.",
     summaryImmersive: "Scottsbluff sits where irrigation from the North Platte meets semi-arid steppe. Summer brings dryline thunderstorms; winter alternates between bitter cold and chinook relief.",
     whyDistinct: "Elevation and escarpment proximity add mesoscale wind and temperature volatility rare on the flat Plains.",
-            experience: {
+                experience: {
       feel: "Scottsbluff sits where irrigation from the North Platte meets semi-arid steppe. Summer brings dryline thunderstorms; winter alternates between bitter cold and chinook relief.",
       seasons: {
         winter: "Cold and sharp — afternoons near 3.3°C, nights near -9°C — skies stay mostly dry with intense sun. Arctic outbreaks can still bite hard.",
@@ -520,8 +520,8 @@ export const PLACES_USA_ROUND2: Place[] = [
         summer: "Warm season peak — afternoons near 30.3°C, nights near 12.7°C — showers pass through regularly. Water supply and irrigation stress matter.",
         autumn: "Shoulder season — afternoons near 17°C, nights near 0.7°C — weather stays moderate and changeable. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Scotts Bluff NM and Oregon Trail history — the practical way to experience high-desert escape terrain in Nebraska.",
-      residentFit: "It rewards wide-open Plains people — especially ag workers — if the local tradeoffs still feel acceptable after a full season in Scottsbluff.",
+      travelerFit: "Visitors come for Scotts Bluff NM and Oregon Trail history.",
+      residentFit: "It rewards wide-open Plains people — especially ag workers — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are long-run drought and deep winter cold.",
     },
     climate: {
@@ -543,7 +543,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 40,
       socialStress: 34,
       accessFriction: 38,
-      note: "Scottsbluff screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; Poor fit if: tree-seekers; humidity lovers. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for tree-seekers; humidity lovers.",
       sources: [
       { label: "NOAA — Scottsbluff", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Scottsbluff", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -553,7 +553,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["ag workers", "remote workers"], travelFit: ["Scotts Bluff NM", "Oregon Trail history"],
     whoWouldLove: "Wide-open Plains people.", whoMightNot: "Tree-seekers; humidity lovers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "scottsbluff-ne-mechanism",
         title: "High-Desert Escape mechanics",
@@ -836,7 +836,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Classic New England shore — delayed spring, milder peaks than Hartford, nor’easter surf in winter.",
     summaryImmersive: "Mystic’s climate is paced by water: fog, drizzle, and moderate summer heat. Tropical systems occasionally brush the coast with surge and wind.",
     whyDistinct: "Dual-sound exposure tightens maritime influence vs inland Connecticut.",
-            experience: {
+                experience: {
       feel: "Mystic’s climate is paced by water: fog, drizzle, and moderate summer heat. Tropical systems occasionally brush the coast with surge and wind.",
       seasons: {
         winter: "Cold and sharp — afternoons near 4.3°C, nights near -2.7°C — rain is frequent and can be heavy. Coastal surge and wind events belong in the planning stack.",
@@ -844,8 +844,8 @@ export const PLACES_USA_ROUND2: Place[] = [
         summer: "Cool summer by latitude — afternoons near 24.7°C, nights near 17°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Hurricane-season tail — afternoons near 16.3°C, nights near 8.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
       },
-      travelerFit: "Visitors come for seaport museum and sailing — the practical way to experience cool-summer maritime terrain in Connecticut.",
-      residentFit: "It rewards coastal New England without big-city scale — especially maritime retirees — if the local tradeoffs still feel acceptable after a full season in Mystic.",
+      travelerFit: "Visitors come for seaport museum and sailing.",
+      residentFit: "It rewards coastal New England without big-city scale — especially maritime retirees — who can accept the local tradeoffs.",
       texture: "An easier place to settle into at sea level — the main things to weigh are coastal and sea-level pressure and flood and surge risk. Tourism-season housing in Mystic/ Stonington runs above inland Connecticut norms; New Haven and Providence are the usual specialist and airport anchors.",
     },
     climate: {
@@ -876,7 +876,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["maritime retirees", "museum-goers"], travelFit: ["seaport museum", "sailing"],
     whoWouldLove: "Coastal New England without big-city scale.", whoMightNot: "Budget retirees; sun-belt seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "mystic-ct-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -916,7 +916,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Central PA university town where valley geometry sharpens frost and lake-enhanced snow reaches west of the main Allegheny crest.",
     summaryImmersive: "State College sits in a valley between long parallel ridges; radiative nights run cold; spring green-up can lag neighboring ridges. Winter storms pick up moisture from the Great Lakes in northwesterly flow.",
     whyDistinct: "Ridge-and-valley terrain at latitude where lake-effect and synoptic snow overlap.",
-            experience: {
+                experience: {
       feel: "State College sits in a valley between long parallel ridges; radiative nights run cold; spring green-up can lag neighboring ridges. Winter storms pick up moisture from the Great Lakes in northwesterly flow.",
       seasons: {
         winter: "Cold and sharp — afternoons near 2.7°C, nights near -6.3°C — showers pass through regularly. Storm systems roll through with real force.",
@@ -924,8 +924,8 @@ export const PLACES_USA_ROUND2: Place[] = [
         summer: "Warm season peak — afternoons near 26.7°C, nights near 15°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
         autumn: "Shoulder season — afternoons near 16.3°C, nights near 5.3°C — showers pass through regularly. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Penn State sports and Rothrock SF — the practical way to experience cold-air pool terrain in Pennsylvania.",
-      residentFit: "It rewards appalachian foothills with college-town amenities — especially academics — if the local tradeoffs still feel acceptable after a full season in State College.",
+      travelerFit: "Visitors come for Penn State sports and Rothrock SF.",
+      residentFit: "It rewards appalachian foothills with college-town amenities — especially academics — who can accept the local tradeoffs.",
       texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
     },
     climate: {
@@ -947,7 +947,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 60,
-      note: "State College screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances; community fabric reads quieter than larger regional hubs. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
       sources: [
       { label: "NOAA — University Park", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — State College", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -957,7 +957,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["academics", "families"], travelFit: ["Penn State sports", "Rothrock SF"],
     whoWouldLove: "Appalachian foothills with college-town amenities.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "state-college-pa-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -1402,7 +1402,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "High-plains city famous for skies — summer thunderstorms, hail, and huge diurnal swings.",
     summaryImmersive: "Roswell sits in a wide valley where dryline and monsoon moisture meet; spring wind and dust are notorious. Irrigation from the Pecos supports pockets of agriculture.",
     whyDistinct: "Classic southern High Plains synoptic environment with monsoon overlay.",
-            experience: {
+                experience: {
       feel: "Roswell sits in a wide valley where dryline and monsoon moisture meet; spring wind and dust are notorious. Irrigation from the Pecos supports pockets of agriculture.",
       seasons: {
         winter: "Mild and workable — afternoons near 13°C, nights near -2.3°C — skies stay mostly dry with intense sun. Storm systems roll through with real force.",
@@ -1410,8 +1410,8 @@ export const PLACES_USA_ROUND2: Place[] = [
         summer: "Hot and humid — afternoons near 34.7°C, nights near 19°C — showers pass through regularly. Water supply and irrigation stress matter.",
         autumn: "Shoulder season — afternoons near 23.7°C, nights near 7°C — weather stays moderate and changeable. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for aliens museum and Bottomless Lakes — the practical way to experience monsoon-edge zone terrain in New Mexico.",
-      residentFit: "It rewards high-plains sky watchers — especially aviation — if the local tradeoffs still feel acceptable after a full season in Roswell.",
+      travelerFit: "Visitors come for aliens museum and Bottomless Lakes.",
+      residentFit: "It rewards high-plains sky watchers — especially aviation — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are long-run drought and extreme summer heat.",
     },
     climate: {
@@ -1433,7 +1433,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Roswell screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for humidity lovers.",
       sources: [
       { label: "NOAA — Roswell Industrial AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Roswell", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1443,7 +1443,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["aviation", "ranching"], travelFit: ["aliens museum", "Bottomless Lakes"],
     whoWouldLove: "High-plains sky watchers.", whoMightNot: "Humidity lovers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "roswell-nm-mechanism",
         title: "Monsoon-Edge Zone mechanics",
@@ -1483,7 +1483,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Gateway city where chinook warmings and summer thunderstorms both make headlines — quick transitions at the Hills’ edge.",
     summaryImmersive: "Rapid City sits where Great Plains simplicity meets orographic complexity; winter can flip from arctic to spring-like in hours when downslope winds arrive.",
     whyDistinct: "Black Hills frontal position amplifies mesoscale wind and temperature volatility.",
-            experience: {
+                experience: {
       feel: "Rapid City sits where Great Plains simplicity meets orographic complexity; winter can flip from arctic to spring-like in hours when downslope winds arrive.",
       seasons: {
         winter: "Cold and sharp — afternoons near 3°C, nights near -9°C — skies stay mostly dry. Arctic outbreaks can still bite hard.",
@@ -1491,8 +1491,8 @@ export const PLACES_USA_ROUND2: Place[] = [
         summer: "Warm season peak — afternoons near 29.3°C, nights near 13.7°C — showers pass through regularly. Wildfire and smoke are summer wildcards.",
         autumn: "Shoulder season — afternoons near 16.3°C, nights near 1.3°C — weather stays moderate and changeable. Storm systems roll through with real force.",
       },
-      travelerFit: "Visitors come for Mount Rushmore and Badlands — the practical way to experience chinook corridor terrain in South Dakota.",
-      residentFit: "It rewards black Hills access with city services — especially tourism — if the local tradeoffs still feel acceptable after a full season in Rapid City.",
+      travelerFit: "Visitors come for Mount Rushmore and Badlands.",
+      residentFit: "It rewards black Hills access with city services — especially tourism — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and flood and surge risk.",
     },
     climate: {
@@ -1514,7 +1514,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Rapid City screening: cost sits in a middle band — verify rents and insurance locally; service access is workable but not metro-dense — confirm hospital and airport distances. Atlas-grade read — confirm on the ground before committing.",
+      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
       sources: [
       { label: "NOAA — Rapid City Regional", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Rapid City", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1524,7 +1524,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["tourism", "healthcare"], travelFit: ["Mount Rushmore", "Badlands"],
     whoWouldLove: "Black Hills access with city services.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "rapid-city-sd-mechanism",
         title: "Chinook Corridor mechanics",
@@ -1564,7 +1564,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "World-famous ski basin — deep snow, strong inversions, and summer perfection at altitude.",
     summaryImmersive: "Jackson Hole traps cold air and captures Pacific moisture lifted by the Tetons; snowpack feeds the Snake River system that defines the ecosystem.",
     whyDistinct: "High-elevation enclosed basin with extreme vertical relief nearby — a textbook mountain meteorology classroom.",
-            experience: {
+                experience: {
       feel: "Jackson Hole traps cold air and captures Pacific moisture lifted by the Tetons; snowpack feeds the Snake River system that defines the ecosystem.",
       seasons: {
         winter: "Cold and sharp — afternoons near -1.3°C, nights near -14°C — showers pass through regularly. Arctic outbreaks can still bite hard.",
@@ -1572,8 +1572,8 @@ export const PLACES_USA_ROUND2: Place[] = [
         summer: "Cool summer by latitude — afternoons near 25°C, nights near 6°C — showers pass through regularly. Wildfire and smoke are summer wildcards.",
         autumn: "Shoulder season — afternoons near 12.7°C, nights near -4°C — showers pass through regularly. Fire season lingers into shoulder months.",
       },
-      travelerFit: "Visitors come for Grand Teton NP and skiing — the practical way to experience cold-air pool terrain in Wyoming.",
-      residentFit: "It rewards mountain-town life with global name recognition — especially hospitality — if the local tradeoffs still feel acceptable after a full season in Jackson.",
+      travelerFit: "Visitors come for Grand Teton NP and skiing.",
+      residentFit: "It rewards mountain-town life with global name recognition — especially hospitality — who can accept the local tradeoffs.",
       texture: "A place that asks for a few compromises at 1901 m elevation — the main things to weigh are wildfire exposure and deep winter cold. Specialty care and major-airport access require real planning.",
     },
     climate: {
@@ -1595,7 +1595,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 64,
       socialStress: 24,
       accessFriction: 72,
-      note: "Jackson screening: cost sits in a middle band — verify rents and insurance locally; specialty care, major airports, or all-weather road access need real planning; community fabric reads quieter than larger regional hubs. Atlas-grade read — confirm on the ground before committing.",
+      note: "Specialty care and major-airport access need real planning; A poor fit for affordable-housing seekers.",
       sources: [
       { label: "NOAA — Jackson AWOS", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Jackson", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -1605,7 +1605,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["hospitality", "outdoor industry"], travelFit: ["Grand Teton NP", "skiing"],
     whoWouldLove: "Mountain-town life with global name recognition.", whoMightNot: "Affordable-housing seekers.",
     confidence: "high",
-            deepSections: [
+                deepSections: [
       {
         id: "jackson-wy-mechanism",
         title: "Cold-Air Pool mechanics",
