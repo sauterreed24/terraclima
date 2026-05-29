@@ -244,6 +244,9 @@ async function main(): Promise<void> {
   const polishIds = [
     "santa-barbara-ca", "driggs-id", "flagstaff-az", "wenatchee-wa", "gunnison-co",
     "logan-ut", "fairbanks-ak", "whitehorse-yt", "victoria-bc", "hood-river-or",
+    "canaan-valley-wv", "redfield-ny", "key-west-fl", "death-valley-ca",
+    "klamath-falls-upper-klamath-basin-or", "lander-sinks-canyon-wy",
+    "mount-charleston-nv", "spearfish-sd", "burkes-garden-va",
   ];
   for (const id of polishIds) {
     const place = PLACES.find(p => p.id === id);
