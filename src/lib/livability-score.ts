@@ -871,13 +871,20 @@ export function scoreLivability(p: Place): LivabilityResult {
 /** Rank a pool by livability v3, returning the per-place breakdown alongside the score. */
 export function rankLivabilityWithBreakdown(pool: Place[]): LivabilityResult[] {
   if (pool.length === 0) return [];
-  // Name tiebreaker gives a total order so tied livability scores rank
-  // identically regardless of corpus insertion order — matching the
-  // tiebreakers used by rankLaces (scoring.ts) and rankLiveFit (live-fit.ts),
-  // and keeping the hero top-ten livability preview stable as the corpus grows.
+  // Chained name→id tiebreaker gives a guaranteed total order so tied livability
+  // scores rank identically regardless of corpus insertion order — matching the
+  // tiebreakers used by rankLaces (scoring.ts) and rankLiveFit (live-fit.ts), and
+  // keeping the hero top-ten livability preview stable as the corpus grows. The
+  // unique-id key matters for genuine name collisions in the corpus (e.g. the two
+  // "Durango" entries) where the name comparison alone would resolve to 0.
   return pool
     .map(scoreLivability)
-    .sort((a, b) => b.score - a.score || a.place.name.localeCompare(b.place.name));
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        a.place.name.localeCompare(b.place.name) ||
+        a.place.id.localeCompare(b.place.id),
+    );
 }
 
 /**

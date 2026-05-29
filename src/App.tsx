@@ -23,7 +23,7 @@ import {
   isBundleActive,
   lifestyleBundleById,
 } from "./lib/lifestyle-bundles";
-import { applyFilters, countActiveExplorerFilterSignals, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit } from "./lib/live-fit";
 import { projectPool } from "./lib/climate-projection";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
@@ -904,9 +904,7 @@ export default function App() {
                     <EmptyResults
                       onClear={clearAllFilters}
                       searchTerm={(filters.search ?? "").trim()}
-                      otherFilterCount={
-                        countActiveExplorerFilterSignals(filters) - ((filters.search?.length ?? 0) > 0 ? 1 : 0)
-                      }
+                      hasOtherFilters={hasNonSearchExplorerFilters(filters)}
                     />
                   </div>
                 ) : (
@@ -1089,16 +1087,16 @@ function OverlayLoadingFallback({ label }: { label: string }) {
 const EmptyResults = memo(function EmptyResults({
   onClear,
   searchTerm,
-  otherFilterCount,
+  hasOtherFilters,
 }: {
   onClear: () => void;
   searchTerm: string;
-  otherFilterCount: number;
+  hasOtherFilters: boolean;
 }) {
   // Tailor the message to what is actually narrowing the set so the guidance
   // points at the right control instead of always blaming "filters".
-  const searchOnly = searchTerm.length > 0 && otherFilterCount === 0;
-  const filtersOnly = searchTerm.length === 0 && otherFilterCount > 0;
+  const searchOnly = searchTerm.length > 0 && !hasOtherFilters;
+  const filtersOnly = searchTerm.length === 0 && hasOtherFilters;
 
   const heading = searchOnly
     ? `No places match “${searchTerm}”`

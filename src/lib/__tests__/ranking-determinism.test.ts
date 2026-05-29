@@ -30,6 +30,19 @@ describe("ranking determinism", () => {
       expect(reversed.map(r => r.place.id)).toEqual(["aaa", "zzz"]);
     });
 
+    it("breaks same-name ties by unique id (real corpus case: two 'Durango' entries)", () => {
+      // name.localeCompare returns 0 for identical names, so without the id
+      // tiebreaker these would fall back to insertion order.
+      const durangoMx = makePlace({ id: "durango-mx", name: "Durango" });
+      const durangoCo = makePlace({ id: "durango-co", name: "Durango" });
+
+      const forward = rankLivabilityWithBreakdown([durangoMx, durangoCo]);
+      const reversed = rankLivabilityWithBreakdown([durangoCo, durangoMx]);
+
+      expect(forward.map(r => r.place.id)).toEqual(["durango-co", "durango-mx"]);
+      expect(reversed.map(r => r.place.id)).toEqual(["durango-co", "durango-mx"]);
+    });
+
     it("is independent of the corpus order it is handed", () => {
       const base = rankLivabilityWithBreakdown(PLACES).map(r => `${r.place.id}:${r.score}`);
 
