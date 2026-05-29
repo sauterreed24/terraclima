@@ -1415,6 +1415,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Clear high-altitude light, dry air, and four sharp seasons on the edge of the Sangres.",
     summaryImmersive: "Santa Fe sits on a sloping bench at the foot of the Sangre de Cristos, elevation alone transforming what could be desert into something closer to mountain plateau. Summers are warm but dry — highs in the high 20s, afternoon monsoon thunder rolling in from the mountains, nights cooling into the mid-teens. Winters are sunny and cold, with reliable snow on the Sangre peaks above and intermittent snow in town. The famous New Mexico 'painter's light' owes as much to altitude and humidity as to any artistic romance — the air here is genuinely clearer, with harder-edged shadows than almost any city at sea level.",
     whyDistinct: "At 2200 m, Santa Fe is high enough to sit comfortably cool in July and cold in January. The monsoon arrives reliably; the Sangre de Cristos amplify both winter precipitation and orographic shower activity.",
+    experience: {
+      feel: "Santa Fe feels like altitude transformed into culture — clear high-desert light at 2200 m, adobe walls holding warmth through cold nights, and afternoon monsoon thunder rolling off the Sangre de Cristos while the plaza stays dry enough to walk in open sandals.",
+      seasons: {
+        winter: "Sunny and sharp — afternoons near 7°C, nights near −9°C, intermittent snow in town and reliable powder on the Sangre peaks above. The famous painter's light is hardest-edged in winter.",
+        spring: "Dry and windy until the monsoon — afternoons climbing through the teens, lilacs and fruit trees breaking bud, and water anxiety building until July storms arrive.",
+        summer: "Warm but never swampy — highs near 29°C, afternoon monsoon cells building against the mountains, nights cooling into the low teens. This is open-window, no-AC weather at altitude.",
+        autumn: "Golden and crisp — cottonwoods along the acequias, the first hard frosts in October, and chile-roasting smoke drifting through the plaza.",
+      },
+      travelerFit: "Visitors come for art markets, adobe architecture, high-desert light, Rio Grande rafting, and ski country an hour from the plaza.",
+      residentFit: "It rewards artists, retirees, and remote workers who want four true seasons, strong culture, and altitude without brutal humidity — if they accept water limits.",
+      texture: "One of North America's most culturally rich high-desert cities — the main things to weigh are water scarcity, wildfire and smoke on surrounding slopes, and housing pressure.",
+    },
     climate: {
       tempHighC: [6.7, 8.9, 12.9, 17.4, 22.6, 28.1, 29.4, 28.1, 25.1, 19.3, 12.2, 7.3],
       tempLowC:  [-8.9, -6.2, -3.2, 0.6, 5.3, 10.2, 13.4, 12.7, 8.9, 2.8, -3.6, -8.3],
@@ -1894,6 +1906,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A cool-summer maritime pocket on the Canadian Shield — Lake Superior acts as a giant inland ocean.",
     summaryImmersive: "Grand Marais sits on the north shore of Lake Superior, whose sheer thermal mass behaves like a small ocean. Summer highs along the immediate shore often stay 10°C below inland Minnesota — July afternoons in the high teens are normal — while winters are milder than the surrounding Boundary Waters plateau. Inland just 20 km, the boreal forest stretches away into genuinely continental climate. Along the shore, fog belts drift, apples ripen late, and the rocky headlands feel closer to Nova Scotia than to Minneapolis.",
     whyDistinct: "Lake Superior's cold mass dominates everything. Summer shore highs are maritime-cool; winter shore lows are lake-moderated; fog forms offshore on warm days and drifts inland.",
+    experience: {
+      feel: "Grand Marais feels like Nova Scotia transplanted onto the Canadian Shield — a cool, fog-softened shore town where Lake Superior acts as an inland ocean, keeping July afternoons in the high teens while inland Minnesota bakes 10°C warmer.",
+      seasons: {
+        winter: "Long and luminous under low sun — afternoons near −7°C, nights near −16°C, but the lake keeps shore lows milder than the Boundary Waters plateau 20 km inland. Lake-effect snow and ice-fog mornings are part of the rhythm.",
+        spring: "Slow and late — ice lingers on Superior into May, then the shore wakes in a rush of birch green and the first boat traffic on the harbor.",
+        summer: "The payoff season — afternoons in the high teens to low 20s, fog belts drifting off cold water on warm mornings, rocky headlands and boreal forest within a short drive. This is why people drive hours from Minneapolis.",
+        autumn: "Boreal color on the Sawtooth escarpment, the first gales on Superior, and a crisp return to single-digit afternoons by November.",
+      },
+      travelerFit: "Visitors come for the North Shore drive, boreal fall color, storm-watching on Superior, and a cool summer escape from the Midwest heat.",
+      residentFit: "It rewards writers, artists, and boreal enthusiasts who want a genuine lake-shore life — cool summers, strong community, and wilderness at the doorstep.",
+      texture: "A rare cool-summer maritime pocket in the interior — the main things to weigh are a long, hard winter, limited growing warmth, and the remoteness of full-service care.",
+    },
     climate: {
       tempHighC: [-6.6, -4.2, 0.9, 7.3, 13.2, 17.8, 21.2, 20.7, 16.8, 10.4, 2.9, -3.7],
       tempLowC:  [-15.9, -14.2, -8.3, -1.4, 3.7, 8.6, 12.3, 12.1, 8.2, 2.8, -4.4, -12.2],
@@ -1983,6 +2007,18 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The wettest place in the eastern US east of the Olympics — a southern-Appalachian cloud-forest pocket.",
     summaryImmersive: "Highlands sits atop the Blue Ridge escarpment at 1230 m — the first high terrain moist Gulf air encounters as it rides north. Annual precipitation regularly tops 2000 mm, with summer afternoons marked by cool orographic showers and evenings that dip into the teens even in July. It is one of the only true temperate rainforest pockets in eastern North America, and the microclimate is dramatic: mountain laurel, rhododendron, and dense hemlock understory coexist with clouds that rest on the ridges most mornings.",
     whyDistinct: "The Blue Ridge escarpment creates a steep climatic gradient — Gulf moisture ascending the wall yields some of the highest rainfall totals east of the Rockies. Elevation keeps summers astonishingly cool for the southeast.",
+    experience: {
+      feel: "Highlands feels like a southern-Appalachian cloud forest — wet, cool, and draped in rhododendron at 1230 m, where Gulf moisture hits the Blue Ridge wall and summer evenings still dip into the mid-teens even in July.",
+      seasons: {
+        winter: "Cool and damp — afternoons near 5°C, nights near −4°C, with occasional snow that melts quickly on south slopes. Fog rests on the ridges most mornings.",
+        spring: "Late and lush — dogwoods and mountain laurel bloom into a green tunnel, afternoon showers build against the escarpment, and the town fills with waterfall hikers.",
+        summer: "The Southeast's secret cool season — highs near 24°C but evenings in the mid-teens, orographic showers most afternoons, and clouds that settle on the ridges like a blanket.",
+        autumn: "Brilliant and brief — hardwood color on the escarpment, the first hard frosts in October, and tropical-remnant rains that can turn steep slopes into debris-flow hazards.",
+      },
+      travelerFit: "Visitors come for waterfall hikes, fall color, a cool summer escape from Piedmont heat, and one of the wettest temperate-rainforest pockets in eastern North America.",
+      residentFit: "It rewards naturalists, cool-summer retirees, and writers who want a deeply wooded mountain retreat without Rocky Mountain isolation.",
+      texture: "A genuine cloud-forest climate in the eastern US — the main things to weigh are persistent rain and fog, limited sun for gardening, and among the highest landslide risk in the Southeast.",
+    },
     climate: {
       tempHighC: [4.9, 6.4, 10.6, 15.8, 20.0, 23.4, 24.6, 24.1, 21.3, 16.4, 11.1, 6.4],
       tempLowC:  [-4.4, -3.4, 0.1, 4.8, 9.3, 13.3, 15.3, 14.9, 11.4, 5.6, 1.0, -3.1],

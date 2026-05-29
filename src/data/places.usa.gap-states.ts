@@ -693,6 +693,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Where winter temperatures can spike 20–30 °F in minutes when downslope winds replace arctic air — a textbook High Plains foehn.",
     summaryImmersive: "Spearfish sits at a canyon mouth where stable westerly flow can descend and warm adiabatically, replacing dense cold air in the valley with dramatic speed. Such events are studied in synoptic meteorology courses because they are so readable on surface traces. Summer is warm and stormy on the Plains edge; winter is a story of wind and rapid change rather than monolithic cold.",
     whyDistinct: "Documented extreme chinook temperature rises + ecotone position between montane forest and High Plains = one of the most meteorologically legible towns in the Great Plains.",
+    experience: {
+      feel: "Spearfish feels like the Great Plains learning to breathe — a canyon mouth at the Black Hills edge where chinook winds can replace arctic cold with warm downslope air in minutes, and winter becomes a story of wind and rapid change rather than monolithic freeze.",
+      seasons: {
+        winter: "Volatile and legible — baseline afternoons near 4°C and nights near −10°C, but foehn events can spike temperatures 20°C in an hour, melting snow and crashing humidity while the valley floor still holds cold pool air.",
+        spring: "Stormy on the Plains edge — afternoon highs climbing through the teens, thunderheads building over the Black Hills, and the ponderosa-grassland ecotone greening fast.",
+        summer: "Warm and sunny — highs near 30°C, dry afternoons, and Spearfish Canyon a few minutes away for waterfall hikes and canyon shade.",
+        autumn: "Golden and windy — cottonwoods in the canyon turning, the first chinook season ramping up, and a crisp return to single-digit afternoons by November.",
+      },
+      travelerFit: "Visitors come for Spearfish Canyon, Black Hills access, and a front-row seat to one of the continent's most readable foehn-wind climates.",
+      residentFit: "It rewards outdoor workers and remote workers who want Plains–mountain ecotone life with a university town anchor — if they respect wind volatility and wildfire exposure.",
+      texture: "A meteorologically famous Plains–mountain gateway — the main things to weigh are chinook-driven temperature whiplash, ecotone wildfire risk, and Rapid City as the specialty-care backup.",
+    },
     climate: {
       tempHighC: [4, 6, 10, 15, 20, 26, 30, 29, 24, 16, 8, 4],
       tempLowC: [-10, -8, -4, 1, 7, 11, 14, 12, 6, -1, -6, -9],

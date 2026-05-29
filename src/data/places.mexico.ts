@@ -336,6 +336,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The archetype of Mexican eternal-spring towns — the 'City of Eternal Spring' by royal decree.",
     summaryImmersive: "Cuernavaca occupies a south-facing bench on the volcanic belt's flank, 1500 m above the tropical lowlands. Aztec emperors and Spanish viceroys retreated here for the climate: afternoons in the mid-to-high 20s year-round, nights cooling into the mid-teens, bougainvillea spilling off every wall. The rainy season arrives in June with dramatic afternoon convection off the volcanoes above, washing the air clean each evening. Winters are dry, bright, and warm.",
     whyDistinct: "South-facing volcanic slope at 1500 m provides warmer daytime temperatures than higher basins like Mexico City, while altitude still moderates extremes.",
+    experience: {
+      feel: "Cuernavaca feels like eternal spring made official — bougainvillea spilling off every wall at 1500 m, afternoons in the mid-to-high 20s year-round, and the volcanic belt's south-facing bench catching warmth that Mexico City, higher and grayer, never quite matches.",
+      seasons: {
+        winter: "Dry, bright, and warm — afternoons near 26°C, nights near 12°C, and the jacarandas starting to purple while the rest of North America shivers.",
+        spring: "The hottest stretch before the rains — afternoons pushing toward 30°C, dust in the air, and water anxiety building until June convection arrives.",
+        summer: "Monsoon season — afternoon storms rolling off Popocatépetl and Iztaccíhuatl, rain washing the air clean by evening, and humidity climbing into the 80% range without ever feeling tropical.",
+        autumn: "The sweet return to dry clarity — rains tapering in October, bougainvillea and citrus back in full sun, and evenings cool enough for open-air dining every night.",
+      },
+      travelerFit: "Visitors come for year-round outdoor life, colonial architecture, volcano views, and a climate that drew Aztec emperors and Spanish viceroys for centuries.",
+      residentFit: "It rewards retirees and families who want lush subtropical gardens, mild nights, and Mexico-City weekend proximity — if they accept urban water stress and regional security context.",
+      texture: "The archetype of Mexican eternal-spring living — the main things to weigh are water supply tightening with growth, hillside development risk, and Morelos security advisories relative to other highland towns.",
+    },
     climate: {
       tempHighC: [25.8, 27.3, 29.1, 30.1, 29.8, 27.1, 25.8, 26.1, 25.4, 25.8, 25.9, 25.6],
       tempLowC:  [12.1, 13.4, 14.9, 16.2, 16.7, 16.8, 15.6, 15.8, 15.8, 14.7, 13.2, 12.3],
@@ -1502,6 +1514,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The highest town in Chihuahua — where winter nights drop to −15°C on the plateau while the canyon bottoms 1,800 m below stay subtropical.",
     summaryImmersive: "Creel is the highest significant settlement in Chihuahua, at 2,338 m on the Tarahumara plateau. The thin, dry air produces dramatic diurnal swings: January afternoons around 15°C, January nights regularly −10 to −15°C. Light snow falls most winters — a rarity for Mexico. Yet the Copper Canyon (Barrancas del Cobre) system drops more than 1,800 m directly off the plateau into subtropical microclimates where bananas and citrus grow just 25 km away horizontally. This vertical zonation is among the steepest in North America; the Tarahumara (Rarámuri) people have exploited it for centuries, moving between the plateau in summer and the canyon floor in winter.",
     whyDistinct: "High-elevation pine-oak plateau on a dry subtropical latitude + immediate vertical collapse into subtropical canyons = one of the most dramatic climate gradients in North America.",
+    experience: {
+      feel: "Creel feels like Mexico's altitude surprise — a pine-oak plateau at 2338 m where January nights drop to −4°C and light snow falls, while subtropical canyon bottoms with bananas and citrus sit just 25 km away and 1800 m below.",
+      seasons: {
+        winter: "Cold and clear — afternoons near 15°C, nights regularly below freezing, light snow most winters, and the Copper Canyon railway running through a landscape that feels more Colorado than Chihuahua.",
+        spring: "Dry and warming fast — afternoons climbing through the low 20s, the last frost risk in April, and the plateau greening before monsoon arrives.",
+        summer: "Monsoon relief — afternoon highs near 26°C, dramatic July-August storms off the Sierra Madre, and the Tarahumara highland country at its most accessible.",
+        autumn: "Crisp and golden — pine-oak slopes turning, the dry season returning in October, and canyon-edge views that compress an entire continent's climate zones into one horizon.",
+      },
+      travelerFit: "Visitors come for the Copper Canyon railway, Tarahumara cultural country, and one of North America's steepest vertical climate gradients.",
+      residentFit: "It rewards highland retreat seekers and canyon-country explorers who want genuine cold winters in Mexico and accept rural infrastructure and Indigenous-region due diligence.",
+      texture: "A dramatic high-plateau life at Mexico's vertical extreme — the main things to weigh are winter-ready housing, long mountain travel, and fire-season stress on surrounding pine-oak forest.",
+    },
     climate: {
       tempHighC: [15.2, 16.8, 19.4, 22.6, 25.1, 25.8, 23.4, 22.9, 22.6, 21.8, 18.2, 15.6], tempLowC: [-4.4, -3.6, -1.2, 2.6, 6.4, 10.2, 12.1, 11.8, 9.8, 5.2, -0.1, -3.6],
       precipMm: [28, 18, 12, 8, 12, 82, 184, 168, 96, 32, 18, 22], snowCm: [5, 4, 2, 0, 0, 0, 0, 0, 0, 0, 2, 4],
