@@ -3,6 +3,7 @@ import { Layers } from "lucide-react";
 import type { Place } from "../../types";
 import { computeBioclim, type BioclimIndex, type BioclimResult } from "../../lib/bioclim";
 import { getPlaceBioclimRanks, type PlaceBioclimRanks } from "../../lib/atlas-corpus-stats";
+import { useProse } from "../../lib/units";
 
 const ICON_COLOR = "#9bd9c2";
 
@@ -143,6 +144,7 @@ function petBand(pet: number): string {
 }
 
 export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ place, anchorId, intro }: { place: Place; anchorId: string; intro?: string }) {
+  const prose = useProse();
   const bio = useMemo(() => computeBioclim(place), [place]);
   const ranks = useMemo(() => getPlaceBioclimRanks(place), [place]);
   if (!bio) return null;
@@ -155,7 +157,7 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
         Bioclimatic indices
       </h3>
       <p className="text-sm text-stone mb-3 max-w-2xl">
-        {intro ?? "Five standard climate-science indices computed directly from this place's monthly temperature and precipitation normals — independent of the authored Köppen label, citable to original sources, comparable across the atlas."}
+        {intro ? prose(intro) : "Five standard climate-science indices computed directly from this place's monthly temperature and precipitation normals — independent of the authored Köppen label, citable to original sources, comparable across the atlas."}
       </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
         {cards.map(card => {

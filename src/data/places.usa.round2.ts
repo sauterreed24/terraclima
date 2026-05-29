@@ -24,12 +24,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Inland Northwest hub where Cascade rain shadow meets occasional warm downslope winds — four sharp seasons and dry summer afternoons.",
     summaryImmersive: "Spokane sits where the plateau opens east of the Cascades: roughly half Seattle’s annual precipitation but real winter cold and reliable summer sun. Pacific moisture arrives in modified form; Arctic outbreaks still punch through. The river corridor organizes urban heat island and nocturnal cold drainage in the older valley neighborhoods.",
     whyDistinct: "Mid-latitude interior position + rain-shadow dryness + episodic chinook warming produces larger winter temperature swings than coastal Washington at the same latitude.",
-                experience: {
+    experience: {
       feel: "Spokane sits where the plateau opens east of the Cascades: roughly half Seattle’s annual precipitation but real winter cold and reliable summer sun. Pacific moisture arrives in modified form; Arctic outbreaks still punch through.",
       seasons: {
         winter: "Deep winter with afternoons near 1.7°C and nights near -5.3°C — heavy snow defines the rhythm. Winter is when Washington's ponderosa pine–steppe transition shows its teeth.",
         spring: "Spring opens with afternoons near 14.7°C and nights near 2.3°C — showers pass through regularly. Spring is when chinook / foehn downslope and river-valley moderation is easiest to read on the ground.",
-        summer: "Summer settles with afternoons near 28°C and nights near 10.7°C — weather stays moderate and changeable. Spokane is at its most kinetic for riverfront park. Wildfire and smoke are summer wildcards.",
+        summer: "Summer settles with afternoons near 28°C and nights near 10.7°C — weather stays moderate and changeable. Spokane is at its most kinetic for Riverfront Park. Wildfire and smoke are summer wildcards.",
         autumn: "Autumn light with afternoons near 15°C and nights near 1.3°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for chinook corridor. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Riverfront Park and ski within 2 hrs — the practical way to experience chinook corridor terrain in Washington.",
@@ -74,7 +74,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "World-famous wine valley where gap flow and fog delay ripening — Cabernet country built on nightly cooling.",
     summaryImmersive: "The valley floor heats by day; cool air drains from the Petaluma Gap and marine layer spills east, wrapping benchlands in fog until mid-morning. Bench elevation differences of only tens of meters reorder frost risk and hang time — the entire AVA system is a map of microclimate.",
     whyDistinct: "Complex terrain channels + fog penetration + inland heat produce one of the steepest wine mesoclimates in the New World in a narrow corridor.",
-                experience: {
+    experience: {
       feel: "Napa Valley Floor — the valley floor heats by day; cool air drains from the Petaluma Gap and marine layer spills east, wrapping benchlands in fog until mid-morning. Bench elevation differences of only tens of meters reorder frost risk and hang time — the entire AVA system is a map of microclimate.",
       seasons: {
         winter: "Winter runs with afternoons near 14.7°C and nights near 4.3°C — rain is frequent and can be heavy. Winter rewards wine industry who accept the cold season.",
@@ -123,7 +123,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Desert resort climate famous for winter sun — summer heat moderated slightly by elevation vs the Imperial Valley floor.",
     summaryImmersive: "Palm Springs sits in the venturi of the San Gorgonio Pass where pressure gradients translate into strong winds; winter attracts snowbirds for reliable warmth; summer pushes human activity into pools and evenings. Palm oases exploit groundwater; the surrounding desert is hyperarid.",
     whyDistinct: "Pass wind regime + mountain backdrop + irrigation oasis — a recreational microclimate layered on extreme desert.",
-                experience: {
+    experience: {
       feel: "Palm Springs sits in the venturi of the San Gorgonio Pass where pressure gradients translate into strong winds; winter attracts snowbirds for reliable warmth; summer pushes human activity into pools and evenings. Palm oases exploit groundwater; the surrounding desert is hyperarid.",
       seasons: {
         winter: "Winter runs with afternoons near 22.3°C and nights near 9.3°C — weather stays moderate and changeable. Winter rewards retirees who accept the cold season.",
@@ -172,7 +172,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Central Texas heat island wrapped around a river corridor — humid subtropical with violent convective peaks and increasingly long warm seasons.",
     summaryImmersive: "Austin’s climate is a blend of Gulf moisture, plateau dry lines, and urban expansion that strengthens nocturnal heat. Hill-country storms fire on boundaries between air masses; flash flooding along the Colorado is a recurring story.",
     whyDistinct: "Escarpment proximity + river + fast-growing UHI — meteorologically busy summers and warming nights.",
-                experience: {
+    experience: {
       feel: "Austin’s climate is a blend of Gulf moisture, plateau dry lines, and urban expansion that strengthens nocturnal heat. Hill-country storms fire on boundaries between air masses; flash flooding along the Colorado is a recurring story.",
       seasons: {
         winter: "The cold season with afternoons near 17°C and nights near 6°C — showers pass through regularly. Winter rewards tech workers who accept the cold season. Storm systems roll through with real force.",
@@ -221,12 +221,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Gulf-side luxury microclimate — warm wet summers, mild dry winters, and sea-breeze caps on peak heat.",
     summaryImmersive: "Naples trades Atlantic surf for Gulf shallows: water temperatures seasonally warm, supporting humid tropical-feeling nights. Cold fronts are brief; sea breezes organize summer convection inland.",
     whyDistinct: "Gulf bathymetry and low latitude yield narrow annual range relative to interior Florida.",
-                experience: {
+    experience: {
       feel: "Naples trades Atlantic surf for Gulf shallows: water temperatures seasonally warm, supporting humid tropical-feeling nights. Cold fronts are brief; sea breezes organize summer convection inland.",
       seasons: {
         winter: "The cold season with afternoons near 24.7°C and nights near 14°C — showers pass through regularly. Winter rewards retirees who accept the cold season. Storm systems roll through with real force.",
         spring: "The thaw season with afternoons near 28.7°C and nights near 18.3°C — showers pass through regularly. Spring green-up arrives against a wet 1435 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "High season with afternoons near 32.7°C and nights near 23.7°C — rain is frequent and can be heavy. Naples is at its most kinetic for everglades. Afternoon convection and storms build often.",
+        summer: "High season with afternoons near 32.7°C and nights near 23.7°C — rain is frequent and can be heavy. Naples is at its most kinetic for Everglades. Afternoon convection and storms build often.",
         autumn: "Fall shoulder with afternoons near 29.7°C and nights near 20.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for hurricane-exposed coast. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Everglades and beaches — the practical way to experience hurricane-exposed coast terrain in Florida.",
@@ -270,12 +270,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Lake-effect capital of the eastern lakes — summer lake breezes, winter streamers measured in feet.",
     summaryImmersive: "Buffalo’s reputation is snow, but the mechanism is physics: cold air over warm open water, convection, and shoreline convergence. Summer benefits from lake cooling and convection along the breeze front.",
     whyDistinct: "Erie’s east-basin geometry maximizes banding events on westerly flow.",
-                experience: {
+    experience: {
       feel: "Buffalo’s reputation is snow, but the mechanism is physics: cold air over warm open water, convection, and shoreline convergence. Summer benefits from lake cooling and convection along the breeze front.",
       seasons: {
         winter: "Deep winter with afternoons near 1.3°C and nights near -6.3°C — heavy snow defines the rhythm. Winter is when New York's great lakes mixed forest shows its teeth. Storm systems roll through with real force.",
         spring: "Spring opens with afternoons near 12°C and nights near 3°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1125 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Summer settles with afternoons near 25.7°C and nights near 15.7°C — rain is frequent and can be heavy. Buffalo is at its most kinetic for niagara. Afternoon convection and storms build often.",
+        summer: "Summer settles with afternoons near 25.7°C and nights near 15.7°C — rain is frequent and can be heavy. Buffalo is at its most kinetic for Niagara. Afternoon convection and storms build often.",
         autumn: "Autumn light with afternoons near 15.3°C and nights near 6.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for lake-effect snowbelt. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Niagara and wing trails — the practical way to experience lake-effect snowbelt terrain in New York.",
@@ -320,12 +320,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "High Plains river town — windy, sunny, and prone to rapid winter warm-ups when downslope flow replaces Arctic air.",
     summaryImmersive: "Scottsbluff sits where irrigation from the North Platte meets semi-arid steppe. Summer brings dryline thunderstorms; winter alternates between bitter cold and chinook relief.",
     whyDistinct: "Elevation and escarpment proximity add mesoscale wind and temperature volatility rare on the flat Plains.",
-                experience: {
+    experience: {
       feel: "Scottsbluff sits where irrigation from the North Platte meets semi-arid steppe. Summer brings dryline thunderstorms; winter alternates between bitter cold and chinook relief.",
       seasons: {
         winter: "Deep winter with afternoons near 3.3°C and nights near -9°C — skies stay mostly dry. Winter rewards ag workers who accept the cold season. Arctic outbreaks can still bite hard.",
         spring: "Spring opens with afternoons near 16.7°C and nights near 1.7°C — showers pass through regularly. Spring is when continental extremity and chinook / foehn downslope is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Summer settles with afternoons near 30.3°C and nights near 12.7°C — showers pass through regularly. Scottsbluff is at its most kinetic for scotts bluff nm. Water supply and irrigation stress matter.",
+        summer: "Summer settles with afternoons near 30.3°C and nights near 12.7°C — showers pass through regularly. Scottsbluff is at its most kinetic for Scotts Bluff NM. Water supply and irrigation stress matter.",
         autumn: "Autumn light with afternoons near 17°C and nights near 0.7°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for high-desert escape. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Scotts Bluff NM and Oregon Trail history — the practical way to experience high-desert escape terrain in Nebraska.",
@@ -371,12 +371,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "America’s rainiest major coastal city — Gulf moisture on tap, summer thunderstorms, and tropical cyclone risk.",
     summaryImmersive: "Mobile receives abundant rainfall from Gulf of Mexico moisture streams; sea breezes clash with interior heat to build summer convection. Tropical systems can deliver extreme multi-day rains.",
     whyDistinct: "Estuary + Gulf fetch + low latitude = among the highest annual precipitation totals for a US city.",
-                experience: {
+    experience: {
       feel: "Mobile receives abundant rainfall from Gulf of Mexico moisture streams; sea breezes clash with interior heat to build summer convection. Tropical systems can deliver extreme multi-day rains.",
       seasons: {
         winter: "The cold season with afternoons near 17°C and nights near 6°C — rain is frequent and can be heavy. Winter rewards port workers who accept the cold season. Storm systems roll through with real force.",
         spring: "The thaw season with afternoons near 25.3°C and nights near 14.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1770 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "High season with afternoons near 32.7°C and nights near 22.7°C — rain is frequent and can be heavy. Mobile is at its most kinetic for mardi gras. Afternoon convection and storms build often.",
+        summer: "High season with afternoons near 32.7°C and nights near 22.7°C — rain is frequent and can be heavy. Mobile is at its most kinetic for Mardi Gras. Afternoon convection and storms build often.",
         autumn: "Fall shoulder with afternoons near 26°C and nights near 14.7°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for hurricane-exposed coast. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Mardi Gras and delta wetlands — the practical way to experience hurricane-exposed coast terrain in Alabama.",
@@ -420,7 +420,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Historic port with long warm seasons — summer humidity and sea-breeze moderation competing for comfort.",
     summaryImmersive: "Savannah’s live-oak canopy and river–ocean geometry soften peak heat compared to inland Georgia; tropical cyclones and spring severe weather still define hazard calendars.",
     whyDistinct: "Estuary + Atlantic fetch + urban canopy creates a distinct thermal and humidity regime vs Atlanta.",
-                experience: {
+    experience: {
       feel: "Savannah’s live-oak canopy and river–ocean geometry soften peak heat compared to inland Georgia; tropical cyclones and spring severe weather still define hazard calendars.",
       seasons: {
         winter: "Winter runs with afternoons near 17°C and nights near 6.3°C — showers pass through regularly. Winter rewards hospitality workers who accept the cold season. Hurricane and coastal surge exposure shapes fall planning.",
@@ -469,12 +469,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Corporate capital on a humid-subtropical margin — hotter summers than Philadelphia shore, cooler than DC on some synoptic days.",
     summaryImmersive: "Wilmington sits in the transition band between maritime Mid-Atlantic and interior heat-pool air; the Brandywine gorge organizes local breezes and cold pools on clear nights.",
     whyDistinct: "Small elevation changes and urban fabric interact with Chesapeake–Delaware moisture sources.",
-                experience: {
+    experience: {
       feel: "Wilmington sits in the transition band between maritime Mid-Atlantic and interior heat-pool air; the Brandywine gorge organizes local breezes and cold pools on clear nights.",
       seasons: {
         winter: "The cold season with afternoons near 6.7°C and nights near -1.7°C — showers pass through regularly. Winter rewards commuters to Philly who accept the cold season. Storm systems roll through with real force.",
         spring: "The thaw season with afternoons near 18°C and nights near 7.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1165 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "High season with afternoons near 30°C and nights near 19.7°C — rain is frequent and can be heavy. Wilmington is at its most kinetic for nemours. Afternoon convection and storms build often.",
+        summer: "High season with afternoons near 30°C and nights near 19.7°C — rain is frequent and can be heavy. Wilmington is at its most kinetic for Nemours. Afternoon convection and storms build often.",
         autumn: "Fall shoulder with afternoons near 19.7°C and nights near 9.7°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for piedmont transition. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Nemours and Longwood nearby — the practical way to experience piedmont transition terrain in Delaware.",
@@ -518,7 +518,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Classic New England shore — delayed spring, milder peaks than Hartford, nor’easter surf in winter.",
     summaryImmersive: "Mystic’s climate is paced by water: fog, drizzle, and moderate summer heat. Tropical systems occasionally brush the coast with surge and wind.",
     whyDistinct: "Dual-sound exposure tightens maritime influence vs inland Connecticut.",
-                experience: {
+    experience: {
       feel: "Mystic’s climate is paced by water: fog, drizzle, and moderate summer heat. Tropical systems occasionally brush the coast with surge and wind.",
       seasons: {
         winter: "The cold season with afternoons near 4.3°C and nights near -2.7°C — rain is frequent and can be heavy. Winter rewards maritime retirees who accept the cold season. Hurricane and coastal surge exposure shapes fall planning.",
@@ -578,12 +578,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Central PA university town where valley geometry sharpens frost and lake-enhanced snow reaches west of the main Allegheny crest.",
     summaryImmersive: "State College sits in a valley between long parallel ridges; radiative nights run cold; spring green-up can lag neighboring ridges. Winter storms pick up moisture from the Great Lakes in northwesterly flow.",
     whyDistinct: "Ridge-and-valley terrain at latitude where lake-effect and synoptic snow overlap.",
-                experience: {
+    experience: {
       feel: "State College sits in a valley between long parallel ridges; radiative nights run cold; spring green-up can lag neighboring ridges. Winter storms pick up moisture from the Great Lakes in northwesterly flow.",
       seasons: {
         winter: "Winter settles in with afternoons near 2.7°C and nights near -6.3°C — showers pass through regularly. Winter rewards academics who accept the cold season. Storm systems roll through with real force.",
         spring: "Spring arrives with afternoons near 14.7°C and nights near 3.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1110 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Summer peaks with afternoons near 26.7°C and nights near 15°C — rain is frequent and can be heavy. State College is at its most kinetic for penn state sports. Afternoon convection and storms build often.",
+        summer: "Summer peaks with afternoons near 26.7°C and nights near 15°C — rain is frequent and can be heavy. State College is at its most kinetic for Penn State sports. Afternoon convection and storms build often.",
         autumn: "Autumn turns with afternoons near 16.3°C and nights near 5.3°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for cold-air pool. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Penn State sports and Rothrock SF — the practical way to experience cold-air pool terrain in Pennsylvania.",
@@ -627,12 +627,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "State capital in the humid subtropical belt — summer heat indices among the South’s more oppressive without ocean breeze.",
     summaryImmersive: "Columbia sits just below the fall line: hotter summers than Charleston, colder winter snaps than the coast. The Congaree moderates some frost near the floodplain; urban expansion strengthens nocturnal heat.",
     whyDistinct: "Inland position at low elevation in the Southeast heat-pool regime.",
-                experience: {
+    experience: {
       feel: "Columbia sits just below the fall line: hotter summers than Charleston, colder winter snaps than the coast. The Congaree moderates some frost near the floodplain; urban expansion strengthens nocturnal heat.",
       seasons: {
         winter: "Winter runs with afternoons near 14°C and nights near 3.3°C — rain is frequent and can be heavy. Winter rewards government workers who accept the cold season. Storm systems roll through with real force.",
         spring: "As spring builds with afternoons near 24.7°C and nights near 12.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1200 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "The warm months with afternoons near 34°C and nights near 22°C — rain is frequent and can be heavy. Columbia is at its most kinetic for congaree np. Plan around heat that can turn genuinely dangerous.",
+        summer: "The warm months with afternoons near 34°C and nights near 22°C — rain is frequent and can be heavy. Columbia is at its most kinetic for Congaree NP. Plan around heat that can turn genuinely dangerous.",
         autumn: "The shoulder season with afternoons near 25°C and nights near 12.3°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for river-valley moderation. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Congaree NP and college sports — the practical way to experience river-valley moderation terrain in South Carolina.",
@@ -676,7 +676,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Continental humid climate with warm muggy summers, cold winters, and mesoscale convective systems along moisture tongues.",
     summaryImmersive: "Des Moines sits in America’s most productive corn belt — summer dew points and CAPE build ahead of fronts; winter brings Arctic outbreaks and occasional ice storms.",
     whyDistinct: "Central US latitude without Great Lakes moderation — sharp seasonality.",
-                experience: {
+    experience: {
       feel: "Des Moines sits in America’s most productive corn belt — summer dew points and CAPE build ahead of fronts; winter brings Arctic outbreaks and occasional ice storms.",
       seasons: {
         winter: "The cold season with afternoons near 1°C and nights near -9°C — weather stays moderate and changeable. Winter rewards insurance who accept the cold season. Storm systems roll through with real force.",
@@ -725,12 +725,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Lower-elevation desert city with dramatic monsoon storms and winter snow visible on the Catalina crest above town.",
     summaryImmersive: "Tucson’s summer rhythm is convection: moisture imported from the Gulf of California meets orographic and urban triggers. Winter brings cool days and brilliant air; hard freezes are rare in the basin floor.",
     whyDistinct: "Basin geometry + monsoon + 900 m+ mountains within minutes’ drive equals extreme vertical climate diversity.",
-                experience: {
+    experience: {
       feel: "Tucson’s summer rhythm is convection: moisture imported from the Gulf of California meets orographic and urban triggers. Winter brings cool days and brilliant air; hard freezes are rare in the basin floor.",
       seasons: {
         winter: "The cold season with afternoons near 18.7°C and nights near 4.7°C — weather stays moderate and changeable. Winter rewards retirees who accept the cold season.",
         spring: "The thaw season with afternoons near 28.3°C and nights near 11.7°C — skies stay mostly dry. Spring is when monsoon convective lift and elevation lapse rate is easiest to read on the ground.",
-        summer: "High season with afternoons near 37.7°C and nights near 22.7°C — showers pass through regularly. Tucson is at its most kinetic for saguaro np. Plan around heat that can turn genuinely dangerous.",
+        summer: "High season with afternoons near 37.7°C and nights near 22.7°C — showers pass through regularly. Tucson is at its most kinetic for Saguaro NP. Plan around heat that can turn genuinely dangerous.",
         autumn: "Fall shoulder with afternoons near 29.7°C and nights near 14°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for monsoon-edge zone. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Saguaro NP and Kitt Peak — the practical way to experience monsoon-edge zone terrain in Arizona.",
@@ -774,12 +774,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Alaska’s largest city — colder than Juneau in winter but milder than Fairbanks; mountain–inlet geometry organizes wind and snow.",
     summaryImmersive: "Cook Inlet’s tides and sea ice modulate winter temperatures; Chugach orographics enhance snowfall on the east side. Summer days are long and mild; smoke from interior fires occasionally pools.",
     whyDistinct: "Maritime subarctic at population scale — rare globally.",
-                experience: {
+    experience: {
       feel: "Anchorage — cook Inlet’s tides and sea ice modulate winter temperatures; Chugach orographics enhance snowfall on the east side. Summer days are long and mild; smoke from interior fires occasionally pools.",
       seasons: {
         winter: "Winter settles in with afternoons near -3.7°C and nights near -10.3°C — weather stays moderate and changeable. Winter rewards logistics who accept the cold season. Arctic outbreaks can still bite hard.",
         spring: "Spring arrives with afternoons near 8°C and nights near 0°C — weather stays moderate and changeable. Spring is when marine layer and orographic lift is easiest to read on the ground.",
-        summer: "Summer peaks with afternoons near 19°C and nights near 11°C — showers pass through regularly. Anchorage is at its most kinetic for chugach access. Wildfire smoke can settle in for stretches.",
+        summer: "Summer peaks with afternoons near 19°C and nights near 11°C — showers pass through regularly. Anchorage is at its most kinetic for Chugach access. Wildfire smoke can settle in for stretches.",
         autumn: "Autumn turns with afternoons near 6.3°C and nights near -1°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for subarctic continental.",
       },
       travelerFit: "Visitors come for Chugach access and flightseeing — the practical way to experience subarctic continental terrain in Alaska.",
@@ -823,7 +823,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Trade-wind lee city — drier than windward Kaneʻohe, warmer nights downtown, hurricane rarity but tsunami vigilance.",
     summaryImmersive: "Honolulu sits where trades split around topography; Waianae range shadows produce west-side dryness while Hilo-like rainfall stays windward. Urban heat island elevates minima in the core.",
     whyDistinct: "Island chain windward/leeward asymmetry at trade latitude with strong UHI.",
-                experience: {
+    experience: {
       feel: "Honolulu sits where trades split around topography; Waianae range shadows produce west-side dryness while Hilo-like rainfall stays windward. Urban heat island elevates minima in the core.",
       seasons: {
         winter: "Winter runs with afternoons near 26.3°C and nights near 18.3°C — showers pass through regularly. Winter rewards military families who accept the cold season. Hurricane and coastal surge exposure shapes fall planning.",
@@ -872,7 +872,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "High-plains city famous for skies — summer thunderstorms, hail, and huge diurnal swings.",
     summaryImmersive: "Roswell sits in a wide valley where dryline and monsoon moisture meet; spring wind and dust are notorious. Irrigation from the Pecos supports pockets of agriculture.",
     whyDistinct: "Classic southern High Plains synoptic environment with monsoon overlay.",
-                experience: {
+    experience: {
       feel: "Roswell sits in a wide valley where dryline and monsoon moisture meet; spring wind and dust are notorious. Irrigation from the Pecos supports pockets of agriculture.",
       seasons: {
         winter: "Deep winter with afternoons near 13°C and nights near -2.3°C — skies stay mostly dry. Winter rewards aviation who accept the cold season. Storm systems roll through with real force.",
@@ -923,12 +923,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Gateway city where chinook warmings and summer thunderstorms both make headlines — quick transitions at the Hills’ edge.",
     summaryImmersive: "Rapid City sits where Great Plains simplicity meets orographic complexity; winter can flip from arctic to spring-like in hours when downslope winds arrive.",
     whyDistinct: "Black Hills frontal position amplifies mesoscale wind and temperature volatility.",
-                experience: {
+    experience: {
       feel: "Rapid City sits where Great Plains simplicity meets orographic complexity; winter can flip from arctic to spring-like in hours when downslope winds arrive.",
       seasons: {
         winter: "The cold season with afternoons near 3°C and nights near -9°C — skies stay mostly dry. Winter rewards tourism who accept the cold season. Arctic outbreaks can still bite hard.",
         spring: "The thaw season with afternoons near 15°C and nights near 1.3°C — showers pass through regularly. Spring is when chinook / foehn downslope and polar jet / arctic front is easiest to read on the ground. Snowmelt and spring rain can swell rivers fast.",
-        summer: "High season with afternoons near 29.3°C and nights near 13.7°C — showers pass through regularly. Rapid City is at its most kinetic for mount rushmore. Wildfire and smoke are summer wildcards.",
+        summer: "High season with afternoons near 29.3°C and nights near 13.7°C — showers pass through regularly. Rapid City is at its most kinetic for Mount Rushmore. Wildfire and smoke are summer wildcards.",
         autumn: "Fall shoulder with afternoons near 16.3°C and nights near 1.3°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for chinook corridor. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Mount Rushmore and Badlands — the practical way to experience chinook corridor terrain in South Dakota.",
@@ -972,12 +972,12 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "World-famous ski basin — deep snow, strong inversions, and summer perfection at altitude.",
     summaryImmersive: "Jackson Hole traps cold air and captures Pacific moisture lifted by the Tetons; snowpack feeds the Snake River system that defines the ecosystem.",
     whyDistinct: "High-elevation enclosed basin with extreme vertical relief nearby — a textbook mountain meteorology classroom.",
-                experience: {
+    experience: {
       feel: "Jackson Hole traps cold air and captures Pacific moisture lifted by the Tetons; snowpack feeds the Snake River system that defines the ecosystem.",
       seasons: {
         winter: "Deep winter with afternoons near -1.3°C and nights near -14°C — showers pass through regularly. Winter rewards hospitality who accept the cold season. Arctic outbreaks can still bite hard.",
         spring: "Spring opens with afternoons near 11°C and nights near -3°C — showers pass through regularly. Spring is when cold-air drainage and orographic lift is easiest to read on the ground.",
-        summer: "Summer settles with afternoons near 25°C and nights near 6°C — showers pass through regularly. Jackson is at its most kinetic for grand teton np. Wildfire and smoke are summer wildcards.",
+        summer: "Summer settles with afternoons near 25°C and nights near 6°C — showers pass through regularly. Jackson is at its most kinetic for Grand Teton NP. Wildfire and smoke are summer wildcards.",
         autumn: "Autumn light with afternoons near 12.7°C and nights near -4°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for cold-air pool. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Grand Teton NP and skiing — the practical way to experience cold-air pool terrain in Wyoming.",
@@ -1021,7 +1021,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Mid-Atlantic humid subtropical capital — sultry summers, irregular Arctic outbreaks, and remnant tropical moisture.",
     summaryImmersive: "D.C.’s climate mixes continental and maritime air; the Potomac moderates some edges while concrete elevates nocturnal heat. Summer dew points routinely support heat indices above advisory thresholds.",
     whyDistinct: "Urban core on a humidity-rich latitude with Chesapeake–Atlantic moisture pathways.",
-                experience: {
+    experience: {
       feel: "Washington, D.C.: D.C.’s climate mixes continental and maritime air; the Potomac moderates some edges while concrete elevates nocturnal heat. Summer dew points routinely support heat indices above advisory thresholds.",
       seasons: {
         winter: "The cold season with afternoons near 7.7°C and nights near -0.7°C — showers pass through regularly. Winter rewards policy workers who accept the cold season. Storm systems roll through with real force.",

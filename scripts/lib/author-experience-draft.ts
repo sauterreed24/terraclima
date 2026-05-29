@@ -119,7 +119,7 @@ function seasonContext(place: Place, key: SeasonKey): string {
   const annualPrecip = getAnnualPrecipMm(place);
 
   if (key === "summer" && travel) {
-    return `${name} is at its most kinetic for ${travel.toLowerCase()}`;
+    return `${name} is at its most kinetic for ${travel}`;
   }
   if (key === "winter" && (meanOf(place.climate.snowCm, SEASON_IDX.winter) ?? 0) >= 15) {
     return `Winter is when ${place.region}'s ${place.biome.toLowerCase()} shows its teeth`;
@@ -200,8 +200,8 @@ function buildTravelerFit(place: Place): string {
   if (draws.length) {
     return `Visitors come for ${joinHumanList(draws, 4)} — the practical way to experience ${archetypeLabel(place)} terrain in ${place.region}.`;
   }
-  const hook = firstSentence(place.summaryImmersive).replace(/\.$/, "").toLowerCase();
-  return `Visitors come to experience ${archetypeLabel(place)} firsthand — ${hook}.`;
+  const hook = truncateImmersive(place.summaryImmersive, 160).replace(/\.$/, "");
+  return `Visitors come to experience ${archetypeLabel(place)} firsthand — ${hook.charAt(0).toLowerCase()}${hook.slice(1)}.`;
 }
 
 function buildResidentFit(place: Place): string {

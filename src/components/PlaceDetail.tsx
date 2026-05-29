@@ -54,7 +54,7 @@ import { Section, KeyValue, LabelRow, Legend, ScorePill, ZoneDivider, titleCaseL
 import { synthesizePlaceSignals } from "../lib/place-signals";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
 import { buildGrowabilityRationale } from "../lib/growability-score";
-import { composeAgricultureIntro, composeBioclimIntro, composeClimateIntro, composeCorpusIntro, composeGeospatialIntro, composeRiskIntro } from "../lib/dossier-intros";
+import { composeAgricultureIntro, composeAtAGlanceIntro, composeBioclimIntro, composeClimateIntro, composeCorpusIntro, composeDeepDossierIntro, composeGeospatialIntro, composeLiveSignalsIntro, composeLivabilityIntro, composePracticalReadIntro, composeRiskIntro, composeTourismIntro } from "../lib/dossier-intros";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
@@ -537,17 +537,30 @@ function DetailBody({
   const bestMonths = useMemo(() => getBestMonths(place, temp), [place, temp]);
   const fieldStory = useMemo(() => composeFieldStory(place, temp, dist), [place, temp, dist]);
   const geospatial = useMemo(() => buildGeospatialAnalysis(place), [place]);
+  const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
+  const livability = useMemo(() => scoreLivability(place), [place]);
+  const deepMerged = useMemo(() => mergeDeepSections(place), [place]);
   const agricultureIntro = useMemo(() => composeAgricultureIntro(place), [place]);
   const geospatialIntro = useMemo(() => composeGeospatialIntro(place, geospatial), [place, geospatial]);
   const climateIntro = useMemo(() => composeClimateIntro(place), [place]);
+  const atAGlanceIntro = useMemo(() => composeAtAGlanceIntro(place), [place]);
+  const practicalIntro = useMemo(() => composePracticalReadIntro(place, geospatial), [place, geospatial]);
+  const tourismIntro = useMemo(() => composeTourismIntro(place), [place]);
+  const livabilityIntro = useMemo(() => composeLivabilityIntro(place, livability), [place, livability]);
+  const liveSignalsIntro = useMemo(
+    () => (place.liveSignals ? composeLiveSignalsIntro(place) : undefined),
+    [place],
+  );
+  const deepDossierIntro = useMemo(
+    () => composeDeepDossierIntro(place, deepMerged.length, bestMonths.length > 0),
+    [place, deepMerged.length, bestMonths.length],
+  );
   const bioclimIntro = useMemo(() => {
     const bio = computeBioclim(place);
     return bio ? composeBioclimIntro(place, bio) : undefined;
   }, [place]);
   const corpusIntro = useMemo(() => composeCorpusIntro(place, PLACE_COUNTS.total), [place]);
   const riskIntro = useMemo(() => composeRiskIntro(place), [place]);
-  const liveFit = useMemo(() => assessLiveFit(place, liveFitFilters), [place, liveFitFilters]);
-  const livability = useMemo(() => scoreLivability(place), [place]);
   const livedSources = useMemo(() => formatLivedSources(place.liveSignals?.sources), [place.liveSignals?.sources]);
   const comfortPrecision = useMemo(() => buildComfortPrecisionProfile(place, { humidityAnalogPool: PLACES }), [place]);
   const comfortRead = useMemo(() => describeHumanComfort(place), [place]);
@@ -558,7 +571,6 @@ function DetailBody({
   const navItems = useMemo(() => buildPlaceDetailNavItems(place), [place]);
   const navDomIds = useMemo(() => navItems.map(i => i.id), [navItems]);
   const readingActiveAnchor = useDetailReadingSpy(navDomIds);
-  const deepMerged = useMemo(() => mergeDeepSections(place), [place]);
 
   const readingActiveRef = useRef<string | null>(readingActiveAnchor);
   readingActiveRef.current = readingActiveAnchor;
@@ -584,7 +596,7 @@ function DetailBody({
         visualSignature={visualSignature}
       />
 
-      <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
+      <PlaceAtAGlance place={place} anchorId={PD.atAGlance} intro={atAGlanceIntro} />
 
       <PlaceFeelRead place={place} anchorId={PD.placeFeel} />
 
@@ -593,6 +605,7 @@ function DetailBody({
       <PlaceBioclimaticIndices place={place} anchorId={PD.bioclimaticIndices} intro={bioclimIntro} />
 
       <Section title="Livability lens v3" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
+        <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">{prose(livabilityIntro)}</p>
         <div className="panel-thin p-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <div>
@@ -655,7 +668,7 @@ function DetailBody({
         <Section title="Lived signals" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
           <div className="panel-thin p-4">
             <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
-              Editorial reads on three axes climate normals cannot capture: cost pressure, social-fabric stress, and daily-services access. 0 = no friction, 100 = severe. These are screening signals anchored to public sources, not appraisals or insurance underwriting.
+              {liveSignalsIntro ?? "Editorial reads on three axes climate normals cannot capture: cost pressure, social-fabric stress, and daily-services access. 0 = no friction, 100 = severe. These are screening signals anchored to public sources, not appraisals or insurance underwriting."}
             </div>
             <ul className="tc-livability-signal-grid">
               {(["costPressure", "socialStress", "accessFriction"] as const).map(axis => {
@@ -728,9 +741,9 @@ function DetailBody({
         </div>
       </Section>
 
-      <PlacePracticalRead place={place} anchorId={PD.practical} />
+      <PlacePracticalRead place={place} anchorId={PD.practical} intro={practicalIntro} />
 
-      <PlaceTourismRead place={place} anchorId={PD.tourism} />
+      <PlaceTourismRead place={place} anchorId={PD.tourism} intro={tourismIntro} />
 
       <Section anchorId={PD.fieldStory} icon={<Compass className="w-4 h-4" style={{ color: "#dcc4ff" }} />} title={fieldStory.title}>
         <div className="panel-field-story p-4 md:p-5 space-y-3.5 rounded-2xl border border-[rgba(199,181,234,0.22)]">
@@ -751,6 +764,7 @@ function DetailBody({
             sections={deepMerged}
             hasBestMonthsGuide={bestMonths.length > 0}
             syncDossierHash={readingActiveAnchor === PD.deepDives}
+            intro={deepDossierIntro}
           />
         </div>
       ) : null}

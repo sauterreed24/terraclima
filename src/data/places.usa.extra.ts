@@ -107,12 +107,12 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Subarctic maritime — bitter cold when Siberian highs meet Bering ice; brief cool summers with midnight sun.",
     summaryImmersive: "Nome is where North America’s cold air masses exit toward the Bering Sea. Winter is long and dark: sea ice damps temperature extremes near shore but storms still rake the coast with wind-driven snow. Spring break-up turns rivers to slush highways; summer brings fog, berries, and cool but pleasant afternoons — t-shirt weather by local standards. The Bering Strait’s proximity means climate teleconnections to both the Pacific and Arctic oscillations show up in storm tracks.",
     whyDistinct: "Coastal subarctic with seasonal sea-ice cover creates a narrower annual temperature range than interior Alaska at the same latitude, but still delivers extreme wind chill when continental air crosses open leads in the ice.",
-              experience: {
+    experience: {
       feel: "Nome is where North America’s cold air masses exit toward the Bering Sea. Winter is long and dark: sea ice damps temperature extremes near shore but storms still rake the coast with wind-driven snow. Spring break-up turns rivers to slush highways;.",
       seasons: {
         winter: "Winter runs with afternoons near -11.3°C and nights near -19°C — heavy snow defines the rhythm. Winter is when Alaska's tundra and dwarf-shrub coastal plain shows its teeth. Arctic outbreaks can still bite hard.",
         spring: "As spring builds with afternoons near 0.7°C and nights near -8°C — snow is a regular part of the picture. Spring is when polar jet / arctic front and continental extremity is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "The warm months with afternoons near 13°C and nights near 5°C — showers pass through regularly. Nome is at its most kinetic for iditarod finish. Afternoon convection and storms build often.",
+        summer: "The warm months with afternoons near 13°C and nights near 5°C — showers pass through regularly. Nome is at its most kinetic for Iditarod finish. Afternoon convection and storms build often.",
         autumn: "The shoulder season with afternoons near 1°C and nights near -7.3°C — snow is a regular part of the picture. Autumn often brings the clearest light and the most honest tradeoffs for subarctic continental. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Iditarod finish and Bering land bridge archaeology — the practical way to experience subarctic continental terrain in Alaska.",
@@ -167,12 +167,12 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid subtropical Gulf city — sea breezes cap summer heat until offshore flow fails ahead of hurricanes.",
     summaryImmersive: "Corpus Christi sits where continental heat meets Gulf moisture. Summer heat indices routinely reach dangerous levels; afternoon sea breezes bring short relief. Tropical storms and hurricanes are the dominant extreme hazard — storm surge into Corpus Christi Bay and Aransas Pass is a recurring engineering problem. Winters are mild; freezes are rare but damaging to citrus when they occur. The Laguna Madre — one of North America’s few hypersaline lagoons — creates unique wind and humidity patterns west of the city.",
     whyDistinct: "Shallow lagoon + barrier island + Gulf fetch produces stronger diurnal sea-breeze modulation than open flat coasts, and hurricane surge risk is amplified by bay geometry.",
-                experience: {
+    experience: {
       feel: "Corpus Christi sits where continental heat meets Gulf moisture. Summer heat indices routinely reach dangerous levels; afternoon sea breezes bring short relief.",
       seasons: {
         winter: "The cold season with afternoons near 18.3°C and nights near 9°C — weather stays moderate and changeable. Winter rewards port workers who accept the cold season. Storm systems roll through with real force.",
         spring: "The thaw season with afternoons near 25.3°C and nights near 18°C — showers pass through regularly. Spring is when tropical-cyclone exposure and diurnal sea breeze is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "High season with afternoons near 33°C and nights near 24.7°C — showers pass through regularly. Corpus Christi is at its most kinetic for padre island. Afternoon convection and storms build often.",
+        summer: "High season with afternoons near 33°C and nights near 24.7°C — showers pass through regularly. Corpus Christi is at its most kinetic for Padre Island. Afternoon convection and storms build often.",
         autumn: "Fall shoulder with afternoons near 27.7°C and nights near 18.3°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for hurricane-exposed coast. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Padre Island and birding — the practical way to experience hurricane-exposed coast terrain in Texas.",
@@ -227,7 +227,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid subtropical inland — river fog, summer convection, and remnant tropical moisture.",
     summaryImmersive: "Paducah’s climate is classically mid-South: hot, humid summers with afternoon thunderstorms; mild winters punctuated by Arctic outbreaks and freezing rain when warm Gulf air overrides cold domes at the surface. The Ohio and Tennessee rivers moderate temperatures slightly and provide moisture for fog banks in spring and fall. Convective available potential energy is high in June ahead of mesoscale convective systems that track along the river valleys.",
     whyDistinct: "Large-river confluence zones concentrate moisture and serve as preferential corridors for nocturnal convection and flooding — hydroclimate is as important as latitude here.",
-                experience: {
+    experience: {
       feel: "Paducah’s climate is classically mid-South: hot, humid summers with afternoon thunderstorms; mild winters punctuated by Arctic outbreaks and freezing rain when warm Gulf air overrides cold domes at the surface.",
       seasons: {
         winter: "Deep winter with afternoons near 7°C and nights near -2.3°C — rain is frequent and can be heavy. Winter rewards logistics who accept the cold season. Storm systems roll through with real force.",
@@ -269,12 +269,12 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Cold, sunny, windy continental climate — scorching summer days and bitter subzero winter nights both occur.",
     summaryImmersive: "Bismarck sits in one of the continent’s starkest annual temperature ranges. Arctic highs in winter deliver brilliant cold and dry air; summer opens to dryline thunderstorms and occasional severe hail. Chinook warming on eastern Rocky lee slopes occasionally interrupts mid-winter cold. Lake Sakakawea moderates lee-side microclimates only slightly — continentality dominates.",
     whyDistinct: "Central position in North America maximizes contrast between maritime air masses — rarely seen — and dry continental polar or tropical air advected from the Gulf in summer.",
-                experience: {
+    experience: {
       feel: "Bismarck sits in one of the continent’s starkest annual temperature ranges. Arctic highs in winter deliver brilliant cold and dry air; summer opens to dryline thunderstorms and occasional severe hail. Chinook warming on eastern Rocky lee slopes occasionally interrupts mid-winter cold.",
       seasons: {
         winter: "Winter runs with afternoons near -3.7°C and nights near -14.7°C — skies stay mostly dry. Winter rewards energy sector who accept the cold season. Arctic outbreaks can still bite hard.",
         spring: "As spring builds with afternoons near 12.3°C and nights near 0.3°C — weather stays moderate and changeable. Spring is when continental extremity and polar jet / arctic front is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "The warm months with afternoons near 28.3°C and nights near 13.7°C — showers pass through regularly. Bismarck is at its most kinetic for lewis & clark. Water supply and irrigation stress matter.",
+        summer: "The warm months with afternoons near 28.3°C and nights near 13.7°C — showers pass through regularly. Bismarck is at its most kinetic for Lewis & Clark. Water supply and irrigation stress matter.",
         autumn: "The shoulder season with afternoons near 13.7°C and nights near 0°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for subarctic continental. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Lewis & Clark and prairie reserves — the practical way to experience subarctic continental terrain in North Dakota.",
@@ -311,7 +311,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid continental–subtropical transition — wet, cloudy, and hilly with sharp microclimates between ridges and valleys.",
     summaryImmersive: "Morgantown’s ridges catch moisture on southwesterly flow ahead of coastal lows; valleys pool cold air and fog on still nights. Snowfall is moderate but elevation within the county varies enough for 200 m to separate rain from heavy snow. Summers are warm and humid — not coastal, not deep South, but persistently sticky. The university town sits at a climate crossroads between mid-Atlantic storms and Ohio Valley convection.",
     whyDistinct: "Plateau dissected by tight river networks produces high spatial variability in frost, fog, and snowfall totals within a 20 km radius.",
-                experience: {
+    experience: {
       feel: "Morgantown’s ridges catch moisture on southwesterly flow ahead of coastal lows; valleys pool cold air and fog on still nights. Snowfall is moderate but elevation within the county varies enough for 200 m to separate rain from heavy snow.",
       seasons: {
         winter: "The cold season with afternoons near 4.3°C and nights near -3.7°C — showers pass through regularly. Winter rewards university families who accept the cold season.",

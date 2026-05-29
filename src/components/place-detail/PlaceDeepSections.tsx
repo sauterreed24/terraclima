@@ -25,12 +25,14 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
   sections,
   hasBestMonthsGuide,
   syncDossierHash,
+  intro,
 }: {
   sections: PlaceDeepSection[];
   /** When true, intro copy points readers at Best months for… to avoid repeating calendar advice. */
   hasBestMonthsGuide?: boolean;
   /** When false, skip writing `#deep-…` so we do not fight the main scroll-spy clearing the hash. */
   syncDossierHash?: boolean;
+  intro?: string;
 }) {
   const prose = useProse();
   const reduceMotion = useReducedMotion();
@@ -149,9 +151,9 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
           </h3>
         </div>
         <p className="text-[11px] md:text-xs text-stone-readable leading-relaxed mt-2 max-w-[52rem]">
-          {hasBestMonthsGuide
+          {prose(intro ?? (hasBestMonthsGuide
             ? "Read this as the atlas field notebook. Any authored essay comes first; then the shared backbone follows: rain year, terrain mechanisms, soil and gardens, nearby contrasts when present, and homes or long-term fit. Best months for... handles calendars below; this section explains why the place behaves the way it does. Temperatures follow the unit in the header."
-            : "Read this as the atlas field notebook. Any authored essay comes first; then the shared backbone follows: rain year, terrain mechanisms, soil and gardens, nearby contrasts when present, and homes or long-term fit. Temperatures follow the unit in the header."}
+            : "Read this as the atlas field notebook. Any authored essay comes first; then the shared backbone follows: rain year, terrain mechanisms, soil and gardens, nearby contrasts when present, and homes or long-term fit. Temperatures follow the unit in the header."))}
         </p>
         <nav
           ref={jumpStripRef}

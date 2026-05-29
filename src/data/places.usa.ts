@@ -3736,12 +3736,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "America's snowiest major city — over 3 m of annual lake-effect snow from Lake Ontario.",
     summaryImmersive: "Syracuse sits 50 km south of Lake Ontario, directly in the line of fire for the lake-effect snow machine. The city's Golden Snowball award tracks its position as America's snowiest major metropolitan area most years. Summer is humid and mild; the lake moderates extreme cold and heat compared to cities further from water.",
     whyDistinct: "Classic lake-effect setup with no terrain lift needed — just cold NW flow over open Ontario.",
-              experience: {
+    experience: {
       feel: "Syracuse sits 50 km south of Lake Ontario, directly in the line of fire for the lake-effect snow machine. The city's Golden Snowball award tracks its position as America's snowiest major metropolitan area most years. Summer is humid and mild;.",
       seasons: {
         winter: "Winter runs with afternoons near -0.3°C and nights near -8.5°C — heavy snow defines the rhythm. Winter is when New York's eastern hardwood forest shows its teeth.",
         spring: "As spring builds with afternoons near 12.2°C and nights near 1°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1106 mm annual backdrop.",
-        summer: "The warm months with afternoons near 25.2°C and nights near 14°C — rain is frequent and can be heavy. Syracuse is at its most kinetic for finger lakes gateway.",
+        summer: "The warm months with afternoons near 25.2°C and nights near 14°C — rain is frequent and can be heavy. Syracuse is at its most kinetic for Finger Lakes gateway.",
         autumn: "The shoulder season with afternoons near 14.5°C and nights near 4.9°C — snow is a regular part of the picture. Autumn often brings the clearest light and the most honest tradeoffs for lake-effect snowbelt.",
       },
       travelerFit: "Visitors come for Finger Lakes gateway — the practical way to experience lake-effect snowbelt terrain in New York.",
@@ -3804,12 +3804,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The Keweenaw's winter averages over 5 m of snow — the snowiest land east of the Rockies and a true Great Lakes wonder.",
     summaryImmersive: "The Keweenaw thrusts 100 km into Lake Superior, exposing it to lake-effect snow from nearly every wind direction. Annual snowfall averages 5 m near Houghton and approaches 7 m on the peninsula's spine. The copper-mining history, the university at Michigan Tech, and the culture of the place are all shaped by the snow. Summers, by contrast, are idyllic: mild, breezy, and sun-sparkled.",
     whyDistinct: "Peninsular geometry plus Lake Superior exposure produces multiple lake-effect wind-direction regimes on a small piece of land.",
-              experience: {
+    experience: {
       feel: "The Keweenaw thrusts 100 km into Lake Superior, exposing it to lake-effect snow from nearly every wind direction. Annual snowfall averages 5 m near Houghton and approaches 7 m on the peninsula's spine.",
       seasons: {
         winter: "Winter runs with afternoons near -4.6°C and nights near -13.3°C — heavy snow defines the rhythm. Winter is when Michigan's northern hardwood-boreal shows its teeth. Arctic outbreaks can still bite hard.",
         spring: "As spring builds with afternoons near 7.4°C and nights near -3.2°C — heavy snow defines the rhythm. Spring green-up arrives against a wet 944 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "The warm months with afternoons near 21.1°C and nights near 9.8°C — rain is frequent and can be heavy. Keweenaw is at its most kinetic for isle royale gateway. Afternoon convection and storms build often.",
+        summer: "The warm months with afternoons near 21.1°C and nights near 9.8°C — rain is frequent and can be heavy. Keweenaw is at its most kinetic for Isle Royale gateway. Afternoon convection and storms build often.",
         autumn: "The shoulder season with afternoons near 10°C and nights near 1.5°C — heavy snow defines the rhythm. Autumn often brings the clearest light and the most honest tradeoffs for lake-effect snowbelt. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Isle Royale gateway and Keweenaw snow — the practical way to experience lake-effect snowbelt terrain in Michigan.",
@@ -3842,7 +3842,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The Driftless Area's organic-farming heartland — a landscape of deep dissected coulees producing dense microclimate variety on small farms.",
     summaryImmersive: "The Driftless Area escaped continental glaciation; the result is a countryside with real topography, deep valleys, and ridge-valley microclimate contrasts that are rare elsewhere in the Upper Midwest. Viroqua has become the de facto center of the country's organic and cooperative farming movement — a cultural result of the climate/soil/topography permutation. Spring creeks hold water; ridgetops shed frost; south-facing slopes warm weeks ahead of north faces.",
     whyDistinct: "Unglaciated relief produces steep, complex terrain with sharp local climate gradients — unusual in the Midwest.",
-                experience: {
+    experience: {
       feel: "Viroqua — the Driftless Area escaped continental glaciation; the result is a countryside with real topography, deep valleys, and ridge-valley microclimate contrasts that are rare elsewhere in the Upper Midwest.",
       seasons: {
         winter: "Deep winter with afternoons near -2.3°C and nights near -12.7°C — snow is a regular part of the picture. Winter is when Wisconsin's oak savanna / maple-basswood coves shows its teeth.",
@@ -4013,7 +4013,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A subtropical estuary city where sea-breeze moderates otherwise oppressive summer humidity — and hurricanes define autumn.",
     summaryImmersive: "Charleston's low-country location on the Ashley-Cooper estuary produces humid-subtropical summers softened by reliable sea-breeze development by early afternoon — enough to bring 2–4°C of relief on most days compared to inland South Carolina. Winters are mild; frost is infrequent. Hurricanes are the existential climate factor; the statistical path brings major storms every decade or two.",
     whyDistinct: "Estuarine geometry with tidal exchange combines with Atlantic sea-breeze to moderate otherwise severe low-country summer heat.",
-              experience: {
+    experience: {
       feel: "Charleston's low-country location on the Ashley-Cooper estuary produces humid-subtropical summers softened by reliable sea-breeze development by early afternoon — enough to bring 2–4°C of relief on most days compared to inland South Carolina. Winters are mild; frost is infrequent.",
       seasons: {
         winter: "The cold season with afternoons near 15.5°C and nights near 5.1°C — showers pass through regularly. Winter rewards Southern urbanites who accept the cold season. Hurricane and coastal surge exposure shapes fall planning.",
@@ -4232,7 +4232,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The snowiest city in the USA — averaging 8 meters of snow per year where Pacific moisture slams into the Chugach Mountains.",
     summaryImmersive: "Valdez sits at the head of a fjord where the mountains rise straight out of the sea to 3,000 m. When moist Pacific air meets that wall, it has nowhere to go but up, and everything condenses in a hurry. The result is one of the most prodigious snowfall totals anywhere — Thompson Pass, just 40 km inland, has measured more than 24 meters in a single winter. Valdez itself averages roughly 8 meters annually. Winters are dark, snowy, and mild by Alaskan standards; summers cool and often overcast. The fjord funnels katabatic winds off the Chugach icefield on calm clear winter nights.",
     whyDistinct: "Orographic maximum on a collision slope: Pacific moisture + 3000 m vertical rise + abundant winter cold-season events = one of the highest snow-water equivalents anywhere on the continent.",
-              experience: {
+    experience: {
       feel: "Valdez sits at the head of a fjord where the mountains rise straight out of the sea to 3,000 m. When moist Pacific air meets that wall, it has nowhere to go but up, and everything condenses in a hurry.",
       seasons: {
         winter: "The cold season with afternoons near -1.3°C and nights near -7.3°C — heavy snow defines the rhythm. Winter is when Alaska's coastal temperate rainforest shows its teeth. Storm systems roll through with real force.",
@@ -4396,7 +4396,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Officially the 'home of the world's worst weather' — wind gust of 372 km/h (231 mph) once held the world record, and July averages just 9°C.",
     summaryImmersive: "Mount Washington stands alone as one of the great weather superlatives of North America. Its latitude places it in the convergence path of three major storm tracks; its altitude places it in the free troposphere; and the regional terrain focuses wind over the summit like a nozzle. The result is a climate more characteristic of a Labrador cape than a New England mountain — January highs near −11°C, July highs near 13°C, fog on 60% of days, freezing fog riming the summit observatory year-round. In April 1934, before weather stations in Antarctica, the summit measured a 372 km/h gust that held the world surface-wind record for 62 years. Hikers die here from exposure in any month.",
     whyDistinct: "Convergence of three storm tracks + regional ridge geometry that channels wind over a single summit + altitude into the free troposphere. No other US peak combines all three.",
-              experience: {
+    experience: {
       feel: "Mount Washington Summit — mount Washington stands alone as one of the great weather superlatives of North America. Its latitude places it in the convergence path of three major storm tracks; its altitude places it in the free troposphere; and the regional terrain focuses wind over the summit like a nozzle.",
       seasons: {
         winter: "Winter runs with afternoons near -10.3°C and nights near -17.7°C — heavy snow defines the rhythm. Winter is when New Hampshire's alpine tundra (above treeline) shows its teeth. Arctic outbreaks can still bite hard.",
@@ -4480,7 +4480,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "One of the mildest subtropical coasts in the continental US — July highs barely reach 32°C and January lows rarely drop below 10°C, moderated by the Gulf on both sides.",
     summaryImmersive: "South Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre. The ocean buffers temperature from both sides: summer highs rarely top 33°C because of reliable afternoon sea breeze, and winter lows rarely approach freezing because Gulf water stays in the mid-20s. The annual range here is remarkably narrow for Texas — about 13°C between coolest and warmest months, versus 21°C in inland San Antonio. The trade-off is hurricane exposure: Padre lies in one of the most active tropical-cyclone corridors in the US, and every few decades a major storm reshapes the entire island.",
     whyDistinct: "Double-water exposure (Gulf + Laguna Madre) compresses the annual temperature range; low latitude + subsidence inversion limits summer heat; Texas gulf upwelling is minimal but marine-layer moderation is still substantial.",
-              experience: {
+    experience: {
       feel: "South Padre Island — south Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre.",
       seasons: {
         winter: "Deep winter with afternoons near 21.7°C and nights near 13°C — humid air keeps everything soft and close. Winter rewards winter-residents who accept the cold season. Storm systems roll through with real force.",
@@ -4520,12 +4520,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Arguably the coldest town in the Lower 48 most winters — regularly registering the US's lowest temperature outside the mountain West.",
     summaryImmersive: "Ely sits where the Canadian Shield reaches into Minnesota: thin soils over granite, thousands of glacier-carved lakes, and a boreal forest climate unlike anywhere else in the contiguous US. On radiative winter nights — still, clear, fresh snow cover — temperatures routinely bottom out near −40°C. Ely and the nearby airport at Embarrass frequently tie for the coldest temperature in the Lower 48. Summers are short but intense, with long daylight, active thunderstorms, and the long twilight characteristic of 48°N. This is the gateway to the Boundary Waters — a million-acre wilderness of lakes and boreal forest where paddling is the only practical travel.",
     whyDistinct: "Deep continental interior + boreal forest snow-covered surface + lack of significant terrain to mix the lower atmosphere + proximity to the polar jet's winter position = extreme winter cold. The innumerable lakes moderate summer somewhat but freeze solid from December to April.",
-                experience: {
+    experience: {
       feel: "Ely sits where the Canadian Shield reaches into Minnesota: thin soils over granite, thousands of glacier-carved lakes, and a boreal forest climate unlike anywhere else in the contiguous US. On radiative winter nights — still, clear, fresh snow cover — temperatures routinely bottom out near −40°C.",
       seasons: {
         winter: "Deep winter with afternoons near -5.3°C and nights near -18.7°C — heavy snow defines the rhythm. Winter is when Minnesota's mixed boreal–northern hardwood forest shows its teeth. Arctic outbreaks can still bite hard.",
         spring: "Spring opens with afternoons near 9.7°C and nights near -3.7°C — snow is a regular part of the picture. Spring is when continental extremity and lake effect is easiest to read on the ground.",
-        summer: "Summer settles with afternoons near 23.3°C and nights near 11.7°C — rain is frequent and can be heavy. Ely is at its most kinetic for boundary waters canoe trips. Wildfire and smoke are summer wildcards.",
+        summer: "Summer settles with afternoons near 23.3°C and nights near 11.7°C — rain is frequent and can be heavy. Ely is at its most kinetic for Boundary Waters canoe trips. Wildfire and smoke are summer wildcards.",
         autumn: "Autumn light with afternoons near 9.7°C and nights near 0.3°C — snow is a regular part of the picture. Autumn often brings the clearest light and the most honest tradeoffs for lake-moderated. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Boundary Waters canoe trips, winter sled-dog training, aurora, and wolf howls — the practical way to experience lake-moderated terrain in Minnesota.",
@@ -4561,7 +4561,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "An outer-coast Oregon beach town where summer highs rarely exceed 21°C and winter lows rarely drop below 3°C — one of the most temperature-stable climates in the Lower 48.",
     summaryImmersive: "Cannon Beach demonstrates what happens when the Pacific dictates climate from both directions. Summer afternoons rarely break 21°C; morning fog from ocean upwelling spills over the low Coast Range and then burns off by midday (sometimes). Winters are mild, damp, and never freeze more than a handful of times. The annual temperature range is roughly 10°C — narrower than most tropical cities'. Rain falls on about 150 days per year, concentrated heavily in November through March; July and August are famously sunny (often literally sunnier than the inland Willamette Valley's foggy coastal-influence days).",
     whyDistinct: "North Pacific summer upwelling off the Oregon coast delivers 9–11°C surface water directly adjacent to the beach — as cold as Alaska's Inside Passage. Sea breeze keeps afternoons cool; the Coast Range blocks continental warming from the Willamette Valley.",
-                experience: {
+    experience: {
       feel: "Cannon Beach demonstrates what happens when the Pacific dictates climate from both directions. Summer afternoons rarely break 21°C; morning fog from ocean upwelling spills over the low Coast Range and then burns off by midday (sometimes).",
       seasons: {
         winter: "Winter runs with afternoons near 10°C and nights near 3°C — rain is frequent and can be heavy. Winter rewards cool-summer lovers who accept the cold season. Storm systems roll through with real force.",
@@ -5255,7 +5255,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Where a river gap occasionally fires downslope warming to spring-like afternoons in mid-winter — the famous 'Chetco effect' against an otherwise cool outer coast.",
     summaryImmersive: "Brookings is already mild for the Oregon coast, but its claim to fame is episodic winter warmth: when pressure patterns align, air descends through the Chetco River corridor and compresses, producing rapid jumps that can melt frost in minutes while Astoria shivers. Baseline climate is still hyper-maritime — cool wet winters, foggy Junes, and summer highs that rarely tax a sweater.",
     whyDistinct: "Gap winds through a low Coast-Range pass create localized foehn-like warming on otherwise uniform north Pacific air; the phenomenon is rare enough to be news but frequent enough to define local lore.",
-              experience: {
+    experience: {
       feel: "Brookings is already mild for the Oregon coast, but its claim to fame is episodic winter warmth: when pressure patterns align, air descends through the Chetco River corridor and compresses, producing rapid jumps that can melt frost in minutes while Astoria shivers.",
       seasons: {
         winter: "Winter settles in with afternoons near 13°C and nights near 5°C — rain is frequent and can be heavy. Winter rewards storm watchers who accept the cold season. Storm systems roll through with real force.",
@@ -5302,12 +5302,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Oregon's inland fruit bowl — hot, dry summers and chilly valley fog nights where pears and wine grapes finish with real sugar.",
     summaryImmersive: "Medford sits in a classic inter-mountain rain shadow: the Coast Range and Klamaths wring out Pacific moisture west and north, leaving the Rogue Basin with sunny, arid summers that feel more Central Valley than Portland. Winter inversions trap smoke and fog in the bowl; spring arrives abruptly with blossom corridors along irrigation canals.",
     whyDistinct: "Pronounced summer dryness combined with reliable irrigation from the Rogue River system creates an orchard microclimate rare for Oregon latitude.",
-                experience: {
+    experience: {
       feel: "Medford sits in a classic inter-mountain rain shadow: the Coast Range and Klamaths wring out Pacific moisture west and north, leaving the Rogue Basin with sunny, arid summers that feel more Central Valley than Portland. Winter inversions trap smoke and fog in the bowl;.",
       seasons: {
         winter: "Deep winter with afternoons near 10°C and nights near 1°C — showers pass through regularly. Winter rewards orchardists who accept the cold season.",
         spring: "Spring opens with afternoons near 18.7°C and nights near 6.3°C — weather stays moderate and changeable. Spring is when rain shadow and river-valley moderation is easiest to read on the ground.",
-        summer: "Summer settles with afternoons near 31.3°C and nights near 13.3°C — skies stay mostly dry. Medford is at its most kinetic for crater lake. Wildfire and smoke are summer wildcards.",
+        summer: "Summer settles with afternoons near 31.3°C and nights near 13.3°C — skies stay mostly dry. Medford is at its most kinetic for Crater Lake. Wildfire and smoke are summer wildcards.",
         autumn: "Autumn light with afternoons near 21.7°C and nights near 5.7°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for rain-shadow sanctuary. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Crater Lake, Rogue River rafting, and pear harvest — the practical way to experience rain-shadow sanctuary terrain in Oregon.",
@@ -5340,7 +5340,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A drier, sunnier maritime pocket than Seattle — cool summers, mild wet winters, and half the gloom of the mainland sound.",
     summaryImmersive: "The San Juans sit in a complex rain shadow cast by the Olympics and Vancouver Island — enough moisture for pastoral green, but enough summer sun to support vineyards and apple orchards on south slopes. Marine breezes keep August afternoons civilized; frost is rare near shore.",
     whyDistinct: "Island wake and Olympic lee combine for a measurable precipitation and cloud-frequency deficit versus Everett or Bellingham at similar latitude.",
-                experience: {
+    experience: {
       feel: "Friday Harbor — the San Juans sit in a complex rain shadow cast by the Olympics and Vancouver Island — enough moisture for pastoral green, but enough summer sun to support vineyards and apple orchards on south slopes. Marine breezes keep August afternoons civilized; frost is rare near shore.",
       seasons: {
         winter: "Winter settles in with afternoons near 7.7°C and nights near 2.3°C — rain is frequent and can be heavy. Winter rewards sailors who accept the cold season.",
@@ -5389,12 +5389,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Sunny and dry for western Washington — bitter inversions in winter, but summers are warm and star-filled.",
     summaryImmersive: "The Methow sits in one of the deepest rain shadows in the Pacific Northwest: storms unload on the Cascades to the west, leaving Winthrop with high-desert sunshine and cold, stagnant air in the valley floor during Arctic outbreaks. Cross-country skiing and dark-sky stargazing are world-class; smoke from regional fires is the summer tradeoff.",
     whyDistinct: "Combination of interior rain shadow + north-south valley geometry that traps cold air and smoke alike.",
-                experience: {
+    experience: {
       feel: "The Methow sits in one of the deepest rain shadows in the Pacific Northwest: storms unload on the Cascades to the west, leaving Winthrop with high-desert sunshine and cold, stagnant air in the valley floor during Arctic outbreaks. Cross-country skiing and dark-sky stargazing are world-class;.",
       seasons: {
         winter: "Winter runs with afternoons near 0°C and nights near -8°C — showers pass through regularly. Winter rewards Nordic skiers who accept the cold season. Arctic outbreaks can still bite hard.",
         spring: "As spring builds with afternoons near 14°C and nights near 1°C — weather stays moderate and changeable. Spring is when rain shadow and temperature inversion is easiest to read on the ground.",
-        summer: "The warm months with afternoons near 27°C and nights near 9°C — weather stays moderate and changeable. Winthrop is at its most kinetic for north cascades highway. Wildfire and smoke are summer wildcards.",
+        summer: "The warm months with afternoons near 27°C and nights near 9°C — weather stays moderate and changeable. Winthrop is at its most kinetic for North Cascades Highway. Wildfire and smoke are summer wildcards.",
         autumn: "The shoulder season with afternoons near 14°C and nights near 0.3°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for rain-shadow sanctuary. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for North Cascades Highway and Methow Trails — the practical way to experience rain-shadow sanctuary terrain in Washington.",
@@ -5424,12 +5424,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Bavarian-themed town, real interior climate — hot summers, cold snowy winters, and orchard country.",
     summaryImmersive: "Leavenworth combines Cascade scenery with continental seasonality: summer heat breaks 30°C regularly; winter snow is reliable for recreation. Chinooks occasionally chew snowpack in midwinter. Irrigation from the Wenatchee supports apples and pears that need winter chill.",
     whyDistinct: "Sharp east-slope transition from wet western Cascades to semi-arid interior within one mountain range.",
-                experience: {
+    experience: {
       feel: "Leavenworth combines Cascade scenery with continental seasonality: summer heat breaks 30°C regularly; winter snow is reliable for recreation. Chinooks occasionally chew snowpack in midwinter. Irrigation from the Wenatchee supports apples and pears that need winter chill.",
       seasons: {
         winter: "Deep winter with afternoons near 2°C and nights near -5°C — showers pass through regularly. Winter rewards ski families who accept the cold season.",
         spring: "Spring opens with afternoons near 16°C and nights near 3.3°C — weather stays moderate and changeable. Spring is when rain shadow and chinook / foehn downslope is easiest to read on the ground.",
-        summer: "Summer settles with afternoons near 29°C and nights near 11°C — skies stay mostly dry. Leavenworth is at its most kinetic for oktoberfest. Wildfire and smoke are summer wildcards.",
+        summer: "Summer settles with afternoons near 29°C and nights near 11°C — skies stay mostly dry. Leavenworth is at its most kinetic for Oktoberfest. Wildfire and smoke are summer wildcards.",
         autumn: "Autumn light with afternoons near 16°C and nights near 1.7°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for rain-shadow sanctuary. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Oktoberfest and Enchantment peaks — the practical way to experience rain-shadow sanctuary terrain in Washington.",
@@ -5459,12 +5459,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Sierra front-row seats — howling easterlies, blazing sun, and the tallest escarpment in the Lower 48 looming west.",
     summaryImmersive: "Lone Pine lives in the hydraulic shadow of the Sierra: dry, windy, and often hazy from Owens Lake dust and seasonal smoke. Winter cold pools in the valley; summer convection builds over the peaks while the floor bakes. It is the gateway climate for Whitney Portal — a vertical kilometer of lapse-rate cooling in minutes of driving.",
     whyDistinct: "Extreme rain shadow plus basin geometry yields persistent inversions and frequent gap winds through passes.",
-                experience: {
+    experience: {
       feel: "Lone Pine lives in the hydraulic shadow of the Sierra: dry, windy, and often hazy from Owens Lake dust and seasonal smoke. Winter cold pools in the valley; summer convection builds over the peaks while the floor bakes.",
       seasons: {
         winter: "Winter settles in with afternoons near 12.7°C and nights near -2.3°C — weather stays moderate and changeable. Winter rewards climbers who accept the cold season.",
         spring: "Spring arrives with afternoons near 22.3°C and nights near 5.3°C — skies stay mostly dry. Spring is when temperature inversion and gap winds is easiest to read on the ground.",
-        summer: "Summer peaks with afternoons near 35.3°C and nights near 14.7°C — skies stay mostly dry. Lone Pine is at its most kinetic for alabama hills. Plan around heat that can turn genuinely dangerous.",
+        summer: "Summer peaks with afternoons near 35.3°C and nights near 14.7°C — skies stay mostly dry. Lone Pine is at its most kinetic for Alabama Hills. Plan around heat that can turn genuinely dangerous.",
         autumn: "Autumn turns with afternoons near 23.7°C and nights near 4.3°C — skies stay mostly dry. Autumn often brings the clearest light and the most honest tradeoffs for basin inversion. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Alabama Hills and Whitney — the practical way to experience basin inversion terrain in California.",
@@ -5494,12 +5494,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Red-rock country where summer monsoon storms explode over sandstone and the lake adds a local humidity bump.",
     summaryImmersive: "Page is a high-desert hub with July–August thunderstorms that paint ephemeral waterfalls on Navajo sandstone. Winters are mild and sunny; shoulder seasons are ideal for canyoneering. Lake Powell moderates immediate shoreline microclimates but does not erase the arid core.",
     whyDistinct: "Monsoon pulse on bare plateau rock creates extreme runoff and flash-flood hazard with little soil storage.",
-                experience: {
+    experience: {
       feel: "Page is a high-desert hub with July–August thunderstorms that paint ephemeral waterfalls on Navajo sandstone. Winters are mild and sunny; shoulder seasons are ideal for canyoneering. Lake Powell moderates immediate shoreline microclimates but does not erase the arid core.",
       seasons: {
         winter: "Winter runs with afternoons near 7.3°C and nights near -1.7°C — skies stay mostly dry. Winter rewards river guides who accept the cold season.",
         spring: "As spring builds with afternoons near 21°C and nights near 8.3°C — skies stay relentlessly clear and dry. Spring is when continental extremity and monsoon convective lift is easiest to read on the ground. Snowmelt and spring rain can swell rivers fast.",
-        summer: "The warm months with afternoons near 34.3°C and nights near 19.7°C — weather stays moderate and changeable. Page is at its most kinetic for antelope canyon. Plan around heat that can turn genuinely dangerous.",
+        summer: "The warm months with afternoons near 34.3°C and nights near 19.7°C — weather stays moderate and changeable. Page is at its most kinetic for Antelope Canyon. Plan around heat that can turn genuinely dangerous.",
         autumn: "The shoulder season with afternoons near 21.7°C and nights near 8°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for high-desert escape. Flash-flood and surge diligence is part of daily life.",
       },
       travelerFit: "Visitors come for Antelope Canyon and Horseshoe Bend — the practical way to experience high-desert escape terrain in Arizona.",
@@ -5529,12 +5529,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Nicknamed 'Icebox of the Nation' — among the coldest mean annual temperatures of any US first-order station.",
     summaryImmersive: "International Falls anchors the border climate where Arctic air masses arrive unimpeded and winter nights routinely plunge far below freezing. Summer is brief but surprisingly pleasant — warm days, cool nights, long evening light. Lake-effect snow and lake ice modulate the harshest extremes slightly, but not enough to soften the reputation.",
     whyDistinct: "Continental northern interior position + river/lake network that organizes persistent cold pools in calm winter highs.",
-                experience: {
+    experience: {
       feel: "International Falls anchors the border climate where Arctic air masses arrive unimpeded and winter nights routinely plunge far below freezing. Summer is brief but surprisingly pleasant — warm days, cool nights, long evening light.",
       seasons: {
         winter: "Deep winter with afternoons near -7°C and nights near -19.3°C — skies stay mostly dry. Winter rewards snowmobilers who accept the cold season. Arctic outbreaks can still bite hard.",
         spring: "Spring opens with afternoons near 8°C and nights near -3.7°C — weather stays moderate and changeable. Spring is when cold-air drainage and lake effect is easiest to read on the ground.",
-        summer: "Summer settles with afternoons near 22.7°C and nights near 11°C — rain is frequent and can be heavy. International Falls is at its most kinetic for voyageurs np.",
+        summer: "Summer settles with afternoons near 22.7°C and nights near 11°C — rain is frequent and can be heavy. International Falls is at its most kinetic for Voyageurs NP.",
         autumn: "Autumn light with afternoons near 10°C and nights near -0.7°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for cold-air pool.",
       },
       travelerFit: "Visitors come for Voyageurs NP and ice fishing — the practical way to experience cold-air pool terrain in Minnesota.",
@@ -5564,7 +5564,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "June can be sweater weather while the interior Midwest swelters — Superior is the air conditioner.",
     summaryImmersive: "Duluth's elevation above the lake and persistent onshore flow keeps July afternoons cooler than Minneapolis by a wide margin. Winter brings legendary lake-effect snow bands on the South Shore. Spring is slow to arrive — fog and ice linger — but autumn is crisp and brilliant.",
     whyDistinct: "Large-lake thermal inertia at 46°N creates one of the strongest summer-cooling anomalies in the interior US.",
-                experience: {
+    experience: {
       feel: "Duluth's elevation above the lake and persistent onshore flow keeps July afternoons cooler than Minneapolis by a wide margin. Winter brings legendary lake-effect snow bands on the South Shore. Spring is slow to arrive — fog and ice linger — but autumn is crisp and brilliant.",
       seasons: {
         winter: "The cold season with afternoons near -5.7°C and nights near -14°C — humid air keeps everything soft and close. Winter rewards outdoor enthusiasts who accept the cold season. Arctic outbreaks can still bite hard.",
@@ -5600,12 +5600,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Streamers of snow off Erie can bury the city while Pittsburgh stays dry — classic Great Lakes lee convergence.",
     summaryImmersive: "Erie receives some of the heaviest snow totals in Pennsylvania when cold air crosses the warm lake. Summer is mild and humid with lake breezes; thunderstorms rake along the lake breeze front. The climate is a hybrid of Midwest continentality and Great Lakes maritime delay.",
     whyDistinct: "Lake-effect snow + lake cooling in summer produces a dual seasonal moderation distinct from inland Pennsylvania.",
-                experience: {
+    experience: {
       feel: "Erie receives some of the heaviest snow totals in Pennsylvania when cold air crosses the warm lake. Summer is mild and humid with lake breezes; thunderstorms rake along the lake breeze front. The climate is a hybrid of Midwest continentality and Great Lakes maritime delay.",
       seasons: {
         winter: "Winter runs with afternoons near 1.3°C and nights near -5.7°C — showers pass through regularly. Winter rewards lake-house seekers who accept the cold season. Storm systems roll through with real force.",
         spring: "As spring builds with afternoons near 12°C and nights near 3.3°C — showers pass through regularly. Spring green-up arrives against a wet 1150 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "The warm months with afternoons near 24.7°C and nights near 15.7°C — rain is frequent and can be heavy. Erie is at its most kinetic for presque isle beaches. Afternoon convection and storms build often.",
+        summer: "The warm months with afternoons near 24.7°C and nights near 15.7°C — rain is frequent and can be heavy. Erie is at its most kinetic for Presque Isle beaches. Afternoon convection and storms build often.",
         autumn: "The shoulder season with afternoons near 15.3°C and nights near 6.7°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for lake-effect snowbelt. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Presque Isle beaches and winter storm chasing — the practical way to experience lake-effect snowbelt terrain in Pennsylvania.",
@@ -5636,12 +5636,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "River-gorge city where summer humidity is serious but gorge winds and elevation dips add local variety.",
     summaryImmersive: "Chattanooga sits where the Tennessee River cuts a gap through plateau country, creating scenic overlooks and localized wind channeling. Summers are hot and humid; spring and fall bring severe thunderstorms along frontal boundaries. Winter is short with occasional light snow on surrounding ridges.",
     whyDistinct: "Gorge topography + long north-south valley alignment organizes diurnal breezes and storm tracks differently than flat Gulf South.",
-                experience: {
+    experience: {
       feel: "Chattanooga sits where the Tennessee River cuts a gap through plateau country, creating scenic overlooks and localized wind channeling. Summers are hot and humid; spring and fall bring severe thunderstorms along frontal boundaries. Winter is short with occasional light snow on surrounding ridges.",
       seasons: {
         winter: "Deep winter with afternoons near 11.7°C and nights near 1.3°C — rain is frequent and can be heavy. Winter rewards outdoor families who accept the cold season. Storm systems roll through with real force.",
         spring: "Spring opens with afternoons near 22.7°C and nights near 11°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1320 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Summer settles with afternoons near 32°C and nights near 21°C — rain is frequent and can be heavy. Chattanooga is at its most kinetic for lookout mountain. Plan around heat that can turn genuinely dangerous.",
+        summer: "Summer settles with afternoons near 32°C and nights near 21°C — rain is frequent and can be heavy. Chattanooga is at its most kinetic for Lookout Mountain. Plan around heat that can turn genuinely dangerous.",
         autumn: "Autumn light with afternoons near 23°C and nights near 11.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for river-valley moderation. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Lookout Mountain and riverfront — the practical way to experience river-valley moderation terrain in Tennessee.",
@@ -5671,12 +5671,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Misty ridges and lush coves — one of the wettest parts of the eastern US outside the southern Appalachians core.",
     summaryImmersive: "Gatlinburg sits at the interface of tourist strip and national park rainforest. Orographic lifting on the Smokies produces abundant rainfall and persistent fog on cool mornings; elevation gradients mean wildflower and fall-color seasons are long and stratified by slope aspect.",
     whyDistinct: "Extreme orographic precipitation on humid subtropical air masses creates a temperate rainforest pocket at mid-elevations.",
-                experience: {
+    experience: {
       feel: "Gatlinburg sits at the interface of tourist strip and national park rainforest. Orographic lifting on the Smokies produces abundant rainfall and persistent fog on cool mornings; elevation gradients mean wildflower and fall-color seasons are long and stratified by slope aspect.",
       seasons: {
         winter: "The cold season with afternoons near 10°C and nights near -0.3°C — rain is frequent and can be heavy. Winter rewards hospitality workers who accept the cold season. Storm systems roll through with real force.",
         spring: "The thaw season with afternoons near 19°C and nights near 8.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1525 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "High season with afternoons near 27.3°C and nights near 17.7°C — rain is frequent and can be heavy. Gatlinburg is at its most kinetic for smokies trails. Afternoon convection and storms build often.",
+        summer: "High season with afternoons near 27.3°C and nights near 17.7°C — rain is frequent and can be heavy. Gatlinburg is at its most kinetic for Smokies trails. Afternoon convection and storms build often.",
         autumn: "Fall shoulder with afternoons near 19.7°C and nights near 8.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for thermal belt. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Smokies trails and autumn color — the practical way to experience thermal belt terrain in Tennessee.",
@@ -5706,12 +5706,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Humid subtropical island chain — warm Gulf Stream eddies offshore, nor'easters in winter, hurricanes in late summer.",
     summaryImmersive: "The Outer Banks are a lesson in exposure: sea breezes cap summer heat, but humidity stays high; winter storms can overwash Highway 12. Each town along the strand has micro-differences in dune height and fetch that matter during storms.",
     whyDistinct: "Barrier-island dynamics + Gulf Stream proximity + hurricane recurvature zone = high climate volatility on a narrow strip.",
-                experience: {
+    experience: {
       feel: "The Outer Banks are a lesson in exposure: sea breezes cap summer heat, but humidity stays high; winter storms can overwash Highway 12. Each town along the strand has micro-differences in dune height and fetch that matter during storms.",
       seasons: {
         winter: "Winter settles in with afternoons near 13°C and nights near 4°C — rain is frequent and can be heavy. Winter rewards remote coastal workers who accept the cold season. Storm systems roll through with real force.",
         spring: "Spring arrives with afternoons near 18.3°C and nights near 11.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1390 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Summer peaks with afternoons near 28°C and nights near 22.3°C — rain is frequent and can be heavy. Outer Banks is at its most kinetic for wright brothers. Afternoon convection and storms build often.",
+        summer: "Summer peaks with afternoons near 28°C and nights near 22.3°C — rain is frequent and can be heavy. Outer Banks is at its most kinetic for Wright Brothers. Afternoon convection and storms build often.",
         autumn: "Autumn turns with afternoons near 22.3°C and nights near 14.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for hurricane-exposed coast. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Wright Brothers, wild horses, and surf — the practical way to experience hurricane-exposed coast terrain in North Carolina.",
@@ -5741,12 +5741,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Lake Champlain delays spring and softens summer heat compared to interior New England.",
     summaryImmersive: "Burlington gets lake-effect snow early in winter when the lake is still unfrozen; spring 'fifth season' fog is famous. Summer afternoons are milder than Boston or Hartford for latitude thanks to lake breezes. Fall color arrives with crisp Canadian air behind cold fronts.",
     whyDistinct: "Large north-south lake axis organizes local breezes and snow bands that do not occur inland in Vermont.",
-                experience: {
+    experience: {
       feel: "Burlington gets lake-effect snow early in winter when the lake is still unfrozen; spring 'fifth season' fog is famous. Summer afternoons are milder than Boston or Hartford for latitude thanks to lake breezes. Fall color arrives with crisp Canadian air behind cold fronts.",
       seasons: {
         winter: "The cold season with afternoons near -0.3°C and nights near -9.3°C — showers pass through regularly. Winter rewards remote tech workers who accept the cold season.",
         spring: "The thaw season with afternoons near 12°C and nights near 2°C — showers pass through regularly. Spring green-up arrives against a wet 990 mm annual backdrop.",
-        summer: "High season with afternoons near 25.7°C and nights near 14.7°C — rain is frequent and can be heavy. Burlington is at its most kinetic for champlain islands.",
+        summer: "High season with afternoons near 25.7°C and nights near 14.7°C — rain is frequent and can be heavy. Burlington is at its most kinetic for Champlain Islands.",
         autumn: "Fall shoulder with afternoons near 14.3°C and nights near 4.7°C — showers pass through regularly. Autumn often brings the clearest light and the most honest tradeoffs for lake-moderated.",
       },
       travelerFit: "Visitors come for Champlain Islands and ski resorts — the practical way to experience lake-moderated terrain in Vermont.",
@@ -5787,12 +5787,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Cool, foggy summers and stormy shoulder seasons — classic Downeast maritime.",
     summaryImmersive: "Bar Harbor sits on Mount Desert Island where sea fog rolls in on summer afternoons and fall colors are electric against dark granite. Winter is cold but moderated relative to interior Maine thanks to water; nor'easters bring heavy mixed precipitation.",
     whyDistinct: "Complex island-interior circulation + Acadia orography creates micro-varies within a few kilometers of coastline.",
-                experience: {
+    experience: {
       feel: "Bar Harbor sits on Mount Desert Island where sea fog rolls in on summer afternoons and fall colors are electric against dark granite. Winter is cold but moderated relative to interior Maine thanks to water; nor'easters bring heavy mixed precipitation.",
       seasons: {
         winter: "The cold season with afternoons near 1.3°C and nights near -7.3°C — rain is frequent and can be heavy. Winter rewards hospitality workers who accept the cold season. Storm systems roll through with real force.",
         spring: "The thaw season with afternoons near 9°C and nights near 1°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1330 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "High season with afternoons near 20.7°C and nights near 12°C — rain is frequent and can be heavy. Bar Harbor is at its most kinetic for acadia. Afternoon convection and storms build often.",
+        summer: "High season with afternoons near 20.7°C and nights near 12°C — rain is frequent and can be heavy. Bar Harbor is at its most kinetic for Acadia. Afternoon convection and storms build often.",
         autumn: "Fall shoulder with afternoons near 12.3°C and nights near 4.3°C — rain is frequent and can be heavy. Autumn often brings the clearest light and the most honest tradeoffs for fjord / inlet coast. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Acadia and whale watching — the practical way to experience fjord / inlet coast terrain in Maine.",
@@ -5840,12 +5840,12 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Wind, cotton, and supercells — a classic High Plains dryline climate with huge diurnal swings.",
     summaryImmersive: "Lubbock sits on the Llano Estacado where summer afternoons routinely top 35°C and humidity drops into the teens. Spring brings dryline thunderstorms and occasional dust storms. Winter is sunny and mild by northern standards but punctuated by blue northers.",
     whyDistinct: "Flat fetch and elevation combine for extreme solar heating and frequent severe convective days.",
-                experience: {
+    experience: {
       feel: "Lubbock sits on the Llano Estacado where summer afternoons routinely top 35°C and humidity drops into the teens. Spring brings dryline thunderstorms and occasional dust storms. Winter is sunny and mild by northern standards but punctuated by blue northers.",
       seasons: {
         winter: "Deep winter with afternoons near 12.3°C and nights near -2.3°C — weather stays moderate and changeable. Winter rewards ag researchers who accept the cold season. Storm systems roll through with real force.",
         spring: "Spring opens with afternoons near 24°C and nights near 9°C — weather stays moderate and changeable. Spring is when continental extremity and monsoon convective lift is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Summer settles with afternoons near 34°C and nights near 20°C — showers pass through regularly. Lubbock is at its most kinetic for palo duro. Afternoon convection and storms build often.",
+        summer: "Summer settles with afternoons near 34°C and nights near 20°C — showers pass through regularly. Lubbock is at its most kinetic for Palo Duro. Afternoon convection and storms build often.",
         autumn: "Autumn light with afternoons near 23.3°C and nights near 8°C — weather stays moderate and changeable. Autumn often brings the clearest light and the most honest tradeoffs for badland / steppe pocket. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Palo Duro and wine country nearby — the practical way to experience badland / steppe pocket terrain in Texas.",
@@ -5875,7 +5875,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Steamy summers, mild winters, and tropical cyclones — the archetypal Gulf humid subtropical city.",
     summaryImmersive: "New Orleans is a climate of extremes in humidity: summer heat indices routinely exceed 40°C equivalent; thunderstorms pop on summer afternoons; winter cold snaps are short but can freeze citrus on the North Shore. Hurricane risk is existential to infrastructure.",
     whyDistinct: "Below-sea-level bowl + delta hydrology + Gulf heat reservoir = compound flood and storm-surge hazard.",
-                experience: {
+    experience: {
       feel: "New Orleans is a climate of extremes in humidity: summer heat indices routinely exceed 40°C equivalent; thunderstorms pop on summer afternoons; winter cold snaps are short but can freeze citrus on the North Shore. Hurricane risk is existential to infrastructure.",
       seasons: {
         winter: "Deep winter with afternoons near 17.3°C and nights near 8°C — rain is frequent and can be heavy. Winter rewards culture seekers who accept the cold season. Storm systems roll through with real force.",
@@ -5908,7 +5908,7 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A perfectly east-west valley that glows pink at sunset — the famed 'pink moment.'",
     summaryImmersive: "Ojai's east-west orientation gives it a last-light glow found almost nowhere else in Southern California — and a climate shaped by its amphitheater walls. Warm, dry summers and mild winters encourage citrus and olives. Afternoons can be hot inland, but the valley orientation channels cooler sea-breeze intrusions most evenings.",
     whyDistinct: "East-west valley catches sunset light; enclosing ranges shelter from most Pacific systems and Santa Ana winds.",
-                experience: {
+    experience: {
       feel: "Ojai's east-west orientation gives it a last-light glow found almost nowhere else in Southern California — and a climate shaped by its amphitheater walls. Warm, dry summers and mild winters encourage citrus and olives.",
       seasons: {
         winter: "Winter runs with afternoons near 18.4°C and nights near 3.9°C — rain is frequent and can be heavy. Winter rewards wellness retreat life who accept the cold season.",

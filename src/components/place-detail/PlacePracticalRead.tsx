@@ -20,7 +20,7 @@ function cardAccent(card: PracticalReadCard): string {
   }
 }
 
-export function PlacePracticalRead({ place, anchorId }: { place: Place; anchorId: string }) {
+export function PlacePracticalRead({ place, anchorId, intro }: { place: Place; anchorId: string; intro?: string }) {
   const prose = useProse();
   const cards = useMemo(() => buildPracticalReadCards(place), [place]);
 
@@ -31,7 +31,7 @@ export function PlacePracticalRead({ place, anchorId }: { place: Place; anchorId
         Practical read
       </h3>
       <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
-        Start here when the profile needs to become practical: what the ground can grow, how to read the terrain, which tradeoffs matter, and where to test the contrast in person.
+        {prose(intro ?? "Start here when the profile needs to become practical: what the ground can grow, how to read the terrain, which tradeoffs matter, and where to test the contrast in person.")}
       </p>
       <div className="grid md:grid-cols-2 gap-3">
         {cards.map(card => (

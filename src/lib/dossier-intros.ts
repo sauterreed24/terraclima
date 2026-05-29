@@ -5,9 +5,12 @@
 import type { Place } from "../types";
 import type { GeospatialAnalysis } from "./geospatial-analysis";
 import type { BioclimResult } from "./bioclim";
+import type { LivabilityResult } from "./livability-score";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { DRIVER_LABELS } from "../types";
 import { getAnnualPrecipMm, meanJanLow, meanSummerHigh } from "./climate-metrics";
+import { getBestMonths } from "./best-months";
+import { scorePlaceFeel } from "./place-feel";
 
 function shortName(place: Place): string {
   return place.name.split("(")[0]!.trim();
@@ -51,7 +54,13 @@ export function composeAgricultureIntro(place: Place): string {
       ? `Soil pH near ${phMid.toFixed(1)} with ~${organicMid.toFixed(1)}% organic matter`
       : `Soil pH near ${phMid.toFixed(1)}`;
 
-  return `${shortName(place)} sits in ${archetype} terrain on ${place.soil.texture.toLowerCase()} with ${place.soil.drainage} drainage — growability is ${scoreRead} (score ${score}/100, zone ${zone ?? "n/a"}). ${frostRead}; ${soilDetail} on ${place.elevationM >= 1000 ? `${Math.round(place.elevationM)} m` : "low"} relief. ${topCrops || "Local-adapted crops"} tend to reward the envelope while ${tricky || "heat- or humidity-demanding crops"} fight it.`;
+  const orchardNote = place.growability.orchard
+    ? ` Orchard analog: ${place.growability.orchard.toLowerCase()}.`
+    : place.growability.homeGarden
+      ? ` Home-garden note: ${place.growability.homeGarden.replace(/\.$/, "").toLowerCase()}.`
+      : "";
+
+  return `${shortName(place)} sits in ${archetype} terrain on ${place.soil.texture.toLowerCase()} with ${place.soil.drainage} drainage — growability is ${scoreRead} (score ${score}/100, zone ${zone ?? "n/a"}). ${frostRead}; ${soilDetail} on ${place.elevationM >= 1000 ? `${Math.round(place.elevationM)} m` : "low"} relief. ${topCrops || "Local-adapted crops"} tend to reward the envelope while ${tricky || "heat- or humidity-demanding crops"} fight it.${orchardNote}`;
 }
 
 export function composeGeospatialIntro(place: Place, geo: GeospatialAnalysis): string {
@@ -115,4 +124,65 @@ export function composeCorpusIntro(place: Place, totalPlaces: number): string {
   const sh = meanSummerHigh(place);
   const precip = getAnnualPrecipMm(place);
   return `How ${shortName(place)} compares to the other ${totalPlaces - 1} curated stops: summer highs near ${Math.round(sh)}°C, ${Math.round(precip)} mm annual precipitation, growability ${place.growability.score}/100, and livability tradeoff ${place.scores.tradeoff}/100. High “wetter than” or “cooler than” shares mean this field beats most atlas entries — not that more rain or less heat is automatically better for your goals.`;
+}
+
+export function composeAtAGlanceIntro(place: Place): string {
+  const feel = scorePlaceFeel(place);
+  const tierRead =
+    place.tier === "A" ? "flagship depth with full story, risks, and sources"
+    : place.tier === "B" ? "spotlight depth — enough structure to compare cleanly"
+    : "index entry — lean, map-first, still fully scorable";
+  return `${shortName(place)} at a glance: ${tierRead}, place-feel ${feel.score}/100 (${feel.headline.toLowerCase()}), Köppen ${place.koppen} on ${place.biome.toLowerCase()}. Tiles below pull from the same structured record as the charts — elevation ${Math.round(place.elevationM)} m, growability ${place.growability.score}/100, confidence ${place.confidence}.`;
+}
+
+export function composePracticalReadIntro(place: Place, geo: GeospatialAnalysis): string {
+  const best = getBestMonths(place, "C").slice(0, 2).map(m => m.label).join(" and ") || "shoulder seasons";
+  const tradeoff =
+    place.scores.tradeoff >= 60 ? "real tradeoffs to weigh before committing"
+    : place.scores.tradeoff >= 45 ? "a few compromises worth checking in person"
+    : "relatively straightforward settling-in signals";
+  return `Practical read for ${shortName(place)}: what the ground can grow, how to read ${place.region} terrain (geospatial signal ${geo.geospatialSignalScore}/100), housing and hazard tradeoffs (${tradeoff}), and nearby contrasts to test on a scouting trip. Best on-the-ground windows often cluster around ${best}.`;
+}
+
+export function composeTourismIntro(place: Place): string {
+  const best = getBestMonths(place, "C").slice(0, 2);
+  const windowRead = best.length
+    ? `${best.map(m => m.label).join("–")}${best[0]?.note ? ` (${best[0].note.slice(0, 100)}…)` : ""}`
+    : "shoulder seasons when comfort and access balance";
+  const draws = joinHumanList(
+    place.travelFit.filter(t => !/^(year-round|summer|winter|spring|fall|autumn|shoulder seasons?)$/i.test(t.trim())),
+    3,
+  );
+  return `Climate tourism scout for ${shortName(place)}: test ${place.biome.toLowerCase()} in person, not from averages alone. Strongest visit window — ${windowRead}. Come for ${draws || "the local climate story"}; use the three-day itinerary below to compare morning fog, afternoon heat, and night recovery against your tolerance.`;
+}
+
+export function composeLivabilityIntro(place: Place, livability: LivabilityResult): string {
+  const driverLabels = livability.drivers
+    .map(k => livability.components.find(c => c.key === k)?.label)
+    .filter(Boolean)
+    .slice(0, 2);
+  const dragLabels = livability.drags
+    .map(k => livability.components.find(c => c.key === k)?.label)
+    .filter(Boolean)
+    .slice(0, 2);
+  const driverRead = driverLabels.length ? `led by ${driverLabels.join(" and ")}` : "balanced across components";
+  const dragRead = dragLabels.length ? `; watch ${dragLabels.join(" and ")}` : "";
+  return `Livability lens for ${shortName(place)} blends thermal comfort, atmosphere, hazards, growability, and lived friction into ${livability.score}/100 — ${driverRead}${dragRead}. Hover any row for the formula; this is a screening score, not a property appraisal.`;
+}
+
+export function composeLiveSignalsIntro(place: Place): string {
+  const ls = place.liveSignals!;
+  const axes: string[] = [];
+  if (ls.costPressure != null && ls.costPressure >= 55) axes.push("housing cost pressure");
+  if (ls.socialStress != null && ls.socialStress >= 55) axes.push("social-fabric stress");
+  if (ls.accessFriction != null && ls.accessFriction >= 55) axes.push("services access friction");
+  const focus = axes.length
+    ? `Editorial screening flags elevated ${axes.join(" and ")} here`
+    : "All three axes sit in moderate range — still verify locally";
+  return `Lived signals for ${shortName(place)} (${place.municipality ?? place.region}): ${focus}. Climate normals cannot capture cost burden, civic stress, or hospital/airport distance — these 0–100 scores anchor to public sources, not insurance or appraisal workflows.`;
+}
+
+export function composeDeepDossierIntro(place: Place, sectionCount: number, hasBestMonthsGuide: boolean): string {
+  const calendar = hasBestMonthsGuide ? " Best months for… handles calendars below;" : "";
+  return `Field dossier for ${shortName(place)} — ${sectionCount} curated ${sectionCount === 1 ? "essay" : "essays"} on ${place.region} mechanisms, hydrology, gardens, and long-stay fit.${calendar} Read this as the atlas field notebook after the overview spotlight: authored depth first, then derived backbone sections where the corpus has them.`;
 }

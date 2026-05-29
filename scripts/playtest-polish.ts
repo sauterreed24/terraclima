@@ -30,6 +30,14 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { buildComfortPrecisionProfile, apparentComfortIndexFromProfile } from "../src/lib/comfort-precision";
 import { composePlaceExperience } from "../src/lib/place-overview";
+import {
+  composeAtAGlanceIntro,
+  composeClimateIntro,
+  composeGeospatialIntro,
+  composePracticalReadIntro,
+  composeTourismIntro,
+} from "../src/lib/dossier-intros";
+import { buildGeospatialAnalysis } from "../src/lib/geospatial-analysis";
 
 async function main(): Promise<void> {
   const validatePlaceId = (id: string) => PLACES.some((p) => p.id === id);
@@ -314,6 +322,21 @@ async function main(): Promise<void> {
   if (probe.feelLine !== "PROBE feel line over the derived read.") {
     // composePlaceExperience caches by identity; a fresh object must bypass the cache.
     throw new Error("experience: authored feel override did not take precedence");
+  }
+
+  // Dossier intros — every place gets localized section leads.
+  const introSample = PLACES.slice(0, 12);
+  for (const place of introSample) {
+    const geo = buildGeospatialAnalysis(place);
+    for (const [label, intro] of [
+      ["atAGlance", composeAtAGlanceIntro(place)],
+      ["climate", composeClimateIntro(place)],
+      ["geospatial", composeGeospatialIntro(place, geo)],
+      ["practical", composePracticalReadIntro(place, geo)],
+      ["tourism", composeTourismIntro(place)],
+    ] as const) {
+      if (intro.length < 48) throw new Error(`${place.id} dossier ${label} intro too thin (${intro.length})`);
+    }
   }
 
   console.log("playtest-polish: OK");
