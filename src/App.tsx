@@ -92,6 +92,12 @@ const CURATED_SET_BY_ID = {
   ...Object.fromEntries(Object.entries(CLIMATE_TRIP_THEME_BY_ID).map(([id, t]) => [id, { ...t, kind: "trip" as const }])),
 };
 
+/** Mac shows ⌘; every other platform sees Ctrl. Detected once for the search shortcut hint. */
+const IS_MAC =
+  typeof navigator !== "undefined" &&
+  /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent || "");
+const SEARCH_SHORTCUT_HINT = IS_MAC ? "⌘K" : "Ctrl K";
+
 function placeForId(id: string): Place | undefined {
   const canonical = resolvePlaceId(id);
   return canonical ? PLACES_BY_ID[canonical] : undefined;
@@ -864,7 +870,7 @@ export default function App() {
                   </div>
                   <div className="text-xs text-stone hidden md:flex items-center gap-2 flex-wrap">
                     <span><span className="tc-tip-pill">Scroll</span> zooms the map</span>
-                    <span><span className="tc-tip-pill">/</span> focuses search</span>
+                    <span><span className="tc-tip-pill">{SEARCH_SHORTCUT_HINT}</span> or <span className="tc-tip-pill">/</span> search</span>
                     <span><span className="tc-tip-pill">R</span> surprise pick</span>
                     <button
                       type="button"

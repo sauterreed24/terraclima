@@ -4,6 +4,15 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Map affordances + discoverability
+
+- **Map empty state (`src/components/AtlasMap.tsx`, `src/styles.css`):** when the current filters/search leave zero pins, the atlas now shows a clear "No places on the map" card (and an empty-aware `aria-label` / `role="status"` live region) instead of a blank, seemingly-broken canvas.
+- **Zoom-limit feedback (`src/components/AtlasMap.tsx`, `src/styles.css`):** the map zoom-in / zoom-out buttons disable (dimmed, `not-allowed`, with a "Maximum/Minimum zoom reached" title) at the zoom limits instead of silently doing nothing. Keyboard `+`/`-` still clamp as before.
+- **Cluster-picker scroll affordance (`src/styles.css`):** a long cluster's pick list now shows an always-visible thin scrollbar so 10+ pins read as scrollable rather than truncated at the fold.
+- **Search shortcut discoverability (`src/App.tsx`):** the desktop tips now surface the global search shortcut (⌘K on Mac, Ctrl K elsewhere) alongside `/`, so power users discover the from-anywhere shortcut the keyboard layer already implements.
+- **Compare-highlight keyboard affordance (`src/styles.css`):** the comparison "highlights" place names (which open the dossier) now have a visible `:focus-visible` ring and hover cue.
+- **Corpus integrity guard (`scripts/sanity-check.ts`):** optional monthly arrays (`snowCm`, `humidity`, `sunshinePct`) are now length-validated (must be 12) like the required arrays, so a malformed optional array can't silently slip past the per-month range checks.
+
 ### Deterministic stability + map & UI polish
 
 - **Stable livability ranking (`src/lib/livability-score.ts`):** `rankLivabilityWithBreakdown` now applies the documented name tiebreaker, so tied livability scores order identically regardless of corpus insertion order — keeping the hero top-ten preview stable as the atlas grows. It previously relied only on the engine's stable-sort-by-insertion order, unlike `rankLaces` (`scoring.ts`) and `rankLiveFit` (`live-fit.ts`).

@@ -106,6 +106,33 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByText(/Flagship/)).toBeInTheDocument();
   });
 
+  it("uses an empty-aware aria-label when no places match, and the interactive one otherwise", () => {
+    setCoarsePointer(false);
+    const { unmount } = renderMap(vi.fn(), [], []);
+    const emptySvg = document.querySelector("svg.atlas-svg");
+    expect(emptySvg?.getAttribute("aria-label")).toMatch(/No places match/i);
+    unmount();
+
+    renderMap();
+    const svg = document.querySelector("svg.atlas-svg");
+    expect(svg?.getAttribute("aria-label")).toMatch(/pin to open/i);
+  });
+
+  it("disables the zoom-in button at max zoom and zoom-out at min zoom", () => {
+    setCoarsePointer(false);
+    renderMap();
+    const zoomIn = screen.getByLabelText("Zoom in") as HTMLButtonElement;
+    const zoomOut = screen.getByLabelText("Zoom out") as HTMLButtonElement;
+
+    for (let i = 0; i < 30; i += 1) fireEvent.click(zoomIn);
+    expect(zoomIn).toBeDisabled();
+    expect(zoomOut).not.toBeDisabled();
+
+    for (let i = 0; i < 40; i += 1) fireEvent.click(zoomOut);
+    expect(zoomOut).toBeDisabled();
+    expect(zoomIn).not.toBeDisabled();
+  });
+
   it("opens dense clusters into a sorted picker with tier and lived-coverage context", () => {
     setCoarsePointer(true);
     const onSelect = vi.fn();
