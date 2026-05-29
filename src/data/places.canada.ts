@@ -457,6 +457,18 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "One of the most ocean-dominated climates in North America — 3000+ mm of rain and almost no seasonal swing.",
     summaryImmersive: "Tofino sits on the exposed outer coast of Vancouver Island, unshielded from Pacific storms. Winter brings some of the most dramatic storm-watching on the continent — 10 m swells, 80-knot winds — and 3300 mm of annual rain. Summers are cool, damp, and fog-prone. Temperature range is tiny: January and July mean highs differ by only ~9°C.",
     whyDistinct: "Full Pacific exposure + coastal orographic lift + no rain-shadow shelter produces the maximum Canadian expression of hyper-maritime climate.",
+    experience: {
+      feel: "Tofino feels like the Pacific at full volume — 3300 mm of rain a year, winter storms that shake the windows, and a temperature range so narrow that January and July differ by only about 9°C.",
+      seasons: {
+        winter: "Storm season — afternoons near 7°C, nights near 3°C, and some of the continent's most dramatic wave-watching as 10 m swells hammer the outer coast. Rain is constant and the forest is soaked green.",
+        spring: "Still wet but brightening — surf season ramps up, whale migrations pass offshore, and the first dry-ish stretches appear in late May.",
+        summer: "Cool and fog-prone — highs near 17°C, damp mornings, and long evenings on the beach that feel more like autumn than summer anywhere else.",
+        autumn: "The second storm season — rainfall surges again in October and November, the town quiets after tourist peak, and the rainforest returns to its default state of perpetual drizzle.",
+      },
+      travelerFit: "Visitors come for storm-watching, surfing, whale watching, and the raw outer-coast experience that no sheltered inner-coast town can replicate.",
+      residentFit: "It rewards surfers, rainforest people, and ocean-obsessed souls who can tolerate Highway 4 washouts, tourism-driven housing costs, and mainland medical access.",
+      texture: "A genuine hyper-maritime life on the edge of the continent — the main things to weigh are relentless rain, extreme housing pressure, and a single road in that closes when the coast erodes.",
+    },
     climate: {
       tempHighC: [7.1, 7.7, 8.7, 10.2, 12.4, 14.5, 16.6, 17.2, 16.1, 13.2, 9.7, 7.4],
       tempLowC:  [2.9, 2.9, 3.5, 4.6, 6.8, 8.9, 10.9, 11.4, 10.0, 7.7, 4.8, 3.1],
@@ -1021,6 +1033,18 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "A Selkirk mountain-town on a deep cold-water lake — mild for its latitude, with a reputation as Canada's most climate-moderate mountain town.",
     summaryImmersive: "Nelson perches on the north arm of Kootenay Lake, whose 150-km length and 150-m depth provides substantial thermal moderation to the surrounding steep mountain town. Winters are milder and summers cooler than you'd expect at 49° latitude and 535 m elevation. The arts and counter-culture character traces partly to the mild mountain climate — livable year-round in a way that many Rocky Mountain interior towns are not.",
     whyDistinct: "Deep mountain lake plus valley shelter produces notably moderated climate for interior BC; glacier-dominated surrounding terrain contributes cool summer air.",
+    experience: {
+      feel: "Nelson feels like a mountain town that forgot to be harsh — Kootenay Lake's 150-km length and deep cold water soften winters and cool summers enough that artists and counter-culture types could build a year-round life at 49° north.",
+      seasons: {
+        winter: "Mild for the latitude — afternoons near freezing, nights near −6°C, and enough snow on the Selkirks above for serious skiing without the bitter cold of Rocky Mountain interior towns.",
+        spring: "Slow thaw along the lake — cherry blossoms on Baker Street, snow retreating up the slopes, and the first patio days when afternoons climb into the low teens.",
+        summer: "Warm but lake-cooled — highs near 26°C, cool evenings, and long days on the water with glacier-fed air drifting down from the peaks above.",
+        autumn: "Golden and smoky — larch turning on the surrounding ridges, the first regional wildfire smoke settling into the valley, and a crisp return to single-digit afternoons by November.",
+      },
+      travelerFit: "Visitors come for heritage Baker Street, Kootenay Lake paddling, nearby ski terrain, and one of Canada's most walkable mountain-town cores.",
+      residentFit: "It rewards creative mountain-town lovers who want lake views, cool summer nights, and a real community — if they accept small-town services and regional smoke seasons.",
+      texture: "Canada's most climate-moderate interior mountain town — the main things to weigh are regional wildfire smoke, steep-lot winter maintenance, and housing above interior BC norms.",
+    },
     climate: { tempHighC: [-0.8, 2.6, 8.4, 14.1, 19.1, 22.8, 26.4, 26.2, 20.4, 12.1, 4.2, -1.1], tempLowC: [-6.1, -4.4, -1.1, 2.3, 6.4, 9.8, 12.1, 11.6, 7.6, 2.8, -1.9, -5.4], precipMm: [68, 46, 46, 42, 58, 62, 48, 48, 50, 58, 80, 86], snowCm: [80, 45, 18, 2, 0, 0, 0, 0, 0, 2, 32, 74], sunshinePct: [32, 38, 45, 52, 58, 65, 72, 70, 58, 45, 32, 28], humidity: [78, 72, 62, 52, 48, 48, 42, 42, 48, 62, 78, 82], annualPrecipMm: 692, frostFreeDays: 160, hardinessZone: "6a" },
     soil: { texture: "Silt loam over till", drainage: "moderate", phRange: [5.4, 6.6], waterHolding: "moderate" },
     growability: { score: 68, hardinessZone: "6a", growsWell: ["Apples", "Stone fruit", "Cool-season veg"], tricky: ["Mediterranean herbs"] },
