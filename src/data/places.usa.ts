@@ -35,13 +35,13 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Sequim sits in one of the most dramatic rain shadows in North America. Pacific systems ride up the Olympic Range, shed their moisture on the windward Quinault and Hoh valleys — among the wettest places on the continent — then descend toward the Dungeness lowland warmer, drier, and already half clear. The town registers roughly 400 mm of annual precipitation, a sixth of what falls just 50 km to the southwest. Summers are cool and breezy off the Strait of Juan de Fuca. Winter mornings glitter under high pressure, with the snowy Olympics standing to the south and Mount Baker visible northeast across the strait. The light here has a distinct quality — a clean, cold-shadow brightness more common in the inland mountain West than along the Pacific.",
     whyDistinct: "Prevailing southwesterlies force moist marine air up the Olympic Range, condensing rain and snow on the windward slopes. The same air compresses and dries as it descends toward the Dungeness lowland, producing a narrow band — perhaps 30 km wide — of genuinely Mediterranean character on an otherwise soaking coast. The Strait of Juan de Fuca moderates temperatures in every season.",
 
-        experience: {
+            experience: {
       feel: "Sequim sits in one of the most dramatic rain shadows in North America. Pacific systems ride up the Olympic Range, shed their moisture on the windward Quinault and Hoh valleys — among the wettest places on the continent — then descend toward the Dungeness lowland warmer, drier, and already half.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 8.3°C, nights near 1.5°C — showers pass through regularly. Winter rewards retirees who accept the cold season.",
-        spring: "Spring opens — afternoons near 13.6°C, nights near 4.9°C — humid air keeps everything soft and close. Spring is when rain shadow and marine layer is easiest to read on the ground.",
-        summer: "Cool summer by latitude — afternoons near 20.7°C, nights near 10.9°C — skies stay mostly dry. Sequim is at its most kinetic for lavender bloom (July).",
-        autumn: "Shoulder season — afternoons near 14.9°C, nights near 6.6°C — showers pass through regularly. Clear light returns as humidity eases.",
+        winter: "Mild by northern standards — afternoons near 8.3°C, nights near 1.5°C — showers pass through regularly.",
+        spring: "Spring opens — afternoons near 13.6°C, nights near 4.9°C — humid air keeps everything soft and close.",
+        summer: "Cool summer by latitude — afternoons near 20.7°C, nights near 10.9°C — skies stay mostly dry.",
+        autumn: "Shoulder season — afternoons near 14.9°C, nights near 6.6°C — showers pass through regularly.",
       },
       travelerFit: "Visitors come for lavender bloom (July), Olympic NP gateway, dark-sky observers, and low-crowd Pacific NW — the practical way to experience rain-shadow sanctuary terrain in Washington.",
       residentFit: "It rewards anyone who wants Pacific Northwest proximity without Pacific Northwest drizzle. Gardeners chasing Mediterranean-style perennials. Those allergic to both heat and humidity — especially retirees — if the local tradeoffs still feel acceptable after a full season in Sequim.",
@@ -2558,19 +2558,19 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "forks-wa-mechanism",
-        title: "Hyper-Maritime at work",
+        id: "forks-orographic-rain",
+        title: "Olympic west-slope orographic lift",
         paragraphs: [
-          "Forks & the Hoh Rainforest sits where olympic Peninsula west slope — the wettest corner of the contiguous United States. The atlas tags this as hyper-maritime (Cfb, roughly 3249 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Marine layer.",
-          "Direct Pacific exposure plus Olympic orographic lift produces persistent, heavy precipitation year-round — the windward twin of Sequim's rain shadow. That mechanism is why two map dots in Washington can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Forks sits on the Pacific-facing foot of the Olympics where storms climb first and unload — one of the wettest normals in the contiguous United States at roughly 3,250 mm annually. Marine-layer air meets orographic lift on the west slope; the same synoptic system that dumps hundreds of millimetres on the Hoh in December can leave Sequim, 150 km away in the rain shadow, nearly dry.",
+          "Elevation bands on the peninsula re-weight everything block by block: river bottoms, coastal strips, and inland ridges see different wind, fog, and drainage. Treat city-scale scores as regional context, not parcel-grade comfort on a specific homestead site.",
         ],
       },
       {
-        id: "forks-wa-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "forks-rainforest-services",
+        title: "Rainforest rhythm and access",
         paragraphs: [
-          "Forks & the Hoh Rainforest screening: The rainforest to Sequim's rain shadow — 3500+ mm of annual rainfall in one of North America's greatest orographic sinks. Soil reads as deep organic over glacial till with moderate drainage and pH 4.8–5.8 — Drainage discipline and microshelter against wind are everything.",
-          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Moss-tolerant everything, Ferns, Berries, Conifer seedlings; Tomatoes, Stone fruit, Mediterranean herbs tend to struggle without intervention. Sun-dependent moods. Anyone reliant on dense daily services — Forks sits hours from a major hospital, airport, or specialty retailer — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Deep organic podzols and persistent damp favour moss, ferns, and conifers — tomatoes and Mediterranean herbs need intervention. The 2015 Paradise Fire reminded the region that even hyper-maritime rainforest is not fire-proof as summers warm.",
+          "Forks runs thin on daily services: Port Angeles is the nearest staffed hospital and Sea-Tac is a five-hour drive plus ferry. Flood exposure registers elevated along river corridors — verify insurance, evacuation routes, and winter road access before treating atlas normals as a lease on daily life.",
         ],
       },
     ],
@@ -2619,21 +2619,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["maritime-loving remote workers"], travelFit: ["Goonies tourism", "Columbia bar", "port food"],
     whoWouldLove: "People who romanticize storm-coast ports.", whoMightNot: "Sun-seekers; relocators reliant on metro-scale services or a major airport at the door.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "astoria-or-mechanism",
-        title: "Hyper-Maritime at work",
+        title: "Hyper-Maritime mechanics",
         paragraphs: [
-          "Astoria sits where southern lip of the Columbia River estuary; mouth of the great river corridor. The atlas tags this as hyper-maritime (Cfb, roughly 1890 mm/yr in these normals), and the dominant spatial engines are Marine layer and River-valley moderation — with Orographic lift also in play.",
-          "River-mouth exposure to Pacific storms combined with marine layer and Coast Range orographic lift produces sustained cool wetness. That mechanism is why two map dots in Oregon can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Astoria sits where southern lip of the Columbia River estuary; mouth of the great river corridor. Cfb normals and roughly 1890 mm/yr frame the regional baseline, but Marine layer and River-valley moderation re-weight what any single forecast means block by block.",
+          "River-mouth exposure to Pacific storms combined with marine layer and Coast Range orographic lift produces sustained cool wetness. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "astoria-or-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Astoria screening: The cloudiest major US city — a cool, misty, river-mouth port with an astonishingly narrow annual temperature range. Soil reads as silty loam over marine sediments with moderate drainage and pH 5–6 — garden success tracks micro-shelter and water timing.",
-          "Coastal exposure registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cool-maritime berries, Brassicas, Rhododendrons; Heat-loving crops, Stone fruit tend to struggle without intervention. Sun-seekers; relocators reliant on metro-scale services or a major airport at the door — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "The cloudiest major US city — a cool, misty, river-mouth port with an astonishingly narrow annual temperature range. Soils read as silty loam over marine sediments with moderate drainage (pH 5–6). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Coastal exposure registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cool-maritime berries, Brassicas, Rhododendrons. Sun-seekers; relocators reliant on metro-scale services or a major airport at the door should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -2682,21 +2682,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["creative remote workers", "retirees"], travelFit: ["Victorian architecture", "wooden boat culture"],
     whoWouldLove: "Anyone who wants Pacific Northwest life with fewer gray days.", whoMightNot: "Housing-price-sensitive — Jefferson-County medians track the Olympic Peninsula migration boom.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "port-townsend-wa-mechanism",
-        title: "Rain-Shadow Sanctuary at work",
+        title: "Rain-Shadow Sanctuary mechanics",
         paragraphs: [
-          "Port Townsend sits where northeast tip of the Olympic Peninsula, at the hinge between Puget Sound and the Strait of Juan de Fuca. The atlas tags this as rain-shadow sanctuary (Csb / Cfb margin, roughly 668 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Marine layer — with Gap winds also in play.",
-          "Double geography — Olympic rain shadow plus Strait gap — produces unusual mildness and relative sun for 48° north latitude. That mechanism is why two map dots in Washington can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Port Townsend sits where northeast tip of the Olympic Peninsula, at the hinge between Puget Sound and the Strait of Juan de Fuca. Csb / Cfb margin normals and roughly 668 mm/yr frame the regional baseline, but Rain shadow and Marine layer re-weight what any single forecast means block by block.",
+          "Double geography — Olympic rain shadow plus Strait gap — produces unusual mildness and relative sun for 48° north latitude. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "port-townsend-wa-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Port Townsend screening: Sequim's Victorian cousin — a rain-shadow port where summer actually arrives, with 16-hour solstice days. Soil reads as glacial till over outwash gravel with good drainage and pH 5.6–6.6 — garden success tracks micro-shelter and water timing.",
-          "No single hazard dominates the risk matrix here; the practical read is still parcel-specific for flood, wind, and access. Growability favors Lavender, Cool-climate wine grapes (marginal), Berries, Herbs; Long-season heat crops tend to struggle without intervention. Housing-price-sensitive — Jefferson-County medians track the Olympic Peninsula migration boom — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Sequim's Victorian cousin — a rain-shadow port where summer actually arrives, with 16-hour solstice days. Soils read as glacial till over outwash gravel with good drainage (pH 5.6–6.6). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Lavender, Cool-climate wine grapes (marginal), Berries. Housing-price-sensitive — Jefferson-County medians track the Olympic Peninsula migration boom should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -2887,19 +2887,19 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "point-reyes-ca-mechanism",
-        title: "Fog-Belt Coast at work",
+        id: "point-reyes-upwelling",
+        title: "California Current upwelling and stratus",
         paragraphs: [
-          "Point Reyes Peninsula sits where windward face of the Point Reyes Peninsula; separated from the mainland by the San Andreas Fault. The atlas tags this as fog-belt coast (Csb (cool oceanic), roughly 1112 mm/yr in these normals), and the dominant spatial engines are Coastal upwelling and Marine layer — with Slope / aspect also in play.",
-          "Peninsula geometry maximizes exposure to cold-water upwelling and marine stratus; San Andreas-fault origins give steep aspect variability. That mechanism is why two map dots in California can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Point Reyes juts into the Pacific at the Bay Area's north edge, maximizing exposure to cold-water upwelling and marine stratus — the outer lighthouse records among the highest fog frequencies in the continental United States. Summer is often foggier than winter here: coastal ridges sit at 12–15°C in August while Tomales Bay pockets inland can run 8°C warmer on the same afternoon.",
+          "San Andreas-fault geology gives steep aspect variability on a small peninsula — dairy ranches that have thrived for 150 years are a direct consequence of unchanging cool, not accident of zoning.",
         ],
       },
       {
-        id: "point-reyes-ca-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "point-reyes-mar-fire",
+        title: "Marin edge, wildfire, and services",
         paragraphs: [
-          "Point Reyes Peninsula screening: The foggiest point on the US West Coast — summer upwelling keeps coastal ridges at 12–15°C in August. Soil reads as sandy loam over serpentine in places with moderate drainage and pH 5.4–6.8 — garden success tracks micro-shelter and water timing.",
-          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Artichokes, Organic dairy pasture, Coastal herbs; Tomatoes, Peppers tend to struggle without intervention. Sun-cravers and anyone who needs daily access to dense services — Point Reyes residents drive 50+ minutes for full-service hospitals and major-airport links — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Wildfire registers elevated after the 2020 Woodward Fire — headland wind and drought cycles on the Marin edge mean parcel scouting includes ember paths and evacuation routes, not just fog-day counts. Roughly 200 fog days a year and 40+ mph headland winds shape daily comfort as much as temperature.",
+          "Residents drive 50+ minutes for full-service hospitals and major-airport links while housing sits well above state medians. Artichokes and coastal herbs succeed on sandy loam; heat-loving crops struggle without micro-shelter.",
         ],
       },
     ],
@@ -3814,21 +3814,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Yellowstone-adjacent lifestyle"], travelFit: ["Yellowstone gate"],
     whoWouldLove: "Dry sun lovers.", whoMightNot: "Those put off by wind.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "cody-wy-mechanism",
-        title: "Chinook Corridor at work",
+        title: "Chinook Corridor mechanics",
         paragraphs: [
-          "Cody at roughly 1555 m elevation sits where bighorn Basin east of the Absarokas; a classic chinook-swept foothill city. The atlas tags this as chinook corridor (BSk, roughly 308 mm/yr in these normals), and the dominant spatial engines are Chinook / foehn downslope and Rain shadow.",
-          "Deep rain-shadow position plus persistent chinook regime produces warm, dry, sun-drenched winter. That mechanism is why two map dots in Wyoming can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Cody sits where bighorn Basin east of the Absarokas; a classic chinook-swept foothill city. At roughly 1555 m, elevation bands matter as much as latitude. BSk normals and roughly 308 mm/yr frame the regional baseline, but Chinook / foehn downslope and Rain shadow re-weight what any single forecast means block by block.",
+          "Deep rain-shadow position plus persistent chinook regime produces warm, dry, sun-drenched winter. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "cody-wy-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Cody screening: The northern Rockies' driest chinook city — Yellowstone's east gate where winter gets interrupted 30+ times a year. Soil reads as sandy loam over clay with good drainage and pH 7.2–8.2 — garden success tracks micro-shelter and water timing.",
-          "Drought registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy fruit, Cold-tolerant cultivars; Humidity crops tend to struggle without intervention. Those put off by wind — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "The northern Rockies' driest chinook city — Yellowstone's east gate where winter gets interrupted 30+ times a year. Soils read as sandy loam over clay with good drainage (pH 7.2–8.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Drought registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy fruit, Cold-tolerant cultivars. Those put off by wind should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -3878,21 +3878,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor culture seekers", "mountain town romantics"], travelFit: ["river access"],
     whoWouldLove: "Rocky-valley outdoor people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "missoula-mt-mechanism",
-        title: "Basin Inversion at work",
+        title: "Basin Inversion mechanics",
         paragraphs: [
-          "Missoula at roughly 975 m elevation sits where five-river confluence in a broad valley of northern Rockies — a textbook mountain-valley inversion setting. The atlas tags this as basin inversion (Dfb / BSk margin, roughly 388 mm/yr in these normals), and the dominant spatial engines are Temperature inversion and Cold-air drainage — with River-valley moderation also in play.",
-          "Ideal inversion geometry — multi-river valley between significant ranges — produces strong cold-air pooling and persistent air-quality events. That mechanism is why two map dots in Montana can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Missoula sits where five-river confluence in a broad valley of northern Rockies — a textbook mountain-valley inversion setting. At roughly 975 m, elevation bands matter as much as latitude. Dfb / BSk margin normals and roughly 388 mm/yr frame the regional baseline, but Temperature inversion and Cold-air drainage re-weight what any single forecast means block by block.",
+          "Ideal inversion geometry — multi-river valley between significant ranges — produces strong cold-air pooling and persistent air-quality events. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "missoula-mt-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Missoula screening: A river-valley city defined by its winter inversions — fog-trapped cold below, sunny warmth on the ridges above. Soil reads as silt loam with good drainage and pH 6.4–7.4 — garden success tracks micro-shelter and water timing.",
-          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Stone fruit, Hardy apples, Cool veg; Long-season heat crops tend to struggle without intervention. Smoke-sensitive — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "A river-valley city defined by its winter inversions — fog-trapped cold below, sunny warmth on the ridges above. Soils read as silt loam with good drainage (pH 6.4–7.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Stone fruit, Hardy apples, Cool veg. Smoke-sensitive should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -3942,21 +3942,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski-town commuters", "tech remotes"], travelFit: ["Yellowstone north"],
     whoWouldLove: "Outdoor people wanting four real seasons.", whoMightNot: "Budget-constrained.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "bozeman-mt-mechanism",
-        title: "Mild-Winter Foothills at work",
+        title: "Mild-Winter Foothills mechanics",
         paragraphs: [
-          "Bozeman at roughly 1474 m elevation sits where gallatin Valley between the Bridgers and the Gallatins. The atlas tags this as mild-winter foothills (Dfb / BSk, roughly 412 mm/yr in these normals), and the dominant spatial engines are Chinook / foehn downslope and River-valley moderation.",
-          "Valley position receives chinook moderation and rain-shadow sunshine from surrounding ranges. That mechanism is why two map dots in Montana can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Bozeman sits where gallatin Valley between the Bridgers and the Gallatins. At roughly 1474 m, elevation bands matter as much as latitude. Dfb / BSk normals and roughly 412 mm/yr frame the regional baseline, but Chinook / foehn downslope and River-valley moderation re-weight what any single forecast means block by block.",
+          "Valley position receives chinook moderation and rain-shadow sunshine from surrounding ranges. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "bozeman-mt-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Bozeman screening: A sunny, chinook-warmed Gallatin Valley city — cool-summer high plains with mountain access. Soil reads as silt loam with good drainage and pH 6.4–7.6 — garden success tracks micro-shelter and water timing.",
-          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy apples, Cool veg; Heat crops tend to struggle without intervention. Budget-constrained — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "A sunny, chinook-warmed Gallatin Valley city — cool-summer high plains with mountain access. Soils read as silt loam with good drainage (pH 6.4–7.6). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy apples, Cool veg. Budget-constrained should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -4069,21 +4069,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["adventure sports"], travelFit: ["Arches", "Canyonlands", "mountain biking"],
     whoWouldLove: "Climbers and mountain bikers.", whoMightNot: "Heat-intolerant.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "moab-ut-mechanism",
-        title: "Desert Oasis at work",
+        title: "Desert Oasis mechanics",
         paragraphs: [
-          "Moab at roughly 1245 m elevation sits where colorado River canyon with Arches and Canyonlands national parks adjacent. The atlas tags this as desert oasis (BWk, roughly 252 mm/yr in these normals), and the dominant spatial engines are Rain shadow and River-valley moderation.",
-          "Canyon-floor position plus river moderation produces unusually mild winters for the elevation; summer heat is amplified by radiating rock walls. That mechanism is why two map dots in Utah can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Moab sits where colorado River canyon with Arches and Canyonlands national parks adjacent. At roughly 1245 m, elevation bands matter as much as latitude. BWk normals and roughly 252 mm/yr frame the regional baseline, but Rain shadow and River-valley moderation re-weight what any single forecast means block by block.",
+          "Canyon-floor position plus river moderation produces unusually mild winters for the elevation; summer heat is amplified by radiating rock walls. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "moab-ut-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Moab screening: Colorado River oasis in red-rock desert — hot summers, mild winters, and perfect spring/fall climate. Soil reads as sandy loam over sandstone with good drainage and pH 7.4–8.2 — garden success tracks micro-shelter and water timing.",
-          "Drought registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Stone fruit, Grapes, Drought-adapted; Humidity lovers tend to struggle without intervention. Heat-intolerant — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Colorado River oasis in red-rock desert — hot summers, mild winters, and perfect spring/fall climate. Soils read as sandy loam over sandstone with good drainage (pH 7.4–8.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Drought registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Stone fruit, Grapes, Drought-adapted. Heat-intolerant should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -4235,13 +4235,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "America's snowiest major city — over 3 m of annual lake-effect snow from Lake Ontario.",
     summaryImmersive: "Syracuse sits 50 km south of Lake Ontario, directly in the line of fire for the lake-effect snow machine. The city's Golden Snowball award tracks its position as America's snowiest major metropolitan area most years. Summer is humid and mild; the lake moderates extreme cold and heat compared to cities further from water.",
     whyDistinct: "Classic lake-effect setup with no terrain lift needed — just cold NW flow over open Ontario.",
-        experience: {
+            experience: {
       feel: "Syracuse sits 50 km south of Lake Ontario, directly in the line of fire for the lake-effect snow machine. The city's Golden Snowball award tracks its position as America's snowiest major metropolitan area most years. Summer is humid and mild;.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -0.3°C, nights near -8.5°C — heavy snow defines the rhythm. Winter is when New York's eastern hardwood forest shows its teeth.",
-        spring: "Late thaw — afternoons near 12.2°C, nights near 1°C — snow is a regular part of the picture. Spring green-up arrives against a wet 1106 mm annual backdrop.",
-        summer: "Cool summer by latitude — afternoons near 25.2°C, nights near 14°C — rain is frequent and can be heavy. Syracuse is at its most kinetic for Finger Lakes gateway.",
-        autumn: "Shoulder season — afternoons near 14.5°C, nights near 4.9°C — snow is a regular part of the picture. Clear light returns as humidity eases.",
+        winter: "Cold and snowy — afternoons near -0.3°C, nights near -8.5°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings.",
+        spring: "Late thaw — afternoons near 12.2°C, nights near 1°C — snow is a regular part of the picture. Green-up arrives against a wet 1106 mm annual backdrop.",
+        summer: "Cool summer by latitude — afternoons near 25.2°C, nights near 14°C — rain is frequent and can be heavy.",
+        autumn: "Shoulder season — afternoons near 14.5°C, nights near 4.9°C — snow is a regular part of the picture.",
       },
       travelerFit: "Visitors come for Finger Lakes gateway — the practical way to experience lake-effect snowbelt terrain in New York.",
       residentFit: "It rewards snow-happy city folk — especially snow-resilient families — if the local tradeoffs still feel acceptable after a full season in Syracuse.",
@@ -4267,21 +4267,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snow-resilient families"], travelFit: ["Finger Lakes gateway"],
     whoWouldLove: "Snow-happy city folk.", whoMightNot: "Sun-dependent.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "syracuse-ny-mechanism",
-        title: "Lake-Effect Snowbelt at work",
+        title: "Lake-Effect Snowbelt mechanics",
         paragraphs: [
-          "Syracuse sits where central New York; directly downwind of Lake Ontario for northwest flow. The atlas tags this as lake-effect snowbelt (Dfb, roughly 1106 mm/yr in these normals), and the dominant spatial engines are Lake effect.",
-          "Classic lake-effect setup with no terrain lift needed — just cold NW flow over open Ontario. That mechanism is why two map dots in New York can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Syracuse sits where central New York; directly downwind of Lake Ontario for northwest flow. Dfb normals and roughly 1106 mm/yr frame the regional baseline, but Lake effect re-weight what any single forecast means block by block.",
+          "Classic lake-effect setup with no terrain lift needed — just cold NW flow over open Ontario. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "syracuse-ny-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Syracuse screening: America's snowiest major city — over 3 m of annual lake-effect snow from Lake Ontario. Soil reads as silty clay loam with moderate drainage and pH 6.4–7.4 — garden success tracks micro-shelter and water timing.",
-          "No single hazard dominates the risk matrix here; the practical read is still parcel-specific for flood, wind, and access. Growability favors Apples, Concord grapes, Cool-climate veg; Long-season heat crops tend to struggle without intervention. Sun-dependent — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "America's snowiest major city — over 3 m of annual lake-effect snow from Lake Ontario. Soils read as silty clay loam with moderate drainage (pH 6.4–7.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Apples, Concord grapes, Cool-climate veg. Sun-dependent should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -4333,19 +4333,19 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "marquette-mi-mechanism",
-        title: "Lake-Moderated at work",
+        id: "marquette-superior-lake-effect",
+        title: "Lake Superior as inland sea",
         paragraphs: [
-          "Marquette sits where lake Superior's south shore on a rocky peninsula. The atlas tags this as lake-moderated (Dfb, roughly 898 mm/yr in these normals), and the dominant spatial engines are Lake effect.",
-          "Lake Superior behaves like a small inland sea at this latitude — strong seasonal lag, moderate summer highs, heavy lake-effect winter precipitation. That mechanism is why two map dots in Michigan can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Marquette sits on a granite peninsula where Lake Superior behaves like a small inland sea — strong seasonal lag moderates summer to highs near 24°C while northwesterlies crossing open water deliver roughly 5 m of lake-effect snow annually. The ore-dock port character is shaped by a latitude where most of North America is already truly northern, yet summer feels deeply maritime.",
+          "Declining lake ice is shifting snow toward rain in shoulder months — a climate-change signal that matters for shoreline infrastructure and winter tourism as much as for thermometer readings.",
         ],
       },
       {
-        id: "marquette-mi-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "marquette-up-port",
+        title: "Upper Peninsula port life",
         paragraphs: [
-          "Marquette screening: The Upper Peninsula's Lake Superior hub — cool summers in the teens, heavy snow, dramatic maritime feel. Soil reads as sandy loam over glacial till with good drainage and pH 5.2–6.4 — garden success tracks micro-shelter and water timing.",
-          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy perennials, Blueberries, Cool veg; Heat crops tend to struggle without intervention. Sun-seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Sandy loam over glacial till with good drainage suits hardy perennials, blueberries, and cool-season vegetables; heat crops struggle without intervention. Storm exposure registers elevated on Superior's south shore — verify parcel wind fetch and bluff stability.",
+          "UP Medical Center covers acute care locally but specialty services often mean Green Bay or Minneapolis drives. Long dark winters and limited sunshine from November through January are relocation filters as real as the snow totals.",
         ],
       },
     ],
@@ -4364,16 +4364,16 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "The Keweenaw thrusts 100 km into Lake Superior, exposing it to lake-effect snow from nearly every wind direction. Annual snowfall averages 5 m near Houghton and approaches 7 m on the peninsula's spine. The copper-mining history, the university at Michigan Tech, and the culture of the place are all shaped by the snow. Summers, by contrast, are idyllic: mild, breezy, and sun-sparkled.",
     whyDistinct: "Peninsular geometry plus Lake Superior exposure produces multiple lake-effect wind-direction regimes on a small piece of land.",
         experience: {
-      feel: "The Keweenaw thrusts 100 km into Lake Superior, exposing it to lake-effect snow from nearly every wind direction. Annual snowfall averages 5 m near Houghton and approaches 7 m on the peninsula's spine.",
+      feel: "The Keweenaw feels like Lake Superior's snow laboratory — a 100 km peninsula where lake-effect bands arrive from nearly every wind direction, Houghton averaging 5 m of snow annually and the spine approaching 7 m, with idyllic breezy summers that feel like the reward for copper-country winters.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -4.6°C, nights near -13.3°C — heavy snow defines the rhythm. Winter is when Michigan's northern hardwood-boreal shows its teeth. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near 7.4°C, nights near -3.2°C — heavy snow defines the rhythm. Spring green-up arrives against a wet 944 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 21.1°C, nights near 9.8°C — rain is frequent and can be heavy. Keweenaw is at its most kinetic for Isle Royale gateway. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 10°C, nights near 1.5°C — heavy snow defines the rhythm. Clear light returns as humidity eases. Storm systems roll through with real force.",
+      winter: "The defining season — afternoons near −6°C, nights near −14°C, lake-effect stacking from multiple wind directions, and Michigan Tech campus life built around clearing metres of snow.",
+      spring: "Late thaw on Superior — ice lingering into May, the Portage Canal opening, afternoons climbing from freezing to low teens as snow retreats up the peninsula.",
+      summer: "Idyllic and breezy — highs near 23°C, sun-sparkled lake days, Isle Royale ferry season, and the brief window when the Keweenaw feels like a secret coast.",
+      autumn: "Storm return — November lake-effect bands firing again, hardwood color on the escarpment, and afternoons falling back below freezing by December.",
       },
-      travelerFit: "Visitors come for Isle Royale gateway and Keweenaw snow — the practical way to experience lake-effect snowbelt terrain in Michigan.",
-      residentFit: "It rewards snow-obsessed northerners — especially winter-loving academics — if the local tradeoffs still feel acceptable after a full season in Houghton.",
-      texture: "A place that asks for a few compromises — the main things to weigh are deep winter cold and storm exposure.",
+      travelerFit: "Visitors come for Michigan Tech events, Isle Royale gateway access, Keweenaw snowbelt bragging rights, and copper-country history.",
+      residentFit: "It rewards snow-obsessed northerners and winter-loving academics — if they accept long drives to Green Bay or Minneapolis for specialty care.",
+      texture: "America's snowiest land east of the Rockies — the main things to weigh are metres of annual snow, storm exposure, and a thin year-round economy beyond the university.",
     },
     climate: { tempHighC: [-5.9, -4.4, 0.6, 7.1, 14.6, 19.4, 22.6, 21.4, 16.8, 10.4, 2.8, -3.6], tempLowC: [-14.1, -14.8, -9.6, -2.8, 2.8, 7.4, 11.2, 10.9, 6.8, 1.8, -4.1, -11.1], precipMm: [56, 42, 58, 66, 82, 96, 96, 94, 108, 98, 82, 66], snowCm: [126, 92, 82, 32, 4, 0, 0, 0, 2, 14, 72, 124], humidity: [78, 76, 74, 70, 70, 72, 74, 78, 80, 78, 82, 82], annualPrecipMm: 944, frostFreeDays: 120, hardinessZone: "4b", sunshinePct: [35, 42, 44, 53, 46, 49, 43, 39, 31, 37, 33, 30] },
     soil: { texture: "Sandy loam on copper-country till", drainage: "moderate", phRange: [5.2, 6.4], waterHolding: "moderate" },
@@ -4397,23 +4397,23 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "houghton-mi-mechanism",
-        title: "Lake-Effect Snowbelt at work",
+        id: "houghton-keweenaw-snowbelt",
+        title: "Peninsular lake-effect geometry",
         paragraphs: [
-          "Keweenaw sits where keweenaw Peninsula jutting into Lake Superior — the snowiest land east of the Rockies. The atlas tags this as lake-effect snowbelt (Dfb, roughly 944 mm/yr in these normals), and the dominant spatial engines are Lake effect.",
-          "Peninsular geometry plus Lake Superior exposure produces multiple lake-effect wind-direction regimes on a small piece of land. That mechanism is why two map dots in Michigan can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "The Keweenaw thrusts 100 km into Lake Superior, exposing it to lake-effect snow from nearly every wind direction — Houghton averages roughly 5 m annually and the peninsula spine approaches 7 m, the snowiest land east of the Rockies. Peninsular geometry creates multiple wind-regime snow belts on a small piece of land.",
+          "Copper-mining history and Michigan Tech's campus culture are shaped by snow as infrastructure, not ornament — plowing, roof load, and winter access are relocation variables alongside temperature.",
         ],
       },
       {
-        id: "houghton-mi-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "houghton-superior-summer",
+        title: "Superior summers and UP access",
         paragraphs: [
-          "Keweenaw screening: The Keweenaw's winter averages over 5 m of snow — the snowiest land east of the Rockies and a true Great Lakes wonder. Soil reads as sandy loam on copper-country till with moderate drainage and pH 5.2–6.4 — garden success tracks micro-shelter and water timing.",
-          "Severe storms registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy perennials, Berries, Cool veg; Heat crops tend to struggle without intervention. Those needing warmth — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Summers are mild, breezy, and sun-sparkled — a sharp contrast to defining winters that keeps a thin year-round population despite isolation. Storm exposure registers high; verify bluff and shoreline parcel exposure.",
+          "Isle Royale gateway traffic and Tech's academic calendar drive the visitor economy. Specialty medical care typically means Green Bay or Minneapolis — confirm insurance and winter road reliability before committing.",
         ],
       },
     ],
-    confidenceNotes: "Coastal-maritime normals capture regional fog and rain; fetch exposure and elevation within a few kilometers can shift sunshine and wind exposure materially.",
+    confidenceNotes: "Lake-effect totals vary sharply by fetch and elevation on the Keweenaw; declining Superior ice is shifting shoulder-season snow toward rain — verify parcel exposure and winter access before treating town normals as block-grade.",
     citations: [{ label: "NOAA — Houghton coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },
@@ -4431,13 +4431,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "The Driftless Area's organic-farming heartland — a landscape of deep dissected coulees producing dense microclimate variety on small farms.",
     summaryImmersive: "The Driftless Area escaped continental glaciation; the result is a countryside with real topography, deep valleys, and ridge-valley microclimate contrasts that are rare elsewhere in the Upper Midwest. Viroqua has become the de facto center of the country's organic and cooperative farming movement — a cultural result of the climate/soil/topography permutation. Spring creeks hold water; ridgetops shed frost; south-facing slopes warm weeks ahead of north faces.",
     whyDistinct: "Unglaciated relief produces steep, complex terrain with sharp local climate gradients — unusual in the Midwest.",
-        experience: {
+            experience: {
       feel: "Viroqua — the Driftless Area escaped continental glaciation; the result is a countryside with real topography, deep valleys, and ridge-valley microclimate contrasts that are rare elsewhere in the Upper Midwest.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -2.3°C, nights near -12.7°C — snow is a regular part of the picture. Winter is when Wisconsin's oak savanna / maple-basswood coves shows its teeth.",
-        spring: "Late thaw — afternoons near 13°C, nights near 0.7°C — showers pass through regularly. Spring green-up arrives against a wet 924 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Warm season peak — afternoons near 26.4°C, nights near 14.2°C — rain is frequent and can be heavy. Viroqua is at its most kinetic for trout fishing.",
-        autumn: "Shoulder season — afternoons near 14.2°C, nights near 2.8°C — showers pass through regularly. Clear light returns as humidity eases. Flash-flood and surge diligence is part of daily life.",
+        winter: "Cold and snowy — afternoons near -2.3°C, nights near -12.7°C — snow is a regular part of the picture.",
+        spring: "Late thaw — afternoons near 13°C, nights near 0.7°C — showers pass through regularly. Green-up arrives against a wet 924 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
+        summer: "Warm season peak — afternoons near 26.4°C, nights near 14.2°C — rain is frequent and can be heavy.",
+        autumn: "Shoulder season — afternoons near 14.2°C, nights near 2.8°C — showers pass through regularly. Flash-flood and surge diligence is part of daily life.",
       },
       travelerFit: "Visitors come for trout fishing and Amish country — the practical way to experience driftless relief pocket terrain in Wisconsin.",
       residentFit: "It rewards small-farm idealists — especially organic farmers — if the local tradeoffs still feel acceptable after a full season in Viroqua.",
@@ -4462,21 +4462,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["organic farmers", "homesteaders"], travelFit: ["trout fishing", "Amish country"],
     whoWouldLove: "Small-farm idealists.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "viroqua-wi-mechanism",
-        title: "Driftless Relief Pocket at work",
+        title: "Driftless Relief Pocket mechanics",
         paragraphs: [
-          "Viroqua sits where driftless Area — unglaciated uplands with deep valleys, spring creeks, and sharp ridge-valley microclimates. The atlas tags this as driftless relief pocket (Dfb, roughly 924 mm/yr in these normals), and the dominant spatial engines are Slope / aspect and Cold-air drainage.",
-          "Unglaciated relief produces steep, complex terrain with sharp local climate gradients — unusual in the Midwest. That mechanism is why two map dots in Wisconsin can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Viroqua sits where driftless Area — unglaciated uplands with deep valleys, spring creeks, and sharp ridge-valley microclimates. Dfb normals and roughly 924 mm/yr frame the regional baseline, but Slope / aspect and Cold-air drainage re-weight what any single forecast means block by block.",
+          "Unglaciated relief produces steep, complex terrain with sharp local climate gradients — unusual in the Midwest. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "viroqua-wi-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Viroqua screening: The Driftless Area's organic-farming heartland — a landscape of deep dissected coulees producing dense microclimate variety on small farms. Soil reads as deep loess / fayette silt loam with good drainage and pH 6–7 — garden success tracks micro-shelter and water timing.",
-          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Organic vegetables, Orchard fruit, Dairy pasture, Cider apples; Long-season heat-lovers tend to struggle without intervention. Mild-winter seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "The Driftless Area's organic-farming heartland — a landscape of deep dissected coulees producing dense microclimate variety on small farms. Soils read as deep loess / fayette silt loam with good drainage (pH 6–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Organic vegetables, Orchard fruit, Dairy pasture. Mild-winter seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -4524,21 +4524,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["creative remotes", "retirees"], travelFit: ["Biltmore", "Blue Ridge Parkway"],
     whoWouldLove: "Those wanting Southern mild with real summer relief.", whoMightNot: "Flood-averse post-Helene.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "asheville-nc-mechanism",
-        title: "Mild-Winter Foothills at work",
+        title: "Mild-Winter Foothills mechanics",
         paragraphs: [
-          "Asheville sits where french Broad River basin between the Black Mountains and the Pisgahs. The atlas tags this as mild-winter foothills (Cfa / Cfb margin, roughly 1140 mm/yr in these normals), and the dominant spatial engines are River-valley moderation and Elevation lapse rate — with Slope / aspect also in play.",
-          "Southern Appalachian basin elevation moderates summer heat while ridge shelter moderates winter cold. That mechanism is why two map dots in North Carolina can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Asheville sits where french Broad River basin between the Black Mountains and the Pisgahs. Cfa / Cfb margin normals and roughly 1140 mm/yr frame the regional baseline, but River-valley moderation and Elevation lapse rate re-weight what any single forecast means block by block.",
+          "Southern Appalachian basin elevation moderates summer heat while ridge shelter moderates winter cold. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "asheville-nc-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Asheville screening: A mountain-basin city with one of the mildest four-season climates in the East — summers rarely above 30°C. Soil reads as sandy loam over gneiss/schist with good drainage and pH 5.2–6.4 — garden success tracks micro-shelter and water timing.",
-          "Flood registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Apples, Blueberries, Heirloom vegetables; Long hot summers tend to struggle without intervention. Flood-averse post-Helene — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "A mountain-basin city with one of the mildest four-season climates in the East — summers rarely above 30°C. Soils read as sandy loam over gneiss/schist with good drainage (pH 5.2–6.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Flood registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Blueberries, Heirloom vegetables. Flood-averse post-Helene should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -4587,21 +4587,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["summer-heat refugees"], travelFit: ["Appalachian Trail", "ski"],
     whoWouldLove: "People who want New-England feel in the South.", whoMightNot: "Flood-averse.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "boone-nc-mechanism",
-        title: "Mild-Winter Foothills at work",
+        title: "Mild-Winter Foothills mechanics",
         paragraphs: [
-          "Boone at roughly 995 m elevation sits where high Blue Ridge Escarpment at 1000 m — a climate transect into near-New England character at Southern latitude. The atlas tags this as mild-winter foothills (Cfb / Dfb transition, roughly 1342 mm/yr in these normals), and the dominant spatial engines are Elevation lapse rate and Orographic lift.",
-          "Extreme elevation for the latitude produces a northern-feeling climate within the Southeast. That mechanism is why two map dots in North Carolina can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Boone sits where high Blue Ridge Escarpment at 1000 m — a climate transect into near-New England character at Southern latitude. At roughly 995 m, elevation bands matter as much as latitude. Cfb / Dfb transition normals and roughly 1342 mm/yr frame the regional baseline, but Elevation lapse rate and Orographic lift re-weight what any single forecast means block by block.",
+          "Extreme elevation for the latitude produces a northern-feeling climate within the Southeast. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "boone-nc-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Boone screening: A 1000-meter ridge town where summer afternoons stay below 25°C and winter brings real snow — New England climate at 36° latitude. Soil reads as acidic loam over schist with good drainage and pH 4.8–5.8 — garden success tracks micro-shelter and water timing.",
-          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Apples, Cabbage, Short-season fruit; Heat-demanding crops tend to struggle without intervention. Flood-averse — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "A 1000-meter ridge town where summer afternoons stay below 25°C and winter brings real snow — New England climate at 36° latitude. Soils read as acidic loam over schist with good drainage (pH 4.8–5.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Cabbage, Short-season fruit. Flood-averse should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -4788,19 +4788,19 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "joseph-or-mechanism",
-        title: "Rain-Shadow Sanctuary at work",
+        id: "joseph-wallowa-rain-shadow",
+        title: "Wallowa rain shadow and alpine relief",
         paragraphs: [
-          "Joseph at roughly 1292 m elevation sits where wallowa Valley at the foot of the Wallowa Mountains — the 'Alps of Oregon' in the state's remote northeast. The atlas tags this as rain-shadow sanctuary (Dfb, roughly 408 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Elevation lapse rate.",
-          "Remote continental valley position with exceptional scenic relief; rain-shadow of the Wallowas delivers less precipitation than latitude suggests. That mechanism is why two map dots in Oregon can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Joseph sits at 1,292 m in the Wallowa Valley where 3,000 m peaks rise from glacial valleys — the 'Alps of Oregon' in the state's remote northeast. Rain shadow of the Wallowas delivers roughly 408 mm annually, far drier than latitude and elevation suggest, while summers run warm-dry-brilliant and winters bring reliable snow without deep continental cold.",
+          "Remote continental valley position means La Grande or Boise drives for specialty care — mountain pass closure is a seasonal relocation variable as real as frost dates.",
         ],
       },
       {
-        id: "joseph-or-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "joseph-ranch-country",
+        title: "Ranch country and fire season",
         paragraphs: [
-          "Joseph screening: Oregon's best-kept alpine secret — a Wallowa Valley ranch town with Swiss-Alps geography and a dry continental climate. Soil reads as silt loam on glacial outwash with good drainage and pH 6.4–7.4 — garden success tracks micro-shelter and water timing.",
-          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cool-season crops, Hardy perennials; Heat crops tend to struggle without intervention. Service-dependent — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Silt loam on glacial outwash with good drainage suits cool-season crops and hardy perennials; the growing season is cautious and smoke season can settle into the valley on bad wildfire years. Wildfire registers elevated — verify slope exposure and evacuation routes on west-facing parcels.",
+          "Wallowa Lake, Hells Canyon, and the Chief Joseph Scenic Byway drive tourism; the year-round job market stays thin outside ranching and seasonal hospitality.",
         ],
       },
     ],
@@ -4954,19 +4954,19 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "sitka-ak-mechanism",
-        title: "Hyper-Maritime at work",
+        id: "sitka-alaska-current",
+        title: "Alaska Current moderation at subarctic latitude",
         paragraphs: [
-          "Sitka sits where outer-coast Pacific island archipelago on Baranof Island, with Mt Edgecumbe volcano just west. The atlas tags this as hyper-maritime (Cfb/Cfc, roughly 2520 mm/yr in these normals), and the dominant spatial engines are Marine layer and Orographic lift — with Diurnal sea breeze also in play.",
-          "The Alaska Current delivers warm Pacific water to this coast even in winter, keeping air temperatures moderated. Steep coastal mountains force continuous orographic lift. Latitude and lat-long combine to place Sitka at one of the highest-precipitation-per-degree-latitude spots in North America. That mechanism is why two map dots in Alaska can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Sitka sits on Baranof Island's outer coast where the Alaska Current delivers warm Pacific water even in winter — July and January averages sit just 9°C apart, one of the narrowest annual ranges at subarctic latitude. Steep coastal mountains force continuous orographic lift, producing roughly 2,520 mm of rain and about 200 rainy days per year.",
+          "Snow at sea level is uncommon and rarely sticks; the hyper-maritime character is rain, not ice — a human tradeoff between extraordinary temperature moderation and persistent low sunshine.",
         ],
       },
       {
-        id: "sitka-ak-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "sitka-island-access",
+        title: "Island logistics and rainforest soils",
         paragraphs: [
-          "Sitka screening: One of the mildest subarctic climates in North America — winter lows near freezing, summer highs in the mid-teens, and 2,500 mm of rain in perpetual maritime drizzle. Soil reads as organic-rich podzols over glacial till and outcrops with imperfect drainage and pH 4.2–5.5 — A gardener's exercise in shade-tolerance and drainage engineering. Success with roots and brassicas; ambitious people build high tunnels.",
-          "Landslide registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cool-season greens, Rhubarb, Potatoes, Kale; Heat-loving crops, Tomatoes (greenhouse only), Most stone fruit tend to struggle without intervention. Sun-seekers; anyone prone to seasonal affective patterns — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Organic-rich podzols with imperfect drainage demand raised beds and shade tolerance — roots and brassicas succeed; heat-loving crops need greenhouses. Landslide exposure registers elevated on saturated slopes.",
+          "Island-only access via Alaska Marine Highway or daily flights means Seattle or Anchorage for specialty care. Commercial fishing and tourism anchor the economy; ocean acidification is a community climate exposure as much as air temperature.",
         ],
       },
     ],
@@ -4987,16 +4987,16 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Valdez sits at the head of a fjord where the mountains rise straight out of the sea to 3,000 m. When moist Pacific air meets that wall, it has nowhere to go but up, and everything condenses in a hurry. The result is one of the most prodigious snowfall totals anywhere — Thompson Pass, just 40 km inland, has measured more than 24 meters in a single winter. Valdez itself averages roughly 8 meters annually. Winters are dark, snowy, and mild by Alaskan standards; summers cool and often overcast. The fjord funnels katabatic winds off the Chugach icefield on calm clear winter nights.",
     whyDistinct: "Orographic maximum on a collision slope: Pacific moisture + 3000 m vertical rise + abundant winter cold-season events = one of the highest snow-water equivalents anywhere on the continent.",
         experience: {
-      feel: "Valdez sits at the head of a fjord where the mountains rise straight out of the sea to 3,000 m. When moist Pacific air meets that wall, it has nowhere to go but up, and everything condenses in a hurry.",
+      feel: "Valdez feels like a fjord where mountains rise 3,000 m straight from the sea — Pacific moisture has nowhere to go but up, producing roughly 8 m of annual snow in town and world-record totals on Thompson Pass, with dark snowy winters and cool overcast summers at the head of Prince William Sound.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -1.3°C, nights near -7.3°C — heavy snow defines the rhythm. Winter is when Alaska's coastal temperate rainforest shows its teeth. Storm systems roll through with real force.",
-        spring: "Late thaw — afternoons near 6.3°C, nights near -1°C — heavy snow defines the rhythm. Spring green-up arrives against a wet 1940 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Cool summer by latitude — afternoons near 16.3°C, nights near 8.3°C — rain is frequent and can be heavy. Valdez is at its most kinetic for heli-skiing. Afternoon convection and storms build often.",
-        autumn: "Autumn fade — afternoons near 6.7°C, nights near 1°C — heavy snow defines the rhythm. Clear light returns as humidity eases. Storm systems roll through with real force.",
+      winter: "Dark and prodigious — afternoons near −1°C, nights near −7°C, metres of snow piling against the Chugach wall, and katabatic winds funneling off the icefield on clear nights.",
+      spring: "Snowmelt urgency — afternoons climbing through single digits, rivers swelling with rain and melt, and avalanche and road-closure planning part of daily life.",
+      summer: "Cool and often damp — highs near 17°C, glacier tours and kayak season, and the briefest sun breaks before autumn storms return.",
+      autumn: "Storm stacking — September and October delivering heavy rain and early snow, heli-ski season approaching, and the Richardson Highway becoming the lifeline again.",
       },
-      travelerFit: "Visitors come for heli-skiing, glacier tours, and Prince William Sound kayaking — the practical way to experience fjord / inlet coast terrain in Alaska.",
-      residentFit: "It rewards anyone for whom 24 feet of snow per year is a feature rather than a warning — especially extreme-snow enthusiasts — if the local tradeoffs still feel acceptable after a full season in Valdez.",
-      texture: "A real-tradeoff place at sea level — the main things to weigh are slope stability and flood and surge risk. Specialty care and major-airport access require real planning.",
+      travelerFit: "Visitors come for heli-skiing, glacier tours, Prince William Sound kayaking, and the snowiest city in the United States.",
+      residentFit: "It rewards extreme-snow enthusiasts and backcountry skiers — if they accept single-highway access, avalanche risk, and Anchorage trips for specialty care.",
+      texture: "A real-tradeoff fjord town — the main things to weigh are record snowfall, landslide and flood exposure, oil-economy volatility, and island-like road access.",
     },
     climate: {
       tempHighC: [-2, -1, 2, 6, 11, 15, 17, 17, 13, 6, 1, -1], tempLowC: [-8, -7, -5, -1, 3, 7, 9, 9, 6, 1, -4, -7],
@@ -5025,19 +5025,19 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "valdez-ak-mechanism",
-        title: "Fjord / Inlet Coast at work",
+        id: "valdez-chugach-orographic",
+        title: "Chugach orographic maximum",
         paragraphs: [
-          "Valdez sits where head of a deep fjord at the base of the Chugach Mountains; 3000+ m peaks immediately north. The atlas tags this as fjord / inlet coast (Dfc, roughly 1940 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Katabatic drainage flow — with Marine layer also in play.",
-          "Orographic maximum on a collision slope: Pacific moisture + 3000 m vertical rise + abundant winter cold-season events = one of the highest snow-water equivalents anywhere on the continent. That mechanism is why two map dots in Alaska can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Valdez sits at the head of a fjord where 3,000 m Chugach peaks rise straight from the sea — Pacific moisture collides with vertical relief and condenses in a hurry. Town averages roughly 8 m of snow annually; Thompson Pass, 40 km inland, has measured more than 24 m in a single winter.",
+          "Katabatic winds funnel off the Chugach icefield on calm clear winter nights, adding local wind chill to already prodigious snowfall. Orographic lift plus abundant cold-season events produce among the highest snow-water equivalents on the continent.",
         ],
       },
       {
-        id: "valdez-ak-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "valdez-fjord-access",
+        title: "Fjord access, slides, and oil-town life",
         paragraphs: [
-          "Valdez screening: The snowiest city in the USA — averaging 8 meters of snow per year where Pacific moisture slams into the Chugach Mountains. Soil reads as silt loam on glacial outwash, rocky in places with good drainage and pH 5–6.5 — garden success tracks micro-shelter and water timing.",
-          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Potatoes, Greens, Berries; Most warm-season crops tend to struggle without intervention. Drivers; those with avalanche fears; anyone needing sun — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Single Richardson Highway access and long ferry links mean avalanche closures and storm isolation are ordinary planning, not edge cases. Landslide exposure registers high — Barry Arm unstable-slope concerns remain part of regional diligence.",
+          "Flood registers elevated where rivers meet the fjord head. A small oil-economy town with limited specialty medical access — Anchorage is the practical anchor for care beyond local clinics.",
         ],
       },
     ],
@@ -5170,19 +5170,19 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "stanley-id-mechanism",
-        title: "Cold-Air Pool at work",
+        id: "stanley-cold-pool",
+        title: "Sawtooth Valley cold-air pooling",
         paragraphs: [
-          "Stanley at roughly 1947 m elevation sits where high enclosed valley east of the Sawtooth Mountains; the valley floor is a classic cold sink drained by the Salmon River. The atlas tags this as cold-air pool (Dfc, roughly 530 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Temperature inversion — with Elevation lapse rate also in play.",
-          "Small enclosed high-altitude valley + dry, clear continental-interior air + lack of nighttime mixing = near-perfect radiative cooling. Same mechanism as Peter Sinks, Utah and Rogers Pass, Montana (world-record cold), but inhabited. That mechanism is why two map dots in Idaho can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Stanley sits at nearly 2,000 m in an enclosed Sawtooth Valley ringed by 3,000 m peaks — textbook cold-air pool geometry. On clear calm nights cold air drains off surrounding ridges and settles under an inversion lid; summer highs can hit 27°C while the following dawn reaches −4°C, and frost is possible in every calendar month.",
+          "The same radiative-cooling mechanism that makes Peter Sinks and Rogers Pass world-record cold sites operates here with year-round habitation — national news regularly picks up Stanley's overnight low on Arctic outbreaks.",
         ],
       },
       {
-        id: "stanley-id-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "stanley-frost-garden",
+        title: "Frost-free weeks and smoke season",
         paragraphs: [
-          "Stanley screening: Often the coldest place in the Lower 48 — a high valley so effective at radiative cooling that summer frosts happen any month of the year. Soil reads as glacial till, silt loam, gravelly with good drainage and pH 6.2–7.2 — Frost-free season is sometimes under 30 days. Short-season cultivars and season extension are mandatory.",
-          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy greens, Potatoes (short-season), Root vegetables, Arctic raspberry; Tomatoes, peppers, most garden staples tend to struggle without intervention. Gardeners; anyone whose knees mind persistent cold — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "A frost-free season sometimes under 30 days means short-season cultivars and season extension are mandatory, not optional. Wildfire smoke can settle into the basin on bad summers while winter delivers deep snow on the Sawtooths.",
+          "Central Idaho Dark Sky Reserve tourism and Salmon River rafting anchor the visitor economy; specialty care and major-airport access require real planning from this high valley.",
         ],
       },
     ],
@@ -5203,16 +5203,16 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Mount Washington stands alone as one of the great weather superlatives of North America. Its latitude places it in the convergence path of three major storm tracks; its altitude places it in the free troposphere; and the regional terrain focuses wind over the summit like a nozzle. The result is a climate more characteristic of a Labrador cape than a New England mountain — January highs near −11°C, July highs near 13°C, fog on 60% of days, freezing fog riming the summit observatory year-round. In April 1934, before weather stations in Antarctica, the summit measured a 372 km/h gust that held the world surface-wind record for 62 years. Hikers die here from exposure in any month.",
     whyDistinct: "Convergence of three storm tracks + regional ridge geometry that channels wind over a single summit + altitude into the free troposphere. No other US peak combines all three.",
         experience: {
-      feel: "Mount Washington Summit — mount Washington stands alone as one of the great weather superlatives of North America. Its latitude places it in the convergence path of three major storm tracks; its altitude places it in the free troposphere; and the regional terrain focuses wind over the summit like a nozzle.",
+      feel: "Mount Washington Summit feels like weather's laboratory at 1,917 m — three storm tracks converging, wind focused over the peak like a nozzle, fog on 60% of days, and a climate closer to a Labrador cape than a New England hike.",
       seasons: {
-        winter: "Deep freeze — afternoons near -10.3°C, nights near -17.7°C — heavy snow defines the rhythm. Winter is when New Hampshire's alpine tundra (above treeline) shows its teeth. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near -1.7°C, nights near -9°C — heavy snow defines the rhythm. Spring green-up arrives against a wet 2130 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 11.7°C, nights near 5.3°C — rain is frequent and can be heavy. Mount Washington Summit is at its most kinetic for weather enthusiasts. Afternoon convection and storms build often.",
-        autumn: "Autumn fade — afternoons near 2°C, nights near -3.7°C — heavy snow defines the rhythm. Clear light returns as humidity eases. Storm systems roll through with real force.",
+      winter: "World-class exposure — afternoons near −11°C, nights near −18°C, rime ice coating the observatory, and hurricane-force gusts routine enough that human survival requires full alpine kit.",
+      spring: "Late winter's tail — heavy snow through April, freezing fog, and hikers underestimating exposure still the primary rescue driver.",
+      summer: "July averages 9°C — afternoons near 12°C feel balmy by summit standards, but afternoon convection and sudden drops to near-freezing remain normal; exposure kills in any month.",
+      autumn: "Rime and wind — autumn gales stacking against the Presidential Range, first significant snow by October, and the Cog Railway running until conditions close the line.",
       },
-      travelerFit: "Visitors come for weather enthusiasts, Cog Railway, summer hiking, and winter mountaineering training — the practical way to experience alpine tundra terrain in New Hampshire.",
-      residentFit: "It rewards meteorology obsessives. Alpine climbers seeking training terrain — especially observatory staff — if the local tradeoffs still feel acceptable after a full season in Mt. Washington Summit.",
-      texture: "A real-tradeoff place at 1917 m elevation — the main things to weigh are deep winter cold and storm exposure.",
+      travelerFit: "Visitors come for the observatory, Cog Railway, Presidential Range hiking, and the 372 km/h gust that once held the world wind record.",
+      residentFit: "Full-time life means observatory staff — a magnificent visit, not a residence for essentially anyone else.",
+      texture: "Home of the world's worst weather — the main things to weigh are very-high storm exposure, extreme cold, zero habitation beyond the observatory, and exposure deaths in every season.",
     },
     climate: {
       tempHighC: [-11, -11, -8, -2, 5, 10, 13, 12, 8, 2, -4, -9], tempLowC: [-18, -19, -16, -9, -2, 3, 7, 6, 2, -3, -10, -16],
@@ -5243,19 +5243,19 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "mount-washington-nh-mechanism",
-        title: "Alpine Tundra at work",
+        id: "mt-washington-storm-convergence",
+        title: "Three storm tracks and gap-wind focus",
         paragraphs: [
-          "Mount Washington Summit at roughly 1917 m elevation sits where highest peak in the northeastern US, rising above a ridge system that acts as a convergence zone for three storm tracks. The atlas tags this as alpine tundra (ET, roughly 2130 mm/yr in these normals), and the dominant spatial engines are Polar jet / arctic front and Gap winds — with Elevation lapse rate also in play.",
-          "Convergence of three storm tracks + regional ridge geometry that channels wind over a single summit + altitude into the free troposphere. No other US peak combines all three. That mechanism is why two map dots in New Hampshire can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Mount Washington stands at the convergence of three major storm tracks with regional ridge geometry that channels wind over a single summit like a nozzle — altitude places the peak in the free troposphere where surface friction barely applies. The April 1934 gust of 372 km/h held the world surface-wind record for 62 years.",
+          "Fog occurs on roughly 60% of days; freezing fog rimes the observatory year-round. The climate reads more like a Labrador cape than a New England mountain — January highs near −11°C and July highs near 13°C.",
         ],
       },
       {
-        id: "mount-washington-nh-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "mt-washington-exposure",
+        title: "Exposure, rescues, and alpine tundra",
         paragraphs: [
-          "Mount Washington Summit screening: Officially the 'home of the world's worst weather' — wind gust of 372 km/h (231 mph) once held the world record, and July averages just 9°C. Soil reads as thin lithosol on granite; much bare rock with excessive drainage and pH 4.5–5.5 — Not applicable — no human habitation except observatory.",
-          "Severe storms registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Alpine / Arctic tundra plants; Everything else tend to struggle without intervention. Essentially everyone else, as a residence; as a visit, it's magnificent — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Hikers die from exposure in every month — summer afternoons near 12°C can still drop to near-freezing with wind and cloud. Storm exposure registers very-high; this is a visit and research site, not a residence beyond observatory staff.",
+          "Thin lithosol on granite supports alpine tundra relicts only. Growability is effectively nil; the summit is weather's laboratory with measurable ecological change as treeline shifts under warming.",
         ],
       },
     ],
@@ -5314,19 +5314,19 @@ export const PLACES_USA: Place[] = [
     confidence: "high",
         deepSections: [
       {
-        id: "yuma-az-mechanism",
-        title: "Desert Oasis at work",
+        id: "yuma-sunshine-irrigation",
+        title: "Sunshine, rain shadow, and Colorado River irrigation",
         paragraphs: [
-          "Yuma sits where lower Colorado River valley at the junction of AZ, CA, and Sonora; surrounded by the hyperarid Sonoran Desert. The atlas tags this as desert oasis (BWh, roughly 71 mm/yr in these normals), and the dominant spatial engines are Rain shadow and River-valley moderation — with Continental extremity and Monsoon convective lift also in play.",
-          "Four-range rain shadow + clear desert atmosphere + Colorado River irrigation overcoming the aridity = a Sunbelt agricultural district with almost no cloudy days. The winter sun angle at this latitude plus the transparent atmosphere makes the December sun more effective than most higher latitudes in April. That mechanism is why two map dots in Arizona can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Yuma registers sunshine on roughly 90% of possible daylight hours — among the highest of any reliably measured city on Earth — while four mountain ranges wring Pacific moisture out before it reaches the lower Colorado valley. Colorado River irrigation turns hyperarid Sonoran desert into America's winter salad bowl: from November through March roughly 90% of U.S. leafy greens are grown here.",
+          "Transparent desert atmosphere makes winter sun at this latitude more effective for crops than many higher-latitude April normals — the agricultural microclimate is engineered water, not natural rainfall at 71 mm annually.",
         ],
       },
       {
-        id: "yuma-az-field-read",
-        title: "Scouting and on-the-ground read",
+        id: "yuma-heat-water",
+        title: "Furnace summers and Colorado River politics",
         paragraphs: [
-          "Yuma screening: The sunniest city on Earth by most measures — 90% of possible sunshine annually — and America's 'winter salad bowl' feeding 90% of U.S. leafy greens from November through March. Soil reads as sandy loam to silty clay on colorado river alluvium with good drainage and pH 7.4–8.4 — garden success tracks micro-shelter and water timing.",
-          "Drought registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Winter vegetables (leafy greens, brassicas, carrots), Citrus, Dates, Cotton; Any non-irrigated crop, Cool-season crops in summer tend to struggle without intervention. Summer residents; water-conservation idealists; humidity-lovers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "July highs average 42°C and exceed 45°C in heat-wave years — midday outdoor life is genuinely hazardous from June through August. Late-summer monsoon spikes bring thunder, dust, and flash-flood diligence on normally dry washes.",
+          "Drought registers very-high as Colorado River Basin megadrought continues — salinity management on alluvial soils and water-right politics are relocation variables alongside extreme heat. Date palms and winter vegetables succeed with irrigation; non-irrigated gardening is not viable.",
         ],
       },
     ],
@@ -5345,13 +5345,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "One of the mildest subtropical coasts in the continental US — July highs barely reach 32°C and January lows rarely drop below 10°C, moderated by the Gulf on both sides.",
     summaryImmersive: "South Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre. The ocean buffers temperature from both sides: summer highs rarely top 33°C because of reliable afternoon sea breeze, and winter lows rarely approach freezing because Gulf water stays in the mid-20s. The annual range here is remarkably narrow for Texas — about 13°C between coolest and warmest months, versus 21°C in inland San Antonio. The trade-off is hurricane exposure: Padre lies in one of the most active tropical-cyclone corridors in the US, and every few decades a major storm reshapes the entire island.",
     whyDistinct: "Double-water exposure (Gulf + Laguna Madre) compresses the annual temperature range; low latitude + subsidence inversion limits summer heat; Texas gulf upwelling is minimal but marine-layer moderation is still substantial.",
-        experience: {
+            experience: {
       feel: "South Padre Island — south Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre.",
       seasons: {
-        winter: "Warm winter window — afternoons near 21.7°C, nights near 13°C — humid air keeps everything soft and close. Winter rewards winter-residents who accept the cold season. Storm systems roll through with real force.",
-        spring: "Spring opens — afternoons near 27.3°C, nights near 20°C — showers pass through regularly. Spring is when diurnal sea breeze and tropical-cyclone exposure is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 32.7°C, nights near 25.7°C — showers pass through regularly. South Padre Island is at its most kinetic for spring break. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 28.7°C, nights near 21°C — rain is frequent and can be heavy. Tropical systems can still shape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Warm winter window — afternoons near 21.7°C, nights near 13°C — humid air keeps everything soft and close. Storm systems roll through with real force.",
+        spring: "Spring opens — afternoons near 27.3°C, nights near 20°C — showers pass through regularly. Storm systems roll through with real force.",
+        summer: "Hot and humid — afternoons near 32.7°C, nights near 25.7°C — showers pass through regularly. Afternoon convection and storms build often.",
+        autumn: "Hurricane-season tail — afternoons near 28.7°C, nights near 21°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for spring break, sea turtle nesting (Kemp's ridley), and birding — the practical way to experience hurricane-exposed coast terrain in Texas.",
       residentFit: "It rewards anyone who wants Florida-like mildness without humidity maximum; anglers and surfers — especially winter-residents — if the local tradeoffs still feel acceptable after a full season in South Padre Island.",
@@ -5381,21 +5381,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["winter-residents", "surfers", "subtropical-coast lovers"], travelFit: ["spring break", "sea turtle nesting (Kemp's ridley)", "birding"],
     whoWouldLove: "Anyone who wants Florida-like mildness without humidity maximum; anglers and surfers.", whoMightNot: "Hurricane-averse; storm-anxious; those who need seasons.",
     confidence: "moderate",
-        deepSections: [
+            deepSections: [
       {
         id: "south-padre-tx-mechanism",
-        title: "Hurricane-Exposed Coast at work",
+        title: "Hurricane-Exposed Coast mechanics",
         paragraphs: [
-          "South Padre Island sits where barrier island on the southern Texas Gulf coast; the climatological boundary between subtropical and tropical regimes. The atlas tags this as hurricane-exposed coast (Cfa/BSh, roughly 762 mm/yr in these normals), and the dominant spatial engines are Diurnal sea breeze and Tropical-cyclone exposure — with Marine layer also in play.",
-          "Double-water exposure (Gulf + Laguna Madre) compresses the annual temperature range; low latitude + subsidence inversion limits summer heat; Texas gulf upwelling is minimal but marine-layer moderation is still substantial. That mechanism is why two map dots in Texas can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "South Padre Island sits where barrier island on the southern Texas Gulf coast; the climatological boundary between subtropical and tropical regimes. Cfa/BSh normals and roughly 762 mm/yr frame the regional baseline, but Diurnal sea breeze and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
+          "Double-water exposure (Gulf + Laguna Madre) compresses the annual temperature range; low latitude + subsidence inversion limits summer heat; Texas gulf upwelling is minimal but marine-layer moderation is still substantial. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "south-padre-tx-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "South Padre Island screening: One of the mildest subtropical coasts in the continental US — July highs barely reach 32°C and January lows rarely drop below 10°C, moderated by the Gulf on both sides. Soil reads as sandy marine deposits, shelly with excessive drainage and pH 7.5–8.5 — A challenging environment — salt, wind, and sand demand specialty plantings.",
-          "Coastal exposure registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Salt-tolerant natives, Sea-oats, Some citrus (inland, not island); Most gardens due to salt spray tend to struggle without intervention. Hurricane-averse; storm-anxious; those who need seasons — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "One of the mildest subtropical coasts in the continental US — July highs barely reach 32°C and January lows rarely drop below 10°C, moderated by the Gulf on both sides. Soils read as sandy marine deposits, shelly with excessive drainage (pH 7.5–8.5). A challenging environment — salt, wind, and sand demand specialty plantings.",
+          "Coastal exposure registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Salt-tolerant natives, Sea-oats, Some citrus (inland, not island). Hurricane-averse; storm-anxious; those who need seasons should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -5414,13 +5414,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Arguably the coldest town in the Lower 48 most winters — regularly registering the US's lowest temperature outside the mountain West.",
     summaryImmersive: "Ely sits where the Canadian Shield reaches into Minnesota: thin soils over granite, thousands of glacier-carved lakes, and a boreal forest climate unlike anywhere else in the contiguous US. On radiative winter nights — still, clear, fresh snow cover — temperatures routinely bottom out near −40°C. Ely and the nearby airport at Embarrass frequently tie for the coldest temperature in the Lower 48. Summers are short but intense, with long daylight, active thunderstorms, and the long twilight characteristic of 48°N. This is the gateway to the Boundary Waters — a million-acre wilderness of lakes and boreal forest where paddling is the only practical travel.",
     whyDistinct: "Deep continental interior + boreal forest snow-covered surface + lack of significant terrain to mix the lower atmosphere + proximity to the polar jet's winter position = extreme winter cold. The innumerable lakes moderate summer somewhat but freeze solid from December to April.",
-        experience: {
+            experience: {
       feel: "Ely sits where the Canadian Shield reaches into Minnesota: thin soils over granite, thousands of glacier-carved lakes, and a boreal forest climate unlike anywhere else in the contiguous US. On radiative winter nights — still, clear, fresh snow cover — temperatures routinely bottom out near −40°C.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -5.3°C, nights near -18.7°C — heavy snow defines the rhythm. Winter is when Minnesota's mixed boreal–northern hardwood forest shows its teeth. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near 9.7°C, nights near -3.7°C — snow is a regular part of the picture. Spring is when continental extremity and lake effect is easiest to read on the ground.",
-        summer: "Cool summer by latitude — afternoons near 23.3°C, nights near 11.7°C — rain is frequent and can be heavy. Ely is at its most kinetic for Boundary Waters canoe trips. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 9.7°C, nights near 0.3°C — snow is a regular part of the picture. Clear light returns as humidity eases. Fire season lingers into shoulder months.",
+        winter: "Cold and snowy — afternoons near -5.3°C, nights near -18.7°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
+        spring: "Late thaw — afternoons near 9.7°C, nights near -3.7°C — snow is a regular part of the picture.",
+        summer: "Cool summer by latitude — afternoons near 23.3°C, nights near 11.7°C — rain is frequent and can be heavy. Wildfire and smoke are summer wildcards.",
+        autumn: "Shoulder season — afternoons near 9.7°C, nights near 0.3°C — snow is a regular part of the picture. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Boundary Waters canoe trips, winter sled-dog training, aurora, and wolf howls — the practical way to experience lake-moderated terrain in Minnesota.",
       residentFit: "It rewards paddlers, hardy winter-sport people, those who feel at home in silent boreal forest — especially wilderness-oriented — if the local tradeoffs still feel acceptable after a full season in Ely.",
@@ -5453,21 +5453,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wilderness-oriented", "winter-sport enthusiasts", "off-grid"], travelFit: ["Boundary Waters canoe trips", "winter sled-dog training", "aurora", "wolf howls"],
     whoWouldLove: "Paddlers, hardy winter-sport people, those who feel at home in silent boreal forest.", whoMightNot: "Anyone unwilling to heat for 7 months; gardeners; humidity-lovers in summer.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "ely-mn-mechanism",
-        title: "Lake-Moderated at work",
+        title: "Lake-Moderated mechanics",
         paragraphs: [
-          "Ely sits where edge of the Boundary Waters Canoe Area Wilderness; Canadian Shield bedrock with innumerable lakes. The atlas tags this as lake-moderated (Dfb, roughly 733 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Lake effect — with Polar jet / arctic front also in play.",
-          "Deep continental interior + boreal forest snow-covered surface + lack of significant terrain to mix the lower atmosphere + proximity to the polar jet's winter position = extreme winter cold. The innumerable lakes moderate summer somewhat but freeze solid from December to April. That mechanism is why two map dots in Minnesota can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Ely sits where edge of the Boundary Waters Canoe Area Wilderness; Canadian Shield bedrock with innumerable lakes. Dfb normals and roughly 733 mm/yr frame the regional baseline, but Continental extremity and Lake effect re-weight what any single forecast means block by block.",
+          "Deep continental interior + boreal forest snow-covered surface + lack of significant terrain to mix the lower atmosphere + proximity to the polar jet's winter position = extreme winter cold. The innumerable lakes moderate summer somewhat but freeze solid from December to April. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "ely-mn-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Ely screening: Arguably the coldest town in the Lower 48 most winters — regularly registering the US's lowest temperature outside the mountain West. Soil reads as sandy loam on glacial till; thin organics over granite with moderate drainage and pH 5–6.2 — Season too short and cold for most commercial crops; home gardens thrive with season extension.",
-          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hardy apples (Honeycrisp heritage), Potatoes, Berries, Cool-season greens; Warm-season crops, Peppers tend to struggle without intervention. Anyone unwilling to heat for 7 months; gardeners; humidity-lovers in summer — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Arguably the coldest town in the Lower 48 most winters — regularly registering the US's lowest temperature outside the mountain West. Soils read as sandy loam on glacial till; thin organics over granite with moderate drainage (pH 5–6.2). Season too short and cold for most commercial crops; home gardens thrive with season extension.",
+          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy apples (Honeycrisp heritage), Potatoes, Berries. Anyone unwilling to heat for 7 months; gardeners; humidity-lovers in summer should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -5487,13 +5487,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "An outer-coast Oregon beach town where summer highs rarely exceed 21°C and winter lows rarely drop below 3°C — one of the most temperature-stable climates in the Lower 48.",
     summaryImmersive: "Cannon Beach demonstrates what happens when the Pacific dictates climate from both directions. Summer afternoons rarely break 21°C; morning fog from ocean upwelling spills over the low Coast Range and then burns off by midday (sometimes). Winters are mild, damp, and never freeze more than a handful of times. The annual temperature range is roughly 10°C — narrower than most tropical cities'. Rain falls on about 150 days per year, concentrated heavily in November through March; July and August are famously sunny (often literally sunnier than the inland Willamette Valley's foggy coastal-influence days).",
     whyDistinct: "North Pacific summer upwelling off the Oregon coast delivers 9–11°C surface water directly adjacent to the beach — as cold as Alaska's Inside Passage. Sea breeze keeps afternoons cool; the Coast Range blocks continental warming from the Willamette Valley.",
-        experience: {
+            experience: {
       feel: "Cannon Beach demonstrates what happens when the Pacific dictates climate from both directions. Summer afternoons rarely break 21°C; morning fog from ocean upwelling spills over the low Coast Range and then burns off by midday (sometimes).",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 10°C, nights near 3°C — rain is frequent and can be heavy. Winter rewards cool-summer lovers who accept the cold season. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 14°C, nights near 5.7°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 2170 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 19.7°C, nights near 11.3°C — humid air keeps everything soft and close. Cannon Beach is at its most kinetic for summer beach. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 16°C, nights near 7.3°C — rain is frequent and can be heavy. Clear light returns as humidity eases. Storm systems roll through with real force.",
+        winter: "Mild by northern standards — afternoons near 10°C, nights near 3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 14°C, nights near 5.7°C — rain is frequent and can be heavy. Green-up arrives against a wet 2170 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 19.7°C, nights near 11.3°C — humid air keeps everything soft and close. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 16°C, nights near 7.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for summer beach, winter storm watching, and tide pools — the practical way to experience hyper-maritime terrain in Oregon.",
       residentFit: "It rewards hot-weather haters, heavy sleepers (cool nights), garden nerds comfortable in fog — especially cool-summer lovers — if the local tradeoffs still feel acceptable after a full season in Cannon Beach.",
@@ -6182,13 +6182,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Where a river gap occasionally fires downslope warming to spring-like afternoons in mid-winter — the famous 'Chetco effect' against an otherwise cool outer coast.",
     summaryImmersive: "Brookings is already mild for the Oregon coast, but its claim to fame is episodic winter warmth: when pressure patterns align, air descends through the Chetco River corridor and compresses, producing rapid jumps that can melt frost in minutes while Astoria shivers. Baseline climate is still hyper-maritime — cool wet winters, foggy Junes, and summer highs that rarely tax a sweater.",
     whyDistinct: "Gap winds through a low Coast-Range pass create localized foehn-like warming on otherwise uniform north Pacific air; the phenomenon is rare enough to be news but frequent enough to define local lore.",
-        experience: {
+            experience: {
       feel: "Brookings is already mild for the Oregon coast, but its claim to fame is episodic winter warmth: when pressure patterns align, air descends through the Chetco River corridor and compresses, producing rapid jumps that can melt frost in minutes while Astoria shivers.",
       seasons: {
-        winter: "Mild and workable — afternoons near 13°C, nights near 5°C — rain is frequent and can be heavy. Winter rewards storm watchers who accept the cold season. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 15.3°C, nights near 7.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1680 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 19°C, nights near 11.7°C — humid air keeps everything soft and close. Brookings is at its most kinetic for winter banana-belt days. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 17.7°C, nights near 8.3°C — rain is frequent and can be heavy. Clear light returns as humidity eases. Storm systems roll through with real force.",
+        winter: "Mild and workable — afternoons near 13°C, nights near 5°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 15.3°C, nights near 7.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1680 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 19°C, nights near 11.7°C — humid air keeps everything soft and close. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 17.7°C, nights near 8.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for winter banana-belt days and Samuel Boardman corridor — the practical way to experience gap / gorge wind corridor terrain in Oregon.",
       residentFit: "It rewards anyone fascinated by micro-scale winter warm bursts on a cold ocean — especially storm watchers — if the local tradeoffs still feel acceptable after a full season in Brookings.",
@@ -6217,21 +6217,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["storm watchers", "coastal gardeners"], travelFit: ["winter banana-belt days", "Samuel Boardman corridor"],
     whoWouldLove: "Anyone fascinated by micro-scale winter warm bursts on a cold ocean.", whoMightNot: "Those who need predictable dry summers inland-style.",
     confidence: "moderate",
-        deepSections: [
+            deepSections: [
       {
         id: "brookings-or-mechanism",
-        title: "Gap / Gorge Wind Corridor at work",
+        title: "Gap / Gorge Wind Corridor mechanics",
         paragraphs: [
-          "Brookings sits where southern Oregon coast at the mouth of the Chetco River; narrow gap through the Coast Range toward the interior. The atlas tags this as gap / gorge wind corridor (Csb, roughly 1680 mm/yr in these normals), and the dominant spatial engines are Gap winds and Marine layer — with Chinook / foehn downslope also in play.",
-          "Gap winds through a low Coast-Range pass create localized foehn-like warming on otherwise uniform north Pacific air; the phenomenon is rare enough to be news but frequent enough to define local lore. That mechanism is why two map dots in Oregon can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Brookings sits where southern Oregon coast at the mouth of the Chetco River; narrow gap through the Coast Range toward the interior. Csb normals and roughly 1680 mm/yr frame the regional baseline, but Gap winds and Marine layer re-weight what any single forecast means block by block.",
+          "Gap winds through a low Coast-Range pass create localized foehn-like warming on otherwise uniform north Pacific air; the phenomenon is rare enough to be news but frequent enough to define local lore. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "brookings-or-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Brookings screening: Where a river gap occasionally fires downslope warming to spring-like afternoons in mid-winter — the famous 'Chetco effect' against an otherwise cool outer coast. Soil reads as marine terrace sand and loam over sandstone with good drainage and pH 5.4–6.2 — Cool, wet, and acid-forward — classic coastal NW palette.",
-          "Coastal exposure registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cool brassicas, Rhododendrons, Berries; Heat-loving melons tend to struggle without intervention. Those who need predictable dry summers inland-style — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Where a river gap occasionally fires downslope warming to spring-like afternoons in mid-winter — the famous 'Chetco effect' against an otherwise cool outer coast. Soils read as marine terrace sand and loam over sandstone with good drainage (pH 5.4–6.2). Cool, wet, and acid-forward — classic coastal NW palette.",
+          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cool brassicas, Rhododendrons, Berries. Those who need predictable dry summers inland-style should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6250,13 +6250,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Oregon's inland fruit bowl — hot, dry summers and chilly valley fog nights where pears and wine grapes finish with real sugar.",
     summaryImmersive: "Medford sits in a classic inter-mountain rain shadow: the Coast Range and Klamaths wring out Pacific moisture west and north, leaving the Rogue Basin with sunny, arid summers that feel more Central Valley than Portland. Winter inversions trap smoke and fog in the bowl; spring arrives abruptly with blossom corridors along irrigation canals.",
     whyDistinct: "Pronounced summer dryness combined with reliable irrigation from the Rogue River system creates an orchard microclimate rare for Oregon latitude.",
-        experience: {
+            experience: {
       feel: "Medford sits in a classic inter-mountain rain shadow: the Coast Range and Klamaths wring out Pacific moisture west and north, leaving the Rogue Basin with sunny, arid summers that feel more Central Valley than Portland. Winter inversions trap smoke and fog in the bowl;.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 10°C, nights near 1°C — showers pass through regularly. Winter rewards orchardists who accept the cold season.",
-        spring: "Spring opens — afternoons near 18.7°C, nights near 6.3°C — weather stays moderate and changeable. Spring is when rain shadow and river-valley moderation is easiest to read on the ground.",
-        summer: "Warm season peak — afternoons near 31.3°C, nights near 13.3°C — skies stay relentlessly clear and dry. Medford is at its most kinetic for Crater Lake. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 21.7°C, nights near 5.7°C — weather stays moderate and changeable. Clear light returns as humidity eases. Fire season lingers into shoulder months.",
+        winter: "Mild by northern standards — afternoons near 10°C, nights near 1°C — showers pass through regularly.",
+        spring: "Spring opens — afternoons near 18.7°C, nights near 6.3°C — weather stays moderate and changeable.",
+        summer: "Warm season peak — afternoons near 31.3°C, nights near 13.3°C — skies stay relentlessly clear and dry. Wildfire and smoke are summer wildcards.",
+        autumn: "Shoulder season — afternoons near 21.7°C, nights near 5.7°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Crater Lake, Rogue River rafting, and pear harvest — the practical way to experience rain-shadow sanctuary terrain in Oregon.",
       residentFit: "It rewards sun-seekers who still want Oregon scenery — especially orchardists — if the local tradeoffs still feel acceptable after a full season in Medford.",
@@ -6287,21 +6287,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["orchardists", "remote workers"], travelFit: ["Crater Lake", "Rogue River rafting", "pear harvest"],
     whoWouldLove: "Sun-seekers who still want Oregon scenery.", whoMightNot: "Fog-haters in winter; smoke-sensitive lungs.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "medford-or-mechanism",
-        title: "Rain-Shadow Sanctuary at work",
+        title: "Rain-Shadow Sanctuary mechanics",
         paragraphs: [
-          "Medford sits where floor of the Rogue Valley south of the Klamath Mountains; rain-shadowed from Pacific onshore flow. The atlas tags this as rain-shadow sanctuary (Csa, roughly 428 mm/yr in these normals), and the dominant spatial engines are Rain shadow and River-valley moderation — with Slope / aspect also in play.",
-          "Pronounced summer dryness combined with reliable irrigation from the Rogue River system creates an orchard microclimate rare for Oregon latitude. That mechanism is why two map dots in Oregon can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Medford sits where floor of the Rogue Valley south of the Klamath Mountains; rain-shadowed from Pacific onshore flow. Csa normals and roughly 428 mm/yr frame the regional baseline, but Rain shadow and River-valley moderation re-weight what any single forecast means block by block.",
+          "Pronounced summer dryness combined with reliable irrigation from the Rogue River system creates an orchard microclimate rare for Oregon latitude. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "medford-or-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Medford screening: Oregon's inland fruit bowl — hot, dry summers and chilly valley fog nights where pears and wine grapes finish with real sugar. Soil reads as volcanic-alluvial loam over stream terraces with good drainage and pH 6–7.2 — garden success tracks micro-shelter and water timing.",
-          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Pears, Wine grapes, Hemp (historically), Tomatoes; Cool-cloud crops without tunnels tend to struggle without intervention. Fog-haters in winter; smoke-sensitive lungs — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Oregon's inland fruit bowl — hot, dry summers and chilly valley fog nights where pears and wine grapes finish with real sugar. Soils read as volcanic-alluvial loam over stream terraces with good drainage (pH 6–7.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Pears, Wine grapes, Hemp (historically). Fog-haters in winter; smoke-sensitive lungs should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6320,13 +6320,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A drier, sunnier maritime pocket than Seattle — cool summers, mild wet winters, and half the gloom of the mainland sound.",
     summaryImmersive: "The San Juans sit in a complex rain shadow cast by the Olympics and Vancouver Island — enough moisture for pastoral green, but enough summer sun to support vineyards and apple orchards on south slopes. Marine breezes keep August afternoons civilized; frost is rare near shore.",
     whyDistinct: "Island wake and Olympic lee combine for a measurable precipitation and cloud-frequency deficit versus Everett or Bellingham at similar latitude.",
-        experience: {
+            experience: {
       feel: "Friday Harbor — the San Juans sit in a complex rain shadow cast by the Olympics and Vancouver Island — enough moisture for pastoral green, but enough summer sun to support vineyards and apple orchards on south slopes. Marine breezes keep August afternoons civilized; frost is rare near shore.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7.7°C, nights near 2.3°C — rain is frequent and can be heavy. Winter rewards sailors who accept the cold season.",
-        spring: "Spring opens — afternoons near 14°C, nights near 6.3°C — showers pass through regularly. Spring is when rain shadow and diurnal sea breeze is easiest to read on the ground.",
-        summer: "Cool summer by latitude — afternoons near 21.3°C, nights near 11.7°C — humid air keeps everything soft and close. Friday Harbor is at its most kinetic for orca watching.",
-        autumn: "Shoulder season — afternoons near 14.3°C, nights near 7°C — showers pass through regularly. Clear light returns as humidity eases.",
+        winter: "Mild by northern standards — afternoons near 7.7°C, nights near 2.3°C — rain is frequent and can be heavy.",
+        spring: "Spring opens — afternoons near 14°C, nights near 6.3°C — showers pass through regularly.",
+        summer: "Cool summer by latitude — afternoons near 21.3°C, nights near 11.7°C — humid air keeps everything soft and close.",
+        autumn: "Shoulder season — afternoons near 14.3°C, nights near 7°C — showers pass through regularly.",
       },
       travelerFit: "Visitors come for orca watching and island hopping — the practical way to experience cool-summer maritime terrain in Washington.",
       residentFit: "It rewards maritime-climate fans who want fewer dreary winters than Seattle proper — especially sailors — if the local tradeoffs still feel acceptable after a full season in Friday Harbor.",
@@ -6355,21 +6355,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["sailors", "remote creatives"], travelFit: ["orca watching", "island hopping"],
     whoWouldLove: "Maritime-climate fans who want fewer dreary winters than Seattle proper.", whoMightNot: "Budget shoppers — island cost of living is steep.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "friday-harbor-wa-mechanism",
-        title: "Cool-Summer Maritime at work",
+        title: "Cool-Summer Maritime mechanics",
         paragraphs: [
-          "Friday Harbor sits where east side of San Juan Island; rain-shadowed from Olympic moisture by the Strait geometry and island wake. The atlas tags this as cool-summer maritime (Csb, roughly 779 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Diurnal sea breeze — with Marine layer also in play.",
-          "Island wake and Olympic lee combine for a measurable precipitation and cloud-frequency deficit versus Everett or Bellingham at similar latitude. That mechanism is why two map dots in Washington can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Friday Harbor sits where east side of San Juan Island; rain-shadowed from Olympic moisture by the Strait geometry and island wake. Csb normals and roughly 779 mm/yr frame the regional baseline, but Rain shadow and Diurnal sea breeze re-weight what any single forecast means block by block.",
+          "Island wake and Olympic lee combine for a measurable precipitation and cloud-frequency deficit versus Everett or Bellingham at similar latitude. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "friday-harbor-wa-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Friday Harbor screening: A drier, sunnier maritime pocket than Seattle — cool summers, mild wet winters, and half the gloom of the mainland sound. Soil reads as glacial till and loam over bedrock with moderate drainage and pH 5.8–6.8 — Salt spray limits some evergreens on west shores; east island is gentler.",
-          "No single hazard dominates the risk matrix here; the practical read is still parcel-specific for flood, wind, and access. Growability favors Apples, Lavender, Cool greens; Peaches without wall tend to struggle without intervention. Budget shoppers — island cost of living is steep — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "A drier, sunnier maritime pocket than Seattle — cool summers, mild wet winters, and half the gloom of the mainland sound. Soils read as glacial till and loam over bedrock with moderate drainage (pH 5.8–6.8). Salt spray limits some evergreens on west shores; east island is gentler.",
+          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Apples, Lavender, Cool greens. Budget shoppers — island cost of living is steep should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6389,13 +6389,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Sunny and dry for western Washington — bitter inversions in winter, but summers are warm and star-filled.",
     summaryImmersive: "The Methow sits in one of the deepest rain shadows in the Pacific Northwest: storms unload on the Cascades to the west, leaving Winthrop with high-desert sunshine and cold, stagnant air in the valley floor during Arctic outbreaks. Cross-country skiing and dark-sky stargazing are world-class; smoke from regional fires is the summer tradeoff.",
     whyDistinct: "Combination of interior rain shadow + north-south valley geometry that traps cold air and smoke alike.",
-        experience: {
+            experience: {
       feel: "The Methow sits in one of the deepest rain shadows in the Pacific Northwest: storms unload on the Cascades to the west, leaving Winthrop with high-desert sunshine and cold, stagnant air in the valley floor during Arctic outbreaks. Cross-country skiing and dark-sky stargazing are world-class;.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 0°C, nights near -8°C — showers pass through regularly. Winter rewards Nordic skiers who accept the cold season. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 14°C, nights near 1°C — weather stays moderate and changeable. Spring is when rain shadow and temperature inversion is easiest to read on the ground.",
-        summer: "Warm season peak — afternoons near 27°C, nights near 9°C — weather stays moderate and changeable. Winthrop is at its most kinetic for North Cascades Highway. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 14°C, nights near 0.3°C — weather stays moderate and changeable. Clear light returns as humidity eases. Fire season lingers into shoulder months.",
+        winter: "Cold and sharp — afternoons near 0°C, nights near -8°C — showers pass through regularly. Arctic outbreaks can still bite hard.",
+        spring: "Spring opens — afternoons near 14°C, nights near 1°C — weather stays moderate and changeable.",
+        summer: "Warm season peak — afternoons near 27°C, nights near 9°C — weather stays moderate and changeable. Wildfire and smoke are summer wildcards.",
+        autumn: "Shoulder season — afternoons near 14°C, nights near 0.3°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for North Cascades Highway and Methow Trails — the practical way to experience rain-shadow sanctuary terrain in Washington.",
       residentFit: "It rewards dry-side Washington seekers who want alpine access without Seattle drizzle — especially Nordic skiers — if the local tradeoffs still feel acceptable after a full season in Winthrop.",
@@ -6421,21 +6421,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Nordic skiers", "dark-sky photographers"], travelFit: ["North Cascades Highway", "Methow Trails"],
     whoWouldLove: "Dry-side Washington seekers who want alpine access without Seattle drizzle.", whoMightNot: "Those needing mild winters or humidity.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "winthrop-wa-mechanism",
-        title: "Rain-Shadow Sanctuary at work",
+        title: "Rain-Shadow Sanctuary mechanics",
         paragraphs: [
-          "Winthrop sits where methow River trench east of the North Cascades crest; deep rain shadow of the Pacific. The atlas tags this as rain-shadow sanctuary (Dsb, roughly 368 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Temperature inversion — with Cold-air drainage also in play.",
-          "Combination of interior rain shadow + north-south valley geometry that traps cold air and smoke alike. That mechanism is why two map dots in Washington can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Winthrop sits where methow River trench east of the North Cascades crest; deep rain shadow of the Pacific. Dsb normals and roughly 368 mm/yr frame the regional baseline, but Rain shadow and Temperature inversion re-weight what any single forecast means block by block.",
+          "Combination of interior rain shadow + north-south valley geometry that traps cold air and smoke alike. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "winthrop-wa-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Winthrop screening: Sunny and dry for western Washington — bitter inversions in winter, but summers are warm and star-filled. Soil reads as glacial outwash and loess over valley floor with good drainage and pH 6.2–7.4 — Short season; favor cold-hardy fruit and quick greens.",
-          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Apples on slopes, Native dryland perennials; Frost-tender citrus tend to struggle without intervention. Those needing mild winters or humidity — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Sunny and dry for western Washington — bitter inversions in winter, but summers are warm and star-filled. Soils read as glacial outwash and loess over valley floor with good drainage (pH 6.2–7.4). Short season; favor cold-hardy fruit and quick greens.",
+          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples on slopes, Native dryland perennials. Those needing mild winters or humidity should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6454,13 +6454,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Bavarian-themed town, real interior climate — hot summers, cold snowy winters, and orchard country.",
     summaryImmersive: "Leavenworth combines Cascade scenery with continental seasonality: summer heat breaks 30°C regularly; winter snow is reliable for recreation. Chinooks occasionally chew snowpack in midwinter. Irrigation from the Wenatchee supports apples and pears that need winter chill.",
     whyDistinct: "Sharp east-slope transition from wet western Cascades to semi-arid interior within one mountain range.",
-        experience: {
+            experience: {
       feel: "Leavenworth combines Cascade scenery with continental seasonality: summer heat breaks 30°C regularly; winter snow is reliable for recreation. Chinooks occasionally chew snowpack in midwinter. Irrigation from the Wenatchee supports apples and pears that need winter chill.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 2°C, nights near -5°C — showers pass through regularly. Winter rewards ski families who accept the cold season.",
-        spring: "Spring opens — afternoons near 16°C, nights near 3.3°C — weather stays moderate and changeable. Spring is when rain shadow and chinook / foehn downslope is easiest to read on the ground.",
-        summer: "Warm season peak — afternoons near 29°C, nights near 11°C — skies stay mostly dry. Leavenworth is at its most kinetic for Oktoberfest. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 16°C, nights near 1.7°C — weather stays moderate and changeable. Clear light returns as humidity eases. Fire season lingers into shoulder months.",
+        winter: "Cold and sharp — afternoons near 2°C, nights near -5°C — showers pass through regularly.",
+        spring: "Spring opens — afternoons near 16°C, nights near 3.3°C — weather stays moderate and changeable.",
+        summer: "Warm season peak — afternoons near 29°C, nights near 11°C — skies stay mostly dry. Wildfire and smoke are summer wildcards.",
+        autumn: "Shoulder season — afternoons near 16°C, nights near 1.7°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Oktoberfest and Enchantment peaks — the practical way to experience rain-shadow sanctuary terrain in Washington.",
       residentFit: "It rewards four-season mountain-town lovers without Colorado altitude — especially ski families — if the local tradeoffs still feel acceptable after a full season in Leavenworth.",
@@ -6486,21 +6486,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski families", "orchardists"], travelFit: ["Oktoberfest", "Enchantment peaks"],
     whoWouldLove: "Four-season mountain-town lovers without Colorado altitude.", whoMightNot: "Cool-summer maritime purists.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "leavenworth-wa-mechanism",
-        title: "Rain-Shadow Sanctuary at work",
+        title: "Rain-Shadow Sanctuary mechanics",
         paragraphs: [
-          "Leavenworth sits where wenatchee River valley at the eastern foothills of the Cascades; strong rain shadow from Pacific storms. The atlas tags this as rain-shadow sanctuary (Dsa, roughly 406 mm/yr in these normals), and the dominant spatial engines are Rain shadow and Chinook / foehn downslope — with River-valley moderation also in play.",
-          "Sharp east-slope transition from wet western Cascades to semi-arid interior within one mountain range. That mechanism is why two map dots in Washington can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Leavenworth sits where wenatchee River valley at the eastern foothills of the Cascades; strong rain shadow from Pacific storms. Dsa normals and roughly 406 mm/yr frame the regional baseline, but Rain shadow and Chinook / foehn downslope re-weight what any single forecast means block by block.",
+          "Sharp east-slope transition from wet western Cascades to semi-arid interior within one mountain range. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "leavenworth-wa-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Leavenworth screening: Bavarian-themed town, real interior climate — hot summers, cold snowy winters, and orchard country. Soil reads as alluvial sandy loam with good drainage and pH 6.4–7.4 — garden success tracks micro-shelter and water timing.",
-          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Apples, Pears, Stone fruit, Hops nearby; Acid peat lovers tend to struggle without intervention. Cool-summer maritime purists — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Bavarian-themed town, real interior climate — hot summers, cold snowy winters, and orchard country. Soils read as alluvial sandy loam with good drainage (pH 6.4–7.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Pears, Stone fruit. Cool-summer maritime purists should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6519,13 +6519,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Sierra front-row seats — howling easterlies, blazing sun, and the tallest escarpment in the Lower 48 looming west.",
     summaryImmersive: "Lone Pine lives in the hydraulic shadow of the Sierra: dry, windy, and often hazy from Owens Lake dust and seasonal smoke. Winter cold pools in the valley; summer convection builds over the peaks while the floor bakes. It is the gateway climate for Whitney Portal — a vertical kilometer of lapse-rate cooling in minutes of driving.",
     whyDistinct: "Extreme rain shadow plus basin geometry yields persistent inversions and frequent gap winds through passes.",
-        experience: {
+            experience: {
       feel: "Lone Pine lives in the hydraulic shadow of the Sierra: dry, windy, and often hazy from Owens Lake dust and seasonal smoke. Winter cold pools in the valley; summer convection builds over the peaks while the floor bakes.",
       seasons: {
-        winter: "Mild and workable — afternoons near 12.7°C, nights near -2.3°C — weather stays moderate and changeable. Winter rewards climbers who accept the cold season.",
-        spring: "Spring opens — afternoons near 22.3°C, nights near 5.3°C — skies stay relentlessly clear and dry. Spring is when temperature inversion and gap winds is easiest to read on the ground.",
-        summer: "Hot and humid — afternoons near 35.3°C, nights near 14.7°C — skies stay relentlessly clear and dry. Lone Pine is at its most kinetic for Alabama Hills. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Shoulder season — afternoons near 23.7°C, nights near 4.3°C — skies stay relentlessly clear and dry. Clear light returns as humidity eases. Fire season lingers into shoulder months.",
+        winter: "Mild and workable — afternoons near 12.7°C, nights near -2.3°C — weather stays moderate and changeable.",
+        spring: "Spring opens — afternoons near 22.3°C, nights near 5.3°C — skies stay relentlessly clear and dry.",
+        summer: "Hot and humid — afternoons near 35.3°C, nights near 14.7°C — skies stay relentlessly clear and dry. Plan around heat that can turn genuinely dangerous.",
+        autumn: "Shoulder season — afternoons near 23.7°C, nights near 4.3°C — skies stay relentlessly clear and dry. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for Alabama Hills and Whitney — the practical way to experience basin inversion terrain in California.",
       residentFit: "It rewards high-desert aesthetes and peak baggers — especially climbers — if the local tradeoffs still feel acceptable after a full season in Lone Pine.",
@@ -6551,21 +6551,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["climbers", "desert photographers"], travelFit: ["Alabama Hills", "Whitney"],
     whoWouldLove: "High-desert aesthetes and peak baggers.", whoMightNot: "Humidity seekers; noise-sensitive — freight trains run the valley.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "lone-pine-ca-mechanism",
-        title: "Basin Inversion at work",
+        title: "Basin Inversion mechanics",
         paragraphs: [
-          "Lone Pine at roughly 1130 m elevation sits where owens Valley floor between the Sierra Nevada and Inyo/White mountains; one of the deepest continental basins in North America. The atlas tags this as basin inversion (BWk, roughly 159 mm/yr in these normals), and the dominant spatial engines are Temperature inversion and Gap winds — with Elevation lapse rate also in play.",
-          "Extreme rain shadow plus basin geometry yields persistent inversions and frequent gap winds through passes. That mechanism is why two map dots in California can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Lone Pine sits where owens Valley floor between the Sierra Nevada and Inyo/White mountains; one of the deepest continental basins in North America. At roughly 1130 m, elevation bands matter as much as latitude. BWk normals and roughly 159 mm/yr frame the regional baseline, but Temperature inversion and Gap winds re-weight what any single forecast means block by block.",
+          "Extreme rain shadow plus basin geometry yields persistent inversions and frequent gap winds through passes. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "lone-pine-ca-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Lone Pine screening: Sierra front-row seats — howling easterlies, blazing sun, and the tallest escarpment in the Lower 48 looming west. Soil reads as sandy alkaline alluvium with excessive drainage and pH 7.5–8.5 — Windbreaks essential; alkaline water common.",
-          "Wildfire registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Native desert perennials with drip; Most fruit without heavy amendment tend to struggle without intervention. Humidity seekers; noise-sensitive — freight trains run the valley — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Sierra front-row seats — howling easterlies, blazing sun, and the tallest escarpment in the Lower 48 looming west. Soils read as sandy alkaline alluvium with excessive drainage (pH 7.5–8.5). Windbreaks essential; alkaline water common.",
+          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Native desert perennials with drip. Humidity seekers; noise-sensitive — freight trains run the valley should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6584,13 +6584,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Red-rock country where summer monsoon storms explode over sandstone and the lake adds a local humidity bump.",
     summaryImmersive: "Page is a high-desert hub with July–August thunderstorms that paint ephemeral waterfalls on Navajo sandstone. Winters are mild and sunny; shoulder seasons are ideal for canyoneering. Lake Powell moderates immediate shoreline microclimates but does not erase the arid core.",
     whyDistinct: "Monsoon pulse on bare plateau rock creates extreme runoff and flash-flood hazard with little soil storage.",
-        experience: {
+            experience: {
       feel: "Page is a high-desert hub with July–August thunderstorms that paint ephemeral waterfalls on Navajo sandstone. Winters are mild and sunny; shoulder seasons are ideal for canyoneering. Lake Powell moderates immediate shoreline microclimates but does not erase the arid core.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7.3°C, nights near -1.7°C — skies stay mostly dry with intense sun. Winter rewards river guides who accept the cold season.",
-        spring: "Spring opens — afternoons near 21°C, nights near 8.3°C — skies stay relentlessly clear and dry. Spring is when continental extremity and monsoon convective lift is easiest to read on the ground. Spring rains can swell rivers and arroyos quickly.",
-        summer: "Hot and humid — afternoons near 34.3°C, nights near 19.7°C — weather stays moderate and changeable. Page is at its most kinetic for Antelope Canyon. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Shoulder season — afternoons near 21.7°C, nights near 8°C — weather stays moderate and changeable. Clear light returns as humidity eases. Flash-flood and surge diligence is part of daily life.",
+        winter: "Mild by northern standards — afternoons near 7.3°C, nights near -1.7°C — skies stay mostly dry with intense sun.",
+        spring: "Spring opens — afternoons near 21°C, nights near 8.3°C — skies stay relentlessly clear and dry. Spring rains can swell rivers and arroyos quickly.",
+        summer: "Hot and humid — afternoons near 34.3°C, nights near 19.7°C — weather stays moderate and changeable. Plan around heat that can turn genuinely dangerous.",
+        autumn: "Shoulder season — afternoons near 21.7°C, nights near 8°C — weather stays moderate and changeable. Flash-flood and surge diligence is part of daily life.",
       },
       travelerFit: "Visitors come for Antelope Canyon and Horseshoe Bend — the practical way to experience high-desert escape terrain in Arizona.",
       residentFit: "It rewards canyon-country obsessives — especially river guides — if the local tradeoffs still feel acceptable after a full season in Page.",
@@ -6616,21 +6616,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["river guides", "remote workers"], travelFit: ["Antelope Canyon", "Horseshoe Bend"],
     whoWouldLove: "Canyon-country obsessives.", whoMightNot: "Anyone who needs greenery without irrigation.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "page-az-mechanism",
-        title: "High-Desert Escape at work",
+        title: "High-Desert Escape mechanics",
         paragraphs: [
-          "Page at roughly 1310 m elevation sits where glen Canyon rim on the Colorado Plateau; slickrock and canyon country with Lake Powell at the doorstep. The atlas tags this as high-desert escape (BSk, roughly 202 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Monsoon convective lift — with Slope / aspect also in play.",
-          "Monsoon pulse on bare plateau rock creates extreme runoff and flash-flood hazard with little soil storage. That mechanism is why two map dots in Arizona can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Page sits where glen Canyon rim on the Colorado Plateau; slickrock and canyon country with Lake Powell at the doorstep. At roughly 1310 m, elevation bands matter as much as latitude. BSk normals and roughly 202 mm/yr frame the regional baseline, but Continental extremity and Monsoon convective lift re-weight what any single forecast means block by block.",
+          "Monsoon pulse on bare plateau rock creates extreme runoff and flash-flood hazard with little soil storage. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "page-az-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Page screening: Red-rock country where summer monsoon storms explode over sandstone and the lake adds a local humidity bump. Soil reads as sandy skeletal soils on navajo sandstone with excessive drainage and pH 7.8–8.4 — garden success tracks micro-shelter and water timing.",
-          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Native succulents, Drip-irrigated trees; Dry farming tend to struggle without intervention. Anyone who needs greenery without irrigation — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Red-rock country where summer monsoon storms explode over sandstone and the lake adds a local humidity bump. Soils read as sandy skeletal soils on navajo sandstone with excessive drainage (pH 7.8–8.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Native succulents, Drip-irrigated trees. Anyone who needs greenery without irrigation should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6649,13 +6649,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Nicknamed 'Icebox of the Nation' — among the coldest mean annual temperatures of any US first-order station.",
     summaryImmersive: "International Falls anchors the border climate where Arctic air masses arrive unimpeded and winter nights routinely plunge far below freezing. Summer is brief but surprisingly pleasant — warm days, cool nights, long evening light. Lake-effect snow and lake ice modulate the harshest extremes slightly, but not enough to soften the reputation.",
     whyDistinct: "Continental northern interior position + river/lake network that organizes persistent cold pools in calm winter highs.",
-        experience: {
+            experience: {
       feel: "International Falls anchors the border climate where Arctic air masses arrive unimpeded and winter nights routinely plunge far below freezing. Summer is brief but surprisingly pleasant — warm days, cool nights, long evening light.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -7°C, nights near -19.3°C — skies stay mostly dry. Winter rewards snowmobilers who accept the cold season. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 8°C, nights near -3.7°C — weather stays moderate and changeable. Spring is when cold-air drainage and lake effect is easiest to read on the ground.",
-        summer: "Cool summer by latitude — afternoons near 22.7°C, nights near 11°C — rain is frequent and can be heavy. International Falls is at its most kinetic for Voyageurs NP.",
-        autumn: "Shoulder season — afternoons near 10°C, nights near -0.7°C — showers pass through regularly. Clear light returns as humidity eases.",
+        winter: "Cold and sharp — afternoons near -7°C, nights near -19.3°C — skies stay mostly dry. Arctic outbreaks can still bite hard.",
+        spring: "Spring opens — afternoons near 8°C, nights near -3.7°C — weather stays moderate and changeable.",
+        summer: "Cool summer by latitude — afternoons near 22.7°C, nights near 11°C — rain is frequent and can be heavy.",
+        autumn: "Shoulder season — afternoons near 10°C, nights near -0.7°C — showers pass through regularly.",
       },
       travelerFit: "Visitors come for Voyageurs NP and ice fishing — the practical way to experience cold-air pool terrain in Minnesota.",
       residentFit: "It rewards hardy winter people who want true northern seasons — especially snowmobilers — if the local tradeoffs still feel acceptable after a full season in International Falls.",
@@ -6681,21 +6681,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snowmobilers", "boreal researchers"], travelFit: ["Voyageurs NP", "ice fishing"],
     whoWouldLove: "Hardy winter people who want true northern seasons.", whoMightNot: "Heat-lovers; thin-blood snowbirds.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "international-falls-mn-mechanism",
-        title: "Cold-Air Pool at work",
+        title: "Cold-Air Pool mechanics",
         paragraphs: [
-          "International Falls sits where rainy River lowland on the Canadian border; cold-air pooling along river corridors and lakes. The atlas tags this as cold-air pool (Dfb, roughly 630 mm/yr in these normals), and the dominant spatial engines are Cold-air drainage and Lake effect — with Polar jet / arctic front also in play.",
-          "Continental northern interior position + river/lake network that organizes persistent cold pools in calm winter highs. That mechanism is why two map dots in Minnesota can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "International Falls sits where rainy River lowland on the Canadian border; cold-air pooling along river corridors and lakes. Dfb normals and roughly 630 mm/yr frame the regional baseline, but Cold-air drainage and Lake effect re-weight what any single forecast means block by block.",
+          "Continental northern interior position + river/lake network that organizes persistent cold pools in calm winter highs. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "international-falls-mn-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "International Falls screening: Nicknamed 'Icebox of the Nation' — among the coldest mean annual temperatures of any US first-order station. Soil reads as glacial lacustrine clay to loam with imperfect drainage and pH 5.8–7 — garden success tracks micro-shelter and water timing.",
-          "Extreme cold registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Potatoes, Hay, Cold-hardy berries; Long-season crops tend to struggle without intervention. Heat-lovers; thin-blood snowbirds — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Nicknamed 'Icebox of the Nation' — among the coldest mean annual temperatures of any US first-order station. Soils read as glacial lacustrine clay to loam with imperfect drainage (pH 5.8–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Extreme cold registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Potatoes, Hay, Cold-hardy berries. Heat-lovers; thin-blood snowbirds should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6714,13 +6714,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "June can be sweater weather while the interior Midwest swelters — Superior is the air conditioner.",
     summaryImmersive: "Duluth's elevation above the lake and persistent onshore flow keeps July afternoons cooler than Minneapolis by a wide margin. Winter brings legendary lake-effect snow bands on the South Shore. Spring is slow to arrive — fog and ice linger — but autumn is crisp and brilliant.",
     whyDistinct: "Large-lake thermal inertia at 46°N creates one of the strongest summer-cooling anomalies in the interior US.",
-        experience: {
+            experience: {
       feel: "Duluth's elevation above the lake and persistent onshore flow keeps July afternoons cooler than Minneapolis by a wide margin. Winter brings legendary lake-effect snow bands on the South Shore. Spring is slow to arrive — fog and ice linger — but autumn is crisp and brilliant.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -5.7°C, nights near -14°C — humid air keeps everything soft and close. Winter rewards outdoor enthusiasts who accept the cold season. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 8°C, nights near -1.3°C — showers pass through regularly. Spring is when lake effect and marine layer is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 22.3°C, nights near 12.3°C — rain is frequent and can be heavy. Duluth is at its most kinetic for tall ships. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 11.7°C, nights near 2.7°C — showers pass through regularly. Clear light returns as humidity eases. Storm systems roll through with real force.",
+        winter: "Cold and sharp — afternoons near -5.7°C, nights near -14°C — humid air keeps everything soft and close. Arctic outbreaks can still bite hard.",
+        spring: "Spring opens — afternoons near 8°C, nights near -1.3°C — showers pass through regularly. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 22.3°C, nights near 12.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 11.7°C, nights near 2.7°C — showers pass through regularly. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for tall ships, fall color, and skiing — the practical way to experience lake-moderated terrain in Minnesota.",
       residentFit: "It rewards cool-summer lovers who still want real winter — especially outdoor enthusiasts — if the local tradeoffs still feel acceptable after a full season in Duluth.",
@@ -6746,21 +6746,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor enthusiasts", "remote workers"], travelFit: ["tall ships", "fall color", "skiing"],
     whoWouldLove: "Cool-summer lovers who still want real winter.", whoMightNot: "Sun-belt retirees seeking warmth.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "duluth-mn-mechanism",
-        title: "Lake-Moderated at work",
+        title: "Lake-Moderated mechanics",
         paragraphs: [
-          "Duluth sits where cliff-top city on the western tip of Lake Superior; local onshore flow and lake cooling dominate summer. The atlas tags this as lake-moderated (Dfb, roughly 808 mm/yr in these normals), and the dominant spatial engines are Lake effect and Marine layer — with Cold-air drainage also in play.",
-          "Large-lake thermal inertia at 46°N creates one of the strongest summer-cooling anomalies in the interior US. That mechanism is why two map dots in Minnesota can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Duluth sits where cliff-top city on the western tip of Lake Superior; local onshore flow and lake cooling dominate summer. Dfb normals and roughly 808 mm/yr frame the regional baseline, but Lake effect and Marine layer re-weight what any single forecast means block by block.",
+          "Large-lake thermal inertia at 46°N creates one of the strongest summer-cooling anomalies in the interior US. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "duluth-mn-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Duluth screening: June can be sweater weather while the interior Midwest swelters — Superior is the air conditioner. Soil reads as clay loam on glacial lake plain and basalt with moderate drainage and pH 6–7.2 — garden success tracks micro-shelter and water timing.",
-          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cool-season vegetables, Sour cherries, Apples; Heat-loving melons tend to struggle without intervention. Sun-belt retirees seeking warmth — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "June can be sweater weather while the interior Midwest swelters — Superior is the air conditioner. Soils read as clay loam on glacial lake plain and basalt with moderate drainage (pH 6–7.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cool-season vegetables, Sour cherries, Apples. Sun-belt retirees seeking warmth should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6778,13 +6778,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Streamers of snow off Erie can bury the city while Pittsburgh stays dry — classic Great Lakes lee convergence.",
     summaryImmersive: "Erie receives some of the heaviest snow totals in Pennsylvania when cold air crosses the warm lake. Summer is mild and humid with lake breezes; thunderstorms rake along the lake breeze front. The climate is a hybrid of Midwest continentality and Great Lakes maritime delay.",
     whyDistinct: "Lake-effect snow + lake cooling in summer produces a dual seasonal moderation distinct from inland Pennsylvania.",
-        experience: {
+            experience: {
       feel: "Erie receives some of the heaviest snow totals in Pennsylvania when cold air crosses the warm lake. Summer is mild and humid with lake breezes; thunderstorms rake along the lake breeze front. The climate is a hybrid of Midwest continentality and Great Lakes maritime delay.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 1.3°C, nights near -5.7°C — showers pass through regularly. Winter rewards lake-house seekers who accept the cold season. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 12°C, nights near 3.3°C — showers pass through regularly. Spring green-up arrives against a wet 1150 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 24.7°C, nights near 15.7°C — rain is frequent and can be heavy. Erie is at its most kinetic for Presque Isle beaches. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 15.3°C, nights near 6.7°C — rain is frequent and can be heavy. Clear light returns as humidity eases. Storm systems roll through with real force.",
+        winter: "Cold and sharp — afternoons near 1.3°C, nights near -5.7°C — showers pass through regularly. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 12°C, nights near 3.3°C — showers pass through regularly. Green-up arrives against a wet 1150 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 24.7°C, nights near 15.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 15.3°C, nights near 6.7°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Presque Isle beaches and winter storm chasing — the practical way to experience lake-effect snowbelt terrain in Pennsylvania.",
       residentFit: "It rewards great Lakes culture and dramatic snow — especially lake-house seekers — if the local tradeoffs still feel acceptable after a full season in Erie.",
@@ -6811,21 +6811,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["lake-house seekers"], travelFit: ["Presque Isle beaches", "winter storm chasing"],
     whoWouldLove: "Great Lakes culture and dramatic snow.", whoMightNot: "Snow shovel haters.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "erie-pa-mechanism",
-        title: "Lake-Effect Snowbelt at work",
+        title: "Lake-Effect Snowbelt mechanics",
         paragraphs: [
-          "Erie sits where presque Isle bay and shoreline on Lake Erie's southern shore; prime fetch for lake-effect snow. The atlas tags this as lake-effect snowbelt (Dfb, roughly 1150 mm/yr in these normals), and the dominant spatial engines are Lake effect and Marine layer — with Continental extremity also in play.",
-          "Lake-effect snow + lake cooling in summer produces a dual seasonal moderation distinct from inland Pennsylvania. That mechanism is why two map dots in Pennsylvania can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Erie sits where presque Isle bay and shoreline on Lake Erie's southern shore; prime fetch for lake-effect snow. Dfb normals and roughly 1150 mm/yr frame the regional baseline, but Lake effect and Marine layer re-weight what any single forecast means block by block.",
+          "Lake-effect snow + lake cooling in summer produces a dual seasonal moderation distinct from inland Pennsylvania. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "erie-pa-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Erie screening: Streamers of snow off Erie can bury the city while Pittsburgh stays dry — classic Great Lakes lee convergence. Soil reads as clay loam on lake plain with imperfect drainage and pH 6.2–7.4 — garden success tracks micro-shelter and water timing.",
-          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Grapes (Concord belt), Apples, Soybeans; Peaches (late frost risk) tend to struggle without intervention. Snow shovel haters — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Streamers of snow off Erie can bury the city while Pittsburgh stays dry — classic Great Lakes lee convergence. Soils read as clay loam on lake plain with imperfect drainage (pH 6.2–7.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Grapes (Concord belt), Apples, Soybeans. Snow shovel haters should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6907,13 +6907,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Misty ridges and lush coves — one of the wettest parts of the eastern US outside the southern Appalachians core.",
     summaryImmersive: "Gatlinburg sits at the interface of tourist strip and national park rainforest. Orographic lifting on the Smokies produces abundant rainfall and persistent fog on cool mornings; elevation gradients mean wildflower and fall-color seasons are long and stratified by slope aspect.",
     whyDistinct: "Extreme orographic precipitation on humid subtropical air masses creates a temperate rainforest pocket at mid-elevations.",
-        experience: {
+            experience: {
       feel: "Gatlinburg sits at the interface of tourist strip and national park rainforest. Orographic lifting on the Smokies produces abundant rainfall and persistent fog on cool mornings; elevation gradients mean wildflower and fall-color seasons are long and stratified by slope aspect.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 10°C, nights near -0.3°C — rain is frequent and can be heavy. Winter rewards hospitality workers who accept the cold season. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 19°C, nights near 8.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1525 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Warm season peak — afternoons near 27.3°C, nights near 17.7°C — rain is frequent and can be heavy. Gatlinburg is at its most kinetic for Smokies trails. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 19.7°C, nights near 8.3°C — rain is frequent and can be heavy. Clear light returns as humidity eases. Storm systems roll through with real force.",
+        winter: "Mild by northern standards — afternoons near 10°C, nights near -0.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 19°C, nights near 8.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1525 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Warm season peak — afternoons near 27.3°C, nights near 17.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 19.7°C, nights near 8.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Smokies trails and autumn color — the practical way to experience thermal belt terrain in Tennessee.",
       residentFit: "It rewards misty-mountain hikers and waterfall chasers — especially hospitality workers — if the local tradeoffs still feel acceptable after a full season in Gatlinburg.",
@@ -6938,21 +6938,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Smokies trails", "autumn color"],
     whoWouldLove: "Misty-mountain hikers and waterfall chasers.", whoMightNot: "Crowd-averse visitors in October weekends.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "gatlinburg-tn-mechanism",
-        title: "Thermal Belt at work",
+        title: "Thermal Belt mechanics",
         paragraphs: [
-          "Gatlinburg sits where tourism gateway on the West Fork of the Little Pigeon River; orographic lift on prevailing southerly flow. The atlas tags this as thermal belt (Cfb, roughly 1525 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Slope / aspect — with River-valley moderation also in play.",
-          "Extreme orographic precipitation on humid subtropical air masses creates a temperate rainforest pocket at mid-elevations. That mechanism is why two map dots in Tennessee can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Gatlinburg sits where tourism gateway on the West Fork of the Little Pigeon River; orographic lift on prevailing southerly flow. Cfb normals and roughly 1525 mm/yr frame the regional baseline, but Orographic lift and Slope / aspect re-weight what any single forecast means block by block.",
+          "Extreme orographic precipitation on humid subtropical air masses creates a temperate rainforest pocket at mid-elevations. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "gatlinburg-tn-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Gatlinburg screening: Misty ridges and lush coves — one of the wettest parts of the eastern US outside the southern Appalachians core. Soil reads as loamy colluvium in coves with moderate drainage and pH 5.4–6.5 — garden success tracks micro-shelter and water timing.",
-          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Rhododendrons, Mountain laurel, Cool greens; Stone fruit (late frost) tend to struggle without intervention. Crowd-averse visitors in October weekends — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Misty ridges and lush coves — one of the wettest parts of the eastern US outside the southern Appalachians core. Soils read as loamy colluvium in coves with moderate drainage (pH 5.4–6.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Rhododendrons, Mountain laurel, Cool greens. Crowd-averse visitors in October weekends should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -6970,13 +6970,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Humid subtropical island chain — warm Gulf Stream eddies offshore, nor'easters in winter, hurricanes in late summer.",
     summaryImmersive: "The Outer Banks are a lesson in exposure: sea breezes cap summer heat, but humidity stays high; winter storms can overwash Highway 12. Each town along the strand has micro-differences in dune height and fetch that matter during storms.",
     whyDistinct: "Barrier-island dynamics + Gulf Stream proximity + hurricane recurvature zone = high climate volatility on a narrow strip.",
-        experience: {
+            experience: {
       feel: "The Outer Banks are a lesson in exposure: sea breezes cap summer heat, but humidity stays high; winter storms can overwash Highway 12. Each town along the strand has micro-differences in dune height and fetch that matter during storms.",
       seasons: {
-        winter: "Mild and workable — afternoons near 13°C, nights near 4°C — rain is frequent and can be heavy. Winter rewards remote coastal workers who accept the cold season. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 18.3°C, nights near 11.3°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1390 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Warm season peak — afternoons near 28°C, nights near 22.3°C — rain is frequent and can be heavy. Outer Banks is at its most kinetic for Wright Brothers. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 22.3°C, nights near 14.3°C — rain is frequent and can be heavy. Tropical systems can still shape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Mild and workable — afternoons near 13°C, nights near 4°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 18.3°C, nights near 11.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1390 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Warm season peak — afternoons near 28°C, nights near 22.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
+        autumn: "Hurricane-season tail — afternoons near 22.3°C, nights near 14.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Wright Brothers, wild horses, and surf — the practical way to experience hurricane-exposed coast terrain in North Carolina.",
       residentFit: "It rewards beach people who accept hurricane season soberly — especially remote coastal workers — if the local tradeoffs still feel acceptable after a full season in Nags Head.",
@@ -7002,21 +7002,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote coastal workers"], travelFit: ["Wright Brothers", "wild horses", "surf"],
     whoWouldLove: "Beach people who accept hurricane season soberly.", whoMightNot: "Evacuation-averse; flood-insurance skeptics.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "nags-head-nc-mechanism",
-        title: "Hurricane-Exposed Coast at work",
+        title: "Hurricane-Exposed Coast mechanics",
         paragraphs: [
-          "Outer Banks sits where barrier island on the Atlantic hurricane track; narrow landform with constant salt-air modification. The atlas tags this as hurricane-exposed coast (Cfa, roughly 1390 mm/yr in these normals), and the dominant spatial engines are Tropical-cyclone exposure and Diurnal sea breeze — with Marine layer also in play.",
-          "Barrier-island dynamics + Gulf Stream proximity + hurricane recurvature zone = high climate volatility on a narrow strip. That mechanism is why two map dots in North Carolina can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Outer Banks sits where barrier island on the Atlantic hurricane track; narrow landform with constant salt-air modification. Cfa normals and roughly 1390 mm/yr frame the regional baseline, but Tropical-cyclone exposure and Diurnal sea breeze re-weight what any single forecast means block by block.",
+          "Barrier-island dynamics + Gulf Stream proximity + hurricane recurvature zone = high climate volatility on a narrow strip. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "nags-head-nc-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Outer Banks screening: Humid subtropical island chain — warm Gulf Stream eddies offshore, nor'easters in winter, hurricanes in late summer. Soil reads as sand over peat in swales with excessive drainage and pH 5.5–7 — garden success tracks micro-shelter and water timing.",
-          "Coastal exposure registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Salt-tolerant grasses, Yucca, Irrigated ornamentals; Fresh-water vegetables without soil tend to struggle without intervention. Evacuation-averse; flood-insurance skeptics — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Humid subtropical island chain — warm Gulf Stream eddies offshore, nor'easters in winter, hurricanes in late summer. Soils read as sand over peat in swales with excessive drainage (pH 5.5–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Coastal exposure registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Salt-tolerant grasses, Yucca, Irrigated ornamentals. Evacuation-averse; flood-insurance skeptics should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -7035,13 +7035,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Lake Champlain delays spring and softens summer heat compared to interior New England.",
     summaryImmersive: "Burlington gets lake-effect snow early in winter when the lake is still unfrozen; spring 'fifth season' fog is famous. Summer afternoons are milder than Boston or Hartford for latitude thanks to lake breezes. Fall color arrives with crisp Canadian air behind cold fronts.",
     whyDistinct: "Large north-south lake axis organizes local breezes and snow bands that do not occur inland in Vermont.",
-        experience: {
+            experience: {
       feel: "Burlington gets lake-effect snow early in winter when the lake is still unfrozen; spring 'fifth season' fog is famous. Summer afternoons are milder than Boston or Hartford for latitude thanks to lake breezes. Fall color arrives with crisp Canadian air behind cold fronts.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -0.3°C, nights near -9.3°C — showers pass through regularly. Winter rewards remote tech workers who accept the cold season.",
-        spring: "Green-up and storms — afternoons near 12°C, nights near 2°C — showers pass through regularly. Spring green-up arrives against a wet 990 mm annual backdrop.",
-        summer: "Cool summer by latitude — afternoons near 25.7°C, nights near 14.7°C — rain is frequent and can be heavy. Burlington is at its most kinetic for Champlain Islands.",
-        autumn: "Shoulder season — afternoons near 14.3°C, nights near 4.7°C — showers pass through regularly. Clear light returns as humidity eases.",
+        winter: "Cold and sharp — afternoons near -0.3°C, nights near -9.3°C — showers pass through regularly.",
+        spring: "Green-up and storms — afternoons near 12°C, nights near 2°C — showers pass through regularly. Green-up arrives against a wet 990 mm annual backdrop.",
+        summer: "Cool summer by latitude — afternoons near 25.7°C, nights near 14.7°C — rain is frequent and can be heavy.",
+        autumn: "Shoulder season — afternoons near 14.3°C, nights near 4.7°C — showers pass through regularly.",
       },
       travelerFit: "Visitors come for Champlain Islands and ski resorts — the practical way to experience lake-moderated terrain in Vermont.",
       residentFit: "It rewards small-city New England with lake recreation — especially remote tech workers — if the local tradeoffs still feel acceptable after a full season in Burlington.",
@@ -7067,21 +7067,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote tech workers", "ski commuters"], travelFit: ["Champlain Islands", "ski resorts"],
     whoWouldLove: "Small-city New England with lake recreation.", whoMightNot: "Those who need warm winters.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "burlington-vt-mechanism",
-        title: "Lake-Moderated at work",
+        title: "Lake-Moderated mechanics",
         paragraphs: [
-          "Burlington sits where eastern shore of Lake Champlain with Adirondack rain shadow to the west. The atlas tags this as lake-moderated (Dfb, roughly 990 mm/yr in these normals), and the dominant spatial engines are Lake effect and Rain shadow — with Temperature inversion also in play.",
-          "Large north-south lake axis organizes local breezes and snow bands that do not occur inland in Vermont. That mechanism is why two map dots in Vermont can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Burlington sits where eastern shore of Lake Champlain with Adirondack rain shadow to the west. Dfb normals and roughly 990 mm/yr frame the regional baseline, but Lake effect and Rain shadow re-weight what any single forecast means block by block.",
+          "Large north-south lake axis organizes local breezes and snow bands that do not occur inland in Vermont. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "burlington-vt-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Burlington screening: Lake Champlain delays spring and softens summer heat compared to interior New England. Soil reads as calcareous clay loam on champlain valley with moderate drainage and pH 6.5–7.5 — garden success tracks micro-shelter and water timing.",
-          "No single hazard dominates the risk matrix here; the practical read is still parcel-specific for flood, wind, and access. Growability favors Apples, Maple syrup, Cold-hardy grapes; Peaches without sites tend to struggle without intervention. Those who need warm winters — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Lake Champlain delays spring and softens summer heat compared to interior New England. Soils read as calcareous clay loam on champlain valley with moderate drainage (pH 6.5–7.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Apples, Maple syrup, Cold-hardy grapes. Those who need warm winters should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -7099,13 +7099,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Cool, foggy summers and stormy shoulder seasons — classic Downeast maritime.",
     summaryImmersive: "Bar Harbor sits on Mount Desert Island where sea fog rolls in on summer afternoons and fall colors are electric against dark granite. Winter is cold but moderated relative to interior Maine thanks to water; nor'easters bring heavy mixed precipitation.",
     whyDistinct: "Complex island-interior circulation + Acadia orography creates micro-varies within a few kilometers of coastline.",
-        experience: {
+            experience: {
       feel: "Bar Harbor sits on Mount Desert Island where sea fog rolls in on summer afternoons and fall colors are electric against dark granite. Winter is cold but moderated relative to interior Maine thanks to water; nor'easters bring heavy mixed precipitation.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 1.3°C, nights near -7.3°C — rain is frequent and can be heavy. Winter rewards hospitality workers who accept the cold season. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 9°C, nights near 1°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1330 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 20.7°C, nights near 12°C — rain is frequent and can be heavy. Bar Harbor is at its most kinetic for Acadia. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 12.3°C, nights near 4.3°C — rain is frequent and can be heavy. Clear light returns as humidity eases. Storm systems roll through with real force.",
+        winter: "Cold and sharp — afternoons near 1.3°C, nights near -7.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 9°C, nights near 1°C — rain is frequent and can be heavy. Green-up arrives against a wet 1330 mm annual backdrop. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 20.7°C, nights near 12°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 12.3°C, nights near 4.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Acadia and whale watching — the practical way to experience fjord / inlet coast terrain in Maine.",
       residentFit: "It rewards granite-coast hikers and blueberry fans — especially hospitality workers — if the local tradeoffs still feel acceptable after a full season in Bar Harbor.",
@@ -7139,21 +7139,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Acadia", "whale watching"],
     whoWouldLove: "Granite-coast hikers and blueberry fans.", whoMightNot: "Budget travelers in peak July.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "bar-harbor-me-mechanism",
-        title: "Fjord / Inlet Coast at work",
+        title: "Fjord / Inlet Coast mechanics",
         paragraphs: [
-          "Bar Harbor sits where east-facing fjord-like coastline near Acadia National Park; cold Labrador Current influence. The atlas tags this as fjord / inlet coast (Dfb, roughly 1330 mm/yr in these normals), and the dominant spatial engines are Marine layer and Polar jet / arctic front — with Orographic lift also in play.",
-          "Complex island-interior circulation + Acadia orography creates micro-varies within a few kilometers of coastline. That mechanism is why two map dots in Maine can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Bar Harbor sits where east-facing fjord-like coastline near Acadia National Park; cold Labrador Current influence. Dfb normals and roughly 1330 mm/yr frame the regional baseline, but Marine layer and Polar jet / arctic front re-weight what any single forecast means block by block.",
+          "Complex island-interior circulation + Acadia orography creates micro-varies within a few kilometers of coastline. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "bar-harbor-me-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Bar Harbor screening: Cool, foggy summers and stormy shoulder seasons — classic Downeast maritime. Soil reads as thin stony podzol on granite with good drainage and pH 4.8–6 — garden success tracks micro-shelter and water timing.",
-          "Coastal exposure registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Blueberries, Cool greens, Hardy apples; Long-season tomatoes tend to struggle without intervention. Budget travelers in peak July — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Cool, foggy summers and stormy shoulder seasons — classic Downeast maritime. Soils read as thin stony podzol on granite with good drainage (pH 4.8–6). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Blueberries, Cool greens, Hardy apples. Budget travelers in peak July should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -7172,13 +7172,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Wind, cotton, and supercells — a classic High Plains dryline climate with huge diurnal swings.",
     summaryImmersive: "Lubbock sits on the Llano Estacado where summer afternoons routinely top 35°C and humidity drops into the teens. Spring brings dryline thunderstorms and occasional dust storms. Winter is sunny and mild by northern standards but punctuated by blue northers.",
     whyDistinct: "Flat fetch and elevation combine for extreme solar heating and frequent severe convective days.",
-        experience: {
+            experience: {
       feel: "Lubbock sits on the Llano Estacado where summer afternoons routinely top 35°C and humidity drops into the teens. Spring brings dryline thunderstorms and occasional dust storms. Winter is sunny and mild by northern standards but punctuated by blue northers.",
       seasons: {
-        winter: "Mild and workable — afternoons near 12.3°C, nights near -2.3°C — weather stays moderate and changeable. Winter rewards ag researchers who accept the cold season. Storm systems roll through with real force.",
-        spring: "Spring opens — afternoons near 24°C, nights near 9°C — weather stays moderate and changeable. Spring is when continental extremity and monsoon convective lift is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 34°C, nights near 20°C — showers pass through regularly. Lubbock is at its most kinetic for Palo Duro. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 23.3°C, nights near 8°C — weather stays moderate and changeable. Clear light returns as humidity eases. Storm systems roll through with real force.",
+        winter: "Mild and workable — afternoons near 12.3°C, nights near -2.3°C — weather stays moderate and changeable. Storm systems roll through with real force.",
+        spring: "Spring opens — afternoons near 24°C, nights near 9°C — weather stays moderate and changeable. Storm systems roll through with real force.",
+        summer: "Hot and humid — afternoons near 34°C, nights near 20°C — showers pass through regularly. Afternoon convection and storms build often.",
+        autumn: "Shoulder season — afternoons near 23.3°C, nights near 8°C — weather stays moderate and changeable. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Palo Duro and wine country nearby — the practical way to experience badland / steppe pocket terrain in Texas.",
       residentFit: "It rewards big-sky storm watchers — especially ag researchers — if the local tradeoffs still feel acceptable after a full season in Lubbock.",
@@ -7204,21 +7204,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ag researchers", "storm chasers"], travelFit: ["Palo Duro", "wine country nearby"],
     whoWouldLove: "Big-sky storm watchers.", whoMightNot: "Humidity lovers; tree-huggers seeking forests.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "lubbock-tx-mechanism",
-        title: "Badland / Steppe Pocket at work",
+        title: "Badland / Steppe Pocket mechanics",
         paragraphs: [
-          "Lubbock at roughly 980 m elevation sits where high Plains caprock escarpment east of the New Mexico border; wide open to dryline storms. The atlas tags this as badland / steppe pocket (BSk, roughly 470 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Monsoon convective lift — with Gap winds also in play.",
-          "Flat fetch and elevation combine for extreme solar heating and frequent severe convective days. That mechanism is why two map dots in Texas can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Lubbock sits where high Plains caprock escarpment east of the New Mexico border; wide open to dryline storms. At roughly 980 m, elevation bands matter as much as latitude. BSk normals and roughly 470 mm/yr frame the regional baseline, but Continental extremity and Monsoon convective lift re-weight what any single forecast means block by block.",
+          "Flat fetch and elevation combine for extreme solar heating and frequent severe convective days. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "lubbock-tx-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Lubbock screening: Wind, cotton, and supercells — a classic High Plains dryline climate with huge diurnal swings. Soil reads as fine sandy loam over caliche with good drainage and pH 7.5–8.5 — garden success tracks micro-shelter and water timing.",
-          "Severe storms registers very-high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Cotton, Sorghum, Pecans with irrigation; Dryland trees tend to struggle without intervention. Humidity lovers; tree-huggers seeking forests — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Wind, cotton, and supercells — a classic High Plains dryline climate with huge diurnal swings. Soils read as fine sandy loam over caliche with good drainage (pH 7.5–8.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Severe storms registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cotton, Sorghum, Pecans with irrigation. Humidity lovers; tree-huggers seeking forests should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -7298,13 +7298,13 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A perfectly east-west valley that glows pink at sunset — the famed 'pink moment.'",
     summaryImmersive: "Ojai's east-west orientation gives it a last-light glow found almost nowhere else in Southern California — and a climate shaped by its amphitheater walls. Warm, dry summers and mild winters encourage citrus and olives. Afternoons can be hot inland, but the valley orientation channels cooler sea-breeze intrusions most evenings.",
     whyDistinct: "East-west valley catches sunset light; enclosing ranges shelter from most Pacific systems and Santa Ana winds.",
-        experience: {
+            experience: {
       feel: "Ojai's east-west orientation gives it a last-light glow found almost nowhere else in Southern California — and a climate shaped by its amphitheater walls. Warm, dry summers and mild winters encourage citrus and olives.",
       seasons: {
-        winter: "Warm winter window — afternoons near 18.4°C, nights near 3.9°C — rain is frequent and can be heavy. Winter rewards wellness retreat life who accept the cold season.",
-        spring: "Spring opens — afternoons near 22.7°C, nights near 8.4°C — showers pass through regularly. Spring is when slope / aspect and rain shadow is easiest to read on the ground.",
-        summer: "Warm season peak — afternoons near 30.6°C, nights near 14.1°C — skies stay relentlessly clear and dry. Ojai is at its most kinetic for citrus farms. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 25.4°C, nights near 9.6°C — weather stays moderate and changeable. Clear light returns as humidity eases. Fire season lingers into shoulder months.",
+        winter: "Warm winter window — afternoons near 18.4°C, nights near 3.9°C — rain is frequent and can be heavy.",
+        spring: "Spring opens — afternoons near 22.7°C, nights near 8.4°C — showers pass through regularly.",
+        summer: "Warm season peak — afternoons near 30.6°C, nights near 14.1°C — skies stay relentlessly clear and dry. Wildfire and smoke are summer wildcards.",
+        autumn: "Shoulder season — afternoons near 25.4°C, nights near 9.6°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
       },
       travelerFit: "Visitors come for citrus farms and sunset chasers — the practical way to experience mediterranean pocket terrain in California.",
       residentFit: "It rewards mediterranean-light obsessives — especially wellness retreat life — if the local tradeoffs still feel acceptable after a full season in Ojai.",
@@ -7330,21 +7330,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wellness retreat life"], travelFit: ["citrus farms", "sunset chasers"],
     whoWouldLove: "Mediterranean-light obsessives.", whoMightNot: "Fire-averse; seekers of seasonal drama.",
     confidence: "moderate",
-        deepSections: [
+            deepSections: [
       {
         id: "ojai-ca-mechanism",
-        title: "Mediterranean Pocket at work",
+        title: "Mediterranean Pocket mechanics",
         paragraphs: [
-          "Ojai sits where east-west-oriented Ojai Valley tucked behind the Topatopa Mountains. The atlas tags this as mediterranean pocket (Csa, roughly 613 mm/yr in these normals), and the dominant spatial engines are Slope / aspect and Rain shadow — with Santa Ana / sundowner downslope also in play.",
-          "East-west valley catches sunset light; enclosing ranges shelter from most Pacific systems and Santa Ana winds. That mechanism is why two map dots in California can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Ojai sits where east-west-oriented Ojai Valley tucked behind the Topatopa Mountains. Csa normals and roughly 613 mm/yr frame the regional baseline, but Slope / aspect and Rain shadow re-weight what any single forecast means block by block.",
+          "East-west valley catches sunset light; enclosing ranges shelter from most Pacific systems and Santa Ana winds. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "ojai-ca-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Ojai screening: A perfectly east-west valley that glows pink at sunset — the famed 'pink moment.'. Soil reads as sandy loam to clay loam on alluvium with good drainage and pH 6.4–7.6 — garden success tracks micro-shelter and water timing.",
-          "Wildfire registers high in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Citrus (Ojai Pixie tangerine), Olives, Avocado, Lavender; Humidity-lovers tend to struggle without intervention. Fire-averse; seekers of seasonal drama — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "A perfectly east-west valley that glows pink at sunset — the famed 'pink moment.'. Soils read as sandy loam to clay loam on alluvium with good drainage (pH 6.4–7.6). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Citrus (Ojai Pixie tangerine), Olives, Avocado. Fire-averse; seekers of seasonal drama should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],

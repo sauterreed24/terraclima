@@ -17,6 +17,8 @@ const SKIP_IDS = new Set([
   "mammoth-lakes-ca", "sedona-az", "taos-nm", "durango-co",
   "apalachicola-fl", "santa-cruz-felton-ca", "ellensburg-wa", "borrego-springs-ca",
   "prescott-az", "cloudcroft-nm", "crested-butte-co", "leadville-co",
+  "forks-wa", "point-reyes-ca", "marquette-mi", "houghton-mi", "joseph-or",
+  "sitka-ak", "valdez-ak", "stanley-id", "mount-washington-nh", "yuma-az",
 ]);
 
 function isGenericBackfill(sections: { id: string }[]): boolean {

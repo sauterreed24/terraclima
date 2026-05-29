@@ -5,7 +5,6 @@
  */
 import type { Place } from "../../src/types";
 import { ARCHETYPE_BY_ID } from "../../src/data/archetypes";
-import { DRIVER_LABELS } from "../../src/types";
 import { getAnnualPrecipMm } from "../../src/lib/climate-metrics";
 
 type SeasonKey = "winter" | "spring" | "summer" | "autumn";
@@ -51,11 +50,6 @@ function shortName(place: Place): string {
 
 function archetypeLabel(place: Place): string {
   return ARCHETYPE_BY_ID[place.archetypes[0]]?.label?.toLowerCase() ?? "distinct microclimate";
-}
-
-function driverPhrase(place: Place): string {
-  const labels = place.drivers.slice(0, 2).map(d => DRIVER_LABELS[d] ?? d);
-  return joinHumanList(labels, 2) || "local terrain";
 }
 
 function seasonWeather(
@@ -119,32 +113,23 @@ function topRiskPhrase(place: Place, season: SeasonKey): string | null {
 }
 
 function seasonContext(place: Place, key: SeasonKey): string {
-  const name = shortName(place);
-  const travel = place.travelFit.find(t => !/^(year-round|summer|winter|spring|fall|autumn|shoulder seasons?)$/i.test(t.trim()));
   const annualPrecip = getAnnualPrecipMm(place);
+  const summerHigh = meanOf(place.climate.tempHighC, SEASON_IDX.summer) ?? 0;
+  const winterSnow = meanOf(place.climate.snowCm, SEASON_IDX.winter) ?? 0;
 
-  if (key === "summer" && travel) {
-    return `${name} is at its most kinetic for ${travel}`;
-  }
-  if (key === "winter" && (meanOf(place.climate.snowCm, SEASON_IDX.winter) ?? 0) >= 15) {
-    return `Winter is when ${place.region}'s ${place.biome.toLowerCase()} shows its teeth`;
+  if (key === "autumn" && place.archetypes.includes("hurricane-coast")) {
+    return "Tropical systems can still reshape the calendar deep into fall";
   }
   if (key === "spring" && annualPrecip >= 900) {
-    return `Spring green-up arrives against a wet ${Math.round(annualPrecip)} mm annual backdrop`;
+    return `Green-up arrives against a wet ${Math.round(annualPrecip)} mm annual backdrop`;
   }
-  if (key === "spring") {
-    return `Spring is when ${driverPhrase(place).toLowerCase()} is easiest to read on the ground`;
+  if (key === "summer" && summerHigh >= 36) {
+    return "Midday outdoor life often shifts to dawn and dusk";
   }
-  if (key === "autumn") {
-    if (place.archetypes.includes("hurricane-coast")) {
-      return "Tropical systems can still shape the calendar deep into fall";
-    }
-    return "Clear light returns as humidity eases";
+  if (key === "winter" && winterSnow >= 28) {
+    return "Snow removal and road access matter as much as thermometer readings";
   }
-  if (key === "winter" && place.relocationFit[0]) {
-    return `Winter rewards ${place.relocationFit[0]} who accept the cold season`;
-  }
-  return `${place.biome} defines the daily backdrop`;
+  return "";
 }
 
 function seasonHeadline(place: Place, key: SeasonKey, highC: number, snowMean: number | null): string {
@@ -191,8 +176,8 @@ function buildSeasonDetail(place: Place, key: SeasonKey): string {
 
   const parts = [
     `${headline} — afternoons near ${highC}°C, nights near ${lowC}°C — ${weather}.`,
-    context.endsWith(".") ? context : `${context}.`,
   ];
+  if (context) parts.push(`${context.endsWith(".") ? context : `${context}.`}`);
   if (risk) parts.push(`${risk}.`);
   return parts.join(" ");
 }
@@ -323,9 +308,24 @@ export function draftAuthoredExperience(place: Place): AuthoredExperienceDraft {
 export function isAutoDraftedExperience(place: Place): boolean {
   const exp = place.experience;
   if (!exp) return false;
+  const joined = [
+    exp.feel,
+    ...Object.values(exp.seasons ?? {}),
+    exp.travelerFit ?? "",
+    exp.residentFit ?? "",
+    exp.texture ?? "",
+  ].join(" ");
   const seasons = Object.values(exp.seasons ?? {}).join(" ");
   // Legacy template: "Winter settles in with afternoons near…"
   if (/with afternoons near [-−]?\d/.test(seasons)) return true;
+  // Templated seasonContext / fit phrases
+  if (/is at its most kinetic for/.test(joined)) return true;
+  if (/shows its teeth/.test(joined)) return true;
+  if (/who accept the cold season/.test(joined)) return true;
+  if (/is easiest to read on the ground/.test(joined)) return true;
+  if (/defines the daily backdrop/.test(joined)) return true;
+  if (/the practical way to experience .* terrain in/.test(joined)) return true;
+  if (/if the local tradeoffs still feel acceptable after a full season in/.test(joined)) return true;
   // Older openers before headline rewrite
   return /^(Winter settles in|The cold season|Deep winter|Winter runs|The thaw season|Spring opens|Spring arrives|High season|Summer peaks|Summer settles|Autumn turns|Autumn light|Fall shoulder|The warm months|As spring builds)/.test(seasons);
 }

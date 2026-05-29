@@ -39,42 +39,47 @@ function topRisk(place: Place): { label: string; level: string } | null {
 
 function reliefLead(place: Place): string {
   const rc = place.reliefContext.replace(/\.$/, "").trim();
-  // Preserve proper nouns and numbers from corpus — do not force lowercase.
   return rc.charAt(0).toUpperCase() + rc.slice(1);
 }
 
 function mechanismSection(place: Place): PlaceDeepSection {
   const name = shortName(place);
   const arch = ARCHETYPE_BY_ID[place.archetypes[0]]?.label ?? place.biome;
-  const drivers = place.drivers.slice(0, 4).map(d => DRIVER_LABELS[d] ?? d);
-  const driverList = drivers.length >= 2 ? `${drivers[0]} and ${drivers[1]}` : drivers[0] ?? "local terrain";
-  const extra = drivers.length > 2 ? ` — with ${drivers.slice(2).join(" and ")} also in play.` : ".";
+  const drivers = place.drivers.slice(0, 3).map(d => DRIVER_LABELS[d] ?? d);
+  const driverText =
+    drivers.length >= 2 ? `${drivers[0]} and ${drivers[1]}`
+    : drivers[0] ?? "local terrain";
   const annual = Math.round(getAnnualPrecipMm(place));
-  const elevNote = place.elevationM >= 800 ? ` at roughly ${place.elevationM} m elevation` : "";
+  const elevClause =
+    place.elevationM >= 800
+      ? ` At roughly ${place.elevationM} m, elevation bands matter as much as latitude.`
+      : "";
   return {
     id: slugId(place, "mechanism"),
-    title: `${arch} at work`,
+    title: `${arch} mechanics`,
     paragraphs: [
-      `${name}${elevNote} sits where ${reliefLead(place).charAt(0).toLowerCase()}${reliefLead(place).slice(1)}. The atlas tags this as ${arch.toLowerCase()} (${place.koppen}, roughly ${annual} mm/yr in these normals), and the dominant spatial engines are ${driverList}${extra}`,
-      `${place.whyDistinct.replace(/\.$/, "")}. That mechanism is why two map dots in ${place.region} can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.`,
+      `${name} sits where ${reliefLead(place).charAt(0).toLowerCase()}${reliefLead(place).slice(1)}.${elevClause} ${place.koppen} normals and roughly ${annual} mm/yr frame the regional baseline, but ${driverText} re-weight what any single forecast means block by block.`,
+      `${place.whyDistinct.replace(/\.$/, "")}. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.`,
     ],
   };
 }
 
 function fieldReadSection(place: Place): PlaceDeepSection {
-  const name = shortName(place);
   const risk = topRisk(place);
-  const grows = place.growability.growsWell.slice(0, 4).join(", ") || "—";
-  const tricky = place.growability.tricky.slice(0, 3).join(", ") || "—";
+  const grows = place.growability.growsWell.slice(0, 3).join(", ") || "—";
+  const garden =
+    place.growability.homeGarden
+    ?? "Garden success tracks micro-shelter, water timing, and frost exposure.";
   const riskLine = risk
-    ? `${risk.label} registers ${risk.level} in this entry — treat parcel-level exposure as a diligence item, not a headline score.`
-    : "No single hazard dominates the risk matrix here; the practical read is still parcel-specific for flood, wind, and access.";
+    ? `${risk.label} registers ${risk.level} here — verify parcel exposure, insurance, and evacuation access before committing.`
+    : "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel.";
+  const whoNot = place.whoMightNot.replace(/\.$/, "");
   return {
     id: slugId(place, "field-read"),
-    title: "Scouting and on-the-ground read",
+    title: "On-the-ground read",
     paragraphs: [
-      `${name} screening: ${place.summaryShort.replace(/\.$/, "")}. Soil reads as ${place.soil.texture.toLowerCase()} with ${place.soil.drainage} drainage and pH ${place.soil.phRange[0]}–${place.soil.phRange[1]} — ${place.growability.homeGarden ?? "garden success tracks micro-shelter and water timing."}`,
-      `${riskLine} Growability favors ${grows}; ${tricky} tend to struggle without intervention. ${place.whoMightNot.replace(/\.$/, "")} — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.`,
+      `${place.summaryShort.replace(/\.$/, "")}. Soils read as ${place.soil.texture.toLowerCase()} with ${place.soil.drainage} drainage (pH ${place.soil.phRange[0]}–${place.soil.phRange[1]}). ${garden}`,
+      `${riskLine} Growability favors ${grows}. ${whoNot} should confirm services and seasonal access on the ground — not from atlas normals alone.`,
     ],
   };
 }

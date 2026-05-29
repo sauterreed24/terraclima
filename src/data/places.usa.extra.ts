@@ -107,13 +107,13 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Subarctic maritime — bitter cold when Siberian highs meet Bering ice; brief cool summers with midnight sun.",
     summaryImmersive: "Nome is where North America’s cold air masses exit toward the Bering Sea. Winter is long and dark: sea ice damps temperature extremes near shore but storms still rake the coast with wind-driven snow. Spring break-up turns rivers to slush highways; summer brings fog, berries, and cool but pleasant afternoons — t-shirt weather by local standards. The Bering Strait’s proximity means climate teleconnections to both the Pacific and Arctic oscillations show up in storm tracks.",
     whyDistinct: "Coastal subarctic with seasonal sea-ice cover creates a narrower annual temperature range than interior Alaska at the same latitude, but still delivers extreme wind chill when continental air crosses open leads in the ice.",
-        experience: {
+            experience: {
       feel: "Nome is where North America’s cold air masses exit toward the Bering Sea. Winter is long and dark: sea ice damps temperature extremes near shore but storms still rake the coast with wind-driven snow. Spring break-up turns rivers to slush highways;.",
       seasons: {
-        winter: "Deep freeze — afternoons near -11.3°C, nights near -19°C — heavy snow defines the rhythm. Winter is when Alaska's tundra and dwarf-shrub coastal plain shows its teeth. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near 0.7°C, nights near -8°C — snow is a regular part of the picture. Spring is when polar jet / arctic front and continental extremity is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 13°C, nights near 5°C — showers pass through regularly. Nome is at its most kinetic for Iditarod finish. Afternoon convection and storms build often.",
-        autumn: "Autumn fade — afternoons near 1°C, nights near -7.3°C — snow is a regular part of the picture. Clear light returns as humidity eases. Storm systems roll through with real force.",
+        winter: "Deep freeze — afternoons near -11.3°C, nights near -19°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
+        spring: "Late thaw — afternoons near 0.7°C, nights near -8°C — snow is a regular part of the picture. Storm systems roll through with real force.",
+        summer: "Cool summer by latitude — afternoons near 13°C, nights near 5°C — showers pass through regularly. Afternoon convection and storms build often.",
+        autumn: "Autumn fade — afternoons near 1°C, nights near -7.3°C — snow is a regular part of the picture. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Iditarod finish and Bering land bridge archaeology — the practical way to experience subarctic continental terrain in Alaska.",
       residentFit: "It rewards arctic coastal culture and long-light summers — especially mining logistics — if the local tradeoffs still feel acceptable after a full season in Nome.",
@@ -179,13 +179,13 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid subtropical Gulf city — sea breezes cap summer heat until offshore flow fails ahead of hurricanes.",
     summaryImmersive: "Corpus Christi sits where continental heat meets Gulf moisture. Summer heat indices routinely reach dangerous levels; afternoon sea breezes bring short relief. Tropical storms and hurricanes are the dominant extreme hazard — storm surge into Corpus Christi Bay and Aransas Pass is a recurring engineering problem. Winters are mild; freezes are rare but damaging to citrus when they occur. The Laguna Madre — one of North America’s few hypersaline lagoons — creates unique wind and humidity patterns west of the city.",
     whyDistinct: "Shallow lagoon + barrier island + Gulf fetch produces stronger diurnal sea-breeze modulation than open flat coasts, and hurricane surge risk is amplified by bay geometry.",
-        experience: {
+            experience: {
       feel: "Corpus Christi sits where continental heat meets Gulf moisture. Summer heat indices routinely reach dangerous levels; afternoon sea breezes bring short relief.",
       seasons: {
-        winter: "Warm winter window — afternoons near 18.3°C, nights near 9°C — humid showers and convection pass through. Winter rewards port workers who accept the cold season. Storm systems roll through with real force.",
-        spring: "Spring opens — afternoons near 25.3°C, nights near 18°C — showers pass through regularly. Spring is when tropical-cyclone exposure and diurnal sea breeze is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 33°C, nights near 24.7°C — showers pass through regularly. Corpus Christi is at its most kinetic for Padre Island. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 27.7°C, nights near 18.3°C — showers pass through regularly. Tropical systems can still shape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Warm winter window — afternoons near 18.3°C, nights near 9°C — humid showers and convection pass through. Storm systems roll through with real force.",
+        spring: "Spring opens — afternoons near 25.3°C, nights near 18°C — showers pass through regularly. Storm systems roll through with real force.",
+        summer: "Hot and humid — afternoons near 33°C, nights near 24.7°C — showers pass through regularly. Afternoon convection and storms build often.",
+        autumn: "Hurricane-season tail — afternoons near 27.7°C, nights near 18.3°C — showers pass through regularly. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Padre Island and birding — the practical way to experience hurricane-exposed coast terrain in Texas.",
       residentFit: "It rewards gulf coast life with strong Hispanic cultural ties — especially port workers — if the local tradeoffs still feel acceptable after a full season in Corpus Christi.",
@@ -251,13 +251,13 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid subtropical inland — river fog, summer convection, and remnant tropical moisture.",
     summaryImmersive: "Paducah’s climate is classically mid-South: hot, humid summers with afternoon thunderstorms; mild winters punctuated by Arctic outbreaks and freezing rain when warm Gulf air overrides cold domes at the surface. The Ohio and Tennessee rivers moderate temperatures slightly and provide moisture for fog banks in spring and fall. Convective available potential energy is high in June ahead of mesoscale convective systems that track along the river valleys.",
     whyDistinct: "Large-river confluence zones concentrate moisture and serve as preferential corridors for nocturnal convection and flooding — hydroclimate is as important as latitude here.",
-        experience: {
+            experience: {
       feel: "Paducah’s climate is classically mid-South: hot, humid summers with afternoon thunderstorms; mild winters punctuated by Arctic outbreaks and freezing rain when warm Gulf air overrides cold domes at the surface.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7°C, nights near -2.3°C — rain is frequent and can be heavy. Winter rewards logistics who accept the cold season. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 20°C, nights near 9°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1315 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Warm season peak — afternoons near 31°C, nights near 20°C — rain is frequent and can be heavy. Paducah is at its most kinetic for quilt museum. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Hurricane-season tail — afternoons near 21.3°C, nights near 9.3°C — rain is frequent and can be heavy. Tropical systems can still shape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Mild by northern standards — afternoons near 7°C, nights near -2.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        spring: "Green-up and storms — afternoons near 20°C, nights near 9°C — rain is frequent and can be heavy. Green-up arrives against a wet 1315 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Warm season peak — afternoons near 31°C, nights near 20°C — rain is frequent and can be heavy. Plan around heat that can turn genuinely dangerous.",
+        autumn: "Hurricane-season tail — afternoons near 21.3°C, nights near 9.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for quilt museum and riverfront — the practical way to experience river-valley moderation terrain in Kentucky.",
       residentFit: "It rewards river-town Midwesterners who tolerate humidity — especially logistics — if the local tradeoffs still feel acceptable after a full season in Paducah.",
@@ -283,21 +283,21 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["logistics", "healthcare"], travelFit: ["quilt museum", "riverfront"],
     whoWouldLove: "River-town Midwesterners who tolerate humidity.", whoMightNot: "Mountain-air seekers.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "paducah-ky-mechanism",
-        title: "River-Valley Moderation at work",
+        title: "River-Valley Moderation mechanics",
         paragraphs: [
-          "Paducah sits where alluvial plain at the confluence of the Tennessee and Ohio Rivers; frequent spring flooding; weak local relief. The atlas tags this as river-valley moderation (Cfa, roughly 1315 mm/yr in these normals), and the dominant spatial engines are River-valley moderation and Tropical-cyclone exposure — with Continental extremity also in play.",
-          "Large-river confluence zones concentrate moisture and serve as preferential corridors for nocturnal convection and flooding — hydroclimate is as important as latitude here. That mechanism is why two map dots in Kentucky can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Paducah sits where alluvial plain at the confluence of the Tennessee and Ohio Rivers; frequent spring flooding; weak local relief. Cfa normals and roughly 1315 mm/yr frame the regional baseline, but River-valley moderation and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
+          "Large-river confluence zones concentrate moisture and serve as preferential corridors for nocturnal convection and flooding — hydroclimate is as important as latitude here. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "paducah-ky-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Paducah screening: Humid subtropical inland — river fog, summer convection, and remnant tropical moisture. Soil reads as mississippi embayment silty loams with moderate drainage and pH 5.5–6.8 — garden success tracks micro-shelter and water timing.",
-          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Soybeans, Corn, Tobacco heritage, Oak shade trees; Dry lavender tend to struggle without intervention. Mountain-air seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Humid subtropical inland — river fog, summer convection, and remnant tropical moisture. Soils read as mississippi embayment silty loams with moderate drainage (pH 5.5–6.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Soybeans, Corn, Tobacco heritage. Mountain-air seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -323,13 +323,13 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Cold, sunny, windy continental climate — scorching summer days and bitter subzero winter nights both occur.",
     summaryImmersive: "Bismarck sits in one of the continent’s starkest annual temperature ranges. Arctic highs in winter deliver brilliant cold and dry air; summer opens to dryline thunderstorms and occasional severe hail. Chinook warming on eastern Rocky lee slopes occasionally interrupts mid-winter cold. Lake Sakakawea moderates lee-side microclimates only slightly — continentality dominates.",
     whyDistinct: "Central position in North America maximizes contrast between maritime air masses — rarely seen — and dry continental polar or tropical air advected from the Gulf in summer.",
-        experience: {
+            experience: {
       feel: "Bismarck sits in one of the continent’s starkest annual temperature ranges. Arctic highs in winter deliver brilliant cold and dry air; summer opens to dryline thunderstorms and occasional severe hail. Chinook warming on eastern Rocky lee slopes occasionally interrupts mid-winter cold.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -3.7°C, nights near -14.7°C — skies stay mostly dry. Winter rewards energy sector who accept the cold season. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 12.3°C, nights near 0.3°C — weather stays moderate and changeable. Spring is when continental extremity and polar jet / arctic front is easiest to read on the ground. Storm systems roll through with real force.",
-        summer: "Warm season peak — afternoons near 28.3°C, nights near 13.7°C — showers pass through regularly. Bismarck is at its most kinetic for Lewis & Clark. Water supply and irrigation stress matter.",
-        autumn: "Shoulder season — afternoons near 13.7°C, nights near 0°C — gray skies dominate. Clear light returns as humidity eases. Storm systems roll through with real force.",
+        winter: "Cold and sharp — afternoons near -3.7°C, nights near -14.7°C — skies stay mostly dry. Arctic outbreaks can still bite hard.",
+        spring: "Spring opens — afternoons near 12.3°C, nights near 0.3°C — weather stays moderate and changeable. Storm systems roll through with real force.",
+        summer: "Warm season peak — afternoons near 28.3°C, nights near 13.7°C — showers pass through regularly. Water supply and irrigation stress matter.",
+        autumn: "Shoulder season — afternoons near 13.7°C, nights near 0°C — gray skies dominate. Storm systems roll through with real force.",
       },
       travelerFit: "Visitors come for Lewis & Clark and prairie reserves — the practical way to experience subarctic continental terrain in North Dakota.",
       residentFit: "It rewards wide-open plains people who own a good parka — especially energy sector — if the local tradeoffs still feel acceptable after a full season in Bismarck.",
@@ -355,21 +355,21 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["energy sector", "remote workers"], travelFit: ["Lewis & Clark", "prairie reserves"],
     whoWouldLove: "Wide-open plains people who own a good parka.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "bismarck-nd-mechanism",
-        title: "Subarctic Continental at work",
+        title: "Subarctic Continental mechanics",
         paragraphs: [
-          "Bismarck sits where missouri River valley cut through rolling High Plains; open to Arctic outbreaks and dryline storms. The atlas tags this as subarctic continental (Dfb, roughly 474 mm/yr in these normals), and the dominant spatial engines are Continental extremity and Polar jet / arctic front — with Lake effect and Chinook / foehn downslope also in play.",
-          "Central position in North America maximizes contrast between maritime air masses — rarely seen — and dry continental polar or tropical air advected from the Gulf in summer. That mechanism is why two map dots in North Dakota can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Bismarck sits where missouri River valley cut through rolling High Plains; open to Arctic outbreaks and dryline storms. Dfb normals and roughly 474 mm/yr frame the regional baseline, but Continental extremity and Polar jet / arctic front re-weight what any single forecast means block by block.",
+          "Central position in North America maximizes contrast between maritime air masses — rarely seen — and dry continental polar or tropical air advected from the Gulf in summer. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "bismarck-nd-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Bismarck screening: Cold, sunny, windy continental climate — scorching summer days and bitter subzero winter nights both occur. Soil reads as mollisols and glacial till loams with good drainage and pH 6–8 — garden success tracks micro-shelter and water timing.",
-          "Severe storms registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Hard red spring wheat, Soybeans, Sunflowers; Long-season corn without heat units tend to struggle without intervention. Mild-winter seekers — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Cold, sunny, windy continental climate — scorching summer days and bitter subzero winter nights both occur. Soils read as mollisols and glacial till loams with good drainage (pH 6–8). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hard red spring wheat, Soybeans, Sunflowers. Mild-winter seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
@@ -395,13 +395,13 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "Humid continental–subtropical transition — wet, cloudy, and hilly with sharp microclimates between ridges and valleys.",
     summaryImmersive: "Morgantown’s ridges catch moisture on southwesterly flow ahead of coastal lows; valleys pool cold air and fog on still nights. Snowfall is moderate but elevation within the county varies enough for 200 m to separate rain from heavy snow. Summers are warm and humid — not coastal, not deep South, but persistently sticky. The university town sits at a climate crossroads between mid-Atlantic storms and Ohio Valley convection.",
     whyDistinct: "Plateau dissected by tight river networks produces high spatial variability in frost, fog, and snowfall totals within a 20 km radius.",
-        experience: {
+            experience: {
       feel: "Morgantown’s ridges catch moisture on southwesterly flow ahead of coastal lows; valleys pool cold air and fog on still nights. Snowfall is moderate but elevation within the county varies enough for 200 m to separate rain from heavy snow.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 4.3°C, nights near -3.7°C — showers pass through regularly. Winter rewards university families who accept the cold season.",
-        spring: "Green-up and storms — afternoons near 17.3°C, nights near 6°C — rain is frequent and can be heavy. Spring green-up arrives against a wet 1125 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Warm season peak — afternoons near 28°C, nights near 17°C — rain is frequent and can be heavy. Morgantown is at its most kinetic for fall color.",
-        autumn: "Shoulder season — afternoons near 17.7°C, nights near 7.3°C — showers pass through regularly. Clear light returns as humidity eases. Flash-flood and surge diligence is part of daily life.",
+        winter: "Cold and sharp — afternoons near 4.3°C, nights near -3.7°C — showers pass through regularly.",
+        spring: "Green-up and storms — afternoons near 17.3°C, nights near 6°C — rain is frequent and can be heavy. Green-up arrives against a wet 1125 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
+        summer: "Warm season peak — afternoons near 28°C, nights near 17°C — rain is frequent and can be heavy.",
+        autumn: "Shoulder season — afternoons near 17.7°C, nights near 7.3°C — showers pass through regularly. Flash-flood and surge diligence is part of daily life.",
       },
       travelerFit: "Visitors come for fall color and whitewater — the practical way to experience river-valley moderation terrain in West Virginia.",
       residentFit: "It rewards appalachian foothills without deep South heat — especially university families — if the local tradeoffs still feel acceptable after a full season in Morgantown.",
@@ -427,21 +427,21 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["university families", "healthcare"], travelFit: ["fall color", "whitewater"],
     whoWouldLove: "Appalachian foothills without deep South heat.", whoMightNot: "Sun-belt retirees seeking dry air.",
     confidence: "high",
-        deepSections: [
+            deepSections: [
       {
         id: "morgantown-wv-mechanism",
-        title: "River-Valley Moderation at work",
+        title: "River-Valley Moderation mechanics",
         paragraphs: [
-          "Morgantown sits where dissected Allegheny Plateau; Monongahela River valley; frequent valley fog and upslope enhancement on SW flow. The atlas tags this as river-valley moderation (Cfa / Dfb transition, roughly 1125 mm/yr in these normals), and the dominant spatial engines are Orographic lift and Cold-air drainage — with River-valley moderation also in play.",
-          "Plateau dissected by tight river networks produces high spatial variability in frost, fog, and snowfall totals within a 20 km radius. That mechanism is why two map dots in West Virginia can feel unlike each other even when headline temperatures look similar — elevation bands, fetch exposure, and drainage geometry all re-weight the same synoptic pattern.",
+          "Morgantown sits where dissected Allegheny Plateau; Monongahela River valley; frequent valley fog and upslope enhancement on SW flow. Cfa / Dfb transition normals and roughly 1125 mm/yr frame the regional baseline, but Orographic lift and Cold-air drainage re-weight what any single forecast means block by block.",
+          "Plateau dissected by tight river networks produces high spatial variability in frost, fog, and snowfall totals within a 20 km radius. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
         ],
       },
       {
         id: "morgantown-wv-field-read",
-        title: "Scouting and on-the-ground read",
+        title: "On-the-ground read",
         paragraphs: [
-          "Morgantown screening: Humid continental–subtropical transition — wet, cloudy, and hilly with sharp microclimates between ridges and valleys. Soil reads as acidic shaly silt loams with moderate drainage and pH 4.8–6.2 — garden success tracks micro-shelter and water timing.",
-          "Flood registers elevated in this entry — treat parcel-level exposure as a diligence item, not a headline score. Growability favors Maple, Apples, Brassicas, Cool-season turf; Drought-tolerant xeriscape without irrigation tend to struggle without intervention. Sun-belt retirees seeking dry air — confirm services, insurance, and evacuation routes before treating atlas normals as a lease on daily life.",
+          "Humid continental–subtropical transition — wet, cloudy, and hilly with sharp microclimates between ridges and valleys. Soils read as acidic shaly silt loams with moderate drainage (pH 4.8–6.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
+          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Maple, Apples, Brassicas. Sun-belt retirees seeking dry air should confirm services and seasonal access on the ground — not from atlas normals alone.",
         ],
       },
     ],
