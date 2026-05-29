@@ -390,7 +390,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "second-home owners"], travelFit: ["Everglades", "beaches"],
     whoWouldLove: "Gulf-coast warmth without Atlantic surf culture.", whoMightNot: "Hurricane-averse; flood-risk skeptics.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "naples-fl-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -553,7 +553,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["ag workers", "remote workers"], travelFit: ["Scotts Bluff NM", "Oregon Trail history"],
     whoWouldLove: "Wide-open Plains people.", whoMightNot: "Tree-seekers; humidity lovers.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "scottsbluff-ne-mechanism",
         title: "High-Desert Escape mechanics",
@@ -876,7 +876,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["maritime retirees", "museum-goers"], travelFit: ["seaport museum", "sailing"],
     whoWouldLove: "Coastal New England without big-city scale.", whoMightNot: "Budget retirees; sun-belt seekers.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "mystic-ct-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -957,7 +957,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["academics", "families"], travelFit: ["Penn State sports", "Rothrock SF"],
     whoWouldLove: "Appalachian foothills with college-town amenities.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "state-college-pa-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -1443,7 +1443,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["aviation", "ranching"], travelFit: ["aliens museum", "Bottomless Lakes"],
     whoWouldLove: "High-plains sky watchers.", whoMightNot: "Humidity lovers.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "roswell-nm-mechanism",
         title: "Monsoon-Edge Zone mechanics",
@@ -1524,7 +1524,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["tourism", "healthcare"], travelFit: ["Mount Rushmore", "Badlands"],
     whoWouldLove: "Black Hills access with city services.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "rapid-city-sd-mechanism",
         title: "Chinook Corridor mechanics",

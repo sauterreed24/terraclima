@@ -1634,7 +1634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "puerto-escondido-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2732,17 +2732,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Classic wet-dry tropics at latitude 23°N — reliable winter sun for snowbirds, humid summer monsoon.",
     summaryImmersive: "Mazatlán delivers postcard winters and steamy summers when the ITCZ influence returns. Pacific storms occasionally send swell and humidity; inland sierras wring rain that rarely reaches the beach uniformly.",
     whyDistinct: "Long straight Pacific fetch with tropical cyclone history distinct from Baja's desert shores.",
-                experience: {
-      feel: "Mazatlán delivers postcard winters and steamy summers when the ITCZ influence returns. Pacific storms occasionally send swell and humidity; inland sierras wring rain that rarely reaches the beach uniformly.",
+    experience: {
+      feel: "Mazatlán feels like classic Pacific wet-dry tropics at 23°N — long sandy beach on the Gulf of California opening where postcard dry winters draw snowbirds and steamy summer monsoon brings ITCZ humidity and tropical cyclone watches.",
       seasons: {
-        winter: "Warm winter window — afternoons near 26.3°C, nights near 12.7°C — skies stay mostly dry. Storm systems roll through with real force.",
-        spring: "Heating up fast — afternoons near 28.3°C, nights near 15.3°C — skies stay mostly dry. Storm systems roll through with real force.",
-        summer: "Warm season peak — afternoons near 31.7°C, nights near 23.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 30.7°C, nights near 20.3°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Dry-season paradise — afternoons near 26°C, nights near 13°C, reliable sun for snowbirds, historic centro walks, and carnival season building toward spring.",
+        spring: "Heating before rains — afternoons climbing toward 28°C, humidity rising, and the last clear weeks before summer convection returns.",
+        summer: "Monsoon steam — highs near 32°C, nights near 24°C, afternoon thunderstorms, and Pacific tropical cyclone watches from August through October.",
+        autumn: "Hurricane tail — highs near 31°C, heavy rains from recurving Pacific systems, and beach nourishment cycles visible after storm seasons.",
       },
-      travelerFit: "Visitors come for historic centro and carnival.",
-      residentFit: "It rewards winter sunbirds on a budget relative to Cabo — especially retirees — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
+      travelerFit: "Visitors come for historic centro, carnival, and winter sun on a budget relative to Cabo — wet season demands storm-aware scheduling.",
+      residentFit: "It rewards winter sunbirds and fishing-industry retirees who accept very-high coastal storm exposure and summer humidity.",
+      texture: "A Pacific wet-dry tradeoff — weigh very-high hurricane and coastal surge risk against reliable dry-season sun and lower cost than Baja resort towns.",
     },
     climate: { tempHighC: [26, 26, 27, 28, 30, 31, 32, 32, 32, 31, 29, 27], tempLowC: [12, 12, 13, 15, 18, 22, 24, 24, 24, 21, 16, 14], precipMm: [20, 8, 5, 3, 5, 40, 150, 220, 200, 85, 25, 22], annualPrecipMm: 783, frostFreeDays: 365, hardinessZone: "11", humidity: [77, 76, 71, 73, 76, 80, 83, 86, 86, 82, 82, 77], sunshinePct: [66, 71, 67, 68, 65, 62, 54, 52, 50, 52, 57, 59] },
     soil: { texture: "Sandy beach and dune", drainage: "excessive", phRange: [7.0, 8.0], waterHolding: "low" },
@@ -2754,7 +2754,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for summer humidity haters.",
+      note: "Mazatlán expat housing at mid-band; Hospital Sharp Mazatlán and MZT anchor care — very-high hurricane and coastal surge risk, summer monsoon humidity, and beach erosion define daily logistics beyond dry-season snowbird appeal.",
       sources: [
       { label: "SMN — Mazatlán", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -2764,21 +2764,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
-                                        deepSections: [
+    deepSections: [
       {
-        id: "mazatlan-mx-mechanism",
-        title: "Tropical Wet-Dry mechanics",
+        id: "mazatlan-wet-dry-tropics",
+        title: "Pacific wet-dry tropics and winter sun",
         paragraphs: [
-          "Mazatlán sits where long sandy beach on Gulf of California opening; tropical wet-dry with summer monsoon. Aw normals and roughly 783 mm/yr frame the regional baseline, but Tropical convective regime and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Long straight Pacific fetch with tropical cyclone history distinct from Baja's desert shores. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Mazatlán sits on a long sandy beach at the Gulf of California opening — Aw normals with roughly 783 mm annually concentrated in summer monsoon, where postcard dry winters draw snowbirds at lower cost than Cabo.",
+          "Long straight Pacific fetch with tropical cyclone history distinct from Baja desert shores — inland sierras wring rain that rarely reaches the beach uniformly on any given afternoon.",
         ],
       },
       {
-        id: "mazatlan-mx-field-read",
-        title: "On-the-ground read",
+        id: "mazatlan-hurricane-surge",
+        title: "Hurricane exposure and coastal surge",
         paragraphs: [
-          "Classic wet-dry tropics at latitude 23°N — reliable winter sun for snowbirds, humid summer monsoon. Soils read as sandy beach and dune with excessive drainage (pH 7–8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Palms, Tropical fruit with irrigation. Summer humidity haters should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Very-high coastal and storm risk registers here — verify elevation certificates and hurricane insurance before committing on low beach blocks. Sandy dune soils support palms and irrigated tropical fruit with excessive drainage.",
+          "Summer humidity haters should spend an August week here before treating dry winters as balance for 32°C muggy afternoons — Hospital Sharp Mazatlán anchors care but storm surge and beach nourishment cycles define long-run coastal logistics.",
         ],
       },
     ],
@@ -2797,17 +2797,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Gulf humidity, tropical cyclone exposure, and a UNESCO fort city — slower pace than Cancún with real storm history.",
     summaryImmersive: "Campeche receives summer deluges from tropical waves and autumn hurricanes; winter is warm and pleasant. Sea breezes moderate the heat but not the humidity. The low flat plain means surge and flood risk during strong storms.",
     whyDistinct: "Western Gulf track exposure differs from Caribbean Yucatán resorts; rainfall seasonality still monsoon-like.",
-                experience: {
-      feel: "Campeche receives summer deluges from tropical waves and autumn hurricanes; winter is warm and pleasant. Sea breezes moderate the heat but not the humidity. The low flat plain means surge and flood risk during strong storms.",
+    experience: {
+      feel: "Campeche feels like a UNESCO Gulf fort city — walled colonial port on a flat coastal plain where summer deluges from tropical waves meet autumn hurricanes, winter stays warm and pleasant, and sea breezes moderate heat but not humidity.",
       seasons: {
-        winter: "Warm winter window — afternoons near 28.3°C, nights near 18.3°C — humid air keeps everything soft and close. Storm systems roll through with real force.",
-        spring: "Heating up fast — afternoons near 32.3°C, nights near 21.7°C — humid air keeps everything soft and close. Green-up arrives against a wet 1320 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 33°C, nights near 22.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 31°C, nights near 21°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Dry-season comfort — afternoons near 28°C, nights near 18°C, walkable fort walls, and the best window for Gulf beaches without monsoon buildup.",
+        spring: "Heating before rains — afternoons climbing through the low 30s, humidity rising, and the last clear weeks before summer convection returns.",
+        summer: "Monsoon deluges — highs near 33°C, nights near 22°C, daily tropical waves, and western Gulf hurricane tracks demanding evacuation planning.",
+        autumn: "Hurricane peak — highs near 31°C, heavy rains and surge risk on the low flat plain, and mangrove margins absorbing storm energy until they cannot.",
       },
-      travelerFit: "Visitors come for fort walls and Gulf beaches.",
-      residentFit: "It rewards gulf tropical life with colonial architecture — especially remote workers — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
+      travelerFit: "Visitors come for UNESCO fort walls, Gulf beaches, and colonial architecture at slower pace than Cancún — storm season requires sober scheduling.",
+      residentFit: "It rewards remote workers and history buffs wanting Gulf tropical life with colonial character — if they accept very-high hurricane and coastal surge risk.",
+      texture: "A Gulf fort tradeoff — weigh very-high storm and flood exposure on a flat plain against warm winters and UNESCO historic-core walkability.",
     },
     climate: { tempHighC: [28, 29, 31, 32, 34, 33, 33, 33, 32, 31, 30, 28], tempLowC: [18, 18, 20, 22, 23, 23, 22, 22, 22, 21, 20, 19], precipMm: [45, 30, 25, 25, 75, 200, 180, 195, 210, 180, 80, 55], annualPrecipMm: 1320, frostFreeDays: 365, hardinessZone: "11", humidity: [76, 75, 70, 72, 75, 83, 78, 85, 85, 81, 81, 76], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Coastal alluvium and limestone", drainage: "imperfect", phRange: [7.0, 8.2], waterHolding: "high" },
@@ -2819,7 +2819,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for hurricane-risk averse.",
+      note: "Campeche colonial housing at mid-band; Hospital General Campeche and CPE anchor care — very-high hurricane and coastal surge on a flat Gulf plain, summer monsoon deluges, and imperfect drainage define daily logistics beyond UNESCO fort appeal.",
       sources: [
       { label: "SMN — Campeche", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -2829,21 +2829,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
-                                        deepSections: [
+    deepSections: [
       {
-        id: "campeche-mx-mechanism",
-        title: "Hurricane-Exposed Coast mechanics",
+        id: "campeche-gulf-fort",
+        title: "Western Gulf fort city and monsoon rhythm",
         paragraphs: [
-          "Campeche sits where walled colonial port on the Gulf of Mexico; flat coastal plain with tropical wet-dry regime. Aw normals and roughly 1320 mm/yr frame the regional baseline, but Tropical-cyclone exposure and Tropical convective regime re-weight what any single forecast means block by block.",
-          "Western Gulf track exposure differs from Caribbean Yucatán resorts; rainfall seasonality still monsoon-like. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Campeche sits on a walled colonial port on the Gulf of Mexico flat plain — Aw normals with roughly 1,320 mm annually, where western Gulf hurricane tracks differ from Caribbean Yucatán resorts but rainfall seasonality stays monsoon-like.",
+          "Winter is warm and pleasant with walkable UNESCO fort walls; summer brings tropical-wave deluges and sea breezes that moderate heat but not humidity on the low coastal plain.",
         ],
       },
       {
-        id: "campeche-mx-field-read",
-        title: "On-the-ground read",
+        id: "campeche-surge-flood",
+        title: "Surge risk and historic-core drainage",
         paragraphs: [
-          "Gulf humidity, tropical cyclone exposure, and a UNESCO fort city — slower pace than Cancún with real storm history. Soils read as coastal alluvium and limestone with imperfect drainage (pH 7–8.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Coconut, Citrus, Chile. Hurricane-risk averse should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Very-high coastal and storm risk registers here — verify flood panels and surge history before committing; historic core elevation is modest and drainage is key. Coastal alluvium and limestone supports coconut, citrus, and chile with imperfect drainage.",
+          "Hurricane-risk-averse relocators should confirm evacuation routes and insurance before committing — Hospital General Campeche anchors care but flat-plain surge and flood exposure define the lived filter beyond colonial Gulf appeal.",
         ],
       },
     ],

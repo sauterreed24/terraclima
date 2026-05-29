@@ -1147,17 +1147,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "A quiet BC orchard valley with fertile soils and protected climate — Kootenay fruit country.",
     summaryImmersive: "Creston sits in a broad valley between two great ranges. Partial rain shadow, long summer days, fertile silt soils, and extensive wetlands support a steady fruit and grain economy.",
     whyDistinct: "Valley position between Selkirks and Purcells provides partial shelter and fertile alluvial soils.",
-                experience: {
-      feel: "Creston Valley — creston sits in a broad valley between two great ranges. Partial rain shadow, long summer days, fertile silt soils, and extensive wetlands support a steady fruit and grain economy.",
+    experience: {
+      feel: "Creston feels like a quiet Kootenay orchard valley — broad floor between the Selkirks and Purcells where partial rain shadow, long summer days, fertile silt soils, and extensive wetlands support a steady fruit-and-grain economy away from Okanagan tourist traffic.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -0.1°C, nights near -6.7°C — humid air keeps everything soft and close.",
-        spring: "Spring opens — afternoons near 14.3°C, nights near 2.2°C — humid air keeps everything soft and close.",
-        summer: "Cool summer by latitude — afternoons near 25.8°C, nights near 11.5°C — showers pass through regularly. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 12.9°C, nights near 2.7°C — humid air keeps everything soft and close. Fire season lingers into shoulder months.",
+        winter: "Cold valley pool — afternoons near freezing, nights near −7°C, snow on the bench orchards, and Kootenay Pass closing on bad systems.",
+        spring: "Slow green-up — afternoons climbing through the mid-teens, wetland bird migration through the Creston Valley Wildlife Management Area, and orchard bloom on south-facing slopes.",
+        summer: "Warm and productive — highs near 26°C, long daylight hours powering cherries and heritage apples, and wildfire smoke the summer wildcard from surrounding slopes.",
+        autumn: "Harvest gold — highs falling through the low teens, fruit stands along Highway 3, and smoke sometimes lingering into October.",
       },
-      travelerFit: "Visitors come for wildlife area and orchards.",
-      residentFit: "It rewards quiet Kootenay folk — especially small-farm families — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are wildfire exposure and smoke-season air quality. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Creston Valley Wildlife Area birding, heritage orchards, and quiet Kootenay fruit country.",
+      residentFit: "It rewards small-farm families and quiet Kootenay folk who accept elevated wildfire smoke exposure and housing above regional medians.",
+      texture: "A sheltered orchard tradeoff — weigh smoke-season air quality, wetland flood geometry, and Creston hospital access against fertile soils and partial rain-shadow protection.",
     },
     climate: { tempHighC: [-1.2, 2.4, 8.4, 14.6, 19.8, 23.4, 27.2, 26.8, 21.2, 13.2, 4.2, -1.6], tempLowC: [-7.8, -5.3, -1.9, 2.1, 6.4, 10.2, 12.4, 12.0, 7.8, 2.8, -2.6, -6.9], precipMm: [36, 26, 30, 36, 52, 62, 42, 36, 36, 46, 50, 50], annualPrecipMm: 502, frostFreeDays: 155, hardinessZone: "5b", humidity: [85, 85, 77, 74, 73, 70, 61, 64, 66, 72, 83, 81], sunshinePct: [37, 44, 47, 55, 60, 64, 57, 54, 45, 40, 36, 33] },
     soil: { texture: "Silt loam on lake-bottom deposits", drainage: "moderate", phRange: [6.2, 7.0], waterHolding: "high" },
@@ -1169,7 +1169,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Housing runs above regional medians; Confirm hospital and airport distances for your needs.",
+      note: "Creston housing runs above regional medians; Creston Valley Hospital and YXC anchor care — elevated wildfire smoke from surrounding Selkirk-Purcell slopes and wetland flood geometry define daily logistics beyond quiet orchard appeal.",
       sources: [
       { label: "ECCC — Creston CDA", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1179,21 +1179,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families"], travelFit: ["wildlife area", "orchards"],
     whoWouldLove: "Quiet Kootenay folk.", whoMightNot: "Urbanites.",
     confidence: "moderate",
-                                        deepSections: [
+    deepSections: [
       {
-        id: "creston-bc-mechanism",
-        title: "Orchard Valley mechanics",
+        id: "creston-kootenay-valley",
+        title: "Selkirk-Purcell valley shelter and orchard soils",
         paragraphs: [
-          "Creston Valley sits where broad valley between the Selkirks and Purcells; fertile floor with wetland complex. Dfb / BSk transition normals and roughly 502 mm/yr frame the regional baseline, but River-valley moderation and Rain shadow re-weight what any single forecast means block by block.",
-          "Valley position between Selkirks and Purcells provides partial shelter and fertile alluvial soils. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Creston sits in a broad valley between the Selkirks and Purcells — Dfb/BSk transition normals with roughly 502 mm annually, where partial rain shadow and river-valley moderation produce a protected orchard climate in Kootenay fruit country.",
+          "Fertile silt loam on lake-bottom deposits supports heritage apples, cherries, hardy grapes, and grain — valley position between two great ranges provides partial shelter from the harshest continental extremes.",
         ],
       },
       {
-        id: "creston-bc-field-read",
-        title: "On-the-ground read",
+        id: "creston-wetland-fire",
+        title: "Wetland complex and wildfire smoke",
         paragraphs: [
-          "A quiet BC orchard valley with fertile soils and protected climate — Kootenay fruit country. Soils read as silt loam on lake-bottom deposits with moderate drainage (pH 6.2–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples (heritage), Cherries, Hardy grapes. Urbanites should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated wildfire and smoke risk registers here — verify evacuation routes and air filtration before committing. Extensive wetlands in the Creston Valley Wildlife Management Area organize flood geometry and bird migration alongside orchard benches.",
+          "Urbanites should confirm parcel elevation above wetland flood zones before committing — Creston Valley Hospital anchors care but smoke-season PM from surrounding slopes defines summer logistics beyond quiet small-farm appeal.",
         ],
       },
     ],
@@ -1819,17 +1819,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's southernmost mainland town — Lake Erie moderation produces hot summers, mild winters, and the country's longest growing season.",
     summaryImmersive: "Leamington sits at 42° latitude — south of the northern California border — on Lake Erie's north shore. The combination of low latitude and lake moderation produces Canada's longest frost-free season (~180 days) and warmest summers. The town has been the country's tomato-growing capital for generations; massive greenhouse complexes now dominate, leveraging both the climate and lake-sourced cooling/heating.",
     whyDistinct: "Southernmost Canadian latitude plus Lake Erie moderation produces the country's most southerly climate regime.",
-                experience: {
-      feel: "Leamington / Pelee — leamington sits at 42° latitude — south of the northern California border — on Lake Erie's north shore. The combination of low latitude and lake moderation produces Canada's longest frost-free season (~180 days) and warmest summers.",
+    experience: {
+      feel: "Leamington feels like Canada's southernmost mainland climate — 42° latitude on Lake Erie's north shore where lake moderation produces the country's longest frost-free season near 180 days, hottest summers, and a tomato-and-greenhouse economy built on deep clay loam.",
       seasons: {
-        winter: "Cold and snowy — afternoons near 0.9°C, nights near -6.9°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 12.8°C, nights near 2.6°C — showers pass through regularly. Green-up arrives against a wet 906 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 25.8°C, nights near 15.8°C — showers pass through regularly. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 15.5°C, nights near 6.8°C — showers pass through regularly. Storm systems roll through with real force.",
+        winter: "Lake-moderated cold — afternoons near 1°C, nights near −7°C, lake-effect snow bands, and greenhouse complexes running through short days.",
+        spring: "Fast green-up — afternoons climbing through the low teens, Point Pelee migration peak, and orchard bloom weeks ahead of interior Ontario.",
+        summer: "Canada's warmest mainland — highs near 27°C, humid lake breezes, tomato harvest, and beach days on Erie's north shore.",
+        autumn: "Extended harvest — highs falling through the mid-teens, Concord grape crush, and the last comfortable weeks before lake-effect returns.",
       },
-      travelerFit: "Visitors come for Point Pelee birding.",
-      residentFit: "It rewards those drawn to Canada's longest growing season — especially greenhouse farmers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are storm exposure.",
+      travelerFit: "Visitors come for Point Pelee birding, Lake Erie beaches, and Canada's longest growing-season demonstration.",
+      residentFit: "It rewards greenhouse farmers and those drawn to Canada's longest growing season — if they accept flat agricultural plain life without mountain scenery.",
+      texture: "A southern-Ontario tradeoff — weigh elevated storm exposure and flat-plain monotony against 180 frost-free days and greenhouse-agriculture infrastructure.",
     },
     climate: { tempHighC: [-0.4, 0.6, 5.8, 13.1, 19.4, 24.6, 26.8, 26.1, 22.6, 15.6, 8.4, 2.4], tempLowC: [-7.9, -8.4, -3.6, 2.8, 8.6, 14.1, 16.8, 16.4, 12.4, 6.4, 1.6, -4.4], precipMm: [62, 52, 68, 82, 82, 80, 70, 78, 92, 78, 86, 76], snowCm: [40, 32, 18, 2, 0, 0, 0, 0, 0, 0, 6, 28], annualPrecipMm: 906, frostFreeDays: 180, hardinessZone: "7a", humidity: [60, 60, 58, 68, 70, 77, 77, 80, 81, 74, 74, 62], sunshinePct: [45, 48, 48, 56, 62, 67, 65, 64, 59, 54, 50, 44] },
     soil: { texture: "Deep clay loam on lakebed sediment", drainage: "moderate", phRange: [6.4, 7.4], waterHolding: "high" },
@@ -1841,7 +1841,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mountain-lovers.",
+      note: "Leamington greenhouse-ag housing at mid-band; Erie Shores HealthCare and YQG anchor care — elevated storm exposure on Lake Erie's north shore and flat agricultural plain define daily logistics beyond Canada's longest growing season.",
       sources: [
       { label: "ECCC — Leamington / Harrow AP", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1851,21 +1851,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["greenhouse farmers"], travelFit: ["Point Pelee birding"],
     whoWouldLove: "Those drawn to Canada's longest growing season.", whoMightNot: "Mountain-lovers.",
     confidence: "high",
-                                        deepSections: [
+    deepSections: [
       {
-        id: "leamington-on-mechanism",
-        title: "Lake-Moderated mechanics",
+        id: "leamington-southernmost",
+        title: "Canada's southernmost mainland and lake moderation",
         paragraphs: [
-          "Leamington / Pelee sits where canada's southernmost mainland, on Lake Erie's north shore. Dfa (warmest Dfa in Canada) normals and roughly 906 mm/yr frame the regional baseline, but Lake effect and River-valley moderation re-weight what any single forecast means block by block.",
-          "Southernmost Canadian latitude plus Lake Erie moderation produces the country's most southerly climate regime. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Leamington sits at 42° latitude on Lake Erie's north shore — Dfa normals with roughly 906 mm annually, where southernmost Canadian latitude plus lake moderation produces the country's longest frost-free season near 180 days.",
+          "Deep clay loam on lakebed sediment supports greenhouse tomatoes, peaches, wine grapes, and peppers — massive greenhouse complexes leverage both climate and lake-sourced cooling and heating.",
         ],
       },
       {
-        id: "leamington-on-field-read",
-        title: "On-the-ground read",
+        id: "leamington-greenhouse-belt",
+        title: "Greenhouse economy and storm exposure",
         paragraphs: [
-          "Canada's southernmost mainland town — Lake Erie moderation produces hot summers, mild winters, and the country's longest growing season. Soils read as deep clay loam on lakebed sediment with moderate drainage (pH 6.4–7.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Tomatoes (greenhouse), Peaches, Wine grapes. Mountain-lovers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated storm risk registers here — verify parcel drainage and insurance before committing on low lake-plain blocks. Canada's tomato-growing capital for generations now dominated by greenhouse acreage underwritten by lake moderation.",
+          "Mountain-lovers should confirm the flat agricultural plain suits them before committing — Erie Shores HealthCare anchors care but lake Erie storm tracks define seasonal logistics beyond warm mainland summers.",
         ],
       },
     ],
@@ -1883,17 +1883,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Lake Superior's port at the boundary of Great Lakes moderation and boreal continentality — some of Ontario's most dramatic climate contrasts.",
     summaryImmersive: "Thunder Bay sits on Lake Superior's north shore where Great Lakes moderation bumps into true boreal continental climate. The lake delays both winter freeze and spring warmth, keeping lakeshore milder than the Shield just inland. Summers are cool; winters long. Lake-effect snow from Superior is substantial when winds are right. The city's character — boreal forest at the back door, cold freshwater sea at the front — is distinctive.",
     whyDistinct: "Lake Superior acts as a thermal flywheel at continental-climate latitude; local shoreline is significantly milder than inland Shield.",
-                experience: {
-      feel: "Thunder Bay sits on Lake Superior's north shore where Great Lakes moderation bumps into true boreal continental climate. The lake delays both winter freeze and spring warmth, keeping lakeshore milder than the Shield just inland. Summers are cool; winters long.",
+    experience: {
+      feel: "Thunder Bay feels like Lake Superior's port at the boundary of Great Lakes moderation and boreal continentality — north shore where the lake delays winter freeze and spring warmth, keeping lakeshore milder than the Shield just inland.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -5.9°C, nights near -16.4°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near 8.1°C, nights near -3°C — snow is a regular part of the picture.",
-        summer: "Cool summer by latitude — afternoons near 21.8°C, nights near 10.5°C — showers pass through regularly. Wildfire smoke can settle in for stretches.",
-        autumn: "Shoulder season — afternoons near 9.3°C, nights near 0.6°C — snow is a regular part of the picture.",
+        winter: "Long and cold — afternoons near −6°C, nights near −16°C, lake-effect snow when winds align, and Superior ice forming later than inland lakes.",
+        spring: "Late thaw — afternoons climbing through single digits, Sleeping Giant still snow-capped in May, and green-up arriving weeks behind southern Ontario.",
+        summer: "Cool and brief — highs near 22°C, wildfire smoke sometimes settling from the boreal Shield, and the payoff window for Lake Superior recreation.",
+        autumn: "Fast freeze — highs falling through 9°C, first hard frosts in September, and hardwood color against dark boreal forest.",
       },
-      travelerFit: "Visitors come for Sleeping Giant Park.",
-      residentFit: "It rewards boreal-lake devotees — especially boreal families — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are deep winter cold and smoke-season air quality.",
+      travelerFit: "Visitors come for Sleeping Giant Provincial Park, Terry Fox monument, and a textbook Superior north-shore port climate.",
+      residentFit: "It rewards boreal-lake devotees and boreal families who accept high extreme-cold risk, elevated smoke exposure, and limited specialist access beyond Thunder Bay Regional.",
+      texture: "A Superior port tradeoff — weigh deep winter cold, smoke-season air quality, and declining lake ice against boreal forest at the back door and cold freshwater sea at the front.",
     },
     climate: { tempHighC: [-7.3, -5.0, 0.8, 8.2, 15.4, 20.1, 23.1, 22.1, 16.8, 9.8, 1.2, -5.4], tempLowC: [-18.4, -17.2, -10.1, -2.4, 3.4, 8.6, 11.8, 11.1, 6.4, 0.8, -5.4, -13.6], precipMm: [28, 22, 36, 44, 72, 84, 88, 86, 92, 66, 52, 38], snowCm: [40, 28, 32, 14, 2, 0, 0, 0, 0, 4, 32, 44], annualPrecipMm: 708, frostFreeDays: 110, hardinessZone: "3b", humidity: [82, 82, 74, 71, 66, 63, 62, 65, 67, 69, 76, 78], sunshinePct: [39, 46, 48, 57, 62, 65, 59, 55, 47, 41, 38, 34] },
     soil: { texture: "Sandy loam over glacial till", drainage: "moderate", phRange: [5.4, 6.4], waterHolding: "moderate" },
@@ -1905,7 +1905,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Confirm rents, insurance, and seasonal access on the ground before treating atlas normals as daily-life certainty.",
+      note: "Thunder Bay housing at mid-band; Thunder Bay Regional Health Sciences Centre and YQT anchor care — high extreme-cold risk, elevated boreal wildfire smoke, and declining Superior ice cover define daily logistics beyond Sleeping Giant appeal.",
       sources: [
       { label: "ECCC — Thunder Bay AP", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1915,21 +1915,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["boreal families"], travelFit: ["Sleeping Giant Park"],
     whoWouldLove: "Boreal-lake devotees.", whoMightNot: "Heat-needing.",
     confidence: "high",
-                                        deepSections: [
+    deepSections: [
       {
-        id: "thunder-bay-on-mechanism",
-        title: "Lake-Moderated mechanics",
+        id: "thunder-bay-superior-flywheel",
+        title: "Lake Superior thermal flywheel and boreal edge",
         paragraphs: [
-          "Thunder Bay sits where north shore of Lake Superior; port city sheltered by Sibley Peninsula. Dfb normals and roughly 708 mm/yr frame the regional baseline, but Lake effect and Continental extremity re-weight what any single forecast means block by block.",
-          "Lake Superior acts as a thermal flywheel at continental-climate latitude; local shoreline is significantly milder than inland Shield. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Thunder Bay sits on Lake Superior's north shore sheltered by Sibley Peninsula — Dfb normals with roughly 708 mm annually, where Superior acts as a thermal flywheel at continental-climate latitude.",
+          "The lake delays both winter freeze and spring warmth, keeping lakeshore milder than the Canadian Shield just inland — boreal forest at the back door, cold freshwater sea at the front.",
         ],
       },
       {
-        id: "thunder-bay-on-field-read",
-        title: "On-the-ground read",
+        id: "thunder-bay-smoke-cold",
+        title: "Boreal smoke and extreme cold",
         paragraphs: [
-          "Lake Superior's port at the boundary of Great Lakes moderation and boreal continentality — some of Ontario's most dramatic climate contrasts. Soils read as sandy loam over glacial till with moderate drainage (pH 5.4–6.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Smoke / air quality registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cold-hardy perennials, Cool-season crops. Heat-needing should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High extreme-cold and elevated smoke risk registers here — verify heating costs and air filtration before committing. Sandy loam over glacial till supports cold-hardy perennials and cool-season crops on sheltered blocks.",
+          "Heat-needing relocators should spend a January week here before committing — Thunder Bay Regional anchors care but boreal wildfire smoke and declining lake ice define long-run climate tradeoffs beyond Superior port appeal.",
         ],
       },
     ],
@@ -2333,7 +2333,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Cool-climate wine people.", whoMightNot: "Those wanting mild winters.",
     confidence: "moderate",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "prince-edward-co-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2406,7 +2406,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "iqaluit-nu-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2477,7 +2477,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "inuvik-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -3025,7 +3025,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "charlottetown-pei-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -3239,7 +3239,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "morden-mb-mechanism",
         title: "Orchard Valley mechanics",
@@ -3304,7 +3304,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
-                                        deepSections: [
+                                            deepSections: [
       {
         id: "sutton-qc-mechanism",
         title: "Piedmont Transition mechanics",
