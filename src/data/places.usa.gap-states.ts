@@ -69,7 +69,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["retirees", "remote workers"], travelFit: ["DeSoto State Park", "hang gliding ridge"],
     whoWouldLove: "Southerners who want mountain air without leaving the state.", whoMightNot: "Those needing urban amenities or dry winters.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "mentone-al-mechanism",
         title: "Thermal Belt mechanics",
@@ -153,7 +153,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["second-home owners", "artists"], travelFit: ["fall color", "cross-country skiing"],
     whoWouldLove: "New England maximalists who want real winter.", whoMightNot: "Mild-climate retirees.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "norfolk-ct-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -237,7 +237,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "remote workers"], travelFit: ["Cape Henlopen", "ferry to Cape May"],
     whoWouldLove: "Bay-and-beach people who prefer small-town scale.", whoMightNot: "Mountain-air seekers; flood-risk skeptics.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "lewes-de-mechanism",
         title: "Lake-Moderated mechanics",
@@ -321,7 +321,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["remote workers", "hikers"], travelFit: ["Bartram Trail", "waterfalls"],
     whoWouldLove: "Southerners who want mountain climate without West Coast prices.", whoMightNot: "Those who need reliable hot summers for crops.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "clayton-ga-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -405,7 +405,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-town lovers", "remote workers"], travelFit: ["Mississippi Palisades", "architecture"],
     whoWouldLove: "Midwest topography fans who still want seasons.", whoMightNot: "Those avoiding cold winters or steep drives.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "galena-il-mechanism",
         title: "Driftless Relief Pocket mechanics",
@@ -489,7 +489,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "beverly-shores-in-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -573,7 +573,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers", "remote workers"], travelFit: ["Wisp Resort", "Autumn Glory"],
     whoWouldLove: "Mid-Atlantic residents who want real ski-adjacent winters.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "oakland-md-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -657,7 +657,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "pittsfield-ma-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -740,7 +740,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "ocean-springs-ms-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -822,7 +822,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "eminence-mo-mechanism",
         title: "Limestone / Karst Pocket mechanics",
@@ -992,7 +992,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["historic-home restorers", "retirees"], travelFit: ["Victorian architecture", "bird migration"],
     whoWouldLove: "Beach-town people who want walkable scale.", whoMightNot: "Dry-air or mountain-climate seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "cape-may-nj-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -1076,7 +1076,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "geneva-on-the-lake-oh-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -1159,7 +1159,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "broken-bow-ok-mechanism",
         title: "Piedmont Transition mechanics",
@@ -1241,7 +1241,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["seasonal residents", "fishermen"], travelFit: ["bluffs", "biking"],
     whoWouldLove: "Cool-summer island people who tolerate ferry logistics.", whoMightNot: "Heat seekers; budget shoppers; anyone unwilling to plan groceries and care around the ferry schedule.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "block-island-ri-mechanism",
         title: "Hyper-Maritime mechanics",

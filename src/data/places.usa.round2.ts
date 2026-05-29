@@ -147,7 +147,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["wine industry", "retirees"], travelFit: ["wine tasting", "hot-air balloons"],
     whoWouldLove: "Viticulture and Mediterranean gardening devotees.", whoMightNot: "Budget shoppers; fire-smoke sensitive.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "napa-ca-mechanism",
         title: "Mediterranean Pocket mechanics",
@@ -228,7 +228,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "hospitality"], travelFit: ["modernism week", "Joshua Tree day trips"],
     whoWouldLove: "Dry heat and winter sun seekers.", whoMightNot: "Summer heat–sensitive visitors.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "palm-springs-ca-mechanism",
         title: "High-Desert Escape mechanics",
@@ -390,7 +390,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["retirees", "second-home owners"], travelFit: ["Everglades", "beaches"],
     whoWouldLove: "Gulf-coast warmth without Atlantic surf culture.", whoMightNot: "Hurricane-averse; flood-risk skeptics.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "naples-fl-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -553,7 +553,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["ag workers", "remote workers"], travelFit: ["Scotts Bluff NM", "Oregon Trail history"],
     whoWouldLove: "Wide-open Plains people.", whoMightNot: "Tree-seekers; humidity lovers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "scottsbluff-ne-mechanism",
         title: "High-Desert Escape mechanics",
@@ -876,7 +876,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["maritime retirees", "museum-goers"], travelFit: ["seaport museum", "sailing"],
     whoWouldLove: "Coastal New England without big-city scale.", whoMightNot: "Budget retirees; sun-belt seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "mystic-ct-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -957,7 +957,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["academics", "families"], travelFit: ["Penn State sports", "Rothrock SF"],
     whoWouldLove: "Appalachian foothills with college-town amenities.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "state-college-pa-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -1443,7 +1443,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["aviation", "ranching"], travelFit: ["aliens museum", "Bottomless Lakes"],
     whoWouldLove: "High-plains sky watchers.", whoMightNot: "Humidity lovers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "roswell-nm-mechanism",
         title: "Monsoon-Edge Zone mechanics",
@@ -1524,7 +1524,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["tourism", "healthcare"], travelFit: ["Mount Rushmore", "Badlands"],
     whoWouldLove: "Black Hills access with city services.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "rapid-city-sd-mechanism",
         title: "Chinook Corridor mechanics",
@@ -1605,7 +1605,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     relocationFit: ["hospitality", "outdoor industry"], travelFit: ["Grand Teton NP", "skiing"],
     whoWouldLove: "Mountain-town life with global name recognition.", whoMightNot: "Affordable-housing seekers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "jackson-wy-mechanism",
         title: "Cold-Air Pool mechanics",

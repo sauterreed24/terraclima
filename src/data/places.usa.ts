@@ -2619,7 +2619,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["maritime-loving remote workers"], travelFit: ["Goonies tourism", "Columbia bar", "port food"],
     whoWouldLove: "People who romanticize storm-coast ports.", whoMightNot: "Sun-seekers; relocators reliant on metro-scale services or a major airport at the door.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "astoria-or-mechanism",
         title: "Hyper-Maritime mechanics",
@@ -2682,7 +2682,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["creative remote workers", "retirees"], travelFit: ["Victorian architecture", "wooden boat culture"],
     whoWouldLove: "Anyone who wants Pacific Northwest life with fewer gray days.", whoMightNot: "Housing-price-sensitive — Jefferson-County medians track the Olympic Peninsula migration boom.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "port-townsend-wa-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -3814,7 +3814,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["Yellowstone-adjacent lifestyle"], travelFit: ["Yellowstone gate"],
     whoWouldLove: "Dry sun lovers.", whoMightNot: "Those put off by wind.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "cody-wy-mechanism",
         title: "Chinook Corridor mechanics",
@@ -3878,7 +3878,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor culture seekers", "mountain town romantics"], travelFit: ["river access"],
     whoWouldLove: "Rocky-valley outdoor people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "missoula-mt-mechanism",
         title: "Basin Inversion mechanics",
@@ -3942,7 +3942,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski-town commuters", "tech remotes"], travelFit: ["Yellowstone north"],
     whoWouldLove: "Outdoor people wanting four real seasons.", whoMightNot: "Budget-constrained.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "bozeman-mt-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -4069,7 +4069,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["adventure sports"], travelFit: ["Arches", "Canyonlands", "mountain biking"],
     whoWouldLove: "Climbers and mountain bikers.", whoMightNot: "Heat-intolerant.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "moab-ut-mechanism",
         title: "Desert Oasis mechanics",
@@ -4267,7 +4267,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snow-resilient families"], travelFit: ["Finger Lakes gateway"],
     whoWouldLove: "Snow-happy city folk.", whoMightNot: "Sun-dependent.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "syracuse-ny-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -4515,7 +4515,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for flood-averse post-Helene.",
+      note: "Mountain-basin housing at mid-band with rising remote-work pressure; Mission Hospital and AVL anchor care — post-Helene flood and landslide diligence on French Broad tributaries shapes parcel choice more than mild-climate comfort scores.",
       sources: [
       { label: "NOAA — Asheville Regional AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "PRISM Climate Group — gridded 1991–2020 normals", url: "https://prism.oregonstate.edu/" },
@@ -4524,21 +4524,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["creative remotes", "retirees"], travelFit: ["Biltmore", "Blue Ridge Parkway"],
     whoWouldLove: "Those wanting Southern mild with real summer relief.", whoMightNot: "Flood-averse post-Helene.",
     confidence: "high",
-                    deepSections: [
+    deepSections: [
       {
-        id: "asheville-nc-mechanism",
-        title: "Mild-Winter Foothills mechanics",
+        id: "asheville-french-broad-basin",
+        title: "Southern Appalachian basin moderation",
         paragraphs: [
-          "Asheville sits where french Broad River basin between the Black Mountains and the Pisgahs. Cfa / Cfb margin normals and roughly 1140 mm/yr frame the regional baseline, but River-valley moderation and Elevation lapse rate re-weight what any single forecast means block by block.",
-          "Southern Appalachian basin elevation moderates summer heat while ridge shelter moderates winter cold. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Asheville sits at 650 m in the French Broad River basin between the Black Mountains and the Pisgahs — elevation produces summers significantly milder than the Piedmont: July afternoons average 28°C versus 32°C in Charlotte 200 km east. River-valley moderation and ridge shelter create one of the mildest four-season climates in the eastern US.",
+          "Thermal-belt and aspect effects mean south-facing slopes warm weeks ahead of north faces; cove forests and orchards reflect a climate that has attracted settlers for 150 years. Atlas normals describe the basin floor, not every ridge-top parcel.",
         ],
       },
       {
-        id: "asheville-nc-field-read",
-        title: "On-the-ground read",
+        id: "asheville-helene-flood",
+        title: "Helene-era flood and landslide diligence",
         paragraphs: [
-          "A mountain-basin city with one of the mildest four-season climates in the East — summers rarely above 30°C. Soils read as sandy loam over gneiss/schist with good drainage (pH 5.2–6.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Blueberries, Heirloom vegetables. Flood-averse post-Helene should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High flood and landslide risk registers here — 2024 Helene was catastrophic across the French Broad watershed; verify parcel elevation, drainage geometry, and insurance before committing. Sandy loam over gneiss supports apples, blueberries, and heirloom vegetables; long hot summers are rare at this elevation.",
+          "Remote-work migration has raised housing pressure — Mission Hospital anchors care locally. Flood-averse post-Helene relocators should scout specific blocks and creek confluences on the ground, not from comfort scores alone.",
         ],
       },
     ],
@@ -4587,7 +4587,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["summer-heat refugees"], travelFit: ["Appalachian Trail", "ski"],
     whoWouldLove: "People who want New-England feel in the South.", whoMightNot: "Flood-averse.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "boone-nc-mechanism",
         title: "Mild-Winter Foothills mechanics",
@@ -5381,7 +5381,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["winter-residents", "surfers", "subtropical-coast lovers"], travelFit: ["spring break", "sea turtle nesting (Kemp's ridley)", "birding"],
     whoWouldLove: "Anyone who wants Florida-like mildness without humidity maximum; anglers and surfers.", whoMightNot: "Hurricane-averse; storm-anxious; those who need seasons.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "south-padre-tx-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -6217,7 +6217,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["storm watchers", "coastal gardeners"], travelFit: ["winter banana-belt days", "Samuel Boardman corridor"],
     whoWouldLove: "Anyone fascinated by micro-scale winter warm bursts on a cold ocean.", whoMightNot: "Those who need predictable dry summers inland-style.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "brookings-or-mechanism",
         title: "Gap / Gorge Wind Corridor mechanics",
@@ -6287,7 +6287,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["orchardists", "remote workers"], travelFit: ["Crater Lake", "Rogue River rafting", "pear harvest"],
     whoWouldLove: "Sun-seekers who still want Oregon scenery.", whoMightNot: "Fog-haters in winter; smoke-sensitive lungs.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "medford-or-mechanism",
         title: "Rain-Shadow Sanctuary mechanics",
@@ -6355,7 +6355,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["sailors", "remote creatives"], travelFit: ["orca watching", "island hopping"],
     whoWouldLove: "Maritime-climate fans who want fewer dreary winters than Seattle proper.", whoMightNot: "Budget shoppers — island cost of living is steep.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "friday-harbor-wa-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -6454,17 +6454,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Bavarian-themed town, real interior climate — hot summers, cold snowy winters, and orchard country.",
     summaryImmersive: "Leavenworth combines Cascade scenery with continental seasonality: summer heat breaks 30°C regularly; winter snow is reliable for recreation. Chinooks occasionally chew snowpack in midwinter. Irrigation from the Wenatchee supports apples and pears that need winter chill.",
     whyDistinct: "Sharp east-slope transition from wet western Cascades to semi-arid interior within one mountain range.",
-                experience: {
-      feel: "Leavenworth combines Cascade scenery with continental seasonality: summer heat breaks 30°C regularly; winter snow is reliable for recreation. Chinooks occasionally chew snowpack in midwinter. Irrigation from the Wenatchee supports apples and pears that need winter chill.",
+    experience: {
+      feel: "Leavenworth feels like Cascade scenery with real interior seasonality — Bavarian-themed storefronts on the Wenatchee River where summer heat breaks 30°C, winter snow is reliable for recreation, and chinooks occasionally chew mid-winter snowpack.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 2°C, nights near -5°C — showers pass through regularly.",
-        spring: "Spring opens — afternoons near 16°C, nights near 3.3°C — weather stays moderate and changeable.",
-        summer: "Warm season peak — afternoons near 29°C, nights near 11°C — skies stay mostly dry. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 16°C, nights near 1.7°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
+        winter: "Cold and snowy — afternoons near 2°C, nights near −5°C, reliable ski and sledding weather, and occasional chinook thaws that strip the valley floor bare.",
+        spring: "Orchard bloom — afternoons climbing through 16°C, apple and pear blossoms along the Wenatchee, and the last window before smoke season.",
+        summer: "Hot and dry — afternoons above 29°C, irrigation channels running full, and regional wildfire smoke flattening air quality for weeks.",
+        autumn: "Oktoberfest gold — highs falling through 16°C, harvest in surrounding orchards, and fire season lingering until Pacific storms return.",
       },
-      travelerFit: "Visitors come for Oktoberfest and Enchantment peaks.",
-      residentFit: "It rewards four-season mountain-town lovers without Colorado altitude — especially ski families — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are wildfire exposure and smoke-season air quality.",
+      travelerFit: "Visitors come for Oktoberfest, Enchantment Lakes access, and a four-season mountain town without Colorado altitude.",
+      residentFit: "It rewards ski families and orchardists who accept high wildfire smoke risk and tourism-season crowding.",
+      texture: "Rain-shadow orchard valley — weigh smoke, irrigation limits, and summer heat against Cascade access and reliable winter snow.",
     },
     climate: { tempHighC: [1, 4, 10, 16, 22, 26, 31, 30, 25, 16, 7, 1], tempLowC: [-6, -4, 0, 3, 7, 10, 12, 11, 6, 1, -2, -5], precipMm: [55, 45, 35, 25, 30, 20, 10, 12, 18, 35, 55, 65], annualPrecipMm: 406, frostFreeDays: 155, hardinessZone: "6b", humidity: [59, 58, 58, 64, 69, 66, 64, 63, 59, 63, 63, 58], sunshinePct: [45, 48, 47, 54, 69, 74, 71, 71, 66, 62, 49, 44] },
     soil: { texture: "Alluvial sandy loam", drainage: "good", phRange: [6.4, 7.4], waterHolding: "moderate" },
@@ -6476,7 +6476,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for cool-summer maritime purists.",
+      note: "Resort-town housing at mid-band with Oktoberfest-season pressure; Central Washington Hospital in Wenatchee anchors care — high wildfire smoke risk and summer heat above 30°C define seasonal friction beyond reliable winter snow.",
       sources: [
       { label: "NOAA — Leavenworth area", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Leavenworth", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -6486,21 +6486,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ski families", "orchardists"], travelFit: ["Oktoberfest", "Enchantment peaks"],
     whoWouldLove: "Four-season mountain-town lovers without Colorado altitude.", whoMightNot: "Cool-summer maritime purists.",
     confidence: "high",
-                    deepSections: [
+    deepSections: [
       {
-        id: "leavenworth-wa-mechanism",
-        title: "Rain-Shadow Sanctuary mechanics",
+        id: "leavenworth-wenatchee-rain-shadow",
+        title: "Cascade rain shadow and orchard chill",
         paragraphs: [
-          "Leavenworth sits where wenatchee River valley at the eastern foothills of the Cascades; strong rain shadow from Pacific storms. Dsa normals and roughly 406 mm/yr frame the regional baseline, but Rain shadow and Chinook / foehn downslope re-weight what any single forecast means block by block.",
-          "Sharp east-slope transition from wet western Cascades to semi-arid interior within one mountain range. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Leavenworth sits in the Wenatchee River valley at the eastern Cascades foothills — Pacific storms unload on the west slope, leaving roughly 406 mm annually and a Dsa character with summer heat above 30°C and reliable winter snow. Irrigation from the Wenatchee supports apples and pears that need adequate winter chill hours.",
+          "Sharp east-slope transition within one mountain range means Wenatchee and Chelan blocks ten kilometres apart can differ on frost timing and smoke exposure. Chinook intrusions occasionally erase mid-winter snowpack on the valley floor.",
         ],
       },
       {
-        id: "leavenworth-wa-field-read",
-        title: "On-the-ground read",
+        id: "leavenworth-smoke-tourism",
+        title: "Smoke season and resort-town friction",
         paragraphs: [
-          "Bavarian-themed town, real interior climate — hot summers, cold snowy winters, and orchard country. Soils read as alluvial sandy loam with good drainage (pH 6.4–7.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Pears, Stone fruit. Cool-summer maritime purists should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High wildfire and smoke risk registers here — verify defensible space, air filtration, and evacuation routes before committing. Alluvial sandy loam supports stone fruit and hops nearby; acid peat lovers struggle in this alkaline orchard envelope.",
+          "Oktoberfest tourism inflates housing pressure in a town of 2,000 — Central Washington Hospital in Wenatchee anchors specialty care. Cool-summer maritime purists should experience August smoke before treating winter snow as the whole story.",
         ],
       },
     ],
@@ -6584,17 +6584,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Red-rock country where summer monsoon storms explode over sandstone and the lake adds a local humidity bump.",
     summaryImmersive: "Page is a high-desert hub with July–August thunderstorms that paint ephemeral waterfalls on Navajo sandstone. Winters are mild and sunny; shoulder seasons are ideal for canyoneering. Lake Powell moderates immediate shoreline microclimates but does not erase the arid core.",
     whyDistinct: "Monsoon pulse on bare plateau rock creates extreme runoff and flash-flood hazard with little soil storage.",
-                experience: {
-      feel: "Page is a high-desert hub with July–August thunderstorms that paint ephemeral waterfalls on Navajo sandstone. Winters are mild and sunny; shoulder seasons are ideal for canyoneering. Lake Powell moderates immediate shoreline microclimates but does not erase the arid core.",
+    experience: {
+      feel: "Page feels like red-rock plateau country at Glen Canyon's rim — July monsoon storms painting ephemeral waterfalls on Navajo sandstone, Lake Powell adding a shoreline humidity bump, and slot-canyon flash-flood hazard as the ever-present summer wildcard.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7.3°C, nights near -1.7°C — skies stay mostly dry with intense sun.",
-        spring: "Spring opens — afternoons near 21°C, nights near 8.3°C — skies stay relentlessly clear and dry. Spring rains can swell rivers and arroyos quickly.",
-        summer: "Hot and humid — afternoons near 34.3°C, nights near 19.7°C — weather stays moderate and changeable. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Shoulder season — afternoons near 21.7°C, nights near 8°C — weather stays moderate and changeable. Flash-flood and surge diligence is part of daily life.",
+        winter: "Mild and sunny — afternoons near 7°C, nights near −2°C, empty tourist roads, and the steadiest window for photography without heat stress.",
+        spring: "Warming fast — afternoons climbing through 21°C, dry clear skies, and arroyo awareness before monsoon gate opens.",
+        summer: "Monsoon drama — afternoons above 34°C, convection building over bare slickrock, haboob dust, and slot-canyon closures when storms track nearby.",
+        autumn: "Shoulder perfection — highs near 22°C, humidity dropping, and the year's best canyoneering weather before winter.",
       },
-      travelerFit: "Visitors come for Antelope Canyon and Horseshoe Bend.",
-      residentFit: "It rewards canyon-country obsessives — especially river guides — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place — the main things to weigh are long-run drought and extreme summer heat.",
+      travelerFit: "Visitors come for Antelope Canyon, Horseshoe Bend, and Lake Powell — summer demands early-morning scheduling and flash-flood awareness.",
+      residentFit: "It rewards canyon-country obsessives and river guides who accept Colorado River politics, tourism economy volatility, and zero greenery without irrigation.",
+      texture: "Plateau monsoon tradeoff — weigh drought, extreme heat, and slot-canyon flood risk against red-rock access and mild winters.",
     },
     climate: { tempHighC: [6, 9, 15, 21, 27, 33, 36, 34, 30, 22, 13, 7], tempLowC: [-3, 0, 4, 8, 13, 18, 21, 20, 15, 8, 1, -2], precipMm: [18, 18, 20, 12, 8, 6, 22, 28, 22, 18, 14, 16], humidity: [40, 36, 32, 26, 22, 20, 30, 34, 32, 30, 34, 40], sunshinePct: [72, 76, 82, 88, 90, 92, 80, 80, 86, 84, 76, 72], annualPrecipMm: 202, frostFreeDays: 200, hardinessZone: "7a" },
     soil: { texture: "Sandy skeletal soils on Navajo sandstone", drainage: "excessive", phRange: [7.8, 8.4], waterHolding: "low" },
@@ -6606,7 +6606,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 38,
-      note: "A poor fit for anyone who needs greenery without irrigation.",
+      note: "Tourism-economy housing at mid-band; Page Hospital and PGA airport anchor local care — Colorado River water politics, slot-canyon flash-flood closures, and summer heat above 34°C define daily logistics beyond mild winter appeal.",
       sources: [
       { label: "NOAA — Page AZ", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Page", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -6616,21 +6616,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["river guides", "remote workers"], travelFit: ["Antelope Canyon", "Horseshoe Bend"],
     whoWouldLove: "Canyon-country obsessives.", whoMightNot: "Anyone who needs greenery without irrigation.",
     confidence: "high",
-                    deepSections: [
+    deepSections: [
       {
-        id: "page-az-mechanism",
-        title: "High-Desert Escape mechanics",
+        id: "page-monsoon-slickrock",
+        title: "Monsoon pulse on bare plateau rock",
         paragraphs: [
-          "Page sits where glen Canyon rim on the Colorado Plateau; slickrock and canyon country with Lake Powell at the doorstep. At roughly 1310 m, elevation bands matter as much as latitude. BSk normals and roughly 202 mm/yr frame the regional baseline, but Continental extremity and Monsoon convective lift re-weight what any single forecast means block by block.",
-          "Monsoon pulse on bare plateau rock creates extreme runoff and flash-flood hazard with little soil storage. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Page sits on the Glen Canyon rim at 1,310 m where monsoon convection builds over Navajo sandstone with almost no soil storage — July and August storms paint ephemeral waterfalls on bare slickrock and can send slot-canyon flash floods with minutes of warning. Roughly 202 mm annually arrives mostly in summer bursts.",
+          "Lake Powell moderates immediate shoreline microclimates but does not erase the arid BSk core — rim blocks and marina blocks differ materially on humidity and wind. Continental heating drives pre-monsoon May–June stress before relief arrives.",
         ],
       },
       {
-        id: "page-az-field-read",
-        title: "On-the-ground read",
+        id: "page-flood-water-politics",
+        title: "Flash floods and Colorado River stress",
         paragraphs: [
-          "Red-rock country where summer monsoon storms explode over sandstone and the lake adds a local humidity bump. Soils read as sandy skeletal soils on navajo sandstone with excessive drainage (pH 7.8–8.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Native succulents, Drip-irrigated trees. Anyone who needs greenery without irrigation should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated flood and drought risk registers here — slot-canyon flash floods kill tourists most years; verify distance from drainages and park closure protocols before guiding or living near canyon access. Sandy skeletal soils on sandstone support only native succulents and drip-irrigated plantings.",
+          "Colorado River flow politics dominate regional life more than garden-scale water — Page Memorial Hospital anchors local care. Anyone needing greenery without irrigation should confirm they accept red-rock desert daily life, not just postcard views.",
         ],
       },
     ],
@@ -6681,7 +6681,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snowmobilers", "boreal researchers"], travelFit: ["Voyageurs NP", "ice fishing"],
     whoWouldLove: "Hardy winter people who want true northern seasons.", whoMightNot: "Heat-lovers; thin-blood snowbirds.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "international-falls-mn-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -6746,7 +6746,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor enthusiasts", "remote workers"], travelFit: ["tall ships", "fall color", "skiing"],
     whoWouldLove: "Cool-summer lovers who still want real winter.", whoMightNot: "Sun-belt retirees seeking warmth.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "duluth-mn-mechanism",
         title: "Lake-Moderated mechanics",
@@ -6811,7 +6811,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["lake-house seekers"], travelFit: ["Presque Isle beaches", "winter storm chasing"],
     whoWouldLove: "Great Lakes culture and dramatic snow.", whoMightNot: "Snow shovel haters.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "erie-pa-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -6938,7 +6938,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Smokies trails", "autumn color"],
     whoWouldLove: "Misty-mountain hikers and waterfall chasers.", whoMightNot: "Crowd-averse visitors in October weekends.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "gatlinburg-tn-mechanism",
         title: "Thermal Belt mechanics",
@@ -7002,7 +7002,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote coastal workers"], travelFit: ["Wright Brothers", "wild horses", "surf"],
     whoWouldLove: "Beach people who accept hurricane season soberly.", whoMightNot: "Evacuation-averse; flood-insurance skeptics.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "nags-head-nc-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -7067,7 +7067,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote tech workers", "ski commuters"], travelFit: ["Champlain Islands", "ski resorts"],
     whoWouldLove: "Small-city New England with lake recreation.", whoMightNot: "Those who need warm winters.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "burlington-vt-mechanism",
         title: "Lake-Moderated mechanics",
@@ -7139,7 +7139,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Acadia", "whale watching"],
     whoWouldLove: "Granite-coast hikers and blueberry fans.", whoMightNot: "Budget travelers in peak July.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "bar-harbor-me-mechanism",
         title: "Fjord / Inlet Coast mechanics",
@@ -7204,7 +7204,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ag researchers", "storm chasers"], travelFit: ["Palo Duro", "wine country nearby"],
     whoWouldLove: "Big-sky storm watchers.", whoMightNot: "Humidity lovers; tree-huggers seeking forests.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "lubbock-tx-mechanism",
         title: "Badland / Steppe Pocket mechanics",
@@ -7330,7 +7330,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wellness retreat life"], travelFit: ["citrus farms", "sunset chasers"],
     whoWouldLove: "Mediterranean-light obsessives.", whoMightNot: "Fire-averse; seekers of seasonal drama.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "ojai-ca-mechanism",
         title: "Mediterranean Pocket mechanics",

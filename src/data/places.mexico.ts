@@ -845,17 +845,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A silver-mining colonial town on the monsoon edge — dry winters, thunderous summers.",
     summaryImmersive: "Álamos sits in the foothills of the Sierra Madre Occidental at 406 m. The North American Monsoon pushes moisture here reliably from July through September, transforming the dry thornscrub into luxuriant green. Winters are warm, dry, and bright — one of the mildest winter climates in northern Mexico.",
     whyDistinct: "Reliable monsoon arrival at lower elevation than most NAM stations; dramatic dry-wet seasonality.",
-                experience: {
-      feel: "Álamos sits in the foothills of the Sierra Madre Occidental at 406 m. The North American Monsoon pushes moisture here reliably from July through September, transforming the dry thornscrub into luxuriant green. Winters are warm, dry, and bright — one of the mildest winter climates in northern Mexico.",
+    experience: {
+      feel: "Álamos feels like colonial Sonora on the monsoon edge — dry bright winters near 27°C, thornscrub turning luxuriant green when North American Monsoon moisture arrives July through September, and one of northern Mexico's mildest winter envelopes at 406 m.",
       seasons: {
-        winter: "Warm winter window — afternoons near 27.4°C, nights near 9°C — humid air keeps everything soft and close.",
-        spring: "Heating up fast — afternoons near 34.7°C, nights near 15.5°C — skies stay mostly dry.",
-        summer: "Hot and humid — afternoons near 34.5°C, nights near 22.6°C — rain is frequent and can be heavy. Plan around heat that can turn genuinely dangerous.",
-        autumn: "Shoulder season — afternoons near 31.9°C, nights near 17.7°C — showers pass through regularly.",
+        winter: "Snowbird season — afternoons near 27°C, nights near 9°C, relentless sun on cobblestone streets, and the steadiest window for birding and architecture walks.",
+        spring: "Heating toward furnace — afternoons climbing through the mid-30s, dry thornscrub, and pre-monsoon stress before July relief.",
+        summer: "Monsoon transformation — afternoons near 34°C with humid spikes, daily convection, and the landscape shifting from brown to green within weeks.",
+        autumn: "Shoulder clarity — highs falling through the low 30s, storms tapering, and harvest weather returning to dry bright afternoons.",
       },
-      travelerFit: "Visitors come for birding and colonial architecture.",
-      residentFit: "It rewards monsoon-edge Sonora romantics — especially snowbird winter escape — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are long-run drought and extreme summer heat.",
+      travelerFit: "Visitors come for colonial architecture, tropical deciduous forest birding, and winter escape from northern cold.",
+      residentFit: "It rewards monsoon-edge Sonora romantics who accept pre-monsoon heat extremes and elevated drought between storms.",
+      texture: "Colonial foothill compromise — weigh long-run drought, June furnace heat, and wildfire smoke against dramatic dry-wet seasonality.",
     },
     climate: { tempHighC: [26.9, 28.7, 32.0, 34.8, 37.4, 38.1, 33.4, 32.1, 32.6, 33.1, 29.9, 26.6], tempLowC: [8.4, 9.6, 12.1, 15.3, 19.1, 22.3, 22.8, 22.6, 22.0, 18.1, 12.9, 9.1], precipMm: [28, 18, 8, 6, 4, 22, 208, 196, 110, 36, 22, 40], annualPrecipMm: 698, frostFreeDays: 365, hardinessZone: "10b equiv.", humidity: [76, 75, 70, 72, 75, 79, 92, 95, 95, 81, 81, 76], sunshinePct: [68, 73, 69, 70, 67, 64, 56, 54, 52, 54, 59, 61] },
     soil: { texture: "Sandy loam", drainage: "good", phRange: [6.8, 7.6], waterHolding: "low" },
@@ -867,7 +867,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 58,
       socialStress: 34,
       accessFriction: 38,
-      note: "Confirm rents, insurance, and seasonal access on the ground before treating atlas normals as daily-life certainty.",
+      note: "Colonial-town housing at mid-band for Sonora; IMSS and Ciudad Obregón/Hermosillo drives anchor care — pre-monsoon May–June heat above 37°C and erratic monsoon timing define seasonal friction beyond mild winter appeal.",
       sources: [
       { label: "SMN — Álamos station", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -877,21 +877,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbird winter escape"], travelFit: ["birding", "colonial architecture"],
     whoWouldLove: "Monsoon-edge Sonora romantics.", whoMightNot: "Heat-averse.",
     confidence: "moderate",
-                    deepSections: [
+    deepSections: [
       {
-        id: "alamos-mx-mechanism",
-        title: "Monsoon-Edge Zone mechanics",
+        id: "alamos-monsoon-colonial",
+        title: "Monsoon edge and colonial foothills",
         paragraphs: [
-          "Álamos sits where foothills of the Sierra Madre Occidental; monsoon moisture arrives reliably each summer. Aw normals and roughly 698 mm/yr frame the regional baseline, but Monsoon convective lift re-weight what any single forecast means block by block.",
-          "Reliable monsoon arrival at lower elevation than most NAM stations; dramatic dry-wet seasonality. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Álamos sits in Sierra Madre Occidental foothills at 406 m where North American Monsoon moisture arrives reliably July through September — transforming dry thornscrub into luxuriant tropical deciduous forest while winters stay warm, dry, and bright near 27°C afternoons. Dramatic dry-wet seasonality at lower elevation than most NAM stations is the defining character.",
+          "Monsoon convective lift re-weight forecasts block by block — arroyo-bottom parcels flood while ridge-top fincas see less rain. Sandy loam with good drainage supports citrus and drought-tolerant natives once storms arrive.",
         ],
       },
       {
-        id: "alamos-mx-field-read",
-        title: "On-the-ground read",
+        id: "alamos-drought-heat",
+        title: "Pre-monsoon furnace and water stress",
         paragraphs: [
-          "A silver-mining colonial town on the monsoon edge — dry winters, thunderous summers. Soils read as sandy loam with good drainage (pH 6.8–7.6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Drought registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Citrus, Mango, Sugarcane. Heat-averse should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated drought and extreme heat register here — verify water storage, shade infrastructure, and pre-monsoon May–June plans before committing. Roughly 698 mm annually arrives mostly in three months; the long dry window demands irrigation discipline.",
+          "Colonial-town housing attracts snowbirds, but heat-averse relocators should experience June before committing. Ciudad Obregón and Navojoa anchor specialty care within a few hours' drive.",
         ],
       },
     ],
@@ -1569,7 +1569,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbirds", "marine-adjacent"], travelFit: ["whale sharks", "island tourism"],
     whoWouldLove: "Those wanting winter perfection on clear turquoise water.", whoMightNot: "Year-round heat-averse.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "la-paz-mx-mechanism",
         title: "Desert Oasis mechanics",
@@ -1634,7 +1634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "puerto-escondido-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -1703,7 +1703,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["colonial-city expats"], travelFit: ["Maya sites", "cenotes"],
     whoWouldLove: "Tropical-dry + culture seekers.", whoMightNot: "Summer-heat-averse.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "merida-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -1768,7 +1768,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["tropical expats"], travelFit: ["lagoon tourism", "stromatolites"],
     whoWouldLove: "Caribbean-adjacent freshwater lovers.", whoMightNot: "Hurricane-averse.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "bacalar-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2282,7 +2282,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "artists", "highland-climate seekers"], travelFit: ["colonial architecture", "highland festivals", "walkable mild-weather city breaks"],
     whoWouldLove: "People who want dry sun and cool evenings without truly cold winters.", whoMightNot: "Humidity lovers or those needing lush, high-rain landscapes.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "san-miguel-de-allende-mx-mechanism",
         title: "Eternal-Spring Highland mechanics",
@@ -2464,17 +2464,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "At 2,663 m, the highest large city in North America — where winter nights commonly drop below freezing and summer afternoons rarely pass 23°C, even at 19°N.",
     summaryImmersive: "Toluca sits in one of the highest basins on Earth with a population over a million, 800 m higher than Denver and 400 m higher than Mexico City. The elevation alone strips nearly 20°C from what the tropical latitude would otherwise suggest. Afternoons rarely exceed 23°C even at peak sun; winter nights regularly drop to −4°C, with frost on car windows 30–60 mornings per year. Despite the latitude, snow falls lightly on some winter days. On clear mornings, the snow-capped Nevado de Toluca volcano looms over the valley. The basin geometry creates pronounced nocturnal inversions that trap cold air and urban emissions.",
     whyDistinct: "Extreme elevation (one of the highest major cities on Earth) + basin geometry + tropical latitude = the coldest-feeling city in Mexico despite its subtropical position.",
-                experience: {
-      feel: "Toluca sits in one of the highest basins on Earth with a population over a million, 800 m higher than Denver and 400 m higher than Mexico City. The elevation alone strips nearly 20°C from what the tropical latitude would otherwise suggest. Afternoons rarely exceed 23°C even at peak sun;.",
+    experience: {
+      feel: "Toluca feels like one of the highest major cities on Earth — 2,663 m in the Valley of Mexico where elevation strips nearly 20°C from tropical latitude, summer afternoons rarely exceed 23°C, and winter nights regularly frost car windows 30–60 mornings per year.",
       seasons: {
-        winter: "Warm winter window — afternoons near 20.3°C, nights near 0.3°C — skies stay mostly dry.",
-        spring: "Spring opens — afternoons near 24.3°C, nights near 6.3°C — weather stays moderate and changeable.",
-        summer: "Cool summer by latitude — afternoons near 21.9°C, nights near 9.9°C — rain is frequent and can be heavy. Wildfire smoke can settle in for stretches.",
-        autumn: "Shoulder season — afternoons near 21°C, nights near 6.1°C — showers pass through regularly.",
+        winter: "Cool and frosty — afternoons near 20°C, nights below freezing, light snow on some days, and Nevado de Toluca snow-capped on clear mornings.",
+        spring: "Dry and warming — afternoons near 24°C, the steadiest hiking window on the volcano, and basin inversions trapping cold air and emissions on stagnant mornings.",
+        summer: "Wet-season cool — afternoons near 22°C despite 19°N latitude, heavy monsoon rain near 820 mm annually, and wildfire smoke pooling in the basin.",
+        autumn: "Shoulder clarity — highs falling through 21°C, storms tapering, and the return of nocturnal frost in open valley pockets.",
       },
-      travelerFit: "Visitors come for Nevado de Toluca hiking, colonial architecture, and traditional markets.",
-      residentFit: "It rewards altitude enthusiasts, cool-climate seekers in Mexico — especially altitude-loving urbanites — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at 2663 m elevation — the main things to weigh are smoke-season air quality. Specialty care and major-airport access require real planning.",
+      travelerFit: "Visitors come for Nevado de Toluca hiking, colonial architecture, and traditional markets in Mexico's coolest major metro.",
+      residentFit: "It rewards altitude enthusiasts who accept basin smog, thin-air adjustment, and Mexico City proximity for airport access.",
+      texture: "High-basin urban compromise — weigh inversion pollution, frost, and smoke against cool-climate livability unavailable at coastal latitudes.",
     },
     climate: {
       tempHighC: [19.8, 21.4, 23.4, 24.6, 24.8, 22.8, 21.4, 21.4, 21.2, 21.1, 20.8, 19.6], tempLowC: [-0.4, 1.2, 3.8, 6.6, 8.4, 10.2, 9.8, 9.6, 9.2, 6.4, 2.6, 0.2],
@@ -2503,21 +2503,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["altitude-loving urbanites"], travelFit: ["Nevado de Toluca hiking", "colonial architecture", "traditional markets"],
     whoWouldLove: "Altitude enthusiasts, cool-climate seekers in Mexico.", whoMightNot: "Anyone sensitive to thin air or winter cold.",
     confidence: "high",
-                    deepSections: [
+    deepSections: [
       {
-        id: "toluca-mx-mechanism",
-        title: "Volcanic Upland mechanics",
+        id: "toluca-high-basin",
+        title: "Highest major valley in Mexico",
         paragraphs: [
-          "Toluca sits where valley of Toluca at 2,663 m, the highest major valley in Mexico; Nevado de Toluca volcano (4,680 m) rises 15 km south. At roughly 2663 m, elevation bands matter as much as latitude. Cwb normals and roughly 820 mm/yr frame the regional baseline, but Elevation lapse rate and Cold-air drainage re-weight what any single forecast means block by block.",
-          "Extreme elevation (one of the highest major cities on Earth) + basin geometry + tropical latitude = the coldest-feeling city in Mexico despite its subtropical position. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Toluca sits at 2,663 m in the Valley of Toluca — 800 m higher than Denver, 400 m above Mexico City, and among the highest major basins on Earth with over a million residents. Elevation lapse rate strips nearly 20°C from tropical latitude expectations: summer afternoons rarely exceed 23°C, winter nights regularly reach −4°C with frost 30–60 mornings annually.",
+          "Nevado de Toluca volcano rises 15 km south to 4,680 m — snow-capped on clear mornings and a vertical climate laboratory within minutes of the metro. Basin geometry traps cold air and urban emissions in nocturnal inversions.",
         ],
       },
       {
-        id: "toluca-mx-field-read",
-        title: "On-the-ground read",
+        id: "toluca-inversion-smoke",
+        title: "Basin inversions and air quality",
         paragraphs: [
-          "At 2,663 m, the highest large city in North America — where winter nights commonly drop below freezing and summer afternoons rarely pass 23°C, even at 19°N. Soils read as volcanic andisol, deep with good drainage (pH 5.6–6.8). Cool-season gardening year-round with frost protection December–February.",
-          "Smoke / air quality registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Maize, Potatoes, Oats. Anyone sensitive to thin air or winter cold should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated smoke and air-quality risk registers here — basin inversions pool PM2.5 and regional wildfire smoke; verify neighborhood elevation and ventilation before committing. Deep volcanic andisol supports maize, potatoes, and cool-season vegetables with frost protection December through February.",
+          "Specialty care is local but AICM in Mexico City anchors international access roughly 90 minutes away. Anyone sensitive to thin air or winter cold should scout valley-floor versus hillside blocks — atlas normals describe the basin, not every colonia's frost exposure.",
         ],
       },
     ],
@@ -2634,7 +2634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["desert-industry workers"], travelFit: ["Bahía de Kino day trips", "desert ecotours"],
     whoWouldLove: "Dry-heat devotees.", whoMightNot: "Anyone who needs summer air conditioning to be optional.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "hermosillo-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2699,7 +2699,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["hospitality retirees", "remote workers"], travelFit: ["whale watching", "beaches"],
     whoWouldLove: "Tropical beach life with mountain backdrop.", whoMightNot: "Dry-climate seekers; hurricane-anxious buyers.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "puerto-vallarta-mx-mechanism",
         title: "Tropical Isothermal Coast mechanics",
@@ -2764,7 +2764,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
-                    deepSections: [
+                        deepSections: [
       {
         id: "mazatlan-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2829,7 +2829,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "campeche-mx-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -2893,7 +2893,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["archaeology guides", "ecotourism"], travelFit: ["ruins", "jungle trails"],
     whoWouldLove: "Jungle climate with Maya history.", whoMightNot: "Anyone who cannot tolerate humidity.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "palenque-mx-mechanism",
         title: "Cloud Forest mechanics",
@@ -2957,7 +2957,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["artisans", "retirees"], travelFit: ["silver markets", "cobblestone walks"],
     whoWouldLove: "Highland colonial towns with tropical latitude.", whoMightNot: "Mobility-limited — steep streets everywhere.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "taxco-mx-mechanism",
         title: "Eternal-Spring Highland mechanics",
@@ -3257,7 +3257,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["dry-climate seekers", "regional professionals"], travelFit: ["Sierra Madre road trips", "historic center"],
     whoWouldLove: "People who like highland sun, cool nights, and monsoon-season drama without lowland humidity.", whoMightNot: "People who want lush wet greenery year-round.",
     confidence: "moderate",
-                    deepSections: [
+                        deepSections: [
       {
         id: "durango-mx-mechanism",
         title: "Monsoon-Edge Zone mechanics",

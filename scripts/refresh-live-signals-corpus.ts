@@ -17,6 +17,8 @@ const SKIP_IDS = new Set([
   "xalapa-mx", "grand-manan-nb",
   "haida-gwaii-bc", "coatepec-mx", "winthrop-wa", "lone-pine-ca", "parras-de-la-fuente-mx",
   "orizaba-mx", "ely-mn", "cuauhtemoc-mx", "viroqua-wi", "gaspe-qc",
+  "medicine-hat-ab", "revelstoke-bc", "tofino-ucluelet-corridor", "pincher-creek-ab", "yellowknife-nt",
+  "alamos-mx", "toluca-mx", "asheville-nc", "leavenworth-wa", "page-az",
 ]);
 
 const fileCache = new Map<string, string>();
