@@ -4342,6 +4342,8 @@
   }
 
   .comfort-precision-panel {
+    container-type: inline-size;
+    container-name: tc-comfort-precision;
     position: relative;
     overflow: hidden;
     border-radius: 0.75rem;
@@ -4409,9 +4411,24 @@
   }
   .comfort-precision-panel__cards {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 0.55rem;
     margin-top: 0.75rem;
+  }
+  @container tc-comfort-precision (max-width: 920px) {
+    .comfort-precision-panel__cards {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @container tc-comfort-precision (max-width: 560px) {
+    .comfort-precision-panel__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @container tc-comfort-precision (max-width: 360px) {
+    .comfort-precision-panel__cards {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
   .comfort-precision-card {
     min-width: 0;
@@ -6356,6 +6373,32 @@ html[data-theme="dark"] .hero-mini-rail {
   background: linear-gradient(180deg, rgba(28, 38, 60, 0.92) 0%, rgba(22, 30, 50, 0.88) 100%);
   border-color: rgba(120, 138, 178, 0.28);
   color: var(--color-frost-strong);
+}
+
+/* v4.8 climate-scenario control — match deep-glass explorer chrome in dark. */
+html[data-theme="dark"] .climate-scenario {
+  background: linear-gradient(180deg, rgba(28, 38, 60, 0.92) 0%, rgba(22, 30, 50, 0.88) 100%);
+  border-color: rgba(120, 138, 178, 0.28);
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .climate-scenario__label,
+html[data-theme="dark"] .climate-scenario__note {
+  color: var(--color-stone-readable);
+}
+html[data-theme="dark"] .climate-scenario__seg {
+  background: rgba(12, 18, 32, 0.92);
+  border-color: rgba(120, 138, 178, 0.32);
+}
+html[data-theme="dark"] .climate-scenario__opt {
+  color: var(--color-stone-readable);
+}
+html[data-theme="dark"] .climate-scenario__opt:hover {
+  color: var(--color-ice);
+}
+html[data-theme="dark"] .climate-scenario__opt[data-active="true"] {
+  color: var(--color-ice);
+  background: rgba(18, 26, 44, 0.96);
+  box-shadow: var(--tc-shadow-inset);
 }
 
 /* Reading nav strip in dossier. */
