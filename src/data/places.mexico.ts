@@ -28,6 +28,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryImmersive: "At 1555 m in the central valleys of Oaxaca, the city sits at exactly the elevation where subtropical heat yields to temperate comfort. Afternoons hover near 22–26 °C for most of the year; summer nights often sit 14–18 °C, while winter nights can dip near 3–8 °C. The dry season stretches from November through May — golden light, crisp mornings, brilliant skies. The wet season arrives in June with afternoon thunderstorms that build over the surrounding sierras and roll across the valleys, usually dissipating by evening. In ten months of the year you can reasonably plan to eat outdoors. The valleys run east-west, funneling moisture from the Isthmus of Tehuantepec, and the encircling sierras rise over 3000 m, producing pronounced orographic enhancement of summer rainfall. It's a climate shaped by altitude, monsoon geometry, and the sheltering mass of Mexico's great southern ranges.",
     whyDistinct: "Tropical latitude (17°N) combined with 1555 m elevation produces a climate that is effectively 'perpetual spring.' The surrounding sierras both protect the valleys from Gulf/Pacific moisture extremes and enhance convective rainfall in the wet season.",
 
+    experience: {
+      feel: "Oaxaca feels like the calendar barely moves. At 1,555 m the city sits exactly where subtropical heat yields to temperate ease — afternoons near 22 to 26°C month after month, golden dry-season light most of the year, and ten months when eating outdoors is simply the default.",
+      seasons: {
+        winter: "The heart of the dry season — warm, brilliant afternoons near 25°C, crisp mornings dipping toward 8°C, and skies so clear the surrounding sierras stand sharp on the horizon.",
+        spring: "The warmest, driest stretch before the rains — afternoons climbing near 30°C through April and May, dusty and bright, the valleys waiting for the first storms to break the heat.",
+        summer: "The wet-season rhythm sets in: warm mornings give way to afternoon thunderstorms that build over the sierras and clear by evening, holding highs near a comfortable 25°C and greening the whole valley.",
+        autumn: "Rains taper through September and October back into golden dry-season light — mild afternoons near 25°C, freshening nights, and the valleys at their most lush before the dust returns.",
+      },
+      travelerFit: "Visitors come for the food and mezcal, Monte Albán and the craft villages, and Day of the Dead — all under a near-perfect highland sky.",
+      residentFit: "It rewards remote workers, retirees, and culture-seekers who want perpetual spring, deep food and arts traditions, and a walkable historic core.",
+      texture: "An exceptionally easy climate; the things to weigh are lived rather than meteorological — altitude, water reliability, and the pressures that come with a fast-growing visitor economy.",
+    },
+
     climate: {
       tempHighC: [25.1, 27.3, 29.6, 30.4, 30.2, 27.4, 25.6, 25.9, 25.6, 25.5, 25.2, 24.7],
       tempLowC:  [7.8, 8.9, 11.3, 13.4, 14.7, 14.9, 14.4, 14.3, 14.3, 12.4, 9.8, 8.1],
@@ -168,6 +181,19 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A highland basin in Chiapas where tropical latitude meets cool highland climate — mist-draped mornings and crisp nights year-round.",
     summaryImmersive: "San Cristóbal sits at 2200 m in a high basin surrounded by cloud-forest ridges that rise another 600 m. At a latitude of 17°N, it should be sweltering — but altitude transforms everything. July afternoons rarely reach 23°C; January mornings can hover near freezing. Mornings frequently emerge from a low stratus deck, the surrounding ridges cloud-wrapped, the basin floor slowly lighting as the fog lifts. The local climate is further shaped by cold-air pooling: calm clear winter nights drop the basin floor near 0°C while ridges just 200 m above stay mild. A remarkable number of the world's 'eternal spring' lists miss San Cristóbal because its spring is cooler, stranger, and cloudier than the Cuernavaca archetype — more Scottish highland than Mediterranean.",
     whyDistinct: "2200 m elevation at subtropical latitude, in a closed basin, bordered by cloud-forest ridges, produces a genuinely cool tropical highland climate with strong diurnal variability.",
+
+    experience: {
+      feel: "San Cristóbal feels less like tropical Mexico than a Scottish highland that wandered south. At 2,200 m the basin wakes under a low stratus deck most mornings, the cloud-forest ridges wrapped in mist, and even July afternoons rarely top 23°C — a cooler, stranger 'eternal spring' than the postcard version.",
+      seasons: {
+        winter: "Clear, calm nights drain cold air onto the basin floor, dropping mornings near freezing while the ridges above stay milder — then afternoons recover to a bright, woodsmoke-scented 19°C.",
+        spring: "The warmest, driest window — afternoons near 24°C, mornings still crisp, and the dry-season light at its sharpest before the rains gather in May.",
+        summer: "Cool and wet: mist-draped mornings burn off slowly, afternoons hold near 21°C, and heavy highland rains build daily over the surrounding cloud forest.",
+        autumn: "September is the wettest month before the skies begin to clear — cool afternoons near 21°C, saturated green ridges, and lengthening, crisp nights as the dry season returns.",
+      },
+      travelerFit: "Visitors come for the colonial highland streets, Tzotzil and Tzeltal Maya markets and villages, and the cool cloud-forest country of the Chiapas plateau.",
+      residentFit: "It rewards travelers-turned-residents who love cool, misty highland air, a deep Indigenous cultural fabric, and a slower, layered mountain-town life.",
+      texture: "A cool, characterful place to settle that asks for some adjustment: the things to weigh are chilly, often-unheated mornings, a long damp wet season, and the realities of a small highland city far from major services.",
+    },
 
     climate: {
       tempHighC: [19.1, 20.6, 22.8, 24.4, 24.1, 22.3, 21.5, 21.8, 21.2, 20.6, 19.8, 19.1],

@@ -35,6 +35,19 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Sequim sits in one of the most dramatic rain shadows in North America. Pacific systems ride up the Olympic Range, shed their moisture on the windward Quinault and Hoh valleys — among the wettest places on the continent — then descend toward the Dungeness lowland warmer, drier, and already half clear. The town registers roughly 400 mm of annual precipitation, a sixth of what falls just 50 km to the southwest. Summers are cool and breezy off the Strait of Juan de Fuca. Winter mornings glitter under high pressure, with the snowy Olympics standing to the south and Mount Baker visible northeast across the strait. The light here has a distinct quality — a clean, cold-shadow brightness more common in the inland mountain West than along the Pacific.",
     whyDistinct: "Prevailing southwesterlies force moist marine air up the Olympic Range, condensing rain and snow on the windward slopes. The same air compresses and dries as it descends toward the Dungeness lowland, producing a narrow band — perhaps 30 km wide — of genuinely Mediterranean character on an otherwise soaking coast. The Strait of Juan de Fuca moderates temperatures in every season.",
 
+    experience: {
+      feel: "Sequim feels like someone cut a dry, luminous window into the Pacific Northwest's gray. The Olympics wring the storms out to the southwest, so the Dungeness lowland stays bright and breezy while the Hoh drowns 50 km away — a clean, cold-shadow light you usually only find in the inland mountain West.",
+      seasons: {
+        winter: "Mornings glitter under high pressure — snow on the Olympics to the south, Mount Baker across the strait — with afternoons near 8°C and frosty starts near 1°C. It is the gray season by Northwest standards, yet Sequim still steals far more sun than Seattle.",
+        spring: "The brightest, driest stretch arrives early: afternoons climb through the teens, the lavender fields green up, and the rain shadow keeps showers brief while the rest of the coast stays sodden.",
+        summer: "Cool, dry, and breezy off the Strait of Juan de Fuca — afternoons top out near 21°C and rarely push past it, sunshine peaks, and rain nearly vanishes. This is open-window, no-AC weather that pulls climate refugees off hotter coasts.",
+        autumn: "The lavender light lingers into October before the storm track returns. Highs ease back through the teens, the first real rains arrive in November, and the Olympics take their first snow.",
+      },
+      travelerFit: "Visitors come for the lavender farms, the Dungeness Spit, and a sunny base camp for Olympic National Park's rainforests and alpine meadows.",
+      residentFit: "It rewards retirees, gardeners, and weather-weary transplants from Seattle and the outer coast who want Northwest scenery without the relentless gray.",
+      texture: "An unusually gentle place to settle — the main things to weigh are a short, low-angle winter and the fact that the dry, sunny pocket is small enough that homes inside it command a premium.",
+    },
+
     climate: {
       tempHighC: [7.8, 9.2, 11.1, 13.4, 16.3, 18.8, 21.6, 21.8, 19.6, 14.8, 10.3, 7.9],
       tempLowC:  [1.2, 1.6, 2.8, 4.6, 7.2, 9.8, 11.6, 11.4, 9.6, 6.7, 3.6, 1.6],
@@ -193,6 +206,19 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A premier Madrean sky island where pine-oak forests and tanagers ride thousands of meters above creosote flats.",
     summaryImmersive: "Portal is the gateway into one of North America's most biologically celebrated microclimates. The Chiricahuas rise abruptly from the Chihuahuan Desert floor — from creosote and mesquite at 1200 m to Douglas-fir and aspen above 2700 m, a vertical stack of biomes compressed into a single afternoon's drive. The canyon village itself sits at the foot of Cave Creek, sheltered by rhyolitic cliffs that channel cool morning air out of the mountains and buffer afternoon sun. Summer monsoon storms build reliably against the range from July onward, often so localized that you watch rain fall on one ridge while the next stays dry. Winters are sunny and cold at night, with snow on the high peaks and almost never in the village. The Chiricahuas are also one of the northernmost homes of the elegant trogon, a marker of just how profoundly elevation rewrites climate this far south.",
     whyDistinct: "The Chiricahuas' 1700 m rise intercepts both winter Pacific systems and summer monsoon moisture. Lapse-rate cooling drops mean annual temperature at the summits by ~10°C relative to the surrounding basin, and orographic lift doubles annual precipitation. The village of Portal itself benefits from canyon shelter and cold-air drainage from the peaks, producing a microclimate distinct from both the basin floor and the summits.",
+
+    experience: {
+      feel: "Portal feels like the desert's front porch to a forested mountain world. The Chiricahuas leap more than 1,600 m straight out of the creosote, so a single morning's drive climbs from cactus heat into Douglas-fir and aspen — and the canyon village sits in the cool seam between, fed by mountain air draining down Cave Creek at dawn.",
+      seasons: {
+        winter: "Bright, still, and sharply diurnal: afternoons in the low teens under relentless sun, nights dropping below freezing near −2°C. Snow whitens the high peaks and almost never the village floor.",
+        spring: "Dry and dazzling — afternoons warm through the 20s toward 28°C, skies stay deep blue, and the legendary spring birding peaks before the heat and the rains arrive.",
+        summer: "Hot afternoons near 32°C give way to the monsoon from July onward: towering storms build against the range so locally you can watch rain fall on one ridge while the next stays bone-dry. Nights stay mild and the desert smells of creosote and wet stone.",
+        autumn: "The monsoon fades into golden, calm weeks — warm days, cool nights, and the canyon sycamores turning. It is arguably the finest season to be here.",
+      },
+      travelerFit: "Visitors come for world-famous birding — the elegant trogon among them — Cave Creek Canyon's rhyolite cliffs, and dark-sky nights at the wilderness edge.",
+      residentFit: "It rewards naturalists, astronomers, and self-reliant desert-mountain people who are comfortable far from services in one of the continent's great biological crossroads.",
+      texture: "This is a remote, self-sufficient life: the main things to weigh are summer heat on the basin floor, wildfire in the range, and a long drive to the nearest town for anything beyond the basics.",
+    },
 
     climate: {
       tempHighC: [14.2, 16.1, 19.4, 23.9, 28.6, 33.1, 32.8, 31.4, 29.6, 24.4, 18.2, 14.1],
@@ -518,6 +544,19 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Monterey's climate is built on the ocean's cold shoulder. Deep water upwells offshore all summer, kept cold by northwesterlies dragging surface water south. That icy sea chills the overlying air into a persistent marine stratus deck that floods the coast every evening and retreats each mid-morning. The result is an astonishing seasonal inversion: August afternoons in the high teens while Salinas, twenty minutes inland, sits near 30°C. Winters are mild and wet, summers are paradoxically the coolest season, and coastal redwoods in nearby canyons drink from the fog itself. Light here is unmistakable — flat, silver, and slow in the mornings; brilliant on the clear afternoons when the marine layer retreats. A single drive from Monterey to Salinas to Paicines crosses a thirty-degree temperature gradient on a bright July day.",
     whyDistinct: "The California Current and intense summer upwelling keep sea-surface temperatures near 12°C even in August. Cold sea surface + warmer air aloft produces a durable marine inversion, capping a 300–600 m stratus layer that dominates coastal weather. Inland valleys escape the marine layer and heat normally, producing one of the continent's sharpest short-distance climate gradients.",
 
+    experience: {
+      feel: "Monterey feels like a place where summer never quite lands. The cold upwelling sea breathes a silver marine layer over the coast each evening, so August afternoons hover in the high teens while Salinas bakes near 30°C twenty minutes inland — one of the sharpest short-distance climate gradients on the continent.",
+      seasons: {
+        winter: "Mild and wet is the rhythm — afternoons near 16°C, nights around 7°C, and the year's heaviest rain rolling through between spells of brilliant clarity. Frost is essentially unknown.",
+        spring: "The skies clear and steady: afternoons in the high teens, wildflowers lighting the headlands, and the marine layer not yet settled into its summer routine.",
+        summer: "Paradoxically the coolest, grayest season on the immediate coast — fog floods in each evening and burns back by mid-morning, holding afternoons near 20°C. Drive inland and you escape into real heat; stay put and you'll want a sweater at the beach.",
+        autumn: "The warmest, clearest stretch arrives once the fog relents — calm, luminous afternoons in the low 20s, the sea still cold, and the best beach weather of the year deep into October.",
+      },
+      travelerFit: "Visitors come for the aquarium and Cannery Row, Big Sur and 17-Mile Drive, and a cool-summer refuge when the rest of California swelters.",
+      residentFit: "It rewards anyone who treasures cool, stable, fog-washed air year-round — heat-averse remote workers, retirees, and gardeners of cool-climate plants.",
+      texture: "An easy climate to live in, with real costs attached: the main things to weigh are Bay-Area-adjacent housing prices and long, sunless summer fog stretches on the immediate coast.",
+    },
+
     climate: {
       tempHighC: [16.4, 17.1, 17.6, 18.4, 18.9, 20.0, 20.3, 21.1, 22.0, 21.6, 18.8, 16.3],
       tempLowC:  [7.1, 8.2, 9.1, 9.7, 10.9, 11.8, 12.3, 12.9, 12.4, 11.3, 9.2, 7.0],
@@ -677,6 +716,19 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A classic Southern-Appalachian thermal belt — mid-slope homes dodge both the frost pockets below and the ridge cold above.",
     summaryImmersive: "Generations of orchardists and tobacco farmers settled mid-slope in the Swannanoa Valley on purpose. On clear calm autumn nights, cold air drains past the 700–900 m thermal belt into the valley floor, and the ridge above loses heat to space — but the thermal belt itself stays mild enough to save an apple crop. Summers are temperate rather than sweltering: even in late July, a 2000 m Black Mountains crest less than 20 km away sits at 20–23°C. The landscape stacks climates vertically: rhododendron-bay coves at the valley floor, oak-hickory on mid-slopes, spruce-fir on Mitchell's summit. Fog and cloud caps are common on upper ridges while the thermal belt basks in sun. Winter here is real but merciful — three to four proper snow events a year, most of which melt within days thanks to radiational warming on south-facing slopes.",
     whyDistinct: "The Southern Appalachians produce pronounced cold-air-drainage patterns on still nights. The Swannanoa Valley is a textbook example: mid-slope homes at 700–900 m enjoy a band that stays 3–7°C warmer than the valley floor in radiative winter mornings, with a growing season typically 2–4 weeks longer. The nearby Black Mountains add lapse-rate cooling and orographic precipitation enhancement.",
+
+    experience: {
+      feel: "Black Mountain feels like the Blue Ridge at its most forgiving. Settle mid-slope in the Swannanoa thermal belt and you dodge both the frost that pools on the valley floor and the cold that clings to the ridges — a band warm enough to save an apple crop, with the Black Mountains stacking spruce-fir coolness just overhead.",
+      seasons: {
+        winter: "Real but merciful — afternoons near 8°C, frosty nights near −3°C, and three or four proper snows a year that mostly melt within days as south-facing slopes catch the sun.",
+        spring: "Long and luxuriant: dogwood and rhododendron climb the slopes, afternoons warm through the teens into the 20s, and the cove forests leaf out from the valley up.",
+        summer: "Temperate rather than sweltering — afternoons near 28°C with cool, humid nights, and a 2,000 m crest 20 km north running a full 10°C cooler when the lowlands wilt. Afternoon mountain storms are common.",
+        autumn: "The headline season: crisp, luminous, and famous for color, with warm days, cool nights, and the thermal belt holding off the first frost weeks longer than the valley floor.",
+      },
+      travelerFit: "Visitors come for Blue Ridge leaf season, Mount Mitchell and the Black Mountains, and an easy mountain-town base just east of Asheville.",
+      residentFit: "It rewards four-season people, gardeners, and retirees who want genuine mountain living with a long growing season and a merciful winter.",
+      texture: "A gentle, well-watered place to settle: the main things to weigh are humid, wet stretches, occasional Appalachian flooding and slope failure after big rains, and rising newcomer demand around Asheville.",
+    },
 
     climate: {
       tempHighC: [7.6, 9.4, 13.6, 18.4, 22.6, 26.1, 27.8, 27.2, 24.6, 19.4, 13.8, 8.8],

@@ -28,6 +28,19 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Osoyoos sits at the northern tip of a dry valley that is, improbably, an extension of the Great Basin Desert. The Cascade Range 200 km west shadows it completely from Pacific moisture, while the Coast Range funnels warm dry air down the valley. Annual precipitation barely breaks 330 mm. Summers are the hottest in Canada outside the deep interior — 35°C afternoons, nights mild over the warm lake. The result is a remarkable north-tip ecosystem where antelope-brush, prickly-pear, and western rattlesnakes live alongside vineyards producing genuinely hot-climate wines — Cabernet, Syrah — at latitude 49°N. The lake itself is among the warmest in Canada for swimming.",
     whyDistinct: "Cascade rain shadow + continental interior + low valley elevation + shallow warm lake = a desert pocket that simply shouldn't exist at this latitude. The climate gradient from Penticton (north) to Osoyoos (south) is one of the sharpest in Canada.",
 
+    experience: {
+      feel: "Osoyoos feels like a slice of the Great Basin smuggled 800 km north into Canada. The Cascades shadow the valley from Pacific moisture, the lake banks heat, and antelope-brush, prickly-pear, and rattlesnakes share the benches with Cabernet vines — the hottest, driest pocket in the country.",
+      seasons: {
+        winter: "Short and cold by valley standards — afternoons hovering near freezing, nights near −6°C, a little snow that comes and goes. The desert sleeps under low, often-gray skies.",
+        spring: "The valley wakes fast: orchards and vineyards blossom, afternoons climb through the teens into the 20s, and the sun returns in force while the benches stay dry.",
+        summer: "Among the hottest summers in Canada outside the deep interior — afternoons near 31°C under blazing sun, single-digit-humidity dry, with the warm lake softening mild evenings. Beach-and-vineyard weather at 49° north.",
+        autumn: "Harvest light: warm, golden days easing through the 20s into the teens, cool nights firming up the wine grapes, and dry skies holding well into October.",
+      },
+      travelerFit: "Visitors come for hot-climate wineries, the warmest swimming lake in Canada, and desert ecology found nowhere else in the country.",
+      residentFit: "It rewards sun-seekers, vintners, and retirees who want a genuine hot-dry summer and a short, manageable winter without leaving Canada.",
+      texture: "Easy-living summers with a catch: the main things to weigh are intense heat and a long-run drought trend, wildfire in the surrounding hills, and irrigation-dependent water in a desert valley.",
+    },
+
     climate: {
       tempHighC: [-0.2, 3.1, 10.9, 17.2, 22.6, 26.9, 31.1, 30.6, 24.4, 15.3, 5.9, 0.3],
       tempLowC:  [-6.4, -4.6, -0.3, 3.6, 7.9, 11.6, 14.2, 13.8, 9.4, 3.6, -1.6, -5.7],
@@ -180,6 +193,19 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canadian prairie shaped by the most celebrated warm winter winds on the continent.",
     summaryImmersive: "A chinook in southern Alberta is a climatological thunderclap. On a January morning the temperature may be −25°C under a heavy prairie inversion; by afternoon a wall of lenticular cloud — the 'chinook arch' — appears over the Rockies, and within two hours the air is 10°C. Lethbridge averages roughly 30–40 chinook days each winter, making its climate meaningfully milder than its latitude suggests. Summers are warm and dry; the wind never really stops. Pincher Creek, nearer the mountains, is even more chinook-shaped, with the strongest wind statistics on the Canadian prairies. The sky here is enormous and always moving.",
     whyDistinct: "Stable westerly flow descends the Rockies, warming adiabatically and gusting across the foothills plains. Chinook frequency produces winters that are warm relative to the same latitude elsewhere on the prairies.",
+
+    experience: {
+      feel: "Lethbridge feels like living inside a moving sky. Out on the southern Alberta prairie the wind almost never stops, and in winter the chinook arch over the Rockies can turn a −25°C morning into an afternoon thaw within hours — a climate of huge light and sudden reversals.",
+      seasons: {
+        winter: "Variable rather than simply frozen: deep prairie cold near −13°C is regularly broken by chinooks that lift the afternoon above freezing within hours, stripping the snow and rattling the windows. Roughly 30 to 40 chinook days a winter make it milder than its latitude suggests.",
+        spring: "Late and blustery — snow can fall into May, but the days lengthen fast, the prairie greens, and afternoons climb through the teens between wind events.",
+        summer: "Warm, dry, and bright — afternoons near 26°C with low humidity, enormous skies, and strong overnight cooling. Hail-bearing supercells are the prairie's summer drama.",
+        autumn: "Often the prairie's finest season: golden, calm-between-winds days easing through the teens, crisp nights, and the first chinooks beginning to spar with early cold snaps.",
+      },
+      travelerFit: "Visitors come for Waterton Lakes, the dinosaur badlands, and the spectacle of chinook-arch skies stacked over the foothills.",
+      residentFit: "It rewards dryland farmers, big-sky people, and anyone who finds warm January winds romantic rather than maddening.",
+      texture: "A bracing place to settle: the main things to weigh are relentless wind, summer hail and storms, and a long-run drought trend on the southern prairie.",
+    },
 
     climate: {
       tempHighC: [-1.5, 0.9, 5.4, 12.7, 18.3, 22.1, 26.2, 26.1, 20.3, 13.0, 4.0, -1.7],
