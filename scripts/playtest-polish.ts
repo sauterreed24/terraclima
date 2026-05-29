@@ -250,6 +250,7 @@ async function main(): Promise<void> {
     "valentine-ne", "hilo-hi", "wolfville-ns", "fernie-elk-valley-bc",
     "valle-guadalupe-mx", "todos-santos-mx",
     "silver-city-nm", "ashland-or", "fort-davis-tx", "niagara-on-the-lake",
+    "patzcuaro-mx", "ajijic-lake-chapala-mx",
   ];
   for (const id of polishIds) {
     const place = PLACES.find(p => p.id === id);
