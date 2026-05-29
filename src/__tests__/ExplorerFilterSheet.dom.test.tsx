@@ -39,4 +39,21 @@ describe("ExplorerFilterSheet", () => {
     expect(screen.queryByPlaceholderText("Search name, region, or archetype")).toBeNull();
     expect(screen.getAllByRole("button", { name: "Close filters" })).toHaveLength(1);
   }, 30000);
+
+  it("counts an active climate scenario in the filter trigger badge", () => {
+    render(
+      <ExplorerFilterSheet
+        searchInputId="test-search"
+        filters={filters}
+        setFilters={vi.fn()}
+        ranking="hidden-gems"
+        setRanking={vi.fn()}
+        scenario="ssp245"
+        onScenarioChange={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByRole("button", { name: "Open Explorer filters and ranking (1 active filter)" })).toBeInTheDocument();
+    expect(screen.getByText("1")).toBeInTheDocument();
+  });
 });

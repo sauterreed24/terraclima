@@ -152,3 +152,32 @@ describe("PlaceDetail glossary driver chip a11y", () => {
     }
   });
 });
+
+describe("PlaceDetail scenario honesty banner", () => {
+  it("shows a present-day normals note when scn≠now", () => {
+    const place = PLACES_BY_ID["boulder-co"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} scenario="ssp585" />
+      </UnitProvider>,
+    );
+
+    expect(screen.getByRole("note")).toHaveTextContent("SSP5-8.5");
+    expect(screen.getByRole("note")).toHaveTextContent("present-day normals");
+  });
+
+  it("hides the banner when scenario is present-day", () => {
+    const place = PLACES_BY_ID["boulder-co"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} scenario="now" />
+      </UnitProvider>,
+    );
+
+    expect(screen.queryByRole("note")).not.toBeInTheDocument();
+  });
+});

@@ -1646,6 +1646,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The only true Mediterranean climate in Mexico — cool, fog-buffered summers produced by upwelling, feeding Mexico's premier wine region just inland.",
     summaryImmersive: "Ensenada sits on the Pacific coast at 32°N, where the California Current's cold upwelling extends a narrow strip of Mediterranean climate south from the border. Summer highs remain around 24°C on the coast; the marine layer burns off by noon most days. Thirty kilometers inland, the Valle de Guadalupe warms to 32°C summer afternoons with cool nights — the ideal diurnal swing for viticulture. Mexico's premier wine region (over 100 wineries) sits here precisely because this is the warmest/driest edge of the cool-summer Mediterranean climate. Winter rains of 300 mm support dryland Cabernet and Tempranillo; summers are essentially rainless.",
     whyDistinct: "The southernmost extent of the California Current upwelling + Mediterranean rainfall pattern. This is the only place in Mexico where a cool-summer maritime and summer-dry climate coincide.",
+    experience: {
+      feel: "Ensenada feels like Mexico's only true Mediterranean coast — cool upwelling keeps summer highs near 25°C on the waterfront, the marine layer burns off by noon most days, and thirty kilometers inland Valle de Guadalupe swings 7–9°C warmer for world-class wine.",
+      seasons: {
+        winter: "Mild and wet — highs near 19°C, nights near 8°C, winter rains of 300 mm supporting dryland Cabernet, and whale-watching season offshore.",
+        spring: "Green and brightening — highs climbing through the low 20s, wildflowers on the chaparral slopes, and the first warm afternoons that draw weekend visitors from Tijuana.",
+        summer: "Dry and fog-buffered — highs near 25°C on the coast, essentially rainless June through August, and irrigation ditches running full in the wine valleys.",
+        autumn: "Harvest and first rains — October storms green the hills again, grape crush in Valle de Guadalupe, and the marine layer returning by morning.",
+      },
+      travelerFit: "Visitors come for wine country tours, seafood cuisine, and whale watching in Mexico's premier cool-Mediterranean pocket.",
+      residentFit: "It rewards winemakers and retirees seeking a California-South alternative who accept water stress as the binding constraint.",
+      texture: "It asks for a few compromises: drought and fire weather rank elevated — water-supply worriers need to read the live signals carefully.",
+    },
     climate: {
       tempHighC: [18.8, 19.4, 20.1, 21.2, 22.4, 23.4, 24.9, 25.4, 24.8, 23.4, 21.1, 19.2], tempLowC: [8.2, 8.9, 10.1, 11.6, 13.4, 15.1, 16.6, 17.4, 16.1, 13.6, 10.4, 8.2],
       precipMm: [62, 58, 44, 20, 4, 1, 0, 1, 2, 12, 30, 58], humidity: [72, 72, 74, 74, 78, 80, 80, 80, 78, 74, 70, 70],
@@ -1686,6 +1698,18 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "The 'Athens of Veracruz' — a cloud-forest highland where eternal mist, 1,500 mm of rain, and mild 22°C afternoons create one of Mexico's greenest and most literary climates.",
     summaryImmersive: "Xalapa sits at 1,427 m on the eastern slope of Mexico's continental divide, the spot where warm Gulf air is forced upslope and condensed into near-permanent mist. The result is a cloud-forest climate — called bosque mesófilo de montaña — one of the rarest and most biodiverse ecosystems in the Americas. Days average 22°C year-round; nights drop to 12–15°C; humidity rarely falls below 70%. Rainfall is heavy and persistent (1,500 mm annually) with drizzle possible in any month. The city's mossy walls, mist-filled mornings, and coffee plantations that creep up from the lowlands give Xalapa its reputation as a cultural and climatic refuge.",
     whyDistinct: "Eastern escarpment of the Sierra Madre Oriental + Gulf moisture + cloud-forest elevation band. A precise combination of latitude, distance from the coast, and elevation puts Xalapa in the global 'cloud-forest isohypse' — a thin belt where persistent cloud contact defines the ecosystem.",
+    experience: {
+      feel: "Xalapa feels like eternal mist made city — the Athens of Veracruz at 1427 m where Gulf moisture condenses into near-permanent cloud forest, days average 22°C year-round, humidity rarely falls below 70%, and mossy walls frame a literary climate refuge.",
+      seasons: {
+        winter: "Cool and misty — highs near 20°C, nights near 11°C, drizzle possible any day, and coffee plantations creeping up from the lowlands.",
+        spring: "Green explosion — wildflowers in the cloud forest, highs climbing through the low 20s, and the first warm afternoons that feel earned after months of mist.",
+        summer: "Rainy season peak — highs near 24°C, afternoon thunderstorms exceeding 200 mm monthly, and saturated slopes that define landslide risk.",
+        autumn: "Mist returns — October rains taper, highs retreating into the low 20s, and the cloud-forest band at its most dramatic on hike days.",
+      },
+      travelerFit: "Visitors come for cloud-forest hikes, coffee culture, and the literary atmosphere of Mexico's greenest highland capital.",
+      residentFit: "It rewards culture seekers and cloud-forest lovers who accept saturated slopes and Veracruz-city humidity as daily texture.",
+      texture: "It asks for a few compromises: landslide risk on saturated slopes is elevated — dry-climate seekers need a different pin.",
+    },
     climate: {
       tempHighC: [20.1, 21.2, 22.8, 24.4, 24.9, 23.6, 22.4, 22.9, 22.6, 22.1, 21.2, 20.4], tempLowC: [11.2, 11.8, 13.2, 14.6, 15.4, 15.8, 15.2, 15.2, 14.9, 14.1, 12.9, 11.6],
       precipMm: [36, 28, 38, 62, 110, 240, 228, 232, 286, 158, 62, 38], humidity: [76, 75, 74, 76, 80, 84, 86, 86, 86, 82, 78, 76],

@@ -13,6 +13,7 @@ import {
 } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
 import { FilterBar } from "./FilterBar";
+import { ClimateScenarioControl } from "./chrome/ClimateScenarioControl";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { countActiveExplorerFilterSignals, type FilterState, type RankingProfile } from "../lib/scoring";
 import type { ScenarioId } from "../types";
@@ -34,11 +35,12 @@ type Props = {
   detailOpen?: boolean;
   scenario?: ScenarioId;
   onScenarioChange?: (next: ScenarioId) => void;
+  projecting?: boolean;
 };
 
 export const ExplorerFilterSheet = memo(
   forwardRef<ExplorerFilterSheetHandle, Props>(function ExplorerFilterSheet(
-    { searchInputId, filters, setFilters, ranking, setRanking, footer, detailOpen, scenario, onScenarioChange },
+    { searchInputId, filters, setFilters, ranking, setRanking, footer, detailOpen, scenario, onScenarioChange, projecting },
     ref,
   ) {
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -101,9 +103,10 @@ export const ExplorerFilterSheet = memo(
     }, [open, searchInputId]);
 
     const chips = useMemo(() => countActiveExplorerFilterSignals(filters), [filters]);
+    const signalCount = chips + (scenario && scenario !== "now" ? 1 : 0);
     const triggerLabel =
-      chips > 0
-        ? `Open Explorer filters and ranking (${chips} active ${chips === 1 ? "filter" : "filters"})`
+      signalCount > 0
+        ? `Open Explorer filters and ranking (${signalCount} active ${signalCount === 1 ? "filter" : "filters"})`
         : "Open Explorer filters and ranking";
 
     return (
@@ -119,9 +122,9 @@ export const ExplorerFilterSheet = memo(
         >
           <SlidersHorizontal className="w-4 h-4 shrink-0" aria-hidden />
           <span className="tc-filter-sheet-trigger__label">Filters</span>
-          {chips > 0 ? (
+          {signalCount > 0 ? (
             <span className="tc-filter-sheet-trigger__badge" aria-hidden>
-              {chips > 9 ? "9+" : chips}
+              {signalCount > 9 ? "9+" : signalCount}
             </span>
           ) : null}
         </button>
@@ -147,6 +150,13 @@ export const ExplorerFilterSheet = memo(
                 <X className="w-4 h-4" aria-hidden />
               </button>
             </div>
+            {onScenarioChange ? (
+              <ClimateScenarioControl
+                scenario={scenario ?? "now"}
+                onChange={onScenarioChange}
+                projecting={projecting}
+              />
+            ) : null}
             <FilterBar
               variant="sheet"
               searchInputId={searchInputId}

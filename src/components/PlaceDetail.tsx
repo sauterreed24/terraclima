@@ -3,7 +3,7 @@ import { drawerPanelTransition, scrimFadeTransition } from "../lib/device-profil
 import { useState, useEffect, useMemo, useRef, useId } from "react";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
-import type { Place, MicroclimateArchetype, TopographicDriver } from "../types";
+import type { Place, MicroclimateArchetype, TopographicDriver, ScenarioId } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { DRIVER_LABELS } from "../types";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
@@ -56,9 +56,10 @@ import { buildGrowabilityRationale } from "../lib/growability-score";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
-  Users, Compass, ExternalLink, Scale, Satellite,
+  Users, Compass, ExternalLink, Scale, Satellite, Clock3,
 } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
+import { scenarioMeta } from "../lib/climate-projection";
 
 /** Solid leading edge on the detail drawer — instant place identity without re-tinting the whole panel. */
 const SETTLEMENT_ROLE_LABEL: Record<string, string> = {
@@ -177,9 +178,10 @@ interface Props {
   bookmarked?: boolean;
   onBookmarkToggle?: (id: string) => void;
   occluded?: boolean;
+  scenario?: ScenarioId;
 }
 
-export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, bookmarked, onBookmarkToggle, occluded = false }: Props) {
+export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, bookmarked, onBookmarkToggle, occluded = false, scenario = "now" }: Props) {
   const reduceMotion = useReducedMotion();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
@@ -278,7 +280,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               onBookmarkToggle={onBookmarkToggle}
               visualSignature={visualSignature!}
             />
-            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} visualSignature={visualSignature!} />
+            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} visualSignature={visualSignature!} scenario={scenario} />
             <PlaceBackToTop panelRef={panelRef} />
           </motion.aside>
         </>
@@ -498,12 +500,13 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
 }
 
 function DetailBody({
-  place, onOpenPlace, liveFitFilters, visualSignature,
+  place, onOpenPlace, liveFitFilters, visualSignature, scenario = "now",
 }: {
   place: Place;
   onOpenPlace?: (id: string) => void;
   liveFitFilters?: LiveFitFilters;
   visualSignature: PlaceVisualSignature;
+  scenario?: ScenarioId;
 }) {
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -563,6 +566,14 @@ function DetailBody({
     <div className="detail-body-shell mx-auto w-full px-4 py-6 md:px-7 md:py-8 lg:grid lg:grid-cols-[11.25rem_minmax(0,1fr)] lg:gap-x-10 lg:px-8">
       <PlaceDetailReadingNav items={navItems} activeAnchorId={readingActiveAnchor} />
       <div className="min-w-0 space-y-10 tc-detail-prose">
+      {scenario !== "now" ? (
+        <div className="compare-scenario-banner dossier-scenario-banner" role="note">
+          <Clock3 className="w-3.5 h-3.5 shrink-0 mt-0.5" aria-hidden />
+          <span>
+            Explorer and Compare use the <strong>{scenarioMeta(scenario).label}</strong> illustrative regional projection. This dossier shows present-day normals ({CLIMATE_NORMALS_PERIOD}).
+          </span>
+        </div>
+      ) : null}
       <PlaceOverviewSpotlight place={place} anchorId={PD.overview} seasonsAnchorId={PD.seasons} />
 
       <PlaceResidencyBrief

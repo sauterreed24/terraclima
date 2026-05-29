@@ -721,6 +721,9 @@
     padding-bottom: 0.65rem;
     border-bottom: 1px solid rgba(200, 170, 140, 0.32);
   }
+  .tc-filter-sheet-dialog__inner .climate-scenario {
+    margin-bottom: 0.75rem;
+  }
 
   .climate-signal-rail {
     --signature-rgb: 94, 196, 220;

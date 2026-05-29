@@ -4,6 +4,13 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Dossier scenario honesty + Tier C experience batch 4
+
+- **PlaceDetail scenario banner (`src/components/PlaceDetail.tsx`, `src/App.tsx`):** when a future climate layer is active, the dossier shows a compact honesty note that Explorer/Compare use the projection while the dossier stays on present-day normals.
+- **Mobile scenario control (`src/components/ExplorerFilterSheet.tsx`):** filter sheet now embeds `ClimateScenarioControl` and counts the active scenario in the Filters FAB badge.
+- **Tier C experience batch 4:** hand-written `experience` for Leadville, Brookings, Sitka, St. John's, Salt Spring Island, Haida Gwaii, Ensenada, and Xalapa; sunshinePct where missing.
+- **Regression hardening:** PlaceDetail scenario-banner test; ExplorerFilterSheet scenario badge test; `playtest-polish` batch-4 anchors.
+
 ### Lens Receipt scenario chip + Tier C experience batch 3
 
 - **Lens Receipt scenario chip (`src/components/FilterBar.tsx`, `src/App.tsx`, `src/components/ExplorerFilterSheet.tsx`):** when a future climate layer is active, the Explorer lens receipt shows a dismissible scenario chip and projection-aware summary line; dismissing resets `scn` to present-day.

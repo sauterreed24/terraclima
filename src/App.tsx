@@ -1019,6 +1019,7 @@ export default function App() {
             setRanking={setRanking}
             scenario={climateScenario}
             onScenarioChange={setClimateScenario}
+            projecting={processor.projecting}
             footer={<FootprintPanel />}
             detailOpen={Boolean(selectedId)}
           />
@@ -1043,6 +1044,7 @@ export default function App() {
             bookmarked={selectedPlace ? bookmarkIds.has(selectedPlace.id) : false}
             onBookmarkToggle={toggleBookmark}
             occluded={placeDetailOccluded}
+            scenario={climateScenario}
           />
         </Suspense>
       ) : null}
