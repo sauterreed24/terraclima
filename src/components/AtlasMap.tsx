@@ -222,6 +222,8 @@ export function AtlasMap({
   // focuses a different pin. Tracking this in state (not a ref) so memoised
   // Marker children can re-render only the two affected pins on a step.
   const [focusedMarkerId, setFocusedMarkerId] = useState<string | null>(null);
+  // Polite announcement for keyboard pin navigation reaching a top/bottom edge.
+  const [navAnnounce, setNavAnnounce] = useState("");
 
   const shellRef = useRef<HTMLDivElement>(null);
   const [dims, setDims] = useState({ width: widthProp, height: heightProp, measured: false });
@@ -831,6 +833,17 @@ export function AtlasMap({
     (fromId: string, direction: AtlasArrowDirection) => {
       const next = nextMarkerId(fromId, direction, markerLayoutPoints);
       if (!next) return;
+      if (next === fromId) {
+        // Focus can't move. For Up/Down that means a top/bottom edge — announce
+        // it so a keyboard/AT user can tell the edge from a broken control. For
+        // Left/Right this only happens with a lone visible pin (they otherwise
+        // wrap circularly), where an "edge row" message would be wrong — stay
+        // silent there.
+        if (direction === "up") setNavAnnounce("Top row of the visible pins.");
+        else if (direction === "down") setNavAnnounce("Bottom row of the visible pins.");
+        return;
+      }
+      setNavAnnounce("");
       setFocusedMarkerId(next);
       requestAnimationFrame(() => focusMarkerInDom(next));
     },
@@ -840,6 +853,7 @@ export function AtlasMap({
     (position: "home" | "end") => {
       const next = endpointMarkerId(position, markerLayoutPoints);
       if (!next) return;
+      setNavAnnounce("");
       setFocusedMarkerId(next);
       requestAnimationFrame(() => focusMarkerInDom(next));
     },
@@ -1345,6 +1359,7 @@ export function AtlasMap({
 
   return (
     <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
+      <div className="sr-only" aria-live="polite">{navAnnounce}</div>
       {topoLoading ? (
         <div
           className="tc-map-topology-loading absolute top-2 left-1/2 -translate-x-1/2 z-20 rounded-full px-3 py-1 text-[11px] text-frost"

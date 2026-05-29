@@ -75,6 +75,22 @@ describe("CompareView", () => {
     expect(screen.getAllByTestId("fingerprint-chart").every(chart => chart.dataset.compactLabels === "true")).toBe(true);
   });
 
+  it("announces the comparison count for screen readers when the set changes", () => {
+    const { rerender } = render(
+      <UnitProvider>
+        <CompareView places={PLACES.slice(0, 2)} open onClose={() => undefined} onRemove={() => undefined} />
+      </UnitProvider>,
+    );
+    expect(screen.getByText("Now comparing 2 places.")).toBeInTheDocument();
+
+    rerender(
+      <UnitProvider>
+        <CompareView places={PLACES.slice(0, 3)} open onClose={() => undefined} onRemove={() => undefined} />
+      </UnitProvider>,
+    );
+    expect(screen.getByText("Now comparing 3 places.")).toBeInTheDocument();
+  });
+
   it("adds a decision read and copyable comparison handoff", () => {
     const onCopyView = vi.fn();
     renderCompare({ onCopyView });
