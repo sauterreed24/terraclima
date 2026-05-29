@@ -445,7 +445,7 @@ export const PLACES_USA_EXTRA: Place[] = [
         ],
       },
     ],
-    confidenceNotes: "Morgantown atlas entry is regional context; flood exposure varies sharply by parcel — confirm parcel elevation, drainage, and insurance before committing.",
+    confidenceNotes: "Sun-belt retirees seeking dry air should confirm WVU Medicine access and parcel elevation above hollow corridors before committing — flash flood frequency is rising on forested slopes.",
     citations: [{ label: "NOAA — Morgantown Municipal", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "PRISM — gridded climate normals", kind: "prism", url: "https://prism.oregonstate.edu/" },],
   },

@@ -31,11 +31,6 @@ function dequote(text: string): string {
   return text.replace(/^["“”']+|["“”']+$/g, "").trim();
 }
 
-function firstSentence(text: string): string {
-  const m = text.match(/^[^.!?]*[.!?]/);
-  return (m ? m[0] : text).trim();
-}
-
 function joinHumanList(items: readonly string[], max = 4): string {
   const clean = Array.from(new Set(items.map(s => s.trim()).filter(Boolean))).slice(0, max);
   if (clean.length === 0) return "";
@@ -234,13 +229,20 @@ function buildResidentFit(place: Place): string {
   return `It rewards ${who.charAt(0).toLowerCase()}${who.slice(1)} who can live with the hazards and service map that come with ${place.region}.`;
 }
 
-function buildTexture(place: Place): string {
-  const tradeoff = place.scores.tradeoff;
-  const base =
-    tradeoff >= 60 ? "A real-tradeoff place"
-    : tradeoff >= 45 ? "A place that asks for a few compromises"
-    : "An easier place to settle into";
+function buildPositiveClause(place: Place): string {
+  if (place.scores.comfort >= 82) return "strong highland comfort and daily livability";
+  if (place.scores.growability >= 78) return "excellent growability and outdoor rhythm";
+  if (place.archetypes.includes("eternal-spring-highland")) return "genuine eternal-spring comfort and clear dry seasons";
+  if (place.archetypes.includes("cool-summer-maritime") || place.archetypes.includes("mediterranean-pocket")) {
+    return "mild summers and a walkable climate signature";
+  }
+  if (place.archetypes.includes("rain-shadow-sanctuary")) return "rain-shadow comfort and strong seasonal clarity";
+  if (place.scores.hiddenGem >= 70) return "distinct microclimate character worth the tradeoffs";
+  if (place.scores.resilience >= 70) return "solid climate resilience relative to the region";
+  return "the place-specific comfort case that drew you to scout it";
+}
 
+function rankedRiskLabels(place: Place, max = 3): string[] {
   const riskOrder = { "very-low": 1, low: 2, moderate: 3, elevated: 4, high: 5, "very-high": 6 } as const;
   const riskLabels: Partial<Record<keyof Place["risks"], string>> = {
     wildfire: "wildfire exposure",
@@ -253,32 +255,59 @@ function buildTexture(place: Place): string {
     coastal: "coastal and sea-level pressure",
     landslide: "slope stability",
   };
-  const ranked = (Object.keys(place.risks) as Array<keyof Place["risks"]>)
+  return (Object.keys(place.risks) as Array<keyof Place["risks"]>)
     .map(k => ({ k, v: riskOrder[place.risks[k].level as keyof typeof riskOrder] ?? 0 }))
     .filter(r => r.v >= 4 && riskLabels[r.k])
     .sort((a, b) => b.v - a.v)
-    .slice(0, 2)
+    .slice(0, max)
     .map(r => riskLabels[r.k]!);
+}
 
-  let lived = "";
-  const ls = place.liveSignals;
-  if (ls) {
-    if ((ls.costPressure ?? 0) >= 70) lived = " Housing runs expensive relative to regional medians.";
-    else if ((ls.accessFriction ?? 0) >= 65) lived = " Specialty care and major-airport access require real planning.";
-    else if ((ls.socialStress ?? 0) >= 65) lived = " Local social-fabric stress is worth checking in person.";
-    else if (ls.note && !/\bscreening\b/i.test(ls.note)) lived = ` ${firstSentence(ls.note)}`;
+function textureDescriptor(place: Place): string {
+  const existing = place.experience?.texture;
+  if (existing?.includes(" — ")) {
+    const head = existing.split(" — ")[0]!.trim();
+    if (head.length >= 24 && !/^An easier place to settle into/i.test(head)) return head;
   }
-
-  const riskClause = ranked.length
-    ? `the main things to weigh are ${joinHumanList(ranked, 2)}`
-    : "no single hazard dominates the picture";
-
+  const tradeoff = place.scores.tradeoff;
+  const base =
+    tradeoff >= 60 ? "A real-tradeoff place"
+    : tradeoff >= 45 ? "A place that asks for a few compromises"
+    : "An easier place to settle into";
   const elev =
     place.elevationM >= 1500 ? ` at ${Math.round(place.elevationM)} m elevation`
     : place.elevationM <= 30 && place.risks.coastal.level !== "very-low" ? " at sea level"
     : "";
+  return `${base}${elev}`;
+}
 
-  return `${base}${elev} — ${riskClause}.${lived}`;
+export function isGenericTexture(texture: string | undefined): boolean {
+  if (!texture?.trim()) return true;
+  return /the main things to weigh are/i.test(texture)
+    || /^An easier place to settle into/i.test(texture);
+}
+
+export function draftTexture(place: Place): string {
+  const existing = place.experience?.texture;
+  const descriptor = textureDescriptor(place);
+  const ranked = rankedRiskLabels(place, 3);
+  const positive = buildPositiveClause(place);
+
+  if (existing && / — the main things to weigh are /i.test(existing)) {
+    const tail = existing.split(/ — the main things to weigh are /i)[1]?.replace(/\.$/, "").trim();
+    if (tail) {
+      return `${descriptor} — weigh ${tail} against ${positive}.`;
+    }
+  }
+
+  if (ranked.length === 0) {
+    return `${descriptor} — no single hazard dominates, but confirm services and exposure on the ground.`;
+  }
+  return `${descriptor} — weigh ${joinHumanList(ranked, 3)} against ${positive}.`;
+}
+
+function buildTexture(place: Place): string {
+  return draftTexture(place);
 }
 
 export interface AuthoredExperienceDraft {
