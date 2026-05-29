@@ -116,6 +116,30 @@ export const LIVE_FIT_PRESETS: readonly LiveFitPreset[] = [
 export const LIVE_FIT_PRESET_BY_ID: Record<LiveFitPresetId, LiveFitPreset> =
   Object.fromEntries(LIVE_FIT_PRESETS.map(p => [p.id, p])) as Record<LiveFitPresetId, LiveFitPreset>;
 
+const PRESET_CANONICAL_RANK = new Map<LiveFitPresetId, number>(
+  LIVE_FIT_PRESETS.map((p, i) => [p.id, i]),
+);
+
+/**
+ * Order a preset set by its canonical position in {@link LIVE_FIT_PRESETS}.
+ *
+ * A `Set<LiveFitPresetId>` carries whatever insertion order its source used —
+ * URL `fit=` order, a lifestyle bundle's authored order, or the order a user
+ * toggled chips. Two logically-identical sets could therefore differ, which
+ * destabilized both the live-fit cache key and the surfaced badge order
+ * (`presets.slice(0, 3)`). Canonicalizing makes the assessment a pure function
+ * of the *set's contents*, so the cache always hits and badges read in the
+ * same intentional order the preset list uses in the UI.
+ */
+function canonicalPresetOrder(
+  presets: ReadonlySet<LiveFitPresetId> | undefined,
+): LiveFitPresetId[] {
+  if (!presets || presets.size === 0) return [];
+  return [...presets].sort(
+    (a, b) => (PRESET_CANONICAL_RANK.get(a) ?? 0) - (PRESET_CANONICAL_RANK.get(b) ?? 0),
+  );
+}
+
 export const LIVE_FIT_SUMMER_CAPS_C = [22, 26] as const;
 export const LIVE_FIT_WINTER_FLOORS_C = [-5, 0, 2] as const;
 export const LIVE_FIT_GROWABILITY_FLOORS = [65, 75] as const;
@@ -306,7 +330,7 @@ function pushPinnedUnique(list: string[], value: string, max: number): void {
 
 function liveFitFilterKey(filters: LiveFitFilters = {}): string {
   return [
-    filters.fitPresets ? [...filters.fitPresets].join(",") : "",
+    canonicalPresetOrder(filters.fitPresets).join(","),
     filters.maxSummerHighC ?? "",
     filters.minWinterLowC ?? "",
     filters.minGrowability ?? "",
@@ -341,7 +365,7 @@ function getCachedLiveFitAssessment(place: Place, filters: LiveFitFilters = {}):
 }
 
 function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): LiveFitAssessment {
-  const presets = [...(filters.fitPresets ?? new Set<LiveFitPresetId>())];
+  const presets = canonicalPresetOrder(filters.fitPresets);
   const presetScores = presets.map(id => presetScore(place, id));
   let score = presetScores.length
     ? Math.round((defaultLiveScore(place) * 0.35) + (presetScores.reduce((a, b) => a + b, 0) / presetScores.length) * 0.65)

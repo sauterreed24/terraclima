@@ -304,10 +304,13 @@ export function buildComfortPrecisionProfile(p: Place, options: ComfortPrecision
     };
   });
 
-  const peakMonth = [...months].sort((a, b) => b.apparentHighC - a.apparentHighC)[0]!;
-  const sleepRecoveryMonth = [...months].sort((a, b) => b.sleepRecoveryScore - a.sleepRecoveryScore)[0]!;
-  const easiestMonths = [...months].sort((a, b) => b.usabilityScore - a.usabilityScore).slice(0, 3);
-  const hardestMonths = [...months].sort((a, b) => a.usabilityScore - b.usabilityScore).slice(0, 3);
+  // Calendar-order (`a.index - b.index`) is the explicit tiebreaker on every
+  // pick below, so two months that tie on the sort metric always resolve to the
+  // earlier month rather than relying on the engine's (stable) sort order.
+  const peakMonth = [...months].sort((a, b) => b.apparentHighC - a.apparentHighC || a.index - b.index)[0]!;
+  const sleepRecoveryMonth = [...months].sort((a, b) => b.sleepRecoveryScore - a.sleepRecoveryScore || a.index - b.index)[0]!;
+  const easiestMonths = [...months].sort((a, b) => b.usabilityScore - a.usabilityScore || a.index - b.index).slice(0, 3);
+  const hardestMonths = [...months].sort((a, b) => a.usabilityScore - b.usabilityScore || a.index - b.index).slice(0, 3);
   const anySource = months.find(m => m.humiditySource !== "missing")?.humiditySource ?? "missing";
   const confidence = confidenceForPlace(p, anySource);
 

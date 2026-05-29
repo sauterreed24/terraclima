@@ -6620,6 +6620,26 @@ html[data-theme="dark"] .detail-drawer-header {
 html[data-theme="dark"] .tc-detail-progress-track {
   background: rgba(120, 138, 178, 0.14);
 }
+/* The default back-to-top pill is paper-white for the light courtyard theme.
+   On the moonlit drawer that reads as a glaring white disc, so give it the
+   same deep-glass chrome the rest of the dark detail surface uses. */
+html[data-theme="dark"] .tc-detail-back-to-top {
+  background: rgba(20, 28, 48, 0.92);
+  border-color: rgba(120, 138, 178, 0.42);
+  color: var(--color-frost-strong);
+  box-shadow: 0 6px 20px -10px rgba(2, 6, 16, 0.75), 0 1px 0 rgba(140, 170, 210, 0.12) inset;
+}
+html[data-theme="dark"] .tc-detail-back-to-top:hover {
+  background: rgba(28, 40, 64, 0.96);
+  border-color: rgba(94, 196, 220, 0.6);
+  box-shadow:
+    0 0 0 1px rgba(94, 196, 220, 0.28),
+    0 10px 26px -10px rgba(2, 6, 16, 0.8),
+    0 1px 0 rgba(140, 200, 230, 0.16) inset;
+}
+html[data-theme="dark"] .tc-detail-back-to-top:focus-visible {
+  outline-color: rgba(94, 196, 220, 0.7);
+}
 
 /* Compare overlay scrim is intentionally still slightly warm so the dialog
    pops; just deepen its base. */
