@@ -23,6 +23,18 @@ export const PLACES_USA_EXTRA: Place[] = [
     summaryShort: "One of the wettest city climates in the United States — trades hit the windward flank and unload warm rain year-round.",
     summaryImmersive: "Hilo is where the northeast trades meet big tropical topography. Moist easterly flow is lifted on the windward slopes of Mauna Kea and Mauna Loa, producing a remarkably steady rainfall regime: many months exceed 250 mm, and annual totals often sit near 3,200 mm. Diurnal range is modest — warm afternoons, mild nights — but humidity is persistent. Rain comes as stratiform drizzle, warm convective cells, and occasional Kona-flow reversals when southerlies wrap moisture back around the island chain. Above the trade inversion, summit observatories on Mauna Kea sit in polar cold; below, Hilo grows orchids, taro, and tropical fruit in red lateritic soils. Hurricanes are rare but not impossible; tsunami and flash flooding from steep watersheds are the acute hazards.",
     whyDistinct: "Trade-wind orographic rainfall on high volcanic islands produces extreme windward/leeward asymmetry: Hilo’s annual total can exceed leeward Kona by an order of magnitude within tens of kilometres, all while sharing the same latitude and maritime air mass.",
+    experience: {
+      feel: "Hilo feels like living inside a warm green cloud. The northeast trades ride up Mauna Kea and Mauna Loa and unload almost daily, so the town is lush, mild, and among the wettest in the United States — orchids and waterfalls everywhere, the summit snows hidden far above the inversion.",
+      seasons: {
+        winter: "Barely cooler than summer — afternoons near 27°C, mild nights near 18°C, and the wettest stretch of a very wet year as winter fronts add to the trades.",
+        spring: "Warm and green with frequent showers — afternoons near 27°C, the rain easing only slightly between bursts, and the windward slopes perpetually misted.",
+        summer: "Warm, humid, and a touch drier than winter — afternoons near 28°C, balmy nights, and trade-shower rhythm broken by the occasional Kona reversal. Hurricanes are rare but watched.",
+        autumn: "Warm and wet again as the rainfall peaks — afternoons near 27°C, heavy showers off the trades, and steep watersheds primed for flash flooding.",
+      },
+      travelerFit: "Visitors come for Hawaiʻi Volcanoes National Park, Mauna Kea's summit observatories, waterfalls, and the lush windward coast.",
+      residentFit: "It rewards rain-loving, garden-minded people who want a genuinely tropical, unhurried life away from resort Hawaiʻi.",
+      texture: "A warm, gentle climate with real hazards: the main things to weigh are relentless rain and gray skies, flash flooding from steep watersheds, and tsunami and volcanic exposure.",
+    },
     climate: {
       tempHighC: [26.5, 26.5, 26.7, 26.8, 27.2, 27.8, 28.0, 28.2, 28.0, 27.6, 27.2, 26.8],
       tempLowC: [17.8, 17.9, 18.2, 18.6, 19.0, 19.2, 19.3, 19.4, 19.2, 19.0, 18.6, 18.0],

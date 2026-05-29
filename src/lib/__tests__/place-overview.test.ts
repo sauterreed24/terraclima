@@ -12,7 +12,10 @@ describe("composePlaceExperience", () => {
   });
 
   it("produces a complete, non-empty humanistic read", () => {
-    const exp = composePlaceExperience(PLACES_BY_ID["bishop-ca"]);
+    // Strip any authored override so this asserts the derived read specifically
+    // (flagship places now carry hand-written experience overrides).
+    const base = PLACES_BY_ID["bishop-ca"];
+    const exp = composePlaceExperience({ ...base, experience: undefined });
     expect(exp.lede.length).toBeGreaterThan(8);
     expect(exp.immersive.length).toBeGreaterThan(40);
     expect(exp.feelLine).toContain("easy-comfort zone");
