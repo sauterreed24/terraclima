@@ -247,6 +247,8 @@ async function main(): Promise<void> {
     "canaan-valley-wv", "redfield-ny", "key-west-fl", "death-valley-ca",
     "klamath-falls-upper-klamath-basin-or", "lander-sinks-canyon-wy",
     "mount-charleston-nv", "spearfish-sd", "burkes-garden-va",
+    "valentine-ne", "hilo-hi", "wolfville-ns", "fernie-elk-valley-bc",
+    "valle-guadalupe-mx", "todos-santos-mx",
   ];
   for (const id of polishIds) {
     const place = PLACES.find(p => p.id === id);
