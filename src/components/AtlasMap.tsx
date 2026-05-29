@@ -1359,7 +1359,7 @@ export function AtlasMap({
 
   return (
     <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
-      <div className="sr-only" aria-live="polite">{navAnnounce}</div>
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">{navAnnounce}</div>
       {topoLoading ? (
         <div
           className="tc-map-topology-loading absolute top-2 left-1/2 -translate-x-1/2 z-20 rounded-full px-3 py-1 text-[11px] text-frost"
