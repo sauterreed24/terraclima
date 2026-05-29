@@ -553,6 +553,18 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's Atlantic fruit belt — apples and vines between two sheltering ridges.",
     summaryImmersive: "The Annapolis Valley lies between two parallel ridges of basalt and sandstone that shelter the valley floor from Atlantic fog and soften its maritime weather. The result is a long-settled fruit country — apple orchards since the 1600s, now with Nova Scotia's emerging cool-climate wine industry. Bay of Fundy tides and high summer sun give the valley enough heat to ripen fruit despite its northern latitude.",
     whyDistinct: "North Mountain shelters from Fundy fog; south-facing slopes catch sun; river-valley moderation extends the season.",
+    experience: {
+      feel: "Wolfville feels like Canada's Atlantic orchard belt sheltered between two ridges — North Mountain blocking Fundy fog, south-facing slopes banking sun, and a valley floor where apples have ripened since the 1600s and cool-climate wine is now finding its voice.",
+      seasons: {
+        winter: "Maritime-cold but valley-sheltered — afternoons near freezing, nights near −11°C, and less Fundy fog than the coast thanks to the North Mountain barrier.",
+        spring: "Late bloom in the fruit belt — orchards waking slowly, the Annapolis Valley greening, and the first wine-country weekends when afternoons climb into the low teens.",
+        summer: "Warm enough to ripen — highs near 25°C, Bay of Fundy tides moderating extremes, and long evenings in a walkable university town.",
+        autumn: "Harvest season — apple picking, grape crush, hardwood color on the ridges, and hurricane-remnant rains that remind you this is still Atlantic Canada.",
+      },
+      travelerFit: "Visitors come for the Annapolis Valley wine trail, apple orchards, Acadia University culture, and Fundy tide watching.",
+      residentFit: "It rewards fruit growers, winemakers, and families who want a sheltered maritime valley with walkable town life and Acadia's cultural anchor.",
+      texture: "Canada's oldest orchard region in a fog-sheltered valley — the main things to weigh are hurricane and tropical-remnant storm exposure, Fundy fog on exposed sites, and Halifax as the specialty-care backup.",
+    },
     climate: {
       tempHighC: [-1.6, -0.8, 3.9, 11.4, 18.1, 22.7, 25.3, 24.9, 20.5, 14.1, 7.4, 1.6],
       tempLowC:  [-10.9, -10.4, -5.6, 0.1, 5.4, 10.2, 13.3, 12.8, 8.7, 3.2, -1.3, -7.4],

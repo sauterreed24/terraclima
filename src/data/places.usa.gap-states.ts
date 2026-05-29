@@ -776,6 +776,18 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "A meteorological celebrity: a nearly circular basin that traps cold air so effectively it can rival much higher Appalachians for frost timing.",
     summaryImmersive: "Burkes Garden is a geomorphic sink surrounded by continuous ridges. On clear, calm nights, katabatic drainage fills the bowl with dense air that cannot easily exit; the result is systematically lower minima than surrounding slopes at similar elevation. Agronomists and orchardists treat the floor and rim as different climates; atmospheric scientists use the basin as an eastern analog to western basin cold pools.",
     whyDistinct: "Basin geometry + radiative cooling + limited ventilation = extreme nocturnal stratification — a documented natural laboratory for cold-pool processes in humid eastern terrain.",
+    experience: {
+      feel: "Burkes Garden feels like a meteorological sinkhole — a nearly circular Appalachian basin where katabatic drainage fills the bowl with dense cold air on clear nights, making the floor systematically colder than the rim at the same elevation and turning agronomists into microclimate cartographers.",
+      seasons: {
+        winter: "Cold-pool season — afternoons near 4°C, nights near −8°C on the floor but often colder as radiative cooling traps dense air, with frost timing that can rival much higher Appalachians.",
+        spring: "Late on the floor, early on the rim — orchardists and hay farmers treating basin floor and ridge as different climates, bloom staggered by the cold pool's persistence.",
+        summer: "Warm enough for pasture — highs near 27°C on the rim, slightly cooler on the floor, and a green bowl of hay and cattle surrounded by continuous ridges.",
+        autumn: "Frost photography season — the first hard frosts arriving early on the floor, hardwood color on the surrounding ridges, and atmospheric scientists treating the basin as an eastern cold-pool laboratory.",
+      },
+      travelerFit: "Visitors come for ridge vistas, spring frost photography, and one of the best-documented cold-air pools in the eastern United States.",
+      residentFit: "It rewards ranching families and remote workers who accept a single-road agricultural bowl with almost no commercial core and treat floor-vs-rim as different farms.",
+      texture: "A meteorological celebrity in a pastoral bowl — the main things to weigh are extreme nocturnal cold on the floor, a 14-day-shorter growing season than the rim, and Tazewell County remoteness.",
+    },
     climate: {
       tempHighC: [4, 6, 11, 17, 22, 25, 27, 26, 22, 16, 10, 6],
       tempLowC: [-8, -6, -2, 3, 9, 13, 15, 14, 10, 4, -2, -6],
