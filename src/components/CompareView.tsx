@@ -170,7 +170,7 @@ export function CompareView({
                 {/* Polite count so screen-reader users hear the set grow/shrink
                     when places are added or removed while the dialog is open
                     (the labelledby title only announces on initial open). */}
-                <div className="sr-only" aria-live="polite">{`Now comparing ${placeCount}.`}</div>
+                <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">{`Now comparing ${placeCount}.`}</div>
               </div>
               <div className="compare-dialog__actions">
                 {onCopyView ? (
