@@ -4385,7 +4385,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 24,
       accessFriction: 60,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for those needing warmth.",
+      note: "UP Health System Portage anchors care — snow-obsessed northerners should budget for metres of annual lake-effect snow and Green Bay or Minneapolis drives for specialty care before committing.",
       sources: [
       { label: "NOAA — Houghton coop", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Houghton", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -4453,7 +4453,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 58,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
+      note: "Gundersen Lutheran in La Crosse anchors specialty care within an hour — small-farm idealists should confirm coulee flood zones and frost hollows on the ground before committing.",
       sources: [
       { label: "NOAA — Viroqua coop", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "USDA NRCS Driftless soils", url: "https://planthardiness.ars.usda.gov/" },
@@ -4776,7 +4776,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 24,
       accessFriction: 60,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for service-dependent.",
+      note: "St. Mary Medical Center in Ontario OR and Boise drives anchor specialty care — ranch-country romantics should confirm Wallowa pass winter access and wildfire smoke seasons before committing.",
       sources: [
       { label: "NOAA — Enterprise 2S coop", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Joseph", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -5487,17 +5487,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "An outer-coast Oregon beach town where summer highs rarely exceed 21°C and winter lows rarely drop below 3°C — one of the most temperature-stable climates in the Lower 48.",
     summaryImmersive: "Cannon Beach demonstrates what happens when the Pacific dictates climate from both directions. Summer afternoons rarely break 21°C; morning fog from ocean upwelling spills over the low Coast Range and then burns off by midday (sometimes). Winters are mild, damp, and never freeze more than a handful of times. The annual temperature range is roughly 10°C — narrower than most tropical cities'. Rain falls on about 150 days per year, concentrated heavily in November through March; July and August are famously sunny (often literally sunnier than the inland Willamette Valley's foggy coastal-influence days).",
     whyDistinct: "North Pacific summer upwelling off the Oregon coast delivers 9–11°C surface water directly adjacent to the beach — as cold as Alaska's Inside Passage. Sea breeze keeps afternoons cool; the Coast Range blocks continental warming from the Willamette Valley.",
-                experience: {
-      feel: "Cannon Beach demonstrates what happens when the Pacific dictates climate from both directions. Summer afternoons rarely break 21°C; morning fog from ocean upwelling spills over the low Coast Range and then burns off by midday (sometimes).",
+    experience: {
+      feel: "Cannon Beach feels like one of the Lower 48's most temperature-stable coasts — Pacific upwelling keeps summer afternoons below 21°C, winter lows rarely freeze, and an annual range near 10°C narrower than most tropical cities, traded for 150+ rainy days and resort-town housing pressure.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 10°C, nights near 3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 14°C, nights near 5.7°C — rain is frequent and can be heavy. Green-up arrives against a wet 2170 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 19.7°C, nights near 11.3°C — humid air keeps everything soft and close. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 16°C, nights near 7.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Storm season — afternoons near 10°C, nights near 3°C, atmospheric rivers and Pacific gales, and Haystack Rock tide pools in winter light.",
+        spring: "Slow green-up — afternoons climbing toward 14°C, June can feel Pacific Northwest-gray until lake heat builds, and Ecola headlands in mist.",
+        summer: "Cool and bright — highs near 20°C, famous July–August sun breaks, morning fog burning off by midday, and tide-pool season at peak.",
+        autumn: "Second storm season — highs falling through 16°C, returning rains, and the year's best storm-watching from bluff cottages.",
       },
-      travelerFit: "Visitors come for summer beach, winter storm watching, and tide pools.",
-      residentFit: "It rewards hot-weather haters, heavy sleepers (cool nights), garden nerds comfortable in fog — especially cool-summer lovers — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Haystack Rock, summer beach, winter storm watching, and cool-maritime gardening.",
+      residentFit: "It rewards cool-summer lovers who accept expensive housing, tourism seasonality, and Cascadia tsunami planning.",
+      texture: "A cool-maritime tradeoff — weigh 2170 mm annual rain, resort housing costs, landslide headlands, and tsunami exposure against superb heat-averse comfort and Seaside service access.",
     },
     climate: {
       tempHighC: [9, 11, 12, 14, 16, 18, 20, 21, 20, 16, 12, 10], tempLowC: [3, 3, 4, 5, 8, 10, 12, 12, 10, 7, 5, 3],
