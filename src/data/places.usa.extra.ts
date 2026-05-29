@@ -283,7 +283,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["logistics", "healthcare"], travelFit: ["quilt museum", "riverfront"],
     whoWouldLove: "River-town Midwesterners who tolerate humidity.", whoMightNot: "Mountain-air seekers.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "paducah-ky-mechanism",
         title: "River-Valley Moderation mechanics",
@@ -355,7 +355,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["energy sector", "remote workers"], travelFit: ["Lewis & Clark", "prairie reserves"],
     whoWouldLove: "Wide-open plains people who own a good parka.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "bismarck-nd-mechanism",
         title: "Subarctic Continental mechanics",
@@ -427,7 +427,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     relocationFit: ["university families", "healthcare"], travelFit: ["fall color", "whitewater"],
     whoWouldLove: "Appalachian foothills without deep South heat.", whoMightNot: "Sun-belt retirees seeking dry air.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "morgantown-wv-mechanism",
         title: "River-Valley Moderation mechanics",

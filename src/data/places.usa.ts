@@ -4235,17 +4235,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "America's snowiest major city — over 3 m of annual lake-effect snow from Lake Ontario.",
     summaryImmersive: "Syracuse sits 50 km south of Lake Ontario, directly in the line of fire for the lake-effect snow machine. The city's Golden Snowball award tracks its position as America's snowiest major metropolitan area most years. Summer is humid and mild; the lake moderates extreme cold and heat compared to cities further from water.",
     whyDistinct: "Classic lake-effect setup with no terrain lift needed — just cold NW flow over open Ontario.",
-                experience: {
-      feel: "Syracuse sits 50 km south of Lake Ontario, directly in the line of fire for the lake-effect snow machine. The city's Golden Snowball award tracks its position as America's snowiest major metropolitan area most years. Summer is humid and mild;.",
+    experience: {
+      feel: "Syracuse feels like America's snowiest major city — 50 km south of Lake Ontario in the direct line of fire for the lake-effect snow machine, Golden Snowball winters, humid mild summers, and the lake moderating extreme cold and heat compared to cities further inland.",
       seasons: {
-        winter: "Cold and snowy — afternoons near -0.3°C, nights near -8.5°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings.",
-        spring: "Late thaw — afternoons near 12.2°C, nights near 1°C — snow is a regular part of the picture. Green-up arrives against a wet 1106 mm annual backdrop.",
-        summer: "Cool summer by latitude — afternoons near 25.2°C, nights near 14°C — rain is frequent and can be heavy.",
-        autumn: "Shoulder season — afternoons near 14.5°C, nights near 4.9°C — snow is a regular part of the picture.",
+        winter: "Lake-effect dominance — afternoons near freezing, nights near −9°C, bands stacking feet of snow overnight, and snow removal as civic infrastructure not inconvenience.",
+        spring: "Late thaw — afternoons climbing through the low teens, last lake-effect squalls in March, and green-up arriving weeks behind the Hudson Valley.",
+        summer: "Humid and mild — highs near 25°C, afternoon thunderstorms, and the lake keeping extremes softer than interior New York.",
+        autumn: "Color and squalls — highs falling through the mid-teens, first lake-effect bands in November, and Finger Lakes day trips in peak foliage.",
       },
-      travelerFit: "Visitors come for Finger Lakes gateway.",
-      residentFit: "It rewards snow-happy city folk — especially snow-resilient families — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — no single hazard dominates the picture. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Finger Lakes gateway access, Syracuse University culture, and a textbook lake-effect snowbelt city.",
+      residentFit: "It rewards snow-happy city folk and snow-resilient families who accept limited winter sunshine and housing above upstate medians.",
+      texture: "A lake-effect tradeoff — weigh 3 m annual snow, gray winter skies, and flood exposure on low parcels against genuine four-season city infrastructure.",
     },
     climate: { tempHighC: [-1.6, -0.4, 4.8, 12.6, 19.3, 23.9, 26.3, 25.4, 21.4, 14.8, 7.4, 1.1], tempLowC: [-9.4, -9.6, -5.2, 1.2, 7.1, 12.3, 15.2, 14.4, 10.4, 4.6, -0.4, -6.4], precipMm: [82, 62, 78, 90, 94, 100, 96, 94, 102, 102, 108, 98], snowCm: [92, 68, 56, 16, 0, 0, 0, 0, 0, 2, 50, 94], humidity: [74, 72, 70, 66, 68, 72, 74, 78, 80, 76, 78, 78], sunshinePct: [34, 40, 44, 50, 54, 58, 60, 58, 52, 44, 28, 26], annualPrecipMm: 1106, frostFreeDays: 170, hardinessZone: "5b" },
     soil: { texture: "Silty clay loam", drainage: "moderate", phRange: [6.4, 7.4], waterHolding: "moderate" },
@@ -4257,7 +4257,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Housing runs above regional medians; A poor fit for sun-dependent.",
+      note: "Syracuse housing runs above upstate medians; Upstate University Hospital and SYR anchor care — 3 m annual lake-effect snow, limited winter sunshine, and fetch-dependent snowfall define daily logistics beyond Finger Lakes gateway appeal.",
       sources: [
       { label: "NOAA — Syracuse Hancock AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Syracuse", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -4267,21 +4267,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snow-resilient families"], travelFit: ["Finger Lakes gateway"],
     whoWouldLove: "Snow-happy city folk.", whoMightNot: "Sun-dependent.",
     confidence: "high",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "syracuse-ny-mechanism",
-        title: "Lake-Effect Snowbelt mechanics",
+        id: "syracuse-lake-effect",
+        title: "Lake Ontario lake-effect geometry",
         paragraphs: [
-          "Syracuse sits where central New York; directly downwind of Lake Ontario for northwest flow. Dfb normals and roughly 1106 mm/yr frame the regional baseline, but Lake effect re-weight what any single forecast means block by block.",
-          "Classic lake-effect setup with no terrain lift needed — just cold NW flow over open Ontario. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Syracuse sits in central New York directly downwind of Lake Ontario for northwest flow — Dfb normals with roughly 1,106 mm annually, where classic lake-effect setup needs no terrain lift, just cold air crossing open water.",
+          "The Golden Snowball award tracks a position as America's snowiest major metro most years — fetch exposure and bluff elevation can shift snowfall by feet per event between neighborhoods only kilometres apart.",
         ],
       },
       {
-        id: "syracuse-ny-field-read",
-        title: "On-the-ground read",
+        id: "syracuse-snow-infrastructure",
+        title: "Snow infrastructure and summer moderation",
         paragraphs: [
-          "America's snowiest major city — over 3 m of annual lake-effect snow from Lake Ontario. Soils read as silty clay loam with moderate drainage (pH 6.4–7.4). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Apples, Concord grapes, Cool-climate veg. Sun-dependent should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Silty clay loam supports apples, Concord grapes, and cool-climate vegetables on sheltered blocks. Lake moderation softens extreme cold and heat compared to interior New York — but gray winter skies and snow-removal logistics define daily life.",
+          "Sun-dependent relocators should confirm fetch exposure before committing — Upstate anchors care but lake-effect bands and flood exposure on low parcels define the lived filter beyond humid mild summers.",
         ],
       },
     ],
@@ -4577,7 +4577,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Confirm rents, insurance, and seasonal access on the ground before treating atlas normals as daily-life certainty.",
+      note: "Boone housing tracks university and tourism demand; Watauga Medical Center anchors care — Helene-era flood and landslide exposure in adjacent valleys, limited flat land, and cloudy-windy high-country days define daily logistics beyond New-England-at-36° appeal.",
       sources: [
       { label: "NOAA — Boone coop", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Boone", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -4587,21 +4587,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["summer-heat refugees"], travelFit: ["Appalachian Trail", "ski"],
     whoWouldLove: "People who want New-England feel in the South.", whoMightNot: "Flood-averse.",
     confidence: "high",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "boone-nc-mechanism",
-        title: "Mild-Winter Foothills mechanics",
+        id: "boone-escarpment-elevation",
+        title: "Blue Ridge Escarpment elevation transect",
         paragraphs: [
-          "Boone sits where high Blue Ridge Escarpment at 1000 m — a climate transect into near-New England character at Southern latitude. At roughly 995 m, elevation bands matter as much as latitude. Cfb / Dfb transition normals and roughly 1342 mm/yr frame the regional baseline, but Elevation lapse rate and Orographic lift re-weight what any single forecast means block by block.",
-          "Extreme elevation for the latitude produces a northern-feeling climate within the Southeast. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Boone sits at 995 m on the High Blue Ridge Escarpment — Cfb/Dfb transition normals with roughly 1,342 mm annually, where extreme elevation for the latitude produces a northern-feeling climate within the Southeast.",
+          "Summer afternoons stay below 25°C while the Carolina Piedmont below swelters; orographic lift organizes cloudy-windy days common enough to shape Appalachian State campus life and ski-season logistics.",
         ],
       },
       {
-        id: "boone-nc-field-read",
-        title: "On-the-ground read",
+        id: "boone-helene-flood",
+        title: "Helene-era flood exposure and growing season",
         paragraphs: [
-          "A 1000-meter ridge town where summer afternoons stay below 25°C and winter brings real snow — New England climate at 36° latitude. Soils read as acidic loam over schist with good drainage (pH 4.8–5.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Cabbage, Short-season fruit. Flood-averse should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated flood and landslide risk registers here — Helene impacts are the reference point for parcel checks in valleys below the escarpment. Acidic loam over schist supports apples, cabbage, and short-season fruit on sheltered blocks.",
+          "Flood-averse relocators should confirm elevation and drainage before committing — Watauga Medical Center anchors local care but valley flood geometry and limited flat land define daily logistics beyond cool-summer refuge appeal.",
         ],
       },
     ],
@@ -6182,17 +6182,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Where a river gap occasionally fires downslope warming to spring-like afternoons in mid-winter — the famous 'Chetco effect' against an otherwise cool outer coast.",
     summaryImmersive: "Brookings is already mild for the Oregon coast, but its claim to fame is episodic winter warmth: when pressure patterns align, air descends through the Chetco River corridor and compresses, producing rapid jumps that can melt frost in minutes while Astoria shivers. Baseline climate is still hyper-maritime — cool wet winters, foggy Junes, and summer highs that rarely tax a sweater.",
     whyDistinct: "Gap winds through a low Coast-Range pass create localized foehn-like warming on otherwise uniform north Pacific air; the phenomenon is rare enough to be news but frequent enough to define local lore.",
-                experience: {
-      feel: "Brookings is already mild for the Oregon coast, but its claim to fame is episodic winter warmth: when pressure patterns align, air descends through the Chetco River corridor and compresses, producing rapid jumps that can melt frost in minutes while Astoria shivers.",
+    experience: {
+      feel: "Brookings feels like the Oregon coast with a winter secret — baseline hyper-maritime cool and wet, but episodic Chetco effect downslope warming that can jump temperatures to spring-like afternoons in mid-winter while Astoria shivers 300 km north.",
       seasons: {
-        winter: "Mild and workable — afternoons near 13°C, nights near 5°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 15.3°C, nights near 7.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1680 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 19°C, nights near 11.7°C — humid air keeps everything soft and close. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 17.7°C, nights near 8.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Mild with warm bursts — baseline afternoons near 13°C, nights near 5°C, plus Chetco effect events compressing air through the Coast Range gap to melt frost in minutes on lucky days.",
+        spring: "Green and stormy — afternoons climbing through the mid-teens against a wet 1,680 mm annual backdrop, Samuel Boardman corridor wildflowers, and the last calm weeks before summer fog.",
+        summer: "Cool maritime peak — highs near 19°C, foggy Junes, and summer highs that rarely tax a sweater despite latitude south of Portland.",
+        autumn: "Storm season — highs falling through the high teens, king-tide coastal pressure, and the heaviest precipitation months arriving as Pacific systems train into Curry County.",
       },
-      travelerFit: "Visitors come for winter banana-belt days and Samuel Boardman corridor.",
-      residentFit: "It rewards anyone fascinated by micro-scale winter warm bursts on a cold ocean — especially storm watchers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are storm exposure and coastal and sea-level pressure. Coastal Curry County housing is below Bay Area norms but still tourist-season tight; Medford is the nearest regional hub over a winding Coast Range drive.",
+      travelerFit: "Visitors come for Chetco effect winter-warmth watching, Samuel Boardman State Scenic Corridor, and a cool outer-coast climate unlike inland Oregon.",
+      residentFit: "It rewards storm watchers and coastal gardeners fascinated by micro-scale winter warm bursts — if they accept elevated coastal storm exposure and Medford drives over the Coast Range for regional services.",
+      texture: "A gap-wind coastal tradeoff — weigh king-tide flooding, landslide exposure on Highway 101, and unpredictable dry summers against mild winters and the famous banana-belt lore.",
     },
     climate: {
       tempHighC: [13, 13, 14, 15, 17, 18, 19, 20, 20, 18, 15, 13], tempLowC: [5, 5, 6, 7, 9, 11, 12, 12, 10, 8, 7, 5],
@@ -6217,21 +6217,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["storm watchers", "coastal gardeners"], travelFit: ["winter banana-belt days", "Samuel Boardman corridor"],
     whoWouldLove: "Anyone fascinated by micro-scale winter warm bursts on a cold ocean.", whoMightNot: "Those who need predictable dry summers inland-style.",
     confidence: "moderate",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "brookings-or-mechanism",
-        title: "Gap / Gorge Wind Corridor mechanics",
+        id: "brookings-chetco-effect",
+        title: "Chetco effect gap-wind warming",
         paragraphs: [
-          "Brookings sits where southern Oregon coast at the mouth of the Chetco River; narrow gap through the Coast Range toward the interior. Csb normals and roughly 1680 mm/yr frame the regional baseline, but Gap winds and Marine layer re-weight what any single forecast means block by block.",
-          "Gap winds through a low Coast-Range pass create localized foehn-like warming on otherwise uniform north Pacific air; the phenomenon is rare enough to be news but frequent enough to define local lore. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Brookings sits at the mouth of the Chetco River where a narrow Coast Range gap toward the interior allows episodic downslope compression — Csb normals with roughly 1,680 mm annually on an otherwise uniform north Pacific coast.",
+          "Gap winds through the low pass create localized foehn-like warming rare enough to make news but frequent enough to define local lore — baseline climate remains hyper-maritime cool and wet between events.",
         ],
       },
       {
-        id: "brookings-or-field-read",
-        title: "On-the-ground read",
+        id: "brookings-coastal-storm",
+        title: "Coastal storm exposure and acid soils",
         paragraphs: [
-          "Where a river gap occasionally fires downslope warming to spring-like afternoons in mid-winter — the famous 'Chetco effect' against an otherwise cool outer coast. Soils read as marine terrace sand and loam over sandstone with good drainage (pH 5.4–6.2). Cool, wet, and acid-forward — classic coastal NW palette.",
-          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cool brassicas, Rhododendrons, Berries. Those who need predictable dry summers inland-style should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated coastal and storm risk registers here — king-tide flooding and Highway 101 landslide exposure are daily engineering realities. Marine terrace sand and loam over sandstone supports cool brassicas, rhododendrons, and berries in acid-forward coastal NW palette.",
+          "Those needing predictable dry summers inland-style should spend a February here before treating Chetco warm bursts as balance for 1,680 mm annual rain — Medford over the Coast Range anchors regional care.",
         ],
       },
     ],
@@ -6250,17 +6250,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Oregon's inland fruit bowl — hot, dry summers and chilly valley fog nights where pears and wine grapes finish with real sugar.",
     summaryImmersive: "Medford sits in a classic inter-mountain rain shadow: the Coast Range and Klamaths wring out Pacific moisture west and north, leaving the Rogue Basin with sunny, arid summers that feel more Central Valley than Portland. Winter inversions trap smoke and fog in the bowl; spring arrives abruptly with blossom corridors along irrigation canals.",
     whyDistinct: "Pronounced summer dryness combined with reliable irrigation from the Rogue River system creates an orchard microclimate rare for Oregon latitude.",
-                experience: {
-      feel: "Medford sits in a classic inter-mountain rain shadow: the Coast Range and Klamaths wring out Pacific moisture west and north, leaving the Rogue Basin with sunny, arid summers that feel more Central Valley than Portland. Winter inversions trap smoke and fog in the bowl;.",
+    experience: {
+      feel: "Medford feels like Oregon's inland fruit bowl — Rogue Valley rain shadow where Coast Range and Klamaths wring out Pacific moisture, leaving sunny arid summers more Central Valley than Portland, with winter inversions trapping fog and smoke in the bowl.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 10°C, nights near 1°C — showers pass through regularly.",
-        spring: "Spring opens — afternoons near 18.7°C, nights near 6.3°C — weather stays moderate and changeable.",
-        summer: "Warm season peak — afternoons near 31.3°C, nights near 13.3°C — skies stay relentlessly clear and dry. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 21.7°C, nights near 5.7°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
+        winter: "Foggy inversions — afternoons near 10°C, nights near 1°C, stagnant valley fog pooling cold air and PM while ridgetops stay clear above the pool.",
+        spring: "Abrupt blossom — afternoons climbing through the high teens, pear and wine-grape corridors along irrigation canals, and the last comfortable weeks before summer heat and fire season.",
+        summer: "Hot and dry — highs near 33°C, relentlessly clear skies, wildfire smoke the defining summer wildcard, and Rogue River runs at dawn before afternoon heat.",
+        autumn: "Harvest and smoke — highs falling through the low 20s, pear harvest in full swing, and fire season lingering into October before valley fog returns.",
       },
-      travelerFit: "Visitors come for Crater Lake, Rogue River rafting, and pear harvest.",
-      residentFit: "It rewards sun-seekers who still want Oregon scenery — especially orchardists — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are wildfire exposure and smoke-season air quality.",
+      travelerFit: "Visitors come for Crater Lake, Rogue River rafting, pear harvest, and a Csa orchard climate rare for Oregon latitude.",
+      residentFit: "It rewards sun-seekers and orchardists who still want Oregon scenery — if they accept high wildfire smoke exposure and winter valley fog.",
+      texture: "A rain-shadow orchard tradeoff — weigh smoke-season air quality, irrigation dependence, and inversion-trapped winter fog against pear-and-wine terroir and Crater Lake access.",
     },
     climate: {
       tempHighC: [9, 12, 15, 18, 23, 28, 33, 33, 29, 22, 14, 9], tempLowC: [1, 2, 4, 6, 9, 12, 14, 14, 10, 5, 2, 0],
@@ -6277,7 +6277,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for fog-haters in winter; smoke-sensitive lungs.",
+      note: "Medford housing at mid-band; Asante Rogue Regional and MFR anchor care — winter valley fog inversions, high wildfire smoke exposure, and irrigation dependence in a 428 mm rain-shadow basin define daily logistics beyond pear-country appeal.",
       sources: [
       { label: "NOAA — Medford AP normals", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Medford", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -6287,21 +6287,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["orchardists", "remote workers"], travelFit: ["Crater Lake", "Rogue River rafting", "pear harvest"],
     whoWouldLove: "Sun-seekers who still want Oregon scenery.", whoMightNot: "Fog-haters in winter; smoke-sensitive lungs.",
     confidence: "high",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "medford-or-mechanism",
-        title: "Rain-Shadow Sanctuary mechanics",
+        id: "medford-rogue-rainshadow",
+        title: "Rogue Valley rain shadow and orchard terroir",
         paragraphs: [
-          "Medford sits where floor of the Rogue Valley south of the Klamath Mountains; rain-shadowed from Pacific onshore flow. Csa normals and roughly 428 mm/yr frame the regional baseline, but Rain shadow and River-valley moderation re-weight what any single forecast means block by block.",
-          "Pronounced summer dryness combined with reliable irrigation from the Rogue River system creates an orchard microclimate rare for Oregon latitude. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Medford sits on the Rogue Valley floor south of the Klamath Mountains — Csa normals with roughly 428 mm annually, where Coast Range and Klamath orography wring out Pacific moisture before it reaches the basin.",
+          "Pronounced summer dryness combined with Rogue River irrigation creates an orchard microclimate rare for Oregon latitude — pears and wine grapes finish with real sugar on south-facing benches above the valley floor.",
         ],
       },
       {
-        id: "medford-or-field-read",
-        title: "On-the-ground read",
+        id: "medford-smoke-inversion",
+        title: "Wildfire smoke and winter inversions",
         paragraphs: [
-          "Oregon's inland fruit bowl — hot, dry summers and chilly valley fog nights where pears and wine grapes finish with real sugar. Soils read as volcanic-alluvial loam over stream terraces with good drainage (pH 6–7.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Pears, Wine grapes, Hemp (historically). Fog-haters in winter; smoke-sensitive lungs should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High wildfire and smoke risk registers here — verify air filtration and evacuation routes before committing. Volcanic-alluvial loam supports pears, wine grapes, and tomatoes with irrigation planning essential in a semi-arid bowl.",
+          "Fog-haters and smoke-sensitive lungs should spend a January inversion week here before treating sunny summers as balance for stagnant valley fog — Asante Rogue Regional anchors care but smoke-season PM defines summer logistics.",
         ],
       },
     ],
@@ -6320,17 +6320,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A drier, sunnier maritime pocket than Seattle — cool summers, mild wet winters, and half the gloom of the mainland sound.",
     summaryImmersive: "The San Juans sit in a complex rain shadow cast by the Olympics and Vancouver Island — enough moisture for pastoral green, but enough summer sun to support vineyards and apple orchards on south slopes. Marine breezes keep August afternoons civilized; frost is rare near shore.",
     whyDistinct: "Island wake and Olympic lee combine for a measurable precipitation and cloud-frequency deficit versus Everett or Bellingham at similar latitude.",
-                experience: {
-      feel: "Friday Harbor — the San Juans sit in a complex rain shadow cast by the Olympics and Vancouver Island — enough moisture for pastoral green, but enough summer sun to support vineyards and apple orchards on south slopes. Marine breezes keep August afternoons civilized; frost is rare near shore.",
+    experience: {
+      feel: "Friday Harbor feels like a drier, sunnier maritime pocket than Seattle — San Juan Island in a complex rain shadow cast by the Olympics and Vancouver Island, enough moisture for pastoral green but enough summer sun for vineyards and Garry oak meadows.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7.7°C, nights near 2.3°C — rain is frequent and can be heavy.",
-        spring: "Spring opens — afternoons near 14°C, nights near 6.3°C — showers pass through regularly.",
-        summer: "Cool summer by latitude — afternoons near 21.3°C, nights near 11.7°C — humid air keeps everything soft and close.",
-        autumn: "Shoulder season — afternoons near 14.3°C, nights near 7°C — showers pass through regularly.",
+        winter: "Mild and wet — afternoons near 8°C, nights near 2°C, ferry-dependent life, and roughly half the gloom of mainland Puget Sound at similar latitude.",
+        spring: "Pastoral green-up — afternoons climbing through the mid-teens, orca season beginning, and wildflower meadows on south-facing slopes above the harbor.",
+        summer: "Civilized maritime peak — highs near 22°C, marine breezes keeping August afternoons comfortable, frost rare near shore, and island-hopping at its best.",
+        autumn: "Crisp and ferry-tight — highs falling through the mid-teens, limited housing inventory squeezing prices, and storm fronts stacking in the Strait.",
       },
-      travelerFit: "Visitors come for orca watching and island hopping.",
-      residentFit: "It rewards maritime-climate fans who want fewer dreary winters than Seattle proper — especially sailors — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at sea level — no single hazard dominates the picture. San Juan ferry schedules and limited inventory keep housing expensive; Anacortes/Bellingham are the usual mainland anchors for flights and specialists.",
+      travelerFit: "Visitors come for orca watching, island hopping, and a maritime climate with measurably less dreary winter than Seattle proper.",
+      residentFit: "It rewards sailors and remote creatives wanting fewer gray winters — if they accept steep island housing costs and Anacortes/Bellingham mainland anchors for flights and specialists.",
+      texture: "An island rain-shadow tradeoff — weigh ferry-schedule logistics, expensive limited inventory, and drought pressure on shallow wells against cool civilized summers and pastoral landscapes.",
     },
     climate: {
       tempHighC: [7, 9, 11, 14, 17, 20, 22, 22, 19, 14, 10, 7], tempLowC: [2, 3, 4, 6, 9, 11, 12, 12, 10, 7, 4, 2],
@@ -6355,21 +6355,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["sailors", "remote creatives"], travelFit: ["orca watching", "island hopping"],
     whoWouldLove: "Maritime-climate fans who want fewer dreary winters than Seattle proper.", whoMightNot: "Budget shoppers — island cost of living is steep.",
     confidence: "high",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "friday-harbor-wa-mechanism",
-        title: "Cool-Summer Maritime mechanics",
+        id: "friday-harbor-island-shadow",
+        title: "Island rain shadow and Olympic lee",
         paragraphs: [
-          "Friday Harbor sits where east side of San Juan Island; rain-shadowed from Olympic moisture by the Strait geometry and island wake. Csb normals and roughly 779 mm/yr frame the regional baseline, but Rain shadow and Diurnal sea breeze re-weight what any single forecast means block by block.",
-          "Island wake and Olympic lee combine for a measurable precipitation and cloud-frequency deficit versus Everett or Bellingham at similar latitude. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Friday Harbor sits on the east side of San Juan Island — Csb normals with roughly 779 mm annually, where island wake and Olympic lee combine for measurable precipitation and cloud-frequency deficit versus Everett or Bellingham at similar latitude.",
+          "Enough summer sun supports vineyards and apple orchards on south slopes while marine breezes keep August afternoons civilized — frost is rare near shore on the island's gentler east side.",
         ],
       },
       {
-        id: "friday-harbor-wa-field-read",
-        title: "On-the-ground read",
+        id: "friday-harbor-ferry-access",
+        title: "Ferry logistics and island water supply",
         paragraphs: [
-          "A drier, sunnier maritime pocket than Seattle — cool summers, mild wet winters, and half the gloom of the mainland sound. Soils read as glacial till and loam over bedrock with moderate drainage (pH 5.8–6.8). Salt spray limits some evergreens on west shores; east island is gentler.",
-          "No single hazard dominates the matrix, but flood, wind, and access still vary sharply by parcel. Growability favors Apples, Lavender, Cool greens. Budget shoppers — island cost of living is steep should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Glacial till and loam over bedrock supports apples, lavender, and cool greens — salt spray limits some evergreens on west shores. San Juan ferry schedules and limited housing inventory keep costs steep relative to mainland Whatcom/Skagit.",
+          "Budget shoppers should confirm water supply on shallow wells before committing — Anacortes and Bellingham anchor flights and specialists beyond island pastoral appeal.",
         ],
       },
     ],
@@ -6649,17 +6649,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "Nicknamed 'Icebox of the Nation' — among the coldest mean annual temperatures of any US first-order station.",
     summaryImmersive: "International Falls anchors the border climate where Arctic air masses arrive unimpeded and winter nights routinely plunge far below freezing. Summer is brief but surprisingly pleasant — warm days, cool nights, long evening light. Lake-effect snow and lake ice modulate the harshest extremes slightly, but not enough to soften the reputation.",
     whyDistinct: "Continental northern interior position + river/lake network that organizes persistent cold pools in calm winter highs.",
-                experience: {
-      feel: "International Falls anchors the border climate where Arctic air masses arrive unimpeded and winter nights routinely plunge far below freezing. Summer is brief but surprisingly pleasant — warm days, cool nights, long evening light.",
+    experience: {
+      feel: "International Falls feels like the Icebox of the Nation — Rainy River border lowland where Arctic air masses arrive unimpeded, winter nights routinely plunge far below freezing, and summer is brief but surprisingly pleasant with warm days and cool nights.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -7°C, nights near -19.3°C — skies stay mostly dry. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 8°C, nights near -3.7°C — weather stays moderate and changeable.",
-        summer: "Cool summer by latitude — afternoons near 22.7°C, nights near 11°C — rain is frequent and can be heavy.",
-        autumn: "Shoulder season — afternoons near 10°C, nights near -0.7°C — showers pass through regularly.",
+        winter: "Arctic severity — afternoons near −7°C, nights near −19°C, cold-air pooling along river corridors, and lake-effect snow modulating but not softening the reputation.",
+        spring: "Late thaw — afternoons climbing through single digits, ice retreating on Rainy Lake, and Voyageurs access opening as the growing season finally arrives.",
+        summer: "Brief perfection — highs near 23°C, long evening light, cool nights near 11°C, and the payoff for surviving another border winter.",
+        autumn: "Fast freeze — highs falling through 10°C, first hard frosts in September, and snowmobilers preparing for another long cold season.",
       },
-      travelerFit: "Visitors come for Voyageurs NP and ice fishing.",
-      residentFit: "It rewards hardy winter people who want true northern seasons — especially snowmobilers — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place — the main things to weigh are deep winter cold.",
+      travelerFit: "Visitors come for Voyageurs National Park, ice fishing, and a textbook subarctic-continental border climate.",
+      residentFit: "It rewards hardy winter people and snowmobilers who want true northern seasons — if they accept among the coldest mean annual temperatures of any US first-order station.",
+      texture: "An Icebox tradeoff — weigh very-high extreme-cold risk, limited sunshine in winter, and thin specialist access against brief beautiful summers and boreal forest access.",
     },
     climate: { tempHighC: [-9, -6, 0, 8, 16, 21, 24, 23, 18, 10, 2, -6], tempLowC: [-22, -19, -12, -3, 4, 10, 12, 11, 6, 0, -8, -17], precipMm: [15, 12, 20, 38, 72, 105, 100, 88, 75, 50, 32, 23], annualPrecipMm: 630, frostFreeDays: 122, hardinessZone: "3b", humidity: [83, 83, 75, 72, 67, 68, 63, 66, 64, 70, 77, 79], sunshinePct: [35, 42, 44, 53, 58, 61, 55, 51, 43, 37, 33, 30] },
     soil: { texture: "Glacial lacustrine clay to loam", drainage: "imperfect", phRange: [5.8, 7.0], waterHolding: "high" },
@@ -6671,7 +6671,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 46,
       socialStress: 30,
       accessFriction: 60,
-      note: "A poor fit for heat-lovers; thin-blood snowbirds.",
+      note: "International Falls housing at low-band; Falls Memorial Hospital and INL anchor care — Icebox-of-the-Nation cold pools, limited winter sunshine, and border remoteness define daily logistics beyond Voyageurs access appeal.",
       sources: [
       { label: "NOAA — International Falls Intl AP", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — International Falls", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -6681,21 +6681,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["snowmobilers", "boreal researchers"], travelFit: ["Voyageurs NP", "ice fishing"],
     whoWouldLove: "Hardy winter people who want true northern seasons.", whoMightNot: "Heat-lovers; thin-blood snowbirds.",
     confidence: "high",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "international-falls-mn-mechanism",
-        title: "Cold-Air Pool mechanics",
+        id: "intl-falls-cold-pool",
+        title: "Cold-air pooling and Arctic exposure",
         paragraphs: [
-          "International Falls sits where rainy River lowland on the Canadian border; cold-air pooling along river corridors and lakes. Dfb normals and roughly 630 mm/yr frame the regional baseline, but Cold-air drainage and Lake effect re-weight what any single forecast means block by block.",
-          "Continental northern interior position + river/lake network that organizes persistent cold pools in calm winter highs. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "International Falls sits on the Rainy River lowland at the Canadian border — Dfb normals with roughly 630 mm annually, where continental northern interior position and river-lake networks organize persistent cold pools in calm winter highs.",
+          "Among the coldest mean annual temperatures of any US first-order station — Arctic air masses arrive unimpeded and winter nights routinely plunge far below freezing before lake ice modulates the harshest extremes slightly.",
         ],
       },
       {
-        id: "international-falls-mn-field-read",
-        title: "On-the-ground read",
+        id: "intl-falls-brief-summer",
+        title: "Brief summer window and boreal access",
         paragraphs: [
-          "Nicknamed 'Icebox of the Nation' — among the coldest mean annual temperatures of any US first-order station. Soils read as glacial lacustrine clay to loam with imperfect drainage (pH 5.8–7). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Extreme cold registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Potatoes, Hay, Cold-hardy berries. Heat-lovers; thin-blood snowbirds should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Glacial lacustrine clay to loam with imperfect drainage supports potatoes, hay, and cold-hardy berries on sheltered blocks. Summer is brief but surprisingly pleasant — warm days, cool nights, long evening light — the payoff for Icebox winters.",
+          "Heat-lovers and thin-blood snowbirds should spend a January week here before committing — Falls Memorial Hospital anchors local care but border remoteness and very-high extreme-cold risk define daily logistics beyond Voyageurs appeal.",
         ],
       },
     ],
@@ -6714,17 +6714,17 @@ export const PLACES_USA: Place[] = [
     summaryShort: "June can be sweater weather while the interior Midwest swelters — Superior is the air conditioner.",
     summaryImmersive: "Duluth's elevation above the lake and persistent onshore flow keeps July afternoons cooler than Minneapolis by a wide margin. Winter brings legendary lake-effect snow bands on the South Shore. Spring is slow to arrive — fog and ice linger — but autumn is crisp and brilliant.",
     whyDistinct: "Large-lake thermal inertia at 46°N creates one of the strongest summer-cooling anomalies in the interior US.",
-                experience: {
-      feel: "Duluth's elevation above the lake and persistent onshore flow keeps July afternoons cooler than Minneapolis by a wide margin. Winter brings legendary lake-effect snow bands on the South Shore. Spring is slow to arrive — fog and ice linger — but autumn is crisp and brilliant.",
+    experience: {
+      feel: "Duluth feels like Lake Superior's air conditioner — cliff-top city on the western tip where persistent onshore flow keeps July afternoons cooler than Minneapolis by a wide margin, legendary South Shore lake-effect snow bands, and slow foggy springs giving way to crisp brilliant autumns.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -5.7°C, nights near -14°C — humid air keeps everything soft and close. Arctic outbreaks can still bite hard.",
-        spring: "Spring opens — afternoons near 8°C, nights near -1.3°C — showers pass through regularly. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 22.3°C, nights near 12.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 11.7°C, nights near 2.7°C — showers pass through regularly. Storm systems roll through with real force.",
+        winter: "Lake-effect deep — afternoons near −6°C, nights near −14°C, South Shore bands stacking snow while the harbor moderates the sharpest cold at the water's edge.",
+        spring: "Slow arrival — afternoons climbing through single digits, fog and ice lingering on Superior into May, and the canal park still wrapped in gray when inland Minnesota greens up.",
+        summer: "Sweater weather — highs near 22°C while Minneapolis swelters, onshore flow keeping cliff-top neighborhoods cool, and tall-ship season on the harbor.",
+        autumn: "Crisp and golden — highs falling through the low teens, North Shore fall color, and the first heavy lake-effect bands in November.",
       },
-      travelerFit: "Visitors come for tall ships, fall color, and skiing.",
-      residentFit: "It rewards cool-summer lovers who still want real winter — especially outdoor enthusiasts — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises — the main things to weigh are deep winter cold and storm exposure.",
+      travelerFit: "Visitors come for tall ships, North Shore fall color, Spirit Mountain skiing, and a textbook large-lake summer-cooling anomaly.",
+      residentFit: "It rewards cool-summer lovers and outdoor enthusiasts who still want real winter — if they accept elevated storm exposure and declining lake ice over time.",
+      texture: "A Superior tradeoff — weigh deep winter cold, lake-effect snow logistics, and ice-cover decline against one of the strongest summer-cooling advantages in the interior US.",
     },
     climate: { tempHighC: [-8, -5, 1, 8, 15, 20, 24, 23, 19, 12, 4, -4], tempLowC: [-16, -14, -8, -1, 5, 10, 14, 13, 9, 3, -4, -12], precipMm: [28, 22, 35, 55, 85, 105, 100, 95, 95, 75, 50, 35], humidity: [72, 72, 73, 70, 68, 70, 72, 75, 77, 73, 76, 75], sunshinePct: [48, 55, 56, 56, 58, 60, 64, 60, 50, 45, 38, 42], annualPrecipMm: 808, frostFreeDays: 140, hardinessZone: "4b" },
     soil: { texture: "Clay loam on glacial lake plain and basalt", drainage: "moderate", phRange: [6.0, 7.2], waterHolding: "high" },
@@ -6737,7 +6737,7 @@ export const PLACES_USA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for sun-belt retirees seeking warmth.",
+      note: "Duluth housing at mid-band; Essentia Health and DLH anchor care — South Shore lake-effect snow, slow foggy springs, and declining Superior ice cover eroding summer-cooling advantage define daily logistics beyond North Shore appeal.",
       sources: [
       { label: "NOAA — Duluth Intl", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "PRISM Climate Group — gridded 1991–2020 normals", url: "https://prism.oregonstate.edu/" },
@@ -6746,21 +6746,21 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["outdoor enthusiasts", "remote workers"], travelFit: ["tall ships", "fall color", "skiing"],
     whoWouldLove: "Cool-summer lovers who still want real winter.", whoMightNot: "Sun-belt retirees seeking warmth.",
     confidence: "high",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "duluth-mn-mechanism",
-        title: "Lake-Moderated mechanics",
+        id: "duluth-superior-cooling",
+        title: "Lake Superior thermal inertia and summer cooling",
         paragraphs: [
-          "Duluth sits where cliff-top city on the western tip of Lake Superior; local onshore flow and lake cooling dominate summer. Dfb normals and roughly 808 mm/yr frame the regional baseline, but Lake effect and Marine layer re-weight what any single forecast means block by block.",
-          "Large-lake thermal inertia at 46°N creates one of the strongest summer-cooling anomalies in the interior US. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Duluth sits on a cliff-top at the western tip of Lake Superior — Dfb normals with roughly 808 mm annually, where large-lake thermal inertia at 46°N creates one of the strongest summer-cooling anomalies in the interior US.",
+          "Persistent onshore flow keeps July afternoons cooler than Minneapolis by a wide margin — June can be sweater weather while the interior Midwest swelters, Superior acting as the air conditioner.",
         ],
       },
       {
-        id: "duluth-mn-field-read",
-        title: "On-the-ground read",
+        id: "duluth-snow-storm",
+        title: "Lake-effect snow and storm exposure",
         paragraphs: [
-          "June can be sweater weather while the interior Midwest swelters — Superior is the air conditioner. Soils read as clay loam on glacial lake plain and basalt with moderate drainage (pH 6–7.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Cool-season vegetables, Sour cherries, Apples. Sun-belt retirees seeking warmth should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Elevated storm risk registers here — legendary South Shore lake-effect snow bands and spring fog lingering while inland Minnesota greens up. Clay loam on glacial lake plain supports cool-season vegetables, sour cherries, and apples on sheltered blocks.",
+          "Sun-belt retirees seeking warmth should confirm storm exposure before committing — Essentia Health anchors care but lake-effect logistics and declining ice cover define long-run climate tradeoffs beyond cool-summer harbor appeal.",
         ],
       },
     ],
@@ -6811,7 +6811,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["lake-house seekers"], travelFit: ["Presque Isle beaches", "winter storm chasing"],
     whoWouldLove: "Great Lakes culture and dramatic snow.", whoMightNot: "Snow shovel haters.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "erie-pa-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -6938,7 +6938,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["hospitality workers", "retirees"], travelFit: ["Smokies trails", "autumn color"],
     whoWouldLove: "Misty-mountain hikers and waterfall chasers.", whoMightNot: "Crowd-averse visitors in October weekends.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "gatlinburg-tn-mechanism",
         title: "Thermal Belt mechanics",
@@ -7067,7 +7067,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["remote tech workers", "ski commuters"], travelFit: ["Champlain Islands", "ski resorts"],
     whoWouldLove: "Small-city New England with lake recreation.", whoMightNot: "Those who need warm winters.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "burlington-vt-mechanism",
         title: "Lake-Moderated mechanics",
@@ -7204,7 +7204,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["ag researchers", "storm chasers"], travelFit: ["Palo Duro", "wine country nearby"],
     whoWouldLove: "Big-sky storm watchers.", whoMightNot: "Humidity lovers; tree-huggers seeking forests.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "lubbock-tx-mechanism",
         title: "Badland / Steppe Pocket mechanics",
@@ -7330,7 +7330,7 @@ export const PLACES_USA: Place[] = [
     relocationFit: ["wellness retreat life"], travelFit: ["citrus farms", "sunset chasers"],
     whoWouldLove: "Mediterranean-light obsessives.", whoMightNot: "Fire-averse; seekers of seasonal drama.",
     confidence: "moderate",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "ojai-ca-mechanism",
         title: "Mediterranean Pocket mechanics",

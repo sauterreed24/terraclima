@@ -1537,17 +1537,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "A warm desert coast facing the Sea of Cortez — winter perfection, hurricane-season heat, and clear turquoise water.",
     summaryImmersive: "La Paz sits on a sheltered bay of the Sea of Cortez, where the desert coast meets some of the world's clearest water. Winters are nearly ideal — 26°C days, 14°C nights, constant sun. Summers are brutal: 35°C afternoons, humidity rising in the wet season, and hurricane season from August through October. The warm Cortez moderates summer heat compared to the interior but raises humidity.",
     whyDistinct: "Cortez warm-water surround produces a distinctly humid summer signature not found on the Pacific-facing Baja coast.",
-                experience: {
-      feel: "La Paz sits on a sheltered bay of the Sea of Cortez, where the desert coast meets some of the world's clearest water. Winters are nearly ideal — 26°C days, 14°C nights, constant sun.",
+    experience: {
+      feel: "La Paz feels like winter perfection on the Sea of Cortez — sheltered Bahía de La Paz where desert coast meets some of the world's clearest water, 26°C dry-season days, and warm Cortez water moderating summer heat while raising humidity compared to Pacific Baja.",
       seasons: {
-        winter: "Warm winter window — afternoons near 24.5°C, nights near 12.8°C — skies stay mostly dry with intense sun. Storm systems roll through with real force.",
-        spring: "Heating up fast — afternoons near 29.9°C, nights near 16.5°C — skies stay relentlessly clear and dry. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 34.6°C, nights near 23.8°C — weather stays moderate and changeable. Water supply and irrigation stress matter.",
-        autumn: "Hurricane-season tail — afternoons near 31.2°C, nights near 20°C — weather stays moderate and changeable. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Dry-season paradise — afternoons near 25°C, nights near 13°C, constant sun, whale-shark season, and the snowbird window at its peak.",
+        spring: "Heating toward peak — afternoons climbing through the high 20s, humidity still tolerable, and the last clear weeks before wet-season convection returns.",
+        summer: "Brutal wet-season heat — highs near 35°C, nights near 24°C, humidity rising, and hurricane watches from August through October.",
+        autumn: "Hurricane tail — highs near 31°C, heavy rains from Gulf of California systems, and the transition back toward dry-season perfection.",
       },
-      travelerFit: "Visitors come for whale sharks and island tourism.",
-      residentFit: "It rewards those wanting winter perfection on clear turquoise water — especially snowbirds — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are long-run drought and extreme summer heat. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for whale sharks, Espíritu Santo island tours, and a BWh desert coast with Cortez-clear water — dry season is the comfort window.",
+      residentFit: "It rewards snowbirds and marine-adjacent relocators wanting winter perfection — if they accept summer heat above 35°C, high drought risk, and hurricane-season logistics.",
+      texture: "A Cortez-coast tradeoff — weigh extreme summer heat, hurricane exposure, and housing above regional medians against nearly ideal dry-season comfort and turquoise water.",
     },
     climate: { tempHighC: [23.6, 25.1, 27.4, 29.8, 32.4, 34.6, 34.4, 34.8, 34.1, 31.6, 27.9, 24.8], tempLowC: [12.4, 12.6, 14.1, 16.4, 19.1, 22.1, 24.4, 24.8, 23.8, 20.1, 16.1, 13.4], precipMm: [14, 6, 2, 1, 1, 4, 20, 30, 48, 12, 6, 14], annualPrecipMm: 158, frostFreeDays: 365, hardinessZone: "11 equiv.", humidity: [37, 37, 35, 39, 43, 48, 52, 54, 52, 46, 43, 38], sunshinePct: [70, 75, 74, 80, 83, 85, 80, 78, 73, 70, 69, 66] },
     soil: { texture: "Sandy alluvial / coastal", drainage: "excessive", phRange: [7.4, 8.2], waterHolding: "low" },
@@ -1559,7 +1559,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Housing runs above regional medians; A poor fit for year-round heat-averse.",
+      note: "La Paz expat housing runs above regional medians; Hospital Ángeles and LAP anchor care — summer heat above 35°C, high drought risk, and hurricane-season logistics define daily life beyond dry-season Cortez perfection.",
       sources: [
       { label: "SMN — La Paz 1991–2020", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -1569,21 +1569,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["snowbirds", "marine-adjacent"], travelFit: ["whale sharks", "island tourism"],
     whoWouldLove: "Those wanting winter perfection on clear turquoise water.", whoMightNot: "Year-round heat-averse.",
     confidence: "high",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "la-paz-mx-mechanism",
-        title: "Desert Oasis mechanics",
+        id: "la-paz-cortez-desert",
+        title: "Sea of Cortez desert coast and winter perfection",
         paragraphs: [
-          "La Paz sits where sheltered Bahía de La Paz on the Sea of Cortez side of Baja Sur. BWh normals and roughly 158 mm/yr frame the regional baseline, but Diurnal sea breeze and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Cortez warm-water surround produces a distinctly humid summer signature not found on the Pacific-facing Baja coast. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "La Paz sits on sheltered Bahía de La Paz on the Sea of Cortez side of Baja Sur — BWh normals with roughly 158 mm annually, where warm Cortez water surround produces a distinctly humid summer signature not found on Pacific-facing Baja coast.",
+          "Winters are nearly ideal — 26°C days, 14°C nights, constant sun — making La Paz a snowbird capital while summers push brutal heat and hurricane watches from August through October.",
         ],
       },
       {
-        id: "la-paz-mx-field-read",
-        title: "On-the-ground read",
+        id: "la-paz-hurricane-drought",
+        title: "Hurricane exposure and drought stress",
         paragraphs: [
-          "A warm desert coast facing the Sea of Cortez — winter perfection, hurricane-season heat, and clear turquoise water. Soils read as sandy alluvial / coastal with excessive drainage (pH 7.4–8.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Date palms, Mango, Citrus. Year-round heat-averse should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High drought risk registers here — sandy alluvial coastal soils with excessive drainage support date palms, mango, and citrus with irrigation planning essential in one of Mexico's driest populated coasts.",
+          "Year-round heat-averse relocators should spend an August week here before treating winter perfection as balance for 35°C humid summers — verify flood exposure on low-lying bay blocks and hurricane insurance before committing.",
         ],
       },
     ],
@@ -1634,7 +1634,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["surfers", "tropical-coast people"], travelFit: ["surfing", "sea-turtle viewing"],
     whoWouldLove: "Pacific-coast surf pilgrims.", whoMightNot: "Humidity-averse.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "puerto-escondido-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2667,17 +2667,17 @@ export const PLACES_MEXICO: Place[] = [
     summaryShort: "Pacific resort climate — warm winter escape, humid summer with tropical cyclone watches.",
     summaryImmersive: "Puerto Vallarta sits where bay curvature and sierra slopes focus afternoon convection. Winter is the dry, golden high season; summer brings muggy heat and Pacific storms. Sea breezes keep beaches cooler than inland Guadalajara by a wide margin.",
     whyDistinct: "Bay geometry + tropical cyclone recurvature zone + strong vertical relief just inland.",
-                experience: {
-      feel: "Puerto Vallarta sits where bay curvature and sierra slopes focus afternoon convection. Winter is the dry, golden high season; summer brings muggy heat and Pacific storms. Sea breezes keep beaches cooler than inland Guadalajara by a wide margin.",
+    experience: {
+      feel: "Puerto Vallarta feels like Pacific resort life with Sierra Madre backdrop — Banderas Bay curvature and slope-driven afternoon convection, dry golden winter high season, muggy summer with Pacific storm watches, and sea breezes keeping beaches cooler than Guadalajara.",
       seasons: {
-        winter: "Warm winter window — afternoons near 29°C, nights near 16.3°C — humid air keeps everything soft and close. Storm systems roll through with real force.",
-        spring: "Heating up fast — afternoons near 31°C, nights near 18.3°C — skies stay mostly dry. Green-up arrives against a wet 1161 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Hot and humid — afternoons near 33°C, nights near 22.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 32°C, nights near 21.7°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Dry-season high season — afternoons near 29°C, nights near 16°C, golden light, whale watching, and trade winds keeping humidity tolerable on the malecón.",
+        spring: "Heating before rains — afternoons climbing toward 31°C, humidity rising, and the last clear weeks before afternoon convection and hurricane season arrive.",
+        summer: "Wet and stormy — highs near 33°C, nights near 23°C, daily afternoon thunderstorms, and Pacific tropical cyclone watches from June through October.",
+        autumn: "Hurricane peak — highs near 32°C, heavy rains from recurving Pacific systems, and landslide exposure on sierra slopes above the bay.",
       },
-      travelerFit: "Visitors come for whale watching and beaches.",
-      residentFit: "It rewards tropical beach life with mountain backdrop — especially hospitality retirees — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
+      travelerFit: "Visitors come for whale watching, beaches, and a tropical resort climate where dry season is the comfort window — wet season demands storm-aware scheduling.",
+      residentFit: "It rewards hospitality retirees and remote workers wanting tropical beach life with mountain backdrop — if they accept very-high storm and coastal surge risk.",
+      texture: "A Banderas Bay tradeoff — weigh hurricane exposure, coastal surge, and landslide risk on sierra slopes against dry-season golden weather and walkable beach-town life.",
     },
     climate: { tempHighC: [29, 29, 30, 31, 32, 33, 33, 33, 33, 32, 31, 29], tempLowC: [16, 16, 17, 18, 20, 22, 23, 23, 23, 22, 20, 17], precipMm: [25, 15, 8, 5, 15, 180, 220, 240, 280, 110, 35, 25], annualPrecipMm: 1161, frostFreeDays: 365, hardinessZone: "11", humidity: [76, 75, 71, 73, 75, 79, 83, 86, 86, 82, 81, 77], sunshinePct: [69, 73, 70, 70, 67, 65, 56, 55, 52, 55, 59, 62] },
     soil: { texture: "Coastal sand and tropical alfisol", drainage: "good", phRange: [6.0, 7.5], waterHolding: "moderate" },
@@ -2689,7 +2689,7 @@ export const PLACES_MEXICO: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for dry-climate seekers; hurricane-anxious buyers.",
+      note: "Puerto Vallarta expat housing at mid-band; Hospital CMQ and PVR anchor care — very-high hurricane and coastal surge risk, sierra landslide exposure, and wet-season humidity define daily logistics beyond dry-season resort appeal.",
       sources: [
       { label: "SMN — Puerto Vallarta", url: "https://smn.conagua.gob.mx/es/" },
       { label: "SMN Mexico — climate normals", url: "https://smn.conagua.gob.mx/es/climatologia/normales-climatologicas-por-estado" },
@@ -2699,21 +2699,21 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["hospitality retirees", "remote workers"], travelFit: ["whale watching", "beaches"],
     whoWouldLove: "Tropical beach life with mountain backdrop.", whoMightNot: "Dry-climate seekers; hurricane-anxious buyers.",
     confidence: "high",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "puerto-vallarta-mx-mechanism",
-        title: "Tropical Isothermal Coast mechanics",
+        id: "pv-banderas-bay",
+        title: "Banderas Bay geometry and sea-breeze moderation",
         paragraphs: [
-          "Puerto Vallarta sits where banderas Bay south shore; Sierra Madre inlandshed with sea-breeze modulation. Aw normals and roughly 1161 mm/yr frame the regional baseline, but Diurnal sea breeze and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Bay geometry + tropical cyclone recurvature zone + strong vertical relief just inland. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Puerto Vallarta sits on the Banderas Bay south shore where Sierra Madre inlandshed and bay curvature focus afternoon convection — Aw tropical normals with roughly 1,161 mm annually concentrated in wet season.",
+          "Sea breezes keep beaches cooler than inland Guadalajara by a wide margin — dry golden winter high season contrasts sharply with muggy summer and Pacific tropical cyclone recurvature zone exposure.",
         ],
       },
       {
-        id: "puerto-vallarta-mx-field-read",
-        title: "On-the-ground read",
+        id: "pv-hurricane-surge",
+        title: "Hurricane surge and sierra landslide risk",
         paragraphs: [
-          "Pacific resort climate — warm winter escape, humid summer with tropical cyclone watches. Soils read as coastal sand and tropical alfisol with good drainage (pH 6–7.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Coconut, Tropical ornamentals, Chile peppers. Dry-climate seekers; hurricane-anxious buyers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Very-high coastal and storm risk registers here — verify elevation certificates, flood panels, and hurricane insurance before committing. Coastal sand and tropical alfisol supports coconut, tropical ornamentals, and chile peppers with good drainage.",
+          "Dry-climate seekers and hurricane-anxious buyers should confirm storm history on their block before committing — Hospital CMQ anchors care but landslide exposure on sierra slopes and surge risk on low malecón parcels define the lived filter.",
         ],
       },
     ],
@@ -2764,7 +2764,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["retirees", "fishing industry"], travelFit: ["historic centro", "carnival"],
     whoWouldLove: "Winter sunbirds on a budget relative to Cabo.", whoMightNot: "Summer humidity haters.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "mazatlan-mx-mechanism",
         title: "Tropical Wet-Dry mechanics",
@@ -2829,7 +2829,7 @@ export const PLACES_MEXICO: Place[] = [
     relocationFit: ["remote workers", "history buffs"], travelFit: ["fort walls", "Gulf beaches"],
     whoWouldLove: "Gulf tropical life with colonial architecture.", whoMightNot: "Hurricane-risk averse.",
     confidence: "moderate",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "campeche-mx-mechanism",
         title: "Hurricane-Exposed Coast mechanics",

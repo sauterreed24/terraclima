@@ -1020,17 +1020,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Okanagan Lake thermal moderation plus rain-shadow dryness — the heart of BC wine country.",
     summaryImmersive: "Summerland sits mid-Okanagan on benches above the lake. Lake moderation buffers winter; rain-shadow dryness and long summer sun power one of Canada's finest orchard-vineyard climates.",
     whyDistinct: "Combination of deep-lake moderation and rain-shadow aridity; south-facing benches enjoy thermal-belt advantages.",
-                experience: {
-      feel: "Summerland sits mid-Okanagan on benches above the lake. Lake moderation buffers winter; rain-shadow dryness and long summer sun power one of Canada's finest orchard-vineyard climates.",
+    experience: {
+      feel: "Summerland feels like the heart of BC wine country — mid-Okanagan benches above the lake where rain-shadow dryness and long summer sun power one of Canada's finest orchard-vineyard climates, with Okanagan Lake thermal mass buffering winter cold.",
       seasons: {
-        winter: "Cold and snowy — afternoons near 0.4°C, nights near -6°C — snow is a regular part of the picture.",
-        spring: "Spring opens — afternoons near 15.1°C, nights near 2.9°C — weather stays moderate and changeable.",
-        summer: "Warm season peak — afternoons near 27.2°C, nights near 12.2°C — weather stays moderate and changeable. Wildfire and smoke are summer wildcards.",
-        autumn: "Shoulder season — afternoons near 13.7°C, nights near 3.2°C — weather stays moderate and changeable. Fire season lingers into shoulder months.",
+        winter: "Lake-moderated cold — afternoons near freezing, nights near −6°C, vineyard crews pruning on south-facing benches while snow dusts the sagebrush hills above.",
+        spring: "Blossom corridor — afternoons climbing through the mid-teens, orchard bloom on the terraces, and the first lake days before summer heat and fire season arrive.",
+        summer: "Hot and dry — highs near 28°C, afternoons above 35°C in heat-dome years, wildfire smoke the defining summer wildcard, and wine tours running at full throttle.",
+        autumn: "Crush season — highs falling through the low teens, grape harvest in full swing, and smoke sometimes lingering into October before lake moderation returns.",
       },
-      travelerFit: "Visitors come for wine tours.",
-      residentFit: "It rewards wine-country people — especially viticulturalists — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are wildfire exposure and smoke-season air quality. Housing runs expensive relative to regional medians.",
+      travelerFit: "Visitors come for Okanagan wine tours, lakeside beaches, and a semi-arid orchard climate with genuine four-season character.",
+      residentFit: "It rewards viticulturalists and wine-country people who accept high wildfire smoke exposure, expensive housing, and irrigation dependence in a 333 mm annual-precipitation valley.",
+      texture: "An orchard-bench tradeoff — weigh fire smoke, water pressure, and housing above regional medians against Canada's most productive cool-climate wine terroir.",
     },
     climate: { tempHighC: [-0.8, 2.4, 9.6, 15.4, 20.3, 24.6, 28.6, 28.3, 22.7, 13.6, 4.9, -0.5], tempLowC: [-6.8, -5.2, -1.1, 2.8, 7.0, 10.7, 13.1, 12.7, 8.4, 3.2, -2.1, -5.9], precipMm: [26, 18, 20, 24, 35, 44, 32, 28, 24, 22, 28, 30], snowCm: [25, 12, 4, 0, 0, 0, 0, 0, 0, 1, 8, 22], humidity: [80, 72, 62, 52, 50, 50, 46, 48, 54, 66, 78, 82], sunshinePct: [25, 38, 52, 60, 66, 70, 80, 78, 66, 46, 28, 22], annualPrecipMm: 333, frostFreeDays: 170, hardinessZone: "6a" },
     soil: { texture: "Sandy loam on glacial benches", drainage: "excessive", phRange: [6.8, 7.6], waterHolding: "low" },
@@ -1042,7 +1042,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 70,
       socialStress: 34,
       accessFriction: 38,
-      note: "Housing runs above regional medians; A poor fit for smoke-sensitive.",
+      note: "Summerland housing runs above regional medians; Penticton Regional Hospital and YLW anchor care — high wildfire smoke exposure, irrigation dependence in a 333 mm valley, and south-facing bench fire risk define daily logistics beyond wine-country appeal.",
       sources: [
       { label: "ECCC — Summerland CDA", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -1052,21 +1052,21 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["viticulturalists", "orchardists"], travelFit: ["wine tours"],
     whoWouldLove: "Wine-country people.", whoMightNot: "Smoke-sensitive.",
     confidence: "high",
-                                    deepSections: [
+    deepSections: [
       {
-        id: "summerland-bc-mechanism",
-        title: "Orchard Valley mechanics",
+        id: "summerland-okanagan-bench",
+        title: "Okanagan bench terroir and lake moderation",
         paragraphs: [
-          "Summerland sits where mid-Okanagan lakeside; orchard-and-vineyard terraces on benches above Okanagan Lake. BSk normals and roughly 333 mm/yr frame the regional baseline, but Rain shadow and Lake effect re-weight what any single forecast means block by block.",
-          "Combination of deep-lake moderation and rain-shadow aridity; south-facing benches enjoy thermal-belt advantages. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Summerland sits on mid-Okanagan orchard-and-vineyard terraces above Okanagan Lake — BSk normals with roughly 333 mm annually, where deep-lake moderation buffers winter and rain-shadow aridity powers one of Canada's finest wine climates.",
+          "South-facing benches enjoy thermal-belt advantages — combination of lake thermal mass and interior rain shadow unique north of the US border and economically legible in every heritage apple block and cool-climate vineyard row.",
         ],
       },
       {
-        id: "summerland-bc-field-read",
-        title: "On-the-ground read",
+        id: "summerland-fire-water",
+        title: "Wildfire smoke and water pressure",
         paragraphs: [
-          "Okanagan Lake thermal moderation plus rain-shadow dryness — the heart of BC wine country. Soils read as sandy loam on glacial benches with excessive drainage (pH 6.8–7.6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Wildfire registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples (heritage), Cherries, Wine grapes (cool-climate). Smoke-sensitive should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "High wildfire and smoke risk registers here — verify evacuation routes and air filtration before committing. Sandy loam on glacial benches with excessive drainage supports heritage apples, cherries, and cool-climate wine grapes with irrigation essential.",
+          "Smoke-sensitive relocators should confirm bench elevation and fire exposure before committing — Penticton Regional Hospital anchors care but water pressure and smoke-season PM define daily logistics beyond lakeside wine-tour appeal.",
         ],
       },
     ],
@@ -1179,7 +1179,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-farm families"], travelFit: ["wildlife area", "orchards"],
     whoWouldLove: "Quiet Kootenay folk.", whoMightNot: "Urbanites.",
     confidence: "moderate",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "creston-bc-mechanism",
         title: "Orchard Valley mechanics",
@@ -1851,7 +1851,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["greenhouse farmers"], travelFit: ["Point Pelee birding"],
     whoWouldLove: "Those drawn to Canada's longest growing season.", whoMightNot: "Mountain-lovers.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "leamington-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -1915,7 +1915,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["boreal families"], travelFit: ["Sleeping Giant Park"],
     whoWouldLove: "Boreal-lake devotees.", whoMightNot: "Heat-needing.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "thunder-bay-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2333,7 +2333,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["winemakers"], travelFit: ["wine trail", "beaches"],
     whoWouldLove: "Cool-climate wine people.", whoMightNot: "Those wanting mild winters.",
     confidence: "moderate",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "prince-edward-co-on-mechanism",
         title: "Lake-Moderated mechanics",
@@ -2406,7 +2406,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Nunavut government workers", "Arctic researchers"], travelFit: ["Inuit cultural tourism", "Arctic wildlife", "polar nights / midnight sun"],
     whoWouldLove: "People deeply drawn to the Arctic; Inuit residents with cultural/land ties.", whoMightNot: "Essentially anyone not prepared for extreme remoteness and cost of living.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "iqaluit-nu-mechanism",
         title: "Subarctic Continental mechanics",
@@ -2477,7 +2477,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["Arctic researchers", "Gwich'in/Inuvialuit residents"], travelFit: ["midnight-sun photography", "aurora (Aug–Apr)", "Dempster Highway journey"],
     whoWouldLove: "Arctic enthusiasts willing to embrace both extremes.", whoMightNot: "Almost everyone else.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "inuvik-nt-mechanism",
         title: "Subarctic Continental mechanics",
@@ -3025,7 +3025,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "charlottetown-pei-mechanism",
         title: "Cool-Summer Maritime mechanics",
@@ -3239,7 +3239,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "morden-mb-mechanism",
         title: "Orchard Valley mechanics",
@@ -3304,7 +3304,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
-                                    deepSections: [
+                                        deepSections: [
       {
         id: "sutton-qc-mechanism",
         title: "Piedmont Transition mechanics",
