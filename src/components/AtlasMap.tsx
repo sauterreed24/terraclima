@@ -1304,11 +1304,15 @@ export function AtlasMap({
   const topoLoading = topo === null && !topoError;
   const svgTouchAction = atlasTouchActionForMode(mapInteractive);
   const legendPanelId = coarsePointer ? "tc-map-mobile-legend" : "tc-map-desktop-legend";
-  const mapAriaLabel =
-    (coarsePointer
-      ? "Atlas map of North America. One-finger drag pans the map; pinch zooms when map mode is active. Use the Scroll page control to let the browser scroll past the map. Tap any pin to open that place's full profile."
-      : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile.") +
-    (featuredTrailPoints.length > 1 ? " Gold trail connects the current top-ranked places." : "");
+  const mapHasPins = pts.length > 0;
+  const canZoomIn = view.k < MAX_ZOOM - 1e-3;
+  const canZoomOut = view.k > MIN_ZOOM + 1e-3;
+  const mapAriaLabel = !mapHasPins
+    ? "Atlas map of North America. No places match the current filters or search; adjust them to bring pins back."
+    : (coarsePointer
+        ? "Atlas map of North America. One-finger drag pans the map; pinch zooms when map mode is active. Use the Scroll page control to let the browser scroll past the map. Tap any pin to open that place's full profile."
+        : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile.") +
+      (featuredTrailPoints.length > 1 ? " Gold trail connects the current top-ranked places." : "");
   const renderMarker = (pt: RenderedClusterPoint) => {
     const screenX = pt.x * settledView.k + settledView.x;
     const labelSide: "left" | "right" = screenX > width * 0.62 ? "left" : "right";
@@ -1348,6 +1352,17 @@ export function AtlasMap({
           aria-live="polite"
         >
           Loading country & state outlines…
+        </div>
+      ) : null}
+      {!topoLoading && !mapHasPins ? (
+        <div
+          className="tc-map-empty-overlay absolute inset-0 z-[3] flex items-center justify-center p-4 pointer-events-none"
+          role="status"
+        >
+          <div className="tc-map-empty-overlay__card">
+            <p className="tc-map-empty-overlay__title">No places on the map</p>
+            <p className="tc-map-empty-overlay__hint">Nothing matches the current filters or search. Clear or loosen one to bring the atlas back.</p>
+          </div>
         </div>
       ) : null}
       <svg
@@ -1790,10 +1805,10 @@ export function AtlasMap({
 
       {/* Zoom controls */}
       <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[2]">
-        <button type="button" className="map-btn" onClick={() => zoomBy(1.7)} title="Zoom in (+)" aria-label="Zoom in">
+        <button type="button" className="map-btn" onClick={() => zoomBy(1.7)} disabled={!canZoomIn} title={canZoomIn ? "Zoom in (+)" : "Maximum zoom reached"} aria-label="Zoom in">
           <Plus className="w-4 h-4" aria-hidden />
         </button>
-        <button type="button" className="map-btn" onClick={() => zoomBy(1 / 1.7)} title="Zoom out (-)" aria-label="Zoom out">
+        <button type="button" className="map-btn" onClick={() => zoomBy(1 / 1.7)} disabled={!canZoomOut} title={canZoomOut ? "Zoom out (-)" : "Minimum zoom reached"} aria-label="Zoom out">
           <Minus className="w-4 h-4" aria-hidden />
         </button>
         <button

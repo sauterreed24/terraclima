@@ -1,6 +1,7 @@
 import { memo, useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { useFocusTrap } from "../../hooks/use-focus-trap";
+import { CMD_KEY_LABEL } from "../../lib/app-constants";
 
 /**
  * Modal listing every keyboard shortcut the app supports. Triggered by
@@ -45,7 +46,7 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
           <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
           <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
           <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
-          <Kbds keys={["Ctrl", "K"]} /> <span className="text-frost">Explorer: focus search (also works from inside any text input)</span>
+          <Kbds keys={[CMD_KEY_LABEL, "K"]} /> <span className="text-frost">Explorer: focus search (also works from inside any text input)</span>
           <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
           <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
           <Kbds keys={["B"]} />        <span className="text-frost">Pin / unpin the currently open place to your shortlist</span>

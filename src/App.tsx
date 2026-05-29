@@ -46,7 +46,7 @@ import {
   preloadCompareView,
   preloadPlaceDetail,
 } from "./lib/lazy-views";
-import { SEARCH_INPUT_ID, SHORTCUTS_SEEN_KEY, type ShareStatus } from "./lib/app-constants";
+import { SEARCH_INPUT_ID, SEARCH_SHORTCUT_HINT, SHORTCUTS_SEEN_KEY, type ShareStatus } from "./lib/app-constants";
 import { LogoMark } from "./components/chrome/LogoMark";
 import { Footer } from "./components/chrome/Footer";
 import { ShortcutsOverlay } from "./components/chrome/ShortcutsOverlay";
@@ -864,7 +864,7 @@ export default function App() {
                   </div>
                   <div className="text-xs text-stone hidden md:flex items-center gap-2 flex-wrap">
                     <span><span className="tc-tip-pill">Scroll</span> zooms the map</span>
-                    <span><span className="tc-tip-pill">/</span> focuses search</span>
+                    <span><span className="tc-tip-pill">{SEARCH_SHORTCUT_HINT}</span> or <span className="tc-tip-pill">/</span> search</span>
                     <span><span className="tc-tip-pill">R</span> surprise pick</span>
                     <button
                       type="button"

@@ -86,6 +86,13 @@ for (const p of PLACES) {
   for (const k of ["tempHighC", "tempLowC", "precipMm"] as const) {
     if (climate[k].length !== 12) report(p.id, "ERROR", `${k} has ${climate[k].length} entries, expected 12`);
   }
+  // Optional monthly arrays are read by 12-month loops elsewhere; a short/long
+  // one would silently yield undefined→NaN downstream (the per-month range
+  // checks below skip undefined), so validate length here too.
+  for (const k of ["snowCm", "humidity", "sunshinePct"] as const) {
+    const arr = climate[k];
+    if (arr && arr.length !== 12) report(p.id, "ERROR", `${k} has ${arr.length} entries, expected 12`);
+  }
 
   // --- Temperature sanity: high >= low each month ---
   for (let m = 0; m < 12; m++) {

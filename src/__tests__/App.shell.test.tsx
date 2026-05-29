@@ -451,6 +451,16 @@ describe("App shell", () => {
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("surfaces the search keyboard shortcut in the desktop tips", async () => {
+    window.history.replaceState(null, "", "/");
+
+    renderApp();
+
+    // ⌘K on Mac, "Ctrl K" elsewhere (jsdom is non-Mac) — either way the search
+    // shortcut must be discoverable, not just "/".
+    expect(screen.getByText(/⌘K|Ctrl K/)).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("shows a search-specific empty state when only a search is active", async () => {
     window.history.replaceState(null, "", "/?q=zzzznonexistent");
 
