@@ -2439,17 +2439,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "North of the Arctic Circle — experiences 56 days of continuous daylight in summer and 30 days of polar night in winter.",
     summaryImmersive: "Inuvik, the largest Canadian community north of the Arctic Circle, sits in the great northern swampland of the Mackenzie River Delta. Summer here brings 56 consecutive days of sun above the horizon — by late June, direct midnight sunlight streams into kitchens. Winter reverses entirely: from early December to early January, the sun does not rise at all, though twilight persists at midday. Winter temperatures drop below −40°C routinely; summer highs can reach 28°C on the warmest days. The annual temperature range is among the largest on the planet — roughly 70°C between summer maxima and winter minima.",
     whyDistinct: "Polar latitude + continental position + Mackenzie Delta microenvironment. The delta's innumerable lakes marginally moderate summer; in winter everything is frozen solid for 7 months and continentality dominates fully.",
-                experience: {
-      feel: "Inuvik, the largest Canadian community north of the Arctic Circle, sits in the great northern swampland of the Mackenzie River Delta. Summer here brings 56 consecutive days of sun above the horizon — by late June, direct midnight sunlight streams into kitchens.",
+                                experience: {
+      feel: "Inuvik feels like the largest Canadian community north of the Arctic Circle in the Mackenzie River Delta — 56 consecutive days of midnight sun in summer when light streams into kitchens, then 30 days of polar night in winter when the sun does not rise at all, with an annual temperature range among the largest on Earth.",
       seasons: {
-        winter: "Deep freeze — afternoons near -22.3°C, nights near -31°C — snow is a regular part of the picture. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near -4.3°C, nights near -16.3°C — snow is a regular part of the picture.",
-        summer: "Cool summer by latitude — afternoons near 21.3°C, nights near 8.7°C — weather stays moderate and changeable.",
-        autumn: "Autumn fade — afternoons near -1.3°C, nights near -9.3°C — snow is a regular part of the picture.",
+        winter: "Polar night freeze — afternoons near −22°C, nights near −31°C, everything frozen solid for seven months, and aurora visible from August through April.",
+        spring: "Break-up on the delta — afternoons climbing toward −4°C, 24-hour daylight returning, ice roads closing, and permafrost active layer thawing.",
+        summer: "Midnight sun peak — highs near 21°C on warm days, 56 days of sun above the horizon, community greenhouses running flat-out, and Dempster Highway tourism at full tilt.",
+        autumn: "Darkness returns — highs falling toward −1°C, first snow by October, sealift deadlines passed, and twilight replacing midnight sun.",
       },
-      travelerFit: "Visitors come for midnight-sun photography, aurora (Aug–Apr), and Dempster Highway journey.",
-      residentFit: "It rewards arctic enthusiasts willing to embrace both extremes — especially Arctic researchers — who can accept the local tradeoffs.",
-      texture: "A real-tradeoff place — the main things to weigh are deep winter cold. Specialty care and major-airport access require real planning.",
+      travelerFit: "Visitors come for midnight-sun photography, aurora viewing, and the Dempster Highway journey to the Arctic Ocean.",
+      residentFit: "It rewards Arctic researchers and Gwich'in/Inuvialuit residents who accept permafrost constraints, extreme cost of living, and among the fastest warming on Earth.",
+      texture: "An Arctic delta tradeoff — weigh −40°C winters, permafrost thaw destabilizing infrastructure, and fly-in supply chains against midnight-sun summers and a community built for both extremes.",
     },
     climate: {
       tempHighC: [-23, -24, -17, -5, 9, 21, 23, 20, 11, -1, -14, -20], tempLowC: [-32, -32, -28, -18, -3, 8, 10, 8, 2, -8, -22, -29],
@@ -2467,7 +2467,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 40,
       accessFriction: 72,
-      note: "Specialty care and major-airport access need real planning; A poor fit for almost everyone else.",
+      note: "Inuvik Airport connects to Yellowknife and Edmonton — Inuvik Regional Hospital anchors care, and anyone not prepared for polar-night isolation and Dempster Highway logistics should visit before committing.",
       sources: [
       { label: "ECCC — Inuvik Climate A 1991–2020", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -2479,19 +2479,19 @@ export const PLACES_CANADA: Place[] = [
     confidence: "high",
                                                 deepSections: [
       {
-        id: "inuvik-nt-mechanism",
-        title: "Subarctic Continental mechanics",
+        id: "inuvik-midnight-polar",
+        title: "Midnight sun and polar night on the delta",
         paragraphs: [
-          "Inuvik sits where mackenzie River Delta, 200 km north of the Arctic Circle; surrounded by taiga-tundra transition. Dfc normals and roughly 240 mm/yr frame the regional baseline, but Continental extremity and Polar jet / arctic front re-weight what any single forecast means block by block.",
-          "Polar latitude + continental position + Mackenzie Delta microenvironment. The delta's innumerable lakes marginally moderate summer; in winter everything is frozen solid for 7 months and continentality dominates fully. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Inuvik sits in the Mackenzie River Delta 200 km north of the Arctic Circle — Dfc normals with roughly 240 mm annually, where 56 consecutive days of sun above the horizon in summer reverse into 30 days of polar night in winter.",
+          "The delta's innumerable lakes marginally moderate summer; in winter everything is frozen solid for seven months and continentality dominates — summer highs can reach 28°C while winter lows drop below −40°C routinely.",
         ],
       },
       {
-        id: "inuvik-nt-field-read",
-        title: "On-the-ground read",
+        id: "inuvik-permafrost-dempster",
+        title: "Permafrost thaw and Dempster Highway access",
         paragraphs: [
-          "North of the Arctic Circle — experiences 56 days of continuous daylight in summer and 30 days of polar night in winter. Soils read as organic soils over permafrost; peat dominant with poor drainage (pH 4.5–6). Community greenhouses operate during the long-daylight growing season.",
-          "Extreme cold registers very-high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hardy greens (short season), Some potatoes, Berries. Almost everyone else should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Organic peat soils over continuous permafrost limit outdoor agriculture to community greenhouses during the long-daylight season — Hardy greens and potatoes succeed in sheltered plots.",
+          "Almost everyone else should confirm Inuvik Regional Hospital access and heating costs before committing — permafrost is structural, and as it thaws roads, buildings, and ecosystems all reorganize.",
         ],
       },
     ],
@@ -2993,17 +2993,17 @@ export const PLACES_CANADA: Place[] = [
     summaryShort: "Canada's smallest province — red soil, potatoes, and breezy summers that rarely exceed 27°C.",
     summaryImmersive: "PEI is a sandbar in the Gulf: winters are snowy and windy; summers are mild with persistent breezes that keep beaches comfortable. Spring fog is common; fall is peak tourism for harvest and lighthouses.",
     whyDistinct: "Island geography with Gulf ice and melt strongly modulates seasonal lag versus mainland New Brunswick.",
-                experience: {
-      feel: "Charlottetown — pEI is a sandbar in the Gulf: winters are snowy and windy; summers are mild with persistent breezes that keep beaches comfortable. Spring fog is common; fall is peak tourism for harvest and lighthouses.",
+                                experience: {
+      feel: "Charlottetown feels like Canada's smallest province capital on a Gulf sandbar — red soil potato country with snowy windy winters, mild breezy summers that rarely exceed 27°C, and spring fog that delays green-up versus mainland New Brunswick.",
       seasons: {
-        winter: "Cold and sharp — afternoons near -1.7°C, nights near -9.7°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 7.3°C, nights near 0°C — rain is frequent and can be heavy. Green-up arrives against a wet 1265 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 22.3°C, nights near 13.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 13°C, nights near 4.7°C — rain is frequent and can be heavy. Tropical systems can still reshape the calendar deep into fall. Storm systems roll through with real force.",
+        winter: "Gulf ice and wind — afternoons near −2°C, nights near −10°C, north-shore storm exposure, and Confederation Bridge crossings that close in blizzards.",
+        spring: "Foggy green-up — afternoons climbing through 7°C, red fields draining, lobster season opening, and lilacs running late versus Moncton.",
+        summer: "Island breeze peak — highs near 22°C, beaches comfortable thanks to persistent Gulf winds, Green Gables tourism, and PEI National Park at full season.",
+        autumn: "Harvest and hurricanes — highs falling through 13°C, potato harvest, fall color on lighthouses, and tropical systems occasionally brushing the Gulf coast.",
       },
-      travelerFit: "Visitors come for Green Gables, beaches, and lobster.",
-      residentFit: "It rewards quiet island life with maritime seasons — especially small-town families — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into at sea level — the main things to weigh are storm exposure and coastal and sea-level pressure.",
+      travelerFit: "Visitors come for Green Gables, red-sand beaches, and lobster suppers in a compact island capital.",
+      residentFit: "It rewards small-town families and farmers who accept island supply chains, seasonal tourism, and quiet winters without urban nightlife.",
+      texture: "An island sandbar tradeoff — weigh Gulf storm exposure, north-shore erosion, and Confederation Bridge access against red-soil terroir, maritime summers, and Canada's most intimate province scale.",
     },
     climate: { tempHighC: [-3, -3, 1, 7, 14, 19, 24, 24, 19, 13, 7, 1], tempLowC: [-12, -11, -6, 0, 6, 11, 15, 15, 10, 4, 0, -6], precipMm: [110, 90, 100, 95, 95, 95, 100, 95, 105, 120, 130, 130], humidity: [74, 74, 76, 76, 78, 80, 82, 82, 80, 78, 76, 74], annualPrecipMm: 1265, frostFreeDays: 150, hardinessZone: "5b", sunshinePct: [39, 45, 48, 56, 49, 53, 46, 43, 34, 41, 37, 34] },
     soil: { texture: "Iron-rich red sandstone-derived loam", drainage: "moderate", phRange: [5.5, 6.5], waterHolding: "moderate" },
@@ -3015,7 +3015,7 @@ export const PLACES_CANADA: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for urban nightlife seekers.",
+      note: "Queen Elizabeth Hospital anchors care and Charlottetown Airport connects to Toronto and Montreal — island housing stays moderate but north-shore storm exposure and bridge closures define winter logistics beyond beach-season appeal.",
       sources: [
       { label: "ECCC — Charlottetown", url: "https://climate.weather.gc.ca/" },
       { label: "Statistics Canada — community profiles", url: "https://www12.statcan.gc.ca/census-recensement/index-eng.cfm" },
@@ -3027,19 +3027,19 @@ export const PLACES_CANADA: Place[] = [
     confidence: "high",
                                                 deepSections: [
       {
-        id: "charlottetown-pei-mechanism",
-        title: "Cool-Summer Maritime mechanics",
+        id: "pei-red-soil-gulf",
+        title: "Red sandstone terroir and Gulf moderation",
         paragraphs: [
-          "Charlottetown sits where island capital on Gulf of St. Lawrence; surrounded by warming water in summer, ice in winter. Dfb normals and roughly 1265 mm/yr frame the regional baseline, but Marine layer and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Island geography with Gulf ice and melt strongly modulates seasonal lag versus mainland New Brunswick. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Charlottetown sits on Prince Edward Island in the Gulf of St. Lawrence — Dfb normals with roughly 1265 mm annually, where island geometry and Gulf ice/melt cycles modulate seasonal lag versus mainland New Brunswick.",
+          "Iron-rich red sandstone loam supports potatoes, grains, and brassicas — breezy summers rarely exceed 27°C thanks to persistent Gulf fetch.",
         ],
       },
       {
-        id: "charlottetown-pei-field-read",
-        title: "On-the-ground read",
+        id: "pei-bridge-storms",
+        title: "Confederation Bridge and north-shore storms",
         paragraphs: [
-          "Canada's smallest province — red soil, potatoes, and breezy summers that rarely exceed 27°C. Soils read as iron-rich red sandstone-derived loam with moderate drainage (pH 5.5–6.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Potatoes, Grains, Brassicas. Urban nightlife seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Spring fog is common; fall is peak tourism for harvest and lighthouses — garden success tracks wind exposure on exposed north-shore blocks more than hardiness zone.",
+          "Urban nightlife seekers should confirm Queen Elizabeth Hospital access before committing — coastal exposure is elevated on north-shore parcels and island infrastructure faces rising storm intensity.",
         ],
       },
     ],
@@ -3239,7 +3239,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["gardeners", "prairie families"], travelFit: ["Morden research station heritage", "prairie fall"],
     whoWouldLove: "Prairie gardeners who want the strongest Manitoba heat-unit pocket they can reasonably find.", whoMightNot: "Mild-winter seekers.",
     confidence: "moderate",
-                                                deepSections: [
+                                                    deepSections: [
       {
         id: "morden-mb-mechanism",
         title: "Orchard Valley mechanics",
@@ -3304,7 +3304,7 @@ export const PLACES_CANADA: Place[] = [
     relocationFit: ["remote workers", "maple-country smallholders"], travelFit: ["fall color", "ski weekends", "wine routes"],
     whoWouldLove: "People who want village-scale Quebec Appalachians with real snow and orchard-maple culture.", whoMightNot: "People seeking low-maintenance winter or hot summers.",
     confidence: "moderate",
-                                                deepSections: [
+                                                    deepSections: [
       {
         id: "sutton-qc-mechanism",
         title: "Piedmont Transition mechanics",

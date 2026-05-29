@@ -916,17 +916,17 @@ export const PLACES_USA_ROUND2: Place[] = [
     summaryShort: "Central PA university town where valley geometry sharpens frost and lake-enhanced snow reaches west of the main Allegheny crest.",
     summaryImmersive: "State College sits in a valley between long parallel ridges; radiative nights run cold; spring green-up can lag neighboring ridges. Winter storms pick up moisture from the Great Lakes in northwesterly flow.",
     whyDistinct: "Ridge-and-valley terrain at latitude where lake-effect and synoptic snow overlap.",
-                experience: {
-      feel: "State College sits in a valley between long parallel ridges; radiative nights run cold; spring green-up can lag neighboring ridges. Winter storms pick up moisture from the Great Lakes in northwesterly flow.",
+                                experience: {
+      feel: "State College feels like a Nittany Valley university town enclosed by parallel Appalachian ridges — radiative nights run cold in the basin, spring green-up lags neighboring ridge tops, and northwesterly flow picks up Great Lakes moisture for lake-enhanced snow west of the Allegheny crest.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 2.7°C, nights near -6.3°C — showers pass through regularly. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 14.7°C, nights near 3.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1110 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Warm season peak — afternoons near 26.7°C, nights near 15°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 16.3°C, nights near 5.3°C — showers pass through regularly. Storm systems roll through with real force.",
+        winter: "Valley cold pool — afternoons near 3°C, nights near −6°C, lake-enhanced snow bands, and Penn State students navigating icy sidewalks between classes.",
+        spring: "Late basin green-up — afternoons climbing toward 15°C, Rothrock State Forest trails muddy, and frost nights still possible into May on valley floors.",
+        summer: "Warm and stormy — highs near 27°C, humid afternoons with convection, Happy Valley farmers market season, and thunderstorms building over ridge tops.",
+        autumn: "Football and foliage — highs falling through 16°C, hardwood color on surrounding ridges, Penn State game-day energy, and the year's best hiking weather.",
       },
-      travelerFit: "Visitors come for Penn State sports and Rothrock SF.",
-      residentFit: "It rewards appalachian foothills with college-town amenities — especially academics — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
+      travelerFit: "Visitors come for Penn State football, Rothrock State Forest, and a ridge-and-valley climate laboratory in central Pennsylvania.",
+      residentFit: "It rewards academics and families who accept cold valley winters, lake-enhanced snow, and flash-flood risk in steep hollows.",
+      texture: "A Happy Valley tradeoff — weigh basin-floor frost, hollow flash flooding, and pollen-heavy springs against Penn State amenities, Mount Nittany Medical Center, and affordable college-town housing.",
     },
     climate: {
       tempHighC: [1, 3, 8, 15, 21, 25, 28, 27, 23, 16, 10, 4],
@@ -947,7 +947,7 @@ export const PLACES_USA_ROUND2: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 60,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
+      note: "Mount Nittany Medical Center and University Park Airport anchor services — verify parcel elevation in steep hollows and expect colder valley-floor frost than ridge-top blocks before committing.",
       sources: [
       { label: "NOAA — University Park", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — State College", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -959,19 +959,19 @@ export const PLACES_USA_ROUND2: Place[] = [
     confidence: "high",
                                                 deepSections: [
       {
-        id: "state-college-pa-mechanism",
-        title: "Cold-Air Pool mechanics",
+        id: "state-college-nittany-valley",
+        title: "Nittany Valley cold pool and lake-enhanced snow",
         paragraphs: [
-          "State College sits where nittany Valley in the Appalachian Ridge and Valley — enclosed basins with cold-air pooling. Dfb normals and roughly 1110 mm/yr frame the regional baseline, but Cold-air drainage and Slope / aspect re-weight what any single forecast means block by block.",
-          "Ridge-and-valley terrain at latitude where lake-effect and synoptic snow overlap. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "State College sits in the Nittany Valley between long parallel ridges in the Appalachian Ridge and Valley — Dfb normals with roughly 1110 mm annually, where enclosed basin geometry sharpens frost and northwesterly flow picks up Great Lakes moisture.",
+          "Radiative nights run cold on the valley floor; spring green-up can lag neighboring ridges by weeks — lake-effect and synoptic snow overlap at this latitude.",
         ],
       },
       {
-        id: "state-college-pa-field-read",
-        title: "On-the-ground read",
+        id: "state-college-hollow-flood",
+        title: "Rothrock hollows and Penn State anchor",
         paragraphs: [
-          "Central PA university town where valley geometry sharpens frost and lake-enhanced snow reaches west of the main Allegheny crest. Soils read as shaley silt loam with moderate drainage (pH 5.5–6.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Maple, Apples, Cool greens. Mild-winter seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Shaley silt loam supports maple, apples, and cool greens on sheltered blocks — garden success tracks basin-floor versus ridge-top frost exposure.",
+          "Mild-winter seekers should confirm Mount Nittany Medical Center access before committing — flash flooding in steep hollows is rising and basin-floor normals understate ridge-versus-floor frost spread.",
         ],
       },
     ],

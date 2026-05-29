@@ -27,17 +27,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Alabama’s coolest summer afternoons outside the highest Smokies — a plateau town where elevation buys genuine relief from Gulf humidity below.",
     summaryImmersive: "Mentone sits on the same Appalachian escarpment that runs into Georgia and Tennessee, but here the state’s stereotypical swelter finally breaks. Westerly storm systems ride the plateau edge; thermal belts and coves on the scarp produce sharp spring frost contrasts that orchardists still map by hand. It is one of the few places in Alabama where true four-season gardening feels honest.",
     whyDistinct: "Plateau elevation (~550 m) in the subtropical Gulf air mass produces lapse-rate cooling and orographic cloud caps on moist flow — a discrete mountain microclimate inside a state better known for torrid lowlands.",
-                experience: {
-      feel: "Mentone sits on the same Appalachian escarpment that runs into Georgia and Tennessee, but here the state’s stereotypical swelter finally breaks. Westerly storm systems ride the plateau edge;.",
+                                experience: {
+      feel: "Mentone feels like Alabama's plateau escape on the Lookout Mountain scarp — roughly 550 m above the Tennessee Valley where Gulf swelter finally breaks, thermal belts on the escarpment produce sharp spring frost contrasts, and true four-season gardening feels honest for the first time in the state.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 10.3°C, nights near -0.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 20.7°C, nights near 8.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1375 mm annual backdrop. Spring rains can swell rivers and low districts quickly.",
-        summer: "Warm season peak — afternoons near 28.7°C, nights near 17.3°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 20.7°C, nights near 8.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Plateau mild — afternoons near 10°C, nights near 0°C, occasional snow on the scarp, and DeSoto Falls frozen on cold mornings.",
+        spring: "Thermal-belt tension — afternoons climbing toward 21°C, orchard frost maps still drawn by hand, and hang-gliders launching from the ridge when winds align.",
+        summer: "Relief from Gulf heat — highs near 29°C, cooler than Chattanooga valley below, afternoon storms riding the plateau edge, and the state's coolest summer afternoons outside the Smokies.",
+        autumn: "Escarpment color — highs falling through 21°C, native azaleas and hardwoods on the scarp, and apple harvest in cove orchards.",
       },
-      travelerFit: "Visitors come for DeSoto State Park and hang gliding ridge.",
-      residentFit: "It rewards southerners who want mountain air without leaving the state — especially retirees — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
+      travelerFit: "Visitors come for DeSoto State Park, hang gliding from Lookout Mountain, and Alabama mountain air without leaving the state.",
+      residentFit: "It rewards retirees and remote workers who want mountain climate inside Alabama but accept limited urban amenities and wet shoulder seasons.",
+      texture: "A Lookout Mountain tradeoff — weigh escarpment flood risk, spring frost on thermal belts, and remote services against genuine elevation relief from Gulf humidity and four-season gardening.",
     },
     climate: {
       tempHighC: [9, 11, 16, 21, 25, 28, 29, 29, 26, 21, 15, 11],
@@ -59,7 +59,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 40,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for those needing urban amenities or dry winters.",
+      note: "DeKalb Regional Medical Center in Fort Payne is the nearest hospital — southerners seeking mountain air should confirm winter road access on the scarp before committing; urban amenity seekers will find Chattanooga 90 minutes west.",
       sources: [
       { label: "NOAA — Valley Head 2 NE (proxy)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Mentone", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -71,19 +71,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "moderate",
                                                 deepSections: [
       {
-        id: "mentone-al-mechanism",
-        title: "Thermal Belt mechanics",
+        id: "mentone-lookout-plateau",
+        title: "Lookout Mountain scarp and lapse-rate relief",
         paragraphs: [
-          "Mentone sits where village on the Cumberland Plateau / Lookout Mountain scarp — roughly 550 m above the Tennessee Valley floor to the west. Cfa normals and roughly 1375 mm/yr frame the regional baseline, but Elevation lapse rate and Slope / aspect re-weight what any single forecast means block by block.",
-          "Plateau elevation (~550 m) in the subtropical Gulf air mass produces lapse-rate cooling and orographic cloud caps on moist flow — a discrete mountain microclimate inside a state better known for torrid lowlands. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Mentone sits on the Cumberland Plateau / Lookout Mountain scarp roughly 550 m above the Tennessee Valley — Cfa normals with roughly 1375 mm annually, where plateau elevation in the subtropical Gulf air mass produces lapse-rate cooling rare in Alabama.",
+          "Westerly storm systems ride the plateau edge; thermal belts and coves on the scarp produce sharp spring frost contrasts that orchardists still map by hand.",
         ],
       },
       {
-        id: "mentone-al-field-read",
-        title: "On-the-ground read",
+        id: "mentone-desoto-garden",
+        title: "DeSoto State Park and four-season gardening",
         paragraphs: [
-          "Alabama’s coolest summer afternoons outside the highest Smokies — a plateau town where elevation buys genuine relief from Gulf humidity below. Soils read as shaley silt loam on sandstone and limestone with moderate drainage (pH 5.4–6.8). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Blueberries, Native azaleas. Those needing urban amenities or dry winters should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Shaley silt loam on sandstone and limestone supports apples, blueberries, and native azaleas — one of the few places in Alabama where true four-season gardening feels honest.",
+          "Those needing urban amenities or dry winters should confirm DeKalb Regional Medical Center access before committing — escarpment flood exposure varies sharply by cove versus ridge-top parcel.",
         ],
       },
     ],
@@ -111,17 +111,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Connecticut’s unofficial cold pole — deep winter snow and spring frosts that arrive later than along I-91.",
     summaryImmersive: "Norfolk collects cold air on clear nights the way a bowl collects water. Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure. Summers are mild and short; the town is a cultural bridge between New England ski country and the Hudson Valley.",
     whyDistinct: "High elevation + inland position + enclosed topography = systematically colder minima than coastal Connecticut or the Hartford basin — a textbook small-scale cold pool.",
-                experience: {
-      feel: "Norfolk collects cold air on clear nights the way a bowl collects water. Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure. Summers are mild and short;.",
+                                experience: {
+      feel: "Norfolk feels like Connecticut's unofficial cold pole — the highest-incorporated town in the state where cold air collects on clear nights like water in a bowl, lake-effect streamers from Lake Ontario occasionally reach this far southeast, and summers are mild and short compared to Hartford or the coast.",
       seasons: {
-        winter: "Cold and snowy — afternoons near 1.7°C, nights near -9°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near 13°C, nights near 1°C — snow is a regular part of the picture. Green-up arrives against a wet 1175 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 24.7°C, nights near 13°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 14.3°C, nights near 3°C — snow is a regular part of the picture. Storm systems roll through with real force.",
+        winter: "Cold pole deep freeze — afternoons near 2°C, nights near −9°C, heavy snow totals, and cross-country skiing when trails are groomed.",
+        spring: "Late and frosty — afternoons climbing through 13°C, last frost weeks behind the Hartford basin, and maple sap season running into April.",
+        summer: "Brief mild window — highs near 25°C, short but comfortable, Infinity Music Festival season, and the year's best hiking before cold returns.",
+        autumn: "Peak color — highs falling through 14°C, Taconic/Berkshire hardwoods at their best, and first snow dusting ridges by November.",
       },
-      travelerFit: "Visitors come for fall color and cross-country skiing.",
-      residentFit: "It rewards new England maximalists who want real winter — especially second-home owners — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are deep winter cold and storm exposure.",
+      travelerFit: "Visitors come for fall color, cross-country skiing, and Connecticut's coldest-incorporated-town bragging rights.",
+      residentFit: "It rewards New England maximalists and second-home owners who want real winter snow and accept limited specialty care beyond Hartford.",
+      texture: "A NW highlands tradeoff — weigh deep winter cold, lake-effect snow removal, and rural isolation against genuine four-season New England character 40 minutes from the Berkshires.",
     },
     climate: {
       tempHighC: [0, 2, 7, 13, 19, 23, 26, 25, 21, 14, 8, 3],
@@ -143,7 +143,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 64,
       socialStress: 24,
       accessFriction: 60,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-climate retirees.",
+      note: "Charlotte Hungerford Hospital in Torrington anchors care — New England maximalists should confirm snow-removal costs and winter road maintenance before committing; mild-climate retirees will find coastal Connecticut more comfortable.",
       sources: [
       { label: "NOAA — Norfolk 2 SW", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Norfolk", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -155,19 +155,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                                 deepSections: [
       {
-        id: "norfolk-ct-mechanism",
-        title: "Cold-Air Pool mechanics",
+        id: "norfolk-cold-pole",
+        title: "Connecticut's cold pole and radiative drainage",
         paragraphs: [
-          "Norfolk sits where highest-incorporated town in Connecticut; rolling Taconic/Berkshire foothills with frequent radiative cold. Dfb normals and roughly 1175 mm/yr frame the regional baseline, but Cold-air drainage and Lake effect re-weight what any single forecast means block by block.",
-          "High elevation + inland position + enclosed topography = systematically colder minima than coastal Connecticut or the Hartford basin — a textbook small-scale cold pool. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Norfolk is the highest-incorporated town in Connecticut on Taconic/Berkshire foothills — Dfb normals with roughly 1175 mm annually, where enclosed topography collects cold air on clear nights systematically colder than coastal Connecticut or the Hartford basin.",
+          "Lake-effect streamers from Lake Ontario occasionally reach this far southeast when flow aligns; more often it is simply elevation and rural exposure driving deep winter snow.",
         ],
       },
       {
-        id: "norfolk-ct-field-read",
-        title: "On-the-ground read",
+        id: "norfolk-berkshire-bridge",
+        title: "Berkshire cultural bridge and maple country",
         paragraphs: [
-          "Connecticut’s unofficial cold pole — deep winter snow and spring frosts that arrive later than along I-91. Soils read as stony loam on schist/gneiss glacial till with good drainage (pH 5–6.2). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Maple syrup, Apples, Cool-season vegetables. Mild-climate retirees should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Stony loam on schist/gneiss glacial till supports maple syrup, apples, and cool-season vegetables — spring frosts arrive later than along I-91.",
+          "Mild-climate retirees should confirm Charlotte Hungerford Hospital access and heating costs before committing — severe storm exposure is elevated and winter snow infrastructure still matters for decades.",
         ],
       },
     ],
@@ -195,17 +195,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Delaware’s gentlest summers — bay and ocean breezes cap heat while humidity stays classically Mid-Atlantic.",
     summaryImmersive: "Lewes sits where the bay’s huge tidal prism organizes daily wind: onshore flow on warm afternoons, land breezes at night, and periodic nor’easters that reshape coastal dunes. It lacks the elevation microclimates of the Appalachians but exemplifies estuarine moderation in a mostly flat state.",
     whyDistinct: "Shallow-mixed Delaware Bay + Atlantic fetch produces a hybrid maritime regime rare inland on the Delmarva Peninsula.",
-                experience: {
-      feel: "Lewes sits where the bay’s huge tidal prism organizes daily wind: onshore flow on warm afternoons, land breezes at night, and periodic nor’easters that reshape coastal dunes. It lacks the elevation microclimates of the Appalachians but exemplifies estuarine moderation in a mostly flat state.",
+                                experience: {
+      feel: "Lewes feels like Delaware's baymouth historic settlement where the tidal prism of Delaware Bay organizes daily wind — onshore flow on warm afternoons, land breezes at night, and periodic nor'easters reshaping coastal dunes in a mostly flat state without Appalachian elevation microclimates.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 7.3°C, nights near -0.7°C — snow is a regular part of the picture. Coastal surge and wind events belong in the planning stack.",
-        spring: "Green-up and storms — afternoons near 16°C, nights near 7.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1145 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Warm season peak — afternoons near 27.7°C, nights near 19.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Hurricane-season tail — afternoons near 19.3°C, nights near 10.7°C — showers pass through regularly. Tropical systems can still reshape the calendar deep into fall. Hurricane and coastal surge exposure shapes fall planning.",
+        winter: "Nor'easter coast — afternoons near 7°C, nights near −1°C, mixed precipitation, and Cape Henlopen quieter than summer tourist peak.",
+        spring: "Bay fog and green-up — afternoons climbing toward 16°C, ferry season to Cape May restarting, and salt marsh awakening along the estuary.",
+        summer: "Bay-breeze moderation — highs near 28°C, sea breeze caps peak heat relative to inland Delaware, beach season at Cape Henlopen, and classic Mid-Atlantic humidity.",
+        autumn: "Hurricane brush season — highs falling through 19°C, tropical systems occasionally bringing surge, and the year's best beach weather in September.",
       },
-      travelerFit: "Visitors come for Cape Henlopen and ferry to Cape May.",
-      residentFit: "It rewards bay-and-beach people who prefer small-town scale — especially coastal retirees — who can accept the local tradeoffs.",
-      texture: "A place that asks for a few compromises at sea level — the main things to weigh are coastal and sea-level pressure and flood and surge risk.",
+      travelerFit: "Visitors come for Cape Henlopen State Park, the Cape May–Lewes Ferry, and Delaware's gentlest summers on the bay.",
+      residentFit: "It rewards coastal retirees who prefer small-town bay scale and accept flood insurance costs and Mid-Atlantic humidity.",
+      texture: "A Delaware Bay tradeoff — weigh nor'easter surge, salt-marsh flood exposure, and rising sea level against moderated summer heat, historic charm, and ferry access to New Jersey.",
     },
     climate: {
       tempHighC: [6, 7, 11, 16, 21, 26, 29, 28, 25, 19, 14, 9],
@@ -227,7 +227,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for mountain-air seekers; flood-risk skeptics.",
+      note: "Beebe Healthcare in Rehoboth Beach anchors Sussex County care — verify FEMA flood panels and elevation above salt marsh before committing; mountain-air seekers and flood-risk skeptics should visit during a nor'easter season first.",
       sources: [
       { label: "NOAA — Lewes (Sussex County)", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Lewes", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -239,19 +239,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                                 deepSections: [
       {
-        id: "lewes-de-mechanism",
-        title: "Lake-Moderated mechanics",
+        id: "lewes-bay-tidal",
+        title: "Delaware Bay tidal prism and sea-breeze caps",
         paragraphs: [
-          "Lewes sits where historic baymouth settlement where Delaware Bay narrows toward the Atlantic; strong sea-breeze and nor’easter exposure. Cfa normals and roughly 1145 mm/yr frame the regional baseline, but Diurnal sea breeze and Tropical-cyclone exposure re-weight what any single forecast means block by block.",
-          "Shallow-mixed Delaware Bay + Atlantic fetch produces a hybrid maritime regime rare inland on the Delmarva Peninsula. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Lewes sits where Delaware Bay narrows toward the Atlantic — Cfa normals with roughly 1145 mm annually, where shallow-mixed bay water and Atlantic fetch produce a hybrid maritime regime rare inland on the Delmarva Peninsula.",
+          "The bay's huge tidal prism organizes daily wind: onshore flow on warm afternoons caps peak heat relative to inland Delaware while humidity stays classically Mid-Atlantic.",
         ],
       },
       {
-        id: "lewes-de-field-read",
-        title: "On-the-ground read",
+        id: "lewes-cape-henlopen",
+        title: "Cape Henlopen and nor'easter surge reach",
         paragraphs: [
-          "Delaware’s gentlest summers — bay and ocean breezes cap heat while humidity stays classically Mid-Atlantic. Soils read as sandy coastal plain and marsh organics with excessive drainage (pH 4.8–6.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Coastal exposure registers high here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Beach plum, Salt-tolerant shrubs, Irrigated perennials. Mountain-air seekers; flood-risk skeptics should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Sandy coastal plain and marsh organics drain excessively — beach plum and salt-tolerant shrubs succeed on elevated blocks while low parcels face high coastal exposure.",
+          "Mountain-air seekers and flood-risk skeptics should confirm Beebe Healthcare access and FEMA flood panels before committing — elevation above salt marsh is the long-term constraint as surge reach expands.",
         ],
       },
     ],
@@ -279,17 +279,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "A Georgia mountain town where July afternoons stay closer to the upper 20s than the low 30s — rare in the Deep South.",
     summaryImmersive: "Clayton is far enough south to feel subtropical in spring, but elevation and orographic cloudiness on moist southerly flow keep midsummer heat human. Waterfalls and north-facing coves stay shockingly cool; south-facing ridges open to sun for viticulture experiments. The contrast with Atlanta’s heat island is not subtle — it is a different regional climate at the same latitude band.",
     whyDistinct: "Orographic enhancement + escarpment elevation produces a montane island climate inside the humid subtropical belt — one of the strongest latitude–elevation decouplings in the Southeast.",
-                experience: {
-      feel: "Clayton is far enough south to feel subtropical in spring, but elevation and orographic cloudiness on moist southerly flow keep midsummer heat human. Waterfalls and north-facing coves stay shockingly cool; south-facing ridges open to sun for viticulture experiments.",
+                                experience: {
+      feel: "Clayton feels like a Blue Ridge escarpment town far enough south to feel subtropical in spring but elevated enough that orographic cloudiness on moist southerly flow keeps midsummer heat human — a montane island climate where July afternoons stay in the upper 20s while Atlanta swelters below.",
       seasons: {
-        winter: "Mild by northern standards — afternoons near 12°C, nights near 0.7°C — snow is a regular part of the picture. Storm systems roll through with real force.",
-        spring: "Green-up and storms — afternoons near 21.7°C, nights near 9.3°C — rain is frequent and can be heavy. Green-up arrives against a wet 1520 mm annual backdrop. Snowmelt and spring rain can swell rivers fast.",
-        summer: "Warm season peak — afternoons near 29.3°C, nights near 17.7°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 21.3°C, nights near 9.3°C — rain is frequent and can be heavy. Storm systems roll through with real force.",
+        winter: "Escarpment mild — afternoons near 12°C, nights near 1°C, occasional snow on north-facing coves, and waterfalls frozen on cold mornings.",
+        spring: "Orographic green-up — afternoons climbing toward 22°C, rhododendron bloom in coves, and Bartram Trail hikers arriving before summer crowds.",
+        summer: "Cloud-capped relief — highs near 29°C, cooler than Atlanta for latitude, afternoon storms on moist southerly flow, and north-facing coves shockingly cool.",
+        autumn: "Waterfall season — highs falling through 21°C, hardwood color on the escarpment, and viticulture experiments on south-facing ridges.",
       },
-      travelerFit: "Visitors come for Bartram Trail and waterfalls.",
-      residentFit: "It rewards southerners who want mountain climate without West Coast prices — especially remote workers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are flood and surge risk and storm exposure.",
+      travelerFit: "Visitors come for Bartram Trail waterfalls, Blue Ridge scenery, and Georgia mountain climate without West Coast prices.",
+      residentFit: "It rewards remote workers and hikers who accept orographic rain, landslide risk on slopes, and cooler summers than crop growers might want.",
+      texture: "A Blue Ridge front tradeoff — weigh 1520 mm annual rain, flash-flood risk on escarpment slopes, and modest hot-season heat against genuine mountain relief from Atlanta's heat island.",
     },
     climate: {
       tempHighC: [11, 13, 17, 22, 26, 29, 30, 29, 26, 22, 16, 12],
@@ -311,7 +311,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 52,
       socialStress: 34,
       accessFriction: 38,
-      note: "A poor fit for those who need reliable hot summers for crops.",
+      note: "Mountain Lakes Medical Center in Clayton anchors care — southerners seeking mountain climate should confirm US-441 winter access before committing; crop growers needing reliable hot summers will find the Piedmont more productive.",
       sources: [
       { label: "NOAA — Clayton 1 WSW", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Clayton", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -323,19 +323,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                                 deepSections: [
       {
-        id: "clayton-ga-mechanism",
-        title: "Mild-Winter Foothills mechanics",
+        id: "clayton-blue-ridge",
+        title: "Blue Ridge escarpment and orographic cloudiness",
         paragraphs: [
-          "Clayton sits where northeast Georgia mountains at the Blue Ridge escarpment; sharp relief toward the Piedmont. Cfb normals and roughly 1520 mm/yr frame the regional baseline, but Orographic lift and Elevation lapse rate re-weight what any single forecast means block by block.",
-          "Orographic enhancement + escarpment elevation produces a montane island climate inside the humid subtropical belt — one of the strongest latitude–elevation decouplings in the Southeast. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Clayton sits at the Blue Ridge escarpment in northeast Georgia at roughly 590 m — Cfb normals with roughly 1520 mm annually, where orographic enhancement and escarpment elevation produce a montane island climate inside the humid subtropical belt.",
+          "Moist southerly flow keeps midsummer heat human — July afternoons stay closer to the upper 20s than the low 30s, one of the strongest latitude–elevation decouplings in the Southeast.",
         ],
       },
       {
-        id: "clayton-ga-field-read",
-        title: "On-the-ground read",
+        id: "clayton-waterfall-coves",
+        title: "North-facing coves and Bartram Trail country",
         paragraphs: [
-          "A Georgia mountain town where July afternoons stay closer to the upper 20s than the low 30s — rare in the Deep South. Soils read as acidic loam in coves; thin on ridges with good drainage (pH 4.8–6). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Flood registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Apples, Brassicas, Blueberries. Those who need reliable hot summers for crops should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Acidic loam in coves and thin ridge soils support apples, brassicas, and blueberries — north-facing coves stay shockingly cool while south-facing ridges open to sun for viticulture experiments.",
+          "Those needing reliable hot summers for crops should confirm Mountain Lakes Medical Center access before committing — flash flood and landslide risk are elevated on escarpment slopes during heavy rain events.",
         ],
       },
     ],
@@ -531,17 +531,17 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     summaryShort: "Maryland’s winter — snowier and colder than Baltimore imagines — with ridge-valley frost contrasts that rival West Virginia.",
     summaryImmersive: "Oakland is the anchor of Garrett County, where Pittsburgh television markets and lake-effect snow belts overlap. Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow. Summer is mild and prized by Mid-Atlantic escapees; spring is late and fickle for growers.",
     whyDistinct: "High elevation + Great Lakes moisture channel + enclosed valleys = disproportionate snow and cold for the Mid-Atlantic seaboard.",
-                experience: {
-      feel: "Oakland is the anchor of Garrett County, where Pittsburgh television markets and lake-effect snow belts overlap. Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow. Summer is mild and prized by Mid-Atlantic escapees;.",
+                                experience: {
+      feel: "Oakland feels like Maryland's high-country anchor in Garrett County — where Pittsburgh television markets and lake-effect snow belts overlap, Deep Creek Lake modifies local breezes, and summer mildness draws Mid-Atlantic escapees from Baltimore heat.",
       seasons: {
-        winter: "Cold and sharp — afternoons near 2.7°C, nights near -7.3°C — heavy snow defines the rhythm. Snow removal and road access matter as much as thermometer readings. Arctic outbreaks can still bite hard.",
-        spring: "Late thaw — afternoons near 13.7°C, nights near 2.3°C — snow is a regular part of the picture. Green-up arrives against a wet 1185 mm annual backdrop. Storm systems roll through with real force.",
-        summer: "Cool summer by latitude — afternoons near 24°C, nights near 13°C — rain is frequent and can be heavy. Afternoon convection and storms build often.",
-        autumn: "Shoulder season — afternoons near 14°C, nights near 3.7°C — snow is a regular part of the picture. Storm systems roll through with real force.",
+        winter: "Lake-effect snowbelt — afternoons near 3°C, nights near −7°C, Wisp Resort open, and upslope snow on northwesterly flow exceeding Baltimore totals by feet.",
+        spring: "Late plateau thaw — afternoons climbing through 14°C, Deep Creek ice-out, and growers watching frost dates weeks behind the Piedmont.",
+        summer: "Mid-Atlantic escape — highs near 24°C, lake recreation at peak, Autumn Glory festival planning, and genuinely cool nights compared to DC.",
+        autumn: "Autumn Glory peak — highs falling through 14°C, hardwood color across Garrett County, Wisp closing, and first lake-effect dusting by November.",
       },
-      travelerFit: "Visitors come for Wisp Resort and Autumn Glory.",
-      residentFit: "It rewards mid-Atlantic residents who want real ski-adjacent winters — especially lake-house buyers — who can accept the local tradeoffs.",
-      texture: "An easier place to settle into — the main things to weigh are deep winter cold and storm exposure.",
+      travelerFit: "Visitors come for Wisp Resort, Deep Creek Lake, and the Autumn Glory festival in Maryland's snowiest county.",
+      residentFit: "It rewards lake-house buyers and remote workers who want ski-adjacent winters and accept rural Garrett County services.",
+      texture: "A Garrett County tradeoff — weigh lake-effect snow removal, Deep Creek flood exposure, and Pittsburgh-distance healthcare against real Mid-Atlantic winter snow and summer mildness Baltimore cannot match.",
     },
     climate: {
       tempHighC: [1, 3, 8, 14, 19, 23, 25, 24, 20, 14, 8, 4],
@@ -563,7 +563,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       costPressure: 46,
       socialStress: 24,
       accessFriction: 60,
-      note: "Verify rents and insurance locally before committing; Confirm hospital and airport distances for your needs; A poor fit for mild-winter seekers.",
+      note: "Garrett County Memorial Hospital anchors care and Pittsburgh is the usual specialist market — mild-winter seekers should visit in February before committing to lake-effect snow totals that rival West Virginia.",
       sources: [
       { label: "NOAA — Oakland 2 SE", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "NOAA climate normals — Oakland", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
@@ -575,19 +575,19 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     confidence: "high",
                                                 deepSections: [
       {
-        id: "oakland-md-mechanism",
-        title: "Cold-Air Pool mechanics",
+        id: "oakland-garrett-lake-effect",
+        title: "Garrett County lake-effect and Deep Creek Lake",
         paragraphs: [
-          "Oakland sits where highest elevation county in Maryland; plateau terrain with lake-effect spillover and Appalachian cold pools. Dfb normals and roughly 1185 mm/yr frame the regional baseline, but Lake effect and Elevation lapse rate re-weight what any single forecast means block by block.",
-          "High elevation + Great Lakes moisture channel + enclosed valleys = disproportionate snow and cold for the Mid-Atlantic seaboard. Compare fetch exposure, slope aspect, and drainage geometry before treating city-scale scores as parcel-grade comfort.",
+          "Oakland anchors Garrett County, Maryland's highest-elevation county at roughly 750 m — Dfb normals with roughly 1185 mm annually, where Great Lakes moisture channels and enclosed valleys produce disproportionate snow and cold for the Mid-Atlantic seaboard.",
+          "Deep Creek Lake adds local moisture and modifies breezes; ridges catch upslope snow on northwesterly flow — winter totals rival West Virginia while Baltimore imagines milder weather.",
         ],
       },
       {
-        id: "oakland-md-field-read",
-        title: "On-the-ground read",
+        id: "oakland-wisp-autumn",
+        title: "Wisp Resort and Autumn Glory economy",
         paragraphs: [
-          "Maryland’s winter — snowier and colder than Baltimore imagines — with ridge-valley frost contrasts that rival West Virginia. Soils read as loam on glacial till and sandstone residuum with moderate drainage (pH 5–6.5). Garden success tracks micro-shelter, water timing, and frost exposure.",
-          "Severe storms registers elevated here — verify parcel exposure, insurance, and evacuation access before committing. Growability favors Hay, Cool-season vegetables, Apples. Mild-winter seekers should confirm services and seasonal access on the ground — not from atlas normals alone.",
+          "Loam on glacial till supports hay, cool-season vegetables, and apples — spring is late and fickle for growers compared to the Piedmont.",
+          "Mild-winter seekers should confirm Garrett County Memorial Hospital access and snow-removal costs before committing — lake tourism economy remains sensitive to winter snow reliability as the season shortens.",
         ],
       },
     ],
@@ -657,7 +657,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["culture seekers", "second homes"], travelFit: ["Tanglewood", "ski areas"],
     whoWouldLove: "New England culture without Boston housing costs.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
-                                                deepSections: [
+                                                    deepSections: [
       {
         id: "pittsfield-ma-mechanism",
         title: "Cold-Air Pool mechanics",
@@ -740,7 +740,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["coastal retirees", "artists"], travelFit: ["Gulf Islands NS", "seafood"],
     whoWouldLove: "Humid subtropical coastal life with arts-town flavor.", whoMightNot: "Hurricane-averse; dry-air seekers.",
     confidence: "high",
-                                                deepSections: [
+                                                    deepSections: [
       {
         id: "ocean-springs-ms-mechanism",
         title: "Hurricane-Exposed Coast mechanics",
@@ -822,7 +822,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["paddlers", "remote workers"], travelFit: ["Ozark NS rivers", "caving"],
     whoWouldLove: "River people who want geology and misty mornings.", whoMightNot: "Those needing dry air or flat farmland.",
     confidence: "high",
-                                                deepSections: [
+                                                    deepSections: [
       {
         id: "eminence-mo-mechanism",
         title: "Limestone / Karst Pocket mechanics",
@@ -1076,7 +1076,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["lake-house buyers"], travelFit: ["wine trail", "winter storm watching"],
     whoWouldLove: "Great Lakes maximalists.", whoMightNot: "Sunbelt retirees.",
     confidence: "high",
-                                                deepSections: [
+                                                    deepSections: [
       {
         id: "geneva-on-the-lake-oh-mechanism",
         title: "Lake-Effect Snowbelt mechanics",
@@ -1159,7 +1159,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     relocationFit: ["outdoor families", "remote workers"], travelFit: ["Beavers Bend SP", "fishing"],
     whoWouldLove: "Oklahoma residents who want forest and water.", whoMightNot: "Dry-climate seekers.",
     confidence: "high",
-                                                deepSections: [
+                                                    deepSections: [
       {
         id: "broken-bow-ok-mechanism",
         title: "Piedmont Transition mechanics",
