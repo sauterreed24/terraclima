@@ -492,11 +492,28 @@ export default function App() {
     () => activeCollection ? baselinePool.map(p => p.id) : undefined,
     [activeCollection, baselinePool],
   );
+  // Pin calendar month for "best-this-month" so rankings stay deterministic within
+  // a month and refresh when the month rolls over (not only on filter/scenario change).
+  const [bestThisMonthEpoch, setBestThisMonthEpoch] = useState(() => {
+    const d = new Date();
+    return Date.UTC(d.getFullYear(), d.getMonth(), 1);
+  });
+  useEffect(() => {
+    const tick = () => {
+      const d = new Date();
+      const next = Date.UTC(d.getFullYear(), d.getMonth(), 1);
+      setBestThisMonthEpoch(prev => (prev === next ? prev : next));
+    };
+    const id = window.setInterval(tick, 60_000);
+    return () => window.clearInterval(id);
+  }, []);
+  const nowEpochMs = ranking === "best-this-month" ? bestThisMonthEpoch : undefined;
   const processor = useClimateProcessor({
     scenario: climateScenario,
     ranking,
     filters: validatedFilters,
     poolIds: scenarioPoolIds,
+    nowEpochMs,
     // Present-day is the default view; only spin up the (corpus-carrying)
     // worker once the user engages a future-climate layer.
     disableWorker: climateScenario === "now",

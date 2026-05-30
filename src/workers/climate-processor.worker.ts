@@ -26,5 +26,13 @@ const ctx = self as unknown as WorkerScope;
 
 ctx.addEventListener("message", (event: MessageEvent) => {
   if (!isWorkerRequest(event.data)) return;
-  ctx.postMessage(runScenarioRanking(event.data));
+  try {
+    ctx.postMessage(runScenarioRanking(event.data));
+  } catch (err) {
+    ctx.postMessage({
+      type: "scenario-rank-error",
+      requestId: event.data.requestId,
+      message: err instanceof Error ? err.message : String(err),
+    });
+  }
 });

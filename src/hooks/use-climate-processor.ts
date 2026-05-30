@@ -18,7 +18,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { RankedRow, ScenarioRankRequest } from "../types/worker";
-import { isWorkerResponse } from "../types/worker";
+import { isWorkerError, isWorkerResponse } from "../types/worker";
 import { runScenarioRanking } from "../lib/climate-processor";
 import type { RankingProfile, ValidatedFilterInput } from "../lib/scoring";
 import type { ScenarioId } from "../types";
@@ -91,7 +91,8 @@ export function useClimateProcessor(input: UseClimateProcessorInput): UseClimate
   // spins up the first time the caller engages a future scenario.
   const workerRef = useRef<Worker | null>(null);
   const requestIdRef = useRef(0);
-  const [workerState, setWorkerState] = useState<{ signature: string; rows: RankedRow[] } | null>(null);
+  type WorkerOutcome = { signature: string; rows: RankedRow[] } | { signature: string; failed: true };
+  const [workerOutcome, setWorkerOutcome] = useState<WorkerOutcome | null>(null);
 
   useEffect(() => {
     return () => {
@@ -107,13 +108,30 @@ export function useClimateProcessor(input: UseClimateProcessorInput): UseClimate
     if (!worker) return; // unsupported env → synchronous seed stands
     const requestId = ++requestIdRef.current;
     const onMessage = (event: MessageEvent) => {
+      if (isWorkerError(event.data)) {
+        if (event.data.requestId !== requestIdRef.current) return;
+        console.warn("[climate-processor] worker error:", event.data.message);
+        setWorkerOutcome({ signature, failed: true });
+        return;
+      }
       if (!isWorkerResponse(event.data)) return;
       if (event.data.requestId !== requestIdRef.current) return; // ignore stale
-      setWorkerState({ signature, rows: event.data.rows });
+      setWorkerOutcome({ signature, rows: event.data.rows });
+    };
+    const onTransportError = () => {
+      if (requestIdRef.current !== requestId) return;
+      console.warn("[climate-processor] worker transport error");
+      setWorkerOutcome({ signature, failed: true });
     };
     worker.addEventListener("message", onMessage);
+    worker.addEventListener("error", onTransportError);
+    worker.addEventListener("messageerror", onTransportError);
     worker.postMessage(buildRequest({ scenario, ranking, filters, poolIds, nowEpochMs }, requestId));
-    return () => worker.removeEventListener("message", onMessage);
+    return () => {
+      worker.removeEventListener("message", onMessage);
+      worker.removeEventListener("error", onTransportError);
+      worker.removeEventListener("messageerror", onTransportError);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [disableWorker, signature]);
 
@@ -121,12 +139,13 @@ export function useClimateProcessor(input: UseClimateProcessorInput): UseClimate
     return { rows: syncRows, status: "sync", projecting: false };
   }
 
-  const fresh = workerState?.signature === signature;
+  const settled = workerOutcome?.signature === signature;
+  const workerRows = settled && "rows" in workerOutcome ? workerOutcome.rows : null;
   return {
     // The synchronous seed guarantees correctness on the first frame and while
     // the worker recompute is in flight; the worker rows replace it on arrival.
-    rows: fresh ? workerState.rows : syncRows,
-    status: fresh ? "ready" : "projecting",
-    projecting: !fresh,
+    rows: workerRows ?? syncRows,
+    status: settled && workerRows ? "ready" : settled ? "sync" : "projecting",
+    projecting: !settled,
   };
 }

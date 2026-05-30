@@ -276,12 +276,27 @@ async function main(): Promise<void> {
     "grand-marais-mi", "apalachicola-fl", "santa-cruz-felton-ca",
     "ellensburg-wa", "hood-river-gorge", "truckee-ca", "mammoth-lakes-ca",
     "borrego-springs-ca", "sedona-az", "prescott-az", "cloudcroft-nm",
-    "taos-nm", "crested-butte-co", "leadville-co", "durango-co",
+    "taos-nm", "crested-butte-co", "leadville-co", "durango-co", "boulder-co",
   ];
   for (const id of tierCLiveIds) {
     const place = PLACES.find(p => p.id === id);
     if (!place) throw new Error(`tier C live anchor missing: ${id}`);
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after Tier C polish pass`);
+  }
+
+  const tierCExperienceBatch1 = [
+    "boulder-co", "truckee-ca", "mammoth-lakes-ca", "borrego-springs-ca",
+    "sedona-az", "prescott-az", "taos-nm", "durango-co",
+  ];
+  for (const id of tierCExperienceBatch1) {
+    const place = PLACES.find(p => p.id === id);
+    if (!place) throw new Error(`tier C experience batch 1 missing: ${id}`);
+    if (!place.experience?.feel) throw new Error(`${id} missing authored experience.feel`);
+    for (const key of ["winter", "spring", "summer", "autumn"] as const) {
+      const detail = place.experience.seasons?.[key];
+      if (!detail || detail.length < 24) throw new Error(`${id} missing authored ${key} season detail`);
+    }
+    if (!place.liveSignals) throw new Error(`${id} missing liveSignals after batch 1`);
   }
 
   const tierCExperienceBatch2 = [
@@ -345,6 +360,21 @@ async function main(): Promise<void> {
       if (!detail || detail.length < 24) throw new Error(`${id} missing authored ${key} season detail`);
     }
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after batch 5`);
+  }
+
+  const tierCExperienceBatch6 = [
+    "asheville-nc", "moab-ut", "cody-wy", "banff-ab",
+    "leavenworth-wa", "stanley-id", "san-miguel-de-allende-mx", "marquette-mi",
+  ];
+  for (const id of tierCExperienceBatch6) {
+    const place = PLACES.find(p => p.id === id);
+    if (!place) throw new Error(`tier C experience batch 6 missing: ${id}`);
+    if (!place.experience?.feel) throw new Error(`${id} missing authored experience.feel`);
+    for (const key of ["winter", "spring", "summer", "autumn"] as const) {
+      const detail = place.experience.seasons?.[key];
+      if (!detail || detail.length < 24) throw new Error(`${id} missing authored ${key} season detail`);
+    }
+    if (!place.liveSignals) throw new Error(`${id} missing liveSignals after batch 6`);
   }
 
   const lethbridge = PLACES.find(p => p.id === "lethbridge-ab");
