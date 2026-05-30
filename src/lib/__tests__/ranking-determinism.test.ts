@@ -5,6 +5,8 @@ import { assessLiveFit, type LiveFitPresetId } from "../live-fit";
 import { buildComfortPrecisionProfile } from "../comfort-precision";
 import { makePlace, makeClimate } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
+import { runScenarioRanking } from "../climate-processor";
+import type { ScenarioRankRequest } from "../../types/worker";
 
 const flat = (v: number): Monthly12 => Array(12).fill(v) as unknown as Monthly12;
 
@@ -100,6 +102,36 @@ describe("ranking determinism", () => {
       const profile = buildComfortPrecisionProfile(place);
       expect(profile.peakMonth.index).toBe(0);
       expect(profile.sleepRecoveryMonth.index).toBe(0);
+    });
+  });
+
+  describe("scenario ranking pipeline (project → filter → rank)", () => {
+    it("produces identical ranked rows regardless of input pool order under a future scenario", () => {
+      // Exercises the full orchestrator used by both the worker and sync fallback
+      // when a climate projection (scn≠now) is active. The projected pool + ranking
+      // must remain a pure function of the *set* of places/filters, not iteration order.
+      const ids = PLACES.slice(0, 40).map(p => p.id); // representative slice for speed
+      const filters = { countries: new Set<string>(), archetypes: new Set<string>() };
+
+      const reqBase: Omit<ScenarioRankRequest, "poolIds"> = {
+        requestId: "det-test",
+        scenario: "ssp585",
+        filters,
+        ranking: "hidden-gems",
+        nowEpochMs: Date.UTC(2026, 4, 30), // fixed for determinism
+      };
+
+      const forward = runScenarioRanking({ ...reqBase, poolIds: ids });
+      const reversed = runScenarioRanking({ ...reqBase, poolIds: [...ids].reverse() });
+      const byId = runScenarioRanking({
+        ...reqBase,
+        poolIds: [...ids].sort((a, b) => a.localeCompare(b)),
+      });
+
+      expect(forward.rows.map(r => r.id)).toEqual(reversed.rows.map(r => r.id));
+      expect(forward.rows.map(r => r.id)).toEqual(byId.rows.map(r => r.id));
+      // Scores must also match exactly (pure projection + deterministic rank).
+      expect(forward.rows.map(r => `${r.id}:${r.score}`)).toEqual(reversed.rows.map(r => `${r.id}:${r.score}`));
     });
   });
 });
