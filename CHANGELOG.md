@@ -4,6 +4,15 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Determinism hardening + Tier C experience batch 6
+
+- **`rankPlaces` total order (`src/lib/scoring.ts`):** score → name → id tiebreaker aligns with `rankLivabilityWithBreakdown` and `rankLiveFit`, fixing same-name order dependence (e.g. two Durango entries).
+- **Pinned `best-this-month` (`src/App.tsx`, `src/hooks/use-climate-processor.ts`):** App passes a calendar-month epoch so month rankings stay deterministic within a month and refresh when the month rolls over.
+- **Worker error contract (`src/types/worker.ts`, `src/workers/climate-processor.worker.ts`, `src/hooks/use-climate-processor.ts`):** typed `scenario-rank-error` response, try/catch in the worker, and hook fallback that clears `projecting` while keeping sync rows.
+- **Regression hardening:** `ranking-determinism.test.ts` guards `rankPlaces` ties, direct pool order-independence, `best-this-month` via `nowEpochMs`, and valid filter fixtures; hook tests cover month epoch updates and worker error fallback.
+- **Tier C experience batch 6:** hand-written `experience` for Asheville, Moab, Cody, Banff, Leavenworth, Stanley, San Miguel de Allende, and Marquette; `liveSignals`, humidity, and/or sunshinePct where missing.
+- **Playtest & corpus tooling:** `tierCExperienceBatch1` regression anchors; `boulder-co` in `tierCLiveIds`; `corpus-coverage-report` tracks missing authored experience by tier.
+
 ### Tier C experience batch 5 + scenario ranking determinism
 
 - **Tier C experience batch 5:** hand-written `experience` for Valdez, Missoula, Sunshine Coast, Bozeman, Cannon Beach, Grand Manan, Prince Rupert, and Coatepec; `liveSignals`, humidity, and/or sunshinePct where missing.

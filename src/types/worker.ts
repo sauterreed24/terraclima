@@ -54,7 +54,13 @@ export interface ScenarioRankResult {
   rows: RankedRow[];
 }
 
-export type WorkerResponse = ScenarioRankResult;
+export interface ScenarioRankError {
+  type: "scenario-rank-error";
+  requestId: number;
+  message: string;
+}
+
+export type WorkerResponse = ScenarioRankResult | ScenarioRankError;
 
 /** Narrowing guard for inbound worker messages (worker side). */
 export function isWorkerRequest(value: unknown): value is WorkerRequest {
@@ -66,10 +72,19 @@ export function isWorkerRequest(value: unknown): value is WorkerRequest {
 }
 
 /** Narrowing guard for inbound responses (main-thread side). */
-export function isWorkerResponse(value: unknown): value is WorkerResponse {
+export function isWorkerResponse(value: unknown): value is ScenarioRankResult {
   return (
     typeof value === "object" &&
     value !== null &&
     (value as { type?: unknown }).type === "scenario-rank-result"
+  );
+}
+
+/** Narrowing guard for worker-side failures posted back to the main thread. */
+export function isWorkerError(value: unknown): value is ScenarioRankError {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    (value as { type?: unknown }).type === "scenario-rank-error"
   );
 }

@@ -3,12 +3,26 @@ import { PLACES } from "../../data/places";
 import { rankLivabilityWithBreakdown } from "../livability-score";
 import { assessLiveFit, type LiveFitPresetId } from "../live-fit";
 import { buildComfortPrecisionProfile } from "../comfort-precision";
+import { rankPlaces } from "../scoring";
 import { makePlace, makeClimate } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
 import { runScenarioRanking } from "../climate-processor";
 import type { ScenarioRankRequest } from "../../types/worker";
+import type { ValidatedFilterInput } from "../scoring";
 
 const flat = (v: number): Monthly12 => Array(12).fill(v) as unknown as Monthly12;
+
+const emptyFilters: ValidatedFilterInput = {
+  countries: [],
+  archetypes: [],
+  fitPresets: [],
+  search: "",
+  maxSummerHighC: null,
+  minWinterLowC: null,
+  minGrowability: null,
+  maxFireRisk: null,
+  maxOverallRisk: null,
+};
 
 /**
  * Deterministic stability guards. These lock in the invariant the rest of the
@@ -105,18 +119,42 @@ describe("ranking determinism", () => {
     });
   });
 
+  describe("rankPlaces", () => {
+    it("breaks same-name ties by unique id (real corpus case: two 'Durango' entries)", () => {
+      const climate = makeClimate();
+      const durangoMx = makePlace({ id: "durango-mx", name: "Durango", climate });
+      const durangoCo = makePlace({ id: "durango-co", name: "Durango", climate });
+
+      const forward = rankPlaces("coolest-summers", [durangoMx, durangoCo]);
+      const reversed = rankPlaces("coolest-summers", [durangoCo, durangoMx]);
+
+      expect(forward[0]!.score).toBe(forward[1]!.score);
+      expect(forward.map(r => r.place.id)).toEqual(["durango-co", "durango-mx"]);
+      expect(reversed.map(r => r.place.id)).toEqual(["durango-co", "durango-mx"]);
+    });
+
+    it("is independent of direct pool input order", () => {
+      const zPlace = makePlace({ id: "zzz", name: "Zzz Harbor" });
+      const aPlace = makePlace({ id: "aaa", name: "Aaa Harbor" });
+
+      const forward = rankPlaces("most-comfortable", [zPlace, aPlace]).map(r => r.place.id);
+      const reversed = rankPlaces("most-comfortable", [aPlace, zPlace]).map(r => r.place.id);
+
+      expect(reversed).toEqual(forward);
+    });
+  });
+
   describe("scenario ranking pipeline (project → filter → rank)", () => {
     it("produces identical ranked rows regardless of input pool order under a future scenario", () => {
       // Exercises the full orchestrator used by both the worker and sync fallback
       // when a climate projection (scn≠now) is active. The projected pool + ranking
       // must remain a pure function of the *set* of places/filters, not iteration order.
       const ids = PLACES.slice(0, 40).map(p => p.id); // representative slice for speed
-      const filters = { countries: new Set<string>(), archetypes: new Set<string>() };
 
       const reqBase: Omit<ScenarioRankRequest, "poolIds"> = {
-        requestId: "det-test",
+        requestId: 1,
         scenario: "ssp585",
-        filters,
+        filters: emptyFilters,
         ranking: "hidden-gems",
         nowEpochMs: Date.UTC(2026, 4, 30), // fixed for determinism
       };
@@ -132,6 +170,31 @@ describe("ranking determinism", () => {
       expect(forward.rows.map(r => r.id)).toEqual(byId.rows.map(r => r.id));
       // Scores must also match exactly (pure projection + deterministic rank).
       expect(forward.rows.map(r => `${r.id}:${r.score}`)).toEqual(reversed.rows.map(r => `${r.id}:${r.score}`));
+    });
+
+    it("best-this-month respects nowEpochMs for month-specific notes", () => {
+      const jan = runScenarioRanking({
+        type: "scenario-rank",
+        requestId: 2,
+        scenario: "now",
+        filters: emptyFilters,
+        ranking: "best-this-month",
+        poolIds: ["sequim-wa"],
+        nowEpochMs: Date.UTC(2026, 0, 15),
+      });
+      const may = runScenarioRanking({
+        type: "scenario-rank",
+        requestId: 3,
+        scenario: "now",
+        filters: emptyFilters,
+        ranking: "best-this-month",
+        poolIds: ["sequim-wa"],
+        nowEpochMs: Date.UTC(2026, 4, 15),
+      });
+
+      expect(jan.rows[0]?.note).toMatch(/^Jan:/);
+      expect(may.rows[0]?.note).toMatch(/^May:/);
+      expect(jan.rows[0]?.note).not.toEqual(may.rows[0]?.note);
     });
   });
 });

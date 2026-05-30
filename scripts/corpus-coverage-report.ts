@@ -33,6 +33,7 @@ const missingLive: Record<Tier, number> = { A: 0, B: 0, C: 0 };
 const missingHumidity: Record<Tier, number> = { A: 0, B: 0, C: 0 };
 const missingSunshine: Record<Tier, number> = { A: 0, B: 0, C: 0 };
 const missingDeep: Record<Tier, number> = { A: 0, B: 0, C: 0 };
+const missingAuthoredExperience: Record<Tier, number> = { A: 0, B: 0, C: 0 };
 const singleCitation: Record<Tier, number> = { A: 0, B: 0, C: 0 };
 
 for (const p of PLACES) {
@@ -41,6 +42,7 @@ for (const p of PLACES) {
   if (p.climate.humidity == null) bump(missingHumidity, t);
   if (p.climate.sunshinePct == null) bump(missingSunshine, t);
   if (!p.deepSections?.length) bump(missingDeep, t);
+  if (!p.experience?.feel) bump(missingAuthoredExperience, t);
   const urlCites = (p.citations ?? []).filter(c => c.url?.startsWith("https://")).length;
   if (urlCites === 1) bump(singleCitation, t);
 }
@@ -50,5 +52,6 @@ console.log(row("missing liveSignals", missingLive, PLACES.length));
 console.log(row("missing humidity", missingHumidity, PLACES.length));
 console.log(row("missing sunshinePct", missingSunshine, PLACES.length));
 console.log(row("missing deepSections", missingDeep, PLACES.length));
+console.log(row("missing authored experience", missingAuthoredExperience, PLACES.length));
 console.log(row("single HTTPS citation", singleCitation, PLACES.length));
 console.log("\nTier counts:", `A=${byTier.A.length}`, `B=${byTier.B.length}`, `C=${byTier.C.length}`);
