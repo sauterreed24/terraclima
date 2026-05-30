@@ -4,6 +4,11 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Tier C experience batch 5 + scenario ranking determinism
+
+- **Tier C experience batch 5:** hand-written `experience` for Valdez, Missoula, Sunshine Coast, Bozeman, Cannon Beach, Grand Manan, Prince Rupert, and Coatepec; `liveSignals`, humidity, and/or sunshinePct where missing.
+- **Scenario ranking determinism (`src/lib/__tests__/ranking-determinism.test.ts`):** guards that `runScenarioRanking` produces identical rows under shuffled pool order when a future climate layer is active.
+
 ### Dossier scenario honesty + Tier C experience batch 4
 
 - **PlaceDetail scenario banner (`src/components/PlaceDetail.tsx`, `src/App.tsx`):** when a future climate layer is active, the dossier shows a compact honesty note that Explorer/Compare use the projection while the dossier stays on present-day normals.

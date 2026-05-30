@@ -332,8 +332,9 @@ async function main(): Promise<void> {
   }
 
   const tierCExperienceBatch5 = [
-    "valdez-ak", "sunshine-coast-bc",
-    // additional high-signal Tier C starters for cross-region coverage (AK fjord snow, BC rain-shadow ferry coast); more to follow as liveSignals are authored for MT inversion anchors like missoula-mt
+    "valdez-ak", "missoula-mt", "sunshine-coast-bc",
+    "bozeman-mt", "cannon-beach-or", "grand-manan-nb",
+    "prince-rupert-bc", "coatepec-mx",
   ];
   for (const id of tierCExperienceBatch5) {
     const place = PLACES.find(p => p.id === id);
