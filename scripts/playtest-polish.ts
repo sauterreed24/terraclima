@@ -331,6 +331,21 @@ async function main(): Promise<void> {
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after batch 4`);
   }
 
+  const tierCExperienceBatch5 = [
+    "valdez-ak", "sunshine-coast-bc",
+    // additional high-signal Tier C starters for cross-region coverage (AK fjord snow, BC rain-shadow ferry coast); more to follow as liveSignals are authored for MT inversion anchors like missoula-mt
+  ];
+  for (const id of tierCExperienceBatch5) {
+    const place = PLACES.find(p => p.id === id);
+    if (!place) throw new Error(`tier C experience batch 5 missing: ${id}`);
+    if (!place.experience?.feel) throw new Error(`${id} missing authored experience.feel`);
+    for (const key of ["winter", "spring", "summer", "autumn"] as const) {
+      const detail = place.experience.seasons?.[key];
+      if (!detail || detail.length < 24) throw new Error(`${id} missing authored ${key} season detail`);
+    }
+    if (!place.liveSignals) throw new Error(`${id} missing liveSignals after batch 5`);
+  }
+
   const lethbridge = PLACES.find(p => p.id === "lethbridge-ab");
   if (!lethbridge?.climate.humidity) throw new Error("lethbridge-ab missing humidity (Tier A)");
 
