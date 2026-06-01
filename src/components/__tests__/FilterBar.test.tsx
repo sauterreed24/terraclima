@@ -185,6 +185,26 @@ describe("FilterBar clear all filters", () => {
     assertNoStaleConstraints(next);
   });
 
+  it("the in-field × clears only the search text, preserving other filters", () => {
+    const setFilters = vi.fn();
+    const state = createEmptyFilterState();
+    state.search = "garden";
+    state.countries = new Set(["USA"]);
+    state.fitPresets = new Set(["cool-summers"]);
+
+    renderFilterBar("F", { filters: state, setFilters });
+
+    // The in-field clear is "Clear search", distinct from the lens "Clear all filters".
+    fireEvent.click(screen.getByRole("button", { name: "Clear search" }));
+
+    expect(setFilters).toHaveBeenCalledTimes(1);
+    const updater = setFilters.mock.calls[0][0] as (f: FilterState) => FilterState;
+    const result = updater(state);
+    expect(result.search).toBe("");
+    expect(result.countries).toEqual(new Set(["USA"]));
+    expect(result.fitPresets).toEqual(new Set(["cool-summers"]));
+  });
+
   it("Lens Receipt clear all uses the same reset shape as the search clear control", () => {
     const setFilters = vi.fn();
     const polluted = createEmptyFilterState();

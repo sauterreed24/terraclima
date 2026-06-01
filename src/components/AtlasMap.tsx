@@ -2475,7 +2475,13 @@ const Marker = memo(function Marker({
 
   const onMarkerFocus = useCallback(() => {
     onFocusReceived(place.id);
-  }, [onFocusReceived, place.id]);
+    // Keyboard parity with mouse hover: focusing a pin (Tab / arrow nav) shows
+    // the same climate-preview tooltip a pointer hover does.
+    onEnter();
+  }, [onFocusReceived, place.id, onEnter]);
+  const onMarkerBlur = useCallback(() => {
+    onLeave();
+  }, [onLeave]);
 
   const ariaLabelBase =
     subLine.length > 0
@@ -2499,6 +2505,7 @@ const Marker = memo(function Marker({
       onPointerLeave={onLeave}
       onKeyDown={onMarkerKeyDown}
       onFocus={onMarkerFocus}
+      onBlur={onMarkerBlur}
     >
       <g transform={`scale(${inv})`}>
         {featuredRank ? (

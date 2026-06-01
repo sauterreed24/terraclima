@@ -154,6 +154,22 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByText("Top row of the visible pins.")).toBeInTheDocument();
   });
 
+  it("shows the climate-preview tooltip on keyboard focus (parity with pointer hover)", () => {
+    setCoarsePointer(false);
+    const places = [makePlace({ id: "solo", name: "Solo Peak", lat: 40, lon: -100, tier: "A" })];
+    renderMap(vi.fn(), [], places);
+
+    // No preview until a pin is engaged.
+    expect(screen.queryByRole("tooltip")).toBeNull();
+
+    const marker = document.querySelector('[data-marker-id="solo"]') as SVGGElement | null;
+    expect(marker).toBeTruthy();
+    fireEvent.focus(marker!);
+
+    // Focusing a pin shows the same tooltip a pointer hover would.
+    expect(screen.getByRole("tooltip")).toHaveTextContent("Solo Peak");
+  });
+
   it("opens dense clusters into a sorted picker with tier and lived-coverage context", () => {
     setCoarsePointer(true);
     const onSelect = vi.fn();

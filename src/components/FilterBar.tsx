@@ -1,4 +1,4 @@
-import { memo, useCallback, type Dispatch, type SetStateAction } from "react";
+import { memo, useCallback, useRef, type Dispatch, type SetStateAction } from "react";
 import type { Country, MicroclimateArchetype, RiskLevel, ScenarioId } from "../types";
 import {
   applyLifestyleBundle,
@@ -114,6 +114,12 @@ export const FilterBar = memo(function FilterBar({
 
   const hasAny = hasActiveExplorerFilters(filters);
   const clearAll = useCallback(() => setFilters(createEmptyFilterState()), [setFilters]);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const hasSearch = (filters.search ?? "").length > 0;
+  const clearSearch = useCallback(() => {
+    setFilters(f => ({ ...f, search: "" }));
+    searchInputRef.current?.focus();
+  }, [setFilters]);
 
   return (
     <div className="panel contour-bg atlas-filter-dock p-3 space-y-3">
@@ -124,6 +130,7 @@ export const FilterBar = memo(function FilterBar({
         <Search className="w-4 h-4 text-stone shrink-0" aria-hidden />
         <input
           id={searchFieldId}
+          ref={searchInputRef}
           value={filters.search ?? ""}
           onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
           placeholder={searchPlaceholder}
@@ -132,13 +139,16 @@ export const FilterBar = memo(function FilterBar({
           autoComplete="off"
           className="bg-transparent text-[15px] text-ice placeholder:text-stone/65 outline-none flex-1 min-w-0"
         />
-        {hasAny && (
+        {/* In-field × clears the search text only (the universal convention), not
+            every filter — clearing all lives in the lens receipt below. Shown
+            only when there is a query to clear, and returns focus to the input. */}
+        {hasSearch && (
           <button
             type="button"
-            onClick={clearAll}
-            aria-label="Clear all filters"
+            onClick={clearSearch}
+            aria-label="Clear search"
             className="text-stone hover:text-ice flex items-center justify-center min-w-9 min-h-9 sm:min-w-9 sm:min-h-9 [@media(pointer:coarse)]:min-w-11 [@media(pointer:coarse)]:min-h-11 rounded-lg hover:bg-[rgba(94,196,220,0.1)] -mr-1"
-            title="Clear filters"
+            title="Clear search"
           >
             <X className="w-4 h-4" />
           </button>
