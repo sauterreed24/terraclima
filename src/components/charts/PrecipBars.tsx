@@ -57,7 +57,12 @@ export function PrecipBars({ precip, snow, height = 160 }: Props) {
   const totalLabel = dist === "imperial" ? `${total.toFixed(total < 10 ? 1 : 0)} in / yr` : `${total.toFixed(0)} mm / yr`;
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Monthly precipitation chart">
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      className="w-full h-auto"
+      role="img"
+      aria-label={`Monthly precipitation chart. Annual total ${totalLabel}; wettest ${MONTHS[wettestIdx]} ${fmt(dPrecip[wettestIdx]!)} ${axisLabel}, driest ${MONTHS[driestIdx]} ${fmt(dPrecip[driestIdx]!)} ${axisLabel}.`}
+    >
       <defs>
         <linearGradient id={precipGradId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#8cc8e0" stopOpacity="0.95" />

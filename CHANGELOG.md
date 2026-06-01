@@ -4,6 +4,12 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Dossier accessibility & touch polish
+
+- **Data-bearing chart labels (`src/components/charts/ClimateRibbon.tsx`, `PrecipBars.tsx`):** the temperature-ribbon and precipitation SVGs now carry the chart's gist in their `role="img"` `aria-label` — warmest/coldest month + values for the ribbon, annual total + wettest/driest month for precip — so screen-reader users get the data, not just "a chart". Values track the active unit system; argmax/argmin are unit-invariant.
+- **Back-to-top touch target (`src/styles.css`):** the place-dossier back-to-top pill grows from 2.6rem to 2.75rem so it meets the project's 44px touch-target bar on phones.
+- **Hero fallback context (`src/components/PlaceDetail.tsx`):** when a place's hero image fails to load, the gradient placeholder now names the place ("{place} — image unavailable") instead of a generic "Image unavailable".
+
 ### Tier C experience batch 5 + scenario ranking determinism
 
 - **Tier C experience batch 5:** hand-written `experience` for Valdez, Missoula, Sunshine Coast, Bozeman, Cannon Beach, Grand Manan, Prince Rupert, and Coatepec; `liveSignals`, humidity, and/or sunshinePct where missing.
