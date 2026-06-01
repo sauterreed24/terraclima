@@ -442,7 +442,7 @@ function DetailHeader({
                 const fallback = document.createElement("div");
                 fallback.className = "tc-hero-fallback w-full h-36 md:h-52 flex items-center justify-center text-stone text-[11px]";
                 fallback.style.background = "linear-gradient(135deg, rgba(140,200,224,0.35), rgba(200,170,140,0.45))";
-                fallback.textContent = "Image unavailable";
+                fallback.textContent = `${place.name} — image unavailable`;
                 fig.insertBefore(fallback, img);
               }
             }}

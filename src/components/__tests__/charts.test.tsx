@@ -31,7 +31,11 @@ describe("chart components — smoke", () => {
     expect(svg).toBeTruthy();
     // 12 high dots + 12 low dots.
     expect(container.querySelectorAll("circle").length).toBe(24);
-    expect(svg?.getAttribute("aria-label")).toMatch(/Monthly high and low temperature/);
+    // Data-bearing label: identifies the warmest/coldest months (unit-invariant).
+    const label = svg?.getAttribute("aria-label") ?? "";
+    expect(label).toMatch(/Monthly high and low temperature/);
+    expect(label).toMatch(/Warmest Jul/);
+    expect(label).toMatch(/coldest Jan/);
   });
 
   it("ClimateRibbon SVG structure is stable (golden)", () => {
@@ -53,6 +57,11 @@ describe("chart components — smoke", () => {
     // 12 precip bars, an outline rect on the wettest month, and 12 snow rects.
     expect(rects.length).toBeGreaterThanOrEqual(12);
     expect(container.textContent).toMatch(/Σ /);
+    // Data-bearing label: annual total + wettest/driest months (unit-invariant).
+    const label = container.querySelector("svg")?.getAttribute("aria-label") ?? "";
+    expect(label).toMatch(/Annual total/);
+    expect(label).toMatch(/wettest May/);
+    expect(label).toMatch(/driest Jul/);
   });
 
   it("ComfortMatrix renders for a place fixture without throwing", () => {

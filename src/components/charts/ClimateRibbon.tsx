@@ -39,6 +39,15 @@ export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, re
   const dataMin = Math.floor(Math.min(...allVals) / step) * step - step;
   const dataMax = Math.ceil(Math.max(...allVals) / step) * step + step;
 
+  // Data-bearing label so screen-reader users get the chart's gist (range +
+  // when), not just "a temperature ribbon". argmax/argmin are unit-invariant.
+  const warmIdx = dHighs.reduce((bi, v, i) => (v > dHighs[bi] ? i : bi), 0);
+  const coldIdx = dLows.reduce((bi, v, i) => (v < dLows[bi] ? i : bi), 0);
+  const ribbonLabel =
+    `Monthly high and low temperature ribbon in degrees ${temp}. ` +
+    `Warmest ${MONTHS[warmIdx]}, highs near ${Math.round(dHighs[warmIdx]!)}°${temp}; ` +
+    `coldest ${MONTHS[coldIdx]}, lows near ${Math.round(dLows[coldIdx]!)}°${temp}.`;
+
   const x = (i: number) => PAD_L + (i + 0.5) * (chartW / 12);
   const y = (v: number) => PAD_T + chartH - ((v - dataMin) / (dataMax - dataMin)) * chartH;
 
@@ -55,7 +64,7 @@ export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, re
   for (let t = Math.ceil(dataMin / tickStep) * tickStep; t <= dataMax; t += tickStep) ticks.push(t);
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label={`Monthly high and low temperature ribbon in degrees ${temp}`}>
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label={ribbonLabel}>
       <defs>
         <linearGradient id={ribbonGradId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#d6ad66" stopOpacity="0.6" />
