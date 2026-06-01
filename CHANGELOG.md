@@ -4,6 +4,11 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Map keyboard preview + conventional search clear
+
+- **Keyboard pin preview (`src/components/AtlasMap.tsx`):** focusing a map pin (Tab / arrow-key navigation) now shows the same climate-preview tooltip a pointer hover does, and clears it on blur — keyboard and assistive-tech users get the at-a-glance read that was previously mouse-only.
+- **Conventional search clear (`src/components/FilterBar.tsx`):** the × inside the search field now clears **only the search text** (the universal convention) and refocuses the input, and appears only when there is a query. Clearing every filter stays on the lens-receipt "Clear all filters" control, so the in-field × no longer ambiguously wiped geography/preset/constraint filters or lingered over an empty search box.
+
 ### Dossier accessibility & touch polish
 
 - **Data-bearing chart labels (`src/components/charts/ClimateRibbon.tsx`, `PrecipBars.tsx`):** the temperature-ribbon and precipitation SVGs now carry the chart's gist in their `role="img"` `aria-label` — warmest/coldest month + values for the ribbon, annual total + wettest/driest month for precip — so screen-reader users get the data, not just "a chart". Values track the active unit system; argmax/argmin are unit-invariant.

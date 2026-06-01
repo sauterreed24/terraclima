@@ -468,7 +468,9 @@ describe("App shell", () => {
 
     // Search-only: blame the query, not "filters", and offer to clear the search.
     expect(screen.getByText("No places match “zzzznonexistent”")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Clear search" })).toBeInTheDocument();
+    // "Clear search" appears both in the empty-results panel and as the in-field
+    // search clear (FilterBar) — the affordance is present.
+    expect(screen.getAllByRole("button", { name: "Clear search" }).length).toBeGreaterThanOrEqual(1);
   }, APP_SHELL_TIMEOUT_MS);
 
   it("passes active Live Finder filters into shared compare views", async () => {
