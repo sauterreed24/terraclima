@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Filter chips: roving-tabindex keyboard navigation
+
+- **One Tab stop per filter group (`src/hooks/use-roving-tabindex.ts` new, `src/components/FilterBar.tsx`):** the Live Finder presets, lifestyle bundles, Rank-by, Country, and Archetype chip groups now use roving tabindex — each group is a single Tab stop, and Left/Right (plus Home/End) move focus within it. A keyboard user previously had to Tab through ~65 individual chips to cross the filter dock; now it's a handful of Tab stops, mirroring the atlas map's pin-navigation model. Each group is a labeled `role="toolbar"` so assistive tech announces the arrow-key affordance.
+
 ### Map keyboard preview + conventional search clear
 
 - **Keyboard pin preview (`src/components/AtlasMap.tsx`):** focusing a map pin (Tab / arrow-key navigation) now shows the same climate-preview tooltip a pointer hover does, and clears it on blur — keyboard and assistive-tech users get the at-a-glance read that was previously mouse-only.

@@ -250,3 +250,44 @@ describe("FilterBar climate scenario chip", () => {
     expect(onScenarioChange).toHaveBeenCalledWith("now");
   });
 });
+
+describe("FilterBar keyboard roving", () => {
+  it("makes each chip group a single Tab stop with arrow-key navigation", () => {
+    renderFilterBar("F", { filters: createEmptyFilterState(), setFilters: vi.fn() });
+
+    const country = screen.getByRole("toolbar", { name: "Country" });
+    const usa = within(country).getByRole("button", { name: "USA" });
+    const mex = within(country).getByRole("button", { name: "Mexico" });
+    const can = within(country).getByRole("button", { name: "Canada" });
+
+    // Exactly one chip is in the Tab order initially (the first).
+    expect(usa).toHaveAttribute("tabindex", "0");
+    expect(mex).toHaveAttribute("tabindex", "-1");
+    expect(can).toHaveAttribute("tabindex", "-1");
+
+    usa.focus();
+    fireEvent.keyDown(usa, { key: "ArrowRight" });
+    expect(document.activeElement).toBe(mex);
+    expect(mex).toHaveAttribute("tabindex", "0");
+    expect(usa).toHaveAttribute("tabindex", "-1");
+
+    // ArrowLeft wraps from the first item back to the last.
+    fireEvent.keyDown(mex, { key: "ArrowLeft" }); // -> USA
+    fireEvent.keyDown(usa, { key: "ArrowLeft" }); // wrap -> Canada
+    expect(document.activeElement).toBe(can);
+    expect(can).toHaveAttribute("tabindex", "0");
+
+    // Home / End jump to the ends.
+    fireEvent.keyDown(can, { key: "Home" });
+    expect(document.activeElement).toBe(usa);
+    fireEvent.keyDown(usa, { key: "End" });
+    expect(document.activeElement).toBe(can);
+  });
+
+  it("exposes labeled groups so the filter chips read as one Tab stop each", () => {
+    renderFilterBar("F", { filters: createEmptyFilterState(), setFilters: vi.fn() });
+    for (const name of ["Live Finder presets", "Lifestyle bundles", "Rank by", "Country", "Archetype"]) {
+      expect(screen.getByRole("toolbar", { name })).toBeInTheDocument();
+    }
+  });
+});

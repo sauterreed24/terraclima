@@ -1,4 +1,5 @@
 import { memo, useCallback, useRef, type Dispatch, type SetStateAction } from "react";
+import { useRovingTabIndex } from "../hooks/use-roving-tabindex";
 import type { Country, MicroclimateArchetype, RiskLevel, ScenarioId } from "../types";
 import {
   applyLifestyleBundle,
@@ -45,6 +46,8 @@ const BUNDLE_ICONS: Record<string, LucideIcon> = {
   "fire-safe": ShieldCheck,
   "shoulder-season": CalendarDays,
 };
+
+const COUNTRY_OPTIONS: Country[] = ["USA", "Mexico", "Canada"];
 
 function countLiveSignals(filters: FilterState): number {
   return (filters.fitPresets?.size ?? 0) + [
@@ -121,6 +124,15 @@ export const FilterBar = memo(function FilterBar({
     searchInputRef.current?.focus();
   }, [setFilters]);
 
+  // Roving tabindex per chip group: each group is one Tab stop with arrow-key
+  // navigation, so keyboard users don't Tab through ~65 individual chips to
+  // cross the filter dock. Counts are stable (constant source arrays).
+  const presetRoving = useRovingTabIndex(LIVE_FIT_PRESETS.length);
+  const bundleRoving = useRovingTabIndex(LIFESTYLE_BUNDLES.length);
+  const rankRoving = useRovingTabIndex(RANKING_OPTIONS.length);
+  const countryRoving = useRovingTabIndex(COUNTRY_OPTIONS.length);
+  const archetypeRoving = useRovingTabIndex(ARCHETYPES.length);
+
   return (
     <div className="panel contour-bg atlas-filter-dock p-3 space-y-3">
       <label
@@ -185,8 +197,8 @@ export const FilterBar = memo(function FilterBar({
             </button>
           ) : null}
         </div>
-        <div className="flex flex-wrap gap-1.5">
-          {LIVE_FIT_PRESETS.map(preset => {
+        <div className="flex flex-wrap gap-1.5" role="toolbar" aria-label="Live Finder presets">
+          {LIVE_FIT_PRESETS.map((preset, idx) => {
             const isActive = filters.fitPresets?.has(preset.id) ?? false;
             return (
               <button
@@ -198,6 +210,7 @@ export const FilterBar = memo(function FilterBar({
                 data-active={isActive}
                 aria-pressed={isActive}
                 title={preset.description}
+                {...presetRoving.getItemProps(idx)}
               >
                 {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
                 {preset.label}
@@ -250,8 +263,8 @@ export const FilterBar = memo(function FilterBar({
       <div className="tc-accent-panel tc-accent-panel--warm p-2.5 space-y-2">
         <div className="text-[10px] uppercase tracking-wider text-stone-readable">Lifestyle bundles</div>
         <p className="text-[11px] text-stone-readable leading-snug">One-click compound presets — sets ranking, filters, and Live Finder signals together.</p>
-        <div className="grid grid-cols-2 gap-1.5">
-          {LIFESTYLE_BUNDLES.map(bundle => {
+        <div className="grid grid-cols-2 gap-1.5" role="toolbar" aria-label="Lifestyle bundles">
+          {LIFESTYLE_BUNDLES.map((bundle, idx) => {
             const isActive = isBundleActive(bundle, ranking, filters);
             return (
               <button
@@ -261,6 +274,7 @@ export const FilterBar = memo(function FilterBar({
                 title={bundle.description}
                 onClick={() => applyLifestyleBundle(bundle, setRanking, setFilters)}
                 className={`lifestyle-bundle-btn${isActive ? " lifestyle-bundle-btn--active" : ""}`}
+                {...bundleRoving.getItemProps(idx)}
               >
                 <span className="lifestyle-bundle-btn__icon" data-tone={bundle.tone} aria-hidden>
                   {(() => {
@@ -277,8 +291,8 @@ export const FilterBar = memo(function FilterBar({
 
       <div>
         <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Rank by</div>
-        <div className="flex flex-wrap gap-1.5">
-          {RANKING_OPTIONS.map(opt => {
+        <div className="flex flex-wrap gap-1.5" role="toolbar" aria-label="Rank by">
+          {RANKING_OPTIONS.map((opt, idx) => {
             const isActive = ranking === opt.id;
             return (
               <button
@@ -289,6 +303,7 @@ export const FilterBar = memo(function FilterBar({
                 data-tone={isActive ? "glacier" : undefined}
                 data-active={isActive}
                 aria-pressed={isActive}
+                {...rankRoving.getItemProps(idx)}
               >
                 {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
                 {opt.label}
@@ -300,8 +315,8 @@ export const FilterBar = memo(function FilterBar({
 
       <div>
         <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Country</div>
-        <div className="flex flex-wrap gap-1.5">
-          {(["USA", "Mexico", "Canada"] as Country[]).map(c => {
+        <div className="flex flex-wrap gap-1.5" role="toolbar" aria-label="Country">
+          {COUNTRY_OPTIONS.map((c, idx) => {
             const isActive = filters.countries.has(c);
             return (
               <button
@@ -312,6 +327,7 @@ export const FilterBar = memo(function FilterBar({
                 data-tone={isActive ? "ochre" : undefined}
                 data-active={isActive}
                 aria-pressed={isActive}
+                {...countryRoving.getItemProps(idx)}
               >
                 {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
                 {c}
@@ -335,11 +351,13 @@ export const FilterBar = memo(function FilterBar({
           )}
         </div>
         <div
+          role="toolbar"
+          aria-label="Archetype"
           className={`flex flex-wrap gap-1.5 overflow-y-auto pr-1 no-scrollbar ${
             variant === "sheet" ? "max-h-[min(52dvh,22rem)]" : "max-h-56"
           }`}
         >
-          {ARCHETYPES.map(a => {
+          {ARCHETYPES.map((a, idx) => {
             const isActive = filters.archetypes.has(a.id);
             return (
               <button
@@ -351,6 +369,7 @@ export const FilterBar = memo(function FilterBar({
                 data-active={isActive}
                 aria-pressed={isActive}
                 title={prose(a.blurb)}
+                {...archetypeRoving.getItemProps(idx)}
               >
                 {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
                 {a.label}
