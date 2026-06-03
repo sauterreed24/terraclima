@@ -358,6 +358,28 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("button", { name: /Current rank #2\. Beta Ridge/ })).toBeInTheDocument();
     expect(screen.getByRole("img", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
     expect(container.querySelector(".map-rank-trail__line")).toBeInTheDocument();
+    expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "full");
+  });
+
+  it("softens the ranked trail when the initial map field is dense", () => {
+    setCoarsePointer(false);
+    const densePlaces = Array.from({ length: 96 }, (_, index) =>
+      makePlace({
+        id: `dense-${index}`,
+        name: `Dense Place ${index}`,
+        tier: index < 8 ? "A" : index < 28 ? "B" : "C",
+        lat: 24 + (index % 12) * 3.2,
+        lon: -126 + Math.floor(index / 12) * 7.2,
+      }),
+    );
+    const { container } = renderMap(
+      vi.fn(),
+      densePlaces.slice(0, 5).map(place => place.id),
+      densePlaces,
+    );
+
+    expect(screen.getByRole("img", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
+    expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "quiet");
   });
 
   it("uses roving tabindex so only one marker is in the Tab order at a time", () => {
