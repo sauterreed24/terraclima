@@ -229,3 +229,25 @@ export function projectPool(pool: readonly Place[], scenario: ScenarioId): Place
   byScenario[scenario] = projected;
   return projected;
 }
+
+/**
+ * Resolve a place for Compare under the active scenario layer.
+ *
+ * Compare slots are keyed by corpus id and can outlive the Explorer's current
+ * baseline pool (e.g. a shared URL with `col` + `cmp` where a compared id is
+ * outside the active collection). The projected pool map only covers the
+ * current baseline; falling back to canonical present-day normals while the UI
+ * banner claims a 2050 projection would mis-state the charts.
+ */
+export function resolveComparePlace(
+  id: string,
+  projectedById: Readonly<Record<string, Place>>,
+  scenario: ScenarioId,
+  resolveCanonical: (id: string) => Place | undefined,
+): Place | undefined {
+  const fromPool = projectedById[id];
+  if (fromPool) return fromPool;
+  const canonical = resolveCanonical(id);
+  if (!canonical) return undefined;
+  return scenario === "now" ? canonical : projectPlace(canonical, scenario);
+}
