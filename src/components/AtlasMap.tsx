@@ -798,6 +798,10 @@ export function AtlasMap({
     () => markerRenderOrder.filter(pt => rankTrailTopMarkerIds.has(pt.place.id)),
     [markerRenderOrder, rankTrailTopMarkerIds],
   );
+  const rankTrailTone =
+    clusterEnabled || (markerPointsAll.length > 75 && settledView.k < 1.18)
+      ? "quiet"
+      : "full";
 
   // Roving-tabindex layout points — one per visible marker, in DOM render
   // order, with the post-projection screen coordinates that `nextMarkerId`
@@ -1665,7 +1669,7 @@ export function AtlasMap({
           </g>
 
           {featuredTrailPath ? (
-            <g className="map-rank-trail" pointerEvents="none" aria-hidden>
+            <g className="map-rank-trail" data-tone={rankTrailTone} pointerEvents="none" aria-hidden>
               <path
                 className="map-rank-trail__glow"
                 d={featuredTrailPath}
