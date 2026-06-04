@@ -666,7 +666,10 @@
       left: auto;
       right: max(0.85rem, calc(0.7rem + env(safe-area-inset-right, 0px)));
       bottom: max(0.85rem, calc(0.7rem + env(safe-area-inset-bottom, 0px)));
+      justify-content: center;
       gap: 0.35rem;
+      min-width: 44px;
+      min-height: 44px;
       padding: 0.6rem;
       transform: none;
     }
