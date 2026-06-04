@@ -116,6 +116,16 @@
     min-height: 100vh;
   }
 
+  .tc-app-shell {
+    overflow-x: clip;
+  }
+
+  @supports not (overflow: clip) {
+    .tc-app-shell {
+      overflow-x: hidden;
+    }
+  }
+
   /* Very light edge warmth — keeps the page feeling sunlit, not flat gray */
   body::after {
     content: "";

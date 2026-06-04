@@ -766,7 +766,7 @@ export default function App() {
   }, [pickRandomPlace, onRandomEmpty]);
 
   return (
-    <div className="relative min-h-screen flex flex-col text-ice overflow-x-hidden">
+    <div className="tc-app-shell relative min-h-screen flex flex-col text-ice">
       <div ref={appShellRef} data-app-shell className="relative z-10 flex flex-col flex-1 min-h-0">
         <a
           href="#main-content"
