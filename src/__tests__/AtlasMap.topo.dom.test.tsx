@@ -42,6 +42,10 @@ describe("AtlasMap topology load failure", () => {
       </UnitProvider>,
     );
 
+    const loading = screen.getByText(/Loading country/i);
+    expect(loading).toHaveClass("tc-map-topology-loading");
+    expect(loading).toHaveAttribute("class", "tc-map-topology-loading");
+
     // The retry affordance appears only after the async load rejects.
     expect(await screen.findByRole("button", { name: /retry loading map borders/i })).toBeInTheDocument();
     expect(screen.queryByText(/loading country/i)).not.toBeInTheDocument();
