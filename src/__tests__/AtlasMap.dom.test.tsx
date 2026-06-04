@@ -92,6 +92,8 @@ describe("AtlasMap DOM controls", () => {
     setCoarsePointer(false);
     renderMap();
 
+    const shell = document.querySelector(".map-shell");
+    expect(shell).toHaveAttribute("data-legend-open", "false");
     expect(screen.queryByRole("button", { name: /Switch map to/ })).toBeNull();
     expect(screen.getByRole("button", { name: "Zoom in" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Zoom out" })).toBeInTheDocument();
@@ -104,6 +106,12 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("group", { name: "Map key" })).toBeInTheDocument();
     expect(screen.getByText("Orographic / orchard / chinook")).toBeInTheDocument();
     expect(screen.getByText(/Flagship/)).toBeInTheDocument();
+    expect(shell).toHaveAttribute("data-legend-open", "true");
+
+    fireEvent.click(screen.getByRole("button", { name: "Close map key" }));
+
+    expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
+    expect(shell).toHaveAttribute("data-legend-open", "false");
   });
 
   it("uses an empty-aware aria-label when no places match, and the interactive one otherwise", () => {
