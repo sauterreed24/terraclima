@@ -3303,16 +3303,21 @@
     .tc-map-stage__caption {
       left: 0.65rem;
       top: 0.65rem;
-      max-width: calc(100% - 5rem);
-      gap: 0.38rem;
-      padding: 0.36rem 0.48rem;
+      max-width: min(12.5rem, calc(100% - 5.4rem));
+      gap: 0.04rem;
+      padding: 0.34rem 0.48rem 0.38rem;
+    }
+    .tc-map-stage__caption span {
+      font-size: 0.52rem;
     }
     .tc-map-stage__caption strong {
-      display: none;
+      display: block;
+      max-width: 100%;
+      font-size: 0.6rem;
     }
     .tc-map-topology-loading {
       left: 0.65rem;
-      top: 2.85rem;
+      top: 3.85rem;
       max-width: calc(100% - 5.5rem);
       font-size: 0.6rem;
     }
