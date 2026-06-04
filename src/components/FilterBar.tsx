@@ -81,6 +81,7 @@ export const FilterBar = memo(function FilterBar({
   const prose = useProse();
   const { temp } = useUnits();
   const searchFieldId = searchInputId ?? "tc-atlas-filter-search";
+  const rankingSelectId = `${searchFieldId}-ranking`;
   const searchPlaceholder = variant === "sheet" ? "Search places" : "Search places or regions";
   const rankingLabel = RANKING_OPTIONS.find(opt => opt.id === ranking)?.label ?? ranking;
   const activeBundle = LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null;
@@ -275,27 +276,26 @@ export const FilterBar = memo(function FilterBar({
         </div>
       </div>
 
-      <div>
-        <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Rank by</div>
-        <div className="flex flex-wrap gap-1.5">
-          {RANKING_OPTIONS.map(opt => {
-            const isActive = ranking === opt.id;
-            return (
-              <button
-                key={opt.id}
-                type="button"
-                onClick={() => setRanking(opt.id)}
-                className="chip chip-btn"
-                data-tone={isActive ? "glacier" : undefined}
-                data-active={isActive}
-                aria-pressed={isActive}
-              >
-                {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
-                {opt.label}
-              </button>
-            );
-          })}
-        </div>
+      <div className="rank-menu">
+        <label htmlFor={rankingSelectId} className="rank-menu__field">
+          <span className="rank-menu__label">Rank by</span>
+          <span className="rank-menu__select-wrap">
+            <select
+              id={rankingSelectId}
+              value={ranking}
+              onChange={event => setRanking(event.currentTarget.value as RankingProfile)}
+              className="rank-menu__select"
+              aria-describedby={`${rankingSelectId}-hint`}
+            >
+              {RANKING_OPTIONS.map(opt => (
+                <option key={opt.id} value={opt.id}>{opt.label}</option>
+              ))}
+            </select>
+          </span>
+        </label>
+        <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
+          Current list and map: {rankingLabel}
+        </p>
       </div>
 
       <div>

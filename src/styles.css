@@ -2698,6 +2698,65 @@
   .atlas-filter-dock {
     box-shadow: var(--tc-shadow-elevated);
   }
+  .rank-menu {
+    display: grid;
+    gap: 0.38rem;
+  }
+  .rank-menu__field {
+    display: grid;
+    gap: 0.38rem;
+  }
+  .rank-menu__label {
+    color: var(--color-stone-readable);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .rank-menu__select-wrap {
+    position: relative;
+  }
+  .rank-menu__select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 0.78rem;
+    top: 50%;
+    width: 0.52rem;
+    height: 0.52rem;
+    border-right: 2px solid rgba(26, 143, 168, 0.72);
+    border-bottom: 2px solid rgba(26, 143, 168, 0.72);
+    transform: translateY(-64%) rotate(45deg);
+    pointer-events: none;
+  }
+  .rank-menu__select {
+    width: 100%;
+    min-height: 2.55rem;
+    appearance: none;
+    border-radius: 0.78rem;
+    border: 1px solid rgba(26, 143, 168, 0.24);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(232, 248, 251, 0.7)),
+      var(--tc-surface-elevated);
+    color: var(--color-ice);
+    padding: 0.58rem 2.15rem 0.58rem 0.72rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1.2;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.94) inset,
+      0 10px 26px -20px rgba(26, 143, 168, 0.32);
+  }
+  .rank-menu__select:focus-visible {
+    outline: 2px solid var(--tc-focus-ring);
+    outline-offset: 2px;
+    border-color: rgba(26, 143, 168, 0.55);
+  }
+  .rank-menu__hint {
+    margin: 0;
+    color: var(--color-stone-readable);
+    font-size: 0.68rem;
+    line-height: 1.3;
+  }
   .lens-receipt {
     position: relative;
     overflow: hidden;
