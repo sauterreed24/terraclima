@@ -89,6 +89,16 @@ const CLUSTER_TIER_LABEL: Record<Place["tier"], string> = {
   B: "Spotlight",
   C: "Index",
 };
+const CLUSTER_VISUAL_BANDS = [
+  { max: 3, band: "small", outerR: 18, innerR: 12.5, fontSize: 12, textY: 4 },
+  { max: 8, band: "standard", outerR: 21, innerR: 15, fontSize: 13, textY: 4.5 },
+  { max: 24, band: "dense", outerR: 23, innerR: 17, fontSize: 13.5, textY: 5 },
+  { max: Number.POSITIVE_INFINITY, band: "mass", outerR: 24, innerR: 18, fontSize: 14, textY: 5 },
+] as const;
+
+function clusterVisualForCount(count: number) {
+  return CLUSTER_VISUAL_BANDS.find(band => count <= band.max) ?? CLUSTER_VISUAL_BANDS[CLUSTER_VISUAL_BANDS.length - 1];
+}
 
 type ClusterPoint = { place: Place; x: number; y: number; id: string };
 type RenderedClusterPoint = ClusterPoint & {
@@ -2066,6 +2076,8 @@ const ClusterMarker = memo(function ClusterMarker({
 }) {
   const inv = 1 / k;
   const count = cluster.points.length;
+  const visual = clusterVisualForCount(count);
+  const labelFontSize = count >= 100 ? Math.max(11.5, visual.fontSize - 1.5) : visual.fontSize;
   const activate = useCallback((e: React.SyntheticEvent) => {
     e.stopPropagation();
     if (shouldSuppressTouchActivation()) return;
@@ -2093,14 +2105,27 @@ const ClusterMarker = memo(function ClusterMarker({
       onPointerDown={stopPan}
       onClick={activate}
       onKeyDown={onKeyDown}
+      data-cluster-size={visual.band}
     >
       <g transform={`scale(${inv})`}>
-        <circle r="24" fill="rgba(8,14,24,0.88)" stroke="rgba(245,250,255,0.92)" strokeWidth="1.5" />
-        <circle r="18" fill="rgba(94,196,220,0.32)" stroke="rgba(94,196,220,0.78)" strokeWidth="1.1" />
+        <circle
+          className="map-cluster__outer"
+          r={visual.outerR}
+          fill="rgba(8,14,24,0.88)"
+          stroke="rgba(245,250,255,0.86)"
+          strokeWidth="1.35"
+        />
+        <circle
+          className="map-cluster__inner"
+          r={visual.innerR}
+          fill="rgba(94,196,220,0.3)"
+          stroke="rgba(94,196,220,0.72)"
+          strokeWidth="1.05"
+        />
         <text
           textAnchor="middle"
-          y="5"
-          fontSize="14"
+          y={visual.textY}
+          fontSize={labelFontSize}
           fontFamily="var(--font-mono),ui-monospace,monospace"
           fontWeight={700}
           fill="rgba(245,250,255,0.98)"
@@ -2108,7 +2133,7 @@ const ClusterMarker = memo(function ClusterMarker({
         >
           {count}
         </text>
-        <circle r="30" fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
+        <circle className="map-cluster__hit-area" r="30" fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
       </g>
     </g>
   );

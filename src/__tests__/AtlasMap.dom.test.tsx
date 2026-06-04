@@ -382,6 +382,42 @@ describe("AtlasMap DOM controls", () => {
     expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "quiet");
   });
 
+  it("sizes cluster chrome by count while preserving the same hit target", () => {
+    setCoarsePointer(false);
+    const smallCluster = Array.from({ length: 2 }, (_, index) =>
+      makePlace({
+        id: `small-cluster-${index}`,
+        name: `Small Cluster ${index}`,
+        lat: 39,
+        lon: -103,
+      }),
+    );
+    const massCluster = Array.from({ length: 90 }, (_, index) =>
+      makePlace({
+        id: `mass-cluster-${index}`,
+        name: `Mass Cluster ${index}`,
+        lat: 49,
+        lon: -116,
+      }),
+    );
+
+    const { container } = renderMap(vi.fn(), [], [...smallCluster, ...massCluster]);
+    const clusters = Array.from(container.querySelectorAll<SVGGElement>(".map-cluster"));
+    const twoPlaceCluster = clusters.find(cluster => cluster.textContent?.trim() === "2");
+    const ninetyPlaceCluster = clusters.find(cluster => cluster.textContent?.trim() === "90");
+
+    expect(twoPlaceCluster).toBeTruthy();
+    expect(ninetyPlaceCluster).toBeTruthy();
+    if (!twoPlaceCluster || !ninetyPlaceCluster) throw new Error("Expected both cluster count bands to render");
+
+    expect(twoPlaceCluster).toHaveAttribute("data-cluster-size", "small");
+    expect(ninetyPlaceCluster).toHaveAttribute("data-cluster-size", "mass");
+    expect(twoPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "18");
+    expect(ninetyPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "24");
+    expect(twoPlaceCluster.querySelector(".map-cluster__hit-area")).toHaveAttribute("r", "30");
+    expect(ninetyPlaceCluster.querySelector(".map-cluster__hit-area")).toHaveAttribute("r", "30");
+  });
+
   it("uses roving tabindex so only one marker is in the Tab order at a time", () => {
     setCoarsePointer(false);
     const { container } = renderMap(vi.fn(), [], defaultMapPlaces());
