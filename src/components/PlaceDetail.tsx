@@ -196,6 +196,8 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
   );
 
   const hadOpenPlaceRef = useRef(false);
+  /** True after a run where `place` was set but `occluded` blocked panel setup (compare/shortcuts on top). */
+  const wasOccludedWithPlaceRef = useRef(false);
   useEffect(() => {
     if (place) {
       hadOpenPlaceRef.current = true;
@@ -207,10 +209,24 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
   }, [place]);
 
   useEffect(() => {
-    if (!place || occluded) return;
+    if (place?.id == null) {
+      wasOccludedWithPlaceRef.current = false;
+      return;
+    }
+    if (occluded) {
+      wasOccludedWithPlaceRef.current = true;
+      return;
+    }
+
     const el = panelRef.current;
     if (!el) return;
-    el.scrollTop = 0;
+
+    const skipScrollTopReset = wasOccludedWithPlaceRef.current;
+    wasOccludedWithPlaceRef.current = false;
+
+    if (!skipScrollTopReset) {
+      el.scrollTop = 0;
+    }
     requestAnimationFrame(() => {
       const closeBtn = el.querySelector<HTMLElement>("[data-place-detail-close]");
       (closeBtn ?? el).focus({ preventScroll: true });
@@ -238,8 +254,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
         }
       }
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by place identity only (`place?.id`), not full object churn; occlusion only prevents a covered panel from stealing focus
-  }, [place?.id]);
+  }, [place?.id, occluded]);
 
   return (
     <AnimatePresence>
