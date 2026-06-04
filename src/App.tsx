@@ -297,6 +297,10 @@ export default function App() {
    */
   const initialUrlSyncDoneRef = useRef(false);
   const explorerDockLg = useMediaQuery("(min-width: 1024px)");
+  // Phones need the map immediately after the hero scout controls. The dense
+  // decision workbench still mounts from tablet width upward, where it no
+  // longer pushes the map several screens down.
+  const explorerHeroPanelsMd = useMediaQuery("(min-width: 768px)");
   // Matches the styles.css `.desktop-scout-board` reveal breakpoint (line ~2170);
   // gating the JSX avoids mounting a 200+ LOC subtree that is `display: none`.
   const scoutBoardLg = useMediaQuery("(min-width: 1180px)");
@@ -526,6 +530,10 @@ export default function App() {
     [deferredFiltered],
   );
   const sortTopFive = useMemo(() => ranked.slice(0, 5), [ranked]);
+  const signatureLeaders = useMemo<SignatureLeader[]>(
+    () => sortTopFive.map(row => ({ ...row, signature: getPlaceVisualSignature(row.place) })),
+    [sortTopFive],
+  );
   const topRankedPlaceIds = useMemo(
     () => sortTopFive.map(row => row.place.id),
     [sortTopFive],
@@ -786,7 +794,7 @@ export default function App() {
                 <HeroCard
                   count={ranked.length}
                   livabilityTopTen={livabilityTopTen}
-                  sortTopFive={sortTopFive}
+                  signatureLeaders={signatureLeaders}
                   ranking={ranking}
                   rankingLabel={rankingLabel}
                   onOpenPlace={openPlace}
@@ -811,6 +819,7 @@ export default function App() {
                   onClearRecents={clearRecents}
                   onApplyQuickPick={applyHeroQuickPick}
                   isQuickPickActive={isHeroQuickPickActive}
+                  showDetailedHeroPanels={explorerHeroPanelsMd}
                   showDesktopScoutBoard={scoutBoardLg}
                 />
 
@@ -828,6 +837,29 @@ export default function App() {
                     onSelect={openPlace}
                   />
                 </div>
+
+                {!explorerHeroPanelsMd ? (
+                  <>
+                    <ExplorerHeroDetailPanels
+                      signatureLeaders={signatureLeaders}
+                      ranking={ranking}
+                      rankingLabel={rankingLabel}
+                      filters={filters}
+                      scoutBrief={scoutBrief}
+                      contextStressRows={contextStressRows}
+                      onOpenPlace={openPlace}
+                      onCompareLeaders={comparePlaces}
+                      onCompareContextLeaders={comparePlaces}
+                      onPreloadCompare={preloadCompareView}
+                      onApplyContextScenario={applyContextScenario}
+                      showDesktopScoutBoard={false}
+                    />
+                    <MobileLivabilityTopTenStrip
+                      rows={livabilityTopTen}
+                      onOpenPlace={openPlace}
+                    />
+                  </>
+                ) : null}
 
                 <section className="hidden md:grid grid-cols-3 gap-3 tc-reader-path" aria-labelledby="reader-path-heading">
                   <h2 id="reader-path-heading" className="sr-only">How to read Terraclima</h2>
@@ -1456,7 +1488,7 @@ const ClimateSignalRail = memo(function ClimateSignalRail({
 const HeroCard = memo(function HeroCard({
   count,
   livabilityTopTen,
-  sortTopFive,
+  signatureLeaders,
   ranking,
   rankingLabel,
   onOpenPlace,
@@ -1481,11 +1513,12 @@ const HeroCard = memo(function HeroCard({
   onClearRecents,
   onApplyQuickPick,
   isQuickPickActive,
+  showDetailedHeroPanels,
   showDesktopScoutBoard,
 }: {
   count: number;
   livabilityTopTen: RankingResult[];
-  sortTopFive: RankingResult[];
+  signatureLeaders: SignatureLeader[];
   ranking: RankingProfile;
   rankingLabel: string;
   onOpenPlace: (id: string) => void;
@@ -1510,6 +1543,7 @@ const HeroCard = memo(function HeroCard({
   onClearRecents: () => void;
   onApplyQuickPick: (r: RankingProfile) => void;
   isQuickPickActive: (r: RankingProfile) => boolean;
+  showDetailedHeroPanels: boolean;
   showDesktopScoutBoard: boolean;
 }) {
   const prose = useProse();
@@ -1521,10 +1555,6 @@ const HeroCard = memo(function HeroCard({
     filters.maxFireRisk,
     filters.maxOverallRisk,
   ].filter(v => v != null).length;
-  const signatureLeaders = useMemo<SignatureLeader[]>(
-    () => sortTopFive.map(row => ({ ...row, signature: getPlaceVisualSignature(row.place) })),
-    [sortTopFive],
-  );
   const heroAccentRgb = signatureLeaders[0]?.signature.mapAccentRgb ?? "94, 196, 220";
   return (
     <div
@@ -1618,44 +1648,24 @@ const HeroCard = memo(function HeroCard({
         />
       ) : null}
 
-      {signatureLeaders.length > 0 ? (
-        <LivingCompassWorkbench
-          rows={signatureLeaders}
+      {showDetailedHeroPanels ? (
+        <ExplorerHeroDetailPanels
+          signatureLeaders={signatureLeaders}
           ranking={ranking}
           rankingLabel={rankingLabel}
           filters={filters}
           scoutBrief={scoutBrief}
-          onOpenPlace={onOpenPlace}
-        />
-      ) : null}
-
-      {scoutBrief && showDesktopScoutBoard ? (
-        <DesktopScoutBoard
-          brief={scoutBrief}
-          onOpenPlace={onOpenPlace}
-        />
-      ) : null}
-
-      {scoutBrief ? (
-        <ScoutBriefPanel
-          brief={scoutBrief}
+          contextStressRows={contextStressRows}
           onOpenPlace={onOpenPlace}
           onCompareLeaders={onCompareLeaders}
-          onPreloadCompare={onPreloadCompare}
-        />
-      ) : null}
-
-      {contextStressRows.length > 1 ? (
-        <ContextStressPanel
-          rows={contextStressRows}
-          onOpenPlace={onOpenPlace}
           onCompareContextLeaders={onCompareContextLeaders}
           onPreloadCompare={onPreloadCompare}
           onApplyContextScenario={onApplyContextScenario}
+          showDesktopScoutBoard={showDesktopScoutBoard}
         />
       ) : null}
 
-      {livabilityTopTen.length > 0 ? (
+      {showDetailedHeroPanels && livabilityTopTen.length > 0 ? (
         <div className="hero-top-ten px-3 py-2.5 sm:px-4 min-[1400px]:py-3 space-y-2.5 min-[1400px]:space-y-3">
           <div className="min-w-0">
             <div className="text-[10px] uppercase tracking-wider text-sage-700">Livability lens · top ten</div>
@@ -1717,6 +1727,121 @@ const HeroCard = memo(function HeroCard({
 
       <div className="hidden min-[1400px]:block">
         <FieldNoteStrip />
+      </div>
+    </div>
+  );
+});
+
+const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
+  signatureLeaders,
+  ranking,
+  rankingLabel,
+  filters,
+  scoutBrief,
+  contextStressRows,
+  onOpenPlace,
+  onCompareLeaders,
+  onCompareContextLeaders,
+  onPreloadCompare,
+  onApplyContextScenario,
+  showDesktopScoutBoard,
+}: {
+  signatureLeaders: SignatureLeader[];
+  ranking: RankingProfile;
+  rankingLabel: string;
+  filters: FilterState;
+  scoutBrief: ExplorerScoutBrief | null;
+  contextStressRows: ContextStressRow[];
+  onOpenPlace: (id: string) => void;
+  onCompareLeaders: (ids: string[]) => void;
+  onCompareContextLeaders: (ids: string[]) => void;
+  onPreloadCompare: () => void;
+  onApplyContextScenario: (id: ContextScenarioId) => void;
+  showDesktopScoutBoard: boolean;
+}) {
+  return (
+    <>
+      {signatureLeaders.length > 0 ? (
+        <LivingCompassWorkbench
+          rows={signatureLeaders}
+          ranking={ranking}
+          rankingLabel={rankingLabel}
+          filters={filters}
+          scoutBrief={scoutBrief}
+          onOpenPlace={onOpenPlace}
+        />
+      ) : null}
+
+      {scoutBrief && showDesktopScoutBoard ? (
+        <DesktopScoutBoard
+          brief={scoutBrief}
+          onOpenPlace={onOpenPlace}
+        />
+      ) : null}
+
+      {scoutBrief ? (
+        <ScoutBriefPanel
+          brief={scoutBrief}
+          onOpenPlace={onOpenPlace}
+          onCompareLeaders={onCompareLeaders}
+          onPreloadCompare={onPreloadCompare}
+        />
+      ) : null}
+
+      {contextStressRows.length > 1 ? (
+        <ContextStressPanel
+          rows={contextStressRows}
+          onOpenPlace={onOpenPlace}
+          onCompareContextLeaders={onCompareContextLeaders}
+          onPreloadCompare={onPreloadCompare}
+          onApplyContextScenario={onApplyContextScenario}
+        />
+      ) : null}
+    </>
+  );
+});
+
+const MobileLivabilityTopTenStrip = memo(function MobileLivabilityTopTenStrip({
+  rows,
+  onOpenPlace,
+}: {
+  rows: RankingResult[];
+  onOpenPlace: (id: string) => void;
+}) {
+  const prose = useProse();
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="hero-top-ten px-3 py-2.5 sm:px-4 space-y-2.5">
+      <div className="min-w-0">
+        <div className="text-[10px] uppercase tracking-wider text-sage-700">Livability lens - top ten</div>
+      </div>
+      <div
+        className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
+        aria-label="Top ten places by livability blend in the current filtered list"
+      >
+        {rows.map((row, i) => (
+          <button
+            key={row.place.id}
+            type="button"
+            onClick={() => onOpenPlace(row.place.id)}
+            aria-label={`Livability rank ${i + 1}. ${row.place.name}, ${row.place.koppen}. Open place profile.`}
+            className="hero-top-ten__chip snap-start shrink-0 px-3 py-2"
+          >
+            <div className="flex items-baseline justify-between gap-2">
+              <span className="font-atlas text-lg text-ice/90 tabular-nums leading-none" aria-hidden>{i + 1}</span>
+              <span className="text-[10px] uppercase tracking-wider text-stone-readable truncate">{row.place.country === "USA" ? "US" : row.place.country === "Canada" ? "CA" : "MX"}</span>
+            </div>
+            <div className="font-atlas text-sm text-ice leading-tight mt-1 truncate" title={row.place.name}>{row.place.name}</div>
+            <div className="text-[11px] text-stone-readable mt-0.5 truncate">{row.place.koppen}</div>
+            <div className="text-[10px] text-stone-readable mt-1 font-mono-num tabular-nums">
+              Blend <span className="text-frost">{Math.round(row.score)}</span>
+            </div>
+            {row.note ? (
+              <div className="text-[10px] text-stone-readable mt-0.5 leading-snug line-clamp-2" title={prose(row.note)}>{prose(row.note)}</div>
+            ) : null}
+          </button>
+        ))}
       </div>
     </div>
   );

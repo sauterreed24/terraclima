@@ -87,6 +87,25 @@ function renderApp() {
   );
 }
 
+function mockViewport(widthPx: number) {
+  window.matchMedia = vi.fn().mockImplementation((query: string) => {
+    const minWidth = query.match(/\(min-width:\s*(\d+)px\)/)?.[1];
+    const maxWidth = query.match(/\(max-width:\s*(\d+)px\)/)?.[1];
+    const matchesMin = minWidth ? widthPx >= Number(minWidth) : true;
+    const matchesMax = maxWidth ? widthPx <= Number(maxWidth) : true;
+    return {
+      matches: matchesMin && matchesMax,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    };
+  }) as unknown as typeof window.matchMedia;
+}
+
 describe("App shell", () => {
   let originalMatchMedia: typeof window.matchMedia;
 
@@ -168,6 +187,7 @@ describe("App shell", () => {
   }, APP_SHELL_TIMEOUT_MS);
 
   it("surfaces the active ranking leaders in the Explorer hero", () => {
+    mockViewport(1280);
     window.history.replaceState(null, "", "/?col=places-that-feel-like-another-country&r=live-fit");
 
     renderApp();
@@ -185,26 +205,31 @@ describe("App shell", () => {
   }, APP_SHELL_TIMEOUT_MS);
 
   it("starts new sessions with live-here fit as the default Explorer ranking", () => {
-    // The "Desktop relocation workbench" panel is now JSX-gated on
-    // `(min-width: 1180px)` to skip mounting it on phones (matches the
-    // existing `.desktop-scout-board { display: none }` CSS rule below
-    // 1180 px). Mock matchMedia so this test runs in the desktop branch.
-    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
-      matches: query.includes("min-width"),
-      media: query,
-      onchange: null,
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-      addEventListener: vi.fn(),
-      removeEventListener: vi.fn(),
-      dispatchEvent: vi.fn(),
-    })) as unknown as typeof window.matchMedia;
+    mockViewport(1280);
     renderApp();
 
     expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Live-here fit · top 5");
     expect(screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit")).toBeInTheDocument();
     expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("keeps the mobile Explorer hero compact and defers dense panels until after the map", () => {
+    mockViewport(390);
+    renderApp();
+
+    const hero = document.querySelector(".panel-hero");
+    const map = screen.getByTestId("atlas-map-stub");
+    const currentRank = screen.getByText("Current rank");
+    const scoutBrief = screen.getByText("Scout brief");
+
+    expect(hero).not.toBeNull();
+    expect(screen.getByRole("group", { name: "Quick ranking presets" })).toBeInTheDocument();
+    expect(screen.getByLabelText(/climate signal leaders/i)).toBeInTheDocument();
+    expect(screen.getByText(/Livability lens/)).toBeInTheDocument();
+    expect(hero!.compareDocumentPosition(map) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(map.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(map.compareDocumentPosition(scoutBrief) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the map leader caption synchronized with the selected ranking", () => {
@@ -225,6 +250,7 @@ describe("App shell", () => {
   }, APP_SHELL_TIMEOUT_MS);
 
   it("compares current Explorer leaders from the scout brief", async () => {
+    mockViewport(1280);
     renderApp();
 
     fireEvent.click(screen.getByRole("button", { name: /Compare current leaders/ }));
@@ -233,6 +259,7 @@ describe("App shell", () => {
   }, APP_SHELL_TIMEOUT_MS);
 
   it("compares distinct context leaders from the stress test", async () => {
+    mockViewport(1280);
     renderApp();
 
     fireEvent.click(screen.getByRole("button", { name: /Compare context top picks/ }));
@@ -241,6 +268,7 @@ describe("App shell", () => {
   }, APP_SHELL_TIMEOUT_MS);
 
   it("applies alternate context presets from the Explorer hero", async () => {
+    mockViewport(1280);
     renderApp();
 
     fireEvent.click(screen.getByRole("button", { name: "Apply context: Cool summers" }));
