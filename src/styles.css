@@ -7755,6 +7755,52 @@ html[data-theme="dark"] .detail-drawer-header[data-tone="aurora"] {
     flex-wrap: wrap;
     gap: 0.45rem;
   }
+  .hero-action-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+  @media (min-width: 640px) {
+    .hero-action-stack {
+      align-items: flex-end;
+    }
+  }
+  @media (max-width: 640px) {
+    .hero-quick-picks {
+      flex-wrap: nowrap;
+      gap: 0.38rem;
+      margin-inline: -0.35rem;
+      padding: 0 0.35rem 0.12rem;
+      overflow-x: auto;
+      scroll-padding-inline: 0.35rem;
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+    }
+    .hero-quick-picks::-webkit-scrollbar {
+      display: none;
+    }
+    .hero-quick-pick {
+      scroll-snap-align: start;
+    }
+    .hero-action-stack {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.48rem;
+      align-items: stretch;
+    }
+    .hero-action-stack .btn-ghost {
+      width: 100%;
+      justify-content: center;
+    }
+    .hero-action-stack > div:last-child {
+      grid-column: 1 / -1;
+      justify-content: center;
+      gap: 1.15rem;
+      padding-top: 0.1rem;
+    }
+  }
   .hero-quick-pick {
     display: inline-flex;
     align-items: center;
