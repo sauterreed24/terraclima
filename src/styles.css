@@ -3174,6 +3174,55 @@
     }
   }
 
+  .compare-bioclim-key {
+    margin: 0 0 0.65rem;
+    border-radius: 0.7rem;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background: rgba(241, 251, 253, 0.68);
+    color: var(--color-stone-readable);
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+  .compare-bioclim-key summary {
+    min-height: 2.25rem;
+    display: flex;
+    align-items: center;
+    padding: 0 0.72rem;
+    cursor: pointer;
+    color: var(--color-ice);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+  .compare-bioclim-key summary:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
+    border-radius: 0.58rem;
+  }
+  .compare-bioclim-key dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem 0.65rem;
+    margin: 0;
+    padding: 0 0.72rem 0.72rem;
+  }
+  .compare-bioclim-key div {
+    min-width: 0;
+  }
+  .compare-bioclim-key dt {
+    color: var(--color-frost);
+    font-weight: 700;
+  }
+  .compare-bioclim-key dd {
+    margin: 0.08rem 0 0;
+  }
+  @media (max-width: 360px) {
+    .compare-bioclim-key dl {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
   .climate-trip-card {
     content-visibility: auto;
     contain-intrinsic-size: 0 340px;
@@ -6776,7 +6825,8 @@ html[data-theme="dark"] .tc-detail-back-to-top:focus-visible {
    pops; just deepen its base. */
 html[data-theme="dark"] .compare-dialog__head,
 html[data-theme="dark"] .compare-decision-read,
-html[data-theme="dark"] .compare-insight-strip {
+html[data-theme="dark"] .compare-insight-strip,
+html[data-theme="dark"] .compare-bioclim-key {
   background: rgba(20, 28, 48, 0.78);
   border-color: rgba(120, 138, 178, 0.28);
   color: var(--color-frost-strong);

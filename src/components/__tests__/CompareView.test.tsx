@@ -106,6 +106,17 @@ describe("CompareView", () => {
     expect(onCopyView).toHaveBeenCalledTimes(1);
   });
 
+  it("adds a compact mobile key for bioclimatic comparison rows", () => {
+    renderCompare();
+
+    expect(screen.getByText("Bioclim key")).toBeInTheDocument();
+    expect(screen.getByText("annual aridity")).toBeInTheDocument();
+    expect(screen.getByText("continentality")).toBeInTheDocument();
+    expect(screen.getByText("growing-season moisture")).toBeInTheDocument();
+    expect(screen.getByText("evaporative demand")).toBeInTheDocument();
+    expect(screen.getByText("precipitation to PET")).toBeInTheDocument();
+  });
+
   it("scopes remove controls to the compare dialog cards", () => {
     const onRemove = vi.fn();
     renderCompare({ onRemove });
