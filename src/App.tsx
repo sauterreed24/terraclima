@@ -1607,7 +1607,7 @@ const HeroCard = memo(function HeroCard({
             </div>
           )}
         </div>
-        <div className="flex flex-col items-stretch sm:items-end gap-3 shrink-0">
+        <div className="hero-action-stack">
           <button
             type="button"
             onClick={onCopyView}

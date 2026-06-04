@@ -234,6 +234,7 @@ describe("App shell", () => {
 
     expect(hero).not.toBeNull();
     expect(screen.getByRole("group", { name: "Quick ranking presets" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Copy current Explorer view" }).closest(".hero-action-stack")).not.toBeNull();
     expect(screen.getByLabelText(/climate signal leaders/i)).toBeInTheDocument();
     expect(screen.getByText(/Livability lens/)).toBeInTheDocument();
     expect(hero!.compareDocumentPosition(map) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
