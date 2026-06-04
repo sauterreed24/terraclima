@@ -1776,10 +1776,12 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
         <DesktopScoutBoard
           brief={scoutBrief}
           onOpenPlace={onOpenPlace}
+          onCompareLeaders={onCompareLeaders}
+          onPreloadCompare={onPreloadCompare}
         />
       ) : null}
 
-      {scoutBrief ? (
+      {scoutBrief && !showDesktopScoutBoard ? (
         <ScoutBriefPanel
           brief={scoutBrief}
           onOpenPlace={onOpenPlace}
@@ -2405,9 +2407,13 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
 const DesktopScoutBoard = memo(function DesktopScoutBoard({
   brief,
   onOpenPlace,
+  onCompareLeaders,
+  onPreloadCompare,
 }: {
   brief: ExplorerScoutBrief;
   onOpenPlace: (id: string) => void;
+  onCompareLeaders: (ids: string[]) => void;
+  onPreloadCompare: () => void;
 }) {
   const prose = useProse();
   return (
@@ -2424,6 +2430,20 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="desktop-scout-board__place">{brief.leader.place.name}</span>
             <span className="desktop-scout-board__note">{prose(brief.fitLine)}</span>
           </button>
+          {brief.compareIds.length >= 2 ? (
+            <button
+              type="button"
+              className="desktop-scout-board__compare"
+              onPointerEnter={onPreloadCompare}
+              onFocus={onPreloadCompare}
+              onPointerDown={onPreloadCompare}
+              onClick={() => onCompareLeaders(brief.compareIds)}
+              aria-label={`Compare current leaders: ${brief.compareIds.length} places`}
+            >
+              <ArrowLeftRight className="w-3 h-3" aria-hidden />
+              Compare
+            </button>
+          ) : null}
         </div>
         <div className="desktop-scout-board__score" aria-label={`Score ${Math.round(brief.leader.score)}`}>
           {Math.round(brief.leader.score)}

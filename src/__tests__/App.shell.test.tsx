@@ -193,7 +193,8 @@ describe("App shell", () => {
     renderApp();
 
     expect(screen.getByText("Current rank")).toBeInTheDocument();
-    expect(screen.getByText("Scout brief")).toBeInTheDocument();
+    expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
+    expect(document.querySelector(".panel-hero .scout-brief")).toBeNull();
     expect(screen.getByText("Context stress test")).toBeInTheDocument();
     expect(screen.getByText(/distinct leaders across/)).toBeInTheDocument();
     expect(screen.getAllByText("Decision matrix").length).toBeGreaterThan(0);
@@ -249,7 +250,7 @@ describe("App shell", () => {
     expect(trigger.closest(".view-enter")).toBeNull();
   }, APP_SHELL_TIMEOUT_MS);
 
-  it("compares current Explorer leaders from the scout brief", async () => {
+  it("compares current Explorer leaders from the desktop scout board", async () => {
     mockViewport(1280);
     renderApp();
 
