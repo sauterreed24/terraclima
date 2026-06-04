@@ -257,6 +257,31 @@ export function CompareView({
                 </>
               )}
             </p>
+            <details className="compare-bioclim-key lg:hidden">
+              <summary>Bioclim key</summary>
+              <dl>
+                <div>
+                  <dt>De Martonne</dt>
+                  <dd>annual aridity</dd>
+                </div>
+                <div>
+                  <dt>Conrad</dt>
+                  <dd>continentality</dd>
+                </div>
+                <div>
+                  <dt>Selianinov HTC</dt>
+                  <dd>growing-season moisture</dd>
+                </div>
+                <div>
+                  <dt>Thornthwaite PET</dt>
+                  <dd>evaporative demand</dd>
+                </div>
+                <div>
+                  <dt>UNEP P/PET</dt>
+                  <dd>precipitation to PET</dd>
+                </div>
+              </dl>
+            </details>
             <div className="overflow-x-auto pb-3 -mx-1 px-1 snap-x snap-mandatory scroll-smooth" aria-label="Scrollable comparison columns" style={{ touchAction: "pan-x pan-y" }}>
               <div className="grid gap-4 min-w-full snap-mandatory" style={{ gridTemplateColumns: columnTemplate }}>
               {places.map(p => {
