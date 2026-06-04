@@ -65,28 +65,49 @@ describe("FilterBar Live Finder temperature constraints", () => {
     expect(screen.getByText("Garden 65+")).toBeInTheDocument();
   });
 
-  it("renders threshold chips in Fahrenheit when the app is in Fahrenheit mode", () => {
+  it("renders threshold choices in Fahrenheit when the app is in Fahrenheit mode", () => {
     renderFilterBar("F");
 
-    expect(screen.getByRole("button", { name: `<= 72${DEG}F` })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: `<= 79${DEG}F` })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: `>= 23${DEG}F` })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: `>= 32${DEG}F` })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: `>= 36${DEG}F` })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: "<= 22C" })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: ">= -5C" })).not.toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Summer cap" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `<= 72${DEG}F` })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `<= 79${DEG}F` })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `>= 23${DEG}F` })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `>= 32${DEG}F` })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `>= 36${DEG}F` })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: "<= 22C" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: ">= -5C" })).not.toBeInTheDocument();
   });
 
-  it("renders threshold chips in Celsius when the app is in Celsius mode", () => {
+  it("renders threshold choices in Celsius when the app is in Celsius mode", () => {
     renderFilterBar("C");
 
-    expect(screen.getByRole("button", { name: `<= 22${DEG}C` })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: `<= 26${DEG}C` })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: `>= -5${DEG}C` })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: `>= 0${DEG}C` })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: `>= 2${DEG}C` })).toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: `<= 72${DEG}F` })).not.toBeInTheDocument();
-    expect(screen.queryByRole("button", { name: `>= 23${DEG}F` })).not.toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Winter floor" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `<= 22${DEG}C` })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `<= 26${DEG}C` })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `>= -5${DEG}C` })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `>= 0${DEG}C` })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: `>= 2${DEG}C` })).toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: `<= 72${DEG}F` })).not.toBeInTheDocument();
+    expect(screen.queryByRole("option", { name: `>= 23${DEG}F` })).not.toBeInTheDocument();
+  });
+
+  it("changes Live Finder threshold constraints from compact menus", () => {
+    const setFilters = vi.fn();
+    const filters = createEmptyFilterState();
+    renderFilterBar("C", { filters, setFilters });
+
+    fireEvent.change(screen.getByRole("combobox", { name: "Summer cap" }), {
+      target: { value: "22" },
+    });
+    fireEvent.change(screen.getByRole("combobox", { name: "Fire ceiling" }), {
+      target: { value: "moderate" },
+    });
+
+    const summerUpdater = setFilters.mock.calls[0][0] as (f: FilterState) => FilterState;
+    const fireUpdater = setFilters.mock.calls[1][0] as (f: FilterState) => FilterState;
+
+    expect(summerUpdater(filters).maxSummerHighC).toBe(22);
+    expect(fireUpdater(filters).maxFireRisk).toBe("moderate");
   });
 });
 
