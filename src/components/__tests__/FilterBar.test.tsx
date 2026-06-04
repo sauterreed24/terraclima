@@ -90,6 +90,25 @@ describe("FilterBar Live Finder temperature constraints", () => {
   });
 });
 
+describe("FilterBar ranking menu", () => {
+  it("changes the active ranking from the compact Rank by menu", () => {
+    const setRanking = vi.fn();
+    renderFilterBar("F", {
+      ranking: "hidden-gems",
+      setRanking,
+    });
+
+    const rankMenu = screen.getByRole("combobox", { name: "Rank by" });
+
+    expect(rankMenu).toHaveValue("hidden-gems");
+    expect(screen.getByText("Current list and map: Hidden gems")).toBeInTheDocument();
+
+    fireEvent.change(rankMenu, { target: { value: "most-comfortable" } });
+
+    expect(setRanking).toHaveBeenCalledWith("most-comfortable");
+  });
+});
+
 describe("FilterBar lifestyle bundles", () => {
   it("uses the active bundle as the current lens receipt when all bundle controls match", () => {
     const exactGarden = createEmptyFilterState();
