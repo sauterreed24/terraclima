@@ -1942,32 +1942,25 @@ export function AtlasMap({
           </span>
           <span>Index — open ring (driver colour on stroke)</span>
         </div>
-        <p className="pt-1 mt-0.5 border-t border-[rgba(140,200,224,0.25)] text-[9px] text-[rgba(210,225,240,0.88)] leading-relaxed">
-          Tap a pin to open its sheet. Use + / − to zoom, Fit (or the 0 key) to show every pin in the frame, and drag to pan.
-        </p>
-        <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
-          Names auto-hide when crowded: at most one label per map cell (tier wins ties). Zoom in or hover for full text.
-        </p>
-        <p className="text-[9px] text-[rgba(255,232,180,0.9)] leading-snug">
-          Gold halos and the connecting trail mark the current top-ranked leaders, matching the rank strip and cards.
-        </p>
-        <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
-          Thin colored aura: strongest place-feel signal, matching the card signature band.
-        </p>
-        <p className="text-[9px] text-[rgba(210,225,240,0.82)] leading-snug">
-          Pale ring: <span className="text-[rgba(255,236,210,0.95)]">US</span>
-          {" · "}
-          <span className="text-[rgba(190,230,255,0.95)]">Canada</span>
-          {" · "}
-          <span className="text-[rgba(255,220,150,0.95)]">Mexico</span>
-          {" "}— fill stays the climate driver.
-        </p>
-        <p className="text-[9px] text-[rgba(200,218,236,0.72)] leading-snug pt-1.5 border-t border-[rgba(140,200,224,0.18)]">
-          Geospatial numbers are atlas screening analytics (terrain + climate + reference EO design goals). They are not live Sentinel, Landsat, or lidar products.
-        </p>
-        <p className="text-[9px] text-[rgba(200,218,236,0.78)] leading-snug pt-0.5">
-          Chart numbers in each profile use the cited normals or blends; WMO 30-year windows are often {CLIMATE_NORMALS_PERIOD} when a period is named.
-        </p>
+        <details className="map-key-notes">
+          <summary>Usage notes</summary>
+          <div className="map-key-notes__body">
+            <p>Tap a pin to open its sheet. Use + / − to zoom, Fit (or the 0 key) to show every pin in the frame, and drag to pan.</p>
+            <p>Names auto-hide when crowded: at most one label per map cell (tier wins ties). Zoom in or hover for full text.</p>
+            <p>Gold halos and the connecting trail mark the current top-ranked leaders, matching the rank strip and cards.</p>
+            <p>Thin colored aura: strongest place-feel signal, matching the card signature band.</p>
+            <p>
+              Pale ring: <span className="text-[rgba(255,236,210,0.95)]">US</span>
+              {" · "}
+              <span className="text-[rgba(190,230,255,0.95)]">Canada</span>
+              {" · "}
+              <span className="text-[rgba(255,220,150,0.95)]">Mexico</span>
+              {" "}— fill stays the climate driver.
+            </p>
+            <p>Geospatial numbers are atlas screening analytics (terrain + climate + reference EO design goals). They are not live Sentinel, Landsat, or lidar products.</p>
+            <p>Chart numbers in each profile use the cited normals or blends; WMO 30-year windows are often {CLIMATE_NORMALS_PERIOD} when a period is named.</p>
+          </div>
+        </details>
       </div>
       ) : null}
 
