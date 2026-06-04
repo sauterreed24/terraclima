@@ -822,7 +822,10 @@
     scroll-snap-type: x proximity;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    padding: 0.02rem 0.02rem 0.18rem;
+    padding: 0.02rem 0.95rem 0.18rem 0.02rem;
+    scroll-padding-inline: 0.02rem 0.95rem;
+    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.05rem), transparent 100%);
+    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.05rem), transparent 100%);
   }
   .climate-signal-rail__grid::-webkit-scrollbar {
     display: none;
@@ -926,6 +929,10 @@
     }
     .climate-signal-rail__grid {
       grid-auto-columns: minmax(12rem, 84vw);
+      padding-right: 1.25rem;
+      scroll-padding-right: 1.25rem;
+      -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.3rem), transparent 100%);
+      mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.3rem), transparent 100%);
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -6261,12 +6268,15 @@
     display: flex;
     gap: 0.4rem;
     overflow-x: auto;
-    padding: 0.15rem 0.1rem 0.45rem;
+    padding: 0.15rem 1rem 0.45rem 0.1rem;
     margin: 0 -0.1rem;
     scrollbar-width: thin;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: 0.1rem 1rem;
     -webkit-overflow-scrolling: touch;
     list-style: none;
+    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1rem), transparent 100%);
+    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1rem), transparent 100%);
   }
   .hero-mini-rail::-webkit-scrollbar {
     height: 6px;
@@ -7775,11 +7785,13 @@ html[data-theme="dark"] .detail-drawer-header[data-tone="aurora"] {
       flex-wrap: nowrap;
       gap: 0.38rem;
       margin-inline: -0.35rem;
-      padding: 0 0.35rem 0.12rem;
+      padding: 0 1.25rem 0.12rem 0.35rem;
       overflow-x: auto;
-      scroll-padding-inline: 0.35rem;
+      scroll-padding-inline: 0.35rem 1.25rem;
       scroll-snap-type: x proximity;
       scrollbar-width: none;
+      -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.25rem), transparent 100%);
+      mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 1.25rem), transparent 100%);
     }
     .hero-quick-picks::-webkit-scrollbar {
       display: none;
