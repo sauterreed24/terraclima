@@ -154,6 +154,14 @@ describe("App shell", () => {
     expect(header!.textContent).toMatch(/North American Microclimate Atlas/);
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("keeps the app shell from becoming the desktop sticky dock scroll container", () => {
+    const { container } = renderApp();
+    const shell = container.querySelector(".tc-app-shell");
+
+    expect(shell).not.toBeNull();
+    expect(shell!.className).not.toContain("overflow-x-hidden");
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("renders Trips in the primary navigation", () => {
     renderApp();
     expect(screen.getAllByRole("button", { name: "Trips" }).length).toBeGreaterThan(0);
