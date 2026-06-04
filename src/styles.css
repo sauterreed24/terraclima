@@ -2757,6 +2757,65 @@
     font-size: 0.68rem;
     line-height: 1.3;
   }
+  .bundle-menu {
+    display: grid;
+    gap: 0.38rem;
+  }
+  .bundle-menu__field {
+    display: grid;
+    gap: 0.38rem;
+  }
+  .bundle-menu__label {
+    color: var(--color-stone-readable);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .bundle-menu__select-wrap {
+    position: relative;
+  }
+  .bundle-menu__select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 0.78rem;
+    top: 50%;
+    width: 0.52rem;
+    height: 0.52rem;
+    border-right: 2px solid rgba(194, 119, 32, 0.72);
+    border-bottom: 2px solid rgba(194, 119, 32, 0.72);
+    transform: translateY(-64%) rotate(45deg);
+    pointer-events: none;
+  }
+  .bundle-menu__select {
+    width: 100%;
+    min-height: 2.55rem;
+    appearance: none;
+    border-radius: 0.78rem;
+    border: 1px solid rgba(232, 155, 32, 0.3);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 246, 224, 0.78)),
+      var(--tc-surface-elevated);
+    color: var(--color-ice);
+    padding: 0.58rem 2.15rem 0.58rem 0.72rem;
+    font-size: 0.86rem;
+    font-weight: 700;
+    line-height: 1.2;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.94) inset,
+      0 10px 26px -20px rgba(232, 155, 32, 0.34);
+  }
+  .bundle-menu__select:focus-visible {
+    outline: 2px solid rgba(232, 155, 32, 0.58);
+    outline-offset: 2px;
+    border-color: rgba(232, 155, 32, 0.6);
+  }
+  .bundle-menu__hint {
+    margin: 0;
+    color: var(--color-stone-readable);
+    font-size: 0.68rem;
+    line-height: 1.3;
+  }
   .lens-receipt {
     position: relative;
     overflow: hidden;
@@ -6708,9 +6767,7 @@ html[data-motion="minimal"] .anim-fade-in {
 }
 
 html[data-motion="minimal"] .hero-quick-pick:hover,
-html[data-motion="reduced"] .hero-quick-pick:hover,
-html[data-motion="minimal"] .lifestyle-bundle-btn:hover,
-html[data-motion="reduced"] .lifestyle-bundle-btn:hover {
+html[data-motion="reduced"] .hero-quick-pick:hover {
   transform: none;
   box-shadow: var(--tc-shadow-inset);
 }
@@ -7296,18 +7353,6 @@ html[data-theme="dark"] .place-card__this-month {
   border-color: rgba(94, 196, 220, 0.35);
 }
 
-html[data-theme="dark"] .lifestyle-bundle-btn {
-  background: var(--tc-chip-bg);
-  border-color: var(--tc-border-warm);
-  color: var(--color-frost-strong);
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
-}
-html[data-theme="dark"] .lifestyle-bundle-btn:hover,
-html[data-theme="dark"] .lifestyle-bundle-btn[aria-pressed="true"] {
-  border-color: rgba(140, 200, 230, 0.5);
-  background: rgba(36, 48, 76, 0.96);
-}
-
 html[data-theme="dark"] .best-window-pill[data-resonant="true"] {
   background: rgba(72, 52, 24, 0.55);
   border-color: rgba(232, 155, 32, 0.45);
@@ -7699,74 +7744,6 @@ html[data-theme="dark"] .detail-drawer-header[data-tone="aurora"] {
   }
   .hero-quick-pick--active:hover { transform: none; }
 
-  /* Lifestyle bundle buttons in FilterBar */
-  .lifestyle-bundle-btn {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    align-items: center;
-    gap: 0.42rem;
-    padding: 0.55rem 0.65rem;
-    border-radius: 0.625rem;
-    border: 1px solid rgba(200, 170, 140, 0.38);
-    background: rgba(255, 253, 248, 0.9);
-    color: var(--color-stone-readable);
-    text-align: left;
-    cursor: pointer;
-    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background 160ms ease;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset;
-  }
-  .lifestyle-bundle-btn:hover {
-    border-color: rgba(232, 155, 32, 0.55);
-    background: rgba(255, 248, 232, 0.96);
-    color: var(--color-frost);
-    transform: translateY(-1px);
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 1) inset,
-      0 4px 14px -5px rgba(232, 155, 32, 0.22);
-  }
-  .lifestyle-bundle-btn:focus-visible {
-    outline: 2px solid rgba(232, 155, 32, 0.55);
-    outline-offset: 2px;
-  }
-  .lifestyle-bundle-btn--active {
-    border-color: rgba(232, 155, 32, 0.68);
-    background: linear-gradient(135deg, rgba(255, 248, 224, 0.92) 0%, rgba(255, 236, 184, 0.72) 100%);
-    color: var(--color-ochre-700);
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 1) inset,
-      0 0 0 1px rgba(232, 155, 32, 0.22);
-  }
-  .lifestyle-bundle-btn--active:hover { transform: none; }
-  .lifestyle-bundle-btn__icon {
-    display: inline-grid;
-    place-items: center;
-    width: 1.55rem;
-    height: 1.55rem;
-    border-radius: 0.52rem;
-    border: 1px solid rgba(180, 150, 120, 0.24);
-    background: rgba(255, 253, 248, 0.72);
-    color: var(--color-glacier-700);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.88) inset;
-  }
-  .lifestyle-bundle-btn__icon[data-tone="sage"] { color: var(--color-sage-700); background: rgba(246, 252, 244, 0.88); }
-  .lifestyle-bundle-btn__icon[data-tone="ochre"] { color: var(--color-ochre-700); background: rgba(255, 248, 236, 0.9); }
-  .lifestyle-bundle-btn__icon[data-tone="ember"] { color: var(--color-ember-700); background: rgba(255, 246, 238, 0.9); }
-  .lifestyle-bundle-btn__icon[data-tone="ice"] { color: var(--color-glacier-700); background: rgba(241, 251, 253, 0.9); }
-  .lifestyle-bundle-btn__icon[data-tone="aurora"] {
-    color: #6f45c5;
-    background: rgba(248, 244, 255, 0.9);
-  }
-  .lifestyle-bundle-btn__label {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    line-height: 1.25;
-  }
-
   /* Medal rank chips (top 3) */
   .place-card__rank-number--medal {
     min-width: 1.55rem;
@@ -7848,12 +7825,10 @@ html[data-theme="dark"] .detail-drawer-header[data-tone="aurora"] {
 
 @media (prefers-reduced-motion: reduce) {
   .hero-quick-pick,
-  .lifestyle-bundle-btn,
   .place-card__livability-bar__fill {
     transition-duration: 0.01ms !important;
   }
-  .hero-quick-pick:hover,
-  .lifestyle-bundle-btn:hover { transform: none; }
+  .hero-quick-pick:hover { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
