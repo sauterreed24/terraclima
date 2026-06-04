@@ -106,7 +106,13 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("group", { name: "Map key" })).toBeInTheDocument();
     expect(screen.getByText("Orographic / orchard / chinook")).toBeInTheDocument();
     expect(screen.getByText(/Flagship/)).toBeInTheDocument();
+    const notes = screen.getByText("Usage notes").closest("details");
+    expect(notes).not.toHaveAttribute("open");
+    expect(screen.getByText(/Geospatial numbers are atlas screening analytics/)).toBeInTheDocument();
     expect(shell).toHaveAttribute("data-legend-open", "true");
+
+    fireEvent.click(screen.getByText("Usage notes"));
+    expect(notes).toHaveAttribute("open");
 
     fireEvent.click(screen.getByRole("button", { name: "Close map key" }));
 
