@@ -2816,6 +2816,61 @@
     font-size: 0.68rem;
     line-height: 1.3;
   }
+  .live-filter-controls {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+  }
+  .live-select-row {
+    display: grid;
+    gap: 0.32rem;
+    min-width: 0;
+  }
+  .live-select-row__label {
+    color: var(--color-stone-readable);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .live-select-row__select-wrap {
+    position: relative;
+  }
+  .live-select-row__select-wrap::after {
+    content: "";
+    position: absolute;
+    right: 0.58rem;
+    top: 50%;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-right: 2px solid rgba(26, 143, 168, 0.68);
+    border-bottom: 2px solid rgba(26, 143, 168, 0.68);
+    transform: translateY(-64%) rotate(45deg);
+    pointer-events: none;
+  }
+  .live-select-row__select {
+    width: 100%;
+    min-height: 2.2rem;
+    appearance: none;
+    border-radius: 0.68rem;
+    border: 1px solid rgba(26, 143, 168, 0.22);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(232, 248, 251, 0.64)),
+      var(--tc-surface-elevated);
+    color: var(--color-ice);
+    padding: 0.48rem 1.65rem 0.48rem 0.58rem;
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.15;
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 8px 20px -18px rgba(26, 143, 168, 0.32);
+  }
+  .live-select-row__select:focus-visible {
+    outline: 2px solid var(--tc-focus-ring);
+    outline-offset: 2px;
+    border-color: rgba(26, 143, 168, 0.55);
+  }
   .lens-receipt {
     position: relative;
     overflow: hidden;

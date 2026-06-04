@@ -67,6 +67,7 @@ export const FilterBar = memo(function FilterBar({
   const searchFieldId = searchInputId ?? "tc-atlas-filter-search";
   const rankingSelectId = `${searchFieldId}-ranking`;
   const bundleSelectId = `${searchFieldId}-bundle`;
+  const liveControlBaseId = `${searchFieldId}-live`;
   const searchPlaceholder = variant === "sheet" ? "Search places" : "Search places or regions";
   const rankingLabel = RANKING_OPTIONS.find(opt => opt.id === ranking)?.label ?? ranking;
   const activeBundle = LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null;
@@ -197,8 +198,9 @@ export const FilterBar = memo(function FilterBar({
             );
           })}
         </div>
-        <div className="grid grid-cols-1 gap-2">
-          <ConstraintRow
+        <div className="live-filter-controls">
+          <ConstraintSelectRow
+            id={`${liveControlBaseId}-summer-cap`}
             label="Summer cap"
             value={filters.maxSummerHighC}
             options={[
@@ -207,7 +209,8 @@ export const FilterBar = memo(function FilterBar({
             ]}
             onPick={v => setLiveNumber("maxSummerHighC", v)}
           />
-          <ConstraintRow
+          <ConstraintSelectRow
+            id={`${liveControlBaseId}-winter-floor`}
             label="Winter floor"
             value={filters.minWinterLowC}
             options={[
@@ -216,7 +219,8 @@ export const FilterBar = memo(function FilterBar({
             ]}
             onPick={v => setLiveNumber("minWinterLowC", v)}
           />
-          <ConstraintRow
+          <ConstraintSelectRow
+            id={`${liveControlBaseId}-garden-floor`}
             label="Garden floor"
             value={filters.minGrowability}
             options={[
@@ -225,12 +229,14 @@ export const FilterBar = memo(function FilterBar({
             ]}
             onPick={v => setLiveNumber("minGrowability", v)}
           />
-          <RiskConstraintRow
+          <RiskConstraintSelectRow
+            id={`${liveControlBaseId}-fire-ceiling`}
             label="Fire ceiling"
             value={filters.maxFireRisk}
             onPick={v => setLiveRisk("maxFireRisk", v)}
           />
-          <RiskConstraintRow
+          <RiskConstraintSelectRow
+            id={`${liveControlBaseId}-risk-ceiling`}
             label="Risk ceiling"
             value={filters.maxOverallRisk}
             onPick={v => setLiveRisk("maxOverallRisk", v)}
@@ -546,47 +552,57 @@ function LensReceipt({
   );
 }
 
-function ConstraintRow({
+function ConstraintSelectRow({
+  id,
   label,
   value,
   options,
   onPick,
 }: {
+  id: string;
   label: string;
   value: number | undefined;
   options: { label: string; value: number | undefined }[];
   onPick: (value: number | undefined) => void;
 }) {
+  const selectedValue = value == null ? "" : String(value);
   return (
-    <div className="flex items-center justify-between gap-2">
-      <span className="text-[10px] uppercase tracking-wider text-stone-readable shrink-0">{label}</span>
-      <div className="flex flex-wrap justify-end gap-1">
-        {options.map(opt => {
-          const active = value === opt.value;
-          return (
-            <button
-              key={`${label}-${opt.label}`}
-              type="button"
-              onClick={() => onPick(opt.value)}
-              className="chip chip-btn"
-              data-tone={active ? "sage" : undefined}
-              data-active={active}
-              aria-pressed={active}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
-      </div>
-    </div>
+    <label htmlFor={id} className="live-select-row">
+      <span className="live-select-row__label">{label}</span>
+      <span className="live-select-row__select-wrap">
+        <select
+          id={id}
+          value={selectedValue}
+          aria-label={label}
+          onChange={event => {
+            const next = event.currentTarget.value;
+            onPick(next === "" ? undefined : Number(next));
+          }}
+          className="live-select-row__select"
+        >
+          {options.map(opt => {
+            return (
+              <option
+                key={`${label}-${opt.label}`}
+                value={opt.value == null ? "" : String(opt.value)}
+              >
+                {opt.label}
+              </option>
+            );
+          })}
+        </select>
+      </span>
+    </label>
   );
 }
 
-function RiskConstraintRow({
+function RiskConstraintSelectRow({
+  id,
   label,
   value,
   onPick,
 }: {
+  id: string;
   label: string;
   value: RiskLevel | undefined;
   onPick: (value: RiskLevel | undefined) => void;
@@ -596,27 +612,32 @@ function RiskConstraintRow({
     ...LIVE_FIT_RISK_CEILINGS.map(value => ({ label: RISK_LABELS[value], value })),
   ];
   return (
-    <div className="flex items-center justify-between gap-2">
-      <span className="text-[10px] uppercase tracking-wider text-stone-readable shrink-0">{label}</span>
-      <div className="flex flex-wrap justify-end gap-1">
-        {options.map(opt => {
-          const active = value === opt.value;
-          return (
-            <button
-              key={`${label}-${opt.label}`}
-              type="button"
-              onClick={() => onPick(opt.value)}
-              className="chip chip-btn"
-              data-tone={active ? "ochre" : undefined}
-              data-active={active}
-              aria-pressed={active}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
-      </div>
-    </div>
+    <label htmlFor={id} className="live-select-row">
+      <span className="live-select-row__label">{label}</span>
+      <span className="live-select-row__select-wrap">
+        <select
+          id={id}
+          value={value ?? ""}
+          aria-label={label}
+          onChange={event => {
+            const next = event.currentTarget.value;
+            onPick(next === "" ? undefined : (next as RiskLevel));
+          }}
+          className="live-select-row__select"
+        >
+          {options.map(opt => {
+            return (
+              <option
+                key={`${label}-${opt.label}`}
+                value={opt.value ?? ""}
+              >
+                {opt.label}
+              </option>
+            );
+          })}
+        </select>
+      </span>
+    </label>
   );
 }
 
