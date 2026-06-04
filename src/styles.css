@@ -3320,6 +3320,11 @@
       min-height: 34rem !important;
     }
   }
+  @media (min-width: 1280px) {
+    .tc-explorer-main {
+      grid-template-columns: minmax(26rem, 1fr) minmax(27rem, 0.94fr);
+    }
+  }
 
   /* Map — frame reads like a lit instrument panel, not a flat widget */
   .tc-map-stage {
