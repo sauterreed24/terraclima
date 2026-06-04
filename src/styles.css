@@ -1952,6 +1952,20 @@
       padding: 0.7rem 0.8rem 0.8rem 0.95rem;
     }
   }
+  @media (min-width: 1180px) {
+    .panel-hero .context-stress__rail {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(13.4rem, 72%);
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      overscroll-behavior-x: contain;
+      padding-bottom: 0.95rem;
+    }
+    .panel-hero .context-stress__card {
+      min-height: 13rem;
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     .context-stress__leader {
       transition: none;
