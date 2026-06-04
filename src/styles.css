@@ -5267,11 +5267,21 @@
 
   .map-key-dock {
     filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.42));
+    transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+  }
+
+  .map-shell[data-legend-open="true"] .map-key-dock,
+  .map-shell[data-legend-open="true"] .map-scale-stack .map-key-toggle {
+    visibility: hidden;
+    pointer-events: none !important;
+    opacity: 0;
+    transform: translateY(0.35rem);
   }
 
   .map-key-toggle {
     min-height: 38px;
     padding-inline: 0.78rem;
+    transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
   }
 
   .map-scale-stack {

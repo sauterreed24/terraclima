@@ -1372,7 +1372,11 @@ export function AtlasMap({
   };
 
   return (
-    <div ref={shellRef} className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell">
+    <div
+      ref={shellRef}
+      className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell"
+      data-legend-open={legendOpen ? "true" : "false"}
+    >
       <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">{navAnnounce}</div>
       {topoLoading ? (
         <div
