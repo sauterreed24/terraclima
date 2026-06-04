@@ -25,7 +25,7 @@ import {
 } from "./lib/lifestyle-bundles";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit } from "./lib/live-fit";
-import { projectPool } from "./lib/climate-projection";
+import { projectPool, resolveComparePlace } from "./lib/climate-projection";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
 import { resonantWindowFor } from "./lib/best-months";
@@ -1083,7 +1083,9 @@ export default function App() {
       {compareOpen ? (
         <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
           <CompareView
-            places={[...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace)}
+            places={[...compareIds]
+              .map(id => resolveComparePlace(id, placesById, climateScenario, placeForId))
+              .filter(isPlace)}
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
