@@ -20,31 +20,15 @@ import {
 } from "../lib/live-fit";
 import { scenarioMeta } from "../lib/climate-projection";
 import {
-  CalendarDays,
   Check,
   Compass,
-  Laptop,
   Search,
-  ShieldCheck,
-  Snowflake,
-  Sprout,
-  Sunrise,
   X,
-  type LucideIcon,
 } from "lucide-react";
 import { fmtTemp, useProse, useUnits, type UnitState } from "../lib/units";
 
 export { RANKING_OPTIONS } from "../lib/ranking-options";
 export { LIFESTYLE_BUNDLES, applyLifestyleBundle, isBundleActive } from "../lib/lifestyle-bundles";
-
-const BUNDLE_ICONS: Record<string, LucideIcon> = {
-  "remote-work": Laptop,
-  "retirement": Sunrise,
-  "garden": Sprout,
-  "snow-ski": Snowflake,
-  "fire-safe": ShieldCheck,
-  "shoulder-season": CalendarDays,
-};
 
 function countLiveSignals(filters: FilterState): number {
   return (filters.fitPresets?.size ?? 0) + [
@@ -82,9 +66,11 @@ export const FilterBar = memo(function FilterBar({
   const { temp } = useUnits();
   const searchFieldId = searchInputId ?? "tc-atlas-filter-search";
   const rankingSelectId = `${searchFieldId}-ranking`;
+  const bundleSelectId = `${searchFieldId}-bundle`;
   const searchPlaceholder = variant === "sheet" ? "Search places" : "Search places or regions";
   const rankingLabel = RANKING_OPTIONS.find(opt => opt.id === ranking)?.label ?? ranking;
   const activeBundle = LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null;
+  const bundleSelectValue = activeBundle?.id ?? "";
   const toggleCountry = useCallback((c: Country) => {
     setFilters(f => {
       const ns = new Set(f.countries);
@@ -112,6 +98,11 @@ export const FilterBar = memo(function FilterBar({
   const setLiveRisk = useCallback((key: "maxFireRisk" | "maxOverallRisk", value: RiskLevel | undefined) => {
     setFilters(f => ({ ...f, [key]: value }));
   }, [setFilters]);
+  const applyBundleById = useCallback((id: string) => {
+    const bundle = LIFESTYLE_BUNDLES.find(candidate => candidate.id === id);
+    if (!bundle) return;
+    applyLifestyleBundle(bundle, setRanking, setFilters);
+  }, [setFilters, setRanking]);
 
   const hasAny = hasActiveExplorerFilters(filters);
   const clearAll = useCallback(() => setFilters(createEmptyFilterState()), [setFilters]);
@@ -247,32 +238,29 @@ export const FilterBar = memo(function FilterBar({
         </div>
       </div>
 
-      {/* ── Lifestyle bundles ──────────────────────────────────────── */}
+      {/* Lifestyle bundle preset menu */}
       <div className="tc-accent-panel tc-accent-panel--warm p-2.5 space-y-2">
-        <div className="text-[10px] uppercase tracking-wider text-stone-readable">Lifestyle bundles</div>
-        <p className="text-[11px] text-stone-readable leading-snug">One-click compound presets — sets ranking, filters, and Live Finder signals together.</p>
-        <div className="grid grid-cols-2 gap-1.5">
-          {LIFESTYLE_BUNDLES.map(bundle => {
-            const isActive = isBundleActive(bundle, ranking, filters);
-            return (
-              <button
-                key={bundle.id}
-                type="button"
-                aria-pressed={isActive}
-                title={bundle.description}
-                onClick={() => applyLifestyleBundle(bundle, setRanking, setFilters)}
-                className={`lifestyle-bundle-btn${isActive ? " lifestyle-bundle-btn--active" : ""}`}
+        <div className="bundle-menu">
+          <label htmlFor={bundleSelectId} className="bundle-menu__field">
+            <span className="bundle-menu__label">Lifestyle bundle</span>
+            <span className="bundle-menu__select-wrap">
+              <select
+                id={bundleSelectId}
+                value={bundleSelectValue}
+                onChange={event => applyBundleById(event.currentTarget.value)}
+                className="bundle-menu__select"
+                aria-describedby={`${bundleSelectId}-hint`}
               >
-                <span className="lifestyle-bundle-btn__icon" data-tone={bundle.tone} aria-hidden>
-                  {(() => {
-                    const Icon = BUNDLE_ICONS[bundle.id];
-                    return Icon ? <Icon className="w-3.5 h-3.5" /> : null;
-                  })()}
-                </span>
-                <span className="lifestyle-bundle-btn__label">{bundle.label}</span>
-              </button>
-            );
-          })}
+                <option value="">Choose a compound preset</option>
+                {LIFESTYLE_BUNDLES.map(bundle => (
+                  <option key={bundle.id} value={bundle.id}>{bundle.label}</option>
+                ))}
+              </select>
+            </span>
+          </label>
+          <p id={`${bundleSelectId}-hint`} className="bundle-menu__hint">
+            {activeBundle ? activeBundle.description : "Applies ranking and Live Finder filters together."}
+          </p>
         </div>
       </div>
 

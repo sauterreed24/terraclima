@@ -136,7 +136,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-for-remote-work",
     });
 
-    expect(screen.getByRole("button", { name: "Remote Work" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("combobox", { name: "Lifestyle bundle" })).toHaveValue("remote-work");
 
     cleanup();
 
@@ -149,7 +149,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-for-remote-work",
     });
 
-    expect(screen.getByRole("button", { name: "Remote Work" })).toHaveAttribute("aria-pressed", "false");
+    expect(screen.getByRole("combobox", { name: "Lifestyle bundle" })).toHaveValue("");
   });
 
   it("clears stale Live Finder constraints when applying a lifestyle bundle", () => {
@@ -157,7 +157,9 @@ describe("FilterBar lifestyle bundles", () => {
     const setRanking = vi.fn();
     renderFilterBar("F", { setFilters, setRanking });
 
-    fireEvent.click(screen.getByRole("button", { name: "Garden & Grow" }));
+    fireEvent.change(screen.getByRole("combobox", { name: "Lifestyle bundle" }), {
+      target: { value: "garden" },
+    });
 
     expect(setRanking).toHaveBeenCalledWith("best-growability");
     const updater = setFilters.mock.calls[0][0] as (filters: FilterState) => FilterState;
