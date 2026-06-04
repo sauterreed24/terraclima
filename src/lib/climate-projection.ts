@@ -229,3 +229,21 @@ export function projectPool(pool: readonly Place[], scenario: ScenarioId): Place
   byScenario[scenario] = projected;
   return projected;
 }
+
+/**
+ * Resolve a compared place for the active scenario. Uses the projected pool
+ * entry when present; otherwise projects the canonical corpus place so Compare
+ * never mixes present-day and future-layer climate for the same scenario.
+ */
+export function resolveComparePlace(
+  id: string,
+  placesById: Record<string, Place>,
+  scenario: ScenarioId,
+  lookup: (id: string) => Place | undefined,
+): Place | undefined {
+  const pooled = placesById[id];
+  if (pooled) return pooled;
+  const base = lookup(id);
+  if (!base) return undefined;
+  return scenario === "now" ? base : projectPlace(base, scenario);
+}

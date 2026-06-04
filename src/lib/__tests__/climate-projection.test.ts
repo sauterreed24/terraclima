@@ -7,6 +7,7 @@ import {
   projectPlace,
   projectPool,
   regionalDelta,
+  resolveComparePlace,
   resolveDelta,
 } from "../climate-projection";
 import { getAnnualPrecipMm, meanJanLow, meanSummerHigh } from "../climate-metrics";
@@ -96,5 +97,16 @@ describe("climate projection — scenario engine", () => {
     expect(regionalDelta(makePlace({ lat: 70 }), "ssp585").deltaJANLowC).toBeGreaterThan(
       regionalDelta(makePlace({ lat: 40 }), "ssp585").deltaJANLowC,
     );
+  });
+
+  it("resolveComparePlace projects canonical places outside the active pool", () => {
+    const base = makePlace({ id: "outside", lat: 40 });
+    const lookup = (id: string) => (id === "outside" ? base : undefined);
+    const pooledOnly = { inside: projectPlace(makePlace({ id: "inside", lat: 40 }), "ssp585") };
+
+    const resolved = resolveComparePlace("outside", pooledOnly, "ssp585", lookup);
+    expect(resolved).toBeDefined();
+    expect(meanSummerHigh(resolved!)).toBeGreaterThan(meanSummerHigh(base));
+    expect(resolveComparePlace("outside", pooledOnly, "now", lookup)).toBe(base);
   });
 });
