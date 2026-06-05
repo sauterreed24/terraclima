@@ -1,6 +1,7 @@
 import type { Place, ScenarioId } from "../types";
 import { scenarioMeta } from "./climate-projection";
 import { ARCHETYPE_LABELS } from "../types";
+import { getBestMonths } from "./best-months";
 import {
   annualComfortMonthCount,
   avgRisk,
@@ -34,6 +35,12 @@ export interface ExplorerScoutBrief {
   fitLine: string;
   decisionLine: string;
   cautionLine: string;
+  nextStep: {
+    label: string;
+    place: Place;
+    action: string;
+    detail: string;
+  };
   decisionSignals: {
     label: string;
     place: Place;
@@ -156,6 +163,46 @@ function decisionLine(signals: ExplorerScoutBrief["decisionSignals"]): string {
   return `No single place dominates: ${top.place.name} leads ${top.count} living signals, while ${winners[1]!.place.name} keeps at least one priority in play.`;
 }
 
+function trimTerminalPunctuation(value: string): string {
+  return value.replace(/[.!?]+$/, "").trim();
+}
+
+function lowerFirst(value: string): string {
+  if (!value) return value;
+  return `${value[0].toLowerCase()}${value.slice(1)}`;
+}
+
+function buildScoutNextStep(
+  leader: RankingResult,
+  decisionRows: readonly ShortlistDecisionRow[],
+): ExplorerScoutBrief["nextStep"] {
+  const leaderRow = decisionRows.find(row => row.place.id === leader.place.id);
+  const runnerUp = decisionRows.find(row => row.place.id !== leader.place.id)?.place;
+  const firstWindow = getBestMonths(leader.place).find(window => window.kind === "good");
+  const watch = leaderRow?.watch
+    ? `First caveat: ${lowerFirst(trimTerminalPunctuation(leaderRow.watch))}.`
+    : "First caveat: read the risk and practical sections.";
+  const compare = runnerUp
+    ? `Then compare it with ${runnerUp.name}.`
+    : "Then save it or compare it against another candidate.";
+
+  if (firstWindow) {
+    return {
+      label: "Scout next",
+      place: leader.place,
+      action: `Scout ${leader.place.name}'s ${firstWindow.label.toLowerCase()}: ${firstWindow.range}.`,
+      detail: `${firstWindow.label}: ${trimTerminalPunctuation(firstWindow.note ?? "best initial window from monthly normals")}. ${watch} ${compare}`,
+    };
+  }
+
+  return {
+    label: "Scout next",
+    place: leader.place,
+    action: `Read ${leader.place.name}'s dossier before treating it as a finalist.`,
+    detail: `${watch} ${compare}`,
+  };
+}
+
 export function buildExplorerScoutBrief(
   ranked: RankingResult[],
   rankingLabel: string,
@@ -185,6 +232,7 @@ export function buildExplorerScoutBrief(
     fitLine: leaderNote ? leaderNote : `${leader.place.koppen} climate signal with ${Math.round(leader.score)} score.`,
     decisionLine: decisionLine(decisionSignals),
     cautionLine: topRiskLine(leader.place),
+    nextStep: buildScoutNextStep(leader, decisionRows),
     decisionSignals,
     decisionRows,
     metrics: [

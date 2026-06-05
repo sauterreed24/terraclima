@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Scout brief next-step handoff
+
+- **Relocation next step (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** the Explorer Scout Brief and desktop relocation workbench now add a compact "Scout next" action derived from the leader's best-month window, first decision-matrix caveat, and runner-up comparison. It opens the same dossier as the leader card, preserves URL unit state, and keeps the cue visually subordinate to the existing shortlist evidence.
+
 ### Map keyboard preview + conventional search clear
 
 - **Keyboard pin preview (`src/components/AtlasMap.tsx`):** focusing a map pin (Tab / arrow-key navigation) now shows the same climate-preview tooltip a pointer hover does, and clears it on blur — keyboard and assistive-tech users get the at-a-glance read that was previously mouse-only.
