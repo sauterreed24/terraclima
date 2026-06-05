@@ -248,6 +248,38 @@ describe("rankPlaces — mediterranean-like credits the computed/parsed Köppen 
   });
 });
 
+describe("rankPlaces — sunniest-winters", () => {
+  it("ranks brighter DJF sunshine ahead of gray-winter places and keeps the note inspectable", () => {
+    const bright = makePlace({
+      id: "bright-winter",
+      climate: makeClimate({
+        sunshinePct: [82, 80, 74, 68, 65, 64, 63, 64, 68, 72, 78, 84] as Monthly12,
+      }),
+    });
+    const gray = makePlace({
+      id: "gray-winter",
+      climate: makeClimate({
+        sunshinePct: [34, 36, 45, 52, 58, 62, 66, 65, 58, 48, 38, 32] as Monthly12,
+      }),
+    });
+    const missing = makePlace({
+      id: "missing-winter-sun",
+      climate: makeClimate({ sunshinePct: undefined }),
+    });
+
+    const ranked = rankPlaces("sunniest-winters", [gray, missing, bright]);
+
+    expect(ranked.map(r => r.place.id)).toEqual(["bright-winter", "gray-winter", "missing-winter-sun"]);
+    expect(ranked[0]!.note).toBe("Winter sunshine ~82% possible");
+    expect(ranked[2]!.note).toBe("Winter sunshine unavailable");
+  });
+
+  it("keeps the sunniest-winter corpus leaders in bright desert and Mexico highland places", () => {
+    const ids = rankPlaces("sunniest-winters", PLACES).slice(0, 8).map(r => r.place.id);
+    expect(ids).toEqual(expect.arrayContaining(["yuma-az", "oaxaca-mx", "todos-santos-mx", "guanajuato-mx"]));
+  });
+});
+
 describe("rankPlaces — bioclim ranking presets", () => {
   it("ranks higher Conrad continentality first", () => {
     const continental = makePlace({

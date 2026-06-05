@@ -51,6 +51,16 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
     maxOverallRisk: "moderate",
   },
   {
+    id: "winter-sun",
+    tone: "ochre",
+    label: "Winter Sun",
+    cue: "Less gray winter",
+    description: "Brighter cold-season light with tolerable winter lows for gray-season escape.",
+    ranking: "sunniest-winters",
+    presets: ["sunny-winters", "mild-winters"],
+    minWinterLowC: -5,
+  },
+  {
     id: "garden",
     tone: "sage",
     label: "Garden & Grow",

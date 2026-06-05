@@ -13,7 +13,7 @@ import {
   meanJanLow,
   getAnnualPrecipMm,
 } from "./climate-metrics";
-import { assessLiveFit, liveFitFilterPass, type LiveFitPresetId } from "./live-fit";
+import { assessLiveFit, liveFitFilterPass, meanWinterSunshinePct, winterSunshineScore, type LiveFitPresetId } from "./live-fit";
 import {
   atmosphericComfortScore,
   describeHumanComfort,
@@ -46,6 +46,7 @@ export type RankingProfile =
   | "most-comfortable"
   | "coolest-summers"
   | "mildest-winters"
+  | "sunniest-winters"
   | "best-shoulder-seasons"
   | "driest-air"
   | "best-growability"
@@ -211,6 +212,12 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       case "mildest-winters": {
         const s = Math.max(0, 100 - Math.max(0, -janLow) * k.mildWinterPerDegC);
         return { place: p, score: s, note: `Mean winter low ${janLow.toFixed(1)}°C` };
+      }
+      case "sunniest-winters": {
+        const winterSun = meanWinterSunshinePct(p);
+        if (winterSun == null) return { place: p, score: 0, note: "Winter sunshine unavailable" };
+        const s = winterSunshineScore(p);
+        return { place: p, score: s, note: `Winter sunshine ~${Math.round(winterSun)}% possible` };
       }
       case "best-shoulder-seasons": {
         const shoulder = (p.climate.tempHighC[3] + p.climate.tempHighC[4] + p.climate.tempHighC[8] + p.climate.tempHighC[9]) / 4;

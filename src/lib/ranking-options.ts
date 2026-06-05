@@ -14,6 +14,7 @@ export const RANKING_OPTIONS: { id: RankingProfile; label: string }[] = [
   { id: "most-unique", label: "Most unique" },
   { id: "coolest-summers", label: "Coolest summers" },
   { id: "mildest-winters", label: "Mildest winters" },
+  { id: "sunniest-winters", label: "Sunniest winters" },
   { id: "best-shoulder-seasons", label: "Best shoulder seasons" },
   { id: "driest-air", label: "Driest air" },
   { id: "best-growability", label: "Best growability" },

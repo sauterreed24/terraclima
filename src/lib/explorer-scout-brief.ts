@@ -194,6 +194,7 @@ function lowerFirst(value: string): string {
 const PRESET_AUDIENCE: Record<LiveFitPresetId, string> = {
   "cool-summers": "heat-sensitive movers",
   "mild-winters": "mild-winter seekers",
+  "sunny-winters": "gray-winter escapees",
   "dry-air": "dry-air seekers",
   "gardenable": "gardeners and land scouts",
   "low-fire-smoke": "smoke-sensitive movers",
