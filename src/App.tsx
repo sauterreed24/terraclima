@@ -2310,22 +2310,38 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
       </div>
 
       <div className="scout-brief__body">
-        <button
-          type="button"
-          className="scout-brief__leader"
-          onClick={() => onOpenPlace(brief.leader.place.id)}
-          aria-label={`Open ${brief.leader.place.name}, current best match`}
-        >
-          <span className="scout-brief__leader-rank" aria-hidden>1</span>
-          <span className="min-w-0">
-            <span className="scout-brief__leader-kicker">Best current match</span>
-            <span className="scout-brief__leader-name">{brief.leader.place.name}</span>
-            <span className="scout-brief__leader-note">{prose(brief.fitLine)}</span>
-          </span>
-          <span className="scout-brief__score" aria-label={`Score ${Math.round(brief.leader.score)}`}>
-            {Math.round(brief.leader.score)}
-          </span>
-        </button>
+        <div className="scout-brief__lead-stack">
+          <button
+            type="button"
+            className="scout-brief__leader"
+            onClick={() => onOpenPlace(brief.leader.place.id)}
+            aria-label={`Open ${brief.leader.place.name}, current best match`}
+          >
+            <span className="scout-brief__leader-rank" aria-hidden>1</span>
+            <span className="min-w-0">
+              <span className="scout-brief__leader-kicker">Best current match</span>
+              <span className="scout-brief__leader-name">{brief.leader.place.name}</span>
+              <span className="scout-brief__leader-note">{prose(brief.fitLine)}</span>
+            </span>
+            <span className="scout-brief__score" aria-label={`Score ${Math.round(brief.leader.score)}`}>
+              {Math.round(brief.leader.score)}
+            </span>
+          </button>
+          <button
+            type="button"
+            className="scout-brief__next-step"
+            onClick={() => onOpenPlace(brief.nextStep.place.id)}
+            title={prose(brief.nextStep.detail)}
+            aria-label={`${brief.nextStep.label}: ${brief.nextStep.action} ${brief.nextStep.detail} Open place profile.`}
+          >
+            <Target className="w-3.5 h-3.5 text-[rgba(26,143,168,0.88)] shrink-0" aria-hidden />
+            <span className="min-w-0">
+              <span className="scout-brief__next-step-label">{brief.nextStep.label}</span>
+              <span className="scout-brief__next-step-action">{prose(brief.nextStep.action)}</span>
+              <span className="scout-brief__next-step-detail">{prose(brief.nextStep.detail)}</span>
+            </span>
+          </button>
+        </div>
 
         <div className="scout-brief__metrics" aria-label="Current shortlist climate and risk summary">
           {brief.metrics.map(metric => (
@@ -2429,6 +2445,19 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
           >
             <span className="desktop-scout-board__place">{brief.leader.place.name}</span>
             <span className="desktop-scout-board__note">{prose(brief.fitLine)}</span>
+          </button>
+          <button
+            type="button"
+            className="desktop-scout-board__next-step"
+            onClick={() => onOpenPlace(brief.nextStep.place.id)}
+            title={prose(brief.nextStep.detail)}
+            aria-label={`${brief.nextStep.label}: ${brief.nextStep.action} ${brief.nextStep.detail} Open place profile.`}
+          >
+            <Target className="w-3 h-3 text-[rgba(26,143,168,0.9)] shrink-0" aria-hidden />
+            <span className="min-w-0">
+              <span className="desktop-scout-board__next-step-label">{brief.nextStep.label}</span>
+              <span className="desktop-scout-board__next-step-action">{prose(brief.nextStep.action)}</span>
+            </span>
           </button>
           {brief.compareIds.length >= 2 ? (
             <button

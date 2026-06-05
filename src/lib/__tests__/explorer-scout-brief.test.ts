@@ -59,6 +59,13 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.decisionRows[0].watch.length).toBeGreaterThan(6);
     expect(brief!.decisionLine).toContain("living signals");
     expect(brief!.cautionLine.length).toBeGreaterThan(20);
+    expect(brief!.nextStep).toMatchObject({
+      label: "Scout next",
+      place: ranked[0].place,
+    });
+    expect(brief!.nextStep.action).toContain(`Scout ${ranked[0].place.name}'s`);
+    expect(brief!.nextStep.action).toContain(":");
+    expect(brief!.nextStep.detail).toContain("First caveat:");
   });
 
   it("shows which shortlisted place wins each living-priority signal", () => {
@@ -121,6 +128,10 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.decisionLine).toContain("4 of 6");
     expect(brief!.decisionRows.map(row => row.place.id)).toEqual(["comfort-town", "risk-cove", "garden-ridge"]);
     expect(brief!.decisionRows[0].decisionCue).toContain("Watch");
+    expect(brief!.nextStep.action).toContain("Comfort Town");
+    expect(brief!.nextStep.detail).toContain("Gardening window");
+    expect(brief!.nextStep.detail).toContain("First caveat:");
+    expect(brief!.nextStep.detail).toContain("Risk Cove");
   });
 
   it("returns null for an empty ranked set", () => {
