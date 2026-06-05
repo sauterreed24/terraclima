@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Winter Sun fit screen
+
+- **Explorer rankings and Fit Finder (`src/lib/scoring.ts`, `src/lib/live-fit.ts`, `src/lib/lifestyle-bundles.ts`, `src/components/FilterBar.tsx`):** adds a deterministic **Sunniest winters** ranking plus a **Winter Sun** Fit Finder path for gray-season escape. The path uses existing monthly `sunshinePct` normals and a winter-low floor, fails closed when winter sunshine is missing, and keeps the applied ranking/preset/constraint line visible before users apply it.
+
 ### Fit Finder applied settings
 
 - **Explorer filters (`src/components/FilterBar.tsx`):** each Fit Finder path now shows a compact applied-setting line for the ranking lens, Live Finder presets, and any temperature/growability/risk constraints before the user applies it. This makes guided paths more inspectable without changing ranking math, corpus data, URLs, or the manual filter controls.

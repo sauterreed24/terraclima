@@ -132,6 +132,31 @@ describe("app-url state", () => {
     })).toMatch(/[?&]r=live-fit/);
   });
 
+  it("round-trips the sunny-winter Live Finder preset through shared URLs", () => {
+    const parsed = parseAppSearch("?r=sunniest-winters&fit=sunny-winters,mild-winters&wl=-5&temp=C&dist=metric");
+    expect(parsed.ranking).toBe("sunniest-winters");
+    expect(parsed.fitPresets).toEqual(["sunny-winters", "mild-winters"]);
+    expect(parsed.minWinterLowC).toBe(-5);
+
+    const url = formatAppRelativeUrl({
+      view: "explorer",
+      placeId: null,
+      collectionId: null,
+      ranking: "sunniest-winters",
+      fitPresets: ["mild-winters", "sunny-winters"],
+      minWinterLowC: -5,
+      temp: "C",
+      dist: "metric",
+      collectionExists: () => true,
+    });
+
+    expect(url).toMatch(/r=sunniest-winters/);
+    expect(url).toMatch(/fit=mild-winters%2Csunny-winters/);
+    expect(url).toMatch(/wl=-5/);
+    expect(url).toMatch(/temp=C/);
+    expect(url).toMatch(/dist=metric/);
+  });
+
   it("caps compare set at COMPARE_LIMIT on parse", () => {
     const p = parseAppSearch("?cmp=a,b,c,d,e,f,g");
     expect(p.compareIds!.length).toBe(COMPARE_LIMIT);

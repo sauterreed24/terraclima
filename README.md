@@ -8,7 +8,7 @@
 
 What to try first:
 
-1. Start from **Live-here fit**, a hero quick pick, or the filter dock's **Fit Finder** paths for heat escape, remote work, retirement, gardenability, dry air, coastal buffering, quiet towns, or low fire/smoke; each path discloses the ranking and constraints it will apply.
+1. Start from **Live-here fit**, a hero quick pick, or the filter dock's **Fit Finder** paths for heat escape, winter sun, remote work, retirement, gardenability, dry air, coastal buffering, quiet towns, or low fire/smoke; each path discloses the ranking and constraints it will apply.
 2. Hover or tap any pin on the map for a one-line climate snapshot, then open a place card for the field-guide profile.
 3. Use the Scout Brief and **Compare** to turn the ranked list into finalists worth reading closely.
 4. Pin places to your shortlist with the bookmark control (or press **B** while a profile is open), then compare or export those finalists from the shortlist rail. Pins live in your browser, no account required.

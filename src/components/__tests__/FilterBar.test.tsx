@@ -137,6 +137,7 @@ describe("FilterBar lifestyle bundles", () => {
     expect(screen.getByText("Fit Finder")).toBeInTheDocument();
     expect(screen.getByText(/Start with what you are escaping or seeking/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Cool Summer Refuge/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Winter Sun/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Low Fire \/ Smoke/ })).toBeInTheDocument();
     expect(screen.getByText("Live Finder signals")).toBeInTheDocument();
   });
@@ -150,6 +151,12 @@ describe("FilterBar lifestyle bundles", () => {
     expect(coolPath).toHaveTextContent("Rank: Coolest summers");
     expect(coolPath).toHaveTextContent("Fit: Cool");
     expect(coolPath).toHaveTextContent(`Summer <= 26${DEG}C`);
+
+    const winterSunPath = screen.getByRole("button", { name: /Winter Sun/ });
+    expect(winterSunPath).toHaveTextContent("Rank: Sunniest winters");
+    expect(winterSunPath).toHaveTextContent("Fit: Mild");
+    expect(winterSunPath).toHaveTextContent("Fit: Sun");
+    expect(winterSunPath).toHaveTextContent(`Winter >= -5${DEG}C`);
 
     cleanup();
     renderFilterBar("F");
@@ -245,6 +252,23 @@ describe("FilterBar lifestyle bundles", () => {
     expect(next.maxSummerHighC).toBe(26);
     expect(next.fitPresets?.has("snow-country")).toBe(false);
     expect(next.fitPresets?.has("four-seasons")).toBe(false);
+  });
+
+  it("applies Winter Sun as a sunny-winter and mild-winter screen", () => {
+    const setFilters = vi.fn();
+    const setRanking = vi.fn();
+    renderFilterBar("F", { setFilters, setRanking });
+
+    fireEvent.click(screen.getByRole("button", { name: /Winter Sun/ }));
+
+    expect(setRanking).toHaveBeenCalledWith("sunniest-winters");
+    const updater = setFilters.mock.calls[0][0] as (filters: FilterState) => FilterState;
+    const next = updater(createEmptyFilterState());
+
+    expect(next.fitPresets).toEqual(new Set(["sunny-winters", "mild-winters"]));
+    expect(next.minWinterLowC).toBe(-5);
+    expect(next.maxSummerHighC).toBeUndefined();
+    expect(next.minGrowability).toBeUndefined();
   });
 });
 

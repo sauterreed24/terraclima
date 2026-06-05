@@ -21,6 +21,7 @@ import { dominantPlaceFeelDrag, placeFeelScore, scorePlaceFeel } from "./place-f
 export type LiveFitPresetId =
   | "cool-summers"
   | "mild-winters"
+  | "sunny-winters"
   | "dry-air"
   | "gardenable"
   | "low-fire-smoke"
@@ -68,6 +69,12 @@ export const LIVE_FIT_PRESETS: readonly LiveFitPreset[] = [
     label: "Mild winters",
     shortLabel: "Mild",
     description: "Favor winter lows that stay easier for daily life.",
+  },
+  {
+    id: "sunny-winters",
+    label: "Sunny winters",
+    shortLabel: "Sun",
+    description: "Prefer brighter cold-season light and fewer gray-winter months.",
   },
   {
     id: "dry-air",
@@ -189,6 +196,21 @@ function humidityScore(place: Place): number {
   return clamp100(100 - Math.max(0, mean - 35) * 2.2);
 }
 
+export function meanWinterSunshinePct(place: Place): number | null {
+  const sunny = place.climate.sunshinePct;
+  if (!sunny) return null;
+  return (sunny[11] + sunny[0] + sunny[1]) / 3;
+}
+
+export function winterSunshineScore(place: Place): number {
+  const winterSun = meanWinterSunshinePct(place);
+  if (winterSun == null) return 0;
+  // 58% possible sunshine is the same atlas-neutral baseline used by the
+  // broader sky-comfort model; this preset is stricter because it is an
+  // explicit gray-season escape screen, not a general comfort bonus.
+  return clamp100(50 + (winterSun - 58) * 1.5);
+}
+
 /**
  * Sunshine + fog-free comfort score (0–100).
  *
@@ -281,6 +303,8 @@ function presetScore(place: Place, preset: LiveFitPresetId): number {
       return clamp100(100 - Math.max(0, summer - 22) * 7);
     case "mild-winters":
       return clamp100(100 - Math.max(0, -winter) * 5);
+    case "sunny-winters":
+      return winterSunshineScore(place);
     case "dry-air":
       return humidityScore(place);
     case "gardenable":

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PLACES_BY_ID } from "../../data/places";
-import { LIVE_FIT_PRESETS, assessLiveFit, liveFitFilterPass, rankLiveFit } from "../live-fit";
+import { LIVE_FIT_PRESETS, assessLiveFit, liveFitFilterPass, rankLiveFit, type LiveFitPresetId } from "../live-fit";
 import { makeClimate, makePlace } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
 
@@ -9,6 +9,7 @@ describe("live-fit scoring", () => {
     const ids = LIVE_FIT_PRESETS.map(p => p.id);
     expect(new Set(ids).size).toBe(ids.length);
     expect(ids).toContain("cool-summers");
+    expect(ids).toContain("sunny-winters");
     expect(ids).toContain("quiet-small-town");
   });
 
@@ -45,6 +46,32 @@ describe("live-fit scoring", () => {
     const filters = { maxSummerHighC: 24, maxFireRisk: "moderate" as const };
     expect(liveFitFilterPass(cool, filters)).toBe(true);
     expect(liveFitFilterPass(hot, filters)).toBe(false);
+  });
+
+  it("uses measured winter sunshine for the sunny-winters preset and fails closed when missing", () => {
+    const bright = makePlace({
+      id: "bright-winter-sun",
+      climate: makeClimate({
+        sunshinePct: [82, 80, 74, 68, 65, 64, 63, 64, 68, 72, 78, 84] as Monthly12,
+      }),
+    });
+    const gray = makePlace({
+      id: "gray-winter-sun",
+      climate: makeClimate({
+        sunshinePct: [34, 36, 45, 52, 58, 62, 66, 65, 58, 48, 38, 32] as Monthly12,
+      }),
+    });
+    const missing = makePlace({
+      id: "missing-winter-sun",
+      climate: makeClimate({ sunshinePct: undefined }),
+    });
+
+    const filters = { fitPresets: new Set<LiveFitPresetId>(["sunny-winters"]) };
+
+    expect(liveFitFilterPass(bright, filters)).toBe(true);
+    expect(liveFitFilterPass(gray, filters)).toBe(false);
+    expect(liveFitFilterPass(missing, filters)).toBe(false);
+    expect(assessLiveFit(bright, filters).reasons).toContain("Sunny winters match (86/100).");
   });
 
   it("ranks the same filtered pool by live-fit assessment", () => {
