@@ -5,9 +5,17 @@ import type { BestWindow } from "../lib/best-months";
 import type { FilterState, RankingResult } from "../lib/scoring";
 
 const ROW_GAP_PX = 12;
-/** Card estimates by layout. Mobile cards are one-column and significantly taller. */
-const EST_ROW_HEIGHT_DESKTOP_PX = 380;
-const EST_ROW_HEIGHT_MOBILE_PX = 530;
+/**
+ * Card estimates by layout. These track the production PlaceCard surface,
+ * including the signature band, bioclim chip, livability read, live-fit panel,
+ * and best-window pill. Keep them close to the rendered row height so the
+ * virtualizer does not reserve a too-short scroll range before rows enter the
+ * viewport and get measured.
+ */
+export const PLACE_GRID_ROW_ESTIMATE_PX = {
+  desktop: 1060,
+  mobile: 1140,
+} as const;
 const OVERSCAN_ROWS = 3;
 const disableScrollAdjustment = () => false;
 
@@ -84,7 +92,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
 
   const virtualizer = useWindowVirtualizer({
     count: rowCount,
-    estimateSize: () => (cols === 1 ? EST_ROW_HEIGHT_MOBILE_PX : EST_ROW_HEIGHT_DESKTOP_PX),
+    estimateSize: () => (cols === 1 ? PLACE_GRID_ROW_ESTIMATE_PX.mobile : PLACE_GRID_ROW_ESTIMATE_PX.desktop),
     overscan: OVERSCAN_ROWS,
     scrollMargin,
     gap: ROW_GAP_PX,
