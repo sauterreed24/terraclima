@@ -3534,12 +3534,84 @@
     font-size: 0.92rem;
     line-height: 1.35;
   }
-  .compare-decision-read__summary span:last-child {
+  .compare-decision-read__caution {
     display: block;
     margin-top: 0.35rem;
     color: var(--color-stone-readable);
     font-size: 0.76rem;
     line-height: 1.35;
+  }
+  .compare-decision-read__next {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+    padding-top: 0.6rem;
+    border-top: 1px solid rgba(26, 143, 168, 0.16);
+  }
+  .compare-decision-read__next-label {
+    color: var(--color-glacier-700);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .compare-decision-read__next-copy {
+    color: var(--color-stone-readable);
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+  .compare-decision-read__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+  .compare-decision-read__action {
+    min-width: 0;
+    max-width: min(100%, 12.5rem);
+    min-height: 2.35rem;
+    display: grid;
+    align-content: center;
+    gap: 0.05rem;
+    padding: 0.35rem 0.55rem;
+    border-radius: 0.55rem;
+    border: 1px solid rgba(26, 143, 168, 0.24);
+    background: rgba(241, 251, 253, 0.7);
+    color: var(--color-ice);
+    text-align: left;
+    transition:
+      background-color var(--tc-duration-fast) var(--tc-ease-standard),
+      border-color var(--tc-duration-fast) var(--tc-ease-standard),
+      transform var(--tc-duration-fast) var(--tc-ease-standard);
+  }
+  .compare-decision-read__action:hover {
+    border-color: rgba(26, 143, 168, 0.48);
+    background: rgba(232, 248, 251, 0.92);
+    transform: translateY(-1px);
+  }
+  .compare-decision-read__action:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
+  }
+  .compare-decision-read__action span {
+    color: var(--color-stone-readable);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .compare-decision-read__action strong {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-ice);
+    font-family: var(--font-serif);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .compare-decision-read__lanes {
     display: grid;
@@ -7379,6 +7451,28 @@ html[data-theme="dark"] .compare-bioclim-key {
 }
 
 /* Scout / context / compass widgets — same deep-glass treatment. */
+html[data-theme="dark"] .compare-decision-read__summary,
+html[data-theme="dark"] .compare-decision-read__lane,
+html[data-theme="dark"] .compare-insight-strip__item {
+  background: rgba(18, 26, 44, 0.62);
+  border-color: rgba(120, 138, 178, 0.24);
+}
+html[data-theme="dark"] .compare-decision-read__next {
+  border-top-color: rgba(120, 138, 178, 0.24);
+}
+html[data-theme="dark"] .compare-decision-read__action {
+  background: rgba(26, 40, 58, 0.72);
+  border-color: rgba(94, 196, 220, 0.28);
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .compare-decision-read__action:hover {
+  background: rgba(31, 50, 70, 0.88);
+  border-color: rgba(94, 196, 220, 0.52);
+}
+html[data-theme="dark"] .compare-decision-read__action strong {
+  color: var(--color-frost-strong);
+}
+
 html[data-theme="dark"] .scout-brief,
 html[data-theme="dark"] .desktop-scout-board,
 html[data-theme="dark"] .context-stress,

@@ -5,28 +5,22 @@ import type { Place, ScenarioId } from "../types";
 import { scenarioMeta } from "../lib/climate-projection";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
-import { annualComfortMonthCount, avgRisk, meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
+import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { computeBioclim, type BioclimIndex } from "../lib/bioclim";
-import { scoreLivability, feltComfortScore, livedFrictionScore } from "../lib/livability-score";
-import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
+import type { LiveFitFilters } from "../lib/live-fit";
 import { apparentComfortIndex } from "../lib/comfort-precision";
+import {
+  buildCompareDecisionProfiles,
+  buildCompareDecisionRead,
+  type CompareDecisionProfile,
+} from "../lib/compare-finalist-verdict";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
 import { ChevronRight, Clock3, Link2, X } from "lucide-react";
 
 type CompareShareStatus = "idle" | "copied" | "failed";
-
-interface DecisionProfile {
-  place: Place;
-  liveFitScore: number;
-  livabilityScore: number;
-  feltComfort: number;
-  livedEase: number;
-  easyMonths: number;
-  riskLoad: number;
-}
 
 interface Props {
   places: Place[];
@@ -65,19 +59,10 @@ export function CompareView({
   const helperText = isSinglePlace
     ? "Add another place from any card or profile to start a side-by-side comparison."
     : "Compare climate fingerprints, seasonal ranges, and screening scores across the saved places.";
-  const decisionProfiles = useMemo<DecisionProfile[]>(() => places.map(place => {
-    const liveFit = assessLiveFit(place, liveFitFilters);
-    const livability = scoreLivability(place);
-    return {
-      place,
-      liveFitScore: liveFit.score,
-      livabilityScore: livability.score,
-      feltComfort: Math.round(feltComfortScore(place)),
-      livedEase: Math.round(livedFrictionScore(place)),
-      easyMonths: annualComfortMonthCount(place),
-      riskLoad: Math.round(avgRisk(place) * 20),
-    };
-  }), [places, liveFitFilters]);
+  const decisionProfiles = useMemo<CompareDecisionProfile[]>(
+    () => buildCompareDecisionProfiles(places, liveFitFilters),
+    [places, liveFitFilters],
+  );
   const decisionById = useMemo(
     () => new Map(decisionProfiles.map(profile => [profile.place.id, profile])),
     [decisionProfiles],
@@ -208,7 +193,38 @@ export function CompareView({
                 <div className="compare-decision-read__summary">
                   <span className="compare-decision-read__eyebrow">Decision read</span>
                   <p>{decisionRead.summary}</p>
-                  <span>{decisionRead.caution}</span>
+                  <span className="compare-decision-read__caution">{decisionRead.caution}</span>
+                  <div className="compare-decision-read__next">
+                    <span className="compare-decision-read__next-label">Next action</span>
+                    <span className="compare-decision-read__next-copy">{decisionRead.nextAction}</span>
+                    {onOpenPlace ? (
+                      <div className="compare-decision-read__actions">
+                        <button
+                          type="button"
+                          className="compare-decision-read__action"
+                          aria-label={`Open first dossier: ${decisionRead.primary.place.name}`}
+                          onClick={() => onOpenPlace(decisionRead.primary.place.id)}
+                        >
+                          <span>Start dossier</span>
+                          <strong title={decisionRead.primary.place.name}>{decisionRead.primary.place.name}</strong>
+                        </button>
+                        {decisionRead.counterweight ? (
+                          <button
+                            type="button"
+                            className="compare-decision-read__action"
+                            aria-label={`Open counterweight dossier: ${decisionRead.counterweight.place.name}`}
+                            onClick={() => {
+                              const counterweight = decisionRead.counterweight;
+                              if (counterweight) onOpenPlace(counterweight.place.id);
+                            }}
+                          >
+                            <span>{decisionRead.counterweight.label}</span>
+                            <strong title={decisionRead.counterweight.place.name}>{decisionRead.counterweight.place.name}</strong>
+                          </button>
+                        ) : null}
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
                 <div className="compare-decision-read__lanes">
                   {decisionRead.lanes.map(lane => (
@@ -379,78 +395,4 @@ function Row({ label, value, wide = false }: { label: string; value: string; wid
       <span className="min-w-0 text-frost font-mono-num text-right leading-snug break-words">{value}</span>
     </div>
   );
-}
-
-function pickProfile(
-  profiles: readonly DecisionProfile[],
-  score: (profile: DecisionProfile) => number,
-  direction: "asc" | "desc" = "desc",
-): DecisionProfile {
-  return [...profiles].sort((a, b) => {
-    const diff = score(a) - score(b);
-    if (diff !== 0) return direction === "asc" ? diff : -diff;
-    return a.place.name.localeCompare(b.place.name);
-  })[0];
-}
-
-function blendedCompareScore(profile: DecisionProfile): number {
-  return Math.round(
-    profile.liveFitScore * 0.32 +
-    profile.livabilityScore * 0.28 +
-    profile.feltComfort * 0.16 +
-    profile.livedEase * 0.1 +
-    profile.place.scores.growability * 0.08 +
-    (100 - profile.riskLoad) * 0.06,
-  );
-}
-
-function buildCompareDecisionRead(profiles: readonly DecisionProfile[]) {
-  if (profiles.length < 2) return null;
-
-  const broadest = pickProfile(profiles, blendedCompareScore);
-  const lowestRisk = pickProfile(profiles, profile => profile.riskLoad, "asc");
-  const comfort = pickProfile(profiles, profile => profile.feltComfort);
-  const garden = pickProfile(profiles, profile => profile.place.scores.growability);
-  const longestSeason = pickProfile(profiles, profile => profile.easyMonths);
-  const highestRisk = pickProfile(profiles, profile => profile.riskLoad);
-  const landClause = garden.place.id === broadest.place.id
-    ? `${broadest.place.name} also keeps the garden edge`
-    : `${garden.place.name} keeps the garden edge`;
-  const riskClause = lowestRisk.place.id === broadest.place.id
-    ? `${broadest.place.name} also carries the lowest risk load`
-    : `${lowestRisk.place.name} is the lower-risk anchor`;
-  const caution = highestRisk.riskLoad - lowestRisk.riskLoad >= 14
-    ? `${highestRisk.place.name} carries the heaviest risk load (${highestRisk.riskLoad}/100); read the risk notes before treating it as equivalent.`
-    : "Risk loads are close enough that seasonal comfort, access, and lived friction should break the tie.";
-
-  return {
-    summary: `${broadest.place.name} is the broadest live-here pick in this comparison; ${riskClause}, and ${landClause}.`,
-    caution,
-    lanes: [
-      {
-        label: "Broadest fit",
-        place: broadest.place,
-        value: `${blendedCompareScore(broadest)}/100`,
-        detail: "Blend of live-fit, livability, felt comfort, lived ease, garden signal, and low-risk margin.",
-      },
-      {
-        label: "Lowest risk",
-        place: lowestRisk.place,
-        value: `${lowestRisk.riskLoad}/100`,
-        detail: "Composite hazard load; lower is easier to underwrite before deeper research.",
-      },
-      {
-        label: "Comfort leader",
-        place: comfort.place,
-        value: `${comfort.feltComfort}/100`,
-        detail: "Human-felt thermal and atmospheric comfort signal.",
-      },
-      {
-        label: "Garden edge",
-        place: garden.place,
-        value: `${garden.place.scores.growability}/100`,
-        detail: `Season runway check: ${longestSeason.place.name} has ${longestSeason.easyMonths}/12 easy months.`,
-      },
-    ],
-  };
 }
