@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Scout brief audience read
+
+- **Scout Brief (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** adds a compact "Best for / Pause if" read to the Explorer Scout Brief and desktop relocation workbench, derived from the active Fit Finder filters, leader decision row, risk load, and easy-month signal. This makes the shortlist answer who should consider it and who should slow down before opening the dossier, without changing ranking math or corpus data.
+
 ### Guided Fit Finder paths
 
 - **Explorer filters (`src/components/FilterBar.tsx`, `src/lib/lifestyle-bundles.ts`):** replaced the old lifestyle-bundle dropdown with compact Fit Finder paths that apply existing rankings plus Live Finder constraints for heat escape, remote work, retirement, gardenability, dry air, coastal buffering, quiet towns, low fire/smoke, snow, and shoulder-season scouting. The hero `Cool summers` quick pick now uses a dedicated cool-summer refuge path instead of the older Snow & Ski bundle, so it no longer applies snow-country filters by surprise.

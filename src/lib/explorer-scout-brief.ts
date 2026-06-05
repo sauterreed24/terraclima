@@ -13,7 +13,7 @@ import {
 import { feltComfortScore } from "./livability-score";
 import { placeFeelScore } from "./place-feel";
 import { buildShortlistDecisionRows, type ShortlistDecisionRow } from "./decision-matrix";
-import type { LiveFitFilters } from "./live-fit";
+import { LIVE_FIT_PRESET_BY_ID, LIVE_FIT_PRESETS, type LiveFitFilters, type LiveFitPresetId } from "./live-fit";
 import type { RankingResult } from "./scoring";
 
 const RISK_LABELS: Record<keyof Place["risks"], string> = {
@@ -35,6 +35,10 @@ export interface ExplorerScoutBrief {
   fitLine: string;
   decisionLine: string;
   cautionLine: string;
+  audienceRead: {
+    love: string;
+    pause: string;
+  };
   nextStep: {
     label: string;
     place: Place;
@@ -172,6 +176,86 @@ function lowerFirst(value: string): string {
   return `${value[0].toLowerCase()}${value.slice(1)}`;
 }
 
+const PRESET_AUDIENCE: Record<LiveFitPresetId, string> = {
+  "cool-summers": "heat-sensitive movers",
+  "mild-winters": "mild-winter seekers",
+  "dry-air": "dry-air seekers",
+  "gardenable": "gardeners and land scouts",
+  "low-fire-smoke": "smoke-sensitive movers",
+  "four-seasons": "four-season households",
+  "snow-country": "snow-country people",
+  "coastal-buffer": "coastal-buffer seekers",
+  "quiet-small-town": "quiet-town scouts",
+};
+
+function activePresetIds(filters: LiveFitFilters): LiveFitPresetId[] {
+  if (!filters.fitPresets?.size) return [];
+  const rank = new Map<LiveFitPresetId, number>(LIVE_FIT_PRESETS.map((preset, index) => [preset.id, index]));
+  return [...filters.fitPresets].sort((a, b) => (rank.get(a) ?? 0) - (rank.get(b) ?? 0));
+}
+
+function joinReadable(values: readonly string[]): string {
+  if (values.length === 0) return "";
+  if (values.length === 1) return values[0]!;
+  if (values.length === 2) return `${values[0]} and ${values[1]}`;
+  return `${values.slice(0, -1).join(", ")}, and ${values[values.length - 1]}`;
+}
+
+function audienceFromFilters(filters: LiveFitFilters, leader: Place): string {
+  const presetAudiences = activePresetIds(filters).map(id => PRESET_AUDIENCE[id]);
+  const thresholdAudiences: string[] = [];
+  if (filters.maxSummerHighC != null) thresholdAudiences.push("heat-escape scouts");
+  if (filters.minWinterLowC != null) thresholdAudiences.push("cold-avoidant movers");
+  if (filters.minGrowability != null) thresholdAudiences.push("garden planners");
+  if (filters.maxFireRisk || filters.maxOverallRisk) thresholdAudiences.push("risk-sensitive households");
+
+  const audiences = [...presetAudiences, ...thresholdAudiences];
+  if (audiences.length) return joinReadable([...new Set(audiences)].slice(0, 3));
+  return leader.relocationFit[0]?.replace(/\s+/g, " ").trim() || "climate-sensitive movers";
+}
+
+function preferencePhrase(filters: LiveFitFilters): string {
+  const presetLabels = activePresetIds(filters).map(id => LIVE_FIT_PRESET_BY_ID[id].label.toLowerCase());
+  const thresholds: string[] = [];
+  if (filters.maxSummerHighC != null) thresholds.push(`summer highs at or below ${filters.maxSummerHighC}°C`);
+  if (filters.minWinterLowC != null) thresholds.push(`winter lows near ${filters.minWinterLowC}°C or milder`);
+  if (filters.minGrowability != null) thresholds.push(`growability at ${filters.minGrowability}/100 or better`);
+  if (filters.maxFireRisk) thresholds.push(`wildfire risk no higher than ${filters.maxFireRisk.replace(/-/g, " ")}`);
+  if (filters.maxOverallRisk) thresholds.push(`overall risk no higher than ${filters.maxOverallRisk.replace(/-/g, " ")}`);
+  const parts = [...presetLabels, ...thresholds];
+  return parts.length ? ` for ${joinReadable(parts.slice(0, 3))}` : "";
+}
+
+function buildAudienceRead(
+  leader: RankingResult,
+  decisionRows: readonly ShortlistDecisionRow[],
+  liveFitFilters: LiveFitFilters,
+): ExplorerScoutBrief["audienceRead"] {
+  const leaderRow = decisionRows.find(row => row.place.id === leader.place.id);
+  const audience = audienceFromFilters(liveFitFilters, leader.place);
+  const preference = preferencePhrase(liveFitFilters);
+  const bestFor = leaderRow?.bestFor.split(";")[0]?.trim() || leader.place.relocationFit[0]?.replace(/\s+/g, " ").trim() || "climate scouts";
+  const liveFit = leaderRow ? `fit ${leaderRow.liveFitScore}` : `score ${Math.round(leader.score)}`;
+  const love = `${audience} should start here${preference}: ${leader.place.name} leads the shortlist with ${liveFit}, and ${bestFor.toLowerCase()} is the clearest match.`;
+
+  let pause: string;
+  if (leaderRow?.watch) {
+    pause = `${lowerFirst(trimTerminalPunctuation(leaderRow.watch))} would be a deal-breaker; verify that in the dossier before shortlisting.`;
+  } else {
+    pause = "you need parcel-level certainty; this is a screening brief, not local due diligence.";
+  }
+
+  if (leaderRow && leaderRow.liveFitScore < 68) {
+    pause = `you need a clean all-around fit; ${leader.place.name} only reaches ${leaderRow.liveFitScore}/100 on the active Live Finder read, so read the dossier before shortlisting.`;
+  } else if (avgRisk(leader.place) * 20 >= 45) {
+    pause = `risk tolerance is low; the leader's composite risk load is ${Math.round(avgRisk(leader.place) * 20)}/100, so read the dossier before shortlisting.`;
+  } else if (annualComfortMonthCount(leader.place) <= 4) {
+    pause = `you need year-round outdoor ease; only ${annualComfortMonthCount(leader.place)} months clear the easy-living screen, so read the dossier before shortlisting.`;
+  }
+
+  return { love, pause };
+}
+
 function buildScoutNextStep(
   leader: RankingResult,
   decisionRows: readonly ShortlistDecisionRow[],
@@ -232,6 +316,7 @@ export function buildExplorerScoutBrief(
     fitLine: leaderNote ? leaderNote : `${leader.place.koppen} climate signal with ${Math.round(leader.score)} score.`,
     decisionLine: decisionLine(decisionSignals),
     cautionLine: topRiskLine(leader.place),
+    audienceRead: buildAudienceRead(leader, decisionRows, liveFitFilters),
     nextStep: buildScoutNextStep(leader, decisionRows),
     decisionSignals,
     decisionRows,
