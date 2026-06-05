@@ -7,6 +7,7 @@ export interface LifestyleBundle {
   id: string;
   tone: "glacier" | "sage" | "ochre" | "ember" | "ice" | "aurora";
   label: string;
+  cue: string;
   description: string;
   ranking: RankingProfile;
   presets: LiveFitPresetId[];
@@ -19,9 +20,20 @@ export interface LifestyleBundle {
 
 export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   {
+    id: "cool-summer-refuge",
+    tone: "glacier",
+    label: "Cool Summer Refuge",
+    cue: "Escape heat",
+    description: "Cooler peak-season afternoons without forcing a snow-country lifestyle.",
+    ranking: "coolest-summers",
+    presets: ["cool-summers"],
+    maxSummerHighC: 26,
+  },
+  {
     id: "remote-work",
     tone: "glacier",
     label: "Remote Work",
+    cue: "Screen work days",
     description: "Cool, productive summers. Low fire & smoke. Mild winters. Ranked by remote-work readiness.",
     ranking: "best-for-remote-work",
     presets: ["cool-summers", "low-fire-smoke"],
@@ -31,6 +43,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
     id: "retirement",
     tone: "ochre",
     label: "Retirement",
+    cue: "Lower-friction daily life",
     description: "Mild all-year, low aggregate risk, good growability. Ranked by year-round comfort.",
     ranking: "best-retirement",
     presets: ["mild-winters"],
@@ -41,15 +54,45 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
     id: "garden",
     tone: "sage",
     label: "Garden & Grow",
+    cue: "Yard and orchard screen",
     description: "Long growing season, good soils, frost-free nights. Ranked by growability.",
     ranking: "best-growability",
     presets: ["gardenable"],
     minGrowability: 65,
   },
   {
+    id: "dry-air",
+    tone: "ochre",
+    label: "Dry Air",
+    cue: "Avoid muggy climates",
+    description: "Lower humidity and bigger day-night relief for people who struggle with sticky heat.",
+    ranking: "driest-air",
+    presets: ["dry-air"],
+  },
+  {
+    id: "coastal-buffer",
+    tone: "aurora",
+    label: "Coastal Buffer",
+    cue: "Moderated extremes",
+    description: "Ocean or large-lake moderation with restrained summer heat and smoother annual range.",
+    ranking: "live-fit",
+    presets: ["coastal-buffer", "cool-summers"],
+    maxSummerHighC: 26,
+  },
+  {
+    id: "quiet-town",
+    tone: "sage",
+    label: "Quiet Towns",
+    cue: "Less sprawl, more anchors",
+    description: "Lesser-known places with settlement anchors and a calmer small-town read.",
+    ranking: "live-fit",
+    presets: ["quiet-small-town"],
+  },
+  {
     id: "snow-ski",
     tone: "ice",
     label: "Snow & Ski",
+    cue: "Want real winter",
     description: "Real winter with reliable snowpack. Four-season drama. Ranked by coolest summers.",
     ranking: "coolest-summers",
     presets: ["snow-country", "four-seasons"],
@@ -57,7 +100,8 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   {
     id: "fire-safe",
     tone: "ember",
-    label: "Fire-Safe",
+    label: "Low Fire / Smoke",
+    cue: "Reduce smoke season",
     description: "Low wildfire and smoke exposure. Climate-resilient trajectory. Ranked by resilience.",
     ranking: "climate-resilient",
     presets: ["low-fire-smoke"],
@@ -68,6 +112,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
     id: "shoulder-season",
     tone: "aurora",
     label: "Best Shoulder",
+    cue: "Spring/fall comfort",
     description: "Ideal spring and autumn conditions. Mild winters, dry air, comfortable year-round.",
     ranking: "best-shoulder-seasons",
     presets: ["mild-winters", "dry-air"],
@@ -76,10 +121,10 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
 
 /** Hero quick-picks that map to a full lifestyle bundle (ranking + Live Finder). */
 export const HERO_BUNDLE_BY_RANKING: Partial<Record<RankingProfile, LifestyleBundle["id"]>> = {
+  "coolest-summers": "cool-summer-refuge",
   "best-for-remote-work": "remote-work",
   "best-retirement": "retirement",
   "best-growability": "garden",
-  "coolest-summers": "snow-ski",
   "climate-resilient": "fire-safe",
 };
 

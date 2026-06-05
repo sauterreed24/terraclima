@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Guided Fit Finder paths
+
+- **Explorer filters (`src/components/FilterBar.tsx`, `src/lib/lifestyle-bundles.ts`):** replaced the old lifestyle-bundle dropdown with compact Fit Finder paths that apply existing rankings plus Live Finder constraints for heat escape, remote work, retirement, gardenability, dry air, coastal buffering, quiet towns, low fire/smoke, snow, and shoulder-season scouting. The hero `Cool summers` quick pick now uses a dedicated cool-summer refuge path instead of the older Snow & Ski bundle, so it no longer applies snow-country filters by surprise.
+
 ### Relocation-first hero fit path
 
 - **Explorer hero (`src/App.tsx`):** the first screen now leads with "Find your climate fit before you scout," shifts the default eyebrow to Live Finder, and renames the hero starters from generic ranking shortcuts to climate-fit quick picks such as Visit now, Comfort fit, Garden life, Cool summers, and Low risk. Screen-reader text and tests cover the new first-run promise.

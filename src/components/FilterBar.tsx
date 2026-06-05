@@ -66,12 +66,11 @@ export const FilterBar = memo(function FilterBar({
   const { temp } = useUnits();
   const searchFieldId = searchInputId ?? "tc-atlas-filter-search";
   const rankingSelectId = `${searchFieldId}-ranking`;
-  const bundleSelectId = `${searchFieldId}-bundle`;
+  const fitFinderTitleId = `${searchFieldId}-fit-finder-title`;
   const liveControlBaseId = `${searchFieldId}-live`;
   const searchPlaceholder = variant === "sheet" ? "Search places" : "Search places or regions";
   const rankingLabel = RANKING_OPTIONS.find(opt => opt.id === ranking)?.label ?? ranking;
   const activeBundle = LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null;
-  const bundleSelectValue = activeBundle?.id ?? "";
   const toggleCountry = useCallback((c: Country) => {
     setFilters(f => {
       const ns = new Set(f.countries);
@@ -99,9 +98,7 @@ export const FilterBar = memo(function FilterBar({
   const setLiveRisk = useCallback((key: "maxFireRisk" | "maxOverallRisk", value: RiskLevel | undefined) => {
     setFilters(f => ({ ...f, [key]: value }));
   }, [setFilters]);
-  const applyBundleById = useCallback((id: string) => {
-    const bundle = LIFESTYLE_BUNDLES.find(candidate => candidate.id === id);
-    if (!bundle) return;
+  const applyBundle = useCallback((bundle: LifestyleBundle) => {
     applyLifestyleBundle(bundle, setRanking, setFilters);
   }, [setFilters, setRanking]);
 
@@ -161,11 +158,53 @@ export const FilterBar = memo(function FilterBar({
         onScenarioChange={onScenarioChange}
       />
 
+      <section className="fit-finder-panel" aria-labelledby={fitFinderTitleId}>
+        <div className="fit-finder-panel__head">
+          <div>
+            <div id={fitFinderTitleId} className="fit-finder-panel__eyebrow">Fit Finder</div>
+            <p className="fit-finder-panel__intro">
+              Start with what you are escaping or seeking; each path applies the existing ranking and Live Finder constraints.
+            </p>
+          </div>
+          {activeBundle ? (
+            <span className="fit-finder-panel__active" data-tone={activeBundle.tone}>
+              {activeBundle.cue}
+            </span>
+          ) : null}
+        </div>
+        <div className="fit-finder-panel__grid" aria-label="Guided climate-fit paths">
+          {LIFESTYLE_BUNDLES.map(bundle => {
+            const isActive = isBundleActive(bundle, ranking, filters);
+            const descId = `${searchFieldId}-fit-${bundle.id}-desc`;
+            return (
+              <button
+                key={bundle.id}
+                type="button"
+                className="fit-finder-panel__path"
+                data-tone={bundle.tone}
+                data-active={isActive}
+                aria-pressed={isActive}
+                aria-describedby={descId}
+                title={bundle.description}
+                onClick={() => applyBundle(bundle)}
+              >
+                <span className="fit-finder-panel__path-top">
+                  <span className="fit-finder-panel__path-label">{bundle.label}</span>
+                  {isActive ? <Check className="fit-finder-panel__check" aria-hidden /> : null}
+                </span>
+                <span className="fit-finder-panel__cue">{bundle.cue}</span>
+                <span id={descId} className="fit-finder-panel__desc">{bundle.description}</span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
       <div className="tc-accent-panel p-2.5 space-y-2">
         <div className="flex items-center justify-between gap-2">
           <div>
-            <div className="text-[10px] uppercase tracking-wider text-stone-readable">Live Finder</div>
-            <div className="text-[11px] text-stone-readable leading-snug">Pick the life you are scouting for; cards explain fit and tradeoffs.</div>
+            <div className="text-[10px] uppercase tracking-wider text-stone-readable">Live Finder signals</div>
+            <div className="text-[11px] text-stone-readable leading-snug">Fine-tune the path; cards explain fit and tradeoffs.</div>
           </div>
           {(filters.fitPresets?.size ?? 0) > 0 ? (
             <button
@@ -241,32 +280,6 @@ export const FilterBar = memo(function FilterBar({
             value={filters.maxOverallRisk}
             onPick={v => setLiveRisk("maxOverallRisk", v)}
           />
-        </div>
-      </div>
-
-      {/* Lifestyle bundle preset menu */}
-      <div className="tc-accent-panel tc-accent-panel--warm p-2.5 space-y-2">
-        <div className="bundle-menu">
-          <label htmlFor={bundleSelectId} className="bundle-menu__field">
-            <span className="bundle-menu__label">Lifestyle bundle</span>
-            <span className="bundle-menu__select-wrap">
-              <select
-                id={bundleSelectId}
-                value={bundleSelectValue}
-                onChange={event => applyBundleById(event.currentTarget.value)}
-                className="bundle-menu__select"
-                aria-describedby={`${bundleSelectId}-hint`}
-              >
-                <option value="">Choose a compound preset</option>
-                {LIFESTYLE_BUNDLES.map(bundle => (
-                  <option key={bundle.id} value={bundle.id}>{bundle.label}</option>
-                ))}
-              </select>
-            </span>
-          </label>
-          <p id={`${bundleSelectId}-hint`} className="bundle-menu__hint">
-            {activeBundle ? activeBundle.description : "Applies ranking and Live Finder filters together."}
-          </p>
         </div>
       </div>
 
