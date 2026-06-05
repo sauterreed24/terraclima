@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Compare finalist verdict
+
+- **Compare (`src/components/CompareView.tsx`, `src/lib/compare-finalist-verdict.ts`):** upgrades the existing decision read into a compact finalist verdict with a first-dossier recommendation, counterweight caveat, next action, and dossier-opening controls. The scoring stays deterministic and uses only existing live-fit, livability, comfort, lived-ease, growability, and risk signals.
+
 ### Scout brief audience read
 
 - **Scout Brief (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** adds a compact "Best for / Pause if" read to the Explorer Scout Brief and desktop relocation workbench, derived from the active Fit Finder filters, leader decision row, risk load, and easy-month signal. This makes the shortlist answer who should consider it and who should slow down before opening the dossier, without changing ranking math or corpus data.

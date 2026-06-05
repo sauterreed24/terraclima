@@ -35,11 +35,13 @@ afterEach(() => cleanup());
 function renderCompare({
   onCopyView,
   onRemove = () => undefined,
+  onOpenPlace,
   shareStatus,
   liveFitFilters,
 }: {
   onCopyView?: () => void;
   onRemove?: (id: string) => void;
+  onOpenPlace?: (id: string) => void;
   shareStatus?: "idle" | "copied" | "failed";
   liveFitFilters?: LiveFitFilters;
 } = {}) {
@@ -50,6 +52,7 @@ function renderCompare({
         open
         onClose={() => undefined}
         onRemove={onRemove}
+        onOpenPlace={onOpenPlace}
         onCopyView={onCopyView}
         shareStatus={shareStatus}
         liveFitFilters={liveFitFilters}
@@ -93,10 +96,12 @@ describe("CompareView", () => {
 
   it("adds a decision read and copyable comparison handoff", () => {
     const onCopyView = vi.fn();
-    renderCompare({ onCopyView });
+    const onOpenPlace = vi.fn();
+    renderCompare({ onCopyView, onOpenPlace });
 
     expect(screen.getByLabelText("Comparison decision read")).toBeInTheDocument();
     expect(screen.getByText("Decision read")).toBeInTheDocument();
+    expect(screen.getByText("Next action")).toBeInTheDocument();
     expect(screen.getByText("Broadest fit")).toBeInTheDocument();
     expect(screen.getByText("Lowest risk")).toBeInTheDocument();
     expect(screen.getByText("Comfort leader")).toBeInTheDocument();
@@ -104,6 +109,8 @@ describe("CompareView", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Copy comparison link" }));
     expect(onCopyView).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole("button", { name: /Open first dossier:/ }));
+    expect(onOpenPlace).toHaveBeenCalledTimes(1);
   });
 
   it("adds a compact mobile key for bioclimatic comparison rows", () => {
