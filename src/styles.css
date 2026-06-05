@@ -3734,7 +3734,116 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .compare-decision-read__scout-sequence {
+    grid-column: 1 / -1;
+    min-width: 0;
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.62rem 0.68rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(61, 143, 85, 0.18);
+    background:
+      linear-gradient(135deg, rgba(246, 252, 244, 0.76), rgba(255, 253, 248, 0.66));
+  }
+  .compare-decision-read__scout-head {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .compare-decision-read__scout-kicker {
+    color: var(--color-sage-700);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .compare-decision-read__scout-copy {
+    min-width: 0;
+    color: var(--color-stone-readable);
+    font-size: 0.68rem;
+    line-height: 1.3;
+    text-align: right;
+  }
+  .compare-decision-read__scout-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .compare-decision-read__scout-step {
+    min-width: 0;
+    display: grid;
+    align-content: start;
+    gap: 0.16rem;
+    padding: 0.55rem 0.6rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(61, 143, 85, 0.22);
+    background: rgba(255, 255, 255, 0.62);
+    color: var(--color-frost);
+    text-align: left;
+  }
+  .compare-decision-read__scout-step--button {
+    cursor: pointer;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+  .compare-decision-read__scout-step--button:hover {
+    border-color: rgba(61, 143, 85, 0.48);
+    box-shadow: 0 10px 22px -18px rgba(61, 143, 85, 0.28);
+    transform: translateY(-1px);
+  }
+  .compare-decision-read__scout-step--button:focus-visible {
+    outline: 2px solid rgba(61, 143, 85, 0.52);
+    outline-offset: 2px;
+  }
+  .compare-decision-read__scout-label {
+    color: var(--color-stone-readable);
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .compare-decision-read__scout-step strong {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-ice);
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    line-height: 1.12;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .compare-decision-read__scout-window {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-sage-700);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .compare-decision-read__scout-detail,
+  .compare-decision-read__scout-caveat {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-stone-readable);
+    font-size: 0.64rem;
+    line-height: 1.25;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .compare-decision-read__scout-caveat {
+    margin-top: 0.1rem;
+    color: var(--color-frost);
+  }
   .compare-decision-read__lanes {
+    grid-column: 2;
+    grid-row: 1;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.55rem;
@@ -3784,6 +3893,11 @@
     .compare-decision-read {
       grid-template-columns: 1fr;
     }
+    .compare-decision-read__scout-sequence,
+    .compare-decision-read__lanes {
+      grid-column: auto;
+      grid-row: auto;
+    }
     .compare-decision-read__lanes {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -3793,6 +3907,14 @@
       margin-left: -0.25rem;
       margin-right: -0.25rem;
     }
+    .compare-decision-read__scout-head {
+      display: grid;
+      gap: 0.2rem;
+    }
+    .compare-decision-read__scout-copy {
+      text-align: left;
+    }
+    .compare-decision-read__scout-steps,
     .compare-decision-read__lanes {
       grid-template-columns: 1fr;
     }
@@ -7675,6 +7797,8 @@ html[data-theme="dark"] .compare-bioclim-key {
 
 /* Scout / context / compass widgets — same deep-glass treatment. */
 html[data-theme="dark"] .compare-decision-read__summary,
+html[data-theme="dark"] .compare-decision-read__scout-sequence,
+html[data-theme="dark"] .compare-decision-read__scout-step,
 html[data-theme="dark"] .compare-decision-read__lane,
 html[data-theme="dark"] .compare-insight-strip__item {
   background: rgba(18, 26, 44, 0.62);
@@ -7694,6 +7818,13 @@ html[data-theme="dark"] .compare-decision-read__action:hover {
 }
 html[data-theme="dark"] .compare-decision-read__action strong {
   color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .compare-decision-read__scout-step strong {
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .compare-decision-read__scout-kicker,
+html[data-theme="dark"] .compare-decision-read__scout-window {
+  color: #c4e6c8;
 }
 
 html[data-theme="dark"] .scout-brief,

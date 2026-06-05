@@ -76,6 +76,11 @@ describe("compare finalist verdict", () => {
     expect(read?.summary).toContain("Quiet Basin is the counterweight");
     expect(read?.caution).toContain("Heat Bluff carries the heaviest risk load");
     expect(read?.nextAction).toContain("Open Broad Town's dossier first");
+    expect(read?.scoutSequence.map(step => step.label)).toEqual(["Start here", "Counterweight", "Risk check"]);
+    expect(read?.scoutSequence.map(step => step.place.name)).toEqual(["Broad Town", "Quiet Basin", "Heat Bluff"]);
+    expect(read?.scoutSequence[0].visitWindow).toContain("Gardening window");
+    expect(read?.scoutSequence[0].why).toContain("Best all-around finalist");
+    expect(read?.scoutSequence[2].caveat).toContain("Risk load: 42/100");
     expect(read?.lanes.map(lane => lane.label)).toEqual(["Broadest fit", "Lowest risk", "Comfort leader", "Garden edge"]);
   });
 
@@ -89,6 +94,16 @@ describe("compare finalist verdict", () => {
 
   it("returns no verdict until at least two places are saved", () => {
     expect(buildCompareDecisionRead([profile("Solo Place", {})])).toBeNull();
+  });
+
+  it("keeps the scouting sequence unique and bounded for real finalists", () => {
+    const read = buildCompareDecisionRead(buildCompareDecisionProfiles(PLACES.slice(0, 4)));
+
+    expect(read?.scoutSequence.length).toBeGreaterThanOrEqual(2);
+    expect(read?.scoutSequence.length).toBeLessThanOrEqual(3);
+    expect(new Set(read?.scoutSequence.map(step => step.place.id)).size).toBe(read?.scoutSequence.length);
+    expect(read?.scoutSequence.every(step => step.visitWindow.length > 0)).toBe(true);
+    expect(read?.scoutSequence.every(step => step.caveat.length > 0)).toBe(true);
   });
 
   it("builds decision profiles from the real corpus and active Live Finder filters", () => {

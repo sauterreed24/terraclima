@@ -1,5 +1,6 @@
 import type { Place } from "../types";
-import { annualComfortMonthCount, avgRisk } from "./climate-metrics";
+import { getBestMonths } from "./best-months";
+import { annualComfortMonthCount, avgRisk, RISK_VALUE } from "./climate-metrics";
 import { assessLiveFit, type LiveFitFilters } from "./live-fit";
 import { feltComfortScore, livedFrictionScore, scoreLivability } from "./livability-score";
 
@@ -20,6 +21,15 @@ export interface CompareDecisionLane {
   detail: string;
 }
 
+export interface CompareScoutStep {
+  label: string;
+  place: Place;
+  visitWindow: string;
+  visitDetail: string;
+  why: string;
+  caveat: string;
+}
+
 interface CounterweightRead {
   place: Place;
   label: string;
@@ -32,8 +42,21 @@ export interface CompareDecisionRead {
   summary: string;
   caution: string;
   nextAction: string;
+  scoutSequence: CompareScoutStep[];
   lanes: CompareDecisionLane[];
 }
+
+const RISK_LABELS: Record<keyof Place["risks"], string> = {
+  wildfire: "Wildfire",
+  flood: "Flood",
+  drought: "Drought",
+  extremeHeat: "Extreme heat",
+  extremeCold: "Extreme cold",
+  smoke: "Smoke",
+  storm: "Storm",
+  landslide: "Landslide",
+  coastal: "Coastal",
+};
 
 function profileNameTie(a: CompareDecisionProfile, b: CompareDecisionProfile): number {
   return a.place.name.localeCompare(b.place.name) || a.place.id.localeCompare(b.place.id);
@@ -81,6 +104,57 @@ export function buildCompareDecisionProfiles(
   });
 }
 
+function compactSentence(s: string, max = 96): string {
+  const clean = s.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.lastIndexOf(" ", max - 1);
+  const head = clean.slice(0, cut > 48 ? cut : max).replace(/[;,:.\s]+$/, "");
+  return `${head}...`;
+}
+
+function topRiskRead(place: Place): string | null {
+  const entries = Object.entries(place.risks) as Array<
+    [keyof Place["risks"], Place["risks"][keyof Place["risks"]]]
+  >;
+  const [key, risk] = entries
+    .sort((a, b) => RISK_VALUE[b[1].level] - RISK_VALUE[a[1].level] || RISK_LABELS[a[0]].localeCompare(RISK_LABELS[b[0]]))[0]!;
+  if (RISK_VALUE[risk.level] < 3) return null;
+  const trend = risk.trend && risk.trend !== "stable" ? `, ${risk.trend}` : "";
+  return `${RISK_LABELS[key]}: ${risk.level.replace(/-/g, " ")}${trend}; verify this hazard in the dossier.`;
+}
+
+function visitWindowRead(place: Place): Pick<CompareScoutStep, "visitWindow" | "visitDetail"> {
+  const window = getBestMonths(place, "C").find(item => item.kind === "good");
+  if (!window) {
+    return {
+      visitWindow: "Season read needed",
+      visitDetail: "Use the dossier's season-by-season section before putting dates on a scout trip.",
+    };
+  }
+  return {
+    visitWindow: `${window.label}: ${window.range}`,
+    visitDetail: window.note ?? "Use this favorable window for first-pass climate scouting.",
+  };
+}
+
+function caveatRead(profile: CompareDecisionProfile): string {
+  const risk = topRiskRead(profile.place);
+  if (risk) return risk;
+  if (profile.riskLoad >= 34) return `Risk load: ${profile.riskLoad}/100; read hazards before treating it as easy.`;
+  if (profile.livedEase < 58) return `Lived ease: ${profile.livedEase}/100; verify daily access, cost, and social fit.`;
+  return compactSentence(profile.place.whoMightNot, 96);
+}
+
+function scoutStep(label: string, profile: CompareDecisionProfile, why: string): CompareScoutStep {
+  return {
+    label,
+    place: profile.place,
+    why,
+    caveat: caveatRead(profile),
+    ...visitWindowRead(profile.place),
+  };
+}
+
 function pickCounterweight(
   primary: CompareDecisionProfile,
   runnerUp: CompareDecisionProfile | undefined,
@@ -107,6 +181,58 @@ function pickCounterweight(
   };
 }
 
+function buildScoutSequence(
+  profiles: readonly CompareDecisionProfile[],
+  primary: CompareDecisionProfile,
+  counterweight: CounterweightRead | null,
+  runnerUp: CompareDecisionProfile | undefined,
+  highestRisk: CompareDecisionProfile,
+): CompareScoutStep[] {
+  const byId = new Map(profiles.map(profile => [profile.place.id, profile]));
+  const sequence: CompareScoutStep[] = [];
+  const limit = Math.min(3, profiles.length);
+
+  function append(step: CompareScoutStep) {
+    if (sequence.length >= limit) return;
+    if (sequence.some(existing => existing.place.id === step.place.id)) return;
+    sequence.push(step);
+  }
+
+  append(scoutStep(
+    "Start here",
+    primary,
+    "Best all-around finalist; pressure-test this dossier before the rest.",
+  ));
+
+  const counterweightProfile = counterweight ? byId.get(counterweight.place.id) : undefined;
+  const counterweightPreference = counterweight?.preference;
+  if (counterweightProfile && counterweightPreference) {
+    append(scoutStep(
+      "Counterweight",
+      counterweightProfile,
+      `Use this as the tradeoff check if ${counterweightPreference}.`,
+    ));
+  }
+
+  if (highestRisk.riskLoad - primary.riskLoad >= 10 || highestRisk.riskLoad >= 34) {
+    append(scoutStep(
+      "Risk check",
+      highestRisk,
+      "Heaviest risk load in this comparison; verify hazards before ranking it as equivalent.",
+    ));
+  }
+
+  if (runnerUp) {
+    append(scoutStep(
+      "Runner-up",
+      runnerUp,
+      "Second all-around option; keep it warm if the first read exposes a dealbreaker.",
+    ));
+  }
+
+  return sequence;
+}
+
 export function buildCompareDecisionRead(
   profiles: readonly CompareDecisionProfile[],
 ): CompareDecisionRead | null {
@@ -122,6 +248,7 @@ export function buildCompareDecisionRead(
   const livedEase = pickProfile(profiles, profile => profile.livedEase);
   const highestRisk = pickProfile(profiles, profile => profile.riskLoad);
   const counterweight = pickCounterweight(primary, runnerUp, lowestRisk, comfort, garden, longestSeason, livedEase);
+  const scoutSequence = buildScoutSequence(profiles, primary, counterweight, runnerUp, highestRisk);
 
   const landClause = garden.place.id === primary.place.id
     ? `${primary.place.name} also keeps the garden edge`
@@ -144,6 +271,7 @@ export function buildCompareDecisionRead(
     nextAction: counterweight
       ? `Open ${primary.place.name}'s dossier first; read ${counterweight.place.name} second if ${counterweight.preference}.`
       : `Open ${primary.place.name}'s dossier first, then add another place to test the tradeoff.`,
+    scoutSequence,
     lanes: [
       {
         label: "Broadest fit",
