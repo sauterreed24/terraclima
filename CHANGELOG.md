@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Shortlist scout plan export
+
+- **Shortlist export (`src/components/chrome/ShortlistExportMenu.tsx`, `src/lib/shortlist-export.ts`):** adds a human-readable Markdown Scout plan export ahead of the machine-readable formats, carrying visit windows, watch-first caveats, score ingredients, and dossier links for pinned finalists. This gives the shortlist a cleaner field-scouting handoff without changing rankings, corpus data, or routes.
+
 ### Climate twins tradeoff read
 
 - **Climate twins (`src/components/place-detail/PlaceClimateTwins.tsx`, `src/lib/climate-analog.ts`):** adds a compact "same feel, different tradeoffs" read above the lead analog, naming the top preserved climate similarities, the main climate tradeoff, and the next action before adding finalists to Compare. This makes the twins section more relocation-useful without changing analog scoring or corpus data.

@@ -1,13 +1,18 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   exportShortlistAsCSV,
   exportShortlistAsGeoJSON,
   exportShortlistAsICS,
   exportShortlistAsJSON,
+  exportShortlistAsMarkdown,
 } from "../shortlist-export";
 import { makePlace } from "./test-fixtures";
 
 const FIXED = new Date("2026-05-15T12:00:00Z");
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 const sample = [
   makePlace({
@@ -44,6 +49,21 @@ describe("exportShortlistAsJSON", () => {
     const parsed = JSON.parse(file.body) as { count: number; places: Array<{ id: string }> };
     expect(parsed.count).toBe(2);
     expect(parsed.places.map(p => p.id)).toEqual(["alpha-valley", "beta, ridge"]);
+  });
+
+  it("uses export time, not module-load time, when no context date is passed", () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-05-15T12:00:00Z"));
+    const first = exportShortlistAsJSON(sample);
+
+    vi.setSystemTime(new Date("2026-05-16T12:30:00Z"));
+    const second = exportShortlistAsJSON(sample);
+
+    expect(first.filename).toBe("terraclima-shortlist-20260515120000.json");
+    expect(second.filename).toBe("terraclima-shortlist-20260516123000.json");
+    expect(JSON.parse(second.body)).toMatchObject({
+      generatedAt: "2026-05-16T12:30:00.000Z",
+    });
   });
 });
 
@@ -110,5 +130,39 @@ describe("exportShortlistAsICS", () => {
     const file = exportShortlistAsICS([place], { generatedAt: FIXED });
     // Commas must be escaped to "\\,", semicolons to "\\;".
     expect(file.body).toMatch(/LOCATION:Foo\\, Bar\\; Baz\\, AZ\\; NM\\, USA/);
+  });
+});
+
+describe("exportShortlistAsMarkdown", () => {
+  it("emits a human-readable scouting plan in pinned order", () => {
+    const file = exportShortlistAsMarkdown(sample, {
+      generatedAt: FIXED,
+      appUrl: "https://example.test/terraclima/",
+    });
+
+    expect(file.filename).toBe("terraclima-scout-plan-20260515120000.md");
+    expect(file.mimeType).toBe("text/markdown");
+    expect(file.body).toContain("# Terraclima Scout Plan");
+    expect(file.body).toContain("Generated: 2026-05-15T12:00:00.000Z");
+    expect(file.body).toContain("Source: https://example.test/terraclima/");
+    expect(file.body).toContain("Places: 2");
+    expect(file.body).toContain("Screening-grade climate and livability intelligence only.");
+    expect(file.body).toContain("### 1. Alpha Valley");
+    expect(file.body).toContain("### 2. Beta \"Ridge\"");
+    expect(file.body).toContain("- Best visit window:");
+    expect(file.body).toContain("- Why scout:");
+    expect(file.body).toContain("- Watch first:");
+    expect(file.body).toContain("- Score ingredients: live-here fit");
+    expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=alpha-valley");
+    expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=beta%2C%20ridge");
+    expect(file.body).toContain("## Compare next");
+  });
+
+  it("keeps the plan useful when no places are pinned", () => {
+    const file = exportShortlistAsMarkdown([], { generatedAt: FIXED });
+
+    expect(file.body).toContain("Places: 0");
+    expect(file.body).toContain("No pinned places yet.");
+    expect(file.body).toContain("## Compare next");
   });
 });
