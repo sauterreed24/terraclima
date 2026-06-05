@@ -59,6 +59,8 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.decisionRows[0].watch.length).toBeGreaterThan(6);
     expect(brief!.decisionLine).toContain("living signals");
     expect(brief!.cautionLine.length).toBeGreaterThan(20);
+    expect(brief!.audienceRead.love).toContain(ranked[0].place.name);
+    expect(brief!.audienceRead.pause.length).toBeGreaterThan(20);
     expect(brief!.nextStep).toMatchObject({
       label: "Scout next",
       place: ranked[0].place,
@@ -132,6 +134,55 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.nextStep.detail).toContain("Gardening window");
     expect(brief!.nextStep.detail).toContain("First caveat:");
     expect(brief!.nextStep.detail).toContain("Risk Cove");
+  });
+
+  it("translates active Fit Finder preferences into a who-fits / who-pauses read", () => {
+    const coolGarden = makePlace({
+      id: "cool-garden",
+      name: "Cool Garden",
+      relocationFit: ["gardeners"],
+      scores: {
+        hiddenGem: 62,
+        microclimateUniqueness: 70,
+        comfort: 88,
+        resilience: 82,
+        growability: 91,
+        tradeoff: 20,
+      },
+    });
+    const riskyGarden = makePlace({
+      id: "risky-garden",
+      name: "Risky Garden",
+      relocationFit: ["gardeners"],
+      risks: {
+        ...risks("low"),
+        wildfire: { level: "high" },
+      },
+      scores: {
+        hiddenGem: 64,
+        microclimateUniqueness: 75,
+        comfort: 80,
+        resilience: 78,
+        growability: 94,
+        tradeoff: 35,
+      },
+    });
+    const ranked: RankingResult[] = [
+      { place: coolGarden, score: 94, note: "Cool garden leader." },
+      { place: riskyGarden, score: 87, note: "Riskier garden runner-up." },
+    ];
+
+    const brief = buildExplorerScoutBrief(
+      ranked,
+      "Test rank",
+      { fitPresets: new Set(["cool-summers", "gardenable"]), maxSummerHighC: 26, minGrowability: 75 },
+    )!;
+
+    expect(brief.audienceRead.love).toContain("heat-sensitive movers");
+    expect(brief.audienceRead.love).toContain("gardeners and land scouts");
+    expect(brief.audienceRead.love).toContain("summer highs at or below 26°C");
+    expect(brief.audienceRead.love).toContain("Cool Garden");
+    expect(brief.audienceRead.pause).toContain("dossier");
   });
 
   it("returns null for an empty ranked set", () => {

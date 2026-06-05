@@ -2355,6 +2355,16 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               <span className="scout-brief__next-step-detail">{prose(brief.nextStep.detail)}</span>
             </span>
           </button>
+          <div className="scout-brief__audience" aria-label="Who this shortlist fits and who should pause">
+            <div>
+              <span className="scout-brief__audience-label">Best for</span>{" "}
+              <p>{prose(brief.audienceRead.love)}</p>
+            </div>
+            <div>
+              <span className="scout-brief__audience-label">Pause if</span>{" "}
+              <p>{prose(brief.audienceRead.pause)}</p>
+            </div>
+          </div>
         </div>
 
         <div className="scout-brief__metrics" aria-label="Current shortlist climate and risk summary">
@@ -2473,6 +2483,10 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
               <span className="desktop-scout-board__next-step-action">{prose(brief.nextStep.action)}</span>
             </span>
           </button>
+          <div className="desktop-scout-board__audience" aria-label="Who this shortlist fits and who should pause">
+            <p><span>Best for</span> {prose(brief.audienceRead.love)}</p>
+            <p><span>Pause if</span> {prose(brief.audienceRead.pause)}</p>
+          </div>
           {brief.compareIds.length >= 2 ? (
             <button
               type="button"
