@@ -95,9 +95,12 @@ describe("AtlasMap DOM controls", () => {
     const shell = document.querySelector(".map-shell");
     expect(shell).toHaveAttribute("data-legend-open", "false");
     expect(screen.queryByRole("button", { name: /Switch map to/ })).toBeNull();
-    expect(screen.getByRole("button", { name: "Zoom in" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Zoom out" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Fit all places in view" })).toBeInTheDocument();
+    const zoomIn = screen.getByRole("button", { name: "Zoom in" });
+    const zoomOut = screen.getByRole("button", { name: "Zoom out" });
+    const fitAll = screen.getByRole("button", { name: "Fit all places in view" });
+    expect(zoomIn).toHaveAttribute("data-map-target", "comfortable");
+    expect(zoomOut).toHaveAttribute("data-map-target", "comfortable");
+    expect(fitAll).toHaveAttribute("data-map-target", "comfortable");
     expect(screen.getByRole("img", { name: /Scroll to zoom, drag to pan/ })).toBeInTheDocument();
     expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
 
