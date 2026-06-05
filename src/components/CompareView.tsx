@@ -226,6 +226,40 @@ export function CompareView({
                     ) : null}
                   </div>
                 </div>
+                <div className="compare-decision-read__scout-sequence" aria-label="Scouting sequence">
+                  <div className="compare-decision-read__scout-head">
+                    <span className="compare-decision-read__scout-kicker">Scout sequence</span>
+                    <span className="compare-decision-read__scout-copy">Visit order, timing, and the first caveat to verify.</span>
+                  </div>
+                  <div className="compare-decision-read__scout-steps">
+                    {decisionRead.scoutSequence.map((step, index) => {
+                      const content = (
+                        <>
+                          <span className="compare-decision-read__scout-label">{index + 1}. {step.label}</span>
+                          <strong title={step.place.name}>{step.place.name}</strong>
+                          <span className="compare-decision-read__scout-window">{step.visitWindow}</span>
+                          <span className="compare-decision-read__scout-detail">{step.visitDetail}</span>
+                          <span className="compare-decision-read__scout-caveat">{step.caveat}</span>
+                        </>
+                      );
+                      return onOpenPlace ? (
+                        <button
+                          key={`${step.label}-${step.place.id}`}
+                          type="button"
+                          className="compare-decision-read__scout-step compare-decision-read__scout-step--button"
+                          aria-label={`Open ${step.place.name} from scouting sequence: ${step.label}. ${step.why}`}
+                          onClick={() => onOpenPlace(step.place.id)}
+                        >
+                          {content}
+                        </button>
+                      ) : (
+                        <div key={`${step.label}-${step.place.id}`} className="compare-decision-read__scout-step">
+                          {content}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
                 <div className="compare-decision-read__lanes">
                   {decisionRead.lanes.map(lane => (
                     <div key={lane.label} className="compare-decision-read__lane">

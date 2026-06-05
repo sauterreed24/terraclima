@@ -106,11 +106,17 @@ describe("CompareView", () => {
     expect(screen.getByText("Lowest risk")).toBeInTheDocument();
     expect(screen.getByText("Comfort leader")).toBeInTheDocument();
     expect(screen.getByText("Garden edge")).toBeInTheDocument();
+    expect(screen.getByLabelText("Scouting sequence")).toBeInTheDocument();
+    expect(screen.getByText("Scout sequence")).toBeInTheDocument();
+    expect(screen.getByText(/Start here/)).toBeInTheDocument();
+    expect(screen.getByText(/Counterweight/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Copy comparison link" }));
     expect(onCopyView).toHaveBeenCalledTimes(1);
     fireEvent.click(screen.getByRole("button", { name: /Open first dossier:/ }));
     expect(onOpenPlace).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole("button", { name: /from scouting sequence: Start here/ }));
+    expect(onOpenPlace).toHaveBeenCalledTimes(2);
   });
 
   it("adds a compact mobile key for bioclimatic comparison rows", () => {

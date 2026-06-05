@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Compare scout sequence
+
+- **Compare (`src/components/CompareView.tsx`, `src/lib/compare-finalist-verdict.ts`):** adds a compact scouting sequence to the finalist decision read. Compare now turns saved finalists into a visit order with best-month timing and the first caveat to verify, while preserving existing deterministic scoring, URL state, and dossier-opening controls.
+
 ### Scout brief field check
 
 - **Scout Brief (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** adds a compact "Field check" cue to the Explorer Scout Brief and desktop relocation workbench, derived from existing nearby-contrast, local-contrast, or settlement-anchor fields. This turns the ranked leader into a concrete scouting comparison before a place becomes a finalist, without changing rankings, corpus data, or routes.
