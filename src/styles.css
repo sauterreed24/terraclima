@@ -1352,6 +1352,7 @@
   .scout-brief__eyebrow,
   .scout-brief__leader-kicker,
   .scout-brief__audience-label,
+  .scout-brief__field-check-label,
   .scout-brief__metric-label,
   .scout-brief__signals-title,
   .scout-brief__signal-label,
@@ -1529,6 +1530,62 @@
     line-height: 1.2;
   }
   .scout-brief__next-step-detail {
+    display: -webkit-box;
+    overflow: hidden;
+    margin-top: 0.14rem;
+    color: var(--color-stone-readable);
+    font-size: 0.69rem;
+    line-height: 1.28;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .scout-brief__field-check {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: 0.45rem;
+    padding: 0.54rem 0.6rem;
+    border-radius: 0.62rem;
+    border: 1px solid rgba(61, 143, 85, 0.2);
+    background:
+      linear-gradient(180deg, rgba(246, 252, 244, 0.72), rgba(255, 253, 248, 0.64));
+    color: var(--color-frost);
+    text-align: left;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.82) inset;
+    transition: box-shadow 160ms ease, transform 160ms ease;
+  }
+  .scout-brief__field-check:hover {
+    border-color: rgba(61, 143, 85, 0.5);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.9) inset,
+      0 10px 22px -16px rgba(61, 143, 85, 0.28);
+    transform: translateY(-1px);
+  }
+  .scout-brief__field-check:focus-visible {
+    outline: 2px solid rgba(61, 143, 85, 0.52);
+    outline-offset: 2px;
+  }
+  .scout-brief__field-check-label {
+    display: block;
+    color: var(--color-stone-readable);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+  .scout-brief__field-check-action {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 0.12rem;
+    color: var(--color-ice);
+    font-size: 0.8rem;
+    font-weight: 760;
+    line-height: 1.2;
+  }
+  .scout-brief__field-check-detail {
     display: -webkit-box;
     overflow: hidden;
     margin-top: 0.14rem;
@@ -1824,12 +1881,14 @@
   @media (prefers-reduced-motion: reduce) {
     .scout-brief__leader,
     .scout-brief__next-step,
+    .scout-brief__field-check,
     .scout-brief__signal,
     .scout-brief__matrix-row {
       transition: none;
     }
     .scout-brief__leader:hover,
     .scout-brief__next-step:hover,
+    .scout-brief__field-check:hover,
     .scout-brief__signal:hover,
     .scout-brief__matrix-row:hover {
       transform: none;
@@ -2125,6 +2184,7 @@
     }
     .desktop-scout-board__eyebrow,
     .desktop-scout-board__audience span,
+    .desktop-scout-board__field-check-label,
     .desktop-scout-board__metric-label,
     .desktop-scout-board__signal-label,
     .desktop-scout-board__matrix-title {
@@ -2239,6 +2299,51 @@
       font-size: 0.7rem;
       font-weight: 760;
       line-height: 1.2;
+    }
+    .desktop-scout-board__field-check {
+      width: 100%;
+      min-width: 0;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: start;
+      gap: 0.36rem;
+      margin-top: 0.44rem;
+      padding: 0.46rem 0 0;
+      border: 0;
+      border-top: 1px dashed rgba(61, 143, 85, 0.24);
+      background: transparent;
+      color: var(--color-frost);
+      text-align: left;
+      cursor: pointer;
+      transition: color 160ms ease, transform 160ms ease;
+    }
+    .desktop-scout-board__field-check:hover {
+      color: var(--color-ice);
+      transform: translateY(-1px);
+    }
+    .desktop-scout-board__field-check:focus-visible {
+      outline: 2px solid rgba(61, 143, 85, 0.52);
+      outline-offset: 3px;
+      border-radius: 0.38rem;
+    }
+    .desktop-scout-board__field-check-label {
+      display: block;
+      color: var(--color-stone-readable);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      line-height: 1.1;
+      text-transform: uppercase;
+    }
+    .desktop-scout-board__field-check-action {
+      display: -webkit-box;
+      overflow: hidden;
+      margin-top: 0.1rem;
+      color: var(--color-frost);
+      font-size: 0.7rem;
+      font-weight: 760;
+      line-height: 1.2;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
     .desktop-scout-board__audience {
       display: grid;
@@ -2452,12 +2557,14 @@
   }
   @media (prefers-reduced-motion: reduce) {
     .desktop-scout-board__next-step,
+    .desktop-scout-board__field-check,
     .desktop-scout-board__signal,
     .desktop-scout-board__compare,
     .desktop-scout-board__matrix-row {
       transition: none;
     }
     .desktop-scout-board__next-step:hover,
+    .desktop-scout-board__field-check:hover,
     .desktop-scout-board__signal:hover,
     .desktop-scout-board__compare:hover,
     .desktop-scout-board__matrix-row:hover {
@@ -8686,13 +8793,20 @@ html[data-motion="full"] .climate-scenario__opt[data-active="true"]::after {
 }
 
 html[data-theme="dark"] .scout-brief__audience,
+html[data-theme="dark"] .scout-brief__field-check,
 html[data-theme="dark"] .desktop-scout-board__audience {
   border-color: rgba(120, 138, 178, 0.26);
 }
 html[data-theme="dark"] .scout-brief__audience {
   background: linear-gradient(180deg, rgba(22, 30, 50, 0.76), rgba(18, 26, 44, 0.66));
 }
+html[data-theme="dark"] .scout-brief__field-check {
+  border: 1px solid rgba(120, 138, 178, 0.26);
+  background: linear-gradient(180deg, rgba(22, 36, 40, 0.76), rgba(18, 26, 44, 0.66));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
 html[data-theme="dark"] .scout-brief__audience div + div,
-html[data-theme="dark"] .desktop-scout-board__audience {
+html[data-theme="dark"] .desktop-scout-board__audience,
+html[data-theme="dark"] .desktop-scout-board__field-check {
   border-top-color: rgba(120, 138, 178, 0.24);
 }

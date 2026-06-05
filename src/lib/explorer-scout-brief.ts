@@ -45,6 +45,14 @@ export interface ExplorerScoutBrief {
     action: string;
     detail: string;
   };
+  fieldCheck: {
+    label: string;
+    place: Place;
+    target: string;
+    action: string;
+    detail: string;
+    source: "nearby-contrast" | "local-contrast" | "settlement-anchor" | "derived";
+  };
   decisionSignals: {
     label: string;
     place: Place;
@@ -287,6 +295,53 @@ function buildScoutNextStep(
   };
 }
 
+function buildFieldCheck(leader: Place): ExplorerScoutBrief["fieldCheck"] {
+  const nearby = leader.nearbyContrasts?.find(contrast => contrast.note.trim());
+  if (nearby) {
+    return {
+      label: "Field check",
+      place: leader,
+      target: nearby.label,
+      action: `Compare ${leader.name} with ${nearby.label}.`,
+      detail: `${nearby.note.trim()} Use this side-by-side check to confirm the ranked climate signal before treating the place as a finalist.`,
+      source: "nearby-contrast",
+    };
+  }
+
+  const local = leader.localContrast?.find(contrast => contrast.note?.trim());
+  if (local?.note) {
+    return {
+      label: "Field check",
+      place: leader,
+      target: `Within ${local.radiusKm} km`,
+      action: `Drive or walk the ${local.radiusKm} km contrast around ${leader.name}.`,
+      detail: `${local.note.trim()} Use the gradient to separate the microclimate from the wider regional baseline.`,
+      source: "local-contrast",
+    };
+  }
+
+  const anchor = leader.settlementsWithinZone?.find(settlement => settlement.name.trim());
+  if (anchor) {
+    return {
+      label: "Field check",
+      place: leader,
+      target: anchor.name,
+      action: `Anchor the scout day in ${anchor.name}.`,
+      detail: `${anchor.note?.trim() || `${anchor.name} is a practical in-zone settlement anchor.`} Compare services, exposure, roads, shade, and drainage before widening the search.`,
+      source: "settlement-anchor",
+    };
+  }
+
+  return {
+    label: "Field check",
+    place: leader,
+    target: "Immediate exposure gradient",
+    action: `Walk or drive ${leader.name}'s immediate exposure gradient.`,
+    detail: "Compare sun, shade, slope, drainage, and wind over a short route; the atlas point is a screening coordinate, not a parcel survey.",
+    source: "derived",
+  };
+}
+
 export function buildExplorerScoutBrief(
   ranked: RankingResult[],
   rankingLabel: string,
@@ -318,6 +373,7 @@ export function buildExplorerScoutBrief(
     cautionLine: topRiskLine(leader.place),
     audienceRead: buildAudienceRead(leader, decisionRows, liveFitFilters),
     nextStep: buildScoutNextStep(leader, decisionRows),
+    fieldCheck: buildFieldCheck(leader.place),
     decisionSignals,
     decisionRows,
     metrics: [
