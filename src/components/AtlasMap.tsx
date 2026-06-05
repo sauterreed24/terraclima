@@ -1838,15 +1838,17 @@ export function AtlasMap({
 
       {/* Zoom controls */}
       <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[2]">
-        <button type="button" className="map-btn" onClick={() => zoomBy(1.7)} disabled={!canZoomIn} title={canZoomIn ? "Zoom in (+)" : "Maximum zoom reached"} aria-label="Zoom in">
+        <button type="button" className="map-btn" data-map-control="zoom-in" data-map-target="comfortable" onClick={() => zoomBy(1.7)} disabled={!canZoomIn} title={canZoomIn ? "Zoom in (+)" : "Maximum zoom reached"} aria-label="Zoom in">
           <Plus className="w-4 h-4" aria-hidden />
         </button>
-        <button type="button" className="map-btn" onClick={() => zoomBy(1 / 1.7)} disabled={!canZoomOut} title={canZoomOut ? "Zoom out (-)" : "Minimum zoom reached"} aria-label="Zoom out">
+        <button type="button" className="map-btn" data-map-control="zoom-out" data-map-target="comfortable" onClick={() => zoomBy(1 / 1.7)} disabled={!canZoomOut} title={canZoomOut ? "Zoom out (-)" : "Minimum zoom reached"} aria-label="Zoom out">
           <Minus className="w-4 h-4" aria-hidden />
         </button>
         <button
           type="button"
           className="map-btn"
+          data-map-control="fit-all"
+          data-map-target="comfortable"
           onClick={reset}
           title="Fit every pin in view (keyboard: 0)"
           aria-label="Fit all places in view"
@@ -1857,6 +1859,8 @@ export function AtlasMap({
           <button
             type="button"
             className="map-btn"
+            data-map-control="retry-borders"
+            data-map-target="comfortable"
             onClick={retryTopo}
             title="Map borders failed to load — retry"
             aria-label="Retry loading map borders"
