@@ -68,6 +68,17 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.nextStep.action).toContain(`Scout ${ranked[0].place.name}'s`);
     expect(brief!.nextStep.action).toContain(":");
     expect(brief!.nextStep.detail).toContain("First caveat:");
+    expect(brief!.scoutPlan.map(step => step.label)).toEqual(["Start here", "Field check", "Second read"]);
+    expect(brief!.scoutPlan[0]).toMatchObject({
+      place: ranked[0].place,
+      kind: "leader",
+    });
+    expect(brief!.scoutPlan[1]).toMatchObject({
+      place: ranked[0].place,
+      kind: "field-check",
+    });
+    expect(brief!.scoutPlan[2].place.id).toBe(ranked[1].place.id);
+    expect(brief!.scoutPlan[2].detail).toContain("Compare against the leader");
     expect(brief!.fieldCheck).toMatchObject({
       label: "Field check",
       place: ranked[0].place,
@@ -141,6 +152,8 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.nextStep.detail).toContain("Gardening window");
     expect(brief!.nextStep.detail).toContain("First caveat:");
     expect(brief!.nextStep.detail).toContain("Risk Cove");
+    expect(brief!.scoutPlan.map(step => step.kind)).toEqual(["leader", "field-check", "tradeoff"]);
+    expect(brief!.scoutPlan[2].place.id).toBe("risk-cove");
   });
 
   it("turns authored nearby contrast into a scouting field check", () => {
@@ -175,6 +188,8 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief.fieldCheck.action).toBe("Compare Contrast Leader with Lower basin.");
     expect(brief.fieldCheck.detail).toContain("Hotter and drier within a short drive.");
     expect(brief.fieldCheck.detail).toContain("confirm the ranked climate signal");
+    expect(brief.scoutPlan.map(step => step.label)).toEqual(["Start here", "Field check"]);
+    expect(brief.scoutPlan[1].action).toBe("Compare Contrast Leader with Lower basin.");
   });
 
   it("translates active Fit Finder preferences into a who-fits / who-pauses read", () => {

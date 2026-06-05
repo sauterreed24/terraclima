@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Scout brief visit plan
+
+- **Scout Brief (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** turns the leader's next action, field-check contrast, and runner-up tradeoff into a compact ordered "Scout day plan." The plan keeps every step clickable, preserves existing ranking math and corpus data, and extends the Celsius runtime audit to cover the new generated copy.
+
 ### Compare scout sequence
 
 - **Compare (`src/components/CompareView.tsx`, `src/lib/compare-finalist-verdict.ts`):** adds a compact scouting sequence to the finalist decision read. Compare now turns saved finalists into a visit order with best-month timing and the first caveat to verify, while preserving existing deterministic scoring, URL state, and dossier-opening controls.

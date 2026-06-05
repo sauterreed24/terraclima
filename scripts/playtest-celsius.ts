@@ -105,6 +105,14 @@ for (const r of RANKINGS) {
     expectNoCelsiusInF(`brief.fitLine[${r}]`, brief.fitLine);
     expectNoCelsiusInF(`brief.decisionLine[${r}]`, brief.decisionLine);
     expectNoCelsiusInF(`brief.cautionLine[${r}]`, brief.cautionLine);
+    expectNoCelsiusInF(`brief.nextStep.action[${r}]`, brief.nextStep.action);
+    expectNoCelsiusInF(`brief.nextStep.detail[${r}]`, brief.nextStep.detail);
+    expectNoCelsiusInF(`brief.fieldCheck.action[${r}]`, brief.fieldCheck.action);
+    expectNoCelsiusInF(`brief.fieldCheck.detail[${r}]`, brief.fieldCheck.detail);
+    for (const step of brief.scoutPlan) {
+      expectNoCelsiusInF(`brief.scoutPlan.action[${r}|${step.label}]`, step.action);
+      expectNoCelsiusInF(`brief.scoutPlan.detail[${r}|${step.label}]`, step.detail);
+    }
     for (const m of brief.metrics) {
       expectNoCelsiusInF(`brief.metric.value[${r}|${m.label}]`, m.value);
       expectNoCelsiusInF(`brief.metric.detail[${r}|${m.label}]`, m.detail);

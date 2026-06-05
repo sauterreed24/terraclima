@@ -207,7 +207,8 @@ describe("App shell", () => {
     expect(screen.getByText("Context stress test")).toBeInTheDocument();
     expect(screen.getByText(/distinct leaders across/)).toBeInTheDocument();
     expect(screen.getAllByText("Decision matrix").length).toBeGreaterThan(0);
-    expect(screen.getByText("Scout next")).toBeInTheDocument();
+    expect(screen.getAllByText("Scout day plan").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Start here").length).toBeGreaterThan(0);
     expect(screen.getByText(/Scout .*:/)).toBeInTheDocument();
     expect(screen.getAllByText("Field check").length).toBeGreaterThan(0);
     expect(screen.getAllByRole("button", { name: /Field check:/ }).length).toBeGreaterThan(0);
