@@ -131,6 +131,16 @@ describe("FilterBar ranking menu", () => {
 });
 
 describe("FilterBar lifestyle bundles", () => {
+  it("renders guided Fit Finder paths before manual Live Finder signals", () => {
+    renderFilterBar("F");
+
+    expect(screen.getByText("Fit Finder")).toBeInTheDocument();
+    expect(screen.getByText(/Start with what you are escaping or seeking/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Cool Summer Refuge/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Low Fire \/ Smoke/ })).toBeInTheDocument();
+    expect(screen.getByText("Live Finder signals")).toBeInTheDocument();
+  });
+
   it("uses the active bundle as the current lens receipt when all bundle controls match", () => {
     const exactGarden = createEmptyFilterState();
     exactGarden.fitPresets = new Set(["gardenable"]);
@@ -157,7 +167,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-for-remote-work",
     });
 
-    expect(screen.getByRole("combobox", { name: "Lifestyle bundle" })).toHaveValue("remote-work");
+    expect(screen.getByTitle("Cool, productive summers. Low fire & smoke. Mild winters. Ranked by remote-work readiness.")).toHaveAttribute("data-active", "true");
 
     cleanup();
 
@@ -170,7 +180,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-for-remote-work",
     });
 
-    expect(screen.getByRole("combobox", { name: "Lifestyle bundle" })).toHaveValue("");
+    expect(screen.getByTitle("Cool, productive summers. Low fire & smoke. Mild winters. Ranked by remote-work readiness.")).toHaveAttribute("data-active", "false");
   });
 
   it("clears stale Live Finder constraints when applying a lifestyle bundle", () => {
@@ -178,9 +188,7 @@ describe("FilterBar lifestyle bundles", () => {
     const setRanking = vi.fn();
     renderFilterBar("F", { setFilters, setRanking });
 
-    fireEvent.change(screen.getByRole("combobox", { name: "Lifestyle bundle" }), {
-      target: { value: "garden" },
-    });
+    fireEvent.click(screen.getByRole("button", { name: /Garden & Grow/ }));
 
     expect(setRanking).toHaveBeenCalledWith("best-growability");
     const updater = setFilters.mock.calls[0][0] as (filters: FilterState) => FilterState;
@@ -200,6 +208,23 @@ describe("FilterBar lifestyle bundles", () => {
     expect(next.minGrowability).toBe(65);
     expect(next.maxFireRisk).toBeUndefined();
     expect(next.maxOverallRisk).toBeUndefined();
+  });
+
+  it("keeps cool-summer guidance separate from snow-country guidance", () => {
+    const setFilters = vi.fn();
+    const setRanking = vi.fn();
+    renderFilterBar("F", { setFilters, setRanking });
+
+    fireEvent.click(screen.getByRole("button", { name: /Cool Summer Refuge/ }));
+
+    expect(setRanking).toHaveBeenCalledWith("coolest-summers");
+    const updater = setFilters.mock.calls[0][0] as (filters: FilterState) => FilterState;
+    const next = updater(createEmptyFilterState());
+
+    expect(next.fitPresets).toEqual(new Set(["cool-summers"]));
+    expect(next.maxSummerHighC).toBe(26);
+    expect(next.fitPresets?.has("snow-country")).toBe(false);
+    expect(next.fitPresets?.has("four-seasons")).toBe(false);
   });
 });
 

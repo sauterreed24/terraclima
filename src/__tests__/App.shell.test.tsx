@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { act, cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
 import { UnitProvider } from "../lib/units";
@@ -227,6 +227,23 @@ describe("App shell", () => {
     expect(screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit")).toBeInTheDocument();
     expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("applies the hero Cool summers path without snow-country filters", async () => {
+    mockViewport(1280);
+    renderApp();
+
+    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
+    fireEvent.click(within(quickPicks).getByRole("button", { name: /Cool summers/ }));
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("r")).toBe("coolest-summers");
+      expect(params.get("fit")).toBe("cool-summers");
+      expect(params.get("sh")).toBe("26");
+      expect(params.get("fit")).not.toContain("snow-country");
+      expect(params.get("fit")).not.toContain("four-seasons");
+    });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the mobile Explorer hero compact and defers dense panels until after the map", () => {

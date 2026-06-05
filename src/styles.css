@@ -2888,64 +2888,163 @@
     font-size: 0.68rem;
     line-height: 1.3;
   }
-  .bundle-menu {
+  .fit-finder-panel {
     display: grid;
-    gap: 0.38rem;
+    gap: 0.62rem;
+    padding: 0.72rem;
+    border-radius: 0.92rem;
+    border: 1px solid rgba(232, 155, 32, 0.24);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 246, 224, 0.62) 45%, rgba(232, 248, 251, 0.52)),
+      var(--tc-surface-elevated);
+    box-shadow: var(--tc-shadow-elevated);
   }
-  .bundle-menu__field {
-    display: grid;
-    gap: 0.38rem;
+  .fit-finder-panel__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.6rem;
   }
-  .bundle-menu__label {
+  .fit-finder-panel__eyebrow {
     color: var(--color-stone-readable);
     font-size: 0.625rem;
     letter-spacing: 0.14em;
     line-height: 1.1;
     text-transform: uppercase;
   }
-  .bundle-menu__select-wrap {
-    position: relative;
-  }
-  .bundle-menu__select-wrap::after {
-    content: "";
-    position: absolute;
-    right: 0.78rem;
-    top: 50%;
-    width: 0.52rem;
-    height: 0.52rem;
-    border-right: 2px solid rgba(194, 119, 32, 0.72);
-    border-bottom: 2px solid rgba(194, 119, 32, 0.72);
-    transform: translateY(-64%) rotate(45deg);
-    pointer-events: none;
-  }
-  .bundle-menu__select {
-    width: 100%;
-    min-height: 2.55rem;
-    appearance: none;
-    border-radius: 0.78rem;
-    border: 1px solid rgba(232, 155, 32, 0.3);
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 246, 224, 0.78)),
-      var(--tc-surface-elevated);
-    color: var(--color-ice);
-    padding: 0.58rem 2.15rem 0.58rem 0.72rem;
-    font-size: 0.86rem;
-    font-weight: 700;
-    line-height: 1.2;
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.94) inset,
-      0 10px 26px -20px rgba(232, 155, 32, 0.34);
-  }
-  .bundle-menu__select:focus-visible {
-    outline: 2px solid rgba(232, 155, 32, 0.58);
-    outline-offset: 2px;
-    border-color: rgba(232, 155, 32, 0.6);
-  }
-  .bundle-menu__hint {
+  .fit-finder-panel__intro {
     margin: 0;
+    margin-top: 0.22rem;
     color: var(--color-stone-readable);
     font-size: 0.68rem;
-    line-height: 1.3;
+    line-height: 1.34;
+  }
+  .fit-finder-panel__active {
+    max-width: 8.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 0 0 auto;
+    padding: 0.2rem 0.48rem;
+    border-radius: 999px;
+    border: 1px solid rgba(232, 155, 32, 0.28);
+    background: rgba(255, 248, 236, 0.82);
+    color: var(--color-frost);
+    font-size: 0.64rem;
+    font-weight: 720;
+    line-height: 1.15;
+  }
+  .fit-finder-panel__active[data-tone="glacier"] {
+    border-color: rgba(26, 143, 168, 0.28);
+    background: rgba(232, 248, 251, 0.82);
+  }
+  .fit-finder-panel__active[data-tone="sage"] {
+    border-color: rgba(61, 143, 85, 0.28);
+    background: rgba(246, 252, 244, 0.9);
+  }
+  .fit-finder-panel__active[data-tone="ember"] {
+    border-color: rgba(232, 90, 50, 0.28);
+    background: rgba(255, 246, 238, 0.86);
+  }
+  .fit-finder-panel__active[data-tone="ice"],
+  .fit-finder-panel__active[data-tone="aurora"] {
+    border-color: rgba(140, 200, 230, 0.3);
+    background: rgba(241, 251, 253, 0.86);
+  }
+  .fit-finder-panel__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.42rem;
+    max-height: min(18rem, 42vh);
+    overflow-y: auto;
+    padding-right: 0.18rem;
+    scrollbar-width: thin;
+  }
+  .fit-finder-panel__path {
+    min-width: 0;
+    display: grid;
+    gap: 0.2rem;
+    text-align: left;
+    padding: 0.54rem 0.56rem;
+    border-radius: 0.7rem;
+    border: 1px solid rgba(200, 170, 140, 0.32);
+    background: rgba(255, 253, 248, 0.78);
+    color: var(--color-frost);
+    cursor: pointer;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+  .fit-finder-panel__path:hover {
+    border-color: rgba(26, 143, 168, 0.45);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 10px 22px -16px rgba(26, 143, 168, 0.28);
+    transform: translateY(-1px);
+  }
+  .fit-finder-panel__path:focus-visible {
+    outline: 2px solid var(--tc-focus-ring);
+    outline-offset: 2px;
+  }
+  .fit-finder-panel__path[data-active="true"] {
+    border-color: rgba(26, 143, 168, 0.58);
+    background:
+      linear-gradient(180deg, rgba(232, 248, 251, 0.86), rgba(255, 253, 248, 0.82));
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.96) inset,
+      0 0 0 1px rgba(26, 143, 168, 0.16);
+  }
+  .fit-finder-panel__path-top {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.34rem;
+  }
+  .fit-finder-panel__path-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-ice);
+    font-size: 0.78rem;
+    font-weight: 780;
+    line-height: 1.15;
+  }
+  .fit-finder-panel__check {
+    width: 0.82rem;
+    height: 0.82rem;
+    flex-shrink: 0;
+    color: var(--color-glacier-700);
+  }
+  .fit-finder-panel__cue {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-glacier-700);
+    font-size: 0.65rem;
+    font-weight: 720;
+    line-height: 1.16;
+  }
+  .fit-finder-panel__desc {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-stone-readable);
+    font-size: 0.65rem;
+    line-height: 1.25;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  @media (max-width: 420px) {
+    .fit-finder-panel__grid {
+      grid-template-columns: 1fr;
+      max-height: min(18rem, 38vh);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .fit-finder-panel__path {
+      transition: none;
+    }
+    .fit-finder-panel__path:hover {
+      transform: none;
+    }
   }
   .live-filter-controls {
     display: grid;
@@ -7375,6 +7474,64 @@ html[data-theme="dark"] .hero-quick-pick:hover {
 }
 html[data-theme="dark"] .hero-quick-pick__icon {
   color: rgba(140, 200, 230, 0.9);
+}
+
+html[data-theme="dark"] .fit-finder-panel {
+  border-color: rgba(232, 155, 32, 0.26);
+  background:
+    linear-gradient(135deg, rgba(22, 30, 50, 0.94), rgba(48, 40, 28, 0.66) 44%, rgba(28, 48, 58, 0.56)),
+    var(--tc-surface-elevated);
+  box-shadow: var(--tc-shadow-elevated);
+}
+html[data-theme="dark"] .fit-finder-panel__active {
+  background: var(--tc-chip-bg);
+  border-color: var(--tc-border-neutral);
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .fit-finder-panel__active[data-tone="glacier"] {
+  border-color: rgba(94, 196, 220, 0.36);
+  background: rgba(28, 48, 58, 0.72);
+}
+html[data-theme="dark"] .fit-finder-panel__active[data-tone="sage"] {
+  border-color: rgba(61, 143, 85, 0.34);
+  background: rgba(28, 44, 36, 0.68);
+}
+html[data-theme="dark"] .fit-finder-panel__active[data-tone="ember"] {
+  border-color: rgba(232, 90, 50, 0.34);
+  background: rgba(52, 32, 28, 0.68);
+}
+html[data-theme="dark"] .fit-finder-panel__active[data-tone="ice"],
+html[data-theme="dark"] .fit-finder-panel__active[data-tone="aurora"] {
+  border-color: rgba(140, 200, 230, 0.34);
+  background: rgba(28, 42, 52, 0.68);
+}
+html[data-theme="dark"] .fit-finder-panel__path {
+  background: rgba(18, 26, 44, 0.74);
+  border-color: rgba(120, 138, 178, 0.26);
+  color: var(--color-frost-strong);
+  box-shadow: var(--tc-shadow-inset);
+}
+html[data-theme="dark"] .fit-finder-panel__path:hover {
+  border-color: rgba(140, 200, 230, 0.46);
+  box-shadow: var(--tc-shadow-inset), var(--tc-glow-accent);
+}
+html[data-theme="dark"] .fit-finder-panel__path[data-active="true"] {
+  border-color: rgba(94, 196, 220, 0.48);
+  background: linear-gradient(180deg, rgba(28, 48, 58, 0.82), rgba(22, 30, 50, 0.86));
+  box-shadow:
+    var(--tc-shadow-inset),
+    0 0 0 1px rgba(94, 196, 220, 0.18),
+    var(--tc-glow-accent);
+}
+html[data-theme="dark"] .fit-finder-panel__path-label {
+  color: var(--color-ice);
+}
+html[data-theme="dark"] .fit-finder-panel__cue,
+html[data-theme="dark"] .fit-finder-panel__check {
+  color: rgba(180, 236, 246, 0.95);
+}
+html[data-theme="dark"] .fit-finder-panel__desc {
+  color: var(--color-stone-readable);
 }
 
 html[data-theme="dark"] .lens-receipt {
