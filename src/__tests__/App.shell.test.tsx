@@ -51,6 +51,7 @@ vi.mock("../components/CompareView", () => ({
         <button type="button" aria-label="Close comparison" onClick={onClose}>
           Close comparison
         </button>
+        <div data-testid="compare-place-ids">{places.map(place => place.id).join(",")}</div>
         {onCopyView ? (
           <button type="button" aria-label="Copy comparison link" onClick={onCopyView}>
             {shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
@@ -600,6 +601,19 @@ describe("App shell", () => {
     renderApp();
     expect(screen.getByText(/Your shortlist · 2/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Open Sequim from your shortlist/ })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("compares pinned shortlist finalists in pinned order", async () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa", "port-townsend-wa", "portal-az"]),
+    );
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Compare 3 pinned places from your shortlist" }));
+
+    expect(await screen.findByRole("dialog", { name: "3 places side by side" })).toBeInTheDocument();
+    expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa,port-townsend-wa,portal-az");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("renders the recently viewed rail when recents exist in localStorage", () => {

@@ -3410,6 +3410,9 @@
     text-overflow: ellipsis;
   }
 
+  .compare-dialog__frame {
+    padding: max(4.75rem, calc(env(safe-area-inset-top) + 4.75rem)) 1rem 1rem;
+  }
   .compare-dialog__head {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -3452,6 +3455,9 @@
     min-height: 2.25rem;
   }
   @media (min-width: 640px) {
+    .compare-dialog__frame {
+      padding: 1.5rem;
+    }
     .compare-dialog__head {
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: start;
@@ -3465,6 +3471,14 @@
     .compare-dialog__head {
       gap: 0.65rem;
       margin-bottom: 0.85rem;
+      padding: 0.72rem;
+      border: 1px solid rgba(26, 143, 168, 0.16);
+      border-radius: 0.8rem;
+      background: rgba(255, 253, 247, 0.78);
+      box-shadow:
+        0 12px 30px -24px rgba(24, 55, 64, 0.45),
+        0 1px 0 rgba(255, 255, 255, 0.8) inset;
+      backdrop-filter: blur(18px);
     }
     .compare-dialog__title-text {
       font-size: 1.48rem;
@@ -6800,6 +6814,13 @@
     gap: 0.5rem;
     flex-wrap: wrap;
     margin-bottom: 0.35rem;
+  }
+  .hero-mini-rail__actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    flex-wrap: wrap;
   }
   .hero-mini-rail__title {
     font-size: 0.62rem;

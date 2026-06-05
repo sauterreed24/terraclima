@@ -1739,6 +1739,8 @@ const HeroCard = memo(function HeroCard({
         onOpenPlace={onOpenPlace}
         onToggleBookmark={onToggleBookmark}
         onClearRecents={onClearRecents}
+        onComparePinned={onCompareLeaders}
+        onPreloadCompare={onPreloadCompare}
       />
 
       <div className="hidden min-[1400px]:block">
@@ -2057,16 +2059,24 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
   onOpenPlace,
   onToggleBookmark,
   onClearRecents,
+  onComparePinned,
+  onPreloadCompare,
 }: {
   bookmarkIds: Set<string>;
   recentIds: readonly string[];
   onOpenPlace: (id: string) => void;
   onToggleBookmark: (id: string) => void;
   onClearRecents: () => void;
+  onComparePinned: (ids: string[]) => void;
+  onPreloadCompare: () => void;
 }) {
   const pinnedPlaces = useMemo(
     () => [...bookmarkIds].map(placeForId).filter(isPlace),
     [bookmarkIds],
+  );
+  const pinnedCompareIds = useMemo(
+    () => pinnedPlaces.slice(0, COMPARE_LIMIT).map(place => place.id),
+    [pinnedPlaces],
   );
   const recentPlaces = useMemo(
     () =>
@@ -2091,7 +2101,28 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
               <BookmarkCheck className="w-3 h-3 text-ochre-700" aria-hidden />
               Your shortlist · {pinnedPlaces.length}
             </span>
-            <ShortlistExportMenu places={pinnedPlaces} />
+            <div className="hero-mini-rail__actions">
+              {pinnedCompareIds.length >= 2 ? (
+                <button
+                  type="button"
+                  className="btn-ghost !text-xs !py-1 !px-2"
+                  onPointerEnter={onPreloadCompare}
+                  onFocus={onPreloadCompare}
+                  onPointerDown={onPreloadCompare}
+                  onClick={() => onComparePinned(pinnedCompareIds)}
+                  aria-label={`Compare ${pinnedCompareIds.length} pinned places from your shortlist`}
+                  title={
+                    pinnedPlaces.length > COMPARE_LIMIT
+                      ? `Compare the first ${COMPARE_LIMIT} pinned places`
+                      : "Compare pinned places"
+                  }
+                >
+                  <ArrowLeftRight className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+                  {pinnedPlaces.length > COMPARE_LIMIT ? `Compare ${COMPARE_LIMIT}` : "Compare"}
+                </button>
+              ) : null}
+              <ShortlistExportMenu places={pinnedPlaces} />
+            </div>
           </div>
           <ul
             className="hero-mini-rail"
