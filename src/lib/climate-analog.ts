@@ -100,6 +100,19 @@ export interface ClimateTwin {
   synopsis: string;
 }
 
+export interface ClimateTwinTradeoffRead {
+  /** Compact header for the dossier callout. */
+  label: string;
+  /** One-sentence relocation read for the top twin. */
+  summary: string;
+  /** The two strongest physical similarities, already humanized for chips. */
+  shared: string[];
+  /** The main non-market climate tradeoff to pressure-test. */
+  tradeoff: string;
+  /** Next user action, intentionally screening-grade and non-prescriptive. */
+  nextAction: string;
+}
+
 /** Blend weights — must sum to 1.0 (asserted in tests).
  *  The bioclim axes are modest physical tie-breakers: they strengthen annual
  *  water balance and maritime/interior structure without displacing the core
@@ -336,6 +349,18 @@ const MATCH_PHRASE: Record<ClimateAnalogAxisKey, string> = {
   mechanism: "the terrain mechanism behind it",
 };
 
+const MATCH_CHIP_LABEL: Record<ClimateAnalogAxisKey, string> = {
+  thermalLevel: "overall warmth",
+  seasonalShape: "seasonal rhythm",
+  seasonalAmplitude: "maritime/continental swing",
+  moisture: "annual moisture",
+  precipRegime: "rain timing",
+  aridity: "water balance",
+  continentality: "continentality",
+  atmosphere: "air and light",
+  mechanism: "terrain mechanism",
+};
+
 function divergencePhrase(key: ClimateAnalogAxisKey, anchor: Place, twin: Place): string {
   const fa = features(anchor);
   const ft = features(twin);
@@ -395,6 +420,37 @@ export function describeAnalogMatch(anchor: Place, twin: Place): string {
     return `${lead}; ${divergencePhrase(divergence.key, anchor, twin)}.`;
   }
   return `${lead}; closely aligned across the year.`;
+}
+
+export function buildClimateTwinTradeoffRead(
+  anchor: Place,
+  twin: ClimateTwin,
+  shift?: ClimateShiftId | null,
+): ClimateTwinTradeoffRead {
+  const meaningfulAxes = twin.axes.filter(ax => ax.key !== "mechanism");
+  const shared = meaningfulAxes
+    .slice()
+    .sort((a, b) => b.closeness - a.closeness || b.weight - a.weight)
+    .slice(0, 2)
+    .map(ax => MATCH_CHIP_LABEL[ax.key]);
+  const tradeoffAxis = meaningfulAxes
+    .slice()
+    .sort((a, b) => a.closeness - b.closeness || b.weight - a.weight)[0];
+  const tradeoff = tradeoffAxis
+    ? divergencePhrase(tradeoffAxis.key, anchor, twin.place)
+    : "needs ordinary local verification";
+  const shiftClause = shift ? ` through the ${CLIMATE_SHIFT_BY_ID[shift].label.toLowerCase()} lens` : "";
+  const sharedClause = shared.length >= 2
+    ? `${shared[0]} and ${shared[1]}`
+    : shared[0] ?? "the broad annual climate";
+
+  return {
+    label: "Same feel, different tradeoffs",
+    summary: `${twin.place.name} is the first same-feel comparison${shiftClause}: it preserves ${sharedClause}; the main climate tradeoff is that it ${tradeoff}.`,
+    shared,
+    tradeoff,
+    nextAction: `Open ${twin.place.name} if that tradeoff sounds useful, or nudge the twin set before adding finalists to Compare.`,
+  };
 }
 
 // ---- "Twin, but…" shift re-ranking ------------------------------------------
