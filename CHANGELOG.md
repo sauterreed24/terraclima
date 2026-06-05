@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Relocation-first hero fit path
+
+- **Explorer hero (`src/App.tsx`):** the first screen now leads with "Find your climate fit before you scout," shifts the default eyebrow to Live Finder, and renames the hero starters from generic ranking shortcuts to climate-fit quick picks such as Visit now, Comfort fit, Garden life, Cool summers, and Low risk. Screen-reader text and tests cover the new first-run promise.
+
 ### Scout brief next-step handoff
 
 - **Relocation next step (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** the Explorer Scout Brief and desktop relocation workbench now add a compact "Scout next" action derived from the leader's best-month window, first decision-matrix caveat, and runner-up comparison. It opens the same dossier as the leader card, preserves URL unit state, and keeps the cue visually subordinate to the existing shortlist evidence.
