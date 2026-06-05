@@ -7,6 +7,7 @@ import {
   exportShortlistAsGeoJSON,
   exportShortlistAsICS,
   exportShortlistAsJSON,
+  exportShortlistAsMarkdown,
   type ShortlistExportFile,
 } from "../../lib/shortlist-export";
 import { useFocusTrap } from "../../hooks/use-focus-trap";
@@ -17,6 +18,12 @@ const FORMATS: ReadonlyArray<{
   hint: string;
   run: (places: readonly Place[]) => ShortlistExportFile;
 }> = [
+  {
+    id: "markdown",
+    label: "Scout plan",
+    hint: "Visit windows, caveats, and dossier links",
+    run: exportShortlistAsMarkdown,
+  },
   { id: "json", label: "JSON", hint: "Minimal place rows for scripts", run: exportShortlistAsJSON },
   { id: "csv", label: "CSV", hint: "Spreadsheet-friendly table", run: exportShortlistAsCSV },
   { id: "geojson", label: "GeoJSON", hint: "RFC 7946 map points", run: exportShortlistAsGeoJSON },
@@ -55,8 +62,14 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
   const onExport = useCallback(
     (run: (places: readonly Place[]) => ShortlistExportFile) => {
       const file = run(places);
-      downloadBlobFile(file.body, file.filename, file.mimeType);
       close();
+      window.setTimeout(() => {
+        try {
+          downloadBlobFile(file.body, file.filename, file.mimeType);
+        } catch {
+          // Some embedded browser surfaces block synthetic downloads. Keep the menu state stable.
+        }
+      }, 0);
     },
     [places, close],
   );
@@ -83,7 +96,7 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
           id={menuId}
           role="menu"
           aria-label="Export shortlist format"
-          className="tc-shortlist-export__panel tc-surface-glass panel-thin absolute right-0 top-full z-20 mt-1 min-w-[12.5rem] p-2 flex flex-col gap-0.5 tc-shortlist-export__panel--open"
+          className="tc-shortlist-export__panel tc-surface-glass panel-thin absolute right-0 sm:right-auto sm:left-0 top-full z-20 mt-1 min-w-[12.5rem] max-w-[calc(100vw-2rem)] p-2 flex flex-col gap-0.5 tc-shortlist-export__panel--open"
         >
           {FORMATS.map(fmt => (
             <button

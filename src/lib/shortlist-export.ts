@@ -17,6 +17,8 @@
  *   - ICS      iCalendar VEVENT per place's best-month window (when the
  *              best-months helper returns a "good" window), so a user can
  *              pin scouting trips to a calendar app. Pure text; no I/O.
+ *   - Markdown a human-readable scouting plan: visit window, why scout,
+ *              watch-first caveat, score ingredients, and dossier links.
  *
  * Pure: no DOM access, no Blob, no fetch. The caller owns the download
  * mechanic so the same helpers work in node tests + the future export
@@ -24,6 +26,8 @@
  */
 import type { Place } from "../types";
 import { getBestMonths } from "./best-months";
+import { buildShortlistDecisionRows } from "./decision-matrix";
+import { scoreLivability } from "./livability-score";
 
 export interface ShortlistExportFile {
   body: string;
@@ -39,14 +43,13 @@ interface ExportContext {
   appUrl: string;
 }
 
-const DEFAULT_CONTEXT: ExportContext = {
-  generatedAt: new Date(),
+const DEFAULT_CONTEXT: Omit<ExportContext, "generatedAt"> = {
   appName: "Terraclima",
   appUrl: "https://sauterreed24.github.io/terraclima/",
 };
 
 function context(partial?: Partial<ExportContext>): ExportContext {
-  return { ...DEFAULT_CONTEXT, ...partial };
+  return { generatedAt: new Date(), ...DEFAULT_CONTEXT, ...partial };
 }
 
 function placeRow(place: Place) {
@@ -194,6 +197,71 @@ export function exportShortlistAsICS(
   };
 }
 
+export function exportShortlistAsMarkdown(
+  places: readonly Place[],
+  ctxPartial?: Partial<ExportContext>,
+): ShortlistExportFile {
+  const ctx = context(ctxPartial);
+  const rows = buildShortlistDecisionRows(
+    places.map(place => {
+      const livability = scoreLivability(place).score;
+      return { place, score: livability, note: `${livability}/100 livability screen` };
+    }),
+    {},
+    places.length,
+  );
+  const lines = [
+    "# Terraclima Scout Plan",
+    "",
+    `Generated: ${ctx.generatedAt.toISOString()}`,
+    `Source: ${ctx.appUrl}`,
+    `Places: ${places.length}`,
+    "",
+    "Screening-grade climate and livability intelligence only. Verify housing, services, hazards, medical needs, schools, insurance, and local rules with official local sources before making decisions.",
+    "",
+    "## Pinned shortlist",
+    "",
+  ];
+
+  if (places.length === 0) {
+    lines.push("No pinned places yet.");
+  } else {
+    for (const row of rows) {
+      const place = row.place;
+      const bestWindow = getBestMonths(place, "C").find(window => window.kind === "good");
+      const location = [place.region, countryLabel(place.country)].filter(Boolean).join(", ");
+      lines.push(`### ${row.rank}. ${place.name}`);
+      lines.push("");
+      lines.push(`- Location: ${location}`);
+      lines.push(`- Climate class: ${place.koppen}; tier ${place.tier}`);
+      if (bestWindow) {
+        const note = bestWindow.note ? ` - ${bestWindow.note}` : "";
+        lines.push(`- Best visit window: ${bestWindow.label} (${bestWindow.range})${note}`);
+      } else {
+        lines.push("- Best visit window: Check the dossier's season-by-season read before scheduling.");
+      }
+      lines.push(`- Why scout: ${row.bestFor}`);
+      lines.push(`- Watch first: ${row.watch}`);
+      lines.push(
+        `- Score ingredients: live-here fit ${row.liveFitScore}/100; felt comfort ${row.comfortScore}/100; ` +
+        `risk load ${row.riskLoad}/100; growability ${row.growability}/100; lived ease ${row.livedEase}/100.`,
+      );
+      lines.push(`- Dossier: ${ctx.appUrl}?p=${encodeURIComponent(place.id)}`);
+      lines.push("");
+    }
+  }
+
+  lines.push("## Compare next");
+  lines.push("");
+  lines.push("Use Compare for finalists that survived the watch-first caveats. This plan preserves your pinned order; it is not a route, booking, appraisal, or recommendation to move.");
+
+  return {
+    body: lines.join("\n") + "\n",
+    filename: `terraclima-scout-plan-${stampSlug(ctx.generatedAt)}.md`,
+    mimeType: "text/markdown",
+  };
+}
+
 // --- helpers ------------------------------------------------------------
 
 const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
@@ -255,6 +323,10 @@ function formatIcsDate(d: Date): string {
 function icsEscape(s: string): string {
   // RFC 5545 §3.3.11: escape commas, semicolons, backslashes, newlines.
   return s.replace(/\\/g, "\\\\").replace(/,/g, "\\,").replace(/;/g, "\\;").replace(/\r?\n/g, "\\n");
+}
+
+function countryLabel(country: Place["country"]): string {
+  return country === "USA" ? "United States" : country;
 }
 
 function monthRangeStart(monthIdx: number, year: number): Date {
