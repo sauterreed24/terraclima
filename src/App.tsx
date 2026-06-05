@@ -864,16 +864,16 @@ export default function App() {
                 <section className="hidden md:grid grid-cols-3 gap-3 tc-reader-path" aria-labelledby="reader-path-heading">
                   <h2 id="reader-path-heading" className="sr-only">How to read Terraclima</h2>
                   <div>
-                    <div className="tc-reader-path__label">Scout</div>
-                    <p>Open any pin or card for a profile that reads like a field notebook: story first, then charts, risks, soil, sources, and similar places.</p>
+                    <div className="tc-reader-path__label">Fit</div>
+                    <p>Start with Live-here fit or a quick pick to screen places by comfort, terrain, risk, and lived ease before opening the map wider.</p>
                   </div>
                   <div>
                     <div className="tc-reader-path__label">Compare</div>
-                    <p>Use Rank by, filters, Surprise, and four-place compare to move from a continental view to a short list worth reading closely.</p>
+                    <p>Move from a continental scan to a shortlist with filters, map clusters, Scout Brief, and four-place compare.</p>
                   </div>
                   <div>
-                    <div className="tc-reader-path__label">Trust</div>
-                    <p>Scores are screening signals. Confidence notes, citations, and geospatial methods stay visible so readers and agents can audit the trail.</p>
+                    <div className="tc-reader-path__label">Scout</div>
+                    <p>Read the dossier, caveats, sources, twins, and Scout next cue before treating any place as a real-world finalist.</p>
                   </div>
                 </section>
 
@@ -1375,16 +1375,30 @@ const NavBtn = memo(function NavBtn({
   );
 });
 
-const QuickPick = memo(function QuickPick({ icon: Icon, label, onClick, active }: { icon: LucideIcon; label: string; onClick: () => void; active: boolean }) {
+const QuickPick = memo(function QuickPick({
+  icon: Icon,
+  label,
+  description,
+  onClick,
+  active,
+}: {
+  icon: LucideIcon;
+  label: string;
+  description: string;
+  onClick: () => void;
+  active: boolean;
+}) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={`hero-quick-pick${active ? " hero-quick-pick--active" : ""}`}
       aria-pressed={active}
+      title={description}
     >
       <Icon className="hero-quick-pick__icon" aria-hidden />
       <span>{label}</span>
+      <span className="sr-only">: {description}</span>
     </button>
   );
 });
@@ -1572,7 +1586,7 @@ const HeroCard = memo(function HeroCard({
                   ? `Live Finder · ${liveSignalCount} signal${liveSignalCount > 1 ? "s" : ""}`
                   : activeArchetypes.size > 0
                     ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}`
-                    : "Explorer"}
+                    : "Live Finder"}
             </span>
             {active && (
               <button type="button" onClick={onClearCollection} className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice">
@@ -1586,24 +1600,24 @@ const HeroCard = memo(function HeroCard({
             )}
           </div>
           <h1 className="font-atlas text-2xl min-[1400px]:text-3xl text-ice leading-tight text-depth-hero">
-            {active ? active.title : "Read the continent by its microclimates"}
+            {active ? active.title : "Find your climate fit before you scout"}
           </h1>
           <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
             {active
               ? active.description
-              : "Trace rain shadows, sky islands, orchard valleys, and cool coasts. Each profile ties weather to terrain, season, and lived place."}
+              : "Screen cool coasts, dry highlands, garden valleys, and lower-risk towns by comfort, terrain, risk, and lived ease before you plan a visit."}
           </p>
 
-          {/* Lifestyle quick-picks — instant one-click ranking presets */}
+          {/* Climate-fit quick-picks — instant one-click ranking presets */}
           {!active && (
-            <div className="hero-quick-picks mt-3" role="group" aria-label="Quick ranking presets">
-              <QuickPick icon={CalendarDays} label="Best this month" onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
-              <QuickPick icon={Sun} label="Comfort" onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
-              <QuickPick icon={Laptop} label="Remote work" onClick={() => onApplyQuickPick("best-for-remote-work")} active={isQuickPickActive("best-for-remote-work")} />
-              <QuickPick icon={Sunrise} label="Retirement" onClick={() => onApplyQuickPick("best-retirement")} active={isQuickPickActive("best-retirement")} />
-              <QuickPick icon={Sprout} label="Garden life" onClick={() => onApplyQuickPick("best-growability")} active={isQuickPickActive("best-growability")} />
-              <QuickPick icon={Snowflake} label="Snow country" onClick={() => onApplyQuickPick("coolest-summers")} active={isQuickPickActive("coolest-summers")} />
-              <QuickPick icon={ShieldCheck} label="Low risk" onClick={() => onApplyQuickPick("climate-resilient")} active={isQuickPickActive("climate-resilient")} />
+            <div className="hero-quick-picks mt-3" role="group" aria-label="Climate-fit quick picks">
+              <QuickPick icon={CalendarDays} label="Visit now" description="Rank places by the current month's scouting weather." onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
+              <QuickPick icon={Sun} label="Comfort fit" description="Surface places with the easiest human-felt comfort." onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
+              <QuickPick icon={Laptop} label="Remote work" description="Prioritize mild, livable places for remote-worker scouting." onClick={() => onApplyQuickPick("best-for-remote-work")} active={isQuickPickActive("best-for-remote-work")} />
+              <QuickPick icon={Sunrise} label="Retirement" description="Look for mild all-year places with lower risk and daily ease." onClick={() => onApplyQuickPick("best-retirement")} active={isQuickPickActive("best-retirement")} />
+              <QuickPick icon={Sprout} label="Garden life" description="Lift places with stronger yard, orchard, and growing-season signals." onClick={() => onApplyQuickPick("best-growability")} active={isQuickPickActive("best-growability")} />
+              <QuickPick icon={Snowflake} label="Cool summers" description="Find places where peak-season afternoons stay restrained." onClick={() => onApplyQuickPick("coolest-summers")} active={isQuickPickActive("coolest-summers")} />
+              <QuickPick icon={ShieldCheck} label="Low risk" description="Favor places with stronger climate-resilience and hazard cushions." onClick={() => onApplyQuickPick("climate-resilient")} active={isQuickPickActive("climate-resilient")} />
             </div>
           )}
         </div>

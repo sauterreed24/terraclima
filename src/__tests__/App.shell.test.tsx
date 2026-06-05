@@ -219,6 +219,10 @@ describe("App shell", () => {
     mockViewport(1280);
     renderApp();
 
+    expect(screen.getByRole("heading", { name: "Find your climate fit before you scout" })).toBeInTheDocument();
+    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
+    expect(quickPicks).toBeInTheDocument();
+    expect(quickPicks).toHaveTextContent("Cool summers");
     expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Live-here fit · top 5");
     expect(screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit")).toBeInTheDocument();
     expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
@@ -235,7 +239,7 @@ describe("App shell", () => {
     const scoutBrief = screen.getByText("Scout brief");
 
     expect(hero).not.toBeNull();
-    expect(screen.getByRole("group", { name: "Quick ranking presets" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Climate-fit quick picks" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Copy current Explorer view" }).closest(".hero-action-stack")).not.toBeNull();
     expect(screen.getByLabelText(/climate signal leaders/i)).toBeInTheDocument();
     expect(screen.getByText(/Livability lens/)).toBeInTheDocument();

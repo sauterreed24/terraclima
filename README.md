@@ -8,10 +8,10 @@
 
 What to try first:
 
-1. Hover or tap any pin on the map for a one-line climate snapshot.
-2. Open a place card — the profile reads like a field guide: opening story, livability breakdown, practical read, charts, risks, climate twins, sources.
-3. Pin places to your shortlist with the bookmark control (or press **B** while a profile is open). Pins live in your browser, no account required.
-4. Sort by **Rank by**, narrow with **Filters**, then use **Compare** to put up to four places side by side.
+1. Start from **Live-here fit** or a hero quick pick such as **Comfort fit**, **Cool summers**, **Garden life**, or **Low risk**.
+2. Hover or tap any pin on the map for a one-line climate snapshot, then open a place card for the field-guide profile.
+3. Use the Scout Brief and **Compare** to turn the ranked list into finalists worth reading closely.
+4. Pin places to your shortlist with the bookmark control (or press **B** while a profile is open). Pins live in your browser, no account required.
 5. Press **?** anywhere for the keyboard-shortcut overlay.
 
 Built for new users: every screen-reader-only label, focus state, keyboard shortcut, touch-friendly tap target, and reduced-motion mode is wired in by default. Mobile users get a hamburger menu + bottom filter sheet; desktop users get a dock-style layout above 1024 px.
