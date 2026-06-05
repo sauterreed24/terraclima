@@ -48,6 +48,7 @@ import { layoutAtlasMapPins } from "../lib/atlas-map-pin-layout";
 import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
 import { computePinLabelModes, type MapPinLabelMode } from "../lib/atlas-map-label-visibility";
 import { livedRealityCoverage } from "../lib/livability-score";
+import type { LiveFitFilters } from "../lib/live-fit";
 import {
   ATLAS_DEFAULT_TOUCH_MODE,
   atlasTouchActionForMode,
@@ -70,6 +71,8 @@ interface Props {
   selectedId?: string;
   onSelect: (id: string) => void;
   featuredIds?: readonly string[];
+  featuredLabel?: string;
+  liveFitFilters?: LiveFitFilters;
   width?: number;
   height?: number;
 }
@@ -212,6 +215,8 @@ export function AtlasMap({
   selectedId,
   onSelect,
   featuredIds = [],
+  featuredLabel,
+  liveFitFilters,
   width: widthProp = 820,
   height: heightProp = 520,
 }: Props) {
@@ -2029,6 +2034,9 @@ export function AtlasMap({
           place={hoverPlace}
           xPct={tooltipScreen.xPct}
           yPct={tooltipScreen.yPct}
+          featuredRank={featuredRankById.get(hoverPlace.id)}
+          featuredLabel={featuredLabel}
+          liveFitFilters={liveFitFilters}
         />
       )}
     </div>
@@ -2650,8 +2658,13 @@ const Marker = memo(function Marker({
           // its right edge lands just before the pin — never past the SVG
           // edge at high zoom.
           const labelDx = labelSide === "right" ? r + 6 : -(r + 6) - labelW;
+          const labelPointerEvents = featuredRank || isActive || isHover ? "auto" : "none";
           return (
-            <g transform={`translate(${labelDx} ${showSub ? 2 : 4})`} pointerEvents="none" className="map-marker-label">
+            <g
+              transform={`translate(${labelDx} ${showSub ? 2 : 4})`}
+              pointerEvents={labelPointerEvents}
+              className="map-marker-label"
+            >
               <rect
                 x={-2}
                 y={showSignatureLine ? -16 : showSub ? -15 : -11}

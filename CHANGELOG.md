@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Map hover fit handoff
+
+- **Atlas map preview (`src/components/AtlasMap.tsx`, `src/components/AtlasMapTooltip.tsx`):** the hover/focus scout preview now reflects the active Live Finder constraints, shows current rank context for top map leaders, and adds a compact next-move cue to open the dossier before comparing finalists. This tightens the map-to-shortlist handoff without adding permanent labels or clutter.
+
 ### Compare finalist verdict
 
 - **Compare (`src/components/CompareView.tsx`, `src/lib/compare-finalist-verdict.ts`):** upgrades the existing decision read into a compact finalist verdict with a first-dossier recommendation, counterweight caveat, next action, and dossier-opening controls. The scoring stays deterministic and uses only existing live-fit, livability, comfort, lived-ease, growability, and risk signals.
