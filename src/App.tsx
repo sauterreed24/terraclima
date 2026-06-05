@@ -875,7 +875,7 @@ export default function App() {
                   </div>
                   <div>
                     <div className="tc-reader-path__label">Scout</div>
-                    <p>Read the dossier, caveats, sources, twins, and Scout next cue before treating any place as a real-world finalist.</p>
+                    <p>Read the dossier, caveats, sources, twins, and Scout day plan before treating any place as a real-world finalist.</p>
                   </div>
                 </section>
 
@@ -2374,34 +2374,40 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               {Math.round(brief.leader.score)}
             </span>
           </button>
-          <button
-            type="button"
-            className="scout-brief__next-step"
-            onClick={() => onOpenPlace(brief.nextStep.place.id)}
-            title={prose(brief.nextStep.detail)}
-            aria-label={`${brief.nextStep.label}: ${brief.nextStep.action} ${brief.nextStep.detail} Open place profile.`}
-          >
-            <Target className="w-3.5 h-3.5 text-[rgba(26,143,168,0.88)] shrink-0" aria-hidden />
-            <span className="min-w-0">
-              <span className="scout-brief__next-step-label">{brief.nextStep.label}</span>
-              <span className="scout-brief__next-step-action">{prose(brief.nextStep.action)}</span>
-              <span className="scout-brief__next-step-detail">{prose(brief.nextStep.detail)}</span>
-            </span>
-          </button>
-          <button
-            type="button"
-            className="scout-brief__field-check"
-            onClick={() => onOpenPlace(brief.fieldCheck.place.id)}
-            title={prose(brief.fieldCheck.detail)}
-            aria-label={`${brief.fieldCheck.label}: ${brief.fieldCheck.action} ${brief.fieldCheck.detail} Open place profile.`}
-          >
-            <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)] shrink-0" aria-hidden />
-            <span className="min-w-0">
-              <span className="scout-brief__field-check-label">{brief.fieldCheck.label}</span>
-              <span className="scout-brief__field-check-action">{prose(brief.fieldCheck.action)}</span>
-              <span className="scout-brief__field-check-detail">{prose(brief.fieldCheck.detail)}</span>
-            </span>
-          </button>
+          <div className="scout-brief__visit-plan" role="group" aria-label="Scout day plan">
+            <div className="scout-brief__visit-plan-head">
+              <span className="scout-brief__visit-plan-title">Scout day plan</span>
+              <span className="scout-brief__visit-plan-copy">Visit order, field check, then the first tradeoff read.</span>
+            </div>
+            <div className="scout-brief__visit-plan-list">
+              {brief.scoutPlan.map((step, index) => {
+                const Icon = step.kind === "field-check" ? Compass : step.kind === "tradeoff" ? ArrowLeftRight : Target;
+                const labelClass = step.kind === "field-check" ? "scout-brief__field-check-label" : "scout-brief__next-step-label";
+                const actionClass = step.kind === "field-check" ? "scout-brief__field-check-action" : "scout-brief__next-step-action";
+                const detailClass = step.kind === "field-check" ? "scout-brief__field-check-detail" : "scout-brief__next-step-detail";
+                const toneClass = step.kind === "field-check" ? "scout-brief__field-check" : "scout-brief__next-step";
+                const action = prose(step.action);
+                const detail = prose(step.detail);
+                return (
+                  <button
+                    key={`${step.kind}-${step.place.id}-${index}`}
+                    type="button"
+                    className={`${toneClass} scout-brief__visit-plan-step`}
+                    onClick={() => onOpenPlace(step.place.id)}
+                    title={detail}
+                    aria-label={`Scout day plan step ${index + 1}. ${step.label}: ${action} ${detail} Open place profile.`}
+                  >
+                    <span className="scout-brief__visit-plan-index" aria-hidden>{index + 1}</span>
+                    <span className="min-w-0">
+                      <span className={labelClass}><Icon className="w-3.5 h-3.5" aria-hidden />{step.label}</span>
+                      <span className={actionClass}>{action}</span>
+                      <span className={detailClass}>{detail}</span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
           <div className="scout-brief__audience" aria-label="Who this shortlist fits and who should pause">
             <div>
               <span className="scout-brief__audience-label">Best for</span>{" "}
@@ -2517,32 +2523,33 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="desktop-scout-board__place">{brief.leader.place.name}</span>
             <span className="desktop-scout-board__note">{prose(brief.fitLine)}</span>
           </button>
-          <button
-            type="button"
-            className="desktop-scout-board__next-step"
-            onClick={() => onOpenPlace(brief.nextStep.place.id)}
-            title={prose(brief.nextStep.detail)}
-            aria-label={`${brief.nextStep.label}: ${brief.nextStep.action} ${brief.nextStep.detail} Open place profile.`}
-          >
-            <Target className="w-3 h-3 text-[rgba(26,143,168,0.9)] shrink-0" aria-hidden />
-            <span className="min-w-0">
-              <span className="desktop-scout-board__next-step-label">{brief.nextStep.label}</span>
-              <span className="desktop-scout-board__next-step-action">{prose(brief.nextStep.action)}</span>
-            </span>
-          </button>
-          <button
-            type="button"
-            className="desktop-scout-board__field-check"
-            onClick={() => onOpenPlace(brief.fieldCheck.place.id)}
-            title={prose(brief.fieldCheck.detail)}
-            aria-label={`${brief.fieldCheck.label}: ${brief.fieldCheck.action} ${brief.fieldCheck.detail} Open place profile.`}
-          >
-            <Compass className="w-3 h-3 text-[rgba(61,143,85,0.9)] shrink-0" aria-hidden />
-            <span className="min-w-0">
-              <span className="desktop-scout-board__field-check-label">{brief.fieldCheck.label}</span>
-              <span className="desktop-scout-board__field-check-action">{prose(brief.fieldCheck.action)}</span>
-            </span>
-          </button>
+          <div className="desktop-scout-board__visit-plan" role="group" aria-label="Desktop scout day plan">
+            <div className="desktop-scout-board__visit-plan-title">Scout day plan</div>
+            {brief.scoutPlan.slice(0, 3).map((step, index) => {
+              const Icon = step.kind === "field-check" ? Compass : step.kind === "tradeoff" ? ArrowLeftRight : Target;
+              const labelClass = step.kind === "field-check" ? "desktop-scout-board__field-check-label" : "desktop-scout-board__next-step-label";
+              const actionClass = step.kind === "field-check" ? "desktop-scout-board__field-check-action" : "desktop-scout-board__next-step-action";
+              const toneClass = step.kind === "field-check" ? "desktop-scout-board__field-check" : "desktop-scout-board__next-step";
+              const action = prose(step.action);
+              const detail = prose(step.detail);
+              return (
+                <button
+                  key={`${step.kind}-${step.place.id}-${index}`}
+                  type="button"
+                  className={`${toneClass} desktop-scout-board__visit-plan-step`}
+                  onClick={() => onOpenPlace(step.place.id)}
+                  title={detail}
+                  aria-label={`Desktop scout day plan step ${index + 1}. ${step.label}: ${action} ${detail} Open place profile.`}
+                >
+                  <span className="desktop-scout-board__visit-plan-index" aria-hidden>{index + 1}</span>
+                  <span className="min-w-0">
+                    <span className={labelClass}><Icon className="w-3 h-3" aria-hidden />{step.label}</span>
+                    <span className={actionClass}>{action}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
           <div className="desktop-scout-board__audience" aria-label="Who this shortlist fits and who should pause">
             <p><span>Best for</span> {prose(brief.audienceRead.love)}</p>
             <p><span>Pause if</span> {prose(brief.audienceRead.pause)}</p>

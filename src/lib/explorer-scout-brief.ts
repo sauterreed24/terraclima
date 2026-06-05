@@ -53,6 +53,13 @@ export interface ExplorerScoutBrief {
     detail: string;
     source: "nearby-contrast" | "local-contrast" | "settlement-anchor" | "derived";
   };
+  scoutPlan: {
+    label: string;
+    place: Place;
+    action: string;
+    detail: string;
+    kind: "leader" | "field-check" | "tradeoff";
+  }[];
   decisionSignals: {
     label: string;
     place: Place;
@@ -342,6 +349,43 @@ function buildFieldCheck(leader: Place): ExplorerScoutBrief["fieldCheck"] {
   };
 }
 
+function buildScoutPlan(
+  leader: RankingResult,
+  nextStep: ExplorerScoutBrief["nextStep"],
+  fieldCheck: ExplorerScoutBrief["fieldCheck"],
+  decisionRows: readonly ShortlistDecisionRow[],
+): ExplorerScoutBrief["scoutPlan"] {
+  const plan: ExplorerScoutBrief["scoutPlan"] = [
+    {
+      label: "Start here",
+      place: nextStep.place,
+      action: nextStep.action,
+      detail: nextStep.detail,
+      kind: "leader",
+    },
+    {
+      label: "Field check",
+      place: fieldCheck.place,
+      action: fieldCheck.action,
+      detail: fieldCheck.detail,
+      kind: "field-check",
+    },
+  ];
+
+  const runnerUp = decisionRows.find(row => row.place.id !== leader.place.id);
+  if (runnerUp) {
+    plan.push({
+      label: "Second read",
+      place: runnerUp.place,
+      action: `Read ${runnerUp.place.name} as the tradeoff check after ${leader.place.name}.`,
+      detail: `Compare against the leader; ${lowerFirst(trimTerminalPunctuation(runnerUp.watch))}.`,
+      kind: "tradeoff",
+    });
+  }
+
+  return plan;
+}
+
 export function buildExplorerScoutBrief(
   ranked: RankingResult[],
   rankingLabel: string,
@@ -359,6 +403,9 @@ export function buildExplorerScoutBrief(
   const leaderNote = leader.note?.replace(/\s+/g, " ").trim();
   const decisionSignals = buildDecisionSignals(places);
   const decisionRows = buildShortlistDecisionRows(shortlist, liveFitFilters);
+  const nextStep = buildScoutNextStep(leader, decisionRows);
+  const fieldCheck = buildFieldCheck(leader.place);
+  const scoutPlan = buildScoutPlan(leader, nextStep, fieldCheck, decisionRows);
 
   const scenarioClause = scenario === "now"
     ? ""
@@ -372,8 +419,9 @@ export function buildExplorerScoutBrief(
     decisionLine: decisionLine(decisionSignals),
     cautionLine: topRiskLine(leader.place),
     audienceRead: buildAudienceRead(leader, decisionRows, liveFitFilters),
-    nextStep: buildScoutNextStep(leader, decisionRows),
-    fieldCheck: buildFieldCheck(leader.place),
+    nextStep,
+    fieldCheck,
+    scoutPlan,
     decisionSignals,
     decisionRows,
     metrics: [
