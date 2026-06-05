@@ -147,7 +147,7 @@ export function CompareView({
              */}
             <div
               role="presentation"
-              className="max-w-[1280px] mx-auto p-4 sm:p-6 pointer-events-auto"
+              className="compare-dialog__frame max-w-[1280px] mx-auto pointer-events-auto"
               onClick={e => e.stopPropagation()}
             >
             <div className="compare-dialog__head">
