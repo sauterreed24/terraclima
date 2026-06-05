@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   analogBreakdown,
   analogScore,
+  buildClimateTwinTradeoffRead,
   CLIMATE_ANALOG_WEIGHTS,
   describeAnalogMatch,
   findClimateTwins,
@@ -152,6 +153,37 @@ describe("describeAnalogMatch", () => {
     const text = describeAnalogMatch(a, b);
     expect(text.length).toBeGreaterThan(0);
     expect(text.endsWith(".")).toBe(true);
+  });
+});
+
+describe("buildClimateTwinTradeoffRead", () => {
+  it("turns the top climate twin into a same-feel tradeoff read", () => {
+    const anchor = makePlace({
+      id: "tradeoff-anchor",
+      lat: 48.1,
+      climate: climateWithPrecip(mediterraneanHighs, mediterraneanLows, mediterraneanPrecip),
+    });
+    const aridTwin = makePlace({
+      id: "tradeoff-twin",
+      name: "Dry Twin",
+      lat: 48.1,
+      climate: climateWithPrecip(mediterraneanHighs, mediterraneanLows, aridWinterPrecip),
+    });
+    const twin = {
+      place: aridTwin,
+      analog: analogScore(anchor, aridTwin),
+      axes: analogBreakdown(anchor, aridTwin),
+      synopsis: describeAnalogMatch(anchor, aridTwin),
+    };
+
+    const read = buildClimateTwinTradeoffRead(anchor, twin, "drier");
+
+    expect(read.label).toBe("Same feel, different tradeoffs");
+    expect(read.summary).toContain("Dry Twin is the first same-feel comparison through the drier lens");
+    expect(read.summary).toContain("the main climate tradeoff");
+    expect(read.shared.length).toBe(2);
+    expect(read.tradeoff.length).toBeGreaterThan(0);
+    expect(read.nextAction).toContain("adding finalists to Compare");
   });
 });
 

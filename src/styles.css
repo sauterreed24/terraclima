@@ -4690,6 +4690,63 @@
       0 1px 0 rgba(255, 255, 255, 0.9) inset,
       0 0 0 1px rgba(26, 143, 168, 0.22);
   }
+  .tc-twins__tradeoff {
+    display: grid;
+    gap: 0.65rem;
+    padding: 0.78rem 0.85rem;
+    border-radius: 0.8rem;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background:
+      linear-gradient(135deg, rgba(94, 196, 220, 0.12), rgba(255, 253, 248, 0.95) 46%, rgba(247, 239, 226, 0.86)),
+      rgba(255, 253, 248, 0.92);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.92) inset,
+      0 12px 28px -24px rgba(26, 143, 168, 0.38);
+  }
+  .tc-twins__tradeoff-kicker {
+    display: inline-flex;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-glacier-700);
+  }
+  .tc-twins__tradeoff p {
+    margin: 0.18rem 0 0;
+    color: var(--color-frost-strong);
+    font-size: 0.78rem;
+    line-height: 1.52;
+  }
+  .tc-twins__tradeoff-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .tc-twins__tradeoff-chip {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    padding: 0.28rem 0.52rem;
+    border-radius: 999px;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background: rgba(255, 255, 255, 0.68);
+    color: var(--color-frost);
+    font-size: 0.68rem;
+    font-weight: 650;
+    line-height: 1.25;
+  }
+  .tc-twins__tradeoff-chip[data-tone="watch"] {
+    border-color: rgba(191, 107, 76, 0.2);
+    background: rgba(255, 247, 235, 0.82);
+    color: var(--color-ice);
+  }
+  .tc-twins__tradeoff-action {
+    padding-top: 0.55rem;
+    border-top: 1px solid rgba(26, 143, 168, 0.12);
+    color: var(--color-stone-readable) !important;
+    font-size: 0.72rem !important;
+    font-weight: 650;
+  }
   .tc-twin-lead,
   .tc-twin-card {
     display: block;

@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Climate twins tradeoff read
+
+- **Climate twins (`src/components/place-detail/PlaceClimateTwins.tsx`, `src/lib/climate-analog.ts`):** adds a compact "same feel, different tradeoffs" read above the lead analog, naming the top preserved climate similarities, the main climate tradeoff, and the next action before adding finalists to Compare. This makes the twins section more relocation-useful without changing analog scoring or corpus data.
+
 ### Map hover fit handoff
 
 - **Atlas map preview (`src/components/AtlasMap.tsx`, `src/components/AtlasMapTooltip.tsx`):** the hover/focus scout preview now reflects the active Live Finder constraints, shows current rank context for top map leaders, and adds a compact next-move cue to open the dossier before comparing finalists. This tightens the map-to-shortlist handoff without adding permanent labels or clutter.

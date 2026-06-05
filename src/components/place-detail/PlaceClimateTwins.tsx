@@ -5,6 +5,7 @@ import { PLACES } from "../../data/places";
 import { ClimateRibbon } from "../charts/ClimateRibbon";
 import {
   CLIMATE_SHIFTS,
+  buildClimateTwinTradeoffRead,
   findClimateTwins,
   type ClimateAnalogAxis,
   type ClimateShiftId,
@@ -76,6 +77,7 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
   }
 
   const [lead, ...rest] = twins;
+  const tradeoffRead = buildClimateTwinTradeoffRead(place, lead, shift);
 
   return (
     <div className="tc-twins" aria-busy={isPending || undefined} data-pending={isPending || undefined}>
@@ -101,6 +103,24 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
             {s.label}
           </button>
         ))}
+      </div>
+
+      <div className="tc-twins__tradeoff" role="group" aria-label="Climate twin tradeoff read">
+        <div>
+          <span className="tc-twins__tradeoff-kicker">{tradeoffRead.label}</span>
+          <p>{tradeoffRead.summary}</p>
+        </div>
+        <div className="tc-twins__tradeoff-grid" aria-label="Top twin relocation read">
+          {tradeoffRead.shared.map(item => (
+            <span key={item} className="tc-twins__tradeoff-chip" data-tone="match">
+              Keeps {item}
+            </span>
+          ))}
+          <span className="tc-twins__tradeoff-chip" data-tone="watch">
+            Watch: {tradeoffRead.tradeoff}
+          </span>
+        </div>
+        <p className="tc-twins__tradeoff-action">{tradeoffRead.nextAction}</p>
       </div>
 
       <button
