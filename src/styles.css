@@ -5987,8 +5987,8 @@
      `content-visibility: auto` tells the browser to skip rendering /
      painting / hit-testing entirely for cards scrolled far off-screen, with
      `contain-intrinsic-size` reserving layout space so the scroll bar
-     doesn't jitter. On an 8GB Surface Pro this takes the initial layout
-     cost from O(n) to O(visible-n). */
+     doesn't jitter. The reserved size matches the current rich card, not the
+     old compact card, so offscreen rows do not collapse before measurement. */
   .place-card {
     cursor: pointer;
     border-color: rgba(195, 165, 138, 0.36);
@@ -6004,7 +6004,7 @@
       border-color 220ms,
       box-shadow 280ms cubic-bezier(0.2, 0.8, 0.2, 1);
     content-visibility: auto;
-    contain-intrinsic-size: 0 272px;
+    contain-intrinsic-size: 0 1060px;
   }
   .place-card:hover { transform: translateY(-2px); }
   .place-card:focus-visible,
@@ -6173,6 +6173,9 @@
     line-height: 1.18;
   }
   @media (max-width: 540px) {
+    .place-card {
+      contain-intrinsic-size: 0 1140px;
+    }
     .place-card__signature-band {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
