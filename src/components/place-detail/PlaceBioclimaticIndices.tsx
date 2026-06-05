@@ -147,6 +147,8 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
   const ranks = useMemo(() => getPlaceBioclimRanks(place), [place]);
   if (!bio) return null;
   const cards = buildCards(bio, ranks);
+  const cardReads = cards.map(card => ({ card, ...card.read(bio) }));
+  const undefinedReads = cardReads.filter(({ idx }) => idx.value === null);
 
   return (
     <section id={anchorId} className="detail-doc-section anim-fade-in scroll-mt-28">
@@ -157,9 +159,16 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
       <p className="text-sm text-stone mb-3 max-w-2xl">
         Five standard climate-science indices computed directly from this place's monthly temperature and precipitation normals — independent of the authored Köppen label, citable to original sources, comparable across the atlas.
       </p>
+      {undefinedReads.length > 0 ? (
+        <div className="tc-accent-panel px-3 py-2.5 mb-3 text-[12px] leading-snug text-stone-readable">
+          <div className="text-[10px] uppercase tracking-wider text-glacier-700 mb-1">Undefined bioclimatic edge</div>
+          <p>
+            {undefinedReads.map(({ card }) => card.label).join(", ")} is undefined for this place because the active growing season never crosses the index threshold. The annual water-balance and continentality reads still compare normally.
+          </p>
+        </div>
+      ) : null}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
-        {cards.map(card => {
-          const { idx, share } = card.read(bio);
+        {cardReads.map(({ card, idx, share }) => {
           const display = valueWithClass(idx as BioclimIndex, card.format);
           const percentile = fmtPercentile(share);
           return (

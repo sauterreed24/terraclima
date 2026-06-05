@@ -268,6 +268,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
             transition={drawerPanelTransition(!!reduceMotion, coarsePointer)}
             className="place-detail-drawer fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto overflow-x-hidden outline-none border-l"
           >
+            <h1 className="sr-only">{place.name} climate dossier</h1>
             <PlaceReadingProgress panelRef={panelRef} />
             <DetailHeader
               place={place}
