@@ -3,7 +3,7 @@ import type { MicroclimateArchetype, Place, RiskAssessment, RiskLevel, Topograph
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { fmtPrecip, fmtTemp, useProse, useUnits } from "../lib/units";
 import { getAnnualPrecipMm, meanJanLow, meanSummerHigh } from "../lib/climate-metrics";
-import { assessLiveFit } from "../lib/live-fit";
+import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { atmosphericComfortScore, describeHumanComfort, humanComfortScore } from "../lib/livability-score";
 import { useRichVisualEffects } from "../lib/device-profile";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
@@ -63,10 +63,16 @@ export function AtlasMapTooltip({
   place,
   xPct,
   yPct,
+  featuredRank,
+  featuredLabel,
+  liveFitFilters,
 }: {
   place: Place;
   xPct: number;
   yPct: number;
+  featuredRank?: number;
+  featuredLabel?: string;
+  liveFitFilters?: LiveFitFilters;
 }) {
   const richEffects = useRichVisualEffects();
   const { temp, dist } = useUnits();
@@ -77,7 +83,7 @@ export function AtlasMapTooltip({
   const watch = topRiskRows(place, 2);
   const growList = place.growability.growsWell.slice(0, 2);
   const trickyFirst = place.growability.tricky[0];
-  const liveFit = assessLiveFit(place);
+  const liveFit = assessLiveFit(place, liveFitFilters);
   const comfort = Math.round(humanComfortScore(place));
   const atmosphere = Math.round(atmosphericComfortScore(place));
   const comfortRead = describeHumanComfort(place);
@@ -94,6 +100,11 @@ export function AtlasMapTooltip({
   const countryLabel =
     place.country === "USA" ? "US" : place.country === "Canada" ? "CA" : "MX";
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
+  const featuredLine = featuredRank && featuredLabel
+    ? `Rank #${featuredRank} by ${featuredLabel}`
+    : featuredRank
+      ? `Rank #${featuredRank}`
+      : null;
   const locationLine = [place.municipality && place.municipality !== place.name ? place.municipality : null, place.region]
     .filter(Boolean)
     .join(" · ");
@@ -130,6 +141,12 @@ export function AtlasMapTooltip({
             {archetypeLabel(place.archetypes[0])}
           </span>
         </div>
+        {featuredLine ? (
+          <div className="tc-map-hover-rankline" aria-label={featuredLine}>
+            <span>{featuredLine}</span>
+            <span>Current lens leader</span>
+          </div>
+        ) : null}
       </header>
 
       <div className="tc-map-hover-card__body">
@@ -177,6 +194,7 @@ export function AtlasMapTooltip({
 
         <section className="tc-map-hover-section tc-map-hover-section--inset" aria-label="Scout cues">
           <h3 className="tc-map-hover-kicker">Scout cues</h3>
+          <p className="tc-map-hover-next-move">Next move: open the dossier from this pin, then compare it against the current leaders.</p>
           <div className="tc-map-hover-cues">
             {growList.length > 0 ? (
               <div>

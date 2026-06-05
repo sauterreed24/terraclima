@@ -4170,6 +4170,33 @@
     opacity: 0.45;
     font-weight: 400;
   }
+  .tc-map-hover-rankline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0.5rem;
+    margin-top: 0.55rem;
+    padding: 0.38rem 0.48rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background: rgba(241, 251, 253, 0.68);
+    color: var(--color-frost-strong);
+    font-size: 0.66rem;
+    line-height: 1.25;
+  }
+  .tc-map-hover-rankline span:first-child {
+    color: var(--color-ice);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .tc-map-hover-rankline span:last-child {
+    color: var(--tc-map-muted);
+    font-size: 0.56rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
 
   .tc-map-hover-field {
     display: grid;
@@ -4242,6 +4269,17 @@
   .tc-map-hover-cues {
     display: grid;
     gap: 0.4rem;
+  }
+  .tc-map-hover-next-move {
+    margin: 0 0 0.48rem;
+    padding: 0.42rem 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(26, 143, 168, 0.16);
+    background: rgba(241, 251, 253, 0.64);
+    color: var(--color-frost-strong);
+    font-size: 0.68rem;
+    font-weight: 600;
+    line-height: 1.35;
   }
   .tc-map-hover-cues > div {
     display: grid;

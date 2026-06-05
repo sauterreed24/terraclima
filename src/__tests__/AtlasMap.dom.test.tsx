@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { AtlasMap, wheelZoomFactor } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
 import { makePlace } from "../lib/__tests__/test-fixtures";
+import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 
 afterEach(cleanup);
 
@@ -52,13 +53,20 @@ function defaultMapPlaces() {
   ];
 }
 
-function renderMap(onSelect = vi.fn(), featuredIds: readonly string[] = [], places = defaultMapPlaces()) {
+function renderMap(
+  onSelect = vi.fn(),
+  featuredIds: readonly string[] = [],
+  places = defaultMapPlaces(),
+  options: { featuredLabel?: string; liveFitFilters?: LiveFitFilters } = {},
+) {
   return render(
     <UnitProvider>
       <AtlasMap
         places={places}
         onSelect={onSelect}
         featuredIds={featuredIds}
+        featuredLabel={options.featuredLabel}
+        liveFitFilters={options.liveFitFilters}
       />
     </UnitProvider>,
   );
@@ -363,6 +371,37 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.queryByText("Open the full sheet")).not.toBeInTheDocument();
 
     fireEvent.click(marker);
+
+    expect(onSelect).toHaveBeenCalledWith("a");
+  });
+
+  it("aligns the hover preview with active ranking context and live-fit filters", () => {
+    setCoarsePointer(false);
+    const places = defaultMapPlaces();
+    const liveFitFilters: LiveFitFilters = { maxSummerHighC: 22 };
+    const expectedLiveFit = assessLiveFit(places[0]!, liveFitFilters).score;
+    renderMap(vi.fn(), ["a"], places, { featuredLabel: "Live-here fit", liveFitFilters });
+
+    const marker = screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ });
+    fireEvent.pointerEnter(marker, { pointerType: "mouse" });
+
+    const preview = screen.getByRole("tooltip");
+    expect(preview).toHaveTextContent("Rank #1 by Live-here fit");
+    expect(preview).toHaveTextContent("Current lens leader");
+    expect(preview).toHaveTextContent("Next move: open the dossier from this pin, then compare it against the current leaders.");
+    expect(preview).toHaveTextContent(`Live fit${expectedLiveFit}`);
+  });
+
+  it("lets ranked map labels activate their own marker instead of passing through to neighbors", () => {
+    setCoarsePointer(false);
+    const onSelect = vi.fn();
+    renderMap(onSelect, ["a"], defaultMapPlaces(), { featuredLabel: "Live-here fit" });
+
+    const marker = screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ });
+    const label = marker.querySelector(".map-marker-label");
+
+    expect(label).toHaveAttribute("pointer-events", "auto");
+    fireEvent.click(label!);
 
     expect(onSelect).toHaveBeenCalledWith("a");
   });

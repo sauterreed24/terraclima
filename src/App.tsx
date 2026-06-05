@@ -834,6 +834,8 @@ export default function App() {
                     places={filtered}
                     selectedId={selectedId ?? undefined}
                     featuredIds={topRankedPlaceIds}
+                    featuredLabel={rankingLabel}
+                    liveFitFilters={filters}
                     onSelect={openPlace}
                   />
                 </div>
