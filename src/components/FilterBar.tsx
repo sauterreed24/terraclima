@@ -13,6 +13,7 @@ import { RANKING_OPTIONS } from "../lib/ranking-options";
 import {
   LIVE_FIT_GROWABILITY_FLOORS,
   LIVE_FIT_PRESETS,
+  LIVE_FIT_PRESET_BY_ID,
   LIVE_FIT_RISK_CEILINGS,
   LIVE_FIT_SUMMER_CAPS_C,
   LIVE_FIT_WINTER_FLOORS_C,
@@ -38,6 +39,23 @@ function countLiveSignals(filters: FilterState): number {
     filters.maxFireRisk,
     filters.maxOverallRisk,
   ].filter(v => v != null).length;
+}
+
+function rankingOptionLabel(id: RankingProfile): string {
+  return RANKING_OPTIONS.find(option => option.id === id)?.label ?? id.replace(/-/g, " ");
+}
+
+function bundleAppliedSummaryParts(bundle: LifestyleBundle, temp: UnitState["temp"]): string[] {
+  const parts = [
+    `Rank: ${rankingOptionLabel(bundle.ranking)}`,
+    ...bundle.presets.map(preset => `Fit: ${LIVE_FIT_PRESET_BY_ID[preset]?.shortLabel ?? preset}`),
+  ];
+  if (bundle.maxSummerHighC != null) parts.push(`Summer <= ${fmtTemp(bundle.maxSummerHighC, temp)}`);
+  if (bundle.minWinterLowC != null) parts.push(`Winter >= ${fmtTemp(bundle.minWinterLowC, temp)}`);
+  if (bundle.minGrowability != null) parts.push(`Garden ${bundle.minGrowability}+`);
+  if (bundle.maxFireRisk) parts.push(`Fire <= ${RISK_LABELS[bundle.maxFireRisk]}`);
+  if (bundle.maxOverallRisk) parts.push(`Risk <= ${RISK_LABELS[bundle.maxOverallRisk]}`);
+  return parts;
 }
 
 interface Props {
@@ -176,6 +194,8 @@ export const FilterBar = memo(function FilterBar({
           {LIFESTYLE_BUNDLES.map(bundle => {
             const isActive = isBundleActive(bundle, ranking, filters);
             const descId = `${searchFieldId}-fit-${bundle.id}-desc`;
+            const appliesId = `${searchFieldId}-fit-${bundle.id}-applies`;
+            const appliedSummary = bundleAppliedSummaryParts(bundle, temp).join(" \u00b7 ");
             return (
               <button
                 key={bundle.id}
@@ -184,7 +204,7 @@ export const FilterBar = memo(function FilterBar({
                 data-tone={bundle.tone}
                 data-active={isActive}
                 aria-pressed={isActive}
-                aria-describedby={descId}
+                aria-describedby={`${descId} ${appliesId}`}
                 title={bundle.description}
                 onClick={() => applyBundle(bundle)}
               >
@@ -194,6 +214,15 @@ export const FilterBar = memo(function FilterBar({
                 </span>
                 <span className="fit-finder-panel__cue">{bundle.cue}</span>
                 <span id={descId} className="fit-finder-panel__desc">{bundle.description}</span>
+                <span
+                  id={appliesId}
+                  className="fit-finder-panel__applies"
+                  aria-label={`${bundle.label} applied settings: ${appliedSummary}`}
+                  title={appliedSummary}
+                >
+                  <span className="fit-finder-panel__applies-kicker">Applies</span>
+                  <span className="fit-finder-panel__applies-copy">{appliedSummary}</span>
+                </span>
               </button>
             );
           })}
