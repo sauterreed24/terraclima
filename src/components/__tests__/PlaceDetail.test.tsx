@@ -89,6 +89,20 @@ describe("PlaceDetail overview spotlight", () => {
 });
 
 describe("PlaceDetail header accessibility", () => {
+  it("exposes a semantic h1 for the dossier while keeping the visible title", () => {
+    const place = PLACES_BY_ID["yuma-az"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} />
+      </UnitProvider>,
+    );
+
+    expect(screen.getByRole("heading", { level: 1, name: `${place.name} climate dossier` })).toHaveClass("sr-only");
+    expect(screen.getByRole("heading", { level: 2, name: place.name })).toBeInTheDocument();
+  });
+
   it("reflects compare membership on the Compare button via aria-pressed", () => {
     const place = PLACES_BY_ID["yuma-az"];
     expect(place).toBeTruthy();
@@ -120,6 +134,26 @@ describe("PlaceDetail header accessibility", () => {
 
     const removeBtn = screen.getByRole("button", { name: `Remove ${place.name} from compare` });
     expect(removeBtn).toHaveAttribute("aria-pressed", "true");
+  });
+});
+
+describe("PlaceDetail bioclimatic edge reads", () => {
+  it("explains undefined growing-season indices without hiding annual reads", () => {
+    const place = PLACES_BY_ID["iqaluit-nu"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} />
+      </UnitProvider>,
+    );
+
+    const edgeNote = screen.getByText("Undefined bioclimatic edge").closest(".tc-accent-panel");
+    expect(edgeNote).not.toBeNull();
+    expect(edgeNote!).toHaveTextContent("Selianinov HTC is undefined");
+    expect(edgeNote!).toHaveTextContent("annual water-balance");
+    expect(screen.getByText("Conrad")).toBeInTheDocument();
+    expect(screen.getByText("UNEP aridity")).toBeInTheDocument();
   });
 });
 
