@@ -3305,6 +3305,34 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
   }
+  .fit-finder-panel__applies {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 0.28rem;
+    margin-top: 0.02rem;
+    padding-top: 0.1rem;
+    border-top: 1px solid rgba(200, 170, 140, 0.22);
+  }
+  .fit-finder-panel__applies-kicker {
+    color: var(--color-glacier-700);
+    font-size: 0.54rem;
+    font-weight: 800;
+    line-height: 1.16;
+    text-transform: uppercase;
+  }
+  .fit-finder-panel__applies-copy {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-frost);
+    font-size: 0.58rem;
+    font-weight: 720;
+    line-height: 1.16;
+    letter-spacing: 0;
+  }
   @media (max-width: 420px) {
     .fit-finder-panel__grid {
       grid-template-columns: 1fr;
@@ -8146,6 +8174,15 @@ html[data-theme="dark"] .fit-finder-panel__check {
 }
 html[data-theme="dark"] .fit-finder-panel__desc {
   color: var(--color-stone-readable);
+}
+html[data-theme="dark"] .fit-finder-panel__applies {
+  border-top-color: rgba(120, 138, 178, 0.22);
+}
+html[data-theme="dark"] .fit-finder-panel__applies-kicker {
+  color: rgba(180, 236, 246, 0.95);
+}
+html[data-theme="dark"] .fit-finder-panel__applies-copy {
+  color: rgba(238, 244, 255, 0.86);
 }
 
 html[data-theme="dark"] .lens-receipt {

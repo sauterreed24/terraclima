@@ -62,7 +62,7 @@ describe("FilterBar Live Finder temperature constraints", () => {
     expect(lens).toHaveTextContent("Hidden gems");
     expect(lens).toHaveTextContent("2 living signals active");
     expect(screen.getByText("1 Live Finder preset")).toBeInTheDocument();
-    expect(screen.getByText("Garden 65+")).toBeInTheDocument();
+    expect(within(lens).getByText("Garden 65+")).toBeInTheDocument();
   });
 
   it("renders threshold choices in Fahrenheit when the app is in Fahrenheit mode", () => {
@@ -139,6 +139,26 @@ describe("FilterBar lifestyle bundles", () => {
     expect(screen.getByRole("button", { name: /Cool Summer Refuge/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Low Fire \/ Smoke/ })).toBeInTheDocument();
     expect(screen.getByText("Live Finder signals")).toBeInTheDocument();
+  });
+
+  it("discloses each path's applied ranking and Live Finder constraints", () => {
+    renderFilterBar("C");
+
+    const coolPath = screen.getByRole("button", { name: /Cool Summer Refuge/ });
+    expect(coolPath).toHaveAttribute("aria-describedby", expect.stringContaining("-applies"));
+    expect(within(coolPath).getByText("Applies")).toBeInTheDocument();
+    expect(coolPath).toHaveTextContent("Rank: Coolest summers");
+    expect(coolPath).toHaveTextContent("Fit: Cool");
+    expect(coolPath).toHaveTextContent(`Summer <= 26${DEG}C`);
+
+    cleanup();
+    renderFilterBar("F");
+
+    const remotePath = screen.getByRole("button", { name: /Remote Work/ });
+    expect(remotePath).toHaveTextContent("Rank: Remote-work ready");
+    expect(remotePath).toHaveTextContent("Fit: Cool");
+    expect(remotePath).toHaveTextContent("Fit: Low fire");
+    expect(remotePath).toHaveTextContent(`Summer <= 79${DEG}F`);
   });
 
   it("uses the active bundle as the current lens receipt when all bundle controls match", () => {

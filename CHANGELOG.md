@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Fit Finder applied settings
+
+- **Explorer filters (`src/components/FilterBar.tsx`):** each Fit Finder path now shows a compact applied-setting line for the ranking lens, Live Finder presets, and any temperature/growability/risk constraints before the user applies it. This makes guided paths more inspectable without changing ranking math, corpus data, URLs, or the manual filter controls.
+
 ### Scout brief visit plan
 
 - **Scout Brief (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** turns the leader's next action, field-check contrast, and runner-up tradeoff into a compact ordered "Scout day plan." The plan keeps every step clickable, preserves existing ranking math and corpus data, and extends the Celsius runtime audit to cover the new generated copy.
