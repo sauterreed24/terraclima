@@ -2388,6 +2388,20 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               <span className="scout-brief__next-step-detail">{prose(brief.nextStep.detail)}</span>
             </span>
           </button>
+          <button
+            type="button"
+            className="scout-brief__field-check"
+            onClick={() => onOpenPlace(brief.fieldCheck.place.id)}
+            title={prose(brief.fieldCheck.detail)}
+            aria-label={`${brief.fieldCheck.label}: ${brief.fieldCheck.action} ${brief.fieldCheck.detail} Open place profile.`}
+          >
+            <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)] shrink-0" aria-hidden />
+            <span className="min-w-0">
+              <span className="scout-brief__field-check-label">{brief.fieldCheck.label}</span>
+              <span className="scout-brief__field-check-action">{prose(brief.fieldCheck.action)}</span>
+              <span className="scout-brief__field-check-detail">{prose(brief.fieldCheck.detail)}</span>
+            </span>
+          </button>
           <div className="scout-brief__audience" aria-label="Who this shortlist fits and who should pause">
             <div>
               <span className="scout-brief__audience-label">Best for</span>{" "}
@@ -2514,6 +2528,19 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="min-w-0">
               <span className="desktop-scout-board__next-step-label">{brief.nextStep.label}</span>
               <span className="desktop-scout-board__next-step-action">{prose(brief.nextStep.action)}</span>
+            </span>
+          </button>
+          <button
+            type="button"
+            className="desktop-scout-board__field-check"
+            onClick={() => onOpenPlace(brief.fieldCheck.place.id)}
+            title={prose(brief.fieldCheck.detail)}
+            aria-label={`${brief.fieldCheck.label}: ${brief.fieldCheck.action} ${brief.fieldCheck.detail} Open place profile.`}
+          >
+            <Compass className="w-3 h-3 text-[rgba(61,143,85,0.9)] shrink-0" aria-hidden />
+            <span className="min-w-0">
+              <span className="desktop-scout-board__field-check-label">{brief.fieldCheck.label}</span>
+              <span className="desktop-scout-board__field-check-action">{prose(brief.fieldCheck.action)}</span>
             </span>
           </button>
           <div className="desktop-scout-board__audience" aria-label="Who this shortlist fits and who should pause">

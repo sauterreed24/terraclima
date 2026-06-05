@@ -68,6 +68,13 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.nextStep.action).toContain(`Scout ${ranked[0].place.name}'s`);
     expect(brief!.nextStep.action).toContain(":");
     expect(brief!.nextStep.detail).toContain("First caveat:");
+    expect(brief!.fieldCheck).toMatchObject({
+      label: "Field check",
+      place: ranked[0].place,
+    });
+    expect(brief!.fieldCheck.action.length).toBeGreaterThan(20);
+    expect(["nearby-contrast", "local-contrast", "settlement-anchor", "derived"]).toContain(brief!.fieldCheck.source);
+    expect(brief!.fieldCheck.detail.length).toBeGreaterThan(40);
   });
 
   it("shows which shortlisted place wins each living-priority signal", () => {
@@ -134,6 +141,40 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.nextStep.detail).toContain("Gardening window");
     expect(brief!.nextStep.detail).toContain("First caveat:");
     expect(brief!.nextStep.detail).toContain("Risk Cove");
+  });
+
+  it("turns authored nearby contrast into a scouting field check", () => {
+    const leader = makePlace({
+      id: "contrast-leader",
+      name: "Contrast Leader",
+      nearbyContrasts: [
+        {
+          label: "Lower basin",
+          note: "Hotter and drier within a short drive.",
+        },
+      ],
+      localContrast: [
+        {
+          radiusKm: 20,
+          note: "Cooler along the ridge.",
+        },
+      ],
+    });
+    const ranked: RankingResult[] = [
+      { place: leader, score: 91, note: "Contrast-aware leader." },
+    ];
+
+    const brief = buildExplorerScoutBrief(ranked, "Test rank")!;
+
+    expect(brief.fieldCheck).toMatchObject({
+      label: "Field check",
+      place: leader,
+      target: "Lower basin",
+      source: "nearby-contrast",
+    });
+    expect(brief.fieldCheck.action).toBe("Compare Contrast Leader with Lower basin.");
+    expect(brief.fieldCheck.detail).toContain("Hotter and drier within a short drive.");
+    expect(brief.fieldCheck.detail).toContain("confirm the ranked climate signal");
   });
 
   it("translates active Fit Finder preferences into a who-fits / who-pauses read", () => {

@@ -209,6 +209,8 @@ describe("App shell", () => {
     expect(screen.getAllByText("Decision matrix").length).toBeGreaterThan(0);
     expect(screen.getByText("Scout next")).toBeInTheDocument();
     expect(screen.getByText(/Scout .*:/)).toBeInTheDocument();
+    expect(screen.getAllByText("Field check").length).toBeGreaterThan(0);
+    expect(screen.getAllByRole("button", { name: /Field check:/ }).length).toBeGreaterThan(0);
     expect(screen.getByText("Best for")).toBeInTheDocument();
     expect(screen.getByText("Pause if")).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Apply context:/ }).length).toBeGreaterThan(3);

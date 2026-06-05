@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Scout brief field check
+
+- **Scout Brief (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** adds a compact "Field check" cue to the Explorer Scout Brief and desktop relocation workbench, derived from existing nearby-contrast, local-contrast, or settlement-anchor fields. This turns the ranked leader into a concrete scouting comparison before a place becomes a finalist, without changing rankings, corpus data, or routes.
+
 ### Shortlist compare handoff
 
 - **Pinned shortlist (`src/App.tsx`, `src/components/CompareView.tsx`):** adds a direct Compare action beside Export when two or more places are pinned, preserving pinned order and the existing four-place Compare cap. This tightens the relocation journey from saved finalists to side-by-side decision read, with extra mobile Compare top spacing so the newly reachable dialog does not crowd the app chrome.
