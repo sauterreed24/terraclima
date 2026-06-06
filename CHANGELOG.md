@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Fit Finder signal row polish
+
+- **Explorer filters (`src/styles.css`):** lets Fit Finder **Rank** and **Signals** values use the full narrow desktop card width, preventing live-font clipping in the right dock while preserving the compact label/value layout in the wider mobile filter sheet.
+
 ### Fit Finder dock clarity
 
 - **Explorer filters (`src/components/FilterBar.tsx`, `src/styles.css`):** replaces each Fit Finder card's crowded one-line applied-settings read with structured **Rank** and **Signals** rows. Full ranking and constraint details remain available through the card title and accessible description, while desktop labels can wrap instead of truncating.
