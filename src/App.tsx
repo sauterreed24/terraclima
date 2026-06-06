@@ -2374,6 +2374,16 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               {Math.round(brief.leader.score)}
             </span>
           </button>
+          <div className="scout-brief__advisor" aria-label="Advisor verdict">
+            <div className="scout-brief__advisor-head">
+              <span className="scout-brief__advisor-title">Advisor verdict</span>
+              <span className="scout-brief__advisor-confidence">{prose(brief.advisorRead.confidence)}</span>
+            </div>
+            <p><span>Read</span> {prose(brief.advisorRead.verdict)}</p>
+            <p><span>Why</span> {prose(brief.advisorRead.why)}</p>
+            <p><span>Check</span> {prose(brief.advisorRead.checkFirst)}</p>
+            <p><span>Next</span> {prose(brief.advisorRead.nextAction)}</p>
+          </div>
           <div className="scout-brief__visit-plan" role="group" aria-label="Scout day plan">
             <div className="scout-brief__visit-plan-head">
               <span className="scout-brief__visit-plan-title">Scout day plan</span>
@@ -2523,6 +2533,14 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="desktop-scout-board__place">{brief.leader.place.name}</span>
             <span className="desktop-scout-board__note">{prose(brief.fitLine)}</span>
           </button>
+          <div className="desktop-scout-board__advisor" aria-label="Advisor verdict">
+            <div className="desktop-scout-board__advisor-title">Advisor verdict</div>
+            <p><span>Read</span> {prose(brief.advisorRead.verdict)}</p>
+            <p><span>Why</span> {prose(brief.advisorRead.why)}</p>
+            <p><span>Check</span> {prose(brief.advisorRead.checkFirst)}</p>
+            <p><span>Next</span> {prose(brief.advisorRead.nextAction)}</p>
+            <p><span>Confidence</span> {prose(brief.advisorRead.confidence)}</p>
+          </div>
           <div className="desktop-scout-board__visit-plan" role="group" aria-label="Desktop scout day plan">
             <div className="desktop-scout-board__visit-plan-title">Scout day plan</div>
             {brief.scoutPlan.slice(0, 3).map((step, index) => {
