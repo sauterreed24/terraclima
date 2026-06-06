@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Shortlist export Compare table
+
+- **Scout plan export (`src/lib/shortlist-export.ts`, `src/components/chrome/ShortlistExportMenu.tsx`):** carries the Compare finalist decision read into the Markdown shortlist export, including a Compare URL plus role, score, fit, risk, visit window, and watch-first rows for the first four pinned places. Export helpers now lazy-load only when a format is chosen, and the export still keeps every pinned place while preserving the no-booking/no-appraisal/no-move-recommendation boundary.
+
 ### Compare finalist decision table
 
 - **Compare (`src/components/CompareView.tsx`, `src/lib/compare-finalist-verdict.ts`):** adds a compact finalist table to the decision read so saved places can be scanned by role, blended score, fit, risk, visit timing, and first caveat before opening dossiers. The table preserves existing Compare ordering, scoring, URL state, and dossier-opening controls.
