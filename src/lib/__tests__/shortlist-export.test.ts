@@ -120,6 +120,31 @@ describe("exportShortlistAsICS", () => {
     }
   });
 
+  it("keeps DTEND after DTSTART for cross-year best-month windows (e.g. Nov–Feb)", () => {
+    const place = makePlace({
+      id: "winter-sun",
+      name: "Winter Sun Town",
+      region: "Test",
+      country: "USA",
+      climate: {
+        tempHighC: [22, 23, 26, 30, 34, 38, 40, 39, 35, 30, 26, 23],
+        tempLowC: [12, 13, 15, 18, 22, 26, 28, 27, 24, 20, 16, 13],
+        precipMm: Array(12).fill(20),
+        humidityPct: Array(12).fill(55),
+        sunshinePct: [70, 72, 75, 80, 85, 90, 92, 90, 85, 78, 72, 68],
+        windKph: Array(12).fill(10),
+        snowCm: Array(12).fill(0),
+      },
+    });
+    const file = exportShortlistAsICS([place], { generatedAt: FIXED });
+    const match = file.body.match(/DTSTART;VALUE=DATE:(\d{8})[\s\S]*?DTEND;VALUE=DATE:(\d{8})/);
+    expect(match).not.toBeNull();
+    const [, dtStart, dtEnd] = match!;
+    expect(dtEnd > dtStart).toBe(true);
+    expect(dtStart).toBe("20261101");
+    expect(dtEnd).toBe("20270401");
+  });
+
   it("escapes commas and semicolons in LOCATION + DESCRIPTION per RFC 5545", () => {
     const place = makePlace({
       id: "with-special",
