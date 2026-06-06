@@ -82,6 +82,14 @@ describe("compare finalist verdict", () => {
     expect(read?.scoutSequence[0].why).toContain("Best all-around finalist");
     expect(read?.scoutSequence[2].caveat).toContain("Risk load: 42/100");
     expect(read?.lanes.map(lane => lane.label)).toEqual(["Broadest fit", "Lowest risk", "Comfort leader", "Garden edge"]);
+    expect(read?.tableRows.map(row => row.role)).toEqual(["Start here", "Counterweight", "Risk check"]);
+    expect(read?.tableRows.map(row => row.place.name)).toEqual(["Broad Town", "Quiet Basin", "Heat Bluff"]);
+    expect(read?.tableRows[0]).toMatchObject({
+      decisionScore: blendedCompareScore(broad),
+      fitSummary: "92/100 fit · 8/12 easy months",
+      riskSummary: "28/100 risk",
+    });
+    expect(read?.tableRows[2].watch).toContain("Risk load: 42/100");
   });
 
   it("uses stable name/id tie-breakers for equal blended scores", () => {
@@ -104,6 +112,11 @@ describe("compare finalist verdict", () => {
     expect(new Set(read?.scoutSequence.map(step => step.place.id)).size).toBe(read?.scoutSequence.length);
     expect(read?.scoutSequence.every(step => step.visitWindow.length > 0)).toBe(true);
     expect(read?.scoutSequence.every(step => step.caveat.length > 0)).toBe(true);
+    expect(read?.tableRows).toHaveLength(4);
+    expect(read?.tableRows.every(row => row.fitSummary.includes("/100 fit"))).toBe(true);
+    expect(read?.tableRows.every(row => row.riskSummary.includes("/100 risk"))).toBe(true);
+    expect(read?.tableRows.every(row => row.visitWindow.length > 0)).toBe(true);
+    expect(read?.tableRows.every(row => row.watch.length > 0)).toBe(true);
   });
 
   it("builds decision profiles from the real corpus and active Live Finder filters", () => {

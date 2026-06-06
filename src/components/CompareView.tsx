@@ -270,6 +270,54 @@ export function CompareView({
                     </div>
                   ))}
                 </div>
+                <div className="compare-finalist-table" aria-label="Finalist decision table">
+                  <div className="compare-finalist-table__head">
+                    <span className="compare-finalist-table__kicker">Finalist table</span>
+                    <span className="compare-finalist-table__copy">Role, score, timing, and first caution for every saved place.</span>
+                  </div>
+                  <div className="compare-finalist-table__scroll" aria-label="Scrollable finalist decision table">
+                    <table>
+                      <caption className="sr-only">Decision table for saved compare finalists</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Role</th>
+                          <th scope="col">Place</th>
+                          <th scope="col">Score</th>
+                          <th scope="col">Fit</th>
+                          <th scope="col">Risk</th>
+                          <th scope="col">Visit</th>
+                          <th scope="col">Watch first</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {decisionRead.tableRows.map(row => (
+                          <tr key={row.place.id}>
+                            <td><span className="compare-finalist-table__role">{row.role}</span></td>
+                            <td>
+                              {onOpenPlace ? (
+                                <button
+                                  type="button"
+                                  className="compare-finalist-table__place"
+                                  aria-label={`Open ${row.place.name} from finalist decision table`}
+                                  onClick={() => onOpenPlace(row.place.id)}
+                                >
+                                  {row.place.name}
+                                </button>
+                              ) : (
+                                <span className="compare-finalist-table__place-text">{row.place.name}</span>
+                              )}
+                            </td>
+                            <td className="font-mono-num">{row.decisionScore}/100</td>
+                            <td>{row.fitSummary}</td>
+                            <td>{row.riskSummary}</td>
+                            <td>{row.visitWindow}</td>
+                            <td>{prose(row.watch)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </section>
             ) : null}
 

@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Compare finalist decision table
+
+- **Compare (`src/components/CompareView.tsx`, `src/lib/compare-finalist-verdict.ts`):** adds a compact finalist table to the decision read so saved places can be scanned by role, blended score, fit, risk, visit timing, and first caveat before opening dossiers. The table preserves existing Compare ordering, scoring, URL state, and dossier-opening controls.
+
 ### Fit Finder signal row polish
 
 - **Explorer filters (`src/styles.css`):** lets Fit Finder **Rank** and **Signals** values use the full narrow desktop card width, preventing live-font clipping in the right dock while preserving the compact label/value layout in the wider mobile filter sheet.
