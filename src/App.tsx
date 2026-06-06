@@ -2615,24 +2615,25 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
         ))}
       </div>
 
-      <div className="desktop-scout-board__signals" aria-label="Priority leaders in the current shortlist">
-        {brief.decisionSignals.slice(0, 3).map(signal => (
-          <button
-            key={signal.label}
-            type="button"
-            className="desktop-scout-board__signal"
-            onClick={() => onOpenPlace(signal.place.id)}
-            title={prose(signal.detail)}
-            aria-label={`${signal.label}: ${signal.place.name}, ${signal.value}. Open place profile.`}
-          >
-            <span className="desktop-scout-board__signal-label">{signal.label}</span>
-            <span className="desktop-scout-board__signal-place">{signal.place.name}</span>
-            <span className="desktop-scout-board__signal-value">{signal.value}</span>
-          </button>
-        ))}
-      </div>
+      <div className="desktop-scout-board__evidence" aria-label="Compact desktop shortlist evidence">
+        <div className="desktop-scout-board__signals" aria-label="Priority leaders in the current shortlist">
+          {brief.decisionSignals.slice(0, 3).map(signal => (
+            <button
+              key={signal.label}
+              type="button"
+              className="desktop-scout-board__signal"
+              onClick={() => onOpenPlace(signal.place.id)}
+              title={prose(signal.detail)}
+              aria-label={`${signal.label}: ${signal.place.name}, ${signal.value}. Open place profile.`}
+            >
+              <span className="desktop-scout-board__signal-label">{signal.label}</span>
+              <span className="desktop-scout-board__signal-place">{signal.place.name}</span>
+              <span className="desktop-scout-board__signal-value">{signal.value}</span>
+            </button>
+          ))}
+        </div>
 
-      <div className="desktop-scout-board__matrix" aria-label="Desktop decision matrix">
+        <div className="desktop-scout-board__matrix" aria-label="Desktop decision matrix">
         <div className="desktop-scout-board__matrix-title">Decision matrix</div>
         {brief.decisionRows.slice(0, 3).map(row => (
           <button
@@ -2651,6 +2652,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="desktop-scout-board__matrix-watch">Watch: {prose(row.watch)}</span>
           </button>
         ))}
+        </div>
       </div>
 
       <div className="desktop-scout-board__caution">

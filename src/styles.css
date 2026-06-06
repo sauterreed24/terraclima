@@ -2300,6 +2300,7 @@
     }
     .desktop-scout-board__leader,
     .desktop-scout-board__metrics,
+    .desktop-scout-board__evidence,
     .desktop-scout-board__signals,
     .desktop-scout-board__matrix,
     .desktop-scout-board__caution {
@@ -2605,19 +2606,27 @@
       font-size: 0.8rem;
       line-height: 1.16;
     }
-    .desktop-scout-board__signals {
+    .desktop-scout-board__evidence {
       grid-column: 1 / -1;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 0.5rem;
+      padding: 0.55rem 0.58rem;
+      border-radius: 0.68rem;
+      border: 1px solid rgba(26, 143, 168, 0.16);
+      background: rgba(255, 253, 248, 0.72);
+    }
+    .desktop-scout-board__signals {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.45rem;
     }
     .desktop-scout-board__signal {
       min-width: 0;
-      min-height: 4rem;
+      min-height: 3.35rem;
       display: grid;
       align-content: start;
-      gap: 0.18rem;
-      padding: 0.55rem 0.62rem;
+      gap: 0.14rem;
+      padding: 0.46rem 0.54rem;
       border-radius: 0.62rem;
       border: 1px solid rgba(61, 143, 85, 0.22);
       background: rgba(255, 255, 255, 0.86);
@@ -2654,15 +2663,10 @@
       font-variant-numeric: tabular-nums;
     }
     .desktop-scout-board__matrix {
-      grid-column: 1 / -1;
       display: grid;
       grid-template-columns: auto repeat(3, minmax(0, 1fr));
-      gap: 0.5rem;
+      gap: 0.45rem;
       align-items: stretch;
-      padding: 0.58rem 0.62rem;
-      border-radius: 0.68rem;
-      border: 1px solid rgba(26, 143, 168, 0.16);
-      background: rgba(255, 253, 248, 0.72);
     }
     .desktop-scout-board__matrix-title {
       align-self: center;
@@ -2676,7 +2680,7 @@
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
       gap: 0.18rem 0.45rem;
-      padding: 0.5rem 0.58rem;
+      padding: 0.46rem 0.54rem;
       border-radius: 0.58rem;
       border: 1px solid rgba(26, 143, 168, 0.2);
       background: rgba(255, 255, 255, 0.86);
@@ -2722,7 +2726,7 @@
     .desktop-scout-board__matrix-watch {
       grid-column: 1 / -1;
       color: var(--color-stone-readable);
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       line-height: 1.25;
     }
     .desktop-scout-board__matrix-stats {
@@ -2751,13 +2755,23 @@
     .desktop-scout-board__metrics {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    .desktop-scout-board__signals,
     .desktop-scout-board__matrix {
-      grid-template-columns: 1fr;
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(12rem, 72%);
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x proximity;
+      scrollbar-width: thin;
+      padding-bottom: 0.12rem;
     }
     .desktop-scout-board__matrix-title {
-      writing-mode: horizontal-tb;
-      transform: none;
-      text-align: left;
+      display: none;
+    }
+    .desktop-scout-board__signal,
+    .desktop-scout-board__matrix-row {
+      scroll-snap-align: start;
     }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -9209,4 +9223,29 @@ html[data-theme="dark"] .desktop-scout-board__advisor,
 html[data-theme="dark"] .desktop-scout-board__visit-plan,
 html[data-theme="dark"] .desktop-scout-board__field-check {
   border-top-color: rgba(120, 138, 178, 0.24);
+}
+html[data-theme="dark"] .desktop-scout-board__evidence {
+  background: rgba(18, 26, 44, 0.68);
+  border-color: rgba(120, 138, 178, 0.22);
+  box-shadow: var(--tc-shadow-inset);
+}
+html[data-theme="dark"] .desktop-scout-board__leader,
+html[data-theme="dark"] .desktop-scout-board__metric,
+html[data-theme="dark"] .desktop-scout-board__caution {
+  background: rgba(22, 30, 50, 0.74);
+  border-color: rgba(120, 138, 178, 0.24);
+}
+html[data-theme="dark"] .desktop-scout-board__signal,
+html[data-theme="dark"] .desktop-scout-board__matrix-row {
+  background: rgba(22, 30, 50, 0.74);
+  border-color: rgba(120, 138, 178, 0.24);
+}
+html[data-theme="dark"] .desktop-scout-board__compare {
+  background: rgba(18, 26, 44, 0.78);
+  border-color: rgba(120, 138, 178, 0.28);
+  color: rgba(180, 236, 246, 0.95);
+}
+html[data-theme="dark"] .desktop-scout-board__score {
+  background: linear-gradient(180deg, rgba(94, 196, 220, 0.3), rgba(26, 143, 168, 0.18));
+  color: var(--color-frost-strong);
 }

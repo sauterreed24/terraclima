@@ -230,11 +230,15 @@ describe("App shell", () => {
 
     const scoutBoard = screen.getByLabelText("Desktop relocation workbench");
     const advisorVerdict = screen.getByText("Advisor verdict");
+    const compactEvidence = screen.getByLabelText("Compact desktop shortlist evidence");
     const signalRail = screen.getByLabelText(/climate signal leaders/i);
     const currentRank = screen.getByText("Current rank");
     const contextStress = screen.getByText("Context stress test");
 
     expect(advisorVerdict.closest(".desktop-scout-board")).toBe(scoutBoard);
+    expect(compactEvidence.closest(".desktop-scout-board")).toBe(scoutBoard);
+    expect(within(compactEvidence).getByText("Decision matrix")).toBeInTheDocument();
+    expect(within(compactEvidence).getAllByRole("button", { name: /desktop decision matrix/ }).length).toBe(3);
     expect(scoutBoard.compareDocumentPosition(signalRail) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(scoutBoard.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(scoutBoard.compareDocumentPosition(contextStress) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();

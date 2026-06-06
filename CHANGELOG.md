@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Scout Board compact evidence
+
+- **Desktop Scout Board (`src/App.tsx`, `src/styles.css`):** folds the priority-leader signals and decision matrix into one compact evidence section with narrow-desktop rails. The relocation verdict stays first, the Compare/profile handoffs remain clickable, and mobile keeps the existing Scout Brief flow.
+
 ### Scout/map hierarchy polish
 
 - **Explorer hero (`src/App.tsx`):** promotes the desktop relocation workbench ahead of the climate signal rail so the advisor verdict, scout-day plan, and Compare handoff land earlier in the first Explorer read. Mobile keeps the compact hero-first, map-second, Scout Brief-after-map flow.
