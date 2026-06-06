@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Scout brief advisor verdict
+
+- **Scout Brief (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** adds a compact advisor verdict to the Explorer Scout Brief and desktop relocation workbench. It explains why the leader is the first scout, what to check before shortlisting, the next action, and the screening-confidence boundary while preserving deterministic scores, corpus data, routes, and Compare behavior.
+
 ### Winter Sun fit screen
 
 - **Explorer rankings and Fit Finder (`src/lib/scoring.ts`, `src/lib/live-fit.ts`, `src/lib/lifestyle-bundles.ts`, `src/components/FilterBar.tsx`):** adds a deterministic **Sunniest winters** ranking plus a **Winter Sun** Fit Finder path for gray-season escape. The path uses existing monthly `sunshinePct` normals and a winter-low floor, fails closed when winter sunshine is missing, and keeps the applied ranking/preset/constraint line visible before users apply it.

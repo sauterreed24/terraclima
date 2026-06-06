@@ -1461,6 +1461,59 @@
     font-weight: 750;
     font-variant-numeric: tabular-nums;
   }
+  .scout-brief__advisor {
+    min-width: 0;
+    display: grid;
+    gap: 0.32rem;
+    padding: 0.58rem 0.62rem;
+    border-radius: 0.65rem;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background:
+      linear-gradient(180deg, rgba(255, 253, 248, 0.86), rgba(232, 248, 251, 0.56)),
+      linear-gradient(90deg, rgba(26, 143, 168, 0.05), rgba(232, 155, 32, 0.04));
+    color: var(--color-frost);
+  }
+  .scout-brief__advisor-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.65rem;
+    min-width: 0;
+  }
+  .scout-brief__advisor-title {
+    flex-shrink: 0;
+    color: var(--color-glacier-700);
+    font-size: 0.66rem;
+    font-weight: 800;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+  .scout-brief__advisor-confidence {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--color-stone-readable);
+    font-size: 0.66rem;
+    line-height: 1.2;
+  }
+  .scout-brief__advisor p {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    color: var(--color-frost);
+    font-size: 0.72rem;
+    line-height: 1.32;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .scout-brief__advisor p span {
+    margin-right: 0.32rem;
+    color: var(--color-stone-readable);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
   .scout-brief__metrics {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1931,6 +1984,13 @@
       display: grid;
       gap: 0.2rem;
     }
+    .scout-brief__advisor-head {
+      display: grid;
+      gap: 0.16rem;
+    }
+    .scout-brief__advisor-confidence {
+      white-space: normal;
+    }
     .scout-brief__visit-plan-copy {
       text-align: left;
     }
@@ -2257,6 +2317,7 @@
     }
     .desktop-scout-board__eyebrow,
     .desktop-scout-board__audience span,
+    .desktop-scout-board__advisor-title,
     .desktop-scout-board__field-check-label,
     .desktop-scout-board__metric-label,
     .desktop-scout-board__signal-label,
@@ -2327,6 +2388,36 @@
       line-height: 1.28;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
+    }
+    .desktop-scout-board__advisor {
+      display: grid;
+      gap: 0.32rem;
+      min-width: 0;
+      margin-top: 0.5rem;
+      padding-top: 0.48rem;
+      border-top: 1px dashed rgba(26, 143, 168, 0.22);
+    }
+    .desktop-scout-board__advisor-title {
+      color: var(--color-glacier-700);
+      letter-spacing: 0;
+    }
+    .desktop-scout-board__advisor p {
+      display: -webkit-box;
+      overflow: hidden;
+      margin: 0;
+      color: var(--color-frost);
+      font-size: 0.68rem;
+      line-height: 1.28;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .desktop-scout-board__advisor p span {
+      margin-right: 0.28rem;
+      color: var(--color-stone-readable);
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
     }
     .desktop-scout-board__next-step {
       width: 100%;
@@ -9077,10 +9168,16 @@ html[data-motion="full"] .climate-scenario__opt[data-active="true"]::after {
 }
 
 html[data-theme="dark"] .scout-brief__audience,
+html[data-theme="dark"] .scout-brief__advisor,
 html[data-theme="dark"] .scout-brief__visit-plan,
 html[data-theme="dark"] .scout-brief__field-check,
 html[data-theme="dark"] .desktop-scout-board__audience {
   border-color: rgba(120, 138, 178, 0.26);
+}
+html[data-theme="dark"] .scout-brief__advisor {
+  background:
+    linear-gradient(180deg, rgba(22, 36, 44, 0.78), rgba(18, 26, 44, 0.66)),
+    linear-gradient(90deg, rgba(90, 190, 210, 0.1), rgba(232, 155, 32, 0.06));
 }
 html[data-theme="dark"] .scout-brief__audience {
   background: linear-gradient(180deg, rgba(22, 30, 50, 0.76), rgba(18, 26, 44, 0.66));
@@ -9101,11 +9198,14 @@ html[data-theme="dark"] .desktop-scout-board__visit-plan-index {
   box-shadow: 0 0 0 1px rgba(120, 138, 178, 0.28) inset;
 }
 html[data-theme="dark"] .scout-brief__visit-plan-title,
+html[data-theme="dark"] .scout-brief__advisor-title,
+html[data-theme="dark"] .desktop-scout-board__advisor-title,
 html[data-theme="dark"] .desktop-scout-board__visit-plan-title {
   color: rgba(180, 236, 246, 0.95);
 }
 html[data-theme="dark"] .scout-brief__audience div + div,
 html[data-theme="dark"] .desktop-scout-board__audience,
+html[data-theme="dark"] .desktop-scout-board__advisor,
 html[data-theme="dark"] .desktop-scout-board__visit-plan,
 html[data-theme="dark"] .desktop-scout-board__field-check {
   border-top-color: rgba(120, 138, 178, 0.24);

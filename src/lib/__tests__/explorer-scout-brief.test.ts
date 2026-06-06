@@ -59,6 +59,13 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.decisionRows[0].watch.length).toBeGreaterThan(6);
     expect(brief!.decisionLine).toContain("living signals");
     expect(brief!.cautionLine.length).toBeGreaterThan(20);
+    expect(brief!.advisorRead.verdict).toContain("first scout");
+    expect(brief!.advisorRead.verdict).toContain("not a moving recommendation");
+    expect(brief!.advisorRead.why).toContain("fit");
+    expect(brief!.advisorRead.checkFirst).toContain("field check");
+    expect(brief!.advisorRead.checkFirst).toMatch(/^Verify /);
+    expect(brief!.advisorRead.nextAction).toContain(`Scout ${ranked[0].place.name}'s`);
+    expect(brief!.advisorRead.confidence).toContain("Screening confidence");
     expect(brief!.audienceRead.love).toContain(ranked[0].place.name);
     expect(brief!.audienceRead.pause.length).toBeGreaterThan(20);
     expect(brief!.nextStep).toMatchObject({
@@ -152,6 +159,8 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief!.nextStep.detail).toContain("Gardening window");
     expect(brief!.nextStep.detail).toContain("First caveat:");
     expect(brief!.nextStep.detail).toContain("Risk Cove");
+    expect(brief!.advisorRead.why).toContain("1 of 6 living signals");
+    expect(brief!.advisorRead.checkFirst).toContain("field check");
     expect(brief!.scoutPlan.map(step => step.kind)).toEqual(["leader", "field-check", "tradeoff"]);
     expect(brief!.scoutPlan[2].place.id).toBe("risk-cove");
   });
@@ -239,6 +248,8 @@ describe("buildExplorerScoutBrief", () => {
     expect(brief.audienceRead.love).toContain("summer highs at or below 26°C");
     expect(brief.audienceRead.love).toContain("Cool Garden");
     expect(brief.audienceRead.pause).toContain("dossier");
+    expect(brief.advisorRead.confidence).toContain("thin shortlist");
+    expect(brief.advisorRead.why).toMatch(/gardeners/i);
   });
 
   it("returns null for an empty ranked set", () => {

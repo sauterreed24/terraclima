@@ -207,9 +207,12 @@ describe("App shell", () => {
     expect(screen.getByText("Context stress test")).toBeInTheDocument();
     expect(screen.getByText(/distinct leaders across/)).toBeInTheDocument();
     expect(screen.getAllByText("Decision matrix").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Advisor verdict").length).toBeGreaterThan(0);
+    expect(screen.getByText(/not a moving recommendation/)).toBeInTheDocument();
+    expect(screen.getByText(/Screening confidence/)).toBeInTheDocument();
     expect(screen.getAllByText("Scout day plan").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Start here").length).toBeGreaterThan(0);
-    expect(screen.getByText(/Scout .*:/)).toBeInTheDocument();
+    expect(screen.getAllByText(/Scout .*:/).length).toBeGreaterThan(0);
     expect(screen.getAllByText("Field check").length).toBeGreaterThan(0);
     expect(screen.getAllByRole("button", { name: /Field check:/ }).length).toBeGreaterThan(0);
     expect(screen.getByText("Best for")).toBeInTheDocument();
@@ -269,6 +272,7 @@ describe("App shell", () => {
     expect(hero!.compareDocumentPosition(map) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(map.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(map.compareDocumentPosition(scoutBrief) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByText("Advisor verdict")).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the map leader caption synchronized with the selected ranking", () => {

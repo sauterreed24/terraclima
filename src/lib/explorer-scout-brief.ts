@@ -33,6 +33,13 @@ export interface ExplorerScoutBrief {
   compareIds: string[];
   summary: string;
   fitLine: string;
+  advisorRead: {
+    verdict: string;
+    why: string;
+    checkFirst: string;
+    nextAction: string;
+    confidence: string;
+  };
   decisionLine: string;
   cautionLine: string;
   audienceRead: {
@@ -182,6 +189,10 @@ function decisionLine(signals: ExplorerScoutBrief["decisionSignals"]): string {
   return `No single place dominates: ${top.place.name} leads ${top.count} living signals, while ${winners[1]!.place.name} keeps at least one priority in play.`;
 }
 
+function signalWinCount(signals: ExplorerScoutBrief["decisionSignals"], place: Place): number {
+  return signals.filter(signal => signal.place.id === place.id).length;
+}
+
 function trimTerminalPunctuation(value: string): string {
   return value.replace(/[.!?]+$/, "").trim();
 }
@@ -189,6 +200,10 @@ function trimTerminalPunctuation(value: string): string {
 function lowerFirst(value: string): string {
   if (!value) return value;
   return `${value[0].toLowerCase()}${value.slice(1)}`;
+}
+
+function checkObject(value: string): string {
+  return lowerFirst(trimTerminalPunctuation(value)).replace(/^check\s+/i, "");
 }
 
 const PRESET_AUDIENCE: Record<LiveFitPresetId, string> = {
@@ -387,6 +402,45 @@ function buildScoutPlan(
   return plan;
 }
 
+function buildAdvisorRead(
+  leader: RankingResult,
+  decisionRows: readonly ShortlistDecisionRow[],
+  decisionSignals: ExplorerScoutBrief["decisionSignals"],
+  nextStep: ExplorerScoutBrief["nextStep"],
+  fieldCheck: ExplorerScoutBrief["fieldCheck"],
+): ExplorerScoutBrief["advisorRead"] {
+  const leaderRow = decisionRows.find(row => row.place.id === leader.place.id);
+  const signalWins = signalWinCount(decisionSignals, leader.place);
+  const signalLine = signalWins > 0
+    ? ` and leads ${signalWins} of ${decisionSignals.length} living signals`
+    : "";
+  const rankingNote = leader.note?.replace(/\s+/g, " ").trim();
+  const bestFor = leaderRow?.bestFor.split(";")[0]?.trim() || leader.place.relocationFit[0] || "climate scouts";
+  const watch = leaderRow?.watch
+    ? checkObject(leaderRow.watch)
+    : "the dossier risk and practical-read sections";
+  const liveFitRead = leaderRow
+    ? `fit ${leaderRow.liveFitScore}/100`
+    : `ranking score ${Math.round(leader.score)}/100`;
+
+  let confidence = "Screening confidence: directional; compare at least one runner-up before shortlisting.";
+  if (leaderRow && decisionRows.length >= 3 && leaderRow.liveFitScore >= 78 && signalWins >= 2) {
+    confidence = "Screening confidence: strong for this lens, still not parcel-level due diligence.";
+  } else if (leaderRow && leaderRow.liveFitScore >= 68) {
+    confidence = "Screening confidence: useful, with one tradeoff to verify before shortlisting.";
+  } else if (decisionRows.length < 3) {
+    confidence = "Screening confidence: thin shortlist; widen the search or compare more places.";
+  }
+
+  return {
+    verdict: `${leader.place.name} is the first scout in this view, not a moving recommendation.`,
+    why: `${bestFor} is the clearest audience fit; ${liveFitRead}${signalLine}.${rankingNote ? ` ${rankingNote}` : ""}`,
+    checkFirst: `Verify ${watch} first, then run the ${fieldCheck.target} field check.`,
+    nextAction: nextStep.action,
+    confidence,
+  };
+}
+
 export function buildExplorerScoutBrief(
   ranked: RankingResult[],
   rankingLabel: string,
@@ -407,6 +461,7 @@ export function buildExplorerScoutBrief(
   const nextStep = buildScoutNextStep(leader, decisionRows);
   const fieldCheck = buildFieldCheck(leader.place);
   const scoutPlan = buildScoutPlan(leader, nextStep, fieldCheck, decisionRows);
+  const advisorRead = buildAdvisorRead(leader, decisionRows, decisionSignals, nextStep, fieldCheck);
 
   const scenarioClause = scenario === "now"
     ? ""
@@ -417,6 +472,7 @@ export function buildExplorerScoutBrief(
     compareIds,
     summary: `${leader.place.name} leads this view by ${rankingLabel}${scenarioClause}; the top ${shortlist.length} span ${countries.join(", ")} and ${archetypes.size} microclimate families.`,
     fitLine: leaderNote ? leaderNote : `${leader.place.koppen} climate signal with ${Math.round(leader.score)} score.`,
+    advisorRead,
     decisionLine: decisionLine(decisionSignals),
     cautionLine: topRiskLine(leader.place),
     audienceRead: buildAudienceRead(leader, decisionRows, liveFitFilters),
