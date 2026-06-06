@@ -645,6 +645,9 @@ describe("App shell", () => {
     );
     renderApp();
     expect(screen.getByText(/Your shortlist · 2/)).toBeInTheDocument();
+    const readiness = screen.getByLabelText("Shortlist scout packet status");
+    expect(readiness).toHaveTextContent("Scout packet ready");
+    expect(readiness).toHaveTextContent("Compare 2 finalists or export a Scout plan");
     expect(screen.getByRole("button", { name: /Open Sequim from your shortlist/ })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
