@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Shortlist scout readiness
+
+- **Pinned shortlist (`src/App.tsx`, `src/lib/shortlist-readiness.ts`):** adds a compact Scout packet status line that explains when pinned places are ready for Compare and when the Scout plan export preserves the full ordered shortlist. The cue stays inside the existing rail and does not change ranking, routes, corpus data, or export files.
+
 ### Shortlist export Compare table
 
 - **Scout plan export (`src/lib/shortlist-export.ts`, `src/components/chrome/ShortlistExportMenu.tsx`):** carries the Compare finalist decision read into the Markdown shortlist export, including a Compare URL plus role, score, fit, risk, visit window, and watch-first rows for the first four pinned places. Export helpers now lazy-load only when a format is chosen, and the export still keeps every pinned place while preserving the no-booking/no-appraisal/no-move-recommendation boundary.

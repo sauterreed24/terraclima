@@ -7444,6 +7444,23 @@
     gap: 0.35rem;
     flex-wrap: wrap;
   }
+  .hero-mini-rail__readiness {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.28rem 0.45rem;
+    margin: 0.42rem 0 0.5rem;
+    color: var(--color-stone-readable);
+    font-size: 0.7rem;
+    line-height: 1.25;
+  }
+  .hero-mini-rail__readiness span {
+    color: var(--color-glacier-700);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
   .hero-mini-rail__title {
     font-size: 0.62rem;
     text-transform: uppercase;

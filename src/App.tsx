@@ -30,6 +30,7 @@ import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
+import { buildShortlistReadiness } from "./lib/shortlist-readiness";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-visual-signature";
 import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
 import { motionPolicy, prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
@@ -2104,6 +2105,10 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
     () => pinnedPlaces.slice(0, COMPARE_LIMIT).map(place => place.id),
     [pinnedPlaces],
   );
+  const shortlistReadiness = useMemo(
+    () => buildShortlistReadiness(pinnedPlaces.length),
+    [pinnedPlaces.length],
+  );
   const recentPlaces = useMemo(
     () =>
       recentIds
@@ -2150,6 +2155,12 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
               <ShortlistExportMenu places={pinnedPlaces} />
             </div>
           </div>
+          {shortlistReadiness ? (
+            <p className="hero-mini-rail__readiness" aria-label="Shortlist scout packet status">
+              <span>{shortlistReadiness.label}</span>
+              {shortlistReadiness.detail}
+            </p>
+          ) : null}
           <ul
             className="hero-mini-rail"
             aria-label="Pinned places — click to open, × to remove"
