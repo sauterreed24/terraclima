@@ -147,25 +147,37 @@ describe("FilterBar lifestyle bundles", () => {
 
     const coolPath = screen.getByRole("button", { name: /Cool Summer Refuge/ });
     expect(coolPath).toHaveAttribute("aria-describedby", expect.stringContaining("-applies"));
-    expect(within(coolPath).getByText("Applies")).toBeInTheDocument();
-    expect(coolPath).toHaveTextContent("Rank: Coolest summers");
-    expect(coolPath).toHaveTextContent("Fit: Cool");
-    expect(coolPath).toHaveTextContent(`Summer <= 26${DEG}C`);
+    expect(within(coolPath).getByText("Rank")).toBeInTheDocument();
+    expect(within(coolPath).getByText("Signals")).toBeInTheDocument();
+    expect(coolPath).toHaveTextContent("Coolest summers");
+    expect(coolPath).toHaveTextContent(`Cool · summer <= 26${DEG}C`);
+    const coolAppliesId = coolPath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
+    expect(coolAppliesId).toBeTruthy();
+    expect(document.getElementById(coolAppliesId!)).toHaveAttribute(
+      "aria-label",
+      `Cool Summer Refuge applied settings: Rank: Coolest summers · Fit: Cool · Summer <= 26${DEG}C`,
+    );
 
     const winterSunPath = screen.getByRole("button", { name: /Winter Sun/ });
-    expect(winterSunPath).toHaveTextContent("Rank: Sunniest winters");
-    expect(winterSunPath).toHaveTextContent("Fit: Mild");
-    expect(winterSunPath).toHaveTextContent("Fit: Sun");
-    expect(winterSunPath).toHaveTextContent(`Winter >= -5${DEG}C`);
+    expect(winterSunPath).toHaveTextContent("Sunniest winters");
+    expect(winterSunPath).toHaveTextContent(`Sun · Mild · winter -5${DEG}C+`);
+    const winterSunAppliesId = winterSunPath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
+    expect(document.getElementById(winterSunAppliesId!)).toHaveAttribute(
+      "aria-label",
+      `Winter Sun applied settings: Rank: Sunniest winters · Fit: Sun · Fit: Mild · Winter >= -5${DEG}C`,
+    );
 
     cleanup();
     renderFilterBar("F");
 
     const remotePath = screen.getByRole("button", { name: /Remote Work/ });
-    expect(remotePath).toHaveTextContent("Rank: Remote-work ready");
-    expect(remotePath).toHaveTextContent("Fit: Cool");
-    expect(remotePath).toHaveTextContent("Fit: Low fire");
-    expect(remotePath).toHaveTextContent(`Summer <= 79${DEG}F`);
+    expect(remotePath).toHaveTextContent("Remote-work ready");
+    expect(remotePath).toHaveTextContent(`Cool · Low fire · summer <= 79${DEG}F`);
+    const remoteAppliesId = remotePath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
+    expect(document.getElementById(remoteAppliesId!)).toHaveAttribute(
+      "aria-label",
+      `Remote Work applied settings: Rank: Remote-work ready · Fit: Cool · Fit: Low fire · Summer <= 79${DEG}F`,
+    );
   });
 
   it("uses the active bundle as the current lens receipt when all bundle controls match", () => {

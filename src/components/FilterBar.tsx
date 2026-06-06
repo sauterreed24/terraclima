@@ -58,6 +58,31 @@ function bundleAppliedSummaryParts(bundle: LifestyleBundle, temp: UnitState["tem
   return parts;
 }
 
+function compactRiskLabel(level: RiskLevel): string {
+  if (level === "moderate") return "mod.";
+  if (level === "very-high") return "very high";
+  return level;
+}
+
+function bundleAppliedRead(bundle: LifestyleBundle, temp: UnitState["temp"]): {
+  full: string;
+  rank: string;
+  signals: string;
+} {
+  const signalParts = bundle.presets.map(preset => LIVE_FIT_PRESET_BY_ID[preset]?.shortLabel ?? preset);
+  if (bundle.maxSummerHighC != null) signalParts.push(`summer <= ${fmtTemp(bundle.maxSummerHighC, temp)}`);
+  if (bundle.minWinterLowC != null) signalParts.push(`winter ${fmtTemp(bundle.minWinterLowC, temp)}+`);
+  if (bundle.minGrowability != null) signalParts.push(`growability ${bundle.minGrowability}+`);
+  if (bundle.maxFireRisk) signalParts.push(`${compactRiskLabel(bundle.maxFireRisk)} fire`);
+  if (bundle.maxOverallRisk) signalParts.push(`${compactRiskLabel(bundle.maxOverallRisk)} risk`);
+
+  return {
+    full: bundleAppliedSummaryParts(bundle, temp).join(" \u00b7 "),
+    rank: rankingOptionLabel(bundle.ranking),
+    signals: signalParts.length > 0 ? signalParts.join(" \u00b7 ") : "ranking only",
+  };
+}
+
 interface Props {
   searchInputId?: string;
   filters: FilterState;
@@ -195,7 +220,7 @@ export const FilterBar = memo(function FilterBar({
             const isActive = isBundleActive(bundle, ranking, filters);
             const descId = `${searchFieldId}-fit-${bundle.id}-desc`;
             const appliesId = `${searchFieldId}-fit-${bundle.id}-applies`;
-            const appliedSummary = bundleAppliedSummaryParts(bundle, temp).join(" \u00b7 ");
+            const appliedRead = bundleAppliedRead(bundle, temp);
             return (
               <button
                 key={bundle.id}
@@ -217,11 +242,17 @@ export const FilterBar = memo(function FilterBar({
                 <span
                   id={appliesId}
                   className="fit-finder-panel__applies"
-                  aria-label={`${bundle.label} applied settings: ${appliedSummary}`}
-                  title={appliedSummary}
+                  aria-label={`${bundle.label} applied settings: ${appliedRead.full}`}
+                  title={appliedRead.full}
                 >
-                  <span className="fit-finder-panel__applies-kicker">Applies</span>
-                  <span className="fit-finder-panel__applies-copy">{appliedSummary}</span>
+                  <span className="fit-finder-panel__applies-row">
+                    <span className="fit-finder-panel__applies-kicker">Rank</span>
+                    <span className="fit-finder-panel__applies-copy">{appliedRead.rank}</span>
+                  </span>
+                  <span className="fit-finder-panel__applies-row">
+                    <span className="fit-finder-panel__applies-kicker">Signals</span>
+                    <span className="fit-finder-panel__applies-copy">{appliedRead.signals}</span>
+                  </span>
                 </span>
               </button>
             );

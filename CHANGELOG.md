@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Fit Finder dock clarity
+
+- **Explorer filters (`src/components/FilterBar.tsx`, `src/styles.css`):** replaces each Fit Finder card's crowded one-line applied-settings read with structured **Rank** and **Signals** rows. Full ranking and constraint details remain available through the card title and accessible description, while desktop labels can wrap instead of truncating.
+
 ### Scout Board action rail
 
 - **Desktop Scout Board (`src/App.tsx`, `src/styles.css`):** adds a compact action rail beside the relocation verdict so desktop users can open the leader dossier, compare the current finalists, or pin the leader to the shortlist without hunting through lower panels. The existing board evidence, map, ranking logic, and mobile Scout Brief path are unchanged.
