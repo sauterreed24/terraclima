@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Scout/map hierarchy polish
+
+- **Explorer hero (`src/App.tsx`):** promotes the desktop relocation workbench ahead of the climate signal rail so the advisor verdict, scout-day plan, and Compare handoff land earlier in the first Explorer read. Mobile keeps the compact hero-first, map-second, Scout Brief-after-map flow.
+
 ### Scout brief advisor verdict
 
 - **Scout Brief (`src/lib/explorer-scout-brief.ts`, `src/App.tsx`):** adds a compact advisor verdict to the Explorer Scout Brief and desktop relocation workbench. It explains why the leader is the first scout, what to check before shortlisting, the next action, and the screening-confidence boundary while preserving deterministic scores, corpus data, routes, and Compare behavior.
