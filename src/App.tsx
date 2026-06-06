@@ -1572,6 +1572,7 @@ const HeroCard = memo(function HeroCard({
     filters.maxOverallRisk,
   ].filter(v => v != null).length;
   const heroAccentRgb = signatureLeaders[0]?.signature.mapAccentRgb ?? "94, 196, 220";
+  const prioritizeDesktopScoutBoard = showDetailedHeroPanels && showDesktopScoutBoard && scoutBrief !== null;
   return (
     <div
       className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
@@ -1656,6 +1657,15 @@ const HeroCard = memo(function HeroCard({
         </div>
       </div>
 
+      {prioritizeDesktopScoutBoard ? (
+        <DesktopScoutBoard
+          brief={scoutBrief}
+          onOpenPlace={onOpenPlace}
+          onCompareLeaders={onCompareLeaders}
+          onPreloadCompare={onPreloadCompare}
+        />
+      ) : null}
+
       {signatureLeaders.length > 0 ? (
         <ClimateSignalRail
           rows={signatureLeaders}
@@ -1678,6 +1688,7 @@ const HeroCard = memo(function HeroCard({
           onPreloadCompare={onPreloadCompare}
           onApplyContextScenario={onApplyContextScenario}
           showDesktopScoutBoard={showDesktopScoutBoard}
+          includeScoutBrief={!prioritizeDesktopScoutBoard}
         />
       ) : null}
 
@@ -1763,6 +1774,7 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   onPreloadCompare,
   onApplyContextScenario,
   showDesktopScoutBoard,
+  includeScoutBrief = true,
 }: {
   signatureLeaders: SignatureLeader[];
   ranking: RankingProfile;
@@ -1776,30 +1788,32 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   onPreloadCompare: () => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
   showDesktopScoutBoard: boolean;
+  includeScoutBrief?: boolean;
 }) {
+  const desktopScoutBoard = includeScoutBrief && scoutBrief && showDesktopScoutBoard ? (
+    <DesktopScoutBoard
+      brief={scoutBrief}
+      onOpenPlace={onOpenPlace}
+      onCompareLeaders={onCompareLeaders}
+      onPreloadCompare={onPreloadCompare}
+    />
+  ) : null;
+  const livingCompass = signatureLeaders.length > 0 ? (
+    <LivingCompassWorkbench
+      rows={signatureLeaders}
+      ranking={ranking}
+      rankingLabel={rankingLabel}
+      filters={filters}
+      scoutBrief={scoutBrief}
+      onOpenPlace={onOpenPlace}
+    />
+  ) : null;
   return (
     <>
-      {signatureLeaders.length > 0 ? (
-        <LivingCompassWorkbench
-          rows={signatureLeaders}
-          ranking={ranking}
-          rankingLabel={rankingLabel}
-          filters={filters}
-          scoutBrief={scoutBrief}
-          onOpenPlace={onOpenPlace}
-        />
-      ) : null}
+      {desktopScoutBoard}
+      {livingCompass}
 
-      {scoutBrief && showDesktopScoutBoard ? (
-        <DesktopScoutBoard
-          brief={scoutBrief}
-          onOpenPlace={onOpenPlace}
-          onCompareLeaders={onCompareLeaders}
-          onPreloadCompare={onPreloadCompare}
-        />
-      ) : null}
-
-      {scoutBrief && !showDesktopScoutBoard ? (
+      {includeScoutBrief && scoutBrief && !showDesktopScoutBoard ? (
         <ScoutBriefPanel
           brief={scoutBrief}
           onOpenPlace={onOpenPlace}

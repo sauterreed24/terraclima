@@ -224,6 +224,22 @@ describe("App shell", () => {
     expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("prioritizes the desktop scout verdict before broader compass diagnostics", () => {
+    mockViewport(1280);
+    renderApp();
+
+    const scoutBoard = screen.getByLabelText("Desktop relocation workbench");
+    const advisorVerdict = screen.getByText("Advisor verdict");
+    const signalRail = screen.getByLabelText(/climate signal leaders/i);
+    const currentRank = screen.getByText("Current rank");
+    const contextStress = screen.getByText("Context stress test");
+
+    expect(advisorVerdict.closest(".desktop-scout-board")).toBe(scoutBoard);
+    expect(scoutBoard.compareDocumentPosition(signalRail) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(scoutBoard.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(scoutBoard.compareDocumentPosition(contextStress) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("starts new sessions with live-here fit as the default Explorer ranking", () => {
     mockViewport(1280);
     renderApp();
