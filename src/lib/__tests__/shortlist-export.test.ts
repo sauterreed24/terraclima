@@ -156,6 +156,13 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=alpha-valley");
     expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=beta%2C%20ridge");
     expect(file.body).toContain("## Compare next");
+    expect(file.body).toContain("Compare URL: https://example.test/terraclima/?cmp=alpha-valley,beta%2C%20ridge");
+    expect(file.body).toContain("Decision read:");
+    expect(file.body).toContain("Next action:");
+    expect(file.body).toContain("Caution:");
+    expect(file.body).toContain("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
+    expect(file.body).toContain("| Start here |");
+    expect(file.body).toContain("Beta \"Ridge\"");
   });
 
   it("keeps the plan useful when no places are pinned", () => {
@@ -164,5 +171,25 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("Places: 0");
     expect(file.body).toContain("No pinned places yet.");
     expect(file.body).toContain("## Compare next");
+    expect(file.body).toContain("Pin at least two places to generate a Compare-ready finalist table.");
+  });
+
+  it("keeps the Compare handoff inside the four-place app limit while preserving the full export", () => {
+    const places = Array.from({ length: 5 }, (_, index) => makePlace({
+      id: `place-${index + 1}`,
+      name: `Place ${index + 1}`,
+      region: "Test range",
+      country: "USA",
+    }));
+    const file = exportShortlistAsMarkdown(places, {
+      generatedAt: FIXED,
+      appUrl: "https://example.test/terraclima/",
+    });
+
+    expect(file.body).toContain("Places: 5");
+    expect(file.body).toContain("### 5. Place 5");
+    expect(file.body).toContain("Compare opens the first 4 pinned places; this export still keeps all 5 places");
+    expect(file.body).toContain("Compare URL: https://example.test/terraclima/?cmp=place-1,place-2,place-3,place-4");
+    expect(file.body).not.toContain("cmp=place-1,place-2,place-3,place-4,place-5");
   });
 });

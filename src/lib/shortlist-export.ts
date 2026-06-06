@@ -26,6 +26,8 @@
  */
 import type { Place } from "../types";
 import { getBestMonths } from "./best-months";
+import { COMPARE_LIMIT } from "./app-url";
+import { buildCompareDecisionProfiles, buildCompareDecisionRead } from "./compare-finalist-verdict";
 import { buildShortlistDecisionRows } from "./decision-matrix";
 import { scoreLivability } from "./livability-score";
 
@@ -253,6 +255,39 @@ export function exportShortlistAsMarkdown(
 
   lines.push("## Compare next");
   lines.push("");
+  if (places.length >= 2) {
+    const comparePlaces = places.slice(0, COMPARE_LIMIT);
+    const compareRead = buildCompareDecisionRead(buildCompareDecisionProfiles(comparePlaces));
+    lines.push(`Compare URL: ${compareUrl(ctx.appUrl, comparePlaces)}`);
+    lines.push("");
+    if (places.length > COMPARE_LIMIT) {
+      lines.push(`Compare opens the first ${COMPARE_LIMIT} pinned places; this export still keeps all ${places.length} places in the pinned shortlist above.`);
+      lines.push("");
+    }
+    if (compareRead) {
+      lines.push(`Decision read: ${compareRead.summary}`);
+      lines.push(`Next action: ${compareRead.nextAction}`);
+      lines.push(`Caution: ${compareRead.caution}`);
+      lines.push("");
+      lines.push("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
+      lines.push("| --- | --- | ---: | --- | --- | --- | --- |");
+      for (const row of compareRead.tableRows) {
+        lines.push(`| ${[
+          markdownCell(row.role),
+          markdownCell(row.place.name),
+          `${row.decisionScore}/100`,
+          markdownCell(row.fitSummary),
+          markdownCell(row.riskSummary),
+          markdownCell(row.visitWindow),
+          markdownCell(row.watch),
+        ].join(" | ")} |`);
+      }
+      lines.push("");
+    }
+  } else {
+    lines.push("Pin at least two places to generate a Compare-ready finalist table.");
+    lines.push("");
+  }
   lines.push("Use Compare for finalists that survived the watch-first caveats. This plan preserves your pinned order; it is not a route, booking, appraisal, or recommendation to move.");
 
   return {
@@ -323,6 +358,16 @@ function formatIcsDate(d: Date): string {
 function icsEscape(s: string): string {
   // RFC 5545 §3.3.11: escape commas, semicolons, backslashes, newlines.
   return s.replace(/\\/g, "\\\\").replace(/,/g, "\\,").replace(/;/g, "\\;").replace(/\r?\n/g, "\\n");
+}
+
+function markdownCell(s: string): string {
+  return s.replace(/\s+/g, " ").trim().replace(/\|/g, "\\|");
+}
+
+function compareUrl(appUrl: string, places: readonly Place[]): string {
+  const separator = appUrl.includes("?") ? "&" : "?";
+  const ids = places.map(place => encodeURIComponent(place.id)).join(",");
+  return `${appUrl}${separator}cmp=${ids}`;
 }
 
 function countryLabel(country: Place["country"]): string {

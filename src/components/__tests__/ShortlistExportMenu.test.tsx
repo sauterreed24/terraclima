@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { PLACES } from "../../data/places";
 import { downloadBlobFile } from "../../lib/download-blob";
@@ -35,16 +35,14 @@ describe("ShortlistExportMenu", () => {
     ]);
   });
 
-  it("downloads the Markdown scout plan when chosen", () => {
-    vi.useFakeTimers();
+  it("downloads the Markdown scout plan when chosen", async () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
     fireEvent.click(screen.getByRole("button", { name: /Export/i }));
     fireEvent.click(screen.getByRole("menuitem", { name: /^Scout plan/i }));
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-    act(() => vi.runOnlyPendingTimers());
 
-    expect(downloadBlobFile).toHaveBeenCalledOnce();
+    await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce());
     const [body, filename, mimeType] = vi.mocked(downloadBlobFile).mock.calls[0]!;
     expect(body).toContain("# Terraclima Scout Plan");
     expect(body).toContain(PLACES[0]!.name);
@@ -52,8 +50,7 @@ describe("ShortlistExportMenu", () => {
     expect(mimeType).toBe("text/markdown");
   });
 
-  it("closes the menu if an embedded browser blocks the download", () => {
-    vi.useFakeTimers();
+  it("closes the menu if an embedded browser blocks the download", async () => {
     vi.mocked(downloadBlobFile).mockImplementationOnce(() => {
       throw new Error("download blocked");
     });
@@ -63,7 +60,6 @@ describe("ShortlistExportMenu", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: /^Scout plan/i }));
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
-    act(() => vi.runOnlyPendingTimers());
-    expect(downloadBlobFile).toHaveBeenCalledOnce();
+    await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce());
   });
 });
