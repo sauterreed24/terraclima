@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Scout Board action rail
+
+- **Desktop Scout Board (`src/App.tsx`, `src/styles.css`):** adds a compact action rail beside the relocation verdict so desktop users can open the leader dossier, compare the current finalists, or pin the leader to the shortlist without hunting through lower panels. The existing board evidence, map, ranking logic, and mobile Scout Brief path are unchanged.
+
 ### Scout Board compact evidence
 
 - **Desktop Scout Board (`src/App.tsx`, `src/styles.css`):** folds the priority-leader signals and decision matrix into one compact evidence section with narrow-desktop rails. The relocation verdict stays first, the Compare/profile handoffs remain clickable, and mobile keeps the existing Scout Brief flow.

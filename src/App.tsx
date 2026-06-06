@@ -854,6 +854,8 @@ export default function App() {
                       onCompareContextLeaders={comparePlaces}
                       onPreloadCompare={preloadCompareView}
                       onApplyContextScenario={applyContextScenario}
+                      bookmarkIds={bookmarkIds}
+                      onToggleBookmark={toggleBookmark}
                       showDesktopScoutBoard={false}
                     />
                     <MobileLivabilityTopTenStrip
@@ -1663,6 +1665,8 @@ const HeroCard = memo(function HeroCard({
           onOpenPlace={onOpenPlace}
           onCompareLeaders={onCompareLeaders}
           onPreloadCompare={onPreloadCompare}
+          bookmarkIds={bookmarkIds}
+          onToggleBookmark={onToggleBookmark}
         />
       ) : null}
 
@@ -1687,6 +1691,8 @@ const HeroCard = memo(function HeroCard({
           onCompareContextLeaders={onCompareContextLeaders}
           onPreloadCompare={onPreloadCompare}
           onApplyContextScenario={onApplyContextScenario}
+          bookmarkIds={bookmarkIds}
+          onToggleBookmark={onToggleBookmark}
           showDesktopScoutBoard={showDesktopScoutBoard}
           includeScoutBrief={!prioritizeDesktopScoutBoard}
         />
@@ -1773,6 +1779,8 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   onCompareContextLeaders,
   onPreloadCompare,
   onApplyContextScenario,
+  bookmarkIds,
+  onToggleBookmark,
   showDesktopScoutBoard,
   includeScoutBrief = true,
 }: {
@@ -1787,6 +1795,8 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   onCompareContextLeaders: (ids: string[]) => void;
   onPreloadCompare: () => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
+  bookmarkIds: Set<string>;
+  onToggleBookmark: (id: string) => void;
   showDesktopScoutBoard: boolean;
   includeScoutBrief?: boolean;
 }) {
@@ -1796,6 +1806,8 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
       onOpenPlace={onOpenPlace}
       onCompareLeaders={onCompareLeaders}
       onPreloadCompare={onPreloadCompare}
+      bookmarkIds={bookmarkIds}
+      onToggleBookmark={onToggleBookmark}
     />
   ) : null;
   const livingCompass = signatureLeaders.length > 0 ? (
@@ -2526,13 +2538,18 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   onOpenPlace,
   onCompareLeaders,
   onPreloadCompare,
+  bookmarkIds,
+  onToggleBookmark,
 }: {
   brief: ExplorerScoutBrief;
   onOpenPlace: (id: string) => void;
   onCompareLeaders: (ids: string[]) => void;
   onPreloadCompare: () => void;
+  bookmarkIds: Set<string>;
+  onToggleBookmark: (id: string) => void;
 }) {
   const prose = useProse();
+  const leaderPinned = bookmarkIds.has(brief.leader.place.id);
   return (
     <section className="desktop-scout-board" aria-label="Desktop relocation workbench">
       <div className="desktop-scout-board__leader">
@@ -2547,6 +2564,43 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <span className="desktop-scout-board__place">{brief.leader.place.name}</span>
             <span className="desktop-scout-board__note">{prose(brief.fitLine)}</span>
           </button>
+          <div className="desktop-scout-board__actions" aria-label={`Scout actions for ${brief.leader.place.name}`}>
+            <button
+              type="button"
+              className="desktop-scout-board__action"
+              onClick={() => onOpenPlace(brief.leader.place.id)}
+              aria-label={`Open ${brief.leader.place.name} climate dossier from the Scout Board`}
+            >
+              <BookOpen className="w-3.5 h-3.5" aria-hidden />
+              Dossier
+            </button>
+            <button
+              type="button"
+              className="desktop-scout-board__action"
+              onPointerEnter={onPreloadCompare}
+              onFocus={onPreloadCompare}
+              onPointerDown={onPreloadCompare}
+              onClick={() => onCompareLeaders(brief.compareIds)}
+              aria-label={`Compare current Scout Board finalists: ${brief.compareIds.length} places`}
+              disabled={brief.compareIds.length < 2}
+            >
+              <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
+              Compare {brief.compareIds.length}
+            </button>
+            <button
+              type="button"
+              className="desktop-scout-board__action"
+              data-active={leaderPinned}
+              aria-pressed={leaderPinned}
+              onClick={() => onToggleBookmark(brief.leader.place.id)}
+              aria-label={leaderPinned
+                ? `Unpin ${brief.leader.place.name} from your shortlist`
+                : `Pin ${brief.leader.place.name} to your shortlist`}
+            >
+              <BookmarkCheck className="w-3.5 h-3.5" aria-hidden />
+              {leaderPinned ? "Pinned" : "Pin"}
+            </button>
+          </div>
           <div className="desktop-scout-board__advisor" aria-label="Advisor verdict">
             <div className="desktop-scout-board__advisor-title">Advisor verdict</div>
             <p><span>Read</span> {prose(brief.advisorRead.verdict)}</p>
@@ -2586,20 +2640,6 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <p><span>Best for</span> {prose(brief.audienceRead.love)}</p>
             <p><span>Pause if</span> {prose(brief.audienceRead.pause)}</p>
           </div>
-          {brief.compareIds.length >= 2 ? (
-            <button
-              type="button"
-              className="desktop-scout-board__compare"
-              onPointerEnter={onPreloadCompare}
-              onFocus={onPreloadCompare}
-              onPointerDown={onPreloadCompare}
-              onClick={() => onCompareLeaders(brief.compareIds)}
-              aria-label={`Compare current leaders: ${brief.compareIds.length} places`}
-            >
-              <ArrowLeftRight className="w-3 h-3" aria-hidden />
-              Compare
-            </button>
-          ) : null}
         </div>
         <div className="desktop-scout-board__score" aria-label={`Score ${Math.round(brief.leader.score)}`}>
           {Math.round(brief.leader.score)}
