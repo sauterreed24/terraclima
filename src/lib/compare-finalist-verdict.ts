@@ -30,6 +30,16 @@ export interface CompareScoutStep {
   caveat: string;
 }
 
+export interface CompareDecisionTableRow {
+  place: Place;
+  role: string;
+  decisionScore: number;
+  fitSummary: string;
+  riskSummary: string;
+  visitWindow: string;
+  watch: string;
+}
+
 interface CounterweightRead {
   place: Place;
   label: string;
@@ -44,6 +54,7 @@ export interface CompareDecisionRead {
   nextAction: string;
   scoutSequence: CompareScoutStep[];
   lanes: CompareDecisionLane[];
+  tableRows: CompareDecisionTableRow[];
 }
 
 const RISK_LABELS: Record<keyof Place["risks"], string> = {
@@ -233,6 +244,40 @@ function buildScoutSequence(
   return sequence;
 }
 
+function buildDecisionTableRows(
+  profiles: readonly CompareDecisionProfile[],
+  primary: CompareDecisionProfile,
+  counterweight: CounterweightRead | null,
+  scoutSequence: readonly CompareScoutStep[],
+): CompareDecisionTableRow[] {
+  const sequenceRank = new Map(scoutSequence.map((step, index) => [step.place.id, index]));
+  const sequenceRole = new Map(scoutSequence.map(step => [step.place.id, step.label]));
+
+  return [...profiles]
+    .sort((a, b) => {
+      const aSeq = sequenceRank.get(a.place.id);
+      const bSeq = sequenceRank.get(b.place.id);
+      if (aSeq != null || bSeq != null) return (aSeq ?? Number.POSITIVE_INFINITY) - (bSeq ?? Number.POSITIVE_INFINITY);
+      return blendedCompareScore(b) - blendedCompareScore(a) || profileNameTie(a, b);
+    })
+    .map(profile => {
+      const visit = visitWindowRead(profile.place);
+      const role = profile.place.id === primary.place.id
+        ? "Start here"
+        : sequenceRole.get(profile.place.id)
+          ?? (counterweight?.place.id === profile.place.id ? counterweight.label : "Keep warm");
+      return {
+        place: profile.place,
+        role,
+        decisionScore: blendedCompareScore(profile),
+        fitSummary: `${profile.liveFitScore}/100 fit · ${profile.easyMonths}/12 easy months`,
+        riskSummary: `${profile.riskLoad}/100 risk`,
+        visitWindow: visit.visitWindow,
+        watch: caveatRead(profile),
+      };
+    });
+}
+
 export function buildCompareDecisionRead(
   profiles: readonly CompareDecisionProfile[],
 ): CompareDecisionRead | null {
@@ -249,6 +294,7 @@ export function buildCompareDecisionRead(
   const highestRisk = pickProfile(profiles, profile => profile.riskLoad);
   const counterweight = pickCounterweight(primary, runnerUp, lowestRisk, comfort, garden, longestSeason, livedEase);
   const scoutSequence = buildScoutSequence(profiles, primary, counterweight, runnerUp, highestRisk);
+  const tableRows = buildDecisionTableRows(profiles, primary, counterweight, scoutSequence);
 
   const landClause = garden.place.id === primary.place.id
     ? `${primary.place.name} also keeps the garden edge`
@@ -272,6 +318,7 @@ export function buildCompareDecisionRead(
       ? `Open ${primary.place.name}'s dossier first; read ${counterweight.place.name} second if ${counterweight.preference}.`
       : `Open ${primary.place.name}'s dossier first, then add another place to test the tradeoff.`,
     scoutSequence,
+    tableRows,
     lanes: [
       {
         label: "Broadest fit",

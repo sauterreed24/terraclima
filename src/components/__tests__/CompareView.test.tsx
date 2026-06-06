@@ -106,10 +106,18 @@ describe("CompareView", () => {
     expect(screen.getByText("Lowest risk")).toBeInTheDocument();
     expect(screen.getByText("Comfort leader")).toBeInTheDocument();
     expect(screen.getByText("Garden edge")).toBeInTheDocument();
-    expect(screen.getByLabelText("Scouting sequence")).toBeInTheDocument();
+    expect(screen.getByLabelText("Finalist decision table")).toBeInTheDocument();
+    expect(screen.getByText("Finalist table")).toBeInTheDocument();
+    expect(screen.getByText("Role")).toBeInTheDocument();
+    expect(screen.getByText("Score")).toBeInTheDocument();
+    expect(screen.getByText("Visit")).toBeInTheDocument();
+    expect(screen.getByText("Watch first")).toBeInTheDocument();
+    expect(screen.getByText("Start here")).toBeInTheDocument();
+    const scoutSequence = screen.getByLabelText("Scouting sequence");
+    expect(scoutSequence).toBeInTheDocument();
     expect(screen.getByText("Scout sequence")).toBeInTheDocument();
-    expect(screen.getByText(/Start here/)).toBeInTheDocument();
-    expect(screen.getByText(/Counterweight/)).toBeInTheDocument();
+    expect(within(scoutSequence).getByText(/Start here/)).toBeInTheDocument();
+    expect(within(scoutSequence).getByText(/Counterweight/)).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: "Copy comparison link" }));
     expect(onCopyView).toHaveBeenCalledTimes(1);
@@ -117,6 +125,21 @@ describe("CompareView", () => {
     expect(onOpenPlace).toHaveBeenCalledTimes(1);
     fireEvent.click(screen.getByRole("button", { name: /from scouting sequence: Start here/ }));
     expect(onOpenPlace).toHaveBeenCalledTimes(2);
+    fireEvent.click(screen.getAllByRole("button", { name: /from finalist decision table/ })[0]);
+    expect(onOpenPlace).toHaveBeenCalledTimes(3);
+  });
+
+  it("renders one finalist decision table row per compared place", () => {
+    renderCompare({ onOpenPlace: vi.fn() });
+
+    const table = screen.getByRole("table", { name: "Decision table for saved compare finalists" });
+    const rows = within(table).getAllByRole("row");
+    expect(rows).toHaveLength(PLACES.slice(0, 4).length + 1);
+    for (const place of PLACES.slice(0, 4)) {
+      expect(within(table).getByRole("button", { name: `Open ${place.name} from finalist decision table` })).toBeInTheDocument();
+    }
+    expect(within(table).getAllByText(/\/100 fit/)).toHaveLength(4);
+    expect(within(table).getAllByText(/\/100 risk/)).toHaveLength(4);
   });
 
   it("adds a compact mobile key for bioclimatic comparison rows", () => {
