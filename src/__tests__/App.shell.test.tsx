@@ -239,6 +239,11 @@ describe("App shell", () => {
     expect(compactEvidence.closest(".desktop-scout-board")).toBe(scoutBoard);
     expect(within(compactEvidence).getByText("Decision matrix")).toBeInTheDocument();
     expect(within(compactEvidence).getAllByRole("button", { name: /desktop decision matrix/ }).length).toBe(3);
+    const actions = screen.getByLabelText(/Scout actions for/);
+    expect(actions.closest(".desktop-scout-board")).toBe(scoutBoard);
+    expect(within(actions).getByRole("button", { name: /Open .* climate dossier from the Scout Board/ })).toBeInTheDocument();
+    expect(within(actions).getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ })).toBeInTheDocument();
+    expect(within(actions).getByRole("button", { name: /Pin .* to your shortlist/ })).toHaveAttribute("aria-pressed", "false");
     expect(scoutBoard.compareDocumentPosition(signalRail) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(scoutBoard.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(scoutBoard.compareDocumentPosition(contextStress) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -316,9 +321,22 @@ describe("App shell", () => {
     mockViewport(1280);
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: /Compare current leaders/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ }));
 
     expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("pins the desktop Scout Board leader into the shortlist", async () => {
+    mockViewport(1280);
+    renderApp();
+
+    const actions = screen.getByLabelText(/Scout actions for/);
+    const pinButton = within(actions).getByRole("button", { name: /Pin .* to your shortlist/ });
+    fireEvent.click(pinButton);
+
+    await waitFor(() => expect(pinButton).toHaveAttribute("aria-pressed", "true"));
+    expect(within(actions).getByRole("button", { name: /Unpin .* from your shortlist/ })).toHaveTextContent("Pinned");
+    expect(screen.getByText(/Your shortlist · 1/)).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("compares distinct context leaders from the stress test", async () => {
