@@ -280,6 +280,25 @@ describe("App shell", () => {
     });
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("summarizes the active Fit Finder path in the Explorer hero", async () => {
+    mockViewport(1280);
+    renderApp();
+
+    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
+    fireEvent.click(within(quickPicks).getByRole("button", { name: /Cool summers/ }));
+
+    const receipt = await screen.findByLabelText("Active Fit Finder path: Cool Summer Refuge");
+    expect(receipt).toHaveTextContent("Fit Finder path active");
+    expect(receipt).toHaveTextContent("Cool Summer Refuge");
+    expect(receipt).toHaveTextContent("Rank by Coolest summers");
+    expect(receipt).toHaveTextContent(new RegExp(`summer <= (26${DEG}C|79${DEG}F)`));
+    expect(within(receipt).getByRole("button", { name: /Open first scout dossier:/ })).toBeInTheDocument();
+
+    fireEvent.click(within(receipt).getByRole("button", { name: /Compare 4 Fit Finder leaders/ }));
+
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("keeps the mobile Explorer hero compact and defers dense panels until after the map", () => {
     mockViewport(390);
     renderApp();
