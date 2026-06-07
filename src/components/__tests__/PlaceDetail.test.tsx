@@ -89,7 +89,7 @@ describe("PlaceDetail overview spotlight", () => {
 });
 
 describe("PlaceDetail residency fit context", () => {
-  it("keeps active Live Finder constraints visible in the residency brief", () => {
+  it("keeps active Fit Finder path and Live Finder constraints visible in the residency brief", () => {
     const place = PLACES_BY_ID["real-catorce-mx"] ?? PLACES_BY_ID["yuma-az"];
     expect(place).toBeTruthy();
 
@@ -103,15 +103,60 @@ describe("PlaceDetail residency fit context", () => {
             maxSummerHighC: 26,
             minWinterLowC: -5,
           }}
+          residencyFitContext={{
+            rankingLabel: "Best shoulder seasons",
+            bundleLabel: "Mexico / Southwest",
+            bundleCue: "Dry highland options",
+          }}
         />
       </UnitProvider>,
     );
 
     const context = screen.getByLabelText("Active fit context");
     expect(context).toHaveTextContent("Current screen");
+    expect(context).toHaveTextContent("Mexico / Southwest path (Dry highland options)");
+    expect(context).toHaveTextContent("Best shoulder seasons");
     expect(context).toHaveTextContent("Scored for Mild winters + Dry air");
     expect(context).toHaveTextContent("summer <= 79°F");
     expect(context).toHaveTextContent("winter >= 23°F");
+  });
+
+  it("names the active ranking lens for manual Live Finder constraints", () => {
+    const place = PLACES_BY_ID["yuma-az"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail
+          place={place}
+          onClose={() => undefined}
+          liveFitFilters={{ maxOverallRisk: "moderate" }}
+          residencyFitContext={{ rankingLabel: "Live-here fit" }}
+        />
+      </UnitProvider>,
+    );
+
+    const context = screen.getByLabelText("Active fit context");
+    expect(context).toHaveTextContent("Live-here fit lens");
+    expect(context).toHaveTextContent("Scored for manual Live Finder constraints");
+    expect(context).toHaveTextContent("overall risk <= Moderate");
+  });
+
+  it("does not add context clutter to plain direct dossiers", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail
+          place={place}
+          onClose={() => undefined}
+          residencyFitContext={{ rankingLabel: "Live-here fit" }}
+        />
+      </UnitProvider>,
+    );
+
+    expect(screen.queryByLabelText("Active fit context")).toBeNull();
   });
 });
 

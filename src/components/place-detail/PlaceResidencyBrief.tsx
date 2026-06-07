@@ -33,7 +33,17 @@ function riskLabel(level: string): string {
   return level.charAt(0).toUpperCase() + level.slice(1);
 }
 
-function buildFitContextRead(filters: LiveFitFilters | undefined, temp: TempUnit): string | null {
+export interface ResidencyFitContext {
+  rankingLabel: string;
+  bundleLabel?: string | null;
+  bundleCue?: string | null;
+}
+
+function buildFitContextRead(
+  filters: LiveFitFilters | undefined,
+  temp: TempUnit,
+  context: ResidencyFitContext | undefined,
+): string | null {
   const presetLabels = LIVE_FIT_PRESETS
     .filter(preset => filters?.fitPresets?.has(preset.id))
     .map(preset => preset.label);
@@ -45,11 +55,20 @@ function buildFitContextRead(filters: LiveFitFilters | undefined, temp: TempUnit
     filters?.maxOverallRisk != null ? `overall risk <= ${riskLabel(filters.maxOverallRisk)}` : null,
   ].filter(Boolean);
 
-  if (presetLabels.length === 0 && constraints.length === 0) return null;
+  const hasLiveFinderSignals = presetLabels.length > 0 || constraints.length > 0;
+  if (!hasLiveFinderSignals) return null;
+
+  const screenContext = context?.bundleLabel
+    ? `${context.bundleLabel} path${context.bundleCue ? ` (${context.bundleCue})` : ""} · ${context.rankingLabel}`
+    : context?.rankingLabel
+      ? `${context.rankingLabel} lens`
+      : null;
   const lens = presetLabels.length > 0 ? presetLabels.join(" + ") : "manual Live Finder constraints";
-  return constraints.length > 0
+  const scoredContext = constraints.length > 0
     ? `Scored for ${lens}, with ${constraints.join(", ")}.`
     : `Scored for ${lens}.`;
+
+  return screenContext ? `${screenContext}. ${scoredContext}` : scoredContext;
 }
 
 export function PlaceResidencyBrief({
@@ -59,6 +78,7 @@ export function PlaceResidencyBrief({
   bestMonths,
   visualSignature,
   liveFitFilters,
+  fitContext,
 }: {
   place: Place;
   liveFit: LiveFitAssessment;
@@ -66,12 +86,13 @@ export function PlaceResidencyBrief({
   bestMonths: BestWindow[];
   visualSignature: PlaceVisualSignature;
   liveFitFilters?: LiveFitFilters;
+  fitContext?: ResidencyFitContext;
 }) {
   const { temp } = useUnits();
   const prose = useProse();
   const bestWindow = bestMonths.find(w => w.kind === "good") ?? null;
   const cautionWindow = bestMonths.find(w => w.kind === "caution") ?? null;
-  const fitContextRead = buildFitContextRead(liveFitFilters, temp);
+  const fitContextRead = buildFitContextRead(liveFitFilters, temp, fitContext);
   const leadDriver =
     livability.drivers
       .map(key => livability.components.find(component => component.key === key))

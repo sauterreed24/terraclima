@@ -45,7 +45,7 @@ import { PlaceFeelRead } from "./place-detail/PlaceFeelRead";
 import { PlaceBioclimaticIndices } from "./place-detail/PlaceBioclimaticIndices";
 import { PlacePracticalRead } from "./place-detail/PlacePracticalRead";
 import { PlaceTourismRead } from "./place-detail/PlaceTourismRead";
-import { PlaceResidencyBrief } from "./place-detail/PlaceResidencyBrief";
+import { PlaceResidencyBrief, type ResidencyFitContext } from "./place-detail/PlaceResidencyBrief";
 import { PlaceComfortPrecision } from "./place-detail/PlaceComfortPrecision";
 import { PlaceBackToTop } from "./place-detail/PlaceBackToTop";
 import { PlaceReadingProgress } from "./place-detail/PlaceReadingProgress";
@@ -174,6 +174,7 @@ interface Props {
   onPickArchetype?: (a: MicroclimateArchetype) => void;
   onOpenPlace?: (id: string) => void;
   liveFitFilters?: LiveFitFilters;
+  residencyFitContext?: ResidencyFitContext;
   /** Whether this place is currently pinned. Hides the control when callback absent. */
   bookmarked?: boolean;
   onBookmarkToggle?: (id: string) => void;
@@ -181,7 +182,7 @@ interface Props {
   scenario?: ScenarioId;
 }
 
-export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, bookmarked, onBookmarkToggle, occluded = false, scenario = "now" }: Props) {
+export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, residencyFitContext, bookmarked, onBookmarkToggle, occluded = false, scenario = "now" }: Props) {
   const reduceMotion = useReducedMotion();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
@@ -281,7 +282,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               onBookmarkToggle={onBookmarkToggle}
               visualSignature={visualSignature!}
             />
-            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} visualSignature={visualSignature!} scenario={scenario} />
+            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} residencyFitContext={residencyFitContext} visualSignature={visualSignature!} scenario={scenario} />
             <PlaceBackToTop panelRef={panelRef} />
           </motion.aside>
         </>
@@ -501,11 +502,12 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
 }
 
 function DetailBody({
-  place, onOpenPlace, liveFitFilters, visualSignature, scenario = "now",
+  place, onOpenPlace, liveFitFilters, residencyFitContext, visualSignature, scenario = "now",
 }: {
   place: Place;
   onOpenPlace?: (id: string) => void;
   liveFitFilters?: LiveFitFilters;
+  residencyFitContext?: ResidencyFitContext;
   visualSignature: PlaceVisualSignature;
   scenario?: ScenarioId;
 }) {
@@ -584,6 +586,7 @@ function DetailBody({
         bestMonths={bestMonths}
         visualSignature={visualSignature}
         liveFitFilters={liveFitFilters}
+        fitContext={residencyFitContext}
       />
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />

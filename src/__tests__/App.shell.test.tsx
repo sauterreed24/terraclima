@@ -68,13 +68,32 @@ vi.mock("../components/CompareView", () => ({
 }));
 
 vi.mock("../components/PlaceDetail", () => ({
-  PlaceDetail: ({ onClose, occluded }: { onClose: () => void; occluded?: boolean }) => (
+  PlaceDetail: ({
+    onClose,
+    occluded,
+    residencyFitContext,
+  }: {
+    onClose: () => void;
+    occluded?: boolean;
+    residencyFitContext?: {
+      rankingLabel: string;
+      bundleLabel?: string | null;
+      bundleCue?: string | null;
+    };
+  }) => (
     <div
       role="dialog"
       aria-label="Place profile"
       aria-hidden={occluded ? "true" : undefined}
       data-testid="place-detail-mock"
     >
+      {residencyFitContext ? (
+        <div data-testid="place-detail-fit-context">
+          {residencyFitContext.bundleLabel ? `${residencyFitContext.bundleLabel} / ` : ""}
+          {residencyFitContext.bundleCue ? `${residencyFitContext.bundleCue} / ` : ""}
+          {residencyFitContext.rankingLabel}
+        </div>
+      ) : null}
       <button type="button" aria-label="Close profile" onClick={onClose} />
     </div>
   ),
@@ -297,6 +316,29 @@ describe("App shell", () => {
     fireEvent.click(within(receipt).getByRole("button", { name: /Compare 4 Fit Finder leaders/ }));
 
     expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("passes the active Fit Finder path and ranking context into shared place dossiers", async () => {
+    mockViewport(1280);
+    window.history.replaceState(
+      null,
+      "",
+      "/?p=real-catorce-mx&c=Mexico%2CUSA&a=eternal-spring-highland%2Chigh-desert-escape%2Cmild-winter-foothills%2Cmonsoon-edge%2Csky-island-refuge%2Cvolcanic-upland&r=best-shoulder-seasons&fit=dry-air%2Cmild-winters&sh=26&wl=-5&temp=C&dist=metric",
+    );
+
+    renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "Place profile" })).toBeInTheDocument();
+    expect(screen.getByTestId("place-detail-fit-context")).toHaveTextContent("Mexico / Southwest");
+    expect(screen.getByTestId("place-detail-fit-context")).toHaveTextContent("Dry highland options");
+    expect(screen.getByTestId("place-detail-fit-context")).toHaveTextContent("Best shoulder seasons");
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("temp")).toBe("C");
+      expect(params.get("dist")).toBe("metric");
+      expect(params.get("r")).toBe("best-shoulder-seasons");
+    });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the mobile Explorer hero compact and defers dense panels until after the map", () => {
