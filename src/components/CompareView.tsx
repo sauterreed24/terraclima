@@ -85,6 +85,7 @@ export function CompareView({
     ];
   }, [decisionProfiles, places, temp]);
   const decisionRead = useMemo(() => buildCompareDecisionRead(decisionProfiles), [decisionProfiles]);
+  const singlePlaceGuide = isSinglePlace ? buildSinglePlaceGuide(decisionProfiles[0]) : null;
   /**
    * Mobile (<lg breakpoint via the Tailwind class) gets fixed-width columns
    * with a horizontal scroll snap so 2–4 places stay readable on a phone
@@ -321,6 +322,40 @@ export function CompareView({
               </section>
             ) : null}
 
+            {singlePlaceGuide ? (
+              <section className="compare-single-guide" aria-label="Single finalist compare setup">
+                <div className="compare-single-guide__copy">
+                  <span className="compare-single-guide__eyebrow">Shortlist setup</span>
+                  <p>{singlePlaceGuide.summary}</p>
+                  <span>{singlePlaceGuide.nextMove}</span>
+                </div>
+                <div className="compare-single-guide__checks" aria-label="Next compare contrasts">
+                  {singlePlaceGuide.checks.map(check => (
+                    <div key={check.label} className="compare-single-guide__check">
+                      <span>{check.label}</span>
+                      <strong>{check.value}</strong>
+                    </div>
+                  ))}
+                </div>
+                <div className="compare-single-guide__actions">
+                  {onOpenPlace ? (
+                    <button
+                      type="button"
+                      className="compare-decision-read__action"
+                      aria-label={`Review anchor dossier: ${singlePlaceGuide.placeName}`}
+                      onClick={() => onOpenPlace(singlePlaceGuide.placeId)}
+                    >
+                      <span>Review anchor</span>
+                      <strong title={singlePlaceGuide.placeName}>{singlePlaceGuide.placeName}</strong>
+                    </button>
+                  ) : null}
+                  <button type="button" className="compare-single-guide__keep-scouting" onClick={onClose}>
+                    Keep scouting
+                  </button>
+                </div>
+              </section>
+            ) : null}
+
             {compareHighlights.length > 0 ? (
               <div className="compare-insight-strip" aria-label="Comparison highlights">
                 {compareHighlights.map(item => (
@@ -465,6 +500,22 @@ function bioclimRow(idx: BioclimIndex, format: (v: number) => string): string {
       : "— (no PET)";
   }
   return `${format(idx.value)} · ${idx.classLabel}`;
+}
+
+function buildSinglePlaceGuide(profile: CompareDecisionProfile | undefined) {
+  if (!profile) return null;
+  const { place } = profile;
+  return {
+    placeId: place.id,
+    placeName: place.name,
+    summary: `${place.name} is saved as the anchor finalist (${profile.liveFitScore}/100 fit · ${profile.easyMonths}/12 easy months).`,
+    nextMove: "Add a peer or counterweight before trusting the comparison read; two places unlock tradeoffs, while three or four make the Scout sequence stronger.",
+    checks: [
+      { label: "Anchor signal", value: `${profile.livabilityScore}/100 livability` },
+      { label: "First contrast", value: "similar goal, different climate" },
+      { label: "Counterweight", value: "lower risk or lower friction" },
+    ],
+  };
 }
 
 function Row({ label, value, wide = false }: { label: string; value: string; wide?: boolean }) {

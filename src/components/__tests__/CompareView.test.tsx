@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { PLACES } from "../../data/places";
 import type { LiveFitFilters, LiveFitPresetId } from "../../lib/live-fit";
 import { UnitProvider } from "../../lib/units";
+import type { Place } from "../../types";
 import { CompareView } from "../CompareView";
 
 vi.mock("framer-motion", () => ({
@@ -34,23 +35,27 @@ afterEach(() => cleanup());
 
 function renderCompare({
   onCopyView,
+  onClose = () => undefined,
   onRemove = () => undefined,
   onOpenPlace,
   shareStatus,
   liveFitFilters,
+  places = PLACES.slice(0, 4),
 }: {
   onCopyView?: () => void;
+  onClose?: () => void;
   onRemove?: (id: string) => void;
   onOpenPlace?: (id: string) => void;
   shareStatus?: "idle" | "copied" | "failed";
   liveFitFilters?: LiveFitFilters;
+  places?: Place[];
 } = {}) {
   render(
     <UnitProvider>
       <CompareView
-        places={PLACES.slice(0, 4)}
+        places={places}
         open
-        onClose={() => undefined}
+        onClose={onClose}
         onRemove={onRemove}
         onOpenPlace={onOpenPlace}
         onCopyView={onCopyView}
@@ -140,6 +145,28 @@ describe("CompareView", () => {
     }
     expect(within(table).getAllByText(/\/100 fit/)).toHaveLength(4);
     expect(within(table).getAllByText(/\/100 risk/)).toHaveLength(4);
+  });
+
+  it("turns a single saved finalist into a guided shortlist setup", () => {
+    const onOpenPlace = vi.fn();
+    const onClose = vi.fn();
+    const anchor = PLACES[0]!;
+    renderCompare({ places: [anchor], onOpenPlace, onClose });
+
+    expect(screen.getByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
+    expect(screen.getByLabelText("Single finalist compare setup")).toBeInTheDocument();
+    expect(screen.getByText("Shortlist setup")).toBeInTheDocument();
+    expect(screen.getByText(/is saved as the anchor finalist/)).toBeInTheDocument();
+    expect(screen.getByText(/Add a peer or counterweight/)).toBeInTheDocument();
+    expect(screen.getByText("Anchor signal")).toBeInTheDocument();
+    expect(screen.getByText("First contrast")).toBeInTheDocument();
+    expect(screen.getByText("Counterweight")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Comparison decision read")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: `Review anchor dossier: ${anchor.name}` }));
+    expect(onOpenPlace).toHaveBeenCalledWith(anchor.id);
+    fireEvent.click(screen.getByRole("button", { name: "Keep scouting" }));
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   it("adds a compact mobile key for bioclimatic comparison rows", () => {

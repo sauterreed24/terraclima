@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Compare single-finalist guide
+
+- **Compare (`src/components/CompareView.tsx`, `src/styles.css`):** when only one place is saved, Compare now shows a compact shortlist setup read with the anchor signal, missing contrast, and review/keep-scouting actions. The full decision read still appears only once there are at least two finalists, and existing Compare ordering, URL state, scoring, and dossier links are unchanged.
+
 ### Dossier fit context receipt
 
 - **Residency brief (`src/components/place-detail/PlaceResidencyBrief.tsx`, `src/styles.css`):** when a Live Finder/Fit Finder path is active, the top dossier brief now names the active fit presets and hard thresholds that shaped the live-here score. This keeps the Explorer-to-dossier journey continuous without changing scoring, routes, corpus data, or adding another detail panel.
