@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Result card ranking evidence
+
+- **Ranked place cards (`src/components/PlaceCard.tsx`, `src/styles.css`):** promotes each ranking note into a top-of-card **Why this rank** evidence strip with a first-check cue, so users can understand why a result made the shortlist before scanning charts or opening the dossier. The strip uses existing ranking/live-fit/signature data and preserves scoring, ranking, routes, and corpus records.
+
 ### Fit Finder journey receipt
 
 - **Explorer hero (`src/App.tsx`, `src/styles.css`):** when a guided Fit Finder path is active, the hero now shows a compact journey receipt with the path name, applied ranking/signals/scope, next scout action, and direct dossier/Compare buttons. The receipt uses the existing bundle activation logic and does not change corpus data, scoring, ranking formulas, or URL state.

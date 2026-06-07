@@ -37,6 +37,32 @@ describe("PlaceCard overlay warmup", () => {
     expect(bioclim.textContent).toContain("K ");
   });
 
+  it("surfaces ranking evidence near the top of the card and describes the open target", () => {
+    const note = "Ranking note: summer afternoons stay unusually restrained for this lens.";
+    const { container } = render(
+      <UnitProvider>
+        <PlaceCard
+          place={PLACES[0]!}
+          note={note}
+          rank={1}
+          rankingLabel="Coolest summers"
+          rankingScore={92}
+          onOpenPlace={() => undefined}
+        />
+      </UnitProvider>,
+    );
+
+    const evidence = screen.getByLabelText("Why this place ranked here");
+    expect(evidence).toHaveTextContent("Why this rank");
+    expect(evidence).toHaveTextContent(note);
+    expect(evidence).toHaveTextContent("First check");
+
+    const openTarget = container.querySelector<HTMLButtonElement>(".place-card__open-target");
+    expect(openTarget).not.toBeNull();
+    expect(openTarget!.getAttribute("aria-describedby")).toContain(evidence.id);
+    expect(container.querySelectorAll(".place-card__ranking-evidence")).toHaveLength(1);
+  });
+
   it("preloads the place detail chunk on hover, focus, and tap intent", () => {
     const onPreloadPlaceDetail = vi.fn();
     const onPreloadCompare = vi.fn();
