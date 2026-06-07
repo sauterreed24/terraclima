@@ -3,6 +3,7 @@ import { ARCHETYPE_LABELS, type Country, type MicroclimateArchetype, type RiskLe
 import {
   applyLifestyleBundle,
   isBundleActive,
+  LIFESTYLE_BUNDLE_GROUPS,
   LIFESTYLE_BUNDLES,
   type LifestyleBundle,
 } from "../lib/lifestyle-bundles";
@@ -253,51 +254,66 @@ export const FilterBar = memo(function FilterBar({
           ) : null}
         </div>
         <div className="fit-finder-panel__grid" aria-label="Guided climate-fit paths">
-          {LIFESTYLE_BUNDLES.map(bundle => {
-            const isActive = isBundleActive(bundle, ranking, filters);
-            const descId = `${searchFieldId}-fit-${bundle.id}-desc`;
-            const appliesId = `${searchFieldId}-fit-${bundle.id}-applies`;
-            const appliedRead = bundleAppliedRead(bundle, temp);
+          {LIFESTYLE_BUNDLE_GROUPS.map(group => {
+            const groupBundles = LIFESTYLE_BUNDLES.filter(bundle => bundle.group === group.id);
+            if (groupBundles.length === 0) return null;
+            const groupTitleId = `${searchFieldId}-fit-group-${group.id}`;
             return (
-              <button
-                key={bundle.id}
-                type="button"
-                className="fit-finder-panel__path"
-                data-tone={bundle.tone}
-                data-active={isActive}
-                aria-pressed={isActive}
-                aria-describedby={`${descId} ${appliesId}`}
-                title={bundle.description}
-                onClick={() => applyBundle(bundle)}
-              >
-                <span className="fit-finder-panel__path-top">
-                  <span className="fit-finder-panel__path-label">{bundle.label}</span>
-                  {isActive ? <Check className="fit-finder-panel__check" aria-hidden /> : null}
-                </span>
-                <span className="fit-finder-panel__cue">{bundle.cue}</span>
-                <span id={descId} className="fit-finder-panel__desc">{bundle.description}</span>
-                <span
-                  id={appliesId}
-                  className="fit-finder-panel__applies"
-                  aria-label={`${bundle.label} applied settings: ${appliedRead.full}`}
-                  title={appliedRead.full}
-                >
-                  <span className="fit-finder-panel__applies-row">
-                    <span className="fit-finder-panel__applies-kicker">Rank</span>
-                    <span className="fit-finder-panel__applies-copy">{appliedRead.rank}</span>
-                  </span>
-                  <span className="fit-finder-panel__applies-row">
-                    <span className="fit-finder-panel__applies-kicker">Signals</span>
-                    <span className="fit-finder-panel__applies-copy">{appliedRead.signals}</span>
-                  </span>
-                  {appliedRead.scope ? (
-                    <span className="fit-finder-panel__applies-row">
-                      <span className="fit-finder-panel__applies-kicker">Scope</span>
-                      <span className="fit-finder-panel__applies-copy">{appliedRead.scope}</span>
-                    </span>
-                  ) : null}
-                </span>
-              </button>
+              <div key={group.id} className="fit-finder-panel__lane" role="group" aria-labelledby={groupTitleId}>
+                <div className="fit-finder-panel__lane-head">
+                  <span id={groupTitleId} className="fit-finder-panel__lane-title">{group.label}</span>
+                  <span className="fit-finder-panel__lane-cue">{group.cue}</span>
+                </div>
+                <div className="fit-finder-panel__lane-grid">
+                  {groupBundles.map(bundle => {
+                    const isActive = isBundleActive(bundle, ranking, filters);
+                    const descId = `${searchFieldId}-fit-${bundle.id}-desc`;
+                    const appliesId = `${searchFieldId}-fit-${bundle.id}-applies`;
+                    const appliedRead = bundleAppliedRead(bundle, temp);
+                    return (
+                      <button
+                        key={bundle.id}
+                        type="button"
+                        className="fit-finder-panel__path"
+                        data-tone={bundle.tone}
+                        data-active={isActive}
+                        aria-pressed={isActive}
+                        aria-describedby={`${descId} ${appliesId}`}
+                        title={bundle.description}
+                        onClick={() => applyBundle(bundle)}
+                      >
+                        <span className="fit-finder-panel__path-top">
+                          <span className="fit-finder-panel__path-label">{bundle.label}</span>
+                          {isActive ? <Check className="fit-finder-panel__check" aria-hidden /> : null}
+                        </span>
+                        <span className="fit-finder-panel__cue">{bundle.cue}</span>
+                        <span id={descId} className="fit-finder-panel__desc">{bundle.description}</span>
+                        <span
+                          id={appliesId}
+                          className="fit-finder-panel__applies"
+                          aria-label={`${bundle.label} applied settings: ${appliedRead.full}`}
+                          title={appliedRead.full}
+                        >
+                          <span className="fit-finder-panel__applies-row">
+                            <span className="fit-finder-panel__applies-kicker">Rank</span>
+                            <span className="fit-finder-panel__applies-copy">{appliedRead.rank}</span>
+                          </span>
+                          <span className="fit-finder-panel__applies-row">
+                            <span className="fit-finder-panel__applies-kicker">Signals</span>
+                            <span className="fit-finder-panel__applies-copy">{appliedRead.signals}</span>
+                          </span>
+                          {appliedRead.scope ? (
+                            <span className="fit-finder-panel__applies-row">
+                              <span className="fit-finder-panel__applies-kicker">Scope</span>
+                              <span className="fit-finder-panel__applies-copy">{appliedRead.scope}</span>
+                            </span>
+                          ) : null}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             );
           })}
         </div>

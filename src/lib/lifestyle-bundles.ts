@@ -3,8 +3,17 @@ import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
 import type { RankingProfile, FilterState } from "./scoring";
 import type { LiveFitPresetId } from "./live-fit";
 
+export type LifestyleBundleGroupId = "escape" | "daily-life" | "terrain-season";
+
+export interface LifestyleBundleGroup {
+  id: LifestyleBundleGroupId;
+  label: string;
+  cue: string;
+}
+
 export interface LifestyleBundle {
   id: string;
+  group: LifestyleBundleGroupId;
   tone: "glacier" | "sage" | "ochre" | "ember" | "ice" | "aurora";
   label: string;
   cue: string;
@@ -20,9 +29,28 @@ export interface LifestyleBundle {
   maxOverallRisk?: RiskLevel;
 }
 
+export const LIFESTYLE_BUNDLE_GROUPS: readonly LifestyleBundleGroup[] = [
+  {
+    id: "escape",
+    label: "Escape discomfort",
+    cue: "Heat, gray winters, smoke, humidity.",
+  },
+  {
+    id: "daily-life",
+    label: "Daily life fit",
+    cue: "Work, retirement, gardens, quiet towns.",
+  },
+  {
+    id: "terrain-season",
+    label: "Terrain & seasons",
+    cue: "Coasts, snow, shoulder seasons, Mexico / Southwest.",
+  },
+] as const;
+
 export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   {
     id: "cool-summer-refuge",
+    group: "escape",
     tone: "glacier",
     label: "Cool Summer Refuge",
     cue: "Escape heat",
@@ -33,6 +61,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "remote-work",
+    group: "daily-life",
     tone: "glacier",
     label: "Remote Work",
     cue: "Screen work days",
@@ -43,6 +72,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "retirement",
+    group: "daily-life",
     tone: "ochre",
     label: "Retirement",
     cue: "Lower-friction daily life",
@@ -54,6 +84,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "winter-sun",
+    group: "escape",
     tone: "ochre",
     label: "Winter Sun",
     cue: "Less gray winter",
@@ -64,6 +95,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "garden",
+    group: "daily-life",
     tone: "sage",
     label: "Garden & Grow",
     cue: "Yard and orchard screen",
@@ -74,6 +106,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "dry-air",
+    group: "escape",
     tone: "ochre",
     label: "Dry Air",
     cue: "Avoid muggy climates",
@@ -83,6 +116,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "mexico-southwest",
+    group: "terrain-season",
     tone: "ochre",
     label: "Mexico / Southwest",
     cue: "Dry highland options",
@@ -103,6 +137,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "coastal-buffer",
+    group: "terrain-season",
     tone: "aurora",
     label: "Coastal Buffer",
     cue: "Moderated extremes",
@@ -113,6 +148,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "quiet-town",
+    group: "daily-life",
     tone: "sage",
     label: "Quiet Towns",
     cue: "Less sprawl, more anchors",
@@ -122,6 +158,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "snow-ski",
+    group: "terrain-season",
     tone: "ice",
     label: "Snow & Ski",
     cue: "Want real winter",
@@ -131,6 +168,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "fire-safe",
+    group: "escape",
     tone: "ember",
     label: "Low Fire / Smoke",
     cue: "Reduce smoke season",
@@ -142,6 +180,7 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
   },
   {
     id: "shoulder-season",
+    group: "terrain-season",
     tone: "aurora",
     label: "Best Shoulder",
     cue: "Spring/fall comfort",

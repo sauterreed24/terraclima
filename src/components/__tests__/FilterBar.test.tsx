@@ -136,10 +136,19 @@ describe("FilterBar lifestyle bundles", () => {
 
     expect(screen.getByText("Fit Finder")).toBeInTheDocument();
     expect(screen.getByText(/Start with what you are escaping or seeking/)).toBeInTheDocument();
+    const escapeLane = screen.getByRole("group", { name: "Escape discomfort" });
+    const dailyLane = screen.getByRole("group", { name: "Daily life fit" });
+    const terrainLane = screen.getByRole("group", { name: "Terrain & seasons" });
+    expect(escapeLane).toHaveTextContent("Heat, gray winters, smoke, humidity.");
+    expect(dailyLane).toHaveTextContent("Work, retirement, gardens, quiet towns.");
+    expect(terrainLane).toHaveTextContent("Coasts, snow, shoulder seasons, Mexico / Southwest.");
     expect(screen.getByRole("button", { name: /Cool Summer Refuge/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Winter Sun/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Mexico \/ Southwest/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Low Fire \/ Smoke/ })).toBeInTheDocument();
+    expect(within(escapeLane).getByRole("button", { name: /Cool Summer Refuge/ })).toBeInTheDocument();
+    expect(within(dailyLane).getByRole("button", { name: /Remote Work/ })).toBeInTheDocument();
+    expect(within(terrainLane).getByRole("button", { name: /Mexico \/ Southwest/ })).toBeInTheDocument();
     expect(screen.getByText("Live Finder signals")).toBeInTheDocument();
   });
 
