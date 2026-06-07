@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Fit Finder journey receipt
+
+- **Explorer hero (`src/App.tsx`, `src/styles.css`):** when a guided Fit Finder path is active, the hero now shows a compact journey receipt with the path name, applied ranking/signals/scope, next scout action, and direct dossier/Compare buttons. The receipt uses the existing bundle activation logic and does not change corpus data, scoring, ranking formulas, or URL state.
+
 ### Fit Finder lanes
 
 - **Fit Finder (`src/components/FilterBar.tsx`, `src/lib/lifestyle-bundles.ts`, `src/styles.css`):** groups guided paths into **Escape discomfort**, **Daily life fit**, and **Terrain & seasons** lanes so the larger preference set stays scannable on desktop and mobile. Each lane is exposed as a named accessible group while existing path behavior, ranking, filters, and URL state remain unchanged.

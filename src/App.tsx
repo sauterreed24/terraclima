@@ -21,10 +21,12 @@ import {
   countLiveFinderConstraintSignals,
   HERO_BUNDLE_BY_RANKING,
   isBundleActive,
+  LIFESTYLE_BUNDLES,
   lifestyleBundleById,
+  type LifestyleBundle,
 } from "./lib/lifestyle-bundles";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
-import { assessLiveFit } from "./lib/live-fit";
+import { assessLiveFit, LIVE_FIT_PRESET_BY_ID } from "./lib/live-fit";
 import { projectPool } from "./lib/climate-projection";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
@@ -35,7 +37,7 @@ import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-
 import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
 import { motionPolicy, prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
-import { useProse, useUnits } from "./lib/units";
+import { fmtTemp, useProse, useUnits, type UnitState } from "./lib/units";
 import { shareUrl } from "./lib/share";
 import { runViewTransition } from "./lib/view-transition";
 import {
@@ -1408,6 +1410,107 @@ const QuickPick = memo(function QuickPick({
   );
 });
 
+const COUNTRY_LABELS: Record<Country, string> = {
+  USA: "U.S.",
+  Canada: "Canada",
+  Mexico: "Mexico",
+};
+
+function rankingOptionLabel(id: RankingProfile): string {
+  return RANKING_OPTIONS.find(option => option.id === id)?.label ?? id.replace(/-/g, " ");
+}
+
+function fitJourneySignals(bundle: LifestyleBundle, temp: UnitState["temp"]): string {
+  const parts = bundle.presets.map(preset => LIVE_FIT_PRESET_BY_ID[preset]?.shortLabel ?? preset);
+  if (bundle.maxSummerHighC != null) parts.push(`summer <= ${fmtTemp(bundle.maxSummerHighC, temp)}`);
+  if (bundle.minWinterLowC != null) parts.push(`winter >= ${fmtTemp(bundle.minWinterLowC, temp)}`);
+  if (bundle.minGrowability != null) parts.push(`growability ${bundle.minGrowability}+`);
+  if (bundle.maxFireRisk) parts.push(`fire <= ${bundle.maxFireRisk.replace(/-/g, " ")}`);
+  if (bundle.maxOverallRisk) parts.push(`risk <= ${bundle.maxOverallRisk.replace(/-/g, " ")}`);
+  return parts.length ? parts.join(" / ") : "ranking only";
+}
+
+function fitJourneyScope(bundle: LifestyleBundle): string | null {
+  const parts: string[] = [];
+  if (bundle.countries?.length) {
+    parts.push(bundle.countries.map(country => COUNTRY_LABELS[country]).join(" + "));
+  }
+  if (bundle.archetypes?.length) {
+    parts.push(`${bundle.archetypes.length} terrain families`);
+  }
+  return parts.length ? parts.join(" / ") : null;
+}
+
+function ActiveFitJourneyReceipt({
+  bundle,
+  scoutBrief,
+  onOpenPlace,
+  onCompareLeaders,
+  onPreloadCompare,
+}: {
+  bundle: LifestyleBundle;
+  scoutBrief: ExplorerScoutBrief | null;
+  onOpenPlace: (id: string) => void;
+  onCompareLeaders: (ids: string[]) => void;
+  onPreloadCompare: () => void;
+}) {
+  const prose = useProse();
+  const { temp } = useUnits();
+  const signals = fitJourneySignals(bundle, temp);
+  const scope = fitJourneyScope(bundle);
+  const rankingRead = rankingOptionLabel(bundle.ranking);
+  const canCompare = (scoutBrief?.compareIds.length ?? 0) >= 2;
+
+  return (
+    <section className="fit-journey-receipt" aria-label={`Active Fit Finder path: ${bundle.label}`}>
+      <div className="fit-journey-receipt__main">
+        <div className="fit-journey-receipt__head">
+          <span className="fit-journey-receipt__eyebrow">Fit Finder path active</span>
+          <strong className="fit-journey-receipt__title">{bundle.label}</strong>
+        </div>
+        <p className="fit-journey-receipt__copy">{bundle.description}</p>
+        <div className="fit-journey-receipt__chips" aria-label={`${bundle.label} applied lens`}>
+          <span>Rank by {rankingRead}</span>
+          <span>{signals}</span>
+          {scope ? <span>{scope}</span> : null}
+        </div>
+        <p className="fit-journey-receipt__next">
+          <span>Next</span>{" "}
+          {scoutBrief
+            ? prose(scoutBrief.advisorRead.nextAction)
+            : "No shortlist yet. Ease one constraint or clear the search before opening dossiers."}
+        </p>
+      </div>
+      {scoutBrief ? (
+        <div className="fit-journey-receipt__actions" aria-label={`${bundle.label} next actions`}>
+          <button
+            type="button"
+            className="fit-journey-receipt__action"
+            onClick={() => onOpenPlace(scoutBrief.leader.place.id)}
+            aria-label={`Open first scout dossier: ${scoutBrief.leader.place.name}`}
+          >
+            <BookOpen className="w-3.5 h-3.5" aria-hidden />
+            Open first scout
+          </button>
+          <button
+            type="button"
+            className="fit-journey-receipt__action"
+            onPointerEnter={onPreloadCompare}
+            onFocus={onPreloadCompare}
+            onPointerDown={onPreloadCompare}
+            onClick={() => onCompareLeaders(scoutBrief.compareIds)}
+            aria-label={`Compare ${scoutBrief.compareIds.length} Fit Finder leaders`}
+            disabled={!canCompare}
+          >
+            <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
+            Compare leaders
+          </button>
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 
 const FieldNoteStrip = memo(function FieldNoteStrip() {
   const dailyIdx = useMemo(() => {
@@ -1574,6 +1677,7 @@ const HeroCard = memo(function HeroCard({
     filters.maxFireRisk,
     filters.maxOverallRisk,
   ].filter(v => v != null).length;
+  const activeFitBundle = active ? null : LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null;
   const heroAccentRgb = signatureLeaders[0]?.signature.mapAccentRgb ?? "94, 196, 220";
   const prioritizeDesktopScoutBoard = showDetailedHeroPanels && showDesktopScoutBoard && scoutBrief !== null;
   return (
@@ -1659,6 +1763,16 @@ const HeroCard = memo(function HeroCard({
           </div>
         </div>
       </div>
+
+      {activeFitBundle ? (
+        <ActiveFitJourneyReceipt
+          bundle={activeFitBundle}
+          scoutBrief={scoutBrief}
+          onOpenPlace={onOpenPlace}
+          onCompareLeaders={onCompareLeaders}
+          onPreloadCompare={onPreloadCompare}
+        />
+      ) : null}
 
       {prioritizeDesktopScoutBoard ? (
         <DesktopScoutBoard
