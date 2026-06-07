@@ -5720,6 +5720,53 @@
     font-size: 0.74rem;
     line-height: 1.35;
   }
+  .residency-brief__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.7rem;
+    margin-top: 0.68rem;
+    padding: 0.58rem 0.66rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(var(--signature-rgb), 0.18);
+    background:
+      linear-gradient(135deg, rgba(255, 253, 248, 0.76), rgba(var(--signature-rgb), 0.07)),
+      rgba(255, 253, 248, 0.62);
+    box-shadow: var(--tc-shadow-inset);
+  }
+  .residency-brief__action-read {
+    min-width: 0;
+  }
+  .residency-brief__action-read span {
+    display: block;
+    color: var(--color-glacier-700);
+    font-size: 0.58rem;
+    font-weight: 850;
+    letter-spacing: 0.11em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .residency-brief__action-read p {
+    margin: 0.16rem 0 0;
+    color: var(--color-stone-readable);
+    font-size: 0.68rem;
+    line-height: 1.3;
+  }
+  .residency-brief__action-buttons {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.35rem;
+  }
+  .residency-brief__action-button {
+    min-height: 2.25rem;
+    white-space: nowrap;
+  }
+  .residency-brief__action-button--active {
+    border-color: rgba(240, 210, 156, 0.78);
+    color: var(--color-ochre-700);
+  }
   .residency-brief__grid {
     display: grid;
     grid-template-columns: minmax(0, 1.35fr) minmax(9.5rem, 0.82fr) minmax(9.5rem, 0.82fr);
@@ -5863,6 +5910,20 @@
     .residency-brief__score {
       width: 3.75rem;
       height: 3.75rem;
+    }
+    .residency-brief__actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    .residency-brief__action-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+      justify-content: stretch;
+      width: 100%;
+    }
+    .residency-brief__action-button {
+      justify-content: center;
+      width: 100%;
     }
     .residency-brief__lanes {
       grid-template-columns: 1fr;
@@ -8395,6 +8456,22 @@ html[data-theme="dark"] .residency-brief__context span {
 }
 html[data-theme="dark"] .residency-brief__context p {
   color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .residency-brief__actions {
+  border-color: rgba(var(--signature-rgb), 0.28);
+  background:
+    linear-gradient(135deg, rgba(18, 26, 44, 0.74), rgba(var(--signature-rgb), 0.12)),
+    rgba(18, 26, 44, 0.62);
+}
+html[data-theme="dark"] .residency-brief__action-read span {
+  color: rgba(180, 236, 246, 0.95);
+}
+html[data-theme="dark"] .residency-brief__action-read p {
+  color: var(--color-stone-readable);
+}
+html[data-theme="dark"] .residency-brief__action-button--active {
+  border-color: rgba(240, 210, 156, 0.68);
+  color: #f0d29c;
 }
 
 /* Overview spotlight — deep-glass panels in dark. */

@@ -8,13 +8,14 @@
  * Extracted from PlaceDetail.tsx during the dossier refactor; no
  * behavior change.
  */
-import { Calendar, ShieldAlert } from "lucide-react";
+import { ArrowLeftRight, Calendar, ShieldAlert } from "lucide-react";
 import type { Place } from "../../types";
 import type { BestWindow } from "../../lib/best-months";
 import { LIVE_FIT_PRESETS, type LiveFitAssessment, type LiveFitFilters } from "../../lib/live-fit";
 import type { LivabilityResult } from "../../lib/livability-score";
 import type { PlaceVisualSignature } from "../../lib/place-visual-signature";
 import { fmtTemp, useProse, useUnits, type TempUnit } from "../../lib/units";
+import { BookmarkButton } from "../BookmarkButton";
 
 function describeSignatureVerification(signature: PlaceVisualSignature): string {
   switch (signature.verify.key) {
@@ -79,6 +80,10 @@ export function PlaceResidencyBrief({
   visualSignature,
   liveFitFilters,
   fitContext,
+  inCompare = false,
+  bookmarked = false,
+  onCompareToggle,
+  onBookmarkToggle,
 }: {
   place: Place;
   liveFit: LiveFitAssessment;
@@ -87,6 +92,10 @@ export function PlaceResidencyBrief({
   visualSignature: PlaceVisualSignature;
   liveFitFilters?: LiveFitFilters;
   fitContext?: ResidencyFitContext;
+  inCompare?: boolean;
+  bookmarked?: boolean;
+  onCompareToggle?: (id: string) => void;
+  onBookmarkToggle?: (id: string) => void;
 }) {
   const { temp } = useUnits();
   const prose = useProse();
@@ -111,6 +120,7 @@ export function PlaceResidencyBrief({
     liveFit.score >= 60 ? "Specialist fit" :
     "Needs scrutiny";
   const goodReason = liveFit.reasons[0] ?? "Balanced climate, risk, and terrain scores make it worth a closer look.";
+  const hasScoutActions = Boolean(onCompareToggle || onBookmarkToggle);
   const lanes = [
     { label: "Live fit", value: liveFit.score, note: goodReason, tone: "glacier" },
     {
@@ -156,6 +166,39 @@ export function PlaceResidencyBrief({
       {fitContextRead ? (
         <div className="residency-brief__context" aria-label="Active fit context">
           <p><span>Current screen</span> {prose(fitContextRead)}</p>
+        </div>
+      ) : null}
+
+      {hasScoutActions ? (
+        <div className="residency-brief__actions" aria-label={`Residency actions for ${place.name}`}>
+          <div className="residency-brief__action-read">
+            <span>Scout handoff</span>
+            <p>Keep this candidate in your shortlist, then compare tradeoffs before planning a visit.</p>
+          </div>
+          <div className="residency-brief__action-buttons">
+            {onBookmarkToggle ? (
+              <BookmarkButton
+                pinned={bookmarked}
+                placeName={place.name}
+                onToggle={() => onBookmarkToggle(place.id)}
+                size="header"
+                ariaContext="from residency brief"
+                className="residency-brief__action-button"
+              />
+            ) : null}
+            {onCompareToggle ? (
+              <button
+                type="button"
+                onClick={() => onCompareToggle(place.id)}
+                aria-pressed={inCompare}
+                aria-label={inCompare ? `Remove ${place.name} from Compare from residency brief` : `Add ${place.name} to Compare from residency brief`}
+                className={`btn-ghost residency-brief__action-button ${inCompare ? "residency-brief__action-button--active" : ""}`}
+              >
+                <ArrowLeftRight className="w-3 h-3" aria-hidden />
+                <span>{inCompare ? "In compare" : "Compare"}</span>
+              </button>
+            ) : null}
+          </div>
         </div>
       ) : null}
 

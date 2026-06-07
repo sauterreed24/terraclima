@@ -282,7 +282,18 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               onBookmarkToggle={onBookmarkToggle}
               visualSignature={visualSignature!}
             />
-            <DetailBody place={place} onOpenPlace={onOpenPlace} liveFitFilters={liveFitFilters} residencyFitContext={residencyFitContext} visualSignature={visualSignature!} scenario={scenario} />
+            <DetailBody
+              place={place}
+              onOpenPlace={onOpenPlace}
+              liveFitFilters={liveFitFilters}
+              residencyFitContext={residencyFitContext}
+              visualSignature={visualSignature!}
+              onCompareToggle={onCompareToggle}
+              inCompare={inCompareIds?.has(place.id) ?? false}
+              bookmarked={Boolean(bookmarked)}
+              onBookmarkToggle={onBookmarkToggle}
+              scenario={scenario}
+            />
             <PlaceBackToTop panelRef={panelRef} />
           </motion.aside>
         </>
@@ -502,13 +513,17 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
 }
 
 function DetailBody({
-  place, onOpenPlace, liveFitFilters, residencyFitContext, visualSignature, scenario = "now",
+  place, onOpenPlace, liveFitFilters, residencyFitContext, visualSignature, onCompareToggle, inCompare, bookmarked, onBookmarkToggle, scenario = "now",
 }: {
   place: Place;
   onOpenPlace?: (id: string) => void;
   liveFitFilters?: LiveFitFilters;
   residencyFitContext?: ResidencyFitContext;
   visualSignature: PlaceVisualSignature;
+  onCompareToggle?: (id: string) => void;
+  inCompare: boolean;
+  bookmarked: boolean;
+  onBookmarkToggle?: (id: string) => void;
   scenario?: ScenarioId;
 }) {
   const { temp, dist } = useUnits();
@@ -587,6 +602,10 @@ function DetailBody({
         visualSignature={visualSignature}
         liveFitFilters={liveFitFilters}
         fitContext={residencyFitContext}
+        inCompare={inCompare}
+        bookmarked={bookmarked}
+        onCompareToggle={onCompareToggle}
+        onBookmarkToggle={onBookmarkToggle}
       />
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />

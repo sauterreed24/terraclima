@@ -35,6 +35,19 @@ describe("BookmarkButton — header variant", () => {
     render(<BookmarkButton pinned={false} placeName="Eureka" onToggle={() => undefined} size="header" />);
     expect(screen.getByRole("button", { name: /Pin Eureka/ })).toHaveTextContent("Pin");
   });
+
+  it("can disambiguate duplicate visible pin controls with an aria context", () => {
+    render(
+      <BookmarkButton
+        pinned={false}
+        placeName="Eureka"
+        onToggle={() => undefined}
+        size="header"
+        ariaContext="from residency brief"
+      />,
+    );
+    expect(screen.getByRole("button", { name: "Pin Eureka to your shortlist from residency brief" })).toHaveTextContent("Pin");
+  });
 });
 
 describe("BookmarkButton — click", () => {
