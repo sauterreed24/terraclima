@@ -583,6 +583,7 @@ function DetailBody({
         livability={livability}
         bestMonths={bestMonths}
         visualSignature={visualSignature}
+        liveFitFilters={liveFitFilters}
       />
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
