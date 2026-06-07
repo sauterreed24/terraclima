@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Fit Finder lanes
+
+- **Fit Finder (`src/components/FilterBar.tsx`, `src/lib/lifestyle-bundles.ts`, `src/styles.css`):** groups guided paths into **Escape discomfort**, **Daily life fit**, and **Terrain & seasons** lanes so the larger preference set stays scannable on desktop and mobile. Each lane is exposed as a named accessible group while existing path behavior, ranking, filters, and URL state remain unchanged.
+
 ### Fit Finder geography path
 
 - **Fit Finder (`src/lib/lifestyle-bundles.ts`, `src/components/FilterBar.tsx`):** adds a scoped **Mexico / Southwest** guided path that combines existing dry-air/mild-winter constraints with U.S./Mexico and dry-highland terrain filters. The path discloses its region and terrain scope in the applied-settings receipt and round-trips through shareable Explorer URLs.

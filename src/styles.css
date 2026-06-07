@@ -3352,12 +3352,51 @@
   }
   .fit-finder-panel__grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.42rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.58rem;
     max-height: min(18rem, 42vh);
     overflow-y: auto;
     padding-right: 0.18rem;
     scrollbar-width: thin;
+  }
+  .fit-finder-panel__lane {
+    min-width: 0;
+    display: grid;
+    gap: 0.34rem;
+  }
+  .fit-finder-panel__lane + .fit-finder-panel__lane {
+    padding-top: 0.08rem;
+    border-top: 1px solid rgba(200, 170, 140, 0.2);
+  }
+  .fit-finder-panel__lane-head {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.45rem;
+  }
+  .fit-finder-panel__lane-title {
+    color: var(--color-glacier-700);
+    font-size: 0.55rem;
+    font-weight: 850;
+    letter-spacing: 0.13em;
+    line-height: 1.08;
+    text-transform: uppercase;
+  }
+  .fit-finder-panel__lane-cue {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-stone-readable);
+    font-size: 0.58rem;
+    line-height: 1.16;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .fit-finder-panel__lane-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.42rem;
   }
   .fit-finder-panel__path {
     min-width: 0;
@@ -3469,7 +3508,19 @@
   @media (max-width: 420px) {
     .fit-finder-panel__grid {
       grid-template-columns: 1fr;
-      max-height: min(18rem, 38vh);
+      max-height: min(20rem, 42vh);
+    }
+    .fit-finder-panel__lane-head {
+      align-items: flex-start;
+      display: grid;
+      gap: 0.12rem;
+    }
+    .fit-finder-panel__lane-cue {
+      text-align: left;
+      white-space: normal;
+    }
+    .fit-finder-panel__lane-grid {
+      grid-template-columns: 1fr;
     }
     .fit-finder-panel__applies-row {
       grid-template-columns: 2.35rem minmax(0, 1fr);
@@ -8436,6 +8487,15 @@ html[data-theme="dark"] .fit-finder-panel__path {
   border-color: rgba(120, 138, 178, 0.26);
   color: var(--color-frost-strong);
   box-shadow: var(--tc-shadow-inset);
+}
+html[data-theme="dark"] .fit-finder-panel__lane + .fit-finder-panel__lane {
+  border-top-color: rgba(120, 138, 178, 0.22);
+}
+html[data-theme="dark"] .fit-finder-panel__lane-title {
+  color: rgba(180, 236, 246, 0.95);
+}
+html[data-theme="dark"] .fit-finder-panel__lane-cue {
+  color: var(--color-stone-readable);
 }
 html[data-theme="dark"] .fit-finder-panel__path:hover {
   border-color: rgba(140, 200, 230, 0.46);
