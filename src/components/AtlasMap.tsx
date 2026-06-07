@@ -2034,6 +2034,7 @@ export function AtlasMap({
           place={hoverPlace}
           xPct={tooltipScreen.xPct}
           yPct={tooltipScreen.yPct}
+          mapWidth={width}
           featuredRank={featuredRankById.get(hoverPlace.id)}
           featuredLabel={featuredLabel}
           liveFitFilters={liveFitFilters}
