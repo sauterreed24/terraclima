@@ -99,6 +99,7 @@ export const PlaceCard = memo(function PlaceCard({
 }: Props) {
   const titleId = useId();
   const rankId = useId();
+  const rankingEvidenceId = useId();
   const { temp, dist } = useUnits();
   const prose = useProse();
   const summerHighC = meanSummerHigh(place);
@@ -138,6 +139,14 @@ export const PlaceCard = memo(function PlaceCard({
   const frostFreeDays = place.climate.frostFreeDays ?? null;
 
   const toneRgb = TONE_RGB[tone] ?? TONE_RGB.ice;
+  const rankingEvidenceNote = !compact && note ? prose(note) : null;
+  const rankingEvidenceCheck = !compact
+    ? liveFit?.cautions[0] ?? visualSignature?.verify.rationale ?? null
+    : null;
+  const describedBy = [
+    rank != null && rankingLabel && rankingScore != null ? rankId : null,
+    rankingEvidenceNote ? rankingEvidenceId : null,
+  ].filter(Boolean).join(" ") || undefined;
 
   const handleOpen = useCallback(() => {
     if (onOpenPlace) onOpenPlace(place.id);
@@ -200,7 +209,7 @@ export const PlaceCard = memo(function PlaceCard({
         onPointerDown={onPreloadPlaceDetail}
         className="place-card__open-target text-left w-full p-4 pl-[calc(1rem+3px)] flex flex-col gap-0 min-h-0 bg-transparent border-0 cursor-pointer"
         aria-labelledby={titleId}
-        aria-describedby={rank != null && rankingLabel && rankingScore != null ? rankId : undefined}
+        aria-describedby={describedBy}
         aria-current={selected ? "true" : undefined}
       >
         {rank != null && rankingLabel && rankingScore != null ? (
@@ -252,6 +261,19 @@ export const PlaceCard = memo(function PlaceCard({
         {!compact && (
           <p className="text-sm text-frost leading-snug pt-3 line-clamp-2">{prose(place.summaryShort)}</p>
         )}
+
+        {rankingEvidenceNote ? (
+          <div
+            id={rankingEvidenceId}
+            className="place-card__ranking-evidence"
+            aria-label="Why this place ranked here"
+          >
+            <p><span>Why this rank</span> {rankingEvidenceNote}</p>
+            {rankingEvidenceCheck ? (
+              <p><span>First check</span> {prose(rankingEvidenceCheck)}</p>
+            ) : null}
+          </div>
+        ) : null}
 
         {visualSignature ? (
           <dl
@@ -475,7 +497,9 @@ export const PlaceCard = memo(function PlaceCard({
           </div>
         )}
 
-        {note && <div className="text-xs text-stone-readable italic pt-2 border-t border-[rgba(71,90,122,0.1)] mt-2">{prose(note)}</div>}
+        {!rankingEvidenceNote && note ? (
+          <div className="text-xs text-stone-readable italic pt-2 border-t border-[rgba(71,90,122,0.1)] mt-2">{prose(note)}</div>
+        ) : null}
       </button>
 
       {onBookmarkToggle && (
