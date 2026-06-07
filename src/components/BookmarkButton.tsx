@@ -10,6 +10,8 @@ interface Props {
   onToggle: (e: MouseEvent<HTMLButtonElement>) => void;
   /** Size variant. `compact` is the small in-card chip; `header` is the prominent toolbar version. */
   size?: "compact" | "header";
+  /** Optional label suffix when the same place has more than one visible pin control. */
+  ariaContext?: string;
   className?: string;
 }
 
@@ -25,6 +27,7 @@ export const BookmarkButton = memo(function BookmarkButton({
   placeName,
   onToggle,
   size = "compact",
+  ariaContext,
   className,
 }: Props) {
   const handleClick = useCallback(
@@ -36,7 +39,8 @@ export const BookmarkButton = memo(function BookmarkButton({
   );
 
   const Icon = pinned ? BookmarkCheck : Bookmark;
-  const ariaLabel = pinned ? `Unpin ${placeName}` : `Pin ${placeName} to your shortlist`;
+  const context = ariaContext ? ` ${ariaContext}` : "";
+  const ariaLabel = pinned ? `Unpin ${placeName}${context}` : `Pin ${placeName} to your shortlist${context}`;
   const title = pinned ? "Remove from your shortlist" : "Save to your shortlist";
 
   if (size === "header") {

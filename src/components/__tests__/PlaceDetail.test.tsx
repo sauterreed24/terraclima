@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PLACES_BY_ID } from "../../data/places";
 import { UnitProvider } from "../../lib/units";
@@ -206,6 +206,50 @@ describe("PlaceDetail header accessibility", () => {
 
     const removeBtn = screen.getByRole("button", { name: `Remove ${place.name} from compare` });
     expect(removeBtn).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("surfaces shortlist and compare actions inside the residency brief", () => {
+    const place = PLACES_BY_ID["yuma-az"];
+    expect(place).toBeTruthy();
+    const onCompareToggle = vi.fn();
+    const onBookmarkToggle = vi.fn();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail
+          place={place}
+          onClose={() => undefined}
+          onCompareToggle={onCompareToggle}
+          inCompareIds={new Set()}
+          bookmarked={false}
+          onBookmarkToggle={onBookmarkToggle}
+        />
+      </UnitProvider>,
+    );
+
+    expect(screen.getByLabelText(`Residency actions for ${place.name}`)).toHaveTextContent("Scout handoff");
+
+    const pinBtn = screen.getByRole("button", { name: `Pin ${place.name} to your shortlist from residency brief` });
+    fireEvent.click(pinBtn);
+    expect(onBookmarkToggle).toHaveBeenCalledWith(place.id);
+
+    const compareBtn = screen.getByRole("button", { name: `Add ${place.name} to Compare from residency brief` });
+    expect(compareBtn).toHaveAttribute("aria-pressed", "false");
+    fireEvent.click(compareBtn);
+    expect(onCompareToggle).toHaveBeenCalledWith(place.id);
+  });
+
+  it("does not render residency actions when the dossier has no action callbacks", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} />
+      </UnitProvider>,
+    );
+
+    expect(screen.queryByLabelText(`Residency actions for ${place.name}`)).toBeNull();
   });
 });
 
