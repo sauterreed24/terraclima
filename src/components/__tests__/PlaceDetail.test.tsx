@@ -88,6 +88,33 @@ describe("PlaceDetail overview spotlight", () => {
   });
 });
 
+describe("PlaceDetail residency fit context", () => {
+  it("keeps active Live Finder constraints visible in the residency brief", () => {
+    const place = PLACES_BY_ID["real-catorce-mx"] ?? PLACES_BY_ID["yuma-az"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail
+          place={place}
+          onClose={() => undefined}
+          liveFitFilters={{
+            fitPresets: new Set(["mild-winters", "dry-air"]),
+            maxSummerHighC: 26,
+            minWinterLowC: -5,
+          }}
+        />
+      </UnitProvider>,
+    );
+
+    const context = screen.getByLabelText("Active fit context");
+    expect(context).toHaveTextContent("Current screen");
+    expect(context).toHaveTextContent("Scored for Mild winters + Dry air");
+    expect(context).toHaveTextContent("summer <= 79°F");
+    expect(context).toHaveTextContent("winter >= 23°F");
+  });
+});
+
 describe("PlaceDetail header accessibility", () => {
   it("exposes a semantic h1 for the dossier while keeping the visible title", () => {
     const place = PLACES_BY_ID["yuma-az"];

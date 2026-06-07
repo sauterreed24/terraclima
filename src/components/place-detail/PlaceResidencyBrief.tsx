@@ -11,10 +11,10 @@
 import { Calendar, ShieldAlert } from "lucide-react";
 import type { Place } from "../../types";
 import type { BestWindow } from "../../lib/best-months";
-import type { LiveFitAssessment } from "../../lib/live-fit";
+import { LIVE_FIT_PRESETS, type LiveFitAssessment, type LiveFitFilters } from "../../lib/live-fit";
 import type { LivabilityResult } from "../../lib/livability-score";
 import type { PlaceVisualSignature } from "../../lib/place-visual-signature";
-import { useProse } from "../../lib/units";
+import { fmtTemp, useProse, useUnits, type TempUnit } from "../../lib/units";
 
 function describeSignatureVerification(signature: PlaceVisualSignature): string {
   switch (signature.verify.key) {
@@ -29,22 +29,49 @@ function describeSignatureVerification(signature: PlaceVisualSignature): string 
   }
 }
 
+function riskLabel(level: string): string {
+  return level.charAt(0).toUpperCase() + level.slice(1);
+}
+
+function buildFitContextRead(filters: LiveFitFilters | undefined, temp: TempUnit): string | null {
+  const presetLabels = LIVE_FIT_PRESETS
+    .filter(preset => filters?.fitPresets?.has(preset.id))
+    .map(preset => preset.label);
+  const constraints = [
+    filters?.maxSummerHighC != null ? `summer <= ${fmtTemp(filters.maxSummerHighC, temp)}` : null,
+    filters?.minWinterLowC != null ? `winter >= ${fmtTemp(filters.minWinterLowC, temp)}` : null,
+    filters?.minGrowability != null ? `growability >= ${filters.minGrowability}` : null,
+    filters?.maxFireRisk != null ? `fire risk <= ${riskLabel(filters.maxFireRisk)}` : null,
+    filters?.maxOverallRisk != null ? `overall risk <= ${riskLabel(filters.maxOverallRisk)}` : null,
+  ].filter(Boolean);
+
+  if (presetLabels.length === 0 && constraints.length === 0) return null;
+  const lens = presetLabels.length > 0 ? presetLabels.join(" + ") : "manual Live Finder constraints";
+  return constraints.length > 0
+    ? `Scored for ${lens}, with ${constraints.join(", ")}.`
+    : `Scored for ${lens}.`;
+}
+
 export function PlaceResidencyBrief({
   place,
   liveFit,
   livability,
   bestMonths,
   visualSignature,
+  liveFitFilters,
 }: {
   place: Place;
   liveFit: LiveFitAssessment;
   livability: LivabilityResult;
   bestMonths: BestWindow[];
   visualSignature: PlaceVisualSignature;
+  liveFitFilters?: LiveFitFilters;
 }) {
+  const { temp } = useUnits();
   const prose = useProse();
   const bestWindow = bestMonths.find(w => w.kind === "good") ?? null;
   const cautionWindow = bestMonths.find(w => w.kind === "caution") ?? null;
+  const fitContextRead = buildFitContextRead(liveFitFilters, temp);
   const leadDriver =
     livability.drivers
       .map(key => livability.components.find(component => component.key === key))
@@ -104,6 +131,12 @@ export function PlaceResidencyBrief({
           <span>fit</span>
         </div>
       </div>
+
+      {fitContextRead ? (
+        <div className="residency-brief__context" aria-label="Active fit context">
+          <p><span>Current screen</span> {prose(fitContextRead)}</p>
+        </div>
+      ) : null}
 
       <div className="residency-brief__grid">
         <div className="residency-brief__primary">

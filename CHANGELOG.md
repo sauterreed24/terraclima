@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Dossier fit context receipt
+
+- **Residency brief (`src/components/place-detail/PlaceResidencyBrief.tsx`, `src/styles.css`):** when a Live Finder/Fit Finder path is active, the top dossier brief now names the active fit presets and hard thresholds that shaped the live-here score. This keeps the Explorer-to-dossier journey continuous without changing scoring, routes, corpus data, or adding another detail panel.
+
 ### Result card ranking evidence
 
 - **Ranked place cards (`src/components/PlaceCard.tsx`, `src/styles.css`):** promotes each ranking note into a top-of-card **Why this rank** evidence strip with a first-check cue, so users can understand why a result made the shortlist before scanning charts or opening the dossier. The strip uses existing ranking/live-fit/signature data and preserves scoring, ranking, routes, and corpus records.
