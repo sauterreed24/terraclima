@@ -545,6 +545,18 @@ export default function App() {
     () => RANKING_OPTIONS.find(o => o.id === ranking)?.label ?? ranking.replace(/-/g, " "),
     [ranking],
   );
+  const activeDossierFitBundle = useMemo(
+    () => LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null,
+    [ranking, filters],
+  );
+  const dossierFitContext = useMemo(
+    () => ({
+      rankingLabel,
+      bundleLabel: activeDossierFitBundle?.label ?? null,
+      bundleCue: activeDossierFitBundle?.cue ?? null,
+    }),
+    [rankingLabel, activeDossierFitBundle],
+  );
   const scoutBrief = useMemo(
     () => buildExplorerScoutBrief(ranked, rankingLabel, deferredFilters, climateScenario),
     [ranked, rankingLabel, deferredFilters, climateScenario],
@@ -1080,6 +1092,7 @@ export default function App() {
             onPickArchetype={pickArchetype}
             onOpenPlace={openPlace}
             liveFitFilters={filters}
+            residencyFitContext={dossierFitContext}
             bookmarked={selectedPlace ? bookmarkIds.has(selectedPlace.id) : false}
             onBookmarkToggle={toggleBookmark}
             occluded={placeDetailOccluded}
