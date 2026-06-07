@@ -362,6 +362,7 @@ describe("AtlasMap DOM controls", () => {
     expect(preview).toHaveTextContent("Physical drivers");
     expect(preview).toHaveTextContent("Rain Shadow");
     expect(preview).toHaveTextContent("Scout cues");
+    expect(preview).toHaveTextContent("Open dossier, compare finalists");
     expect(preview).toHaveTextContent("lavender, grapes");
     expect(preview).toHaveTextContent("late frost pockets");
 
@@ -388,7 +389,8 @@ describe("AtlasMap DOM controls", () => {
     const preview = screen.getByRole("tooltip");
     expect(preview).toHaveTextContent("Rank #1 by Live-here fit");
     expect(preview).toHaveTextContent("Current lens leader");
-    expect(preview).toHaveTextContent("Next move: open the dossier from this pin, then compare it against the current leaders.");
+    expect(preview).not.toHaveTextContent("Next move: open the dossier from this pin, then compare it against the current leaders.");
+    expect(preview).toHaveTextContent("Open dossier, compare finalists");
     expect(preview).toHaveTextContent(`Live fit${expectedLiveFit}`);
   });
 

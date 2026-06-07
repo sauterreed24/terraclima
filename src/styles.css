@@ -4726,6 +4726,9 @@
     --tc-map-accent-line: rgba(26, 143, 168, 0.35);
     --tc-map-ink: var(--color-ice);
     --tc-map-muted: var(--color-stone);
+    display: flex;
+    flex-direction: column;
+    max-height: min(39rem, var(--tc-map-hover-max-height, calc(100% - 1rem)));
     border-radius: 14px;
     border: 1px solid rgba(195, 165, 138, 0.38);
     background:
@@ -4769,6 +4772,7 @@
   }
 
   .tc-map-hover-card__hero {
+    flex: 0 0 auto;
     position: relative;
     padding: 0.75rem 0.85rem 0.8rem;
     background:
@@ -4789,10 +4793,14 @@
   }
 
   .tc-map-hover-card__body {
+    min-height: 0;
     padding: 0.75rem 0.85rem 0.9rem;
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
   }
 
   .tc-map-hover-kicker {
@@ -4809,15 +4817,6 @@
     padding-left: 0.65rem;
     margin: 0;
     border-left: 2px solid var(--tc-map-accent-line);
-  }
-  .tc-map-hover-section--inset {
-    padding: 0.6rem 0.65rem 0.65rem 0.75rem;
-    border-radius: 10px;
-    border: 1px solid rgba(195, 165, 138, 0.28);
-    border-left-width: 3px;
-    border-left-color: var(--tc-map-accent-line);
-    background: rgba(255, 253, 248, 0.65);
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset;
   }
 
   /** Section that carries its own frame (e.g. climate strip) — drop duplicate left rail. */
@@ -4953,28 +4952,45 @@
     border-left: 1px solid rgba(195, 165, 138, 0.22);
   }
 
+  .tc-map-hover-scout-strip {
+    padding: 0.52rem 0.58rem 0.58rem;
+    border-radius: 10px;
+    border: 1px solid rgba(195, 165, 138, 0.28);
+    background:
+      linear-gradient(135deg, rgba(241, 251, 253, 0.58), rgba(255, 253, 248, 0.76)),
+      rgba(255, 253, 248, 0.62);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.85) inset;
+  }
+  .tc-map-hover-scout-strip__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.55rem;
+    margin-bottom: 0.42rem;
+  }
+  .tc-map-hover-scout-strip__head .tc-map-hover-kicker {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+  }
+  .tc-map-hover-scout-strip__head span {
+    color: var(--color-frost-strong);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    text-align: right;
+  }
   .tc-map-hover-cues {
     display: grid;
-    gap: 0.4rem;
-  }
-  .tc-map-hover-next-move {
-    margin: 0 0 0.48rem;
-    padding: 0.42rem 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid rgba(26, 143, 168, 0.16);
-    background: rgba(241, 251, 253, 0.64);
-    color: var(--color-frost-strong);
-    font-size: 0.68rem;
-    font-weight: 600;
-    line-height: 1.35;
+    gap: 0.32rem;
   }
   .tc-map-hover-cues > div {
     display: grid;
-    grid-template-columns: 4.4rem minmax(0, 1fr);
-    gap: 0.45rem;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: 0.4rem;
     align-items: start;
-    font-size: 0.72rem;
-    line-height: 1.35;
+    font-size: 0.68rem;
+    line-height: 1.32;
     color: var(--color-frost-strong);
   }
   .tc-map-hover-cues > div[data-risk="moderate"] {

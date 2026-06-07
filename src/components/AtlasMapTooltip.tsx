@@ -63,6 +63,7 @@ export function AtlasMapTooltip({
   place,
   xPct,
   yPct,
+  mapWidth,
   featuredRank,
   featuredLabel,
   liveFitFilters,
@@ -70,6 +71,7 @@ export function AtlasMapTooltip({
   place: Place;
   xPct: number;
   yPct: number;
+  mapWidth: number;
   featuredRank?: number;
   featuredLabel?: string;
   liveFitFilters?: LiveFitFilters;
@@ -88,13 +90,17 @@ export function AtlasMapTooltip({
   const atmosphere = Math.round(atmosphericComfortScore(place));
   const comfortRead = describeHumanComfort(place);
 
+  const compactMap = mapWidth < 420;
   const onRight = xPct < 55;
   const onTop = yPct > 58;
+  const availableHeightPct = onTop ? yPct : 100 - yPct;
   const style: CSSProperties = {
-    left: `${xPct}%`,
+    left: compactMap ? "0.5rem" : `${xPct}%`,
     top: `${yPct}%`,
-    transform: `translate(${onRight ? "12px" : "calc(-100% - 12px)"}, ${onTop ? "calc(-100% - 10px)" : "10px"})`,
-    maxWidth: "min(21.5rem, calc(100vw - 1rem))",
+    transform: `translate(${compactMap ? "0" : onRight ? "12px" : "calc(-100% - 12px)"}, ${onTop ? "calc(-100% - 10px)" : "10px"})`,
+    width: compactMap ? "calc(100% - 1rem)" : undefined,
+    maxWidth: compactMap ? "calc(100% - 1rem)" : "min(21.5rem, calc(100vw - 1rem))",
+    ["--tc-map-hover-max-height" as string]: `calc(${availableHeightPct}% - 1rem)`,
   };
 
   const countryLabel =
@@ -192,9 +198,11 @@ export function AtlasMapTooltip({
           </section>
         ) : null}
 
-        <section className="tc-map-hover-section tc-map-hover-section--inset" aria-label="Scout cues">
-          <h3 className="tc-map-hover-kicker">Scout cues</h3>
-          <p className="tc-map-hover-next-move">Next move: open the dossier from this pin, then compare it against the current leaders.</p>
+        <section className="tc-map-hover-scout-strip" aria-label="Scout cues">
+          <div className="tc-map-hover-scout-strip__head">
+            <h3 className="tc-map-hover-kicker">Scout cues</h3>
+            <span>Open dossier, compare finalists</span>
+          </div>
           <div className="tc-map-hover-cues">
             {growList.length > 0 ? (
               <div>
