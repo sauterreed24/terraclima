@@ -138,6 +138,7 @@ describe("FilterBar lifestyle bundles", () => {
     expect(screen.getByText(/Start with what you are escaping or seeking/)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Cool Summer Refuge/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Winter Sun/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Mexico \/ Southwest/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Low Fire \/ Smoke/ })).toBeInTheDocument();
     expect(screen.getByText("Live Finder signals")).toBeInTheDocument();
   });
@@ -165,6 +166,18 @@ describe("FilterBar lifestyle bundles", () => {
     expect(document.getElementById(winterSunAppliesId!)).toHaveAttribute(
       "aria-label",
       `Winter Sun applied settings: Rank: Sunniest winters · Fit: Sun · Fit: Mild · Winter >= -5${DEG}C`,
+    );
+
+    const mexicoPath = screen.getByRole("button", { name: /Mexico \/ Southwest/ });
+    expect(mexicoPath).toHaveTextContent("Best shoulder seasons");
+    expect(mexicoPath).toHaveTextContent(`Dry · Mild · summer <= 26${DEG}C · winter -5${DEG}C+`);
+    expect(mexicoPath).toHaveTextContent("Scope");
+    expect(mexicoPath).toHaveTextContent("U.S. + Mexico");
+    expect(mexicoPath).toHaveTextContent("Eternal-Spring Highland + Volcanic Upland + Sky-Island Refuge + 3 more");
+    const mexicoAppliesId = mexicoPath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
+    expect(document.getElementById(mexicoAppliesId!)).toHaveAttribute(
+      "aria-label",
+      `Mexico / Southwest applied settings: Rank: Best shoulder seasons · Fit: Dry · Fit: Mild · Region: U.S. + Mexico · Terrain: Eternal-Spring Highland + Volcanic Upland + Sky-Island Refuge + High-Desert Escape + Monsoon-Edge Zone + Mild-Winter Foothills · Summer <= 26${DEG}C · Winter >= -5${DEG}C`,
     );
 
     cleanup();
@@ -222,6 +235,45 @@ describe("FilterBar lifestyle bundles", () => {
     expect(screen.getByTitle("Cool, productive summers. Low fire & smoke. Mild winters. Ranked by remote-work readiness.")).toHaveAttribute("data-active", "false");
   });
 
+  it("marks a geography-scoped path active only when region and terrain filters match", () => {
+    const exactMexicoSouthwest = createEmptyFilterState();
+    exactMexicoSouthwest.fitPresets = new Set(["dry-air", "mild-winters"]);
+    exactMexicoSouthwest.countries = new Set(["USA", "Mexico"]);
+    exactMexicoSouthwest.archetypes = new Set([
+      "eternal-spring-highland",
+      "volcanic-upland",
+      "sky-island-refuge",
+      "high-desert-escape",
+      "monsoon-edge",
+      "mild-winter-foothills",
+    ]);
+    exactMexicoSouthwest.maxSummerHighC = 26;
+    exactMexicoSouthwest.minWinterLowC = -5;
+
+    renderFilterBar("F", {
+      filters: exactMexicoSouthwest,
+      ranking: "best-shoulder-seasons",
+    });
+
+    expect(screen.getByTitle("Mexico highlands and Southwest uplifts with dry air, shoulder-season comfort, and moderated winter lows.")).toHaveAttribute("data-active", "true");
+
+    cleanup();
+
+    const staleScope = createEmptyFilterState();
+    staleScope.fitPresets = new Set(["dry-air", "mild-winters"]);
+    staleScope.countries = new Set(["USA"]);
+    staleScope.archetypes = new Set(exactMexicoSouthwest.archetypes);
+    staleScope.maxSummerHighC = 26;
+    staleScope.minWinterLowC = -5;
+
+    renderFilterBar("F", {
+      filters: staleScope,
+      ranking: "best-shoulder-seasons",
+    });
+
+    expect(screen.getByTitle("Mexico highlands and Southwest uplifts with dry air, shoulder-season comfort, and moderated winter lows.")).toHaveAttribute("data-active", "false");
+  });
+
   it("clears stale Live Finder constraints when applying a lifestyle bundle", () => {
     const setFilters = vi.fn();
     const setRanking = vi.fn();
@@ -264,6 +316,40 @@ describe("FilterBar lifestyle bundles", () => {
     expect(next.maxSummerHighC).toBe(26);
     expect(next.fitPresets?.has("snow-country")).toBe(false);
     expect(next.fitPresets?.has("four-seasons")).toBe(false);
+  });
+
+  it("applies the Mexico / Southwest path as a scoped regional dry-highland screen", () => {
+    const setFilters = vi.fn();
+    const setRanking = vi.fn();
+    renderFilterBar("F", { setFilters, setRanking });
+
+    fireEvent.click(screen.getByRole("button", { name: /Mexico \/ Southwest/ }));
+
+    expect(setRanking).toHaveBeenCalledWith("best-shoulder-seasons");
+    const updater = setFilters.mock.calls[0][0] as (filters: FilterState) => FilterState;
+    const previous = createEmptyFilterState();
+    previous.countries = new Set(["Canada"]);
+    previous.archetypes = new Set(["fog-belt-coast"]);
+    previous.fitPresets = new Set(["snow-country"]);
+    previous.maxOverallRisk = "low";
+
+    const next = updater(previous);
+
+    expect(next.countries).toEqual(new Set(["USA", "Mexico"]));
+    expect(next.archetypes).toEqual(new Set([
+      "eternal-spring-highland",
+      "volcanic-upland",
+      "sky-island-refuge",
+      "high-desert-escape",
+      "monsoon-edge",
+      "mild-winter-foothills",
+    ]));
+    expect(next.fitPresets).toEqual(new Set(["dry-air", "mild-winters"]));
+    expect(next.maxSummerHighC).toBe(26);
+    expect(next.minWinterLowC).toBe(-5);
+    expect(next.minGrowability).toBeUndefined();
+    expect(next.maxFireRisk).toBeUndefined();
+    expect(next.maxOverallRisk).toBeUndefined();
   });
 
   it("applies Winter Sun as a sunny-winter and mild-winter screen", () => {

@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Fit Finder geography path
+
+- **Fit Finder (`src/lib/lifestyle-bundles.ts`, `src/components/FilterBar.tsx`):** adds a scoped **Mexico / Southwest** guided path that combines existing dry-air/mild-winter constraints with U.S./Mexico and dry-highland terrain filters. The path discloses its region and terrain scope in the applied-settings receipt and round-trips through shareable Explorer URLs.
+
 ### Shortlist scout readiness
 
 - **Pinned shortlist (`src/App.tsx`, `src/lib/shortlist-readiness.ts`):** adds a compact Scout packet status line that explains when pinned places are ready for Compare and when the Scout plan export preserves the full ordered shortlist. The cue stays inside the existing rail and does not change ranking, routes, corpus data, or export files.

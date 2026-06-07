@@ -1,5 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
-import type { RiskLevel } from "../types";
+import type { Country, MicroclimateArchetype, RiskLevel } from "../types";
 import type { RankingProfile, FilterState } from "./scoring";
 import type { LiveFitPresetId } from "./live-fit";
 
@@ -11,6 +11,8 @@ export interface LifestyleBundle {
   description: string;
   ranking: RankingProfile;
   presets: LiveFitPresetId[];
+  countries?: Country[];
+  archetypes?: MicroclimateArchetype[];
   maxSummerHighC?: number;
   minWinterLowC?: number;
   minGrowability?: number;
@@ -80,6 +82,26 @@ export const LIFESTYLE_BUNDLES: readonly LifestyleBundle[] = [
     presets: ["dry-air"],
   },
   {
+    id: "mexico-southwest",
+    tone: "ochre",
+    label: "Mexico / Southwest",
+    cue: "Dry highland options",
+    description: "Mexico highlands and Southwest uplifts with dry air, shoulder-season comfort, and moderated winter lows.",
+    ranking: "best-shoulder-seasons",
+    presets: ["dry-air", "mild-winters"],
+    countries: ["USA", "Mexico"],
+    archetypes: [
+      "eternal-spring-highland",
+      "volcanic-upland",
+      "sky-island-refuge",
+      "high-desert-escape",
+      "monsoon-edge",
+      "mild-winter-foothills",
+    ],
+    maxSummerHighC: 26,
+    minWinterLowC: -5,
+  },
+  {
     id: "coastal-buffer",
     tone: "aurora",
     label: "Coastal Buffer",
@@ -143,8 +165,16 @@ function samePresetSet(actual: Set<LiveFitPresetId> | undefined, expected: reado
   return expected.every(preset => actual?.has(preset));
 }
 
+function sameStringSet(actual: ReadonlySet<string>, expected: readonly string[] | undefined): boolean {
+  if (!expected) return true;
+  if (actual.size !== expected.length) return false;
+  return expected.every(value => actual.has(value));
+}
+
 export function isBundleActive(bundle: LifestyleBundle, ranking: RankingProfile, filters: FilterState): boolean {
   return ranking === bundle.ranking &&
+    sameStringSet(filters.countries, bundle.countries) &&
+    sameStringSet(filters.archetypes, bundle.archetypes) &&
     samePresetSet(filters.fitPresets, bundle.presets) &&
     filters.maxSummerHighC === bundle.maxSummerHighC &&
     filters.minWinterLowC === bundle.minWinterLowC &&
@@ -161,6 +191,8 @@ export function applyLifestyleBundle(
   setRanking(bundle.ranking);
   setFilters(f => ({
     ...f,
+    countries: bundle.countries ? new Set(bundle.countries) : f.countries,
+    archetypes: bundle.archetypes ? new Set(bundle.archetypes) : f.archetypes,
     fitPresets: new Set(bundle.presets),
     maxSummerHighC: bundle.maxSummerHighC,
     minWinterLowC: bundle.minWinterLowC,
