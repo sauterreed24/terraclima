@@ -194,6 +194,43 @@ async function main(): Promise<void> {
   if (!isBundleActive(remoteWork, remoteWork.ranking, remoteHydrated)) {
     throw new Error("remote-work URL round-trip did not hydrate an active bundle");
   }
+  const mexicoSouthwest = lifestyleBundleById("mexico-southwest");
+  if (!mexicoSouthwest) throw new Error("mexico-southwest bundle missing");
+  const mexicoUrl = formatAppRelativeUrl({
+    view: "explorer",
+    countries: mexicoSouthwest.countries,
+    archetypes: mexicoSouthwest.archetypes,
+    ranking: mexicoSouthwest.ranking,
+    fitPresets: mexicoSouthwest.presets,
+    maxSummerHighC: mexicoSouthwest.maxSummerHighC,
+    minWinterLowC: mexicoSouthwest.minWinterLowC,
+    collectionExists: () => true,
+    archetypeExists: () => true,
+  });
+  if (!mexicoUrl.includes("c=Mexico%2CUSA")) {
+    throw new Error(`mexico-southwest bundle URL missing region scope: ${mexicoUrl}`);
+  }
+  if (!mexicoUrl.includes("a=eternal-spring-highland")) {
+    throw new Error(`mexico-southwest bundle URL missing terrain scope: ${mexicoUrl}`);
+  }
+  if (!mexicoUrl.includes("sh=26")) {
+    throw new Error(`mexico-southwest bundle URL missing summer cap: ${mexicoUrl}`);
+  }
+  const mexicoParsed = parseAppSearch(new URL(mexicoUrl, "https://example.com").search, { validatePlaceId });
+  const mexicoHydrated = filterStateFromValidated({
+    countries: mexicoParsed.countries,
+    archetypes: mexicoParsed.archetypes,
+    fitPresets: mexicoParsed.fitPresets,
+    search: mexicoParsed.search,
+    maxSummerHighC: mexicoParsed.maxSummerHighC,
+    minWinterLowC: mexicoParsed.minWinterLowC,
+    minGrowability: mexicoParsed.minGrowability,
+    maxFireRisk: mexicoParsed.maxFireRisk,
+    maxOverallRisk: mexicoParsed.maxOverallRisk,
+  });
+  if (!isBundleActive(mexicoSouthwest, mexicoSouthwest.ranking, mexicoHydrated)) {
+    throw new Error("mexico-southwest URL round-trip did not hydrate an active bundle");
+  }
 
   // Climate-scenario ("2050 time machine") URL round-trip + projection recompute.
   const scnUrl = formatAppRelativeUrl({ view: "explorer", scenario: "ssp585", collectionExists: () => true });

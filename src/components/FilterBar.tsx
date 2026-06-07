@@ -1,5 +1,5 @@
 import { memo, useCallback, useRef, type Dispatch, type SetStateAction } from "react";
-import type { Country, MicroclimateArchetype, RiskLevel, ScenarioId } from "../types";
+import { ARCHETYPE_LABELS, type Country, type MicroclimateArchetype, type RiskLevel, type ScenarioId } from "../types";
 import {
   applyLifestyleBundle,
   isBundleActive,
@@ -45,11 +45,46 @@ function rankingOptionLabel(id: RankingProfile): string {
   return RANKING_OPTIONS.find(option => option.id === id)?.label ?? id.replace(/-/g, " ");
 }
 
+const COUNTRY_LABELS: Record<Country, string> = {
+  USA: "U.S.",
+  Canada: "Canada",
+  Mexico: "Mexico",
+};
+
+function compactList(labels: readonly string[], limit = 3): string {
+  if (labels.length <= limit) return labels.join(" + ");
+  return `${labels.slice(0, limit).join(" + ")} + ${labels.length - limit} more`;
+}
+
+function bundleScopeFull(bundle: LifestyleBundle): string | null {
+  const parts: string[] = [];
+  if (bundle.countries?.length) {
+    parts.push(`Region: ${bundle.countries.map(country => COUNTRY_LABELS[country]).join(" + ")}`);
+  }
+  if (bundle.archetypes?.length) {
+    parts.push(`Terrain: ${bundle.archetypes.map(archetype => ARCHETYPE_LABELS[archetype]).join(" + ")}`);
+  }
+  return parts.length ? parts.join(" \u00b7 ") : null;
+}
+
+function bundleScopeCompact(bundle: LifestyleBundle): string | undefined {
+  const parts: string[] = [];
+  if (bundle.countries?.length) {
+    parts.push(bundle.countries.map(country => COUNTRY_LABELS[country]).join(" + "));
+  }
+  if (bundle.archetypes?.length) {
+    parts.push(compactList(bundle.archetypes.map(archetype => ARCHETYPE_LABELS[archetype])));
+  }
+  return parts.length ? parts.join(" \u00b7 ") : undefined;
+}
+
 function bundleAppliedSummaryParts(bundle: LifestyleBundle, temp: UnitState["temp"]): string[] {
   const parts = [
     `Rank: ${rankingOptionLabel(bundle.ranking)}`,
     ...bundle.presets.map(preset => `Fit: ${LIVE_FIT_PRESET_BY_ID[preset]?.shortLabel ?? preset}`),
   ];
+  const scope = bundleScopeFull(bundle);
+  if (scope) parts.push(scope);
   if (bundle.maxSummerHighC != null) parts.push(`Summer <= ${fmtTemp(bundle.maxSummerHighC, temp)}`);
   if (bundle.minWinterLowC != null) parts.push(`Winter >= ${fmtTemp(bundle.minWinterLowC, temp)}`);
   if (bundle.minGrowability != null) parts.push(`Garden ${bundle.minGrowability}+`);
@@ -68,6 +103,7 @@ function bundleAppliedRead(bundle: LifestyleBundle, temp: UnitState["temp"]): {
   full: string;
   rank: string;
   signals: string;
+  scope?: string;
 } {
   const signalParts = bundle.presets.map(preset => LIVE_FIT_PRESET_BY_ID[preset]?.shortLabel ?? preset);
   if (bundle.maxSummerHighC != null) signalParts.push(`summer <= ${fmtTemp(bundle.maxSummerHighC, temp)}`);
@@ -80,6 +116,7 @@ function bundleAppliedRead(bundle: LifestyleBundle, temp: UnitState["temp"]): {
     full: bundleAppliedSummaryParts(bundle, temp).join(" \u00b7 "),
     rank: rankingOptionLabel(bundle.ranking),
     signals: signalParts.length > 0 ? signalParts.join(" \u00b7 ") : "ranking only",
+    scope: bundleScopeCompact(bundle),
   };
 }
 
@@ -253,6 +290,12 @@ export const FilterBar = memo(function FilterBar({
                     <span className="fit-finder-panel__applies-kicker">Signals</span>
                     <span className="fit-finder-panel__applies-copy">{appliedRead.signals}</span>
                   </span>
+                  {appliedRead.scope ? (
+                    <span className="fit-finder-panel__applies-row">
+                      <span className="fit-finder-panel__applies-kicker">Scope</span>
+                      <span className="fit-finder-panel__applies-copy">{appliedRead.scope}</span>
+                    </span>
+                  ) : null}
                 </span>
               </button>
             );
