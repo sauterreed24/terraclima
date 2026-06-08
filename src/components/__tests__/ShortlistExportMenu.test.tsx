@@ -41,8 +41,10 @@ describe("ShortlistExportMenu", () => {
     fireEvent.click(screen.getByRole("menuitem", { name: /^Scout plan/i }));
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
+    expect(screen.getByRole("status")).toHaveTextContent("Preparing export...");
 
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce());
+    expect(screen.getByRole("status")).toHaveTextContent("Download started.");
     const [body, filename, mimeType] = vi.mocked(downloadBlobFile).mock.calls[0]!;
     expect(body).toContain("# Terraclima Scout Plan");
     expect(body).toContain(PLACES[0]!.name);
@@ -61,5 +63,6 @@ describe("ShortlistExportMenu", () => {
 
     expect(screen.queryByRole("menu")).not.toBeInTheDocument();
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce());
+    await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Download blocked. Try another format or browser."));
   });
 });

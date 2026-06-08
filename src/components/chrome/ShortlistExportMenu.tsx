@@ -6,6 +6,7 @@ import type { ShortlistExportFile } from "../../lib/shortlist-export";
 import { useFocusTrap } from "../../hooks/use-focus-trap";
 
 type ExportFormatId = "markdown" | "json" | "csv" | "geojson" | "ics";
+type ExportStatus = "idle" | "preparing" | "ready" | "failed";
 
 const FORMATS: ReadonlyArray<{
   id: ExportFormatId;
@@ -41,12 +42,25 @@ interface Props {
 
 export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, className = "" }: Props) {
   const [open, setOpen] = useState(false);
+  const [status, setStatus] = useState<ExportStatus>("idle");
   const panelRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const mountedRef = useRef(true);
+  const statusResetRef = useRef<number | null>(null);
   const menuId = useId();
   useFocusTrap(panelRef, open, true);
 
   const close = useCallback(() => setOpen(false), []);
+  const setExportStatus = useCallback((next: ExportStatus) => {
+    if (mountedRef.current) setStatus(next);
+  }, []);
+  const resetLater = useCallback(() => {
+    if (statusResetRef.current !== null) window.clearTimeout(statusResetRef.current);
+    statusResetRef.current = window.setTimeout(() => {
+      setExportStatus("idle");
+      statusResetRef.current = null;
+    }, 2600);
+  }, [setExportStatus]);
 
   useEffect(() => {
     if (!open) return;
@@ -61,25 +75,44 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
     return () => window.removeEventListener("keydown", onKey, true);
   }, [open, close]);
 
+  useEffect(() => () => {
+    mountedRef.current = false;
+    if (statusResetRef.current !== null) window.clearTimeout(statusResetRef.current);
+  }, []);
+
   const disabled = places.length === 0;
+  const statusMessage =
+    status === "preparing" ? "Preparing export..."
+      : status === "ready" ? "Download started."
+        : status === "failed" ? "Download blocked. Try another format or browser."
+          : "";
 
   const onExport = useCallback(
     (format: ExportFormatId) => {
       const exportPlaces = [...places];
       close();
+      setExportStatus("preparing");
+      if (statusResetRef.current !== null) {
+        window.clearTimeout(statusResetRef.current);
+        statusResetRef.current = null;
+      }
       void buildShortlistExport(format, exportPlaces).then(file => {
         window.setTimeout(() => {
           try {
             downloadBlobFile(file.body, file.filename, file.mimeType);
+            setExportStatus("ready");
           } catch {
-            // Some embedded browser surfaces block synthetic downloads. Keep the menu state stable.
+            // Some embedded browser surfaces block synthetic downloads. Keep that visible.
+            setExportStatus("failed");
           }
+          resetLater();
         }, 0);
       }).catch(() => {
-        // Keep the menu closed if the lazy export chunk fails to load.
+        setExportStatus("failed");
+        resetLater();
       });
     },
-    [places, close],
+    [places, close, resetLater, setExportStatus],
   );
 
   return (
@@ -91,13 +124,18 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         aria-haspopup="menu"
-        disabled={disabled}
+        disabled={disabled || status === "preparing"}
         title={disabled ? "Pin places to export your shortlist" : "Download shortlist"}
         onClick={() => setOpen(v => !v)}
       >
         <Download className="w-3.5 h-3.5" aria-hidden />
-        Export
+        {status === "preparing" ? "Exporting" : "Export"}
       </button>
+      {statusMessage ? (
+        <span className="tc-shortlist-export__status" data-status={status} role="status" aria-live="polite">
+          {statusMessage}
+        </span>
+      ) : null}
       {open ? (
         <div
           ref={panelRef}
