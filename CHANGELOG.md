@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Shortlist export feedback
+
+- **Shortlist export (`src/components/chrome/ShortlistExportMenu.tsx`, `src/styles.css`):** export actions now show preparing, download-started, and blocked-download status feedback instead of silently closing the menu. The export formats, file contents, shortlist order, and lazy-loaded export chunk stay unchanged.
+
 ### Compare single-finalist guide
 
 - **Compare (`src/components/CompareView.tsx`, `src/styles.css`):** when only one place is saved, Compare now shows a compact shortlist setup read with the anchor signal, missing contrast, and review/keep-scouting actions. The full decision read still appears only once there are at least two finalists, and existing Compare ordering, URL state, scoring, and dossier links are unchanged.

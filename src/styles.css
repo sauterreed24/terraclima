@@ -8191,8 +8191,41 @@
     filter: brightness(0.88) saturate(0.9);
   }
 
+  .tc-shortlist-export {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.22rem;
+  }
   .tc-shortlist-export__panel {
     box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.25);
+  }
+  .tc-shortlist-export__status {
+    min-height: 0.8rem;
+    max-width: 13rem;
+    color: var(--color-stone-readable);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+  }
+  .tc-shortlist-export__status[data-status="preparing"] {
+    color: var(--color-glacier-700);
+  }
+  .tc-shortlist-export__status[data-status="ready"] {
+    color: var(--color-sage-700);
+  }
+  .tc-shortlist-export__status[data-status="failed"] {
+    color: var(--color-ember-700);
+  }
+  html[data-theme="dark"] .tc-shortlist-export__status[data-status="preparing"] {
+    color: #b4ecf6;
+  }
+  html[data-theme="dark"] .tc-shortlist-export__status[data-status="ready"] {
+    color: #c4e6c8;
+  }
+  html[data-theme="dark"] .tc-shortlist-export__status[data-status="failed"] {
+    color: #ffb199;
   }
   .tc-shortlist-export__item {
     border: 0;
