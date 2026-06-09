@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MOTION_DURATION_BASE_S, scrimFadeTransition } from "../lib/device-profile";
 import { useEffect, useId, useMemo, useRef } from "react";
-import type { Place, ScenarioId } from "../types";
+import type { Place, RiskLevel, ScenarioId } from "../types";
 import { scenarioMeta } from "../lib/climate-projection";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
@@ -9,7 +9,11 @@ import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-me
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { computeBioclim, type BioclimIndex } from "../lib/bioclim";
-import type { LiveFitFilters } from "../lib/live-fit";
+import {
+  LIVE_FIT_PRESET_BY_ID,
+  LIVE_FIT_PRESETS,
+  type LiveFitFilters,
+} from "../lib/live-fit";
 import { apparentComfortIndex } from "../lib/comfort-precision";
 import {
   buildCompareDecisionProfiles,
@@ -86,6 +90,10 @@ export function CompareView({
   }, [decisionProfiles, places, temp]);
   const decisionRead = useMemo(() => buildCompareDecisionRead(decisionProfiles), [decisionProfiles]);
   const singlePlaceGuide = isSinglePlace ? buildSinglePlaceGuide(decisionProfiles[0]) : null;
+  const compareLensReceipt = useMemo(
+    () => buildCompareLensReceipt(liveFitFilters, scenario, temp),
+    [liveFitFilters, scenario, temp],
+  );
   /**
    * Mobile (<lg breakpoint via the Tailwind class) gets fixed-width columns
    * with a horizontal scroll snap so 2–4 places stay readable on a phone
@@ -187,6 +195,24 @@ export function CompareView({
                   Climate charts and scores use the <strong>{scenarioMeta(scenario).label}</strong> illustrative regional projection — the same layer as the Explorer. Place dossiers still show present-day normals.
                 </span>
               </div>
+            ) : null}
+
+            {compareLensReceipt ? (
+              <section className="compare-lens-receipt" aria-label="Comparison scoring lens">
+                <div className="compare-lens-receipt__copy">
+                  <span className="compare-lens-receipt__eyebrow">Score lens</span>
+                  <p>{compareLensReceipt.summary}</p>
+                  <span>{compareLensReceipt.honesty}</span>
+                </div>
+                <div className="compare-lens-receipt__chips" aria-label="Active comparison lens ingredients">
+                  {compareLensReceipt.chips.map(chip => (
+                    <span key={`${chip.label}-${chip.value}`} className="compare-lens-receipt__chip">
+                      <span>{chip.label}</span>
+                      <strong>{chip.value}</strong>
+                    </span>
+                  ))}
+                </div>
+              </section>
             ) : null}
 
             {decisionRead ? (
@@ -500,6 +526,83 @@ function bioclimRow(idx: BioclimIndex, format: (v: number) => string): string {
       : "— (no PET)";
   }
   return `${format(idx.value)} · ${idx.classLabel}`;
+}
+
+const RISK_LABELS: Record<RiskLevel, string> = {
+  "very-low": "very low",
+  low: "low",
+  moderate: "moderate",
+  elevated: "elevated",
+  high: "high",
+  "very-high": "very high",
+};
+
+function joinReadable(parts: readonly string[]): string {
+  if (parts.length === 0) return "";
+  if (parts.length === 1) return parts[0]!;
+  if (parts.length === 2) return `${parts[0]} and ${parts[1]}`;
+  return `${parts.slice(0, -1).join(", ")}, and ${parts[parts.length - 1]}`;
+}
+
+function buildCompareLensReceipt(
+  filters: LiveFitFilters | undefined,
+  scenario: ScenarioId,
+  tempUnit: ReturnType<typeof useUnits>["temp"],
+): {
+  summary: string;
+  honesty: string;
+  chips: { label: string; value: string }[];
+} | null {
+  const fitPresets = filters?.fitPresets;
+  const presetLabels = LIVE_FIT_PRESETS
+    .filter(preset => fitPresets?.has(preset.id))
+    .map(preset => LIVE_FIT_PRESET_BY_ID[preset.id].label);
+  const thresholds: string[] = [];
+  const chips: { label: string; value: string }[] = [];
+
+  if (presetLabels.length > 0) {
+    chips.push({ label: "Signals", value: joinReadable(presetLabels.slice(0, 3)) });
+  }
+  if (filters?.maxSummerHighC != null) {
+    const value = `summer <= ${fmtTemp(filters.maxSummerHighC, tempUnit)}`;
+    thresholds.push(value);
+    chips.push({ label: "Heat cap", value });
+  }
+  if (filters?.minWinterLowC != null) {
+    const value = `winter >= ${fmtTemp(filters.minWinterLowC, tempUnit)}`;
+    thresholds.push(value);
+    chips.push({ label: "Cold floor", value });
+  }
+  if (filters?.minGrowability != null) {
+    const value = `growability >= ${filters.minGrowability}/100`;
+    thresholds.push(value);
+    chips.push({ label: "Garden floor", value });
+  }
+  if (filters?.maxFireRisk) {
+    const value = `fire <= ${RISK_LABELS[filters.maxFireRisk]}`;
+    thresholds.push(value);
+    chips.push({ label: "Fire ceiling", value });
+  }
+  if (filters?.maxOverallRisk) {
+    const value = `risk <= ${RISK_LABELS[filters.maxOverallRisk]}`;
+    thresholds.push(value);
+    chips.push({ label: "Risk ceiling", value });
+  }
+
+  const hasFitLens = presetLabels.length > 0 || thresholds.length > 0;
+  const hasScenarioLens = scenario !== "now";
+  if (!hasFitLens && !hasScenarioLens) return null;
+
+  const scenarioLabel = hasScenarioLens ? scenarioMeta(scenario).label : "present-day normals";
+  chips.push({ label: "Climate layer", value: scenarioLabel });
+
+  const signalRead = presetLabels.length > 0 ? joinReadable(presetLabels.slice(0, 3)) : "the broad Compare blend";
+  const thresholdRead = thresholds.length > 0 ? ` with hard checks for ${joinReadable(thresholds.slice(0, 3))}` : "";
+  return {
+    summary: `Fit and finalist scores are being read through ${signalRead}${thresholdRead}.`,
+    honesty: `Use this as a screening lens under ${scenarioLabel}; open dossiers before treating a place as a real-world finalist.`,
+    chips,
+  };
 }
 
 function buildSinglePlaceGuide(profile: CompareDecisionProfile | undefined) {

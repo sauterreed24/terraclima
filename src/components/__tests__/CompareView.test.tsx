@@ -223,6 +223,30 @@ describe("CompareView", () => {
     expect(within(liveFitHighlight as HTMLElement).getByText("92/100")).toBeInTheDocument();
   });
 
+  it("explains the active comparison scoring lens when Live Finder filters shape Compare", () => {
+    renderCompare({
+      liveFitFilters: {
+        fitPresets: new Set<LiveFitPresetId>(["cool-summers", "dry-air"]),
+        maxSummerHighC: 22,
+        maxFireRisk: "elevated",
+      },
+    });
+
+    const lens = screen.getByLabelText("Comparison scoring lens");
+    expect(lens).toHaveTextContent("Score lens");
+    expect(lens).toHaveTextContent("Fit and finalist scores are being read through Cool summers and Dry air");
+    expect(lens).toHaveTextContent("summer <= 72°F");
+    expect(lens).toHaveTextContent("fire <= elevated");
+    expect(lens).toHaveTextContent("present-day normals");
+    expect(lens).toHaveTextContent("screening lens");
+  });
+
+  it("keeps default present-day Compare free of the scoring lens receipt", () => {
+    renderCompare();
+
+    expect(screen.queryByLabelText("Comparison scoring lens")).not.toBeInTheDocument();
+  });
+
   it("shows a scenario honesty banner when comparing under a future climate layer", () => {
     render(
       <UnitProvider>
@@ -237,6 +261,7 @@ describe("CompareView", () => {
     );
     expect(screen.getByRole("note")).toHaveTextContent(/SSP5-8.5/);
     expect(screen.getByRole("note")).toHaveTextContent(/Place dossiers still show present-day normals/);
+    expect(screen.getByLabelText("Comparison scoring lens")).toHaveTextContent(/SSP5-8.5/);
   });
 
   it("omits the scenario banner for present-day compare", () => {
