@@ -23,7 +23,9 @@ describe("ShortlistExportMenu", () => {
 
   it("shows Scout plan first in the export menu", () => {
     render(<ShortlistExportMenu places={[PLACES[0]!]} />);
-    fireEvent.click(screen.getByRole("button", { name: /Export/i }));
+    const trigger = screen.getByRole("button", { name: /Export/i });
+    expect(trigger).toHaveClass("tc-shortlist-export__trigger");
+    fireEvent.click(trigger);
 
     const items = screen.getAllByRole("menuitem");
     expect(items.map(item => item.textContent)).toEqual([

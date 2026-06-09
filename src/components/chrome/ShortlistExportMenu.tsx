@@ -120,7 +120,7 @@ export const ShortlistExportMenu = memo(function ShortlistExportMenu({ places, c
       <button
         ref={triggerRef}
         type="button"
-        className="btn-ghost !text-xs !py-1 !px-2"
+        className="btn-ghost tc-shortlist-export__trigger !text-xs !py-1 !px-2"
         aria-expanded={open}
         aria-controls={open ? menuId : undefined}
         aria-haspopup="menu"

@@ -284,6 +284,16 @@ export function exportShortlistAsMarkdown(
       }
       lines.push("");
     }
+  } else if (places.length === 1) {
+    const anchor = places[0];
+    const row = rows[0];
+    lines.push(`Compare setup URL: ${compareUrl(ctx.appUrl, places)}`);
+    lines.push("");
+    lines.push(`${anchor.name} is saved as the anchor finalist. Use Compare setup to add a similar peer or a counterweight before trusting the side-by-side read.`);
+    if (row) {
+      lines.push(`Anchor read: ${row.bestFor} Watch first: ${row.watch}`);
+    }
+    lines.push("");
   } else {
     lines.push("Pin at least two places to generate a Compare-ready finalist table.");
     lines.push("");

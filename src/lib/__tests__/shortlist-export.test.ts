@@ -174,6 +174,22 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("Pin at least two places to generate a Compare-ready finalist table.");
   });
 
+  it("exports a Compare setup handoff for a one-place shortlist", () => {
+    const file = exportShortlistAsMarkdown([sample[0]], {
+      generatedAt: FIXED,
+      appUrl: "https://example.test/terraclima/",
+    });
+
+    expect(file.body).toContain("Places: 1");
+    expect(file.body).toContain("### 1. Alpha Valley");
+    expect(file.body).toContain("Compare setup URL: https://example.test/terraclima/?cmp=alpha-valley");
+    expect(file.body).toContain("Alpha Valley is saved as the anchor finalist.");
+    expect(file.body).toContain("add a similar peer or a counterweight");
+    expect(file.body).toContain("Anchor read:");
+    expect(file.body).not.toContain("Pin at least two places to generate a Compare-ready finalist table.");
+    expect(file.body).not.toContain("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
+  });
+
   it("keeps the Compare handoff inside the four-place app limit while preserving the full export", () => {
     const places = Array.from({ length: 5 }, (_, index) => makePlace({
       id: `place-${index + 1}`,
