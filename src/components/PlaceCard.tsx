@@ -7,7 +7,8 @@ import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib
 import { getBioclimCardSignal, getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
 import { getBestMonths, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
-import { ArrowRight, Droplets, Leaf, Sun } from "lucide-react";
+import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
+import { ArrowRight, Droplets, Home, Leaf, Sun } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
 import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
 import { getPlaceVisualSignature } from "../lib/place-visual-signature";
@@ -57,6 +58,8 @@ interface Props {
    */
   resonantWindow?: BestWindow["id"] | null;
   liveFitFilters?: LiveFitFilters;
+  /** The reader's home-base anchor. Non-compact cards show a compact delta strip against it. */
+  homePlace?: Place | null;
   rank?: number;
   rankingLabel?: string;
   rankingScore?: number;
@@ -95,7 +98,7 @@ const TONE_RGB: Record<string, string> = {
  * the interactive render budget dramatically on low-spec hardware.
  */
 export const PlaceCard = memo(function PlaceCard({
-  place, selected, note, onOpenPlace, onClick, onCompareToggle, onPreloadPlaceDetail, onPreloadCompare, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, rank, rankingLabel, rankingScore, referenceMonth = getReferenceMonth(),
+  place, selected, note, onOpenPlace, onClick, onCompareToggle, onPreloadPlaceDetail, onPreloadCompare, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, homePlace, rank, rankingLabel, rankingScore, referenceMonth = getReferenceMonth(),
 }: Props) {
   const titleId = useId();
   const rankId = useId();
@@ -124,6 +127,10 @@ export const PlaceCard = memo(function PlaceCard({
     [place, compact, liveFitFilters],
   );
   const livabilityResult = useMemo(() => (compact ? null : scoreLivability(place)), [place, compact]);
+  const homeComparison = useMemo(
+    () => (compact || !homePlace ? null : buildHomeBaseComparison(homePlace, place)),
+    [place, compact, homePlace],
+  );
   const comfortRead = useMemo(() => (compact ? null : describeHumanComfort(place)), [place, compact]);
   const visualSignature = useMemo(() => (compact ? null : getPlaceVisualSignature(place)), [place, compact]);
 
@@ -394,6 +401,45 @@ export const PlaceCard = memo(function PlaceCard({
             <p className="text-[10px] leading-snug text-stone-readable mt-2 pl-0.5 border-t border-dashed border-[rgba(71,90,122,0.12)] pt-2" title={prose(corpusTeaser)}>
               {prose(corpusTeaser)}
             </p>
+          ) : null}
+
+          {homeComparison ? (
+            <div
+              className="place-card__home-delta"
+              aria-label={homeComparison.isSame
+                ? `${place.name} is your home base`
+                : `Climate versus your home base, ${homeComparison.home.name}`}
+              title={prose(homeComparison.headline)}
+            >
+              <span className="place-card__home-delta__label">
+                <Home className="w-3 h-3 shrink-0" aria-hidden />
+                {homeComparison.isSame ? "Home base" : `vs ${homeComparison.home.name}`}
+              </span>
+              {homeComparison.isSame ? (
+                <span className="chip" data-tone="glacier">your climate baseline</span>
+              ) : (
+                (() => {
+                  const chips = pickHomeDeltaChips(homeComparison);
+                  return chips.length === 0 ? (
+                    <span className="chip" data-tone="sage" title="Every major climate signal lands within a rounding error of home.">
+                      climate sibling
+                    </span>
+                  ) : (
+                    chips.map(signal => (
+                      <span
+                        key={signal.id}
+                        className="chip"
+                        data-tone={signal.tone}
+                        title={`${signal.label}: ${signal.descriptor} than home. ${signal.basis}`}
+                      >
+                        {signal.shortLabel}{" "}
+                        <span className="font-mono-num">{formatHomeDeltaValue(signal, temp, dist)}</span>
+                      </span>
+                    ))
+                  );
+                })()
+              )}
+            </div>
           ) : null}
         </div>
 

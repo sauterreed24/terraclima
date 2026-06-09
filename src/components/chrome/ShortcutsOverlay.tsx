@@ -50,6 +50,7 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
           <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
           <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
           <Kbds keys={["B"]} />        <span className="text-frost">Pin / unpin the currently open place to your shortlist</span>
+          <Kbds keys={["H"]} />        <span className="text-frost">Set / clear the open place as your home base — cards and dossiers then show climate deltas against it</span>
           <Kbds keys={["Esc"]} />      <span className="text-frost">Close shortcuts, compare, filter sheet, site menu, or place detail (or clear a non-empty search field)</span>
           <Kbds keys={["?"]} />        <span className="text-frost">Toggle this help</span>
         </div>

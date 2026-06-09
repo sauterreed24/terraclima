@@ -21,6 +21,7 @@
  *   dist    distance unit: "imperial" (default) | "metric"
  *   theme   color theme: "auto" (default) | "light" | "dark"
  *   scn     climate scenario layer: "now" (default) | "ssp245" | "ssp585"
+ *   hb      home-base place id (cards/dossiers read climate deltas against it)
  */
 
 import type { Country, MicroclimateArchetype, RiskLevel, ScenarioId } from "../types";
@@ -63,6 +64,7 @@ export interface ParsedAppUrl {
   dist: DistUnit | null;
   theme: ThemePreference | null;
   scenario: ScenarioId | null;
+  homeBaseId: string | null;
 }
 
 const VIEWS = new Set<AppView>(["explorer", "trips", "collections", "learn"]);
@@ -152,6 +154,8 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
   if (isThemePreference(theme)) out.theme = theme;
   const scn = params.get("scn");
   if (scn && SCENARIO_VALUES.has(scn as ScenarioId)) out.scenario = scn as ScenarioId;
+  const hb = params.get("hb");
+  if (hb) out.homeBaseId = hb;
   return out;
 }
 
@@ -184,6 +188,7 @@ export interface AppUrlState {
   dist?: DistUnit | null;
   theme?: ThemePreference | null;
   scenario?: ScenarioId | null;
+  homeBaseId?: string | null;
   collectionExists: (id: string) => boolean;
   archetypeExists?: (id: string) => boolean;
   placeExists?: (id: string) => boolean;
@@ -248,6 +253,10 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
     const ids = [...compareIds].filter(validate).slice(0, COMPARE_LIMIT);
     if (ids.length > 0) params.set("cmp", ids.join(","));
   }
+  if (state.homeBaseId) {
+    const validate = state.placeExists ?? (() => true);
+    if (validate(state.homeBaseId)) params.set("hb", state.homeBaseId);
+  }
   const qs = params.toString();
   const path = typeof window !== "undefined" ? window.location.pathname : "/";
   return qs ? `${path}?${qs}` : path;
@@ -296,6 +305,7 @@ export interface ValidatedAppState {
   dist: DistUnit | null;
   theme: ThemePreference | null;
   scenario: ScenarioId | null;
+  homeBaseId: string | null;
 }
 
 export function validatedStateFromSearch(
@@ -320,6 +330,7 @@ export function validatedStateFromSearch(
   const search_ = p.search ?? "";
   const compareIds = [...new Set((p.compareIds ?? []).map(resolveId).filter((id): id is string => id != null))]
     .slice(0, COMPARE_LIMIT);
+  const homeBaseId = p.homeBaseId ? resolveId(p.homeBaseId) : null;
   return {
     view,
     placeId,
@@ -339,6 +350,7 @@ export function validatedStateFromSearch(
     dist: p.dist ?? null,
     theme: p.theme ?? null,
     scenario: p.scenario ?? null,
+    homeBaseId,
   };
 }
 
@@ -369,6 +381,7 @@ export function readInitialAppState(
       dist: null,
       theme: null,
       scenario: null,
+      homeBaseId: null,
     };
   }
   return validatedStateFromSearch(window.location.search, placesById, collectionById, archetypesById, resolvePlaceId);

@@ -127,3 +127,37 @@ describe("PlaceCard overlay warmup", () => {
     expect(onPreloadPlaceDetail).not.toHaveBeenCalled();
   });
 });
+
+describe("PlaceCard home-base delta strip", () => {
+  it("shows compact climate-delta chips against the home base", () => {
+    const home = PLACES.find(p => p.id === "sequim-wa")!;
+    const place = PLACES.find(p => p.id === "tucson-az") ?? PLACES.find(p => p.id !== home.id)!;
+    render(
+      <UnitProvider>
+        <PlaceCard place={place} homePlace={home} onOpenPlace={() => undefined} />
+      </UnitProvider>,
+    );
+
+    const strip = screen.getByLabelText(`Climate versus your home base, ${home.name}`);
+    expect(strip).toHaveTextContent(`vs ${home.name}`);
+    expect(strip.querySelectorAll(".chip").length).toBeGreaterThan(0);
+  });
+
+  it("marks the home base's own card as the baseline", () => {
+    const home = PLACES.find(p => p.id === "sequim-wa")!;
+    render(
+      <UnitProvider>
+        <PlaceCard place={home} homePlace={home} onOpenPlace={() => undefined} />
+      </UnitProvider>,
+    );
+
+    const strip = screen.getByLabelText(`${home.name} is your home base`);
+    expect(strip).toHaveTextContent("your climate baseline");
+  });
+
+  it("renders no delta strip without a home base", () => {
+    renderPlaceCard();
+    expect(screen.queryByText(/vs /)).not.toBeInTheDocument();
+    expect(document.querySelector(".place-card__home-delta")).toBeNull();
+  });
+});

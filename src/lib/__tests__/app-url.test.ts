@@ -62,6 +62,10 @@ describe("parseAppSearch", () => {
     expect(parseAppSearch("?scn=now")).toEqual({}); // implicit default, never written
     expect(parseAppSearch("?scn=rcp99")).toEqual({});
   });
+  it("captures hb (home-base place id)", () => {
+    expect(parseAppSearch("?hb=sequim-wa")).toEqual({ homeBaseId: "sequim-wa" });
+    expect(parseAppSearch("?hb=")).toEqual({});
+  });
 });
 
 describe("validatedStateFromSearch", () => {
@@ -94,6 +98,13 @@ describe("validatedStateFromSearch", () => {
     expect(
       validatedStateFromSearch("?cmp=old-foo,bar,missing,old-foo", places, collections, undefined, resolve).compareIds,
     ).toEqual(["foo", "bar"]);
+  });
+  it("validates and canonicalizes the home-base id", () => {
+    expect(validatedStateFromSearch("?hb=foo", places, collections).homeBaseId).toBe("foo");
+    expect(validatedStateFromSearch("?hb=missing", places, collections).homeBaseId).toBeNull();
+    expect(validatedStateFromSearch("", places, collections).homeBaseId).toBeNull();
+    const resolve = (id: string) => id === "old-foo" ? "foo" : places[id as keyof typeof places] ? id : null;
+    expect(validatedStateFromSearch("?hb=old-foo", places, collections, undefined, resolve).homeBaseId).toBe("foo");
   });
 });
 
@@ -229,6 +240,29 @@ describe("formatAppRelativeUrl", () => {
       collectionExists: ce,
     });
     expect(url).toBe("/");
+  });
+  it("writes ?hb= last, only when the place exists, and round-trips", () => {
+    const pe = (id: string) => id === "sequim-wa";
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, homeBaseId: "sequim-wa", placeExists: pe, collectionExists: ce }),
+    ).toBe("/?hb=sequim-wa");
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, homeBaseId: "ghost-town", placeExists: pe, collectionExists: ce }),
+    ).toBe("/");
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, homeBaseId: null, placeExists: pe, collectionExists: ce }),
+    ).toBe("/");
+    const url = formatAppRelativeUrl({
+      view: "explorer",
+      placeId: "sequim-wa",
+      collectionId: null,
+      compareIds: ["sequim-wa"],
+      homeBaseId: "sequim-wa",
+      placeExists: pe,
+      collectionExists: ce,
+    });
+    expect(url).toBe("/?p=sequim-wa&cmp=sequim-wa&hb=sequim-wa");
+    expect(parseAppSearch(url.slice(1)).homeBaseId).toBe("sequim-wa");
   });
   it("emits ?theme= for explicit light/dark but omits auto (the implicit default)", () => {
     expect(

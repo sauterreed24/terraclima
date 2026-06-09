@@ -331,3 +331,69 @@ describe("PlaceDetail scenario honesty banner", () => {
     expect(screen.queryByRole("note")).not.toBeInTheDocument();
   });
 });
+
+describe("PlaceDetail home-base anchor", () => {
+  it("renders the vs-home section and an active header toggle when a home base is set", () => {
+    const place = PLACES_BY_ID["boulder-co"];
+    const home = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+    expect(home).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail
+          place={place}
+          onClose={() => undefined}
+          homePlace={home}
+          onHomeBaseToggle={() => undefined}
+        />
+      </UnitProvider>,
+    );
+
+    expect(
+      screen.getByRole("heading", { name: `Versus your home base — ${home.name}` }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/Compared with Sequim/)).toBeInTheDocument();
+
+    const toggle = screen.getByRole("button", { name: `Set ${place.name} as your home base for climate deltas` });
+    expect(toggle).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("flips into the baseline explainer when the open dossier IS the home base", () => {
+    const home = PLACES_BY_ID["sequim-wa"];
+    const onHomeBaseToggle = vi.fn();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail
+          place={home}
+          onClose={() => undefined}
+          homePlace={home}
+          onHomeBaseToggle={onHomeBaseToggle}
+        />
+      </UnitProvider>,
+    );
+
+    expect(screen.getByRole("heading", { name: "Your home base" })).toBeInTheDocument();
+    const headerToggle = screen.getByRole("button", { name: `Clear ${home.name} as your home base` });
+    expect(headerToggle).toHaveAttribute("aria-pressed", "true");
+
+    fireEvent.click(screen.getByRole("button", { name: "Clear home base" }));
+    expect(onHomeBaseToggle).toHaveBeenCalledWith(home.id);
+  });
+
+  it("renders no vs-home surface when no home base is set", () => {
+    const place = PLACES_BY_ID["boulder-co"];
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} onHomeBaseToggle={() => undefined} />
+      </UnitProvider>,
+    );
+
+    expect(screen.queryByText(/Versus your home base/)).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: `Set ${place.name} as your home base for climate deltas` }),
+    ).toBeInTheDocument();
+  });
+});

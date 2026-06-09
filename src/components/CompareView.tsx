@@ -20,9 +20,11 @@ import {
   buildCompareDecisionRead,
   type CompareDecisionProfile,
 } from "../lib/compare-finalist-verdict";
+import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
+import { COMPARE_LIMIT } from "../lib/app-url";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
-import { ChevronRight, Clock3, Link2, X } from "lucide-react";
+import { ChevronRight, Clock3, Home, Link2, X } from "lucide-react";
 
 type CompareShareStatus = "idle" | "copied" | "failed";
 
@@ -35,6 +37,10 @@ interface Props {
   onCopyView?: () => void;
   shareStatus?: CompareShareStatus;
   liveFitFilters?: LiveFitFilters;
+  /** Home-base anchor (projected to the active scenario by the caller). Columns read deltas against it. */
+  homePlace?: Place | null;
+  /** Add a place to the compare set — used by the "add home base" affordance. */
+  onAddPlace?: (id: string) => void;
   scenario?: ScenarioId;
   occluded?: boolean;
 }
@@ -48,6 +54,8 @@ export function CompareView({
   onCopyView,
   shareStatus = "idle",
   liveFitFilters,
+  homePlace,
+  onAddPlace,
   scenario = "now",
   occluded = false,
 }: Props) {
@@ -170,6 +178,18 @@ export function CompareView({
                 <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">{`Now comparing ${placeCount}.`}</div>
               </div>
               <div className="compare-dialog__actions">
+                {homePlace && onAddPlace && !places.some(pl => pl.id === homePlace.id) && places.length < COMPARE_LIMIT ? (
+                  <button
+                    type="button"
+                    onClick={() => onAddPlace(homePlace.id)}
+                    className="btn-ghost !text-xs !py-1.5"
+                    aria-label={`Add your home base, ${homePlace.name}, to the comparison`}
+                    title={`Put ${homePlace.name} side by side with the finalists so the columns share your baseline.`}
+                  >
+                    <Home className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+                    Add home ({homePlace.name})
+                  </button>
+                ) : null}
                 {onCopyView ? (
                   <button
                     type="button"
@@ -497,6 +517,10 @@ export function CompareView({
                     <Row label="Growability" value={p.scores.growability.toString()} />
                   </div>
 
+                  {homePlace ? (
+                    <HomeDeltaStrip place={p} home={homePlace} />
+                  ) : null}
+
                   <div className="mt-3">
                     <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Climate ribbon</div>
                     <ClimateRibbon highs={p.climate.tempHighC} lows={p.climate.tempLowC} height={140} />
@@ -516,6 +540,45 @@ export function CompareView({
         </>
       )}
     </AnimatePresence>
+  );
+}
+
+function HomeDeltaStrip({ place, home }: { place: Place; home: Place }) {
+  const { temp, dist } = useUnits();
+  const prose = useProse();
+  const comparison = useMemo(() => buildHomeBaseComparison(home, place), [home, place]);
+  if (comparison.isSame) {
+    return (
+      <div className="mt-3" aria-label={`${place.name} is your home base`}>
+        <span className="chip" data-tone="glacier">
+          <Home className="w-3 h-3" aria-hidden /> Your home base
+        </span>
+      </div>
+    );
+  }
+  const chips = pickHomeDeltaChips(comparison, 4);
+  return (
+    <div className="mt-3" aria-label={`${place.name} versus home base ${home.name}`} title={prose(comparison.headline)}>
+      <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Vs home · {home.name}</div>
+      <div className="flex flex-wrap gap-1">
+        {chips.length === 0 ? (
+          <span className="chip" data-tone="sage" title="Every major climate signal lands within a rounding error of home.">
+            climate sibling
+          </span>
+        ) : (
+          chips.map(signal => (
+            <span
+              key={signal.id}
+              className="chip"
+              data-tone={signal.tone}
+              title={`${signal.label}: ${signal.descriptor} than home. ${signal.basis}`}
+            >
+              {signal.shortLabel} <span className="font-mono-num">{formatHomeDeltaValue(signal, temp, dist)}</span>
+            </span>
+          ))
+        )}
+      </div>
+    </div>
   );
 }
 
