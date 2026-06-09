@@ -61,6 +61,7 @@ import {
 } from "./lib/app-ranking-preference";
 import {
   BOOKMARK_LIMIT,
+  addBookmarksToFront,
   loadBookmarks,
   toggleBookmark as toggleBookmarkPersist,
 } from "./lib/place-bookmarks";
@@ -630,6 +631,37 @@ export default function App() {
     }
   }, []);
 
+  const saveScoutFinalists = useCallback((ids: readonly string[]) => {
+    const seen = new Set<string>();
+    const finalists: string[] = [];
+    for (const id of ids) {
+      const canonical = resolvePlaceId(id) ?? id;
+      if (!PLACES_BY_ID[canonical] || seen.has(canonical)) continue;
+      seen.add(canonical);
+      finalists.push(canonical);
+      if (finalists.length >= COMPARE_LIMIT) break;
+    }
+    if (finalists.length === 0) {
+      setTransientFeedback("No Scout finalists are available to save yet.");
+      return;
+    }
+
+    const saved = addBookmarksToFront(finalists);
+    setBookmarkIds(new Set(saved.ids));
+    const savedCount = finalists.filter(id => saved.ids.includes(id)).length;
+    if (saved.added.length === 0) {
+      setTransientFeedback(`${savedCount} Scout finalists are already in your shortlist.`);
+    } else if (saved.capped) {
+      setTransientFeedback(
+        `Saved ${saved.added.length} new finalist${saved.added.length === 1 ? "" : "s"}; shortlist cap kept the top ${BOOKMARK_LIMIT}.`,
+      );
+    } else {
+      setTransientFeedback(
+        `Saved ${saved.added.length} new finalist${saved.added.length === 1 ? "" : "s"}; ${savedCount} Scout finalists are ready to compare or export.`,
+      );
+    }
+  }, []);
+
   const clearRecents = useCallback(() => {
     setRecentIds(clearRecentPlaces());
   }, []);
@@ -827,6 +859,7 @@ export default function App() {
                   onCompareLeaders={comparePlaces}
                   onCompareContextLeaders={comparePlaces}
                   onPreloadCompare={preloadCompareView}
+                  onSaveScoutFinalists={saveScoutFinalists}
                   onApplyContextScenario={applyContextScenario}
                   bookmarkIds={bookmarkIds}
                   recentIds={recentIds}
@@ -868,6 +901,7 @@ export default function App() {
                       onCompareLeaders={comparePlaces}
                       onCompareContextLeaders={comparePlaces}
                       onPreloadCompare={preloadCompareView}
+                      onSaveScoutFinalists={saveScoutFinalists}
                       onApplyContextScenario={applyContextScenario}
                       bookmarkIds={bookmarkIds}
                       onToggleBookmark={toggleBookmark}
@@ -1641,6 +1675,7 @@ const HeroCard = memo(function HeroCard({
   onCompareLeaders,
   onCompareContextLeaders,
   onPreloadCompare,
+  onSaveScoutFinalists,
   onApplyContextScenario,
   bookmarkIds,
   recentIds,
@@ -1671,6 +1706,7 @@ const HeroCard = memo(function HeroCard({
   onCompareLeaders: (ids: string[]) => void;
   onCompareContextLeaders: (ids: string[]) => void;
   onPreloadCompare: () => void;
+  onSaveScoutFinalists: (ids: readonly string[]) => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
   bookmarkIds: Set<string>;
   recentIds: readonly string[];
@@ -1793,6 +1829,7 @@ const HeroCard = memo(function HeroCard({
           onOpenPlace={onOpenPlace}
           onCompareLeaders={onCompareLeaders}
           onPreloadCompare={onPreloadCompare}
+          onSaveScoutFinalists={onSaveScoutFinalists}
           bookmarkIds={bookmarkIds}
           onToggleBookmark={onToggleBookmark}
         />
@@ -1818,6 +1855,7 @@ const HeroCard = memo(function HeroCard({
           onCompareLeaders={onCompareLeaders}
           onCompareContextLeaders={onCompareContextLeaders}
           onPreloadCompare={onPreloadCompare}
+          onSaveScoutFinalists={onSaveScoutFinalists}
           onApplyContextScenario={onApplyContextScenario}
           bookmarkIds={bookmarkIds}
           onToggleBookmark={onToggleBookmark}
@@ -1906,6 +1944,7 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   onCompareLeaders,
   onCompareContextLeaders,
   onPreloadCompare,
+  onSaveScoutFinalists,
   onApplyContextScenario,
   bookmarkIds,
   onToggleBookmark,
@@ -1922,6 +1961,7 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   onCompareLeaders: (ids: string[]) => void;
   onCompareContextLeaders: (ids: string[]) => void;
   onPreloadCompare: () => void;
+  onSaveScoutFinalists: (ids: readonly string[]) => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
   bookmarkIds: Set<string>;
   onToggleBookmark: (id: string) => void;
@@ -1934,6 +1974,7 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
       onOpenPlace={onOpenPlace}
       onCompareLeaders={onCompareLeaders}
       onPreloadCompare={onPreloadCompare}
+      onSaveScoutFinalists={onSaveScoutFinalists}
       bookmarkIds={bookmarkIds}
       onToggleBookmark={onToggleBookmark}
     />
@@ -1959,6 +2000,7 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
           onOpenPlace={onOpenPlace}
           onCompareLeaders={onCompareLeaders}
           onPreloadCompare={onPreloadCompare}
+          onSaveScoutFinalists={onSaveScoutFinalists}
         />
       ) : null}
 
@@ -2477,13 +2519,16 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
   onOpenPlace,
   onCompareLeaders,
   onPreloadCompare,
+  onSaveScoutFinalists,
 }: {
   brief: ExplorerScoutBrief;
   onOpenPlace: (id: string) => void;
   onCompareLeaders: (ids: string[]) => void;
   onPreloadCompare: () => void;
+  onSaveScoutFinalists: (ids: readonly string[]) => void;
 }) {
   const prose = useProse();
+  const canSaveFinalists = brief.compareIds.length >= 2;
   return (
     <section className="scout-brief" aria-labelledby="explorer-scout-brief-title">
       <div className="scout-brief__head">
@@ -2515,6 +2560,18 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
             >
               <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
               Compare leaders
+            </button>
+          ) : null}
+          {canSaveFinalists ? (
+            <button
+              type="button"
+              className="btn-ghost !text-xs !py-1.5"
+              onClick={() => onSaveScoutFinalists(brief.compareIds)}
+              aria-label={`Save ${brief.compareIds.length} Scout Brief finalists to your shortlist`}
+              title="Pin these ranked leaders so Compare and Scout plan export stay ready."
+            >
+              <BookmarkCheck className="w-3.5 h-3.5 text-ochre-700" aria-hidden />
+              Save finalists
             </button>
           ) : null}
         </div>
@@ -2676,6 +2733,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   onOpenPlace,
   onCompareLeaders,
   onPreloadCompare,
+  onSaveScoutFinalists,
   bookmarkIds,
   onToggleBookmark,
 }: {
@@ -2683,11 +2741,13 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   onOpenPlace: (id: string) => void;
   onCompareLeaders: (ids: string[]) => void;
   onPreloadCompare: () => void;
+  onSaveScoutFinalists: (ids: readonly string[]) => void;
   bookmarkIds: Set<string>;
   onToggleBookmark: (id: string) => void;
 }) {
   const prose = useProse();
   const leaderPinned = bookmarkIds.has(brief.leader.place.id);
+  const canSaveFinalists = brief.compareIds.length >= 2;
   return (
     <section className="desktop-scout-board" aria-label="Desktop relocation workbench">
       <div className="desktop-scout-board__leader">
@@ -2724,6 +2784,17 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             >
               <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
               Compare {brief.compareIds.length}
+            </button>
+            <button
+              type="button"
+              className="desktop-scout-board__action"
+              onClick={() => onSaveScoutFinalists(brief.compareIds)}
+              aria-label={`Save ${brief.compareIds.length} Scout Board finalists to your shortlist`}
+              title="Pin these ranked leaders so Compare and Scout plan export stay ready."
+              disabled={!canSaveFinalists}
+            >
+              <BookmarkCheck className="w-3.5 h-3.5" aria-hidden />
+              Save {brief.compareIds.length}
             </button>
             <button
               type="button"

@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Save Scout Board finalists
+
+- **Explorer Scout Board (`src/App.tsx`, `src/lib/place-bookmarks.ts`):** Scout Brief and desktop Scout Board actions can now save the current Compare-ready finalists into the pinned shortlist in ranked order. This closes the path from Fit Finder / ranking scan to Compare and Scout plan export without changing scores, corpus data, export formats, or route state.
+
 ### Shortlist export feedback
 
 - **Shortlist export (`src/components/chrome/ShortlistExportMenu.tsx`, `src/styles.css`):** export actions now show preparing, download-started, and blocked-download status feedback instead of silently closing the menu. The export formats, file contents, shortlist order, and lazy-loaded export chunk stay unchanged.
