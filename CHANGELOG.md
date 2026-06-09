@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Fit Finder scope reset
+
+- **Fit Finder (`src/lib/lifestyle-bundles.ts`, `src/components/FilterBar.tsx`):** global guided paths now clear stale region and terrain filters when selected, and they no longer read as active while old geography scope is still filtering the list. This keeps path switching honest without changing scores, corpus data, URL semantics, or regional paths such as Mexico / Southwest.
+
 ### Map Fit Finder path cue
 
 - **Explorer map (`src/App.tsx`, `src/styles.css`):** the map caption now switches from a plain rank trail to a compact **Fit path map** cue when a Fit Finder bundle is active, naming the active path plus the Scout lead/finalist count while keeping the map pins, cluster picker, scoring, routes, corpus data, and default ranking caption unchanged.
