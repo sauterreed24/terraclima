@@ -319,6 +319,23 @@ describe("App shell", () => {
     expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("summarizes the active Fit Finder path in the map caption", async () => {
+    mockViewport(1280);
+    renderApp();
+
+    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
+    fireEvent.click(within(quickPicks).getByRole("button", { name: /Cool summers/ }));
+
+    await screen.findByLabelText("Active Fit Finder path: Cool Summer Refuge");
+
+    const caption = document.querySelector(".tc-map-stage__caption");
+    expect(caption).toHaveAttribute("data-mode", "fit-path");
+    expect(caption).toHaveTextContent("Fit path map");
+    expect(caption).toHaveTextContent("Cool Summer Refuge");
+    expect(caption).toHaveTextContent(/Scout lead .+ \/ 4 finalists/);
+    expect(caption).toHaveAccessibleName(/Map follows the active Cool Summer Refuge Fit Finder path/);
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("passes the active Fit Finder path and ranking context into shared place dossiers", async () => {
     mockViewport(1280);
     window.history.replaceState(

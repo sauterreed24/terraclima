@@ -4686,8 +4686,8 @@
     top: 0.85rem;
     display: inline-grid;
     align-items: start;
-    gap: 0.12rem;
-    max-width: min(24rem, calc(100% - 8rem));
+    gap: 0.1rem;
+    max-width: min(25.5rem, calc(100% - 8rem));
     border-radius: 0.5rem;
     border: 1px solid rgba(180, 236, 246, 0.26);
     background: rgba(6, 15, 24, 0.66);
@@ -4698,21 +4698,47 @@
       0 8px 26px -18px rgba(0, 0, 0, 0.75),
       0 1px 0 rgba(255, 255, 255, 0.08) inset;
   }
+  .tc-map-stage__caption[data-mode="fit-path"] {
+    border-color: rgba(250, 204, 21, 0.34);
+    background:
+      linear-gradient(135deg, rgba(250, 204, 21, 0.14), rgba(6, 15, 24, 0.58) 44%),
+      rgba(6, 15, 24, 0.72);
+    box-shadow:
+      0 10px 28px -18px rgba(0, 0, 0, 0.78),
+      0 0 24px -16px rgba(250, 204, 21, 0.5),
+      0 1px 0 rgba(255, 255, 255, 0.09) inset;
+  }
   .tc-map-stage__caption span {
     font-size: 0.58rem;
     letter-spacing: 0;
     text-transform: uppercase;
     color: rgba(180, 236, 246, 0.78);
   }
-  .tc-map-stage__caption strong {
+  .tc-map-stage__caption[data-mode="fit-path"] span {
+    color: rgba(255, 235, 166, 0.86);
+  }
+  .tc-map-stage__caption strong,
+  .tc-map-stage__caption em {
+    min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .tc-map-stage__caption strong {
     color: rgba(255, 255, 255, 0.94);
     font-family: var(--font-mono);
     font-size: 0.66rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
+  }
+  .tc-map-stage__caption em {
+    display: block;
+    max-width: 100%;
+    color: rgba(226, 240, 246, 0.78);
+    font-size: 0.58rem;
+    font-style: normal;
+    font-weight: 650;
+    line-height: 1.15;
   }
   .tc-map-stage:has(.cluster-picker) .tc-map-stage__caption {
     opacity: 0;
@@ -4755,6 +4781,10 @@
       display: block;
       max-width: 100%;
       font-size: 0.6rem;
+    }
+    .tc-map-stage__caption em {
+      max-width: 100%;
+      font-size: 0.54rem;
     }
     .tc-map-topology-loading {
       left: 0.65rem;

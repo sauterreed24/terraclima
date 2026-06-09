@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Map Fit Finder path cue
+
+- **Explorer map (`src/App.tsx`, `src/styles.css`):** the map caption now switches from a plain rank trail to a compact **Fit path map** cue when a Fit Finder bundle is active, naming the active path plus the Scout lead/finalist count while keeping the map pins, cluster picker, scoring, routes, corpus data, and default ranking caption unchanged.
+
 ### Empty-results recovery plan
 
 - **Explorer empty state (`src/App.tsx`, `src/styles.css`):** zero-result searches now show targeted recovery actions for clearing only the search, relaxing Live Finder limits, clearing region/terrain filters, or resetting Explorer. This turns a dead-end filter combination into a guided scouting recovery step while preserving ranking math, corpus data, route semantics, and the existing full-reset behavior.
