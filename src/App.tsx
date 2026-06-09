@@ -32,6 +32,7 @@ import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
+import { buildShortlistPacketCue } from "./lib/shortlist-packet";
 import { buildShortlistReadiness } from "./lib/shortlist-readiness";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-visual-signature";
 import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
@@ -2266,6 +2267,7 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
   onComparePinned: (ids: string[]) => void;
   onPreloadCompare: () => void;
 }) {
+  const prose = useProse();
   const pinnedPlaces = useMemo(
     () => [...bookmarkIds].map(placeForId).filter(isPlace),
     [bookmarkIds],
@@ -2278,6 +2280,11 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
     () => buildShortlistReadiness(pinnedPlaces.length),
     [pinnedPlaces.length],
   );
+  const shortlistPacketCue = useMemo(
+    () => buildShortlistPacketCue(pinnedPlaces, COMPARE_LIMIT),
+    [pinnedPlaces],
+  );
+  const shortlistPacketCounterweight = shortlistPacketCue?.counterweight ?? null;
   const recentPlaces = useMemo(
     () =>
       recentIds
@@ -2329,6 +2336,43 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
               <span>{shortlistReadiness.label}</span>
               {shortlistReadiness.detail}
             </p>
+          ) : null}
+          {shortlistPacketCue ? (
+            <div className="hero-shortlist-packet" aria-label="Shortlist packet decision cue">
+              <div className="hero-shortlist-packet__head">
+                <span>Scout packet</span>
+                <strong>Start with {shortlistPacketCue.primary.name}</strong>
+              </div>
+              <p className="hero-shortlist-packet__summary">
+                {prose(shortlistPacketCue.summary)}
+              </p>
+              <div className="hero-shortlist-packet__actions">
+                <button
+                  type="button"
+                  className="hero-shortlist-packet__action"
+                  onClick={() => onOpenPlace(shortlistPacketCue.primary.id)}
+                  aria-label={`Open first shortlist dossier: ${shortlistPacketCue.primary.name}`}
+                >
+                  <BookOpen className="w-3.5 h-3.5" aria-hidden />
+                  Start dossier
+                </button>
+                {shortlistPacketCounterweight ? (
+                  <button
+                    type="button"
+                    className="hero-shortlist-packet__action"
+                    onClick={() => onOpenPlace(shortlistPacketCounterweight.id)}
+                    aria-label={`Open shortlist contrast dossier: ${shortlistPacketCounterweight.name}`}
+                  >
+                    <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
+                    Contrast
+                  </button>
+                ) : null}
+              </div>
+              <p className="hero-shortlist-packet__watch">
+                <ShieldAlert className="w-3.5 h-3.5" aria-hidden />
+                <span><strong>Watch:</strong> {prose(shortlistPacketCue.watch)}</span>
+              </p>
+            </div>
           ) : null}
           <ul
             className="hero-mini-rail"

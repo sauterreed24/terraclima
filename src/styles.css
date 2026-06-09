@@ -7786,6 +7786,114 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
+  .hero-shortlist-packet {
+    --tc-shortlist-packet-action-bg: rgba(255, 255, 255, 0.74);
+    --tc-shortlist-packet-action-border: rgba(26, 143, 168, 0.28);
+    --tc-shortlist-packet-action-text: var(--color-glacier-700);
+    --tc-shortlist-packet-action-hover-bg: rgba(255, 255, 255, 0.92);
+    --tc-shortlist-packet-action-hover-border: rgba(26, 143, 168, 0.42);
+    display: grid;
+    gap: 0.42rem;
+    margin: 0.45rem 0 0.58rem;
+    padding: 0.58rem 0.64rem;
+    border-radius: 0.72rem;
+    border: 1px solid rgba(26, 143, 168, 0.2);
+    background:
+      linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 252, 244, 0.66)),
+      rgba(255, 252, 247, 0.64);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.72) inset;
+  }
+  .hero-shortlist-packet__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.55rem;
+    min-width: 0;
+  }
+  .hero-shortlist-packet__head span {
+    color: var(--color-glacier-700);
+    font-size: 0.6rem;
+    font-weight: 900;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .hero-shortlist-packet__head strong {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-frost);
+    font-family: var(--font-serif);
+    font-size: 0.86rem;
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .hero-shortlist-packet__summary,
+  .hero-shortlist-packet__watch {
+    color: var(--color-stone-readable);
+    font-size: 0.7rem;
+    line-height: 1.28;
+  }
+  .hero-shortlist-packet__summary {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+  .hero-shortlist-packet__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.32rem;
+  }
+  .hero-shortlist-packet__action {
+    min-height: 1.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.32rem;
+    padding: 0.3rem 0.54rem;
+    border-radius: 999px;
+    border: 1px solid var(--tc-shortlist-packet-action-border);
+    background: var(--tc-shortlist-packet-action-bg);
+    color: var(--tc-shortlist-packet-action-text);
+    font-size: 0.66rem;
+    font-weight: 850;
+    cursor: pointer;
+    transition: transform 160ms;
+  }
+  .hero-shortlist-packet__action:hover {
+    transform: translateY(-1px);
+    border-color: var(--tc-shortlist-packet-action-hover-border);
+    background: var(--tc-shortlist-packet-action-hover-bg);
+  }
+  .hero-shortlist-packet__action:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.55);
+    outline-offset: 2px;
+  }
+  .hero-shortlist-packet__watch {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.36rem;
+    padding-top: 0.36rem;
+    border-top: 1px dashed rgba(180, 150, 120, 0.24);
+  }
+  .hero-shortlist-packet__watch svg {
+    color: var(--color-ember-700);
+    flex: 0 0 auto;
+    margin-top: 0.05rem;
+  }
+  .hero-shortlist-packet__watch strong {
+    color: var(--color-frost);
+    font-weight: 850;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-shortlist-packet__action {
+      transition: none;
+    }
+    .hero-shortlist-packet__action:hover {
+      transform: none;
+    }
+  }
   .hero-mini-rail__title {
     font-size: 0.62rem;
     text-transform: uppercase;
@@ -8637,10 +8745,18 @@ html[data-theme="dark"] .climate-signal-rail,
 html[data-theme="dark"] .residency-brief,
 html[data-theme="dark"] .comfort-precision-panel,
 html[data-theme="dark"] .hero-top-ten,
-html[data-theme="dark"] .hero-mini-rail {
+html[data-theme="dark"] .hero-mini-rail,
+html[data-theme="dark"] .hero-shortlist-packet {
   background: linear-gradient(180deg, rgba(28, 38, 60, 0.92) 0%, rgba(22, 30, 50, 0.88) 100%);
   border-color: rgba(120, 138, 178, 0.28);
   color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .hero-shortlist-packet {
+  --tc-shortlist-packet-action-bg: rgba(18, 26, 44, 0.72);
+  --tc-shortlist-packet-action-border: rgba(94, 196, 220, 0.28);
+  --tc-shortlist-packet-action-text: var(--color-frost-strong);
+  --tc-shortlist-packet-action-hover-bg: rgba(31, 50, 70, 0.88);
+  --tc-shortlist-packet-action-hover-border: rgba(94, 196, 220, 0.52);
 }
 html[data-theme="dark"] .residency-brief__context {
   border-color: rgba(var(--signature-rgb), 0.34);
