@@ -737,6 +737,23 @@ export default function App() {
     setFilters(createEmptyFilterState());
     setActiveCollection(null);
   }, []);
+  const relaxLiveFinderFilters = useCallback(() => {
+    setFilters(f => {
+      const {
+        maxSummerHighC: _maxSummerHighC,
+        minWinterLowC: _minWinterLowC,
+        minGrowability: _minGrowability,
+        maxFireRisk: _maxFireRisk,
+        maxOverallRisk: _maxOverallRisk,
+        ...rest
+      } = f;
+      return { ...rest, fitPresets: new Set() };
+    });
+  }, []);
+  const clearGeographyFilters = useCallback(() => {
+    setFilters(f => ({ ...f, countries: new Set(), archetypes: new Set() }));
+    setActiveCollection(null);
+  }, []);
   const closeCompare = useCallback(() => setCompareOpen(false), []);
 
   const focusSearchInput = useCallback(() => {
@@ -988,9 +1005,12 @@ export default function App() {
                 {ranked.length === 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <EmptyResults
-                      onClear={clearAllFilters}
+                      filters={filters}
+                      onClearAll={clearAllFilters}
+                      onClearSearch={clearSearch}
+                      onRelaxLiveFinder={relaxLiveFinderFilters}
+                      onClearGeography={clearGeographyFilters}
                       searchTerm={(filters.search ?? "").trim()}
-                      hasOtherFilters={hasNonSearchExplorerFilters(filters)}
                     />
                   </div>
                 ) : (
@@ -1179,16 +1199,25 @@ function OverlayLoadingFallback({ label }: { label: string }) {
 }
 
 const EmptyResults = memo(function EmptyResults({
-  onClear,
+  filters,
+  onClearAll,
+  onClearSearch,
+  onRelaxLiveFinder,
+  onClearGeography,
   searchTerm,
-  hasOtherFilters,
 }: {
-  onClear: () => void;
+  filters: FilterState;
+  onClearAll: () => void;
+  onClearSearch: () => void;
+  onRelaxLiveFinder: () => void;
+  onClearGeography: () => void;
   searchTerm: string;
-  hasOtherFilters: boolean;
 }) {
   // Tailor the message to what is actually narrowing the set so the guidance
   // points at the right control instead of always blaming "filters".
+  const liveSignalCount = countLiveFinderConstraintSignals(filters);
+  const geographyCount = filters.countries.size + filters.archetypes.size;
+  const hasOtherFilters = hasNonSearchExplorerFilters(filters);
   const searchOnly = searchTerm.length > 0 && !hasOtherFilters;
   const filtersOnly = searchTerm.length === 0 && hasOtherFilters;
 
@@ -1203,6 +1232,48 @@ const EmptyResults = memo(function EmptyResults({
     : filtersOnly
       ? "That's a tight intersection — try loosening one. Drop a country, drop one of the archetypes, or relax a Live-Finder limit."
       : "That's a tight combination — try shortening the search or loosening one filter. Names, regions, archetypes, and Köppen codes all match.";
+  const recoveryActions: Array<{
+    key: string;
+    label: string;
+    detail: string;
+    onClick: () => void;
+    primary?: boolean;
+  }> = [];
+
+  if (searchTerm.length > 0) {
+    recoveryActions.push({
+      key: "search",
+      label: "Clear search",
+      detail: `Remove “${searchTerm}” and keep the climate-fit filters intact.`,
+      onClick: onClearSearch,
+      primary: searchOnly,
+    });
+  }
+  if (liveSignalCount > 0) {
+    recoveryActions.push({
+      key: "live",
+      label: "Relax Live Finder",
+      detail: `Drop ${liveSignalCount} comfort, risk, or growability limit${liveSignalCount === 1 ? "" : "s"} while keeping search and geography.`,
+      onClick: onRelaxLiveFinder,
+      primary: filtersOnly && geographyCount === 0,
+    });
+  }
+  if (geographyCount > 0) {
+    recoveryActions.push({
+      key: "geography",
+      label: "Clear region / terrain",
+      detail: `Drop ${geographyCount} region or terrain filter${geographyCount === 1 ? "" : "s"} while keeping search and Live Finder signals.`,
+      onClick: onClearGeography,
+      primary: filtersOnly && liveSignalCount === 0,
+    });
+  }
+  recoveryActions.push({
+    key: "all",
+    label: "Reset Explorer",
+    detail: "Return to the full atlas and restart the fit search.",
+    onClick: onClearAll,
+    primary: !recoveryActions.some(action => action.primary),
+  });
 
   return (
     <div className="col-span-full panel-warm tc-empty-results p-6 sm:p-7 text-center anim-fade-in">
@@ -1214,9 +1285,26 @@ const EmptyResults = memo(function EmptyResults({
       <p className="text-xs text-stone mb-4 max-w-md mx-auto">
         Nothing is broken: the atlas still holds <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated stops behind the filters.
       </p>
-      <button type="button" onClick={onClear} className="btn-primary !text-xs">
-        <X className="w-3.5 h-3.5" aria-hidden /> {searchOnly ? "Clear search" : "Clear all filters"}
-      </button>
+      <div className="tc-empty-results__recovery" role="group" aria-label="Ways to recover matching places">
+        <div className="tc-empty-results__recovery-head">
+          <span>Try next</span>
+          <p>Loosen one part of the screen instead of losing the whole scouting context.</p>
+        </div>
+        <div className="tc-empty-results__actions">
+          {recoveryActions.map(action => (
+            <button
+              key={action.key}
+              type="button"
+              onClick={action.onClick}
+              className="tc-empty-results__action"
+              data-primary={action.primary || undefined}
+            >
+              <span>{action.label}</span>
+              <small>{action.detail}</small>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   );
 });

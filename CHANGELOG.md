@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Empty-results recovery plan
+
+- **Explorer empty state (`src/App.tsx`, `src/styles.css`):** zero-result searches now show targeted recovery actions for clearing only the search, relaxing Live Finder limits, clearing region/terrain filters, or resetting Explorer. This turns a dead-end filter combination into a guided scouting recovery step while preserving ranking math, corpus data, route semantics, and the existing full-reset behavior.
+
 ### One-place Scout plan Compare setup
 
 - **Scout plan export (`src/lib/shortlist-export.ts`, `src/components/chrome/ShortlistExportMenu.tsx`):** a one-place Markdown Scout plan now includes a direct **Compare setup** URL and anchor-finalist next action instead of telling users to pin another place first. The compact export trigger also gets the same 32 px shortlist touch target and dark-mode contrast hardening as the Compare setup action. Multi-place decision tables, empty-shortlist copy, export formats, scoring, routes, and corpus data are unchanged.

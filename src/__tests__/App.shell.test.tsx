@@ -629,7 +629,12 @@ describe("App shell", () => {
     renderApp();
 
     expect(screen.getByText("Nothing matches that search and those filters")).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Clear all filters" }));
+    const recovery = screen.getByRole("group", { name: "Ways to recover matching places" });
+    expect(within(recovery).getByRole("button", { name: /Clear search/ })).toBeInTheDocument();
+    expect(within(recovery).getByRole("button", { name: /Relax Live Finder/ })).toBeInTheDocument();
+    expect(within(recovery).getByRole("button", { name: /Reset Explorer/ })).toBeInTheDocument();
+
+    fireEvent.click(within(recovery).getByRole("button", { name: /Reset Explorer/ }));
 
     await waitFor(() => {
       const params = new URLSearchParams(window.location.search);
@@ -641,6 +646,52 @@ describe("App shell", () => {
       expect(params.get("risk")).toBeNull();
       expect(params.get("q")).toBeNull();
       expect(screen.queryByText("Nothing matches that search and those filters")).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("relaxes Live Finder constraints from the empty state without losing the search", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/?r=live-fit&fit=cool-summers&sh=22&wl=2&grow=75&fire=low&risk=moderate&q=zzzznonexistent",
+    );
+
+    renderApp();
+
+    const recovery = screen.getByRole("group", { name: "Ways to recover matching places" });
+    fireEvent.click(within(recovery).getByRole("button", { name: /Relax Live Finder/ }));
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("fit")).toBeNull();
+      expect(params.get("sh")).toBeNull();
+      expect(params.get("wl")).toBeNull();
+      expect(params.get("grow")).toBeNull();
+      expect(params.get("fire")).toBeNull();
+      expect(params.get("risk")).toBeNull();
+      expect(params.get("q")).toBe("zzzznonexistent");
+      expect(screen.getByText("No places match “zzzznonexistent”")).toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("clears geography from the empty state while preserving the query", async () => {
+    window.history.replaceState(
+      null,
+      "",
+      "/?c=Mexico&a=sky-island-refuge&q=zzzznonexistent",
+    );
+
+    renderApp();
+
+    const recovery = screen.getByRole("group", { name: "Ways to recover matching places" });
+    fireEvent.click(within(recovery).getByRole("button", { name: /Clear region \/ terrain/ }));
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("c")).toBeNull();
+      expect(params.get("a")).toBeNull();
+      expect(params.get("q")).toBe("zzzznonexistent");
+      expect(screen.getByText("No places match “zzzznonexistent”")).toBeInTheDocument();
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -661,9 +712,8 @@ describe("App shell", () => {
 
     // Search-only: blame the query, not "filters", and offer to clear the search.
     expect(screen.getByText("No places match “zzzznonexistent”")).toBeInTheDocument();
-    // "Clear search" appears both in the empty-results panel and as the in-field
-    // search clear (FilterBar) — the affordance is present.
-    expect(screen.getAllByRole("button", { name: "Clear search" }).length).toBeGreaterThanOrEqual(1);
+    const recovery = screen.getByRole("group", { name: "Ways to recover matching places" });
+    expect(within(recovery).getByRole("button", { name: /Clear search/ })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("passes active Live Finder filters into shared compare views", async () => {
