@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Shortlist packet decision cue
+
+- **Pinned shortlist (`src/App.tsx`, `src/lib/shortlist-packet.ts`, `src/styles.css`):** compare-ready saved places now show a compact Scout packet cue naming the first dossier to read, a contrast dossier, and the first caveat to verify before opening Compare. The cue reuses the existing Compare finalist verdict logic and does not change scores, corpus data, routes, export formats, or bookmark order.
+
 ### Save Scout Board finalists
 
 - **Explorer Scout Board (`src/App.tsx`, `src/lib/place-bookmarks.ts`):** Scout Brief and desktop Scout Board actions can now save the current Compare-ready finalists into the pinned shortlist in ranked order. This closes the path from Fit Finder / ranking scan to Compare and Scout plan export without changing scores, corpus data, export formats, or route state.
