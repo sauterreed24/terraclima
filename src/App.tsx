@@ -117,6 +117,56 @@ function readCurrentAppState() {
 
 type View = "explorer" | "trips" | "collections" | "learn";
 
+interface MapStageContext {
+  mode: "rank" | "fit-path";
+  eyebrow: string;
+  headline: string;
+  detail: string | null;
+  title: string;
+  ariaLabel: string;
+}
+
+function buildMapStageContext({
+  activeBundle,
+  rankingLabel,
+  scoutBrief,
+  featuredCount,
+}: {
+  activeBundle: LifestyleBundle | null;
+  rankingLabel: string;
+  scoutBrief: ExplorerScoutBrief | null;
+  featuredCount: number;
+}): MapStageContext {
+  const rankTitle = `${rankingLabel} \u00b7 top ${featuredCount}`;
+  if (!activeBundle) {
+    return {
+      mode: "rank",
+      eyebrow: "Rank trail",
+      headline: rankTitle,
+      detail: null,
+      title: rankTitle,
+      ariaLabel: `Map highlights the top ${featuredCount} places for ${rankingLabel}.`,
+    };
+  }
+
+  const scoutLead = scoutBrief?.leader.place.name ?? null;
+  const finalistCount = scoutBrief?.compareIds.length ?? featuredCount;
+  const detail = scoutLead
+    ? `Scout lead ${scoutLead} / ${finalistCount} finalist${finalistCount === 1 ? "" : "s"}`
+    : `${rankingLabel} / top ${featuredCount}`;
+  const title = `${activeBundle.label} / ${activeBundle.cue} / ${rankingLabel}`;
+  return {
+    mode: "fit-path",
+    eyebrow: "Fit path map",
+    headline: activeBundle.label,
+    detail,
+    title,
+    ariaLabel: scoutLead
+      ? `Map follows the active ${activeBundle.label} Fit Finder path. Scout lead ${scoutLead}. ${finalistCount} finalists are highlighted.`
+      : `Map follows the active ${activeBundle.label} Fit Finder path for ${rankingLabel}.`,
+  };
+}
+
 const ClimateTripsView = lazy(loadClimateTripsView);
 const CollectionsView = lazy(loadCollectionsView);
 const LearnMode = lazy(loadLearnMode);
@@ -563,6 +613,15 @@ export default function App() {
     () => buildExplorerScoutBrief(ranked, rankingLabel, deferredFilters, climateScenario),
     [ranked, rankingLabel, deferredFilters, climateScenario],
   );
+  const mapStageContext = useMemo(
+    () => buildMapStageContext({
+      activeBundle: activeDossierFitBundle,
+      rankingLabel,
+      scoutBrief,
+      featuredCount: topRankedPlaceIds.length,
+    }),
+    [activeDossierFitBundle, rankingLabel, scoutBrief, topRankedPlaceIds.length],
+  );
   const contextStressRows = useMemo(
     () => buildContextStressRows({
       pool,
@@ -890,11 +949,17 @@ export default function App() {
                 />
 
                 <div className="tc-map-stage relative h-[clamp(320px,50svh,560px)] md:h-[54dvh] md:min-h-[min(480px,46dvh)]">
-                  <div className="tc-map-stage__caption" aria-hidden="true">
-                    <span>Rank trail</span>
-                    <strong title={`${rankingLabel} · top ${topRankedPlaceIds.length}`}>
-                      {rankingLabel} · top {topRankedPlaceIds.length}
+                  <div
+                    className="tc-map-stage__caption"
+                    role="note"
+                    data-mode={mapStageContext.mode}
+                    aria-label={mapStageContext.ariaLabel}
+                  >
+                    <span>{mapStageContext.eyebrow}</span>
+                    <strong title={mapStageContext.title}>
+                      {mapStageContext.headline}
                     </strong>
+                    {mapStageContext.detail ? <em>{mapStageContext.detail}</em> : null}
                   </div>
                   <AtlasMap
                     places={filtered}
