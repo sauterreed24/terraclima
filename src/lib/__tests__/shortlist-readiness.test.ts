@@ -8,8 +8,8 @@ describe("buildShortlistReadiness", () => {
 
   it("nudges a one-place shortlist toward Compare readiness", () => {
     expect(buildShortlistReadiness(1)).toEqual({
-      label: "Scout packet warming up",
-      detail: "Pin one more place to unlock Compare; the Scout plan export already saves this dossier.",
+      label: "Scout setup ready",
+      detail: "Open Compare setup to plan the missing contrast; export already saves this dossier.",
     });
   });
 

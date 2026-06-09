@@ -2309,23 +2309,29 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
               Your shortlist · {pinnedPlaces.length}
             </span>
             <div className="hero-mini-rail__actions">
-              {pinnedCompareIds.length >= 2 ? (
+              {pinnedCompareIds.length > 0 ? (
                 <button
                   type="button"
-                  className="btn-ghost !text-xs !py-1 !px-2"
+                  className="btn-ghost hero-mini-rail__compare !text-xs !py-1 !px-2"
                   onPointerEnter={onPreloadCompare}
                   onFocus={onPreloadCompare}
                   onPointerDown={onPreloadCompare}
                   onClick={() => onComparePinned(pinnedCompareIds)}
-                  aria-label={`Compare ${pinnedCompareIds.length} pinned places from your shortlist`}
+                  aria-label={
+                    pinnedCompareIds.length === 1
+                      ? `Open Compare setup for ${pinnedPlaces[0].name} from your shortlist`
+                      : `Compare ${pinnedCompareIds.length} pinned places from your shortlist`
+                  }
                   title={
-                    pinnedPlaces.length > COMPARE_LIMIT
+                    pinnedCompareIds.length === 1
+                      ? "Open setup guide for choosing a contrast"
+                      : pinnedPlaces.length > COMPARE_LIMIT
                       ? `Compare the first ${COMPARE_LIMIT} pinned places`
                       : "Compare pinned places"
                   }
                 >
                   <ArrowLeftRight className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
-                  {pinnedPlaces.length > COMPARE_LIMIT ? `Compare ${COMPARE_LIMIT}` : "Compare"}
+                  {pinnedCompareIds.length === 1 ? "Compare setup" : pinnedPlaces.length > COMPARE_LIMIT ? `Compare ${COMPARE_LIMIT}` : "Compare"}
                 </button>
               ) : null}
               <ShortlistExportMenu places={pinnedPlaces} />

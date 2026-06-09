@@ -9,8 +9,8 @@ export function buildShortlistReadiness(count: number, compareLimit = COMPARE_LI
   if (count <= 0) return null;
   if (count === 1) {
     return {
-      label: "Scout packet warming up",
-      detail: "Pin one more place to unlock Compare; the Scout plan export already saves this dossier.",
+      label: "Scout setup ready",
+      detail: "Open Compare setup to plan the missing contrast; export already saves this dossier.",
     };
   }
   if (count > compareLimit) {

@@ -7769,6 +7769,9 @@
     gap: 0.35rem;
     flex-wrap: wrap;
   }
+  .hero-mini-rail__compare {
+    min-height: 2rem;
+  }
   .hero-mini-rail__readiness {
     display: flex;
     flex-wrap: wrap;
@@ -9157,6 +9160,16 @@ html[data-theme="dark"] .hero-mini-rail__chip:hover {
 html[data-theme="dark"] .hero-mini-rail__chip[data-tone="ochre"] {
   background: linear-gradient(135deg, rgba(48, 40, 28, 0.95) 0%, rgba(72, 52, 24, 0.92) 100%);
   border-color: rgba(232, 155, 32, 0.45);
+}
+html[data-theme="dark"] .hero-mini-rail__compare {
+  background: rgba(18, 26, 44, 0.82) !important;
+  border-color: rgba(94, 196, 220, 0.32);
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .hero-mini-rail__compare:hover {
+  background: rgba(31, 50, 70, 0.92) !important;
+  border-color: rgba(140, 200, 230, 0.55);
+  color: var(--color-ice);
 }
 
 html[data-theme="dark"] .living-compass__rank-row {
