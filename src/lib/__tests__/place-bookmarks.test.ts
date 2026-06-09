@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   BOOKMARK_LIMIT,
   BOOKMARKS_STORAGE_KEY,
+  addBookmarksToFront,
   clearBookmarks,
   hasBookmark,
   loadBookmarks,
@@ -55,6 +56,29 @@ describe("place-bookmarks", () => {
   it("dedupes ids when setting", () => {
     setBookmarks(["a", "b", "a", "c", "b"]);
     expect(loadBookmarks()).toEqual(["a", "b", "c"]);
+  });
+
+  it("adds ranked finalists to the head without toggling existing pins off", () => {
+    setBookmarks(["sequim-wa", "portal-az", "creel-mx"]);
+
+    const result = addBookmarksToFront(["port-townsend-wa", "sequim-wa", "port-townsend-wa"]);
+
+    expect(result.added).toEqual(["port-townsend-wa"]);
+    expect(result.capped).toBe(false);
+    expect(result.ids).toEqual(["port-townsend-wa", "sequim-wa", "portal-az", "creel-mx"]);
+    expect(loadBookmarks()).toEqual(["port-townsend-wa", "sequim-wa", "portal-az", "creel-mx"]);
+  });
+
+  it("caps merged finalist saves while keeping the incoming shortlist order", () => {
+    const existing = Array.from({ length: BOOKMARK_LIMIT }, (_, i) => `existing-${i}`);
+    setBookmarks(existing);
+
+    const result = addBookmarksToFront(["leader-1", "leader-2"]);
+
+    expect(result.capped).toBe(true);
+    expect(result.added).toEqual(["leader-1", "leader-2"]);
+    expect(result.ids).toHaveLength(BOOKMARK_LIMIT);
+    expect(result.ids.slice(0, 3)).toEqual(["leader-1", "leader-2", "existing-0"]);
   });
 
   it("ignores malformed storage payloads gracefully", () => {

@@ -107,6 +107,40 @@ export function setBookmarks(ids: readonly string[]): string[] {
   return cleaned;
 }
 
+/**
+ * Add a ranked set of ids to the head of the saved shortlist without toggling
+ * existing pins off. This is used for "save these finalists" flows where the
+ * current rank order matters more than single-click recency.
+ */
+export function addBookmarksToFront(ids: readonly string[]): { ids: string[]; added: string[]; capped: boolean } {
+  const storage = safeStorage();
+  const current = readRaw(storage);
+  const incoming: string[] = [];
+  const incomingSeen = new Set<string>();
+  for (const v of ids) {
+    if (typeof v !== "string" || !v) continue;
+    if (incomingSeen.has(v)) continue;
+    incomingSeen.add(v);
+    incoming.push(v);
+  }
+
+  const merged = [
+    ...incoming,
+    ...current.filter(id => !incomingSeen.has(id)),
+  ];
+  const next = merged.slice(0, BOOKMARK_LIMIT);
+  const currentSet = new Set(current);
+  const nextSet = new Set(next);
+  const added = incoming.filter(id => !currentSet.has(id) && nextSet.has(id));
+
+  writeRaw(storage, next);
+  return {
+    ids: next,
+    added,
+    capped: merged.length > BOOKMARK_LIMIT,
+  };
+}
+
 /** Remove a single id. No-op if absent. Returns the new list. */
 export function removeBookmark(id: string): string[] {
   const storage = safeStorage();

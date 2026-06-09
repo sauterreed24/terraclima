@@ -262,6 +262,7 @@ describe("App shell", () => {
     expect(actions.closest(".desktop-scout-board")).toBe(scoutBoard);
     expect(within(actions).getByRole("button", { name: /Open .* climate dossier from the Scout Board/ })).toBeInTheDocument();
     expect(within(actions).getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ })).toBeInTheDocument();
+    expect(within(actions).getByRole("button", { name: /Save 4 Scout Board finalists to your shortlist/ })).toBeInTheDocument();
     expect(within(actions).getByRole("button", { name: /Pin .* to your shortlist/ })).toHaveAttribute("aria-pressed", "false");
     expect(scoutBoard.compareDocumentPosition(signalRail) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(scoutBoard.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -359,6 +360,7 @@ describe("App shell", () => {
     expect(map.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(map.compareDocumentPosition(scoutBrief) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByText("Advisor verdict")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Save 4 Scout Brief finalists to your shortlist/ })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the map leader caption synchronized with the selected ranking", () => {
@@ -385,6 +387,27 @@ describe("App shell", () => {
     fireEvent.click(screen.getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ }));
 
     expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("saves current Scout Board finalists into the shortlist in ranked order", async () => {
+    mockViewport(1280);
+    renderApp();
+
+    const actions = screen.getByLabelText(/Scout actions for/);
+    fireEvent.click(within(actions).getByRole("button", { name: /Save 4 Scout Board finalists to your shortlist/ }));
+
+    await waitFor(() => {
+      const saved = JSON.parse(window.localStorage.getItem("terraclima.bookmarks.v1") ?? "[]") as string[];
+      expect(saved).toHaveLength(4);
+    });
+    expect(screen.getByText(/Saved 4 new finalists/)).toBeInTheDocument();
+    const saved = JSON.parse(window.localStorage.getItem("terraclima.bookmarks.v1") ?? "[]") as string[];
+    expect(screen.getByLabelText("Shortlist scout packet status")).toHaveTextContent("Scout packet ready");
+
+    fireEvent.click(screen.getByRole("button", { name: "Compare 4 pinned places from your shortlist" }));
+
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+    expect(screen.getByTestId("compare-place-ids")).toHaveTextContent(saved.join(","));
   }, APP_SHELL_TIMEOUT_MS);
 
   it("pins the desktop Scout Board leader into the shortlist", async () => {
