@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Compare score lens receipt
+
+- **Compare (`src/components/CompareView.tsx`, `src/styles.css`):** filtered or scenario-aware comparisons now show a compact **Score lens** receipt that names the active Live Finder signals, hard thresholds, and climate layer shaping finalist fit scores. Default present-day Compare stays uncluttered, and no scoring, ranking, corpus data, routes, or exports change.
+
 ### Fit Finder scope reset
 
 - **Fit Finder (`src/lib/lifestyle-bundles.ts`, `src/components/FilterBar.tsx`):** global guided paths now clear stale region and terrain filters when selected, and they no longer read as active while old geography scope is still filtering the list. This keeps path switching honest without changing scores, corpus data, URL semantics, or regional paths such as Mexico / Southwest.

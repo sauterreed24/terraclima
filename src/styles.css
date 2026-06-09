@@ -3953,6 +3953,87 @@
     font-weight: 600;
   }
 
+  .compare-lens-receipt {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.6rem;
+    margin: 0 0 0.75rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(26, 143, 168, 0.2);
+    background:
+      linear-gradient(135deg, rgba(255, 253, 248, 0.92), rgba(241, 251, 253, 0.78));
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.86) inset,
+      0 10px 24px -22px rgba(24, 55, 64, 0.32);
+  }
+  .compare-lens-receipt__copy {
+    min-width: 0;
+  }
+  .compare-lens-receipt__eyebrow {
+    display: block;
+    color: var(--color-glacier-700);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .compare-lens-receipt__copy p {
+    margin: 0.24rem 0 0;
+    color: var(--color-ice);
+    font-size: 0.84rem;
+    line-height: 1.35;
+  }
+  .compare-lens-receipt__copy > span:last-child {
+    display: block;
+    margin-top: 0.22rem;
+    color: var(--color-stone-readable);
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+  .compare-lens-receipt__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    min-width: 0;
+  }
+  .compare-lens-receipt__chip {
+    display: inline-grid;
+    gap: 0.08rem;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0.34rem 0.48rem;
+    border-radius: 0.55rem;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background: rgba(255, 255, 255, 0.62);
+  }
+  .compare-lens-receipt__chip span {
+    color: var(--color-stone-readable);
+    font-size: 0.54rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .compare-lens-receipt__chip strong {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    color: var(--color-ice);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+  @media (min-width: 820px) {
+    .compare-lens-receipt {
+      grid-template-columns: minmax(18rem, 1fr) minmax(0, 1.25fr);
+      align-items: center;
+    }
+    .compare-lens-receipt__chips {
+      justify-content: flex-end;
+    }
+  }
+
   .compare-decision-read {
     display: grid;
     grid-template-columns: minmax(16rem, 0.9fr) minmax(0, 1.6fr);
@@ -8709,6 +8790,7 @@ html[data-theme="dark"] .tc-detail-back-to-top:focus-visible {
 /* Compare overlay scrim is intentionally still slightly warm so the dialog
    pops; just deepen its base. */
 html[data-theme="dark"] .compare-dialog__head,
+html[data-theme="dark"] .compare-lens-receipt,
 html[data-theme="dark"] .compare-decision-read,
 html[data-theme="dark"] .compare-single-guide,
 html[data-theme="dark"] .compare-finalist-table,
@@ -8724,6 +8806,7 @@ html[data-theme="dark"] .compare-decision-read__summary,
 html[data-theme="dark"] .compare-decision-read__scout-sequence,
 html[data-theme="dark"] .compare-decision-read__scout-step,
 html[data-theme="dark"] .compare-decision-read__lane,
+html[data-theme="dark"] .compare-lens-receipt__chip,
 html[data-theme="dark"] .compare-single-guide__copy,
 html[data-theme="dark"] .compare-single-guide__check,
 html[data-theme="dark"] .compare-finalist-table tbody tr,
@@ -8772,7 +8855,9 @@ html[data-theme="dark"] .compare-decision-read__action strong {
   color: var(--color-frost-strong);
 }
 html[data-theme="dark"] .compare-single-guide__copy p,
-html[data-theme="dark"] .compare-single-guide__check strong {
+html[data-theme="dark"] .compare-single-guide__check strong,
+html[data-theme="dark"] .compare-lens-receipt__copy p,
+html[data-theme="dark"] .compare-lens-receipt__chip strong {
   color: var(--color-frost-strong);
 }
 html[data-theme="dark"] .compare-decision-read__scout-step strong {
