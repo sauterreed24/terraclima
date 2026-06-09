@@ -722,7 +722,7 @@ describe("App shell", () => {
     expect(screen.queryByRole("button", { name: "Unpin Sequim from your shortlist" })).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
-  it("keeps the shortlist decision cue hidden until at least two finalists are pinned", () => {
+  it("opens Compare setup from a one-place shortlist while keeping the decision cue hidden", async () => {
     window.localStorage.setItem(
       "terraclima.bookmarks.v1",
       JSON.stringify(["sequim-wa"]),
@@ -730,8 +730,15 @@ describe("App shell", () => {
 
     renderApp();
 
-    expect(screen.getByLabelText("Shortlist scout packet status")).toHaveTextContent("Scout packet warming up");
+    const readiness = screen.getByLabelText("Shortlist scout packet status");
+    expect(readiness).toHaveTextContent("Scout setup ready");
+    expect(readiness).toHaveTextContent("Open Compare setup to plan the missing contrast");
     expect(screen.queryByLabelText("Shortlist packet decision cue")).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Open Compare setup for Sequim from your shortlist" }));
+
+    expect(await screen.findByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
+    expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("renders the pinned shortlist rail when bookmarks exist in localStorage", () => {

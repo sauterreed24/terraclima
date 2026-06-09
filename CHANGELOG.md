@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### One-place shortlist setup
+
+- **Pinned shortlist (`src/App.tsx`, `src/lib/shortlist-readiness.ts`):** a single saved finalist now offers a direct **Compare setup** handoff to the existing one-place Compare guide instead of implying Compare is unavailable. The two-plus-place decision cue, Compare cap, export files, routes, scoring, and corpus data are unchanged.
+
 ### Shortlist packet decision cue
 
 - **Pinned shortlist (`src/App.tsx`, `src/lib/shortlist-packet.ts`, `src/styles.css`):** compare-ready saved places now show a compact Scout packet cue naming the first dossier to read, a contrast dossier, and the first caveat to verify before opening Compare. The cue reuses the existing Compare finalist verdict logic and does not change scores, corpus data, routes, export formats, or bookmark order.
