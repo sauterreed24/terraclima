@@ -327,6 +327,53 @@ describe("FilterBar lifestyle bundles", () => {
     expect(next.fitPresets?.has("four-seasons")).toBe(false);
   });
 
+  it("clears geography scope when switching from a regional path to a global one", () => {
+    const setFilters = vi.fn();
+    const setRanking = vi.fn();
+    renderFilterBar("F", { setFilters, setRanking });
+
+    fireEvent.click(screen.getByRole("button", { name: /Cool Summer Refuge/ }));
+
+    expect(setRanking).toHaveBeenCalledWith("coolest-summers");
+    const updater = setFilters.mock.calls[0][0] as (filters: FilterState) => FilterState;
+    const previous = createEmptyFilterState();
+    previous.countries = new Set(["USA", "Mexico"]);
+    previous.archetypes = new Set([
+      "eternal-spring-highland",
+      "volcanic-upland",
+      "sky-island-refuge",
+      "high-desert-escape",
+      "monsoon-edge",
+      "mild-winter-foothills",
+    ]);
+    previous.fitPresets = new Set(["dry-air", "mild-winters"]);
+    previous.maxSummerHighC = 26;
+    previous.minWinterLowC = -5;
+
+    const next = updater(previous);
+
+    expect(next.countries).toEqual(new Set());
+    expect(next.archetypes).toEqual(new Set());
+    expect(next.fitPresets).toEqual(new Set(["cool-summers"]));
+    expect(next.maxSummerHighC).toBe(26);
+    expect(next.minWinterLowC).toBeUndefined();
+  });
+
+  it("does not mark a global path active while stale geography filters remain", () => {
+    const staleCoolSummer = createEmptyFilterState();
+    staleCoolSummer.fitPresets = new Set(["cool-summers"]);
+    staleCoolSummer.maxSummerHighC = 26;
+    staleCoolSummer.countries = new Set(["USA", "Mexico"]);
+    staleCoolSummer.archetypes = new Set(["sky-island-refuge"]);
+
+    renderFilterBar("F", {
+      filters: staleCoolSummer,
+      ranking: "coolest-summers",
+    });
+
+    expect(screen.getByTitle("Cooler peak-season afternoons without forcing a snow-country lifestyle.")).toHaveAttribute("data-active", "false");
+  });
+
   it("applies the Mexico / Southwest path as a scoped regional dry-highland screen", () => {
     const setFilters = vi.fn();
     const setRanking = vi.fn();

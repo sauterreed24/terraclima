@@ -205,7 +205,7 @@ function samePresetSet(actual: Set<LiveFitPresetId> | undefined, expected: reado
 }
 
 function sameStringSet(actual: ReadonlySet<string>, expected: readonly string[] | undefined): boolean {
-  if (!expected) return true;
+  if (!expected) return actual.size === 0;
   if (actual.size !== expected.length) return false;
   return expected.every(value => actual.has(value));
 }
@@ -230,8 +230,8 @@ export function applyLifestyleBundle(
   setRanking(bundle.ranking);
   setFilters(f => ({
     ...f,
-    countries: bundle.countries ? new Set(bundle.countries) : f.countries,
-    archetypes: bundle.archetypes ? new Set(bundle.archetypes) : f.archetypes,
+    countries: bundle.countries ? new Set(bundle.countries) : new Set(),
+    archetypes: bundle.archetypes ? new Set(bundle.archetypes) : new Set(),
     fitPresets: new Set(bundle.presets),
     maxSummerHighC: bundle.maxSummerHighC,
     minWinterLowC: bundle.minWinterLowC,
