@@ -3,6 +3,7 @@ import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { PlaceCard } from "./PlaceCard";
 import type { BestWindow } from "../lib/best-months";
 import type { FilterState, RankingResult } from "../lib/scoring";
+import type { Place } from "../types";
 
 const ROW_GAP_PX = 12;
 /**
@@ -45,6 +46,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   compareIds,
   resonantWindow,
   liveFitFilters,
+  homePlace,
   rankingLabel,
   bookmarkIds,
   onBookmarkToggle,
@@ -58,6 +60,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   compareIds: Set<string>;
   resonantWindow: BestWindow["id"] | null;
   liveFitFilters: FilterState;
+  /** Home-base anchor; cards render a compact delta strip against it. */
+  homePlace?: Place | null;
   rankingLabel: string;
   bookmarkIds?: Set<string>;
   onBookmarkToggle?: (id: string) => void;
@@ -153,6 +157,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
                   onBookmarkToggle={onBookmarkToggle}
                   resonantWindow={resonantWindow}
                   liveFitFilters={liveFitFilters}
+                  homePlace={homePlace}
                   rank={start + colIndex + 1}
                   rankingLabel={rankingLabel}
                   rankingScore={r.score}

@@ -56,8 +56,9 @@ import { buildGrowabilityRationale } from "../lib/growability-score";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
-  Users, Compass, ExternalLink, Scale, Satellite, Clock3,
+  Users, Compass, ExternalLink, Scale, Satellite, Clock3, Home,
 } from "lucide-react";
+import { PlaceVersusHome } from "./place-detail/PlaceVersusHome";
 import { BookmarkButton } from "./BookmarkButton";
 import { scenarioMeta } from "../lib/climate-projection";
 
@@ -178,11 +179,15 @@ interface Props {
   /** Whether this place is currently pinned. Hides the control when callback absent. */
   bookmarked?: boolean;
   onBookmarkToggle?: (id: string) => void;
+  /** The reader's home-base anchor (present-day normals). Enables the vs-home delta read. */
+  homePlace?: Place | null;
+  /** Set / clear the given place as home base. Hides the header control when absent. */
+  onHomeBaseToggle?: (id: string) => void;
   occluded?: boolean;
   scenario?: ScenarioId;
 }
 
-export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, residencyFitContext, bookmarked, onBookmarkToggle, occluded = false, scenario = "now" }: Props) {
+export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, residencyFitContext, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, occluded = false, scenario = "now" }: Props) {
   const reduceMotion = useReducedMotion();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
@@ -280,6 +285,8 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               onPickArchetype={onPickArchetype}
               bookmarked={Boolean(bookmarked)}
               onBookmarkToggle={onBookmarkToggle}
+              isHome={homePlace?.id === place.id}
+              onHomeBaseToggle={onHomeBaseToggle}
               visualSignature={visualSignature!}
             />
             <DetailBody
@@ -292,6 +299,8 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
               inCompare={inCompareIds?.has(place.id) ?? false}
               bookmarked={Boolean(bookmarked)}
               onBookmarkToggle={onBookmarkToggle}
+              homePlace={homePlace}
+              onHomeBaseToggle={onHomeBaseToggle}
               scenario={scenario}
             />
             <PlaceBackToTop panelRef={panelRef} />
@@ -303,7 +312,7 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
 }
 
 function DetailHeader({
-  place, titleId, onClose, onCompareToggle, inCompare, onPickArchetype, bookmarked, onBookmarkToggle, visualSignature,
+  place, titleId, onClose, onCompareToggle, inCompare, onPickArchetype, bookmarked, onBookmarkToggle, isHome, onHomeBaseToggle, visualSignature,
 }: {
   place: Place;
   titleId: string;
@@ -313,6 +322,8 @@ function DetailHeader({
   onPickArchetype?: (a: MicroclimateArchetype) => void;
   bookmarked: boolean;
   onBookmarkToggle?: (id: string) => void;
+  isHome?: boolean;
+  onHomeBaseToggle?: (id: string) => void;
   visualSignature: PlaceVisualSignature;
 }) {
   const { temp, dist } = useUnits();
@@ -367,6 +378,23 @@ function DetailHeader({
         </div>
         <div className="flex items-center gap-1 self-end shrink-0 md:self-start flex-wrap justify-end">
           <CopyPlaceLink placeId={place.id} placeName={place.name} />
+          {onHomeBaseToggle && (
+            <button
+              type="button"
+              onClick={() => onHomeBaseToggle(place.id)}
+              aria-pressed={Boolean(isHome)}
+              aria-label={isHome
+                ? `Clear ${place.name} as your home base`
+                : `Set ${place.name} as your home base for climate deltas`}
+              title={isHome
+                ? `${place.name} is your home base — every card and dossier shows climate deltas against it. Click to clear.`
+                : `Read the whole atlas relative to ${place.name}: cards, dossiers, and Compare then show climate deltas against it.`}
+              className={`btn-ghost !text-xs ${isHome ? "!border-[rgba(140,200,224,0.8)] !text-glacier-700" : ""}`}
+            >
+              <Home className="w-3 h-3" aria-hidden />
+              {isHome ? "Home base" : "Set home"}
+            </button>
+          )}
           {onBookmarkToggle && (
             <BookmarkButton
               pinned={bookmarked}
@@ -513,7 +541,7 @@ function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string
 }
 
 function DetailBody({
-  place, onOpenPlace, liveFitFilters, residencyFitContext, visualSignature, onCompareToggle, inCompare, bookmarked, onBookmarkToggle, scenario = "now",
+  place, onOpenPlace, liveFitFilters, residencyFitContext, visualSignature, onCompareToggle, inCompare, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, scenario = "now",
 }: {
   place: Place;
   onOpenPlace?: (id: string) => void;
@@ -524,6 +552,8 @@ function DetailBody({
   inCompare: boolean;
   bookmarked: boolean;
   onBookmarkToggle?: (id: string) => void;
+  homePlace?: Place | null;
+  onHomeBaseToggle?: (id: string) => void;
   scenario?: ScenarioId;
 }) {
   const { temp, dist } = useUnits();
@@ -607,6 +637,10 @@ function DetailBody({
         onCompareToggle={onCompareToggle}
         onBookmarkToggle={onBookmarkToggle}
       />
+
+      {homePlace ? (
+        <PlaceVersusHome place={place} home={homePlace} onHomeBaseToggle={onHomeBaseToggle} />
+      ) : null}
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
 

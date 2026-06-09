@@ -41,6 +41,12 @@ export interface KeyboardShortcutDeps {
    */
   toggleBookmarkSelected?: () => void;
   /**
+   * Set / clear the currently-selected place as the home-base climate
+   * anchor. Same no-op-when-nothing-selected contract as the bookmark
+   * toggle.
+   */
+  toggleHomeBaseSelected?: () => void;
+  /**
    * Id of the global Explorer search input. When Escape is pressed inside
    * this input with a non-empty value (and no overlay is in the way), the
    * search is cleared as a final convenience instead of being a no-op.
@@ -125,6 +131,13 @@ export function useKeyboardShortcuts(deps: KeyboardShortcutDeps): void {
         if (!d.selectedId || !d.toggleBookmarkSelected) return;
         e.preventDefault();
         d.toggleBookmarkSelected();
+        return;
+      }
+      if (e.key === "h" || e.key === "H") {
+        // Mirror of B: set / clear the open place as the home-base anchor.
+        if (!d.selectedId || !d.toggleHomeBaseSelected) return;
+        e.preventDefault();
+        d.toggleHomeBaseSelected();
         return;
       }
 

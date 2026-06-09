@@ -15,6 +15,7 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 | `cmp` | Compare set, comma-separated place ids | Only known ids; **max 4** (`COMPARE_LIMIT`) |
 | `theme` | Color theme override: `light`, `dark` | `auto` (the implicit default) is never written; unknown values dropped |
 | `scn` | Climate-scenario layer: `ssp245`, `ssp585` | `now` (the implicit default) is never written; unknown values dropped |
+| `hb` | Home-base place id (cards, dossiers, and Compare read climate deltas against it) | Only known ids (alias-canonicalized); omitted when unset; written last |
 
 ## Live Finder parameters (Explorer filters)
 
@@ -48,6 +49,10 @@ The "2050 time machine" ([`src/lib/climate-projection.ts`](../src/lib/climate-pr
 - The place **dossier still shows present-day normals**; only the Explorer aggregate views project.
 - **Compare** uses the same projected normals as the active Explorer layer when `scn≠now` (charts, ribbons, and screening scores). Opening a place profile from Compare still loads present-day dossier data.
 - Ranking under a scenario flows through the climate-processor worker subsystem ([`src/hooks/use-climate-processor.ts`](../src/hooks/use-climate-processor.ts)); a synchronous fallback keeps the result identical when no worker is available.
+
+## Home-base anchor (`hb`)
+
+The home base ([`src/lib/home-base.ts`](../src/lib/home-base.ts)) is a sticky preference with theme-style precedence: an explicit `?hb=` wins on first paint and on `popstate`; otherwise the persisted `localStorage` choice is re-validated against the corpus. Setting or clearing the anchor (dossier header toggle, **H** shortcut, or the count-strip clear control) writes both the URL and storage. Deltas are derived in `src/lib/home-base.ts` from authored normals only; under `scn≠now` the Explorer grid and Compare diff projected place vs projected home, while the dossier section stays present-day.
 
 ## Formatting rules
 

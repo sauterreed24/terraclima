@@ -27,6 +27,39 @@ function defaults(overrides: Partial<KeyboardShortcutDeps> = {}): KeyboardShortc
   };
 }
 
+describe("useKeyboardShortcuts — home base (H) shortcut", () => {
+  afterEach(() => cleanup());
+
+  it("calls toggleHomeBaseSelected only when a place is selected", () => {
+    const toggleHomeBaseSelected = vi.fn();
+    const { rerender } = render(
+      <MountShortcuts {...defaults({ selectedId: null, toggleHomeBaseSelected })} />,
+    );
+    fireEvent.keyDown(window, { key: "h" });
+    expect(toggleHomeBaseSelected).not.toHaveBeenCalled();
+
+    rerender(<MountShortcuts {...defaults({ selectedId: "sequim-wa", toggleHomeBaseSelected })} />);
+    fireEvent.keyDown(window, { key: "H" });
+    expect(toggleHomeBaseSelected).toHaveBeenCalledTimes(1);
+  });
+
+  it("ignores H when modifier keys are held or focus is in a text input", () => {
+    const toggleHomeBaseSelected = vi.fn();
+    render(
+      <>
+        <input data-testid="text-input" />
+        <MountShortcuts {...defaults({ selectedId: "sequim-wa", toggleHomeBaseSelected })} />
+      </>,
+    );
+    fireEvent.keyDown(window, { key: "h", ctrlKey: true });
+    fireEvent.keyDown(window, { key: "h", metaKey: true });
+    const input = document.querySelector("input")!;
+    input.focus();
+    fireEvent.keyDown(input, { key: "h" });
+    expect(toggleHomeBaseSelected).not.toHaveBeenCalled();
+  });
+});
+
 describe("useKeyboardShortcuts — bookmark (B) shortcut", () => {
   afterEach(() => cleanup());
 

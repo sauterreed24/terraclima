@@ -27,7 +27,8 @@ import {
 } from "./lib/lifestyle-bundles";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit, LIVE_FIT_PRESET_BY_ID } from "./lib/live-fit";
-import { projectPool } from "./lib/climate-projection";
+import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
+import { projectPlace, projectPool } from "./lib/climate-projection";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
 import { resonantWindowFor } from "./lib/best-months";
@@ -258,6 +259,14 @@ export default function App() {
   const [filters, setFilters] = useState<FilterState>(() => filterStateFromValidated(initialAppState));
   const [ranking, setRankingRaw] = useState<RankingProfile>(() => initialAppState.ranking ?? loadPersistedRanking());
   const [climateScenario, setClimateScenario] = useState<ScenarioId>(() => initialAppState.scenario ?? "now");
+  // Home-base climate anchor. URL ?hb= wins on first paint (shareable
+  // "vs our home" links); otherwise the last explicit choice from
+  // localStorage, re-validated against the current corpus.
+  const [homeBaseId, setHomeBaseIdRaw] = useState<string | null>(() => {
+    if (initialAppState.homeBaseId) return initialAppState.homeBaseId;
+    const stored = loadHomeBaseId();
+    return stored ? resolvePlaceId(stored) : null;
+  });
   const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
   // Theme preference (auto/light/dark). URL ?theme=... wins on first paint;
@@ -400,6 +409,7 @@ export default function App() {
       dist,
       theme: themePreference === "auto" ? null : themePreference,
       scenario: climateScenario === "now" ? null : climateScenario,
+      homeBaseId,
       collectionExists: (id: string) => Boolean(CURATED_SET_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
       placeExists: (id: string) => resolvePlaceId(id) != null,
@@ -434,7 +444,7 @@ export default function App() {
       replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist, themePreference, climateScenario]);
+  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist, themePreference, climateScenario, homeBaseId]);
 
   useEffect(() => {
     const onPop = () => {
@@ -452,6 +462,14 @@ export default function App() {
       setCompareIds(new Set(v.compareIds));
       setRankingRaw(v.ranking ?? loadPersistedRanking());
       setClimateScenario(v.scenario ?? "now");
+      // Home base is a sticky preference like theme: an explicit ?hb= on the
+      // target entry wins; otherwise fall back to the persisted choice so
+      // Back/Forward through pre-home entries doesn't silently clear it.
+      setHomeBaseIdRaw(() => {
+        if (v.homeBaseId) return v.homeBaseId;
+        const stored = loadHomeBaseId();
+        return stored ? resolvePlaceId(stored) : null;
+      });
       // Units are a sticky global preference persisted by the UnitProvider.
       // Only honour an explicit unit param on the target entry — otherwise
       // Back/Forward to an entry created before a toggle (no temp/dist param)
@@ -637,6 +655,14 @@ export default function App() {
   rankedRef.current = ranked;
 
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
+  // Present-day home base for the dossier (which always shows present-day
+  // normals) and a scenario-consistent twin for the Explorer grid and
+  // Compare, so deltas never mix projected places with a present-day home.
+  const homeBasePlace = homeBaseId ? placeForId(homeBaseId) ?? null : null;
+  const homeBasePlaceForScenario = useMemo(
+    () => (homeBasePlace && climateScenario !== "now" ? projectPlace(homeBasePlace, climateScenario) : homeBasePlace),
+    [homeBasePlace, climateScenario],
+  );
   const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
@@ -689,6 +715,24 @@ export default function App() {
     } else {
       setTransientFeedback(`Removed ${placeName} from your shortlist.`);
     }
+  }, []);
+
+  const toggleHomeBase = useCallback((id: string) => {
+    const canonical = resolvePlaceId(id);
+    if (!canonical) return;
+    const place = PLACES_BY_ID[canonical];
+    const next = homeBaseId === canonical ? null : canonical;
+    persistHomeBaseId(next);
+    setHomeBaseIdRaw(next);
+    setTransientFeedback(next
+      ? `${place.name} is now your home base — cards, dossiers, and Compare read climate deltas against it.`
+      : `Cleared your home base — cards and dossiers return to absolute readings.`);
+  }, [homeBaseId]);
+
+  const clearHomeBase = useCallback(() => {
+    persistHomeBaseId(null);
+    setHomeBaseIdRaw(null);
+    setTransientFeedback("Cleared your home base — cards and dossiers return to absolute readings.");
   }, []);
 
   const saveScoutFinalists = useCallback((ids: readonly string[]) => {
@@ -857,6 +901,11 @@ export default function App() {
     toggleBookmark(selectedId);
   }, [selectedId, toggleBookmark]);
 
+  const toggleHomeBaseSelected = useCallback(() => {
+    if (!selectedId) return;
+    toggleHomeBase(selectedId);
+  }, [selectedId, toggleHomeBase]);
+
   useKeyboardShortcuts({
     view,
     showShortcuts,
@@ -872,6 +921,7 @@ export default function App() {
     pickRandomPlace,
     onRandomEmpty,
     toggleBookmarkSelected,
+    toggleHomeBaseSelected,
     searchInputId: SEARCH_INPUT_ID,
     clearSearch,
   });
@@ -1028,8 +1078,24 @@ export default function App() {
                     Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{rankingLabel}</span>
                   </div>
                   <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-                    {`Showing ${ranked.length} of ${PLACE_COUNTS.total} places, ranked by ${rankingLabel}.`}
+                    {`Showing ${ranked.length} of ${PLACE_COUNTS.total} places, ranked by ${rankingLabel}.${homeBasePlace ? ` Cards show climate deltas against your home base, ${homeBasePlace.name}.` : ""}`}
                   </div>
+                  {homeBasePlace ? (
+                    <div className="text-xs text-stone flex items-center gap-1.5 min-w-0">
+                      <span className="truncate">
+                        vs home <span className="text-frost">{homeBasePlace.name}</span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={clearHomeBase}
+                        className="btn-ghost !p-1 !text-[10px]"
+                        aria-label={`Stop comparing against ${homeBasePlace.name} (clear home base)`}
+                        title="Clear home base — cards and dossiers return to absolute readings"
+                      >
+                        <X className="w-3 h-3" aria-hidden />
+                      </button>
+                    </div>
+                  ) : null}
                   <div className="text-xs text-stone hidden md:flex items-center gap-2 flex-wrap">
                     <span><span className="tc-tip-pill">Scroll</span> zooms the map</span>
                     <span><span className="tc-tip-pill">{SEARCH_SHORTCUT_HINT}</span> or <span className="tc-tip-pill">/</span> search</span>
@@ -1095,6 +1161,7 @@ export default function App() {
                       compareIds={compareIds}
                       resonantWindow={resonantWindow}
                       liveFitFilters={filters}
+                      homePlace={homeBasePlaceForScenario}
                       rankingLabel={rankingLabel}
                       bookmarkIds={bookmarkIds}
                       onBookmarkToggle={toggleBookmark}
@@ -1215,6 +1282,8 @@ export default function App() {
             residencyFitContext={dossierFitContext}
             bookmarked={selectedPlace ? bookmarkIds.has(selectedPlace.id) : false}
             onBookmarkToggle={toggleBookmark}
+            homePlace={homeBasePlace}
+            onHomeBaseToggle={toggleHomeBase}
             occluded={placeDetailOccluded}
             scenario={climateScenario}
           />
@@ -1234,6 +1303,8 @@ export default function App() {
             onCopyView={copyCurrentView}
             shareStatus={shareStatus}
             liveFitFilters={filters}
+            homePlace={homeBasePlaceForScenario}
+            onAddPlace={toggleCompare}
             scenario={climateScenario}
             occluded={compareViewOccluded}
           />

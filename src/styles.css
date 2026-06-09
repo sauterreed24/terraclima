@@ -9656,6 +9656,33 @@ html[data-theme="dark"] .detail-drawer-header[data-tone="aurora"] {
     text-overflow: ellipsis;
   }
 
+  /* "vs home" delta strip — only renders when a home base is pinned. */
+  .place-card__home-delta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.55rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed rgba(71, 90, 122, 0.14);
+    min-width: 0;
+  }
+  .place-card__home-delta__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-stone-readable);
+    line-height: 1.2;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .place-card__home-delta .chip {
+    text-transform: none;
+  }
+
   /* Livability score bar */
   .place-card__livability-bar {
     padding: 0.5rem 0.65rem;
