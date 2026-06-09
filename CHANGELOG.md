@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### One-place Scout plan Compare setup
+
+- **Scout plan export (`src/lib/shortlist-export.ts`, `src/components/chrome/ShortlistExportMenu.tsx`):** a one-place Markdown Scout plan now includes a direct **Compare setup** URL and anchor-finalist next action instead of telling users to pin another place first. The compact export trigger also gets the same 32 px shortlist touch target and dark-mode contrast hardening as the Compare setup action. Multi-place decision tables, empty-shortlist copy, export formats, scoring, routes, and corpus data are unchanged.
+
 ### One-place shortlist setup
 
 - **Pinned shortlist (`src/App.tsx`, `src/lib/shortlist-readiness.ts`):** a single saved finalist now offers a direct **Compare setup** handoff to the existing one-place Compare guide instead of implying Compare is unavailable. The two-plus-place decision cue, Compare cap, export files, routes, scoring, and corpus data are unchanged.

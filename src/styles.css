@@ -8308,6 +8308,9 @@
     align-items: flex-start;
     gap: 0.22rem;
   }
+  .tc-shortlist-export__trigger {
+    min-height: 2rem;
+  }
   .tc-shortlist-export__panel {
     box-shadow: 0 12px 32px -12px rgba(0, 0, 0, 0.25);
   }
@@ -8337,6 +8340,16 @@
   }
   html[data-theme="dark"] .tc-shortlist-export__status[data-status="failed"] {
     color: #ffb199;
+  }
+  html[data-theme="dark"] .tc-shortlist-export__trigger {
+    background: rgba(18, 26, 44, 0.82) !important;
+    border-color: rgba(94, 196, 220, 0.32) !important;
+    color: var(--color-frost-strong);
+  }
+  html[data-theme="dark"] .tc-shortlist-export__trigger:hover {
+    background: rgba(31, 50, 70, 0.92) !important;
+    border-color: rgba(140, 200, 230, 0.55) !important;
+    color: var(--color-ice);
   }
   .tc-shortlist-export__item {
     border: 0;
