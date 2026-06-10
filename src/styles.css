@@ -5477,10 +5477,12 @@
     padding: 0.62rem 0.68rem;
     background: rgba(255, 253, 248, 0.76);
   }
-  .detail-signature-panel__primary {
+  /* Child-combinator selector (not !important) so the moonlit dark-theme
+     override can win the cascade from the unlayered theme block below. */
+  .detail-signature-panel > .detail-signature-panel__primary {
     background:
       linear-gradient(135deg, rgba(var(--signature-rgb), 0.14), rgba(255, 253, 248, 0.78) 62%),
-      rgba(255, 253, 248, 0.82) !important;
+      rgba(255, 253, 248, 0.82);
   }
   .detail-signature-panel dt {
     color: var(--color-stone-readable);
@@ -8589,6 +8591,10 @@ html[data-motion="reduced"] .hero-quick-pick:hover {
    The light defaults stay in `:root`/`@layer base`; we *only* override
    here so toggling back to light reverts cleanly with no leak.
    ========================================================= */
+/* Dark tokens never apply on paper — printing a dossier from the dark theme
+   must produce the same ink-on-white brief as the day theme, so the whole
+   moonlit variable remap is scoped out of print. */
+@media not print {
 :root[data-theme="dark"] {
   color-scheme: dark;
   --tc-surface-elevated: rgba(28, 38, 60, 0.94);
@@ -8627,6 +8633,16 @@ html[data-motion="reduced"] .hero-quick-pick:hover {
   --color-stone: #aab4c8;
   --color-stone-readable: #c4ccdb;
   --color-shadow: #94a0ba;
+  /* Tonal emphasis tier. The -700 tokens are used exclusively as TEXT
+     (audited: zero background/border usages in CSS or markup), tuned for
+     light paper in the day theme. On moonlit chrome the light values
+     (#0d5f72 teal, #245c36 moss, #a86a0c amber) drop below 2:1 contrast,
+     so remap them to bright readable equivalents (all >= 7:1 on panels). */
+  --color-glacier-700: #7fd0e4;
+  --color-sage-700: #9fd4ac;
+  --color-ochre-700: #e9b45c;
+  --color-ember-700: #f49d78;
+}
 }
 
 :root[data-theme="dark"] html,
@@ -9348,6 +9364,23 @@ html[data-theme="dark"] .place-card__signature-band {
 html[data-theme="dark"] .place-card__signature-band > div {
   background: rgba(28, 38, 60, 0.5);
 }
+/* Dossier-header signature panel: same moonlit treatment as the card band —
+   the light-paper cell backgrounds otherwise sit under remapped light text. */
+html[data-theme="dark"] .detail-signature-panel {
+  background: rgba(24, 32, 54, 0.65);
+  border-color: rgba(var(--signature-rgb), 0.34);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.05) inset,
+    0 14px 34px -24px rgba(var(--signature-rgb), 0.3);
+}
+html[data-theme="dark"] .detail-signature-panel > div {
+  background: rgba(28, 38, 60, 0.55);
+}
+html[data-theme="dark"] .detail-signature-panel > .detail-signature-panel__primary {
+  background:
+    linear-gradient(135deg, rgba(var(--signature-rgb), 0.18), rgba(28, 38, 60, 0.6) 62%),
+    rgba(28, 38, 60, 0.6);
+}
 html[data-theme="dark"] .place-card__ranking-evidence {
   border-color: rgba(120, 210, 232, 0.2);
   border-left-color: rgba(120, 210, 232, 0.58);
@@ -9369,6 +9402,10 @@ html[data-theme="dark"] .place-card__livability-bar {
 html[data-theme="dark"] .place-card__this-month {
   background: var(--tc-surface-muted);
   border-color: rgba(94, 196, 220, 0.35);
+}
+html[data-theme="dark"] .tc-hero-credit {
+  background: rgba(22, 30, 50, 0.94);
+  border-top-color: rgba(120, 138, 178, 0.32);
 }
 
 html[data-theme="dark"] .best-window-pill[data-resonant="true"] {
@@ -9681,6 +9718,33 @@ html[data-theme="dark"] .detail-drawer-header[data-tone="aurora"] {
   }
   .place-card__home-delta .chip {
     text-transform: none;
+  }
+
+  /* Hero-image credit line in the dossier header. The cream strip works on
+     paper; in dark mode the remapped light text needs a moonlit surface or
+     the credit goes light-on-light. */
+  .tc-hero-credit {
+    display: block;
+    color: var(--color-stone);
+    background: rgba(252, 244, 232, 0.96);
+    border-top: 1px solid rgba(200, 160, 120, 0.28);
+  }
+
+  /* Vs-home delta chips read as data values, not labels — sentence case. */
+  .tc-home-delta-chips .chip {
+    text-transform: none;
+  }
+
+  /* Vs-home delta tiles: labels may wrap to two lines, so pin the
+     descriptor chip to the bottom edge to keep rows visually aligned. */
+  .tc-vs-home-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .tc-vs-home-tile > :last-child {
+    margin-top: auto;
+    padding-top: 0.3rem;
   }
 
   /* Livability score bar */

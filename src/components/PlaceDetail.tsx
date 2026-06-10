@@ -488,7 +488,7 @@ function DetailHeader({
               }
             }}
           />
-          <figcaption className="px-3 py-2 text-[10px] leading-snug text-stone bg-[rgba(252,244,232,0.96)] border-t border-[rgba(200,160,120,0.28)]">
+          <figcaption className="tc-hero-credit px-3 py-2 text-[10px] leading-snug">
             <a href={hero.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:text-glacier-700 hover:underline">
               {hero.creditLine}
             </a>

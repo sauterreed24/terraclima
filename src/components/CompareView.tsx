@@ -560,7 +560,7 @@ function HomeDeltaStrip({ place, home }: { place: Place; home: Place }) {
   return (
     <div className="mt-3" aria-label={`${place.name} versus home base ${home.name}`} title={prose(comparison.headline)}>
       <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Vs home · {home.name}</div>
-      <div className="flex flex-wrap gap-1">
+      <div className="tc-home-delta-chips flex flex-wrap gap-1">
         {chips.length === 0 ? (
           <span className="chip" data-tone="sage" title="Every major climate signal lands within a rounding error of home.">
             climate sibling

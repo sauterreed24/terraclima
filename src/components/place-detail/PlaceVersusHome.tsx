@@ -58,9 +58,11 @@ export function PlaceVersusHome({
   return (
     <Section anchorId="pd-vs-home" title={`Versus your home base — ${home.name}`} icon={SECTION_ICON}>
       <div className="panel-thin p-4">
-        <p className="text-sm text-frost leading-snug">{prose(comparison.headline)}</p>
-        <div className="divider-contour my-3" />
-        <ul className="grid grid-cols-2 md:grid-cols-4 gap-2" aria-label={`Climate deltas, ${place.name} minus ${home.name}`}>
+        <div className="tc-accent-panel px-3 py-2.5 mb-3">
+          <div className="text-[10px] uppercase tracking-wider text-glacier-700 mb-1">The delta read</div>
+          <p className="text-[12px] leading-snug text-frost">{prose(comparison.headline)}</p>
+        </div>
+        <ul className="tc-home-delta-chips grid grid-cols-2 md:grid-cols-4 gap-2" aria-label={`Climate deltas, ${place.name} minus ${home.name}`}>
           {comparison.signals.map(signal => (
             <DeltaTile key={signal.id} signal={signal} temp={temp} dist={dist} />
           ))}
@@ -86,19 +88,19 @@ function DeltaTile({
 }) {
   const similar = signal.direction === "similar";
   return (
-    <li className="panel-thin px-3 py-2" title={signal.basis}>
+    <li className="tc-vs-home-tile panel-thin px-3 py-2" title={signal.basis}>
       <div className="text-[10px] uppercase tracking-wider text-stone">{signal.label}</div>
       <div className="font-mono-num text-sm text-ice mt-0.5 flex items-baseline gap-1">
         {similar ? (
           <span aria-hidden>≈</span>
         ) : (
-          <span aria-hidden className={signal.direction === "higher" ? "text-ochre-300" : "text-glacier-700"}>
+          <span aria-hidden className={signal.direction === "higher" ? "text-ochre-700" : "text-glacier-700"}>
             {signal.direction === "higher" ? "▲" : "▼"}
           </span>
         )}
         <span>{similar ? "similar" : formatHomeDeltaValue(signal, temp, dist)}</span>
       </div>
-      <div className="mt-1">
+      <div>
         <span className="chip" data-tone={signal.tone}>{signal.descriptor}</span>
       </div>
     </li>
