@@ -11,6 +11,8 @@ export interface SemanticThemeTokens {
   borderNeutral: string;
   borderWarm: string;
   scrim: string;
+  /** Opaque blur stand-in layered under `scrim` when backdrop blur is unavailable (low power / reduced motion / unsupported). */
+  scrimVeil: string;
   chipBg: string;
   chipActive: string;
   shadowElevated: string;
@@ -32,6 +34,7 @@ export const SEMANTIC_TOKENS_LIGHT: SemanticThemeTokens = {
   borderNeutral: "rgba(71, 90, 122, 0.28)",
   borderWarm: "rgba(200, 170, 140, 0.42)",
   scrim: "rgba(62, 38, 24, 0.35)",
+  scrimVeil: "rgba(247, 240, 231, 0.92)",
   chipBg: "rgba(255, 255, 255, 0.94)",
   chipActive: "rgba(94, 196, 220, 0.22)",
   shadowElevated:
@@ -54,6 +57,7 @@ export const SEMANTIC_TOKENS_DARK: SemanticThemeTokens = {
   borderNeutral: "rgba(120, 138, 178, 0.32)",
   borderWarm: "rgba(140, 160, 200, 0.36)",
   scrim: "rgba(8, 12, 22, 0.62)",
+  scrimVeil: "rgba(13, 19, 32, 0.92)",
   chipBg: "rgba(32, 42, 68, 0.92)",
   chipActive: "rgba(94, 196, 220, 0.32)",
   shadowElevated:
@@ -86,6 +90,7 @@ export const SEMANTIC_TOKEN_KEYS = [
   "--tc-border-neutral",
   "--tc-border-warm",
   "--tc-scrim",
+  "--tc-scrim-veil",
   "--tc-chip-bg",
   "--tc-chip-active",
   "--tc-shadow-elevated",

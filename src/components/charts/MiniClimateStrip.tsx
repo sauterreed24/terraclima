@@ -43,8 +43,8 @@ export function MiniClimateStrip({ place, height = 36 }: Props) {
   );
 }
 
-/** Map a monthly mean temp (°C) to an atlas-palette hex colour. */
-function tempColor(t: number): string {
+/** Map a monthly mean temp (°C) to an atlas-palette colour (shared with the dossier hero fallback). */
+export function tempColor(t: number): string {
   // Cold → ice-blue; mild → sage/ochre; hot → ember
   const stops: Array<[number, [number, number, number]]> = [
     [-20, [164, 199, 220]],

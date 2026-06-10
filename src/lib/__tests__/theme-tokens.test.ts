@@ -9,7 +9,7 @@ import {
 
 describe("theme-tokens", () => {
   it("defines all semantic CSS variable names", () => {
-    expect(SEMANTIC_TOKEN_KEYS).toHaveLength(17);
+    expect(SEMANTIC_TOKEN_KEYS).toHaveLength(18);
     expect(SEMANTIC_TOKEN_KEYS.every(k => k.startsWith("--tc-"))).toBe(true);
   });
 
