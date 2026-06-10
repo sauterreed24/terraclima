@@ -66,7 +66,8 @@ That includes type checking, ESLint, Vitest, prose tests, metadata consistency, 
 After visual or map-pin changes, spot-check in the browser:
 
 - **Light beauty pass:** Explorer hero glow → lens receipt chips → place card hover → open place detail; surfaces should feel layered (inset highlights, not flat white slabs in nested blocks).
-- **Dark theme:** lens receipt, Live Finder (`.tc-accent-panel`), reading nav, map loading pill, and **climate scenario control** should read as moonlit jewel/chrome — no paper-white flash on `data-theme="dark"`. Hero spectrum bar and map instrument contrast unchanged.
+- **Dark theme:** lens receipt, Live Finder (`.tc-accent-panel`), reading nav, map loading pill, and **climate scenario control** should read as moonlit jewel/chrome — no paper-white flash on `data-theme="dark"`. Hero spectrum bar and map instrument contrast unchanged. In the dossier, also spot-check the place-signature panel, At a glance lattice, Field story, and field-dossier shell (their light defaults are hardcoded paper; dark remaps live near the other `html[data-theme="dark"]` drawer rules).
+- **No-blur tier:** with DevTools CPU throttling/save-data (or `html.tc-low-power`), open Compare and the shortcuts overlay — the scrim must fall back to the opaque `--tc-scrim-veil` + tint stack, not a see-through tint. Avoid `!important` on layered component rules that dark mode needs to override: important-in-layer beats the unlayered dark remap.
 - **Motion tier:** `document.documentElement.dataset.motion` follows `motionPolicy()` (`full` / `minimal` / `reduced`). With OS reduce motion on, view cross-fade and drawer spring should calm or disable while layout stays usable.
 - **Reduced motion:** enable OS “reduce motion”; modals and map topo load should skip blur/long fades (`motionPolicy()` → `reduced` / `minimal`).
 - **Map:** one-finger pan, pinch zoom, cluster picker Escape + focus return, leader lines when pins spread.

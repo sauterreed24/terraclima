@@ -13,7 +13,7 @@ import { RiskProfile } from "./charts/RiskProfile";
 import { ContrastChart } from "./charts/ContrastChart";
 import { ClimateChangeDelta } from "./charts/ClimateChangeDelta";
 import { ComfortMatrix } from "./charts/ComfortMatrix";
-import { MiniClimateStrip } from "./charts/MiniClimateStrip";
+import { MiniClimateStrip, tempColor } from "./charts/MiniClimateStrip";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
@@ -337,6 +337,9 @@ function DetailHeader({
     : null;
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
   const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
+  // Tracked by src (not a boolean) so switching places resets the fallback.
+  const [failedHeroSrc, setFailedHeroSrc] = useState<string | null>(null);
+  const heroFailed = hero != null && failedHeroSrc === hero.src;
   const osmHref = safeExternalHref(openStreetMapUrl(place.lat, place.lon, 10)) ?? "https://www.openstreetmap.org/";
 
   return (
@@ -461,34 +464,28 @@ function DetailHeader({
 
       {hero && (
         <figure className="mt-4 rounded-2xl overflow-hidden border border-[rgba(200,160,120,0.45)] shadow-[0_8px_28px_-12px_rgba(62,38,24,0.12)]">
-          <img
-            src={hero.src}
-            srcSet={hero.srcSet}
-            sizes={hero.sizes}
-            alt={hero.alt}
-            width={1280}
-            height={520}
-            className="w-full h-36 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
-            loading="eager"
-            decoding="async"
-            onError={(e) => {
-              // Hero image failed (offline / 404 / blocked). Replace with a
-              // tone-matched gradient placeholder so the panel doesn't show
-              // an awkward broken-image icon. The figcaption still renders
-              // the credit line so context is preserved.
-              const img = e.currentTarget;
-              img.style.display = "none";
-              const fig = img.parentElement;
-              if (fig && !fig.querySelector(".tc-hero-fallback")) {
-                const fallback = document.createElement("div");
-                fallback.className = "tc-hero-fallback w-full h-36 md:h-52 flex items-center justify-center text-stone text-[11px]";
-                fallback.style.background = "linear-gradient(135deg, rgba(140,200,224,0.35), rgba(200,170,140,0.45))";
-                fallback.textContent = `${place.name} — image unavailable`;
-                fig.insertBefore(fallback, img);
-              }
-            }}
-          />
-          <figcaption className="px-3 py-2 text-[10px] leading-snug text-stone bg-[rgba(252,244,232,0.96)] border-t border-[rgba(200,160,120,0.28)]">
+          {heroFailed ? (
+            // Hero image failed (offline / 404 / blocked). Stand in with a
+            // climate-signature panorama drawn from the place's own monthly
+            // normals so the dossier still opens on the place's identity
+            // instead of an apologetic empty box. The figcaption keeps the
+            // credit so the source page stays one click away.
+            <HeroClimateFallback place={place} signatureLabel={visualSignature.primaryLabel} />
+          ) : (
+            <img
+              src={hero.src}
+              srcSet={hero.srcSet}
+              sizes={hero.sizes}
+              alt={hero.alt}
+              width={1280}
+              height={520}
+              className="w-full h-36 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
+              loading="eager"
+              decoding="async"
+              onError={() => setFailedHeroSrc(hero.src)}
+            />
+          )}
+          <figcaption className="tc-hero-credit px-3 py-2 text-[10px] leading-snug">
             <a href={hero.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:text-glacier-700 hover:underline">
               {hero.creditLine}
             </a>
@@ -527,6 +524,42 @@ function DetailHeader({
           <MiniClimateStrip place={place} height={22} />
         </div>
       ) : null}
+    </div>
+  );
+}
+
+/**
+ * Designed stand-in for a hero photo that cannot load (offline PWA, blocked
+ * CDN, 404): a January→December temperature panorama from the place's own
+ * authored normals, labelled with the place name and primary signature.
+ */
+function HeroClimateFallback({ place, signatureLabel }: { place: Place; signatureLabel: string }) {
+  const { tempHighC, tempLowC } = place.climate;
+  const ribbon = useMemo(() => {
+    const months = Math.max(tempHighC.length, 2);
+    const stops = tempHighC.map((high, i) => {
+      const mean = (high + (tempLowC[i] ?? high)) / 2;
+      return `${tempColor(mean)} ${((i / (months - 1)) * 100).toFixed(1)}%`;
+    });
+    return `linear-gradient(90deg, ${stops.join(", ")})`;
+  }, [tempHighC, tempLowC]);
+
+  return (
+    <div
+      className="tc-hero-fallback h-36 md:h-52"
+      style={{ ["--tc-hero-ribbon" as string]: ribbon }}
+      role="img"
+      aria-label={`${place.name} — photo unavailable; showing its January-to-December temperature palette instead`}
+    >
+      <div className="tc-hero-fallback__plate">
+        <span className="tc-hero-fallback__kicker">{signatureLabel}</span>
+        <span className="tc-hero-fallback__name font-atlas">{place.name}</span>
+      </div>
+      <div className="tc-hero-fallback__scale" aria-hidden>
+        <span>Jan</span>
+        <span>Monthly temperature palette</span>
+        <span>Dec</span>
+      </div>
     </div>
   );
 }

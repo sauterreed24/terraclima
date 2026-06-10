@@ -141,7 +141,7 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
       className="space-y-4"
       aria-labelledby="place-deep-sections-heading"
     >
-      <div className="rounded-2xl border border-[rgba(200,170,140,0.38)] bg-[rgba(255,253,248,0.92)] px-4 py-3.5 md:px-5 md:py-4">
+      <div className="detail-dossier-intro rounded-2xl border px-4 py-3.5 md:px-5 md:py-4">
         <div className="flex flex-wrap items-center gap-2 text-ice">
           <BookOpen className="w-4 h-4 shrink-0 text-stone opacity-80" aria-hidden />
           <h3 id="place-deep-sections-heading" className="font-atlas text-lg md:text-xl tracking-tight">

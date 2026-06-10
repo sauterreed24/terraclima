@@ -72,6 +72,11 @@
     --tc-border-neutral: rgba(71, 90, 122, 0.28);
     --tc-border-warm: rgba(200, 170, 140, 0.42);
     --tc-scrim: rgba(62, 38, 24, 0.35);
+    /* Opaque stand-in for the scrim's backdrop blur on tiers without it
+       (low power, reduced motion, no backdrop-filter support). Layered
+       UNDER `--tc-scrim` it reproduces the blurred result — page detail
+       hidden, tint and text contrast unchanged. */
+    --tc-scrim-veil: rgba(247, 240, 231, 0.92);
     --tc-chip-bg: rgba(255, 255, 255, 0.94);
     --tc-chip-active: rgba(94, 196, 220, 0.22);
     --tc-shadow-elevated:
@@ -5456,6 +5461,96 @@
     opacity: 0.7;
   }
 
+  /* Dossier hero stand-in when the photo can't load — a Jan→Dec monthly
+     temperature panorama (`--tc-hero-ribbon`, set inline from the place's
+     normals) under a paper/moonlight veil keyed off `--color-abyss` so it
+     re-themes automatically. */
+  .tc-hero-fallback {
+    position: relative;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-abyss) 52%, transparent) 0%,
+        color-mix(in srgb, var(--color-abyss) 16%, transparent) 42%,
+        color-mix(in srgb, var(--color-abyss) 40%, transparent) 100%
+      ),
+      var(--tc-hero-ribbon, linear-gradient(135deg, rgba(140, 200, 224, 0.5), rgba(200, 170, 140, 0.55)));
+  }
+  /* Faint contour texture so the panorama reads as an atlas plate, not a flat swatch. */
+  .tc-hero-fallback::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(135deg, transparent 0 22px, rgba(255, 255, 255, 0.12) 22px 23px, transparent 23px 56px),
+      repeating-linear-gradient(42deg, transparent 0 32px, rgba(255, 255, 255, 0.08) 32px 33px, transparent 33px 74px);
+  }
+  .tc-hero-fallback__plate {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.18rem;
+    max-width: min(85%, 30rem);
+    padding: 0.55rem 1.15rem 0.62rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--tc-inset-border);
+    background: var(--tc-surface-elevated);
+    box-shadow: var(--tc-shadow-inset);
+    text-align: center;
+  }
+  .tc-hero-fallback__kicker {
+    color: var(--color-stone-readable);
+    font-size: 0.5625rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+  .tc-hero-fallback__name {
+    color: var(--color-ice);
+    font-size: 1.25rem;
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .tc-hero-fallback__scale {
+    position: absolute;
+    inset: auto 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.3rem 0.75rem 0.34rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-abyss) 35%, transparent);
+    background: color-mix(in srgb, var(--color-abyss) 46%, transparent);
+    color: var(--color-frost);
+    font-size: 0.5625rem;
+    font-weight: 600;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  @media (min-width: 768px) {
+    .tc-hero-fallback__name {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* Hero photo credit strip — themed here (not inline) so dark mode can
+     remap the paper strip without touching markup. */
+  .tc-hero-credit {
+    color: var(--color-stone);
+    background: rgba(252, 244, 232, 0.96);
+    border-top: 1px solid rgba(200, 160, 120, 0.28);
+  }
+
   .detail-signature-panel {
     --signature-rgb: 94, 196, 220;
     display: grid;
@@ -5477,10 +5572,12 @@
     padding: 0.62rem 0.68rem;
     background: rgba(255, 253, 248, 0.76);
   }
-  .detail-signature-panel__primary {
+  /* `> div.…` outranks the generic cell rule below without `!important`
+     (which would also outrank the unlayered dark-theme remap). */
+  .detail-signature-panel > div.detail-signature-panel__primary {
     background:
       linear-gradient(135deg, rgba(var(--signature-rgb), 0.14), rgba(255, 253, 248, 0.78) 62%),
-      rgba(255, 253, 248, 0.82) !important;
+      rgba(255, 253, 248, 0.82);
   }
   .detail-signature-panel dt {
     color: var(--color-stone-readable);
@@ -6705,6 +6802,11 @@
   }
 
   /* Field dossier — one shell, chapters as editorial stack */
+  .detail-dossier-intro {
+    border-color: rgba(200, 170, 140, 0.38);
+    background: rgba(255, 253, 248, 0.92);
+  }
+
   .detail-dossier-shell {
     border-radius: 1rem;
     border: 1px solid rgba(195, 165, 138, 0.4);
@@ -6726,20 +6828,20 @@
     outline: 2px solid rgba(232, 155, 32, 0.45);
     outline-offset: 2px;
   }
+  /* Active highlights are token-mapped (no hardcoded paper, no !important):
+     `!important` here would outrank the unlayered dark-theme remap and pin
+     near-white text onto a paper pill in dark mode. The reading-nav active
+     visual lives with the other .tc-reading-nav-link rules further down. */
   .detail-dossier-jump--active {
     font-weight: 600;
-    color: var(--color-ice) !important;
-    border-color: rgba(125, 106, 90, 0.5) !important;
-    background: rgba(255, 252, 247, 0.95) !important;
+    border-radius: 0.375rem;
+    color: var(--color-ice);
+    background: var(--tc-chip-active);
     box-shadow: inset 0 -2px 0 rgba(232, 155, 32, 0.55);
   }
 
   .tc-reading-nav-link--active {
     font-weight: 600;
-    color: var(--color-ice) !important;
-    border-color: rgba(200, 170, 140, 0.45) !important;
-    background: rgba(255, 252, 247, 0.9) !important;
-    box-shadow: inset 3px 0 0 rgba(232, 155, 32, 0.65);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -8310,21 +8412,39 @@
     border-color: var(--tc-border-warm);
   }
 
-  /* Modal / overlay scrim — shared by compare, dossier, shortcuts */
+  /* Modal / overlay scrim — shared by compare, dossier, shortcuts.
+     Whenever the blur is dropped, an opaque veil must replace it in the
+     same breath, or Compare/dossier text collides with the crisp page
+     behind. The veil sits UNDER the designed tint so the visible tone
+     (and the contrast of modal text drawn on the scrim) matches the
+     blurred tier. */
   .tc-modal-scrim {
     background: var(--tc-scrim);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
+  @supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
+    .tc-modal-scrim {
+      background:
+        linear-gradient(var(--tc-scrim), var(--tc-scrim)),
+        var(--tc-scrim-veil);
+    }
+  }
   @media (prefers-reduced-motion: reduce) {
     .tc-modal-scrim {
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
+      background:
+        linear-gradient(var(--tc-scrim), var(--tc-scrim)),
+        var(--tc-scrim-veil);
     }
   }
   html.tc-low-power .tc-modal-scrim {
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
+    background:
+      linear-gradient(var(--tc-scrim), var(--tc-scrim)),
+      var(--tc-scrim-veil);
   }
 
   /* Primary nav buttons in header + mobile menu */
@@ -8596,6 +8716,7 @@ html[data-motion="reduced"] .hero-quick-pick:hover {
   --tc-border-neutral: rgba(120, 138, 178, 0.32);
   --tc-border-warm: rgba(140, 160, 200, 0.36);
   --tc-scrim: rgba(8, 12, 22, 0.62);
+  --tc-scrim-veil: rgba(13, 19, 32, 0.92);
   --tc-chip-bg: rgba(32, 42, 68, 0.92);
   --tc-chip-active: rgba(94, 196, 220, 0.32);
   --tc-shadow-elevated:
@@ -8627,6 +8748,10 @@ html[data-motion="reduced"] .hero-quick-pick:hover {
   --color-stone: #aab4c8;
   --color-stone-readable: #c4ccdb;
   --color-shadow: #94a0ba;
+  /* Glacier-700 is used exclusively as link/accent TEXT ("deep teal on
+     paper"); on moonlit chrome the same role needs a bright teal or links
+     all but vanish (#0d5f72 on #0d1320 is ~1.6:1). */
+  --color-glacier-700: #7ad0e6;
 }
 
 :root[data-theme="dark"] html,
@@ -8785,6 +8910,51 @@ html[data-theme="dark"] .tc-detail-back-to-top:hover {
 }
 html[data-theme="dark"] .tc-detail-back-to-top:focus-visible {
   outline-color: rgba(94, 196, 220, 0.7);
+}
+
+/* Field dossier shell — its light defaults are hardcoded paper; remap to the
+   moonlit drawer chrome or the flipped text scale lands light-on-cream. */
+html[data-theme="dark"] .detail-dossier-intro {
+  border-color: rgba(120, 138, 178, 0.3);
+  background: rgba(20, 28, 48, 0.85);
+}
+html[data-theme="dark"] .detail-dossier-shell {
+  border-color: rgba(120, 138, 178, 0.32);
+  background: linear-gradient(180deg, rgba(21, 29, 50, 0.97) 0%, rgba(16, 23, 40, 0.98) 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+html[data-theme="dark"] .detail-dossier-chapter + .detail-dossier-chapter {
+  border-top-color: rgba(120, 138, 178, 0.24);
+}
+html[data-theme="dark"] .detail-dossier-chapter::before {
+  background: linear-gradient(180deg, rgba(140, 160, 200, 0.32) 0%, rgba(140, 160, 200, 0.1) 100%);
+}
+html[data-theme="dark"] .detail-dossier-chapter-idx {
+  color: rgba(170, 182, 205, 0.6);
+}
+html[data-theme="dark"] .panel-field-story {
+  background:
+    linear-gradient(135deg, rgba(150, 90, 130, 0.22) 0%, rgba(22, 30, 50, 0.92) 45%, rgba(18, 25, 42, 0.95) 100%),
+    linear-gradient(180deg, rgba(94, 196, 220, 0.1) 0%, transparent 42%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+/* "At a glance" lattice — same paper-to-moonlight remap. */
+html[data-theme="dark"] .atlas-snapshot-wrap {
+  border-color: rgba(120, 138, 178, 0.32);
+  background:
+    linear-gradient(160deg, rgba(24, 33, 56, 0.98) 0%, rgba(17, 24, 42, 0.95) 100%),
+    radial-gradient(80% 120% at 0% 0%, rgba(94, 196, 220, 0.12), transparent 60%),
+    radial-gradient(60% 80% at 100% 0%, rgba(255, 196, 214, 0.08), transparent 55%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 32px -18px rgba(0, 0, 0, 0.5);
+}
+html[data-theme="dark"] .atlas-snapshot-grid {
+  --atlas-snapshot-line: rgba(120, 138, 178, 0.26);
+}
+html[data-theme="dark"] .atlas-snapshot-tile {
+  background: rgba(22, 30, 50, 0.96);
+}
+html[data-theme="dark"] .atlas-snapshot-tile:hover {
+  background: rgba(28, 38, 62, 0.98);
 }
 
 /* Compare overlay scrim is intentionally still slightly warm so the dialog
@@ -8982,6 +9152,13 @@ html[data-theme="dark"] .place-detail-reading-nav,
 html[data-theme="dark"] .detail-doc-section {
   background: transparent;
   color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .tc-reading-nav-desktop {
+  background: rgba(22, 30, 50, 0.55);
+  border-color: rgba(120, 138, 178, 0.28);
+}
+html[data-theme="dark"] .tc-reading-nav-mobile {
+  border-bottom-color: rgba(120, 138, 178, 0.3);
 }
 
 /* Footer band. */
@@ -9436,6 +9613,33 @@ html[data-theme="dark"] .detail-drawer-header[data-tone="ice"] {
 }
 html[data-theme="dark"] .detail-drawer-header[data-tone="aurora"] {
   background-image: radial-gradient(1000px 300px at 15% 0%, rgba(255, 196, 214, 0.16), transparent 65%);
+}
+
+/* Place signature panel — its light defaults are hardcoded paper, so give
+   the cells a moonlit remap or the flipped text scale lands white-on-cream. */
+html[data-theme="dark"] .detail-signature-panel {
+  border-color: rgba(var(--signature-rgb), 0.38);
+  background:
+    linear-gradient(90deg, rgba(var(--signature-rgb), 0.2), rgba(28, 38, 60, 0.4) 42%, rgba(120, 138, 178, 0.16)),
+    rgba(10, 16, 28, 0.6);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 14px 34px -24px rgba(var(--signature-rgb), 0.45);
+}
+html[data-theme="dark"] .detail-signature-panel > div {
+  background: rgba(28, 38, 60, 0.86);
+}
+html[data-theme="dark"] .detail-signature-panel > div.detail-signature-panel__primary {
+  background:
+    linear-gradient(135deg, rgba(var(--signature-rgb), 0.2), rgba(28, 38, 60, 0.88) 62%),
+    rgba(28, 38, 60, 0.92);
+}
+html[data-theme="dark"] .detail-signature-panel dd .font-mono-num {
+  background: rgba(var(--signature-rgb), 0.22);
+}
+html[data-theme="dark"] .tc-hero-credit {
+  background: rgba(16, 23, 38, 0.92);
+  border-top-color: rgba(120, 138, 178, 0.26);
 }
 
 /* =========================================================
@@ -10103,7 +10307,7 @@ html[data-theme="dark"] .detail-drawer-header[data-tone="aurora"] {
     border-color: rgba(26, 143, 168, 0.42);
     background: var(--tc-chip-active);
     color: var(--color-ice);
-    box-shadow: var(--tc-shadow-inset);
+    box-shadow: inset 3px 0 0 rgba(232, 155, 32, 0.65), var(--tc-shadow-inset);
   }
 
   .tc-map-topology-loading {
