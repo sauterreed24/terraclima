@@ -4931,6 +4931,152 @@
       0 6px 24px -4px rgba(0, 0, 0, 0.45),
       0 1px 0 rgba(255, 255, 255, 0.06) inset;
   }
+  .map-atlas-readout {
+    --map-readout-rgb: 94, 196, 220;
+    position: absolute;
+    right: 0.78rem;
+    bottom: 3.85rem;
+    z-index: 3;
+    width: min(20rem, calc(100% - 8.75rem));
+    min-width: 15rem;
+    padding: 0.56rem;
+    color: rgba(245, 250, 255, 0.95);
+    pointer-events: none;
+    background:
+      linear-gradient(135deg, rgba(var(--map-readout-rgb), 0.16), rgba(10, 18, 32, 0.78) 42%),
+      rgba(8, 15, 27, 0.84);
+    box-shadow:
+      0 14px 34px -20px rgba(var(--map-readout-rgb), 0.5),
+      0 7px 28px -9px rgba(0, 0, 0, 0.52),
+      0 1px 0 rgba(255, 255, 255, 0.07) inset;
+    transition: opacity 160ms ease;
+  }
+  .map-shell:has(.cluster-picker) .map-atlas-readout {
+    opacity: 0;
+  }
+  .map-shell[data-legend-open="true"] .map-atlas-readout {
+    opacity: 0;
+  }
+  .map-atlas-readout__head {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.65rem;
+    padding-bottom: 0.42rem;
+    border-bottom: 1px solid rgba(180, 236, 246, 0.18);
+  }
+  .map-atlas-readout__head span {
+    flex: 0 0 auto;
+    color: rgba(180, 236, 246, 0.78);
+    font-size: 0.56rem;
+    font-weight: 780;
+    letter-spacing: 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .map-atlas-readout__head strong {
+    min-width: 0;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.96);
+    font-family: var(--font-serif);
+    font-size: 0.78rem;
+    font-weight: 650;
+    line-height: 1.1;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .map-atlas-readout__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0.5rem 0 0;
+    overflow: hidden;
+    border-radius: 9px;
+    background: rgba(180, 236, 246, 0.16);
+  }
+  .map-atlas-readout__item {
+    min-width: 0;
+    padding: 0.43rem 0.46rem 0.48rem;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025)),
+      rgba(7, 14, 25, 0.58);
+  }
+  .map-atlas-readout__item dt {
+    overflow: hidden;
+    color: rgba(180, 236, 246, 0.74);
+    font-size: 0.49rem;
+    font-weight: 760;
+    letter-spacing: 0.09em;
+    line-height: 1.1;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .map-atlas-readout__item dd {
+    min-width: 0;
+    margin: 0.14rem 0 0;
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.66rem;
+    font-weight: 760;
+    line-height: 1.12;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .map-atlas-readout__item span {
+    display: block;
+    min-width: 0;
+    margin-top: 0.12rem;
+    overflow: hidden;
+    color: rgba(220, 235, 248, 0.68);
+    font-size: 0.53rem;
+    font-weight: 650;
+    line-height: 1.16;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  @media (max-width: 680px) {
+    .map-atlas-readout {
+      left: 0.65rem;
+      right: 0.65rem;
+      bottom: 5.2rem;
+      width: auto;
+      min-width: 0;
+      padding: 0.48rem;
+    }
+    .map-atlas-readout__head {
+      padding-bottom: 0.36rem;
+    }
+    .map-atlas-readout__head strong {
+      font-size: 0.72rem;
+    }
+    .map-atlas-readout__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 0.42rem;
+    }
+    .map-atlas-readout__item {
+      padding: 0.36rem 0.38rem 0.4rem;
+    }
+    .map-atlas-readout__item dd {
+      font-size: 0.61rem;
+    }
+    .map-atlas-readout__item span {
+      display: none;
+    }
+  }
+  @media (max-width: 420px) {
+    .map-atlas-readout {
+      bottom: 5.45rem;
+    }
+    .map-atlas-readout__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .map-atlas-readout__head strong {
+      max-width: 12rem;
+    }
+  }
   .map-key-popover {
     max-height: min(27rem, calc(100% - 6rem));
     overflow-y: auto;
@@ -7105,6 +7251,13 @@
   .map-key-dock {
     filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.42));
     transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+  }
+  @media (max-width: 680px) {
+    .map-key-dock {
+      left: 8.75rem !important;
+      right: auto !important;
+      bottom: 0.75rem !important;
+    }
   }
 
   .map-shell[data-legend-open="true"] .map-key-dock,

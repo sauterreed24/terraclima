@@ -94,6 +94,16 @@ describe("AtlasMap DOM controls", () => {
 
     expect(screen.getByRole("button", { name: "Switch map to direct interaction" })).toHaveTextContent("Use map");
     expect(screen.getByRole("button", { name: "Switch map to direct interaction" })).toHaveAttribute("aria-pressed", "false");
+
+    fireEvent.click(screen.getByRole("button", { name: "Key" }));
+
+    const mapKey = screen.getByRole("group", { name: "Map key" });
+    expect(mapKey).toBeInTheDocument();
+    expect(within(mapKey).getByText("Orographic / orchard / chinook")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Close map key" }));
+
+    expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
   });
 
   it("keeps desktop controls available without rendering the phone touch-mode toggle", () => {
@@ -417,6 +427,27 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("img", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
     expect(container.querySelector(".map-rank-trail__line")).toBeInTheDocument();
     expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "full");
+  });
+
+  it("summarizes the current ranked map read before the user hovers a pin", () => {
+    setCoarsePointer(false);
+    renderMap(vi.fn(), ["a", "b"], defaultMapPlaces(), { featuredLabel: "Live-here fit" });
+
+    const readout = screen.getByLabelText("Current map read");
+
+    expect(screen.queryByRole("tooltip")).toBeNull();
+    expect(readout).toHaveTextContent("Atlas read");
+    expect(readout).toHaveTextContent("Alpha Valley leads");
+    expect(readout).toHaveTextContent("2 linked");
+    expect(readout).toHaveTextContent("Live-here fit");
+    expect(readout).toHaveTextContent("Driver");
+    expect(readout).toHaveTextContent("Feel");
+    expect(readout).toHaveTextContent("Field");
+    expect(readout).toHaveTextContent("2 open pins");
+    expect(readout.querySelector(".map-atlas-readout__grid")).toHaveAttribute(
+      "aria-label",
+      expect.stringContaining("Current map read."),
+    );
   });
 
   it("softens the ranked trail when the initial map field is dense", () => {
