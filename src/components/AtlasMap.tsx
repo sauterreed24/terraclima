@@ -132,6 +132,17 @@ type ClimateRibbon = {
   dash?: string;
 };
 
+type AtlasMapReadout = {
+  accentRgb: string;
+  ariaLabel: string;
+  headline: string;
+  items: Array<{
+    label: string;
+    value: string;
+    detail: string;
+  }>;
+};
+
 /** Microclimate driver legend — lives on the dark map chrome with high-contrast labels. */
 function MapLegendDot({ color, label }: { color: string; label: string }) {
   return (
@@ -153,6 +164,90 @@ function pinLayoutPriority(place: Place, selectedId: string | undefined, feature
   return tierPriority + Math.max(0, 2 - place.name.length / 24);
 }
 
+function countByValue<T extends string>(values: readonly T[]): Array<{ value: T; count: number }> {
+  const counts = new Map<T, { count: number; firstIndex: number }>();
+  values.forEach((value, index) => {
+    const current = counts.get(value);
+    counts.set(value, current ? { ...current, count: current.count + 1 } : { count: 1, firstIndex: index });
+  });
+  return [...counts.entries()]
+    .map(([value, meta]) => ({ value, count: meta.count, firstIndex: meta.firstIndex }))
+    .sort((a, b) => b.count - a.count || a.firstIndex - b.firstIndex)
+    .map(({ value, count }) => ({ value, count }));
+}
+
+function countDetail(count: number, total: number, noun: string): string {
+  if (total <= 1) return total === 1 ? `1 ${noun}` : `No ${noun}s`;
+  return `${count}/${total} ${noun}${total === 1 ? "" : "s"}`;
+}
+
+function compactAtlasLabel(label: string): string {
+  return label
+    .replace(/\s*\/\s*/g, " / ")
+    .replace(/\bSanctuary\b/g, "")
+    .replace(/\bBelt\b/g, "")
+    .replace(/\bPocket\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function buildAtlasMapReadout({
+  places,
+  featuredIds,
+  featuredLabel,
+  clusterCount,
+  visiblePinCount,
+}: {
+  places: readonly Place[];
+  featuredIds: readonly string[];
+  featuredLabel?: string;
+  clusterCount: number;
+  visiblePinCount: number;
+}): AtlasMapReadout | null {
+  if (places.length === 0) return null;
+
+  const placeById = new Map(places.map(place => [place.id, place]));
+  const leaders = featuredIds.slice(0, 5).map(id => placeById.get(id)).filter((place): place is Place => Boolean(place));
+  const readPlaces = leaders.length > 0 ? leaders : places.slice(0, Math.min(5, places.length));
+  const total = readPlaces.length;
+  const signatures = readPlaces.map(getPlaceVisualSignature);
+  const axisCounts = countByValue(signatures.map(signature => signature.strength.shortLabel));
+  const topAxis = axisCounts[0] ?? { value: "Mixed", count: total };
+  const driverCounts = countByValue(readPlaces.flatMap(place => place.archetypes[0] ? [place.archetypes[0]] : []));
+  const topDriver = driverCounts[0];
+  const driverMeta = topDriver ? ARCHETYPE_BY_ID[topDriver.value] : null;
+  const leaderLabel = leaders.length > 1
+    ? `${leaders.length} linked`
+    : leaders.length === 1
+      ? "1 leader"
+      : `${places.length} pins`;
+  const clusterValue = clusterCount > 0
+    ? pluralCount(clusterCount, "cluster")
+    : pluralCount(visiblePinCount, "open pin");
+  const clusterDetail = clusterCount > 0
+    ? "Dense areas grouped"
+    : "Labels adapt to zoom";
+  const driverLabel = driverMeta ? compactAtlasLabel(driverMeta.label) : "Mixed drivers";
+  const driverDetail = topDriver ? countDetail(topDriver.count, total, "leader") : "Current field";
+  const axisDetail = countDetail(topAxis.count, total, "leader");
+  const accent = signatures.find(signature => signature.strength.shortLabel === topAxis.value) ?? signatures[0];
+  const lensLabel = featuredLabel ?? (leaders.length > 0 ? "Ranked lens" : "Visible field");
+  const headline = leaders[0]
+    ? `${leaders[0].name} leads`
+    : `${places.length} mapped places`;
+
+  return {
+    accentRgb: accent?.mapAccentRgb ?? "94, 196, 220",
+    headline,
+    ariaLabel: `Current map read. ${leaderLabel} for ${lensLabel}. Main driver ${driverLabel}, ${driverDetail}. Strongest feel signal ${topAxis.value}, ${axisDetail}. ${clusterValue}.`,
+    items: [
+      { label: "Leaders", value: leaderLabel, detail: lensLabel },
+      { label: "Driver", value: driverLabel, detail: driverDetail },
+      { label: "Feel", value: `${topAxis.value}-led`, detail: axisDetail },
+      { label: "Field", value: clusterValue, detail: clusterDetail },
+    ],
+  };
+}
 
 function linePath(points: Array<[number, number]>): string {
   if (points.length === 0) return "";
@@ -817,6 +912,16 @@ export function AtlasMap({
     clusterEnabled || (markerPointsAll.length > 75 && settledView.k < 1.18)
       ? "quiet"
       : "full";
+  const atlasMapReadout = useMemo(
+    () => buildAtlasMapReadout({
+      places,
+      featuredIds,
+      featuredLabel,
+      clusterCount: clusterItems.length,
+      visiblePinCount: markerPoints.length,
+    }),
+    [places, featuredIds, featuredLabel, clusterItems.length, markerPoints.length],
+  );
 
   // Roving-tabindex layout points — one per visible marker, in DOM render
   // order, with the post-projection screen coordinates that `nextMarkerId`
@@ -1831,6 +1936,28 @@ export function AtlasMap({
         ) : null}
       </div>
 
+      {atlasMapReadout ? (
+        <aside
+          className="map-atlas-readout map-chrome-panel"
+          aria-label="Current map read"
+          style={{ ["--map-readout-rgb" as string]: atlasMapReadout.accentRgb }}
+        >
+          <div className="map-atlas-readout__head">
+            <span>Atlas read</span>
+            <strong title={atlasMapReadout.headline}>{atlasMapReadout.headline}</strong>
+          </div>
+          <dl className="map-atlas-readout__grid" aria-label={atlasMapReadout.ariaLabel}>
+            {atlasMapReadout.items.map(item => (
+              <div key={item.label} className="map-atlas-readout__item">
+                <dt>{item.label}</dt>
+                <dd>{item.value}</dd>
+                <span>{item.detail}</span>
+              </div>
+            ))}
+          </dl>
+        </aside>
+      ) : null}
+
       {/* Cursor lat/lon readout — imperatively updated via ref on pointer move.
           Hidden on coarse pointers (touch never hovers usefully). */}
       {!coarsePointer ? (
@@ -1906,7 +2033,7 @@ export function AtlasMap({
         </div>
       ) : null}
 
-      {!coarsePointer && legendOpen ? (
+      {legendOpen ? (
       <div
         role="group"
         id={legendPanelId}
