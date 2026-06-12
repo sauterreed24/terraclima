@@ -25,14 +25,16 @@ vi.mock("../components/CompareView", () => ({
     places,
     open,
     onClose,
+    onRemove,
     onCopyView,
     shareStatus,
     liveFitFilters,
     occluded,
   }: {
-    places: Array<{ id: string }>;
+    places: Array<{ id: string; name?: string }>;
     open: boolean;
     onClose: () => void;
+    onRemove: (id: string) => void;
     onCopyView?: () => void;
     shareStatus?: "idle" | "copied" | "failed";
     liveFitFilters?: {
@@ -51,6 +53,16 @@ vi.mock("../components/CompareView", () => ({
         <button type="button" aria-label="Close comparison" onClick={onClose}>
           Close comparison
         </button>
+        {places.map(place => (
+          <button
+            key={place.id}
+            type="button"
+            aria-label={`Remove ${place.name ?? place.id} from comparison`}
+            onClick={() => onRemove(place.id)}
+          >
+            Remove {place.id}
+          </button>
+        ))}
         <div data-testid="compare-place-ids">{places.map(place => place.id).join(",")}</div>
         {onCopyView ? (
           <button type="button" aria-label="Copy comparison link" onClick={onCopyView}>
@@ -579,6 +591,24 @@ describe("App shell", () => {
 
     await waitFor(() => expect(shell).not.toHaveAttribute("aria-hidden"));
     expect(shell).not.toHaveAttribute("inert");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("restores the app shell when the last compared place is removed", async () => {
+    window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa");
+    const { container } = renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+    const shell = container.querySelector("[data-app-shell]");
+    expect(shell).not.toBeNull();
+
+    await waitFor(() => expect(shell).toHaveAttribute("inert"));
+
+    fireEvent.click(screen.getByRole("button", { name: /Remove Sequim from comparison/ }));
+    fireEvent.click(screen.getByRole("button", { name: /Remove Port Townsend from comparison/ }));
+
+    await waitFor(() => expect(screen.queryByTestId("compare-view-mock")).not.toBeInTheDocument());
+    await waitFor(() => expect(shell).not.toHaveAttribute("inert"));
+    expect(shell).not.toHaveAttribute("aria-hidden");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("isolates the app shell while a place detail deep link is open", async () => {
