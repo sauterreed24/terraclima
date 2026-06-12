@@ -663,10 +663,31 @@ export default function App() {
     () => (homeBasePlace && climateScenario !== "now" ? projectPlace(homeBasePlace, climateScenario) : homeBasePlace),
     [homeBasePlace, climateScenario],
   );
+  const comparePlacesResolved = useMemo(() => {
+    const out: Place[] = [];
+    for (const id of compareIds) {
+      const pooled = placesById[id];
+      if (pooled) {
+        out.push(pooled);
+        continue;
+      }
+      const baseline = placeForId(id);
+      if (!baseline) continue;
+      out.push(climateScenario !== "now" ? projectPlace(baseline, climateScenario) : baseline);
+    }
+    return out;
+  }, [compareIds, placesById, climateScenario]);
   const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
   useElementIsolation(appShellRef, appShellOccluded);
+
+  // CompareView only renders when places.length > 0, but onRemove can empty the
+  // set while compareOpen stays true — which would leave the app shell inert
+  // with no visible modal or Compare affordance (compareCount === 0).
+  useEffect(() => {
+    if (compareOpen && compareIds.size === 0) setCompareOpen(false);
+  }, [compareOpen, compareIds.size]);
 
   const toggleCompare = useCallback((id: string) => {
     setCompareIds(s => {
@@ -1292,7 +1313,7 @@ export default function App() {
       {compareOpen ? (
         <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
           <CompareView
-            places={[...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace)}
+            places={comparePlacesResolved}
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
