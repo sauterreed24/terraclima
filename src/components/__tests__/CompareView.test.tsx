@@ -287,6 +287,7 @@ describe("CompareView", () => {
     expect(screen.getByText("Visit")).toBeInTheDocument();
     expect(screen.getByText("Watch first")).toBeInTheDocument();
     expect(screen.getByText("Start here")).toBeInTheDocument();
+    expect(screen.getByLabelText("Evidence readiness")).toBeInTheDocument();
     const scoutSequence = screen.getByLabelText("Scouting sequence");
     expect(scoutSequence).toBeInTheDocument();
     expect(screen.getByText("Scout sequence")).toBeInTheDocument();
@@ -301,6 +302,35 @@ describe("CompareView", () => {
     expect(onOpenPlace).toHaveBeenCalledTimes(2);
     fireEvent.click(screen.getAllByRole("button", { name: /from finalist decision table/ })[0]);
     expect(onOpenPlace).toHaveBeenCalledTimes(3);
+  });
+
+  it("surfaces weak evidence before a place is treated as travel-ready", () => {
+    const onOpenPlace = vi.fn();
+    const thinPlace: Place = {
+      ...PLACES[0]!,
+      id: "thin-evidence-test",
+      name: "Thin Evidence Test",
+      confidence: "low",
+      citations: [],
+      deepSections: undefined,
+      liveSignals: undefined,
+      climate: {
+        ...PLACES[0]!.climate,
+        humidity: undefined,
+        sunshinePct: undefined,
+      },
+    };
+    renderCompare({ places: [thinPlace, PLACES[1]!], onOpenPlace });
+
+    const readiness = screen.getByLabelText("Evidence readiness");
+    expect(readiness).toHaveTextContent("Thin Evidence Test: Thin read - source first");
+    expect(readiness).toHaveTextContent("0 HTTPS sources");
+    expect(readiness).toHaveTextContent("Low confidence profile");
+    expect(readiness).toHaveTextContent("Add a second HTTPS source");
+    expect(readiness).toHaveTextContent("Fill lived-friction signals");
+
+    fireEvent.click(within(readiness).getByRole("button", { name: "Open Thin Evidence Test dossier from evidence readiness" }));
+    expect(onOpenPlace).toHaveBeenCalledWith("thin-evidence-test");
   });
 
   it("renders one finalist decision table row per compared place", () => {

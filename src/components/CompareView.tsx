@@ -225,6 +225,10 @@ export function CompareView({
   const visibleGroupedRows = showDifferencesOnly
     ? groupedRows.filter(row => row.different)
     : groupedRows;
+  const evidenceReadiness = useMemo(
+    () => buildCompareEvidenceReadiness(places),
+    [places],
+  );
   const singlePlaceGuide = isSinglePlace ? buildSinglePlaceGuide(decisionProfiles[0]) : null;
   const compareLensReceipt = useMemo(
     () => buildCompareLensReceipt(liveFitFilters, scenario, temp),
@@ -645,6 +649,52 @@ export function CompareView({
               </section>
             ) : null}
 
+            {evidenceReadiness.length > 0 ? (
+              <section className="compare-evidence-readiness" aria-label="Evidence readiness">
+                <div className="compare-evidence-readiness__head">
+                  <div>
+                    <span className="compare-evidence-readiness__eyebrow">Evidence readiness</span>
+                    <strong>{evidenceReadiness[0].place.name}: {evidenceReadiness[0].label}</strong>
+                  </div>
+                  <span>Source depth, lived signals, and climate-measurement gaps before booking a scout trip or comparing housing.</span>
+                </div>
+                <div className="compare-evidence-readiness__grid">
+                  {evidenceReadiness.map(row => (
+                    <article
+                      key={row.place.id}
+                      className="compare-evidence-readiness__card"
+                      data-tone={row.tone}
+                      aria-label={`${row.place.name} evidence readiness`}
+                    >
+                      <div className="compare-evidence-readiness__card-head">
+                        <span>{row.label}</span>
+                        <strong>{row.score}/100</strong>
+                      </div>
+                      {onOpenPlace ? (
+                        <button
+                          type="button"
+                          className="compare-evidence-readiness__place"
+                          aria-label={`Open ${row.place.name} dossier from evidence readiness`}
+                          onClick={() => onOpenPlace(row.place.id)}
+                        >
+                          {row.place.name}
+                        </button>
+                      ) : (
+                        <strong className="compare-evidence-readiness__place-text">{row.place.name}</strong>
+                      )}
+                      <div className="compare-evidence-readiness__facts" aria-label={`${row.place.name} evidence facts`}>
+                        {row.facts.map(fact => <span key={fact}>{fact}</span>)}
+                      </div>
+                      <p>{row.action}</p>
+                      <ul>
+                        {row.gaps.map(gap => <li key={gap}>{gap}</li>)}
+                      </ul>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ) : null}
+
             {singlePlaceGuide ? (
               <section className="compare-single-guide" aria-label="Single finalist compare setup">
                 <div className="compare-single-guide__copy">
@@ -871,6 +921,68 @@ interface GroupedComparisonRow {
   label: string;
   values: string[];
   different: boolean;
+}
+
+type EvidenceReadinessTone = "strong" | "review" | "thin";
+
+interface CompareEvidenceReadiness {
+  place: Place;
+  label: string;
+  score: number;
+  tone: EvidenceReadinessTone;
+  facts: string[];
+  gaps: string[];
+  action: string;
+}
+
+function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenceReadiness[] {
+  return places.map(place => {
+    const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
+    const deepSections = place.deepSections?.length ?? 0;
+    const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
+    const hasHumidity = Boolean(place.climate.humidity?.length);
+    const hasSunshine = Boolean(place.climate.sunshinePct?.length);
+    const confidenceScore = place.confidence === "high" ? 34 : place.confidence === "moderate" ? 22 : 10;
+    const score = Math.min(100, Math.round(
+      confidenceScore +
+      Math.min(httpsCitations * 8, 24) +
+      Math.min(deepSections * 8, 24) +
+      (hasLiveSignals ? 8 : 0) +
+      (hasHumidity ? 5 : 0) +
+      (hasSunshine ? 5 : 0),
+    ));
+    const gaps = [
+      ...(place.confidence === "low" ? ["Low confidence profile"] : place.confidence === "moderate" ? ["Moderate confidence profile"] : []),
+      ...(httpsCitations < 2 ? ["Add a second HTTPS source"] : []),
+      ...(deepSections < 1 ? ["Expand deep-dive context"] : []),
+      ...(!hasLiveSignals ? ["Fill lived-friction signals"] : []),
+      ...(!hasHumidity ? ["Source humidity normals"] : []),
+      ...(!hasSunshine ? ["Source sunshine normals"] : []),
+    ].slice(0, 4);
+    const label = score >= 78 && gaps.length <= 1
+      ? "Ready for scout plan"
+      : score >= 58
+        ? "Verify before booking"
+        : "Thin read - source first";
+    const tone: EvidenceReadinessTone = label === "Ready for scout plan" ? "strong" : label === "Verify before booking" ? "review" : "thin";
+    const action = gaps.length === 0
+      ? "Good enough for side-by-side scouting; still verify parcel-level hazards and logistics."
+      : `Check ${gaps[0].toLowerCase()} before treating this finalist as travel- or move-ready.`;
+    return {
+      place,
+      label,
+      score,
+      tone,
+      facts: [
+        `${place.confidence} confidence`,
+        `${httpsCitations} HTTPS source${httpsCitations === 1 ? "" : "s"}`,
+        `${deepSections} deep section${deepSections === 1 ? "" : "s"}`,
+        hasLiveSignals ? "lived signals" : "lived signals missing",
+      ],
+      gaps: gaps.length ? gaps : ["No major source gaps in the current profile"],
+      action,
+    };
+  }).sort((a, b) => a.score - b.score || a.place.name.localeCompare(b.place.name) || a.place.id.localeCompare(b.place.id));
 }
 
 function buildGroupedComparisonRows(
