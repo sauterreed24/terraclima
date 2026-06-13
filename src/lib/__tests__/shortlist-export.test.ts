@@ -166,6 +166,13 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("Decision read:");
     expect(file.body).toContain("Next action:");
     expect(file.body).toContain("Caution:");
+    expect(file.body).toContain("Scout verification checklist:");
+    expect(file.body).toContain("- Scout window - ");
+    expect(file.body).toContain("- Hazard check - ");
+    expect(file.body).toContain("- Daily-life friction - ");
+    expect(file.body).toContain("- Source gap - ");
+    expect(file.body).toContain("Proof:");
+    expect(file.body).toContain("before booking");
     expect(file.body).toContain("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
     expect(file.body).toContain("| Start here |");
     expect(file.body).toContain("Beta \"Ridge\"");

@@ -291,6 +291,11 @@ export function exportShortlistAsMarkdown(
       lines.push(`Next action: ${compareRead.nextAction}`);
       lines.push(`Caution: ${compareRead.caution}`);
       lines.push("");
+      lines.push("Scout verification checklist:");
+      for (const item of compareRead.verificationChecklist) {
+        lines.push(`- ${item.label} - ${item.place.name}: ${item.action} Proof: ${item.proof}`);
+      }
+      lines.push("");
       lines.push("| Role | Place | Score | Fit | Risk | Visit | Watch first |");
       lines.push("| --- | --- | ---: | --- | --- | --- | --- |");
       for (const row of compareRead.tableRows) {

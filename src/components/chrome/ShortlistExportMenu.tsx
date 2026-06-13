@@ -16,7 +16,7 @@ const FORMATS: ReadonlyArray<{
   {
     id: "markdown",
     label: "Scout plan",
-    hint: "Visit windows, caveats, and source gaps",
+    hint: "Visit windows, source gaps, and verification steps",
   },
   { id: "json", label: "JSON", hint: "Minimal place rows for scripts" },
   { id: "csv", label: "CSV", hint: "Spreadsheet-friendly table" },
