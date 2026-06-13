@@ -38,12 +38,21 @@ import { ChevronRight, Clock3, Home, Link2, X } from "lucide-react";
 
 type CompareShareStatus = "idle" | "copied" | "failed";
 type CandidateSourceFilter = "all" | CompareCandidateSource;
+type CandidateSortId = "curated" | "lens" | "risk" | "easy" | "name";
 
 const CANDIDATE_SOURCE_FILTERS: readonly { id: CandidateSourceFilter; label: string }[] = [
   { id: "all", label: "All" },
   { id: "Shortlist", label: "Shortlist" },
   { id: "Recent", label: "Recent" },
   { id: "Ranked", label: "Ranked" },
+];
+
+const CANDIDATE_SORT_OPTIONS: readonly { id: CandidateSortId; label: string }[] = [
+  { id: "curated", label: "Curated" },
+  { id: "lens", label: "Lens score" },
+  { id: "risk", label: "Lowest risk" },
+  { id: "easy", label: "Easy months" },
+  { id: "name", label: "A-Z" },
 ];
 
 interface Props {
@@ -91,10 +100,13 @@ export function CompareView({
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const candidateSearchId = useId();
+  const candidateSortId = useId();
   const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
   const [candidateQuery, setCandidateQuery] = useState("");
   const [candidateSourceFilter, setCandidateSourceFilter] = useState<CandidateSourceFilter>("all");
+  const [candidateSort, setCandidateSort] = useState<CandidateSortId>("curated");
   const activeComparisonLens = comparisonLens ?? DEFAULT_COMPARISON_LENS;
+  const activeComparisonLensLabel = comparisonLensLabel(activeComparisonLens);
   const placeCount = `${places.length} ${places.length === 1 ? "place" : "places"}`;
   const isSinglePlace = places.length === 1;
   const title = isSinglePlace ? `${placeCount} saved to compare` : `${placeCount} side by side`;
@@ -146,9 +158,17 @@ export function CompareView({
     }
     return rows;
   }, [candidates, places]);
+  const candidateDecisionProfiles = useMemo<CompareDecisionProfile[]>(
+    () => buildCompareDecisionProfiles(candidateTray.map(candidate => candidate.place), liveFitFilters),
+    [candidateTray, liveFitFilters],
+  );
+  const candidateDecisionById = useMemo(
+    () => new Map(candidateDecisionProfiles.map(profile => [profile.place.id, profile])),
+    [candidateDecisionProfiles],
+  );
   const filteredCandidateTray = useMemo(() => {
     const query = candidateQuery.trim().toLowerCase();
-    return candidateTray.filter(candidate => {
+    const filtered = candidateTray.filter(candidate => {
       if (candidate.source === "Active") return true;
       if (candidateSourceFilter !== "all" && candidate.source !== candidateSourceFilter) return false;
       if (!query) return true;
@@ -163,14 +183,33 @@ export function CompareView({
       ].join(" ").toLowerCase();
       return haystack.includes(query);
     });
-  }, [candidateQuery, candidateSourceFilter, candidateTray]);
+    const active = filtered.filter(candidate => candidate.source === "Active");
+    const inactive = filtered.filter(candidate => candidate.source !== "Active");
+    if (candidateSort !== "curated") {
+      inactive.sort((a, b) => {
+        const profileA = candidateDecisionById.get(a.place.id);
+        const profileB = candidateDecisionById.get(b.place.id);
+        const nameTie = a.place.name.localeCompare(b.place.name) || a.place.id.localeCompare(b.place.id);
+        if (!profileA || !profileB) return nameTie;
+        switch (candidateSort) {
+          case "lens":
+            return compareLensScore(profileB, activeComparisonLens) - compareLensScore(profileA, activeComparisonLens) || nameTie;
+          case "risk":
+            return profileA.riskLoad - profileB.riskLoad || nameTie;
+          case "easy":
+            return profileB.easyMonths - profileA.easyMonths || nameTie;
+          case "name":
+            return nameTie;
+          default:
+            return 0;
+        }
+      });
+    }
+    return [...active, ...inactive];
+  }, [activeComparisonLens, candidateDecisionById, candidateQuery, candidateSort, candidateSourceFilter, candidateTray]);
   const candidateCountRead = candidateQuery.trim() || candidateSourceFilter !== "all"
     ? `${filteredCandidateTray.length}/${candidateTray.length} shown`
     : `${candidateTray.length} candidates`;
-  const candidateDecisionProfiles = useMemo<CompareDecisionProfile[]>(
-    () => buildCompareDecisionProfiles(candidateTray.map(candidate => candidate.place), liveFitFilters),
-    [candidateTray, liveFitFilters],
-  );
   const coachRecommendations = useMemo(
     () => buildCompareCoachRecommendations({
       activePlaces: places,
@@ -361,10 +400,24 @@ export function CompareView({
                       </button>
                     ))}
                   </div>
+                  <label className="compare-workbench__candidate-sort" htmlFor={candidateSortId}>
+                    <span aria-hidden="true">Sort</span>
+                    <span className="sr-only">Sort Workbench candidates</span>
+                    <select
+                      id={candidateSortId}
+                      value={candidateSort}
+                      onChange={event => setCandidateSort(event.currentTarget.value as CandidateSortId)}
+                    >
+                      {CANDIDATE_SORT_OPTIONS.map(option => (
+                        <option key={option.id} value={option.id}>{option.label}</option>
+                      ))}
+                    </select>
+                  </label>
                 </div>
                 <div className="compare-workbench__candidate-scroll">
                   {filteredCandidateTray.length > 0 ? filteredCandidateTray.map(candidate => {
                     const active = activeCandidateIds.has(candidate.place.id);
+                    const candidateProfile = candidateDecisionById.get(candidate.place.id);
                     const action = active
                       ? `Remove ${candidate.place.name} from active comparison`
                       : places.length >= COMPARE_LIMIT
@@ -387,6 +440,16 @@ export function CompareView({
                           <span>{candidate.source}</span>
                           <strong>{candidate.place.region}</strong>
                         </span>
+                        {candidateProfile ? (
+                          <span className="compare-workbench__candidate-read" aria-label={`${candidate.place.name} candidate read`}>
+                            <span>
+                              <strong>{compareLensScore(candidateProfile, activeComparisonLens)}/100</strong>
+                              <em>{activeComparisonLensLabel}</em>
+                            </span>
+                            <span>{candidateProfile.easyMonths}/12 easy months</span>
+                            <span>{candidateProfile.riskLoad}/100 risk load</span>
+                          </span>
+                        ) : null}
                       </button>
                     );
                   }) : (

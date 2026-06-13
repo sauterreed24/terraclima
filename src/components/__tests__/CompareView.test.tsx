@@ -3,6 +3,7 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { PLACES } from "../../data/places";
+import { buildCompareDecisionProfiles, compareLensScore } from "../../lib/compare-finalist-verdict";
 import type { CompareCandidate, ComparisonLensId } from "../../lib/compare-workbench";
 import type { LiveFitFilters, LiveFitPresetId } from "../../lib/live-fit";
 import { UnitProvider } from "../../lib/units";
@@ -187,6 +188,34 @@ describe("CompareView", () => {
     expect(tray).toHaveTextContent("5/7 shown");
   });
 
+  it("sorts inactive candidates by decision cues and shows compact score reads", () => {
+    const candidates: CompareCandidate[] = [
+      { place: PLACES[4]!, source: "Shortlist", note: "Pinned test candidate" },
+      { place: PLACES[5]!, source: "Recent", note: "Recent test candidate" },
+      { place: PLACES[6]!, source: "Ranked", note: "Ranked test candidate" },
+    ];
+    renderCompare({
+      places: PLACES.slice(0, 4),
+      candidates,
+      comparisonLens: "risk",
+    });
+
+    const tray = screen.getByLabelText("Candidate tray");
+    const select = within(tray).getByRole("combobox", { name: "Sort Workbench candidates" });
+    const sortedProfiles = buildCompareDecisionProfiles(candidates.map(candidate => candidate.place))
+      .sort((a, b) => compareLensScore(b, "risk") - compareLensScore(a, "risk") || a.place.name.localeCompare(b.place.name));
+    const topProfile = sortedProfiles[0]!;
+
+    fireEvent.change(select, { target: { value: "lens" } });
+
+    const inactiveButtons = within(tray).getAllByRole("button", { name: /Swap .* into active comparison/ });
+    expect(inactiveButtons[0]).toHaveAttribute("aria-label", `Swap ${topProfile.place.name} into active comparison`);
+    expect(inactiveButtons[0]).toHaveTextContent(`${compareLensScore(topProfile, "risk")}/100`);
+    expect(inactiveButtons[0]).toHaveTextContent("Risk");
+    expect(inactiveButtons[0]).toHaveTextContent(`${topProfile.easyMonths}/12 easy months`);
+    expect(inactiveButtons[0]).toHaveTextContent(`${topProfile.riskLoad}/100 risk load`);
+  });
+
   it("groups practical comparison rows and can hide matching signals", () => {
     renderCompare();
 
@@ -248,7 +277,7 @@ describe("CompareView", () => {
     expect(screen.getByText("Decision read")).toBeInTheDocument();
     expect(screen.getByText("Next action")).toBeInTheDocument();
     expect(screen.getByText("Broadest fit")).toBeInTheDocument();
-    expect(screen.getByText("Lowest risk")).toBeInTheDocument();
+    expect(within(screen.getByLabelText("Comparison decision read")).getByText("Lowest risk")).toBeInTheDocument();
     expect(screen.getByText("Comfort leader")).toBeInTheDocument();
     expect(screen.getByText("Garden edge")).toBeInTheDocument();
     expect(screen.getByLabelText("Finalist decision table")).toBeInTheDocument();
