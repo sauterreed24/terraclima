@@ -29,7 +29,7 @@ describe("ShortlistExportMenu", () => {
 
     const items = screen.getAllByRole("menuitem");
     expect(items.map(item => item.textContent)).toEqual([
-      "Scout planVisit windows, caveats, and dossier links",
+      "Scout planVisit windows, caveats, and source gaps",
       "JSONMinimal place rows for scripts",
       "CSVSpreadsheet-friendly table",
       "GeoJSONRFC 7946 map points",

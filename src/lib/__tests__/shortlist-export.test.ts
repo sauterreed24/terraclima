@@ -155,6 +155,12 @@ describe("exportShortlistAsMarkdown", () => {
     expect(file.body).toContain("- Score ingredients: live-here fit");
     expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=alpha-valley");
     expect(file.body).toContain("- Dossier: https://example.test/terraclima/?p=beta%2C%20ridge");
+    expect(file.body).toContain("## Evidence readiness");
+    expect(file.body).toContain("Weakest source reads first.");
+    expect(file.body).toContain("### Alpha Valley - Thin read - source first");
+    expect(file.body).toContain("- Evidence facts: high confidence; 0 HTTPS sources; 0 deep sections; lived signals missing; humidity sourced; sunshine missing.");
+    expect(file.body).toContain("- Verify first: adding a second HTTPS source; expanding deep-dive context; filling lived-friction signals; sourcing sunshine normals.");
+    expect(file.body).toContain("- Planner action: Start with adding a second HTTPS source; do not treat this finalist as travel- or move-ready until that source gap is checked.");
     expect(file.body).toContain("## Compare next");
     expect(file.body).toContain("Compare URL: https://example.test/terraclima/?cmp=alpha-valley,beta%2C%20ridge");
     expect(file.body).toContain("Decision read:");

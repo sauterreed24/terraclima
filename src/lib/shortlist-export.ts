@@ -45,6 +45,15 @@ interface ExportContext {
   appUrl: string;
 }
 
+interface ExportEvidenceReadiness {
+  place: Place;
+  label: string;
+  score: number;
+  facts: string[];
+  gaps: string[];
+  action: string;
+}
+
 const DEFAULT_CONTEXT: Omit<ExportContext, "generatedAt"> = {
   appName: "Terraclima",
   appUrl: "https://sauterreed24.github.io/terraclima/",
@@ -251,6 +260,19 @@ export function exportShortlistAsMarkdown(
       lines.push(`- Dossier: ${ctx.appUrl}?p=${encodeURIComponent(place.id)}`);
       lines.push("");
     }
+
+    lines.push("## Evidence readiness");
+    lines.push("");
+    lines.push("Weakest source reads first. Use this section to decide what must be verified before booking a scout trip, comparing housing, or treating a finalist as move-ready.");
+    lines.push("");
+    for (const row of buildExportEvidenceReadiness(places)) {
+      lines.push(`### ${row.place.name} - ${row.label} (${row.score}/100)`);
+      lines.push("");
+      lines.push(`- Evidence facts: ${row.facts.join("; ")}.`);
+      lines.push(`- Verify first: ${row.gaps.join("; ")}.`);
+      lines.push(`- Planner action: ${row.action}`);
+      lines.push("");
+    }
   }
 
   lines.push("## Compare next");
@@ -372,6 +394,57 @@ function icsEscape(s: string): string {
 
 function markdownCell(s: string): string {
   return s.replace(/\s+/g, " ").trim().replace(/\|/g, "\\|");
+}
+
+function buildExportEvidenceReadiness(places: readonly Place[]): ExportEvidenceReadiness[] {
+  return places.map(place => {
+    const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
+    const deepSections = place.deepSections?.length ?? 0;
+    const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
+    const hasHumidity = Boolean(place.climate.humidity?.length);
+    const hasSunshine = Boolean(place.climate.sunshinePct?.length);
+    const confidenceScore = place.confidence === "high" ? 34 : place.confidence === "moderate" ? 22 : 10;
+    const score = Math.min(100, Math.round(
+      confidenceScore +
+      Math.min(httpsCitations * 8, 24) +
+      Math.min(deepSections * 8, 24) +
+      (hasLiveSignals ? 8 : 0) +
+      (hasHumidity ? 5 : 0) +
+      (hasSunshine ? 5 : 0),
+    ));
+    const gaps = [
+      ...(place.confidence === "low" ? ["low confidence profile"] : place.confidence === "moderate" ? ["moderate confidence profile"] : []),
+      ...(httpsCitations < 2 ? ["adding a second HTTPS source"] : []),
+      ...(deepSections < 1 ? ["expanding deep-dive context"] : []),
+      ...(!hasLiveSignals ? ["filling lived-friction signals"] : []),
+      ...(!hasHumidity ? ["sourcing humidity normals"] : []),
+      ...(!hasSunshine ? ["sourcing sunshine normals"] : []),
+    ].slice(0, 5);
+    const label = score >= 78 && gaps.length <= 1
+      ? "Ready for scout plan"
+      : score >= 58
+        ? "Verify before booking"
+        : "Thin read - source first";
+    const action = gaps.length === 0
+      ? "Good enough for side-by-side scouting; still verify parcel-level hazards and logistics."
+      : `Start with ${gaps[0]}; do not treat this finalist as travel- or move-ready until that source gap is checked.`;
+
+    return {
+      place,
+      label,
+      score,
+      facts: [
+        `${place.confidence} confidence`,
+        `${httpsCitations} HTTPS source${httpsCitations === 1 ? "" : "s"}`,
+        `${deepSections} deep section${deepSections === 1 ? "" : "s"}`,
+        hasLiveSignals ? "lived signals present" : "lived signals missing",
+        hasHumidity ? "humidity sourced" : "humidity missing",
+        hasSunshine ? "sunshine sourced" : "sunshine missing",
+      ],
+      gaps: gaps.length ? gaps : ["no major source gaps in the current profile"],
+      action,
+    };
+  }).sort((a, b) => a.score - b.score || a.place.name.localeCompare(b.place.name) || a.place.id.localeCompare(b.place.id));
 }
 
 function compareUrl(appUrl: string, places: readonly Place[]): string {
