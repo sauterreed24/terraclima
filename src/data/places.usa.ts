@@ -3890,17 +3890,53 @@ export const PLACES_USA: Place[] = [
     summaryShort: "A 1000-meter ridge town where summer afternoons stay below 25°C and winter brings real snow — New England climate at 36° latitude.",
     summaryImmersive: "Boone perches at 995 m on the Blue Ridge Escarpment, high enough that its climate resembles New Hampshire more than the Carolina Piedmont below. Summer afternoons stay in the low-to-mid 20s °C; winters bring snow and real cold; cloudy-windy days are common. The Appalachian Trail passes through; the landscape carries an ecological character more northern than its latitude suggests.",
     whyDistinct: "Extreme elevation for the latitude produces a northern-feeling climate within the Southeast.",
-    climate: { tempHighC: [4.1, 5.6, 10.1, 14.8, 19.4, 22.6, 24.6, 23.9, 20.4, 15.4, 9.8, 5.2], tempLowC: [-6.1, -5.2, -1.8, 2.4, 7.4, 12.1, 14.4, 13.6, 10.1, 4.4, -0.4, -4.9], precipMm: [108, 98, 122, 110, 128, 128, 138, 122, 108, 84, 92, 104], snowCm: [40, 36, 25, 6, 0, 0, 0, 0, 0, 0, 8, 26], annualPrecipMm: 1342, frostFreeDays: 150, hardinessZone: "6a" },
+    climate: { tempHighC: [4.1, 5.6, 10.1, 14.8, 19.4, 22.6, 24.6, 23.9, 20.4, 15.4, 9.8, 5.2], tempLowC: [-6.1, -5.2, -1.8, 2.4, 7.4, 12.1, 14.4, 13.6, 10.1, 4.4, -0.4, -4.9], precipMm: [108, 98, 122, 110, 128, 128, 138, 122, 108, 84, 92, 104], snowCm: [40, 36, 25, 6, 0, 0, 0, 0, 0, 0, 8, 26], humidity: [67, 64, 67, 67, 72, 75, 78, 78, 75, 72, 70, 70], sunshinePct: [53, 52, 55, 62, 61, 66, 64, 63, 57, 57, 60, 53], annualPrecipMm: 1342, frostFreeDays: 150, hardinessZone: "6a" },
     soil: { texture: "Acidic loam over schist", drainage: "good", phRange: [4.8, 5.8], waterHolding: "moderate" },
     growability: { score: 62, hardinessZone: "6a", growsWell: ["Apples", "Cabbage", "Short-season fruit"], tricky: ["Heat-demanding crops"] },
     climateChange: { outlook2050: "Warmer; ecosystem upslope migration.", outlook2100: "Unique climate-latitude combination eroding.", keyShifts: [{variable: "Winter cold", direction: "down"}], resilienceNote: "Elevation keeps summer livable." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "elevated", trend: "worsening", note: "Helene impacts."}, drought: {level: "low", trend: "mixed"}, extremeHeat: {level: "low", trend: "worsening"}, extremeCold: {level: "moderate", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "elevated", trend: "worsening"}, landslide: {level: "elevated", trend: "worsening"}, coastal: {level: "very-low", trend: "stable"} },
     scores: { hiddenGem: 44, microclimateUniqueness: 70, comfort: 70, resilience: 50, growability: 62, tradeoff: 38 },
+    liveSignals: {
+      costPressure: 58,
+      socialStress: 32,
+      accessFriction: 42,
+      note: "Appalachian State, second-home demand, and outdoor-tourism traffic pressure housing and roads, but Watauga Medical Center gives Boone an unusually strong service anchor for a small mountain town. Winter weather, landslide/flood exposure, and curving High Country roads are the practical friction points.",
+      sources: [
+        { label: "U.S. Census QuickFacts - Boone town", url: "https://www.census.gov/quickfacts/fact/table/boonetownnorthcarolina/PST045225" },
+        { label: "UNC Health Appalachian - Watauga Medical Center", url: "https://www.unchealthappalachian.org/locations/profile/watauga-medical-center/" },
+        { label: "High Country Regional Hazard Mitigation Plan", url: "https://www.ashecountygov.com/hifi/files/departments/emergency-management/High_Country_Regional_Hazard_Mitigation_Plan_Update_20170907_PUBLIC_reduced.pdf" },
+      ],
+    },
     relocationFit: ["summer-heat refugees"], travelFit: ["Appalachian Trail", "ski"],
     whoWouldLove: "People who want New-England feel in the South.", whoMightNot: "Flood-averse.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Boone coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [
+      { label: "NOAA - Boone coop normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "Weather Spark - Boone average weather", kind: "other", url: "https://weatherspark.com/y/17975/Average-Weather-in-Boone-North-Carolina-United-States-Year-Round" },
+      { label: "Climate-Data.org - Boone humidity and sunshine", kind: "other", url: "https://en.climate-data.org/north-america/united-states-of-america/north-carolina/boone-18171/", note: "Humidity is reported directly; sunshinePct is approximated from reported average daily sun hours divided by possible daylight at Boone latitude." },
+      { label: "UNC Health Appalachian - Watauga Medical Center", kind: "other", url: "https://www.unchealthappalachian.org/locations/profile/watauga-medical-center/" },
+      { label: "High Country Regional Hazard Mitigation Plan", kind: "other", url: "https://www.ashecountygov.com/hifi/files/departments/emergency-management/High_Country_Regional_Hazard_Mitigation_Plan_Update_20170907_PUBLIC_reduced.pdf" },
+      { label: "U.S. Census QuickFacts - Boone town", kind: "other", url: "https://www.census.gov/quickfacts/fact/table/boonetownnorthcarolina/PST045225" },
+    ],
+    deepSections: [
+      {
+        id: "boone-escarpment-comfort",
+        title: "Escarpment height makes the climate",
+        paragraphs: [
+          "Boone's roughly 1000 m elevation is the whole story: summer highs stay in the low-to-mid 20s C while the Piedmont and Foothills below run much hotter. That makes it one of the Southeast's clearest heat-refuge comparisons.",
+          "The same exposure also means wind, cloud, and winter precipitation are part of the comfort read. A scout trip should compare Boone to lower Asheville or Black Mountain on the same dates, not just compare annual averages.",
+        ],
+      },
+      {
+        id: "boone-living-friction",
+        title: "A real town, but still mountain logistics",
+        paragraphs: [
+          "Watauga Medical Center gives Boone a stronger service base than many mountain resort towns, and Appalachian State keeps the town active year-round. That lowers access friction compared with smaller Blue Ridge hamlets.",
+          "Housing pressure, student-season traffic, winter roads, flood-prone valleys, and landslide exposure still belong in the lived-climate read. Treat the climate advantage as a reason to visit carefully, not a shortcut around local due diligence.",
+        ],
+      },
+    ],
   },
 
   // ====================================================================

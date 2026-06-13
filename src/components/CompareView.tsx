@@ -422,11 +422,16 @@ export function CompareView({
                   {filteredCandidateTray.length > 0 ? filteredCandidateTray.map(candidate => {
                     const active = activeCandidateIds.has(candidate.place.id);
                     const candidateProfile = candidateDecisionById.get(candidate.place.id);
+                    const replacementPlace = !active && places.length >= COMPARE_LIMIT ? places[0] : null;
                     const action = active
                       ? `Remove ${candidate.place.name} from active comparison`
                       : places.length >= COMPARE_LIMIT
                         ? `Swap ${candidate.place.name} into active comparison`
                         : `Add ${candidate.place.name} to active comparison`;
+                    const title = [
+                      candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`,
+                      replacementPlace ? `Replaces oldest active slot: ${replacementPlace.name}.` : null,
+                    ].filter(Boolean).join(" ");
                     return (
                       <button
                         key={`${candidate.source}-${candidate.place.id}`}
@@ -436,8 +441,8 @@ export function CompareView({
                         data-source={candidate.source.toLowerCase()}
                         aria-pressed={active}
                         aria-label={action}
-                        title={candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`}
-                        onClick={() => onAddPlace?.(candidate.place.id)}
+                        title={title}
+                        onClick={() => active ? onRemove(candidate.place.id) : onAddPlace?.(candidate.place.id)}
                       >
                         <span className="compare-workbench__candidate-name">{candidate.place.name}</span>
                         <span className="compare-workbench__candidate-meta">
@@ -452,6 +457,11 @@ export function CompareView({
                             </span>
                             <span>{candidateProfile.easyMonths}/12 easy months</span>
                             <span>{candidateProfile.riskLoad}/100 risk load</span>
+                          </span>
+                        ) : null}
+                        {replacementPlace ? (
+                          <span className="compare-workbench__candidate-swap">
+                            Replaces {replacementPlace.name}
                           </span>
                         ) : null}
                       </button>

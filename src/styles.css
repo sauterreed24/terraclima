@@ -4229,6 +4229,16 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .compare-workbench__candidate-swap {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-stone-readable);
+    font-size: 0.58rem;
+    font-weight: 780;
+    line-height: 1.15;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .compare-workbench__coach {
     grid-column: 1 / -1;
     display: grid;

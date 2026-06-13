@@ -84,6 +84,7 @@ describe("CompareView", () => {
   it("renders the Compare Workbench lens controls and candidate tray", () => {
     const onComparisonLensChange = vi.fn();
     const onAddPlace = vi.fn();
+    const onRemove = vi.fn();
     const candidates: CompareCandidate[] = PLACES.slice(0, 8).map(place => ({
       place,
       source: "Shortlist",
@@ -96,7 +97,7 @@ describe("CompareView", () => {
           places={PLACES.slice(0, 4)}
           open
           onClose={() => undefined}
-          onRemove={() => undefined}
+          onRemove={onRemove}
           onAddPlace={onAddPlace}
           candidates={candidates}
           comparisonLens="risk"
@@ -116,7 +117,14 @@ describe("CompareView", () => {
     expect(onComparisonLensChange).toHaveBeenCalledWith("garden");
 
     expect(within(screen.getByLabelText("Candidate tray")).getAllByRole("button", { name: /active comparison/ })).toHaveLength(8);
-    expect(screen.getByRole("button", { name: `Remove ${PLACES[0].name} from active comparison` })).toHaveAttribute("aria-pressed", "true");
+    const activeCandidate = screen.getByRole("button", { name: `Remove ${PLACES[0].name} from active comparison` });
+    expect(activeCandidate).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(activeCandidate);
+    expect(onRemove).toHaveBeenCalledWith(PLACES[0].id);
+
+    const swapCandidate = screen.getByRole("button", { name: `Swap ${PLACES[4].name} into active comparison` });
+    expect(swapCandidate).toHaveTextContent(`Replaces ${PLACES[0].name}`);
+    expect(swapCandidate).toHaveAttribute("title", expect.stringContaining(`Replaces oldest active slot: ${PLACES[0].name}.`));
     fireEvent.click(screen.getByRole("button", { name: `Swap ${PLACES[4].name} into active comparison` }));
     expect(onAddPlace).toHaveBeenCalledWith(PLACES[4].id);
   });
