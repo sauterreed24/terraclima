@@ -68,6 +68,11 @@ import {
   toggleBookmark as toggleBookmarkPersist,
 } from "./lib/place-bookmarks";
 import {
+  DEFAULT_COMPARISON_LENS,
+  type CompareCandidate,
+  type ComparisonLensId,
+} from "./lib/compare-workbench";
+import {
   clearRecentPlaces,
   loadRecentPlaces,
   recordRecentPlace,
@@ -255,6 +260,7 @@ export default function App() {
   const [selectedId, setSelectedId] = useState<string | null>(initialAppState.placeId);
   const [compareIds, setCompareIds] = useState<Set<string>>(() => new Set(initialAppState.compareIds));
   const [compareOpen, setCompareOpen] = useState(() => initialAppState.compareIds.length >= 2);
+  const [comparisonLens, setComparisonLens] = useState<ComparisonLensId>(() => initialAppState.comparisonLens ?? DEFAULT_COMPARISON_LENS);
   const [activeCollection, setActiveCollection] = useState<string | null>(initialAppState.collectionId);
   const [filters, setFilters] = useState<FilterState>(() => filterStateFromValidated(initialAppState));
   const [ranking, setRankingRaw] = useState<RankingProfile>(() => initialAppState.ranking ?? loadPersistedRanking());
@@ -409,6 +415,7 @@ export default function App() {
       dist,
       theme: themePreference === "auto" ? null : themePreference,
       scenario: climateScenario === "now" ? null : climateScenario,
+      comparisonLens,
       homeBaseId,
       collectionExists: (id: string) => Boolean(CURATED_SET_BY_ID[id]),
       archetypeExists: (id: string) => Object.prototype.hasOwnProperty.call(ARCHETYPE_BY_ID, id),
@@ -444,7 +451,7 @@ export default function App() {
       replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist, themePreference, climateScenario, homeBaseId]);
+  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist, themePreference, climateScenario, comparisonLens, homeBaseId]);
 
   useEffect(() => {
     const onPop = () => {
@@ -460,6 +467,7 @@ export default function App() {
       setActiveCollection(v.collectionId);
       setFilters(filterStateFromValidated(v));
       setCompareIds(new Set(v.compareIds));
+      setComparisonLens(v.comparisonLens);
       setRankingRaw(v.ranking ?? loadPersistedRanking());
       setClimateScenario(v.scenario ?? "now");
       // Home base is a sticky preference like theme: an explicit ?hb= on the
@@ -663,6 +671,27 @@ export default function App() {
     () => (homeBasePlace && climateScenario !== "now" ? projectPlace(homeBasePlace, climateScenario) : homeBasePlace),
     [homeBasePlace, climateScenario],
   );
+  const compareCandidates = useMemo<CompareCandidate[]>(() => {
+    const seen = new Set<string>();
+    const candidates: CompareCandidate[] = [];
+    const push = (place: Place | undefined, source: CompareCandidate["source"], note: string) => {
+      if (!place || seen.has(place.id)) return;
+      seen.add(place.id);
+      candidates.push({ place, source, note });
+    };
+
+    for (const id of bookmarkIds) {
+      push(placesById[id] ?? placeForId(id), "Shortlist", "Pinned to your shortlist");
+    }
+    for (const id of recentIds) {
+      push(placesById[id] ?? placeForId(id), "Recent", "Recently opened dossier");
+    }
+    for (const row of ranked.slice(0, 12)) {
+      push(row.place, "Ranked", `${rankingLabel} leader`);
+    }
+
+    return candidates;
+  }, [bookmarkIds, placesById, ranked, rankingLabel, recentIds]);
   const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
@@ -1305,6 +1334,9 @@ export default function App() {
             liveFitFilters={filters}
             homePlace={homeBasePlaceForScenario}
             onAddPlace={toggleCompare}
+            candidates={compareCandidates}
+            comparisonLens={comparisonLens}
+            onComparisonLensChange={setComparisonLens}
             scenario={climateScenario}
             occluded={compareViewOccluded}
           />
@@ -2543,19 +2575,19 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
                   onClick={() => onComparePinned(pinnedCompareIds)}
                   aria-label={
                     pinnedCompareIds.length === 1
-                      ? `Open Compare setup for ${pinnedPlaces[0].name} from your shortlist`
-                      : `Compare ${pinnedCompareIds.length} pinned places from your shortlist`
+                      ? `Open Compare Workbench setup for ${pinnedPlaces[0].name} from your shortlist`
+                      : `Open Compare Workbench for ${pinnedCompareIds.length} pinned places from your shortlist`
                   }
                   title={
                     pinnedCompareIds.length === 1
                       ? "Open setup guide for choosing a contrast"
                       : pinnedPlaces.length > COMPARE_LIMIT
-                      ? `Compare the first ${COMPARE_LIMIT} pinned places`
-                      : "Compare pinned places"
+                      ? `Open Workbench with the first ${COMPARE_LIMIT} pinned places active; all pins stay available in the tray and export.`
+                      : "Open Compare Workbench for pinned places"
                   }
                 >
                   <ArrowLeftRight className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
-                  {pinnedCompareIds.length === 1 ? "Compare setup" : pinnedPlaces.length > COMPARE_LIMIT ? `Compare ${COMPARE_LIMIT}` : "Compare"}
+                  {pinnedCompareIds.length === 1 ? "Workbench setup" : "Workbench"}
                 </button>
               ) : null}
               <ShortlistExportMenu places={pinnedPlaces} />

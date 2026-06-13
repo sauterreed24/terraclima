@@ -1,18 +1,13 @@
 /**
- * Corpus coverage summary — per-tier counts for editorial gaps.
- * Non-fatal: exit 0 always (wired into quality:check as visibility only).
+ * Corpus coverage summary: non-fatal editorial gap report.
+ * Wired into quality:check for visibility only.
  */
 import { PLACES } from "../src/data/places";
-import type { Place } from "../src/types";
-
-type Tier = "A" | "B" | "C";
-
-function tierOf(p: Place): Tier {
-  return p.tier;
-}
+import { buildCorpusCoverageReport, COVERAGE_ISSUES, type CoverageIssueId } from "../src/lib/corpus-coverage";
+import type { Tier } from "../src/types";
 
 function row(label: string, counts: Record<Tier, number>, total: number): string {
-  const pct = (n: number) => (total ? `${((n / total) * 100).toFixed(1)}%` : "—");
+  const pct = (n: number) => (total ? `${((n / total) * 100).toFixed(1)}%` : "-");
   return [
     label.padEnd(28),
     `A:${String(counts.A).padStart(3)} (${pct(counts.A).padStart(5)})`,
@@ -22,33 +17,34 @@ function row(label: string, counts: Record<Tier, number>, total: number): string
   ].join("  ");
 }
 
-function bump(map: Record<Tier, number>, tier: Tier) {
-  map[tier] += 1;
-}
+const report = buildCorpusCoverageReport(PLACES);
+const tierCounts = Object.fromEntries(report.byTier.map(group => [group.tier, group.total])) as Record<Tier, number>;
 
-const byTier: Record<Tier, Place[]> = { A: [], B: [], C: [] };
-for (const p of PLACES) byTier[tierOf(p)].push(p);
-
-const missingLive: Record<Tier, number> = { A: 0, B: 0, C: 0 };
-const missingHumidity: Record<Tier, number> = { A: 0, B: 0, C: 0 };
-const missingSunshine: Record<Tier, number> = { A: 0, B: 0, C: 0 };
-const missingDeep: Record<Tier, number> = { A: 0, B: 0, C: 0 };
-const singleCitation: Record<Tier, number> = { A: 0, B: 0, C: 0 };
-
-for (const p of PLACES) {
-  const t = tierOf(p);
-  if (!p.liveSignals) bump(missingLive, t);
-  if (p.climate.humidity == null) bump(missingHumidity, t);
-  if (p.climate.sunshinePct == null) bump(missingSunshine, t);
-  if (!p.deepSections?.length) bump(missingDeep, t);
-  const urlCites = (p.citations ?? []).filter(c => c.url?.startsWith("https://")).length;
-  if (urlCites === 1) bump(singleCitation, t);
+function countsFor(issue: CoverageIssueId): Record<Tier, number> {
+  const counts: Record<Tier, number> = { A: 0, B: 0, C: 0 };
+  for (const group of report.byTier) {
+    if (group.tier) counts[group.tier] = group.issueCounts[issue];
+  }
+  return counts;
 }
 
 console.log("corpus-coverage-report (non-fatal summary)\n");
-console.log(row("missing liveSignals", missingLive, PLACES.length));
-console.log(row("missing humidity", missingHumidity, PLACES.length));
-console.log(row("missing sunshinePct", missingSunshine, PLACES.length));
-console.log(row("missing deepSections", missingDeep, PLACES.length));
-console.log(row("single HTTPS citation", singleCitation, PLACES.length));
-console.log("\nTier counts:", `A=${byTier.A.length}`, `B=${byTier.B.length}`, `C=${byTier.C.length}`);
+for (const issue of COVERAGE_ISSUES) {
+  console.log(row(issue.label, countsFor(issue.id), PLACES.length));
+}
+console.log("\nTier counts:", `A=${tierCounts.A ?? 0}`, `B=${tierCounts.B ?? 0}`, `C=${tierCounts.C ?? 0}`);
+
+console.log("\nHighest-thinness countries:");
+for (const group of report.byCountry.slice(0, 3)) {
+  console.log(`  ${group.label}: ${group.thin}/${group.total} thin`);
+}
+
+console.log("\nHighest-thinness regions:");
+for (const group of report.byRegion.slice(0, 6)) {
+  console.log(`  ${group.label}: ${group.thin}/${group.total} thin`);
+}
+
+console.log("\nThinnest places:");
+for (const place of report.thinPlaces.slice(0, 8)) {
+  console.log(`  ${place.name} (${place.region}, ${place.country}, Tier ${place.tier}): ${place.missing.join(", ")}`);
+}

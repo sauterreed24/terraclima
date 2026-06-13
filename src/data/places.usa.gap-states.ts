@@ -242,11 +242,54 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     climateChange: { outlook2050: "Less ice cover may reduce snowband frequency but increase lake heat.", outlook2100: "Shifting shoreline ecology.", keyShifts: [{ variable: "Lake ice", direction: "down" }], resilienceNote: "Lake moderation still dominates local comfort." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "moderate", trend: "worsening" } },
     scores: { hiddenGem: 50, microclimateUniqueness: 70, comfort: 66, resilience: 60, growability: 58, tradeoff: 42 },
+    liveSignals: {
+      costPressure: 58,
+      socialStress: 18,
+      accessFriction: 48,
+      note: "Small resident base and park-adjacent housing keep costs and services uneven, while South Shore / Chicago access prevents true isolation.",
+      sources: [
+        { label: "Town of Beverly Shores - municipal services", url: "https://www.in.gov/towns/beverlyshores/" },
+        { label: "Indiana Dunes National Park - park context", url: "https://www.nps.gov/indu/" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Beverly Shores", role: "village", population: "~600", note: "Tiny lakefront municipality embedded in dunes, second homes, and national-park edges." },
+      { name: "Michigan City", role: "town", note: "Closest larger service anchor and useful comparison for lake-effect snow, errands, and rail access." },
+      { name: "Chesterton", role: "town", note: "Inland Duneland service base with less immediate lake exposure." },
+    ],
+    thingsToDo: [
+      { label: "Indiana Dunes beach-to-swale walk", kind: "trail", season: "spring to autumn", note: "A compact read on lake breeze, sand heat, shade, wetlands, and rare dune ecology." },
+      { label: "South Shore Line commute check", kind: "urban", season: "year-round", note: "Tests whether Chicago access offsets the small-town service gap." },
+      { label: "Winter snowband watch", kind: "seasonal", season: "winter", note: "Lake-effect clouds and localized snow are part of the true lived climate." },
+      { label: "Spring bird migration", kind: "wildlife", season: "spring", note: "The lakeshore flyway shows why this narrow strip carries outsized ecological value." },
+    ],
+    deepSections: [
+      {
+        id: "beverly-shores-lake-season-lag",
+        title: "Lake moderation is useful but asymmetric",
+        paragraphs: [
+          "Lake Michigan makes Beverly Shores milder than inland Indiana, but the benefit changes by season. Spring stays colder longer because the lake is still cold, while late summer and early autumn can feel softer than the inland corn belt.",
+          "That seasonal lag is exactly what makes it useful as a comparison anchor. It is not simply cooler or warmer; it shifts the calendar, trims peak heat, adds cloud and snowband risk, and makes parcel exposure matter block by block.",
+        ],
+      },
+      {
+        id: "beverly-shores-small-town-friction",
+        title: "A climate refuge with small-town friction",
+        paragraphs: [
+          "The dunes setting is exceptional, but daily life is not frictionless. The resident population is small, many homes are seasonal, and routine services often mean Michigan City, Chesterton, or Chicago instead of a self-contained town.",
+          "For travel, that is part of the charm. For relocation, the decision turns on whether rail access, park proximity, and lake comfort outweigh limited local services, winter cloud, and lakefront housing pressure.",
+        ],
+      },
+    ],
     relocationFit: ["Chicago commuters", "park lovers"], travelFit: ["Indiana Dunes trails", "bird migration"],
     whoWouldLove: "Great Lakes beach people who want dunes, not crowds.", whoMightNot: "Sun-belt warmth seekers.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Michigan City IN", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [
+      { label: "NOAA - Michigan City IN climate normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "National Park Service - Indiana Dunes National Park", kind: "other", url: "https://www.nps.gov/indu/" },
+      { label: "Town of Beverly Shores - municipal services", kind: "other", url: "https://www.in.gov/towns/beverlyshores/" },
+    ],
   },
 
   // Maryland — Appalachian high county

@@ -62,6 +62,12 @@ describe("parseAppSearch", () => {
     expect(parseAppSearch("?scn=now")).toEqual({}); // implicit default, never written
     expect(parseAppSearch("?scn=rcp99")).toEqual({});
   });
+  it("parses the comparison priority lens but drops the default and unknowns", () => {
+    expect(parseAppSearch("?clens=move")).toEqual({ comparisonLens: "move" });
+    expect(parseAppSearch("?clens=travel")).toEqual({ comparisonLens: "travel" });
+    expect(parseAppSearch("?clens=balanced")).toEqual({});
+    expect(parseAppSearch("?clens=fastest")).toEqual({});
+  });
   it("captures hb (home-base place id)", () => {
     expect(parseAppSearch("?hb=sequim-wa")).toEqual({ homeBaseId: "sequim-wa" });
     expect(parseAppSearch("?hb=")).toEqual({});
@@ -106,6 +112,11 @@ describe("validatedStateFromSearch", () => {
     const resolve = (id: string) => id === "old-foo" ? "foo" : places[id as keyof typeof places] ? id : null;
     expect(validatedStateFromSearch("?hb=old-foo", places, collections, undefined, resolve).homeBaseId).toBe("foo");
   });
+  it("validates the comparison priority lens with balanced fallback", () => {
+    expect(validatedStateFromSearch("?clens=garden", places, collections).comparisonLens).toBe("garden");
+    expect(validatedStateFromSearch("?clens=not-real", places, collections).comparisonLens).toBe("balanced");
+    expect(validatedStateFromSearch("", places, collections).comparisonLens).toBe("balanced");
+  });
 });
 
 describe("formatAppRelativeUrl", () => {
@@ -148,6 +159,15 @@ describe("formatAppRelativeUrl", () => {
       formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, scenario: "ssp585", collectionExists: ce }),
     ).toBe("/?scn=ssp585");
     expect(parseAppSearch("/?scn=ssp245".replace("/", "")).scenario).toBe("ssp245");
+  });
+  it("writes ?clens= only for non-default comparison lenses and round-trips", () => {
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, comparisonLens: "balanced", collectionExists: ce }),
+    ).toBe("/");
+    expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, comparisonLens: "risk", collectionExists: ce }),
+    ).toBe("/?clens=risk");
+    expect(parseAppSearch("?clens=remote").comparisonLens).toBe("remote");
   });
   it("preserves order: v then p then col", () => {
     const url = formatAppRelativeUrl({

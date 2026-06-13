@@ -622,7 +622,7 @@ export const PLACES_MEXICO: Place[] = [
     id: "valle-de-bravo-mx",
     tier: "B",
     country: "Mexico",
-    region: "Estado de Mexico",
+    region: "Estado de México",
     municipality: "Valle de Bravo",
     name: "Valle de Bravo & Lake Avandaro",
     lat: 19.1950,

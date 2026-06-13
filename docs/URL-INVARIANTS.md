@@ -15,6 +15,7 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 | `cmp` | Compare set, comma-separated place ids | Only known ids; **max 4** (`COMPARE_LIMIT`) |
 | `theme` | Color theme override: `light`, `dark` | `auto` (the implicit default) is never written; unknown values dropped |
 | `scn` | Climate-scenario layer: `ssp245`, `ssp585` | `now` (the implicit default) is never written; unknown values dropped |
+| `clens` | Compare priority lens: `travel`, `move`, `remote`, `garden`, `risk` | `balanced` (the implicit default) is never written; unknown values dropped |
 | `hb` | Home-base place id (cards, dossiers, and Compare read climate deltas against it) | Only known ids (alias-canonicalized); omitted when unset; written last |
 
 ## Live Finder parameters (Explorer filters)
@@ -66,6 +67,8 @@ The home base ([`src/lib/home-base.ts`](../src/lib/home-base.ts)) is a sticky pr
 - At most **4** ids in `cmp` and in memory (`Set` eviction drops oldest).
 - A shared URL with two or more valid `cmp` ids opens Compare immediately.
 - A shared URL with one valid `cmp` id saves that place to compare but does not auto-open Compare.
+- `clens` changes only the Compare decision/read lens and grouped score row; it does not transmit shortlist data.
+- Shortlist Workbench candidates stay local (bookmarks, recent places, current ranked leaders). Export still reads the full shortlist, not only the four active `cmp` slots.
 
 ## Regression vectors
 
