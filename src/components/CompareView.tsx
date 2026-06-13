@@ -588,6 +588,40 @@ export function CompareView({
                     })}
                   </div>
                 </div>
+                <div className="compare-verification-checklist" aria-label="Scout verification checklist">
+                  <div className="compare-verification-checklist__head">
+                    <span className="compare-verification-checklist__kicker">Scout verification checklist</span>
+                    <span>What to prove before booking a visit, comparing housing, or treating a finalist as move-ready.</span>
+                  </div>
+                  <div className="compare-verification-checklist__grid">
+                    {decisionRead.verificationChecklist.map(item => {
+                      const card = (
+                        <>
+                          <span className="compare-verification-checklist__label">{item.label}</span>
+                          <strong title={item.place.name}>{item.place.name}</strong>
+                          <span className="compare-verification-checklist__action">{prose(item.action)}</span>
+                          <span className="compare-verification-checklist__proof">{prose(item.proof)}</span>
+                        </>
+                      );
+                      return onOpenPlace ? (
+                        <button
+                          key={item.id}
+                          type="button"
+                          className="compare-verification-checklist__item compare-verification-checklist__item--button"
+                          data-tone={item.tone}
+                          aria-label={`Open ${item.place.name} from scout verification checklist: ${item.label}`}
+                          onClick={() => onOpenPlace(item.place.id)}
+                        >
+                          {card}
+                        </button>
+                      ) : (
+                        <div key={item.id} className="compare-verification-checklist__item" data-tone={item.tone}>
+                          {card}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
                 <div className="compare-decision-read__lanes">
                   {decisionRead.lanes.map(lane => (
                     <div key={lane.label} className="compare-decision-read__lane">

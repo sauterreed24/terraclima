@@ -293,6 +293,14 @@ describe("CompareView", () => {
     expect(screen.getByText("Scout sequence")).toBeInTheDocument();
     expect(within(scoutSequence).getByText(/Start here/)).toBeInTheDocument();
     expect(within(scoutSequence).getByText(/Counterweight/)).toBeInTheDocument();
+    const checklist = screen.getByLabelText("Scout verification checklist");
+    expect(checklist).toHaveTextContent("Scout verification checklist");
+    expect(checklist).toHaveTextContent("Scout window");
+    expect(checklist).toHaveTextContent("Tradeoff check");
+    expect(checklist).toHaveTextContent("Hazard check");
+    expect(checklist).toHaveTextContent("Daily-life friction");
+    expect(checklist).toHaveTextContent("Source gap");
+    expect(checklist).toHaveTextContent("What to prove before booking a visit");
 
     fireEvent.click(screen.getByRole("button", { name: "Copy comparison link" }));
     expect(onCopyView).toHaveBeenCalledTimes(1);
@@ -300,8 +308,10 @@ describe("CompareView", () => {
     expect(onOpenPlace).toHaveBeenCalledTimes(1);
     fireEvent.click(screen.getByRole("button", { name: /from scouting sequence: Start here/ }));
     expect(onOpenPlace).toHaveBeenCalledTimes(2);
-    fireEvent.click(screen.getAllByRole("button", { name: /from finalist decision table/ })[0]);
+    fireEvent.click(within(checklist).getAllByRole("button", { name: /from scout verification checklist/ })[0]);
     expect(onOpenPlace).toHaveBeenCalledTimes(3);
+    fireEvent.click(screen.getAllByRole("button", { name: /from finalist decision table/ })[0]);
+    expect(onOpenPlace).toHaveBeenCalledTimes(4);
   });
 
   it("surfaces weak evidence before a place is treated as travel-ready", () => {

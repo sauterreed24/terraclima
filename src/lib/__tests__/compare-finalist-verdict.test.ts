@@ -81,6 +81,27 @@ describe("compare finalist verdict", () => {
     expect(read?.scoutSequence[0].visitWindow).toContain("Gardening window");
     expect(read?.scoutSequence[0].why).toContain("Best all-around finalist");
     expect(read?.scoutSequence[2].caveat).toContain("Risk load: 42/100");
+    expect(read?.verificationChecklist.map(item => item.label)).toEqual([
+      "Scout window",
+      "Tradeoff check",
+      "Hazard check",
+      "Daily-life friction",
+      "Source gap",
+    ]);
+    expect(read?.verificationChecklist[0]).toMatchObject({
+      place: broad.place,
+      tone: "book",
+    });
+    expect(read?.verificationChecklist[1]).toMatchObject({
+      place: lowerRisk.place,
+      tone: "book",
+    });
+    expect(read?.verificationChecklist[2]).toMatchObject({
+      place: highRisk.place,
+      tone: "verify",
+    });
+    expect(read?.verificationChecklist[3].proof).toContain("70/100 lived-ease read");
+    expect(read?.verificationChecklist[4].proof).toContain("second HTTPS source");
     expect(read?.lanes.map(lane => lane.label)).toEqual(["Broadest fit", "Lowest risk", "Comfort leader", "Garden edge"]);
     expect(read?.tableRows.map(row => row.role)).toEqual(["Start here", "Counterweight", "Risk check"]);
     expect(read?.tableRows.map(row => row.place.name)).toEqual(["Broad Town", "Quiet Basin", "Heat Bluff"]);
@@ -112,6 +133,9 @@ describe("compare finalist verdict", () => {
     expect(new Set(read?.scoutSequence.map(step => step.place.id)).size).toBe(read?.scoutSequence.length);
     expect(read?.scoutSequence.every(step => step.visitWindow.length > 0)).toBe(true);
     expect(read?.scoutSequence.every(step => step.caveat.length > 0)).toBe(true);
+    expect(read?.verificationChecklist.length).toBeGreaterThanOrEqual(4);
+    expect(read?.verificationChecklist.every(item => item.action.length > 0)).toBe(true);
+    expect(read?.verificationChecklist.every(item => item.proof.length > 0)).toBe(true);
     expect(read?.tableRows).toHaveLength(4);
     expect(read?.tableRows.every(row => row.fitSummary.includes("/100 fit"))).toBe(true);
     expect(read?.tableRows.every(row => row.riskSummary.includes("/100 risk"))).toBe(true);

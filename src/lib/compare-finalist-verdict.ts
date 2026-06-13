@@ -45,6 +45,17 @@ export interface CompareDecisionTableRow {
   watch: string;
 }
 
+export type CompareVerificationTone = "book" | "verify" | "source";
+
+export interface CompareVerificationItem {
+  id: string;
+  label: string;
+  place: Place;
+  action: string;
+  proof: string;
+  tone: CompareVerificationTone;
+}
+
 interface CounterweightRead {
   place: Place;
   label: string;
@@ -58,6 +69,7 @@ export interface CompareDecisionRead {
   caution: string;
   nextAction: string;
   scoutSequence: CompareScoutStep[];
+  verificationChecklist: CompareVerificationItem[];
   lanes: CompareDecisionLane[];
   tableRows: CompareDecisionTableRow[];
 }
@@ -224,6 +236,26 @@ function caveatRead(profile: CompareDecisionProfile): string {
   return compactSentence(profile.place.whoMightNot, 96);
 }
 
+function sourceGapLabels(place: Place): string[] {
+  const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
+  const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
+  const hasHumidity = Boolean(place.climate.humidity?.length);
+  const hasSunshine = Boolean(place.climate.sunshinePct?.length);
+  return [
+    ...(place.confidence === "low" ? ["low-confidence profile"] : place.confidence === "moderate" ? ["moderate-confidence profile"] : []),
+    ...(httpsCitations < 2 ? ["second HTTPS source"] : []),
+    ...((place.deepSections?.length ?? 0) < 1 ? ["deep-dive context"] : []),
+    ...(!hasLiveSignals ? ["lived-friction signals"] : []),
+    ...(!hasHumidity ? ["humidity normals"] : []),
+    ...(!hasSunshine ? ["sunshine normals"] : []),
+  ];
+}
+
+function sourceGapWeight(place: Place): number {
+  const confidenceWeight = place.confidence === "low" ? 2 : place.confidence === "moderate" ? 1 : 0;
+  return sourceGapLabels(place).length + confidenceWeight;
+}
+
 function scoutStep(label: string, profile: CompareDecisionProfile, why: string): CompareScoutStep {
   return {
     label,
@@ -348,6 +380,77 @@ function buildDecisionTableRows(
     });
 }
 
+function buildVerificationChecklist(
+  profiles: readonly CompareDecisionProfile[],
+  primary: CompareDecisionProfile,
+  counterweight: CounterweightRead | null,
+  highestRisk: CompareDecisionProfile,
+  lensRead: string,
+): CompareVerificationItem[] {
+  const lowestLivedEase = pickProfile(profiles, profile => profile.livedEase, "asc");
+  const weakestEvidence = [...profiles].sort((a, b) => {
+    const gapDiff = sourceGapWeight(b.place) - sourceGapWeight(a.place);
+    if (gapDiff !== 0) return gapDiff;
+    return profileNameTie(a, b);
+  })[0]!;
+  const visit = visitWindowRead(primary.place);
+  const items: CompareVerificationItem[] = [
+    {
+      id: "scout-window",
+      label: "Scout window",
+      place: primary.place,
+      action: `Start with ${visit.visitWindow}; use that season to test the ${lensRead} promise.`,
+      proof: "Confirm heat, rain, smoke, daylight, and lodging logistics against the dossier before dates harden.",
+      tone: "book",
+    },
+  ];
+
+  if (counterweight) {
+    items.push({
+      id: "counterweight",
+      label: "Tradeoff check",
+      place: counterweight.place,
+      action: `Compare ${counterweight.place.name} before locking travel if ${counterweight.preference}.`,
+      proof: "Use the same dates, errands, neighborhood walk, and housing notes so the tradeoff is not just a ranking-table read.",
+      tone: "book",
+    });
+  }
+
+  items.push({
+    id: "hazard",
+    label: "Hazard check",
+    place: highestRisk.place,
+    action: `Resolve ${highestRisk.place.name}'s hardest risk before it stays equivalent to the leader.`,
+    proof: caveatRead(highestRisk),
+    tone: highestRisk.riskLoad >= 34 ? "verify" : "book",
+  });
+
+  items.push({
+    id: "daily-life",
+    label: "Daily-life friction",
+    place: lowestLivedEase.place,
+    action: `Stress-test ${lowestLivedEase.place.name} for errands, housing, health care, internet, and social fit before calling it move-ready.`,
+    proof: `${lowestLivedEase.livedEase}/100 lived-ease read; a visit should prove the friction is tolerable, not just scenic.`,
+    tone: lowestLivedEase.livedEase < 60 ? "verify" : "book",
+  });
+
+  const sourceGaps = sourceGapLabels(weakestEvidence.place);
+  items.push({
+    id: "source-gap",
+    label: "Source gap",
+    place: weakestEvidence.place,
+    action: sourceGaps.length
+      ? `Source-check ${weakestEvidence.place.name} before using it as a travel or moving anchor.`
+      : `Keep ${weakestEvidence.place.name}'s evidence profile attached to the comparison packet.`,
+    proof: sourceGaps.length
+      ? `Verify ${sourceGaps.slice(0, 3).join(", ")} before booking around this finalist.`
+      : "No major source gap is visible in the current profile; still verify parcel-level hazards and local logistics.",
+    tone: sourceGaps.length >= 3 ? "source" : sourceGaps.length > 0 ? "verify" : "book",
+  });
+
+  return items;
+}
+
 export function buildCompareDecisionRead(
   profiles: readonly CompareDecisionProfile[],
   lens: ComparisonLensId = DEFAULT_COMPARISON_LENS,
@@ -367,6 +470,7 @@ export function buildCompareDecisionRead(
   const lensRead = lens === DEFAULT_COMPARISON_LENS ? "all-around" : `${comparisonLensLabel(lens).toLowerCase()}-lens`;
   const scoutSequence = buildScoutSequence(profiles, primary, counterweight, runnerUp, highestRisk, lensRead);
   const tableRows = buildDecisionTableRows(profiles, primary, counterweight, scoutSequence, lens);
+  const verificationChecklist = buildVerificationChecklist(profiles, primary, counterweight, highestRisk, lensRead);
 
   const landClause = garden.place.id === primary.place.id
     ? `${primary.place.name} also keeps the garden edge`
@@ -390,6 +494,7 @@ export function buildCompareDecisionRead(
       ? `Open ${primary.place.name}'s dossier first; read ${counterweight.place.name} second if ${counterweight.preference}.`
       : `Open ${primary.place.name}'s dossier first, then add another place to test the tradeoff.`,
     scoutSequence,
+    verificationChecklist,
     tableRows,
     lanes: [
       {

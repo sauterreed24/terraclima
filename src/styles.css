@@ -4881,6 +4881,114 @@
     margin-top: 0.1rem;
     color: var(--color-frost);
   }
+  .compare-verification-checklist {
+    grid-column: 1 / -1;
+    min-width: 0;
+    display: grid;
+    gap: 0.55rem;
+    padding: 0.62rem 0.68rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background:
+      linear-gradient(135deg, rgba(241, 251, 253, 0.74), rgba(255, 253, 248, 0.66));
+  }
+  .compare-verification-checklist__head {
+    min-width: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .compare-verification-checklist__kicker {
+    color: var(--color-glacier-700);
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .compare-verification-checklist__head > span:last-child {
+    min-width: 0;
+    max-width: 34rem;
+    color: var(--color-stone-readable);
+    font-size: 0.68rem;
+    line-height: 1.3;
+    text-align: right;
+  }
+  .compare-verification-checklist__grid {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 0.5rem;
+  }
+  .compare-verification-checklist__item {
+    min-width: 0;
+    display: grid;
+    align-content: start;
+    gap: 0.16rem;
+    padding: 0.55rem 0.6rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(26, 143, 168, 0.2);
+    background: rgba(255, 255, 255, 0.62);
+    color: var(--color-frost);
+    text-align: left;
+  }
+  .compare-verification-checklist__item[data-tone="verify"] {
+    border-color: rgba(180, 150, 120, 0.36);
+    background:
+      linear-gradient(135deg, rgba(255, 253, 248, 0.82), rgba(255, 247, 231, 0.62));
+  }
+  .compare-verification-checklist__item[data-tone="source"] {
+    border-color: rgba(190, 86, 72, 0.34);
+    background:
+      linear-gradient(135deg, rgba(255, 248, 246, 0.84), rgba(255, 253, 248, 0.64));
+  }
+  .compare-verification-checklist__item--button {
+    cursor: pointer;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+  .compare-verification-checklist__item--button:hover {
+    border-color: rgba(26, 143, 168, 0.48);
+    box-shadow: 0 10px 22px -18px rgba(26, 143, 168, 0.28);
+    transform: translateY(-1px);
+  }
+  .compare-verification-checklist__item--button:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.52);
+    outline-offset: 2px;
+  }
+  .compare-verification-checklist__label {
+    color: var(--color-stone-readable);
+    font-size: 0.55rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .compare-verification-checklist__item strong {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-ice);
+    font-family: var(--font-serif);
+    font-size: 0.86rem;
+    line-height: 1.12;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .compare-verification-checklist__action,
+  .compare-verification-checklist__proof {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--color-stone-readable);
+    font-size: 0.64rem;
+    line-height: 1.25;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+  .compare-verification-checklist__proof {
+    margin-top: 0.1rem;
+    color: var(--color-frost);
+    -webkit-line-clamp: 2;
+  }
   .compare-decision-read__lanes {
     grid-column: 2;
     grid-row: 1;
@@ -5049,6 +5157,7 @@
       max-width: none;
     }
     .compare-decision-read__scout-sequence,
+    .compare-verification-checklist,
     .compare-decision-read__lanes {
       grid-column: auto;
       grid-row: auto;
@@ -5123,10 +5232,16 @@
       display: grid;
       gap: 0.2rem;
     }
-    .compare-decision-read__scout-copy {
+    .compare-decision-read__scout-copy,
+    .compare-verification-checklist__head > span:last-child {
       text-align: left;
     }
+    .compare-verification-checklist__head {
+      display: grid;
+      gap: 0.2rem;
+    }
     .compare-decision-read__scout-steps,
+    .compare-verification-checklist__grid,
     .compare-decision-read__lanes {
       grid-template-columns: 1fr;
     }
@@ -9792,6 +9907,7 @@ html[data-theme="dark"] .compare-dialog__head,
 html[data-theme="dark"] .compare-workbench,
 html[data-theme="dark"] .compare-lens-receipt,
 html[data-theme="dark"] .compare-decision-read,
+html[data-theme="dark"] .compare-verification-checklist,
 html[data-theme="dark"] .compare-evidence-readiness,
 html[data-theme="dark"] .compare-single-guide,
 html[data-theme="dark"] .compare-finalist-table,
@@ -9817,6 +9933,7 @@ html[data-theme="dark"] .compare-workbench__source-filter,
 html[data-theme="dark"] .compare-workbench__candidate-empty,
 html[data-theme="dark"] .compare-decision-read__scout-sequence,
 html[data-theme="dark"] .compare-decision-read__scout-step,
+html[data-theme="dark"] .compare-verification-checklist__item,
 html[data-theme="dark"] .compare-decision-read__lane,
 html[data-theme="dark"] .compare-evidence-readiness__card,
 html[data-theme="dark"] .compare-lens-receipt__chip,
@@ -9837,6 +9954,7 @@ html[data-theme="dark"] .compare-diff-board td {
 html[data-theme="dark"] .compare-workbench__lens-option:hover,
 html[data-theme="dark"] .compare-workbench__candidate:hover,
 html[data-theme="dark"] .compare-workbench__coach-card:hover,
+html[data-theme="dark"] .compare-verification-checklist__item--button:hover,
 html[data-theme="dark"] .compare-workbench__source-filter-btn:hover {
   background: rgba(31, 50, 70, 0.82);
   border-color: rgba(94, 196, 220, 0.4);
@@ -9924,8 +10042,12 @@ html[data-theme="dark"] .compare-decision-read__scout-step strong {
   color: var(--color-frost-strong);
 }
 html[data-theme="dark"] .compare-decision-read__scout-kicker,
-html[data-theme="dark"] .compare-decision-read__scout-window {
+html[data-theme="dark"] .compare-decision-read__scout-window,
+html[data-theme="dark"] .compare-verification-checklist__kicker {
   color: #c4e6c8;
+}
+html[data-theme="dark"] .compare-verification-checklist__item strong {
+  color: var(--color-frost-strong);
 }
 
 html[data-theme="dark"] .scout-brief,
