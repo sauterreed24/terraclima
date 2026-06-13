@@ -31,7 +31,7 @@ describe("corpus coverage helper", () => {
 
   it("keeps the first promotion pack out of the thinnest-place queue", () => {
     const report = buildCorpusCoverageReport(PLACES);
-    const promotedIds = new Set(["beverly-shores-in", "bismarck-nd", "boone-nc", "charlottetown-pei"]);
+    const promotedIds = new Set(["anchorage-ak", "beverly-shores-in", "bismarck-nd", "boone-nc", "charlottetown-pei"]);
 
     for (const id of promotedIds) {
       const place = report.places.find(row => row.id === id);
@@ -43,6 +43,9 @@ describe("corpus coverage helper", () => {
     const boone = report.places.find(row => row.id === "boone-nc");
     expect(boone?.missing).not.toContain("humidity");
     expect(boone?.missing).not.toContain("sunshinePct");
+    const anchorage = report.places.find(row => row.id === "anchorage-ak");
+    expect(anchorage?.missing).not.toContain("humidity");
+    expect(anchorage?.missing).not.toContain("sunshinePct");
     expect(report.thinPlaces.slice(0, 12).some(place => promotedIds.has(place.id))).toBe(false);
   });
 });
