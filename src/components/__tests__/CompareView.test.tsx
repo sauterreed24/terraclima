@@ -107,7 +107,7 @@ describe("CompareView", () => {
     const workbench = screen.getByLabelText("Compare workbench");
     expect(workbench).toHaveTextContent("Priority lens");
     expect(workbench).toHaveTextContent("Risk");
-    expect(workbench).toHaveTextContent("4/4 active / 8 nearby");
+    expect(workbench).toHaveTextContent("4/4 active / 8 candidates");
 
     const lens = screen.getByRole("group", { name: "Comparison priority lens" });
     expect(within(lens).getByRole("button", { name: "Risk" })).toHaveAttribute("aria-pressed", "true");
@@ -130,7 +130,7 @@ describe("CompareView", () => {
       candidates: [{ place: contrast, source: "Ranked", note: "Leader" }],
     });
 
-    expect(screen.getByLabelText("Compare workbench")).toHaveTextContent("1/4 active / 2 nearby");
+    expect(screen.getByLabelText("Compare workbench")).toHaveTextContent("1/4 active / 2 candidates");
     expect(screen.getByRole("button", { name: `Add ${contrast.name} to active comparison` })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: `Add ${contrast.name} to active comparison` }));
     expect(onAddPlace).toHaveBeenCalledWith(contrast.id);
@@ -159,6 +159,32 @@ describe("CompareView", () => {
 
     expect(onAddPlace).toHaveBeenCalledTimes(1);
     expect(PLACES.slice(0, 4).map(place => place.id)).not.toContain(onAddPlace.mock.calls[0][0]);
+  });
+
+  it("filters the candidate tray by source and search while keeping active slots visible", () => {
+    const candidates: CompareCandidate[] = [
+      { place: PLACES[4]!, source: "Shortlist", note: "Pinned test candidate" },
+      { place: PLACES[5]!, source: "Recent", note: "Recent test candidate" },
+      { place: PLACES[6]!, source: "Ranked", note: "Ranked test candidate" },
+    ];
+    renderCompare({
+      places: PLACES.slice(0, 4),
+      candidates,
+    });
+
+    const tray = screen.getByLabelText("Candidate tray");
+    expect(within(tray).getAllByRole("button", { name: /active comparison/ })).toHaveLength(7);
+
+    fireEvent.click(within(tray).getByRole("button", { name: "Recent" }));
+    expect(within(tray).getAllByRole("button", { name: /active comparison/ })).toHaveLength(5);
+    expect(within(tray).getByRole("button", { name: `Swap ${PLACES[5]!.name} into active comparison` })).toBeInTheDocument();
+    expect(within(tray).queryByRole("button", { name: `Swap ${PLACES[4]!.name} into active comparison` })).not.toBeInTheDocument();
+
+    fireEvent.change(within(tray).getByRole("searchbox", { name: "Find Workbench candidates" }), {
+      target: { value: PLACES[5]!.region },
+    });
+    expect(within(tray).getByRole("button", { name: `Swap ${PLACES[5]!.name} into active comparison` })).toBeInTheDocument();
+    expect(tray).toHaveTextContent("5/7 shown");
   });
 
   it("groups practical comparison rows and can hide matching signals", () => {

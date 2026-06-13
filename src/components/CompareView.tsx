@@ -25,6 +25,7 @@ import {
   COMPARISON_LENS_OPTIONS,
   DEFAULT_COMPARISON_LENS,
   comparisonLensLabel,
+  type CompareCandidateSource,
   type CompareCandidate,
   type ComparisonLensId,
 } from "../lib/compare-workbench";
@@ -36,6 +37,14 @@ import { useElementIsolation } from "../hooks/use-element-isolation";
 import { ChevronRight, Clock3, Home, Link2, X } from "lucide-react";
 
 type CompareShareStatus = "idle" | "copied" | "failed";
+type CandidateSourceFilter = "all" | CompareCandidateSource;
+
+const CANDIDATE_SOURCE_FILTERS: readonly { id: CandidateSourceFilter; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "Shortlist", label: "Shortlist" },
+  { id: "Recent", label: "Recent" },
+  { id: "Ranked", label: "Ranked" },
+];
 
 interface Props {
   places: Place[];
@@ -81,7 +90,10 @@ export function CompareView({
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
+  const candidateSearchId = useId();
   const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
+  const [candidateQuery, setCandidateQuery] = useState("");
+  const [candidateSourceFilter, setCandidateSourceFilter] = useState<CandidateSourceFilter>("all");
   const activeComparisonLens = comparisonLens ?? DEFAULT_COMPARISON_LENS;
   const placeCount = `${places.length} ${places.length === 1 ? "place" : "places"}`;
   const isSinglePlace = places.length === 1;
@@ -134,6 +146,27 @@ export function CompareView({
     }
     return rows;
   }, [candidates, places]);
+  const filteredCandidateTray = useMemo(() => {
+    const query = candidateQuery.trim().toLowerCase();
+    return candidateTray.filter(candidate => {
+      if (candidate.source === "Active") return true;
+      if (candidateSourceFilter !== "all" && candidate.source !== candidateSourceFilter) return false;
+      if (!query) return true;
+      const place = candidate.place;
+      const haystack = [
+        place.name,
+        place.region,
+        place.country,
+        ...place.archetypes,
+        candidate.source,
+        candidate.note ?? "",
+      ].join(" ").toLowerCase();
+      return haystack.includes(query);
+    });
+  }, [candidateQuery, candidateSourceFilter, candidateTray]);
+  const candidateCountRead = candidateQuery.trim() || candidateSourceFilter !== "all"
+    ? `${filteredCandidateTray.length}/${candidateTray.length} shown`
+    : `${candidateTray.length} candidates`;
   const candidateDecisionProfiles = useMemo<CompareDecisionProfile[]>(
     () => buildCompareDecisionProfiles(candidateTray.map(candidate => candidate.place), liveFitFilters),
     [candidateTray, liveFitFilters],
@@ -300,12 +333,37 @@ export function CompareView({
                 <div className="compare-workbench__tray-head">
                   <div>
                     <span className="compare-workbench__eyebrow">Candidates</span>
-                    <strong>{places.length}/{COMPARE_LIMIT} active / {candidateTray.length} nearby</strong>
+                    <strong>{places.length}/{COMPARE_LIMIT} active / {candidateCountRead}</strong>
                   </div>
                   <span>Shortlist, recent places, and current leaders stay in reach.</span>
                 </div>
+                <div className="compare-workbench__candidate-tools" aria-label="Candidate finder">
+                  <label className="compare-workbench__candidate-search" htmlFor={candidateSearchId}>
+                    <span className="sr-only">Find Workbench candidates</span>
+                    <input
+                      id={candidateSearchId}
+                      type="search"
+                      value={candidateQuery}
+                      onChange={event => setCandidateQuery(event.currentTarget.value)}
+                      placeholder="Find by place, region, source..."
+                    />
+                  </label>
+                  <div className="compare-workbench__source-filter" role="group" aria-label="Candidate source filter">
+                    {CANDIDATE_SOURCE_FILTERS.map(filter => (
+                      <button
+                        key={filter.id}
+                        type="button"
+                        className="compare-workbench__source-filter-btn"
+                        aria-pressed={filter.id === candidateSourceFilter}
+                        onClick={() => setCandidateSourceFilter(filter.id)}
+                      >
+                        {filter.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
                 <div className="compare-workbench__candidate-scroll">
-                  {candidateTray.map(candidate => {
+                  {filteredCandidateTray.length > 0 ? filteredCandidateTray.map(candidate => {
                     const active = activeCandidateIds.has(candidate.place.id);
                     const action = active
                       ? `Remove ${candidate.place.name} from active comparison`
@@ -331,7 +389,11 @@ export function CompareView({
                         </span>
                       </button>
                     );
-                  })}
+                  }) : (
+                    <div className="compare-workbench__candidate-empty" role="status">
+                      No candidates match this finder.
+                    </div>
+                  )}
                 </div>
               </div>
 
