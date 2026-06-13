@@ -3,6 +3,11 @@ import { getBestMonths } from "./best-months";
 import { annualComfortMonthCount, avgRisk, RISK_VALUE } from "./climate-metrics";
 import { assessLiveFit, type LiveFitFilters } from "./live-fit";
 import { feltComfortScore, livedFrictionScore, scoreLivability } from "./livability-score";
+import {
+  comparisonLensLabel,
+  DEFAULT_COMPARISON_LENS,
+  type ComparisonLensId,
+} from "./compare-workbench";
 
 export interface CompareDecisionProfile {
   place: Place;
@@ -94,6 +99,69 @@ export function blendedCompareScore(profile: CompareDecisionProfile): number {
     profile.place.scores.growability * 0.08 +
     (100 - profile.riskLoad) * 0.06,
   );
+}
+
+function easyMonthScore(profile: CompareDecisionProfile): number {
+  return Math.round((profile.easyMonths / 12) * 100);
+}
+
+function weightedScore(parts: readonly [value: number, weight: number][]): number {
+  return Math.round(parts.reduce((sum, [value, weight]) => sum + value * weight, 0));
+}
+
+export function compareLensScore(
+  profile: CompareDecisionProfile,
+  lens: ComparisonLensId = DEFAULT_COMPARISON_LENS,
+): number {
+  const easyMonths = easyMonthScore(profile);
+  const lowRisk = 100 - profile.riskLoad;
+  switch (lens) {
+    case "travel":
+      return weightedScore([
+        [profile.feltComfort, 0.3],
+        [easyMonths, 0.25],
+        [lowRisk, 0.2],
+        [profile.place.scores.microclimateUniqueness, 0.15],
+        [profile.place.scores.hiddenGem, 0.1],
+      ]);
+    case "move":
+      return weightedScore([
+        [profile.liveFitScore, 0.28],
+        [profile.livabilityScore, 0.28],
+        [profile.livedEase, 0.18],
+        [lowRisk, 0.16],
+        [profile.place.scores.growability, 0.1],
+      ]);
+    case "remote":
+      return weightedScore([
+        [profile.liveFitScore, 0.34],
+        [profile.livedEase, 0.22],
+        [profile.feltComfort, 0.16],
+        [lowRisk, 0.14],
+        [profile.place.scores.resilience, 0.09],
+        [easyMonths, 0.05],
+      ]);
+    case "garden":
+      return weightedScore([
+        [profile.place.scores.growability, 0.38],
+        [easyMonths, 0.18],
+        [lowRisk, 0.14],
+        [profile.place.scores.resilience, 0.14],
+        [profile.feltComfort, 0.1],
+        [profile.liveFitScore, 0.06],
+      ]);
+    case "risk":
+      return weightedScore([
+        [lowRisk, 0.42],
+        [profile.place.scores.resilience, 0.22],
+        [profile.livedEase, 0.16],
+        [profile.livabilityScore, 0.12],
+        [profile.feltComfort, 0.08],
+      ]);
+    case "balanced":
+    default:
+      return blendedCompareScore(profile);
+  }
 }
 
 export function buildCompareDecisionProfiles(
@@ -198,6 +266,7 @@ function buildScoutSequence(
   counterweight: CounterweightRead | null,
   runnerUp: CompareDecisionProfile | undefined,
   highestRisk: CompareDecisionProfile,
+  lensRead: string,
 ): CompareScoutStep[] {
   const byId = new Map(profiles.map(profile => [profile.place.id, profile]));
   const sequence: CompareScoutStep[] = [];
@@ -212,7 +281,7 @@ function buildScoutSequence(
   append(scoutStep(
     "Start here",
     primary,
-    "Best all-around finalist; pressure-test this dossier before the rest.",
+    `Best ${lensRead} finalist; pressure-test this dossier before the rest.`,
   ));
 
   const counterweightProfile = counterweight ? byId.get(counterweight.place.id) : undefined;
@@ -249,6 +318,7 @@ function buildDecisionTableRows(
   primary: CompareDecisionProfile,
   counterweight: CounterweightRead | null,
   scoutSequence: readonly CompareScoutStep[],
+  lens: ComparisonLensId,
 ): CompareDecisionTableRow[] {
   const sequenceRank = new Map(scoutSequence.map((step, index) => [step.place.id, index]));
   const sequenceRole = new Map(scoutSequence.map(step => [step.place.id, step.label]));
@@ -258,7 +328,7 @@ function buildDecisionTableRows(
       const aSeq = sequenceRank.get(a.place.id);
       const bSeq = sequenceRank.get(b.place.id);
       if (aSeq != null || bSeq != null) return (aSeq ?? Number.POSITIVE_INFINITY) - (bSeq ?? Number.POSITIVE_INFINITY);
-      return blendedCompareScore(b) - blendedCompareScore(a) || profileNameTie(a, b);
+      return compareLensScore(b, lens) - compareLensScore(a, lens) || profileNameTie(a, b);
     })
     .map(profile => {
       const visit = visitWindowRead(profile.place);
@@ -269,7 +339,7 @@ function buildDecisionTableRows(
       return {
         place: profile.place,
         role,
-        decisionScore: blendedCompareScore(profile),
+        decisionScore: compareLensScore(profile, lens),
         fitSummary: `${profile.liveFitScore}/100 fit · ${profile.easyMonths}/12 easy months`,
         riskSummary: `${profile.riskLoad}/100 risk`,
         visitWindow: visit.visitWindow,
@@ -280,12 +350,13 @@ function buildDecisionTableRows(
 
 export function buildCompareDecisionRead(
   profiles: readonly CompareDecisionProfile[],
+  lens: ComparisonLensId = DEFAULT_COMPARISON_LENS,
 ): CompareDecisionRead | null {
   if (profiles.length < 2) return null;
 
-  const byBlend = [...profiles].sort((a, b) => blendedCompareScore(b) - blendedCompareScore(a) || profileNameTie(a, b));
-  const primary = byBlend[0]!;
-  const runnerUp = byBlend.find(profile => profile.place.id !== primary.place.id);
+  const byLens = [...profiles].sort((a, b) => compareLensScore(b, lens) - compareLensScore(a, lens) || profileNameTie(a, b));
+  const primary = byLens[0]!;
+  const runnerUp = byLens.find(profile => profile.place.id !== primary.place.id);
   const lowestRisk = pickProfile(profiles, profile => profile.riskLoad, "asc");
   const comfort = pickProfile(profiles, profile => profile.feltComfort);
   const garden = pickProfile(profiles, profile => profile.place.scores.growability);
@@ -293,8 +364,9 @@ export function buildCompareDecisionRead(
   const livedEase = pickProfile(profiles, profile => profile.livedEase);
   const highestRisk = pickProfile(profiles, profile => profile.riskLoad);
   const counterweight = pickCounterweight(primary, runnerUp, lowestRisk, comfort, garden, longestSeason, livedEase);
-  const scoutSequence = buildScoutSequence(profiles, primary, counterweight, runnerUp, highestRisk);
-  const tableRows = buildDecisionTableRows(profiles, primary, counterweight, scoutSequence);
+  const lensRead = lens === DEFAULT_COMPARISON_LENS ? "all-around" : `${comparisonLensLabel(lens).toLowerCase()}-lens`;
+  const scoutSequence = buildScoutSequence(profiles, primary, counterweight, runnerUp, highestRisk, lensRead);
+  const tableRows = buildDecisionTableRows(profiles, primary, counterweight, scoutSequence, lens);
 
   const landClause = garden.place.id === primary.place.id
     ? `${primary.place.name} also keeps the garden edge`
@@ -312,7 +384,7 @@ export function buildCompareDecisionRead(
   return {
     primary,
     counterweight,
-    summary: `${primary.place.name} is the first finalist to pressure-test (${blendedCompareScore(primary)}/100 all-around); ${riskClause}, and ${landClause}.${counterweightClause}`,
+    summary: `${primary.place.name} is the first finalist to pressure-test (${compareLensScore(primary, lens)}/100 ${lensRead}); ${riskClause}, and ${landClause}.${counterweightClause}`,
     caution,
     nextAction: counterweight
       ? `Open ${primary.place.name}'s dossier first; read ${counterweight.place.name} second if ${counterweight.preference}.`
@@ -321,10 +393,12 @@ export function buildCompareDecisionRead(
     tableRows,
     lanes: [
       {
-        label: "Broadest fit",
+        label: lens === DEFAULT_COMPARISON_LENS ? "Broadest fit" : `${comparisonLensLabel(lens)} fit`,
         place: primary.place,
-        value: `${blendedCompareScore(primary)}/100`,
-        detail: "Blend of live-fit, livability, felt comfort, lived ease, garden signal, and low-risk margin.",
+        value: `${compareLensScore(primary, lens)}/100`,
+        detail: lens === DEFAULT_COMPARISON_LENS
+          ? "Blend of live-fit, livability, felt comfort, lived ease, garden signal, and low-risk margin."
+          : `Priority read using the ${comparisonLensLabel(lens).toLowerCase()} comparison lens.`,
       },
       {
         label: "Lowest risk",

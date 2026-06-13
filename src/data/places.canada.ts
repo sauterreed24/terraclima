@@ -2007,11 +2007,54 @@ export const PLACES_CANADA: Place[] = [
     climateChange: { outlook2050: "Coastal erosion on north shore; warmer Gulf waters.", outlook2100: "Sea-level rise threatens low-lying farms.", keyShifts: [{ variable: "Ice duration", direction: "down" }], resilienceNote: "Island infrastructure is exposed to storms." },
     risks: { wildfire: { level: "low", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "low", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "elevated", trend: "worsening" } },
     scores: { hiddenGem: 58, microclimateUniqueness: 66, comfort: 66, growability: 62, resilience: 54, tradeoff: 38 },
+    liveSignals: {
+      costPressure: 48,
+      socialStress: 16,
+      accessFriction: 36,
+      note: "Charlottetown has PEI's strongest service base, but island logistics, seasonal housing pressure, and coastal storm diligence still matter.",
+      sources: [
+        { label: "City of Charlottetown - municipal services", url: "https://www.charlottetown.ca/" },
+        { label: "Government of PEI - erosion and flooding", url: "https://www.princeedwardisland.ca/en/information/land-and-environment/erosion-and-flooding" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Charlottetown", role: "hub", population: "~40,000 city", note: "Island capital, university, hospital, port, airport, and province-scale service center." },
+      { name: "Stratford", role: "town", note: "Harbour-adjacent residential contrast with bridge access and slightly different exposure." },
+      { name: "Cornwall", role: "town", note: "West-side service and commuting contrast with a more suburban island feel." },
+    ],
+    thingsToDo: [
+      { label: "Victoria Park waterfront", kind: "urban", season: "summer", note: "Reads sea breeze, harbour humidity, and walkable service access in one loop." },
+      { label: "North shore beach day", kind: "water", season: "summer", note: "Shows how Gulf water softens heat while keeping wind and erosion in the decision." },
+      { label: "Fall harvest route", kind: "food-drink", season: "autumn", note: "Red soil, potatoes, orchards, and farm roads make the island growing climate visible." },
+      { label: "Winter bridge-and-storm check", kind: "seasonal", season: "winter", note: "A practical read on wind, drifting snow, ferry/bridge backups, and wet-cold tolerance." },
+    ],
+    deepSections: [
+      {
+        id: "charlottetown-island-service-anchor",
+        title: "The island service anchor changes the lived read",
+        paragraphs: [
+          "Charlottetown is small, but within PEI it functions like the service center. That means the maritime climate comes with hospitals, university life, government offices, airport access, groceries, and cultural venues close enough for daily use.",
+          "For relocation, that access matters as much as the weather. A rural PEI beach climate can become isolating in winter; Charlottetown keeps the same broad island signal while reducing everyday friction.",
+        ],
+      },
+      {
+        id: "charlottetown-seasonal-lag-and-coast",
+        title: "Seasonal lag, red soil, and coastal diligence",
+        paragraphs: [
+          "The Gulf delays spring, moderates summer, and keeps autumn useful. Gardens and farms benefit from moisture and long light, but the island setting also means wind, salt, coastal erosion, and storm-water decisions are never far away.",
+          "That makes Charlottetown a strong comparison anchor for people weighing maritime comfort against mainland convenience. It is easier to live in than a small fishing village, but less urban and less insulated than Halifax or Moncton.",
+        ],
+      },
+    ],
     relocationFit: ["small-town families", "farmers"], travelFit: ["Green Gables", "beaches", "lobster"],
     whoWouldLove: "Quiet island life with maritime seasons.", whoMightNot: "Urban nightlife seekers.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "ECCC — Charlottetown", kind: "eccc", url: "https://climate.weather.gc.ca/" }],
+    citations: [
+      { label: "ECCC - Charlottetown climate data", kind: "eccc", url: "https://climate.weather.gc.ca/" },
+      { label: "City of Charlottetown - municipal services", kind: "other", url: "https://www.charlottetown.ca/" },
+      { label: "Government of PEI - erosion and flooding", kind: "other", url: "https://www.princeedwardisland.ca/en/information/land-and-environment/erosion-and-flooding" },
+    ],
   },
 
   {

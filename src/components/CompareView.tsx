@@ -1,11 +1,11 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { MOTION_DURATION_BASE_S, scrimFadeTransition } from "../lib/device-profile";
-import { useEffect, useId, useMemo, useRef } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { Place, RiskLevel, ScenarioId } from "../types";
 import { scenarioMeta } from "../lib/climate-projection";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
-import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
+import { meanJanLow, meanSummerHigh, getAnnualPrecipMm, RISK_VALUE } from "../lib/climate-metrics";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { computeBioclim, type BioclimIndex } from "../lib/bioclim";
@@ -18,8 +18,16 @@ import { apparentComfortIndex } from "../lib/comfort-precision";
 import {
   buildCompareDecisionProfiles,
   buildCompareDecisionRead,
+  compareLensScore,
   type CompareDecisionProfile,
 } from "../lib/compare-finalist-verdict";
+import {
+  COMPARISON_LENS_OPTIONS,
+  DEFAULT_COMPARISON_LENS,
+  comparisonLensLabel,
+  type CompareCandidate,
+  type ComparisonLensId,
+} from "../lib/compare-workbench";
 import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
 import { COMPARE_LIMIT } from "../lib/app-url";
 import { useFocusTrap } from "../hooks/use-focus-trap";
@@ -41,6 +49,10 @@ interface Props {
   homePlace?: Place | null;
   /** Add a place to the compare set — used by the "add home base" affordance. */
   onAddPlace?: (id: string) => void;
+  /** Local-only workbench candidates from shortlist, recents, and ranked leaders. */
+  candidates?: CompareCandidate[];
+  comparisonLens?: ComparisonLensId;
+  onComparisonLensChange?: (lens: ComparisonLensId) => void;
   scenario?: ScenarioId;
   occluded?: boolean;
 }
@@ -56,6 +68,9 @@ export function CompareView({
   liveFitFilters,
   homePlace,
   onAddPlace,
+  candidates = [],
+  comparisonLens = DEFAULT_COMPARISON_LENS,
+  onComparisonLensChange,
   scenario = "now",
   occluded = false,
 }: Props) {
@@ -65,6 +80,8 @@ export function CompareView({
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
+  const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
+  const activeComparisonLens = comparisonLens ?? DEFAULT_COMPARISON_LENS;
   const placeCount = `${places.length} ${places.length === 1 ? "place" : "places"}`;
   const isSinglePlace = places.length === 1;
   const title = isSinglePlace ? `${placeCount} saved to compare` : `${placeCount} side by side`;
@@ -96,7 +113,33 @@ export function CompareView({
       { label: "Best growability", place: bestGrowability, value: `${bestGrowability.scores.growability}/100` },
     ];
   }, [decisionProfiles, places, temp]);
-  const decisionRead = useMemo(() => buildCompareDecisionRead(decisionProfiles), [decisionProfiles]);
+  const decisionRead = useMemo(
+    () => buildCompareDecisionRead(decisionProfiles, activeComparisonLens),
+    [activeComparisonLens, decisionProfiles],
+  );
+  const activeCandidateIds = useMemo(() => new Set(places.map(place => place.id)), [places]);
+  const candidateTray = useMemo(() => {
+    const seen = new Set<string>();
+    const rows: CompareCandidate[] = [];
+    for (const place of places) {
+      if (seen.has(place.id)) continue;
+      seen.add(place.id);
+      rows.push({ place, source: "Active", note: "Active slot" });
+    }
+    for (const candidate of candidates) {
+      if (seen.has(candidate.place.id)) continue;
+      seen.add(candidate.place.id);
+      rows.push(candidate);
+    }
+    return rows;
+  }, [candidates, places]);
+  const groupedRows = useMemo(
+    () => buildGroupedComparisonRows(places, decisionById, activeComparisonLens, temp, dist),
+    [activeComparisonLens, decisionById, dist, places, temp],
+  );
+  const visibleGroupedRows = showDifferencesOnly
+    ? groupedRows.filter(row => row.different)
+    : groupedRows;
   const singlePlaceGuide = isSinglePlace ? buildSinglePlaceGuide(decisionProfiles[0]) : null;
   const compareLensReceipt = useMemo(
     () => buildCompareLensReceipt(liveFitFilters, scenario, temp),
@@ -216,6 +259,69 @@ export function CompareView({
                 </span>
               </div>
             ) : null}
+
+            <section className="compare-workbench" aria-label="Compare workbench">
+              <div className="compare-workbench__lens">
+                <div className="compare-workbench__lens-copy">
+                  <span className="compare-workbench__eyebrow">Priority lens</span>
+                  <strong>{comparisonLensLabel(activeComparisonLens)}</strong>
+                  <span>{COMPARISON_LENS_OPTIONS.find(option => option.id === activeComparisonLens)?.detail}</span>
+                </div>
+                <div className="compare-workbench__lens-options" role="group" aria-label="Comparison priority lens">
+                  {COMPARISON_LENS_OPTIONS.map(option => (
+                    <button
+                      key={option.id}
+                      type="button"
+                      className="compare-workbench__lens-option"
+                      aria-pressed={option.id === activeComparisonLens}
+                      title={option.detail}
+                      onClick={() => onComparisonLensChange?.(option.id)}
+                    >
+                      {option.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="compare-workbench__tray" aria-label="Candidate tray">
+                <div className="compare-workbench__tray-head">
+                  <div>
+                    <span className="compare-workbench__eyebrow">Candidates</span>
+                    <strong>{places.length}/{COMPARE_LIMIT} active / {candidateTray.length} nearby</strong>
+                  </div>
+                  <span>Shortlist, recent places, and current leaders stay in reach.</span>
+                </div>
+                <div className="compare-workbench__candidate-scroll">
+                  {candidateTray.map(candidate => {
+                    const active = activeCandidateIds.has(candidate.place.id);
+                    const action = active
+                      ? `Remove ${candidate.place.name} from active comparison`
+                      : places.length >= COMPARE_LIMIT
+                        ? `Swap ${candidate.place.name} into active comparison`
+                        : `Add ${candidate.place.name} to active comparison`;
+                    return (
+                      <button
+                        key={`${candidate.source}-${candidate.place.id}`}
+                        type="button"
+                        className="compare-workbench__candidate"
+                        data-active={active ? "true" : undefined}
+                        data-source={candidate.source.toLowerCase()}
+                        aria-pressed={active}
+                        aria-label={action}
+                        title={candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`}
+                        onClick={() => onAddPlace?.(candidate.place.id)}
+                      >
+                        <span className="compare-workbench__candidate-name">{candidate.place.name}</span>
+                        <span className="compare-workbench__candidate-meta">
+                          <span>{candidate.source}</span>
+                          <strong>{candidate.place.region}</strong>
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
 
             {compareLensReceipt ? (
               <section className="compare-lens-receipt" aria-label="Comparison scoring lens">
@@ -402,6 +508,52 @@ export function CompareView({
               </section>
             ) : null}
 
+            <section className="compare-diff-board" aria-label="Grouped comparison rows">
+              <div className="compare-diff-board__head">
+                <div>
+                  <span className="compare-diff-board__eyebrow">Difference board</span>
+                  <strong>{showDifferencesOnly ? `${visibleGroupedRows.length} signals differ` : `${groupedRows.length} grouped signals`}</strong>
+                </div>
+                <button
+                  type="button"
+                  className="compare-diff-board__toggle"
+                  aria-pressed={showDifferencesOnly}
+                  onClick={() => setShowDifferencesOnly(value => !value)}
+                >
+                  Show differences only
+                </button>
+              </div>
+              <div className="compare-diff-board__scroll" aria-label="Scrollable grouped comparison rows">
+                <table>
+                  <caption className="sr-only">Grouped comparison signals for active places</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Group</th>
+                      <th scope="col">Signal</th>
+                      {places.map(place => (
+                        <th key={place.id} scope="col">{place.name}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {visibleGroupedRows.length > 0 ? visibleGroupedRows.map(row => (
+                      <tr key={`${row.group}-${row.label}`} data-different={row.different ? "true" : undefined}>
+                        <td className="compare-diff-board__group">{row.group}</td>
+                        <th scope="row">{row.label}</th>
+                        {row.values.map((value, index) => (
+                          <td key={`${row.group}-${row.label}-${places[index]?.id ?? index}`}>{value}</td>
+                        ))}
+                      </tr>
+                    )) : (
+                      <tr>
+                        <td colSpan={places.length + 2}>All visible grouped signals match across these active places.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
             {compareHighlights.length > 0 ? (
               <div className="compare-insight-strip" aria-label="Comparison highlights">
                 {compareHighlights.map(item => (
@@ -543,6 +695,86 @@ export function CompareView({
   );
 }
 
+interface GroupedComparisonRow {
+  group: string;
+  label: string;
+  values: string[];
+  different: boolean;
+}
+
+function buildGroupedComparisonRows(
+  places: readonly Place[],
+  decisionById: Map<string, CompareDecisionProfile>,
+  lens: ComparisonLensId,
+  tempUnit: ReturnType<typeof useUnits>["temp"],
+  distUnit: ReturnType<typeof useUnits>["dist"],
+): GroupedComparisonRow[] {
+  const row = (group: string, label: string, values: string[]): GroupedComparisonRow => ({
+    group,
+    label,
+    values,
+    different: new Set(values.map(value => value.toLowerCase())).size > 1,
+  });
+  const score = (value: number | null | undefined) => value == null ? "not graded" : `${Math.round(value)}/100`;
+  const decisionScore = (place: Place, pick: (profile: CompareDecisionProfile) => number) => {
+    const profile = decisionById.get(place.id);
+    return profile ? `${pick(profile)}/100` : "not graded";
+  };
+  const meanPercent = (values: readonly number[] | undefined) => values?.length
+    ? `${Math.round(values.reduce((sum, value) => sum + value, 0) / values.length)}%`
+    : "not sourced";
+  const meanSunshine = (place: Place) => meanPercent(place.climate.sunshinePct);
+  const meanHumidity = (place: Place) => meanPercent(place.climate.humidity);
+  const httpsCitations = (place: Place) => `${place.citations.filter(citation => citation.url?.startsWith("https://")).length}`;
+
+  return [
+    row("Comfort", "Priority lens score", places.map(place => {
+      const profile = decisionById.get(place.id);
+      return profile ? `${compareLensScore(profile, lens)}/100` : "not graded";
+    })),
+    row("Comfort", "JJA high", places.map(place => fmtTemp(meanSummerHigh(place), tempUnit, { digits: 1 }))),
+    row("Comfort", "Jan low", places.map(place => fmtTemp(meanJanLow(place), tempUnit, { digits: 1 }))),
+    row("Comfort", "Felt comfort", places.map(place => decisionScore(place, profile => profile.feltComfort))),
+    row("Comfort", "Humidity", places.map(meanHumidity)),
+    row("Seasonality", "Koppen", places.map(place => place.koppen)),
+    row("Seasonality", "Easy months", places.map(place => {
+      const profile = decisionById.get(place.id);
+      return profile ? `${profile.easyMonths}/12` : "not graded";
+    })),
+    row("Seasonality", "Annual precip", places.map(place => fmtPrecip(getAnnualPrecipMm(place), distUnit))),
+    row("Seasonality", "Sunshine", places.map(meanSunshine)),
+    row("Seasonality", "Frost-free", places.map(place => place.climate.frostFreeDays == null ? "not sourced" : `${place.climate.frostFreeDays} d`)),
+    row("Hazards", "Risk load", places.map(place => {
+      const profile = decisionById.get(place.id);
+      return profile ? `${profile.riskLoad}/100` : "not graded";
+    })),
+    row("Hazards", "Top hazard", places.map(topRiskValue)),
+    row("Hazards", "Extreme heat", places.map(place => RISK_LABELS[place.risks.extremeHeat.level])),
+    row("Hazards", "Wildfire / smoke", places.map(place => `${RISK_LABELS[place.risks.wildfire.level]} / ${RISK_LABELS[place.risks.smoke.level]}`)),
+    row("Lived friction", "Live-here fit", places.map(place => decisionScore(place, profile => profile.liveFitScore))),
+    row("Lived friction", "Livability", places.map(place => decisionScore(place, profile => profile.livabilityScore))),
+    row("Lived friction", "Lived ease", places.map(place => decisionScore(place, profile => profile.livedEase))),
+    row("Access/cost", "Cost pressure", places.map(place => score(place.liveSignals?.costPressure))),
+    row("Access/cost", "Access friction", places.map(place => score(place.liveSignals?.accessFriction))),
+    row("Access/cost", "Social stress", places.map(place => score(place.liveSignals?.socialStress))),
+    row("Garden/land", "Growability", places.map(place => score(place.scores.growability))),
+    row("Garden/land", "Hardiness", places.map(place => place.growability.hardinessZone ?? place.climate.hardinessZone ?? "not sourced")),
+    row("Garden/land", "Elevation", places.map(place => fmtElev(place.elevationM, distUnit))),
+    row("Garden/land", "Soil drainage", places.map(place => place.soil.drainage)),
+    row("Evidence", "Tier", places.map(place => place.tier)),
+    row("Evidence", "Confidence", places.map(place => place.confidence)),
+    row("Evidence", "HTTPS citations", places.map(httpsCitations)),
+    row("Evidence", "Deep sections", places.map(place => `${place.deepSections?.length ?? 0}`)),
+  ];
+}
+
+function topRiskValue(place: Place): string {
+  const [axis, risk] = (Object.entries(place.risks) as Array<
+    [keyof Place["risks"], Place["risks"][keyof Place["risks"]]]
+  >).sort((a, b) => RISK_VALUE[b[1].level] - RISK_VALUE[a[1].level] || RISK_AXIS_LABELS[a[0]].localeCompare(RISK_AXIS_LABELS[b[0]]))[0]!;
+  return `${RISK_AXIS_LABELS[axis]}: ${RISK_LABELS[risk.level]}`;
+}
+
 function HomeDeltaStrip({ place, home }: { place: Place; home: Place }) {
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -598,6 +830,18 @@ const RISK_LABELS: Record<RiskLevel, string> = {
   elevated: "elevated",
   high: "high",
   "very-high": "very high",
+};
+
+const RISK_AXIS_LABELS: Record<keyof Place["risks"], string> = {
+  wildfire: "Wildfire",
+  flood: "Flood",
+  drought: "Drought",
+  extremeHeat: "Extreme heat",
+  extremeCold: "Extreme cold",
+  smoke: "Smoke",
+  storm: "Storm",
+  landslide: "Landslide",
+  coastal: "Coastal",
 };
 
 function joinReadable(parts: readonly string[]): string {

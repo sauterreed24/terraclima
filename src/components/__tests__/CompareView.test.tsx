@@ -3,6 +3,7 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { PLACES } from "../../data/places";
+import type { CompareCandidate, ComparisonLensId } from "../../lib/compare-workbench";
 import type { LiveFitFilters, LiveFitPresetId } from "../../lib/live-fit";
 import { UnitProvider } from "../../lib/units";
 import type { Place } from "../../types";
@@ -38,16 +39,24 @@ function renderCompare({
   onClose = () => undefined,
   onRemove = () => undefined,
   onOpenPlace,
+  onAddPlace,
   shareStatus,
   liveFitFilters,
+  candidates,
+  comparisonLens,
+  onComparisonLensChange,
   places = PLACES.slice(0, 4),
 }: {
   onCopyView?: () => void;
   onClose?: () => void;
   onRemove?: (id: string) => void;
   onOpenPlace?: (id: string) => void;
+  onAddPlace?: (id: string) => void;
   shareStatus?: "idle" | "copied" | "failed";
   liveFitFilters?: LiveFitFilters;
+  candidates?: CompareCandidate[];
+  comparisonLens?: ComparisonLensId;
+  onComparisonLensChange?: (lens: ComparisonLensId) => void;
   places?: Place[];
 } = {}) {
   render(
@@ -61,12 +70,92 @@ function renderCompare({
         onCopyView={onCopyView}
         shareStatus={shareStatus}
         liveFitFilters={liveFitFilters}
+        onAddPlace={onAddPlace}
+        candidates={candidates}
+        comparisonLens={comparisonLens}
+        onComparisonLensChange={onComparisonLensChange}
       />
     </UnitProvider>,
   );
 }
 
 describe("CompareView", () => {
+  it("renders the Compare Workbench lens controls and candidate tray", () => {
+    const onComparisonLensChange = vi.fn();
+    const onAddPlace = vi.fn();
+    const candidates: CompareCandidate[] = PLACES.slice(0, 8).map(place => ({
+      place,
+      source: "Shortlist",
+      note: "Pinned test candidate",
+    }));
+
+    render(
+      <UnitProvider>
+        <CompareView
+          places={PLACES.slice(0, 4)}
+          open
+          onClose={() => undefined}
+          onRemove={() => undefined}
+          onAddPlace={onAddPlace}
+          candidates={candidates}
+          comparisonLens="risk"
+          onComparisonLensChange={onComparisonLensChange}
+        />
+      </UnitProvider>,
+    );
+
+    const workbench = screen.getByLabelText("Compare workbench");
+    expect(workbench).toHaveTextContent("Priority lens");
+    expect(workbench).toHaveTextContent("Risk");
+    expect(workbench).toHaveTextContent("4/4 active / 8 nearby");
+
+    const lens = screen.getByRole("group", { name: "Comparison priority lens" });
+    expect(within(lens).getByRole("button", { name: "Risk" })).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(within(lens).getByRole("button", { name: "Garden" }));
+    expect(onComparisonLensChange).toHaveBeenCalledWith("garden");
+
+    expect(screen.getAllByRole("button", { name: /active comparison/ })).toHaveLength(8);
+    expect(screen.getByRole("button", { name: `Remove ${PLACES[0].name} from active comparison` })).toHaveAttribute("aria-pressed", "true");
+    fireEvent.click(screen.getByRole("button", { name: `Swap ${PLACES[4].name} into active comparison` }));
+    expect(onAddPlace).toHaveBeenCalledWith(PLACES[4].id);
+  });
+
+  it("keeps the Workbench useful for a single saved place", () => {
+    const anchor = PLACES[0]!;
+    const contrast = PLACES[1]!;
+    const onAddPlace = vi.fn();
+    renderCompare({
+      places: [anchor],
+      onAddPlace,
+      candidates: [{ place: contrast, source: "Ranked", note: "Leader" }],
+    });
+
+    expect(screen.getByLabelText("Compare workbench")).toHaveTextContent("1/4 active / 2 nearby");
+    expect(screen.getByRole("button", { name: `Add ${contrast.name} to active comparison` })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: `Add ${contrast.name} to active comparison` }));
+    expect(onAddPlace).toHaveBeenCalledWith(contrast.id);
+  });
+
+  it("groups practical comparison rows and can hide matching signals", () => {
+    renderCompare();
+
+    const table = screen.getByRole("table", { name: "Grouped comparison signals for active places" });
+    expect(table).toHaveTextContent("Comfort");
+    expect(table).toHaveTextContent("Seasonality");
+    expect(table).toHaveTextContent("Hazards");
+    expect(table).toHaveTextContent("Lived friction");
+    expect(table).toHaveTextContent("Access/cost");
+    expect(table).toHaveTextContent("Garden/land");
+    expect(table).toHaveTextContent("Evidence");
+    expect(table).toHaveTextContent("HTTPS citations");
+
+    const beforeRows = within(table).getAllByRole("row").length;
+    const toggle = screen.getByRole("button", { name: "Show differences only" });
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-pressed", "true");
+    expect(within(table).getAllByRole("row").length).toBeLessThanOrEqual(beforeRows);
+  });
+
   it("surfaces comparison highlights before the column matrix", () => {
     renderCompare();
 

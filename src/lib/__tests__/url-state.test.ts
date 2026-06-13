@@ -8,7 +8,7 @@ describe("app-url state", () => {
   });
 
   it("parses filters and compare from query string", () => {
-    const p = parseAppSearch("?v=trips&p=sequim-wa&col=rainshadow&c=USA,Canada&a=fog-belt-coast,rain-shadow-sanctuary&q=san+jose&cmp=a,b,c&r=live-fit&fit=cool-summers,quiet-small-town&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated&temp=C&dist=metric");
+    const p = parseAppSearch("?v=trips&p=sequim-wa&col=rainshadow&c=USA,Canada&a=fog-belt-coast,rain-shadow-sanctuary&q=san+jose&cmp=a,b,c&clens=move&r=live-fit&fit=cool-summers,quiet-small-town&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated&temp=C&dist=metric");
     expect(p.view).toBe("trips");
     expect(p.placeId).toBe("sequim-wa");
     expect(p.collectionId).toBe("rainshadow");
@@ -17,6 +17,7 @@ describe("app-url state", () => {
     // URLSearchParams decodes "+" as a space.
     expect(p.search).toBe("san jose");
     expect(p.compareIds).toEqual(["a", "b", "c"]);
+    expect(p.comparisonLens).toBe("move");
     expect(p.ranking).toBe("live-fit");
     expect(p.fitPresets).toEqual(["cool-summers", "quiet-small-town"]);
     expect(p.maxSummerHighC).toBe(22);
@@ -58,6 +59,7 @@ describe("app-url state", () => {
       archetypes: ["rain-shadow-sanctuary"],
       search: "  fog  ",
       compareIds: ["a", "b"],
+      comparisonLens: "garden",
       ranking: "live-fit",
       fitPresets: ["quiet-small-town", "cool-summers"],
       maxSummerHighC: 22,
@@ -85,6 +87,7 @@ describe("app-url state", () => {
     expect(url).toMatch(/temp=C/);
     expect(url).toMatch(/dist=metric/);
     expect(url).toMatch(/cmp=a%2Cb/);
+    expect(url).toMatch(/clens=garden/);
   });
 
   it("omits defaults from the URL", () => {
@@ -112,6 +115,7 @@ describe("app-url state", () => {
     expect(url).not.toMatch(/[?&]temp=/);
     expect(url).not.toMatch(/[?&]dist=/);
     expect(url).not.toMatch(/[?&]cmp=/);
+    expect(url).not.toMatch(/[?&]clens=/);
   });
 
   it("keeps default live-fit URLs clean unless live-fit controls are active", () => {

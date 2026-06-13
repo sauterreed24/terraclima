@@ -239,11 +239,54 @@ export const PLACES_USA_EXTRA: Place[] = [
     climateChange: { outlook2050: "Wetter springs; more crop-damaging hail days.", outlook2100: "Winter warming faster than summer.", keyShifts: [{ variable: "Frost-free season", direction: "up" }], resilienceNote: "Agriculture adapts via cultivar shifts." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "mixed" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "high", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "elevated", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     scores: { hiddenGem: 44, microclimateUniqueness: 56, comfort: 48, resilience: 60, growability: 68, tradeoff: 52 },
+    liveSignals: {
+      costPressure: 34,
+      socialStress: 30,
+      accessFriction: 28,
+      note: "State-capital services, hospital access, and a real metro job base offset the winter-driving burden and Great Plains wind exposure.",
+      sources: [
+        { label: "City of Bismarck - services", url: "https://www.bismarcknd.gov/1606/Services" },
+        { label: "U.S. Census QuickFacts - Bismarck city", url: "https://www.census.gov/quickfacts/fact/table/bismarckcitynorthdakota/POP010220" },
+      ],
+    },
+    settlementsWithinZone: [
+      { name: "Bismarck", role: "hub", population: "~75,000", note: "State-capital service base on the east side of the Missouri River." },
+      { name: "Mandan", role: "town", note: "Across the river, useful for comparing commute, wind, floodplain, and everyday-service tradeoffs." },
+      { name: "Lincoln", role: "town", note: "Suburban prairie edge where exposure and driving distances become more obvious." },
+    ],
+    thingsToDo: [
+      { label: "Missouri River trail check", kind: "trail", season: "spring to autumn", note: "Reads wind, river humidity, cottonwood shade, and floodplain siting in one loop." },
+      { label: "Fort Abraham Lincoln State Park", kind: "historic", season: "shoulder seasons", note: "Open prairie exposure and river-bluff terrain make the continentality tangible." },
+      { label: "January cold-start test", kind: "seasonal", season: "winter", note: "A practical relocation check for vehicles, errands, school mornings, and tolerance for subzero wind." },
+      { label: "Prairie storm watch", kind: "vista", season: "late spring", note: "Dryline storms, hail, and big-sky convective structure are a core part of the local climate identity." },
+    ],
+    deepSections: [
+      {
+        id: "bismarck-continentality-is-logistics",
+        title: "Continentality becomes a logistics question",
+        paragraphs: [
+          "Bismarck is not just cold or hot; it asks whether a household is comfortable planning around extremes. Winter errands, school closures, vehicle reliability, wind chill, and snowpack all matter as much as monthly averages.",
+          "The same openness creates upside. Air dries quickly after storms, sunshine is common for a northern city, and the Missouri River valley gives the place more shape than a flat-plains stereotype suggests.",
+        ],
+      },
+      {
+        id: "bismarck-capital-service-counterweight",
+        title: "The state-capital service base is the counterweight",
+        paragraphs: [
+          "Many Great Plains climates look difficult on paper because the hazard and seasonality scores are heavy. Bismarck earns a better lived read because it has hospitals, state offices, retail, airport access, and municipal services close at hand.",
+          "That makes it a useful comparison anchor: harsher than lake-moderated or mountain towns, but much easier to operate from than a small remote prairie settlement with the same wind and cold.",
+        ],
+      },
+    ],
     relocationFit: ["energy sector", "remote workers"], travelFit: ["Lewis & Clark", "prairie reserves"],
     whoWouldLove: "Wide-open plains people who own a good parka.", whoMightNot: "Mild-winter seekers.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Bismarck Municipal", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [
+      { label: "NOAA - Bismarck Municipal climate normals", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "City of Bismarck - municipal services", kind: "other", url: "https://www.bismarcknd.gov/1606/Services" },
+      { label: "U.S. Census QuickFacts - Bismarck city", kind: "oss-data", url: "https://www.census.gov/quickfacts/fact/table/bismarckcitynorthdakota/POP010220" },
+    ],
   },
   {
     id: "morgantown-wv",

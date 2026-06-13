@@ -28,6 +28,9 @@ vi.mock("../components/CompareView", () => ({
     onCopyView,
     shareStatus,
     liveFitFilters,
+    candidates,
+    comparisonLens,
+    onComparisonLensChange,
     occluded,
   }: {
     places: Array<{ id: string }>;
@@ -35,6 +38,9 @@ vi.mock("../components/CompareView", () => ({
     onClose: () => void;
     onCopyView?: () => void;
     shareStatus?: "idle" | "copied" | "failed";
+    candidates?: Array<{ place: { id: string } }>;
+    comparisonLens?: string;
+    onComparisonLensChange?: (lens: "risk") => void;
     liveFitFilters?: {
       fitPresets?: Set<string>;
       maxSummerHighC?: number;
@@ -52,6 +58,13 @@ vi.mock("../components/CompareView", () => ({
           Close comparison
         </button>
         <div data-testid="compare-place-ids">{places.map(place => place.id).join(",")}</div>
+        <div data-testid="compare-lens">{comparisonLens}</div>
+        <div data-testid="compare-candidate-count">{candidates?.length ?? 0}</div>
+        {onComparisonLensChange ? (
+          <button type="button" aria-label="Set risk comparison lens" onClick={() => onComparisonLensChange("risk")}>
+            Risk lens
+          </button>
+        ) : null}
         {onCopyView ? (
           <button type="button" aria-label="Copy comparison link" onClick={onCopyView}>
             {shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
@@ -421,7 +434,7 @@ describe("App shell", () => {
     const saved = JSON.parse(window.localStorage.getItem("terraclima.bookmarks.v1") ?? "[]") as string[];
     expect(screen.getByLabelText("Shortlist scout packet status")).toHaveTextContent("Scout packet ready");
 
-    fireEvent.click(screen.getByRole("button", { name: "Compare 4 pinned places from your shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench for 4 pinned places from your shortlist" }));
 
     expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
     expect(screen.getByTestId("compare-place-ids")).toHaveTextContent(saved.join(","));
@@ -636,6 +649,32 @@ describe("App shell", () => {
     await waitFor(() => expect(screen.getAllByText("Link copied").length).toBeGreaterThan(0));
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("hydrates, changes, and shares the comparison priority lens", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+    window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa&clens=move&temp=C");
+
+    renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+    expect(screen.getByTestId("compare-lens")).toHaveTextContent("move");
+
+    fireEvent.click(screen.getByRole("button", { name: "Set risk comparison lens" }));
+    await waitFor(() => {
+      expect(new URLSearchParams(window.location.search).get("clens")).toBe("risk");
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Copy comparison link" }));
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const copied = new URL(writeText.mock.calls[0][0] as string);
+    expect(copied.searchParams.get("cmp")).toBe("sequim-wa,port-townsend-wa");
+    expect(copied.searchParams.get("clens")).toBe("risk");
+    expect(copied.searchParams.get("temp")).toBe("C");
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("clears all filters from URL and restores results after empty-results clear", async () => {
     window.history.replaceState(
       null,
@@ -802,7 +841,7 @@ describe("App shell", () => {
     expect(readiness).toHaveTextContent("Open Compare setup to plan the missing contrast");
     expect(screen.queryByLabelText("Shortlist packet decision cue")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Open Compare setup for Sequim from your shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench setup for Sequim from your shortlist" }));
 
     expect(await screen.findByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
     expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa");
@@ -834,10 +873,24 @@ describe("App shell", () => {
     );
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Compare 3 pinned places from your shortlist" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench for 3 pinned places from your shortlist" }));
 
     expect(await screen.findByRole("dialog", { name: "3 places side by side" })).toBeInTheDocument();
     expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa,port-townsend-wa,portal-az");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("opens a 5-place shortlist with four active slots and all pins as workbench candidates", async () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa", "port-townsend-wa", "portal-az", "real-catorce-mx", "valle-de-bravo-mx"]),
+    );
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench for 4 pinned places from your shortlist" }));
+
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+    expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa,port-townsend-wa,portal-az,real-catorce-mx");
+    expect(Number(screen.getByTestId("compare-candidate-count").textContent ?? "0")).toBeGreaterThanOrEqual(5);
   }, APP_SHELL_TIMEOUT_MS);
 
   it("renders the recently viewed rail when recents exist in localStorage", () => {

@@ -21,6 +21,7 @@
  *   dist    distance unit: "imperial" (default) | "metric"
  *   theme   color theme: "auto" (default) | "light" | "dark"
  *   scn     climate scenario layer: "now" (default) | "ssp245" | "ssp585"
+ *   clens   comparison priority lens: "balanced" (default) | "travel" | "move" | "remote" | "garden" | "risk"
  *   hb      home-base place id (cards/dossiers read climate deltas against it)
  */
 
@@ -39,6 +40,11 @@ import {
   LIVE_FIT_WINTER_FLOORS_C,
   type LiveFitPresetId,
 } from "./live-fit";
+import {
+  DEFAULT_COMPARISON_LENS,
+  isComparisonLensId,
+  type ComparisonLensId,
+} from "./compare-workbench";
 
 export type AppView = "explorer" | "trips" | "collections" | "learn";
 
@@ -64,6 +70,7 @@ export interface ParsedAppUrl {
   dist: DistUnit | null;
   theme: ThemePreference | null;
   scenario: ScenarioId | null;
+  comparisonLens: ComparisonLensId | null;
   homeBaseId: string | null;
 }
 
@@ -154,6 +161,8 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
   if (isThemePreference(theme)) out.theme = theme;
   const scn = params.get("scn");
   if (scn && SCENARIO_VALUES.has(scn as ScenarioId)) out.scenario = scn as ScenarioId;
+  const clens = params.get("clens");
+  if (isComparisonLensId(clens) && clens !== DEFAULT_COMPARISON_LENS) out.comparisonLens = clens;
   const hb = params.get("hb");
   if (hb) out.homeBaseId = hb;
   return out;
@@ -188,6 +197,7 @@ export interface AppUrlState {
   dist?: DistUnit | null;
   theme?: ThemePreference | null;
   scenario?: ScenarioId | null;
+  comparisonLens?: ComparisonLensId | null;
   homeBaseId?: string | null;
   collectionExists: (id: string) => boolean;
   archetypeExists?: (id: string) => boolean;
@@ -253,6 +263,9 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
     const ids = [...compareIds].filter(validate).slice(0, COMPARE_LIMIT);
     if (ids.length > 0) params.set("cmp", ids.join(","));
   }
+  if (state.comparisonLens && state.comparisonLens !== DEFAULT_COMPARISON_LENS) {
+    params.set("clens", state.comparisonLens);
+  }
   if (state.homeBaseId) {
     const validate = state.placeExists ?? (() => true);
     if (validate(state.homeBaseId)) params.set("hb", state.homeBaseId);
@@ -305,6 +318,7 @@ export interface ValidatedAppState {
   dist: DistUnit | null;
   theme: ThemePreference | null;
   scenario: ScenarioId | null;
+  comparisonLens: ComparisonLensId;
   homeBaseId: string | null;
 }
 
@@ -350,6 +364,7 @@ export function validatedStateFromSearch(
     dist: p.dist ?? null,
     theme: p.theme ?? null,
     scenario: p.scenario ?? null,
+    comparisonLens: p.comparisonLens ?? DEFAULT_COMPARISON_LENS,
     homeBaseId,
   };
 }
@@ -381,6 +396,7 @@ export function readInitialAppState(
       dist: null,
       theme: null,
       scenario: null,
+      comparisonLens: DEFAULT_COMPARISON_LENS,
       homeBaseId: null,
     };
   }
