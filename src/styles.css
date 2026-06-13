@@ -4098,6 +4098,94 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .compare-workbench__coach {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 0.55rem;
+    min-width: 0;
+    padding: 0.65rem;
+    border-radius: 0.7rem;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background: rgba(255, 255, 255, 0.62);
+  }
+  .compare-workbench__coach-head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+  .compare-workbench__coach-head strong {
+    display: block;
+    margin-top: 0.14rem;
+    color: var(--color-ice);
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }
+  .compare-workbench__coach-head > span {
+    max-width: 28rem;
+    color: var(--color-stone-readable);
+    font-size: 0.72rem;
+    line-height: 1.3;
+    text-align: right;
+  }
+  .compare-workbench__coach-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.5rem;
+  }
+  .compare-workbench__coach-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.16rem 0.5rem;
+    min-width: 0;
+    min-height: 5.35rem;
+    padding: 0.58rem 0.62rem;
+    border-radius: 0.62rem;
+    border: 1px solid rgba(71, 90, 122, 0.18);
+    background: rgba(255, 255, 255, 0.76);
+    color: var(--color-ice);
+    text-align: left;
+  }
+  .compare-workbench__coach-card:hover {
+    border-color: rgba(26, 143, 168, 0.36);
+    background: rgba(241, 251, 253, 0.88);
+  }
+  .compare-workbench__coach-card:focus-visible {
+    outline: 2px solid var(--tc-focus-ring);
+    outline-offset: 2px;
+  }
+  .compare-workbench__coach-card strong {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--color-ice);
+    font-size: 0.82rem;
+    line-height: 1.18;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .compare-workbench__coach-label {
+    grid-column: 1 / -1;
+    color: var(--color-glacier-700);
+    font-size: 0.58rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+  .compare-workbench__coach-metric {
+    color: var(--color-ember-700);
+    font-size: 0.66rem;
+    font-weight: 800;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .compare-workbench__coach-detail {
+    grid-column: 1 / -1;
+    color: var(--color-stone-readable);
+    font-size: 0.66rem;
+    line-height: 1.25;
+  }
 
   .compare-lens-receipt {
     display: grid;
@@ -4702,6 +4790,17 @@
     }
     .compare-workbench__candidate {
       flex-basis: 9.75rem;
+    }
+    .compare-workbench__coach-head {
+      display: grid;
+      align-items: start;
+    }
+    .compare-workbench__coach-head > span {
+      max-width: none;
+      text-align: left;
+    }
+    .compare-workbench__coach-grid {
+      grid-template-columns: 1fr;
     }
     .compare-decision-read {
       margin-left: -0.25rem;
@@ -9399,8 +9498,10 @@ html[data-theme="dark"] .compare-bioclim-key {
 html[data-theme="dark"] .compare-decision-read__summary,
 html[data-theme="dark"] .compare-workbench__lens,
 html[data-theme="dark"] .compare-workbench__tray,
+html[data-theme="dark"] .compare-workbench__coach,
 html[data-theme="dark"] .compare-workbench__lens-option,
 html[data-theme="dark"] .compare-workbench__candidate,
+html[data-theme="dark"] .compare-workbench__coach-card,
 html[data-theme="dark"] .compare-decision-read__scout-sequence,
 html[data-theme="dark"] .compare-decision-read__scout-step,
 html[data-theme="dark"] .compare-decision-read__lane,
@@ -9420,7 +9521,8 @@ html[data-theme="dark"] .compare-diff-board td {
   border-bottom-color: rgba(120, 138, 178, 0.22);
 }
 html[data-theme="dark"] .compare-workbench__lens-option:hover,
-html[data-theme="dark"] .compare-workbench__candidate:hover {
+html[data-theme="dark"] .compare-workbench__candidate:hover,
+html[data-theme="dark"] .compare-workbench__coach-card:hover {
   background: rgba(31, 50, 70, 0.82);
   border-color: rgba(94, 196, 220, 0.4);
 }
@@ -9478,7 +9580,9 @@ html[data-theme="dark"] .compare-single-guide__copy p,
 html[data-theme="dark"] .compare-single-guide__check strong,
 html[data-theme="dark"] .compare-workbench__lens-copy strong,
 html[data-theme="dark"] .compare-workbench__tray-head strong,
+html[data-theme="dark"] .compare-workbench__coach-head strong,
 html[data-theme="dark"] .compare-workbench__candidate-name,
+html[data-theme="dark"] .compare-workbench__coach-card strong,
 html[data-theme="dark"] .compare-diff-board__head strong,
 html[data-theme="dark"] .compare-diff-board tbody th,
 html[data-theme="dark"] .compare-lens-receipt__copy p,

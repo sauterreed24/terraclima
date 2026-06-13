@@ -28,6 +28,7 @@ import {
   type CompareCandidate,
   type ComparisonLensId,
 } from "../lib/compare-workbench";
+import { buildCompareCoachRecommendations } from "../lib/compare-workbench-coach";
 import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
 import { COMPARE_LIMIT } from "../lib/app-url";
 import { useFocusTrap } from "../hooks/use-focus-trap";
@@ -133,6 +134,18 @@ export function CompareView({
     }
     return rows;
   }, [candidates, places]);
+  const candidateDecisionProfiles = useMemo<CompareDecisionProfile[]>(
+    () => buildCompareDecisionProfiles(candidateTray.map(candidate => candidate.place), liveFitFilters),
+    [candidateTray, liveFitFilters],
+  );
+  const coachRecommendations = useMemo(
+    () => buildCompareCoachRecommendations({
+      activePlaces: places,
+      candidateProfiles: candidateDecisionProfiles,
+      lens: activeComparisonLens,
+    }),
+    [activeComparisonLens, candidateDecisionProfiles, places],
+  );
   const groupedRows = useMemo(
     () => buildGroupedComparisonRows(places, decisionById, activeComparisonLens, temp, dist),
     [activeComparisonLens, decisionById, dist, places, temp],
@@ -321,6 +334,39 @@ export function CompareView({
                   })}
                 </div>
               </div>
+
+              {coachRecommendations.length > 0 ? (
+                <div className="compare-workbench__coach" aria-label="Contrast coach">
+                  <div className="compare-workbench__coach-head">
+                    <div>
+                      <span className="compare-workbench__eyebrow">Contrast coach</span>
+                      <strong>Best swaps to learn faster</strong>
+                    </div>
+                    <span>Use these candidates when the active set needs a clearer tradeoff.</span>
+                  </div>
+                  <div className="compare-workbench__coach-grid">
+                    {coachRecommendations.map(recommendation => {
+                      const action = places.length >= COMPARE_LIMIT
+                        ? `Swap ${recommendation.place.name} into active comparison from Contrast coach: ${recommendation.label}`
+                        : `Add ${recommendation.place.name} to active comparison from Contrast coach: ${recommendation.label}`;
+                      return (
+                        <button
+                          key={`${recommendation.lane}-${recommendation.place.id}`}
+                          type="button"
+                          className="compare-workbench__coach-card"
+                          aria-label={action}
+                          onClick={() => onAddPlace?.(recommendation.place.id)}
+                        >
+                          <span className="compare-workbench__coach-label">{recommendation.label}</span>
+                          <strong>{recommendation.place.name}</strong>
+                          <span className="compare-workbench__coach-metric">{recommendation.metric}</span>
+                          <span className="compare-workbench__coach-detail">{recommendation.detail}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
             </section>
 
             {compareLensReceipt ? (

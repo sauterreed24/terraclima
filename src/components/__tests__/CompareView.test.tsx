@@ -114,7 +114,7 @@ describe("CompareView", () => {
     fireEvent.click(within(lens).getByRole("button", { name: "Garden" }));
     expect(onComparisonLensChange).toHaveBeenCalledWith("garden");
 
-    expect(screen.getAllByRole("button", { name: /active comparison/ })).toHaveLength(8);
+    expect(within(screen.getByLabelText("Candidate tray")).getAllByRole("button", { name: /active comparison/ })).toHaveLength(8);
     expect(screen.getByRole("button", { name: `Remove ${PLACES[0].name} from active comparison` })).toHaveAttribute("aria-pressed", "true");
     fireEvent.click(screen.getByRole("button", { name: `Swap ${PLACES[4].name} into active comparison` }));
     expect(onAddPlace).toHaveBeenCalledWith(PLACES[4].id);
@@ -134,6 +134,31 @@ describe("CompareView", () => {
     expect(screen.getByRole("button", { name: `Add ${contrast.name} to active comparison` })).toBeInTheDocument();
     fireEvent.click(screen.getByRole("button", { name: `Add ${contrast.name} to active comparison` }));
     expect(onAddPlace).toHaveBeenCalledWith(contrast.id);
+  });
+
+  it("surfaces contrast coach recommendations as one-click workbench swaps", () => {
+    const onAddPlace = vi.fn();
+    const candidates: CompareCandidate[] = PLACES.slice(0, 9).map(place => ({
+      place,
+      source: "Shortlist",
+      note: "Pinned test candidate",
+    }));
+    renderCompare({
+      places: PLACES.slice(0, 4),
+      candidates,
+      onAddPlace,
+      comparisonLens: "risk",
+    });
+
+    const coach = screen.getByLabelText("Contrast coach");
+    expect(coach).toHaveTextContent("Best swaps to learn faster");
+    expect(coach).toHaveTextContent(/upgrade|contrast|counterweight|anchor/i);
+
+    const recommendation = within(coach).getAllByRole("button", { name: /from Contrast coach/ })[0]!;
+    fireEvent.click(recommendation);
+
+    expect(onAddPlace).toHaveBeenCalledTimes(1);
+    expect(PLACES.slice(0, 4).map(place => place.id)).not.toContain(onAddPlace.mock.calls[0][0]);
   });
 
   it("groups practical comparison rows and can hide matching signals", () => {
