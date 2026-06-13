@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { PLACES } from "../../data/places";
-import { buildCompareDecisionProfiles } from "../compare-finalist-verdict";
-import { buildCompareCoachRecommendations } from "../compare-workbench-coach";
+import { buildCompareDecisionProfiles, type CompareDecisionProfile } from "../compare-finalist-verdict";
+import { buildCompareCandidateSwapInsight, buildCompareCoachRecommendations } from "../compare-workbench-coach";
 
 describe("compare workbench coach", () => {
   it("recommends unique inactive candidates for a crowded workbench tray", () => {
@@ -32,5 +32,48 @@ describe("compare workbench coach", () => {
       candidateProfiles,
       lens: "balanced",
     })).toEqual([]);
+  });
+
+  it("explains why an inactive candidate is worth swapping into the active set", () => {
+    const activeProfiles: CompareDecisionProfile[] = [
+      {
+        place: PLACES[0]!,
+        liveFitScore: 54,
+        livabilityScore: 55,
+        feltComfort: 56,
+        livedEase: 50,
+        easyMonths: 5,
+        riskLoad: 38,
+      },
+      {
+        place: PLACES[1]!,
+        liveFitScore: 58,
+        livabilityScore: 58,
+        feltComfort: 59,
+        livedEase: 54,
+        easyMonths: 6,
+        riskLoad: 34,
+      },
+    ];
+    const candidateProfile: CompareDecisionProfile = {
+      place: PLACES[2]!,
+      liveFitScore: 82,
+      livabilityScore: 80,
+      feltComfort: 76,
+      livedEase: 78,
+      easyMonths: 9,
+      riskLoad: 21,
+    };
+
+    const insight = buildCompareCandidateSwapInsight({
+      activeProfiles,
+      candidateProfile,
+      lens: "move",
+    });
+
+    expect(insight.label).toBe("Move upgrade");
+    expect(insight.tone).toBe("upgrade");
+    expect(insight.detail).toContain("active move read");
+    expect(insight.score).toBeGreaterThan(0);
   });
 });

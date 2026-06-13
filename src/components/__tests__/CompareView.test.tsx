@@ -222,6 +222,9 @@ describe("CompareView", () => {
     expect(inactiveButtons[0]).toHaveTextContent("Risk");
     expect(inactiveButtons[0]).toHaveTextContent(`${topProfile.easyMonths}/12 easy months`);
     expect(inactiveButtons[0]).toHaveTextContent(`${topProfile.riskLoad}/100 risk load`);
+    const insight = within(inactiveButtons[0]).getByLabelText(`${topProfile.place.name} swap insight`);
+    expect(insight).toHaveTextContent(/upgrade|contrast|anchor|counterweight|near leader|keep warm/i);
+    expect(insight.textContent?.length ?? 0).toBeGreaterThan(24);
   });
 
   it("groups practical comparison rows and can hide matching signals", () => {

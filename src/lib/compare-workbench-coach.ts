@@ -4,6 +4,7 @@ import { compareLensScore, type CompareDecisionProfile } from "./compare-finalis
 import { comparisonLensLabel, type ComparisonLensId } from "./compare-workbench";
 
 export type CompareCoachLaneId = "lens" | "climate-contrast" | "risk" | "evidence";
+export type CompareCandidateSwapTone = "upgrade" | "contrast" | "risk" | "garden" | "evidence" | "steady";
 
 export interface CompareCoachRecommendation {
   lane: CompareCoachLaneId;
@@ -14,9 +15,22 @@ export interface CompareCoachRecommendation {
   score: number;
 }
 
+export interface CompareCandidateSwapInsight {
+  label: string;
+  detail: string;
+  tone: CompareCandidateSwapTone;
+  score: number;
+}
+
 interface CompareCoachInput {
   activePlaces: readonly Place[];
   candidateProfiles: readonly CompareDecisionProfile[];
+  lens: ComparisonLensId;
+}
+
+interface CompareCandidateSwapInput {
+  activeProfiles: readonly CompareDecisionProfile[];
+  candidateProfile: CompareDecisionProfile;
   lens: ComparisonLensId;
 }
 
@@ -67,6 +81,32 @@ function climateContrastScore(place: Place, active: ActiveClimateAverages): numb
   );
 }
 
+function climateContrastDetail(place: Place, active: ActiveClimateAverages): string {
+  const summerDelta = meanSummerHigh(place) - active.summerHighC;
+  const winterDelta = meanJanLow(place) - active.janLowC;
+  const precipDelta = getAnnualPrecipMm(place) - active.annualPrecipMm;
+  const elevationDelta = place.elevationM - active.elevationM;
+  const signals = [
+    {
+      weight: Math.abs(summerDelta) * 4,
+      detail: `${Math.abs(summerDelta).toFixed(1)} C ${summerDelta < 0 ? "cooler" : "warmer"} JJA high than the active average.`,
+    },
+    {
+      weight: Math.abs(winterDelta) * 3,
+      detail: `${Math.abs(winterDelta).toFixed(1)} C ${winterDelta > 0 ? "milder" : "colder"} January low than the active average.`,
+    },
+    {
+      weight: Math.abs(precipDelta) / 22,
+      detail: `${Math.round(Math.abs(precipDelta))} mm ${precipDelta > 0 ? "wetter" : "drier"} annually than the active average.`,
+    },
+    {
+      weight: Math.abs(elevationDelta) / 85,
+      detail: `${Math.round(Math.abs(elevationDelta))} m ${elevationDelta > 0 ? "higher" : "lower"} than the active average.`,
+    },
+  ].sort((a, b) => b.weight - a.weight);
+  return signals[0]?.detail ?? "Adds a different climate shape than the active set.";
+}
+
 function evidenceScore(place: Place): number {
   const confidence = place.confidence === "high" ? 32 : place.confidence === "moderate" ? 20 : 8;
   const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
@@ -85,6 +125,98 @@ function evidenceDetail(place: Place): string {
   const deepSections = place.deepSections?.length ?? 0;
   const sourceBacked = place.liveSignals ? "source-backed lived signals" : "limited lived signals";
   return `${place.confidence} confidence, ${citations} HTTPS citation${citations === 1 ? "" : "s"}, ${deepSections} deep section${deepSections === 1 ? "" : "s"}, ${sourceBacked}.`;
+}
+
+export function buildCompareCandidateSwapInsight({
+  activeProfiles,
+  candidateProfile,
+  lens,
+}: CompareCandidateSwapInput): CompareCandidateSwapInsight {
+  const lensLabel = comparisonLensLabel(lens);
+  const lensRead = lensLabel.toLowerCase();
+  const candidateScore = compareLensScore(candidateProfile, lens);
+  if (activeProfiles.length === 0) {
+    return {
+      label: "Start a comparison",
+      detail: `${candidateScore}/100 ${lensRead} read; add a peer to expose tradeoffs.`,
+      tone: "steady",
+      score: candidateScore,
+    };
+  }
+
+  const byLens = [...activeProfiles].sort((a, b) => compareLensScore(b, lens) - compareLensScore(a, lens) || byProfileName(a, b));
+  const strongestLens = byLens[0]!;
+  const weakestLens = byLens[byLens.length - 1]!;
+  const weakestLensScore = compareLensScore(weakestLens, lens);
+  const strongestLensScore = compareLensScore(strongestLens, lens);
+  const lowestRisk = pickMin(activeProfiles, profile => profile.riskLoad)!;
+  const bestGarden = pickMax(activeProfiles, profile => profile.place.scores.growability)!;
+  const minEvidence = Math.min(...activeProfiles.map(profile => evidenceScore(profile.place)));
+  const candidateEvidence = evidenceScore(candidateProfile.place);
+  const lensDelta = candidateScore - weakestLensScore;
+
+  if (lensDelta >= 4) {
+    return {
+      label: `${lensLabel} upgrade`,
+      detail: `+${lensDelta} vs ${weakestLens.place.name}'s active ${lensRead} read.`,
+      tone: "upgrade",
+      score: lensDelta,
+    };
+  }
+
+  if (candidateProfile.riskLoad <= lowestRisk.riskLoad - 5) {
+    return {
+      label: "Lower-risk anchor",
+      detail: `${lowestRisk.riskLoad - candidateProfile.riskLoad} points lower risk than the safest active slot.`,
+      tone: "risk",
+      score: lowestRisk.riskLoad - candidateProfile.riskLoad,
+    };
+  }
+
+  if (candidateProfile.place.scores.growability >= bestGarden.place.scores.growability + 8) {
+    return {
+      label: "Garden counterweight",
+      detail: `+${candidateProfile.place.scores.growability - bestGarden.place.scores.growability} growability vs the strongest active garden read.`,
+      tone: "garden",
+      score: candidateProfile.place.scores.growability - bestGarden.place.scores.growability,
+    };
+  }
+
+  const climateAverages = activeClimateAverages(activeProfiles.map(profile => profile.place));
+  const contrast = climateContrastScore(candidateProfile.place, climateAverages);
+  if (contrast >= 18) {
+    return {
+      label: "Climate contrast",
+      detail: climateContrastDetail(candidateProfile.place, climateAverages),
+      tone: "contrast",
+      score: contrast,
+    };
+  }
+
+  if (candidateEvidence >= minEvidence + 16) {
+    return {
+      label: "Evidence anchor",
+      detail: evidenceDetail(candidateProfile.place),
+      tone: "evidence",
+      score: candidateEvidence - minEvidence,
+    };
+  }
+
+  if (candidateScore >= strongestLensScore - 3) {
+    return {
+      label: "Near leader",
+      detail: `Within ${Math.abs(strongestLensScore - candidateScore)} points of the strongest active ${lensRead} read.`,
+      tone: "steady",
+      score: candidateScore,
+    };
+  }
+
+  return {
+    label: "Keep warm",
+    detail: "Similar enough to keep nearby; swap it in when region, access, or personal fit matters.",
+    tone: "steady",
+    score: candidateScore,
+  };
 }
 
 function pushUnique(

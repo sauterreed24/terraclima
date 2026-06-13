@@ -29,7 +29,7 @@ import {
   type CompareCandidate,
   type ComparisonLensId,
 } from "../lib/compare-workbench";
-import { buildCompareCoachRecommendations } from "../lib/compare-workbench-coach";
+import { buildCompareCandidateSwapInsight, buildCompareCoachRecommendations } from "../lib/compare-workbench-coach";
 import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
 import { COMPARE_LIMIT } from "../lib/app-url";
 import { useFocusTrap } from "../hooks/use-focus-trap";
@@ -422,6 +422,13 @@ export function CompareView({
                   {filteredCandidateTray.length > 0 ? filteredCandidateTray.map(candidate => {
                     const active = activeCandidateIds.has(candidate.place.id);
                     const candidateProfile = candidateDecisionById.get(candidate.place.id);
+                    const candidateInsight = !active && candidateProfile
+                      ? buildCompareCandidateSwapInsight({
+                        activeProfiles: decisionProfiles,
+                        candidateProfile,
+                        lens: activeComparisonLens,
+                      })
+                      : null;
                     const replacementPlace = !active && places.length >= COMPARE_LIMIT ? places[0] : null;
                     const action = active
                       ? `Remove ${candidate.place.name} from active comparison`
@@ -430,6 +437,7 @@ export function CompareView({
                         : `Add ${candidate.place.name} to active comparison`;
                     const title = [
                       candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`,
+                      candidateInsight ? `${candidateInsight.label}: ${candidateInsight.detail}` : null,
                       replacementPlace ? `Replaces oldest active slot: ${replacementPlace.name}.` : null,
                     ].filter(Boolean).join(" ");
                     return (
@@ -457,6 +465,16 @@ export function CompareView({
                             </span>
                             <span>{candidateProfile.easyMonths}/12 easy months</span>
                             <span>{candidateProfile.riskLoad}/100 risk load</span>
+                          </span>
+                        ) : null}
+                        {candidateInsight ? (
+                          <span
+                            className="compare-workbench__candidate-insight"
+                            data-tone={candidateInsight.tone}
+                            aria-label={`${candidate.place.name} swap insight`}
+                          >
+                            <strong>{candidateInsight.label}</strong>
+                            <span>{candidateInsight.detail}</span>
                           </span>
                         ) : null}
                         {replacementPlace ? (
