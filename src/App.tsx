@@ -692,6 +692,10 @@ export default function App() {
 
     return candidates;
   }, [bookmarkIds, placesById, ranked, rankingLabel, recentIds]);
+  const resolvedComparePlaces = useMemo(
+    () => [...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace),
+    [compareIds, placesById],
+  );
   const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
@@ -839,6 +843,15 @@ export default function App() {
     );
     setEvictedComparePlaceId(null);
   }, [evictedComparePlaceId]);
+
+  // CompareView only renders when there is at least one resolved place. If the
+  // last active slot is removed (or every id is stale), close compare so the
+  // app shell is not left inert behind an invisible overlay.
+  useEffect(() => {
+    if (compareOpen && resolvedComparePlaces.length === 0) {
+      setCompareOpen(false);
+    }
+  }, [compareOpen, resolvedComparePlaces.length]);
 
   const openCompare = useCallback(() => {
     preloadCompareView();
@@ -1321,7 +1334,7 @@ export default function App() {
       {compareOpen ? (
         <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
           <CompareView
-            places={[...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace)}
+            places={resolvedComparePlaces}
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}

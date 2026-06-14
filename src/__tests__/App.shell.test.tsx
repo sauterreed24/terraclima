@@ -25,6 +25,7 @@ vi.mock("../components/CompareView", () => ({
     places,
     open,
     onClose,
+    onRemove,
     onCopyView,
     shareStatus,
     liveFitFilters,
@@ -33,9 +34,10 @@ vi.mock("../components/CompareView", () => ({
     onComparisonLensChange,
     occluded,
   }: {
-    places: Array<{ id: string }>;
+    places: Array<{ id: string; name?: string }>;
     open: boolean;
     onClose: () => void;
+    onRemove?: (id: string) => void;
     onCopyView?: () => void;
     shareStatus?: "idle" | "copied" | "failed";
     candidates?: Array<{ place: { id: string } }>;
@@ -57,6 +59,18 @@ vi.mock("../components/CompareView", () => ({
         <button type="button" aria-label="Close comparison" onClick={onClose}>
           Close comparison
         </button>
+        {places.map(place => (
+          onRemove ? (
+            <button
+              key={place.id}
+              type="button"
+              aria-label={`Remove ${place.name ?? place.id} from comparison`}
+              onClick={() => onRemove(place.id)}
+            >
+              Remove {place.name ?? place.id}
+            </button>
+          ) : null
+        ))}
         <div data-testid="compare-place-ids">{places.map(place => place.id).join(",")}</div>
         <div data-testid="compare-lens">{comparisonLens}</div>
         <div data-testid="compare-candidate-count">{candidates?.length ?? 0}</div>
@@ -845,6 +859,29 @@ describe("App shell", () => {
 
     expect(await screen.findByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
     expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("closes compare and restores the app shell when the last active place is removed", async () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa"]),
+    );
+    const { container } = renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench setup for Sequim from your shortlist" }));
+    expect(await screen.findByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
+
+    const shell = container.querySelector("[data-app-shell]");
+    expect(shell).not.toBeNull();
+    await waitFor(() => expect(shell).toHaveAttribute("inert"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove Sequim from comparison" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "1 place saved to compare" })).not.toBeInTheDocument();
+    });
+    expect(shell).not.toHaveAttribute("inert");
+    expect(shell).not.toHaveAttribute("aria-hidden");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("renders the pinned shortlist rail when bookmarks exist in localStorage", () => {
