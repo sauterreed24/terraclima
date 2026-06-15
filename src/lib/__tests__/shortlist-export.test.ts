@@ -6,6 +6,7 @@ import {
   exportShortlistAsJSON,
   exportShortlistAsMarkdown,
 } from "../shortlist-export";
+import { PLACES } from "../../data/places";
 import { makePlace } from "./test-fixtures";
 
 const FIXED = new Date("2026-05-15T12:00:00Z");
@@ -130,6 +131,20 @@ describe("exportShortlistAsICS", () => {
     const file = exportShortlistAsICS([place], { generatedAt: FIXED });
     // Commas must be escaped to "\\,", semicolons to "\\;".
     expect(file.body).toMatch(/LOCATION:Foo\\, Bar\\; Baz\\, AZ\\; NM\\, USA/);
+  });
+
+  it("uses the next calendar year for cross-year best-month windows", () => {
+    const place = PLACES.find(candidate => candidate.id === "key-west-fl");
+    expect(place).toBeTruthy();
+
+    const file = exportShortlistAsICS([place!], { generatedAt: FIXED });
+    const start = file.body.match(/DTSTART;VALUE=DATE:(\d{8})/)?.[1];
+    const end = file.body.match(/DTEND;VALUE=DATE:(\d{8})/)?.[1];
+    expect(start).toBeTruthy();
+    expect(end).toBeTruthy();
+    expect(start! < end!).toBe(true);
+    expect(start).toBe("20261101");
+    expect(end).toBe("20270401");
   });
 });
 

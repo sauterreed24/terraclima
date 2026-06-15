@@ -692,10 +692,23 @@ export default function App() {
 
     return candidates;
   }, [bookmarkIds, placesById, ranked, rankingLabel, recentIds]);
+  const resolvedComparePlaces = useMemo(
+    () => [...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace),
+    [compareIds],
+  );
   const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
   useElementIsolation(appShellRef, appShellOccluded);
+
+  // Close compare when every active id fails to resolve or the user removes
+  // the last place — otherwise compareOpen stays true while CompareView
+  // renders nothing and the app shell stays inert with no visible dialog.
+  useEffect(() => {
+    if (compareOpen && resolvedComparePlaces.length === 0) {
+      setCompareOpen(false);
+    }
+  }, [compareOpen, resolvedComparePlaces.length]);
 
   const toggleCompare = useCallback((id: string) => {
     setCompareIds(s => {
@@ -1321,7 +1334,7 @@ export default function App() {
       {compareOpen ? (
         <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
           <CompareView
-            places={[...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace)}
+            places={resolvedComparePlaces}
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
