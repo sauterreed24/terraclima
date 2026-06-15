@@ -25,6 +25,7 @@ vi.mock("../components/CompareView", () => ({
     places,
     open,
     onClose,
+    onRemove,
     onCopyView,
     shareStatus,
     liveFitFilters,
@@ -36,6 +37,7 @@ vi.mock("../components/CompareView", () => ({
     places: Array<{ id: string }>;
     open: boolean;
     onClose: () => void;
+    onRemove?: (id: string) => void;
     onCopyView?: () => void;
     shareStatus?: "idle" | "copied" | "failed";
     candidates?: Array<{ place: { id: string } }>;
@@ -57,6 +59,18 @@ vi.mock("../components/CompareView", () => ({
         <button type="button" aria-label="Close comparison" onClick={onClose}>
           Close comparison
         </button>
+        {onRemove
+          ? places.map(place => (
+            <button
+              key={place.id}
+              type="button"
+              aria-label={`Remove ${place.id} from comparison`}
+              onClick={() => onRemove(place.id)}
+            >
+              Remove {place.id}
+            </button>
+          ))
+          : null}
         <div data-testid="compare-place-ids">{places.map(place => place.id).join(",")}</div>
         <div data-testid="compare-lens">{comparisonLens}</div>
         <div data-testid="compare-candidate-count">{candidates?.length ?? 0}</div>
@@ -591,6 +605,37 @@ describe("App shell", () => {
     fireEvent.click(screen.getByRole("button", { name: "Close comparison" }));
 
     await waitFor(() => expect(shell).not.toHaveAttribute("aria-hidden"));
+    expect(shell).not.toHaveAttribute("inert");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("closes compare and restores the app shell when every active place is removed", async () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa"]),
+    );
+    const { container } = renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench setup for Sequim from your shortlist" }));
+    expect(await screen.findByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
+    const shell = container.querySelector("[data-app-shell]");
+    expect(shell).not.toBeNull();
+    await waitFor(() => expect(shell).toHaveAttribute("aria-hidden", "true"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove sequim-wa from comparison" }));
+
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: "1 place saved to compare" })).not.toBeInTheDocument());
+    expect(shell).not.toHaveAttribute("aria-hidden");
+    expect(shell).not.toHaveAttribute("inert");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("does not leave the app shell inert when a compare URL has no resolvable places", async () => {
+    window.history.replaceState(null, "", "/?cmp=missing-place-a,missing-place-b");
+    const { container } = renderApp();
+
+    const shell = container.querySelector("[data-app-shell]");
+    expect(shell).not.toBeNull();
+    await waitFor(() => expect(screen.queryByTestId("compare-view-mock")).not.toBeInTheDocument());
+    expect(shell).not.toHaveAttribute("aria-hidden");
     expect(shell).not.toHaveAttribute("inert");
   }, APP_SHELL_TIMEOUT_MS);
 

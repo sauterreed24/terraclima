@@ -175,7 +175,7 @@ export function exportShortlistAsICS(
       ? monthRangeStart(range.startMonth, year)
       : new Date(Date.UTC(year, ctx.generatedAt.getUTCMonth(), ctx.generatedAt.getUTCDate()));
     const end = range
-      ? monthRangeEnd(range.endMonth, year)
+      ? monthRangeEnd(range.endMonth, range.endMonth < range.startMonth ? year + 1 : year)
       : new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() + 1));
     lines.push("BEGIN:VEVENT");
     lines.push(`UID:terraclima-${place.id}-${year}@sauterreed24.github.io`);
