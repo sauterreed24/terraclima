@@ -37,10 +37,29 @@ describe("PlaceClimateTwins", () => {
       </UnitProvider>,
     );
 
-    fireEvent.click(screen.getByRole("button", { name: /closest climate twin/i }));
+    const leadTwinButton = screen.getByRole("button", { name: /closest climate twin/i });
+    expect(leadTwinButton).toHaveAttribute("title", leadTwinButton.getAttribute("aria-label"));
+    fireEvent.click(leadTwinButton);
 
     expect(onOpenPlace).toHaveBeenCalledTimes(1);
-    expect(onOpenPlace).toHaveBeenCalledWith(expect.any(String));
+    expect(onOpenPlace).toHaveBeenCalledWith(expect.any(String), { trigger: leadTwinButton });
     expect(onOpenPlace.mock.calls[0]?.[0]).not.toBe(place.id);
+  });
+
+  it("gives every related climate twin card matching hover help", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceClimateTwins place={place} onOpenPlace={() => undefined} />
+      </UnitProvider>,
+    );
+
+    const twinCards = screen.getAllByRole("button", { name: /climate match/i });
+    expect(twinCards.length).toBeGreaterThan(0);
+    twinCards.forEach(card => {
+      expect(card).toHaveAttribute("title", card.getAttribute("aria-label"));
+    });
   });
 });

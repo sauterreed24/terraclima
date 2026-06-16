@@ -59,6 +59,8 @@ The home base ([`src/lib/home-base.ts`](../src/lib/home-base.ts)) is a sticky pr
 
 - Default view (`explorer`) omits `v`.
 - Retired view links, including `?v=pro`, canonicalize back to Explorer instead of rendering a dead route.
+- Bare profile links stay bare: opening `?p=<place>` does not inject a locally persisted ranking lens, and closing that profile returns to a clean Explorer URL instead of reintroducing the stored lens. Ranking params are written when they came from the URL, the reader changes the lens in-session, or active Live Finder state needs the lens to travel with the link.
+- Deep dossier links (`?p=<place>#deep-...`) preserve the profile query, scroll the drawer to the chapter, and move focus to that chapter heading so copied section links are keyboard-readable.
 - Countries and archetypes are sorted for stable URLs.
 - History flag `tcPlace` on pushState indicates "opened place in-app" so **Back** closes the panel instead of leaving the site.
 

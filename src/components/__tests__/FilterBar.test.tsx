@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import type { ComponentProps } from "react";
+import { useState, type ComponentProps } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { FilterBar } from "../FilterBar";
 import { UnitContext, type UnitState } from "../../lib/units";
@@ -48,6 +48,44 @@ function renderFilterBar(
 }
 
 describe("FilterBar Live Finder temperature constraints", () => {
+  it("clears a focused search on Escape before an owning dialog can close", () => {
+    function StatefulFilterBar() {
+      const [filters, setFilters] = useState<FilterState>({
+        ...createEmptyFilterState(),
+        search: "zzzz-no-match",
+      });
+      const units: UnitState = {
+        temp: "C",
+        dist: "metric",
+        setTemp: vi.fn(),
+        setDist: vi.fn(),
+        toggle: vi.fn(),
+      };
+      return (
+        <UnitContext.Provider value={units}>
+          <FilterBar
+            searchInputId="test-search"
+            filters={filters}
+            setFilters={setFilters}
+            ranking="live-fit"
+            setRanking={vi.fn()}
+            variant="sheet"
+          />
+        </UnitContext.Provider>
+      );
+    }
+
+    render(<StatefulFilterBar />);
+
+    const search = screen.getByRole("textbox", { name: "Search places by name, region, or archetype" }) as HTMLInputElement;
+    search.focus();
+
+    expect(search.value).toBe("zzzz-no-match");
+    expect(fireEvent.keyDown(search, { key: "Escape" })).toBe(false);
+    expect(search.value).toBe("");
+    expect(search).toHaveFocus();
+  });
+
   it("summarizes the active Explorer lens before the control groups", () => {
     const filters = createEmptyFilterState();
     filters.fitPresets = new Set(["gardenable"]);
@@ -63,12 +101,21 @@ describe("FilterBar Live Finder temperature constraints", () => {
     expect(lens).toHaveTextContent("2 living signals active");
     expect(screen.getByText("1 Live Finder preset")).toBeInTheDocument();
     expect(within(lens).getByText("Garden 65+")).toBeInTheDocument();
+    expect(within(lens).getByRole("button", { name: "Clear all filters" })).toHaveAttribute("title", "Clear all filters");
+    expect(within(lens).getByRole("button", { name: "Remove filter: 1 Live Finder preset" })).toHaveAttribute(
+      "title",
+      "Remove filter: 1 Live Finder preset",
+    );
+    expect(within(lens).getByRole("button", { name: "Remove filter: Garden 65+" })).toHaveAttribute(
+      "title",
+      "Remove filter: Garden 65+",
+    );
   });
 
   it("renders threshold choices in Fahrenheit when the app is in Fahrenheit mode", () => {
     renderFilterBar("F");
 
-    expect(screen.getByRole("combobox", { name: "Summer cap" })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Summer cap" })).toHaveAttribute("title", "Summer cap");
     expect(screen.getByRole("option", { name: `<= 72${DEG}F` })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: `<= 79${DEG}F` })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: `>= 23${DEG}F` })).toBeInTheDocument();
@@ -81,7 +128,7 @@ describe("FilterBar Live Finder temperature constraints", () => {
   it("renders threshold choices in Celsius when the app is in Celsius mode", () => {
     renderFilterBar("C");
 
-    expect(screen.getByRole("combobox", { name: "Winter floor" })).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "Winter floor" })).toHaveAttribute("title", "Winter floor");
     expect(screen.getByRole("option", { name: `<= 22${DEG}C` })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: `<= 26${DEG}C` })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: `>= -5${DEG}C` })).toBeInTheDocument();
@@ -146,7 +193,10 @@ describe("FilterBar lifestyle bundles", () => {
     expect(screen.getByRole("button", { name: /Winter Sun/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Mexico \/ Southwest/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Low Fire \/ Smoke/ })).toBeInTheDocument();
-    expect(within(escapeLane).getByRole("button", { name: /Cool Summer Refuge/ })).toBeInTheDocument();
+    expect(within(escapeLane).getByRole("button", { name: "Apply Cool Summer Refuge Fit Finder path" })).toHaveAttribute(
+      "title",
+      "Apply Cool Summer Refuge Fit Finder path",
+    );
     expect(within(dailyLane).getByRole("button", { name: /Remote Work/ })).toBeInTheDocument();
     expect(within(terrainLane).getByRole("button", { name: /Mexico \/ Southwest/ })).toBeInTheDocument();
     expect(screen.getByText("Live Finder signals")).toBeInTheDocument();
@@ -228,7 +278,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-for-remote-work",
     });
 
-    expect(screen.getByTitle("Cool, productive summers. Low fire & smoke. Mild winters. Ranked by remote-work readiness.")).toHaveAttribute("data-active", "true");
+    expect(screen.getByRole("button", { name: "Remote Work Fit Finder path is active" })).toHaveAttribute("data-active", "true");
 
     cleanup();
 
@@ -241,7 +291,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-for-remote-work",
     });
 
-    expect(screen.getByTitle("Cool, productive summers. Low fire & smoke. Mild winters. Ranked by remote-work readiness.")).toHaveAttribute("data-active", "false");
+    expect(screen.getByRole("button", { name: "Apply Remote Work Fit Finder path" })).toHaveAttribute("data-active", "false");
   });
 
   it("marks a geography-scoped path active only when region and terrain filters match", () => {
@@ -264,7 +314,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-shoulder-seasons",
     });
 
-    expect(screen.getByTitle("Mexico highlands and Southwest uplifts with dry air, shoulder-season comfort, and moderated winter lows.")).toHaveAttribute("data-active", "true");
+    expect(screen.getByRole("button", { name: "Mexico / Southwest Fit Finder path is active" })).toHaveAttribute("data-active", "true");
 
     cleanup();
 
@@ -280,7 +330,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "best-shoulder-seasons",
     });
 
-    expect(screen.getByTitle("Mexico highlands and Southwest uplifts with dry air, shoulder-season comfort, and moderated winter lows.")).toHaveAttribute("data-active", "false");
+    expect(screen.getByRole("button", { name: "Apply Mexico / Southwest Fit Finder path" })).toHaveAttribute("data-active", "false");
   });
 
   it("clears stale Live Finder constraints when applying a lifestyle bundle", () => {
@@ -371,7 +421,7 @@ describe("FilterBar lifestyle bundles", () => {
       ranking: "coolest-summers",
     });
 
-    expect(screen.getByTitle("Cooler peak-season afternoons without forcing a snow-country lifestyle.")).toHaveAttribute("data-active", "false");
+    expect(screen.getByRole("button", { name: "Apply Cool Summer Refuge Fit Finder path" })).toHaveAttribute("data-active", "false");
   });
 
   it("applies the Mexico / Southwest path as a scoped regional dry-highland screen", () => {
@@ -470,6 +520,66 @@ describe("FilterBar clear all filters", () => {
     expect(result.fitPresets).toEqual(new Set(["cool-summers"]));
   });
 
+  it("labels compact country chips with explicit filter actions", () => {
+    const setFilters = vi.fn();
+    const state = createEmptyFilterState();
+    state.countries = new Set(["USA"]);
+
+    renderFilterBar("F", { filters: state, setFilters });
+
+    const usa = screen.getByRole("button", { name: "Remove United States country filter" });
+    expect(usa).toHaveTextContent("USA");
+    expect(usa).toHaveAttribute("title", "Remove United States country filter");
+    expect(usa).toHaveAttribute("aria-pressed", "true");
+
+    const mexico = screen.getByRole("button", { name: "Filter to Mexico places" });
+    expect(mexico).toHaveAttribute("title", "Filter to Mexico places");
+    expect(mexico).toHaveAttribute("aria-pressed", "false");
+
+    fireEvent.click(mexico);
+
+    const updater = setFilters.mock.calls[0][0] as (f: FilterState) => FilterState;
+    expect(updater(state).countries).toEqual(new Set(["USA", "Mexico"]));
+  });
+
+  it("labels group reset controls and clears only that filter group", () => {
+    const setFilters = vi.fn();
+    const state = createEmptyFilterState();
+    state.countries = new Set(["USA"]);
+    state.archetypes = new Set(["mediterranean-pocket", "fog-belt-coast"]);
+    state.fitPresets = new Set(["cool-summers", "dry-air"]);
+    state.maxSummerHighC = 26;
+
+    renderFilterBar("F", { filters: state, setFilters });
+
+    const clearPresets = screen.getByRole("button", { name: "Clear Live Finder presets" });
+    expect(clearPresets).toHaveTextContent("Clear presets");
+    expect(clearPresets).toHaveAttribute("title", "Clear Live Finder presets");
+
+    const clearArchetypes = screen.getByRole("button", { name: "Clear 2 archetype filters" });
+    expect(clearArchetypes).toHaveTextContent("clear · 2");
+    expect(clearArchetypes).toHaveAttribute("title", "Clear 2 archetype filters");
+
+    fireEvent.click(clearPresets);
+    fireEvent.click(clearArchetypes);
+
+    const presetUpdater = setFilters.mock.calls[0][0] as (f: FilterState) => FilterState;
+    const archetypeUpdater = setFilters.mock.calls[1][0] as (f: FilterState) => FilterState;
+
+    expect(presetUpdater(state)).toMatchObject({
+      countries: new Set(["USA"]),
+      archetypes: new Set(["mediterranean-pocket", "fog-belt-coast"]),
+      fitPresets: new Set(),
+      maxSummerHighC: 26,
+    });
+    expect(archetypeUpdater(state)).toMatchObject({
+      countries: new Set(["USA"]),
+      archetypes: new Set(),
+      fitPresets: new Set(["cool-summers", "dry-air"]),
+      maxSummerHighC: 26,
+    });
+  });
+
   it("Lens Receipt clear all uses the same reset shape as the search clear control", () => {
     const setFilters = vi.fn();
     const polluted = createEmptyFilterState();
@@ -511,7 +621,9 @@ describe("FilterBar climate scenario chip", () => {
     const lens = screen.getByRole("region", { name: "Current Explorer lens" });
     expect(lens).toHaveTextContent("SSP5-8.5");
     expect(lens).toHaveTextContent("illustrative regional projection");
-    fireEvent.click(screen.getByRole("button", { name: "Remove filter: 2050 high" }));
+    const scenarioChip = screen.getByRole("button", { name: "Remove filter: 2050 high" });
+    expect(scenarioChip).toHaveAttribute("title", "Remove filter: 2050 high");
+    fireEvent.click(scenarioChip);
     expect(onScenarioChange).toHaveBeenCalledWith("now");
   });
 });

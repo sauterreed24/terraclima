@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Compass, HelpCircle, Laptop, Library, Link2, Map, Menu, Route, Search, ShieldAlert, ShieldCheck, Shuffle, Snowflake, Sparkles, Sprout, Sun, Sunrise, Target, X, type LucideIcon } from "lucide-react";
+import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Compass, HelpCircle, Home, Laptop, Library, Link2, Map, Menu, Route, Search, ShieldAlert, ShieldCheck, Shuffle, Snowflake, Sparkles, Sprout, Sun, Sunrise, Target, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -31,6 +31,7 @@ import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
 import { projectPlace, projectPool } from "./lib/climate-projection";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
+import { CompareLoadingFallback } from "./components/CompareLoadingFallback";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
 import { buildShortlistPacketCue } from "./lib/shortlist-packet";
@@ -56,6 +57,7 @@ import { LogoMark } from "./components/chrome/LogoMark";
 import { Footer } from "./components/chrome/Footer";
 import { ShortcutsOverlay } from "./components/chrome/ShortcutsOverlay";
 import { ShortlistExportMenu } from "./components/chrome/ShortlistExportMenu";
+import { PlaceDetailLoadingFallback } from "./components/place-detail/PlaceDetailLoadingFallback";
 import {
   DEFAULT_RANKING,
   loadPersistedRanking,
@@ -81,6 +83,7 @@ import {
   type AppHistoryState,
   COMPARE_LIMIT,
   formatAppRelativeUrl,
+  parseAppSearch,
   pushAppUrl,
   readInitialAppState,
   replaceAppUrl,
@@ -122,6 +125,9 @@ function readCurrentAppState() {
 }
 
 type View = "explorer" | "trips" | "collections" | "learn";
+type OpenPlaceHandler = (id: string, opts?: { trigger?: HTMLElement | null }) => void;
+type OpenCompareHandler = (opts?: { trigger?: HTMLElement | null }) => void;
+type ComparePlacesHandler = (ids: string[], opts?: { trigger?: HTMLElement | null }) => void;
 
 interface MapStageContext {
   mode: "rank" | "fit-path";
@@ -178,6 +184,10 @@ const CollectionsView = lazy(loadCollectionsView);
 const LearnMode = lazy(loadLearnMode);
 const PlaceDetail = lazy(loadPlaceDetail);
 const CompareView = lazy(loadCompareView);
+
+if (typeof window !== "undefined" && (parseAppSearch(window.location.search).compareIds?.length ?? 0) > 0) {
+  preloadCompareView();
+}
 
 export default function App() {
   const richVisualEffects = useRichVisualEffects();
@@ -264,6 +274,10 @@ export default function App() {
   const [activeCollection, setActiveCollection] = useState<string | null>(initialAppState.collectionId);
   const [filters, setFilters] = useState<FilterState>(() => filterStateFromValidated(initialAppState));
   const [ranking, setRankingRaw] = useState<RankingProfile>(() => initialAppState.ranking ?? loadPersistedRanking());
+  const [rankingExplicitInUrl, setRankingExplicitInUrl] = useState(() => initialAppState.ranking != null);
+  const [suppressPersistedRankingInUrl, setSuppressPersistedRankingInUrl] = useState(
+    () => initialAppState.placeId != null && initialAppState.ranking == null,
+  );
   const [climateScenario, setClimateScenario] = useState<ScenarioId>(() => initialAppState.scenario ?? "now");
   // Home-base climate anchor. URL ?hb= wins on first paint (shareable
   // "vs our home" links); otherwise the last explicit choice from
@@ -275,6 +289,7 @@ export default function App() {
   });
   const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
+  const [animatePlaceDetailEntry, setAnimatePlaceDetailEntry] = useState(false);
   // Theme preference (auto/light/dark). URL ?theme=... wins on first paint;
   // otherwise we read the last explicit choice from localStorage; otherwise
   // default to "auto" so the OS preference drives the resolved theme.
@@ -289,6 +304,7 @@ export default function App() {
   /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
   const [transientFeedback, setTransientFeedback] = useState<string | null>(null);
   const [shareStatus, setShareStatus] = useState<ShareStatus>("idle");
+  const [shareFallbackUrl, setShareFallbackUrl] = useState<string | null>(null);
   const shareResetRef = useRef<number | null>(null);
   /** Latest place id to be auto-evicted from compare so the feedback can name it. */
   const [evictedComparePlaceId, setEvictedComparePlaceId] = useState<string | null>(null);
@@ -301,6 +317,8 @@ export default function App() {
   });
   const setRanking = useCallback((profile: RankingProfile) => {
     setRankingRaw(profile);
+    setRankingExplicitInUrl(true);
+    setSuppressPersistedRankingInUrl(false);
     persistRankingProfile(profile);
   }, []);
 
@@ -340,18 +358,37 @@ export default function App() {
   const copyCurrentView = useCallback(() => {
     if (typeof window === "undefined") return;
     const url = new URL(window.location.href);
+    const sharePayloadUrl = url.toString();
+    if (shareResetRef.current !== null) {
+      window.clearTimeout(shareResetRef.current);
+      shareResetRef.current = null;
+    }
+    setShareStatus("idle");
+    setShareFallbackUrl(null);
     // Use the native share sheet when available (iOS / Android / modern
     // Safari). The helper transparently falls back to clipboard so
     // desktop browsers and older mobile browsers still copy the URL.
     void shareUrl({
       title: document.title || "Terraclima",
       text: "Terraclima view",
-      url: url.toString(),
+      url: sharePayloadUrl,
     }).then(outcome => {
-      setShareStatus(outcome === "failed" ? "failed" : "copied");
-      if (shareResetRef.current !== null) window.clearTimeout(shareResetRef.current);
+      if (outcome === "dismissed") {
+        setShareStatus("idle");
+        setShareFallbackUrl(null);
+        shareResetRef.current = null;
+        return;
+      }
+      setShareStatus(outcome);
+      if (outcome === "failed") {
+        setShareFallbackUrl(sharePayloadUrl);
+        shareResetRef.current = null;
+        return;
+      }
+      setShareFallbackUrl(null);
       shareResetRef.current = window.setTimeout(() => {
         setShareStatus("idle");
+        setShareFallbackUrl(null);
         shareResetRef.current = null;
       }, 2200);
     });
@@ -376,8 +413,25 @@ export default function App() {
   const scoutBoardLg = useMediaQuery("(min-width: 1180px)");
   const explorerFilterSheetRef = useRef<ExplorerFilterSheetHandle | null>(null);
   const appShellRef = useRef<HTMLDivElement>(null);
+  const skipLinkRef = useRef<HTMLAnchorElement>(null);
+  const topBarRegionRef = useRef<HTMLDivElement>(null);
+  const appContentRef = useRef<HTMLDivElement>(null);
+  const appViewContentRef = useRef<HTMLDivElement>(null);
+  const footerRegionRef = useRef<HTMLDivElement>(null);
   /** Reference to the trigger that opened the place detail, so we can return focus on close. */
   const detailTriggerRef = useRef<HTMLElement | null>(null);
+  /** Tracks whether a profile was actually open so first paint never steals focus. */
+  const detailWasOpenRef = useRef(Boolean(initialAppState.placeId));
+  const detailCloseFallbackRef = useRef<number | null>(null);
+  /** Reference to the trigger that opened Compare, so closing the modal returns keyboard users to context. */
+  const compareTriggerRef = useRef<HTMLElement | null>(null);
+  const compareTriggerLabelRef = useRef<string | null>(null);
+  const compareWasOpenRef = useRef(compareOpen);
+  /** Reference to the trigger that opened shortcuts help, so closing returns users to context. */
+  const shortcutsTriggerRef = useRef<HTMLElement | null>(null);
+  const shortcutsTriggerLabelRef = useRef<string | null>(null);
+  /** One-shot flag for route switches that should land on the active trip/collection clear affordance. */
+  const activeScopeFocusPendingRef = useRef(false);
 
   useEffect(() => {
     if (!selectedId) {
@@ -396,6 +450,13 @@ export default function App() {
       filters.minGrowability != null ||
       filters.maxFireRisk != null ||
       filters.maxOverallRisk != null;
+    const shouldSuppressPersistedRanking = suppressPersistedRankingInUrl &&
+      !rankingExplicitInUrl &&
+      !hasLiveFitState;
+    const shouldWriteRanking = ranking !== DEFAULT_RANKING &&
+      !shouldSuppressPersistedRanking &&
+      (rankingExplicitInUrl || !selectedId || hasLiveFitState);
+    const rankingForUrl = hasLiveFitState ? ranking : shouldWriteRanking ? ranking : null;
     const state = {
       view,
       placeId: selectedId,
@@ -404,7 +465,7 @@ export default function App() {
       archetypes: [...filters.archetypes],
       search: filters.search ?? "",
       compareIds: [...compareIds],
-      ranking: ranking === DEFAULT_RANKING && !hasLiveFitState ? null : ranking,
+      ranking: rankingForUrl,
       fitPresets: [...(filters.fitPresets ?? new Set())],
       maxSummerHighC: filters.maxSummerHighC ?? null,
       minWinterLowC: filters.minWinterLowC ?? null,
@@ -451,7 +512,7 @@ export default function App() {
       replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection, filters, compareIds, ranking, temp, dist, themePreference, climateScenario, comparisonLens, homeBaseId]);
+  }, [view, selectedId, activeCollection, filters, compareIds, ranking, rankingExplicitInUrl, suppressPersistedRankingInUrl, temp, dist, themePreference, climateScenario, comparisonLens, homeBaseId]);
 
   useEffect(() => {
     const onPop = () => {
@@ -462,12 +523,15 @@ export default function App() {
         ARCHETYPE_BY_ID as Record<string, unknown>,
         resolvePlaceId,
       );
+      setAnimatePlaceDetailEntry(false);
       setView(v.view);
       setSelectedId(v.placeId);
       setActiveCollection(v.collectionId);
       setFilters(filterStateFromValidated(v));
       setCompareIds(new Set(v.compareIds));
       setComparisonLens(v.comparisonLens);
+      setRankingExplicitInUrl(v.ranking != null);
+      setSuppressPersistedRankingInUrl(v.placeId != null && v.ranking == null);
       setRankingRaw(v.ranking ?? loadPersistedRanking());
       setClimateScenario(v.scenario ?? "now");
       // Home base is a sticky preference like theme: an explicit ?hb= on the
@@ -523,6 +587,8 @@ export default function App() {
   }, [view]);
 
   const [showShortcuts, setShowShortcuts] = useState(false);
+  const [siteMenuOpen, setSiteMenuOpen] = useState(false);
+  const [filterSheetOpen, setFilterSheetOpen] = useState(false);
 
   const baselinePool = useMemo(() => {
     if (activeCollection) {
@@ -663,10 +729,15 @@ export default function App() {
   rankedRef.current = ranked;
 
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
+  const activeComparePlaces = useMemo(
+    () => [...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace),
+    [compareIds, placesById],
+  );
   // Present-day home base for the dossier (which always shows present-day
   // normals) and a scenario-consistent twin for the Explorer grid and
   // Compare, so deltas never mix projected places with a present-day home.
   const homeBasePlace = homeBaseId ? placeForId(homeBaseId) ?? null : null;
+  const homeBaseClearLabel = homeBasePlace ? `Stop comparing against ${homeBasePlace.name} (clear home base)` : "";
   const homeBasePlaceForScenario = useMemo(
     () => (homeBasePlace && climateScenario !== "now" ? projectPlace(homeBasePlace, climateScenario) : homeBasePlace),
     [homeBasePlace, climateScenario],
@@ -696,6 +767,11 @@ export default function App() {
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
   useElementIsolation(appShellRef, appShellOccluded);
+  useElementIsolation(skipLinkRef, siteMenuOpen);
+  useElementIsolation(appContentRef, siteMenuOpen);
+  useElementIsolation(topBarRegionRef, filterSheetOpen);
+  useElementIsolation(appViewContentRef, filterSheetOpen);
+  useElementIsolation(footerRegionRef, filterSheetOpen || siteMenuOpen);
 
   const toggleCompare = useCallback((id: string) => {
     setCompareIds(s => {
@@ -726,8 +802,53 @@ export default function App() {
     if (canonical) {
       setRecentIds(recordRecentPlace(canonical));
     }
+    setAnimatePlaceDetailEntry(true);
     setSelectedId(id);
   }, []);
+
+  const focusMainContentNextFrame = useCallback(() => {
+    const focusMain = () => {
+      const main = document.getElementById("main-content");
+      if (!main) return;
+      try { main.focus({ preventScroll: true }); } catch { /* noop */ }
+    };
+    window.setTimeout(focusMain, 0);
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(focusMain);
+      });
+    }
+  }, []);
+
+  const focusShortlistRemoveNextFrame = useCallback((placeId: string) => {
+    let focused = false;
+    const focusTarget = (fallbackToMain: boolean) => {
+      if (focused) return;
+      const target = Array.from(
+        document.querySelectorAll<HTMLButtonElement>("[data-shortlist-remove-id]"),
+      ).find(button => button.getAttribute("data-shortlist-remove-id") === placeId);
+      if (target) {
+        try {
+          target.focus({ preventScroll: true });
+          focused = true;
+          return;
+        } catch {
+          // Fall through to the main-content recovery path below.
+        }
+      }
+      if (fallbackToMain) {
+        focusMainContentNextFrame();
+      }
+    };
+    window.setTimeout(() => focusTarget(false), 0);
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => focusTarget(true));
+      });
+    } else {
+      window.setTimeout(() => focusTarget(true), 50);
+    }
+  }, [focusMainContentNextFrame]);
 
   const toggleBookmark = useCallback((id: string) => {
     const canonical = resolvePlaceId(id) ?? id;
@@ -746,6 +867,16 @@ export default function App() {
     }
   }, []);
 
+  const removePinnedRailPlace = useCallback((id: string, nextFocusId: string | null = null) => {
+    const canonical = resolvePlaceId(id) ?? id;
+    toggleBookmark(canonical);
+    if (nextFocusId) {
+      focusShortlistRemoveNextFrame(nextFocusId);
+    } else {
+      focusMainContentNextFrame();
+    }
+  }, [focusMainContentNextFrame, focusShortlistRemoveNextFrame, toggleBookmark]);
+
   const toggleHomeBase = useCallback((id: string) => {
     const canonical = resolvePlaceId(id);
     if (!canonical) return;
@@ -762,7 +893,8 @@ export default function App() {
     persistHomeBaseId(null);
     setHomeBaseIdRaw(null);
     setTransientFeedback("Cleared your home base — cards and dossiers return to absolute readings.");
-  }, []);
+    focusMainContentNextFrame();
+  }, [focusMainContentNextFrame]);
 
   const saveScoutFinalists = useCallback((ids: readonly string[]) => {
     const seen = new Set<string>();
@@ -797,27 +929,53 @@ export default function App() {
 
   const clearRecents = useCallback(() => {
     setRecentIds(clearRecentPlaces());
-  }, []);
+    focusMainContentNextFrame();
+  }, [focusMainContentNextFrame]);
 
   const closeDetail = useCallback(() => {
+    setAnimatePlaceDetailEntry(false);
     if (typeof window !== "undefined" && selectedId) {
       const st = window.history.state as AppHistoryState | null;
       if (st?.tcPlace) {
+        const closingPlaceId = selectedId;
         window.history.back();
+        if (detailCloseFallbackRef.current !== null) {
+          window.clearTimeout(detailCloseFallbackRef.current);
+        }
+        detailCloseFallbackRef.current = window.setTimeout(() => {
+          detailCloseFallbackRef.current = null;
+          setSelectedId(current => current === closingPlaceId ? null : current);
+        }, 250);
         return;
       }
     }
     setSelectedId(null);
   }, [selectedId]);
 
-  // Return focus to the place's opening trigger after the detail panel closes.
-  // Without this, focus drops to <body> and keyboard users lose context.
+  useEffect(() => () => {
+    if (detailCloseFallbackRef.current !== null) {
+      window.clearTimeout(detailCloseFallbackRef.current);
+      detailCloseFallbackRef.current = null;
+    }
+  }, []);
+
+  // Return focus after the detail panel closes. In-app opens go back to their
+  // launcher; shared profile links have no launcher, so land on main content.
   useEffect(() => {
-    if (selectedId !== null) return;
+    if (selectedId !== null) {
+      detailWasOpenRef.current = true;
+      return;
+    }
+    if (!detailWasOpenRef.current) return;
+    detailWasOpenRef.current = false;
     const trigger = detailTriggerRef.current;
-    if (!trigger) return;
+    const target =
+      trigger && trigger.isConnected && trigger !== document.body
+        ? trigger
+        : document.getElementById("main-content");
+    if (!target) return;
     const id = window.requestAnimationFrame(() => {
-      try { trigger.focus({ preventScroll: true }); } catch { /* noop */ }
+      try { target.focus({ preventScroll: true }); } catch { /* noop */ }
     });
     return () => window.cancelAnimationFrame(id);
   }, [selectedId]);
@@ -840,13 +998,29 @@ export default function App() {
     setEvictedComparePlaceId(null);
   }, [evictedComparePlaceId]);
 
-  const openCompare = useCallback(() => {
+  const openCompare = useCallback((opts?: { trigger?: HTMLElement | null }) => {
     preloadCompareView();
+    if (opts?.trigger) {
+      compareTriggerRef.current = opts.trigger;
+      compareTriggerLabelRef.current = opts.trigger.getAttribute("aria-label") ?? null;
+    } else if (typeof document !== "undefined") {
+      const active = (document.activeElement as HTMLElement | null) ?? null;
+      compareTriggerRef.current = active;
+      compareTriggerLabelRef.current = active?.getAttribute("aria-label") ?? null;
+    }
     setCompareOpen(true);
   }, []);
 
-  const comparePlaces = useCallback((ids: string[]) => {
+  const comparePlaces = useCallback((ids: string[], opts?: { trigger?: HTMLElement | null }) => {
     if (ids.length > 0) preloadCompareView();
+    if (opts?.trigger) {
+      compareTriggerRef.current = opts.trigger;
+      compareTriggerLabelRef.current = opts.trigger.getAttribute("aria-label") ?? null;
+    } else if (typeof document !== "undefined") {
+      const active = (document.activeElement as HTMLElement | null) ?? null;
+      compareTriggerRef.current = active;
+      compareTriggerLabelRef.current = active?.getAttribute("aria-label") ?? null;
+    }
     setCompareIds(new Set(ids.slice(0, COMPARE_LIMIT)));
     setCompareOpen(ids.length > 0);
   }, []);
@@ -863,8 +1037,14 @@ export default function App() {
     setViewFluid("explorer");
   }, [setViewFluid]);
 
-  const clearCollection = useCallback(() => setActiveCollection(null), []);
-  const clearArchetypes = useCallback(() => setFilters(f => ({ ...f, archetypes: new Set() })), []);
+  const clearCollection = useCallback(() => {
+    setActiveCollection(null);
+    focusMainContentNextFrame();
+  }, [focusMainContentNextFrame]);
+  const clearArchetypes = useCallback(() => {
+    setFilters(f => ({ ...f, archetypes: new Set() }));
+    focusMainContentNextFrame();
+  }, [focusMainContentNextFrame]);
   const clearAllFilters = useCallback(() => {
     setFilters(createEmptyFilterState());
     setActiveCollection(null);
@@ -886,7 +1066,62 @@ export default function App() {
     setFilters(f => ({ ...f, countries: new Set(), archetypes: new Set() }));
     setActiveCollection(null);
   }, []);
-  const closeCompare = useCallback(() => setCompareOpen(false), []);
+  const closeCompare = useCallback((opts?: { restoreFocus?: boolean }) => {
+    if (opts?.restoreFocus === false) {
+      compareTriggerRef.current = null;
+      compareTriggerLabelRef.current = null;
+    }
+    if (shareResetRef.current !== null) {
+      window.clearTimeout(shareResetRef.current);
+      shareResetRef.current = null;
+    }
+    setShareStatus("idle");
+    setShareFallbackUrl(null);
+    setCompareOpen(false);
+  }, []);
+
+  useEffect(() => {
+    if (compareOpen) {
+      compareWasOpenRef.current = true;
+      return;
+    }
+    if (!compareWasOpenRef.current) return;
+    compareWasOpenRef.current = false;
+    const focusCompareTrigger = () => {
+      const hasLayoutSignals = [...document.querySelectorAll<HTMLElement>("button, [href], input, select, textarea")]
+        .some(el => {
+          const rect = el.getBoundingClientRect();
+          return rect.width > 0 || rect.height > 0 || el.getClientRects().length > 0;
+        });
+      const canRestoreFocus = (el: HTMLElement | null): el is HTMLElement => {
+        if (!el || !el.isConnected || el === document.body) return false;
+        if (el.closest("dialog:not([open])")) return false;
+        if (el.hasAttribute("disabled") || el.getAttribute("aria-hidden") === "true") return false;
+        if (!hasLayoutSignals) return true;
+        const rect = el.getBoundingClientRect();
+        return (rect.width > 0 || rect.height > 0 || el.getClientRects().length > 0) && rect.bottom >= 0 && rect.top <= window.innerHeight;
+      };
+      const trigger = compareTriggerRef.current;
+      const label = compareTriggerLabelRef.current;
+      const labelTarget = label
+        ? [...document.querySelectorAll<HTMLButtonElement>("button")]
+          .find(button => button.getAttribute("aria-label") === label && canRestoreFocus(button))
+        : null;
+      const target = canRestoreFocus(trigger)
+        ? trigger
+        : labelTarget ?? document.getElementById("main-content");
+      if (!target) return;
+      try { target.focus({ preventScroll: true }); } catch { /* noop */ }
+    };
+    const rafId = window.requestAnimationFrame(focusCompareTrigger);
+    const retryId = window.setTimeout(focusCompareTrigger, 80);
+    const settledRetryId = window.setTimeout(focusCompareTrigger, 240);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(retryId);
+      window.clearTimeout(settledRetryId);
+    };
+  }, [compareOpen]);
 
   const focusSearchInput = useCallback(() => {
     const el = document.getElementById(SEARCH_INPUT_ID) as HTMLInputElement | null;
@@ -907,11 +1142,11 @@ export default function App() {
     explorerFilterSheetRef.current?.open();
   }, []);
 
-  const pickRandomPlace = useCallback((): boolean => {
+  const pickRandomPlace = useCallback((opts?: { trigger?: HTMLElement | null }): boolean => {
     const poolRanked = rankedRef.current;
     if (poolRanked.length === 0) return false;
     const idx = Math.floor(Math.random() * poolRanked.length);
-    openPlace(poolRanked[idx].place.id);
+    openPlace(poolRanked[idx].place.id, opts);
     return true;
   }, [openPlace]);
 
@@ -919,11 +1154,47 @@ export default function App() {
     setTransientFeedback("No places match your filters — clear one to enable Surprise / R.");
   }, []);
 
-  const openShortcutsHelp = useCallback(() => {
+  const openShortcutsHelp = useCallback((trigger?: HTMLElement | null) => {
+    if (trigger) {
+      shortcutsTriggerRef.current = trigger;
+      shortcutsTriggerLabelRef.current = trigger.getAttribute("aria-label") ?? null;
+    } else {
+      const active = (document.activeElement as HTMLElement | null) ?? null;
+      shortcutsTriggerRef.current = active;
+      shortcutsTriggerLabelRef.current = active?.getAttribute("aria-label") ?? null;
+    }
     setShowShortcuts(true);
     setShortcutsSeen(true);
     try { window.localStorage.setItem(SHORTCUTS_SEEN_KEY, "1"); } catch { /* noop */ }
   }, []);
+
+  const closeShortcutsHelp = useCallback(() => {
+    setShowShortcuts(false);
+  }, []);
+
+  useEffect(() => {
+    if (showShortcuts) return;
+    const focusShortcutsTrigger = () => {
+      const trigger = shortcutsTriggerRef.current;
+      const label = shortcutsTriggerLabelRef.current;
+      const target = trigger?.isConnected
+        ? trigger
+        : label
+        ? [...document.querySelectorAll<HTMLButtonElement>("button")]
+          .find(button => button.getAttribute("aria-label") === label && !button.disabled)
+        : null;
+      if (!target) return;
+      try { target.focus({ preventScroll: true }); } catch { /* noop */ }
+    };
+    const rafId = window.requestAnimationFrame(focusShortcutsTrigger);
+    const retryId = window.setTimeout(focusShortcutsTrigger, 80);
+    const settledRetryId = window.setTimeout(focusShortcutsTrigger, 240);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(retryId);
+      window.clearTimeout(settledRetryId);
+    };
+  }, [showShortcuts]);
 
   const toggleBookmarkSelected = useCallback(() => {
     if (!selectedId) return;
@@ -954,43 +1225,76 @@ export default function App() {
     searchInputId: SEARCH_INPUT_ID,
     clearSearch,
   });
-  const onOpenPlaceFromSubview = useCallback((id: string) => { openPlace(id); setViewFluid("explorer"); }, [openPlace, setViewFluid]);
+  const onOpenPlaceFromCollections = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
+    openPlace(id, opts);
+  }, [openPlace]);
+  const onOpenPlaceFromLearn = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
+    openPlace(id, opts);
+  }, [openPlace]);
   const onOpenPlaceFromTrips = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
     openPlace(id, opts);
   }, [openPlace]);
   const onPickCollection = useCallback((id: string) => {
+    activeScopeFocusPendingRef.current = true;
     setActiveCollection(a => a === id ? null : id);
     setViewFluid("explorer");
   }, [setViewFluid]);
   const onPickTripTheme = onPickCollection;
 
-  const surpriseMe = useCallback(() => {
-    if (!pickRandomPlace()) onRandomEmpty();
+  useEffect(() => {
+    if (!activeScopeFocusPendingRef.current || view !== "explorer") return;
+    const focusActiveScopeTarget = () => {
+      const target =
+        document.querySelector<HTMLButtonElement>("[data-active-scope-clear]") ??
+        document.getElementById("main-content");
+      if (!target) return;
+      try {
+        target.scrollIntoView?.({ block: "center", inline: "nearest" });
+        target.focus();
+      } catch { /* noop */ }
+      activeScopeFocusPendingRef.current = false;
+    };
+    const rafId = window.requestAnimationFrame(focusActiveScopeTarget);
+    const retryId = window.setTimeout(focusActiveScopeTarget, 80);
+    const settledRetryId = window.setTimeout(focusActiveScopeTarget, 240);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(retryId);
+      window.clearTimeout(settledRetryId);
+    };
+  }, [activeCollection, view]);
+
+  const surpriseMe = useCallback((opts?: { trigger?: HTMLElement | null }) => {
+    if (!pickRandomPlace(opts)) onRandomEmpty();
   }, [pickRandomPlace, onRandomEmpty]);
 
   return (
     <div className="tc-app-shell relative min-h-screen flex flex-col text-ice">
       <div ref={appShellRef} data-app-shell className="relative z-10 flex flex-col flex-1 min-h-0">
         <a
+          ref={skipLinkRef}
           href="#main-content"
           className="skip-to-main focus:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(26,143,168,0.55)] focus-visible:ring-offset-2"
         >
           Skip to main content
         </a>
         <div className="ambient-aurora" aria-hidden="true" />
-        <div id="main-content" role="main" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
-      <TopBar
-        view={view}
-        setView={setViewFluid}
-        onOpenCompare={openCompare}
-        onPreloadCompare={preloadCompareView}
-        compareCount={compareIds.size}
-        themePreference={themePreference}
-        onThemeChange={setTheme}
-      />
+        <main id="main-content" tabIndex={-1} className="relative z-10 flex flex-col flex-1 min-h-0 outline-none">
+      <div ref={topBarRegionRef} data-topbar-region>
+        <TopBar
+          view={view}
+          setView={setViewFluid}
+          onOpenCompare={openCompare}
+          onPreloadCompare={preloadCompareView}
+          compareCount={compareIds.size}
+          themePreference={themePreference}
+          onThemeChange={setTheme}
+          onMenuOpenChange={setSiteMenuOpen}
+        />
+      </div>
 
-      <div className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1600px] w-full mx-auto">
-        <div key={view} className="view-enter flex-1 flex flex-col lg:flex-row gap-4 min-w-0">
+      <div ref={appContentRef} data-app-content className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1600px] w-full mx-auto">
+        <div ref={appViewContentRef} data-app-view-content key={view} className="view-enter flex-1 flex flex-col lg:flex-row gap-4 min-w-0">
           {view === "explorer" && (
             <>
               <div className="tc-explorer-main flex-1 min-w-0 flex flex-col gap-4">
@@ -1001,6 +1305,8 @@ export default function App() {
                   ranking={ranking}
                   rankingLabel={rankingLabel}
                   onOpenPlace={openPlace}
+                  onClearAll={clearAllFilters}
+                  onClearSearch={clearSearch}
                   activeCollection={activeCollection}
                   onClearCollection={clearCollection}
                   activeArchetypes={filters.archetypes}
@@ -1010,6 +1316,11 @@ export default function App() {
                   filters={filters}
                   onCopyView={copyCurrentView}
                   shareStatus={shareStatus}
+                  shareFallbackUrl={compareOpen ? null : shareFallbackUrl}
+                  homeBasePlace={homeBasePlace}
+                  onClearHomeBase={clearHomeBase}
+                  compareCount={compareIds.size}
+                  onOpenCompare={openCompare}
                   scoutBrief={scoutBrief}
                   contextStressRows={contextStressRows}
                   onCompareLeaders={comparePlaces}
@@ -1020,6 +1331,7 @@ export default function App() {
                   bookmarkIds={bookmarkIds}
                   recentIds={recentIds}
                   onToggleBookmark={toggleBookmark}
+                  onRemovePinnedPlace={removePinnedRailPlace}
                   onClearRecents={clearRecents}
                   onApplyQuickPick={applyHeroQuickPick}
                   isQuickPickActive={isHeroQuickPickActive}
@@ -1117,32 +1429,34 @@ export default function App() {
                       <button
                         type="button"
                         onClick={clearHomeBase}
-                        className="btn-ghost !p-1 !text-[10px]"
-                        aria-label={`Stop comparing against ${homeBasePlace.name} (clear home base)`}
-                        title="Clear home base — cards and dossiers return to absolute readings"
+                        className="btn-ghost tc-home-base-clear !p-1 !text-[10px]"
+                        aria-label={homeBaseClearLabel}
+                        title={homeBaseClearLabel}
                       >
                         <X className="w-3 h-3" aria-hidden />
                       </button>
                     </div>
                   ) : null}
-                  <div className="text-xs text-stone hidden md:flex items-center gap-2 flex-wrap">
+                  <div className="tc-header-help-desktop text-xs text-stone">
                     <span><span className="tc-tip-pill">Scroll</span> zooms the map</span>
                     <span><span className="tc-tip-pill">{SEARCH_SHORTCUT_HINT}</span> or <span className="tc-tip-pill">/</span> search</span>
                     <span><span className="tc-tip-pill">R</span> surprise pick</span>
                     <button
                       type="button"
-                      onClick={openShortcutsHelp}
+                      onClick={event => openShortcutsHelp(event.currentTarget)}
                       className={`tc-header-help-btn focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[rgba(26,143,168,0.55)] ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
                       aria-label="Show keyboard shortcuts"
+                      title="Show keyboard shortcuts"
                     >
                       <HelpCircle className="w-3.5 h-3.5" aria-hidden /> Shortcuts
                     </button>
                   </div>
                   <button
                     type="button"
-                    onClick={openShortcutsHelp}
-                    className={`md:hidden tc-header-help-btn tc-header-help-btn--touch ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
+                    onClick={event => openShortcutsHelp(event.currentTarget)}
+                    className={`tc-header-help-mobile tc-header-help-btn tc-header-help-btn--touch ${shortcutsSeen ? "" : "tc-shortcuts-pulse"}`}
                     aria-label="Show keyboard shortcuts and tips"
+                    title="Show keyboard shortcuts and tips"
                   >
                     <HelpCircle className="w-3.5 h-3.5" aria-hidden /> Tips
                   </button>
@@ -1156,6 +1470,7 @@ export default function App() {
                       onClick={() => setTransientFeedback(null)}
                       className="btn-ghost !text-xs !py-1"
                       aria-label="Dismiss message"
+                      title="Dismiss message"
                     >
                       <X className="w-3 h-3" aria-hidden /> Dismiss
                     </button>
@@ -1243,14 +1558,14 @@ export default function App() {
               <div className="max-w-3xl mx-auto">
                 <div className="mb-5 tc-page-intro">
                   <div className="text-xs uppercase tracking-wider text-stone">Curated</div>
-                  <h2 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Collections</h2>
+                  <h1 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Collections</h1>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
                     Hand-assembled routes through the atlas: rain shadows, sky islands, eternal springs, lake snowbelts, and other climate families. Pin one to narrow the map.
                   </p>
                 </div>
                 <Suspense fallback={<RouteLoadingFallback label="Loading Collections" />}>
                   <CollectionsView
-                    onOpenPlace={onOpenPlaceFromSubview}
+                    onOpenPlace={onOpenPlaceFromCollections}
                     onPick={onPickCollection}
                     activeId={activeCollection ?? undefined}
                   />
@@ -1264,13 +1579,13 @@ export default function App() {
               <div className="max-w-3xl mx-auto">
                 <div className="mb-5 tc-page-intro tc-page-intro--sage">
                   <div className="text-xs uppercase tracking-wider text-stone">Learn</div>
-                  <h2 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Field guide</h2>
+                  <h1 className="font-atlas text-3xl text-ice text-depth-hero mt-0.5">Field guide</h1>
                   <p className="text-sm text-frost mt-1 max-w-2xl">
                     Microclimate has a grammar. Lapse rate, cold-air pooling, orographic lift, and thermal belts give readers and agents the words to explain why a place feels unlike its neighbors.
                   </p>
                 </div>
                 <Suspense fallback={<RouteLoadingFallback label="Loading Learn" />}>
-                  <LearnMode onOpenPlace={onOpenPlaceFromSubview} />
+                  <LearnMode onOpenPlace={onOpenPlaceFromLearn} />
                 </Suspense>
               </div>
             </div>
@@ -1289,17 +1604,28 @@ export default function App() {
             projecting={processor.projecting}
             footer={<FootprintPanel />}
             detailOpen={Boolean(selectedId)}
+            onOpenChange={setFilterSheetOpen}
           />
         ) : null}
       </div>
 
-      <Footer />
+      <div ref={footerRegionRef} data-footer-region>
+        <Footer />
+      </div>
 
-        </div>
+        </main>
       </div>
 
       {selectedPlace ? (
-        <Suspense fallback={<OverlayLoadingFallback label={`Loading ${selectedPlace.name}`} />}>
+        <Suspense
+          fallback={(
+            <PlaceDetailLoadingFallback
+              placeName={selectedPlace.name}
+              onClose={closeDetail}
+              occluded={placeDetailOccluded}
+            />
+          )}
+        >
           <PlaceDetail
             place={selectedPlace}
             onClose={closeDetail}
@@ -1315,13 +1641,14 @@ export default function App() {
             onHomeBaseToggle={toggleHomeBase}
             occluded={placeDetailOccluded}
             scenario={climateScenario}
+            animateEntry={animatePlaceDetailEntry}
           />
         </Suspense>
       ) : null}
       {compareOpen ? (
-        <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
+        <Suspense fallback={<CompareLoadingFallback places={activeComparePlaces} onClose={closeCompare} />}>
           <CompareView
-            places={[...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace)}
+            places={activeComparePlaces}
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
@@ -1331,6 +1658,7 @@ export default function App() {
             }}
             onCopyView={copyCurrentView}
             shareStatus={shareStatus}
+            shareFallbackUrl={shareFallbackUrl}
             liveFitFilters={filters}
             homePlace={homeBasePlaceForScenario}
             onAddPlace={toggleCompare}
@@ -1343,7 +1671,7 @@ export default function App() {
         </Suspense>
       ) : null}
 
-      {showShortcuts && <ShortcutsOverlay onClose={() => setShowShortcuts(false)} />}
+      {showShortcuts && <ShortcutsOverlay onClose={closeShortcutsHelp} />}
     </div>
   );
 }
@@ -1352,16 +1680,6 @@ function RouteLoadingFallback({ label }: { label: string }) {
   return (
     <div role="status" aria-live="polite" className="panel-thin p-4 text-sm text-stone-readable">
       {label}...
-    </div>
-  );
-}
-
-function OverlayLoadingFallback({ label }: { label: string }) {
-  return (
-    <div className="fixed inset-0 z-[80] flex items-center justify-center p-4 pointer-events-none" aria-live="polite">
-      <div role="status" className="panel p-4 text-sm text-stone-readable shadow-2xl">
-        {label}...
-      </div>
     </div>
   );
 }
@@ -1485,17 +1803,21 @@ const TopBar = memo(function TopBar({
   compareCount,
   themePreference,
   onThemeChange,
+  onMenuOpenChange,
 }: {
   view: View;
   setView: (v: View) => void;
-  onOpenCompare: () => void;
+  onOpenCompare: OpenCompareHandler;
   onPreloadCompare: () => void;
   compareCount: number;
   themePreference: ThemePreference;
   onThemeChange: (next: ThemePreference) => void;
+  onMenuOpenChange: (open: boolean) => void;
 }) {
   const menuRef = useRef<HTMLDialogElement>(null);
+  const menuTriggerRef = useRef<HTMLButtonElement>(null);
   const menuPanelRef = useRef<HTMLDivElement>(null);
+  const menuCloseRef = useRef<HTMLButtonElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useFocusTrap(menuPanelRef, menuOpen);
@@ -1505,7 +1827,7 @@ const TopBar = memo(function TopBar({
     let alive = true;
     const id = window.requestAnimationFrame(() => {
       if (!alive) return;
-      menuPanelRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+      menuCloseRef.current?.focus({ preventScroll: true });
     });
     return () => {
       alive = false;
@@ -1516,11 +1838,17 @@ const TopBar = memo(function TopBar({
   useEffect(() => {
     const d = menuRef.current;
     if (!d) return;
-    const sync = () => setMenuOpen(d.open);
+    const sync = () => {
+      setMenuOpen(d.open);
+      onMenuOpenChange(d.open);
+    };
     d.addEventListener("toggle", sync);
     sync();
-    return () => d.removeEventListener("toggle", sync);
-  }, []);
+    return () => {
+      d.removeEventListener("toggle", sync);
+      onMenuOpenChange(false);
+    };
+  }, [onMenuOpenChange]);
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -1535,8 +1863,19 @@ const TopBar = memo(function TopBar({
     menuRef.current?.close();
   }, []);
 
+  useEffect(() => {
+    const dialog = menuRef.current;
+    if (!dialog) return;
+    const closeFromBackdrop = (event: MouseEvent) => {
+      if (event.target === dialog) closeMenu();
+    };
+    dialog.addEventListener("click", closeFromBackdrop);
+    return () => dialog.removeEventListener("click", closeFromBackdrop);
+  }, [closeMenu]);
+
   const openMenu = useCallback(() => {
     menuRef.current?.showModal();
+    menuCloseRef.current?.focus({ preventScroll: true });
   }, []);
 
   const pickView = useCallback(
@@ -1547,6 +1886,7 @@ const TopBar = memo(function TopBar({
     [setView, closeMenu],
   );
   const compareAriaLabel = `Open compare (${compareCount} ${compareCount === 1 ? "place" : "places"})`;
+  const menuTriggerLabel = menuOpen ? "Close site menu" : "Open site menu";
 
   return (
     <header className="sticky top-0 z-30 tc-header-bar">
@@ -1563,15 +1903,17 @@ const TopBar = memo(function TopBar({
           </div>
 
           <button
+            ref={menuTriggerRef}
             type="button"
-            onClick={openMenu}
+            onClick={menuOpen ? closeMenu : openMenu}
             className="tc-header-menu-trigger min-[560px]:hidden"
             aria-haspopup="dialog"
             aria-expanded={menuOpen}
             aria-controls="tc-site-menu"
+            title={menuTriggerLabel}
           >
             <Menu className="w-5 h-5" aria-hidden />
-            <span className="sr-only">Open site menu</span>
+            <span className="sr-only">{menuTriggerLabel}</span>
           </button>
         </div>
 
@@ -1587,12 +1929,13 @@ const TopBar = memo(function TopBar({
           {compareCount > 0 && (
             <button
               type="button"
-              onClick={onOpenCompare}
+              onClick={event => onOpenCompare({ trigger: event.currentTarget })}
               onPointerEnter={onPreloadCompare}
               onFocus={onPreloadCompare}
               onPointerDown={onPreloadCompare}
-              className="btn-primary !text-xs !py-1.5"
+              className="btn-primary tc-compare-open-trigger !text-xs !py-1.5"
               aria-label={compareAriaLabel}
+              title={compareAriaLabel}
             >
               <Target className="w-3.5 h-3.5" aria-hidden /> Compare · {compareCount}
             </button>
@@ -1602,22 +1945,19 @@ const TopBar = memo(function TopBar({
         <dialog
           ref={menuRef}
           id="tc-site-menu"
+          aria-modal="true"
           className="tc-site-menu-dialog tc-glass-dialog-motion"
           aria-labelledby="tc-site-menu-title"
         >
-          <button
-            type="button"
-            className="fixed inset-0 z-0 min-h-[100dvh] min-w-[100vw] cursor-default border-0 bg-transparent p-0"
-            aria-hidden="true"
-            tabIndex={-1}
-            onClick={closeMenu}
-          />
-          <div ref={menuPanelRef} className="relative z-10 tc-site-menu-dialog__inner">
+          <div
+            ref={menuPanelRef}
+            className="relative z-10 tc-site-menu-dialog__inner"
+          >
             <div className="tc-site-menu-dialog__head">
               <h2 id="tc-site-menu-title" className="font-atlas text-lg text-ice m-0">
                 Navigate
               </h2>
-              <button type="button" onClick={closeMenu} className="btn-ghost !p-2 rounded-lg" aria-label="Close menu">
+              <button ref={menuCloseRef} type="button" onClick={closeMenu} className="btn-ghost tc-site-menu-dialog__close !p-2 rounded-lg" aria-label="Close menu" title="Close menu">
                 <X className="w-4 h-4" aria-hidden />
               </button>
             </div>
@@ -1643,12 +1983,13 @@ const TopBar = memo(function TopBar({
                   onPointerEnter={onPreloadCompare}
                   onFocus={onPreloadCompare}
                   onPointerDown={onPreloadCompare}
-                  onClick={() => {
+                  onClick={event => {
                     closeMenu();
-                    onOpenCompare();
+                    onOpenCompare({ trigger: menuTriggerRef.current ?? event.currentTarget });
                   }}
-                  className="btn-primary w-full justify-center !py-2.5 mt-1"
+                  className="btn-primary tc-compare-open-trigger w-full justify-center !py-2.5 mt-1"
                   aria-label={compareAriaLabel}
+                  title={compareAriaLabel}
                 >
                   <Target className="w-4 h-4" aria-hidden /> Compare · {compareCount}
                 </button>
@@ -1699,17 +2040,19 @@ const QuickPick = memo(function QuickPick({
   onClick: () => void;
   active: boolean;
 }) {
+  const accessibleLabel = `${label}: ${description}`;
+
   return (
     <button
       type="button"
       onClick={onClick}
       className={`hero-quick-pick${active ? " hero-quick-pick--active" : ""}`}
+      aria-label={accessibleLabel}
       aria-pressed={active}
-      title={description}
+      title={accessibleLabel}
     >
       <Icon className="hero-quick-pick__icon" aria-hidden />
       <span>{label}</span>
-      <span className="sr-only">: {description}</span>
     </button>
   );
 });
@@ -1754,8 +2097,8 @@ function ActiveFitJourneyReceipt({
 }: {
   bundle: LifestyleBundle;
   scoutBrief: ExplorerScoutBrief | null;
-  onOpenPlace: (id: string) => void;
-  onCompareLeaders: (ids: string[]) => void;
+  onOpenPlace: OpenPlaceHandler;
+  onCompareLeaders: ComparePlacesHandler;
   onPreloadCompare: () => void;
 }) {
   const prose = useProse();
@@ -1790,7 +2133,7 @@ function ActiveFitJourneyReceipt({
           <button
             type="button"
             className="fit-journey-receipt__action"
-            onClick={() => onOpenPlace(scoutBrief.leader.place.id)}
+            onClick={event => onOpenPlace(scoutBrief.leader.place.id, { trigger: event.currentTarget })}
             aria-label={`Open first scout dossier: ${scoutBrief.leader.place.name}`}
           >
             <BookOpen className="w-3.5 h-3.5" aria-hidden />
@@ -1802,7 +2145,7 @@ function ActiveFitJourneyReceipt({
             onPointerEnter={onPreloadCompare}
             onFocus={onPreloadCompare}
             onPointerDown={onPreloadCompare}
-            onClick={() => onCompareLeaders(scoutBrief.compareIds)}
+            onClick={event => onCompareLeaders(scoutBrief.compareIds, { trigger: event.currentTarget })}
             aria-label={`Compare ${scoutBrief.compareIds.length} Fit Finder leaders`}
             disabled={!canCompare}
           >
@@ -1861,7 +2204,7 @@ const ClimateSignalRail = memo(function ClimateSignalRail({
 }: {
   rows: readonly SignatureLeader[];
   rankingLabel: string;
-  onOpenPlace: (id: string) => void;
+  onOpenPlace: OpenPlaceHandler;
 }) {
   const prose = useProse();
   const visibleRows = rows.slice(0, 5);
@@ -1873,7 +2216,11 @@ const ClimateSignalRail = memo(function ClimateSignalRail({
       className="climate-signal-rail"
       style={{ ["--signature-rgb" as string]: leader.signature.mapAccentRgb }}
       aria-label={`Current ${rankingLabel} climate signal leaders`}
+      aria-describedby="climate-signal-rail-scroll-hint"
     >
+      <p id="climate-signal-rail-scroll-hint" className="sr-only">
+        Swipe or scroll horizontally to browse more current climate signal leaders.
+      </p>
       <div className="climate-signal-rail__head">
         <span>Climate signal</span>
         <strong>{rankingLabel}</strong>
@@ -1887,25 +2234,29 @@ const ClimateSignalRail = memo(function ClimateSignalRail({
         ))}
       </div>
       <div className="climate-signal-rail__grid">
-        {visibleRows.map((row, i) => (
-          <button
-            key={row.place.id}
-            type="button"
-            onClick={() => onOpenPlace(row.place.id)}
-            className="climate-signal-rail__chip"
-            style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
-            aria-label={`Open ${row.place.name}, climate signal rank ${i + 1} by ${rankingLabel}`}
-          >
-            <span className="climate-signal-rail__rank" aria-hidden>{i + 1}</span>
-            <span className="climate-signal-rail__copy">
-              <span className="climate-signal-rail__place" title={row.place.name}>{row.place.name}</span>
-              <span className="climate-signal-rail__note" title={row.note ? prose(row.note) : row.signature.primaryBlurb}>
-                {row.note ? prose(row.note) : row.signature.primaryLabel}
+        {visibleRows.map((row, i) => {
+          const openLabel = `Open ${row.place.name}, climate signal rank ${i + 1} by ${rankingLabel}`;
+          return (
+            <button
+              key={row.place.id}
+              type="button"
+              onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
+              className="climate-signal-rail__chip"
+              style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
+              aria-label={openLabel}
+              title={openLabel}
+            >
+              <span className="climate-signal-rail__rank" aria-hidden>{i + 1}</span>
+              <span className="climate-signal-rail__copy">
+                <span className="climate-signal-rail__place" title={row.place.name}>{row.place.name}</span>
+                <span className="climate-signal-rail__note" title={row.note ? prose(row.note) : row.signature.primaryBlurb}>
+                  {row.note ? prose(row.note) : row.signature.primaryLabel}
+                </span>
               </span>
-            </span>
-            <span className="climate-signal-rail__score font-mono-num" aria-hidden>{Math.round(row.score)}</span>
-          </button>
-        ))}
+              <span className="climate-signal-rail__score font-mono-num" aria-hidden>{Math.round(row.score)}</span>
+            </button>
+          );
+        })}
       </div>
     </section>
   );
@@ -1918,6 +2269,8 @@ const HeroCard = memo(function HeroCard({
   ranking,
   rankingLabel,
   onOpenPlace,
+  onClearAll,
+  onClearSearch,
   activeCollection,
   onClearCollection,
   activeArchetypes,
@@ -1927,6 +2280,11 @@ const HeroCard = memo(function HeroCard({
   filters,
   onCopyView,
   shareStatus,
+  shareFallbackUrl,
+  homeBasePlace,
+  onClearHomeBase,
+  compareCount,
+  onOpenCompare,
   scoutBrief,
   contextStressRows,
   onCompareLeaders,
@@ -1937,6 +2295,7 @@ const HeroCard = memo(function HeroCard({
   bookmarkIds,
   recentIds,
   onToggleBookmark,
+  onRemovePinnedPlace,
   onClearRecents,
   onApplyQuickPick,
   isQuickPickActive,
@@ -1948,26 +2307,34 @@ const HeroCard = memo(function HeroCard({
   signatureLeaders: SignatureLeader[];
   ranking: RankingProfile;
   rankingLabel: string;
-  onOpenPlace: (id: string) => void;
+  onOpenPlace: OpenPlaceHandler;
+  onClearAll: () => void;
+  onClearSearch: () => void;
   activeCollection: string | null;
   onClearCollection: () => void;
   activeArchetypes: Set<MicroclimateArchetype>;
   onClearArchetypes: () => void;
-  onSurpriseMe: () => void;
+  onSurpriseMe: (opts?: { trigger?: HTMLElement | null }) => void;
   canSurprise: boolean;
   filters: FilterState;
   onCopyView: () => void;
   shareStatus: ShareStatus;
+  shareFallbackUrl: string | null;
+  homeBasePlace: Place | null;
+  onClearHomeBase: () => void;
+  compareCount: number;
+  onOpenCompare: OpenCompareHandler;
   scoutBrief: ExplorerScoutBrief | null;
   contextStressRows: ContextStressRow[];
-  onCompareLeaders: (ids: string[]) => void;
-  onCompareContextLeaders: (ids: string[]) => void;
+  onCompareLeaders: ComparePlacesHandler;
+  onCompareContextLeaders: ComparePlacesHandler;
   onPreloadCompare: () => void;
   onSaveScoutFinalists: (ids: readonly string[]) => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
   bookmarkIds: Set<string>;
   recentIds: readonly string[];
   onToggleBookmark: (id: string) => void;
+  onRemovePinnedPlace: (id: string, nextFocusId?: string | null) => void;
   onClearRecents: () => void;
   onApplyQuickPick: (r: RankingProfile) => void;
   isQuickPickActive: (r: RankingProfile) => boolean;
@@ -1975,7 +2342,23 @@ const HeroCard = memo(function HeroCard({
   showDesktopScoutBoard: boolean;
 }) {
   const prose = useProse();
+  const shareFallbackInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (shareStatus !== "failed" || !shareFallbackUrl) return;
+    const focusId = window.setTimeout(() => {
+      const input = shareFallbackInputRef.current;
+      if (!input) return;
+      try {
+        input.focus({ preventScroll: true });
+        input.select();
+      } catch {
+        // The URL remains visible even if an embedded browser blocks selection.
+      }
+    }, 0);
+    return () => window.clearTimeout(focusId);
+  }, [shareFallbackUrl, shareStatus]);
   const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
+  const compareHeroLabel = `Open compare setup from Explorer hero (${compareCount} ${compareCount === 1 ? "place" : "places"})`;
   const liveSignalCount = (filters.fitPresets?.size ?? 0) + [
     filters.maxSummerHighC,
     filters.minWinterLowC,
@@ -1986,6 +2369,17 @@ const HeroCard = memo(function HeroCard({
   const activeFitBundle = active ? null : LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null;
   const heroAccentRgb = signatureLeaders[0]?.signature.mapAccentRgb ?? "94, 196, 220";
   const prioritizeDesktopScoutBoard = showDetailedHeroPanels && showDesktopScoutBoard && scoutBrief !== null;
+  const activeScopeClearLabel = active ? `Clear ${active.title} ${active.kind === "trip" ? "trip" : "collection"} filter` : "";
+  const searchTerm = (filters.search ?? "").trim();
+  const copyViewLabel =
+    shareStatus === "shared"
+      ? "Shared current Explorer view"
+      : shareStatus === "copied"
+        ? "Copied current Explorer view link"
+        : shareStatus === "failed"
+          ? "Copy current Explorer view failed"
+          : "Copy or share current Explorer view";
+  const surpriseLabel = "Open a random place from the current filtered list";
   return (
     <div
       className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
@@ -2005,12 +2399,19 @@ const HeroCard = memo(function HeroCard({
                     : "Live Finder"}
             </span>
             {active && (
-              <button type="button" onClick={onClearCollection} className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice">
+              <button
+                type="button"
+                onClick={onClearCollection}
+                className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice"
+                data-active-scope-clear
+                aria-label={activeScopeClearLabel}
+                title={activeScopeClearLabel}
+              >
                 <X className="w-3 h-3" aria-hidden /> Clear {active.kind === "trip" ? "trip" : "collection"}
               </button>
             )}
             {!active && activeArchetypes.size > 0 && (
-              <button type="button" onClick={onClearArchetypes} className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice">
+              <button type="button" onClick={onClearArchetypes} className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice" data-active-scope-clear>
                 <X className="w-3 h-3" aria-hidden /> Clear archetypes
               </button>
             )}
@@ -2026,7 +2427,15 @@ const HeroCard = memo(function HeroCard({
 
           {/* Climate-fit quick-picks — instant one-click ranking presets */}
           {!active && (
-            <div className="hero-quick-picks mt-3" role="group" aria-label="Climate-fit quick picks">
+            <div
+              className="hero-quick-picks mt-3"
+              role="group"
+              aria-label="Climate-fit quick picks"
+              aria-describedby="hero-quick-picks-scroll-hint"
+            >
+              <span id="hero-quick-picks-scroll-hint" className="sr-only">
+                Swipe or scroll horizontally to browse more Fit Finder paths.
+              </span>
               <QuickPick icon={CalendarDays} label="Visit now" description="Rank places by the current month's scouting weather." onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
               <QuickPick icon={Sun} label="Comfort fit" description="Surface places with the easiest human-felt comfort." onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
               <QuickPick icon={Laptop} label="Remote work" description="Prioritize mild, livable places for remote-worker scouting." onClick={() => onApplyQuickPick("best-for-remote-work")} active={isQuickPickActive("best-for-remote-work")} />
@@ -2042,26 +2451,55 @@ const HeroCard = memo(function HeroCard({
             type="button"
             onClick={onCopyView}
             className={`btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)] ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
-            aria-label="Copy current Explorer view"
-            title="Copy a URL with the current filters, ranking, and selected place"
+            aria-label={copyViewLabel}
+            title={copyViewLabel}
           >
             <Link2 className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
             <span aria-live="polite">
-              {shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy view"}
+              {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy view"}
             </span>
           </button>
           {canSurprise && (
             <button
               type="button"
-              onClick={onSurpriseMe}
+              onClick={event => onSurpriseMe({ trigger: event.currentTarget })}
               className="btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
-              aria-label="Open a random place from the current filtered list"
-              title="Uses the same pool as the cards and map below"
+              aria-label={surpriseLabel}
+              title={surpriseLabel}
             >
               <Shuffle className="w-3.5 h-3.5 text-[rgba(122,212,240,0.9)]" aria-hidden />
               Surprise me
             </button>
           )}
+          {compareCount > 0 ? (
+            <button
+              type="button"
+              onClick={event => onOpenCompare({ trigger: event.currentTarget })}
+              onPointerEnter={onPreloadCompare}
+              onFocus={onPreloadCompare}
+              onPointerDown={onPreloadCompare}
+              className="btn-primary hero-action-stack__compare min-[560px]:hidden !text-xs !py-1.5 w-full justify-center"
+              aria-label={compareHeroLabel}
+              title={compareHeroLabel}
+            >
+              <Target className="w-3.5 h-3.5" aria-hidden /> Compare &middot; {compareCount}
+            </button>
+          ) : null}
+          {shareStatus === "failed" && shareFallbackUrl ? (
+            <div className="tc-share-fallback" role="group" aria-label="Manual Explorer share link">
+              <span className="tc-share-fallback__label">Shareable link</span>
+              <input
+                ref={shareFallbackInputRef}
+                type="text"
+                readOnly
+                value={shareFallbackUrl}
+                className="tc-share-fallback__input"
+                aria-label="Shareable Explorer URL for manual copy"
+                onFocus={event => event.currentTarget.select()}
+                onClick={event => event.currentTarget.select()}
+              />
+            </div>
+          ) : null}
           <div className="flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
             <Metric label="In view" value={count} animated />
             <Metric label="Atlas total" value={PLACE_COUNTS.total} />
@@ -2069,6 +2507,58 @@ const HeroCard = memo(function HeroCard({
           </div>
         </div>
       </div>
+
+      {homeBasePlace ? (
+        <div className="tc-hero-home-receipt" role="status" aria-label={`Explorer home base: ${homeBasePlace.name}`}>
+          <Home className="tc-hero-home-receipt__icon" aria-hidden />
+          <div className="tc-hero-home-receipt__copy">
+            <strong>Home base: {homeBasePlace.name}</strong>
+            <span>Cards, dossiers, and Compare read climate deltas against this anchor.</span>
+          </div>
+          <button
+            type="button"
+            className="tc-hero-home-receipt__action"
+            onClick={onClearHomeBase}
+            aria-label={`Stop comparing against ${homeBasePlace.name} from the Explorer hero (clear home base)`}
+            title={`Stop comparing against ${homeBasePlace.name} from the Explorer hero (clear home base)`}
+          >
+            Clear
+          </button>
+        </div>
+      ) : null}
+
+      {count === 0 ? (
+        <div className="tc-hero-empty-recovery" role="group" aria-label="Immediate zero-result recovery">
+          <Search className="tc-hero-empty-recovery__icon" aria-hidden />
+          <div className="tc-hero-empty-recovery__copy">
+            <strong>{searchTerm ? `No matches for "${searchTerm}"` : "No places in this screen"}</strong>
+            <span>Recover here before scrolling: clear the search or reset the full Explorer.</span>
+          </div>
+          <div className="tc-hero-empty-recovery__actions">
+            {searchTerm ? (
+              <button
+                type="button"
+                className="tc-hero-empty-recovery__action"
+                onClick={onClearSearch}
+                aria-label="Clear search from hero recovery"
+                title="Clear search from hero recovery"
+              >
+                Clear search
+              </button>
+            ) : null}
+            <button
+              type="button"
+              className="tc-hero-empty-recovery__action"
+              data-primary={searchTerm ? undefined : true}
+              onClick={onClearAll}
+              aria-label="Reset Explorer from hero recovery"
+              title="Reset Explorer from hero recovery"
+            >
+              Reset Explorer
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {activeFitBundle ? (
         <ActiveFitJourneyReceipt
@@ -2146,28 +2636,32 @@ const HeroCard = memo(function HeroCard({
             className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
             aria-label="Top ten places by livability blend in the current filtered list"
           >
-            {livabilityTopTen.map((row, i) => (
-              <button
-                key={row.place.id}
-                type="button"
-                onClick={() => onOpenPlace(row.place.id)}
-                aria-label={`Livability rank ${i + 1}. ${row.place.name}, ${row.place.koppen}. Open place profile.`}
-                className="hero-top-ten__chip snap-start shrink-0 px-3 py-2"
-              >
-                <div className="flex items-baseline justify-between gap-2">
-                  <span className="font-atlas text-lg text-ice/90 tabular-nums leading-none" aria-hidden>{i + 1}</span>
-                  <span className="text-[10px] uppercase tracking-wider text-stone-readable truncate">{row.place.country === "USA" ? "US" : row.place.country === "Canada" ? "CA" : "MX"}</span>
-                </div>
-                <div className="font-atlas text-sm text-ice leading-tight mt-1 truncate" title={row.place.name}>{row.place.name}</div>
-                <div className="text-[11px] text-stone-readable mt-0.5 truncate">{row.place.koppen}</div>
-                <div className="text-[10px] text-stone-readable mt-1 font-mono-num tabular-nums">
-                  Blend <span className="text-frost">{Math.round(row.score)}</span>
-                </div>
-                {row.note ? (
-                  <div className="text-[10px] text-stone-readable mt-0.5 leading-snug line-clamp-2" title={prose(row.note)}>{prose(row.note)}</div>
-                ) : null}
-              </button>
-            ))}
+            {livabilityTopTen.map((row, i) => {
+              const openLabel = `Livability rank ${i + 1}. ${row.place.name}, ${row.place.koppen}. Open place profile.`;
+              return (
+                <button
+                  key={row.place.id}
+                  type="button"
+                  onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
+                  aria-label={openLabel}
+                  title={openLabel}
+                  className="hero-top-ten__chip snap-start shrink-0 px-3 py-2"
+                >
+                  <div className="flex items-baseline justify-between gap-2">
+                    <span className="font-atlas text-lg text-ice/90 tabular-nums leading-none" aria-hidden>{i + 1}</span>
+                    <span className="text-[10px] uppercase tracking-wider text-stone-readable truncate">{row.place.country === "USA" ? "US" : row.place.country === "Canada" ? "CA" : "MX"}</span>
+                  </div>
+                  <div className="font-atlas text-sm text-ice leading-tight mt-1 truncate" title={row.place.name}>{row.place.name}</div>
+                  <div className="text-[11px] text-stone-readable mt-0.5 truncate">{row.place.koppen}</div>
+                  <div className="text-[10px] text-stone-readable mt-1 font-mono-num tabular-nums">
+                    Blend <span className="text-frost">{Math.round(row.score)}</span>
+                  </div>
+                  {row.note ? (
+                    <div className="text-[10px] text-stone-readable mt-0.5 leading-snug line-clamp-2" title={prose(row.note)}>{prose(row.note)}</div>
+                  ) : null}
+                </button>
+              );
+            })}
           </div>
 
         </div>
@@ -2177,7 +2671,7 @@ const HeroCard = memo(function HeroCard({
         bookmarkIds={bookmarkIds}
         recentIds={recentIds}
         onOpenPlace={onOpenPlace}
-        onToggleBookmark={onToggleBookmark}
+        onRemovePinnedPlace={onRemovePinnedPlace}
         onClearRecents={onClearRecents}
         onComparePinned={onCompareLeaders}
         onPreloadCompare={onPreloadCompare}
@@ -2214,9 +2708,9 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   filters: FilterState;
   scoutBrief: ExplorerScoutBrief | null;
   contextStressRows: ContextStressRow[];
-  onOpenPlace: (id: string) => void;
-  onCompareLeaders: (ids: string[]) => void;
-  onCompareContextLeaders: (ids: string[]) => void;
+  onOpenPlace: OpenPlaceHandler;
+  onCompareLeaders: ComparePlacesHandler;
+  onCompareContextLeaders: ComparePlacesHandler;
   onPreloadCompare: () => void;
   onSaveScoutFinalists: (ids: readonly string[]) => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
@@ -2279,7 +2773,7 @@ const MobileLivabilityTopTenStrip = memo(function MobileLivabilityTopTenStrip({
   onOpenPlace,
 }: {
   rows: RankingResult[];
-  onOpenPlace: (id: string) => void;
+  onOpenPlace: OpenPlaceHandler;
 }) {
   const prose = useProse();
   if (rows.length === 0) return null;
@@ -2293,28 +2787,32 @@ const MobileLivabilityTopTenStrip = memo(function MobileLivabilityTopTenStrip({
         className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
         aria-label="Top ten places by livability blend in the current filtered list"
       >
-        {rows.map((row, i) => (
-          <button
-            key={row.place.id}
-            type="button"
-            onClick={() => onOpenPlace(row.place.id)}
-            aria-label={`Livability rank ${i + 1}. ${row.place.name}, ${row.place.koppen}. Open place profile.`}
-            className="hero-top-ten__chip snap-start shrink-0 px-3 py-2"
-          >
-            <div className="flex items-baseline justify-between gap-2">
-              <span className="font-atlas text-lg text-ice/90 tabular-nums leading-none" aria-hidden>{i + 1}</span>
-              <span className="text-[10px] uppercase tracking-wider text-stone-readable truncate">{row.place.country === "USA" ? "US" : row.place.country === "Canada" ? "CA" : "MX"}</span>
-            </div>
-            <div className="font-atlas text-sm text-ice leading-tight mt-1 truncate" title={row.place.name}>{row.place.name}</div>
-            <div className="text-[11px] text-stone-readable mt-0.5 truncate">{row.place.koppen}</div>
-            <div className="text-[10px] text-stone-readable mt-1 font-mono-num tabular-nums">
-              Blend <span className="text-frost">{Math.round(row.score)}</span>
-            </div>
-            {row.note ? (
-              <div className="text-[10px] text-stone-readable mt-0.5 leading-snug line-clamp-2" title={prose(row.note)}>{prose(row.note)}</div>
-            ) : null}
-          </button>
-        ))}
+        {rows.map((row, i) => {
+          const openLabel = `Livability rank ${i + 1}. ${row.place.name}, ${row.place.koppen}. Open place profile.`;
+          return (
+            <button
+              key={row.place.id}
+              type="button"
+              onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
+              aria-label={openLabel}
+              title={openLabel}
+              className="hero-top-ten__chip snap-start shrink-0 px-3 py-2"
+            >
+              <div className="flex items-baseline justify-between gap-2">
+                <span className="font-atlas text-lg text-ice/90 tabular-nums leading-none" aria-hidden>{i + 1}</span>
+                <span className="text-[10px] uppercase tracking-wider text-stone-readable truncate">{row.place.country === "USA" ? "US" : row.place.country === "Canada" ? "CA" : "MX"}</span>
+              </div>
+              <div className="font-atlas text-sm text-ice leading-tight mt-1 truncate" title={row.place.name}>{row.place.name}</div>
+              <div className="text-[11px] text-stone-readable mt-0.5 truncate">{row.place.koppen}</div>
+              <div className="text-[10px] text-stone-readable mt-1 font-mono-num tabular-nums">
+                Blend <span className="text-frost">{Math.round(row.score)}</span>
+              </div>
+              {row.note ? (
+                <div className="text-[10px] text-stone-readable mt-0.5 leading-snug line-clamp-2" title={prose(row.note)}>{prose(row.note)}</div>
+              ) : null}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -2367,7 +2865,7 @@ const LivingCompassWorkbench = memo(function LivingCompassWorkbench({
   rankingLabel: string;
   filters: FilterState;
   scoutBrief: ExplorerScoutBrief | null;
-  onOpenPlace: (id: string) => void;
+  onOpenPlace: OpenPlaceHandler;
 }) {
   const prose = useProse();
   const leader = scoutBrief?.leader ?? rows[0] ?? null;
@@ -2475,31 +2973,35 @@ const LivingCompassWorkbench = memo(function LivingCompassWorkbench({
           className="living-compass__rank-list"
           aria-label={`Top five places for the selected ranking profile: ${rankingLabel}`}
         >
-          {rankRows.map((row, i) => (
-            <button
-              key={row.place.id}
-              type="button"
-              className="living-compass__rank-row"
-              style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
-              onClick={() => onOpenPlace(row.place.id)}
-              aria-label={`Rank ${i + 1}. ${row.place.name}. Score ${Math.round(row.score)}. Open place profile.`}
-            >
-              <span className="living-compass__rank-number" aria-hidden>{i + 1}</span>
-              <span className="living-compass__rank-main">
-                <span className="living-compass__rank-name" title={row.place.name}>{row.place.name}</span>
-                <span className="living-compass__rank-note" title={row.note ? prose(row.note) : undefined}>
-                  {row.note ? prose(row.note) : row.signature.primaryLabel}
+          {rankRows.map((row, i) => {
+            const openLabel = `Rank ${i + 1}. ${row.place.name}. Score ${Math.round(row.score)}. Open place profile.`;
+            return (
+              <button
+                key={row.place.id}
+                type="button"
+                className="living-compass__rank-row"
+                style={{ ["--signature-rgb" as string]: row.signature.mapAccentRgb }}
+                onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
+                aria-label={openLabel}
+                title={openLabel}
+              >
+                <span className="living-compass__rank-number" aria-hidden>{i + 1}</span>
+                <span className="living-compass__rank-main">
+                  <span className="living-compass__rank-name" title={row.place.name}>{row.place.name}</span>
+                  <span className="living-compass__rank-note" title={row.note ? prose(row.note) : undefined}>
+                    {row.note ? prose(row.note) : row.signature.primaryLabel}
+                  </span>
+                  <span className="living-compass__rank-caveat">
+                    Watch {prose(row.decision?.watch ?? row.signature.verify.shortLabel)}
+                  </span>
                 </span>
-                <span className="living-compass__rank-caveat">
-                  Watch {prose(row.decision?.watch ?? row.signature.verify.shortLabel)}
+                <span className="living-compass__rank-meter" aria-hidden>
+                  <span className="font-mono-num">{row.liveFit.score}</span>
+                  <i><b style={{ width: `${row.liveFit.score}%` }} /></i>
                 </span>
-              </span>
-              <span className="living-compass__rank-meter" aria-hidden>
-                <span className="font-mono-num">{row.liveFit.score}</span>
-                <i><b style={{ width: `${row.liveFit.score}%` }} /></i>
-              </span>
-            </button>
-          ))}
+              </button>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -2510,17 +3012,17 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
   bookmarkIds,
   recentIds,
   onOpenPlace,
-  onToggleBookmark,
+  onRemovePinnedPlace,
   onClearRecents,
   onComparePinned,
   onPreloadCompare,
 }: {
   bookmarkIds: Set<string>;
   recentIds: readonly string[];
-  onOpenPlace: (id: string) => void;
-  onToggleBookmark: (id: string) => void;
+  onOpenPlace: OpenPlaceHandler;
+  onRemovePinnedPlace: (id: string, nextFocusId?: string | null) => void;
   onClearRecents: () => void;
-  onComparePinned: (ids: string[]) => void;
+  onComparePinned: ComparePlacesHandler;
   onPreloadCompare: () => void;
 }) {
   const prose = useProse();
@@ -2541,6 +3043,12 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
     [pinnedPlaces],
   );
   const shortlistPacketCounterweight = shortlistPacketCue?.counterweight ?? null;
+  const shortlistPacketPrimaryLabel = shortlistPacketCue
+    ? `Open first shortlist dossier: ${shortlistPacketCue.primary.name}`
+    : "";
+  const shortlistPacketCounterweightLabel = shortlistPacketCounterweight
+    ? `Open shortlist contrast dossier: ${shortlistPacketCounterweight.name}`
+    : "";
   const recentPlaces = useMemo(
     () =>
       recentIds
@@ -2552,6 +3060,10 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
         .slice(0, 6),
     [recentIds, bookmarkIds],
   );
+  const recentClearLabel = `Clear recently viewed list (${recentPlaces.length} ${recentPlaces.length === 1 ? "place" : "places"} shown)`;
+  const pinnedCompareLabel = pinnedCompareIds.length === 1
+    ? `Open Compare Workbench setup for ${pinnedPlaces[0]?.name ?? "this place"} from your shortlist`
+    : `Open Compare Workbench for ${pinnedCompareIds.length} pinned places from your shortlist`;
 
   if (pinnedPlaces.length === 0 && recentPlaces.length === 0) return null;
 
@@ -2572,19 +3084,9 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
                   onPointerEnter={onPreloadCompare}
                   onFocus={onPreloadCompare}
                   onPointerDown={onPreloadCompare}
-                  onClick={() => onComparePinned(pinnedCompareIds)}
-                  aria-label={
-                    pinnedCompareIds.length === 1
-                      ? `Open Compare Workbench setup for ${pinnedPlaces[0].name} from your shortlist`
-                      : `Open Compare Workbench for ${pinnedCompareIds.length} pinned places from your shortlist`
-                  }
-                  title={
-                    pinnedCompareIds.length === 1
-                      ? "Open setup guide for choosing a contrast"
-                      : pinnedPlaces.length > COMPARE_LIMIT
-                      ? `Open Workbench with the first ${COMPARE_LIMIT} pinned places active; all pins stay available in the tray and export.`
-                      : "Open Compare Workbench for pinned places"
-                  }
+                  onClick={event => onComparePinned(pinnedCompareIds, { trigger: event.currentTarget })}
+                  aria-label={pinnedCompareLabel}
+                  title={pinnedCompareLabel}
                 >
                   <ArrowLeftRight className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
                   {pinnedCompareIds.length === 1 ? "Workbench setup" : "Workbench"}
@@ -2612,8 +3114,9 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
                 <button
                   type="button"
                   className="hero-shortlist-packet__action"
-                  onClick={() => onOpenPlace(shortlistPacketCue.primary.id)}
-                  aria-label={`Open first shortlist dossier: ${shortlistPacketCue.primary.name}`}
+                  onClick={event => onOpenPlace(shortlistPacketCue.primary.id, { trigger: event.currentTarget })}
+                  aria-label={shortlistPacketPrimaryLabel}
+                  title={shortlistPacketPrimaryLabel}
                 >
                   <BookOpen className="w-3.5 h-3.5" aria-hidden />
                   Start dossier
@@ -2622,8 +3125,9 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
                   <button
                     type="button"
                     className="hero-shortlist-packet__action"
-                    onClick={() => onOpenPlace(shortlistPacketCounterweight.id)}
-                    aria-label={`Open shortlist contrast dossier: ${shortlistPacketCounterweight.name}`}
+                    onClick={event => onOpenPlace(shortlistPacketCounterweight.id, { trigger: event.currentTarget })}
+                    aria-label={shortlistPacketCounterweightLabel}
+                    title={shortlistPacketCounterweightLabel}
                   >
                     <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
                     Contrast
@@ -2636,31 +3140,41 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
               </p>
             </div>
           ) : null}
+          <p id="hero-pinned-rail-scroll-hint" className="sr-only">
+            Swipe or scroll horizontally to browse saved shortlist places; each place also has an unpin control.
+          </p>
           <ul
             className="hero-mini-rail"
             aria-label="Pinned places — click to open, × to remove"
+            aria-describedby="hero-pinned-rail-scroll-hint"
           >
-            {pinnedPlaces.map(p => (
-              <li key={p.id} className="hero-mini-rail__chip" data-tone="ochre">
-                <button
-                  type="button"
-                  className="bg-transparent border-0 p-0 m-0 inline-flex items-center gap-1.5 cursor-pointer text-left min-w-0"
-                  onClick={() => onOpenPlace(p.id)}
-                  aria-label={`Open ${p.name} from your shortlist`}
-                >
-                  <span className="hero-mini-rail__chip-name">{p.name}</span>
-                  <span className="hero-mini-rail__chip-meta">{p.country === "USA" ? "US" : p.country === "Canada" ? "CA" : "MX"}</span>
-                </button>
-                <button
-                  type="button"
-                  className="hero-mini-rail__chip-remove bg-transparent border-0 cursor-pointer"
-                  onClick={() => onToggleBookmark(p.id)}
-                  aria-label={`Unpin ${p.name} from your shortlist`}
-                >
-                  ×
-                </button>
-              </li>
-            ))}
+            {pinnedPlaces.map((p, index) => {
+              const nextPinnedFocusId = pinnedPlaces[index + 1]?.id ?? pinnedPlaces[index - 1]?.id ?? null;
+              return (
+                <li key={p.id} className="hero-mini-rail__chip" data-tone="ochre">
+                  <button
+                    type="button"
+                    className="hero-mini-rail__chip-open bg-transparent border-0 p-0 m-0 inline-flex items-center gap-1.5 cursor-pointer text-left min-w-0"
+                    onClick={event => onOpenPlace(p.id, { trigger: event.currentTarget })}
+                    aria-label={`Open ${p.name} from your shortlist`}
+                    title={`Open ${p.name} from your shortlist`}
+                  >
+                    <span className="hero-mini-rail__chip-name">{p.name}</span>
+                    <span className="hero-mini-rail__chip-meta">{p.country === "USA" ? "US" : p.country === "Canada" ? "CA" : "MX"}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="hero-mini-rail__chip-remove bg-transparent border-0 cursor-pointer"
+                    onClick={() => onRemovePinnedPlace(p.id, nextPinnedFocusId)}
+                    aria-label={`Unpin ${p.name} from your shortlist`}
+                    title={`Unpin ${p.name} from your shortlist`}
+                    data-shortlist-remove-id={p.id}
+                  >
+                    ×
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </section>
       ) : null}
@@ -2676,19 +3190,28 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
               type="button"
               className="hero-mini-rail__action"
               onClick={onClearRecents}
-              aria-label="Clear recently viewed list"
+              aria-label={recentClearLabel}
+              title={recentClearLabel}
             >
               Clear
             </button>
           </div>
-          <ul className="hero-mini-rail" aria-label="Recently opened place profiles">
+          <p id="hero-recent-rail-scroll-hint" className="sr-only">
+            Swipe or scroll horizontally to browse recently opened place profiles.
+          </p>
+          <ul
+            className="hero-mini-rail"
+            aria-label="Recently opened place profiles"
+            aria-describedby="hero-recent-rail-scroll-hint"
+          >
             {recentPlaces.map(p => (
               <li key={p.id} className="contents">
                 <button
                   type="button"
                   className="hero-mini-rail__chip"
-                  onClick={() => onOpenPlace(p.id)}
+                  onClick={event => onOpenPlace(p.id, { trigger: event.currentTarget })}
                   aria-label={`Open ${p.name} (recently viewed)`}
+                  title={`Open ${p.name} (recently viewed)`}
                 >
                   <span className="hero-mini-rail__chip-name">{p.name}</span>
                   <span className="hero-mini-rail__chip-meta">{p.koppen}</span>
@@ -2710,8 +3233,8 @@ const ContextStressPanel = memo(function ContextStressPanel({
   onApplyContextScenario,
 }: {
   rows: ContextStressRow[];
-  onOpenPlace: (id: string) => void;
-  onCompareContextLeaders: (ids: string[]) => void;
+  onOpenPlace: OpenPlaceHandler;
+  onCompareContextLeaders: ComparePlacesHandler;
   onPreloadCompare: () => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
 }) {
@@ -2742,7 +3265,7 @@ const ContextStressPanel = memo(function ContextStressPanel({
               onPointerEnter={onPreloadCompare}
               onFocus={onPreloadCompare}
               onPointerDown={onPreloadCompare}
-              onClick={() => onCompareContextLeaders(leaderSummary.compareIds)}
+              onClick={event => onCompareContextLeaders(leaderSummary.compareIds, { trigger: event.currentTarget })}
               aria-label={`Compare context top picks: ${leaderSummary.compareIds.length} places`}
               title={leaderSummary.summary}
             >
@@ -2753,8 +3276,17 @@ const ContextStressPanel = memo(function ContextStressPanel({
         </div>
       </div>
 
-      <div className="context-stress__rail" aria-label="Scenario leaders for the current place context">
-        {rows.map(row => (
+      <p id="context-stress-scroll-hint" className="sr-only">
+        Swipe or scroll horizontally to browse alternate context leaders and apply a different scouting lens.
+      </p>
+      <div
+        className="context-stress__rail"
+        aria-label="Scenario leaders for the current place context"
+        aria-describedby="context-stress-scroll-hint"
+      >
+        {rows.map(row => {
+          const openLabel = `Open ${row.leader.place.name} from ${row.label}`;
+          return (
           <div key={row.id} className="context-stress__card" data-current={row.id === "current" ? "true" : undefined}>
             <div className="context-stress__card-head">
               <div className="min-w-0">
@@ -2769,7 +3301,7 @@ const ContextStressPanel = memo(function ContextStressPanel({
             <button
               type="button"
               className="context-stress__leader"
-              onClick={() => onOpenPlace(row.leader.place.id)}
+              onClick={event => onOpenPlace(row.leader.place.id, { trigger: event.currentTarget })}
               aria-label={`${row.label}: open ${row.leader.place.name}, score ${Math.round(row.leader.score)}`}
               title={prose(row.description)}
             >
@@ -2795,8 +3327,9 @@ const ContextStressPanel = memo(function ContextStressPanel({
               <button
                 type="button"
                 className="btn-ghost !text-xs !py-1.5"
-                onClick={() => onOpenPlace(row.leader.place.id)}
-                aria-label={`Open ${row.leader.place.name} from ${row.label}`}
+                onClick={event => onOpenPlace(row.leader.place.id, { trigger: event.currentTarget })}
+                aria-label={openLabel}
+                title={openLabel}
               >
                 <Target className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
                 Open
@@ -2814,7 +3347,8 @@ const ContextStressPanel = memo(function ContextStressPanel({
               ) : null}
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );
@@ -2828,13 +3362,16 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
   onSaveScoutFinalists,
 }: {
   brief: ExplorerScoutBrief;
-  onOpenPlace: (id: string) => void;
-  onCompareLeaders: (ids: string[]) => void;
+  onOpenPlace: OpenPlaceHandler;
+  onCompareLeaders: ComparePlacesHandler;
   onPreloadCompare: () => void;
   onSaveScoutFinalists: (ids: readonly string[]) => void;
 }) {
   const prose = useProse();
   const canSaveFinalists = brief.compareIds.length >= 2;
+  const openLeaderLabel = `Open scout brief leader ${brief.leader.place.name}`;
+  const compareLeadersLabel = `Compare current leaders: ${brief.compareIds.length} places`;
+  const saveFinalistsLabel = `Save ${brief.compareIds.length} Scout Brief finalists to your shortlist`;
   return (
     <section className="scout-brief" aria-labelledby="explorer-scout-brief-title">
       <div className="scout-brief__head">
@@ -2848,8 +3385,9 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
           <button
             type="button"
             className="btn-ghost !text-xs !py-1.5"
-            onClick={() => onOpenPlace(brief.leader.place.id)}
-            aria-label={`Open scout brief leader ${brief.leader.place.name}`}
+            onClick={event => onOpenPlace(brief.leader.place.id, { trigger: event.currentTarget })}
+            aria-label={openLeaderLabel}
+            title={openLeaderLabel}
           >
             <Target className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
             Open leader
@@ -2861,8 +3399,9 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               onPointerEnter={onPreloadCompare}
               onFocus={onPreloadCompare}
               onPointerDown={onPreloadCompare}
-              onClick={() => onCompareLeaders(brief.compareIds)}
-              aria-label={`Compare current leaders: ${brief.compareIds.length} places`}
+              onClick={event => onCompareLeaders(brief.compareIds, { trigger: event.currentTarget })}
+              aria-label={compareLeadersLabel}
+              title={compareLeadersLabel}
             >
               <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
               Compare leaders
@@ -2873,8 +3412,8 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
               type="button"
               className="btn-ghost !text-xs !py-1.5"
               onClick={() => onSaveScoutFinalists(brief.compareIds)}
-              aria-label={`Save ${brief.compareIds.length} Scout Brief finalists to your shortlist`}
-              title="Pin these ranked leaders so Compare and Scout plan export stay ready."
+              aria-label={saveFinalistsLabel}
+              title={saveFinalistsLabel}
             >
               <BookmarkCheck className="w-3.5 h-3.5 text-ochre-700" aria-hidden />
               Save finalists
@@ -2888,8 +3427,9 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
           <button
             type="button"
             className="scout-brief__leader"
-            onClick={() => onOpenPlace(brief.leader.place.id)}
+            onClick={event => onOpenPlace(brief.leader.place.id, { trigger: event.currentTarget })}
             aria-label={`Open ${brief.leader.place.name}, current best match`}
+            title={`Open ${brief.leader.place.name}, current best match`}
           >
             <span className="scout-brief__leader-rank" aria-hidden>1</span>
             <span className="min-w-0">
@@ -2930,7 +3470,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
                     key={`${step.kind}-${step.place.id}-${index}`}
                     type="button"
                     className={`${toneClass} scout-brief__visit-plan-step`}
-                    onClick={() => onOpenPlace(step.place.id)}
+                    onClick={event => onOpenPlace(step.place.id, { trigger: event.currentTarget })}
                     title={detail}
                     aria-label={`Scout day plan step ${index + 1}. ${step.label}: ${action} ${detail} Open place profile.`}
                   >
@@ -2977,7 +3517,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
                 key={signal.label}
                 type="button"
                 className="scout-brief__signal"
-                onClick={() => onOpenPlace(signal.place.id)}
+                onClick={event => onOpenPlace(signal.place.id, { trigger: event.currentTarget })}
                 title={prose(signal.detail)}
                 aria-label={`${signal.label}: ${signal.place.name}, ${signal.value}. Open place profile.`}
               >
@@ -3001,7 +3541,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
                   key={row.place.id}
                   type="button"
                   className="scout-brief__matrix-row"
-                  onClick={() => onOpenPlace(row.place.id)}
+                  onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
                   title={prose(row.decisionCue)}
                   aria-label={`Decision matrix rank ${row.rank}. ${row.place.name}. ${row.decisionCue} Open place profile.`}
                 >
@@ -3044,8 +3584,8 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   onToggleBookmark,
 }: {
   brief: ExplorerScoutBrief;
-  onOpenPlace: (id: string) => void;
-  onCompareLeaders: (ids: string[]) => void;
+  onOpenPlace: OpenPlaceHandler;
+  onCompareLeaders: ComparePlacesHandler;
   onPreloadCompare: () => void;
   onSaveScoutFinalists: (ids: readonly string[]) => void;
   bookmarkIds: Set<string>;
@@ -3054,6 +3594,13 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   const prose = useProse();
   const leaderPinned = bookmarkIds.has(brief.leader.place.id);
   const canSaveFinalists = brief.compareIds.length >= 2;
+  const leaderOpenLabel = `Open ${brief.leader.place.name} from the desktop relocation workbench`;
+  const dossierLabel = `Open ${brief.leader.place.name} climate dossier from the Scout Board`;
+  const compareLabel = `Compare current Scout Board finalists: ${brief.compareIds.length} places`;
+  const saveFinalistsLabel = `Save ${brief.compareIds.length} Scout Board finalists to your shortlist`;
+  const pinLabel = leaderPinned
+    ? `Unpin ${brief.leader.place.name} from your shortlist`
+    : `Pin ${brief.leader.place.name} to your shortlist`;
   return (
     <section className="desktop-scout-board" aria-label="Desktop relocation workbench">
       <div className="desktop-scout-board__leader">
@@ -3062,8 +3609,9 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
           <button
             type="button"
             className="desktop-scout-board__leader-button"
-            onClick={() => onOpenPlace(brief.leader.place.id)}
-            aria-label={`Open ${brief.leader.place.name} from the desktop relocation workbench`}
+            onClick={event => onOpenPlace(brief.leader.place.id, { trigger: event.currentTarget })}
+            aria-label={leaderOpenLabel}
+            title={leaderOpenLabel}
           >
             <span className="desktop-scout-board__place">{brief.leader.place.name}</span>
             <span className="desktop-scout-board__note">{prose(brief.fitLine)}</span>
@@ -3072,8 +3620,9 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             <button
               type="button"
               className="desktop-scout-board__action"
-              onClick={() => onOpenPlace(brief.leader.place.id)}
-              aria-label={`Open ${brief.leader.place.name} climate dossier from the Scout Board`}
+              onClick={event => onOpenPlace(brief.leader.place.id, { trigger: event.currentTarget })}
+              aria-label={dossierLabel}
+              title={dossierLabel}
             >
               <BookOpen className="w-3.5 h-3.5" aria-hidden />
               Dossier
@@ -3084,8 +3633,9 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
               onPointerEnter={onPreloadCompare}
               onFocus={onPreloadCompare}
               onPointerDown={onPreloadCompare}
-              onClick={() => onCompareLeaders(brief.compareIds)}
-              aria-label={`Compare current Scout Board finalists: ${brief.compareIds.length} places`}
+              onClick={event => onCompareLeaders(brief.compareIds, { trigger: event.currentTarget })}
+              aria-label={compareLabel}
+              title={compareLabel}
               disabled={brief.compareIds.length < 2}
             >
               <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
@@ -3095,8 +3645,8 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
               type="button"
               className="desktop-scout-board__action"
               onClick={() => onSaveScoutFinalists(brief.compareIds)}
-              aria-label={`Save ${brief.compareIds.length} Scout Board finalists to your shortlist`}
-              title="Pin these ranked leaders so Compare and Scout plan export stay ready."
+              aria-label={saveFinalistsLabel}
+              title={saveFinalistsLabel}
               disabled={!canSaveFinalists}
             >
               <BookmarkCheck className="w-3.5 h-3.5" aria-hidden />
@@ -3108,9 +3658,8 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
               data-active={leaderPinned}
               aria-pressed={leaderPinned}
               onClick={() => onToggleBookmark(brief.leader.place.id)}
-              aria-label={leaderPinned
-                ? `Unpin ${brief.leader.place.name} from your shortlist`
-                : `Pin ${brief.leader.place.name} to your shortlist`}
+              aria-label={pinLabel}
+              title={pinLabel}
             >
               <BookmarkCheck className="w-3.5 h-3.5" aria-hidden />
               {leaderPinned ? "Pinned" : "Pin"}
@@ -3138,7 +3687,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
                   key={`${step.kind}-${step.place.id}-${index}`}
                   type="button"
                   className={`${toneClass} desktop-scout-board__visit-plan-step`}
-                  onClick={() => onOpenPlace(step.place.id)}
+                  onClick={event => onOpenPlace(step.place.id, { trigger: event.currentTarget })}
                   title={detail}
                   aria-label={`Desktop scout day plan step ${index + 1}. ${step.label}: ${action} ${detail} Open place profile.`}
                 >
@@ -3177,7 +3726,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
               key={signal.label}
               type="button"
               className="desktop-scout-board__signal"
-              onClick={() => onOpenPlace(signal.place.id)}
+              onClick={event => onOpenPlace(signal.place.id, { trigger: event.currentTarget })}
               title={prose(signal.detail)}
               aria-label={`${signal.label}: ${signal.place.name}, ${signal.value}. Open place profile.`}
             >
@@ -3195,7 +3744,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
             key={row.place.id}
             type="button"
             className="desktop-scout-board__matrix-row"
-            onClick={() => onOpenPlace(row.place.id)}
+            onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
             title={prose(row.decisionCue)}
             aria-label={`Open ${row.place.name} from the desktop decision matrix`}
           >

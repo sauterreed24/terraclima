@@ -61,7 +61,7 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
   onOpenPlace,
 }: {
   place: Place;
-  onOpenPlace?: (id: string) => void;
+  onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
 }) {
   const [shift, setShift] = useState<ClimateShiftId | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -126,8 +126,9 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
       <button
         type="button"
         className="tc-twin-lead reveal-row"
-        onClick={() => onOpenPlace?.(lead.place.id)}
+        onClick={event => onOpenPlace?.(lead.place.id, { trigger: event.currentTarget })}
         aria-label={`Open ${lead.place.name}, the closest climate twin, ${Math.round(lead.analog * 100)} out of 100 match`}
+        title={`Open ${lead.place.name}, the closest climate twin, ${Math.round(lead.analog * 100)} out of 100 match`}
       >
         <div className="tc-twin-lead__head">
           <span className="tc-twin-lead__kicker">
@@ -167,8 +168,9 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
             key={twin.place.id}
             type="button"
             className="tc-twin-card reveal-row"
-            onClick={() => onOpenPlace?.(twin.place.id)}
+            onClick={event => onOpenPlace?.(twin.place.id, { trigger: event.currentTarget })}
             aria-label={`Open ${twin.place.name}, climate match ${Math.round(twin.analog * 100)} out of 100`}
+            title={`Open ${twin.place.name}, climate match ${Math.round(twin.analog * 100)} out of 100`}
           >
             <div className="tc-twin-card__head">
               <div className="min-w-0">

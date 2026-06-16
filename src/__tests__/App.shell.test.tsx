@@ -6,6 +6,8 @@ import { UnitProvider } from "../lib/units";
 
 const APP_SHELL_TIMEOUT_MS = 30000;
 const DEG = "\u00b0";
+const CELSIUS_LABEL = "Use Celsius temperatures";
+const METRIC_DISTANCE_LABEL = "Use kilometers, meters, and millimeters";
 
 /** Avoid dynamic topojson imports + async map setup leaking past test teardown. */
 vi.mock("../components/AtlasMap", () => ({
@@ -37,7 +39,7 @@ vi.mock("../components/CompareView", () => ({
     open: boolean;
     onClose: () => void;
     onCopyView?: () => void;
-    shareStatus?: "idle" | "copied" | "failed";
+    shareStatus?: "idle" | "shared" | "copied" | "failed";
     candidates?: Array<{ place: { id: string } }>;
     comparisonLens?: string;
     onComparisonLensChange?: (lens: "risk") => void;
@@ -66,8 +68,8 @@ vi.mock("../components/CompareView", () => ({
           </button>
         ) : null}
         {onCopyView ? (
-          <button type="button" aria-label="Copy comparison link" onClick={onCopyView}>
-            {shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
+          <button type="button" aria-label="Copy or share comparison link" onClick={onCopyView}>
+            {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
           </button>
         ) : null}
         {(liveFitFilters?.fitPresets?.size ?? 0) > 0 || liveFitFilters?.maxSummerHighC != null ? (
@@ -85,9 +87,11 @@ vi.mock("../components/PlaceDetail", () => ({
     onClose,
     occluded,
     residencyFitContext,
+    animateEntry,
   }: {
     onClose: () => void;
     occluded?: boolean;
+    animateEntry?: boolean;
     residencyFitContext?: {
       rankingLabel: string;
       bundleLabel?: string | null;
@@ -99,6 +103,7 @@ vi.mock("../components/PlaceDetail", () => ({
       aria-label="Place profile"
       aria-hidden={occluded ? "true" : undefined}
       data-testid="place-detail-mock"
+      data-animate-entry={animateEntry ? "true" : "false"}
     >
       {residencyFitContext ? (
         <div data-testid="place-detail-fit-context">
@@ -150,6 +155,7 @@ describe("App shell", () => {
 
   afterEach(() => {
     cleanup();
+    vi.unstubAllGlobals();
     window.matchMedia = originalMatchMedia;
   });
 
@@ -187,6 +193,28 @@ describe("App shell", () => {
     expect(header!.textContent).toMatch(/North American Microclimate Atlas/);
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("uses a semantic main landmark as the skip-link target", () => {
+    const { container } = renderApp();
+    const skipLink = screen.getByText("Skip to main content");
+    const main = screen.getByRole("main");
+
+    expect(skipLink).toHaveAttribute("href", "#main-content");
+    expect(main).toHaveAttribute("id", "main-content");
+    expect(container.querySelector("main#main-content")).toBe(main);
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("gives direct information routes a visible h1 for orientation", () => {
+    window.history.replaceState(null, "", "/?v=collections");
+    const { unmount } = renderApp();
+    expect(screen.getByRole("heading", { level: 1, name: "Collections" })).toBeInTheDocument();
+    unmount();
+
+    cleanup();
+    window.history.replaceState(null, "", "/?v=learn");
+    renderApp();
+    expect(screen.getByRole("heading", { level: 1, name: "Field guide" })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("keeps the app shell from becoming the desktop sticky dock scroll container", () => {
     const { container } = renderApp();
     const shell = container.querySelector(".tc-app-shell");
@@ -210,6 +238,88 @@ describe("App shell", () => {
     window.history.replaceState(null, "", "/?v=trips");
     renderApp();
     expect(await screen.findByTestId("climate-trips-view")).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("opens Learn example profiles without leaving the Learn route", async () => {
+    window.history.replaceState(null, "", "/?v=learn");
+    renderApp();
+
+    const example = await screen.findByRole(
+      "button",
+      { name: "Open Huachuca Sky Island profile from Learn concept: Microclimate" },
+      { timeout: APP_SHELL_TIMEOUT_MS },
+    );
+    fireEvent.click(example);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("place-detail-mock")).toHaveAttribute("data-animate-entry", "true");
+      expect(window.location.search).toContain("v=learn");
+      expect(window.location.search).toContain("p=huachuca-az");
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("opens Collections place profiles without leaving the Collections route", async () => {
+    window.history.replaceState(null, "", "/?v=collections");
+    renderApp();
+
+    const collectionPlace = await screen.findByRole(
+      "button",
+      { name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Identity" },
+      { timeout: APP_SHELL_TIMEOUT_MS },
+    );
+    fireEvent.click(collectionPlace);
+
+    await waitFor(() => {
+      expect(screen.getByTestId("place-detail-mock")).toHaveAttribute("data-animate-entry", "true");
+      expect(window.location.search).toContain("v=collections");
+      expect(window.location.search).toContain("p=sequim-wa");
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Close profile" }));
+
+    await waitFor(() => {
+      expect(screen.queryByTestId("place-detail-mock")).not.toBeInTheDocument();
+      expect(window.location.search).toContain("v=collections");
+      expect(window.location.search).not.toContain("p=sequim-wa");
+      expect(collectionPlace).toHaveFocus();
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("lands focus on the active collection clear control after pinning from Collections", async () => {
+    renderApp();
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Collections" })[0]);
+    const pinButton = await screen.findByRole(
+      "button",
+      { name: "Pin Rain-Shadow Sanctuaries collection" },
+      { timeout: APP_SHELL_TIMEOUT_MS },
+    );
+    fireEvent.click(pinButton);
+
+    await waitFor(() => {
+      const clear = screen.getByRole("button", { name: /Clear .* collection filter/ });
+      expect(clear).toHaveFocus();
+      expect(clear).toHaveAttribute("title", clear.getAttribute("aria-label"));
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("moves focus to main content after clearing an active collection scope", async () => {
+    window.history.replaceState(null, "", "/?col=rain-shadows");
+
+    renderApp();
+
+    const clear = await screen.findByRole(
+      "button",
+      { name: "Clear Rain-Shadow Sanctuaries collection filter" },
+      { timeout: APP_SHELL_TIMEOUT_MS },
+    );
+    fireEvent.click(clear);
+
+    await waitFor(() => {
+      expect(screen.queryByRole("button", { name: "Clear Rain-Shadow Sanctuaries collection filter" })).not.toBeInTheDocument();
+      expect(document.getElementById("main-content")).toHaveFocus();
+      expect(window.location.search).toBe("");
+    });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("falls back to Explorer for unknown view values", () => {
@@ -269,14 +379,24 @@ describe("App shell", () => {
 
     expect(advisorVerdict.closest(".desktop-scout-board")).toBe(scoutBoard);
     expect(compactEvidence.closest(".desktop-scout-board")).toBe(scoutBoard);
+    const leaderButton = within(scoutBoard).getByRole("button", { name: /Open .* from the desktop relocation workbench/ });
+    expect(leaderButton).toHaveAttribute("title", leaderButton.getAttribute("aria-label"));
     expect(within(compactEvidence).getByText("Decision matrix")).toBeInTheDocument();
     expect(within(compactEvidence).getAllByRole("button", { name: /desktop decision matrix/ }).length).toBe(3);
     const actions = screen.getByLabelText(/Scout actions for/);
     expect(actions.closest(".desktop-scout-board")).toBe(scoutBoard);
-    expect(within(actions).getByRole("button", { name: /Open .* climate dossier from the Scout Board/ })).toBeInTheDocument();
-    expect(within(actions).getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ })).toBeInTheDocument();
-    expect(within(actions).getByRole("button", { name: /Save 4 Scout Board finalists to your shortlist/ })).toBeInTheDocument();
-    expect(within(actions).getByRole("button", { name: /Pin .* to your shortlist/ })).toHaveAttribute("aria-pressed", "false");
+    const dossierButton = within(actions).getByRole("button", { name: /Open .* climate dossier from the Scout Board/ });
+    const compareButton = within(actions).getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ });
+    expect(dossierButton).toBeInTheDocument();
+    expect(dossierButton).toHaveAttribute("title", dossierButton.getAttribute("aria-label"));
+    expect(compareButton).toBeInTheDocument();
+    expect(compareButton).toHaveAttribute("title", "Compare current Scout Board finalists: 4 places");
+    const saveButton = within(actions).getByRole("button", { name: /Save 4 Scout Board finalists to your shortlist/ });
+    expect(saveButton).toBeInTheDocument();
+    expect(saveButton).toHaveAttribute("title", saveButton.getAttribute("aria-label"));
+    const pinButton = within(actions).getByRole("button", { name: /Pin .* to your shortlist/ });
+    expect(pinButton).toHaveAttribute("aria-pressed", "false");
+    expect(pinButton).toHaveAttribute("title", pinButton.getAttribute("aria-label"));
     expect(scoutBoard.compareDocumentPosition(signalRail) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(scoutBoard.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(scoutBoard.compareDocumentPosition(contextStress) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
@@ -290,10 +410,30 @@ describe("App shell", () => {
     const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
     expect(quickPicks).toBeInTheDocument();
     expect(quickPicks).toHaveTextContent("Cool summers");
+    const quickPickButtons = within(quickPicks).getAllByRole("button");
+    expect(quickPickButtons.map(button => button.getAttribute("aria-label"))).toEqual([
+      "Visit now: Rank places by the current month's scouting weather.",
+      "Comfort fit: Surface places with the easiest human-felt comfort.",
+      "Remote work: Prioritize mild, livable places for remote-worker scouting.",
+      "Retirement: Look for mild all-year places with lower risk and daily ease.",
+      "Garden life: Lift places with stronger yard, orchard, and growing-season signals.",
+      "Cool summers: Find places where peak-season afternoons stay restrained.",
+      "Low risk: Favor places with stronger climate-resilience and hazard cushions.",
+    ]);
+    expect(quickPickButtons[0]).toHaveAttribute("title", "Visit now: Rank places by the current month's scouting weather.");
     expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Live-here fit · top 5");
-    expect(screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit")).toBeInTheDocument();
+    const currentRank = screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit");
+    expect(currentRank).toBeInTheDocument();
     expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: /Rank 1\./ }).length).toBeGreaterThan(0);
+    const rankOneButtons = screen.getAllByRole("button", { name: /Rank 1\./ });
+    expect(rankOneButtons.length).toBeGreaterThan(0);
+    const firstRankButton = rankOneButtons[0]!;
+    expect(firstRankButton).toHaveAttribute("title", firstRankButton.getAttribute("aria-label"));
+    const signalRail = screen.getByLabelText("Current Live-here fit climate signal leaders");
+    const firstSignalChip = within(signalRail).getByRole("button", {
+      name: /Open .*, climate signal rank 1 by Live-here fit/,
+    });
+    expect(firstSignalChip).toHaveAttribute("title", firstSignalChip.getAttribute("aria-label"));
   }, APP_SHELL_TIMEOUT_MS);
 
   it("applies the hero Cool summers path without snow-country filters", async () => {
@@ -329,7 +469,7 @@ describe("App shell", () => {
 
     fireEvent.click(within(receipt).getByRole("button", { name: /Compare 4 Fit Finder leaders/ }));
 
-    expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("summarizes the active Fit Finder path in the map caption", async () => {
@@ -382,15 +522,40 @@ describe("App shell", () => {
     const scoutBrief = screen.getByText("Scout brief");
 
     expect(hero).not.toBeNull();
-    expect(screen.getByRole("group", { name: "Climate-fit quick picks" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Copy current Explorer view" }).closest(".hero-action-stack")).not.toBeNull();
-    expect(screen.getByLabelText(/climate signal leaders/i)).toBeInTheDocument();
+    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
+    const signalRail = screen.getByLabelText(/climate signal leaders/i);
+    expect(quickPicks).toBeInTheDocument();
+    expect(quickPicks).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more Fit Finder paths.");
+    const copyView = screen.getByRole("button", { name: "Copy or share current Explorer view" });
+    const surpriseMe = screen.getByRole("button", { name: "Open a random place from the current filtered list" });
+    expect(copyView.closest(".hero-action-stack")).not.toBeNull();
+    expect(copyView).toHaveAttribute("title", "Copy or share current Explorer view");
+    expect(surpriseMe).toHaveAttribute("title", "Open a random place from the current filtered list");
+    expect(signalRail).toBeInTheDocument();
+    expect(signalRail).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more current climate signal leaders.");
+    expect(screen.getByLabelText("Scenario leaders for the current place context")).toHaveAccessibleDescription(
+      "Swipe or scroll horizontally to browse alternate context leaders and apply a different scouting lens.",
+    );
     expect(screen.getByText(/Livability lens/)).toBeInTheDocument();
+    const livabilityRankOneChips = screen.getAllByRole("button", { name: /Livability rank 1\./ });
+    expect(livabilityRankOneChips.length).toBeGreaterThan(0);
+    livabilityRankOneChips.forEach(chip => {
+      expect(chip).toHaveAttribute("title", chip.getAttribute("aria-label"));
+    });
     expect(hero!.compareDocumentPosition(map) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(map.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(map.compareDocumentPosition(scoutBrief) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(screen.getByText("Advisor verdict")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Save 4 Scout Brief finalists to your shortlist/ })).toBeInTheDocument();
+    const scoutBriefSection = scoutBrief.closest(".scout-brief");
+    expect(scoutBriefSection).not.toBeNull();
+    const openLeader = within(scoutBriefSection as HTMLElement).getByRole("button", { name: /Open scout brief leader/ });
+    const leaderCard = within(scoutBriefSection as HTMLElement).getByRole("button", { name: /current best match/ });
+    const compareLeaders = within(scoutBriefSection as HTMLElement).getByRole("button", { name: "Compare current leaders: 4 places" });
+    const saveFinalists = within(scoutBriefSection as HTMLElement).getByRole("button", { name: /Save 4 Scout Brief finalists to your shortlist/ });
+    expect(openLeader).toHaveAttribute("title", openLeader.getAttribute("aria-label"));
+    expect(leaderCard).toHaveAttribute("title", leaderCard.getAttribute("aria-label"));
+    expect(compareLeaders).toHaveAttribute("title", "Compare current leaders: 4 places");
+    expect(saveFinalists).toHaveAttribute("title", "Save 4 Scout Brief finalists to your shortlist");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the map leader caption synchronized with the selected ranking", () => {
@@ -416,7 +581,21 @@ describe("App shell", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ }));
 
-    expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("returns focus to the Compare opener after closing Compare", async () => {
+    mockViewport(1280);
+    renderApp();
+
+    const opener = screen.getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ });
+    fireEvent.click(opener);
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Close comparison" }));
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(opener);
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("saves current Scout Board finalists into the shortlist in ranked order", async () => {
@@ -436,7 +615,7 @@ describe("App shell", () => {
 
     fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench for 4 pinned places from your shortlist" }));
 
-    expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
     expect(screen.getByTestId("compare-place-ids")).toHaveTextContent(saved.join(","));
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -446,10 +625,17 @@ describe("App shell", () => {
 
     const actions = screen.getByLabelText(/Scout actions for/);
     const pinButton = within(actions).getByRole("button", { name: /Pin .* to your shortlist/ });
+    expect(pinButton).toHaveAttribute("title", pinButton.getAttribute("aria-label"));
     fireEvent.click(pinButton);
 
     await waitFor(() => expect(pinButton).toHaveAttribute("aria-pressed", "true"));
-    expect(within(actions).getByRole("button", { name: /Unpin .* from your shortlist/ })).toHaveTextContent("Pinned");
+    const pinnedButton = within(actions).getByRole("button", { name: /Unpin .* from your shortlist/ });
+    expect(pinnedButton).toHaveTextContent("Pinned");
+    expect(pinnedButton).toHaveAttribute("title", pinnedButton.getAttribute("aria-label"));
+    const dismiss = screen.getByRole("button", { name: "Dismiss message" });
+    expect(dismiss).toHaveAttribute("title", "Dismiss message");
+    fireEvent.click(dismiss);
+    expect(screen.queryByText(/Pinned .* to your shortlist/)).not.toBeInTheDocument();
     expect(screen.getByText(/Your shortlist · 1/)).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -457,9 +643,13 @@ describe("App shell", () => {
     mockViewport(1280);
     renderApp();
 
+    const contextRail = screen.getByLabelText("Scenario leaders for the current place context");
+    const currentContextOpen = within(contextRail).getByRole("button", { name: /Open .* from Current setup/ });
+    expect(currentContextOpen).toHaveAttribute("title", currentContextOpen.getAttribute("aria-label"));
+
     fireEvent.click(screen.getByRole("button", { name: /Compare context top picks/ }));
 
-    expect(await screen.findByRole("dialog", { name: /places side by side/ })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: /places side by side/ }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("applies alternate context presets from the Explorer hero", async () => {
@@ -485,13 +675,106 @@ describe("App shell", () => {
 
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy current Explorer view" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
     expect(copied.searchParams.get("q")).toBe("monterey");
     expect(copied.searchParams.get("r")).toBeNull();
-    expect(await screen.findByText("Link copied")).toBeInTheDocument();
+    const copiedButton = await screen.findByRole("button", { name: "Copied current Explorer view link" });
+    expect(copiedButton).toHaveTextContent("Link copied");
+    expect(copiedButton).toHaveAttribute("title", "Copied current Explorer view link");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("offers a selectable share URL when browser copy APIs are blocked", async () => {
+    const originalExecCommand = document.execCommand;
+    const writeText = vi.fn().mockRejectedValue(new Error("blocked"));
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText },
+      configurable: true,
+    });
+    document.execCommand = vi.fn().mockReturnValue(false) as unknown as typeof document.execCommand;
+    window.history.replaceState(null, "", "/?q=monterey&temp=C&dist=metric");
+
+    try {
+      renderApp();
+
+      fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
+
+      const failedButton = await screen.findByRole("button", { name: "Copy current Explorer view failed" });
+      expect(failedButton).toHaveTextContent("Copy failed");
+      const manualUrl = await screen.findByRole("textbox", { name: "Shareable Explorer URL for manual copy" });
+      const manualValue = (manualUrl as HTMLInputElement).value;
+      expect(manualValue).toContain("q=monterey");
+      expect(manualValue).toContain("temp=C");
+      expect(manualValue).toContain("dist=metric");
+      await waitFor(() => expect(manualUrl).toHaveFocus());
+      await new Promise(resolve => window.setTimeout(resolve, 2400));
+      expect(screen.getByRole("textbox", { name: "Shareable Explorer URL for manual copy" })).toHaveValue(manualValue);
+      expect(screen.getByRole("button", { name: "Copy current Explorer view failed" })).toBeInTheDocument();
+    } finally {
+      document.execCommand = originalExecCommand;
+    }
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("returns focus to the Surprise me opener after closing its random profile", async () => {
+    const randomSpy = vi.spyOn(Math, "random").mockReturnValue(0);
+    try {
+      renderApp();
+
+      const opener = screen.getByRole("button", { name: "Open a random place from the current filtered list" });
+      expect(opener).toHaveAttribute("title", "Open a random place from the current filtered list");
+      fireEvent.click(opener);
+
+      await screen.findByRole("button", { name: "Close profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
+      await act(async () => {
+        fireEvent.click(screen.getByRole("button", { name: "Close profile" }));
+        await new Promise(resolve => window.setTimeout(resolve, 300));
+      });
+
+      await waitFor(() => {
+        expect(screen.queryByRole("button", { name: "Close profile" })).not.toBeInTheDocument();
+      }, { timeout: APP_SHELL_TIMEOUT_MS });
+      await waitFor(() => {
+        expect(document.activeElement).toBe(opener);
+      }, { timeout: APP_SHELL_TIMEOUT_MS });
+    } finally {
+      randomSpy.mockRestore();
+    }
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("reports native share completion without claiming the link was copied", async () => {
+    const share = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { share });
+    window.history.replaceState(null, "", "/?q=monterey");
+
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
+
+    await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
+    const sharedButton = await screen.findByRole("button", { name: "Shared current Explorer view" });
+    expect(sharedButton).toHaveTextContent("Shared");
+    expect(sharedButton).toHaveAttribute("title", "Shared current Explorer view");
+    expect(screen.queryByText("Link copied")).not.toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("stays idle when the native share sheet is dismissed", async () => {
+    const share = vi.fn().mockRejectedValue(new DOMException("user cancelled", "AbortError"));
+    vi.stubGlobal("navigator", { share });
+
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
+
+    await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
+    await waitFor(() => {
+      const copyView = screen.getByRole("button", { name: "Copy or share current Explorer view" });
+      expect(copyView).toHaveTextContent("Copy view");
+      expect(copyView).toHaveAttribute("title", "Copy or share current Explorer view");
+    });
+    expect(screen.queryByText("Link copied")).not.toBeInTheDocument();
+    expect(screen.queryByText("Copy failed")).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("preserves unit choices in copied Explorer URLs", async () => {
@@ -504,15 +787,15 @@ describe("App shell", () => {
 
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: `${DEG}C` }));
-    fireEvent.click(screen.getByRole("button", { name: "km" }));
+    fireEvent.click(screen.getByRole("button", { name: CELSIUS_LABEL }));
+    fireEvent.click(screen.getByRole("button", { name: METRIC_DISTANCE_LABEL }));
 
     await waitFor(() => {
       expect(window.location.search).toContain("temp=C");
       expect(window.location.search).toContain("dist=metric");
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy current Explorer view" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
@@ -526,16 +809,16 @@ describe("App shell", () => {
 
     renderApp();
 
-    expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: CELSIUS_LABEL })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: METRIC_DISTANCE_LABEL })).toHaveAttribute("aria-pressed", "true");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the chosen units when navigating Back to an entry without unit params", async () => {
     window.history.replaceState(null, "", "/?temp=C&dist=metric");
     renderApp();
 
-    expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: CELSIUS_LABEL })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: METRIC_DISTANCE_LABEL })).toHaveAttribute("aria-pressed", "true");
 
     // Simulate Back to a history entry created before the unit toggle: its URL
     // carries no temp/dist param. Units are a sticky global preference, so the
@@ -546,9 +829,9 @@ describe("App shell", () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByRole("button", { name: `${DEG}C` })).toHaveAttribute("aria-pressed", "true");
+      expect(screen.getByRole("button", { name: CELSIUS_LABEL })).toHaveAttribute("aria-pressed", "true");
     });
-    expect(screen.getByRole("button", { name: "km" })).toHaveAttribute("aria-pressed", "true");
+    expect(screen.getByRole("button", { name: METRIC_DISTANCE_LABEL })).toHaveAttribute("aria-pressed", "true");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps live-fit ranking in shared URLs when live-fit controls are active", async () => {
@@ -561,7 +844,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy current Explorer view" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
@@ -574,14 +857,14 @@ describe("App shell", () => {
 
     renderApp();
 
-    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("isolates the app shell while a shared compare URL is open, then restores it on close", async () => {
     window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa");
     const { container } = renderApp();
 
-    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
     const shell = container.querySelector("[data-app-shell]");
     expect(shell).not.toBeNull();
 
@@ -606,6 +889,121 @@ describe("App shell", () => {
     expect(shell).toHaveAttribute("inert");
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("opens deep-linked place profiles without the offscreen entry animation", async () => {
+    window.history.replaceState(null, "", "/?p=sequim-wa");
+
+    renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "Place profile" })).toHaveAttribute("data-animate-entry", "false");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("keeps a bare profile deep link clean when a different ranking is persisted locally", async () => {
+    window.localStorage.setItem("terraclima.ranking.v1", "most-comfortable");
+    window.history.replaceState(null, "", "/?p=sequim-wa");
+
+    renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "Place profile" })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(window.location.search).toBe("?p=sequim-wa");
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("keeps the Explorer URL clean after closing a bare profile deep link with a persisted ranking", async () => {
+    window.localStorage.setItem("terraclima.ranking.v1", "most-comfortable");
+    window.history.replaceState(null, "", "/?p=sequim-wa");
+
+    renderApp();
+
+    fireEvent.click(await screen.findByRole("button", { name: "Close profile" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Place profile" })).not.toBeInTheDocument();
+      expect(window.location.search).toBe("");
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("moves focus to main content after closing a bare profile deep link", async () => {
+    window.history.replaceState(null, "", "/?p=sequim-wa");
+
+    renderApp();
+
+    fireEvent.click(await screen.findByRole("button", { name: "Close profile" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Place profile" })).not.toBeInTheDocument();
+      expect(document.getElementById("main-content")).toHaveFocus();
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("keeps an explicit profile ranking in the Explorer URL after closing the deep link", async () => {
+    window.localStorage.setItem("terraclima.ranking.v1", "coolest-summers");
+    window.history.replaceState(null, "", "/?p=sequim-wa&r=most-comfortable");
+
+    renderApp();
+
+    fireEvent.click(await screen.findByRole("button", { name: "Close profile" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Place profile" })).not.toBeInTheDocument();
+      expect(window.location.search).toBe("?r=most-comfortable");
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("moves focus to main content after clearing the Explorer home-base anchor", async () => {
+    window.history.replaceState(null, "", "/?hb=sequim-wa");
+
+    renderApp();
+
+    const clearHome = await screen.findByRole(
+      "button",
+      { name: "Stop comparing against Sequim (clear home base)" },
+      { timeout: APP_SHELL_TIMEOUT_MS },
+    );
+    expect(clearHome).toHaveAttribute("title", clearHome.getAttribute("aria-label"));
+    fireEvent.click(clearHome);
+
+    await waitFor(() => {
+      expect(screen.queryByRole("button", { name: "Stop comparing against Sequim (clear home base)" })).not.toBeInTheDocument();
+      expect(document.getElementById("main-content")).toHaveFocus();
+      expect(window.location.search).toBe("");
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("surfaces and clears the active home-base anchor from the Explorer hero", async () => {
+    window.history.replaceState(null, "", "/?hb=sequim-wa");
+
+    renderApp();
+
+    const receipt = await screen.findByRole(
+      "status",
+      { name: "Explorer home base: Sequim" },
+      { timeout: APP_SHELL_TIMEOUT_MS },
+    );
+    expect(receipt).toHaveTextContent("Home base: Sequim");
+    expect(receipt).toHaveTextContent("Cards, dossiers, and Compare read climate deltas against this anchor.");
+
+    const clearHome = within(receipt).getByRole("button", {
+      name: "Stop comparing against Sequim from the Explorer hero (clear home base)",
+    });
+    expect(clearHome).toHaveAttribute("title", clearHome.getAttribute("aria-label"));
+    fireEvent.click(clearHome);
+
+    await waitFor(() => {
+      expect(screen.queryByRole("status", { name: "Explorer home base: Sequim" })).not.toBeInTheDocument();
+      expect(document.getElementById("main-content")).toHaveFocus();
+      expect(window.location.search).toBe("");
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("keeps the drawer entry animation for user-opened place profiles", async () => {
+    renderApp();
+
+    fireEvent.click(screen.getAllByRole("button", { name: /Rank 1\./ })[0]);
+
+    expect(await screen.findByRole("dialog", { name: "Place profile" })).toHaveAttribute("data-animate-entry", "true");
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("preserves a dossier hash during initial open-place URL sync", async () => {
     window.history.replaceState(null, "", "/?p=sequim-wa#deep-sequim-hydrology");
 
@@ -623,10 +1021,12 @@ describe("App shell", () => {
     window.history.replaceState(null, "", "/?p=sequim-wa&cmp=sequim-wa,port-townsend-wa");
     const { container } = renderApp();
 
-    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
-    const detail = container.querySelector("[data-testid='place-detail-mock']");
-    expect(detail).not.toBeNull();
-    expect(detail).toHaveAttribute("aria-hidden", "true");
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+    await waitFor(() => {
+      const detail = container.querySelector("[data-testid='place-detail-mock']");
+      expect(detail).not.toBeNull();
+      expect(detail).toHaveAttribute("aria-hidden", "true");
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("copies comparison URLs from the compare dialog", async () => {
@@ -639,7 +1039,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    fireEvent.click(await screen.findByRole("button", { name: "Copy comparison link" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Copy or share comparison link" }));
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
@@ -659,7 +1059,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
     expect(screen.getByTestId("compare-lens")).toHaveTextContent("move");
 
     fireEvent.click(screen.getByRole("button", { name: "Set risk comparison lens" }));
@@ -667,7 +1067,7 @@ describe("App shell", () => {
       expect(new URLSearchParams(window.location.search).get("clens")).toBe("risk");
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy comparison link" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share comparison link" }));
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
     expect(copied.searchParams.get("cmp")).toBe("sequim-wa,port-townsend-wa");
@@ -772,12 +1172,30 @@ describe("App shell", () => {
     expect(within(recovery).getByRole("button", { name: /Clear search/ })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("surfaces immediate hero recovery when a search leaves zero visible places", async () => {
+    window.history.replaceState(null, "", "/?q=zzzznonexistent");
+
+    renderApp();
+
+    const heroRecovery = screen.getByRole("group", { name: "Immediate zero-result recovery" });
+    expect(heroRecovery).toHaveTextContent('No matches for "zzzznonexistent"');
+    expect(heroRecovery).toHaveTextContent("Recover here before scrolling");
+    expect(within(heroRecovery).getByRole("button", { name: "Reset Explorer from hero recovery" })).toBeInTheDocument();
+
+    fireEvent.click(within(heroRecovery).getByRole("button", { name: "Clear search from hero recovery" }));
+
+    await waitFor(() => {
+      expect(new URLSearchParams(window.location.search).get("q")).toBeNull();
+      expect(screen.queryByRole("group", { name: "Immediate zero-result recovery" })).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("passes active Live Finder filters into shared compare views", async () => {
     window.history.replaceState(null, "", "/?cmp=sequim-wa,portal-az&r=live-fit&fit=cool-summers&sh=22");
 
     renderApp();
 
-    expect(await screen.findByRole("dialog", { name: "2 places side by side" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
     expect(screen.getByTestId("compare-live-filters")).toHaveTextContent("cool-summers / summer 22");
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -787,7 +1205,55 @@ describe("App shell", () => {
     renderApp();
 
     expect(screen.queryByRole("dialog", { name: "1 place side by side" })).not.toBeInTheDocument();
-    expect(screen.getAllByRole("button", { name: "Open compare (1 place)" }).length).toBeGreaterThan(0);
+    const compareTriggers = screen.getAllByRole("button", { name: "Open compare (1 place)" });
+    expect(compareTriggers.length).toBeGreaterThan(0);
+    compareTriggers.forEach(trigger => {
+      expect(trigger).toHaveClass("tc-compare-open-trigger");
+      expect(trigger).toHaveAttribute("title", "Open compare (1 place)");
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("opens one-place Compare setup from the mobile Explorer hero action", async () => {
+    window.history.replaceState(null, "", "/?cmp=sequim-wa");
+
+    renderApp();
+
+    const heroCompare = screen.getByRole("button", { name: "Open compare setup from Explorer hero (1 place)" });
+    expect(heroCompare.closest(".hero-action-stack")).not.toBeNull();
+    expect(heroCompare).toHaveAttribute("title", "Open compare setup from Explorer hero (1 place)");
+
+    fireEvent.click(heroCompare);
+
+    expect(await screen.findByRole("dialog", { name: "1 place saved to compare" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+    expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa");
+    fireEvent.click(screen.getByRole("button", { name: "Close comparison" }));
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(heroCompare);
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("returns focus to the visible site-menu trigger after opening Compare from the mobile menu", async () => {
+    window.history.replaceState(null, "", "/?cmp=sequim-wa");
+
+    renderApp();
+
+    const menuTrigger = screen.getAllByRole("button", { name: "Open site menu" })[0]!;
+    fireEvent.click(menuTrigger);
+
+    const menu = await screen.findByRole("dialog", { name: "Navigate" });
+    const menuCompare = within(menu).getByRole("button", { name: "Open compare (1 place)" });
+    expect(menuCompare).toHaveAttribute("title", "Open compare (1 place)");
+    fireEvent.click(menuCompare);
+
+    expect(await screen.findByRole("dialog", { name: "1 place saved to compare" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+    expect(menu).not.toHaveAttribute("open");
+
+    fireEvent.click(screen.getByRole("button", { name: "Close comparison" }));
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(menuTrigger);
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("exposes only the visible close button in the mobile site menu", async () => {
@@ -795,16 +1261,157 @@ describe("App shell", () => {
 
     fireEvent.click(screen.getAllByRole("button", { name: "Open site menu" })[0]);
 
+    const dialog = await screen.findByRole("dialog", { name: "Navigate" });
+    expect(dialog).toHaveAttribute("aria-modal", "true");
+    expect(dialog.querySelector("button[aria-hidden='true']")).not.toBeInTheDocument();
     await waitFor(() => expect(screen.getAllByRole("button", { name: "Close menu" })).toHaveLength(1));
+    const close = screen.getByRole("button", { name: "Close menu" });
+    expect(close).toHaveClass("tc-site-menu-dialog__close");
+    expect(close).toHaveAttribute("title", "Close menu");
+    await waitFor(() => expect(close).toHaveFocus());
+    fireEvent.click(dialog);
+    await waitFor(() => expect(dialog).not.toHaveAttribute("open"));
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("labels the mobile site-menu trigger as a close action while expanded", async () => {
+    renderApp();
+
+    const menuTrigger = screen.getAllByRole("button", { name: "Open site menu" })[0]!;
+    expect(menuTrigger).toHaveAttribute("aria-expanded", "false");
+    expect(menuTrigger).toHaveAttribute("title", "Open site menu");
+
+    fireEvent.click(menuTrigger);
+
+    const dialog = await screen.findByRole("dialog", { name: "Navigate" });
+    expect(menuTrigger).toHaveAccessibleName("Close site menu");
+    expect(menuTrigger).toHaveAttribute("aria-expanded", "true");
+    expect(menuTrigger).toHaveAttribute("title", "Close site menu");
+
+    fireEvent.click(menuTrigger);
+
+    await waitFor(() => expect(dialog).not.toHaveAttribute("open"));
+    expect(menuTrigger).toHaveAccessibleName("Open site menu");
+    expect(menuTrigger).toHaveAttribute("aria-expanded", "false");
+    expect(menuTrigger).toHaveAttribute("title", "Open site menu");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("isolates Explorer content while the mobile site menu is open", async () => {
+    const { container } = renderApp();
+
+    const skipLink = screen.getByText("Skip to main content");
+    const appContent = container.querySelector("[data-app-content]");
+    const footerRegion = container.querySelector("[data-footer-region]");
+    expect(skipLink).not.toHaveAttribute("aria-hidden");
+    expect(skipLink).not.toHaveAttribute("inert");
+    expect(appContent).not.toBeNull();
+    expect(appContent).not.toHaveAttribute("aria-hidden");
+    expect(appContent).not.toHaveAttribute("inert");
+    expect(footerRegion).not.toBeNull();
+    expect(footerRegion).not.toHaveAttribute("aria-hidden");
+    expect(footerRegion).not.toHaveAttribute("inert");
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Open site menu" })[0]!);
+
+    const dialog = await screen.findByRole("dialog", { name: "Navigate" });
+    await waitFor(() => {
+      expect(skipLink).toHaveAttribute("aria-hidden", "true");
+      expect(skipLink).toHaveAttribute("inert");
+      expect(appContent).toHaveAttribute("aria-hidden", "true");
+      expect(appContent).toHaveAttribute("inert");
+      expect(footerRegion).toHaveAttribute("aria-hidden", "true");
+      expect(footerRegion).toHaveAttribute("inert");
+    });
+    expect(dialog).not.toHaveAttribute("aria-hidden");
+    expect(dialog).not.toHaveAttribute("inert");
+
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close menu" }));
+
+    await waitFor(() => {
+      expect(dialog).not.toHaveAttribute("open");
+      expect(skipLink).not.toHaveAttribute("aria-hidden");
+      expect(skipLink).not.toHaveAttribute("inert");
+      expect(appContent).not.toHaveAttribute("aria-hidden");
+      expect(appContent).not.toHaveAttribute("inert");
+      expect(footerRegion).not.toHaveAttribute("aria-hidden");
+      expect(footerRegion).not.toHaveAttribute("inert");
+    });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("exposes only the visible close button in the mobile filter sheet", async () => {
     renderApp();
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]);
+    const trigger = screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]!;
+    fireEvent.click(trigger);
 
+    expect(await screen.findByRole("dialog", { name: "Filters & ranking" })).toHaveAttribute("aria-modal", "true");
     await waitFor(() => expect(screen.getAllByRole("button", { name: "Close filters" })).toHaveLength(1));
     expect(screen.getByLabelText("Search places by name, region, or archetype")).toHaveAttribute("placeholder", "Search places");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("isolates page chrome and Explorer content while the mobile filter sheet is open", async () => {
+    const { container } = renderApp();
+
+    const topBarRegion = container.querySelector("[data-topbar-region]");
+    const appViewContent = container.querySelector("[data-app-view-content]");
+    const footerRegion = container.querySelector("[data-footer-region]");
+    const triggerShell = container.querySelector("[data-filter-sheet-trigger-shell]");
+
+    expect(topBarRegion).not.toBeNull();
+    expect(appViewContent).not.toBeNull();
+    expect(footerRegion).not.toBeNull();
+    expect(triggerShell).not.toBeNull();
+
+    const trigger = screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]!;
+    fireEvent.click(trigger);
+
+    const dialog = await screen.findByRole("dialog", { name: "Filters & ranking" });
+    await waitFor(() => {
+      expect(topBarRegion).toHaveAttribute("aria-hidden", "true");
+      expect(topBarRegion).toHaveAttribute("inert");
+      expect(appViewContent).toHaveAttribute("aria-hidden", "true");
+      expect(appViewContent).toHaveAttribute("inert");
+      expect(footerRegion).toHaveAttribute("aria-hidden", "true");
+      expect(footerRegion).toHaveAttribute("inert");
+      expect(triggerShell).toHaveAttribute("aria-hidden", "true");
+      expect(triggerShell).toHaveAttribute("inert");
+    });
+    expect(dialog).not.toHaveAttribute("aria-hidden");
+    expect(dialog).not.toHaveAttribute("inert");
+
+    fireEvent.click(within(dialog).getByRole("button", { name: "Close filters" }));
+
+    await waitFor(() => {
+      expect(dialog).not.toHaveAttribute("open");
+      expect(topBarRegion).not.toHaveAttribute("aria-hidden");
+      expect(topBarRegion).not.toHaveAttribute("inert");
+      expect(appViewContent).not.toHaveAttribute("aria-hidden");
+      expect(appViewContent).not.toHaveAttribute("inert");
+      expect(footerRegion).not.toHaveAttribute("aria-hidden");
+      expect(footerRegion).not.toHaveAttribute("inert");
+      expect(triggerShell).not.toHaveAttribute("aria-hidden");
+      expect(triggerShell).not.toHaveAttribute("inert");
+      expect(trigger).toHaveFocus();
+    });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("returns focus to the shortcuts opener after closing help", async () => {
+    renderApp();
+
+    const opener = screen.getByRole("button", { name: "Show keyboard shortcuts and tips" });
+    expect(opener).toHaveAttribute("title", "Show keyboard shortcuts and tips");
+    expect(screen.getByRole("button", { name: "Show keyboard shortcuts" })).toHaveAttribute(
+      "title",
+      "Show keyboard shortcuts",
+    );
+    fireEvent.click(opener);
+
+    expect(await screen.findByRole("dialog", { name: "Keyboard shortcuts" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Close keyboard shortcuts help" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Keyboard shortcuts" })).not.toBeInTheDocument();
+      expect(opener).toHaveFocus();
+    });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("does not crash when bookmark persistence throws on toggle", () => {
@@ -821,11 +1428,45 @@ describe("App shell", () => {
     renderApp();
 
     expect(screen.getByText(/Your shortlist · 1/)).toBeInTheDocument();
-    expect(() => {
-      fireEvent.click(screen.getByRole("button", { name: "Unpin Sequim from your shortlist" }));
-    }).not.toThrow();
+    try {
+      expect(() => {
+        fireEvent.click(screen.getByRole("button", { name: "Unpin Sequim from your shortlist" }));
+      }).not.toThrow();
+    } finally {
+      window.localStorage.setItem = originalSetItem;
+    }
     expect(screen.getByRole("main")).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Unpin Sequim from your shortlist" })).not.toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("moves focus to main content after removing the last pinned rail place", async () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa"]),
+    );
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Unpin Sequim from your shortlist" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("button", { name: "Unpin Sequim from your shortlist" })).not.toBeInTheDocument();
+      expect(screen.getByRole("main")).toHaveFocus();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("keeps focus on the next pinned rail remove button when more shortlist places remain", async () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa", "port-townsend-wa", "forks-wa"]),
+    );
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Unpin Sequim from your shortlist" }));
+
+    await waitFor(() => {
+      expect(document.querySelector('[data-shortlist-remove-id="sequim-wa"]')).not.toBeInTheDocument();
+      expect(document.querySelector('[data-shortlist-remove-id="port-townsend-wa"]')).toHaveFocus();
+    }, { timeout: 5000 });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("opens Compare setup from a one-place shortlist while keeping the decision cue hidden", async () => {
@@ -841,9 +1482,11 @@ describe("App shell", () => {
     expect(readiness).toHaveTextContent("Open Compare setup to plan the missing contrast");
     expect(screen.queryByLabelText("Shortlist packet decision cue")).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench setup for Sequim from your shortlist" }));
+    const compareSetup = screen.getByRole("button", { name: "Open Compare Workbench setup for Sequim from your shortlist" });
+    expect(compareSetup).toHaveAttribute("title", compareSetup.getAttribute("aria-label"));
+    fireEvent.click(compareSetup);
 
-    expect(await screen.findByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "1 place saved to compare" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
     expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa");
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -861,9 +1504,23 @@ describe("App shell", () => {
     expect(packet).toHaveTextContent("Scout packet");
     expect(packet).toHaveTextContent(/Start with/);
     expect(packet).toHaveTextContent("Watch:");
-    expect(within(packet).getByRole("button", { name: /Open first shortlist dossier:/ })).toBeInTheDocument();
-    expect(within(packet).getByRole("button", { name: /Open shortlist contrast dossier:/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Open Sequim from your shortlist/ })).toBeInTheDocument();
+    const firstDossier = within(packet).getByRole("button", { name: /Open first shortlist dossier:/ });
+    const contrastDossier = within(packet).getByRole("button", { name: /Open shortlist contrast dossier:/ });
+    expect(firstDossier).toBeInTheDocument();
+    expect(firstDossier).toHaveAttribute("title", firstDossier.getAttribute("aria-label"));
+    expect(contrastDossier).toBeInTheDocument();
+    expect(contrastDossier).toHaveAttribute("title", contrastDossier.getAttribute("aria-label"));
+    expect(screen.getByLabelText(/Pinned places/)).toHaveAccessibleDescription(
+      "Swipe or scroll horizontally to browse saved shortlist places; each place also has an unpin control.",
+    );
+    const openSequim = screen.getByRole("button", { name: "Open Sequim from your shortlist" });
+    const unpinSequim = screen.getByRole("button", { name: "Unpin Sequim from your shortlist" });
+    expect(openSequim).toHaveClass("hero-mini-rail__chip-open");
+    expect(openSequim).toHaveAttribute("title", "Open Sequim from your shortlist");
+    expect(unpinSequim).toHaveClass("hero-mini-rail__chip-remove");
+    expect(unpinSequim).toHaveAttribute("title", "Unpin Sequim from your shortlist");
+    const comparePinned = screen.getByRole("button", { name: "Open Compare Workbench for 2 pinned places from your shortlist" });
+    expect(comparePinned).toHaveAttribute("title", comparePinned.getAttribute("aria-label"));
   }, APP_SHELL_TIMEOUT_MS);
 
   it("compares pinned shortlist finalists in pinned order", async () => {
@@ -873,9 +1530,11 @@ describe("App shell", () => {
     );
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench for 3 pinned places from your shortlist" }));
+    const comparePinned = screen.getByRole("button", { name: "Open Compare Workbench for 3 pinned places from your shortlist" });
+    expect(comparePinned).toHaveAttribute("title", comparePinned.getAttribute("aria-label"));
+    fireEvent.click(comparePinned);
 
-    expect(await screen.findByRole("dialog", { name: "3 places side by side" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "3 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
     expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa,port-townsend-wa,portal-az");
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -886,9 +1545,11 @@ describe("App shell", () => {
     );
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Open Compare Workbench for 4 pinned places from your shortlist" }));
+    const comparePinned = screen.getByRole("button", { name: "Open Compare Workbench for 4 pinned places from your shortlist" });
+    expect(comparePinned).toHaveAttribute("title", comparePinned.getAttribute("aria-label"));
+    fireEvent.click(comparePinned);
 
-    expect(await screen.findByRole("dialog", { name: "4 places side by side" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
     expect(screen.getByTestId("compare-place-ids")).toHaveTextContent("sequim-wa,port-townsend-wa,portal-az,real-catorce-mx");
     expect(Number(screen.getByTestId("compare-candidate-count").textContent ?? "0")).toBeGreaterThanOrEqual(5);
   }, APP_SHELL_TIMEOUT_MS);
@@ -900,7 +1561,79 @@ describe("App shell", () => {
     );
     renderApp();
     expect(screen.getByText(/Recently viewed · 1/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Open Sequim \(recently viewed\)/ })).toBeInTheDocument();
+    expect(screen.getByLabelText("Recently opened place profiles")).toHaveAccessibleDescription(
+      "Swipe or scroll horizontally to browse recently opened place profiles.",
+    );
+    const recentSequim = screen.getByRole("button", { name: /Open Sequim \(recently viewed\)/ });
+    expect(recentSequim).toBeInTheDocument();
+    expect(recentSequim).toHaveAttribute("title", "Open Sequim (recently viewed)");
+    expect(screen.getByRole("button", { name: "Clear recently viewed list (1 place shown)" })).toHaveAttribute(
+      "title",
+      "Clear recently viewed list (1 place shown)",
+    );
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("moves focus to main content after clearing the recently viewed rail", async () => {
+    window.localStorage.setItem(
+      "terraclima.recent-places.v1",
+      JSON.stringify(["sequim-wa"]),
+    );
+    renderApp();
+
+    fireEvent.click(screen.getByRole("button", { name: "Clear recently viewed list (1 place shown)" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("button", { name: "Clear recently viewed list (1 place shown)" })).not.toBeInTheDocument();
+      expect(screen.getByRole("main")).toHaveFocus();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("returns focus to the recently viewed opener after closing its profile", async () => {
+    window.localStorage.setItem(
+      "terraclima.recent-places.v1",
+      JSON.stringify(["sequim-wa"]),
+    );
+    renderApp();
+
+    const opener = screen.getByRole("button", { name: /Open Sequim \(recently viewed\)/ });
+    fireEvent.click(opener);
+    await screen.findByRole("button", { name: "Close profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: "Close profile" }));
+      await new Promise(resolve => window.setTimeout(resolve, 300));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByRole("button", { name: "Close profile" })).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(opener);
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("returns focus to the shortlist opener after closing its profile", async () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa", "port-townsend-wa"]),
+    );
+    renderApp();
+
+    const opener = screen.getByRole("button", { name: /Open Sequim from your shortlist/ });
+    fireEvent.click(opener);
+    await screen.findByRole("button", { name: "Close profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    await act(async () => {
+      fireEvent.click(screen.getByRole("button", { name: "Close profile" }));
+      await new Promise(resolve => window.setTimeout(resolve, 300));
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByRole("button", { name: "Close profile" })).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+
+    await waitFor(() => {
+      expect(document.activeElement).toBe(opener);
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("does not mark deep-linked place history as in-app navigation after URL sync", async () => {
@@ -912,7 +1645,7 @@ describe("App shell", () => {
 
     fireEvent.click(screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]);
     await screen.findByLabelText("Search places by name, region, or archetype", {}, { timeout: APP_SHELL_TIMEOUT_MS });
-    fireEvent.click(screen.getAllByRole("button", { name: "USA" })[0]);
+    fireEvent.click(screen.getAllByRole("button", { name: "Filter to United States places" })[0]);
 
     await waitFor(() => {
       expect(window.location.search).toMatch(/c=USA/);

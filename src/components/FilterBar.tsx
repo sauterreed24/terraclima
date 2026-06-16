@@ -52,6 +52,18 @@ const COUNTRY_LABELS: Record<Country, string> = {
   Mexico: "Mexico",
 };
 
+const COUNTRY_FILTER_LABELS: Record<Country, string> = {
+  USA: "United States",
+  Canada: "Canada",
+  Mexico: "Mexico",
+};
+
+function countryFilterActionLabel(country: Country, active: boolean): string {
+  return active
+    ? `Remove ${COUNTRY_FILTER_LABELS[country]} country filter`
+    : `Filter to ${COUNTRY_FILTER_LABELS[country]} places`;
+}
+
 function compactList(labels: readonly string[], limit = 3): string {
   if (labels.length <= limit) return labels.join(" + ");
   return `${labels.slice(0, limit).join(" + ")} + ${labels.length - limit} more`;
@@ -191,6 +203,10 @@ export const FilterBar = memo(function FilterBar({
     setFilters(f => ({ ...f, search: "" }));
     searchInputRef.current?.focus();
   }, [setFilters]);
+  const clearArchetypesLabel =
+    filters.archetypes.size === 1
+      ? "Clear 1 archetype filter"
+      : `Clear ${filters.archetypes.size} archetype filters`;
 
   return (
     <div className="panel contour-bg atlas-filter-dock p-3 space-y-3">
@@ -204,6 +220,12 @@ export const FilterBar = memo(function FilterBar({
           ref={searchInputRef}
           value={filters.search ?? ""}
           onChange={e => setFilters(f => ({ ...f, search: e.target.value }))}
+          onKeyDown={event => {
+            if (event.key !== "Escape" || event.currentTarget.value.length === 0) return;
+            event.preventDefault();
+            event.stopPropagation();
+            clearSearch();
+          }}
           placeholder={searchPlaceholder}
           aria-label="Search places by name, region, or archetype"
           enterKeyHint="search"
@@ -270,6 +292,9 @@ export const FilterBar = memo(function FilterBar({
                     const descId = `${searchFieldId}-fit-${bundle.id}-desc`;
                     const appliesId = `${searchFieldId}-fit-${bundle.id}-applies`;
                     const appliedRead = bundleAppliedRead(bundle, temp);
+                    const actionLabel = isActive
+                      ? `${bundle.label} Fit Finder path is active`
+                      : `Apply ${bundle.label} Fit Finder path`;
                     return (
                       <button
                         key={bundle.id}
@@ -278,8 +303,9 @@ export const FilterBar = memo(function FilterBar({
                         data-tone={bundle.tone}
                         data-active={isActive}
                         aria-pressed={isActive}
+                        aria-label={actionLabel}
                         aria-describedby={`${descId} ${appliesId}`}
-                        title={bundle.description}
+                        title={actionLabel}
                         onClick={() => applyBundle(bundle)}
                       >
                         <span className="fit-finder-panel__path-top">
@@ -331,6 +357,7 @@ export const FilterBar = memo(function FilterBar({
               onClick={() => setFilters(f => ({ ...f, fitPresets: new Set() }))}
               className="text-stone hover:text-ice normal-case text-[11px] tracking-normal shrink-0"
               aria-label="Clear Live Finder presets"
+              title="Clear Live Finder presets"
             >
               Clear presets
             </button>
@@ -429,6 +456,7 @@ export const FilterBar = memo(function FilterBar({
         <div className="flex flex-wrap gap-1.5">
           {(["USA", "Mexico", "Canada"] as Country[]).map(c => {
             const isActive = filters.countries.has(c);
+            const actionLabel = countryFilterActionLabel(c, isActive);
             return (
               <button
                 key={c}
@@ -438,6 +466,8 @@ export const FilterBar = memo(function FilterBar({
                 data-tone={isActive ? "ochre" : undefined}
                 data-active={isActive}
                 aria-pressed={isActive}
+                aria-label={actionLabel}
+                title={actionLabel}
               >
                 {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
                 {c}
@@ -455,6 +485,8 @@ export const FilterBar = memo(function FilterBar({
               type="button"
               onClick={() => setFilters(f => ({ ...f, archetypes: new Set() }))}
               className="text-stone hover:text-ice normal-case text-[11px] tracking-normal"
+              aria-label={clearArchetypesLabel}
+              title={clearArchetypesLabel}
             >
               clear · {filters.archetypes.size}
             </button>
@@ -647,6 +679,7 @@ function LensReceipt({
             className="lens-receipt__clear"
             onClick={onClearAll}
             aria-label="Clear all filters"
+            title="Clear all filters"
           >
             Clear all
           </button>
@@ -655,15 +688,17 @@ function LensReceipt({
       <p className="lens-receipt__line">{lensLine}</p>
       <div className="lens-receipt__chips" aria-label="Active lens signals">
         {chips.length > 0 ? (
-          chips.slice(0, 7).map(chip => (
-            chip.onDismiss ? (
+          chips.slice(0, 7).map(chip => {
+            const removeLabel = `Remove filter: ${chip.label}`;
+            return chip.onDismiss ? (
               <button
                 key={chip.key}
                 type="button"
                 className="lens-receipt__chip lens-receipt__chip--dismiss"
                 data-tone={chip.tone}
                 onClick={chip.onDismiss}
-                aria-label={`Remove filter: ${chip.label}`}
+                aria-label={removeLabel}
+                title={removeLabel}
               >
                 {chip.label}
                 <X className="w-3 h-3 shrink-0 opacity-70" aria-hidden />
@@ -672,8 +707,8 @@ function LensReceipt({
               <span key={chip.key} className="lens-receipt__chip" data-tone={chip.tone}>
                 {chip.label}
               </span>
-            )
-          ))
+            );
+          })
         ) : (
           <span className="lens-receipt__chip" data-tone="glacier">
             Full atlas
@@ -706,6 +741,7 @@ function ConstraintSelectRow({
           id={id}
           value={selectedValue}
           aria-label={label}
+          title={label}
           onChange={event => {
             const next = event.currentTarget.value;
             onPick(next === "" ? undefined : Number(next));
@@ -751,6 +787,7 @@ function RiskConstraintSelectRow({
           id={id}
           value={value ?? ""}
           aria-label={label}
+          title={label}
           onChange={event => {
             const next = event.currentTarget.value;
             onPick(next === "" ? undefined : (next as RiskLevel));

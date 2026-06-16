@@ -4,7 +4,7 @@ import { BookOpen, Compass } from "lucide-react";
 import { useProse } from "../lib/units";
 
 interface Props {
-  onOpenPlace: (id: string) => void;
+  onOpenPlace: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
 }
 
 export function LearnMode({ onOpenPlace }: Props) {
@@ -99,13 +99,15 @@ export function LearnMode({ onOpenPlace }: Props) {
                 {c.exampleIds.map(id => {
                   const p = PLACES_BY_ID[id];
                   if (!p) return null;
+                  const openProfileLabel = `Open ${p.name} profile from Learn concept: ${c.term}`;
                   return (
                     <button
                       key={id}
-                      onClick={() => onOpenPlace(id)}
+                      onClick={event => onOpenPlace(id, { trigger: event.currentTarget })}
                       className="chip chip-btn"
                       data-tone="glacier"
-                      title={`Open ${p.name}`}
+                      aria-label={openProfileLabel}
+                      title={openProfileLabel}
                     >
                       {p.name}
                     </button>

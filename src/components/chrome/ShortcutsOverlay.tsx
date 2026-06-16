@@ -14,16 +14,17 @@ import { CMD_KEY_LABEL } from "../../lib/app-constants";
 export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { onClose: () => void }) {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const closeLabel = "Close keyboard shortcuts help";
   useFocusTrap(panelRef, true, true);
   useEffect(() => {
     closeBtnRef.current?.focus();
   }, []);
   return (
-    <div className="fixed inset-0 z-[90] flex items-center justify-center p-4 anim-fade-in">
-      <button
-        type="button"
+    <div className="fixed inset-0 z-[90] flex items-stretch justify-center overflow-y-auto p-4 anim-fade-in sm:items-center">
+      <div
+        data-shortcuts-scrim
         className="tc-modal-scrim absolute inset-0 z-0 cursor-default border-0 p-0"
-        aria-label="Close keyboard shortcuts"
+        aria-hidden="true"
         onClick={onClose}
       />
       <div
@@ -31,11 +32,18 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
         role="dialog"
         aria-modal="true"
         aria-labelledby="kbd-shortcuts-title"
-        className="relative z-10 panel p-6 max-w-md w-full"
+        className="relative z-10 panel my-auto max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto p-6"
       >
         <div className="flex items-center justify-between mb-3">
           <h3 id="kbd-shortcuts-title" className="font-atlas text-xl text-ice">Keyboard shortcuts</h3>
-          <button ref={closeBtnRef} type="button" onClick={onClose} className="btn-ghost !p-1.5" aria-label="Close keyboard shortcuts help">
+          <button
+            ref={closeBtnRef}
+            type="button"
+            onClick={onClose}
+            className="btn-ghost tc-shortcuts-overlay__close !p-2 rounded-lg"
+            aria-label={closeLabel}
+            title={closeLabel}
+          >
             <X className="w-3.5 h-3.5" aria-hidden />
           </button>
         </div>

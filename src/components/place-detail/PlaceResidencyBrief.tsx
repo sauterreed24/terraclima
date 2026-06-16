@@ -121,6 +121,9 @@ export function PlaceResidencyBrief({
     "Needs scrutiny";
   const goodReason = liveFit.reasons[0] ?? "Balanced climate, risk, and terrain scores make it worth a closer look.";
   const hasScoutActions = Boolean(onCompareToggle || onBookmarkToggle);
+  const compareScoutLabel = inCompare
+    ? `Remove ${place.name} from Compare from residency brief`
+    : `Add ${place.name} to Compare from residency brief`;
   const lanes = [
     { label: "Live fit", value: liveFit.score, note: goodReason, tone: "glacier" },
     {
@@ -191,8 +194,9 @@ export function PlaceResidencyBrief({
                 type="button"
                 onClick={() => onCompareToggle(place.id)}
                 aria-pressed={inCompare}
-                aria-label={inCompare ? `Remove ${place.name} from Compare from residency brief` : `Add ${place.name} to Compare from residency brief`}
-                className={`btn-ghost residency-brief__action-button ${inCompare ? "residency-brief__action-button--active" : ""}`}
+                aria-label={compareScoutLabel}
+                title={compareScoutLabel}
+                className={`btn-ghost residency-brief__action-button ${inCompare ? "residency-brief__action-button--active compare-toggle--active" : ""}`}
               >
                 <ArrowLeftRight className="w-3 h-3" aria-hidden />
                 <span>{inCompare ? "In compare" : "Compare"}</span>

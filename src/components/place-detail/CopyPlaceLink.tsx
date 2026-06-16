@@ -2,7 +2,7 @@ import { Link2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { shareUrl } from "../../lib/share";
 
-type CopyStatus = "idle" | "copied" | "failed";
+type CopyStatus = "idle" | "shared" | "copied" | "failed";
 
 const RESET_MS = 2000;
 
@@ -33,7 +33,12 @@ export function CopyPlaceLink({ placeId, placeName }: { placeId: string; placeNa
     if (resetTimerRef.current != null) {
       clearTimeout(resetTimerRef.current);
     }
-    setStatus(outcome === "failed" ? "failed" : "copied");
+    if (outcome === "dismissed") {
+      setStatus("idle");
+      resetTimerRef.current = null;
+      return;
+    }
+    setStatus(outcome);
     resetTimerRef.current = setTimeout(() => {
       setStatus("idle");
       resetTimerRef.current = null;
@@ -41,21 +46,23 @@ export function CopyPlaceLink({ placeId, placeName }: { placeId: string; placeNa
   }, [placeId, placeName]);
 
   const label =
-    status === "copied" ? "Copied" : status === "failed" ? "Copy failed" : "Copy link";
+    status === "shared" ? "Shared" : status === "copied" ? "Copied" : status === "failed" ? "Copy failed" : "Copy link";
+  const buttonLabel =
+    status === "shared"
+      ? "Shared link to this place"
+      : status === "copied"
+        ? "Copied link to this place"
+        : status === "failed"
+          ? "Copy link failed"
+          : "Copy or share link to this place";
 
   return (
     <button
       type="button"
       onClick={() => void onCopy()}
       className="btn-ghost !text-xs"
-      title="Copy or share URL to this place"
-      aria-label={
-        status === "copied"
-          ? "Copied link to this place"
-          : status === "failed"
-            ? "Copy link failed"
-            : "Copy link to this place"
-      }
+      title={buttonLabel}
+      aria-label={buttonLabel}
     >
       <Link2 className="w-3 h-3" aria-hidden />
       <span aria-live="polite">{label}</span>

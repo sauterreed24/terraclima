@@ -63,7 +63,11 @@ export function PlaceDetailReadingNav({
       <nav
         className="lg:hidden tc-reading-nav-mobile mb-6"
         aria-label="On this page"
+        aria-describedby="tc-reading-nav-mobile-scroll-hint"
       >
+        <p id="tc-reading-nav-mobile-scroll-hint" className="sr-only">
+          Swipe or scroll horizontally to browse more dossier chapters.
+        </p>
         <div className="text-[10px] uppercase tracking-[0.18em] text-stone mb-2 px-0.5">On this page</div>
         <div
           ref={mobileStripRef}

@@ -39,10 +39,11 @@ describe("PlaceCard overlay warmup", () => {
 
   it("surfaces ranking evidence near the top of the card and describes the open target", () => {
     const note = "Ranking note: summer afternoons stay unusually restrained for this lens.";
+    const place = PLACES[0]!;
     const { container } = render(
       <UnitProvider>
         <PlaceCard
-          place={PLACES[0]!}
+          place={place}
           note={note}
           rank={1}
           rankingLabel="Coolest summers"
@@ -59,6 +60,8 @@ describe("PlaceCard overlay warmup", () => {
 
     const openTarget = container.querySelector<HTMLButtonElement>(".place-card__open-target");
     expect(openTarget).not.toBeNull();
+    expect(openTarget).toHaveAccessibleName(`Open ${place.name} place profile`);
+    expect(openTarget).toHaveAttribute("title", openTarget!.getAttribute("aria-label"));
     expect(openTarget!.getAttribute("aria-describedby")).toContain(evidence.id);
     expect(container.querySelectorAll(".place-card__ranking-evidence")).toHaveLength(1);
   });
@@ -76,6 +79,22 @@ describe("PlaceCard overlay warmup", () => {
 
     expect(onPreloadPlaceDetail).toHaveBeenCalledTimes(3);
     expect(onPreloadCompare).not.toHaveBeenCalled();
+  });
+
+  it("passes the open target as the close-focus return trigger", () => {
+    const onOpenPlace = vi.fn();
+    const place = PLACES[0]!;
+    const { container } = render(
+      <UnitProvider>
+        <PlaceCard place={place} onOpenPlace={onOpenPlace} />
+      </UnitProvider>,
+    );
+    const openTarget = container.querySelector<HTMLButtonElement>(".place-card__open-target");
+
+    expect(openTarget).not.toBeNull();
+    fireEvent.click(openTarget!);
+
+    expect(onOpenPlace).toHaveBeenCalledWith(place.id, { trigger: openTarget });
   });
 
   it("highlights the reference month on the climate bar", () => {
@@ -118,6 +137,7 @@ describe("PlaceCard overlay warmup", () => {
     const onPreloadCompare = vi.fn();
     const { place } = renderPlaceCard({ onPreloadPlaceDetail, onPreloadCompare });
     const compareButton = screen.getByRole("button", { name: `Add ${place.name} to comparison` });
+    expect(compareButton).toHaveAttribute("title", `Add ${place.name} to comparison`);
 
     fireEvent.pointerEnter(compareButton);
     fireEvent.focus(compareButton);
@@ -125,6 +145,25 @@ describe("PlaceCard overlay warmup", () => {
 
     expect(onPreloadCompare).toHaveBeenCalledTimes(3);
     expect(onPreloadPlaceDetail).not.toHaveBeenCalled();
+  });
+
+  it("uses the readable active compare class when already selected", () => {
+    const place = PLACES[0]!;
+    render(
+      <UnitProvider>
+        <PlaceCard
+          place={place}
+          inCompare
+          onOpenPlace={() => undefined}
+          onCompareToggle={() => undefined}
+        />
+      </UnitProvider>,
+    );
+
+    const compareButton = screen.getByRole("button", { name: `Remove ${place.name} from comparison` });
+    expect(compareButton).toHaveAttribute("aria-pressed", "true");
+    expect(compareButton).toHaveAttribute("title", `Remove ${place.name} from comparison`);
+    expect(compareButton).toHaveClass("compare-toggle--active");
   });
 });
 

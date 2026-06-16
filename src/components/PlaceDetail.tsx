@@ -1,6 +1,6 @@
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { drawerPanelTransition, scrimFadeTransition } from "../lib/device-profile";
-import { useState, useEffect, useMemo, useRef, useId } from "react";
+import { useState, useEffect, useMemo, useRef, useId, useCallback, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
 import type { Place, MicroclimateArchetype, TopographicDriver, ScenarioId } from "../types";
@@ -173,7 +173,7 @@ interface Props {
   onCompareToggle?: (id: string) => void;
   inCompareIds?: Set<string>;
   onPickArchetype?: (a: MicroclimateArchetype) => void;
-  onOpenPlace?: (id: string) => void;
+  onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
   liveFitFilters?: LiveFitFilters;
   residencyFitContext?: ResidencyFitContext;
   /** Whether this place is currently pinned. Hides the control when callback absent. */
@@ -185,13 +185,16 @@ interface Props {
   onHomeBaseToggle?: (id: string) => void;
   occluded?: boolean;
   scenario?: ScenarioId;
+  animateEntry?: boolean;
 }
 
-export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, residencyFitContext, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, occluded = false, scenario = "now" }: Props) {
+export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, residencyFitContext, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, occluded = false, scenario = "now", animateEntry = true }: Props) {
   const reduceMotion = useReducedMotion();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
+  const dialogTitleId = useId();
   const titleId = useId();
+  const placeId = place?.id ?? null;
   useElementIsolation(panelRef, occluded);
   useFocusTrap(panelRef, Boolean(place) && !occluded);
   // Computed once for the entire drawer; both DetailHeader and DetailBody
@@ -213,46 +216,69 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
   }, [place]);
 
   useEffect(() => {
-    if (!place || occluded) return;
+    if (!placeId || occluded) return;
     const el = panelRef.current;
     if (!el) return;
     el.scrollTop = 0;
-    requestAnimationFrame(() => {
+    let didResolveHash = false;
+    let hashResolveAttempts = 0;
+    const focusPanelStart = () => {
+      const hash = window.location.hash;
+      if (didResolveHash && hash.startsWith("#deep-")) return;
       const closeBtn = el.querySelector<HTMLElement>("[data-place-detail-close]");
       (closeBtn ?? el).focus({ preventScroll: true });
-      const hash = window.location.hash;
+      if (didResolveHash) return;
       if (hash.startsWith("#deep-")) {
+        hashResolveAttempts += 1;
         const target = el.querySelector<HTMLElement>(hash);
         if (target) {
+          didResolveHash = true;
           const er = el.getBoundingClientRect();
           const tr = target.getBoundingClientRect();
           const top = el.scrollTop + (tr.top - er.top) - 12;
           el.scrollTo({ top: Math.max(0, top), behavior: "auto" });
-        } else {
-          // D7: stale hash (e.g. user navigated between places via similar-places)
-          // Drop the hash and try to anchor at the dossier opener so they at
-          // least land on the deep-sections region of the new place. If even
-          // that's missing (no deepSections), the panel stays at scrollTop=0.
-          clearDossierHash();
-          const dossier = el.querySelector<HTMLElement>(`#${PD.deepDives}`);
-          if (dossier) {
-            const er = el.getBoundingClientRect();
-            const dr = dossier.getBoundingClientRect();
-            const top = el.scrollTop + (dr.top - er.top) - 12;
-            el.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+          const focusTarget = target.querySelector<HTMLElement>("[data-deep-chapter-title]") ?? target;
+          if (focusTarget.tabIndex < 0) {
+            focusTarget.setAttribute("tabindex", "-1");
           }
+          focusTarget.focus({ preventScroll: true });
+          return;
         }
+        if (hashResolveAttempts < 4) return;
+        didResolveHash = true;
+        // D7: stale hash (e.g. user navigated between places via similar-places)
+        // Drop the hash and try to anchor at the dossier opener so they at
+        // least land on the deep-sections region of the new place. If even
+        // that's missing (no deepSections), the panel stays at scrollTop=0.
+        clearDossierHash();
+        const dossier = el.querySelector<HTMLElement>(`#${PD.deepDives}`);
+        if (dossier) {
+          const er = el.getBoundingClientRect();
+          const dr = dossier.getBoundingClientRect();
+          const top = el.scrollTop + (dr.top - er.top) - 12;
+          el.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+        }
+        return;
       }
-    });
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- keyed by place identity only (`place?.id`), not full object churn; occlusion only prevents a covered panel from stealing focus
-  }, [place?.id]);
+      didResolveHash = true;
+    };
+    focusPanelStart();
+    const rafId = window.requestAnimationFrame(focusPanelStart);
+    const focusRetryId = window.setTimeout(focusPanelStart, 120);
+    const settledFocusRetryId = window.setTimeout(focusPanelStart, 500);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.clearTimeout(focusRetryId);
+      window.clearTimeout(settledFocusRetryId);
+    };
+  }, [placeId, occluded]);
 
   return (
     <AnimatePresence>
       {place && (
         <>
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={animateEntry ? { opacity: 0 } : false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={scrimFadeTransition(!!reduceMotion)}
@@ -266,15 +292,15 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
             data-place-detail
             tabIndex={-1}
             role="dialog"
-            aria-labelledby={titleId}
+            aria-labelledby={dialogTitleId}
             aria-modal="true"
-            initial={{ x: "100%", opacity: 0.6 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: "100%", opacity: 0.4 }}
+            initial={animateEntry ? { opacity: 0.98 } : false}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0.4 }}
             transition={drawerPanelTransition(!!reduceMotion, coarsePointer)}
             className="place-detail-drawer fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-y-auto overflow-x-hidden outline-none border-l"
           >
-            <h1 className="sr-only">{place.name} climate dossier</h1>
+            <h1 id={dialogTitleId} className="sr-only">{place.name} climate dossier</h1>
             <PlaceReadingProgress panelRef={panelRef} />
             <DetailHeader
               place={place}
@@ -341,6 +367,10 @@ function DetailHeader({
   const [failedHeroSrc, setFailedHeroSrc] = useState<string | null>(null);
   const heroFailed = hero != null && failedHeroSrc === hero.src;
   const osmHref = safeExternalHref(openStreetMapUrl(place.lat, place.lon, 10)) ?? "https://www.openstreetmap.org/";
+  const homeBaseLabel = isHome
+    ? `Clear ${place.name} as your home base`
+    : `Set ${place.name} as your home base for climate deltas`;
+  const compareLabel = inCompare ? `Remove ${place.name} from compare` : `Add ${place.name} to compare`;
 
   return (
     <div
@@ -386,12 +416,8 @@ function DetailHeader({
               type="button"
               onClick={() => onHomeBaseToggle(place.id)}
               aria-pressed={Boolean(isHome)}
-              aria-label={isHome
-                ? `Clear ${place.name} as your home base`
-                : `Set ${place.name} as your home base for climate deltas`}
-              title={isHome
-                ? `${place.name} is your home base — every card and dossier shows climate deltas against it. Click to clear.`
-                : `Read the whole atlas relative to ${place.name}: cards, dossiers, and Compare then show climate deltas against it.`}
+              aria-label={homeBaseLabel}
+              title={homeBaseLabel}
               className={`btn-ghost !text-xs ${isHome ? "!border-[rgba(140,200,224,0.8)] !text-glacier-700" : ""}`}
             >
               <Home className="w-3 h-3" aria-hidden />
@@ -411,8 +437,9 @@ function DetailHeader({
               type="button"
               onClick={() => onCompareToggle(place.id)}
               aria-pressed={inCompare}
-              aria-label={inCompare ? `Remove ${place.name} from compare` : `Add ${place.name} to compare`}
-              className={`btn-ghost !text-xs ${inCompare ? "!border-[rgba(240,210,156,0.8)] !text-ochre-300" : ""}`}
+              aria-label={compareLabel}
+              title={compareLabel}
+              className={`btn-ghost !text-xs ${inCompare ? "compare-toggle--active" : ""}`}
             >
               <ArrowLeftRight className="w-3 h-3" />
               {inCompare ? "In compare" : "Compare"}
@@ -424,6 +451,7 @@ function DetailHeader({
             onClick={onClose}
             className="btn-ghost !p-2"
             aria-label="Close profile"
+            title="Close profile"
           >
             <X className="w-4 h-4" aria-hidden />
           </button>
@@ -485,7 +513,7 @@ function DetailHeader({
               onError={() => setFailedHeroSrc(hero.src)}
             />
           )}
-          <figcaption className="tc-hero-credit px-3 py-2 text-[10px] leading-snug">
+          <figcaption className="tc-hero-credit px-3 py-0 text-[10px] leading-snug">
             <a href={hero.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:text-glacier-700 hover:underline">
               {hero.creditLine}
             </a>
@@ -498,7 +526,7 @@ function DetailHeader({
           href={osmHref}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1.5 text-[11px] font-medium text-glacier-700 hover:text-glacier-500 hover:underline"
+          className="tc-detail-map-link inline-flex items-center gap-1.5 text-[11px] font-medium text-glacier-700 hover:text-glacier-500 hover:underline"
         >
           <MapPin className="w-3.5 h-3.5 shrink-0" aria-hidden />
           Open this area on a live map (OpenStreetMap)
@@ -577,7 +605,7 @@ function DetailBody({
   place, onOpenPlace, liveFitFilters, residencyFitContext, visualSignature, onCompareToggle, inCompare, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, scenario = "now",
 }: {
   place: Place;
-  onOpenPlace?: (id: string) => void;
+  onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
   liveFitFilters?: LiveFitFilters;
   residencyFitContext?: ResidencyFitContext;
   visualSignature: PlaceVisualSignature;
@@ -595,10 +623,28 @@ function DetailBody({
   const driverPanelId = useId();
   const annualP = getAnnualPrecipMm(place);
   const [activeDriver, setActiveDriver] = useState<TopographicDriver | null>(null);
+  const activeDriverTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   const activeConcept = activeDriver
     ? CONCEPTS.find(c => c.id === DRIVER_CONCEPT_MAP[activeDriver])
     : null;
+  const driverGlossaryCloseLabel = "Close glossary explanation";
+  const closeDriverGlossary = useCallback(() => {
+    setActiveDriver(null);
+    window.setTimeout(() => {
+      try {
+        activeDriverTriggerRef.current?.focus({ preventScroll: true });
+      } catch {
+        activeDriverTriggerRef.current?.focus();
+      }
+    }, 0);
+  }, []);
+  const onDriverGlossaryKeyDown = useCallback((event: ReactKeyboardEvent<HTMLElement>) => {
+    if (event.key !== "Escape") return;
+    event.preventDefault();
+    event.stopPropagation();
+    closeDriverGlossary();
+  }, [closeDriverGlossary]);
 
   const synthesized = useMemo(() => {
     const s = synthesizePlaceSignals(place, temp, dist);
@@ -780,7 +826,7 @@ function DetailBody({
                 {livedSources.map((source, i) => (
                   <span key={source.key}>
                     {i > 0 ? " · " : ""}
-                    {source.href ? <a href={source.href} className="underline decoration-dotted hover:text-frost" target="_blank" rel="noreferrer noopener">{source.label}</a> : source.label}
+                    {source.href ? <a href={source.href} className="tc-detail-source-link underline decoration-dotted hover:text-frost" target="_blank" rel="noreferrer noopener">{source.label}</a> : source.label}
                   </span>
                 ))}
               </div>
@@ -863,11 +909,16 @@ function DetailBody({
             return (
               <button
                 key={d}
-                className="chip chip-btn"
+                className="chip chip-btn tc-driver-chip"
                 data-tone="ochre"
                 data-active={active}
-                onClick={() => setActiveDriver(active ? null : d)}
-                title={hasConcept ? "Click to explain" : DRIVER_LABELS[d]}
+                onClick={(event) => {
+                  activeDriverTriggerRef.current = event.currentTarget;
+                  setActiveDriver(active ? null : d);
+                }}
+                onKeyDown={active ? onDriverGlossaryKeyDown : undefined}
+                aria-label={hasConcept ? `Explain ${DRIVER_LABELS[d]}` : DRIVER_LABELS[d]}
+                title={hasConcept ? `Explain ${DRIVER_LABELS[d]}` : DRIVER_LABELS[d]}
                 {...(hasConcept
                   ? {
                       "aria-expanded": active,
@@ -890,7 +941,7 @@ function DetailBody({
             <div id={driverPanelId} className="mt-3 panel-warm p-4 overflow-hidden">
               <div className="flex items-start justify-between gap-2 mb-1">
                 <div className="font-atlas text-base text-ice">{activeConcept.term}</div>
-                <button type="button" onClick={() => setActiveDriver(null)} className="text-stone hover:text-ice" aria-label="Close glossary explanation"><X className="w-3.5 h-3.5" /></button>
+                <button type="button" onClick={closeDriverGlossary} onKeyDown={onDriverGlossaryKeyDown} className="tc-driver-glossary-close text-stone hover:text-ice" aria-label={driverGlossaryCloseLabel} title={driverGlossaryCloseLabel}><X className="w-3.5 h-3.5" /></button>
               </div>
               <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
               <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
@@ -911,7 +962,7 @@ function DetailBody({
               >
                 <div className="flex items-start justify-between gap-2 mb-1">
                   <div className="font-atlas text-base text-ice">{activeConcept.term}</div>
-                  <button type="button" onClick={() => setActiveDriver(null)} className="text-stone hover:text-ice" aria-label="Close glossary explanation"><X className="w-3.5 h-3.5" /></button>
+                  <button type="button" onClick={closeDriverGlossary} onKeyDown={onDriverGlossaryKeyDown} className="tc-driver-glossary-close text-stone hover:text-ice" aria-label={driverGlossaryCloseLabel} title={driverGlossaryCloseLabel}><X className="w-3.5 h-3.5" /></button>
                 </div>
                 <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
                 <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
@@ -1126,7 +1177,7 @@ function DetailBody({
                 return linked ? (
                   <button
                     key={i}
-                    onClick={() => onOpenPlace?.(n.placeId!)}
+                    onClick={event => onOpenPlace?.(n.placeId!, { trigger: event.currentTarget })}
                     className="panel-thin p-3 reveal-row w-full text-left flex items-start gap-2"
                   >
                     <div className="flex-1 min-w-0">
@@ -1345,7 +1396,7 @@ function DetailBody({
                         href={href}
                         target="_blank"
                         rel="noreferrer noopener"
-                        className="underline decoration-[rgba(140,200,224,0.55)] decoration-dotted hover:text-ice"
+                        className="tc-detail-source-link underline decoration-[rgba(140,200,224,0.55)] decoration-dotted hover:text-ice"
                       >
                         {c.label}
                       </a>

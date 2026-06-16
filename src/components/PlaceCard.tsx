@@ -40,7 +40,7 @@ interface Props {
   selected?: boolean;
   note?: string;
   /** Prefer this over `onClick` in lists — stable reference lets `memo` skip re-renders. */
-  onOpenPlace?: (id: string) => void;
+  onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
   /** @deprecated use `onOpenPlace` */
   onClick?: () => void;
   onCompareToggle?: (id: string) => void;
@@ -111,6 +111,7 @@ export const PlaceCard = memo(function PlaceCard({
   const primaryArchetype = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
   const tone = primaryArchetype?.tone ?? "ice";
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
+  const openTargetLabel = `Open ${place.name} place profile`;
 
   // Compute the single "best window" teaser for the card. Memoized because
   // PlaceCard is already wrapped in React.memo and `place` is stable — so
@@ -155,8 +156,8 @@ export const PlaceCard = memo(function PlaceCard({
     rankingEvidenceNote ? rankingEvidenceId : null,
   ].filter(Boolean).join(" ") || undefined;
 
-  const handleOpen = useCallback(() => {
-    if (onOpenPlace) onOpenPlace(place.id);
+  const handleOpen = useCallback((event: MouseEvent<HTMLButtonElement>) => {
+    if (onOpenPlace) onOpenPlace(place.id, { trigger: event.currentTarget });
     else onClick?.();
   }, [onOpenPlace, onClick, place.id]);
 
@@ -215,7 +216,8 @@ export const PlaceCard = memo(function PlaceCard({
         onFocus={onPreloadPlaceDetail}
         onPointerDown={onPreloadPlaceDetail}
         className="place-card__open-target text-left w-full p-4 pl-[calc(1rem+3px)] flex flex-col gap-0 min-h-0 bg-transparent border-0 cursor-pointer"
-        aria-labelledby={titleId}
+        aria-label={openTargetLabel}
+        title={openTargetLabel}
         aria-describedby={describedBy}
         aria-current={selected ? "true" : undefined}
       >
@@ -564,8 +566,8 @@ export const PlaceCard = memo(function PlaceCard({
           onPointerEnter={onPreloadCompare}
           onFocus={onPreloadCompare}
           onPointerDown={onPreloadCompare}
-          className={`btn-ghost place-card__compare-btn !px-3 !py-2 !text-xs ${inCompare ? "!border-[rgba(240,210,156,0.8)] !text-ochre-300" : ""}`}
-          title="Add to comparison"
+          className={`btn-ghost place-card__compare-btn !px-3 !py-2 !text-xs ${inCompare ? "compare-toggle--active" : ""}`}
+          title={inCompare ? `Remove ${place.name} from comparison` : `Add ${place.name} to comparison`}
           aria-label={inCompare ? `Remove ${place.name} from comparison` : `Add ${place.name} to comparison`}
           aria-pressed={inCompare}
         >

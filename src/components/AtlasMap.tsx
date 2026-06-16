@@ -103,6 +103,16 @@ function clusterVisualForCount(count: number) {
   return CLUSTER_VISUAL_BANDS.find(band => count <= band.max) ?? CLUSTER_VISUAL_BANDS[CLUSTER_VISUAL_BANDS.length - 1];
 }
 
+function clusterPlacePreview(points: readonly ClusterPoint[]): string {
+  const names = points
+    .map(point => point.place.name)
+    .filter((name, index, all) => all.indexOf(name) === index);
+  if (names.length === 0) return "";
+  if (names.length === 1) return ` around ${names[0]}`;
+  if (names.length === 2) return ` around ${names[0]} and ${names[1]}`;
+  return ` including ${names[0]}, ${names[1]}, and ${names.length - 2} more`;
+}
+
 type ClusterPoint = { place: Place; x: number; y: number; id: string };
 type RenderedClusterPoint = ClusterPoint & {
   anchorX: number;
@@ -336,6 +346,7 @@ export function AtlasMap({
   const [navAnnounce, setNavAnnounce] = useState("");
 
   const shellRef = useRef<HTMLDivElement>(null);
+  const legendToggleRef = useRef<HTMLButtonElement>(null);
   const [dims, setDims] = useState({ width: widthProp, height: heightProp, measured: false });
 
   useLayoutEffect(() => {
@@ -1442,9 +1453,35 @@ export function AtlasMap({
   const topoLoading = topo === null && !topoError;
   const svgTouchAction = atlasTouchActionForMode(mapInteractive);
   const legendPanelId = coarsePointer ? "tc-map-mobile-legend" : "tc-map-desktop-legend";
+  const legendToggleKind = coarsePointer ? "legend" : "key";
+  const legendToggleLabel = `${legendOpen ? "Hide" : "Open"} map ${legendToggleKind}`;
+  const closeLegend = useCallback(() => {
+    setLegendOpen(false);
+    window.setTimeout(() => {
+      try {
+        legendToggleRef.current?.focus({ preventScroll: true });
+      } catch {
+        legendToggleRef.current?.focus();
+      }
+    }, 0);
+  }, []);
+  useEffect(() => {
+    if (!legendOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      event.stopPropagation();
+      closeLegend();
+    };
+    window.addEventListener("keydown", onKey, true);
+    return () => window.removeEventListener("keydown", onKey, true);
+  }, [legendOpen, closeLegend]);
   const mapHasPins = pts.length > 0;
   const canZoomIn = view.k < MAX_ZOOM - 1e-3;
   const canZoomOut = view.k > MIN_ZOOM + 1e-3;
+  const zoomInLabel = canZoomIn ? "Zoom in (+)" : "Maximum zoom reached";
+  const zoomOutLabel = canZoomOut ? "Zoom out (-)" : "Minimum zoom reached";
+  const fitAllLabel = "Fit every pin in view (keyboard: 0)";
   const mapAriaLabel = !mapHasPins
     ? "Atlas map of North America. No places match the current filters or search; adjust them to bring pins back."
     : (coarsePointer
@@ -1924,10 +1961,13 @@ export function AtlasMap({
         </div>
         {coarsePointer ? (
           <button
+            ref={legendToggleRef}
             type="button"
             className="map-control-pill map-key-toggle pointer-events-auto"
             aria-expanded={legendOpen}
             aria-controls={legendPanelId}
+            aria-label={legendToggleLabel}
+            title={legendToggleLabel}
             onClick={() => setLegendOpen(v => !v)}
           >
             <Info className="w-3.5 h-3.5" aria-hidden />
@@ -1970,10 +2010,10 @@ export function AtlasMap({
 
       {/* Zoom controls */}
       <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[2]">
-        <button type="button" className="map-btn" data-map-control="zoom-in" data-map-target="comfortable" onClick={() => zoomBy(1.7)} disabled={!canZoomIn} title={canZoomIn ? "Zoom in (+)" : "Maximum zoom reached"} aria-label="Zoom in">
+        <button type="button" className="map-btn" data-map-control="zoom-in" data-map-target="comfortable" onClick={() => zoomBy(1.7)} disabled={!canZoomIn} title={zoomInLabel} aria-label={zoomInLabel}>
           <Plus className="w-4 h-4" aria-hidden />
         </button>
-        <button type="button" className="map-btn" data-map-control="zoom-out" data-map-target="comfortable" onClick={() => zoomBy(1 / 1.7)} disabled={!canZoomOut} title={canZoomOut ? "Zoom out (-)" : "Minimum zoom reached"} aria-label="Zoom out">
+        <button type="button" className="map-btn" data-map-control="zoom-out" data-map-target="comfortable" onClick={() => zoomBy(1 / 1.7)} disabled={!canZoomOut} title={zoomOutLabel} aria-label={zoomOutLabel}>
           <Minus className="w-4 h-4" aria-hidden />
         </button>
         <button
@@ -1982,8 +2022,8 @@ export function AtlasMap({
           data-map-control="fit-all"
           data-map-target="comfortable"
           onClick={reset}
-          title="Fit every pin in view (keyboard: 0)"
-          aria-label="Fit all places in view"
+          title={fitAllLabel}
+          aria-label={fitAllLabel}
         >
           <Maximize2 className="w-3.5 h-3.5" aria-hidden />
         </button>
@@ -2021,10 +2061,13 @@ export function AtlasMap({
       {!coarsePointer ? (
         <div className="map-key-dock absolute bottom-3 right-3 z-[4] pointer-events-auto">
           <button
+            ref={legendToggleRef}
             type="button"
             className="map-control-pill map-key-toggle"
             aria-expanded={legendOpen}
             aria-controls={legendPanelId}
+            aria-label={legendToggleLabel}
+            title={legendToggleLabel}
             onClick={() => setLegendOpen(v => !v)}
           >
             <Info className="w-3.5 h-3.5" aria-hidden />
@@ -2033,7 +2076,7 @@ export function AtlasMap({
         </div>
       ) : null}
 
-      {legendOpen ? (
+      {!coarsePointer && legendOpen ? (
       <div
         role="group"
         id={legendPanelId}
@@ -2042,7 +2085,7 @@ export function AtlasMap({
       >
         <div className="flex items-center justify-between gap-2">
           <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Map key</div>
-          <button type="button" className="map-legend-close" onClick={() => setLegendOpen(false)} aria-label="Close map key">
+          <button type="button" className="map-legend-close" onClick={closeLegend} aria-label="Close map key" title="Close map key">
             <X className="w-3.5 h-3.5" aria-hidden />
           </button>
         </div>
@@ -2115,7 +2158,7 @@ export function AtlasMap({
         >
           <div className="flex items-center justify-between gap-2">
             <div className="text-[10px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Map legend</div>
-            <button type="button" className="map-legend-close" onClick={() => setLegendOpen(false)} aria-label="Close map legend">
+            <button type="button" className="map-legend-close" onClick={closeLegend} aria-label="Close map legend" title="Close map legend">
               <X className="w-3.5 h-3.5" aria-hidden />
             </button>
           </div>
@@ -2214,10 +2257,12 @@ const ClusterMarker = memo(function ClusterMarker({
   const inv = 1 / k;
   const count = cluster.points.length;
   const visual = clusterVisualForCount(count);
+  const label = `${count} nearby microclimates${clusterPlacePreview(cluster.points)}. Zoom or choose from this cluster.`;
   const labelFontSize = count >= 100 ? Math.max(11.5, visual.fontSize - 1.5) : visual.fontSize;
-  const activate = useCallback((e: React.SyntheticEvent) => {
+  const activate = useCallback((e: React.SyntheticEvent<SVGGElement>) => {
     e.stopPropagation();
     if (shouldSuppressTouchActivation()) return;
+    e.currentTarget.focus({ preventScroll: true });
     onActivate(cluster);
   }, [cluster, onActivate, shouldSuppressTouchActivation]);
   const stopPan = useCallback((e: React.PointerEvent) => {
@@ -2237,13 +2282,14 @@ const ClusterMarker = memo(function ClusterMarker({
       transform={`translate(${cluster.x} ${cluster.y})`}
       role="button"
       tabIndex={0}
-      aria-label={`${count} nearby microclimates. Zoom or choose from this cluster.`}
+      aria-label={label}
       className="map-cluster"
       onPointerDown={stopPan}
       onClick={activate}
       onKeyDown={onKeyDown}
       data-cluster-size={visual.band}
     >
+      <title>{label}</title>
       <g transform={`scale(${inv})`}>
         <circle
           className="map-cluster__outer"
@@ -2470,7 +2516,7 @@ const ClusterPicker = memo(function ClusterPicker({
           </div>
           <div id={descriptionId} className="cluster-picker__sort">{summary.description}</div>
         </div>
-        <button ref={closeBtnRef} type="button" className="map-legend-close" onClick={onClose} aria-label="Close cluster picker">
+        <button ref={closeBtnRef} type="button" className="map-legend-close" onClick={onClose} aria-label="Close cluster picker" title="Close cluster picker">
           <X className="w-3.5 h-3.5" aria-hidden />
         </button>
       </div>
@@ -2673,6 +2719,7 @@ const Marker = memo(function Marker({
       onFocus={onMarkerFocus}
       onBlur={onMarkerBlur}
     >
+      <title>{ariaLabel}</title>
       <g transform={`scale(${inv})`}>
         {featuredRank ? (
           <g className="map-rank-halo" aria-hidden>

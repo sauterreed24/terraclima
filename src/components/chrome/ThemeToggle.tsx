@@ -37,6 +37,7 @@ export function ThemeToggle({ preference, onChange, compact = false }: Props) {
       {OPTIONS.map(opt => {
         const active = opt.id === preference;
         const Icon = opt.Icon;
+        const optionLabel = `${opt.label} theme - ${opt.hint}`;
         return (
           <button
             key={opt.id}
@@ -46,8 +47,8 @@ export function ThemeToggle({ preference, onChange, compact = false }: Props) {
               if (!active) onChange(opt.id);
             }}
             aria-pressed={active}
-            aria-label={`${opt.label} theme — ${opt.hint}`}
-            title={opt.hint}
+            aria-label={optionLabel}
+            title={optionLabel}
             data-active={active ? "true" : "false"}
           >
             <Icon className="tc-theme-toggle__icon" aria-hidden />

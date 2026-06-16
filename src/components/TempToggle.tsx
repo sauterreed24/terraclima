@@ -8,6 +8,11 @@ type Props = {
   onAfterChange?: () => void;
 };
 
+const FAHRENHEIT_LABEL = "Use Fahrenheit temperatures";
+const CELSIUS_LABEL = "Use Celsius temperatures";
+const IMPERIAL_DISTANCE_LABEL = "Use miles, feet, and inches";
+const METRIC_DISTANCE_LABEL = "Use kilometers, meters, and millimeters";
+
 export const TempToggle = memo(function TempToggle({ stretch, className = "", onAfterChange }: Props) {
   const { temp, dist, setTemp, setDist } = useUnits();
   const wrap = `tc-temp-toggle${stretch ? " tc-temp-toggle--stretch" : ""} ${className}`.trim();
@@ -24,7 +29,8 @@ export const TempToggle = memo(function TempToggle({ stretch, className = "", on
         }}
         className="tc-temp-toggle__btn"
         aria-pressed={temp === "F"}
-        title="Use Fahrenheit"
+        aria-label={FAHRENHEIT_LABEL}
+        title={FAHRENHEIT_LABEL}
       >
         °F
       </button>
@@ -38,7 +44,8 @@ export const TempToggle = memo(function TempToggle({ stretch, className = "", on
         }}
         className="tc-temp-toggle__btn"
         aria-pressed={temp === "C"}
-        title="Switch to degrees Celsius"
+        aria-label={CELSIUS_LABEL}
+        title={CELSIUS_LABEL}
       >
         °C
       </button>
@@ -52,7 +59,8 @@ export const TempToggle = memo(function TempToggle({ stretch, className = "", on
         }}
         className="tc-temp-toggle__btn tc-temp-toggle__btn--distance"
         aria-pressed={dist === "imperial"}
-        title="Use miles, feet, and inches"
+        aria-label={IMPERIAL_DISTANCE_LABEL}
+        title={IMPERIAL_DISTANCE_LABEL}
       >
         mi
       </button>
@@ -66,7 +74,8 @@ export const TempToggle = memo(function TempToggle({ stretch, className = "", on
         }}
         className="tc-temp-toggle__btn"
         aria-pressed={dist === "metric"}
-        title="Use kilometers, meters, and millimeters"
+        aria-label={METRIC_DISTANCE_LABEL}
+        title={METRIC_DISTANCE_LABEL}
       >
         km
       </button>

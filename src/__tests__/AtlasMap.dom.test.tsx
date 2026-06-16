@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AtlasMap, wheelZoomFactor } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
@@ -82,7 +82,7 @@ describe("AtlasMap DOM controls", () => {
     expect(wheelZoomFactor(0, 0)).toBe(1);
   });
 
-  it("defaults phone-sized coarse pointers to direct map mode with a scroll escape", () => {
+  it("defaults phone-sized coarse pointers to direct map mode with a scroll escape", async () => {
     setCoarsePointer(true);
     renderMap();
 
@@ -95,36 +95,55 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("button", { name: "Switch map to direct interaction" })).toHaveTextContent("Use map");
     expect(screen.getByRole("button", { name: "Switch map to direct interaction" })).toHaveAttribute("aria-pressed", "false");
 
-    fireEvent.click(screen.getByRole("button", { name: "Key" }));
-
-    const mapKey = screen.getByRole("group", { name: "Map key" });
-    expect(mapKey).toBeInTheDocument();
-    expect(within(mapKey).getByText("Orographic / orchard / chinook")).toBeInTheDocument();
-
-    fireEvent.click(screen.getByRole("button", { name: "Close map key" }));
+    const keyButton = screen.getByRole("button", { name: "Open map legend" });
+    expect(keyButton).toHaveTextContent("Key");
+    expect(keyButton).toHaveAttribute("title", "Open map legend");
+    fireEvent.click(keyButton);
 
     expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
+    const mapLegend = screen.getByRole("dialog", { name: "Map legend" });
+    expect(mapLegend).toBeInTheDocument();
+    expect(keyButton).toHaveAccessibleName("Hide map legend");
+    expect(keyButton).toHaveAttribute("title", "Hide map legend");
+    expect(within(mapLegend).getByText("Orographic / orchard / chinook")).toBeInTheDocument();
+
+    const closeMapLegend = screen.getByRole("button", { name: "Close map legend" });
+    expect(closeMapLegend).toHaveAttribute("title", "Close map legend");
+    fireEvent.click(closeMapLegend);
+
+    expect(screen.queryByRole("dialog", { name: "Map legend" })).toBeNull();
+    await waitFor(() => expect(document.activeElement).toBe(keyButton));
   });
 
-  it("keeps desktop controls available without rendering the phone touch-mode toggle", () => {
+  it("keeps desktop controls available without rendering the phone touch-mode toggle", async () => {
     setCoarsePointer(false);
-    renderMap();
+    const { container } = renderMap();
 
     const shell = document.querySelector(".map-shell");
     expect(shell).toHaveAttribute("data-legend-open", "false");
     expect(screen.queryByRole("button", { name: /Switch map to/ })).toBeNull();
-    const zoomIn = screen.getByRole("button", { name: "Zoom in" });
-    const zoomOut = screen.getByRole("button", { name: "Zoom out" });
-    const fitAll = screen.getByRole("button", { name: "Fit all places in view" });
+    const zoomIn = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-in"]');
+    const zoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+    const fitAll = screen.getByRole("button", { name: "Fit every pin in view (keyboard: 0)" });
+    expect(zoomIn).toBeTruthy();
+    expect(zoomOut).toBeTruthy();
     expect(zoomIn).toHaveAttribute("data-map-target", "comfortable");
+    expect(zoomIn).toHaveAttribute("title", zoomIn?.getAttribute("aria-label"));
     expect(zoomOut).toHaveAttribute("data-map-target", "comfortable");
+    expect(zoomOut).toHaveAttribute("title", zoomOut?.getAttribute("aria-label"));
     expect(fitAll).toHaveAttribute("data-map-target", "comfortable");
+    expect(fitAll).toHaveAttribute("title", "Fit every pin in view (keyboard: 0)");
     expect(screen.getByRole("img", { name: /Scroll to zoom, drag to pan/ })).toBeInTheDocument();
     expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
 
-    fireEvent.click(screen.getByRole("button", { name: "Key" }));
+    const keyButton = screen.getByRole("button", { name: "Open map key" });
+    expect(keyButton).toHaveTextContent("Key");
+    expect(keyButton).toHaveAttribute("title", "Open map key");
+    fireEvent.click(keyButton);
 
     expect(screen.getByRole("group", { name: "Map key" })).toBeInTheDocument();
+    expect(keyButton).toHaveAccessibleName("Hide map key");
+    expect(keyButton).toHaveAttribute("title", "Hide map key");
     expect(screen.getByText("Orographic / orchard / chinook")).toBeInTheDocument();
     expect(screen.getByText(/Flagship/)).toBeInTheDocument();
     const notes = screen.getByText("Usage notes").closest("details");
@@ -135,10 +154,32 @@ describe("AtlasMap DOM controls", () => {
     fireEvent.click(screen.getByText("Usage notes"));
     expect(notes).toHaveAttribute("open");
 
-    fireEvent.click(screen.getByRole("button", { name: "Close map key" }));
+    const closeMapKey = screen.getByRole("button", { name: "Close map key" });
+    expect(closeMapKey).toHaveAttribute("title", "Close map key");
+    fireEvent.click(closeMapKey);
 
     expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
     expect(shell).toHaveAttribute("data-legend-open", "false");
+    await waitFor(() => expect(document.activeElement).toBe(keyButton));
+  });
+
+  it("closes the desktop map key on Escape and restores focus to the trigger", async () => {
+    setCoarsePointer(false);
+    renderMap();
+
+    const shell = document.querySelector(".map-shell");
+    const keyButton = screen.getByRole("button", { name: "Open map key" });
+    fireEvent.click(keyButton);
+
+    expect(screen.getByRole("group", { name: "Map key" })).toBeInTheDocument();
+    expect(keyButton).toHaveAccessibleName("Hide map key");
+    expect(shell).toHaveAttribute("data-legend-open", "true");
+
+    fireEvent.keyDown(keyButton, { key: "Escape" });
+
+    expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
+    expect(shell).toHaveAttribute("data-legend-open", "false");
+    await waitFor(() => expect(document.activeElement).toBe(keyButton));
   });
 
   it("uses an empty-aware aria-label when no places match, and the interactive one otherwise", () => {
@@ -155,17 +196,26 @@ describe("AtlasMap DOM controls", () => {
 
   it("disables the zoom-in button at max zoom and zoom-out at min zoom", () => {
     setCoarsePointer(false);
-    renderMap();
-    const zoomIn = screen.getByLabelText("Zoom in") as HTMLButtonElement;
-    const zoomOut = screen.getByLabelText("Zoom out") as HTMLButtonElement;
+    const { container } = renderMap();
+    const zoomIn = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-in"]');
+    const zoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+    expect(zoomIn).toBeTruthy();
+    expect(zoomOut).toBeTruthy();
 
-    for (let i = 0; i < 30; i += 1) fireEvent.click(zoomIn);
-    expect(zoomIn).toBeDisabled();
-    expect(zoomOut).not.toBeDisabled();
+    for (let i = 0; i < 30; i += 1) fireEvent.click(zoomIn!);
+    const maxZoom = screen.getByLabelText("Maximum zoom reached") as HTMLButtonElement;
+    expect(maxZoom).toBeDisabled();
+    expect(maxZoom).toHaveAttribute("title", "Maximum zoom reached");
+    expect(container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]')).not.toBeDisabled();
 
-    for (let i = 0; i < 40; i += 1) fireEvent.click(zoomOut);
-    expect(zoomOut).toBeDisabled();
-    expect(zoomIn).not.toBeDisabled();
+    for (let i = 0; i < 40; i += 1) {
+      const currentZoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+      fireEvent.click(currentZoomOut!);
+    }
+    const minZoom = screen.getByLabelText("Minimum zoom reached") as HTMLButtonElement;
+    expect(minZoom).toBeDisabled();
+    expect(minZoom).toHaveAttribute("title", "Minimum zoom reached");
+    expect(screen.getByLabelText("Zoom in (+)")).not.toBeDisabled();
   });
 
   it("announces the top/bottom edge when arrow-key pin nav cannot move further", () => {
@@ -273,7 +323,7 @@ describe("AtlasMap DOM controls", () => {
     expect(within(dialog).getByText("1 flagship / 1 spotlight / 18 index")).toBeInTheDocument();
     expect(within(dialog).getByText("Lived read")).toBeInTheDocument();
     expect(within(dialog).getByText("1 source-backed / 1 partial / 18 pending")).toBeInTheDocument();
-    expect(within(dialog).getByRole("button", { name: "Close cluster picker" })).toBeInTheDocument();
+    expect(within(dialog).getByRole("button", { name: "Close cluster picker" })).toHaveAttribute("title", "Close cluster picker");
     expect(within(dialog).getByText("Location key")).toBeInTheDocument();
     expect(within(dialog).getByText("20 pins separated")).toBeInTheDocument();
     expect(dialog.querySelectorAll(".cluster-picker__mini-pin")).toHaveLength(20);
@@ -304,10 +354,6 @@ describe("AtlasMap DOM controls", () => {
     renderMap(vi.fn(), [], clusterPlaces);
 
     const trigger = screen.getByRole("button", { name: /20 nearby microclimates/ });
-    // jsdom's fireEvent.click does NOT focus the click target the way a real
-    // browser does, so explicitly focus the trigger first to mimic the real
-    // open path (where the keyboard/touch user activates the cluster pin).
-    trigger.focus();
     fireEvent.click(trigger);
 
     const dialog = screen.getByRole("dialog", { name: "Choose a microclimate from this cluster" });
@@ -322,6 +368,35 @@ describe("AtlasMap DOM controls", () => {
       screen.queryByRole("dialog", { name: "Choose a microclimate from this cluster" }),
     ).toBeNull();
     // Focus is restored to whatever launched the picker.
+    expect(document.activeElement).toBe(trigger);
+  });
+
+  it("closes the cluster picker from the map surface and restores focus to the cluster trigger", () => {
+    setCoarsePointer(true);
+    const clusterPlaces = [
+      makePlace({ id: "surface-a", name: "Surface Alpha", tier: "A", lat: 40, lon: -100 }),
+      makePlace({ id: "surface-b", name: "Surface Beta", tier: "A", lat: 40, lon: -100 }),
+      ...Array.from({ length: 18 }, (_, i) =>
+        makePlace({ id: `surface-z-${i}`, name: `Surface Gamma ${i}`, tier: "C", lat: 40, lon: -100 }),
+      ),
+    ];
+    renderMap(vi.fn(), [], clusterPlaces);
+
+    const trigger = screen.getByRole("button", { name: /20 nearby microclimates/ });
+    fireEvent.click(trigger);
+
+    const dialog = screen.getByRole("dialog", { name: "Choose a microclimate from this cluster" });
+    const closeBtn = within(dialog).getByRole("button", { name: "Close cluster picker" });
+    expect(document.activeElement).toBe(closeBtn);
+
+    fireEvent.pointerDown(screen.getByRole("img", { name: /Atlas map of North America/ }), {
+      button: 0,
+      pointerType: "mouse",
+    });
+
+    expect(
+      screen.queryByRole("dialog", { name: "Choose a microclimate from this cluster" }),
+    ).toBeNull();
     expect(document.activeElement).toBe(trigger);
   });
 
@@ -356,6 +431,7 @@ describe("AtlasMap DOM controls", () => {
     renderMap(onSelect);
 
     const marker = screen.getByRole("button", { name: /Alpha Valley/ });
+    expect(marker.querySelector("title")).toHaveTextContent("Alpha Valley");
     fireEvent.pointerEnter(marker, { pointerType: "mouse" });
 
     const preview = screen.getByRole("tooltip");
@@ -492,8 +568,8 @@ describe("AtlasMap DOM controls", () => {
 
     const { container } = renderMap(vi.fn(), [], [...smallCluster, ...massCluster]);
     const clusters = Array.from(container.querySelectorAll<SVGGElement>(".map-cluster"));
-    const twoPlaceCluster = clusters.find(cluster => cluster.textContent?.trim() === "2");
-    const ninetyPlaceCluster = clusters.find(cluster => cluster.textContent?.trim() === "90");
+    const twoPlaceCluster = clusters.find(cluster => cluster.getAttribute("aria-label")?.startsWith("2 nearby microclimates"));
+    const ninetyPlaceCluster = clusters.find(cluster => cluster.getAttribute("aria-label")?.startsWith("90 nearby microclimates"));
 
     expect(twoPlaceCluster).toBeTruthy();
     expect(ninetyPlaceCluster).toBeTruthy();
@@ -501,10 +577,44 @@ describe("AtlasMap DOM controls", () => {
 
     expect(twoPlaceCluster).toHaveAttribute("data-cluster-size", "small");
     expect(ninetyPlaceCluster).toHaveAttribute("data-cluster-size", "mass");
+    expect(twoPlaceCluster.querySelector("title")).toHaveTextContent("2 nearby microclimates");
+    expect(ninetyPlaceCluster.querySelector("title")).toHaveTextContent("90 nearby microclimates");
     expect(twoPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "18");
     expect(ninetyPlaceCluster.querySelector(".map-cluster__outer")).toHaveAttribute("r", "24");
     expect(twoPlaceCluster.querySelector(".map-cluster__hit-area")).toHaveAttribute("r", "30");
     expect(ninetyPlaceCluster.querySelector(".map-cluster__hit-area")).toHaveAttribute("r", "30");
+  });
+
+  it("adds place context so equal-size cluster buttons stay distinct", () => {
+    setCoarsePointer(false);
+    const westCluster = Array.from({ length: 46 }, (_, index) =>
+      makePlace({
+        id: `west-cluster-${index}`,
+        name: index === 0 ? "West Alpha" : index === 1 ? "West Beta" : `West Pocket ${index}`,
+        lat: 39,
+        lon: -103,
+      }),
+    );
+    const eastCluster = Array.from({ length: 46 }, (_, index) =>
+      makePlace({
+        id: `east-cluster-${index}`,
+        name: index === 0 ? "East Alpha" : index === 1 ? "East Beta" : `East Pocket ${index}`,
+        lat: 49,
+        lon: -116,
+      }),
+    );
+
+    const { container } = renderMap(vi.fn(), [], [...westCluster, ...eastCluster]);
+    const labels = Array.from(container.querySelectorAll<SVGGElement>(".map-cluster"))
+      .map(cluster => cluster.getAttribute("aria-label") ?? "")
+      .filter(label => label.startsWith("46 nearby microclimates"));
+
+    expect(labels).toHaveLength(2);
+    expect(new Set(labels).size).toBe(2);
+    expect(labels).toEqual(expect.arrayContaining([
+      expect.stringContaining("West Alpha, West Beta, and 44 more"),
+      expect.stringContaining("East Alpha, East Beta, and 44 more"),
+    ]));
   });
 
   it("uses roving tabindex so only one marker is in the Tab order at a time", () => {

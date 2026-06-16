@@ -9,7 +9,7 @@ import { useProse } from "../lib/units";
 interface Props {
   onOpenPlace: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
   onPickTripTheme: (id: string) => void;
-  onComparePlaces: (ids: string[]) => void;
+  onComparePlaces: (ids: string[], opts?: { trigger?: HTMLElement | null }) => void;
   onPreloadPlaceDetail?: () => void;
   onPreloadCompare?: () => void;
   activeThemeId?: string;
@@ -65,11 +65,11 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
     [themeRows],
   );
 
-  const compareTheme = useCallback((theme: ClimateTripTheme) => {
+  const compareTheme = useCallback((theme: ClimateTripTheme, trigger?: HTMLElement | null) => {
     const ids = (themeRowsById.get(theme.id) ?? themePlaces(theme))
       .slice(0, COMPARE_LIMIT)
       .map(row => row.place.id);
-    onComparePlaces(ids);
+    onComparePlaces(ids, { trigger });
   }, [onComparePlaces, themeRowsById]);
 
   return (
@@ -100,6 +100,8 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
           {themeRows.map(({ theme, rows }) => {
             const active = theme.id === activeThemeId;
             const top = rows[0];
+            const filterLabel = active ? `Clear trip filter for ${theme.title}` : `Filter map to trip style: ${theme.title}`;
+            const compareLabel = `Compare top stops for ${theme.title}`;
             return (
               <article
                 key={theme.id}
@@ -119,6 +121,32 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
                     </span>
                   ) : null}
                 </div>
+                <div className="climate-trip-card__actions">
+                  <button
+                    type="button"
+                    onClick={() => onPickTripTheme(theme.id)}
+                    className={active ? "btn-primary !text-xs" : "btn-ghost !text-xs"}
+                    aria-pressed={active}
+                    aria-label={filterLabel}
+                    title={filterLabel}
+                  >
+                    <MapIcon className="w-3.5 h-3.5" aria-hidden />
+                    {active ? "Clear trip filter" : "Filter map to this trip"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={e => compareTheme(theme, e.currentTarget)}
+                    onPointerEnter={onPreloadCompare}
+                    onFocus={onPreloadCompare}
+                    onPointerDown={onPreloadCompare}
+                    className="btn-ghost !text-xs"
+                    aria-label={compareLabel}
+                    title={compareLabel}
+                  >
+                    <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
+                    Compare top stops
+                  </button>
+                </div>
                 <p className="text-sm text-frost leading-relaxed mb-3">{prose(theme.description)}</p>
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {theme.bestFor.slice(0, 4).map(item => (
@@ -128,23 +156,6 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
                 <div className="panel-thin p-3 mb-3">
                   <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Season read</div>
                   <p className="text-[12px] text-frost leading-snug">{prose(theme.seasonHint)}</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <button type="button" onClick={() => onPickTripTheme(theme.id)} className={active ? "btn-primary !text-xs" : "btn-ghost !text-xs"}>
-                    <MapIcon className="w-3.5 h-3.5" aria-hidden />
-                    {active ? "Trip pinned" : "Filter map to this trip"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => compareTheme(theme)}
-                    onPointerEnter={onPreloadCompare}
-                    onFocus={onPreloadCompare}
-                    onPointerDown={onPreloadCompare}
-                    className="btn-ghost !text-xs"
-                  >
-                    <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
-                    Compare top stops
-                  </button>
                 </div>
               </article>
             );
@@ -177,21 +188,25 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
         </div>
         <h2 id="seasonal-windows-heading" className="font-atlas text-lg text-ice">Best seasonal windows</h2>
         <div className="grid md:grid-cols-3 gap-2 mt-3">
-          {tourismPicks.slice(0, 6).map(({ place, profile }) => (
-            <button
-              key={place.id}
-              type="button"
-              onPointerEnter={onPreloadPlaceDetail}
-              onFocus={onPreloadPlaceDetail}
-              onPointerDown={onPreloadPlaceDetail}
-              onClick={e => onOpenPlace(place.id, { trigger: e.currentTarget })}
-              className="panel-thin p-3 text-left reveal-row"
-              aria-label={`Open ${place.name} climate tourism profile`}
-            >
-              <div className="font-atlas text-sm text-ice">{place.name}</div>
-              <div className="text-[12px] text-stone-readable mt-1">{profile.bestVisitWindow.label}: <span className="text-frost">{profile.bestVisitWindow.range}</span></div>
-            </button>
-          ))}
+          {tourismPicks.slice(0, 6).map(({ place, profile }) => {
+            const openProfileLabel = `Open ${place.name} climate tourism profile from seasonal windows`;
+            return (
+              <button
+                key={place.id}
+                type="button"
+                onPointerEnter={onPreloadPlaceDetail}
+                onFocus={onPreloadPlaceDetail}
+                onPointerDown={onPreloadPlaceDetail}
+                onClick={e => onOpenPlace(place.id, { trigger: e.currentTarget })}
+                className="panel-thin climate-trip-season-button p-3 text-left reveal-row"
+                aria-label={openProfileLabel}
+                title={openProfileLabel}
+              >
+                <div className="font-atlas text-sm text-ice">{place.name}</div>
+                <div className="text-[12px] text-stone-readable mt-1">{profile.bestVisitWindow.label}: <span className="text-frost">{profile.bestVisitWindow.range}</span></div>
+              </button>
+            );
+          })}
         </div>
       </section>
     </div>
@@ -210,6 +225,7 @@ function TourismPickCard({
   const prose = useProse();
   const { place, profile } = row;
   const firstDay = profile.itinerary.days[0];
+  const openProfileLabel = `Open ${place.name} climate tourism profile from tourism picks`;
   return (
     <article className="panel climate-trip-card climate-trip-pick-card p-4 anim-fade-in space-y-3">
       <div className="flex items-start justify-between gap-3">
@@ -266,6 +282,8 @@ function TourismPickCard({
           onPointerDown={onPreloadPlaceDetail}
           onClick={e => onOpenPlace(place.id, { trigger: e.currentTarget })}
           className="btn-primary !text-xs"
+          aria-label={openProfileLabel}
+          title={openProfileLabel}
         >
           <ExternalLink className="w-3.5 h-3.5" aria-hidden />
           Open profile

@@ -32,11 +32,11 @@ import {
 import { buildCompareCandidateSwapInsight, buildCompareCoachRecommendations } from "../lib/compare-workbench-coach";
 import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
 import { COMPARE_LIMIT } from "../lib/app-url";
+import type { ShareStatus } from "../lib/app-constants";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
-import { ChevronRight, Clock3, Home, Link2, X } from "lucide-react";
+import { ChevronRight, Clock3, Home, Link2, Plus, RefreshCcw, X } from "lucide-react";
 
-type CompareShareStatus = "idle" | "copied" | "failed";
 type CandidateSourceFilter = "all" | CompareCandidateSource;
 type CandidateSortId = "curated" | "lens" | "risk" | "easy" | "name";
 
@@ -60,9 +60,10 @@ interface Props {
   open: boolean;
   onClose: () => void;
   onRemove: (id: string) => void;
-  onOpenPlace?: (id: string) => void;
+  onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
   onCopyView?: () => void;
-  shareStatus?: CompareShareStatus;
+  shareStatus?: ShareStatus;
+  shareFallbackUrl?: string | null;
   liveFitFilters?: LiveFitFilters;
   /** Home-base anchor (projected to the active scenario by the caller). Columns read deltas against it. */
   homePlace?: Place | null;
@@ -84,6 +85,7 @@ export function CompareView({
   onOpenPlace,
   onCopyView,
   shareStatus = "idle",
+  shareFallbackUrl = null,
   liveFitFilters,
   homePlace,
   onAddPlace,
@@ -98,9 +100,12 @@ export function CompareView({
   const reduceMotion = useReducedMotion();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const candidateSearchRef = useRef<HTMLInputElement>(null);
+  const shareFallbackInputRef = useRef<HTMLInputElement>(null);
   const titleId = useId();
   const candidateSearchId = useId();
   const candidateSortId = useId();
+  const candidateSearchLabel = "Find Workbench candidates by name, region, source, or scouting note";
   const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
   const [candidateQuery, setCandidateQuery] = useState("");
   const [candidateSourceFilter, setCandidateSourceFilter] = useState<CandidateSourceFilter>("all");
@@ -166,10 +171,17 @@ export function CompareView({
     () => new Map(candidateDecisionProfiles.map(profile => [profile.place.id, profile])),
     [candidateDecisionProfiles],
   );
-  const filteredCandidateTray = useMemo(() => {
+  const activeCandidateTray = useMemo(
+    () => candidateTray.filter(candidate => candidate.source === "Active"),
+    [candidateTray],
+  );
+  const inactiveCandidateTray = useMemo(
+    () => candidateTray.filter(candidate => candidate.source !== "Active"),
+    [candidateTray],
+  );
+  const filteredInactiveCandidateTray = useMemo(() => {
     const query = candidateQuery.trim().toLowerCase();
-    const filtered = candidateTray.filter(candidate => {
-      if (candidate.source === "Active") return true;
+    const filtered = inactiveCandidateTray.filter(candidate => {
       if (candidateSourceFilter !== "all" && candidate.source !== candidateSourceFilter) return false;
       if (!query) return true;
       const place = candidate.place;
@@ -183,10 +195,8 @@ export function CompareView({
       ].join(" ").toLowerCase();
       return haystack.includes(query);
     });
-    const active = filtered.filter(candidate => candidate.source === "Active");
-    const inactive = filtered.filter(candidate => candidate.source !== "Active");
     if (candidateSort !== "curated") {
-      inactive.sort((a, b) => {
+      filtered.sort((a, b) => {
         const profileA = candidateDecisionById.get(a.place.id);
         const profileB = candidateDecisionById.get(b.place.id);
         const nameTie = a.place.name.localeCompare(b.place.name) || a.place.id.localeCompare(b.place.id);
@@ -205,11 +215,25 @@ export function CompareView({
         }
       });
     }
-    return [...active, ...inactive];
-  }, [activeComparisonLens, candidateDecisionById, candidateQuery, candidateSort, candidateSourceFilter, candidateTray]);
-  const candidateCountRead = candidateQuery.trim() || candidateSourceFilter !== "all"
-    ? `${filteredCandidateTray.length}/${candidateTray.length} shown`
+    return filtered;
+  }, [activeComparisonLens, candidateDecisionById, candidateQuery, candidateSort, candidateSourceFilter, inactiveCandidateTray]);
+  const filteredCandidateTray = useMemo(
+    () => [...activeCandidateTray, ...filteredInactiveCandidateTray],
+    [activeCandidateTray, filteredInactiveCandidateTray],
+  );
+  const candidateFinderActive = candidateQuery.trim().length > 0 || candidateSourceFilter !== "all";
+  const resetCandidateFinder = () => {
+    setCandidateQuery("");
+    setCandidateSourceFilter("all");
+    candidateSearchRef.current?.focus({ preventScroll: true });
+  };
+  const candidateMatchWord = filteredInactiveCandidateTray.length === 1 ? "match" : "matches";
+  const candidateCountRead = candidateFinderActive
+    ? `${filteredInactiveCandidateTray.length}/${inactiveCandidateTray.length} ${candidateMatchWord}`
     : `${candidateTray.length} candidates`;
+  const candidateTrayHelper = candidateFinderActive
+    ? "Active places stay pinned; finder matches appear after them."
+    : "Shortlist, recent places, and current leaders stay in reach.";
   const coachRecommendations = useMemo(
     () => buildCompareCoachRecommendations({
       activePlaces: places,
@@ -251,6 +275,17 @@ export function CompareView({
     if (!open || places.length === 0 || occluded) return;
     closeBtnRef.current?.focus({ preventScroll: true });
   }, [occluded, open, places.length]);
+
+  useEffect(() => {
+    if (shareStatus !== "failed" || !shareFallbackUrl || occluded) return;
+    const focusTimer = window.setTimeout(() => {
+      const input = shareFallbackInputRef.current;
+      input?.focus({ preventScroll: true });
+      input?.select();
+    }, 0);
+    return () => window.clearTimeout(focusTimer);
+  }, [occluded, shareFallbackUrl, shareStatus]);
+
   return (
     <AnimatePresence>
       {open && places.length > 0 && (
@@ -288,17 +323,15 @@ export function CompareView({
             className="fixed inset-0 z-50 overflow-y-auto pointer-events-none"
           >
             {/*
-             * `presentation` role + `onClick stopPropagation` prevents clicks
-             * on the column-strip padding from bubbling up to the scrim and
-             * dismissing the modal. The dialog itself owns Escape via the
-             * global keyboard hook and the focus trap, so no keyboard handler
-             * is needed on this purely structural container.
+             * The frame only contributes safe-area padding and max width. Keep
+             * it pass-through so clicks in empty modal padding reach the scrim;
+             * the inner content wrapper owns pointer events for real controls.
              */}
             <div
               role="presentation"
-              className="compare-dialog__frame max-w-[1280px] mx-auto pointer-events-auto"
-              onClick={e => e.stopPropagation()}
+              className="compare-dialog__frame max-w-[1280px] mx-auto"
             >
+            <div className="compare-dialog__content">
             <div className="compare-dialog__head">
               <div className="compare-dialog__title">
                 <div className="compare-dialog__eyebrow">Compare</div>
@@ -327,16 +360,33 @@ export function CompareView({
                     type="button"
                     onClick={onCopyView}
                     className={`btn-ghost !text-xs !py-1.5 ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
-                    aria-label="Copy comparison link"
-                    title="Copy a shareable URL for this comparison"
+                    aria-label="Copy or share comparison link"
+                    title="Copy or share a URL for this comparison"
                   >
                     <Link2 className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
                     <span aria-live="polite">
-                      {shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
+                      {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
                     </span>
                   </button>
                 ) : null}
-                <button ref={closeBtnRef} type="button" onClick={onClose} className="btn-ghost"><X className="w-4 h-4" /> Close</button>
+                {shareStatus === "failed" && shareFallbackUrl ? (
+                  <div className="tc-share-fallback compare-dialog__share-fallback" role="group" aria-label="Manual comparison share link">
+                    <span className="tc-share-fallback__label">Shareable link</span>
+                    <input
+                      ref={shareFallbackInputRef}
+                      type="text"
+                      readOnly
+                      value={shareFallbackUrl}
+                      className="tc-share-fallback__input"
+                      aria-label="Shareable comparison URL for manual copy"
+                      onFocus={event => event.currentTarget.select()}
+                      onClick={event => event.currentTarget.select()}
+                    />
+                  </div>
+                ) : null}
+                <button ref={closeBtnRef} type="button" onClick={onClose} className="btn-ghost" aria-label="Close comparison" title="Close comparison">
+                  <X className="w-4 h-4" aria-hidden /> Close
+                </button>
               </div>
             </div>
 
@@ -378,16 +428,36 @@ export function CompareView({
                     <span className="compare-workbench__eyebrow">Candidates</span>
                     <strong>{places.length}/{COMPARE_LIMIT} active / {candidateCountRead}</strong>
                   </div>
-                  <span>Shortlist, recent places, and current leaders stay in reach.</span>
+                  <span>{candidateTrayHelper}</span>
+                  {candidateFinderActive ? (
+                    <button
+                      type="button"
+                      className="btn-ghost compare-workbench__candidate-reset"
+                      onClick={resetCandidateFinder}
+                      aria-label="Reset candidate finder to all sources"
+                      title="Clear candidate search and show all source filters"
+                    >
+                      Reset finder
+                    </button>
+                  ) : null}
                 </div>
                 <div className="compare-workbench__candidate-tools" aria-label="Candidate finder">
                   <label className="compare-workbench__candidate-search" htmlFor={candidateSearchId}>
-                    <span className="sr-only">Find Workbench candidates</span>
+                    <span className="sr-only">{candidateSearchLabel}</span>
                     <input
+                      ref={candidateSearchRef}
                       id={candidateSearchId}
                       type="search"
                       value={candidateQuery}
                       onChange={event => setCandidateQuery(event.currentTarget.value)}
+                      onKeyDown={event => {
+                        if (event.key !== "Escape" || candidateQuery.length === 0) return;
+                        event.preventDefault();
+                        event.stopPropagation();
+                        setCandidateQuery("");
+                      }}
+                      aria-label={candidateSearchLabel}
+                      title={candidateSearchLabel}
                       placeholder="Find by place, region, source..."
                     />
                   </label>
@@ -398,6 +468,7 @@ export function CompareView({
                         type="button"
                         className="compare-workbench__source-filter-btn"
                         aria-pressed={filter.id === candidateSourceFilter}
+                        title={`Show ${filter.label.toLowerCase()} compare candidates`}
                         onClick={() => setCandidateSourceFilter(filter.id)}
                       >
                         {filter.label}
@@ -435,6 +506,12 @@ export function CompareView({
                       : places.length >= COMPARE_LIMIT
                         ? `Swap ${candidate.place.name} into active comparison`
                         : `Add ${candidate.place.name} to active comparison`;
+                    const actionCue = active
+                      ? { label: "Remove", tone: "remove", Icon: X }
+                      : places.length >= COMPARE_LIMIT
+                        ? { label: "Swap", tone: "swap", Icon: RefreshCcw }
+                        : { label: "Add", tone: "add", Icon: Plus };
+                    const CandidateActionIcon = actionCue.Icon;
                     const title = [
                       candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`,
                       candidateInsight ? `${candidateInsight.label}: ${candidateInsight.detail}` : null,
@@ -452,7 +529,13 @@ export function CompareView({
                         title={title}
                         onClick={() => active ? onRemove(candidate.place.id) : onAddPlace?.(candidate.place.id)}
                       >
-                        <span className="compare-workbench__candidate-name">{candidate.place.name}</span>
+                        <span className="compare-workbench__candidate-topline">
+                          <span className="compare-workbench__candidate-name">{candidate.place.name}</span>
+                          <span className="compare-workbench__candidate-action" data-action={actionCue.tone}>
+                            <CandidateActionIcon aria-hidden="true" />
+                            <span>{actionCue.label}</span>
+                          </span>
+                        </span>
                         <span className="compare-workbench__candidate-meta">
                           <span>{candidate.source}</span>
                           <strong>{candidate.place.region}</strong>
@@ -512,6 +595,7 @@ export function CompareView({
                           type="button"
                           className="compare-workbench__coach-card"
                           aria-label={action}
+                          title={action}
                           onClick={() => onAddPlace?.(recommendation.place.id)}
                         >
                           <span className="compare-workbench__coach-label">{recommendation.label}</span>
@@ -559,7 +643,8 @@ export function CompareView({
                           type="button"
                           className="compare-decision-read__action"
                           aria-label={`Open first dossier: ${decisionRead.primary.place.name}`}
-                          onClick={() => onOpenPlace(decisionRead.primary.place.id)}
+                          title={`Open first dossier: ${decisionRead.primary.place.name}`}
+                          onClick={event => onOpenPlace(decisionRead.primary.place.id, { trigger: event.currentTarget })}
                         >
                           <span>Start dossier</span>
                           <strong title={decisionRead.primary.place.name}>{decisionRead.primary.place.name}</strong>
@@ -569,9 +654,10 @@ export function CompareView({
                             type="button"
                             className="compare-decision-read__action"
                             aria-label={`Open counterweight dossier: ${decisionRead.counterweight.place.name}`}
-                            onClick={() => {
+                            title={`Open counterweight dossier: ${decisionRead.counterweight.place.name}`}
+                            onClick={event => {
                               const counterweight = decisionRead.counterweight;
-                              if (counterweight) onOpenPlace(counterweight.place.id);
+                              if (counterweight) onOpenPlace(counterweight.place.id, { trigger: event.currentTarget });
                             }}
                           >
                             <span>{decisionRead.counterweight.label}</span>
@@ -604,7 +690,8 @@ export function CompareView({
                           type="button"
                           className="compare-decision-read__scout-step compare-decision-read__scout-step--button"
                           aria-label={`Open ${step.place.name} from scouting sequence: ${step.label}. ${step.why}`}
-                          onClick={() => onOpenPlace(step.place.id)}
+                          title={`Open ${step.place.name} from scouting sequence: ${step.label}. ${step.why}`}
+                          onClick={event => onOpenPlace(step.place.id, { trigger: event.currentTarget })}
                         >
                           {content}
                         </button>
@@ -638,7 +725,8 @@ export function CompareView({
                           className="compare-verification-checklist__item compare-verification-checklist__item--button"
                           data-tone={item.tone}
                           aria-label={`Open ${item.place.name} from scout verification checklist: ${item.label}`}
-                          onClick={() => onOpenPlace(item.place.id)}
+                          title={`Open ${item.place.name} from scout verification checklist: ${item.label}`}
+                          onClick={event => onOpenPlace(item.place.id, { trigger: event.currentTarget })}
                         >
                           {card}
                         </button>
@@ -689,7 +777,8 @@ export function CompareView({
                                   type="button"
                                   className="compare-finalist-table__place"
                                   aria-label={`Open ${row.place.name} from finalist decision table`}
-                                  onClick={() => onOpenPlace(row.place.id)}
+                                  title={`Open ${row.place.name} from finalist decision table`}
+                                  onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
                                 >
                                   {row.place.name}
                                 </button>
@@ -737,7 +826,8 @@ export function CompareView({
                           type="button"
                           className="compare-evidence-readiness__place"
                           aria-label={`Open ${row.place.name} dossier from evidence readiness`}
-                          onClick={() => onOpenPlace(row.place.id)}
+                          title={`Open ${row.place.name} dossier from evidence readiness`}
+                          onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
                         >
                           {row.place.name}
                         </button>
@@ -778,7 +868,8 @@ export function CompareView({
                       type="button"
                       className="compare-decision-read__action"
                       aria-label={`Review anchor dossier: ${singlePlaceGuide.placeName}`}
-                      onClick={() => onOpenPlace(singlePlaceGuide.placeId)}
+                      title={`Review anchor dossier: ${singlePlaceGuide.placeName}`}
+                      onClick={event => onOpenPlace(singlePlaceGuide.placeId, { trigger: event.currentTarget })}
                     >
                       <span>Review anchor</span>
                       <strong title={singlePlaceGuide.placeName}>{singlePlaceGuide.placeName}</strong>
@@ -846,8 +937,9 @@ export function CompareView({
                       <button
                         type="button"
                         className="compare-insight-strip__place compare-insight-strip__place--link"
-                        title={`Open profile: ${item.place.name}`}
-                        onClick={() => onOpenPlace(item.place.id)}
+                        aria-label={`Open ${item.place.name} profile from comparison highlight: ${item.label}`}
+                        title={`Open ${item.place.name} profile from comparison highlight: ${item.label}`}
+                        onClick={event => onOpenPlace(item.place.id, { trigger: event.currentTarget })}
                       >
                         {item.place.name}
                       </button>
@@ -905,16 +997,17 @@ export function CompareView({
                 const utci = apparentComfortIndex(p);
                 return (
                 <div key={p.id} className="panel p-4 relative snap-start tc-compare-col">
-                  <button type="button" onClick={() => onRemove(p.id)} aria-label={`Remove ${p.name} from comparison`} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center">
+                  <button type="button" onClick={() => onRemove(p.id)} aria-label={`Remove ${p.name} from comparison`} title={`Remove ${p.name} from comparison`} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center">
                     <X className="w-4 h-4" />
                   </button>
                   <div className="text-xs text-stone">{p.region}, {p.country}</div>
                   {onOpenPlace ? (
                     <button
                       type="button"
-                      className="font-atlas text-lg text-ice mb-3 text-left hover:underline focus-visible:underline"
+                      className="compare-column-title font-atlas text-lg text-ice mb-3 text-left hover:underline focus-visible:underline"
                       aria-label={`Open ${p.name} profile`}
-                      onClick={() => onOpenPlace(p.id)}
+                      title={`Open ${p.name} profile`}
+                      onClick={event => onOpenPlace(p.id, { trigger: event.currentTarget })}
                     >
                       {p.name}
                     </button>
@@ -970,6 +1063,7 @@ export function CompareView({
             <p className="text-caption text-stone-readable mt-2 px-1 leading-snug">
               * Feels-like (UTCI-style) is a warm-season heat-and-humidity strain screen from air temperature and relative humidity only — no wind, solar, or radiant-temperature inputs. Not a true UTCI value.
             </p>
+            </div>
             </div>
           </motion.div>
         </>

@@ -9,12 +9,26 @@ vi.mock("framer-motion", async () => {
   const React = await import("react");
   const motionKeys = new Set(["animate", "exit", "initial", "transition", "whileHover", "whileTap", "layout"]);
   type MotionElementProps = Record<string, unknown> & { children?: React.ReactNode };
+  const serializeMotionProp = (value: unknown) => {
+    if (value === undefined) return undefined;
+    return JSON.stringify(value);
+  };
   const passthrough = (tag: "div" | "aside") =>
     React.forwardRef<HTMLElement, MotionElementProps>((props, ref) => {
       const domProps = Object.fromEntries(
         Object.entries(props).filter(([key]) => key !== "children" && !motionKeys.has(key)),
       );
-      return React.createElement(tag, { ...domProps, ref }, props.children as React.ReactNode);
+      return React.createElement(
+        tag,
+        {
+          ...domProps,
+          ref,
+          "data-motion-animate": serializeMotionProp(props.animate),
+          "data-motion-exit": serializeMotionProp(props.exit),
+          "data-motion-initial": serializeMotionProp(props.initial),
+        },
+        props.children as React.ReactNode,
+      );
     });
 
   return {
@@ -36,10 +50,26 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
+  window.history.replaceState(null, "", "/");
   vi.unstubAllGlobals();
+  vi.useRealTimers();
 });
 
 describe("PlaceDetail growability rationale", () => {
+  it("names the loaded drawer as a climate dossier for assistive technology", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} />
+      </UnitProvider>,
+    );
+
+    expect(screen.getByRole("dialog", { name: "Sequim climate dossier" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Sequim", level: 2 })).toBeInTheDocument();
+  });
+
   it("renders the computed Why this score read inside Soil & growability", () => {
     const place = PLACES_BY_ID["yuma-az"];
     expect(place).toBeTruthy();
@@ -71,6 +101,9 @@ describe("PlaceDetail overview spotlight", () => {
 
     // The humanistic eyebrow + the four-season walkthrough.
     expect(screen.getByText("What it actually feels like")).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: "Open this area on a live map (OpenStreetMap)" }),
+    ).toHaveClass("tc-detail-map-link");
     expect(screen.getByText("The year, season by season")).toBeInTheDocument();
     for (const season of ["Winter", "Spring", "Summer", "Autumn"]) {
       expect(screen.getByText(season)).toBeInTheDocument();
@@ -175,6 +208,78 @@ describe("PlaceDetail header accessibility", () => {
     expect(screen.getByRole("heading", { level: 2, name: place.name })).toBeInTheDocument();
   });
 
+  it("moves initial focus to the close control when the drawer mounts", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    const close = screen.getByRole("button", { name: "Close profile" });
+    expect(document.activeElement).toBe(close);
+    expect(close).toHaveAttribute("title", "Close profile");
+  });
+
+  it("describes horizontally scrollable dossier navigation strips", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    const mobileReadingNav = document.querySelector(".tc-reading-nav-mobile");
+    expect(mobileReadingNav).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more dossier chapters.");
+    expect(screen.getByLabelText("Jump within field dossier")).toHaveAccessibleDescription(
+      "Swipe or scroll horizontally to browse more field dossier chapters.",
+    );
+  });
+
+  it("keeps animated drawer entry in the viewport on first paint", () => {
+    const place = PLACES_BY_ID["morelia-mx"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry />
+      </UnitProvider>,
+    );
+
+    const drawer = document.querySelector("[data-place-detail]");
+    expect(drawer).not.toHaveAttribute("data-motion-initial", expect.stringContaining("\"x\""));
+    expect(drawer).not.toHaveAttribute("data-motion-animate", expect.stringContaining("\"x\""));
+    expect(drawer).toHaveAttribute("data-motion-initial", expect.stringContaining("\"opacity\""));
+  });
+
+  it("moves deep-link focus to the shared field-dossier chapter", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+    window.history.replaceState(null, "", "/?p=sequim-wa#deep-sequim-hydrology");
+    const scrollTo = vi.fn();
+    Object.defineProperty(HTMLElement.prototype, "scrollTo", {
+      configurable: true,
+      value: scrollTo,
+    });
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    const target = document.getElementById("deep-sequim-hydrology");
+    const heading = target?.querySelector("[data-deep-chapter-title]");
+    expect(target).toHaveAttribute("aria-labelledby", heading?.id);
+    expect(heading).toHaveAttribute("tabindex", "-1");
+    expect(document.activeElement).toBe(heading);
+    expect(scrollTo).toHaveBeenCalled();
+  });
+
   it("reflects compare membership on the Compare button via aria-pressed", () => {
     const place = PLACES_BY_ID["yuma-az"];
     expect(place).toBeTruthy();
@@ -192,6 +297,7 @@ describe("PlaceDetail header accessibility", () => {
 
     const addBtn = screen.getByRole("button", { name: `Add ${place.name} to compare` });
     expect(addBtn).toHaveAttribute("aria-pressed", "false");
+    expect(addBtn).toHaveAttribute("title", `Add ${place.name} to compare`);
 
     rerender(
       <UnitProvider>
@@ -206,6 +312,8 @@ describe("PlaceDetail header accessibility", () => {
 
     const removeBtn = screen.getByRole("button", { name: `Remove ${place.name} from compare` });
     expect(removeBtn).toHaveAttribute("aria-pressed", "true");
+    expect(removeBtn).toHaveAttribute("title", `Remove ${place.name} from compare`);
+    expect(removeBtn).toHaveClass("compare-toggle--active");
   });
 
   it("surfaces shortlist and compare actions inside the residency brief", () => {
@@ -214,7 +322,7 @@ describe("PlaceDetail header accessibility", () => {
     const onCompareToggle = vi.fn();
     const onBookmarkToggle = vi.fn();
 
-    render(
+    const { rerender } = render(
       <UnitProvider>
         <PlaceDetail
           place={place}
@@ -230,13 +338,31 @@ describe("PlaceDetail header accessibility", () => {
     expect(screen.getByLabelText(`Residency actions for ${place.name}`)).toHaveTextContent("Scout handoff");
 
     const pinBtn = screen.getByRole("button", { name: `Pin ${place.name} to your shortlist from residency brief` });
+    expect(pinBtn).toHaveAttribute("title", `Pin ${place.name} to your shortlist from residency brief`);
     fireEvent.click(pinBtn);
     expect(onBookmarkToggle).toHaveBeenCalledWith(place.id);
 
     const compareBtn = screen.getByRole("button", { name: `Add ${place.name} to Compare from residency brief` });
     expect(compareBtn).toHaveAttribute("aria-pressed", "false");
+    expect(compareBtn).toHaveAttribute("title", `Add ${place.name} to Compare from residency brief`);
     fireEvent.click(compareBtn);
     expect(onCompareToggle).toHaveBeenCalledWith(place.id);
+
+    rerender(
+      <UnitProvider>
+        <PlaceDetail
+          place={place}
+          onClose={() => undefined}
+          onCompareToggle={onCompareToggle}
+          inCompareIds={new Set([place.id])}
+          bookmarked={false}
+          onBookmarkToggle={onBookmarkToggle}
+        />
+      </UnitProvider>,
+    );
+    const activeCompareBtn = screen.getByRole("button", { name: `Remove ${place.name} from Compare from residency brief` });
+    expect(activeCompareBtn).toHaveAttribute("title", `Remove ${place.name} from Compare from residency brief`);
+    expect(activeCompareBtn).toHaveClass("compare-toggle--active");
   });
 
   it("does not render residency actions when the dossier has no action callbacks", () => {
@@ -299,7 +425,64 @@ describe("PlaceDetail glossary driver chip a11y", () => {
     expect(chipsWithConcept.length).toBeGreaterThan(0);
     for (const chip of chipsWithConcept) {
       expect(chip.getAttribute("aria-expanded")).toBe("false");
+      expect(chip).toHaveAttribute("aria-label", expect.stringMatching(/^Explain .+/));
+      expect(chip).toHaveAttribute("title", chip.getAttribute("aria-label"));
     }
+  });
+
+  it("renders the glossary reveal close control with its touch-target class", () => {
+    const place = PLACES_BY_ID["eureka-ca"] ?? PLACES_BY_ID["yuma-az"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} />
+      </UnitProvider>,
+    );
+
+    const chip = Array.from(document.querySelectorAll<HTMLButtonElement>(
+      'button.tc-driver-chip[data-tone="ochre"][aria-expanded]',
+    ))[0];
+    expect(chip).toBeTruthy();
+
+    fireEvent.click(chip!);
+
+    expect(chip!).toHaveAttribute("aria-expanded", "true");
+    const closeGlossary = screen.getByRole("button", { name: "Close glossary explanation" });
+    expect(closeGlossary).toHaveClass("tc-driver-glossary-close");
+    expect(closeGlossary).toHaveAttribute("title", "Close glossary explanation");
+  });
+
+  it("closes only the driver glossary on Escape and returns focus to the chip", () => {
+    vi.useFakeTimers();
+    const place = PLACES_BY_ID["eureka-ca"] ?? PLACES_BY_ID["yuma-az"];
+    expect(place).toBeTruthy();
+    const onClose = vi.fn();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={onClose} />
+      </UnitProvider>,
+    );
+    vi.runOnlyPendingTimers();
+
+    const chip = Array.from(document.querySelectorAll<HTMLButtonElement>(
+      'button.tc-driver-chip[data-tone="ochre"][aria-expanded]',
+    ))[0];
+    expect(chip).toBeTruthy();
+
+    fireEvent.click(chip!);
+    expect(chip!).toHaveAttribute("aria-expanded", "true");
+    expect(screen.getByRole("button", { name: "Close glossary explanation" })).toBeInTheDocument();
+
+    expect(fireEvent.keyDown(chip!, { key: "Escape" })).toBe(false);
+    vi.runOnlyPendingTimers();
+
+    expect(onClose).not.toHaveBeenCalled();
+    expect(screen.getByRole("dialog", { name: `${place!.name} climate dossier` })).toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Close glossary explanation" })).not.toBeInTheDocument();
+    expect(chip!).toHaveAttribute("aria-expanded", "false");
+    expect(chip!).toHaveFocus();
   });
 });
 
@@ -357,6 +540,7 @@ describe("PlaceDetail home-base anchor", () => {
 
     const toggle = screen.getByRole("button", { name: `Set ${place.name} as your home base for climate deltas` });
     expect(toggle).toHaveAttribute("aria-pressed", "false");
+    expect(toggle).toHaveAttribute("title", `Set ${place.name} as your home base for climate deltas`);
   });
 
   it("flips into the baseline explainer when the open dossier IS the home base", () => {
@@ -375,10 +559,15 @@ describe("PlaceDetail home-base anchor", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Your home base" })).toBeInTheDocument();
-    const headerToggle = screen.getByRole("button", { name: `Clear ${home.name} as your home base` });
+    const clearButtons = screen.getAllByRole("button", { name: `Clear ${home.name} as your home base` });
+    const headerToggle = clearButtons.find(button => button.getAttribute("aria-pressed") === "true");
     expect(headerToggle).toHaveAttribute("aria-pressed", "true");
 
-    fireEvent.click(screen.getByRole("button", { name: "Clear home base" }));
+    const sectionClear = clearButtons.find(button => button.textContent?.includes("Clear home base"));
+    expect(sectionClear).toHaveClass("tc-home-base-clear");
+    expect(sectionClear).toHaveAttribute("title", `Clear ${home.name} as your home base`);
+
+    fireEvent.click(sectionClear!);
     expect(onHomeBaseToggle).toHaveBeenCalledWith(home.id);
   });
 

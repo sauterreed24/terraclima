@@ -10,15 +10,15 @@ describe("BookmarkButton — compact (chip)", () => {
     render(<BookmarkButton pinned={false} placeName="Sequim" onToggle={() => undefined} />);
     const btn = screen.getByRole("button", { name: "Pin Sequim to your shortlist" });
     expect(btn).toHaveAttribute("aria-pressed", "false");
-    expect(btn).toHaveAttribute("title", "Save to your shortlist");
+    expect(btn).toHaveAttribute("title", "Pin Sequim to your shortlist");
     expect(btn.className).not.toContain("tc-bookmark-chip--pinned");
   });
 
   it("uses an unpin label + BookmarkCheck icon when pinned", () => {
     render(<BookmarkButton pinned placeName="Sequim" onToggle={() => undefined} />);
-    const btn = screen.getByRole("button", { name: "Unpin Sequim" });
+    const btn = screen.getByRole("button", { name: "Unpin Sequim from your shortlist" });
     expect(btn).toHaveAttribute("aria-pressed", "true");
-    expect(btn).toHaveAttribute("title", "Remove from your shortlist");
+    expect(btn).toHaveAttribute("title", "Unpin Sequim from your shortlist");
     expect(btn.className).toContain("tc-bookmark-chip--pinned");
   });
 });
@@ -26,7 +26,7 @@ describe("BookmarkButton — compact (chip)", () => {
 describe("BookmarkButton — header variant", () => {
   it("renders the labelled toolbar variant when size='header'", () => {
     render(<BookmarkButton pinned placeName="Eureka" onToggle={() => undefined} size="header" />);
-    const btn = screen.getByRole("button", { name: "Unpin Eureka" });
+    const btn = screen.getByRole("button", { name: "Unpin Eureka from your shortlist" });
     expect(btn.className).toContain("tc-bookmark-btn");
     expect(btn).toHaveTextContent("Pinned");
   });
@@ -46,7 +46,9 @@ describe("BookmarkButton — header variant", () => {
         ariaContext="from residency brief"
       />,
     );
-    expect(screen.getByRole("button", { name: "Pin Eureka to your shortlist from residency brief" })).toHaveTextContent("Pin");
+    const btn = screen.getByRole("button", { name: "Pin Eureka to your shortlist from residency brief" });
+    expect(btn).toHaveTextContent("Pin");
+    expect(btn).toHaveAttribute("title", "Pin Eureka to your shortlist from residency brief");
   });
 });
 

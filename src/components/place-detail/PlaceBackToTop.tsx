@@ -12,6 +12,7 @@ import { prefersReducedMotion } from "../../lib/device-profile";
 
 export function PlaceBackToTop({ panelRef }: { panelRef: { current: HTMLElement | null } }) {
   const [visible, setVisible] = useState(false);
+  const label = "Scroll to top of place profile";
 
   useEffect(() => {
     const el = panelRef.current;
@@ -44,8 +45,8 @@ export function PlaceBackToTop({ panelRef }: { panelRef: { current: HTMLElement 
       type="button"
       onClick={onClick}
       className="tc-detail-back-to-top"
-      aria-label="Scroll to top of place profile"
-      title="Back to top"
+      aria-label={label}
+      title={label}
     >
       <ArrowUp className="w-4 h-4" aria-hidden />
     </button>

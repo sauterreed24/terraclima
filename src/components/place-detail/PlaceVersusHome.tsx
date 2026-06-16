@@ -31,6 +31,7 @@ export function PlaceVersusHome({
   const { temp, dist } = useUnits();
   const prose = useProse();
   const comparison = useMemo(() => buildHomeBaseComparison(home, place), [home, place]);
+  const clearHomeBaseLabel = `Clear ${place.name} as your home base`;
 
   if (comparison.isSame) {
     return (
@@ -44,8 +45,10 @@ export function PlaceVersusHome({
           {onHomeBaseToggle ? (
             <button
               type="button"
-              className="btn-ghost !text-xs shrink-0"
+              className="btn-ghost tc-home-base-clear !text-xs shrink-0"
               onClick={() => onHomeBaseToggle(place.id)}
+              aria-label={clearHomeBaseLabel}
+              title={clearHomeBaseLabel}
             >
               Clear home base
             </button>

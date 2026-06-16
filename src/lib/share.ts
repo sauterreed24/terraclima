@@ -12,7 +12,7 @@
  */
 import { writeClipboardText } from "./clipboard";
 
-export type ShareOutcome = "shared" | "copied" | "failed";
+export type ShareOutcome = "shared" | "dismissed" | "copied" | "failed";
 
 export interface SharePayload {
   /** Required; usually the place name or "Terraclima". */
@@ -36,12 +36,12 @@ function getShareNavigator(): ShareCapableNavigator | null {
 /**
  * Open the OS share sheet for the given payload. Returns:
  *  - `"shared"` if the native share completed successfully,
+ *  - `"dismissed"` if the user closed the native share sheet,
  *  - `"copied"` if we silently fell back to clipboard and that worked,
  *  - `"failed"` if both paths failed.
  *
- * A user-cancelled native share (AbortError) is treated as `"shared"` —
- * the user chose to dismiss, not a failure; the caller should not show a
- * "share failed" toast.
+ * A user-cancelled native share (AbortError) is not a failure and should not
+ * produce copy-success feedback, because nothing was copied.
  */
 export async function shareUrl(payload: SharePayload): Promise<ShareOutcome> {
   const nav = getShareNavigator();
@@ -54,8 +54,8 @@ export async function shareUrl(payload: SharePayload): Promise<ShareOutcome> {
         return "shared";
       } catch (err) {
         if (err instanceof DOMException && err.name === "AbortError") {
-          // User dismissed the share sheet — don't fall back to clipboard.
-          return "shared";
+          // User dismissed the share sheet; don't fall back to clipboard.
+          return "dismissed";
         }
         // All other failures: fall through to clipboard.
       }

@@ -52,6 +52,6 @@ describe("AtlasMap topology load failure", () => {
 
     // Graceful degradation: pins and the standard zoom controls still render.
     expect(screen.getByRole("button", { name: /Alpha Valley/ })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Zoom in" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Zoom in (+)" })).toBeInTheDocument();
   });
 });

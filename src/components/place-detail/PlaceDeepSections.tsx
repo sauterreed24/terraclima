@@ -153,10 +153,14 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
             ? "Read this as the atlas field notebook. Any authored essay comes first; then the shared backbone follows: rain year, terrain mechanisms, soil and gardens, nearby contrasts when present, and homes or long-term fit. Best months for... handles calendars below; this section explains why the place behaves the way it does. Temperatures follow the unit in the header."
             : "Read this as the atlas field notebook. Any authored essay comes first; then the shared backbone follows: rain year, terrain mechanisms, soil and gardens, nearby contrasts when present, and homes or long-term fit. Temperatures follow the unit in the header."}
         </p>
+        <p id="field-dossier-jump-scroll-hint" className="sr-only">
+          Swipe or scroll horizontally to browse more field dossier chapters.
+        </p>
         <nav
           ref={jumpStripRef}
           className="mt-3 flex flex-wrap gap-1.5 overflow-x-auto max-w-full pb-0.5 [scrollbar-width:thin] scroll-smooth"
           aria-label="Jump within field dossier"
+          aria-describedby="field-dossier-jump-scroll-hint"
         >
           {jumps.map(j => {
             const isActive = activeId === j.id;
@@ -180,25 +184,36 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
       </div>
 
       <div className="detail-dossier-shell contain-paint">
-        {sections.map((sec, idx) => (
-          <article
-            key={sec.id}
-            id={`deep-${sec.id}`}
-            className="detail-dossier-chapter scroll-mt-28"
-          >
-            <header className="detail-dossier-chapter-head">
-              <span className="detail-dossier-chapter-idx" aria-hidden>
-                {(idx + 1).toString().padStart(2, "0")}
-              </span>
-              <h4 className="detail-dossier-chapter-title font-atlas">{sec.title}</h4>
-            </header>
-            <div className="detail-dossier-body space-y-3 text-[15px] leading-[1.78] text-[color:var(--color-frost-strong)] pl-0 md:pl-10">
-              {sec.paragraphs.map((p, i) => (
-                <p key={i} className={i === 0 ? "detail-deep-lead" : undefined}>{prose(p)}</p>
-              ))}
-            </div>
-          </article>
-        ))}
+        {sections.map((sec, idx) => {
+          const chapterTitleId = `deep-${sec.id}-title`;
+          return (
+            <article
+              key={sec.id}
+              id={`deep-${sec.id}`}
+              className="detail-dossier-chapter scroll-mt-28"
+              aria-labelledby={chapterTitleId}
+            >
+              <header className="detail-dossier-chapter-head">
+                <span className="detail-dossier-chapter-idx" aria-hidden>
+                  {(idx + 1).toString().padStart(2, "0")}
+                </span>
+                <h4
+                  id={chapterTitleId}
+                  className="detail-dossier-chapter-title font-atlas"
+                  tabIndex={-1}
+                  data-deep-chapter-title
+                >
+                  {sec.title}
+                </h4>
+              </header>
+              <div className="detail-dossier-body space-y-3 text-[15px] leading-[1.78] text-[color:var(--color-frost-strong)] pl-0 md:pl-10">
+                {sec.paragraphs.map((p, i) => (
+                  <p key={i} className={i === 0 ? "detail-deep-lead" : undefined}>{prose(p)}</p>
+                ))}
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );

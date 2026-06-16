@@ -26,11 +26,11 @@ describe("shareUrl", () => {
     expect(out).toBe("copied");
   });
 
-  it("treats an AbortError from navigator.share as a successful (user-cancelled) share", async () => {
+  it("returns dismissed when the user closes the native share sheet", async () => {
     const share = vi.fn().mockRejectedValue(new DOMException("user cancelled", "AbortError"));
     vi.stubGlobal("navigator", { share });
     const out = await shareUrl({ title: "T", url: "https://example.com" });
-    expect(out).toBe("shared");
+    expect(out).toBe("dismissed");
   });
 
   it("falls back to clipboard on any other share rejection", async () => {

@@ -23,5 +23,5 @@ export const CMD_KEY_LABEL = IS_MAC ? "⌘" : "Ctrl";
 /** Compact one-pill hint for the global search shortcut, e.g. "⌘K" / "Ctrl K". */
 export const SEARCH_SHORTCUT_HINT = IS_MAC ? "⌘K" : "Ctrl K";
 
-/** State of the "copy current view" UX. */
-export type ShareStatus = "idle" | "copied" | "failed";
+/** State of copy/share URL feedback shown by Explorer and Compare controls. */
+export type ShareStatus = "idle" | "shared" | "copied" | "failed";

@@ -24,7 +24,7 @@ describe("CopyPlaceLink", () => {
     vi.stubGlobal("navigator", { clipboard: { writeText } });
 
     render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
-    fireEvent.click(screen.getByRole("button", { name: "Copy link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
 
     await waitFor(() => {
       expect(screen.getByText("Copied")).toBeInTheDocument();
@@ -39,7 +39,7 @@ describe("CopyPlaceLink", () => {
     document.execCommand = (() => false) as unknown as typeof document.execCommand;
 
     render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
-    fireEvent.click(screen.getByRole("button", { name: "Copy link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
 
     await waitFor(() => {
       expect(screen.getByText("Copy failed")).toBeInTheDocument();
@@ -52,7 +52,7 @@ describe("CopyPlaceLink", () => {
     document.execCommand = execCommand as unknown as typeof document.execCommand;
 
     render(<CopyPlaceLink placeId="port-townsend-wa" placeName="Port Townsend" />);
-    fireEvent.click(screen.getByRole("button", { name: "Copy link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
 
     await waitFor(() => {
       expect(screen.getByText("Copied")).toBeInTheDocument();
@@ -67,10 +67,41 @@ describe("CopyPlaceLink", () => {
 
     render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy link to this place" }));
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
 
     await waitFor(() => {
       expect(screen.getByText("Copy failed")).toBeInTheDocument();
     });
+  });
+
+  it("shows Shared when the native share sheet completes", async () => {
+    const share = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { share });
+
+    render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Shared")).toBeInTheDocument();
+    });
+    const payload = share.mock.calls[0][0] as { title: string; text?: string; url: string };
+    expect(payload.title).toBe("Sequim");
+    expect(payload.text).toContain("Sequim");
+    expect(payload.url).toContain("p=sequim-wa");
+  });
+
+  it("returns to idle when the native share sheet is dismissed", async () => {
+    const share = vi.fn().mockRejectedValue(new DOMException("user cancelled", "AbortError"));
+    vi.stubGlobal("navigator", { share });
+
+    render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+
+    await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: "Copy or share link to this place" })).toHaveTextContent("Copy link");
+    });
+    expect(screen.queryByText("Copied")).not.toBeInTheDocument();
+    expect(screen.queryByText("Copy failed")).not.toBeInTheDocument();
   });
 });

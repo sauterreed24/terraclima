@@ -40,8 +40,8 @@ export const BookmarkButton = memo(function BookmarkButton({
 
   const Icon = pinned ? BookmarkCheck : Bookmark;
   const context = ariaContext ? ` ${ariaContext}` : "";
-  const ariaLabel = pinned ? `Unpin ${placeName}${context}` : `Pin ${placeName} to your shortlist${context}`;
-  const title = pinned ? "Remove from your shortlist" : "Save to your shortlist";
+  const ariaLabel = pinned ? `Unpin ${placeName} from your shortlist${context}` : `Pin ${placeName} to your shortlist${context}`;
+  const title = ariaLabel;
 
   if (size === "header") {
     return (
