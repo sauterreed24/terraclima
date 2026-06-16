@@ -234,6 +234,8 @@ export function CompareView({
   const candidateTrayHelper = candidateFinderActive
     ? "Active places stay pinned; finder matches appear after them."
     : "Shortlist, recent places, and current leaders stay in reach.";
+  const noInactiveCandidateMatches =
+    candidateFinderActive && filteredInactiveCandidateTray.length === 0 && inactiveCandidateTray.length > 0;
   const coachRecommendations = useMemo(
     () => buildCompareCoachRecommendations({
       activePlaces: places,
@@ -489,6 +491,11 @@ export function CompareView({
                     </select>
                   </label>
                 </div>
+                {noInactiveCandidateMatches ? (
+                  <div className="compare-workbench__candidate-empty compare-workbench__candidate-empty--filtered" role="status">
+                    No finder matches outside the active set. Reset finder or try a broader place, region, or source.
+                  </div>
+                ) : null}
                 <div className="compare-workbench__candidate-scroll">
                   {filteredCandidateTray.length > 0 ? filteredCandidateTray.map(candidate => {
                     const active = activeCandidateIds.has(candidate.place.id);

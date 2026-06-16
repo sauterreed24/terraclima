@@ -244,6 +244,28 @@ describe("CompareView", () => {
     expect(tray).toHaveTextContent("7 candidates");
   });
 
+  it("explains zero candidate-finder matches without hiding active compare slots", () => {
+    const candidates: CompareCandidate[] = [
+      { place: PLACES[4]!, source: "Shortlist", note: "Pinned test candidate" },
+      { place: PLACES[5]!, source: "Recent", note: "Recent test candidate" },
+    ];
+    renderCompare({
+      places: PLACES.slice(0, 4),
+      candidates,
+    });
+
+    const tray = screen.getByLabelText("Candidate tray");
+    fireEvent.change(within(tray).getByRole("searchbox", { name: CANDIDATE_SEARCH_LABEL }), {
+      target: { value: "zzznomatches" },
+    });
+
+    expect(tray).toHaveTextContent("4/4 active / 0/2 matches");
+    expect(tray).toHaveTextContent("No finder matches outside the active set.");
+    expect(within(tray).getByRole("button", { name: "Reset candidate finder to all sources" })).toBeInTheDocument();
+    expect(within(tray).getAllByRole("button", { name: /active comparison/ })).toHaveLength(4);
+    expect(within(tray).queryByRole("button", { name: /Swap .* into active comparison/ })).not.toBeInTheDocument();
+  });
+
   it("clears the candidate search on Escape before closing the comparison", () => {
     const onClose = vi.fn();
     const candidates: CompareCandidate[] = [
