@@ -34,6 +34,27 @@ describe("CopyPlaceLink", () => {
     expect(new URL(copied).searchParams.get("p")).toBe("sequim-wa");
   });
 
+  it("strips comparison-only state from copied place links", async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    vi.stubGlobal("navigator", { clipboard: { writeText } });
+    window.history.replaceState(
+      null,
+      "",
+      "/?p=sequim-wa&cmp=sequim-wa,port-townsend-wa&clens=risk&temp=C&dist=metric",
+    );
+
+    render(<CopyPlaceLink placeId="sequim-wa" placeName="Sequim" />);
+    fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
+
+    await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
+    const copied = new URL(writeText.mock.calls[0][0] as string);
+    expect(copied.searchParams.get("p")).toBe("sequim-wa");
+    expect(copied.searchParams.get("temp")).toBe("C");
+    expect(copied.searchParams.get("dist")).toBe("metric");
+    expect(copied.searchParams.has("cmp")).toBe(false);
+    expect(copied.searchParams.has("clens")).toBe(false);
+  });
+
   it("offers a selectable place URL when clipboard and fallback both fail", async () => {
     vi.stubGlobal("navigator", {});
     document.execCommand = (() => false) as unknown as typeof document.execCommand;

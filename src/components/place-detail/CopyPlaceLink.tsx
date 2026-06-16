@@ -32,6 +32,8 @@ export function CopyPlaceLink({ placeId, placeName }: { placeId: string; placeNa
 
   const onCopy = useCallback(async () => {
     const u = new URL(window.location.href);
+    u.searchParams.delete("cmp");
+    u.searchParams.delete("clens");
     u.searchParams.set("p", placeId);
     const hash = window.location.hash;
     if (hash.startsWith("#deep-")) {
