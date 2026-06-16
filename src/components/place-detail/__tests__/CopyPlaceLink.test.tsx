@@ -34,7 +34,7 @@ describe("CopyPlaceLink", () => {
     expect(new URL(copied).searchParams.get("p")).toBe("sequim-wa");
   });
 
-  it("shows Copy failed when clipboard and fallback both fail", async () => {
+  it("offers a selectable place URL when clipboard and fallback both fail", async () => {
     vi.stubGlobal("navigator", {});
     document.execCommand = (() => false) as unknown as typeof document.execCommand;
 
@@ -44,6 +44,11 @@ describe("CopyPlaceLink", () => {
     await waitFor(() => {
       expect(screen.getByText("Copy failed")).toBeInTheDocument();
     });
+    const fallbackGroup = screen.getByRole("group", { name: "Manual place share link" });
+    const fallbackInput = screen.getByRole("textbox", { name: "Shareable place URL for manual copy" });
+    expect(fallbackGroup).toContainElement(fallbackInput);
+    expect((fallbackInput as HTMLInputElement).value).toContain("p=sequim-wa");
+    await waitFor(() => expect(fallbackInput).toHaveFocus());
   });
 
   it("uses textarea fallback when navigator.clipboard is missing", async () => {
@@ -60,7 +65,7 @@ describe("CopyPlaceLink", () => {
     expect(execCommand).toHaveBeenCalledWith("copy");
   });
 
-  it("does not throw when clipboard rejects", async () => {
+  it("does not throw when clipboard rejects and still exposes the manual URL", async () => {
     const writeText = vi.fn().mockRejectedValue(new Error("denied"));
     vi.stubGlobal("navigator", { clipboard: { writeText } });
     document.execCommand = (() => false) as unknown as typeof document.execCommand;
@@ -72,6 +77,7 @@ describe("CopyPlaceLink", () => {
     await waitFor(() => {
       expect(screen.getByText("Copy failed")).toBeInTheDocument();
     });
+    expect((screen.getByRole("textbox", { name: "Shareable place URL for manual copy" }) as HTMLInputElement).value).toContain("p=sequim-wa");
   });
 
   it("shows Shared when the native share sheet completes", async () => {

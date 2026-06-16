@@ -11476,6 +11476,10 @@ html[data-theme="dark"] .tc-hero-credit {
     outline: 2px solid rgba(26, 143, 168, 0.62);
     outline-offset: 2px;
   }
+  .copy-place-link__fallback {
+    flex: 1 1 min(100%, 22rem);
+    min-width: min(100%, 18rem);
+  }
   .tc-hero-home-receipt {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
