@@ -2,6 +2,7 @@ import { Component, type ErrorInfo, type ReactNode } from "react";
 
 interface Props {
   children: ReactNode;
+  reloadPage?: () => void;
 }
 
 interface State {
@@ -25,24 +26,49 @@ export class ErrorBoundary extends Component<Props, State> {
     }
   }
 
+  private reloadPage = () => {
+    if (this.props.reloadPage) {
+      this.props.reloadPage();
+      return;
+    }
+    window.location.reload();
+  };
+
+  private openFreshAtlas = () => {
+    const rootUrl = new URL(import.meta.env.BASE_URL || "./", window.location.href);
+    rootUrl.search = "";
+    rootUrl.hash = "";
+    window.history.replaceState(null, "", rootUrl);
+    this.reloadPage();
+  };
+
   render() {
     if (this.state.err) {
       return (
         <div role="alert" className="tc-error-boundary">
           <p className="font-atlas text-lg mb-2 text-ice">Something went wrong</p>
           <p className="text-sm text-stone mb-4 max-w-md">
-            The atlas hit an unexpected error. You can reload the page — your last unit preference is stored in the browser.
+            The atlas hit an unexpected error. Open a fresh atlas if this shared URL keeps failing, or retry the current view.
           </p>
-          <button
-            type="button"
-            className="tc-error-boundary__btn"
-            // Recovery UI: focus must land on the only actionable control immediately.
-            // eslint-disable-next-line jsx-a11y/no-autofocus -- intentional error-recovery affordance
-            autoFocus
-            onClick={() => window.location.reload()}
-          >
-            Reload Terraclima
-          </button>
+          <div className="tc-error-boundary__actions">
+            <button
+              type="button"
+              className="tc-error-boundary__btn"
+              // Recovery UI: focus must land on the safest actionable control immediately.
+              // eslint-disable-next-line jsx-a11y/no-autofocus -- intentional error-recovery affordance
+              autoFocus
+              onClick={this.openFreshAtlas}
+            >
+              Open fresh atlas
+            </button>
+            <button
+              type="button"
+              className="tc-error-boundary__btn tc-error-boundary__btn--secondary"
+              onClick={this.reloadPage}
+            >
+              Retry current view
+            </button>
+          </div>
         </div>
       );
     }

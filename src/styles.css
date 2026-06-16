@@ -9850,13 +9850,25 @@
     background: var(--color-abyss);
     color: var(--color-frost);
   }
+  .tc-error-boundary__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem;
+  }
   .tc-error-boundary__btn {
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
+    min-height: 2.75rem;
     font-size: 0.875rem;
     font-weight: 600;
     background: linear-gradient(180deg, #3dd4ee 0%, #138a9e 100%);
     color: #0a1010;
+  }
+  .tc-error-boundary__btn--secondary {
+    border: 1px solid rgba(140, 200, 224, 0.45);
+    background: rgba(13, 20, 32, 0.74);
+    color: var(--color-frost);
   }
 
   .tc-logo-mark {
