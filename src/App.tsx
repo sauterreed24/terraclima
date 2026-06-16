@@ -692,6 +692,18 @@ export default function App() {
 
     return candidates;
   }, [bookmarkIds, placesById, ranked, rankingLabel, recentIds]);
+  const resolvedComparePlaces = useMemo(
+    () => [...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace),
+    [compareIds, placesById],
+  );
+  // CompareView only renders when open && places.length > 0. Without this sync,
+  // removing the last active place leaves compareOpen true and the shell inert
+  // with no visible dialog or scrim to dismiss.
+  useEffect(() => {
+    if (compareOpen && resolvedComparePlaces.length === 0) {
+      setCompareOpen(false);
+    }
+  }, [compareOpen, resolvedComparePlaces.length]);
   const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
@@ -1321,7 +1333,7 @@ export default function App() {
       {compareOpen ? (
         <Suspense fallback={<OverlayLoadingFallback label="Loading compare" />}>
           <CompareView
-            places={[...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace)}
+            places={resolvedComparePlaces}
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
