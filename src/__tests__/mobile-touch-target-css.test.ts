@@ -85,6 +85,8 @@ describe("mobile touch target CSS", () => {
     expectRule(".tc-header-help-mobile", /display:\s*inline-flex;/);
     expect(styles).toMatch(/@media \(min-width:\s*768px\)\s*\{[\s\S]*?\.tc-header-help-desktop\s*\{[\s\S]*?display:\s*flex;[\s\S]*?\.tc-header-help-mobile\s*\{[\s\S]*?display:\s*none;/);
     expect(styles).toMatch(/@media \(max-width:\s*480px\)\s*\{[\s\S]*?\.tc-filter-sheet-trigger\s*\{[\s\S]*?min-width:\s*46px;[\s\S]*?min-height:\s*46px;/);
+    expect(styles).toMatch(/@media \(max-width:\s*480px\)\s*\{[\s\S]*?\.tc-filter-sheet-trigger__label\s*\{[\s\S]*?max-width:\s*5rem;[\s\S]*?text-overflow:\s*ellipsis;/);
+    expect(styles).not.toMatch(/@media \(max-width:\s*480px\)\s*\{[\s\S]*?\.tc-filter-sheet-trigger__label\s*\{[\s\S]*?clip:\s*rect/);
     expectRule(".tc-site-menu-dialog__inner .tc-temp-toggle__btn", /min-height:\s*46px;/);
     expectRule(".tc-site-menu-dialog__inner .tc-theme-toggle__btn", /min-height:\s*46px;/);
     expectRule(".tc-site-menu-dialog__close", /min-width:\s*46px;[\s\S]*min-height:\s*46px;/);
