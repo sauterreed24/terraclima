@@ -137,6 +137,23 @@ describe("CompareView", () => {
     expect(onAddPlace).toHaveBeenCalledWith(PLACES[4].id);
   });
 
+  it("offers direct shortcuts to decision, evidence, differences, and candidates", () => {
+    renderCompare();
+
+    const shortcuts = screen.getByRole("navigation", { name: "Compare decision shortcuts" });
+    const workbench = screen.getByLabelText("Compare workbench");
+
+    expect(shortcuts.compareDocumentPosition(workbench) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(within(shortcuts).getByRole("link", { name: "Jump to Compare decision read" })).toHaveAttribute("href", "#compare-decision-read");
+    expect(within(shortcuts).getByRole("link", { name: "Jump to Compare evidence readiness" })).toHaveAttribute("href", "#compare-evidence-readiness");
+    expect(within(shortcuts).getByRole("link", { name: "Jump to Compare difference board" })).toHaveAttribute("href", "#compare-diff-board");
+    expect(within(shortcuts).getByRole("link", { name: "Jump to Compare candidate workbench" })).toHaveAttribute("href", "#compare-candidates");
+    expect(workbench).toHaveAttribute("id", "compare-candidates");
+    expect(screen.getByLabelText("Comparison decision read")).toHaveAttribute("id", "compare-decision-read");
+    expect(screen.getByLabelText("Evidence readiness")).toHaveAttribute("id", "compare-evidence-readiness");
+    expect(screen.getByLabelText("Grouped comparison rows")).toHaveAttribute("id", "compare-diff-board");
+  });
+
   it("keeps empty dialog padding pass-through while the visible close action owns focus", () => {
     const onClose = vi.fn();
     renderCompare({ onClose });
@@ -392,8 +409,9 @@ describe("CompareView", () => {
     const onOpenPlace = vi.fn();
     renderCompare({ onCopyView, onOpenPlace });
 
-    expect(screen.getByLabelText("Comparison decision read")).toBeInTheDocument();
-    expect(screen.getByText("Decision read")).toBeInTheDocument();
+    const decisionRead = screen.getByLabelText("Comparison decision read");
+    expect(decisionRead).toBeInTheDocument();
+    expect(within(decisionRead).getByText("Decision read")).toBeInTheDocument();
     expect(screen.getByText("Next action")).toBeInTheDocument();
     expect(screen.getByText("Broadest fit")).toBeInTheDocument();
     expect(within(screen.getByLabelText("Comparison decision read")).getByText("Lowest risk")).toBeInTheDocument();

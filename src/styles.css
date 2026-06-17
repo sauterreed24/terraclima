@@ -4051,6 +4051,58 @@
     font-weight: 600;
   }
 
+  .compare-dialog__shortcuts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0 0 0.75rem;
+  }
+  .compare-dialog__shortcut {
+    min-width: 0;
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background: rgba(255, 255, 255, 0.72);
+    padding: 0.32rem 0.72rem;
+    color: var(--color-stone-readable);
+    font-size: 0.72rem;
+    font-weight: 750;
+    line-height: 1.15;
+    text-align: center;
+    text-decoration: none;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.82) inset;
+    transition: border-color 160ms ease, background 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+  .compare-dialog__shortcut--primary {
+    border-color: rgba(26, 143, 168, 0.38);
+    background: rgba(241, 251, 253, 0.88);
+    color: var(--color-ice);
+  }
+  .compare-dialog__shortcut:hover {
+    border-color: rgba(26, 143, 168, 0.45);
+    color: var(--color-ice);
+    transform: translateY(-1px);
+  }
+  .compare-dialog__shortcut:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.6);
+    outline-offset: 2px;
+  }
+  #compare-candidates,
+  #compare-decision-read,
+  #compare-evidence-readiness,
+  #compare-setup-guide,
+  #compare-diff-board {
+    scroll-margin-top: 0.85rem;
+  }
+  @media (max-width: 520px) {
+    .compare-dialog__shortcut {
+      flex: 1 1 calc(50% - 0.5rem);
+    }
+  }
+
   .compare-workbench {
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.35fr);
@@ -10436,6 +10488,21 @@ html[data-theme="dark"] .compare-workbench__candidate[data-active="true"] {
 }
 html[data-theme="dark"] .compare-workbench__candidate-read > span {
   background: rgba(42, 64, 70, 0.72);
+}
+html[data-theme="dark"] .compare-dialog__shortcut {
+  background: rgba(18, 26, 44, 0.72);
+  border-color: rgba(120, 138, 178, 0.28);
+  color: var(--color-frost-strong);
+  box-shadow: none;
+}
+html[data-theme="dark"] .compare-dialog__shortcut--primary {
+  background: rgba(28, 58, 70, 0.72);
+  border-color: rgba(94, 196, 220, 0.5);
+  color: #b4ecf6;
+}
+html[data-theme="dark"] .compare-dialog__shortcut:hover {
+  background: rgba(31, 50, 70, 0.82);
+  border-color: rgba(94, 196, 220, 0.4);
 }
 html[data-theme="dark"] .compare-workbench__candidate-action {
   background: rgba(28, 58, 70, 0.72);

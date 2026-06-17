@@ -134,6 +134,7 @@ describe("mobile touch target CSS", () => {
 
   it("keeps Compare Workbench controls at or above a 44px hit area", () => {
     expectRule(".compare-dialog__actions .btn-ghost", /min-height:\s*2\.75rem;/);
+    expectRule(".compare-dialog__shortcut", /min-height:\s*2\.75rem;/);
     expectRule(".compare-workbench__lens-option", /min-height:\s*2\.75rem;/);
     expectRule(".compare-workbench__candidate-search input", /min-height:\s*2\.75rem;/);
     expectRule(".compare-workbench__source-filter-btn", /min-width:\s*2\.75rem;[\s\S]*min-height:\s*2\.75rem;/);

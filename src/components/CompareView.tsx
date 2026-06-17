@@ -405,7 +405,30 @@ export function CompareView({
               </div>
             ) : null}
 
-            <section className="compare-workbench" aria-label="Compare workbench">
+            <nav className="compare-dialog__shortcuts" aria-label="Compare decision shortcuts">
+              {decisionRead ? (
+                <a className="compare-dialog__shortcut compare-dialog__shortcut--primary" href="#compare-decision-read" aria-label="Jump to Compare decision read">
+                  Decision read
+                </a>
+              ) : singlePlaceGuide ? (
+                <a className="compare-dialog__shortcut compare-dialog__shortcut--primary" href="#compare-setup-guide" aria-label="Jump to Compare setup guide">
+                  Setup guide
+                </a>
+              ) : null}
+              {evidenceReadiness.length > 0 ? (
+                <a className="compare-dialog__shortcut" href="#compare-evidence-readiness" aria-label="Jump to Compare evidence readiness">
+                  Evidence
+                </a>
+              ) : null}
+              <a className="compare-dialog__shortcut" href="#compare-diff-board" aria-label="Jump to Compare difference board">
+                Difference board
+              </a>
+              <a className="compare-dialog__shortcut" href="#compare-candidates" aria-label="Jump to Compare candidate workbench">
+                Candidates
+              </a>
+            </nav>
+
+            <section id="compare-candidates" className="compare-workbench" aria-label="Compare workbench">
               <div className="compare-workbench__lens">
                 <div className="compare-workbench__lens-copy">
                   <span className="compare-workbench__eyebrow">Priority lens</span>
@@ -640,7 +663,7 @@ export function CompareView({
             ) : null}
 
             {decisionRead ? (
-              <section className="compare-decision-read" aria-label="Comparison decision read">
+              <section id="compare-decision-read" className="compare-decision-read" aria-label="Comparison decision read">
                 <div className="compare-decision-read__summary">
                   <span className="compare-decision-read__eyebrow">Decision read</span>
                   <p>{decisionRead.summary}</p>
@@ -812,7 +835,7 @@ export function CompareView({
             ) : null}
 
             {evidenceReadiness.length > 0 ? (
-              <section className="compare-evidence-readiness" aria-label="Evidence readiness">
+              <section id="compare-evidence-readiness" className="compare-evidence-readiness" aria-label="Evidence readiness">
                 <div className="compare-evidence-readiness__head">
                   <div>
                     <span className="compare-evidence-readiness__eyebrow">Evidence readiness</span>
@@ -859,7 +882,7 @@ export function CompareView({
             ) : null}
 
             {singlePlaceGuide ? (
-              <section className="compare-single-guide" aria-label="Single finalist compare setup">
+              <section id="compare-setup-guide" className="compare-single-guide" aria-label="Single finalist compare setup">
                 <div className="compare-single-guide__copy">
                   <span className="compare-single-guide__eyebrow">Shortlist setup</span>
                   <p>{singlePlaceGuide.summary}</p>
@@ -893,7 +916,7 @@ export function CompareView({
               </section>
             ) : null}
 
-            <section className="compare-diff-board" aria-label="Grouped comparison rows">
+            <section id="compare-diff-board" className="compare-diff-board" aria-label="Grouped comparison rows">
               <div className="compare-diff-board__head">
                 <div>
                   <span className="compare-diff-board__eyebrow">Difference board</span>
