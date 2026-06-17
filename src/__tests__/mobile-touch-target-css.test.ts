@@ -48,6 +48,7 @@ describe("mobile touch target CSS", () => {
     expectRule("[data-active-scope-clear]", /min-height:\s*2\.75rem;/);
     expectRule(".tc-home-base-clear", /display:\s*inline-flex;[\s\S]*min-width:\s*2\.75rem;[\s\S]*min-height:\s*2\.75rem;/);
     expectRule(".tc-hero-home-receipt__action", /display:\s*inline-flex;[\s\S]*min-height:\s*2\.75rem;/);
+    expectRule(".fit-journey-receipt__action", /display:\s*inline-flex;[\s\S]*min-height:\s*2\.75rem;/);
     expectRule(".hero-mini-rail__chip-open", /min-height:\s*2\.75rem;/);
     expectRule(".hero-mini-rail__chip-remove", /min-width:\s*2\.75rem;[\s\S]*min-height:\s*2\.75rem;/);
     expectRule(".hero-mini-rail__action", /min-width:\s*2\.75rem;[\s\S]*min-height:\s*2\.75rem;/);

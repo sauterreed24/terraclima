@@ -11726,7 +11726,8 @@ html[data-theme="dark"] .tc-hero-credit {
     align-items: center;
     justify-content: center;
     gap: 0.32rem;
-    min-height: 2rem;
+    min-height: 2.75rem;
+    padding: 0.42rem 0.58rem;
     border-radius: 0.5rem;
     border: 1px solid rgba(26, 143, 168, 0.24);
     background: rgba(255, 255, 255, 0.72);
@@ -11762,9 +11763,6 @@ html[data-theme="dark"] .tc-hero-credit {
   @media (max-width: 420px) {
     .fit-journey-receipt__actions {
       grid-template-columns: minmax(0, 1fr);
-    }
-    .fit-journey-receipt__action {
-      min-height: 2.35rem;
     }
   }
 
