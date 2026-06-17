@@ -1007,9 +1007,11 @@ export default function App() {
         ? trigger
         : document.getElementById("main-content");
     if (!target) return;
-    const id = window.requestAnimationFrame(() => {
+    const restoreFocus = () => {
       try { target.focus({ preventScroll: true }); } catch { /* noop */ }
-    });
+    };
+    restoreFocus();
+    const id = window.requestAnimationFrame(restoreFocus);
     return () => window.cancelAnimationFrame(id);
   }, [selectedId]);
 
@@ -2202,6 +2204,77 @@ function ActiveFitJourneyReceipt({
   );
 }
 
+function CurrentScoutReadReceipt({
+  scoutBrief,
+  rankingLabel,
+  count,
+  onOpenPlace,
+  onCompareLeaders,
+  onPreloadCompare,
+}: {
+  scoutBrief: ExplorerScoutBrief;
+  rankingLabel: string;
+  count: number;
+  onOpenPlace: OpenPlaceHandler;
+  onCompareLeaders: ComparePlacesHandler;
+  onPreloadCompare: () => void;
+}) {
+  const prose = useProse();
+  const canCompare = scoutBrief.compareIds.length >= 2;
+  const leader = scoutBrief.leader;
+  const leaderScore = Math.round(leader.score);
+
+  return (
+    <section
+      className="fit-journey-receipt fit-journey-receipt--scout"
+      aria-label={`Current scout read: ${leader.place.name}`}
+    >
+      <div className="fit-journey-receipt__main">
+        <div className="fit-journey-receipt__head">
+          <span className="fit-journey-receipt__eyebrow">Current scout read</span>
+          <strong className="fit-journey-receipt__title">{leader.place.name}</strong>
+        </div>
+        <p className="fit-journey-receipt__copy">
+          {prose(scoutBrief.advisorRead.why)}
+        </p>
+        <div className="fit-journey-receipt__chips" aria-label={`${leader.place.name} current scout signals`}>
+          <span>{leaderScore}/100 {rankingLabel}</span>
+          <span>{count} in view</span>
+          <span>{scoutBrief.compareIds.length} compare-ready finalists</span>
+        </div>
+        <p className="fit-journey-receipt__next">
+          <span>Verify first</span>{" "}
+          {prose(scoutBrief.advisorRead.checkFirst)}
+        </p>
+      </div>
+      <div className="fit-journey-receipt__actions" aria-label={`Current scout actions for ${leader.place.name}`}>
+        <button
+          type="button"
+          className="fit-journey-receipt__action"
+          onClick={event => onOpenPlace(leader.place.id, { trigger: event.currentTarget })}
+          aria-label={`Open current scout dossier: ${leader.place.name}`}
+        >
+          <BookOpen className="w-3.5 h-3.5" aria-hidden />
+          Open dossier
+        </button>
+        <button
+          type="button"
+          className="fit-journey-receipt__action"
+          onPointerEnter={onPreloadCompare}
+          onFocus={onPreloadCompare}
+          onPointerDown={onPreloadCompare}
+          onClick={event => onCompareLeaders(scoutBrief.compareIds, { trigger: event.currentTarget })}
+          aria-label={`Compare ${scoutBrief.compareIds.length} current scout finalists`}
+          disabled={!canCompare}
+        >
+          <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
+          Compare leaders
+        </button>
+      </div>
+    </section>
+  );
+}
+
 
 const FieldNoteStrip = memo(function FieldNoteStrip() {
   const dailyIdx = useMemo(() => {
@@ -2472,26 +2545,6 @@ const HeroCard = memo(function HeroCard({
               : "Screen cool coasts, dry highlands, garden valleys, and lower-risk towns by comfort, terrain, risk, and lived ease before you plan a visit."}
           </p>
 
-          {/* Climate-fit quick-picks — instant one-click ranking presets */}
-          {!active && (
-            <div
-              className="hero-quick-picks mt-3"
-              role="group"
-              aria-label="Climate-fit quick picks"
-              aria-describedby="hero-quick-picks-scroll-hint"
-            >
-              <span id="hero-quick-picks-scroll-hint" className="sr-only">
-                Swipe or scroll horizontally to browse more Fit Finder paths.
-              </span>
-              <QuickPick icon={CalendarDays} label="Visit now" description="Rank places by the current month's scouting weather." onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
-              <QuickPick icon={Sun} label="Comfort fit" description="Surface places with the easiest human-felt comfort." onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
-              <QuickPick icon={Laptop} label="Remote work" description="Prioritize mild, livable places for remote-worker scouting." onClick={() => onApplyQuickPick("best-for-remote-work")} active={isQuickPickActive("best-for-remote-work")} />
-              <QuickPick icon={Sunrise} label="Retirement" description="Look for mild all-year places with lower risk and daily ease." onClick={() => onApplyQuickPick("best-retirement")} active={isQuickPickActive("best-retirement")} />
-              <QuickPick icon={Sprout} label="Garden life" description="Lift places with stronger yard, orchard, and growing-season signals." onClick={() => onApplyQuickPick("best-growability")} active={isQuickPickActive("best-growability")} />
-              <QuickPick icon={Snowflake} label="Cool summers" description="Find places where peak-season afternoons stay restrained." onClick={() => onApplyQuickPick("coolest-summers")} active={isQuickPickActive("coolest-summers")} />
-              <QuickPick icon={ShieldCheck} label="Low risk" description="Favor places with stronger climate-resilience and hazard cushions." onClick={() => onApplyQuickPick("climate-resilient")} active={isQuickPickActive("climate-resilient")} />
-            </div>
-          )}
         </div>
         <div className="hero-action-stack">
           <button
@@ -2565,6 +2618,38 @@ const HeroCard = memo(function HeroCard({
           </div>
         </div>
       </div>
+
+      {!activeFitBundle && scoutBrief && count > 0 ? (
+        <CurrentScoutReadReceipt
+          scoutBrief={scoutBrief}
+          rankingLabel={rankingLabel}
+          count={count}
+          onOpenPlace={onOpenPlace}
+          onCompareLeaders={onCompareLeaders}
+          onPreloadCompare={onPreloadCompare}
+        />
+      ) : null}
+
+      {/* Climate-fit quick-picks — instant one-click ranking presets */}
+      {!active && (
+        <div
+          className="hero-quick-picks"
+          role="group"
+          aria-label="Climate-fit quick picks"
+          aria-describedby="hero-quick-picks-scroll-hint"
+        >
+          <span id="hero-quick-picks-scroll-hint" className="sr-only">
+            Swipe or scroll horizontally to browse more Fit Finder paths.
+          </span>
+          <QuickPick icon={CalendarDays} label="Visit now" description="Rank places by the current month's scouting weather." onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
+          <QuickPick icon={Sun} label="Comfort fit" description="Surface places with the easiest human-felt comfort." onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
+          <QuickPick icon={Laptop} label="Remote work" description="Prioritize mild, livable places for remote-worker scouting." onClick={() => onApplyQuickPick("best-for-remote-work")} active={isQuickPickActive("best-for-remote-work")} />
+          <QuickPick icon={Sunrise} label="Retirement" description="Look for mild all-year places with lower risk and daily ease." onClick={() => onApplyQuickPick("best-retirement")} active={isQuickPickActive("best-retirement")} />
+          <QuickPick icon={Sprout} label="Garden life" description="Lift places with stronger yard, orchard, and growing-season signals." onClick={() => onApplyQuickPick("best-growability")} active={isQuickPickActive("best-growability")} />
+          <QuickPick icon={Snowflake} label="Cool summers" description="Find places where peak-season afternoons stay restrained." onClick={() => onApplyQuickPick("coolest-summers")} active={isQuickPickActive("coolest-summers")} />
+          <QuickPick icon={ShieldCheck} label="Low risk" description="Favor places with stronger climate-resilience and hazard cushions." onClick={() => onApplyQuickPick("climate-resilient")} active={isQuickPickActive("climate-resilient")} />
+        </div>
+      )}
 
       {homeBasePlace ? (
         <div className="tc-hero-home-receipt" role="status" aria-label={`Explorer home base: ${homeBasePlace.name}`}>

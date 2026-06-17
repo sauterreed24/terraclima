@@ -437,6 +437,22 @@ describe("App shell", () => {
     expect(screen.queryByText("2050 remap")).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("surfaces the current Scout Brief leader in the Explorer hero", async () => {
+    mockViewport(1280);
+    renderApp();
+
+    const receipt = await screen.findByLabelText(/Current scout read:/);
+    expect(receipt).toHaveTextContent("Current scout read");
+    expect(receipt).toHaveTextContent(/\/100 Live-here fit/);
+    expect(receipt).toHaveTextContent("compare-ready finalists");
+    expect(receipt).toHaveTextContent("Verify first");
+    expect(within(receipt).getByRole("button", { name: /Open current scout dossier:/ })).toBeInTheDocument();
+
+    fireEvent.click(within(receipt).getByRole("button", { name: /Compare 4 current scout finalists/ }));
+
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("surfaces a future scenario remap when the Explorer opens on a 2050 layer", () => {
     mockViewport(1280);
     window.history.replaceState(null, "", "/?scn=ssp245&r=live-fit");
