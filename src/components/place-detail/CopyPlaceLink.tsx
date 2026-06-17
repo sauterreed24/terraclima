@@ -72,14 +72,14 @@ export function CopyPlaceLink({ placeId, placeName }: { placeId: string; placeNa
   }, [placeId, placeName]);
 
   const label =
-    status === "shared" ? "Shared" : status === "copied" ? "Copied" : status === "failed" ? "Copy failed" : "Copy link";
+    status === "shared" ? "Shared" : status === "copied" ? "Copied" : status === "failed" ? "Manual copy" : "Copy link";
   const buttonLabel =
     status === "shared"
       ? "Shared link to this place"
       : status === "copied"
         ? "Copied link to this place"
         : status === "failed"
-          ? "Copy link failed"
+          ? "Retry copy or use the selected manual place URL"
           : "Copy or share link to this place";
 
   return (

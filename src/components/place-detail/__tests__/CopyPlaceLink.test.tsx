@@ -63,7 +63,9 @@ describe("CopyPlaceLink", () => {
     fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Copy failed")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Retry copy or use the selected manual place URL" })).toHaveTextContent(
+        "Manual copy",
+      );
     });
     const fallbackGroup = screen.getByRole("group", { name: "Manual place share link" });
     const fallbackInput = screen.getByRole("textbox", { name: "Shareable place URL for manual copy" });
@@ -96,7 +98,9 @@ describe("CopyPlaceLink", () => {
     fireEvent.click(screen.getByRole("button", { name: "Copy or share link to this place" }));
 
     await waitFor(() => {
-      expect(screen.getByText("Copy failed")).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Retry copy or use the selected manual place URL" })).toHaveTextContent(
+        "Manual copy",
+      );
     });
     expect((screen.getByRole("textbox", { name: "Shareable place URL for manual copy" }) as HTMLInputElement).value).toContain("p=sequim-wa");
   });
@@ -129,6 +133,6 @@ describe("CopyPlaceLink", () => {
       expect(screen.getByRole("button", { name: "Copy or share link to this place" })).toHaveTextContent("Copy link");
     });
     expect(screen.queryByText("Copied")).not.toBeInTheDocument();
-    expect(screen.queryByText("Copy failed")).not.toBeInTheDocument();
+    expect(screen.queryByText("Manual copy")).not.toBeInTheDocument();
   });
 });
