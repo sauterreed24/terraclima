@@ -74,6 +74,7 @@ function buildFitContextRead(
 
 export function PlaceResidencyBrief({
   place,
+  anchorId,
   liveFit,
   livability,
   bestMonths,
@@ -86,6 +87,7 @@ export function PlaceResidencyBrief({
   onBookmarkToggle,
 }: {
   place: Place;
+  anchorId: string;
   liveFit: LiveFitAssessment;
   livability: LivabilityResult;
   bestMonths: BestWindow[];
@@ -143,6 +145,7 @@ export function PlaceResidencyBrief({
 
   return (
     <section
+      id={anchorId}
       className="detail-doc-section residency-brief anim-fade-in"
       style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb }}
       aria-labelledby="residency-brief-title"

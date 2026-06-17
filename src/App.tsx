@@ -1368,6 +1368,7 @@ export default function App() {
                   onClearRecents={clearRecents}
                   onApplyQuickPick={applyHeroQuickPick}
                   isQuickPickActive={isHeroQuickPickActive}
+                  showHeroSignalRail={!scoutBoardLg}
                   showDetailedHeroPanels={explorerHeroPanelsMd && !scoutBoardLg}
                   showDesktopScoutBoard={scoutBoardLg}
                 />
@@ -1426,6 +1427,7 @@ export default function App() {
                       bookmarkIds={bookmarkIds}
                       onToggleBookmark={toggleBookmark}
                       showDesktopScoutBoard={scoutBoardLg}
+                      includeSignalRail={scoutBoardLg}
                     />
                     {!explorerHeroPanelsMd ? (
                       <MobileLivabilityTopTenStrip
@@ -2341,6 +2343,7 @@ const HeroCard = memo(function HeroCard({
   onClearRecents,
   onApplyQuickPick,
   isQuickPickActive,
+  showHeroSignalRail,
   showDetailedHeroPanels,
   showDesktopScoutBoard,
 }: {
@@ -2380,6 +2383,7 @@ const HeroCard = memo(function HeroCard({
   onClearRecents: () => void;
   onApplyQuickPick: (r: RankingProfile) => void;
   isQuickPickActive: (r: RankingProfile) => boolean;
+  showHeroSignalRail: boolean;
   showDetailedHeroPanels: boolean;
   showDesktopScoutBoard: boolean;
 }) {
@@ -2636,7 +2640,7 @@ const HeroCard = memo(function HeroCard({
         />
       ) : null}
 
-      {signatureLeaders.length > 0 ? (
+      {showHeroSignalRail && signatureLeaders.length > 0 ? (
         <ClimateSignalRail
           rows={signatureLeaders}
           rankingLabel={rankingLabel}
@@ -2754,6 +2758,7 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   bookmarkIds,
   onToggleBookmark,
   showDesktopScoutBoard,
+  includeSignalRail = false,
   includeScoutBrief = true,
 }: {
   signatureLeaders: SignatureLeader[];
@@ -2771,6 +2776,7 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   bookmarkIds: Set<string>;
   onToggleBookmark: (id: string) => void;
   showDesktopScoutBoard: boolean;
+  includeSignalRail?: boolean;
   includeScoutBrief?: boolean;
 }) {
   const desktopScoutBoard = includeScoutBrief && scoutBrief && showDesktopScoutBoard ? (
@@ -2782,6 +2788,13 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
       onSaveScoutFinalists={onSaveScoutFinalists}
       bookmarkIds={bookmarkIds}
       onToggleBookmark={onToggleBookmark}
+    />
+  ) : null;
+  const signalRail = includeSignalRail && signatureLeaders.length > 0 ? (
+    <ClimateSignalRail
+      rows={signatureLeaders}
+      rankingLabel={rankingLabel}
+      onOpenPlace={onOpenPlace}
     />
   ) : null;
   const livingCompass = signatureLeaders.length > 0 ? (
@@ -2797,6 +2810,7 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   return (
     <>
       {desktopScoutBoard}
+      {signalRail}
       {livingCompass}
 
       {includeScoutBrief && scoutBrief && !showDesktopScoutBoard ? (

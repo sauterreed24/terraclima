@@ -4,6 +4,7 @@
  */
 export const PD = {
   overview: "pd-overview",
+  residency: "pd-residency-brief",
   seasons: "pd-seasons",
   atAGlance: "pd-at-a-glance",
   placeFeel: "pd-place-feel",
@@ -58,6 +59,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   const activities = buildPracticalActivities(place);
   const items: PlaceNavItem[] = [
     { id: PD.overview, label: "Overview", group: PD_NAV_GROUP.lived },
+    { id: PD.residency, label: "Residency brief", group: PD_NAV_GROUP.lived },
     { id: PD.seasons, label: "Season by season", group: PD_NAV_GROUP.lived },
     { id: PD.atAGlance, label: "At a glance", group: PD_NAV_GROUP.lived },
     { id: PD.placeFeel, label: "Place feel", group: PD_NAV_GROUP.lived },

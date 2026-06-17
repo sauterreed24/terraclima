@@ -35,6 +35,7 @@ import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "../lib/place-visual-signature";
 import { safeExternalHref } from "../lib/safe-url";
 import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
+import { scrollDetailRootToSection } from "../lib/detail-scroll-spy";
 import { useMediaQuery } from "../hooks/use-media-query";
 import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
 import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
@@ -56,7 +57,7 @@ import { buildGrowabilityRationale } from "../lib/growability-score";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
   TrendingUp, Thermometer, Droplets, Sun, ChevronRight, HelpCircle, Calendar, Link2,
-  Users, Compass, ExternalLink, Scale, Satellite, Clock3, Home,
+  Users, Compass, ExternalLink, Scale, Satellite, Clock3, Home, FileText,
 } from "lucide-react";
 import { PlaceVersusHome } from "./place-detail/PlaceVersusHome";
 import { BookmarkButton } from "./BookmarkButton";
@@ -354,6 +355,7 @@ function DetailHeader({
 }) {
   const { temp, dist } = useUnits();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
+  const reduceMotion = useReducedMotion();
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice";
   const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
@@ -371,6 +373,7 @@ function DetailHeader({
     ? `Clear ${place.name} as your home base`
     : `Set ${place.name} as your home base for climate deltas`;
   const compareLabel = inCompare ? `Remove ${place.name} from compare` : `Add ${place.name} to compare`;
+  const residencyBriefLabel = `Jump to ${place.name} residency brief`;
 
   return (
     <div
@@ -410,6 +413,20 @@ function DetailHeader({
           </div>
         </div>
         <div className="flex items-center gap-1 self-end shrink-0 md:self-start flex-wrap justify-end">
+          <a
+            href={`#${PD.residency}`}
+            onClick={(event) => {
+              if (scrollDetailRootToSection(PD.residency, { behavior: reduceMotion ? "auto" : "smooth" })) {
+                event.preventDefault();
+              }
+            }}
+            aria-label={residencyBriefLabel}
+            title={residencyBriefLabel}
+            className="btn-ghost !text-xs"
+          >
+            <FileText className="w-3 h-3" aria-hidden />
+            Brief
+          </a>
           <CopyPlaceLink placeId={place.id} placeName={place.name} />
           {onHomeBaseToggle && (
             <button
@@ -705,6 +722,7 @@ function DetailBody({
 
       <PlaceResidencyBrief
         place={place}
+        anchorId={PD.residency}
         liveFit={liveFit}
         livability={livability}
         bestMonths={bestMonths}

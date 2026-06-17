@@ -240,6 +240,64 @@ describe("PlaceDetail header accessibility", () => {
     );
   });
 
+  it("surfaces the residency brief in the reading nav", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    expect(document.querySelector("#pd-residency-brief")).toHaveTextContent("Residency brief");
+    expect(screen.getAllByRole("link", { name: "Residency brief" })).toHaveLength(2);
+    expect(document.querySelector(".tc-reading-nav-mobile a[href='#pd-residency-brief']")).toBeInTheDocument();
+    expect(document.querySelector(".tc-reading-nav-desktop a[href='#pd-residency-brief']")).toBeInTheDocument();
+  });
+
+  it("scrolls dossier navigation inside the drawer", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    const drawer = document.querySelector<HTMLElement>("[data-place-detail]");
+    const residency = document.querySelector<HTMLElement>("#pd-residency-brief");
+    const desktopResidencyLink = document.querySelector<HTMLAnchorElement>(
+      ".tc-reading-nav-desktop a[href='#pd-residency-brief']",
+    );
+    expect(drawer).toBeTruthy();
+    expect(residency).toBeTruthy();
+    expect(desktopResidencyLink).toBeTruthy();
+
+    const scrollTo = vi.fn();
+    drawer!.scrollTop = 100;
+    Object.defineProperty(drawer, "scrollTo", { configurable: true, value: scrollTo });
+    Object.defineProperty(drawer, "getBoundingClientRect", {
+      configurable: true,
+      value: () => ({ top: 20, bottom: 720, left: 0, right: 900, width: 900, height: 700 }),
+    });
+    Object.defineProperty(residency, "getBoundingClientRect", {
+      configurable: true,
+      value: () => ({ top: 350, bottom: 650, left: 0, right: 700, width: 700, height: 300 }),
+    });
+
+    fireEvent.click(desktopResidencyLink!);
+
+    expect(scrollTo).toHaveBeenCalledWith({ top: 418, behavior: "auto" });
+    expect(window.location.hash).toBe("");
+
+    scrollTo.mockClear();
+    fireEvent.click(screen.getByRole("link", { name: "Jump to Sequim residency brief" }));
+
+    expect(scrollTo).toHaveBeenCalledWith({ top: 418, behavior: "auto" });
+  });
+
   it("keeps animated drawer entry in the viewport on first paint", () => {
     const place = PLACES_BY_ID["morelia-mx"];
     expect(place).toBeTruthy();

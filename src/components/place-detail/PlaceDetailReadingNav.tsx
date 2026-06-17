@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, type MouseEvent as ReactMouseEvent } from "react";
 import { useReducedMotion } from "framer-motion";
 import type { PlaceNavItem } from "./place-detail-nav";
+import { scrollDetailRootToSection } from "../../lib/detail-scroll-spy";
 import { childOverflowsContainer, scrollChildIntoContainer } from "../../lib/scroll-within-container";
 
 /**
@@ -48,6 +49,12 @@ export function PlaceDetailReadingNav({
     };
   }, [activeAnchorId, itemKey, reduceMotion]);
 
+  const onNavClick = useCallback((event: ReactMouseEvent<HTMLAnchorElement>, id: string) => {
+    if (scrollDetailRootToSection(id, { behavior: reduceMotion ? "auto" : "smooth" })) {
+      event.preventDefault();
+    }
+  }, [reduceMotion]);
+
   if (items.length === 0) return null;
 
   const linkBase =
@@ -80,6 +87,7 @@ export function PlaceDetailReadingNav({
                 key={it.id}
                 href={`#${it.id}`}
                 className={`${mobileLink}${isActive ? " tc-reading-nav-link--active" : ""}`}
+                onClick={event => onNavClick(event, it.id)}
                 aria-current={isActive ? "location" : undefined}
               >
                 {it.label}
@@ -106,6 +114,7 @@ export function PlaceDetailReadingNav({
                 <a
                   href={`#${it.id}`}
                   className={`${desktopLink}${isActive ? " tc-reading-nav-link--active" : ""}`}
+                  onClick={event => onNavClick(event, it.id)}
                   aria-current={isActive ? "location" : undefined}
                 >
                   {it.label}

@@ -7,6 +7,26 @@ export function detailScrollRoot(): HTMLElement | null {
   return document.querySelector<HTMLElement>("[data-place-detail]");
 }
 
+export function scrollDetailRootToSection(
+  id: string,
+  options: { behavior?: ScrollBehavior; marginFallback?: number } = {},
+): boolean {
+  const root = detailScrollRoot();
+  const target = document.getElementById(id);
+  if (!root || !target) return false;
+
+  const rootRect = root.getBoundingClientRect();
+  const targetRect = target.getBoundingClientRect();
+  const fallback = options.marginFallback ?? 12;
+  const parsedMargin = Number.parseFloat(getComputedStyle(target).scrollMarginTop);
+  const scrollMarginTop = Number.isFinite(parsedMargin) && parsedMargin > 0 ? parsedMargin : fallback;
+  root.scrollTo({
+    top: Math.max(0, root.scrollTop + (targetRect.top - rootRect.top) - scrollMarginTop),
+    behavior: options.behavior ?? "smooth",
+  });
+  return true;
+}
+
 /**
  * Last section whose top has crossed the marker — stable while scrolling
  * long profiles inside the drawer.
