@@ -118,6 +118,10 @@ export function CompareView({
   const helperText = isSinglePlace
     ? "Add another place from any card or profile to start a side-by-side comparison."
     : "Compare climate fingerprints, seasonal ranges, and screening scores across the saved places.";
+  const copyComparisonLabel =
+    shareStatus === "failed"
+      ? "Retry copy or use the selected manual comparison URL"
+      : "Copy or share comparison link";
   const decisionProfiles = useMemo<CompareDecisionProfile[]>(
     () => buildCompareDecisionProfiles(places, liveFitFilters),
     [places, liveFitFilters],
@@ -362,12 +366,12 @@ export function CompareView({
                     type="button"
                     onClick={onCopyView}
                     className={`btn-ghost !text-xs !py-1.5 ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
-                    aria-label="Copy or share comparison link"
-                    title="Copy or share a URL for this comparison"
+                    aria-label={copyComparisonLabel}
+                    title={copyComparisonLabel}
                   >
                     <Link2 className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
                     <span aria-live="polite">
-                      {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
+                      {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Manual copy" : "Copy comparison"}
                     </span>
                   </button>
                 ) : null}

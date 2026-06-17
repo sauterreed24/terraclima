@@ -69,7 +69,7 @@ vi.mock("../components/CompareView", () => ({
         ) : null}
         {onCopyView ? (
           <button type="button" aria-label="Copy or share comparison link" onClick={onCopyView}>
-            {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy comparison"}
+            {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Manual copy" : "Copy comparison"}
           </button>
         ) : null}
         {(liveFitFilters?.fitPresets?.size ?? 0) > 0 || liveFitFilters?.maxSummerHighC != null ? (
@@ -701,8 +701,8 @@ describe("App shell", () => {
 
       fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
 
-      const failedButton = await screen.findByRole("button", { name: "Copy current Explorer view failed" });
-      expect(failedButton).toHaveTextContent("Copy failed");
+      const failedButton = await screen.findByRole("button", { name: "Retry copy or use the selected manual Explorer URL" });
+      expect(failedButton).toHaveTextContent("Manual copy");
       const manualUrl = await screen.findByRole("textbox", { name: "Shareable Explorer URL for manual copy" });
       const manualValue = (manualUrl as HTMLInputElement).value;
       expect(manualValue).toContain("q=monterey");
@@ -711,7 +711,7 @@ describe("App shell", () => {
       await waitFor(() => expect(manualUrl).toHaveFocus());
       await new Promise(resolve => window.setTimeout(resolve, 2400));
       expect(screen.getByRole("textbox", { name: "Shareable Explorer URL for manual copy" })).toHaveValue(manualValue);
-      expect(screen.getByRole("button", { name: "Copy current Explorer view failed" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Retry copy or use the selected manual Explorer URL" })).toBeInTheDocument();
     } finally {
       document.execCommand = originalExecCommand;
     }
@@ -774,7 +774,7 @@ describe("App shell", () => {
       expect(copyView).toHaveAttribute("title", "Copy or share current Explorer view");
     });
     expect(screen.queryByText("Link copied")).not.toBeInTheDocument();
-    expect(screen.queryByText("Copy failed")).not.toBeInTheDocument();
+    expect(screen.queryByText("Manual copy")).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("preserves unit choices in copied Explorer URLs", async () => {

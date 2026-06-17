@@ -453,6 +453,9 @@ describe("CompareView", () => {
 
     renderCompare({ onCopyView: vi.fn(), shareStatus: "failed", shareFallbackUrl: fallbackUrl });
 
+    expect(screen.getByRole("button", { name: "Retry copy or use the selected manual comparison URL" })).toHaveTextContent(
+      "Manual copy",
+    );
     const fallbackGroup = screen.getByRole("group", { name: "Manual comparison share link" });
     const fallbackInput = within(fallbackGroup).getByRole("textbox", {
       name: "Shareable comparison URL for manual copy",

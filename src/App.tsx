@@ -2377,7 +2377,7 @@ const HeroCard = memo(function HeroCard({
       : shareStatus === "copied"
         ? "Copied current Explorer view link"
         : shareStatus === "failed"
-          ? "Copy current Explorer view failed"
+          ? "Retry copy or use the selected manual Explorer URL"
           : "Copy or share current Explorer view";
   const surpriseLabel = "Open a random place from the current filtered list";
   return (
@@ -2456,7 +2456,7 @@ const HeroCard = memo(function HeroCard({
           >
             <Link2 className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
             <span aria-live="polite">
-              {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Copy failed" : "Copy view"}
+              {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Manual copy" : "Copy view"}
             </span>
           </button>
           {canSurprise && (
