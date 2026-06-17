@@ -453,6 +453,27 @@ describe("App shell", () => {
     expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("keeps a pinned Climate Trips route travel-oriented in the Explorer hero", async () => {
+    mockViewport(1280);
+    window.history.replaceState(null, "", "/?col=places-that-feel-like-another-country");
+
+    renderApp();
+
+    const receipt = await screen.findByLabelText("Active trip route: Places That Feel Like Another Country");
+    expect(receipt).toHaveTextContent("Trip route active");
+    expect(receipt).toHaveTextContent("tourism appeal");
+    expect(receipt).toHaveTextContent("stops in view");
+    expect(receipt).toHaveTextContent("Field check");
+    expect(screen.queryByLabelText(/Current scout read:/)).not.toBeInTheDocument();
+    expect(within(receipt).getByRole("button", { name: /Open trip lead:/ })).toBeInTheDocument();
+
+    fireEvent.click(within(receipt).getByRole("button", {
+      name: "Compare 4 trip stops for Places That Feel Like Another Country",
+    }));
+
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("surfaces a future scenario remap when the Explorer opens on a 2050 layer", () => {
     mockViewport(1280);
     window.history.replaceState(null, "", "/?scn=ssp245&r=live-fit");

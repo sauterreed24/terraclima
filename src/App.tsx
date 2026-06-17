@@ -12,7 +12,7 @@ import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
 import { useMediaQuery } from "./hooks/use-media-query";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS, resolvePlaceId, warmPlaceSearchIndex } from "./data/places";
 import { COLLECTION_BY_ID } from "./data/collections";
-import { CLIMATE_TRIP_THEME_BY_ID } from "./data/climate-trip-themes";
+import { CLIMATE_TRIP_THEME_BY_ID, type ClimateTripTheme } from "./data/climate-trip-themes";
 import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
 import {
@@ -40,6 +40,7 @@ import { buildShortlistReadiness } from "./lib/shortlist-readiness";
 import { buildScenarioReshuffleSummary, type ScenarioReshuffleSummary, type ScenarioReshuffleRow } from "./lib/scenario-reshuffle";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-visual-signature";
 import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
+import { getClimateTourismProfile, type ClimateTourismProfile } from "./lib/climate-tourism";
 import { motionPolicy, prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
 import { fmtDelta, fmtTemp, useProse, useUnits, type UnitState } from "./lib/units";
@@ -115,6 +116,21 @@ function placeForId(id: string): Place | undefined {
 
 function isPlace(p: Place | undefined): p is Place {
   return p != null;
+}
+
+type TripRouteRow = {
+  place: Place;
+  profile: ClimateTourismProfile;
+};
+
+function buildTripRouteRows(theme: ClimateTripTheme, visiblePlaces: readonly Place[]): TripRouteRow[] {
+  const visibleById: Record<string, Place> = {};
+  for (const place of visiblePlaces) visibleById[place.id] = place;
+  return theme.placeIds
+    .map(id => visibleById[id])
+    .filter(isPlace)
+    .map(place => ({ place, profile: getClimateTourismProfile(place) }))
+    .sort((a, b) => b.profile.scores.tourismAppeal - a.profile.scores.tourismAppeal);
 }
 
 function readCurrentAppState() {
@@ -635,6 +651,14 @@ export default function App() {
 
   const deferredFilters = useDeferredValue(filters);
   const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
+  const activeTripTheme = useMemo(
+    () => activeCollection ? CLIMATE_TRIP_THEME_BY_ID[activeCollection] ?? null : null,
+    [activeCollection],
+  );
+  const activeTripRows = useMemo(
+    () => activeTripTheme ? buildTripRouteRows(activeTripTheme, filtered) : [],
+    [activeTripTheme, filtered],
+  );
 
   // Scenario-aware ranking runs through the climate-processor worker subsystem
   // (with a synchronous fallback). Both paths call the same pure orchestrator,
@@ -1343,6 +1367,8 @@ export default function App() {
                   onClearAll={clearAllFilters}
                   onClearSearch={clearSearch}
                   activeCollection={activeCollection}
+                  activeTripTheme={activeTripTheme}
+                  activeTripRows={activeTripRows}
                   onClearCollection={clearCollection}
                   activeArchetypes={filters.archetypes}
                   onClearArchetypes={clearArchetypes}
@@ -2204,6 +2230,79 @@ function ActiveFitJourneyReceipt({
   );
 }
 
+function ActiveTripRouteReceipt({
+  theme,
+  rows,
+  count,
+  onOpenPlace,
+  onCompareLeaders,
+  onPreloadCompare,
+}: {
+  theme: ClimateTripTheme;
+  rows: TripRouteRow[];
+  count: number;
+  onOpenPlace: OpenPlaceHandler;
+  onCompareLeaders: ComparePlacesHandler;
+  onPreloadCompare: () => void;
+}) {
+  const prose = useProse();
+  const lead = rows[0];
+  if (!lead) return null;
+  const compareIds = rows.slice(0, COMPARE_LIMIT).map(row => row.place.id);
+  const canCompare = compareIds.length >= 2;
+  const windowRead = `${lead.profile.bestVisitWindow.label}: ${lead.profile.bestVisitWindow.range}`;
+
+  return (
+    <section
+      className="fit-journey-receipt fit-journey-receipt--trip"
+      aria-label={`Active trip route: ${theme.title}`}
+    >
+      <div className="fit-journey-receipt__main">
+        <div className="fit-journey-receipt__head">
+          <span className="fit-journey-receipt__eyebrow">Trip route active</span>
+          <strong className="fit-journey-receipt__title">{lead.place.name}</strong>
+        </div>
+        <p className="fit-journey-receipt__copy">
+          {prose(lead.profile.climateStory)}
+        </p>
+        <div className="fit-journey-receipt__chips" aria-label={`${theme.title} trip route signals`}>
+          <span>{lead.profile.scores.tourismAppeal}/100 tourism appeal</span>
+          <span>{count} stop{count === 1 ? "" : "s"} in view</span>
+          <span>{windowRead}</span>
+        </div>
+        <p className="fit-journey-receipt__next">
+          <span>Field check</span>{" "}
+          {prose(theme.seasonHint)}
+        </p>
+      </div>
+      <div className="fit-journey-receipt__actions" aria-label={`${theme.title} trip route actions`}>
+        <button
+          type="button"
+          className="fit-journey-receipt__action"
+          onClick={event => onOpenPlace(lead.place.id, { trigger: event.currentTarget })}
+          aria-label={`Open trip lead: ${lead.place.name}`}
+        >
+          <Route className="w-3.5 h-3.5" aria-hidden />
+          Open trip lead
+        </button>
+        <button
+          type="button"
+          className="fit-journey-receipt__action"
+          onPointerEnter={onPreloadCompare}
+          onFocus={onPreloadCompare}
+          onPointerDown={onPreloadCompare}
+          onClick={event => onCompareLeaders(compareIds, { trigger: event.currentTarget })}
+          aria-label={`Compare ${compareIds.length} trip stops for ${theme.title}`}
+          disabled={!canCompare}
+        >
+          <ArrowLeftRight className="w-3.5 h-3.5" aria-hidden />
+          Compare trip stops
+        </button>
+      </div>
+    </section>
+  );
+}
+
 function CurrentScoutReadReceipt({
   scoutBrief,
   rankingLabel,
@@ -2389,6 +2488,8 @@ const HeroCard = memo(function HeroCard({
   onClearAll,
   onClearSearch,
   activeCollection,
+  activeTripTheme,
+  activeTripRows,
   onClearCollection,
   activeArchetypes,
   onClearArchetypes,
@@ -2429,6 +2530,8 @@ const HeroCard = memo(function HeroCard({
   onClearAll: () => void;
   onClearSearch: () => void;
   activeCollection: string | null;
+  activeTripTheme: ClimateTripTheme | null;
+  activeTripRows: TripRouteRow[];
   onClearCollection: () => void;
   activeArchetypes: Set<MicroclimateArchetype>;
   onClearArchetypes: () => void;
@@ -2619,7 +2722,16 @@ const HeroCard = memo(function HeroCard({
         </div>
       </div>
 
-      {!activeFitBundle && scoutBrief && count > 0 ? (
+      {activeTripTheme && activeTripRows.length > 0 ? (
+        <ActiveTripRouteReceipt
+          theme={activeTripTheme}
+          rows={activeTripRows}
+          count={count}
+          onOpenPlace={onOpenPlace}
+          onCompareLeaders={onCompareLeaders}
+          onPreloadCompare={onPreloadCompare}
+        />
+      ) : !activeFitBundle && scoutBrief && count > 0 ? (
         <CurrentScoutReadReceipt
           scoutBrief={scoutBrief}
           rankingLabel={rankingLabel}
