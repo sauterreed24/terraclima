@@ -2,7 +2,10 @@
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { CLIMATE_TRIP_THEMES } from "../../data/climate-trip-themes";
+import { PLACES_BY_ID } from "../../data/places";
+import { getClimateTourismProfile } from "../../lib/climate-tourism";
 import { UnitProvider } from "../../lib/units";
+import type { Place } from "../../types";
 import { ClimateTripsView } from "../ClimateTripsView";
 
 afterEach(() => cleanup());
@@ -70,6 +73,29 @@ describe("ClimateTripsView", () => {
 
     expect(actionBlock).not.toBeNull();
     expect(actionBlock?.compareDocumentPosition(description) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("surfaces the lead stop and visit window before each long trip read", () => {
+    const firstTheme = CLIMATE_TRIP_THEMES[0];
+    renderClimateTripsView();
+    const firstCard = screen.getByRole("heading", { name: firstTheme.title }).closest(".climate-trip-card");
+    const actionBlock = firstCard?.querySelector(".climate-trip-card__actions");
+    const rows = firstTheme.placeIds
+      .map(id => PLACES_BY_ID[id])
+      .filter((place): place is Place => place != null)
+      .map(place => ({ place, profile: getClimateTourismProfile(place) }))
+      .sort((a, b) => b.profile.scores.tourismAppeal - a.profile.scores.tourismAppeal);
+    const lead = rows[0];
+
+    expect(firstCard).not.toBeNull();
+    expect(lead).toBeDefined();
+    const cue = within(firstCard as HTMLElement).getByLabelText(`Trip lead for ${firstTheme.title}`);
+    expect(cue).toHaveTextContent("Trip lead");
+    expect(cue).toHaveTextContent(lead!.place.name);
+    expect(cue).toHaveTextContent(`${lead!.profile.bestVisitWindow.label}: ${lead!.profile.bestVisitWindow.range}`);
+    expect(actionBlock).not.toBeNull();
+    expect(cue.compareDocumentPosition(actionBlock as HTMLElement) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(cue.compareDocumentPosition(within(firstCard as HTMLElement).getByText(firstTheme.description)) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 
   it("names the active trip action as a clear action", () => {

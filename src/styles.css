@@ -5826,6 +5826,38 @@
   .climate-trip-card__actions > .btn-primary {
     justify-content: center;
   }
+  .climate-trip-card__lead-cue {
+    display: grid;
+    gap: 0.12rem;
+    margin: 0 0 0.8rem;
+    padding: 0.62rem 0.72rem;
+    border-radius: 0.72rem;
+    border: 1px solid rgba(26, 143, 168, 0.18);
+    background: linear-gradient(135deg, rgba(255, 253, 248, 0.88), rgba(232, 248, 251, 0.58));
+    box-shadow: var(--tc-shadow-inset);
+  }
+  .climate-trip-card__lead-cue span {
+    color: var(--color-stone-readable);
+    font-size: 0.64rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+  .climate-trip-card__lead-cue strong {
+    min-width: 0;
+    color: var(--color-ice);
+    font-family: "Fraunces", Georgia, serif;
+    font-size: 0.98rem;
+    font-weight: 650;
+    line-height: 1.16;
+  }
+  .climate-trip-card__lead-cue small {
+    min-width: 0;
+    color: var(--color-frost);
+    font-size: 0.76rem;
+    line-height: 1.25;
+  }
   .climate-trip-season-button {
     min-height: 2.75rem;
   }
@@ -10489,6 +10521,17 @@ html[data-theme="dark"] .compare-workbench__candidate[data-active="true"] {
 }
 html[data-theme="dark"] .compare-workbench__candidate-read > span {
   background: rgba(42, 64, 70, 0.72);
+}
+html[data-theme="dark"] .climate-trip-card__lead-cue {
+  border-color: rgba(94, 196, 220, 0.24);
+  background: linear-gradient(135deg, rgba(18, 26, 44, 0.82), rgba(28, 58, 70, 0.62));
+  box-shadow: none;
+}
+html[data-theme="dark"] .climate-trip-card__lead-cue strong {
+  color: var(--color-ice);
+}
+html[data-theme="dark"] .climate-trip-card__lead-cue small {
+  color: var(--color-frost-strong);
 }
 html[data-theme="dark"] .compare-dialog__shortcut {
   background: rgba(18, 26, 44, 0.72);

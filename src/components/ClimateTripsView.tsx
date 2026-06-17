@@ -155,6 +155,13 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
                     </span>
                   ) : null}
                 </div>
+                {top ? (
+                  <div className="climate-trip-card__lead-cue" aria-label={`Trip lead for ${theme.title}`}>
+                    <span>Trip lead</span>
+                    <strong>{top.place.name}</strong>
+                    <small>{top.profile.bestVisitWindow.label}: {top.profile.bestVisitWindow.range}</small>
+                  </div>
+                ) : null}
                 <div className="climate-trip-card__actions">
                   <button
                     type="button"
