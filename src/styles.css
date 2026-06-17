@@ -125,6 +125,12 @@
     overflow-x: clip;
   }
 
+  [data-app-content],
+  [data-app-view-content] {
+    min-width: 0;
+    max-width: 100%;
+  }
+
   @supports not (overflow: clip) {
     .tc-app-shell {
       overflow-x: hidden;
@@ -226,6 +232,7 @@
     --hero-accent-rgb: 94, 196, 220;
     position: relative;
     overflow: hidden;
+    min-width: 0;
     background:
       linear-gradient(155deg, #ffffff 0%, rgba(255, 253, 248, 0.985) 36%, rgba(255, 248, 240, 0.96) 100%),
       linear-gradient(92deg, rgba(var(--hero-accent-rgb), 0.11), transparent 34%, rgba(232, 155, 32, 0.06) 100%);
@@ -783,6 +790,8 @@
     overflow: hidden;
     display: grid;
     gap: 0.68rem;
+    min-width: 0;
+    max-width: 100%;
     border-radius: 0.95rem;
     border: 1px solid rgba(var(--signature-rgb), 0.3);
     padding: 0.82rem;
@@ -856,6 +865,8 @@
     grid-auto-columns: minmax(10.75rem, 32%);
     grid-template-columns: none;
     gap: 0.45rem;
+    min-width: 0;
+    max-width: 100%;
     overflow-x: auto;
     overscroll-behavior-inline: contain;
     scroll-snap-type: x proximity;
@@ -947,7 +958,7 @@
   @media (min-width: 1500px) {
     .climate-signal-rail__grid {
       grid-auto-flow: row;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 11.5rem), 1fr));
       overflow: visible;
       padding-bottom: 0;
     }
@@ -964,7 +975,7 @@
       gap: 0.18rem;
     }
     .climate-signal-rail__grid {
-      grid-auto-columns: minmax(12rem, 84vw);
+      grid-auto-columns: minmax(min(12rem, 72vw), 84vw);
       padding-right: 1.25rem;
       scroll-padding-right: 1.25rem;
     }
@@ -5779,8 +5790,8 @@
     .tc-explorer-main > .tc-map-stage {
       grid-column: 2;
       grid-row: 1;
-      position: sticky;
-      top: 5.25rem;
+      position: relative;
+      top: auto;
       height: min(45rem, calc(100dvh - 6.75rem)) !important;
       min-height: 38rem !important;
     }
@@ -5808,6 +5819,9 @@
 
   /* Map — frame reads like a lit instrument panel, not a flat widget */
   .tc-map-stage {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
     border-radius: 0.75rem;
     box-shadow:
       0 26px 44px -26px rgba(7, 17, 27, 0.32),
@@ -8959,13 +8973,15 @@
   .place-card__compare-spacer {
     display: block;
     width: min(8.75rem, 38vw);
-    min-height: 44px;
+    min-height: 50px;
   }
   .place-card__compare-btn {
     position: absolute;
-    top: 2.9rem;
+    top: 3.25rem;
     right: 1rem;
     z-index: 1;
+    max-width: min(8rem, calc(100% - 2rem));
+    white-space: nowrap;
     /* Keep the tap target ≥44px tall on touch devices so it's reachable. */
     min-height: 44px;
     /* Stop hover transform on the parent card from also lifting the button visually. */
@@ -9122,7 +9138,7 @@
   .place-card__bookmark-btn {
     position: absolute;
     top: 0.85rem;
-    right: 6.55rem;
+    right: 6.8rem;
     z-index: 2;
     transform: translateZ(0);
     touch-action: manipulation;
@@ -11423,12 +11439,15 @@ html[data-theme="dark"] .tc-hero-credit {
     display: flex;
     flex-wrap: wrap;
     gap: 0.45rem;
+    min-width: 0;
+    max-width: 100%;
   }
   .hero-action-stack {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0.75rem;
+    min-width: 0;
     flex-shrink: 0;
   }
   .hero-action-stack .btn-ghost,
@@ -11546,6 +11565,28 @@ html[data-theme="dark"] .tc-hero-credit {
     }
   }
   @media (max-width: 640px) {
+    [data-app-content],
+    [data-app-view-content],
+    .tc-explorer-main,
+    .tc-explorer-main > *,
+    .panel-hero,
+    .panel-thin,
+    .tc-map-stage,
+    .climate-signal-rail {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    [data-app-content] {
+      padding-inline: clamp(0.75rem, 3.6vw, 1rem);
+    }
+
+    .panel-hero h1,
+    .panel-hero p {
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
     .hero-quick-picks {
       flex-wrap: nowrap;
       gap: 0.38rem;
@@ -11568,12 +11609,14 @@ html[data-theme="dark"] .tc-hero-credit {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.48rem;
       align-items: stretch;
+      width: 100%;
     }
     .hero-action-stack .btn-ghost,
     .hero-action-stack .btn-primary {
       width: 100%;
       min-height: 46px;
       justify-content: center;
+      min-width: 0;
     }
     .hero-action-stack__compare {
       grid-column: 1 / -1;
@@ -12134,6 +12177,160 @@ html[data-theme="dark"] .tc-hero-credit {
   color: var(--color-stone-readable);
   flex: 1 1 14rem;
   min-width: 0;
+}
+
+.scenario-remap {
+  display: grid;
+  gap: 0.75rem;
+  padding: 0.82rem;
+  border-color: rgba(139, 92, 246, 0.18);
+  background:
+    linear-gradient(135deg, rgba(248, 252, 255, 0.92), rgba(255, 253, 248, 0.9)),
+    repeating-linear-gradient(118deg, rgba(139, 92, 246, 0.055) 0 1px, transparent 1px 34px);
+}
+.scenario-remap__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.9rem;
+}
+.scenario-remap__eyebrow {
+  margin: 0;
+  color: var(--color-glacier-700);
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+.scenario-remap__headline {
+  margin-top: 0.18rem;
+  color: var(--color-ice);
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 1.5vw, 1.22rem);
+  line-height: 1.16;
+}
+.scenario-remap__copy {
+  max-width: 70rem;
+  margin-top: 0.22rem;
+  color: var(--color-stone-readable);
+  font-size: 0.76rem;
+  line-height: 1.36;
+}
+.scenario-remap__facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.34rem;
+  max-width: 22rem;
+}
+.scenario-remap__facts span,
+.scenario-remap__move,
+.scenario-remap__score,
+.scenario-remap__deltas span {
+  border-radius: 999px;
+  border: 1px solid rgba(26, 143, 168, 0.18);
+  background: rgba(255, 255, 255, 0.74);
+  color: var(--color-frost);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.86) inset;
+}
+.scenario-remap__facts span {
+  padding: 0.24rem 0.48rem;
+  font-size: 0.66rem;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+.scenario-remap__rows {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: 0.55rem;
+}
+.scenario-remap__row {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.5rem 0.62rem;
+  align-items: start;
+  padding: 0.62rem 0.68rem;
+  border-radius: 0.72rem;
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  background:
+    linear-gradient(160deg, rgba(255, 255, 255, 0.92), rgba(232, 248, 251, 0.58)),
+    rgba(255, 255, 255, 0.76);
+  color: var(--color-frost);
+  text-align: left;
+  transition: border-color 160ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+.scenario-remap__row:hover {
+  border-color: rgba(26, 143, 168, 0.45);
+  box-shadow: 0 12px 28px -18px rgba(26, 143, 168, 0.32);
+  transform: translateY(-1px);
+}
+.scenario-remap__row:focus-visible {
+  outline: 2px solid rgba(26, 143, 168, 0.6);
+  outline-offset: 2px;
+}
+.scenario-remap__rank {
+  display: inline-grid;
+  place-items: center;
+  width: 1.62rem;
+  height: 1.62rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(196, 181, 253, 0.45), rgba(122, 212, 240, 0.24));
+  color: var(--color-ice);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 850;
+  font-variant-numeric: tabular-nums;
+}
+.scenario-remap__main {
+  min-width: 0;
+  display: grid;
+  gap: 0.22rem;
+}
+.scenario-remap__place {
+  overflow-wrap: anywhere;
+  color: var(--color-ice);
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  line-height: 1.12;
+}
+.scenario-remap__move,
+.scenario-remap__score {
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.12rem 0.4rem;
+  font-size: 0.66rem;
+  line-height: 1.15;
+}
+.scenario-remap__score {
+  color: var(--color-glacier-700);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.scenario-remap__deltas {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+  min-width: 0;
+}
+.scenario-remap__deltas span {
+  padding: 0.14rem 0.38rem;
+  color: var(--color-stone-readable);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 760px) {
+  .scenario-remap__head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .scenario-remap__facts {
+    justify-content: flex-start;
+    max-width: none;
+  }
 }
 @media (pointer: coarse) {
   .climate-scenario__opt {

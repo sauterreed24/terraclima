@@ -28,7 +28,8 @@ import {
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit, LIVE_FIT_PRESET_BY_ID } from "./lib/live-fit";
 import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
-import { projectPlace, projectPool } from "./lib/climate-projection";
+import { projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
+import { runScenarioRanking } from "./lib/climate-processor";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
 import { CompareLoadingFallback } from "./components/CompareLoadingFallback";
@@ -36,11 +37,12 @@ import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
 import { buildShortlistPacketCue } from "./lib/shortlist-packet";
 import { buildShortlistReadiness } from "./lib/shortlist-readiness";
+import { buildScenarioReshuffleSummary, type ScenarioReshuffleSummary, type ScenarioReshuffleRow } from "./lib/scenario-reshuffle";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "./lib/place-visual-signature";
 import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenario, summarizeContextStressRows, type ContextScenarioId, type ContextStressRow } from "./lib/context-scenarios";
 import { motionPolicy, prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
-import { fmtTemp, useProse, useUnits, type UnitState } from "./lib/units";
+import { fmtDelta, fmtTemp, useProse, useUnits, type UnitState } from "./lib/units";
 import { shareUrl } from "./lib/share";
 import { runViewTransition } from "./lib/view-transition";
 import {
@@ -668,6 +670,24 @@ export default function App() {
     }
     return out;
   }, [processor.rows, placesById]);
+  const baselineRanked = useMemo<RankingResult[]>(() => {
+    if (climateScenario === "now") return ranked;
+    const rows = runScenarioRanking({
+      type: "scenario-rank",
+      requestId: -2050,
+      scenario: "now",
+      ranking,
+      filters: validatedFilters,
+      ...(scenarioPoolIds ? { poolIds: scenarioPoolIds } : {}),
+    }).rows;
+    return rows
+      .map(row => {
+        const place = placeForId(row.id);
+        if (!place) return null;
+        return row.note != null ? { place, score: row.score, note: row.note } : { place, score: row.score };
+      })
+      .filter((row): row is RankingResult => row != null);
+  }, [climateScenario, ranked, ranking, scenarioPoolIds, validatedFilters]);
   // The hero top-ten is decorative (lives below the map + cards). Defer it
   // so React can drop a stale render and let the higher-value updates above
   // commit first when the user is rapidly changing filters.
@@ -689,30 +709,43 @@ export default function App() {
     () => RANKING_OPTIONS.find(o => o.id === ranking)?.label ?? ranking.replace(/-/g, " "),
     [ranking],
   );
+  const scenarioRankingLabel = useMemo(
+    () => climateScenario === "now" ? rankingLabel : `${scenarioMeta(climateScenario).short} · ${rankingLabel}`,
+    [climateScenario, rankingLabel],
+  );
+  const scenarioReshuffle = useMemo(
+    () => buildScenarioReshuffleSummary({
+      scenario: climateScenario,
+      baselineRanked,
+      projectedRanked: ranked,
+      limit: COMPARE_LIMIT,
+    }),
+    [baselineRanked, climateScenario, ranked],
+  );
   const activeDossierFitBundle = useMemo(
     () => LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null,
     [ranking, filters],
   );
   const dossierFitContext = useMemo(
     () => ({
-      rankingLabel,
+      rankingLabel: scenarioRankingLabel,
       bundleLabel: activeDossierFitBundle?.label ?? null,
       bundleCue: activeDossierFitBundle?.cue ?? null,
     }),
-    [rankingLabel, activeDossierFitBundle],
+    [scenarioRankingLabel, activeDossierFitBundle],
   );
   const scoutBrief = useMemo(
-    () => buildExplorerScoutBrief(ranked, rankingLabel, deferredFilters, climateScenario),
-    [ranked, rankingLabel, deferredFilters, climateScenario],
+    () => buildExplorerScoutBrief(ranked, scenarioRankingLabel, deferredFilters, climateScenario),
+    [ranked, scenarioRankingLabel, deferredFilters, climateScenario],
   );
   const mapStageContext = useMemo(
     () => buildMapStageContext({
       activeBundle: activeDossierFitBundle,
-      rankingLabel,
+      rankingLabel: scenarioRankingLabel,
       scoutBrief,
       featuredCount: topRankedPlaceIds.length,
     }),
-    [activeDossierFitBundle, rankingLabel, scoutBrief, topRankedPlaceIds.length],
+    [activeDossierFitBundle, scenarioRankingLabel, scoutBrief, topRankedPlaceIds.length],
   );
   const contextStressRows = useMemo(
     () => buildContextStressRows({
@@ -720,9 +753,9 @@ export default function App() {
       currentRanked: ranked,
       currentFilters: deferredFilters,
       currentRanking: ranking,
-      currentRankingLabel: rankingLabel,
+      currentRankingLabel: scenarioRankingLabel,
     }),
-    [pool, ranked, deferredFilters, ranking, rankingLabel],
+    [pool, ranked, deferredFilters, ranking, scenarioRankingLabel],
   );
   const resonantWindow = useMemo(() => resonantWindowFor(ranking), [ranking]);
   const rankedRef = useRef(ranked);
@@ -758,11 +791,11 @@ export default function App() {
       push(placesById[id] ?? placeForId(id), "Recent", "Recently opened dossier");
     }
     for (const row of ranked.slice(0, 12)) {
-      push(row.place, "Ranked", `${rankingLabel} leader`);
+      push(row.place, "Ranked", `${scenarioRankingLabel} leader`);
     }
 
     return candidates;
-  }, [bookmarkIds, placesById, ranked, rankingLabel, recentIds]);
+  }, [bookmarkIds, placesById, ranked, scenarioRankingLabel, recentIds]);
   const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
@@ -1293,7 +1326,7 @@ export default function App() {
         />
       </div>
 
-      <div ref={appContentRef} data-app-content className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1600px] w-full mx-auto">
+      <div ref={appContentRef} data-app-content className="flex-1 flex flex-col lg:flex-row gap-4 p-4 max-w-[1760px] w-full mx-auto">
         <div ref={appViewContentRef} data-app-view-content key={view} className="view-enter flex-1 flex flex-col lg:flex-row gap-4 min-w-0">
           {view === "explorer" && (
             <>
@@ -1303,7 +1336,7 @@ export default function App() {
                   livabilityTopTen={livabilityTopTen}
                   signatureLeaders={signatureLeaders}
                   ranking={ranking}
-                  rankingLabel={rankingLabel}
+                  rankingLabel={scenarioRankingLabel}
                   onOpenPlace={openPlace}
                   onClearAll={clearAllFilters}
                   onClearSearch={clearSearch}
@@ -1335,7 +1368,7 @@ export default function App() {
                   onClearRecents={clearRecents}
                   onApplyQuickPick={applyHeroQuickPick}
                   isQuickPickActive={isHeroQuickPickActive}
-                  showDetailedHeroPanels={explorerHeroPanelsMd}
+                  showDetailedHeroPanels={explorerHeroPanelsMd && !scoutBoardLg}
                   showDesktopScoutBoard={scoutBoardLg}
                 />
 
@@ -1356,18 +1389,31 @@ export default function App() {
                     places={filtered}
                     selectedId={selectedId ?? undefined}
                     featuredIds={topRankedPlaceIds}
-                    featuredLabel={rankingLabel}
+                    featuredLabel={scenarioRankingLabel}
                     liveFitFilters={filters}
                     onSelect={openPlace}
                   />
                 </div>
 
-                {!explorerHeroPanelsMd ? (
+                <ClimateScenarioControl
+                  scenario={climateScenario}
+                  onChange={setClimateScenario}
+                  projecting={processor.projecting}
+                />
+                {scenarioReshuffle ? (
+                  <ScenarioRemapPanel
+                    summary={scenarioReshuffle}
+                    rankingLabel={rankingLabel}
+                    onOpenPlace={openPlace}
+                  />
+                ) : null}
+
+                {scoutBoardLg || !explorerHeroPanelsMd ? (
                   <>
                     <ExplorerHeroDetailPanels
                       signatureLeaders={signatureLeaders}
                       ranking={ranking}
-                      rankingLabel={rankingLabel}
+                      rankingLabel={scenarioRankingLabel}
                       filters={filters}
                       scoutBrief={scoutBrief}
                       contextStressRows={contextStressRows}
@@ -1379,12 +1425,14 @@ export default function App() {
                       onApplyContextScenario={applyContextScenario}
                       bookmarkIds={bookmarkIds}
                       onToggleBookmark={toggleBookmark}
-                      showDesktopScoutBoard={false}
+                      showDesktopScoutBoard={scoutBoardLg}
                     />
-                    <MobileLivabilityTopTenStrip
-                      rows={livabilityTopTen}
-                      onOpenPlace={openPlace}
-                    />
+                    {!explorerHeroPanelsMd ? (
+                      <MobileLivabilityTopTenStrip
+                        rows={livabilityTopTen}
+                        onOpenPlace={openPlace}
+                      />
+                    ) : null}
                   </>
                 ) : null}
 
@@ -1404,22 +1452,16 @@ export default function App() {
                   </div>
                 </section>
 
-                <ClimateScenarioControl
-                  scenario={climateScenario}
-                  onChange={setClimateScenario}
-                  projecting={processor.projecting}
-                />
-
                 <div className="panel-thin p-3 flex items-center justify-between flex-wrap gap-2">
                   {/* Visual count is animated via raf-driven textContent mutation,
                       which would spam any enclosing aria-live region. The
                       authoritative announcement lives in the sr-only sibling
                       below so screen readers hear only the final value. */}
                   <div className="text-xs text-stone" aria-hidden="true">
-                    Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{rankingLabel}</span>
+                    Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{scenarioRankingLabel}</span>
                   </div>
                   <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-                    {`Showing ${ranked.length} of ${PLACE_COUNTS.total} places, ranked by ${rankingLabel}.${homeBasePlace ? ` Cards show climate deltas against your home base, ${homeBasePlace.name}.` : ""}`}
+                    {`Showing ${ranked.length} of ${PLACE_COUNTS.total} places, ranked by ${scenarioRankingLabel}.${homeBasePlace ? ` Cards show climate deltas against your home base, ${homeBasePlace.name}.` : ""}`}
                   </div>
                   {homeBasePlace ? (
                     <div className="text-xs text-stone flex items-center gap-1.5 min-w-0">
@@ -1506,7 +1548,7 @@ export default function App() {
                       resonantWindow={resonantWindow}
                       liveFitFilters={filters}
                       homePlace={homeBasePlaceForScenario}
-                      rankingLabel={rankingLabel}
+                      rankingLabel={scenarioRankingLabel}
                       bookmarkIds={bookmarkIds}
                       onBookmarkToggle={toggleBookmark}
                     />
@@ -2815,6 +2857,92 @@ const MobileLivabilityTopTenStrip = memo(function MobileLivabilityTopTenStrip({
         })}
       </div>
     </div>
+  );
+});
+
+function scenarioRankMoveLabel(row: ScenarioReshuffleRow): string {
+  if (row.currentRank == null) return "new to this future top set";
+  if (row.rankDelta == null || row.rankDelta === 0) return `holds #${row.currentRank}`;
+  return row.rankDelta > 0 ? `up ${row.rankDelta} from #${row.currentRank}` : `down ${Math.abs(row.rankDelta)} from #${row.currentRank}`;
+}
+
+function scenarioScoreLabel(row: ScenarioReshuffleRow): string {
+  const projected = Math.round(row.projectedScore);
+  if (row.currentScore == null || row.scoreDelta == null) return `${projected} projected`;
+  const delta = Math.round(row.scoreDelta);
+  const signed = delta > 0 ? `+${delta}` : `${delta}`;
+  return `${projected} projected · ${signed} vs now`;
+}
+
+const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
+  summary,
+  rankingLabel,
+  onOpenPlace,
+}: {
+  summary: ScenarioReshuffleSummary;
+  rankingLabel: string;
+  onOpenPlace: OpenPlaceHandler;
+}) {
+  const { temp } = useUnits();
+  const prose = useProse();
+  const meta = scenarioMeta(summary.scenario);
+  const leaderLine = summary.leaderChanged
+    ? `${summary.projectedLeaderName ?? "A new leader"} overtakes ${summary.baselineLeaderName ?? "the present-day leader"}.`
+    : `${summary.projectedLeaderName ?? "The leader"} still leads, but the margins are recalculated against projected normals.`;
+  const churnLine = summary.newTopCount === 0
+    ? "Projected top-four places are already present-day leaders; use the deltas to judge how their comfort margin changes."
+    : `${summary.newTopCount} projected top-four ${summary.newTopCount === 1 ? "place is" : "places are"} new compared with the present-day top four.`;
+  const newTopFact = summary.newTopCount === 1 ? "1 new top-four place" : `${summary.newTopCount} new top-four places`;
+
+  return (
+    <section className="scenario-remap panel-thin" aria-labelledby="scenario-remap-title">
+      <div className="scenario-remap__head">
+        <div className="min-w-0">
+          <h2 id="scenario-remap-title" className="scenario-remap__eyebrow">
+            2050 remap
+          </h2>
+          <p className="scenario-remap__headline">
+            {meta.short} reranks {rankingLabel.toLowerCase()} against projected 2041-2060 normals.
+          </p>
+          <p className="scenario-remap__copy">
+            {leaderLine} {churnLine} Deltas compare each projected place card with its 1991-2020 baseline.
+          </p>
+        </div>
+        <div className="scenario-remap__facts" aria-label={`${meta.short} remap summary`}>
+          <span>{meta.label}</span>
+          <span>{summary.leaderChanged ? "new #1" : "leader holds"}</span>
+          <span>{newTopFact}</span>
+        </div>
+      </div>
+
+      <div className="scenario-remap__rows" aria-label={`${meta.short} projected leaders`}>
+        {summary.rows.map(row => {
+          const openLabel = `Open ${row.place.name}, projected ${meta.short} rank ${row.projectedRank}`;
+          return (
+            <button
+              key={row.place.id}
+              type="button"
+              className="scenario-remap__row"
+              onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
+              aria-label={openLabel}
+              title={prose(row.place.climateChange.outlook2050)}
+            >
+              <span className="scenario-remap__rank" aria-hidden>{row.projectedRank}</span>
+              <span className="scenario-remap__main">
+                <span className="scenario-remap__place">{row.place.name}</span>
+                <span className="scenario-remap__move">{scenarioRankMoveLabel(row)}</span>
+                <span className="scenario-remap__score">{scenarioScoreLabel(row)}</span>
+              </span>
+              <span className="scenario-remap__deltas" aria-label={`${row.place.name} projected climate deltas`}>
+                <span>Summer {fmtDelta(row.summerHighDeltaC, temp, { digits: 1 })}</span>
+                <span>Winter {fmtDelta(row.winterLowDeltaC, temp, { digits: 1 })}</span>
+                <span>Precip {row.precipDeltaPct > 0 ? "+" : ""}{row.precipDeltaPct.toFixed(0)}%</span>
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </section>
   );
 });
 

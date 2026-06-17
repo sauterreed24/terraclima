@@ -434,6 +434,22 @@ describe("App shell", () => {
       name: /Open .*, climate signal rank 1 by Live-here fit/,
     });
     expect(firstSignalChip).toHaveAttribute("title", firstSignalChip.getAttribute("aria-label"));
+    expect(screen.queryByText("2050 remap")).not.toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("surfaces a future scenario remap when the Explorer opens on a 2050 layer", () => {
+    mockViewport(1280);
+    window.history.replaceState(null, "", "/?scn=ssp245&r=live-fit");
+
+    renderApp();
+
+    expect(screen.getByText("2050 remap")).toBeInTheDocument();
+    expect(screen.getByText(/2050 mid reranks live-here fit against projected 2041-2060 normals/i)).toBeInTheDocument();
+    expect(screen.getByLabelText("2050 mid remap summary")).toHaveTextContent(/2050.*SSP2-4\.5/);
+    const projectedLeaders = screen.getByLabelText("2050 mid projected leaders");
+    expect(within(projectedLeaders).getAllByRole("button", { name: /projected 2050 mid rank/ }).length).toBeGreaterThan(0);
+    expect(projectedLeaders).toHaveTextContent("Summer");
+    expect(document.body).toHaveTextContent(/ranked by 2050 mid .* Live-here fit/);
   }, APP_SHELL_TIMEOUT_MS);
 
   it("applies the hero Cool summers path without snow-country filters", async () => {
