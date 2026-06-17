@@ -1040,6 +1040,9 @@ describe("App shell", () => {
     );
     expect(receipt).toHaveTextContent("Home base: Sequim");
     expect(receipt).toHaveTextContent("Cards, dossiers, and Compare read climate deltas against this anchor.");
+    expect(screen.queryByRole("button", { name: "Find your home-base analog using Explorer search" })).not.toBeInTheDocument();
+    const scoutReceipt = screen.getByLabelText(/Current scout read:/);
+    expect(receipt.compareDocumentPosition(scoutReceipt) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 
     const clearHome = within(receipt).getByRole("button", {
       name: "Stop comparing against Sequim from the Explorer hero (clear home base)",
@@ -1052,6 +1055,24 @@ describe("App shell", () => {
       expect(document.getElementById("main-content")).toHaveFocus();
       expect(window.location.search).toBe("");
     });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("offers a hero shortcut to find a home-base analog", async () => {
+    mockViewport(1280);
+    renderApp();
+
+    const findHomeBase = await screen.findByRole(
+      "button",
+      { name: "Find your home-base analog using Explorer search" },
+      { timeout: APP_SHELL_TIMEOUT_MS },
+    );
+    expect(findHomeBase).toHaveTextContent("Find home base");
+    expect(findHomeBase).toHaveAttribute("title", findHomeBase.getAttribute("aria-label"));
+
+    fireEvent.click(findHomeBase);
+
+    const search = screen.getByRole("textbox", { name: "Search places by name, region, or archetype" });
+    expect(search).toHaveFocus();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the drawer entry animation for user-opened place profiles", async () => {

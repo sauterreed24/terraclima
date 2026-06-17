@@ -1379,6 +1379,7 @@ export default function App() {
                   shareStatus={shareStatus}
                   shareFallbackUrl={compareOpen ? null : shareFallbackUrl}
                   homeBasePlace={homeBasePlace}
+                  onFindHomeBase={focusSearchInput}
                   onClearHomeBase={clearHomeBase}
                   compareCount={compareIds.size}
                   onOpenCompare={openCompare}
@@ -2500,6 +2501,7 @@ const HeroCard = memo(function HeroCard({
   shareStatus,
   shareFallbackUrl,
   homeBasePlace,
+  onFindHomeBase,
   onClearHomeBase,
   compareCount,
   onOpenCompare,
@@ -2542,6 +2544,7 @@ const HeroCard = memo(function HeroCard({
   shareStatus: ShareStatus;
   shareFallbackUrl: string | null;
   homeBasePlace: Place | null;
+  onFindHomeBase: () => void;
   onClearHomeBase: () => void;
   compareCount: number;
   onOpenCompare: OpenCompareHandler;
@@ -2603,6 +2606,7 @@ const HeroCard = memo(function HeroCard({
           : "Copy or share current Explorer view";
   const surpriseLabel = "Open a random place from the current filtered list";
   const scoutBriefJumpLabel = "Jump to Scout Brief synthesis";
+  const findHomeBaseLabel = "Find your home-base analog using Explorer search";
   return (
     <div
       className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
@@ -2674,6 +2678,18 @@ const HeroCard = memo(function HeroCard({
               Surprise me
             </button>
           )}
+          {!homeBasePlace && !activeTripTheme ? (
+            <button
+              type="button"
+              onClick={onFindHomeBase}
+              className="btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
+              aria-label={findHomeBaseLabel}
+              title={findHomeBaseLabel}
+            >
+              <Home className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
+              Find home base
+            </button>
+          ) : null}
           {scoutBrief ? (
             <a
               href="#explorer-scout-brief"
@@ -2722,6 +2738,25 @@ const HeroCard = memo(function HeroCard({
         </div>
       </div>
 
+      {homeBasePlace ? (
+        <div className="tc-hero-home-receipt" role="status" aria-label={`Explorer home base: ${homeBasePlace.name}`}>
+          <Home className="tc-hero-home-receipt__icon" aria-hidden />
+          <div className="tc-hero-home-receipt__copy">
+            <strong>Home base: {homeBasePlace.name}</strong>
+            <span>Cards, dossiers, and Compare read climate deltas against this anchor.</span>
+          </div>
+          <button
+            type="button"
+            className="tc-hero-home-receipt__action"
+            onClick={onClearHomeBase}
+            aria-label={`Stop comparing against ${homeBasePlace.name} from the Explorer hero (clear home base)`}
+            title={`Stop comparing against ${homeBasePlace.name} from the Explorer hero (clear home base)`}
+          >
+            Clear
+          </button>
+        </div>
+      ) : null}
+
       {activeTripTheme && activeTripRows.length > 0 ? (
         <ActiveTripRouteReceipt
           theme={activeTripTheme}
@@ -2762,25 +2797,6 @@ const HeroCard = memo(function HeroCard({
           <QuickPick icon={ShieldCheck} label="Low risk" description="Favor places with stronger climate-resilience and hazard cushions." onClick={() => onApplyQuickPick("climate-resilient")} active={isQuickPickActive("climate-resilient")} />
         </div>
       )}
-
-      {homeBasePlace ? (
-        <div className="tc-hero-home-receipt" role="status" aria-label={`Explorer home base: ${homeBasePlace.name}`}>
-          <Home className="tc-hero-home-receipt__icon" aria-hidden />
-          <div className="tc-hero-home-receipt__copy">
-            <strong>Home base: {homeBasePlace.name}</strong>
-            <span>Cards, dossiers, and Compare read climate deltas against this anchor.</span>
-          </div>
-          <button
-            type="button"
-            className="tc-hero-home-receipt__action"
-            onClick={onClearHomeBase}
-            aria-label={`Stop comparing against ${homeBasePlace.name} from the Explorer hero (clear home base)`}
-            title={`Stop comparing against ${homeBasePlace.name} from the Explorer hero (clear home base)`}
-          >
-            Clear
-          </button>
-        </div>
-      ) : null}
 
       {count === 0 ? (
         <div className="tc-hero-empty-recovery" role="group" aria-label="Immediate zero-result recovery">
