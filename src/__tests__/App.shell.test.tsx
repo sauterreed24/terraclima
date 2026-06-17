@@ -535,7 +535,7 @@ describe("App shell", () => {
     const hero = document.querySelector(".panel-hero");
     const map = screen.getByTestId("atlas-map-stub");
     const currentRank = screen.getByText("Current rank");
-    const scoutBrief = screen.getByText("Scout brief");
+    const scoutBrief = screen.getByRole("region", { name: "Scout brief" });
 
     expect(hero).not.toBeNull();
     const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
@@ -544,9 +544,13 @@ describe("App shell", () => {
     expect(quickPicks).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more Fit Finder paths.");
     const copyView = screen.getByRole("button", { name: "Copy or share current Explorer view" });
     const surpriseMe = screen.getByRole("button", { name: "Open a random place from the current filtered list" });
+    const scoutBriefJump = screen.getByRole("link", { name: "Jump to Scout Brief synthesis" });
     expect(copyView.closest(".hero-action-stack")).not.toBeNull();
     expect(copyView).toHaveAttribute("title", "Copy or share current Explorer view");
     expect(surpriseMe).toHaveAttribute("title", "Open a random place from the current filtered list");
+    expect(scoutBriefJump.closest(".hero-action-stack")).not.toBeNull();
+    expect(scoutBriefJump).toHaveAttribute("href", "#explorer-scout-brief");
+    expect(scoutBriefJump).toHaveAttribute("title", "Jump to Scout Brief synthesis");
     expect(signalRail).toBeInTheDocument();
     expect(signalRail).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more current climate signal leaders.");
     expect(screen.getByLabelText("Scenario leaders for the current place context")).toHaveAccessibleDescription(
@@ -561,6 +565,7 @@ describe("App shell", () => {
     expect(hero!.compareDocumentPosition(map) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(map.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(map.compareDocumentPosition(scoutBrief) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(scoutBrief).toHaveAttribute("id", "explorer-scout-brief");
     expect(screen.getByText("Advisor verdict")).toBeInTheDocument();
     const scoutBriefSection = scoutBrief.closest(".scout-brief");
     expect(scoutBriefSection).not.toBeNull();

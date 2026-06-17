@@ -1369,6 +1369,7 @@
   /* Explorer hero - synthesized shortlist brief */
   .scout-brief {
     position: relative;
+    scroll-margin-top: 1rem;
     overflow: hidden;
     border-radius: 0.875rem;
     border: 1px solid rgba(122, 212, 240, 0.32);
@@ -11551,6 +11552,9 @@ html[data-theme="dark"] .tc-hero-credit {
   .hero-action-stack .btn-primary {
     min-height: 46px;
     justify-content: center;
+  }
+  .hero-action-stack a.btn-ghost {
+    text-decoration: none;
   }
   .tc-share-fallback {
     display: grid;

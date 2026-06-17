@@ -2422,6 +2422,7 @@ const HeroCard = memo(function HeroCard({
           ? "Retry copy or use the selected manual Explorer URL"
           : "Copy or share current Explorer view";
   const surpriseLabel = "Open a random place from the current filtered list";
+  const scoutBriefJumpLabel = "Jump to Scout Brief synthesis";
   return (
     <div
       className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
@@ -2513,6 +2514,17 @@ const HeroCard = memo(function HeroCard({
               Surprise me
             </button>
           )}
+          {scoutBrief ? (
+            <a
+              href="#explorer-scout-brief"
+              className="btn-ghost hero-action-stack__scout !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
+              aria-label={scoutBriefJumpLabel}
+              title={scoutBriefJumpLabel}
+            >
+              <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
+              Scout brief
+            </a>
+          ) : null}
           {compareCount > 0 ? (
             <button
               type="button"
@@ -3501,7 +3513,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
   const compareLeadersLabel = `Compare current leaders: ${brief.compareIds.length} places`;
   const saveFinalistsLabel = `Save ${brief.compareIds.length} Scout Brief finalists to your shortlist`;
   return (
-    <section className="scout-brief" aria-labelledby="explorer-scout-brief-title">
+    <section id="explorer-scout-brief" className="scout-brief" aria-labelledby="explorer-scout-brief-title">
       <div className="scout-brief__head">
         <div className="min-w-0">
           <div id="explorer-scout-brief-title" className="scout-brief__eyebrow">
