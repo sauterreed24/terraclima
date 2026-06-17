@@ -25,6 +25,18 @@ function renderClimateTripsView(activeThemeId?: string) {
 }
 
 describe("ClimateTripsView", () => {
+  it("gives the Trips hero direct shortcuts to styles, stops, and seasonal windows", () => {
+    renderClimateTripsView();
+
+    expect(screen.getByRole("link", { name: `Jump to ${CLIMATE_TRIP_THEMES.length} climate trip styles` })).toHaveAttribute("href", "#trip-styles-heading");
+    expect(screen.getByRole("link", { name: "Jump to 9 concrete climate tourism stops" })).toHaveAttribute("href", "#tourism-picks-heading");
+    expect(screen.getByRole("link", { name: "Jump to best seasonal windows" })).toHaveAttribute("href", "#seasonal-windows-heading");
+    const quickRead = screen.getByLabelText("Climate Trips quick read");
+    expect(quickRead).toHaveTextContent(`${CLIMATE_TRIP_THEMES.length} trip styles`);
+    expect(quickRead).toHaveTextContent("9 concrete stops");
+    expect(quickRead).toHaveTextContent(/Top pick: .+ \d+\/100/);
+  });
+
   it("gives repeated trip style actions unique accessible names", () => {
     const firstTheme = CLIMATE_TRIP_THEMES[0];
     const { onPickTripTheme, onComparePlaces } = renderClimateTripsView();

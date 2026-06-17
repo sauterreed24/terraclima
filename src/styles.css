@@ -5729,6 +5729,36 @@
     content-visibility: auto;
     contain-intrinsic-size: 0 340px;
   }
+  .climate-trip-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .climate-trip-hero-actions .btn-ghost,
+  .climate-trip-hero-actions .btn-primary {
+    min-height: 2.75rem;
+    justify-content: center;
+  }
+  .climate-trip-hero-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
+    max-width: 52rem;
+  }
+  .climate-trip-hero-facts span {
+    min-width: 0;
+    max-width: 100%;
+    border-radius: 999px;
+    border: 1px solid rgba(26, 143, 168, 0.16);
+    background: rgba(255, 255, 255, 0.7);
+    padding: 0.24rem 0.5rem;
+    color: var(--color-stone-readable);
+    font-size: 0.68rem;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
   .climate-trip-card__actions {
     display: flex;
     flex-wrap: wrap;

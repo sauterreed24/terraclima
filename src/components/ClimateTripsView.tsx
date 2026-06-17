@@ -71,6 +71,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
       .map(row => row.place.id);
     onComparePlaces(ids, { trigger });
   }, [onComparePlaces, themeRowsById]);
+  const topTourismPick = tourismPicks[0];
 
   return (
     <div className="space-y-7">
@@ -88,6 +89,39 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
         <p className="text-sm text-frost leading-relaxed mt-3 max-w-3xl">
           Find fog belts, rain shadows, sky islands, orchard valleys, cold-air pools, volcanic soils, and places that feel like another country. Use this as a scouting itinerary, not a booking engine.
         </p>
+        <div className="climate-trip-hero-actions" aria-label="Climate Trips section shortcuts">
+          <a
+            href="#trip-styles-heading"
+            className="btn-primary !text-xs"
+            aria-label={`Jump to ${CLIMATE_TRIP_THEMES.length} climate trip styles`}
+          >
+            <Compass className="w-3.5 h-3.5" aria-hidden />
+            Choose style
+          </a>
+          <a
+            href="#tourism-picks-heading"
+            className="btn-ghost !text-xs"
+            aria-label={`Jump to ${tourismPicks.length} concrete climate tourism stops`}
+          >
+            <MapIcon className="w-3.5 h-3.5" aria-hidden />
+            See concrete stops
+          </a>
+          <a
+            href="#seasonal-windows-heading"
+            className="btn-ghost !text-xs"
+            aria-label="Jump to best seasonal windows"
+          >
+            <Telescope className="w-3.5 h-3.5" aria-hidden />
+            Best windows
+          </a>
+        </div>
+        <div className="climate-trip-hero-facts" aria-label="Climate Trips quick read">
+          <span>{CLIMATE_TRIP_THEMES.length} trip styles</span>
+          <span>{tourismPicks.length} concrete stops</span>
+          {topTourismPick ? (
+            <span>Top pick: {topTourismPick.place.name} {topTourismPick.profile.scores.tourismAppeal}/100</span>
+          ) : null}
+        </div>
       </section>
 
       <section aria-labelledby="trip-styles-heading" className="space-y-3">
