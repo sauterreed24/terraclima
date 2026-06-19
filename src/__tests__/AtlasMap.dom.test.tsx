@@ -617,6 +617,60 @@ describe("AtlasMap DOM controls", () => {
     ]));
   });
 
+  it("groups the north arrow and scale bar in one bottom-left cartography cluster", () => {
+    setCoarsePointer(false);
+    const { container } = renderMap();
+
+    const cluster = container.querySelector(".map-cartography-cluster");
+    expect(cluster).toBeTruthy();
+    // North arrow furniture is decorative orientation, not an interactive control.
+    expect(cluster?.querySelector(".map-compass svg")).toBeTruthy();
+    // The scale bar reports real distance, so we deliberately do not render a
+    // redundant raw zoom multiplier alongside it.
+    expect(container.querySelector(".map-zoom-readout")).toBeNull();
+  });
+
+  it("drops the decorative north arrow on coarse pointers to save room", () => {
+    setCoarsePointer(true);
+    const { container } = renderMap();
+    expect(container.querySelector(".map-compass")).toBeNull();
+    // The scale bar itself stays available on every pointer type.
+    expect(container.querySelector(".map-scale-stack")).toBeTruthy();
+  });
+
+  it("zooms in on a desktop double-click of the map background, but ignores pins", () => {
+    setCoarsePointer(false);
+    // Widely separated pins keep the initial fit zoom well below the cap so a
+    // double-click has room to zoom in.
+    const places = [
+      makePlace({ id: "nw", name: "Northwest", lat: 49, lon: -123, tier: "A" }),
+      makePlace({ id: "se", name: "Southeast", lat: 26, lon: -80, tier: "B" }),
+    ];
+    const { container } = renderMap(vi.fn(), [], places);
+
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+    svg.getBoundingClientRect = () =>
+      ({ left: 0, top: 0, right: 280, bottom: 260, width: 280, height: 260, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect;
+
+    // Read the live zoom factor straight off the pan/zoom group's transform.
+    const zoom = () => {
+      const g = Array.from(svg.querySelectorAll("g")).find(el => /scale\(/.test(el.getAttribute("transform") ?? ""));
+      const m = /scale\(([\d.]+)\)/.exec(g?.getAttribute("transform") ?? "");
+      return m ? parseFloat(m[1]) : 0;
+    };
+    const before = zoom();
+    expect(before).toBeGreaterThan(0);
+
+    // A double-click that lands on a pin must not zoom — the pin owns activation.
+    const marker = container.querySelector('[data-atlas-marker="true"]') as SVGGElement;
+    fireEvent.doubleClick(marker, { clientX: 140, clientY: 130 });
+    expect(zoom()).toBeCloseTo(before, 5);
+
+    // A double-click on empty map zooms in.
+    fireEvent.doubleClick(svg, { clientX: 140, clientY: 130 });
+    expect(zoom()).toBeGreaterThan(before);
+  });
+
   it("uses roving tabindex so only one marker is in the Tab order at a time", () => {
     setCoarsePointer(false);
     const { container } = renderMap(vi.fn(), [], defaultMapPlaces());

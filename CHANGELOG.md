@@ -4,6 +4,15 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Interactive map declutter & zoom affordance
+
+- **Bottom-left cartography cluster (`src/components/AtlasMap.tsx`, `src/styles.css`):** the compass rose used to float top-right where it overlapped the +/−/Fit zoom column, and the raw `×N` zoom readout sat top-left *behind* the App's title caption (never visible). The compass is now a compact north arrow paired with the distance scale bar in a single bottom-left cluster, leaving the top corners clear; the redundant raw zoom multiplier is dropped entirely (the scale bar already reports real distance — a sub-1 "×" value just read oddly). The north arrow is desktop-only; coarse and narrow (≤680 px) viewports keep just the scale bar so the cluster can't crowd the relocated key dock or atlas readout.
+- **Mobile atlas-readout clearance (`src/styles.css`):** on phone widths the bottom "Atlas read" band sat a few pixels over the top of the bottom-left scale + Key stack; its `bottom` offset now clears that stack so the scale bar is never clipped.
+- **Mobile touch-mode toggle placement (`src/components/AtlasMap.tsx`):** the **Use map / Scroll page** control floated at the top-left, where the title caption painted over it. It now leads the top-right control column alongside the zoom buttons, so the primary phone interaction switch is no longer obscured. The control's role, `aria-pressed`, label, and behavior are unchanged.
+- **Projection credit moved on-demand (`src/components/AtlasMap.tsx`):** the always-on "ALBERS CONIC · NORTH AMERICA" label sat in the bottom-right under the Key toggle, partly hidden. The projection line ("Albers equal-area conic, centered on North America, north up") now lives in the map key (desktop usage notes and the mobile legend) instead of cluttering the map surface.
+- **Desktop double-click to zoom (`src/components/AtlasMap.tsx`, `src/__tests__/AtlasMap.dom.test.tsx`):** double-clicking empty map now zooms in ~1.7× centered on the cursor — desktop parity with the existing touch double-tap and a standard map affordance. Double-clicks that land on a pin or cluster are left to those elements' own activation, and coarse pointers keep the dedicated double-tap path. The map aria-label and usage notes mention the gesture; new DOM tests cover the zoom, the pin/cluster guard, and the consolidated cluster's responsive contents.
+- No scoring, ranking, corpus data, routes, clustering, or URL semantics change.
+
 ### Shared mobile dossier link reliability
 
 - **Place-detail deep links (`src/App.tsx`, `src/components/PlaceDetail.tsx`):** shared `?p=` profile URLs now skip the offscreen drawer entry state on first paint and Back/Forward hydration, so phone-width hard loads land with the dossier visible instead of leaving the animated panel translated 100% off-canvas. User-initiated dossier opens still keep the slide-in motion.
