@@ -617,7 +617,7 @@ describe("AtlasMap DOM controls", () => {
     ]));
   });
 
-  it("groups the north arrow, scale, and live zoom readout in one bottom-left cluster", () => {
+  it("groups the north arrow and scale bar in one bottom-left cartography cluster", () => {
     setCoarsePointer(false);
     const { container } = renderMap();
 
@@ -625,17 +625,15 @@ describe("AtlasMap DOM controls", () => {
     expect(cluster).toBeTruthy();
     // North arrow furniture is decorative orientation, not an interactive control.
     expect(cluster?.querySelector(".map-compass svg")).toBeTruthy();
-    // The raw zoom multiplier now lives next to the scale bar instead of floating
-    // (invisibly) behind the title caption at the top-left.
-    const readout = container.querySelector(".map-zoom-readout");
-    expect(readout?.textContent ?? "").toMatch(/^×\d/);
+    // The scale bar reports real distance, so we deliberately do not render a
+    // redundant raw zoom multiplier alongside it.
+    expect(container.querySelector(".map-zoom-readout")).toBeNull();
   });
 
-  it("drops the north arrow and raw zoom readout on coarse pointers to save room", () => {
+  it("drops the decorative north arrow on coarse pointers to save room", () => {
     setCoarsePointer(true);
     const { container } = renderMap();
     expect(container.querySelector(".map-compass")).toBeNull();
-    expect(container.querySelector(".map-zoom-readout")).toBeNull();
     // The scale bar itself stays available on every pointer type.
     expect(container.querySelector(".map-scale-stack")).toBeTruthy();
   });
@@ -654,7 +652,12 @@ describe("AtlasMap DOM controls", () => {
     svg.getBoundingClientRect = () =>
       ({ left: 0, top: 0, right: 280, bottom: 260, width: 280, height: 260, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect;
 
-    const zoom = () => parseFloat((container.querySelector(".map-zoom-readout")?.textContent ?? "×0").replace("×", ""));
+    // Read the live zoom factor straight off the pan/zoom group's transform.
+    const zoom = () => {
+      const g = Array.from(svg.querySelectorAll("g")).find(el => /scale\(/.test(el.getAttribute("transform") ?? ""));
+      const m = /scale\(([\d.]+)\)/.exec(g?.getAttribute("transform") ?? "");
+      return m ? parseFloat(m[1]) : 0;
+    };
     const before = zoom();
     expect(before).toBeGreaterThan(0);
 

@@ -1963,10 +1963,11 @@ export function AtlasMap({
             projection credit moved into the on-demand map key. */}
       </svg>
 
-      {/* Bottom-left cartography cluster — north arrow, scale bar, and live zoom
-          readout grouped as one widget so the busy corners above stay clear.
-          On coarse pointers the north arrow and raw zoom multiplier drop out to
-          save room, leaving the scale bar plus the compact Key access. */}
+      {/* Bottom-left cartography cluster — north arrow + scale bar grouped as one
+          widget so the busy corners above stay clear. The north arrow is desktop
+          only; coarse pointers keep just the scale bar plus the compact Key
+          access. (The scale bar reports real distance, so a raw zoom multiplier
+          would be redundant — we deliberately don't show one.) */}
       <div className="map-scale-stack absolute bottom-3 left-3 z-[3] flex flex-col items-start gap-2 pointer-events-none max-w-[min(calc(100vw-8rem),22rem)]">
         <div className="map-cartography-cluster">
           {!coarsePointer ? <MapCompassGlyph /> : null}
@@ -1982,9 +1983,6 @@ export function AtlasMap({
                 <div className="w-1/2 h-full bg-[rgba(230,242,252,0.55)]" />
               </div>
             </div>
-            {!coarsePointer ? (
-              <div className="map-zoom-readout" aria-hidden>×{view.k.toFixed(2)}</div>
-            ) : null}
           </div>
         </div>
         {coarsePointer ? (
