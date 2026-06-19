@@ -167,6 +167,38 @@ function MapLegendDot({ color, label }: { color: string; label: string }) {
   );
 }
 
+/** Compact north arrow for the bottom-left cartography cluster. The map is a
+ *  fixed north-up Albers projection, so this reads as orientation furniture
+ *  (paired with the scale bar) rather than an interactive control. */
+function MapCompassGlyph() {
+  return (
+    <div className="map-compass" aria-hidden>
+      <svg viewBox="0 0 40 40" width="40" height="40" focusable="false" role="presentation">
+        <circle cx="20" cy="20" r="16.5" fill="rgba(13,20,32,0.78)" stroke="rgba(170,193,220,0.5)" strokeWidth="1" />
+        <circle cx="20" cy="20" r="12.5" fill="none" stroke="rgba(170,193,220,0.2)" strokeWidth="0.6" strokeDasharray="2 2.4" />
+        {/* East–west crossbar (quiet), then the north–south needle on top. */}
+        <path d="M6 20 L20 17.4 L34 20 L20 22.6 Z" fill="rgba(195,228,241,0.26)" />
+        <path d="M20 33.5 L22.6 20 L20 20 Z" fill="rgba(158,182,210,0.55)" />
+        <path d="M20 7 L22.6 20 L20 20 Z" fill="rgba(247,219,164,0.95)" />
+        <path d="M20 7 L17.4 20 L20 20 Z" fill="rgba(255,238,200,0.78)" />
+        <circle cx="20" cy="20" r="1.5" fill="rgba(230,242,252,0.92)" />
+        <text
+          x="20"
+          y="6.4"
+          textAnchor="middle"
+          fontSize="7"
+          fontWeight={800}
+          fill="rgba(247,237,213,0.98)"
+          fontFamily="var(--font-sans),system-ui,sans-serif"
+          style={{ paintOrder: "stroke fill", stroke: "rgba(8,14,24,0.92)", strokeWidth: 1.7, strokeLinejoin: "round" }}
+        >
+          N
+        </text>
+      </svg>
+    </div>
+  );
+}
+
 function pinLayoutPriority(place: Place, selectedId: string | undefined, featuredRank?: number): number {
   if (place.id === selectedId) return 100;
   if (featuredRank) return 28 - featuredRank;
@@ -1385,6 +1417,20 @@ export function AtlasMap({
     );
   }, [pts, width, height]);
 
+  // Desktop parity with the touch double-tap: double-clicking empty map zooms in
+  // ~1.7× centered on the cursor (matches the zoom-in button). Double-clicks that
+  // land on a pin or cluster are left to those elements' own activation, and
+  // coarse pointers keep using the dedicated double-tap path in onPointerUp.
+  const onDoubleClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
+    if (coarsePointer) return;
+    const target = e.target as Element | null;
+    if (target?.closest?.('[data-atlas-marker="true"], .map-cluster')) return;
+    const rect = svgRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const { x: mx, y: my } = svgPointFromClient(e.clientX, e.clientY, rect, width, height);
+    setView(v => zoomAtScreenPoint(v, 1.7, mx, my));
+  }, [coarsePointer, width, height]);
+
   // Keyboard: +/- to zoom, 0 to reset, arrows pan the map when the SVG
   // itself owns focus. When focus is on a marker, the Marker's own keydown
   // owns arrows for roving-tabindex navigation between pins — bail out
@@ -1486,7 +1532,7 @@ export function AtlasMap({
     ? "Atlas map of North America. No places match the current filters or search; adjust them to bring pins back."
     : (coarsePointer
         ? "Atlas map of North America. One-finger drag pans the map; pinch zooms when map mode is active. Use the Scroll page control to let the browser scroll past the map. Tap any pin to open that place's full profile."
-        : "Atlas map of North America. Scroll to zoom, drag to pan. Click any pin to open that place's full profile.") +
+        : "Atlas map of North America. Scroll to zoom, drag to pan, double-click to zoom in. Click any pin to open that place's full profile.") +
       (featuredTrailPoints.length > 1 ? " Gold trail connects the current top-ranked places." : "");
   const renderMarker = (pt: RenderedClusterPoint) => {
     const screenX = pt.x * settledView.k + settledView.x;
@@ -1561,6 +1607,7 @@ export function AtlasMap({
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
+        onDoubleClick={onDoubleClick}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
@@ -1636,12 +1683,6 @@ export function AtlasMap({
           <filter id="coastalGlow" x="-10%" y="-10%" width="120%" height="120%">
             <feGaussianBlur stdDeviation="0.85" />
           </filter>
-
-          {/* Compass rose accent */}
-          <radialGradient id="compassFill" cx="50%" cy="50%" r="50%">
-            <stop offset="0" stopColor="rgba(241,246,252,0.95)" />
-            <stop offset="1" stopColor="rgba(155,178,205,0.55)" />
-          </radialGradient>
 
           {/* Clip NA landmass for relief veils (no extra network; vector only). */}
           {topo && focusPath.length > 8 ? (
@@ -1915,48 +1956,35 @@ export function AtlasMap({
         {/* Vignette (above geometry, below UI) */}
         <rect x="0" y="0" width={width} height={height} fill="url(#vignette)" pointerEvents="none" />
 
-        {/* Compass rose — full 4-point cardinal readout */}
-        <g transform={`translate(${width - 60} 60)`} pointerEvents="none" opacity="0.7">
-          <circle r="26" fill="rgba(13,20,32,0.72)" stroke="rgba(170,193,220,0.5)" strokeWidth="0.9" />
-          <circle r="20" fill="none" stroke="rgba(170,193,220,0.18)" strokeWidth="0.5" strokeDasharray="2 2" />
-          {/* North-South needle */}
-          <path d="M0 -21 L4 0 L0 21 L-4 0 Z" fill="url(#compassFill)" />
-          {/* East-West crossbar */}
-          <path d="M-21 0 L0 -3 L21 0 L0 3 Z" fill="rgba(195,228,241,0.28)" />
-          {/* Centre stud */}
-          <circle r="1.6" fill="rgba(230,242,252,0.85)" />
-          <text x="0" y="-29" textAnchor="middle" fontSize="9" fill="rgba(241,246,252,0.9)" fontFamily="var(--font-sans),system-ui,sans-serif" fontWeight={700}>N</text>
-          <text x="29" y="3"   textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="var(--font-sans),system-ui,sans-serif" fontWeight={500}>E</text>
-          <text x="0" y="37"   textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="var(--font-sans),system-ui,sans-serif" fontWeight={500}>S</text>
-          <text x="-29" y="3"  textAnchor="middle" fontSize="9" fill="rgba(170,193,220,0.8)" fontFamily="var(--font-sans),system-ui,sans-serif" fontWeight={500}>W</text>
-        </g>
-
-        {/* Projection credit */}
-        <text
-          x={width - 14}
-          y={height - 12}
-          textAnchor="end"
-          fontSize="9"
-          fill="rgba(165,185,210,0.55)"
-          fontFamily="var(--font-sans),system-ui,sans-serif"
-          letterSpacing="0.08em"
-          pointerEvents="none"
-        >ALBERS CONIC · NORTH AMERICA</text>
+        {/* The compass + scale + zoom readout used to float in two opposite
+            corners (and the compass overlapped the zoom controls). They now live
+            together in one bottom-left cartography cluster — see `map-scale-stack`
+            below — keeping the top-right and bottom-right corners clear. The
+            projection credit moved into the on-demand map key. */}
       </svg>
 
-      {/* Scale plus compact key access. The full legend stays hidden until requested. */}
+      {/* Bottom-left cartography cluster — north arrow, scale bar, and live zoom
+          readout grouped as one widget so the busy corners above stay clear.
+          On coarse pointers the north arrow and raw zoom multiplier drop out to
+          save room, leaving the scale bar plus the compact Key access. */}
       <div className="map-scale-stack absolute bottom-3 left-3 z-[3] flex flex-col items-start gap-2 pointer-events-none max-w-[min(calc(100vw-8rem),22rem)]">
-        <div className="flex flex-col gap-1 w-[104px] shrink-0">
-          <div
-            ref={scaleBarRef}
-            className="text-[10px] font-mono-num tracking-wide text-[rgba(236,244,252,0.95)] tabular-nums leading-tight drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)]"
-          >
-            — mi
-          </div>
-          <div className="h-[10px] flex items-end gap-0">
-            <div ref={scaleBarBarRef} className="h-[6px] border border-[rgba(170,193,220,0.75)] bg-[rgba(13,20,32,0.55)]" style={{ width: 100 }}>
-              <div className="w-1/2 h-full bg-[rgba(230,242,252,0.55)]" />
+        <div className="map-cartography-cluster">
+          {!coarsePointer ? <MapCompassGlyph /> : null}
+          <div className="flex flex-col gap-1 w-[104px] shrink-0">
+            <div
+              ref={scaleBarRef}
+              className="text-[10px] font-mono-num tracking-wide text-[rgba(236,244,252,0.95)] tabular-nums leading-tight drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)]"
+            >
+              — mi
             </div>
+            <div className="h-[10px] flex items-end gap-0">
+              <div ref={scaleBarBarRef} className="h-[6px] border border-[rgba(170,193,220,0.75)] bg-[rgba(13,20,32,0.55)]" style={{ width: 100 }}>
+                <div className="w-1/2 h-full bg-[rgba(230,242,252,0.55)]" />
+              </div>
+            </div>
+            {!coarsePointer ? (
+              <div className="map-zoom-readout" aria-hidden>×{view.k.toFixed(2)}</div>
+            ) : null}
           </div>
         </div>
         {coarsePointer ? (
@@ -2008,8 +2036,22 @@ export function AtlasMap({
         >—</div>
       ) : null}
 
-      {/* Zoom controls */}
-      <div className="absolute top-3 right-3 flex flex-col gap-1.5 z-[2]">
+      {/* Zoom + interaction controls — all map-control affordances grouped in the
+          top-right column. On coarse pointers the touch-mode toggle leads the
+          stack (it used to float top-left, hidden behind the title caption). */}
+      <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-[3]">
+        {coarsePointer ? (
+          <button
+            type="button"
+            className="map-control-pill map-touch-mode-toggle pointer-events-auto"
+            aria-pressed={mapInteractive}
+            aria-label={mapInteractive ? "Switch map to page scrolling" : "Switch map to direct interaction"}
+            title={mapInteractive ? "Let page scroll gestures pass through the map" : "Use one-finger pan and pinch zoom on the map"}
+            onClick={() => setTouchMode(mode => mode === "map" ? "page" : "map")}
+          >
+            {mapInteractive ? "Scroll page" : "Use map"}
+          </button>
+        ) : null}
         <button type="button" className="map-btn" data-map-control="zoom-in" data-map-target="comfortable" onClick={() => zoomBy(1.7)} disabled={!canZoomIn} title={zoomInLabel} aria-label={zoomInLabel}>
           <Plus className="w-4 h-4" aria-hidden />
         </button>
@@ -2041,21 +2083,6 @@ export function AtlasMap({
           </button>
         ) : null}
       </div>
-
-      {coarsePointer ? (
-        <div className="absolute top-3 left-3 z-[3] pointer-events-auto">
-          <button
-            type="button"
-            className="map-control-pill"
-            aria-pressed={mapInteractive}
-            aria-label={mapInteractive ? "Switch map to page scrolling" : "Switch map to direct interaction"}
-            title={mapInteractive ? "Let page scroll gestures pass through the map" : "Use one-finger pan and pinch zoom on the map"}
-            onClick={() => setTouchMode(mode => mode === "map" ? "page" : "map")}
-          >
-            {mapInteractive ? "Scroll page" : "Use map"}
-          </button>
-        </div>
-      ) : null}
 
       {/* Map key — tucked above the button so it does not sit on the atlas by default. */}
       {!coarsePointer ? (
@@ -2124,7 +2151,7 @@ export function AtlasMap({
         <details className="map-key-notes">
           <summary>Usage notes</summary>
           <div className="map-key-notes__body">
-            <p>Tap a pin to open its sheet. Use + / − to zoom, Fit (or the 0 key) to show every pin in the frame, and drag to pan.</p>
+            <p>Click a pin to open its sheet. Scroll or double-click to zoom, use + / − or Fit (the 0 key) to frame every pin, and drag to pan.</p>
             <p>Names auto-hide when crowded: at most one label per map cell (tier wins ties). Zoom in or hover for full text.</p>
             <p>Gold halos and the connecting trail mark the current top-ranked leaders, matching the rank strip and cards.</p>
             <p>Thin colored aura: strongest place-feel signal, matching the card signature band.</p>
@@ -2138,15 +2165,11 @@ export function AtlasMap({
             </p>
             <p>Geospatial numbers are atlas screening analytics (terrain + climate + reference EO design goals). They are not live Sentinel, Landsat, or lidar products.</p>
             <p>Chart numbers in each profile use the cited normals or blends; WMO 30-year windows are often {CLIMATE_NORMALS_PERIOD} when a period is named.</p>
+            <p className="map-key-notes__credit">Projection: Albers equal-area conic, centered on North America (north is up).</p>
           </div>
         </details>
       </div>
       ) : null}
-
-      {/* Zoom indicator */}
-      <div className="absolute top-3 left-3 panel-thin px-2 py-1 text-[10px] font-mono-num text-stone pointer-events-none z-[2]">
-        ×{view.k.toFixed(2)}
-      </div>
 
       {coarsePointer && legendOpen ? (
         <div
@@ -2180,6 +2203,7 @@ export function AtlasMap({
             <div>Thin colored aura marks each place's strongest feel signal.</div>
             <div>Pale outer ring: US, Canada, or Mexico. Fill color stays the climate driver.</div>
             <div>Clusters show nearby pins. Tap one to zoom; tightly overlapping groups open a picker.</div>
+            <div className="map-key-notes__credit">Projection: Albers equal-area conic, centered on North America (north is up).</div>
           </div>
         </div>
       ) : null}
