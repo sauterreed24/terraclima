@@ -27,6 +27,7 @@ vi.mock("../components/CompareView", () => ({
     places,
     open,
     onClose,
+    onRemove,
     onCopyView,
     shareStatus,
     liveFitFilters,
@@ -38,6 +39,7 @@ vi.mock("../components/CompareView", () => ({
     places: Array<{ id: string }>;
     open: boolean;
     onClose: () => void;
+    onRemove?: (id: string) => void;
     onCopyView?: () => void;
     shareStatus?: "idle" | "shared" | "copied" | "failed";
     candidates?: Array<{ place: { id: string } }>;
@@ -59,6 +61,16 @@ vi.mock("../components/CompareView", () => ({
         <button type="button" aria-label="Close comparison" onClick={onClose}>
           Close comparison
         </button>
+        {places.map(place => (
+          <button
+            key={place.id}
+            type="button"
+            aria-label={`Remove ${place.id} from comparison`}
+            onClick={() => onRemove?.(place.id)}
+          >
+            Remove {place.id}
+          </button>
+        ))}
         <div data-testid="compare-place-ids">{places.map(place => place.id).join(",")}</div>
         <div data-testid="compare-lens">{comparisonLens}</div>
         <div data-testid="compare-candidate-count">{candidates?.length ?? 0}</div>
@@ -933,6 +945,26 @@ describe("App shell", () => {
 
     await waitFor(() => expect(shell).not.toHaveAttribute("aria-hidden"));
     expect(shell).not.toHaveAttribute("inert");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("releases the app shell when the last active compare place is removed", async () => {
+    window.history.replaceState(null, "", "/?cmp=sequim-wa,port-townsend-wa");
+    const { container } = renderApp();
+
+    expect(await screen.findByRole("dialog", { name: "2 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+    const shell = container.querySelector("[data-app-shell]");
+    expect(shell).not.toBeNull();
+
+    await waitFor(() => expect(shell).toHaveAttribute("inert"));
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove sequim-wa from comparison" }));
+    expect(screen.getByRole("dialog", { name: "1 place saved to compare" })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove port-townsend-wa from comparison" }));
+
+    await waitFor(() => expect(screen.queryByRole("dialog", { name: /place saved to compare|places side by side/ })).not.toBeInTheDocument());
+    await waitFor(() => expect(shell).not.toHaveAttribute("inert"));
+    expect(shell).not.toHaveAttribute("aria-hidden");
   }, APP_SHELL_TIMEOUT_MS);
 
   it("isolates the app shell while a place detail deep link is open", async () => {

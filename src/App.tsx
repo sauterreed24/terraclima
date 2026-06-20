@@ -1139,6 +1139,14 @@ export default function App() {
     setCompareOpen(false);
   }, []);
 
+  // CompareView only renders when places.length > 0; without this guard, removing
+  // the last active place leaves compareOpen true and the shell stuck inert.
+  useEffect(() => {
+    if (compareOpen && activeComparePlaces.length === 0) {
+      setCompareOpen(false);
+    }
+  }, [compareOpen, activeComparePlaces.length]);
+
   useEffect(() => {
     if (compareOpen) {
       compareWasOpenRef.current = true;
