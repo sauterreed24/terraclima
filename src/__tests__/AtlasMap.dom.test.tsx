@@ -133,7 +133,7 @@ describe("AtlasMap DOM controls", () => {
     expect(zoomOut).toHaveAttribute("title", zoomOut?.getAttribute("aria-label"));
     expect(fitAll).toHaveAttribute("data-map-target", "comfortable");
     expect(fitAll).toHaveAttribute("title", "Fit every pin in view (keyboard: 0)");
-    expect(screen.getByRole("img", { name: /Scroll to zoom, drag to pan/ })).toBeInTheDocument();
+    expect(screen.getByRole("application", { name: /Scroll to zoom, drag to pan/ })).toBeInTheDocument();
     expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
 
     const keyButton = screen.getByRole("button", { name: "Open map key" });
@@ -389,7 +389,7 @@ describe("AtlasMap DOM controls", () => {
     const closeBtn = within(dialog).getByRole("button", { name: "Close cluster picker" });
     expect(document.activeElement).toBe(closeBtn);
 
-    fireEvent.pointerDown(screen.getByRole("img", { name: /Atlas map of North America/ }), {
+    fireEvent.pointerDown(screen.getByRole("application", { name: /Atlas map of North America/ }), {
       button: 0,
       pointerType: "mouse",
     });
@@ -500,7 +500,7 @@ describe("AtlasMap DOM controls", () => {
 
     expect(screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /Current rank #2\. Beta Ridge/ })).toBeInTheDocument();
-    expect(screen.getByRole("img", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
+    expect(screen.getByRole("application", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
     expect(container.querySelector(".map-rank-trail__line")).toBeInTheDocument();
     expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "full");
   });
@@ -524,6 +524,29 @@ describe("AtlasMap DOM controls", () => {
       "aria-label",
       expect.stringContaining("Current map read."),
     );
+
+    // Valid <dl> structure (axe definition-list): each grouping div holds only a
+    // <dt>/<dd> pair, and the detail line is nested inside the <dd> rather than a
+    // stray <span> sibling that breaks the definition-list grouping.
+    const items = readout.querySelectorAll(".map-atlas-readout__item");
+    expect(items.length).toBeGreaterThan(0);
+    items.forEach(item => {
+      const tags = Array.from(item.children).map(c => c.tagName);
+      expect(tags).toEqual(["DT", "DD"]);
+      expect(item.querySelector("dd > span")).not.toBeNull();
+    });
+  });
+
+  it("exposes the interactive map as an application widget, not a static image", () => {
+    setCoarsePointer(false);
+    const { container } = renderMap();
+    const svg = container.querySelector("svg.atlas-svg");
+    // role=application (not img) lets the focusable map legitimately contain the
+    // focusable pin buttons (avoids the nested-interactive a11y violation) and
+    // makes screen readers pass arrow keys through to pan/zoom.
+    expect(svg).toHaveAttribute("role", "application");
+    expect(svg).toHaveAttribute("aria-roledescription", "Interactive map");
+    expect(svg).toHaveAttribute("tabindex", "0");
   });
 
   it("softens the ranked trail when the initial map field is dense", () => {
@@ -543,7 +566,7 @@ describe("AtlasMap DOM controls", () => {
       densePlaces,
     );
 
-    expect(screen.getByRole("img", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
+    expect(screen.getByRole("application", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
     expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "quiet");
   });
 

@@ -1600,7 +1600,8 @@ export function AtlasMap({
         style={{ touchAction: svgTouchAction }}
         shapeRendering="geometricPrecision"
         textRendering="geometricPrecision"
-        role="img"
+        role="application"
+        aria-roledescription="Interactive map"
         tabIndex={0}
         aria-label={mapAriaLabel}
         onPointerDown={onPointerDown}
@@ -2016,8 +2017,7 @@ export function AtlasMap({
             {atlasMapReadout.items.map(item => (
               <div key={item.label} className="map-atlas-readout__item">
                 <dt>{item.label}</dt>
-                <dd>{item.value}</dd>
-                <span>{item.detail}</span>
+                <dd>{item.value}<span>{item.detail}</span></dd>
               </div>
             ))}
           </dl>
