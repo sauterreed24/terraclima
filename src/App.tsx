@@ -1057,6 +1057,15 @@ export default function App() {
     setEvictedComparePlaceId(null);
   }, [evictedComparePlaceId]);
 
+  // CompareView only renders when there is at least one resolved place. If the
+  // last active slot is removed (or every id is stale), close compare so the
+  // app shell is not left inert behind an invisible overlay.
+  useEffect(() => {
+    if (compareOpen && activeComparePlaces.length === 0) {
+      setCompareOpen(false);
+    }
+  }, [compareOpen, activeComparePlaces.length]);
+
   const openCompare = useCallback((opts?: { trigger?: HTMLElement | null }) => {
     preloadCompareView();
     if (opts?.trigger) {
