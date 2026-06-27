@@ -139,9 +139,8 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
             return (
               <article
                 key={theme.id}
-                className={`panel collection-curation-card climate-trip-card p-4 anim-fade-in ${active ? "glow-glacier" : ""}`}
+                className={`panel collection-curation-card climate-trip-card p-4 anim-fade-in ${active ? "glow-glacier tc-curated-card--active" : ""}`}
                 data-tone={theme.tone}
-                style={active ? { borderColor: "rgba(140,200,224,0.75)" } : undefined}
               >
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="min-w-0">

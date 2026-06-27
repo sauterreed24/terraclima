@@ -33,6 +33,8 @@ import { runScenarioRanking } from "./lib/climate-processor";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
 import { CompareLoadingFallback } from "./components/CompareLoadingFallback";
+import { LazyRouteErrorBoundary } from "./components/LazyRouteErrorBoundary";
+import { RouteLoadingFallback } from "./components/RouteLoadingFallback";
 import { resonantWindowFor } from "./lib/best-months";
 import { buildExplorerScoutBrief, type ExplorerScoutBrief } from "./lib/explorer-scout-brief";
 import { buildShortlistPacketCue } from "./lib/shortlist-packet";
@@ -1612,16 +1614,18 @@ export default function App() {
           {view === "trips" && (
             <div className="flex-1 min-w-0">
               <div className="max-w-6xl mx-auto">
-                <Suspense fallback={<RouteLoadingFallback label="Loading Climate Trips" />}>
-                  <ClimateTripsView
-                    onOpenPlace={onOpenPlaceFromTrips}
-                    onPickTripTheme={onPickTripTheme}
-                    onComparePlaces={comparePlaces}
-                    onPreloadPlaceDetail={preloadPlaceDetail}
-                    onPreloadCompare={preloadCompareView}
-                    activeThemeId={activeCollection && CLIMATE_TRIP_THEME_BY_ID[activeCollection] ? activeCollection : undefined}
-                  />
-                </Suspense>
+                <LazyRouteErrorBoundary routeLabel="Climate Trips">
+                  <Suspense fallback={<RouteLoadingFallback label="Climate Trips" />}>
+                    <ClimateTripsView
+                      onOpenPlace={onOpenPlaceFromTrips}
+                      onPickTripTheme={onPickTripTheme}
+                      onComparePlaces={comparePlaces}
+                      onPreloadPlaceDetail={preloadPlaceDetail}
+                      onPreloadCompare={preloadCompareView}
+                      activeThemeId={activeCollection && CLIMATE_TRIP_THEME_BY_ID[activeCollection] ? activeCollection : undefined}
+                    />
+                  </Suspense>
+                </LazyRouteErrorBoundary>
               </div>
             </div>
           )}
@@ -1636,13 +1640,15 @@ export default function App() {
                     Hand-assembled routes through the atlas: rain shadows, sky islands, eternal springs, lake snowbelts, and other climate families. Pin one to narrow the map.
                   </p>
                 </div>
-                <Suspense fallback={<RouteLoadingFallback label="Loading Collections" />}>
-                  <CollectionsView
-                    onOpenPlace={onOpenPlaceFromCollections}
-                    onPick={onPickCollection}
-                    activeId={activeCollection ?? undefined}
-                  />
-                </Suspense>
+                <LazyRouteErrorBoundary routeLabel="Collections">
+                  <Suspense fallback={<RouteLoadingFallback label="Collections" />}>
+                    <CollectionsView
+                      onOpenPlace={onOpenPlaceFromCollections}
+                      onPick={onPickCollection}
+                      activeId={activeCollection ?? undefined}
+                    />
+                  </Suspense>
+                </LazyRouteErrorBoundary>
               </div>
             </div>
           )}
@@ -1657,9 +1663,11 @@ export default function App() {
                     Microclimate has a grammar. Lapse rate, cold-air pooling, orographic lift, and thermal belts give readers and agents the words to explain why a place feels unlike its neighbors.
                   </p>
                 </div>
-                <Suspense fallback={<RouteLoadingFallback label="Loading Learn" />}>
-                  <LearnMode onOpenPlace={onOpenPlaceFromLearn} />
-                </Suspense>
+                <LazyRouteErrorBoundary routeLabel="Learn">
+                  <Suspense fallback={<RouteLoadingFallback label="Learn" />}>
+                    <LearnMode onOpenPlace={onOpenPlaceFromLearn} />
+                  </Suspense>
+                </LazyRouteErrorBoundary>
               </div>
             </div>
           )}
@@ -1690,37 +1698,40 @@ export default function App() {
       </div>
 
       {selectedPlace ? (
-        <Suspense
-          fallback={(
-            <PlaceDetailLoadingFallback
-              placeName={selectedPlace.name}
+        <LazyRouteErrorBoundary routeLabel="Place profile">
+          <Suspense
+            fallback={(
+              <PlaceDetailLoadingFallback
+                placeName={selectedPlace.name}
+                onClose={closeDetail}
+                occluded={placeDetailOccluded}
+              />
+            )}
+          >
+            <PlaceDetail
+              place={selectedPlace}
               onClose={closeDetail}
+              onCompareToggle={toggleCompare}
+              inCompareIds={compareIds}
+              onPickArchetype={pickArchetype}
+              onOpenPlace={openPlace}
+              liveFitFilters={filters}
+              residencyFitContext={dossierFitContext}
+              bookmarked={selectedPlace ? bookmarkIds.has(selectedPlace.id) : false}
+              onBookmarkToggle={toggleBookmark}
+              homePlace={homeBasePlace}
+              onHomeBaseToggle={toggleHomeBase}
               occluded={placeDetailOccluded}
+              scenario={climateScenario}
+              animateEntry={animatePlaceDetailEntry}
             />
-          )}
-        >
-          <PlaceDetail
-            place={selectedPlace}
-            onClose={closeDetail}
-            onCompareToggle={toggleCompare}
-            inCompareIds={compareIds}
-            onPickArchetype={pickArchetype}
-            onOpenPlace={openPlace}
-            liveFitFilters={filters}
-            residencyFitContext={dossierFitContext}
-            bookmarked={selectedPlace ? bookmarkIds.has(selectedPlace.id) : false}
-            onBookmarkToggle={toggleBookmark}
-            homePlace={homeBasePlace}
-            onHomeBaseToggle={toggleHomeBase}
-            occluded={placeDetailOccluded}
-            scenario={climateScenario}
-            animateEntry={animatePlaceDetailEntry}
-          />
-        </Suspense>
+          </Suspense>
+        </LazyRouteErrorBoundary>
       ) : null}
       {compareOpen ? (
-        <Suspense fallback={<CompareLoadingFallback places={activeComparePlaces} onClose={closeCompare} />}>
-          <CompareView
+        <LazyRouteErrorBoundary routeLabel="Compare">
+          <Suspense fallback={<CompareLoadingFallback places={activeComparePlaces} onClose={closeCompare} />}>
+            <CompareView
             places={activeComparePlaces}
             open={compareOpen}
             onClose={closeCompare}
@@ -1741,18 +1752,11 @@ export default function App() {
             scenario={climateScenario}
             occluded={compareViewOccluded}
           />
-        </Suspense>
+          </Suspense>
+        </LazyRouteErrorBoundary>
       ) : null}
 
       {showShortcuts && <ShortcutsOverlay onClose={closeShortcutsHelp} />}
-    </div>
-  );
-}
-
-function RouteLoadingFallback({ label }: { label: string }) {
-  return (
-    <div role="status" aria-live="polite" className="panel-thin p-4 text-sm text-stone-readable">
-      {label}...
     </div>
   );
 }

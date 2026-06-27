@@ -27,6 +27,17 @@ export interface PwaController {
   unregister: () => Promise<void>;
 }
 
+/** Set before SKIP_WAITING so controllerchange reload is user-initiated only. */
+let userAcceptedServiceWorkerUpdate = false;
+
+export function markServiceWorkerUpdateAccepted(): void {
+  userAcceptedServiceWorkerUpdate = true;
+}
+
+export function shouldReloadOnServiceWorkerControllerChange(): boolean {
+  return userAcceptedServiceWorkerUpdate;
+}
+
 /** True when the browser supports SW *and* we're not in dev. */
 export function shouldRegisterServiceWorker(env: { DEV?: boolean } = import.meta.env): boolean {
   if (typeof navigator === "undefined" || !("serviceWorker" in navigator)) return false;
@@ -54,6 +65,7 @@ export function registerServiceWorker(
 ): PwaController {
   const controller: PwaController = {
     activateUpdate(registration) {
+      markServiceWorkerUpdateAccepted();
       registration.waiting?.postMessage({ type: "SKIP_WAITING" });
     },
     async unregister() {
@@ -88,9 +100,11 @@ export function registerServiceWorker(
           }
         });
       });
-      // When the new SW takes over, reload once so the UI matches the new bundle.
+      // Reload only after the user explicitly accepts an update — never on the
+      // silent first-install takeover or an auto-activated waiting worker.
       let refreshing = false;
       navigator.serviceWorker.addEventListener("controllerchange", () => {
+        if (!shouldReloadOnServiceWorkerControllerChange()) return;
         if (refreshing) return;
         refreshing = true;
         window.location.reload();

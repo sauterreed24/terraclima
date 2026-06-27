@@ -7,21 +7,29 @@
  * A single rAF-throttled scroll listener keeps the cost a sub-millisecond
  * style-write per frame.
  */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function PlaceReadingProgress({ panelRef }: { panelRef: { current: HTMLElement | null } }) {
   const barRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const [progressPercent, setProgressPercent] = useState(0);
 
   useEffect(() => {
     const el = panelRef.current;
     const bar = barRef.current;
     if (!el || !bar) return;
     let raf = 0;
+    let lastAnnounced = 0;
     const update = () => {
       raf = 0;
       const max = el.scrollHeight - el.clientHeight;
       const pct = max <= 0 ? 0 : Math.min(1, Math.max(0, el.scrollTop / max));
       bar.style.transform = `scaleX(${pct})`;
+      const rounded = Math.round(pct * 100);
+      if (rounded !== lastAnnounced) {
+        lastAnnounced = rounded;
+        setProgressPercent(rounded);
+      }
     };
     const onScroll = () => {
       if (raf) return;
@@ -36,8 +44,16 @@ export function PlaceReadingProgress({ panelRef }: { panelRef: { current: HTMLEl
   }, [panelRef]);
 
   return (
-    <div className="tc-detail-progress-track" aria-hidden="true">
-      <div ref={barRef} className="tc-detail-progress-fill" />
+    <div
+      ref={trackRef}
+      className="tc-detail-progress-track"
+      role="progressbar"
+      aria-label="Dossier reading progress"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={progressPercent}
+    >
+      <div ref={barRef} className="tc-detail-progress-fill" aria-hidden="true" />
     </div>
   );
 }

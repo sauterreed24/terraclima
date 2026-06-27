@@ -1,6 +1,11 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from "vitest";
-import { resolveServiceWorkerUrl, shouldRegisterServiceWorker } from "../pwa";
+import {
+  markServiceWorkerUpdateAccepted,
+  resolveServiceWorkerUrl,
+  shouldRegisterServiceWorker,
+  shouldReloadOnServiceWorkerControllerChange,
+} from "../pwa";
 
 describe("resolveServiceWorkerUrl", () => {
   it("joins a base path that already ends with /", () => {
@@ -43,5 +48,13 @@ describe("shouldRegisterServiceWorker", () => {
         configurable: true,
       });
     }
+  });
+});
+
+describe("service worker reload gating", () => {
+  it("does not reload until the user accepts an update", () => {
+    expect(shouldReloadOnServiceWorkerControllerChange()).toBe(false);
+    markServiceWorkerUpdateAccepted();
+    expect(shouldReloadOnServiceWorkerControllerChange()).toBe(true);
   });
 });

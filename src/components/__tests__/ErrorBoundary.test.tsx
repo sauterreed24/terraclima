@@ -26,6 +26,25 @@ describe("ErrorBoundary", () => {
     expect(screen.getByText("Healthy subtree")).toBeInTheDocument();
   });
 
+  it("renders chunk-specific recovery when a bundle fails to load", () => {
+    const reloadPage = vi.fn();
+    class ChunkBoom extends React.Component {
+      render() {
+        throw new Error("Failed to fetch dynamically imported module");
+      }
+    }
+
+    render(
+      <ErrorBoundary reloadPage={reloadPage}>
+        <ChunkBoom />
+      </ErrorBoundary>,
+    );
+
+    expect(screen.getByRole("alert")).toHaveTextContent("Atlas bundle failed to load");
+    fireEvent.click(screen.getByRole("button", { name: "Retry download" }));
+    expect(reloadPage).toHaveBeenCalledTimes(1);
+  });
+
   it("renders the recovery alert when a child throws", () => {
     const reloadPage = vi.fn();
 

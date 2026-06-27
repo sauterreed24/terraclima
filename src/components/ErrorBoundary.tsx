@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
+import { isChunkLoadError } from "../lib/chunk-load-error";
 
 interface Props {
   children: ReactNode;
@@ -7,6 +8,7 @@ interface Props {
 
 interface State {
   err: Error | null;
+  chunkError: boolean;
 }
 
 /**
@@ -14,10 +16,10 @@ interface State {
  * Operational deployments: users see a recovery affordance instead of a blank root.
  */
 export class ErrorBoundary extends Component<Props, State> {
-  state: State = { err: null };
+  state: State = { err: null, chunkError: false };
 
   static getDerivedStateFromError(err: Error): State {
-    return { err };
+    return { err, chunkError: isChunkLoadError(err) };
   }
 
   componentDidCatch(err: Error, info: ErrorInfo) {
@@ -44,11 +46,16 @@ export class ErrorBoundary extends Component<Props, State> {
 
   render() {
     if (this.state.err) {
+      const chunkError = this.state.chunkError;
       return (
         <div role="alert" className="tc-error-boundary">
-          <p className="font-atlas text-lg mb-2 text-ice">Something went wrong</p>
+          <p className="font-atlas text-lg mb-2 text-ice">
+            {chunkError ? "Atlas bundle failed to load" : "Something went wrong"}
+          </p>
           <p className="text-sm text-stone mb-4 max-w-md">
-            The atlas hit an unexpected error. Open a fresh atlas if this shared URL keeps failing, or retry the current view.
+            {chunkError
+              ? "A Terraclima code bundle failed to download — common after a deploy or on a flaky connection. Retry the download or open a fresh atlas."
+              : "The atlas hit an unexpected error. Open a fresh atlas if this shared URL keeps failing, or retry the current view."}
           </p>
           <div className="tc-error-boundary__actions">
             <button
@@ -57,17 +64,17 @@ export class ErrorBoundary extends Component<Props, State> {
               // Recovery UI: focus must land on the safest actionable control immediately.
               // eslint-disable-next-line jsx-a11y/no-autofocus -- intentional error-recovery affordance
               autoFocus
-              onClick={this.openFreshAtlas}
-            >
-              Open fresh atlas
-            </button>
-            <button
-              type="button"
-              className="tc-error-boundary__btn tc-error-boundary__btn--secondary"
-              onClick={this.reloadPage}
-            >
-              Retry current view
-            </button>
+            onClick={chunkError ? this.reloadPage : this.openFreshAtlas}
+          >
+            {chunkError ? "Retry download" : "Open fresh atlas"}
+          </button>
+          <button
+            type="button"
+            className="tc-error-boundary__btn tc-error-boundary__btn--secondary"
+            onClick={this.reloadPage}
+          >
+            {chunkError ? "Open fresh atlas" : "Retry current view"}
+          </button>
           </div>
         </div>
       );
