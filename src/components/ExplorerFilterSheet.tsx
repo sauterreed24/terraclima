@@ -110,7 +110,7 @@ export const ExplorerFilterSheet = memo(
       sync();
       return () => {
         d.removeEventListener("toggle", sync);
-        onOpenChange?.(false);
+        if (d.open) onOpenChange?.(false);
       };
     }, [onOpenChange]);
 

@@ -1,10 +1,32 @@
 // @vitest-environment jsdom
 
-import { describe, expect, it } from "vitest";
-import { renderHook } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { renderHook, waitFor } from "@testing-library/react";
 import { useClimateProcessor, type UseClimateProcessorInput } from "../use-climate-processor";
 import { PLACES } from "../../data/places";
 import type { ValidatedFilterInput } from "../../lib/scoring";
+
+class BrokenWorker {
+  static instances: BrokenWorker[] = [];
+  constructor(_url: string | URL, _options?: WorkerOptions) {
+    BrokenWorker.instances.push(this);
+  }
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject) {
+    if (type !== "error") return;
+    queueMicrotask(() => {
+      if (typeof listener === "function") listener(new Event("error"));
+      else listener.handleEvent(new Event("error"));
+    });
+  }
+  removeEventListener() {}
+  postMessage() {}
+  terminate() {}
+}
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+  BrokenWorker.instances = [];
+});
 
 const emptyFilters: ValidatedFilterInput = {
   countries: [],
@@ -62,5 +84,24 @@ describe("useClimateProcessor (synchronous fallback)", () => {
       }
     }
     expect(changed).toBe(true);
+  });
+
+  it("falls back to synchronous rows when the worker errors", async () => {
+    vi.stubGlobal("Worker", BrokenWorker);
+
+    const { result } = renderHook(() =>
+      useClimateProcessor({
+        scenario: "ssp585",
+        ranking: "most-comfortable",
+        filters: emptyFilters,
+      }),
+    );
+
+    await waitFor(() => {
+      expect(result.current.projecting).toBe(false);
+      expect(result.current.status).toBe("sync");
+    });
+    expect(result.current.rows).toHaveLength(PLACES.length);
+    expect(BrokenWorker.instances.length).toBeGreaterThan(0);
   });
 });

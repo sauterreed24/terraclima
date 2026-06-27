@@ -542,6 +542,32 @@ describe("PlaceDetail glossary driver chip a11y", () => {
     expect(chip!).toHaveAttribute("aria-expanded", "false");
     expect(chip!).toHaveFocus();
   });
+
+  it("wires header bookmark and compare toggles", () => {
+    const place = PLACES_BY_ID["sequim-wa"]!;
+    const onBookmarkToggle = vi.fn();
+    const onCompareToggle = vi.fn();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail
+          place={place}
+          onClose={() => undefined}
+          bookmarked={false}
+          onBookmarkToggle={onBookmarkToggle}
+          onCompareToggle={onCompareToggle}
+          inCompareIds={new Set()}
+          animateEntry={false}
+        />
+      </UnitProvider>,
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: `Pin ${place.name} to your shortlist` }));
+    expect(onBookmarkToggle).toHaveBeenCalledWith(place.id);
+
+    fireEvent.click(screen.getByRole("button", { name: `Add ${place.name} to compare` }));
+    expect(onCompareToggle).toHaveBeenCalledWith(place.id);
+  });
 });
 
 describe("PlaceDetail scenario honesty banner", () => {
