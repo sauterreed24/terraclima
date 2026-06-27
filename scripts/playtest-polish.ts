@@ -21,6 +21,7 @@ import {
   exportShortlistAsGeoJSON,
   exportShortlistAsICS,
   exportShortlistAsJSON,
+  exportShortlistAsMarkdown,
 } from "../src/lib/shortlist-export";
 import { motionPolicy } from "../src/lib/device-profile";
 import { applyTheme } from "../src/lib/theme";
@@ -77,6 +78,7 @@ async function main(): Promise<void> {
     exportShortlistAsCSV,
     exportShortlistAsGeoJSON,
     exportShortlistAsICS,
+    exportShortlistAsMarkdown,
   ]) {
     const f = fn(sample, { generatedAt: new Date("2026-01-01T00:00:00Z") });
     if (!f.body || f.body.length < 10) throw new Error(`empty export from ${fn.name}`);
@@ -93,6 +95,79 @@ async function main(): Promise<void> {
     if (clip !== "https://x.test/?a=1") throw new Error("clipboard share fallback failed");
   } finally {
     Object.defineProperty(globalThis, "navigator", { value: prevNav, configurable: true });
+  }
+
+  // execCommand clipboard fallback when navigator.clipboard is absent.
+  const execDom = new JSDOM("<!DOCTYPE html><html><head></head><body></body></html>");
+  const prevDocument = globalThis.document;
+  const prevExecNav = globalThis.navigator;
+  Object.defineProperty(globalThis, "document", { value: execDom.window.document, configurable: true });
+  Object.defineProperty(globalThis, "navigator", { value: {}, configurable: true });
+  let execCopied = "";
+  execDom.window.document.execCommand = (command: string) => {
+    if (command !== "copy") return false;
+    const textarea = execDom.window.document.querySelector("textarea");
+    execCopied = textarea?.value ?? "";
+    return true;
+  };
+  try {
+    const outcome = await shareUrl({ url: "https://x.test/?exec=1", title: "T", text: "hi" });
+    if (outcome !== "copied") throw new Error(`execCommand share fallback expected copied, got ${outcome}`);
+    if (execCopied !== "https://x.test/?exec=1") throw new Error(`execCommand copied wrong text: ${execCopied}`);
+  } finally {
+    Object.defineProperty(globalThis, "document", { value: prevDocument, configurable: true });
+    Object.defineProperty(globalThis, "navigator", { value: prevExecNav, configurable: true });
+  }
+
+  const cmpUrl = formatAppRelativeUrl({
+    view: "explorer",
+    compareIds: ["sequim-wa", "santa-barbara-ca"],
+    collectionExists: () => true,
+    validatePlaceId,
+  });
+  if (!cmpUrl.includes("cmp=sequim-wa") || !cmpUrl.includes("santa-barbara-ca")) {
+    throw new Error(`compare URL missing cmp ids: ${cmpUrl}`);
+  }
+  const cmpParsed = parseAppSearch(new URL(cmpUrl, "https://example.com").search, { validatePlaceId });
+  if (cmpParsed.compareIds.length !== 2) throw new Error("compareIds parse failed");
+
+  const stackedUrl = formatAppRelativeUrl({
+    view: "explorer",
+    placeId: "sequim-wa",
+    compareIds: ["sequim-wa", "santa-barbara-ca"],
+    collectionExists: () => true,
+    validatePlaceId,
+  });
+  if (!stackedUrl.includes("p=sequim-wa") || !stackedUrl.includes("cmp=")) {
+    throw new Error(`stacked place+compare URL incomplete: ${stackedUrl}`);
+  }
+
+  const homeUrl = formatAppRelativeUrl({
+    view: "explorer",
+    homeBaseId: "sequim-wa",
+    collectionExists: () => true,
+    validatePlaceId,
+  });
+  if (!homeUrl.includes("hb=sequim-wa")) throw new Error(`home base URL missing hb: ${homeUrl}`);
+  const homeParsed = parseAppSearch(new URL(homeUrl, "https://example.com").search, { validatePlaceId });
+  if (homeParsed.homeBaseId !== "sequim-wa") throw new Error("homeBaseId parse failed");
+
+  const colScnUrl = formatAppRelativeUrl({
+    view: "explorer",
+    collectionId: "rain-shadows",
+    scenario: "ssp245",
+    collectionExists: id => id === "rain-shadows",
+    validatePlaceId,
+  });
+  if (!colScnUrl.includes("col=rain-shadows") || !colScnUrl.includes("scn=ssp245")) {
+    throw new Error(`collection+scenario URL incomplete: ${colScnUrl}`);
+  }
+  const colScnParsed = parseAppSearch(new URL(colScnUrl, "https://example.com").search, {
+    validatePlaceId,
+    collectionExists: id => id === "rain-shadows",
+  });
+  if (colScnParsed.collectionId !== "rain-shadows" || colScnParsed.scenario !== "ssp245") {
+    throw new Error("collection+scenario parse failed");
   }
 
   const polluted = filterStateFromValidated({
@@ -278,6 +353,13 @@ async function main(): Promise<void> {
     "@container tc-comfort-precision",
   ]) {
     if (!styles.includes(needle)) throw new Error(`styles.css missing post-v4.8 polish: ${needle}`);
+  }
+  for (const needle of [
+    ".tc-curated-card--active",
+    ".tc-pwa-update-banner",
+    'html[data-theme="dark"] .panel-field-story::before',
+  ]) {
+    if (!styles.includes(needle)) throw new Error(`styles.css missing PR #253 token: ${needle}`);
   }
 
   // Corpus sunshine + UTCI* comfort path on a flagship B place.

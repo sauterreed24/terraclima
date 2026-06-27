@@ -173,4 +173,33 @@ describe("ShortlistExportMenu", () => {
     await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledOnce(), { timeout: 5000 });
     await waitFor(() => expect(screen.getByRole("status")).toHaveTextContent("Download blocked. Try another format or browser."));
   });
+
+  it("downloads CSV, GeoJSON, and calendar exports", async () => {
+    render(<ShortlistExportMenu places={[PLACES[0]!, PLACES[1]!]} />);
+    fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+
+    fireEvent.click(screen.getByRole("menuitem", { name: /^CSV/i }));
+    await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledTimes(1), { timeout: 5000 });
+    expect(vi.mocked(downloadBlobFile).mock.calls[0]![2]).toBe("text/csv");
+
+    fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /^GeoJSON/i }));
+    await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledTimes(2), { timeout: 5000 });
+    expect(vi.mocked(downloadBlobFile).mock.calls[1]![2]).toBe("application/geo+json");
+
+    fireEvent.click(screen.getByRole("button", { name: "Export shortlist" }));
+    fireEvent.click(screen.getByRole("menuitem", { name: /^Calendar/i }));
+    await waitFor(() => expect(downloadBlobFile).toHaveBeenCalledTimes(3), { timeout: 5000 });
+    expect(vi.mocked(downloadBlobFile).mock.calls[2]![2]).toBe("text/calendar");
+  });
+
+  it("closes the export menu on Escape", async () => {
+    render(<ShortlistExportMenu places={[PLACES[0]!]} />);
+    const trigger = screen.getByRole("button", { name: "Export shortlist" });
+    fireEvent.click(trigger);
+    const menu = screen.getByRole("menu", { name: "Export shortlist format" });
+    fireEvent.keyDown(menu, { key: "Escape" });
+    expect(screen.queryByRole("menu", { name: "Export shortlist format" })).not.toBeInTheDocument();
+    await waitFor(() => expect(trigger).toHaveFocus());
+  });
 });

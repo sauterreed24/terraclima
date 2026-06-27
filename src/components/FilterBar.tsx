@@ -664,7 +664,10 @@ function LensReceipt({
         : "Broad atlas scan with ranking only.";
 
   return (
-    <section className="lens-receipt" aria-label="Current Explorer lens" aria-live="polite">
+    <section className="lens-receipt" aria-label="Current Explorer lens">
+      <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+        {`${rankingLabel}. ${lensLine}`}
+      </div>
       <div className="lens-receipt__head">
         <span className="lens-receipt__icon" aria-hidden>
           <Compass className="w-4 h-4" />

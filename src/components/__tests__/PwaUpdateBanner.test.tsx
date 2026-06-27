@@ -12,7 +12,7 @@ describe("PwaUpdateBanner", () => {
     const onDismiss = vi.fn();
     render(<PwaUpdateBanner onRefresh={onRefresh} onDismiss={onDismiss} />);
 
-    expect(screen.getByRole("status")).toHaveTextContent("Atlas update ready");
+    expect(screen.getByRole("region", { name: "Atlas update" })).toHaveTextContent("Atlas update ready");
     fireEvent.click(screen.getByRole("button", { name: "Refresh now" }));
     expect(onRefresh).toHaveBeenCalledTimes(1);
 

@@ -2,7 +2,7 @@
 import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { PLACES } from "../../data/places";
+import { PLACES, PLACES_BY_ID } from "../../data/places";
 import { buildCompareDecisionProfiles, compareLensScore } from "../../lib/compare-finalist-verdict";
 import type { CompareCandidate, ComparisonLensId } from "../../lib/compare-workbench";
 import type { LiveFitFilters, LiveFitPresetId } from "../../lib/live-fit";
@@ -49,6 +49,9 @@ function renderCompare({
   candidates,
   comparisonLens,
   onComparisonLensChange,
+  homePlace,
+  scenario,
+  occluded,
   places = PLACES.slice(0, 4),
 }: {
   onCopyView?: () => void;
@@ -62,6 +65,9 @@ function renderCompare({
   candidates?: CompareCandidate[];
   comparisonLens?: ComparisonLensId;
   onComparisonLensChange?: (lens: ComparisonLensId) => void;
+  homePlace?: Place | null;
+  scenario?: "now" | "ssp245" | "ssp585";
+  occluded?: boolean;
   places?: Place[];
 } = {}) {
   render(
@@ -80,6 +86,9 @@ function renderCompare({
         candidates={candidates}
         comparisonLens={comparisonLens}
         onComparisonLensChange={onComparisonLensChange}
+        homePlace={homePlace}
+        scenario={scenario}
+        occluded={occluded}
       />
     </UnitProvider>,
   );
@@ -666,5 +675,31 @@ describe("CompareView", () => {
       </UnitProvider>,
     );
     expect(screen.queryByRole("note")).not.toBeInTheDocument();
+  });
+
+  it("shows home-base delta strips and an add-home CTA when a baseline is set", () => {
+    const home = PLACES_BY_ID["santa-barbara-ca"]!;
+    const places = PLACES.filter(place => place.id !== home.id).slice(0, 2);
+    const onAddPlace = vi.fn();
+    renderCompare({
+      places,
+      homePlace: home,
+      onAddPlace,
+    });
+
+    expect(screen.getAllByText(/Vs home/i).length).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole("button", { name: `Add your home base, ${home.name}, to the comparison` }));
+    expect(onAddPlace).toHaveBeenCalledWith(home.id);
+  });
+
+  it("marks the compare dialog occluded when stacked above another overlay", () => {
+    renderCompare({ occluded: true, places: PLACES.slice(0, 2) });
+    expect(screen.getByRole("dialog", { hidden: true })).toHaveAttribute("aria-hidden", "true");
+  });
+
+  it("shows the SSP2-4.5 scenario banner and scoring lens receipt", () => {
+    renderCompare({ scenario: "ssp245", places: PLACES.slice(0, 2) });
+    expect(screen.getByRole("note")).toHaveTextContent(/SSP2-4.5/);
+    expect(screen.getByLabelText("Comparison scoring lens")).toHaveTextContent(/SSP2-4.5/);
   });
 });
