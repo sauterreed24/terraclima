@@ -92,6 +92,7 @@ export function useClimateProcessor(input: UseClimateProcessorInput): UseClimate
   const workerRef = useRef<Worker | null>(null);
   const requestIdRef = useRef(0);
   const [workerState, setWorkerState] = useState<{ signature: string; rows: RankedRow[] } | null>(null);
+  const [workerBroken, setWorkerBroken] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -101,7 +102,7 @@ export function useClimateProcessor(input: UseClimateProcessorInput): UseClimate
   }, []);
 
   useEffect(() => {
-    if (disableWorker) return;
+    if (disableWorker || workerBroken) return;
     if (!workerRef.current) workerRef.current = createWorker();
     const worker = workerRef.current;
     if (!worker) return; // unsupported env → synchronous seed stands
@@ -111,13 +112,25 @@ export function useClimateProcessor(input: UseClimateProcessorInput): UseClimate
       if (event.data.requestId !== requestIdRef.current) return; // ignore stale
       setWorkerState({ signature, rows: event.data.rows });
     };
+    const onError = () => {
+      worker.removeEventListener("message", onMessage);
+      worker.removeEventListener("error", onError);
+      worker.terminate();
+      workerRef.current = null;
+      setWorkerState(null);
+      setWorkerBroken(true);
+    };
     worker.addEventListener("message", onMessage);
+    worker.addEventListener("error", onError);
     worker.postMessage(buildRequest({ scenario, ranking, filters, poolIds, nowEpochMs }, requestId));
-    return () => worker.removeEventListener("message", onMessage);
+    return () => {
+      worker.removeEventListener("message", onMessage);
+      worker.removeEventListener("error", onError);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [disableWorker, signature]);
+  }, [disableWorker, workerBroken, signature]);
 
-  if (disableWorker || workerRef.current == null) {
+  if (disableWorker || workerBroken || workerRef.current == null) {
     return { rows: syncRows, status: "sync", projecting: false };
   }
 

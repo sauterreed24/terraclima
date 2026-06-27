@@ -19,13 +19,27 @@ const emptyFilters: ValidatedFilterInput = {
 };
 
 describe("useClimateProcessor (synchronous fallback)", () => {
-  it("returns a synchronous ranking when the worker is disabled", () => {
+  it("falls back to synchronous rows when the worker is disabled", () => {
     const { result } = renderHook(() =>
       useClimateProcessor({ scenario: "now", ranking: "most-comfortable", filters: emptyFilters, disableWorker: true }),
     );
     expect(result.current.status).toBe("sync");
     expect(result.current.projecting).toBe(false);
     expect(result.current.rows).toHaveLength(PLACES.length);
+  });
+
+  it("mirrors disableWorker parity when workerBroken would be set", () => {
+    const { result } = renderHook(() =>
+      useClimateProcessor({
+        scenario: "ssp245",
+        ranking: "most-comfortable",
+        filters: emptyFilters,
+        disableWorker: true,
+      }),
+    );
+    expect(result.current.status).toBe("sync");
+    expect(result.current.projecting).toBe(false);
+    expect(result.current.rows.length).toBeGreaterThan(0);
   });
 
   it("reprojects scores when the scenario changes", () => {
