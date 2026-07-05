@@ -766,6 +766,49 @@ describe("AtlasMap DOM controls", () => {
     }
   });
 
+  it("keeps pins on their geographic anchors when zoomed in", () => {
+    setCoarsePointer(false);
+    const places = [
+      makePlace({ id: "solo", name: "Solo Peak", lat: 40, lon: -100, tier: "A" }),
+    ];
+    const { container } = renderMap(vi.fn(), [], places);
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+    svg.getBoundingClientRect = () =>
+      ({ left: 0, top: 0, right: 280, bottom: 260, width: 280, height: 260, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect;
+
+    const zoomGroup = Array.from(svg.querySelectorAll("g")).find(el => /scale\(/.test(el.getAttribute("transform") ?? ""));
+    expect(zoomGroup).toBeTruthy();
+    const before = /translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/.exec(zoomGroup!.getAttribute("transform") ?? "");
+    expect(before).toBeTruthy();
+    const k0 = parseFloat(before![3]!);
+
+    fireEvent.click(screen.getByRole("button", { name: "Zoom in (+)" }));
+
+    const after = /translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/.exec(zoomGroup!.getAttribute("transform") ?? "");
+    expect(after).toBeTruthy();
+    const k1 = parseFloat(after![3]!);
+    expect(k1).toBeGreaterThan(k0);
+
+    const marker = container.querySelector('[data-marker-id="solo"]') as SVGGElement;
+    const markerTransform = marker.getAttribute("transform") ?? "";
+    const pin = /translate\(([-\d.]+) ([-\d.]+)\)/.exec(markerTransform);
+    expect(pin).toBeTruthy();
+    const px = parseFloat(pin![1]!);
+    const py = parseFloat(pin![2]!);
+    const vx = parseFloat(after![1]!);
+    const vy = parseFloat(after![2]!);
+    const expectedScreenX = vx + k1 * px;
+    const expectedScreenY = vy + k1 * py;
+
+    // Counter-scale wrapper keeps screen anchor tied to map projection math.
+    const innerScale = marker.querySelector("g[transform^=\"scale(\"]")?.getAttribute("transform") ?? "";
+    expect(innerScale).toMatch(new RegExp(`scale\\(${1 / k1}\\)`));
+
+    // If pins used a parent scale(1/k) from the origin, screen position would be vx+px (wrong at k>1).
+    expect(Math.abs(expectedScreenX - (vx + px))).toBeGreaterThan(1);
+    expect(Math.abs(expectedScreenY - (vy + py))).toBeGreaterThan(1);
+  });
+
   it("shows the rich hover preview immediately when a marker receives keyboard focus", () => {
     setCoarsePointer(false);
     renderMap(vi.fn(), [], defaultMapPlaces());

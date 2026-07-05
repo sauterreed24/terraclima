@@ -322,9 +322,10 @@ function smoothTrailPath(points: Array<[number, number]>): string {
  * Performance:
  *   - Pan is applied directly to the SVG transform via a ref + RAF, so no
  *     React re-renders fire during a drag (markers, borders, etc. stay put).
- *   - Wheel/pinch zoom use the same imperative gesture buffer; React `view`
- *     commits once the gesture idles (~80 ms wheel, pointer-up for pinch).
- *   - Marker counter-scale is applied on shared parent `<g>` refs, not per pin.
+ *   - Wheel/pinch zoom update the outer SVG transform imperatively during the
+ *     gesture; React `view` commits once the gesture ends (~50 ms wheel idle,
+ *     pointer-up for pinch). Each pin counter-scales with translate→scale(1/k).
+ *   - `data-gesturing` is toggled on the shell via DOM, not React state.
  *   - All geo strokes use vector-effect="non-scaling-stroke" so we don't
  *     have to recompute stroke widths on zoom.
  *   - Markers are React.memo'd; hover uses a compact preview first, rich
@@ -370,6 +371,9 @@ export const AtlasMap = memo(function AtlasMap({
   const [navAnnounce, setNavAnnounce] = useState("");
 
   const shellRef = useRef<HTMLDivElement>(null);
+  const setShellGesturing = useCallback((active: boolean) => {
+    shellRef.current?.setAttribute("data-gesturing", active ? "true" : "false");
+  }, []);
   const legendToggleRef = useRef<HTMLButtonElement>(null);
   const [dims, setDims] = useState({ width: widthProp, height: heightProp, measured: false });
 
@@ -417,11 +421,11 @@ export const AtlasMap = memo(function AtlasMap({
       clearTimeout(wheelCommitTimerRef.current);
       wheelCommitTimerRef.current = null;
     }
-    setGesturing(false);
+    setShellGesturing(false);
     dragRef.current.active = false;
     dragRef.current.dx = 0;
     dragRef.current.dy = 0;
-  }, [mapInteractive]);
+  }, [mapInteractive, setShellGesturing]);
 
   const svgRef = useRef<SVGSVGElement>(null);
   const transformRef = useRef<SVGGElement>(null);
@@ -544,9 +548,6 @@ export const AtlasMap = memo(function AtlasMap({
   const wheelAccumFactorRef = useRef(1);
   const wheelCommitTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const transformRAFRef = useRef(0);
-  const counterScaleRef = useRef<SVGGElement>(null);
-  const counterScaleTopRef = useRef<SVGGElement>(null);
-  const [gesturing, setGesturing] = useState(false);
   const [tooltipVariant, setTooltipVariant] = useState<"compact" | "full">("compact");
   const tooltipDwellTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Tracks the previous touch's pointerdown for double-tap-to-zoom detection.
@@ -1066,8 +1067,8 @@ export const AtlasMap = memo(function AtlasMap({
     gestureRef.current = null;
     wheelGestureStartRef.current = null;
     wheelAccumFactorRef.current = 1;
-    setGesturing(false);
-  }, []);
+    setShellGesturing(false);
+  }, [setShellGesturing]);
 
   const commitGesture = useCallback(() => {
     if (wheelCommitTimerRef.current) {
@@ -1077,21 +1078,21 @@ export const AtlasMap = memo(function AtlasMap({
     if (!gestureRef.current) {
       wheelGestureStartRef.current = null;
       wheelAccumFactorRef.current = 1;
-      setGesturing(false);
+      setShellGesturing(false);
       return;
     }
     const next = gestureRef.current;
     gestureRef.current = null;
     wheelGestureStartRef.current = null;
     wheelAccumFactorRef.current = 1;
-    setGesturing(false);
+    setShellGesturing(false);
     setView(next);
-  }, []);
+  }, [setShellGesturing]);
 
   const updateGestureView = useCallback((next: { k: number; x: number; y: number }) => {
     gestureRef.current = next;
     viewRef.current = next;
-    setGesturing(true);
+    setShellGesturing(true);
     if (!transformRAFRef.current) {
       transformRAFRef.current = requestAnimationFrame(() => {
         transformRAFRef.current = 0;
@@ -1101,25 +1102,18 @@ export const AtlasMap = memo(function AtlasMap({
         const y = live.y + (drag.active ? drag.dy : 0);
         if (transformRef.current) {
           transformRef.current.setAttribute("transform", `translate(${x} ${y}) scale(${live.k})`);
-          transformRef.current.style.setProperty("--map-k", String(live.k));
-        }
-        if (counterScaleRef.current) {
-          counterScaleRef.current.setAttribute("transform", `scale(${1 / live.k})`);
-        }
-        if (counterScaleTopRef.current) {
-          counterScaleTopRef.current.setAttribute("transform", `scale(${1 / live.k})`);
         }
         updateScaleBar(scaleBarRef.current, scaleBarBarRef.current, live.k, kmPerPxAt1, distRef.current);
       });
     }
-  }, [kmPerPxAt1]);
+  }, [kmPerPxAt1, setShellGesturing]);
 
   const scheduleWheelCommit = useCallback(() => {
     if (wheelCommitTimerRef.current) clearTimeout(wheelCommitTimerRef.current);
     wheelCommitTimerRef.current = setTimeout(() => {
       wheelCommitTimerRef.current = null;
       commitGesture();
-    }, 80);
+    }, 50);
   }, [commitGesture]);
 
   // DOM transform applier — used during drag (no re-render), live gestures,
@@ -1131,13 +1125,6 @@ export const AtlasMap = memo(function AtlasMap({
     const y = live.y + (drag.active ? drag.dy : 0);
     if (transformRef.current) {
       transformRef.current.setAttribute("transform", `translate(${x} ${y}) scale(${live.k})`);
-      transformRef.current.style.setProperty("--map-k", String(live.k));
-    }
-    if (counterScaleRef.current) {
-      counterScaleRef.current.setAttribute("transform", `scale(${1 / live.k})`);
-    }
-    if (counterScaleTopRef.current) {
-      counterScaleTopRef.current.setAttribute("transform", `scale(${1 / live.k})`);
     }
   }, []);
 
@@ -1241,7 +1228,7 @@ export const AtlasMap = memo(function AtlasMap({
       width,
       height,
     );
-    const v = viewRef.current;
+    const v = gestureRef.current ?? viewRef.current;
     pinchRef.current = {
       startDistance: Math.max(1, pointerDistance(a, b)),
       startK: v.k,
@@ -1591,7 +1578,7 @@ export const AtlasMap = memo(function AtlasMap({
       <Marker
         key={pt.place.id}
         pt={pt}
-        labelZoomK={settledView.k}
+        k={view.k}
         labelMode={pinLabelModes.get(pt.place.id) ?? "hidden"}
         labelSide={labelSide}
         isActive={pt.place.id === selectedId}
@@ -1627,7 +1614,7 @@ export const AtlasMap = memo(function AtlasMap({
       ref={shellRef}
       className="relative w-full h-full rounded-2xl overflow-hidden border border-[rgba(91,113,144,0.55)] map-shell"
       data-legend-open={legendOpen ? "true" : "false"}
-      data-gesturing={gesturing ? "true" : "false"}
+      data-gesturing="false"
     >
       <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">{navAnnounce}</div>
       {topoLoading ? (
@@ -1768,7 +1755,8 @@ export const AtlasMap = memo(function AtlasMap({
             operations — no repaint of the country paths per frame. */}
         <g
           ref={transformRef}
-          style={{ willChange: "transform", ["--map-k" as string]: view.k }}
+          transform={`translate(${view.x} ${view.y}) scale(${view.k})`}
+          style={{ willChange: "transform" }}
         >
           {/* Cartography group. When the atlas-data chunk hasn't landed yet
               this subtree renders with `opacity: 0` and no `d` attributes,
@@ -1891,39 +1879,38 @@ export const AtlasMap = memo(function AtlasMap({
 
           {/* Country labels — big, quiet, sit under markers. Opacity falls
               off at high zoom so they don't compete with marker labels. */}
-          <g ref={counterScaleRef}>
-            <g pointerEvents="none" opacity={Math.max(0, Math.min(0.9, 1.35 - settledView.k * 0.35))}>
-              {countryLabels.map(cl => (
-                <g key={cl.id} transform={`translate(${cl.x} ${cl.y})`}>
-                  <text
-                    textAnchor="middle"
-                    fontSize={13}
-                    letterSpacing="0.32em"
-                    fontWeight={600}
-                    fill="rgba(230,242,252,0.62)"
-                    fontFamily="var(--font-sans), system-ui, sans-serif"
-                    style={{ paintOrder: "stroke fill", stroke: "rgba(8,14,26,0.85)", strokeWidth: 4, strokeLinejoin: "round" }}
-                  >{cl.label}</text>
-                </g>
-              ))}
-            </g>
+          <g pointerEvents="none" opacity={Math.max(0, Math.min(0.9, 1.35 - view.k * 0.35))}>
+            {countryLabels.map(cl => (
+              <g key={cl.id} transform={`translate(${cl.x} ${cl.y}) scale(${1 / view.k})`}>
+                <text
+                  textAnchor="middle"
+                  fontSize={13}
+                  letterSpacing="0.32em"
+                  fontWeight={600}
+                  fill="rgba(230,242,252,0.62)"
+                  fontFamily="var(--font-sans), system-ui, sans-serif"
+                  style={{ paintOrder: "stroke fill", stroke: "rgba(8,14,26,0.85)", strokeWidth: 4, strokeLinejoin: "round" }}
+                >{cl.label}</text>
+              </g>
+            ))}
+          </g>
 
-            {/* Clustered pins (mobile / low zoom) */}
-            <g>
-              {clusterItems.map(cluster => (
-                <ClusterMarker
-                  key={cluster.id}
-                  cluster={cluster}
-                  onActivate={activateCluster}
-                  shouldSuppressTouchActivation={shouldSuppressTouchActivation}
-                />
-              ))}
-            </g>
+          {/* Clustered pins (mobile / low zoom) */}
+          <g>
+            {clusterItems.map(cluster => (
+              <ClusterMarker
+                key={cluster.id}
+                cluster={cluster}
+                k={view.k}
+                onActivate={activateCluster}
+                shouldSuppressTouchActivation={shouldSuppressTouchActivation}
+              />
+            ))}
+          </g>
 
-            {/* Base pins first; the ranked trail then reads above the field without covering top-ranked / active pins. */}
-            <g>
-              {baseMarkerRenderOrder.map(renderMarker)}
-            </g>
+          {/* Base pins first; the ranked trail then reads above the field without covering top-ranked / active pins. */}
+          <g>
+            {baseMarkerRenderOrder.map(renderMarker)}
           </g>
 
           {featuredTrailPath ? (
@@ -1993,7 +1980,7 @@ export const AtlasMap = memo(function AtlasMap({
                 <circle
                   cx={pt.anchorX}
                   cy={pt.anchorY}
-                  r={Math.max(0.6, 1.8 / settledView.k)}
+                  r={Math.max(0.6, 1.8 / view.k)}
                   fill="rgba(245,250,255,0.8)"
                   stroke="rgba(8,14,24,0.9)"
                   strokeWidth="0.65"
@@ -2004,7 +1991,7 @@ export const AtlasMap = memo(function AtlasMap({
           </g>
 
           {/* Ranked, hovered, and selected pins stay above the trail for clear hit targets and badges. */}
-          <g ref={counterScaleTopRef}>
+          <g>
             {topMarkerRenderOrder.map(renderMarker)}
           </g>
         </g>
@@ -2294,7 +2281,7 @@ export const AtlasMap = memo(function AtlasMap({
 
 interface MarkerProps {
   pt: { place: Place; x: number; y: number };
-  labelZoomK: number;
+  k: number;
   labelMode: MapPinLabelMode;
   /** Side of the pin to draw the label on. Flips to "left" when the marker
    * sits in the right band of the visible viewport so the label never clips
@@ -2324,13 +2311,16 @@ interface MarkerProps {
 
 const ClusterMarker = memo(function ClusterMarker({
   cluster,
+  k,
   onActivate,
   shouldSuppressTouchActivation,
 }: {
   cluster: AtlasClusterItem<ClusterPoint>;
+  k: number;
   onActivate: (cluster: AtlasClusterItem<ClusterPoint>) => void;
   shouldSuppressTouchActivation: () => boolean;
 }) {
+  const inv = 1 / k;
   const count = cluster.points.length;
   const visual = clusterVisualForCount(count);
   const label = `${count} nearby microclimates${clusterPlacePreview(cluster.points)}. Zoom or choose from this cluster.`;
@@ -2366,32 +2356,34 @@ const ClusterMarker = memo(function ClusterMarker({
       data-cluster-size={visual.band}
     >
       <title>{label}</title>
-      <circle
-        className="map-cluster__outer"
-        r={visual.outerR}
-        fill="rgba(8,14,24,0.88)"
-        stroke="rgba(245,250,255,0.86)"
-        strokeWidth="1.35"
-      />
-      <circle
-        className="map-cluster__inner"
-        r={visual.innerR}
-        fill="rgba(94,196,220,0.3)"
-        stroke="rgba(94,196,220,0.72)"
-        strokeWidth="1.05"
-      />
-      <text
-        textAnchor="middle"
-        y={visual.textY}
-        fontSize={labelFontSize}
-        fontFamily="var(--font-mono),ui-monospace,monospace"
-        fontWeight={700}
-        fill="rgba(245,250,255,0.98)"
-        style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.9)", strokeWidth: 2, strokeLinejoin: "round" }}
-      >
-        {count}
-      </text>
-      <circle className="map-cluster__hit-area" r="30" fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
+      <g transform={`scale(${inv})`}>
+        <circle
+          className="map-cluster__outer"
+          r={visual.outerR}
+          fill="rgba(8,14,24,0.88)"
+          stroke="rgba(245,250,255,0.86)"
+          strokeWidth="1.35"
+        />
+        <circle
+          className="map-cluster__inner"
+          r={visual.innerR}
+          fill="rgba(94,196,220,0.3)"
+          stroke="rgba(94,196,220,0.72)"
+          strokeWidth="1.05"
+        />
+        <text
+          textAnchor="middle"
+          y={visual.textY}
+          fontSize={labelFontSize}
+          fontFamily="var(--font-mono),ui-monospace,monospace"
+          fontWeight={700}
+          fill="rgba(245,250,255,0.98)"
+          style={{ paintOrder: "stroke fill", stroke: "rgba(6,10,18,0.9)", strokeWidth: 2, strokeLinejoin: "round" }}
+        >
+          {count}
+        </text>
+        <circle className="map-cluster__hit-area" r="30" fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
+      </g>
     </g>
   );
 });
@@ -2658,7 +2650,7 @@ const ClusterPicker = memo(function ClusterPicker({
 });
 
 const Marker = memo(function Marker({
-  pt, labelZoomK, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
+  pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
   onSelect, onEnter, onFocusEnter, onLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
 }: MarkerProps) {
   const { place, x, y } = pt;
@@ -2669,6 +2661,7 @@ const Marker = memo(function Marker({
   const baseSize = place.tier === "A" ? 7.2 : place.tier === "B" ? 5.4 : 4.35;
   const r = isActive ? baseSize + 1.8 : isHover ? baseSize + 1.2 : baseSize;
 
+  const inv = 1 / k;
   const subLine = placeMapSecondaryLine(place);
 
   const titleLimit =
@@ -2677,17 +2670,17 @@ const Marker = memo(function Marker({
       : labelMode === "full"
         ? isActive || isHover
           ? 120
-          : labelZoomK >= 1.38
+          : k >= 1.38
             ? 56
-            : Math.max(12, Math.min(30, Math.floor(11 + labelZoomK * 11)))
+            : Math.max(12, Math.min(30, Math.floor(11 + k * 11)))
         : 0;
   const titleDisp =
     labelMode === "hidden" ? "" : truncateMapTitle(place.name, Math.max(1, titleLimit));
   const showSub =
     labelMode === "full" &&
-    (isActive || isHover || labelZoomK >= 1.24) &&
+    (isActive || isHover || k >= 1.24) &&
     subLine.length > 0;
-  const showSignatureLine = showSub && (isActive || isHover || labelZoomK >= 1.38);
+  const showSignatureLine = showSub && (isActive || isHover || k >= 1.38);
   const labelW = Math.min(
     320,
     Math.max(
@@ -2792,6 +2785,7 @@ const Marker = memo(function Marker({
       onBlur={onMarkerBlur}
     >
       <title>{ariaLabel}</title>
+      <g transform={`scale(${inv})`}>
         {featuredRank ? (
           <g className="map-rank-halo" aria-hidden>
             <circle
@@ -2971,6 +2965,7 @@ const Marker = memo(function Marker({
         })() : null}
         {/* Hit target on top so touch/stylus picks the marker, not the map pan layer beneath. */}
         <circle r={r + 18} fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
+      </g>
     </g>
   );
 }, (prev, next) =>
@@ -2980,7 +2975,7 @@ const Marker = memo(function Marker({
   prev.isActive === next.isActive &&
   prev.isHover === next.isHover &&
   prev.featuredRank === next.featuredRank &&
-  prev.labelZoomK === next.labelZoomK &&
+  prev.k === next.k &&
   prev.richEffects === next.richEffects &&
   prev.isRovingFocused === next.isRovingFocused &&
   prev.shouldSuppressTouchActivation === next.shouldSuppressTouchActivation &&
