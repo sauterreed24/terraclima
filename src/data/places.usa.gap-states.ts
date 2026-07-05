@@ -779,7 +779,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     whoWouldLove: "Plains–mountain ecotone people who respect wind.", whoMightNot: "Those needing stable mild winters.",
     confidence: "high",
     confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
-    citations: [{ label: "NOAA — Spearfish", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Rapid City — Black Hills climatology notes", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Spearfish", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Rapid City — Black Hills climatology notes", kind: "noaa", url: "https://www.weather.gov/unr/" }],
     deepSections: [
       {
         id: "spearfish-chinook",
