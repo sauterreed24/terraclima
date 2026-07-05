@@ -73,4 +73,12 @@ export default tseslint.config(
       "no-useless-escape": "warn",
     },
   },
+  {
+    // Browser-driving playtests (Playwright): node process + DOM globals,
+    // because `page.evaluate` callbacks execute in the page context.
+    files: ["scripts/**/*.mjs"],
+    languageOptions: {
+      globals: { ...globals.node, ...globals.browser },
+    },
+  },
 );

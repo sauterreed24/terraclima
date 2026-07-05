@@ -135,7 +135,9 @@ export const PlaceClimateTwins = memo(function PlaceClimateTwins({
             <Sparkles className="w-3 h-3" aria-hidden /> {shift ? "Top shifted twin" : "Closest climate twin"}
           </span>
           <div className="tc-twin-lead__title">
-            <div>
+            {/* min-w-0 lets a long twin name ellipsize instead of forcing the
+                lead card past the drawer edge on narrow phones. */}
+            <div className="min-w-0">
               <div className="tc-twin-card__name">{lead.place.name}</div>
               <div className="tc-twin-card__meta">{lead.place.region}, {countryCode(lead.place.country)} · {lead.place.koppen}</div>
             </div>

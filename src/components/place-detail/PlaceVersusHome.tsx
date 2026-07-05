@@ -63,7 +63,7 @@ export function PlaceVersusHome({
       <div className="panel-thin p-4">
         <p className="text-sm text-frost leading-snug">{prose(comparison.headline)}</p>
         <div className="divider-contour my-3" />
-        <ul className="grid grid-cols-2 md:grid-cols-4 gap-2" aria-label={`Climate deltas, ${place.name} minus ${home.name}`}>
+        <ul className="grid grid-cols-2 @3xl/dossier:grid-cols-4 gap-2" aria-label={`Climate deltas, ${place.name} minus ${home.name}`}>
           {comparison.signals.map(signal => (
             <DeltaTile key={signal.id} signal={signal} temp={temp} dist={dist} />
           ))}

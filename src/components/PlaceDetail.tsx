@@ -380,7 +380,11 @@ function DetailHeader({
       data-tone={tone}
       className="detail-drawer-header md:sticky md:top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 tc-surface-elevated backdrop-blur relative border-b tc-border-warm"
     >
-      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between md:gap-4">
+      {/* Title + actions share a row only from lg up: the drawer is ~706-830px
+          across the md band and the six header actions (~540px, shrink-0)
+          would squeeze the place name into a sliver and clip the archetype
+          chips mid-word. */}
+      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
         <div className="min-w-0 w-full">
           <div className="flex items-center gap-1.5 md:gap-2 text-xs text-stone mb-1 flex-wrap">
             <span className="chip" data-tone={place.tier === "A" ? "ochre" : place.tier === "B" ? "ice" : "sage"}>{tierLabel}</span>
@@ -412,7 +416,7 @@ function DetailHeader({
             ))}
           </div>
         </div>
-        <div className="flex items-center gap-1 self-end shrink-0 md:self-start flex-wrap justify-end">
+        <div className="flex items-center gap-1 self-end shrink-0 lg:self-start flex-wrap justify-end">
           <a
             href={`#${PD.residency}`}
             onClick={(event) => {
@@ -1352,7 +1356,7 @@ function DetailBody({
                         {ACTIVITY_KIND_LABEL[a.kind] ?? a.kind}
                       </span>
                       {a.season && (
-                        <span className="chip" data-tone="glacier" style={{ fontSize: "10px" }}>
+                        <span className="chip chip--multiline" data-tone="glacier" style={{ fontSize: "10px" }}>
                           {a.season}
                         </span>
                       )}

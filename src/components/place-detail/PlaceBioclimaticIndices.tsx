@@ -167,7 +167,10 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
           </p>
         </div>
       ) : null}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+      {/* Container-aware (dossier column, not viewport): the drawer caps at
+          900px and the reading nav eats ~220px, so viewport breakpoints made
+          these five cards squeeze into ~116px columns on desktop. */}
+      <div className="grid grid-cols-1 @xl/dossier:grid-cols-2 @3xl/dossier:grid-cols-3 gap-2.5">
         {cardReads.map(({ card, idx, share }) => {
           const display = valueWithClass(idx as BioclimIndex, card.format);
           const percentile = fmtPercentile(share);

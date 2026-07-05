@@ -260,6 +260,8 @@ CI cannot exercise **touch** or real device GPUs. After anything that affects la
 
 Try widths near **375px**, **768px**, **1024px**, and full desktop. Always run `npm run quality:check` first.
 
+For dossier-layout changes there is also an automated sweep: `scripts/playtest-visual.mjs` opens **every place profile** in headless Chromium at several viewport widths and fails on horizontal overflow, clipped SVG chart labels, or colliding season/lane header boxes. It needs a running `npm run preview` plus a dev-only `playwright-core` install — the exact loop is documented in the script header. It is intentionally not part of `quality:check` (needs a browser download), but run it after any change to the place-detail drawer, its section grids, or `src/styles.css` layout rules.
+
 ## Human Review Guide
 
 For a portfolio review, start here:
