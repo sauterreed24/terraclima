@@ -16,6 +16,11 @@ export function MicroclimateFingerprint({ place, compare, size = 260, compactLab
   const cx = size / 2, cy = size / 2;
   const r = size / 2 - 32;
   const labelRadius = compactLabels ? 110 : 118;
+  // Horizontal-extreme labels ("Dryness" right, "Low humidity" left) are
+  // centered on labelRadius and extend past size/2 — without side padding
+  // the svg clips them mid-word. Pad the viewBox instead of shrinking the
+  // radius so the rings keep their footprint.
+  const padX = compactLabels ? 16 : 36;
 
   const angle = (i: number) => -Math.PI / 2 + (i * 2 * Math.PI) / N;
   const point = (i: number, v: number) => {
@@ -32,7 +37,7 @@ export function MicroclimateFingerprint({ place, compare, size = 260, compactLab
   const rings = [25, 50, 75, 100];
 
   return (
-    <svg viewBox={`0 0 ${size} ${size}`} className="w-full h-auto" role="img" aria-label={`Microclimate fingerprint for ${place.name}`}>
+    <svg viewBox={`${-padX} 0 ${size + padX * 2} ${size}`} className="w-full h-auto" role="img" aria-label={`Microclimate fingerprint for ${place.name}`}>
       {/* Polygonal rings */}
       {rings.map(ring => {
         const pts = axes.map((_, i) => {
