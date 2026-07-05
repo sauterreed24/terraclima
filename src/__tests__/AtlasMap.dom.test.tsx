@@ -776,20 +776,21 @@ describe("AtlasMap DOM controls", () => {
     svg.getBoundingClientRect = () =>
       ({ left: 0, top: 0, right: 280, bottom: 260, width: 280, height: 260, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect;
 
-    const zoomGroup = Array.from(svg.querySelectorAll("g")).find(el => /scale\(/.test(el.getAttribute("transform") ?? ""));
+    const zoomGroup = svg.querySelector("g[style*='will-change']") as SVGGElement;
     expect(zoomGroup).toBeTruthy();
-    const before = /translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/.exec(zoomGroup!.getAttribute("transform") ?? "");
+    const before = /translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/.exec(zoomGroup.getAttribute("transform") ?? "");
     expect(before).toBeTruthy();
     const k0 = parseFloat(before![3]!);
 
     fireEvent.click(screen.getByRole("button", { name: "Zoom in (+)" }));
 
-    const after = /translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/.exec(zoomGroup!.getAttribute("transform") ?? "");
+    const after = /translate\(([-\d.]+) ([-\d.]+)\) scale\(([\d.]+)\)/.exec(zoomGroup.getAttribute("transform") ?? "");
     expect(after).toBeTruthy();
     const k1 = parseFloat(after![3]!);
     expect(k1).toBeGreaterThan(k0);
 
     const marker = container.querySelector('[data-marker-id="solo"]') as SVGGElement;
+    expect(marker.getAttribute("data-has-leader")).toBe("false");
     const markerTransform = marker.getAttribute("transform") ?? "";
     const pin = /translate\(([-\d.]+) ([-\d.]+)\)/.exec(markerTransform);
     expect(pin).toBeTruthy();

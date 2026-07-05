@@ -8428,10 +8428,21 @@
   }
 
   .map-marker .map-marker-label {
-    transition: opacity 100ms ease, transform 100ms ease;
+    transition: opacity 100ms ease, transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .map-marker:hover .map-marker-label {
     opacity: 1;
+    transform: translateY(-1px);
+  }
+  .map-pin-leader__line {
+    transition: stroke 120ms ease, stroke-width 120ms ease;
+  }
+  .map-pin-leader__anchor {
+    transition: r 120ms ease, fill 120ms ease;
+  }
+  .map-marker--offset-label:hover ~ .map-pin-leader .map-pin-leader__line,
+  .map-shell:has(.map-marker--offset-label:hover) .map-pin-leader__line {
+    stroke-width: 1.6;
   }
   .map-marker:hover .map-marker-label rect {
     stroke: rgba(200, 228, 255, 0.78);
