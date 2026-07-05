@@ -17,7 +17,15 @@ describe("corpus coverage helper", () => {
     expect(report.byTier.map(group => group.tier)).toEqual(["A", "B", "C"]);
     expect(report.byCountry.length).toBeGreaterThanOrEqual(3);
     expect(report.byRegion.length).toBeGreaterThan(20);
-    expect(report.thinPlaces[0]?.thinness).toBeGreaterThanOrEqual(report.thinPlaces.at(-1)?.thinness ?? 0);
+    // After the Tier C polish pass the corpus is fully covered — no thin
+    // places remain. When gaps are reintroduced (e.g. a new place without
+    // polish), the report must still sort the thin queue descending by
+    // thinness, so the invariant is checked conditionally.
+    if (report.thinPlaces.length > 0) {
+      expect(report.thinPlaces[0]?.thinness).toBeGreaterThanOrEqual(report.thinPlaces.at(-1)?.thinness ?? 0);
+    } else {
+      expect(report.thinPlaces).toHaveLength(0);
+    }
   });
 
   it("keeps Mexico State under one canonical region label", () => {

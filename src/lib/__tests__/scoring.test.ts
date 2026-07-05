@@ -276,7 +276,19 @@ describe("rankPlaces — sunniest-winters", () => {
 
   it("keeps the sunniest-winter corpus leaders in bright desert and Mexico highland places", () => {
     const ids = rankPlaces("sunniest-winters", PLACES).slice(0, 8).map(r => r.place.id);
-    expect(ids).toEqual(expect.arrayContaining(["yuma-az", "oaxaca-mx", "todos-santos-mx", "guanajuato-mx"]));
+    // After the Tier C polish pass added winter sunshine to every place,
+    // the sunniest-winter leaders are the genuinely bright desert and
+    // Mexico-highland entries — Yuma, Tucson, Palm Springs, Hermosillo,
+    // La Paz, Borrego Springs, plus the Mexico highland anchors Oaxaca
+    // and Alamos. The previous snapshot (todos-santos-mx, guanajuato-mx)
+    // was an artifact of sparse sunshinePct coverage rather than the
+    // actual sunniest-winter ranking.
+    expect(ids).toEqual(expect.arrayContaining([
+      "yuma-az",
+      "tucson-az",
+      "palm-springs-ca",
+      "oaxaca-mx",
+    ]));
   });
 });
 

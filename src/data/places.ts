@@ -7,11 +7,50 @@ import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { PLACES_USA } from "./places.usa";
 import { PLACES_CANADA } from "./places.canada";
 import { PLACES_MEXICO } from "./places.mexico";
+import { TIER_C_POLISH, TIER_C_POLISH_GENERATED } from "./places.tier-c-polish";
+
+const TIER_C_POLISH_ALL: Record<string, typeof TIER_C_POLISH[keyof typeof TIER_C_POLISH]> = {
+  ...TIER_C_POLISH,
+  ...TIER_C_POLISH_GENERATED,
+};
+
+/**
+ * Apply Tier C polish (humidity, sunshinePct, liveSignals, deepSections,
+ * additional citations) into a base authored place. Polish is layered
+ * *under* the authored fields so any hand-curated value in the original
+ * data files wins. Citations are concatenated (authored first, polish
+ * second) so existing sources keep their position.
+ */
+function applyPolish(p: Place): Place {
+  const polish = TIER_C_POLISH_ALL[p.id];
+  if (!polish) return p;
+  const climate = polish.climate
+    ? {
+        ...p.climate,
+        ...(polish.climate.humidity != null && p.climate.humidity == null
+          ? { humidity: polish.climate.humidity }
+          : {}),
+        ...(polish.climate.sunshinePct != null && p.climate.sunshinePct == null
+          ? { sunshinePct: polish.climate.sunshinePct }
+          : {}),
+      }
+    : p.climate;
+  const liveSignals = p.liveSignals ?? polish.liveSignals;
+  const deepSections = p.deepSections ?? polish.deepSections;
+  const citations = polish.additionalCitations
+    ? [...p.citations, ...polish.additionalCitations]
+    : p.citations;
+  return { ...p, climate, liveSignals, deepSections, citations };
+}
+
+const POLISHED_USA = PLACES_USA.map(applyPolish);
+const POLISHED_CANADA = PLACES_CANADA.map(applyPolish);
+const POLISHED_MEXICO = PLACES_MEXICO.map(applyPolish);
 
 export const PLACES: Place[] = [
-  ...PLACES_USA,
-  ...PLACES_CANADA,
-  ...PLACES_MEXICO,
+  ...POLISHED_USA,
+  ...POLISHED_CANADA,
+  ...POLISHED_MEXICO,
 ];
 
 export const PLACES_BY_ID: Record<string, Place> = Object.fromEntries(
