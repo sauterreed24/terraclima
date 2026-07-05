@@ -819,5 +819,9 @@ describe("AtlasMap DOM controls", () => {
     const preview = screen.getByRole("tooltip");
     expect(preview).toHaveAttribute("data-variant", "full");
     expect(preview).toHaveTextContent("Climate snapshot");
+    expect(preview.querySelector(".tc-map-hover-title")).toBeTruthy();
+    expect(preview.querySelector(".text-ice")).toBeNull();
+    expect(preview.querySelector(".text-stone")).toBeNull();
+    expect(preview.querySelector(".tc-map-hover-metric__label")).toBeTruthy();
   });
 });

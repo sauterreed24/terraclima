@@ -136,11 +136,11 @@ export function AtlasMapTooltip({
                 <span aria-hidden="true">·</span>
                 <span>{countryLabel}</span>
               </div>
-              <h2 id="tc-map-hover-title" className="font-atlas text-[1.02rem] leading-tight text-ice mt-1">
+              <h2 id="tc-map-hover-title" className="tc-map-hover-title font-atlas text-[1.02rem] leading-tight mt-1">
                 {place.name}
               </h2>
               {locationLine ? (
-                <p className="text-[0.68rem] leading-snug text-stone font-medium mt-0.5">
+                <p className="tc-map-hover-subline text-[0.68rem] leading-snug font-medium mt-0.5">
                   {locationLine}
                 </p>
               ) : null}
@@ -186,11 +186,11 @@ export function AtlasMapTooltip({
               <span aria-hidden="true">·</span>
               <span>{place.confidence} confidence</span>
             </div>
-            <h2 id="tc-map-hover-title" className="font-atlas text-[1.12rem] leading-tight text-ice mt-1.5">
+            <h2 id="tc-map-hover-title" className="tc-map-hover-title font-atlas text-[1.12rem] leading-tight mt-1.5">
               {place.name}
             </h2>
             {locationLine ? (
-              <p className="text-[0.72rem] leading-snug text-stone font-medium mt-1">
+              <p className="tc-map-hover-subline text-[0.72rem] leading-snug font-medium mt-1">
                 {locationLine}
               </p>
             ) : null}
@@ -211,8 +211,8 @@ export function AtlasMapTooltip({
         <section className="tc-map-hover-section tc-map-hover-section--flush" aria-label="Climate snapshot">
           <h3 className="tc-map-hover-kicker">Climate snapshot</h3>
           <div className="tc-map-hover-instrument">
-            <div className="tc-map-hover-instrument__strip" style={richEffects ? { filter: "saturate(1.06)" } : undefined}>
-              <MiniClimateStrip place={place} height={22} />
+            <div className="tc-map-hover-instrument__strip" style={richEffects ? { filter: "saturate(1.08)" } : undefined}>
+              <MiniClimateStrip place={place} height={26} />
             </div>
             <div className="tc-map-hover-instrument__metrics">
               <InstrumentMetric label="JJA high" value={fmtTemp(meanSummerHigh(place), temp)} tone="ochre" />
@@ -282,17 +282,10 @@ export function AtlasMapTooltip({
 }
 
 function InstrumentMetric({ label, value, tone }: { label: string; value: string; tone: "ochre" | "glacier" | "sage" }) {
-  const c: Record<string, string> = {
-    ochre: "#ffc860",
-    glacier: "#8fd4ea",
-    sage: "#8fd99a",
-  };
   return (
-    <div className="flex flex-col items-center gap-0.5 px-1 min-w-0">
-      <span className="text-[0.52rem] font-bold uppercase tracking-[0.08em] text-stone leading-tight text-center">{label}</span>
-      <span className="font-mono-num text-[0.82rem] font-semibold tabular-nums text-center" style={{ color: c[tone] }}>
-        {value}
-      </span>
+    <div className="tc-map-hover-metric" data-tone={tone}>
+      <span className="tc-map-hover-metric__label">{label}</span>
+      <span className="tc-map-hover-metric__value">{value}</span>
     </div>
   );
 }
