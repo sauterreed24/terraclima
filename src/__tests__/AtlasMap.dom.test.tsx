@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor, within, act } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { AtlasMap, wheelZoomFactor } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
@@ -251,7 +251,8 @@ describe("AtlasMap DOM controls", () => {
     expect(marker).toBeTruthy();
     fireEvent.focus(marker!);
 
-    // Focusing a pin shows the same tooltip a pointer hover would.
+    // Focusing a pin shows the rich tooltip immediately (no dwell).
+    expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "full");
     expect(screen.getByRole("tooltip")).toHaveTextContent("Solo Peak");
   });
 
@@ -425,59 +426,63 @@ describe("AtlasMap DOM controls", () => {
     expect(document.activeElement).toBe(close);
   });
 
-  it("shows a compact non-blocking scout preview on desktop hover while click still selects", () => {
-    setCoarsePointer(false);
-    const onSelect = vi.fn();
-    renderMap(onSelect);
+  it("shows a compact instant preview on hover and promotes to the rich scout card after dwell", async () => {
+    vi.useFakeTimers();
+    try {
+      setCoarsePointer(false);
+      const onSelect = vi.fn();
+      renderMap(onSelect);
 
-    const marker = screen.getByRole("button", { name: /Alpha Valley/ });
-    expect(marker.querySelector("title")).toHaveTextContent("Alpha Valley");
-    fireEvent.pointerEnter(marker, { pointerType: "mouse" });
+      const marker = screen.getByRole("button", { name: /Alpha Valley/ });
+      fireEvent.pointerEnter(marker, { pointerType: "mouse" });
 
-    const preview = screen.getByRole("tooltip");
-    expect(preview).toHaveClass("pointer-events-none");
-    expect(preview).toHaveTextContent("Alpha Valley");
-    expect(preview).toHaveTextContent("Climate snapshot");
-    expect(preview).toHaveTextContent("JJA high");
-    expect(preview).toHaveTextContent("Comfort read");
-    expect(preview).toHaveTextContent("Comfort");
-    expect(preview).toHaveTextContent("Live fit");
-    expect(preview).toHaveTextContent("Atmosphere");
-    expect(preview).toHaveTextContent("Microclimate gist");
-    expect(preview).toHaveTextContent("rain-shadow bench");
-    expect(preview).toHaveTextContent("Physical drivers");
-    expect(preview).toHaveTextContent("Rain Shadow");
-    expect(preview).toHaveTextContent("Scout cues");
-    expect(preview).toHaveTextContent("Open dossier, compare finalists");
-    expect(preview).toHaveTextContent("lavender, grapes");
-    expect(preview).toHaveTextContent("late frost pockets");
+      const preview = screen.getByRole("tooltip");
+      expect(preview).toHaveAttribute("data-variant", "compact");
+      expect(preview).toHaveTextContent("Alpha Valley");
+      expect(preview).toHaveTextContent("JJA high");
+      expect(preview).not.toHaveTextContent("Climate snapshot");
 
-    expect(screen.queryByText("Location & classification")).not.toBeInTheDocument();
-    expect(screen.queryByText(/Atlas scores/)).not.toBeInTheDocument();
-    expect(screen.queryByText("Mid-century outlook (~2050)")).not.toBeInTheDocument();
-    expect(screen.queryByText("Open the full sheet")).not.toBeInTheDocument();
+      await act(async () => {
+        vi.advanceTimersByTime(360);
+      });
 
-    fireEvent.click(marker);
+      const richPreview = screen.getByRole("tooltip");
+      expect(richPreview).toHaveAttribute("data-variant", "full");
+      expect(richPreview).toHaveTextContent("Climate snapshot");
+      expect(richPreview).toHaveTextContent("Scout cues");
 
-    expect(onSelect).toHaveBeenCalledWith("a");
+      fireEvent.click(marker);
+      expect(onSelect).toHaveBeenCalledWith("a");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
-  it("aligns the hover preview with active ranking context and live-fit filters", () => {
-    setCoarsePointer(false);
-    const places = defaultMapPlaces();
-    const liveFitFilters: LiveFitFilters = { maxSummerHighC: 22 };
-    const expectedLiveFit = assessLiveFit(places[0]!, liveFitFilters).score;
-    renderMap(vi.fn(), ["a"], places, { featuredLabel: "Live-here fit", liveFitFilters });
+  it("aligns the hover preview with active ranking context and live-fit filters", async () => {
+    vi.useFakeTimers();
+    try {
+      setCoarsePointer(false);
+      const places = defaultMapPlaces();
+      const liveFitFilters: LiveFitFilters = { maxSummerHighC: 22 };
+      const expectedLiveFit = assessLiveFit(places[0]!, liveFitFilters).score;
+      renderMap(vi.fn(), ["a"], places, { featuredLabel: "Live-here fit", liveFitFilters });
 
-    const marker = screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ });
-    fireEvent.pointerEnter(marker, { pointerType: "mouse" });
+      const marker = screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ });
+      fireEvent.pointerEnter(marker, { pointerType: "mouse" });
 
-    const preview = screen.getByRole("tooltip");
-    expect(preview).toHaveTextContent("Rank #1 by Live-here fit");
-    expect(preview).toHaveTextContent("Current lens leader");
-    expect(preview).not.toHaveTextContent("Next move: open the dossier from this pin, then compare it against the current leaders.");
-    expect(preview).toHaveTextContent("Open dossier, compare finalists");
-    expect(preview).toHaveTextContent(`Live fit${expectedLiveFit}`);
+      expect(screen.getByRole("tooltip")).toHaveTextContent("Rank #1 by Live-here fit");
+
+      await act(async () => {
+        vi.advanceTimersByTime(360);
+      });
+
+      const richPreview = screen.getByRole("tooltip");
+      expect(richPreview).toHaveAttribute("data-variant", "full");
+      expect(richPreview).toHaveTextContent("Current lens leader");
+      expect(richPreview).toHaveTextContent(`Live fit${expectedLiveFit}`);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("lets ranked map labels activate their own marker instead of passing through to neighbors", () => {
@@ -731,5 +736,44 @@ describe("AtlasMap DOM controls", () => {
     );
     const tabZero = updated.find(m => m.getAttribute("tabindex") === "0");
     expect(tabZero?.getAttribute("data-marker-id")).toBe(markers[1]?.getAttribute("data-marker-id"));
+  });
+
+  it("marks the map shell as gesturing during pinch zoom and commits after release", async () => {
+    vi.useFakeTimers();
+    try {
+      setCoarsePointer(true);
+      const { container } = renderMap(vi.fn(), [], defaultMapPlaces());
+      const shell = container.querySelector(".map-shell") as HTMLElement;
+      const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+      svg.getBoundingClientRect = () =>
+        ({ left: 0, top: 0, right: 280, bottom: 260, width: 280, height: 260, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect;
+
+      await act(async () => {
+        fireEvent.pointerDown(svg, { pointerId: 1, pointerType: "touch", clientX: 100, clientY: 130 });
+        fireEvent.pointerDown(svg, { pointerId: 2, pointerType: "touch", clientX: 180, clientY: 130 });
+        fireEvent.pointerMove(svg, { pointerId: 1, pointerType: "touch", clientX: 90, clientY: 130 });
+        fireEvent.pointerMove(svg, { pointerId: 2, pointerType: "touch", clientX: 190, clientY: 130 });
+      });
+      expect(shell.getAttribute("data-gesturing")).toBe("true");
+
+      await act(async () => {
+        fireEvent.pointerUp(svg, { pointerId: 1, pointerType: "touch", clientX: 90, clientY: 130 });
+        fireEvent.pointerUp(svg, { pointerId: 2, pointerType: "touch", clientX: 190, clientY: 130 });
+      });
+      expect(shell.getAttribute("data-gesturing")).toBe("false");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("shows the rich hover preview immediately when a marker receives keyboard focus", () => {
+    setCoarsePointer(false);
+    renderMap(vi.fn(), [], defaultMapPlaces());
+    const marker = document.querySelector('[data-marker-id="a"]') as SVGGElement;
+    fireEvent.focus(marker);
+
+    const preview = screen.getByRole("tooltip");
+    expect(preview).toHaveAttribute("data-variant", "full");
+    expect(preview).toHaveTextContent("Climate snapshot");
   });
 });

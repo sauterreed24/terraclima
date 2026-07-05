@@ -67,6 +67,7 @@ export function AtlasMapTooltip({
   featuredRank,
   featuredLabel,
   liveFitFilters,
+  variant = "full",
 }: {
   place: Place;
   xPct: number;
@@ -75,6 +76,7 @@ export function AtlasMapTooltip({
   featuredRank?: number;
   featuredLabel?: string;
   liveFitFilters?: LiveFitFilters;
+  variant?: "compact" | "full";
 }) {
   const richEffects = useRichVisualEffects();
   const { temp, dist } = useUnits();
@@ -115,6 +117,55 @@ export function AtlasMapTooltip({
     .filter(Boolean)
     .join(" · ");
 
+  if (variant === "compact") {
+    return (
+      <div
+        role="tooltip"
+        id="tc-map-hover-preview"
+        aria-labelledby="tc-map-hover-title"
+        className="tc-map-hover-card tc-map-hover-card--compact absolute w-[min(18rem,calc(100vw-1.25rem))] pointer-events-none anim-fade-in z-10 text-left shadow-2xl"
+        data-tone={dataTone}
+        data-variant="compact"
+        style={style}
+      >
+        <header className="tc-map-hover-card__hero">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0 flex-1">
+              <div className="tc-map-hover-meta-row">
+                <span>{tierLabel}</span>
+                <span aria-hidden="true">·</span>
+                <span>{countryLabel}</span>
+              </div>
+              <h2 id="tc-map-hover-title" className="font-atlas text-[1.02rem] leading-tight text-ice mt-1">
+                {place.name}
+              </h2>
+              {locationLine ? (
+                <p className="text-[0.68rem] leading-snug text-stone font-medium mt-0.5">
+                  {locationLine}
+                </p>
+              ) : null}
+            </div>
+            <span className="chip shrink-0 max-w-[7.5rem] text-center leading-snug text-[0.62rem]" data-tone={tone}>
+              {archetypeLabel(place.archetypes[0])}
+            </span>
+          </div>
+          {featuredLine ? (
+            <div className="tc-map-hover-rankline" aria-label={featuredLine}>
+              <span>{featuredLine}</span>
+            </div>
+          ) : null}
+        </header>
+        <div className="tc-map-hover-card__body tc-map-hover-card__body--compact">
+          <div className="tc-map-hover-compact-metrics" aria-label="Quick climate read">
+            <InstrumentMetric label="JJA high" value={fmtTemp(meanSummerHigh(place), temp)} tone="ochre" />
+            <InstrumentMetric label="Jan low" value={fmtTemp(meanJanLow(place), temp)} tone="glacier" />
+            <InstrumentMetric label="Precip" value={fmtPrecip(getAnnualPrecipMm(place), dist)} tone="sage" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       role="tooltip"
@@ -122,6 +173,7 @@ export function AtlasMapTooltip({
       aria-labelledby="tc-map-hover-title"
       className="tc-map-hover-card absolute w-[min(21.5rem,calc(100vw-1.25rem))] pointer-events-none anim-fade-in z-10 text-left shadow-2xl"
       data-tone={dataTone}
+      data-variant="full"
       style={style}
     >
       <header className="tc-map-hover-card__hero">
@@ -231,9 +283,9 @@ export function AtlasMapTooltip({
 
 function InstrumentMetric({ label, value, tone }: { label: string; value: string; tone: "ochre" | "glacier" | "sage" }) {
   const c: Record<string, string> = {
-    ochre: "#c2781a",
-    glacier: "#1a7a94",
-    sage: "#2d6b3f",
+    ochre: "#ffc860",
+    glacier: "#8fd4ea",
+    sage: "#8fd99a",
   };
   return (
     <div className="flex flex-col items-center gap-0.5 px-1 min-w-0">

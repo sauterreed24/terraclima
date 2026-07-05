@@ -1422,7 +1422,7 @@ export default function App() {
                     selectedId={selectedId ?? undefined}
                     featuredIds={topRankedPlaceIds}
                     featuredLabel={scenarioRankingLabel}
-                    liveFitFilters={filters}
+                    liveFitFilters={deferredFilters}
                     onSelect={openPlace}
                   />
                 </div>
@@ -1579,7 +1579,7 @@ export default function App() {
                       onPreloadCompare={preloadCompareView}
                       compareIds={compareIds}
                       resonantWindow={resonantWindow}
-                      liveFitFilters={filters}
+                      liveFitFilters={deferredFilters}
                       homePlace={homeBasePlaceForScenario}
                       rankingLabel={scenarioRankingLabel}
                       bookmarkIds={bookmarkIds}
@@ -1715,7 +1715,7 @@ export default function App() {
               inCompareIds={compareIds}
               onPickArchetype={pickArchetype}
               onOpenPlace={openPlace}
-              liveFitFilters={filters}
+              liveFitFilters={deferredFilters}
               residencyFitContext={dossierFitContext}
               bookmarked={selectedPlace ? bookmarkIds.has(selectedPlace.id) : false}
               onBookmarkToggle={toggleBookmark}
@@ -1743,7 +1743,7 @@ export default function App() {
             onCopyView={copyCurrentView}
             shareStatus={shareStatus}
             shareFallbackUrl={shareFallbackUrl}
-            liveFitFilters={filters}
+            liveFitFilters={deferredFilters}
             homePlace={homeBasePlaceForScenario}
             onAddPlace={toggleCompare}
             candidates={compareCandidates}
