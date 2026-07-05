@@ -24,6 +24,9 @@ import type { Monthly12, PlaceDeepSection, Citation, LivedSignals } from "../typ
 export interface TierCPolishEntry {
   climate?: { humidity?: Monthly12; sunshinePct?: Monthly12 };
   liveSignals?: LivedSignals;
+  /** Sources to append to an existing liveSignals.sources list (e.g. when a
+   * place shipped with only one source and the polish pass adds a second). */
+  liveSignalsAdditionalSources?: { label: string; url?: string }[];
   deepSections?: PlaceDeepSection[];
   additionalCitations?: Citation[];
 }
@@ -347,6 +350,88 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
     ],
   },
 };
+
+/**
+ * Targeted additions for places that already shipped with a liveSignals
+ * entry but only one source. Each entry below appends a second URL-backed
+ * source so every place's liveSignals has 2+ sources — the standard the
+ * rest of the corpus already meets. Includes Tier A/B places that had
+ * the same single-source gap; the polish applier does not check tier.
+ */
+export const TIER_C_POLISH_SOURCES: Record<string, { label: string; url: string }[]> = {
+  // Tier C — single-source liveSignals entries
+  "forks-wa": [
+    { label: "NOAA — Forks climate normals", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+  ],
+  "astoria-or": [
+    { label: "NOAA — Astoria climate normals", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+  ],
+  "port-townsend-wa": [
+    { label: "NOAA — Port Townsend climate normals", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+  ],
+  "sitka-ak": [
+    { label: "NOAA — Sitka climate normals", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+  ],
+  "valdez-ak": [
+    { label: "NWS Anchorage — Thompson Pass snowfall", url: "https://www.weather.gov/afc/" },
+  ],
+  "brookings-or": [
+    { label: "PRISM Climate Group — gridded 1991–2020 normals", url: "https://prism.oregonstate.edu/" },
+  ],
+  "block-island-ri": [
+    { label: "NOAA — Block Island climate normals", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+  ],
+  "salt-spring-bc": [
+    { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
+  ],
+  "grand-manan-nb": [
+    { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
+  ],
+  "tofino-ucluelet-corridor": [
+    { label: "ECCC — Tofino climate normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
+  ],
+  "qualicum-bc": [
+    { label: "ECCC — Qualicum climate normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
+  ],
+  "prince-rupert-bc": [
+    { label: "Climate Atlas of Canada — gridded projections and normals", url: "https://climateatlas.ca/" },
+  ],
+  "haida-gwaii-bc": [
+    { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
+  ],
+  "coatepec-mx": [
+    { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
+  ],
+  "orizaba-mx": [
+    { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
+  ],
+  // Tier A/B — same single-source gap, same fix
+  "port-orford-cape-blanco-or": [
+    { label: "NOAA — Port Orford climate normals", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+  ],
+  "victoria-bc": [
+    { label: "Capital Regional District — Victoria housing", url: "https://www.crd.bc.ca/" },
+  ],
+  "tofino-bc": [
+    { label: "ECCC — Tofino climate normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
+  ],
+  "oaxaca-mx": [
+    { label: "INECC — Oaxaca climate vulnerability assessment", url: "https://www.gob.mx/inecc" },
+  ],
+  "san-cristobal-mx": [
+    { label: "INECC — Chiapas highland climate vulnerability assessment", url: "https://www.gob.mx/inecc" },
+  ],
+  "cuernavaca-mx": [
+    { label: "INECC — Morelos climate vulnerability assessment", url: "https://www.gob.mx/inecc" },
+  ],
+  "black-mountain-nc": [
+    { label: "NOAA — Black Mountain climate normals", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+  ],
+  "zacatlan-de-las-manzanas-mx": [
+    { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
+  ],
+};
+
 export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
   // ===== USA =====
   "brookings-or": { deepSections: [

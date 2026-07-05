@@ -69,7 +69,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     whoWouldLove: "Rainforest people who enjoy steady warmth and don't mind humidity.", whoMightNot: "Sun-chasers seeking dry summers; mold-sensitive residents.",
     confidence: "high",
     confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
-    citations: [{ label: "NOAA — Hilo International", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Honolulu — Hawaiʻi climate summaries", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Hilo International", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NWS Honolulu — Hawaiʻi climate summaries", kind: "noaa", url: "https://www.weather.gov/hfo/" }],
     deepSections: [
       {
         id: "hilo-trades",

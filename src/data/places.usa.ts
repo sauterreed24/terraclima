@@ -3986,7 +3986,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Those who want genuine tropical with a US passport.", whoMightNot: "Hurricane-averse; future-flood worried.",
     confidence: "high",
     confidenceNotes: "This high-confidence profile is reliable at microclimate-zone scale because NOAA normals, federal terrain/hydrography sources, and atlas relief reasoning agree; parcel exposure, smoke, insurance, and water access still need local checks.",
-    citations: [{ label: "NOAA — Key West International AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NOAA Hurricane Center climatology", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Key West International AP", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NOAA Hurricane Center — tropical cyclone climatology", kind: "noaa", url: "https://www.nhc.noaa.gov/climo/" }],
     deepSections: [
       {
         id: "key-west-isothermal-water",
@@ -4270,7 +4270,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Anyone for whom 24 feet of snow per year is a feature rather than a warning.", whoMightNot: "Drivers; those with avalanche fears; anyone needing sun.",
     confidence: "high",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Valdez WSO", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Thompson Pass snowfall records (NWS Anchorage)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Valdez WSO", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "Thompson Pass snowfall records (NWS Anchorage)", kind: "noaa", url: "https://www.weather.gov/afc/" }],
   },
 
   {
@@ -4461,7 +4461,7 @@ export const PLACES_USA: Place[] = [
     whoWouldLove: "Anyone who wants Florida-like mildness without humidity maximum; anglers and surfers.", whoMightNot: "Hurricane-averse; storm-anxious; those who need seasons.",
     confidence: "moderate",
     confidenceNotes: "Tier C entry — editorial screening grounded in published normals (NOAA / ECCC / SMN as applicable), PRISM / WorldClim grids, and atlas-archetype reasoning. Treat any specific deltas as interpretive context, not station-grade measurements.",
-    citations: [{ label: "NOAA — Brownsville airport normals (nearby)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NHC hurricane climatology", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
+    citations: [{ label: "NOAA — Brownsville airport normals (nearby)", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }, { label: "NHC hurricane climatology", kind: "noaa", url: "https://www.nhc.noaa.gov/climo/" }],
   },
 
   {

@@ -7,19 +7,35 @@ import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { PLACES_USA } from "./places.usa";
 import { PLACES_CANADA } from "./places.canada";
 import { PLACES_MEXICO } from "./places.mexico";
-import { TIER_C_POLISH, TIER_C_POLISH_GENERATED } from "./places.tier-c-polish";
+import { TIER_C_POLISH, TIER_C_POLISH_GENERATED, TIER_C_POLISH_SOURCES } from "./places.tier-c-polish";
 
 const TIER_C_POLISH_ALL: Record<string, typeof TIER_C_POLISH[keyof typeof TIER_C_POLISH]> = {
   ...TIER_C_POLISH,
   ...TIER_C_POLISH_GENERATED,
 };
 
+// Layer the targeted source-additions on top of the merged polish map.
+// Places without an existing polish entry get a minimal entry that only
+// carries the additional sources; places with an existing entry get the
+// sources appended via the liveSignalsAdditionalSources field.
+for (const [id, sources] of Object.entries(TIER_C_POLISH_SOURCES)) {
+  const existing = TIER_C_POLISH_ALL[id];
+  TIER_C_POLISH_ALL[id] = {
+    ...existing,
+    liveSignalsAdditionalSources: [
+      ...(existing?.liveSignalsAdditionalSources ?? []),
+      ...sources,
+    ],
+  };
+}
+
 /**
  * Apply Tier C polish (humidity, sunshinePct, liveSignals, deepSections,
  * additional citations) into a base authored place. Polish is layered
  * *under* the authored fields so any hand-curated value in the original
- * data files wins. Citations are concatenated (authored first, polish
- * second) so existing sources keep their position.
+ * data files wins. Citations and liveSignals sources are concatenated
+ * (authored first, polish second) with URL de-duplication so the polish
+ * never introduces a duplicate citation URL.
  */
 function applyPolish(p: Place): Place {
   const polish = TIER_C_POLISH_ALL[p.id];
@@ -35,11 +51,32 @@ function applyPolish(p: Place): Place {
           : {}),
       }
     : p.climate;
-  const liveSignals = p.liveSignals ?? polish.liveSignals;
+
+  // liveSignals: prefer the authored value. If the authored value exists
+  // but the polish supplies additional sources, merge them in (URL-deduped).
+  let liveSignals = p.liveSignals ?? polish.liveSignals;
+  if (p.liveSignals && polish.liveSignalsAdditionalSources?.length) {
+    const existing = p.liveSignals.sources ?? [];
+    const existingUrls = new Set(existing.map(s => s.url ?? ""));
+    const merged = [
+      ...existing,
+      ...polish.liveSignalsAdditionalSources.filter(s => !existingUrls.has(s.url ?? "")),
+    ];
+    liveSignals = { ...p.liveSignals, sources: merged };
+  }
+
   const deepSections = p.deepSections ?? polish.deepSections;
+
+  // Citations: concatenate authored + polish, deduping by URL so a polish
+  // entry never introduces a duplicate of an existing source URL.
   const citations = polish.additionalCitations
-    ? [...p.citations, ...polish.additionalCitations]
+    ? (() => {
+        const existingUrls = new Set(p.citations.map(c => c.url ?? ""));
+        const additions = polish.additionalCitations.filter(c => !existingUrls.has(c.url ?? ""));
+        return [...p.citations, ...additions];
+      })()
     : p.citations;
+
   return { ...p, climate, liveSignals, deepSections, citations };
 }
 
