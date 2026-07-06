@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, render } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
 import { UnitProvider } from "../lib/units";
@@ -31,5 +31,6 @@ describe("App pending affordances", () => {
     const stage = document.querySelector(".tc-map-stage");
     expect(stage).toHaveAttribute("data-pending", "true");
     expect(stage).toHaveAttribute("aria-busy", "true");
+    expect(screen.getByText(/Updating ranked results for the selected climate layer/i)).toBeInTheDocument();
   });
 });

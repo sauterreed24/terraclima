@@ -25,7 +25,12 @@ export function ClimateScenarioControl({
     : `${projecting ? "Projecting… " : ""}Illustrative ${scenarioMeta(scenario).label} regional projection — dossier still shows present-day normals.`;
 
   return (
-    <div className="climate-scenario panel-thin" role="group" aria-label="Climate scenario layer">
+    <div
+      className="climate-scenario panel-thin"
+      role="group"
+      aria-label="Climate scenario layer"
+      aria-busy={projecting || undefined}
+    >
       <span className="climate-scenario__label">
         <Clock3 className="w-3.5 h-3.5" aria-hidden /> Climate layer
       </span>

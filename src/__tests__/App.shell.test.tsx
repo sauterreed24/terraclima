@@ -434,7 +434,7 @@ describe("App shell", () => {
       name: /Open .*, climate signal rank 1 by Live-here fit/,
     });
     expect(firstSignalChip).toHaveAttribute("title", firstSignalChip.getAttribute("aria-label"));
-    expect(screen.queryByText("2050 remap")).not.toBeInTheDocument();
+    expect(screen.queryByText("2050 mid remap")).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("surfaces the current Scout Brief leader in the Explorer hero", async () => {
@@ -480,7 +480,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    expect(screen.getByText("2050 remap")).toBeInTheDocument();
+    expect(screen.getByText("2050 mid remap")).toBeInTheDocument();
     expect(screen.getByText(/2050 mid reranks live-here fit against projected 2041-2060 normals/i)).toBeInTheDocument();
     expect(screen.getByLabelText("2050 mid remap summary")).toHaveTextContent(/2050.*SSP2-4\.5/);
     const projectedLeaders = screen.getByLabelText("2050 mid projected leaders");
@@ -1425,6 +1425,16 @@ describe("App shell", () => {
     expect(await screen.findByRole("dialog", { name: "Filters & ranking" })).toHaveAttribute("aria-modal", "true");
     await waitFor(() => expect(screen.getAllByRole("button", { name: "Close filters" })).toHaveLength(1));
     expect(screen.getByLabelText("Search places by name, region, or archetype")).toHaveAttribute("placeholder", "Search places");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("keeps the map climate layer control in the mobile filter sheet only", async () => {
+    mockViewport(390);
+    renderApp();
+    expect(screen.queryByRole("group", { name: "Climate scenario layer" })).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]!);
+    expect(await screen.findByRole("dialog", { name: "Filters & ranking" })).toBeInTheDocument();
+    expect(screen.getByRole("group", { name: "Climate scenario layer" })).toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("isolates page chrome and Explorer content while the mobile filter sheet is open", async () => {

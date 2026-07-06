@@ -27,6 +27,7 @@ describe("ClimateScenarioControl", () => {
 
   it("updates the live note when a future scenario is active", () => {
     render(<ClimateScenarioControl scenario="ssp585" onChange={() => undefined} projecting />);
+    expect(screen.getByRole("group", { name: "Climate scenario layer" })).toHaveAttribute("aria-busy", "true");
     expect(screen.getByText(/Projecting…/)).toBeInTheDocument();
     expect(screen.getByText(/SSP5-8.5/)).toBeInTheDocument();
     expect(screen.getByText(/dossier still shows present-day normals/)).toBeInTheDocument();

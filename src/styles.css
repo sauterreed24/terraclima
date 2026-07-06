@@ -11091,6 +11091,12 @@ html[data-theme="dark"] .place-overview__feel {
   border-color: rgba(227, 166, 59, 0.4);
   border-left-color: rgba(227, 166, 59, 0.85);
 }
+html[data-theme="dark"] .place-overview__eyebrow {
+  color: var(--color-ochre-500);
+}
+html[data-theme="dark"] .place-overview__immersive::first-letter {
+  color: var(--color-ochre-500);
+}
 html[data-theme="dark"] .place-overview__season,
 html[data-theme="dark"] .place-overview__fit-card {
   background: rgba(18, 26, 44, 0.72);

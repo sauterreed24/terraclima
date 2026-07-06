@@ -188,7 +188,7 @@ describe("App resilience integration", () => {
     fireEvent.click(screen.getByRole("button", { name: "2050 mid" }));
 
     expect(screen.getByText(/Illustrative 2050 · SSP2-4.5 regional projection/i)).toBeInTheDocument();
-    expect(screen.getByText(/2050 remap/i)).toBeInTheDocument();
+    expect(screen.getByText(/2050 mid remap/i)).toBeInTheDocument();
 
     await waitFor(
       () => {

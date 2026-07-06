@@ -4,6 +4,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import App from "../App";
 import { CompareView } from "../components/CompareView";
+import { ClimateTripsView } from "../components/ClimateTripsView";
 import { CollectionsView } from "../components/CollectionsView";
 import { LazyRouteErrorBoundary } from "../components/LazyRouteErrorBoundary";
 import { LearnMode } from "../components/LearnMode";
@@ -11,6 +12,7 @@ import { PlaceDetail } from "../components/PlaceDetail";
 import { RouteLoadingFallback } from "../components/RouteLoadingFallback";
 import { PwaUpdateBanner } from "../components/chrome/PwaUpdateBanner";
 import { PLACES, PLACES_BY_ID } from "../data/places";
+import { applyTheme } from "../lib/theme";
 import { UnitProvider } from "../lib/units";
 import { assertNoSeriousAxeViolations } from "../test-helpers/axe-audit";
 
@@ -122,5 +124,52 @@ describe("playtest axe — serious/critical WCAG 2.1 A/AA", () => {
       </LazyRouteErrorBoundary>,
     );
     await assertNoSeriousAxeViolations(boundary.container);
+  });
+
+  it("passes on ClimateTripsView", async () => {
+    const { container } = render(
+      <UnitProvider>
+        <ClimateTripsView
+          onOpenPlace={() => undefined}
+          onPickTripTheme={() => undefined}
+          onComparePlaces={() => undefined}
+        />
+      </UnitProvider>,
+    );
+    await assertNoSeriousAxeViolations(container);
+  });
+
+  it("passes on Explorer, CompareView, and PlaceDetail in dark theme", async () => {
+    applyTheme(document, "dark", "dark");
+    window.history.replaceState(null, "", "/");
+    const explorer = render(
+      <UnitProvider>
+        <App />
+      </UnitProvider>,
+    );
+    await assertNoSeriousAxeViolations(explorer.container);
+    cleanup();
+
+    const compare = render(
+      <UnitProvider>
+        <CompareView
+          places={PLACES.slice(0, 3)}
+          open
+          onClose={() => undefined}
+          onRemove={() => undefined}
+          scenario="ssp245"
+        />
+      </UnitProvider>,
+    );
+    await assertNoSeriousAxeViolations(compare.container);
+    cleanup();
+
+    const detail = render(
+      <UnitProvider>
+        <PlaceDetail place={PLACES_BY_ID["sequim-wa"]!} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+    await assertNoSeriousAxeViolations(detail.container);
+    applyTheme(document, "light", "light");
   });
 });

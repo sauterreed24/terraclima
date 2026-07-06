@@ -17,7 +17,7 @@ export function LearnMode({ onOpenPlace }: Props) {
         <ol className="text-sm text-frost leading-relaxed list-decimal pl-5 space-y-1.5">
           <li>Go to <span className="text-ice font-medium">Explorer</span>, then open any place from the map or the card list.</li>
           <li>In the profile, read top to bottom, or use <span className="text-ice font-medium">On this page</span> to jump — same content, less scrolling.</li>
-          <li>Use <span className="text-ice font-medium">Search</span> and <span className="text-ice font-medium">Rank by</span> in the sidebar to reorder or narrow the list; the map always shows the same filtered set.</li>
+          <li>Use <span className="text-ice font-medium">Search</span> and <span className="text-ice font-medium">Rank by</span> in the <span className="text-ice font-medium">Filters</span> panel (desktop filter dock or mobile Filters button) to reorder or narrow the list; the map always shows the same filtered set.</li>
           <li>Come back to <span className="text-ice font-medium">Learn</span> for vocabulary (rain shadow, chinook, etc.) and example places linked under each term.</li>
         </ol>
       </div>

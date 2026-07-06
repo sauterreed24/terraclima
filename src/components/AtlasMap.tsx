@@ -350,7 +350,7 @@ export const AtlasMap = memo(function AtlasMap({
   featuredLabel,
   liveFitFilters,
   onEmptyRecovery,
-  emptyRecoveryLabel = "Reset filters",
+  emptyRecoveryLabel = "Reset Explorer",
   width: widthProp = 820,
   height: heightProp = 520,
 }: Props) {
@@ -1593,7 +1593,7 @@ export const AtlasMap = memo(function AtlasMap({
         >
           <div className="tc-map-empty-overlay__card pointer-events-auto">
             <p className="tc-map-empty-overlay__title">No places on the map</p>
-            <p className="tc-map-empty-overlay__hint">Nothing matches the current filters or search. Clear or loosen one to bring the atlas back.</p>
+            <p className="tc-map-empty-overlay__hint">Nothing matches the current filters or search. Loosen one control to bring the atlas back.</p>
             {onEmptyRecovery ? (
               <button
                 type="button"

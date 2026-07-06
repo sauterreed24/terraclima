@@ -42,4 +42,10 @@ describe("LearnMode", () => {
 
     expect(onOpenPlace).toHaveBeenCalledWith("huachuca-az", { trigger: chip });
   });
+
+  it("describes Explorer filters without the legacy sidebar label", () => {
+    const { container } = renderLearnMode();
+    expect(container.textContent).toMatch(/Filters panel \(desktop filter dock or mobile Filters button\)/);
+    expect(container.textContent).not.toMatch(/in the sidebar to reorder/i);
+  });
 });

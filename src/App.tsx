@@ -1205,8 +1205,14 @@ export default function App() {
     const hasSearch = (filters.search ?? "").trim().length > 0;
     return hasSearch
       ? { onEmptyRecovery: clearSearch, emptyRecoveryLabel: "Clear search" as const }
-      : { onEmptyRecovery: clearAllFilters, emptyRecoveryLabel: "Reset filters" as const };
+      : { onEmptyRecovery: clearAllFilters, emptyRecoveryLabel: "Reset Explorer" as const };
   }, [filters.search, clearSearch, clearAllFilters]);
+
+  const explorerPendingMessage = resultsPending
+    ? processor.projecting && deferredFilters === filters
+      ? "Updating ranked results for the selected climate layer."
+      : "Updating ranked results for the current filters."
+    : "";
 
   const openFilterSheet = useCallback(() => {
     explorerFilterSheetRef.current?.open();
@@ -1442,11 +1448,19 @@ export default function App() {
                   />
                 </div>
 
-                <ClimateScenarioControl
-                  scenario={climateScenario}
-                  onChange={setClimateScenario}
-                  projecting={processor.projecting}
-                />
+                {explorerPendingMessage ? (
+                  <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+                    {explorerPendingMessage}
+                  </div>
+                ) : null}
+
+                {explorerDockLg ? (
+                  <ClimateScenarioControl
+                    scenario={climateScenario}
+                    onChange={setClimateScenario}
+                    projecting={processor.projecting}
+                  />
+                ) : null}
                 {scenarioReshuffle ? (
                   <ScenarioRemapPanel
                     summary={scenarioReshuffle}
@@ -3173,7 +3187,7 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
       <div className="scenario-remap__head">
         <div className="min-w-0">
           <h2 id="scenario-remap-title" className="scenario-remap__eyebrow">
-            2050 remap
+            {meta.short} remap
           </h2>
           <p className="scenario-remap__headline">
             {meta.short} reranks {rankingLabel.toLowerCase()} against projected 2041-2060 normals.
