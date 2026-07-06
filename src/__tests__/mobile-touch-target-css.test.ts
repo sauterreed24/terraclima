@@ -100,6 +100,10 @@ describe("mobile touch target CSS", () => {
     expectRule(".map-legend-close", /flex:\s*0 0 44px;[\s\S]*width:\s*44px;[\s\S]*min-width:\s*44px;[\s\S]*height:\s*44px;[\s\S]*min-height:\s*44px;/);
     expectRule(".map-key-popover", /max-height:\s*min\(19rem,\s*calc\(100vh - 6rem\),\s*calc\(100% - 6rem\)\);/);
     expectRule(".map-key-notes summary", /min-height:\s*2\.75rem;[\s\S]*display:\s*flex;[\s\S]*align-items:\s*center;/);
+    expectRule(".scenario-remap__row", /min-height:\s*2\.75rem;/);
+    const topologyLoading = ruleBody(".tc-map-topology-loading");
+    expect(topologyLoading).not.toMatch(/--tc-surface-elevated/);
+    expect(topologyLoading).toMatch(/rgba\(/);
   });
 
   it("keeps filter-sheet actions and collection chips at or above a 44px hit area", () => {

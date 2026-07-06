@@ -57,7 +57,12 @@ function renderMap(
   onSelect = vi.fn(),
   featuredIds: readonly string[] = [],
   places = defaultMapPlaces(),
-  options: { featuredLabel?: string; liveFitFilters?: LiveFitFilters } = {},
+  options: {
+    featuredLabel?: string;
+    liveFitFilters?: LiveFitFilters;
+    onEmptyRecovery?: () => void;
+    emptyRecoveryLabel?: string;
+  } = {},
 ) {
   return render(
     <UnitProvider>
@@ -67,6 +72,8 @@ function renderMap(
         featuredIds={featuredIds}
         featuredLabel={options.featuredLabel}
         liveFitFilters={options.liveFitFilters}
+        onEmptyRecovery={options.onEmptyRecovery}
+        emptyRecoveryLabel={options.emptyRecoveryLabel}
       />
     </UnitProvider>,
   );
@@ -239,7 +246,8 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByText("Top row of the visible pins.")).toBeInTheDocument();
   });
 
-  it("shows the climate-preview tooltip on keyboard focus (parity with pointer hover)", () => {
+  it("shows the climate-preview tooltip on keyboard focus (parity with pointer hover)", async () => {
+    vi.useFakeTimers();
     setCoarsePointer(false);
     const places = [makePlace({ id: "solo", name: "Solo Peak", lat: 40, lon: -100, tier: "A" })];
     renderMap(vi.fn(), [], places);
@@ -251,9 +259,13 @@ describe("AtlasMap DOM controls", () => {
     expect(marker).toBeTruthy();
     fireEvent.focus(marker!);
 
-    // Focusing a pin shows the rich tooltip immediately (no dwell).
+    expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "compact");
+    await act(async () => {
+      vi.advanceTimersByTime(350);
+    });
     expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "full");
     expect(screen.getByRole("tooltip")).toHaveTextContent("Solo Peak");
+    vi.useRealTimers();
   });
 
   it("opens dense clusters into a sorted picker with tier and lived-coverage context", () => {
@@ -810,18 +822,41 @@ describe("AtlasMap DOM controls", () => {
     expect(Math.abs(expectedScreenY - (vy + py))).toBeGreaterThan(1);
   });
 
-  it("shows the rich hover preview immediately when a marker receives keyboard focus", () => {
+  it("promotes the keyboard-focused tooltip to full after dwell", async () => {
+    vi.useFakeTimers();
     setCoarsePointer(false);
     renderMap(vi.fn(), [], defaultMapPlaces());
     const marker = document.querySelector('[data-marker-id="a"]') as SVGGElement;
     fireEvent.focus(marker);
 
     const preview = screen.getByRole("tooltip");
+    expect(preview).toHaveAttribute("data-variant", "compact");
+    await act(async () => {
+      vi.advanceTimersByTime(350);
+    });
     expect(preview).toHaveAttribute("data-variant", "full");
     expect(preview).toHaveTextContent("Climate snapshot");
     expect(preview.querySelector(".tc-map-hover-title")).toBeTruthy();
     expect(preview.querySelector(".text-ice")).toBeNull();
     expect(preview.querySelector(".text-stone")).toBeNull();
     expect(preview.querySelector(".tc-map-hover-metric__label")).toBeTruthy();
+    vi.useRealTimers();
+  });
+
+  it("uses map-chrome coord readout styling instead of paper panel tokens", () => {
+    setCoarsePointer(false);
+    renderMap();
+    const readout = document.querySelector(".tc-map-coord-readout");
+    expect(readout).toBeTruthy();
+    expect(readout?.className).not.toMatch(/panel-thin|text-frost/);
+  });
+
+  it("offers empty-map recovery when filters leave zero pins", () => {
+    setCoarsePointer(false);
+    const onEmptyRecovery = vi.fn();
+    renderMap(vi.fn(), [], [], { onEmptyRecovery, emptyRecoveryLabel: "Clear search" });
+    expect(screen.getByText("No places on the map")).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "Clear search" }));
+    expect(onEmptyRecovery).toHaveBeenCalledTimes(1);
   });
 });

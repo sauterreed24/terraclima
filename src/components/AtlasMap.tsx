@@ -73,6 +73,8 @@ interface Props {
   featuredIds?: readonly string[];
   featuredLabel?: string;
   liveFitFilters?: LiveFitFilters;
+  onEmptyRecovery?: () => void;
+  emptyRecoveryLabel?: string;
   width?: number;
   height?: number;
 }
@@ -347,6 +349,8 @@ export const AtlasMap = memo(function AtlasMap({
   featuredIds = [],
   featuredLabel,
   liveFitFilters,
+  onEmptyRecovery,
+  emptyRecoveryLabel = "Reset filters",
   width: widthProp = 820,
   height: heightProp = 520,
 }: Props) {
@@ -1552,9 +1556,8 @@ export const AtlasMap = memo(function AtlasMap({
         }}
         onFocusEnter={() => {
           cancelHoverClear();
-          cancelTooltipDwell();
           setHoverId(pt.place.id);
-          setTooltipVariant("full");
+          scheduleTooltipRich();
           updateTooltip({ x: pt.anchorX, y: pt.anchorY });
         }}
         onLeave={scheduleHoverClear}
@@ -1588,9 +1591,18 @@ export const AtlasMap = memo(function AtlasMap({
           className="tc-map-empty-overlay absolute inset-0 z-[3] flex items-center justify-center p-4 pointer-events-none"
           role="status"
         >
-          <div className="tc-map-empty-overlay__card">
+          <div className="tc-map-empty-overlay__card pointer-events-auto">
             <p className="tc-map-empty-overlay__title">No places on the map</p>
             <p className="tc-map-empty-overlay__hint">Nothing matches the current filters or search. Clear or loosen one to bring the atlas back.</p>
+            {onEmptyRecovery ? (
+              <button
+                type="button"
+                className="tc-map-empty-overlay__action"
+                onClick={onEmptyRecovery}
+              >
+                {emptyRecoveryLabel}
+              </button>
+            ) : null}
           </div>
         </div>
       ) : null}
@@ -2039,8 +2051,7 @@ export const AtlasMap = memo(function AtlasMap({
       {!coarsePointer ? (
         <div
           ref={coordLabelRef}
-          className="absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none z-[2] px-2.5 py-1 rounded-md panel-thin text-[10px] font-mono-num text-frost tracking-wider opacity-0 transition-opacity"
-          style={{ transition: "opacity 200ms" }}
+          className="tc-map-coord-readout absolute bottom-3 left-1/2 -translate-x-1/2 pointer-events-none z-[2] opacity-0 transition-opacity"
         >—</div>
       ) : null}
 

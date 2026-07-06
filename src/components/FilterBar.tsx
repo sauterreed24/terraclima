@@ -259,197 +259,119 @@ export const FilterBar = memo(function FilterBar({
         ranking={ranking}
         scenario={scenario}
         onScenarioChange={onScenarioChange}
+        hideClearAll={variant === "sheet"}
       />
 
-      <section className="fit-finder-panel" aria-labelledby={fitFinderTitleId}>
-        <div className="fit-finder-panel__head">
-          <div>
-            <div id={fitFinderTitleId} className="fit-finder-panel__eyebrow">Fit Finder</div>
-            <p className="fit-finder-panel__intro">
-              Start with what you are escaping or seeking; each path applies the existing ranking and Live Finder constraints.
+      {variant === "sheet" ? (
+        <div className="tc-filter-sheet-rank-bar">
+          <div className="rank-menu">
+            <label htmlFor={rankingSelectId} className="rank-menu__field">
+              <span className="rank-menu__label">Rank by</span>
+              <span className="rank-menu__select-wrap">
+                <select
+                  id={rankingSelectId}
+                  value={ranking}
+                  onChange={event => setRanking(event.currentTarget.value as RankingProfile)}
+                  className="rank-menu__select"
+                  aria-describedby={`${rankingSelectId}-hint`}
+                >
+                  {RANKING_OPTIONS.map(opt => (
+                    <option key={opt.id} value={opt.id}>{opt.label}</option>
+                  ))}
+                </select>
+              </span>
+            </label>
+            <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
+              Current list and map: {rankingLabel}
             </p>
           </div>
-          {activeBundle ? (
-            <span className="fit-finder-panel__active" data-tone={activeBundle.tone}>
-              {activeBundle.cue}
-            </span>
-          ) : null}
-        </div>
-        <div className="fit-finder-panel__grid" aria-label="Guided climate-fit paths">
-          {LIFESTYLE_BUNDLE_GROUPS.map(group => {
-            const groupBundles = LIFESTYLE_BUNDLES.filter(bundle => bundle.group === group.id);
-            if (groupBundles.length === 0) return null;
-            const groupTitleId = `${searchFieldId}-fit-group-${group.id}`;
-            return (
-              <div key={group.id} className="fit-finder-panel__lane" role="group" aria-labelledby={groupTitleId}>
-                <div className="fit-finder-panel__lane-head">
-                  <span id={groupTitleId} className="fit-finder-panel__lane-title">{group.label}</span>
-                  <span className="fit-finder-panel__lane-cue">{group.cue}</span>
-                </div>
-                <div className="fit-finder-panel__lane-grid">
-                  {groupBundles.map(bundle => {
-                    const isActive = isBundleActive(bundle, ranking, filters);
-                    const descId = `${searchFieldId}-fit-${bundle.id}-desc`;
-                    const appliesId = `${searchFieldId}-fit-${bundle.id}-applies`;
-                    const appliedRead = bundleAppliedRead(bundle, temp);
-                    const actionLabel = isActive
-                      ? `${bundle.label} Fit Finder path is active`
-                      : `Apply ${bundle.label} Fit Finder path`;
-                    return (
-                      <button
-                        key={bundle.id}
-                        type="button"
-                        className="fit-finder-panel__path"
-                        data-tone={bundle.tone}
-                        data-active={isActive}
-                        aria-pressed={isActive}
-                        aria-label={actionLabel}
-                        aria-describedby={`${descId} ${appliesId}`}
-                        title={actionLabel}
-                        onClick={() => applyBundle(bundle)}
-                      >
-                        <span className="fit-finder-panel__path-top">
-                          <span className="fit-finder-panel__path-label">{bundle.label}</span>
-                          {isActive ? <Check className="fit-finder-panel__check" aria-hidden /> : null}
-                        </span>
-                        <span className="fit-finder-panel__cue">{bundle.cue}</span>
-                        <span id={descId} className="fit-finder-panel__desc">{bundle.description}</span>
-                        <span
-                          id={appliesId}
-                          className="fit-finder-panel__applies"
-                          aria-label={`${bundle.label} applied settings: ${appliedRead.full}`}
-                          title={appliedRead.full}
-                        >
-                          <span className="fit-finder-panel__applies-row">
-                            <span className="fit-finder-panel__applies-kicker">Rank</span>
-                            <span className="fit-finder-panel__applies-copy">{appliedRead.rank}</span>
-                          </span>
-                          <span className="fit-finder-panel__applies-row">
-                            <span className="fit-finder-panel__applies-kicker">Signals</span>
-                            <span className="fit-finder-panel__applies-copy">{appliedRead.signals}</span>
-                          </span>
-                          {appliedRead.scope ? (
-                            <span className="fit-finder-panel__applies-row">
-                              <span className="fit-finder-panel__applies-kicker">Scope</span>
-                              <span className="fit-finder-panel__applies-copy">{appliedRead.scope}</span>
-                            </span>
-                          ) : null}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <div className="tc-accent-panel p-2.5 space-y-2">
-        <div className="flex items-center justify-between gap-2">
-          <div>
-            <div className="text-[10px] uppercase tracking-wider text-stone-readable">Live Finder signals</div>
-            <div className="text-[11px] text-stone-readable leading-snug">Fine-tune the path; cards explain fit and tradeoffs.</div>
-          </div>
-          {(filters.fitPresets?.size ?? 0) > 0 ? (
+          {hasAny ? (
             <button
               type="button"
-              onClick={() => setFilters(f => ({ ...f, fitPresets: new Set() }))}
-              className="text-stone hover:text-ice normal-case text-[11px] tracking-normal shrink-0"
-              aria-label="Clear Live Finder presets"
-              title="Clear Live Finder presets"
+              className="lens-receipt__clear"
+              onClick={clearAll}
+              aria-label="Clear all filters"
+              title="Clear all filters"
             >
-              Clear presets
+              Clear all
             </button>
           ) : null}
         </div>
-        <div className="flex flex-wrap gap-1.5">
-          {LIVE_FIT_PRESETS.map(preset => {
-            const isActive = filters.fitPresets?.has(preset.id) ?? false;
-            return (
-              <button
-                key={preset.id}
-                type="button"
-                onClick={() => toggleFitPreset(preset.id)}
-                className="chip chip-btn"
-                data-tone={isActive ? "glacier" : undefined}
-                data-active={isActive}
-                aria-pressed={isActive}
-                title={preset.description}
-              >
-                {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
-                {preset.label}
-              </button>
-            );
-          })}
-        </div>
-        <div className="live-filter-controls">
-          <ConstraintSelectRow
-            id={`${liveControlBaseId}-summer-cap`}
-            label="Summer cap"
-            value={filters.maxSummerHighC}
-            options={[
-              { label: "None", value: undefined },
-              ...LIVE_FIT_SUMMER_CAPS_C.map(value => ({ label: `<= ${fmtTemp(value, temp)}`, value })),
-            ]}
-            onPick={v => setLiveNumber("maxSummerHighC", v)}
-          />
-          <ConstraintSelectRow
-            id={`${liveControlBaseId}-winter-floor`}
-            label="Winter floor"
-            value={filters.minWinterLowC}
-            options={[
-              { label: "None", value: undefined },
-              ...LIVE_FIT_WINTER_FLOORS_C.map(value => ({ label: `>= ${fmtTemp(value, temp)}`, value })),
-            ]}
-            onPick={v => setLiveNumber("minWinterLowC", v)}
-          />
-          <ConstraintSelectRow
-            id={`${liveControlBaseId}-garden-floor`}
-            label="Garden floor"
-            value={filters.minGrowability}
-            options={[
-              { label: "None", value: undefined },
-              ...LIVE_FIT_GROWABILITY_FLOORS.map(value => ({ label: `${value}+`, value })),
-            ]}
-            onPick={v => setLiveNumber("minGrowability", v)}
-          />
-          <RiskConstraintSelectRow
-            id={`${liveControlBaseId}-fire-ceiling`}
-            label="Fire ceiling"
-            value={filters.maxFireRisk}
-            onPick={v => setLiveRisk("maxFireRisk", v)}
-          />
-          <RiskConstraintSelectRow
-            id={`${liveControlBaseId}-risk-ceiling`}
-            label="Risk ceiling"
-            value={filters.maxOverallRisk}
-            onPick={v => setLiveRisk("maxOverallRisk", v)}
-          />
-        </div>
-      </div>
+      ) : null}
 
-      <div className="rank-menu">
-        <label htmlFor={rankingSelectId} className="rank-menu__field">
-          <span className="rank-menu__label">Rank by</span>
-          <span className="rank-menu__select-wrap">
-            <select
-              id={rankingSelectId}
-              value={ranking}
-              onChange={event => setRanking(event.currentTarget.value as RankingProfile)}
-              className="rank-menu__select"
-              aria-describedby={`${rankingSelectId}-hint`}
-            >
-              {RANKING_OPTIONS.map(opt => (
-                <option key={opt.id} value={opt.id}>{opt.label}</option>
-              ))}
-            </select>
-          </span>
-        </label>
-        <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
-          Current list and map: {rankingLabel}
-        </p>
-      </div>
+      {variant === "sheet" ? (
+        <details className="tc-filter-sheet-details">
+          <summary className="tc-filter-sheet-details__summary">Fit Finder</summary>
+          <FitFinderPanel
+            searchFieldId={searchFieldId}
+            fitFinderTitleId={fitFinderTitleId}
+            ranking={ranking}
+            filters={filters}
+            activeBundle={activeBundle}
+            temp={temp}
+            applyBundle={applyBundle}
+          />
+        </details>
+      ) : (
+        <FitFinderPanel
+          searchFieldId={searchFieldId}
+          fitFinderTitleId={fitFinderTitleId}
+          ranking={ranking}
+          filters={filters}
+          activeBundle={activeBundle}
+          temp={temp}
+          applyBundle={applyBundle}
+        />
+      )}
+
+      {variant === "sheet" ? (
+        <details className="tc-filter-sheet-details">
+          <summary className="tc-filter-sheet-details__summary">Live Finder signals</summary>
+          <LiveFinderPanel
+            filters={filters}
+            temp={temp}
+            liveControlBaseId={liveControlBaseId}
+            setFilters={setFilters}
+            toggleFitPreset={toggleFitPreset}
+            setLiveNumber={setLiveNumber}
+            setLiveRisk={setLiveRisk}
+          />
+        </details>
+      ) : (
+        <LiveFinderPanel
+          filters={filters}
+          temp={temp}
+          liveControlBaseId={liveControlBaseId}
+          setFilters={setFilters}
+          toggleFitPreset={toggleFitPreset}
+          setLiveNumber={setLiveNumber}
+          setLiveRisk={setLiveRisk}
+        />
+      )}
+
+      {variant === "dock" ? (
+        <div className="rank-menu">
+          <label htmlFor={rankingSelectId} className="rank-menu__field">
+            <span className="rank-menu__label">Rank by</span>
+            <span className="rank-menu__select-wrap">
+              <select
+                id={rankingSelectId}
+                value={ranking}
+                onChange={event => setRanking(event.currentTarget.value as RankingProfile)}
+                className="rank-menu__select"
+                aria-describedby={`${rankingSelectId}-hint`}
+              >
+                {RANKING_OPTIONS.map(opt => (
+                  <option key={opt.id} value={opt.id}>{opt.label}</option>
+                ))}
+              </select>
+            </span>
+          </label>
+          <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
+            Current list and map: {rankingLabel}
+          </p>
+        </div>
+      ) : null}
 
       <div>
         <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Country</div>
@@ -521,6 +443,214 @@ export const FilterBar = memo(function FilterBar({
   );
 });
 
+function FitFinderPanel({
+  searchFieldId,
+  fitFinderTitleId,
+  ranking,
+  filters,
+  activeBundle,
+  temp,
+  applyBundle,
+}: {
+  searchFieldId: string;
+  fitFinderTitleId: string;
+  ranking: RankingProfile;
+  filters: FilterState;
+  activeBundle: LifestyleBundle | null;
+  temp: UnitState["temp"];
+  applyBundle: (bundle: LifestyleBundle) => void;
+}) {
+  return (
+    <section className="fit-finder-panel" aria-labelledby={fitFinderTitleId}>
+      <div className="fit-finder-panel__head">
+        <div>
+          <div id={fitFinderTitleId} className="fit-finder-panel__eyebrow">Fit Finder</div>
+          <p className="fit-finder-panel__intro">
+            Start with what you are escaping or seeking; each path applies the existing ranking and Live Finder constraints.
+          </p>
+        </div>
+        {activeBundle ? (
+          <span className="fit-finder-panel__active" data-tone={activeBundle.tone}>
+            {activeBundle.cue}
+          </span>
+        ) : null}
+      </div>
+      <div className="fit-finder-panel__grid" aria-label="Guided climate-fit paths">
+        {LIFESTYLE_BUNDLE_GROUPS.map(group => {
+          const groupBundles = LIFESTYLE_BUNDLES.filter(bundle => bundle.group === group.id);
+          if (groupBundles.length === 0) return null;
+          const groupTitleId = `${searchFieldId}-fit-group-${group.id}`;
+          return (
+            <div key={group.id} className="fit-finder-panel__lane" role="group" aria-labelledby={groupTitleId}>
+              <div className="fit-finder-panel__lane-head">
+                <span id={groupTitleId} className="fit-finder-panel__lane-title">{group.label}</span>
+                <span className="fit-finder-panel__lane-cue">{group.cue}</span>
+              </div>
+              <div className="fit-finder-panel__lane-grid">
+                {groupBundles.map(bundle => {
+                  const isActive = isBundleActive(bundle, ranking, filters);
+                  const descId = `${searchFieldId}-fit-${bundle.id}-desc`;
+                  const appliesId = `${searchFieldId}-fit-${bundle.id}-applies`;
+                  const appliedRead = bundleAppliedRead(bundle, temp);
+                  const actionLabel = isActive
+                    ? `${bundle.label} Fit Finder path is active`
+                    : `Apply ${bundle.label} Fit Finder path`;
+                  return (
+                    <button
+                      key={bundle.id}
+                      type="button"
+                      className="fit-finder-panel__path"
+                      data-tone={bundle.tone}
+                      data-active={isActive}
+                      aria-pressed={isActive}
+                      aria-label={actionLabel}
+                      aria-describedby={`${descId} ${appliesId}`}
+                      title={actionLabel}
+                      onClick={() => applyBundle(bundle)}
+                    >
+                      <span className="fit-finder-panel__path-top">
+                        <span className="fit-finder-panel__path-label">{bundle.label}</span>
+                        {isActive ? <Check className="fit-finder-panel__check" aria-hidden /> : null}
+                      </span>
+                      <span className="fit-finder-panel__cue">{bundle.cue}</span>
+                      <span id={descId} className="fit-finder-panel__desc">{bundle.description}</span>
+                      <span
+                        id={appliesId}
+                        className="fit-finder-panel__applies"
+                        aria-label={`${bundle.label} applied settings: ${appliedRead.full}`}
+                        title={appliedRead.full}
+                      >
+                        <span className="fit-finder-panel__applies-row">
+                          <span className="fit-finder-panel__applies-kicker">Rank</span>
+                          <span className="fit-finder-panel__applies-copy">{appliedRead.rank}</span>
+                        </span>
+                        <span className="fit-finder-panel__applies-row">
+                          <span className="fit-finder-panel__applies-kicker">Signals</span>
+                          <span className="fit-finder-panel__applies-copy">{appliedRead.signals}</span>
+                        </span>
+                        {appliedRead.scope ? (
+                          <span className="fit-finder-panel__applies-row">
+                            <span className="fit-finder-panel__applies-kicker">Scope</span>
+                            <span className="fit-finder-panel__applies-copy">{appliedRead.scope}</span>
+                          </span>
+                        ) : null}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function LiveFinderPanel({
+  filters,
+  temp,
+  liveControlBaseId,
+  setFilters,
+  toggleFitPreset,
+  setLiveNumber,
+  setLiveRisk,
+}: {
+  filters: FilterState;
+  temp: UnitState["temp"];
+  liveControlBaseId: string;
+  setFilters: Dispatch<SetStateAction<FilterState>>;
+  toggleFitPreset: (id: LiveFitPresetId) => void;
+  setLiveNumber: (key: "maxSummerHighC" | "minWinterLowC" | "minGrowability", value: number | undefined) => void;
+  setLiveRisk: (key: "maxFireRisk" | "maxOverallRisk", value: RiskLevel | undefined) => void;
+}) {
+  return (
+    <div className="tc-accent-panel p-2.5 space-y-2">
+      <div className="flex items-center justify-between gap-2">
+        <div>
+          <div className="text-[10px] uppercase tracking-wider text-stone-readable">Live Finder signals</div>
+          <div className="text-[11px] text-stone-readable leading-snug">Fine-tune the path; cards explain fit and tradeoffs.</div>
+        </div>
+        {(filters.fitPresets?.size ?? 0) > 0 ? (
+          <button
+            type="button"
+            onClick={() => setFilters(f => ({ ...f, fitPresets: new Set() }))}
+            className="text-stone hover:text-ice normal-case text-[11px] tracking-normal shrink-0"
+            aria-label="Clear Live Finder presets"
+            title="Clear Live Finder presets"
+          >
+            Clear presets
+          </button>
+        ) : null}
+      </div>
+      <div className="flex flex-wrap gap-1.5">
+        {LIVE_FIT_PRESETS.map(preset => {
+          const isActive = filters.fitPresets?.has(preset.id) ?? false;
+          return (
+            <button
+              key={preset.id}
+              type="button"
+              onClick={() => toggleFitPreset(preset.id)}
+              className="chip chip-btn"
+              data-tone={isActive ? "glacier" : undefined}
+              data-active={isActive}
+              aria-pressed={isActive}
+              title={preset.description}
+            >
+              {isActive ? <Check className="w-3 h-3 -ml-0.5 mr-0.5" aria-hidden /> : null}
+              {preset.label}
+            </button>
+          );
+        })}
+      </div>
+      <div className="live-filter-controls">
+        <ConstraintSelectRow
+          id={`${liveControlBaseId}-summer-cap`}
+          label="Summer cap"
+          value={filters.maxSummerHighC}
+          options={[
+            { label: "None", value: undefined },
+            ...LIVE_FIT_SUMMER_CAPS_C.map(value => ({ label: `<= ${fmtTemp(value, temp)}`, value })),
+          ]}
+          onPick={v => setLiveNumber("maxSummerHighC", v)}
+        />
+        <ConstraintSelectRow
+          id={`${liveControlBaseId}-winter-floor`}
+          label="Winter floor"
+          value={filters.minWinterLowC}
+          options={[
+            { label: "None", value: undefined },
+            ...LIVE_FIT_WINTER_FLOORS_C.map(value => ({ label: `>= ${fmtTemp(value, temp)}`, value })),
+          ]}
+          onPick={v => setLiveNumber("minWinterLowC", v)}
+        />
+        <ConstraintSelectRow
+          id={`${liveControlBaseId}-garden-floor`}
+          label="Garden floor"
+          value={filters.minGrowability}
+          options={[
+            { label: "None", value: undefined },
+            ...LIVE_FIT_GROWABILITY_FLOORS.map(value => ({ label: `${value}+`, value })),
+          ]}
+          onPick={v => setLiveNumber("minGrowability", v)}
+        />
+        <RiskConstraintSelectRow
+          id={`${liveControlBaseId}-fire-ceiling`}
+          label="Fire ceiling"
+          value={filters.maxFireRisk}
+          onPick={v => setLiveRisk("maxFireRisk", v)}
+        />
+        <RiskConstraintSelectRow
+          id={`${liveControlBaseId}-risk-ceiling`}
+          label="Risk ceiling"
+          value={filters.maxOverallRisk}
+          onPick={v => setLiveRisk("maxOverallRisk", v)}
+        />
+      </div>
+    </div>
+  );
+}
+
 function clearLiveFinderConstraints(f: FilterState): FilterState {
   return {
     ...f,
@@ -544,6 +674,7 @@ function LensReceipt({
   ranking,
   scenario = "now",
   onScenarioChange,
+  hideClearAll = false,
 }: {
   rankingLabel: string;
   filters: FilterState;
@@ -555,6 +686,7 @@ function LensReceipt({
   ranking: RankingProfile;
   scenario?: ScenarioId;
   onScenarioChange?: (next: ScenarioId) => void;
+  hideClearAll?: boolean;
 }) {
   const liveSignalCount = countLiveSignals(filters);
   const chips: { key: string; label: string; tone?: string; onDismiss?: () => void }[] = [];
@@ -676,7 +808,7 @@ function LensReceipt({
           <div className="lens-receipt__eyebrow">Current lens</div>
           <div className="lens-receipt__title">{rankingLabel}</div>
         </div>
-        {hasAny ? (
+        {hasAny && !hideClearAll ? (
           <button
             type="button"
             className="lens-receipt__clear"
@@ -717,6 +849,15 @@ function LensReceipt({
             Full atlas
           </span>
         )}
+        {chips.length > 7 ? (
+          <span
+            className="lens-receipt__chip lens-receipt__chip--overflow"
+            data-tone="glacier"
+            title={chips.slice(7).map(chip => chip.label).join(", ")}
+          >
+            +{chips.length - 7} more
+          </span>
+        ) : null}
       </div>
     </section>
   );

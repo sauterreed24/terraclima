@@ -378,7 +378,7 @@ function DetailHeader({
   return (
     <div
       data-tone={tone}
-      className="detail-drawer-header md:sticky md:top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 tc-surface-elevated backdrop-blur relative border-b tc-border-warm"
+      className="detail-drawer-header sticky top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 tc-surface-elevated backdrop-blur relative border-b tc-border-warm"
     >
       {/* Title + actions share a row only from lg up: the drawer is ~706-830px
           across the md band and the six header actions (~540px, shrink-0)
@@ -616,7 +616,7 @@ function HeroClimateFallback({ place, signatureLabel }: { place: Place; signatur
 function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className="atlas-hero-stat panel-thin px-3 py-2">
-      <div className="text-[10px] uppercase tracking-wider text-stone flex items-center gap-1">{icon}{label}</div>
+      <div className="text-[10px] uppercase tracking-wider text-stone-readable flex items-center gap-1">{icon}{label}</div>
       <div className="font-mono-num text-sm text-ice">{value}</div>
     </div>
   );
@@ -755,7 +755,7 @@ function DetailBody({
         <div className="panel-thin p-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <div>
-              <div className="text-[10px] uppercase tracking-wider text-stone">Blended livability score</div>
+              <div className="text-[10px] uppercase tracking-wider text-stone-readable">Blended livability score</div>
               <div className="font-mono-num text-3xl text-ice mt-0.5">
                 {livability.score}<span className="text-sm text-stone">/100</span>
               </div>
@@ -860,7 +860,7 @@ function DetailBody({
       <Section title="Live-here fit" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="grid md:grid-cols-[11rem_1fr] gap-3">
           <div className="panel-thin p-4">
-            <div className="text-[10px] uppercase tracking-wider text-stone">Current match</div>
+            <div className="text-[10px] uppercase tracking-wider text-stone-readable">Current match</div>
             <div className="font-mono-num text-3xl text-ice mt-1">{liveFit.score}<span className="text-sm text-stone">/100</span></div>
             <div className="mt-2 flex flex-wrap gap-1">
               {liveFit.badges.map(b => <span key={b} className="chip" data-tone="glacier">{b}</span>)}
@@ -868,13 +868,13 @@ function DetailBody({
           </div>
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="panel-thin p-4 border-l-2" style={{ borderLeftColor: "#5ec4dc" }}>
-              <div className="text-[10px] uppercase tracking-wider text-stone mb-2">Why it fits</div>
+              <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-2">Why it fits</div>
               <ul className="space-y-1.5 text-sm text-frost">
                 {liveFit.reasons.map(r => <li key={r}>{prose(r)}</li>)}
               </ul>
             </div>
             <div className="panel-thin p-4 border-l-2" style={{ borderLeftColor: "#e89b20" }}>
-              <div className="text-[10px] uppercase tracking-wider text-stone mb-2">Watch this</div>
+              <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-2">Watch this</div>
               {liveFit.cautions.length ? (
                 <ul className="space-y-1.5 text-sm text-frost">
                   {liveFit.cautions.map(c => <li key={c}>{prose(c)}</li>)}
@@ -1030,7 +1030,7 @@ function DetailBody({
               <div key={w.label} className="panel-thin p-3 flex items-start gap-3">
                 <div className="text-xl leading-none pt-0.5" aria-hidden="true">{w.glyph}</div>
                 <div className="min-w-0 flex-1">
-                  <div className="text-xs uppercase tracking-wider text-stone">{w.label}</div>
+                  <div className="text-xs uppercase tracking-wider text-stone-readable">{w.label}</div>
                   <div className="text-sm text-ice font-mono-num">{w.range}</div>
                   {w.note && <div className="text-[11px] text-stone italic mt-0.5 leading-snug">{prose(w.note)}</div>}
                 </div>

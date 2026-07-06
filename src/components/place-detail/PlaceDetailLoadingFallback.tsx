@@ -43,7 +43,7 @@ export function PlaceDetailLoadingFallback({ placeName, onClose, occluded = fals
         className="place-detail-drawer fixed top-0 right-0 h-full w-full md:w-[min(92vw,900px)] max-w-full z-40 panel !rounded-none !border-y-0 !border-r-0 overflow-hidden outline-none border-l"
       >
         <div className="flex min-h-full flex-col">
-          <div className="flex items-start justify-between gap-4 border-b border-white/10 px-4 py-4 md:px-6">
+          <div className="flex items-start justify-between gap-4 border-b tc-border-neutral px-4 py-4 md:px-6">
             <div className="min-w-0">
               <p className="m-0 text-[10px] uppercase tracking-[0.16em] text-stone-readable">
                 Opening profile
@@ -77,13 +77,13 @@ export function PlaceDetailLoadingFallback({ placeName, onClose, occluded = fals
               </p>
             </div>
             <div className="mt-7 space-y-3" aria-hidden="true">
-              <div className="h-3 w-3/4 rounded-full bg-white/10" />
-              <div className="h-3 w-full rounded-full bg-white/10" />
-              <div className="h-3 w-5/6 rounded-full bg-white/10" />
+              <div className="h-3 w-3/4 rounded-full bg-[var(--tc-inset-bg)]" />
+              <div className="h-3 w-full rounded-full bg-[var(--tc-inset-bg)]" />
+              <div className="h-3 w-5/6 rounded-full bg-[var(--tc-inset-bg)]" />
               <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                <div className="h-24 rounded-lg border border-white/10 bg-white/[0.04]" />
-                <div className="h-24 rounded-lg border border-white/10 bg-white/[0.04]" />
-                <div className="h-24 rounded-lg border border-white/10 bg-white/[0.04]" />
+                <div className="h-24 rounded-lg border tc-border-neutral bg-[var(--tc-inset-bg)]" />
+                <div className="h-24 rounded-lg border tc-border-neutral bg-[var(--tc-inset-bg)]" />
+                <div className="h-24 rounded-lg border tc-border-neutral bg-[var(--tc-inset-bg)]" />
               </div>
             </div>
           </div>

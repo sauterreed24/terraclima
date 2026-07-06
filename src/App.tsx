@@ -25,6 +25,7 @@ import {
   lifestyleBundleById,
   type LifestyleBundle,
 } from "./lib/lifestyle-bundles";
+import { explorerResultsPending } from "./lib/explorer-pending";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit, LIVE_FIT_PRESET_BY_ID } from "./lib/live-fit";
 import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
@@ -680,6 +681,7 @@ export default function App() {
     // worker once the user engages a future-climate layer.
     disableWorker: climateScenario === "now",
   });
+  const resultsPending = explorerResultsPending(filters, deferredFilters, processor.projecting);
   // NB: `Map` is shadowed by the lucide-react `Map` icon imported above, so a
   // plain record is used to index the projected pool by id.
   const placesById = useMemo(() => {
@@ -1199,6 +1201,13 @@ export default function App() {
     setFilters(f => (f.search ? { ...f, search: "" } : f));
   }, []);
 
+  const mapEmptyRecovery = useMemo(() => {
+    const hasSearch = (filters.search ?? "").trim().length > 0;
+    return hasSearch
+      ? { onEmptyRecovery: clearSearch, emptyRecoveryLabel: "Clear search" as const }
+      : { onEmptyRecovery: clearAllFilters, emptyRecoveryLabel: "Reset filters" as const };
+  }, [filters.search, clearSearch, clearAllFilters]);
+
   const openFilterSheet = useCallback(() => {
     explorerFilterSheetRef.current?.open();
   }, []);
@@ -1404,7 +1413,11 @@ export default function App() {
                   showDesktopScoutBoard={scoutBoardLg}
                 />
 
-                <div className="tc-map-stage relative h-[clamp(320px,50svh,560px)] md:h-[54dvh] md:min-h-[min(480px,46dvh)]">
+                <div
+                  className="tc-map-stage relative h-[clamp(320px,50svh,560px)] md:h-[54dvh] md:min-h-[min(480px,46dvh)]"
+                  aria-busy={resultsPending || undefined}
+                  data-pending={resultsPending || undefined}
+                >
                   <div
                     className="tc-map-stage__caption"
                     role="note"
@@ -1424,6 +1437,8 @@ export default function App() {
                     featuredLabel={scenarioRankingLabel}
                     liveFitFilters={deferredFilters}
                     onSelect={openPlace}
+                    onEmptyRecovery={mapEmptyRecovery.onEmptyRecovery}
+                    emptyRecoveryLabel={mapEmptyRecovery.emptyRecoveryLabel}
                   />
                 </div>
 
@@ -1464,6 +1479,7 @@ export default function App() {
                       <MobileLivabilityTopTenStrip
                         rows={livabilityTopTen}
                         onOpenPlace={openPlace}
+                        pending={resultsPending}
                       />
                     ) : null}
                   </>
@@ -1485,13 +1501,17 @@ export default function App() {
                   </div>
                 </section>
 
-                <div className="panel-thin p-3 flex items-center justify-between flex-wrap gap-2">
+                <div
+                  className="panel-thin p-3 flex items-center justify-between flex-wrap gap-2"
+                  aria-busy={resultsPending || undefined}
+                  data-pending={resultsPending || undefined}
+                >
                   {/* Visual count is animated via raf-driven textContent mutation,
                       which would spam any enclosing aria-live region. The
                       authoritative announcement lives in the sr-only sibling
                       below so screen readers hear only the final value. */}
-                  <div className="text-xs text-stone" aria-hidden="true">
-                    Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{scenarioRankingLabel}</span>
+                  <div className="text-xs text-stone-readable" aria-hidden="true">
+                    Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} paused={resultsPending} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{scenarioRankingLabel}</span>
                   </div>
                   <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
                     {`Showing ${ranked.length} of ${PLACE_COUNTS.total} places, ranked by ${scenarioRankingLabel}.${homeBasePlace ? ` Cards show climate deltas against your home base, ${homeBasePlace.name}.` : ""}`}
@@ -1564,7 +1584,12 @@ export default function App() {
                     />
                   </div>
                 ) : (
-                  <section className="flex flex-col gap-3 min-w-0" aria-labelledby="ranked-places-heading">
+                  <section
+                    className="flex flex-col gap-3 min-w-0"
+                    aria-labelledby="ranked-places-heading"
+                    aria-busy={resultsPending || undefined}
+                    data-pending={resultsPending || undefined}
+                  >
                     <div className="tc-section-heading pt-1">
                       <div className="tc-section-heading__line opacity-80" aria-hidden />
                       <span id="ranked-places-heading" className="tc-section-heading__label">Ranked places</span>
@@ -3056,15 +3081,21 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
 const MobileLivabilityTopTenStrip = memo(function MobileLivabilityTopTenStrip({
   rows,
   onOpenPlace,
+  pending = false,
 }: {
   rows: RankingResult[];
   onOpenPlace: OpenPlaceHandler;
+  pending?: boolean;
 }) {
   const prose = useProse();
   if (rows.length === 0) return null;
 
   return (
-    <div className="hero-top-ten px-3 py-2.5 sm:px-4 space-y-2.5">
+    <div
+      className="hero-top-ten px-3 py-2.5 sm:px-4 space-y-2.5"
+      aria-busy={pending || undefined}
+      data-pending={pending || undefined}
+    >
       <div className="min-w-0">
         <div className="text-[10px] uppercase tracking-wider text-sage-700">Livability lens - top ten</div>
       </div>
@@ -4149,12 +4180,13 @@ const Metric = memo(function Metric({ label, value, animated }: { label: string;
   );
 });
 
-function AnimatedNumber({ value, durationMs = 520 }: { value: number; durationMs?: number }) {
+function AnimatedNumber({ value, durationMs = 520, paused = false }: { value: number; durationMs?: number; paused?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
   const displayedRef = useRef(value);
   const rafRef = useRef(0);
 
   useEffect(() => {
+    if (paused) return;
     const from = displayedRef.current;
     const to = value;
     if (from === to) return;
@@ -4175,7 +4207,7 @@ function AnimatedNumber({ value, durationMs = 520 }: { value: number; durationMs
     };
     rafRef.current = requestAnimationFrame(step);
     return () => cancelAnimationFrame(rafRef.current);
-  }, [value, durationMs]);
+  }, [value, durationMs, paused]);
 
   return <span ref={ref}>{displayedRef.current}</span>;
 }

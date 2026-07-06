@@ -1,4 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   SEMANTIC_TOKEN_KEYS,
   SEMANTIC_TOKENS_DARK,
@@ -6,6 +9,9 @@ import {
   captionContrastOk,
   semanticTokensFor,
 } from "../theme-tokens";
+
+const stylesPath = resolve(dirname(fileURLToPath(import.meta.url)), "../../styles.css");
+const styles = readFileSync(stylesPath, "utf8");
 
 describe("theme-tokens", () => {
   it("defines all semantic CSS variable names", () => {
@@ -45,9 +51,13 @@ describe("theme-tokens", () => {
       "html[data-theme=\"dark\"] .lens-receipt",
       "html[data-theme=\"dark\"] .tc-accent-panel",
       "html[data-theme=\"dark\"] .climate-scenario",
+      "html[data-theme=\"dark\"] .scenario-remap",
       ".tc-modal-scrim",
       ".tc-nav-btn--active",
     ];
     expect(required.every(s => s.includes("dark") || s.startsWith(".tc-"))).toBe(true);
+    for (const selector of required.filter(s => s.includes("dark"))) {
+      expect(styles).toContain(selector);
+    }
   });
 });
