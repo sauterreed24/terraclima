@@ -29,7 +29,7 @@ import { explorerResultsPending } from "./lib/explorer-pending";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { assessLiveFit, LIVE_FIT_PRESET_BY_ID } from "./lib/live-fit";
 import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
-import { projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
+import { placeForCompareSlot, projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
 import { runScenarioRanking } from "./lib/climate-processor";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
@@ -791,8 +791,11 @@ export default function App() {
 
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
   const activeComparePlaces = useMemo(
-    () => [...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace),
-    [compareIds, placesById],
+    () =>
+      [...compareIds]
+        .map(id => placeForCompareSlot(id, placesById, climateScenario, placeForId(id)))
+        .filter(isPlace),
+    [compareIds, placesById, climateScenario],
   );
   // Present-day home base for the dossier (which always shows present-day
   // normals) and a scenario-consistent twin for the Explorer grid and
@@ -1060,6 +1063,15 @@ export default function App() {
     );
     setEvictedComparePlaceId(null);
   }, [evictedComparePlaceId]);
+
+  // CompareView only renders when there is at least one resolved place. If the
+  // last active slot is removed (or every id is stale), close compare so the
+  // app shell is not left inert behind an invisible overlay.
+  useEffect(() => {
+    if (compareOpen && activeComparePlaces.length === 0) {
+      setCompareOpen(false);
+    }
+  }, [compareOpen, activeComparePlaces.length]);
 
   const openCompare = useCallback((opts?: { trigger?: HTMLElement | null }) => {
     preloadCompareView();
