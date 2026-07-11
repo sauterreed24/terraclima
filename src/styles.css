@@ -6313,19 +6313,23 @@
   .map-atlas-readout__item:nth-child(n + 3) {
     display: none;
   }
+  .map-atlas-readout[data-expanded="true"] .map-atlas-readout__grid,
   .map-atlas-readout:hover .map-atlas-readout__grid,
   .map-atlas-readout:focus-within .map-atlas-readout__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
+  .map-atlas-readout[data-expanded="true"] .map-atlas-readout__item:nth-child(n + 3),
   .map-atlas-readout:hover .map-atlas-readout__item:nth-child(n + 3),
   .map-atlas-readout:focus-within .map-atlas-readout__item:nth-child(n + 3) {
     display: block;
   }
   @media (pointer: coarse) {
+    .map-atlas-readout[data-expanded="true"] .map-atlas-readout__grid,
     .map-atlas-readout:hover .map-atlas-readout__grid,
     .map-atlas-readout:focus-within .map-atlas-readout__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+    .map-atlas-readout[data-expanded="true"] .map-atlas-readout__item:nth-child(n + 3),
     .map-atlas-readout:hover .map-atlas-readout__item:nth-child(n + 3),
     .map-atlas-readout:focus-within .map-atlas-readout__item:nth-child(n + 3) {
       display: none;

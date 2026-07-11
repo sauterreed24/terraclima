@@ -474,12 +474,17 @@ export const AtlasMap = memo(function AtlasMap({
   const [hoverId, setHoverId] = useState<string | null>(null);
   const hoverIdRef = useRef<string | null>(null);
   hoverIdRef.current = hoverId;
+  /** Distinguishes pointer dwell promotion from keyboard-compact preview. */
+  const tooltipInputRef = useRef<"pointer" | "keyboard">("pointer");
+  /** Pin id that owns the keyboard compact peek until blur. */
+  const keyboardPreviewIdRef = useRef<string | null>(null);
   const [tooltipScreen, setTooltipScreen] = useState<{ xPct: number; yPct: number } | null>(null);
   const [clusterPicker, setClusterPicker] = useState<{
     cluster: AtlasClusterItem<{ place: Place; x: number; y: number; id: string }>;
     xPct: number;
     yPct: number;
   } | null>(null);
+  const [atlasReadoutExpanded, setAtlasReadoutExpanded] = useState(false);
   const hoverClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const cancelHoverClear = useCallback(() => {
@@ -501,6 +506,12 @@ export const AtlasMap = memo(function AtlasMap({
     setTooltipVariant("compact");
     tooltipDwellTimerRef.current = setTimeout(() => {
       tooltipDwellTimerRef.current = null;
+      // Never promote while keyboard owns a pin preview.
+      if (keyboardPreviewIdRef.current) {
+        tooltipInputRef.current = "keyboard";
+        setTooltipVariant("compact");
+        return;
+      }
       setTooltipVariant("full");
     }, 450);
   }, [cancelTooltipDwell]);
@@ -510,9 +521,17 @@ export const AtlasMap = memo(function AtlasMap({
     cancelTooltipDwell();
     hoverClearTimerRef.current = setTimeout(() => {
       hoverClearTimerRef.current = null;
+      // Pointer left a pin that still has keyboard focus — keep the compact peek.
+      if (keyboardPreviewIdRef.current && keyboardPreviewIdRef.current === hoverIdRef.current) {
+        tooltipInputRef.current = "keyboard";
+        setTooltipVariant("compact");
+        return;
+      }
       setHoverId(null);
       setTooltipScreen(null);
       setTooltipVariant("compact");
+      tooltipInputRef.current = "pointer";
+      keyboardPreviewIdRef.current = null;
     }, 180);
   }, [cancelHoverClear, cancelTooltipDwell]);
 
@@ -1567,17 +1586,33 @@ export const AtlasMap = memo(function AtlasMap({
   const onMarkerHoverEnter = useCallback((id: string, x: number, y: number) => {
     cancelHoverClear();
     setHoverId(id);
-    scheduleTooltipRich();
     updateTooltip({ x, y });
-  }, [cancelHoverClear, scheduleTooltipRich, updateTooltip]);
+    // Keyboard focus owns the compact peek: pointer graze must not promote to full.
+    if (keyboardPreviewIdRef.current) {
+      cancelTooltipDwell();
+      tooltipInputRef.current = "keyboard";
+      setTooltipVariant("compact");
+      return;
+    }
+    tooltipInputRef.current = "pointer";
+    scheduleTooltipRich();
+  }, [cancelHoverClear, cancelTooltipDwell, scheduleTooltipRich, updateTooltip]);
   /** Keyboard focus shows the compact peek only — never auto-promotes to full. */
   const onMarkerFocusEnter = useCallback((id: string, x: number, y: number) => {
     cancelHoverClear();
     cancelTooltipDwell();
+    keyboardPreviewIdRef.current = id;
+    tooltipInputRef.current = "keyboard";
     setHoverId(id);
     setTooltipVariant("compact");
     updateTooltip({ x, y });
   }, [cancelHoverClear, cancelTooltipDwell, updateTooltip]);
+  /** Blur ends the keyboard preview session, then clears like a pointer leave. */
+  const onMarkerFocusLeave = useCallback(() => {
+    keyboardPreviewIdRef.current = null;
+    tooltipInputRef.current = "pointer";
+    scheduleHoverClear();
+  }, [scheduleHoverClear]);
   const renderMarker = (pt: RenderedClusterPoint) => {
     const screenX = pt.x * settledView.k + settledView.x;
     const labelSide: "left" | "right" = screenX > width * 0.62 ? "left" : "right";
@@ -1597,6 +1632,7 @@ export const AtlasMap = memo(function AtlasMap({
         onHoverEnter={onMarkerHoverEnter}
         onFocusEnter={onMarkerFocusEnter}
         onLeave={scheduleHoverClear}
+        onFocusLeave={onMarkerFocusLeave}
         shouldSuppressTouchActivation={shouldSuppressTouchActivation}
         onArrow={onMarkerArrow}
         onHomeEnd={onMarkerHomeEnd}
@@ -1664,8 +1700,8 @@ export const AtlasMap = memo(function AtlasMap({
         onPointerLeave={(e) => {
           // Ignore leave events when the pointer moves onto a marker or other
           // descendant — only finish when the cursor exits the SVG entirely.
-          const related = e.relatedTarget as Node | null;
-          if (related && e.currentTarget.contains(related)) {
+          const related = e.relatedTarget;
+          if (related instanceof Node && e.currentTarget.contains(related)) {
             if (coordLabelRef.current) coordLabelRef.current.style.opacity = "0";
             return;
           }
@@ -2065,6 +2101,7 @@ export const AtlasMap = memo(function AtlasMap({
         <aside
           className="map-atlas-readout map-chrome-panel"
           aria-label="Current map read"
+          data-expanded={atlasReadoutExpanded ? "true" : "false"}
           style={{ ["--map-readout-rgb" as string]: atlasMapReadout.accentRgb }}
         >
           <div className="map-atlas-readout__head">
@@ -2073,10 +2110,12 @@ export const AtlasMap = memo(function AtlasMap({
             <button
               type="button"
               className="map-atlas-readout__expand"
-              aria-label="Expand atlas read details"
-              title="Expand atlas read details"
+              aria-expanded={atlasReadoutExpanded}
+              aria-label={atlasReadoutExpanded ? "Collapse atlas read details" : "Expand atlas read details"}
+              title={atlasReadoutExpanded ? "Collapse atlas read details" : "Expand atlas read details"}
+              onClick={() => setAtlasReadoutExpanded(v => !v)}
             >
-              More
+              {atlasReadoutExpanded ? "Less" : "More"}
             </button>
           </div>
           <dl className="map-atlas-readout__grid" aria-label={atlasMapReadout.ariaLabel}>
@@ -2334,6 +2373,8 @@ interface MarkerProps {
   /** Keyboard focus enter — compact peek only (no dwell promotion). */
   onFocusEnter: (id: string, x: number, y: number) => void;
   onLeave: () => void;
+  /** Keyboard blur — ends the keyboard compact session, then clears preview. */
+  onFocusLeave: () => void;
   shouldSuppressTouchActivation: () => boolean;
   /** Arrow-key step within the visible marker set. */
   onArrow: (id: string, direction: AtlasArrowDirection) => void;
@@ -2686,7 +2727,7 @@ const ClusterPicker = memo(function ClusterPicker({
 
 const Marker = memo(function Marker({
   pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
-  onSelect, onHoverEnter, onFocusEnter, onLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
+  onSelect, onHoverEnter, onFocusEnter, onLeave, onFocusLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
 }: MarkerProps) {
   const { place, x, y, anchorX, anchorY, needsLeader } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
@@ -2749,7 +2790,9 @@ const Marker = memo(function Marker({
     e.stopPropagation();
   }, []);
 
-  const handleHoverEnter = useCallback(() => {
+  const handleHoverEnter = useCallback((event: React.PointerEvent) => {
+    // Touch/pen activate the dossier on tap; don't run hover dwell promotion.
+    if (event.pointerType === "touch" || event.pointerType === "pen") return;
     onHoverEnter(place.id, anchorX, anchorY);
   }, [onHoverEnter, place.id, anchorX, anchorY]);
 
@@ -2804,8 +2847,8 @@ const Marker = memo(function Marker({
     onFocusEnter(place.id, anchorX, anchorY);
   }, [onFocusReceived, place.id, onFocusEnter, anchorX, anchorY]);
   const onMarkerBlur = useCallback(() => {
-    onLeave();
-  }, [onLeave]);
+    onFocusLeave();
+  }, [onFocusLeave]);
 
   const ariaLabelBase =
     subLine.length > 0
@@ -3029,6 +3072,7 @@ const Marker = memo(function Marker({
   prev.onHoverEnter === next.onHoverEnter &&
   prev.onFocusEnter === next.onFocusEnter &&
   prev.onLeave === next.onLeave &&
+  prev.onFocusLeave === next.onFocusLeave &&
   prev.labelMode === next.labelMode &&
   prev.labelSide === next.labelSide &&
   prev.isActive === next.isActive &&
