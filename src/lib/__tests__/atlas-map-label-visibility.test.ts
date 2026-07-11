@@ -13,9 +13,9 @@ describe("computePinLabelModes", () => {
     const modes = computePinLabelModes(
       [
         { place: place("a", "A", "Alpha Ridge"), x: 0, y: 0 },
-        { place: place("b", "A", "Beta Valley"), x: 160, y: 0 },
+        { place: place("b", "A", "Beta Valley"), x: 70, y: 0 },
       ],
-      { k: 0.7, x: 0, y: 0 },
+      { k: 0.8, x: 0, y: 0 },
       undefined,
       null,
       {
@@ -34,7 +34,7 @@ describe("computePinLabelModes", () => {
         { place: place("a", "A", "Alpha Ridge"), x: 0, y: 0 },
         { place: place("b", "A", "Beta Valley"), x: 260, y: 0 },
       ],
-      { k: 1.6, x: 0, y: 0 },
+      { k: 1.9, x: 0, y: 0 },
       undefined,
       null,
       viewport,
@@ -66,7 +66,7 @@ describe("computePinLabelModes", () => {
         { place: place("flagship", "A", "Flagship Coast"), x: 0, y: 0 },
         { place: place("spotlight", "B", "Spotlight Valley"), x: 400, y: 0 },
       ],
-      { k: 0.7, x: 0, y: 0 },
+      { k: 0.8, x: 0, y: 0 },
       undefined,
       null,
       {
@@ -79,19 +79,36 @@ describe("computePinLabelModes", () => {
     expect(modes.get("spotlight")).toBe("hidden");
   });
 
+  it("hides non-featured labels below the raised mid-zoom floor", () => {
+    const modes = computePinLabelModes(
+      [
+        { place: place("flagship", "A", "Flagship Coast"), x: 0, y: 0 },
+        { place: place("spotlight", "B", "Spotlight Valley"), x: 400, y: 0 },
+      ],
+      { k: 1.0, x: 0, y: 0 },
+      undefined,
+      null,
+      viewport,
+    );
+
+    expect(modes.get("flagship")).toBe("hidden");
+    expect(modes.get("spotlight")).toBe("hidden");
+  });
+
   it("uses side-aware label boxes so adjacent long names do not run together", () => {
     const modes = computePinLabelModes(
       [
         { place: place("a", "A", "Pátzcuaro"), x: 120, y: 80 },
         { place: place("b", "A", "Cuernavaca & Tepozteco Bench"), x: 125, y: 80 },
       ],
-      { k: 1.35, x: 0, y: 0 },
+      { k: 1.4, x: 0, y: 0 },
       undefined,
       null,
       viewport,
     );
 
-    expect(modes.get("a")).toBe("full");
+    // Mid-zoom: A/B eligible for compact only; collision still suppresses the neighbor.
+    expect(modes.get("a")).toBe("compact");
     expect(modes.get("b")).toBe("hidden");
   });
 });

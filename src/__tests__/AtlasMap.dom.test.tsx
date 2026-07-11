@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { AtlasMap, wheelZoomFactor } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
 import { makePlace } from "../lib/__tests__/test-fixtures";
-import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
+import { type LiveFitFilters } from "../lib/live-fit";
 
 afterEach(cleanup);
 
@@ -266,10 +266,12 @@ describe("AtlasMap DOM controls", () => {
 
     expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "compact");
     await act(async () => {
-      vi.advanceTimersByTime(350);
+      vi.advanceTimersByTime(500);
     });
-    expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "full");
+    // Keyboard stays on the compact peek — no dwell promotion.
+    expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "compact");
     expect(screen.getByRole("tooltip")).toHaveTextContent("Solo Peak");
+    expect(screen.getByRole("tooltip")).not.toHaveTextContent("Climate snapshot");
     vi.useRealTimers();
   });
 
@@ -460,13 +462,16 @@ describe("AtlasMap DOM controls", () => {
       expect(preview).not.toHaveTextContent("Climate snapshot");
 
       await act(async () => {
-        vi.advanceTimersByTime(360);
+        vi.advanceTimersByTime(460);
       });
 
       const richPreview = screen.getByRole("tooltip");
       expect(richPreview).toHaveAttribute("data-variant", "full");
       expect(richPreview).toHaveTextContent("Climate snapshot");
-      expect(richPreview).toHaveTextContent("Scout cues");
+      expect(richPreview).toHaveTextContent("Why it differs");
+      expect(richPreview).toHaveTextContent("Open pin for full profile");
+      expect(richPreview).not.toHaveTextContent("Scout cues");
+      expect(richPreview).not.toHaveTextContent("Comfort read");
 
       fireEvent.click(marker);
       expect(onSelect).toHaveBeenCalledWith("a");
@@ -481,7 +486,6 @@ describe("AtlasMap DOM controls", () => {
       setCoarsePointer(false);
       const places = defaultMapPlaces();
       const liveFitFilters: LiveFitFilters = { maxSummerHighC: 22 };
-      const expectedLiveFit = assessLiveFit(places[0]!, liveFitFilters).score;
       renderMap(vi.fn(), ["a"], places, { featuredLabel: "Live-here fit", liveFitFilters });
 
       const marker = screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ });
@@ -490,13 +494,15 @@ describe("AtlasMap DOM controls", () => {
       expect(screen.getByRole("tooltip")).toHaveTextContent("Rank #1 by Live-here fit");
 
       await act(async () => {
-        vi.advanceTimersByTime(360);
+        vi.advanceTimersByTime(460);
       });
 
       const richPreview = screen.getByRole("tooltip");
       expect(richPreview).toHaveAttribute("data-variant", "full");
-      expect(richPreview).toHaveTextContent("Current lens leader");
-      expect(richPreview).toHaveTextContent(`Live fit${expectedLiveFit}`);
+      expect(richPreview).toHaveTextContent("Rank #1 by Live-here fit");
+      expect(richPreview).toHaveTextContent("Climate snapshot");
+      expect(richPreview).not.toHaveTextContent("Live fit");
+      expect(richPreview).not.toHaveTextContent("Current lens leader");
     } finally {
       vi.useRealTimers();
     }
@@ -524,7 +530,7 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("button", { name: /Current rank #2\. Beta Ridge/ })).toBeInTheDocument();
     expect(screen.getByRole("application", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
     expect(container.querySelector(".map-rank-trail__line")).toBeInTheDocument();
-    expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "full");
+    expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "quiet");
   });
 
   it("summarizes the current ranked map read before the user hovers a pin", () => {
@@ -539,6 +545,8 @@ describe("AtlasMap DOM controls", () => {
     expect(readout).toHaveTextContent("2 linked");
     expect(readout).toHaveTextContent("Live-here fit");
     expect(readout).toHaveTextContent("Driver");
+    // Feel/Field remain in the DOM for a11y but stay visually collapsed until hover/focus.
+    expect(readout.querySelectorAll(".map-atlas-readout__item").length).toBe(4);
     expect(readout).toHaveTextContent("Feel");
     expect(readout).toHaveTextContent("Field");
     expect(readout).toHaveTextContent("2 open pins");
@@ -827,7 +835,7 @@ describe("AtlasMap DOM controls", () => {
     expect(Math.abs(expectedScreenY - (vy + py))).toBeGreaterThan(1);
   });
 
-  it("promotes the keyboard-focused tooltip to full after dwell", async () => {
+  it("keeps the keyboard-focused tooltip compact after dwell", async () => {
     vi.useFakeTimers();
     setCoarsePointer(false);
     renderMap(vi.fn(), [], defaultMapPlaces());
@@ -837,10 +845,10 @@ describe("AtlasMap DOM controls", () => {
     const preview = screen.getByRole("tooltip");
     expect(preview).toHaveAttribute("data-variant", "compact");
     await act(async () => {
-      vi.advanceTimersByTime(350);
+      vi.advanceTimersByTime(500);
     });
-    expect(preview).toHaveAttribute("data-variant", "full");
-    expect(preview).toHaveTextContent("Climate snapshot");
+    expect(preview).toHaveAttribute("data-variant", "compact");
+    expect(preview).not.toHaveTextContent("Climate snapshot");
     expect(preview.querySelector(".tc-map-hover-title")).toBeTruthy();
     expect(preview.querySelector(".text-ice")).toBeNull();
     expect(preview.querySelector(".text-stone")).toBeNull();

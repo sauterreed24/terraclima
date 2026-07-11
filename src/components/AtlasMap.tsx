@@ -331,7 +331,7 @@ function smoothTrailPath(points: Array<[number, number]>): string {
  *   - All geo strokes use vector-effect="non-scaling-stroke" so we don't
  *     have to recompute stroke widths on zoom.
  *   - Markers are React.memo'd; hover uses a compact preview first, rich
- *     card after ~350 ms dwell (keyboard focus skips dwell).
+ *     card after ~450 ms dwell (keyboard focus stays compact).
  *   - Marker visual size stays constant at any zoom via a counter-scale
  *     wrapper (no per-marker arithmetic).
  *   - Pins call the parent `onSelect` directly — not gated on pan `moved`,
@@ -348,7 +348,7 @@ export const AtlasMap = memo(function AtlasMap({
   onSelect,
   featuredIds = [],
   featuredLabel,
-  liveFitFilters,
+  liveFitFilters: _liveFitFilters,
   onEmptyRecovery,
   emptyRecoveryLabel = "Reset Explorer",
   width: widthProp = 820,
@@ -502,7 +502,7 @@ export const AtlasMap = memo(function AtlasMap({
     tooltipDwellTimerRef.current = setTimeout(() => {
       tooltipDwellTimerRef.current = null;
       setTooltipVariant("full");
-    }, 350);
+    }, 450);
   }, [cancelTooltipDwell]);
 
   const scheduleHoverClear = useCallback(() => {
@@ -978,7 +978,7 @@ export const AtlasMap = memo(function AtlasMap({
     [markerRenderOrder, rankTrailTopMarkerIds],
   );
   const rankTrailTone =
-    clusterEnabled || (markerPointsAll.length > 75 && settledView.k < 1.18)
+    clusterEnabled || settledView.k < 1.35
       ? "quiet"
       : "full";
   const atlasMapReadout = useMemo(
@@ -1570,6 +1570,14 @@ export const AtlasMap = memo(function AtlasMap({
     scheduleTooltipRich();
     updateTooltip({ x, y });
   }, [cancelHoverClear, scheduleTooltipRich, updateTooltip]);
+  /** Keyboard focus shows the compact peek only — never auto-promotes to full. */
+  const onMarkerFocusEnter = useCallback((id: string, x: number, y: number) => {
+    cancelHoverClear();
+    cancelTooltipDwell();
+    setHoverId(id);
+    setTooltipVariant("compact");
+    updateTooltip({ x, y });
+  }, [cancelHoverClear, cancelTooltipDwell, updateTooltip]);
   const renderMarker = (pt: RenderedClusterPoint) => {
     const screenX = pt.x * settledView.k + settledView.x;
     const labelSide: "left" | "right" = screenX > width * 0.62 ? "left" : "right";
@@ -1587,6 +1595,7 @@ export const AtlasMap = memo(function AtlasMap({
         isRovingFocused={pt.place.id === effectiveFocusedMarkerId}
         onSelect={onSelect}
         onHoverEnter={onMarkerHoverEnter}
+        onFocusEnter={onMarkerFocusEnter}
         onLeave={scheduleHoverClear}
         shouldSuppressTouchActivation={shouldSuppressTouchActivation}
         onArrow={onMarkerArrow}
@@ -1884,7 +1893,7 @@ export const AtlasMap = memo(function AtlasMap({
 
           {/* Country labels — big, quiet, sit under markers. Opacity falls
               off at high zoom so they don't compete with marker labels. */}
-          <g pointerEvents="none" opacity={Math.max(0, Math.min(0.9, 1.35 - view.k * 0.35))}>
+          <g pointerEvents="none" opacity={Math.max(0, Math.min(0.9, 1.15 - view.k * 0.42))}>
             {countryLabels.map(cl => (
               <g key={cl.id} transform={`translate(${cl.x} ${cl.y}) scale(${1 / view.k})`}>
                 <text
@@ -1941,7 +1950,7 @@ export const AtlasMap = memo(function AtlasMap({
                 strokeLinejoin="round"
                 vectorEffect="non-scaling-stroke"
               />
-              {richEffects ? (
+              {richEffects && rankTrailTone === "full" ? (
                 <path
                   className="map-rank-trail__pulse"
                   d={featuredTrailPath}
@@ -1977,9 +1986,9 @@ export const AtlasMap = memo(function AtlasMap({
                   y1={pt.anchorY}
                   x2={pt.x}
                   y2={pt.y}
-                  stroke={pt.crowded ? "rgba(255,214,128,0.82)" : "rgba(220,235,248,0.68)"}
-                  strokeWidth="1.35"
-                  strokeDasharray={pt.crowded ? "3 2.5" : "none"}
+                  stroke={pt.crowded ? "rgba(255,214,128,0.48)" : "rgba(220,235,248,0.38)"}
+                  strokeWidth="1.1"
+                  strokeDasharray={pt.crowded ? "3 3.5" : "2.5 3"}
                   strokeLinecap="round"
                   vectorEffect="non-scaling-stroke"
                 />
@@ -1987,10 +1996,10 @@ export const AtlasMap = memo(function AtlasMap({
                   className="map-pin-leader__anchor"
                   cx={pt.anchorX}
                   cy={pt.anchorY}
-                  r={Math.max(0.85, 2.4 / view.k)}
-                  fill="rgba(245,250,255,0.92)"
-                  stroke="rgba(8,14,24,0.94)"
-                  strokeWidth="0.85"
+                  r={Math.max(0.7, 2.0 / view.k)}
+                  fill="rgba(245,250,255,0.72)"
+                  stroke="rgba(8,14,24,0.7)"
+                  strokeWidth="0.75"
                   vectorEffect="non-scaling-stroke"
                 />
               </g>
@@ -2061,6 +2070,14 @@ export const AtlasMap = memo(function AtlasMap({
           <div className="map-atlas-readout__head">
             <span>Atlas read</span>
             <strong title={atlasMapReadout.headline}>{atlasMapReadout.headline}</strong>
+            <button
+              type="button"
+              className="map-atlas-readout__expand"
+              aria-label="Expand atlas read details"
+              title="Expand atlas read details"
+            >
+              More
+            </button>
           </div>
           <dl className="map-atlas-readout__grid" aria-label={atlasMapReadout.ariaLabel}>
             {atlasMapReadout.items.map(item => (
@@ -2288,7 +2305,6 @@ export const AtlasMap = memo(function AtlasMap({
           mapWidth={width}
           featuredRank={featuredRankById.get(hoverPlace.id)}
           featuredLabel={featuredLabel}
-          liveFitFilters={liveFitFilters}
           variant={tooltipVariant}
         />
       )}
@@ -2313,8 +2329,10 @@ interface MarkerProps {
    * Tab focus among all visible markers. */
   isRovingFocused: boolean;
   onSelect: (id: string) => void;
-  /** Stable hover/focus enter — Marker passes place id + geographic anchor. */
+  /** Stable hover enter — Marker passes place id + geographic anchor. */
   onHoverEnter: (id: string, x: number, y: number) => void;
+  /** Keyboard focus enter — compact peek only (no dwell promotion). */
+  onFocusEnter: (id: string, x: number, y: number) => void;
   onLeave: () => void;
   shouldSuppressTouchActivation: () => boolean;
   /** Arrow-key step within the visible marker set. */
@@ -2526,7 +2544,7 @@ const ClusterPicker = memo(function ClusterPicker({
 }) {
   const onRight = xPct < 52;
   const pickerInsetPx = 12;
-  const maxPickerHeightPx = Math.min(520, Math.max(280, mapHeight - pickerInsetPx * 2));
+  const maxPickerHeightPx = Math.min(380, Math.max(280, mapHeight - pickerInsetPx * 2));
   const anchorY = (yPct / 100) * mapHeight;
   const topPx = Math.max(
     pickerInsetPx,
@@ -2668,7 +2686,7 @@ const ClusterPicker = memo(function ClusterPicker({
 
 const Marker = memo(function Marker({
   pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
-  onSelect, onHoverEnter, onLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
+  onSelect, onHoverEnter, onFocusEnter, onLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
 }: MarkerProps) {
   const { place, x, y, anchorX, anchorY, needsLeader } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
@@ -2685,13 +2703,18 @@ const Marker = memo(function Marker({
   const labelSpreadDx = needsLeader ? (x - anchorX) * k : 0;
   const labelSpreadDy = needsLeader ? (y - anchorY) * k : 0;
 
+  // Pin chrome LOD: keep glyphs clickable, drop decorative rings at continent scale.
+  const showAura = k >= 1.0;
+  const showCountryRing = k >= 1.0;
+  const showOrbit = richEffects && k >= 1.15;
+
   const titleLimit =
     labelMode === "compact"
       ? 16
       : labelMode === "full"
         ? isActive || isHover
           ? 120
-          : k >= 1.38
+          : k >= 1.65
             ? 56
             : Math.max(12, Math.min(30, Math.floor(11 + k * 11)))
         : 0;
@@ -2699,9 +2722,9 @@ const Marker = memo(function Marker({
     labelMode === "hidden" ? "" : truncateMapTitle(place.name, Math.max(1, titleLimit));
   const showSub =
     labelMode === "full" &&
-    (isActive || isHover || k >= 1.24) &&
+    (isActive || isHover || k >= 1.45) &&
     subLine.length > 0;
-  const showSignatureLine = showSub && (isActive || isHover || k >= 1.38);
+  const showSignatureLine = showSub && (isActive || isHover || k >= 1.65);
   const labelW = Math.min(
     320,
     Math.max(
@@ -2778,9 +2801,8 @@ const Marker = memo(function Marker({
 
   const onMarkerFocus = useCallback(() => {
     onFocusReceived(place.id);
-    // Keyboard parity with mouse hover: focusing a pin shows the rich preview immediately.
-    onHoverEnter(place.id, anchorX, anchorY);
-  }, [onFocusReceived, place.id, onHoverEnter, anchorX, anchorY]);
+    onFocusEnter(place.id, anchorX, anchorY);
+  }, [onFocusReceived, place.id, onFocusEnter, anchorX, anchorY]);
   const onMarkerBlur = useCallback(() => {
     onLeave();
   }, [onLeave]);
@@ -2790,6 +2812,7 @@ const Marker = memo(function Marker({
       ? `${place.name}, ${subLine}. Open full profile.`
       : `Open full profile for ${place.name}`;
   const ariaLabel = featuredRank ? `Current rank #${featuredRank}. ${ariaLabelBase}` : ariaLabelBase;
+  const pinLod = showAura ? "full" : "glyph";
 
   return (
     <g
@@ -2799,6 +2822,7 @@ const Marker = memo(function Marker({
       data-atlas-marker="true"
       data-marker-id={place.id}
       data-has-leader={needsLeader ? "true" : "false"}
+      data-pin-lod={pinLod}
       aria-label={ariaLabel}
       className={`map-marker${featuredRank ? " map-marker--featured" : ""}${needsLeader ? " map-marker--offset-label" : ""}`}
       style={{ cursor: "pointer" }}
@@ -2822,7 +2846,7 @@ const Marker = memo(function Marker({
               stroke="rgba(255, 214, 128, 0.76)"
               strokeWidth={1.15}
               strokeDasharray="5 5"
-              className={richEffects ? "map-rank-halo__orbit" : undefined}
+              className={showOrbit ? "map-rank-halo__orbit" : undefined}
             />
             <circle r={r + 8.2} fill="rgba(255, 198, 96, 0.1)" stroke="rgba(255, 238, 190, 0.55)" strokeWidth={1.05} />
             <g className="map-rank-badge" transform={`translate(${r + 12} ${-(r + 13)})`}>
@@ -2840,24 +2864,28 @@ const Marker = memo(function Marker({
             </g>
           </g>
         ) : null}
-        <circle
-          className="map-marker__signature-aura"
-          r={r + 6.6}
-          fill="none"
-          stroke={signature.mapAccentColor}
-          strokeWidth={1.25}
-          strokeDasharray={signature.mapDash === "none" ? undefined : signature.mapDash}
-          strokeLinecap="round"
-          opacity={isActive || isHover || featuredRank ? 0.94 : 0.58}
-          style={{ color: signature.mapAccentColor }}
-        />
-        <circle
-          r={r + 3.65}
-          fill="none"
-          stroke={COUNTRY_RING_STROKE[place.country]}
-          strokeWidth={1.55}
-          opacity={0.93}
-        />
+        {showAura ? (
+          <circle
+            className="map-marker__signature-aura"
+            r={r + 6.6}
+            fill="none"
+            stroke={signature.mapAccentColor}
+            strokeWidth={1.25}
+            strokeDasharray={signature.mapDash === "none" ? undefined : signature.mapDash}
+            strokeLinecap="round"
+            opacity={isActive || isHover || featuredRank ? 0.94 : 0.58}
+            style={{ color: signature.mapAccentColor }}
+          />
+        ) : null}
+        {showCountryRing ? (
+          <circle
+            r={r + 3.65}
+            fill="none"
+            stroke={COUNTRY_RING_STROKE[place.country]}
+            strokeWidth={1.55}
+            opacity={0.93}
+          />
+        ) : null}
         {/* Cheap halo (no SVG filter — one translucent circle reads as glow). */}
         <circle r={r + 4} fill={color} opacity={0.12} />
 
@@ -2999,6 +3027,7 @@ const Marker = memo(function Marker({
 }, (prev, next) =>
   prev.onSelect === next.onSelect &&
   prev.onHoverEnter === next.onHoverEnter &&
+  prev.onFocusEnter === next.onFocusEnter &&
   prev.onLeave === next.onLeave &&
   prev.labelMode === next.labelMode &&
   prev.labelSide === next.labelSide &&

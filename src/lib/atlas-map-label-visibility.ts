@@ -39,7 +39,7 @@ function estimateLabelBox(
       ? 16
       : emphasized
         ? 120
-        : mapZoomK >= 1.38
+        : mapZoomK >= 1.65
           ? 56
           : Math.max(12, Math.min(30, Math.floor(11 + mapZoomK * 11)));
   const titleWidth = Math.min(place.name.length, titleLimit) * (mode === "compact" ? 6.7 : 7.2) + 22;
@@ -48,7 +48,7 @@ function estimateLabelBox(
     mode === "full" ? 320 : 168,
     Math.max(mode === "full" ? 104 : 72, titleWidth, secondaryWidth),
   );
-  const height = mode === "full" ? (emphasized || mapZoomK >= 1.38 ? 54 : 40) : 24;
+  const height = mode === "full" ? (emphasized || mapZoomK >= 1.65 ? 54 : 40) : 24;
   const gap = mode === "full" ? 13 : 11;
   const left = side === "right" ? screenX + gap : screenX - gap - width;
   return {
@@ -69,11 +69,11 @@ function intersects(a: LabelBox, b: LabelBox, gutter: number): boolean {
 }
 
 function candidateMode(place: Place, mapZoomK: number, featuredRank?: number): MapPinLabelMode {
-  if (featuredRank) return mapZoomK >= 1.1 ? "full" : mapZoomK >= 0.58 ? "compact" : "hidden";
-  if (mapZoomK < 0.92) return "hidden";
-  if (mapZoomK < 1.12) return place.tier === "A" ? "compact" : "hidden";
-  if (mapZoomK < 1.32) return place.tier === "C" ? "hidden" : "compact";
-  if (mapZoomK < 1.55) return place.tier === "C" ? "compact" : "full";
+  if (featuredRank) return mapZoomK >= 1.25 ? "full" : mapZoomK >= 0.72 ? "compact" : "hidden";
+  if (mapZoomK < 1.05) return "hidden";
+  if (mapZoomK < 1.28) return place.tier === "A" ? "compact" : "hidden";
+  if (mapZoomK < 1.55) return place.tier === "C" ? "hidden" : "compact";
+  if (mapZoomK < 1.85) return place.tier === "C" ? "compact" : "full";
   return "full";
 }
 
@@ -120,7 +120,7 @@ export function computePinLabelModes(
 
   const accepted: LabelBox[] = [];
   const byId = new Map(pts.map(pt => [pt.place.id, pt]));
-  const gutter = mapZoomK < 1.12 ? 18 : mapZoomK < 1.42 ? 12 : 9;
+  const gutter = mapZoomK < 1.28 ? 22 : mapZoomK < 1.55 ? 16 : 9;
   const viewportPad = 28;
 
   for (const id of alwaysFull) {
