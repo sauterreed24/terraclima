@@ -6428,6 +6428,10 @@
     border-top: 1px solid rgba(140, 200, 224, 0.2);
     color: rgba(210, 225, 240, 0.82);
   }
+  .map-key-lens-line {
+    margin: 0;
+    color: rgba(245, 250, 255, 0.92);
+  }
   .map-key-notes summary {
     min-height: 2.75rem;
     display: flex;

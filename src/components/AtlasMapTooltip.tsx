@@ -72,6 +72,11 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
     : featuredRank
       ? `Rank #${featuredRank}`
       : null;
+  const lensHint = featuredLabel
+    ? (/comfortable/i.test(featuredLabel)
+      ? "Fill = climate driver · aura = feel · gold = comfort leaders"
+      : `Fill = climate driver · aura = feel · gold = top ${featuredLabel}`)
+    : null;
   const locationLine = [place.municipality && place.municipality !== place.name ? place.municipality : null, place.region]
     .filter(Boolean)
     .join(" · ");
@@ -113,6 +118,11 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
             <div className="tc-map-hover-rankline" aria-label={featuredLine}>
               <span>{featuredLine}</span>
             </div>
+          ) : null}
+          {lensHint ? (
+            <p className="tc-map-hover-lens-hint text-[0.58rem] leading-snug mt-1 text-[rgba(236,244,252,0.78)]">
+              {lensHint}
+            </p>
           ) : null}
         </header>
         <div className="tc-map-hover-card__body tc-map-hover-card__body--compact">
@@ -161,6 +171,11 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
           <div className="tc-map-hover-rankline" aria-label={featuredLine}>
             <span>{featuredLine}</span>
           </div>
+        ) : null}
+        {lensHint ? (
+          <p className="tc-map-hover-lens-hint text-[0.58rem] leading-snug mt-1 text-[rgba(236,244,252,0.78)]">
+            {lensHint}
+          </p>
         ) : null}
       </header>
 

@@ -1565,7 +1565,6 @@ export default function App() {
                     selectedId={selectedId ?? undefined}
                     featuredIds={topRankedPlaceIds}
                     featuredLabel={scenarioRankingLabel}
-                    liveFitFilters={liveFitFilters}
                     onSelect={openPlace}
                     onEmptyRecovery={mapEmptyRecovery.onEmptyRecovery}
                     emptyRecoveryLabel={mapEmptyRecovery.emptyRecoveryLabel}

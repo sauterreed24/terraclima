@@ -1,7 +1,9 @@
 // @vitest-environment jsdom
 import { describe, expect, it } from "vitest";
 import {
+  atlasClusterFocusId,
   endpointMarkerId,
+  isAtlasClusterFocusId,
   isMarkerKeyboardTarget,
   nextMarkerId,
   type AtlasMarkerLayoutPoint,
@@ -126,6 +128,20 @@ describe("isMarkerKeyboardTarget", () => {
     document.body.removeChild(wrapper);
   });
 
+  it("returns true when the target is inside a unified cluster focus target", () => {
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = `
+      <svg>
+        <g data-atlas-focus-target="true" data-atlas-focus-id="cluster:a|b">
+          <circle data-inner></circle>
+        </g>
+      </svg>
+    `;
+    document.body.appendChild(wrapper);
+    expect(isMarkerKeyboardTarget(wrapper.querySelector("circle"))).toBe(true);
+    document.body.removeChild(wrapper);
+  });
+
   it("returns false when the target is the bare SVG (not a marker)", () => {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     document.body.appendChild(svg);
@@ -137,5 +153,25 @@ describe("isMarkerKeyboardTarget", () => {
     expect(isMarkerKeyboardTarget(null)).toBe(false);
     // Plain object is not an Element.
     expect(isMarkerKeyboardTarget({} as EventTarget)).toBe(false);
+  });
+});
+
+describe("cluster focus ids", () => {
+  it("prefixes cluster keys for the unified roving list", () => {
+    expect(atlasClusterFocusId("a|b")).toBe("cluster:a|b");
+    expect(isAtlasClusterFocusId("cluster:a|b")).toBe(true);
+    expect(isAtlasClusterFocusId("seattle-wa")).toBe(false);
+  });
+
+  it("lets arrows walk mixed pin and cluster targets", () => {
+    const mixed: AtlasMarkerLayoutPoint[] = [
+      { id: "pin-a", x: 10, y: 10 },
+      { id: atlasClusterFocusId("b|c"), x: 80, y: 12 },
+      { id: "pin-d", x: 140, y: 14 },
+    ];
+    expect(nextMarkerId("pin-a", "right", mixed)).toBe("cluster:b|c");
+    expect(nextMarkerId("cluster:b|c", "right", mixed)).toBe("pin-d");
+    expect(endpointMarkerId("home", mixed)).toBe("pin-a");
+    expect(endpointMarkerId("end", mixed)).toBe("pin-d");
   });
 });
