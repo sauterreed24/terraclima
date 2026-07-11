@@ -827,7 +827,16 @@ export default function App() {
   );
   const resonantWindow = useMemo(() => resonantWindowFor(ranking), [ranking]);
   const rankedRef = useRef(ranked);
+  /** Invalidates deferred focus callbacks from prior shortlist / main-content handoffs. */
+  const focusScheduleGenerationRef = useRef(0);
   rankedRef.current = ranked;
+  useEffect(() => {
+    return () => {
+      // Drop any pending focus handoffs when this App instance unmounts so they
+      // cannot steal focus from a later test render or navigation.
+      focusScheduleGenerationRef.current += 1;
+    };
+  }, []);
 
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
   const activeComparePlaces = useMemo(
@@ -908,7 +917,9 @@ export default function App() {
   }, []);
 
   const focusMainContentNextFrame = useCallback(() => {
+    const generation = ++focusScheduleGenerationRef.current;
     const focusMain = () => {
+      if (generation !== focusScheduleGenerationRef.current) return;
       const main = document.getElementById("main-content");
       if (!main) return;
       try { main.focus({ preventScroll: true }); } catch { /* noop */ }
@@ -922,15 +933,17 @@ export default function App() {
   }, []);
 
   const focusShortlistRemoveNextFrame = useCallback((placeId: string) => {
+    const generation = ++focusScheduleGenerationRef.current;
     let focused = false;
     let attempts = 0;
-    const maxAttempts = 12;
+    const maxAttempts = 24;
     const tryFocus = () => {
+      if (generation !== focusScheduleGenerationRef.current) return true;
       if (focused) return true;
       const target = Array.from(
         document.querySelectorAll<HTMLButtonElement>("[data-shortlist-remove-id]"),
       ).find(button => button.getAttribute("data-shortlist-remove-id") === placeId);
-      if (!target) return false;
+      if (!target || !target.isConnected) return false;
       try {
         target.focus({ preventScroll: true });
         focused = true;
@@ -940,19 +953,17 @@ export default function App() {
       }
     };
     const scheduleAttempt = () => {
+      if (generation !== focusScheduleGenerationRef.current) return;
       if (tryFocus()) return;
       attempts += 1;
       if (attempts >= maxAttempts) {
         focusMainContentNextFrame();
         return;
       }
-      if (typeof window.requestAnimationFrame === "function") {
-        window.requestAnimationFrame(scheduleAttempt);
-      } else {
-        window.setTimeout(scheduleAttempt, 16);
-      }
+      // Prefer setTimeout over a tight rAF burst so React can commit the updated
+      // shortlist rail before we give up and fall back to main content.
+      window.setTimeout(scheduleAttempt, attempts < 4 ? 0 : 16);
     };
-    // Defer past the current click handler so React can commit the updated rail.
     window.setTimeout(scheduleAttempt, 0);
   }, [focusMainContentNextFrame]);
 
@@ -4079,7 +4090,11 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
     ? `Unpin ${brief.leader.place.name} from your shortlist`
     : `Pin ${brief.leader.place.name} to your shortlist`;
   return (
-    <section className="desktop-scout-board" aria-label="Desktop relocation workbench">
+    <section
+      id="explorer-scout-brief"
+      className="desktop-scout-board"
+      aria-label="Desktop relocation workbench"
+    >
       <div className="desktop-scout-board__leader">
         <div>
           <div className="desktop-scout-board__eyebrow">Relocation read</div>

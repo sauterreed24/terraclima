@@ -4,6 +4,14 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Discovery-first Explorer cold start
+
+- **Default ranking (`src/lib/app-ranking-preference.ts`):** first-run Explorer sessions now open on **Most unique** instead of Live-here fit, so the atlas leads with microclimate discovery. Persisted ranking preferences still win for returning readers; active Live Finder constraints still auto-switch to `live-fit`.
+- **Hero discovery surface (`src/App.tsx`):** cold-start copy and quick picks emphasize uniqueness, hidden gems, cool summers, fog/marine coasts, climate-dissonance trips, and visit-now seasonality. Surprise me is the primary CTA; Scout Board / Living Compass / livability rails stay behind an explicit **Scout tools** disclosure.
+- **Weighted Surprise (`src/lib/surprise-pick.ts`):** **Surprise me** / **R** favor higher `microclimateUniqueness` (with a lighter hidden-gem boost) inside the current filtered pool and prefer places not in the recently-viewed rail.
+- **Archetype field guide (`src/components/PlaceDetail.tsx`):** opening a place surfaces the primary archetype's authored `guide` copy in a compact expandable panel so "why is this distinct?" is answerable without hunting.
+- **Desktop Scout brief jump:** the hero Scout brief link targets `#explorer-scout-brief` on both the mobile Scout Brief panel and the desktop relocation workbench.
+
 ### Interactive map declutter & zoom affordance
 
 - **Bottom-left cartography cluster (`src/components/AtlasMap.tsx`, `src/styles.css`):** the compass rose used to float top-right where it overlapped the +/−/Fit zoom column, and the raw `×N` zoom readout sat top-left *behind* the App's title caption (never visible). The compass is now a compact north arrow paired with the distance scale bar in a single bottom-left cluster, leaving the top corners clear; the redundant raw zoom multiplier is dropped entirely (the scale bar already reports real distance — a sub-1 "×" value just read oddly). The north arrow is desktop-only; coarse and narrow (≤680 px) viewports keep just the scale bar so the cluster can't crowd the relocated key dock or atlas readout.

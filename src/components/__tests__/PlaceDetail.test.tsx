@@ -682,12 +682,12 @@ describe("PlaceDetail archetype field guide", () => {
       </UnitProvider>,
     );
 
-    const guide = document.getElementById("place-archetype-guide");
-    expect(guide).toBeTruthy();
+    const guide = screen.getByRole("region", { name: /Rain-Shadow Sanctuary field guide/i });
+    expect(guide).toHaveAttribute("id", "place-archetype-guide");
     expect(guide).not.toHaveAttribute("hidden");
     expect(guide).toHaveTextContent(/Rain-Shadow Sanctuary/i);
     expect(guide).toHaveTextContent(/field guide/i);
-    expect(guide!.textContent?.length ?? 0).toBeGreaterThan(40);
+    expect(guide.textContent?.length ?? 0).toBeGreaterThan(40);
 
     const primaryChip = screen.getByRole("button", { name: /Rain-Shadow Sanctuary:/i });
     expect(primaryChip).toHaveAttribute("aria-expanded", "true");

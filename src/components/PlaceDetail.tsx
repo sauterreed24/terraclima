@@ -438,6 +438,8 @@ function DetailHeader({
           {primaryArchetype?.guide ? (
             <div
               id="place-archetype-guide"
+              role="region"
+              aria-label={`${primaryArchetype.label} field guide`}
               className="mt-2.5 panel-thin p-2.5 border-l-2"
               style={{ borderLeftColor: "rgba(240, 210, 156, 0.65)" }}
               hidden={!archetypeGuideOpen}
@@ -451,6 +453,8 @@ function DetailHeader({
                 <button
                   type="button"
                   className="btn-ghost !text-[11px] !py-1 mt-2"
+                  aria-label={`Filter atlas to ${primaryArchetype.label} places`}
+                  title={`Filter atlas to ${primaryArchetype.label} places`}
                   onClick={(e) => {
                     e.stopPropagation();
                     onPickArchetype(place.archetypes[0]!);

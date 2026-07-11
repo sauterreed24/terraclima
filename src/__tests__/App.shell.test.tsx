@@ -616,6 +616,41 @@ describe("App shell", () => {
     expect(saveFinalists).toHaveAttribute("title", "Save 4 Scout Brief finalists to your shortlist");
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("anchors the desktop Scout brief jump to the relocation workbench", () => {
+    mockViewport(1280);
+    renderApp();
+    openScoutTools();
+
+    const scoutBriefJump = screen.getByRole("link", { name: "Jump to Scout Brief synthesis" });
+    expect(scoutBriefJump).toHaveAttribute("href", "#explorer-scout-brief");
+    const workbench = screen.getByLabelText("Desktop relocation workbench");
+    expect(workbench).toHaveAttribute("id", "explorer-scout-brief");
+    expect(document.querySelectorAll("#explorer-scout-brief")).toHaveLength(1);
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("applies Fog & marine and Another country discovery quick picks", async () => {
+    mockViewport(1280);
+    renderApp();
+
+    const quickPicks = screen.getByRole("group", { name: "Discovery quick picks" });
+    fireEvent.click(within(quickPicks).getByRole("button", { name: /Fog & marine/ }));
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("r")).toBe("coolest-summers");
+      expect(params.get("a")).toMatch(/fog-belt-coast/);
+      expect(params.get("a")).toMatch(/cool-summer-maritime/);
+    });
+
+    fireEvent.click(within(quickPicks).getByRole("button", { name: /Another country/ }));
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("col")).toBe("places-that-feel-like-another-country");
+    });
+    expect(await screen.findByLabelText("Active trip route: Places That Feel Like Another Country")).toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("keeps the map leader caption synchronized with the selected ranking", () => {
     window.history.replaceState(null, "", "/?r=best-growability");
 
@@ -1560,14 +1595,21 @@ describe("App shell", () => {
     );
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Unpin Sequim from your shortlist" }));
+    const sequimRemove = screen.getByRole("button", { name: "Unpin Sequim from your shortlist" });
+    sequimRemove.focus();
+    expect(sequimRemove).toHaveFocus();
+    fireEvent.click(sequimRemove);
 
     await waitFor(() => {
-      expect(document.querySelector('[data-shortlist-remove-id="sequim-wa"]')).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Unpin Sequim from your shortlist" })).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+
+    const nextRemove = await screen.findByRole("button", {
+      name: "Unpin Port Townsend from your shortlist",
     }, { timeout: APP_SHELL_TIMEOUT_MS });
 
     await waitFor(() => {
-      expect(document.querySelector('[data-shortlist-remove-id="port-townsend-wa"]')).toHaveFocus();
+      expect(nextRemove).toHaveFocus();
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
