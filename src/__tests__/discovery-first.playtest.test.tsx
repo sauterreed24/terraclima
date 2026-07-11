@@ -35,6 +35,14 @@ function renderApp() {
   );
 }
 
+function openHeroMoreMenu() {
+  const more = screen.getByRole("button", { name: "More atlas actions" });
+  if (more.getAttribute("aria-expanded") !== "true") {
+    fireEvent.click(more);
+  }
+  expect(more).toHaveAttribute("aria-expanded", "true");
+}
+
 describe("Discovery-first playtest", () => {
   beforeEach(() => {
     window.history.replaceState(null, "", "/");
@@ -52,7 +60,9 @@ describe("Discovery-first playtest", () => {
     expect(screen.getByRole("heading", { name: "Discover microclimates hiding in plain sight" })).toBeInTheDocument();
     expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Most unique · top 5");
     expect(screen.getByRole("button", { name: "Open a unique microclimate from the current filtered list" })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Show scout tools" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "More atlas actions" })).toBeInTheDocument();
+    openHeroMoreMenu();
+    expect(screen.getByRole("button", { name: "Show scouting tools" })).toBeInTheDocument();
     expect(screen.queryByLabelText("Desktop relocation workbench")).not.toBeInTheDocument();
     expect(screen.queryByLabelText(/climate signal leaders/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Livability lens/)).not.toBeInTheDocument();
@@ -73,6 +83,7 @@ describe("Discovery-first playtest", () => {
       expect(guide).toBeInTheDocument();
       expect(guide).toHaveAttribute("id", "place-archetype-guide");
       expect(guide.textContent?.length ?? 0).toBeGreaterThan(40);
+      expect(screen.getByRole("heading", { name: "Why this climate is different here" })).toBeInTheDocument();
     } finally {
       randomSpy.mockRestore();
     }
@@ -90,6 +101,6 @@ describe("Discovery-first playtest", () => {
 
     expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent(/Hidden gems/i);
     expect(screen.queryByLabelText("Desktop relocation workbench")).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Show scout tools" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "More atlas actions" })).toBeInTheDocument();
   }, TIMEOUT);
 });

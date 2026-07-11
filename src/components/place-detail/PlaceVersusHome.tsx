@@ -8,6 +8,7 @@ import {
 } from "../../lib/home-base";
 import { CLIMATE_NORMALS_PERIOD } from "../../lib/atlas-metadata";
 import { useProse, useUnits } from "../../lib/units";
+import { PD } from "./place-detail-nav";
 import { Section } from "./place-detail-ui";
 
 const SECTION_ICON = <Home className="w-4 h-4" style={{ color: "#5ec4dc" }} aria-hidden />;
@@ -35,7 +36,7 @@ export function PlaceVersusHome({
 
   if (comparison.isSame) {
     return (
-      <Section anchorId="pd-vs-home" title="Your home base" icon={SECTION_ICON}>
+      <Section anchorId={PD.vsHome} title="Your home base" icon={SECTION_ICON}>
         <div className="tc-accent-panel px-4 py-3 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-frost leading-snug max-w-xl">
             {place.name} is your climate baseline. Every other card, dossier, and Compare column
@@ -59,7 +60,7 @@ export function PlaceVersusHome({
   }
 
   return (
-    <Section anchorId="pd-vs-home" title={`Versus your home base — ${home.name}`} icon={SECTION_ICON}>
+    <Section anchorId={PD.vsHome} title={`Versus your home base — ${home.name}`} icon={SECTION_ICON}>
       <div className="panel-thin p-4">
         <p className="text-sm text-frost leading-snug">{prose(comparison.headline)}</p>
         <div className="divider-contour my-3" />

@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
+import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -1748,6 +1748,7 @@ export default function App() {
                       compareIds={compareIds}
                       resonantWindow={resonantWindow}
                       liveFitFilters={liveFitFilters}
+                      rankingProfile={ranking}
                       homePlace={homeBasePlaceForScenario}
                       rankingLabel={scenarioRankingLabel}
                       bookmarkIds={bookmarkIds}
@@ -2195,7 +2196,7 @@ const TopBar = memo(function TopBar({
         </div>
 
         <nav className="hidden min-[560px]:flex flex-wrap items-center gap-1.5 min-[560px]:justify-end" aria-label="Primary">
-          <NavBtn active={view === "explorer"} onClick={() => setView("explorer")} icon={<Map className="w-3.5 h-3.5" />} label="Explorer" />
+          <NavBtn active={view === "explorer"} onClick={() => setView("explorer")} icon={<Map className="w-3.5 h-3.5" />} label="Atlas" />
           <NavBtn active={view === "trips"} onClick={() => setView("trips")} icon={<Route className="w-3.5 h-3.5" />} label="Trips" />
           <NavBtn active={view === "collections"} onClick={() => setView("collections")} icon={<Library className="w-3.5 h-3.5" />} label="Collections" />
           <NavBtn active={view === "learn"} onClick={() => setView("learn")} icon={<Compass className="w-3.5 h-3.5" />} label="Learn" />
@@ -2239,7 +2240,7 @@ const TopBar = memo(function TopBar({
               </button>
             </div>
             <div className="flex flex-col gap-2">
-              <NavBtn stretch active={view === "explorer"} onClick={() => pickView("explorer")} icon={<Map className="w-4 h-4" />} label="Explorer" />
+              <NavBtn stretch active={view === "explorer"} onClick={() => pickView("explorer")} icon={<Map className="w-4 h-4" />} label="Atlas" />
               <NavBtn stretch active={view === "trips"} onClick={() => pickView("trips")} icon={<Route className="w-4 h-4" />} label="Trips" />
               <NavBtn stretch active={view === "collections"} onClick={() => pickView("collections")} icon={<Library className="w-4 h-4" />} label="Collections" />
               <NavBtn stretch active={view === "learn"} onClick={() => pickView("learn")} icon={<Compass className="w-4 h-4" />} label="Learn" />
@@ -2819,7 +2820,8 @@ const HeroCard = memo(function HeroCard({
   const surpriseLabel = "Open a unique microclimate from the current filtered list";
   const scoutBriefJumpLabel = "Jump to Scout Brief synthesis";
   const findHomeBaseLabel = "Find your home-base analog using Explorer search";
-  const scoutToolsLabel = scoutToolsOpen ? "Hide scout tools" : "Show scout tools";
+  const scoutToolsLabel = scoutToolsOpen ? "Hide scouting tools" : "Show scouting tools";
+  const [heroMoreOpen, setHeroMoreOpen] = useState(false);
   const jumpToScoutBrief = useCallback(() => {
     const target = document.getElementById("explorer-scout-brief");
     if (!target) return;
@@ -2883,18 +2885,6 @@ const HeroCard = memo(function HeroCard({
 
         </div>
         <div className="hero-action-stack">
-          <button
-            type="button"
-            onClick={onCopyView}
-            className={`btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)] ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
-            aria-label={copyViewLabel}
-            title={copyViewLabel}
-          >
-            <Link2 className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
-            <span aria-live="polite">
-              {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Manual copy" : "Copy view"}
-            </span>
-          </button>
           {canSurprise && (
             <button
               type="button"
@@ -2907,17 +2897,6 @@ const HeroCard = memo(function HeroCard({
               Surprise me
             </button>
           )}
-          <button
-            type="button"
-            onClick={onToggleScoutTools}
-            className="btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
-            aria-pressed={scoutToolsOpen}
-            aria-label={scoutToolsLabel}
-            title={scoutToolsLabel}
-          >
-            <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
-            Scout tools
-          </button>
           {!homeBasePlace && !activeTripTheme ? (
             <button
               type="button"
@@ -2930,18 +2909,64 @@ const HeroCard = memo(function HeroCard({
               Find home base
             </button>
           ) : null}
-          {scoutToolsOpen && scoutBrief ? (
+          <div className="hero-more-menu relative w-full sm:w-auto">
             <button
               type="button"
-              onClick={jumpToScoutBrief}
-              className="btn-ghost hero-action-stack__scout !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
-              aria-label={scoutBriefJumpLabel}
-              title={scoutBriefJumpLabel}
+              className={`btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)] ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
+              aria-label="More atlas actions"
+              title="More atlas actions"
+              aria-expanded={heroMoreOpen}
+              aria-controls="hero-more-menu-panel"
+              onClick={() => setHeroMoreOpen(open => !open)}
             >
-              <BookOpen className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
-              Scout brief
+              <MoreHorizontal className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+              More
             </button>
-          ) : null}
+            {heroMoreOpen ? (
+            <div
+              id="hero-more-menu-panel"
+              className="hero-more-menu__panel mt-2 flex flex-col gap-2 sm:absolute sm:right-0 sm:z-20 sm:min-w-[12.5rem] sm:rounded-lg sm:border sm:border-[rgba(122,212,240,0.28)] sm:bg-[color:var(--color-slate-1)] sm:p-2 sm:shadow-lg"
+              role="group"
+              aria-label="More atlas actions menu"
+            >
+              <button
+                type="button"
+                onClick={onCopyView}
+                className={`btn-ghost !text-xs !py-1.5 w-full justify-start border-[rgba(122,212,240,0.35)] ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}
+                aria-label={copyViewLabel}
+                title={copyViewLabel}
+              >
+                <Link2 className="w-3.5 h-3.5 text-[rgba(26,143,168,0.9)]" aria-hidden />
+                <span aria-live="polite">
+                  {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Manual copy" : "Copy view"}
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={onToggleScoutTools}
+                className="btn-ghost !text-xs !py-1.5 w-full justify-start border-[rgba(122,212,240,0.35)]"
+                aria-pressed={scoutToolsOpen}
+                aria-label={scoutToolsLabel}
+                title={scoutToolsLabel}
+              >
+                <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
+                Scouting tools
+              </button>
+              {scoutToolsOpen && scoutBrief ? (
+                <button
+                  type="button"
+                  onClick={jumpToScoutBrief}
+                  className="btn-ghost hero-action-stack__scout !text-xs !py-1.5 w-full justify-start border-[rgba(122,212,240,0.35)]"
+                  aria-label={scoutBriefJumpLabel}
+                  title={scoutBriefJumpLabel}
+                >
+                  <BookOpen className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
+                  Scout brief
+                </button>
+              ) : null}
+            </div>
+            ) : null}
+          </div>
           {compareCount > 0 ? (
             <button
               type="button"

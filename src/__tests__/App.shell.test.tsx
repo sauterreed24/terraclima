@@ -137,11 +137,27 @@ function renderApp() {
   );
 }
 
+/** Opens the hero overflow menu so Copy / Scouting tools are exposed. */
+function openHeroMoreMenu() {
+  const more = screen.getByRole("button", { name: "More atlas actions" });
+  if (more.getAttribute("aria-expanded") !== "true") {
+    fireEvent.click(more);
+  }
+  expect(more).toHaveAttribute("aria-expanded", "true");
+}
+
 /** Scout Board / Living Compass / signal rails stay collapsed until asked for. */
 function openScoutTools() {
-  const toggle = screen.getByRole("button", { name: "Show scout tools" });
+  openHeroMoreMenu();
+  const toggle = screen.getByRole("button", { name: "Show scouting tools" });
   fireEvent.click(toggle);
-  expect(screen.getByRole("button", { name: "Hide scout tools" })).toBeInTheDocument();
+  openHeroMoreMenu();
+  expect(screen.getByRole("button", { name: "Hide scouting tools" })).toBeInTheDocument();
+}
+
+function clickCopyView() {
+  openHeroMoreMenu();
+  fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
 }
 
 function mockViewport(widthPx: number) {
@@ -444,7 +460,9 @@ describe("App shell", () => {
     expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Most unique · top 5");
     expect(screen.queryByLabelText("Desktop relocation workbench")).not.toBeInTheDocument();
     expect(screen.queryByLabelText(/climate signal leaders/i)).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Show scout tools" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "More atlas actions" })).toBeInTheDocument();
+    openHeroMoreMenu();
+    expect(screen.getByRole("button", { name: "Show scouting tools" })).toBeInTheDocument();
     expect(screen.queryByText("2050 mid remap")).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -582,8 +600,9 @@ describe("App shell", () => {
     const quickPicks = screen.getByRole("group", { name: "Discovery quick picks" });
     expect(quickPicks).toBeInTheDocument();
     expect(quickPicks).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more discovery paths.");
-    const copyView = screen.getByRole("button", { name: "Copy or share current Explorer view" });
     const surpriseMe = screen.getByRole("button", { name: "Open a unique microclimate from the current filtered list" });
+    openHeroMoreMenu();
+    const copyView = screen.getByRole("button", { name: "Copy or share current Explorer view" });
     expect(copyView.closest(".hero-action-stack")).not.toBeNull();
     expect(copyView).toHaveAttribute("title", "Copy or share current Explorer view");
     expect(surpriseMe).toHaveAttribute("title", "Open a unique microclimate from the current filtered list");
@@ -596,6 +615,7 @@ describe("App shell", () => {
     const currentRank = screen.getByText("Current rank");
     const scoutBrief = screen.getByRole("region", { name: "Scout brief" });
     const signalRail = screen.getByLabelText(/climate signal leaders/i);
+    openHeroMoreMenu();
     const scoutBriefJump = screen.getByRole("button", { name: "Jump to Scout Brief synthesis" });
     expect(scoutBriefJump.closest(".hero-action-stack")).not.toBeNull();
     expect(scoutBriefJump).toHaveAttribute("title", "Jump to Scout Brief synthesis");
@@ -790,7 +810,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
+    clickCopyView();
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
@@ -814,7 +834,7 @@ describe("App shell", () => {
     try {
       renderApp();
 
-      fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
+      clickCopyView();
 
       const failedButton = await screen.findByRole("button", { name: "Retry copy or use the selected manual Explorer URL" });
       expect(failedButton).toHaveTextContent("Manual copy");
@@ -865,7 +885,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
+    clickCopyView();
 
     await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
     const sharedButton = await screen.findByRole("button", { name: "Shared current Explorer view" });
@@ -880,10 +900,11 @@ describe("App shell", () => {
 
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
+    clickCopyView();
 
     await waitFor(() => expect(share).toHaveBeenCalledTimes(1));
     await waitFor(() => {
+      openHeroMoreMenu();
       const copyView = screen.getByRole("button", { name: "Copy or share current Explorer view" });
       expect(copyView).toHaveTextContent("Copy view");
       expect(copyView).toHaveAttribute("title", "Copy or share current Explorer view");
@@ -910,7 +931,7 @@ describe("App shell", () => {
       expect(window.location.search).toContain("dist=metric");
     });
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
+    clickCopyView();
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
@@ -959,7 +980,7 @@ describe("App shell", () => {
 
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: "Copy or share current Explorer view" }));
+    clickCopyView();
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);

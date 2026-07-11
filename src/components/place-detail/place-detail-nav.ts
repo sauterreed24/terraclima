@@ -4,7 +4,9 @@
  */
 export const PD = {
   overview: "pd-overview",
+  whyHere: "pd-why-here",
   residency: "pd-residency-brief",
+  vsHome: "pd-vs-home",
   seasons: "pd-seasons",
   atAGlance: "pd-at-a-glance",
   placeFeel: "pd-place-feel",
@@ -17,7 +19,6 @@ export const PD = {
   tourism: "pd-climate-tourism",
   fieldStory: "pd-field-story",
   deepDives: "pd-deep-dives",
-  whyHere: "pd-why-here",
   rhythm: "pd-seasonal-rhythm",
   bestMonths: "pd-best-months",
   numbersTogether: "pd-numbers-together",
@@ -55,21 +56,34 @@ export interface PlaceNavItem {
   group: string;
 }
 
+export interface PlaceDetailNavOptions {
+  /** When true, include the Versus home reading-nav entry. */
+  hasHomeBase?: boolean;
+}
+
 /** Builds the table of contents for the current place (conditional sections omitted). */
-export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
+export function buildPlaceDetailNavItems(place: Place, opts?: PlaceDetailNavOptions): PlaceNavItem[] {
   const nearbyRows = buildNearbyContextRows(place);
   const settlementAnchors = buildSettlementAnchors(place);
   const activities = buildPracticalActivities(place);
   const items: PlaceNavItem[] = [
     { id: PD.overview, label: "Overview", group: PD_NAV_GROUP.lived },
+    { id: PD.whyHere, label: "Why it differs", group: PD_NAV_GROUP.lived },
     { id: PD.residency, label: "Residency brief", group: PD_NAV_GROUP.lived },
+  ];
+
+  if (opts?.hasHomeBase) {
+    items.push({ id: PD.vsHome, label: "Versus home", group: PD_NAV_GROUP.lived });
+  }
+
+  items.push(
     { id: PD.seasons, label: "Season by season", group: PD_NAV_GROUP.lived },
     { id: PD.atAGlance, label: "At a glance", group: PD_NAV_GROUP.lived },
     { id: PD.placeFeel, label: "Place feel", group: PD_NAV_GROUP.lived },
     { id: PD.comfortPrecision, label: "Comfort precision", group: PD_NAV_GROUP.lived },
     { id: PD.bioclimaticIndices, label: "Bioclimatic indices", group: PD_NAV_GROUP.lived },
     { id: PD.livability, label: "Livability lens", group: PD_NAV_GROUP.lived },
-  ];
+  );
 
   if (place.liveSignals) {
     items.push({ id: PD.livedSignals, label: "Lived signals", group: PD_NAV_GROUP.lived });
@@ -87,7 +101,6 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   }
 
   items.push(
-    { id: PD.whyHere, label: "Why it differs", group: PD_NAV_GROUP.data },
     { id: PD.rhythm, label: "Seasonal rhythm", group: PD_NAV_GROUP.data },
   );
 
