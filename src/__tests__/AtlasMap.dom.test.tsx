@@ -1,16 +1,25 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, waitFor, within, act } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { useState } from "react";
 import { AtlasMap, wheelZoomFactor } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
 import { makePlace } from "../lib/__tests__/test-fixtures";
-import { type LiveFitFilters } from "../lib/live-fit";
 
 afterEach(cleanup);
 
-function setCoarsePointer(matches: boolean) {
+function setPointerMedia({
+  coarse = false,
+  anyCoarse = false,
+}: {
+  coarse?: boolean;
+  anyCoarse?: boolean;
+} = {}) {
   window.matchMedia = vi.fn().mockImplementation((query: string) => ({
-    matches: query === "(pointer: coarse)" ? matches : false,
+    matches:
+      query === "(pointer: coarse)" ? coarse
+      : query === "(any-pointer: coarse)" ? anyCoarse
+      : false,
     media: query,
     onchange: null,
     addListener: vi.fn(),
@@ -19,6 +28,10 @@ function setCoarsePointer(matches: boolean) {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   }));
+}
+
+function setCoarsePointer(matches: boolean) {
+  setPointerMedia({ coarse: matches, anyCoarse: matches });
 }
 
 function defaultMapPlaces() {
@@ -59,7 +72,7 @@ function renderMap(
   places = defaultMapPlaces(),
   options: {
     featuredLabel?: string;
-    liveFitFilters?: LiveFitFilters;
+    selectedId?: string;
     onEmptyRecovery?: () => void;
     emptyRecoveryLabel?: string;
   } = {},
@@ -68,10 +81,10 @@ function renderMap(
     <UnitProvider>
       <AtlasMap
         places={places}
+        selectedId={options.selectedId}
         onSelect={onSelect}
         featuredIds={featuredIds}
         featuredLabel={options.featuredLabel}
-        liveFitFilters={options.liveFitFilters}
         onEmptyRecovery={options.onEmptyRecovery}
         emptyRecoveryLabel={options.emptyRecoveryLabel}
       />
@@ -242,13 +255,13 @@ describe("AtlasMap DOM controls", () => {
 
     // Left/Right wrap (here onto the lone pin) and must NOT mislabel as a row edge.
     fireEvent.keyDown(marker!, { key: "ArrowRight" });
-    expect(screen.queryByText(/row of the visible pins/)).toBeNull();
+    expect(screen.queryByText(/row of the visible (pins|map targets)/)).toBeNull();
 
     fireEvent.keyDown(marker!, { key: "ArrowDown" });
-    expect(screen.getByText("Bottom row of the visible pins.")).toBeInTheDocument();
+    expect(screen.getByText(/Bottom row of the visible map targets/)).toBeInTheDocument();
 
     fireEvent.keyDown(marker!, { key: "ArrowUp" });
-    expect(screen.getByText("Top row of the visible pins.")).toBeInTheDocument();
+    expect(screen.getByText(/Top row of the visible map targets/)).toBeInTheDocument();
   });
 
   it("shows the climate-preview tooltip on keyboard focus (parity with pointer hover)", async () => {
@@ -516,18 +529,18 @@ describe("AtlasMap DOM controls", () => {
     }
   });
 
-  it("aligns the hover preview with active ranking context and live-fit filters", async () => {
+  it("aligns the hover preview with active ranking context", async () => {
     vi.useFakeTimers();
     try {
       setCoarsePointer(false);
       const places = defaultMapPlaces();
-      const liveFitFilters: LiveFitFilters = { maxSummerHighC: 22 };
-      renderMap(vi.fn(), ["a"], places, { featuredLabel: "Live-here fit", liveFitFilters });
+      renderMap(vi.fn(), ["a"], places, { featuredLabel: "Most comfortable" });
 
       const marker = screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ });
       fireEvent.pointerEnter(marker, { pointerType: "mouse" });
 
-      expect(screen.getByRole("tooltip")).toHaveTextContent("Rank #1 by Live-here fit");
+      expect(screen.getByRole("tooltip")).toHaveTextContent("Rank #1 by Most comfortable");
+      expect(screen.getByRole("tooltip")).toHaveTextContent("Fill = climate driver");
 
       await act(async () => {
         vi.advanceTimersByTime(460);
@@ -535,8 +548,9 @@ describe("AtlasMap DOM controls", () => {
 
       const richPreview = screen.getByRole("tooltip");
       expect(richPreview).toHaveAttribute("data-variant", "full");
-      expect(richPreview).toHaveTextContent("Rank #1 by Live-here fit");
+      expect(richPreview).toHaveTextContent("Rank #1 by Most comfortable");
       expect(richPreview).toHaveTextContent("Climate snapshot");
+      expect(richPreview).toHaveTextContent("gold = comfort leaders");
       expect(richPreview).not.toHaveTextContent("Live fit");
       expect(richPreview).not.toHaveTextContent("Current lens leader");
     } finally {
@@ -960,5 +974,196 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByText("No places on the map")).toBeTruthy();
     fireEvent.click(screen.getByRole("button", { name: "Reset Explorer" }));
     expect(onEmptyRecovery).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows a scroll escape on hybrid fine-pointer devices with any coarse pointer", () => {
+    setPointerMedia({ coarse: false, anyCoarse: true });
+    Object.defineProperty(navigator, "maxTouchPoints", { configurable: true, value: 0 });
+    renderMap();
+    expect(screen.getByRole("button", { name: "Switch map to page scrolling" })).toBeInTheDocument();
+  });
+
+  it("hands wheel events to the page at maximum zoom instead of trapping scroll", () => {
+    setCoarsePointer(false);
+    const { container } = renderMap();
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+    expect(svg).toBeTruthy();
+
+    for (let i = 0; i < 40; i += 1) {
+      const zoomIn = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-in"]');
+      if (!zoomIn || zoomIn.disabled) break;
+      fireEvent.click(zoomIn);
+    }
+
+    const transform = () => container.querySelector("svg.atlas-svg > g")?.getAttribute("transform") ?? "";
+    const before = transform();
+    const event = new WheelEvent("wheel", { deltaY: -120, bubbles: true, cancelable: true });
+    const prevented = !svg.dispatchEvent(event);
+    expect(prevented).toBe(false);
+    expect(transform()).toBe(before);
+  });
+
+  it("hands wheel events to the page at minimum zoom instead of trapping scroll", () => {
+    setCoarsePointer(false);
+    const { container } = renderMap();
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+
+    for (let i = 0; i < 40; i += 1) {
+      const zoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+      if (!zoomOut || zoomOut.disabled) break;
+      fireEvent.click(zoomOut);
+    }
+
+    const event = new WheelEvent("wheel", { deltaY: 120, bubbles: true, cancelable: true });
+    const prevented = !svg.dispatchEvent(event);
+    expect(prevented).toBe(false);
+  });
+
+  it("keeps mid-range wheel zoom owned by the map", () => {
+    setCoarsePointer(false);
+    const { container } = renderMap();
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+    // Back off from any tight fit-all zoom so wheel-in is still consumable.
+    for (let i = 0; i < 6; i += 1) {
+      const zoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+      if (!zoomOut || zoomOut.disabled) break;
+      fireEvent.click(zoomOut);
+    }
+    Object.defineProperty(svg, "getBoundingClientRect", {
+      value: () => ({ left: 0, top: 0, width: 820, height: 520, right: 820, bottom: 520, x: 0, y: 0, toJSON: () => ({}) }),
+    });
+    const event = new WheelEvent("wheel", {
+      deltaY: -80,
+      clientX: 100,
+      clientY: 100,
+      bubbles: true,
+      cancelable: true,
+    });
+    const prevented = !svg.dispatchEvent(event);
+    expect(prevented).toBe(true);
+  });
+
+  it("uses one roving tab stop across clusters and keeps arrow parity", async () => {
+    setCoarsePointer(true);
+    // Spread places across NA so low-zoom clustering yields multiple targets.
+    const places = Array.from({ length: 28 }, (_, i) =>
+      makePlace({
+        id: `c${i}`,
+        name: `Cluster Place ${i}`,
+        lat: 25 + (i % 7) * 5,
+        lon: -120 + Math.floor(i / 7) * 12,
+        tier: i % 3 === 0 ? "A" : i % 3 === 1 ? "B" : "C",
+      }),
+    );
+    const { container } = renderMap(vi.fn(), [], places);
+    await waitFor(() => {
+      expect(container.querySelectorAll(".map-cluster").length).toBeGreaterThan(1);
+    });
+
+    const focusTargets = Array.from(
+      container.querySelectorAll<SVGGElement>("[data-atlas-focus-target='true']"),
+    );
+    expect(focusTargets.length).toBeGreaterThan(1);
+    const tabZero = focusTargets.filter(el => el.getAttribute("tabindex") === "0");
+    expect(tabZero.length).toBe(1);
+
+    const clusters = Array.from(container.querySelectorAll<SVGGElement>(".map-cluster"));
+    expect(clusters.every(c => c.getAttribute("tabindex") === "0")).toBe(false);
+
+    const start = tabZero[0]!;
+    start.focus();
+    fireEvent.keyDown(start, { key: "ArrowRight" });
+    await waitFor(() => {
+      const nextZero = Array.from(
+        container.querySelectorAll<SVGGElement>("[data-atlas-focus-target='true']"),
+      ).find(el => el.getAttribute("tabindex") === "0");
+      expect(nextZero).toBeTruthy();
+      expect(nextZero).not.toBe(start);
+    });
+  });
+
+  it("re-anchors the hover tooltip after zoom so screen percent tracks the pin", async () => {
+    setCoarsePointer(false);
+    const { container } = renderMap();
+    // Start from a zoomed-out frame so + still moves the view.
+    for (let i = 0; i < 4; i += 1) {
+      const zoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+      if (!zoomOut || zoomOut.disabled) break;
+      fireEvent.click(zoomOut);
+    }
+    const marker = container.querySelector('[data-atlas-marker="true"]') as SVGGElement;
+    fireEvent.pointerEnter(marker, { pointerType: "mouse" });
+    const tooltip = screen.getByRole("tooltip") as HTMLElement;
+    const beforeTop = tooltip.style.top;
+
+    const zoomIn = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-in"]');
+    expect(zoomIn).toBeTruthy();
+    fireEvent.click(zoomIn!);
+    await waitFor(() => {
+      const after = screen.getByRole("tooltip") as HTMLElement;
+      expect(after.style.top).not.toBe(beforeTop);
+    });
+  });
+
+  it("centers an externally selected pin without requiring a second map click", async () => {
+    setCoarsePointer(false);
+    const { container, rerender } = render(
+      <UnitProvider>
+        <AtlasMap places={defaultMapPlaces()} onSelect={vi.fn()} />
+      </UnitProvider>,
+    );
+    const transformOf = () => {
+      const g = container.querySelector("svg.atlas-svg > g");
+      return g?.getAttribute("transform") ?? "";
+    };
+    await waitFor(() => expect(transformOf()).toMatch(/scale\(/));
+    const before = transformOf();
+
+    rerender(
+      <UnitProvider>
+        <AtlasMap places={defaultMapPlaces()} selectedId="b" onSelect={vi.fn()} />
+      </UnitProvider>,
+    );
+    await waitFor(() => expect(transformOf()).not.toBe(before));
+    expect(transformOf()).toMatch(/scale\(/);
+  });
+
+  it("preserves context when selecting an already-visible pin from the map", async () => {
+    setCoarsePointer(false);
+    function Harness() {
+      const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
+      return (
+        <UnitProvider>
+          <AtlasMap
+            places={defaultMapPlaces()}
+            selectedId={selectedId}
+            onSelect={(id) => setSelectedId(id)}
+          />
+        </UnitProvider>
+      );
+    }
+    const { container } = render(<Harness />);
+    const transformOf = () => container.querySelector("svg.atlas-svg > g")?.getAttribute("transform") ?? "";
+    await waitFor(() => expect(transformOf()).toMatch(/scale\(/));
+
+    for (let i = 0; i < 5; i += 1) {
+      const zoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+      if (!zoomOut || zoomOut.disabled) break;
+      fireEvent.click(zoomOut);
+    }
+    const before = transformOf();
+    const scaleBefore = Number((before.match(/scale\(([^)]+)\)/) ?? [])[1] ?? "0");
+
+    const marker = container.querySelector('[data-marker-id="a"]') as SVGGElement;
+    fireEvent.click(marker);
+
+    await waitFor(() => {
+      expect(container.querySelector('[data-marker-id="a"]')).toBeTruthy();
+    });
+    const after = transformOf();
+    const scaleAfter = Number((after.match(/scale\(([^)]+)\)/) ?? [])[1] ?? "0");
+    // Map-initiated selection should not jump to the single-point ~2.85× center fit.
+    expect(scaleAfter).toBeLessThan(2.5);
+    expect(Math.abs(scaleAfter - scaleBefore)).toBeLessThan(0.35);
   });
 });

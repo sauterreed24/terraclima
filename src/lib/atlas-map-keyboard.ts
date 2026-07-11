@@ -101,12 +101,23 @@ export function endpointMarkerId(
   return position === "home" ? visible[0].id : visible[visible.length - 1].id;
 }
 
+/** Stable id prefix for cluster focus targets in the unified roving list. */
+export const ATLAS_CLUSTER_FOCUS_PREFIX = "cluster:";
+
+export function atlasClusterFocusId(clusterKey: string): string {
+  return `${ATLAS_CLUSTER_FOCUS_PREFIX}${clusterKey}`;
+}
+
+export function isAtlasClusterFocusId(id: string): boolean {
+  return id.startsWith(ATLAS_CLUSTER_FOCUS_PREFIX);
+}
+
 /**
- * Returns true when the React keyboard event came from a marker child of
- * the SVG (versus the SVG itself). Used in the map's window-level keydown
- * handler to skip arrow-key map panning while a marker has focus.
+ * Returns true when the React keyboard event came from a pin or cluster
+ * focus target (versus the SVG itself). Used in the map's window-level
+ * keydown handler to skip arrow-key map panning while a target has focus.
  */
 export function isMarkerKeyboardTarget(target: EventTarget | null): boolean {
   if (!(target instanceof Element)) return false;
-  return target.closest('[data-atlas-marker="true"]') != null;
+  return target.closest('[data-atlas-focus-target="true"], [data-atlas-marker="true"]') != null;
 }

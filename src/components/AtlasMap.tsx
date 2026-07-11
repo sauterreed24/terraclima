@@ -10,8 +10,18 @@ import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useUnits } from "../lib/units";
 import { getCachedAtlasTopology, loadAtlasTopology, type AtlasTopology } from "../lib/atlas-map-topology";
 import { motionPolicy, useRichVisualEffects } from "../lib/device-profile";
-import { fitMapViewToPoints } from "../lib/atlas-map-fit";
 import {
+  atlasSafeAreaForChrome,
+  contentBBoxFromPoints,
+  ensurePointVisible,
+  fitMapViewToPoints,
+  isPointInSafeFrame,
+  mapPointToScreen,
+  viewForViewportResize,
+  type MapSafeArea,
+} from "../lib/atlas-map-fit";
+import {
+  atlasClusterFocusId,
   endpointMarkerId,
   isMarkerKeyboardTarget,
   nextMarkerId,
@@ -29,6 +39,7 @@ import {
   clampZoom,
   MAX_ZOOM,
   MIN_ZOOM,
+  wheelDeltaConsumable,
   wheelZoomFactor as wheelZoomFactorImpl,
   zoomAtScreenPoint,
 } from "../lib/atlas-map-zoom";
@@ -48,13 +59,14 @@ import { layoutAtlasMapPins } from "../lib/atlas-map-pin-layout";
 import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
 import { computePinLabelModes, type MapPinLabelMode } from "../lib/atlas-map-label-visibility";
 import { livedRealityCoverage } from "../lib/livability-score";
-import type { LiveFitFilters } from "../lib/live-fit";
 import {
   ATLAS_DEFAULT_TOUCH_MODE,
   atlasTouchActionForMode,
+  needsAtlasScrollEscape,
   resolveAtlasMapInteractive,
   type AtlasTouchMode,
 } from "../lib/atlas-map-touch-gesture";
+import { useAtlasMapViewCommit } from "../hooks/use-atlas-map-view";
 import { useMediaQuery } from "../hooks/use-media-query";
 import { AtlasMapTooltip } from "./AtlasMapTooltip";
 import { CLIMATE_NORMALS_PERIOD } from "../lib/atlas-metadata";
@@ -72,7 +84,6 @@ interface Props {
   onSelect: (id: string) => void;
   featuredIds?: readonly string[];
   featuredLabel?: string;
-  liveFitFilters?: LiveFitFilters;
   onEmptyRecovery?: () => void;
   emptyRecoveryLabel?: string;
   width?: number;
@@ -276,18 +287,25 @@ function buildAtlasMapReadout({
   const axisDetail = countDetail(topAxis.count, total, "leader");
   const accent = signatures.find(signature => signature.strength.shortLabel === topAxis.value) ?? signatures[0];
   const lensLabel = featuredLabel ?? (leaders.length > 0 ? "Ranked lens" : "Visible field");
+  const lensIsComfort = Boolean(featuredLabel && /comfortable/i.test(featuredLabel));
   const headline = leaders[0]
     ? `${leaders[0].name} leads`
     : `${places.length} mapped places`;
+  const feelDetail = lensIsComfort
+    ? `${axisDetail} · aura = feel`
+    : axisDetail;
+  const leaderDetail = lensIsComfort
+    ? `${lensLabel} · gold = comfort leaders`
+    : lensLabel;
 
   return {
     accentRgb: accent?.mapAccentRgb ?? "94, 196, 220",
     headline,
-    ariaLabel: `Current map read. ${leaderLabel} for ${lensLabel}. Main driver ${driverLabel}, ${driverDetail}. Strongest feel signal ${topAxis.value}, ${axisDetail}. ${clusterValue}.`,
+    ariaLabel: `Current map read. ${leaderLabel} for ${lensLabel}. Main driver ${driverLabel}, ${driverDetail}. Strongest feel signal ${topAxis.value}, ${axisDetail}. ${clusterValue}.${lensIsComfort ? " Pin fill is the climate driver; colored aura is feel; gold marks comfort leaders." : ""}`,
     items: [
-      { label: "Leaders", value: leaderLabel, detail: lensLabel },
-      { label: "Driver", value: driverLabel, detail: driverDetail },
-      { label: "Feel", value: `${topAxis.value}-led`, detail: axisDetail },
+      { label: "Leaders", value: leaderLabel, detail: leaderDetail },
+      { label: "Driver", value: driverLabel, detail: lensIsComfort ? `${driverDetail} · fill color` : driverDetail },
+      { label: "Feel", value: `${topAxis.value}-led`, detail: feelDetail },
       { label: "Field", value: clusterValue, detail: clusterDetail },
     ],
   };
@@ -324,9 +342,10 @@ function smoothTrailPath(points: Array<[number, number]>): string {
  * Performance:
  *   - Pan is applied directly to the SVG transform via a ref + RAF, so no
  *     React re-renders fire during a drag (markers, borders, etc. stay put).
- *   - Wheel/pinch zoom update the outer SVG transform imperatively during the
- *     gesture; React `view` commits once the gesture ends (~50 ms wheel idle,
- *     pointer-up for pinch). Each pin counter-scales with translate→scale(1/k).
+ *   - Wheel and pinch commit through React `setView` (RAF-coalesced for wheel;
+ *     per-move for pinch). Wheel gesturing clears after ~90 ms idle. Drag is
+ *     the only path that mutates the SVG transform imperatively mid-gesture.
+ *     Each pin counter-scales with translate→scale(1/k).
  *   - `data-gesturing` is toggled on the shell via DOM, not React state.
  *   - All geo strokes use vector-effect="non-scaling-stroke" so we don't
  *     have to recompute stroke widths on zoom.
@@ -348,7 +367,6 @@ export const AtlasMap = memo(function AtlasMap({
   onSelect,
   featuredIds = [],
   featuredLabel,
-  liveFitFilters: _liveFitFilters,
   onEmptyRecovery,
   emptyRecoveryLabel = "Reset Explorer",
   width: widthProp = 820,
@@ -356,6 +374,13 @@ export const AtlasMap = memo(function AtlasMap({
 }: Props) {
   /** Skip SVG Gaussian blur on coast & heavy marker pulse on low-power / save-data devices (e.g. older Surfaces). */
   const coarsePointer = useMediaQuery("(pointer: coarse)");
+  const anyCoarsePointer = useMediaQuery("(any-pointer: coarse)");
+  const touchCapable = typeof navigator !== "undefined" && (navigator.maxTouchPoints ?? 0) > 0;
+  const showScrollEscape = needsAtlasScrollEscape({
+    coarsePointer,
+    anyCoarsePointer,
+    touchCapable,
+  });
   // Touch devices skip rich effects unconditionally — the SVG blur filter and
   // marker pulses are the largest paint cost on iOS Safari, and modern phones
   // still report >4 GB / >4 cores so the generic `useRichVisualEffects()`
@@ -364,7 +389,12 @@ export const AtlasMap = memo(function AtlasMap({
   const topoFadeMs = motionPolicy() === "full" ? 420 : 0;
   const borderFadeMs = motionPolicy() === "full" ? 520 : 0;
   const [touchMode, setTouchMode] = useState<AtlasTouchMode>(ATLAS_DEFAULT_TOUCH_MODE);
-  const mapInteractive = resolveAtlasMapInteractive({ coarsePointer, touchMode });
+  const mapInteractive = resolveAtlasMapInteractive({
+    coarsePointer,
+    touchMode,
+    anyCoarsePointer,
+    touchCapable,
+  });
   const [legendOpen, setLegendOpen] = useState(false);
   // Roving-tabindex state: which marker currently owns Tab focus. Defaults to
   // null; the first visible marker takes over until the user moves arrows or
@@ -406,15 +436,19 @@ export const AtlasMap = memo(function AtlasMap({
   const height = dims.height;
   const mapMeasured = dims.measured;
   const compactMapChrome = coarsePointer || width < 760;
+  const safeArea = useMemo<MapSafeArea>(
+    () => atlasSafeAreaForChrome(compactMapChrome),
+    [compactMapChrome],
+  );
 
   useEffect(() => {
-    if (!coarsePointer) {
+    if (!showScrollEscape) {
       setTouchMode(ATLAS_DEFAULT_TOUCH_MODE);
     }
     if (!compactMapChrome) {
       setLegendOpen(false);
     }
-  }, [coarsePointer, compactMapChrome]);
+  }, [showScrollEscape, compactMapChrome]);
 
   useEffect(() => {
     if (mapInteractive) return;
@@ -478,12 +512,11 @@ export const AtlasMap = memo(function AtlasMap({
   const tooltipInputRef = useRef<"pointer" | "keyboard">("pointer");
   /** Pin id that owns the keyboard compact peek until blur. */
   const keyboardPreviewIdRef = useRef<string | null>(null);
-  const [tooltipScreen, setTooltipScreen] = useState<{ xPct: number; yPct: number } | null>(null);
+  const [tooltipAnchor, setTooltipAnchor] = useState<{ x: number; y: number } | null>(null);
   const [clusterPicker, setClusterPicker] = useState<{
     cluster: AtlasClusterItem<{ place: Place; x: number; y: number; id: string }>;
-    xPct: number;
-    yPct: number;
   } | null>(null);
+  const selectionFromMapRef = useRef(false);
   const [atlasReadoutExpanded, setAtlasReadoutExpanded] = useState(false);
   const hoverClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -528,7 +561,7 @@ export const AtlasMap = memo(function AtlasMap({
         return;
       }
       setHoverId(null);
-      setTooltipScreen(null);
+      setTooltipAnchor(null);
       setTooltipVariant("compact");
       tooltipInputRef.current = "pointer";
       keyboardPreviewIdRef.current = null;
@@ -674,6 +707,19 @@ export const AtlasMap = memo(function AtlasMap({
     [places],
   );
 
+  const contentBBox = useMemo(
+    () => contentBBoxFromPoints(pts.map(p => ({ x: p.x, y: p.y }))),
+    [pts],
+  );
+
+  const { clampView, commitView, fitOpts } = useAtlasMapViewCommit({
+    width,
+    height,
+    safeArea,
+    contentBBox,
+    setView,
+  });
+
   useLayoutEffect(() => {
     if (!mapMeasured) return;
     if (fitSignatureRef.current === pointsSignature) return;
@@ -683,16 +729,44 @@ export const AtlasMap = memo(function AtlasMap({
       setView({ k: 1, x: 0, y: 0 });
       return;
     }
-    setView(
+    setView(clampView(
       fitMapViewToPoints(
         pts.map(p => ({ x: p.x, y: p.y })),
         width,
         height,
         48,
-        { minK: MIN_ZOOM, maxK: MAX_ZOOM, inset: 0.065 }
-      )
-    );
-  }, [pts, pointsSignature, width, height, mapMeasured]);
+        fitOpts({ inset: 0.065 }),
+      ),
+    ));
+  }, [pts, pointsSignature, width, height, mapMeasured, clampView, fitOpts]);
+
+  const prevViewportRef = useRef<{ width: number; height: number; safeArea: MapSafeArea } | null>(null);
+  useLayoutEffect(() => {
+    if (!mapMeasured) return;
+    const prev = prevViewportRef.current;
+    prevViewportRef.current = { width, height, safeArea };
+    if (!prev) return;
+    if (
+      prev.width === width
+      && prev.height === height
+      && prev.safeArea.top === safeArea.top
+      && prev.safeArea.right === safeArea.right
+      && prev.safeArea.bottom === safeArea.bottom
+      && prev.safeArea.left === safeArea.left
+    ) {
+      return;
+    }
+    // Preserve geographic center across resize/orientation using chrome-aware
+    // frame centers, then clamp so content cannot vanish.
+    setView(v => clampView(viewForViewportResize(
+      v,
+      prev.width,
+      prev.height,
+      width,
+      height,
+      { prevSafeArea: prev.safeArea, nextSafeArea: safeArea },
+    )));
+  }, [width, height, mapMeasured, clampView, safeArea]);
 
   const lastPanSelectionRef = useRef<string | null>(null);
   useLayoutEffect(() => {
@@ -701,16 +775,41 @@ export const AtlasMap = memo(function AtlasMap({
     const pt = pts.find(p => p.place.id === selectedId);
     if (!pt) return;
     lastPanSelectionRef.current = selectedId;
-    setView(
+    const fromMap = selectionFromMapRef.current;
+    selectionFromMapRef.current = false;
+    if (fromMap) {
+      setView(v => {
+        const ensured = ensurePointVisible(
+          { x: pt.x, y: pt.y },
+          v,
+          width,
+          height,
+          { safeArea, margin: 28 },
+        );
+        const clamped = clampView(ensured);
+        if (isPointInSafeFrame({ x: pt.x, y: pt.y }, clamped, width, height, safeArea, 0, 28)) {
+          return clamped;
+        }
+        return ensurePointVisible(
+          { x: pt.x, y: pt.y },
+          clamped,
+          width,
+          height,
+          { safeArea, margin: 28 },
+        );
+      });
+      return;
+    }
+    setView(clampView(
       fitMapViewToPoints(
         [{ x: pt.x, y: pt.y }],
         width,
         height,
         48,
-        { minK: MIN_ZOOM, maxK: MAX_ZOOM, inset: 0.14 },
+        fitOpts({ inset: 0.14 }),
       ),
-    );
-  }, [selectedId, pts, width, height, mapMeasured]);
+    ));
+  }, [selectedId, pts, width, height, mapMeasured, clampView, fitOpts, safeArea]);
 
   useEffect(() => {
     if (!selectedId) lastPanSelectionRef.current = null;
@@ -1011,26 +1110,30 @@ export const AtlasMap = memo(function AtlasMap({
     [places, featuredIds, featuredLabel, clusterItems.length, markerPoints.length],
   );
 
-  // Roving-tabindex layout points — one per visible marker, in DOM render
-  // order, with the post-projection screen coordinates that `nextMarkerId`
-  // uses to bucket rows for ArrowUp / ArrowDown. Recomputed when the visible
-  // set changes (zoom / pan / filter) or the settled view changes.
+  // Roving-tabindex layout points — pins and clusters in one list so Tab
+  // hits a single entry and arrows walk both. Screen coords drive Up/Down.
   const markerLayoutPoints = useMemo<AtlasMarkerLayoutPoint[]>(() => {
-    return markerRenderOrder.map(pt => ({
+    const pins = markerRenderOrder.map(pt => ({
       id: pt.place.id,
       x: pt.x * settledView.k + settledView.x,
       y: pt.y * settledView.k + settledView.y,
     }));
-  }, [markerRenderOrder, settledView]);
+    const clusters = clusterItems.map(cluster => ({
+      id: atlasClusterFocusId(cluster.id),
+      x: cluster.x * settledView.k + settledView.x,
+      y: cluster.y * settledView.k + settledView.y,
+    }));
+    return [...clusters, ...pins];
+  }, [markerRenderOrder, clusterItems, settledView]);
   const markerLayoutById = useMemo(() => {
     const map = new Map<string, AtlasMarkerLayoutPoint>();
     for (const p of markerLayoutPoints) map.set(p.id, p);
     return map;
   }, [markerLayoutPoints]);
-  // The "effective" focused id — what each Marker compares against to decide
-  // whether to render with tabIndex=0. When state is null (initial mount) the
-  // first visible marker becomes the keyboard entry point; when state points
-  // to a marker that's no longer visible (zoom culled it) we also fall back.
+  // The "effective" focused id — what each Marker/Cluster compares against to
+  // decide whether to render with tabIndex=0. When state is null (initial mount)
+  // the first visible target becomes the keyboard entry point; when state points
+  // to a target that's no longer visible we also fall back.
   const effectiveFocusedMarkerId =
     focusedMarkerId && markerLayoutById.has(focusedMarkerId)
       ? focusedMarkerId
@@ -1038,7 +1141,9 @@ export const AtlasMap = memo(function AtlasMap({
   const focusMarkerInDom = useCallback((id: string) => {
     const svg = svgRef.current;
     if (!svg) return;
-    const el = svg.querySelector<SVGGElement>(`[data-marker-id="${CSS.escape(id)}"]`);
+    const el = svg.querySelector<SVGGElement>(
+      `[data-atlas-focus-id="${CSS.escape(id)}"], [data-marker-id="${CSS.escape(id)}"]`,
+    );
     el?.focus();
   }, []);
   const onMarkerArrow = useCallback(
@@ -1051,8 +1156,8 @@ export const AtlasMap = memo(function AtlasMap({
         // Left/Right this only happens with a lone visible pin (they otherwise
         // wrap circularly), where an "edge row" message would be wrong — stay
         // silent there.
-        if (direction === "up") setNavAnnounce("Top row of the visible pins.");
-        else if (direction === "down") setNavAnnounce("Bottom row of the visible pins.");
+        if (direction === "up") setNavAnnounce("Top row of the visible map targets.");
+        else if (direction === "down") setNavAnnounce("Bottom row of the visible map targets.");
         return;
       }
       setNavAnnounce("");
@@ -1075,9 +1180,14 @@ export const AtlasMap = memo(function AtlasMap({
     setFocusedMarkerId(curr => (curr === id ? curr : id));
   }, []);
 
-  // Markers call `onSelect` directly. Do not gate on `dragRef.moved`: marker
-  // `pointerdown` stops propagation so the map never resets `moved` after a
-  // pan — using a drag guard here left pins unclickable until full reload.
+  const selectFromMap = useCallback((id: string) => {
+    selectionFromMapRef.current = true;
+    // Re-tapping an already-selected pin should still nudge it into the safe frame.
+    if (lastPanSelectionRef.current === id) {
+      lastPanSelectionRef.current = null;
+    }
+    onSelect(id);
+  }, [onSelect]);
 
   const syncShellGesturing = useCallback(() => {
     setShellGesturing(pinchRef.current !== null || wheelActiveRef.current);
@@ -1112,18 +1222,22 @@ export const AtlasMap = memo(function AtlasMap({
 
   useLayoutEffect(() => { applyDOMTransform(); });
 
-  // Wheel zoom — RAF-coalesced setView (same reliable path as pre-polish map).
+  // Wheel zoom — RAF-coalesced setView. At zoom limits, hand the gesture
+  // back to the page so scroll is not trapped over the map.
   const wheelRAF = useRef<number>(0);
   const wheelBuf = useRef<{ k: number; mx: number; my: number } | null>(null);
 
   const onWheel = useCallback((e: WheelEvent) => {
+    const factor = wheelZoomFactor(e.deltaY, e.deltaMode);
+    if (!wheelDeltaConsumable(viewRef.current, factor)) {
+      return;
+    }
     e.preventDefault();
     markWheelGesture();
     const rect = svgRef.current?.getBoundingClientRect();
     if (!rect) return;
     const mx = ((e.clientX - rect.left) / rect.width) * width;
     const my = ((e.clientY - rect.top) / rect.height) * height;
-    const factor = wheelZoomFactor(e.deltaY, e.deltaMode);
     const prev = wheelBuf.current;
     wheelBuf.current = prev
       ? { k: prev.k * factor, mx, my }
@@ -1134,10 +1248,10 @@ export const AtlasMap = memo(function AtlasMap({
         const buf = wheelBuf.current;
         wheelBuf.current = null;
         if (!buf) return;
-        setView(v => zoomAtScreenPoint(v, buf.k, buf.mx, buf.my));
+        commitView(v => zoomAtScreenPoint(v, buf.k, buf.mx, buf.my));
       });
     }
-  }, [width, height, markWheelGesture]);
+  }, [width, height, markWheelGesture, commitView]);
 
   useEffect(() => {
     const node = svgRef.current;
@@ -1190,7 +1304,11 @@ export const AtlasMap = memo(function AtlasMap({
     const { dx, dy, moved } = dragRef.current;
     dragRef.current.active = false;
     if (dx !== 0 || dy !== 0) {
-      const next = { ...viewRef.current, x: viewRef.current.x + dx, y: viewRef.current.y + dy };
+      const next = clampView({
+        ...viewRef.current,
+        x: viewRef.current.x + dx,
+        y: viewRef.current.y + dy,
+      });
       viewRef.current = next;
       setView(next);
     }
@@ -1198,7 +1316,7 @@ export const AtlasMap = memo(function AtlasMap({
     dragRef.current.dy = 0;
     applyDOMTransform();
     return moved;
-  }, [applyDOMTransform]);
+  }, [applyDOMTransform, clampView]);
 
   const startPinch = useCallback(() => {
     const rect = svgRef.current?.getBoundingClientRect();
@@ -1268,7 +1386,7 @@ export const AtlasMap = memo(function AtlasMap({
         height,
       );
       const nextK = clampZoom(pinchRef.current.startK * (pointerDistance(a, b) / pinchRef.current.startDistance));
-      setView({
+      commitView({
         k: nextK,
         x: center.x - pinchRef.current.mapCenterX * nextK,
         y: center.y - pinchRef.current.mapCenterY * nextK,
@@ -1276,7 +1394,7 @@ export const AtlasMap = memo(function AtlasMap({
       return true;
     }
     return false;
-  }, [width, height]);
+  }, [width, height, commitView]);
 
   const finishTouchPointer = useCallback((e: React.PointerEvent<SVGSVGElement>): boolean => {
     activeTouchPointersRef.current.delete(e.pointerId);
@@ -1401,23 +1519,23 @@ export const AtlasMap = memo(function AtlasMap({
         const rect = svgRef.current?.getBoundingClientRect();
         if (rect) {
           const { x: mx, y: my } = svgPointFromClient(touchTap.clientX, touchTap.clientY, rect, width, height);
-          setView(v => zoomAtScreenPoint(v, 1.9, mx, my));
+          setView(v => clampView(zoomAtScreenPoint(v, 1.9, mx, my)));
         }
       } else {
         lastTouchTapRef.current = { t: now, clientX: touchTap.clientX, clientY: touchTap.clientY };
       }
     }
-  }, [finishDrag, finishTouchPointer, height, mapInteractive, suppressNextTouchActivation, width, syncShellGesturing]);
+  }, [finishDrag, finishTouchPointer, height, mapInteractive, suppressNextTouchActivation, width, syncShellGesturing, clampView]);
 
   const zoomBy = useCallback((f: number) => {
-    setView(v => {
+    commitView(v => {
       const nk = clampZoom(v.k * f);
       const cx = width / 2;
       const cy = height / 2;
       const factor = nk / v.k;
       return { k: nk, x: cx - (cx - v.x) * factor, y: cy - (cy - v.y) * factor };
     });
-  }, [width, height]);
+  }, [width, height, commitView]);
 
   const reset = useCallback(() => {
     setClusterPicker(null);
@@ -1425,16 +1543,16 @@ export const AtlasMap = memo(function AtlasMap({
       setView({ k: 1, x: 0, y: 0 });
       return;
     }
-    setView(
+    commitView(
       fitMapViewToPoints(
         pts.map(p => ({ x: p.x, y: p.y })),
         width,
         height,
         48,
-        { minK: MIN_ZOOM, maxK: MAX_ZOOM, inset: 0.065 }
-      )
+        fitOpts({ inset: 0.065 }),
+      ),
     );
-  }, [pts, width, height]);
+  }, [pts, width, height, commitView, fitOpts]);
 
   // Desktop parity with the touch double-tap: double-clicking empty map zooms in
   // ~1.7× centered on the cursor (matches the zoom-in button). Double-clicks that
@@ -1443,17 +1561,17 @@ export const AtlasMap = memo(function AtlasMap({
   const onDoubleClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
     if (coarsePointer) return;
     const target = e.target as Element | null;
-    if (target?.closest?.('[data-atlas-marker="true"], .map-cluster')) return;
+    if (target?.closest?.('[data-atlas-marker="true"], .map-cluster, [data-atlas-focus-target="true"]')) return;
     const rect = svgRef.current?.getBoundingClientRect();
     if (!rect) return;
     const { x: mx, y: my } = svgPointFromClient(e.clientX, e.clientY, rect, width, height);
-    setView(v => zoomAtScreenPoint(v, 1.7, mx, my));
-  }, [coarsePointer, width, height]);
+    commitView(v => zoomAtScreenPoint(v, 1.7, mx, my));
+  }, [coarsePointer, width, height, commitView]);
 
   // Keyboard: +/- to zoom, 0 to reset, arrows pan the map when the SVG
-  // itself owns focus. When focus is on a marker, the Marker's own keydown
-  // owns arrows for roving-tabindex navigation between pins — bail out
-  // early here so we don't both step a pin AND pan the map.
+  // itself owns focus. When focus is on a pin/cluster, that target's keydown
+  // owns arrows for roving-tabindex navigation — bail out early here so we
+  // don't both step a target AND pan the map.
   useEffect(() => {
     const node = svgRef.current;
     if (!node) return;
@@ -1464,33 +1582,46 @@ export const AtlasMap = memo(function AtlasMap({
         case "+": case "=": zoomBy(1.4); break;
         case "-": case "_": zoomBy(1 / 1.4); break;
         case "0": reset(); break;
-        case "ArrowLeft":  setView(v => ({ ...v, x: v.x + 30 })); break;
-        case "ArrowRight": setView(v => ({ ...v, x: v.x - 30 })); break;
-        case "ArrowUp":    setView(v => ({ ...v, y: v.y + 30 })); break;
-        case "ArrowDown":  setView(v => ({ ...v, y: v.y - 30 })); break;
+        case "ArrowLeft":  commitView(v => ({ ...v, x: v.x + 30 })); break;
+        case "ArrowRight": commitView(v => ({ ...v, x: v.x - 30 })); break;
+        case "ArrowUp":    commitView(v => ({ ...v, y: v.y + 30 })); break;
+        case "ArrowDown":  commitView(v => ({ ...v, y: v.y - 30 })); break;
         default: return;
       }
       e.preventDefault();
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [zoomBy, reset]);
+  }, [zoomBy, reset, commitView]);
 
   const updateTooltip = useCallback((pt: { x: number; y: number }) => {
-    const v = viewRef.current;
-    const sx = pt.x * v.k + v.x;
-    const sy = pt.y * v.k + v.y;
-    setTooltipScreen({ xPct: (sx / width) * 100, yPct: (sy / height) * 100 });
-  }, [width, height]);
+    setTooltipAnchor({ x: pt.x, y: pt.y });
+  }, []);
+
+  const tooltipScreen = useMemo(() => {
+    if (!tooltipAnchor || width < 1 || height < 1) return null;
+    const screen = mapPointToScreen(tooltipAnchor, view);
+    return {
+      xPct: (screen.x / width) * 100,
+      yPct: (screen.y / height) * 100,
+    };
+  }, [tooltipAnchor, view, width, height]);
 
   const openClusterPicker = useCallback((cluster: AtlasClusterItem<{ place: Place; x: number; y: number; id: string }>) => {
-    const v = viewRef.current;
-    setClusterPicker({
-      cluster,
-      xPct: ((cluster.x * v.k + v.x) / width) * 100,
-      yPct: ((cluster.y * v.k + v.y) / height) * 100,
-    });
-  }, [width, height]);
+    setClusterPicker({ cluster });
+  }, []);
+
+  const clusterPickerScreen = useMemo(() => {
+    if (!clusterPicker || width < 1 || height < 1) return null;
+    const screen = mapPointToScreen(
+      { x: clusterPicker.cluster.x, y: clusterPicker.cluster.y },
+      view,
+    );
+    return {
+      xPct: (screen.x / width) * 100,
+      yPct: (screen.y / height) * 100,
+    };
+  }, [clusterPicker, view, width, height]);
 
   const activateCluster = useCallback((cluster: AtlasClusterItem<{ place: Place; x: number; y: number; id: string }>) => {
     const alreadyAtTouchLimit = coarsePointer && viewRef.current.k >= MAX_ZOOM * 0.94;
@@ -1504,16 +1635,17 @@ export const AtlasMap = memo(function AtlasMap({
       maxK: MAX_ZOOM,
       pad: coarsePointer ? 92 : 72,
       inset: 0.08,
+      safeArea,
     });
 
     setClusterPicker(null);
-    setView(next);
+    commitView(next);
     // Activating a cluster unmounts the focused cluster <g> as it separates
     // into individual pins. Without this, keyboard/AT users would be dropped to
     // <body> and lose arrow-key map navigation. Returning focus to the map SVG
     // keeps the roving-tabindex context alive (preventScroll avoids a jump).
     svgRef.current?.focus({ preventScroll: true });
-  }, [width, height, coarsePointer, clusterRadiusPx, openClusterPicker]);
+  }, [width, height, coarsePointer, clusterRadiusPx, openClusterPicker, commitView, safeArea]);
 
   const topoLoading = topo === null && !topoError;
   const svgTouchAction = atlasTouchActionForMode(mapInteractive);
@@ -1579,7 +1711,7 @@ export const AtlasMap = memo(function AtlasMap({
   const fitAllLabel = "Fit every pin in view (keyboard: 0)";
   const mapAriaLabel = !mapHasPins
     ? "Atlas map of North America. No places match the current filters or search; adjust them to bring pins back."
-    : (coarsePointer
+    : (showScrollEscape
         ? "Atlas map of North America. One-finger drag pans the map; pinch zooms when map mode is active. Use the Scroll page control to let the browser scroll past the map. Tap any pin to open that place's full profile."
         : "Atlas map of North America. Scroll to zoom, drag to pan, double-click to zoom in. Click any pin to open that place's full profile.") +
       (featuredTrailPoints.length > 1 ? " Gold trail connects the current top-ranked places." : "");
@@ -1628,7 +1760,7 @@ export const AtlasMap = memo(function AtlasMap({
         featuredRank={featuredRankById.get(pt.place.id)}
         richEffects={richEffects}
         isRovingFocused={pt.place.id === effectiveFocusedMarkerId}
-        onSelect={onSelect}
+        onSelect={selectFromMap}
         onHoverEnter={onMarkerHoverEnter}
         onFocusEnter={onMarkerFocusEnter}
         onLeave={scheduleHoverClear}
@@ -1947,15 +2079,23 @@ export const AtlasMap = memo(function AtlasMap({
 
           {/* Clustered pins (mobile / low zoom) */}
           <g>
-            {clusterItems.map(cluster => (
+            {clusterItems.map(cluster => {
+              const focusId = atlasClusterFocusId(cluster.id);
+              return (
               <ClusterMarker
                 key={cluster.id}
                 cluster={cluster}
                 k={view.k}
+                focusId={focusId}
+                isRovingFocused={focusId === effectiveFocusedMarkerId}
                 onActivate={activateCluster}
                 shouldSuppressTouchActivation={shouldSuppressTouchActivation}
+                onArrow={onMarkerArrow}
+                onHomeEnd={onMarkerHomeEnd}
+                onFocusReceived={onMarkerFocusReceived}
               />
-            ))}
+              );
+            })}
           </g>
 
           {/* Base pins first; the ranked trail then reads above the field without covering top-ranked / active pins. */}
@@ -2139,10 +2279,10 @@ export const AtlasMap = memo(function AtlasMap({
       ) : null}
 
       {/* Zoom + interaction controls — all map-control affordances grouped in the
-          top-right column. On coarse pointers the touch-mode toggle leads the
-          stack (it used to float top-left, hidden behind the title caption). */}
+          top-right column. Scroll-escape toggle leads when touch can trap page
+          scroll (coarse primary or hybrid fine+touch). */}
       <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-[3]">
-        {coarsePointer ? (
+        {showScrollEscape ? (
           <button
             type="button"
             className="map-control-pill map-touch-mode-toggle pointer-events-auto"
@@ -2231,6 +2371,12 @@ export const AtlasMap = memo(function AtlasMap({
           <MapLegendDot color="#e3a63b" label="Identity" />
           <MapLegendDot color="#ad8cff" label="Clarity" />
         </div>
+        <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">How to read pins</div>
+        <div className="map-key-lens-line text-[10px] leading-snug text-[rgba(245,250,255,0.92)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
+          {featuredLabel
+            ? `Fill = climate driver · aura = feel · gold = ${/comfortable/i.test(featuredLabel) ? "comfort leaders" : `top ${featuredLabel}`}.`
+            : "Fill = climate driver · aura = feel · gold = current top-ranked leaders."}
+        </div>
         <div className="text-[9px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Pin shape · tier</div>
         <div className="flex items-center gap-2.5 text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
           <span className="inline-flex items-center justify-center w-[18px] h-[18px] shrink-0" aria-hidden>
@@ -2311,6 +2457,11 @@ export const AtlasMap = memo(function AtlasMap({
             <MapLegendDot color="#ad8cff" label="Clarity aura" />
           </div>
           <div className="grid gap-1.5 border-t border-[rgba(140,200,224,0.24)] pt-2 text-[10px] text-[rgba(245,250,255,0.95)] [text-shadow:0_1px_2px_rgba(0,0,0,0.85)]">
+            <div className="map-key-lens-line">
+              {featuredLabel
+                ? `Fill = climate driver · aura = feel · gold = ${/comfortable/i.test(featuredLabel) ? "comfort leaders" : `top ${featuredLabel}`}.`
+                : "Fill = climate driver · aura = feel · gold = current top-ranked leaders."}
+            </div>
             <div>Diamond: flagship. Square: spotlight. Open ring: index.</div>
             <div>Gold halos and route line mark the current top-ranked leaders.</div>
             <div>Thin colored aura marks each place's strongest feel signal.</div>
@@ -2321,16 +2472,17 @@ export const AtlasMap = memo(function AtlasMap({
         </dialog>
       ) : null}
 
-      {clusterPicker ? (
+      {clusterPicker && clusterPickerScreen ? (
         <ClusterPicker
           cluster={clusterPicker.cluster}
-          xPct={clusterPicker.xPct}
-          yPct={clusterPicker.yPct}
+          xPct={clusterPickerScreen.xPct}
+          yPct={clusterPickerScreen.yPct}
           mapHeight={height}
           featuredRankById={featuredRankById}
           onClose={() => setClusterPicker(null)}
           onSelect={(id) => {
             setClusterPicker(null);
+            selectionFromMapRef.current = true;
             onSelect(id);
           }}
         />
@@ -2388,13 +2540,23 @@ interface MarkerProps {
 const ClusterMarker = memo(function ClusterMarker({
   cluster,
   k,
+  focusId,
+  isRovingFocused,
   onActivate,
   shouldSuppressTouchActivation,
+  onArrow,
+  onHomeEnd,
+  onFocusReceived,
 }: {
   cluster: AtlasClusterItem<ClusterPoint>;
   k: number;
+  focusId: string;
+  isRovingFocused: boolean;
   onActivate: (cluster: AtlasClusterItem<ClusterPoint>) => void;
   shouldSuppressTouchActivation: () => boolean;
+  onArrow: (id: string, direction: AtlasArrowDirection) => void;
+  onHomeEnd: (position: "home" | "end") => void;
+  onFocusReceived: (id: string) => void;
 }) {
   const inv = 1 / k;
   const count = cluster.points.length;
@@ -2412,23 +2574,61 @@ const ClusterMarker = memo(function ClusterMarker({
     e.stopPropagation();
   }, []);
   const onKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      e.stopPropagation();
-      onActivate(cluster);
+    switch (e.key) {
+      case "Enter":
+      case " ":
+        e.preventDefault();
+        e.stopPropagation();
+        onActivate(cluster);
+        return;
+      case "ArrowLeft":
+        e.preventDefault();
+        e.stopPropagation();
+        onArrow(focusId, "left");
+        return;
+      case "ArrowRight":
+        e.preventDefault();
+        e.stopPropagation();
+        onArrow(focusId, "right");
+        return;
+      case "ArrowUp":
+        e.preventDefault();
+        e.stopPropagation();
+        onArrow(focusId, "up");
+        return;
+      case "ArrowDown":
+        e.preventDefault();
+        e.stopPropagation();
+        onArrow(focusId, "down");
+        return;
+      case "Home":
+        e.preventDefault();
+        e.stopPropagation();
+        onHomeEnd("home");
+        return;
+      case "End":
+        e.preventDefault();
+        e.stopPropagation();
+        onHomeEnd("end");
+        return;
+      default:
+        return;
     }
-  }, [cluster, onActivate]);
+  }, [cluster, focusId, onActivate, onArrow, onHomeEnd]);
 
   return (
     <g
       transform={`translate(${cluster.x} ${cluster.y})`}
       role="button"
-      tabIndex={0}
+      tabIndex={isRovingFocused ? 0 : -1}
       aria-label={label}
       className="map-cluster"
+      data-atlas-focus-target="true"
+      data-atlas-focus-id={focusId}
       onPointerDown={stopPan}
       onClick={activate}
       onKeyDown={onKeyDown}
+      onFocus={() => onFocusReceived(focusId)}
       data-cluster-size={visual.band}
     >
       <title>{label}</title>
@@ -2863,6 +3063,8 @@ const Marker = memo(function Marker({
       role="button"
       tabIndex={isRovingFocused ? 0 : -1}
       data-atlas-marker="true"
+      data-atlas-focus-target="true"
+      data-atlas-focus-id={place.id}
       data-marker-id={place.id}
       data-has-leader={needsLeader ? "true" : "false"}
       data-pin-lod={pinLod}

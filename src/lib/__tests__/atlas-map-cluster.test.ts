@@ -98,6 +98,19 @@ describe("cluster zoom helpers", () => {
     expect(view.y).toBeTypeOf("number");
   });
 
+  it("centers the cluster in an asymmetric safe frame when provided", () => {
+    const view = fitMapViewToCluster(cluster, 1000, 800, {
+      minK: 0,
+      maxK: 1000,
+      pad: 0,
+      inset: 0,
+      safeArea: { top: 100, right: 200, bottom: 50, left: 0 },
+    });
+    // Frame center is (400, 425); cluster center is (15, 10).
+    expect(view.x).toBeCloseTo(400 - view.k * 15, 6);
+    expect(view.y).toBeCloseTo(425 - view.k * 10, 6);
+  });
+
   it("detects whether clustered points can visually separate at max zoom", () => {
     expect(canClusterSeparateAtZoom(cluster, 8, 44)).toBe(true);
 

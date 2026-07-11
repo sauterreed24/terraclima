@@ -18,6 +18,7 @@
     "test:prose": "tsx scripts/test-prose.ts",
     "test:celsius": "tsx scripts/playtest-celsius.ts",
     "playtest:polish": "tsx scripts/playtest-polish.ts",
+    "playtest:map": "node scripts/playtest-map.mjs",
     "check:metadata": "tsx scripts/check-site-metadata.ts",
     "check:performance-budget": "tsx scripts/check-performance-budget.ts",
     "audit:corpus": "tsx scripts/audit-corpus.ts",
