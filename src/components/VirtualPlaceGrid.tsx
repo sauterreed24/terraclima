@@ -2,21 +2,22 @@ import { memo, useLayoutEffect, useRef, useState } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { PlaceCard } from "./PlaceCard";
 import type { BestWindow } from "../lib/best-months";
-import type { RankingResult } from "../lib/scoring";
+import type { RankingProfile, RankingResult } from "../lib/scoring";
 import type { LiveFitFilters } from "../lib/live-fit";
+import { shouldShowPlaceCardScreeningScores } from "../lib/place-card-screening";
 import type { Place } from "../types";
 
 const ROW_GAP_PX = 12;
 /**
- * Card estimates by layout. These track the production PlaceCard surface,
- * including the signature band, bioclim chip, livability read, live-fit panel,
- * and best-window pill. Keep them close to the rendered row height so the
- * virtualizer does not reserve a too-short scroll range before rows enter the
- * viewport and get measured.
+ * Card estimates by layout. Discovery cards omit livability / live-fit /
+ * signature score chrome; fit-mode cards are taller. Estimates lean slightly
+ * tall so the virtualizer does not under-reserve scroll range before measure.
  */
 export const PLACE_GRID_ROW_ESTIMATE_PX = {
-  desktop: 1060,
-  mobile: 1140,
+  desktop: 820,
+  mobile: 900,
+  screeningDesktop: 1060,
+  screeningMobile: 1140,
 } as const;
 const OVERSCAN_ROWS = 3;
 const disableScrollAdjustment = () => false;
@@ -47,6 +48,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   compareIds,
   resonantWindow,
   liveFitFilters,
+  rankingProfile,
   homePlace,
   rankingLabel,
   bookmarkIds,
@@ -61,6 +63,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   compareIds: Set<string>;
   resonantWindow: BestWindow["id"] | null;
   liveFitFilters: LiveFitFilters;
+  rankingProfile: RankingProfile;
   /** Home-base anchor; cards render a compact delta strip against it. */
   homePlace?: Place | null;
   rankingLabel: string;
@@ -68,6 +71,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   onBookmarkToggle?: (id: string) => void;
 }) {
   const cols = useGridColumns();
+  const showScreeningScores = shouldShowPlaceCardScreeningScores(rankingProfile, liveFitFilters);
   const rowCount = ranked.length === 0 ? 0 : Math.ceil(ranked.length / cols);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [scrollMargin, setScrollMargin] = useState(0);
@@ -97,7 +101,12 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
 
   const virtualizer = useWindowVirtualizer({
     count: rowCount,
-    estimateSize: () => (cols === 1 ? PLACE_GRID_ROW_ESTIMATE_PX.mobile : PLACE_GRID_ROW_ESTIMATE_PX.desktop),
+    estimateSize: () => {
+      if (showScreeningScores) {
+        return cols === 1 ? PLACE_GRID_ROW_ESTIMATE_PX.screeningMobile : PLACE_GRID_ROW_ESTIMATE_PX.screeningDesktop;
+      }
+      return cols === 1 ? PLACE_GRID_ROW_ESTIMATE_PX.mobile : PLACE_GRID_ROW_ESTIMATE_PX.desktop;
+    },
     overscan: OVERSCAN_ROWS,
     scrollMargin,
     gap: ROW_GAP_PX,
@@ -158,6 +167,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
                   onBookmarkToggle={onBookmarkToggle}
                   resonantWindow={resonantWindow}
                   liveFitFilters={liveFitFilters}
+                  showScreeningScores={showScreeningScores}
+                  rankingProfile={rankingProfile}
                   homePlace={homePlace}
                   rank={start + colIndex + 1}
                   rankingLabel={rankingLabel}

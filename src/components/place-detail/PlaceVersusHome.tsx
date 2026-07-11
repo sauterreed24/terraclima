@@ -8,16 +8,14 @@ import {
 } from "../../lib/home-base";
 import { CLIMATE_NORMALS_PERIOD } from "../../lib/atlas-metadata";
 import { useProse, useUnits } from "../../lib/units";
+import { PD } from "./place-detail-nav";
 import { Section } from "./place-detail-ui";
 
 const SECTION_ICON = <Home className="w-4 h-4" style={{ color: "#5ec4dc" }} aria-hidden />;
 
 /**
- * "Versus your home base" — the relocation-first delta read. Renders only
- * when the reader has pinned a home base in the app shell. All deltas are
- * pure functions of the authored normals (see src/lib/home-base.ts); when
- * the open dossier IS the home base, the section flips into a short
- * baseline explainer with a clear control.
+ * "Versus your home base" — relocation deltas when a home is set, or a
+ * fixed placeholder CTA when the reader has not pinned one yet.
  */
 export function PlaceVersusHome({
   place,
@@ -25,17 +23,46 @@ export function PlaceVersusHome({
   onHomeBaseToggle,
 }: {
   place: Place;
-  home: Place;
+  home: Place | null;
   onHomeBaseToggle?: (id: string) => void;
 }) {
   const { temp, dist } = useUnits();
   const prose = useProse();
-  const comparison = useMemo(() => buildHomeBaseComparison(home, place), [home, place]);
+  const comparison = useMemo(
+    () => (home ? buildHomeBaseComparison(home, place) : null),
+    [home, place],
+  );
+  const setHomeLabel = `Set ${place.name} as your home base for climate deltas`;
   const clearHomeBaseLabel = `Clear ${place.name} as your home base`;
+
+  if (!home || !comparison) {
+    return (
+      <Section anchorId={PD.vsHome} title="Versus your home base" icon={SECTION_ICON}>
+        <div className="tc-accent-panel px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm text-frost leading-snug max-w-xl">
+            Set a home base to see how summers, winters, moisture, sun, snow, comfortable months,
+            and hazard load here compare with the climate you know. Use this place, or open your
+            town&apos;s dossier and press <kbd className="kbd">H</kbd>.
+          </p>
+          {onHomeBaseToggle ? (
+            <button
+              type="button"
+              className="btn-primary !text-xs shrink-0"
+              onClick={() => onHomeBaseToggle(place.id)}
+              aria-label={setHomeLabel}
+              title={setHomeLabel}
+            >
+              Set {place.name} as home
+            </button>
+          ) : null}
+        </div>
+      </Section>
+    );
+  }
 
   if (comparison.isSame) {
     return (
-      <Section anchorId="pd-vs-home" title="Your home base" icon={SECTION_ICON}>
+      <Section anchorId={PD.vsHome} title="Your home base" icon={SECTION_ICON}>
         <div className="tc-accent-panel px-4 py-3 flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm text-frost leading-snug max-w-xl">
             {place.name} is your climate baseline. Every other card, dossier, and Compare column
@@ -59,7 +86,7 @@ export function PlaceVersusHome({
   }
 
   return (
-    <Section anchorId="pd-vs-home" title={`Versus your home base — ${home.name}`} icon={SECTION_ICON}>
+    <Section anchorId={PD.vsHome} title={`Versus your home base — ${home.name}`} icon={SECTION_ICON}>
       <div className="panel-thin p-4">
         <p className="text-sm text-frost leading-snug">{prose(comparison.headline)}</p>
         <div className="divider-contour my-3" />

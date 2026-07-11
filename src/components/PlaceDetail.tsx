@@ -21,6 +21,8 @@ import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtDelta, useProse } from "../li
 import { getBestMonths } from "../lib/best-months";
 import { CopyPlaceLink } from "./place-detail/CopyPlaceLink";
 import { PlaceClimateTwins } from "./place-detail/PlaceClimateTwins";
+import { PlaceClimateTwinsTeaser } from "./place-detail/PlaceClimateTwinsTeaser";
+import { PlaceDiscoveryJourneyBridge } from "./place-detail/PlaceDiscoveryJourneyBridge";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
@@ -187,9 +189,13 @@ interface Props {
   occluded?: boolean;
   scenario?: ScenarioId;
   animateEntry?: boolean;
+  /** When "surprise", scroll once to the mechanism section after open. */
+  entryIntent?: "surprise" | null;
+  /** Clears entryIntent after the surprise scroll nudge runs. */
+  onEntryIntentConsumed?: () => void;
 }
 
-export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, residencyFitContext, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, occluded = false, scenario = "now", animateEntry = true }: Props) {
+export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, residencyFitContext, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, occluded = false, scenario = "now", animateEntry = true, entryIntent = null, onEntryIntentConsumed }: Props) {
   const reduceMotion = useReducedMotion();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
@@ -273,6 +279,20 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
       window.clearTimeout(settledFocusRetryId);
     };
   }, [placeId, occluded]);
+
+  useEffect(() => {
+    if (!placeId || occluded || entryIntent !== "surprise") return;
+    if (typeof window !== "undefined" && window.location.hash.startsWith("#deep-")) {
+      onEntryIntentConsumed?.();
+      return;
+    }
+    const behavior = reduceMotion ? "auto" : "smooth";
+    const t = window.setTimeout(() => {
+      scrollDetailRootToSection(PD.whyHere, { behavior });
+      onEntryIntentConsumed?.();
+    }, 180);
+    return () => window.clearTimeout(t);
+  }, [placeId, occluded, entryIntent, reduceMotion, onEntryIntentConsumed]);
 
   return (
     <AnimatePresence>
@@ -775,6 +795,99 @@ function DetailBody({
       ) : null}
       <PlaceOverviewSpotlight place={place} anchorId={PD.overview} seasonsAnchorId={PD.seasons} />
 
+      <Section anchorId={PD.whyHere} icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="Why this climate is different here">
+        <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.whyDistinct)}</p>
+
+        <div className="flex flex-wrap gap-1.5 mt-3">
+          {place.drivers.map(d => {
+            const hasConcept = DRIVER_CONCEPT_MAP[d] != null;
+            const active = activeDriver === d;
+            return (
+              <button
+                key={d}
+                className="chip chip-btn tc-driver-chip"
+                data-tone="ochre"
+                data-active={active}
+                onClick={(event) => {
+                  activeDriverTriggerRef.current = event.currentTarget;
+                  setActiveDriver(active ? null : d);
+                }}
+                onKeyDown={active ? onDriverGlossaryKeyDown : undefined}
+                aria-label={hasConcept ? `Explain ${DRIVER_LABELS[d]}` : DRIVER_LABELS[d]}
+                title={hasConcept ? `Explain ${DRIVER_LABELS[d]}` : DRIVER_LABELS[d]}
+                {...(hasConcept
+                  ? {
+                      "aria-expanded": active,
+                      "aria-controls": active ? driverPanelId : undefined,
+                    }
+                  : {})}
+              >
+                {DRIVER_LABELS[d]}
+                {hasConcept && <HelpCircle className="w-3 h-3 opacity-70" />}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Under reduced-motion the height/opacity tween is wasted work and a
+           subtle source of layout shift — render the panel statically and skip
+           AnimatePresence entirely so users get an instant expand/collapse. */}
+        {reduceMotion ? (
+          activeConcept ? (
+            <div id={driverPanelId} className="mt-3 panel-warm p-4 overflow-hidden">
+              <div className="flex items-start justify-between gap-2 mb-1">
+                <div className="font-atlas text-base text-ice">{activeConcept.term}</div>
+                <button type="button" onClick={closeDriverGlossary} onKeyDown={onDriverGlossaryKeyDown} className="tc-driver-glossary-close text-stone hover:text-ice" aria-label={driverGlossaryCloseLabel} title={driverGlossaryCloseLabel}><X className="w-3.5 h-3.5" /></button>
+              </div>
+              <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
+              <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
+              {activeConcept.mechanism && (
+                <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Under the hood ·</span> {prose(activeConcept.mechanism)}</div>
+              )}
+            </div>
+          ) : null
+        ) : (
+          <AnimatePresence>
+            {activeConcept && (
+              <motion.div
+                id={driverPanelId}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-3 panel-warm p-4 overflow-hidden"
+              >
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <div className="font-atlas text-base text-ice">{activeConcept.term}</div>
+                  <button type="button" onClick={closeDriverGlossary} onKeyDown={onDriverGlossaryKeyDown} className="tc-driver-glossary-close text-stone hover:text-ice" aria-label={driverGlossaryCloseLabel} title={driverGlossaryCloseLabel}><X className="w-3.5 h-3.5" /></button>
+                </div>
+                <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
+                <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
+                {activeConcept.mechanism && (
+                  <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Under the hood ·</span> {prose(activeConcept.mechanism)}</div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
+
+        <div className="text-sm text-stone mt-3 italic">Relief context: {prose(place.reliefContext)}</div>
+      </Section>
+
+      <PlaceDiscoveryJourneyBridge
+        place={place}
+        homePlace={homePlace}
+        onHomeBaseToggle={onHomeBaseToggle}
+        reduceMotion={Boolean(reduceMotion)}
+      />
+
+      <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} />
+
+      <PlaceClimateTwinsTeaser
+        place={place}
+        onOpenPlace={onOpenPlace}
+        reduceMotion={Boolean(reduceMotion)}
+      />
+
       <PlaceResidencyBrief
         place={place}
         anchorId={PD.residency}
@@ -789,10 +902,6 @@ function DetailBody({
         onCompareToggle={onCompareToggle}
         onBookmarkToggle={onBookmarkToggle}
       />
-
-      {homePlace ? (
-        <PlaceVersusHome place={place} home={homePlace} onHomeBaseToggle={onHomeBaseToggle} />
-      ) : null}
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
 
@@ -969,87 +1078,9 @@ function DetailBody({
       <ZoneDivider
         eyebrow="The data lab"
         title="Climate, terrain & measurements"
-        blurb="Everything above is the lived read. From here down the dossier turns analytical — the mechanisms, monthly numbers, atlas-wide context, and remote-sensing checks behind the feel."
+        blurb="The mechanism is above. From here down the dossier turns analytical — monthly numbers, atlas-wide context, and remote-sensing checks behind the feel."
         icon={<TrendingUp className="w-3.5 h-3.5" aria-hidden />}
       />
-
-      <Section anchorId={PD.whyHere} icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="Why this climate is different here">
-        <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.whyDistinct)}</p>
-
-        <div className="flex flex-wrap gap-1.5 mt-3">
-          {place.drivers.map(d => {
-            const hasConcept = DRIVER_CONCEPT_MAP[d] != null;
-            const active = activeDriver === d;
-            return (
-              <button
-                key={d}
-                className="chip chip-btn tc-driver-chip"
-                data-tone="ochre"
-                data-active={active}
-                onClick={(event) => {
-                  activeDriverTriggerRef.current = event.currentTarget;
-                  setActiveDriver(active ? null : d);
-                }}
-                onKeyDown={active ? onDriverGlossaryKeyDown : undefined}
-                aria-label={hasConcept ? `Explain ${DRIVER_LABELS[d]}` : DRIVER_LABELS[d]}
-                title={hasConcept ? `Explain ${DRIVER_LABELS[d]}` : DRIVER_LABELS[d]}
-                {...(hasConcept
-                  ? {
-                      "aria-expanded": active,
-                      "aria-controls": active ? driverPanelId : undefined,
-                    }
-                  : {})}
-              >
-                {DRIVER_LABELS[d]}
-                {hasConcept && <HelpCircle className="w-3 h-3 opacity-70" />}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Under reduced-motion the height/opacity tween is wasted work and a
-           subtle source of layout shift — render the panel statically and skip
-           AnimatePresence entirely so users get an instant expand/collapse. */}
-        {reduceMotion ? (
-          activeConcept ? (
-            <div id={driverPanelId} className="mt-3 panel-warm p-4 overflow-hidden">
-              <div className="flex items-start justify-between gap-2 mb-1">
-                <div className="font-atlas text-base text-ice">{activeConcept.term}</div>
-                <button type="button" onClick={closeDriverGlossary} onKeyDown={onDriverGlossaryKeyDown} className="tc-driver-glossary-close text-stone hover:text-ice" aria-label={driverGlossaryCloseLabel} title={driverGlossaryCloseLabel}><X className="w-3.5 h-3.5" /></button>
-              </div>
-              <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
-              <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
-              {activeConcept.mechanism && (
-                <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Under the hood ·</span> {prose(activeConcept.mechanism)}</div>
-              )}
-            </div>
-          ) : null
-        ) : (
-          <AnimatePresence>
-            {activeConcept && (
-              <motion.div
-                id={driverPanelId}
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="mt-3 panel-warm p-4 overflow-hidden"
-              >
-                <div className="flex items-start justify-between gap-2 mb-1">
-                  <div className="font-atlas text-base text-ice">{activeConcept.term}</div>
-                  <button type="button" onClick={closeDriverGlossary} onKeyDown={onDriverGlossaryKeyDown} className="tc-driver-glossary-close text-stone hover:text-ice" aria-label={driverGlossaryCloseLabel} title={driverGlossaryCloseLabel}><X className="w-3.5 h-3.5" /></button>
-                </div>
-                <div className="text-sm text-frost">{prose(activeConcept.short)}</div>
-                <div className="text-sm text-ice leading-relaxed mt-2">{prose(activeConcept.long)}</div>
-                {activeConcept.mechanism && (
-                  <div className="text-xs text-stone italic mt-2"><span className="uppercase tracking-wider not-italic">Under the hood ·</span> {prose(activeConcept.mechanism)}</div>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        )}
-
-        <div className="text-sm text-stone mt-3 italic">Relief context: {prose(place.reliefContext)}</div>
-      </Section>
 
       <Section anchorId={PD.rhythm} icon={<Wind className="w-4 h-4" style={{ color: "#8cc8e0" }} />} title="Seasonal rhythm">
         <div className="space-y-4">
@@ -1146,6 +1177,11 @@ function DetailBody({
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
           Screening blends atlas terrain, climate seasonality, risks, and corpus ranks. Sentinel-2 and Landsat appear below as <span className="text-frost font-medium">reference</span> sensor families for the spectral checks a field analyst would queue — not live scenes from this app. Relief texture is a separate atlas proxy for where fine-scale topography would usually matter.
         </p>
+        <details className="place-geospatial-details">
+          <summary className="place-geospatial-details__summary cursor-pointer text-sm text-frost font-medium py-2 px-3 rounded-lg border border-[rgba(200,160,120,0.28)] bg-[rgba(255,248,240,0.35)] list-none [&::-webkit-details-marker]:hidden">
+            Show geospatial screening detail
+          </summary>
+          <div className="mt-3 space-y-3">
         <div className="grid md:grid-cols-[1.05fr_0.95fr] gap-3">
           <div className="panel-thin p-4 space-y-2">
             <KeyValue label="Geospatial signal score" value={`${geospatial.geospatialSignalScore}/100`} />
@@ -1224,6 +1260,8 @@ function DetailBody({
           <p className="text-[11px] text-stone italic mt-2">{GEOSPATIAL_ANALYSIS_METHOD}</p>
           <p className="text-[11px] text-stone italic mt-1">{geospatial.limitNote}</p>
         </div>
+          </div>
+        </details>
       </Section>
 
       <Section anchorId={PD.signature} title="Climate signature (radar chart)" icon={<Sparkles className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
@@ -1429,7 +1467,7 @@ function DetailBody({
         </Section>
       )}
 
-      <Section anchorId={PD.similar} title="Climate twins" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+      <Section anchorId={PD.similar} title="Climate twins detail" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
         <PlaceClimateTwins place={place} onOpenPlace={onOpenPlace} />
       </Section>
 

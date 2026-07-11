@@ -48,6 +48,7 @@ describe("PlaceCard overlay warmup", () => {
           rank={1}
           rankingLabel="Coolest summers"
           rankingScore={92}
+          rankingProfile="coolest-summers"
           onOpenPlace={() => undefined}
         />
       </UnitProvider>,
@@ -56,7 +57,10 @@ describe("PlaceCard overlay warmup", () => {
     const evidence = screen.getByLabelText("Why this place ranked here");
     expect(evidence).toHaveTextContent("Why this rank");
     expect(evidence).toHaveTextContent(note);
-    expect(evidence).toHaveTextContent("First check");
+    expect(evidence).not.toHaveTextContent("First check");
+    expect(screen.queryByText("Livability")).not.toBeInTheDocument();
+    expect(screen.queryByText("Live-here fit")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(`${place.name} visual signature`)).not.toBeInTheDocument();
 
     const openTarget = container.querySelector<HTMLButtonElement>(".place-card__open-target");
     expect(openTarget).not.toBeNull();
@@ -64,6 +68,25 @@ describe("PlaceCard overlay warmup", () => {
     expect(openTarget).toHaveAttribute("title", openTarget!.getAttribute("aria-label"));
     expect(openTarget!.getAttribute("aria-describedby")).toContain(evidence.id);
     expect(container.querySelectorAll(".place-card__ranking-evidence")).toHaveLength(1);
+  });
+
+  it("surfaces screening scores for fit-oriented rankings", () => {
+    const place = PLACES[0]!;
+    render(
+      <UnitProvider>
+        <PlaceCard
+          place={place}
+          note="Fit note"
+          rankingProfile="live-fit"
+          onOpenPlace={() => undefined}
+        />
+      </UnitProvider>,
+    );
+
+    expect(screen.getByText("Livability")).toBeInTheDocument();
+    expect(screen.getByText("Live-here fit")).toBeInTheDocument();
+    expect(screen.getByLabelText(`${place.name} visual signature`)).toBeInTheDocument();
+    expect(screen.getByLabelText("Why this place ranked here")).toHaveTextContent("First check");
   });
 
   it("preloads the place detail chunk on hover, focus, and tap intent", () => {

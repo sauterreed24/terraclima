@@ -23,7 +23,7 @@ describe("PlaceClimateTwins", () => {
     expect(note).toHaveTextContent("the main climate tradeoff");
     expect(note).toHaveTextContent("Keeps");
     expect(note).toHaveTextContent("Watch:");
-    expect(note).toHaveTextContent("adding finalists to Compare");
+    expect(note).toHaveTextContent("Open Port Townsend's dossier to pressure-test that tradeoff");
   });
 
   it("keeps the lead twin card clickable after adding the relocation read", () => {

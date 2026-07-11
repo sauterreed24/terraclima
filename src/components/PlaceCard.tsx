@@ -12,6 +12,8 @@ import { ArrowRight, Droplets, Home, Leaf, Sun } from "lucide-react";
 import { BookmarkButton } from "./BookmarkButton";
 import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
 import { getPlaceVisualSignature } from "../lib/place-visual-signature";
+import type { RankingProfile } from "../lib/scoring";
+import { shouldShowPlaceCardScreeningScores } from "../lib/place-card-screening";
 
 // ── Climate gradient bar helpers ─────────────────────────────────────────────
 
@@ -58,6 +60,13 @@ interface Props {
    */
   resonantWindow?: BestWindow["id"] | null;
   liveFitFilters?: LiveFitFilters;
+  /**
+   * When true, show livability / live-fit / Feel–Leads–Verify screening chrome.
+   * Defaults from ranking + Live Finder filters when omitted.
+   */
+  showScreeningScores?: boolean;
+  /** Active Explorer ranking — used with liveFitFilters when showScreeningScores is omitted. */
+  rankingProfile?: RankingProfile;
   /** The reader's home-base anchor. Non-compact cards show a compact delta strip against it. */
   homePlace?: Place | null;
   rank?: number;
@@ -98,7 +107,7 @@ const TONE_RGB: Record<string, string> = {
  * the interactive render budget dramatically on low-spec hardware.
  */
 export const PlaceCard = memo(function PlaceCard({
-  place, selected, note, onOpenPlace, onClick, onCompareToggle, onPreloadPlaceDetail, onPreloadCompare, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, homePlace, rank, rankingLabel, rankingScore, referenceMonth = getReferenceMonth(),
+  place, selected, note, onOpenPlace, onClick, onCompareToggle, onPreloadPlaceDetail, onPreloadCompare, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, showScreeningScores, rankingProfile, homePlace, rank, rankingLabel, rankingScore, referenceMonth = getReferenceMonth(),
 }: Props) {
   const titleId = useId();
   const rankId = useId();
@@ -112,6 +121,10 @@ export const PlaceCard = memo(function PlaceCard({
   const tone = primaryArchetype?.tone ?? "ice";
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
   const openTargetLabel = `Open ${place.name} place profile`;
+  const screeningScores = showScreeningScores
+    ?? (rankingProfile
+      ? shouldShowPlaceCardScreeningScores(rankingProfile, liveFitFilters)
+      : shouldShowPlaceCardScreeningScores("most-unique", liveFitFilters));
 
   // Compute the single "best window" teaser for the card. Memoized because
   // PlaceCard is already wrapped in React.memo and `place` is stable — so
@@ -124,16 +137,25 @@ export const PlaceCard = memo(function PlaceCard({
   const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);
   const bioclimSignal = useMemo(() => (compact ? null : getBioclimCardSignal(place)), [place, compact]);
   const liveFit = useMemo(
-    () => (compact ? null : assessLiveFit(place, liveFitFilters)),
-    [place, compact, liveFitFilters],
+    () => (compact || !screeningScores ? null : assessLiveFit(place, liveFitFilters)),
+    [place, compact, screeningScores, liveFitFilters],
   );
-  const livabilityResult = useMemo(() => (compact ? null : scoreLivability(place)), [place, compact]);
+  const livabilityResult = useMemo(
+    () => (compact || !screeningScores ? null : scoreLivability(place)),
+    [place, compact, screeningScores],
+  );
   const homeComparison = useMemo(
     () => (compact || !homePlace ? null : buildHomeBaseComparison(homePlace, place)),
     [place, compact, homePlace],
   );
-  const comfortRead = useMemo(() => (compact ? null : describeHumanComfort(place)), [place, compact]);
-  const visualSignature = useMemo(() => (compact ? null : getPlaceVisualSignature(place)), [place, compact]);
+  const comfortRead = useMemo(
+    () => (compact || !screeningScores ? null : describeHumanComfort(place)),
+    [place, compact, screeningScores],
+  );
+  const visualSignature = useMemo(
+    () => (compact || !screeningScores ? null : getPlaceVisualSignature(place)),
+    [place, compact, screeningScores],
+  );
 
   // Derived at-a-glance extras surfaced on non-compact cards
   const annualSunshinePct = useMemo(() => {

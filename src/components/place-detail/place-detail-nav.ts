@@ -4,6 +4,9 @@
  */
 export const PD = {
   overview: "pd-overview",
+  whyHere: "pd-why-here",
+  vsHome: "pd-vs-home",
+  similarTeaser: "pd-similar-teaser",
   residency: "pd-residency-brief",
   seasons: "pd-seasons",
   atAGlance: "pd-at-a-glance",
@@ -17,7 +20,6 @@ export const PD = {
   tourism: "pd-climate-tourism",
   fieldStory: "pd-field-story",
   deepDives: "pd-deep-dives",
-  whyHere: "pd-why-here",
   rhythm: "pd-seasonal-rhythm",
   bestMonths: "pd-best-months",
   numbersTogether: "pd-numbers-together",
@@ -62,6 +64,9 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   const activities = buildPracticalActivities(place);
   const items: PlaceNavItem[] = [
     { id: PD.overview, label: "Overview", group: PD_NAV_GROUP.lived },
+    { id: PD.whyHere, label: "Why it differs", group: PD_NAV_GROUP.lived },
+    { id: PD.vsHome, label: "Versus home", group: PD_NAV_GROUP.lived },
+    { id: PD.similarTeaser, label: "Climate twins", group: PD_NAV_GROUP.lived },
     { id: PD.residency, label: "Residency brief", group: PD_NAV_GROUP.lived },
     { id: PD.seasons, label: "Season by season", group: PD_NAV_GROUP.lived },
     { id: PD.atAGlance, label: "At a glance", group: PD_NAV_GROUP.lived },
@@ -87,7 +92,6 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   }
 
   items.push(
-    { id: PD.whyHere, label: "Why it differs", group: PD_NAV_GROUP.data },
     { id: PD.rhythm, label: "Seasonal rhythm", group: PD_NAV_GROUP.data },
   );
 
@@ -120,7 +124,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
     items.push({ id: PD.activities, label: "Things to do", group: PD_NAV_GROUP.fit });
   }
 
-  items.push({ id: PD.similar, label: "Climate twins", group: PD_NAV_GROUP.fit });
+  items.push({ id: PD.similar, label: "Twins detail", group: PD_NAV_GROUP.fit });
   items.push({ id: PD.verdict, label: "Scores & sources", group: PD_NAV_GROUP.fit });
 
   return items;

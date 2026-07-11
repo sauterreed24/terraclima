@@ -49,13 +49,13 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
         </div>
         <div className="divider-contour mb-3" />
         <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
-          <Kbds keys={["E"]} />        <span className="text-frost">Explorer</span>
+          <Kbds keys={["E"]} />        <span className="text-frost">Atlas</span>
           <Kbds keys={["T"]} />        <span className="text-frost">Trips</span>
           <Kbds keys={["C"]} />        <span className="text-frost">Collections</span>
           <Kbds keys={["L"]} />        <span className="text-frost">Learn</span>
-          <Kbds keys={["/"]} />        <span className="text-frost">Explorer: focus search (on narrow screens also opens the filter sheet)</span>
-          <Kbds keys={[CMD_KEY_LABEL, "K"]} /> <span className="text-frost">Explorer: focus search (also works from inside any text input)</span>
-          <Kbds keys={["F"]} />        <span className="text-frost">Explorer: open filter sheet (narrow screens only)</span>
+          <Kbds keys={["/"]} />        <span className="text-frost">Atlas: focus search (on narrow screens also opens the filter sheet)</span>
+          <Kbds keys={[CMD_KEY_LABEL, "K"]} /> <span className="text-frost">Atlas: focus search (also works from inside any text input)</span>
+          <Kbds keys={["F"]} />        <span className="text-frost">Atlas: open filter sheet (narrow screens only)</span>
           <Kbds keys={["R"]} />        <span className="text-frost">Surprise - random place in your current list</span>
           <Kbds keys={["B"]} />        <span className="text-frost">Pin / unpin the currently open place to your shortlist</span>
           <Kbds keys={["H"]} />        <span className="text-frost">Set / clear the open place as your home base — cards and dossiers then show climate deltas against it</span>
@@ -74,7 +74,7 @@ export const ShortcutsOverlay = memo(function ShortcutsOverlay({ onClose }: { on
             Share a place: open it, then use <strong className="text-frost font-normal">Copy link</strong> in the panel header. The URL encodes the place and view. Surprise uses the same filtered pool as the cards.
           </p>
           <p>
-            Climate layer: use the <strong className="text-frost font-normal">Climate layer</strong> control below the map to flip the Explorer (and Compare) between present-day normals and illustrative 2050 SSP2-4.5 / SSP5-8.5 projections. Place dossiers stay on present-day data.
+            Climate layer: use the <strong className="text-frost font-normal">Climate layer</strong> control below the map to flip the Atlas (and Compare) between present-day normals and illustrative 2050 SSP2-4.5 / SSP5-8.5 projections. Place dossiers stay on present-day data.
           </p>
         </div>
       </div>
