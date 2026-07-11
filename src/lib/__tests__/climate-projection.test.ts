@@ -4,6 +4,7 @@ import {
   estimateFrostFreeDays,
   latBand,
   projectClimateProfile,
+  placeForCompareSlot,
   projectPlace,
   projectPool,
   regionalDelta,
@@ -96,5 +97,14 @@ describe("climate projection — scenario engine", () => {
     expect(regionalDelta(makePlace({ lat: 70 }), "ssp585").deltaJANLowC).toBeGreaterThan(
       regionalDelta(makePlace({ lat: 40 }), "ssp585").deltaJANLowC,
     );
+  });
+
+  it("projects compare slots outside the active Explorer pool when scn≠now", () => {
+    const p = makePlace({ id: "compare-outside-pool", lat: 45 });
+    const outsidePool: Record<string, typeof p> = {};
+    const resolved = placeForCompareSlot(p.id, outsidePool, "ssp585", p)!;
+    expect(meanSummerHigh(resolved)).toBe(meanSummerHigh(projectPlace(p, "ssp585")));
+    expect(meanSummerHigh(resolved)).toBeGreaterThan(meanSummerHigh(p));
+    expect(placeForCompareSlot(p.id, outsidePool, "now", p)).toBe(p);
   });
 });
