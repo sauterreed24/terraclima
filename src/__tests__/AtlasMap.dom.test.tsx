@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 import { cleanup, fireEvent, render, screen, waitFor, within, act } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { useState } from "react";
 import { AtlasMap, wheelZoomFactor } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
 import { makePlace } from "../lib/__tests__/test-fixtures";
@@ -1002,6 +1003,22 @@ describe("AtlasMap DOM controls", () => {
     expect(transform()).toBe(before);
   });
 
+  it("hands wheel events to the page at minimum zoom instead of trapping scroll", () => {
+    setCoarsePointer(false);
+    const { container } = renderMap();
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+
+    for (let i = 0; i < 40; i += 1) {
+      const zoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+      if (!zoomOut || zoomOut.disabled) break;
+      fireEvent.click(zoomOut);
+    }
+
+    const event = new WheelEvent("wheel", { deltaY: 120, bubbles: true, cancelable: true });
+    const prevented = !svg.dispatchEvent(event);
+    expect(prevented).toBe(false);
+  });
+
   it("keeps mid-range wheel zoom owned by the map", () => {
     setCoarsePointer(false);
     const { container } = renderMap();
@@ -1109,5 +1126,44 @@ describe("AtlasMap DOM controls", () => {
     );
     await waitFor(() => expect(transformOf()).not.toBe(before));
     expect(transformOf()).toMatch(/scale\(/);
+  });
+
+  it("preserves context when selecting an already-visible pin from the map", async () => {
+    setCoarsePointer(false);
+    function Harness() {
+      const [selectedId, setSelectedId] = useState<string | undefined>(undefined);
+      return (
+        <UnitProvider>
+          <AtlasMap
+            places={defaultMapPlaces()}
+            selectedId={selectedId}
+            onSelect={(id) => setSelectedId(id)}
+          />
+        </UnitProvider>
+      );
+    }
+    const { container } = render(<Harness />);
+    const transformOf = () => container.querySelector("svg.atlas-svg > g")?.getAttribute("transform") ?? "";
+    await waitFor(() => expect(transformOf()).toMatch(/scale\(/));
+
+    for (let i = 0; i < 5; i += 1) {
+      const zoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+      if (!zoomOut || zoomOut.disabled) break;
+      fireEvent.click(zoomOut);
+    }
+    const before = transformOf();
+    const scaleBefore = Number((before.match(/scale\(([^)]+)\)/) ?? [])[1] ?? "0");
+
+    const marker = container.querySelector('[data-marker-id="a"]') as SVGGElement;
+    fireEvent.click(marker);
+
+    await waitFor(() => {
+      expect(container.querySelector('[data-marker-id="a"]')).toBeTruthy();
+    });
+    const after = transformOf();
+    const scaleAfter = Number((after.match(/scale\(([^)]+)\)/) ?? [])[1] ?? "0");
+    // Map-initiated selection should not jump to the single-point ~2.85× center fit.
+    expect(scaleAfter).toBeLessThan(2.5);
+    expect(Math.abs(scaleAfter - scaleBefore)).toBeLessThan(0.35);
   });
 });

@@ -189,6 +189,21 @@ describe("viewForViewportResize", () => {
     const view = { k: 1.5, x: 10, y: 20 };
     expect(viewForViewportResize(view, 800, 600, 800, 600)).toEqual(view);
   });
+
+  it("preserves the chrome-aware safe-frame center when safe areas change", () => {
+    const prevSafe = { top: 0, right: 0, bottom: 0, left: 0 };
+    const nextSafe = { top: 100, right: 0, bottom: 0, left: 0 };
+    const view = { k: 1, x: 0, y: 0 };
+    // Prev safe-frame center is (400, 300). Map point under it is (400, 300).
+    // Next safe-frame (0,100)-(800,600) center is (400, 350).
+    const next = viewForViewportResize(view, 800, 600, 800, 600, {
+      prevSafeArea: prevSafe,
+      nextSafeArea: nextSafe,
+    });
+    expect(next.k).toBe(1);
+    expect(next.x).toBeCloseTo(0, 6);
+    expect(next.y).toBeCloseTo(50, 6);
+  });
 });
 
 describe("contentBBoxFromPoints", () => {

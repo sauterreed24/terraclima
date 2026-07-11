@@ -177,14 +177,25 @@ export function fitMapViewToCluster<T extends AtlasClusterPoint>(
   cluster: AtlasClusterItem<T>,
   width: number,
   height: number,
-  opts: { minK: number; maxK: number; pad?: number; inset?: number },
+  opts: {
+    minK: number;
+    maxK: number;
+    pad?: number;
+    inset?: number;
+    safeArea?: import("./atlas-map-fit").MapSafeArea;
+  },
 ): MapViewState {
   return fitMapViewToPoints(
     cluster.points.map(p => ({ x: p.x, y: p.y })),
     width,
     height,
     opts.pad ?? 72,
-    { minK: opts.minK, maxK: opts.maxK, inset: opts.inset ?? 0.08 },
+    {
+      minK: opts.minK,
+      maxK: opts.maxK,
+      inset: opts.inset ?? 0.08,
+      safeArea: opts.safeArea,
+    },
   );
 }
 

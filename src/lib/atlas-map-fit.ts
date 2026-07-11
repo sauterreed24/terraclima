@@ -266,6 +266,9 @@ export function ensurePointVisible(
 /**
  * Preserve map-space center and zoom across a viewport size change, then
  * recompute translation so the same geographic center stays in the new frame.
+ *
+ * When safe areas are provided, the preserved center is the chrome-aware
+ * safe-frame center (not the raw container midpoint).
  */
 export function viewForViewportResize(
   view: MapViewState,
@@ -273,16 +276,36 @@ export function viewForViewportResize(
   prevVh: number,
   nextVw: number,
   nextVh: number,
+  opts: {
+    prevSafeArea?: MapSafeArea;
+    nextSafeArea?: MapSafeArea;
+    pad?: number;
+  } = {},
 ): MapViewState {
   if (prevVw < 1 || prevVh < 1 || nextVw < 1 || nextVh < 1) return view;
-  if (prevVw === nextVw && prevVh === nextVh) return view;
+  if (
+    prevVw === nextVw
+    && prevVh === nextVh
+    && !opts.prevSafeArea
+    && !opts.nextSafeArea
+  ) {
+    return view;
+  }
 
-  const mapCx = (prevVw / 2 - view.x) / view.k;
-  const mapCy = (prevVh / 2 - view.y) / view.k;
+  const pad = opts.pad ?? 0;
+  const prevFrame = safeFrameRect(prevVw, prevVh, opts.prevSafeArea, pad);
+  const nextFrame = safeFrameRect(nextVw, nextVh, opts.nextSafeArea, pad);
+  const prevCx = prevFrame.x0 + prevFrame.width / 2;
+  const prevCy = prevFrame.y0 + prevFrame.height / 2;
+  const nextCx = nextFrame.x0 + nextFrame.width / 2;
+  const nextCy = nextFrame.y0 + nextFrame.height / 2;
+
+  const mapCx = (prevCx - view.x) / view.k;
+  const mapCy = (prevCy - view.y) / view.k;
   return {
     k: view.k,
-    x: nextVw / 2 - view.k * mapCx,
-    y: nextVh / 2 - view.k * mapCy,
+    x: nextCx - view.k * mapCx,
+    y: nextCy - view.k * mapCy,
   };
 }
 

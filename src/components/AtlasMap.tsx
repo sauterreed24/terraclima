@@ -15,6 +15,7 @@ import {
   contentBBoxFromPoints,
   ensurePointVisible,
   fitMapViewToPoints,
+  isPointInSafeFrame,
   mapPointToScreen,
   viewForViewportResize,
   type MapSafeArea,
@@ -739,15 +740,33 @@ export const AtlasMap = memo(function AtlasMap({
     ));
   }, [pts, pointsSignature, width, height, mapMeasured, clampView, fitOpts]);
 
-  const prevViewportRef = useRef<{ width: number; height: number } | null>(null);
+  const prevViewportRef = useRef<{ width: number; height: number; safeArea: MapSafeArea } | null>(null);
   useLayoutEffect(() => {
     if (!mapMeasured) return;
     const prev = prevViewportRef.current;
-    prevViewportRef.current = { width, height };
-    if (!prev || (prev.width === width && prev.height === height)) return;
-    // Preserve geographic center across resize/orientation; do not re-fit-all.
-    setView(v => clampView(viewForViewportResize(v, prev.width, prev.height, width, height)));
-  }, [width, height, mapMeasured, clampView]);
+    prevViewportRef.current = { width, height, safeArea };
+    if (!prev) return;
+    if (
+      prev.width === width
+      && prev.height === height
+      && prev.safeArea.top === safeArea.top
+      && prev.safeArea.right === safeArea.right
+      && prev.safeArea.bottom === safeArea.bottom
+      && prev.safeArea.left === safeArea.left
+    ) {
+      return;
+    }
+    // Preserve geographic center across resize/orientation using chrome-aware
+    // frame centers, then clamp so content cannot vanish.
+    setView(v => clampView(viewForViewportResize(
+      v,
+      prev.width,
+      prev.height,
+      width,
+      height,
+      { prevSafeArea: prev.safeArea, nextSafeArea: safeArea },
+    )));
+  }, [width, height, mapMeasured, clampView, safeArea]);
 
   const lastPanSelectionRef = useRef<string | null>(null);
   useLayoutEffect(() => {
@@ -759,13 +778,26 @@ export const AtlasMap = memo(function AtlasMap({
     const fromMap = selectionFromMapRef.current;
     selectionFromMapRef.current = false;
     if (fromMap) {
-      setView(v => clampView(ensurePointVisible(
-        { x: pt.x, y: pt.y },
-        v,
-        width,
-        height,
-        { safeArea, margin: 28 },
-      )));
+      setView(v => {
+        const ensured = ensurePointVisible(
+          { x: pt.x, y: pt.y },
+          v,
+          width,
+          height,
+          { safeArea, margin: 28 },
+        );
+        const clamped = clampView(ensured);
+        if (isPointInSafeFrame({ x: pt.x, y: pt.y }, clamped, width, height, safeArea, 0, 28)) {
+          return clamped;
+        }
+        return ensurePointVisible(
+          { x: pt.x, y: pt.y },
+          clamped,
+          width,
+          height,
+          { safeArea, margin: 28 },
+        );
+      });
       return;
     }
     setView(clampView(
@@ -1150,6 +1182,10 @@ export const AtlasMap = memo(function AtlasMap({
 
   const selectFromMap = useCallback((id: string) => {
     selectionFromMapRef.current = true;
+    // Re-tapping an already-selected pin should still nudge it into the safe frame.
+    if (lastPanSelectionRef.current === id) {
+      lastPanSelectionRef.current = null;
+    }
     onSelect(id);
   }, [onSelect]);
 
@@ -1599,6 +1635,7 @@ export const AtlasMap = memo(function AtlasMap({
       maxK: MAX_ZOOM,
       pad: coarsePointer ? 92 : 72,
       inset: 0.08,
+      safeArea,
     });
 
     setClusterPicker(null);
@@ -1608,7 +1645,7 @@ export const AtlasMap = memo(function AtlasMap({
     // <body> and lose arrow-key map navigation. Returning focus to the map SVG
     // keeps the roving-tabindex context alive (preventScroll avoids a jump).
     svgRef.current?.focus({ preventScroll: true });
-  }, [width, height, coarsePointer, clusterRadiusPx, openClusterPicker, commitView]);
+  }, [width, height, coarsePointer, clusterRadiusPx, openClusterPicker, commitView, safeArea]);
 
   const topoLoading = topo === null && !topoError;
   const svgTouchAction = atlasTouchActionForMode(mapInteractive);
