@@ -46,9 +46,11 @@ async function main() {
   const consoleErrors = [];
 
   for (const vp of VIEWPORTS) {
+    const isNarrow = vp.width <= 430;
     const context = await browser.newContext({
       viewport: { width: vp.width, height: vp.height },
-      // Block public network: only allow local preview + data/blob.
+      hasTouch: isNarrow,
+      isMobile: isNarrow,
       reducedMotion: "reduce",
     });
     await context.route("**/*", (route) => {
@@ -61,17 +63,26 @@ async function main() {
       ) {
         return route.continue();
       }
+      // Intentionally offline: drop public network without treating aborts as failures.
       return route.abort();
     });
 
     const page = await context.newPage();
     page.on("pageerror", (err) => {
-      consoleErrors.push({ viewport: vp.name, message: String(err) });
+      const message = String(err);
+      if (message.includes("net::ERR_FAILED") || message.includes("Failed to load resource")) return;
+      consoleErrors.push({ viewport: vp.name, message });
     });
     page.on("console", (msg) => {
-      if (msg.type() === "error") {
-        consoleErrors.push({ viewport: vp.name, message: msg.text() });
-      }
+      if (msg.type() !== "error") return;
+      const text = msg.text();
+      // Route-abort noise from the offline network policy.
+      if (/net::ERR_FAILED|Failed to load resource|ERR_ABORTED/i.test(text)) return;
+      consoleErrors.push({ viewport: vp.name, message: text });
+    });
+    page.on("requestfailed", (req) => {
+      // Expected when the offline route policy aborts non-local URLs.
+      void req;
     });
 
     const url = `${BASE}/?r=most-comfortable`;
@@ -79,6 +90,14 @@ async function main() {
       await page.goto(url, { waitUntil: "domcontentloaded", timeout: 30000 });
       await page.waitForSelector(".map-shell", { timeout: 20000 });
       await page.waitForTimeout(400);
+
+      // Touch-sized viewports should expose Scroll page escape before other flows.
+      if (isNarrow) {
+        const hasEscape = await page.locator(".map-touch-mode-toggle").count();
+        if (hasEscape === 0) {
+          findings.push({ viewport: vp.name, kind: "missing-scroll-escape" });
+        }
+      }
 
       const shotPath = join(ARTIFACT_DIR, `most-comfortable-${vp.name}.png`);
       await page.locator(".tc-map-stage, .map-shell").first().screenshot({ path: shotPath });
@@ -138,14 +157,6 @@ async function main() {
         }
         await page.keyboard.press("Escape");
         await page.waitForTimeout(100);
-      }
-
-      // Touch-sized viewports should expose Scroll page escape.
-      if (vp.width <= 430) {
-        const escape = page.getByRole("button", { name: /Switch map to page scrolling|Switch map to direct interaction/ });
-        if ((await escape.count()) === 0) {
-          findings.push({ viewport: vp.name, kind: "missing-scroll-escape" });
-        }
       }
 
       // Empty-state smoke: nonsense search if filter UI is present is optional;
