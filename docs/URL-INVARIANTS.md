@@ -12,6 +12,7 @@ Executable checks live in [`src/lib/app-url.ts`](../src/lib/app-url.ts), [`src/l
 | `c` | Countries, comma-separated (`USA`, `Canada`, `Mexico`) | Non-members stripped |
 | `a` | Archetype ids, comma-separated | Filtered to known archetypes when validator provided |
 | `q` | Search string | Trimmed for round-trip |
+| `r` | Ranking profile | Default **`most-unique`** is never written; other profiles (including `live-fit`) are written when active |
 | `cmp` | Compare set, comma-separated place ids | Only known ids; **max 4** (`COMPARE_LIMIT`) |
 | `theme` | Color theme override: `light`, `dark` | `auto` (the implicit default) is never written; unknown values dropped |
 | `scn` | Climate-scenario layer: `ssp245`, `ssp585` | `now` (the implicit default) is never written; unknown values dropped |
@@ -33,9 +34,9 @@ Hydration uses [`filterStateFromValidated()`](../src/lib/scoring.ts) from valida
 
 Omitted when unset (clear-all / empty state): `fit`, `sh`, `wl`, `grow`, `fire`, `risk`, and `q`.
 
-## Lifestyle bundles (hero + FilterBar dock)
+## Lifestyle bundles (FilterBar dock)
 
-Six curated bundles live in [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyle-bundles.ts). Applying a bundle sets **`r`** (ranking profile) and the Live Finder fields above (`fit`, `sh`, `wl`, `grow`, `fire`, `risk`) in one shot. Hero quick-picks that overlap a bundle (remote work, retirement, garden, snow, fire-safe) call the same `applyLifestyleBundle()` path as the dock chips.
+Six curated bundles live in [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyle-bundles.ts). Applying a bundle from the FilterBar Fit Finder dock sets **`r`** (ranking profile) and the Live Finder fields above (`fit`, `sh`, `wl`, `grow`, `fire`, `risk`) in one shot. Explorer hero quick-picks are discovery lenses (Most unique, Hidden gems, Cool summers, Fog & marine, Another country, Visit now) and do **not** auto-apply lifestyle bundles.
 
 **Auto live-fit sort:** When Live Finder constraints are active (any preset or numeric/risk cap) but no lifestyle bundle is fully active and **`r`** is not `live-fit`, Explorer switches ranking to **`live-fit`** so the list sorts with `rankLiveFit()`. Lens Receipt may note when display ranking and live-fit sort diverge.
 

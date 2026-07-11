@@ -200,7 +200,7 @@ describe("formatAppRelativeUrl", () => {
     });
     expect(url).toBe("/?p=foo&c=USA&a=rain-shadow-sanctuary&q=garden+town&r=live-fit&fit=cool-summers%2Cdry-air&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated&temp=C&dist=metric");
   });
-  it("omits the default live-fit ranking until live-fit constraints are present", () => {
+  it("omits the default most-unique ranking from the URL", () => {
     expect(
       formatAppRelativeUrl({
         view: "explorer",
@@ -208,7 +208,7 @@ describe("formatAppRelativeUrl", () => {
         collectionId: null,
         temp: "F",
         dist: "imperial",
-        ranking: "live-fit",
+        ranking: "most-unique",
         collectionExists: ce,
       }),
     ).toBe("/");
@@ -221,13 +221,22 @@ describe("formatAppRelativeUrl", () => {
         collectionExists: ce,
       }),
     ).toBe("/?r=hidden-gems");
+    expect(
+      formatAppRelativeUrl({
+        view: "explorer",
+        placeId: null,
+        collectionId: null,
+        ranking: "live-fit",
+        collectionExists: ce,
+      }),
+    ).toBe("/?r=live-fit");
   });
   it("omits live-fit URL params when explorer state has no live-fit signals", () => {
     const url = formatAppRelativeUrl({
       view: "explorer",
       placeId: null,
       collectionId: null,
-      ranking: "live-fit",
+      ranking: "most-unique",
       fitPresets: [],
       maxSummerHighC: null,
       minWinterLowC: null,

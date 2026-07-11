@@ -496,6 +496,54 @@ async function main(): Promise<void> {
     throw new Error("experience: authored feel override did not take precedence");
   }
 
+  // Discovery-first cold start: default ranking is most-unique and omitted from URLs.
+  const { DEFAULT_RANKING } = await import("../src/lib/app-ranking-preference");
+  if (DEFAULT_RANKING !== "most-unique") {
+    throw new Error(`DEFAULT_RANKING should be most-unique, got ${DEFAULT_RANKING}`);
+  }
+  const discoveryDefaultUrl = formatAppRelativeUrl({
+    view: "explorer",
+    ranking: "most-unique",
+    collectionExists: () => true,
+  });
+  if (discoveryDefaultUrl !== "/") {
+    throw new Error(`most-unique should omit r= from URL, got ${discoveryDefaultUrl}`);
+  }
+  const liveFitExplicitUrl = formatAppRelativeUrl({
+    view: "explorer",
+    ranking: "live-fit",
+    collectionExists: () => true,
+  });
+  if (!liveFitExplicitUrl.includes("r=live-fit")) {
+    throw new Error(`live-fit should serialize when selected: ${liveFitExplicitUrl}`);
+  }
+
+  const { pickSurprisePlaceId } = await import("../src/lib/surprise-pick");
+  const { rankPlaces } = await import("../src/lib/scoring");
+  const rankedUnique = rankPlaces("most-unique", PLACES);
+  const recentIds = rankedUnique.slice(0, 8).map((row) => row.place.id);
+  const surpriseId = pickSurprisePlaceId(rankedUnique, recentIds, () => 0.01);
+  if (!surpriseId || recentIds.includes(surpriseId)) {
+    throw new Error(`Surprise should prefer non-recent places when available, got ${surpriseId}`);
+  }
+  const surprisePlace = rankedUnique.find((row) => row.place.id === surpriseId)?.place;
+  if (!surprisePlace || surprisePlace.scores.microclimateUniqueness < 40) {
+    throw new Error(`Surprise low-cursor pick should land on a high-uniqueness place: ${surpriseId}`);
+  }
+
+  const { ARCHETYPE_BY_ID } = await import("../src/data/archetypes");
+  const guided = Object.values(ARCHETYPE_BY_ID).filter((meta) => Boolean(meta.guide?.trim()));
+  if (guided.length < 10) {
+    throw new Error(`Expected authored archetype guides, found ${guided.length}`);
+  }
+  const sampleGuidedPlace = PLACES.find((p) => {
+    const primary = p.archetypes[0];
+    return primary != null && Boolean(ARCHETYPE_BY_ID[primary]?.guide?.trim());
+  });
+  if (!sampleGuidedPlace) {
+    throw new Error("No corpus place carries a primary archetype with guide copy");
+  }
+
   console.log("playtest-polish: OK");
 }
 

@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Compass, HelpCircle, Home, Laptop, Library, Link2, Map, Menu, Route, Search, ShieldAlert, ShieldCheck, Shuffle, Snowflake, Sparkles, Sprout, Sun, Sunrise, Target, X, type LucideIcon } from "lucide-react";
+import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -17,16 +17,14 @@ import { ARCHETYPE_BY_ID } from "./data/archetypes";
 import { FIELD_NOTES } from "./data/field-notes";
 import {
   anyLifestyleBundleActive,
-  applyLifestyleBundle,
   countLiveFinderConstraintSignals,
-  HERO_BUNDLE_BY_RANKING,
   isBundleActive,
   LIFESTYLE_BUNDLES,
-  lifestyleBundleById,
   type LifestyleBundle,
 } from "./lib/lifestyle-bundles";
 import { explorerResultsPending } from "./lib/explorer-pending";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { pickSurprisePlaceId } from "./lib/surprise-pick";
 import { assessLiveFit, LIVE_FIT_PRESET_BY_ID } from "./lib/live-fit";
 import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
 import { projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
@@ -106,6 +104,24 @@ import {
   type ThemePreference,
 } from "./lib/theme";
 import { ThemeToggle } from "./components/chrome/ThemeToggle";
+
+/** Hero discovery paths — ranking lenses, archetype screens, or a pinned trip. */
+type DiscoveryQuickPickId =
+  | "most-unique"
+  | "hidden-gems"
+  | "best-this-month"
+  | "coolest-summers"
+  | "fog-marine"
+  | "another-country";
+
+const FOG_MARINE_ARCHETYPES: readonly MicroclimateArchetype[] = [
+  "fog-belt-coast",
+  "cool-summer-maritime",
+  "coastal-upwelling",
+  "hyper-maritime",
+];
+
+const ANOTHER_COUNTRY_TRIP_ID = "places-that-feel-like-another-country";
 
 const CURATED_SET_BY_ID = {
   ...Object.fromEntries(Object.entries(COLLECTION_BY_ID).map(([id, c]) => [id, { ...c, kind: "collection" as const }])),
@@ -610,6 +626,8 @@ export default function App() {
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [siteMenuOpen, setSiteMenuOpen] = useState(false);
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
+  /** Scout Board / Living Compass / livability rails stay collapsed until asked for. */
+  const [scoutToolsOpen, setScoutToolsOpen] = useState(false);
 
   const baselinePool = useMemo(() => {
     if (activeCollection) {
@@ -624,26 +642,48 @@ export default function App() {
   // bioclim/analog identity caches are untouched.
   const pool = useMemo(() => projectPool(baselinePool, climateScenario), [baselinePool, climateScenario]);
 
-  const applyHeroQuickPick = useCallback((profile: RankingProfile) => {
-    const bundleId = HERO_BUNDLE_BY_RANKING[profile];
-    if (bundleId) {
-      const bundle = lifestyleBundleById(bundleId);
-      if (bundle) {
-        applyLifestyleBundle(bundle, setRanking, setFilters);
-        return;
-      }
+  const applyHeroQuickPick = useCallback((pick: DiscoveryQuickPickId) => {
+    if (pick === "another-country") {
+      activeScopeFocusPendingRef.current = true;
+      setActiveCollection(ANOTHER_COUNTRY_TRIP_ID);
+      setFilters(createEmptyFilterState());
+      setRanking("most-unique");
+      setViewFluid("explorer");
+      return;
     }
-    setRanking(profile);
-  }, [setRanking, setFilters]);
+    if (pick === "fog-marine") {
+      setActiveCollection(null);
+      setFilters(f => ({
+        ...createEmptyFilterState(),
+        search: f.search,
+        archetypes: new Set(FOG_MARINE_ARCHETYPES),
+      }));
+      setRanking("coolest-summers");
+      setViewFluid("explorer");
+      return;
+    }
+    setActiveCollection(null);
+    setFilters(f => ({
+      ...createEmptyFilterState(),
+      search: f.search,
+    }));
+    setRanking(pick);
+  }, [setRanking, setViewFluid]);
 
-  const isHeroQuickPickActive = useCallback((profile: RankingProfile) => {
-    const bundleId = HERO_BUNDLE_BY_RANKING[profile];
-    if (bundleId) {
-      const bundle = lifestyleBundleById(bundleId);
-      return bundle ? isBundleActive(bundle, ranking, filters) : ranking === profile;
+  const isHeroQuickPickActive = useCallback((pick: DiscoveryQuickPickId) => {
+    if (pick === "another-country") {
+      return activeCollection === ANOTHER_COUNTRY_TRIP_ID;
     }
-    return ranking === profile;
-  }, [ranking, filters]);
+    if (pick === "fog-marine") {
+      if (activeCollection) return false;
+      if (ranking !== "coolest-summers") return false;
+      if (filters.archetypes.size !== FOG_MARINE_ARCHETYPES.length) return false;
+      return FOG_MARINE_ARCHETYPES.every(a => filters.archetypes.has(a));
+    }
+    if (activeCollection) return false;
+    if (filters.archetypes.size > 0) return false;
+    return ranking === pick;
+  }, [activeCollection, ranking, filters.archetypes]);
 
   useEffect(() => {
     if (anyLifestyleBundleActive(ranking, filters)) return;
@@ -787,7 +827,16 @@ export default function App() {
   );
   const resonantWindow = useMemo(() => resonantWindowFor(ranking), [ranking]);
   const rankedRef = useRef(ranked);
+  /** Invalidates deferred focus callbacks from prior shortlist / main-content handoffs. */
+  const focusScheduleGenerationRef = useRef(0);
   rankedRef.current = ranked;
+  useEffect(() => {
+    return () => {
+      // Drop any pending focus handoffs when this App instance unmounts so they
+      // cannot steal focus from a later test render or navigation.
+      focusScheduleGenerationRef.current += 1;
+    };
+  }, []);
 
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
   const activeComparePlaces = useMemo(
@@ -868,7 +917,9 @@ export default function App() {
   }, []);
 
   const focusMainContentNextFrame = useCallback(() => {
+    const generation = ++focusScheduleGenerationRef.current;
     const focusMain = () => {
+      if (generation !== focusScheduleGenerationRef.current) return;
       const main = document.getElementById("main-content");
       if (!main) return;
       try { main.focus({ preventScroll: true }); } catch { /* noop */ }
@@ -882,33 +933,38 @@ export default function App() {
   }, []);
 
   const focusShortlistRemoveNextFrame = useCallback((placeId: string) => {
+    const generation = ++focusScheduleGenerationRef.current;
     let focused = false;
-    const focusTarget = (fallbackToMain: boolean) => {
-      if (focused) return;
+    let attempts = 0;
+    const maxAttempts = 24;
+    const tryFocus = () => {
+      if (generation !== focusScheduleGenerationRef.current) return true;
+      if (focused) return true;
       const target = Array.from(
         document.querySelectorAll<HTMLButtonElement>("[data-shortlist-remove-id]"),
       ).find(button => button.getAttribute("data-shortlist-remove-id") === placeId);
-      if (target) {
-        try {
-          target.focus({ preventScroll: true });
-          focused = true;
-          return;
-        } catch {
-          // Fall through to the main-content recovery path below.
-        }
-      }
-      if (fallbackToMain) {
-        focusMainContentNextFrame();
+      if (!target || !target.isConnected) return false;
+      try {
+        target.focus({ preventScroll: true });
+        focused = true;
+        return true;
+      } catch {
+        return false;
       }
     };
-    window.setTimeout(() => focusTarget(false), 0);
-    if (typeof window.requestAnimationFrame === "function") {
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => focusTarget(true));
-      });
-    } else {
-      window.setTimeout(() => focusTarget(true), 50);
-    }
+    const scheduleAttempt = () => {
+      if (generation !== focusScheduleGenerationRef.current) return;
+      if (tryFocus()) return;
+      attempts += 1;
+      if (attempts >= maxAttempts) {
+        focusMainContentNextFrame();
+        return;
+      }
+      // Prefer setTimeout over a tight rAF burst so React can commit the updated
+      // shortlist rail before we give up and fall back to main content.
+      window.setTimeout(scheduleAttempt, attempts < 4 ? 0 : 16);
+    };
+    window.setTimeout(scheduleAttempt, 0);
   }, [focusMainContentNextFrame]);
 
   const toggleBookmark = useCallback((id: string) => {
@@ -1219,12 +1275,11 @@ export default function App() {
   }, []);
 
   const pickRandomPlace = useCallback((opts?: { trigger?: HTMLElement | null }): boolean => {
-    const poolRanked = rankedRef.current;
-    if (poolRanked.length === 0) return false;
-    const idx = Math.floor(Math.random() * poolRanked.length);
-    openPlace(poolRanked[idx].place.id, opts);
+    const id = pickSurprisePlaceId(rankedRef.current, recentIds);
+    if (!id) return false;
+    openPlace(id, opts);
     return true;
-  }, [openPlace]);
+  }, [openPlace, recentIds]);
 
   const onRandomEmpty = useCallback(() => {
     setTransientFeedback("No places match your filters — clear one to enable Surprise / R.");
@@ -1414,9 +1469,11 @@ export default function App() {
                   onClearRecents={clearRecents}
                   onApplyQuickPick={applyHeroQuickPick}
                   isQuickPickActive={isHeroQuickPickActive}
-                  showHeroSignalRail={!scoutBoardLg}
-                  showDetailedHeroPanels={explorerHeroPanelsMd && !scoutBoardLg}
-                  showDesktopScoutBoard={scoutBoardLg}
+                  scoutToolsOpen={scoutToolsOpen}
+                  onToggleScoutTools={() => setScoutToolsOpen(open => !open)}
+                  showHeroSignalRail={scoutToolsOpen && !scoutBoardLg}
+                  showDetailedHeroPanels={scoutToolsOpen && explorerHeroPanelsMd && !scoutBoardLg}
+                  showDesktopScoutBoard={scoutToolsOpen && scoutBoardLg}
                 />
 
                 <div
@@ -1469,7 +1526,7 @@ export default function App() {
                   />
                 ) : null}
 
-                {scoutBoardLg || !explorerHeroPanelsMd ? (
+                {scoutToolsOpen && (scoutBoardLg || !explorerHeroPanelsMd) ? (
                   <>
                     <ExplorerHeroDetailPanels
                       signatureLeaders={signatureLeaders}
@@ -1502,16 +1559,16 @@ export default function App() {
                 <section className="hidden md:grid grid-cols-3 gap-3 tc-reader-path" aria-labelledby="reader-path-heading">
                   <h2 id="reader-path-heading" className="sr-only">How to read Terraclima</h2>
                   <div>
-                    <div className="tc-reader-path__label">Fit</div>
-                    <p>Start with Live-here fit or a quick pick to screen places by comfort, terrain, risk, and lived ease before opening the map wider.</p>
+                    <div className="tc-reader-path__label">Discover</div>
+                    <p>Start from Most unique, Surprise me, or a discovery quick pick to find microclimates most people have never heard of.</p>
                   </div>
                   <div>
-                    <div className="tc-reader-path__label">Compare</div>
-                    <p>Move from a continental scan to a shortlist with filters, map clusters, Scout Brief, and four-place compare.</p>
+                    <div className="tc-reader-path__label">Read</div>
+                    <p>Open a place and learn why it differs — archetype guide, terrain drivers, and local contrasts before any fit scoring.</p>
                   </div>
                   <div>
-                    <div className="tc-reader-path__label">Scout</div>
-                    <p>Read the dossier, caveats, sources, twins, and Scout day plan before treating any place as a real-world finalist.</p>
+                    <div className="tc-reader-path__label">Narrow</div>
+                    <p>Use filters, Collections, Climate Trips, Compare, or Scout tools when you want a shortlist — not before you have found something curious.</p>
                   </div>
                 </section>
 
@@ -2562,6 +2619,8 @@ const HeroCard = memo(function HeroCard({
   onClearRecents,
   onApplyQuickPick,
   isQuickPickActive,
+  scoutToolsOpen,
+  onToggleScoutTools,
   showHeroSignalRail,
   showDetailedHeroPanels,
   showDesktopScoutBoard,
@@ -2603,8 +2662,10 @@ const HeroCard = memo(function HeroCard({
   onToggleBookmark: (id: string) => void;
   onRemovePinnedPlace: (id: string, nextFocusId?: string | null) => void;
   onClearRecents: () => void;
-  onApplyQuickPick: (r: RankingProfile) => void;
-  isQuickPickActive: (r: RankingProfile) => boolean;
+  onApplyQuickPick: (pick: DiscoveryQuickPickId) => void;
+  isQuickPickActive: (pick: DiscoveryQuickPickId) => boolean;
+  scoutToolsOpen: boolean;
+  onToggleScoutTools: () => void;
   showHeroSignalRail: boolean;
   showDetailedHeroPanels: boolean;
   showDesktopScoutBoard: boolean;
@@ -2647,9 +2708,10 @@ const HeroCard = memo(function HeroCard({
         : shareStatus === "failed"
           ? "Retry copy or use the selected manual Explorer URL"
           : "Copy or share current Explorer view";
-  const surpriseLabel = "Open a random place from the current filtered list";
+  const surpriseLabel = "Open a unique microclimate from the current filtered list";
   const scoutBriefJumpLabel = "Jump to Scout Brief synthesis";
   const findHomeBaseLabel = "Find your home-base analog using Explorer search";
+  const scoutToolsLabel = scoutToolsOpen ? "Hide scout tools" : "Show scout tools";
   return (
     <div
       className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
@@ -2664,9 +2726,9 @@ const HeroCard = memo(function HeroCard({
                 ? active.kind === "trip" ? "Trip pinned" : "Collection pinned"
                 : liveSignalCount > 0
                   ? `Live Finder · ${liveSignalCount} signal${liveSignalCount > 1 ? "s" : ""}`
-                  : activeArchetypes.size > 0
+                    : activeArchetypes.size > 0
                     ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}`
-                    : "Live Finder"}
+                    : "Microclimate atlas"}
             </span>
             {active && (
               <button
@@ -2687,12 +2749,12 @@ const HeroCard = memo(function HeroCard({
             )}
           </div>
           <h1 className="font-atlas text-2xl min-[1400px]:text-3xl text-ice leading-tight text-depth-hero">
-            {active ? active.title : "Find your climate fit before you scout"}
+            {active ? active.title : "Discover microclimates hiding in plain sight"}
           </h1>
           <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
             {active
               ? active.description
-              : "Screen cool coasts, dry highlands, garden valleys, and lower-risk towns by comfort, terrain, risk, and lived ease before you plan a visit."}
+              : "Rain shadows, sky islands, fog belts, thermal belts, and other terrain climates most people never hear of. Open a pin, try Surprise me, or start from Most unique."}
           </p>
 
         </div>
@@ -2713,14 +2775,25 @@ const HeroCard = memo(function HeroCard({
             <button
               type="button"
               onClick={event => onSurpriseMe({ trigger: event.currentTarget })}
-              className="btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
+              className="btn-primary !text-xs !py-1.5 w-full sm:w-auto"
               aria-label={surpriseLabel}
               title={surpriseLabel}
             >
-              <Shuffle className="w-3.5 h-3.5 text-[rgba(122,212,240,0.9)]" aria-hidden />
+              <Shuffle className="w-3.5 h-3.5" aria-hidden />
               Surprise me
             </button>
           )}
+          <button
+            type="button"
+            onClick={onToggleScoutTools}
+            className="btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
+            aria-pressed={scoutToolsOpen}
+            aria-label={scoutToolsLabel}
+            title={scoutToolsLabel}
+          >
+            <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
+            Scout tools
+          </button>
           {!homeBasePlace && !activeTripTheme ? (
             <button
               type="button"
@@ -2733,14 +2806,14 @@ const HeroCard = memo(function HeroCard({
               Find home base
             </button>
           ) : null}
-          {scoutBrief ? (
+          {scoutToolsOpen && scoutBrief ? (
             <a
               href="#explorer-scout-brief"
               className="btn-ghost hero-action-stack__scout !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
               aria-label={scoutBriefJumpLabel}
               title={scoutBriefJumpLabel}
             >
-              <Compass className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
+              <BookOpen className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
               Scout brief
             </a>
           ) : null}
@@ -2809,7 +2882,7 @@ const HeroCard = memo(function HeroCard({
           onCompareLeaders={onCompareLeaders}
           onPreloadCompare={onPreloadCompare}
         />
-      ) : !activeFitBundle && scoutBrief && count > 0 ? (
+      ) : !activeFitBundle && scoutToolsOpen && scoutBrief && count > 0 ? (
         <CurrentScoutReadReceipt
           scoutBrief={scoutBrief}
           rankingLabel={rankingLabel}
@@ -2820,24 +2893,23 @@ const HeroCard = memo(function HeroCard({
         />
       ) : null}
 
-      {/* Climate-fit quick-picks — instant one-click ranking presets */}
+      {/* Discovery quick-picks — uniqueness, gems, and terrain screens */}
       {!active && (
         <div
           className="hero-quick-picks"
           role="group"
-          aria-label="Climate-fit quick picks"
+          aria-label="Discovery quick picks"
           aria-describedby="hero-quick-picks-scroll-hint"
         >
           <span id="hero-quick-picks-scroll-hint" className="sr-only">
-            Swipe or scroll horizontally to browse more Fit Finder paths.
+            Swipe or scroll horizontally to browse more discovery paths.
           </span>
-          <QuickPick icon={CalendarDays} label="Visit now" description="Rank places by the current month's scouting weather." onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
-          <QuickPick icon={Sun} label="Comfort fit" description="Surface places with the easiest human-felt comfort." onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
-          <QuickPick icon={Laptop} label="Remote work" description="Prioritize mild, livable places for remote-worker scouting." onClick={() => onApplyQuickPick("best-for-remote-work")} active={isQuickPickActive("best-for-remote-work")} />
-          <QuickPick icon={Sunrise} label="Retirement" description="Look for mild all-year places with lower risk and daily ease." onClick={() => onApplyQuickPick("best-retirement")} active={isQuickPickActive("best-retirement")} />
-          <QuickPick icon={Sprout} label="Garden life" description="Lift places with stronger yard, orchard, and growing-season signals." onClick={() => onApplyQuickPick("best-growability")} active={isQuickPickActive("best-growability")} />
+          <QuickPick icon={Sparkles} label="Most unique" description="Rank places by microclimate uniqueness." onClick={() => onApplyQuickPick("most-unique")} active={isQuickPickActive("most-unique")} />
+          <QuickPick icon={Eye} label="Hidden gems" description="Surface lesser-known stops with strong atlas signal." onClick={() => onApplyQuickPick("hidden-gems")} active={isQuickPickActive("hidden-gems")} />
           <QuickPick icon={Snowflake} label="Cool summers" description="Find places where peak-season afternoons stay restrained." onClick={() => onApplyQuickPick("coolest-summers")} active={isQuickPickActive("coolest-summers")} />
-          <QuickPick icon={ShieldCheck} label="Low risk" description="Favor places with stronger climate-resilience and hazard cushions." onClick={() => onApplyQuickPick("climate-resilient")} active={isQuickPickActive("climate-resilient")} />
+          <QuickPick icon={Cloud} label="Fog & marine" description="Filter to fog belts, cool maritime coasts, and upwelling shores." onClick={() => onApplyQuickPick("fog-marine")} active={isQuickPickActive("fog-marine")} />
+          <QuickPick icon={Globe2} label="Another country" description="Pin the climate-dissonance trip: places that feel unlike their map." onClick={() => onApplyQuickPick("another-country")} active={isQuickPickActive("another-country")} />
+          <QuickPick icon={CalendarDays} label="Visit now" description="Rank places by the current month's scouting weather." onClick={() => onApplyQuickPick("best-this-month")} active={isQuickPickActive("best-this-month")} />
         </div>
       )}
 
@@ -4018,7 +4090,11 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
     ? `Unpin ${brief.leader.place.name} from your shortlist`
     : `Pin ${brief.leader.place.name} to your shortlist`;
   return (
-    <section className="desktop-scout-board" aria-label="Desktop relocation workbench">
+    <section
+      id="explorer-scout-brief"
+      className="desktop-scout-board"
+      aria-label="Desktop relocation workbench"
+    >
       <div className="desktop-scout-board__leader">
         <div>
           <div className="desktop-scout-board__eyebrow">Relocation read</div>

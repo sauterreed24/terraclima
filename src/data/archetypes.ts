@@ -1,7 +1,8 @@
 // ============================================================
 // Terraclima — Microclimate Archetypes
-// Provides display metadata for each archetype and short
-// "field guide" descriptions used in collection views.
+// Provides display metadata for each archetype: chip labels,
+// tone colors, short blurbs, and longer field-guide `guide`
+// copy surfaced in PlaceDetail when a reader opens a profile.
 // ============================================================
 
 import type { MicroclimateArchetype } from "../types";

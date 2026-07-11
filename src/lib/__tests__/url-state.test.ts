@@ -118,14 +118,21 @@ describe("app-url state", () => {
     expect(url).not.toMatch(/[?&]clens=/);
   });
 
-  it("keeps default live-fit URLs clean unless live-fit controls are active", () => {
+  it("keeps default most-unique URLs clean and writes live-fit when selected", () => {
+    expect(formatAppRelativeUrl({
+      view: "explorer",
+      placeId: null,
+      collectionId: null,
+      ranking: "most-unique",
+      collectionExists: () => true,
+    })).toBe("/");
     expect(formatAppRelativeUrl({
       view: "explorer",
       placeId: null,
       collectionId: null,
       ranking: "live-fit",
       collectionExists: () => true,
-    })).toBe("/");
+    })).toBe("/?r=live-fit");
     expect(formatAppRelativeUrl({
       view: "explorer",
       placeId: null,
