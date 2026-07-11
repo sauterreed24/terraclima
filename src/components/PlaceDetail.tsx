@@ -380,7 +380,7 @@ function DetailHeader({
   return (
     <div
       data-tone={tone}
-      className="detail-drawer-header sticky top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 tc-surface-elevated backdrop-blur relative border-b tc-border-warm"
+      className="detail-drawer-header relative z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 tc-surface-elevated border-b tc-border-warm"
     >
       {/* Title + actions share a row only from lg up: the drawer is ~706-830px
           across the md band and the six header actions (~540px, shrink-0)

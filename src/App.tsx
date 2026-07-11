@@ -792,6 +792,7 @@ export default function App() {
     () => rankLivabilityPreview(deferredFiltered).slice(0, 10),
     [deferredFiltered],
   );
+  const livabilityPending = resultsPending || deferredFiltered !== filtered;
   const sortTopFive = useMemo(() => ranked.slice(0, 5), [ranked]);
   const signatureLeaders = useMemo<SignatureLeader[]>(
     () => sortTopFive.map(row => ({ ...row, signature: getPlaceVisualSignature(row.place) })),
@@ -1228,6 +1229,11 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (!compareOpen || activeComparePlaces.length > 0) return;
+    closeCompare();
+  }, [activeComparePlaces.length, closeCompare, compareOpen]);
+
+  useEffect(() => {
     if (compareOpen) {
       compareWasOpenRef.current = true;
       return;
@@ -1281,8 +1287,8 @@ export default function App() {
     }
   }, []);
 
-  const openFilterSheet = useCallback(() => {
-    explorerFilterSheetRef.current?.open();
+  const openFilterSheet = useCallback((trigger?: HTMLElement | null) => {
+    explorerFilterSheetRef.current?.open(trigger ?? (document.activeElement as HTMLElement | null));
   }, []);
 
   /**
@@ -1290,12 +1296,12 @@ export default function App() {
    * the dock is collapsed (the input lives inside that dialog below 1024px).
    * Matches the `/` and Cmd/Ctrl+K shortcut sequence on narrow viewports.
    */
-  const focusExplorerSearch = useCallback(() => {
+  const focusExplorerSearch = useCallback((trigger?: HTMLElement | null) => {
     if (explorerDockLg) {
       focusSearchInput();
       return;
     }
-    openFilterSheet();
+    openFilterSheet(trigger);
     requestAnimationFrame(() => {
       requestAnimationFrame(focusSearchInput);
     });
@@ -1476,6 +1482,7 @@ export default function App() {
                 <HeroCard
                   count={ranked.length}
                   livabilityTopTen={livabilityTopTen}
+                  livabilityPending={livabilityPending}
                   signatureLeaders={signatureLeaders}
                   ranking={ranking}
                   rankingLabel={scenarioRankingLabel}
@@ -1599,14 +1606,14 @@ export default function App() {
                       showDesktopScoutBoard={scoutBoardLg}
                       includeSignalRail={scoutBoardLg}
                       livabilityTopTen={livabilityTopTen}
-                      livabilityPending={resultsPending}
+                      livabilityPending={livabilityPending}
                     />
                     {!explorerHeroPanelsMd ? (
                       <LivabilityTopTenRail
                         rows={livabilityTopTen}
                         onOpenPlace={openPlace}
                         variant="compact"
-                        pending={resultsPending}
+                        pending={livabilityPending}
                       />
                     ) : null}
                   </>
@@ -2575,7 +2582,7 @@ const FieldNoteStrip = memo(function FieldNoteStrip() {
   const note = FIELD_NOTES[idx];
 
   return (
-    <div className="rounded-xl border border-[rgba(61,143,85,0.28)] bg-[linear-gradient(135deg,rgba(255,253,248,0.98)_0%,rgba(236,248,232,0.55)_100%)] px-4 py-3 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+    <div className="tc-field-note-strip rounded-xl border border-[rgba(61,143,85,0.28)] bg-[linear-gradient(135deg,rgba(255,253,248,0.98)_0%,rgba(236,248,232,0.55)_100%)] px-4 py-3 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
       <div className="flex items-center gap-2 shrink-0">
         <BookOpen className="w-3.5 h-3.5 shrink-0 text-sage-700" aria-hidden />
         <div className="flex flex-col gap-0.5">
@@ -2671,6 +2678,7 @@ const ClimateSignalRail = memo(function ClimateSignalRail({
 const HeroCard = memo(function HeroCard({
   count,
   livabilityTopTen,
+  livabilityPending,
   signatureLeaders,
   ranking,
   rankingLabel,
@@ -2718,6 +2726,7 @@ const HeroCard = memo(function HeroCard({
 }: {
   count: number;
   livabilityTopTen: RankingResult[];
+  livabilityPending: boolean;
   signatureLeaders: SignatureLeader[];
   ranking: RankingProfile;
   rankingLabel: string;
@@ -2739,7 +2748,7 @@ const HeroCard = memo(function HeroCard({
   shareStatus: ShareStatus;
   shareFallbackUrl: string | null;
   homeBasePlace: Place | null;
-  onFindHomeBase: () => void;
+  onFindHomeBase: (trigger?: HTMLElement | null) => void;
   onClearHomeBase: () => void;
   compareCount: number;
   onOpenCompare: OpenCompareHandler;
@@ -2803,6 +2812,15 @@ const HeroCard = memo(function HeroCard({
   const scoutBriefJumpLabel = "Jump to Scout Brief synthesis";
   const findHomeBaseLabel = "Find your home-base analog using Explorer search";
   const scoutToolsLabel = scoutToolsOpen ? "Hide scout tools" : "Show scout tools";
+  const jumpToScoutBrief = useCallback(() => {
+    const target = document.getElementById("explorer-scout-brief");
+    if (!target) return;
+    target.scrollIntoView?.({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      block: "start",
+    });
+    target.focus({ preventScroll: true });
+  }, []);
   return (
     <div
       className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
@@ -2895,7 +2913,7 @@ const HeroCard = memo(function HeroCard({
           {!homeBasePlace && !activeTripTheme ? (
             <button
               type="button"
-              onClick={onFindHomeBase}
+              onClick={event => onFindHomeBase(event.currentTarget)}
               className="btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
               aria-label={findHomeBaseLabel}
               title={findHomeBaseLabel}
@@ -2905,15 +2923,16 @@ const HeroCard = memo(function HeroCard({
             </button>
           ) : null}
           {scoutToolsOpen && scoutBrief ? (
-            <a
-              href="#explorer-scout-brief"
+            <button
+              type="button"
+              onClick={jumpToScoutBrief}
               className="btn-ghost hero-action-stack__scout !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)]"
               aria-label={scoutBriefJumpLabel}
               title={scoutBriefJumpLabel}
             >
               <BookOpen className="w-3.5 h-3.5 text-[rgba(61,143,85,0.9)]" aria-hidden />
               Scout brief
-            </a>
+            </button>
           ) : null}
           {compareCount > 0 ? (
             <button
@@ -3086,6 +3105,7 @@ const HeroCard = memo(function HeroCard({
           rows={livabilityTopTen}
           onOpenPlace={onOpenPlace}
           variant="detailed"
+          pending={livabilityPending}
         />
       ) : null}
 
@@ -3935,7 +3955,7 @@ const ScoutBriefPanel = memo(function ScoutBriefPanel({
   const compareLeadersLabel = `Compare current leaders: ${brief.compareIds.length} places`;
   const saveFinalistsLabel = `Save ${brief.compareIds.length} Scout Brief finalists to your shortlist`;
   return (
-    <section id="explorer-scout-brief" className="scout-brief" aria-labelledby="explorer-scout-brief-title">
+    <section id="explorer-scout-brief" tabIndex={-1} className="scout-brief" aria-labelledby="explorer-scout-brief-title">
       <div className="scout-brief__head">
         <div className="min-w-0">
           <div id="explorer-scout-brief-title" className="scout-brief__eyebrow">
@@ -4166,6 +4186,7 @@ const DesktopScoutBoard = memo(function DesktopScoutBoard({
   return (
     <section
       id="explorer-scout-brief"
+      tabIndex={-1}
       className="desktop-scout-board"
       aria-label="Desktop relocation workbench"
     >

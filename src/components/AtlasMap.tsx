@@ -379,7 +379,7 @@ export const AtlasMap = memo(function AtlasMap({
     shellRef.current?.setAttribute("data-gesturing", active ? "true" : "false");
   }, []);
   const legendToggleRef = useRef<HTMLButtonElement>(null);
-  const legendPanelRef = useRef<HTMLDivElement>(null);
+  const legendPanelRef = useRef<HTMLDialogElement>(null);
   const legendCloseBtnRef = useRef<HTMLButtonElement>(null);
   const [dims, setDims] = useState({ width: widthProp, height: heightProp, measured: false });
 
@@ -1502,17 +1502,35 @@ export const AtlasMap = memo(function AtlasMap({
   const legendToggleKind = coarsePointer ? "legend" : "key";
   const legendToggleLabel = `${legendOpen ? "Hide" : "Open"} map ${legendToggleKind}`;
   const closeLegend = useCallback(() => {
+    const dialog = legendPanelRef.current;
+    if (dialog?.open) dialog.close();
     setLegendOpen(false);
-    window.setTimeout(() => {
+    const restoreFocus = () => {
       try {
         legendToggleRef.current?.focus({ preventScroll: true });
       } catch {
         legendToggleRef.current?.focus();
       }
-    }, 0);
+    };
+    window.requestAnimationFrame(restoreFocus);
+    window.setTimeout(restoreFocus, 0);
+    window.setTimeout(restoreFocus, 80);
   }, []);
-  // Trap Tab inside the mobile legend dialog (desktop key panel is non-modal).
-  useFocusTrap(legendPanelRef, coarsePointer && legendOpen, true);
+  // Native modal isolation blocks pointer/AT access to the page behind the
+  // legend; the explicit trap provides deterministic Tab wrapping in tests
+  // and older engines.
+  useFocusTrap(legendPanelRef, coarsePointer && legendOpen);
+  useEffect(() => {
+    if (!legendOpen || !coarsePointer) return;
+    const dialog = legendPanelRef.current;
+    if (!dialog || dialog.open) return;
+    try {
+      dialog.showModal();
+    } catch {
+      // Embedded/older engines may reject showModal; the panel still renders
+      // and the focus trap keeps keyboard focus within it.
+    }
+  }, [legendOpen, coarsePointer]);
   useEffect(() => {
     if (!legendOpen || !coarsePointer) return;
     legendCloseBtnRef.current?.focus({ preventScroll: true });
@@ -2194,13 +2212,16 @@ export const AtlasMap = memo(function AtlasMap({
       ) : null}
 
       {coarsePointer && legendOpen ? (
-        <div
+        <dialog
           ref={legendPanelRef}
           id="tc-map-mobile-legend"
-          role="dialog"
           aria-modal="true"
           aria-label="Map legend"
           className="map-mobile-legend map-chrome-panel"
+          onCancel={(event) => {
+            event.preventDefault();
+            closeLegend();
+          }}
         >
           <div className="flex items-center justify-between gap-2">
             <div className="text-[10px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Map legend</div>
@@ -2235,7 +2256,7 @@ export const AtlasMap = memo(function AtlasMap({
             <div>Clusters show nearby pins. Tap one to zoom; tightly overlapping groups open a picker.</div>
             <div className="map-key-notes__credit">Projection: Albers equal-area conic, centered on North America (north is up).</div>
           </div>
-        </div>
+        </dialog>
       ) : null}
 
       {clusterPicker ? (
@@ -2989,6 +3010,7 @@ const Marker = memo(function Marker({
   prev.pt.y === next.pt.y &&
   prev.pt.anchorX === next.pt.anchorX &&
   prev.pt.anchorY === next.pt.anchorY &&
+  prev.pt.needsLeader === next.pt.needsLeader &&
   prev.pt.place === next.pt.place
 );
 

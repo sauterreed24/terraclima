@@ -23,7 +23,7 @@ import { fmtTemp, useUnits } from "../lib/units";
 import type { ScenarioId } from "../types";
 
 export type ExplorerFilterSheetHandle = {
-  open: () => void;
+  open: (trigger?: HTMLElement | null) => void;
   close: () => void;
 };
 
@@ -92,6 +92,7 @@ export const ExplorerFilterSheet = memo(
     const triggerButtonRef = useRef<HTMLButtonElement>(null);
     const panelRef = useRef<HTMLDivElement>(null);
     const closeButtonRef = useRef<HTMLButtonElement>(null);
+    const externalTriggerRef = useRef<HTMLElement | null>(null);
     const wasOpenRef = useRef(false);
     const [open, setOpen] = useState(false);
     const { temp } = useUnits();
@@ -130,9 +131,12 @@ export const ExplorerFilterSheet = memo(
       }
       if (!wasOpenRef.current) return;
       wasOpenRef.current = false;
+      const externalTrigger = externalTriggerRef.current;
+      externalTriggerRef.current = null;
+      const target = externalTrigger?.isConnected ? externalTrigger : triggerButtonRef.current;
       const focusTrigger = () => {
         try {
-          triggerButtonRef.current?.focus({ preventScroll: true });
+          target?.focus({ preventScroll: true });
         } catch {
           /* noop */
         }
@@ -173,7 +177,8 @@ export const ExplorerFilterSheet = memo(
       }
     }, []);
 
-    const openSheet = useCallback(() => {
+    const openSheet = useCallback((trigger?: HTMLElement | null) => {
+      externalTriggerRef.current = trigger?.isConnected ? trigger : null;
       dialogRef.current?.showModal();
     }, []);
 
@@ -222,7 +227,7 @@ export const ExplorerFilterSheet = memo(
           <button
             ref={triggerButtonRef}
             type="button"
-            onClick={openSheet}
+            onClick={() => openSheet(triggerButtonRef.current)}
             className="tc-filter-sheet-trigger"
             aria-haspopup="dialog"
             aria-expanded={open}

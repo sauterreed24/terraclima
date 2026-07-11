@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#fffefb" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0d1320" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fffefb" media="(prefers-color-scheme: light)" data-theme-color="light" />
+    <meta name="theme-color" content="#0d1320" media="(prefers-color-scheme: dark)" data-theme-color="dark" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -148,6 +148,23 @@
           root.setAttribute("data-theme", resolved);
           root.setAttribute("data-theme-preference", pref);
           root.style.colorScheme = resolved;
+          var lightThemeColor = document.querySelector('meta[data-theme-color="light"]');
+          var darkThemeColor = document.querySelector('meta[data-theme-color="dark"]');
+          if (lightThemeColor) lightThemeColor.media = resolved === "light" ? "all" : "not all";
+          if (darkThemeColor) darkThemeColor.media = resolved === "dark" ? "all" : "not all";
+
+          var reducedMotion = false;
+          try {
+            reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          } catch (e) { /* no matchMedia */ }
+          var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+          var saveData = !!(connection && connection.saveData);
+          var lowMemory = typeof navigator.deviceMemory === "number" && navigator.deviceMemory <= 4;
+          var cores = typeof navigator.hardwareConcurrency === "number" ? navigator.hardwareConcurrency : 8;
+          var richEffects = !reducedMotion && !saveData && !lowMemory && cores > 4;
+          var motion = reducedMotion ? "reduced" : richEffects ? "full" : "minimal";
+          root.setAttribute("data-motion", motion);
+          root.classList.toggle("tc-low-power", !richEffects);
         } catch (e) { /* never block paint */ }
       })();
     </script>

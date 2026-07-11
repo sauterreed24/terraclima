@@ -77,6 +77,12 @@ export function applyTheme(
   root.setAttribute("data-theme-preference", preference);
   // `color-scheme` on the root affects native form controls + scrollbars.
   root.style.colorScheme = resolved;
+  // Keep installed-PWA / mobile browser chrome aligned with an explicit
+  // in-app theme, not only the operating-system media query.
+  const lightThemeColor = doc.querySelector<HTMLMetaElement>('meta[data-theme-color="light"]');
+  const darkThemeColor = doc.querySelector<HTMLMetaElement>('meta[data-theme-color="dark"]');
+  if (lightThemeColor) lightThemeColor.media = resolved === "light" ? "all" : "not all";
+  if (darkThemeColor) darkThemeColor.media = resolved === "dark" ? "all" : "not all";
 }
 
 /** Persist the explicit user choice across sessions. */

@@ -6106,6 +6106,11 @@
   html.tc-low-power .tc-explorer-pending-pill__dot {
     animation: none;
   }
+  @media (prefers-reduced-motion: reduce) {
+    .tc-explorer-pending-pill__dot {
+      animation: none;
+    }
+  }
   .tc-results-pending-inline {
     color: var(--color-glacier-700);
     font-weight: 650;
@@ -8899,15 +8904,23 @@
   }
 
   .map-mobile-legend {
-    position: absolute;
+    position: fixed;
     left: 0.75rem;
     right: 0.75rem;
     bottom: 0.75rem;
+    top: auto;
     z-index: 6;
     display: grid;
     gap: 0.65rem;
     padding: 0.85rem;
+    width: auto;
+    max-width: 32rem;
+    margin: auto;
+    border: 1px solid rgba(140, 200, 224, 0.35);
     color: rgba(245, 250, 255, 0.96);
+  }
+  .map-mobile-legend::backdrop {
+    background: var(--tc-scrim-veil, rgba(5, 10, 18, 0.82));
   }
 
   .map-legend-close {
@@ -10751,6 +10764,13 @@ html[data-theme="dark"] .btn-ghost.compare-toggle--active:hover {
   background: rgba(111, 74, 28, 0.96);
   border-color: rgba(255, 220, 148, 0.82);
   color: #fff0c8;
+}
+html[data-theme="dark"] .tc-field-note-strip {
+  border-color: rgba(143, 217, 154, 0.3);
+  background:
+    linear-gradient(135deg, rgba(22, 38, 42, 0.96), rgba(18, 30, 38, 0.9)),
+    rgba(13, 19, 32, 0.92);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
 }
 html[data-theme="dark"] .tc-bookmark-btn--pinned {
   border-color: rgba(255, 207, 112, 0.72);
