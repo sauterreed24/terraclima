@@ -46,6 +46,18 @@ export interface LiveFitFilters {
   maxOverallRisk?: RiskLevel;
 }
 
+/** Narrow a broader filter bag to the fields `assessLiveFit` actually reads. */
+export function pickLiveFitFilters(filters: LiveFitFilters): LiveFitFilters {
+  return {
+    fitPresets: filters.fitPresets,
+    maxSummerHighC: filters.maxSummerHighC,
+    minWinterLowC: filters.minWinterLowC,
+    minGrowability: filters.minGrowability,
+    maxFireRisk: filters.maxFireRisk,
+    maxOverallRisk: filters.maxOverallRisk,
+  };
+}
+
 export interface LiveFitAssessment {
   score: number;
   reasons: string[];

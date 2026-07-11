@@ -379,6 +379,8 @@ export const AtlasMap = memo(function AtlasMap({
     shellRef.current?.setAttribute("data-gesturing", active ? "true" : "false");
   }, []);
   const legendToggleRef = useRef<HTMLButtonElement>(null);
+  const legendPanelRef = useRef<HTMLDivElement>(null);
+  const legendCloseBtnRef = useRef<HTMLButtonElement>(null);
   const [dims, setDims] = useState({ width: widthProp, height: heightProp, measured: false });
 
   useLayoutEffect(() => {
@@ -1509,6 +1511,12 @@ export const AtlasMap = memo(function AtlasMap({
       }
     }, 0);
   }, []);
+  // Trap Tab inside the mobile legend dialog (desktop key panel is non-modal).
+  useFocusTrap(legendPanelRef, coarsePointer && legendOpen, true);
+  useEffect(() => {
+    if (!legendOpen || !coarsePointer) return;
+    legendCloseBtnRef.current?.focus({ preventScroll: true });
+  }, [legendOpen, coarsePointer]);
   useEffect(() => {
     if (!legendOpen) return;
     const onKey = (event: KeyboardEvent) => {
@@ -1532,6 +1540,12 @@ export const AtlasMap = memo(function AtlasMap({
         ? "Atlas map of North America. One-finger drag pans the map; pinch zooms when map mode is active. Use the Scroll page control to let the browser scroll past the map. Tap any pin to open that place's full profile."
         : "Atlas map of North America. Scroll to zoom, drag to pan, double-click to zoom in. Click any pin to open that place's full profile.") +
       (featuredTrailPoints.length > 1 ? " Gold trail connects the current top-ranked places." : "");
+  const onMarkerHoverEnter = useCallback((id: string, x: number, y: number) => {
+    cancelHoverClear();
+    setHoverId(id);
+    scheduleTooltipRich();
+    updateTooltip({ x, y });
+  }, [cancelHoverClear, scheduleTooltipRich, updateTooltip]);
   const renderMarker = (pt: RenderedClusterPoint) => {
     const screenX = pt.x * settledView.k + settledView.x;
     const labelSide: "left" | "right" = screenX > width * 0.62 ? "left" : "right";
@@ -1548,18 +1562,7 @@ export const AtlasMap = memo(function AtlasMap({
         richEffects={richEffects}
         isRovingFocused={pt.place.id === effectiveFocusedMarkerId}
         onSelect={onSelect}
-        onEnter={() => {
-          cancelHoverClear();
-          setHoverId(pt.place.id);
-          scheduleTooltipRich();
-          updateTooltip({ x: pt.anchorX, y: pt.anchorY });
-        }}
-        onFocusEnter={() => {
-          cancelHoverClear();
-          setHoverId(pt.place.id);
-          scheduleTooltipRich();
-          updateTooltip({ x: pt.anchorX, y: pt.anchorY });
-        }}
+        onHoverEnter={onMarkerHoverEnter}
         onLeave={scheduleHoverClear}
         shouldSuppressTouchActivation={shouldSuppressTouchActivation}
         onArrow={onMarkerArrow}
@@ -2192,6 +2195,7 @@ export const AtlasMap = memo(function AtlasMap({
 
       {coarsePointer && legendOpen ? (
         <div
+          ref={legendPanelRef}
           id="tc-map-mobile-legend"
           role="dialog"
           aria-modal="true"
@@ -2200,7 +2204,14 @@ export const AtlasMap = memo(function AtlasMap({
         >
           <div className="flex items-center justify-between gap-2">
             <div className="text-[10px] uppercase tracking-wider text-[rgba(236,244,252,0.72)]">Map legend</div>
-            <button type="button" className="map-legend-close" onClick={closeLegend} aria-label="Close map legend" title="Close map legend">
+            <button
+              ref={legendCloseBtnRef}
+              type="button"
+              className="map-legend-close"
+              onClick={closeLegend}
+              aria-label="Close map legend"
+              title="Close map legend"
+            >
               <X className="w-3.5 h-3.5" aria-hidden />
             </button>
           </div>
@@ -2275,8 +2286,8 @@ interface MarkerProps {
    * Tab focus among all visible markers. */
   isRovingFocused: boolean;
   onSelect: (id: string) => void;
-  onEnter: () => void;
-  onFocusEnter: () => void;
+  /** Stable hover/focus enter — Marker passes place id + geographic anchor. */
+  onHoverEnter: (id: string, x: number, y: number) => void;
   onLeave: () => void;
   shouldSuppressTouchActivation: () => boolean;
   /** Arrow-key step within the visible marker set. */
@@ -2630,7 +2641,7 @@ const ClusterPicker = memo(function ClusterPicker({
 
 const Marker = memo(function Marker({
   pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
-  onSelect, onEnter, onFocusEnter, onLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
+  onSelect, onHoverEnter, onLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
 }: MarkerProps) {
   const { place, x, y, anchorX, anchorY, needsLeader } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
@@ -2688,6 +2699,10 @@ const Marker = memo(function Marker({
     e.stopPropagation();
   }, []);
 
+  const handleHoverEnter = useCallback(() => {
+    onHoverEnter(place.id, anchorX, anchorY);
+  }, [onHoverEnter, place.id, anchorX, anchorY]);
+
   const onMarkerKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
       switch (e.key) {
@@ -2737,8 +2752,8 @@ const Marker = memo(function Marker({
   const onMarkerFocus = useCallback(() => {
     onFocusReceived(place.id);
     // Keyboard parity with mouse hover: focusing a pin shows the rich preview immediately.
-    onFocusEnter();
-  }, [onFocusReceived, place.id, onFocusEnter]);
+    onHoverEnter(place.id, anchorX, anchorY);
+  }, [onFocusReceived, place.id, onHoverEnter, anchorX, anchorY]);
   const onMarkerBlur = useCallback(() => {
     onLeave();
   }, [onLeave]);
@@ -2762,7 +2777,7 @@ const Marker = memo(function Marker({
       style={{ cursor: "pointer" }}
       onPointerDown={stopPan}
       onClick={activate}
-      onPointerEnter={onEnter}
+      onPointerEnter={handleHoverEnter}
       onPointerLeave={onLeave}
       onKeyDown={onMarkerKeyDown}
       onFocus={onMarkerFocus}
@@ -2956,6 +2971,8 @@ const Marker = memo(function Marker({
   );
 }, (prev, next) =>
   prev.onSelect === next.onSelect &&
+  prev.onHoverEnter === next.onHoverEnter &&
+  prev.onLeave === next.onLeave &&
   prev.labelMode === next.labelMode &&
   prev.labelSide === next.labelSide &&
   prev.isActive === next.isActive &&
@@ -2970,6 +2987,8 @@ const Marker = memo(function Marker({
   prev.onFocusReceived === next.onFocusReceived &&
   prev.pt.x === next.pt.x &&
   prev.pt.y === next.pt.y &&
+  prev.pt.anchorX === next.pt.anchorX &&
+  prev.pt.anchorY === next.pt.anchorY &&
   prev.pt.place === next.pt.place
 );
 

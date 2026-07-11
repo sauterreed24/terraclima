@@ -208,6 +208,9 @@ export const PlaceCard = memo(function PlaceCard({
           />
         ))}
       </div>
+      <span className="sr-only">
+        {`Year at a glance: summer highs near ${fmtTemp(summerHighC, temp)}, January lows near ${fmtTemp(janLowC, temp)}.`}
+      </span>
 
       <button
         type="button"

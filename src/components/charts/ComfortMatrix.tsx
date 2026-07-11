@@ -14,6 +14,10 @@ export function ComfortMatrix({ place }: Props) {
   const glowId = `comfort-glow-${useId().replace(/:/g, "")}`;
   const scores = MONTHS.map((_, i) => scoreMonth(place, i));
   const peakIdx = scores.reduce((best, v, i, arr) => (v > arr[best] ? i : best), 0);
+  const stressIdx = scores.reduce((best, v, i, arr) => (v < arr[best] ? i : best), 0);
+  const matrixLabel =
+    `Monthly comfort matrix. Most comfortable ${MONTHS[peakIdx]} (score ${scores[peakIdx]!.toFixed(1)} of 4); ` +
+    `most stressed ${MONTHS[stressIdx]} (score ${scores[stressIdx]!.toFixed(1)} of 4).`;
 
   const W = 560, H = 56;
   const PAD_L = 6, PAD_R = 6;
@@ -24,7 +28,7 @@ export function ComfortMatrix({ place }: Props) {
   const top = 10;
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label="Monthly comfort matrix">
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto" role="img" aria-label={matrixLabel}>
       <defs>
         <filter id={glowId} x="-20%" y="-20%" width="140%" height="140%">
           <feGaussianBlur stdDeviation="1.4" result="blur" />

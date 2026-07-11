@@ -130,6 +130,21 @@ export function CompareView({
     () => new Map(decisionProfiles.map(profile => [profile.place.id, profile])),
     [decisionProfiles],
   );
+  const columnMetricsById = useMemo(() => {
+    const map = new Map<string, {
+      geo: ReturnType<typeof buildGeospatialAnalysis>;
+      bio: ReturnType<typeof computeBioclim>;
+      utci: ReturnType<typeof apparentComfortIndex>;
+    }>();
+    for (const place of places) {
+      map.set(place.id, {
+        geo: buildGeospatialAnalysis(place),
+        bio: computeBioclim(place),
+        utci: apparentComfortIndex(place),
+      });
+    }
+    return map;
+  }, [places]);
   const compareHighlights = useMemo(() => {
     if (places.length < 2) return [];
     const coolestSummer = places.reduce((best, place) => meanSummerHigh(place) < meanSummerHigh(best) ? place : best, places[0]);
@@ -1025,10 +1040,9 @@ export function CompareView({
             <div className="overflow-x-auto pb-3 -mx-1 px-1 snap-x snap-mandatory scroll-smooth" aria-label="Scrollable comparison columns" style={{ touchAction: "pan-x pan-y" }}>
               <div className="grid gap-4 min-w-full snap-mandatory" style={{ gridTemplateColumns: columnTemplate }}>
               {places.map(p => {
-                const geo = buildGeospatialAnalysis(p);
+                const metrics = columnMetricsById.get(p.id)!;
+                const { geo, bio, utci } = metrics;
                 const decision = decisionById.get(p.id)!;
-                const bio = computeBioclim(p);
-                const utci = apparentComfortIndex(p);
                 return (
                 <div key={p.id} className="panel p-4 relative snap-start tc-compare-col">
                   <button type="button" onClick={() => onRemove(p.id)} aria-label={`Remove ${p.name} from comparison`} title={`Remove ${p.name} from comparison`} className="absolute top-2 right-2 text-stone hover:text-ice min-h-[44px] min-w-[44px] inline-flex items-center justify-center">

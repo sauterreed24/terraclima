@@ -25,7 +25,7 @@ import {
 import { explorerResultsPending } from "./lib/explorer-pending";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { pickSurprisePlaceId } from "./lib/surprise-pick";
-import { assessLiveFit, LIVE_FIT_PRESET_BY_ID } from "./lib/live-fit";
+import { assessLiveFit, LIVE_FIT_PRESET_BY_ID, pickLiveFitFilters, type LiveFitFilters } from "./lib/live-fit";
 import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
 import { projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
 import { runScenarioRanking } from "./lib/climate-processor";
@@ -693,6 +693,34 @@ export default function App() {
   }, [filters, ranking, setRanking]);
 
   const deferredFilters = useDeferredValue(filters);
+  // Narrow live-fit inputs so search keystrokes don't invalidate PlaceCard /
+  // map tooltip memos that only read comfort/risk/growability constraints.
+  const {
+    fitPresets: liveFitPresets,
+    maxSummerHighC: liveFitMaxSummerHighC,
+    minWinterLowC: liveFitMinWinterLowC,
+    minGrowability: liveFitMinGrowability,
+    maxFireRisk: liveFitMaxFireRisk,
+    maxOverallRisk: liveFitMaxOverallRisk,
+  } = deferredFilters;
+  const liveFitFilters = useMemo(
+    (): LiveFitFilters => pickLiveFitFilters({
+      fitPresets: liveFitPresets,
+      maxSummerHighC: liveFitMaxSummerHighC,
+      minWinterLowC: liveFitMinWinterLowC,
+      minGrowability: liveFitMinGrowability,
+      maxFireRisk: liveFitMaxFireRisk,
+      maxOverallRisk: liveFitMaxOverallRisk,
+    }),
+    [
+      liveFitPresets,
+      liveFitMaxSummerHighC,
+      liveFitMinWinterLowC,
+      liveFitMinGrowability,
+      liveFitMaxFireRisk,
+      liveFitMaxOverallRisk,
+    ],
+  );
   const filtered = useMemo(() => applyFilters(pool, deferredFilters), [pool, deferredFilters]);
   const activeTripTheme = useMemo(
     () => activeCollection ? CLIMATE_TRIP_THEME_BY_ID[activeCollection] ?? null : null,
@@ -1253,6 +1281,26 @@ export default function App() {
     }
   }, []);
 
+  const openFilterSheet = useCallback(() => {
+    explorerFilterSheetRef.current?.open();
+  }, []);
+
+  /**
+   * Focus the Explorer search field, opening the mobile filter sheet first when
+   * the dock is collapsed (the input lives inside that dialog below 1024px).
+   * Matches the `/` and Cmd/Ctrl+K shortcut sequence on narrow viewports.
+   */
+  const focusExplorerSearch = useCallback(() => {
+    if (explorerDockLg) {
+      focusSearchInput();
+      return;
+    }
+    openFilterSheet();
+    requestAnimationFrame(() => {
+      requestAnimationFrame(focusSearchInput);
+    });
+  }, [explorerDockLg, openFilterSheet, focusSearchInput]);
+
   const clearSearch = useCallback(() => {
     setFilters(f => (f.search ? { ...f, search: "" } : f));
   }, []);
@@ -1269,10 +1317,6 @@ export default function App() {
       ? "Updating ranked results for the selected climate layer."
       : "Updating ranked results for the current filters."
     : "";
-
-  const openFilterSheet = useCallback(() => {
-    explorerFilterSheetRef.current?.open();
-  }, []);
 
   const pickRandomPlace = useCallback((opts?: { trigger?: HTMLElement | null }): boolean => {
     const id = pickSurprisePlaceId(rankedRef.current, recentIds);
@@ -1438,6 +1482,8 @@ export default function App() {
                   onOpenPlace={openPlace}
                   onClearAll={clearAllFilters}
                   onClearSearch={clearSearch}
+                  onRelaxLiveFinder={relaxLiveFinderFilters}
+                  onClearGeography={clearGeographyFilters}
                   activeCollection={activeCollection}
                   activeTripTheme={activeTripTheme}
                   activeTripRows={activeTripRows}
@@ -1451,7 +1497,7 @@ export default function App() {
                   shareStatus={shareStatus}
                   shareFallbackUrl={compareOpen ? null : shareFallbackUrl}
                   homeBasePlace={homeBasePlace}
-                  onFindHomeBase={focusSearchInput}
+                  onFindHomeBase={focusExplorerSearch}
                   onClearHomeBase={clearHomeBase}
                   compareCount={compareIds.size}
                   onOpenCompare={openCompare}
@@ -1498,7 +1544,7 @@ export default function App() {
                     selectedId={selectedId ?? undefined}
                     featuredIds={topRankedPlaceIds}
                     featuredLabel={scenarioRankingLabel}
-                    liveFitFilters={deferredFilters}
+                    liveFitFilters={liveFitFilters}
                     onSelect={openPlace}
                     onEmptyRecovery={mapEmptyRecovery.onEmptyRecovery}
                     emptyRecoveryLabel={mapEmptyRecovery.emptyRecoveryLabel}
@@ -1508,6 +1554,13 @@ export default function App() {
                 {explorerPendingMessage ? (
                   <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
                     {explorerPendingMessage}
+                  </div>
+                ) : null}
+
+                {explorerPendingMessage ? (
+                  <div className="tc-explorer-pending-pill" aria-hidden="true">
+                    <span className="tc-explorer-pending-pill__dot" />
+                    Updating…
                   </div>
                 ) : null}
 
@@ -1545,11 +1598,14 @@ export default function App() {
                       onToggleBookmark={toggleBookmark}
                       showDesktopScoutBoard={scoutBoardLg}
                       includeSignalRail={scoutBoardLg}
+                      livabilityTopTen={livabilityTopTen}
+                      livabilityPending={resultsPending}
                     />
                     {!explorerHeroPanelsMd ? (
-                      <MobileLivabilityTopTenStrip
+                      <LivabilityTopTenRail
                         rows={livabilityTopTen}
                         onOpenPlace={openPlace}
+                        variant="compact"
                         pending={resultsPending}
                       />
                     ) : null}
@@ -1583,6 +1639,7 @@ export default function App() {
                       below so screen readers hear only the final value. */}
                   <div className="text-xs text-stone-readable" aria-hidden="true">
                     Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} paused={resultsPending} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{scenarioRankingLabel}</span>
+                    {resultsPending ? <span className="tc-results-pending-inline"> · Updating…</span> : null}
                   </div>
                   <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
                     {`Showing ${ranked.length} of ${PLACE_COUNTS.total} places, ranked by ${scenarioRankingLabel}.${homeBasePlace ? ` Cards show climate deltas against your home base, ${homeBasePlace.name}.` : ""}`}
@@ -1675,7 +1732,7 @@ export default function App() {
                       onPreloadCompare={preloadCompareView}
                       compareIds={compareIds}
                       resonantWindow={resonantWindow}
-                      liveFitFilters={deferredFilters}
+                      liveFitFilters={liveFitFilters}
                       homePlace={homeBasePlaceForScenario}
                       rankingLabel={scenarioRankingLabel}
                       bookmarkIds={bookmarkIds}
@@ -1811,7 +1868,7 @@ export default function App() {
               inCompareIds={compareIds}
               onPickArchetype={pickArchetype}
               onOpenPlace={openPlace}
-              liveFitFilters={deferredFilters}
+                      liveFitFilters={liveFitFilters}
               residencyFitContext={dossierFitContext}
               bookmarked={selectedPlace ? bookmarkIds.has(selectedPlace.id) : false}
               onBookmarkToggle={toggleBookmark}
@@ -1839,7 +1896,7 @@ export default function App() {
             onCopyView={copyCurrentView}
             shareStatus={shareStatus}
             shareFallbackUrl={shareFallbackUrl}
-            liveFitFilters={deferredFilters}
+                      liveFitFilters={liveFitFilters}
             homePlace={homeBasePlaceForScenario}
             onAddPlace={toggleCompare}
             candidates={compareCandidates}
@@ -1874,8 +1931,6 @@ const EmptyResults = memo(function EmptyResults({
 }) {
   // Tailor the message to what is actually narrowing the set so the guidance
   // points at the right control instead of always blaming "filters".
-  const liveSignalCount = countLiveFinderConstraintSignals(filters);
-  const geographyCount = filters.countries.size + filters.archetypes.size;
   const hasOtherFilters = hasNonSearchExplorerFilters(filters);
   const searchOnly = searchTerm.length > 0 && !hasOtherFilters;
   const filtersOnly = searchTerm.length === 0 && hasOtherFilters;
@@ -1891,47 +1946,13 @@ const EmptyResults = memo(function EmptyResults({
     : filtersOnly
       ? "That's a tight intersection — try loosening one. Drop a country, drop one of the archetypes, or relax a Live-Finder limit."
       : "That's a tight combination — try shortening the search or loosening one filter. Names, regions, archetypes, and Köppen codes all match.";
-  const recoveryActions: Array<{
-    key: string;
-    label: string;
-    detail: string;
-    onClick: () => void;
-    primary?: boolean;
-  }> = [];
-
-  if (searchTerm.length > 0) {
-    recoveryActions.push({
-      key: "search",
-      label: "Clear search",
-      detail: `Remove “${searchTerm}” and keep the climate-fit filters intact.`,
-      onClick: onClearSearch,
-      primary: searchOnly,
-    });
-  }
-  if (liveSignalCount > 0) {
-    recoveryActions.push({
-      key: "live",
-      label: "Relax Live Finder",
-      detail: `Drop ${liveSignalCount} comfort, risk, or growability limit${liveSignalCount === 1 ? "" : "s"} while keeping search and geography.`,
-      onClick: onRelaxLiveFinder,
-      primary: filtersOnly && geographyCount === 0,
-    });
-  }
-  if (geographyCount > 0) {
-    recoveryActions.push({
-      key: "geography",
-      label: "Clear region / terrain",
-      detail: `Drop ${geographyCount} region or terrain filter${geographyCount === 1 ? "" : "s"} while keeping search and Live Finder signals.`,
-      onClick: onClearGeography,
-      primary: filtersOnly && liveSignalCount === 0,
-    });
-  }
-  recoveryActions.push({
-    key: "all",
-    label: "Reset Explorer",
-    detail: "Return to the full atlas and restart the fit search.",
-    onClick: onClearAll,
-    primary: !recoveryActions.some(action => action.primary),
+  const recoveryActions = buildExplorerRecoveryActions({
+    filters,
+    searchTerm,
+    onClearSearch,
+    onRelaxLiveFinder,
+    onClearGeography,
+    onClearAll,
   });
 
   return (
@@ -1967,6 +1988,74 @@ const EmptyResults = memo(function EmptyResults({
     </div>
   );
 });
+
+type ExplorerRecoveryAction = {
+  key: string;
+  label: string;
+  detail: string;
+  onClick: () => void;
+  primary?: boolean;
+};
+
+/** Shared zero-result recovery actions for the hero strip and the grid empty state. */
+function buildExplorerRecoveryActions({
+  filters,
+  searchTerm,
+  onClearSearch,
+  onRelaxLiveFinder,
+  onClearGeography,
+  onClearAll,
+}: {
+  filters: FilterState;
+  searchTerm: string;
+  onClearSearch: () => void;
+  onRelaxLiveFinder: () => void;
+  onClearGeography: () => void;
+  onClearAll: () => void;
+}): ExplorerRecoveryAction[] {
+  const liveSignalCount = countLiveFinderConstraintSignals(filters);
+  const geographyCount = filters.countries.size + filters.archetypes.size;
+  const hasOtherFilters = hasNonSearchExplorerFilters(filters);
+  const searchOnly = searchTerm.length > 0 && !hasOtherFilters;
+  const filtersOnly = searchTerm.length === 0 && hasOtherFilters;
+  const recoveryActions: ExplorerRecoveryAction[] = [];
+
+  if (searchTerm.length > 0) {
+    recoveryActions.push({
+      key: "search",
+      label: "Clear search",
+      detail: `Remove “${searchTerm}” and keep the climate-fit filters intact.`,
+      onClick: onClearSearch,
+      primary: searchOnly,
+    });
+  }
+  if (liveSignalCount > 0) {
+    recoveryActions.push({
+      key: "live",
+      label: "Relax Live Finder",
+      detail: `Drop ${liveSignalCount} comfort, risk, or growability limit${liveSignalCount === 1 ? "" : "s"} while keeping search and geography.`,
+      onClick: onRelaxLiveFinder,
+      primary: filtersOnly && geographyCount === 0,
+    });
+  }
+  if (geographyCount > 0) {
+    recoveryActions.push({
+      key: "geography",
+      label: "Clear region / terrain",
+      detail: `Drop ${geographyCount} region or terrain filter${geographyCount === 1 ? "" : "s"} while keeping search and Live Finder signals.`,
+      onClick: onClearGeography,
+      primary: filtersOnly && liveSignalCount === 0,
+    });
+  }
+  recoveryActions.push({
+    key: "all",
+    label: "Reset Explorer",
+    detail: "Return to the full atlas and restart the fit search.",
+    onClick: onClearAll,
+    primary: !recoveryActions.some(action => action.primary),
+  });
+  return recoveryActions;
+}
 
 const TopBar = memo(function TopBar({
   view,
@@ -2588,6 +2677,8 @@ const HeroCard = memo(function HeroCard({
   onOpenPlace,
   onClearAll,
   onClearSearch,
+  onRelaxLiveFinder,
+  onClearGeography,
   activeCollection,
   activeTripTheme,
   activeTripRows,
@@ -2633,6 +2724,8 @@ const HeroCard = memo(function HeroCard({
   onOpenPlace: OpenPlaceHandler;
   onClearAll: () => void;
   onClearSearch: () => void;
+  onRelaxLiveFinder: () => void;
+  onClearGeography: () => void;
   activeCollection: string | null;
   activeTripTheme: ClimateTripTheme | null;
   activeTripRows: TripRouteRow[];
@@ -2670,7 +2763,6 @@ const HeroCard = memo(function HeroCard({
   showDetailedHeroPanels: boolean;
   showDesktopScoutBoard: boolean;
 }) {
-  const prose = useProse();
   const shareFallbackInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (shareStatus !== "failed" || !shareFallbackUrl) return;
@@ -2697,7 +2789,6 @@ const HeroCard = memo(function HeroCard({
   ].filter(v => v != null).length;
   const activeFitBundle = active ? null : LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null;
   const heroAccentRgb = signatureLeaders[0]?.signature.mapAccentRgb ?? "94, 196, 220";
-  const prioritizeDesktopScoutBoard = showDetailedHeroPanels && showDesktopScoutBoard && scoutBrief !== null;
   const activeScopeClearLabel = active ? `Clear ${active.title} ${active.kind === "trip" ? "trip" : "collection"} filter` : "";
   const searchTerm = (filters.search ?? "").trim();
   const copyViewLabel =
@@ -2743,7 +2834,14 @@ const HeroCard = memo(function HeroCard({
               </button>
             )}
             {!active && activeArchetypes.size > 0 && (
-              <button type="button" onClick={onClearArchetypes} className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice" data-active-scope-clear>
+              <button
+                type="button"
+                onClick={onClearArchetypes}
+                className="inline-flex items-center gap-1 text-xs text-stone hover:text-ice"
+                data-active-scope-clear
+                aria-label={`Clear ${activeArchetypes.size} archetype filter${activeArchetypes.size === 1 ? "" : "s"}`}
+                title={`Clear ${activeArchetypes.size} archetype filter${activeArchetypes.size === 1 ? "" : "s"}`}
+              >
                 <X className="w-3 h-3" aria-hidden /> Clear archetypes
               </button>
             )}
@@ -2918,30 +3016,29 @@ const HeroCard = memo(function HeroCard({
           <Search className="tc-hero-empty-recovery__icon" aria-hidden />
           <div className="tc-hero-empty-recovery__copy">
             <strong>{searchTerm ? `No matches for "${searchTerm}"` : "No places in this screen"}</strong>
-            <span>Recover here before scrolling: clear the search or reset the full Explorer.</span>
+            <span>Recover here before scrolling: loosen one part of the screen instead of losing the whole scouting context.</span>
           </div>
           <div className="tc-hero-empty-recovery__actions">
-            {searchTerm ? (
+            {buildExplorerRecoveryActions({
+              filters,
+              searchTerm,
+              onClearSearch,
+              onRelaxLiveFinder,
+              onClearGeography,
+              onClearAll,
+            }).map(action => (
               <button
+                key={action.key}
                 type="button"
                 className="tc-hero-empty-recovery__action"
-                onClick={onClearSearch}
-                aria-label="Clear search from hero recovery"
-                title="Clear search from hero recovery"
+                data-primary={action.primary || undefined}
+                onClick={action.onClick}
+                aria-label={`${action.label} from hero recovery`}
+                title={action.detail}
               >
-                Clear search
+                {action.label}
               </button>
-            ) : null}
-            <button
-              type="button"
-              className="tc-hero-empty-recovery__action"
-              data-primary={searchTerm ? undefined : true}
-              onClick={onClearAll}
-              aria-label="Reset Explorer from hero recovery"
-              title="Reset Explorer from hero recovery"
-            >
-              Reset Explorer
-            </button>
+            ))}
           </div>
         </div>
       ) : null}
@@ -2953,18 +3050,6 @@ const HeroCard = memo(function HeroCard({
           onOpenPlace={onOpenPlace}
           onCompareLeaders={onCompareLeaders}
           onPreloadCompare={onPreloadCompare}
-        />
-      ) : null}
-
-      {prioritizeDesktopScoutBoard ? (
-        <DesktopScoutBoard
-          brief={scoutBrief}
-          onOpenPlace={onOpenPlace}
-          onCompareLeaders={onCompareLeaders}
-          onPreloadCompare={onPreloadCompare}
-          onSaveScoutFinalists={onSaveScoutFinalists}
-          bookmarkIds={bookmarkIds}
-          onToggleBookmark={onToggleBookmark}
         />
       ) : null}
 
@@ -2993,64 +3078,15 @@ const HeroCard = memo(function HeroCard({
           bookmarkIds={bookmarkIds}
           onToggleBookmark={onToggleBookmark}
           showDesktopScoutBoard={showDesktopScoutBoard}
-          includeScoutBrief={!prioritizeDesktopScoutBoard}
         />
       ) : null}
 
       {showDetailedHeroPanels && livabilityTopTen.length > 0 ? (
-        <div className="hero-top-ten px-3 py-2.5 sm:px-4 min-[1400px]:py-3 space-y-2.5 min-[1400px]:space-y-3">
-          <div className="min-w-0">
-            <div className="text-[10px] uppercase tracking-wider text-sage-700">Livability lens · top ten</div>
-            <p className="hidden min-[1400px]:block text-xs text-stone-readable mt-1 leading-relaxed max-w-3xl">
-              Same filtered pool as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by our published blend — not by whatever you picked in Rank by.
-            </p>
-            <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights (v3)">
-              <span className="livability-weight-pill" title="Blends the thermal plateau, warm-night recovery, year-round usable-month runway, sky/dampness, and curated comfort.">Felt comfort {Math.round(LIVABILITY_WEIGHTS.thermalComfort * 100)}%</span>
-              <span className="livability-weight-pill" title="Sky, wind exposure, humidity or arid-air strain, smoke/air, and solar burden.">Atmosphere {Math.round(LIVABILITY_WEIGHTS.atmosphericEase * 100)}%</span>
-              <span className="livability-weight-pill" title="0.6 × mean-of-9 + 0.4 × max-of-9 — surfaces tail risk that an averaged hazard score would hide.">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardCushion * 100)}%</span>
-              <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
-              <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
-              <span className="livability-weight-pill" title="U-shaped penalty: full marks 700..1500 mm/yr; both arid (<300) and saturated (>2500) reduce the score.">Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
-              <span className="livability-weight-pill" title="Curated cost, social-fabric, and daily-services friction.">Lived friction {Math.round(LIVABILITY_WEIGHTS.livedFriction * 100)}%</span>
-              <span className="livability-weight-pill" title="Derived actual-place read from sensory comfort, daily ease, place identity, and scouting clarity.">Place feel {Math.round(LIVABILITY_WEIGHTS.placeFeel * 100)}%</span>
-            </div>
-            <p className="hidden min-[1400px]:block mt-1.5 text-[10px] text-stone-readable/85 italic">
-              v3 livability lens — felt comfort, atmosphere, usable-month runway, hazard cushion, precip moderation, lived friction, and place feel. Editorial triage for exploration, not appraisal or medical heat-stress advice.
-            </p>
-          </div>
-          <div
-            className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
-            aria-label="Top ten places by livability blend in the current filtered list"
-          >
-            {livabilityTopTen.map((row, i) => {
-              const openLabel = `Livability rank ${i + 1}. ${row.place.name}, ${row.place.koppen}. Open place profile.`;
-              return (
-                <button
-                  key={row.place.id}
-                  type="button"
-                  onClick={event => onOpenPlace(row.place.id, { trigger: event.currentTarget })}
-                  aria-label={openLabel}
-                  title={openLabel}
-                  className="hero-top-ten__chip snap-start shrink-0 px-3 py-2"
-                >
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className="font-atlas text-lg text-ice/90 tabular-nums leading-none" aria-hidden>{i + 1}</span>
-                    <span className="text-[10px] uppercase tracking-wider text-stone-readable truncate">{row.place.country === "USA" ? "US" : row.place.country === "Canada" ? "CA" : "MX"}</span>
-                  </div>
-                  <div className="font-atlas text-sm text-ice leading-tight mt-1 truncate" title={row.place.name}>{row.place.name}</div>
-                  <div className="text-[11px] text-stone-readable mt-0.5 truncate">{row.place.koppen}</div>
-                  <div className="text-[10px] text-stone-readable mt-1 font-mono-num tabular-nums">
-                    Blend <span className="text-frost">{Math.round(row.score)}</span>
-                  </div>
-                  {row.note ? (
-                    <div className="text-[10px] text-stone-readable mt-0.5 leading-snug line-clamp-2" title={prose(row.note)}>{prose(row.note)}</div>
-                  ) : null}
-                </button>
-              );
-            })}
-          </div>
-
-        </div>
+        <LivabilityTopTenRail
+          rows={livabilityTopTen}
+          onOpenPlace={onOpenPlace}
+          variant="detailed"
+        />
       ) : null}
 
       <PinnedAndRecentRails
@@ -3088,6 +3124,8 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   showDesktopScoutBoard,
   includeSignalRail = false,
   includeScoutBrief = true,
+  livabilityTopTen = [],
+  livabilityPending = false,
 }: {
   signatureLeaders: SignatureLeader[];
   ranking: RankingProfile;
@@ -3106,6 +3144,8 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   showDesktopScoutBoard: boolean;
   includeSignalRail?: boolean;
   includeScoutBrief?: boolean;
+  livabilityTopTen?: RankingResult[];
+  livabilityPending?: boolean;
 }) {
   const desktopScoutBoard = includeScoutBrief && scoutBrief && showDesktopScoutBoard ? (
     <DesktopScoutBoard
@@ -3135,11 +3175,20 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
       onOpenPlace={onOpenPlace}
     />
   ) : null;
+  const livabilityRail = showDesktopScoutBoard && livabilityTopTen.length > 0 ? (
+    <LivabilityTopTenRail
+      rows={livabilityTopTen}
+      onOpenPlace={onOpenPlace}
+      variant="detailed"
+      pending={livabilityPending}
+    />
+  ) : null;
   return (
     <>
       {desktopScoutBoard}
       {signalRail}
       {livingCompass}
+      {livabilityRail}
 
       {includeScoutBrief && scoutBrief && !showDesktopScoutBoard ? (
         <ScoutBriefPanel
@@ -3164,26 +3213,51 @@ const ExplorerHeroDetailPanels = memo(function ExplorerHeroDetailPanels({
   );
 });
 
-const MobileLivabilityTopTenStrip = memo(function MobileLivabilityTopTenStrip({
+const LivabilityTopTenRail = memo(function LivabilityTopTenRail({
   rows,
   onOpenPlace,
+  variant = "compact",
   pending = false,
 }: {
   rows: RankingResult[];
   onOpenPlace: OpenPlaceHandler;
+  variant?: "detailed" | "compact";
   pending?: boolean;
 }) {
   const prose = useProse();
   if (rows.length === 0) return null;
+  const detailed = variant === "detailed";
 
   return (
     <div
-      className="hero-top-ten px-3 py-2.5 sm:px-4 space-y-2.5"
+      className={`hero-top-ten px-3 py-2.5 sm:px-4 space-y-2.5${detailed ? " min-[1400px]:py-3 min-[1400px]:space-y-3" : ""}`}
       aria-busy={pending || undefined}
       data-pending={pending || undefined}
     >
       <div className="min-w-0">
-        <div className="text-[10px] uppercase tracking-wider text-sage-700">Livability lens - top ten</div>
+        <div className="text-[10px] uppercase tracking-wider text-sage-700">
+          {detailed ? "Livability lens · top ten" : "Livability lens - top ten"}
+        </div>
+        {detailed ? (
+          <>
+            <p className="hidden min-[1400px]:block text-xs text-stone-readable mt-1 leading-relaxed max-w-3xl">
+              Same filtered pool as the map and cards. This row is <span className="font-medium text-frost">always</span> sorted by our published blend — not by whatever you picked in Rank by.
+            </p>
+            <div className="mt-2 hidden min-[1400px]:flex flex-wrap items-center gap-1.5 text-[10px] text-stone-readable" aria-label="Livability blend weights (v3)">
+              <span className="livability-weight-pill" title="Blends the thermal plateau, warm-night recovery, year-round usable-month runway, sky/dampness, and curated comfort.">Felt comfort {Math.round(LIVABILITY_WEIGHTS.thermalComfort * 100)}%</span>
+              <span className="livability-weight-pill" title="Sky, wind exposure, humidity or arid-air strain, smoke/air, and solar burden.">Atmosphere {Math.round(LIVABILITY_WEIGHTS.atmosphericEase * 100)}%</span>
+              <span className="livability-weight-pill" title="0.6 × mean-of-9 + 0.4 × max-of-9 — surfaces tail risk that an averaged hazard score would hide.">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardCushion * 100)}%</span>
+              <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
+              <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
+              <span className="livability-weight-pill" title="U-shaped penalty: full marks 700..1500 mm/yr; both arid (<300) and saturated (>2500) reduce the score.">Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
+              <span className="livability-weight-pill" title="Curated cost, social-fabric, and daily-services friction.">Lived friction {Math.round(LIVABILITY_WEIGHTS.livedFriction * 100)}%</span>
+              <span className="livability-weight-pill" title="Derived actual-place read from sensory comfort, daily ease, place identity, and scouting clarity.">Place feel {Math.round(LIVABILITY_WEIGHTS.placeFeel * 100)}%</span>
+            </div>
+            <p className="hidden min-[1400px]:block mt-1.5 text-[10px] text-stone-readable/85 italic">
+              v3 livability lens — felt comfort, atmosphere, usable-month runway, hazard cushion, precip moderation, lived friction, and place feel. Editorial triage for exploration, not appraisal or medical heat-stress advice.
+            </p>
+          </>
+        ) : null}
       </div>
       <div
         className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 snap-x snap-mandatory scroll-smooth [scrollbar-width:thin]"
