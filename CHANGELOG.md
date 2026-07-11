@@ -4,6 +4,13 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Interactive map declutter II: scout peek + surface LOD
+
+- **Hover card slim-down (`src/components/AtlasMapTooltip.tsx`, `src/styles.css`):** the pin preview no longer expands into a dossier-scale panel. Compact stays a name + climate metrics peek; pointer dwell (450 ms) promotes to a medium scout card (climate strip, why-it-differs, up to two drivers) capped at ~18 rem tall / 19 rem wide. Comfort scores, scout cues, and confidence chrome stay in the full profile. Keyboard focus never auto-promotes past compact.
+- **Label + pin LOD (`src/lib/atlas-map-label-visibility.ts`, `src/components/AtlasMap.tsx`):** name labels appear later and open to `full` less often; mid-zoom collision gutters are wider. Below continent-scale zoom (`k < 1.0`) pins keep the tier glyph and hit target but drop signature auras and country rings; rank-halo orbit waits until `k ≥ 1.15`. Leader lines are quieter by default.
+- **Quieter chrome (`src/components/AtlasMap.tsx`, `src/styles.css`):** the Atlas readout collapses to Leaders + Driver until hover/focus-within or an explicit More/Less toggle (coarse pointers stay collapsed). Rank trails default to quiet until `k ≥ 1.35` outside clusters; country labels fade earlier. Cluster picker max height caps at 380 px. Keyboard pin focus keeps a compact peek even if the pointer grazes and leaves the focused pin.
+- No scoring, ranking, corpus data, routes, clustering, or URL semantics change.
+
 ### Discovery-first Explorer cold start
 
 - **Default ranking (`src/lib/app-ranking-preference.ts`):** first-run Explorer sessions now open on **Most unique** instead of Live-here fit, so the atlas leads with microclimate discovery. Persisted ranking preferences still win for returning readers; active Live Finder constraints still auto-switch to `live-fit`.

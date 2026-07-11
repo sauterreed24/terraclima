@@ -4,7 +4,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { AtlasMap, wheelZoomFactor } from "../components/AtlasMap";
 import { UnitProvider } from "../lib/units";
 import { makePlace } from "../lib/__tests__/test-fixtures";
-import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
+import { type LiveFitFilters } from "../lib/live-fit";
 
 afterEach(cleanup);
 
@@ -253,24 +253,56 @@ describe("AtlasMap DOM controls", () => {
 
   it("shows the climate-preview tooltip on keyboard focus (parity with pointer hover)", async () => {
     vi.useFakeTimers();
-    setCoarsePointer(false);
-    const places = [makePlace({ id: "solo", name: "Solo Peak", lat: 40, lon: -100, tier: "A" })];
-    renderMap(vi.fn(), [], places);
+    try {
+      setCoarsePointer(false);
+      const places = [makePlace({ id: "solo", name: "Solo Peak", lat: 40, lon: -100, tier: "A" })];
+      renderMap(vi.fn(), [], places);
 
-    // No preview until a pin is engaged.
-    expect(screen.queryByRole("tooltip")).toBeNull();
+      // No preview until a pin is engaged.
+      expect(screen.queryByRole("tooltip")).toBeNull();
 
-    const marker = document.querySelector('[data-marker-id="solo"]') as SVGGElement | null;
-    expect(marker).toBeTruthy();
-    fireEvent.focus(marker!);
+      const marker = document.querySelector('[data-marker-id="solo"]') as SVGGElement | null;
+      expect(marker).toBeTruthy();
+      fireEvent.focus(marker!);
 
-    expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "compact");
-    await act(async () => {
-      vi.advanceTimersByTime(350);
-    });
-    expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "full");
-    expect(screen.getByRole("tooltip")).toHaveTextContent("Solo Peak");
-    vi.useRealTimers();
+      expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "compact");
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+      // Keyboard stays on the compact peek — no dwell promotion.
+      expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "compact");
+      expect(screen.getByRole("tooltip")).toHaveTextContent("Solo Peak");
+      expect(screen.getByRole("tooltip")).not.toHaveTextContent("Climate snapshot");
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("keeps the keyboard compact peek when the pointer grazes and leaves the focused pin", async () => {
+    vi.useFakeTimers();
+    try {
+      setCoarsePointer(false);
+      renderMap(vi.fn(), [], defaultMapPlaces());
+      const marker = document.querySelector('[data-marker-id="a"]') as SVGGElement;
+      fireEvent.focus(marker);
+      expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "compact");
+
+      fireEvent.pointerEnter(marker, { pointerType: "mouse" });
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+      expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "compact");
+      expect(screen.getByRole("tooltip")).not.toHaveTextContent("Climate snapshot");
+
+      fireEvent.pointerLeave(marker, { pointerType: "mouse" });
+      await act(async () => {
+        vi.advanceTimersByTime(200);
+      });
+      expect(screen.getByRole("tooltip")).toBeInTheDocument();
+      expect(screen.getByRole("tooltip")).toHaveAttribute("data-variant", "compact");
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("opens dense clusters into a sorted picker with tier and lived-coverage context", () => {
@@ -345,6 +377,12 @@ describe("AtlasMap DOM controls", () => {
     expect(within(dialog).getByText("Location key")).toBeInTheDocument();
     expect(within(dialog).getByText("20 pins separated")).toBeInTheDocument();
     expect(dialog.querySelectorAll(".cluster-picker__mini-pin")).toHaveLength(20);
+    const pickerMax = Number.parseFloat(
+      getComputedStyle(dialog).getPropertyValue("--cluster-picker-max-height") ||
+        (dialog as HTMLElement).style.getPropertyValue("--cluster-picker-max-height"),
+    );
+    expect(pickerMax).toBeGreaterThan(0);
+    expect(pickerMax).toBeLessThanOrEqual(380);
     expect(first).toHaveAttribute("aria-label", expect.stringContaining("Position 1"));
     expect(first).toHaveTextContent("Alpha Valley");
     expect(first).toHaveTextContent("Flagship");
@@ -460,13 +498,16 @@ describe("AtlasMap DOM controls", () => {
       expect(preview).not.toHaveTextContent("Climate snapshot");
 
       await act(async () => {
-        vi.advanceTimersByTime(360);
+        vi.advanceTimersByTime(460);
       });
 
       const richPreview = screen.getByRole("tooltip");
       expect(richPreview).toHaveAttribute("data-variant", "full");
       expect(richPreview).toHaveTextContent("Climate snapshot");
-      expect(richPreview).toHaveTextContent("Scout cues");
+      expect(richPreview).toHaveTextContent("Why it differs");
+      expect(richPreview).toHaveTextContent("Open pin for full profile");
+      expect(richPreview).not.toHaveTextContent("Scout cues");
+      expect(richPreview).not.toHaveTextContent("Comfort read");
 
       fireEvent.click(marker);
       expect(onSelect).toHaveBeenCalledWith("a");
@@ -481,7 +522,6 @@ describe("AtlasMap DOM controls", () => {
       setCoarsePointer(false);
       const places = defaultMapPlaces();
       const liveFitFilters: LiveFitFilters = { maxSummerHighC: 22 };
-      const expectedLiveFit = assessLiveFit(places[0]!, liveFitFilters).score;
       renderMap(vi.fn(), ["a"], places, { featuredLabel: "Live-here fit", liveFitFilters });
 
       const marker = screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ });
@@ -490,13 +530,15 @@ describe("AtlasMap DOM controls", () => {
       expect(screen.getByRole("tooltip")).toHaveTextContent("Rank #1 by Live-here fit");
 
       await act(async () => {
-        vi.advanceTimersByTime(360);
+        vi.advanceTimersByTime(460);
       });
 
       const richPreview = screen.getByRole("tooltip");
       expect(richPreview).toHaveAttribute("data-variant", "full");
-      expect(richPreview).toHaveTextContent("Current lens leader");
-      expect(richPreview).toHaveTextContent(`Live fit${expectedLiveFit}`);
+      expect(richPreview).toHaveTextContent("Rank #1 by Live-here fit");
+      expect(richPreview).toHaveTextContent("Climate snapshot");
+      expect(richPreview).not.toHaveTextContent("Live fit");
+      expect(richPreview).not.toHaveTextContent("Current lens leader");
     } finally {
       vi.useRealTimers();
     }
@@ -524,7 +566,7 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.getByRole("button", { name: /Current rank #2\. Beta Ridge/ })).toBeInTheDocument();
     expect(screen.getByRole("application", { name: /Gold trail connects the current top-ranked places/ })).toBeInTheDocument();
     expect(container.querySelector(".map-rank-trail__line")).toBeInTheDocument();
-    expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "full");
+    expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "quiet");
   });
 
   it("summarizes the current ranked map read before the user hovers a pin", () => {
@@ -539,12 +581,25 @@ describe("AtlasMap DOM controls", () => {
     expect(readout).toHaveTextContent("2 linked");
     expect(readout).toHaveTextContent("Live-here fit");
     expect(readout).toHaveTextContent("Driver");
+    // Feel/Field stay in the DOM; the dl aria-label carries the full read for AT.
+    // Visual collapse is CSS (nth-child); More toggles data-expanded for sticky expand.
+    expect(readout.querySelectorAll(".map-atlas-readout__item").length).toBe(4);
+    expect(readout).toHaveAttribute("data-expanded", "false");
     expect(readout).toHaveTextContent("Feel");
     expect(readout).toHaveTextContent("Field");
     expect(readout).toHaveTextContent("2 open pins");
     expect(readout.querySelector(".map-atlas-readout__grid")).toHaveAttribute(
       "aria-label",
       expect.stringContaining("Current map read."),
+    );
+
+    const expand = within(readout).getByRole("button", { name: "Expand atlas read details" });
+    expect(expand).toHaveAttribute("aria-expanded", "false");
+    fireEvent.click(expand);
+    expect(readout).toHaveAttribute("data-expanded", "true");
+    expect(within(readout).getByRole("button", { name: "Collapse atlas read details" })).toHaveAttribute(
+      "aria-expanded",
+      "true",
     );
 
     // Valid <dl> structure (axe definition-list): each grouping div holds only a
@@ -827,25 +882,67 @@ describe("AtlasMap DOM controls", () => {
     expect(Math.abs(expectedScreenY - (vy + py))).toBeGreaterThan(1);
   });
 
-  it("promotes the keyboard-focused tooltip to full after dwell", async () => {
+  it("keeps the keyboard-focused tooltip compact after dwell", async () => {
     vi.useFakeTimers();
-    setCoarsePointer(false);
-    renderMap(vi.fn(), [], defaultMapPlaces());
-    const marker = document.querySelector('[data-marker-id="a"]') as SVGGElement;
-    fireEvent.focus(marker);
+    try {
+      setCoarsePointer(false);
+      renderMap(vi.fn(), [], defaultMapPlaces());
+      const marker = document.querySelector('[data-marker-id="a"]') as SVGGElement;
+      fireEvent.focus(marker);
 
-    const preview = screen.getByRole("tooltip");
-    expect(preview).toHaveAttribute("data-variant", "compact");
-    await act(async () => {
-      vi.advanceTimersByTime(350);
+      const preview = screen.getByRole("tooltip");
+      expect(preview).toHaveAttribute("data-variant", "compact");
+      await act(async () => {
+        vi.advanceTimersByTime(500);
+      });
+      expect(preview).toHaveAttribute("data-variant", "compact");
+      expect(preview).not.toHaveTextContent("Climate snapshot");
+      expect(preview.querySelector(".tc-map-hover-title")).toBeTruthy();
+      expect(preview.querySelector(".text-ice")).toBeNull();
+      expect(preview.querySelector(".text-stone")).toBeNull();
+      expect(preview.querySelector(".tc-map-hover-metric__label")).toBeTruthy();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("uses glyph pin LOD at continent-scale fit zoom", () => {
+    setCoarsePointer(false);
+    const places = [
+      makePlace({ id: "nw", name: "Northwest", lat: 48, lon: -122, tier: "A" }),
+      makePlace({ id: "ne", name: "Northeast", lat: 45, lon: -70, tier: "B" }),
+      makePlace({ id: "sw", name: "Southwest", lat: 32, lon: -116, tier: "B" }),
+      makePlace({ id: "se", name: "Southeast", lat: 28, lon: -82, tier: "C" }),
+      makePlace({ id: "mx", name: "Mexico City", lat: 19.4, lon: -99.1, tier: "A" }),
+    ];
+    const { container } = renderMap(vi.fn(), [], places);
+    // Zoom out to the floor so pin chrome LOD stays glyph-only.
+    for (let i = 0; i < 12; i += 1) {
+      const zoomOut = screen.getByRole("button", { name: /Zoom out|Minimum zoom/ });
+      if ((zoomOut as HTMLButtonElement).disabled) break;
+      fireEvent.click(zoomOut);
+    }
+    const marker = container.querySelector('[data-marker-id="nw"]') as SVGGElement | null;
+    expect(marker).toBeTruthy();
+    expect(marker).toHaveAttribute("data-pin-lod", "glyph");
+    expect(marker?.querySelector(".map-marker__signature-aura")).toBeNull();
+  });
+
+  it("promotes rank-trail tone after zooming past the quiet threshold", async () => {
+    setCoarsePointer(false);
+    const { container } = renderMap(vi.fn(), ["a", "b"]);
+    const trail = container.querySelector(".map-rank-trail");
+    expect(trail).toHaveAttribute("data-tone", "quiet");
+
+    for (let i = 0; i < 14; i += 1) {
+      const zoomIn = screen.getByRole("button", { name: /Zoom in|Maximum zoom/ });
+      if ((zoomIn as HTMLButtonElement).disabled) break;
+      fireEvent.click(zoomIn);
+    }
+    // settledView lags gesture zoom by ~120ms before trail tone recomputes.
+    await waitFor(() => {
+      expect(container.querySelector(".map-rank-trail")).toHaveAttribute("data-tone", "full");
     });
-    expect(preview).toHaveAttribute("data-variant", "full");
-    expect(preview).toHaveTextContent("Climate snapshot");
-    expect(preview.querySelector(".tc-map-hover-title")).toBeTruthy();
-    expect(preview.querySelector(".text-ice")).toBeNull();
-    expect(preview.querySelector(".text-stone")).toBeNull();
-    expect(preview.querySelector(".tc-map-hover-metric__label")).toBeTruthy();
-    vi.useRealTimers();
   });
 
   it("uses map-chrome coord readout styling instead of paper panel tokens", () => {
