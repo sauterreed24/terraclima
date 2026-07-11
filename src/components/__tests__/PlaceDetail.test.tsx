@@ -655,7 +655,7 @@ describe("PlaceDetail home-base anchor", () => {
     expect(onHomeBaseToggle).toHaveBeenCalledWith(home.id);
   });
 
-  it("renders no vs-home surface when no home base is set", () => {
+  it("renders a vs-home placeholder when no home base is set", () => {
     const place = PLACES_BY_ID["boulder-co"];
 
     render(
@@ -664,10 +664,32 @@ describe("PlaceDetail home-base anchor", () => {
       </UnitProvider>,
     );
 
-    expect(screen.queryByText(/Versus your home base/)).not.toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Versus your home base" })).toBeInTheDocument();
+    expect(screen.getByRole("complementary", { name: "First-session climate journey" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Climate twins" })).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: `Set ${place.name} as your home base for climate deltas` }),
-    ).toBeInTheDocument();
+      screen.getAllByRole("button", { name: `Set ${place.name} as your home base for climate deltas` }).length,
+    ).toBeGreaterThanOrEqual(2);
+  });
+
+  it("orders mechanism, versus home, and twins before the residency brief", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} onHomeBaseToggle={() => undefined} />
+      </UnitProvider>,
+    );
+
+    const why = screen.getByRole("heading", { name: "Why this climate is different here" });
+    const vsHome = screen.getByRole("heading", { name: "Versus your home base" });
+    const twins = screen.getByRole("heading", { name: "Climate twins" });
+    const residency = document.getElementById("pd-residency-brief");
+    expect(residency).not.toBeNull();
+    expect(why.compareDocumentPosition(vsHome) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(vsHome.compareDocumentPosition(twins) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(twins.compareDocumentPosition(residency!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });
 

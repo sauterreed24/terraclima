@@ -327,6 +327,7 @@ export default function App() {
   const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
   const [animatePlaceDetailEntry, setAnimatePlaceDetailEntry] = useState(false);
+  const [placeEntryIntent, setPlaceEntryIntent] = useState<"surprise" | null>(null);
   // Theme preference (auto/light/dark). URL ?theme=... wins on first paint;
   // otherwise we read the last explicit choice from localStorage; otherwise
   // default to "auto" so the OS preference drives the resolved theme.
@@ -930,7 +931,7 @@ export default function App() {
     });
   }, []);
 
-  const openPlace = useCallback((id: string, opts?: { trigger?: HTMLElement | null }) => {
+  const openPlace = useCallback((id: string, opts?: { trigger?: HTMLElement | null; entryIntent?: "surprise" | null }) => {
     preloadPlaceDetail();
     if (opts?.trigger) {
       detailTriggerRef.current = opts.trigger;
@@ -941,8 +942,13 @@ export default function App() {
     if (canonical) {
       setRecentIds(recordRecentPlace(canonical));
     }
+    setPlaceEntryIntent(opts?.entryIntent ?? null);
     setAnimatePlaceDetailEntry(true);
     setSelectedId(id);
+  }, []);
+
+  const consumePlaceEntryIntent = useCallback(() => {
+    setPlaceEntryIntent(null);
   }, []);
 
   const focusMainContentNextFrame = useCallback(() => {
@@ -1335,7 +1341,7 @@ export default function App() {
   const pickRandomPlace = useCallback((opts?: { trigger?: HTMLElement | null }): boolean => {
     const id = pickSurprisePlaceId(rankedRef.current, recentIds);
     if (!id) return false;
-    openPlace(id, opts);
+    openPlace(id, { ...opts, entryIntent: "surprise" });
     return true;
   }, [openPlace, recentIds]);
 
@@ -1893,6 +1899,8 @@ export default function App() {
               occluded={placeDetailOccluded}
               scenario={climateScenario}
               animateEntry={animatePlaceDetailEntry}
+              entryIntent={placeEntryIntent}
+              onEntryIntentConsumed={consumePlaceEntryIntent}
             />
           </Suspense>
         </LazyRouteErrorBoundary>
@@ -2882,6 +2890,11 @@ const HeroCard = memo(function HeroCard({
               ? active.description
               : "Rain shadows, sky islands, fog belts, thermal belts, and other terrain climates most people never hear of. Open a pin, try Surprise me, or start from Most unique."}
           </p>
+          {!homeBasePlace && !active ? (
+            <p className="text-xs text-stone-readable mt-1.5 max-w-2xl leading-snug">
+              Surprise opens a profile — set your home city there to unlock climate deltas and twins with clearer tradeoffs.
+            </p>
+          ) : null}
 
         </div>
         <div className="hero-action-stack">

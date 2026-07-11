@@ -21,6 +21,8 @@ import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtDelta, useProse } from "../li
 import { getBestMonths } from "../lib/best-months";
 import { CopyPlaceLink } from "./place-detail/CopyPlaceLink";
 import { PlaceClimateTwins } from "./place-detail/PlaceClimateTwins";
+import { PlaceClimateTwinsTeaser } from "./place-detail/PlaceClimateTwinsTeaser";
+import { PlaceDiscoveryJourneyBridge } from "./place-detail/PlaceDiscoveryJourneyBridge";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
@@ -187,9 +189,13 @@ interface Props {
   occluded?: boolean;
   scenario?: ScenarioId;
   animateEntry?: boolean;
+  /** When "surprise", scroll once to the mechanism section after open. */
+  entryIntent?: "surprise" | null;
+  /** Clears entryIntent after the surprise scroll nudge runs. */
+  onEntryIntentConsumed?: () => void;
 }
 
-export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, residencyFitContext, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, occluded = false, scenario = "now", animateEntry = true }: Props) {
+export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onPickArchetype, onOpenPlace, liveFitFilters, residencyFitContext, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, occluded = false, scenario = "now", animateEntry = true, entryIntent = null, onEntryIntentConsumed }: Props) {
   const reduceMotion = useReducedMotion();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const panelRef = useRef<HTMLElement>(null);
@@ -273,6 +279,20 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
       window.clearTimeout(settledFocusRetryId);
     };
   }, [placeId, occluded]);
+
+  useEffect(() => {
+    if (!placeId || occluded || entryIntent !== "surprise") return;
+    if (typeof window !== "undefined" && window.location.hash.startsWith("#deep-")) {
+      onEntryIntentConsumed?.();
+      return;
+    }
+    const behavior = reduceMotion ? "auto" : "smooth";
+    const t = window.setTimeout(() => {
+      scrollDetailRootToSection(PD.whyHere, { behavior });
+      onEntryIntentConsumed?.();
+    }, 180);
+    return () => window.clearTimeout(t);
+  }, [placeId, occluded, entryIntent, reduceMotion, onEntryIntentConsumed]);
 
   return (
     <AnimatePresence>
@@ -746,10 +766,7 @@ function DetailBody({
   const practicalActivities = useMemo(() => buildPracticalActivities(place), [place]);
   const nearbyContextRows = useMemo(() => buildNearbyContextRows(place), [place]);
   const growabilityRationale = useMemo(() => buildGrowabilityRationale(place), [place]);
-  const navItems = useMemo(
-    () => buildPlaceDetailNavItems(place, { hasHomeBase: Boolean(homePlace) }),
-    [place, homePlace],
-  );
+  const navItems = useMemo(() => buildPlaceDetailNavItems(place), [place]);
   const navDomIds = useMemo(() => navItems.map(i => i.id), [navItems]);
   const readingActiveAnchor = useDetailReadingSpy(navDomIds);
   const deepMerged = useMemo(() => mergeDeepSections(place), [place]);
@@ -856,6 +873,21 @@ function DetailBody({
         <div className="text-sm text-stone mt-3 italic">Relief context: {prose(place.reliefContext)}</div>
       </Section>
 
+      <PlaceDiscoveryJourneyBridge
+        place={place}
+        homePlace={homePlace}
+        onHomeBaseToggle={onHomeBaseToggle}
+        reduceMotion={Boolean(reduceMotion)}
+      />
+
+      <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} />
+
+      <PlaceClimateTwinsTeaser
+        place={place}
+        onOpenPlace={onOpenPlace}
+        reduceMotion={Boolean(reduceMotion)}
+      />
+
       <PlaceResidencyBrief
         place={place}
         anchorId={PD.residency}
@@ -870,10 +902,6 @@ function DetailBody({
         onCompareToggle={onCompareToggle}
         onBookmarkToggle={onBookmarkToggle}
       />
-
-      {homePlace ? (
-        <PlaceVersusHome place={place} home={homePlace} onHomeBaseToggle={onHomeBaseToggle} />
-      ) : null}
 
       <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
 
@@ -1439,7 +1467,7 @@ function DetailBody({
         </Section>
       )}
 
-      <Section anchorId={PD.similar} title="Climate twins" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+      <Section anchorId={PD.similar} title="Climate twins detail" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
         <PlaceClimateTwins place={place} onOpenPlace={onOpenPlace} />
       </Section>
 

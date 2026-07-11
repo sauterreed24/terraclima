@@ -449,7 +449,7 @@ export function buildClimateTwinTradeoffRead(
     summary: `${twin.place.name} is the first same-feel comparison${shiftClause}: it preserves ${sharedClause}; the main climate tradeoff is that it ${tradeoff}.`,
     shared,
     tradeoff,
-    nextAction: `Open ${twin.place.name} if that tradeoff sounds useful, or nudge the twin set before adding finalists to Compare.`,
+    nextAction: `Open ${twin.place.name}'s dossier to pressure-test that tradeoff before shortlisting.`,
   };
 }
 
