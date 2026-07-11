@@ -1240,7 +1240,10 @@ export default function App() {
     }
     if (!compareWasOpenRef.current) return;
     compareWasOpenRef.current = false;
+    let restoredTarget: HTMLElement | null = null;
     const focusCompareTrigger = () => {
+      const current = document.activeElement as HTMLElement | null;
+      if (restoredTarget && current !== document.body && current !== restoredTarget) return;
       const hasLayoutSignals = [...document.querySelectorAll<HTMLElement>("button, [href], input, select, textarea")]
         .some(el => {
           const rect = el.getBoundingClientRect();
@@ -1264,7 +1267,10 @@ export default function App() {
         ? trigger
         : labelTarget ?? document.getElementById("main-content");
       if (!target) return;
-      try { target.focus({ preventScroll: true }); } catch { /* noop */ }
+      try {
+        target.focus({ preventScroll: true });
+        restoredTarget = target;
+      } catch { /* noop */ }
     };
     const rafId = window.requestAnimationFrame(focusCompareTrigger);
     const retryId = window.setTimeout(focusCompareTrigger, 80);
@@ -1288,7 +1294,9 @@ export default function App() {
   }, []);
 
   const openFilterSheet = useCallback((trigger?: HTMLElement | null) => {
-    explorerFilterSheetRef.current?.open(trigger ?? (document.activeElement as HTMLElement | null));
+    const active = document.activeElement as HTMLElement | null;
+    const opener = trigger ?? (active && active !== document.body ? active : null);
+    explorerFilterSheetRef.current?.open(opener);
   }, []);
 
   /**

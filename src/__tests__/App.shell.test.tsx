@@ -1886,6 +1886,22 @@ describe("App shell", () => {
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("restores a body-opened mobile search shortcut to the visible Filters trigger", async () => {
+    mockViewport(390);
+    renderApp();
+
+    const trigger = screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]!;
+    expect(document.activeElement).toBe(document.body);
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+
+    const sheet = await screen.findByRole("dialog", { name: "Filters & ranking" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    const search = within(sheet).getByRole("textbox", { name: "Search places by name, region, or archetype" });
+    await waitFor(() => expect(search).toHaveFocus(), { timeout: APP_SHELL_TIMEOUT_MS });
+
+    fireEvent.click(within(sheet).getByRole("button", { name: "Close filters" }));
+    await waitFor(() => expect(trigger).toHaveFocus(), { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("selects existing search text when Ctrl+K focuses the search input", async () => {
     renderApp();
 

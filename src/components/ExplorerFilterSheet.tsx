@@ -178,7 +178,8 @@ export const ExplorerFilterSheet = memo(
     }, []);
 
     const openSheet = useCallback((trigger?: HTMLElement | null) => {
-      externalTriggerRef.current = trigger?.isConnected ? trigger : null;
+      externalTriggerRef.current =
+        trigger?.isConnected && trigger !== document.body ? trigger : null;
       dialogRef.current?.showModal();
     }, []);
 

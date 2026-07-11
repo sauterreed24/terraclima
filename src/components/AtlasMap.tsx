@@ -1505,12 +1505,18 @@ export const AtlasMap = memo(function AtlasMap({
     const dialog = legendPanelRef.current;
     if (dialog?.open) dialog.close();
     setLegendOpen(false);
+    let restored = false;
     const restoreFocus = () => {
+      const target = legendToggleRef.current;
+      const current = document.activeElement;
+      if (!target || !target.isConnected) return;
+      if (restored && current !== document.body && current !== target) return;
       try {
-        legendToggleRef.current?.focus({ preventScroll: true });
+        target.focus({ preventScroll: true });
       } catch {
-        legendToggleRef.current?.focus();
+        target.focus();
       }
+      restored = true;
     };
     window.requestAnimationFrame(restoreFocus);
     window.setTimeout(restoreFocus, 0);
