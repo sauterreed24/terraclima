@@ -1,4 +1,4 @@
-import type { CSSProperties } from "react";
+import { memo, useMemo, type CSSProperties } from "react";
 import type { MicroclimateArchetype, Place, RiskAssessment, RiskLevel, TopographicDriver } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { fmtPrecip, fmtTemp, useProse, useUnits } from "../lib/units";
@@ -59,7 +59,7 @@ function riskTone(level: RiskLevel): "low" | "moderate" | "high" {
   return "low";
 }
 
-export function AtlasMapTooltip({
+export const AtlasMapTooltip = memo(function AtlasMapTooltip({
   place,
   xPct,
   yPct,
@@ -87,10 +87,13 @@ export function AtlasMapTooltip({
   const watch = topRiskRows(place, 2);
   const growList = place.growability.growsWell.slice(0, 2);
   const trickyFirst = place.growability.tricky[0];
-  const liveFit = assessLiveFit(place, liveFitFilters);
-  const comfort = Math.round(humanComfortScore(place));
-  const atmosphere = Math.round(atmosphericComfortScore(place));
-  const comfortRead = describeHumanComfort(place);
+  const scored = useMemo(() => ({
+    liveFit: assessLiveFit(place, liveFitFilters),
+    comfort: Math.round(humanComfortScore(place)),
+    atmosphere: Math.round(atmosphericComfortScore(place)),
+    comfortRead: describeHumanComfort(place),
+  }), [place, liveFitFilters]);
+  const { liveFit, comfort, atmosphere, comfortRead } = scored;
 
   const compactMap = mapWidth < 420;
   const onRight = xPct < 55;
@@ -253,7 +256,7 @@ export function AtlasMapTooltip({
         <section className="tc-map-hover-scout-strip" aria-label="Scout cues">
           <div className="tc-map-hover-scout-strip__head">
             <h3 className="tc-map-hover-kicker">Scout cues</h3>
-            <span>Open dossier, compare finalists</span>
+            <span>Open dossier from the pin · compare from the profile</span>
           </div>
           <div className="tc-map-hover-cues">
             {growList.length > 0 ? (
@@ -279,7 +282,7 @@ export function AtlasMapTooltip({
       </div>
     </div>
   );
-}
+});
 
 function InstrumentMetric({ label, value, tone }: { label: string; value: string; tone: "ochre" | "glacier" | "sage" }) {
   return (

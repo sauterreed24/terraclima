@@ -110,12 +110,17 @@ describe("AtlasMap DOM controls", () => {
     expect(screen.queryByRole("group", { name: "Map key" })).toBeNull();
     const mapLegend = screen.getByRole("dialog", { name: "Map legend" });
     expect(mapLegend).toBeInTheDocument();
+    expect(mapLegend).toHaveAttribute("open");
+    expect(mapLegend).toHaveAttribute("aria-modal", "true");
     expect(keyButton).toHaveAccessibleName("Hide map legend");
     expect(keyButton).toHaveAttribute("title", "Hide map legend");
     expect(within(mapLegend).getByText("Orographic / orchard / chinook")).toBeInTheDocument();
 
     const closeMapLegend = screen.getByRole("button", { name: "Close map legend" });
     expect(closeMapLegend).toHaveAttribute("title", "Close map legend");
+    await waitFor(() => expect(closeMapLegend).toHaveFocus());
+    fireEvent.keyDown(closeMapLegend, { key: "Tab" });
+    expect(closeMapLegend).toHaveFocus();
     fireEvent.click(closeMapLegend);
 
     expect(screen.queryByRole("dialog", { name: "Map legend" })).toBeNull();

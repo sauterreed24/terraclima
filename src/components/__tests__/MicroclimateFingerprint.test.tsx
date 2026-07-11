@@ -10,7 +10,7 @@ describe("MicroclimateFingerprint", () => {
   it("uses compact labels when rendered in tight comparison cards", () => {
     render(<MicroclimateFingerprint place={makePlace({ name: "Compact Ridge" })} compactLabels />);
 
-    expect(screen.getByRole("img", { name: "Microclimate fingerprint for Compact Ridge" })).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /Microclimate fingerprint for Compact Ridge/ })).toBeInTheDocument();
     expect(screen.getByText("Low hum.")).toBeInTheDocument();
     expect(screen.queryByText("Low humidity")).not.toBeInTheDocument();
   });

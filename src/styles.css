@@ -6080,6 +6080,41 @@
     filter: saturate(0.94);
     transition: opacity 140ms ease, filter 140ms ease;
   }
+  .tc-explorer-pending-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    align-self: flex-start;
+    padding: 0.28rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid rgba(94, 196, 220, 0.35);
+    background: rgba(94, 196, 220, 0.12);
+    color: var(--color-frost);
+    font-size: 0.68rem;
+    font-weight: 650;
+    letter-spacing: 0.02em;
+  }
+  .tc-explorer-pending-pill__dot {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
+    background: var(--color-glacier-500, #5ec4dc);
+    animation: pulseDot 1.4s ease-in-out infinite;
+  }
+  html[data-motion="reduced"] .tc-explorer-pending-pill__dot,
+  html[data-motion="minimal"] .tc-explorer-pending-pill__dot,
+  html.tc-low-power .tc-explorer-pending-pill__dot {
+    animation: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tc-explorer-pending-pill__dot {
+      animation: none;
+    }
+  }
+  .tc-results-pending-inline {
+    color: var(--color-glacier-700);
+    font-weight: 650;
+  }
   .tc-map-topology-loading {
     position: absolute;
     z-index: 5;
@@ -8869,15 +8904,23 @@
   }
 
   .map-mobile-legend {
-    position: absolute;
+    position: fixed;
     left: 0.75rem;
     right: 0.75rem;
     bottom: 0.75rem;
+    top: auto;
     z-index: 6;
     display: grid;
     gap: 0.65rem;
     padding: 0.85rem;
+    width: auto;
+    max-width: 32rem;
+    margin: auto;
+    border: 1px solid rgba(140, 200, 224, 0.35);
     color: rgba(245, 250, 255, 0.96);
+  }
+  .map-mobile-legend::backdrop {
+    background: var(--tc-scrim-veil, rgba(5, 10, 18, 0.82));
   }
 
   .map-legend-close {
@@ -9245,8 +9288,8 @@
        text-bearing variants on wider breakpoints. */
     .tc-header-menu-trigger,
     .tc-filter-sheet-trigger {
-      min-width: 44px;
-      min-height: 44px;
+      min-width: 46px;
+      min-height: 46px;
     }
     [data-place-detail-close] {
       min-width: 44px;
@@ -9604,8 +9647,8 @@
     transition: background 160ms, border-color 160ms, color 160ms;
   }
   .tc-bookmark-btn--pinned {
-    border-color: rgba(232, 180, 60, 0.7) !important;
-    color: rgba(160, 110, 20, 0.95) !important;
+    border-color: rgba(232, 180, 60, 0.7);
+    color: rgba(160, 110, 20, 0.95);
     background: rgba(255, 236, 184, 0.65);
   }
   .tc-bookmark-btn--pinned:hover {
@@ -10521,10 +10564,8 @@ html[data-motion="minimal"] .scenario-remap__row:hover {
   .btn-primary:hover,
   .map-btn:hover,
   .place-card:hover,
-  .current-rank-strip__chip:hover,
   .climate-signal-rail__chip:hover,
   .living-compass__rank-row:hover,
-  .signature-constellation__card:hover,
   .scout-brief__leader:hover,
   .scout-brief__signal:hover,
   .scout-brief__matrix-row:hover,
@@ -10609,8 +10650,6 @@ html[data-motion="minimal"] .scenario-remap__row:hover {
   --color-glacier-700: #7ad0e6;
 }
 
-:root[data-theme="dark"] html,
-:root[data-theme="dark"] body,
 html[data-theme="dark"],
 html[data-theme="dark"] body {
   background: #0d1320;
@@ -10722,6 +10761,26 @@ html[data-theme="dark"] .btn-ghost.compare-toggle--active {
     0 10px 24px -16px rgba(255, 207, 112, 0.45);
 }
 html[data-theme="dark"] .btn-ghost.compare-toggle--active:hover {
+  background: rgba(111, 74, 28, 0.96);
+  border-color: rgba(255, 220, 148, 0.82);
+  color: #fff0c8;
+}
+html[data-theme="dark"] .tc-field-note-strip {
+  border-color: rgba(143, 217, 154, 0.3);
+  background:
+    linear-gradient(135deg, rgba(22, 38, 42, 0.96), rgba(18, 30, 38, 0.9)),
+    rgba(13, 19, 32, 0.92);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+}
+html[data-theme="dark"] .tc-bookmark-btn--pinned {
+  border-color: rgba(255, 207, 112, 0.72);
+  color: #ffe3a1;
+  background: rgba(92, 63, 24, 0.9);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 0 0 1px rgba(255, 207, 112, 0.12);
+}
+html[data-theme="dark"] .tc-bookmark-btn--pinned:hover {
   background: rgba(111, 74, 28, 0.96);
   border-color: rgba(255, 220, 148, 0.82);
   color: #fff0c8;
@@ -12757,11 +12816,13 @@ html[data-theme="dark"] .tc-hero-credit {
   flex-wrap: wrap;
   gap: 0.6rem;
   padding: 0.55rem 0.75rem;
-  /* @starting-style entry: fade/rise in on first paint. */
+}
+html[data-motion="full"] .climate-scenario {
+  /* @starting-style entry: fade/rise in on first paint (full motion only). */
   transition: opacity 0.32s ease, transform 0.32s ease;
 }
 @starting-style {
-  .climate-scenario {
+  html[data-motion="full"] .climate-scenario {
     opacity: 0;
     transform: translateY(-4px);
   }

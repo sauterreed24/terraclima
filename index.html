@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#fffefb" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0d1320" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fffefb" media="(prefers-color-scheme: light)" data-theme-color="light" />
+    <meta name="theme-color" content="#0d1320" media="(prefers-color-scheme: dark)" data-theme-color="dark" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -103,18 +103,71 @@
     <!-- Inline critical colour tokens so the right background paints instantly
          while the bundle is fetched. Pairs the light default with a dark
          match for `prefers-color-scheme: dark` users so we don't flash the
-         bright paper before the React app applies their theme. The runtime
-         theme module (src/lib/theme.ts) overrides this on mount when the
-         user has an explicit preference saved. -->
+         bright paper before the React app applies their theme. The boot
+         script below also applies an explicit `?theme=` / localStorage
+         preference before first paint (mirrors src/lib/theme.ts). -->
     <style>
       html, body { background: #fffefb; color: #221a14; }
       #root { min-height: 100vh; }
+      html[data-theme="dark"], html[data-theme="dark"] body {
+        background: #0d1320; color: #f2f5fb;
+      }
+      html[data-theme="light"], html[data-theme="light"] body {
+        background: #fffefb; color: #221a14;
+      }
       @media (prefers-color-scheme: dark) {
-        html:not([data-theme="light"]), html:not([data-theme="light"]) body {
+        html:not([data-theme="light"]):not([data-theme="dark"]),
+        html:not([data-theme="light"]):not([data-theme="dark"]) body {
           background: #0d1320; color: #f2f5fb;
         }
       }
     </style>
+    <script>
+      (function () {
+        try {
+          var KEY = "tc.theme";
+          var pref = null;
+          try {
+            var params = new URLSearchParams(window.location.search || "");
+            var fromUrl = params.get("theme");
+            if (fromUrl === "auto" || fromUrl === "light" || fromUrl === "dark") pref = fromUrl;
+          } catch (e) { /* malformed URL */ }
+          if (!pref) {
+            try {
+              var stored = window.localStorage.getItem(KEY);
+              if (stored === "auto" || stored === "light" || stored === "dark") pref = stored;
+            } catch (e) { /* private browsing */ }
+          }
+          if (!pref) pref = "auto";
+          var prefersDark = false;
+          try {
+            prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          } catch (e) { /* no matchMedia */ }
+          var resolved = pref === "dark" ? "dark" : pref === "light" ? "light" : (prefersDark ? "dark" : "light");
+          var root = document.documentElement;
+          root.setAttribute("data-theme", resolved);
+          root.setAttribute("data-theme-preference", pref);
+          root.style.colorScheme = resolved;
+          var lightThemeColor = document.querySelector('meta[data-theme-color="light"]');
+          var darkThemeColor = document.querySelector('meta[data-theme-color="dark"]');
+          if (lightThemeColor) lightThemeColor.media = resolved === "light" ? "all" : "not all";
+          if (darkThemeColor) darkThemeColor.media = resolved === "dark" ? "all" : "not all";
+
+          var reducedMotion = false;
+          try {
+            reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          } catch (e) { /* no matchMedia */ }
+          var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+          var saveData = !!(connection && connection.saveData);
+          var lowMemory = typeof navigator.deviceMemory === "number" && navigator.deviceMemory <= 4;
+          var cores = typeof navigator.hardwareConcurrency === "number" ? navigator.hardwareConcurrency : 8;
+          var richEffects = !reducedMotion && !saveData && !lowMemory && cores > 4;
+          var motion = reducedMotion ? "reduced" : richEffects ? "full" : "minimal";
+          root.setAttribute("data-motion", motion);
+          root.classList.toggle("tc-low-power", !richEffects);
+        } catch (e) { /* never block paint */ }
+      })();
+    </script>
 
     <title>Terraclima — North American Microclimate Atlas</title>
   </head>

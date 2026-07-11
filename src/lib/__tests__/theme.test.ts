@@ -59,15 +59,30 @@ describe("resolveTheme", () => {
 
 describe("applyTheme", () => {
   it("sets data-theme, data-theme-preference, and color-scheme on the document root", () => {
+    const lightMeta = document.createElement("meta");
+    lightMeta.dataset.themeColor = "light";
+    lightMeta.media = "(prefers-color-scheme: light)";
+    const darkMeta = document.createElement("meta");
+    darkMeta.dataset.themeColor = "dark";
+    darkMeta.media = "(prefers-color-scheme: dark)";
+    document.head.append(lightMeta, darkMeta);
+
     applyTheme(document, "auto", "dark");
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
     expect(document.documentElement.getAttribute("data-theme-preference")).toBe("auto");
     expect(document.documentElement.style.colorScheme).toBe("dark");
+    expect(lightMeta.media).toBe("not all");
+    expect(darkMeta.media).toBe("all");
 
     applyTheme(document, "light", "light");
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
     expect(document.documentElement.getAttribute("data-theme-preference")).toBe("light");
     expect(document.documentElement.style.colorScheme).toBe("light");
+    expect(lightMeta.media).toBe("all");
+    expect(darkMeta.media).toBe("not all");
+
+    lightMeta.remove();
+    darkMeta.remove();
   });
 });
 

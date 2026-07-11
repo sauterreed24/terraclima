@@ -380,7 +380,7 @@ function DetailHeader({
   return (
     <div
       data-tone={tone}
-      className="detail-drawer-header sticky top-0 z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 tc-surface-elevated backdrop-blur relative border-b tc-border-warm"
+      className="detail-drawer-header relative z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 tc-surface-elevated border-b tc-border-warm"
     >
       {/* Title + actions share a row only from lg up: the drawer is ~706-830px
           across the md band and the six header actions (~540px, shrink-0)
@@ -802,7 +802,7 @@ function DetailBody({
 
       <PlaceBioclimaticIndices place={place} anchorId={PD.bioclimaticIndices} />
 
-      <Section title="Livability lens v3" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
+      <Section anchorId={PD.livability} title="Livability lens v3" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="panel-thin p-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <div>
@@ -839,6 +839,7 @@ function DetailBody({
                   {Math.round(c.value)}
                   <span className="text-stone text-[10px]">/100</span>
                 </div>
+                <span className="sr-only">{c.rationale}</span>
               </li>
             ))}
           </ul>
@@ -862,7 +863,7 @@ function DetailBody({
       </Section>
 
       {place.liveSignals ? (
-        <Section title="Lived signals" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
+        <Section anchorId={PD.livedSignals} title="Lived signals" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
           <div className="panel-thin p-4">
             <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
               Editorial reads on three axes climate normals cannot capture: cost pressure, social-fabric stress, and daily-services access. 0 = no friction, 100 = severe. These are screening signals anchored to public sources, not appraisals or insurance underwriting.
@@ -908,7 +909,7 @@ function DetailBody({
         </Section>
       ) : null}
 
-      <Section title="Live-here fit" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
+      <Section anchorId={PD.liveHereFit} title="Live-here fit" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="grid md:grid-cols-[11rem_1fr] gap-3">
           <div className="panel-thin p-4">
             <div className="text-[10px] uppercase tracking-wider text-stone-readable">Current match</div>

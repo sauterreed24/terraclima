@@ -10,6 +10,9 @@ export const PD = {
   placeFeel: "pd-place-feel",
   comfortPrecision: "pd-comfort-precision",
   bioclimaticIndices: "pd-bioclimatic-indices",
+  livability: "pd-livability",
+  livedSignals: "pd-lived-signals",
+  liveHereFit: "pd-live-here-fit",
   practical: "pd-practical-read",
   tourism: "pd-climate-tourism",
   fieldStory: "pd-field-story",
@@ -65,10 +68,19 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
     { id: PD.placeFeel, label: "Place feel", group: PD_NAV_GROUP.lived },
     { id: PD.comfortPrecision, label: "Comfort precision", group: PD_NAV_GROUP.lived },
     { id: PD.bioclimaticIndices, label: "Bioclimatic indices", group: PD_NAV_GROUP.lived },
+    { id: PD.livability, label: "Livability lens", group: PD_NAV_GROUP.lived },
+  ];
+
+  if (place.liveSignals) {
+    items.push({ id: PD.livedSignals, label: "Lived signals", group: PD_NAV_GROUP.lived });
+  }
+
+  items.push(
+    { id: PD.liveHereFit, label: "Live-here fit", group: PD_NAV_GROUP.lived },
     { id: PD.practical, label: "Practical read", group: PD_NAV_GROUP.lived },
     { id: PD.tourism, label: "Climate tourism", group: PD_NAV_GROUP.lived },
     { id: PD.fieldStory, label: "Field story", group: PD_NAV_GROUP.lived },
-  ];
+  );
 
   if (mergeDeepSections(place).length > 0) {
     items.push({ id: PD.deepDives, label: "Field dossier", group: PD_NAV_GROUP.lived });

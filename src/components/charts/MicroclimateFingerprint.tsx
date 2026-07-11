@@ -35,9 +35,13 @@ export function MicroclimateFingerprint({ place, compare, size = 260, compactLab
     }).join(" ") + " Z";
 
   const rings = [25, 50, 75, 100];
+  const topAxes = [...axes].sort((a, b) => b.v - a.v).slice(0, 3);
+  const fingerprintLabel =
+    `Microclimate fingerprint for ${place.name}. ` +
+    `Strongest axes: ${topAxes.map(a => `${a.label} ${Math.round(a.v)}`).join(", ")}.`;
 
   return (
-    <svg viewBox={`${-padX} 0 ${size + padX * 2} ${size}`} className="w-full h-auto" role="img" aria-label={`Microclimate fingerprint for ${place.name}`}>
+    <svg viewBox={`${-padX} 0 ${size + padX * 2} ${size}`} className="w-full h-auto" role="img" aria-label={fingerprintLabel}>
       {/* Polygonal rings */}
       {rings.map(ring => {
         const pts = axes.map((_, i) => {

@@ -2,7 +2,8 @@ import { memo, useLayoutEffect, useRef, useState } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { PlaceCard } from "./PlaceCard";
 import type { BestWindow } from "../lib/best-months";
-import type { FilterState, RankingResult } from "../lib/scoring";
+import type { RankingResult } from "../lib/scoring";
+import type { LiveFitFilters } from "../lib/live-fit";
 import type { Place } from "../types";
 
 const ROW_GAP_PX = 12;
@@ -59,7 +60,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   onPreloadCompare?: () => void;
   compareIds: Set<string>;
   resonantWindow: BestWindow["id"] | null;
-  liveFitFilters: FilterState;
+  liveFitFilters: LiveFitFilters;
   /** Home-base anchor; cards render a compact delta strip against it. */
   homePlace?: Place | null;
   rankingLabel: string;

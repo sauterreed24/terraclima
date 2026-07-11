@@ -27,6 +27,7 @@ vi.mock("../components/CompareView", () => ({
     places,
     open,
     onClose,
+    onRemove,
     onCopyView,
     shareStatus,
     liveFitFilters,
@@ -38,6 +39,7 @@ vi.mock("../components/CompareView", () => ({
     places: Array<{ id: string }>;
     open: boolean;
     onClose: () => void;
+    onRemove: (id: string) => void;
     onCopyView?: () => void;
     shareStatus?: "idle" | "shared" | "copied" | "failed";
     candidates?: Array<{ place: { id: string } }>;
@@ -59,6 +61,16 @@ vi.mock("../components/CompareView", () => ({
         <button type="button" aria-label="Close comparison" onClick={onClose}>
           Close comparison
         </button>
+        {places.map(place => (
+          <button
+            key={place.id}
+            type="button"
+            aria-label={`Remove ${place.id} from comparison`}
+            onClick={() => onRemove(place.id)}
+          >
+            Remove {place.id}
+          </button>
+        ))}
         <div data-testid="compare-place-ids">{places.map(place => place.id).join(",")}</div>
         <div data-testid="compare-lens">{comparisonLens}</div>
         <div data-testid="compare-candidate-count">{candidates?.length ?? 0}</div>
@@ -575,7 +587,7 @@ describe("App shell", () => {
     expect(copyView.closest(".hero-action-stack")).not.toBeNull();
     expect(copyView).toHaveAttribute("title", "Copy or share current Explorer view");
     expect(surpriseMe).toHaveAttribute("title", "Open a unique microclimate from the current filtered list");
-    expect(screen.queryByRole("link", { name: "Jump to Scout Brief synthesis" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: "Jump to Scout Brief synthesis" })).not.toBeInTheDocument();
     expect(screen.queryByLabelText(/climate signal leaders/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/Livability lens/)).not.toBeInTheDocument();
 
@@ -584,9 +596,8 @@ describe("App shell", () => {
     const currentRank = screen.getByText("Current rank");
     const scoutBrief = screen.getByRole("region", { name: "Scout brief" });
     const signalRail = screen.getByLabelText(/climate signal leaders/i);
-    const scoutBriefJump = screen.getByRole("link", { name: "Jump to Scout Brief synthesis" });
+    const scoutBriefJump = screen.getByRole("button", { name: "Jump to Scout Brief synthesis" });
     expect(scoutBriefJump.closest(".hero-action-stack")).not.toBeNull();
-    expect(scoutBriefJump).toHaveAttribute("href", "#explorer-scout-brief");
     expect(scoutBriefJump).toHaveAttribute("title", "Jump to Scout Brief synthesis");
     expect(signalRail).toBeInTheDocument();
     expect(signalRail).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more current climate signal leaders.");
@@ -603,6 +614,9 @@ describe("App shell", () => {
     expect(map.compareDocumentPosition(currentRank) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(map.compareDocumentPosition(scoutBrief) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(scoutBrief).toHaveAttribute("id", "explorer-scout-brief");
+    expect(scoutBrief).toHaveAttribute("tabindex", "-1");
+    fireEvent.click(scoutBriefJump);
+    expect(scoutBrief).toHaveFocus();
     expect(screen.getByText("Advisor verdict")).toBeInTheDocument();
     const scoutBriefSection = scoutBrief.closest(".scout-brief");
     expect(scoutBriefSection).not.toBeNull();
@@ -621,10 +635,12 @@ describe("App shell", () => {
     renderApp();
     openScoutTools();
 
-    const scoutBriefJump = screen.getByRole("link", { name: "Jump to Scout Brief synthesis" });
-    expect(scoutBriefJump).toHaveAttribute("href", "#explorer-scout-brief");
+    const scoutBriefJump = screen.getByRole("button", { name: "Jump to Scout Brief synthesis" });
     const workbench = screen.getByLabelText("Desktop relocation workbench");
     expect(workbench).toHaveAttribute("id", "explorer-scout-brief");
+    expect(workbench).toHaveAttribute("tabindex", "-1");
+    fireEvent.click(scoutBriefJump);
+    expect(workbench).toHaveFocus();
     expect(document.querySelectorAll("#explorer-scout-brief")).toHaveLength(1);
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -1117,6 +1133,29 @@ describe("App shell", () => {
     expect(search).toHaveFocus();
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("opens mobile filters for Find home base and restores focus to that hero action", async () => {
+    mockViewport(390);
+    renderApp();
+
+    const findHomeBase = await screen.findByRole(
+      "button",
+      { name: "Find your home-base analog using Explorer search" },
+      { timeout: APP_SHELL_TIMEOUT_MS },
+    );
+    fireEvent.click(findHomeBase);
+
+    const sheet = await screen.findByRole("dialog", { name: "Filters & ranking" });
+    expect(sheet).toHaveAttribute("open");
+    const search = within(sheet).getByRole("textbox", { name: "Search places by name, region, or archetype" });
+    await waitFor(() => expect(search).toHaveFocus(), { timeout: 2000 });
+
+    fireEvent.click(within(sheet).getByRole("button", { name: "Close filters" }));
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Filters & ranking" })).not.toBeInTheDocument();
+      expect(findHomeBase).toHaveFocus();
+    }, { timeout: 2000 });
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("keeps the drawer entry animation for user-opened place profiles", async () => {
     mockViewport(1280);
     renderApp();
@@ -1353,6 +1392,23 @@ describe("App shell", () => {
 
     await waitFor(() => {
       expect(document.activeElement).toBe(heroCompare);
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("closes Compare when its final saved place is removed", async () => {
+    window.history.replaceState(null, "", "/?cmp=sequim-wa");
+    renderApp();
+
+    const heroCompare = screen.getByRole("button", { name: "Open compare setup from Explorer hero (1 place)" });
+    fireEvent.click(heroCompare);
+    expect(await screen.findByRole("dialog", { name: "1 place saved to compare" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: "Remove sequim-wa from comparison" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "1 place saved to compare" })).not.toBeInTheDocument();
+      expect(document.querySelector("[data-app-shell]")).not.toHaveAttribute("aria-hidden");
+      expect(new URLSearchParams(window.location.search).has("cmp")).toBe(false);
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -1828,6 +1884,22 @@ describe("App shell", () => {
     await waitFor(() => {
       expect(document.activeElement).toBe(search);
     }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("restores a body-opened mobile search shortcut to the visible Filters trigger", async () => {
+    mockViewport(390);
+    renderApp();
+
+    const trigger = screen.getAllByRole("button", { name: "Open Explorer filters and ranking" })[0]!;
+    expect(document.activeElement).toBe(document.body);
+    fireEvent.keyDown(window, { key: "k", ctrlKey: true });
+
+    const sheet = await screen.findByRole("dialog", { name: "Filters & ranking" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    const search = within(sheet).getByRole("textbox", { name: "Search places by name, region, or archetype" });
+    await waitFor(() => expect(search).toHaveFocus(), { timeout: APP_SHELL_TIMEOUT_MS });
+
+    fireEvent.click(within(sheet).getByRole("button", { name: "Close filters" }));
+    await waitFor(() => expect(trigger).toHaveFocus(), { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("selects existing search text when Ctrl+K focuses the search input", async () => {
