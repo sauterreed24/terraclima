@@ -17,7 +17,7 @@ describe("app-ranking-preference", () => {
   });
 
   it("defaults when storage is empty", () => {
-    expect(DEFAULT_RANKING).toBe("live-fit");
+    expect(DEFAULT_RANKING).toBe("most-unique");
     expect(loadPersistedRanking()).toBe(DEFAULT_RANKING);
   });
 

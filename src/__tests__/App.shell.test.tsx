@@ -125,6 +125,13 @@ function renderApp() {
   );
 }
 
+/** Scout Board / Living Compass / signal rails stay collapsed until asked for. */
+function openScoutTools() {
+  const toggle = screen.getByRole("button", { name: "Show scout tools" });
+  fireEvent.click(toggle);
+  expect(screen.getByRole("button", { name: "Hide scout tools" })).toBeInTheDocument();
+}
+
 function mockViewport(widthPx: number) {
   window.matchMedia = vi.fn().mockImplementation((query: string) => {
     const minWidth = query.match(/\(min-width:\s*(\d+)px\)/)?.[1];
@@ -342,6 +349,7 @@ describe("App shell", () => {
     window.history.replaceState(null, "", "/?col=places-that-feel-like-another-country&r=live-fit");
 
     renderApp();
+    openScoutTools();
 
     expect(screen.getByText("Current rank")).toBeInTheDocument();
     expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
@@ -369,6 +377,7 @@ describe("App shell", () => {
   it("prioritizes the desktop scout verdict before broader compass diagnostics", () => {
     mockViewport(1280);
     renderApp();
+    openScoutTools();
 
     const scoutBoard = screen.getByLabelText("Desktop relocation workbench");
     const advisorVerdict = screen.getByText("Advisor verdict");
@@ -402,48 +411,39 @@ describe("App shell", () => {
     expect(scoutBoard.compareDocumentPosition(contextStress) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   }, APP_SHELL_TIMEOUT_MS);
 
-  it("starts new sessions with live-here fit as the default Explorer ranking", () => {
+  it("starts new sessions with most-unique as the default Explorer ranking", () => {
     mockViewport(1280);
     renderApp();
 
-    expect(screen.getByRole("heading", { name: "Find your climate fit before you scout" })).toBeInTheDocument();
-    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
+    expect(screen.getByRole("heading", { name: "Discover microclimates hiding in plain sight" })).toBeInTheDocument();
+    const quickPicks = screen.getByRole("group", { name: "Discovery quick picks" });
     expect(quickPicks).toBeInTheDocument();
-    expect(quickPicks).toHaveTextContent("Cool summers");
+    expect(quickPicks).toHaveTextContent("Most unique");
     const quickPickButtons = within(quickPicks).getAllByRole("button");
     expect(quickPickButtons.map(button => button.getAttribute("aria-label"))).toEqual([
-      "Visit now: Rank places by the current month's scouting weather.",
-      "Comfort fit: Surface places with the easiest human-felt comfort.",
-      "Remote work: Prioritize mild, livable places for remote-worker scouting.",
-      "Retirement: Look for mild all-year places with lower risk and daily ease.",
-      "Garden life: Lift places with stronger yard, orchard, and growing-season signals.",
+      "Most unique: Rank places by microclimate uniqueness.",
+      "Hidden gems: Surface lesser-known stops with strong atlas signal.",
       "Cool summers: Find places where peak-season afternoons stay restrained.",
-      "Low risk: Favor places with stronger climate-resilience and hazard cushions.",
+      "Fog & marine: Filter to fog belts, cool maritime coasts, and upwelling shores.",
+      "Another country: Pin the climate-dissonance trip: places that feel unlike their map.",
+      "Visit now: Rank places by the current month's scouting weather.",
     ]);
-    expect(quickPickButtons[0]).toHaveAttribute("title", "Visit now: Rank places by the current month's scouting weather.");
-    expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Live-here fit · top 5");
-    const currentRank = screen.getByLabelText("Top five places for the selected ranking profile: Live-here fit");
-    expect(currentRank).toBeInTheDocument();
-    expect(screen.getByLabelText("Desktop relocation workbench")).toBeInTheDocument();
-    const rankOneButtons = screen.getAllByRole("button", { name: /Rank 1\./ });
-    expect(rankOneButtons.length).toBeGreaterThan(0);
-    const firstRankButton = rankOneButtons[0]!;
-    expect(firstRankButton).toHaveAttribute("title", firstRankButton.getAttribute("aria-label"));
-    const signalRail = screen.getByLabelText("Current Live-here fit climate signal leaders");
-    const firstSignalChip = within(signalRail).getByRole("button", {
-      name: /Open .*, climate signal rank 1 by Live-here fit/,
-    });
-    expect(firstSignalChip).toHaveAttribute("title", firstSignalChip.getAttribute("aria-label"));
+    expect(quickPickButtons[0]).toHaveAttribute("title", "Most unique: Rank places by microclimate uniqueness.");
+    expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Most unique · top 5");
+    expect(screen.queryByLabelText("Desktop relocation workbench")).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/climate signal leaders/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Show scout tools" })).toBeInTheDocument();
     expect(screen.queryByText("2050 mid remap")).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("surfaces the current Scout Brief leader in the Explorer hero", async () => {
     mockViewport(1280);
     renderApp();
+    openScoutTools();
 
     const receipt = await screen.findByLabelText(/Current scout read:/);
     expect(receipt).toHaveTextContent("Current scout read");
-    expect(receipt).toHaveTextContent(/\/100 Live-here fit/);
+    expect(receipt).toHaveTextContent(/\/100 Most unique/);
     expect(receipt).toHaveTextContent("compare-ready finalists");
     expect(receipt).toHaveTextContent("Verify first");
     expect(within(receipt).getByRole("button", { name: /Open current scout dossier:/ })).toBeInTheDocument();
@@ -489,29 +489,25 @@ describe("App shell", () => {
     expect(document.body).toHaveTextContent(/ranked by 2050 mid .* Live-here fit/);
   }, APP_SHELL_TIMEOUT_MS);
 
-  it("applies the hero Cool summers path without snow-country filters", async () => {
+  it("applies the hero Cool summers path as a discovery ranking", async () => {
     mockViewport(1280);
     renderApp();
 
-    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
+    const quickPicks = screen.getByRole("group", { name: "Discovery quick picks" });
     fireEvent.click(within(quickPicks).getByRole("button", { name: /Cool summers/ }));
 
     await waitFor(() => {
       const params = new URLSearchParams(window.location.search);
       expect(params.get("r")).toBe("coolest-summers");
-      expect(params.get("fit")).toBe("cool-summers");
-      expect(params.get("sh")).toBe("26");
-      expect(params.get("fit")).not.toContain("snow-country");
-      expect(params.get("fit")).not.toContain("four-seasons");
+      expect(params.get("fit")).toBeNull();
+      expect(params.get("sh")).toBeNull();
     });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("summarizes the active Fit Finder path in the Explorer hero", async () => {
     mockViewport(1280);
+    window.history.replaceState(null, "", "/?r=coolest-summers&fit=cool-summers&sh=26");
     renderApp();
-
-    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
-    fireEvent.click(within(quickPicks).getByRole("button", { name: /Cool summers/ }));
 
     const receipt = await screen.findByLabelText("Active Fit Finder path: Cool Summer Refuge");
     expect(receipt).toHaveTextContent("Fit Finder path active");
@@ -527,10 +523,8 @@ describe("App shell", () => {
 
   it("summarizes the active Fit Finder path in the map caption", async () => {
     mockViewport(1280);
+    window.history.replaceState(null, "", "/?r=coolest-summers&fit=cool-summers&sh=26");
     renderApp();
-
-    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
-    fireEvent.click(within(quickPicks).getByRole("button", { name: /Cool summers/ }));
 
     await screen.findByLabelText("Active Fit Finder path: Cool Summer Refuge");
 
@@ -565,26 +559,32 @@ describe("App shell", () => {
     });
   }, APP_SHELL_TIMEOUT_MS);
 
-  it("keeps the mobile Explorer hero compact and defers dense panels until after the map", () => {
+  it("keeps the mobile Explorer hero compact and defers dense panels until Scout tools open", () => {
     mockViewport(390);
     renderApp();
 
     const hero = document.querySelector(".panel-hero");
     const map = screen.getByTestId("atlas-map-stub");
-    const currentRank = screen.getByText("Current rank");
-    const scoutBrief = screen.getByRole("region", { name: "Scout brief" });
 
     expect(hero).not.toBeNull();
-    const quickPicks = screen.getByRole("group", { name: "Climate-fit quick picks" });
-    const signalRail = screen.getByLabelText(/climate signal leaders/i);
+    const quickPicks = screen.getByRole("group", { name: "Discovery quick picks" });
     expect(quickPicks).toBeInTheDocument();
-    expect(quickPicks).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more Fit Finder paths.");
+    expect(quickPicks).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more discovery paths.");
     const copyView = screen.getByRole("button", { name: "Copy or share current Explorer view" });
-    const surpriseMe = screen.getByRole("button", { name: "Open a random place from the current filtered list" });
-    const scoutBriefJump = screen.getByRole("link", { name: "Jump to Scout Brief synthesis" });
+    const surpriseMe = screen.getByRole("button", { name: "Open a unique microclimate from the current filtered list" });
     expect(copyView.closest(".hero-action-stack")).not.toBeNull();
     expect(copyView).toHaveAttribute("title", "Copy or share current Explorer view");
-    expect(surpriseMe).toHaveAttribute("title", "Open a random place from the current filtered list");
+    expect(surpriseMe).toHaveAttribute("title", "Open a unique microclimate from the current filtered list");
+    expect(screen.queryByRole("link", { name: "Jump to Scout Brief synthesis" })).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(/climate signal leaders/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Livability lens/)).not.toBeInTheDocument();
+
+    openScoutTools();
+
+    const currentRank = screen.getByText("Current rank");
+    const scoutBrief = screen.getByRole("region", { name: "Scout brief" });
+    const signalRail = screen.getByLabelText(/climate signal leaders/i);
+    const scoutBriefJump = screen.getByRole("link", { name: "Jump to Scout Brief synthesis" });
     expect(scoutBriefJump.closest(".hero-action-stack")).not.toBeNull();
     expect(scoutBriefJump).toHaveAttribute("href", "#explorer-scout-brief");
     expect(scoutBriefJump).toHaveAttribute("title", "Jump to Scout Brief synthesis");
@@ -636,6 +636,7 @@ describe("App shell", () => {
   it("compares current Explorer leaders from the desktop scout board", async () => {
     mockViewport(1280);
     renderApp();
+    openScoutTools();
 
     fireEvent.click(screen.getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ }));
 
@@ -645,6 +646,7 @@ describe("App shell", () => {
   it("returns focus to the Compare opener after closing Compare", async () => {
     mockViewport(1280);
     renderApp();
+    openScoutTools();
 
     const opener = screen.getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ });
     fireEvent.click(opener);
@@ -659,6 +661,7 @@ describe("App shell", () => {
   it("saves current Scout Board finalists into the shortlist in ranked order", async () => {
     mockViewport(1280);
     renderApp();
+    openScoutTools();
 
     const actions = screen.getByLabelText(/Scout actions for/);
     fireEvent.click(within(actions).getByRole("button", { name: /Save 4 Scout Board finalists to your shortlist/ }));
@@ -680,6 +683,7 @@ describe("App shell", () => {
   it("pins the desktop Scout Board leader into the shortlist", async () => {
     mockViewport(1280);
     renderApp();
+    openScoutTools();
 
     const actions = screen.getByLabelText(/Scout actions for/);
     const pinButton = within(actions).getByRole("button", { name: /Pin .* to your shortlist/ });
@@ -700,6 +704,7 @@ describe("App shell", () => {
   it("compares distinct context leaders from the stress test", async () => {
     mockViewport(1280);
     renderApp();
+    openScoutTools();
 
     const contextRail = screen.getByLabelText("Scenario leaders for the current place context");
     const currentContextOpen = within(contextRail).getByRole("button", { name: /Open .* from Current setup/ });
@@ -713,6 +718,7 @@ describe("App shell", () => {
   it("applies alternate context presets from the Explorer hero", async () => {
     mockViewport(1280);
     renderApp();
+    openScoutTools();
 
     fireEvent.click(screen.getByRole("button", { name: "Apply context: Cool summers" }));
 
@@ -738,7 +744,7 @@ describe("App shell", () => {
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
     expect(copied.searchParams.get("q")).toBe("monterey");
-    expect(copied.searchParams.get("r")).toBeNull();
+    expect(copied.searchParams.get("r")).toBe("live-fit");
     const copiedButton = await screen.findByRole("button", { name: "Copied current Explorer view link" });
     expect(copiedButton).toHaveTextContent("Link copied");
     expect(copiedButton).toHaveAttribute("title", "Copied current Explorer view link");
@@ -780,8 +786,8 @@ describe("App shell", () => {
     try {
       renderApp();
 
-      const opener = screen.getByRole("button", { name: "Open a random place from the current filtered list" });
-      expect(opener).toHaveAttribute("title", "Open a random place from the current filtered list");
+      const opener = screen.getByRole("button", { name: "Open a unique microclimate from the current filtered list" });
+      expect(opener).toHaveAttribute("title", "Open a unique microclimate from the current filtered list");
       fireEvent.click(opener);
 
       await screen.findByRole("button", { name: "Close profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
@@ -1041,6 +1047,7 @@ describe("App shell", () => {
     expect(receipt).toHaveTextContent("Home base: Sequim");
     expect(receipt).toHaveTextContent("Cards, dossiers, and Compare read climate deltas against this anchor.");
     expect(screen.queryByRole("button", { name: "Find your home-base analog using Explorer search" })).not.toBeInTheDocument();
+    openScoutTools();
     const scoutReceipt = screen.getByLabelText(/Current scout read:/);
     expect(receipt.compareDocumentPosition(scoutReceipt) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
 
@@ -1076,7 +1083,9 @@ describe("App shell", () => {
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps the drawer entry animation for user-opened place profiles", async () => {
+    mockViewport(1280);
     renderApp();
+    openScoutTools();
 
     fireEvent.click(screen.getAllByRole("button", { name: /Rank 1\./ })[0]);
 
@@ -1544,6 +1553,7 @@ describe("App shell", () => {
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps focus on the next pinned rail remove button when more shortlist places remain", async () => {
+    mockViewport(1280);
     window.localStorage.setItem(
       "terraclima.bookmarks.v1",
       JSON.stringify(["sequim-wa", "port-townsend-wa", "forks-wa"]),
@@ -1554,8 +1564,11 @@ describe("App shell", () => {
 
     await waitFor(() => {
       expect(document.querySelector('[data-shortlist-remove-id="sequim-wa"]')).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+
+    await waitFor(() => {
       expect(document.querySelector('[data-shortlist-remove-id="port-townsend-wa"]')).toHaveFocus();
-    }, { timeout: 5000 });
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
   it("opens Compare setup from a one-place shortlist while keeping the decision cue hidden", async () => {

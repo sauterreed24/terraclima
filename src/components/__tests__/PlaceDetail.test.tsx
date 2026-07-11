@@ -670,3 +670,30 @@ describe("PlaceDetail home-base anchor", () => {
     ).toBeInTheDocument();
   });
 });
+
+describe("PlaceDetail archetype field guide", () => {
+  it("surfaces the primary archetype guide for discovery readers", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    const guide = document.getElementById("place-archetype-guide");
+    expect(guide).toBeTruthy();
+    expect(guide).not.toHaveAttribute("hidden");
+    expect(guide).toHaveTextContent(/Rain-Shadow Sanctuary/i);
+    expect(guide).toHaveTextContent(/field guide/i);
+    expect(guide!.textContent?.length ?? 0).toBeGreaterThan(40);
+
+    const primaryChip = screen.getByRole("button", { name: /Rain-Shadow Sanctuary:/i });
+    expect(primaryChip).toHaveAttribute("aria-expanded", "true");
+    expect(primaryChip).toHaveAttribute("aria-controls", "place-archetype-guide");
+    fireEvent.click(primaryChip);
+    expect(guide).toHaveAttribute("hidden");
+    expect(primaryChip).toHaveAttribute("aria-expanded", "false");
+  });
+});

@@ -357,6 +357,8 @@ function DetailHeader({
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const reduceMotion = useReducedMotion();
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice";
+  const primaryArchetype = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
+  const [archetypeGuideOpen, setArchetypeGuideOpen] = useState(true);
   const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
   const annualP = getAnnualPrecipMm(place);
@@ -402,19 +404,64 @@ function DetailHeader({
             {place.name}
           </h2>
           <div className="flex flex-wrap gap-1.5 mt-2">
-            {place.archetypes.map(a => (
-              <button
-                key={a}
-                type="button"
-                className="chip chip-btn"
-                data-tone={ARCHETYPE_BY_ID[a]?.tone ?? "ice"}
-                onClick={(e) => { e.stopPropagation(); onPickArchetype?.(a); onClose(); }}
-                title={`Filter to ${ARCHETYPE_BY_ID[a]?.label ?? a}`}
-              >
-                {ARCHETYPE_BY_ID[a]?.label ?? a}
-              </button>
-            ))}
+            {place.archetypes.map(a => {
+              const meta = ARCHETYPE_BY_ID[a];
+              const isPrimary = a === place.archetypes[0];
+              const chipTitle = meta
+                ? `${meta.label}: ${meta.blurb}${isPrimary ? " — expand field guide below" : ""}`
+                : a;
+              return (
+                <button
+                  key={a}
+                  type="button"
+                  className="chip chip-btn"
+                  data-tone={meta?.tone ?? "ice"}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isPrimary && meta?.guide) {
+                      setArchetypeGuideOpen(open => !open);
+                      return;
+                    }
+                    onPickArchetype?.(a);
+                    onClose();
+                  }}
+                  title={chipTitle}
+                  aria-label={chipTitle}
+                  aria-expanded={isPrimary && meta?.guide ? archetypeGuideOpen : undefined}
+                  aria-controls={isPrimary && meta?.guide ? "place-archetype-guide" : undefined}
+                >
+                  {meta?.label ?? a}
+                </button>
+              );
+            })}
           </div>
+          {primaryArchetype?.guide ? (
+            <div
+              id="place-archetype-guide"
+              className="mt-2.5 panel-thin p-2.5 border-l-2"
+              style={{ borderLeftColor: "rgba(240, 210, 156, 0.65)" }}
+              hidden={!archetypeGuideOpen}
+            >
+              <div className="text-[10px] uppercase tracking-wider text-stone">
+                {primaryArchetype.label} · field guide
+              </div>
+              <p className="text-xs text-frost leading-relaxed mt-1">{primaryArchetype.guide}</p>
+              <p className="text-[11px] text-stone mt-1.5 leading-snug">{primaryArchetype.blurb}</p>
+              {onPickArchetype && place.archetypes[0] ? (
+                <button
+                  type="button"
+                  className="btn-ghost !text-[11px] !py-1 mt-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onPickArchetype(place.archetypes[0]!);
+                    onClose();
+                  }}
+                >
+                  Filter atlas to {primaryArchetype.label}
+                </button>
+              ) : null}
+            </div>
+          ) : null}
         </div>
         <div className="flex items-center gap-1 self-end shrink-0 lg:self-start flex-wrap justify-end">
           <a
