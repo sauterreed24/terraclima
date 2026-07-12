@@ -380,10 +380,15 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
     }
   });
 
-  // Name tiebreaker gives a total order so tied scores rank identically
-  // regardless of corpus insertion order (and matches the tiebreakers used by
-  // explorer-scout-brief and decision-matrix).
-  return scored.sort((a, b) => b.score - a.score || a.place.name.localeCompare(b.place.name));
+  // Name + id tiebreakers give a total order so tied scores (including
+  // same-name corpus pairs like the two Durango entries, and score-0 clusters
+  // for profiles that lack optional climate fields) rank identically
+  // regardless of corpus insertion order — matching live-fit / livability.
+  return scored.sort((a, b) =>
+    b.score - a.score ||
+    a.place.name.localeCompare(b.place.name) ||
+    a.place.id.localeCompare(b.place.id),
+  );
 }
 
 // Filters

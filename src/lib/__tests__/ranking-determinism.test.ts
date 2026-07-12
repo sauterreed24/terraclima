@@ -3,6 +3,7 @@ import { PLACES } from "../../data/places";
 import { rankLivabilityWithBreakdown } from "../livability-score";
 import { assessLiveFit, type LiveFitPresetId } from "../live-fit";
 import { buildComfortPrecisionProfile } from "../comfort-precision";
+import { rankPlaces } from "../scoring";
 import { makePlace, makeClimate } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
 import { runScenarioRanking } from "../climate-processor";
@@ -87,6 +88,40 @@ describe("ranking determinism", () => {
       expect(cool).toBeGreaterThanOrEqual(0);
       expect(garden).toBeGreaterThanOrEqual(0);
       expect(cool).toBeLessThan(garden);
+    });
+  });
+
+  describe("rankPlaces", () => {
+    it("breaks same-name ties by unique id (Durango CO vs Durango MX)", () => {
+      const tiedScores = {
+        microclimateUniqueness: 80,
+        hiddenGem: 50,
+        comfort: 50,
+        resilience: 50,
+        growability: 50,
+        tradeoff: 30,
+      };
+      const durangoMx = makePlace({ id: "durango-mx", name: "Durango", scores: tiedScores });
+      const durangoCo = makePlace({ id: "durango-co", name: "Durango", scores: tiedScores });
+
+      const forward = rankPlaces("most-unique", [durangoMx, durangoCo]);
+      const reversed = rankPlaces("most-unique", [durangoCo, durangoMx]);
+
+      expect(forward[0]!.score).toBe(forward[1]!.score);
+      expect(forward.map(r => r.place.id)).toEqual(["durango-co", "durango-mx"]);
+      expect(reversed.map(r => r.place.id)).toEqual(["durango-co", "durango-mx"]);
+    });
+
+    it("keeps score-0 clusters stable across input order", () => {
+      // sunniest-winters scores 0 when sunshinePct is missing — a large tie block.
+      const alpha = makePlace({ id: "alpha-ridge", name: "Alpha Ridge", climate: makeClimate({ sunshinePct: undefined }) });
+      const zulu = makePlace({ id: "zulu-ridge", name: "Zulu Ridge", climate: makeClimate({ sunshinePct: undefined }) });
+
+      const forward = rankPlaces("sunniest-winters", [zulu, alpha]);
+      const reversed = rankPlaces("sunniest-winters", [alpha, zulu]);
+      expect(forward.every(r => r.score === 0)).toBe(true);
+      expect(forward.map(r => r.place.id)).toEqual(["alpha-ridge", "zulu-ridge"]);
+      expect(reversed.map(r => r.place.id)).toEqual(["alpha-ridge", "zulu-ridge"]);
     });
   });
 

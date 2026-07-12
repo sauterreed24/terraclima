@@ -48,7 +48,8 @@ npm run playtest:browser
 - **`filterStateFromValidated()`** hydrates explorer filters from URL-validated fields on first paint and `popstate` — keep in sync with [`validatedStateFromSearch`](../src/lib/app-url.ts), not duplicated in `App.tsx`.
 - **`hasActiveExplorerFilters()`** / **`countActiveExplorerFilterSignals()`** are the single source for “filters active” in FilterBar and the mobile filter sheet badge.
 - **FilterBar `onClearAll`:** Lens Receipt / sheet Clear all must call App’s `clearAllFilters` (empty filters **and** clear curated `col`). Do not leave FilterBar on a local `createEmptyFilterState()`-only clear.
-- **Auto live-fit is transient:** constraint-driven switches to `r=live-fit` must not `persistRankingProfile`; Clear all / Reset Explorer restores the stored preference (or `most-unique` if storage held `live-fit`).
+- **Auto live-fit is transient:** constraint-driven switches to `r=live-fit` must not `persistRankingProfile`; chip dismiss / Clear all restore the pre-constraint ranking snapshot (URL-explicit flag included), falling back to the stored preference (or `most-unique` if storage held `live-fit`) when there is no snapshot.
+- **Home-base URL ↔ storage:** explicit `?hb=` writes through to `localStorage` on hydrate/`popstate`; unresolved stored ids are purged so orphans do not resurrect after corpus edits.
 - **`npm run playtest:polish`** asserts filter clear restores the full corpus and omits stale live-fit URL params after clear.
 
 ## Compare scenario contract

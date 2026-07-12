@@ -320,12 +320,22 @@ export default function App() {
   );
   const [climateScenario, setClimateScenario] = useState<ScenarioId>(() => initialAppState.scenario ?? "now");
   // Home-base climate anchor. URL ?hb= wins on first paint (shareable
-  // "vs our home" links); otherwise the last explicit choice from
-  // localStorage, re-validated against the current corpus.
+  // "vs our home" links) and is written through to storage so Back/Forward
+  // sticky restore matches the shared link. Otherwise the last explicit
+  // choice from localStorage, re-validated against the current corpus.
   const [homeBaseId, setHomeBaseIdRaw] = useState<string | null>(() => {
-    if (initialAppState.homeBaseId) return initialAppState.homeBaseId;
+    if (initialAppState.homeBaseId) {
+      persistHomeBaseId(initialAppState.homeBaseId);
+      return initialAppState.homeBaseId;
+    }
     const stored = loadHomeBaseId();
-    return stored ? resolvePlaceId(stored) : null;
+    if (!stored) return null;
+    const resolved = resolvePlaceId(stored);
+    if (!resolved) {
+      persistHomeBaseId(null);
+      return null;
+    }
+    return resolved;
   });
   const [bookmarkIds, setBookmarkIds] = useState<Set<string>>(() => new Set(loadBookmarks()));
   const [recentIds, setRecentIds] = useState<readonly string[]>(() => loadRecentPlaces());
@@ -360,7 +370,7 @@ export default function App() {
     setSuppressPersistedRankingInUrl(false);
     persistRankingProfile(profile);
     // Explicit menu/bundle choice owns persistence; cancel any auto live-fit marker.
-    liveFitAutoAppliedRef.current = false;
+    liveFitAutoAppliedRef.current = null;
   }, []);
 
   // Apply theme on mount and whenever the preference changes. When the
@@ -431,11 +441,15 @@ export default function App() {
   /** One-shot flag for route switches that should land on the active trip/collection clear affordance. */
   const activeScopeFocusPendingRef = useRef(false);
   /**
-   * When Live Finder constraints auto-switch ranking to `live-fit`, we must not
-   * overwrite the user's persisted preference. Cleared on explicit setRanking
-   * or when constraints drop back to zero.
+   * When Live Finder constraints auto-switch ranking to `live-fit`, snapshot
+   * the prior ranking + URL-explicit flag so chip-dismiss can restore them
+   * instead of only the persisted preference. Cleared on explicit setRanking
+   * or full Explorer reset.
    */
-  const liveFitAutoAppliedRef = useRef(false);
+  const liveFitAutoAppliedRef = useRef<{
+    ranking: RankingProfile;
+    rankingExplicitInUrl: boolean;
+  } | null>(null);
 
   useEffect(() => {
     if (!selectedId) {
@@ -539,12 +553,22 @@ export default function App() {
       setRankingRaw(v.ranking ?? loadPersistedRanking());
       setClimateScenario(v.scenario ?? "now");
       // Home base is a sticky preference like theme: an explicit ?hb= on the
-      // target entry wins; otherwise fall back to the persisted choice so
-      // Back/Forward through pre-home entries doesn't silently clear it.
+      // target entry wins and is written through to storage; otherwise fall
+      // back to the persisted choice so Back/Forward through pre-home entries
+      // doesn't silently clear it. Purge orphans that no longer resolve.
       setHomeBaseIdRaw(() => {
-        if (v.homeBaseId) return v.homeBaseId;
+        if (v.homeBaseId) {
+          persistHomeBaseId(v.homeBaseId);
+          return v.homeBaseId;
+        }
         const stored = loadHomeBaseId();
-        return stored ? resolvePlaceId(stored) : null;
+        if (!stored) return null;
+        const resolved = resolvePlaceId(stored);
+        if (!resolved) {
+          persistHomeBaseId(null);
+          return null;
+        }
+        return resolved;
       });
       // Units are a sticky global preference persisted by the UnitProvider.
       // Only honour an explicit unit param on the target entry — otherwise
@@ -654,24 +678,24 @@ export default function App() {
 
   useEffect(() => {
     if (anyLifestyleBundleActive(ranking, filters)) {
-      liveFitAutoAppliedRef.current = false;
+      liveFitAutoAppliedRef.current = null;
       return;
     }
     const liveSignals = countLiveFinderConstraintSignals(filters);
     if (liveSignals > 0 && ranking !== "live-fit") {
       // Transient lens for active constraints — do not persist over the user's last explicit ranking.
+      liveFitAutoAppliedRef.current = { ranking, rankingExplicitInUrl };
       setRankingRaw("live-fit");
       setRankingExplicitInUrl(true);
-      liveFitAutoAppliedRef.current = true;
       return;
     }
     if (liveSignals === 0 && liveFitAutoAppliedRef.current && ranking === "live-fit") {
-      const restored = loadPersistedRanking();
-      setRankingRaw(restored === "live-fit" ? DEFAULT_RANKING : restored);
-      setRankingExplicitInUrl(false);
-      liveFitAutoAppliedRef.current = false;
+      const snap = liveFitAutoAppliedRef.current;
+      liveFitAutoAppliedRef.current = null;
+      setRankingRaw(snap.ranking);
+      setRankingExplicitInUrl(snap.rankingExplicitInUrl);
     }
-  }, [filters, ranking]);
+  }, [filters, ranking, rankingExplicitInUrl]);
 
   const deferredFilters = useDeferredValue(filters);
   // Narrow live-fit inputs so search keystrokes don't invalidate PlaceCard /
@@ -1178,12 +1202,18 @@ export default function App() {
     setActiveCollection(null);
     // Full Explorer reset: drop a stuck live-fit lens (auto or URL) so the
     // discovery default / stored preference returns. Chip-by-chip dismiss of
-    // the last Live Finder constraint is handled by the auto-apply effect.
-    liveFitAutoAppliedRef.current = false;
+    // the last Live Finder constraint restores the pre-constraint snapshot.
+    const snap = liveFitAutoAppliedRef.current;
+    liveFitAutoAppliedRef.current = null;
     if (ranking === "live-fit") {
-      const restored = loadPersistedRanking();
-      setRankingRaw(restored === "live-fit" ? DEFAULT_RANKING : restored);
-      setRankingExplicitInUrl(false);
+      if (snap) {
+        setRankingRaw(snap.ranking);
+        setRankingExplicitInUrl(snap.rankingExplicitInUrl);
+      } else {
+        const restored = loadPersistedRanking();
+        setRankingRaw(restored === "live-fit" ? DEFAULT_RANKING : restored);
+        setRankingExplicitInUrl(false);
+      }
     }
   }, [ranking]);
   const relaxLiveFinderFilters = useCallback(() => {

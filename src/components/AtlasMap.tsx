@@ -1637,16 +1637,17 @@ export const AtlasMap = memo(function AtlasMap({
     setTooltipAnchor({ x: pt.x, y: pt.y });
   }, []);
 
-  // Prefer settledView so dwell-promoted rich tooltips do not re-render the
-  // climate strip on every wheel/zoom tick while the pointer stays still.
+  // Prefer live `view` so wheel/zoom ticks keep the scout peek pinned to the
+  // place. During pan/pinch the shell's `data-gesturing` CSS hides the card
+  // (imperative transform would otherwise leave it floating off-pin).
   const tooltipScreen = useMemo(() => {
     if (!tooltipAnchor || width < 1 || height < 1) return null;
-    const screen = mapPointToScreen(tooltipAnchor, settledView);
+    const screen = mapPointToScreen(tooltipAnchor, view);
     return {
       xPct: (screen.x / width) * 100,
       yPct: (screen.y / height) * 100,
     };
-  }, [tooltipAnchor, settledView, width, height]);
+  }, [tooltipAnchor, view, width, height]);
 
   const openClusterPicker = useCallback((cluster: AtlasClusterItem<{ place: Place; x: number; y: number; id: string }>) => {
     setClusterPicker({ cluster });
