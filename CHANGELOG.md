@@ -4,6 +4,18 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Long-horizon correctness and contract polish
+
+- **Compare workbench scenario honesty:** shortlist/recent candidates outside a narrowed Explorer pool now resolve through `placeForCompareSlot` (`src/lib/compare-workbench.ts`), so 2050 layers no longer mix present-day normals into workbench scores.
+- **Imperial unit leaks:** Field Guide archetype copy, bioclim/compare surfaces, and related prose now run through `localizeProse` / hardened unit patterns (metres ranges, qualitative distances, chinook deltas).
+- **Clear all ↔ curated collection:** FilterBar / Lens Receipt Clear all accepts App's full Explorer reset (`onClearAll`), so curated `col` clears with filters instead of leaving a stuck collection pool.
+- **Auto live-fit is transient:** constraint-driven `live-fit` ranking no longer overwrites the persisted preference; Clear all / Reset Explorer restores discovery ranking when live-fit was only a session lens.
+- **URL risk ceilings documented correctly:** `fire` / `risk` allowlist is `low` | `moderate` | `elevated` (matching FilterBar); docs no longer advertise dropped `high` / `extreme` tokens.
+- **Shared winter-sunshine metric:** `meanWinterSunshinePct` lives once in `climate-metrics.ts` (home-base + live-fit).
+- **Dossier vs-home under scenarios:** Versus Home footnote notes when Explorer/Compare use a projected layer while the dossier stays present-day.
+- **Compare focus restore:** focus trap no longer races App's compare-trigger restore retries.
+- **PlaceCard:** removed deprecated `onClick` prop; lists use `onOpenPlace` only.
+
 ### Consolidation, trust, and product-clarity release
 
 - **Evidence hierarchy (`src/lib/evidence-summary.ts`, `PlaceEvidenceSummary`):** place dossiers gain a compact “How to read this profile” disclosure plus section labels that distinguish measured normals, editorial context, deterministic derivation, regional projections, and screening scores. Confidence and completeness stay separate; citations remain section-level, not sentence-level.

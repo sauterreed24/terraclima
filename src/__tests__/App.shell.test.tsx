@@ -1284,6 +1284,8 @@ describe("App shell", () => {
       expect(params.get("fire")).toBeNull();
       expect(params.get("risk")).toBeNull();
       expect(params.get("q")).toBeNull();
+      // Auto live-fit from constraints must not stick after a full Explorer reset.
+      expect(params.get("r")).toBeNull();
       expect(screen.queryByText("Nothing matches that search and those filters")).not.toBeInTheDocument();
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);

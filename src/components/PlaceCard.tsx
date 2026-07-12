@@ -41,10 +41,8 @@ interface Props {
   place: Place;
   selected?: boolean;
   note?: string;
-  /** Prefer this over `onClick` in lists — stable reference lets `memo` skip re-renders. */
+  /** Stable list opener — keeps `memo` effective across parent re-renders. */
   onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
-  /** @deprecated use `onOpenPlace` */
-  onClick?: () => void;
   onCompareToggle?: (id: string) => void;
   onPreloadPlaceDetail?: () => void;
   onPreloadCompare?: () => void;
@@ -107,7 +105,7 @@ const TONE_RGB: Record<string, string> = {
  * the interactive render budget dramatically on low-spec hardware.
  */
 export const PlaceCard = memo(function PlaceCard({
-  place, selected, note, onOpenPlace, onClick, onCompareToggle, onPreloadPlaceDetail, onPreloadCompare, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, showScreeningScores, rankingProfile, homePlace, rank, rankingLabel, rankingScore, referenceMonth = getReferenceMonth(),
+  place, selected, note, onOpenPlace, onCompareToggle, onPreloadPlaceDetail, onPreloadCompare, inCompare, bookmarked, onBookmarkToggle, compact, resonantWindow, liveFitFilters, showScreeningScores, rankingProfile, homePlace, rank, rankingLabel, rankingScore, referenceMonth = getReferenceMonth(),
 }: Props) {
   const titleId = useId();
   const rankId = useId();
@@ -179,9 +177,8 @@ export const PlaceCard = memo(function PlaceCard({
   ].filter(Boolean).join(" ") || undefined;
 
   const handleOpen = useCallback((event: MouseEvent<HTMLButtonElement>) => {
-    if (onOpenPlace) onOpenPlace(place.id, { trigger: event.currentTarget });
-    else onClick?.();
-  }, [onOpenPlace, onClick, place.id]);
+    onOpenPlace?.(place.id, { trigger: event.currentTarget });
+  }, [onOpenPlace, place.id]);
 
   const handleCompare = useCallback((e: MouseEvent<HTMLButtonElement>) => {
     // Compare button is a sibling of the open button, not nested — but a

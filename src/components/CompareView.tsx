@@ -290,7 +290,9 @@ export function CompareView({
     [places.length],
   );
   useElementIsolation(panelRef, occluded);
-  useFocusTrap(panelRef, open && places.length > 0 && !occluded, true);
+  // App owns focus restore to compareTriggerRef with retries; leave trap restore off
+  // so the two mechanisms do not race on close.
+  useFocusTrap(panelRef, open && places.length > 0 && !occluded, false);
 
   useEffect(() => {
     if (!open || places.length === 0 || occluded) return;

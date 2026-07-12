@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Home } from "lucide-react";
-import type { Place } from "../../types";
+import type { Place, ScenarioId } from "../../types";
 import {
   buildHomeBaseComparison,
   formatHomeDeltaValue,
@@ -8,6 +8,7 @@ import {
 } from "../../lib/home-base";
 import { CLIMATE_NORMALS_PERIOD } from "../../lib/atlas-metadata";
 import { classifyDossierSection } from "../../lib/evidence-summary";
+import { scenarioMeta } from "../../lib/climate-projection";
 import { useProse, useUnits } from "../../lib/units";
 import { PD } from "./place-detail-nav";
 import { Section } from "./place-detail-ui";
@@ -18,15 +19,21 @@ const SECTION_ICON = <Home className="w-4 h-4" style={{ color: "#5ec4dc" }} aria
 /**
  * "Versus your home base" — relocation deltas when a home is set, or a
  * fixed placeholder CTA when the reader has not pinned one yet.
+ *
+ * Dossier always uses present-day normals. When Explorer is on a 2050
+ * scenario layer, cards/Compare diff projected place vs projected home —
+ * this section stays on authored normals and says so.
  */
 export function PlaceVersusHome({
   place,
   home,
   onHomeBaseToggle,
+  scenario = "now",
 }: {
   place: Place;
   home: Place | null;
   onHomeBaseToggle?: (id: string) => void;
+  scenario?: ScenarioId;
 }) {
   const { temp, dist } = useUnits();
   const prose = useProse();
@@ -104,6 +111,13 @@ export function PlaceVersusHome({
           Deltas read {place.name} minus {home.name} from {CLIMATE_NORMALS_PERIOD} normals — a
           screening lens, not a forecast. Change your home base from any dossier header, the{" "}
           <kbd className="kbd">H</kbd> shortcut, or the count strip above the ranked cards.
+          {scenario !== "now" ? (
+            <>
+              {" "}Explorer cards and Compare currently use the{" "}
+              <strong>{scenarioMeta(scenario).short}</strong> projected layer for vs-home chips;
+              this dossier section stays on present-day normals.
+            </>
+          ) : null}
         </p>
       </div>
     </Section>

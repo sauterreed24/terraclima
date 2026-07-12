@@ -74,6 +74,13 @@ export function meanAnnualSunshinePct(p: Place): number | null {
   return sunshine.reduce((sum, value) => sum + value, 0) / sunshine.length;
 }
 
+/** Mean Dec–Feb possible sunshine (%). Null when the place has no sunshine series. */
+export function meanWinterSunshinePct(p: Place): number | null {
+  const sun = p.climate.sunshinePct;
+  if (!sun) return null;
+  return (sun[11] + sun[0] + sun[1]) / 3;
+}
+
 export const SEASONAL_USABILITY = {
   dayComfortC: [16, 28] as const,
   sleepComfortC: [4, 19] as const,

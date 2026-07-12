@@ -885,7 +885,7 @@ function DetailBody({
 
       <PlaceEvidenceSummary place={place} anchorId={PD.evidence} />
 
-      <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} />
+      <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} scenario={scenario} />
 
       <PlaceClimateTwinsTeaser
         place={place}

@@ -593,6 +593,39 @@ describe("FilterBar clear all filters", () => {
 
     expect(setFilters).toHaveBeenCalledWith(createEmptyFilterState());
   });
+
+  it("Lens Receipt clear all prefers onClearAll when App wires a full Explorer reset", () => {
+    const setFilters = vi.fn();
+    const onClearAll = vi.fn();
+    const polluted = createEmptyFilterState();
+    polluted.search = "fog";
+    polluted.countries = new Set(["USA"]);
+
+    render(
+      <UnitContext.Provider value={{
+        temp: "F",
+        dist: "imperial",
+        setTemp: vi.fn(),
+        setDist: vi.fn(),
+        toggle: vi.fn(),
+      }}
+      >
+        <FilterBar
+          filters={polluted}
+          setFilters={setFilters}
+          ranking="live-fit"
+          setRanking={vi.fn()}
+          onClearAll={onClearAll}
+        />
+      </UnitContext.Provider>,
+    );
+
+    const lens = screen.getByRole("region", { name: "Current Explorer lens" });
+    fireEvent.click(within(lens).getByRole("button", { name: "Clear all filters" }));
+
+    expect(onClearAll).toHaveBeenCalledTimes(1);
+    expect(setFilters).not.toHaveBeenCalled();
+  });
 });
 
 describe("FilterBar climate scenario chip", () => {

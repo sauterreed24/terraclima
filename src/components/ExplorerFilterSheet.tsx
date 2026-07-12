@@ -33,6 +33,8 @@ type Props = {
   setFilters: Dispatch<SetStateAction<FilterState>>;
   ranking: RankingProfile;
   setRanking: (r: RankingProfile) => void;
+  /** Full Explorer reset — forwarded to FilterBar Clear all. */
+  onClearAll?: () => void;
   /** Shown below filters in the sheet (e.g. atlas footprint stats). */
   footer?: ReactNode;
   /** When a place profile opens, the sheet closes so the drawer is unobstructed. */
@@ -84,7 +86,7 @@ function summarizeActiveExplorerLens(
 
 export const ExplorerFilterSheet = memo(
   forwardRef<ExplorerFilterSheetHandle, Props>(function ExplorerFilterSheet(
-    { searchInputId, filters, setFilters, ranking, setRanking, footer, detailOpen, scenario, onScenarioChange, onOpenChange, projecting },
+    { searchInputId, filters, setFilters, ranking, setRanking, onClearAll, footer, detailOpen, scenario, onScenarioChange, onOpenChange, projecting },
     ref,
   ) {
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -289,6 +291,7 @@ export const ExplorerFilterSheet = memo(
               setFilters={setFilters}
               ranking={ranking}
               setRanking={setRanking}
+              onClearAll={onClearAll}
               scenario={scenario}
               onScenarioChange={onScenarioChange}
             />

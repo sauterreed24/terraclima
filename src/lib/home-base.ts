@@ -28,6 +28,7 @@ import {
   meanJanLow,
   meanSummerHigh,
   meanSummerHumidityPct,
+  meanWinterSunshinePct,
 } from "./climate-metrics";
 import { fmtDelta, fmtSnow, type DistUnit, type TempUnit } from "./units";
 
@@ -295,12 +296,6 @@ const HAZARD_SPEC: SignalSpec = {
   adjHigher: "heavier",
   adjLower: "lighter",
 };
-
-function meanWinterSunshinePct(p: Place): number | null {
-  const sun = p.climate.sunshinePct;
-  if (!sun) return null;
-  return (sun[11] + sun[0] + sun[1]) / 3;
-}
 
 function annualSnowCm(p: Place): number | null {
   const snow = p.climate.snowCm;
