@@ -1194,15 +1194,24 @@ describe("AtlasMap DOM controls", () => {
       ),
     ];
     const { container } = renderMap(vi.fn(), [], clusterPlaces);
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
     const transformOf = () => container.querySelector("svg.atlas-svg > g")?.getAttribute("transform") ?? "";
+
+    // Control: with the map focused and no picker, keyboard zoom must move the view.
+    svg.focus();
+    const beforeOpen = transformOf();
+    fireEvent.keyDown(svg, { key: "=" });
+    expect(transformOf()).not.toBe(beforeOpen);
 
     fireEvent.click(screen.getByRole("button", { name: /20 nearby microclimates/ }));
     expect(screen.getByRole("dialog", { name: "Choose a microclimate from this cluster" })).toBeInTheDocument();
 
     const before = transformOf();
-    fireEvent.keyDown(window, { key: "=" });
-    fireEvent.keyDown(window, { key: "+" });
-    fireEvent.keyDown(window, { key: "ArrowRight" });
+    // Dispatch on the SVG so the target check would otherwise allow zoom —
+    // the clusterPickerOpenRef guard must still no-op.
+    fireEvent.keyDown(svg, { key: "=" });
+    fireEvent.keyDown(svg, { key: "+" });
+    fireEvent.keyDown(svg, { key: "ArrowRight" });
     expect(transformOf()).toBe(before);
   });
 

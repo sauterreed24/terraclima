@@ -1591,10 +1591,10 @@ export const AtlasMap = memo(function AtlasMap({
   }, [pts, width, height, commitView, fitOpts]);
 
   // Desktop parity with the touch double-tap: double-clicking empty map zooms in
-  // ~1.7× centered on the cursor. (Toolbar +/- uses 1.4× per click; touch
-  // double-tap uses 1.9×.) Double-clicks that land on a pin or cluster are left
-  // to those elements' own activation, and coarse pointers keep using the
-  // dedicated double-tap path in onPointerUp.
+  // ~1.7× centered on the cursor (same step as the zoom-in toolbar button).
+  // Keyboard +/- uses 1.4× per keypress. Touch double-tap uses 1.9×. Double-clicks
+  // that land on a pin or cluster are left to those elements' own activation, and
+  // coarse pointers keep using the dedicated double-tap path in onPointerUp.
   const onDoubleClick = useCallback((e: React.MouseEvent<SVGSVGElement>) => {
     if (coarsePointer) return;
     const target = e.target as Element | null;

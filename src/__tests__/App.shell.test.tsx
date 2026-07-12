@@ -1290,6 +1290,49 @@ describe("App shell", () => {
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("clears curated collection with filters when Reset Explorer runs", async () => {
+    mockViewport(1280);
+    window.history.replaceState(
+      null,
+      "",
+      "/?col=rain-shadows&fit=cool-summers&q=zzzznonexistent",
+    );
+
+    renderApp();
+
+    expect(screen.getByRole("button", { name: /Clear .* collection filter/ })).toBeInTheDocument();
+    const recovery = screen.getByRole("group", { name: "Ways to recover matching places" });
+    fireEvent.click(within(recovery).getByRole("button", { name: /Reset Explorer/ }));
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("col")).toBeNull();
+      expect(params.get("fit")).toBeNull();
+      expect(params.get("q")).toBeNull();
+      expect(screen.queryByRole("button", { name: /Clear .* collection filter/ })).not.toBeInTheDocument();
+      expect(screen.queryByText("Nothing matches that search and those filters")).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("Lens Receipt Clear all clears curated collection together with filters", async () => {
+    mockViewport(1280);
+    window.history.replaceState(null, "", "/?col=rain-shadows&fit=cool-summers&c=USA");
+
+    renderApp();
+
+    expect(screen.getByRole("button", { name: /Clear .* collection filter/ })).toBeInTheDocument();
+    const lens = screen.getByRole("region", { name: "Current Explorer lens" });
+    fireEvent.click(within(lens).getByRole("button", { name: "Clear all filters" }));
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("col")).toBeNull();
+      expect(params.get("fit")).toBeNull();
+      expect(params.get("c")).toBeNull();
+      expect(screen.queryByRole("button", { name: /Clear .* collection filter/ })).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("relaxes Live Finder constraints from the empty state without losing the search", async () => {
     window.history.replaceState(
       null,
