@@ -8514,6 +8514,227 @@
     text-wrap: pretty;
   }
 
+  /* Evidence hierarchy — compact dossier disclosure + section chips */
+  .tc-evidence-summary {
+    border: 1px solid rgba(200, 175, 150, 0.38);
+    border-radius: 0.85rem;
+    background:
+      linear-gradient(180deg, rgba(255, 252, 246, 0.92), rgba(247, 240, 228, 0.72));
+    padding: 0.85rem 1rem 0.95rem;
+  }
+  .tc-evidence-summary__toggle {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    text-align: left;
+    min-height: 44px;
+    color: var(--color-ice);
+  }
+  .tc-evidence-summary__toggle-lead {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    min-width: 0;
+  }
+  .tc-evidence-summary__eyebrow {
+    display: block;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-stone-readable);
+  }
+  .tc-evidence-summary__title {
+    display: block;
+    font-family: var(--font-atlas);
+    font-size: 1.05rem;
+    line-height: 1.25;
+    color: var(--color-ice);
+  }
+  .tc-evidence-summary__toggle-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    flex-shrink: 0;
+  }
+  .tc-evidence-summary__pill {
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid rgba(140, 170, 190, 0.35);
+    color: var(--color-frost);
+    background: rgba(255, 255, 255, 0.45);
+  }
+  .tc-evidence-summary__pill[data-tone="sage"] {
+    border-color: rgba(90, 140, 100, 0.35);
+  }
+  .tc-evidence-summary__chevron {
+    transition: transform 160ms ease;
+  }
+  .tc-evidence-summary__chevron[data-open="true"] {
+    transform: rotate(180deg);
+  }
+  .tc-evidence-summary__lede {
+    margin: 0.55rem 0 0;
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--color-frost);
+    max-width: 46rem;
+  }
+  .tc-evidence-summary__panel {
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(200, 170, 140, 0.28);
+    display: grid;
+    gap: 0.85rem;
+  }
+  .tc-evidence-summary__grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+  @media (min-width: 720px) {
+    .tc-evidence-summary__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .tc-evidence-summary__label {
+    font-size: 0.62rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--color-stone-readable);
+    margin-bottom: 0.25rem;
+  }
+  .tc-evidence-summary__body,
+  .tc-evidence-summary__class-desc,
+  .tc-evidence-summary__footnote,
+  .tc-evidence-summary__missing li {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--color-frost);
+  }
+  .tc-evidence-summary__classes {
+    display: grid;
+    gap: 0.45rem;
+  }
+  .tc-evidence-summary__class {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+  }
+  .tc-evidence-summary__class-copy {
+    display: grid;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+  .tc-evidence-summary__class-title {
+    font-size: 0.8rem;
+    color: var(--color-ice);
+  }
+  .tc-evidence-summary__missing ul,
+  .tc-evidence-summary__source-groups,
+  .tc-evidence-summary__source-list {
+    margin: 0.25rem 0 0;
+    padding-left: 1.1rem;
+  }
+  .tc-evidence-summary__source-groups > li {
+    margin-bottom: 0.55rem;
+  }
+  .tc-evidence-summary__source-kind {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    color: var(--color-stone-readable);
+    margin-bottom: 0.15rem;
+  }
+  .tc-evidence-summary__source-list {
+    font-size: 0.8rem;
+    color: var(--color-frost);
+  }
+  .tc-evidence-summary__footnote {
+    margin: 0;
+    color: var(--color-stone-readable);
+  }
+  .tc-evidence-chip {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 0.35rem;
+    padding: 0.18rem 0.45rem;
+    border: 1px solid rgba(140, 170, 190, 0.4);
+    background: rgba(255, 255, 255, 0.55);
+    color: var(--color-frost);
+    white-space: nowrap;
+  }
+  .tc-evidence-chip[data-evidence-class="observed-normal"] {
+    border-color: rgba(61, 143, 85, 0.45);
+    color: #2f6a45;
+    background: rgba(236, 248, 232, 0.75);
+  }
+  .tc-evidence-chip[data-evidence-class="authored-context"] {
+    border-color: rgba(168, 130, 70, 0.45);
+    color: #7a5720;
+    background: rgba(255, 244, 220, 0.7);
+  }
+  .tc-evidence-chip[data-evidence-class="deterministic-derived"] {
+    border-color: rgba(70, 130, 160, 0.45);
+    color: #2f5f78;
+    background: rgba(230, 244, 250, 0.75);
+  }
+  .tc-evidence-chip[data-evidence-class="regional-projection"] {
+    border-color: rgba(140, 110, 180, 0.4);
+    color: #5a4580;
+    background: rgba(242, 236, 252, 0.75);
+  }
+  .tc-evidence-chip[data-evidence-class="screening-score"] {
+    border-color: rgba(180, 110, 70, 0.45);
+    color: #8a4a22;
+    background: rgba(255, 236, 220, 0.75);
+  }
+  .tc-evidence-chip[data-evidence-class="field-observation"] {
+    border-color: rgba(90, 120, 100, 0.4);
+    color: #3d5c4a;
+    background: rgba(232, 242, 236, 0.75);
+  }
+
+  html[data-theme="dark"] .tc-evidence-summary {
+    background: linear-gradient(180deg, rgba(22, 30, 46, 0.92), rgba(16, 22, 36, 0.88));
+    border-color: rgba(94, 196, 220, 0.22);
+  }
+  html[data-theme="dark"] .tc-evidence-summary__pill,
+  html[data-theme="dark"] .tc-evidence-chip {
+    background: rgba(18, 26, 44, 0.72);
+    color: var(--color-frost);
+  }
+  html[data-theme="dark"] .tc-evidence-chip[data-evidence-class="observed-normal"] {
+    border-color: rgba(120, 190, 140, 0.45);
+    color: #b6dfc0;
+  }
+  html[data-theme="dark"] .tc-evidence-chip[data-evidence-class="authored-context"] {
+    border-color: rgba(220, 180, 110, 0.4);
+    color: #f0d29c;
+  }
+  html[data-theme="dark"] .tc-evidence-chip[data-evidence-class="deterministic-derived"] {
+    border-color: rgba(94, 196, 220, 0.4);
+    color: #9fd8ea;
+  }
+  html[data-theme="dark"] .tc-evidence-chip[data-evidence-class="regional-projection"] {
+    border-color: rgba(180, 160, 220, 0.4);
+    color: #d2c4f0;
+  }
+  html[data-theme="dark"] .tc-evidence-chip[data-evidence-class="screening-score"] {
+    border-color: rgba(230, 150, 100, 0.4);
+    color: #efb49a;
+  }
+
   /* Place detail — reading nav desktop column (replaces plain border-r) */
   .tc-reading-nav-desktop {
     padding: 0.5rem 0.65rem 0.75rem 0.35rem;

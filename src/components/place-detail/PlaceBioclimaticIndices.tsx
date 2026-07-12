@@ -3,6 +3,8 @@ import { Layers } from "lucide-react";
 import type { Place } from "../../types";
 import { computeBioclim, type BioclimIndex, type BioclimResult } from "../../lib/bioclim";
 import { getPlaceBioclimRanks, type PlaceBioclimRanks } from "../../lib/atlas-corpus-stats";
+import { classifyDossierSection } from "../../lib/evidence-summary";
+import { EvidenceClassLabel } from "./PlaceEvidenceSummary";
 
 const ICON_COLOR = "#9bd9c2";
 
@@ -156,6 +158,9 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
         <Layers className="w-4 h-4 shrink-0" style={{ color: ICON_COLOR }} aria-hidden />
         Bioclimatic indices
       </h3>
+      <div className="flex flex-wrap items-center gap-2 mb-2">
+        <EvidenceClassLabel cls={classifyDossierSection("bioclim")} />
+      </div>
       <p className="text-sm text-stone mb-3 max-w-2xl">
         Five standard climate-science indices computed directly from this place's monthly temperature and precipitation normals — independent of the authored Köppen label, citable to original sources, comparable across the atlas.
       </p>

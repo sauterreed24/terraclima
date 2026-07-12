@@ -27,7 +27,7 @@ import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonS
 import { pickSurprisePlaceId } from "./lib/surprise-pick";
 import { assessLiveFit, LIVE_FIT_PRESET_BY_ID, pickLiveFitFilters, type LiveFitFilters } from "./lib/live-fit";
 import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
-import { projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
+import { placeForCompareSlot, projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
 import { runScenarioRanking } from "./lib/climate-processor";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
@@ -870,8 +870,11 @@ export default function App() {
 
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
   const activeComparePlaces = useMemo(
-    () => [...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace),
-    [compareIds, placesById],
+    () =>
+      [...compareIds]
+        .map(id => placeForCompareSlot(id, placesById, climateScenario, placeForId(id)))
+        .filter(isPlace),
+    [compareIds, placesById, climateScenario],
   );
   // Present-day home base for the dossier (which always shows present-day
   // normals) and a scenario-consistent twin for the Explorer grid and

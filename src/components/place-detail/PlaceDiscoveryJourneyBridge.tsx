@@ -34,7 +34,7 @@ export function PlaceDiscoveryJourneyBridge({
       {!hasHome ? (
         <>
           <p className="text-sm text-frost leading-snug max-w-2xl">
-            Set this place—or your town—as home base to unlock climate deltas, then find climate
+            Set this place, or your town, as home base to unlock climate deltas. Then find climate
             twins with clearer tradeoffs.
           </p>
           {onHomeBaseToggle ? (

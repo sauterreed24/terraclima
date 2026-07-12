@@ -22,6 +22,12 @@ import {
   buildPracticalReadCards,
   buildSettlementAnchors,
 } from "../src/lib/practical-read";
+import {
+  ALLOWED_CITATION_KINDS,
+  ALLOWED_CONFIDENCE,
+  findDuplicateCitations,
+  validatePlaceEvidence,
+} from "../src/lib/evidence-summary";
 
 type Issue = { id: string; severity: "WARN" | "ERROR"; msg: string };
 const issues: Issue[] = [];
@@ -344,6 +350,23 @@ for (const p of PLACES) {
   for (const c of p.citations) {
     if (c.url != null && safeExternalHref(c.url) == null) {
       report(p.id, "ERROR", `citation "${c.label}" has unsafe or malformed URL "${c.url}"`);
+    }
+    if (!c.label?.trim()) {
+      report(p.id, "ERROR", `citation kind ${c.kind} has an empty label`);
+    }
+    if (!(ALLOWED_CITATION_KINDS as readonly string[]).includes(c.kind)) {
+      report(p.id, "ERROR", `citation kind "${c.kind}" is not allowlisted`);
+    }
+  }
+  if (!(ALLOWED_CONFIDENCE as readonly string[]).includes(p.confidence)) {
+    report(p.id, "ERROR", `confidence "${p.confidence}" is not allowlisted`);
+  }
+  for (const label of findDuplicateCitations(p.citations)) {
+    report(p.id, "ERROR", `duplicate citation "${label}"`);
+  }
+  for (const err of validatePlaceEvidence(p)) {
+    if (/projection override/.test(err)) {
+      report(p.id, "ERROR", err);
     }
   }
   if (p.tier === "A" || p.tier === "B") {

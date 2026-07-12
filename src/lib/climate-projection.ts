@@ -229,3 +229,20 @@ export function projectPool(pool: readonly Place[], scenario: ScenarioId): Place
   byScenario[scenario] = projected;
   return projected;
 }
+
+/**
+ * Resolve a compare slot to the active climate layer.
+ * Prefer the narrowed Explorer pool; otherwise project the corpus place when
+ * scn≠now so Compare never mixes present-day normals with a future banner.
+ */
+export function placeForCompareSlot(
+  id: string,
+  poolById: Readonly<Record<string, Place>>,
+  scenario: ScenarioId,
+  corpusPlace: Place | undefined,
+): Place | undefined {
+  const fromPool = poolById[id];
+  if (fromPool) return fromPool;
+  if (!corpusPlace) return undefined;
+  return scenario === "now" ? corpusPlace : projectPlace(corpusPlace, scenario);
+}
