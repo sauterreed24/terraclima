@@ -35,6 +35,7 @@ vi.mock("../components/CompareView", () => ({
     comparisonLens,
     onComparisonLensChange,
     occluded,
+    onOpenPlace,
   }: {
     places: Array<{ id: string }>;
     open: boolean;
@@ -50,6 +51,7 @@ vi.mock("../components/CompareView", () => ({
       maxSummerHighC?: number;
     };
     occluded?: boolean;
+    onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
   }) =>
     open && places.length > 0 ? (
       <div
@@ -71,6 +73,18 @@ vi.mock("../components/CompareView", () => ({
             Remove {place.id}
           </button>
         ))}
+        {onOpenPlace
+          ? places.map(place => (
+              <button
+                key={`open-${place.id}`}
+                type="button"
+                aria-label={`Open ${place.id} from comparison`}
+                onClick={event => onOpenPlace(place.id, { trigger: event.currentTarget })}
+              >
+                Open {place.id}
+              </button>
+            ))
+          : null}
         <div data-testid="compare-place-ids">{places.map(place => place.id).join(",")}</div>
         <div data-testid="compare-lens">{comparisonLens}</div>
         <div data-testid="compare-candidate-count">{candidates?.length ?? 0}</div>
@@ -725,6 +739,36 @@ describe("App shell", () => {
     fireEvent.click(screen.getByRole("button", { name: "Close comparison" }));
 
     await waitFor(() => {
+      expect(document.activeElement).toBe(opener);
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("hands Compare → dossier focus without racing the Compare restore retries", async () => {
+    mockViewport(1280);
+    renderApp();
+    openScoutTools();
+
+    const opener = screen.getByRole("button", { name: /Compare current Scout Board finalists: 4 places/ });
+    fireEvent.click(opener);
+    expect(await screen.findByRole("dialog", { name: "4 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS })).toBeInTheDocument();
+
+    const openFromCompare = screen.getByRole("button", { name: "Open death-valley-ca from comparison" });
+    fireEvent.click(openFromCompare);
+
+    const profile = await screen.findByRole("dialog", { name: "Place profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    expect(screen.queryByRole("dialog", { name: "4 places side by side" })).not.toBeInTheDocument();
+
+    // Delayed Compare restore (80ms / 240ms) must not steal focus back to the Compare launcher.
+    await act(async () => {
+      await new Promise(resolve => window.setTimeout(resolve, 280));
+    });
+    expect(profile).toBeInTheDocument();
+    expect(document.activeElement).not.toBe(opener);
+
+    fireEvent.click(within(profile).getByRole("button", { name: "Close profile" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Place profile" })).not.toBeInTheDocument();
       expect(document.activeElement).toBe(opener);
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);

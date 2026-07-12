@@ -32,6 +32,7 @@ import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
 import { placeForCompareSlot, projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
 import { runScenarioRanking } from "./lib/climate-processor";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
+import { useRankingCalendarMonth } from "./hooks/use-ranking-calendar-month";
 import { useShareStatus } from "./hooks/use-share-status";
 import { EmptyResults } from "./components/explorer/EmptyResults";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
@@ -745,11 +746,15 @@ export default function App() {
     () => activeCollection ? baselinePool.map(p => p.id) : undefined,
     [activeCollection, baselinePool],
   );
+  // Pin Visit-now / best-this-month to the calendar month so a long-lived tab
+  // does not keep June ranks while PlaceCard chrome has rolled into July.
+  const { nowEpochMs: rankingNowEpochMs, referenceMonth: rankingReferenceMonth } = useRankingCalendarMonth();
   const processor = useClimateProcessor({
     scenario: climateScenario,
     ranking,
     filters: validatedFilters,
     poolIds: scenarioPoolIds,
+    nowEpochMs: rankingNowEpochMs,
     // Present-day is the default view; only spin up the (corpus-carrying)
     // worker once the user engages a future-climate layer.
     disableWorker: climateScenario === "now",
@@ -782,6 +787,7 @@ export default function App() {
       scenario: "now",
       ranking,
       filters: validatedFilters,
+      nowEpochMs: rankingNowEpochMs,
       ...(scenarioPoolIds ? { poolIds: scenarioPoolIds } : {}),
     }).rows;
     return rows
@@ -791,7 +797,7 @@ export default function App() {
         return row.note != null ? { place, score: row.score, note: row.note } : { place, score: row.score };
       })
       .filter((row): row is RankingResult => row != null);
-  }, [climateScenario, ranked, ranking, scenarioPoolIds, validatedFilters]);
+  }, [climateScenario, ranked, ranking, rankingNowEpochMs, scenarioPoolIds, validatedFilters]);
   // The hero top-ten is decorative (lives below the map + cards). Defer it
   // so React can drop a stale render and let the higher-value updates above
   // commit first when the user is rapidly changing filters.
@@ -1254,6 +1260,9 @@ export default function App() {
     }
     if (!compareWasOpenRef.current) return;
     compareWasOpenRef.current = false;
+    // Compare → dossier handoff: the place panel owns focus; do not race it
+    // with the delayed Compare-trigger restore retries below.
+    if (selectedId != null) return;
     let restoredTarget: HTMLElement | null = null;
     const focusCompareTrigger = () => {
       const current = document.activeElement as HTMLElement | null;
@@ -1294,7 +1303,7 @@ export default function App() {
       window.clearTimeout(retryId);
       window.clearTimeout(settledRetryId);
     };
-  }, [compareOpen]);
+  }, [compareOpen, selectedId]);
 
   const focusSearchInput = useCallback(() => {
     const el = document.getElementById(SEARCH_INPUT_ID) as HTMLInputElement | null;
@@ -1764,6 +1773,7 @@ export default function App() {
                       rankingProfile={ranking}
                       homePlace={homeBasePlaceForScenario}
                       rankingLabel={scenarioRankingLabel}
+                      referenceMonth={rankingReferenceMonth}
                       bookmarkIds={bookmarkIds}
                       onBookmarkToggle={toggleBookmark}
                     />
@@ -1922,9 +1932,14 @@ export default function App() {
             open={compareOpen}
             onClose={closeCompare}
             onRemove={toggleCompare}
-            onOpenPlace={id => {
-              closeCompare();
-              openPlace(id);
+            onOpenPlace={(id, opts) => {
+              // Prefer the Explorer Compare launcher as the dossier return
+              // target — in-Compare controls unmount with the overlay.
+              const compareLauncher = compareTriggerRef.current;
+              closeCompare({ restoreFocus: false });
+              openPlace(id, {
+                trigger: compareLauncher ?? opts?.trigger ?? null,
+              });
             }}
             onCopyView={copyCurrentView}
             shareStatus={shareStatus}
@@ -3234,10 +3249,13 @@ function scenarioRankMoveLabel(row: ScenarioReshuffleRow): string {
 
 function scenarioScoreLabel(row: ScenarioReshuffleRow): string {
   const projected = Math.round(row.projectedScore);
-  if (row.currentScore == null || row.scoreDelta == null) return `${projected} projected`;
+  if (row.currentScore == null || row.scoreDelta == null) return `${projected} lens score`;
   const delta = Math.round(row.scoreDelta);
+  // Authored-score lenses (most-unique, hidden gems, …) stay flat under
+  // projection — omit a noisy "+0" that reads like a climate miss.
+  if (delta === 0) return `${projected} lens score (unchanged vs present-day climate)`;
   const signed = delta > 0 ? `+${delta}` : `${delta}`;
-  return `${projected} projected · ${signed} vs now`;
+  return `${projected} lens score · ${signed} vs present-day climate`;
 }
 
 const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
@@ -3271,7 +3289,7 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
             {meta.short} reranks {rankingLabel.toLowerCase()} against projected 2041-2060 normals.
           </p>
           <p className="scenario-remap__copy">
-            {leaderLine} {churnLine} Deltas compare each projected place card with its 1991-2020 baseline.
+            {leaderLine} {churnLine} Lens-score chips compare the active ranking under projected vs present-day climate; summer / winter / precip chips are climate deltas vs 1991-2020 normals.
           </p>
         </div>
         <div className="scenario-remap__facts" aria-label={`${meta.short} remap summary`}>

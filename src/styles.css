@@ -6489,6 +6489,12 @@
     opacity: 0;
     pointer-events: none;
   }
+  /* Leader lines / pin-spread layout lag on settledView during gestures —
+     hide them so they cannot disagree with the live SVG transform. */
+  .map-shell[data-gesturing="true"] .map-pin-leaders {
+    visibility: hidden;
+    opacity: 0;
+  }
   .tc-map-hover-card--compact {
     max-height: min(9.5rem, var(--tc-map-hover-max-height, calc(100% - 1rem)));
   }
