@@ -23,6 +23,7 @@ import {
   type LifestyleBundle,
 } from "./lib/lifestyle-bundles";
 import { explorerResultsPending } from "./lib/explorer-pending";
+import { buildCompareCandidates } from "./lib/compare-workbench";
 import { buildExplorerRecoveryActions } from "./lib/explorer-recovery";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { pickSurprisePlaceId } from "./lib/surprise-pick";
@@ -842,27 +843,15 @@ export default function App() {
     () => (homeBasePlace && climateScenario !== "now" ? projectPlace(homeBasePlace, climateScenario) : homeBasePlace),
     [homeBasePlace, climateScenario],
   );
-  const compareCandidates = useMemo<CompareCandidate[]>(() => {
-    const seen = new Set<string>();
-    const candidates: CompareCandidate[] = [];
-    const push = (place: Place | undefined, source: CompareCandidate["source"], note: string) => {
-      if (!place || seen.has(place.id)) return;
-      seen.add(place.id);
-      candidates.push({ place, source, note });
-    };
-
-    for (const id of bookmarkIds) {
-      push(placesById[id] ?? placeForId(id), "Shortlist", "Pinned to your shortlist");
-    }
-    for (const id of recentIds) {
-      push(placesById[id] ?? placeForId(id), "Recent", "Recently opened dossier");
-    }
-    for (const row of ranked.slice(0, 12)) {
-      push(row.place, "Ranked", `${scenarioRankingLabel} leader`);
-    }
-
-    return candidates;
-  }, [bookmarkIds, placesById, ranked, scenarioRankingLabel, recentIds]);
+  const compareCandidates = useMemo<CompareCandidate[]>(() => buildCompareCandidates({
+    bookmarkIds,
+    recentIds,
+    ranked,
+    placesById,
+    scenario: climateScenario,
+    scenarioRankingLabel,
+    resolveCorpusPlace: placeForId,
+  }), [bookmarkIds, climateScenario, placesById, ranked, scenarioRankingLabel, recentIds]);
   const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
