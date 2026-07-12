@@ -47,7 +47,13 @@ npm run playtest:browser
 - **`createEmptyFilterState()`** in [`src/lib/scoring.ts`](../src/lib/scoring.ts) is the canonical reset for “clear all filters” (omits optional Live Finder / elevation keys).
 - **`filterStateFromValidated()`** hydrates explorer filters from URL-validated fields on first paint and `popstate` — keep in sync with [`validatedStateFromSearch`](../src/lib/app-url.ts), not duplicated in `App.tsx`.
 - **`hasActiveExplorerFilters()`** / **`countActiveExplorerFilterSignals()`** are the single source for “filters active” in FilterBar and the mobile filter sheet badge.
+- **FilterBar `onClearAll`:** Lens Receipt / sheet Clear all must call App’s `clearAllFilters` (empty filters **and** clear curated `col`). Do not leave FilterBar on a local `createEmptyFilterState()`-only clear.
+- **Auto live-fit is transient:** constraint-driven switches to `r=live-fit` must not `persistRankingProfile`; Clear all / Reset Explorer restores the stored preference (or `most-unique` if storage held `live-fit`).
 - **`npm run playtest:polish`** asserts filter clear restores the full corpus and omits stale live-fit URL params after clear.
+
+## Compare scenario contract
+
+- Active compare columns **and** workbench candidates (shortlist / recent / ranked) resolve through [`placeForCompareSlot`](../src/lib/climate-projection.ts) / [`buildCompareCandidates`](../src/lib/compare-workbench.ts) so `scn≠now` never mixes present-day normals into projected UI.
 
 ## Evolution v4.8 (2026-05)
 
