@@ -1192,7 +1192,13 @@ export const AtlasMap = memo(function AtlasMap({
   }, [onSelect]);
 
   const syncShellGesturing = useCallback(() => {
-    setShellGesturing(pinchRef.current !== null || wheelActiveRef.current);
+    // Pan must hide hover cards / leaders once the drag threshold is crossed —
+    // pinch and wheel already did; one-finger / mouse drag used to leave them live.
+    setShellGesturing(
+      pinchRef.current !== null
+      || wheelActiveRef.current
+      || (dragRef.current.active && dragRef.current.moved),
+    );
   }, [setShellGesturing]);
 
   const scheduleWheelGestureEnd = useCallback(() => {
@@ -1502,14 +1508,17 @@ export const AtlasMap = memo(function AtlasMap({
     const dy = (e.clientY - dragRef.current.startY) * sy;
     dragRef.current.dx = dx;
     dragRef.current.dy = dy;
-    if (!dragRef.current.moved && Math.abs(dx) + Math.abs(dy) > 4) dragRef.current.moved = true;
+    if (!dragRef.current.moved && Math.abs(dx) + Math.abs(dy) > 4) {
+      dragRef.current.moved = true;
+      syncShellGesturing();
+    }
     if (!dragRef.current.raf) {
       dragRef.current.raf = requestAnimationFrame(() => {
         dragRef.current.raf = 0;
         applyDOMTransform();
       });
     }
-  }, [width, height, applyDOMTransform, updateCursorCoord, mapInteractive, updateExplicitTouchPan]);
+  }, [width, height, applyDOMTransform, updateCursorCoord, mapInteractive, updateExplicitTouchPan, syncShellGesturing]);
 
   const onPointerUp = useCallback((e?: React.PointerEvent<SVGSVGElement>) => {
     let touchTap: { clientX: number; clientY: number } | null = null;

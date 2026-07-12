@@ -169,3 +169,13 @@ describe("mobile touch target CSS", () => {
     expectRule(".tc-hero-credit a", /display:\s*grid;[\s\S]*min-height:\s*2\.75rem;/);
   });
 });
+
+describe("field note strip theme CSS", () => {
+  it("defines light Field note surfaces that dark theme remaps without utility fights", () => {
+    expectRule(".tc-field-note-strip", /border:\s*1px solid rgba\(61,\s*143,\s*85,\s*0\.28\);/);
+    expectRule(".tc-field-note-strip", /background:\s*linear-gradient\(135deg,\s*rgba\(255,\s*253,\s*248/);
+    expect(
+      ruleBody("html[data-theme=\"dark\"] .tc-field-note-strip"),
+    ).toMatch(/rgba\(22,\s*38,\s*42|rgba\(13,\s*19,\s*32/);
+  });
+});

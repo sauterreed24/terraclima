@@ -7062,6 +7062,11 @@
     background: linear-gradient(165deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 252, 248, 0.94) 100%);
     padding-left: 0.65rem;
   }
+  /* Field note strip — light default lives here so dark remaps are not fighting Tailwind utilities. */
+  .tc-field-note-strip {
+    border: 1px solid rgba(61, 143, 85, 0.28);
+    background: linear-gradient(135deg, rgba(255, 253, 248, 0.98) 0%, rgba(236, 248, 232, 0.55) 100%);
+  }
   /* Full-atlas comparison matrix (place detail) */
   .atlas-corpus-matrix {
     contain: layout style;

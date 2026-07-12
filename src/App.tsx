@@ -948,7 +948,8 @@ export default function App() {
     }
     setPlaceEntryIntent(opts?.entryIntent ?? null);
     setAnimatePlaceDetailEntry(true);
-    setSelectedId(id);
+    // Prefer the canonical id so shared ?p= URLs never keep retired aliases.
+    setSelectedId(canonical ?? id);
   }, []);
 
   const consumePlaceEntryIntent = useCallback(() => {
@@ -2480,7 +2481,7 @@ const FieldNoteStrip = memo(function FieldNoteStrip() {
   const note = FIELD_NOTES[idx];
 
   return (
-    <div className="tc-field-note-strip rounded-xl border border-[rgba(61,143,85,0.28)] bg-[linear-gradient(135deg,rgba(255,253,248,0.98)_0%,rgba(236,248,232,0.55)_100%)] px-4 py-3 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+    <div className="tc-field-note-strip rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
       <div className="flex items-center gap-2 shrink-0">
         <BookOpen className="w-3.5 h-3.5 shrink-0 text-sage-700" aria-hidden />
         <div className="flex flex-col gap-0.5">
@@ -2560,7 +2561,7 @@ const ClimateSignalRail = memo(function ClimateSignalRail({
               <span className="climate-signal-rail__rank" aria-hidden>{i + 1}</span>
               <span className="climate-signal-rail__copy">
                 <span className="climate-signal-rail__place" title={row.place.name}>{row.place.name}</span>
-                <span className="climate-signal-rail__note" title={row.note ? prose(row.note) : row.signature.primaryBlurb}>
+                <span className="climate-signal-rail__note" title={row.note ? prose(row.note) : prose(row.signature.primaryBlurb)}>
                   {row.note ? prose(row.note) : row.signature.primaryLabel}
                 </span>
               </span>
