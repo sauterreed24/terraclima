@@ -98,9 +98,9 @@ if (!existsSync(INDEX_HTML)) {
 }
 
 const html = readFileSync(INDEX_HTML, "utf8");
-const preloads = extractModulePreloads(html);
-const entryScripts = extractEntryScripts(html);
-const stylesheets = extractStylesheets(html);
+const preloads = extractModulePreloads(html).filter(isLocalAssetHref);
+const entryScripts = extractEntryScripts(html).filter(isLocalAssetHref);
+const stylesheets = extractStylesheets(html).filter(isLocalAssetHref);
 
 const violations: string[] = [];
 
