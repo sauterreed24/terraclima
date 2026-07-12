@@ -51,6 +51,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   rankingProfile,
   homePlace,
   rankingLabel,
+  referenceMonth,
   bookmarkIds,
   onBookmarkToggle,
 }: {
@@ -67,6 +68,8 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   /** Home-base anchor; cards render a compact delta strip against it. */
   homePlace?: Place | null;
   rankingLabel: string;
+  /** Calendar month (0–11) shared with Visit-now / best-this-month ranking. */
+  referenceMonth?: number;
   bookmarkIds?: Set<string>;
   onBookmarkToggle?: (id: string) => void;
 }) {
@@ -173,6 +176,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
                   rank={start + colIndex + 1}
                   rankingLabel={rankingLabel}
                   rankingScore={r.score}
+                  referenceMonth={referenceMonth}
                 />
               ))}
             </div>

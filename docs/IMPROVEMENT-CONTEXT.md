@@ -69,7 +69,8 @@ npm run playtest:browser
 
 - **Lifestyle bundles:** [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyle-bundles.ts) — hero quick-picks and FilterBar dock share `applyLifestyleBundle()`; auto **`live-fit`** ranking when constraints are active without a full bundle match.
 - **Map ↔ list:** `AtlasMap` pans to the selected pin via `fitMapViewToPoints` (respects `motionPolicy()`); `VirtualPlaceGrid` scrolls the selected card into view (debounced `scrollToIndex`).
-- **Compare → profile:** Compare column titles and highlight strips call `onOpenPlace`; App closes compare then opens the dossier (focus return matches place-detail pattern).
+- **Compare → profile:** Compare column titles and highlight strips call `onOpenPlace` with `{ trigger }`; App closes Compare with `restoreFocus: false`, skips Compare-trigger restore while a dossier is open, and returns focus to the Explorer Compare launcher (or main) when the dossier closes.
+- **Visit-now month pin:** `useRankingCalendarMonth` supplies a shared `nowEpochMs` / `referenceMonth` to the climate processor, baseline reshuffle pass, and `VirtualPlaceGrid` cards; refreshes on visibility/focus so month-boundary tabs stay coherent.
 - **Share depth:** `CopyPlaceLink` uses `shareUrl()` and preserves `#deep-…` dossier section hashes when copying from a scrolled profile.
 - **Corpus:** 28 fog-belt / cool-summer-maritime places now ship station-sourced `climate.humidity` (sanity WARNs cleared).
 

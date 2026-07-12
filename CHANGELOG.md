@@ -4,6 +4,13 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Focus, Visit-now month, and scenario remap honesty
+
+- **Compare → dossier handoff:** closing Compare into a place profile no longer races delayed Compare-trigger focus restores; the Explorer Compare launcher is preferred as the dossier return target.
+- **Visit-now / `best-this-month`:** ranking and PlaceCard climate-bar chrome share a calendar-month epoch (`useRankingCalendarMonth`), refreshed on tab visibility/focus so long-lived sessions do not drift across month boundaries.
+- **Scenario remap copy:** lens-score chips are labeled as ranking-score deltas under projected vs present-day climate; summer/winter/precip chips remain climate deltas vs 1991-2020 normals; flat authored-score lenses omit a noisy `+0`.
+- **Map leader lines during gestures:** `.map-pin-leaders` hide under `data-gesturing` alongside the hover card.
+
 ### Post-merge trust polish (home base, ranking, map hover)
 
 - **Home-base hydrate write-through:** explicit `?hb=` persists to `localStorage` on first paint and `popstate`; unresolved stored ids are purged so orphans cannot resurrect.
