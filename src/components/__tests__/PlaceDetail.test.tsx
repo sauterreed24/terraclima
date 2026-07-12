@@ -618,7 +618,7 @@ describe("PlaceDetail home-base anchor", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: `Versus your home base — ${home.name}` }),
+      screen.getByRole("heading", { name: `Versus your home base · ${home.name}` }),
     ).toBeInTheDocument();
     expect(screen.getByText(/Compared with Sequim/)).toBeInTheDocument();
 

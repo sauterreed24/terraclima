@@ -73,6 +73,10 @@ function extractStylesheets(html: string): string[] {
     .filter((href): href is string => Boolean(href));
 }
 
+function isLocalAssetHref(href: string): boolean {
+  return href.startsWith("/") || href.startsWith("./") || href.startsWith("assets/") || !/^[a-z]+:/i.test(href);
+}
+
 function resolveAssetPath(href: string): string {
   const cleaned = href.replace(/^\.\//, "").replace(/^\//, "");
   if (cleaned.startsWith("assets/")) return join(DIST, cleaned);
