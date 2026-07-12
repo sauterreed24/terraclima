@@ -317,7 +317,7 @@ export const PlaceCard = memo(function PlaceCard({
           >
             <div>
               <dt>Signature</dt>
-              <dd title={visualSignature.primaryBlurb}>
+              <dd title={prose(visualSignature.primaryBlurb)}>
                 <span className="place-card__signature-value">{visualSignature.primaryLabel}</span>
               </dd>
             </div>

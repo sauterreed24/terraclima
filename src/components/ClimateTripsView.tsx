@@ -144,7 +144,7 @@ export function ClimateTripsView({ onOpenPlace, onPickTripTheme, onComparePlaces
               >
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <div className="min-w-0">
-                    <div className="text-xs uppercase tracking-wider text-stone">{theme.subtitle}</div>
+                    <div className="text-xs uppercase tracking-wider text-stone">{prose(theme.subtitle)}</div>
                     <h2 className="font-atlas text-xl text-ice leading-tight">{theme.title}</h2>
                     <div className="text-[11px] text-stone mt-0.5">{theme.placeIds.length} stops</div>
                   </div>
