@@ -1,4 +1,6 @@
-import type { Place } from "../types";
+import type { Place, ScenarioId } from "../types";
+import { placeForCompareSlot } from "./climate-projection";
+import type { RankingResult } from "./scoring";
 
 export type ComparisonLensId = "balanced" | "travel" | "move" | "remote" | "garden" | "risk";
 
@@ -37,5 +39,47 @@ export function isComparisonLensId(value: string | null | undefined): value is C
 
 export function comparisonLensLabel(id: ComparisonLensId): string {
   return COMPARISON_LENS_OPTIONS.find(option => option.id === id)?.label ?? "Balanced";
+}
+
+/** Compare workbench tray: shortlist, recents, and ranked leaders for swap-in. */
+export function buildCompareCandidates({
+  bookmarkIds,
+  recentIds,
+  ranked,
+  placesById,
+  scenario,
+  scenarioRankingLabel,
+  resolveCorpusPlace,
+}: {
+  bookmarkIds: Iterable<string>;
+  recentIds: readonly string[];
+  ranked: readonly RankingResult[];
+  placesById: Readonly<Record<string, Place>>;
+  scenario: ScenarioId;
+  scenarioRankingLabel: string;
+  resolveCorpusPlace: (id: string) => Place | undefined;
+}): CompareCandidate[] {
+  const seen = new Set<string>();
+  const candidates: CompareCandidate[] = [];
+  const push = (place: Place | undefined, source: CompareCandidateSource, note: string) => {
+    if (!place || seen.has(place.id)) return;
+    seen.add(place.id);
+    candidates.push({ place, source, note });
+  };
+
+  const resolve = (id: string) =>
+    placeForCompareSlot(id, placesById, scenario, resolveCorpusPlace(id));
+
+  for (const id of bookmarkIds) {
+    push(resolve(id), "Shortlist", "Pinned to your shortlist");
+  }
+  for (const id of recentIds) {
+    push(resolve(id), "Recent", "Recently opened dossier");
+  }
+  for (const row of ranked.slice(0, 12)) {
+    push(row.place, "Ranked", `${scenarioRankingLabel} leader`);
+  }
+
+  return candidates;
 }
 
