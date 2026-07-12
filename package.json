@@ -19,6 +19,8 @@
     "test:celsius": "tsx scripts/playtest-celsius.ts",
     "playtest:polish": "tsx scripts/playtest-polish.ts",
     "playtest:map": "node scripts/playtest-map.mjs",
+    "playtest:browser": "node scripts/playtest-browser.mjs",
+    "test:browser": "node scripts/playtest-browser.mjs",
     "check:metadata": "tsx scripts/check-site-metadata.ts",
     "check:performance-budget": "tsx scripts/check-performance-budget.ts",
     "audit:corpus": "tsx scripts/audit-corpus.ts",
@@ -28,7 +30,8 @@
     "dump:corpus-rank": "tsx scripts/dump-corpus-ranks.ts",
     "generate:og": "tsx scripts/generate-og-image.ts",
     "generate:icons": "tsx scripts/generate-icons.ts",
-    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run build && npm run check:performance-budget"
+    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run build && npm run check:performance-budget",
+    "playtest:rigorous": "node scripts/playtest-rigorous.mjs"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.13.24",
@@ -60,6 +63,7 @@
     "eslint-plugin-react-hooks": "^7.1.1",
     "globals": "^17.6.0",
     "jsdom": "^29.1.1",
+    "playwright-core": "^1.61.1",
     "postcss": "^8.5.14",
     "tailwindcss": "^4.3.0",
     "tsx": "^4.21.0",

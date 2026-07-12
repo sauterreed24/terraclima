@@ -618,7 +618,7 @@ describe("PlaceDetail home-base anchor", () => {
     );
 
     expect(
-      screen.getByRole("heading", { name: `Versus your home base — ${home.name}` }),
+      screen.getByRole("heading", { name: `Versus your home base · ${home.name}` }),
     ).toBeInTheDocument();
     expect(screen.getByText(/Compared with Sequim/)).toBeInTheDocument();
 
@@ -717,5 +717,34 @@ describe("PlaceDetail archetype field guide", () => {
     fireEvent.click(primaryChip);
     expect(guide).toHaveAttribute("hidden");
     expect(primaryChip).toHaveAttribute("aria-expanded", "false");
+  });
+});
+
+describe("PlaceDetail evidence hierarchy", () => {
+  it("exposes a compact Evidence disclosure and screening labels on score sections", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} />
+      </UnitProvider>,
+    );
+
+    const evidence = screen.getByRole("region", { name: "Evidence and how to read this profile" });
+    expect(evidence).toBeInTheDocument();
+    expect(evidence).toHaveTextContent(/How to read this profile/);
+    expect(evidence).toHaveTextContent(/screening/i);
+
+    const toggle = screen.getByRole("button", { name: /How to read this profile/i });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-expanded", "true");
+    expect(evidence).toHaveTextContent(/Confidence vs completeness/);
+    expect(evidence).toHaveTextContent(/Sources by type/);
+
+    expect(screen.getAllByText("Screening score").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("Derived").length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText("Regional projection").length).toBeGreaterThanOrEqual(1);
   });
 });

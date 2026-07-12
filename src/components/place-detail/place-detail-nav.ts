@@ -34,6 +34,7 @@ export const PD = {
   settlements: "pd-settlements",
   activities: "pd-activities",
   similar: "pd-similar",
+  evidence: "pd-evidence",
   verdict: "pd-verdict",
 } as const;
 
@@ -65,6 +66,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   const items: PlaceNavItem[] = [
     { id: PD.overview, label: "Overview", group: PD_NAV_GROUP.lived },
     { id: PD.whyHere, label: "Why it differs", group: PD_NAV_GROUP.lived },
+    { id: PD.evidence, label: "Evidence", group: PD_NAV_GROUP.lived },
     { id: PD.vsHome, label: "Versus home", group: PD_NAV_GROUP.lived },
     { id: PD.similarTeaser, label: "Climate twins", group: PD_NAV_GROUP.lived },
     { id: PD.residency, label: "Residency brief", group: PD_NAV_GROUP.lived },

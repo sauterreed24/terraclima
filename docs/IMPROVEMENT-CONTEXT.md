@@ -1,6 +1,6 @@
 # Terraclima Improvement Context
 
-Last reconciled: 2026-05-28.
+Last reconciled: 2026-07-12.
 
 ## Repo Reality
 
@@ -26,7 +26,21 @@ Run:
 npm run quality:check
 ```
 
-That includes type checking, ESLint, Vitest, prose tests, metadata consistency, corpus audits, sanity checks, ranking goldens, and a production build.
+That includes type checking, ESLint, Vitest, prose tests, metadata consistency, corpus audits (including evidence integrity), sanity checks, ranking goldens, a production build, and gzip byte budgets for initial assets.
+
+Browser smoke is separate:
+
+```bash
+npm run build && npm run preview -- --host 127.0.0.1 --port 4173
+npx playwright install chromium   # once
+npm run playtest:browser
+```
+
+## Evidence hierarchy (2026-07)
+
+- [`src/lib/evidence-summary.ts`](../src/lib/evidence-summary.ts) classifies dossier sections and citations into measured normals, authored context, deterministic derivation, regional projection, screening scores, and field observations.
+- The dossier surfaces a compact Evidence disclosure and section labels; rankings remain screening aids.
+- Compare uses [`placeForCompareSlot`](../src/lib/climate-projection.ts) so out-of-pool slots under `scn≠now` stay on the projected layer.
 
 ## Filter state contract
 

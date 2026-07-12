@@ -104,7 +104,7 @@ Free, public, quality-first: fast to open, easy to share, trustworthy to inspect
 - Rankings, profile depth, citations, confidence notes, and risk caveats *are* the product surface.
 - Copy current view and `?p=` profile links so scouting state and dossiers move cleanly between devices.
 - Canonical public URL: `https://sauterreed24.github.io/terraclima/`.
-- `npm run quality:check` guards URL parsing, metadata, ranking, corpus shape, prose, °C and polish playtests, coverage, and production builds. Atlas gesture/framing regressions are covered by Vitest atlas suites plus the optional local `npm run playtest:map` sweep.
+- `npm run quality:check` guards URL parsing, metadata, ranking, corpus shape, prose, °C and polish playtests, coverage, production builds, and gzip byte budgets. Atlas gesture/framing regressions are covered by Vitest atlas suites plus the optional local `npm run playtest:map` sweep. Broader route smoke lives in `npm run playtest:browser` (CI: browser-smoke workflow).
 
 ## Climate intelligence
 
@@ -129,7 +129,7 @@ Terraclima combines editorial research with deterministic analysis. It does **no
 - **Accessibility:** focus traps on dialogs; live region for filtered counts; pins and clusters share one roving-tabindex; visible focus on map controls; `aria-pressed` / `aria-expanded` on toggles.
 - **Map performance:** custom SVG Albers atlas (no Mapbox/Leaflet/tiles) — drag without React thrash, rAF-coalesced wheel zoom, lazy topology, mobile clustering, capability-gated effects. Framing/clamp/wheel handoff/scroll escape live in `atlas-map-fit.ts`, `atlas-map-zoom.ts`, `atlas-map-cluster.ts`, `atlas-map-keyboard.ts`, `atlas-map-touch-gesture.ts`; [`use-atlas-map-view.ts`](src/hooks/use-atlas-map-view.ts) commits clamped view state.
 - **Cards & bundles:** virtualized place grid; cold routes (Trips, Collections, Learn, Detail, Compare) code-split; post-build performance budget.
-- **CI:** [`.github/workflows/quality.yml`](.github/workflows/quality.yml) runs `npm run quality:check` on PRs and non-`main` pushes.
+- **CI:** [`.github/workflows/quality.yml`](.github/workflows/quality.yml) runs `npm run quality:check` on PRs and non-`main` pushes. [`.github/workflows/browser-smoke.yml`](.github/workflows/browser-smoke.yml) runs the Playwright browser suite against a local preview.
 
 ## Performance targets
 
@@ -148,7 +148,7 @@ Structured editorial research backed by public climate and geospatial references
 - **Earth observation context:** Sentinel-2 / Landsat for spectral screening (NDVI-class, thermal, moisture, snow, burn history).
 - **Relief texture:** screening where finer topography would materially improve interpretation.
 
-Every place carries citations and confidence notes. Derived scores stay conservative; interpretive content is labeled as such.
+Every place carries citations and confidence notes. Derived scores stay conservative; interpretive content is labeled as such. The dossier Evidence disclosure separates measured normals, editorial context, deterministic calculations, regional projections, and screening scores without inventing station-level precision.
 
 The corpus covers **226** North American places, including **8 Tier A flagships** and **54 Tier B** deeper relocation/travel candidates. Tier A/B entries require confidence notes, at least two URL-backed citations, and deep-section coverage. Recent deepening includes Port Orford / Cape Blanco, Klamath Falls / Upper Klamath Basin, Los Alamos / Pajarito Plateau, Lander / Sinks Canyon, Atlin Lake, Fernie / Elk Valley, Valle de Bravo, and Zacatlán de las Manzanas, plus deeper Nelson, Pátzcuaro, Todos Santos, Tapalpa, and Mazamitla.
 
@@ -267,8 +267,9 @@ npm run test:prose         # Prose / unit localization regressions
 npm run test:celsius       # °C localization playtest
 npm run playtest:polish    # UI polish / copy consistency
 npm run playtest:map       # Real-browser atlas sweep (local preview + playwright-core; not in quality:check)
+npm run playtest:browser   # Product smoke: Explorer/map/dossier/Compare + axe (alias: test:browser)
 npm run check:metadata     # Shell / discovery metadata
-npm run check:performance-budget # Cold-route modulepreload budget
+npm run check:performance-budget # Cold-route modulepreload + initial gzip byte budgets
 npm run audit:corpus       # Corpus prose / units / consistency
 npm run sanity             # Structural + geospatial sanity
 npm run corpus:coverage    # Tier / section coverage report
@@ -298,6 +299,8 @@ Try ~**375px**, **768px**, **1024px**, and full desktop. Run `npm run quality:ch
 **Dossier layout:** `scripts/playtest-visual.mjs` opens every place profile in headless Chromium and fails on horizontal overflow or clipped chart/header collisions. Needs `npm run preview` plus a local `playwright-core` install (see script header). Not in `quality:check`.
 
 **Atlas map:** `npm run playtest:map` against a local preview. Centers on `/?r=most-comfortable`, sweeps **1440×900** → **360×800**, checks overflow and unified roving focus, exercises fit/pan/zoom keys, wheel, pin open, cluster activate, orientation flip, light/dark low-power, and hybrid scroll escape. Local-only base URL; off-host network aborted. Artifacts: `/opt/cursor/artifacts/playtest-map` or `TC_MAP_ARTIFACT_DIR`. Run after `AtlasMap`, `atlas-map-*`, map styles, or map keyboard/touch changes.
+
+**Browser smoke:** `npm run playtest:browser` (or `test:browser`) after `npm run build` + `npm run preview`. Covers discovery load, empty-results recovery, dossier evidence disclosure, Compare under a scenario layer, map keyboard/touch samples, and axe serious/critical checks across light/dark and several viewports. Network is local-only. Artifacts: `TC_BROWSER_ARTIFACT_DIR` (default `/opt/cursor/artifacts/playtest-browser`). Install Chromium once with `npx playwright install chromium`. CI runs this in `browser-smoke.yml`; it is intentionally not part of `quality:check`.
 
 ## Human review guide
 

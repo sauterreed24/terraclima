@@ -23,13 +23,16 @@ import {
   type LifestyleBundle,
 } from "./lib/lifestyle-bundles";
 import { explorerResultsPending } from "./lib/explorer-pending";
-import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasNonSearchExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { buildExplorerRecoveryActions } from "./lib/explorer-recovery";
+import { applyFilters, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { pickSurprisePlaceId } from "./lib/surprise-pick";
 import { assessLiveFit, LIVE_FIT_PRESET_BY_ID, pickLiveFitFilters, type LiveFitFilters } from "./lib/live-fit";
 import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
-import { projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
+import { placeForCompareSlot, projectPlace, projectPool, scenarioMeta } from "./lib/climate-projection";
 import { runScenarioRanking } from "./lib/climate-processor";
 import { useClimateProcessor } from "./hooks/use-climate-processor";
+import { useShareStatus } from "./hooks/use-share-status";
+import { EmptyResults } from "./components/explorer/EmptyResults";
 import { ClimateScenarioControl } from "./components/chrome/ClimateScenarioControl";
 import { CompareLoadingFallback } from "./components/CompareLoadingFallback";
 import { LazyRouteErrorBoundary } from "./components/LazyRouteErrorBoundary";
@@ -45,7 +48,6 @@ import { getClimateTourismProfile, type ClimateTourismProfile } from "./lib/clim
 import { motionPolicy, prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
 import { fmtDelta, fmtTemp, useProse, useUnits, type UnitState } from "./lib/units";
-import { shareUrl } from "./lib/share";
 import { runViewTransition } from "./lib/view-transition";
 import {
   loadClimateTripsView,
@@ -341,9 +343,7 @@ export default function App() {
   });
   /** One-shot transient feedback for actions like pressing R on an empty pool or hitting the compare cap. */
   const [transientFeedback, setTransientFeedback] = useState<string | null>(null);
-  const [shareStatus, setShareStatus] = useState<ShareStatus>("idle");
-  const [shareFallbackUrl, setShareFallbackUrl] = useState<string | null>(null);
-  const shareResetRef = useRef<number | null>(null);
+  const { shareStatus, shareFallbackUrl, copyCurrentView, resetShareStatus } = useShareStatus();
   /** Latest place id to be auto-evicted from compare so the feedback can name it. */
   const [evictedComparePlaceId, setEvictedComparePlaceId] = useState<string | null>(null);
   /** Hide the "?" first-run pulse once the user has seen / opened it. */
@@ -358,10 +358,6 @@ export default function App() {
     setRankingExplicitInUrl(true);
     setSuppressPersistedRankingInUrl(false);
     persistRankingProfile(profile);
-  }, []);
-
-  useEffect(() => () => {
-    if (shareResetRef.current !== null) window.clearTimeout(shareResetRef.current);
   }, []);
 
   // Apply theme on mount and whenever the preference changes. When the
@@ -391,45 +387,6 @@ export default function App() {
       try { persistThemePreference(window.localStorage, next); }
       catch { /* private browsing — runtime + URL still work */ }
     }
-  }, []);
-
-  const copyCurrentView = useCallback(() => {
-    if (typeof window === "undefined") return;
-    const url = new URL(window.location.href);
-    const sharePayloadUrl = url.toString();
-    if (shareResetRef.current !== null) {
-      window.clearTimeout(shareResetRef.current);
-      shareResetRef.current = null;
-    }
-    setShareStatus("idle");
-    setShareFallbackUrl(null);
-    // Use the native share sheet when available (iOS / Android / modern
-    // Safari). The helper transparently falls back to clipboard so
-    // desktop browsers and older mobile browsers still copy the URL.
-    void shareUrl({
-      title: document.title || "Terraclima",
-      text: "Terraclima view",
-      url: sharePayloadUrl,
-    }).then(outcome => {
-      if (outcome === "dismissed") {
-        setShareStatus("idle");
-        setShareFallbackUrl(null);
-        shareResetRef.current = null;
-        return;
-      }
-      setShareStatus(outcome);
-      if (outcome === "failed") {
-        setShareFallbackUrl(sharePayloadUrl);
-        shareResetRef.current = null;
-        return;
-      }
-      setShareFallbackUrl(null);
-      shareResetRef.current = window.setTimeout(() => {
-        setShareStatus("idle");
-        setShareFallbackUrl(null);
-        shareResetRef.current = null;
-      }, 2200);
-    });
   }, []);
 
   const prevPlaceIdRef = useRef<string | null>(initialAppState.placeId);
@@ -870,8 +827,11 @@ export default function App() {
 
   const selectedPlace = selectedId ? placeForId(selectedId) ?? null : null;
   const activeComparePlaces = useMemo(
-    () => [...compareIds].map(id => placesById[id] ?? placeForId(id)).filter(isPlace),
-    [compareIds, placesById],
+    () =>
+      [...compareIds]
+        .map(id => placeForCompareSlot(id, placesById, climateScenario, placeForId(id)))
+        .filter(isPlace),
+    [compareIds, placesById, climateScenario],
   );
   // Present-day home base for the dossier (which always shows present-day
   // normals) and a scenario-consistent twin for the Explorer grid and
@@ -1225,14 +1185,9 @@ export default function App() {
       compareTriggerRef.current = null;
       compareTriggerLabelRef.current = null;
     }
-    if (shareResetRef.current !== null) {
-      window.clearTimeout(shareResetRef.current);
-      shareResetRef.current = null;
-    }
-    setShareStatus("idle");
-    setShareFallbackUrl(null);
+    resetShareStatus();
     setCompareOpen(false);
-  }, []);
+  }, [resetShareStatus]);
 
   useEffect(() => {
     if (!compareOpen || activeComparePlaces.length > 0) return;
@@ -1636,15 +1591,15 @@ export default function App() {
                   <h2 id="reader-path-heading" className="sr-only">How to read Terraclima</h2>
                   <div>
                     <div className="tc-reader-path__label">Discover</div>
-                    <p>Start from Most unique, Surprise me, or a discovery quick pick to find microclimates most people have never heard of.</p>
+                    <p>Pins are unusual climates. Start from Most unique or Surprise me.</p>
                   </div>
                   <div>
                     <div className="tc-reader-path__label">Read</div>
-                    <p>Open a place and learn why it differs — archetype guide, terrain drivers, and local contrasts before any fit scoring.</p>
+                    <p>Open a place for the physical mechanism before any screening score.</p>
                   </div>
                   <div>
                     <div className="tc-reader-path__label">Narrow</div>
-                    <p>Use filters, Collections, Climate Trips, Compare, or Scout tools when you want a shortlist — not before you have found something curious.</p>
+                    <p>Filters, trips, Compare, and Scout tools wait until you have a curious shortlist.</p>
                   </div>
                 </section>
 
@@ -1935,149 +1890,6 @@ export default function App() {
       {showShortcuts && <ShortcutsOverlay onClose={closeShortcutsHelp} />}
     </div>
   );
-}
-
-const EmptyResults = memo(function EmptyResults({
-  filters,
-  onClearAll,
-  onClearSearch,
-  onRelaxLiveFinder,
-  onClearGeography,
-  searchTerm,
-}: {
-  filters: FilterState;
-  onClearAll: () => void;
-  onClearSearch: () => void;
-  onRelaxLiveFinder: () => void;
-  onClearGeography: () => void;
-  searchTerm: string;
-}) {
-  // Tailor the message to what is actually narrowing the set so the guidance
-  // points at the right control instead of always blaming "filters".
-  const hasOtherFilters = hasNonSearchExplorerFilters(filters);
-  const searchOnly = searchTerm.length > 0 && !hasOtherFilters;
-  const filtersOnly = searchTerm.length === 0 && hasOtherFilters;
-
-  const heading = searchOnly
-    ? `No places match “${searchTerm}”`
-    : filtersOnly
-      ? "Nothing matches those filters at once"
-      : "Nothing matches that search and those filters";
-
-  const body = searchOnly
-    ? "Try a shorter or different term — names, regions, archetypes, and Köppen codes all match, and accents are forgiving (“san jose” finds San José)."
-    : filtersOnly
-      ? "That's a tight intersection — try loosening one. Drop a country, drop one of the archetypes, or relax a Live-Finder limit."
-      : "That's a tight combination — try shortening the search or loosening one filter. Names, regions, archetypes, and Köppen codes all match.";
-  const recoveryActions = buildExplorerRecoveryActions({
-    filters,
-    searchTerm,
-    onClearSearch,
-    onRelaxLiveFinder,
-    onClearGeography,
-    onClearAll,
-  });
-
-  return (
-    <div className="col-span-full panel-warm tc-empty-results p-6 sm:p-7 text-center anim-fade-in">
-      <div className="tc-empty-results__icon">
-        <Search className="w-4 h-4 tc-icon-ochre" aria-hidden />
-      </div>
-      <h3 className="font-atlas text-lg text-ice mb-1">{heading}</h3>
-      <p className="text-sm text-frost mb-2 max-w-md mx-auto">{body}</p>
-      <p className="text-xs text-stone mb-4 max-w-md mx-auto">
-        Nothing is broken: the atlas still holds <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated stops behind the filters.
-      </p>
-      <div className="tc-empty-results__recovery" role="group" aria-label="Ways to recover matching places">
-        <div className="tc-empty-results__recovery-head">
-          <span>Try next</span>
-          <p>Loosen one part of the screen instead of losing the whole scouting context.</p>
-        </div>
-        <div className="tc-empty-results__actions">
-          {recoveryActions.map(action => (
-            <button
-              key={action.key}
-              type="button"
-              onClick={action.onClick}
-              className="tc-empty-results__action"
-              data-primary={action.primary || undefined}
-            >
-              <span>{action.label}</span>
-              <small>{action.detail}</small>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-});
-
-type ExplorerRecoveryAction = {
-  key: string;
-  label: string;
-  detail: string;
-  onClick: () => void;
-  primary?: boolean;
-};
-
-/** Shared zero-result recovery actions for the hero strip and the grid empty state. */
-function buildExplorerRecoveryActions({
-  filters,
-  searchTerm,
-  onClearSearch,
-  onRelaxLiveFinder,
-  onClearGeography,
-  onClearAll,
-}: {
-  filters: FilterState;
-  searchTerm: string;
-  onClearSearch: () => void;
-  onRelaxLiveFinder: () => void;
-  onClearGeography: () => void;
-  onClearAll: () => void;
-}): ExplorerRecoveryAction[] {
-  const liveSignalCount = countLiveFinderConstraintSignals(filters);
-  const geographyCount = filters.countries.size + filters.archetypes.size;
-  const hasOtherFilters = hasNonSearchExplorerFilters(filters);
-  const searchOnly = searchTerm.length > 0 && !hasOtherFilters;
-  const filtersOnly = searchTerm.length === 0 && hasOtherFilters;
-  const recoveryActions: ExplorerRecoveryAction[] = [];
-
-  if (searchTerm.length > 0) {
-    recoveryActions.push({
-      key: "search",
-      label: "Clear search",
-      detail: `Remove “${searchTerm}” and keep the climate-fit filters intact.`,
-      onClick: onClearSearch,
-      primary: searchOnly,
-    });
-  }
-  if (liveSignalCount > 0) {
-    recoveryActions.push({
-      key: "live",
-      label: "Relax Live Finder",
-      detail: `Drop ${liveSignalCount} comfort, risk, or growability limit${liveSignalCount === 1 ? "" : "s"} while keeping search and geography.`,
-      onClick: onRelaxLiveFinder,
-      primary: filtersOnly && geographyCount === 0,
-    });
-  }
-  if (geographyCount > 0) {
-    recoveryActions.push({
-      key: "geography",
-      label: "Clear region / terrain",
-      detail: `Drop ${geographyCount} region or terrain filter${geographyCount === 1 ? "" : "s"} while keeping search and Live Finder signals.`,
-      onClick: onClearGeography,
-      primary: filtersOnly && liveSignalCount === 0,
-    });
-  }
-  recoveryActions.push({
-    key: "all",
-    label: "Reset Explorer",
-    detail: "Return to the full atlas and restart the fit search.",
-    onClick: onClearAll,
-    primary: !recoveryActions.some(action => action.primary),
-  });
-  return recoveryActions;
 }
 
 const TopBar = memo(function TopBar({

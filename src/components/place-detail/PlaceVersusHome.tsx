@@ -7,9 +7,11 @@ import {
   type HomeDeltaSignal,
 } from "../../lib/home-base";
 import { CLIMATE_NORMALS_PERIOD } from "../../lib/atlas-metadata";
+import { classifyDossierSection } from "../../lib/evidence-summary";
 import { useProse, useUnits } from "../../lib/units";
 import { PD } from "./place-detail-nav";
 import { Section } from "./place-detail-ui";
+import { EvidenceClassLabel } from "./PlaceEvidenceSummary";
 
 const SECTION_ICON = <Home className="w-4 h-4" style={{ color: "#5ec4dc" }} aria-hidden />;
 
@@ -86,8 +88,11 @@ export function PlaceVersusHome({
   }
 
   return (
-    <Section anchorId={PD.vsHome} title={`Versus your home base — ${home.name}`} icon={SECTION_ICON}>
+    <Section anchorId={PD.vsHome} title={`Versus your home base · ${home.name}`} icon={SECTION_ICON}>
       <div className="panel-thin p-4">
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <EvidenceClassLabel cls={classifyDossierSection("vs-home")} />
+        </div>
         <p className="text-sm text-frost leading-snug">{prose(comparison.headline)}</p>
         <div className="divider-contour my-3" />
         <ul className="grid grid-cols-2 @3xl/dossier:grid-cols-4 gap-2" aria-label={`Climate deltas, ${place.name} minus ${home.name}`}>

@@ -29,6 +29,15 @@ import { COLLECTIONS } from "../src/data/collections";
 import { CLIMATE_TRIP_THEMES } from "../src/data/climate-trip-themes";
 import { FIELD_NOTES } from "../src/data/field-notes";
 import type { Place } from "../src/types";
+import {
+  ALLOWED_CITATION_KINDS,
+  ALLOWED_CONFIDENCE,
+  EVIDENCE_CLASSES,
+  assertEvidenceClassesExhaustive,
+  findDuplicateCitations,
+  validatePlaceEvidence,
+} from "../src/lib/evidence-summary";
+import { safeExternalHref } from "../src/lib/safe-url";
 
 // ---------- Config ----------
 
@@ -300,6 +309,43 @@ function checkProjection(p: Place): void {
   }
 }
 
+/**
+ * Evidence integrity — allowlisted confidence/kinds, nonempty labels,
+ * duplicate citations, safe URLs, and projection-override citation support.
+ * Does not invent station IDs or claim sentence-level sourcing.
+ */
+function checkEvidenceIntegrity(p: Place): void {
+  if (!(ALLOWED_CONFIDENCE as readonly string[]).includes(p.confidence)) {
+    record("fatal", `${p.id}:confidence`, `confidence "${p.confidence}" is not allowlisted`);
+  }
+  for (const c of p.citations ?? []) {
+    if (!(ALLOWED_CITATION_KINDS as readonly string[]).includes(c.kind)) {
+      record("fatal", `${p.id}:citation[${c.kind}]`, `citation kind is not allowlisted`);
+    }
+    if (!c.label?.trim()) {
+      record("fatal", `${p.id}:citation[${c.kind}]`, "citation label is empty");
+    }
+    if (c.url != null && safeExternalHref(c.url) == null) {
+      record("fatal", `${p.id}:citation[${c.kind}].url`, `unsafe or malformed URL "${c.url}"`);
+    }
+  }
+  for (const label of findDuplicateCitations(p.citations ?? [])) {
+    record("fatal", `${p.id}:citations`, `duplicate citation "${label}"`);
+  }
+  for (const err of validatePlaceEvidence(p)) {
+    // validatePlaceEvidence overlaps some checks above; keep projection-support fatals.
+    if (/projection override|not allowlisted|empty label|duplicate citation|unsafe or malformed/.test(err)) {
+      record("fatal", `${p.id}:evidence`, err);
+    }
+  }
+}
+
+try {
+  assertEvidenceClassesExhaustive([...EVIDENCE_CLASSES]);
+} catch (err) {
+  record("fatal", "evidence-classes", err instanceof Error ? err.message : String(err));
+}
+
 for (const p of PLACES) {
   for (const [field, text] of placeFields(p)) {
     const where = `${p.id}:${field}`;
@@ -309,6 +355,7 @@ for (const p of PLACES) {
   }
   checkCitationUrls(p);
   checkProjection(p);
+  checkEvidenceIntegrity(p);
 }
 for (const c of CONCEPTS) {
   for (const [field, val] of [["short", c.short], ["long", c.long], ["mechanism", c.mechanism]] as const) {

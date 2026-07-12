@@ -1,0 +1,54 @@
+# Browser smoke suite for Terraclima.
+# Kept separate from quality:check so ordinary local iteration stays fast.
+# Requires Chromium (Playwright) and a production preview build.
+name: Browser smoke
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: browser-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-node@v6.4.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - name: Start preview
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 &
+          for i in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:4173/ >/dev/null; then
+              echo "preview ready"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "preview failed to start"
+          exit 1
+      - name: Browser smoke
+        env:
+          TC_BASE_URL: http://127.0.0.1:4173
+          TC_BROWSER_ARTIFACT_DIR: playtest-browser-artifacts
+        run: npm run playtest:browser
+      - name: Upload artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playtest-browser-artifacts
+          path: playtest-browser-artifacts
+          if-no-files-found: ignore

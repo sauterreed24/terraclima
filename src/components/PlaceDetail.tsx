@@ -62,8 +62,10 @@ import {
   Users, Compass, ExternalLink, Scale, Satellite, Clock3, Home, FileText,
 } from "lucide-react";
 import { PlaceVersusHome } from "./place-detail/PlaceVersusHome";
+import { EvidenceClassLabel, PlaceEvidenceSummary } from "./place-detail/PlaceEvidenceSummary";
 import { BookmarkButton } from "./BookmarkButton";
 import { scenarioMeta } from "../lib/climate-projection";
+import { classifyDossierSection } from "../lib/evidence-summary";
 
 /** Solid leading edge on the detail drawer — instant place identity without re-tinting the whole panel. */
 const SETTLEMENT_ROLE_LABEL: Record<string, string> = {
@@ -880,6 +882,8 @@ function DetailBody({
         reduceMotion={Boolean(reduceMotion)}
       />
 
+      <PlaceEvidenceSummary place={place} anchorId={PD.evidence} />
+
       <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} />
 
       <PlaceClimateTwinsTeaser
@@ -913,6 +917,9 @@ function DetailBody({
 
       <Section anchorId={PD.livability} title="Livability lens v3" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
         <div className="panel-thin p-4">
+          <div className="flex flex-wrap items-center gap-2 mb-2">
+            <EvidenceClassLabel cls={classifyDossierSection("livability")} />
+          </div>
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <div>
               <div className="text-[10px] uppercase tracking-wider text-stone-readable">Blended livability score</div>
@@ -1174,6 +1181,9 @@ function DetailBody({
       </Section>
 
       <Section anchorId={PD.geospatial} title="Geospatial analysis" icon={<Satellite className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <EvidenceClassLabel cls={classifyDossierSection("geospatial")} />
+        </div>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
           Screening blends atlas terrain, climate seasonality, risks, and corpus ranks. Sentinel-2 and Landsat appear below as <span className="text-frost font-medium">reference</span> sensor families for the spectral checks a field analyst would queue — not live scenes from this app. Relief texture is a separate atlas proxy for where fine-scale topography would usually matter.
         </p>
@@ -1367,6 +1377,9 @@ function DetailBody({
       </Section>
 
       <Section anchorId={PD.outlook} title="Climate-change outlook">
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <EvidenceClassLabel cls={classifyDossierSection("outlook")} />
+        </div>
         <ClimateChangeDelta place={place} />
       </Section>
 
@@ -1472,6 +1485,12 @@ function DetailBody({
       </Section>
 
       <Section anchorId={PD.verdict} title="Hidden-gem verdict · sources">
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <EvidenceClassLabel cls={classifyDossierSection("scores")} />
+        </div>
+        <p className="text-[11px] text-stone leading-relaxed mb-3 max-w-2xl">
+          These score pills are screening aids for ranking and comparison, not measured station products or an appraisal of the place.
+        </p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
           <ScorePill label="Hidden gem" value={place.scores.hiddenGem} tone="sage" />
           <ScorePill label="Microclimate uniqueness" value={place.scores.microclimateUniqueness} tone="ochre" />
