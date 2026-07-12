@@ -21,6 +21,8 @@
 import { localizeProse } from "../src/lib/units";
 import { PLACES } from "../src/data/places";
 import { CONCEPTS } from "../src/data/glossary";
+import { ARCHETYPES } from "../src/data/archetypes";
+import { COLLECTIONS } from "../src/data/collections";
 import { ALL_RANKING_PROFILES } from "../src/lib/ranking-options";
 import { rankPlaces } from "../src/lib/scoring";
 import { describeHumanComfort, scoreLivability } from "../src/lib/livability-score";
@@ -32,6 +34,7 @@ const RANKINGS = ALL_RANKING_PROFILES;
 
 let leaks = 0;
 let mismatches = 0;
+let metricLeaks = 0;
 
 function expectNoCelsiusInF(where: string, text: string | null | undefined): void {
   if (!text) return;
@@ -39,6 +42,24 @@ function expectNoCelsiusInF(where: string, text: string | null | undefined): voi
   if (/°C\b/.test(localized) || /\b\d+(?:\.\d+)?\s+Celsius\b/i.test(localized)) {
     leaks++;
     console.log(`F-LEAK ${where}: ${localized.substring(0, 220)}`);
+  }
+}
+
+function expectNoMetricDistanceInImperial(where: string, text: string | null | undefined): void {
+  if (!text) return;
+  const localized = localizeProse(text, "F", "imperial");
+  // Catch leftover bare metres / kilometres that should have converted for
+  // editorial elevation and distance claims. Ignore scientific index codes.
+  if (
+    /\b\d[\d,]*(?:\.\d+)?\s*m\b(?![/a-zA-Z])/.test(localized) ||
+    /\b\d[\d,]*(?:\.\d+)?\s*(?:meters?|metres?|kilometers?|kilometres?)\b/i.test(localized) ||
+    /\b(?:thousands|hundreds)\s+of\s+(?:meters?|metres?|kilometers?|kilometres?)\b/i.test(localized) ||
+    /\b(?:a\s+)?few\s+hundred\s+(?:meters?|metres?)\b/i.test(localized) ||
+    /\b(?:meters?|metres?)\s+across\b/i.test(localized) ||
+    /\b(?:kilometers?|kilometres?)\s+wide\b/i.test(localized)
+  ) {
+    metricLeaks++;
+    console.log(`M-LEAK ${where}: ${localized.substring(0, 220)}`);
   }
 }
 
@@ -70,18 +91,22 @@ for (const p of PLACES) {
   ];
   for (const [where, text] of fields) {
     expectNoCelsiusInF(where, text);
+    expectNoMetricDistanceInImperial(where, text);
     expectCelsiusPreservedInC(where, text);
   }
   for (const k of Object.keys(p.risks) as Array<keyof typeof p.risks>) {
     expectNoCelsiusInF(`${p.id}.risks.${k}.note`, p.risks[k]?.note);
+    expectNoMetricDistanceInImperial(`${p.id}.risks.${k}.note`, p.risks[k]?.note);
     expectCelsiusPreservedInC(`${p.id}.risks.${k}.note`, p.risks[k]?.note);
   }
   for (const nc of p.nearbyContrasts ?? []) {
     expectNoCelsiusInF(`${p.id}.nearbyContrast.note`, nc.note);
+    expectNoMetricDistanceInImperial(`${p.id}.nearbyContrast.note`, nc.note);
     expectCelsiusPreservedInC(`${p.id}.nearbyContrast.note`, nc.note);
   }
   for (const lc of p.localContrast ?? []) {
     expectNoCelsiusInF(`${p.id}.localContrast.note`, lc.note);
+    expectNoMetricDistanceInImperial(`${p.id}.localContrast.note`, lc.note);
     expectCelsiusPreservedInC(`${p.id}.localContrast.note`, lc.note);
   }
 }
@@ -89,8 +114,27 @@ for (const p of PLACES) {
 for (const c of CONCEPTS) {
   for (const field of [c.short, c.long, c.mechanism] as Array<string | undefined>) {
     expectNoCelsiusInF(`concept.${c.id}`, field);
+    expectNoMetricDistanceInImperial(`concept.${c.id}`, field);
     expectCelsiusPreservedInC(`concept.${c.id}`, field);
   }
+}
+
+for (const a of ARCHETYPES) {
+  expectNoCelsiusInF(`archetype.${a.id}.blurb`, a.blurb);
+  expectNoCelsiusInF(`archetype.${a.id}.guide`, a.guide);
+  expectNoMetricDistanceInImperial(`archetype.${a.id}.blurb`, a.blurb);
+  expectNoMetricDistanceInImperial(`archetype.${a.id}.guide`, a.guide);
+  expectCelsiusPreservedInC(`archetype.${a.id}.blurb`, a.blurb);
+  expectCelsiusPreservedInC(`archetype.${a.id}.guide`, a.guide);
+}
+
+for (const c of COLLECTIONS) {
+  expectNoCelsiusInF(`collection.${c.id}.subtitle`, c.subtitle);
+  expectNoCelsiusInF(`collection.${c.id}.description`, c.description);
+  expectNoMetricDistanceInImperial(`collection.${c.id}.subtitle`, c.subtitle);
+  expectNoMetricDistanceInImperial(`collection.${c.id}.description`, c.description);
+  expectCelsiusPreservedInC(`collection.${c.id}.subtitle`, c.subtitle);
+  expectCelsiusPreservedInC(`collection.${c.id}.description`, c.description);
 }
 
 // 2. Runtime-generated strings — the recent leak surface.
@@ -165,6 +209,7 @@ for (const p of PLACES) {
 
 console.log(
   `\nF-mode: ${leaks === 0 ? "OK" : "FAIL"} ${leaks} leak${leaks === 1 ? "" : "s"} · ` +
+    `imperial-distance: ${metricLeaks === 0 ? "OK" : "FAIL"} ${metricLeaks} leak${metricLeaks === 1 ? "" : "s"} · ` +
     `C-mode: ${mismatches === 0 ? "OK" : "FAIL"} ${mismatches} mismatch${mismatches === 1 ? "" : "es"}`,
 );
-process.exit(leaks > 0 || mismatches > 0 ? 1 : 0);
+process.exit(leaks > 0 || metricLeaks > 0 || mismatches > 0 ? 1 : 0);

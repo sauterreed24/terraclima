@@ -9,6 +9,7 @@ import {
   meanJanLow,
   meanSummerHigh,
   meanSummerHumidityPct,
+  meanWinterSunshinePct,
   monthlyUsabilityScore,
   RISK_VALUE,
   seasonalUsabilityScore,
@@ -77,11 +78,13 @@ describe("climate-metrics", () => {
     expect(meanAnnualHumidityPct(withFields)).toBeCloseTo(66.83, 2);
     expect(meanSummerHumidityPct(withFields)).toBeCloseTo((54 + 48 + 54) / 3, 6);
     expect(meanAnnualSunshinePct(withFields)).toBeCloseTo(56.67, 2);
+    expect(meanWinterSunshinePct(withFields)).toBeCloseTo((40 + 40 + 45) / 3, 6);
 
     const missing = makePlace({ climate: makeClimate({ humidity: undefined, sunshinePct: undefined }) });
     expect(meanAnnualHumidityPct(missing)).toBeNull();
     expect(meanSummerHumidityPct(missing)).toBeNull();
     expect(meanAnnualSunshinePct(missing)).toBeNull();
+    expect(meanWinterSunshinePct(missing)).toBeNull();
   });
 
   it("scores monthly usability from day comfort, sleep comfort, and precip burden", () => {

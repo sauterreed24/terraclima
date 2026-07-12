@@ -213,6 +213,30 @@ describe("localizeProse — distances", () => {
   it("converts elevations with vocabulary cues", () => {
     expect(localizeProse("The town sits at 1,500 m.", "F", "imperial")).toContain("4,921 ft");
   });
+  it("converts between-and elevation bands without orphaning the first endpoint", () => {
+    expect(localizeProse("Highland basins between 1500 and 2500 m.", "F", "imperial")).toBe(
+      "Highland basins between 4,921 and 8,202 ft.",
+    );
+  });
+  it("converts spelled-out metre ranges without orphaning the first endpoint", () => {
+    expect(localizeProse("Annual snowfall totals of 3–6 meters are normal.", "F", "imperial")).toBe(
+      "Annual snowfall totals of 10–20 feet are normal.",
+    );
+  });
+  it("converts qualitative metric distance nouns", () => {
+    expect(localizeProse("Sky islands rise thousands of meters above arid basins.", "F", "imperial")).toContain(
+      "thousands of feet",
+    );
+    expect(localizeProse("Influence carries hundreds of kilometers inland.", "F", "imperial")).toContain(
+      "hundreds of miles",
+    );
+    expect(localizeProse("Ridgetops only a few hundred meters higher.", "F", "imperial")).toContain(
+      "a few hundred feet",
+    );
+    expect(localizeProse("They can be meters across or kilometers wide.", "F", "imperial")).toBe(
+      "They can be feet across or miles wide.",
+    );
+  });
   it("preserves plus thresholds when localizing spelled metric lengths", () => {
     expect(localizeProse("5+ meters of annual snow.", "F", "imperial")).toContain("16+ feet");
   });
@@ -228,6 +252,14 @@ describe("localizeProse — distances", () => {
   });
   it("is a no-op when dist=metric", () => {
     expect(localizeProse("The town sits at 1,500 m.", "C", "metric")).toBe("The town sits at 1,500 m.");
+  });
+});
+
+describe("localizeProse — chinook-style temperature spikes", () => {
+  it("treats spiking temperatures as deltas, not absolute readings", () => {
+    expect(localizeProse("sometimes spiking temperatures 20–30°C in hours", "F", "imperial")).toBe(
+      "sometimes spiking temperatures 36–54°F in hours",
+    );
   });
 });
 

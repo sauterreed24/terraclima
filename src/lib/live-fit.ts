@@ -4,6 +4,7 @@ import {
   avgRisk,
   meanJanLow,
   meanSummerHigh,
+  meanWinterSunshinePct,
   RISK_VALUE,
   seasonalUsabilityScore,
 } from "./climate-metrics";
@@ -208,11 +209,7 @@ function humidityScore(place: Place): number {
   return clamp100(100 - Math.max(0, mean - 35) * 2.2);
 }
 
-export function meanWinterSunshinePct(place: Place): number | null {
-  const sunny = place.climate.sunshinePct;
-  if (!sunny) return null;
-  return (sunny[11] + sunny[0] + sunny[1]) / 3;
-}
+export { meanWinterSunshinePct } from "./climate-metrics";
 
 export function winterSunshineScore(place: Place): number {
   const winterSun = meanWinterSunshinePct(place);

@@ -1166,4 +1166,93 @@ describe("AtlasMap DOM controls", () => {
     expect(scaleAfter).toBeLessThan(2.5);
     expect(Math.abs(scaleAfter - scaleBefore)).toBeLessThan(0.35);
   });
+
+  it("releases wheel zoom while Scroll page mode is active on hybrid devices", () => {
+    setPointerMedia({ coarse: false, anyCoarse: true });
+    Object.defineProperty(navigator, "maxTouchPoints", { configurable: true, value: 1 });
+    const { container } = renderMap();
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+    const transformOf = () => container.querySelector("svg.atlas-svg > g")?.getAttribute("transform") ?? "";
+
+    fireEvent.click(screen.getByRole("button", { name: "Switch map to page scrolling" }));
+    expect(screen.getByRole("button", { name: "Switch map to direct interaction" })).toBeInTheDocument();
+
+    const before = transformOf();
+    const event = new WheelEvent("wheel", { deltaY: -120, bubbles: true, cancelable: true });
+    const prevented = !svg.dispatchEvent(event);
+    expect(prevented).toBe(false);
+    expect(transformOf()).toBe(before);
+  });
+
+  it("ignores map keyboard zoom while the cluster picker is open", () => {
+    setCoarsePointer(true);
+    const clusterPlaces = [
+      makePlace({ id: "kb-a", name: "KB Alpha", tier: "A", lat: 40, lon: -100 }),
+      makePlace({ id: "kb-b", name: "KB Beta", tier: "A", lat: 40, lon: -100 }),
+      ...Array.from({ length: 18 }, (_, i) =>
+        makePlace({ id: `kb-z-${i}`, name: `KB Gamma ${i}`, tier: "C", lat: 40, lon: -100 }),
+      ),
+    ];
+    const { container } = renderMap(vi.fn(), [], clusterPlaces);
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+    const transformOf = () => container.querySelector("svg.atlas-svg > g")?.getAttribute("transform") ?? "";
+
+    // Control: with the map focused and no picker, keyboard zoom must move the view.
+    svg.focus();
+    const beforeOpen = transformOf();
+    fireEvent.keyDown(svg, { key: "=" });
+    expect(transformOf()).not.toBe(beforeOpen);
+
+    fireEvent.click(screen.getByRole("button", { name: /20 nearby microclimates/ }));
+    expect(screen.getByRole("dialog", { name: "Choose a microclimate from this cluster" })).toBeInTheDocument();
+
+    const before = transformOf();
+    // Dispatch on the SVG so the target check would otherwise allow zoom —
+    // the clusterPickerOpenRef guard must still no-op.
+    fireEvent.keyDown(svg, { key: "=" });
+    fireEvent.keyDown(svg, { key: "+" });
+    fireEvent.keyDown(svg, { key: "ArrowRight" });
+    expect(transformOf()).toBe(before);
+  });
+
+  it("updates the DOM transform during pinch without waiting for React commit until release", async () => {
+    setCoarsePointer(true);
+    const { container } = renderMap(vi.fn(), [], defaultMapPlaces());
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+    svg.getBoundingClientRect = () =>
+      ({ left: 0, top: 0, right: 280, bottom: 260, width: 280, height: 260, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect;
+    const zoomGroup = () => container.querySelector("g[style*='will-change']") as SVGGElement;
+    const parseK = () => {
+      const m = /scale\(([\d.]+)\)/.exec(zoomGroup()?.getAttribute("transform") ?? "");
+      return m ? parseFloat(m[1]!) : NaN;
+    };
+
+    // Back off from the tight fit-all zoom so pinch-in still has headroom.
+    for (let i = 0; i < 8; i += 1) {
+      const zoomOut = container.querySelector<HTMLButtonElement>('[data-map-control="zoom-out"]');
+      if (!zoomOut || zoomOut.disabled) break;
+      fireEvent.click(zoomOut);
+    }
+    const k0 = parseK();
+    expect(k0).toBeGreaterThan(0);
+
+    await act(async () => {
+      fireEvent.pointerDown(svg, { pointerId: 1, pointerType: "touch", clientX: 100, clientY: 130 });
+      fireEvent.pointerDown(svg, { pointerId: 2, pointerType: "touch", clientX: 160, clientY: 130 });
+      fireEvent.pointerMove(svg, { pointerId: 1, pointerType: "touch", clientX: 70, clientY: 130 });
+      fireEvent.pointerMove(svg, { pointerId: 2, pointerType: "touch", clientX: 190, clientY: 130 });
+    });
+
+    const kMid = parseK();
+    expect(kMid).toBeGreaterThan(k0);
+
+    await act(async () => {
+      fireEvent.pointerUp(svg, { pointerId: 1, pointerType: "touch", clientX: 70, clientY: 130 });
+      fireEvent.pointerUp(svg, { pointerId: 2, pointerType: "touch", clientX: 190, clientY: 130 });
+    });
+
+    await waitFor(() => {
+      expect(parseK()).toBeCloseTo(kMid, 5);
+    });
+  });
 });

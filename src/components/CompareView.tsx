@@ -290,7 +290,9 @@ export function CompareView({
     [places.length],
   );
   useElementIsolation(panelRef, occluded);
-  useFocusTrap(panelRef, open && places.length > 0 && !occluded, true);
+  // App owns focus restore to compareTriggerRef with retries; leave trap restore off
+  // so the two mechanisms do not race on close.
+  useFocusTrap(panelRef, open && places.length > 0 && !occluded, false);
 
   useEffect(() => {
     if (!open || places.length === 0 || occluded) return;
@@ -1068,11 +1070,11 @@ export function CompareView({
                   <div className="grid grid-cols-2 gap-2 mt-3 text-sm tc-compare-stats">
                     <Row label="Elevation" value={fmtElev(p.elevationM, dist)} />
                     <Row label="Köppen" value={p.koppen} wide />
-                    <Row label="De Martonne" value={bio ? bioclimRow(bio.deMartonne, v => v.toFixed(1)) : "—"} wide />
-                    <Row label="Conrad" value={bio ? bioclimRow(bio.conrad, v => v.toFixed(1)) : "—"} wide />
-                    <Row label="Selianinov HTC" value={bio ? bioclimRow(bio.selianinov, v => v.toFixed(2)) : "—"} wide />
-                    <Row label="UNEP P/PET" value={bio ? bioclimRow(bio.unepAridity, v => v.toFixed(2)) : "—"} wide />
-                    <Row label="Thornthwaite PET" value={bio ? `${Math.round(bio.thornthwaitePet.value)} mm` : "—"} />
+                    <Row label="De Martonne" value={bio ? bioclimRow(bio.deMartonne, v => v.toFixed(1), prose) : "—"} wide />
+                    <Row label="Conrad" value={bio ? bioclimRow(bio.conrad, v => v.toFixed(1), prose) : "—"} wide />
+                    <Row label="Selianinov HTC" value={bio ? bioclimRow(bio.selianinov, v => v.toFixed(2), prose) : "—"} wide />
+                    <Row label="UNEP P/PET" value={bio ? bioclimRow(bio.unepAridity, v => v.toFixed(2), prose) : "—"} wide />
+                    <Row label="Thornthwaite PET" value={bio ? prose(`${Math.round(bio.thornthwaitePet.value)} mm`) : "—"} />
                     <Row label="JJA high" value={fmtTemp(meanSummerHigh(p), temp, { digits: 1 })} />
                     <Row label="Jan low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
@@ -1301,10 +1303,10 @@ function HomeDeltaStrip({ place, home }: { place: Place; home: Place }) {
   );
 }
 
-function bioclimRow(idx: BioclimIndex, format: (v: number) => string): string {
+function bioclimRow(idx: BioclimIndex, format: (v: number) => string, localize: (s: string) => string): string {
   if (idx.value === null) {
     return idx.reason === "no_growing_season" ? "— (no growing season)"
-      : idx.reason === "mat_below_neg10" ? "— (MAT ≤ −10 °C)"
+      : idx.reason === "mat_below_neg10" ? localize("— (MAT ≤ −10 °C)")
       : "— (no PET)";
   }
   return `${format(idx.value)} · ${idx.classLabel}`;

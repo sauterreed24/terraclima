@@ -23,6 +23,7 @@ import {
   type LifestyleBundle,
 } from "./lib/lifestyle-bundles";
 import { explorerResultsPending } from "./lib/explorer-pending";
+import { buildCompareCandidates } from "./lib/compare-workbench";
 import { buildExplorerRecoveryActions } from "./lib/explorer-recovery";
 import { applyFilters, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { pickSurprisePlaceId } from "./lib/surprise-pick";
@@ -358,6 +359,8 @@ export default function App() {
     setRankingExplicitInUrl(true);
     setSuppressPersistedRankingInUrl(false);
     persistRankingProfile(profile);
+    // Explicit menu/bundle choice owns persistence; cancel any auto live-fit marker.
+    liveFitAutoAppliedRef.current = false;
   }, []);
 
   // Apply theme on mount and whenever the preference changes. When the
@@ -427,6 +430,12 @@ export default function App() {
   const shortcutsTriggerLabelRef = useRef<string | null>(null);
   /** One-shot flag for route switches that should land on the active trip/collection clear affordance. */
   const activeScopeFocusPendingRef = useRef(false);
+  /**
+   * When Live Finder constraints auto-switch ranking to `live-fit`, we must not
+   * overwrite the user's persisted preference. Cleared on explicit setRanking
+   * or when constraints drop back to zero.
+   */
+  const liveFitAutoAppliedRef = useRef(false);
 
   useEffect(() => {
     if (!selectedId) {
@@ -644,11 +653,25 @@ export default function App() {
   }, [activeCollection, ranking, filters.archetypes]);
 
   useEffect(() => {
-    if (anyLifestyleBundleActive(ranking, filters)) return;
-    if (countLiveFinderConstraintSignals(filters) > 0 && ranking !== "live-fit") {
-      setRanking("live-fit");
+    if (anyLifestyleBundleActive(ranking, filters)) {
+      liveFitAutoAppliedRef.current = false;
+      return;
     }
-  }, [filters, ranking, setRanking]);
+    const liveSignals = countLiveFinderConstraintSignals(filters);
+    if (liveSignals > 0 && ranking !== "live-fit") {
+      // Transient lens for active constraints — do not persist over the user's last explicit ranking.
+      setRankingRaw("live-fit");
+      setRankingExplicitInUrl(true);
+      liveFitAutoAppliedRef.current = true;
+      return;
+    }
+    if (liveSignals === 0 && liveFitAutoAppliedRef.current && ranking === "live-fit") {
+      const restored = loadPersistedRanking();
+      setRankingRaw(restored === "live-fit" ? DEFAULT_RANKING : restored);
+      setRankingExplicitInUrl(false);
+      liveFitAutoAppliedRef.current = false;
+    }
+  }, [filters, ranking]);
 
   const deferredFilters = useDeferredValue(filters);
   // Narrow live-fit inputs so search keystrokes don't invalidate PlaceCard /
@@ -724,6 +747,9 @@ export default function App() {
     }
     return out;
   }, [processor.rows, placesById]);
+  // Present-day ranking for the scenario reshuffle strip only. At current corpus
+  // size (~226) this second pass is cheap (~1 ms); keep it local rather than
+  // complicating the climate-processor until the pool grows enough to matter.
   const baselineRanked = useMemo<RankingResult[]>(() => {
     if (climateScenario === "now") return ranked;
     const rows = runScenarioRanking({
@@ -842,27 +868,15 @@ export default function App() {
     () => (homeBasePlace && climateScenario !== "now" ? projectPlace(homeBasePlace, climateScenario) : homeBasePlace),
     [homeBasePlace, climateScenario],
   );
-  const compareCandidates = useMemo<CompareCandidate[]>(() => {
-    const seen = new Set<string>();
-    const candidates: CompareCandidate[] = [];
-    const push = (place: Place | undefined, source: CompareCandidate["source"], note: string) => {
-      if (!place || seen.has(place.id)) return;
-      seen.add(place.id);
-      candidates.push({ place, source, note });
-    };
-
-    for (const id of bookmarkIds) {
-      push(placesById[id] ?? placeForId(id), "Shortlist", "Pinned to your shortlist");
-    }
-    for (const id of recentIds) {
-      push(placesById[id] ?? placeForId(id), "Recent", "Recently opened dossier");
-    }
-    for (const row of ranked.slice(0, 12)) {
-      push(row.place, "Ranked", `${scenarioRankingLabel} leader`);
-    }
-
-    return candidates;
-  }, [bookmarkIds, placesById, ranked, scenarioRankingLabel, recentIds]);
+  const compareCandidates = useMemo<CompareCandidate[]>(() => buildCompareCandidates({
+    bookmarkIds,
+    recentIds,
+    ranked,
+    placesById,
+    scenario: climateScenario,
+    scenarioRankingLabel,
+    resolveCorpusPlace: placeForId,
+  }), [bookmarkIds, climateScenario, placesById, ranked, scenarioRankingLabel, recentIds]);
   const appShellOccluded = Boolean(selectedPlace) || compareOpen || showShortcuts;
   const placeDetailOccluded = compareOpen || showShortcuts;
   const compareViewOccluded = showShortcuts;
@@ -1162,7 +1176,16 @@ export default function App() {
   const clearAllFilters = useCallback(() => {
     setFilters(createEmptyFilterState());
     setActiveCollection(null);
-  }, []);
+    // Full Explorer reset: drop a stuck live-fit lens (auto or URL) so the
+    // discovery default / stored preference returns. Chip-by-chip dismiss of
+    // the last Live Finder constraint is handled by the auto-apply effect.
+    liveFitAutoAppliedRef.current = false;
+    if (ranking === "live-fit") {
+      const restored = loadPersistedRanking();
+      setRankingRaw(restored === "live-fit" ? DEFAULT_RANKING : restored);
+      setRankingExplicitInUrl(false);
+    }
+  }, [ranking]);
   const relaxLiveFinderFilters = useCallback(() => {
     setFilters(f => {
       const {
@@ -1731,6 +1754,7 @@ export default function App() {
                     setFilters={setFilters}
                     ranking={ranking}
                     setRanking={setRanking}
+                    onClearAll={clearAllFilters}
                     scenario={climateScenario}
                     onScenarioChange={setClimateScenario}
                   />
@@ -1809,6 +1833,7 @@ export default function App() {
             setFilters={setFilters}
             ranking={ranking}
             setRanking={setRanking}
+            onClearAll={clearAllFilters}
             scenario={climateScenario}
             onScenarioChange={setClimateScenario}
             projecting={processor.projecting}

@@ -376,6 +376,7 @@ function DetailHeader({
   visualSignature: PlaceVisualSignature;
 }) {
   const { temp, dist } = useUnits();
+  const prose = useProse();
   const coarsePointer = useMediaQuery("(pointer: coarse)");
   const reduceMotion = useReducedMotion();
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice";
@@ -430,7 +431,7 @@ function DetailHeader({
               const meta = ARCHETYPE_BY_ID[a];
               const isPrimary = a === place.archetypes[0];
               const chipTitle = meta
-                ? `${meta.label}: ${meta.blurb}${isPrimary ? " — expand field guide below" : ""}`
+                ? `${meta.label}: ${prose(meta.blurb)}${isPrimary ? " — expand field guide below" : ""}`
                 : a;
               return (
                 <button
@@ -469,8 +470,8 @@ function DetailHeader({
               <div className="text-[10px] uppercase tracking-wider text-stone">
                 {primaryArchetype.label} · field guide
               </div>
-              <p className="text-xs text-frost leading-relaxed mt-1">{primaryArchetype.guide}</p>
-              <p className="text-[11px] text-stone mt-1.5 leading-snug">{primaryArchetype.blurb}</p>
+              <p className="text-xs text-frost leading-relaxed mt-1">{prose(primaryArchetype.guide)}</p>
+              <p className="text-[11px] text-stone mt-1.5 leading-snug">{prose(primaryArchetype.blurb)}</p>
               {onPickArchetype && place.archetypes[0] ? (
                 <button
                   type="button"
@@ -559,7 +560,7 @@ function DetailHeader({
       >
         <div className="detail-signature-panel__primary">
           <dt>Place signature</dt>
-          <dd title={visualSignature.primaryBlurb}>{visualSignature.primaryLabel}</dd>
+          <dd title={prose(visualSignature.primaryBlurb)}>{visualSignature.primaryLabel}</dd>
         </div>
         <div>
           <dt>Feel</dt>
@@ -884,7 +885,7 @@ function DetailBody({
 
       <PlaceEvidenceSummary place={place} anchorId={PD.evidence} />
 
-      <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} />
+      <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} scenario={scenario} />
 
       <PlaceClimateTwinsTeaser
         place={place}

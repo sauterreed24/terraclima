@@ -139,6 +139,11 @@ interface Props {
   setFilters: Dispatch<SetStateAction<FilterState>>;
   ranking: RankingProfile;
   setRanking: (r: RankingProfile) => void;
+  /**
+   * Full Explorer reset (filters + curated collection + auto live-fit ranking).
+   * When omitted, Clear all only empties FilterState — prefer wiring App.clearAllFilters.
+   */
+  onClearAll?: () => void;
   /** Taller archetype scroller inside the mobile filter dialog. */
   variant?: "dock" | "sheet";
   scenario?: ScenarioId;
@@ -151,6 +156,7 @@ export const FilterBar = memo(function FilterBar({
   setFilters,
   ranking,
   setRanking,
+  onClearAll,
   variant = "dock",
   scenario = "now",
   onScenarioChange,
@@ -196,7 +202,13 @@ export const FilterBar = memo(function FilterBar({
   }, [setFilters, setRanking]);
 
   const hasAny = hasActiveExplorerFilters(filters);
-  const clearAll = useCallback(() => setFilters(createEmptyFilterState()), [setFilters]);
+  const clearAll = useCallback(() => {
+    if (onClearAll) {
+      onClearAll();
+      return;
+    }
+    setFilters(createEmptyFilterState());
+  }, [onClearAll, setFilters]);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const hasSearch = (filters.search ?? "").length > 0;
   const clearSearch = useCallback(() => {

@@ -29,8 +29,8 @@ Hydration uses [`filterStateFromValidated()`](../src/lib/scoring.ts) from valida
 | `sh` | Summer high cap (°C, encoded) | Allowlisted in `app-url.ts` (`LIVE_FIT_SUMMER_CAPS_C`) |
 | `wl` | Winter low floor (°C, encoded) | Allowlisted (`LIVE_FIT_WINTER_FLOORS_C`) |
 | `grow` | Growability floor (0–100) | Allowlisted (`LIVE_FIT_GROWABILITY_FLOORS`) |
-| `fire` | Wildfire risk ceiling | `low`, `moderate`, `high`, `extreme` |
-| `risk` | Overall risk ceiling | Same risk tokens |
+| `fire` | Wildfire risk ceiling | Allowlisted in `LIVE_FIT_RISK_CEILINGS`: `low`, `moderate`, `elevated` (matches FilterBar selects; unknown tokens like `high` / `extreme` are dropped) |
+| `risk` | Overall risk ceiling | Same allowlist as `fire` |
 
 Omitted when unset (clear-all / empty state): `fit`, `sh`, `wl`, `grow`, `fire`, `risk`, and `q`.
 
@@ -38,7 +38,9 @@ Omitted when unset (clear-all / empty state): `fit`, `sh`, `wl`, `grow`, `fire`,
 
 Six curated bundles live in [`src/lib/lifestyle-bundles.ts`](../src/lib/lifestyle-bundles.ts). Applying a bundle from the FilterBar Fit Finder dock sets **`r`** (ranking profile) and the Live Finder fields above (`fit`, `sh`, `wl`, `grow`, `fire`, `risk`) in one shot. Explorer hero quick-picks are discovery lenses (Most unique, Hidden gems, Cool summers, Fog & marine, Another country, Visit now) and do **not** auto-apply lifestyle bundles.
 
-**Auto live-fit sort:** When Live Finder constraints are active (any preset or numeric/risk cap) but no lifestyle bundle is fully active and **`r`** is not `live-fit`, Explorer switches ranking to **`live-fit`** so the list sorts with `rankLiveFit()`. Lens Receipt may note when display ranking and live-fit sort diverge.
+**Auto live-fit sort:** When Live Finder constraints are active (any preset or numeric/risk cap) but no lifestyle bundle is fully active and **`r`** is not `live-fit`, Explorer switches ranking to **`live-fit`** so the list sorts with `rankLiveFit()`. That auto-switch is **transient**: it does not overwrite the persisted ranking preference, and when the last Live Finder constraint clears via chip dismiss, ranking restores to the stored preference (or `most-unique` if storage held `live-fit`). Explicit Rank-by / lifestyle-bundle choices still persist. Lens Receipt may note when display ranking and live-fit sort diverge.
+
+**Clear all / Reset Explorer:** Lens Receipt / FilterBar Clear all and empty-state Reset Explorer share App’s `clearAllFilters` — empty `FilterState`, clear curated `col`, and leave `live-fit` for the discovery default / stored non-live-fit preference. A full Explorer reset always exits a stuck live-fit lens (auto, URL, or menu) so the atlas returns to discovery; chip-by-chip dismiss keeps an explicitly chosen live-fit ranking.
 
 **Lens Receipt chips:** Each active explorer signal renders as a dismissible chip; removing one field uses a functional `setFilters` update (search, country, archetype, presets, and caps are independent).
 

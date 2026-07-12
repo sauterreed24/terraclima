@@ -193,6 +193,9 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
 
     switch (profile) {
       case "live-fit": {
+        // Production Explorer uses `rankLiveFit(filtered, filters)` via climate-processor.
+        // This branch is a filter-less fallback for generic `rankPlaces("live-fit")` callers
+        // (scripts / goldens). Prefer `rankLiveFit` when Live Finder constraints matter.
         const fit = assessLiveFit(p);
         return { place: p, score: fit.score, note: `${fit.score}/100 live-here fit · ${fit.reasons[0]}` };
       }
