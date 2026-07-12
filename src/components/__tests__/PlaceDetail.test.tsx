@@ -718,6 +718,24 @@ describe("PlaceDetail archetype field guide", () => {
     expect(guide).toHaveAttribute("hidden");
     expect(primaryChip).toHaveAttribute("aria-expanded", "false");
   });
+
+  it("localizes eternal-spring field-guide metres and Celsius in Fahrenheit mode", () => {
+    const place = PLACES_BY_ID["valle-de-bravo-mx"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    const guide = screen.getByRole("region", { name: /Eternal-Spring Highland field guide/i });
+    expect(guide).toHaveTextContent(/4,921 and 8,202 ft/);
+    expect(guide).toHaveTextContent(/72–79°F/);
+    expect(guide).toHaveTextContent(/46–57°F/);
+    expect(guide).not.toHaveTextContent(/°C/);
+    expect(guide).not.toHaveTextContent(/\b1500 and 2500 m\b/);
+  });
 });
 
 describe("PlaceDetail evidence hierarchy", () => {

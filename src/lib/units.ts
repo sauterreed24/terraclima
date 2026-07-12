@@ -236,7 +236,7 @@ const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narro
 // Bare "by" is kept because corpus prose uses "warmer by 5°C", "punctuated
 // by 25°C warm-ups", "differs by 8°C", and similar. The one absolute
 // "by 27°C water" phrasing has been rewritten in the corpus.
-const DELTA_BEFORE_PAT = /\b(by|spike[sd]?|swing of|range of|spread of|delta|differential|diurnal|amplitude|gradient|shift(?:ed|s)? (?:of|by)|lift(?:ed|s)? (?:of|by)|drop(?:ped|s)? (?:of|by)|rise(?:s)? (?:of|by)|fall(?:s)? (?:of|by)|jump(?:s|ed)? (?:of|by)|climb(?:s|ed)? (?:of|by)|plunge(?:s|d)? (?:of|by)|lift|strip(?:s|ped)?|boost(?:s|ed)? (?:by|of)|warm(?:s|ed|ing)? (?:by|up by)|cool(?:s|ed|ing)? (?:by|down by)|moderat\w+ (?:by)|up to|down to|averag(?:es|ing)? (?:\d+°?\s*[CF] )?(?:warmer|cooler|colder))\s*$/;
+const DELTA_BEFORE_PAT = /\b(by|spik(?:e|es|ed|ing)(?:\s+temperatures?)?|swing of|range of|spread of|delta|differential|diurnal|amplitude|gradient|shift(?:ed|s)? (?:of|by)|lift(?:ed|s)? (?:of|by)|drop(?:ped|s)? (?:of|by)|rise(?:s)? (?:of|by)|fall(?:s)? (?:of|by)|jump(?:s|ed)? (?:of|by)|climb(?:s|ed)? (?:of|by)|plunge(?:s|d)? (?:of|by)|lift|strip(?:s|ped)?|boost(?:s|ed)? (?:by|of)|warm(?:s|ed|ing)? (?:by|up by)|cool(?:s|ed|ing)? (?:by|down by)|moderat\w+ (?:by)|up to|down to|averag(?:es|ing)? (?:\d+°?\s*[CF] )?(?:warmer|cooler|colder))\s*$/;
 
 /** Characters that terminate a clause for the purposes of delta detection. */
 const CLAUSE_TERMINATORS = /[.;:,\u2014\u2013|\n]/;
@@ -421,10 +421,16 @@ function formatLocalizedDecimal(valueF: number, explicitSign: boolean, digits = 
  *
  * When `dist` is `"imperial"`, also rewrites common editorial metric units:
  *   - "1,427 m" → "4,682 ft"
+ *   - "between 1500 and 2500 m" → "between 4,921 and 8,202 ft"
+ *   - "3–6 meters" → "10–20 feet"
+ *   - "thousands of meters" → "thousands of feet"
  *   - "1,500 mm" → "59 in"
  *   - "80 cm"   → "31 in"
  *   - "10 km"   → "6 mi"
  *   - "25 km/h" / "25 kph" → "16 mph"
+ *
+ * Temperature deltas such as "spiking temperatures 20–30°C" convert with the
+ * ×9/5 scale (not the absolute °C→°F offset).
  *
  * No-op for temperatures when the user prefers Celsius, and no-op for
  * distances when the user prefers metric.
@@ -597,6 +603,38 @@ function localizeDistanceProse(text: string): string {
     }
   );
 
+  // Qualitative word-form metric lengths ("thousands of meters", "hundreds of
+  // kilometers", "a few hundred meters"). Convert unit nouns only — the
+  // quantity words stay, matching common US climate writing.
+  text = text.replace(/\bthousands of met(?:er|re)s\b/gi, "thousands of feet");
+  text = text.replace(/\bhundreds of met(?:er|re)s\b/gi, "hundreds of feet");
+  text = text.replace(/\bhundreds of (?:kilomet(?:er|re)s|km)\b/gi, "hundreds of miles");
+  text = text.replace(/\b((?:a\s+)?few\s+hundred)\s+met(?:er|re)s\b/gi, (_m, qty: string) => `${qty} feet`);
+  text = text.replace(/\bmet(?:er|re)s across\b/gi, "feet across");
+  text = text.replace(/\b(?:kilomet(?:er|re)s|kilometers) wide\b/gi, "miles wide");
+
+  // Spelled-out ranges BEFORE singular spelled-out units so "3–6 meters"
+  // becomes "10–20 feet" rather than orphaning the first endpoint.
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s+met(?:er|re)s?\b/gi,
+    (_m, n1: string, sep: string, n2: string) => {
+      const ft1 = parseLooseNum(n1) * 3.28084;
+      const ft2 = parseLooseNum(n2) * 3.28084;
+      const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
+      return `${formatUSNumber(ft1)}${joiner}${formatUSNumber(ft2)} feet`;
+    }
+  );
+  text = text.replace(
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s+kilomet(?:er|re)s?\b/gi,
+    (_m, n1: string, sep: string, n2: string) => {
+      const mi1 = parseLooseNum(n1) * 0.621371;
+      const mi2 = parseLooseNum(n2) * 0.621371;
+      const digits = Math.max(mi1, mi2) < 10 ? 1 : 0;
+      const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
+      return `${formatUSNumber(mi1, digits)}${joiner}${formatUSNumber(mi2, digits)} miles`;
+    }
+  );
+
   // Spelled-out non-hyphenated metric units. These come before the bare-symbol
   // passes so we consume the entire phrase ("980 meters" stays a single match
   // instead of matching "980 m" and orphaning "eters").
@@ -636,33 +674,36 @@ function localizeDistanceProse(text: string): string {
   });
 
   // Metric ranges with one trailing unit: "300 to 700 mm", "5–10 km",
-  // "20-40 cm". Convert both endpoints before the single-unit passes so the
-  // first number cannot be orphaned or reversed in localized UI summaries.
+  // "20-40 cm", "1500 and 2500 m". Convert both endpoints before the
+  // single-unit passes so the first number cannot be orphaned.
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*km\b(?!\/)/gi,
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*km\b(?!\/)/gi,
     (_m, n1: string, sep: string, n2: string) => {
       const v1 = parseLooseNum(n1) * 0.621371;
       const v2 = parseLooseNum(n2) * 0.621371;
       const digits = Math.max(v1, v2) < 10 ? 1 : 0;
-      return `${formatUSNumber(v1, digits)}${sep === "to" ? " to " : sep}${formatUSNumber(v2, digits)} mi`;
+      const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
+      return `${formatUSNumber(v1, digits)}${joiner}${formatUSNumber(v2, digits)} mi`;
     }
   );
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*mm\b(?![a-zA-Z])/gi,
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*mm\b(?![a-zA-Z])/gi,
     (_m, n1: string, sep: string, n2: string) => {
       const v1 = parseLooseNum(n1) / 25.4;
       const v2 = parseLooseNum(n2) / 25.4;
       const digits = Math.max(v1, v2) < 10 ? 1 : 0;
-      return `${formatUSNumber(v1, digits)}${sep === "to" ? " to " : sep}${formatUSNumber(v2, digits)} in`;
+      const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
+      return `${formatUSNumber(v1, digits)}${joiner}${formatUSNumber(v2, digits)} in`;
     }
   );
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*cm\b(?![a-zA-Z])/gi,
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*cm\b(?![a-zA-Z])/gi,
     (_m, n1: string, sep: string, n2: string) => {
       const v1 = parseLooseNum(n1) / 2.54;
       const v2 = parseLooseNum(n2) / 2.54;
       const digits = Math.max(v1, v2) < 10 ? 1 : 0;
-      return `${formatUSNumber(v1, digits)}${sep === "to" ? " to " : sep}${formatUSNumber(v2, digits)} in`;
+      const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
+      return `${formatUSNumber(v1, digits)}${joiner}${formatUSNumber(v2, digits)} in`;
     }
   );
 
@@ -692,23 +733,25 @@ function localizeDistanceProse(text: string): string {
     return `${formatUSNumber(inches, inches < 10 ? 1 : 0)} in`;
   });
 
-  // Metre ranges "N–M m" / "N-M m" / "N to M m" — used for stratus layers,
-  // elevation bands ("homes at 700–900 m"), etc. Run BEFORE the bare-m
-  // handler so we consume both numbers as a range.
+  // Metre ranges "N–M m" / "N-M m" / "N to M m" / "N and M m" — used for
+  // stratus layers, elevation bands ("homes at 700–900 m", "between 1500
+  // and 2500 m"), etc. Run BEFORE the bare-m handler so we consume both
+  // numbers as a range.
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![/²^])/g,
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![/²^])/g,
     (match, n1: string, sep: string, n2: string, offset: number, full: string) => {
       const before = full.substring(Math.max(0, offset - 80), offset).toLowerCase();
       const after = full.substring(offset + match.length, offset + match.length + 64).toLowerCase();
       const elevationy =
-        /\b(at|to|above|over|elevation|altitude|homes?|stratus|layer|depth|rise|rising|drop|peak|peaks|crest|ridge|summit|plateau|capping|band|relief|dunes?|bluffs?|horizontal)\b/.test(before) ||
+        /\b(at|to|above|over|between|elevation|altitude|homes?|stratus|layer|depth|rise|rising|drop|peak|peaks|crest|ridge|summit|plateau|capping|band|basins?|relief|dunes?|bluffs?|horizontal)\b/.test(before) ||
         /\b(stratus|layer|peaks?|crest|ridge|summit|plateau|depth|rise|rising|drop|higher|lower|snow|snowfall|annually|elevation|altitude|band|belt|relief|dunes?|bluffs?|horizontal)\b/.test(after);
       if (!elevationy) return match;
       const v1 = parseLooseNum(n1);
       const v2 = parseLooseNum(n2);
       const ft1 = v1 * 3.28084;
       const ft2 = v2 * 3.28084;
-      return `${formatUSNumber(ft1)}${sep === "to" ? " to " : sep}${formatUSNumber(ft2)} ft`;
+      const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
+      return `${formatUSNumber(ft1)}${joiner}${formatUSNumber(ft2)} ft`;
     }
   );
 
@@ -738,7 +781,7 @@ function localizeDistanceProse(text: string): string {
       // Broad vocabulary of landform / elevation cues. Order is longest-first
       // only where ambiguity could arise; otherwise alphabetical.
       const beforeHit =
-        /\b(?:elevation|altitude|sits\s+(?:at|above|on)|perch(?:es|ed)?\s+at|situated\s+at|lies\s+at|located\s+at|rests\s+at|nestled\s+at|grassland\s+at|town\s+(?:at|of)|city\s+(?:at|of)|capital\s+at|town\s+of\s+\w+\s+at|at\s+(?:least|more\s+than|nearly|roughly|about)|more\s+than|from|to|above|over|approaches?|averag(?:es|ing)?|rises?|rising|peaks?|summit|crest|ridge|plateau|m\.a\.s\.l\.|asl|meters?|metres?|higher\s+than|lower\s+than|tall|climbs?|drops?\s+(?:to|of)?|floor\s+of|basin|slopes?\s+(?:up|down)?\s*to|pass|saddle|crater|caldera|uplift|escarpment|up\s+to|storms?\s+of|swells?\s+of|layer|stratus|permafrost|kilometer|kilometre|km|volcano|volcan|mountain|mountains|mt\.?|mount|lake|canyon|bluff|headland|cliff|plateau|mesa|dune|dunes|cirque|plate|bedrock|relief|horizontal|with)\b/.test(before) ||
+        /\b(?:elevation|altitude|sits\s+(?:at|above|on)|perch(?:es|ed)?\s+at|situated\s+at|lies\s+at|located\s+at|rests\s+at|nestled\s+at|grassland\s+at|town\s+(?:at|of)|city\s+(?:at|of)|capital\s+at|town\s+of\s+\w+\s+at|at\s+(?:least|more\s+than|nearly|roughly|about)|more\s+than|from|to|above|over|between|every|approaches?|averag(?:es|ing)?|rises?|rising|peaks?|summit|crest|ridge|plateau|m\.a\.s\.l\.|asl|meters?|metres?|higher\s+than|lower\s+than|tall|climbs?|drops?\s+(?:to|of)?|floor\s+of|basin|basins?|slopes?\s+(?:up|down)?\s*to|pass|saddle|crater|caldera|uplift|escarpment|up\s+to|storms?\s+of|swells?\s+of|layer|stratus|permafrost|kilometer|kilometre|km|volcano|volcan|mountain|mountains|mt\.?|mount|lake|canyon|bluff|headland|cliff|plateau|mesa|dune|dunes|cirque|plate|bedrock|relief|horizontal|with)\b/.test(before) ||
         /\bat\s*$/.test(before) ||
         // Approximation tilde immediately preceding the number: "~1200 m".
         /~\s*$/.test(beforeRaw) ||

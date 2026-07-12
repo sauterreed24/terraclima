@@ -5,6 +5,7 @@ import { computeBioclim, type BioclimIndex, type BioclimResult } from "../../lib
 import { getPlaceBioclimRanks, type PlaceBioclimRanks } from "../../lib/atlas-corpus-stats";
 import { classifyDossierSection } from "../../lib/evidence-summary";
 import { EvidenceClassLabel } from "./PlaceEvidenceSummary";
+import { useProse } from "../../lib/units";
 
 const ICON_COLOR = "#9bd9c2";
 
@@ -145,6 +146,7 @@ function petBand(pet: number): string {
 }
 
 export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ place, anchorId }: { place: Place; anchorId: string }) {
+  const prose = useProse();
   const bio = useMemo(() => computeBioclim(place), [place]);
   const ranks = useMemo(() => getPlaceBioclimRanks(place), [place]);
   if (!bio) return null;
@@ -182,10 +184,10 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
           return (
             <div key={card.label} className="panel-thin p-3 flex flex-col gap-1.5">
               <div className="text-[10px] uppercase tracking-wider text-stone" title={card.full}>{card.label}</div>
-              <div className="font-mono-num text-2xl text-ice leading-tight">{display.primary}</div>
-              <div className="text-xs text-frost">{display.secondary}</div>
+              <div className="font-mono-num text-2xl text-ice leading-tight">{prose(display.primary)}</div>
+              <div className="text-xs text-frost">{prose(display.secondary)}</div>
               {percentile ? <div className="text-[11px] text-stone">{percentile}</div> : null}
-              <div className="text-[11px] text-stone leading-snug mt-1">{card.description(bio)}</div>
+              <div className="text-[11px] text-stone leading-snug mt-1">{prose(card.description(bio))}</div>
               <div className="text-[10px] text-stone/70 mt-auto pt-1 font-mono-num">{card.citation}</div>
             </div>
           );
