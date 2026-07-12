@@ -6482,6 +6482,13 @@
     contain: layout style paint;
     backdrop-filter: blur(10px);
   }
+  /* Pan/pinch paint the SVG transform imperatively without React view updates;
+     hide the hover card while gesturing so it cannot float off its pin. */
+  .map-shell[data-gesturing="true"] .tc-map-hover-card {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
   .tc-map-hover-card--compact {
     max-height: min(9.5rem, var(--tc-map-hover-max-height, calc(100% - 1rem)));
   }
@@ -12091,6 +12098,12 @@ html[data-theme="dark"] .detail-signature-panel > div.detail-signature-panel__pr
 }
 html[data-theme="dark"] .detail-signature-panel dd .font-mono-num {
   background: rgba(var(--signature-rgb), 0.22);
+}
+html[data-theme="dark"] .atlas-hero-stat {
+  background: linear-gradient(165deg, rgba(28, 38, 60, 0.96) 0%, rgba(16, 23, 38, 0.92) 100%);
+}
+html[data-theme="dark"] .atlas-corpus-matrix__row:hover {
+  background: rgba(94, 196, 220, 0.08);
 }
 html[data-theme="dark"] .tc-hero-credit {
   background: rgba(16, 23, 38, 0.92);

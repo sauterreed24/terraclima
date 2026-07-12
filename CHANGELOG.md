@@ -4,12 +4,20 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Post-merge trust polish (home base, ranking, map hover)
+
+- **Home-base hydrate write-through:** explicit `?hb=` persists to `localStorage` on first paint and `popstate`; unresolved stored ids are purged so orphans cannot resurrect.
+- **Auto live-fit snapshot restore:** constraint-driven `live-fit` remembers the prior ranking + URL-explicit flag and restores that snapshot on chip dismiss / Clear all (instead of only `loadPersistedRanking()`).
+- **`rankPlaces` id tiebreaker:** same-name and score-0 clusters sort by id after name (Durango CO/MX, missing `sunshinePct` winters).
+- **Map hover card:** tooltip screen position tracks live `view` again; pan/pinch hides the card via `.map-shell[data-gesturing="true"]` so it cannot float off the pin.
+- **Dark theme paper flashes:** `.atlas-hero-stat` and corpus-matrix row hover use dark surfaces instead of light paper.
+
 ### Atlas map gesture and interaction polish
 
 - **Imperative pinch:** two-finger zoom mutates `viewRef` + the SVG transform (and `data-atlas-inv-scale` counter-scale) without reconciling every Marker at 60 Hz; React commits on release.
 - **Scroll page + wheel:** while the map is in page-scroll mode, wheel events are no longer `preventDefault`’d — hybrid trackpads can scroll the Explorer past the atlas.
 - **Cluster picker keyboard guard:** `+` / `-` / arrows do not pan or zoom the map under an open cluster picker.
-- **Tooltip settle:** dwell-promoted hover cards track `settledView` so wheel ticks do not re-render the climate strip every frame.
+- **Hover card during gestures:** live `view` keeps wheel/zoom peeks pinned; imperative pan/pinch hide the card while `data-gesturing` is true.
 - **Leader highlight:** per-pin leader lines use `data-leader-for` + `.map-pin-leader--active` (the old sibling CSS never matched).
 - Docs: map↔list centering is an intentional instant snap (not a reduced-motion fly).
 

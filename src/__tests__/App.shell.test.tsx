@@ -1086,6 +1086,31 @@ describe("App shell", () => {
     });
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("writes an explicit ?hb= home base through to localStorage on hydrate", async () => {
+    window.history.replaceState(null, "", "/?hb=sequim-wa");
+
+    renderApp();
+
+    await screen.findByRole(
+      "status",
+      { name: "Explorer home base: Sequim" },
+      { timeout: APP_SHELL_TIMEOUT_MS },
+    );
+    expect(JSON.parse(window.localStorage.getItem("terraclima.home-base.v1") ?? "null")).toBe("sequim-wa");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("purges an unresolved home-base id from localStorage on hydrate", async () => {
+    window.localStorage.setItem("terraclima.home-base.v1", JSON.stringify("not-a-real-place-id"));
+    window.history.replaceState(null, "", "/");
+
+    renderApp();
+
+    await waitFor(() => {
+      expect(window.localStorage.getItem("terraclima.home-base.v1")).toBeNull();
+      expect(screen.queryByRole("status", { name: /Explorer home base:/ })).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("moves focus to main content after clearing the Explorer home-base anchor", async () => {
     window.history.replaceState(null, "", "/?hb=sequim-wa");
 
@@ -1330,6 +1355,31 @@ describe("App shell", () => {
       expect(params.get("fit")).toBeNull();
       expect(params.get("c")).toBeNull();
       expect(screen.queryByRole("button", { name: /Clear .* collection filter/ })).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("restores the pre-constraint URL ranking after auto live-fit chip dismiss", async () => {
+    mockViewport(1280);
+    // Persisted preference differs from the shared URL ranking so a naive
+    // loadPersistedRanking() restore would leave the wrong lens.
+    window.localStorage.setItem("terraclima.ranking.v1", "coolest-summers");
+    window.history.replaceState(null, "", "/?r=most-comfortable&fit=cool-summers");
+
+    renderApp();
+
+    const lens = await screen.findByRole("region", { name: "Current Explorer lens" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    await waitFor(() => {
+      expect(new URLSearchParams(window.location.search).get("r")).toBe("live-fit");
+      expect(within(lens).getByText("Live-here fit")).toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+
+    fireEvent.click(within(lens).getByRole("button", { name: "Remove filter: 1 Live Finder preset" }));
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("fit")).toBeNull();
+      expect(params.get("r")).toBe("most-comfortable");
+      expect(window.localStorage.getItem("terraclima.ranking.v1")).toBe("coolest-summers");
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
