@@ -30,7 +30,8 @@
     "dump:corpus-rank": "tsx scripts/dump-corpus-ranks.ts",
     "generate:og": "tsx scripts/generate-og-image.ts",
     "generate:icons": "tsx scripts/generate-icons.ts",
-    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run build && npm run check:performance-budget"
+    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run build && npm run check:performance-budget",
+    "playtest:rigorous": "node scripts/playtest-rigorous.mjs"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.13.24",
