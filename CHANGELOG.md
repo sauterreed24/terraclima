@@ -4,6 +4,15 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Atlas map gesture and interaction polish
+
+- **Imperative pinch:** two-finger zoom mutates `viewRef` + the SVG transform (and `data-atlas-inv-scale` counter-scale) without reconciling every Marker at 60 Hz; React commits on release.
+- **Scroll page + wheel:** while the map is in page-scroll mode, wheel events are no longer `preventDefault`’d — hybrid trackpads can scroll the Explorer past the atlas.
+- **Cluster picker keyboard guard:** `+` / `-` / arrows do not pan or zoom the map under an open cluster picker.
+- **Tooltip settle:** dwell-promoted hover cards track `settledView` so wheel ticks do not re-render the climate strip every frame.
+- **Leader highlight:** per-pin leader lines use `data-leader-for` + `.map-pin-leader--active` (the old sibling CSS never matched).
+- Docs: map↔list centering is an intentional instant snap (not a reduced-motion fly).
+
 ### Long-horizon correctness and contract polish
 
 - **Compare workbench scenario honesty:** shortlist/recent candidates outside a narrowed Explorer pool now resolve through `placeForCompareSlot` (`src/lib/compare-workbench.ts`), so 2050 layers no longer mix present-day normals into workbench scores.

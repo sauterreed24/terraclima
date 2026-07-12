@@ -8907,10 +8907,20 @@
     transition: r 120ms ease, fill 120ms ease;
     opacity: 0.78;
   }
-  .map-marker--offset-label:hover ~ .map-pin-leader .map-pin-leader__line,
-  .map-shell:has(.map-marker--offset-label:hover) .map-pin-leader__line {
-    stroke-width: 1.35;
-    opacity: 0.95;
+  /* Leaders live in a separate SVG layer from markers, so sibling `~` never
+     matches. Highlight the active leader via `.map-pin-leader--active` (set
+     from AtlasMap hover/focus) and keep a quiet broad cue while any offset
+     pin is hovered. */
+  .map-shell:has(.map-marker--offset-label:hover) .map-pin-leader__line,
+  .map-shell:has(.map-marker--offset-label:focus-visible) .map-pin-leader__line {
+    opacity: 0.8;
+  }
+  .map-pin-leader--active .map-pin-leader__line {
+    stroke-width: 1.45;
+    opacity: 0.98;
+  }
+  .map-pin-leader--active .map-pin-leader__anchor {
+    opacity: 1;
   }
   .map-marker:hover .map-marker-label rect {
     stroke: rgba(200, 228, 255, 0.78);

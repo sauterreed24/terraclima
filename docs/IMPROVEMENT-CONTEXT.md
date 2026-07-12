@@ -91,8 +91,9 @@ After visual or map-pin changes, spot-check in the browser:
 - **Motion tier:** `document.documentElement.dataset.motion` follows `motionPolicy()` (`full` / `minimal` / `reduced`). With OS reduce motion on, view cross-fade and drawer spring should calm or disable while layout stays usable.
 - **Reduced motion:** enable OS “reduce motion”; modals and map topo load should skip blur/long fades (`motionPolicy()` → `reduced` / `minimal`).
 - **Map:** one-finger pan, pinch zoom, cluster picker Escape + focus return, leader lines when pins spread.
-- **Map ↔ list sync:** select a pin or card — map view should center the pin; virtual grid should scroll the matching card into view (reduced motion: no animated fly).
+- **Map ↔ list sync:** select a pin or card — map view should center the pin; virtual grid should scroll the matching card into view. Centering is an **instant** view jump (no animated fly); reduced-motion users get the same snap, which avoids vestibular-unfriendly interpolation on the SVG stage.
 - **Lifestyle bundle:** hero Remote Work and dock Remote Work should produce the same URL (`fit=cool-summers,low-fire-smoke`, `sh=26`, ranking `best-for-remote-work`).
+- **Scroll page mode:** with the Scroll page / Use map toggle (coarse or hybrid), wheel and one-finger pan must release to the page — the map must not `preventDefault` wheel while in page mode.
 
 ## Inapplicable Research Items
 
