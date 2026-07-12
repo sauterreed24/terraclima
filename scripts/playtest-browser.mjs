@@ -180,17 +180,28 @@ async function main() {
       }
 
       // Empty results recovery: impossible search.
+      // On phone widths the search field lives in the filter sheet.
       const search = page.locator("#terraclima-place-search").first();
       if (await search.count()) {
-        await search.fill("zzzx-no-such-climate-place-qqq");
-        await page.waitForTimeout(350);
-        const empty = page.locator(".tc-empty-results");
-        if (await empty.count()) {
-          const reset = empty.getByRole("button", { name: /Reset Explorer|Clear search/i }).first();
-          if (await reset.count()) await reset.click();
-          await page.waitForTimeout(200);
-        } else {
-          findings.push({ label, kind: "empty-results-missing" });
+        const visible = await search.isVisible().catch(() => false);
+        if (!visible) {
+          const openFilters = page.getByRole("button", { name: /Open Explorer filters/i }).first();
+          if (await openFilters.count()) {
+            await openFilters.click();
+            await page.waitForTimeout(250);
+          }
+        }
+        if (await search.isVisible().catch(() => false)) {
+          await search.fill("zzzx-no-such-climate-place-qqq");
+          await page.waitForTimeout(350);
+          const empty = page.locator(".tc-empty-results");
+          if (await empty.count()) {
+            const reset = empty.getByRole("button", { name: /Reset Explorer|Clear search/i }).first();
+            if (await reset.count()) await reset.click();
+            await page.waitForTimeout(200);
+          } else {
+            findings.push({ label, kind: "empty-results-missing" });
+          }
         }
       }
 

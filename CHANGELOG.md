@@ -4,6 +4,16 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Consolidation, trust, and product-clarity release
+
+- **Evidence hierarchy (`src/lib/evidence-summary.ts`, `PlaceEvidenceSummary`):** place dossiers gain a compact “How to read this profile” disclosure plus section labels that distinguish measured normals, editorial context, deterministic derivation, regional projections, and screening scores. Confidence and completeness stay separate; citations remain section-level, not sentence-level.
+- **Corpus validation:** `audit:corpus` and `sanity` enforce allowlisted confidence/citation kinds, nonempty labels, duplicate citation detection, safe URLs, exhaustive evidence classes, and projection-override citation support.
+- **Compare scenario honesty:** `placeForCompareSlot()` projects out-of-pool Compare slots when `scn≠now`, so present-day normals are never shown under a future-layer banner.
+- **Discovery clarity:** tighter reader-path copy; vs-home deltas labeled as derived; journey-bridge wording cleaned.
+- **Orchestration boundaries:** Explorer empty-result recovery and share-status live in focused modules; atlas cluster picker extracted to `AtlasMapClusterPicker`.
+- **Verification:** post-build gzip byte budgets for initial CSS/JS and cold chunks; `npm run playtest:browser` / `test:browser` Playwright smoke suite; dedicated `.github/workflows/browser-smoke.yml` (kept outside `quality:check`).
+- No ranking formula, URL semantics, corpus place count, or map projection changes.
+
 ### Interactive map declutter II: scout peek + surface LOD
 
 - **Hover card slim-down (`src/components/AtlasMapTooltip.tsx`, `src/styles.css`):** the pin preview no longer expands into a dossier-scale panel. Compact stays a name + climate metrics peek; pointer dwell (450 ms) promotes to a medium scout card (climate strip, why-it-differs, up to two drivers) capped at ~18 rem tall / 19 rem wide. Comfort scores, scout cues, and confidence chrome stay in the full profile. Keyboard focus never auto-promotes past compact.

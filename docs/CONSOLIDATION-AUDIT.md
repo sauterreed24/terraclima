@@ -95,6 +95,15 @@ Terraclima is a static North American microclimate atlas. The core question is w
 | Entry `index-*.js` raw / gzip | ~349 KB / ~100 KB |
 | `playtest:map` | Not run at baseline (optional; Chrome present) |
 
-### After
+### After (this branch)
 
-Filled in at release finalization (see Verification section of the PR report).
+| Check | Result |
+|-------|--------|
+| `npm run quality:check` | Pass (1050 Vitest tests) |
+| Evidence unit + dossier DOM tests | Pass |
+| Corpus audit / sanity | 0 errors, 0 warnings; 226 places |
+| Cold preload + gzip budgets | Pass (CSS gzip ~57 KB / 62 KB; initial JS gzip ~603 KB / 680 KB; entry ~100 KB / 112 KB; PlaceDetail raw ~160 KB / 200 KB) |
+| `npm run playtest:browser` | Pass (5 explorer viewports + dossier + compare + map samples; 0 axe serious/critical in suite) |
+| `npm run playtest:map` | Pass (7 viewports + theme/hybrid matrix) |
+| URL semantics | Unchanged |
+| Ranking goldens | Unchanged |
