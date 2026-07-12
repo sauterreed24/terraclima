@@ -4,6 +4,14 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Playtest harden: pan gesturing, unit tooltip, dark field note, alias URLs
+
+- **Map pan gesturing:** one-finger / mouse pan now sets `data-gesturing` once the drag threshold is crossed, so hover cards and leader lines hide during pan (not only pinch/wheel).
+- **Climate Signal tooltips:** archetype blurbs in the signal rail `title` run through `prose()` so °F mode no longer leaks °C copy.
+- **Field note strip:** light paper gradient moved into CSS so dark-theme remaps are not overridden by Tailwind utilities.
+- **Place-id aliases:** `openPlace` writes the canonical id into selection/URL state (`san-miguel-mx` → `san-miguel-de-allende-mx`).
+- **Coverage:** Compare→dossier under `scn=ssp245`, mouse-pan gesturing, Fahrenheit signal-rail titles, dark Field note strip, alias URL canonicalize.
+
 ### Focus, Visit-now month, and scenario remap honesty
 
 - **Compare → dossier handoff:** closing Compare into a place profile no longer races delayed Compare-trigger focus restores; the Explorer Compare launcher is preferred as the dossier return target.

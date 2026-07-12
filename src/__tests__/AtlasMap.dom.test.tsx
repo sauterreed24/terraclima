@@ -852,6 +852,30 @@ describe("AtlasMap DOM controls", () => {
     }
   });
 
+  it("marks the map shell as gesturing once a mouse pan crosses the drag threshold", async () => {
+    setCoarsePointer(false);
+    const { container } = renderMap(vi.fn(), [], defaultMapPlaces());
+    const shell = container.querySelector(".map-shell") as HTMLElement;
+    const svg = container.querySelector("svg.atlas-svg") as SVGSVGElement;
+    svg.getBoundingClientRect = () =>
+      ({ left: 0, top: 0, right: 280, bottom: 260, width: 280, height: 260, x: 0, y: 0, toJSON: () => ({}) }) as DOMRect;
+
+    await act(async () => {
+      fireEvent.pointerDown(svg, { pointerId: 1, pointerType: "mouse", button: 0, clientX: 140, clientY: 130 });
+    });
+    expect(shell.getAttribute("data-gesturing")).not.toBe("true");
+
+    await act(async () => {
+      fireEvent.pointerMove(svg, { pointerId: 1, pointerType: "mouse", buttons: 1, clientX: 160, clientY: 145 });
+    });
+    expect(shell.getAttribute("data-gesturing")).toBe("true");
+
+    await act(async () => {
+      fireEvent.pointerUp(svg, { pointerId: 1, pointerType: "mouse", button: 0, clientX: 160, clientY: 145 });
+    });
+    expect(shell.getAttribute("data-gesturing")).toBe("false");
+  });
+
   it("keeps pins on their geographic anchors when zoomed in", () => {
     setCoarsePointer(false);
     const places = [

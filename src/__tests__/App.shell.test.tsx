@@ -36,6 +36,7 @@ vi.mock("../components/CompareView", () => ({
     onComparisonLensChange,
     occluded,
     onOpenPlace,
+    scenario,
   }: {
     places: Array<{ id: string }>;
     open: boolean;
@@ -52,6 +53,7 @@ vi.mock("../components/CompareView", () => ({
     };
     occluded?: boolean;
     onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
+    scenario?: string;
   }) =>
     open && places.length > 0 ? (
       <div
@@ -59,6 +61,7 @@ vi.mock("../components/CompareView", () => ({
         aria-label={places.length === 1 ? "1 place saved to compare" : `${places.length} places side by side`}
         aria-hidden={occluded ? "true" : undefined}
         data-testid="compare-view-mock"
+        data-scenario={scenario ?? "now"}
       >
         <button type="button" aria-label="Close comparison" onClick={onClose}>
           Close comparison
@@ -98,6 +101,9 @@ vi.mock("../components/CompareView", () => ({
             {shareStatus === "shared" ? "Shared" : shareStatus === "copied" ? "Link copied" : shareStatus === "failed" ? "Manual copy" : "Copy comparison"}
           </button>
         ) : null}
+        {scenario && scenario !== "now" ? (
+          <div data-testid="compare-scenario-banner">Projected layer: {scenario}</div>
+        ) : null}
         {(liveFitFilters?.fitPresets?.size ?? 0) > 0 || liveFitFilters?.maxSummerHighC != null ? (
           <div data-testid="compare-live-filters">
             {[...(liveFitFilters?.fitPresets ?? new Set())].join(",") || "no presets"}
@@ -114,10 +120,14 @@ vi.mock("../components/PlaceDetail", () => ({
     occluded,
     residencyFitContext,
     animateEntry,
+    scenario,
+    place,
   }: {
     onClose: () => void;
     occluded?: boolean;
     animateEntry?: boolean;
+    scenario?: string;
+    place?: { id: string };
     residencyFitContext?: {
       rankingLabel: string;
       bundleLabel?: string | null;
@@ -130,12 +140,19 @@ vi.mock("../components/PlaceDetail", () => ({
       aria-hidden={occluded ? "true" : undefined}
       data-testid="place-detail-mock"
       data-animate-entry={animateEntry ? "true" : "false"}
+      data-place-id={place?.id}
+      data-scenario={scenario ?? "now"}
     >
       {residencyFitContext ? (
         <div data-testid="place-detail-fit-context">
           {residencyFitContext.bundleLabel ? `${residencyFitContext.bundleLabel} / ` : ""}
           {residencyFitContext.bundleCue ? `${residencyFitContext.bundleCue} / ` : ""}
           {residencyFitContext.rankingLabel}
+        </div>
+      ) : null}
+      {scenario && scenario !== "now" ? (
+        <div data-testid="place-detail-scenario-honesty">
+          Explorer uses {scenario}; dossier stays on present-day normals
         </div>
       ) : null}
       <button type="button" aria-label="Close profile" onClick={onClose} />
@@ -771,6 +788,63 @@ describe("App shell", () => {
       expect(screen.queryByRole("dialog", { name: "Place profile" })).not.toBeInTheDocument();
       expect(document.activeElement).toBe(opener);
     }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("hands Compare → dossier focus under a 2050 scenario without mixing focus restores", async () => {
+    mockViewport(1280);
+    window.history.replaceState(null, "", "/?scn=ssp245&cmp=sequim-wa,portal-az");
+    renderApp();
+
+    const compare = await screen.findByRole("dialog", { name: "2 places side by side" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    expect(compare).toHaveAttribute("data-scenario", "ssp245");
+    expect(screen.getByTestId("compare-scenario-banner")).toHaveTextContent(/ssp245/i);
+
+    const openFromCompare = screen.getByRole("button", { name: "Open sequim-wa from comparison" });
+    fireEvent.click(openFromCompare);
+
+    const profile = await screen.findByRole("dialog", { name: "Place profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    expect(screen.queryByRole("dialog", { name: "2 places side by side" })).not.toBeInTheDocument();
+    expect(profile).toHaveAttribute("data-scenario", "ssp245");
+    expect(screen.getByTestId("place-detail-scenario-honesty")).toHaveTextContent(/present-day normals/i);
+
+    await act(async () => {
+      await new Promise(resolve => window.setTimeout(resolve, 280));
+    });
+    expect(profile).toBeInTheDocument();
+
+    fireEvent.click(within(profile).getByRole("button", { name: "Close profile" }));
+
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: "Place profile" })).not.toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+    expect(new URLSearchParams(window.location.search).get("scn")).toBe("ssp245");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("canonicalizes place-id aliases into shared dossier URLs", async () => {
+    mockViewport(1280);
+    window.history.replaceState(null, "", "/?p=san-miguel-mx");
+    renderApp();
+
+    const profile = await screen.findByRole("dialog", { name: "Place profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    expect(profile).toHaveAttribute("data-place-id", "san-miguel-de-allende-mx");
+    await waitFor(() => {
+      expect(new URLSearchParams(window.location.search).get("p")).toBe("san-miguel-de-allende-mx");
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("localizes Climate Signal rail tooltips in Fahrenheit mode", async () => {
+    mockViewport(1280);
+    renderApp();
+    openScoutTools();
+
+    const rail = await screen.findByLabelText(/climate signal leaders/i, undefined, { timeout: APP_SHELL_TIMEOUT_MS });
+    const notes = rail.querySelectorAll(".climate-signal-rail__note");
+    expect(notes.length).toBeGreaterThan(0);
+    for (const note of Array.from(notes)) {
+      const title = note.getAttribute("title") ?? "";
+      expect(title).not.toMatch(/\d+\s*°C|\d+\s*°\s*C|\bCelsius\b/i);
+      expect(title).not.toMatch(/\b\d+\s*m\b(?!\w)/);
+    }
   }, APP_SHELL_TIMEOUT_MS);
 
   it("saves current Scout Board finalists into the shortlist in ranked order", async () => {
