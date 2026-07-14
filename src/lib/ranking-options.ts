@@ -1,5 +1,13 @@
 import type { RankingProfile } from "./scoring";
 
+/** Concise first-viewport explanation for the existing comfort ranking. */
+export const MOST_COMFORTABLE_LENS_SUMMARY =
+  "A day-to-day comfort read balancing felt temperature, atmosphere, usable months, hazards, and daily friction.";
+
+/** Detailed receipt copy kept beside the ranking label to prevent terminology drift. */
+export const MOST_COMFORTABLE_LENS_DESCRIPTION =
+  "Ranks how a place is likely to feel day to day: felt temperature, atmospheric ease, usable months, hazard cushion, and lived friction — not just mild averages.";
+
 /**
  * Explorer “Rank by” options — **single source of truth** for display order and labels.
  * `ALL_RANKING_PROFILES` is derived from this list so localStorage validation never drifts.

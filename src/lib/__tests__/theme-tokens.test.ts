@@ -13,6 +13,13 @@ import {
 const stylesPath = resolve(dirname(fileURLToPath(import.meta.url)), "../../styles.css");
 const styles = readFileSync(stylesPath, "utf8");
 
+function cssRuleBody(selector: string): string {
+  const start = styles.indexOf(`${selector} {`);
+  if (start < 0) return "";
+  const bodyStart = styles.indexOf("{", start) + 1;
+  return styles.slice(bodyStart, styles.indexOf("}", bodyStart));
+}
+
 describe("theme-tokens", () => {
   it("defines all semantic CSS variable names", () => {
     expect(SEMANTIC_TOKEN_KEYS).toHaveLength(18);
@@ -49,6 +56,9 @@ describe("theme-tokens", () => {
       "html[data-theme=\"dark\"] .hero-quick-pick",
       "html[data-theme=\"dark\"] .living-compass__rank-row",
       "html[data-theme=\"dark\"] .lens-receipt",
+      "html[data-theme=\"dark\"] .rank-menu__select",
+      "html[data-theme=\"dark\"] .tc-filter-sheet-trigger",
+      "html[data-theme=\"dark\"] .tc-bookmark-chip",
       "html[data-theme=\"dark\"] .tc-accent-panel",
       "html[data-theme=\"dark\"] .climate-scenario",
       "html[data-theme=\"dark\"] .scenario-remap",
@@ -59,5 +69,30 @@ describe("theme-tokens", () => {
     for (const selector of required.filter(s => s.includes("dark"))) {
       expect(styles).toContain(selector);
     }
+  });
+
+  it("keeps prominent dark controls on dark tokenized surfaces", () => {
+    const selectors = [
+      'html[data-theme="dark"] .rank-menu__select',
+      'html[data-theme="dark"] .tc-filter-sheet-trigger',
+      'html[data-theme="dark"] .tc-bookmark-chip',
+    ];
+
+    for (const selector of selectors) {
+      const body = cssRuleBody(selector);
+      expect(body, selector).not.toBe("");
+      expect(body, selector).not.toMatch(/rgba\(255,\s*(?:252|255),\s*(?:247|255),\s*0\.9\d\)/);
+    }
+
+    expect(cssRuleBody(selectors[0])).toContain("color-scheme: dark");
+    expect(cssRuleBody(selectors[0])).toContain("var(--tc-surface-elevated)");
+    expect(cssRuleBody(selectors[1])).toContain("var(--tc-surface-elevated)");
+    expect(cssRuleBody(selectors[2])).toContain("var(--tc-chip-bg)");
+    expect(styles).toContain('html[data-theme="dark"] .rank-menu__select option');
+    expect(styles).toContain('html[data-theme="dark"] .rank-menu__select:focus-visible');
+    expect(styles).toContain('html[data-theme="dark"] .tc-filter-sheet-trigger:focus-visible');
+    expect(styles).toContain('html[data-theme="dark"] .tc-bookmark-chip:focus-visible');
+    expect(styles).toContain('html[data-theme="dark"] .tc-bookmark-chip--pinned:hover');
+    expect(styles).toContain('html[data-theme="dark"] .tc-bookmark-chip--pinned:focus-visible');
   });
 });

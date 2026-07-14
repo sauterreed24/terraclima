@@ -702,21 +702,18 @@
   }
   @media (max-width: 480px) {
     .tc-filter-sheet-trigger {
-      left: auto;
-      right: max(0.85rem, calc(0.7rem + env(safe-area-inset-right, 0px)));
       bottom: max(0.85rem, calc(0.7rem + env(safe-area-inset-bottom, 0px)));
       justify-content: center;
       gap: 0.35rem;
       min-width: 46px;
       min-height: 46px;
       padding: 0.6rem 0.72rem;
-      transform: none;
     }
     .tc-filter-sheet-trigger:hover {
-      transform: translateY(-2px);
+      transform: translateX(-50%) translateY(-2px);
     }
     .tc-filter-sheet-trigger:active {
-      transform: none;
+      transform: translateX(-50%);
     }
     .tc-filter-sheet-trigger__label {
       overflow: hidden;
@@ -727,7 +724,7 @@
   }
   @media (max-width: 480px) and (prefers-reduced-motion: reduce) {
     .tc-filter-sheet-trigger:hover {
-      transform: none;
+      transform: translateX(-50%);
     }
   }
   .tc-filter-sheet-dialog {
@@ -5955,10 +5952,10 @@
   }
   .learn-concept-card:hover { transform: translateY(-2px); }
 
-  @media (min-width: 1180px) {
+  @media (min-width: 1500px) {
     .tc-explorer-main {
       display: grid !important;
-      grid-template-columns: minmax(0, 1fr) minmax(24.5rem, 0.72fr);
+      grid-template-columns: minmax(0, 2fr) minmax(34rem, 3fr);
       align-items: start;
     }
     .tc-explorer-main > .panel-hero {
@@ -5970,28 +5967,16 @@
       grid-row: 1;
       position: relative;
       top: auto;
-      height: min(45rem, calc(100dvh - 6.75rem)) !important;
-      min-height: 38rem !important;
+      height: min(42rem, calc(100dvh - 6.75rem)) !important;
+      min-height: 34rem !important;
     }
     .tc-explorer-main > .tc-reader-path,
+    .tc-explorer-main > .tc-explorer-continuity,
     .tc-explorer-main > .panel-thin,
     .tc-explorer-main > .tc-toast,
     .tc-explorer-main > section,
     .tc-explorer-main > .grid {
       grid-column: 1 / -1;
-    }
-  }
-  @media (min-width: 1180px) and (max-width: 1360px) {
-    .tc-explorer-main {
-      grid-template-columns: minmax(0, 1fr) minmax(24rem, 0.72fr);
-    }
-    .tc-explorer-main > .tc-map-stage {
-      min-height: 34rem !important;
-    }
-  }
-  @media (min-width: 1280px) {
-    .tc-explorer-main {
-      grid-template-columns: minmax(26rem, 1fr) minmax(27rem, 0.94fr);
     }
   }
 
@@ -8577,6 +8562,22 @@
     justify-content: flex-end;
     gap: 0.35rem;
     flex-shrink: 0;
+  }
+  @media (max-width: 480px) {
+    .tc-evidence-summary__toggle {
+      flex-wrap: wrap;
+    }
+    .tc-evidence-summary__toggle-lead,
+    .tc-evidence-summary__toggle-meta {
+      flex: 1 1 100%;
+    }
+    .tc-evidence-summary__toggle-meta {
+      justify-content: flex-start;
+      padding-left: 1.425rem;
+    }
+    .tc-evidence-summary__chevron {
+      margin-left: auto;
+    }
   }
   .tc-evidence-summary__pill {
     font-size: 0.62rem;
@@ -11862,6 +11863,70 @@ html[data-theme="dark"] .atlas-filter-dock {
   box-shadow: var(--tc-shadow-elevated);
 }
 
+html[data-theme="dark"] .rank-menu__select {
+  color-scheme: dark;
+  border-color: rgba(94, 196, 220, 0.34);
+  background:
+    linear-gradient(135deg, rgba(36, 48, 76, 0.98), rgba(28, 48, 58, 0.9)),
+    var(--tc-surface-elevated);
+  color: var(--color-ice);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 12px 28px -20px rgba(0, 0, 0, 0.72);
+}
+html[data-theme="dark"] .rank-menu__select option {
+  background: var(--tc-surface-elevated);
+  color: var(--color-ice);
+}
+html[data-theme="dark"] .rank-menu__select:focus-visible {
+  border-color: rgba(94, 196, 220, 0.58);
+  background:
+    linear-gradient(135deg, rgba(40, 54, 84, 0.99), rgba(30, 52, 62, 0.96)),
+    var(--tc-surface-elevated);
+}
+
+html[data-theme="dark"] .tc-filter-sheet-trigger {
+  border-color: var(--tc-border-neutral);
+  background:
+    linear-gradient(165deg, rgba(36, 48, 76, 0.98), rgba(28, 48, 58, 0.94)),
+    var(--tc-surface-elevated);
+  color: var(--color-ice);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 14px 38px -18px rgba(0, 0, 0, 0.74),
+    0 0 0 1px rgba(94, 196, 220, 0.12) inset;
+}
+html[data-theme="dark"] .tc-filter-sheet-trigger:hover,
+html[data-theme="dark"] .tc-filter-sheet-trigger:focus-visible {
+  border-color: rgba(94, 196, 220, 0.5);
+  background:
+    linear-gradient(165deg, rgba(42, 56, 86, 0.99), rgba(30, 54, 62, 0.96)),
+    var(--tc-surface-elevated);
+}
+
+html[data-theme="dark"] .tc-bookmark-chip {
+  border-color: var(--tc-border-neutral);
+  background: var(--tc-chip-bg);
+  color: var(--color-frost-strong);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+}
+html[data-theme="dark"] .tc-bookmark-chip:hover,
+html[data-theme="dark"] .tc-bookmark-chip:focus-visible {
+  border-color: rgba(94, 196, 220, 0.48);
+  background: rgba(42, 54, 76, 0.96);
+  color: var(--color-ice);
+}
+html[data-theme="dark"] .tc-bookmark-chip--pinned,
+html[data-theme="dark"] .tc-bookmark-chip--pinned:hover,
+html[data-theme="dark"] .tc-bookmark-chip--pinned:focus-visible {
+  border-color: rgba(232, 180, 60, 0.66);
+  background: rgba(84, 62, 28, 0.94);
+  color: #ffe8b8;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 0 0 1px rgba(232, 155, 32, 0.16) inset;
+}
+
 html[data-theme="dark"] .place-detail-drawer {
   border-left-color: var(--tc-border-neutral) !important;
   box-shadow: -28px 0 56px -18px rgba(0, 0, 0, 0.55);
@@ -12150,6 +12215,7 @@ html[data-theme="dark"] .tc-hero-credit {
   .panel-hero .current-rank-strip,
   .panel-hero .hero-top-ten,
   .panel-hero .hero-mini-rail,
+  .tc-explorer-continuity .hero-mini-rail,
   .panel-hero .tc-reader-path,
   .tc-detail-back-to-top,
   .tc-bookmark-chip,
@@ -12543,6 +12609,21 @@ html[data-theme="dark"] .tc-hero-credit {
   @media (min-width: 640px) {
     .hero-action-stack {
       align-items: flex-end;
+    }
+  }
+  @media (min-width: 641px) and (max-width: 1023px) {
+    .hero-action-stack {
+      flex-flow: row wrap;
+      align-items: stretch;
+      width: 100%;
+    }
+    .hero-action-stack > .btn-ghost,
+    .hero-action-stack > .btn-primary {
+      flex: 1 1 12rem;
+      width: auto;
+    }
+    .hero-action-stack > .tc-share-fallback {
+      flex: 1 1 100%;
     }
   }
   @media (max-width: 640px) {

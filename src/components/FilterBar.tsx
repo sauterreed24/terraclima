@@ -10,7 +10,7 @@ import {
 import { createEmptyFilterState, hasActiveExplorerFilters, type FilterState } from "../lib/scoring";
 import { ARCHETYPES } from "../data/archetypes";
 import type { RankingProfile } from "../lib/scoring";
-import { RANKING_OPTIONS } from "../lib/ranking-options";
+import { MOST_COMFORTABLE_LENS_DESCRIPTION, RANKING_OPTIONS } from "../lib/ranking-options";
 import {
   LIVE_FIT_GROWABILITY_FLOORS,
   LIVE_FIT_PRESETS,
@@ -805,7 +805,9 @@ function LensReceipt({
         : `${liveSignalCount} living signal${liveSignalCount === 1 ? "" : "s"} active — switch ranking to Live-fit for aligned sort.`
       : hasAny
         ? "Filtered atlas view with the selected ranking lens."
-        : "Broad atlas scan with ranking only.";
+        : ranking === "most-comfortable"
+          ? MOST_COMFORTABLE_LENS_DESCRIPTION
+          : "Broad atlas scan with ranking only.";
 
   return (
     <section className="lens-receipt" aria-label="Current Explorer lens">

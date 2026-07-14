@@ -168,6 +168,11 @@ describe("mobile touch target CSS", () => {
     expectRule("[data-place-detail] #pd-settlements .panel-thin .chip", /min-width:\s*0;[\s\S]*max-width:\s*100%;/);
     expectRule(".tc-hero-credit a", /display:\s*grid;[\s\S]*min-height:\s*2\.75rem;/);
   });
+
+  it("reflows narrow evidence controls instead of squeezing their label", () => {
+    expect(styles).toMatch(/@media \(max-width:\s*480px\)\s*\{[\s\S]*?\.tc-evidence-summary__toggle\s*\{[\s\S]*?flex-wrap:\s*wrap;[\s\S]*?\.tc-evidence-summary__toggle-lead,\s*\.tc-evidence-summary__toggle-meta\s*\{[\s\S]*?flex:\s*1 1 100%;/);
+    expect(styles).toMatch(/@media \(max-width:\s*480px\)\s*\{[\s\S]*?\.tc-evidence-summary__toggle-meta\s*\{[\s\S]*?justify-content:\s*flex-start;/);
+  });
 });
 
 describe("field note strip theme CSS", () => {

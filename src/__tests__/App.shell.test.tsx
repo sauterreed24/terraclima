@@ -481,6 +481,7 @@ describe("App shell", () => {
     const quickPickButtons = within(quickPicks).getAllByRole("button");
     expect(quickPickButtons.map(button => button.getAttribute("aria-label"))).toEqual([
       "Most unique: Rank places by microclimate uniqueness.",
+      "Most comfortable: Rank by felt temperature, atmosphere, usable months, hazards, and daily friction.",
       "Hidden gems: Surface lesser-known stops with strong atlas signal.",
       "Cool summers: Find places where peak-season afternoons stay restrained.",
       "Fog & marine: Filter to fog belts, cool maritime coasts, and upwelling shores.",
@@ -495,6 +496,34 @@ describe("App shell", () => {
     openHeroMoreMenu();
     expect(screen.getByRole("button", { name: "Show scouting tools" })).toBeInTheDocument();
     expect(screen.queryByText("2050 mid remap")).not.toBeInTheDocument();
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("explains and visibly marks the unfiltered comfort lens from a shared Explorer URL", () => {
+    mockViewport(390);
+    window.history.replaceState(null, "", "/?r=most-comfortable");
+    renderApp();
+
+    const hero = document.querySelector<HTMLElement>(".panel-hero");
+    expect(hero).not.toBeNull();
+    expect(within(hero!).getByText("Comfort lens · full atlas")).toBeInTheDocument();
+    expect(within(hero!).getByText(/day-to-day comfort read balancing felt temperature/i)).toBeInTheDocument();
+    expect(within(hero!).getByText(/Open a leader to see the score and first tradeoff/i)).toBeInTheDocument();
+
+    const quickPicks = screen.getByRole("group", { name: "Discovery quick picks" });
+    expect(within(quickPicks).getByRole("button", { name: /Most comfortable:/ })).toHaveAttribute("aria-pressed", "true");
+    expect(within(quickPicks).getByRole("button", { name: /Most unique:/ })).toHaveAttribute("aria-pressed", "false");
+    expect(document.querySelector(".tc-map-stage__caption strong")).toHaveTextContent("Most comfortable · top 5");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("labels the comfort lens as filtered when a shared URL narrows the atlas", () => {
+    mockViewport(390);
+    window.history.replaceState(null, "", "/?r=most-comfortable&c=Canada");
+    renderApp();
+
+    const hero = document.querySelector<HTMLElement>(".panel-hero");
+    expect(hero).not.toBeNull();
+    expect(within(hero!).getByText("Comfort lens · filtered view")).toBeInTheDocument();
+    expect(within(hero!).queryByText("Comfort lens · full atlas")).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("surfaces the current Scout Brief leader in the Explorer hero", async () => {
@@ -1955,6 +1984,33 @@ describe("App shell", () => {
     expect(unpinSequim).toHaveAttribute("title", "Unpin Sequim from your shortlist");
     const comparePinned = screen.getByRole("button", { name: "Open Compare Workbench for 2 pinned places from your shortlist" });
     expect(comparePinned).toHaveAttribute("title", comparePinned.getAttribute("aria-label"));
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("places returning-user continuity after the map and outside the Explorer hero", () => {
+    window.localStorage.setItem(
+      "terraclima.bookmarks.v1",
+      JSON.stringify(["sequim-wa", "port-townsend-wa"]),
+    );
+    window.localStorage.setItem(
+      "terraclima.recent-places.v1",
+      JSON.stringify(["forks-wa"]),
+    );
+    const { container } = renderApp();
+
+    const explorerMain = container.querySelector(".tc-explorer-main");
+    const hero = container.querySelector(".panel-hero");
+    const map = container.querySelector(".tc-map-stage");
+    const continuity = container.querySelector(".tc-explorer-continuity");
+
+    expect(explorerMain).not.toBeNull();
+    expect(hero).not.toBeNull();
+    expect(map).not.toBeNull();
+    expect(continuity).not.toBeNull();
+    expect(continuity).toHaveClass("panel-thin");
+    expect(continuity?.parentElement).toBe(explorerMain);
+    expect(hero?.contains(continuity)).toBe(false);
+    expect(hero!.compareDocumentPosition(map!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(map!.compareDocumentPosition(continuity!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("compares pinned shortlist finalists in pinned order", async () => {

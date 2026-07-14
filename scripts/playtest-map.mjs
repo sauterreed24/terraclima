@@ -31,6 +31,21 @@ const VIEWPORTS = [
   { name: "360x800", width: 360, height: 800 },
 ];
 
+const SAVED_STATE_VIEWPORTS = [
+  { name: "390x844-saved", width: 390, height: 844 },
+  { name: "1024x768-saved", width: 1024, height: 768 },
+];
+
+const DESKTOP_BOUNDARY_VIEWPORTS = [
+  { name: "1499x900-stacked", width: 1499, height: 900, layout: "stacked" },
+  { name: "1500x900-split", width: 1500, height: 900, layout: "split" },
+];
+
+const SAVED_EXPLORER_STATE = {
+  bookmarks: ["sequim-wa", "port-townsend-wa", "portal-az"],
+  recents: ["real-catorce-mx", "valle-de-bravo-mx"],
+};
+
 function assertLocalBase(url) {
   const u = new URL(url);
   if (u.hostname !== "localhost" && u.hostname !== "127.0.0.1") {
@@ -109,6 +124,161 @@ async function collectMapIssues(page) {
     }
     return out;
   });
+}
+
+async function collectSavedStateResponsiveIssues(page) {
+  return page.evaluate(() => {
+    const out = [];
+    const stage = document.querySelector(".tc-map-stage");
+    const continuity = document.querySelector(".tc-explorer-continuity");
+
+    if (!stage) {
+      out.push({ kind: "missing-map-stage" });
+      return out;
+    }
+
+    const stageRect = stage.getBoundingClientRect();
+    if (stageRect.top >= window.innerHeight || stageRect.bottom <= 0) {
+      out.push({
+        kind: "saved-map-outside-first-viewport",
+        mapTop: Math.round(stageRect.top),
+        viewportHeight: window.innerHeight,
+      });
+    }
+
+    if (!continuity) {
+      out.push({ kind: "missing-explorer-continuity" });
+    } else {
+      const continuityRect = continuity.getBoundingClientRect();
+      const followsMap = Boolean(
+        stage.compareDocumentPosition(continuity) & Node.DOCUMENT_POSITION_FOLLOWING,
+      );
+      if (!followsMap || continuityRect.top < stageRect.bottom - 1) {
+        out.push({
+          kind: "continuity-does-not-follow-map",
+          followsMap,
+          mapBottom: Math.round(stageRect.bottom),
+          continuityTop: Math.round(continuityRect.top),
+        });
+      }
+    }
+
+    return out;
+  });
+}
+
+async function collectFilterControlOverlapIssues(page) {
+  return page.evaluate(() => {
+    const out = [];
+    const filterTrigger = document.querySelector(".tc-filter-sheet-trigger");
+    if (!filterTrigger) return out;
+
+    const filterRect = filterTrigger.getBoundingClientRect();
+    const controls = document.querySelectorAll("[data-map-control]");
+    for (const control of controls) {
+      const controlRect = control.getBoundingClientRect();
+      const visible = controlRect.width > 0 && controlRect.height > 0;
+      const intersects = visible
+        && filterRect.left < controlRect.right
+        && filterRect.right > controlRect.left
+        && filterRect.top < controlRect.bottom
+        && filterRect.bottom > controlRect.top;
+      if (intersects) {
+        out.push({
+          kind: "filters-overlap-map-control",
+          control: control.getAttribute("data-map-control"),
+        });
+      }
+    }
+
+    return out;
+  });
+}
+
+async function collectDesktopBoundaryIssues(page, expectedLayout) {
+  return page.evaluate((layout) => {
+    const out = [];
+    const main = document.querySelector(".tc-explorer-main");
+    const hero = main?.querySelector(":scope > .panel-hero");
+    const stage = main?.querySelector(":scope > .tc-map-stage");
+    const continuity = main?.querySelector(":scope > .tc-explorer-continuity");
+
+    if (!main || !hero || !stage || !continuity) {
+      out.push({
+        kind: "missing-desktop-layout-region",
+        main: Boolean(main),
+        hero: Boolean(hero),
+        map: Boolean(stage),
+        continuity: Boolean(continuity),
+      });
+      return out;
+    }
+
+    const mainStyle = getComputedStyle(main);
+    const heroRect = hero.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
+    const continuityRect = continuity.getBoundingClientRect();
+    const followsMap = Boolean(
+      stage.compareDocumentPosition(continuity) & Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+
+    if (layout === "stacked") {
+      if (mainStyle.display !== "flex" || mainStyle.flexDirection !== "column") {
+        out.push({
+          kind: "desktop-boundary-should-stack",
+          display: mainStyle.display,
+          flexDirection: mainStyle.flexDirection,
+        });
+      }
+      if (stageRect.top < heroRect.bottom - 1) {
+        out.push({
+          kind: "stacked-map-overlaps-hero",
+          heroBottom: Math.round(heroRect.bottom),
+          mapTop: Math.round(stageRect.top),
+        });
+      }
+      if (Math.abs(heroRect.width - stageRect.width) > 2) {
+        out.push({
+          kind: "stacked-map-not-full-width",
+          heroWidth: Math.round(heroRect.width),
+          mapWidth: Math.round(stageRect.width),
+        });
+      }
+    } else {
+      if (mainStyle.display !== "grid") {
+        out.push({ kind: "desktop-boundary-should-split", display: mainStyle.display });
+      }
+      if (Math.abs(heroRect.top - stageRect.top) > 2 || stageRect.left < heroRect.right - 1) {
+        out.push({
+          kind: "split-columns-misaligned",
+          heroTop: Math.round(heroRect.top),
+          mapTop: Math.round(stageRect.top),
+          heroRight: Math.round(heroRect.right),
+          mapLeft: Math.round(stageRect.left),
+        });
+      }
+      const occupiedWidth = heroRect.width + stageRect.width;
+      const mapShare = occupiedWidth > 0 ? stageRect.width / occupiedWidth : 0;
+      if (mapShare < 0.56 || mapShare > 0.64) {
+        out.push({
+          kind: "split-map-share-out-of-range",
+          mapShare: Number(mapShare.toFixed(3)),
+        });
+      }
+    }
+
+    if (!followsMap || continuityRect.top < Math.max(heroRect.bottom, stageRect.bottom) - 1) {
+      out.push({
+        kind: "desktop-continuity-placement",
+        followsMap,
+        heroBottom: Math.round(heroRect.bottom),
+        mapBottom: Math.round(stageRect.bottom),
+        continuityTop: Math.round(continuityRect.top),
+      });
+    }
+
+    return out;
+  }, expectedLayout);
 }
 
 async function main() {
@@ -236,6 +406,110 @@ async function main() {
     await context.close();
   }
 
+  // Returning-user layout: saved rails must follow a map that enters the first viewport.
+  for (const vp of SAVED_STATE_VIEWPORTS) {
+    const isNarrow = vp.width <= 430;
+    const context = await browser.newContext({
+      viewport: { width: vp.width, height: vp.height },
+      hasTouch: isNarrow,
+      isMobile: isNarrow,
+      reducedMotion: "reduce",
+    });
+    await attachOfflineRouting(context, BASE);
+    await context.addInitScript((savedState) => {
+      window.localStorage.setItem(
+        "terraclima.bookmarks.v1",
+        JSON.stringify(savedState.bookmarks),
+      );
+      window.localStorage.setItem(
+        "terraclima.recent-places.v1",
+        JSON.stringify(savedState.recents),
+      );
+    }, SAVED_EXPLORER_STATE);
+
+    const page = await context.newPage();
+    attachConsoleGuards(page, vp.name, consoleErrors);
+    try {
+      await page.goto(`${BASE}/?r=most-comfortable`, {
+        waitUntil: "domcontentloaded",
+        timeout: 30000,
+      });
+      await page.waitForSelector(".map-shell", { timeout: 20000 });
+      await page.waitForSelector(".tc-explorer-continuity", { timeout: 20000 });
+      await page.waitForTimeout(500);
+
+      for (const issue of await collectSavedStateResponsiveIssues(page)) {
+        findings.push({ viewport: vp.name, ...issue });
+      }
+      await page.screenshot({
+        path: join(ARTIFACT_DIR, `most-comfortable-${vp.name}-first-viewport.png`),
+        fullPage: false,
+      });
+
+      // Center the map before checking the fixed trigger against every map control.
+      await page.locator(".tc-map-stage").scrollIntoViewIfNeeded();
+      await page.waitForTimeout(120);
+      for (const issue of await collectFilterControlOverlapIssues(page)) {
+        findings.push({ viewport: vp.name, ...issue });
+      }
+      await page.screenshot({
+        path: join(ARTIFACT_DIR, `most-comfortable-${vp.name}-map-controls.png`),
+        fullPage: false,
+      });
+    } catch (err) {
+      findings.push({ viewport: vp.name, kind: "navigation-error", message: String(err) });
+    }
+
+    await context.close();
+  }
+
+  // Exact atlas-first breakpoint contract: full-width stack below 1500px,
+  // approximately 40/60 hero-map split from 1500px upward.
+  for (const vp of DESKTOP_BOUNDARY_VIEWPORTS) {
+    const context = await browser.newContext({
+      viewport: { width: vp.width, height: vp.height },
+      reducedMotion: "reduce",
+    });
+    await attachOfflineRouting(context, BASE);
+    await context.addInitScript((savedState) => {
+      window.localStorage.setItem(
+        "terraclima.bookmarks.v1",
+        JSON.stringify(savedState.bookmarks),
+      );
+      window.localStorage.setItem(
+        "terraclima.recent-places.v1",
+        JSON.stringify(savedState.recents),
+      );
+    }, SAVED_EXPLORER_STATE);
+
+    const page = await context.newPage();
+    attachConsoleGuards(page, vp.name, consoleErrors);
+    try {
+      await page.goto(`${BASE}/?r=most-comfortable`, {
+        waitUntil: "domcontentloaded",
+        timeout: 30000,
+      });
+      await page.waitForSelector(".map-shell", { timeout: 20000 });
+      await page.waitForSelector(".tc-explorer-continuity", { timeout: 20000 });
+      await page.waitForTimeout(500);
+
+      for (const issue of await collectDesktopBoundaryIssues(page, vp.layout)) {
+        findings.push({ viewport: vp.name, ...issue });
+      }
+      for (const issue of await collectMapIssues(page)) {
+        findings.push({ viewport: vp.name, ...issue });
+      }
+      await page.screenshot({
+        path: join(ARTIFACT_DIR, `most-comfortable-${vp.name}.png`),
+        fullPage: false,
+      });
+    } catch (err) {
+      findings.push({ viewport: vp.name, kind: "navigation-error", message: String(err) });
+    }
+
+    await context.close();
+  }
+
   // Light/dark + low-power + reduced motion matrix on desktop.
   for (const theme of ["light", "dark"]) {
     const context = await browser.newContext({ viewport: { width: 1280, height: 720 } });
@@ -324,7 +598,7 @@ async function main() {
   }
   if (consoleErrors.length > 0) process.exit(1);
 
-  console.log(`playtest:map ok — ${VIEWPORTS.length} viewports + theme/hybrid matrix; artifacts in ${ARTIFACT_DIR}`);
+  console.log(`playtest:map ok — ${VIEWPORTS.length} viewports + ${SAVED_STATE_VIEWPORTS.length} saved-state viewports + ${DESKTOP_BOUNDARY_VIEWPORTS.length} breakpoint viewports + theme/hybrid matrix; artifacts in ${ARTIFACT_DIR}`);
 }
 
 main().catch((err) => {
