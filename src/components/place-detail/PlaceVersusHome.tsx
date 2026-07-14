@@ -56,7 +56,7 @@ export function PlaceVersusHome({
           {onHomeBaseToggle ? (
             <button
               type="button"
-              className="btn-primary !text-xs shrink-0"
+              className="btn-primary !text-xs min-w-0 max-w-full whitespace-normal"
               onClick={() => onHomeBaseToggle(place.id)}
               aria-label={setHomeLabel}
               title={setHomeLabel}

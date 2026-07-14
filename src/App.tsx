@@ -25,7 +25,7 @@ import {
 import { explorerResultsPending } from "./lib/explorer-pending";
 import { buildCompareCandidates } from "./lib/compare-workbench";
 import { buildExplorerRecoveryActions } from "./lib/explorer-recovery";
-import { applyFilters, createEmptyFilterState, filterStateFromValidated, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
+import { applyFilters, createEmptyFilterState, filterStateFromValidated, hasActiveExplorerFilters, rankLivabilityPreview, scoreLivability, toValidatedFilterInput, LIVABILITY_WEIGHTS, type FilterState, type LivabilityResult, type RankingProfile, type RankingResult } from "./lib/scoring";
 import { pickSurprisePlaceId } from "./lib/surprise-pick";
 import { assessLiveFit, LIVE_FIT_PRESET_BY_ID, pickLiveFitFilters, type LiveFitFilters } from "./lib/live-fit";
 import { loadHomeBaseId, persistHomeBaseId } from "./lib/home-base";
@@ -108,10 +108,12 @@ import {
   type ThemePreference,
 } from "./lib/theme";
 import { ThemeToggle } from "./components/chrome/ThemeToggle";
+import { MOST_COMFORTABLE_LENS_SUMMARY } from "./lib/ranking-options";
 
 /** Hero discovery paths — ranking lenses, archetype screens, or a pinned trip. */
 type DiscoveryQuickPickId =
   | "most-unique"
+  | "most-comfortable"
   | "hidden-gems"
   | "best-this-month"
   | "coolest-summers"
@@ -1548,10 +1550,7 @@ export default function App() {
                   onSaveScoutFinalists={saveScoutFinalists}
                   onApplyContextScenario={applyContextScenario}
                   bookmarkIds={bookmarkIds}
-                  recentIds={recentIds}
                   onToggleBookmark={toggleBookmark}
-                  onRemovePinnedPlace={removePinnedRailPlace}
-                  onClearRecents={clearRecents}
                   onApplyQuickPick={applyHeroQuickPick}
                   isQuickPickActive={isHeroQuickPickActive}
                   scoutToolsOpen={scoutToolsOpen}
@@ -1588,6 +1587,16 @@ export default function App() {
                     emptyRecoveryLabel={mapEmptyRecovery.emptyRecoveryLabel}
                   />
                 </div>
+
+                <PinnedAndRecentRails
+                  bookmarkIds={bookmarkIds}
+                  recentIds={recentIds}
+                  onOpenPlace={openPlace}
+                  onRemovePinnedPlace={removePinnedRailPlace}
+                  onClearRecents={clearRecents}
+                  onComparePinned={comparePlaces}
+                  onPreloadCompare={preloadCompareView}
+                />
 
                 {explorerPendingMessage ? (
                   <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
@@ -2481,7 +2490,7 @@ const FieldNoteStrip = memo(function FieldNoteStrip() {
   const note = FIELD_NOTES[idx];
 
   return (
-    <div className="tc-field-note-strip rounded-xl px-4 py-3 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+    <div className="tc-field-note-strip rounded-xl px-4 py-3 flex flex-col gap-3">
       <div className="flex items-center gap-2 shrink-0">
         <BookOpen className="w-3.5 h-3.5 shrink-0 text-sage-700" aria-hidden />
         <div className="flex flex-col gap-0.5">
@@ -2497,7 +2506,7 @@ const FieldNoteStrip = memo(function FieldNoteStrip() {
       <button
         type="button"
         onClick={() => setPick(Math.floor(Math.random() * FIELD_NOTES.length))}
-        className="btn-ghost !text-xs !py-1.5 shrink-0 self-start sm:self-center border-[rgba(61,143,85,0.28)]"
+        className="btn-ghost !text-xs !py-1.5 shrink-0 self-start border-[rgba(61,143,85,0.28)]"
         aria-label="Show another field note"
       >
         <Shuffle className="w-3.5 h-3.5 text-sage-700" aria-hidden />
@@ -2611,10 +2620,7 @@ const HeroCard = memo(function HeroCard({
   onSaveScoutFinalists,
   onApplyContextScenario,
   bookmarkIds,
-  recentIds,
   onToggleBookmark,
-  onRemovePinnedPlace,
-  onClearRecents,
   onApplyQuickPick,
   isQuickPickActive,
   scoutToolsOpen,
@@ -2659,10 +2665,7 @@ const HeroCard = memo(function HeroCard({
   onSaveScoutFinalists: (ids: readonly string[]) => void;
   onApplyContextScenario: (id: ContextScenarioId) => void;
   bookmarkIds: Set<string>;
-  recentIds: readonly string[];
   onToggleBookmark: (id: string) => void;
-  onRemovePinnedPlace: (id: string, nextFocusId?: string | null) => void;
-  onClearRecents: () => void;
   onApplyQuickPick: (pick: DiscoveryQuickPickId) => void;
   isQuickPickActive: (pick: DiscoveryQuickPickId) => boolean;
   scoutToolsOpen: boolean;
@@ -2696,6 +2699,8 @@ const HeroCard = memo(function HeroCard({
     filters.maxOverallRisk,
   ].filter(v => v != null).length;
   const activeFitBundle = active ? null : LIFESTYLE_BUNDLES.find(bundle => isBundleActive(bundle, ranking, filters)) ?? null;
+  const comfortLensActive = !active && ranking === "most-comfortable";
+  const comfortLensFullAtlas = comfortLensActive && !hasActiveExplorerFilters(filters);
   const heroAccentRgb = signatureLeaders[0]?.signature.mapAccentRgb ?? "94, 196, 220";
   const activeScopeClearLabel = active ? `Clear ${active.title} ${active.kind === "trip" ? "trip" : "collection"} filter` : "";
   const searchTerm = (filters.search ?? "").trim();
@@ -2737,7 +2742,11 @@ const HeroCard = memo(function HeroCard({
                   ? `Live Finder · ${liveSignalCount} signal${liveSignalCount > 1 ? "s" : ""}`
                     : activeArchetypes.size > 0
                     ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}`
-                    : "Microclimate atlas"}
+                    : comfortLensActive
+                      ? comfortLensFullAtlas
+                        ? "Comfort lens · full atlas"
+                        : "Comfort lens · filtered view"
+                      : "Microclimate atlas"}
             </span>
             {active && (
               <button
@@ -2770,11 +2779,15 @@ const HeroCard = memo(function HeroCard({
           <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
             {active
               ? active.description
-              : "Rain shadows, sky islands, fog belts, thermal belts, and other terrain climates most people never hear of. Open a pin, try Surprise me, or start from Most unique."}
+              : comfortLensActive
+                ? MOST_COMFORTABLE_LENS_SUMMARY
+                : "Rain shadows, sky islands, fog belts, thermal belts, and other terrain climates most people never hear of. Open a pin, try Surprise me, or start from Most unique."}
           </p>
           {!homeBasePlace && !active ? (
             <p className="text-xs text-stone-readable mt-1.5 max-w-2xl leading-snug">
-              Surprise opens a profile — set your home city there to unlock climate deltas and twins with clearer tradeoffs.
+              {comfortLensActive
+                ? "Open a leader to see the score and first tradeoff behind its position."
+                : "Surprise opens a profile — set your home city there to unlock climate deltas and twins with clearer tradeoffs."}
             </p>
           ) : null}
 
@@ -2950,6 +2963,7 @@ const HeroCard = memo(function HeroCard({
             Swipe or scroll horizontally to browse more discovery paths.
           </span>
           <QuickPick icon={Sparkles} label="Most unique" description="Rank places by microclimate uniqueness." onClick={() => onApplyQuickPick("most-unique")} active={isQuickPickActive("most-unique")} />
+          <QuickPick icon={Compass} label="Most comfortable" description="Rank by felt temperature, atmosphere, usable months, hazards, and daily friction." onClick={() => onApplyQuickPick("most-comfortable")} active={isQuickPickActive("most-comfortable")} />
           <QuickPick icon={Eye} label="Hidden gems" description="Surface lesser-known stops with strong atlas signal." onClick={() => onApplyQuickPick("hidden-gems")} active={isQuickPickActive("hidden-gems")} />
           <QuickPick icon={Snowflake} label="Cool summers" description="Find places where peak-season afternoons stay restrained." onClick={() => onApplyQuickPick("coolest-summers")} active={isQuickPickActive("coolest-summers")} />
           <QuickPick icon={Cloud} label="Fog & marine" description="Filter to fog belts, cool maritime coasts, and upwelling shores." onClick={() => onApplyQuickPick("fog-marine")} active={isQuickPickActive("fog-marine")} />
@@ -3037,17 +3051,7 @@ const HeroCard = memo(function HeroCard({
         />
       ) : null}
 
-      <PinnedAndRecentRails
-        bookmarkIds={bookmarkIds}
-        recentIds={recentIds}
-        onOpenPlace={onOpenPlace}
-        onRemovePinnedPlace={onRemovePinnedPlace}
-        onClearRecents={onClearRecents}
-        onComparePinned={onCompareLeaders}
-        onPreloadCompare={onPreloadCompare}
-      />
-
-      <div className="hidden min-[1400px]:block">
+      <div className="hidden min-[1500px]:block">
         <FieldNoteStrip />
       </div>
     </div>
@@ -3581,7 +3585,7 @@ const PinnedAndRecentRails = memo(function PinnedAndRecentRails({
   if (pinnedPlaces.length === 0 && recentPlaces.length === 0) return null;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+    <div className="tc-explorer-continuity panel-thin p-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
       {pinnedPlaces.length > 0 ? (
         <section aria-labelledby="hero-pinned-title">
           <div className="hero-mini-rail__header flex items-center justify-between gap-2">

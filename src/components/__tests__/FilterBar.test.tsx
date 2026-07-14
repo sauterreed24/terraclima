@@ -268,6 +268,15 @@ describe("FilterBar lifestyle bundles", () => {
     expect(lens).toHaveTextContent("Long growing season");
   });
 
+  it("explains the unfiltered Most comfortable ranking instead of calling it ranking only", () => {
+    renderFilterBar("F", { ranking: "most-comfortable" });
+
+    const lens = screen.getByRole("region", { name: "Current Explorer lens" });
+    expect(lens).toHaveTextContent("Most comfortable");
+    expect(lens).toHaveTextContent("felt temperature, atmospheric ease, usable months, hazard cushion, and lived friction");
+    expect(lens).not.toHaveTextContent("Broad atlas scan with ranking only");
+  });
+
   it("only marks a lifestyle bundle active when all bundle-owned live filters match", () => {
     const exactRemote = createEmptyFilterState();
     exactRemote.fitPresets = new Set(["cool-summers", "low-fire-smoke"]);

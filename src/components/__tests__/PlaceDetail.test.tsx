@@ -656,7 +656,7 @@ describe("PlaceDetail home-base anchor", () => {
   });
 
   it("renders a vs-home placeholder when no home base is set", () => {
-    const place = PLACES_BY_ID["boulder-co"];
+    const place = PLACES_BY_ID["black-mountain-nc"];
 
     render(
       <UnitProvider>
@@ -670,6 +670,11 @@ describe("PlaceDetail home-base anchor", () => {
     expect(
       screen.getAllByRole("button", { name: `Set ${place.name} as your home base for climate deltas` }).length,
     ).toBeGreaterThanOrEqual(2);
+    const sectionAction = screen
+      .getAllByRole("button", { name: `Set ${place.name} as your home base for climate deltas` })
+      .find(button => button.closest("#pd-vs-home"));
+    expect(sectionAction).toHaveClass("min-w-0", "max-w-full", "whitespace-normal");
+    expect(sectionAction).not.toHaveClass("shrink-0");
   });
 
   it("orders mechanism, versus home, and twins before the residency brief", () => {
