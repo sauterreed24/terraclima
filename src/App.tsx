@@ -553,6 +553,9 @@ export default function App() {
       setComparisonLens(v.comparisonLens);
       setRankingExplicitInUrl(v.ranking != null);
       setSuppressPersistedRankingInUrl(v.placeId != null && v.ranking == null);
+      // Navigation owns URL state — drop any transient auto live-fit snapshot so
+      // Back/Forward to an explicit ?r=live-fit entry is not clobbered.
+      liveFitAutoAppliedRef.current = null;
       setRankingRaw(v.ranking ?? loadPersistedRanking());
       setClimateScenario(v.scenario ?? "now");
       // Home base is a sticky preference like theme: an explicit ?hb= on the

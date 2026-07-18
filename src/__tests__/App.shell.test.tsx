@@ -1530,6 +1530,27 @@ describe("App shell", () => {
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("preserves explicit live-fit ranking on popstate after auto live-fit snapshot", async () => {
+    mockViewport(1280);
+    window.history.replaceState(null, "", "/?r=most-comfortable&fit=cool-summers");
+
+    renderApp();
+
+    await waitFor(() => {
+      expect(new URLSearchParams(window.location.search).get("r")).toBe("live-fit");
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+
+    // Back/Forward to a history entry with explicit live-fit (no constraints).
+    window.history.replaceState(null, "", "/?r=live-fit");
+    act(() => {
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    });
+
+    await waitFor(() => {
+      expect(new URLSearchParams(window.location.search).get("r")).toBe("live-fit");
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("relaxes Live Finder constraints from the empty state without losing the search", async () => {
     window.history.replaceState(
       null,
