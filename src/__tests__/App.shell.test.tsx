@@ -1505,6 +1505,33 @@ describe("App shell", () => {
     }, { timeout: APP_SHELL_TIMEOUT_MS });
   }, APP_SHELL_TIMEOUT_MS);
 
+  it("preserves explicit live-fit ranking on popstate after auto live-fit snapshot", async () => {
+    mockViewport(1280);
+    window.history.replaceState(null, "", "/?r=most-comfortable&fit=cool-summers");
+
+    renderApp();
+
+    const lens = await screen.findByRole("region", { name: "Current Explorer lens" }, { timeout: APP_SHELL_TIMEOUT_MS });
+    await waitFor(() => {
+      expect(new URLSearchParams(window.location.search).get("r")).toBe("live-fit");
+      expect(within(lens).getByText("Live-here fit")).toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+
+    // Back/Forward to an explicit ?r=live-fit entry (no constraints) must not
+    // restore a stale auto-live-fit snapshot over the URL.
+    window.history.replaceState(null, "", "/?r=live-fit");
+    act(() => {
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    });
+
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get("r")).toBe("live-fit");
+      expect(params.get("fit")).toBeNull();
+      expect(within(lens).getByText("Live-here fit")).toBeInTheDocument();
+    }, { timeout: APP_SHELL_TIMEOUT_MS });
+  }, APP_SHELL_TIMEOUT_MS);
+
   it("restores the pre-constraint URL ranking after auto live-fit chip dismiss", async () => {
     mockViewport(1280);
     // Persisted preference differs from the shared URL ranking so a naive

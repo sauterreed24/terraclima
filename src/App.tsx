@@ -537,6 +537,9 @@ export default function App() {
 
   useEffect(() => {
     const onPop = () => {
+      // URL navigation owns ranking; drop any stale auto-live-fit snapshot so
+      // Back/Forward to explicit ?r=live-fit is not clobbered.
+      liveFitAutoAppliedRef.current = null;
       const v = validatedStateFromSearch(
         window.location.search,
         PLACES_BY_ID as Record<string, unknown>,
