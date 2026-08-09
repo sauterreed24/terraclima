@@ -509,6 +509,12 @@ describe("AtlasMap DOM controls", () => {
       expect(preview).toHaveTextContent("Alpha Valley");
       expect(preview).toHaveTextContent("JJA high");
       expect(preview).not.toHaveTextContent("Climate snapshot");
+      expect(preview).toHaveClass("tc-map-hover-card-enter");
+      expect(preview).not.toHaveClass("anim-fade-in");
+      expect(preview).toHaveAttribute("data-horizontal");
+      expect(preview).toHaveAttribute("data-vertical");
+      expect(["left", "right"]).toContain(preview.getAttribute("data-horizontal"));
+      expect(["above", "below"]).toContain(preview.getAttribute("data-vertical"));
 
       await act(async () => {
         vi.advanceTimersByTime(460);
@@ -521,10 +527,82 @@ describe("AtlasMap DOM controls", () => {
       expect(richPreview).toHaveTextContent("Open pin for full profile");
       expect(richPreview).not.toHaveTextContent("Scout cues");
       expect(richPreview).not.toHaveTextContent("Comfort read");
+      expect(richPreview).toHaveClass("tc-map-hover-card-enter");
+      expect(richPreview).not.toHaveClass("anim-fade-in");
+      expect(richPreview).toHaveAttribute("data-horizontal", preview.getAttribute("data-horizontal")!);
+      expect(richPreview).toHaveAttribute("data-vertical", preview.getAttribute("data-vertical")!);
 
       fireEvent.click(marker);
       expect(onSelect).toHaveBeenCalledWith("a");
     } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("exposes quadrant placement attrs and keeps the entrance class motion-safe", async () => {
+    vi.useFakeTimers();
+    const root = document.documentElement;
+    const prevMotion = root.getAttribute("data-motion");
+    try {
+      setCoarsePointer(false);
+      // Southern pin → prefers card above; western pin → prefers card to the right.
+      const places = [
+        makePlace({
+          id: "south",
+          name: "South Mesa",
+          lat: 20,
+          lon: -105,
+          tier: "A",
+          whyDistinct: "A southern highland bench for quadrant placement coverage.",
+        }),
+        makePlace({
+          id: "north-east",
+          name: "North East Ridge",
+          lat: 48,
+          lon: -70,
+          tier: "B",
+        }),
+      ];
+      renderMap(vi.fn(), [], places);
+
+      const south = screen.getByRole("button", { name: /South Mesa/ });
+      fireEvent.pointerEnter(south, { pointerType: "mouse" });
+      let card = screen.getByRole("tooltip");
+      expect(card).toHaveAttribute("data-horizontal", "right");
+      expect(card).toHaveAttribute("data-vertical", "above");
+      expect(card.style.transform).toMatch(/translate\(/);
+      expect(card.style.transform).not.toBe("none");
+      expect(card.style.transform).not.toMatch(/translateY\(0\)/);
+      expect(card).toHaveClass("tc-map-hover-card-enter");
+      expect(card).not.toHaveClass("anim-fade-in");
+
+      await act(async () => {
+        vi.advanceTimersByTime(460);
+      });
+      card = screen.getByRole("tooltip");
+      expect(card).toHaveAttribute("data-variant", "full");
+      expect(card).toHaveAttribute("data-horizontal", "right");
+      expect(card).toHaveAttribute("data-vertical", "above");
+      expect(card).toHaveClass("tc-map-hover-card-enter");
+
+      fireEvent.pointerLeave(south, { pointerType: "mouse" });
+      await act(async () => {
+        vi.advanceTimersByTime(200);
+      });
+
+      root.setAttribute("data-motion", "reduced");
+      const northEast = screen.getByRole("button", { name: /North East Ridge/ });
+      fireEvent.pointerEnter(northEast, { pointerType: "mouse" });
+      card = screen.getByRole("tooltip");
+      expect(card).toHaveAttribute("data-horizontal", "left");
+      expect(card).toHaveAttribute("data-vertical", "below");
+      expect(card).toHaveClass("tc-map-hover-card-enter");
+      expect(card).not.toHaveClass("anim-fade-in");
+      // Reduced-motion styling disables the entrance; the placement class stays for parity.
+      expect(root.getAttribute("data-motion")).toBe("reduced");
+    } finally {
+      if (prevMotion == null) root.removeAttribute("data-motion");
+      else root.setAttribute("data-motion", prevMotion);
       vi.useRealTimers();
     }
   });

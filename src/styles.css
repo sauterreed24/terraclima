@@ -6467,6 +6467,10 @@
     contain: layout style paint;
     backdrop-filter: blur(10px);
   }
+  /* Opacity-only entrance — never animate transform; inline translate owns placement. */
+  .tc-map-hover-card-enter {
+    animation: mapHoverCardEnter 160ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
   /* Pan/pinch paint the SVG transform imperatively without React view updates;
      hide the hover card while gesturing so it cannot float off its pin. */
   .map-shell[data-gesturing="true"] .tc-map-hover-card {
@@ -10535,7 +10539,8 @@
   }
 
   html.tc-low-power .anim-fade-in,
-  html.tc-low-power .view-enter {
+  html.tc-low-power .view-enter,
+  html.tc-low-power .tc-map-hover-card-enter {
     animation-duration: 120ms;
   }
 }
@@ -10819,6 +10824,12 @@
 }
 .anim-fade-in { animation: fadeInUp 400ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
 
+/* Map hover card: opacity only so quadrant translate() placement stays intact. */
+@keyframes mapHoverCardEnter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* View transition — used to swap Explorer/Collections/Learn without any
    runtime animation library. Re-keyed on view change; the browser does the
    cross-fade entirely on the compositor. */
@@ -10835,7 +10846,9 @@
 html[data-motion="reduced"] .view-enter,
 html[data-motion="minimal"] .view-enter,
 html[data-motion="reduced"] .anim-fade-in,
-html[data-motion="minimal"] .anim-fade-in {
+html[data-motion="minimal"] .anim-fade-in,
+html[data-motion="reduced"] .tc-map-hover-card-enter,
+html[data-motion="minimal"] .tc-map-hover-card-enter {
   animation: none !important;
 }
 
@@ -13158,6 +13171,7 @@ html[data-theme="dark"] .tc-hero-credit {
 @media (prefers-reduced-motion: reduce) {
   .anim-fade-in,
   .view-enter,
+  .tc-map-hover-card-enter,
     .pulse-dot,
     .panel-hero::before,
     .map-signal-ribbons path,
