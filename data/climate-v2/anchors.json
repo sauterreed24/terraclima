@@ -1,0 +1,3624 @@
+{
+  "version": 1,
+  "count": 226,
+  "anchors": [
+    {
+      "id": "sequim-wa",
+      "name": "Sequim",
+      "country": "USA",
+      "tier": "A",
+      "lat": 48.0793,
+      "lon": -123.1081,
+      "elevationM": 55,
+      "region": "Washington",
+      "climateAnchor": {
+        "lat": 48.0793,
+        "lon": -123.1081,
+        "elevationM": 55,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "portal-az",
+      "name": "Portal & the Chiricahua Sky Island",
+      "country": "USA",
+      "tier": "A",
+      "lat": 31.9133,
+      "lon": -109.1414,
+      "elevationM": 1460,
+      "region": "Arizona",
+      "climateAnchor": {
+        "lat": 31.9133,
+        "lon": -109.1414,
+        "elevationM": 1460,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "huachuca-az",
+      "name": "Huachuca Sky Island",
+      "country": "USA",
+      "tier": "B",
+      "lat": 31.5455,
+      "lon": -110.3069,
+      "elevationM": 1400,
+      "region": "Arizona",
+      "climateAnchor": {
+        "lat": 31.5455,
+        "lon": -110.3069,
+        "elevationM": 1400,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "monterey-ca",
+      "name": "Monterey & the Fog Coast",
+      "country": "USA",
+      "tier": "A",
+      "lat": 36.6002,
+      "lon": -121.8947,
+      "elevationM": 23,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 36.6002,
+        "lon": -121.8947,
+        "elevationM": 23,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "black-mountain-nc",
+      "name": "Black Mountain & the Swannanoa Thermal Belt",
+      "country": "USA",
+      "tier": "A",
+      "lat": 35.6176,
+      "lon": -82.3217,
+      "elevationM": 700,
+      "region": "North Carolina",
+      "climateAnchor": {
+        "lat": 35.6176,
+        "lon": -82.3217,
+        "elevationM": 700,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "bishop-ca",
+      "name": "Bishop & the Owens Valley",
+      "country": "USA",
+      "tier": "B",
+      "lat": 37.3614,
+      "lon": -118.395,
+      "elevationM": 1253,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 37.3614,
+        "lon": -118.395,
+        "elevationM": 1253,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "flagstaff-az",
+      "name": "Flagstaff",
+      "country": "USA",
+      "tier": "B",
+      "lat": 35.1983,
+      "lon": -111.6513,
+      "elevationM": 2106,
+      "region": "Arizona",
+      "climateAnchor": {
+        "lat": 35.1983,
+        "lon": -111.6513,
+        "elevationM": 2106,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "silver-city-nm",
+      "name": "Silver City",
+      "country": "USA",
+      "tier": "B",
+      "lat": 32.7701,
+      "lon": -108.2803,
+      "elevationM": 1813,
+      "region": "New Mexico",
+      "climateAnchor": {
+        "lat": 32.7701,
+        "lon": -108.2803,
+        "elevationM": 1813,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "hood-river-or",
+      "name": "Hood River & the Columbia Gorge Orchard Belt",
+      "country": "USA",
+      "tier": "B",
+      "lat": 45.7054,
+      "lon": -121.5215,
+      "elevationM": 49,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 45.7054,
+        "lon": -121.5215,
+        "elevationM": 49,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "ashland-or",
+      "name": "Ashland & the Rogue Valley",
+      "country": "USA",
+      "tier": "B",
+      "lat": 42.1946,
+      "lon": -122.7095,
+      "elevationM": 595,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 42.1946,
+        "lon": -122.7095,
+        "elevationM": 595,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "santa-fe-nm",
+      "name": "Santa Fe",
+      "country": "USA",
+      "tier": "B",
+      "lat": 35.687,
+      "lon": -105.9378,
+      "elevationM": 2194,
+      "region": "New Mexico",
+      "climateAnchor": {
+        "lat": 35.687,
+        "lon": -105.9378,
+        "elevationM": 2194,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "santa-barbara-ca",
+      "name": "Santa Barbara",
+      "country": "USA",
+      "tier": "B",
+      "lat": 34.4208,
+      "lon": -119.6982,
+      "elevationM": 15,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 34.4208,
+        "lon": -119.6982,
+        "elevationM": 15,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "driggs-id",
+      "name": "Teton Valley (Driggs)",
+      "country": "USA",
+      "tier": "B",
+      "lat": 43.7232,
+      "lon": -111.1111,
+      "elevationM": 1866,
+      "region": "Idaho",
+      "climateAnchor": {
+        "lat": 43.7232,
+        "lon": -111.1111,
+        "elevationM": 1866,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "traverse-city-mi",
+      "name": "Traverse City & the Leelanau Fruit Belt",
+      "country": "USA",
+      "tier": "B",
+      "lat": 44.7631,
+      "lon": -85.6206,
+      "elevationM": 190,
+      "region": "Michigan",
+      "climateAnchor": {
+        "lat": 44.7631,
+        "lon": -85.6206,
+        "elevationM": 190,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "ithaca-ny",
+      "name": "Ithaca & the Finger Lakes",
+      "country": "USA",
+      "tier": "B",
+      "lat": 42.444,
+      "lon": -76.5019,
+      "elevationM": 125,
+      "region": "New York",
+      "climateAnchor": {
+        "lat": 42.444,
+        "lon": -76.5019,
+        "elevationM": 125,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "grand-marais-mn",
+      "name": "Grand Marais & the Lake Superior North Shore",
+      "country": "USA",
+      "tier": "B",
+      "lat": 47.7506,
+      "lon": -90.3343,
+      "elevationM": 185,
+      "region": "Minnesota",
+      "climateAnchor": {
+        "lat": 47.7506,
+        "lon": -90.3343,
+        "elevationM": 185,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "highlands-nc",
+      "name": "Highlands (Southern Appalachian Cloud Forest)",
+      "country": "USA",
+      "tier": "B",
+      "lat": 35.0526,
+      "lon": -83.1969,
+      "elevationM": 1230,
+      "region": "North Carolina",
+      "climateAnchor": {
+        "lat": 35.0526,
+        "lon": -83.1969,
+        "elevationM": 1230,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "boulder-co",
+      "name": "Boulder",
+      "country": "USA",
+      "tier": "C",
+      "lat": 40.015,
+      "lon": -105.2705,
+      "elevationM": 1655,
+      "region": "Colorado",
+      "climateAnchor": {
+        "lat": 40.015,
+        "lon": -105.2705,
+        "elevationM": 1655,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "grand-marais-mi",
+      "name": "Grand Marais (Upper Peninsula)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 46.6722,
+      "lon": -85.9752,
+      "elevationM": 190,
+      "region": "Michigan",
+      "climateAnchor": {
+        "lat": 46.6722,
+        "lon": -85.9752,
+        "elevationM": 190,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "apalachicola-fl",
+      "name": "Apalachicola",
+      "country": "USA",
+      "tier": "C",
+      "lat": 29.7258,
+      "lon": -84.9852,
+      "elevationM": 3,
+      "region": "Florida",
+      "climateAnchor": {
+        "lat": 29.7258,
+        "lon": -84.9852,
+        "elevationM": 3,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "santa-cruz-felton-ca",
+      "name": "Felton & the Santa Cruz Redwood Belt",
+      "country": "USA",
+      "tier": "C",
+      "lat": 37.0513,
+      "lon": -122.0727,
+      "elevationM": 120,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 37.0513,
+        "lon": -122.0727,
+        "elevationM": 120,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "wenatchee-wa",
+      "name": "Wenatchee",
+      "country": "USA",
+      "tier": "B",
+      "lat": 47.4235,
+      "lon": -120.3103,
+      "elevationM": 230,
+      "region": "Washington",
+      "climateAnchor": {
+        "lat": 47.4235,
+        "lon": -120.3103,
+        "elevationM": 230,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "ellensburg-wa",
+      "name": "Ellensburg (Kittitas Valley)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 46.9965,
+      "lon": -120.5478,
+      "elevationM": 466,
+      "region": "Washington",
+      "climateAnchor": {
+        "lat": 46.9965,
+        "lon": -120.5478,
+        "elevationM": 466,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "forks-wa",
+      "name": "Forks & the Hoh Rainforest",
+      "country": "USA",
+      "tier": "C",
+      "lat": 47.9507,
+      "lon": -124.3852,
+      "elevationM": 105,
+      "region": "Washington",
+      "climateAnchor": {
+        "lat": 47.9507,
+        "lon": -124.3852,
+        "elevationM": 105,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "astoria-or",
+      "name": "Astoria (Columbia Mouth)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 46.1879,
+      "lon": -123.8313,
+      "elevationM": 7,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 46.1879,
+        "lon": -123.8313,
+        "elevationM": 7,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "port-townsend-wa",
+      "name": "Port Townsend",
+      "country": "USA",
+      "tier": "C",
+      "lat": 48.117,
+      "lon": -122.7604,
+      "elevationM": 30,
+      "region": "Washington",
+      "climateAnchor": {
+        "lat": 48.117,
+        "lon": -122.7604,
+        "elevationM": 30,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "hood-river-gorge",
+      "name": "Columbia Gorge Gap Corridor",
+      "country": "USA",
+      "tier": "C",
+      "lat": 45.695,
+      "lon": -121.238,
+      "elevationM": 70,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 45.695,
+        "lon": -121.238,
+        "elevationM": 70,
+        "note": "Represents the Columbia Gorge gap-wind corridor near river level, not the surrounding plateau pixel.",
+        "overrideReason": "Retain zone-floor coordinate despite Daymet grid elevation +343 m; pixel samples steeper canyon wall. Documented elevation mismatch — do not retune lat/lon merely to shrink grid delta."
+      }
+    },
+    {
+      "id": "eureka-ca",
+      "name": "Eureka (Humboldt Bay)",
+      "country": "USA",
+      "tier": "B",
+      "lat": 40.8021,
+      "lon": -124.1637,
+      "elevationM": 6,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 40.8021,
+        "lon": -124.1637,
+        "elevationM": 6,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "point-reyes-ca",
+      "name": "Point Reyes Peninsula",
+      "country": "USA",
+      "tier": "C",
+      "lat": 38.0697,
+      "lon": -122.8069,
+      "elevationM": 15,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 38.0697,
+        "lon": -122.8069,
+        "elevationM": 15,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "truckee-ca",
+      "name": "Truckee (Tahoe Basin)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 39.328,
+      "lon": -120.1833,
+      "elevationM": 1810,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 39.328,
+        "lon": -120.1833,
+        "elevationM": 1810,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "mammoth-lakes-ca",
+      "name": "Mammoth Lakes (Eastern Sierra)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 37.6485,
+      "lon": -118.9721,
+      "elevationM": 2424,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 37.6485,
+        "lon": -118.9721,
+        "elevationM": 2424,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "borrego-springs-ca",
+      "name": "Borrego Springs (Anza-Borrego)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 33.2559,
+      "lon": -116.3748,
+      "elevationM": 180,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 33.2559,
+        "lon": -116.3748,
+        "elevationM": 180,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "fort-davis-tx",
+      "name": "Fort Davis & the Davis Mountains",
+      "country": "USA",
+      "tier": "B",
+      "lat": 30.5882,
+      "lon": -103.8955,
+      "elevationM": 1478,
+      "region": "Texas",
+      "climateAnchor": {
+        "lat": 30.5882,
+        "lon": -103.8955,
+        "elevationM": 1478,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "marfa-tx",
+      "name": "Marfa",
+      "country": "USA",
+      "tier": "C",
+      "lat": 30.3094,
+      "lon": -104.0205,
+      "elevationM": 1470,
+      "region": "Texas",
+      "climateAnchor": {
+        "lat": 30.3094,
+        "lon": -104.0205,
+        "elevationM": 1470,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "sedona-az",
+      "name": "Sedona (Red Rock Country)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 34.8697,
+      "lon": -111.761,
+      "elevationM": 1372,
+      "region": "Arizona",
+      "climateAnchor": {
+        "lat": 34.8697,
+        "lon": -111.761,
+        "elevationM": 1372,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "prescott-az",
+      "name": "Prescott",
+      "country": "USA",
+      "tier": "C",
+      "lat": 34.54,
+      "lon": -112.4685,
+      "elevationM": 1636,
+      "region": "Arizona",
+      "climateAnchor": {
+        "lat": 34.54,
+        "lon": -112.4685,
+        "elevationM": 1636,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "cloudcroft-nm",
+      "name": "Cloudcroft (Sacramento Mountains)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 32.9548,
+      "lon": -105.742,
+      "elevationM": 2667,
+      "region": "New Mexico",
+      "climateAnchor": {
+        "lat": 32.9548,
+        "lon": -105.742,
+        "elevationM": 2667,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "taos-nm",
+      "name": "Taos",
+      "country": "USA",
+      "tier": "C",
+      "lat": 36.4072,
+      "lon": -105.5734,
+      "elevationM": 2124,
+      "region": "New Mexico",
+      "climateAnchor": {
+        "lat": 36.4072,
+        "lon": -105.5734,
+        "elevationM": 2124,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "gunnison-co",
+      "name": "Gunnison (Cold Pool)",
+      "country": "USA",
+      "tier": "B",
+      "lat": 38.5458,
+      "lon": -106.9253,
+      "elevationM": 2347,
+      "region": "Colorado",
+      "climateAnchor": {
+        "lat": 38.5458,
+        "lon": -106.9253,
+        "elevationM": 2347,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "crested-butte-co",
+      "name": "Crested Butte",
+      "country": "USA",
+      "tier": "C",
+      "lat": 38.8697,
+      "lon": -106.9878,
+      "elevationM": 2707,
+      "region": "Colorado",
+      "climateAnchor": {
+        "lat": 38.8697,
+        "lon": -106.9878,
+        "elevationM": 2707,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "leadville-co",
+      "name": "Leadville (Highest City)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 39.2508,
+      "lon": -106.2925,
+      "elevationM": 3094,
+      "region": "Colorado",
+      "climateAnchor": {
+        "lat": 39.2508,
+        "lon": -106.2925,
+        "elevationM": 3094,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "durango-co",
+      "name": "Durango",
+      "country": "USA",
+      "tier": "C",
+      "lat": 37.2753,
+      "lon": -107.8801,
+      "elevationM": 1988,
+      "region": "Colorado",
+      "climateAnchor": {
+        "lat": 37.2753,
+        "lon": -107.8801,
+        "elevationM": 1988,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "cody-wy",
+      "name": "Cody (Chinook Foothills)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 44.5263,
+      "lon": -109.0565,
+      "elevationM": 1555,
+      "region": "Wyoming",
+      "climateAnchor": {
+        "lat": 44.5263,
+        "lon": -109.0565,
+        "elevationM": 1555,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "missoula-mt",
+      "name": "Missoula (Valley Inversion)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 46.8721,
+      "lon": -113.994,
+      "elevationM": 975,
+      "region": "Montana",
+      "climateAnchor": {
+        "lat": 46.8721,
+        "lon": -113.994,
+        "elevationM": 975,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "bozeman-mt",
+      "name": "Bozeman",
+      "country": "USA",
+      "tier": "C",
+      "lat": 45.677,
+      "lon": -111.0429,
+      "elevationM": 1474,
+      "region": "Montana",
+      "climateAnchor": {
+        "lat": 45.677,
+        "lon": -111.0429,
+        "elevationM": 1474,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "logan-ut",
+      "name": "Logan (Cache Valley)",
+      "country": "USA",
+      "tier": "B",
+      "lat": 41.737,
+      "lon": -111.8338,
+      "elevationM": 1380,
+      "region": "Utah",
+      "climateAnchor": {
+        "lat": 41.737,
+        "lon": -111.8338,
+        "elevationM": 1380,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "moab-ut",
+      "name": "Moab (Canyon Oasis)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 38.5733,
+      "lon": -109.5498,
+      "elevationM": 1245,
+      "region": "Utah",
+      "climateAnchor": {
+        "lat": 38.5733,
+        "lon": -109.5498,
+        "elevationM": 1245,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "canaan-valley-wv",
+      "name": "Canaan Valley",
+      "country": "USA",
+      "tier": "B",
+      "lat": 39.05,
+      "lon": -79.45,
+      "elevationM": 980,
+      "region": "West Virginia",
+      "climateAnchor": {
+        "lat": 39.05,
+        "lon": -79.45,
+        "elevationM": 980,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "redfield-ny",
+      "name": "Tug Hill Plateau",
+      "country": "USA",
+      "tier": "B",
+      "lat": 43.545,
+      "lon": -75.892,
+      "elevationM": 540,
+      "region": "New York",
+      "climateAnchor": {
+        "lat": 43.545,
+        "lon": -75.892,
+        "elevationM": 540,
+        "note": "Represents the Tug Hill Plateau lake-effect snowbelt settlement zone.",
+        "overrideReason": "Retain authored plateau coordinate despite Daymet grid elevation −252 m; grid may sample a lower lee slope. Lake-effect snowfall remains station-sourced separately from Daymet SWE."
+      }
+    },
+    {
+      "id": "syracuse-ny",
+      "name": "Syracuse",
+      "country": "USA",
+      "tier": "C",
+      "lat": 43.0481,
+      "lon": -76.1474,
+      "elevationM": 125,
+      "region": "New York",
+      "climateAnchor": {
+        "lat": 43.0481,
+        "lon": -76.1474,
+        "elevationM": 125,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "marquette-mi",
+      "name": "Marquette (UP)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 46.5436,
+      "lon": -87.3954,
+      "elevationM": 190,
+      "region": "Michigan",
+      "climateAnchor": {
+        "lat": 46.5436,
+        "lon": -87.3954,
+        "elevationM": 190,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "houghton-mi",
+      "name": "Keweenaw (Houghton)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 47.1214,
+      "lon": -88.5694,
+      "elevationM": 185,
+      "region": "Michigan",
+      "climateAnchor": {
+        "lat": 47.1214,
+        "lon": -88.5694,
+        "elevationM": 185,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "viroqua-wi",
+      "name": "Viroqua (Driftless Area)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 43.5559,
+      "lon": -90.8876,
+      "elevationM": 395,
+      "region": "Wisconsin",
+      "climateAnchor": {
+        "lat": 43.5559,
+        "lon": -90.8876,
+        "elevationM": 395,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "asheville-nc",
+      "name": "Asheville",
+      "country": "USA",
+      "tier": "C",
+      "lat": 35.5951,
+      "lon": -82.5515,
+      "elevationM": 650,
+      "region": "North Carolina",
+      "climateAnchor": {
+        "lat": 35.5951,
+        "lon": -82.5515,
+        "elevationM": 650,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "boone-nc",
+      "name": "Boone (High Country)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 36.2168,
+      "lon": -81.6746,
+      "elevationM": 995,
+      "region": "North Carolina",
+      "climateAnchor": {
+        "lat": 36.2168,
+        "lon": -81.6746,
+        "elevationM": 995,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "key-west-fl",
+      "name": "Key West",
+      "country": "USA",
+      "tier": "B",
+      "lat": 24.5551,
+      "lon": -81.78,
+      "elevationM": 2,
+      "region": "Florida",
+      "climateAnchor": {
+        "lat": 24.5551,
+        "lon": -81.78,
+        "elevationM": 2,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "charleston-sc",
+      "name": "Charleston",
+      "country": "USA",
+      "tier": "C",
+      "lat": 32.7765,
+      "lon": -79.9311,
+      "elevationM": 3,
+      "region": "South Carolina",
+      "climateAnchor": {
+        "lat": 32.7765,
+        "lon": -79.9311,
+        "elevationM": 3,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "joseph-or",
+      "name": "Joseph (Wallowa Mountains)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 45.3546,
+      "lon": -117.2301,
+      "elevationM": 1292,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 45.3546,
+        "lon": -117.2301,
+        "elevationM": 1292,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "fairbanks-ak",
+      "name": "Fairbanks",
+      "country": "USA",
+      "tier": "B",
+      "lat": 64.8378,
+      "lon": -147.7164,
+      "elevationM": 135,
+      "region": "Alaska",
+      "climateAnchor": {
+        "lat": 64.8378,
+        "lon": -147.7164,
+        "elevationM": 135,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "sitka-ak",
+      "name": "Sitka",
+      "country": "USA",
+      "tier": "C",
+      "lat": 57.0531,
+      "lon": -135.33,
+      "elevationM": 8,
+      "region": "Alaska",
+      "climateAnchor": {
+        "lat": 57.0531,
+        "lon": -135.33,
+        "elevationM": 8,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "valdez-ak",
+      "name": "Valdez (Prince William Sound)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 61.1308,
+      "lon": -146.3483,
+      "elevationM": 10,
+      "region": "Alaska",
+      "climateAnchor": {
+        "lat": 61.1308,
+        "lon": -146.3483,
+        "elevationM": 10,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "death-valley-ca",
+      "name": "Death Valley (Furnace Creek)",
+      "country": "USA",
+      "tier": "B",
+      "lat": 36.46,
+      "lon": -116.8653,
+      "elevationM": -59,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 36.46,
+        "lon": -116.8653,
+        "elevationM": -59,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "stanley-id",
+      "name": "Stanley (Sawtooth Valley)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 44.2157,
+      "lon": -114.9319,
+      "elevationM": 1947,
+      "region": "Idaho",
+      "climateAnchor": {
+        "lat": 44.2157,
+        "lon": -114.9319,
+        "elevationM": 1947,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "mount-washington-nh",
+      "name": "Mount Washington Summit",
+      "country": "USA",
+      "tier": "C",
+      "lat": 44.2706,
+      "lon": -71.3033,
+      "elevationM": 1917,
+      "region": "New Hampshire",
+      "climateAnchor": {
+        "lat": 44.2706,
+        "lon": -71.3033,
+        "elevationM": 1917,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "yuma-az",
+      "name": "Yuma",
+      "country": "USA",
+      "tier": "C",
+      "lat": 32.7253,
+      "lon": -114.6243,
+      "elevationM": 42,
+      "region": "Arizona",
+      "climateAnchor": {
+        "lat": 32.7253,
+        "lon": -114.6243,
+        "elevationM": 42,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "south-padre-tx",
+      "name": "South Padre Island",
+      "country": "USA",
+      "tier": "C",
+      "lat": 26.1068,
+      "lon": -97.1681,
+      "elevationM": 2,
+      "region": "Texas",
+      "climateAnchor": {
+        "lat": 26.1068,
+        "lon": -97.1681,
+        "elevationM": 2,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "ely-mn",
+      "name": "Ely (Boundary Waters)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 47.9038,
+      "lon": -91.8668,
+      "elevationM": 443,
+      "region": "Minnesota",
+      "climateAnchor": {
+        "lat": 47.9038,
+        "lon": -91.8668,
+        "elevationM": 443,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "cannon-beach-or",
+      "name": "Cannon Beach",
+      "country": "USA",
+      "tier": "C",
+      "lat": 45.8917,
+      "lon": -123.9615,
+      "elevationM": 10,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 45.8917,
+        "lon": -123.9615,
+        "elevationM": 10,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "valentine-ne",
+      "name": "Valentine & the Nebraska Sandhills",
+      "country": "USA",
+      "tier": "B",
+      "lat": 42.8725,
+      "lon": -100.5503,
+      "elevationM": 775,
+      "region": "Nebraska",
+      "climateAnchor": {
+        "lat": 42.8725,
+        "lon": -100.5503,
+        "elevationM": 775,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "loess-hills-ia",
+      "name": "Loess Hills",
+      "country": "USA",
+      "tier": "B",
+      "lat": 41.556,
+      "lon": -95.8977,
+      "elevationM": 380,
+      "region": "Iowa",
+      "climateAnchor": {
+        "lat": 41.556,
+        "lon": -95.8977,
+        "elevationM": 380,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "flint-hills-ks",
+      "name": "Flint Hills",
+      "country": "USA",
+      "tier": "B",
+      "lat": 38.3706,
+      "lon": -96.5428,
+      "elevationM": 400,
+      "region": "Kansas",
+      "climateAnchor": {
+        "lat": 38.3706,
+        "lon": -96.5428,
+        "elevationM": 400,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "eureka-springs-ar",
+      "name": "Eureka Springs & the Ozark Escarpment",
+      "country": "USA",
+      "tier": "B",
+      "lat": 36.4015,
+      "lon": -93.7377,
+      "elevationM": 430,
+      "region": "Arkansas",
+      "climateAnchor": {
+        "lat": 36.4015,
+        "lon": -93.7377,
+        "elevationM": 430,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "brookings-or",
+      "name": "Brookings (Chetco Effect)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 42.0526,
+      "lon": -124.284,
+      "elevationM": 40,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 42.0526,
+        "lon": -124.284,
+        "elevationM": 40,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "medford-or",
+      "name": "Medford (Rogue Valley)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 42.3265,
+      "lon": -122.8756,
+      "elevationM": 430,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 42.3265,
+        "lon": -122.8756,
+        "elevationM": 430,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "friday-harbor-wa",
+      "name": "Friday Harbor (San Juan Islands)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 48.5353,
+      "lon": -123.0174,
+      "elevationM": 20,
+      "region": "Washington",
+      "climateAnchor": {
+        "lat": 48.5353,
+        "lon": -123.0174,
+        "elevationM": 20,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "winthrop-wa",
+      "name": "Winthrop (Methow Valley)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 48.4779,
+      "lon": -120.1777,
+      "elevationM": 520,
+      "region": "Washington",
+      "climateAnchor": {
+        "lat": 48.4779,
+        "lon": -120.1777,
+        "elevationM": 520,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "leavenworth-wa",
+      "name": "Leavenworth (Cascade East Slope)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 47.5962,
+      "lon": -120.6615,
+      "elevationM": 350,
+      "region": "Washington",
+      "climateAnchor": {
+        "lat": 47.5962,
+        "lon": -120.6615,
+        "elevationM": 350,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "lone-pine-ca",
+      "name": "Lone Pine (Owens Valley)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 36.606,
+      "lon": -118.0629,
+      "elevationM": 1130,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 36.606,
+        "lon": -118.0629,
+        "elevationM": 1130,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "page-az",
+      "name": "Page (Colorado Plateau)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 36.9147,
+      "lon": -111.4558,
+      "elevationM": 1310,
+      "region": "Arizona",
+      "climateAnchor": {
+        "lat": 36.9147,
+        "lon": -111.4558,
+        "elevationM": 1310,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "international-falls-mn",
+      "name": "International Falls",
+      "country": "USA",
+      "tier": "C",
+      "lat": 48.6011,
+      "lon": -93.4101,
+      "elevationM": 340,
+      "region": "Minnesota",
+      "climateAnchor": {
+        "lat": 48.6011,
+        "lon": -93.4101,
+        "elevationM": 340,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "duluth-mn",
+      "name": "Duluth (Lake Superior)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 46.7867,
+      "lon": -92.1005,
+      "elevationM": 210,
+      "region": "Minnesota",
+      "climateAnchor": {
+        "lat": 46.7867,
+        "lon": -92.1005,
+        "elevationM": 210,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "erie-pa",
+      "name": "Erie (Lake Erie Snowbelt)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 42.1292,
+      "lon": -80.0851,
+      "elevationM": 200,
+      "region": "Pennsylvania",
+      "climateAnchor": {
+        "lat": 42.1292,
+        "lon": -80.0851,
+        "elevationM": 200,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "chattanooga-tn",
+      "name": "Chattanooga (Tennessee River Gap)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 35.0456,
+      "lon": -85.3097,
+      "elevationM": 210,
+      "region": "Tennessee",
+      "climateAnchor": {
+        "lat": 35.0456,
+        "lon": -85.3097,
+        "elevationM": 210,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "gatlinburg-tn",
+      "name": "Gatlinburg (Great Smokies)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 35.7143,
+      "lon": -83.5102,
+      "elevationM": 390,
+      "region": "Tennessee",
+      "climateAnchor": {
+        "lat": 35.7143,
+        "lon": -83.5102,
+        "elevationM": 390,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "nags-head-nc",
+      "name": "Outer Banks (Nags Head)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 35.9574,
+      "lon": -75.624,
+      "elevationM": 3,
+      "region": "North Carolina",
+      "climateAnchor": {
+        "lat": 35.9574,
+        "lon": -75.624,
+        "elevationM": 3,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "burlington-vt",
+      "name": "Burlington (Lake Champlain)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 44.4759,
+      "lon": -73.2121,
+      "elevationM": 60,
+      "region": "Vermont",
+      "climateAnchor": {
+        "lat": 44.4759,
+        "lon": -73.2121,
+        "elevationM": 60,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "bar-harbor-me",
+      "name": "Bar Harbor (Downeast)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 44.3876,
+      "lon": -68.2039,
+      "elevationM": 20,
+      "region": "Maine",
+      "climateAnchor": {
+        "lat": 44.3876,
+        "lon": -68.2039,
+        "elevationM": 20,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "lubbock-tx",
+      "name": "Lubbock (Llano Estacado)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 33.5779,
+      "lon": -101.8552,
+      "elevationM": 980,
+      "region": "Texas",
+      "climateAnchor": {
+        "lat": 33.5779,
+        "lon": -101.8552,
+        "elevationM": 980,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "new-orleans-la",
+      "name": "New Orleans",
+      "country": "USA",
+      "tier": "C",
+      "lat": 29.9511,
+      "lon": -90.0715,
+      "elevationM": 0,
+      "region": "Louisiana",
+      "climateAnchor": {
+        "lat": 29.9511,
+        "lon": -90.0715,
+        "elevationM": 0,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "ojai-ca",
+      "name": "Ojai",
+      "country": "USA",
+      "tier": "C",
+      "lat": 34.448,
+      "lon": -119.2429,
+      "elevationM": 227,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 34.448,
+        "lon": -119.2429,
+        "elevationM": 227,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "hilo-hi",
+      "name": "Hilo & Windward Mauna Kea",
+      "country": "USA",
+      "tier": "B",
+      "lat": 19.7241,
+      "lon": -155.0869,
+      "elevationM": 18,
+      "region": "Hawaii",
+      "climateAnchor": {
+        "lat": 19.7241,
+        "lon": -155.0869,
+        "elevationM": 18,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "nome-ak",
+      "name": "Nome (Seward Peninsula)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 64.5011,
+      "lon": -165.4064,
+      "elevationM": 6,
+      "region": "Alaska",
+      "climateAnchor": {
+        "lat": 64.5011,
+        "lon": -165.4064,
+        "elevationM": 6,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "corpus-christi-tx",
+      "name": "Corpus Christi (Laguna Madre)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 27.8006,
+      "lon": -97.3964,
+      "elevationM": 2,
+      "region": "Texas",
+      "climateAnchor": {
+        "lat": 27.8006,
+        "lon": -97.3964,
+        "elevationM": 2,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "paducah-ky",
+      "name": "Paducah (Ohio–Tennessee Confluence)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 37.0834,
+      "lon": -88.6,
+      "elevationM": 113,
+      "region": "Kentucky",
+      "climateAnchor": {
+        "lat": 37.0834,
+        "lon": -88.6,
+        "elevationM": 113,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "bismarck-nd",
+      "name": "Bismarck (Northern Great Plains)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 46.8083,
+      "lon": -100.7837,
+      "elevationM": 514,
+      "region": "North Dakota",
+      "climateAnchor": {
+        "lat": 46.8083,
+        "lon": -100.7837,
+        "elevationM": 514,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "morgantown-wv",
+      "name": "Morgantown (Appalachian Plateau)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 39.6297,
+      "lon": -79.9559,
+      "elevationM": 273,
+      "region": "West Virginia",
+      "climateAnchor": {
+        "lat": 39.6297,
+        "lon": -79.9559,
+        "elevationM": 273,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "port-orford-cape-blanco-or",
+      "name": "Port Orford & Cape Blanco",
+      "country": "USA",
+      "tier": "B",
+      "lat": 42.7457,
+      "lon": -124.497,
+      "elevationM": 18,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 42.7457,
+        "lon": -124.497,
+        "elevationM": 18,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "klamath-falls-upper-klamath-basin-or",
+      "name": "Klamath Falls & Upper Klamath Basin",
+      "country": "USA",
+      "tier": "B",
+      "lat": 42.2249,
+      "lon": -121.7817,
+      "elevationM": 1248,
+      "region": "Oregon",
+      "climateAnchor": {
+        "lat": 42.2249,
+        "lon": -121.7817,
+        "elevationM": 1248,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "los-alamos-pajarito-plateau-nm",
+      "name": "Los Alamos & the Pajarito Plateau",
+      "country": "USA",
+      "tier": "B",
+      "lat": 35.8881,
+      "lon": -106.3069,
+      "elevationM": 2231,
+      "region": "New Mexico",
+      "climateAnchor": {
+        "lat": 35.8881,
+        "lon": -106.3069,
+        "elevationM": 2231,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "lander-sinks-canyon-wy",
+      "name": "Lander & Sinks Canyon",
+      "country": "USA",
+      "tier": "B",
+      "lat": 42.833,
+      "lon": -108.7307,
+      "elevationM": 1630,
+      "region": "Wyoming",
+      "climateAnchor": {
+        "lat": 42.833,
+        "lon": -108.7307,
+        "elevationM": 1630,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "mentone-al",
+      "name": "Mentone (Lookout Mountain)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 34.5786,
+      "lon": -85.5891,
+      "elevationM": 548,
+      "region": "Alabama",
+      "climateAnchor": {
+        "lat": 34.5786,
+        "lon": -85.5891,
+        "elevationM": 548,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "norfolk-ct",
+      "name": "Norfolk (NW Highlands)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 41.9465,
+      "lon": -73.2019,
+      "elevationM": 427,
+      "region": "Connecticut",
+      "climateAnchor": {
+        "lat": 41.9465,
+        "lon": -73.2019,
+        "elevationM": 427,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "lewes-de",
+      "name": "Lewes (Delaware Bay)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 38.7746,
+      "lon": -75.1393,
+      "elevationM": 3,
+      "region": "Delaware",
+      "climateAnchor": {
+        "lat": 38.7746,
+        "lon": -75.1393,
+        "elevationM": 3,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "clayton-ga",
+      "name": "Clayton (Blue Ridge Front)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 34.8781,
+      "lon": -83.404,
+      "elevationM": 590,
+      "region": "Georgia",
+      "climateAnchor": {
+        "lat": 34.8781,
+        "lon": -83.404,
+        "elevationM": 590,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "galena-il",
+      "name": "Galena (Driftless Mississippi)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 42.4157,
+      "lon": -90.429,
+      "elevationM": 193,
+      "region": "Illinois",
+      "climateAnchor": {
+        "lat": 42.4157,
+        "lon": -90.429,
+        "elevationM": 193,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "beverly-shores-in",
+      "name": "Beverly Shores (Lake Michigan)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 41.9125,
+      "lon": -86.9806,
+      "elevationM": 185,
+      "region": "Indiana",
+      "climateAnchor": {
+        "lat": 41.9125,
+        "lon": -86.9806,
+        "elevationM": 185,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "oakland-md",
+      "name": "Oakland (Garrett County Highlands)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 39.4115,
+      "lon": -79.4048,
+      "elevationM": 750,
+      "region": "Maryland",
+      "climateAnchor": {
+        "lat": 39.4115,
+        "lon": -79.4048,
+        "elevationM": 750,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "pittsfield-ma",
+      "name": "Pittsfield (Berkshires)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 42.4501,
+      "lon": -73.2455,
+      "elevationM": 317,
+      "region": "Massachusetts",
+      "climateAnchor": {
+        "lat": 42.4501,
+        "lon": -73.2455,
+        "elevationM": 317,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "ocean-springs-ms",
+      "name": "Ocean Springs (Mississippi Sound)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 30.4113,
+      "lon": -88.8278,
+      "elevationM": 7,
+      "region": "Mississippi",
+      "climateAnchor": {
+        "lat": 30.4113,
+        "lon": -88.8278,
+        "elevationM": 7,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "eminence-mo",
+      "name": "Eminence (Ozark Current River)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 37.1506,
+      "lon": -91.3579,
+      "elevationM": 215,
+      "region": "Missouri",
+      "climateAnchor": {
+        "lat": 37.1506,
+        "lon": -91.3579,
+        "elevationM": 215,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "mount-charleston-nv",
+      "name": "Mount Charleston (Spring Mountains)",
+      "country": "USA",
+      "tier": "B",
+      "lat": 36.2958,
+      "lon": -115.5931,
+      "elevationM": 2300,
+      "region": "Nevada",
+      "climateAnchor": {
+        "lat": 36.2958,
+        "lon": -115.5931,
+        "elevationM": 2300,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "cape-may-nj",
+      "name": "Cape May (Atlantic Tip)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 38.9351,
+      "lon": -74.906,
+      "elevationM": 3,
+      "region": "New Jersey",
+      "climateAnchor": {
+        "lat": 38.9351,
+        "lon": -74.906,
+        "elevationM": 3,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "geneva-on-the-lake-oh",
+      "name": "Geneva-on-the-Lake (Lake Erie Snowbelt)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 41.8595,
+      "lon": -80.9481,
+      "elevationM": 185,
+      "region": "Ohio",
+      "climateAnchor": {
+        "lat": 41.8595,
+        "lon": -80.9481,
+        "elevationM": 185,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "broken-bow-ok",
+      "name": "Broken Bow (Ouachita Uplift)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 34.0293,
+      "lon": -94.7372,
+      "elevationM": 130,
+      "region": "Oklahoma",
+      "climateAnchor": {
+        "lat": 34.0293,
+        "lon": -94.7372,
+        "elevationM": 130,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "block-island-ri",
+      "name": "Block Island",
+      "country": "USA",
+      "tier": "C",
+      "lat": 41.1717,
+      "lon": -71.5778,
+      "elevationM": 20,
+      "region": "Rhode Island",
+      "climateAnchor": {
+        "lat": 41.1717,
+        "lon": -71.5778,
+        "elevationM": 20,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "spearfish-sd",
+      "name": "Spearfish (Northern Black Hills)",
+      "country": "USA",
+      "tier": "B",
+      "lat": 44.4908,
+      "lon": -103.8591,
+      "elevationM": 1110,
+      "region": "South Dakota",
+      "climateAnchor": {
+        "lat": 44.4908,
+        "lon": -103.8591,
+        "elevationM": 1110,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "burkes-garden-va",
+      "name": "Burkes Garden (Cold-Air Pool)",
+      "country": "USA",
+      "tier": "B",
+      "lat": 37.0921,
+      "lon": -81.3548,
+      "elevationM": 920,
+      "region": "Virginia",
+      "climateAnchor": {
+        "lat": 37.0921,
+        "lon": -81.3548,
+        "elevationM": 920,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "spokane-wa",
+      "name": "Spokane (Inland Empire)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 47.6588,
+      "lon": -117.426,
+      "elevationM": 562,
+      "region": "Washington",
+      "climateAnchor": {
+        "lat": 47.6588,
+        "lon": -117.426,
+        "elevationM": 562,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "napa-ca",
+      "name": "Napa Valley Floor",
+      "country": "USA",
+      "tier": "C",
+      "lat": 38.2975,
+      "lon": -122.2869,
+      "elevationM": 20,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 38.2975,
+        "lon": -122.2869,
+        "elevationM": 20,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "palm-springs-ca",
+      "name": "Palm Springs (Coachella)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 33.8303,
+      "lon": -116.5453,
+      "elevationM": 146,
+      "region": "California",
+      "climateAnchor": {
+        "lat": 33.8303,
+        "lon": -116.5453,
+        "elevationM": 146,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "austin-tx",
+      "name": "Austin (Edwards Plateau Edge)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 30.2672,
+      "lon": -97.7431,
+      "elevationM": 149,
+      "region": "Texas",
+      "climateAnchor": {
+        "lat": 30.2672,
+        "lon": -97.7431,
+        "elevationM": 149,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "naples-fl",
+      "name": "Naples (Gulf Barrier)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 26.142,
+      "lon": -81.7948,
+      "elevationM": 1,
+      "region": "Florida",
+      "climateAnchor": {
+        "lat": 26.142,
+        "lon": -81.7948,
+        "elevationM": 1,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "buffalo-ny",
+      "name": "Buffalo (Erie Eastern Shore)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 42.8864,
+      "lon": -78.8784,
+      "elevationM": 183,
+      "region": "New York",
+      "climateAnchor": {
+        "lat": 42.8864,
+        "lon": -78.8784,
+        "elevationM": 183,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "scottsbluff-ne",
+      "name": "Scottsbluff (High Plains Escarpment)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 41.8666,
+      "lon": -103.6672,
+      "elevationM": 1189,
+      "region": "Nebraska",
+      "climateAnchor": {
+        "lat": 41.8666,
+        "lon": -103.6672,
+        "elevationM": 1189,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "mobile-al",
+      "name": "Mobile (Gulf Maritime)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 30.6954,
+      "lon": -88.0399,
+      "elevationM": 3,
+      "region": "Alabama",
+      "climateAnchor": {
+        "lat": 30.6954,
+        "lon": -88.0399,
+        "elevationM": 3,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "savannah-ga",
+      "name": "Savannah (Atlantic Bight)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 32.0809,
+      "lon": -81.0912,
+      "elevationM": 15,
+      "region": "Georgia",
+      "climateAnchor": {
+        "lat": 32.0809,
+        "lon": -81.0912,
+        "elevationM": 15,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "wilmington-de",
+      "name": "Wilmington (Brandywine–Piedmont)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 39.7447,
+      "lon": -75.5484,
+      "elevationM": 28,
+      "region": "Delaware",
+      "climateAnchor": {
+        "lat": 39.7447,
+        "lon": -75.5484,
+        "elevationM": 28,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "mystic-ct",
+      "name": "Mystic (Fishers Island Sound)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 41.3541,
+      "lon": -71.9662,
+      "elevationM": 3,
+      "region": "Connecticut",
+      "climateAnchor": {
+        "lat": 41.3541,
+        "lon": -71.9662,
+        "elevationM": 3,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "state-college-pa",
+      "name": "State College (Ridge & Valley)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 40.7934,
+      "lon": -77.86,
+      "elevationM": 360,
+      "region": "Pennsylvania",
+      "climateAnchor": {
+        "lat": 40.7934,
+        "lon": -77.86,
+        "elevationM": 360,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "columbia-sc",
+      "name": "Columbia (Fall Line)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 34.0007,
+      "lon": -81.0348,
+      "elevationM": 94,
+      "region": "South Carolina",
+      "climateAnchor": {
+        "lat": 34.0007,
+        "lon": -81.0348,
+        "elevationM": 94,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "des-moines-ia",
+      "name": "Des Moines (Corn Belt)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 41.5868,
+      "lon": -93.625,
+      "elevationM": 291,
+      "region": "Iowa",
+      "climateAnchor": {
+        "lat": 41.5868,
+        "lon": -93.625,
+        "elevationM": 291,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "tucson-az",
+      "name": "Tucson (Sonoran Basin)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 32.2226,
+      "lon": -110.9747,
+      "elevationM": 728,
+      "region": "Arizona",
+      "climateAnchor": {
+        "lat": 32.2226,
+        "lon": -110.9747,
+        "elevationM": 728,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "anchorage-ak",
+      "name": "Anchorage (Cook Inlet)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 61.2181,
+      "lon": -149.9003,
+      "elevationM": 30,
+      "region": "Alaska",
+      "climateAnchor": {
+        "lat": 61.2181,
+        "lon": -149.9003,
+        "elevationM": 30,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "honolulu-hi",
+      "name": "Honolulu ( Oʻahu Lee)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 21.3069,
+      "lon": -157.8583,
+      "elevationM": 5,
+      "region": "Hawaii",
+      "climateAnchor": {
+        "lat": 21.3069,
+        "lon": -157.8583,
+        "elevationM": 5,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "roswell-nm",
+      "name": "Roswell (Pecos Valley)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 33.3943,
+      "lon": -104.523,
+      "elevationM": 1087,
+      "region": "New Mexico",
+      "climateAnchor": {
+        "lat": 33.3943,
+        "lon": -104.523,
+        "elevationM": 1087,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "rapid-city-sd",
+      "name": "Rapid City (Eastern Black Hills)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 44.0805,
+      "lon": -103.231,
+      "elevationM": 966,
+      "region": "South Dakota",
+      "climateAnchor": {
+        "lat": 44.0805,
+        "lon": -103.231,
+        "elevationM": 966,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "jackson-wy",
+      "name": "Jackson (Jackson Hole)",
+      "country": "USA",
+      "tier": "C",
+      "lat": 43.4799,
+      "lon": -110.7624,
+      "elevationM": 1901,
+      "region": "Wyoming",
+      "climateAnchor": {
+        "lat": 43.4799,
+        "lon": -110.7624,
+        "elevationM": 1901,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "washington-dc",
+      "name": "Washington, D.C.",
+      "country": "USA",
+      "tier": "C",
+      "lat": 38.9072,
+      "lon": -77.0369,
+      "elevationM": 15,
+      "region": "District of Columbia",
+      "climateAnchor": {
+        "lat": 38.9072,
+        "lon": -77.0369,
+        "elevationM": 15,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "osoyoos-bc",
+      "name": "Osoyoos & the South Okanagan",
+      "country": "Canada",
+      "tier": "A",
+      "lat": 49.0314,
+      "lon": -119.4682,
+      "elevationM": 277,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.0314,
+        "lon": -119.4682,
+        "elevationM": 277,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "lethbridge-ab",
+      "name": "Lethbridge & the Chinook Belt",
+      "country": "Canada",
+      "tier": "A",
+      "lat": 49.6956,
+      "lon": -112.8451,
+      "elevationM": 910,
+      "region": "Alberta",
+      "climateAnchor": {
+        "lat": 49.6956,
+        "lon": -112.8451,
+        "elevationM": 910,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "victoria-bc",
+      "name": "Victoria & Saanich Peninsula",
+      "country": "Canada",
+      "tier": "B",
+      "lat": 48.4284,
+      "lon": -123.3656,
+      "elevationM": 23,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 48.4284,
+        "lon": -123.3656,
+        "elevationM": 23,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "tofino-bc",
+      "name": "Tofino",
+      "country": "Canada",
+      "tier": "B",
+      "lat": 49.153,
+      "lon": -125.9066,
+      "elevationM": 10,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.153,
+        "lon": -125.9066,
+        "elevationM": 10,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "wolfville-ns",
+      "name": "Wolfville & the Annapolis Valley",
+      "country": "Canada",
+      "tier": "B",
+      "lat": 45.0908,
+      "lon": -64.3636,
+      "elevationM": 14,
+      "region": "Nova Scotia",
+      "climateAnchor": {
+        "lat": 45.0908,
+        "lon": -64.3636,
+        "elevationM": 14,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "niagara-on-the-lake",
+      "name": "Niagara Peninsula Fruit Belt",
+      "country": "Canada",
+      "tier": "B",
+      "lat": 43.2557,
+      "lon": -79.0739,
+      "elevationM": 80,
+      "region": "Ontario",
+      "climateAnchor": {
+        "lat": 43.2557,
+        "lon": -79.0739,
+        "elevationM": 80,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "atlin-lake-bc",
+      "name": "Atlin & Atlin Lake",
+      "country": "Canada",
+      "tier": "B",
+      "lat": 59.5786,
+      "lon": -133.6896,
+      "elevationM": 670,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 59.5786,
+        "lon": -133.6896,
+        "elevationM": 670,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "fernie-elk-valley-bc",
+      "name": "Fernie & the Elk Valley",
+      "country": "Canada",
+      "tier": "B",
+      "lat": 49.5042,
+      "lon": -115.0628,
+      "elevationM": 1010,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.5042,
+        "lon": -115.0628,
+        "elevationM": 1010,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "sunshine-coast-bc",
+      "name": "Sunshine Coast (Sechelt)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.4756,
+      "lon": -123.7539,
+      "elevationM": 40,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.4756,
+        "lon": -123.7539,
+        "elevationM": 40,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "salt-spring-bc",
+      "name": "Salt Spring Island",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 48.8088,
+      "lon": -123.496,
+      "elevationM": 40,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 48.8088,
+        "lon": -123.496,
+        "elevationM": 40,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "summerland-bc",
+      "name": "Summerland (Central Okanagan)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.5997,
+      "lon": -119.672,
+      "elevationM": 453,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.5997,
+        "lon": -119.672,
+        "elevationM": 453,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "grand-manan-nb",
+      "name": "Grand Manan Island",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 44.6737,
+      "lon": -66.7984,
+      "elevationM": 30,
+      "region": "New Brunswick",
+      "climateAnchor": {
+        "lat": 44.6737,
+        "lon": -66.7984,
+        "elevationM": 30,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "creston-bc",
+      "name": "Creston Valley",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.0968,
+      "lon": -116.5135,
+      "elevationM": 600,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.0968,
+        "lon": -116.5135,
+        "elevationM": 600,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "penticton-bc",
+      "name": "Penticton (South Okanagan)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.4952,
+      "lon": -119.5935,
+      "elevationM": 344,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.4952,
+        "lon": -119.5935,
+        "elevationM": 344,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "kamloops-bc",
+      "name": "Kamloops",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 50.6745,
+      "lon": -120.3273,
+      "elevationM": 345,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 50.6745,
+        "lon": -120.3273,
+        "elevationM": 345,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "nelson-bc",
+      "name": "Nelson (West Kootenay)",
+      "country": "Canada",
+      "tier": "B",
+      "lat": 49.4928,
+      "lon": -117.2948,
+      "elevationM": 535,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.4928,
+        "lon": -117.2948,
+        "elevationM": 535,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "revelstoke-bc",
+      "name": "Revelstoke (Snow Capital)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 50.9989,
+      "lon": -118.1958,
+      "elevationM": 453,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 50.9989,
+        "lon": -118.1958,
+        "elevationM": 453,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "tofino-ucluelet-corridor",
+      "name": "Ucluelet",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 48.9426,
+      "lon": -125.5463,
+      "elevationM": 6,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 48.9426,
+        "lon": -125.5463,
+        "elevationM": 6,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "qualicum-bc",
+      "name": "Qualicum Beach",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.35,
+      "lon": -124.4411,
+      "elevationM": 20,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.35,
+        "lon": -124.4411,
+        "elevationM": 20,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "prince-rupert-bc",
+      "name": "Prince Rupert",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 54.315,
+      "lon": -130.3208,
+      "elevationM": 35,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 54.315,
+        "lon": -130.3208,
+        "elevationM": 35,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "pincher-creek-ab",
+      "name": "Pincher Creek (Chinook Zone)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.4834,
+      "lon": -113.9521,
+      "elevationM": 1190,
+      "region": "Alberta",
+      "climateAnchor": {
+        "lat": 49.4834,
+        "lon": -113.9521,
+        "elevationM": 1190,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "cypress-hills-sk",
+      "name": "Cypress Hills",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.6506,
+      "lon": -109.484,
+      "elevationM": 1460,
+      "region": "Saskatchewan",
+      "climateAnchor": {
+        "lat": 49.6506,
+        "lon": -109.484,
+        "elevationM": 1460,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "leamington-on",
+      "name": "Leamington / Pelee",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 42.0523,
+      "lon": -82.5975,
+      "elevationM": 183,
+      "region": "Ontario",
+      "climateAnchor": {
+        "lat": 42.0523,
+        "lon": -82.5975,
+        "elevationM": 183,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "thunder-bay-on",
+      "name": "Thunder Bay",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 48.3809,
+      "lon": -89.2477,
+      "elevationM": 183,
+      "region": "Ontario",
+      "climateAnchor": {
+        "lat": 48.3809,
+        "lon": -89.2477,
+        "elevationM": 183,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "gaspe-qc",
+      "name": "Gaspé Peninsula Tip",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 48.8313,
+      "lon": -64.4857,
+      "elevationM": 10,
+      "region": "Québec",
+      "climateAnchor": {
+        "lat": 48.8313,
+        "lon": -64.4857,
+        "elevationM": 10,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "st-johns-nl",
+      "name": "St. John's",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 47.5615,
+      "lon": -52.7126,
+      "elevationM": 60,
+      "region": "Newfoundland and Labrador",
+      "climateAnchor": {
+        "lat": 47.5615,
+        "lon": -52.7126,
+        "elevationM": 60,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "whitehorse-yt",
+      "name": "Whitehorse",
+      "country": "Canada",
+      "tier": "B",
+      "lat": 60.7212,
+      "lon": -135.0568,
+      "elevationM": 706,
+      "region": "Yukon",
+      "climateAnchor": {
+        "lat": 60.7212,
+        "lon": -135.0568,
+        "elevationM": 706,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "yellowknife-nt",
+      "name": "Yellowknife",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 62.454,
+      "lon": -114.3718,
+      "elevationM": 206,
+      "region": "Northwest Territories",
+      "climateAnchor": {
+        "lat": 62.454,
+        "lon": -114.3718,
+        "elevationM": 206,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "churchill-mb",
+      "name": "Churchill (Hudson Bay)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 58.7684,
+      "lon": -94.165,
+      "elevationM": 29,
+      "region": "Manitoba",
+      "climateAnchor": {
+        "lat": 58.7684,
+        "lon": -94.165,
+        "elevationM": 29,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "prince-edward-co-on",
+      "name": "Prince Edward County",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 43.9469,
+      "lon": -77.2353,
+      "elevationM": 95,
+      "region": "Ontario",
+      "climateAnchor": {
+        "lat": 43.9469,
+        "lon": -77.2353,
+        "elevationM": 95,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "iqaluit-nu",
+      "name": "Iqaluit",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 63.7467,
+      "lon": -68.517,
+      "elevationM": 36,
+      "region": "Nunavut",
+      "climateAnchor": {
+        "lat": 63.7467,
+        "lon": -68.517,
+        "elevationM": 36,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "inuvik-nt",
+      "name": "Inuvik",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 68.3607,
+      "lon": -133.723,
+      "elevationM": 68,
+      "region": "Northwest Territories",
+      "climateAnchor": {
+        "lat": 68.3607,
+        "lon": -133.723,
+        "elevationM": 68,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "haida-gwaii-bc",
+      "name": "Haida Gwaii",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 53.2533,
+      "lon": -132.0813,
+      "elevationM": 15,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 53.2533,
+        "lon": -132.0813,
+        "elevationM": 15,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "medicine-hat-ab",
+      "name": "Medicine Hat",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 50.0366,
+      "lon": -110.6767,
+      "elevationM": 717,
+      "region": "Alberta",
+      "climateAnchor": {
+        "lat": 50.0366,
+        "lon": -110.6767,
+        "elevationM": 717,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "twillingate-nl",
+      "name": "Twillingate (Iceberg Coast)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.6667,
+      "lon": -54.7667,
+      "elevationM": 12,
+      "region": "Newfoundland and Labrador",
+      "climateAnchor": {
+        "lat": 49.6667,
+        "lon": -54.7667,
+        "elevationM": 12,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "kelowna-bc",
+      "name": "Kelowna (Central Okanagan)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.888,
+      "lon": -119.496,
+      "elevationM": 344,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.888,
+        "lon": -119.496,
+        "elevationM": 344,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "squamish-bc",
+      "name": "Squamish (Howe Sound)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.7016,
+      "lon": -123.1558,
+      "elevationM": 5,
+      "region": "British Columbia",
+      "climateAnchor": {
+        "lat": 49.7016,
+        "lon": -123.1558,
+        "elevationM": 5,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "banff-ab",
+      "name": "Banff (Bow Valley)",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 51.1784,
+      "lon": -115.5708,
+      "elevationM": 1383,
+      "region": "Alberta",
+      "climateAnchor": {
+        "lat": 51.1784,
+        "lon": -115.5708,
+        "elevationM": 1383,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "halifax-ns",
+      "name": "Halifax",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 44.6488,
+      "lon": -63.5752,
+      "elevationM": 30,
+      "region": "Nova Scotia",
+      "climateAnchor": {
+        "lat": 44.6488,
+        "lon": -63.5752,
+        "elevationM": 30,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "charlottetown-pei",
+      "name": "Charlottetown",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 46.2382,
+      "lon": -63.1311,
+      "elevationM": 20,
+      "region": "Prince Edward Island",
+      "climateAnchor": {
+        "lat": 46.2382,
+        "lon": -63.1311,
+        "elevationM": 20,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "baie-saint-paul-qc",
+      "name": "Baie-Saint-Paul & Charlevoix",
+      "country": "Canada",
+      "tier": "B",
+      "lat": 47.4412,
+      "lon": -70.5047,
+      "elevationM": 15,
+      "region": "Quebec",
+      "climateAnchor": {
+        "lat": 47.4412,
+        "lon": -70.5047,
+        "elevationM": 15,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "dawson-city-yt",
+      "name": "Dawson City",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 64.0601,
+      "lon": -139.432,
+      "elevationM": 320,
+      "region": "Yukon",
+      "climateAnchor": {
+        "lat": 64.0601,
+        "lon": -139.432,
+        "elevationM": 320,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "morden-mb",
+      "name": "Morden & the Pembina Escarpment",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 49.1919,
+      "lon": -98.1014,
+      "elevationM": 300,
+      "region": "Manitoba",
+      "climateAnchor": {
+        "lat": 49.1919,
+        "lon": -98.1014,
+        "elevationM": 300,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "sutton-qc",
+      "name": "Sutton & the Eastern Townships",
+      "country": "Canada",
+      "tier": "C",
+      "lat": 45.1087,
+      "lon": -72.6153,
+      "elevationM": 210,
+      "region": "Quebec",
+      "climateAnchor": {
+        "lat": 45.1087,
+        "lon": -72.6153,
+        "elevationM": 210,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "oaxaca-mx",
+      "name": "Oaxaca City (Valles Centrales)",
+      "country": "Mexico",
+      "tier": "A",
+      "lat": 17.0732,
+      "lon": -96.7266,
+      "elevationM": 1555,
+      "region": "Oaxaca",
+      "climateAnchor": {
+        "lat": 17.0732,
+        "lon": -96.7266,
+        "elevationM": 1555,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "san-cristobal-mx",
+      "name": "San Cristóbal de las Casas",
+      "country": "Mexico",
+      "tier": "A",
+      "lat": 16.737,
+      "lon": -92.6376,
+      "elevationM": 2200,
+      "region": "Chiapas",
+      "climateAnchor": {
+        "lat": 16.737,
+        "lon": -92.6376,
+        "elevationM": 2200,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "cuernavaca-mx",
+      "name": "Cuernavaca",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 18.9186,
+      "lon": -99.2345,
+      "elevationM": 1510,
+      "region": "Morelos",
+      "climateAnchor": {
+        "lat": 18.9186,
+        "lon": -99.2345,
+        "elevationM": 1510,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "valle-guadalupe-mx",
+      "name": "Valle de Guadalupe",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 32.1,
+      "lon": -116.6,
+      "elevationM": 400,
+      "region": "Baja California",
+      "climateAnchor": {
+        "lat": 32.1,
+        "lon": -116.6,
+        "elevationM": 400,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "patzcuaro-mx",
+      "name": "Pátzcuaro & the Meseta Tarasca",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 19.5133,
+      "lon": -101.6097,
+      "elevationM": 2140,
+      "region": "Michoacán",
+      "climateAnchor": {
+        "lat": 19.5133,
+        "lon": -101.6097,
+        "elevationM": 2140,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "valle-de-bravo-mx",
+      "name": "Valle de Bravo & Lake Avandaro",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 19.195,
+      "lon": -100.132,
+      "elevationM": 1850,
+      "region": "Estado de México",
+      "climateAnchor": {
+        "lat": 19.195,
+        "lon": -100.132,
+        "elevationM": 1850,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "zacatlan-de-las-manzanas-mx",
+      "name": "Zacatlan de las Manzanas",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 19.935,
+      "lon": -97.961,
+      "elevationM": 2040,
+      "region": "Puebla",
+      "climateAnchor": {
+        "lat": 19.935,
+        "lon": -97.961,
+        "elevationM": 2040,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "coatepec-mx",
+      "name": "Coatepec (Coffee Cloud Belt)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 19.453,
+      "lon": -96.9614,
+      "elevationM": 1250,
+      "region": "Veracruz",
+      "climateAnchor": {
+        "lat": 19.453,
+        "lon": -96.9614,
+        "elevationM": 1250,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "alamos-mx",
+      "name": "Álamos (Monsoon-Edge Colonial)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 27.0281,
+      "lon": -108.9356,
+      "elevationM": 406,
+      "region": "Sonora",
+      "climateAnchor": {
+        "lat": 27.0281,
+        "lon": -108.9356,
+        "elevationM": 406,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "todos-santos-mx",
+      "name": "Todos Santos",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 23.4486,
+      "lon": -110.2233,
+      "elevationM": 40,
+      "region": "Baja California Sur",
+      "climateAnchor": {
+        "lat": 23.4486,
+        "lon": -110.2233,
+        "elevationM": 40,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "tapalpa-mx",
+      "name": "Tapalpa (Sierra de Tapalpa)",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 19.9436,
+      "lon": -103.7597,
+      "elevationM": 2020,
+      "region": "Jalisco",
+      "climateAnchor": {
+        "lat": 19.9436,
+        "lon": -103.7597,
+        "elevationM": 2020,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "xilitla-mx",
+      "name": "Xilitla (Huasteca Cloud Forest)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 21.3858,
+      "lon": -98.9919,
+      "elevationM": 600,
+      "region": "San Luis Potosí",
+      "climateAnchor": {
+        "lat": 21.3858,
+        "lon": -98.9919,
+        "elevationM": 600,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "morelia-mx",
+      "name": "Morelia",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 19.706,
+      "lon": -101.195,
+      "elevationM": 1920,
+      "region": "Michoacán",
+      "climateAnchor": {
+        "lat": 19.706,
+        "lon": -101.195,
+        "elevationM": 1920,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "guanajuato-mx",
+      "name": "Guanajuato",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 21.019,
+      "lon": -101.2574,
+      "elevationM": 2000,
+      "region": "Guanajuato",
+      "climateAnchor": {
+        "lat": 21.019,
+        "lon": -101.2574,
+        "elevationM": 2000,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "zacatecas-mx",
+      "name": "Zacatecas",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 22.7709,
+      "lon": -102.5832,
+      "elevationM": 2440,
+      "region": "Zacatecas",
+      "climateAnchor": {
+        "lat": 22.7709,
+        "lon": -102.5832,
+        "elevationM": 2440,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "saltillo-mx",
+      "name": "Saltillo",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 25.426,
+      "lon": -100.9996,
+      "elevationM": 1600,
+      "region": "Coahuila",
+      "climateAnchor": {
+        "lat": 25.426,
+        "lon": -100.9996,
+        "elevationM": 1600,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "cuauhtemoc-mx",
+      "name": "Cuauhtémoc (Mennonite Apple Country)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 28.405,
+      "lon": -106.8667,
+      "elevationM": 2060,
+      "region": "Chihuahua",
+      "climateAnchor": {
+        "lat": 28.405,
+        "lon": -106.8667,
+        "elevationM": 2060,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "real-catorce-mx",
+      "name": "Real de Catorce",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 23.6879,
+      "lon": -100.8886,
+      "elevationM": 2756,
+      "region": "San Luis Potosí",
+      "climateAnchor": {
+        "lat": 23.6879,
+        "lon": -100.8886,
+        "elevationM": 2756,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "la-paz-mx",
+      "name": "La Paz (Sea of Cortez)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 24.1426,
+      "lon": -110.3128,
+      "elevationM": 10,
+      "region": "Baja California Sur",
+      "climateAnchor": {
+        "lat": 24.1426,
+        "lon": -110.3128,
+        "elevationM": 10,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "puerto-escondido-mx",
+      "name": "Puerto Escondido",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 15.8718,
+      "lon": -97.0768,
+      "elevationM": 10,
+      "region": "Oaxaca",
+      "climateAnchor": {
+        "lat": 15.8718,
+        "lon": -97.0768,
+        "elevationM": 10,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "merida-mx",
+      "name": "Mérida",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 20.9674,
+      "lon": -89.5926,
+      "elevationM": 9,
+      "region": "Yucatán",
+      "climateAnchor": {
+        "lat": 20.9674,
+        "lon": -89.5926,
+        "elevationM": 9,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "bacalar-mx",
+      "name": "Bacalar (Laguna de los Siete Colores)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 18.6794,
+      "lon": -88.395,
+      "elevationM": 10,
+      "region": "Quintana Roo",
+      "climateAnchor": {
+        "lat": 18.6794,
+        "lon": -88.395,
+        "elevationM": 10,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "tequila-mx",
+      "name": "Tequila (Agave Country)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 20.8833,
+      "lon": -103.8333,
+      "elevationM": 1180,
+      "region": "Jalisco",
+      "climateAnchor": {
+        "lat": 20.8833,
+        "lon": -103.8333,
+        "elevationM": 1180,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "mazamitla-mx",
+      "name": "Mazamitla",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 19.9158,
+      "lon": -103.0244,
+      "elevationM": 2220,
+      "region": "Jalisco",
+      "climateAnchor": {
+        "lat": 19.9158,
+        "lon": -103.0244,
+        "elevationM": 2220,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "la-ventosa-mx",
+      "name": "La Ventosa (Tehuantepec Gap)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 16.5631,
+      "lon": -94.9633,
+      "elevationM": 40,
+      "region": "Oaxaca",
+      "climateAnchor": {
+        "lat": 16.5631,
+        "lon": -94.9633,
+        "elevationM": 40,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "creel-mx",
+      "name": "Creel (Copper Canyon Highlands)",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 27.7478,
+      "lon": -107.6353,
+      "elevationM": 2338,
+      "region": "Chihuahua",
+      "climateAnchor": {
+        "lat": 27.7478,
+        "lon": -107.6353,
+        "elevationM": 2338,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "ensenada-mx",
+      "name": "Ensenada (Valle de Guadalupe)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 31.8714,
+      "lon": -116.6016,
+      "elevationM": 15,
+      "region": "Baja California",
+      "climateAnchor": {
+        "lat": 31.8714,
+        "lon": -116.6016,
+        "elevationM": 15,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "xalapa-mx",
+      "name": "Xalapa (Cloud-Forest Capital)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 19.5438,
+      "lon": -96.9103,
+      "elevationM": 1427,
+      "region": "Veracruz",
+      "climateAnchor": {
+        "lat": 19.5438,
+        "lon": -96.9103,
+        "elevationM": 1427,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "san-miguel-de-allende-mx",
+      "name": "San Miguel de Allende",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 20.9144,
+      "lon": -100.7436,
+      "elevationM": 1910,
+      "region": "Guanajuato",
+      "climateAnchor": {
+        "lat": 20.9144,
+        "lon": -100.7436,
+        "elevationM": 1910,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "cuatrocienegas-mx",
+      "name": "Cuatro Ciénegas Basin",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 26.985,
+      "lon": -102.067,
+      "elevationM": 740,
+      "region": "Coahuila",
+      "climateAnchor": {
+        "lat": 26.985,
+        "lon": -102.067,
+        "elevationM": 740,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "parras-de-la-fuente-mx",
+      "name": "Parras Valley",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 25.4418,
+      "lon": -102.1789,
+      "elevationM": 1520,
+      "region": "Coahuila",
+      "climateAnchor": {
+        "lat": 25.4418,
+        "lon": -102.1789,
+        "elevationM": 1520,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "toluca-mx",
+      "name": "Toluca (Highest Major Mexican City)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 19.2925,
+      "lon": -99.6532,
+      "elevationM": 2663,
+      "region": "Estado de México",
+      "climateAnchor": {
+        "lat": 19.2925,
+        "lon": -99.6532,
+        "elevationM": 2663,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "monterrey-mx",
+      "name": "Monterrey (Sierra Madre Foothills)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 25.6866,
+      "lon": -100.3161,
+      "elevationM": 540,
+      "region": "Nuevo León",
+      "climateAnchor": {
+        "lat": 25.6866,
+        "lon": -100.3161,
+        "elevationM": 540,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "hermosillo-mx",
+      "name": "Hermosillo (Sonoran Desert)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 29.0729,
+      "lon": -110.9559,
+      "elevationM": 200,
+      "region": "Sonora",
+      "climateAnchor": {
+        "lat": 29.0729,
+        "lon": -110.9559,
+        "elevationM": 200,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "puerto-vallarta-mx",
+      "name": "Puerto Vallarta (Banderas Bay)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 20.6534,
+      "lon": -105.2253,
+      "elevationM": 10,
+      "region": "Jalisco",
+      "climateAnchor": {
+        "lat": 20.6534,
+        "lon": -105.2253,
+        "elevationM": 10,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "mazatlan-mx",
+      "name": "Mazatlán (Pacific Humid Tropical)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 23.2494,
+      "lon": -106.4111,
+      "elevationM": 5,
+      "region": "Sinaloa",
+      "climateAnchor": {
+        "lat": 23.2494,
+        "lon": -106.4111,
+        "elevationM": 5,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "campeche-mx",
+      "name": "Campeche (Gulf Coast Fort)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 19.8301,
+      "lon": -90.5349,
+      "elevationM": 5,
+      "region": "Campeche",
+      "climateAnchor": {
+        "lat": 19.8301,
+        "lon": -90.5349,
+        "elevationM": 5,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "palenque-mx",
+      "name": "Palenque (Lacandon Jungle Edge)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 17.4833,
+      "lon": -92.05,
+      "elevationM": 150,
+      "region": "Chiapas",
+      "climateAnchor": {
+        "lat": 17.4833,
+        "lon": -92.05,
+        "elevationM": 150,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "taxco-mx",
+      "name": "Taxco (Sierra Madre del Sur)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 18.5563,
+      "lon": -99.6047,
+      "elevationM": 1773,
+      "region": "Guerrero",
+      "climateAnchor": {
+        "lat": 18.5563,
+        "lon": -99.6047,
+        "elevationM": 1773,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "puebla-mx",
+      "name": "Puebla (Trans-Mexican Volcanic Belt)",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 19.0414,
+      "lon": -98.2063,
+      "elevationM": 2150,
+      "region": "Puebla",
+      "climateAnchor": {
+        "lat": 19.0414,
+        "lon": -98.2063,
+        "elevationM": 2150,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "ajijic-lake-chapala-mx",
+      "name": "Ajijic & Lake Chapala",
+      "country": "Mexico",
+      "tier": "B",
+      "lat": 20.2992,
+      "lon": -103.2577,
+      "elevationM": 1530,
+      "region": "Jalisco",
+      "climateAnchor": {
+        "lat": 20.2992,
+        "lon": -103.2577,
+        "elevationM": 1530,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "queretaro-mx",
+      "name": "Querétaro",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 20.5888,
+      "lon": -100.3899,
+      "elevationM": 1820,
+      "region": "Querétaro",
+      "climateAnchor": {
+        "lat": 20.5888,
+        "lon": -100.3899,
+        "elevationM": 1820,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "durango-mx",
+      "name": "Durango",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 24.0277,
+      "lon": -104.6532,
+      "elevationM": 1880,
+      "region": "Durango",
+      "climateAnchor": {
+        "lat": 24.0277,
+        "lon": -104.6532,
+        "elevationM": 1880,
+        "note": "default place coordinate"
+      }
+    },
+    {
+      "id": "orizaba-mx",
+      "name": "Orizaba",
+      "country": "Mexico",
+      "tier": "C",
+      "lat": 18.8498,
+      "lon": -97.1036,
+      "elevationM": 1230,
+      "region": "Veracruz",
+      "climateAnchor": {
+        "lat": 18.8498,
+        "lon": -97.1036,
+        "elevationM": 1230,
+        "note": "default place coordinate"
+      }
+    }
+  ]
+}

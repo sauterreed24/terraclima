@@ -2,7 +2,10 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    include: ["src/**/__tests__/**/*.{test,spec}.{ts,tsx}"],
+    include: [
+      "src/**/__tests__/**/*.{test,spec}.{ts,tsx}",
+      "scripts/climate-data/__tests__/**/*.{test,spec}.{ts,tsx}",
+    ],
     setupFiles: ["./src/test-setup.ts"],
     // Default: Node. Files that need DOM set `// @vitest-environment jsdom` (app-url, App shell).
     environment: "node",

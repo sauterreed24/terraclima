@@ -101,12 +101,20 @@ export interface ClimateProfile {
   tempLowC: Monthly12;
   /** Mean precipitation by month (mm). */
   precipMm: Monthly12;
-  /** Mean snowfall by month (cm). Optional. */
+  /**
+   * Mean snowfall by month (cm). Optional.
+   * Station-sourced normals only — never Daymet SWE relabeled as snowfall.
+   */
   snowCm?: Monthly12;
-  /** Relative humidity mean by month (%). Optional. */
+  /** Relative humidity mean by month (%). Optional. May be estimated from vapor pressure. */
   humidity?: Monthly12;
-  /** Sunshine % of possible by month. Optional. */
+  /**
+   * @deprecated Legacy sunshine % of possible. Prefer `solarEnergyMjM2Day`
+   * (Daymet solar resource). Retained temporarily for authored corpus migration.
+   */
   sunshinePct?: Monthly12;
+  /** Mean daily solar resource by month (MJ/m²/day). Not observed sunshine hours. */
+  solarEnergyMjM2Day?: Monthly12;
   /** Annual precipitation (mm), computed or given directly. */
   annualPrecipMm?: number;
   /** Approximate frost-free days per year. */
@@ -115,7 +123,7 @@ export interface ClimateProfile {
   gdd10?: number;
   /** USDA hardiness zone or Canadian equivalent. */
   hardinessZone?: string;
-  /** Est. chill hours below 7.2°C. */
+  /** Est. chill hours below 7.2°C. Requires hourly source; omit when unavailable. */
   chillHours?: number;
   /** Typical diurnal swing (°C) — summer midpoint. */
   diurnalSummerC?: number;
@@ -255,7 +263,7 @@ export interface LivedSignals {
 
 export interface Citation {
   label: string;
-  kind: "noaa" | "prism" | "usda" | "usgs" | "fema" | "epa" | "eccc" | "climate-atlas-canada" | "smn" | "inegi" | "inecc" | "atlas-riesgos" | "worldclim" | "soilgrids" | "nasa-nex" | "cmip6" | "sentinel-2" | "landsat" | "oss-data" | "academic" | "field-observation" | "other";
+  kind: "noaa" | "prism" | "usda" | "usgs" | "fema" | "epa" | "eccc" | "climate-atlas-canada" | "smn" | "inegi" | "inecc" | "atlas-riesgos" | "worldclim" | "daymet" | "era5" | "soilgrids" | "nasa-nex" | "cmip6" | "sentinel-2" | "landsat" | "oss-data" | "academic" | "field-observation" | "other";
   note?: string;
   url?: string;
 }
@@ -405,7 +413,19 @@ export interface Place {
   whoMightNot: string;
 
   // Integrity
+  /**
+   * Legacy single confidence field. Prefer `editorialConfidence` +
+   * `climateDataConfidence` (Climate Data V2). When only `confidence` is
+   * authored, runtime treats it as editorial confidence.
+   */
   confidence: Confidence;
+  /** Editorial / narrative confidence (citations, screening notes). */
+  editorialConfidence?: Confidence;
+  /**
+   * Climate-grid / station validation confidence. Grid-only Tier C cannot
+   * inherit “high” from citation count alone.
+   */
+  climateDataConfidence?: Confidence;
   confidenceNotes?: string;
   citations: Citation[];
 

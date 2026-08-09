@@ -55,3 +55,8 @@ coverage/
 # OS junk
 ehthumbs.db
 Icon?
+
+# Climate Data V2 raw caches (committed artifacts live under data/climate-v2 and src/data/generated)
+.cache/daymet/
+.cache/climate-data/
+.cache/nex-gddp/

@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "notes": [
+    "Reviewed station mappings for Climate Data V2 validation.",
+    "Candidates must be within 75 km / 300 m elevation, ≥24 usable years, ≥80% valid daily observations for included months.",
+    "Prefer stations within 25 km / 150 m. Official stations validate the grid — they do not silently replace Daymet."
+  ],
+  "stations": {}
+}
