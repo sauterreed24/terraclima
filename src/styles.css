@@ -6220,13 +6220,11 @@
       0 14px 34px -20px rgba(var(--map-readout-rgb), 0.5),
       0 7px 28px -9px rgba(0, 0, 0, 0.52),
       0 1px 0 rgba(255, 255, 255, 0.07) inset;
-    transition: opacity 160ms ease;
+    transition: opacity 160ms ease, transform 160ms ease;
   }
-  .map-shell:has(.cluster-picker) .map-atlas-readout {
-    opacity: 0;
-    pointer-events: none;
-  }
-  .map-shell[data-legend-open="true"] .map-atlas-readout {
+  .map-shell:has(.cluster-picker) .map-atlas-readout,
+  .map-shell[data-legend-open="true"] .map-atlas-readout,
+  .map-shell[data-gesturing="true"] .map-atlas-readout {
     opacity: 0;
     pointer-events: none;
   }
@@ -6280,11 +6278,6 @@
     outline: 2px solid rgba(240, 210, 156, 0.95);
     outline-offset: 2px;
   }
-  @media (pointer: coarse) {
-    .map-atlas-readout__expand {
-      display: none;
-    }
-  }
   .map-atlas-readout__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -6294,31 +6287,84 @@
     border-radius: 9px;
     background: rgba(180, 236, 246, 0.16);
   }
-  /* Collapsed by default: Leaders + Driver only (Feel/Field hidden until expand). */
-  .map-atlas-readout__item:nth-child(n + 3) {
+  /* Full density: Leaders + Driver only until expand/hover. */
+  .map-atlas-readout[data-density="full"] .map-atlas-readout__item:nth-child(n + 3) {
     display: none;
   }
-  .map-atlas-readout[data-expanded="true"] .map-atlas-readout__grid,
-  .map-atlas-readout:hover .map-atlas-readout__grid,
-  .map-atlas-readout:focus-within .map-atlas-readout__grid {
+  .map-atlas-readout[data-density="full"][data-expanded="true"] .map-atlas-readout__grid,
+  .map-atlas-readout[data-density="full"]:hover .map-atlas-readout__grid,
+  .map-atlas-readout[data-density="full"]:focus-within .map-atlas-readout__grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
-  .map-atlas-readout[data-expanded="true"] .map-atlas-readout__item:nth-child(n + 3),
-  .map-atlas-readout:hover .map-atlas-readout__item:nth-child(n + 3),
-  .map-atlas-readout:focus-within .map-atlas-readout__item:nth-child(n + 3) {
+  .map-atlas-readout[data-density="full"][data-expanded="true"] .map-atlas-readout__item:nth-child(n + 3),
+  .map-atlas-readout[data-density="full"]:hover .map-atlas-readout__item:nth-child(n + 3),
+  .map-atlas-readout[data-density="full"]:focus-within .map-atlas-readout__item:nth-child(n + 3) {
     display: block;
   }
-  @media (pointer: coarse) {
-    .map-atlas-readout[data-expanded="true"] .map-atlas-readout__grid,
-    .map-atlas-readout:hover .map-atlas-readout__grid,
-    .map-atlas-readout:focus-within .map-atlas-readout__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .map-atlas-readout[data-expanded="true"] .map-atlas-readout__item:nth-child(n + 3),
-    .map-atlas-readout:hover .map-atlas-readout__item:nth-child(n + 3),
-    .map-atlas-readout:focus-within .map-atlas-readout__item:nth-child(n + 3) {
-      display: none;
-    }
+  /*
+   * Compact density (phones / narrow shells): corner chip by default so the
+   * full-width Leaders·Driver panel cannot sit in the middle of the viewport
+   * while the user scrolls the place list or uses “Scroll page”.
+   */
+  .map-atlas-readout[data-density="compact"] {
+    left: auto;
+    right: 0.65rem;
+    bottom: 5.35rem;
+    width: auto;
+    min-width: 0;
+    max-width: min(12.75rem, calc(100% - 6.5rem));
+    padding: 0.34rem 0.4rem;
+    touch-action: manipulation;
+  }
+  .map-atlas-readout[data-density="compact"] .map-atlas-readout__head {
+    align-items: center;
+    gap: 0.4rem;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .map-atlas-readout[data-density="compact"] .map-atlas-readout__head span {
+    font-size: 0.5rem;
+  }
+  .map-atlas-readout[data-density="compact"] .map-atlas-readout__head strong {
+    font-size: 0.66rem;
+    text-align: left;
+  }
+  .map-atlas-readout[data-density="compact"] .map-atlas-readout__expand {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.7rem;
+    min-width: 2.4rem;
+    padding: 0.2rem 0.45rem;
+    font-size: 0.55rem;
+  }
+  .map-atlas-readout[data-density="compact"] .map-atlas-readout__grid {
+    display: none;
+    margin-top: 0.36rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .map-atlas-readout[data-density="compact"][data-expanded="true"] {
+    max-width: min(18.5rem, calc(100% - 1.3rem));
+  }
+  .map-atlas-readout[data-density="compact"][data-expanded="true"] .map-atlas-readout__head {
+    padding-bottom: 0.32rem;
+    border-bottom: 1px solid rgba(180, 236, 246, 0.18);
+  }
+  .map-atlas-readout[data-density="compact"][data-expanded="true"] .map-atlas-readout__grid {
+    display: grid;
+  }
+  .map-atlas-readout[data-density="compact"][data-expanded="true"] .map-atlas-readout__item:nth-child(n + 3) {
+    display: block;
+  }
+  .map-atlas-readout[data-density="compact"] .map-atlas-readout__item span {
+    display: none;
+  }
+  /* While page-scrolling through the map, keep the chip from capturing swipes. */
+  .map-atlas-readout[data-density="compact"][data-page-scroll="true"] {
+    pointer-events: none;
+  }
+  .map-atlas-readout[data-density="compact"][data-page-scroll="true"] .map-atlas-readout__expand {
+    pointer-events: auto;
   }
   .map-atlas-readout__item {
     min-width: 0;
@@ -6361,46 +6407,13 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  @media (max-width: 680px) {
-    .map-atlas-readout {
-      left: 0.65rem;
-      right: 0.65rem;
-      /* Clear the bottom-left scale + Key stack (~5.8rem tall from the map foot)
-         so the readout never clips the scale bar on phones. */
-      bottom: 6.35rem;
-      width: auto;
-      min-width: 0;
-      padding: 0.48rem;
-    }
-    .map-atlas-readout__head {
-      padding-bottom: 0.36rem;
-    }
-    .map-atlas-readout__head strong {
-      font-size: 0.72rem;
-    }
-    .map-atlas-readout__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      margin-top: 0.42rem;
-    }
-    .map-atlas-readout__item {
-      padding: 0.36rem 0.38rem 0.4rem;
-    }
-    .map-atlas-readout__item dd {
-      font-size: 0.61rem;
-    }
-    .map-atlas-readout__item span {
-      display: none;
-    }
-  }
   @media (max-width: 420px) {
-    .map-atlas-readout {
-      bottom: 6.6rem;
+    .map-atlas-readout[data-density="compact"] {
+      bottom: 5.6rem;
+      max-width: min(14.25rem, calc(100% - 5.25rem));
     }
-    .map-atlas-readout__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .map-atlas-readout__head strong {
-      max-width: 12rem;
+    .map-atlas-readout[data-density="compact"][data-expanded="true"] {
+      max-width: calc(100% - 1.3rem);
     }
   }
   .map-key-popover {

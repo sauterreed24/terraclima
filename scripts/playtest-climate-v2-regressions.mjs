@@ -135,6 +135,43 @@ async function main() {
     // First-viewport hierarchy: brand/atlas should be present without a wall of secondary chrome
     const text = await bodyText(page);
     if (!/Terraclima/i.test(text)) findings.push({ label, kind: "missing-brand" });
+
+    // Atlas Read must be a compact corner chip on coarse pointers — not a
+    // full-width mid-band panel that steals page scroll while browsing places.
+    await page.waitForSelector(".map-atlas-readout", { timeout: 20000 });
+    await page.evaluate(() => window.scrollTo(0, 400));
+    await page.waitForTimeout(250);
+    const atlasRead = await page.evaluate(() => {
+      const el = document.querySelector(".map-atlas-readout");
+      const shell = document.querySelector(".map-shell")?.getBoundingClientRect();
+      const r = el?.getBoundingClientRect();
+      if (!el || !shell || !r) return { missing: true };
+      const midY = window.innerHeight / 2;
+      const crossesMid = r.top <= midY && r.bottom >= midY;
+      return {
+        missing: false,
+        density: el.getAttribute("data-density"),
+        expanded: el.getAttribute("data-expanded"),
+        widthPct: r.width / shell.width,
+        height: r.height,
+        midBandCoverage: crossesMid ? r.width / window.innerWidth : 0,
+      };
+    });
+    if (atlasRead.missing) findings.push({ label, kind: "atlas-read-missing" });
+    else {
+      if (atlasRead.density !== "compact") {
+        findings.push({ label, kind: "atlas-read-not-compact", ...atlasRead });
+      }
+      if (atlasRead.expanded !== "false") {
+        findings.push({ label, kind: "atlas-read-expanded-by-default", ...atlasRead });
+      }
+      if (atlasRead.widthPct > 0.55 || atlasRead.height > 56) {
+        findings.push({ label, kind: "atlas-read-too-large", ...atlasRead });
+      }
+      if (atlasRead.midBandCoverage > 0.45) {
+        findings.push({ label, kind: "atlas-read-blocks-midband", ...atlasRead });
+      }
+    }
     await shot(page, label);
     await ctx.close();
   }

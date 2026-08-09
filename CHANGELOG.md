@@ -4,6 +4,11 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Mobile Atlas Read chip — stop blocking the map mid-band
+
+- **Problem:** On phones the Atlas Read panel was a full-width Leaders·Driver bar with `pointer-events: auto`, so while scrolling places it sat in the middle of the viewport and stole page/map gestures. Coarse pointers also hid the More control, so it could not be collapsed.
+- **Fix:** Coarse pointers get a compact corner chip (headline + More). Details expand only on demand; the chip hides during map gestures; in Scroll-page mode it does not capture swipes (More stays tappable). Desktop hover/expand behavior is unchanged.
+
 ### Map hover identity for dense Climate V2 rank clusters
 
 - **Pin collision hit targets:** collision-spread glyphs now carry the hover/tap hit circle (leader line keeps the geographic anchor), so nearby top-ranked places no longer collapse to one oversized stacked target.
