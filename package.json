@@ -32,6 +32,7 @@
     "generate:icons": "tsx scripts/generate-icons.ts",
     "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run climate:data:verify && npm run build && npm run check:performance-budget",
     "playtest:rigorous": "node scripts/playtest-rigorous.mjs",
+    "playtest:climate-v2": "node scripts/playtest-climate-v2-regressions.mjs",
     "climate:data:fetch": "tsx scripts/climate-data/fetch-daymet.ts",
     "climate:data:generate": "tsx scripts/climate-data/generate.ts",
     "climate:data:verify": "tsx scripts/climate-data/verify.ts",
