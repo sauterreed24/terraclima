@@ -141,14 +141,16 @@ Tuned for real devices, not only high-end laptops.
 
 ## Data and provenance
 
-Structured editorial research backed by public climate and geospatial references:
+Structured editorial research backed by public climate and geospatial references. See [`docs/CLIMATE-DATA-V2.md`](docs/CLIMATE-DATA-V2.md) for formulas and pipeline commands.
 
-- **Climate normals:** usually 1991–2020 (NOAA, ECCC / Climate Atlas of Canada, SMN, and related station products).
-- **Spatial baselines:** PRISM, WorldClim, SoilGrids, USGS, INEGI, INECC, FEMA, Atlas Nacional de Riesgos, CMIP6, NASA NEX-GDDP where applicable.
+- **Current climate (Now):** Daymet V4 R1 rolling **1996–2025** climatology (not a WMO standard normal). Official **1991–2020** WMO normals remain the same-source comparison/reference.
+- **Station validation:** NOAA/GHCN-D & normals (USA), ECCC (Canada), SMN/WMO (Mexico) validate the grid — they do not silently replace it.
+- **Fallback / QA:** ERA5-Land only for Daymet failure, offshore/land-mask exceptions, or independent QA. WorldClim 2.1 (1970–2000) is a historical comparator, not “current” provenance.
+- **Projections:** NASA NEX-GDDP-CMIP6 ensemble deltas (median + P10/P90) when ingested; research/screening only.
 - **Earth observation context:** Sentinel-2 / Landsat for spectral screening (NDVI-class, thermal, moisture, snow, burn history).
 - **Relief texture:** screening where finer topography would materially improve interpretation.
 
-Every place carries citations and confidence notes. Derived scores stay conservative; interpretive content is labeled as such. The dossier Evidence disclosure separates measured normals, editorial context, deterministic calculations, regional projections, and screening scores without inventing station-level precision.
+Every place carries citations plus split `editorialConfidence` / `climateDataConfidence`. Derived scores stay conservative; interpretive content is labeled as such. The dossier Evidence disclosure separates measured normals, editorial context, deterministic calculations, projections, and screening scores, including a compact vs-1991–2020 receipt.
 
 The corpus covers **226** North American places, including **8 Tier A flagships** and **54 Tier B** deeper relocation/travel candidates. Tier A/B entries require confidence notes, at least two URL-backed citations, and deep-section coverage. Recent deepening includes Port Orford / Cape Blanco, Klamath Falls / Upper Klamath Basin, Los Alamos / Pajarito Plateau, Lander / Sinks Canyon, Atlin Lake, Fernie / Elk Valley, Valle de Bravo, and Zacatlán de las Manzanas, plus deeper Nelson, Pátzcuaro, Todos Santos, Tapalpa, and Mazamitla.
 

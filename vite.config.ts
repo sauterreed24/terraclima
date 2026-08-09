@@ -135,6 +135,10 @@ export default defineConfig({
           if (id.includes("/data/places.usa")) return "places-usa";
           if (id.includes("/data/places.canada")) return "places-canada";
           if (id.includes("/data/places.mexico")) return "places-mexico";
+          // Compact climate overlay rides with place assembly; full provenance
+          // records stay in a separate lazy chunk for evidence surfaces.
+          if (id.includes("/data/generated/climate-v2/records")) return "climate-v2-records";
+          if (id.includes("/data/generated/climate-v2/overlay")) return "climate-v2-overlay";
           // Curated / reference data — smaller, but still belongs out of
           // the main entry so the entry compiles fast and these can be
           // cached independently as the rest of the UI evolves.

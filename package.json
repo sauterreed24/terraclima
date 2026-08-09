@@ -30,8 +30,13 @@
     "dump:corpus-rank": "tsx scripts/dump-corpus-ranks.ts",
     "generate:og": "tsx scripts/generate-og-image.ts",
     "generate:icons": "tsx scripts/generate-icons.ts",
-    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run build && npm run check:performance-budget",
-    "playtest:rigorous": "node scripts/playtest-rigorous.mjs"
+    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run climate:data:verify && npm run build && npm run check:performance-budget",
+    "playtest:rigorous": "node scripts/playtest-rigorous.mjs",
+    "climate:data:fetch": "tsx scripts/climate-data/fetch-daymet.ts",
+    "climate:data:generate": "tsx scripts/climate-data/generate.ts",
+    "climate:data:verify": "tsx scripts/climate-data/verify.ts",
+    "climate:data:audit": "tsx scripts/climate-data/audit.ts",
+    "climate:data:update": "tsx scripts/climate-data/update.ts"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.13.24",

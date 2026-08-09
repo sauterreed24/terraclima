@@ -8,12 +8,13 @@ import {
 } from "../atlas-metadata";
 
 describe("atlas-metadata constants", () => {
-  it("CLIMATE_NORMALS_PERIOD names the WMO 30-year base period", () => {
+  it("CLIMATE_NORMALS_PERIOD names the rolling Now window", () => {
     expect(CLIMATE_NORMALS_PERIOD).toMatch(/\d{4}.{1,3}\d{4}/);
+    expect(CLIMATE_NORMALS_PERIOD).toBe("1996–2025");
   });
 
-  it("ATLAS_EDITORIAL_SNAPSHOT looks like a month-year label", () => {
-    expect(ATLAS_EDITORIAL_SNAPSHOT).toMatch(/^[A-Z][a-z]+ \d{4}$/);
+  it("ATLAS_EDITORIAL_SNAPSHOT reflects data-through year", () => {
+    expect(ATLAS_EDITORIAL_SNAPSHOT).toMatch(/Data through \d{4}/);
   });
 
   it("EARTH_OBSERVATION_SOURCES enumerates both Sentinel-2 and Landsat", () => {

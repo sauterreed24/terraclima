@@ -798,7 +798,7 @@ function LensReceipt({
   const lensLine = activeBundle
     ? activeBundle.description
     : scenario !== "now"
-      ? `${scenarioMeta(scenario).label} — illustrative regional projection reshaping ranks and cards.`
+      ? `${scenarioMeta(scenario).label} — ensemble projection reshaping ranks and cards.`
       : liveSignalCount > 0
       ? sortedByLiveFit
         ? `${liveSignalCount} living signal${liveSignalCount === 1 ? "" : "s"} — sorted by live-fit.`

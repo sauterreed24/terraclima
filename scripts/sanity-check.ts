@@ -95,7 +95,7 @@ for (const p of PLACES) {
   // Optional monthly arrays are read by 12-month loops elsewhere; a short/long
   // one would silently yield undefined→NaN downstream (the per-month range
   // checks below skip undefined), so validate length here too.
-  for (const k of ["snowCm", "humidity", "sunshinePct"] as const) {
+  for (const k of ["snowCm", "humidity", "sunshinePct", "solarEnergyMjM2Day"] as const) {
     const arr = climate[k];
     if (arr && arr.length !== 12) report(p.id, "ERROR", `${k} has ${arr.length} entries, expected 12`);
   }
@@ -132,11 +132,21 @@ for (const p of PLACES) {
     }
   }
 
-  // --- Sunshine if present ---
+  // --- Legacy sunshine % if present ---
   if (climate.sunshinePct) {
     for (let m = 0; m < 12; m++) {
       if (climate.sunshinePct[m] < 10 || climate.sunshinePct[m] > 100) {
         report(p.id, "WARN", `sunshine month ${m + 1} = ${climate.sunshinePct[m]}%`);
+      }
+    }
+  }
+
+  // --- Solar resource (MJ/m²/day) if present ---
+  if (climate.solarEnergyMjM2Day) {
+    for (let m = 0; m < 12; m++) {
+      const v = climate.solarEnergyMjM2Day[m];
+      if (!Number.isFinite(v) || v < 0 || v > 45) {
+        report(p.id, "WARN", `solarEnergy month ${m + 1} = ${v} MJ/m²/day`);
       }
     }
   }

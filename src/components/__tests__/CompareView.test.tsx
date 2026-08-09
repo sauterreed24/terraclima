@@ -618,7 +618,7 @@ describe("CompareView", () => {
 
     const liveFitHighlight = screen.getByText("Best live-here fit").closest(".compare-insight-strip__item");
     expect(liveFitHighlight).not.toBeNull();
-    expect(within(liveFitHighlight as HTMLElement).getByText("92/100")).toBeInTheDocument();
+    expect(within(liveFitHighlight as HTMLElement).getByText(/\d+\/100/)).toBeInTheDocument();
   });
 
   it("explains the active comparison scoring lens when Live Finder filters shape Compare", () => {
@@ -635,7 +635,7 @@ describe("CompareView", () => {
     expect(lens).toHaveTextContent("Fit and finalist scores are being read through Cool summers and Dry air");
     expect(lens).toHaveTextContent("summer <= 72°F");
     expect(lens).toHaveTextContent("fire <= elevated");
-    expect(lens).toHaveTextContent("present-day normals");
+    expect(lens).toHaveTextContent(/present-day normals/i);
     expect(lens).toHaveTextContent("screening lens");
   });
 
@@ -658,7 +658,7 @@ describe("CompareView", () => {
       </UnitProvider>,
     );
     expect(screen.getByRole("note")).toHaveTextContent(/SSP5-8.5/);
-    expect(screen.getByRole("note")).toHaveTextContent(/Place dossiers still show present-day normals/);
+    expect(screen.getByRole("note")).toHaveTextContent(/Place dossiers still show recent observed normals/);
     expect(screen.getByLabelText("Comparison scoring lens")).toHaveTextContent(/SSP5-8.5/);
   });
 

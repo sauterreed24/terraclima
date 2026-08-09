@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-08-09",
+  "placeCount": 226,
+  "elevOutliers": [
+    {
+      "id": "hood-river-gorge",
+      "authored": 70,
+      "grid": 413,
+      "delta": 343
+    },
+    {
+      "id": "redfield-ny",
+      "authored": 540,
+      "grid": 288,
+      "delta": -252
+    }
+  ],
+  "validationCounts": {
+    "validated": 0,
+    "gridOnly": 163,
+    "reviewedException": 63
+  },
+  "manifestHash": "0a9a83851a13030881ad5201c8010f197225052297f84aae874ccadf1f31c7ce"
+}

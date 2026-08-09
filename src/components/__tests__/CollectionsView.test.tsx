@@ -26,9 +26,9 @@ describe("CollectionsView", () => {
     expect(within(firstCard as HTMLElement).getByText("25 places")).toBeInTheDocument();
     expect(
       within(firstCard as HTMLElement).getByRole("button", {
-        name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Identity",
+        name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Comfort",
       }),
-    ).toHaveAttribute("title", "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Identity");
+    ).toHaveAttribute("title", "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Comfort");
     expect((firstCard as HTMLElement).querySelectorAll(".collection-spectrum__bar").length).toBeGreaterThan(3);
     expect(container.querySelector(".collection-place-chip__dot")).not.toBeNull();
 
@@ -37,7 +37,7 @@ describe("CollectionsView", () => {
     expect(pinButton).toHaveAttribute("title", "Filter the Explorer to Rain-Shadow Sanctuaries");
     fireEvent.click(pinButton);
     const placeButton = within(firstCard as HTMLElement).getByRole("button", {
-      name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Identity",
+      name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Comfort",
     });
     fireEvent.click(placeButton);
 

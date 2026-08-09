@@ -3,7 +3,7 @@ import type { Country, Place, Tier } from "../types";
 export type CoverageIssueId =
   | "liveSignals"
   | "humidity"
-  | "sunshinePct"
+  | "solarEnergyMjM2Day"
   | "deepSections"
   | "multipleHttpsCitations";
 
@@ -41,7 +41,7 @@ export interface CorpusCoverageReport {
 export const COVERAGE_ISSUES: readonly { id: CoverageIssueId; label: string }[] = [
   { id: "liveSignals", label: "missing liveSignals" },
   { id: "humidity", label: "missing humidity" },
-  { id: "sunshinePct", label: "missing sunshinePct" },
+  { id: "solarEnergyMjM2Day", label: "missing solarEnergyMjM2Day" },
   { id: "deepSections", label: "missing deepSections" },
   { id: "multipleHttpsCitations", label: "under 2 HTTPS citations" },
 ];
@@ -50,7 +50,7 @@ function emptyIssueCounts(): Record<CoverageIssueId, number> {
   return {
     liveSignals: 0,
     humidity: 0,
-    sunshinePct: 0,
+    solarEnergyMjM2Day: 0,
     deepSections: 0,
     multipleHttpsCitations: 0,
   };
@@ -73,7 +73,9 @@ export function analyzePlaceCoverage(place: Place): PlaceCoverageRead {
 
   if (!place.liveSignals) missing.push("liveSignals");
   if (place.climate.humidity == null) missing.push("humidity");
-  if (place.climate.sunshinePct == null) missing.push("sunshinePct");
+  if (place.climate.solarEnergyMjM2Day == null && place.climate.sunshinePct == null) {
+    missing.push("solarEnergyMjM2Day");
+  }
   if (deepSectionCount === 0) missing.push("deepSections");
   if (httpsCitationCount < 2) missing.push("multipleHttpsCitations");
 

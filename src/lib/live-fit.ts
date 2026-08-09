@@ -232,10 +232,11 @@ export function winterSunshineScore(place: Place): number {
  */
 function sunshineScore(place: Place): number {
   const sunny = place.climate.sunshinePct;
+  const solar = place.climate.solarEnergyMjM2Day;
   const hum = place.climate.humidity;
   const diurnal = place.climate.diurnalSummerC ?? (place.climate.tempHighC[6] - place.climate.tempLowC[6]);
 
-  if (!sunny && !hum) return 50; // no data — neutral
+  if (!sunny && !solar && !hum) return 50; // no data — neutral
 
   let score = 50; // neutral baseline tied to US average
 
@@ -243,6 +244,10 @@ function sunshineScore(place: Place): number {
     const annualSun = sunny.reduce((a, b) => a + b, 0) / 12;
     // 58% = US avg = 50 pts; +1.5 pts per % above, -1.5 below; capped 0–100
     score = clamp100(50 + (annualSun - 58) * 1.5);
+  } else if (solar) {
+    const annualSolar = solar.reduce((a, b) => a + b, 0) / 12;
+    const annualSunProxy = Math.max(0, Math.min(100, 10 + annualSolar * 3.75));
+    score = clamp100(50 + (annualSunProxy - 58) * 1.5);
   }
 
   if (hum) {

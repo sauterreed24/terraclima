@@ -70,6 +70,8 @@ export const OBSERVED_NORMAL_SOURCE_KINDS = new Set<Citation["kind"]>([
   "eccc",
   "climate-atlas-canada",
   "smn",
+  "daymet",
+  "era5",
   "worldclim",
 ]);
 
@@ -95,6 +97,8 @@ export const ALLOWED_CITATION_KINDS: readonly Citation["kind"][] = [
   "inecc",
   "atlas-riesgos",
   "worldclim",
+  "daymet",
+  "era5",
   "soilgrids",
   "nasa-nex",
   "cmip6",
@@ -219,11 +223,11 @@ export function listMissingStructuredFields(place: Place): MissingEvidenceField[
       note: "Optional humidity normals are absent; comfort math uses conservative analogs where needed.",
     });
   }
-  if (!climate.sunshinePct) {
+  if (!climate.solarEnergyMjM2Day && !climate.sunshinePct) {
     missing.push({
-      id: "sunshine",
-      label: "Sunshine percent",
-      note: "Optional sunshine normals are absent.",
+      id: "solar",
+      label: "Solar resource",
+      note: "Optional monthly solar-resource normals (MJ/m²/day) are absent.",
     });
   }
   if (!climate.snowCm) {
@@ -296,12 +300,12 @@ export function buildPlaceEvidenceSummary(place: Place): PlaceEvidenceSummary {
   }
 
   const classNotes: Partial<Record<EvidenceClass, string>> = {
-    "observed-normal": `${urlCitationCount} URL-backed citation${urlCitationCount === 1 ? "" : "s"}; climate charts use authored ${CLIMATE_NORMALS_PERIOD} normals.`,
+    "observed-normal": `${urlCitationCount} URL-backed citation${urlCitationCount === 1 ? "" : "s"}; climate charts use Daymet-derived ${CLIMATE_NORMALS_PERIOD} rolling climatology (not a WMO standard normal).`,
     "authored-context": "Why-it-differs, field story, and fit prose are editorial interpretation over structured data.",
-    "deterministic-derived": "Bioclimatic indices, climate twins, and vs-home deltas are calculated from authored fields.",
+    "deterministic-derived": "Bioclimatic indices, climate twins, and vs-home deltas are calculated from structured climate fields.",
     "regional-projection": place.projection
-      ? "This place carries an authored projection override; Explorer still labels scenarios as regional illustrations."
-      : "Future layers use a coarse sourced regional anomaly table, not a site forecast.",
+      ? "This place carries an authored projection override; Explorer still labels scenarios as ensemble illustrations for screening."
+      : "Future layers use NEX-GDDP-CMIP6 ensemble deltas when available (research/screening only), not a site engineering forecast.",
     "screening-score": "Livability, live-fit, geospatial, tourism, and score pills are screening aids for comparison.",
   };
   if (classesPresent.has("field-observation")) {

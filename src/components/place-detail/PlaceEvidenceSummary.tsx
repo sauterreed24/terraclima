@@ -6,6 +6,7 @@ import {
   evidenceClassMeta,
   type EvidenceClass,
 } from "../../lib/evidence-summary";
+import { CLIMATE_V2_OVERLAY_BY_ID } from "../../data/generated/climate-v2";
 import { safeExternalHref } from "../../lib/safe-url";
 import { useProse } from "../../lib/units";
 
@@ -69,9 +70,12 @@ export function PlaceEvidenceSummary({
             <div>
               <div className="tc-evidence-summary__label">Confidence vs completeness</div>
               <p className="tc-evidence-summary__body">
-                Confidence ({summary.confidence}) is the editorial judgment of source strength
+                Editorial confidence ({place.editorialConfidence ?? summary.confidence}) judges narrative
+                source strength
                 {summary.confidenceNotes ? `: ${prose(summary.confidenceNotes)}` : "."}
                 {" "}
+                Climate-data confidence ({place.climateDataConfidence ?? "pending"}) reflects grid
+                validation status — grid-only places cannot inherit high climate confidence from citation count.
                 Completeness ({summary.completenessLabel}) only describes optional field coverage
                 — {summary.completenessNote}
               </p>
@@ -79,9 +83,21 @@ export function PlaceEvidenceSummary({
             <div>
               <div className="tc-evidence-summary__label">Normals period</div>
               <p className="tc-evidence-summary__body">
-                Authored climate charts use {summary.normalsPeriod} normals when the citation
-                window supports that period. Mixed or reanalysis sources are called out in citation notes.
+                Charts use Recent · {summary.normalsPeriod} rolling climatology (not a WMO standard normal).
+                Official {`1991–2020`} WMO normals remain the comparison/reference from the same Daymet source.
               </p>
+              {(() => {
+                const shift = CLIMATE_V2_OVERLAY_BY_ID[place.id]?.recentShift;
+                if (!shift) return null;
+                const fmt = (n: number, unit: string) =>
+                  `${n > 0 ? "+" : ""}${n.toFixed(1)}${unit}`;
+                return (
+                  <p className="tc-evidence-summary__body mt-2">
+                    vs 1991–2020: JJA high {fmt(shift.jjaHighDeltaC, "°C")}, January low{" "}
+                    {fmt(shift.janLowDeltaC, "°C")}, annual precip {fmt(shift.annualPrecipDeltaPct, "%")}.
+                  </p>
+                );
+              })()}
             </div>
           </div>
 

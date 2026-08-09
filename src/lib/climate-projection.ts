@@ -34,6 +34,8 @@
 // ============================================================
 
 import type { ClimateDelta, ClimateProfile, Country, Monthly12, Place, ScenarioId } from "../types";
+import { getClimateV2Overlay } from "../data/generated/climate-v2";
+import { NASA_PROJECTION_DISCLAIMER } from "./climate-v2/contracts";
 
 const DAYS_IN_MONTH: readonly number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
@@ -46,9 +48,24 @@ export interface ScenarioMeta {
 
 /** Scenario layers in slider order (now → moderate → high). */
 export const SCENARIOS: readonly ScenarioMeta[] = [
-  { id: "now", label: "Now (1991–2020)", short: "Now", description: "Authored present-day climate normals." },
-  { id: "ssp245", label: "2050 · SSP2-4.5", short: "2050 mid", description: "Mid-century under the 'middle of the road' emissions pathway." },
-  { id: "ssp585", label: "2050 · SSP5-8.5", short: "2050 high", description: "Mid-century under the 'high emissions' pathway." },
+  {
+    id: "now",
+    label: "Recent · 1996–2025",
+    short: "Recent",
+    description: "Rolling 1996–2025 climatology (not a WMO standard normal).",
+  },
+  {
+    id: "ssp245",
+    label: "2050 mid (2041–2060) · SSP2-4.5",
+    short: "2050 mid",
+    description: "Mid-century under SSP2-4.5 — ensemble median applied to 1996–2025 observed climatology.",
+  },
+  {
+    id: "ssp585",
+    label: "2050 high (2041–2060) · SSP5-8.5",
+    short: "2050 high",
+    description: "Mid-century under SSP5-8.5 — ensemble median applied to 1996–2025 observed climatology.",
+  },
 ] as const;
 
 export const SCENARIO_IDS: readonly ScenarioId[] = SCENARIOS.map(s => s.id);
@@ -57,11 +74,13 @@ export function scenarioMeta(id: ScenarioId): ScenarioMeta {
   return SCENARIOS.find(s => s.id === id) ?? SCENARIOS[0]!;
 }
 
-/** Documented provenance for the regional anomaly table (UI + audit surface). */
+/** Documented provenance for projection layers (UI + audit surface). */
 export const SCENARIO_SOURCES: readonly { label: string; url: string }[] = [
-  { label: "IPCC AR6 WGI Atlas — North & Central America regional fact sheets", url: "https://interactive-atlas.ipcc.ch/" },
-  { label: "NASA NEX-GDDP-CMIP6 downscaled ensemble", url: "https://www.nasa.gov/nex/gddp" },
+  { label: "NASA NEX-GDDP-CMIP6 downscaled ensemble (per-place when ingested)", url: "https://www.nasa.gov/nex/gddp" },
+  { label: "IPCC AR6 WGI Atlas — provisional screening envelope when NEX unavailable", url: "https://interactive-atlas.ipcc.ch/" },
 ];
+
+export const PROJECTION_SCREENING_DISCLAIMER = NASA_PROJECTION_DISCLAIMER;
 
 type LatBandKey = "tropical" | "subtropical" | "midlat" | "northern" | "boreal" | "arctic";
 
@@ -124,10 +143,27 @@ export function regionalDelta(place: Place, scenario: ScenarioId): ClimateDelta 
   return { ...base, deltaPrecipPct: base.deltaPrecipPct + nudge };
 }
 
-/** Override-aware anomaly: authored `Place.projection` wins over the table. */
+/**
+ * Override-aware anomaly resolution order:
+ * 1. Authored `Place.projection` (cited local override)
+ * 2. Generated NEX-GDDP ensemble median when `projection.status === "ok"`
+ * 3. Provisional IPCC regional screening envelope (explicitly not NEX)
+ */
 export function resolveDelta(place: Place, scenario: ScenarioId): ClimateDelta {
   if (scenario === "now") return { deltaJJAHighC: 0, deltaJANLowC: 0, deltaPrecipPct: 0 };
-  return place.projection?.[scenario] ?? regionalDelta(place, scenario);
+  if (place.projection?.[scenario]) return place.projection[scenario]!;
+
+  const v2 = getClimateV2Overlay(place.id);
+  if (v2?.projection && v2.projectionStatus === "ok") {
+    const ens = scenario === "ssp245" ? v2.projection.ssp245 : v2.projection.ssp585;
+    return {
+      deltaJJAHighC: ens.deltaJJAHighC.median,
+      deltaJANLowC: ens.deltaJANLowC.median,
+      deltaPrecipPct: ens.deltaPrecipPct.median,
+    };
+  }
+
+  return regionalDelta(place, scenario);
 }
 
 function round1(n: number): number {

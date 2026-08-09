@@ -4,6 +4,17 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Climate Data V2 — Daymet 1996–2025 rolling climatology
+
+- **Default Now:** Daymet V4 R1 rolling **1996–2025** climatology (not a WMO standard normal). Same-source **1991–2020** retained for comparison receipts.
+- **Pipeline:** offline `scripts/climate-data/*` fetch/generate/verify/audit; committed `data/climate-v2/manifest.json`, generated overlays under `src/data/generated/climate-v2/`, raw Daymet cache gitignored.
+- **Provenance:** per-place periods, source refs, validation status (`validated` / `grid-only` / `reviewed-exception`); split `editorialConfidence` / `climateDataConfidence`.
+- **Metrics:** `solarEnergyMjM2Day` (solar resource) replaces template sunshine %; Daymet SWE stays snowpack, never snowfall cm; RH estimated from vapor pressure.
+- **UI:** “Recent · 1996–2025”, evidence panel + Learn methodology, compact vs-1991–2020 receipt; map hovers keep active-period trust label without expanding the first viewport.
+- **Projections:** NEX-GDDP ensemble path reserved; places may mark projection unavailable until ensemble assets land (no invented single-model forecasts).
+- **Automation:** monthly Daymet freshness workflow opens a candidate PR only when checks pass (never auto-merge).
+- **Audit:** shadow-diff + rank-diff vs pre-V2 baseline; elevation mismatches for Hood River Gorge and Redfield documented as climate-anchor exceptions.
+
 ### Playtest harden: pan gesturing, unit tooltip, dark field note, alias URLs
 
 - **Map pan gesturing:** one-finger / mouse pan now sets `data-gesturing` once the drag threshold is crossed, so hover cards and leader lines hide during pan (not only pinch/wheel).

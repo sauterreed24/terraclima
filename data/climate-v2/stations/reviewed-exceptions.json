@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "notes": [
+    "Reviewed exceptions for Tier A/B places without a validated station match, or with known grid/terrain semantics issues.",
+    "exceptionReason values: terrain | coastal-exposure | zone-vs-town | station-relocation | grid-limitation | station-mapping-pending | elevation-mismatch | authored-blend-divergence.",
+    "Large authored-vs-Daymet deltas are a review queue, not automatic proof either value is wrong. Daymet V2 remains the runtime source of truth once overlaid."
+  ],
+  "exceptions": {
+    "hood-river-gorge": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "elevation-mismatch",
+      "notes": "Columbia Gorge gap corridor: Daymet 1 km pixel elevation +343 m vs authored river-level reference. Climate-anchor override documents zone-floor semantics; do not retune lat/lon merely to shrink grid delta."
+    },
+    "redfield-ny": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "elevation-mismatch",
+      "notes": "Tug Hill Plateau: Daymet grid elevation −252 m vs authored plateau elevation; lake-effect snow is station-sourced separately from Daymet SWE. Authored precip also diverges (~30%)."
+    },
+    "hood-river-or": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "zone-vs-town",
+      "notes": "Orchard-belt / valley-floor semantics vs Daymet pixel; pending GHCN station mapping."
+    },
+    "honolulu-hi": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "coastal-exposure",
+      "notes": "Island coastal pixel vs authored urban normals; precipitation bias >100% vs authored. Daymet land pixel retained; official station validation pending."
+    },
+    "mount-charleston-nv": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "terrain",
+      "notes": "Sky-island / steep terrain: winter lows and precip diverge from authored town normals (>2°C low, >30% precip)."
+    },
+    "lone-pine-ca": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "terrain",
+      "notes": "Owens Valley floor vs Sierra-adjacent pixel effects; winter low and precip outliers vs authored."
+    },
+    "real-catorce-mx": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "authored-blend-divergence",
+      "notes": "High desert pueblo: authored Tier C blend vs Daymet 1 km (~4°C summer high, ~34% precip). Mexico SMN station validation pending; Daymet retained as cross-border truth."
+    },
+    "ensenada-mx": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "coastal-exposure",
+      "notes": "Pacific coastal Baja: authored vs Daymet diverge on both temperature (~5°C high) and precip (~32%). Coastal marine influence / land-mask effects under review."
+    },
+    "iqaluit-nu": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "grid-limitation",
+      "notes": "Arctic coastal settlement: winter lows diverge ~5°C from authored. Daymet northern edge / coastal ice regime; ECCC station validation pending."
+    },
+    "prince-rupert-bc": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "coastal-exposure",
+      "notes": "Hyper-maritime North Coast: retained for priority review even when within numeric thresholds; coastal exposure and station mapping pending."
+    },
+    "santa-barbara-ca": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "coastal-exposure",
+      "notes": "South Coast marine layer / foothill semantics: summer highs ~3.4°C warmer in Daymet than authored coastal normals."
+    },
+    "mexico-grid-queue": {
+      "status": "reviewed-exception",
+      "stations": [],
+      "exceptionReason": "station-mapping-pending",
+      "notes": "Many Mexico places show authored-vs-Daymet temperature outliers because prior corpus used editorial blends. Daymet is the cross-border source; SMN/WMO station mapping is a follow-up program, not a silent replace."
+    }
+  }
+}
