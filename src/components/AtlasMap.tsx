@@ -95,10 +95,10 @@ const DESKTOP_CLUSTER_RADIUS_PX = 36;
 const MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF = 1.65;
 const DESKTOP_CLUSTER_LABEL_ZOOM_CUTOFF = 1.45;
 const DESKTOP_MARKER_CULL_ZOOM_CUTOFF = 1.45;
-const MOBILE_PIN_MIN_SPACING_PX = 42;
-const DESKTOP_PIN_MIN_SPACING_PX = 32;
-const MOBILE_PIN_MAX_OFFSET_PX = 34;
-const DESKTOP_PIN_MAX_OFFSET_PX = 24;
+const MOBILE_PIN_MIN_SPACING_PX = 46;
+const DESKTOP_PIN_MIN_SPACING_PX = 38;
+const MOBILE_PIN_MAX_OFFSET_PX = 40;
+const DESKTOP_PIN_MAX_OFFSET_PX = 36;
 const CLUSTER_VISUAL_BANDS = [
   { max: 3, band: "small", outerR: 18, innerR: 12.5, fontSize: 12, textY: 4 },
   { max: 8, band: "standard", outerR: 21, innerR: 15, fontSize: 13, textY: 4.5 },
@@ -1058,14 +1058,12 @@ export const AtlasMap = memo(function AtlasMap({
   );
 
   /**
-   * SVG paint order = hit-test order. Render inactive pins first, then hover,
-   * then selection so stacked pins are clickable without hunting for a gap.
+   * SVG paint order = hit-test order. Render inactive pins first, then featured
+   * (worse rank → best rank so #1 wins overlaps), then hover, then selection.
    *
-   * Implemented as a single linear partition pass: with ~130 pins, only 0–2
-   * ever have non-zero priority. The previous spread + sort allocated a new
-   * array and ran ~896 `localeCompare` calls per recompute (every hover,
-   * every selection). The base order from `laidOutMarkerPoints` is already
-   * deterministic so we don't need a tiebreaker.
+   * Featured sort matters after Climate V2: several lenses concentrate nearby
+   * Mexico highland places in the top five, so paint order must prefer the
+   * current leader when hit targets still graze each other.
    */
   const markerRenderOrder = useMemo(() => {
     const base: RenderedClusterPoint[] = [];
@@ -1078,6 +1076,11 @@ export const AtlasMap = memo(function AtlasMap({
       else if (featuredRankById.has(pt.place.id)) featured.push(pt);
       else base.push(pt);
     }
+    featured.sort((a, b) => {
+      const ra = featuredRankById.get(a.place.id) ?? 99;
+      const rb = featuredRankById.get(b.place.id) ?? 99;
+      return rb - ra;
+    });
     base.push(...featured);
     if (hover) base.push(hover);
     if (selected) base.push(selected);
@@ -2736,7 +2739,7 @@ const Marker = memo(function Marker({
   pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
   onSelect, onHoverEnter, onFocusEnter, onLeave, onFocusLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
 }: MarkerProps) {
-  const { place, x, y, anchorX, anchorY, needsLeader } = pt;
+  const { place, x, y, needsLeader, crowded } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
   const color = TONE[tone];
   const signature = useMemo(() => getPlaceVisualSignature(place), [place]);
@@ -2746,10 +2749,12 @@ const Marker = memo(function Marker({
 
   const inv = 1 / k;
   const subLine = placeMapSecondaryLine(place);
-  // When pins spread for collision, labels sit at the spread point while the
-  // glyph stays on the geographic anchor (leader line connects them).
-  const labelSpreadDx = needsLeader ? (x - anchorX) * k : 0;
-  const labelSpreadDy = needsLeader ? (y - anchorY) * k : 0;
+  // Collision layout moves the glyph + hit target to the spread point; a leader
+  // line preserves the true geographic anchor. Labels travel with the glyph so
+  // dense top-ranked clusters (e.g. Mexico highland comfort leaders) stay
+  // independently hoverable instead of stacking one oversized hit circle.
+  const hitPad = crowded ? 5 : 10;
+  const hitR = Math.max(r + hitPad, crowded ? 14 : 18);
 
   // Pin chrome LOD: keep glyphs clickable, drop decorative rings at continent scale.
   const showAura = k >= 1.0;
@@ -2800,8 +2805,8 @@ const Marker = memo(function Marker({
   const handleHoverEnter = useCallback((event: React.PointerEvent) => {
     // Touch/pen activate the dossier on tap; don't run hover dwell promotion.
     if (event.pointerType === "touch" || event.pointerType === "pen") return;
-    onHoverEnter(place.id, anchorX, anchorY);
-  }, [onHoverEnter, place.id, anchorX, anchorY]);
+    onHoverEnter(place.id, x, y);
+  }, [onHoverEnter, place.id, x, y]);
 
   const onMarkerKeyDown = useCallback(
     (e: React.KeyboardEvent) => {
@@ -2851,8 +2856,8 @@ const Marker = memo(function Marker({
 
   const onMarkerFocus = useCallback(() => {
     onFocusReceived(place.id);
-    onFocusEnter(place.id, anchorX, anchorY);
-  }, [onFocusReceived, place.id, onFocusEnter, anchorX, anchorY]);
+    onFocusEnter(place.id, x, y);
+  }, [onFocusReceived, place.id, onFocusEnter, x, y]);
   const onMarkerBlur = useCallback(() => {
     onFocusLeave();
   }, [onFocusLeave]);
@@ -2866,7 +2871,7 @@ const Marker = memo(function Marker({
 
   return (
     <g
-      transform={`translate(${anchorX} ${anchorY})`}
+      transform={`translate(${x} ${y})`}
       role="button"
       tabIndex={isRovingFocused ? 0 : -1}
       data-atlas-marker="true"
@@ -2874,6 +2879,7 @@ const Marker = memo(function Marker({
       data-atlas-focus-id={place.id}
       data-marker-id={place.id}
       data-has-leader={needsLeader ? "true" : "false"}
+      data-pin-crowded={crowded ? "true" : "false"}
       data-pin-lod={pinLod}
       aria-label={ariaLabel}
       className={`map-marker${featuredRank ? " map-marker--featured" : ""}${needsLeader ? " map-marker--offset-label" : ""}`}
@@ -2888,8 +2894,8 @@ const Marker = memo(function Marker({
     >
       <title>{ariaLabel}</title>
       <g transform={`scale(${inv})`} data-atlas-inv-scale="">
-        {/* Generous invisible hit target — geographic anchor stays the tap point. */}
-        <circle r={Math.max(r + 10, 18)} fill="transparent" stroke="none" pointerEvents="all" />
+        {/* Hit target follows the collision-spread glyph; geo truth stays on the leader anchor. */}
+        <circle r={hitR} fill="transparent" stroke="none" pointerEvents="all" />
         {featuredRank ? (
           <g className="map-rank-halo" aria-hidden>
             <circle
@@ -3009,7 +3015,7 @@ const Marker = memo(function Marker({
           const labelPointerEvents = featuredRank || isActive || isHover ? "auto" : "none";
           return (
             <g
-              transform={`translate(${labelSpreadDx + labelDx} ${labelSpreadDy + (showSub ? 2 : 4)})`}
+              transform={`translate(${labelDx} ${showSub ? 2 : 4})`}
               pointerEvents={labelPointerEvents}
               className="map-marker-label"
             >
@@ -3072,7 +3078,7 @@ const Marker = memo(function Marker({
           );
         })() : null}
         {/* Hit target on top so touch/stylus picks the marker, not the map pan layer beneath. */}
-        <circle r={r + 18} fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
+        <circle r={Math.max(hitR, crowded ? hitR : r + 18)} fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
       </g>
     </g>
   );
@@ -3099,6 +3105,7 @@ const Marker = memo(function Marker({
   prev.pt.anchorX === next.pt.anchorX &&
   prev.pt.anchorY === next.pt.anchorY &&
   prev.pt.needsLeader === next.pt.needsLeader &&
+  prev.pt.crowded === next.pt.crowded &&
   prev.pt.place === next.pt.place
 );
 

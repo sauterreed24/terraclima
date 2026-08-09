@@ -4,6 +4,12 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Map hover identity for dense Climate V2 rank clusters
+
+- **Pin collision hit targets:** collision-spread glyphs now carry the hover/tap hit circle (leader line keeps the geographic anchor), so nearby top-ranked places no longer collapse to one oversized stacked target.
+- **Featured paint order:** among gold comfort leaders, worse ranks paint first and #1 last so residual overlaps prefer the current lens leader.
+- **Crowded hit padding:** tighter invisible hit radii when pins are marked crowded after layout.
+
 ### Climate Data V2 — Daymet 1996–2025 rolling climatology
 
 - **Default Now:** Daymet V4 R1 rolling **1996–2025** climatology (not a WMO standard normal). Same-source **1991–2020** retained for comparison receipts.
