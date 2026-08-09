@@ -156,9 +156,9 @@ export const PlaceCard = memo(function PlaceCard({
   );
 
   // Derived at-a-glance extras surfaced on non-compact cards
-  const annualSunshinePct = useMemo(() => {
-    if (compact || !place.climate.sunshinePct) return null;
-    return Math.round(place.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12);
+  const annualSolarMj = useMemo(() => {
+    if (compact || !place.climate.solarEnergyMjM2Day) return null;
+    return place.climate.solarEnergyMjM2Day.reduce((a, b) => a + b, 0) / 12;
   }, [place, compact]);
   const avgHumidity = useMemo(() => {
     if (compact || !place.climate.humidity) return null;
@@ -360,14 +360,14 @@ export const PlaceCard = memo(function PlaceCard({
             <Stat label="Uniqueness" value={place.scores.microclimateUniqueness.toString()} tone="ice" />
           </div>
 
-          {/* Extended stats row: sunshine, humidity, frost-free days */}
-          {!compact && (annualSunshinePct != null || avgHumidity != null || frostFreeDays != null) && (
+          {/* Extended stats row: solar resource, humidity, frost-free days */}
+          {!compact && (annualSolarMj != null || avgHumidity != null || frostFreeDays != null) && (
             <div className="place-card__ext-stats">
-              {annualSunshinePct != null && (
-                <span className="place-card__ext-stat" title="Mean annual sunshine % of possible">
+              {annualSolarMj != null && (
+                <span className="place-card__ext-stat" title="Mean annual solar resource (MJ/m²/day)">
                   <Sun className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#c4a020" }} />
-                  <span className="font-mono-num">{annualSunshinePct}%</span>
-                  <span className="text-stone-readable/60">sun</span>
+                  <span className="font-mono-num">{annualSolarMj.toFixed(1)}</span>
+                  <span className="text-stone-readable/60">MJ</span>
                 </span>
               )}
               {avgHumidity != null && (

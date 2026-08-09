@@ -1,7 +1,8 @@
 import { memo } from "react";
 import { Layers, Search } from "lucide-react";
 import { PLACE_COUNTS } from "../../data/places";
-import { ATLAS_EDITORIAL_SNAPSHOT, CLIMATE_NORMALS_PERIOD } from "../../lib/atlas-metadata";
+import { CLIMATE_NORMALS_PERIOD, CLIMATE_WMO_NORMALS_PERIOD } from "../../lib/atlas-metadata";
+import { climateDataSnapshotLabel } from "../../lib/climate-v2/periods";
 
 /**
  * Atlas footer — the only place in the chrome that names the editorial
@@ -16,13 +17,13 @@ export const Footer = memo(function Footer() {
         <div className="flex items-center gap-3">
           <Layers className="w-3.5 h-3.5" />
           <span>
-            Terraclima is a curated atlas, not a live weather, appraisal, or parcel feed. Climate numbers lean on NOAA, PRISM, ECCC, and SMN normals ({CLIMATE_NORMALS_PERIOD} where available), with WorldClim as a wider net. Geospatial screening uses consistent terrain-climate logic, Sentinel-2 and Landsat reference families, and a relief-texture proxy; every score points back to place notes, sources, and confidence.
+            Terraclima is a curated atlas, not a live weather, appraisal, or parcel feed. Current climate uses Daymet V4 R1 rolling normals ({CLIMATE_NORMALS_PERIOD}; not a WMO standard normal), with {CLIMATE_WMO_NORMALS_PERIOD} as the official comparison period. NOAA, ECCC, and SMN station products validate the grid. Geospatial screening uses consistent terrain-climate logic, Sentinel-2 and Landsat reference families, and a relief-texture proxy; every score points back to place notes, sources, and confidence.
           </span>
         </div>
         <div className="flex items-center gap-3">
           <Search className="w-3.5 h-3.5" />
           <span>
-            {PLACE_COUNTS.total} hand-picked places - editorial refresh {ATLAS_EDITORIAL_SNAPSHOT}
+            {PLACE_COUNTS.total} hand-picked places — {climateDataSnapshotLabel()}
           </span>
         </div>
       </div>

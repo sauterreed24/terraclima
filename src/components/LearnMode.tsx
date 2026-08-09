@@ -12,6 +12,23 @@ export function LearnMode({ onOpenPlace }: Props) {
   return (
     <div className="space-y-4">
       <div className="panel p-4 border-[rgba(26,143,168,0.22)]">
+        <div className="text-xs uppercase tracking-wider text-stone mb-1">Data methodology</div>
+        <h3 className="font-atlas text-lg text-ice mb-2">Where the climate numbers come from</h3>
+        <p className="text-sm text-frost leading-relaxed mb-2">
+          Default <span className="text-ice font-medium">Recent · 1996–2025</span> is a rolling Daymet V4 R1 climatology
+          — not a WMO standard normal. Official <span className="text-ice font-medium">1991–2020</span> normals stay as
+          the same-source comparison. Station products (NOAA, ECCC, SMN) validate the grid; ERA5-Land is fallback/QA only.
+          Solar resource is MJ/m²/day from shortwave radiation × day length, not observed sunshine hours. Daymet SWE is
+          snowpack, never snowfall centimetres. Mid-century layers use NEX-GDDP-CMIP6 ensemble deltas when ingested
+          (research/screening only — not for engineering design).
+        </p>
+        <p className="text-xs text-stone leading-relaxed">
+          Full formulas, validation thresholds, and limitations live in the repository doc
+          {" "}<code className="text-ice">docs/CLIMATE-DATA-V2.md</code>.
+        </p>
+      </div>
+
+      <div className="panel p-4 border-[rgba(26,143,168,0.22)]">
         <div className="text-xs uppercase tracking-wider text-stone mb-1">Start here</div>
         <h3 className="font-atlas text-lg text-ice mb-2">How to read every location in the atlas</h3>
         <ol className="text-sm text-frost leading-relaxed list-decimal pl-5 space-y-1.5">

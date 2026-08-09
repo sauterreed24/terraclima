@@ -4,10 +4,12 @@
 
 import type { Place } from "../types";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
+import { applyClimateV2Overlay } from "../lib/climate-v2/overlay";
 import { PLACES_USA } from "./places.usa";
 import { PLACES_CANADA } from "./places.canada";
 import { PLACES_MEXICO } from "./places.mexico";
 import { TIER_C_POLISH, TIER_C_POLISH_GENERATED, TIER_C_POLISH_SOURCES } from "./places.tier-c-polish";
+import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
 
 const TIER_C_POLISH_ALL: Record<string, typeof TIER_C_POLISH[keyof typeof TIER_C_POLISH]> = {
   ...TIER_C_POLISH,
@@ -84,11 +86,19 @@ const POLISHED_USA = PLACES_USA.map(applyPolish);
 const POLISHED_CANADA = PLACES_CANADA.map(applyPolish);
 const POLISHED_MEXICO = PLACES_MEXICO.map(applyPolish);
 
+/**
+ * Overlay generated Climate V2 Daymet normals onto Place.climate.
+ * When the generated bundle is empty (bootstrap), authored climate is kept.
+ */
+function applyClimateV2(p: Place): Place {
+  return applyClimateV2Overlay(p, CLIMATE_V2_OVERLAY_BY_ID[p.id]);
+}
+
 export const PLACES: Place[] = [
   ...POLISHED_USA,
   ...POLISHED_CANADA,
   ...POLISHED_MEXICO,
-];
+].map(applyClimateV2);
 
 export const PLACES_BY_ID: Record<string, Place> = Object.fromEntries(
   PLACES.map(p => [p.id, p]),

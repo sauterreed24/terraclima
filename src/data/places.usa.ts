@@ -2381,7 +2381,7 @@ export const PLACES_USA: Place[] = [
     id: "ellensburg-wa", tier: "C", country: "USA", region: "Washington", municipality: "Ellensburg", name: "Ellensburg (Kittitas Valley)",
     lat: 46.9965, lon: -120.5478, elevationM: 466,
     reliefContext: "Kittitas Valley, a broad basin on the east slope of the Cascades at the Yakima River's entry from Snoqualmie Pass.",
-    biome: "Shrub-steppe", koppen: "BSk",
+    biome: "Shrub-steppe", koppen: "Dsb",
     archetypes: ["rain-shadow-sanctuary", "gap-wind-corridor", "river-valley-moderation"],
     drivers: ["rain-shadow", "gap-winds", "river-moderation"],
     summaryShort: "One of the windiest rain-shadow valleys in the Northwest — a cold-sunny climate paradox.",

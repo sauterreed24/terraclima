@@ -417,7 +417,7 @@ export function CompareView({
               <div className="compare-scenario-banner" role="note">
                 <Clock3 className="w-3.5 h-3.5 shrink-0" aria-hidden />
                 <span>
-                  Climate charts and scores use the <strong>{scenarioMeta(scenario).label}</strong> illustrative regional projection — the same layer as the Explorer. Place dossiers still show present-day normals.
+                  Climate charts and scores use the <strong>{scenarioMeta(scenario).label}</strong> projection layer — the same layer as the Explorer. Place dossiers still show recent observed normals.
                 </span>
               </div>
             ) : null}
@@ -1147,7 +1147,7 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
     const deepSections = place.deepSections?.length ?? 0;
     const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
     const hasHumidity = Boolean(place.climate.humidity?.length);
-    const hasSunshine = Boolean(place.climate.sunshinePct?.length);
+    const hasSunshine = Boolean(place.climate.solarEnergyMjM2Day?.length || place.climate.sunshinePct?.length);
     const confidenceScore = place.confidence === "high" ? 34 : place.confidence === "moderate" ? 22 : 10;
     const score = Math.min(100, Math.round(
       confidenceScore +
@@ -1163,7 +1163,7 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
       ...(deepSections < 1 ? ["Expand deep-dive context"] : []),
       ...(!hasLiveSignals ? ["Fill lived-friction signals"] : []),
       ...(!hasHumidity ? ["Source humidity normals"] : []),
-      ...(!hasSunshine ? ["Source sunshine normals"] : []),
+      ...(!hasSunshine ? ["Source solar-resource normals"] : []),
     ].slice(0, 4);
     const label = score >= 78 && gaps.length <= 1
       ? "Ready for scout plan"
@@ -1212,7 +1212,13 @@ function buildGroupedComparisonRows(
   const meanPercent = (values: readonly number[] | undefined) => values?.length
     ? `${Math.round(values.reduce((sum, value) => sum + value, 0) / values.length)}%`
     : "not sourced";
-  const meanSunshine = (place: Place) => meanPercent(place.climate.sunshinePct);
+  const meanSunshine = (place: Place) => {
+    if (place.climate.solarEnergyMjM2Day?.length) {
+      const mean = place.climate.solarEnergyMjM2Day.reduce((a, b) => a + b, 0) / 12;
+      return Number.isFinite(mean) ? `${mean.toFixed(1)} MJ` : "not sourced";
+    }
+    return meanPercent(place.climate.sunshinePct);
+  };
   const meanHumidity = (place: Place) => meanPercent(place.climate.humidity);
   const httpsCitations = (place: Place) => `${place.citations.filter(citation => citation.url?.startsWith("https://")).length}`;
 
@@ -1231,7 +1237,7 @@ function buildGroupedComparisonRows(
       return profile ? `${profile.easyMonths}/12` : "not graded";
     })),
     row("Seasonality", "Annual precip", places.map(place => fmtPrecip(getAnnualPrecipMm(place), distUnit))),
-    row("Seasonality", "Sunshine", places.map(meanSunshine)),
+    row("Seasonality", "Solar resource", places.map(meanSunshine)),
     row("Seasonality", "Frost-free", places.map(place => place.climate.frostFreeDays == null ? "not sourced" : `${place.climate.frostFreeDays} d`)),
     row("Hazards", "Risk load", places.map(place => {
       const profile = decisionById.get(place.id);

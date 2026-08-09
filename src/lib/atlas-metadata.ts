@@ -1,11 +1,19 @@
 /**
  * Editorial / provenance copy shared across the shell and place detail.
- * WMO 30-year normals; atlas corpus is hand-curated, not a live API feed.
+ *
+ * Default “Now” is the rolling 1996–2025 climatology (not a WMO standard normal).
+ * Official WMO 1991–2020 remains the comparison/reference period.
  */
-export const CLIMATE_NORMALS_PERIOD = "1991–2020" as const;
+export const CLIMATE_NORMALS_PERIOD = "1996–2025" as const;
 
-/** Shown in the footer and detail panel so readers know the corpus is versioned, not real-time. */
-export const ATLAS_EDITORIAL_SNAPSHOT = "April 2026" as const;
+/** Official WMO standard normal used for comparison receipts. */
+export const CLIMATE_WMO_NORMALS_PERIOD = "1991–2020" as const;
+
+/**
+ * Shown in the footer and detail panel so readers know the corpus is versioned.
+ * Prefer `climateDataSnapshotLabel()` from climate-v2/periods for manifest-derived text.
+ */
+export const ATLAS_EDITORIAL_SNAPSHOT = "Data through 2025" as const;
 
 export interface EarthObservationSource {
   id: "sentinel-2" | "landsat";

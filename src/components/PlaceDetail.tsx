@@ -385,8 +385,8 @@ function DetailHeader({
   const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
   const annualP = getAnnualPrecipMm(place);
-  const sunshine = place.climate.sunshinePct
-    ? Math.round(place.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12)
+  const solarResource = place.climate.solarEnergyMjM2Day
+    ? (place.climate.solarEnergyMjM2Day.reduce((a, b) => a + b, 0) / 12)
     : null;
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
   const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
@@ -633,8 +633,8 @@ function DetailHeader({
         <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="JJA high" value={fmtTemp(summerHigh, temp)} />
         <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />} label="Jan low" value={fmtTemp(janLow, temp)} />
         <HeroStat icon={<Droplets className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />} label="Annual precip" value={fmtPrecip(annualP, dist)} />
-        {sunshine != null ? (
-          <HeroStat icon={<Sun className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="Sunshine" value={`${sunshine}%`} />
+        {solarResource != null ? (
+          <HeroStat icon={<Sun className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="Solar resource" value={`${solarResource.toFixed(1)} MJ`} />
         ) : place.climate.hardinessZone ? (
           <HeroStat icon={<Leaf className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />} label="Hardiness" value={place.climate.hardinessZone} />
         ) : (
@@ -792,7 +792,7 @@ function DetailBody({
         <div className="compare-scenario-banner dossier-scenario-banner" role="note">
           <Clock3 className="w-3.5 h-3.5 shrink-0 mt-0.5" aria-hidden />
           <span>
-            Explorer and Compare use the <strong>{scenarioMeta(scenario).label}</strong> illustrative regional projection. This dossier shows present-day normals ({CLIMATE_NORMALS_PERIOD}).
+            Explorer and Compare use the <strong>{scenarioMeta(scenario).label}</strong> projection layer. This dossier shows recent observed normals ({CLIMATE_NORMALS_PERIOD}; rolling climatology, not WMO standard normal).
           </span>
         </div>
       ) : null}
@@ -1511,7 +1511,7 @@ function DetailBody({
 
         <div className="mt-3">
           <p className="text-[11px] text-stone leading-relaxed mb-2">
-            Citations name the station, product, or study behind each number. WMO-style 30-year windows are typically {CLIMATE_NORMALS_PERIOD} when a period appears in the label; mixed or reanalysis sources are called out in the note.
+            Citations name the station, product, or study behind each number. Current charts use Daymet rolling {CLIMATE_NORMALS_PERIOD} climatology (not a WMO standard normal); official 1991–2020 normals remain the comparison period.
           </p>
           <div className="text-[10px] uppercase tracking-wider text-stone mb-1.5 flex items-center gap-2">
             <BookOpen className="w-3 h-3" /> Citations

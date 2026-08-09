@@ -465,10 +465,21 @@ export function skyComfortScore(p: Place): number {
     score -= Math.min(18, (annualHumidity - 78) * 0.5 + (10 - diurnal) * 0.9);
   }
 
-  // Summer-sunshine collapse: even when the humidity proxy understates the
-  // fog deck, a real measurement of dim summers should pull sky comfort down.
+  // Summer solar-resource collapse: dim summers pull sky comfort down.
+  // Prefer MJ/m²/day; fall back to legacy sunshine % when present.
+  const solar = p.climate.solarEnergyMjM2Day;
   const sunshine = p.climate.sunshinePct;
-  if (sunshine) {
+  if (solar) {
+    const summerSolar = (solar[5] + solar[6] + solar[7]) / 3;
+    // ~12 MJ/m²/day ≈ collapse threshold analogous to ~55% sunshine
+    const collapseMj = 12;
+    if (summerSolar < collapseMj) {
+      score -= Math.min(
+        SKY_COMFORT.summerSunshineCollapsePenaltyMaxPts,
+        (collapseMj - summerSolar) * 2.2,
+      );
+    }
+  } else if (sunshine) {
     const summerSun = (sunshine[5] + sunshine[6] + sunshine[7]) / 3;
     if (summerSun < SKY_COMFORT.summerSunshineCollapsePct) {
       score -= Math.min(

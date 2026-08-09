@@ -2480,7 +2480,7 @@ export const AtlasMap = memo(function AtlasMap({
               {" "}— fill stays the climate driver.
             </p>
             <p>Geospatial numbers are atlas screening analytics (terrain + climate + reference EO design goals). They are not live Sentinel, Landsat, or lidar products.</p>
-            <p>Chart numbers in each profile use the cited normals or blends; WMO 30-year windows are often {CLIMATE_NORMALS_PERIOD} when a period is named.</p>
+            <p>Chart numbers use Daymet rolling {CLIMATE_NORMALS_PERIOD} climatology (not a WMO standard normal); 1991–2020 remains the official comparison period.</p>
             <p className="map-key-notes__credit">Projection: Albers equal-area conic, centered on North America (north is up).</p>
           </div>
         </details>

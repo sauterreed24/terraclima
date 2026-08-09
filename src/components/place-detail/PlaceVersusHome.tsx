@@ -108,7 +108,7 @@ export function PlaceVersusHome({
           ))}
         </ul>
         <p className="text-[11px] text-stone-readable leading-snug mt-3">
-          Deltas read {place.name} minus {home.name} from {CLIMATE_NORMALS_PERIOD} normals — a
+          Deltas read {place.name} minus {home.name} from recent {CLIMATE_NORMALS_PERIOD} climatology — a
           screening lens, not a forecast. Change your home base from any dossier header, the{" "}
           <kbd className="kbd">H</kbd> shortcut, or the count strip above the ranked cards.
           {scenario !== "now" ? (

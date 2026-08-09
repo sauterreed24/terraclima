@@ -68,17 +68,41 @@ export function meanSummerHumidityPct(p: Place): number | null {
   return (humidity[5] + humidity[6] + humidity[7]) / 3;
 }
 
-export function meanAnnualSunshinePct(p: Place): number | null {
-  const sunshine = p.climate.sunshinePct;
-  if (!sunshine) return null;
-  return sunshine.reduce((sum, value) => sum + value, 0) / sunshine.length;
+/** Mean annual solar resource (MJ/m²/day). Prefer V2 solarEnergy; legacy sunshinePct as fallback. */
+export function meanAnnualSolarMjM2Day(p: Place): number | null {
+  const solar = p.climate.solarEnergyMjM2Day;
+  if (solar) return solar.reduce((sum, value) => sum + value, 0) / solar.length;
+  return null;
 }
 
-/** Mean Dec–Feb possible sunshine (%). Null when the place has no sunshine series. */
+/** Mean Dec–Feb solar resource (MJ/m²/day). */
+export function meanWinterSolarMjM2Day(p: Place): number | null {
+  const solar = p.climate.solarEnergyMjM2Day;
+  if (!solar) return null;
+  return (solar[11] + solar[0] + solar[1]) / 3;
+}
+
+/**
+ * @deprecated Prefer meanAnnualSolarMjM2Day. Legacy sunshine % helper kept for
+ * transitional scoring paths that still expect a 0–100 sky brightness proxy.
+ * When only solar energy is present, maps MJ/m²/day → rough % via 0.25*MJ*10≈scale.
+ */
+export function meanAnnualSunshinePct(p: Place): number | null {
+  const sunshine = p.climate.sunshinePct;
+  if (sunshine) return sunshine.reduce((sum, value) => sum + value, 0) / sunshine.length;
+  const solar = meanAnnualSolarMjM2Day(p);
+  if (solar == null) return null;
+  // Typical NA annual means ~10–20 MJ/m²/day → map 8→40, 16→70, 22→90
+  return Math.max(0, Math.min(100, 10 + solar * 3.75));
+}
+
+/** Mean Dec–Feb possible sunshine (%). Null when neither solar nor sunshine series exist. */
 export function meanWinterSunshinePct(p: Place): number | null {
   const sun = p.climate.sunshinePct;
-  if (!sun) return null;
-  return (sun[11] + sun[0] + sun[1]) / 3;
+  if (sun) return (sun[11] + sun[0] + sun[1]) / 3;
+  const solar = meanWinterSolarMjM2Day(p);
+  if (solar == null) return null;
+  return Math.max(0, Math.min(100, 10 + solar * 3.75));
 }
 
 export const SEASONAL_USABILITY = {

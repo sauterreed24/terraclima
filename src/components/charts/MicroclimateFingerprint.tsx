@@ -101,7 +101,8 @@ function compactAxisLabel(label: string): string {
     case "Cool summers": return "Cool";
     case "Mild winters": return "Mild";
     case "Dryness": return "Dry";
-    case "Sunshine": return "Sun";
+    case "Sunshine":
+    case "Solar": return "Sun";
     case "Diurnal swing": return "Swing";
     case "Elevation": return "Elev.";
     case "Low humidity": return "Low hum.";
@@ -116,14 +117,18 @@ function buildAxes(p: Place): Axis[] {
   const annualP = getAnnualPrecipMm(p);
   const diurnal = p.climate.diurnalSummerC ?? p.climate.tempHighC[6] - p.climate.tempLowC[6];
   const humidity = p.climate.humidity ? p.climate.humidity.reduce((a, b) => a + b, 0) / 12 : 65;
-  const sunshine = p.climate.sunshinePct ? p.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12 : 55;
+  const sunshine = p.climate.solarEnergyMjM2Day
+    ? Math.max(0, Math.min(100, 10 + (p.climate.solarEnergyMjM2Day.reduce((a, b) => a + b, 0) / 12) * 3.75))
+    : p.climate.sunshinePct
+      ? p.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12
+      : 55;
 
   // All axes normalized 0..100
   return [
     { label: "Cool summers", v: clamp(100 - Math.max(0, summerHigh - 16) * 4) },
     { label: "Mild winters", v: clamp(100 - Math.max(0, -janLow) * 5) },
     { label: "Dryness", v: clamp(100 - annualP / 20) },
-    { label: "Sunshine", v: clamp(sunshine * 1.2) },
+    { label: "Solar", v: clamp(sunshine * 1.2) },
     { label: "Diurnal swing", v: clamp((diurnal - 4) * 8) },
     { label: "Elevation", v: clamp(p.elevationM / 35) },
     { label: "Low humidity", v: clamp(100 - Math.max(0, humidity - 35) * 2) },
