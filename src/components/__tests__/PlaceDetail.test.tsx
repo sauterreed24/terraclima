@@ -582,7 +582,7 @@ describe("PlaceDetail scenario honesty banner", () => {
     );
 
     expect(screen.getByRole("note")).toHaveTextContent("SSP5-8.5");
-    expect(screen.getByRole("note")).toHaveTextContent("present-day normals");
+    expect(screen.getByRole("note")).toHaveTextContent(/recent observed normals/i);
   });
 
   it("hides the banner when scenario is present-day", () => {

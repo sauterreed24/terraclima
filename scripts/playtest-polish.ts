@@ -362,9 +362,9 @@ async function main(): Promise<void> {
     if (!styles.includes(needle)) throw new Error(`styles.css missing PR #253 token: ${needle}`);
   }
 
-  // Corpus sunshine + UTCI* comfort path on a flagship B place.
+  // Corpus solar resource + UTCI* comfort path on a flagship B place.
   const sb = PLACES.find(p => p.id === "santa-barbara-ca");
-  if (!sb?.climate.sunshinePct) throw new Error("santa-barbara-ca missing sunshinePct");
+  if (!sb?.climate.solarEnergyMjM2Day) throw new Error("santa-barbara-ca missing solarEnergyMjM2Day");
   const comfort = buildComfortPrecisionProfile(sb);
   const utci = apparentComfortIndexFromProfile(comfort);
   if (!Number.isFinite(utci.score) || utci.score < 0 || utci.score > 100) {
@@ -386,7 +386,7 @@ async function main(): Promise<void> {
   for (const id of polishIds) {
     const place = PLACES.find(p => p.id === id);
     if (!place) throw new Error(`polish anchor missing: ${id}`);
-    if (!place.climate.sunshinePct) throw new Error(`${id} missing sunshinePct after polish pass`);
+    if (!place.climate.solarEnergyMjM2Day) throw new Error(`${id} missing solarEnergyMjM2Day after V2 overlay`);
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after polish pass`);
     if (!place.climate.humidity) throw new Error(`${id} missing humidity after Tier B polish pass`);
   }
@@ -415,7 +415,7 @@ async function main(): Promise<void> {
       const detail = place.experience.seasons?.[key];
       if (!detail || detail.length < 24) throw new Error(`${id} missing authored ${key} season detail`);
     }
-    if (!place.climate.sunshinePct) throw new Error(`${id} missing sunshinePct after batch 2`);
+    if (!place.climate.solarEnergyMjM2Day) throw new Error(`${id} missing solarEnergyMjM2Day after batch 2`);
     if (!place.liveSignals) throw new Error(`${id} missing liveSignals after batch 2`);
   }
 

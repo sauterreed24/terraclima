@@ -360,10 +360,31 @@ async function hoverPinById(page, pinId) {
   return true;
 }
 
-async function collectRepresentativePinIds(page) {
+/**
+ * Resolve the current #1 featured comfort-leader pin (gold halo). Rankings can
+ * shift after climate corpus refreshes; clustering only protects featured IDs,
+ * so hover-containment sweeps must follow the live leader rather than a
+ * hard-coded place that may have left the top five.
+ */
+async function resolvePrimaryFeaturedPinId(page) {
   return page.evaluate(() => {
+    const featured = Array.from(
+      document.querySelectorAll(".map-marker--featured[data-marker-id]"),
+    );
+    for (const el of featured) {
+      const label = el.getAttribute("aria-label") || "";
+      if (/Current rank #1\b/.test(label)) {
+        return el.getAttribute("data-marker-id");
+      }
+    }
+    return featured[0]?.getAttribute("data-marker-id") ?? null;
+  });
+}
+
+async function collectRepresentativePinIds(page, primaryPinId) {
+  return page.evaluate((primaryId) => {
     const shell = document.querySelector(".map-shell");
-    if (!shell) return ["real-catorce-mx"];
+    if (!shell) return primaryId ? [primaryId] : [];
     const shellRect = shell.getBoundingClientRect();
     const markers = Array.from(document.querySelectorAll("[data-atlas-marker='true']"))
       .map((el) => {
@@ -385,19 +406,19 @@ async function collectRepresentativePinIds(page) {
     const pushUnique = (id) => {
       if (id && !pick.includes(id)) pick.push(id);
     };
-    pushUnique("real-catorce-mx");
+    if (primaryId) pushUnique(primaryId);
     if (markers.length) {
       pushUnique(markers.reduce((a, b) => (a.cy <= b.cy ? a : b)).id); // top
       pushUnique(markers.reduce((a, b) => (a.cy >= b.cy ? a : b)).id); // bottom
       pushUnique(markers.reduce((a, b) => (a.cx <= b.cx ? a : b)).id); // left
       pushUnique(markers.reduce((a, b) => (a.cx >= b.cx ? a : b)).id); // right
     }
-    // Prefer featured southern comfort leader even if momentarily out of shell math.
-    if (byId.has("real-catorce-mx") || document.querySelector('[data-marker-id="real-catorce-mx"]')) {
-      pushUnique("real-catorce-mx");
+    // Prefer the live featured comfort leader even if momentarily out of shell math.
+    if (primaryId && (byId.has(primaryId) || document.querySelector(`[data-marker-id="${primaryId}"]`))) {
+      pushUnique(primaryId);
     }
     return pick.slice(0, 5);
-  });
+  }, primaryPinId);
 }
 
 async function runHoverCardSweep(page, findings, viewportName) {
@@ -408,15 +429,16 @@ async function runHoverCardSweep(page, findings, viewportName) {
   await allowHoverThroughChrome(page);
 
   const wideDesktop = /1440|1280/.test(viewportName);
-  const pinIds = await collectRepresentativePinIds(page);
+  const primaryPinId = await resolvePrimaryFeaturedPinId(page);
+  const pinIds = await collectRepresentativePinIds(page, primaryPinId);
   let exercised = 0;
   for (const pinId of pinIds) {
     const ok = await hoverPinById(page, pinId);
     if (!ok) continue;
     await page.waitForTimeout(HOVER_CARD_DWELL_MS + 40);
-    // Hard readout check on the southern comfort leader at wide desktops — the
+    // Hard readout check on the live comfort leader at wide desktops — the
     // defect case. Other cardinal pins only need shell containment + placement.
-    const checkReadoutOverlap = pinId === "real-catorce-mx" && wideDesktop;
+    const checkReadoutOverlap = Boolean(primaryPinId) && pinId === primaryPinId && wideDesktop;
     for (const issue of await collectHoverCardContainmentIssues(page, {
       expectFull: true,
       label: `${viewportName}:${pinId}`,
@@ -437,23 +459,23 @@ async function runHoverCardSweep(page, findings, viewportName) {
 
   // Zoom with keyboard while the pointer stays on the pin so re-anchoring is live.
   // Run before keyboard-focus checks so roving focus cannot pin the compact path.
-  if (await hoverPinById(page, "real-catorce-mx")) {
+  if (primaryPinId && await hoverPinById(page, primaryPinId)) {
     await page.waitForTimeout(HOVER_CARD_DWELL_MS + 40);
     await page.keyboard.press("=");
     await page.waitForTimeout(180);
     // If zoom walked the pin out of the shell, fit once and re-hover at a milder zoom.
-    const stillVisible = await page.evaluate(() => {
-      const pin = document.querySelector('[data-marker-id="real-catorce-mx"]');
+    const stillVisible = await page.evaluate((pinId) => {
+      const pin = document.querySelector(`[data-marker-id="${pinId}"]`);
       const shell = document.querySelector(".map-shell");
       if (!pin || !shell) return false;
       const pr = pin.getBoundingClientRect();
       const sr = shell.getBoundingClientRect();
       return pr.left >= sr.left && pr.right <= sr.right && pr.top >= sr.top && pr.bottom <= sr.bottom;
-    });
+    }, primaryPinId);
     if (!stillVisible) {
       if (await fit.count()) await fit.click();
       await page.waitForTimeout(160);
-      await hoverPinById(page, "real-catorce-mx");
+      await hoverPinById(page, primaryPinId);
       await page.waitForTimeout(HOVER_CARD_DWELL_MS + 40);
       await page.keyboard.press("=");
       await page.waitForTimeout(180);
@@ -470,7 +492,9 @@ async function runHoverCardSweep(page, findings, viewportName) {
   // Keyboard focus stays compact and must remain inside the map shell.
   await page.mouse.move(8, 8);
   await page.waitForTimeout(120);
-  const keyboardPin = page.locator('[data-marker-id="real-catorce-mx"]');
+  const keyboardPin = primaryPinId
+    ? page.locator(`[data-marker-id="${primaryPinId}"]`)
+    : page.locator(".map-marker--featured[data-marker-id]").first();
   if (await keyboardPin.count()) {
     await keyboardPin.focus();
     await page.waitForTimeout(HOVER_CARD_DWELL_MS + 40);
@@ -501,7 +525,7 @@ async function runHoverCardSweep(page, findings, viewportName) {
     await page.waitForTimeout(220);
     await page.locator(".tc-map-stage").scrollIntoViewIfNeeded();
     await allowHoverThroughChrome(page);
-    if (await hoverPinById(page, "real-catorce-mx")) {
+    if (primaryPinId && await hoverPinById(page, primaryPinId)) {
       await page.waitForTimeout(HOVER_CARD_DWELL_MS + 40);
       for (const issue of await collectHoverCardContainmentIssues(page, {
         expectFull: true,
@@ -856,7 +880,7 @@ async function main() {
         timeout: 30000,
       });
       await page.waitForSelector(".map-shell", { timeout: 20000 });
-      await page.waitForSelector("[data-marker-id='real-catorce-mx']", { timeout: 20000 });
+      await page.waitForSelector(".map-marker--featured[data-marker-id]", { timeout: 20000 });
       await page.waitForTimeout(400);
       await runHoverCardSweep(page, findings, vp.name);
       await page.screenshot({
@@ -869,7 +893,8 @@ async function main() {
         document.documentElement.setAttribute("data-motion", "reduced");
       });
       await allowHoverThroughChrome(page);
-      if (await hoverPinById(page, "real-catorce-mx")) {
+      const featuredPinId = await resolvePrimaryFeaturedPinId(page);
+      if (featuredPinId && await hoverPinById(page, featuredPinId)) {
         await page.waitForTimeout(HOVER_CARD_DWELL_MS + 40);
         for (const issue of await collectHoverCardContainmentIssues(page, {
           expectFull: true,

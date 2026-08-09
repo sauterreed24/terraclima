@@ -50,13 +50,13 @@ describe("corpus coverage helper", () => {
     }
     const boone = report.places.find(row => row.id === "boone-nc");
     expect(boone?.missing).not.toContain("humidity");
-    expect(boone?.missing).not.toContain("sunshinePct");
+    expect(boone?.missing).not.toContain("solarEnergyMjM2Day");
     const anchorage = report.places.find(row => row.id === "anchorage-ak");
     expect(anchorage?.missing).not.toContain("humidity");
-    expect(anchorage?.missing).not.toContain("sunshinePct");
+    expect(anchorage?.missing).not.toContain("solarEnergyMjM2Day");
     const alamos = report.places.find(row => row.id === "alamos-mx");
     expect(alamos?.missing).not.toContain("humidity");
-    expect(alamos?.missing).not.toContain("sunshinePct");
+    expect(alamos?.missing).not.toContain("solarEnergyMjM2Day");
     expect(report.thinPlaces.slice(0, 12).some(place => promotedIds.has(place.id))).toBe(false);
   });
 });

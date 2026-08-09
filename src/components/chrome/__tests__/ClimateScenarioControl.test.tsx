@@ -13,13 +13,14 @@ describe("ClimateScenarioControl", () => {
     const group = screen.getByRole("group", { name: "Climate scenario layer" });
     expect(group).toBeInTheDocument();
 
-    const now = screen.getByRole("button", { name: "Now" });
+    const now = screen.getByRole("button", { name: "Recent" });
     const mid = screen.getByRole("button", { name: "2050 mid" });
     const high = screen.getByRole("button", { name: "2050 high" });
     expect(now).toHaveAttribute("aria-pressed", "true");
     expect(mid).toHaveAttribute("aria-pressed", "false");
     expect(high).toHaveAttribute("aria-pressed", "false");
-    expect(screen.getByText(/Present-day normals \(1991–2020\)/)).toBeInTheDocument();
+    expect(screen.getByText(/Recent · 1996–2025/)).toBeInTheDocument();
+    expect(screen.getByText(/not WMO standard normal/i)).toBeInTheDocument();
 
     fireEvent.click(mid);
     expect(onChange).toHaveBeenCalledWith("ssp245");
@@ -29,7 +30,7 @@ describe("ClimateScenarioControl", () => {
     render(<ClimateScenarioControl scenario="ssp585" onChange={() => undefined} projecting />);
     expect(screen.getByRole("group", { name: "Climate scenario layer" })).toHaveAttribute("aria-busy", "true");
     expect(screen.getByText(/Projecting…/)).toBeInTheDocument();
-    expect(screen.getByText(/SSP5-8.5/)).toBeInTheDocument();
-    expect(screen.getByText(/dossier still shows present-day normals/)).toBeInTheDocument();
+    expect(screen.getByText(/2050 high \(2041–2060\)/)).toBeInTheDocument();
+    expect(screen.getByText(/dossier still shows recent observed normals/)).toBeInTheDocument();
   });
 });

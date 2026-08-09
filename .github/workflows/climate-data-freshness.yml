@@ -1,0 +1,77 @@
+# Monthly read-only check: has Daymet’s latest complete calendar year advanced?
+# When yes, regenerate a candidate rolling window and open a PR only if checks pass.
+# Never auto-merge.
+name: Climate data freshness
+
+on:
+  schedule:
+    - cron: "0 14 3 * *" # 03:00 UTC on the 3rd of each month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  check-and-refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Detect Daymet latest complete year
+        id: daymet
+        run: |
+          # Probe a stable continental pixel for the newest complete calendar year.
+          # Prefer the year after the pinned manifest dataThroughYear.
+          PINNED=$(node -e "console.log(require('./data/climate-v2/manifest.json').dataThroughYear||2025)")
+          CANDIDATE=$((PINNED + 1))
+          URL="https://daymet.ornl.gov/single-pixel/api/data?lat=39.0&lon=-98.0&vars=tmax&years=${CANDIDATE}"
+          CODE=$(curl -sS -o /tmp/daymet-probe.csv -w "%{http_code}" "$URL" || true)
+          ROWS=0
+          if [ "$CODE" = "200" ]; then
+            ROWS=$(grep -c "^${CANDIDATE}," /tmp/daymet-probe.csv || true)
+          fi
+          echo "pinned=$PINNED" >> "$GITHUB_OUTPUT"
+          echo "candidate=$CANDIDATE" >> "$GITHUB_OUTPUT"
+          if [ "$CODE" = "200" ] && [ "$ROWS" -ge 365 ]; then
+            echo "advanced=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "advanced=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Daymet probe HTTP $CODE rows=$ROWS pinned=$PINNED candidate=$CANDIDATE"
+
+      - name: No refresh needed
+        if: steps.daymet.outputs.advanced != 'true'
+        run: echo "Daymet latest complete year has not advanced past ${{ steps.daymet.outputs.pinned }}."
+
+      - name: Regenerate candidate rolling window
+        if: steps.daymet.outputs.advanced == 'true'
+        run: |
+          npm run climate:data:update -- --through=${{ steps.daymet.outputs.candidate }} --concurrency=4
+          npm run climate:data:verify
+          npm run climate:data:audit
+
+      - name: Open refresh PR
+        if: steps.daymet.outputs.advanced == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(climate): roll normals through ${{ steps.daymet.outputs.candidate }}"
+          title: "Climate data refresh through ${{ steps.daymet.outputs.candidate }}"
+          body: |
+            Automated Daymet freshness refresh.
+
+            - Previous data-through year: `${{ steps.daymet.outputs.pinned }}`
+            - Candidate data-through year: `${{ steps.daymet.outputs.candidate }}`
+            - New rolling window ends in `${{ steps.daymet.outputs.candidate }}` (30-year climatology).
+
+            **Do not auto-merge.** Review source/rank/quality diffs in `data/climate-v2/audit/` before merge.
+          branch: cursor/climate-data-refresh-${{ steps.daymet.outputs.candidate }}
+          delete-branch: true

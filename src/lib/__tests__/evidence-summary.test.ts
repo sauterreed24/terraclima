@@ -67,7 +67,7 @@ describe("evidence-summary", () => {
     const place = samplePlace();
     const summary = buildPlaceEvidenceSummary(place);
     expect(summary.placeId).toBe(place.id);
-    expect(summary.normalsPeriod).toMatch(/1991/);
+    expect(summary.normalsPeriod).toMatch(/1996/);
     expect(ALLOWED_CONFIDENCE).toContain(summary.confidence);
     expect(summary.citationCount).toBe(place.citations.length);
     expect(summary.urlCitationCount).toBe(

@@ -662,7 +662,7 @@ describe("FilterBar climate scenario chip", () => {
 
     const lens = screen.getByRole("region", { name: "Current Explorer lens" });
     expect(lens).toHaveTextContent("SSP5-8.5");
-    expect(lens).toHaveTextContent("illustrative regional projection");
+    expect(lens).toHaveTextContent(/projection/i);
     const scenarioChip = screen.getByRole("button", { name: "Remove filter: 2050 high" });
     expect(scenarioChip).toHaveAttribute("title", "Remove filter: 2050 high");
     fireEvent.click(scenarioChip);

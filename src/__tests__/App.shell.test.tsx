@@ -152,7 +152,7 @@ vi.mock("../components/PlaceDetail", () => ({
       ) : null}
       {scenario && scenario !== "now" ? (
         <div data-testid="place-detail-scenario-honesty">
-          Explorer uses {scenario}; dossier stays on present-day normals
+          Explorer uses {scenario}; dossier stays on recent observed normals
         </div>
       ) : null}
       <button type="button" aria-label="Close profile" onClick={onClose} />
@@ -330,7 +330,7 @@ describe("App shell", () => {
 
     const collectionPlace = await screen.findByRole(
       "button",
-      { name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Identity" },
+      { name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Comfort" },
       { timeout: APP_SHELL_TIMEOUT_MS },
     );
     fireEvent.click(collectionPlace);
@@ -834,7 +834,7 @@ describe("App shell", () => {
     const profile = await screen.findByRole("dialog", { name: "Place profile" }, { timeout: APP_SHELL_TIMEOUT_MS });
     expect(screen.queryByRole("dialog", { name: "2 places side by side" })).not.toBeInTheDocument();
     expect(profile).toHaveAttribute("data-scenario", "ssp245");
-    expect(screen.getByTestId("place-detail-scenario-honesty")).toHaveTextContent(/present-day normals/i);
+    expect(screen.getByTestId("place-detail-scenario-honesty")).toHaveTextContent(/recent observed normals/i);
 
     await act(async () => {
       await new Promise(resolve => window.setTimeout(resolve, 280));
