@@ -294,6 +294,15 @@ function buildAtlasMapReadout({
   };
 }
 
+/** Short headline for the mobile Atlas Read chip — keep the control corner-sized. */
+function compactAtlasReadHeadline(headline: string): string {
+  const base = headline.replace(/\s+leads$/i, "").trim();
+  const amp = base.indexOf(" & ");
+  if (amp > 0 && amp <= 20) return base.slice(0, amp);
+  if (base.length <= 22) return base;
+  return `${base.slice(0, 20).trimEnd()}…`;
+}
+
 function linePath(points: Array<[number, number]>): string {
   if (points.length === 0) return "";
   const [first, ...rest] = points;
@@ -434,6 +443,12 @@ export const AtlasMap = memo(function AtlasMap({
   }, [showScrollEscape, compactMapChrome]);
 
   useEffect(() => {
+    // Page-scroll mode is for browsing the atlas; collapse the readout so a
+    // leftover expanded panel cannot sit in the middle of the viewport.
+    if (!mapInteractive) setAtlasReadoutExpanded(false);
+  }, [mapInteractive]);
+
+  useEffect(() => {
     if (mapInteractive) return;
     activeTouchPointersRef.current.clear();
     const live = pinchLiveRef.current;
@@ -516,6 +531,8 @@ export const AtlasMap = memo(function AtlasMap({
   clusterPickerOpenRef.current = clusterPicker != null;
   const selectionFromMapRef = useRef(false);
   const [atlasReadoutExpanded, setAtlasReadoutExpanded] = useState(false);
+  // Compact chrome (phones / narrow shells): keep the atlas read as a corner
+  // chip so it cannot dominate the map mid-band while the user scrolls places.
   const hoverClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const cancelHoverClear = useCallback(() => {
@@ -2313,15 +2330,22 @@ export const AtlasMap = memo(function AtlasMap({
           className="map-atlas-readout map-chrome-panel"
           aria-label="Current map read"
           data-expanded={atlasReadoutExpanded ? "true" : "false"}
+          data-density={coarsePointer ? "compact" : "full"}
+          data-page-scroll={mapInteractive ? "false" : "true"}
           style={{ ["--map-readout-rgb" as string]: atlasMapReadout.accentRgb }}
         >
           <div className="map-atlas-readout__head">
             <span>Atlas read</span>
-            <strong title={atlasMapReadout.headline}>{atlasMapReadout.headline}</strong>
+            <strong title={atlasMapReadout.headline}>
+              {coarsePointer
+                ? compactAtlasReadHeadline(atlasMapReadout.headline)
+                : atlasMapReadout.headline}
+            </strong>
             <button
               type="button"
               className="map-atlas-readout__expand"
               aria-expanded={atlasReadoutExpanded}
+              aria-controls="tc-map-atlas-readout-grid"
               aria-label={atlasReadoutExpanded ? "Collapse atlas read details" : "Expand atlas read details"}
               title={atlasReadoutExpanded ? "Collapse atlas read details" : "Expand atlas read details"}
               onClick={() => setAtlasReadoutExpanded(v => !v)}
@@ -2329,7 +2353,12 @@ export const AtlasMap = memo(function AtlasMap({
               {atlasReadoutExpanded ? "Less" : "More"}
             </button>
           </div>
-          <dl className="map-atlas-readout__grid" aria-label={atlasMapReadout.ariaLabel}>
+          <dl
+            id="tc-map-atlas-readout-grid"
+            className="map-atlas-readout__grid"
+            aria-label={atlasMapReadout.ariaLabel}
+            hidden={coarsePointer && !atlasReadoutExpanded ? true : undefined}
+          >
             {atlasMapReadout.items.map(item => (
               <div key={item.label} className="map-atlas-readout__item">
                 <dt>{item.label}</dt>

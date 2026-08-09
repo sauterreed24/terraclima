@@ -677,6 +677,7 @@ describe("AtlasMap DOM controls", () => {
     // Visual collapse is CSS (nth-child); More toggles data-expanded for sticky expand.
     expect(readout.querySelectorAll(".map-atlas-readout__item").length).toBe(4);
     expect(readout).toHaveAttribute("data-expanded", "false");
+    expect(readout).toHaveAttribute("data-density", "full");
     expect(readout).toHaveTextContent("Feel");
     expect(readout).toHaveTextContent("Field");
     expect(readout).toHaveTextContent("2 open pins");
@@ -704,6 +705,28 @@ describe("AtlasMap DOM controls", () => {
       expect(tags).toEqual(["DT", "DD"]);
       expect(item.querySelector("dd > span")).not.toBeNull();
     });
+  });
+
+  it("keeps the atlas read as a compact corner chip on coarse pointers", () => {
+    setCoarsePointer(true);
+    renderMap(vi.fn(), ["a", "b"], defaultMapPlaces(), { featuredLabel: "Most comfortable" });
+
+    const readout = screen.getByLabelText("Current map read");
+    expect(readout).toHaveAttribute("data-density", "compact");
+    expect(readout).toHaveAttribute("data-expanded", "false");
+    // Compact chip shortens the headline so the control stays corner-sized.
+    expect(readout).toHaveTextContent("Alpha Valley");
+    expect(readout).not.toHaveTextContent("Alpha Valley leads");
+
+    const grid = readout.querySelector(".map-atlas-readout__grid");
+    expect(grid).toHaveAttribute("hidden");
+
+    const expand = within(readout).getByRole("button", { name: "Expand atlas read details" });
+    fireEvent.click(expand);
+    expect(readout).toHaveAttribute("data-expanded", "true");
+    expect(grid).not.toHaveAttribute("hidden");
+    expect(readout).toHaveTextContent("Driver");
+    expect(readout).toHaveTextContent("Feel");
   });
 
   it("exposes the interactive map as an application widget, not a static image", () => {
