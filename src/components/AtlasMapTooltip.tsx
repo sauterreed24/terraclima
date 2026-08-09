@@ -54,14 +54,19 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
   // Prefer the quadrant with more free space so the card covers less map.
   const onRight = (100 - xPct) >= xPct;
   const onTop = yPct >= (100 - yPct);
+  const horizontal = onRight ? "right" : "left";
+  const vertical = onTop ? "above" : "below";
   const availableHeightPct = onTop ? yPct : 100 - yPct;
   const style: CSSProperties = {
     left: compactMap ? "0.5rem" : `${xPct}%`,
     top: `${yPct}%`,
+    // Inline transform owns quadrant placement — entrance animation must never touch it.
     transform: `translate(${compactMap ? "0" : onRight ? "12px" : "calc(-100% - 12px)"}, ${onTop ? "calc(-100% - 10px)" : "10px"})`,
     width: compactMap ? "calc(100% - 1rem)" : undefined,
     maxWidth: compactMap ? "calc(100% - 1rem)" : "min(19rem, calc(100vw - 1rem))",
-    ["--tc-map-hover-max-height" as string]: `calc(${availableHeightPct}% - 1rem)`,
+    // Leave room for the 10px pin gap plus an 8px shell inset so max-height
+    // scrolling keeps the card visually inside the map stage.
+    ["--tc-map-hover-max-height" as string]: `calc(${availableHeightPct}% - 1.25rem)`,
   };
 
   const countryLabel =
@@ -88,9 +93,11 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
         role="tooltip"
         id="tc-map-hover-preview"
         aria-labelledby="tc-map-hover-title"
-        className="tc-map-hover-card tc-map-hover-card--compact absolute w-[min(18rem,calc(100vw-1.25rem))] pointer-events-none anim-fade-in z-10 text-left shadow-2xl"
+        className="tc-map-hover-card tc-map-hover-card--compact tc-map-hover-card-enter absolute w-[min(18rem,calc(100vw-1.25rem))] pointer-events-none z-10 text-left shadow-2xl"
         data-tone={dataTone}
         data-variant="compact"
+        data-horizontal={horizontal}
+        data-vertical={vertical}
         style={style}
       >
         <header className="tc-map-hover-card__hero">
@@ -141,9 +148,11 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
       role="tooltip"
       id="tc-map-hover-preview"
       aria-labelledby="tc-map-hover-title"
-      className="tc-map-hover-card absolute w-[min(19rem,calc(100vw-1.25rem))] pointer-events-none anim-fade-in z-10 text-left shadow-2xl"
+      className="tc-map-hover-card tc-map-hover-card-enter absolute w-[min(19rem,calc(100vw-1.25rem))] pointer-events-none z-10 text-left shadow-2xl"
       data-tone={dataTone}
       data-variant="full"
+      data-horizontal={horizontal}
+      data-vertical={vertical}
       style={style}
     >
       <header className="tc-map-hover-card__hero">
