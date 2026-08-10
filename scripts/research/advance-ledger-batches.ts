@@ -86,7 +86,6 @@ function main() {
   const bundle = JSON.parse(readFileSync(receiptsPath, "utf8")) as { version: 1; generatedOn: string; receipts: PlaceResearchReceipt[] };
   const ledger = JSON.parse(readFileSync(ledgerPath, "utf8")) as ResearchLedger;
   const receiptById = new Map(bundle.receipts.map(r => [r.placeId, r]));
-  const placeById = new Map(PLACES.map(p => [p.id, p]));
 
   let targets = [...PLACES].sort((a, b) => a.id.localeCompare(b.id));
   if (priorityOnly) {
@@ -94,9 +93,8 @@ function main() {
     targets = targets.filter(p => set.has(p.id) || CLIMATE_V2_OVERLAY_BY_ID[p.id]?.validationStatus === "reviewed-exception");
   } else if (countryArg) {
     targets = targets.filter(p => p.country === countryArg);
-  } else if (!all) {
-    // Default: advance everything that can verify
-    targets = targets;
+  } else {
+    void all; // default and --all both advance every place that can verify
   }
 
   let newlyVerified = 0;

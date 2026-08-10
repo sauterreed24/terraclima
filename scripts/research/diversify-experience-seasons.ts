@@ -16,7 +16,10 @@ function mean(vals: number[], idx: number[]): number {
 }
 
 function fmt1(n: number): string {
-  return (Math.round(n * 10) / 10).toFixed(1).replace(/\.0$/, "");
+  const rounded = Math.round(n * 10) / 10;
+  const body = Math.abs(rounded).toFixed(1).replace(/\.0$/, "");
+  // Corpus audit requires Unicode minus (−), not ASCII hyphen-minus.
+  return rounded < 0 ? `−${body}` : body;
 }
 
 type Season = "winter" | "spring" | "summer" | "autumn";

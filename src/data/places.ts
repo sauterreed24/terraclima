@@ -2,10 +2,9 @@
 // Terraclima — Unified Places Corpus
 // ============================================================
 
-import type { Place } from "../types";
+import type { Citation, Place } from "../types";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { applyClimateV2Overlay } from "../lib/climate-v2/overlay";
-import { applyResearchOverlay } from "../lib/research/overlay";
 import { sanitizeLivedSignals } from "../lib/research/lived-indicators";
 import { PLACES_USA } from "./places.usa";
 import { PLACES_CANADA } from "./places.canada";
@@ -16,10 +15,11 @@ import { EXPERIENCE_AUTHORED } from "./places.experience-authored";
 import { DEEP_SECTIONS_AUTHORED } from "./places.deep-sections-authored";
 import { SUMMARY_IMMERSIVE_POLISH } from "./places.summary-polish";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
-import { RESEARCH_RECEIPTS_BY_ID } from "./generated/research";
 import housingPressureJson from "./generated/research/housing-pressure-by-id.json";
+import citationsOverlayJson from "./generated/research/citations-overlay.json";
 
 const HOUSING_PRESSURE_BY_ID = (housingPressureJson as { byId: Record<string, number> }).byId;
+const CITATIONS_OVERLAY_BY_ID = (citationsOverlayJson as { byId: Record<string, Citation[]> }).byId;
 
 const TIER_C_POLISH_ALL: Record<string, typeof TIER_C_POLISH[keyof typeof TIER_C_POLISH]> = {
   ...TIER_C_POLISH,
@@ -120,9 +120,20 @@ function applyLivedIndicators(p: Place): Place {
   };
 }
 
-/** Merge research receipts; project deprecated Citation[] compatibility view. */
+/**
+ * Merge compact research citation projection (deprecated Citation[] view).
+ * Full PlaceResearchReceipt records stay lazy-loaded in Evidence UI so the
+ * eager places graph does not ship multi-megabyte receipt JSON.
+ */
 function applyResearch(p: Place): Place {
-  return applyResearchOverlay(p, RESEARCH_RECEIPTS_BY_ID[p.id]);
+  const projected = CITATIONS_OVERLAY_BY_ID[p.id];
+  if (!projected?.length) return p;
+  const existingUrls = new Set(projected.map(c => (c.url ?? "").toLowerCase()));
+  const authoredExtras = p.citations.filter(c => {
+    const url = (c.url ?? "").toLowerCase();
+    return !url || !existingUrls.has(url);
+  });
+  return { ...p, citations: [...projected, ...authoredExtras] };
 }
 
 /**

@@ -18,10 +18,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "anchorage-ak": {
     feel: "Head of Cook Inlet with Chugach Mountains to the east — marine-modified subarctic — that is the short version of why Anchorage feels the way it does at 30 m. Marine layer sets the tone, and the fjord / inlet coast signature shows up in almost every season here, not just one.",
     seasons: {
-      winter: "Anchorage (Cook Inlet) cold months stay close to -3.6°C days and -10.8°C nights, with a drier storm cadence in Alaska.",
-      spring: "Anchorage (Cook Inlet) climbs toward 8.3°C spring afternoons while 30 m elevation preserves -2°C nights.",
+      winter: "Anchorage (Cook Inlet) cold months stay close to −3.6°C days and −10.8°C nights, with a drier storm cadence in Alaska.",
+      spring: "Anchorage (Cook Inlet) climbs toward 8.3°C spring afternoons while 30 m elevation preserves −2°C nights.",
       summer: "Anchorage (Cook Inlet) summer is an honest 19.2°C afternoon climate; nights to 9.9°C keep diurnal swing real.",
-      autumn: "Anchorage (Cook Inlet) autumn light means 5.9°C afternoons at 30 m and -1.4°C after dark.",
+      autumn: "Anchorage (Cook Inlet) autumn light means 5.9°C afternoons at 30 m and −1.4°C after dark.",
     },
     travelerFit: "Travelers come to Anchorage mainly for Chugach access and flightseeing, and most leave surprised by how much the subarctic continental pattern shapes the visit.",
     residentFit: "Long-term residents in Anchorage skew toward logistics and outdoor workers, the group most likely to find the tradeoffs of living here worth the climate on offer.",
@@ -30,7 +30,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "asheville-nc": {
     feel: "French Broad River basin between the Black Mountains and the Pisgahs — that is the short version of why Asheville feels the way it does at 650 m. River-valley moderation sets the tone, and the river-valley moderation signature shows up in almost every season here, not just one.",
     seasons: {
-      winter: "Asheville cold months stay close to 10°C days and -2.1°C nights, with a wetter storm cadence in North Carolina.",
+      winter: "Asheville cold months stay close to 10°C days and −2.1°C nights, with a wetter storm cadence in North Carolina.",
       spring: "Asheville spring feels workable at 19.9°C days and 6°C nights across the Southern Appalachian mixed forest.",
       summer: "Asheville in summer means about 28.3°C heat, wetter rainfall pattern, and 16.2°C overnight air.",
       autumn: "Asheville autumn highs near 20.2°C and lows near 7.1°C suit longer outdoor days than midsummer.",
@@ -66,10 +66,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "banff-ab": {
     feel: "The setting comes first in Banff: Bow River valley inside Banff National Park, 1383 m above sea level. Chinook / foehn downslope sets the tone, and the alpine tundra signature shows up in almost every season here, not just one.",
     seasons: {
-      winter: "Banff (Bow Valley) cold months stay close to -2.7°C days and -12.7°C nights, with a drier storm cadence in Alberta.",
-      spring: "Banff (Bow Valley) climbs toward 8.9°C spring afternoons while 1383 m elevation preserves -3.9°C nights.",
+      winter: "Banff (Bow Valley) cold months stay close to −2.7°C days and −12.7°C nights, with a drier storm cadence in Alberta.",
+      spring: "Banff (Bow Valley) climbs toward 8.9°C spring afternoons while 1383 m elevation preserves −3.9°C nights.",
       summer: "Banff (Bow Valley) summer afternoons land near 21.2°C, with nights easing toward 6.1°C when skies clear.",
-      autumn: "Banff (Bow Valley) autumn light means 8.9°C afternoons at 1383 m and -2.4°C after dark.",
+      autumn: "Banff (Bow Valley) autumn light means 8.9°C afternoons at 1383 m and −2.4°C after dark.",
     },
     travelerFit: "It is Lake Louise, skiing, and hiking that pulls most visitors to Banff, and the Dfc-class weather turns out to be part of the appeal, not just a backdrop.",
     residentFit: "Residency here suits hospitality seasonal workers and park staff — the kind of household that treats the chinook corridor rhythm as a feature of daily life, not a novelty.",
@@ -78,7 +78,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "bar-harbor-me": {
     feel: "The setting comes first in Bar Harbor: East-facing fjord-like coastline near Acadia National Park, 20 m above sea level. Marine layer is the mechanism behind it, layering a cool-summer maritime pattern on top that most of the Maine interior never sees.",
     seasons: {
-      winter: "Bar Harbor (Downeast) cold months stay close to 1.4°C days and -8.2°C nights, with a wetter storm cadence in Maine.",
+      winter: "Bar Harbor (Downeast) cold months stay close to 1.4°C days and −8.2°C nights, with a wetter storm cadence in Maine.",
       spring: "Bar Harbor (Downeast) spring highs near 11.2°C and lows near 0.9°C favor scouting walks over midsummer crowds.",
       summer: "Bar Harbor (Downeast) summer is an honest 24°C afternoon climate; nights to 13.4°C keep diurnal swing real.",
       autumn: "Bar Harbor (Downeast) fall holds about 14.7°C afternoons while nights drop toward 5.2°C over Spruce–fir coastal forest.",
@@ -90,7 +90,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "beverly-shores-in": {
     feel: "Beverly Shores occupies a specific piece of ground — Dune-and-swale coast on southern Lake Michigan — at 185 m. The give-away is lake effect, which turns straightforward Dfa-class averages into something sharper on the ground.",
     seasons: {
-      winter: "Beverly Shores (Lake Michigan) winter afternoons settle near 2.2°C — nights -5.5°C — under Dfa seasonality.",
+      winter: "Beverly Shores (Lake Michigan) winter afternoons settle near 2.2°C — nights −5.5°C — under Dfa seasonality.",
       spring: "Beverly Shores (Lake Michigan) opens spring under roughly 14.8°C days — wetter moisture — and 4.2°C overnight recovery.",
       summer: "Beverly Shores (Lake Michigan) asks for 27.4°C summer-day planning across Great Lakes beachgrass and oak savanna, then 16.8°C nights for sleep and gardens.",
       autumn: "Beverly Shores (Lake Michigan) autumn returns to roughly 17.2°C days and 7.5°C nights — often the clearest travel window.",
@@ -102,8 +102,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "bismarck-nd": {
     feel: "At 514 m, the defining fact about Bismarck is geography — Missouri River valley cut through rolling High Plains. Add in northern mixed grass prairie and you get the combination that makes the subarctic continental label feel earned rather than a marketing line.",
     seasons: {
-      winter: "Bismarck (Northern Great Plains) cold months stay close to -3.3°C days and -14.5°C nights, with a drier storm cadence in North Dakota.",
-      spring: "Bismarck (Northern Great Plains) spring highs near 12.4°C and lows near -1.1°C favor scouting walks over midsummer crowds.",
+      winter: "Bismarck (Northern Great Plains) cold months stay close to −3.3°C days and −14.5°C nights, with a drier storm cadence in North Dakota.",
+      spring: "Bismarck (Northern Great Plains) spring highs near 12.4°C and lows near −1.1°C favor scouting walks over midsummer crowds.",
       summer: "Bismarck (Northern Great Plains) in summer means about 27.6°C heat, wetter rainfall pattern, and 13.3°C overnight air.",
       autumn: "Bismarck (Northern Great Plains) fall holds about 14.1°C afternoons while nights drop toward 0.8°C over Northern mixed grass prairie.",
     },
@@ -114,7 +114,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "block-island-ri": {
     feel: "Step outside in New Shoreham and the terrain announces itself at once: Outer-island microclimate in Block Island Sound, 20 m up. Marine layer is the mechanism behind it, layering a cool-summer maritime pattern on top that most of the Rhode Island interior never sees.",
     seasons: {
-      winter: "Block Island winters run near 5.5°C by day and -2.6°C at night, shaped by marine layer across Maritime heath and moors.",
+      winter: "Block Island winters run near 5.5°C by day and −2.6°C at night, shaped by marine layer across Maritime heath and moors.",
       spring: "Block Island spring feels workable at 12.9°C days and 4.2°C nights across the Maritime heath and moors.",
       summer: "Block Island summer afternoons land near 25.1°C, with nights easing toward 16.5°C when skies clear.",
       autumn: "Block Island autumn light means 17.4°C afternoons at 20 m and 8.9°C after dark.",
@@ -126,7 +126,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "boone-nc": {
     feel: "Elevation does the early work in Boone, at 995 m: High Blue Ridge Escarpment at 1000 m — a climate transect into near-New England character at Southern latitude. Elevation lapse rate explains most of it — a mild-winter foothills effect layered over northern hardwoods in a southern setting that most neighboring North Carolina towns don't get.",
     seasons: {
-      winter: "Boone (High Country) keeps winter highs near 7°C while -3.8°C overnight lows test housing and travel plans.",
+      winter: "Boone (High Country) keeps winter highs near 7°C while −3.8°C overnight lows test housing and travel plans.",
       spring: "Boone (High Country) spring highs near 16.5°C and lows near 4.3°C favor scouting walks over midsummer crowds.",
       summer: "Boone (High Country) in summer means about 25.3°C heat, wetter rainfall pattern, and 14.6°C overnight air.",
       autumn: "Boone (High Country) autumn highs near 17.3°C and lows near 5.7°C suit longer outdoor days than midsummer.",
@@ -150,7 +150,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "buffalo-ny": {
     feel: "The setting comes first in Buffalo: Eastern end of Lake Erie — long fetch for lake-effect snowbands, 183 m above sea level. Lake effect sets the tone, and the lake-moderated signature shows up in almost every season here, not just one.",
     seasons: {
-      winter: "Buffalo (Erie Eastern Shore) cold months stay close to 1.8°C days and -5.9°C nights, with a wetter storm cadence in New York.",
+      winter: "Buffalo (Erie Eastern Shore) cold months stay close to 1.8°C days and −5.9°C nights, with a wetter storm cadence in New York.",
       spring: "Buffalo (Erie Eastern Shore) climbs toward 13°C spring afternoons while 183 m elevation preserves 2.3°C nights.",
       summer: "Buffalo (Erie Eastern Shore) summer is an honest 26°C afternoon climate; nights to 15.6°C keep diurnal swing real.",
       autumn: "Buffalo (Erie Eastern Shore) fall holds about 16.1°C afternoons while nights drop toward 6.7°C over Great Lakes mixed forest.",
@@ -162,7 +162,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "burlington-vt": {
     feel: "At 60 m, the defining fact about Burlington is geography — Eastern shore of Lake Champlain with Adirondack rain shadow to the west. Lake effect explains most of it — a lake-moderated effect layered over northern hardwood forest that most neighboring Vermont towns don't get.",
     seasons: {
-      winter: "Burlington (Lake Champlain) keeps winter highs near 0°C while -9.6°C overnight lows test housing and travel plans.",
+      winter: "Burlington (Lake Champlain) keeps winter highs near 0°C while −9.6°C overnight lows test housing and travel plans.",
       spring: "Burlington (Lake Champlain) spring highs near 12.9°C and lows near 1.2°C favor scouting walks over midsummer crowds.",
       summer: "Burlington (Lake Champlain) summer afternoons land near 26.5°C, with nights easing toward 14.5°C when skies clear.",
       autumn: "Burlington (Lake Champlain) autumn light means 15.2°C afternoons at 60 m and 4.9°C after dark.",
@@ -186,7 +186,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "cape-may-nj": {
     feel: "Cape May sits inside its maritime holly forest and dune scrub, 3 m up: Peninsula tip between Delaware Bay and open Atlantic. It is diurnal sea breeze that keeps the numbers from reading like a generic Cfa town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Cape May (Atlantic Tip) winter afternoons settle near 8.2°C — nights -1.1°C — under Cfa seasonality.",
+      winter: "Cape May (Atlantic Tip) winter afternoons settle near 8.2°C — nights −1.1°C — under Cfa seasonality.",
       spring: "Cape May (Atlantic Tip) spring afternoons reach about 17.3°C, nights near 7°C, before peak-season heat arrives.",
       summer: "Cape May (Atlantic Tip) asks for 28.7°C summer-day planning across Maritime holly forest and dune scrub, then 19.1°C nights for sleep and gardens.",
       autumn: "Cape May (Atlantic Tip) autumn returns to roughly 20.2°C days and 10.2°C nights — often the clearest travel window.",
@@ -210,8 +210,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "charlottetown-pei": {
     feel: "The setting comes first in Charlottetown: Island capital on Gulf of St. Lawrence, 20 m above sea level. Marine layer is the mechanism behind it, layering a lake-moderated pattern on top that most of the Prince Edward Island interior never sees.",
     seasons: {
-      winter: "Charlottetown cold months stay close to -0.5°C days and -8.4°C nights, with a wetter storm cadence in Prince Edward Island.",
-      spring: "Charlottetown spring highs near 8°C and lows near -0.5°C favor scouting walks over midsummer crowds.",
+      winter: "Charlottetown cold months stay close to −0.5°C days and −8.4°C nights, with a wetter storm cadence in Prince Edward Island.",
+      spring: "Charlottetown spring highs near 8°C and lows near −0.5°C favor scouting walks over midsummer crowds.",
       summer: "Charlottetown summer is an honest 22.6°C afternoon climate; nights to 13.3°C keep diurnal swing real.",
       autumn: "Charlottetown fall holds about 13.6°C afternoons while nights drop toward 5.7°C over Mixed farmland and coastal forest.",
     },
@@ -234,10 +234,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "churchill-mb": {
     feel: "Churchill occupies a specific piece of ground — Western Hudson Bay coast — at 29 m. The give-away is polar jet / arctic front, which turns straightforward Dfc-class averages into something sharper on the ground.",
     seasons: {
-      winter: "Churchill (Hudson Bay) holds winter light near -18.7°C afternoons and -27.2°C nights at 29 m.",
-      spring: "Churchill (Hudson Bay) spring afternoons reach about -3.6°C, nights near -13.8°C, before peak-season heat arrives.",
+      winter: "Churchill (Hudson Bay) holds winter light near −18.7°C afternoons and −27.2°C nights at 29 m.",
+      spring: "Churchill (Hudson Bay) spring afternoons reach about −3.6°C, nights near −13.8°C, before peak-season heat arrives.",
       summer: "Churchill (Hudson Bay) summer highs near 17.2°C at 29 m still leave polar jet exposure mattering after sunset near 7.2°C.",
-      autumn: "Churchill (Hudson Bay) autumn stays usable at 2.4°C days and -4.5°C nights as polar jet exposure reasserts cooler evenings.",
+      autumn: "Churchill (Hudson Bay) autumn stays usable at 2.4°C days and −4.5°C nights as polar jet exposure reasserts cooler evenings.",
     },
     travelerFit: "The draw for visitors is straightforward: polar bears, beluga whales, and aurora, set inside a subarctic continental climate that is easy to underestimate from a distance.",
     residentFit: "Full-time life in Churchill tends to reward subarctic researchers — people who plan their year around the subarctic continental pattern rather than fighting it.",
@@ -246,7 +246,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "clayton-ga": {
     feel: "The setting comes first in Clayton: Northeast Georgia mountains at the Blue Ridge escarpment, 590 m above sea level. Orographic lift is the mechanism behind it, layering a thermal belt pattern on top that most of the Georgia interior never sees.",
     seasons: {
-      winter: "Clayton (Blue Ridge Front) keeps winter highs near 11.3°C while -0.5°C overnight lows test housing and travel plans.",
+      winter: "Clayton (Blue Ridge Front) keeps winter highs near 11.3°C while −0.5°C overnight lows test housing and travel plans.",
       spring: "Clayton (Blue Ridge Front) spring highs near 20.9°C and lows near 7.5°C favor scouting walks over midsummer crowds.",
       summer: "Clayton (Blue Ridge Front) summer afternoons land near 29°C, with nights easing toward 17.3°C when skies clear.",
       autumn: "Clayton (Blue Ridge Front) fall holds about 21.2°C afternoons while nights drop toward 8.7°C over Cove hardwood and mesic forest.",
@@ -258,8 +258,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "cody-wy": {
     feel: "Cody sits 1555 m above sea level, and the ground tells the story: Bighorn Basin east of the Absarokas. Chinook / foehn downslope does the heavy lifting here, which is why the Köppen BSk classification undersells how distinct the daily rhythm actually feels.",
     seasons: {
-      winter: "Cody (Chinook Foothills) in winter is a 3.1°C daytime story; nights to -9.2°C make chinook foehn tangible.",
-      spring: "Cody (Chinook Foothills) shoulder season sits near 13.7°C days and -0.2°C nights, with chinook foehn still cooling mornings.",
+      winter: "Cody (Chinook Foothills) in winter is a 3.1°C daytime story; nights to −9.2°C make chinook foehn tangible.",
+      spring: "Cody (Chinook Foothills) shoulder season sits near 13.7°C days and −0.2°C nights, with chinook foehn still cooling mornings.",
       summer: "Cody (Chinook Foothills) asks for 27.8°C summer-day planning across Sage steppe / cottonwood riparian, then 11.4°C nights for sleep and gardens.",
       autumn: "Cody (Chinook Foothills) closes the warm half-year near 15.2°C by day; 1.2°C nights and drier storms reset the calendar.",
     },
@@ -294,7 +294,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "creston-bc": {
     feel: "Creston sits inside its interior cedar-hemlock, 600 m up: Broad valley between the Selkirks and Purcells. It is river-valley moderation that keeps the numbers from reading like a generic Dfb town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Creston Valley in winter is a 1.8°C daytime story; nights to -4.8°C make river moderation tangible.",
+      winter: "Creston Valley in winter is a 1.8°C daytime story; nights to −4.8°C make river moderation tangible.",
       spring: "Creston Valley shoulder season sits near 14.4°C days and 2.3°C nights, with river moderation still cooling mornings.",
       summer: "Creston Valley summer highs near 27.1°C at 600 m still leave river moderation mattering after sunset near 11.4°C.",
       autumn: "Creston Valley closes the warm half-year near 13.7°C by day; 3°C nights and mixed storms reset the calendar.",
@@ -330,10 +330,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "cypress-hills-sk": {
     feel: "Step outside in Maple Creek / Cypress Hills and the terrain announces itself at once: Island-mountain plateau rising 700 m above the surrounding prairie — the highest point between the Rockies and Labrador, 1460 m up. Elevation lapse rate is the mechanism behind it, layering a badland / steppe pocket pattern on top that most of the Saskatchewan interior never sees.",
     seasons: {
-      winter: "Cypress Hills winters run near -3.8°C by day and -14.1°C at night, shaped by elevation lapse rate across Montane forest / fescue grassland.",
-      spring: "Cypress Hills climbs toward 8.2°C spring afternoons while 1460 m elevation preserves -3°C nights.",
+      winter: "Cypress Hills winters run near −3.8°C by day and −14.1°C at night, shaped by elevation lapse rate across Montane forest / fescue grassland.",
+      spring: "Cypress Hills climbs toward 8.2°C spring afternoons while 1460 m elevation preserves −3°C nights.",
       summer: "Cypress Hills summer afternoons land near 22.1°C, with nights easing toward 9.2°C when skies clear.",
-      autumn: "Cypress Hills autumn highs near 9.9°C and lows near -1.5°C suit longer outdoor days than midsummer.",
+      autumn: "Cypress Hills autumn highs near 9.9°C and lows near −1.5°C suit longer outdoor days than midsummer.",
     },
     travelerFit: "Short stays here revolve around dark-sky preserve and boreal surprise; the sky-island refuge climate mostly reads as a bonus until you notice how much it shapes the itinerary.",
     residentFit: "Residency here suits prairie ranchers — the kind of household that treats the sky-island refuge rhythm as a feature of daily life, not a novelty.",
@@ -342,10 +342,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "dawson-city-yt": {
     feel: "Dawson City is built 320 m up, on this footprint: Yukon River and Klondike River confluence in a cold interior basin under long subarctic daylight. That is continental extremity at work, and it makes Dawson City read less like a textbook Dfc station and more like its own microclimate.",
     seasons: {
-      winter: "Dawson City in winter is a -16.7°C daytime story; nights to -26.4°C make continentality tangible.",
-      spring: "Dawson City opens spring under roughly 6.6°C days — drier moisture — and -9.4°C overnight recovery.",
+      winter: "Dawson City in winter is a −16.7°C daytime story; nights to −26.4°C make continentality tangible.",
+      spring: "Dawson City opens spring under roughly 6.6°C days — drier moisture — and −9.4°C overnight recovery.",
       summer: "Dawson City warm season centers on 21.7°C days; 6.8°C nights are the practical relief.",
-      autumn: "Dawson City autumn stays usable at 0.5°C days and -9.4°C nights as continentality reasserts cooler evenings.",
+      autumn: "Dawson City autumn stays usable at 0.5°C days and −9.4°C nights as continentality reasserts cooler evenings.",
     },
     travelerFit: "Most people show up in Dawson City for Klondike history, midnight sun, and aurora and stay a day longer than planned once the local rhythm sets in.",
     residentFit: "Full-time life in Dawson City tends to reward northern history workers and aurora seekers — people who plan their year around the subarctic continental pattern rather than fighting it.",
@@ -354,7 +354,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "des-moines-ia": {
     feel: "Step outside in Des Moines and the terrain announces itself at once: Raccoon and Des Moines rivers confluence on rolling till plain — classic Midwest convective regime, 291 m up. Strip away the Dfa label and what is left is river-valley moderation pushing the river-valley moderation pattern harder than the regional average would suggest.",
     seasons: {
-      winter: "Des Moines (Corn Belt) keeps winter highs near 1.3°C while -9°C overnight lows test housing and travel plans.",
+      winter: "Des Moines (Corn Belt) keeps winter highs near 1.3°C while −9°C overnight lows test housing and travel plans.",
       spring: "Des Moines (Corn Belt) spring highs near 16.4°C and lows near 4.1°C favor scouting walks over midsummer crowds.",
       summer: "Des Moines (Corn Belt) in summer means about 28.9°C heat, wetter rainfall pattern, and 17.1°C overnight air.",
       autumn: "Des Moines (Corn Belt) autumn light means 17.8°C afternoons at 291 m and 5.4°C after dark.",
@@ -366,8 +366,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "duluth-mn": {
     feel: "Duluth sits 210 m above sea level, and the ground tells the story: Cliff-top city on the western tip of Lake Superior. Lake effect does the heavy lifting here, which is why the Köppen Dfb classification undersells how distinct the daily rhythm actually feels.",
     seasons: {
-      winter: "Duluth (Lake Superior) winter afternoons settle near -3.5°C — nights -13.2°C — under Dfb seasonality.",
-      spring: "Duluth (Lake Superior) opens spring under roughly 10.1°C days — wetter moisture — and -1.1°C overnight recovery.",
+      winter: "Duluth (Lake Superior) winter afternoons settle near −3.5°C — nights −13.2°C — under Dfb seasonality.",
+      spring: "Duluth (Lake Superior) opens spring under roughly 10.1°C days — wetter moisture — and −1.1°C overnight recovery.",
       summer: "Duluth (Lake Superior) asks for 24.4°C summer-day planning across Boreal–temperate transition forest, then 12.6°C nights for sleep and gardens.",
       autumn: "Duluth (Lake Superior) closes the warm half-year near 12.6°C by day; 3.2°C nights and wetter storms reset the calendar.",
     },
@@ -390,8 +390,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "ely-mn": {
     feel: "Ely sits inside its mixed boreal–northern hardwood forest, 443 m up: Edge of the Boundary Waters Canoe Area Wilderness. It is continental extremity that keeps the numbers from reading like a generic Dfb town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Ely (Boundary Waters) holds winter light near -6.5°C afternoons and -17.8°C nights at 443 m.",
-      spring: "Ely (Boundary Waters) opens spring under roughly 9.7°C days — mixed moisture — and -3.6°C overnight recovery.",
+      winter: "Ely (Boundary Waters) holds winter light near −6.5°C afternoons and −17.8°C nights at 443 m.",
+      spring: "Ely (Boundary Waters) opens spring under roughly 9.7°C days — mixed moisture — and −3.6°C overnight recovery.",
       summer: "Ely (Boundary Waters) warm season centers on 24.1°C days; 11.1°C nights are the practical relief.",
       autumn: "Ely (Boundary Waters) autumn stays usable at 10.6°C days and 0.6°C nights as continentality reasserts cooler evenings.",
     },
@@ -402,7 +402,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "eminence-mo": {
     feel: "At 215 m, the defining fact about Eminence is geography — Dissected Ozark plateau on the Jacks Fork / Current River — spring-fed corridors with groundwater-dominated microclimates. Add in oak–hickory forest and karst springs and you get the combination that makes the limestone / karst pocket label feel earned rather than a marketing line.",
     seasons: {
-      winter: "Eminence (Ozark Current River) cold months stay close to 8.6°C days and -3.5°C nights, with a wetter storm cadence in Missouri.",
+      winter: "Eminence (Ozark Current River) cold months stay close to 8.6°C days and −3.5°C nights, with a wetter storm cadence in Missouri.",
       spring: "Eminence (Ozark Current River) spring highs near 20.8°C and lows near 6.9°C favor scouting walks over midsummer crowds.",
       summer: "Eminence (Ozark Current River) in summer means about 31.2°C heat, wetter rainfall pattern, and 18°C overnight air.",
       autumn: "Eminence (Ozark Current River) autumn light means 21.4°C afternoons at 215 m and 7.5°C after dark.",
@@ -414,7 +414,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "erie-pa": {
     feel: "Step outside in Erie and the terrain announces itself at once: Presque Isle bay and shoreline on Lake Erie's southern shore, 200 m up. Lake effect is the mechanism behind it, layering a lake-moderated pattern on top that most of the Pennsylvania interior never sees.",
     seasons: {
-      winter: "Erie (Lake Erie Snowbelt) keeps winter highs near 2.4°C while -5°C overnight lows test housing and travel plans.",
+      winter: "Erie (Lake Erie Snowbelt) keeps winter highs near 2.4°C while −5°C overnight lows test housing and travel plans.",
       spring: "Erie (Lake Erie Snowbelt) spring feels workable at 13.5°C days and 3.2°C nights across the Temperate deciduous forest and lakeshore dunes.",
       summer: "Erie (Lake Erie Snowbelt) summer afternoons land near 25.9°C, with nights easing toward 16.2°C when skies clear.",
       autumn: "Erie (Lake Erie Snowbelt) fall holds about 16.4°C afternoons while nights drop toward 7.6°C over Temperate deciduous forest and lakeshore dunes.",
@@ -438,7 +438,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "galena-il": {
     feel: "Galena sits at 193 m: Mississippi River bluffs and dissected uplands at the Illinois edge of the Driftless Area — unglaciated terrain in a glaciated state. It is slope / aspect that keeps the numbers from reading like a generic Dfa town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Galena (Driftless Mississippi) in winter is a -0.2°C daytime story; nights to -9.7°C make aspect slope tangible.",
+      winter: "Galena (Driftless Mississippi) in winter is a −0.2°C daytime story; nights to −9.7°C make aspect slope tangible.",
       spring: "Galena (Driftless Mississippi) spring afternoons reach about 14.9°C, nights near 3°C, before peak-season heat arrives.",
       summer: "Galena (Driftless Mississippi) asks for 27.9°C summer-day planning across Oak savanna and prairie openings, then 16°C nights for sleep and gardens.",
       autumn: "Galena (Driftless Mississippi) closes the warm half-year near 16.4°C by day; 5°C nights and wetter storms reset the calendar.",
@@ -450,8 +450,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "gaspe-qc": {
     feel: "Tip of the Gaspé Peninsula, where Appalachian ridges drop into the Gulf of St. Lawrence — that is the short version of why Gaspé feels the way it does at 10 m. Add in boreal-Acadian transition with salt-spray flora and you get the combination that makes the cool-summer maritime label feel earned rather than a marketing line.",
     seasons: {
-      winter: "Gaspé Peninsula Tip winters run near -3.9°C by day and -12.3°C at night, shaped by marine layer across Boreal-Acadian transition with salt-spray flora.",
-      spring: "Gaspé Peninsula Tip spring feels workable at 5.5°C days and -3.1°C nights across the Boreal-Acadian transition with salt-spray flora.",
+      winter: "Gaspé Peninsula Tip winters run near −3.9°C by day and −12.3°C at night, shaped by marine layer across Boreal-Acadian transition with salt-spray flora.",
+      spring: "Gaspé Peninsula Tip spring feels workable at 5.5°C days and −3.1°C nights across the Boreal-Acadian transition with salt-spray flora.",
       summer: "Gaspé Peninsula Tip in summer means about 20°C heat, wetter rainfall pattern, and 10.5°C overnight air.",
       autumn: "Gaspé Peninsula Tip fall holds about 10.4°C afternoons while nights drop toward 2.4°C over Boreal-Acadian transition with salt-spray flora.",
     },
@@ -462,7 +462,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "gatlinburg-tn": {
     feel: "Gatlinburg is built 390 m up, on this footprint: Tourism gateway on the West Fork of the Little Pigeon River. Orographic lift does the heavy lifting here, which is why the Köppen Cfb classification undersells how distinct the daily rhythm actually feels.",
     seasons: {
-      winter: "Gatlinburg (Great Smokies) winter afternoons settle near 10.8°C — nights -1.2°C — under Cfb seasonality.",
+      winter: "Gatlinburg (Great Smokies) winter afternoons settle near 10.8°C — nights −1.2°C — under Cfb seasonality.",
       spring: "Gatlinburg (Great Smokies) opens spring under roughly 21.3°C days — wetter moisture — and 7.1°C overnight recovery.",
       summer: "Gatlinburg (Great Smokies) asks for 29.5°C summer-day planning across Cove hardwood and mesic forest, then 17.4°C nights for sleep and gardens.",
       autumn: "Gatlinburg (Great Smokies) closes the warm half-year near 21.5°C by day; 8.2°C nights and wetter storms reset the calendar.",
@@ -474,7 +474,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "geneva-on-the-lake-oh": {
     feel: "Geneva-on-the-Lake occupies a specific piece of ground — Lake Erie shoreline east of Cleveland where westerly flow produces long-fetch lake-effect streamers — at 185 m. Lake effect is doing real work on the thermometer, and it is the reason people describe Geneva-on-the-Lake as a lake-effect snowbelt rather than just another Ohio town.",
     seasons: {
-      winter: "Geneva-on-the-Lake (Lake Erie Snowbelt) in winter is a 2.8°C daytime story; nights to -4.7°C make lake effect tangible.",
+      winter: "Geneva-on-the-Lake (Lake Erie Snowbelt) in winter is a 2.8°C daytime story; nights to −4.7°C make lake effect tangible.",
       spring: "Geneva-on-the-Lake (Lake Erie Snowbelt) shoulder season sits near 14.2°C days and 3.8°C nights, with lake effect still cooling mornings.",
       summer: "Geneva-on-the-Lake (Lake Erie Snowbelt) summer highs near 26.5°C at 185 m still leave lake effect mattering after sunset near 16.4°C.",
       autumn: "Geneva-on-the-Lake (Lake Erie Snowbelt) autumn returns to roughly 17°C days and 7.8°C nights — often the clearest travel window.",
@@ -498,7 +498,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "halifax-ns": {
     feel: "The setting comes first in Halifax: Atlantic coast on Chebucto Bay, 30 m above sea level. Marine layer sets the tone, and the hurricane-exposed coast signature shows up in almost every season here, not just one.",
     seasons: {
-      winter: "Halifax cold months stay close to 1.9°C days and -6.5°C nights, with a wetter storm cadence in Nova Scotia.",
+      winter: "Halifax cold months stay close to 1.9°C days and −6.5°C nights, with a wetter storm cadence in Nova Scotia.",
       spring: "Halifax spring feels workable at 9.4°C days and 0.6°C nights across the Acadian mixed forest.",
       summer: "Halifax in summer means about 22.1°C heat, wetter rainfall pattern, and 12.9°C overnight air.",
       autumn: "Halifax autumn highs near 14.8°C and lows near 6.3°C suit longer outdoor days than midsummer.",
@@ -534,8 +534,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "international-falls-mn": {
     feel: "The setting comes first in International Falls: Rainy River lowland on the Canadian border, 340 m above sea level. Cold-air drainage is the mechanism behind it, layering a subarctic continental pattern on top that most of the Minnesota interior never sees.",
     seasons: {
-      winter: "International Falls keeps winter highs near -6.9°C while -18.3°C overnight lows test housing and travel plans.",
-      spring: "International Falls spring highs near 10°C and lows near -3.4°C favor scouting walks over midsummer crowds.",
+      winter: "International Falls keeps winter highs near −6.9°C while −18.3°C overnight lows test housing and travel plans.",
+      spring: "International Falls spring highs near 10°C and lows near −3.4°C favor scouting walks over midsummer crowds.",
       summer: "International Falls summer afternoons land near 24.5°C, with nights easing toward 11.1°C when skies clear.",
       autumn: "International Falls fall holds about 10.9°C afternoons while nights drop toward 0.4°C over Boreal mixed forest.",
     },
@@ -546,10 +546,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "inuvik-nt": {
     feel: "Elevation does the early work in Inuvik, at 68 m: Mackenzie River Delta, 200 km north of the Arctic Circle. Continental extremity explains most of it — a subarctic continental effect layered over subarctic taiga-tundra transition that most neighboring Northwest Territories towns don't get.",
     seasons: {
-      winter: "Inuvik cold months stay close to -20°C days and -27.5°C nights, with a drier storm cadence in Northwest Territories.",
-      spring: "Inuvik spring feels workable at -5.6°C days and -15.3°C nights across the Subarctic taiga-tundra transition.",
+      winter: "Inuvik cold months stay close to −20°C days and −27.5°C nights, with a drier storm cadence in Northwest Territories.",
+      spring: "Inuvik spring feels workable at −5.6°C days and −15.3°C nights across the Subarctic taiga-tundra transition.",
       summer: "Inuvik summer afternoons land near 16.7°C, with nights easing toward 6.9°C when skies clear.",
-      autumn: "Inuvik autumn highs near -2.4°C and lows near -8.8°C suit longer outdoor days than midsummer.",
+      autumn: "Inuvik autumn highs near −2.4°C and lows near −8.8°C suit longer outdoor days than midsummer.",
     },
     travelerFit: "It is midnight-sun photography, aurora (Aug–Apr), and Dempster Highway journey that pulls most visitors to Inuvik, and the Dfc-class weather turns out to be part of the appeal, not just a backdrop.",
     residentFit: "Long-term residents in Inuvik skew toward Arctic researchers and Gwich'in/Inuvialuit residents, the group most likely to find the tradeoffs of living here worth the climate on offer.",
@@ -558,10 +558,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "iqaluit-nu": {
     feel: "Head of Frobisher Bay on southern Baffin Island — that is the short version of why Iqaluit feels the way it does at 36 m. Add in low-arctic tundra and you get the combination that makes the subarctic continental label feel earned rather than a marketing line.",
     seasons: {
-      winter: "Iqaluit keeps winter highs near -17.3°C while -24.5°C overnight lows test housing and travel plans.",
-      spring: "Iqaluit spring feels workable at -7.8°C days and -15.2°C nights across the Low-Arctic tundra.",
+      winter: "Iqaluit keeps winter highs near −17.3°C while −24.5°C overnight lows test housing and travel plans.",
+      spring: "Iqaluit spring feels workable at −7.8°C days and −15.2°C nights across the Low-Arctic tundra.",
       summer: "Iqaluit in summer means about 10.1°C heat, mixed rainfall pattern, and 3.2°C overnight air.",
-      autumn: "Iqaluit autumn highs near 0.3°C and lows near -5.1°C suit longer outdoor days than midsummer.",
+      autumn: "Iqaluit autumn highs near 0.3°C and lows near −5.1°C suit longer outdoor days than midsummer.",
     },
     travelerFit: "Short stays here revolve around Inuit cultural tourism, Arctic wildlife, and polar nights / midnight sun; the subarctic continental climate mostly reads as a bonus until you notice how much it shapes the itinerary.",
     residentFit: "Long-term residents in Iqaluit skew toward Nunavut government workers and Arctic researchers, the group most likely to find the tradeoffs of living here worth the climate on offer.",
@@ -570,10 +570,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "jackson-wy": {
     feel: "Jackson sits inside its montane sage and conifer, 1901 m up: Flat-floored valley between the Tetons and Gros Ventre — iconic cold pool and orographic snow. It is cold-air drainage that keeps the numbers from reading like a generic Dfc town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Jackson (Jackson Hole) holds winter light near -1°C afternoons and -12.7°C nights at 1901 m.",
-      spring: "Jackson (Jackson Hole) spring afternoons reach about 10.7°C, nights near -3.8°C, before peak-season heat arrives.",
+      winter: "Jackson (Jackson Hole) holds winter light near −1°C afternoons and −12.7°C nights at 1901 m.",
+      spring: "Jackson (Jackson Hole) spring afternoons reach about 10.7°C, nights near −3.8°C, before peak-season heat arrives.",
       summer: "Jackson (Jackson Hole) asks for 25.5°C summer-day planning across Montane sage and conifer, then 5.7°C nights for sleep and gardens.",
-      autumn: "Jackson (Jackson Hole) closes the warm half-year near 12.9°C by day; -2.6°C nights and mixed storms reset the calendar.",
+      autumn: "Jackson (Jackson Hole) closes the warm half-year near 12.9°C by day; −2.6°C nights and mixed storms reset the calendar.",
     },
     travelerFit: "Most people show up in Jackson for Grand Teton NP and skiing and stay a day longer than planned once the local rhythm sets in.",
     residentFit: "Jackson rewards hospitality and outdoor industry most clearly, since year-round living means absorbing the cold-air pool pattern in every season, not just the postcard one.",
@@ -582,7 +582,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "kamloops-bc": {
     feel: "Kamloops occupies a specific piece of ground — Confluence of Thompson rivers in the BC Interior Plateau — one of Canada's driest climates — at 345 m. The give-away is rain shadow, which turns straightforward BSk-class averages into something sharper on the ground.",
     seasons: {
-      winter: "Kamloops winter afternoons settle near 1.6°C — nights -5.2°C — under BSk seasonality.",
+      winter: "Kamloops winter afternoons settle near 1.6°C — nights −5.2°C — under BSk seasonality.",
       spring: "Kamloops opens spring under roughly 15.7°C days — drier moisture — and 3.1°C overnight recovery.",
       summer: "Kamloops summer highs near 27.6°C at 345 m still leave rain shadow mattering after sunset near 12.7°C.",
       autumn: "Kamloops autumn returns to roughly 13.8°C days and 3.7°C nights — often the clearest travel window.",
@@ -594,7 +594,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "kelowna-bc": {
     feel: "Step outside in Kelowna and the terrain announces itself at once: East shore of Okanagan Lake, 344 m up. Strip away the BSk label and what is left is rain shadow pushing the rain-shadow sanctuary pattern harder than the regional average would suggest.",
     seasons: {
-      winter: "Kelowna (Central Okanagan) keeps winter highs near 2.5°C while -3.3°C overnight lows test housing and travel plans.",
+      winter: "Kelowna (Central Okanagan) keeps winter highs near 2.5°C while −3.3°C overnight lows test housing and travel plans.",
       spring: "Kelowna (Central Okanagan) spring feels workable at 15.7°C days and 3.8°C nights across the Ponderosa pine–bunchgrass and irrigated orchard.",
       summer: "Kelowna (Central Okanagan) in summer means about 27.8°C heat, drier rainfall pattern, and 13.6°C overnight air.",
       autumn: "Kelowna (Central Okanagan) autumn highs near 14.3°C and lows near 4.9°C suit longer outdoor days than midsummer.",
@@ -630,7 +630,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "leamington-on": {
     feel: "Leamington sits at 183 m: Canada's southernmost mainland, on Lake Erie's north shore. It is lake effect that keeps the numbers from reading like a generic Dfa town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Leamington / Pelee winter afternoons settle near 1.4°C — nights -5.1°C — under Dfa (warmest Dfa in Canada) seasonality.",
+      winter: "Leamington / Pelee winter afternoons settle near 1.4°C — nights −5.1°C — under Dfa (warmest Dfa in Canada) seasonality.",
       spring: "Leamington / Pelee spring afternoons reach about 12.7°C, nights near 3.7°C, before peak-season heat arrives.",
       summer: "Leamington / Pelee summer highs near 26.1°C at 183 m still leave lake effect mattering after sunset near 17°C.",
       autumn: "Leamington / Pelee autumn returns to roughly 16°C days and 8°C nights — often the clearest travel window.",
@@ -642,7 +642,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "leavenworth-wa": {
     feel: "Leavenworth sits 350 m above sea level, and the ground tells the story: Wenatchee River valley at the eastern foothills of the Cascades. Rain shadow is doing real work on the thermometer, and it is the reason people describe Leavenworth as a rain-shadow sanctuary rather than just another Washington town.",
     seasons: {
-      winter: "Leavenworth (Cascade East Slope) winter afternoons settle near 3.2°C — nights -4.1°C — under Dsa seasonality.",
+      winter: "Leavenworth (Cascade East Slope) winter afternoons settle near 3.2°C — nights −4.1°C — under Dsa seasonality.",
       spring: "Leavenworth (Cascade East Slope) spring afternoons reach about 16.2°C, nights near 2.3°C, before peak-season heat arrives.",
       summer: "Leavenworth (Cascade East Slope) warm season centers on 28.6°C days; 11.6°C nights are the practical relief.",
       autumn: "Leavenworth (Cascade East Slope) autumn returns to roughly 15.9°C days and 3.6°C nights — often the clearest travel window.",
@@ -654,7 +654,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "lewes-de": {
     feel: "Lewes sits 3 m above sea level, and the ground tells the story: Historic baymouth settlement where Delaware Bay narrows toward the Atlantic. Diurnal sea breeze is doing real work on the thermometer, and it is the reason people describe Lewes as a lake-moderated rather than just another Delaware town.",
     seasons: {
-      winter: "Lewes (Delaware Bay) in winter is a 8.6°C daytime story; nights to -1°C make sea breeze tangible.",
+      winter: "Lewes (Delaware Bay) in winter is a 8.6°C daytime story; nights to −1°C make sea breeze tangible.",
       spring: "Lewes (Delaware Bay) spring afternoons reach about 17.9°C, nights near 7.2°C, before peak-season heat arrives.",
       summer: "Lewes (Delaware Bay) asks for 29.2°C summer-day planning across Maritime forest and salt marsh edge, then 19.2°C nights for sleep and gardens.",
       autumn: "Lewes (Delaware Bay) closes the warm half-year near 20.6°C by day; 10.2°C nights and wetter storms reset the calendar.",
@@ -678,7 +678,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "lubbock-tx": {
     feel: "The setting comes first in Lubbock: High Plains caprock escarpment east of the New Mexico border, 980 m above sea level. Continental extremity sets the tone, and the high-desert escape signature shows up in almost every season here, not just one.",
     seasons: {
-      winter: "Lubbock (Llano Estacado) keeps winter highs near 13.8°C while -2.2°C overnight lows test housing and travel plans.",
+      winter: "Lubbock (Llano Estacado) keeps winter highs near 13.8°C while −2.2°C overnight lows test housing and travel plans.",
       spring: "Lubbock (Llano Estacado) climbs toward 24.5°C spring afternoons while 980 m elevation preserves 7.7°C nights.",
       summer: "Lubbock (Llano Estacado) summer afternoons land near 33.6°C, with nights easing toward 19.3°C when skies clear.",
       autumn: "Lubbock (Llano Estacado) autumn light means 24°C afternoons at 980 m and 8.9°C after dark.",
@@ -690,8 +690,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "marquette-mi": {
     feel: "At 190 m, the defining fact about Marquette is geography — Lake Superior's south shore on a rocky peninsula. Lake effect explains most of it — a lake-moderated effect layered over boreal-northern hardwood transition that most neighboring Michigan towns don't get.",
     seasons: {
-      winter: "Marquette (UP) keeps winter highs near -2.3°C while -10.4°C overnight lows test housing and travel plans.",
-      spring: "Marquette (UP) spring highs near 9.5°C and lows near -1.4°C favor scouting walks over midsummer crowds.",
+      winter: "Marquette (UP) keeps winter highs near −2.3°C while −10.4°C overnight lows test housing and travel plans.",
+      spring: "Marquette (UP) spring highs near 9.5°C and lows near −1.4°C favor scouting walks over midsummer crowds.",
       summer: "Marquette (UP) summer is an honest 23.7°C afternoon climate; nights to 12.3°C keep diurnal swing real.",
       autumn: "Marquette (UP) fall holds about 12.8°C afternoons while nights drop toward 4°C over Boreal-northern hardwood transition.",
     },
@@ -726,10 +726,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "medicine-hat-ab": {
     feel: "Medicine Hat sits at 717 m: South Saskatchewan River valley on the semiarid short-grass prairie of southeastern Alberta. The give-away is chinook / foehn downslope, which turns straightforward BSk-class averages into something sharper on the ground.",
     seasons: {
-      winter: "Medicine Hat in winter is a -1.7°C daytime story; nights to -13°C make chinook foehn tangible.",
-      spring: "Medicine Hat spring afternoons reach about 12.5°C, nights near -1.1°C, before peak-season heat arrives.",
+      winter: "Medicine Hat in winter is a −1.7°C daytime story; nights to −13°C make chinook foehn tangible.",
+      spring: "Medicine Hat spring afternoons reach about 12.5°C, nights near −1.1°C, before peak-season heat arrives.",
       summer: "Medicine Hat warm season centers on 26.5°C days; 11°C nights are the practical relief.",
-      autumn: "Medicine Hat autumn returns to roughly 13.5°C days and -0.3°C nights — often the clearest travel window.",
+      autumn: "Medicine Hat autumn returns to roughly 13.5°C days and −0.3°C nights — often the clearest travel window.",
     },
     travelerFit: "Medicine Hat earns its visitors through badlands tours, South Saskatchewan River, and dark-sky observers — reason enough on their own, before the climate even factors in.",
     residentFit: "Medicine Hat rewards sun-seekers in Canada, retirees, and drought-tolerant gardeners most clearly, since year-round living means absorbing the chinook corridor pattern in every season, not just the postcard one.",
@@ -738,7 +738,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "mentone-al": {
     feel: "Mentone sits inside its oak–hickory and mesic cove forest, 548 m up: Village on the Cumberland Plateau / Lookout Mountain scarp — roughly 550 m above the Tennessee Valley floor to the west. It is elevation lapse rate that keeps the numbers from reading like a generic Cfa town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Mentone (Lookout Mountain) in winter is a 10.1°C daytime story; nights to -0.5°C make elevation lapse rate tangible.",
+      winter: "Mentone (Lookout Mountain) in winter is a 10.1°C daytime story; nights to −0.5°C make elevation lapse rate tangible.",
       spring: "Mentone (Lookout Mountain) opens spring under roughly 20.4°C days — wetter moisture — and 8°C overnight recovery.",
       summer: "Mentone (Lookout Mountain) summer highs near 29.2°C at 548 m still leave elevation lapse rate mattering after sunset near 18.2°C.",
       autumn: "Mentone (Lookout Mountain) autumn stays usable at 21°C days and 9.2°C nights as elevation lapse rate reasserts cooler evenings.",
@@ -762,7 +762,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "moab-ut": {
     feel: "Step outside in Moab and the terrain announces itself at once: Colorado River canyon with Arches and Canyonlands national parks adjacent, 1245 m up. Strip away the BWk label and what is left is rain shadow pushing the desert oasis pattern harder than the regional average would suggest.",
     seasons: {
-      winter: "Moab (Canyon Oasis) cold months stay close to 7.6°C days and -4.7°C nights, with a drier storm cadence in Utah.",
+      winter: "Moab (Canyon Oasis) cold months stay close to 7.6°C days and −4.7°C nights, with a drier storm cadence in Utah.",
       spring: "Moab (Canyon Oasis) climbs toward 22.3°C spring afternoons while 1245 m elevation preserves 5.7°C nights.",
       summer: "Moab (Canyon Oasis) in summer means about 36.1°C heat, drier rainfall pattern, and 18.2°C overnight air.",
       autumn: "Moab (Canyon Oasis) autumn highs near 22.3°C and lows near 6.2°C suit longer outdoor days than midsummer.",
@@ -798,8 +798,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "morden-mb": {
     feel: "Elevation does the early work in Morden, at 300 m: Southern Manitoba warm pocket near the Pembina Escarpment, west of the Red River Valley. Slope / aspect explains most of it — an orchard valley effect layered over tallgrass prairie and parkland transition that most neighboring Manitoba towns don't get.",
     seasons: {
-      winter: "Morden & the Pembina Escarpment winters run near -8°C by day and -17.5°C at night, shaped by aspect slope across Tallgrass prairie and parkland transition.",
-      spring: "Morden & the Pembina Escarpment climbs toward 9.3°C spring afternoons while 300 m elevation preserves -2.4°C nights.",
+      winter: "Morden & the Pembina Escarpment winters run near −8°C by day and −17.5°C at night, shaped by aspect slope across Tallgrass prairie and parkland transition.",
+      spring: "Morden & the Pembina Escarpment climbs toward 9.3°C spring afternoons while 300 m elevation preserves −2.4°C nights.",
       summer: "Morden & the Pembina Escarpment in summer means about 25.1°C heat, wetter rainfall pattern, and 12.6°C overnight air.",
       autumn: "Morden & the Pembina Escarpment autumn light means 11.2°C afternoons at 300 m and 0.4°C after dark.",
     },
@@ -822,7 +822,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "morgantown-wv": {
     feel: "Morgantown sits 273 m above sea level, and the ground tells the story: Dissected Allegheny Plateau. Orographic lift does the heavy lifting here, which is why the Köppen Cfa classification undersells how distinct the daily rhythm actually feels.",
     seasons: {
-      winter: "Morgantown (Appalachian Plateau) winter afternoons settle near 5.7°C — nights -4.2°C — under Cfa / Dfb transition seasonality.",
+      winter: "Morgantown (Appalachian Plateau) winter afternoons settle near 5.7°C — nights −4.2°C — under Cfa / Dfb transition seasonality.",
       spring: "Morgantown (Appalachian Plateau) spring afternoons reach about 17.8°C, nights near 4.4°C, before peak-season heat arrives.",
       summer: "Morgantown (Appalachian Plateau) asks for 28.1°C summer-day planning across Mixed mesophytic forest, then 16°C nights for sleep and gardens.",
       autumn: "Morgantown (Appalachian Plateau) closes the warm half-year near 18.6°C by day; 6.5°C nights and wetter storms reset the calendar.",
@@ -834,10 +834,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "mount-washington-nh": {
     feel: "At 1917 m, the defining fact about Mt. Washington Summit is geography — Highest peak in the northeastern US, rising above a ridge system that acts as a convergence zone for three storm tracks. Polar jet / arctic front explains most of it — an alpine tundra effect layered over alpine tundra (above treeline) that most neighboring New Hampshire towns don't get.",
     seasons: {
-      winter: "Mount Washington Summit winters run near -7.8°C by day and -17.2°C at night, shaped by polar jet exposure across Alpine tundra (above treeline).",
-      spring: "Mount Washington Summit spring highs near 0.9°C and lows near -7.4°C favor scouting walks over midsummer crowds.",
+      winter: "Mount Washington Summit winters run near −7.8°C by day and −17.2°C at night, shaped by polar jet exposure across Alpine tundra (above treeline).",
+      spring: "Mount Washington Summit spring highs near 0.9°C and lows near −7.4°C favor scouting walks over midsummer crowds.",
       summer: "Mount Washington Summit summer afternoons land near 13.3°C, with nights easing toward 6.5°C when skies clear.",
-      autumn: "Mount Washington Summit autumn light means 4.6°C afternoons at 1917 m and -2.7°C after dark.",
+      autumn: "Mount Washington Summit autumn light means 4.6°C afternoons at 1917 m and −2.7°C after dark.",
     },
     travelerFit: "Short stays here revolve around weather enthusiasts, Cog Railway, and summer hiking; the alpine tundra climate mostly reads as a bonus until you notice how much it shapes the itinerary.",
     residentFit: "Long-term residents in Mt. Washington Summit skew toward observatory staff, the group most likely to find the tradeoffs of living here worth the climate on offer.",
@@ -846,7 +846,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "mystic-ct": {
     feel: "Elevation does the early work in Mystic, at 3 m: Estuarine village between Long Island Sound and Block Island Sound — persistent maritime air. Strip away the Dfb label and what is left is marine layer pushing the cool-summer maritime pattern harder than the regional average would suggest.",
     seasons: {
-      winter: "Mystic (Fishers Island Sound) keeps winter highs near 5.1°C while -3.7°C overnight lows test housing and travel plans.",
+      winter: "Mystic (Fishers Island Sound) keeps winter highs near 5.1°C while −3.7°C overnight lows test housing and travel plans.",
       spring: "Mystic (Fishers Island Sound) spring feels workable at 14°C days and 4°C nights across the Maritime oak–pine.",
       summer: "Mystic (Fishers Island Sound) summer afternoons land near 26.1°C, with nights easing toward 16.6°C when skies clear.",
       autumn: "Mystic (Fishers Island Sound) autumn highs near 17.6°C and lows near 7.8°C suit longer outdoor days than midsummer.",
@@ -906,10 +906,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "nome-ak": {
     feel: "Nome is built 6 m up, on this footprint: Bering Sea coast at the mouth of the Snake River. That is polar jet / arctic front at work, and it makes Nome read less like a textbook Dfc station and more like its own microclimate.",
     seasons: {
-      winter: "Nome (Seward Peninsula) in winter is a -9.5°C daytime story; nights to -17.4°C make polar jet exposure tangible.",
-      spring: "Nome (Seward Peninsula) shoulder season sits near -1.1°C days and -9.3°C nights, with polar jet exposure still cooling mornings.",
+      winter: "Nome (Seward Peninsula) in winter is a −9.5°C daytime story; nights to −17.4°C make polar jet exposure tangible.",
+      spring: "Nome (Seward Peninsula) shoulder season sits near −1.1°C days and −9.3°C nights, with polar jet exposure still cooling mornings.",
       summer: "Nome (Seward Peninsula) summer highs near 14.1°C at 6 m still leave polar jet exposure mattering after sunset near 6.4°C.",
-      autumn: "Nome (Seward Peninsula) autumn stays usable at 2.7°C days and -4°C nights as polar jet exposure reasserts cooler evenings.",
+      autumn: "Nome (Seward Peninsula) autumn stays usable at 2.7°C days and −4°C nights as polar jet exposure reasserts cooler evenings.",
     },
     travelerFit: "The draw for visitors is straightforward: Iditarod finish and Bering land bridge archaeology, set inside a subarctic continental climate that is easy to underestimate from a distance.",
     residentFit: "Nome rewards mining logistics and research most clearly, since year-round living means absorbing the subarctic continental pattern in every season, not just the postcard one.",
@@ -918,7 +918,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "norfolk-ct": {
     feel: "At 427 m, the defining fact about Norfolk is geography — Highest-incorporated town in Connecticut. Cold-air drainage explains most of it — a cold-air pool effect layered over northern hardwoods and hemlock ravines that most neighboring Connecticut towns don't get.",
     seasons: {
-      winter: "Norfolk (NW Highlands) cold months stay close to 0.7°C days and -8.6°C nights, with a wetter storm cadence in Connecticut.",
+      winter: "Norfolk (NW Highlands) cold months stay close to 0.7°C days and −8.6°C nights, with a wetter storm cadence in Connecticut.",
       spring: "Norfolk (NW Highlands) spring highs near 12.6°C and lows near 0.7°C favor scouting walks over midsummer crowds.",
       summer: "Norfolk (NW Highlands) summer afternoons land near 24.6°C, with nights easing toward 13.5°C when skies clear.",
       autumn: "Norfolk (NW Highlands) autumn highs near 14.1°C and lows near 4°C suit longer outdoor days than midsummer.",
@@ -930,7 +930,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "oakland-md": {
     feel: "Oakland sits 750 m above sea level, and the ground tells the story: Highest elevation county in Maryland. Lake effect does the heavy lifting here, which is why the Köppen Dfb classification undersells how distinct the daily rhythm actually feels.",
     seasons: {
-      winter: "Oakland (Garrett County Highlands) winter afternoons settle near 3.2°C — nights -6.5°C — under Dfb seasonality.",
+      winter: "Oakland (Garrett County Highlands) winter afternoons settle near 3.2°C — nights −6.5°C — under Dfb seasonality.",
       spring: "Oakland (Garrett County Highlands) shoulder season sits near 14.9°C days and 2.3°C nights, with lake effect still cooling mornings.",
       summer: "Oakland (Garrett County Highlands) asks for 25.1°C summer-day planning across Northern hardwoods and hay meadows, then 13.6°C nights for sleep and gardens.",
       autumn: "Oakland (Garrett County Highlands) closes the warm half-year near 15.9°C by day; 4.4°C nights and wetter storms reset the calendar.",
@@ -978,7 +978,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "paducah-ky": {
     feel: "Elevation does the early work in Paducah, at 113 m: Alluvial plain at the confluence of the Tennessee and Ohio Rivers. River-valley moderation explains most of it — a river-valley moderation effect layered over western mesophytic forest margin and cropland that most neighboring Kentucky towns don't get.",
     seasons: {
-      winter: "Paducah (Ohio–Tennessee Confluence) winters run near 8.5°C by day and -1.5°C at night, shaped by river moderation across Western mesophytic forest margin and cropland.",
+      winter: "Paducah (Ohio–Tennessee Confluence) winters run near 8.5°C by day and −1.5°C at night, shaped by river moderation across Western mesophytic forest margin and cropland.",
       spring: "Paducah (Ohio–Tennessee Confluence) spring feels workable at 20.7°C days and 8.7°C nights across the Western mesophytic forest margin and cropland.",
       summer: "Paducah (Ohio–Tennessee Confluence) in summer means about 31°C heat, wetter rainfall pattern, and 19.6°C overnight air.",
       autumn: "Paducah (Ohio–Tennessee Confluence) fall holds about 21.7°C afternoons while nights drop toward 9.2°C over Western mesophytic forest margin and cropland.",
@@ -990,7 +990,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "page-az": {
     feel: "Step outside in Page and the terrain announces itself at once: Glen Canyon rim on the Colorado Plateau, 1310 m up. Strip away the BSk label and what is left is continental extremity pushing the high-desert escape pattern harder than the regional average would suggest.",
     seasons: {
-      winter: "Page (Colorado Plateau) cold months stay close to 9.2°C days and -1.6°C nights, with a drier storm cadence in Arizona.",
+      winter: "Page (Colorado Plateau) cold months stay close to 9.2°C days and −1.6°C nights, with a drier storm cadence in Arizona.",
       spring: "Page (Colorado Plateau) climbs toward 22.2°C spring afternoons while 1310 m elevation preserves 7.7°C nights.",
       summer: "Page (Colorado Plateau) summer afternoons land near 35.2°C, with nights easing toward 20.2°C when skies clear.",
       autumn: "Page (Colorado Plateau) fall holds about 22.1°C afternoons while nights drop toward 9°C over Pinyon–juniper woodland and sagebrush.",
@@ -1038,7 +1038,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "penticton-bc": {
     feel: "Penticton occupies a specific piece of ground — Isthmus between Skaha and Okanagan Lakes in the deep Okanagan rain-shadow valley — at 344 m. The give-away is rain shadow, which turns straightforward BSk-class averages into something sharper on the ground.",
     seasons: {
-      winter: "Penticton (South Okanagan) in winter is a 2.7°C daytime story; nights to -3.4°C make rain shadow tangible.",
+      winter: "Penticton (South Okanagan) in winter is a 2.7°C daytime story; nights to −3.4°C make rain shadow tangible.",
       spring: "Penticton (South Okanagan) opens spring under roughly 16.1°C days — drier moisture — and 3.7°C overnight recovery.",
       summer: "Penticton (South Okanagan) asks for 28.3°C summer-day planning across Interior ponderosa-bunchgrass, then 13.4°C nights for sleep and gardens.",
       autumn: "Penticton (South Okanagan) closes the warm half-year near 14.8°C by day; 4.7°C nights and drier storms reset the calendar.",
@@ -1050,10 +1050,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "pincher-creek-ab": {
     feel: "Pincher Creek occupies a specific piece of ground — Foothills immediately east of the Rockies at the Crowsnest Pass outflow — at 1190 m. Chinook / foehn downslope is doing real work on the thermometer, and it is the reason people describe Pincher Creek as a chinook corridor rather than just another Alberta town.",
     seasons: {
-      winter: "Pincher Creek (Chinook Zone) holds winter light near 0.4°C afternoons and -10°C nights at 1190 m.",
-      spring: "Pincher Creek (Chinook Zone) shoulder season sits near 10.5°C days and -1.8°C nights, with chinook foehn still cooling mornings.",
+      winter: "Pincher Creek (Chinook Zone) holds winter light near 0.4°C afternoons and −10°C nights at 1190 m.",
+      spring: "Pincher Creek (Chinook Zone) shoulder season sits near 10.5°C days and −1.8°C nights, with chinook foehn still cooling mornings.",
       summer: "Pincher Creek (Chinook Zone) warm season centers on 23.5°C days; 8.2°C nights are the practical relief.",
-      autumn: "Pincher Creek (Chinook Zone) autumn stays usable at 12°C days and -0.2°C nights as chinook foehn reasserts cooler evenings.",
+      autumn: "Pincher Creek (Chinook Zone) autumn stays usable at 12°C days and −0.2°C nights as chinook foehn reasserts cooler evenings.",
     },
     travelerFit: "Most people show up in Pincher Creek for Waterton gateway and stay a day longer than planned once the local rhythm sets in.",
     residentFit: "Full-time life in Pincher Creek tends to reward ranchers and wind-tolerant — people who plan their year around the chinook corridor pattern rather than fighting it.",
@@ -1062,7 +1062,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "pittsfield-ma": {
     feel: "Hudson/Housatonic watershed uplands between the Taconic Range and Green Mountains — interior New England with continentality — that is the short version of why Pittsfield feels the way it does at 317 m. Polar jet / arctic front sets the tone, and the piedmont transition signature shows up in almost every season here, not just one.",
     seasons: {
-      winter: "Pittsfield (Berkshires) cold months stay close to 1.4°C days and -8.5°C nights, with a wetter storm cadence in Massachusetts.",
+      winter: "Pittsfield (Berkshires) cold months stay close to 1.4°C days and −8.5°C nights, with a wetter storm cadence in Massachusetts.",
       spring: "Pittsfield (Berkshires) spring highs near 13.4°C and lows near 0.8°C favor scouting walks over midsummer crowds.",
       summer: "Pittsfield (Berkshires) in summer means about 25.8°C heat, wetter rainfall pattern, and 13.3°C overnight air.",
       autumn: "Pittsfield (Berkshires) autumn highs near 15.3°C and lows near 3.9°C suit longer outdoor days than midsummer.",
@@ -1074,7 +1074,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "prince-edward-co-on": {
     feel: "Prince Edward County sits 95 m above sea level, and the ground tells the story: Peninsula into Lake Ontario. Lake effect does the heavy lifting here, which is why the Köppen Dfb classification undersells how distinct the daily rhythm actually feels.",
     seasons: {
-      winter: "Prince Edward County holds winter light near 0.5°C afternoons and -7.8°C nights at 95 m.",
+      winter: "Prince Edward County holds winter light near 0.5°C afternoons and −7.8°C nights at 95 m.",
       spring: "Prince Edward County spring afternoons reach about 11.5°C, nights near 1.8°C, before peak-season heat arrives.",
       summer: "Prince Edward County asks for 25.1°C summer-day planning across Carolinian-boreal transition on limestone, then 15.1°C nights for sleep and gardens.",
       autumn: "Prince Edward County closes the warm half-year near 15°C by day; 6°C nights and wetter storms reset the calendar.",
@@ -1146,7 +1146,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "rapid-city-sd": {
     feel: "Rapid City occupies a specific piece of ground — Prairie edge at the Black Hills front — rapid weather changes when Pacific systems meet continental air — at 966 m. Chinook / foehn downslope is doing real work on the thermometer, and it is the reason people describe Rapid City as a chinook corridor rather than just another South Dakota town.",
     seasons: {
-      winter: "Rapid City (Eastern Black Hills) holds winter light near 3.9°C afternoons and -8.8°C nights at 966 m.",
+      winter: "Rapid City (Eastern Black Hills) holds winter light near 3.9°C afternoons and −8.8°C nights at 966 m.",
       spring: "Rapid City (Eastern Black Hills) spring afternoons reach about 13.9°C, nights near 0.6°C, before peak-season heat arrives.",
       summer: "Rapid City (Eastern Black Hills) warm season centers on 28.4°C days; 13.8°C nights are the practical relief.",
       autumn: "Rapid City (Eastern Black Hills) autumn stays usable at 16.8°C days and 2.7°C nights as chinook foehn reasserts cooler evenings.",
@@ -1170,7 +1170,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "revelstoke-bc": {
     feel: "Revelstoke is built 453 m up, on this footprint: Columbia River valley deep within the Selkirks. That is orographic lift at work, and it makes Revelstoke read less like a textbook Dfb station and more like its own microclimate.",
     seasons: {
-      winter: "Revelstoke (Snow Capital) holds winter light near -0.2°C afternoons and -6.2°C nights at 453 m.",
+      winter: "Revelstoke (Snow Capital) holds winter light near −0.2°C afternoons and −6.2°C nights at 453 m.",
       spring: "Revelstoke (Snow Capital) shoulder season sits near 13.3°C days and 1.1°C nights, with orographic lift still cooling mornings.",
       summer: "Revelstoke (Snow Capital) summer highs near 25.4°C at 453 m still leave orographic lift mattering after sunset near 10.5°C.",
       autumn: "Revelstoke (Snow Capital) autumn stays usable at 11.4°C days and 2.6°C nights as orographic lift reasserts cooler evenings.",
@@ -1182,7 +1182,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "roswell-nm": {
     feel: "Roswell sits inside its shortgrass steppe, 1087 m up: Broad Pecos River valley on the Llano Estacado margin — high plains dryness with summer monsoon convection. It is monsoon convective lift that keeps the numbers from reading like a generic BSk town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Roswell (Pecos Valley) in winter is a 15.2°C daytime story; nights to -3.1°C make monsoon lift tangible.",
+      winter: "Roswell (Pecos Valley) in winter is a 15.2°C daytime story; nights to −3.1°C make monsoon lift tangible.",
       spring: "Roswell (Pecos Valley) spring afternoons reach about 26.2°C, nights near 6.6°C, before peak-season heat arrives.",
       summer: "Roswell (Pecos Valley) warm season centers on 35.2°C days; 18.3°C nights are the practical relief.",
       autumn: "Roswell (Pecos Valley) autumn returns to roughly 25.1°C days and 7.6°C nights — often the clearest travel window.",
@@ -1230,7 +1230,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "scottsbluff-ne": {
     feel: "At 1189 m, the defining fact about Scottsbluff is geography — North Platte River at the Wildcat Hills — Plains edge with Pine Ridge scarp to the north. Add in shortgrass prairie and ponderosa islands and you get the combination that makes the high-desert escape label feel earned rather than a marketing line.",
     seasons: {
-      winter: "Scottsbluff (High Plains Escarpment) cold months stay close to 5.8°C days and -8.8°C nights, with a drier storm cadence in Nebraska.",
+      winter: "Scottsbluff (High Plains Escarpment) cold months stay close to 5.8°C days and −8.8°C nights, with a drier storm cadence in Nebraska.",
       spring: "Scottsbluff (High Plains Escarpment) spring highs near 16.9°C and lows near 0.9°C favor scouting walks over midsummer crowds.",
       summer: "Scottsbluff (High Plains Escarpment) summer is an honest 31.1°C afternoon climate; nights to 13.8°C keep diurnal swing real.",
       autumn: "Scottsbluff (High Plains Escarpment) autumn highs near 18.8°C and lows near 1.8°C suit longer outdoor days than midsummer.",
@@ -1254,7 +1254,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "spokane-wa": {
     feel: "Spokane sits at 562 m: Spokane River valley on the Columbia Plateau east of the Cascades. The give-away is chinook / foehn downslope, which turns straightforward Dsb-class averages into something sharper on the ground.",
     seasons: {
-      winter: "Spokane (Inland Empire) winter afternoons settle near 3°C — nights -4.3°C — under Dsb seasonality.",
+      winter: "Spokane (Inland Empire) winter afternoons settle near 3°C — nights −4.3°C — under Dsb seasonality.",
       spring: "Spokane (Inland Empire) spring afternoons reach about 15.1°C, nights near 2°C, before peak-season heat arrives.",
       summer: "Spokane (Inland Empire) asks for 28.4°C summer-day planning across Ponderosa pine–steppe transition, then 10.8°C nights for sleep and gardens.",
       autumn: "Spokane (Inland Empire) autumn returns to roughly 15.5°C days and 2.6°C nights — often the clearest travel window.",
@@ -1278,10 +1278,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "stanley-id": {
     feel: "Stanley sits 1947 m above sea level, and the ground tells the story: High enclosed valley east of the Sawtooth Mountains. Cold-air drainage is doing real work on the thermometer, and it is the reason people describe Stanley as a cold-air pool rather than just another Idaho town.",
     seasons: {
-      winter: "Stanley (Sawtooth Valley) holds winter light near 0.5°C afternoons and -12.7°C nights at 1947 m.",
-      spring: "Stanley (Sawtooth Valley) opens spring under roughly 10.7°C days — mixed moisture — and -4.9°C overnight recovery.",
+      winter: "Stanley (Sawtooth Valley) holds winter light near 0.5°C afternoons and −12.7°C nights at 1947 m.",
+      spring: "Stanley (Sawtooth Valley) opens spring under roughly 10.7°C days — mixed moisture — and −4.9°C overnight recovery.",
       summer: "Stanley (Sawtooth Valley) warm season centers on 24.8°C days; 4.7°C nights are the practical relief.",
-      autumn: "Stanley (Sawtooth Valley) closes the warm half-year near 12.9°C by day; -3.3°C nights and mixed storms reset the calendar.",
+      autumn: "Stanley (Sawtooth Valley) closes the warm half-year near 12.9°C by day; −3.3°C nights and mixed storms reset the calendar.",
     },
     travelerFit: "Stanley earns its visitors through Sawtooth backpacking, Salmon River rafting, and dark-sky observers (Central Idaho DSR) — reason enough on their own, before the climate even factors in.",
     residentFit: "Full-time life in Stanley tends to reward extreme-cold enthusiasts, river guides, and off-grid homesteaders — people who plan their year around the cold-air pool pattern rather than fighting it.",
@@ -1290,7 +1290,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "state-college-pa": {
     feel: "At 360 m, the defining fact about State College is geography — Nittany Valley in the Appalachian Ridge and Valley — enclosed basins with cold-air pooling. Add in mixed hardwood forest and you get the combination that makes the cold-air pool label feel earned rather than a marketing line.",
     seasons: {
-      winter: "State College (Ridge & Valley) cold months stay close to 3°C days and -6°C nights, with a wetter storm cadence in Pennsylvania.",
+      winter: "State College (Ridge & Valley) cold months stay close to 3°C days and −6°C nights, with a wetter storm cadence in Pennsylvania.",
       spring: "State College (Ridge & Valley) spring feels workable at 15.6°C days and 2.9°C nights across the Mixed hardwood forest.",
       summer: "State College (Ridge & Valley) summer is an honest 27.2°C afternoon climate; nights to 14.8°C keep diurnal swing real.",
       autumn: "State College (Ridge & Valley) fall holds about 16.7°C afternoons while nights drop toward 5.3°C over Mixed hardwood forest.",
@@ -1302,7 +1302,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "summerland-bc": {
     feel: "Summerland sits 453 m above sea level, and the ground tells the story: Mid-Okanagan lakeside. Rain shadow does the heavy lifting here, which is why the Köppen BSk classification undersells how distinct the daily rhythm actually feels.",
     seasons: {
-      winter: "Summerland (Central Okanagan) holds winter light near 2.1°C afternoons and -4.1°C nights at 453 m.",
+      winter: "Summerland (Central Okanagan) holds winter light near 2.1°C afternoons and −4.1°C nights at 453 m.",
       spring: "Summerland (Central Okanagan) opens spring under roughly 14.9°C days — drier moisture — and 3°C overnight recovery.",
       summer: "Summerland (Central Okanagan) asks for 27.1°C summer-day planning across Interior Douglas-fir / bunchgrass, then 12.7°C nights for sleep and gardens.",
       autumn: "Summerland (Central Okanagan) autumn stays usable at 13.9°C days and 4.1°C nights as rain shadow reasserts cooler evenings.",
@@ -1314,7 +1314,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "sutton-qc": {
     feel: "Sutton sits at 210 m: Village at the foot of the Sutton Mountains in Quebec's Appalachian uplands. It is orographic lift that keeps the numbers from reading like a generic Dfb town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Sutton & the Eastern Townships in winter is a -2°C daytime story; nights to -11.6°C make orographic lift tangible.",
+      winter: "Sutton & the Eastern Townships in winter is a −2°C daytime story; nights to −11.6°C make orographic lift tangible.",
       spring: "Sutton & the Eastern Townships spring afternoons reach about 11.2°C, nights near 0°C, before peak-season heat arrives.",
       summer: "Sutton & the Eastern Townships summer highs near 24.8°C at 210 m still leave orographic lift mattering after sunset near 13.4°C.",
       autumn: "Sutton & the Eastern Townships autumn stays usable at 13.7°C days and 3.8°C nights as orographic lift reasserts cooler evenings.",
@@ -1326,7 +1326,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "syracuse-ny": {
     feel: "The setting comes first in Syracuse: Central New York, 125 m above sea level. Lake effect sets the tone, and the lake-moderated signature shows up in almost every season here, not just one.",
     seasons: {
-      winter: "Syracuse keeps winter highs near 1.7°C while -6.9°C overnight lows test housing and travel plans.",
+      winter: "Syracuse keeps winter highs near 1.7°C while −6.9°C overnight lows test housing and travel plans.",
       spring: "Syracuse spring feels workable at 13.8°C days and 2.1°C nights across the Eastern hardwood forest.",
       summer: "Syracuse summer is an honest 26.9°C afternoon climate; nights to 15°C keep diurnal swing real.",
       autumn: "Syracuse fall holds about 16.3°C afternoons while nights drop toward 5.9°C over Eastern hardwood forest.",
@@ -1362,8 +1362,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "thunder-bay-on": {
     feel: "Step outside in Thunder Bay and the terrain announces itself at once: North shore of Lake Superior, 183 m up. Lake effect is the mechanism behind it, layering a subarctic continental pattern on top that most of the Ontario interior never sees.",
     seasons: {
-      winter: "Thunder Bay winters run near -5.1°C by day and -15.2°C at night, shaped by lake effect across Boreal forest.",
-      spring: "Thunder Bay climbs toward 8.2°C spring afternoons while 183 m elevation preserves -3.3°C nights.",
+      winter: "Thunder Bay winters run near −5.1°C by day and −15.2°C at night, shaped by lake effect across Boreal forest.",
+      spring: "Thunder Bay climbs toward 8.2°C spring afternoons while 183 m elevation preserves −3.3°C nights.",
       summer: "Thunder Bay in summer means about 22.7°C heat, wetter rainfall pattern, and 10.8°C overnight air.",
       autumn: "Thunder Bay fall holds about 11.1°C afternoons while nights drop toward 1.9°C over Boreal forest.",
     },
@@ -1410,8 +1410,8 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "twillingate-nl": {
     feel: "Elevation does the early work in Twillingate, at 12 m: Notre Dame Bay on Newfoundland's northeast coast. Marine layer explains most of it — a cool-summer maritime effect layered over boreal coastal barrens that most neighboring Newfoundland and Labrador towns don't get.",
     seasons: {
-      winter: "Twillingate (Iceberg Coast) winters run near -0.8°C by day and -7.4°C at night, shaped by marine layer across Boreal coastal barrens.",
-      spring: "Twillingate (Iceberg Coast) climbs toward 5.3°C spring afternoons while 12 m elevation preserves -2.1°C nights.",
+      winter: "Twillingate (Iceberg Coast) winters run near −0.8°C by day and −7.4°C at night, shaped by marine layer across Boreal coastal barrens.",
+      spring: "Twillingate (Iceberg Coast) climbs toward 5.3°C spring afternoons while 12 m elevation preserves −2.1°C nights.",
       summer: "Twillingate (Iceberg Coast) in summer means about 19.3°C heat, wetter rainfall pattern, and 10.3°C overnight air.",
       autumn: "Twillingate (Iceberg Coast) fall holds about 11°C afternoons while nights drop toward 4.3°C over Boreal coastal barrens.",
     },
@@ -1422,7 +1422,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "washington-dc": {
     feel: "Washington is built 15 m up, on this footprint: Potomac River fall-line city on the Atlantic coastal plain — heat island + Chesapeake moisture. That is continental extremity at work, and it makes Washington read less like a textbook Cfa station and more like its own microclimate.",
     seasons: {
-      winter: "Washington, D.C. winter afternoons settle near 8.1°C — nights -1.7°C — under Cfa seasonality.",
+      winter: "Washington, D.C. winter afternoons settle near 8.1°C — nights −1.7°C — under Cfa seasonality.",
       spring: "Washington, D.C. opens spring under roughly 19.2°C days — wetter moisture — and 7.4°C overnight recovery.",
       summer: "Washington, D.C. summer highs near 30.1°C at 15 m still leave continentality mattering after sunset near 19.4°C.",
       autumn: "Washington, D.C. autumn returns to roughly 20.3°C days and 9.5°C nights — often the clearest travel window.",
@@ -1434,7 +1434,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "wilmington-de": {
     feel: "Wilmington sits 28 m above sea level, and the ground tells the story: Fall-line zone where Piedmont meets coastal plain. River-valley moderation does the heavy lifting here, which is why the Köppen Cfa classification undersells how distinct the daily rhythm actually feels.",
     seasons: {
-      winter: "Wilmington (Brandywine–Piedmont) holds winter light near 6.6°C afternoons and -2.4°C nights at 28 m.",
+      winter: "Wilmington (Brandywine–Piedmont) holds winter light near 6.6°C afternoons and −2.4°C nights at 28 m.",
       spring: "Wilmington (Brandywine–Piedmont) shoulder season sits near 17.7°C days and 6.5°C nights, with river moderation still cooling mornings.",
       summer: "Wilmington (Brandywine–Piedmont) summer highs near 29.4°C at 28 m still leave river moderation mattering after sunset near 18.8°C.",
       autumn: "Wilmington (Brandywine–Piedmont) autumn stays usable at 19.5°C days and 9.1°C nights as river moderation reasserts cooler evenings.",
@@ -1458,10 +1458,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "yellowknife-nt": {
     feel: "Yellowknife sits at 206 m: Great Slave Lake's north shore. It is continental extremity that keeps the numbers from reading like a generic Dfc town, and the difference is felt daily, not just on a chart.",
     seasons: {
-      winter: "Yellowknife in winter is a -17.9°C daytime story; nights to -26.6°C make continentality tangible.",
-      spring: "Yellowknife shoulder season sits near -0.1°C days and -12°C nights, with continentality still cooling mornings.",
+      winter: "Yellowknife in winter is a −17.9°C daytime story; nights to −26.6°C make continentality tangible.",
+      spring: "Yellowknife shoulder season sits near −0.1°C days and −12°C nights, with continentality still cooling mornings.",
       summer: "Yellowknife asks for 19.5°C summer-day planning across Boreal-taiga transition, then 9.2°C nights for sleep and gardens.",
-      autumn: "Yellowknife autumn returns to roughly 2.1°C days and -4.9°C nights — often the clearest travel window.",
+      autumn: "Yellowknife autumn returns to roughly 2.1°C days and −4.9°C nights — often the clearest travel window.",
     },
     travelerFit: "The draw for visitors is straightforward: aurora and ice road, set inside a subarctic continental climate that is easy to underestimate from a distance.",
     residentFit: "Full-time life in Yellowknife tends to reward aurora-centric life and northern service workers — people who plan their year around the subarctic continental pattern rather than fighting it.",

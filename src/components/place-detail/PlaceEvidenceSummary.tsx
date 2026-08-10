@@ -1,13 +1,14 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { BookOpen, ChevronDown, Download, ShieldCheck } from "lucide-react";
 import type { Place } from "../../types";
+import type { PlaceResearchReceipt } from "../../lib/research/contracts";
 import {
   buildPlaceEvidenceSummary,
   evidenceClassMeta,
   type EvidenceClass,
 } from "../../lib/evidence-summary";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "../../data/generated/climate-v2";
-import { RESEARCH_RECEIPTS_BY_ID } from "../../data/generated/research";
+import { loadResearchReceipts } from "../../data/generated/research";
 import { groupClaimsByScope, sourcesForClaim } from "../../lib/research/claim-scope";
 import { safeExternalHref } from "../../lib/safe-url";
 import { downloadBlobFile } from "../../lib/download-blob";
@@ -26,11 +27,22 @@ export function PlaceEvidenceSummary({
   anchorId?: string;
 }) {
   const summary = buildPlaceEvidenceSummary(place);
-  const receipt = RESEARCH_RECEIPTS_BY_ID[place.id];
+  const [receipt, setReceipt] = useState<PlaceResearchReceipt | null>(null);
   const claimGroups = receipt ? groupClaimsByScope(receipt) : [];
   const prose = useProse();
   const panelId = useId();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    void loadResearchReceipts().then(byId => {
+      if (!cancelled) setReceipt(byId[place.id] ?? null);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [place.id]);
+
   const exportDossierData = () => {
     downloadBlobFile(
       JSON.stringify({ place, researchReceipt: receipt ?? null }, null, 2),

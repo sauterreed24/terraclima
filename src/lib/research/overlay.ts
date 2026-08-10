@@ -61,10 +61,15 @@ export function citationsFromResearchSources(sources: readonly CorpusSource[]): 
     const key = url.toLowerCase();
     if (seen.has(key)) continue;
     seen.add(key);
+    const rawNote = [source.locator, source.dataPeriod, source.version].filter(Boolean).join(" · ");
+    // Corpus audit bans ASCII hyphen-minus before digits; use Unicode minus.
+    const note = rawNote
+      ? rawNote.replace(/(^|[^A-Za-z0-9])-(\d)/g, "$1−$2")
+      : undefined;
     out.push({
       label: source.title,
       kind: citationKindFor(source),
-      note: [source.locator, source.dataPeriod, source.version].filter(Boolean).join(" · ") || undefined,
+      note,
       url,
     });
   }
