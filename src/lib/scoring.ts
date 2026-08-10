@@ -360,8 +360,8 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       }
       case "best-retirement": {
         // Mild all-year, low aggregate risk, good growability, and a livable
-        // cost / social / access reality (retirees are highly sensitive to
-        // specialty-care distance and to neighbourhood social-fabric stress).
+        // housing pressure / access remoteness (retirees are highly sensitive to
+        // specialty-care distance and hospital/airport route times).
         const winterScore = Math.max(0, 24 - Math.max(0, -(janLow + 1)) * 3.8);
         const summerScore = Math.max(0, 20 - Math.max(0, summerHigh - 28) * 2.5);
         const riskScore = Math.max(0, 18 - avgRisk(p) * 5.2);

@@ -61,7 +61,6 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
   "asheville-nc": {
     liveSignals: {
       costPressure: 70,
-      socialStress: 36,
       accessFriction: 38,
       note: "Asheville's climate-refuge reputation has tightened housing affordability against wage base, but Mission Hospital gives the city a stronger service anchor than most mountain counties. Heavy-rain events, landslide exposure on steep slopes, and the French Broad floodplain are the practical climate-friction points.",
       sources: [
@@ -118,7 +117,6 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
     climate: { humidity: [72, 70, 68, 65, 68, 70, 72, 74, 74, 72, 72, 74], sunshinePct: [50, 55, 60, 65, 65, 70, 75, 75, 70, 65, 60, 55] },
     liveSignals: {
       costPressure: 80,
-      socialStress: 38,
       accessFriction: 18,
       note: "Austin's tech-and-university growth has put sustained pressure on housing affordability; daily services, hospitals, and Austin-Bergstrom International Airport cover most needs. Urban heat-island nights and 100-year-floodplain redevelopment along Shoal, Walnut, and Onion creeks are the climate-weighted friction points.",
       sources: [
@@ -318,7 +316,6 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
     climate: { humidity: [74, 72, 68, 65, 68, 70, 72, 72, 73, 72, 74, 76], sunshinePct: [50, 55, 60, 62, 65, 70, 72, 70, 65, 60, 52, 48] },
     liveSignals: {
       costPressure: 38,
-      socialStress: 28,
       accessFriction: 62,
       note: "Broken Bow is a small Ouachita-foothills town where tourism, forestry, and the nearby McCurtain County correctional-and-health infrastructure anchor employment; specialty medical care and airport access route through Idabel or Texarkana. Heavy-rain events and Mountain Fork River floodplain are the practical climate-friction points.",
       sources: [
@@ -439,7 +436,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "buffalo-ny": { climate: { humidity: [84, 82, 76, 71, 71, 74, 76, 78, 79, 78, 80, 85], sunshinePct: [50, 55, 60, 62, 65, 68, 70, 70, 65, 60, 50, 45] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Buffalo's lake-effect snowbelt delivers the snow-and-cool-summer climate identity, but winter snow labour, lake-corridor flood homework, and distance to specialty medical care are the live-here filter. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Buffalo", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -455,7 +451,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "charleston-sc": { liveSignals: {
       costPressure: 72,
-      socialStress: 28,
       accessFriction: 58,
       note: "Charleston's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The coastal risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Charleston", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -464,7 +459,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "chattanooga-tn": { liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Chattanooga's river-valley moderation dominates the lived climate; growth-and-housing pressure, urban heat-island nights, and inland-coastal flood-zone homework are the practical friction points. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Chattanooga", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -473,7 +467,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "clayton-ga": { climate: { humidity: [93, 90, 86, 82, 80, 82, 84, 86, 90, 93, 94, 94], sunshinePct: [20, 27, 37, 42, 47, 47, 52, 52, 47, 37, 24, 20] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Clayton's mild-winter foothills delivers the cool-humid climate identity, but small-town service homework, road-and-drainage infrastructure during heavy rain, and distance to specialty medical care are the live-here tradeoffs. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Clayton", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -485,7 +478,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "cody-wy": { liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Cody's chinook corridor moderates winter cold and gives the region its mild-winter read, but wildfire exposure on the urban-wildland edge, growth-and-housing pressure, and wind-loading on older homes are the practical friction points. The drought risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Cody", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -494,7 +486,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "columbia-sc": { climate: { humidity: [72, 70, 68, 65, 68, 70, 72, 74, 74, 72, 72, 74], sunshinePct: [50, 55, 60, 65, 65, 70, 70, 70, 65, 62, 55, 50] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Columbia's river-valley moderation gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Columbia", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -503,7 +494,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "corpus-christi-tx": { climate: { humidity: [78, 76, 74, 71, 74, 76, 78, 80, 80, 78, 78, 80], sunshinePct: [46, 51, 56, 61, 61, 66, 66, 66, 61, 58, 51, 46] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "Corpus Christi's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The storm risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Corpus Christi", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -513,7 +503,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "des-moines-ia": { climate: { humidity: [75, 73, 70, 65, 65, 68, 70, 72, 73, 72, 74, 76], sunshinePct: [50, 55, 60, 62, 65, 68, 70, 70, 65, 60, 50, 45] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Des Moines's river-valley moderation dominates the lived climate; growth-and-housing pressure, urban heat-island nights, and inland-coastal flood-zone homework are the practical friction points. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Des Moines", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -522,7 +511,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "duluth-mn": { liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Duluth's lake moderation delivers the snow-and-cool-summer climate identity, but winter snow labour, lake-corridor flood homework, and distance to specialty medical care are the live-here filter. The extreme cold risk reads elevated and improving, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Duluth", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -537,7 +525,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "ely-mn": { climate: { humidity: [78, 76, 72, 66, 65, 68, 70, 74, 76, 76, 78, 80], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Ely's lake moderation produces the long-winter climate identity, but heating-season cost, winter driving, and distance to specialty medical care are the live-here filter. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Ely", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -546,7 +533,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "eminence-mo": { climate: { humidity: [72, 70, 68, 65, 68, 70, 72, 74, 74, 72, 72, 74], sunshinePct: [50, 55, 60, 65, 65, 70, 70, 70, 65, 62, 55, 50] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Eminence's karst hydrology shapes the lived climate, but practical relocation homework around housing, services, and hazard exposure belongs in the read. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Eminence", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -555,7 +541,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "erie-pa": { liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Erie's lake-effect snowbelt delivers the snow-and-cool-summer climate identity, but winter snow labour, lake-corridor flood homework, and distance to specialty medical care are the live-here filter. The storm risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Erie", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -570,7 +555,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "galena-il": { climate: { humidity: [79, 77, 74, 69, 69, 72, 74, 76, 77, 76, 78, 80], sunshinePct: [50, 55, 60, 62, 65, 68, 70, 70, 65, 60, 50, 45] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "Galena's driftless relief produces the cold-winter climate identity, but cold-pool inversion nights, heating-season cost, and a long drive to specialty medical care are the live-here filter. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Galena", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -579,7 +563,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "gatlinburg-tn": { climate: { humidity: [93, 90, 86, 82, 80, 82, 84, 86, 90, 93, 94, 94], sunshinePct: [20, 27, 37, 42, 47, 47, 52, 52, 47, 37, 24, 20] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Gatlinburg's thermal-belt position delivers the cool-humid climate identity, but small-town service homework, road-and-drainage infrastructure during heavy rain, and distance to specialty medical care are the live-here tradeoffs. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Gatlinburg", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -588,7 +571,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "geneva-on-the-lake-oh": { climate: { humidity: [90, 88, 82, 77, 77, 80, 82, 84, 85, 84, 86, 91], sunshinePct: [46, 51, 56, 58, 61, 64, 66, 66, 61, 56, 46, 41] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Geneva-on-the-Lake's lake-effect snowbelt delivers the snow-and-cool-summer climate identity, but winter snow labour, lake-corridor flood homework, and distance to specialty medical care are the live-here filter. The storm risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Geneva-on-the-Lake", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -600,7 +582,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "honolulu-hi": { climate: { humidity: [72, 70, 68, 65, 65, 68, 70, 72, 72, 72, 72, 74], sunshinePct: [55, 58, 62, 65, 65, 68, 68, 68, 65, 62, 55, 52] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 62,
       note: "Honolulu's tropical-isothermal coast delivers the dry-and-sunny climate identity, but second-home housing pressure, water-supply homework, and distance to specialty medical care are the practical friction points. The coastal risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Honolulu", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -615,7 +596,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "international-falls-mn": { climate: { humidity: [82, 80, 76, 70, 69, 72, 74, 78, 80, 80, 82, 84], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "International Falls's cold-air pooling produces the long-winter climate identity, but heating-season cost, winter driving, and distance to specialty medical care are the live-here filter. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for International Falls", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -624,7 +604,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "jackson-wy": { climate: { humidity: [84, 82, 78, 72, 69, 72, 74, 78, 82, 84, 86, 86], sunshinePct: [42, 49, 56, 59, 62, 64, 64, 59, 52, 46, 36, 32] }, liveSignals: {
       costPressure: 72,
-      socialStress: 28,
       accessFriction: 58,
       note: "Jackson's cold-air pooling produces the cool-summer climate identity, but wildfire exposure, second-home housing pressure, and a long drive to specialty medical care are the live-here tradeoffs. The wildfire risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Jackson", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -639,7 +618,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "leavenworth-wa": { climate: { humidity: [70, 65, 60, 55, 55, 60, 65, 65, 65, 68, 72, 75], sunshinePct: [55, 60, 65, 68, 70, 75, 80, 80, 75, 68, 55, 50] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Leavenworth's rain shadow moderates winter cold and gives the region its mild-winter read, but wildfire exposure on the urban-wildland edge, growth-and-housing pressure, and wind-loading on older homes are the practical friction points. The wildfire risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Leavenworth", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -648,7 +626,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "lewes-de": { climate: { sunshinePct: [50, 55, 60, 65, 65, 70, 70, 70, 65, 62, 55, 50] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Lewes's lake moderation gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The coastal risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Lewes", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -657,7 +634,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "lone-pine-ca": { climate: { humidity: [51, 46, 38, 31, 26, 21, 24, 28, 31, 38, 46, 51], sunshinePct: [80, 84, 90, 94, 96, 96, 96, 94, 96, 92, 86, 80] }, liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Lone Pine's basin inversion shapes the lived climate, but practical relocation homework around housing, services, and hazard exposure belongs in the read. The drought risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Lone Pine", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -666,7 +642,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "lubbock-tx": { climate: { humidity: [54, 50, 44, 38, 36, 34, 37, 40, 42, 46, 50, 54], sunshinePct: [76, 80, 84, 88, 90, 92, 90, 88, 90, 86, 80, 76] }, liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Lubbock's badland-steppe exposure produces the dry-winter, monsoon-summer climate identity, but water-supply homework, wildfire exposure, and a long drive to specialty medical care are the live-here tradeoffs. The storm risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Lubbock", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -678,7 +653,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "marquette-mi": { liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Marquette's lake moderation delivers the snow-and-cool-summer climate identity, but winter snow labour, lake-corridor flood homework, and distance to specialty medical care are the live-here filter. The extreme cold risk reads high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Marquette", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -687,7 +661,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "medford-or": { climate: { humidity: [78, 75, 70, 65, 60, 55, 50, 50, 55, 65, 72, 78], sunshinePct: [50, 55, 62, 68, 72, 80, 85, 85, 78, 68, 55, 50] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Medford's rain shadow delivers the dry-and-sunny climate identity, but second-home housing pressure, water-supply homework, and distance to specialty medical care are the practical friction points. The wildfire risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Medford", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -696,7 +669,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "mentone-al": { climate: { humidity: [72, 70, 68, 65, 68, 70, 72, 74, 74, 72, 72, 74], sunshinePct: [50, 55, 60, 65, 65, 70, 70, 70, 65, 62, 55, 50] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Mentone's thermal-belt position shapes the lived climate, but practical relocation homework around housing, services, and hazard exposure belongs in the read. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Mentone", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -708,7 +680,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "moab-ut": { climate: { humidity: [47, 42, 34, 27, 22, 17, 20, 24, 27, 34, 42, 47], sunshinePct: [80, 84, 90, 94, 96, 96, 96, 94, 96, 92, 86, 80] }, liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Moab's desert-basin position and desert-oasis position set the lived climate, but summer heat isolation and water-supply homework are the practical live-here filter. The drought risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Moab", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -717,7 +688,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "mobile-al": { climate: { humidity: [78, 76, 74, 71, 74, 76, 78, 80, 80, 78, 78, 80], sunshinePct: [46, 51, 56, 61, 61, 66, 66, 66, 61, 58, 51, 46] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Mobile's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The storm risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Mobile", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -726,7 +696,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "morgantown-wv": { climate: { humidity: [76, 74, 72, 69, 72, 74, 76, 78, 78, 76, 76, 78], sunshinePct: [50, 55, 60, 65, 65, 70, 70, 70, 65, 62, 55, 50] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "Morgantown's river-valley moderation produces the cold-winter climate identity, but cold-pool inversion nights, heating-season cost, and a long drive to specialty medical care are the live-here filter. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Morgantown", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -735,7 +704,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "mount-washington-nh": { climate: { sunshinePct: [29, 39, 54, 59, 54, 49, 44, 42, 39, 34, 26, 22] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Mt. Washington Summit's alpine-tundra elevation produces the cool-summer climate identity, but wildfire exposure, second-home housing pressure, and a long drive to specialty medical care are the live-here tradeoffs. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Mt. Washington Summit", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -747,7 +715,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "nags-head-nc": { climate: { humidity: [78, 76, 74, 71, 74, 76, 78, 80, 80, 78, 78, 80], sunshinePct: [46, 51, 56, 61, 61, 66, 66, 66, 61, 58, 51, 46] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Nags Head's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The storm risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Nags Head", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -756,7 +723,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "napa-ca": { climate: { humidity: [78, 75, 70, 65, 60, 55, 50, 50, 55, 65, 72, 78], sunshinePct: [50, 55, 62, 68, 72, 80, 85, 85, 78, 68, 55, 50] }, liveSignals: {
       costPressure: 72,
-      socialStress: 28,
       accessFriction: 58,
       note: "Napa's Mediterranean pocket delivers the warm-summer, dry-fall climate identity, but second-home housing pressure, wildfire exposure on the urban-wildland edge, and water-supply homework are the practical friction points. The wildfire risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Napa", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -765,7 +731,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "naples-fl": { climate: { humidity: [75, 70, 65, 60, 60, 70, 78, 82, 84, 82, 78, 76], sunshinePct: [70, 75, 78, 75, 65, 55, 45, 45, 50, 60, 65, 70] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "Naples's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The flood risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Naples", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -774,7 +739,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "new-orleans-la": { liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "New Orleans's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The flood risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for New Orleans", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -783,14 +747,12 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "nome-ak": { climate: { sunshinePct: [38, 45, 52, 55, 58, 60, 60, 55, 48, 42, 32, 28] }, liveSignals: {
       costPressure: 50,
-      socialStress: 30,
       accessFriction: 78,
       note: "Nome's subarctic continentality keeps the climate maritime-cool, but ferry-only access for some neighborhoods, storm-coast flood exposure, and high freight-linked costs are the practical friction points. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Ferry-only or remote-highway access defines the lived-friction profile, with specialty medical care and airport access requiring multi-hour travel.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Nome", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
     }, additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "norfolk-ct": { climate: { humidity: [91, 89, 82, 76, 75, 78, 80, 84, 86, 86, 88, 93], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "Norfolk's cold-air pooling delivers the snow-and-cool-summer climate identity, but winter snow labour, lake-corridor flood homework, and distance to specialty medical care are the live-here filter. The extreme cold risk reads elevated and improving, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Norfolk", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -799,7 +761,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "oakland-md": { climate: { humidity: [91, 89, 82, 76, 75, 78, 80, 84, 86, 86, 88, 93], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "Oakland's cold-air pooling delivers the snow-and-cool-summer climate identity, but winter snow labour, lake-corridor flood homework, and distance to specialty medical care are the live-here filter. The extreme cold risk reads elevated and improving, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Oakland", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -808,7 +769,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "ocean-springs-ms": { climate: { humidity: [78, 76, 74, 71, 74, 76, 78, 80, 80, 78, 78, 80], sunshinePct: [46, 51, 56, 61, 61, 66, 66, 66, 61, 58, 51, 46] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Ocean Springs's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The storm risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Ocean Springs", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -817,7 +777,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "ojai-ca": { climate: { humidity: [78, 75, 70, 65, 60, 55, 50, 50, 55, 65, 72, 78], sunshinePct: [50, 55, 62, 68, 72, 80, 85, 85, 78, 68, 55, 50] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Ojai's Mediterranean pocket delivers the warm-summer, dry-fall climate identity, but second-home housing pressure, wildfire exposure on the urban-wildland edge, and water-supply homework are the practical friction points. The wildfire risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Ojai", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -826,7 +785,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "paducah-ky": { climate: { humidity: [78, 76, 74, 71, 74, 76, 78, 80, 80, 78, 78, 80], sunshinePct: [46, 51, 56, 61, 61, 66, 66, 66, 61, 58, 51, 46] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Paducah's river-valley moderation gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Paducah", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -835,7 +793,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "page-az": { liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Page's high-desert elevation produces the dry-winter, monsoon-summer climate identity, but water-supply homework, wildfire exposure, and a long drive to specialty medical care are the live-here tradeoffs. The drought risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Page", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -844,7 +801,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "palm-springs-ca": { climate: { humidity: [37, 32, 27, 20, 15, 15, 17, 22, 24, 27, 32, 37], sunshinePct: [90, 93, 96, 96, 96, 96, 96, 96, 96, 96, 93, 90] }, liveSignals: {
       costPressure: 72,
-      socialStress: 28,
       accessFriction: 58,
       note: "Palm Springs's desert-basin position and high-desert elevation set the lived climate, but summer heat isolation and water-supply homework are the practical live-here filter. The extreme heat risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Palm Springs", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -853,7 +809,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "pittsfield-ma": { climate: { humidity: [91, 89, 82, 76, 75, 78, 80, 84, 86, 86, 88, 93], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "Pittsfield's cold-air pooling delivers the snow-and-cool-summer climate identity, but winter snow labour, lake-corridor flood homework, and distance to specialty medical care are the live-here filter. The storm risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Pittsfield", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -871,7 +826,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "rapid-city-sd": { climate: { humidity: [57, 52, 47, 42, 42, 50, 60, 64, 60, 54, 57, 60], sunshinePct: [63, 70, 74, 78, 80, 78, 73, 70, 73, 70, 63, 60] }, liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Rapid City's chinook corridor moderates winter cold and gives the region its mild-winter read, but wildfire exposure on the urban-wildland edge, growth-and-housing pressure, and wind-loading on older homes are the practical friction points. The wildfire risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Rapid City", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -880,7 +834,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "roswell-nm": { liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Roswell's monsoon edge produces the dry-winter, monsoon-summer climate identity, but water-supply homework, wildfire exposure, and a long drive to specialty medical care are the live-here tradeoffs. The drought risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Roswell", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -892,7 +845,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "savannah-ga": { climate: { humidity: [78, 76, 74, 71, 74, 76, 78, 80, 80, 78, 78, 80], sunshinePct: [46, 51, 56, 61, 61, 66, 66, 66, 61, 58, 51, 46] }, liveSignals: {
       costPressure: 72,
-      socialStress: 28,
       accessFriction: 58,
       note: "Savannah's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The coastal risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Savannah", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -901,7 +853,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "scottsbluff-ne": { liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Scottsbluff's high-desert elevation moderates winter cold and gives the region its mild-winter read, but wildfire exposure on the urban-wildland edge, growth-and-housing pressure, and wind-loading on older homes are the practical friction points. The drought risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Scottsbluff", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -916,7 +867,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "south-padre-tx": { climate: { sunshinePct: [50, 55, 60, 65, 65, 70, 70, 70, 65, 62, 55, 50] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "South Padre Island's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The storm risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for South Padre Island", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -925,7 +875,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "spokane-wa": { climate: { humidity: [70, 65, 60, 55, 55, 60, 65, 65, 65, 68, 72, 75], sunshinePct: [55, 60, 65, 68, 70, 75, 80, 80, 75, 68, 55, 50] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Spokane's chinook corridor moderates winter cold and gives the region its mild-winter read, but wildfire exposure on the urban-wildland edge, growth-and-housing pressure, and wind-loading on older homes are the practical friction points. The wildfire risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Spokane", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -934,7 +883,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "stanley-id": { climate: { sunshinePct: [42, 49, 56, 59, 62, 64, 64, 59, 52, 46, 36, 32] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "Stanley's cold-air pooling produces the cool-summer climate identity, but wildfire exposure, second-home housing pressure, and a long drive to specialty medical care are the live-here tradeoffs. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Stanley", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -943,7 +891,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "state-college-pa": { climate: { humidity: [82, 80, 76, 70, 69, 72, 74, 78, 80, 80, 82, 84], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "State College's cold-air pooling produces the cold-winter climate identity, but cold-pool inversion nights, heating-season cost, and a long drive to specialty medical care are the live-here filter. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for State College", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -952,7 +899,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "syracuse-ny": { liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Syracuse's lake-effect snowbelt delivers the snow-and-cool-summer climate identity, but winter snow labour, lake-corridor flood homework, and distance to specialty medical care are the live-here filter. Hazard exposure reads moderate across the risk matrix, with no single dominant tail. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Syracuse", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -967,7 +913,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "tucson-az": { climate: { humidity: [37, 32, 27, 20, 15, 15, 17, 22, 24, 27, 32, 37], sunshinePct: [90, 93, 96, 96, 96, 96, 96, 96, 96, 96, 93, 90] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Tucson's monsoon edge dominates the lived climate; growth-and-housing pressure, urban heat-island nights, and inland-coastal flood-zone homework are the practical friction points. The extreme heat risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Tucson", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -982,7 +927,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "washington-dc": { climate: { humidity: [72, 70, 68, 65, 68, 70, 72, 74, 74, 72, 72, 74], sunshinePct: [50, 55, 60, 65, 65, 70, 70, 70, 65, 62, 55, 50] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Washington's urban heat island gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Washington", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -991,7 +935,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "wilmington-de": { climate: { humidity: [72, 70, 68, 65, 68, 70, 72, 74, 74, 72, 72, 74], sunshinePct: [50, 55, 60, 65, 65, 70, 70, 70, 65, 62, 55, 50] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Wilmington's Piedmont transition dominates the lived climate; growth-and-housing pressure, urban heat-island nights, and inland-coastal flood-zone homework are the practical friction points. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Wilmington", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -1003,7 +946,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" }] },
   "yuma-az": { liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Yuma's desert-basin position and desert-oasis position set the lived climate, but summer heat isolation and water-supply homework are the practical live-here filter. The drought risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "U.S. Census Bureau — QuickFacts search for Yuma", url: "https://www.census.gov/quickfacts/" }, { label: "NOAA — U.S. Climate Normals 1991–2020", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" }],
@@ -1014,7 +956,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
   // ===== Canada =====
   "banff-ab": { climate: { humidity: [80, 78, 74, 68, 65, 68, 70, 74, 78, 80, 82, 82], sunshinePct: [42, 49, 56, 59, 62, 64, 64, 59, 52, 46, 36, 32] }, liveSignals: {
       costPressure: 72,
-      socialStress: 28,
       accessFriction: 58,
       note: "Banff's chinook corridor moderates winter cold and gives the region its mild-winter read, but wildfire exposure on the urban-wildland edge, growth-and-housing pressure, and wind-loading on older homes are the practical friction points. The wildfire risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "Statistics Canada — census profile search for Banff", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1024,7 +965,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
   "charlottetown-pei": { climate: { sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] } },
   "churchill-mb": { climate: { humidity: [92, 90, 86, 80, 77, 80, 82, 86, 90, 92, 94, 94], sunshinePct: [26, 33, 40, 43, 46, 48, 48, 43, 36, 30, 20, 16] }, liveSignals: {
       costPressure: 58,
-      socialStress: 26,
       accessFriction: 56,
       note: "Churchill's subarctic continentality keeps the climate maritime-cool, but tourist-and-second-home housing pressure, ferry-or-highway access, and storm-coast flood exposure are the live-here tradeoffs. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "Statistics Canada — census profile search for Churchill", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1033,7 +973,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "creston-bc": { climate: { humidity: [78, 76, 72, 66, 65, 68, 70, 74, 76, 76, 78, 80], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Creston's orchard-valley warmth delivers the warm-summer, dry-fall climate identity, but second-home housing pressure, wildfire exposure on the urban-wildland edge, and water-supply homework are the practical friction points. The wildfire risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "Statistics Canada — census profile search for Creston", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1042,7 +981,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "cypress-hills-sk": { climate: { humidity: [82, 80, 76, 70, 69, 72, 74, 78, 80, 80, 82, 84], sunshinePct: [49, 54, 59, 62, 66, 69, 72, 69, 64, 56, 46, 42] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "Maple Creek / Cypress Hills's sky-island elevation produces the cool-summer climate identity, but wildfire exposure, second-home housing pressure, and a long drive to specialty medical care are the live-here tradeoffs. The extreme cold risk reads high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "Statistics Canada — census profile search for Maple Creek / Cypress Hills", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1051,7 +989,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "dawson-city-yt": { climate: { humidity: [84, 82, 78, 72, 69, 72, 74, 78, 82, 84, 86, 86], sunshinePct: [38, 45, 52, 55, 58, 60, 60, 55, 48, 42, 32, 28] }, liveSignals: {
       costPressure: 50,
-      socialStress: 30,
       accessFriction: 78,
       note: "Dawson City's subarctic continentality produces the long-winter climate identity, but heating-season cost, winter driving, and distance to specialty medical care are the live-here filter. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Ferry-only or remote-highway access defines the lived-friction profile, with specialty medical care and airport access requiring multi-hour travel.",
       sources: [{ label: "Statistics Canada — census profile search for Dawson City", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1060,7 +997,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "gaspe-qc": { climate: { sunshinePct: [33, 38, 43, 46, 50, 53, 56, 53, 48, 40, 30, 26] }, liveSignals: {
       costPressure: 58,
-      socialStress: 26,
       accessFriction: 56,
       note: "Gaspé's maritime moderation keeps the climate maritime-cool, but tourist-and-second-home housing pressure, ferry-or-highway access, and storm-coast flood exposure are the live-here tradeoffs. The storm risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "Statistics Canada — census profile search for Gaspé", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1076,7 +1012,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
   "halifax-ns": { climate: { sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "inuvik-nt": { climate: { humidity: [80, 78, 74, 68, 65, 68, 70, 74, 78, 80, 82, 82], sunshinePct: [38, 45, 52, 55, 58, 60, 60, 55, 48, 42, 32, 28] }, liveSignals: {
       costPressure: 50,
-      socialStress: 30,
       accessFriction: 78,
       note: "Inuvik's subarctic continentality produces the long-winter climate identity, but heating-season cost, winter driving, and distance to specialty medical care are the live-here filter. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Ferry-only or remote-highway access defines the lived-friction profile, with specialty medical care and airport access requiring multi-hour travel.",
       sources: [{ label: "Statistics Canada — census profile search for Inuvik", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1085,7 +1020,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "iqaluit-nu": { climate: { humidity: [82, 80, 78, 75, 72, 70, 72, 76, 80, 82, 83, 84], sunshinePct: [29, 39, 54, 59, 54, 49, 44, 42, 39, 34, 26, 22] }, liveSignals: {
       costPressure: 50,
-      socialStress: 30,
       accessFriction: 78,
       note: "Iqaluit's subarctic continentality produces the cool-summer climate identity, but wildfire exposure, second-home housing pressure, and a long drive to specialty medical care are the live-here tradeoffs. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Ferry-only or remote-highway access defines the lived-friction profile, with specialty medical care and airport access requiring multi-hour travel.",
       sources: [{ label: "Statistics Canada — census profile search for Iqaluit", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1094,7 +1028,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "kamloops-bc": { liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Kamloops's rain shadow delivers the dry-and-sunny climate identity, but second-home housing pressure, water-supply homework, and distance to specialty medical care are the practical friction points. The wildfire risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "Statistics Canada — census profile search for Kamloops", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1103,7 +1036,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "kelowna-bc": { liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Kelowna's rain shadow delivers the dry-and-sunny climate identity, but second-home housing pressure, water-supply homework, and distance to specialty medical care are the practical friction points. The wildfire risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "Statistics Canada — census profile search for Kelowna", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1112,7 +1044,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "leamington-on": { climate: { humidity: [75, 73, 70, 65, 65, 68, 70, 72, 73, 72, 74, 76], sunshinePct: [50, 55, 60, 62, 65, 68, 70, 70, 65, 60, 50, 45] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Leamington's lake moderation delivers the warm-summer, dry-fall climate identity, but second-home housing pressure, wildfire exposure on the urban-wildland edge, and water-supply homework are the practical friction points. The storm risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "Statistics Canada — census profile search for Leamington", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1121,7 +1052,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "medicine-hat-ab": { liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 42,
       note: "Medicine Hat's chinook corridor moderates winter cold and gives the region its mild-winter read, but wildfire exposure on the urban-wildland edge, growth-and-housing pressure, and wind-loading on older homes are the practical friction points. The drought risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "Statistics Canada — census profile search for Medicine Hat", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1130,7 +1060,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "morden-mb": { climate: { humidity: [84, 82, 78, 72, 71, 74, 76, 80, 82, 82, 84, 86], sunshinePct: [41, 46, 51, 54, 58, 61, 64, 61, 56, 48, 38, 34] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Morden's orchard-valley warmth delivers the warm-summer, dry-fall climate identity, but second-home housing pressure, wildfire exposure on the urban-wildland edge, and water-supply homework are the practical friction points. The extreme cold risk reads high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "Statistics Canada — census profile search for Morden", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1139,7 +1068,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "penticton-bc": { liveSignals: {
       costPressure: 72,
-      socialStress: 28,
       accessFriction: 58,
       note: "Penticton's rain shadow delivers the dry-and-sunny climate identity, but second-home housing pressure, water-supply homework, and distance to specialty medical care are the practical friction points. The wildfire risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "Statistics Canada — census profile search for Penticton", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1148,7 +1076,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "pincher-creek-ab": { climate: { humidity: [78, 76, 72, 66, 65, 68, 70, 74, 76, 76, 78, 80], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Pincher Creek's chinook corridor moderates winter cold and gives the region its mild-winter read, but wildfire exposure on the urban-wildland edge, growth-and-housing pressure, and wind-loading on older homes are the practical friction points. The extreme cold risk reads elevated and improving, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "Statistics Canada — census profile search for Pincher Creek", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1157,7 +1084,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "prince-edward-co-on": { climate: { humidity: [78, 76, 72, 66, 65, 68, 70, 74, 76, 76, 78, 80], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Prince Edward County's lake moderation delivers the warm-summer, dry-fall climate identity, but second-home housing pressure, wildfire exposure on the urban-wildland edge, and water-supply homework are the practical friction points. Hazard exposure reads moderate across the risk matrix, with no single dominant tail. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "Statistics Canada — census profile search for Prince Edward County", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1170,7 +1096,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
   "qualicum-bc": { climate: { sunshinePct: [32, 40, 50, 58, 62, 65, 75, 75, 65, 50, 35, 30] }, additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "revelstoke-bc": { climate: { humidity: [98, 97, 90, 84, 83, 86, 88, 92, 94, 94, 96, 98], sunshinePct: [33, 38, 43, 46, 50, 53, 56, 53, 48, 40, 30, 26] }, liveSignals: {
       costPressure: 58,
-      socialStress: 26,
       accessFriction: 56,
       note: "Revelstoke's lake-effect snowbelt keeps the climate maritime-cool, but tourist-and-second-home housing pressure, ferry-or-highway access, and storm-coast flood exposure are the live-here tradeoffs. The storm risk reads high and stable, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "Statistics Canada — census profile search for Revelstoke", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1182,7 +1107,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "squamish-bc": { climate: { sunshinePct: [28, 35, 45, 50, 55, 55, 60, 60, 55, 45, 32, 28] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Squamish's fjord-inlet exposure keeps the climate maritime-cool, but ferry-only access for some neighborhoods, storm-coast flood exposure, and high freight-linked costs are the practical friction points. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "Statistics Canada — census profile search for Squamish", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1192,7 +1116,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
   "st-johns-nl": { additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "summerland-bc": { liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 42,
       note: "Summerland's orchard-valley warmth delivers the dry-and-sunny climate identity, but second-home housing pressure, water-supply homework, and distance to specialty medical care are the practical friction points. The wildfire risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Daily services cover most needs, with specialty medical care and airport access within a regional drive.",
       sources: [{ label: "Statistics Canada — census profile search for Summerland", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1204,7 +1127,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "sutton-qc": { climate: { humidity: [82, 80, 76, 70, 69, 72, 74, 78, 80, 80, 82, 84], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 36,
-      socialStress: 26,
       accessFriction: 56,
       note: "Sutton's Piedmont transition produces the cold-winter climate identity, but cold-pool inversion nights, heating-season cost, and a long drive to specialty medical care are the live-here filter. The extreme cold risk reads elevated and improving, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "Statistics Canada — census profile search for Sutton", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1213,7 +1135,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "thunder-bay-on": { climate: { humidity: [78, 76, 72, 66, 65, 68, 70, 74, 76, 76, 78, 80], sunshinePct: [45, 50, 55, 58, 62, 65, 68, 65, 60, 52, 42, 38] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 18,
       note: "Thunder Bay's lake moderation produces the long-winter climate identity, but heating-season cost, winter driving, and distance to specialty medical care are the live-here filter. The extreme cold risk reads high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Daily services, hospitals, and airport access are strong, which softens the access-friction score.",
       sources: [{ label: "Statistics Canada — census profile search for Thunder Bay", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1228,7 +1149,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "Climate Atlas of Canada — gridded projections and normals", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" }] },
   "yellowknife-nt": { climate: { humidity: [84, 82, 78, 72, 69, 72, 74, 78, 82, 84, 86, 86], sunshinePct: [38, 45, 52, 55, 58, 60, 60, 55, 48, 42, 32, 28] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 78,
       note: "Yellowknife's subarctic continentality produces the long-winter climate identity, but heating-season cost, winter driving, and distance to specialty medical care are the live-here filter. The extreme cold risk reads very high and improving, and that is the dominant hazard-tail to weigh against the mild averages. Ferry-only or remote-highway access defines the lived-friction profile, with specialty medical care and airport access requiring multi-hour travel.",
       sources: [{ label: "Statistics Canada — census profile search for Yellowknife", url: "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E" }, { label: "ECCC — Canadian Climate Normals", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" }],
@@ -1239,7 +1159,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
   // ===== Mexico =====
   "bacalar-mx": { climate: { humidity: [75, 70, 65, 60, 60, 70, 78, 82, 84, 82, 78, 76], sunshinePct: [70, 75, 78, 75, 65, 55, 45, 45, 50, 60, 65, 70] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "Bacalar's tropical wet-dry gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The extreme heat risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Bacalar municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1248,7 +1167,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "campeche-mx": { climate: { humidity: [75, 70, 65, 60, 60, 70, 78, 82, 84, 82, 78, 76], sunshinePct: [70, 75, 78, 75, 65, 55, 45, 45, 50, 60, 65, 70] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 62,
       note: "San Francisco de Campeche's hurricane exposure gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The storm risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — San Francisco de Campeche municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1260,7 +1178,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "cuatrocienegas-mx": { climate: { sunshinePct: [73, 78, 83, 86, 88, 90, 86, 84, 86, 83, 78, 73] }, liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 62,
       note: "Cuatro Ciénegas's desert-basin position and desert-oasis position set the lived climate, but summer heat isolation and water-supply homework are the practical live-here filter. The drought risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Cuatro Ciénegas municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1272,7 +1189,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "durango-mx": { climate: { humidity: [58, 54, 48, 42, 40, 38, 41, 44, 46, 50, 54, 58], sunshinePct: [76, 80, 84, 88, 90, 92, 90, 88, 90, 86, 80, 76] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 62,
       note: "Victoria de Durango's monsoon edge produces the dry-winter, monsoon-summer climate identity, but water-supply homework, wildfire exposure, and a long drive to specialty medical care are the live-here tradeoffs. The drought risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Victoria de Durango municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1285,7 +1201,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
   "guanajuato-mx": { additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "hermosillo-mx": { climate: { humidity: [37, 32, 27, 20, 15, 15, 17, 22, 24, 27, 32, 37], sunshinePct: [90, 93, 96, 96, 96, 96, 96, 96, 96, 96, 93, 90] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 62,
       note: "Hermosillo's tropical wet-dry produces the dry-winter, monsoon-summer climate identity, but water-supply homework, wildfire exposure, and a long drive to specialty medical care are the live-here tradeoffs. The extreme heat risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Hermosillo municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1294,7 +1209,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "la-paz-mx": { climate: { humidity: [43, 38, 33, 26, 20, 16, 23, 28, 30, 33, 38, 43], sunshinePct: [86, 89, 94, 96, 96, 96, 94, 92, 94, 92, 89, 86] }, liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 62,
       note: "La Paz's desert-basin position and desert-oasis position set the lived climate, but summer heat isolation and water-supply homework are the practical live-here filter. The drought risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — La Paz municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1303,7 +1217,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "la-ventosa-mx": { climate: { sunshinePct: [70, 75, 78, 75, 65, 55, 45, 45, 50, 60, 65, 70] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "La Ventosa / Tehuantepec's gap-wind corridor gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The extreme heat risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — La Ventosa / Tehuantepec municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1312,7 +1225,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "mazatlan-mx": { climate: { humidity: [75, 70, 65, 60, 60, 70, 78, 82, 84, 82, 78, 76], sunshinePct: [70, 75, 78, 75, 65, 55, 45, 45, 50, 60, 65, 70] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "Mazatlán's tropical wet-dry gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The storm risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Mazatlán municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1321,7 +1233,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "merida-mx": { climate: { humidity: [75, 70, 65, 60, 60, 70, 78, 82, 84, 82, 78, 76], sunshinePct: [70, 75, 78, 75, 65, 55, 45, 45, 50, 60, 65, 70] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "Mérida's tropical wet-dry gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The extreme heat risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Mérida municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1330,7 +1241,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "monterrey-mx": { climate: { humidity: [64, 59, 52, 46, 44, 46, 54, 59, 62, 62, 64, 66], sunshinePct: [65, 70, 75, 78, 80, 82, 78, 76, 78, 75, 70, 65] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 62,
       note: "Monterrey's monsoon edge dominates the lived climate; growth-and-housing pressure, urban heat-island nights, and inland-coastal flood-zone homework are the practical friction points. The extreme heat risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Monterrey municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1343,7 +1253,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "palenque-mx": { climate: { humidity: [90, 88, 86, 84, 84, 86, 88, 90, 90, 92, 92, 92], sunshinePct: [47, 52, 57, 57, 52, 47, 42, 42, 42, 42, 42, 47] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "Palenque's cloud-forest exposure produces the dry-winter, monsoon-summer climate identity, but water-supply homework, wildfire exposure, and a long drive to specialty medical care are the live-here tradeoffs. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Palenque municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1352,7 +1261,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "parras-de-la-fuente-mx": { climate: { sunshinePct: [73, 78, 83, 86, 88, 90, 86, 84, 86, 83, 78, 73] }, liveSignals: {
       costPressure: 48,
-      socialStress: 26,
       accessFriction: 62,
       note: "Parras de la Fuente's high-desert elevation delivers the warm-summer, dry-fall climate identity, but second-home housing pressure, wildfire exposure on the urban-wildland edge, and water-supply homework are the practical friction points. The drought risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Parras de la Fuente municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1361,7 +1269,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "puebla-mx": { climate: { humidity: [69, 64, 59, 56, 59, 69, 76, 79, 80, 76, 69, 69], sunshinePct: [68, 72, 75, 75, 72, 65, 55, 55, 58, 65, 68, 70] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 62,
       note: "Puebla's volcanic-upland elevation dominates the lived climate; growth-and-housing pressure, urban heat-island nights, and inland-coastal flood-zone homework are the practical friction points. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Puebla municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1370,7 +1277,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "puerto-escondido-mx": { climate: { humidity: [75, 70, 65, 60, 60, 70, 78, 82, 84, 82, 78, 76], sunshinePct: [70, 75, 78, 75, 65, 55, 45, 45, 50, 60, 65, 70] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "Puerto Escondido's tropical wet-dry gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The storm risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Puerto Escondido municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1379,7 +1285,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "puerto-vallarta-mx": { climate: { humidity: [75, 70, 65, 60, 60, 70, 78, 82, 84, 82, 78, 76], sunshinePct: [70, 75, 78, 75, 65, 55, 45, 45, 50, 60, 65, 70] }, liveSignals: {
       costPressure: 72,
-      socialStress: 28,
       accessFriction: 62,
       note: "Puerto Vallarta's tropical-isothermal coast gives the region its mild winter and tropical-coast identity, but hurricane-track flood exposure, insurance-market tightening, and summer heat-island nights are the live-here tradeoffs. The storm risk reads very high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Puerto Vallarta municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1395,7 +1300,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ] },
   "taxco-mx": { climate: { humidity: [65, 60, 55, 52, 55, 65, 72, 75, 76, 72, 65, 65], sunshinePct: [68, 72, 75, 75, 72, 65, 55, 55, 58, 65, 68, 70] }, liveSignals: {
       costPressure: 72,
-      socialStress: 28,
       accessFriction: 62,
       note: "Taxco de Alarcón's highland elevation delivers the mild-year-round climate identity, but growth-and-housing pressure, urban-service homework, and basin-inversion winter nights are the practical friction points. The landslide risk reads high and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Taxco de Alarcón municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1405,7 +1309,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
   "tequila-mx": { climate: { humidity: [75, 70, 65, 60, 60, 70, 78, 82, 84, 82, 78, 76], sunshinePct: [70, 75, 78, 75, 65, 55, 45, 45, 50, 60, 65, 70] }, additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "toluca-mx": { climate: { sunshinePct: [68, 72, 75, 75, 72, 65, 55, 55, 58, 65, 68, 70] }, liveSignals: {
       costPressure: 76,
-      socialStress: 42,
       accessFriction: 62,
       note: "Toluca de Lerdo's volcanic-upland elevation produces the cold-winter climate identity, but cold-pool inversion nights, heating-season cost, and a long drive to specialty medical care are the live-here filter. The smoke risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Toluca de Lerdo municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],
@@ -1417,7 +1320,6 @@ export const TIER_C_POLISH_GENERATED: Record<string, TierCPolishEntry> = {
     ], additionalCitations: [{ label: "WorldClim — gridded climate normals for Mexico", kind: "worldclim", url: "https://www.worldclim.org/" }] },
   "xilitla-mx": { climate: { humidity: [80, 78, 76, 73, 76, 78, 80, 82, 82, 80, 80, 82], sunshinePct: [42, 47, 52, 57, 57, 62, 62, 62, 57, 54, 47, 42] }, liveSignals: {
       costPressure: 44,
-      socialStress: 26,
       accessFriction: 62,
       note: "Xilitla's cloud-forest exposure delivers the cool-humid climate identity, but small-town service homework, road-and-drainage infrastructure during heavy rain, and distance to specialty medical care are the live-here tradeoffs. The flood risk reads elevated and worsening, and that is the dominant hazard-tail to weigh against the mild averages. Most specialty medical care and airport access route through a regional hub, which is the defining lived-friction point.",
       sources: [{ label: "INEGI — Xilitla municipal context", url: "https://www.inegi.org.mx/" }, { label: "SMN/Conagua — normales climatológicas por estado", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" }],

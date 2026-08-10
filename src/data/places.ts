@@ -5,11 +5,17 @@
 import type { Place } from "../types";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { applyClimateV2Overlay } from "../lib/climate-v2/overlay";
+import { applyResearchOverlay } from "../lib/research/overlay";
+import { sanitizeLivedSignals } from "../lib/research/lived-indicators";
 import { PLACES_USA } from "./places.usa";
 import { PLACES_CANADA } from "./places.canada";
 import { PLACES_MEXICO } from "./places.mexico";
 import { TIER_C_POLISH, TIER_C_POLISH_GENERATED, TIER_C_POLISH_SOURCES } from "./places.tier-c-polish";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
+import { RESEARCH_RECEIPTS_BY_ID } from "./generated/research";
+import housingPressureJson from "./generated/research/housing-pressure-by-id.json";
+
+const HOUSING_PRESSURE_BY_ID = (housingPressureJson as { byId: Record<string, number> }).byId;
 
 const TIER_C_POLISH_ALL: Record<string, typeof TIER_C_POLISH[keyof typeof TIER_C_POLISH]> = {
   ...TIER_C_POLISH,
@@ -94,11 +100,32 @@ function applyClimateV2(p: Place): Place {
   return applyClimateV2Overlay(p, CLIMATE_V2_OVERLAY_BY_ID[p.id]);
 }
 
+/** Strip socialStress and attach transparent housing/access indices. */
+function applyLivedIndicators(p: Place): Place {
+  const ls = sanitizeLivedSignals(p.liveSignals);
+  if (!ls) return p;
+  const housingPressureIndex = HOUSING_PRESSURE_BY_ID[p.id] ?? ls.housingPressureIndex ?? ls.costPressure;
+  const accessRemotenessIndex = ls.accessRemotenessIndex ?? ls.accessFriction;
+  return {
+    ...p,
+    liveSignals: {
+      ...ls,
+      housingPressureIndex,
+      accessRemotenessIndex,
+    },
+  };
+}
+
+/** Merge research receipts; project deprecated Citation[] compatibility view. */
+function applyResearch(p: Place): Place {
+  return applyResearchOverlay(p, RESEARCH_RECEIPTS_BY_ID[p.id]);
+}
+
 export const PLACES: Place[] = [
   ...POLISHED_USA,
   ...POLISHED_CANADA,
   ...POLISHED_MEXICO,
-].map(applyClimateV2);
+].map(p => applyResearch(applyLivedIndicators(applyClimateV2(p))));
 
 export const PLACES_BY_ID: Record<string, Place> = Object.fromEntries(
   PLACES.map(p => [p.id, p]),

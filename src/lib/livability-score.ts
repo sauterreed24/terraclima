@@ -166,24 +166,22 @@ export const HAZARD_CUSHION = {
 /**
  * Lived-friction parameters. The component starts near a neutral baseline, but
  * places without curated `liveSignals` now receive a small coverage penalty so
- * an unresearched housing/services/safety read cannot look as decision-ready as
- * a sourced one. Graded places then deduct on each of the three lived axes.
- * The relative weights reflect the strongest signals
- * surfaced by resident-review and cost-of-living research: affordability is
- * the dominant filter for most relocators, social fabric is the dominant
- * filter for places that look "perfect" on paper but read poorly in lived
- * reports (Eureka), and access friction sets a ceiling on how rural a place
- * can be before its livability suffers (Tofino, Forks, Point Reyes).
+ * an unresearched housing/services read cannot look as decision-ready as a
+ * sourced one. Graded places deduct on housing pressure and access remoteness
+ * only — social-stress / review-sentiment proxies are removed. Affordability
+ * remains the dominant relocator filter; hospital/airport travel time and
+ * material transport constraints set the remoteness ceiling.
  */
 export const LIVED_FRICTION = {
   /** Neutral baseline when the lived axes are graded. */
   neutralBaseline: 70,
   /** Conservative coverage penalty when lived reality is not yet source-backed. */
   unratedCoveragePenalty: 4,
-  /** Per-point weight on the three friction axes (0..100 input → 0..100 deduction). */
-  costWeight: 0.45,
-  socialWeight: 0.35,
-  accessWeight: 0.20,
+  /** Per-point weight on factual friction axes (renormalized over available). */
+  costWeight: 0.65,
+  /** @deprecated socialStress removed from scoring; retained at 0 for clarity. */
+  socialWeight: 0,
+  accessWeight: 0.35,
   /** Below this friction value, no penalty applies — only credit for known-easy places. */
   benignFloor: 35,
   /** Per-point credit applied when an axis grades below `benignFloor`. */
@@ -708,10 +706,12 @@ export function livedFrictionScore(p: Place): number {
   const ls = p.liveSignals;
   if (!ls) return LIVED_FRICTION.neutralBaseline - LIVED_FRICTION.unratedCoveragePenalty;
 
+  const housing = ls.housingPressureIndex ?? ls.costPressure;
+  const access = ls.accessRemotenessIndex ?? ls.accessFriction;
+
   const axes: [number | undefined, number][] = [
-    [ls.costPressure, LIVED_FRICTION.costWeight],
-    [ls.socialStress, LIVED_FRICTION.socialWeight],
-    [ls.accessFriction, LIVED_FRICTION.accessWeight],
+    [housing, LIVED_FRICTION.costWeight],
+    [access, LIVED_FRICTION.accessWeight],
   ];
 
   let totalWeight = 0;
@@ -741,9 +741,11 @@ export function livedFrictionScore(p: Place): number {
 export function livedRealityCoverage(p: Place): LivedRealityCoverage {
   const ls = p.liveSignals;
   if (!ls) return { axes: 0, sourceCount: 0, confidence: "unrated" };
-  const axes = [ls.costPressure, ls.socialStress, ls.accessFriction].filter(v => v != null).length;
+  const housing = ls.housingPressureIndex ?? ls.costPressure ?? ls.housingCostBurdenPct;
+  const access = ls.accessRemotenessIndex ?? ls.accessFriction ?? ls.hospitalRouteMinutes;
+  const axes = [housing, access].filter(v => v != null).length;
   const sourceCount = countLivedSourceEvidence(ls.sources);
-  if (axes >= 3 && sourceCount > 0 && ls.note?.trim()) {
+  if (axes >= 2 && sourceCount > 0 && ls.note?.trim()) {
     return { axes, sourceCount, confidence: "source-backed" };
   }
   return { axes, sourceCount, confidence: "partial" };
@@ -753,13 +755,14 @@ export function livedRealityCoverage(p: Place): LivedRealityCoverage {
  * Public accessor for the dominant lived-friction driver, used by the UI
  * and live-fit reasons/cautions so the score is never opaque.
  */
-export function dominantLivedFriction(p: Place): { axis: "cost" | "social" | "access"; value: number } | null {
+export function dominantLivedFriction(p: Place): { axis: "cost" | "access"; value: number } | null {
   const ls = p.liveSignals;
   if (!ls) return null;
-  let best: { axis: "cost" | "social" | "access"; value: number } | null = null;
-  if (ls.costPressure != null) best = { axis: "cost", value: ls.costPressure };
-  if (ls.socialStress != null && (!best || ls.socialStress > best.value)) best = { axis: "social", value: ls.socialStress };
-  if (ls.accessFriction != null && (!best || ls.accessFriction > best.value)) best = { axis: "access", value: ls.accessFriction };
+  const housing = ls.housingPressureIndex ?? ls.costPressure;
+  const access = ls.accessRemotenessIndex ?? ls.accessFriction;
+  let best: { axis: "cost" | "access"; value: number } | null = null;
+  if (housing != null) best = { axis: "cost", value: housing };
+  if (access != null && (!best || access > best.value)) best = { axis: "access", value: access };
   return best;
 }
 
@@ -822,7 +825,7 @@ function makeRationale(p: Place, key: ComponentKey, value: number): string {
     case "livedFriction": {
       const dom = dominantLivedFriction(p);
       if (!dom) return `Lived reality unrated → conservative screening ${Math.round(value)}/100`;
-      const axis = dom.axis === "cost" ? "Cost pressure" : dom.axis === "social" ? "Social stress" : "Access friction";
+      const axis = dom.axis === "cost" ? "Housing pressure" : "Access remoteness";
       return `${axis} ${Math.round(dom.value)}/100 (lower is easier) → lived comfort ${Math.round(value)}/100`;
     }
     case "placeFeel": {

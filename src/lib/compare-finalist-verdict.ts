@@ -232,7 +232,7 @@ function caveatRead(profile: CompareDecisionProfile): string {
   const risk = topRiskRead(profile.place);
   if (risk) return risk;
   if (profile.riskLoad >= 34) return `Risk load: ${profile.riskLoad}/100; read hazards before treating it as easy.`;
-  if (profile.livedEase < 58) return `Lived ease: ${profile.livedEase}/100; verify daily access, cost, and social fit.`;
+  if (profile.livedEase < 58) return `Lived ease: ${profile.livedEase}/100; verify housing pressure and hospital/airport access.`;
   return compactSentence(profile.place.whoMightNot, 96);
 }
 
@@ -429,7 +429,7 @@ function buildVerificationChecklist(
     id: "daily-life",
     label: "Daily-life friction",
     place: lowestLivedEase.place,
-    action: `Stress-test ${lowestLivedEase.place.name} for errands, housing, health care, internet, and social fit before calling it move-ready.`,
+    action: `Stress-test ${lowestLivedEase.place.name} for errands, housing, health care, internet, and access remoteness before calling it move-ready.`,
     proof: `${lowestLivedEase.livedEase}/100 lived-ease read; a visit should prove the friction is tolerable, not just scenic.`,
     tone: lowestLivedEase.livedEase < 60 ? "verify" : "book",
   });

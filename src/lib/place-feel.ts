@@ -117,7 +117,10 @@ function serviceAnchorScore(place: Place): number {
 function livedAxisEase(place: Place): number {
   const ls = place.liveSignals;
   if (!ls) return 68;
-  const axes = [ls.costPressure, ls.socialStress, ls.accessFriction].filter((v): v is number => v != null);
+  const axes = [
+    ls.housingPressureIndex ?? ls.costPressure,
+    ls.accessRemotenessIndex ?? ls.accessFriction,
+  ].filter((v): v is number => v != null);
   if (axes.length === 0) return 68;
   const friction = axes.reduce((sum, v) => sum + clamp(v), 0) / axes.length;
   return clamp(100 - friction);
@@ -244,7 +247,7 @@ export function scorePlaceFeel(place: Place): PlaceFeelResult {
   if (strengths.length === 0) pushLimited(strengths, `${sorted[0]!.label} is the strongest part of the feel read.`);
 
   if (values.sensoryComfort < 55) pushLimited(frictions, "Sensory comfort is mixed: temperature, sky, storm, smoke, or dampness can change the mood fast.");
-  if (values.dailyEase < 55) pushLimited(frictions, "Daily ease needs verification before shortlisting: access, social/cost friction, or risk load can bite.");
+  if (values.dailyEase < 55) pushLimited(frictions, "Daily ease needs verification before shortlisting: access remoteness, housing pressure, or risk load can bite.");
   if (values.placeIdentity < 55) pushLimited(frictions, "The corpus still reads thin here; treat the feel score as a scouting prompt, not a finished portrait.");
   if (values.scoutingClarity < 55) pushLimited(frictions, "Scouting clarity is limited; there are fewer authored anchors, activities, or contrasts than stronger entries.");
   if (frictions.length === 0) pushLimited(frictions, `${weak[0]!.label} is the first thing to verify in person.`);

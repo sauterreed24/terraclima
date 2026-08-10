@@ -244,7 +244,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     scores: { hiddenGem: 50, microclimateUniqueness: 70, comfort: 66, resilience: 60, growability: 58, tradeoff: 42 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 18,
       accessFriction: 48,
       note: "Small resident base and park-adjacent housing keep costs and services uneven, while South Shore / Chicago access prevents true isolation.",
       sources: [
@@ -503,7 +502,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     scores: { hiddenGem: 72, microclimateUniqueness: 92, comfort: 58, resilience: 48, growability: 42, tradeoff: 48 },
     liveSignals: {
       costPressure: 62,
-      socialStress: 20,
       accessFriction: 28,
       note: "Mount Charleston Village sits 45 minutes from Las Vegas services, but wildfire evacuation, winter road closures on NV-156/157, and second-home pricing from heat-island refugees are the live-here filter behind the sky-island comfort.",
       sources: [
@@ -574,7 +572,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     scores: { hiddenGem: 40, microclimateUniqueness: 60, comfort: 70, resilience: 46, growability: 60, tradeoff: 50 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 26,
       accessFriction: 40,
       note: "Cape May County housing tightens in summer but stays below Northeast metro medians; Philadelphia and Atlantic City are the usual specialist and airport anchors.",
       sources: [
@@ -703,7 +700,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     scores: { hiddenGem: 58, microclimateUniqueness: 76, comfort: 64, resilience: 44, growability: 48, tradeoff: 58 },
     liveSignals: {
       costPressure: 78,
-      socialStress: 18,
       accessFriction: 74,
       note: "Ferry-only / small-plane access; year-round population ~1,000 with a tight, expensive housing market and limited specialty services.",
       sources: [
@@ -766,7 +762,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     scores: { hiddenGem: 62, microclimateUniqueness: 88, comfort: 56, resilience: 58, growability: 54, tradeoff: 46 },
     liveSignals: {
       costPressure: 40,
-      socialStress: 16,
       accessFriction: 42,
       note: "Spearfish Regional Hospital and Black Hills State University anchor services, but chinook wind volatility, Rapid City specialty backup, and ecotone wildfire exposure are the lived-friction story behind the foehn fame.",
       sources: [
@@ -850,7 +845,6 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     scores: { hiddenGem: 78, microclimateUniqueness: 90, comfort: 54, resilience: 60, growability: 66, tradeoff: 44 },
     liveSignals: {
       costPressure: 34,
-      socialStress: 10,
       accessFriction: 55,
       note: "Burkes Garden is a single-road agricultural bowl with almost no commercial core; Tazewell County services and Bluefield-or-Roanoke specialty care are the lived-friction story behind the cold-pool microclimate fame.",
       sources: [

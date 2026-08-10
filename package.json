@@ -30,7 +30,7 @@
     "dump:corpus-rank": "tsx scripts/dump-corpus-ranks.ts",
     "generate:og": "tsx scripts/generate-og-image.ts",
     "generate:icons": "tsx scripts/generate-icons.ts",
-    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run climate:data:verify && npm run build && npm run check:performance-budget",
+    "quality:check": "npm run typecheck && npm run lint && npm run test && npm run test:prose && npm run test:celsius && npm run playtest:polish && npm run check:metadata && npm run audit:corpus && npm run sanity && npm run corpus:coverage && npm run test:corpus-gold && npm run climate:data:verify && npm run corpus:research:verify && npm run corpus:voice:check && npm run corpus:consistency:check && npm run build && npm run check:performance-budget",
     "playtest:rigorous": "node scripts/playtest-rigorous.mjs",
     "playtest:climate-v2": "node scripts/playtest-climate-v2-regressions.mjs",
     "playtest:release-audit": "node scripts/playtest-release-audit.mjs",
@@ -38,7 +38,13 @@
     "climate:data:generate": "tsx scripts/climate-data/generate.ts",
     "climate:data:verify": "tsx scripts/climate-data/verify.ts",
     "climate:data:audit": "tsx scripts/climate-data/audit.ts",
-    "climate:data:update": "tsx scripts/climate-data/update.ts"
+    "climate:data:update": "tsx scripts/climate-data/update.ts",
+    "corpus:research:bootstrap": "tsx scripts/research/bootstrap-research-layer.ts",
+    "corpus:research:verify": "tsx scripts/research/verify-research.ts",
+    "corpus:voice:check": "tsx scripts/research/voice-check.ts",
+    "corpus:consistency:check": "tsx scripts/research/consistency-check.ts",
+    "corpus:links:check": "tsx scripts/research/links-check.ts",
+    "corpus:research:report": "tsx scripts/research/research-report.ts"
   },
   "dependencies": {
     "@tanstack/react-virtual": "^3.13.24",

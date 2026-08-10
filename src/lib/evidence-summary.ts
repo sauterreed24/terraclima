@@ -240,8 +240,8 @@ export function listMissingStructuredFields(place: Place): MissingEvidenceField[
   if (!place.liveSignals) {
     missing.push({
       id: "live-signals",
-      label: "Lived cost / social / access signals",
-      note: "No curated lived-friction grades; livability uses a conservative screening baseline for those axes.",
+      label: "Lived housing / access indicators",
+      note: "No dated lived indicators; livability uses a conservative screening baseline for housing pressure and access remoteness.",
     });
   }
   if (!place.projection) {

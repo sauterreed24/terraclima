@@ -111,7 +111,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 56, microclimateUniqueness: 94, comfort: 72, resilience: 48, growability: 86, tradeoff: 52 },
     liveSignals: {
       costPressure: 70,
-      socialStress: 42,
       accessFriction: 56,
       note: "Osoyoos is a high-amenity resort and retirement town where housing is the main lived filter: the 2024 housing-needs report tracks affordability, adequacy, accessibility, and proximity-to-services constraints. Social stress reads moderate rather than severe, but cost and seasonal tourism pressure matter. Access is workable but not metro-deep: BC Transit Route 40 links Osoyoos, Oliver, and Penticton, South Okanagan General Hospital in Oliver provides 24/7 emergency and acute care, and higher-order hospital/airport depth remains north in Penticton/Kelowna.",
       sources: [
@@ -277,7 +276,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 48, microclimateUniqueness: 76, comfort: 62, resilience: 60, growability: 68, tradeoff: 40 },
     liveSignals: {
       costPressure: 50,
-      socialStress: 52,
       accessFriction: 40,
       note: "Lethbridge remains easier than coastal Canadian metros, but its 2024 housing assessment flags rental and ownership stress for single, one-parent, and fixed-income households; the 2024-2029 wellbeing strategy treats housing insecurity, homelessness, and safety as active work. Regional access is buffered by Chinook Regional Hospital and intercity transit, while YQL's own 2026 FAQ says the only commercial carrier planned to discontinue Lethbridge-Calgary service on June 24, 2026 as the airport pursued replacement routes.",
       sources: [
@@ -393,7 +391,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 24, microclimateUniqueness: 82, comfort: 86, resilience: 74, growability: 82, tradeoff: 34 },
     liveSignals: {
       costPressure: 72,
-      socialStress: 30,
       accessFriction: 28,
       note: "Capital-region housing market has tightened sharply since 2020; major airport and BC Ferries integrate Victoria into the south-coast services hub.",
       sources: [
@@ -490,7 +487,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 40, microclimateUniqueness: 86, comfort: 54, resilience: 70, growability: 52, tradeoff: 60 },
     liveSignals: {
       costPressure: 84,
-      socialStress: 24,
       accessFriction: 70,
       note: "Tofino housing has been one of BC's most extreme tourism-driven markets; only Highway 4 in (frequent washouts), no major airport, full-service medical on the mainland.",
       sources: [
@@ -586,7 +582,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 58, microclimateUniqueness: 62, comfort: 66, resilience: 62, growability: 78, tradeoff: 35 },
     liveSignals: {
       costPressure: 48,
-      socialStress: 16,
       accessFriction: 36,
       note: "Acadia University and the Annapolis Valley fruit belt anchor a walkable town, but Fundy fog, hurricane remnants, and Halifax specialty backup are the lived-friction story behind the sheltered valley comfort.",
       sources: [
@@ -683,7 +678,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 22, microclimateUniqueness: 76, comfort: 70, resilience: 62, growability: 85, tradeoff: 32 },
     liveSignals: {
       costPressure: 66,
-      socialStress: 22,
       accessFriction: 26,
       note: "Niagara-on-the-Lake is not an isolated orchard village: the wider Niagara service base is close, but heritage tourism, wine-country demand, and region-wide attainable-housing pressure make cost a real live-here filter.",
       sources: [
@@ -769,7 +763,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 92, microclimateUniqueness: 84, comfort: 36, resilience: 60, growability: 32, tradeoff: 70 },
     liveSignals: {
       costPressure: 32,
-      socialStress: 10,
       accessFriction: 78,
       note: "Atlin's ~400-person lake village is genuinely remote: Whitehorse is hours away, winter darkness is severe, and healthcare and supply logistics are the lived-friction story behind the northern lake comfort.",
       sources: [
@@ -845,7 +838,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 68, microclimateUniqueness: 80, comfort: 58, resilience: 54, growability: 52, tradeoff: 54 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 18,
       accessFriction: 38,
       note: "Elk Valley Hospital and a real downtown anchor daily life, but deep snow maintenance, avalanche terrain, wildfire smoke, and Cranbrook specialty backup are the lived-friction story behind the mountain-town comfort.",
       sources: [
@@ -912,7 +904,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 70, microclimateUniqueness: 74, comfort: 80, resilience: 68, growability: 72, tradeoff: 35 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 22,
       accessFriction: 48,
       note: "Ferry-linked Sunshine Coast housing runs below Metro Vancouver but still tight; Gibsons/Sechelt groceries and specialist care often mean a Vancouver-bound trip.",
       sources: [
@@ -956,7 +947,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 56, microclimateUniqueness: 78, comfort: 82, resilience: 68, growability: 80, tradeoff: 38 },
     liveSignals: {
       costPressure: 64,
-      socialStress: 20,
       accessFriction: 52,
       note: "Gulf-Islands ferry schedule and tourism-tightened housing shape day-to-day logistics; Saanich and Victoria are an hour-plus ferry+drive away.",
       sources: [
@@ -1021,7 +1011,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 84, microclimateUniqueness: 76, comfort: 58, resilience: 58, growability: 56, tradeoff: 40 },
     liveSignals: {
       costPressure: 46,
-      socialStress: 18,
       accessFriction: 55,
       note: "Island groceries and year-round services are limited; Saint John and Calais are the usual ferry-linked anchors for specialists and flights.",
       sources: [
@@ -1137,7 +1126,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 68, microclimateUniqueness: 64, comfort: 68, resilience: 56, growability: 68, tradeoff: 40 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 22,
       accessFriction: 48,
       note: "Nelson's arts-town housing runs above interior BC norms; Castlegar/West Kootenay Regional Airport covers most air links while regional wildfire smoke and steep winter lots are part of the lived filter.",
       sources: [
@@ -1227,7 +1215,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 42, microclimateUniqueness: 88, comfort: 54, resilience: 78, growability: 44, tradeoff: 56 },
     liveSignals: {
       costPressure: 76,
-      socialStress: 24,
       accessFriction: 70,
       note: "Outer-coast Pacific Rim corridor with limited Highway-4 access and tourism-inflated housing; daily services depend on Port Alberni and Nanaimo.",
       sources: [
@@ -1259,7 +1246,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 64, microclimateUniqueness: 72, comfort: 86, resilience: 74, growability: 78, tradeoff: 30 },
     liveSignals: {
       costPressure: 56,
-      socialStress: 16,
       accessFriction: 30,
       note: "Island-East retirement belt with Nanaimo / YYJ access via the E&N corridor; cost has tightened with retiree migration but remains below Greater Vancouver.",
       sources: [
@@ -1321,7 +1307,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 60, microclimateUniqueness: 86, comfort: 42, resilience: 72, growability: 30, tradeoff: 64 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 38,
       accessFriction: 78,
       note: "Skeena-end port with notoriously dark, wet weather (>2,500 mm/yr, ~110 sun-days), small economy, and limited specialty-medical access — care often requires Terrace or Vancouver.",
       sources: [
@@ -1490,7 +1475,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 40, microclimateUniqueness: 82, comfort: 44, resilience: 60, growability: 34, tradeoff: 56 },
     liveSignals: {
       costPressure: 44,
-      socialStress: 30,
       accessFriction: 38,
       note: "A full regional capital makes the extreme maritime weather more livable, but fog, wind, slope, snow clearing, and storm surge shape daily routines.",
       sources: [
@@ -1568,7 +1552,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 72, microclimateUniqueness: 88, comfort: 44, resilience: 40, growability: 30, tradeoff: 58 },
     liveSignals: {
       costPressure: 54,
-      socialStress: 18,
       accessFriction: 58,
       note: "Yukon's capital has a regional hospital and Erik Nielsen Whitehorse International Airport, but northern supply chains, permafrost infrastructure, and a thin private rental market shape the live-here screen.",
       sources: [
@@ -1775,7 +1758,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 74, microclimateUniqueness: 82, comfort: 50, resilience: 70, growability: 56, tradeoff: 60 },
     liveSignals: {
       costPressure: 50,
-      socialStress: 24,
       accessFriction: 86,
       note: "Archipelago accessible only by Inland-Passage ferry or air; medical and supply logistics are a defining daily reality.",
       sources: [
@@ -1844,7 +1826,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 78, microclimateUniqueness: 84, comfort: 50, resilience: 58, growability: 32, tradeoff: 60 },
     liveSignals: {
       costPressure: 42,
-      socialStress: 20,
       accessFriction: 72,
       note: "Housing is modest but year-round work is thin; the Twillingate–Gander ferry link and St. John's flights are the usual anchors for groceries, care, and specialists.",
       sources: [
@@ -1947,7 +1928,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 36, microclimateUniqueness: 62, comfort: 64, growability: 54, resilience: 56, tradeoff: 40 },
     liveSignals: {
       costPressure: 55,
-      socialStress: 34,
       accessFriction: 22,
       note: "Halifax has the easiest service base in Atlantic Canada, but housing pressure, harbour weather, fog, and coastal storm exposure keep the lived score grounded.",
       sources: [
@@ -2009,7 +1989,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 58, microclimateUniqueness: 66, comfort: 66, growability: 62, resilience: 54, tradeoff: 38 },
     liveSignals: {
       costPressure: 48,
-      socialStress: 16,
       accessFriction: 36,
       note: "Charlottetown has PEI's strongest service base, but island logistics, seasonal housing pressure, and coastal storm diligence still matter.",
       sources: [
@@ -2096,7 +2075,6 @@ export const PLACES_CANADA: Place[] = [
     scores: { hiddenGem: 78, microclimateUniqueness: 74, comfort: 60, resilience: 58, growability: 62, tradeoff: 42 },
     liveSignals: {
       costPressure: 46,
-      socialStress: 14,
       accessFriction: 42,
       note: "Baie-Saint-Paul's arts-and-food tourism anchors a walkable estuary town, but Charlevoix slope hazards, Quebec City specialty backup, and estuary storm exposure are the lived-friction story.",
       sources: [

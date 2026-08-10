@@ -90,12 +90,8 @@ function watchLine(place: Place, livedEase: number, feelScore: number): string {
 
   const dominantFriction = dominantLivedFriction(place);
   if (dominantFriction && dominantFriction.value >= 55) {
-    const axis = dominantFriction.axis === "cost"
-      ? "Cost"
-      : dominantFriction.axis === "social"
-        ? "Social fabric"
-        : "Daily access";
-    return `${axis}: ${Math.round(dominantFriction.value)}/100 friction`;
+    const axis = dominantFriction.axis === "cost" ? "Housing pressure" : "Access remoteness";
+    return `${axis}: ${Math.round(dominantFriction.value)}/100`;
   }
 
   const summerHigh = meanSummerHigh(place);

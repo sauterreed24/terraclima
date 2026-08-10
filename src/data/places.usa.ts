@@ -119,7 +119,6 @@ export const PLACES_USA: Place[] = [
 
     liveSignals: {
       costPressure: 48,
-      socialStress: 22,
       accessFriction: 32,
       note: "Clallam-County housing has tightened with retirees but remains well below Bay Area / Marin levels; Port Angeles serves daily needs and Sea-Tac is a 2.5-hour drive plus ferry.",
       sources: [
@@ -291,7 +290,6 @@ export const PLACES_USA: Place[] = [
 
     liveSignals: {
       costPressure: 42,
-      socialStress: 18,
       accessFriction: 82,
       note: "Tiny-market housing and quiet community fabric are not the hard part; long service drives, volunteer fire/EMS dependence, wildfire planning, and specialty-care distance are the real live-here filter.",
       sources: [
@@ -464,7 +462,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 68, microclimateUniqueness: 88, comfort: 72, resilience: 58, growability: 58, tradeoff: 46 },
     liveSignals: {
       costPressure: 36,
-      socialStress: 28,
       accessFriction: 42,
       note: "Sierra Vista is a real southeast-Arizona service hub with a hospital and joint-use airport, but Fort Huachuca dependence, Tucson specialty backup, wildfire planning, and water diligence belong in the live-here screen.",
       sources: [
@@ -641,7 +638,6 @@ export const PLACES_USA: Place[] = [
 
     liveSignals: {
       costPressure: 86,
-      socialStress: 28,
       accessFriction: 22,
       note: "Median home values cluster well above $1M and the housing-burdened share is among California's highest.",
       sources: [
@@ -814,7 +810,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 70, microclimateUniqueness: 84, comfort: 78, resilience: 74, growability: 80, tradeoff: 38 },
     liveSignals: {
       costPressure: 48,
-      socialStress: 24,
       accessFriction: 22,
       note: "Asheville-metro housing has tightened post-2020 but remains well below coastal-California medians; Mission Hospital + Asheville Regional Airport are 20 minutes away.",
       sources: [
@@ -934,7 +929,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 72, microclimateUniqueness: 94, comfort: 64, resilience: 52, growability: 58, tradeoff: 50 },
     liveSignals: {
       costPressure: 62,
-      socialStress: 38,
       accessFriction: 58,
       note: "Bishop is the eastern Sierra's practical hub, but the live-here friction is real: local housing-element material flags limited supply and rental pressure in Bishop/Inyo, while Inyo's community health assessment frames housing, transportation, and care access as social-determinant constraints. Northern Inyo gives the valley a local emergency-care anchor and Eastern Sierra Transit links Bishop north/south, yet specialist depth, airports, and urban services still require long US-395 travel.",
       sources: [
@@ -1034,7 +1028,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 40, microclimateUniqueness: 80, comfort: 70, resilience: 58, growability: 48, tradeoff: 42 },
     liveSignals: {
       costPressure: 55,
-      socialStress: 32,
       accessFriction: 34,
       note: "NAU and tourism anchor the economy, but wildfire insurance, housing pressure from Phoenix spillover, and winter I-17 closures are the live-here filter alongside the mile-high comfort.",
       sources: [
@@ -1133,7 +1126,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 86, microclimateUniqueness: 80, comfort: 78, resilience: 62, growability: 64, tradeoff: 36 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 30,
       accessFriction: 48,
       note: "Silver City has real small-town services and a strong arts base, but specialist care, airport access, smoke season, and water diligence keep it from being frictionless.",
       sources: [
@@ -1244,7 +1236,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 52, microclimateUniqueness: 84, comfort: 80, resilience: 68, growability: 86, tradeoff: 35 },
     liveSignals: {
       costPressure: 60,
-      socialStress: 18,
       accessFriction: 26,
       note: "Hood River tracks Portland metro housing pressure; PDX is about an hour on I-84, but Gorge wind, fire/smoke, winter road closures, and orchard-water issues are part of daily life.",
       sources: [
@@ -1355,7 +1346,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 56, microclimateUniqueness: 70, comfort: 76, resilience: 54, growability: 82, tradeoff: 45 },
     liveSignals: {
       costPressure: 66,
-      socialStress: 24,
       accessFriction: 32,
       note: "Ashland has unusually strong culture and Medford backup, but housing cost, smoke cancellations, water constraints, and evacuation realities shape the lived climate.",
       sources: [
@@ -1464,7 +1454,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 34, microclimateUniqueness: 72, comfort: 76, resilience: 58, growability: 56, tradeoff: 42 },
     liveSignals: {
       costPressure: 70,
-      socialStress: 34,
       accessFriction: 24,
       note: "Santa Fe is service-rich for a high-desert city, but housing pressure, water limits, winter cold, smoke, and hillside fire exposure keep the climate romance grounded.",
       sources: [
@@ -1573,7 +1562,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 28, microclimateUniqueness: 80, comfort: 92, resilience: 60, growability: 82, tradeoff: 55 },
     liveSignals: {
       costPressure: 88,
-      socialStress: 28,
       accessFriction: 18,
       note: "The climate is spectacularly easy, but housing cost, debris-flow history, fire insurance, drought rules, and coastal access pressure dominate the live-here filter.",
       sources: [
@@ -1683,7 +1671,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 66, microclimateUniqueness: 82, comfort: 54, resilience: 62, growability: 32, tradeoff: 60 },
     liveSignals: {
       costPressure: 62,
-      socialStress: 18,
       accessFriction: 58,
       note: "Teton Valley housing has tightened with Jackson spillover; daily services sit in Driggs/Victor but specialty care and a major airport require the Jackson Hole drive over Teton Pass.",
       sources: [
@@ -1782,7 +1769,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 56, microclimateUniqueness: 82, comfort: 70, resilience: 66, growability: 82, tradeoff: 38 },
     liveSignals: {
       costPressure: 64,
-      socialStress: 22,
       accessFriction: 18,
       note: "A strong regional hospital, commercial airport, and year-round services make Traverse City unusually practical for a small northern climate refuge; resort-town housing pressure, short-term-rental politics, and summer congestion are the real frictions.",
       sources: [
@@ -1881,7 +1867,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 52, microclimateUniqueness: 70, comfort: 66, resilience: 68, growability: 76, tradeoff: 34 },
     liveSignals: {
       costPressure: 66,
-      socialStress: 30,
       accessFriction: 22,
       note: "Ithaca has a rare small-city service base for its size - university employers, airport, medical system, transit, and culture - but the 2026 reality is housing-cost pressure and student-market competition, not service scarcity.",
       sources: [
@@ -1979,7 +1964,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 78, microclimateUniqueness: 84, comfort: 60, resilience: 72, growability: 44, tradeoff: 45 },
     liveSignals: {
       costPressure: 44,
-      socialStress: 16,
       accessFriction: 64,
       note: "North Shore housing is modest by Twin Cities standards but the full-service hospital and major-airport run are long; winter road maintenance and seasonal tourism swings shape daily logistics.",
       sources: [
@@ -2080,7 +2064,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 70, microclimateUniqueness: 88, comfort: 72, resilience: 66, growability: 62, tradeoff: 45 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 26,
       accessFriction: 40,
       note: "Resort-town housing in Highlands runs above rural NC norms; Asheville is the usual hospital and airport anchor under an hour away.",
       sources: [
@@ -2153,7 +2136,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 18, microclimateUniqueness: 70, comfort: 74, resilience: 54, growability: 60, tradeoff: 40 },
     liveSignals: {
       costPressure: 82,
-      socialStress: 38,
       accessFriction: 32,
       note: "Front Range foothill housing runs well above Colorado medians; the Marshall Fire (2021) sharpened wildfire-insurance and rebuild friction. Daily care is strong at Foothills Hospital and RTD/Denver International access is routine, but smoke-season air quality and water-right stress on the plains fringe are seasonal relocation realities.",
       sources: [
@@ -2198,7 +2180,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 74, microclimateUniqueness: 82, comfort: 48, resilience: 62, growability: 38, tradeoff: 55 },
     liveSignals: {
       costPressure: 28,
-      socialStress: 48,
       accessFriction: 82,
       note: "Algoma County's eastern shore is among the most isolated lake-effect snowbelts in the Lower 48; Munising Memorial Hospital is the nearest acute-care anchor and Marquette or Traverse City handles specialty care. Seasonal tourism and a thinning year-round base shape housing and service availability.",
       sources: [
@@ -2242,7 +2223,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 58, microclimateUniqueness: 50, comfort: 56, resilience: 30, growability: 64, tradeoff: 68 },
     liveSignals: {
       costPressure: 42,
-      socialStress: 52,
       accessFriction: 74,
       note: "Franklin County's estuary economy still carries Hurricane Michael (2018) recovery stress; Gulf storm surge and insurance friction dominate long-term relocation math. Tallahassee Memorial and Panama City are the practical specialty-care anchors — not Apalachicola itself.",
       sources: [
@@ -2286,7 +2266,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 56, microclimateUniqueness: 84, comfort: 78, resilience: 58, growability: 72, tradeoff: 45 },
     liveSignals: {
       costPressure: 68,
-      socialStress: 36,
       accessFriction: 48,
       note: "San Lorenzo Valley housing tracks Santa Cruz–Monterey spillover; the CZU Complex (2020) burned adjacent ridges and keeps wildfire-insurance salient. Dominican Hospital and SJC access are a valley drive away — not walkable daily infrastructure.",
       sources: [
@@ -2337,7 +2316,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 32, microclimateUniqueness: 80, comfort: 74, resilience: 58, growability: 88, tradeoff: 48 },
     liveSignals: {
       costPressure: 52,
-      socialStress: 20,
       accessFriction: 38,
       note: "Apple-belt housing has climbed with Seattle spillover; Wenatchee Regional Medical Center and Pangborn Airport cover daily needs, but wildfire smoke inversions and irrigation/water-right stress are seasonal relocation realities.",
       sources: [
@@ -2407,7 +2385,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 54, microclimateUniqueness: 72, comfort: 64, resilience: 58, growability: 66, tradeoff: 44 },
     liveSignals: {
       costPressure: 44,
-      socialStress: 40,
       accessFriction: 54,
       note: "Central Washington University anchors a modest service base, but persistent gap winds and smoke-season inversions are daily quality-of-life variables. Kittitas Valley Healthcare covers acute care; Seattle-Tacoma remains the specialty-care and major-airport anchor.",
       sources: [
@@ -2451,7 +2428,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 44, microclimateUniqueness: 92, comfort: 46, resilience: 72, growability: 44, tradeoff: 68 },
     liveSignals: {
       costPressure: 30,
-      socialStress: 32,
       accessFriction: 78,
       note: "Logging-economy town with limited services; nearest staffed hospital is in Port Angeles and Sea-Tac is a 5-hour drive plus ferry; persistent overcast and rainy summers temper the climate score.",
       sources: [
@@ -2494,7 +2470,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 52, microclimateUniqueness: 76, comfort: 50, resilience: 66, growability: 56, tradeoff: 58 },
     liveSignals: {
       costPressure: 50,
-      socialStress: 28,
       accessFriction: 56,
       note: "Columbia-mouth weather is famously dim and wet; Portland International is a 100-mile drive and the local economy still leans on a thinning port and tourism base.",
       sources: [
@@ -2537,7 +2512,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 54, microclimateUniqueness: 80, comfort: 80, resilience: 74, growability: 70, tradeoff: 28 },
     liveSignals: {
       costPressure: 56,
-      socialStress: 22,
       accessFriction: 36,
       note: "Victorian downtown has tightened the housing market; Kingston / Edmonds ferries plus the 101 drive to Sea-Tac shape day-to-day logistics.",
       sources: [
@@ -2580,7 +2554,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 36, microclimateUniqueness: 88, comfort: 70, resilience: 60, growability: 76, tradeoff: 46 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 28,
       accessFriction: 42,
       note: "Hood River orchard and wind-sport tourism have tightened housing along the east-gorge corridor; the 2017 Eagle Creek Fire burned the west rim and keeps smoke-season salient. Mid-Columbia Medical Center and Portland access cover daily needs, but wind-exposed sites and fire insurance are parcel-level checks.",
       sources: [
@@ -2631,7 +2604,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 64, microclimateUniqueness: 92, comfort: 50, resilience: 80, growability: 60, tradeoff: 62 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 72,
       accessFriction: 52,
       note: "Eureka ranks among California's higher violent-crime cities and resident reviews flag visible street distress; major-airport access requires a long drive or a Crescent City puddle-jumper.",
       sources: [
@@ -2702,7 +2674,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 48, microclimateUniqueness: 88, comfort: 56, resilience: 80, growability: 58, tradeoff: 58 },
     liveSignals: {
       costPressure: 78,
-      socialStress: 22,
       accessFriction: 72,
       note: "Second-foggiest place in North America (~200 fog days/yr) with 40+ mph headland winds; 50-minute drive to staffed services; Marin housing market sits well above state median.",
       sources: [
@@ -2747,7 +2718,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 32, microclimateUniqueness: 80, comfort: 54, resilience: 48, growability: 32, tradeoff: 54 },
     liveSignals: {
       costPressure: 78,
-      socialStress: 34,
       accessFriction: 58,
       note: "Tahoe-basin housing pressure and short-term-rental rules dominate Truckee's live-here math; the 2021 Caldor Fire approached the basin from the south. Tahoe Forest Hospital covers acute care, but Reno and Sacramento remain the specialty-care and major-airport anchors.",
       sources: [
@@ -2792,7 +2762,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 28, microclimateUniqueness: 76, comfort: 52, resilience: 50, growability: 20, tradeoff: 58 },
     liveSignals: {
       costPressure: 72,
-      socialStress: 42,
       accessFriction: 70,
       note: "Resort-town worker housing and seasonal employment dominate Mammoth's lived economy; Mammoth Hospital covers basics but Bishop and Reno handle most specialty care. Smoke from Sierra fires and shrinking snowpack are the long-tail climate-relocation risks.",
       sources: [
@@ -2837,7 +2806,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 62, microclimateUniqueness: 72, comfort: 50, resilience: 34, growability: 40, tradeoff: 64 },
     liveSignals: {
       costPressure: 48,
-      socialStress: 30,
       accessFriction: 76,
       note: "International Dark-Sky status and winter perfection come with summer heat stress, groundwater limits, and a long drive to El Centro or San Diego for specialty care. Borrego Valley's unincorporated service base keeps daily errands simple but narrow.",
       sources: [
@@ -2887,7 +2855,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 84, microclimateUniqueness: 84, comfort: 74, resilience: 62, growability: 54, tradeoff: 40 },
     liveSignals: {
       costPressure: 34,
-      socialStress: 22,
       accessFriction: 72,
       note: "Fort Davis has an exceptional sky-island climate, but it is a very small service base: groceries, specialists, airport access, water, and wildfire planning require patience.",
       sources: [
@@ -2964,7 +2931,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 64, microclimateUniqueness: 66, comfort: 72, resilience: 58, growability: 46, tradeoff: 40 },
     liveSignals: {
       costPressure: 72,
-      socialStress: 24,
       accessFriction: 66,
       note: "The sky, art scene, and cool nights are exceptional; housing cost, long drives, limited services, and water limits are the real live-here filter.",
       sources: [
@@ -3039,7 +3005,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 20, microclimateUniqueness: 68, comfort: 74, resilience: 50, growability: 62, tradeoff: 42 },
     liveSignals: {
       costPressure: 76,
-      socialStress: 34,
       accessFriction: 52,
       note: "Red-rock tourism and second-home demand keep housing tight; the 2014 Slide Fire and ongoing Oak Creek flash-flood risk sharpen wildfire-insurance and parcel checks. Verde Valley Medical Center covers acute care, but Phoenix remains the specialty-care anchor.",
       sources: [
@@ -3085,7 +3050,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 32, microclimateUniqueness: 58, comfort: 76, resilience: 54, growability: 58, tradeoff: 38 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 32,
       accessFriction: 44,
       note: "Phoenix climate refugees and retirees have tightened Prescott's mile-high housing market; the 2013 Yarnell Hill Fire nearby keeps wildfire planning salient. Yavapai Regional Medical Center and Prescott Regional Airport cover most daily needs.",
       sources: [
@@ -3130,7 +3094,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 72, microclimateUniqueness: 78, comfort: 64, resilience: 52, growability: 40, tradeoff: 42 },
     liveSignals: {
       costPressure: 46,
-      socialStress: 28,
       accessFriction: 68,
       note: "The Sacramento Mountains sky island is a dramatic climate escape, but Cloudcroft's year-round population is tiny and Alamogordo handles groceries, clinics, and major errands. Monsoon flash flooding on the mountain highway is a seasonal access check.",
       sources: [
@@ -3176,7 +3139,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 36, microclimateUniqueness: 64, comfort: 72, resilience: 54, growability: 50, tradeoff: 42 },
     liveSignals: {
       costPressure: 64,
-      socialStress: 40,
       accessFriction: 58,
       note: "Taos art-market housing and short-term-rental pressure sit atop tight high-desert water governance; Holy Cross Medical Center covers basics but Albuquerque handles most specialty care. Smoke from Sangre de Cristo fires is the summer air-quality variable.",
       sources: [
@@ -3226,7 +3188,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 76, microclimateUniqueness: 92, comfort: 40, resilience: 52, growability: 20, tradeoff: 68 },
     liveSignals: {
       costPressure: 48,
-      socialStress: 14,
       accessFriction: 44,
       note: "Western Colorado University anchors services, but −30°C inversion mornings, limited specialty care beyond Montrose, and a thin winter job market are the lived-friction story behind the cold-pool fame.",
       sources: [
@@ -3291,7 +3252,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 24, microclimateUniqueness: 68, comfort: 52, resilience: 46, growability: 18, tradeoff: 58 },
     liveSignals: {
       costPressure: 74,
-      socialStress: 36,
       accessFriction: 62,
       note: "Resort-town worker housing and seasonal employment dominate Crested Butte's lived economy; Gunnison Valley Health and a long winter drive to Montrose handle most medical needs. Smoke from West Slope fires and shrinking snowpack are the long-tail climate risks.",
       sources: [
@@ -3335,7 +3295,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 42, microclimateUniqueness: 86, comfort: 32, resilience: 54, growability: 14, tradeoff: 72 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 44,
       accessFriction: 64,
       note: "North America's highest incorporated city trades altitude clarity for thin-air daily life and a small service base; St. Vincent Hospital covers acute care but Denver handles most specialty needs. Winter isolation on US-24 is a seasonal relocation reality.",
       sources: [
@@ -3379,7 +3338,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 38, microclimateUniqueness: 56, comfort: 74, resilience: 54, growability: 60, tradeoff: 40 },
     liveSignals: {
       costPressure: 62,
-      socialStress: 34,
       accessFriction: 46,
       note: "Durango's mild San Juan climate attracts Front Range spillover, tightening housing along the Animas corridor; 416 Fire (2018) and ongoing smoke seasons keep wildfire-insurance salient. Mercy Hospital covers daily care and DRO offers regional air access.",
       sources: [
@@ -3445,7 +3403,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 28, microclimateUniqueness: 62, comfort: 60, resilience: 42, growability: 54, tradeoff: 50 },
     liveSignals: {
       costPressure: 52,
-      socialStress: 34,
       accessFriction: 42,
       note: "University of Montana anchors a modest service base, but winter inversions and very-high wildfire smoke days define daily quality-of-life math. Providence St. Patrick Hospital covers acute care; Spokane and Salt Lake City remain the practical specialty-care anchors.",
       sources: [
@@ -3489,7 +3446,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 20, microclimateUniqueness: 48, comfort: 66, resilience: 54, growability: 52, tradeoff: 40 },
     liveSignals: {
       costPressure: 68,
-      socialStress: 32,
       accessFriction: 38,
       note: "Montana State University and a growing tech-remote cohort have tightened Gallatin Valley housing; Bozeman Health covers acute care but Billings and Salt Lake City remain specialty-care anchors. Chinook thaws and smoke-season air quality are daily variables.",
       sources: [
@@ -3533,7 +3489,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 38, microclimateUniqueness: 78, comfort: 52, resilience: 46, growability: 70, tradeoff: 58 },
     liveSignals: {
       costPressure: 42,
-      socialStress: 24,
       accessFriction: 36,
       note: "USU and the fruit belt keep services local, but winter PM2.5 inversions can persist for weeks — the relocation screen is air quality as much as orchard charm.",
       sources: [
@@ -3619,7 +3574,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 90, microclimateUniqueness: 94, comfort: 46, resilience: 58, growability: 30, tradeoff: 54 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 16,
       accessFriction: 52,
       note: "Canaan Valley State Park and ski tourism anchor the economy, but Tucker County's remote Allegheny plateau location, limited specialty care beyond Elkins, and short growing season are the live-here filter behind the boreal cold-pool fame.",
       sources: [
@@ -3687,7 +3641,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 80, microclimateUniqueness: 96, comfort: 40, resilience: 58, growability: 36, tradeoff: 58 },
     liveSignals: {
       costPressure: 32,
-      socialStress: 12,
       accessFriction: 58,
       note: "Tug Hill snow records draw die-hards, but Oswego County's remote plateau roads, roof-load winters, and Syracuse-or-Watertown specialty-care distance are the lived-friction story behind the lake-effect superlatives.",
       sources: [
@@ -3796,7 +3749,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 76, microclimateUniqueness: 88, comfort: 44, resilience: 64, growability: 38, tradeoff: 56 },
     liveSignals: {
       costPressure: 36,
-      socialStress: 30,
       accessFriction: 58,
       note: "Michigan Tech anchors a modest service base, but the Keweenaw's snowbelt isolation and UP access friction define daily life. UP Health System — Marquette is the practical specialty-care anchor; Houghton itself is a campus town, not a regional medical hub.",
       sources: [
@@ -3844,7 +3796,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 76, microclimateUniqueness: 72, comfort: 58, resilience: 68, growability: 82, tradeoff: 34 },
     liveSignals: {
       costPressure: 40,
-      socialStress: 26,
       accessFriction: 48,
       note: "Vernon County's organic-farming reputation keeps housing modest but services thin; Gundersen Health System in La Crosse is the practical specialty-care anchor. Flash flooding in coulees and Driftless road geometry define daily access friction.",
       sources: [
@@ -3898,7 +3849,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 44, microclimateUniqueness: 70, comfort: 70, resilience: 50, growability: 62, tradeoff: 38 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 32,
       accessFriction: 42,
       note: "Appalachian State, second-home demand, and outdoor-tourism traffic pressure housing and roads, but Watauga Medical Center gives Boone an unusually strong service anchor for a small mountain town. Winter weather, landslide/flood exposure, and curving High Country roads are the practical friction points.",
       sources: [
@@ -3973,7 +3923,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 6, microclimateUniqueness: 84, comfort: 68, resilience: 18, growability: 62, tradeoff: 74 },
     liveSignals: {
       costPressure: 88,
-      socialStress: 22,
       accessFriction: 35,
       note: "Key West International Airport and Lower Keys services are real, but hurricane insurance, sea-level-rise exposure, and median home costs well above mainland Florida are the live-here filter behind the isothermal comfort.",
       sources: [
@@ -4063,7 +4012,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 82, microclimateUniqueness: 68, comfort: 62, resilience: 56, growability: 48, tradeoff: 46 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 24,
       accessFriction: 62,
       note: "Wallowa County's ranch-and-tourism economy keeps housing modest but services thin; Grande Ronde Hospital in La Grande is the practical acute-care anchor — Joseph itself is a gallery town, not a medical hub. Regional wildfire smoke and long winter drives define daily quality-of-life math.",
       sources: [
@@ -4121,7 +4069,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 58, microclimateUniqueness: 92, comfort: 36, resilience: 42, growability: 52, tradeoff: 78 },
     liveSignals: {
       costPressure: 46,
-      socialStress: 22,
       accessFriction: 52,
       note: "Fairbanks is Alaska's interior hub with a regional hospital and airport, but ice-fog inversions, permafrost-thaw infrastructure, extreme cold logistics, and long smoke seasons define the lived filter.",
       sources: [
@@ -4209,7 +4156,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 66, microclimateUniqueness: 82, comfort: 56, resilience: 64, growability: 54, tradeoff: 60 },
     liveSignals: {
       costPressure: 58,
-      socialStress: 22,
       accessFriction: 78,
       note: "Island-only access via Alaska Marine Highway or daily Alaska Airlines flights; specialty medical care typically requires Seattle or Anchorage trips.",
       sources: [
@@ -4259,7 +4205,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 54, microclimateUniqueness: 90, comfort: 44, resilience: 58, growability: 48, tradeoff: 78 },
     liveSignals: {
       costPressure: 52,
-      socialStress: 22,
       accessFriction: 82,
       note: "Single Richardson-Highway in/out (and a long ferry), record-setting snowfall and avalanche closures, limited specialty medical access; small, oil-economy town.",
       sources: [
@@ -4311,7 +4256,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 28, microclimateUniqueness: 98, comfort: 18, resilience: 28, growability: 22, tradeoff: 92 },
     liveSignals: {
       costPressure: 42,
-      socialStress: 18,
       accessFriction: 72,
       note: "Furnace Creek and park staff housing are scarce; summer heat closes roads, specialty care is hours away in Bishop or Las Vegas, and flash-flood closures are the lived-friction story behind the winter comfort peak.",
       sources: [
@@ -4530,7 +4474,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 48, microclimateUniqueness: 76, comfort: 72, resilience: 72, growability: 58, tradeoff: 48 },
     liveSignals: {
       costPressure: 72,
-      socialStress: 22,
       accessFriction: 48,
       note: "The temperature profile is superb for heat-averse people, but housing cost, tourism seasonality, tsunami exposure, and dependence on Seaside/Astoria services shape the live-here feel.",
       sources: [
@@ -4668,7 +4611,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 86, microclimateUniqueness: 82, comfort: 56, resilience: 62, growability: 48, tradeoff: 46 },
     liveSignals: {
       costPressure: 34,
-      socialStress: 12,
       accessFriction: 58,
       note: "Cherry County's sparse Sandhills ranch country keeps housing relatively affordable, but Niobrara River canyon logistics, long drives to North Platte specialty care, and wind-driven winter road closures are the live-here filter.",
       sources: [
@@ -4820,7 +4762,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 82, microclimateUniqueness: 80, comfort: 58, resilience: 64, growability: 64, tradeoff: 36 },
     liveSignals: {
       costPressure: 36,
-      socialStress: 14,
       accessFriction: 38,
       note: "Loess Hills land stays relatively affordable compared with Omaha metro, but steep-road maintenance, limited specialty care beyond Council Bluffs, and erosion-sensitive parcels are the lived-friction story.",
       sources: [
@@ -4972,7 +4913,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 78, microclimateUniqueness: 74, comfort: 64, resilience: 68, growability: 60, tradeoff: 40 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 16,
       accessFriction: 44,
       note: "Cottonwood Falls and the Tallgrass Preserve anchor a quiet ranch economy, but spring burn smoke, limited specialty care beyond Manhattan or Emporia, and a thin winter job market are the live-here filter.",
       sources: [
@@ -5126,7 +5066,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 70, microclimateUniqueness: 68, comfort: 68, resilience: 70, growability: 70, tradeoff: 34 },
     liveSignals: {
       costPressure: 42,
-      socialStress: 18,
       accessFriction: 40,
       note: "Victorian tourism and arts anchor the economy, but steep vertical streets, limited wheelchair access, and Fayetteville-or-Springfield specialty backup are the lived-friction story behind the karst microclimate charm.",
       sources: [
@@ -5221,7 +5160,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 58, microclimateUniqueness: 86, comfort: 74, growability: 62, resilience: 62, tradeoff: 42 },
     liveSignals: {
       costPressure: 52,
-      socialStress: 24,
       accessFriction: 46,
       note: "Coastal Curry County housing is below Bay Area norms but still tourist-season tight; Medford is the nearest regional hub over a winding Coast Range drive.",
       sources: [
@@ -5282,7 +5220,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 62, microclimateUniqueness: 78, comfort: 80, growability: 72, resilience: 58, tradeoff: 40 },
     liveSignals: {
       costPressure: 68,
-      socialStress: 20,
       accessFriction: 50,
       note: "San Juan ferry schedules and limited inventory keep housing expensive; Anacortes/Bellingham are the usual mainland anchors for flights and specialists.",
       sources: [
@@ -5328,7 +5265,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 72, microclimateUniqueness: 80, comfort: 58, growability: 52, resilience: 54, tradeoff: 52 },
     liveSignals: {
       costPressure: 52,
-      socialStress: 28,
       accessFriction: 46,
       note: "Methow Valley tourism and second-home demand have tightened housing in Winthrop; regional wildfire smoke and cold-air inversions are daily quality-of-life variables. Mid-Valley Hospital in Omak and Confluence Health in Wenatchee cover acute care — not walkable from every parcel.",
       sources: [
@@ -5570,7 +5506,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 46, microclimateUniqueness: 68, comfort: 64, growability: 62, resilience: 58, tradeoff: 40 },
     liveSignals: {
       costPressure: 72,
-      socialStress: 38,
       accessFriction: 18,
       note: "Burlington is service-rich for a cold-climate small city - airport, academic medical center, universities, and transit - but the city itself is openly treating housing supply and affordability as the central 2026 live-here constraint.",
       sources: [
@@ -5612,7 +5547,6 @@ export const PLACES_USA: Place[] = [
     scores: { hiddenGem: 58, microclimateUniqueness: 74, comfort: 60, growability: 50, resilience: 54, tradeoff: 44 },
     liveSignals: {
       costPressure: 62,
-      socialStress: 28,
       accessFriction: 44,
       note: "Acadia-season housing spikes in summer; year-round services cluster in Bar Harbor with limited winter flights via Bangor.",
       sources: [

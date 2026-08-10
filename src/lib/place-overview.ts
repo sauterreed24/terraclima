@@ -378,9 +378,10 @@ function deriveTexture(place: Place): string {
   let livedCue = "";
   const ls = place.liveSignals;
   if (ls) {
-    if ((ls.costPressure ?? 0) >= 70) livedCue = " Housing runs expensive, so budget is part of the calculus.";
-    else if ((ls.accessFriction ?? 0) >= 65) livedCue = " Day-to-day services sit a real drive away.";
-    else if ((ls.socialStress ?? 0) >= 65) livedCue = " Local social-fabric stress is worth checking in person.";
+    const housing = ls.housingPressureIndex ?? ls.costPressure ?? 0;
+    const access = ls.accessRemotenessIndex ?? ls.accessFriction ?? 0;
+    if (housing >= 70) livedCue = " Housing pressure is high, so budget is part of the calculus.";
+    else if (access >= 65) livedCue = " Hospital or airport access sits a real drive away.";
     if (ls.note?.trim()) {
       const note = firstSentence(ls.note);
       livedCue += livedCue ? ` ${note}` : ` ${note}`;
