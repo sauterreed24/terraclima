@@ -160,6 +160,7 @@ export function classifyDossierSection(
   section:
     | "climate-normals"
     | "mechanism"
+    | "risk"
     | "bioclim"
     | "livability"
     | "live-fit"
@@ -175,6 +176,7 @@ export function classifyDossierSection(
     case "climate-normals":
       return "observed-normal";
     case "mechanism":
+    case "risk":
       return "authored-context";
     case "bioclim":
     case "vs-home":
@@ -240,8 +242,8 @@ export function listMissingStructuredFields(place: Place): MissingEvidenceField[
   if (!place.liveSignals) {
     missing.push({
       id: "live-signals",
-      label: "Lived cost / social / access signals",
-      note: "No curated lived-friction grades; livability uses a conservative screening baseline for those axes.",
+      label: "Lived housing / access indicators",
+      note: "No dated lived indicators; livability uses a conservative screening baseline for housing pressure and access remoteness.",
     });
   }
   if (!place.projection) {

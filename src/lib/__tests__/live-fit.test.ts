@@ -116,7 +116,7 @@ describe("live-fit scoring", () => {
   it("surfaces a caution when lived-reality coverage is missing", () => {
     const unrated = makePlace({ id: "unrated-live-reality", liveSignals: undefined });
     const fit = assessLiveFit(unrated);
-    expect(fit.cautions.some(c => c.includes("Lived-reality signals are not source-backed yet"))).toBe(true);
+    expect(fit.cautions.some(c => c.includes("Lived indicators are not source-backed yet"))).toBe(true);
   });
 
   it("keeps missing lived-reality coverage visible even when other cautions are saturated", () => {
@@ -132,7 +132,7 @@ describe("live-fit scoring", () => {
     });
     const fit = assessLiveFit(saturated);
     expect(fit.cautions.length).toBeLessThanOrEqual(3);
-    expect(fit.cautions.some(c => c.includes("Lived-reality signals are not source-backed yet"))).toBe(true);
+    expect(fit.cautions.some(c => c.includes("Lived indicators are not source-backed yet"))).toBe(true);
   });
 
   it("rewards a longer livable season when peak-season temperatures tie", () => {

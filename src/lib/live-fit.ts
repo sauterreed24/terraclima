@@ -465,29 +465,28 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
     pushUnique(cautions, `Place feel is ${feel.band.toLowerCase()}; verify ${drag.label.toLowerCase()} before shortlisting.`, 3);
   }
 
-  // Lived-friction cautions — surface curated affordability, social-fabric and
-  // access drags so a climatically perfect coast cannot bury its lived reality.
+  // Lived-friction cautions — surface housing pressure and access remoteness
+  // so a climatically perfect coast cannot bury dated lived constraints.
   const lived = place.liveSignals;
   const livedCoverage = livedRealityCoverage(place);
   if (lived) {
     const dom = dominantLivedFriction(place);
-    if (lived.costPressure != null && lived.costPressure >= 70) {
-      pushUnique(cautions, `Affordability is a real filter — cost pressure ${Math.round(lived.costPressure)}/100${lived.note && dom?.axis === "cost" ? ` (${lived.note})` : ""}.`, 3);
+    const housing = lived.housingPressureIndex ?? lived.costPressure;
+    const access = lived.accessRemotenessIndex ?? lived.accessFriction;
+    if (housing != null && housing >= 70) {
+      pushUnique(cautions, `Affordability is a real filter — housing pressure ${Math.round(housing)}/100${lived.note && dom?.axis === "cost" ? ` (${lived.note})` : ""}.`, 3);
     }
-    if (lived.socialStress != null && lived.socialStress >= 55) {
-      pushUnique(cautions, `Resident reports describe social-fabric stress — graded ${Math.round(lived.socialStress)}/100${lived.note && dom?.axis === "social" ? ` (${lived.note})` : ""}.`, 3);
+    if (access != null && access >= 60) {
+      pushUnique(cautions, `Hospital or airport access is limited — remoteness ${Math.round(access)}/100${lived.note && dom?.axis === "access" ? ` (${lived.note})` : ""}.`, 3);
     }
-    if (lived.accessFriction != null && lived.accessFriction >= 60) {
-      pushUnique(cautions, `Daily-services access is limited — friction ${Math.round(lived.accessFriction)}/100${lived.note && dom?.axis === "access" ? ` (${lived.note})` : ""}.`, 3);
-    }
-    if ((lived.costPressure ?? 100) <= 35 && (lived.socialStress ?? 100) <= 35 && (lived.accessFriction ?? 100) <= 40) {
-      pushUnique(reasons, "Lived signals are easy: cost, social fabric, and daily-services access all read benign.", 3);
+    if ((housing ?? 100) <= 35 && (access ?? 100) <= 40) {
+      pushUnique(reasons, "Lived indicators are easy: housing pressure and access remoteness both read benign.", 3);
     }
     if (livedCoverage.confidence === "partial") {
-      pushPinnedUnique(cautions, "Lived-reality coverage is partial; verify housing, services, safety, and insurance before shortlisting.", 3);
+      pushPinnedUnique(cautions, "Lived-indicator coverage is partial; verify housing burden, hospital access, and transport before shortlisting.", 3);
     }
   } else {
-    pushPinnedUnique(cautions, "Lived-reality signals are not source-backed yet; verify housing, services, safety, and insurance before shortlisting.", 3);
+    pushPinnedUnique(cautions, "Lived indicators are not source-backed yet; verify housing burden, hospital access, and transport before shortlisting.", 3);
   }
 
   // Marine-fog / low-sunshine caution

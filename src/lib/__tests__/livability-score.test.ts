@@ -408,7 +408,6 @@ describe("lived reality coverage", () => {
     const sourceBackedEasy = makePlace({
       liveSignals: {
         costPressure: 20,
-        socialStress: 22,
         accessFriction: 24,
         note: "Full-service town with benign lived-friction signals.",
         sources: [{ label: "Municipal profile", url: "https://example.com/profile" }],
@@ -427,7 +426,6 @@ describe("lived reality coverage", () => {
     const p = makePlace({
       liveSignals: {
         costPressure: 20,
-        socialStress: 22,
         accessFriction: 24,
         note: "Full-service town with benign lived-friction signals.",
         sources: urlOnlySources,
@@ -435,7 +433,7 @@ describe("lived reality coverage", () => {
     });
 
     expect(livedRealityCoverage(p)).toEqual({
-      axes: 3,
+      axes: 2,
       sourceCount: 1,
       confidence: "source-backed",
     });

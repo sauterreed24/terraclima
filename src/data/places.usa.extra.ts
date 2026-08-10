@@ -56,7 +56,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     scores: { hiddenGem: 72, microclimateUniqueness: 94, comfort: 58, resilience: 62, growability: 88, tradeoff: 44 },
     liveSignals: {
       costPressure: 52,
-      socialStress: 24,
       accessFriction: 48,
       note: "Hilo Medical Center and University of Hawaiʻi at Hilo anchor services, but persistent humidity, mold pressure, flash-flood risk, and Honolulu specialty backup are the live-here filter behind the trade-wind rainfall.",
       sources: [
@@ -241,7 +240,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     scores: { hiddenGem: 44, microclimateUniqueness: 56, comfort: 48, resilience: 60, growability: 68, tradeoff: 52 },
     liveSignals: {
       costPressure: 34,
-      socialStress: 30,
       accessFriction: 28,
       note: "State-capital services, hospital access, and a real metro job base offset the winter-driving burden and Great Plains wind exposure.",
       sources: [
@@ -369,7 +367,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     scores: { hiddenGem: 88, microclimateUniqueness: 90, comfort: 60, resilience: 72, growability: 64, tradeoff: 56 },
     liveSignals: {
       costPressure: 36,
-      socialStress: 24,
       accessFriction: 68,
       note: "Cape Blanco is the windiest US headland; Curry County services are thin and Eugene / Medford are 2.5–3 h away on US-101.",
       sources: [
@@ -457,7 +454,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     scores: { hiddenGem: 74, microclimateUniqueness: 78, comfort: 66, resilience: 56, growability: 60, tradeoff: 58 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 28,
       accessFriction: 40,
       note: "Sky Lakes Medical Center and a regional airport anchor services, but Klamath Basin water allocation, winter inversion air quality, and regional smoke days are the live-here filter behind the dry-air comfort numbers.",
       sources: [
@@ -533,7 +529,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     scores: { hiddenGem: 62, microclimateUniqueness: 86, comfort: 72, resilience: 56, growability: 54, tradeoff: 60 },
     liveSignals: {
       costPressure: 52,
-      socialStress: 22,
       accessFriction: 46,
       note: "High incomes cushion the housing market, but limited mesa supply, one-county hospital access, and wildfire/evacuation due diligence keep this from being a frictionless climate win.",
       sources: [
@@ -610,7 +605,6 @@ export const PLACES_USA_EXTRA: Place[] = [
     scores: { hiddenGem: 82, microclimateUniqueness: 76, comfort: 58, resilience: 56, growability: 50, tradeoff: 46 },
     liveSignals: {
       costPressure: 36,
-      socialStress: 14,
       accessFriction: 46,
       note: "Lander Regional Hospital and a functional Main Street anchor daily life, but Wyoming wind, winter severity, and Riverton-or-Casper specialty backup are the lived-friction story behind the dry-air foothill comfort.",
       sources: [

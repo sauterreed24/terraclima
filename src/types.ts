@@ -213,52 +213,70 @@ export interface ScoreBundle {
 }
 
 /**
- * Lived-experience signals that climate normals alone cannot capture.
- * Each axis is 0..100, where 0 = no friction and 100 = severe friction.
+ * Factual lived indicators that climate normals alone cannot capture.
  *
- * Used by Live-fit and Livability v2 to keep climatically "perfect" places
- * (e.g. fog-belt coasts with documented affordability or isolation issues,
- * or upwelling towns with documented social-stress problems) from monopolising
- * the rankings. Fields are intentionally optional and individually graded so
- * the model can scale across the full 226-place corpus without authors
- * having to fill every axis at once.
+ * Replaces the deprecated social-stress / review-sentiment model. Indices are
+ * generated only from visible dated inputs; missing data stays missing (no
+ * imputation). Used by Live-fit and Livability to keep climatically "perfect"
+ * but expensive or remote places from monopolising rankings.
  *
- * Source convention: gradings are anchored to publicly observable signals
- * (median home / income ratios, Niche/AreaVibes reviews, BLS / Statcan crime
- * indices, drive-time / hospital-access proxies). They are editorial reads,
- * not appraisals or insurance underwriting.
+ * Not appraisals or insurance underwriting.
  */
+export type ServiceHubClass = "local" | "regional" | "remote" | "isolated";
+
+export type TransportConstraint =
+  | "ferry-only"
+  | "seasonal-road"
+  | "single-access-road"
+  | "none";
+
 export interface LivedSignals {
+  /** Share of households spending ≥30% of income on housing (0..100). */
+  housingCostBurdenPct?: number;
+  /** Data year for housingCostBurdenPct. */
+  housingCostBurdenYear?: number;
+  /** Median home value ÷ median household income where definitions match. */
+  homeValueToIncomeRatio?: number;
+  /** Data year for homeValueToIncomeRatio. */
+  homeValueToIncomeYear?: number;
+  /** One-way route minutes to nearest verified acute-care hospital. */
+  hospitalRouteMinutes?: number;
+  /** One-way route minutes to nearest commercial-service airport. */
+  airportRouteMinutes?: number;
+  /** Verified local/regional service-hub classification. */
+  serviceHubClass?: ServiceHubClass;
+  /** Material transport constraints (ferry-only, seasonal road, etc.). */
+  transportConstraints?: TransportConstraint[];
   /**
-   * Affordability / cost pressure. 0 = cost is not a meaningful filter for
-   * a typical relocator; 100 = housing burden is severe (Bay Area / Hawai'i
-   * top-tier). Anchored loosely to median-home / median-income ratios and
-   * housing-cost-burdened share.
+   * Within-country housing-pressure percentile (0..100) from comparable
+   * housing inputs only. Definition and source year must be shown in UI.
+   */
+  housingPressureIndex?: number;
+  /**
+   * Access remoteness (0..100) from documented absolute travel-time
+   * thresholds (hospital / airport), not from sentiment.
+   */
+  accessRemotenessIndex?: number;
+  /** Short clause naming the dominant dated driver. */
+  note?: string;
+  /** Citations for the indicators above. */
+  sources?: { label: string; url?: string }[];
+
+  /**
+   * @deprecated Prefer housingPressureIndex / housingCostBurdenPct.
+   * Retained only while authored files migrate; stripped from ranking when
+   * housingPressureIndex is present.
    */
   costPressure?: number;
   /**
-   * Social-fabric / civic stress. 0 = quiet, easy-to-settle community;
-   * 100 = persistent reports of violent crime, homelessness, or visible
-   * social distress in core walkable areas. Anchored to recent crime
-   * indices and resident-review sentiment, not tourist anxiety.
+   * @deprecated Removed from UI, ranking, prose, and schema consumers.
+   * Must not be published.
    */
   socialStress?: number;
   /**
-   * Access friction. 0 = dense services, multiple groceries, hospital in
-   * town, major airport within ~1 h; 100 = ferry-only / long drive to a
-   * staffed hospital / one road in. Captures the lived "what if I need
-   * something" cost that pure-climate scoring ignores.
+   * @deprecated Prefer accessRemotenessIndex / hospitalRouteMinutes.
    */
   accessFriction?: number;
-  /**
-   * Free-text annotation. Single short clause attached to the dominant
-   * driver so the UI can surface a reason rather than a bare number.
-   */
-  note?: string;
-  /**
-   * Editorial citations or anchors for the gradings above.
-   */
-  sources?: { label: string; url?: string }[];
 }
 
 export interface Citation {

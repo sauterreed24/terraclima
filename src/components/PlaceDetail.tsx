@@ -25,6 +25,7 @@ import { PlaceClimateTwinsTeaser } from "./place-detail/PlaceClimateTwinsTeaser"
 import { PlaceDiscoveryJourneyBridge } from "./place-detail/PlaceDiscoveryJourneyBridge";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
+import { composePlaceExperience } from "../lib/place-overview";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
@@ -32,6 +33,7 @@ import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { formatLivedSources } from "../lib/lived-sources";
+import { effectiveAccessRemoteness, effectiveHousingPressure } from "../lib/research/lived-indicators";
 import { buildComfortPrecisionProfile } from "../lib/comfort-precision";
 import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "../lib/place-visual-signature";
@@ -40,7 +42,7 @@ import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
 import { scrollDetailRootToSection } from "../lib/detail-scroll-spy";
 import { useMediaQuery } from "../hooks/use-media-query";
 import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
-import { PD, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
+import { PD, PD_ALL_IDS, PD_NAV_GROUP, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
 import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
 import { PlaceAtAGlance } from "./place-detail/PlaceAtAGlance";
 import { PlaceOverviewSpotlight } from "./place-detail/PlaceOverviewSpotlight";
@@ -269,6 +271,22 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
         }
         return;
       }
+      // Legacy/shared `#pd-*` section anchors (from before the five-chapter
+      // reorg, or from a copied section link): scroll straight to the
+      // section. The reading nav then expands the right chapter on its own,
+      // since chapter expansion follows the scroll-spy's active anchor.
+      const legacyId = hash.slice(1);
+      if (legacyId && (PD_ALL_IDS as readonly string[]).includes(legacyId)) {
+        didResolveHash = true;
+        const target = el.querySelector<HTMLElement>(hash);
+        if (target) {
+          const er = el.getBoundingClientRect();
+          const tr = target.getBoundingClientRect();
+          const top = el.scrollTop + (tr.top - er.top) - 12;
+          el.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+        }
+        return;
+      }
       didResolveHash = true;
     };
     focusPanelStart();
@@ -381,7 +399,7 @@ function DetailHeader({
   const reduceMotion = useReducedMotion();
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice";
   const primaryArchetype = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
-  const [archetypeGuideOpen, setArchetypeGuideOpen] = useState(true);
+  const [archetypeGuideOpen, setArchetypeGuideOpen] = useState(false);
   const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
   const annualP = getAnnualPrecipMm(place);
@@ -389,6 +407,7 @@ function DetailHeader({
     ? (place.climate.solarEnergyMjM2Day.reduce((a, b) => a + b, 0) / 12)
     : null;
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
+  const lede = useMemo(() => composePlaceExperience(place).lede, [place]);
   const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
   // Tracked by src (not a boolean) so switching places resets the fallback.
   const [failedHeroSrc, setFailedHeroSrc] = useState<string | null>(null);
@@ -412,7 +431,6 @@ function DetailHeader({
       <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
         <div className="min-w-0 w-full">
           <div className="flex items-center gap-1.5 md:gap-2 text-xs text-stone mb-1 flex-wrap">
-            <span className="chip" data-tone={place.tier === "A" ? "ochre" : place.tier === "B" ? "ice" : "sage"}>{tierLabel}</span>
             <MapPin className="w-3 h-3" aria-hidden />
             <span>{place.municipality ? `${place.municipality}, ` : ""}{place.region}, {place.country}</span>
             <span className="text-shadow">·</span>
@@ -422,10 +440,18 @@ function DetailHeader({
             <span>{place.koppen}</span>
             <span className="text-shadow">·</span>
             <span className="font-mono-num">{place.lat.toFixed(2)}°, {place.lon.toFixed(2)}°</span>
+            {/* Tier is a curation note, not the lead identity signal — kept
+               plain-text at the tail of the meta line instead of a bright
+               chip so location and coordinates read first. */}
+            <span className="text-shadow">·</span>
+            <span className="text-stone-readable/80">{tierLabel}</span>
           </div>
           <h2 id={titleId} className="font-atlas text-[1.65rem] md:text-3xl text-ice tracking-tight leading-[1.15]">
             {place.name}
           </h2>
+          <p className="detail-drawer-header__lede text-sm text-frost leading-snug mt-1.5 max-w-2xl">
+            {prose(lede)}
+          </p>
           <div className="flex flex-wrap gap-1.5 mt-2">
             {place.archetypes.map(a => {
               const meta = ARCHETYPE_BY_ID[a];
@@ -602,7 +628,7 @@ function DetailHeader({
               alt={hero.alt}
               width={1280}
               height={520}
-              className="w-full h-36 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
+              className="w-full h-28 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
               loading="eager"
               decoding="async"
               onError={() => setFailedHeroSrc(hero.src)}
@@ -629,7 +655,11 @@ function DetailHeader({
         </a>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
+      <div className="text-[10px] uppercase tracking-wider text-stone-readable mt-4 flex items-center gap-1.5">
+        <Calendar className="w-3 h-3 shrink-0" aria-hidden />
+        Climate normals · <span className="font-mono-num">{CLIMATE_NORMALS_PERIOD}</span>
+      </div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-1.5">
         <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="JJA high" value={fmtTemp(summerHigh, temp)} />
         <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />} label="Jan low" value={fmtTemp(janLow, temp)} />
         <HeroStat icon={<Droplets className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />} label="Annual precip" value={fmtPrecip(annualP, dist)} />
@@ -669,7 +699,7 @@ function HeroClimateFallback({ place, signatureLabel }: { place: Place; signatur
 
   return (
     <div
-      className="tc-hero-fallback h-36 md:h-52"
+      className="tc-hero-fallback h-28 md:h-52"
       style={{ ["--tc-hero-ribbon" as string]: ribbon }}
       role="img"
       aria-label={`${place.name} — photo unavailable; showing its January-to-December temperature palette instead`}
@@ -788,15 +818,9 @@ function DetailBody({
     <div className="detail-body-shell mx-auto w-full px-4 py-6 md:px-7 md:py-8 lg:grid lg:grid-cols-[11.25rem_minmax(0,1fr)] lg:gap-x-10 lg:px-8">
       <PlaceDetailReadingNav items={navItems} activeAnchorId={readingActiveAnchor} />
       <div className="min-w-0 space-y-10 tc-detail-prose">
-      {scenario !== "now" ? (
-        <div className="compare-scenario-banner dossier-scenario-banner" role="note">
-          <Clock3 className="w-3.5 h-3.5 shrink-0 mt-0.5" aria-hidden />
-          <span>
-            Explorer and Compare use the <strong>{scenarioMeta(scenario).label}</strong> projection layer. This dossier shows recent observed normals ({CLIMATE_NORMALS_PERIOD}; rolling climatology, not WMO standard normal).
-          </span>
-        </div>
-      ) : null}
       <PlaceOverviewSpotlight place={place} anchorId={PD.overview} seasonsAnchorId={PD.seasons} />
+
+      <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
 
       <Section anchorId={PD.whyHere} icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="Why this climate is different here">
         <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.whyDistinct)}</p>
@@ -876,14 +900,35 @@ function DetailBody({
         <div className="text-sm text-stone mt-3 italic">Relief context: {prose(place.reliefContext)}</div>
       </Section>
 
+      <PlaceFeelRead place={place} anchorId={PD.placeFeel} />
+
+      <Section anchorId={PD.signature} title="Climate signature (radar chart)" icon={<Sparkles className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
+        <div className="grid md:grid-cols-[1fr_260px] gap-6 items-center">
+          <div className="space-y-2">
+            <KeyValue label="Mean annual precipitation" value={fmtPrecip(annualP, dist)} />
+            <KeyValue label="Frost-free days (est.)" value={`${place.climate.frostFreeDays ?? "—"}`} />
+            <KeyValue label="Hardiness zone" value={place.climate.hardinessZone ?? place.growability.hardinessZone ?? "—"} />
+            <KeyValue label="Chill hours (est.)" value={`${place.climate.chillHours ?? "—"}`} />
+            <KeyValue label="Summer diurnal swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { signed: false }) : "—"} />
+            <KeyValue label="Biome" value={place.biome} />
+          </div>
+          <MicroclimateFingerprint place={place} />
+        </div>
+      </Section>
+
+      <ZoneDivider
+        eyebrow="Chapter 2"
+        title={PD_NAV_GROUP.liveOrVisit}
+        blurb="Resident and traveler fit side by side — lived indicators, settlements, things to do, and one decision lens that pulls the scores together."
+        icon={<Users className="w-3.5 h-3.5" aria-hidden />}
+      />
+
       <PlaceDiscoveryJourneyBridge
         place={place}
         homePlace={homePlace}
         onHomeBaseToggle={onHomeBaseToggle}
         reduceMotion={Boolean(reduceMotion)}
       />
-
-      <PlaceEvidenceSummary place={place} anchorId={PD.evidence} />
 
       <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} scenario={scenario} />
 
@@ -893,148 +938,41 @@ function DetailBody({
         reduceMotion={Boolean(reduceMotion)}
       />
 
-      <PlaceResidencyBrief
-        place={place}
-        anchorId={PD.residency}
-        liveFit={liveFit}
-        livability={livability}
-        bestMonths={bestMonths}
-        visualSignature={visualSignature}
-        liveFitFilters={liveFitFilters}
-        fitContext={residencyFitContext}
-        inCompare={inCompare}
-        bookmarked={bookmarked}
-        onCompareToggle={onCompareToggle}
-        onBookmarkToggle={onBookmarkToggle}
-      />
-
-      <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
-
-      <PlaceFeelRead place={place} anchorId={PD.placeFeel} />
-
-      <PlaceComfortPrecision profile={comfortPrecision} />
-
-      <PlaceBioclimaticIndices place={place} anchorId={PD.bioclimaticIndices} />
-
-      <Section anchorId={PD.livability} title="Livability lens v3" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
-        <div className="panel-thin p-4">
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            <EvidenceClassLabel cls={classifyDossierSection("livability")} />
-          </div>
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <div>
-              <div className="text-[10px] uppercase tracking-wider text-stone-readable">Blended livability score</div>
-              <div className="font-mono-num text-3xl text-ice mt-0.5">
-                {livability.score}<span className="text-sm text-stone">/100</span>
-              </div>
-            </div>
-            <div className="text-[11px] text-stone-readable max-w-lg leading-snug">
-              Human-felt thermal comfort, atmosphere (sky, wind, humidity, smoke, and solar load), tail-risk-aware hazard cushion, U-shaped precip moderation, curated lived friction, and derived place feel. Hover a row for its formula.
-            </div>
-          </div>
-          <div className="divider-contour my-3" />
-          <div className="tc-accent-panel px-3 py-2.5 mb-3">
-            <div className="text-[10px] uppercase tracking-wider text-glacier-700 mb-1">{comfortRead.headline}</div>
-            <p className="text-[12px] leading-snug text-frost">{prose(comfortRead.summary)}</p>
-          </div>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {livability.components.map(c => (
-              <li
-                key={c.key}
-                className="tc-livability-row"
-                title={c.rationale}
-              >
-                <div className="tc-livability-row__label">{c.label}</div>
-                <div className="tc-livability-row__bar">
-                  <div
-                    className="tc-livability-row__bar-fill"
-                    data-level={c.value >= 68 ? "high" : c.value >= 38 ? "mid" : "low"}
-                    style={{ width: `${Math.max(0, Math.min(100, c.value))}%` }}
-                  />
-                </div>
-                <div className="tc-livability-row__value font-mono-num">
-                  {Math.round(c.value)}
-                  <span className="text-stone text-[10px]">/100</span>
-                </div>
-                <span className="sr-only">{c.rationale}</span>
-              </li>
-            ))}
-          </ul>
-          {(livability.drivers.length > 0 || livability.drags.length > 0) ? (
-            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
-              {livability.drivers.length > 0 ? (
-                <div className="rounded-lg border border-[rgba(61,143,85,0.28)] bg-[rgba(236,248,232,0.55)] px-3 py-2">
-                  <div className="text-[10px] uppercase tracking-wider text-sage-700 mb-0.5">Drivers</div>
-                  <div className="text-frost">{livability.drivers.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
-                </div>
-              ) : null}
-              {livability.drags.length > 0 ? (
-                <div className="rounded-lg border border-[rgba(232,90,50,0.28)] bg-[rgba(255,236,228,0.55)] px-3 py-2">
-                  <div className="text-[10px] uppercase tracking-wider text-ember-700 mb-0.5">Drags</div>
-                  <div className="text-frost">{livability.drags.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
-                </div>
-              ) : null}
-            </div>
-          ) : null}
-        </div>
+      <Section anchorId={PD.similar} title="Climate twins detail" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+        <PlaceClimateTwins place={place} onOpenPlace={onOpenPlace} />
       </Section>
 
-      {place.liveSignals ? (
-        <Section anchorId={PD.livedSignals} title="Lived signals" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
-          <div className="panel-thin p-4">
-            <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
-              Editorial reads on three axes climate normals cannot capture: cost pressure, social-fabric stress, and daily-services access. 0 = no friction, 100 = severe. These are screening signals anchored to public sources, not appraisals or insurance underwriting.
-            </div>
-            <ul className="tc-livability-signal-grid">
-              {(["costPressure", "socialStress", "accessFriction"] as const).map(axis => {
-                const value = place.liveSignals?.[axis];
-                if (value == null) return null;
-                const label = axis === "costPressure" ? "Cost pressure" : axis === "socialStress" ? "Social stress" : "Access friction";
-                const desc = axis === "costPressure"
-                  ? "Housing burden & cost-of-living."
-                  : axis === "socialStress"
-                    ? "Crime, homelessness, civic distress."
-                    : "Distance to hospital, airport, daily services.";
-                const level = value <= 35 ? "high" : value <= 60 ? "mid" : "low";
-                return (
-                  <li key={axis} className="tc-livability-row tc-livability-row--signal" title={`${label}: ${Math.round(value)}/100`}>
-                    <div className="tc-livability-row__label">{label}<span className="block text-[10px] text-stone-readable font-normal">{desc}</span></div>
-                    <div className="tc-livability-row__bar">
-                      <div className="tc-livability-row__bar-fill" data-level={level} style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
-                    </div>
-                    <div className="tc-livability-row__value font-mono-num">{Math.round(value)}<span className="text-stone text-[10px]">/100</span></div>
-                  </li>
-                );
-              })}
-            </ul>
-            {place.liveSignals.note ? (
-              <p className="mt-3 text-[12px] leading-snug text-frost border-t border-dashed border-[rgba(71,90,122,0.18)] pt-2">{prose(place.liveSignals.note)}</p>
-            ) : null}
-            {livedSources.length > 0 ? (
-              <div className="mt-2 text-[11px] text-stone-readable">
-                Sources:
-                {" "}
-                {livedSources.map((source, i) => (
-                  <span key={source.key}>
-                    {i > 0 ? " · " : ""}
-                    {source.href ? <a href={source.href} className="tc-detail-source-link underline decoration-dotted hover:text-frost" target="_blank" rel="noreferrer noopener">{source.label}</a> : source.label}
-                  </span>
-                ))}
-              </div>
-            ) : null}
-          </div>
-        </Section>
-      ) : null}
-
-      <Section anchorId={PD.liveHereFit} title="Live-here fit" icon={<Scale className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
-        <div className="grid md:grid-cols-[11rem_1fr] gap-3">
-          <div className="panel-thin p-4">
-            <div className="text-[10px] uppercase tracking-wider text-stone-readable">Current match</div>
-            <div className="font-mono-num text-3xl text-ice mt-1">{liveFit.score}<span className="text-sm text-stone">/100</span></div>
-            <div className="mt-2 flex flex-wrap gap-1">
-              {liveFit.badges.map(b => <span key={b} className="chip" data-tone="glacier">{b}</span>)}
-            </div>
-          </div>
+      {/* Decision lens — the consolidated shortlist-grade verdict. Folds the
+         previously separate "Live-here fit" and "Livability lens" score
+         cards into one place so readers see every score, driver, and
+         caution behind the residency call without hunting through repeated
+         cards further down the dossier. */}
+      <div className="detail-doc-section detail-decision-lens anim-fade-in">
+        <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
+          <Scale className="w-4 h-4 shrink-0" style={{ color: "#5ec4dc" }} aria-hidden />
+          Decision lens
+        </h3>
+        <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
+          One shortlist-grade read: live-here fit, livability, place feel, and what to verify — plus the full reasons, cautions, and score breakdown behind each number.
+        </p>
+        <PlaceResidencyBrief
+          place={place}
+          anchorId={PD.residency}
+          liveFit={liveFit}
+          livability={livability}
+          bestMonths={bestMonths}
+          visualSignature={visualSignature}
+          liveFitFilters={liveFitFilters}
+          fitContext={residencyFitContext}
+          inCompare={inCompare}
+          bookmarked={bookmarked}
+          onCompareToggle={onCompareToggle}
+          onBookmarkToggle={onBookmarkToggle}
+        />
+        <div id={PD.liveHereFit} className="detail-decision-lens__detail scroll-mt-28">
+          <h4 className="detail-decision-lens__detail-title font-atlas text-sm text-ice mb-2.5 flex items-center gap-1.5 tracking-tight opacity-90">
+            Full fit detail
+          </h4>
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="panel-thin p-4 border-l-2" style={{ borderLeftColor: "#5ec4dc" }}>
               <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-2">Why it fits</div>
@@ -1054,11 +992,251 @@ function DetailBody({
             </div>
           </div>
         </div>
-      </Section>
+        <div id={PD.livability} className="detail-decision-lens__detail scroll-mt-28">
+          <h4 className="detail-decision-lens__detail-title font-atlas text-sm text-ice mb-2.5 flex items-center gap-1.5 tracking-tight opacity-90">
+            Livability breakdown
+          </h4>
+          <div className="panel-thin p-4">
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <EvidenceClassLabel cls={classifyDossierSection("livability")} />
+            </div>
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              <div>
+                <div className="text-[10px] uppercase tracking-wider text-stone-readable">Blended livability score</div>
+                <div className="font-mono-num text-3xl text-ice mt-0.5">
+                  {livability.score}<span className="text-sm text-stone">/100</span>
+                </div>
+              </div>
+              <div className="text-[11px] text-stone-readable max-w-lg leading-snug">
+                Human-felt thermal comfort, atmosphere (sky, wind, humidity, smoke, and solar load), tail-risk-aware hazard cushion, U-shaped precip moderation, curated lived friction, and derived place feel. Hover a row for its formula.
+              </div>
+            </div>
+            <div className="divider-contour my-3" />
+            <div className="tc-accent-panel px-3 py-2.5 mb-3">
+              <div className="text-[10px] uppercase tracking-wider text-glacier-700 mb-1">{comfortRead.headline}</div>
+              <p className="text-[12px] leading-snug text-frost">{prose(comfortRead.summary)}</p>
+            </div>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {livability.components.map(c => (
+                <li
+                  key={c.key}
+                  className="tc-livability-row"
+                  title={c.rationale}
+                >
+                  <div className="tc-livability-row__label">{c.label}</div>
+                  <div className="tc-livability-row__bar">
+                    <div
+                      className="tc-livability-row__bar-fill"
+                      data-level={c.value >= 68 ? "high" : c.value >= 38 ? "mid" : "low"}
+                      style={{ width: `${Math.max(0, Math.min(100, c.value))}%` }}
+                    />
+                  </div>
+                  <div className="tc-livability-row__value font-mono-num">
+                    {Math.round(c.value)}
+                    <span className="text-stone text-[10px]">/100</span>
+                  </div>
+                  <span className="sr-only">{c.rationale}</span>
+                </li>
+              ))}
+            </ul>
+            {(livability.drivers.length > 0 || livability.drags.length > 0) ? (
+              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                {livability.drivers.length > 0 ? (
+                  <div className="rounded-lg border border-[rgba(61,143,85,0.28)] bg-[rgba(236,248,232,0.55)] px-3 py-2">
+                    <div className="text-[10px] uppercase tracking-wider text-sage-700 mb-0.5">Drivers</div>
+                    <div className="text-frost">{livability.drivers.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
+                  </div>
+                ) : null}
+                {livability.drags.length > 0 ? (
+                  <div className="rounded-lg border border-[rgba(232,90,50,0.28)] bg-[rgba(255,236,228,0.55)] px-3 py-2">
+                    <div className="text-[10px] uppercase tracking-wider text-ember-700 mb-0.5">Drags</div>
+                    <div className="text-frost">{livability.drags.map(k => livability.components.find(c => c.key === k)?.label).filter(Boolean).join(" · ")}</div>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+
+      {place.liveSignals ? (
+        <Section anchorId={PD.livedSignals} title="Lived indicators" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
+          <div className="panel-thin p-4">
+            <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
+              Factual housing and access reads that climate normals cannot capture. 0 = no friction, 100 = severe. Screening indicators anchored to public sources — not appraisals or insurance underwriting.
+            </div>
+            <ul className="tc-livability-signal-grid">
+              {([
+                { key: "housing", label: "Housing pressure", desc: "Within-country housing burden percentile.", value: effectiveHousingPressure(place.liveSignals) },
+                { key: "access", label: "Access remoteness", desc: "Hospital, airport, and service-hub distance.", value: effectiveAccessRemoteness(place.liveSignals) },
+              ] as const).map(axis => {
+                const value = axis.value;
+                if (value == null) return null;
+                const level = value <= 35 ? "high" : value <= 60 ? "mid" : "low";
+                return (
+                  <li key={axis.key} className="tc-livability-row tc-livability-row--signal" title={`${axis.label}: ${Math.round(value)}/100`}>
+                    <div className="tc-livability-row__label">{axis.label}<span className="block text-[10px] text-stone-readable font-normal">{axis.desc}</span></div>
+                    <div className="tc-livability-row__bar">
+                      <div className="tc-livability-row__bar-fill" data-level={level} style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
+                    </div>
+                    <div className="tc-livability-row__value font-mono-num">{Math.round(value)}<span className="text-stone text-[10px]">/100</span></div>
+                  </li>
+                );
+              })}
+            </ul>
+            {(() => {
+              const ls = place.liveSignals!;
+              const factualRows: { label: string; value: string }[] = [];
+              if (ls.hospitalRouteMinutes != null) {
+                factualRows.push({ label: "Hospital route", value: `${Math.round(ls.hospitalRouteMinutes)} min` });
+              }
+              if (ls.airportRouteMinutes != null) {
+                factualRows.push({ label: "Airport route", value: `${Math.round(ls.airportRouteMinutes)} min` });
+              }
+              if (ls.housingCostBurdenPct != null) {
+                const year = ls.housingCostBurdenYear ? ` (${ls.housingCostBurdenYear})` : "";
+                factualRows.push({ label: "Housing cost burden", value: `${Math.round(ls.housingCostBurdenPct)}%${year}` });
+              }
+              if (ls.serviceHubClass) {
+                const hubLabel = { local: "Local hub", regional: "Regional hub", remote: "Remote", isolated: "Isolated" }[ls.serviceHubClass];
+                factualRows.push({ label: "Service hub", value: hubLabel });
+              }
+              const constraints = ls.transportConstraints?.filter(c => c !== "none") ?? [];
+              if (constraints.length > 0) {
+                const constraintLabel = {
+                  "ferry-only": "Ferry only",
+                  "seasonal-road": "Seasonal road",
+                  "single-access-road": "Single access road",
+                } as const;
+                factualRows.push({
+                  label: "Transport constraints",
+                  value: constraints.map(c => constraintLabel[c]).join(" · "),
+                });
+              }
+              if (factualRows.length === 0) return null;
+              return (
+                <dl className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-[11px] border-t border-dashed border-[rgba(71,90,122,0.18)] pt-3">
+                  {factualRows.map(row => (
+                    <div key={row.label} className="flex items-baseline justify-between gap-2">
+                      <dt className="text-stone-readable">{row.label}</dt>
+                      <dd className="font-mono-num text-frost text-right">{row.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              );
+            })()}
+            {place.liveSignals.note ? (
+              <p className="mt-3 text-[12px] leading-snug text-frost border-t border-dashed border-[rgba(71,90,122,0.18)] pt-2">{prose(place.liveSignals.note)}</p>
+            ) : null}
+            {livedSources.length > 0 ? (
+              <div className="mt-2 text-[11px] text-stone-readable">
+                Sources:
+                {" "}
+                {livedSources.map((source, i) => (
+                  <span key={source.key}>
+                    {i > 0 ? " · " : ""}
+                    {source.href ? <a href={source.href} className="tc-detail-source-link underline decoration-dotted hover:text-frost" target="_blank" rel="noreferrer noopener">{source.label}</a> : source.label}
+                  </span>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </Section>
+      ) : null}
+
+      {settlementAnchors.length > 0 && (
+        <Section anchorId={PD.settlements} title="Settlements and scouting bases" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
+          <div className="grid md:grid-cols-2 gap-2">
+            {settlementAnchors.map(s => (
+              <div key={s.name} className="panel-thin p-3 flex items-start gap-3">
+                <div
+                  aria-hidden="true"
+                  className="mt-0.5 w-2 h-2 rounded-full shrink-0"
+                  style={{ background: SETTLEMENT_ROLE_COLOR[s.role] ?? "#9badc2" }}
+                />
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="font-atlas text-sm text-ice truncate">{s.name}</div>
+                    <span className="chip" data-tone={SETTLEMENT_ROLE_TONE[s.role] ?? "ice"} style={{ fontSize: "10px" }}>
+                      {SETTLEMENT_ROLE_LABEL[s.role] ?? s.role}
+                    </span>
+                    <span className="chip" data-tone="glacier" style={{ fontSize: "10px" }}>
+                      {s.relation}
+                    </span>
+                  </div>
+                  {s.population && (
+                    <div className="text-[11px] text-stone font-mono-num mt-0.5">pop. {s.population}</div>
+                  )}
+                  {s.note && (
+                    <div className="text-[12px] text-frost italic mt-1 leading-snug">{prose(s.note)}</div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-[11px] text-stone italic mt-2">
+            Authored settlements share the zone; derived bases are practical anchors for comparing access, services, and nearby climate gradients.
+          </div>
+        </Section>
+      )}
+
+      {practicalActivities.length > 0 && (
+        <Section anchorId={PD.activities} title="Things to do nearby" icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+          <div className="grid md:grid-cols-2 gap-2">
+            {practicalActivities.map((a, i) => (
+              <div key={`${a.label}-${i}`} className="panel-thin p-3">
+                <div className="flex items-start gap-2">
+                  <div className="text-lg leading-none pt-0.5" aria-hidden="true">
+                    {ACTIVITY_KIND_GLYPH[a.kind] ?? "✶"}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="text-sm text-ice leading-snug">{a.label}</div>
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      <span className="chip" data-tone={ACTIVITY_KIND_TONE[a.kind] ?? "ice"} style={{ fontSize: "10px" }}>
+                        {ACTIVITY_KIND_LABEL[a.kind] ?? a.kind}
+                      </span>
+                      {a.season && (
+                        <span className="chip chip--multiline" data-tone="glacier" style={{ fontSize: "10px" }}>
+                          {a.season}
+                        </span>
+                      )}
+                      {a.source === "derived" && (
+                        <span className="chip" data-tone="ice" style={{ fontSize: "10px" }}>
+                          Derived
+                        </span>
+                      )}
+                    </div>
+                    {a.note && (
+                      <div className="text-[12px] text-frost italic mt-1 leading-snug">{prose(a.note)}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Section>
+      )}
 
       <PlacePracticalRead place={place} anchorId={PD.practical} />
 
       <PlaceTourismRead place={place} anchorId={PD.tourism} />
+
+      <Section anchorId={PD.who} title="Who would love this · who might not">
+        <div className="grid md:grid-cols-2 gap-3">
+          <div className="panel-thin p-3 border-l-2" style={{ borderLeftColor: "#c6dcbd" }}>
+            <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Fits best</div>
+            <div className="text-sm text-frost">{prose(place.whoWouldLove)}</div>
+          </div>
+          <div className="panel-thin p-3 border-l-2" style={{ borderLeftColor: "#d37c5b" }}>
+            <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Poor fit</div>
+            <div className="text-sm text-frost">{prose(place.whoMightNot)}</div>
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-1.5 mt-3">
+          {place.relocationFit.map(t => <span key={t} className="chip" data-tone="glacier">Relocation · {t}</span>)}
+          {place.travelFit.map(t => <span key={t} className="chip" data-tone="sage">Travel · {t}</span>)}
+        </div>
+      </Section>
 
       <Section anchorId={PD.fieldStory} icon={<Compass className="w-4 h-4" style={{ color: "#dcc4ff" }} />} title={fieldStory.title}>
         <div className="panel-field-story p-4 md:p-5 space-y-3.5 rounded-2xl border border-[rgba(199,181,234,0.22)]">
@@ -1073,20 +1251,10 @@ function DetailBody({
         </p>
       </Section>
 
-      {deepMerged.length > 0 ? (
-        <div id={PD.deepDives} className="detail-doc-section scroll-mt-28">
-          <PlaceDeepSections
-            sections={deepMerged}
-            hasBestMonthsGuide={bestMonths.length > 0}
-            syncDossierHash={readingActiveAnchor === PD.deepDives}
-          />
-        </div>
-      ) : null}
-
       <ZoneDivider
-        eyebrow="The data lab"
-        title="Climate, terrain & measurements"
-        blurb="The mechanism is above. From here down the dossier turns analytical — monthly numbers, atlas-wide context, and remote-sensing checks behind the feel."
+        eyebrow="Chapter 3"
+        title={PD_NAV_GROUP.climateLand}
+        blurb="The measurements behind the feel — monthly rhythm, comfort precision, full atlas context, remote-sensing checks, and what the ground offers."
         icon={<TrendingUp className="w-3.5 h-3.5" aria-hidden />}
       />
 
@@ -1133,6 +1301,10 @@ function DetailBody({
           </div>
         </Section>
       )}
+
+      <PlaceComfortPrecision profile={comfortPrecision} />
+
+      <PlaceBioclimaticIndices place={place} anchorId={PD.bioclimaticIndices} />
 
       <Section anchorId={PD.numbersTogether} title="How the numbers read together" icon={<TrendingUp className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
         <div className="panel-thin p-4 space-y-2">
@@ -1275,20 +1447,6 @@ function DetailBody({
         </details>
       </Section>
 
-      <Section anchorId={PD.signature} title="Climate signature (radar chart)" icon={<Sparkles className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
-        <div className="grid md:grid-cols-[1fr_260px] gap-6 items-center">
-          <div className="space-y-2">
-            <KeyValue label="Mean annual precipitation" value={fmtPrecip(annualP, dist)} />
-            <KeyValue label="Frost-free days (est.)" value={`${place.climate.frostFreeDays ?? "—"}`} />
-            <KeyValue label="Hardiness zone" value={place.climate.hardinessZone ?? place.growability.hardinessZone ?? "—"} />
-            <KeyValue label="Chill hours (est.)" value={`${place.climate.chillHours ?? "—"}`} />
-            <KeyValue label="Summer diurnal swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { signed: false }) : "—"} />
-            <KeyValue label="Biome" value={place.biome} />
-          </div>
-          <MicroclimateFingerprint place={place} />
-        </div>
-      </Section>
-
       {nearbyContextRows.length > 0 ? (
         <Section anchorId={PD.contrast} title="Local contrast" icon={<TrendingUp className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
           {place.localContrast && <ContrastChart contrasts={place.localContrast} />}
@@ -1321,16 +1479,9 @@ function DetailBody({
         </Section>
       ) : null}
 
-      <ZoneDivider
-        eyebrow="Land & growing"
-        title="Agriculture, soil & climate risk"
-        blurb="What the ground itself offers — soil, what grows well, and the hazard and long-range outlook a grower or resident plans around."
-        icon={<Leaf className="w-3.5 h-3.5" aria-hidden />}
-      />
-
       <Section anchorId={PD.soil} title="Agriculture & soil" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          The growing read pairs the soil profile with what the climate envelope rewards or fights. Hardiness, frost-free runway, and chill hours sit in the climate signature below; here the focus is dirt, drainage, and what actually thrives.
+          The growing read pairs the soil profile with what the climate envelope rewards or fights. Hardiness, frost-free runway, and chill hours sit in the climate signature above; here the focus is dirt, drainage, and what actually thrives.
         </p>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="panel-thin p-4">
@@ -1373,7 +1524,26 @@ function DetailBody({
         </div>
       </Section>
 
+      <ZoneDivider
+        eyebrow="Chapter 4"
+        title={PD_NAV_GROUP.risksFuture}
+        blurb="Hazards, the shift already showing up in the record, and how far the climate-change outlook can be trusted."
+        icon={<CloudRain className="w-3.5 h-3.5" aria-hidden />}
+      />
+
+      {scenario !== "now" ? (
+        <div className="compare-scenario-banner dossier-scenario-banner" role="note">
+          <Clock3 className="w-3.5 h-3.5 shrink-0 mt-0.5" aria-hidden />
+          <span>
+            Explorer and Compare use the <strong>{scenarioMeta(scenario).label}</strong> projection layer. This dossier shows recent observed normals ({CLIMATE_NORMALS_PERIOD}; rolling climatology, not WMO standard normal).
+          </span>
+        </div>
+      ) : null}
+
       <Section anchorId={PD.risk} title="Climate risk" icon={<CloudRain className="w-4 h-4" style={{ color: "#d37c5b" }} />}>
+        <div className="flex flex-wrap items-center gap-2 mb-2">
+          <EvidenceClassLabel cls={classifyDossierSection("risk")} />
+        </div>
         <RiskProfile place={place} />
       </Section>
 
@@ -1385,105 +1555,13 @@ function DetailBody({
       </Section>
 
       <ZoneDivider
-        eyebrow="Fit, neighbors & sources"
-        title="Who it suits, what's nearby & where the numbers come from"
-        blurb="Back to the human scale — the people who thrive here, the settlements and outings that anchor the zone, climate twins elsewhere, and the citations behind every figure."
-        icon={<Users className="w-3.5 h-3.5" aria-hidden />}
+        eyebrow="Chapter 5"
+        title={PD_NAV_GROUP.evidenceMethods}
+        blurb="What's measured versus derived, who reviewed it and when, the sources behind each claim, and how to pull the raw data."
+        icon={<BookOpen className="w-3.5 h-3.5" aria-hidden />}
       />
 
-      <Section anchorId={PD.who} title="Who would love this · who might not">
-        <div className="grid md:grid-cols-2 gap-3">
-          <div className="panel-thin p-3 border-l-2" style={{ borderLeftColor: "#c6dcbd" }}>
-            <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Fits best</div>
-            <div className="text-sm text-frost">{prose(place.whoWouldLove)}</div>
-          </div>
-          <div className="panel-thin p-3 border-l-2" style={{ borderLeftColor: "#d37c5b" }}>
-            <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Poor fit</div>
-            <div className="text-sm text-frost">{prose(place.whoMightNot)}</div>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-1.5 mt-3">
-          {place.relocationFit.map(t => <span key={t} className="chip" data-tone="glacier">Relocation · {t}</span>)}
-          {place.travelFit.map(t => <span key={t} className="chip" data-tone="sage">Travel · {t}</span>)}
-        </div>
-      </Section>
-
-      {settlementAnchors.length > 0 && (
-        <Section anchorId={PD.settlements} title="Settlements and scouting bases" icon={<Users className="w-4 h-4" style={{ color: "#c3e4f1" }} />}>
-          <div className="grid md:grid-cols-2 gap-2">
-            {settlementAnchors.map(s => (
-              <div key={s.name} className="panel-thin p-3 flex items-start gap-3">
-                <div
-                  aria-hidden="true"
-                  className="mt-0.5 w-2 h-2 rounded-full shrink-0"
-                  style={{ background: SETTLEMENT_ROLE_COLOR[s.role] ?? "#9badc2" }}
-                />
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <div className="font-atlas text-sm text-ice truncate">{s.name}</div>
-                    <span className="chip" data-tone={SETTLEMENT_ROLE_TONE[s.role] ?? "ice"} style={{ fontSize: "10px" }}>
-                      {SETTLEMENT_ROLE_LABEL[s.role] ?? s.role}
-                    </span>
-                    <span className="chip" data-tone="glacier" style={{ fontSize: "10px" }}>
-                      {s.relation}
-                    </span>
-                  </div>
-                  {s.population && (
-                    <div className="text-[11px] text-stone font-mono-num mt-0.5">pop. {s.population}</div>
-                  )}
-                  {s.note && (
-                    <div className="text-[12px] text-frost italic mt-1 leading-snug">{prose(s.note)}</div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="text-[11px] text-stone italic mt-2">
-            Authored settlements share the zone; derived bases are practical anchors for comparing access, services, and nearby climate gradients.
-          </div>
-        </Section>
-      )}
-
-      {practicalActivities.length > 0 && (
-        <Section anchorId={PD.activities} title="Things to do nearby" icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
-          <div className="grid md:grid-cols-2 gap-2">
-            {practicalActivities.map((a, i) => (
-              <div key={`${a.label}-${i}`} className="panel-thin p-3">
-                <div className="flex items-start gap-2">
-                  <div className="text-lg leading-none pt-0.5" aria-hidden="true">
-                    {ACTIVITY_KIND_GLYPH[a.kind] ?? "✶"}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm text-ice leading-snug">{a.label}</div>
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      <span className="chip" data-tone={ACTIVITY_KIND_TONE[a.kind] ?? "ice"} style={{ fontSize: "10px" }}>
-                        {ACTIVITY_KIND_LABEL[a.kind] ?? a.kind}
-                      </span>
-                      {a.season && (
-                        <span className="chip chip--multiline" data-tone="glacier" style={{ fontSize: "10px" }}>
-                          {a.season}
-                        </span>
-                      )}
-                      {a.source === "derived" && (
-                        <span className="chip" data-tone="ice" style={{ fontSize: "10px" }}>
-                          Derived
-                        </span>
-                      )}
-                    </div>
-                    {a.note && (
-                      <div className="text-[12px] text-frost italic mt-1 leading-snug">{prose(a.note)}</div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Section>
-      )}
-
-      <Section anchorId={PD.similar} title="Climate twins detail" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
-        <PlaceClimateTwins place={place} onOpenPlace={onOpenPlace} />
-      </Section>
+      <PlaceEvidenceSummary place={place} anchorId={PD.evidence} />
 
       <Section anchorId={PD.verdict} title="Hidden-gem verdict · sources">
         <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -1541,6 +1619,16 @@ function DetailBody({
           </ul>
         </div>
       </Section>
+
+      {deepMerged.length > 0 ? (
+        <div id={PD.deepDives} className="detail-doc-section scroll-mt-28">
+          <PlaceDeepSections
+            sections={deepMerged}
+            hasBestMonthsGuide={bestMonths.length > 0}
+            syncDossierHash={readingActiveAnchor === PD.deepDives}
+          />
+        </div>
+      ) : null}
       </div>
     </div>
   );

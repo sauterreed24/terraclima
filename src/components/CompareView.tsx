@@ -36,6 +36,7 @@ import type { ShareStatus } from "../lib/app-constants";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
 import { ChevronRight, Clock3, Home, Link2, Plus, RefreshCcw, X } from "lucide-react";
+import { effectiveAccessRemoteness, effectiveHousingPressure } from "../lib/research/lived-indicators";
 
 type CandidateSourceFilter = "all" | CompareCandidateSource;
 type CandidateSortId = "curated" | "lens" | "risk" | "easy" | "name";
@@ -1249,9 +1250,8 @@ function buildGroupedComparisonRows(
     row("Lived friction", "Live-here fit", places.map(place => decisionScore(place, profile => profile.liveFitScore))),
     row("Lived friction", "Livability", places.map(place => decisionScore(place, profile => profile.livabilityScore))),
     row("Lived friction", "Lived ease", places.map(place => decisionScore(place, profile => profile.livedEase))),
-    row("Access/cost", "Cost pressure", places.map(place => score(place.liveSignals?.costPressure))),
-    row("Access/cost", "Access friction", places.map(place => score(place.liveSignals?.accessFriction))),
-    row("Access/cost", "Social stress", places.map(place => score(place.liveSignals?.socialStress))),
+    row("Access/cost", "Housing pressure", places.map(place => score(effectiveHousingPressure(place.liveSignals)))),
+    row("Access/cost", "Access remoteness", places.map(place => score(effectiveAccessRemoteness(place.liveSignals)))),
     row("Garden/land", "Growability", places.map(place => score(place.scores.growability))),
     row("Garden/land", "Hardiness", places.map(place => place.growability.hardinessZone ?? place.climate.hardinessZone ?? "not sourced")),
     row("Garden/land", "Elevation", places.map(place => fmtElev(place.elevationM, distUnit))),

@@ -111,7 +111,6 @@ export const PLACES_MEXICO: Place[] = [
 
     liveSignals: {
       costPressure: 32,
-      socialStress: 34,
       accessFriction: 26,
       note: "Affordable for relocators on USD/CAD incomes but rapid tourism-driven gentrification has tightened the historic centre; OAX airport links Mexico City and US gateways.",
       sources: [
@@ -260,7 +259,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 70, microclimateUniqueness: 86, comfort: 80, resilience: 62, growability: 72, tradeoff: 42 },
     liveSignals: {
       costPressure: 24,
-      socialStress: 38,
       accessFriction: 38,
       note: "Cool-highland Chiapas cost-of-living remains low; political tensions surface periodically, and Tuxtla airport is a 70-minute drive.",
       sources: [
@@ -370,7 +368,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 20, microclimateUniqueness: 72, comfort: 86, resilience: 60, growability: 86, tradeoff: 42 },
     liveSignals: {
       costPressure: 36,
-      socialStress: 44,
       accessFriction: 22,
       note: "Mexico-City weekend hub keeps housing tighter than other Mexico highland towns; Morelos has ranked higher on Mexican-government safety advisories than Oaxaca or Querétaro.",
       sources: [
@@ -467,7 +464,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 38, microclimateUniqueness: 72, comfort: 76, resilience: 50, growability: 78, tradeoff: 48 },
     liveSignals: {
       costPressure: 52,
-      socialStress: 22,
       accessFriction: 44,
       note: "Valle de Guadalupe's wine tourism keeps housing pressure rising, but groundwater limits, Ensenada specialty backup, and drought-driven irrigation conflict are the live-here filter behind the Mediterranean comfort.",
       sources: [
@@ -562,7 +558,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 74, microclimateUniqueness: 72, comfort: 84, resilience: 62, growability: 80, tradeoff: 36 },
     liveSignals: {
       costPressure: 30,
-      socialStress: 36,
       accessFriction: 34,
       note: "A real regional town with groceries, clinics, schools, and Morelia backup; lake health, older housing, and tourist-season pressure are the practical checks.",
       sources: [
@@ -658,7 +653,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 62, microclimateUniqueness: 74, comfort: 86, resilience: 62, growability: 78, tradeoff: 36 },
     liveSignals: {
       costPressure: 68,
-      socialStress: 34,
       accessFriction: 38,
       note: "Excellent climate with weekend-home economics: housing pressure, traffic surges, slope diligence, and lake access can dominate the lived experience.",
       sources: [
@@ -733,7 +727,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 86, microclimateUniqueness: 78, comfort: 82, resilience: 60, growability: 82, tradeoff: 36 },
     liveSignals: {
       costPressure: 22,
-      socialStress: 28,
       accessFriction: 42,
       note: "Sierra Norte de Puebla orchard town with low cost-of-living and quiet civic life; nearest commercial airport is Puebla, ~2.5 h south.",
       sources: [
@@ -798,7 +791,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 78, microclimateUniqueness: 76, comfort: 74, resilience: 62, growability: 80, tradeoff: 38 },
     liveSignals: {
       costPressure: 24,
-      socialStress: 32,
       accessFriction: 32,
       note: "Coffee-cloud-belt town with strong cost-of-living advantage; Xalapa and Veracruz are short drives away for full services.",
       sources: [
@@ -838,7 +830,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 80, microclimateUniqueness: 68, comfort: 54, resilience: 46, growability: 64, tradeoff: 52 },
     liveSignals: {
       costPressure: 34,
-      socialStress: 30,
       accessFriction: 54,
       note: "Alamos is a high-character small-town scout, not a full-service metro substitute: Data Mexico puts the municipality under 25,000 residents, while the cultural calendar and Pueblo Magico identity create real visitor infrastructure. The lived tradeoff is regional backup for airports, specialty care, and heavy-rain drainage during the monsoon season.",
       sources: [
@@ -888,7 +879,7 @@ export const PLACES_MEXICO: Place[] = [
     reliefContext: "Pacific-facing Baja peninsula coast; cooled by California Current remnants.",
     biome: "Sonoran Desert meeting Pacific ocean", koppen: "BWh",
     archetypes: ["desert-oasis", "mild-winter-foothills"], drivers: ["upwelling"],
-    summaryShort: "Pacific-side Baja oasis with mild winters and surprisingly tolerable summers.",
+    summaryShort: "Pacific-side Baja oasis where cool-current air keeps winters mild and summers surprisingly tolerable beside the desert.",
     summaryImmersive: "Todos Santos sits in a freshwater oasis on the Pacific coast of Baja Sur. The cold Pacific keeps summers several degrees cooler than the Sea of Cortez side. Winters are perfect — warm days, cool nights, sunny.",
     whyDistinct: "Pacific coolness + freshwater spring oasis + desert surroundings.",
     experience: {
@@ -911,7 +902,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 52, microclimateUniqueness: 66, comfort: 76, resilience: 46, growability: 62, tradeoff: 45 },
     liveSignals: {
       costPressure: 48,
-      socialStress: 20,
       accessFriction: 46,
       note: "Todos Santos art-and-surf tourism keeps the town lively, but oasis water rights, tropical-storm drainage, and La Paz specialty backup are the lived-friction story behind the Pacific-side comfort.",
       sources: [
@@ -975,7 +965,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 82, microclimateUniqueness: 70, comfort: 80, resilience: 62, growability: 72, tradeoff: 34 },
     liveSignals: {
       costPressure: 44,
-      socialStress: 28,
       accessFriction: 48,
       note: "A cool, appealing cabin-and-weekend town, but full-service life leans on Sayula/Guadalajara and forest-edge roads are part of the daily calculus.",
       sources: [
@@ -1015,7 +1004,7 @@ export const PLACES_MEXICO: Place[] = [
     reliefContext: "Windward Sierra Madre Oriental; reliably cloud-fed.",
     biome: "Montane cloud forest", koppen: "Cfa",
     archetypes: ["cloud-forest"], drivers: ["orographic-lift"],
-    summaryShort: "Cloud-forest refuge in the Huasteca Potosina — eternally green, eternally wet.",
+    summaryShort: "Cloud-forest refuge in the Huasteca Potosina — windward Gulf moisture keeps slopes eternally green and wet.",
     summaryImmersive: "Xilitla sits on the windward Gulf slope of the Sierra Madre Oriental at 600 m. Moist Gulf air rises here and drips onto the forest almost continuously. The result is one of Mexico's lushest cloud forests, famous for the surreal sculpture garden Las Pozas.",
     whyDistinct: "Gulf moisture + windward slope = reliable cloud forest.",
     climate: { tempHighC: [21.6, 23.4, 26.1, 28.4, 29.6, 29.0, 28.3, 28.8, 28.2, 26.9, 24.4, 22.0], tempLowC: [12.3, 13.6, 15.6, 17.8, 19.2, 19.6, 19.1, 19.1, 19.0, 17.8, 15.4, 13.1], precipMm: [78, 56, 52, 86, 162, 330, 298, 286, 342, 248, 142, 96], annualPrecipMm: 2176, frostFreeDays: 365, hardinessZone: "12a equiv." },
@@ -1052,7 +1041,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 40, microclimateUniqueness: 60, comfort: 88, resilience: 66, growability: 82, tradeoff: 24 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 42,
       accessFriction: 24,
       note: "Full-service state capital with airport, universities, hospitals, and a colonial core; neighborhood selection matters more than the climate grid suggests.",
       sources: [
@@ -1113,7 +1101,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 52, microclimateUniqueness: 58, comfort: 84, resilience: 58, growability: 70, tradeoff: 32 },
     liveSignals: {
       costPressure: 42,
-      socialStress: 38,
       accessFriction: 36,
       note: "A real university/culture town, but steep streets, tourist pressure, canyon drainage, and car access can dominate daily comfort.",
       sources: [
@@ -1175,7 +1162,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 74, microclimateUniqueness: 68, comfort: 74, resilience: 50, growability: 58, tradeoff: 38 },
     liveSignals: {
       costPressure: 34,
-      socialStress: 36,
       accessFriction: 34,
       note: "Cool, walkable, and comparatively affordable for a historic capital, but water stress, thin air-service depth, and winter cold are real daily filters.",
       sources: [
@@ -1240,7 +1226,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 54, microclimateUniqueness: 52, comfort: 76, resilience: 52, growability: 60, tradeoff: 32 },
     liveSignals: {
       costPressure: 32,
-      socialStress: 34,
       accessFriction: 18,
       note: "A real industrial and university city with Monterrey access; dry highland comfort is easier to live with because services are broad and daily logistics are normal.",
       sources: [
@@ -1301,7 +1286,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 84, microclimateUniqueness: 66, comfort: 68, resilience: 54, growability: 82, tradeoff: 32 },
     liveSignals: {
       costPressure: 30,
-      socialStress: 42,
       accessFriction: 36,
       note: "Cuauhtemoc is a genuine northwest-Chihuahua service and agro-industrial hub rather than just a scenic orchard pocket; the live-here checks are water stress, winter road weather, and northern-Chihuahua security context.",
       sources: [
@@ -1335,7 +1319,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 90, microclimateUniqueness: 84, comfort: 60, resilience: 48, growability: 28, tradeoff: 54 },
     liveSignals: {
       costPressure: 28,
-      socialStress: 22,
       accessFriction: 88,
       note: "Housing in the ghost town is cheap but services are minimal; the 2.3 km tunnel and Matehuala/Saltillo drives are the real live-here filter for groceries, fuel, and care.",
       sources: [
@@ -1472,7 +1455,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 36, microclimateUniqueness: 72, comfort: 78, resilience: 54, growability: 76, tradeoff: 32 },
     liveSignals: {
       costPressure: 44,
-      socialStress: 34,
       accessFriction: 30,
       note: "Close to Guadalajara and highly legible for visitors; tourism demand and harvest/distillery traffic matter more than service scarcity.",
       sources: [
@@ -1545,7 +1527,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 78, microclimateUniqueness: 68, comfort: 78, resilience: 62, growability: 70, tradeoff: 36 },
     liveSignals: {
       costPressure: 46,
-      socialStress: 28,
       accessFriction: 50,
       note: "Cool forest comfort is strong, but it is a small tourism/cabin market with limited services, weekend traffic, road exposure, and forest-fire homework.",
       sources: [
@@ -1649,7 +1630,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 82, microclimateUniqueness: 86, comfort: 54, resilience: 58, growability: 46, tradeoff: 60 },
     liveSignals: {
       costPressure: 38,
-      socialStress: 46,
       accessFriction: 66,
       note: "Creel is not an expat-cost outlier, but winter-ready housing, Indigenous-region due diligence, rural poverty, and long mountain travel make the lived read materially harder than the climate score alone.",
       sources: [
@@ -1732,7 +1712,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 66, microclimateUniqueness: 82, comfort: 80, resilience: 58, growability: 76, tradeoff: 38 },
     liveSignals: {
       costPressure: 52,
-      socialStress: 30,
       accessFriction: 44,
       note: "Valle de Guadalupe and Ensenada draw expat retirees but water stress, border-region logistics, and Tijuana/San Diego specialist runs shape daily friction.",
       sources: [
@@ -1764,7 +1743,7 @@ export const PLACES_MEXICO: Place[] = [
         winter: "Cool and misty — highs near 20°C, nights near 11°C, drizzle possible any day, and coffee plantations creeping up from the lowlands.",
         spring: "Green explosion — wildflowers in the cloud forest, highs climbing through the low 20s, and the first warm afternoons that feel earned after months of mist.",
         summer: "Rainy season peak — highs near 24°C, afternoon thunderstorms exceeding 200 mm monthly, and saturated slopes that define landslide risk.",
-        autumn: "Mist returns — October rains taper, highs retreating into the low 20s, and the cloud-forest band at its most dramatic on hike days.",
+        autumn: "The fog thickens again through October and November as the rains taper, highs settle back into the low 20s, and mossy courtyards around the centro stay damp well into midday.",
       },
       travelerFit: "Visitors come for cloud-forest hikes, coffee culture, and the literary atmosphere of Mexico's greenest highland capital.",
       residentFit: "It rewards culture seekers and cloud-forest lovers who accept saturated slopes and Veracruz-city humidity as daily texture.",
@@ -1783,7 +1762,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 76, microclimateUniqueness: 86, comfort: 74, resilience: 58, growability: 78, tradeoff: 34 },
     liveSignals: {
       costPressure: 44,
-      socialStress: 34,
       accessFriction: 38,
       note: "University-town housing is moderate for Mexico but persistent drizzle and Veracruz-port logistics shape daily friction for remote workers.",
       sources: [
@@ -1823,7 +1801,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 52, microclimateUniqueness: 70, comfort: 78, resilience: 54, growability: 68, tradeoff: 42 },
     liveSignals: {
       costPressure: 56,
-      socialStress: 32,
       accessFriction: 36,
       note: "Expat housing and services cluster in the centro but seasonal tourism, water rationing in dry springs, and León/Querétaro specialist trips are part of the lived filter.",
       sources: [
@@ -2159,7 +2136,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 36, microclimateUniqueness: 72, comfort: 88, growability: 84, resilience: 60, tradeoff: 34 },
     liveSignals: {
       costPressure: 62,
-      socialStress: 26,
       accessFriction: 24,
       note: "The service base is unusually easy for a lake village, but expat demand, traffic, water quality, and hillside drainage keep the live-here score grounded.",
       sources: [
@@ -2197,7 +2173,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Why this became a comfort-climate magnet",
         paragraphs: [
           "Ajijic offers a rare mix: walkable village life, warm dry-season days, cool nights, lush wet-season renewal, and limited need for heating or cooling in well-designed homes.",
-          "That comfort has a social footprint. Popularity brings traffic, housing pressure, and service strain, so the atlas treats it as a high-comfort place rather than a hidden gem.",
+          "That comfort has a social footprint. Popularity brings traffic, housing pressure, and service strain, so the atlas treats it as a high-comfort place with a well-known reputation, not an undiscovered one.",
         ],
       },
       {
@@ -2233,7 +2209,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 24, microclimateUniqueness: 60, comfort: 74, growability: 70, resilience: 52, tradeoff: 42 },
     liveSignals: {
       costPressure: 48,
-      socialStress: 32,
       accessFriction: 18,
       note: "One of the easiest service bases in the Bajio, with airport and industry; growth pressure, water stress, and fringe heat are the counterweights.",
       sources: [
@@ -2322,7 +2297,6 @@ export const PLACES_MEXICO: Place[] = [
     scores: { hiddenGem: 74, microclimateUniqueness: 78, comfort: 72, growability: 78, resilience: 56, tradeoff: 40 },
     liveSignals: {
       costPressure: 26,
-      socialStress: 36,
       accessFriction: 30,
       note: "Highland Veracruz town with low cost-of-living; Veracruz international airport ~2 h away.",
       sources: [

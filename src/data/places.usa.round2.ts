@@ -414,7 +414,6 @@ export const PLACES_USA_ROUND2: Place[] = [
     scores: { hiddenGem: 44, microclimateUniqueness: 56, comfort: 64, resilience: 50, growability: 58, tradeoff: 44 },
     liveSignals: {
       costPressure: 64,
-      socialStress: 24,
       accessFriction: 38,
       note: "Tourism-season housing in Mystic/ Stonington runs above inland Connecticut norms; New Haven and Providence are the usual specialist and airport anchors.",
       sources: [
@@ -612,7 +611,6 @@ export const PLACES_USA_ROUND2: Place[] = [
     scores: { hiddenGem: 28, microclimateUniqueness: 62, comfort: 54, resilience: 56, growability: 48, tradeoff: 48 },
     liveSignals: {
       costPressure: 56,
-      socialStress: 42,
       accessFriction: 48,
       note: "Anchorage is the rare Alaska comparison that has true city services: the state's largest hospital, Alaska's gateway airport, and the primary inbound-cargo port. The lived friction is not isolation inside town; it is winter darkness, snow labor, earthquake and ground-failure diligence, smoke episodes, and higher freight-linked costs than most lower-48 cities.",
       sources: [

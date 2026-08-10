@@ -61,8 +61,9 @@ describe("composePlaceExperience", () => {
     expect(authored.authored).toBe(true);
   });
 
-  it("does not mark a place authored when no experience override is present", () => {
-    expect(composePlaceExperience(PLACES_BY_ID["yuma-az"]).authored).toBe(false);
+  it("does not mark a place authored when experience override is cleared", () => {
+    const base = PLACES_BY_ID["yuma-az"];
+    expect(composePlaceExperience({ ...base, experience: undefined }).authored).toBe(false);
   });
 
   it("weaves the primary driver into the derived feel line", () => {

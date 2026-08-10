@@ -54,7 +54,6 @@ describe("place-feel scoring", () => {
       ],
       liveSignals: {
         costPressure: 24,
-        socialStress: 18,
         accessFriction: 20,
         note: "Service access is strong and daily friction is low.",
         sources: [{ label: "County services", url: "https://example.com/" }],
@@ -76,12 +75,12 @@ describe("place-feel scoring", () => {
   it("penalizes access, cost, and risk friction even when the climate is pleasant", () => {
     const easy = makePlace({
       id: "easy",
-      liveSignals: { costPressure: 18, socialStress: 18, accessFriction: 18 },
+      liveSignals: { costPressure: 18, accessFriction: 18 },
       settlementsWithinZone: [{ name: "Easy City", role: "hub", note: "Daily services are close." }],
     });
     const difficult = makePlace({
       id: "difficult",
-      liveSignals: { costPressure: 88, socialStress: 76, accessFriction: 92 },
+      liveSignals: { costPressure: 88, accessFriction: 92 },
       risks: {
         ...makePlace().risks,
         wildfire: { level: "high" },

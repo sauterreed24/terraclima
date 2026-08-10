@@ -144,9 +144,10 @@ describe("livability v3 — corpus smoke", () => {
       expect(place, id).toBeDefined();
       expect(place!.liveSignals?.note?.length, `${id} liveSignals.note`).toBeGreaterThan(48);
       expect(place!.liveSignals?.sources?.length, `${id} liveSignals.sources`).toBeGreaterThanOrEqual(2);
-      expect(place!.liveSignals?.costPressure, `${id} costPressure`).toBeGreaterThanOrEqual(0);
-      expect(place!.liveSignals?.socialStress, `${id} socialStress`).toBeGreaterThanOrEqual(0);
-      expect(place!.liveSignals?.accessFriction, `${id} accessFriction`).toBeGreaterThanOrEqual(0);
+      const housing = place!.liveSignals?.housingPressureIndex ?? place!.liveSignals?.costPressure;
+      const access = place!.liveSignals?.accessRemotenessIndex ?? place!.liveSignals?.accessFriction;
+      expect(housing, `${id} housing pressure`).toBeGreaterThanOrEqual(0);
+      expect(access, `${id} access remoteness`).toBeGreaterThanOrEqual(0);
     }
   });
 });
