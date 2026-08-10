@@ -5528,7 +5528,7 @@ export const PLACES_USA: Place[] = [
     koppen: "Dfb",
     archetypes: ["fjord-inlet", "cool-summer-maritime", "fog-belt-coast"],
     drivers: ["marine-layer", "polar-jet-exposure", "orographic-lift"],
-    summaryShort: "Cool, foggy summers and stormy shoulder seasons — classic Downeast maritime.",
+    summaryShort: "Cool, foggy summers and stormy shoulder seasons on Mount Desert Island — classic Downeast maritime under Labrador Current air.",
     summaryImmersive: "Bar Harbor sits on Mount Desert Island where sea fog rolls in on summer afternoons and fall colors are electric against dark granite. Winter is cold but moderated relative to interior Maine thanks to water; nor'easters bring heavy mixed precipitation.",
     whyDistinct: "Complex island-interior circulation + Acadia orography creates micro-varies within a few kilometers of coastline.",
     climate: {

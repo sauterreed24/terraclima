@@ -924,7 +924,7 @@ export const PLACES_CANADA: Place[] = [
     reliefContext: "Southern Gulf Islands in the Olympic rain shadow.",
     biome: "Coastal Douglas-fir / Garry oak", koppen: "Csb",
     archetypes: ["rain-shadow-sanctuary", "mediterranean-pocket", "cool-summer-maritime"], drivers: ["rain-shadow", "marine-layer"],
-    summaryShort: "Rain-shadow Gulf Island with a Mediterranean microclimate and slow island culture.",
+    summaryShort: "Rain-shadow Gulf Island with a Mediterranean microclimate, Garry oak meadows, dry summers, and ferry-paced island culture.",
     summaryImmersive: "The Southern Gulf Islands receive roughly half of Vancouver's precipitation — the Olympic rain shadow extends this far north and east. Salt Spring's sheltered bays and Garry oak meadows reveal a climate more Mediterranean than most of coastal BC.",
     whyDistinct: "Olympic rain shadow + Gulf Island shelter + marine moderation.",
     experience: {
@@ -1649,7 +1649,7 @@ export const PLACES_CANADA: Place[] = [
     reliefContext: "Peninsula into Lake Ontario; near-island status produces strong lake moderation.",
     biome: "Carolinian-boreal transition on limestone", koppen: "Dfb",
     archetypes: ["lake-moderated", "limestone-karst", "orchard-valley"], drivers: ["lake-effect", "karst-infiltration"],
-    summaryShort: "Ontario's fastest-rising wine region, built on lake-moderated microclimate and limestone terroir.",
+    summaryShort: "Lake-moderated Ontario peninsula where limestone soils, cool nights, and cool-climate vineyards define a rising wine region.",
     summaryImmersive: "A near-island jutting into Lake Ontario, PEC enjoys measurable lake moderation and sits on a limestone plateau that drains fast and warms quickly in spring. Cool-climate wine — Pinot Noir, Chardonnay, Riesling — has flourished here since 2000.",
     whyDistinct: "Peninsula geometry maximizes lake influence; limestone substrate + thin soils accelerate spring warming.",
     climate: { tempHighC: [-2.4, -1.4, 3.3, 10.8, 17.6, 23.1, 25.9, 24.9, 20.5, 13.6, 6.4, 0.2], tempLowC: [-10.1, -10.0, -5.2, 1.1, 6.8, 12.0, 14.8, 14.2, 10.1, 4.6, -0.4, -5.8], precipMm: [64, 54, 62, 74, 80, 76, 72, 74, 88, 82, 80, 70], snowCm: [44, 32, 20, 4, 0, 0, 0, 0, 0, 0, 6, 32], annualPrecipMm: 876, frostFreeDays: 170, hardinessZone: "6b" },

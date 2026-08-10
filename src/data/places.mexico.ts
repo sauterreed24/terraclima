@@ -879,7 +879,7 @@ export const PLACES_MEXICO: Place[] = [
     reliefContext: "Pacific-facing Baja peninsula coast; cooled by California Current remnants.",
     biome: "Sonoran Desert meeting Pacific ocean", koppen: "BWh",
     archetypes: ["desert-oasis", "mild-winter-foothills"], drivers: ["upwelling"],
-    summaryShort: "Pacific-side Baja oasis with mild winters and surprisingly tolerable summers.",
+    summaryShort: "Pacific-side Baja oasis where cool-current air keeps winters mild and summers surprisingly tolerable beside the desert.",
     summaryImmersive: "Todos Santos sits in a freshwater oasis on the Pacific coast of Baja Sur. The cold Pacific keeps summers several degrees cooler than the Sea of Cortez side. Winters are perfect — warm days, cool nights, sunny.",
     whyDistinct: "Pacific coolness + freshwater spring oasis + desert surroundings.",
     experience: {
@@ -1004,7 +1004,7 @@ export const PLACES_MEXICO: Place[] = [
     reliefContext: "Windward Sierra Madre Oriental; reliably cloud-fed.",
     biome: "Montane cloud forest", koppen: "Cfa",
     archetypes: ["cloud-forest"], drivers: ["orographic-lift"],
-    summaryShort: "Cloud-forest refuge in the Huasteca Potosina — eternally green, eternally wet.",
+    summaryShort: "Cloud-forest refuge in the Huasteca Potosina — windward Gulf moisture keeps slopes eternally green and wet.",
     summaryImmersive: "Xilitla sits on the windward Gulf slope of the Sierra Madre Oriental at 600 m. Moist Gulf air rises here and drips onto the forest almost continuously. The result is one of Mexico's lushest cloud forests, famous for the surreal sculpture garden Las Pozas.",
     whyDistinct: "Gulf moisture + windward slope = reliable cloud forest.",
     climate: { tempHighC: [21.6, 23.4, 26.1, 28.4, 29.6, 29.0, 28.3, 28.8, 28.2, 26.9, 24.4, 22.0], tempLowC: [12.3, 13.6, 15.6, 17.8, 19.2, 19.6, 19.1, 19.1, 19.0, 17.8, 15.4, 13.1], precipMm: [78, 56, 52, 86, 162, 330, 298, 286, 342, 248, 142, 96], annualPrecipMm: 2176, frostFreeDays: 365, hardinessZone: "12a equiv." },
