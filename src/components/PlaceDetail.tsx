@@ -32,6 +32,7 @@ import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { formatLivedSources } from "../lib/lived-sources";
+import { effectiveAccessRemoteness, effectiveHousingPressure } from "../lib/research/lived-indicators";
 import { buildComfortPrecisionProfile } from "../lib/comfort-precision";
 import { describeHumanComfort, scoreLivability } from "../lib/livability-score";
 import { getPlaceVisualSignature, type PlaceVisualSignature } from "../lib/place-visual-signature";
@@ -381,7 +382,7 @@ function DetailHeader({
   const reduceMotion = useReducedMotion();
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "ice";
   const primaryArchetype = place.archetypes[0] ? ARCHETYPE_BY_ID[place.archetypes[0]] : null;
-  const [archetypeGuideOpen, setArchetypeGuideOpen] = useState(true);
+  const [archetypeGuideOpen, setArchetypeGuideOpen] = useState(false);
   const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
   const annualP = getAnnualPrecipMm(place);
@@ -980,25 +981,22 @@ function DetailBody({
       </Section>
 
       {place.liveSignals ? (
-        <Section anchorId={PD.livedSignals} title="Lived signals" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
+        <Section anchorId={PD.livedSignals} title="Lived indicators" icon={<Scale className="w-4 h-4" style={{ color: "#dcc4ff" }} />}>
           <div className="panel-thin p-4">
             <div className="text-[11px] text-stone-readable leading-snug mb-3 max-w-2xl">
-              Editorial reads on three axes climate normals cannot capture: cost pressure, social-fabric stress, and daily-services access. 0 = no friction, 100 = severe. These are screening signals anchored to public sources, not appraisals or insurance underwriting.
+              Factual housing and access reads that climate normals cannot capture. 0 = no friction, 100 = severe. Screening indicators anchored to public sources — not appraisals or insurance underwriting.
             </div>
             <ul className="tc-livability-signal-grid">
-              {(["costPressure", "socialStress", "accessFriction"] as const).map(axis => {
-                const value = place.liveSignals?.[axis];
+              {([
+                { key: "housing", label: "Housing pressure", desc: "Within-country housing burden percentile.", value: effectiveHousingPressure(place.liveSignals) },
+                { key: "access", label: "Access remoteness", desc: "Hospital, airport, and service-hub distance.", value: effectiveAccessRemoteness(place.liveSignals) },
+              ] as const).map(axis => {
+                const value = axis.value;
                 if (value == null) return null;
-                const label = axis === "costPressure" ? "Cost pressure" : axis === "socialStress" ? "Social stress" : "Access friction";
-                const desc = axis === "costPressure"
-                  ? "Housing burden & cost-of-living."
-                  : axis === "socialStress"
-                    ? "Crime, homelessness, civic distress."
-                    : "Distance to hospital, airport, daily services.";
                 const level = value <= 35 ? "high" : value <= 60 ? "mid" : "low";
                 return (
-                  <li key={axis} className="tc-livability-row tc-livability-row--signal" title={`${label}: ${Math.round(value)}/100`}>
-                    <div className="tc-livability-row__label">{label}<span className="block text-[10px] text-stone-readable font-normal">{desc}</span></div>
+                  <li key={axis.key} className="tc-livability-row tc-livability-row--signal" title={`${axis.label}: ${Math.round(value)}/100`}>
+                    <div className="tc-livability-row__label">{axis.label}<span className="block text-[10px] text-stone-readable font-normal">{axis.desc}</span></div>
                     <div className="tc-livability-row__bar">
                       <div className="tc-livability-row__bar-fill" data-level={level} style={{ width: `${Math.max(0, Math.min(100, value))}%` }} />
                     </div>
@@ -1007,6 +1005,47 @@ function DetailBody({
                 );
               })}
             </ul>
+            {(() => {
+              const ls = place.liveSignals!;
+              const factualRows: { label: string; value: string }[] = [];
+              if (ls.hospitalRouteMinutes != null) {
+                factualRows.push({ label: "Hospital route", value: `${Math.round(ls.hospitalRouteMinutes)} min` });
+              }
+              if (ls.airportRouteMinutes != null) {
+                factualRows.push({ label: "Airport route", value: `${Math.round(ls.airportRouteMinutes)} min` });
+              }
+              if (ls.housingCostBurdenPct != null) {
+                const year = ls.housingCostBurdenYear ? ` (${ls.housingCostBurdenYear})` : "";
+                factualRows.push({ label: "Housing cost burden", value: `${Math.round(ls.housingCostBurdenPct)}%${year}` });
+              }
+              if (ls.serviceHubClass) {
+                const hubLabel = { local: "Local hub", regional: "Regional hub", remote: "Remote", isolated: "Isolated" }[ls.serviceHubClass];
+                factualRows.push({ label: "Service hub", value: hubLabel });
+              }
+              const constraints = ls.transportConstraints?.filter(c => c !== "none") ?? [];
+              if (constraints.length > 0) {
+                const constraintLabel = {
+                  "ferry-only": "Ferry only",
+                  "seasonal-road": "Seasonal road",
+                  "single-access-road": "Single access road",
+                } as const;
+                factualRows.push({
+                  label: "Transport constraints",
+                  value: constraints.map(c => constraintLabel[c]).join(" · "),
+                });
+              }
+              if (factualRows.length === 0) return null;
+              return (
+                <dl className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-[11px] border-t border-dashed border-[rgba(71,90,122,0.18)] pt-3">
+                  {factualRows.map(row => (
+                    <div key={row.label} className="flex items-baseline justify-between gap-2">
+                      <dt className="text-stone-readable">{row.label}</dt>
+                      <dd className="font-mono-num text-frost text-right">{row.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              );
+            })()}
             {place.liveSignals.note ? (
               <p className="mt-3 text-[12px] leading-snug text-frost border-t border-dashed border-[rgba(71,90,122,0.18)] pt-2">{prose(place.liveSignals.note)}</p>
             ) : null}

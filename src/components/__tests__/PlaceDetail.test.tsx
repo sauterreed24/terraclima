@@ -709,16 +709,20 @@ describe("PlaceDetail archetype field guide", () => {
       </UnitProvider>,
     );
 
-    const guide = screen.getByRole("region", { name: /Rain-Shadow Sanctuary field guide/i });
+    const guide = document.getElementById("place-archetype-guide");
+    expect(guide).toBeTruthy();
     expect(guide).toHaveAttribute("id", "place-archetype-guide");
-    expect(guide).not.toHaveAttribute("hidden");
+    expect(guide).toHaveAttribute("hidden");
     expect(guide).toHaveTextContent(/Rain-Shadow Sanctuary/i);
     expect(guide).toHaveTextContent(/field guide/i);
     expect(guide.textContent?.length ?? 0).toBeGreaterThan(40);
 
     const primaryChip = screen.getByRole("button", { name: /Rain-Shadow Sanctuary:/i });
-    expect(primaryChip).toHaveAttribute("aria-expanded", "true");
+    expect(primaryChip).toHaveAttribute("aria-expanded", "false");
     expect(primaryChip).toHaveAttribute("aria-controls", "place-archetype-guide");
+    fireEvent.click(primaryChip);
+    expect(guide).not.toHaveAttribute("hidden");
+    expect(primaryChip).toHaveAttribute("aria-expanded", "true");
     fireEvent.click(primaryChip);
     expect(guide).toHaveAttribute("hidden");
     expect(primaryChip).toHaveAttribute("aria-expanded", "false");
@@ -733,6 +737,9 @@ describe("PlaceDetail archetype field guide", () => {
         <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
       </UnitProvider>,
     );
+
+    const primaryChip = screen.getByRole("button", { name: /Eternal-Spring Highland:/i });
+    fireEvent.click(primaryChip);
 
     const guide = screen.getByRole("region", { name: /Eternal-Spring Highland field guide/i });
     expect(guide).toHaveTextContent(/4,921 and 8,202 ft/);

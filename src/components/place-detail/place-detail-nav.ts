@@ -79,7 +79,7 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
   ];
 
   if (place.liveSignals) {
-    items.push({ id: PD.livedSignals, label: "Lived signals", group: PD_NAV_GROUP.lived });
+    items.push({ id: PD.livedSignals, label: "Lived indicators", group: PD_NAV_GROUP.lived });
   }
 
   items.push(

@@ -337,7 +337,6 @@ describe("AtlasMap DOM controls", () => {
         lon: -100,
         liveSignals: {
           costPressure: 30,
-          socialStress: 20,
           accessFriction: 35,
           note: "Two source lived-reality read for the dense-cluster picker.",
           sources: [
