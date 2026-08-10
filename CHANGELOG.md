@@ -4,6 +4,10 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Release playtest audit harness
+
+- Add `npm run playtest:release-audit` for post-merge regression coverage: mobile Atlas Read chip footprint, featured hover identity, dossier provenance labels, scenario URL persistence, 1499/1500 overflow, and home-base reload.
+
 ### Mobile Atlas Read chip — stop blocking the map mid-band
 
 - **Problem:** On phones the Atlas Read panel was a full-width Leaders·Driver bar with `pointer-events: auto`, so while scrolling places it sat in the middle of the viewport and stole page/map gestures. Coarse pointers also hid the More control, so it could not be collapsed.
