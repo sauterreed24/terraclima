@@ -10,7 +10,8 @@ import { sanitizeLivedSignals } from "../lib/research/lived-indicators";
 import { PLACES_USA } from "./places.usa";
 import { PLACES_CANADA } from "./places.canada";
 import { PLACES_MEXICO } from "./places.mexico";
-import { TIER_C_POLISH, TIER_C_POLISH_GENERATED, TIER_C_POLISH_SOURCES } from "./places.tier-c-polish";
+import { TIER_C_POLISH, TIER_C_POLISH_SOURCES } from "./places.tier-c-polish";
+import { TIER_C_INDICATORS } from "./places.tier-c-indicators";
 import { EXPERIENCE_AUTHORED } from "./places.experience-authored";
 import { SUMMARY_IMMERSIVE_POLISH } from "./places.summary-polish";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
@@ -21,7 +22,7 @@ const HOUSING_PRESSURE_BY_ID = (housingPressureJson as { byId: Record<string, nu
 
 const TIER_C_POLISH_ALL: Record<string, typeof TIER_C_POLISH[keyof typeof TIER_C_POLISH]> = {
   ...TIER_C_POLISH,
-  ...TIER_C_POLISH_GENERATED,
+  ...TIER_C_INDICATORS,
 };
 
 // Layer the targeted source-additions on top of the merged polish map.

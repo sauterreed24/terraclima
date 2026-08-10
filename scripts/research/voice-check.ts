@@ -3,7 +3,7 @@
  */
 import { PLACES } from "../../src/data/places";
 import { BANNED_VOICE_PHRASES } from "../../src/lib/research/contracts";
-import { TIER_C_POLISH_GENERATED } from "../../src/data/places.tier-c-polish";
+import * as tierCPolish from "../../src/data/places.tier-c-polish";
 
 const STRICT = process.argv.includes("--strict");
 
@@ -32,11 +32,12 @@ function main() {
   const errors: string[] = [];
   const warns: string[] = [];
 
-  const generatedKeys = Object.keys(TIER_C_POLISH_GENERATED);
-  if (STRICT && generatedKeys.length > 0) {
+  // TIER_C_POLISH_GENERATED has been retired; guard against it silently
+  // coming back (e.g. a bad merge) without requiring the export to exist.
+  const generatedExport = (tierCPolish as Record<string, unknown>).TIER_C_POLISH_GENERATED;
+  const generatedKeys = generatedExport ? Object.keys(generatedExport as Record<string, unknown>) : [];
+  if (generatedKeys.length > 0) {
     errors.push(`TIER_C_POLISH_GENERATED still ships ${generatedKeys.length} entries — must be retired`);
-  } else if (generatedKeys.length > 0) {
-    warns.push(`TIER_C_POLISH_GENERATED still present (${generatedKeys.length} keys) — retirement pending`);
   }
 
   const paraSeen = new Map<string, string[]>();

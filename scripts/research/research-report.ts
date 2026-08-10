@@ -7,7 +7,6 @@ import { fileURLToPath } from "node:url";
 import { PLACES } from "../../src/data/places";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "../../src/data/generated/climate-v2";
 import type { PlaceResearchReceipt, ResearchLedger } from "../../src/lib/research/contracts";
-import { TIER_C_POLISH_GENERATED } from "../../src/data/places.tier-c-polish";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -66,7 +65,6 @@ function main() {
   console.log(`- Places: ${PLACES.length}`);
   console.log(`- Research receipts: ${receipts.length} (verified ${verifiedReceipts})`);
   console.log(`- Authored experience complete: ${experienceComplete}/226`);
-  console.log(`- TIER_C_POLISH_GENERATED keys: ${Object.keys(TIER_C_POLISH_GENERATED).length}`);
   console.log(`- Published socialStress residues: ${withSocial}`);
   console.log("");
   console.log("## Climate V2 validation");

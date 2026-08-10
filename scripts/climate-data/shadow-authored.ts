@@ -6,9 +6,9 @@ import type { Place } from "../../src/types";
 import { PLACES_USA } from "../../src/data/places.usa";
 import { PLACES_CANADA } from "../../src/data/places.canada";
 import { PLACES_MEXICO } from "../../src/data/places.mexico";
-import { TIER_C_POLISH, TIER_C_POLISH_GENERATED } from "../../src/data/places.tier-c-polish";
+import { TIER_C_POLISH } from "../../src/data/places.tier-c-polish";
 
-const POLISH = { ...TIER_C_POLISH, ...TIER_C_POLISH_GENERATED };
+const POLISH = { ...TIER_C_POLISH };
 
 function applyPolishOnly(p: Place): Place {
   const polish = POLISH[p.id as keyof typeof POLISH] as
