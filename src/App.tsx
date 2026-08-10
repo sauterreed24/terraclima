@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
+import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, ChevronsDownUp, ChevronsUpDown, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -2675,6 +2675,10 @@ const HeroCard = memo(function HeroCard({
   showDesktopScoutBoard: boolean;
 }) {
   const shareFallbackInputRef = useRef<HTMLInputElement>(null);
+  const heroCompactSentinelRef = useRef<HTMLDivElement>(null);
+  const [heroScrollCompact, setHeroScrollCompact] = useState(false);
+  const [heroCompactPinnedOpen, setHeroCompactPinnedOpen] = useState(false);
+  const stackedExplorerLayout = useMediaQuery("(max-width: 1499px)");
   useEffect(() => {
     if (shareStatus !== "failed" || !shareFallbackUrl) return;
     const focusId = window.setTimeout(() => {
@@ -2689,6 +2693,33 @@ const HeroCard = memo(function HeroCard({
     }, 0);
     return () => window.clearTimeout(focusId);
   }, [shareFallbackUrl, shareStatus]);
+  useEffect(() => {
+    // Wide atlas-first grids already put the map beside the hero — compact sticky
+    // chrome is for stacked viewports where the hero eats the first half of the screen.
+    if (!stackedExplorerLayout) {
+      setHeroScrollCompact(false);
+      setHeroCompactPinnedOpen(false);
+      return;
+    }
+    const sentinel = heroCompactSentinelRef.current;
+    if (!sentinel || typeof IntersectionObserver !== "function") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const compact = !entry.isIntersecting;
+        setHeroScrollCompact(compact);
+        if (!compact) setHeroCompactPinnedOpen(false);
+      },
+      {
+        // Match sticky site header so collapse starts once the map claims the viewport.
+        // IntersectionObserver only accepts px/% here — rem is rejected at construct time.
+        rootMargin: "-76px 0px 0px 0px",
+        threshold: 0,
+      },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [stackedExplorerLayout]);
+  const heroCompact = stackedExplorerLayout && heroScrollCompact && !heroCompactPinnedOpen;
   const active = activeCollection ? CURATED_SET_BY_ID[activeCollection] ?? null : null;
   const compareHeroLabel = `Open compare setup from Explorer hero (${compareCount} ${compareCount === 1 ? "place" : "places"})`;
   const liveSignalCount = (filters.fitPresets?.size ?? 0) + [
@@ -2726,27 +2757,39 @@ const HeroCard = memo(function HeroCard({
     });
     target.focus({ preventScroll: true });
   }, []);
+  const heroEyebrow = active
+    ? active.kind === "trip" ? "Trip pinned" : "Collection pinned"
+    : liveSignalCount > 0
+      ? `Live Finder · ${liveSignalCount} signal${liveSignalCount > 1 ? "s" : ""}`
+      : activeArchetypes.size > 0
+        ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}`
+        : comfortLensActive
+          ? comfortLensFullAtlas
+            ? "Comfort lens · full atlas"
+            : "Comfort lens · filtered view"
+          : "Microclimate atlas";
+  const heroCompactToggleLabel = heroCompact
+    ? "Expand Explorer header"
+    : "Collapse Explorer header";
   return (
+    <>
+    <div
+      ref={heroCompactSentinelRef}
+      className="tc-hero-compact-sentinel"
+      aria-hidden="true"
+    />
     <div
       className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
       style={{ ["--hero-accent-rgb" as string]: heroAccentRgb }}
+      data-compact={heroCompact ? "true" : "false"}
+      data-compact-available={stackedExplorerLayout ? "true" : "false"}
     >
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Sparkles className="w-3.5 h-3.5 tc-icon-ochre" aria-hidden />
             <span className="text-xs uppercase tracking-wider text-stone-readable">
-              {active
-                ? active.kind === "trip" ? "Trip pinned" : "Collection pinned"
-                : liveSignalCount > 0
-                  ? `Live Finder · ${liveSignalCount} signal${liveSignalCount > 1 ? "s" : ""}`
-                    : activeArchetypes.size > 0
-                    ? `Filtered by ${activeArchetypes.size} archetype${activeArchetypes.size > 1 ? "s" : ""}`
-                    : comfortLensActive
-                      ? comfortLensFullAtlas
-                        ? "Comfort lens · full atlas"
-                        : "Comfort lens · filtered view"
-                      : "Microclimate atlas"}
+              {heroEyebrow}
             </span>
             {active && (
               <button
@@ -2772,24 +2815,43 @@ const HeroCard = memo(function HeroCard({
                 <X className="w-3 h-3" aria-hidden /> Clear archetypes
               </button>
             )}
+            {stackedExplorerLayout && heroScrollCompact ? (
+              <button
+                type="button"
+                className="tc-hero-compact-toggle"
+                onClick={() => setHeroCompactPinnedOpen(open => !open)}
+                aria-pressed={!heroCompact}
+                aria-label={heroCompactToggleLabel}
+                title={heroCompactToggleLabel}
+              >
+                {heroCompact ? (
+                  <ChevronsUpDown className="w-3.5 h-3.5" aria-hidden />
+                ) : (
+                  <ChevronsDownUp className="w-3.5 h-3.5" aria-hidden />
+                )}
+                <span>{heroCompact ? "Expand" : "Compact"}</span>
+              </button>
+            ) : null}
           </div>
           <h1 className="font-atlas text-2xl min-[1400px]:text-3xl text-ice leading-tight text-depth-hero">
             {active ? active.title : "Discover microclimates hiding in plain sight"}
           </h1>
-          <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
-            {active
-              ? active.description
-              : comfortLensActive
-                ? MOST_COMFORTABLE_LENS_SUMMARY
-                : "Rain shadows, sky islands, fog belts, thermal belts, and other terrain climates most people never hear of. Open a pin, try Surprise me, or start from Most unique."}
-          </p>
-          {!homeBasePlace && !active ? (
-            <p className="text-xs text-stone-readable mt-1.5 max-w-2xl leading-snug">
-              {comfortLensActive
-                ? "Open a leader to see the score and first tradeoff behind its position."
-                : "Surprise opens a profile — set your home city there to unlock climate deltas and twins with clearer tradeoffs."}
+          <div className="tc-hero-expanded-copy" hidden={heroCompact || undefined}>
+            <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
+              {active
+                ? active.description
+                : comfortLensActive
+                  ? MOST_COMFORTABLE_LENS_SUMMARY
+                  : "Rain shadows, sky islands, fog belts, thermal belts, and other terrain climates most people never hear of. Open a pin, try Surprise me, or start from Most unique."}
             </p>
-          ) : null}
+            {!homeBasePlace && !active ? (
+              <p className="text-xs text-stone-readable mt-1.5 max-w-2xl leading-snug">
+                {comfortLensActive
+                  ? "Open a leader to see the score and first tradeoff behind its position."
+                  : "Surprise opens a profile — set your home city there to unlock climate deltas and twins with clearer tradeoffs."}
+              </p>
+            ) : null}
+          </div>
 
         </div>
         <div className="hero-action-stack">
@@ -2904,7 +2966,10 @@ const HeroCard = memo(function HeroCard({
               />
             </div>
           ) : null}
-          <div className="flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
+          <div
+            className="flex items-center gap-4 shrink-0 text-right justify-end flex-wrap tc-hero-metrics"
+            hidden={heroCompact || undefined}
+          >
             <Metric label="In view" value={count} animated />
             <Metric label="Atlas total" value={PLACE_COUNTS.total} />
             <Metric label="Flagships" value={PLACE_COUNTS.tierA} />
@@ -2912,6 +2977,7 @@ const HeroCard = memo(function HeroCard({
         </div>
       </div>
 
+      <div className="tc-hero-expanded-copy" hidden={heroCompact || undefined}>
       {homeBasePlace ? (
         <div className="tc-hero-home-receipt" role="status" aria-label={`Explorer home base: ${homeBasePlace.name}`}>
           <Home className="tc-hero-home-receipt__icon" aria-hidden />
@@ -3054,7 +3120,9 @@ const HeroCard = memo(function HeroCard({
       <div className="hidden min-[1500px]:block">
         <FieldNoteStrip />
       </div>
+      </div>
     </div>
+    </>
   );
 });
 

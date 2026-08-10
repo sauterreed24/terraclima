@@ -657,6 +657,8 @@ describe("App shell", () => {
     const map = screen.getByTestId("atlas-map-stub");
 
     expect(hero).not.toBeNull();
+    expect(hero).toHaveAttribute("data-compact", "false");
+    expect(hero).toHaveAttribute("data-compact-available", "true");
     const quickPicks = screen.getByRole("group", { name: "Discovery quick picks" });
     expect(quickPicks).toBeInTheDocument();
     expect(quickPicks).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more discovery paths.");
@@ -708,6 +710,78 @@ describe("App shell", () => {
     expect(leaderCard).toHaveAttribute("title", leaderCard.getAttribute("aria-label"));
     expect(compareLeaders).toHaveAttribute("title", "Compare current leaders: 4 places");
     expect(saveFinalists).toHaveAttribute("title", "Save 4 Scout Brief finalists to your shortlist");
+  }, APP_SHELL_TIMEOUT_MS);
+
+  it("collapses the stacked Explorer hero into sticky chrome once the map claims the viewport", () => {
+    mockViewport(390);
+    type ObserverCallback = IntersectionObserverCallback;
+    const observers: Array<{ callback: ObserverCallback; elements: Set<Element> }> = [];
+    class MockIntersectionObserver {
+      callback: ObserverCallback;
+      elements = new Set<Element>();
+      constructor(callback: ObserverCallback) {
+        this.callback = callback;
+        observers.push(this);
+      }
+      observe(element: Element) {
+        this.elements.add(element);
+      }
+      unobserve(element: Element) {
+        this.elements.delete(element);
+      }
+      disconnect() {
+        this.elements.clear();
+      }
+      takeRecords(): IntersectionObserverEntry[] {
+        return [];
+      }
+      root = null;
+      rootMargin = "";
+      thresholds: number[] = [];
+    }
+    const originalIO = window.IntersectionObserver;
+    window.IntersectionObserver = MockIntersectionObserver as unknown as typeof IntersectionObserver;
+
+    try {
+      renderApp();
+      const hero = document.querySelector(".panel-hero");
+      const sentinel = document.querySelector(".tc-hero-compact-sentinel");
+      expect(hero).not.toBeNull();
+      expect(sentinel).not.toBeNull();
+      expect(hero).toHaveAttribute("data-compact", "false");
+      expect(observers.length).toBeGreaterThan(0);
+
+      act(() => {
+        for (const observer of observers) {
+          if (!observer.elements.has(sentinel as Element)) continue;
+          observer.callback(
+            [
+              {
+                isIntersecting: false,
+                target: sentinel as Element,
+                intersectionRatio: 0,
+                boundingClientRect: sentinel!.getBoundingClientRect(),
+                intersectionRect: new DOMRect(),
+                rootBounds: null,
+                time: 0,
+              } as IntersectionObserverEntry,
+            ],
+            observer as unknown as IntersectionObserver,
+          );
+        }
+      });
+
+      expect(hero).toHaveAttribute("data-compact", "true");
+      expect(screen.queryByRole("group", { name: "Discovery quick picks" })).not.toBeInTheDocument();
+      const expand = screen.getByRole("button", { name: "Expand Explorer header" });
+      expect(expand).toHaveAttribute("aria-pressed", "false");
+      fireEvent.click(expand);
+      expect(hero).toHaveAttribute("data-compact", "false");
+      expect(screen.getByRole("group", { name: "Discovery quick picks" })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Collapse Explorer header" })).toHaveAttribute("aria-pressed", "true");
+    } finally {
+      window.IntersectionObserver = originalIO;
+    }
   }, APP_SHELL_TIMEOUT_MS);
 
   it("anchors the desktop Scout brief jump to the relocation workbench", () => {

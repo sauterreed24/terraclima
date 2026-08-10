@@ -56,6 +56,7 @@ import {
   type AtlasClusterItem,
 } from "../lib/atlas-map-cluster";
 import { layoutAtlasMapPins } from "../lib/atlas-map-pin-layout";
+import { defaultRankBadgeOffset, layoutRankBadges } from "../lib/atlas-map-rank-badges";
 import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
 import { computePinLabelModes, type MapPinLabelMode } from "../lib/atlas-map-label-visibility";
 import {
@@ -97,8 +98,9 @@ const DESKTOP_CLUSTER_LABEL_ZOOM_CUTOFF = 1.45;
 const DESKTOP_MARKER_CULL_ZOOM_CUTOFF = 1.45;
 const MOBILE_PIN_MIN_SPACING_PX = 46;
 const DESKTOP_PIN_MIN_SPACING_PX = 38;
-const MOBILE_PIN_MAX_OFFSET_PX = 40;
-const DESKTOP_PIN_MAX_OFFSET_PX = 36;
+/** Slightly wider spread budget so highland comfort clusters can clear glyph + badge seats. */
+const MOBILE_PIN_MAX_OFFSET_PX = 48;
+const DESKTOP_PIN_MAX_OFFSET_PX = 44;
 const CLUSTER_VISUAL_BANDS = [
   { max: 3, band: "small", outerR: 18, innerR: 12.5, fontSize: 12, textY: 4 },
   { max: 8, band: "standard", outerR: 21, innerR: 15, fontSize: 13, textY: 4.5 },
@@ -127,6 +129,10 @@ type RenderedClusterPoint = ClusterPoint & {
   offsetPx: number;
   needsLeader: boolean;
   crowded: boolean;
+  /** Rank-badge offset in inverse-scaled marker local space (featured pins only). */
+  badgeDx?: number;
+  badgeDy?: number;
+  badgeFanned?: boolean;
 };
 
 type ClimateRibbon = {
@@ -1053,7 +1059,7 @@ export const AtlasMap = memo(function AtlasMap({
       },
     );
 
-    return layout.pins.map(pin => ({
+    const basePins = layout.pins.map(pin => ({
       ...pin.point,
       x: pin.x,
       y: pin.y,
@@ -1062,7 +1068,50 @@ export const AtlasMap = memo(function AtlasMap({
       offsetPx: pin.offsetPx,
       needsLeader: pin.needsLeader,
       crowded: pin.crowded,
+      screenX: pin.screenX,
+      screenY: pin.screenY,
     }));
+
+    const featuredForBadges = basePins
+      .map(pt => {
+        const rank = featuredRankById.get(pt.place.id);
+        if (!rank) return null;
+        const baseSize = pt.place.tier === "A" ? 7.2 : pt.place.tier === "B" ? 5.4 : 4.35;
+        return {
+          id: pt.place.id,
+          screenX: pt.screenX,
+          screenY: pt.screenY,
+          rank,
+          pinRadiusPx: baseSize,
+          crowded: pt.crowded,
+        };
+      })
+      .filter((row): row is NonNullable<typeof row> => row != null);
+
+    const badgeById = new Map(
+      layoutRankBadges(featuredForBadges, {
+        minSpacingPx: coarsePointer ? 22 : 20,
+        proximityPx: coarsePointer ? 64 : 56,
+      }).map(badge => [badge.id, badge]),
+    );
+
+    return basePins.map(pt => {
+      const badge = badgeById.get(pt.place.id);
+      return {
+        place: pt.place,
+        x: pt.x,
+        y: pt.y,
+        id: pt.id,
+        anchorX: pt.anchorX,
+        anchorY: pt.anchorY,
+        offsetPx: pt.offsetPx,
+        needsLeader: pt.needsLeader,
+        crowded: pt.crowded,
+        badgeDx: badge?.dx,
+        badgeDy: badge?.dy,
+        badgeFanned: badge?.fanned,
+      };
+    });
   }, [markerPoints, settledView, coarsePointer, selectedId, featuredRankById]);
 
   const pinLabelModes = useMemo(
@@ -2768,13 +2817,18 @@ const Marker = memo(function Marker({
   pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
   onSelect, onHoverEnter, onFocusEnter, onLeave, onFocusLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
 }: MarkerProps) {
-  const { place, x, y, needsLeader, crowded } = pt;
+  const { place, x, y, needsLeader, crowded, badgeDx, badgeDy, badgeFanned } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
   const color = TONE[tone];
   const signature = useMemo(() => getPlaceVisualSignature(place), [place]);
 
   const baseSize = place.tier === "A" ? 7.2 : place.tier === "B" ? 5.4 : 4.35;
   const r = isActive ? baseSize + 1.8 : isHover ? baseSize + 1.2 : baseSize;
+  const badgeSeat = featuredRank
+    ? (badgeDx != null && badgeDy != null
+        ? { dx: badgeDx, dy: badgeDy }
+        : defaultRankBadgeOffset(r))
+    : null;
 
   const inv = 1 / k;
   const subLine = placeMapSecondaryLine(place);
@@ -2936,7 +2990,11 @@ const Marker = memo(function Marker({
               className={showOrbit ? "map-rank-halo__orbit" : undefined}
             />
             <circle r={r + 8.2} fill="rgba(255, 198, 96, 0.1)" stroke="rgba(255, 238, 190, 0.55)" strokeWidth={1.05} />
-            <g className="map-rank-badge" transform={`translate(${r + 12} ${-(r + 13)})`}>
+            <g
+              className="map-rank-badge"
+              data-badge-fanned={badgeFanned ? "true" : "false"}
+              transform={`translate(${badgeSeat!.dx} ${badgeSeat!.dy})`}
+            >
               <circle r="8.5" fill="rgba(255, 228, 166, 0.96)" stroke="rgba(8,14,24,0.92)" strokeWidth="1.15" />
               <text
                 textAnchor="middle"
@@ -3135,6 +3193,9 @@ const Marker = memo(function Marker({
   prev.pt.anchorY === next.pt.anchorY &&
   prev.pt.needsLeader === next.pt.needsLeader &&
   prev.pt.crowded === next.pt.crowded &&
+  prev.pt.badgeDx === next.pt.badgeDx &&
+  prev.pt.badgeDy === next.pt.badgeDy &&
+  prev.pt.badgeFanned === next.pt.badgeFanned &&
   prev.pt.place === next.pt.place
 );
 

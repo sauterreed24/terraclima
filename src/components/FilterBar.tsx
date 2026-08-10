@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, type Dispatch, type SetStateAction } from "react";
+import { memo, useCallback, useRef, type Dispatch, type MouseEvent, type SetStateAction } from "react";
 import { ARCHETYPE_LABELS, type Country, type MicroclimateArchetype, type RiskLevel, type ScenarioId } from "../types";
 import {
   applyLifestyleBundle,
@@ -385,8 +385,13 @@ export const FilterBar = memo(function FilterBar({
         </div>
       ) : null}
 
-      <div>
-        <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Country</div>
+      <details className="tc-filter-sheet-details" data-filter-group="country">
+        <summary className="tc-filter-sheet-details__summary">
+          <span>
+            Country
+            {filters.countries.size > 0 ? ` · ${filters.countries.size}` : ""}
+          </span>
+        </summary>
         <div className="flex flex-wrap gap-1.5">
           {(["USA", "Mexico", "Canada"] as Country[]).map(c => {
             const isActive = filters.countries.has(c);
@@ -409,23 +414,30 @@ export const FilterBar = memo(function FilterBar({
             );
           })}
         </div>
-      </div>
+      </details>
 
-      <div>
-        <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 flex items-center justify-between">
-          <span>Archetype</span>
-          {filters.archetypes.size > 0 && (
+      <details className="tc-filter-sheet-details" data-filter-group="archetype">
+        <summary className="tc-filter-sheet-details__summary tc-filter-sheet-details__summary--split">
+          <span>
+            Archetype
+            {filters.archetypes.size > 0 ? ` · ${filters.archetypes.size}` : ""}
+          </span>
+          {filters.archetypes.size > 0 ? (
             <button
               type="button"
-              onClick={() => setFilters(f => ({ ...f, archetypes: new Set() }))}
-              className="text-stone hover:text-ice normal-case text-[11px] tracking-normal"
+              onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                event.preventDefault();
+                event.stopPropagation();
+                setFilters(f => ({ ...f, archetypes: new Set() }));
+              }}
+              className="text-stone hover:text-ice normal-case text-[11px] tracking-normal font-semibold"
               aria-label={clearArchetypesLabel}
               title={clearArchetypesLabel}
             >
               clear · {filters.archetypes.size}
             </button>
-          )}
-        </div>
+          ) : null}
+        </summary>
         <div
           className={`flex flex-wrap gap-1.5 overflow-y-auto pr-1 no-scrollbar ${
             variant === "sheet" ? "max-h-[min(52dvh,22rem)]" : "max-h-56"
@@ -450,7 +462,7 @@ export const FilterBar = memo(function FilterBar({
             );
           })}
         </div>
-      </div>
+      </details>
     </div>
   );
 });

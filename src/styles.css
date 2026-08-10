@@ -819,6 +819,10 @@
     text-transform: uppercase;
     color: var(--color-stone-readable);
   }
+  .tc-filter-sheet-details__summary--split {
+    justify-content: space-between;
+    gap: 0.65rem;
+  }
   .tc-filter-sheet-details__summary::-webkit-details-marker {
     display: none;
   }
@@ -827,6 +831,11 @@
   }
   .tc-filter-sheet-details > :not(summary) {
     padding: 0.65rem 0.75rem 0.75rem;
+  }
+  /* Dock + sheet: Country / Archetype groups collapse by default so the long
+     30+ archetype chip wall stops dominating vertical scroll. */
+  .atlas-filter-dock .tc-filter-sheet-details {
+    margin-bottom: 0.55rem;
   }
 
   .climate-signal-rail {
@@ -11110,6 +11119,16 @@ html[data-theme="dark"] .panel-warm {
     0 12px 36px -22px rgba(0, 0, 0, 0.55);
 }
 
+html[data-theme="dark"] .tc-hero-compact-toggle {
+  background: rgba(18, 28, 40, 0.72);
+  border-color: rgba(122, 212, 240, 0.28);
+  color: rgba(214, 228, 240, 0.82);
+}
+html[data-theme="dark"] .tc-hero-compact-toggle:hover {
+  color: rgba(240, 246, 252, 0.96);
+  border-color: rgba(122, 212, 240, 0.48);
+}
+
 html[data-theme="dark"] .panel-hero {
   background:
     linear-gradient(155deg, rgba(32, 42, 68, 0.96) 0%, rgba(24, 32, 54, 0.94) 36%, rgba(18, 24, 42, 0.92) 100%),
@@ -12544,6 +12563,92 @@ html[data-theme="dark"] .tc-hero-credit {
     flex-shrink: 0;
   }
 
+  /* Hero scroll-collapse sentinel — zero-height marker above the sticky chrome. */
+  .tc-hero-compact-sentinel {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .tc-hero-compact-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.28rem;
+    min-height: 2rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(122, 212, 240, 0.34);
+    background: rgba(255, 255, 255, 0.62);
+    color: var(--color-stone-readable);
+    font-size: 0.66rem;
+    font-weight: 750;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tc-hero-compact-toggle:hover {
+    color: var(--color-ice);
+    border-color: rgba(26, 143, 168, 0.45);
+  }
+  .tc-hero-compact-toggle:focus-visible {
+    outline: 2px solid rgba(26, 143, 168, 0.62);
+    outline-offset: 2px;
+  }
+
+  /* Compact sticky hero: reclaim map canvas once the user scrolls past the
+     first-viewport marketing block on stacked Explorer layouts. */
+  @media (max-width: 1499px) {
+    .panel-hero[data-compact="true"] {
+      position: sticky;
+      /* Sit just under the sticky site header instead of covering Terraclima chrome. */
+      top: 4.75rem;
+      z-index: 24;
+      padding: 0.55rem 0.8rem !important;
+      gap: 0.45rem !important;
+      box-shadow:
+        0 1px 0 rgba(255, 255, 255, 1) inset,
+        0 0 0 1px rgba(var(--hero-accent-rgb), 0.14) inset,
+        0 14px 28px -18px rgba(26, 143, 168, 0.22);
+    }
+    .panel-hero[data-compact="true"] .tc-hero-expanded-copy,
+    .panel-hero[data-compact="true"] .tc-hero-metrics {
+      display: none;
+    }
+    .panel-hero[data-compact="true"] h1 {
+      font-size: 1.05rem;
+      line-height: 1.2;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .panel-hero[data-compact="true"] .hero-action-stack {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.45rem;
+    }
+    .panel-hero[data-compact="true"] .hero-action-stack .btn-ghost,
+    .panel-hero[data-compact="true"] .hero-action-stack .btn-primary {
+      min-height: 2.5rem;
+      width: auto;
+    }
+    .panel-hero[data-compact="true"] .hero-more-menu__panel {
+      position: absolute;
+      right: 0;
+      z-index: 30;
+      min-width: 12rem;
+      margin-top: 0.35rem;
+      padding: 0.45rem;
+      border-radius: 0.7rem;
+      border: 1px solid rgba(122, 212, 240, 0.28);
+      background: color-mix(in srgb, var(--color-slate-1) 96%, white);
+      box-shadow: 0 16px 28px -18px rgba(26, 21, 17, 0.45);
+    }
+  }
+
   /* Hero quick-picks row */
   .hero-quick-picks {
     display: flex;
@@ -12551,6 +12656,11 @@ html[data-theme="dark"] .tc-hero-credit {
     gap: 0.45rem;
     min-width: 0;
     max-width: 100%;
+  }
+  .tc-hero-expanded-copy {
+    display: grid;
+    gap: inherit;
+    min-width: 0;
   }
   .hero-action-stack {
     display: flex;

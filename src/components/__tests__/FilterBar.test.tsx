@@ -529,12 +529,30 @@ describe("FilterBar clear all filters", () => {
     expect(result.fitPresets).toEqual(new Set(["cool-summers"]));
   });
 
+  it("collapses Country and Archetype chip groups by default", () => {
+    renderFilterBar("F");
+
+    const country = document.querySelector<HTMLDetailsElement>('[data-filter-group="country"]');
+    const archetype = document.querySelector<HTMLDetailsElement>('[data-filter-group="archetype"]');
+    expect(country).not.toBeNull();
+    expect(archetype).not.toBeNull();
+    expect(country!.open).toBe(false);
+    expect(archetype!.open).toBe(false);
+    expect(country!.querySelector("summary")).toHaveTextContent("Country");
+    expect(archetype!.querySelector("summary")).toHaveTextContent("Archetype");
+  });
+
   it("labels compact country chips with explicit filter actions", () => {
     const setFilters = vi.fn();
     const state = createEmptyFilterState();
     state.countries = new Set(["USA"]);
 
     renderFilterBar("F", { filters: state, setFilters });
+
+    const country = document.querySelector<HTMLDetailsElement>('[data-filter-group="country"]');
+    expect(country).not.toBeNull();
+    expect(country!.querySelector("summary")).toHaveTextContent("Country · 1");
+    fireEvent.click(country!.querySelector("summary")!);
 
     const usa = screen.getByRole("button", { name: "Remove United States country filter" });
     expect(usa).toHaveTextContent("USA");
@@ -564,6 +582,10 @@ describe("FilterBar clear all filters", () => {
     const clearPresets = screen.getByRole("button", { name: "Clear Live Finder presets" });
     expect(clearPresets).toHaveTextContent("Clear presets");
     expect(clearPresets).toHaveAttribute("title", "Clear Live Finder presets");
+
+    const archetype = document.querySelector<HTMLDetailsElement>('[data-filter-group="archetype"]');
+    expect(archetype).not.toBeNull();
+    expect(archetype!.querySelector("summary")).toHaveTextContent("Archetype · 2");
 
     const clearArchetypes = screen.getByRole("button", { name: "Clear 2 archetype filters" });
     expect(clearArchetypes).toHaveTextContent("clear · 2");
