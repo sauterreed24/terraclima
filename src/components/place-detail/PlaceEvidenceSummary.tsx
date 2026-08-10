@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import { BookOpen, ChevronDown, ShieldCheck } from "lucide-react";
+import { BookOpen, ChevronDown, Download, ShieldCheck } from "lucide-react";
 import type { Place } from "../../types";
 import {
   buildPlaceEvidenceSummary,
@@ -7,7 +7,10 @@ import {
   type EvidenceClass,
 } from "../../lib/evidence-summary";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "../../data/generated/climate-v2";
+import { RESEARCH_RECEIPTS_BY_ID } from "../../data/generated/research";
+import { groupClaimsByScope, sourcesForClaim } from "../../lib/research/claim-scope";
 import { safeExternalHref } from "../../lib/safe-url";
+import { downloadBlobFile } from "../../lib/download-blob";
 import { useProse } from "../../lib/units";
 
 /**
@@ -23,9 +26,18 @@ export function PlaceEvidenceSummary({
   anchorId?: string;
 }) {
   const summary = buildPlaceEvidenceSummary(place);
+  const receipt = RESEARCH_RECEIPTS_BY_ID[place.id];
+  const claimGroups = receipt ? groupClaimsByScope(receipt) : [];
   const prose = useProse();
   const panelId = useId();
   const [open, setOpen] = useState(false);
+  const exportDossierData = () => {
+    downloadBlobFile(
+      JSON.stringify({ place, researchReceipt: receipt ?? null }, null, 2),
+      `${place.id}-dossier.json`,
+      "application/json",
+    );
+  };
 
   return (
     <section
@@ -54,6 +66,11 @@ export function PlaceEvidenceSummary({
           <span className="tc-evidence-summary__pill" data-tone="sage">
             {summary.completenessLabel} coverage
           </span>
+          {receipt ? (
+            <span className="tc-evidence-summary__pill" data-tone="ice" title={`Research receipt last reviewed ${receipt.reviewedOn}`}>
+              Reviewed {receipt.reviewedOn}
+            </span>
+          ) : null}
           <ChevronDown
             className="w-4 h-4 tc-evidence-summary__chevron"
             data-open={open}
@@ -164,11 +181,81 @@ export function PlaceEvidenceSummary({
             </ul>
           </div>
 
+          {receipt ? (
+            <div className="tc-evidence-summary__sources">
+              <div className="tc-evidence-summary__label flex items-center gap-1.5">
+                <ShieldCheck className="w-3 h-3" aria-hidden />
+                Claim-mapped sources by scope · reviewed {receipt.reviewedOn}
+              </div>
+              <ul className="tc-evidence-summary__source-groups">
+                {claimGroups.map(group => (
+                  <li key={group.scope}>
+                    <div className="tc-evidence-summary__source-kind">
+                      <span className="chip" data-tone="glacier" style={{ fontSize: "10px" }}>
+                        {group.scope}
+                      </span>
+                      <span>{group.claims.length} claim{group.claims.length === 1 ? "" : "s"}</span>
+                    </div>
+                    <ul className="tc-evidence-summary__source-list">
+                      {group.claims.map(claim => {
+                        const claimSources = sourcesForClaim(receipt, claim);
+                        return (
+                          <li key={claim.id}>
+                            {prose(claim.note ?? claim.calculationOrReasoning ?? "Structured field claim, checked against cited sources.")}
+                            {claimSources.length > 0 ? (
+                              <span className="text-stone">
+                                {" — "}
+                                {claimSources.map((source, i) => {
+                                  const href = safeExternalHref(source.url);
+                                  return (
+                                    <span key={source.id}>
+                                      {i > 0 ? " · " : ""}
+                                      {href ? (
+                                        <a
+                                          href={href}
+                                          target="_blank"
+                                          rel="noreferrer noopener"
+                                          className="tc-detail-source-link underline decoration-dotted hover:text-frost"
+                                        >
+                                          {source.publisher}
+                                        </a>
+                                      ) : (
+                                        source.publisher
+                                      )}
+                                    </span>
+                                  );
+                                })}
+                              </span>
+                            ) : null}
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+              {receipt.unresolved.length > 0 ? (
+                <p className="tc-evidence-summary__footnote mt-2">
+                  {receipt.unresolved.length} field{receipt.unresolved.length === 1 ? "" : "s"} flagged for
+                  follow-up research ({receipt.unresolved.map(u => u.issue).join("; ")}); treat those claims as
+                  provisional.
+                </p>
+              ) : null}
+            </div>
+          ) : null}
+
           <p className="tc-evidence-summary__footnote">
             Rankings and fit scores are decision aids for comparison, not objective rankings of
             places as lived experience. Section-level citations support the profile; they do not
             claim every sentence is station-sourced.
           </p>
+
+          <div>
+            <button type="button" className="btn-ghost !text-xs" onClick={exportDossierData}>
+              <Download className="w-3 h-3" aria-hidden />
+              Export raw dossier data (JSON)
+            </button>
+          </div>
         </div>
       ) : null}
     </section>

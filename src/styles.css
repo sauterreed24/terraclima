@@ -8016,6 +8016,18 @@
     }
   }
 
+  /* Decision lens — consolidates the live-here-fit and livability score
+     cards under the residency brief so the reasons/cautions/breakdown for
+     each score sit with the summary, not scattered as repeated cards. */
+  .detail-decision-lens__detail {
+    margin-top: 0.9rem;
+    padding-top: 0.9rem;
+    border-top: 1px dashed rgba(200, 170, 140, 0.35);
+  }
+  .detail-decision-lens__detail-title {
+    opacity: 0.9;
+  }
+
   /* ============================================================ */
   /* Overview spotlight — "what it actually feels like" lead      */
   /* ============================================================ */
@@ -8798,6 +8810,34 @@
   }
   li:first-child > .tc-reading-nav-group {
     margin-top: 0;
+  }
+
+  /* Five-chapter reading nav: only the chapter links show by default; a
+     chapter's section links nest underneath it and only render while that
+     chapter is active or has been explicitly expanded (see
+     PlaceDetailReadingNav). Chapter links read slightly bolder/larger than
+     the nested section links they disclose. */
+  .tc-reading-nav-desktop li + li {
+    margin-top: 0.2rem;
+  }
+  .tc-reading-nav-chapter {
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .tc-reading-nav-nested {
+    margin: 0.2rem 0 0.15rem;
+    padding-left: 0.6rem;
+    border-left: 1px solid var(--tc-inset-border);
+    display: grid;
+    gap: 0.15rem;
+  }
+  .tc-reading-nav-nested-link {
+    font-size: 0.72rem;
+    padding: 0.3rem 0.6rem;
+    opacity: 0.94;
+  }
+  .tc-reading-nav-mobile .tc-reading-nav-nested-link {
+    font-size: 0.7rem;
   }
 
   /* Field dossier — one shell, chapters as editorial stack */

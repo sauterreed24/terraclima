@@ -114,10 +114,13 @@ describe("PlaceDetail overview spotlight", () => {
     expect(screen.getByText("Who lives here happily")).toBeInTheDocument();
     expect(screen.getByText("Who might not")).toBeInTheDocument();
 
-    // The dossier is segmented into acts — the labels appear both as
-    // reading-nav group headers and as in-body zone dividers.
-    expect(screen.getAllByText("The data lab").length).toBeGreaterThan(0);
-    expect(screen.getAllByText("Land & growing").length).toBeGreaterThan(0);
+    // The dossier is segmented into five reading chapters — the chapter
+    // names appear both as reading-nav top-level links and as in-body zone
+    // dividers between chapters.
+    expect(screen.getAllByText("Live or Visit").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Climate & Land").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Risks & Future").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Evidence & Methods").length).toBeGreaterThan(0);
   });
 });
 
@@ -240,7 +243,7 @@ describe("PlaceDetail header accessibility", () => {
     );
   });
 
-  it("surfaces the residency brief in the reading nav", () => {
+  it("surfaces the decision lens in the reading nav once its chapter is open", () => {
     const place = PLACES_BY_ID["sequim-wa"];
     expect(place).toBeTruthy();
 
@@ -251,7 +254,16 @@ describe("PlaceDetail header accessibility", () => {
     );
 
     expect(document.querySelector("#pd-residency-brief")).toHaveTextContent("Residency brief");
-    expect(screen.getAllByRole("link", { name: "Residency brief" })).toHaveLength(2);
+
+    // Only the five chapter links show initially; nested section links
+    // (like "Decision lens") stay collapsed until their chapter is active.
+    expect(screen.queryAllByRole("link", { name: "Decision lens" })).toHaveLength(0);
+
+    const chapterLinks = screen.getAllByRole("link", { name: "Live or Visit" });
+    expect(chapterLinks.length).toBeGreaterThanOrEqual(1);
+    fireEvent.click(chapterLinks[0]);
+
+    expect(screen.getAllByRole("link", { name: "Decision lens" })).toHaveLength(2);
     expect(document.querySelector(".tc-reading-nav-mobile a[href='#pd-residency-brief']")).toBeInTheDocument();
     expect(document.querySelector(".tc-reading-nav-desktop a[href='#pd-residency-brief']")).toBeInTheDocument();
   });
@@ -336,6 +348,31 @@ describe("PlaceDetail header accessibility", () => {
     expect(heading).toHaveAttribute("tabindex", "-1");
     expect(document.activeElement).toBe(heading);
     expect(scrollTo).toHaveBeenCalled();
+  });
+
+  it("scrolls to a legacy pre-reorg #pd-* section hash on open", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+    // "#pd-risk" is a stable anchor id that predates the five-chapter reorg
+    // (it now lives inside the Risks & Future chapter).
+    window.history.replaceState(null, "", "/?p=sequim-wa#pd-risk");
+    const scrollTo = vi.fn();
+    Object.defineProperty(HTMLElement.prototype, "scrollTo", {
+      configurable: true,
+      value: scrollTo,
+    });
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    expect(document.getElementById("pd-risk")).toBeTruthy();
+    expect(scrollTo).toHaveBeenCalled();
+    // The hash itself is left untouched (unlike stale #deep-* hashes) since
+    // the section it points to always exists once the drawer has rendered.
+    expect(window.location.hash).toBe("#pd-risk");
   });
 
   it("reflects compare membership on the Compare button via aria-pressed", () => {

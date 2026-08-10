@@ -160,6 +160,7 @@ export function classifyDossierSection(
   section:
     | "climate-normals"
     | "mechanism"
+    | "risk"
     | "bioclim"
     | "livability"
     | "live-fit"
@@ -175,6 +176,7 @@ export function classifyDossierSection(
     case "climate-normals":
       return "observed-normal";
     case "mechanism":
+    case "risk":
       return "authored-context";
     case "bioclim":
     case "vs-home":
