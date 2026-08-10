@@ -2711,7 +2711,8 @@ const HeroCard = memo(function HeroCard({
       },
       {
         // Match sticky site header so collapse starts once the map claims the viewport.
-        rootMargin: "-4.75rem 0px 0px 0px",
+        // IntersectionObserver only accepts px/% here — rem is rejected at construct time.
+        rootMargin: "-76px 0px 0px 0px",
         threshold: 0,
       },
     );
