@@ -1743,7 +1743,7 @@ export const PLACES_MEXICO: Place[] = [
         winter: "Cool and misty — highs near 20°C, nights near 11°C, drizzle possible any day, and coffee plantations creeping up from the lowlands.",
         spring: "Green explosion — wildflowers in the cloud forest, highs climbing through the low 20s, and the first warm afternoons that feel earned after months of mist.",
         summer: "Rainy season peak — highs near 24°C, afternoon thunderstorms exceeding 200 mm monthly, and saturated slopes that define landslide risk.",
-        autumn: "Mist returns — October rains taper, highs retreating into the low 20s, and the cloud-forest band at its most dramatic on hike days.",
+        autumn: "The fog thickens again through October and November as the rains taper, highs settle back into the low 20s, and mossy courtyards around the centro stay damp well into midday.",
       },
       travelerFit: "Visitors come for cloud-forest hikes, coffee culture, and the literary atmosphere of Mexico's greenest highland capital.",
       residentFit: "It rewards culture seekers and cloud-forest lovers who accept saturated slopes and Veracruz-city humidity as daily texture.",
@@ -2173,7 +2173,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Why this became a comfort-climate magnet",
         paragraphs: [
           "Ajijic offers a rare mix: walkable village life, warm dry-season days, cool nights, lush wet-season renewal, and limited need for heating or cooling in well-designed homes.",
-          "That comfort has a social footprint. Popularity brings traffic, housing pressure, and service strain, so the atlas treats it as a high-comfort place rather than a hidden gem.",
+          "That comfort has a social footprint. Popularity brings traffic, housing pressure, and service strain, so the atlas treats it as a high-comfort place with a well-known reputation, not an undiscovered one.",
         ],
       },
       {

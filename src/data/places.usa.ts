@@ -1455,7 +1455,7 @@ export const PLACES_USA: Place[] = [
     liveSignals: {
       costPressure: 70,
       accessFriction: 24,
-      note: "Santa Fe is service-rich for a high-desert city, but housing pressure, water limits, winter cold, smoke, and hillside fire exposure keep the climate romance grounded.",
+      note: "Santa Fe is service-rich for a high-desert city, but housing pressure, water limits, winter cold, smoke, and hillside fire exposure keep the climate appeal grounded.",
       sources: [
         { label: "City of Santa Fe - municipal services", url: "https://santafenm.gov/" },
         { label: "City of Santa Fe - water conservation context", url: "https://santafenm.gov/public-utilities/water/water-demand-and-conservation" },
@@ -2962,7 +2962,7 @@ export const PLACES_USA: Place[] = [
         id: "marfa-services-water-and-cost",
         title: "The live-here test is services, water, and cost",
         paragraphs: [
-          "Marfa is compact, but it is not easy in the way a larger city is easy. Groceries, specialists, airport access, and many repairs require planning around Alpine, Fort Davis, Midland-Odessa, or El Paso. That access friction keeps the ranking from over-rewarding the climate romance.",
+          "Marfa is compact, but it is not easy in the way a larger city is easy. Groceries, specialists, airport access, and many repairs require planning around Alpine, Fort Davis, Midland-Odessa, or El Paso. That access friction keeps the ranking from over-rewarding the desert-light appeal.",
           "Housing pressure from tourism and the art economy is the other check. The climate is forgiving for a desert edge, but the practical scouting question is whether the household budget, groundwater reality, and service distance still feel acceptable after the first week of beautiful evenings.",
         ],
       },

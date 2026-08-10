@@ -11,6 +11,8 @@ import { PLACES_USA } from "./places.usa";
 import { PLACES_CANADA } from "./places.canada";
 import { PLACES_MEXICO } from "./places.mexico";
 import { TIER_C_POLISH, TIER_C_POLISH_GENERATED, TIER_C_POLISH_SOURCES } from "./places.tier-c-polish";
+import { EXPERIENCE_AUTHORED } from "./places.experience-authored";
+import { SUMMARY_IMMERSIVE_POLISH } from "./places.summary-polish";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
 import { RESEARCH_RECEIPTS_BY_ID } from "./generated/research";
 import housingPressureJson from "./generated/research/housing-pressure-by-id.json";
@@ -121,11 +123,58 @@ function applyResearch(p: Place): Place {
   return applyResearchOverlay(p, RESEARCH_RECEIPTS_BY_ID[p.id]);
 }
 
+/**
+ * Layer authored experience copy onto places that shipped with a partial or
+ * missing `experience` block. Authored experience already present in the
+ * base data files always wins — this only fills fields that are absent, so
+ * a hand-curated place never gets a generated field overwritten underneath
+ * it. Season sub-fields are filled independently of one another.
+ */
+function applyExperienceAuthored(p: Place): Place {
+  const authored = EXPERIENCE_AUTHORED[p.id];
+  if (!authored) return p;
+  const existing = p.experience;
+  const seasons = {
+    winter: existing?.seasons?.winter ?? authored.seasons?.winter,
+    spring: existing?.seasons?.spring ?? authored.seasons?.spring,
+    summer: existing?.seasons?.summer ?? authored.seasons?.summer,
+    autumn: existing?.seasons?.autumn ?? authored.seasons?.autumn,
+  };
+  return {
+    ...p,
+    experience: {
+      feel: existing?.feel ?? authored.feel,
+      seasons,
+      travelerFit: existing?.travelerFit ?? authored.travelerFit,
+      residentFit: existing?.residentFit ?? authored.residentFit,
+      texture: existing?.texture ?? authored.texture,
+    },
+  };
+}
+
+/**
+ * Expand a short summaryImmersive (under the ~80-150 word target band) with
+ * additional place-grounded sentences. Only applies when the authored
+ * summaryImmersive still matches the text this expansion was written
+ * against, so a later hand-edit of the base copy is never silently
+ * clobbered by a stale generated expansion.
+ */
+function applySummaryPolish(p: Place): Place {
+  const polish = SUMMARY_IMMERSIVE_POLISH[p.id];
+  if (!polish) return p;
+  if (p.summaryImmersive !== polish.original) return p;
+  return { ...p, summaryImmersive: polish.expanded };
+}
+
 export const PLACES: Place[] = [
   ...POLISHED_USA,
   ...POLISHED_CANADA,
   ...POLISHED_MEXICO,
-].map(p => applyResearch(applyLivedIndicators(applyClimateV2(p))));
+].map(p =>
+  applyResearch(
+    applyLivedIndicators(applyClimateV2(applySummaryPolish(applyExperienceAuthored(p)))),
+  ),
+);
 
 export const PLACES_BY_ID: Record<string, Place> = Object.fromEntries(
   PLACES.map(p => [p.id, p]),
