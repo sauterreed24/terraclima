@@ -13,6 +13,7 @@ import { PLACES_MEXICO } from "./places.mexico";
 import { TIER_C_POLISH, TIER_C_POLISH_SOURCES } from "./places.tier-c-polish";
 import { TIER_C_INDICATORS } from "./places.tier-c-indicators";
 import { EXPERIENCE_AUTHORED } from "./places.experience-authored";
+import { DEEP_SECTIONS_AUTHORED } from "./places.deep-sections-authored";
 import { SUMMARY_IMMERSIVE_POLISH } from "./places.summary-polish";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "./generated/climate-v2";
 import { RESEARCH_RECEIPTS_BY_ID } from "./generated/research";
@@ -154,6 +155,20 @@ function applyExperienceAuthored(p: Place): Place {
 }
 
 /**
+ * Fill in bespoke deep sections for places that shipped with none. Authored
+ * deepSections already present on the base place (curated in places.*.ts, or
+ * via the Tier C polish overlay above) always win — this only fills the gap
+ * where deepSections is absent or empty, so it never overwrites hand-curated
+ * research content.
+ */
+function applyAuthoredDeepSections(p: Place): Place {
+  if (p.deepSections && p.deepSections.length > 0) return p;
+  const authored = DEEP_SECTIONS_AUTHORED[p.id];
+  if (!authored || authored.length === 0) return p;
+  return { ...p, deepSections: authored };
+}
+
+/**
  * Expand a short summaryImmersive (under the ~80-150 word target band) with
  * additional place-grounded sentences. Only applies when the authored
  * summaryImmersive still matches the text this expansion was written
@@ -173,7 +188,9 @@ export const PLACES: Place[] = [
   ...POLISHED_MEXICO,
 ].map(p =>
   applyResearch(
-    applyLivedIndicators(applyClimateV2(applySummaryPolish(applyExperienceAuthored(p)))),
+    applyLivedIndicators(
+      applyClimateV2(applySummaryPolish(applyAuthoredDeepSections(applyExperienceAuthored(p)))),
+    ),
   ),
 );
 
