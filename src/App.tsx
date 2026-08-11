@@ -2985,11 +2985,13 @@ const HeroCard = memo(function HeroCard({
               />
             </div>
           ) : null}
-          <div className="hero-metrics flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
-            <Metric label="In view" value={count} animated />
-            <Metric label="Atlas total" value={PLACE_COUNTS.total} />
-            <Metric label="Flagships" value={PLACE_COUNTS.tierA} />
-          </div>
+          {!compact ? (
+            <div className="hero-metrics flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
+              <Metric label="In view" value={count} animated />
+              <Metric label="Atlas total" value={PLACE_COUNTS.total} />
+              <Metric label="Flagships" value={PLACE_COUNTS.tierA} />
+            </div>
+          ) : null}
         </div>
       </div>
 

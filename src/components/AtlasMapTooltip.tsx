@@ -242,25 +242,27 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
           </section>
         ) : null}
 
-        <div className="tc-map-hover-footer-row">
-          {onToggleBookmark ? (
-            <div className="tc-map-hover-card__actions pointer-events-auto">
-              <BookmarkButton
-                pinned={pinned}
-                placeName={place.name}
-                onToggle={handlePin}
-                size="compact"
-                ariaContext="from map preview"
-              />
-              <span className="tc-map-hover-footer-cue tc-map-hover-footer-cue--inline">
-                {pinned ? "Pinned · open pin for profile" : "Pin shortlist · open for profile"}
-              </span>
-            </div>
-          ) : (
-            <p className="tc-map-hover-footer-cue">Open pin for full profile</p>
-          )}
-        </div>
+        {!onToggleBookmark ? (
+          <p className="tc-map-hover-footer-cue">Open pin for full profile</p>
+        ) : null}
       </div>
+
+      {onToggleBookmark ? (
+        <div className="tc-map-hover-footer-row tc-map-hover-footer-row--sticky">
+          <div className="tc-map-hover-card__actions pointer-events-auto">
+            <BookmarkButton
+              pinned={pinned}
+              placeName={place.name}
+              onToggle={handlePin}
+              size="compact"
+              ariaContext="from map preview"
+            />
+            <span className="tc-map-hover-footer-cue tc-map-hover-footer-cue--inline">
+              {pinned ? "Pinned · open pin for profile" : "Pin shortlist · open for profile"}
+            </span>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 });
