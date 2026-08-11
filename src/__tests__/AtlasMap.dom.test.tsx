@@ -75,6 +75,9 @@ function renderMap(
     selectedId?: string;
     onEmptyRecovery?: () => void;
     emptyRecoveryLabel?: string;
+    bookmarkIds?: ReadonlySet<string>;
+    onToggleBookmark?: (id: string) => void;
+    onMapEngaged?: () => void;
   } = {},
 ) {
   return render(
@@ -87,6 +90,9 @@ function renderMap(
         featuredLabel={options.featuredLabel}
         onEmptyRecovery={options.onEmptyRecovery}
         emptyRecoveryLabel={options.emptyRecoveryLabel}
+        bookmarkIds={options.bookmarkIds}
+        onToggleBookmark={options.onToggleBookmark}
+        onMapEngaged={options.onMapEngaged}
       />
     </UnitProvider>,
   );
@@ -536,6 +542,46 @@ describe("AtlasMap DOM controls", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it("pins a place to the shortlist from the rich hover card without opening the dossier", async () => {
+    vi.useFakeTimers();
+    try {
+      setCoarsePointer(false);
+      const onSelect = vi.fn();
+      const onToggleBookmark = vi.fn();
+      renderMap(onSelect, [], defaultMapPlaces(), {
+        bookmarkIds: new Set(),
+        onToggleBookmark,
+      });
+
+      const marker = screen.getByRole("button", { name: /Alpha Valley/ });
+      fireEvent.pointerEnter(marker, { pointerType: "mouse" });
+      await act(async () => {
+        vi.advanceTimersByTime(460);
+      });
+
+      const richPreview = screen.getByRole("tooltip");
+      expect(richPreview).toHaveAttribute("data-interactive", "true");
+      expect(richPreview).toHaveTextContent("Pin shortlist · open for profile");
+      fireEvent.click(within(richPreview).getByRole("button", { name: /Pin Alpha Valley to your shortlist/ }));
+      expect(onToggleBookmark).toHaveBeenCalledWith("a");
+      expect(onSelect).not.toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("shift-clicks a map pin to shortlist without opening the dossier", () => {
+    setCoarsePointer(false);
+    const onSelect = vi.fn();
+    const onToggleBookmark = vi.fn();
+    renderMap(onSelect, [], defaultMapPlaces(), { onToggleBookmark });
+
+    const marker = screen.getByRole("button", { name: /Alpha Valley/ });
+    fireEvent.click(marker, { shiftKey: true });
+    expect(onToggleBookmark).toHaveBeenCalledWith("a");
+    expect(onSelect).not.toHaveBeenCalled();
   });
 
   it("exposes quadrant placement attrs and keeps the entrance class motion-safe", async () => {

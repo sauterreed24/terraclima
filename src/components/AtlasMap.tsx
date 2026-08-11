@@ -86,19 +86,24 @@ interface Props {
   featuredLabel?: string;
   onEmptyRecovery?: () => void;
   emptyRecoveryLabel?: string;
+  bookmarkIds?: ReadonlySet<string>;
+  onToggleBookmark?: (id: string) => void;
+  onMapEngaged?: () => void;
   width?: number;
   height?: number;
 }
 
 const MOBILE_CLUSTER_RADIUS_PX = 48;
 const DESKTOP_CLUSTER_RADIUS_PX = 36;
-const MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF = 1.65;
-const DESKTOP_CLUSTER_LABEL_ZOOM_CUTOFF = 1.45;
-const DESKTOP_MARKER_CULL_ZOOM_CUTOFF = 1.45;
-const MOBILE_PIN_MIN_SPACING_PX = 46;
-const DESKTOP_PIN_MIN_SPACING_PX = 38;
-const MOBILE_PIN_MAX_OFFSET_PX = 40;
-const DESKTOP_PIN_MAX_OFFSET_PX = 36;
+const MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF = 1.95;
+const DESKTOP_CLUSTER_LABEL_ZOOM_CUTOFF = 1.7;
+const DESKTOP_MARKER_CULL_ZOOM_CUTOFF = 1.7;
+const MOBILE_PIN_MIN_SPACING_PX = 48;
+const DESKTOP_PIN_MIN_SPACING_PX = 40;
+const MOBILE_PIN_MAX_OFFSET_PX = 54;
+const DESKTOP_PIN_MAX_OFFSET_PX = 50;
+const MOBILE_CLUSTER_ENABLE_MIN_POINTS = 18;
+const DESKTOP_CLUSTER_ENABLE_MIN_POINTS = 60;
 const CLUSTER_VISUAL_BANDS = [
   { max: 3, band: "small", outerR: 18, innerR: 12.5, fontSize: 12, textY: 4 },
   { max: 8, band: "standard", outerR: 21, innerR: 15, fontSize: 13, textY: 4.5 },
@@ -361,6 +366,9 @@ export const AtlasMap = memo(function AtlasMap({
   featuredLabel,
   onEmptyRecovery,
   emptyRecoveryLabel = "Reset Explorer",
+  bookmarkIds,
+  onToggleBookmark,
+  onMapEngaged,
   width: widthProp = 820,
   height: heightProp = 520,
 }: Props) {
@@ -993,8 +1001,14 @@ export const AtlasMap = memo(function AtlasMap({
   const clusterRadiusPx = coarsePointer ? MOBILE_CLUSTER_RADIUS_PX : DESKTOP_CLUSTER_RADIUS_PX;
   const clusterZoomCutoff = coarsePointer ? MOBILE_CLUSTER_LABEL_ZOOM_CUTOFF : DESKTOP_CLUSTER_LABEL_ZOOM_CUTOFF;
   const clusterEnabled =
-    pts.length > (coarsePointer ? 18 : 90) &&
+    pts.length > (coarsePointer ? MOBILE_CLUSTER_ENABLE_MIN_POINTS : DESKTOP_CLUSTER_ENABLE_MIN_POINTS) &&
     (settledView.k < clusterZoomCutoff || (coarsePointer && settledView.k >= MAX_ZOOM * 0.96));
+  const mapEngagedRef = useRef(false);
+  const notifyMapEngaged = useCallback(() => {
+    if (mapEngagedRef.current) return;
+    mapEngagedRef.current = true;
+    onMapEngaged?.();
+  }, [onMapEngaged]);
   const renderItems = useMemo(
     () => clusterMapPoints(clusterSourcePoints, {
       enabled: clusterEnabled,
@@ -1037,6 +1051,10 @@ export const AtlasMap = memo(function AtlasMap({
   }, [markerPointsAll, coarsePointer, settledView, width, height, selectedId]);
 
   const laidOutMarkerPoints = useMemo<RenderedClusterPoint[]>(() => {
+    const baseMaxOffset = coarsePointer ? MOBILE_PIN_MAX_OFFSET_PX : DESKTOP_PIN_MAX_OFFSET_PX;
+    // Mid-zoom is where highland stacks hurt most: give the collision pass more
+    // room once clustering has released pins but labels still compete.
+    const midZoomBoost = settledView.k >= 1.15 && settledView.k < 2.9 ? (coarsePointer ? 14 : 12) : 0;
     const layout = layoutAtlasMapPins(
       markerPoints.map(pt => ({
         ...pt,
@@ -1047,8 +1065,8 @@ export const AtlasMap = memo(function AtlasMap({
         enabled: markerPoints.length > 1,
         view: settledView,
         minSpacingPx: coarsePointer ? MOBILE_PIN_MIN_SPACING_PX : DESKTOP_PIN_MIN_SPACING_PX,
-        maxOffsetPx: coarsePointer ? MOBILE_PIN_MAX_OFFSET_PX : DESKTOP_PIN_MAX_OFFSET_PX,
-        iterations: coarsePointer ? 14 : 10,
+        maxOffsetPx: baseMaxOffset + midZoomBoost,
+        iterations: coarsePointer ? 16 : 12,
         leaderThresholdPx: coarsePointer ? 5 : 4,
       },
     );
@@ -1208,18 +1226,20 @@ export const AtlasMap = memo(function AtlasMap({
     if (lastPanSelectionRef.current === id) {
       lastPanSelectionRef.current = null;
     }
+    notifyMapEngaged();
     onSelect(id);
-  }, [onSelect]);
+  }, [notifyMapEngaged, onSelect]);
 
   const syncShellGesturing = useCallback(() => {
     // Pan must hide hover cards / leaders once the drag threshold is crossed —
     // pinch and wheel already did; one-finger / mouse drag used to leave them live.
-    setShellGesturing(
+    const gesturing =
       pinchRef.current !== null
       || wheelActiveRef.current
-      || (dragRef.current.active && dragRef.current.moved),
-    );
-  }, [setShellGesturing]);
+      || (dragRef.current.active && dragRef.current.moved);
+    if (gesturing) notifyMapEngaged();
+    setShellGesturing(gesturing);
+  }, [notifyMapEngaged, setShellGesturing]);
 
   const scheduleWheelGestureEnd = useCallback(() => {
     if (wheelIdleTimerRef.current) clearTimeout(wheelIdleTimerRef.current);
@@ -1797,6 +1817,7 @@ export const AtlasMap = memo(function AtlasMap({
 
   const onMarkerHoverEnter = useCallback((id: string, x: number, y: number) => {
     cancelHoverClear();
+    notifyMapEngaged();
     setHoverId(id);
     updateTooltip({ x, y });
     syncActiveLeader(id);
@@ -1809,7 +1830,7 @@ export const AtlasMap = memo(function AtlasMap({
     }
     tooltipInputRef.current = "pointer";
     scheduleTooltipRich();
-  }, [cancelHoverClear, cancelTooltipDwell, scheduleTooltipRich, updateTooltip, syncActiveLeader]);
+  }, [cancelHoverClear, cancelTooltipDwell, notifyMapEngaged, scheduleTooltipRich, updateTooltip, syncActiveLeader]);
   /** Keyboard focus shows the compact peek only — never auto-promotes to full. */
   const onMarkerFocusEnter = useCallback((id: string, x: number, y: number) => {
     cancelHoverClear();
@@ -1843,6 +1864,7 @@ export const AtlasMap = memo(function AtlasMap({
         richEffects={richEffects}
         isRovingFocused={pt.place.id === effectiveFocusedMarkerId}
         onSelect={selectFromMap}
+        onToggleBookmark={onToggleBookmark}
         onHoverEnter={onMarkerHoverEnter}
         onFocusEnter={onMarkerFocusEnter}
         onLeave={scheduleHoverClear}
@@ -2579,6 +2601,8 @@ export const AtlasMap = memo(function AtlasMap({
           yPct={clusterPickerScreen.yPct}
           mapHeight={height}
           featuredRankById={featuredRankById}
+          bookmarkIds={bookmarkIds}
+          onToggleBookmark={onToggleBookmark}
           onClose={() => setClusterPicker(null)}
           onSelect={(id) => {
             setClusterPicker(null);
@@ -2597,6 +2621,10 @@ export const AtlasMap = memo(function AtlasMap({
           featuredRank={featuredRankById.get(hoverPlace.id)}
           featuredLabel={featuredLabel}
           variant={tooltipVariant}
+          pinned={bookmarkIds?.has(hoverPlace.id) ?? false}
+          onToggleBookmark={onToggleBookmark ? () => onToggleBookmark(hoverPlace.id) : undefined}
+          onPreviewPointerEnter={cancelHoverClear}
+          onPreviewPointerLeave={scheduleHoverClear}
         />
       )}
     </div>
@@ -2620,6 +2648,7 @@ interface MarkerProps {
    * Tab focus among all visible markers. */
   isRovingFocused: boolean;
   onSelect: (id: string) => void;
+  onToggleBookmark?: (id: string) => void;
   /** Stable hover enter — Marker passes place id + geographic anchor. */
   onHoverEnter: (id: string, x: number, y: number) => void;
   /** Keyboard focus enter — compact peek only (no dwell promotion). */
@@ -2766,7 +2795,7 @@ const ClusterMarker = memo(function ClusterMarker({
 
 const Marker = memo(function Marker({
   pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
-  onSelect, onHoverEnter, onFocusEnter, onLeave, onFocusLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
+  onSelect, onToggleBookmark, onHoverEnter, onFocusEnter, onLeave, onFocusLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
 }: MarkerProps) {
   const { place, x, y, needsLeader, crowded } = pt;
   const tone = ARCHETYPE_BY_ID[place.archetypes[0]]?.tone ?? "glacier";
@@ -2821,9 +2850,16 @@ const Marker = memo(function Marker({
     (e: React.SyntheticEvent) => {
       e.stopPropagation();
       if (shouldSuppressTouchActivation()) return;
+      const mod = "altKey" in e || "metaKey" in e || "shiftKey" in e
+        ? e as React.MouseEvent | React.KeyboardEvent
+        : null;
+      if (mod && onToggleBookmark && (mod.altKey || mod.metaKey || mod.shiftKey)) {
+        onToggleBookmark(place.id);
+        return;
+      }
       onSelect(place.id);
     },
-    [onSelect, place.id, shouldSuppressTouchActivation],
+    [onSelect, onToggleBookmark, place.id, shouldSuppressTouchActivation],
   );
 
   const stopPan = useCallback((e: React.PointerEvent) => {
@@ -2844,7 +2880,18 @@ const Marker = memo(function Marker({
         case " ":
           e.preventDefault();
           e.stopPropagation();
+          if (onToggleBookmark && (e.altKey || e.metaKey || e.shiftKey)) {
+            onToggleBookmark(place.id);
+            return;
+          }
           onSelect(place.id);
+          return;
+        case "p":
+        case "P":
+          if (!onToggleBookmark) return;
+          e.preventDefault();
+          e.stopPropagation();
+          onToggleBookmark(place.id);
           return;
         case "ArrowLeft":
           e.preventDefault();
@@ -2880,7 +2927,7 @@ const Marker = memo(function Marker({
           return;
       }
     },
-    [onSelect, place.id, onArrow, onHomeEnd],
+    [onSelect, onToggleBookmark, place.id, onArrow, onHomeEnd],
   );
 
   const onMarkerFocus = useCallback(() => {
@@ -2891,10 +2938,11 @@ const Marker = memo(function Marker({
     onFocusLeave();
   }, [onFocusLeave]);
 
+  const pinHint = onToggleBookmark ? " Shift-click or press P to pin to shortlist." : "";
   const ariaLabelBase =
     subLine.length > 0
-      ? `${place.name}, ${subLine}. Open full profile.`
-      : `Open full profile for ${place.name}`;
+      ? `${place.name}, ${subLine}. Open full profile.${pinHint}`
+      : `Open full profile for ${place.name}.${pinHint}`;
   const ariaLabel = featuredRank ? `Current rank #${featuredRank}. ${ariaLabelBase}` : ariaLabelBase;
   const pinLod = showAura ? "full" : "glyph";
 
@@ -3113,6 +3161,7 @@ const Marker = memo(function Marker({
   );
 }, (prev, next) =>
   prev.onSelect === next.onSelect &&
+  prev.onToggleBookmark === next.onToggleBookmark &&
   prev.onHoverEnter === next.onHoverEnter &&
   prev.onFocusEnter === next.onFocusEnter &&
   prev.onLeave === next.onLeave &&

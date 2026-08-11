@@ -1,4 +1,4 @@
-import { lazy, memo, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { lazy, memo, startTransition, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
@@ -622,6 +622,60 @@ export default function App() {
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
   /** Scout Board / Living Compass / livability rails stay collapsed until asked for. */
   const [scoutToolsOpen, setScoutToolsOpen] = useState(false);
+  const [heroCompact, setHeroCompact] = useState(false);
+  const [heroCompactPinnedOpen, setHeroCompactPinnedOpen] = useState(false);
+  const mapStageRef = useRef<HTMLDivElement>(null);
+  const explorerWideMapSplit = useMediaQuery("(min-width: 1500px)");
+
+  useEffect(() => {
+    if (view !== "explorer" || explorerWideMapSplit) {
+      startTransition(() => {
+        setHeroCompact(false);
+        setHeroCompactPinnedOpen(false);
+      });
+      return;
+    }
+    const stage = mapStageRef.current;
+    if (!stage) return;
+    const update = () => {
+      if (heroCompactPinnedOpen) {
+        startTransition(() => setHeroCompact(false));
+        return;
+      }
+      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      const top = stage.getBoundingClientRect().top;
+      // Wait for real scroll toward the map — stacked layouts often show the
+      // map partly in the first viewport without the user having engaged yet.
+      const next = scrollY > 28 && top < 160;
+      startTransition(() => setHeroCompact(prev => (prev === next ? prev : next)));
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [view, explorerWideMapSplit, heroCompactPinnedOpen]);
+
+  const engageMapFirstChrome = useCallback(() => {
+    if (explorerWideMapSplit || heroCompactPinnedOpen) return;
+    startTransition(() => setHeroCompact(true));
+  }, [explorerWideMapSplit, heroCompactPinnedOpen]);
+
+  const expandHeroChrome = useCallback(() => {
+    startTransition(() => {
+      setHeroCompactPinnedOpen(true);
+      setHeroCompact(false);
+    });
+  }, []);
+
+  const collapseHeroChrome = useCallback(() => {
+    startTransition(() => {
+      setHeroCompactPinnedOpen(false);
+      setHeroCompact(true);
+    });
+  }, []);
 
   const baselinePool = useMemo(() => {
     if (activeCollection) {
@@ -1558,9 +1612,13 @@ export default function App() {
                   showHeroSignalRail={scoutToolsOpen && !scoutBoardLg}
                   showDetailedHeroPanels={scoutToolsOpen && explorerHeroPanelsMd && !scoutBoardLg}
                   showDesktopScoutBoard={scoutToolsOpen && scoutBoardLg}
+                  compact={heroCompact}
+                  onExpandChrome={expandHeroChrome}
+                  onCollapseChrome={collapseHeroChrome}
                 />
 
                 <div
+                  ref={mapStageRef}
                   className="tc-map-stage relative h-[clamp(320px,50svh,560px)] md:h-[54dvh] md:min-h-[min(480px,46dvh)]"
                   aria-busy={resultsPending || undefined}
                   data-pending={resultsPending || undefined}
@@ -1585,6 +1643,9 @@ export default function App() {
                     onSelect={openPlace}
                     onEmptyRecovery={mapEmptyRecovery.onEmptyRecovery}
                     emptyRecoveryLabel={mapEmptyRecovery.emptyRecoveryLabel}
+                    bookmarkIds={bookmarkIds}
+                    onToggleBookmark={toggleBookmark}
+                    onMapEngaged={engageMapFirstChrome}
                   />
                 </div>
 
@@ -2628,6 +2689,9 @@ const HeroCard = memo(function HeroCard({
   showHeroSignalRail,
   showDetailedHeroPanels,
   showDesktopScoutBoard,
+  compact = false,
+  onExpandChrome,
+  onCollapseChrome,
 }: {
   count: number;
   livabilityTopTen: RankingResult[];
@@ -2673,6 +2737,9 @@ const HeroCard = memo(function HeroCard({
   showHeroSignalRail: boolean;
   showDetailedHeroPanels: boolean;
   showDesktopScoutBoard: boolean;
+  compact?: boolean;
+  onExpandChrome?: () => void;
+  onCollapseChrome?: () => void;
 }) {
   const shareFallbackInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -2726,9 +2793,11 @@ const HeroCard = memo(function HeroCard({
     });
     target.focus({ preventScroll: true });
   }, []);
+  const compactChromeLabel = compact ? "Expand atlas intro" : "Compact atlas intro for the map";
   return (
     <div
       className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
+      data-compact={compact ? "true" : "false"}
       style={{ ["--hero-accent-rgb" as string]: heroAccentRgb }}
     >
       <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
@@ -2772,11 +2841,23 @@ const HeroCard = memo(function HeroCard({
                 <X className="w-3 h-3" aria-hidden /> Clear archetypes
               </button>
             )}
+            {(onExpandChrome || onCollapseChrome) ? (
+              <button
+                type="button"
+                className="tc-hero-compact-toggle"
+                onClick={compact ? onExpandChrome : onCollapseChrome}
+                aria-pressed={compact}
+                aria-label={compactChromeLabel}
+                title={compactChromeLabel}
+              >
+                {compact ? "Expand intro" : "Map first"}
+              </button>
+            ) : null}
           </div>
           <h1 className="font-atlas text-2xl min-[1400px]:text-3xl text-ice leading-tight text-depth-hero">
             {active ? active.title : "Discover microclimates hiding in plain sight"}
           </h1>
-          <p className="text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
+          <p className="hero-lede text-sm text-frost mt-1 max-w-2xl leading-relaxed line-clamp-4 min-[1400px]:line-clamp-none">
             {active
               ? active.description
               : comfortLensActive
@@ -2784,7 +2865,7 @@ const HeroCard = memo(function HeroCard({
                 : "Rain shadows, sky islands, fog belts, thermal belts, and other terrain climates most people never hear of. Open a pin, try Surprise me, or start from Most unique."}
           </p>
           {!homeBasePlace && !active ? (
-            <p className="text-xs text-stone-readable mt-1.5 max-w-2xl leading-snug">
+            <p className="hero-secondary-tip text-xs text-stone-readable mt-1.5 max-w-2xl leading-snug">
               {comfortLensActive
                 ? "Open a leader to see the score and first tradeoff behind its position."
                 : "Surprise opens a profile — set your home city there to unlock climate deltas and twins with clearer tradeoffs."}
@@ -2904,7 +2985,7 @@ const HeroCard = memo(function HeroCard({
               />
             </div>
           ) : null}
-          <div className="flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
+          <div className="hero-metrics flex items-center gap-4 shrink-0 text-right justify-end flex-wrap">
             <Metric label="In view" value={count} animated />
             <Metric label="Atlas total" value={PLACE_COUNTS.total} />
             <Metric label="Flagships" value={PLACE_COUNTS.tierA} />

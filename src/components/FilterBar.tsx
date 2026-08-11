@@ -202,6 +202,7 @@ export const FilterBar = memo(function FilterBar({
   }, [setFilters, setRanking]);
 
   const hasAny = hasActiveExplorerFilters(filters);
+  const liveSignalCount = countLiveSignals(filters);
   const clearAll = useCallback(() => {
     if (onClearAll) {
       onClearAll();
@@ -312,8 +313,10 @@ export const FilterBar = memo(function FilterBar({
       ) : null}
 
       {variant === "sheet" ? (
-        <details className="tc-filter-sheet-details">
-          <summary className="tc-filter-sheet-details__summary">Fit Finder</summary>
+        <details className="tc-filter-sheet-details" {...(activeBundle ? { open: true } : {})}>
+          <summary className="tc-filter-sheet-details__summary">
+            Fit Finder{activeBundle ? ` · ${activeBundle.label}` : ""}
+          </summary>
           <FitFinderPanel
             searchFieldId={searchFieldId}
             fitFinderTitleId={fitFinderTitleId}
@@ -336,20 +339,13 @@ export const FilterBar = memo(function FilterBar({
         />
       )}
 
-      {variant === "sheet" ? (
-        <details className="tc-filter-sheet-details">
-          <summary className="tc-filter-sheet-details__summary">Live Finder signals</summary>
-          <LiveFinderPanel
-            filters={filters}
-            temp={temp}
-            liveControlBaseId={liveControlBaseId}
-            setFilters={setFilters}
-            toggleFitPreset={toggleFitPreset}
-            setLiveNumber={setLiveNumber}
-            setLiveRisk={setLiveRisk}
-          />
-        </details>
-      ) : (
+      <details
+        className="tc-filter-sheet-details"
+        {...(liveSignalCount > 0 ? { open: true } : {})}
+      >
+        <summary className="tc-filter-sheet-details__summary">
+          Live Finder{liveSignalCount > 0 ? ` · ${liveSignalCount} signal${liveSignalCount === 1 ? "" : "s"}` : ""}
+        </summary>
         <LiveFinderPanel
           filters={filters}
           temp={temp}
@@ -359,7 +355,7 @@ export const FilterBar = memo(function FilterBar({
           setLiveNumber={setLiveNumber}
           setLiveRisk={setLiveRisk}
         />
-      )}
+      </details>
 
       {variant === "dock" ? (
         <div className="rank-menu">
@@ -385,8 +381,13 @@ export const FilterBar = memo(function FilterBar({
         </div>
       ) : null}
 
-      <div>
-        <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5">Country</div>
+      <details
+        className="tc-filter-sheet-details"
+        {...(filters.countries.size > 0 ? { open: true } : {})}
+      >
+        <summary className="tc-filter-sheet-details__summary">
+          Country{filters.countries.size > 0 ? ` · ${filters.countries.size}` : ""}
+        </summary>
         <div className="flex flex-wrap gap-1.5">
           {(["USA", "Mexico", "Canada"] as Country[]).map(c => {
             const isActive = filters.countries.has(c);
@@ -409,23 +410,30 @@ export const FilterBar = memo(function FilterBar({
             );
           })}
         </div>
-      </div>
+      </details>
 
-      <div>
-        <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 flex items-center justify-between">
-          <span>Archetype</span>
-          {filters.archetypes.size > 0 && (
+      <details
+        className="tc-filter-sheet-details"
+        {...(filters.archetypes.size > 0 ? { open: true } : {})}
+      >
+        <summary className="tc-filter-sheet-details__summary">
+          <span>Archetype{filters.archetypes.size > 0 ? ` · ${filters.archetypes.size}` : ""}</span>
+          {filters.archetypes.size > 0 ? (
             <button
               type="button"
-              onClick={() => setFilters(f => ({ ...f, archetypes: new Set() }))}
-              className="text-stone hover:text-ice normal-case text-[11px] tracking-normal"
+              onClick={event => {
+                event.preventDefault();
+                event.stopPropagation();
+                setFilters(f => ({ ...f, archetypes: new Set() }));
+              }}
+              className="tc-filter-sheet-details__clear"
               aria-label={clearArchetypesLabel}
               title={clearArchetypesLabel}
             >
               clear · {filters.archetypes.size}
             </button>
-          )}
-        </div>
+          ) : null}
+        </summary>
         <div
           className={`flex flex-wrap gap-1.5 overflow-y-auto pr-1 no-scrollbar ${
             variant === "sheet" ? "max-h-[min(52dvh,22rem)]" : "max-h-56"
@@ -450,7 +458,7 @@ export const FilterBar = memo(function FilterBar({
             );
           })}
         </div>
-      </div>
+      </details>
     </div>
   );
 });

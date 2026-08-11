@@ -19,6 +19,13 @@ function assertNoStaleConstraints(state: FilterState): void {
   expect(state.maxOverallRisk).toBeUndefined();
 }
 
+function openFilterAccordion(label: RegExp | string) {
+  const summary = screen.getByText(label, { selector: "summary, summary *" }).closest("summary");
+  expect(summary).not.toBeNull();
+  if (summary?.closest("details")?.open) return;
+  fireEvent.click(summary!);
+}
+
 function renderFilterBar(
   temp: UnitState["temp"],
   opts: {
@@ -26,6 +33,7 @@ function renderFilterBar(
     ranking?: RankingProfile;
     setFilters?: ComponentProps<typeof FilterBar>["setFilters"];
     setRanking?: ComponentProps<typeof FilterBar>["setRanking"];
+    openLiveFinder?: boolean;
   } = {},
 ) {
   const units: UnitState = {
@@ -35,7 +43,7 @@ function renderFilterBar(
     setDist: vi.fn(),
     toggle: vi.fn(),
   };
-  return render(
+  const view = render(
     <UnitContext.Provider value={units}>
       <FilterBar
         filters={opts.filters ?? createEmptyFilterState()}
@@ -45,6 +53,8 @@ function renderFilterBar(
       />
     </UnitContext.Provider>,
   );
+  if (opts.openLiveFinder) openFilterAccordion(/^Live Finder$/);
+  return view;
 }
 
 describe("FilterBar Live Finder temperature constraints", () => {
@@ -113,7 +123,7 @@ describe("FilterBar Live Finder temperature constraints", () => {
   });
 
   it("renders threshold choices in Fahrenheit when the app is in Fahrenheit mode", () => {
-    renderFilterBar("F");
+    renderFilterBar("F", { openLiveFinder: true });
 
     expect(screen.getByRole("combobox", { name: "Summer cap" })).toHaveAttribute("title", "Summer cap");
     expect(screen.getByRole("option", { name: `<= 72${DEG}F` })).toBeInTheDocument();
@@ -126,7 +136,7 @@ describe("FilterBar Live Finder temperature constraints", () => {
   });
 
   it("renders threshold choices in Celsius when the app is in Celsius mode", () => {
-    renderFilterBar("C");
+    renderFilterBar("C", { openLiveFinder: true });
 
     expect(screen.getByRole("combobox", { name: "Winter floor" })).toHaveAttribute("title", "Winter floor");
     expect(screen.getByRole("option", { name: `<= 22${DEG}C` })).toBeInTheDocument();
@@ -141,7 +151,7 @@ describe("FilterBar Live Finder temperature constraints", () => {
   it("changes Live Finder threshold constraints from compact menus", () => {
     const setFilters = vi.fn();
     const filters = createEmptyFilterState();
-    renderFilterBar("C", { filters, setFilters });
+    renderFilterBar("C", { filters, setFilters, openLiveFinder: true });
 
     fireEvent.change(screen.getByRole("combobox", { name: "Summer cap" }), {
       target: { value: "22" },
@@ -199,6 +209,7 @@ describe("FilterBar lifestyle bundles", () => {
     );
     expect(within(dailyLane).getByRole("button", { name: /Remote Work/ })).toBeInTheDocument();
     expect(within(terrainLane).getByRole("button", { name: /Mexico \/ Southwest/ })).toBeInTheDocument();
+    expect(screen.getByText("Live Finder")).toBeInTheDocument();
     expect(screen.getByText("Live Finder signals")).toBeInTheDocument();
   });
 
@@ -634,6 +645,37 @@ describe("FilterBar clear all filters", () => {
 
     expect(onClearAll).toHaveBeenCalledTimes(1);
     expect(setFilters).not.toHaveBeenCalled();
+  });
+});
+
+describe("FilterBar accordion groups", () => {
+  it("collapses Live Finder, Country, and Archetype by default until opened or active", () => {
+    renderFilterBar("F");
+
+    const liveSummary = screen.getByText("Live Finder", { selector: "summary" });
+    const countrySummary = screen.getByText("Country", { selector: "summary" });
+    const archetypeSummary = screen.getByText("Archetype", { selector: "summary, summary *" }).closest("summary");
+    expect(liveSummary.closest("details")?.open).toBe(false);
+    expect(countrySummary.closest("details")?.open).toBe(false);
+    expect(archetypeSummary?.closest("details")?.open).toBe(false);
+    expect(screen.getByRole("combobox", { name: "Summer cap" }).closest("details")?.open).toBe(false);
+    expect(screen.getByRole("button", { name: "Filter to Mexico places" }).closest("details")?.open).toBe(false);
+
+    openFilterAccordion("Country");
+    expect(screen.getByRole("button", { name: "Filter to Mexico places" }).closest("details")?.open).toBe(true);
+  });
+
+  it("auto-opens accordion groups that already have active filters", () => {
+    const filters = createEmptyFilterState();
+    filters.countries = new Set(["Mexico"]);
+    filters.archetypes = new Set(["fog-belt-coast"]);
+    filters.fitPresets = new Set(["cool-summers"]);
+    renderFilterBar("F", { filters });
+
+    expect(screen.getByText("Country · 1", { selector: "summary" }).closest("details")?.open).toBe(true);
+    expect(screen.getByText("Archetype · 1").closest("details")?.open).toBe(true);
+    expect(screen.getByText("Live Finder · 1 signal", { selector: "summary" }).closest("details")?.open).toBe(true);
+    expect(screen.getByRole("button", { name: "Remove Mexico country filter" })).toBeInTheDocument();
   });
 });
 
