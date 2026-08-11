@@ -657,10 +657,24 @@ describe("App shell", () => {
     const map = screen.getByTestId("atlas-map-stub");
 
     expect(hero).not.toBeNull();
+    expect(hero).toHaveAttribute("data-compact", "false");
     const quickPicks = screen.getByRole("group", { name: "Discovery quick picks" });
     expect(quickPicks).toBeInTheDocument();
     expect(quickPicks).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more discovery paths.");
     const surpriseMe = screen.getByRole("button", { name: "Open a unique microclimate from the current filtered list" });
+    const mapFirst = screen.getByRole("button", { name: "Compact atlas intro for the map" });
+    expect(mapFirst).toHaveTextContent("Map first");
+    fireEvent.click(mapFirst);
+    expect(hero).toHaveAttribute("data-compact", "true");
+    expect(screen.getByRole("button", { name: "Expand atlas intro" })).toHaveTextContent("Expand intro");
+    // Latched compact must survive scroll/resize noise from the map-first heuristic.
+    fireEvent.scroll(window);
+    fireEvent(window, new Event("resize"));
+    expect(hero).toHaveAttribute("data-compact", "true");
+    fireEvent.click(screen.getByRole("button", { name: "Expand atlas intro" }));
+    expect(hero).toHaveAttribute("data-compact", "false");
+    fireEvent.click(screen.getByRole("button", { name: "Compact atlas intro for the map" }));
+    expect(hero).toHaveAttribute("data-compact", "true");
     openHeroMoreMenu();
     const copyView = screen.getByRole("button", { name: "Copy or share current Explorer view" });
     expect(copyView.closest(".hero-action-stack")).not.toBeNull();

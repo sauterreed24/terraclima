@@ -1,10 +1,11 @@
-import { memo, useEffect, useMemo, useRef, type CSSProperties } from "react";
+import { memo, useEffect, useMemo, useRef, type CSSProperties, type MouseEvent } from "react";
 import { X } from "lucide-react";
 import type { Place } from "../../types";
 import { useFocusTrap } from "../../hooks/use-focus-trap";
 import { type AtlasClusterItem } from "../../lib/atlas-map-cluster";
 import { livedRealityCoverage } from "../../lib/livability-score";
 import { placeMapSecondaryLine } from "../../lib/atlas-map-label";
+import { BookmarkButton } from "../BookmarkButton";
 
 export type AtlasMapClusterPoint = { place: Place; x: number; y: number; id: string };
 
@@ -136,6 +137,8 @@ export const AtlasMapClusterPicker = memo(function AtlasMapClusterPicker({
   yPct,
   mapHeight,
   featuredRankById,
+  bookmarkIds,
+  onToggleBookmark,
   onClose,
   onSelect,
 }: {
@@ -144,6 +147,8 @@ export const AtlasMapClusterPicker = memo(function AtlasMapClusterPicker({
   yPct: number;
   mapHeight: number;
   featuredRankById: ReadonlyMap<string, number>;
+  bookmarkIds?: ReadonlySet<string>;
+  onToggleBookmark?: (id: string) => void;
   onClose: () => void;
   onSelect: (id: string) => void;
 }) {
@@ -264,24 +269,41 @@ export const AtlasMapClusterPicker = memo(function AtlasMapClusterPicker({
             : CLUSTER_TIER_LABEL[pt.place.tier];
           const coverage = livedRealityCoverage(pt.place);
           const coverageLabel = clusterPickerCoverageLabel(pt.place);
+          const pinned = bookmarkIds?.has(pt.place.id) ?? false;
+          const handlePin = (event: MouseEvent<HTMLButtonElement>) => {
+            event.preventDefault();
+            event.stopPropagation();
+            onToggleBookmark?.(pt.place.id);
+          };
           return (
-            <button
-              key={pt.place.id}
-              type="button"
-              className="cluster-picker__item"
-              aria-label={`Open ${pt.place.name}. Position ${pt.pickerIndex}. ${tierLabel}. ${coverageLabel}.`}
-              onClick={() => onSelect(pt.place.id)}
-            >
-              <span className="cluster-picker__item-head">
-                <span className="cluster-picker__title-row">
-                  <span className="cluster-picker__index" aria-hidden="true">{pt.pickerIndex}</span>
-                  <span className="cluster-picker__title">{pt.place.name}</span>
+            <div key={pt.place.id} className="cluster-picker__item-row">
+              <button
+                type="button"
+                className="cluster-picker__item"
+                aria-label={`Open ${pt.place.name}. Position ${pt.pickerIndex}. ${tierLabel}. ${coverageLabel}.`}
+                onClick={() => onSelect(pt.place.id)}
+              >
+                <span className="cluster-picker__item-head">
+                  <span className="cluster-picker__title-row">
+                    <span className="cluster-picker__index" aria-hidden="true">{pt.pickerIndex}</span>
+                    <span className="cluster-picker__title">{pt.place.name}</span>
+                  </span>
+                  <span className="cluster-picker__tier">{tierLabel}</span>
                 </span>
-                <span className="cluster-picker__tier">{tierLabel}</span>
-              </span>
-              <span className="cluster-picker__secondary">{placeMapSecondaryLine(pt.place)}</span>
-              <span className="cluster-picker__coverage" data-coverage={coverage.confidence}>{coverageLabel}</span>
-            </button>
+                <span className="cluster-picker__secondary">{placeMapSecondaryLine(pt.place)}</span>
+                <span className="cluster-picker__coverage" data-coverage={coverage.confidence}>{coverageLabel}</span>
+              </button>
+              {onToggleBookmark ? (
+                <BookmarkButton
+                  pinned={pinned}
+                  placeName={pt.place.name}
+                  onToggle={handlePin}
+                  size="compact"
+                  ariaContext="from cluster picker"
+                  className="cluster-picker__pin"
+                />
+              ) : null}
+            </div>
           );
         })}
       </div>

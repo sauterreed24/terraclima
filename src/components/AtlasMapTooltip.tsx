@@ -1,10 +1,11 @@
-import { memo, type CSSProperties } from "react";
+import { memo, type CSSProperties, type MouseEvent } from "react";
 import type { MicroclimateArchetype, Place, TopographicDriver } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { fmtPrecip, fmtTemp, useProse, useUnits } from "../lib/units";
 import { getAnnualPrecipMm, meanJanLow, meanSummerHigh } from "../lib/climate-metrics";
 import { useRichVisualEffects } from "../lib/device-profile";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
+import { BookmarkButton } from "./BookmarkButton";
 
 function formatDriver(d: TopographicDriver): string {
   return d
@@ -24,7 +25,8 @@ function toneToDataTone(t: string): "glacier" | "sage" | "ochre" | "ember" | "ic
 
 /**
  * Compact scout peek for map pin hover/focus. Answers “what kind of climate
- * is this?” — scores and scouting stay in the dossier.
+ * is this?” — scores and scouting stay in the dossier. Full variant can pin
+ * to the shortlist without opening the profile.
  */
 export const AtlasMapTooltip = memo(function AtlasMapTooltip({
   place,
@@ -34,6 +36,10 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
   featuredRank,
   featuredLabel,
   variant = "full",
+  pinned = false,
+  onToggleBookmark,
+  onPreviewPointerEnter,
+  onPreviewPointerLeave,
 }: {
   place: Place;
   xPct: number;
@@ -42,6 +48,10 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
   featuredRank?: number;
   featuredLabel?: string;
   variant?: "compact" | "full";
+  pinned?: boolean;
+  onToggleBookmark?: () => void;
+  onPreviewPointerEnter?: () => void;
+  onPreviewPointerLeave?: () => void;
 }) {
   const richEffects = useRichVisualEffects();
   const { temp, dist } = useUnits();
@@ -86,6 +96,11 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
     .filter(Boolean)
     .join(" · ");
   const gist = place.whyDistinct || place.summaryShort;
+  const handlePin = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    onToggleBookmark?.();
+  };
 
   if (variant === "compact") {
     return (
@@ -143,17 +158,22 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
     );
   }
 
+  const interactive = Boolean(onToggleBookmark);
   return (
     <div
-      role="tooltip"
+      role={interactive ? "dialog" : "tooltip"}
       id="tc-map-hover-preview"
       aria-labelledby="tc-map-hover-title"
-      className="tc-map-hover-card tc-map-hover-card-enter absolute w-[min(19rem,calc(100vw-1.25rem))] pointer-events-none z-10 text-left shadow-2xl"
+      aria-modal={interactive ? false : undefined}
+      className={`tc-map-hover-card tc-map-hover-card-enter absolute w-[min(19rem,calc(100vw-1.25rem))] z-10 text-left shadow-2xl ${interactive ? "pointer-events-auto" : "pointer-events-none"}`}
       data-tone={dataTone}
       data-variant="full"
       data-horizontal={horizontal}
       data-vertical={vertical}
+      data-interactive={interactive ? "true" : "false"}
       style={style}
+      onPointerEnter={interactive ? onPreviewPointerEnter : undefined}
+      onPointerLeave={interactive ? onPreviewPointerLeave : undefined}
     >
       <header className="tc-map-hover-card__hero">
         <div className="flex items-start justify-between gap-2.5">
@@ -223,8 +243,27 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
           </section>
         ) : null}
 
-        <p className="tc-map-hover-footer-cue">Open pin for full profile</p>
+        {!onToggleBookmark ? (
+          <p className="tc-map-hover-footer-cue">Open pin for full profile</p>
+        ) : null}
       </div>
+
+      {onToggleBookmark ? (
+        <div className="tc-map-hover-footer-row tc-map-hover-footer-row--sticky">
+          <div className="tc-map-hover-card__actions pointer-events-auto">
+            <BookmarkButton
+              pinned={pinned}
+              placeName={place.name}
+              onToggle={handlePin}
+              size="compact"
+              ariaContext="from map preview"
+            />
+            <span className="tc-map-hover-footer-cue tc-map-hover-footer-cue--inline">
+              {pinned ? "Pinned · open pin for profile" : "Pin shortlist · open for profile"}
+            </span>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 });
