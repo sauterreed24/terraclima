@@ -6,9 +6,9 @@ All notable changes to Terraclima are tracked here.
 
 ### Map-first Explorer polish (path to 10)
 
-- **Compact hero chrome:** Explorer hero gains a Map first / Expand intro control and auto-compacts into a sticky slim bar after scroll or first map engagement (side-by-side wide layout stays expanded).
-- **Filter dock accordions:** Live Finder, Country, and Archetype collapse by default; groups with active filters auto-open. Cuts sidebar scroll before the map gets attention.
-- **Map → shortlist:** Rich hover cards and cluster picker can pin without opening a dossier; Shift/Alt/Meta-click or `P` on a focused pin also toggles the shortlist.
+- **Compact hero chrome:** Explorer hero gains a Map first / Expand intro control and auto-compacts into a sticky slim bar after scroll or first map engagement (side-by-side wide layout stays expanded). Manual Map first / map engagement latches compact until Expand intro; Expand latches open until Map first again.
+- **Filter dock accordions:** Live Finder, Country, and Archetype collapse by default; groups with active filters auto-open but stay user-collapsible. Cuts sidebar scroll before the map gets attention.
+- **Map → shortlist:** Rich hover cards (non-modal dialog when interactive) and cluster picker can pin without opening a dossier; Shift/Alt/Meta-click or `P` on a focused pin also toggles the shortlist. Pin control lives in a sticky hover-card footer.
 - **Denser pin stacks:** Clustering stays active deeper into mid-zoom, collision offsets grow in the mid-zoom band, and desktop clustering engages earlier so highland clusters stay readable.
 
 ### Release playtest audit harness
