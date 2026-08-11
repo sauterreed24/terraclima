@@ -622,24 +622,29 @@ export default function App() {
   const [filterSheetOpen, setFilterSheetOpen] = useState(false);
   /** Scout Board / Living Compass / livability rails stay collapsed until asked for. */
   const [scoutToolsOpen, setScoutToolsOpen] = useState(false);
+  /** auto = scroll heuristic; compact/expanded = latched until the other is chosen. */
+  const [heroChromeMode, setHeroChromeMode] = useState<"auto" | "compact" | "expanded">("auto");
   const [heroCompact, setHeroCompact] = useState(false);
-  const [heroCompactPinnedOpen, setHeroCompactPinnedOpen] = useState(false);
   const mapStageRef = useRef<HTMLDivElement>(null);
   const explorerWideMapSplit = useMediaQuery("(min-width: 1500px)");
 
   useEffect(() => {
     if (view !== "explorer" || explorerWideMapSplit) {
       startTransition(() => {
+        setHeroChromeMode("auto");
         setHeroCompact(false);
-        setHeroCompactPinnedOpen(false);
       });
       return;
     }
     const stage = mapStageRef.current;
     if (!stage) return;
     const update = () => {
-      if (heroCompactPinnedOpen) {
+      if (heroChromeMode === "expanded") {
         startTransition(() => setHeroCompact(false));
+        return;
+      }
+      if (heroChromeMode === "compact") {
+        startTransition(() => setHeroCompact(true));
         return;
       }
       const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
@@ -656,23 +661,26 @@ export default function App() {
       window.removeEventListener("scroll", update);
       window.removeEventListener("resize", update);
     };
-  }, [view, explorerWideMapSplit, heroCompactPinnedOpen]);
+  }, [view, explorerWideMapSplit, heroChromeMode]);
 
   const engageMapFirstChrome = useCallback(() => {
-    if (explorerWideMapSplit || heroCompactPinnedOpen) return;
-    startTransition(() => setHeroCompact(true));
-  }, [explorerWideMapSplit, heroCompactPinnedOpen]);
+    if (explorerWideMapSplit || heroChromeMode === "expanded") return;
+    startTransition(() => {
+      setHeroChromeMode("compact");
+      setHeroCompact(true);
+    });
+  }, [explorerWideMapSplit, heroChromeMode]);
 
   const expandHeroChrome = useCallback(() => {
     startTransition(() => {
-      setHeroCompactPinnedOpen(true);
+      setHeroChromeMode("expanded");
       setHeroCompact(false);
     });
   }, []);
 
   const collapseHeroChrome = useCallback(() => {
     startTransition(() => {
-      setHeroCompactPinnedOpen(false);
+      setHeroChromeMode("compact");
       setHeroCompact(true);
     });
   }, []);

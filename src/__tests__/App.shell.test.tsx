@@ -667,6 +667,14 @@ describe("App shell", () => {
     fireEvent.click(mapFirst);
     expect(hero).toHaveAttribute("data-compact", "true");
     expect(screen.getByRole("button", { name: "Expand atlas intro" })).toHaveTextContent("Expand intro");
+    // Latched compact must survive scroll/resize noise from the map-first heuristic.
+    fireEvent.scroll(window);
+    fireEvent(window, new Event("resize"));
+    expect(hero).toHaveAttribute("data-compact", "true");
+    fireEvent.click(screen.getByRole("button", { name: "Expand atlas intro" }));
+    expect(hero).toHaveAttribute("data-compact", "false");
+    fireEvent.click(screen.getByRole("button", { name: "Compact atlas intro for the map" }));
+    expect(hero).toHaveAttribute("data-compact", "true");
     openHeroMoreMenu();
     const copyView = screen.getByRole("button", { name: "Copy or share current Explorer view" });
     expect(copyView.closest(".hero-action-stack")).not.toBeNull();

@@ -561,8 +561,9 @@ describe("AtlasMap DOM controls", () => {
         vi.advanceTimersByTime(460);
       });
 
-      const richPreview = screen.getByRole("tooltip");
+      const richPreview = screen.getByRole("dialog");
       expect(richPreview).toHaveAttribute("data-interactive", "true");
+      expect(richPreview).toHaveAttribute("id", "tc-map-hover-preview");
       expect(richPreview).toHaveTextContent("Pin shortlist · open for profile");
       fireEvent.click(within(richPreview).getByRole("button", { name: /Pin Alpha Valley to your shortlist/ }));
       expect(onToggleBookmark).toHaveBeenCalledWith("a");

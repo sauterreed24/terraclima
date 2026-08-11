@@ -677,6 +677,18 @@ describe("FilterBar accordion groups", () => {
     expect(screen.getByText("Live Finder · 1 signal", { selector: "summary" }).closest("details")?.open).toBe(true);
     expect(screen.getByRole("button", { name: "Remove Mexico country filter" })).toBeInTheDocument();
   });
+
+  it("lets users collapse an accordion even while its filters stay active", () => {
+    const filters = createEmptyFilterState();
+    filters.countries = new Set(["Mexico"]);
+    renderFilterBar("F", { filters });
+
+    const countryDetails = screen.getByText("Country · 1", { selector: "summary" }).closest("details");
+    expect(countryDetails?.open).toBe(true);
+    fireEvent.click(screen.getByText("Country · 1", { selector: "summary" }));
+    expect(countryDetails?.open).toBe(false);
+    expect(filters.countries).toEqual(new Set(["Mexico"]));
+  });
 });
 
 describe("FilterBar climate scenario chip", () => {

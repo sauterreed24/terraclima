@@ -1,4 +1,4 @@
-import { memo, useCallback, useRef, type Dispatch, type SetStateAction } from "react";
+import { memo, useCallback, useEffect, useRef, useState, type Dispatch, type SetStateAction, type SyntheticEvent } from "react";
 import { ARCHETYPE_LABELS, type Country, type MicroclimateArchetype, type RiskLevel, type ScenarioId } from "../types";
 import {
   applyLifestyleBundle,
@@ -203,6 +203,31 @@ export const FilterBar = memo(function FilterBar({
 
   const hasAny = hasActiveExplorerFilters(filters);
   const liveSignalCount = countLiveSignals(filters);
+  const countryCount = filters.countries.size;
+  const archetypeCount = filters.archetypes.size;
+  const [liveOpen, setLiveOpen] = useState(liveSignalCount > 0);
+  const [countryOpen, setCountryOpen] = useState(countryCount > 0);
+  const [archetypeOpen, setArchetypeOpen] = useState(archetypeCount > 0);
+  const [fitOpen, setFitOpen] = useState(Boolean(activeBundle));
+  // Auto-open when a group gains active filters; never force-lock open so users
+  // can still collapse a busy dock to reclaim vertical room.
+  useEffect(() => {
+    if (liveSignalCount > 0) setLiveOpen(true);
+  }, [liveSignalCount]);
+  useEffect(() => {
+    if (countryCount > 0) setCountryOpen(true);
+  }, [countryCount]);
+  useEffect(() => {
+    if (archetypeCount > 0) setArchetypeOpen(true);
+  }, [archetypeCount]);
+  useEffect(() => {
+    if (activeBundle) setFitOpen(true);
+  }, [activeBundle]);
+  const onDetailsToggle = useCallback((setter: Dispatch<SetStateAction<boolean>>) => {
+    return (event: SyntheticEvent<HTMLDetailsElement>) => {
+      setter(event.currentTarget.open);
+    };
+  }, []);
   const clearAll = useCallback(() => {
     if (onClearAll) {
       onClearAll();
@@ -313,7 +338,11 @@ export const FilterBar = memo(function FilterBar({
       ) : null}
 
       {variant === "sheet" ? (
-        <details className="tc-filter-sheet-details" {...(activeBundle ? { open: true } : {})}>
+        <details
+          className="tc-filter-sheet-details"
+          open={fitOpen}
+          onToggle={onDetailsToggle(setFitOpen)}
+        >
           <summary className="tc-filter-sheet-details__summary">
             Fit Finder{activeBundle ? ` · ${activeBundle.label}` : ""}
           </summary>
@@ -341,7 +370,8 @@ export const FilterBar = memo(function FilterBar({
 
       <details
         className="tc-filter-sheet-details"
-        {...(liveSignalCount > 0 ? { open: true } : {})}
+        open={liveOpen}
+        onToggle={onDetailsToggle(setLiveOpen)}
       >
         <summary className="tc-filter-sheet-details__summary">
           Live Finder{liveSignalCount > 0 ? ` · ${liveSignalCount} signal${liveSignalCount === 1 ? "" : "s"}` : ""}
@@ -383,10 +413,11 @@ export const FilterBar = memo(function FilterBar({
 
       <details
         className="tc-filter-sheet-details"
-        {...(filters.countries.size > 0 ? { open: true } : {})}
+        open={countryOpen}
+        onToggle={onDetailsToggle(setCountryOpen)}
       >
         <summary className="tc-filter-sheet-details__summary">
-          Country{filters.countries.size > 0 ? ` · ${filters.countries.size}` : ""}
+          Country{countryCount > 0 ? ` · ${countryCount}` : ""}
         </summary>
         <div className="flex flex-wrap gap-1.5">
           {(["USA", "Mexico", "Canada"] as Country[]).map(c => {
@@ -414,11 +445,12 @@ export const FilterBar = memo(function FilterBar({
 
       <details
         className="tc-filter-sheet-details"
-        {...(filters.archetypes.size > 0 ? { open: true } : {})}
+        open={archetypeOpen}
+        onToggle={onDetailsToggle(setArchetypeOpen)}
       >
         <summary className="tc-filter-sheet-details__summary">
-          <span>Archetype{filters.archetypes.size > 0 ? ` · ${filters.archetypes.size}` : ""}</span>
-          {filters.archetypes.size > 0 ? (
+          <span>Archetype{archetypeCount > 0 ? ` · ${archetypeCount}` : ""}</span>
+          {archetypeCount > 0 ? (
             <button
               type="button"
               onClick={event => {
@@ -430,7 +462,7 @@ export const FilterBar = memo(function FilterBar({
               aria-label={clearArchetypesLabel}
               title={clearArchetypesLabel}
             >
-              clear · {filters.archetypes.size}
+              clear · {archetypeCount}
             </button>
           ) : null}
         </summary>

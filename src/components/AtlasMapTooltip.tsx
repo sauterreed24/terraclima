@@ -161,9 +161,10 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
   const interactive = Boolean(onToggleBookmark);
   return (
     <div
-      role="tooltip"
+      role={interactive ? "dialog" : "tooltip"}
       id="tc-map-hover-preview"
       aria-labelledby="tc-map-hover-title"
+      aria-modal={interactive ? false : undefined}
       className={`tc-map-hover-card tc-map-hover-card-enter absolute w-[min(19rem,calc(100vw-1.25rem))] z-10 text-left shadow-2xl ${interactive ? "pointer-events-auto" : "pointer-events-none"}`}
       data-tone={dataTone}
       data-variant="full"
