@@ -68,6 +68,8 @@ describe("PlaceDetail growability rationale", () => {
 
     expect(screen.getByRole("dialog", { name: "Sequim climate dossier" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Sequim", level: 2 })).toBeInTheDocument();
+    expect(document.querySelector("figure")).toBeTruthy();
+    expect(document.querySelector("figure img")).toBeTruthy();
   });
 
   it("renders the computed Why this score read inside Soil & growability", () => {
@@ -121,6 +123,22 @@ describe("PlaceDetail overview spotlight", () => {
     expect(screen.getAllByText("Climate & Land").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Risks & Future").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Evidence & Methods").length).toBeGreaterThan(0);
+
+    expect(document.querySelector("figure")).toBeTruthy();
+    expect(document.querySelector("figure .tc-hero-fallback")).toBeTruthy();
+    expect(
+      screen.getByRole("img", { name: /January-to-December temperature palette from monthly normals/i }),
+    ).toBeInTheDocument();
+
+    const glance = document.getElementById("pd-at-a-glance");
+    const feel = document.getElementById("pd-place-feel");
+    const signature = document.getElementById("pd-signature");
+    expect(glance?.tagName).toBe("DETAILS");
+    expect(feel?.tagName).toBe("DETAILS");
+    expect(signature?.tagName).toBe("DETAILS");
+    expect(glance).not.toHaveAttribute("open");
+    expect(feel).not.toHaveAttribute("open");
+    expect(signature).not.toHaveAttribute("open");
   });
 });
 
@@ -373,6 +391,29 @@ describe("PlaceDetail header accessibility", () => {
     // The hash itself is left untouched (unlike stale #deep-* hashes) since
     // the section it points to always exists once the drawer has rendered.
     expect(window.location.hash).toBe("#pd-risk");
+  });
+
+  it("opens a collapsed score section when the drawer loads on its #pd-* hash", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+    window.history.replaceState(null, "", "/?p=sequim-wa#pd-signature");
+    const scrollTo = vi.fn();
+    Object.defineProperty(HTMLElement.prototype, "scrollTo", {
+      configurable: true,
+      value: scrollTo,
+    });
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    const signature = document.getElementById("pd-signature");
+    expect(signature?.tagName).toBe("DETAILS");
+    expect(signature).toHaveAttribute("open");
+    expect(scrollTo).toHaveBeenCalled();
+    expect(window.location.hash).toBe("#pd-signature");
   });
 
   it("reflects compare membership on the Compare button via aria-pressed", () => {
@@ -725,11 +766,13 @@ describe("PlaceDetail home-base anchor", () => {
     );
 
     const why = screen.getByRole("heading", { name: "Why this climate is different here" });
+    const dossier = screen.getByRole("heading", { name: "Field dossier" });
     const vsHome = screen.getByRole("heading", { name: "Versus your home base" });
     const twins = screen.getByRole("heading", { name: "Climate twins" });
     const residency = document.getElementById("pd-residency-brief");
     expect(residency).not.toBeNull();
-    expect(why.compareDocumentPosition(vsHome) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(why.compareDocumentPosition(dossier) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(dossier.compareDocumentPosition(vsHome) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(vsHome.compareDocumentPosition(twins) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     expect(twins.compareDocumentPosition(residency!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });

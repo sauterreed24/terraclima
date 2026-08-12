@@ -173,7 +173,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
       id: "appendix-forces-atlas",
       title: "Spatial logic and terrain engines",
       paragraphs: [
-        `${list} Use these as the spatial grammar for the profile: slope, exposure, water, elevation, and air-mass pathways explain why one map dot can feel unlike the surrounding region. Tap the matching chips under "Why this climate is different here" for glossary definitions.`,
+        `${list} Slope, exposure, water, elevation, and air-mass pathways explain why one map dot can feel unlike the surrounding region. Tap the matching chips under "Why this climate is different here" for glossary definitions.`,
       ],
     });
   }
@@ -186,7 +186,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     const tricky = g.tricky.length ? g.tricky.slice(0, 4).join(", ") : "—";
     const ph = `${s.phRange[0]}–${s.phRange[1]}`;
     const groundParas = [
-      `${s.texture} Drainage is ${s.drainage}; soil pH about ${ph}. Growability sits at ${g.score}/100 in this atlas. Crops and plants called out as strong fits: ${grows}. Worth extra care: ${tricky}.`,
+      `${s.texture} Drainage is ${s.drainage}; soil pH about ${ph}. The garden screen is ${g.score}/100. Crops and plants called out as strong fits: ${grows}. Worth extra care: ${tricky}.`,
     ];
     if (s.notes) groundParas.push(trimProse(s.notes, MAX_SOIL_NOTE_CHARS));
     if (g.homeGarden) groundParas.push(`Home garden angle: ${trimProse(g.homeGarden, 240)}`);
@@ -248,7 +248,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
       paragraphs: [
         `If you are scouting a home or small land parcel, start with who already thrives here: ${place.whoWouldLove} Relocation tags we attach include ${rel} — they are editorial shorthand, not census demographics.`,
         `Be equally clear on poor fit so you do not waste a site visit: ${place.whoMightNot} Travel-wise, people often show up for ${travel}.`,
-        `Comfort (${place.scores.comfort}/100), resilience (${place.scores.resilience}/100), and growability (${place.scores.growability}/100) summarize habitability, climate-change positioning, and yard or orchard potential inside this atlas — not appraisal or lending rules. ${trade}`,
+        `Comfort, resilience, and garden screens (${place.scores.comfort}, ${place.scores.resilience}, and ${place.scores.growability} of 100) summarize habitability, climate-change positioning, and yard or orchard potential — not appraisal or lending rules. ${trade}`,
         `Risk diligence (always verify locally): ${riskBits.join(" · ")}.`,
         `Confidence here is ${place.confidence}${place.confidenceNotes ? ` — ${place.confidenceNotes}` : ""}. Use citations at the end of this sheet as your jump-off for primary sources.`,
       ],

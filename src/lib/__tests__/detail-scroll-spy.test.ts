@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
-import { afterEach, describe, expect, it } from "vitest";
-import { detailScrollRoot, pickActiveSectionIndex } from "../detail-scroll-spy";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { detailScrollRoot, ensureDetailSectionOpen, pickActiveSectionIndex, scrollDetailRootToSection } from "../detail-scroll-spy";
 
 function setBox(el: HTMLElement, rect: Partial<DOMRect>, scroll: Partial<Pick<HTMLElement, "clientHeight" | "scrollHeight" | "scrollTop">> = {}) {
   Object.defineProperty(el, "clientHeight", { configurable: true, value: scroll.clientHeight ?? 0 });
@@ -66,5 +66,33 @@ describe("detail scroll spy", () => {
     const sections = [sectionAt(100), sectionAt(240), sectionAt(360)];
 
     expect(pickActiveSectionIndex(root, sections)).toBe(1);
+  });
+
+  it("opens a collapsed details target before scrolling to it", () => {
+    const root = document.createElement("div");
+    root.dataset.placeDetail = "true";
+    setBox(root, { top: 0, height: 600 }, { clientHeight: 600, scrollHeight: 1600, scrollTop: 0 });
+    const scrollTo = vi.fn();
+    root.scrollTo = scrollTo as unknown as typeof root.scrollTo;
+
+    const details = document.createElement("details");
+    details.id = "pd-signature";
+    setBox(details, { top: 400, height: 80 });
+    root.append(details);
+    document.body.append(root);
+
+    expect(details.open).toBe(false);
+    expect(scrollDetailRootToSection("pd-signature", { behavior: "auto" })).toBe(true);
+    expect(details.open).toBe(true);
+    expect(scrollTo).toHaveBeenCalled();
+  });
+
+  it("does not wrap a non-details section in an open details", () => {
+    const section = document.createElement("section");
+    section.id = "pd-risk";
+    document.body.append(section);
+
+    ensureDetailSectionOpen(section);
+    expect(section.closest("details")).toBeNull();
   });
 });

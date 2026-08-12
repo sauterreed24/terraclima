@@ -93,13 +93,13 @@ interface PdSectionDef {
  * `buildPlaceDetailNavItems` and legacy hash → chapter resolution.
  */
 const PD_SECTION_DEFS: PdSectionDef[] = [
-  // Portrait — summary, signature, seasonal feel, microclimate mechanism.
+  // Portrait — story first: overview, mechanism, authored dossier, contrast, field story.
   { id: PD.overview, label: "Overview", group: "portrait" },
   { id: PD.seasons, label: "Season by season", group: "portrait" },
-  { id: PD.atAGlance, label: "At a glance", group: "portrait" },
   { id: PD.whyHere, label: "Why it differs", group: "portrait" },
-  { id: PD.placeFeel, label: "Place feel", group: "portrait" },
-  { id: PD.signature, label: "Climate signature", group: "portrait" },
+  { id: PD.deepDives, label: "Field dossier", group: "portrait", optional: "deepDives" },
+  { id: PD.contrast, label: "Local contrast", group: "portrait", optional: "contrast" },
+  { id: PD.fieldStory, label: "Field story", group: "portrait" },
 
   // Live or Visit — resident/traveler fit, lived indicators, settlements,
   // activities, and the consolidated decision lens.
@@ -115,10 +115,11 @@ const PD_SECTION_DEFS: PdSectionDef[] = [
   { id: PD.practical, label: "Practical read", group: "liveOrVisit" },
   { id: PD.tourism, label: "Climate tourism", group: "liveOrVisit" },
   { id: PD.who, label: "Who fits", group: "liveOrVisit" },
-  { id: PD.fieldStory, label: "Field story", group: "liveOrVisit" },
 
-  // Climate & Land — monthly climate, period comparison, terrain, soil,
-  // growability, and nearby contrasts.
+  // Climate & Land — monthly climate, screening scores, terrain, soil.
+  { id: PD.atAGlance, label: "At a glance", group: "climateLand" },
+  { id: PD.placeFeel, label: "Place feel", group: "climateLand" },
+  { id: PD.signature, label: "Climate signature", group: "climateLand" },
   { id: PD.rhythm, label: "Seasonal rhythm", group: "climateLand" },
   { id: PD.bestMonths, label: "Best months", group: "climateLand", optional: "bestMonths" },
   { id: PD.comfortPrecision, label: "Comfort precision", group: "climateLand" },
@@ -126,7 +127,6 @@ const PD_SECTION_DEFS: PdSectionDef[] = [
   { id: PD.numbersTogether, label: "Numbers together", group: "climateLand" },
   { id: PD.corpus, label: "Full atlas context", group: "climateLand" },
   { id: PD.geospatial, label: "Geospatial analysis", group: "climateLand" },
-  { id: PD.contrast, label: "Local contrast", group: "climateLand", optional: "contrast" },
   { id: PD.soil, label: "Agriculture & soil", group: "climateLand" },
 
   // Risks & Future — hazards, observed recent shift, climate-change
@@ -138,7 +138,6 @@ const PD_SECTION_DEFS: PdSectionDef[] = [
   // formulas, raw-data/export links, and methodology.
   { id: PD.evidence, label: "Evidence", group: "evidenceMethods" },
   { id: PD.verdict, label: "Scores & sources", group: "evidenceMethods" },
-  { id: PD.deepDives, label: "Field dossier", group: "evidenceMethods", optional: "deepDives" },
 ];
 
 /** Chapter label for every known section id — used to resolve legacy hashes. */
@@ -149,9 +148,10 @@ export const PD_GROUP_BY_ID: Record<string, PdChapterKey> = Object.fromEntries(
 /** Every stable PD.* anchor id, for legacy-hash detection. */
 export const PD_ALL_IDS: readonly string[] = PD_SECTION_DEFS.map(def => def.id);
 
-/** Chapter label for a section id (or the deep-dives chapter for `deep-…` appendix ids). */
+/** Chapter for a section id, including `deep-…` / `appendix-…` field-dossier hashes. */
 export function chapterForAnchorId(id: string): PdChapterKey | null {
   if (id in PD_GROUP_BY_ID) return PD_GROUP_BY_ID[id]!;
+  if (id.startsWith("deep-") || id.startsWith("appendix-")) return "portrait";
   return null;
 }
 

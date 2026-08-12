@@ -194,6 +194,17 @@ describe("AtlasMap DOM controls", () => {
     await waitFor(() => expect(document.activeElement).toBe(keyButton));
   });
 
+  it("fills the atlas from land polygons so interior water is not painted as continent", async () => {
+    setCoarsePointer(false);
+    const { container } = renderMap();
+    await waitFor(() => {
+      const land = container.querySelector('[data-atlas-fill="land-with-holes"]');
+      expect(land).toBeTruthy();
+      expect((land?.getAttribute("d") ?? "").length).toBeGreaterThan(8);
+    });
+    expect(container.querySelector("#tc-land-holes-clip")).toBeTruthy();
+  });
+
   it("closes the desktop map key on Escape and restores focus to the trigger", async () => {
     setCoarsePointer(false);
     renderMap();
@@ -499,7 +510,7 @@ describe("AtlasMap DOM controls", () => {
     expect(document.activeElement).toBe(close);
   });
 
-  it("shows a compact instant preview on hover and promotes to the rich scout card after dwell", async () => {
+  it("shows a compact climate peek on hover and does not promote to a full card", async () => {
     vi.useFakeTimers();
     try {
       setCoarsePointer(false);
@@ -512,7 +523,7 @@ describe("AtlasMap DOM controls", () => {
       const preview = screen.getByRole("tooltip");
       expect(preview).toHaveAttribute("data-variant", "compact");
       expect(preview).toHaveTextContent("Alpha Valley");
-      expect(preview).toHaveTextContent("JJA high");
+      expect(preview).toHaveTextContent("summers");
       expect(preview).not.toHaveTextContent("Climate snapshot");
       expect(preview).toHaveClass("tc-map-hover-card-enter");
       expect(preview).not.toHaveClass("anim-fade-in");
@@ -525,17 +536,12 @@ describe("AtlasMap DOM controls", () => {
         vi.advanceTimersByTime(460);
       });
 
-      const richPreview = screen.getByRole("tooltip");
-      expect(richPreview).toHaveAttribute("data-variant", "full");
-      expect(richPreview).toHaveTextContent("Climate snapshot");
-      expect(richPreview).toHaveTextContent("Why it differs");
-      expect(richPreview).toHaveTextContent("Open pin for full profile");
-      expect(richPreview).not.toHaveTextContent("Scout cues");
-      expect(richPreview).not.toHaveTextContent("Comfort read");
-      expect(richPreview).toHaveClass("tc-map-hover-card-enter");
-      expect(richPreview).not.toHaveClass("anim-fade-in");
-      expect(richPreview).toHaveAttribute("data-horizontal", preview.getAttribute("data-horizontal")!);
-      expect(richPreview).toHaveAttribute("data-vertical", preview.getAttribute("data-vertical")!);
+      const stillPeek = screen.getByRole("tooltip");
+      expect(stillPeek).toHaveAttribute("data-variant", "compact");
+      expect(stillPeek).not.toHaveTextContent("Climate snapshot");
+      expect(stillPeek).not.toHaveTextContent("Why it differs");
+      expect(stillPeek).toHaveAttribute("data-horizontal", preview.getAttribute("data-horizontal")!);
+      expect(stillPeek).toHaveAttribute("data-vertical", preview.getAttribute("data-vertical")!);
 
       fireEvent.click(marker);
       expect(onSelect).toHaveBeenCalledWith("a");
@@ -544,7 +550,7 @@ describe("AtlasMap DOM controls", () => {
     }
   });
 
-  it("pins a place to the shortlist from the rich hover card without opening the dossier", async () => {
+  it("keeps shortlist pinning on the pin, not a floating hover card", async () => {
     vi.useFakeTimers();
     try {
       setCoarsePointer(false);
@@ -561,11 +567,11 @@ describe("AtlasMap DOM controls", () => {
         vi.advanceTimersByTime(460);
       });
 
-      const richPreview = screen.getByRole("region", { name: "Alpha Valley map preview" });
-      expect(richPreview).toHaveAttribute("data-interactive", "true");
-      expect(richPreview).toHaveAttribute("id", "tc-map-hover-preview");
-      expect(richPreview).toHaveTextContent("Pin shortlist · open for profile");
-      fireEvent.click(within(richPreview).getByRole("button", { name: /Pin Alpha Valley to your shortlist/ }));
+      const peek = screen.getByRole("tooltip");
+      expect(peek).toHaveAttribute("data-variant", "compact");
+      expect(peek).toHaveClass("pointer-events-none");
+      expect(within(peek).queryByRole("button")).toBeNull();
+      fireEvent.click(marker, { shiftKey: true });
       expect(onToggleBookmark).toHaveBeenCalledWith("a");
       expect(onSelect).not.toHaveBeenCalled();
     } finally {
@@ -662,7 +668,7 @@ describe("AtlasMap DOM controls", () => {
         vi.advanceTimersByTime(460);
       });
       card = screen.getByRole("tooltip");
-      expect(card).toHaveAttribute("data-variant", "full");
+      expect(card).toHaveAttribute("data-variant", "compact");
       expect(card).toHaveAttribute("data-horizontal", "right");
       expect(card).toHaveAttribute("data-vertical", "above");
       expect(card).toHaveClass("tc-map-hover-card-enter");
@@ -700,19 +706,19 @@ describe("AtlasMap DOM controls", () => {
       fireEvent.pointerEnter(marker, { pointerType: "mouse" });
 
       expect(screen.getByRole("tooltip")).toHaveTextContent("Rank #1 by Most comfortable");
-      expect(screen.getByRole("tooltip")).toHaveTextContent("Fill = climate driver");
+      expect(screen.getByRole("tooltip")).not.toHaveTextContent("Fill = climate driver");
 
       await act(async () => {
         vi.advanceTimersByTime(460);
       });
 
-      const richPreview = screen.getByRole("tooltip");
-      expect(richPreview).toHaveAttribute("data-variant", "full");
-      expect(richPreview).toHaveTextContent("Rank #1 by Most comfortable");
-      expect(richPreview).toHaveTextContent("Climate snapshot");
-      expect(richPreview).toHaveTextContent("gold = comfort leaders");
-      expect(richPreview).not.toHaveTextContent("Live fit");
-      expect(richPreview).not.toHaveTextContent("Current lens leader");
+      const peek = screen.getByRole("tooltip");
+      expect(peek).toHaveAttribute("data-variant", "compact");
+      expect(peek).toHaveTextContent("Rank #1 by Most comfortable");
+      expect(peek).toHaveTextContent("summers");
+      expect(peek).not.toHaveTextContent("Climate snapshot");
+      expect(peek).not.toHaveTextContent("Live fit");
+      expect(peek).not.toHaveTextContent("Current lens leader");
     } finally {
       vi.useRealTimers();
     }
@@ -1121,7 +1127,7 @@ describe("AtlasMap DOM controls", () => {
       expect(preview.querySelector(".tc-map-hover-title")).toBeTruthy();
       expect(preview.querySelector(".text-ice")).toBeNull();
       expect(preview.querySelector(".text-stone")).toBeNull();
-      expect(preview.querySelector(".tc-map-hover-metric__label")).toBeTruthy();
+      expect(preview.querySelector(".tc-map-hover-climate-line")).toBeTruthy();
     } finally {
       vi.useRealTimers();
     }

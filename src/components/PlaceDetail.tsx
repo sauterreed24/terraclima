@@ -54,7 +54,7 @@ import { PlaceResidencyBrief, type ResidencyFitContext } from "./place-detail/Pl
 import { PlaceComfortPrecision } from "./place-detail/PlaceComfortPrecision";
 import { PlaceBackToTop } from "./place-detail/PlaceBackToTop";
 import { PlaceReadingProgress } from "./place-detail/PlaceReadingProgress";
-import { Section, KeyValue, LabelRow, Legend, ScorePill, ZoneDivider, titleCaseLocal } from "./place-detail/place-detail-ui";
+import { Section, KeyValue, LabelRow, Legend, ScorePill, ScoreDetails, ZoneDivider, titleCaseLocal } from "./place-detail/place-detail-ui";
 import { synthesizePlaceSignals } from "../lib/place-signals";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
 import { buildGrowabilityRationale } from "../lib/growability-score";
@@ -278,13 +278,9 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
       const legacyId = hash.slice(1);
       if (legacyId && (PD_ALL_IDS as readonly string[]).includes(legacyId)) {
         didResolveHash = true;
-        const target = el.querySelector<HTMLElement>(hash);
-        if (target) {
-          const er = el.getBoundingClientRect();
-          const tr = target.getBoundingClientRect();
-          const top = el.scrollTop + (tr.top - er.top) - 12;
-          el.scrollTo({ top: Math.max(0, top), behavior: "auto" });
-        }
+        // Opens collapsed score `<details>` (#pd-at-a-glance, #pd-place-feel,
+        // #pd-signature) before scrolling so shared hashes land on the body.
+        scrollDetailRootToSection(legacyId, { behavior: "auto" });
         return;
       }
       didResolveHash = true;
@@ -580,67 +576,50 @@ function DetailHeader({
       </div>
 
       <dl
-        className="detail-signature-panel"
+        className="detail-signature-panel detail-signature-panel--quiet"
         style={{ ["--signature-rgb" as string]: visualSignature.mapAccentRgb }}
         aria-label={`${place.name} place signature`}
       >
         <div className="detail-signature-panel__primary">
-          <dt>Place signature</dt>
-          <dd title={prose(visualSignature.primaryBlurb)}>{visualSignature.primaryLabel}</dd>
-        </div>
-        <div>
           <dt>Feel</dt>
-          <dd title={`Place-feel score ${visualSignature.feelScore}/100`}>
+          <dd title={prose(visualSignature.primaryBlurb)}>
             <span>{visualSignature.feelBand}</span>
-            <span className="font-mono-num">{visualSignature.feelScore}</span>
-          </dd>
-        </div>
-        <div>
-          <dt>Leads with</dt>
-          <dd title={visualSignature.strength.rationale}>
-            <span>{visualSignature.strength.shortLabel}</span>
-            <span className="font-mono-num">{Math.round(visualSignature.strength.value)}</span>
-          </dd>
-        </div>
-        <div>
-          <dt>Verify</dt>
-          <dd title={visualSignature.verify.rationale}>
-            <span>{visualSignature.verify.shortLabel}</span>
-            <span className="font-mono-num">{Math.round(visualSignature.verify.value)}</span>
+            <span className="text-frost font-normal">{visualSignature.primaryLabel}</span>
           </dd>
         </div>
       </dl>
 
-      {hero && (
-        <figure className="mt-4 rounded-2xl overflow-hidden border border-[rgba(200,160,120,0.45)] shadow-[0_8px_28px_-12px_rgba(62,38,24,0.12)]">
-          {heroFailed ? (
-            // Hero image failed (offline / 404 / blocked). Stand in with a
-            // climate-signature panorama drawn from the place's own monthly
-            // normals so the dossier still opens on the place's identity
-            // instead of an apologetic empty box. The figcaption keeps the
-            // credit so the source page stays one click away.
-            <HeroClimateFallback place={place} signatureLabel={visualSignature.primaryLabel} />
-          ) : (
-            <img
-              src={hero.src}
-              srcSet={hero.srcSet}
-              sizes={hero.sizes}
-              alt={hero.alt}
-              width={1280}
-              height={520}
-              className="w-full h-28 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
-              loading="eager"
-              decoding="async"
-              onError={() => setFailedHeroSrc(hero.src)}
-            />
-          )}
-          <figcaption className="tc-hero-credit px-3 py-0 text-[10px] leading-snug">
+      <figure className="mt-4 rounded-2xl overflow-hidden border border-[rgba(200,160,120,0.45)] shadow-[0_8px_28px_-12px_rgba(62,38,24,0.12)]">
+        {hero && !heroFailed ? (
+          <img
+            src={hero.src}
+            srcSet={hero.srcSet}
+            sizes={hero.sizes}
+            alt={hero.alt}
+            width={1280}
+            height={520}
+            className="w-full h-28 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
+            loading="eager"
+            decoding="async"
+            onError={() => setFailedHeroSrc(hero.src)}
+          />
+        ) : (
+          <HeroClimateFallback
+            place={place}
+            signatureLabel={visualSignature.primaryLabel}
+            photoFailed={heroFailed}
+          />
+        )}
+        <figcaption className="tc-hero-credit px-3 py-0 text-[10px] leading-snug">
+          {hero && !heroFailed ? (
             <a href={hero.sourceUrl} target="_blank" rel="noopener noreferrer" className="hover:text-glacier-700 hover:underline">
               {hero.creditLine}
             </a>
-          </figcaption>
-        </figure>
-      )}
+          ) : (
+            <span>January–December temperature palette from this place&apos;s monthly normals.</span>
+          )}
+        </figcaption>
+      </figure>
 
       <div className="mt-2">
         <a
@@ -682,11 +661,18 @@ function DetailHeader({
 }
 
 /**
- * Designed stand-in for a hero photo that cannot load (offline PWA, blocked
- * CDN, 404): a January→December temperature panorama from the place's own
- * authored normals, labelled with the place name and primary signature.
+ * Climate-palette visual for every place. Used as the primary figure when no
+ * Commons photo is curated, and as a stand-in when a photo fails to load.
  */
-function HeroClimateFallback({ place, signatureLabel }: { place: Place; signatureLabel: string }) {
+function HeroClimateFallback({
+  place,
+  signatureLabel,
+  photoFailed,
+}: {
+  place: Place;
+  signatureLabel: string;
+  photoFailed: boolean;
+}) {
   const { tempHighC, tempLowC } = place.climate;
   const ribbon = useMemo(() => {
     const months = Math.max(tempHighC.length, 2);
@@ -697,12 +683,16 @@ function HeroClimateFallback({ place, signatureLabel }: { place: Place; signatur
     return `linear-gradient(90deg, ${stops.join(", ")})`;
   }, [tempHighC, tempLowC]);
 
+  const ariaLabel = photoFailed
+    ? `${place.name} — photo unavailable; showing its January-to-December temperature palette instead`
+    : `${place.name} — January-to-December temperature palette from monthly normals`;
+
   return (
     <div
       className="tc-hero-fallback h-28 md:h-52"
       style={{ ["--tc-hero-ribbon" as string]: ribbon }}
       role="img"
-      aria-label={`${place.name} — photo unavailable; showing its January-to-December temperature palette instead`}
+      aria-label={ariaLabel}
     >
       <div className="tc-hero-fallback__plate">
         <span className="tc-hero-fallback__kicker">{signatureLabel}</span>
@@ -820,8 +810,6 @@ function DetailBody({
       <div className="min-w-0 space-y-10 tc-detail-prose">
       <PlaceOverviewSpotlight place={place} anchorId={PD.overview} seasonsAnchorId={PD.seasons} />
 
-      <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
-
       <Section anchorId={PD.whyHere} icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="Why this climate is different here">
         <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.whyDistinct)}</p>
 
@@ -900,20 +888,59 @@ function DetailBody({
         <div className="text-sm text-stone mt-3 italic">Relief context: {prose(place.reliefContext)}</div>
       </Section>
 
-      <PlaceFeelRead place={place} anchorId={PD.placeFeel} />
-
-      <Section anchorId={PD.signature} title="Climate signature (radar chart)" icon={<Sparkles className="w-4 h-4" style={{ color: "#8cc8e0" }} />}>
-        <div className="grid md:grid-cols-[1fr_260px] gap-6 items-center">
-          <div className="space-y-2">
-            <KeyValue label="Mean annual precipitation" value={fmtPrecip(annualP, dist)} />
-            <KeyValue label="Frost-free days (est.)" value={`${place.climate.frostFreeDays ?? "—"}`} />
-            <KeyValue label="Hardiness zone" value={place.climate.hardinessZone ?? place.growability.hardinessZone ?? "—"} />
-            <KeyValue label="Chill hours (est.)" value={`${place.climate.chillHours ?? "—"}`} />
-            <KeyValue label="Summer diurnal swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { signed: false }) : "—"} />
-            <KeyValue label="Biome" value={place.biome} />
-          </div>
-          <MicroclimateFingerprint place={place} />
+      {deepMerged.length > 0 ? (
+        <div id={PD.deepDives} className="detail-doc-section scroll-mt-28">
+          <PlaceDeepSections
+            sections={deepMerged}
+            hasBestMonthsGuide={bestMonths.length > 0}
+            syncDossierHash={readingActiveAnchor === PD.deepDives}
+          />
         </div>
+      ) : null}
+
+      {nearbyContextRows.length > 0 ? (
+        <Section anchorId={PD.contrast} title="Local contrast" icon={<TrendingUp className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
+          {place.localContrast && <ContrastChart contrasts={place.localContrast} />}
+          {nearbyContextRows.length > 0 && (
+            <div className="mt-4 space-y-2">
+              <div className="text-[10px] uppercase tracking-wider text-stone">Nearby contrasts and scouting checks</div>
+              {nearbyContextRows.map((n, i) => {
+                const linked = n.placeId && PLACES_BY_ID[n.placeId];
+                return linked ? (
+                  <button
+                    key={i}
+                    onClick={event => onOpenPlace?.(n.placeId!, { trigger: event.currentTarget })}
+                    className="panel-thin p-3 reveal-row w-full text-left flex items-start gap-2"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="font-medium text-frost text-sm">{linked.name}</div>
+                      <div className="text-stone text-sm leading-relaxed">{prose(n.note)}</div>
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-stone mt-0.5 shrink-0" />
+                  </button>
+                ) : (
+                  <div key={i} className="panel-thin p-3">
+                    <div className="font-medium text-frost text-sm">{n.label}</div>
+                    <div className="text-stone text-sm leading-relaxed">{prose(n.note)}</div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </Section>
+      ) : null}
+
+      <Section anchorId={PD.fieldStory} icon={<Compass className="w-4 h-4" style={{ color: "#dcc4ff" }} />} title={fieldStory.title}>
+        <div className="panel-field-story p-4 md:p-5 space-y-3.5 rounded-2xl border border-[rgba(199,181,234,0.22)]">
+          {fieldStory.paragraphs.map((p, i) => (
+            <p key={i} className="text-[color:var(--color-frost-strong)] leading-[1.72] text-[15px] tracking-[0.012em]">
+              {prose(p)}
+            </p>
+          ))}
+        </div>
+        <p className="text-[11px] text-stone italic mt-2">
+          Woven from this place&apos;s terrain, climate, and community notes — read it together with the summaries above, not instead of them.
+        </p>
       </Section>
 
       <ZoneDivider
@@ -1238,25 +1265,34 @@ function DetailBody({
         </div>
       </Section>
 
-      <Section anchorId={PD.fieldStory} icon={<Compass className="w-4 h-4" style={{ color: "#dcc4ff" }} />} title={fieldStory.title}>
-        <div className="panel-field-story p-4 md:p-5 space-y-3.5 rounded-2xl border border-[rgba(199,181,234,0.22)]">
-          {fieldStory.paragraphs.map((p, i) => (
-            <p key={i} className="text-[color:var(--color-frost-strong)] leading-[1.72] text-[15px] tracking-[0.012em]">
-              {prose(p)}
-            </p>
-          ))}
-        </div>
-        <p className="text-[11px] text-stone italic mt-2">
-          Woven from this place&apos;s terrain, climate, and community notes — read it together with the summaries above, not instead of them.
-        </p>
-      </Section>
-
       <ZoneDivider
         eyebrow="Chapter 3"
         title={PD_NAV_GROUP.climateLand}
-        blurb="The measurements behind the feel — monthly rhythm, comfort precision, full atlas context, remote-sensing checks, and what the ground offers."
+        blurb="The measurements behind the feel — monthly rhythm, screening scores, full atlas context, remote-sensing checks, and what the ground offers."
         icon={<TrendingUp className="w-3.5 h-3.5" aria-hidden />}
       />
+
+      <PlaceAtAGlance place={place} anchorId={PD.atAGlance} />
+
+      <PlaceFeelRead place={place} anchorId={PD.placeFeel} />
+
+      <ScoreDetails
+        id={PD.signature}
+        title="Climate signature"
+        icon={<Sparkles className="w-4 h-4" style={{ color: "#8cc8e0" }} />}
+      >
+        <div className="grid md:grid-cols-[1fr_260px] gap-6 items-center">
+          <div className="space-y-2">
+            <KeyValue label="Mean annual precipitation" value={fmtPrecip(annualP, dist)} />
+            <KeyValue label="Frost-free days (est.)" value={`${place.climate.frostFreeDays ?? "—"}`} />
+            <KeyValue label="Hardiness zone" value={place.climate.hardinessZone ?? place.growability.hardinessZone ?? "—"} />
+            <KeyValue label="Chill hours (est.)" value={`${place.climate.chillHours ?? "—"}`} />
+            <KeyValue label="Summer diurnal swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { signed: false }) : "—"} />
+            <KeyValue label="Biome" value={place.biome} />
+          </div>
+          <MicroclimateFingerprint place={place} />
+        </div>
+      </ScoreDetails>
 
       <Section anchorId={PD.rhythm} icon={<Wind className="w-4 h-4" style={{ color: "#8cc8e0" }} />} title="Seasonal rhythm">
         <div className="space-y-4">
@@ -1447,38 +1483,6 @@ function DetailBody({
         </details>
       </Section>
 
-      {nearbyContextRows.length > 0 ? (
-        <Section anchorId={PD.contrast} title="Local contrast" icon={<TrendingUp className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
-          {place.localContrast && <ContrastChart contrasts={place.localContrast} />}
-          {nearbyContextRows.length > 0 && (
-            <div className="mt-4 space-y-2">
-              <div className="text-[10px] uppercase tracking-wider text-stone">Nearby contrasts and scouting checks</div>
-              {nearbyContextRows.map((n, i) => {
-                const linked = n.placeId && PLACES_BY_ID[n.placeId];
-                return linked ? (
-                  <button
-                    key={i}
-                    onClick={event => onOpenPlace?.(n.placeId!, { trigger: event.currentTarget })}
-                    className="panel-thin p-3 reveal-row w-full text-left flex items-start gap-2"
-                  >
-                    <div className="flex-1 min-w-0">
-                      <div className="font-medium text-frost text-sm">{linked.name}</div>
-                      <div className="text-stone text-sm leading-relaxed">{prose(n.note)}</div>
-                    </div>
-                    <ChevronRight className="w-4 h-4 text-stone mt-0.5 shrink-0" />
-                  </button>
-                ) : (
-                  <div key={i} className="panel-thin p-3">
-                    <div className="font-medium text-frost text-sm">{n.label}</div>
-                    <div className="text-stone text-sm leading-relaxed">{prose(n.note)}</div>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </Section>
-      ) : null}
-
       <Section anchorId={PD.soil} title="Agriculture & soil" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
           The growing read pairs the soil profile with what the climate envelope rewards or fights. Hardiness, frost-free runway, and chill hours sit in the climate signature above; here the focus is dirt, drainage, and what actually thrives.
@@ -1619,16 +1623,6 @@ function DetailBody({
           </ul>
         </div>
       </Section>
-
-      {deepMerged.length > 0 ? (
-        <div id={PD.deepDives} className="detail-doc-section scroll-mt-28">
-          <PlaceDeepSections
-            sections={deepMerged}
-            hasBestMonthsGuide={bestMonths.length > 0}
-            syncDossierHash={readingActiveAnchor === PD.deepDives}
-          />
-        </div>
-      ) : null}
       </div>
     </div>
   );

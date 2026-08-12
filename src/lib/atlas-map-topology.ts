@@ -1,3 +1,5 @@
+import type { FeatureCollection, Geometry } from "geojson";
+import { feature } from "topojson-client";
 import type { Topology, GeometryCollection } from "topojson-specification";
 
 export type CountriesTopo = Topology<{
@@ -43,6 +45,17 @@ let topoPromise: Promise<AtlasTopology> | null = null;
 
 export function getCachedAtlasTopology(): AtlasTopology | null {
   return cachedTopo;
+}
+
+/**
+ * Natural Earth land polygons (lake holes included) from the same world-atlas
+ * payload as country borders. Fill this, clipped to the NA focus countries,
+ * so interior water reads as ocean instead of painted continent.
+ */
+export function atlasLandFeatureCollection(
+  topo: AtlasTopology,
+): FeatureCollection<Geometry> {
+  return feature(topo.countries, topo.countries.objects.land) as unknown as FeatureCollection<Geometry>;
 }
 
 export function loadAtlasTopology(): Promise<AtlasTopology> {
