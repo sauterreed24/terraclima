@@ -37,6 +37,28 @@ export function Section({
  * land/agriculture sections. Keeps the long dossier legible without forcing a
  * structural reorder of every section.
  */
+export function ScoreDetails({
+  id,
+  title,
+  icon,
+  children,
+}: {
+  id: string;
+  title: string;
+  icon?: ReactNode;
+  children: ReactNode;
+}) {
+  return (
+    <details id={id} className="place-score-details detail-doc-section anim-fade-in scroll-mt-28">
+      <summary className="place-score-details__summary">
+        {icon}
+        {title}
+      </summary>
+      <div className="place-score-details__body">{children}</div>
+    </details>
+  );
+}
+
 export function ZoneDivider({
   eyebrow,
   title,

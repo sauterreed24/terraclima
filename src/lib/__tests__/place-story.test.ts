@@ -20,14 +20,43 @@ describe("composeFieldStory", () => {
     const story = composeFieldStory(place, "F", "imperial");
 
     expect(story.title).toBe("Field story: Test Mesa");
-    expect(story.paragraphs).toHaveLength(6);
-    expect(story.paragraphs[0]).toContain("Test Mesa sits near 4,921 ft");
-    expect(story.paragraphs[1]).toContain("high-summer afternoons around 81°F");
-    expect(story.paragraphs[1]).toContain("Köppen Csb");
-    expect(story.paragraphs[2]).toContain("Orographic lift and Cold-air drainage");
-    expect(story.paragraphs[3]).toContain("The lived map is anchored by Mesa Town (1,200).");
-    expect(story.paragraphs[4]).toContain("Mesa overlook (spring)");
-    expect(story.paragraphs[5]).toContain("strongest for gardeners who want cool nights");
+    expect(story.paragraphs[0]).toBe("test distinct");
+    expect(story.paragraphs.some(p => p.includes("Test Mesa sits near 4,921 ft"))).toBe(true);
+    expect(story.paragraphs.some(p => p.includes("High-summer afternoons run around 81°F"))).toBe(true);
+    expect(story.paragraphs.some(p => p.includes("Köppen Csb"))).toBe(true);
+    expect(story.paragraphs.some(p => p.includes("Orographic lift and Cold-air drainage"))).toBe(true);
+    expect(story.paragraphs).toContain("The lived map is anchored by Mesa Town (1,200).");
+    expect(story.paragraphs.some(p => p.includes("Mesa overlook (spring)"))).toBe(true);
+    expect(story.paragraphs.some(p => /Strongest for gardeners who want cool nights/i.test(p))).toBe(true);
+    expect(story.paragraphs.join(" ")).not.toMatch(/Start with the ground/i);
+    expect(story.paragraphs.join(" ")).not.toMatch(/climate signature is measurable/i);
+    expect(story.paragraphs.join(" ")).not.toMatch(/Fit check/i);
+  });
+
+  it("leads with authored feel when present, then why-distinct", () => {
+    const story = composeFieldStory(
+      makePlace({
+        whyDistinct: "Cold air drains off the mesa into the orchard benches.",
+        experience: {
+          feel: "Dry light and a sharp evening cool-down.",
+          texture: "Wind on the rim; frost in the draws.",
+          seasons: {
+            winter: "Cold.",
+            spring: "Bright.",
+            summer: "Warm days.",
+            autumn: "Clear.",
+          },
+          travelerFit: "Day hikes.",
+          residentFit: "Gardeners.",
+        },
+      }),
+      "C",
+      "metric",
+    );
+
+    expect(story.paragraphs[0]).toBe("Dry light and a sharp evening cool-down.");
+    expect(story.paragraphs[1]).toContain("Cold air drains off the mesa");
+    expect(story.paragraphs.at(-1)).toBe("Wind on the rim; frost in the draws.");
   });
 
   it("falls back to travel fit when no activities are authored", () => {

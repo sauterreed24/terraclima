@@ -15,12 +15,13 @@ export function PlaceFeelRead({ place, anchorId }: { place: Place; anchorId: str
   const feel = useMemo(() => scorePlaceFeel(place), [place]);
 
   return (
-    <section id={anchorId} className="detail-doc-section anim-fade-in scroll-mt-28">
-      <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
+    <details id={anchorId} className="place-score-details detail-doc-section anim-fade-in scroll-mt-28">
+      <summary className="place-score-details__summary">
         <Gauge className="w-4 h-4 shrink-0" style={{ color: "#c7b5ea" }} aria-hidden />
         Place feel
-      </h3>
+      </summary>
 
+      <div className="place-score-details__body">
       <div className="grid lg:grid-cols-[13rem_1fr] gap-3">
         <div className="panel-thin p-4">
           <div className="text-[10px] uppercase tracking-wider text-stone">Actual-place rating</div>
@@ -85,6 +86,7 @@ export function PlaceFeelRead({ place, anchorId }: { place: Place; anchorId: str
         <MapPinned className="w-3.5 h-3.5" aria-hidden />
         Derived from authored corpus texture, comfort signals, lived friction, risk load, and scouting anchors.
       </p>
-    </section>
+      </div>
+    </details>
   );
 }

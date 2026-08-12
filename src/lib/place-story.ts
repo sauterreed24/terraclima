@@ -5,10 +5,9 @@ import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "./climate-metrics
 import { fmtElev, fmtPrecip, fmtTemp } from "./units";
 import type { DistUnit, TempUnit } from "./units";
 
-function sentenceLead(text: string): string {
-  const first = text.split(/[.;]/)[0]?.trim() ?? text.trim();
-  if (!first) return "the local terrain sets the terms";
-  return `${first.charAt(0).toLowerCase()}${first.slice(1)}`;
+function firstSentence(text: string): string {
+  const first = text.split(/(?<=[.!?])\s+/)[0]?.trim() ?? text.trim();
+  return first;
 }
 
 function joinHumanList(items: readonly string[], max = 4): string {
@@ -19,10 +18,15 @@ function joinHumanList(items: readonly string[], max = 4): string {
   return `${clean.slice(0, -1).join(", ")}, and ${clean.at(-1)}`;
 }
 
+function ensurePeriod(text: string): string {
+  const t = text.trim();
+  if (!t) return t;
+  return /[.!?]$/.test(t) ? t : `${t}.`;
+}
+
 /**
- * Composes a human, scene-first narrative from structured place data so every
- * entry gets a distinct story even before optional hand-authored prose lands
- * in the corpus. Numbers are already localized to the active unit system.
+ * Scene-first narrative from structured place data. Leads with mechanism and
+ * sensation; numbers arrive as supporting texture, not a score readout.
  */
 export function composeFieldStory(
   place: Place,
@@ -34,22 +38,32 @@ export function composeFieldStory(
   const annualP = getAnnualPrecipMm(place);
   const archetypeLabel = ARCHETYPE_BY_ID[place.archetypes[0]]?.label ?? "this landscape";
   const driverLabels = place.drivers.map(d => DRIVER_LABELS[d] ?? d);
+  const feel = place.experience?.feel?.trim();
+  const texture = place.experience?.texture?.trim();
+  const why = place.whyDistinct.trim();
 
   const paragraphs: string[] = [];
 
-  paragraphs.push(
-    `Start with the ground: ${place.name} sits near ${fmtElev(place.elevationM, dist)} in ${archetypeLabel.toLowerCase()} terrain, where ${sentenceLead(place.reliefContext)}.`,
-  );
+  if (feel) {
+    paragraphs.push(feel);
+    if (firstSentence(why) !== feel) paragraphs.push(why);
+  } else {
+    paragraphs.push(why);
+  }
 
   paragraphs.push(
-    `The climate signature is measurable: high-summer afternoons around ${fmtTemp(jh, temp)}, winter lows near ${fmtTemp(
-      jl,
-      temp,
-    )}, about ${fmtPrecip(annualP, dist)} of precipitation, and Köppen ${place.koppen} - ${place.biome}.`,
+    `${place.name} sits near ${fmtElev(place.elevationM, dist)} in ${archetypeLabel.toLowerCase()} country, where ${place.reliefContext.replace(/\.$/, "")}. Terrain engines on the record are ${joinHumanList(driverLabels, 5)}.`,
   );
 
+  const nearby = (place.nearbyContrasts ?? []).filter(n => n.note).slice(0, 2);
+  if (nearby.length) {
+    paragraphs.push(
+      nearby.map(n => `${n.label}: ${n.note.replace(/\.$/, "")}.`).join(" "),
+    );
+  }
+
   paragraphs.push(
-    `The terrain engines named in the record are ${joinHumanList(driverLabels, 5)}. Read the charts through those forces first: elevation, exposure, water, and air movement explain more here than a single regional average.`,
+    `High-summer afternoons run around ${fmtTemp(jh, temp)}, winter lows near ${fmtTemp(jl, temp)}, with about ${fmtPrecip(annualP, dist)} of precipitation — Köppen ${place.koppen}, ${place.biome}.`,
   );
 
   if (place.settlementsWithinZone?.length) {
@@ -72,9 +86,13 @@ export function composeFieldStory(
     paragraphs.push(`Travelers often show up for ${joinHumanList(place.travelFit, 4)}, which is the practical side of the same climate signal.`);
   }
 
-  paragraphs.push(
-    `Fit check: strongest for ${place.whoWouldLove}; harder for ${place.whoMightNot}.`,
-  );
+  if (texture) {
+    paragraphs.push(texture);
+  } else {
+    paragraphs.push(
+      `Strongest for ${ensurePeriod(place.whoWouldLove)} Harder for ${ensurePeriod(place.whoMightNot)}`,
+    );
+  }
 
   return {
     title: `Field story: ${place.name}`,

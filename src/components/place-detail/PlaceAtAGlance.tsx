@@ -21,11 +21,12 @@ export function PlaceAtAGlance({ place, anchorId }: { place: Place; anchorId: st
   if (tiles.length === 0) return null;
 
   return (
-    <section id={anchorId} className="detail-doc-section anim-fade-in scroll-mt-28">
-      <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
+    <details id={anchorId} className="place-score-details detail-doc-section anim-fade-in scroll-mt-28">
+      <summary className="place-score-details__summary">
         <LayoutGrid className="w-4 h-4 shrink-0" style={{ color: "var(--color-glacier-500)" }} aria-hidden />
         At a glance
-      </h3>
+      </summary>
+      <div className="place-score-details__body">
       <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
         Use this as the profile&apos;s map legend: depth, place feel, climate class, confidence, water year, and atlas context, all computed from the same structured fields as the charts.
       </p>
@@ -40,6 +41,7 @@ export function PlaceAtAGlance({ place, anchorId }: { place: Place; anchorId: st
           ))}
         </div>
       </div>
-    </section>
+      </div>
+    </details>
   );
 }

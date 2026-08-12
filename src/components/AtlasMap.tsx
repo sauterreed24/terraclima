@@ -8,7 +8,7 @@ import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useUnits } from "../lib/units";
-import { getCachedAtlasTopology, loadAtlasTopology, type AtlasTopology } from "../lib/atlas-map-topology";
+import { atlasLandFeatureCollection, getCachedAtlasTopology, loadAtlasTopology, type AtlasTopology } from "../lib/atlas-map-topology";
 import { motionPolicy, useRichVisualEffects } from "../lib/device-profile";
 import {
   atlasSafeAreaForChrome,
@@ -351,8 +351,8 @@ function smoothTrailPath(points: Array<[number, number]>): string {
  *   - `data-gesturing` is toggled on the shell via DOM, not React state.
  *   - All geo strokes use vector-effect="non-scaling-stroke" so we don't
  *     have to recompute stroke widths on zoom.
- *   - Markers are React.memo'd; hover uses a compact preview first, rich
- *     card after ~450 ms dwell (keyboard focus stays compact).
+ *   - Markers are React.memo'd; hover/focus stay on a compact peek
+ *     (name, archetype, one climate line). Click/tap opens the dossier.
  *   - Marker visual size stays constant at any zoom via a counter-scale
  *     wrapper (no per-marker arithmetic).
  *   - Pins call the parent `onSelect` directly — not gated on pan `moved`,
@@ -531,7 +531,7 @@ export const AtlasMap = memo(function AtlasMap({
   const [hoverId, setHoverId] = useState<string | null>(null);
   const hoverIdRef = useRef<string | null>(null);
   hoverIdRef.current = hoverId;
-  /** Distinguishes pointer dwell promotion from keyboard-compact preview. */
+  /** Distinguishes pointer peek from keyboard-compact preview. */
   const tooltipInputRef = useRef<"pointer" | "keyboard">("pointer");
   /** Pin id that owns the keyboard compact peek until blur. */
   const keyboardPreviewIdRef = useRef<string | null>(null);
@@ -555,42 +555,17 @@ export const AtlasMap = memo(function AtlasMap({
     }
   }, []);
 
-  const cancelTooltipDwell = useCallback(() => {
-    if (tooltipDwellTimerRef.current) {
-      clearTimeout(tooltipDwellTimerRef.current);
-      tooltipDwellTimerRef.current = null;
-    }
-  }, []);
-
-  const scheduleTooltipRich = useCallback(() => {
-    cancelTooltipDwell();
-    setTooltipVariant("compact");
-    tooltipDwellTimerRef.current = setTimeout(() => {
-      tooltipDwellTimerRef.current = null;
-      // Never promote while keyboard owns a pin preview.
-      if (keyboardPreviewIdRef.current) {
-        tooltipInputRef.current = "keyboard";
-        setTooltipVariant("compact");
-        return;
-      }
-      setTooltipVariant("full");
-    }, 450);
-  }, [cancelTooltipDwell]);
-
   const scheduleHoverClear = useCallback(() => {
     cancelHoverClear();
-    cancelTooltipDwell();
     hoverClearTimerRef.current = setTimeout(() => {
       hoverClearTimerRef.current = null;
       // Pointer left a pin that still has keyboard focus — keep the compact peek.
       if (keyboardPreviewIdRef.current && keyboardPreviewIdRef.current === hoverIdRef.current) {
         tooltipInputRef.current = "keyboard";
-        setTooltipVariant("compact");
         return;
       }
       setHoverId(null);
       setTooltipAnchor(null);
-      setTooltipVariant("compact");
       tooltipInputRef.current = "pointer";
       keyboardPreviewIdRef.current = null;
       const root = transformRef.current;
@@ -598,12 +573,11 @@ export const AtlasMap = memo(function AtlasMap({
         el.classList.remove("map-pin-leader--active");
       });
     }, 180);
-  }, [cancelHoverClear, cancelTooltipDwell]);
+  }, [cancelHoverClear]);
 
   useEffect(() => () => {
     cancelHoverClear();
-    cancelTooltipDwell();
-  }, [cancelHoverClear, cancelTooltipDwell]);
+  }, [cancelHoverClear]);
 
   // Direct-DOM refs for the cursor lat/lon readout and the scale bar. These
   // are mutated imperatively (via ref.textContent / ref.style.width) on
@@ -633,8 +607,6 @@ export const AtlasMap = memo(function AtlasMap({
   /** Tracks active wheel zoom for pausing decorative animations. */
   const wheelActiveRef = useRef(false);
   const wheelIdleTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [tooltipVariant, setTooltipVariant] = useState<"compact" | "full">("compact");
-  const tooltipDwellTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Tracks the previous touch's pointerdown for double-tap-to-zoom detection.
   // The follow-up tap zooms ~1.9× centered on the tap point — only when the
   // gesture didn't move and didn't land on a marker (markers stop propagation
@@ -712,6 +684,10 @@ export const AtlasMap = memo(function AtlasMap({
     () => focusCountries.map(f => pathGen(f) ?? "").join(" "),
     [focusCountries, pathGen]
   );
+  const landPath = useMemo(() => {
+    if (!topo) return "";
+    return pathGen(atlasLandFeatureCollection(topo)) ?? "";
+  }, [topo, pathGen]);
   const otherPath = useMemo(
     () => otherCountries.map(f => pathGen(f) ?? "").join(" "),
     [otherCountries, pathGen]
@@ -869,13 +845,20 @@ export const AtlasMap = memo(function AtlasMap({
   /** Soft, clipped ellipses over major cordilleras — reads as relief without raster tiles. */
   const terrainVeils = useMemo(() => {
     const anchors: Array<{ lon: number; lat: number; rxk: number; ryk: number; rot: number; op: number }> = [
-      { lon: -116, lat: 46.5, rxk: 0.2, ryk: 0.12, rot: -32, op: 0.11 },
+      { lon: -122.2, lat: 47.4, rxk: 0.07, ryk: 0.16, rot: -6, op: 0.12 },
+      { lon: -128.4, lat: 54.8, rxk: 0.11, ryk: 0.13, rot: 14, op: 0.11 },
+      { lon: -116, lat: 46.5, rxk: 0.2, ryk: 0.12, rot: -32, op: 0.12 },
       { lon: -109, lat: 40, rxk: 0.17, ryk: 0.14, rot: -18, op: 0.13 },
-      { lon: -119.5, lat: 38, rxk: 0.11, ryk: 0.26, rot: 15, op: 0.1 },
-      { lon: -82.5, lat: 36.2, rxk: 0.1, ryk: 0.22, rot: 22, op: 0.09 },
-      { lon: -105, lat: 29.5, rxk: 0.09, ryk: 0.15, rot: 38, op: 0.075 },
-      { lon: -126, lat: 53.5, rxk: 0.12, ryk: 0.09, rot: 8, op: 0.085 },
-      { lon: -97, lat: 19.5, rxk: 0.09, ryk: 0.13, rot: 55, op: 0.07 },
+      { lon: -106.4, lat: 36.4, rxk: 0.08, ryk: 0.13, rot: -14, op: 0.1 },
+      { lon: -119.5, lat: 38, rxk: 0.11, ryk: 0.26, rot: 15, op: 0.11 },
+      { lon: -82.5, lat: 36.2, rxk: 0.1, ryk: 0.22, rot: 22, op: 0.1 },
+      { lon: -105, lat: 29.5, rxk: 0.09, ryk: 0.15, rot: 38, op: 0.08 },
+      { lon: -126, lat: 53.5, rxk: 0.12, ryk: 0.09, rot: 8, op: 0.09 },
+      { lon: -107.2, lat: 26.2, rxk: 0.08, ryk: 0.18, rot: 16, op: 0.1 },
+      { lon: -100.2, lat: 24.1, rxk: 0.06, ryk: 0.15, rot: 28, op: 0.085 },
+      { lon: -97, lat: 19.5, rxk: 0.12, ryk: 0.06, rot: 78, op: 0.09 },
+      { lon: -97.4, lat: 17.1, rxk: 0.1, ryk: 0.07, rot: 68, op: 0.08 },
+      { lon: -147.2, lat: 63.4, rxk: 0.14, ryk: 0.07, rot: 8, op: 0.1 },
     ];
     const out: Array<{ id: string; cx: number; cy: number; rx: number; ry: number; rot: number; op: number }> = [];
     anchors.forEach((a, i) => {
@@ -906,34 +889,30 @@ export const AtlasMap = memo(function AtlasMap({
       {
         id: "marine-layer",
         lonLat: [[-129, 51], [-126, 47], [-124, 43], [-122, 39], [-120, 35], [-116, 31]],
-        color: "rgba(120, 220, 245, 0.68)",
-        width: 4.2,
-        opacity: 0.34,
-        dash: "2 10",
+        color: "rgba(120, 220, 245, 0.42)",
+        width: 16,
+        opacity: 0.16,
       },
       {
         id: "rocky-rain-shadow",
         lonLat: [[-116, 51], [-113, 46], [-110, 42], [-107, 38], [-105, 34], [-104, 30]],
-        color: "rgba(255, 204, 112, 0.72)",
-        width: 3.6,
-        opacity: 0.3,
-        dash: "1 8",
+        color: "rgba(255, 204, 112, 0.4)",
+        width: 14,
+        opacity: 0.14,
       },
       {
         id: "gulf-moisture",
         lonLat: [[-98, 24], [-93, 29], [-88, 33], [-83, 37], [-77, 41]],
-        color: "rgba(143, 217, 154, 0.64)",
-        width: 3.2,
-        opacity: 0.23,
-        dash: "4 12",
+        color: "rgba(143, 217, 154, 0.38)",
+        width: 15,
+        opacity: 0.12,
       },
       {
         id: "sierra-madre",
         lonLat: [[-108, 31], [-104, 27], [-101, 23], [-98, 19], [-95, 16]],
-        color: "rgba(212, 168, 255, 0.68)",
-        width: 3.1,
-        opacity: 0.25,
-        dash: "2 9",
+        color: "rgba(212, 168, 255, 0.4)",
+        width: 13,
+        opacity: 0.13,
       },
     ];
 
@@ -1860,27 +1839,21 @@ export const AtlasMap = memo(function AtlasMap({
     setHoverId(id);
     updateTooltip({ x, y });
     syncActiveLeader(id);
-    // Keyboard focus owns the compact peek: pointer graze must not promote to full.
     if (keyboardPreviewIdRef.current) {
-      cancelTooltipDwell();
       tooltipInputRef.current = "keyboard";
-      setTooltipVariant("compact");
       return;
     }
     tooltipInputRef.current = "pointer";
-    scheduleTooltipRich();
-  }, [cancelHoverClear, cancelTooltipDwell, scheduleTooltipRich, updateTooltip, syncActiveLeader]);
-  /** Keyboard focus shows the compact peek only — never auto-promotes to full. */
+  }, [cancelHoverClear, updateTooltip, syncActiveLeader]);
+  /** Keyboard focus shows the same compact peek as pointer hover. */
   const onMarkerFocusEnter = useCallback((id: string, x: number, y: number) => {
     cancelHoverClear();
-    cancelTooltipDwell();
     keyboardPreviewIdRef.current = id;
     tooltipInputRef.current = "keyboard";
     setHoverId(id);
-    setTooltipVariant("compact");
     updateTooltip({ x, y });
     syncActiveLeader(id);
-  }, [cancelHoverClear, cancelTooltipDwell, updateTooltip, syncActiveLeader]);
+  }, [cancelHoverClear, updateTooltip, syncActiveLeader]);
   /** Blur ends the keyboard preview session, then clears like a pointer leave. */
   const onMarkerFocusLeave = useCallback(() => {
     keyboardPreviewIdRef.current = null;
@@ -2053,10 +2026,15 @@ export const AtlasMap = memo(function AtlasMap({
             <feGaussianBlur stdDeviation="0.85" />
           </filter>
 
-          {/* Clip NA landmass for relief veils (no extra network; vector only). */}
+          {/* Clip NA country outlines so worldwide land fill stays on the atlas. */}
           {topo && focusPath.length > 8 ? (
             <clipPath id="tc-focus-land-clip">
               <path d={focusPath} />
+            </clipPath>
+          ) : null}
+          {topo && landPath.length > 8 ? (
+            <clipPath id="tc-land-holes-clip">
+              <path d={landPath} />
             </clipPath>
           ) : null}
         </defs>
@@ -2113,22 +2091,32 @@ export const AtlasMap = memo(function AtlasMap({
               filter={richEffects ? "url(#coastalGlow)" : undefined}
             />
 
-            {/* Focus country fills */}
-            <path d={focusPath} fill="url(#landGrad)" />
+            {/* Focus land fill uses Natural Earth land (lake holes) clipped to NA. */}
+            <g clipPath={focusPath.length > 8 ? "url(#tc-focus-land-clip)" : undefined}>
+              <path
+                d={landPath.length > 8 ? landPath : focusPath}
+                fill="url(#landGrad)"
+                data-atlas-fill="land-with-holes"
+              />
 
-            {/* Hillshade overlays — phones get just one to keep the relief feel
-                without three full-landmass fill repaints per pinch frame. */}
-            <path d={focusPath} fill="url(#hillshade)" opacity={richEffects ? 0.95 : 0.72} />
-            {!coarsePointer ? (
-              <>
-                <path d={focusPath} fill="url(#hillshade2)" opacity={richEffects ? 0.82 : 0.55} />
-                <path d={focusPath} fill="url(#landGrain)" opacity={richEffects ? 0.35 : 0.12} />
-              </>
-            ) : null}
+              {/* Hillshade overlays — phones get just one to keep the relief feel
+                  without three full-landmass fill repaints per pinch frame. */}
+              <path d={landPath.length > 8 ? landPath : focusPath} fill="url(#hillshade)" opacity={richEffects ? 0.95 : 0.72} />
+              {!coarsePointer ? (
+                <>
+                  <path d={landPath.length > 8 ? landPath : focusPath} fill="url(#hillshade2)" opacity={richEffects ? 0.82 : 0.55} />
+                  <path d={landPath.length > 8 ? landPath : focusPath} fill="url(#landGrain)" opacity={richEffects ? 0.35 : 0.12} />
+                </>
+              ) : null}
+            </g>
 
-            {/* Faux cordillera shading — clipped to land, cheap ellipses (no DEM fetch). */}
-            {topo && focusPath.length > 8 ? (
-              <g clipPath="url(#tc-focus-land-clip)" pointerEvents="none" opacity={richEffects ? 0.88 : 0.62}>
+            {/* Faux cordillera shading — clipped to land-with-holes so lakes stay water. */}
+            {topo && (landPath.length > 8 || focusPath.length > 8) ? (
+              <g
+                clipPath={landPath.length > 8 ? "url(#tc-land-holes-clip)" : "url(#tc-focus-land-clip)"}
+                pointerEvents="none"
+                opacity={richEffects ? 0.88 : 0.62}
+              >
                 {terrainVeils.map(v => (
                   <ellipse
                     key={v.id}
@@ -2146,12 +2134,13 @@ export const AtlasMap = memo(function AtlasMap({
 
             {/* Sunward rim on landmass — 1 extra path, no filter */}
             <path
-              d={focusPath}
+              d={landPath.length > 8 ? landPath : focusPath}
               fill="none"
               stroke="rgba(255, 248, 235, 0.11)"
               strokeWidth="1.2"
               vectorEffect="non-scaling-stroke"
               opacity={richEffects ? 0.9 : 0.45}
+              clipPath={focusPath.length > 8 ? "url(#tc-focus-land-clip)" : undefined}
             />
 
             <g className="map-signal-ribbons" pointerEvents="none" aria-hidden>
@@ -2418,7 +2407,7 @@ export const AtlasMap = memo(function AtlasMap({
             id="tc-map-atlas-readout-grid"
             className="map-atlas-readout__grid"
             aria-label={atlasMapReadout.ariaLabel}
-            hidden={coarsePointer && !atlasReadoutExpanded ? true : undefined}
+            hidden={!atlasReadoutExpanded ? true : undefined}
           >
             {atlasMapReadout.items.map(item => (
               <div key={item.label} className="map-atlas-readout__item">
@@ -2659,11 +2648,6 @@ export const AtlasMap = memo(function AtlasMap({
           mapWidth={width}
           featuredRank={featuredRankById.get(hoverPlace.id)}
           featuredLabel={featuredLabel}
-          variant={tooltipVariant}
-          pinned={bookmarkIds?.has(hoverPlace.id) ?? false}
-          onToggleBookmark={onToggleBookmark ? () => onToggleBookmark(hoverPlace.id) : undefined}
-          onPreviewPointerEnter={cancelHoverClear}
-          onPreviewPointerLeave={scheduleHoverClear}
         />
       )}
     </div>
@@ -2912,7 +2896,7 @@ const Marker = memo(function Marker({
   }, []);
 
   const handleHoverEnter = useCallback((event: React.PointerEvent) => {
-    // Touch/pen activate the dossier on tap; don't run hover dwell promotion.
+    // Touch/pen activate the dossier on tap; hover peek is pointer-only.
     if (event.pointerType === "touch" || event.pointerType === "pen") return;
     onHoverEnter(place.id, x, y);
   }, [onHoverEnter, place.id, x, y]);
