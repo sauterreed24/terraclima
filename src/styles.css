@@ -9100,6 +9100,7 @@
   }
   .map-rank-halo {
     filter: drop-shadow(0 0 7px rgba(255, 204, 112, 0.32));
+    pointer-events: none;
   }
   .map-rank-halo__orbit {
     transform-origin: center;
@@ -9107,6 +9108,7 @@
   }
   .map-rank-badge {
     filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.45));
+    pointer-events: none;
   }
   .map-rank-trail {
     filter: drop-shadow(0 0 10px rgba(255, 204, 112, 0.18));

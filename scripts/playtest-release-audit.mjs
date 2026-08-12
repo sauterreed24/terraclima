@@ -3,7 +3,7 @@
  * scenario persistence, and console regressions beyond the standard suites.
  */
 import { chromium } from "playwright-core";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { accessSync, constants, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const BASE = process.env.TC_BASE_URL ?? "http://127.0.0.1:4173";
@@ -42,13 +42,45 @@ async function shot(page, name) {
   await page.screenshot({ path: join(ARTIFACT_DIR, `${name}.png`), fullPage: false });
 }
 
+/** Hover the glyph hit circle, not the group bbox (fanned badges inflate the group). */
+async function hoverMarkerGlyph(page, markerSelector) {
+  const box = await page.evaluate((sel) => {
+    const marker = document.querySelector(sel);
+    if (!marker) return null;
+    const hit = marker.querySelector("circle[pointer-events='all']")
+      ?? marker.querySelector("circle[fill='transparent']");
+    const r = (hit ?? marker).getBoundingClientRect();
+    if (r.width < 2 || r.height < 2) return null;
+    return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+  }, markerSelector);
+  if (!box) return false;
+  await page.mouse.move(box.x, box.y);
+  return true;
+}
+
 async function main() {
   const u = new URL(BASE);
   if (u.hostname !== "127.0.0.1" && u.hostname !== "localhost") {
     throw new Error(`refuses non-local base: ${BASE}`);
   }
 
-  const browser = await chromium.launch({ headless: true });
+  const chromeCandidates = [
+    process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
+    "/usr/local/bin/google-chrome",
+    "/usr/bin/google-chrome",
+    "/usr/bin/chromium-browser",
+  ].filter(Boolean);
+  let executablePath;
+  for (const candidate of chromeCandidates) {
+    try {
+      accessSync(candidate, constants.X_OK);
+      executablePath = candidate;
+      break;
+    } catch {
+      // try next
+    }
+  }
+  const browser = await chromium.launch(executablePath ? { executablePath, headless: true } : { headless: true });
 
   // Mobile atlas-read chip + scroll-page
   {
@@ -145,12 +177,11 @@ async function main() {
     );
     if (featured.length < 1) findings.push({ label, kind: "no-featured" });
     for (const f of featured) {
-      const box = await page.locator(`[data-marker-id="${f.id}"]`).boundingBox();
-      if (!box) {
+      const hovered = await hoverMarkerGlyph(page, `[data-marker-id="${f.id}"]`);
+      if (!hovered) {
         findings.push({ label, kind: "no-bbox", id: f.id });
         continue;
       }
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
       await page.waitForTimeout(450);
       const card = await page.evaluate(() => {
         const el = document.querySelector(".tc-map-hover-card");
@@ -166,7 +197,7 @@ async function main() {
         findings.push({ label, kind: "identity-mismatch", id: f.id, expected, card });
       }
       await page.mouse.move(8, 8);
-      await page.waitForTimeout(100);
+      await page.waitForTimeout(400);
     }
     await shot(page, label);
     await ctx.close();
@@ -309,12 +340,10 @@ async function main() {
     const page = await ctx.newPage();
     guard(page, label);
     await page.goto(`${BASE}/?r=most-comfortable`, { waitUntil: "networkidle", timeout: 45000 });
-    await page.waitForSelector(".map-marker[data-marker-id]", { timeout: 20000 });
-    const marker = page.locator(".map-marker[data-marker-id]").first();
-    const box = await marker.boundingBox();
-    if (!box) findings.push({ label, kind: "no-marker-bbox" });
+    await page.waitForSelector(".map-marker--featured[data-marker-id]", { timeout: 20000 });
+    const hovered = await hoverMarkerGlyph(page, ".map-marker--featured[data-marker-id]");
+    if (!hovered) findings.push({ label, kind: "no-marker-bbox" });
     else {
-      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
       await page.waitForTimeout(550);
       const preview = await page.evaluate(() => {
         const el = document.getElementById("tc-map-hover-preview");

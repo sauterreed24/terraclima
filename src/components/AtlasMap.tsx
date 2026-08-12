@@ -1857,7 +1857,6 @@ export const AtlasMap = memo(function AtlasMap({
 
   const onMarkerHoverEnter = useCallback((id: string, x: number, y: number) => {
     cancelHoverClear();
-    notifyMapEngaged();
     setHoverId(id);
     updateTooltip({ x, y });
     syncActiveLeader(id);
@@ -1870,7 +1869,7 @@ export const AtlasMap = memo(function AtlasMap({
     }
     tooltipInputRef.current = "pointer";
     scheduleTooltipRich();
-  }, [cancelHoverClear, cancelTooltipDwell, notifyMapEngaged, scheduleTooltipRich, updateTooltip, syncActiveLeader]);
+  }, [cancelHoverClear, cancelTooltipDwell, scheduleTooltipRich, updateTooltip, syncActiveLeader]);
   /** Keyboard focus shows the compact peek only — never auto-promotes to full. */
   const onMarkerFocusEnter = useCallback((id: string, x: number, y: number) => {
     cancelHoverClear();
@@ -3019,7 +3018,7 @@ const Marker = memo(function Marker({
         {/* Hit target follows the collision-spread glyph; geo truth stays on the leader anchor. */}
         <circle r={hitR} fill="transparent" stroke="none" pointerEvents="all" />
         {featuredRank ? (
-          <g className="map-rank-halo" aria-hidden>
+          <g className="map-rank-halo" aria-hidden pointerEvents="none">
             <circle
               r={r + 13}
               fill="none"

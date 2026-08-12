@@ -573,6 +573,21 @@ describe("AtlasMap DOM controls", () => {
     }
   });
 
+  it("does not latch Map-first chrome on pin hover, but does when opening a place", () => {
+    setCoarsePointer(false);
+    const onMapEngaged = vi.fn();
+    const onSelect = vi.fn();
+    renderMap(onSelect, [], defaultMapPlaces(), { onMapEngaged });
+
+    const marker = screen.getByRole("button", { name: /Alpha Valley/ });
+    fireEvent.pointerEnter(marker, { pointerType: "mouse" });
+    expect(onMapEngaged).not.toHaveBeenCalled();
+
+    fireEvent.click(marker);
+    expect(onSelect).toHaveBeenCalledWith("a");
+    expect(onMapEngaged).toHaveBeenCalledTimes(1);
+  });
+
   it("fans overlapping featured rank badges instead of stacking them NE", async () => {
     setCoarsePointer(false);
     const highland = [
@@ -591,6 +606,7 @@ describe("AtlasMap DOM controls", () => {
     expect(badges.some(badge => badge.getAttribute("data-badge-fanned") === "true")).toBe(true);
     const seats = badges.map(badge => badge.getAttribute("transform") ?? "");
     expect(new Set(seats).size).toBeGreaterThan(1);
+    expect(document.querySelector(".map-rank-halo")).toHaveAttribute("pointer-events", "none");
   });
 
   it("shift-clicks a map pin to shortlist without opening the dossier", () => {
