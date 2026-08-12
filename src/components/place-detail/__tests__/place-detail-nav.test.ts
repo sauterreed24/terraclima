@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PD, chapterForAnchorId } from "../../components/place-detail/place-detail-nav";
+import { PD, chapterForAnchorId } from "../place-detail-nav";
 
 describe("place detail nav anchors", () => {
   it("keeps load-bearing PD ids stable while field dossier lives in Portrait", () => {
