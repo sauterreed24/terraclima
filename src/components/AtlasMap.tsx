@@ -2084,12 +2084,13 @@ export const AtlasMap = memo(function AtlasMap({
               vectorEffect="non-scaling-stroke"
             />
 
-            {/* Coastline glow — use holed land so lakes stay water, not tinted land.
-                Blur filter skipped on modest hardware (GPU savings). */}
+            {/* Coastline glow — holed land, clipped to NA so lakes and
+                distant continents stay water/silhouette. Blur skipped on modest hardware. */}
             <path
               d={landPath.length > 8 ? landPath : focusPath}
               fill={richEffects ? "rgba(140,200,224,0.18)" : "rgba(140,200,224,0.12)"}
               filter={richEffects ? "url(#coastalGlow)" : undefined}
+              clipPath={focusPath.length > 8 ? "url(#tc-focus-land-clip)" : undefined}
             />
 
             {/* Focus land fill uses Natural Earth land (lake holes) clipped to NA. */}
