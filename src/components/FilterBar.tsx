@@ -302,27 +302,12 @@ export const FilterBar = memo(function FilterBar({
 
       {variant === "sheet" ? (
         <div className="tc-filter-sheet-rank-bar">
-          <div className="rank-menu">
-            <label htmlFor={rankingSelectId} className="rank-menu__field">
-              <span className="rank-menu__label">Rank by</span>
-              <span className="rank-menu__select-wrap">
-                <select
-                  id={rankingSelectId}
-                  value={ranking}
-                  onChange={event => setRanking(event.currentTarget.value as RankingProfile)}
-                  className="rank-menu__select"
-                  aria-describedby={`${rankingSelectId}-hint`}
-                >
-                  {RANKING_OPTIONS.map(opt => (
-                    <option key={opt.id} value={opt.id}>{opt.label}</option>
-                  ))}
-                </select>
-              </span>
-            </label>
-            <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
-              Current list and map: {rankingLabel}
-            </p>
-          </div>
+          <RankByControl
+            rankingSelectId={rankingSelectId}
+            ranking={ranking}
+            rankingLabel={rankingLabel}
+            setRanking={setRanking}
+          />
           {hasAny ? (
             <button
               type="button"
@@ -335,28 +320,23 @@ export const FilterBar = memo(function FilterBar({
             </button>
           ) : null}
         </div>
-      ) : null}
-
-      {variant === "sheet" ? (
-        <details
-          className="tc-filter-sheet-details"
-          open={fitOpen}
-          onToggle={onDetailsToggle(setFitOpen)}
-        >
-          <summary className="tc-filter-sheet-details__summary">
-            Fit Finder{activeBundle ? ` · ${activeBundle.label}` : ""}
-          </summary>
-          <FitFinderPanel
-            searchFieldId={searchFieldId}
-            fitFinderTitleId={fitFinderTitleId}
-            ranking={ranking}
-            filters={filters}
-            activeBundle={activeBundle}
-            temp={temp}
-            applyBundle={applyBundle}
-          />
-        </details>
       ) : (
+        <RankByControl
+          rankingSelectId={rankingSelectId}
+          ranking={ranking}
+          rankingLabel={rankingLabel}
+          setRanking={setRanking}
+        />
+      )}
+
+      <details
+        className="tc-filter-sheet-details"
+        open={fitOpen}
+        onToggle={onDetailsToggle(setFitOpen)}
+      >
+        <summary className="tc-filter-sheet-details__summary">
+          Fit Finder{activeBundle ? ` · ${activeBundle.label}` : ""}
+        </summary>
         <FitFinderPanel
           searchFieldId={searchFieldId}
           fitFinderTitleId={fitFinderTitleId}
@@ -366,7 +346,7 @@ export const FilterBar = memo(function FilterBar({
           temp={temp}
           applyBundle={applyBundle}
         />
-      )}
+      </details>
 
       <details
         className="tc-filter-sheet-details"
@@ -386,30 +366,6 @@ export const FilterBar = memo(function FilterBar({
           setLiveRisk={setLiveRisk}
         />
       </details>
-
-      {variant === "dock" ? (
-        <div className="rank-menu">
-          <label htmlFor={rankingSelectId} className="rank-menu__field">
-            <span className="rank-menu__label">Rank by</span>
-            <span className="rank-menu__select-wrap">
-              <select
-                id={rankingSelectId}
-                value={ranking}
-                onChange={event => setRanking(event.currentTarget.value as RankingProfile)}
-                className="rank-menu__select"
-                aria-describedby={`${rankingSelectId}-hint`}
-              >
-                {RANKING_OPTIONS.map(opt => (
-                  <option key={opt.id} value={opt.id}>{opt.label}</option>
-                ))}
-              </select>
-            </span>
-          </label>
-          <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
-            Current list and map: {rankingLabel}
-          </p>
-        </div>
-      ) : null}
 
       <details
         className="tc-filter-sheet-details"
@@ -494,6 +450,42 @@ export const FilterBar = memo(function FilterBar({
     </div>
   );
 });
+
+function RankByControl({
+  rankingSelectId,
+  ranking,
+  rankingLabel,
+  setRanking,
+}: {
+  rankingSelectId: string;
+  ranking: RankingProfile;
+  rankingLabel: string;
+  setRanking: (r: RankingProfile) => void;
+}) {
+  return (
+    <div className="rank-menu">
+      <label htmlFor={rankingSelectId} className="rank-menu__field">
+        <span className="rank-menu__label">Rank by</span>
+        <span className="rank-menu__select-wrap">
+          <select
+            id={rankingSelectId}
+            value={ranking}
+            onChange={event => setRanking(event.currentTarget.value as RankingProfile)}
+            className="rank-menu__select"
+            aria-describedby={`${rankingSelectId}-hint`}
+          >
+            {RANKING_OPTIONS.map(opt => (
+              <option key={opt.id} value={opt.id}>{opt.label}</option>
+            ))}
+          </select>
+        </span>
+      </label>
+      <p id={`${rankingSelectId}-hint`} className="rank-menu__hint">
+        Current list and map: {rankingLabel}
+      </p>
+    </div>
+  );
+}
 
 function FitFinderPanel({
   searchFieldId,

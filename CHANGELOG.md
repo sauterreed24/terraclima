@@ -4,6 +4,14 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Playtest polish: history, rank badges, filter dock
+
+- **Live-fit history:** Back/Forward to an explicit `?r=live-fit` URL no longer gets rewritten to the pre-constraint ranking. `popstate` clears the in-memory auto live-fit snapshot so history stays the source of truth.
+- **Hover vs Map first:** Peeking a pin no longer latches compact hero chrome. Compact still follows Map first, pan/pinch/wheel, opening a place, and the scroll heuristic — so a hover cannot reflow the map out from under the cursor.
+- **Filter dock order:** Rank by sits directly under search / lens receipt. Fit Finder joins Live Finder, Country, and Archetype as a collapsed accordion (auto-opens when a path is active).
+- **Map preview a11y:** Interactive hover cards are a named region, not a fake dialog, so screen readers are not told a modal opened on pin hover.
+- **Release audit:** `playtest:release-audit` now checks Rank-by-before-Fit-Finder dock order and that map previews are not dialogs.
+
 ### Map-first Explorer polish (path to 10)
 
 - **Compact hero chrome:** Explorer hero gains a Map first / Expand intro control and auto-compacts into a sticky slim bar after scroll or first map engagement (side-by-side wide layout stays expanded). Manual Map first / map engagement latches compact until Expand intro; Expand latches open until Map first again.

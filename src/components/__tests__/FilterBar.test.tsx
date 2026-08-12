@@ -34,6 +34,7 @@ function renderFilterBar(
     setFilters?: ComponentProps<typeof FilterBar>["setFilters"];
     setRanking?: ComponentProps<typeof FilterBar>["setRanking"];
     openLiveFinder?: boolean;
+    openFitFinder?: boolean;
   } = {},
 ) {
   const units: UnitState = {
@@ -53,6 +54,7 @@ function renderFilterBar(
       />
     </UnitContext.Provider>,
   );
+  if (opts.openFitFinder) openFilterAccordion(/^Fit Finder/);
   if (opts.openLiveFinder) openFilterAccordion(/^Live Finder$/);
   return view;
 }
@@ -185,14 +187,25 @@ describe("FilterBar ranking menu", () => {
 
     expect(setRanking).toHaveBeenCalledWith("most-comfortable");
   });
+
+  it("keeps Rank by above Fit Finder so the dock ranking control is not buried", () => {
+    renderFilterBar("F");
+
+    const rankMenu = screen.getByRole("combobox", { name: "Rank by" });
+    const fitSummary = screen.getByText(/^Fit Finder$/, { selector: "summary" });
+    expect(rankMenu.compareDocumentPosition(fitSummary) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
 });
 
 describe("FilterBar lifestyle bundles", () => {
   it("renders guided Fit Finder paths before manual Live Finder signals", () => {
-    renderFilterBar("F");
+    renderFilterBar("F", { openFitFinder: true, openLiveFinder: true });
 
-    expect(screen.getByText("Fit Finder")).toBeInTheDocument();
+    expect(screen.getByText("Fit Finder", { selector: "summary" })).toBeInTheDocument();
     expect(screen.getByText(/Start with what you are escaping or seeking/)).toBeInTheDocument();
+    const fitSummary = screen.getByText("Fit Finder", { selector: "summary" });
+    const liveSummary = screen.getByText("Live Finder", { selector: "summary" });
+    expect(fitSummary.compareDocumentPosition(liveSummary) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     const escapeLane = screen.getByRole("group", { name: "Escape discomfort" });
     const dailyLane = screen.getByRole("group", { name: "Daily life fit" });
     const terrainLane = screen.getByRole("group", { name: "Terrain & seasons" });
@@ -309,6 +322,7 @@ describe("FilterBar lifestyle bundles", () => {
     renderFilterBar("F", {
       filters: staleRemote,
       ranking: "best-for-remote-work",
+      openFitFinder: true,
     });
 
     expect(screen.getByRole("button", { name: "Apply Remote Work Fit Finder path" })).toHaveAttribute("data-active", "false");
@@ -348,6 +362,7 @@ describe("FilterBar lifestyle bundles", () => {
     renderFilterBar("F", {
       filters: staleScope,
       ranking: "best-shoulder-seasons",
+      openFitFinder: true,
     });
 
     expect(screen.getByRole("button", { name: "Apply Mexico / Southwest Fit Finder path" })).toHaveAttribute("data-active", "false");
@@ -356,7 +371,7 @@ describe("FilterBar lifestyle bundles", () => {
   it("clears stale Live Finder constraints when applying a lifestyle bundle", () => {
     const setFilters = vi.fn();
     const setRanking = vi.fn();
-    renderFilterBar("F", { setFilters, setRanking });
+    renderFilterBar("F", { setFilters, setRanking, openFitFinder: true });
 
     fireEvent.click(screen.getByRole("button", { name: /Garden & Grow/ }));
 
@@ -383,7 +398,7 @@ describe("FilterBar lifestyle bundles", () => {
   it("keeps cool-summer guidance separate from snow-country guidance", () => {
     const setFilters = vi.fn();
     const setRanking = vi.fn();
-    renderFilterBar("F", { setFilters, setRanking });
+    renderFilterBar("F", { setFilters, setRanking, openFitFinder: true });
 
     fireEvent.click(screen.getByRole("button", { name: /Cool Summer Refuge/ }));
 
@@ -400,7 +415,7 @@ describe("FilterBar lifestyle bundles", () => {
   it("clears geography scope when switching from a regional path to a global one", () => {
     const setFilters = vi.fn();
     const setRanking = vi.fn();
-    renderFilterBar("F", { setFilters, setRanking });
+    renderFilterBar("F", { setFilters, setRanking, openFitFinder: true });
 
     fireEvent.click(screen.getByRole("button", { name: /Cool Summer Refuge/ }));
 
@@ -439,6 +454,7 @@ describe("FilterBar lifestyle bundles", () => {
     renderFilterBar("F", {
       filters: staleCoolSummer,
       ranking: "coolest-summers",
+      openFitFinder: true,
     });
 
     expect(screen.getByRole("button", { name: "Apply Cool Summer Refuge Fit Finder path" })).toHaveAttribute("data-active", "false");
@@ -447,7 +463,7 @@ describe("FilterBar lifestyle bundles", () => {
   it("applies the Mexico / Southwest path as a scoped regional dry-highland screen", () => {
     const setFilters = vi.fn();
     const setRanking = vi.fn();
-    renderFilterBar("F", { setFilters, setRanking });
+    renderFilterBar("F", { setFilters, setRanking, openFitFinder: true });
 
     fireEvent.click(screen.getByRole("button", { name: /Mexico \/ Southwest/ }));
 
@@ -481,7 +497,7 @@ describe("FilterBar lifestyle bundles", () => {
   it("applies Winter Sun as a sunny-winter and mild-winter screen", () => {
     const setFilters = vi.fn();
     const setRanking = vi.fn();
-    renderFilterBar("F", { setFilters, setRanking });
+    renderFilterBar("F", { setFilters, setRanking, openFitFinder: true });
 
     fireEvent.click(screen.getByRole("button", { name: /Winter Sun/ }));
 
@@ -649,12 +665,14 @@ describe("FilterBar clear all filters", () => {
 });
 
 describe("FilterBar accordion groups", () => {
-  it("collapses Live Finder, Country, and Archetype by default until opened or active", () => {
+  it("collapses Fit Finder, Live Finder, Country, and Archetype by default until opened or active", () => {
     renderFilterBar("F");
 
     const liveSummary = screen.getByText("Live Finder", { selector: "summary" });
     const countrySummary = screen.getByText("Country", { selector: "summary" });
     const archetypeSummary = screen.getByText("Archetype", { selector: "summary, summary *" }).closest("summary");
+    const fitSummary = screen.getByText(/^Fit Finder$/, { selector: "summary" });
+    expect(fitSummary.closest("details")?.open).toBe(false);
     expect(liveSummary.closest("details")?.open).toBe(false);
     expect(countrySummary.closest("details")?.open).toBe(false);
     expect(archetypeSummary?.closest("details")?.open).toBe(false);

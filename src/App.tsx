@@ -592,6 +592,10 @@ export default function App() {
       }
       setCompareOpen(v.compareIds.length >= 2);
       prevPlaceIdRef.current = v.placeId;
+      // History navigation is the source of truth — drop any in-memory
+      // pre-constraint snapshot so Back/Forward to explicit ?r=live-fit
+      // (without constraints) is not clobbered by auto live-fit restore.
+      liveFitAutoAppliedRef.current = null;
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
