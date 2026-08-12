@@ -83,6 +83,7 @@ function attachConsoleGuards(page, viewportName, consoleErrors) {
 }
 
 async function collectMapIssues(page) {
+  await page.waitForSelector('[data-atlas-fill="land-with-holes"]', { timeout: 15000 }).catch(() => {});
   return page.evaluate(() => {
     const out = [];
     const shell = document.querySelector(".map-shell");
@@ -121,6 +122,9 @@ async function collectMapIssues(page) {
       if (!/Leaders|Driver|Feel|Field/i.test(text)) {
         out.push({ kind: "readout-missing-lens-labels" });
       }
+    }
+    if (!document.querySelector('[data-atlas-fill="land-with-holes"]')) {
+      out.push({ kind: "missing-land-with-holes" });
     }
     return out;
   });
@@ -199,7 +203,7 @@ const HOVER_CARD_INSET_PX = 8;
 const HOVER_CARD_DWELL_MS = 460;
 
 async function collectHoverCardContainmentIssues(page, {
-  expectFull = true,
+  expectFull = false,
   label = "hover",
   checkReadoutOverlap = true,
 } = {}) {
@@ -440,7 +444,7 @@ async function runHoverCardSweep(page, findings, viewportName) {
     // defect case. Other cardinal pins only need shell containment + placement.
     const checkReadoutOverlap = Boolean(primaryPinId) && pinId === primaryPinId && wideDesktop;
     for (const issue of await collectHoverCardContainmentIssues(page, {
-      expectFull: true,
+      expectFull: false,
       label: `${viewportName}:${pinId}`,
       checkReadoutOverlap,
     })) {
@@ -481,7 +485,7 @@ async function runHoverCardSweep(page, findings, viewportName) {
       await page.waitForTimeout(180);
     }
     for (const issue of await collectHoverCardContainmentIssues(page, {
-      expectFull: true,
+      expectFull: false,
       label: `${viewportName}:after-zoom`,
       checkReadoutOverlap: wideDesktop,
     })) {
@@ -528,7 +532,7 @@ async function runHoverCardSweep(page, findings, viewportName) {
     if (primaryPinId && await hoverPinById(page, primaryPinId)) {
       await page.waitForTimeout(HOVER_CARD_DWELL_MS + 40);
       for (const issue of await collectHoverCardContainmentIssues(page, {
-        expectFull: true,
+        expectFull: false,
         label: `${viewportName}:after-resize`,
         checkReadoutOverlap: box.width >= 1280,
       })) {
@@ -884,7 +888,7 @@ async function main() {
       await page.waitForTimeout(400);
       await runHoverCardSweep(page, findings, vp.name);
       await page.screenshot({
-        path: join(ARTIFACT_DIR, `most-comfortable-${vp.name}-rich-card.png`),
+        path: join(ARTIFACT_DIR, `most-comfortable-${vp.name}-compact-peek.png`),
         fullPage: false,
       });
 
@@ -897,7 +901,7 @@ async function main() {
       if (featuredPinId && await hoverPinById(page, featuredPinId)) {
         await page.waitForTimeout(HOVER_CARD_DWELL_MS + 40);
         for (const issue of await collectHoverCardContainmentIssues(page, {
-          expectFull: true,
+          expectFull: false,
           label: `${vp.name}:reduced-motion`,
           checkReadoutOverlap: vp.width >= 1280,
         })) {

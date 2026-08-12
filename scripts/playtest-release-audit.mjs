@@ -332,7 +332,7 @@ async function main() {
     await ctx.close();
   }
 
-  // Interactive map preview is a named region, not a fake dialog
+  // Compact map peek is a tooltip, not a dialog covering the land
   {
     const label = "hover-preview-region";
     const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
@@ -355,10 +355,10 @@ async function main() {
         };
       });
       if (!preview) findings.push({ label, kind: "missing-preview" });
-      else if (preview.interactive === "true") {
+      else {
         if (preview.role === "dialog") findings.push({ label, kind: "preview-is-dialog", preview });
-        if (preview.role !== "region") findings.push({ label, kind: "preview-role", preview });
-        if (!/map preview/i.test(preview.label ?? "")) findings.push({ label, kind: "preview-unlabeled", preview });
+        if (preview.role !== "tooltip") findings.push({ label, kind: "preview-role", preview });
+        if (preview.interactive === "true") findings.push({ label, kind: "preview-is-interactive", preview });
       }
     }
     await shot(page, label);
