@@ -2084,9 +2084,10 @@ export const AtlasMap = memo(function AtlasMap({
               vectorEffect="non-scaling-stroke"
             />
 
-            {/* Coastline glow — blur filter skipped on modest hardware (GPU savings). */}
+            {/* Coastline glow — use holed land so lakes stay water, not tinted land.
+                Blur filter skipped on modest hardware (GPU savings). */}
             <path
-              d={focusPath}
+              d={landPath.length > 8 ? landPath : focusPath}
               fill={richEffects ? "rgba(140,200,224,0.18)" : "rgba(140,200,224,0.12)"}
               filter={richEffects ? "url(#coastalGlow)" : undefined}
             />

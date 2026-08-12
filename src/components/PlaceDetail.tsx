@@ -278,13 +278,9 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
       const legacyId = hash.slice(1);
       if (legacyId && (PD_ALL_IDS as readonly string[]).includes(legacyId)) {
         didResolveHash = true;
-        const target = el.querySelector<HTMLElement>(hash);
-        if (target) {
-          const er = el.getBoundingClientRect();
-          const tr = target.getBoundingClientRect();
-          const top = el.scrollTop + (tr.top - er.top) - 12;
-          el.scrollTo({ top: Math.max(0, top), behavior: "auto" });
-        }
+        // Opens collapsed score `<details>` (#pd-at-a-glance, #pd-place-feel,
+        // #pd-signature) before scrolling so shared hashes land on the body.
+        scrollDetailRootToSection(legacyId, { behavior: "auto" });
         return;
       }
       didResolveHash = true;

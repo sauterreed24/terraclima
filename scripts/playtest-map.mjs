@@ -14,7 +14,7 @@
  * Exits 1 on defect; 0 on a clean sweep.
  */
 import { chromium } from "playwright-core";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { accessSync, constants, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const BASE = process.env.TC_BASE_URL ?? "http://localhost:4173";
@@ -637,7 +637,23 @@ async function main() {
   assertLocalBase(BASE);
   mkdirSync(ARTIFACT_DIR, { recursive: true });
 
-  const browser = await chromium.launch();
+  const chromeCandidates = [
+    process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
+    "/usr/local/bin/google-chrome",
+    "/usr/bin/google-chrome",
+    "/usr/bin/chromium-browser",
+  ].filter(Boolean);
+  let executablePath;
+  for (const candidate of chromeCandidates) {
+    try {
+      accessSync(candidate, constants.X_OK);
+      executablePath = candidate;
+      break;
+    } catch {
+      // try next
+    }
+  }
+  const browser = await chromium.launch(executablePath ? { executablePath } : {});
   const findings = [];
   const consoleErrors = [];
 

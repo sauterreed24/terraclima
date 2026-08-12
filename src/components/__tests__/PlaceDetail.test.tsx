@@ -393,6 +393,29 @@ describe("PlaceDetail header accessibility", () => {
     expect(window.location.hash).toBe("#pd-risk");
   });
 
+  it("opens a collapsed score section when the drawer loads on its #pd-* hash", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+    window.history.replaceState(null, "", "/?p=sequim-wa#pd-signature");
+    const scrollTo = vi.fn();
+    Object.defineProperty(HTMLElement.prototype, "scrollTo", {
+      configurable: true,
+      value: scrollTo,
+    });
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} animateEntry={false} />
+      </UnitProvider>,
+    );
+
+    const signature = document.getElementById("pd-signature");
+    expect(signature?.tagName).toBe("DETAILS");
+    expect(signature).toHaveAttribute("open");
+    expect(scrollTo).toHaveBeenCalled();
+    expect(window.location.hash).toBe("#pd-signature");
+  });
+
   it("reflects compare membership on the Compare button via aria-pressed", () => {
     const place = PLACES_BY_ID["yuma-az"];
     expect(place).toBeTruthy();

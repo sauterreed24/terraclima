@@ -7,6 +7,17 @@ export function detailScrollRoot(): HTMLElement | null {
   return document.querySelector<HTMLElement>("[data-place-detail]");
 }
 
+/**
+ * Open a collapsed `<details>` section (or its nearest details ancestor)
+ * so hash links and reading-nav clicks land on the section body, not a
+ * closed summary. Does not reopen every details on scroll-spy ticks —
+ * only when navigating to that section.
+ */
+export function ensureDetailSectionOpen(target: Element): void {
+  const details = target instanceof HTMLDetailsElement ? target : target.closest("details");
+  if (details && !details.open) details.open = true;
+}
+
 export function scrollDetailRootToSection(
   id: string,
   options: { behavior?: ScrollBehavior; marginFallback?: number } = {},
@@ -14,6 +25,8 @@ export function scrollDetailRootToSection(
   const root = detailScrollRoot();
   const target = document.getElementById(id);
   if (!root || !target) return false;
+
+  ensureDetailSectionOpen(target);
 
   const rootRect = root.getBoundingClientRect();
   const targetRect = target.getBoundingClientRect();
