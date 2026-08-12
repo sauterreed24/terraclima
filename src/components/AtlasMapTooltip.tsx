@@ -161,10 +161,10 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
   const interactive = Boolean(onToggleBookmark);
   return (
     <div
-      role={interactive ? "dialog" : "tooltip"}
+      role={interactive ? "region" : "tooltip"}
       id="tc-map-hover-preview"
-      aria-labelledby="tc-map-hover-title"
-      aria-modal={interactive ? false : undefined}
+      aria-labelledby={interactive ? undefined : "tc-map-hover-title"}
+      aria-label={interactive ? `${place.name} map preview` : undefined}
       className={`tc-map-hover-card tc-map-hover-card-enter absolute w-[min(19rem,calc(100vw-1.25rem))] z-10 text-left shadow-2xl ${interactive ? "pointer-events-auto" : "pointer-events-none"}`}
       data-tone={dataTone}
       data-variant="full"

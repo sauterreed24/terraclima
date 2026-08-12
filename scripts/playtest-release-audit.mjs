@@ -270,6 +270,72 @@ async function main() {
     await ctx.close();
   }
 
+  // Filter dock: Rank by stays visible while Fit Finder starts collapsed
+  {
+    const label = "dock-rank-first";
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    await attachOffline(ctx);
+    const page = await ctx.newPage();
+    guard(page, label);
+    await page.goto(`${BASE}/`, { waitUntil: "networkidle", timeout: 45000 });
+    await page.waitForSelector(".atlas-filter-dock", { timeout: 20000 });
+    const dock = await page.evaluate(() => {
+      const root = document.querySelector(".atlas-filter-dock");
+      if (!root) return null;
+      const rank = root.querySelector(".rank-menu__select");
+      const fit = [...root.querySelectorAll("details")].find(d =>
+        (d.querySelector("summary")?.textContent ?? "").trim().startsWith("Fit Finder"),
+      );
+      if (!rank || !fit) return { missing: true };
+      return {
+        rankBeforeFit: Boolean(rank.compareDocumentPosition(fit) & Node.DOCUMENT_POSITION_FOLLOWING),
+        fitOpen: fit.open,
+      };
+    });
+    if (!dock || dock.missing) findings.push({ label, kind: "missing-dock-controls", dock });
+    else {
+      if (!dock.rankBeforeFit) findings.push({ label, kind: "rank-buried-below-fit", dock });
+      if (dock.fitOpen) findings.push({ label, kind: "fit-finder-open-by-default", dock });
+    }
+    await shot(page, label);
+    await ctx.close();
+  }
+
+  // Interactive map preview is a named region, not a fake dialog
+  {
+    const label = "hover-preview-region";
+    const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+    await attachOffline(ctx);
+    const page = await ctx.newPage();
+    guard(page, label);
+    await page.goto(`${BASE}/?r=most-comfortable`, { waitUntil: "networkidle", timeout: 45000 });
+    await page.waitForSelector(".map-marker[data-marker-id]", { timeout: 20000 });
+    const marker = page.locator(".map-marker[data-marker-id]").first();
+    const box = await marker.boundingBox();
+    if (!box) findings.push({ label, kind: "no-marker-bbox" });
+    else {
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      await page.waitForTimeout(550);
+      const preview = await page.evaluate(() => {
+        const el = document.getElementById("tc-map-hover-preview");
+        if (!el) return null;
+        return {
+          role: el.getAttribute("role"),
+          interactive: el.getAttribute("data-interactive"),
+          label: el.getAttribute("aria-label"),
+        };
+      });
+      if (!preview) findings.push({ label, kind: "missing-preview" });
+      else if (preview.interactive === "true") {
+        if (preview.role === "dialog") findings.push({ label, kind: "preview-is-dialog", preview });
+        if (preview.role !== "region") findings.push({ label, kind: "preview-role", preview });
+        if (!/map preview/i.test(preview.label ?? "")) findings.push({ label, kind: "preview-unlabeled", preview });
+      }
+    }
+    await shot(page, label);
+    await ctx.close();
+  }
+
   await browser.close();
 
   const report = { findings, consoleErrors, artifactDir: ARTIFACT_DIR, base: BASE };

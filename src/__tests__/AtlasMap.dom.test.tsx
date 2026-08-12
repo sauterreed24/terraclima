@@ -561,7 +561,7 @@ describe("AtlasMap DOM controls", () => {
         vi.advanceTimersByTime(460);
       });
 
-      const richPreview = screen.getByRole("dialog");
+      const richPreview = screen.getByRole("region", { name: "Alpha Valley map preview" });
       expect(richPreview).toHaveAttribute("data-interactive", "true");
       expect(richPreview).toHaveAttribute("id", "tc-map-hover-preview");
       expect(richPreview).toHaveTextContent("Pin shortlist · open for profile");
@@ -571,6 +571,26 @@ describe("AtlasMap DOM controls", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it("fans overlapping featured rank badges instead of stacking them NE", async () => {
+    setCoarsePointer(false);
+    const highland = [
+      makePlace({ id: "patzcuaro-mx", name: "Pátzcuaro", lat: 19.51, lon: -101.61, tier: "A" }),
+      makePlace({ id: "morelia-mx", name: "Morelia", lat: 19.52, lon: -101.60, tier: "A" }),
+      makePlace({ id: "patzcuaro-lake-mx", name: "Lake Pátzcuaro", lat: 19.515, lon: -101.605, tier: "B" }),
+      makePlace({ id: "tzintzuntzan-mx", name: "Tzintzuntzan", lat: 19.518, lon: -101.608, tier: "B" }),
+      makePlace({ id: "erongaricuaro-mx", name: "Erongarícuaro", lat: 19.513, lon: -101.612, tier: "C" }),
+    ];
+    renderMap(vi.fn(), highland.map(place => place.id), highland, { featuredLabel: "Most comfortable" });
+
+    await waitFor(() => {
+      expect(document.querySelectorAll(".map-rank-badge")).toHaveLength(5);
+    });
+    const badges = [...document.querySelectorAll(".map-rank-badge")];
+    expect(badges.some(badge => badge.getAttribute("data-badge-fanned") === "true")).toBe(true);
+    const seats = badges.map(badge => badge.getAttribute("transform") ?? "");
+    expect(new Set(seats).size).toBeGreaterThan(1);
   });
 
   it("shift-clicks a map pin to shortlist without opening the dossier", () => {
