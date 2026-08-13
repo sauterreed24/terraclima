@@ -373,6 +373,49 @@ async function main() {
     });
   }
 
+  // 9b) First-page climate quartet: sunshine as percent of possible, never solar MJ
+  const HERO_SPOTS = [
+    { id: "sequim-wa", label: "Sunshine", value: "50%" },
+    { id: "yuma-az", label: "Sunshine", value: "92%" },
+    { id: "astoria-or", label: "Sunshine", value: "43%", overview: /storm-lashed port/i },
+    { id: "bacalar-mx", label: "Growing season", value: "365 days" },
+    { id: "portal-az", label: "Sunshine", value: "79%", overview: /Paradise|Portal|Chiricahua/i },
+  ];
+  for (const spot of HERO_SPOTS) {
+    const label = `hero-quartet-${spot.id}`;
+    await withPage(browser, {
+      viewport: { width: 1280, height: 900 },
+      reducedMotion: "reduce",
+    }, label, async (page) => {
+      await page.goto(`${BASE}/?p=${spot.id}`, { waitUntil: "domcontentloaded", timeout: 30000 });
+      await page.waitForSelector("[data-place-detail]", { timeout: 20000 });
+      await page.waitForSelector(".atlas-hero-stat", { timeout: 10000 });
+      const stats = await page.locator(".atlas-hero-stat").allInnerTexts();
+      const joined = stats.join(" | ");
+      if (!stats.some(t => /Summer high/i.test(t))) {
+        findings.push({ label, kind: "missing-summer-high", joined });
+      }
+      if (!stats.some(t => /January low/i.test(t))) {
+        findings.push({ label, kind: "missing-january-low", joined });
+      }
+      if (stats.some(t => /Solar resource|JJA high|Sunny days/i.test(t))) {
+        findings.push({ label, kind: "stale-hero-stat", joined });
+      }
+      const fourth = stats.find(t => new RegExp(spot.label, "i").test(t));
+      if (!fourth || !fourth.includes(spot.value)) {
+        findings.push({ label, kind: "hero-fourth-mismatch", expected: `${spot.label} ${spot.value}`, joined });
+      }
+      if (spot.overview) {
+        await page.waitForSelector(".place-overview", { timeout: 10000 });
+        const overview = await page.locator(".place-overview").innerText();
+        if (!spot.overview.test(overview)) {
+          findings.push({ label, kind: "overview-missing-authored-detail", snippet: overview.slice(0, 280) });
+        }
+      }
+      await shot(page, label);
+    });
+  }
+
   // 10) Phone overview overflow on the originally broken lakeshore pin
   await withPage(browser, {
     viewport: { width: 390, height: 844 },

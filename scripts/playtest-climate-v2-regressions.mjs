@@ -3,7 +3,7 @@
  * Local preview only. Exit 1 on findings / console errors.
  */
 import { chromium } from "playwright-core";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { accessSync, constants, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const BASE = process.env.TC_BASE_URL ?? "http://127.0.0.1:4173";
@@ -56,13 +56,29 @@ async function shot(page, name) {
   await page.screenshot({ path: join(ARTIFACT_DIR, `${name}.png`), fullPage: false });
 }
 
+function resolveChrome() {
+  for (const candidate of [
+    process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
+    "/usr/local/bin/google-chrome",
+    "/usr/bin/google-chrome",
+    "/usr/bin/chromium-browser",
+  ].filter(Boolean)) {
+    try {
+      accessSync(candidate, constants.X_OK);
+      return candidate;
+    } catch { /* next */ }
+  }
+  return undefined;
+}
+
 async function main() {
   const u = new URL(BASE);
   if (u.hostname !== "127.0.0.1" && u.hostname !== "localhost") {
     throw new Error(`refuses non-local base: ${BASE}`);
   }
 
-  const browser = await chromium.launch({ headless: true });
+  const executablePath = resolveChrome();
+  const browser = await chromium.launch(executablePath ? { executablePath, headless: true } : { headless: true });
 
   // --- Desktop light explorer ---
   {
