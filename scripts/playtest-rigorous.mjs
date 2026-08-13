@@ -1,9 +1,10 @@
 /**
  * Rigorous pre-merge browser playtest for the consolidation release.
  * Extends playtest:browser with URL round-trips, theme matrix, back-to-close,
- * home-base, evidence labels, and scenario/compare honesty checks.
+ * home-base, evidence labels, scenario/compare honesty, overview depth, and
+ * live Commons hero photographs (Wikimedia allowlisted only for that step).
  *
- *   TC_BASE_URL=http://127.0.0.1:4173 node scripts/playtest-rigorous.mjs
+ *   TC_BASE_URL=http://127.0.0.1:4173 npm run playtest:rigorous
  */
 import { chromium } from "playwright-core";
 import { createRequire } from "node:module";
@@ -27,7 +28,18 @@ function assertLocalBase(url) {
   }
 }
 
-function attachOfflineRouting(context, base) {
+function isWikimediaUrl(url) {
+  try {
+    const host = new URL(url).hostname;
+    return host === "commons.wikimedia.org"
+      || host === "upload.wikimedia.org"
+      || host.endsWith(".wikimedia.org");
+  } catch {
+    return false;
+  }
+}
+
+function attachRouting(context, base, { allowWikimedia = false } = {}) {
   return context.route("**/*", (route) => {
     const reqUrl = route.request().url();
     if (
@@ -35,6 +47,7 @@ function attachOfflineRouting(context, base) {
       || reqUrl.startsWith("data:")
       || reqUrl.startsWith("blob:")
       || reqUrl.startsWith("about:")
+      || (allowWikimedia && isWikimediaUrl(reqUrl))
     ) {
       return route.continue();
     }
@@ -75,9 +88,9 @@ async function shot(page, name) {
   await page.screenshot({ path: join(ARTIFACT_DIR, `${name}.png`), fullPage: false });
 }
 
-async function withPage(browser, opts, label, fn) {
+async function withPage(browser, opts, label, fn, routing = {}) {
   const context = await browser.newContext(opts);
-  await attachOfflineRouting(context, BASE);
+  await attachRouting(context, BASE, routing);
   const page = await context.newPage();
   attachConsoleGuards(page, label);
   try {
@@ -89,6 +102,19 @@ async function withPage(browser, opts, label, fn) {
     await context.close();
   }
 }
+
+const OVERVIEW_HEADINGS = ["Why it feels different", "Nearby contrast", "A short history"];
+const OVERVIEW_PLACES = [
+  "sequim-wa",
+  "beverly-shores-in",
+  "tucson-az",
+  "portal-az",
+  "yuma-az",
+  "forks-wa",
+  "monterey-ca",
+  "qualicum-bc",
+];
+const LIVE_HERO_PLACES = ["sequim-wa", "beverly-shores-in", "tucson-az"];
 
 function resolveChrome() {
   for (const candidate of [
@@ -315,6 +341,77 @@ async function main() {
       for (const v of await runAxe(page)) findings.push({ label: route.label, kind: "axe", ...v });
       await shot(page, route.label);
     });
+  }
+
+  // 9) Overview depth + Commons photo request (offline — image fetch may abort)
+  for (const placeId of OVERVIEW_PLACES) {
+    const label = `overview-${placeId}`;
+    await withPage(browser, {
+      viewport: { width: 1280, height: 900 },
+      reducedMotion: "reduce",
+    }, label, async (page) => {
+      const commonsHits = [];
+      page.on("request", (req) => {
+        if (isWikimediaUrl(req.url())) commonsHits.push(req.url());
+      });
+      await page.goto(`${BASE}/?p=${placeId}`, { waitUntil: "domcontentloaded", timeout: 30000 });
+      await page.waitForSelector("[data-place-detail]", { timeout: 20000 });
+      await page.waitForSelector(".place-overview", { timeout: 10000 });
+      for (const heading of OVERVIEW_HEADINGS) {
+        if (!(await page.getByRole("heading", { name: heading }).count())) {
+          findings.push({ label, kind: "overview-heading-missing", heading });
+        }
+      }
+      const historyParas = await page.locator(".place-overview__history p").count();
+      if (historyParas < 2) findings.push({ label, kind: "history-thin", historyParas });
+      const contrastItems = await page.locator(".place-overview__contrast-list li").count();
+      if (contrastItems < 1) findings.push({ label, kind: "contrast-empty" });
+      if (!commonsHits.some(u => /Special:FilePath|\/wikipedia\/commons\//i.test(u))) {
+        findings.push({ label, kind: "hero-photo-not-requested", hits: commonsHits.slice(0, 3) });
+      }
+      await shot(page, label);
+    });
+  }
+
+  // 10) Phone overview overflow on the originally broken lakeshore pin
+  await withPage(browser, {
+    viewport: { width: 390, height: 844 },
+    hasTouch: true,
+    isMobile: true,
+    reducedMotion: "reduce",
+  }, "overview-mobile-beverly-shores", async (page) => {
+    await page.goto(`${BASE}/?p=beverly-shores-in`, { waitUntil: "domcontentloaded", timeout: 30000 });
+    await page.waitForSelector("[data-place-detail]", { timeout: 20000 });
+    await page.waitForSelector(".place-overview", { timeout: 10000 });
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+    if (overflow) findings.push({ label: "overview-mobile-beverly-shores", kind: "page-h-overflow" });
+    if (!(await page.getByRole("heading", { name: "A short history" }).count())) {
+      findings.push({ label: "overview-mobile-beverly-shores", kind: "overview-heading-missing", heading: "A short history" });
+    }
+    await shot(page, "overview-mobile-beverly-shores");
+  });
+
+  // 11) Live Commons photograph — allowlist Wikimedia so the img can actually paint
+  for (const placeId of LIVE_HERO_PLACES) {
+    const label = `hero-live-${placeId}`;
+    await withPage(browser, {
+      viewport: { width: 1280, height: 800 },
+      reducedMotion: "reduce",
+    }, label, async (page) => {
+      await page.goto(`${BASE}/?p=${placeId}`, { waitUntil: "domcontentloaded", timeout: 30000 });
+      await page.waitForSelector("[data-place-detail]", { timeout: 20000 });
+      const loaded = await page.waitForFunction(() => {
+        const img = document.querySelector("[data-place-detail] figure img");
+        return Boolean(img && img.complete && img.naturalWidth > 20);
+      }, { timeout: 25000 }).catch(() => null);
+      const fallback = await page.locator(".tc-hero-fallback").count();
+      if (!loaded) {
+        findings.push({ label, kind: "hero-photo-did-not-load", fallback: fallback > 0 });
+      } else if (fallback > 0) {
+        findings.push({ label, kind: "hero-fallback-despite-photo" });
+      }
+      await shot(page, label);
+    }, { allowWikimedia: true });
   }
 
   await browser.close();

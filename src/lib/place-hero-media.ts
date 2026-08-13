@@ -930,6 +930,10 @@ export function getPlaceHeroMedia(placeId: string): PlaceHeroMedia | null {
   };
 }
 
+export function listPlaceHeroFiles(): ReadonlyArray<{ id: string; file: string }> {
+  return Object.entries(HERO_BY_PLACE_ID).map(([id, row]) => ({ id, file: row.file }));
+}
+
 export function placeHeroMediaCount(): number {
   return Object.keys(HERO_BY_PLACE_ID).length;
 }

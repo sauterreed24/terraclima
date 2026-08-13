@@ -601,6 +601,7 @@ function DetailHeader({
             className="w-full h-28 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
             loading="eager"
             decoding="async"
+            referrerPolicy="no-referrer"
             onError={() => setFailedHeroSrc(hero.src)}
           />
         ) : (

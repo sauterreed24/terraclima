@@ -44,7 +44,7 @@ export function PlaceOverviewSpotlight({
             Why it feels different
           </h3>
           <p>{prose(exp.whyDifferent)}</p>
-          <p className="place-overview__drivers">{exp.whyDrivers}</p>
+          <p className="place-overview__drivers">{prose(exp.whyDrivers)}</p>
         </article>
         <article className="place-overview__essay-card" data-kind="contrast">
           <h3 className="place-overview__block-title">
@@ -52,8 +52,8 @@ export function PlaceOverviewSpotlight({
             Nearby contrast
           </h3>
           <ul className="place-overview__contrast-list">
-            {exp.contrastItems.map(item => (
-              <li key={`${item.label}:${item.note.slice(0, 48)}`}>
+            {exp.contrastItems.map((item, i) => (
+              <li key={`${i}:${item.label}`}>
                 <div className="place-overview__contrast-label">{item.label}</div>
                 <p>{prose(item.note)}</p>
               </li>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PLACES } from "../../data/places";
-import { getPlaceHeroMedia, placeHeroMediaCount } from "../place-hero-media";
+import { getPlaceHeroMedia, listPlaceHeroFiles, placeHeroMediaCount } from "../place-hero-media";
 
 describe("place hero media", () => {
   it("serves responsive, attributable media for default live-fit leaders", () => {
@@ -26,6 +26,17 @@ describe("place hero media", () => {
       expect(media!.sourceUrl).toContain("commons.wikimedia.org/wiki/File:");
       expect(media!.src).toContain("Special:FilePath");
       expect(media!.creditLine).toMatch(/Wikimedia Commons/i);
+    }
+  });
+
+  it("lists a Commons filename for every corpus place", () => {
+    const files = listPlaceHeroFiles();
+    const byId = new Map(files.map(row => [row.id, row.file]));
+    expect(files.length).toBeGreaterThanOrEqual(PLACES.length);
+    for (const place of PLACES) {
+      const file = byId.get(place.id);
+      expect(file, `${place.id} missing Commons filename`).toBeTruthy();
+      expect(/\.(jpe?g|png|webp)$/i.test(file!), `${place.id} unexpected file ${file}`).toBe(true);
     }
   });
 });

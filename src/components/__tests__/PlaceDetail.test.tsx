@@ -70,6 +70,7 @@ describe("PlaceDetail growability rationale", () => {
     expect(screen.getByRole("heading", { name: "Sequim", level: 2 })).toBeInTheDocument();
     expect(document.querySelector("figure")).toBeTruthy();
     expect(document.querySelector("figure img")).toBeTruthy();
+    expect(document.querySelector("figure img")).toHaveAttribute("referrerpolicy", "no-referrer");
   });
 
   it("falls back to the temperature palette when a place photo fails to load", () => {
