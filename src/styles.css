@@ -7106,6 +7106,7 @@
   }
   .atlas-snapshot-tile {
     padding: 0.7rem 0.75rem 0.8rem;
+    min-width: 0;
     min-height: 4.5rem;
     background: rgba(255, 254, 252, 0.98);
     display: flex;
@@ -7123,6 +7124,8 @@
     color: var(--color-stone);
   }
   .atlas-snapshot-tile__value {
+    min-width: 0;
+    overflow-wrap: anywhere;
     font-family: var(--font-serif);
     font-size: 0.98rem;
     line-height: 1.3;
