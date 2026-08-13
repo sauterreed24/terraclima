@@ -661,8 +661,7 @@ function DetailHeader({
 }
 
 /**
- * Climate-palette visual for every place. Used as the primary figure when no
- * Commons photo is curated, and as a stand-in when a photo fails to load.
+ * Climate-palette visual used only when a Commons photo fails to load.
  */
 function HeroClimateFallback({
   place,

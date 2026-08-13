@@ -16,18 +16,16 @@ describe("place hero media", () => {
     }
   });
 
-  it("covers a systematic Commons slice with attributable alts, not a handful of flagships", () => {
-    expect(placeHeroMediaCount()).toBeGreaterThanOrEqual(80);
+  it("covers every corpus place with an attributable Commons photograph", () => {
+    expect(placeHeroMediaCount()).toBeGreaterThanOrEqual(PLACES.length);
 
-    const withHero = PLACES.filter(place => getPlaceHeroMedia(place.id));
-    expect(withHero.length).toBeGreaterThanOrEqual(80);
-
-    for (const place of withHero) {
-      const media = getPlaceHeroMedia(place.id)!;
-      expect(media.alt.length).toBeGreaterThan(24);
-      expect(media.sourceUrl).toContain("commons.wikimedia.org/wiki/File:");
-      expect(media.src).toContain("Special:FilePath");
-      expect(media.creditLine).toMatch(/Wikimedia Commons/i);
+    for (const place of PLACES) {
+      const media = getPlaceHeroMedia(place.id);
+      expect(media, `${place.id} missing hero photograph`).not.toBeNull();
+      expect(media!.alt.length, `${place.id} alt`).toBeGreaterThan(24);
+      expect(media!.sourceUrl).toContain("commons.wikimedia.org/wiki/File:");
+      expect(media!.src).toContain("Special:FilePath");
+      expect(media!.creditLine).toMatch(/Wikimedia Commons/i);
     }
   });
 });

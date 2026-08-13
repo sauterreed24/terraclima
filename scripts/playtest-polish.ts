@@ -480,6 +480,12 @@ async function main(): Promise<void> {
       throw new Error(`${place.id} experience: missing fit framing`);
     }
     if (!exp.texture.trim()) throw new Error(`${place.id} experience: empty texture`);
+    if (!exp.whyDifferent.trim()) throw new Error(`${place.id} experience: empty whyDifferent`);
+    if (exp.contrastItems.length < 1) throw new Error(`${place.id} experience: missing contrast items`);
+    if (exp.historyParagraphs.length < 2) throw new Error(`${place.id} experience: thin history`);
+    for (const para of exp.historyParagraphs) {
+      if (para.trim().length < 40) throw new Error(`${place.id} experience: thin history paragraph`);
+    }
     if (exp.seasons.length !== 4) throw new Error(`${place.id} experience: expected 4 seasons, got ${exp.seasons.length}`);
     exp.seasons.forEach((s, i) => {
       if (s.key !== SEASON_ORDER[i]) throw new Error(`${place.id} experience: season order drift at ${i}`);

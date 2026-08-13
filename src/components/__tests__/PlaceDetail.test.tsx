@@ -72,6 +72,25 @@ describe("PlaceDetail growability rationale", () => {
     expect(document.querySelector("figure img")).toBeTruthy();
   });
 
+  it("falls back to the temperature palette when a place photo fails to load", () => {
+    const place = PLACES_BY_ID["sequim-wa"];
+    expect(place).toBeTruthy();
+
+    render(
+      <UnitProvider>
+        <PlaceDetail place={place} onClose={() => undefined} />
+      </UnitProvider>,
+    );
+
+    const img = document.querySelector("figure img");
+    expect(img).toBeTruthy();
+    fireEvent.error(img!);
+    expect(document.querySelector("figure .tc-hero-fallback")).toBeTruthy();
+    expect(
+      screen.getByRole("img", { name: /photo unavailable; showing its January-to-December temperature palette/i }),
+    ).toBeInTheDocument();
+  });
+
   it("renders the computed Why this score read inside Soil & growability", () => {
     const place = PLACES_BY_ID["yuma-az"];
     expect(place).toBeTruthy();
@@ -103,6 +122,9 @@ describe("PlaceDetail overview spotlight", () => {
 
     // The humanistic eyebrow + the four-season walkthrough.
     expect(screen.getByText("What it actually feels like")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Why it feels different" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Nearby contrast" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "A short history" })).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Open this area on a live map (OpenStreetMap)" }),
     ).toHaveClass("tc-detail-map-link");
@@ -125,10 +147,8 @@ describe("PlaceDetail overview spotlight", () => {
     expect(screen.getAllByText("Evidence & Methods").length).toBeGreaterThan(0);
 
     expect(document.querySelector("figure")).toBeTruthy();
-    expect(document.querySelector("figure .tc-hero-fallback")).toBeTruthy();
-    expect(
-      screen.getByRole("img", { name: /January-to-December temperature palette from monthly normals/i }),
-    ).toBeInTheDocument();
+    expect(document.querySelector("figure img")).toBeTruthy();
+    expect(document.querySelector("figure .tc-hero-fallback")).toBeFalsy();
 
     const glance = document.getElementById("pd-at-a-glance");
     const feel = document.getElementById("pd-place-feel");

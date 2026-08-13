@@ -161,6 +161,8 @@ function applyExperienceAuthored(p: Place): Place {
       travelerFit: existing?.travelerFit ?? authored.travelerFit,
       residentFit: existing?.residentFit ?? authored.residentFit,
       texture: existing?.texture ?? authored.texture,
+      history: existing?.history ?? authored.history,
+      why: existing?.why ?? authored.why,
     },
   };
 }

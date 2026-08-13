@@ -56,7 +56,7 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
     alt: "Port Townsend marina and wooden-boat waterfront on the Olympic rain shadow edge",
   },
   "tucson-az": {
-    file: "Saguaro_National_Park,_Tucson.jpg",
+    file: "Carnegiea gigantea in Saguaro National Park near Tucson, Arizona during November (58).jpg",
     alt: "Saguaro cacti and Sonoran Desert hills near Tucson",
   },
   "portal-az": {
@@ -637,6 +637,283 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
   "yuma-az": {
     file: "Colorado River At Yuma - Page-473.jpg",
     alt: "Colorado River corridor at Yuma on the Sonoran Desert floor",
+  },
+
+  "huachuca-az": {
+    file: "Ramsey Canyon Nature Preserve.jpg",
+    alt: "Ramsey Canyon woodland in the Huachuca sky-island range above the Arizona desert",
+  },
+  "bishop-ca": {
+    file: "Downtown Bishop with the Sierra Nevada Mountains in the background.jpg",
+    alt: "Bishop on the Owens Valley floor with the Sierra Nevada rising behind",
+  },
+  "silver-city-nm": {
+    file: "Overlooking downtown Silver City from Boston Hill.jpg",
+    alt: "Silver City rooftops and hills from Boston Hill in southwest New Mexico",
+  },
+  "driggs-id": {
+    file: "Teton Valley Idaho.jpg",
+    alt: "Teton Valley farmland and mountain light near Driggs, Idaho",
+  },
+  "grand-marais-mn": {
+    file: "BreakwaterGrandMaraisMN.jpg",
+    alt: "Grand Marais breakwater on the Lake Superior north shore",
+  },
+  "highlands-nc": {
+    file: "The town of Highlands, North Carolina, in Macon County 03.jpg",
+    alt: "Highlands town and Southern Appalachian cloud-forest ridges",
+  },
+  "grand-marais-mi": {
+    file: "Grand Marais, MI (Aug 2016).jpg",
+    alt: "Grand Marais on Michigan's Upper Peninsula Lake Superior shore",
+  },
+  "apalachicola-fl": {
+    file: "Apalachicolastreet1.jpg",
+    alt: "Historic Apalachicola street on Florida's Forgotten Coast",
+  },
+  "santa-cruz-felton-ca": {
+    file: "Henry cowell redwoods state park trees 2023.jpg",
+    alt: "Coast redwoods in the Santa Cruz Mountains belt around Felton",
+  },
+  "ellensburg-wa": {
+    file: "West of Ellensburg (9564355777).jpg",
+    alt: "Kittitas Valley benches and sky west of Ellensburg, Washington",
+  },
+  "fort-davis-tx": {
+    file: "Fort Davis National Historic Site P9102741.jpg",
+    alt: "Fort Davis historic site in the Davis Mountains of West Texas",
+  },
+  "gunnison-co": {
+    file: "East River (northern Gunnison County, Colorado, USA) (46220745984).jpg",
+    alt: "East River valley in Gunnison County's high cold-pool country",
+  },
+  "canaan-valley-wv": {
+    file: "Fall Patchwork in Canaan Valley, West Virginia (6806687221).jpg",
+    alt: "Autumn patchwork across Canaan Valley in the West Virginia highlands",
+  },
+  "redfield-ny": {
+    file: "North Branch Salmon River, Tug Hill region, NY (winter).JPG",
+    alt: "Winter river ice on Tug Hill, the lake-effect snow engine of upstate New York",
+  },
+  "syracuse-ny": {
+    file: "Syracuse, New York skyline (cropped).jpg",
+    alt: "Syracuse skyline in the Ontario lake-effect belt of central New York",
+  },
+  "marquette-mi": {
+    file: "Downtown Marquette, Michigan in Autumn (43657514144).jpg",
+    alt: "Autumn downtown Marquette on Lake Superior's Upper Peninsula shore",
+  },
+  "houghton-mi": {
+    file: "Houghton 2019 Aerial.jpg",
+    alt: "Aerial view of Houghton on the Keweenaw waterway",
+  },
+  "viroqua-wi": {
+    file: "Viroqua City Hall.jpg",
+    alt: "Viroqua city hall in Wisconsin's Driftless hill country",
+  },
+  "south-padre-tx": {
+    file: "South Padre Island.jpg",
+    alt: "South Padre Island beach and Gulf water on the Texas coast",
+  },
+  "valentine-ne": {
+    file: "Niobrara scenic river.jpg",
+    alt: "Niobrara River corridor through the Nebraska Sandhills near Valentine",
+  },
+  "loess-hills-ia": {
+    file: "Loess Hills I-80 Iowa 632.jpg",
+    alt: "Loess Hills bluffs rising from the Missouri River plains of western Iowa",
+  },
+  "flint-hills-ks": {
+    file: "Tallgrass Prairie Trail.jpg",
+    alt: "Tallgrass prairie trail in the Flint Hills of Kansas",
+  },
+  "eureka-springs-ar": {
+    file: "Crescent Hotel (cropped).jpg",
+    alt: "Crescent Hotel above the Ozark escarpment town of Eureka Springs",
+  },
+  "medford-or": {
+    file: "Medford SP Depot - Medford Oregon.jpg",
+    alt: "Historic depot in Medford on the Rogue Valley floor",
+  },
+  "international-falls-mn": {
+    file: "International Falls, Minnesota 1.jpg",
+    alt: "International Falls on the Rainy River at Minnesota's northern border",
+  },
+  "erie-pa": {
+    file: "Erie PA skyline from tower observation deck (cropped).jpg",
+    alt: "Erie skyline on the Lake Erie snowbelt shore of Pennsylvania",
+  },
+  "paducah-ky": {
+    file: "Broadway - Paducah, Kentucky.jpg",
+    alt: "Broadway in Paducah at the Ohio–Tennessee confluence",
+  },
+  "port-orford-cape-blanco-or": {
+    file: "Cape Blanco looking south.JPG",
+    alt: "Cape Blanco headland looking south on the southern Oregon coast",
+  },
+  "klamath-falls-upper-klamath-basin-or": {
+    file: "Klamath Falls (2022).jpg",
+    alt: "Klamath Falls and the Upper Klamath Basin in south-central Oregon",
+  },
+  "los-alamos-pajarito-plateau-nm": {
+    file: "Los Alamos Aerial.jpg",
+    alt: "Aerial view of Los Alamos on the Pajarito Plateau",
+  },
+  "lander-sinks-canyon-wy": {
+    file: "Sinks Canyon State Park (4679266666).jpg",
+    alt: "Sinks Canyon walls and river west of Lander, Wyoming",
+  },
+  "mentone-al": {
+    file: "Mentone Springs Hotel.JPG",
+    alt: "Mentone Springs Hotel on Lookout Mountain in northeast Alabama",
+  },
+  "norfolk-ct": {
+    file: "Norfolk, Connecticut.jpg",
+    alt: "Norfolk village in the northwest Connecticut highlands",
+  },
+  "lewes-de": {
+    file: "Cape Henlopen State Park Lewes, DE March 2019.jpg",
+    alt: "Cape Henlopen dunes and Atlantic light at Lewes, Delaware",
+  },
+  "clayton-ga": {
+    file: "Aerial of downtown Clayton, Georgia, in Rabun County 05.jpg",
+    alt: "Aerial view of Clayton on the Blue Ridge front in northeast Georgia",
+  },
+  "galena-il": {
+    file: "Galena, Illinois.jpg",
+    alt: "Galena's brick townscape in the Driftless Mississippi hills",
+  },
+  "beverly-shores-in": {
+    file: "Lake Michigan from Beach, Lake Front Drive, Beverly Shores, IN.jpg",
+    alt: "Lake Michigan beach and dunes at Beverly Shores on the Indiana lakeshore",
+  },
+  "oakland-md": {
+    file: "2ndStreet OaklandMD 2589.jpg",
+    alt: "Second Street in Oakland on Maryland's Garrett County highland",
+  },
+  "pittsfield-ma": {
+    file: "Pittsfield, Massachusetts skyline.jpg",
+    alt: "Pittsfield skyline in the Berkshire hills of western Massachusetts",
+  },
+  "ocean-springs-ms": {
+    file: "Shrimpboats.JPG",
+    alt: "Shrimp boats on the Mississippi Sound at Ocean Springs",
+  },
+  "eminence-mo": {
+    file: "Junction of Jacks Fork and Current River near Eminence, Missouri (79271).jpg",
+    alt: "Jacks Fork meeting the Current River near Eminence in the Missouri Ozarks",
+  },
+  "mount-charleston-nv": {
+    file: "Mount Charleston from Las Vegas 1.jpg",
+    alt: "Mount Charleston and the Spring Mountains rising above the Mojave",
+  },
+  "geneva-on-the-lake-oh": {
+    file: "Geneva On The Lake Downtown - panoramio (1).jpg",
+    alt: "Geneva-on-the-Lake townscape on Ohio's Lake Erie snowbelt shore",
+  },
+  "broken-bow-ok": {
+    file: "Broken-bow-spillway.jpg",
+    alt: "Broken Bow Lake spillway in the Ouachita forest country of southeast Oklahoma",
+  },
+  "burkes-garden-va": {
+    file: "Burkes Garden, Virginia - panoramio.jpg",
+    alt: "Burkes Garden bowl and surrounding ridges in southwest Virginia",
+  },
+  "scottsbluff-ne": {
+    file: "Scotts Bluff National Monument - Nebraska (14439451582).jpg",
+    alt: "Scotts Bluff escarpment above the North Platte plains of western Nebraska",
+  },
+  "wilmington-de": {
+    file: "Wilmington, Delaware, USA.jpg",
+    alt: "Wilmington on the Brandywine–Piedmont edge of Delaware",
+  },
+  "mystic-ct": {
+    file: "Mystic, Connecticut aerial view.jpg",
+    alt: "Aerial view of Mystic on Fishers Island Sound in Connecticut",
+  },
+  "state-college-pa": {
+    file: "Downtown sc.jpg",
+    alt: "Downtown State College in Pennsylvania's Ridge and Valley country",
+  },
+  "columbia-sc": {
+    file: "Fall skyline of Columbia SC from Arsenal Hill.jpg",
+    alt: "Columbia skyline from Arsenal Hill on South Carolina's Fall Line",
+  },
+  "cypress-hills-sk": {
+    file: "CypressHills1.JPG",
+    alt: "Cypress Hills upland rising above the surrounding Saskatchewan prairie",
+  },
+  "leamington-on": {
+    file: "Lake Erie Leamington.jpg",
+    alt: "Lake Erie shoreline at Leamington on Ontario's southern tip",
+  },
+  "prince-edward-co-on": {
+    file: "Lake Ontario - Prince Edward County.jpg",
+    alt: "Lake Ontario light on Prince Edward County's limestone peninsula",
+  },
+  "inuvik-nt": {
+    file: "Front view of Our Lady of Victory Church, Inuvik, NT.jpg",
+    alt: "Our Lady of Victory igloo church in Inuvik on the Mackenzie Delta",
+  },
+  "medicine-hat-ab": {
+    file: "South Saskatchewan near Medicine Hat.jpg",
+    alt: "South Saskatchewan River coulee country near Medicine Hat, Alberta",
+  },
+  "zacatlan-de-las-manzanas-mx": {
+    file: "Ex convento de San Francisco,Zacatlán, Puebla. .jpg",
+    alt: "San Francisco convent and highland townscape in Zacatlán de las Manzanas",
+  },
+  "todos-santos-mx": {
+    file: "Plaza Todos Santos BCS - panoramio.jpg",
+    alt: "Plaza and desert-oasis townscape of Todos Santos in Baja California Sur",
+  },
+  "saltillo-mx": {
+    file: "Catedral de Saltillo, Coahuila 2012.jpg",
+    alt: "Saltillo Cathedral on the cool Coahuila highland",
+  },
+  "cuauhtemoc-mx": {
+    file: "Catedral de Cuauhtémoc, Chihuahua.jpg",
+    alt: "Cathedral in Cuauhtémoc, the Mennonite apple country of Chihuahua",
+  },
+  "tequila-mx": {
+    file: "Streets of Tequila 664424236 (cropped).jpg",
+    alt: "Colonial streets of Tequila in Jalisco's agave highland",
+  },
+  "mazamitla-mx": {
+    file: "TemploMazamitla.jpg",
+    alt: "Parish church in Mazamitla on the cool Sierra del Tigre",
+  },
+  "la-ventosa-mx": {
+    file: "Isthmus of Tehuantepec-aeac.jpg",
+    alt: "Isthmus of Tehuantepec landscape in the gap-wind corridor of Oaxaca",
+  },
+  "ensenada-mx": {
+    file: "Ensenada Bay.jpg",
+    alt: "Ensenada Bay on Baja California's Mediterranean-climate Pacific coast",
+  },
+  "cuatrocienegas-mx": {
+    file: "Poza Azul Cuatro Cienegas.jpg",
+    alt: "Poza Azul turquoise pool in the Cuatro Ciénegas desert basin",
+  },
+  "parras-de-la-fuente-mx": {
+    file: "Calle en Parras de la Fuente.jpg",
+    alt: "Street in Parras de la Fuente, the oasis wine valley of Coahuila",
+  },
+  "toluca-mx": {
+    file: "Toluca a los pies del nevado.jpg",
+    alt: "Toluca at the foot of the Nevado on the high Mexican volcanic belt",
+  },
+  "hermosillo-mx": {
+    file: "Calles de Hermosillo, Sonora 2022.jpg",
+    alt: "Streets of Hermosillo in the Sonoran Desert of northwest Mexico",
+  },
+  "durango-mx": {
+    file: "Victoria de Durango desde el cerro de Los Remedios.jpg",
+    alt: "Victoria de Durango from Cerro de Los Remedios in the northern highlands",
+  },
+  "orizaba-mx": {
+    file: "Pico de Orizaba desde Hidalgo, Puebla.jpg",
+    alt: "Pico de Orizaba rising above the highland approaches to Orizaba",
   },
 };
 

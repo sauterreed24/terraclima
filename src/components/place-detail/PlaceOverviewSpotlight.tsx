@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Compass, Plane, Home, UserMinus, ThermometerSun } from "lucide-react";
+import { Compass, Plane, Home, UserMinus, ThermometerSun, GitCompare, Landmark, Mountain } from "lucide-react";
 import type { Place } from "../../types";
 import { composePlaceExperience } from "../../lib/place-overview";
 import { fmtTemp, useProse, useUnits } from "../../lib/units";
@@ -7,8 +7,8 @@ import { fmtTemp, useProse, useUnits } from "../../lib/units";
 /**
  * Overview spotlight — the humanistic lead of every place dossier. Answers
  * "what does this place actually feel like?" with an evocative lede, a rich
- * immersive read, a four-season walkthrough, and who-it-fits framing, before
- * the analytical sections begin.
+ * immersive read, mechanism + nearby contrast, a short history, a four-season
+ * walkthrough, and who-it-fits framing, before the analytical sections begin.
  */
 export function PlaceOverviewSpotlight({
   place,
@@ -36,6 +36,43 @@ export function PlaceOverviewSpotlight({
       </div>
 
       <p className="place-overview__immersive">{prose(exp.immersive)}</p>
+
+      <div className="place-overview__essay">
+        <article className="place-overview__essay-card" data-kind="why">
+          <h3 className="place-overview__block-title">
+            <Mountain className="w-3.5 h-3.5" aria-hidden="true" />
+            Why it feels different
+          </h3>
+          <p>{prose(exp.whyDifferent)}</p>
+          <p className="place-overview__drivers">{exp.whyDrivers}</p>
+        </article>
+        <article className="place-overview__essay-card" data-kind="contrast">
+          <h3 className="place-overview__block-title">
+            <GitCompare className="w-3.5 h-3.5" aria-hidden="true" />
+            Nearby contrast
+          </h3>
+          <ul className="place-overview__contrast-list">
+            {exp.contrastItems.map(item => (
+              <li key={`${item.label}:${item.note.slice(0, 48)}`}>
+                <div className="place-overview__contrast-label">{item.label}</div>
+                <p>{prose(item.note)}</p>
+              </li>
+            ))}
+          </ul>
+        </article>
+      </div>
+
+      <article className="place-overview__history" aria-labelledby={`${anchorId}-history`}>
+        <h3 id={`${anchorId}-history`} className="place-overview__block-title">
+          <Landmark className="w-3.5 h-3.5" aria-hidden="true" />
+          A short history
+        </h3>
+        {exp.historyParagraphs.map((para, i) => (
+          <p key={i} className={i === 0 ? "place-overview__history-lead" : undefined}>
+            {prose(para)}
+          </p>
+        ))}
+      </article>
 
       <div className="place-overview__feel">
         <ThermometerSun className="w-4 h-4 shrink-0" aria-hidden="true" />
