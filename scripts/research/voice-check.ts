@@ -57,6 +57,10 @@ function main() {
         { path: "experience.travelerFit", text: place.experience.travelerFit ?? "" },
         { path: "experience.residentFit", text: place.experience.residentFit ?? "" },
         { path: "experience.texture", text: place.experience.texture ?? "" },
+        { path: "experience.why", text: place.experience.why ?? "" },
+        ...(typeof place.experience.history === "string"
+          ? [{ path: "experience.history", text: place.experience.history }]
+          : (place.experience.history ?? []).map((p, i) => ({ path: `experience.history.${i}`, text: p }))),
       );
       for (const season of ["winter", "spring", "summer", "autumn"] as const) {
         texts.push({ path: `experience.seasons.${season}`, text: place.experience.seasons?.[season] ?? "" });

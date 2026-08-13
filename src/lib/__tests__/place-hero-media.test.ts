@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PLACES } from "../../data/places";
-import { getPlaceHeroMedia, placeHeroMediaCount } from "../place-hero-media";
+import { getPlaceHeroMedia, listPlaceHeroFiles, placeHeroMediaCount } from "../place-hero-media";
 
 describe("place hero media", () => {
   it("serves responsive, attributable media for default live-fit leaders", () => {
@@ -16,18 +16,27 @@ describe("place hero media", () => {
     }
   });
 
-  it("covers a systematic Commons slice with attributable alts, not a handful of flagships", () => {
-    expect(placeHeroMediaCount()).toBeGreaterThanOrEqual(80);
+  it("covers every corpus place with an attributable Commons photograph", () => {
+    expect(placeHeroMediaCount()).toBeGreaterThanOrEqual(PLACES.length);
 
-    const withHero = PLACES.filter(place => getPlaceHeroMedia(place.id));
-    expect(withHero.length).toBeGreaterThanOrEqual(80);
+    for (const place of PLACES) {
+      const media = getPlaceHeroMedia(place.id);
+      expect(media, `${place.id} missing hero photograph`).not.toBeNull();
+      expect(media!.alt.length, `${place.id} alt`).toBeGreaterThan(24);
+      expect(media!.sourceUrl).toContain("commons.wikimedia.org/wiki/File:");
+      expect(media!.src).toContain("Special:FilePath");
+      expect(media!.creditLine).toMatch(/Wikimedia Commons/i);
+    }
+  });
 
-    for (const place of withHero) {
-      const media = getPlaceHeroMedia(place.id)!;
-      expect(media.alt.length).toBeGreaterThan(24);
-      expect(media.sourceUrl).toContain("commons.wikimedia.org/wiki/File:");
-      expect(media.src).toContain("Special:FilePath");
-      expect(media.creditLine).toMatch(/Wikimedia Commons/i);
+  it("lists a Commons filename for every corpus place", () => {
+    const files = listPlaceHeroFiles();
+    const byId = new Map(files.map(row => [row.id, row.file]));
+    expect(files.length).toBeGreaterThanOrEqual(PLACES.length);
+    for (const place of PLACES) {
+      const file = byId.get(place.id);
+      expect(file, `${place.id} missing Commons filename`).toBeTruthy();
+      expect(/\.(jpe?g|png|webp)$/i.test(file!), `${place.id} unexpected file ${file}`).toBe(true);
     }
   });
 });

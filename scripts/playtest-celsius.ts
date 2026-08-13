@@ -199,7 +199,20 @@ for (const p of PLACES) {
   expectNoCelsiusInF(`experience.residentFit ${p.id}`, exp.residentFit);
   expectNoCelsiusInF(`experience.wouldNotFit ${p.id}`, exp.wouldNotFit);
   expectNoCelsiusInF(`experience.texture ${p.id}`, exp.texture);
+  expectNoCelsiusInF(`experience.whyDifferent ${p.id}`, exp.whyDifferent);
+  expectNoMetricDistanceInImperial(`experience.whyDifferent ${p.id}`, exp.whyDifferent);
   expectCelsiusPreservedInC(`experience.feelLine ${p.id}`, exp.feelLine);
+  expectCelsiusPreservedInC(`experience.whyDifferent ${p.id}`, exp.whyDifferent);
+  for (const item of exp.contrastItems) {
+    expectNoCelsiusInF(`experience.contrast ${p.id}`, item.note);
+    expectNoMetricDistanceInImperial(`experience.contrast ${p.id}`, item.note);
+    expectCelsiusPreservedInC(`experience.contrast ${p.id}`, item.note);
+  }
+  for (const [i, para] of exp.historyParagraphs.entries()) {
+    expectNoCelsiusInF(`experience.history[${i}] ${p.id}`, para);
+    expectNoMetricDistanceInImperial(`experience.history[${i}] ${p.id}`, para);
+    expectCelsiusPreservedInC(`experience.history[${i}] ${p.id}`, para);
+  }
   for (const s of exp.seasons) {
     expectNoCelsiusInF(`experience.season[${s.key}].detail ${p.id}`, s.detail);
     expectNoCelsiusInF(`experience.season[${s.key}].headline ${p.id}`, s.headline);

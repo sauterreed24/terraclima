@@ -236,8 +236,20 @@ async function main() {
     const page = await context.newPage();
     attachConsoleGuards(page, label, consoleErrors);
     try {
+      const commonsHits = [];
+      page.on("request", (req) => {
+        if (/wikimedia\.org/i.test(req.url())) commonsHits.push(req.url());
+      });
       await page.goto(`${BASE}/?p=sequim-wa#pd-evidence`, { waitUntil: "domcontentloaded", timeout: 30000 });
       await page.waitForSelector("[data-place-detail]", { timeout: 20000 });
+      for (const heading of ["Why it feels different", "Nearby contrast", "A short history"]) {
+        if (!(await page.getByRole("heading", { name: heading }).count())) {
+          findings.push({ label, kind: "overview-heading-missing", heading });
+        }
+      }
+      if (!commonsHits.some(u => /Special:FilePath|\/wikipedia\/commons\//i.test(u))) {
+        findings.push({ label, kind: "hero-photo-not-requested", hits: commonsHits.slice(0, 3) });
+      }
       const evidence = page.getByRole("region", { name: /Evidence and how to read this profile/i });
       await evidence.waitFor({ timeout: 10000 });
       const toggle = page.getByRole("button", { name: /How to read this profile/i });

@@ -4,6 +4,8 @@
 // Composes a humanistic, season-by-season overview for every place from
 // its structured climate record, so the dossier can lead with a vivid
 // "what does this place feel like?" spotlight rather than a chart wall.
+// The same engine also supplies the mechanism explanation, nearby contrast,
+// and a short settlement/land-use history so the first screen has depth.
 //
 // Authored `Place.experience` fields (optional) win field-by-field over the
 // derived read, letting flagship places carry deeper, voice-driven prose
@@ -64,8 +66,23 @@ export interface PlaceExperienceReading {
   wouldNotFit: string;
   /** Honest "what to expect / what to weigh" texture. */
   texture: string;
+  /** Mechanism explanation — why this pin does not feel like the surrounding region. */
+  whyDifferent: string;
+  /** Quiet driver line, e.g. "Shaped by rain shadow and marine layer." */
+  whyDrivers: string;
+  /** Nearby / local contrast cards for the overview. Always at least one item. */
+  contrastItems: PlaceContrastItem[];
+  /** 2–4 paragraph human history (settlement, land use, people). */
+  historyParagraphs: string[];
+  /** True when history came from an authored override. */
+  historyAuthored: boolean;
   /** True when any authored override contributed. */
   authored: boolean;
+}
+
+export interface PlaceContrastItem {
+  label: string;
+  note: string;
 }
 
 type SeasonTone = "frigid" | "cold" | "cool" | "mild" | "warm" | "hot";
@@ -391,6 +408,220 @@ function deriveTexture(place: Place): string {
   return `${base}: ${riskClause}.${livedCue}`;
 }
 
+function hashPick<T>(id: string, options: readonly T[]): T {
+  let h = 2166136261;
+  for (let i = 0; i < id.length; i++) h = Math.imul(h ^ id.charCodeAt(i), 16777619);
+  return options[(h >>> 0) % options.length]!;
+}
+
+function countryPhrase(place: Place): string {
+  if (place.country === "USA") return "the United States";
+  if (place.country === "Canada") return "Canada";
+  return "Mexico";
+}
+
+function namedCenter(place: Place): string {
+  const muni = place.municipality?.split("/")[0]?.replace(/\(.*\)/, "").trim();
+  return muni || place.name;
+}
+
+function ensurePeriod(text: string): string {
+  const t = text.trim();
+  if (!t) return t;
+  return /[.!?]$/.test(t) ? t : `${t}.`;
+}
+
+function authoredHistoryParagraphs(place: Place): string[] | null {
+  const raw = place.experience?.history;
+  if (!raw) return null;
+  const list = (typeof raw === "string" ? [raw] : [...raw])
+    .map(s => s.trim())
+    .filter(Boolean);
+  return list.length ? list : null;
+}
+
+function deriveWhyDrivers(place: Place): string {
+  const labels = place.drivers
+    .map(d => DRIVER_LABELS[d]?.toLowerCase())
+    .filter((s): s is string => Boolean(s));
+  if (!labels.length) return "Local terrain — not the regional average — is what makes the pin worth opening.";
+  return `Shaped mainly by ${joinHumanList(labels, 5)}.`;
+}
+
+function contrastDeltaClause(lc: NonNullable<Place["localContrast"]>[number]): string | null {
+  const bits: string[] = [];
+  if (lc.summerHighDeltaC != null && lc.summerHighDeltaC !== 0) {
+    const mag = Math.abs(lc.summerHighDeltaC);
+    bits.push(lc.summerHighDeltaC > 0
+      ? `about ${mag}°C warmer in summer`
+      : `about ${mag}°C cooler in summer`);
+  }
+  if (lc.winterLowDeltaC != null && lc.winterLowDeltaC !== 0) {
+    const mag = Math.abs(lc.winterLowDeltaC);
+    bits.push(lc.winterLowDeltaC > 0
+      ? `about ${mag}°C milder in winter`
+      : `about ${mag}°C colder in winter`);
+  }
+  if (lc.precipDeltaPct != null && Math.abs(lc.precipDeltaPct) >= 8) {
+    const mag = Math.abs(Math.round(lc.precipDeltaPct));
+    bits.push(lc.precipDeltaPct > 0
+      ? `about ${mag}% more annual precipitation`
+      : `about ${mag}% less annual precipitation`);
+  }
+  if (lc.growingSeasonDeltaDays != null && Math.abs(lc.growingSeasonDeltaDays) >= 8) {
+    const mag = Math.abs(Math.round(lc.growingSeasonDeltaDays));
+    bits.push(lc.growingSeasonDeltaDays > 0
+      ? `roughly ${mag} extra frost-free days`
+      : `roughly ${mag} fewer frost-free days`);
+  }
+  if (!bits.length) return null;
+  return bits.length === 1 ? bits[0]! : `${bits.slice(0, -1).join(", ")}, and ${bits.at(-1)}`;
+}
+
+function deriveContrastItems(place: Place): PlaceContrastItem[] {
+  const items: PlaceContrastItem[] = [];
+  const seen = new Set<string>();
+  const push = (label: string, note: string) => {
+    const n = note.trim();
+    if (!n) return;
+    const key = n.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    items.push({ label: label.trim() || "Nearby", note: ensurePeriod(n) });
+  };
+
+  for (const nc of place.nearbyContrasts ?? []) {
+    if (items.length >= 4) break;
+    push(nc.label, nc.note);
+  }
+  for (const lc of place.localContrast ?? []) {
+    if (items.length >= 4) break;
+    const delta = contrastDeltaClause(lc);
+    const note = [lc.note?.trim(), delta ? `Measured contrast: ${delta}.` : ""]
+      .filter(Boolean)
+      .join(" ");
+    push(`Within ${lc.radiusKm} km`, note);
+  }
+
+  if (items.length === 0) {
+    const hook = ARCHETYPE_BY_ID[place.archetypes[0]]?.label?.toLowerCase() ?? "this microclimate";
+    push(
+      "The surrounding country",
+      `${place.reliefContext.replace(/\.$/, "")} — that is the ${hook} contrast the atlas is pointing at, not a regional average.`,
+    );
+  }
+  return items.slice(0, 4);
+}
+
+const HISTORY_SKIP = /method|station|how we know|confidence|prism|normals|residual uncertainty/;
+const HISTORY_BOOST = /histor|settlement|people|cultur|town|living|friction|land use|ecology|irrigation|mining|pueblo|indigenous|colonial|human|community|cabin|access|service|ranch|orchard|farm|wine/;
+
+function deepHistoryParagraph(place: Place): string | null {
+  const sections = place.deepSections ?? [];
+  const ranked = sections
+    .map(sec => {
+      const blob = `${sec.id} ${sec.title}`.toLowerCase();
+      if (HISTORY_SKIP.test(blob)) return { sec, score: -1 };
+      let score = 0;
+      if (HISTORY_BOOST.test(blob)) score += 3;
+      if (/hydrology|land use|living|friction|town/.test(blob)) score += 1;
+      return { sec, score };
+    })
+    .filter(row => row.score > 0)
+    .sort((a, b) => b.score - a.score);
+
+  const whyHead = firstSentence(place.whyDistinct).slice(0, 48).toLowerCase();
+  for (const row of ranked) {
+    for (const para of row.sec.paragraphs) {
+      const t = para.trim();
+      if (t.length < 80) continue;
+      if (t.slice(0, 48).toLowerCase() === whyHead) continue;
+      return t;
+    }
+  }
+  return null;
+}
+
+function settlementHistoryParagraph(place: Place): string | null {
+  const settlements = place.settlementsWithinZone;
+  if (!settlements?.length) return null;
+  const slice = settlements.slice(0, 4);
+  const named = slice.map(s => {
+    const pop = s.population ? ` (${s.population})` : "";
+    return `${s.name}${pop}`;
+  });
+  const more =
+    settlements.length > slice.length
+      ? `, plus ${settlements.length - slice.length} more communities sharing the same air mass`
+      : "";
+  const noted = slice.find(s => s.note?.trim())?.note?.trim();
+  const ghost = settlements.find(s => s.role === "ghost-town" || s.role === "tribal");
+  const lead = hashPick(place.id, [
+    `The lived map is anchored by ${joinHumanList(named, 4)}${more}.`,
+    `People actually on the ground cluster around ${joinHumanList(named, 4)}${more}.`,
+    `${namedCenter(place)} sits inside a small constellation of places — ${joinHumanList(named, 4)}${more}.`,
+  ]);
+  const extra = noted ? ` ${ensurePeriod(noted)}` : "";
+  const ghostBit = ghost?.note && ghost.note !== noted
+    ? ` ${ghost.name}: ${ensurePeriod(ghost.note)}`
+    : "";
+  return `${lead}${extra}${ghostBit}`;
+}
+
+function historicActivityParagraph(place: Place): string | null {
+  const acts = (place.thingsToDo ?? []).filter(t =>
+    t.kind === "historic" || /histor|museum|pueblo|mission|fort|mine|railway|heritage|ruins/i.test(t.label),
+  );
+  if (!acts.length) return null;
+  const top = acts.slice(0, 2);
+  const bits = top.map(t => {
+    const note = t.note?.trim();
+    return note ? `${t.label} — ${note.replace(/\.$/, "")}` : t.label;
+  });
+  return `Traces of how people have used this climate are still easy to walk: ${bits.join("; ")}.`;
+}
+
+function landscapeHistoryLead(place: Place): string {
+  const relief = place.reliefContext.replace(/\.$/, "");
+  const hook = ARCHETYPE_BY_ID[place.archetypes[0]]?.label?.toLowerCase() ?? "distinct microclimate";
+  const center = namedCenter(place);
+  const country = countryPhrase(place);
+  return hashPick(place.id, [
+    `${place.name} sits in ${place.region}, ${country} — ${relief}. The ${hook} pattern is what people have had to organize a town, a farm, or a season around, not a footnote on the regional average.`,
+    `${center} grew where ${place.biome.split("/")[0]!.trim().toLowerCase()} meets this specific piece of ground: ${relief}. That is the human side of a ${place.koppen} year.`,
+    `Settlement here follows the terrain. ${ensurePeriod(relief)} In ${place.region}, that produces a ${hook} pocket the surrounding region does not share.`,
+    `${place.name} is not an abstract climate class. It is ${center} in ${place.region}, ${country}, on this footprint: ${relief}.`,
+  ]);
+}
+
+function deriveHistoryParagraphs(place: Place): string[] {
+  const authored = authoredHistoryParagraphs(place);
+  if (authored) return authored.slice(0, 4);
+
+  const paras: string[] = [landscapeHistoryLead(place)];
+  const settlement = settlementHistoryParagraph(place);
+  if (settlement) paras.push(settlement);
+  const historic = historicActivityParagraph(place);
+  if (historic) paras.push(historic);
+  const deep = deepHistoryParagraph(place);
+  if (deep && !paras.some(p => p.slice(0, 40) === deep.slice(0, 40))) {
+    paras.push(deep);
+  }
+
+  if (paras.length < 2) {
+    const soil = place.soil.notes?.trim();
+    if (soil && /histor|irrigation|heritage|farm|mining|pueblo|ranch/i.test(soil)) {
+      paras.push(ensurePeriod(firstSentence(soil)));
+    } else {
+      paras.push(
+        `${place.whoWouldLove.replace(/\.$/, "")} — that is the household pattern this climate has tended to select for, as much as any census category.`,
+      );
+    }
+  }
+
+  return paras.slice(0, 4);
+}
+
 const _experienceCache = new WeakMap<Place, PlaceExperienceReading>();
 
 /**
@@ -407,6 +638,9 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
   const authoredTraveler = place.experience?.travelerFit;
   const authoredResident = place.experience?.residentFit;
   const authoredTexture = place.experience?.texture;
+  const authoredWhy = place.experience?.why?.trim();
+  const authoredHistory = Boolean(authoredHistoryParagraphs(place));
+  const historyParagraphs = deriveHistoryParagraphs(place);
 
   const result: PlaceExperienceReading = {
     lede: dequote(place.summaryShort),
@@ -417,8 +651,14 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
     residentFit: authoredResident ?? place.whoWouldLove,
     wouldNotFit: place.whoMightNot,
     texture: authoredTexture ?? deriveTexture(place),
+    whyDifferent: authoredWhy || place.whyDistinct,
+    whyDrivers: deriveWhyDrivers(place),
+    contrastItems: deriveContrastItems(place),
+    historyParagraphs,
+    historyAuthored: authoredHistory,
     authored: Boolean(
       authoredFeel || authoredTraveler || authoredResident || authoredTexture ||
+      authoredWhy || authoredHistory ||
       seasons.some(s => s.authored),
     ),
   };

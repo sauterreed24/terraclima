@@ -23,6 +23,7 @@
  * Exits 1 when any defect is found; 0 on a clean sweep.
  */
 import { chromium } from "playwright-core";
+import { accessSync, constants } from "node:fs";
 
 const BASE = process.env.TC_BASE_URL ?? "http://localhost:4173";
 const argv = process.argv.slice(2);
@@ -33,6 +34,21 @@ const WIDTHS = widthsArg >= 0
   ? argv[widthsArg + 1].split(",").map(w => parseInt(w, 10))
   : [1024, 1280, 768, 390];
 
+function resolveChrome() {
+  for (const candidate of [
+    process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH,
+    "/usr/local/bin/google-chrome",
+    "/usr/bin/google-chrome",
+    "/usr/bin/chromium-browser",
+  ].filter(Boolean)) {
+    try {
+      accessSync(candidate, constants.X_OK);
+      return candidate;
+    } catch { /* next */ }
+  }
+  return undefined;
+}
+
 async function main() {
   const idsEnv = process.env.TC_PLACE_IDS;
   if (!idsEnv) {
@@ -42,7 +58,8 @@ async function main() {
   const ids = idsEnv.split(",").filter(Boolean).slice(0, LIMIT);
   console.error(`Playtesting ${ids.length} places × ${WIDTHS.length} widths`);
 
-  const browser = await chromium.launch();
+  const executablePath = resolveChrome();
+  const browser = await chromium.launch(executablePath ? { executablePath } : {});
   const findings = [];
   let checked = 0;
 

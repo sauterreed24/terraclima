@@ -342,6 +342,13 @@ export interface AuthoredExperience {
   residentFit?: string;
   /** Honest "what to expect / what to weigh" texture line. */
   texture?: string;
+  /**
+   * Optional 1–3 paragraph human history (settlement, land use, people).
+   * A string is treated as one paragraph; pass an array for several.
+   */
+  history?: string | readonly string[];
+  /** Optional overview override for the mechanism explanation (defaults to whyDistinct). */
+  why?: string;
 }
 
 export interface ZoneActivity {

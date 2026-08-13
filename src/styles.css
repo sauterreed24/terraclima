@@ -7106,6 +7106,7 @@
   }
   .atlas-snapshot-tile {
     padding: 0.7rem 0.75rem 0.8rem;
+    min-width: 0;
     min-height: 4.5rem;
     background: rgba(255, 254, 252, 0.98);
     display: flex;
@@ -7123,6 +7124,8 @@
     color: var(--color-stone);
   }
   .atlas-snapshot-tile__value {
+    min-width: 0;
+    overflow-wrap: anywhere;
     font-family: var(--font-serif);
     font-size: 0.98rem;
     line-height: 1.3;
@@ -8376,6 +8379,85 @@
     font-style: italic;
     line-height: 1.55;
     text-wrap: pretty;
+  }
+  .place-overview__essay {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr));
+    gap: 0.7rem;
+  }
+  .place-overview__essay-card,
+  .place-overview__history {
+    min-width: 0;
+    border-radius: 0.85rem;
+    border: 1px solid rgba(200, 170, 140, 0.3);
+    background: rgba(255, 253, 248, 0.78);
+    padding: 0.85rem 0.95rem 0.95rem;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.82) inset;
+  }
+  .place-overview__essay-card[data-kind="why"] {
+    border-top: 3px solid rgba(227, 166, 59, 0.85);
+  }
+  .place-overview__essay-card[data-kind="contrast"] {
+    border-top: 3px solid rgba(94, 196, 220, 0.85);
+  }
+  .place-overview__history {
+    border-top: 3px solid rgba(137, 175, 136, 0.85);
+  }
+  .place-overview__block-title {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 0 0.5rem;
+    color: var(--color-ice);
+    font-family: var(--font-atlas);
+    font-size: 0.92rem;
+    font-weight: 650;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .place-overview__block-title svg {
+    color: var(--color-stone-readable);
+  }
+  .place-overview__essay-card p,
+  .place-overview__history p {
+    margin: 0;
+    color: var(--color-frost-strong);
+    font-size: 0.9rem;
+    line-height: 1.62;
+    text-wrap: pretty;
+  }
+  .place-overview__history p + p {
+    margin-top: 0.7rem;
+  }
+  .place-overview__history-lead {
+    font-size: 0.95rem;
+  }
+  .place-overview__essay-card p.place-overview__drivers {
+    margin-top: 0.55rem;
+    color: var(--color-stone-readable);
+    font-size: 0.78rem;
+    font-style: italic;
+    line-height: 1.45;
+  }
+  .place-overview__contrast-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .place-overview__contrast-label {
+    margin-bottom: 0.12rem;
+    color: var(--color-stone-readable);
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .place-overview__contrast-list p {
+    font-size: 0.84rem;
+    line-height: 1.5;
   }
   /* Viewport fallbacks for engines without container-query support; the
      `@container dossier` rules above are the primary responsive path and
@@ -11675,7 +11757,9 @@ html[data-theme="dark"] .place-overview__immersive::first-letter {
   color: var(--color-ochre-500);
 }
 html[data-theme="dark"] .place-overview__season,
-html[data-theme="dark"] .place-overview__fit-card {
+html[data-theme="dark"] .place-overview__fit-card,
+html[data-theme="dark"] .place-overview__essay-card,
+html[data-theme="dark"] .place-overview__history {
   background: rgba(18, 26, 44, 0.72);
   border-color: rgba(120, 138, 178, 0.24);
   box-shadow: var(--tc-shadow-inset);

@@ -601,6 +601,7 @@ function DetailHeader({
             className="w-full h-28 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
             loading="eager"
             decoding="async"
+            referrerPolicy="no-referrer"
             onError={() => setFailedHeroSrc(hero.src)}
           />
         ) : (
@@ -661,8 +662,7 @@ function DetailHeader({
 }
 
 /**
- * Climate-palette visual for every place. Used as the primary figure when no
- * Commons photo is curated, and as a stand-in when a photo fails to load.
+ * Climate-palette visual used only when a Commons photo fails to load.
  */
 function HeroClimateFallback({
   place,

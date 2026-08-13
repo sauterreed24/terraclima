@@ -80,4 +80,48 @@ describe("composePlaceExperience", () => {
     expect(summer.detail).toContain("Olympic Peninsula west slope");
     expect(summer.authored).toBe(false);
   });
+
+  it("leads the overview with mechanism, nearby contrast, and a short history for every place", () => {
+    for (const place of PLACES) {
+      const exp = composePlaceExperience(place);
+      expect(exp.whyDifferent.trim().length, `${place.id} whyDifferent`).toBeGreaterThan(24);
+      expect(exp.whyDrivers.toLowerCase()).toMatch(/shaped mainly by|local terrain/);
+      expect(exp.contrastItems.length, `${place.id} contrast`).toBeGreaterThanOrEqual(1);
+      for (const item of exp.contrastItems) {
+        expect(item.label.trim()).not.toHaveLength(0);
+        expect(item.note.trim().length).toBeGreaterThan(12);
+      }
+      expect(exp.historyParagraphs.length, `${place.id} history`).toBeGreaterThanOrEqual(2);
+      for (const para of exp.historyParagraphs) {
+        expect(para.trim().length, `${place.id} history para`).toBeGreaterThan(40);
+      }
+    }
+  });
+
+  it("uses Sequim's rain-shadow contrast and Portal's settlement history", () => {
+    const sequim = composePlaceExperience(PLACES_BY_ID["sequim-wa"]);
+    expect(sequim.whyDifferent).toMatch(/Olympic/i);
+    expect(sequim.contrastItems.some(item => /forks/i.test(`${item.label} ${item.note}`))).toBe(true);
+
+    const portal = composePlaceExperience(PLACES_BY_ID["portal-az"]);
+    expect(portal.historyParagraphs.join(" ")).toMatch(/Paradise|Portal|Chiricahua/i);
+  });
+
+  it("lets authored history and why override the derived portrait", () => {
+    const base = PLACES_BY_ID["yuma-az"];
+    const authored = composePlaceExperience({
+      ...base,
+      experience: {
+        why: "AUTHORED why this desert floor is different.",
+        history: ["AUTHORED history paragraph one is long enough.", "AUTHORED history paragraph two is also long enough."],
+      },
+    });
+    expect(authored.whyDifferent).toBe("AUTHORED why this desert floor is different.");
+    expect(authored.historyParagraphs).toEqual([
+      "AUTHORED history paragraph one is long enough.",
+      "AUTHORED history paragraph two is also long enough.",
+    ]);
+    expect(authored.historyAuthored).toBe(true);
+    expect(authored.authored).toBe(true);
+  });
 });

@@ -69,7 +69,7 @@ On a phone, navigation folds into a hamburger and filters into a bottom sheet; o
 
 ### Open a place and go deep
 
-Each **place profile** is a long-form field guide: opening story, curated hero media where available, at-a-glance facts, practical scouting cards, live-here reasons and cautions, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, climate twins, settlements, things to do, citations, and confidence notes.
+Each **place profile** is a long-form field guide: opening story, a photograph of the place, at-a-glance facts, practical scouting cards, live-here reasons and cautions, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, climate twins, settlements, things to do, citations, and confidence notes. The Overview leads with why the climate differs, nearby contrast, a short settlement history, and a season-by-season feel.
 
 **Home base (“vs home”):** pin any corpus place as home from the dossier, **H**, or `?hb=`. Cards grow a compact delta strip; dossiers add a **Versus your home base** section; Compare diffs finalists against home (with **Add home**). Deltas use authored 1991–2020 normals; under a 2050 scenario, projected is compared to projected so timelines never mix. See [`src/lib/home-base.ts`](src/lib/home-base.ts).
 

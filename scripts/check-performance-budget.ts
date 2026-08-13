@@ -47,8 +47,12 @@ const BUDGETS = {
   maxModulePreloads: 22,
   /** Atlas topology cold chunk raw size ceiling (lazy). Baseline ~222 KB → 280 KB. */
   atlasDataRaw: 280_000,
-  /** PlaceDetail cold chunk raw size ceiling (lazy). Baseline ~149 KB → 200 KB. */
-  placeDetailRaw: 200_000,
+  /**
+   * PlaceDetail cold chunk raw size ceiling (lazy). Baseline ~149 KB → 200 KB.
+   * Photographing every corpus place plus the overview portrait (why / contrast /
+   * history) lands just over 200 KB; keep a small documented allowance.
+   */
+  placeDetailRaw: 212_000,
 } as const;
 
 function extractAttrs(tag: string, attr: string): string | null {
