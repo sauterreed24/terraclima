@@ -88,21 +88,22 @@ export function meanWinterSolarMjM2Day(p: Place): number | null {
  * When only solar energy is present, maps MJ/m²/day → rough % via 0.25*MJ*10≈scale.
  */
 export function meanAnnualSunshinePct(p: Place): number | null {
+  // Prefer Daymet solar when present so restoring authored sunshinePct
+  // for display cannot shift rankings or livability scores.
+  const solar = meanAnnualSolarMjM2Day(p);
+  if (solar != null) return Math.max(0, Math.min(100, 10 + solar * 3.75));
   const sunshine = p.climate.sunshinePct;
   if (sunshine) return sunshine.reduce((sum, value) => sum + value, 0) / sunshine.length;
-  const solar = meanAnnualSolarMjM2Day(p);
-  if (solar == null) return null;
-  // Typical NA annual means ~10–20 MJ/m²/day → map 8→40, 16→70, 22→90
-  return Math.max(0, Math.min(100, 10 + solar * 3.75));
+  return null;
 }
 
 /** Mean Dec–Feb possible sunshine (%). Null when neither solar nor sunshine series exist. */
 export function meanWinterSunshinePct(p: Place): number | null {
+  const solar = meanWinterSolarMjM2Day(p);
+  if (solar != null) return Math.max(0, Math.min(100, 10 + solar * 3.75));
   const sun = p.climate.sunshinePct;
   if (sun) return (sun[11] + sun[0] + sun[1]) / 3;
-  const solar = meanWinterSolarMjM2Day(p);
-  if (solar == null) return null;
-  return Math.max(0, Math.min(100, 10 + solar * 3.75));
+  return null;
 }
 
 export const SEASONAL_USABILITY = {

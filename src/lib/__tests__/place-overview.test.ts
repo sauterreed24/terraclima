@@ -18,7 +18,7 @@ describe("composePlaceExperience", () => {
     const exp = composePlaceExperience({ ...base, experience: undefined });
     expect(exp.lede.length).toBeGreaterThan(8);
     expect(exp.immersive.length).toBeGreaterThan(40);
-    expect(exp.feelLine).toContain("easy-comfort zone");
+    expect(exp.feelLine).toContain("easy to be outside");
     expect(exp.travelerFit.trim()).not.toHaveLength(0);
     expect(exp.residentFit.trim()).not.toHaveLength(0);
     expect(exp.wouldNotFit.trim()).not.toHaveLength(0);
@@ -85,7 +85,7 @@ describe("composePlaceExperience", () => {
     for (const place of PLACES) {
       const exp = composePlaceExperience(place);
       expect(exp.whyDifferent.trim().length, `${place.id} whyDifferent`).toBeGreaterThan(24);
-      expect(exp.whyDrivers.toLowerCase()).toMatch(/shaped mainly by|local terrain/);
+      expect(exp.whyDrivers.toLowerCase()).toMatch(/most of the work here comes from|what sets the weather apart is|the local climate is shaped by|local terrain/);
       expect(exp.contrastItems.length, `${place.id} contrast`).toBeGreaterThanOrEqual(1);
       for (const item of exp.contrastItems) {
         expect(item.label.trim()).not.toHaveLength(0);
@@ -94,8 +94,49 @@ describe("composePlaceExperience", () => {
       expect(exp.historyParagraphs.length, `${place.id} history`).toBeGreaterThanOrEqual(2);
       for (const para of exp.historyParagraphs) {
         expect(para.trim().length, `${place.id} history para`).toBeGreaterThan(40);
+        expect(para, `${place.id} history voice`).not.toMatch(/abstract climate class|household pattern this climate/i);
       }
+      expect(exp.immersive, `${place.id} immersive voice`).not.toMatch(/The rhythm holds most years|doing quiet work behind the numbers|postcard version of the|risk lines worth checking|growability scores/);
+      expect(exp.historyParagraphs.join(" "), `${place.id} history voice`).not.toMatch(/growability scores|the record works out as follows|editorial shorthand/i);
     }
+  });
+
+  it("prefers sensory seasons over generated numeric templates", () => {
+    const alamos = composePlaceExperience(PLACES_BY_ID["alamos-mx"]);
+    expect(alamos.seasons.find(s => s.key === "winter")!.detail).not.toMatch(/keeps winter highs near/);
+    expect(alamos.seasons.find(s => s.key === "winter")!.authored).toBe(false);
+  });
+
+  it("keeps hand-written Sequim seasons", () => {
+    const sequim = composePlaceExperience(PLACES_BY_ID["sequim-wa"]);
+    expect(sequim.seasons.find(s => s.key === "summer")!.detail).toMatch(/Strait of Juan de Fuca/i);
+    expect(sequim.seasons.find(s => s.key === "summer")!.authored).toBe(true);
+  });
+
+  it("replaces generated season templates with a sensory read", () => {
+    const asheville = composePlaceExperience(PLACES_BY_ID["asheville-nc"]);
+    expect(asheville.seasons.find(s => s.key === "winter")!.detail).not.toMatch(/cold months stay close to/);
+    expect(asheville.seasons.find(s => s.key === "winter")!.authored).toBe(false);
+    expect(asheville.travelerFit).not.toMatch(/most leave surprised/i);
+    expect(asheville.texture).not.toMatch(/None of that erases the appeal/i);
+  });
+
+  it("strips generated immersive padding and keeps the authored portrait", () => {
+    const astoria = composePlaceExperience(PLACES_BY_ID["astoria-or"]);
+    expect(astoria.immersive).toMatch(/storm-lashed port/i);
+    expect(astoria.immersive).not.toMatch(/doing quiet work behind the numbers|The rhythm holds most years|risk lines worth checking/);
+  });
+
+  it("does not leave dangling punctuation on cleaned fit copy", () => {
+    const bacalar = composePlaceExperience(PLACES_BY_ID["bacalar-mx"]);
+    expect(bacalar.residentFit).not.toMatch(/,\./);
+    expect(bacalar.residentFit.trim().endsWith(".")).toBe(true);
+  });
+
+  it("uses Portal settlement history rather than scoring jargon", () => {
+    const portal = composePlaceExperience(PLACES_BY_ID["portal-az"]);
+    expect(portal.historyParagraphs.join(" ")).toMatch(/Paradise|Portal|Chiricahua/i);
+    expect(portal.historyParagraphs.join(" ")).not.toMatch(/growability scores|the record works out as follows/i);
   });
 
   it("uses Sequim's rain-shadow contrast and Portal's settlement history", () => {

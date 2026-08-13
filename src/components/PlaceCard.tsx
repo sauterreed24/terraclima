@@ -2,6 +2,7 @@ import { memo, useCallback, useId, useMemo, type MouseEvent } from "react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
+import { observedSunnyDaysPerYear, precipHeroLabel } from "../lib/hero-glance";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib/units";
 import { getBioclimCardSignal, getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
@@ -157,9 +158,9 @@ export const PlaceCard = memo(function PlaceCard({
   );
 
   // Derived at-a-glance extras surfaced on non-compact cards
-  const annualSolarMj = useMemo(() => {
-    if (compact || !place.climate.solarEnergyMjM2Day) return null;
-    return place.climate.solarEnergyMjM2Day.reduce((a, b) => a + b, 0) / 12;
+  const sunnyDays = useMemo(() => {
+    if (compact) return null;
+    return observedSunnyDaysPerYear(place);
   }, [place, compact]);
   const avgHumidity = useMemo(() => {
     if (compact || !place.climate.humidity) return null;
@@ -355,20 +356,20 @@ export const PlaceCard = memo(function PlaceCard({
         <div className="pt-3">
           <div className="text-caption mb-1.5">Core numbers</div>
           <div className="place-card__inset-panel grid grid-cols-2 sm:grid-cols-4 gap-2 rounded-lg px-2 py-2">
-            <Stat label="JJA high" value={fmtTemp(summerHighC, temp)} tone="ochre" />
-            <Stat label="Jan low" value={fmtTemp(janLowC, temp)} tone="glacier" />
-            <Stat label="Annual precip" value={fmtPrecip(annualP, dist)} tone="sage" />
+            <Stat label="Summer high" value={fmtTemp(summerHighC, temp)} tone="ochre" />
+            <Stat label="January low" value={fmtTemp(janLowC, temp)} tone="glacier" />
+            <Stat label={precipHeroLabel(place)} value={fmtPrecip(annualP, dist)} tone="sage" />
             <Stat label="Uniqueness" value={place.scores.microclimateUniqueness.toString()} tone="ice" />
           </div>
 
           {/* Extended stats row: solar resource, humidity, frost-free days */}
-          {!compact && (annualSolarMj != null || avgHumidity != null || frostFreeDays != null) && (
+          {!compact && (sunnyDays != null || avgHumidity != null || frostFreeDays != null) && (
             <div className="place-card__ext-stats">
-              {annualSolarMj != null && (
-                <span className="place-card__ext-stat" title="Mean annual solar resource (MJ/m²/day)">
+              {sunnyDays != null && (
+                <span className="place-card__ext-stat" title="Estimated from percent of possible sunshine">
                   <Sun className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#c4a020" }} />
-                  <span className="font-mono-num">{annualSolarMj.toFixed(1)}</span>
-                  <span className="text-stone-readable/60">MJ</span>
+                  <span className="font-mono-num">{sunnyDays}</span>
+                  <span className="text-stone-readable/60">sunny days</span>
                 </span>
               )}
               {avgHumidity != null && (

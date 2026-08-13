@@ -122,7 +122,7 @@ export function PlaceEvidenceSummary({
                   `${n > 0 ? "+" : ""}${n.toFixed(1)}${unit}`;
                 return (
                   <p className="tc-evidence-summary__body mt-2">
-                    vs 1991–2020: JJA high {fmt(shift.jjaHighDeltaC, "°C")}, January low{" "}
+                    vs 1991–2020: summer high {fmt(shift.jjaHighDeltaC, "°C")}, January low{" "}
                     {fmt(shift.janLowDeltaC, "°C")}, annual precip {fmt(shift.annualPrecipDeltaPct, "%")}.
                   </p>
                 );

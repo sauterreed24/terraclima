@@ -30,7 +30,6 @@ describe("Climate Data V2 coverage", () => {
       expect(rec!.climate.humidity).toHaveLength(12);
       const precipSum = rec!.climate.precipMm.reduce((a, b) => a + b, 0);
       expect(Math.abs(precipSum - rec!.climate.annualPrecipMm)).toBeLessThan(0.2);
-      expect(p.climate.sunshinePct).toBeUndefined();
       expect(p.climate.solarEnergyMjM2Day).toEqual(rec!.climate.solarEnergyMjM2Day);
       expect(p.climate.annualPrecipMm).toBe(rec!.climate.annualPrecipMm);
       expect(p.climateDataConfidence).toBeTruthy();

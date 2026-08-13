@@ -278,6 +278,26 @@ function terrainSeasonContext(place: Place, key: SeasonKey): string | null {
   return null;
 }
 
+const SEASON_ACTIVITY_HINT: Record<SeasonKey, RegExp> = {
+  winter: /\bwinter\b|\bsnow\b|\bski|\bice\b|\bstorm-watch/i,
+  spring: /\bspring\b|\bbloom\b|\bwildflower|\bbird/i,
+  summer: /\bsummer\b|\bmonsoon\b|\bhike\b|\bswim|\bfestival/i,
+  autumn: /\bautumn\b|\bfall\b|\bharvest\b|\bfoliage|\bwine/i,
+};
+
+function seasonActivityCue(place: Place, key: SeasonKey): string | null {
+  const hint = SEASON_ACTIVITY_HINT[key];
+  const acts = (place.thingsToDo ?? []).filter(t => {
+    const blob = `${t.label} ${t.season ?? ""} ${t.note ?? ""}`;
+    return hint.test(blob);
+  });
+  const top = acts[0];
+  if (!top) return null;
+  const note = top.note?.trim();
+  if (note) return ensurePeriod(`${top.label} — ${firstSentence(note).replace(/\.$/, "")}`);
+  return ensurePeriod(`${top.label} is part of the ${key} rhythm here`);
+}
+
 function buildSeason(place: Place, def: SeasonDef): SeasonReading {
   const highC = meanOf(place.climate.tempHighC, def.idx) ?? 0;
   const lowC = meanOf(place.climate.tempLowC, def.idx) ?? 0;
@@ -295,10 +315,15 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
   ];
   const terrain = terrainSeasonContext(place, def.key);
   if (terrain) sentences.push(terrain.endsWith(".") ? terrain : `${terrain}.`);
+  else {
+    const activity = seasonActivityCue(place, def.key);
+    if (activity) sentences.push(activity);
+  }
   const risk = seasonRiskPhrase(place, def.key);
   if (risk) sentences.push(`${risk}.`);
 
   const authoredDetail = place.experience?.seasons?.[def.key];
+  const useAuthored = Boolean(authoredDetail) && !isGeneratedSeasonDetail(authoredDetail!);
 
   return {
     key: def.key,
@@ -309,8 +334,8 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
     lowC,
     tone,
     headline: seasonHeadline(tone, conditions),
-    detail: authoredDetail ?? sentences.join(" "),
-    authored: Boolean(authoredDetail),
+    detail: useAuthored ? authoredDetail! : sentences.join(" "),
+    authored: useAuthored,
   };
 }
 
@@ -346,17 +371,16 @@ function deriveFeelLine(place: Place): string {
   const easy = annualComfortMonthCount(place);
   const sh = meanSummerHigh(place);
   const jl = meanJanLow(place);
-  const hook = ARCHETYPE_BY_ID[place.archetypes[0]]?.label?.toLowerCase() ?? "distinct microclimate";
   const driverId = place.drivers[0];
-  const driverLabel = driverId ? DRIVER_LABELS[driverId]?.toLowerCase() : null;
+  const driverLabel = driverId ? driverPlain(driverId) : null;
   const shapeClause = driverLabel ? `, shaped mainly by ${driverLabel}` : "";
   const easyClause =
-    easy >= 12 ? `Nearly every month of the year lands in the easy-comfort zone`
-    : easy >= 9 ? `Most of the year — about ${easy} months in 12 — sits in the easy-comfort zone`
-    : easy >= 5 ? `Roughly ${easy} of the year's 12 months land in the easy-comfort zone`
-    : easy >= 2 ? `Only about ${easy} months a year sit squarely in the easy-comfort zone`
-    : `Genuine comfort is a short window here — barely ${easy} month${easy === 1 ? "" : "s"} a year`;
-  return `${easyClause}. Summers run ${summerWord(sh)}, winters ${winterWord(jl)}, and the air tends ${airWord(place)} — textbook ${hook}${shapeClause}.`;
+    easy >= 12 ? `Nearly every month feels easy to be outside`
+    : easy >= 9 ? `Most of the year — about ${easy} months in 12 — feels easy to be outside`
+    : easy >= 5 ? `Roughly ${easy} of the year's 12 months feel easy to be outside`
+    : easy >= 2 ? `Only about ${easy} months a year feel truly easy to be outside`
+    : `Genuine outdoor comfort is a short window here — barely ${easy} month${easy === 1 ? "" : "s"} a year`;
+  return `${easyClause}. Summers run ${summerWord(sh)}, winters ${winterWord(jl)}, and the air tends ${airWord(place)}${shapeClause}.`;
 }
 
 /** Cadence-only travel tags ("year-round", "summer") don't read as draws. */
@@ -370,15 +394,35 @@ function deriveTravelerFit(place: Place): string {
   if (draws.length) {
     return `Travelers come for ${joinHumanList(draws, 4)}.`;
   }
+  const activities = (place.thingsToDo ?? [])
+    .map(t => t.label.replace(/\s+/g, " ").trim())
+    .filter(Boolean)
+    .slice(0, 3);
+  if (activities.length) {
+    return `Travelers come for ${joinHumanList(activities, 3)}.`;
+  }
   const hook = ARCHETYPE_BY_ID[place.archetypes[0]]?.label?.toLowerCase() ?? "the microclimate";
   return `Visitors come to experience the ${hook} firsthand and the landscape that shapes it.`;
+}
+
+function deriveResidentFit(place: Place): string {
+  const love = place.whoWouldLove.replace(/\.$/, "").trim();
+  const tags = place.relocationFit
+    .map(t => t.trim())
+    .filter(t => t && !CADENCE_TRAVEL_TAGS.has(t.toLowerCase()))
+    .slice(0, 3);
+  if (love.length > 48) return ensurePeriod(love);
+  if (tags.length) {
+    return `${ensurePeriod(love)} It tends to fit ${joinHumanList(tags, 3)}.`;
+  }
+  return ensurePeriod(love);
 }
 
 function deriveTexture(place: Place): string {
   const tradeoff = place.scores.tradeoff;
   const base =
-    tradeoff >= 60 ? "This is a real-tradeoff place"
-    : tradeoff >= 45 ? "It asks for a few compromises"
+    tradeoff >= 60 ? "This is a place of real tradeoffs"
+    : tradeoff >= 45 ? "It asks for a few honest compromises"
     : "It is an easy place to settle into";
 
   const ranked = (Object.keys(place.risks) as Array<keyof typeof place.risks>)
@@ -431,6 +475,144 @@ function ensurePeriod(text: string): string {
   return /[.!?]$/.test(t) ? t : `${t}.`;
 }
 
+const DRIVER_PLAIN: Record<string, string> = {
+  "orographic-lift": "mountains wringing moisture out of passing storms",
+  "rain-shadow": "a rain shadow",
+  "elevation-lapse-rate": "elevation — cooler as you climb",
+  "cold-air-drainage": "cold air draining downhill at night",
+  "marine-layer": "a marine layer",
+  "upwelling": "cold coastal upwelling",
+  "chinook-foehn": "chinook / downslope warm wind",
+  "lake-effect": "the lake",
+  "gap-winds": "gap winds through the terrain",
+  "inversion": "valley inversions",
+  "aspect-slope": "slope and aspect",
+  "monsoon-lift": "summer monsoon storms",
+  "karst-infiltration": "limestone and underground drainage",
+  "river-moderation": "the river corridor",
+  "santa-ana": "downslope desert wind",
+  "katabatic-flow": "downslope drainage flow",
+  "sea-breeze": "a daily sea breeze",
+  "continentality": "distance from the ocean",
+  "polar-jet-exposure": "arctic air when the jet stream dips",
+  "tropical-convection": "tropical downpours",
+  "trade-wind": "trade winds",
+  "hurricane-track": "tropical-storm tracks",
+};
+
+function driverPlain(id: string): string {
+  return DRIVER_PLAIN[id] ?? DRIVER_LABELS[id as keyof typeof DRIVER_LABELS]?.toLowerCase() ?? id.replace(/-/g, " ");
+}
+
+function wordCount(text: string): number {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+function isGeneratedSeasonDetail(text: string): boolean {
+  return /highs near .+°C|keeps winter highs near|climbs toward .+°C spring|in summer means about .+°C heat|cold months stay close to|winter afternoons settle near|asks for .+°C summer-day|holds winter light near|summer highs near .+°C at -?\d+ m still leave|afternoon climate; nights to|shoulder season sits near .+°C days|autumn light means .+°C afternoons|autumn stays usable at .+°C days|autumn highs near .+°C and lows near|in winter is a .+°C daytime story|daytime story; nights to|.°C daytime story|winters run near|shaped by marine layer across|overnight lows test housing|summer afternoons land near .+°C|fall holds about .+°C afternoons|opens spring under roughly|spring feels workable at .+°C days|spring highs near .+°C and lows near|summer is an honest .+°C afternoon|autumn returns to roughly .+°C days|warm season centers on .+°C days|often the clearest travel window|nights are the practical relief/.test(text);
+}
+
+function isGeneratedFeel(text: string): boolean {
+  return /occupies a specific piece of ground|that is the short version of why|The setting comes first in |Elevation does the early work|sets the tone, and the .+ signature shows up|The give-away is |the defining fact about .+ is geography|feel earned rather than a marketing line|read less like a textbook|Step outside in .+ and the terrain announces/.test(text);
+}
+
+function isGeneratedTexture(text: string): boolean {
+  return /None of that erases the appeal of the|the decision should be made with eyes open|sits in the middle — some give, some take|is a genuine tradeoff, not a settled question|Where it costs you back:|What a scouting trip should actually check first/.test(text);
+}
+
+function cleanAuthoredFit(text: string | undefined): string | null {
+  if (!text?.trim()) return null;
+  const original = text.trim();
+  const generated = /most leave surprised by how much the|stay a day longer than planned once the local rhythm|climate mostly reads as a bonus until you notice|, provided the day-to-day realities| — the kind of household that treats the |since year-round living means absorbing the |the group most likely to find the tradeoffs of living here|The draw for visitors is straightforward|that pulls most visitors to|Short stays here revolve around|Most people show up in .+ for /.test(original);
+  if (!generated) return original;
+  let t = original;
+  t = t.replace(/^The draw for visitors is straightforward:\s*/i, "Visitors come for ");
+  t = t.replace(/^It is (.+) that pulls most visitors to [^,.]+,?\s*/i, "Visitors come for $1. ");
+  t = t.replace(/^Most people show up in [A-ZÁÉÍÓÚÑ][\w'’.\- ]+ for /i, "People come for ");
+  t = t.replace(/^Short stays here revolve around /i, "Visitors come for ");
+  t = t.replace(/, and most leave surprised by how much the .+$/i, ".");
+  t = t.replace(/; the .+ climate mostly reads as a bonus.+$/i, ".");
+  t = t.replace(/ and stay a day longer than planned.+$/i, ".");
+  t = t.replace(/, and the [A-Z][a-z]{1,3}-class weather turns out.+$/i, ".");
+  t = t.replace(/\s*and the [A-Z][a-z]{1,3}-class weather turns out.+$/i, ".");
+  t = t.replace(/, provided the day-to-day realities.+$/i, ".");
+  t = t.replace(/ — the kind of household that treats the .+$/i, ".");
+  t = t.replace(/ since year-round living means absorbing the .+$/i, ".");
+  t = t.replace(/ the group most likely to find the tradeoffs of living here worth the climate on offer\.?$/i, ".");
+  t = t.replace(/, set inside a .+ climate that is easy to underestimate from a distance\.?$/i, ".");
+  t = t.replace(/\s+\./g, ".").replace(/\.\s+\./g, ". ").replace(/[,;]+(?=\.)/g, "").replace(/[,;:\s]+$/g, "");
+  t = ensurePeriod(t);
+  if (t.length < 24) return original;
+  return t;
+}
+
+const GENERATED_IMMERSIVE_MARKERS: readonly RegExp[] = [
+  / The rhythm holds most years:/,
+  / The Köppen [A-Za-z0-9]+ label is the broad-stroke/,
+  / is doing quiet work behind the numbers/,
+  / rewards people who plan around the /,
+  / It suits .+ more than casual visitors chasing a postcard/,
+  / The honest tradeoff is /,
+  / No single hazard dominates the risk picture here/,
+  / Expect summer afternoons near .+ as the baseline/,
+  / The draw for most visitors is straightforward/,
+  / Annual precipitation runs close to /,
+  / layering a .+ pattern onto the /,
+  / two risk lines worth checking/,
+  / treating the climate numbers as the whole story/,
+  / the numbers a scouting trip should actually check/,
+  / and that biome is as much a product of the local climate/,
+  / sits inside highland subtropical lake basin/,
+];
+
+function stripGeneratedImmersiveTail(text: string): string {
+  let cut = text.length;
+  for (const re of GENERATED_IMMERSIVE_MARKERS) {
+    const m = text.search(re);
+    if (m >= 0 && m < cut) cut = m;
+  }
+  if (cut === text.length) return text.trim();
+  const head = text.slice(0, cut).trim();
+  if (/[.!?]$/.test(head)) return head;
+  const sentenceEnd = Math.max(head.lastIndexOf(". "), head.lastIndexOf("! "), head.lastIndexOf("? "));
+  return (sentenceEnd >= 0 ? head.slice(0, sentenceEnd + 1) : head).trim();
+}
+
+function overlapsExisting(existing: string, next: string): boolean {
+  const needle = next.slice(0, 36).toLowerCase();
+  return needle.length >= 12 && existing.toLowerCase().includes(needle);
+}
+
+function enrichImmersive(place: Place, base: string): string {
+  const lead = stripGeneratedImmersiveTail(base);
+  if (wordCount(lead) >= 80) return lead;
+  const extra: string[] = [lead];
+  const add = (sentence: string | null | undefined) => {
+    if (!sentence?.trim()) return;
+    const next = ensurePeriod(sentence.trim());
+    if (wordCount(extra.join(" ")) >= 110) return;
+    if (overlapsExisting(extra.join(" "), next)) return;
+    extra.push(next);
+  };
+
+  const why = firstSentence(place.whyDistinct);
+  if (why.length > 72 && /[a-z]\s+[a-z]/i.test(why) && !why.includes(";")) add(why);
+  if (wordCount(extra.join(" ")) < 80) add(landUseParagraph(place, { allowCrops: false }));
+  if (wordCount(extra.join(" ")) < 85) {
+    const contrast = place.nearbyContrasts?.[0];
+    if (contrast?.note?.trim()) {
+      add(`${contrast.label}: ${firstSentence(contrast.note)}`);
+    }
+  }
+  if (wordCount(extra.join(" ")) < 85) {
+    const noted = place.settlementsWithinZone?.find(s => s.note?.trim());
+    if (noted?.note) {
+      add(`${noted.name} — ${firstSentence(noted.note)}`);
+    }
+  }
+  return extra.filter(Boolean).join(" ");
+}
+
 function authoredHistoryParagraphs(place: Place): string[] | null {
   const raw = place.experience?.history;
   if (!raw) return null;
@@ -441,11 +623,14 @@ function authoredHistoryParagraphs(place: Place): string[] | null {
 }
 
 function deriveWhyDrivers(place: Place): string {
-  const labels = place.drivers
-    .map(d => DRIVER_LABELS[d]?.toLowerCase())
-    .filter((s): s is string => Boolean(s));
-  if (!labels.length) return "Local terrain — not the regional average — is what makes the pin worth opening.";
-  return `Shaped mainly by ${joinHumanList(labels, 5)}.`;
+  const labels = place.drivers.map(d => driverPlain(d)).filter(Boolean);
+  if (!labels.length) return "Local terrain — not the regional average — is what makes this place worth opening.";
+  const list = joinHumanList(labels, 5);
+  return hashPick(place.id, [
+    `Most of the work here comes from ${list}.`,
+    `What sets the weather apart is ${list}.`,
+    `The local climate is shaped by ${list}.`,
+  ]);
 }
 
 function contrastDeltaClause(lc: NonNullable<Place["localContrast"]>[number]): string | null {
@@ -497,49 +682,58 @@ function deriveContrastItems(place: Place): PlaceContrastItem[] {
   for (const lc of place.localContrast ?? []) {
     if (items.length >= 4) break;
     const delta = contrastDeltaClause(lc);
-    const note = [lc.note?.trim(), delta ? `Measured contrast: ${delta}.` : ""]
+    const note = [lc.note?.trim(), delta ? `${delta.charAt(0).toUpperCase()}${delta.slice(1)}.` : ""]
       .filter(Boolean)
       .join(" ");
     push(`Within ${lc.radiusKm} km`, note);
   }
 
   if (items.length === 0) {
-    const hook = ARCHETYPE_BY_ID[place.archetypes[0]]?.label?.toLowerCase() ?? "this microclimate";
     push(
       "The surrounding country",
-      `${place.reliefContext.replace(/\.$/, "")} — that is the ${hook} contrast the atlas is pointing at, not a regional average.`,
+      `${place.reliefContext.replace(/\.$/, "")} — that difference from the surrounding country is why this place belongs in the atlas.`,
     );
   }
   return items.slice(0, 4);
 }
 
-const HISTORY_SKIP = /method|station|how we know|confidence|prism|normals|residual uncertainty/;
-const HISTORY_BOOST = /histor|settlement|people|cultur|town|living|friction|land use|ecology|irrigation|mining|pueblo|indigenous|colonial|human|community|cabin|access|service|ranch|orchard|farm|wine/;
+const HISTORY_SKIP = /method|station|how we know|confidence|prism|normals|residual uncertainty|growability scores|hardiness zone|the case for treating|justifies this entry|microclimate-uniqueness figure|housing pressure|plants here live inside|for relocation, this entry|the record works out as follows|worth walking through in order|numbers break down like this|editorial shorthand|risk diligence here starts|comfort sits at|this atlas rather than|unremarkable .+ waypoint|station record files under|air masses/;
+const HISTORY_BOOST = /histor|settlement|people|cultur|indigenous|colonial|mining|pueblo|mission|ranch|orchard|farm|wine|lavender|irrigation|land use|ecology|community|cabin/;
 
-function deepHistoryParagraph(place: Place): string | null {
+function isGeneratedDeepSection(sec: NonNullable<Place["deepSections"]>[number]): boolean {
+  return /terrain-mechanism$|risk-and-ground-truth$/.test(sec.id)
+    || /risk matrix and growability|housing, access, and who this place|honest ledger|the Dfb record|Terrain, lake effect/i.test(`${sec.id} ${sec.title}`);
+}
+
+function deepHistoryParagraphs(place: Place): string[] {
   const sections = place.deepSections ?? [];
   const ranked = sections
     .map(sec => {
+      if (isGeneratedDeepSection(sec)) return { sec, score: -1 };
       const blob = `${sec.id} ${sec.title}`.toLowerCase();
       if (HISTORY_SKIP.test(blob)) return { sec, score: -1 };
       let score = 0;
       if (HISTORY_BOOST.test(blob)) score += 3;
-      if (/hydrology|land use|living|friction|town/.test(blob)) score += 1;
+      if (/hydrology|land use|living|town/.test(blob)) score += 1;
       return { sec, score };
     })
     .filter(row => row.score > 0)
     .sort((a, b) => b.score - a.score);
 
   const whyHead = firstSentence(place.whyDistinct).slice(0, 48).toLowerCase();
+  const out: string[] = [];
   for (const row of ranked) {
     for (const para of row.sec.paragraphs) {
       const t = para.trim();
       if (t.length < 80) continue;
+      if (HISTORY_SKIP.test(t.toLowerCase())) continue;
       if (t.slice(0, 48).toLowerCase() === whyHead) continue;
-      return t;
+      if (out.some(p => p.slice(0, 40) === t.slice(0, 40))) continue;
+      out.push(t);
+      if (out.length >= 2) return out;
     }
   }
-  return null;
+  return out;
 }
 
 function settlementHistoryParagraph(place: Place): string | null {
@@ -578,20 +772,62 @@ function historicActivityParagraph(place: Place): string | null {
     const note = t.note?.trim();
     return note ? `${t.label} — ${note.replace(/\.$/, "")}` : t.label;
   });
-  return `Traces of how people have used this climate are still easy to walk: ${bits.join("; ")}.`;
+  return `You can still walk the older story of the place: ${bits.join("; ")}.`;
 }
 
 function landscapeHistoryLead(place: Place): string {
   const relief = place.reliefContext.replace(/\.$/, "");
-  const hook = ARCHETYPE_BY_ID[place.archetypes[0]]?.label?.toLowerCase() ?? "distinct microclimate";
   const center = namedCenter(place);
   const country = countryPhrase(place);
   return hashPick(place.id, [
-    `${place.name} sits in ${place.region}, ${country} — ${relief}. The ${hook} pattern is what people have had to organize a town, a farm, or a season around, not a footnote on the regional average.`,
-    `${center} grew where ${place.biome.split("/")[0]!.trim().toLowerCase()} meets this specific piece of ground: ${relief}. That is the human side of a ${place.koppen} year.`,
-    `Settlement here follows the terrain. ${ensurePeriod(relief)} In ${place.region}, that produces a ${hook} pocket the surrounding region does not share.`,
-    `${place.name} is not an abstract climate class. It is ${center} in ${place.region}, ${country}, on this footprint: ${relief}.`,
+      `${place.name} sits in ${place.region}, ${country}, on this ground: ${relief}.`,
+      `${center} grew up where the land does this: ${relief}.`,
+      `${center} sits in ${place.region}, ${country}. ${ensurePeriod(relief)}`,
+      `${place.name} is a lived place first: ${center}, ${place.region}, ${country}. ${ensurePeriod(relief)}`,
   ]);
+}
+
+function landUseParagraph(place: Place, opts: { allowCrops?: boolean } = {}): string | null {
+  const soil = place.soil.notes?.trim();
+  if (soil && soil.length > 70) return ensurePeriod(soil);
+  const orchard = place.growability.orchard?.trim();
+  if (orchard && orchard.length > 40) return ensurePeriod(orchard);
+  const garden = place.growability.homeGarden?.trim();
+  if (garden && garden.length > 50) return ensurePeriod(garden);
+  if (!opts.allowCrops) return null;
+  const crops = (place.growability.growsWell ?? [])
+    .map(c => c.replace(/\(.*\)/g, "").trim())
+    .filter(c => c.length > 2)
+    .slice(0, 3);
+  if (crops.length >= 2) {
+    return `${namedCenter(place)} can grow ${joinHumanList(crops, 3)} when the season cooperates.`;
+  }
+  return null;
+}
+
+function knownForParagraph(place: Place): string | null {
+  const acts = (place.thingsToDo ?? []).filter(t => t.kind !== "urban");
+  if (!acts.length) return null;
+  const labels = acts.slice(0, 3).map(t => t.label.replace(/\s+/g, " ").trim()).filter(Boolean);
+  if (!labels.length) return null;
+  const lead = hashPick(place.id, [
+    `On the ground, people come for ${joinHumanList(labels, 3)}.`,
+    `What people actually do here: ${joinHumanList(labels, 3)}.`,
+  ]);
+  const note = acts.find(t => t.note && t.note.trim().length > 40)?.note?.trim();
+  return note ? `${lead} ${ensurePeriod(firstSentence(note))}` : lead;
+}
+
+function peopleHistoryParagraph(place: Place): string {
+  const love = place.whoWouldLove.replace(/\.$/, "").trim();
+  const biome = place.biome.split("/")[0]!.trim().toLowerCase();
+  const draws = place.travelFit.filter(t => !CADENCE_TRAVEL_TAGS.has(t.trim().toLowerCase())).slice(0, 3);
+  const drawBit = draws.length ? ` Visitors still come for ${joinHumanList(draws, 3)}.` : "";
+  if (love.length > 40) return ensurePeriod(`${love}.${drawBit}`.replace(/\.\./g, "."));
+  if (/^people who /i.test(love)) {
+    return `${love} — matching themselves to ${biome} rather than a generic ${place.region} average.${drawBit}`;
+  }
+  return `${place.name} has always collected ${love.toLowerCase()} — people matching themselves to ${biome}, not to a generic ${place.region} average.${drawBit}`;
 }
 
 function deriveHistoryParagraphs(place: Place): string[] {
@@ -603,20 +839,21 @@ function deriveHistoryParagraphs(place: Place): string[] {
   if (settlement) paras.push(settlement);
   const historic = historicActivityParagraph(place);
   if (historic) paras.push(historic);
-  const deep = deepHistoryParagraph(place);
-  if (deep && !paras.some(p => p.slice(0, 40) === deep.slice(0, 40))) {
-    paras.push(deep);
+  const known = knownForParagraph(place);
+  if (known && !historic && !paras.some(p => overlapsExisting(p, known))) {
+    paras.push(known);
+  }
+  const land = landUseParagraph(place, { allowCrops: true });
+  if (land && !paras.some(p => p.slice(0, 40) === land.slice(0, 40))) {
+    paras.push(land);
+  }
+  for (const deep of deepHistoryParagraphs(place)) {
+    if (paras.length >= 4) break;
+    if (!paras.some(p => p.slice(0, 40) === deep.slice(0, 40))) paras.push(deep);
   }
 
   if (paras.length < 2) {
-    const soil = place.soil.notes?.trim();
-    if (soil && /histor|irrigation|heritage|farm|mining|pueblo|ranch/i.test(soil)) {
-      paras.push(ensurePeriod(firstSentence(soil)));
-    } else {
-      paras.push(
-        `${place.whoWouldLove.replace(/\.$/, "")} — that is the household pattern this climate has tended to select for, as much as any census category.`,
-      );
-    }
+    paras.push(peopleHistoryParagraph(place));
   }
 
   return paras.slice(0, 4);
@@ -634,21 +871,23 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
   if (cached) return cached;
 
   const seasons = SEASON_DEFS.map(def => buildSeason(place, def));
-  const authoredFeel = place.experience?.feel;
-  const authoredTraveler = place.experience?.travelerFit;
-  const authoredResident = place.experience?.residentFit;
-  const authoredTexture = place.experience?.texture;
+  const authoredFeelRaw = place.experience?.feel;
+  const authoredFeel = authoredFeelRaw && !isGeneratedFeel(authoredFeelRaw) ? authoredFeelRaw : undefined;
+  const authoredTraveler = cleanAuthoredFit(place.experience?.travelerFit);
+  const authoredResident = cleanAuthoredFit(place.experience?.residentFit);
+  const authoredTextureRaw = place.experience?.texture;
+  const authoredTexture = authoredTextureRaw && !isGeneratedTexture(authoredTextureRaw) ? authoredTextureRaw : undefined;
   const authoredWhy = place.experience?.why?.trim();
   const authoredHistory = Boolean(authoredHistoryParagraphs(place));
   const historyParagraphs = deriveHistoryParagraphs(place);
 
   const result: PlaceExperienceReading = {
     lede: dequote(place.summaryShort),
-    immersive: place.summaryImmersive,
+    immersive: enrichImmersive(place, place.summaryImmersive),
     feelLine: authoredFeel ?? deriveFeelLine(place),
     seasons,
     travelerFit: authoredTraveler ?? deriveTravelerFit(place),
-    residentFit: authoredResident ?? place.whoWouldLove,
+    residentFit: authoredResident ?? deriveResidentFit(place),
     wouldNotFit: place.whoMightNot,
     texture: authoredTexture ?? deriveTexture(place),
     whyDifferent: authoredWhy || place.whyDistinct,

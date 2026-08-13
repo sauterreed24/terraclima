@@ -17,6 +17,7 @@ import { MiniClimateStrip, tempColor } from "./charts/MiniClimateStrip";
 import { PLACES, PLACES_BY_ID, PLACE_COUNTS } from "../data/places";
 import { CONCEPTS } from "../data/glossary";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
+import { fourthHeroStat, precipHeroLabel } from "../lib/hero-glance";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtDelta, useProse } from "../lib/units";
 import { getBestMonths } from "../lib/best-months";
 import { CopyPlaceLink } from "./place-detail/CopyPlaceLink";
@@ -399,9 +400,7 @@ function DetailHeader({
   const summerHigh = meanSummerHigh(place);
   const janLow = meanJanLow(place);
   const annualP = getAnnualPrecipMm(place);
-  const solarResource = place.climate.solarEnergyMjM2Day
-    ? (place.climate.solarEnergyMjM2Day.reduce((a, b) => a + b, 0) / 12)
-    : null;
+  const fourthStat = fourthHeroStat(place);
   const tierLabel = place.tier === "A" ? "Flagship" : place.tier === "B" ? "Spotlight" : "Index";
   const lede = useMemo(() => composePlaceExperience(place).lede, [place]);
   const hero = useMemo(() => getPlaceHeroMedia(place.id), [place.id]);
@@ -640,16 +639,20 @@ function DetailHeader({
         Climate normals · <span className="font-mono-num">{CLIMATE_NORMALS_PERIOD}</span>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-1.5">
-        <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="JJA high" value={fmtTemp(summerHigh, temp)} />
-        <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />} label="Jan low" value={fmtTemp(janLow, temp)} />
-        <HeroStat icon={<Droplets className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />} label="Annual precip" value={fmtPrecip(annualP, dist)} />
-        {solarResource != null ? (
-          <HeroStat icon={<Sun className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="Solar resource" value={`${solarResource.toFixed(1)} MJ`} />
-        ) : place.climate.hardinessZone ? (
-          <HeroStat icon={<Leaf className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />} label="Hardiness" value={place.climate.hardinessZone} />
-        ) : (
-          <HeroStat icon={<Mountain className="w-3.5 h-3.5" style={{ color: "#c3e4f1" }} />} label="Biome" value={place.biome.split(" / ")[0]} />
-        )}
+        <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />} label="Summer high" value={fmtTemp(summerHigh, temp)} />
+        <HeroStat icon={<Thermometer className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />} label="January low" value={fmtTemp(janLow, temp)} />
+        <HeroStat icon={<Droplets className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />} label={precipHeroLabel(place)} value={fmtPrecip(annualP, dist)} />
+        <HeroStat
+          icon={
+            fourthStat.kind === "sunny-days" ? <Sun className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
+            : fourthStat.kind === "humidity" ? <Droplets className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />
+            : fourthStat.kind === "biome" ? <Mountain className="w-3.5 h-3.5" style={{ color: "#c3e4f1" }} />
+            : <Leaf className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />
+          }
+          label={fourthStat.label}
+          value={fourthStat.value}
+          hint={fourthStat.hint}
+        />
       </div>
 
       {!coarsePointer ? (
@@ -707,9 +710,9 @@ function HeroClimateFallback({
   );
 }
 
-function HeroStat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function HeroStat({ icon, label, value, hint }: { icon: React.ReactNode; label: string; value: string; hint?: string }) {
   return (
-    <div className="atlas-hero-stat panel-thin px-3 py-2">
+    <div className="atlas-hero-stat panel-thin px-3 py-2" title={hint}>
       <div className="text-[10px] uppercase tracking-wider text-stone-readable flex items-center gap-1">{icon}{label}</div>
       <div className="font-mono-num text-sm text-ice">{value}</div>
     </div>
