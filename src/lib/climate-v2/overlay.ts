@@ -42,7 +42,7 @@ export function applyClimateV2Overlay(
   const climate: ClimateProfile = {
     ...place.climate,
     ...generated,
-    // Keep authored percent-of-possible sunshine for human "sunny days"
+    // Keep authored percent-of-possible sunshine for human "Sunshine %"
     // display. V2 solar energy is a different physical quantity and must
     // not wipe the sunshine series or be relabeled as observed sun hours.
     hardinessZone: place.climate.hardinessZone,

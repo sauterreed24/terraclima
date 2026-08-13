@@ -2,16 +2,16 @@ import type { Place } from "../types";
 import { meanAnnualHumidityPct } from "./climate-metrics";
 
 /**
- * Station-style sunny-day estimate from percent of possible sunshine.
+ * Mean percent of possible sunshine from the authored monthly series.
  * Returns null when only Daymet solar energy is present — that series is
- * not observed sunshine hours and must not be relabeled as sunny days.
+ * not observed sunshine hours and must not be shown as sky brightness.
  */
-export function observedSunnyDaysPerYear(place: Place): number | null {
+export function observedSunshinePct(place: Place): number | null {
   const sun = place.climate.sunshinePct;
   if (!sun || sun.length !== 12) return null;
   const mean = sun.reduce((sum, value) => sum + value, 0) / sun.length;
   if (!Number.isFinite(mean) || mean < 0) return null;
-  return Math.round((mean / 100) * 365);
+  return Math.round(mean);
 }
 
 export function precipHeroLabel(place: Place): string {
@@ -20,7 +20,7 @@ export function precipHeroLabel(place: Place): string {
   return annualSnowCm >= 25 ? "Rain & snow" : "Yearly rain";
 }
 
-export type HeroFourthKind = "sunny-days" | "humidity" | "frost-free" | "hardiness" | "biome";
+export type HeroFourthKind = "sunshine" | "humidity" | "frost-free" | "hardiness" | "biome";
 
 export interface HeroFourthStat {
   kind: HeroFourthKind;
@@ -51,13 +51,13 @@ function growingSeasonStat(days: number): HeroFourthStat {
 
 /** Fourth first-page climate number — something a visitor can feel. */
 export function fourthHeroStat(place: Place): HeroFourthStat {
-  const sunnyDays = observedSunnyDaysPerYear(place);
-  if (sunnyDays != null) {
+  const sunshinePct = observedSunshinePct(place);
+  if (sunshinePct != null) {
     return {
-      kind: "sunny-days",
-      label: "Sunny days",
-      value: `${sunnyDays} days`,
-      hint: "Estimated from percent of possible sunshine across the year — how often the sky actually opens up.",
+      kind: "sunshine",
+      label: "Sunshine",
+      value: `${sunshinePct}%`,
+      hint: "Percent of possible sunshine across the year — how often the sky actually opens up, not a count of cloudless calendar days.",
     };
   }
 

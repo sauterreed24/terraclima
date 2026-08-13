@@ -2,7 +2,7 @@ import { memo, useCallback, useId, useMemo, type MouseEvent } from "react";
 import type { Place } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "../lib/climate-metrics";
-import { observedSunnyDaysPerYear, precipHeroLabel } from "../lib/hero-glance";
+import { observedSunshinePct, precipHeroLabel } from "../lib/hero-glance";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib/units";
 import { getBioclimCardSignal, getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
@@ -158,9 +158,9 @@ export const PlaceCard = memo(function PlaceCard({
   );
 
   // Derived at-a-glance extras surfaced on non-compact cards
-  const sunnyDays = useMemo(() => {
+  const sunshinePct = useMemo(() => {
     if (compact) return null;
-    return observedSunnyDaysPerYear(place);
+    return observedSunshinePct(place);
   }, [place, compact]);
   const avgHumidity = useMemo(() => {
     if (compact || !place.climate.humidity) return null;
@@ -362,14 +362,14 @@ export const PlaceCard = memo(function PlaceCard({
             <Stat label="Uniqueness" value={place.scores.microclimateUniqueness.toString()} tone="ice" />
           </div>
 
-          {/* Extended stats row: solar resource, humidity, frost-free days */}
-          {!compact && (sunnyDays != null || avgHumidity != null || frostFreeDays != null) && (
+          {/* Extended stats row: sunshine, humidity, frost-free days */}
+          {!compact && (sunshinePct != null || avgHumidity != null || frostFreeDays != null) && (
             <div className="place-card__ext-stats">
-              {sunnyDays != null && (
-                <span className="place-card__ext-stat" title="Estimated from percent of possible sunshine">
+              {sunshinePct != null && (
+                <span className="place-card__ext-stat" title="Percent of possible sunshine across the year">
                   <Sun className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#c4a020" }} />
-                  <span className="font-mono-num">{sunnyDays}</span>
-                  <span className="text-stone-readable/60">sunny days</span>
+                  <span className="font-mono-num">{sunshinePct}%</span>
+                  <span className="text-stone-readable/60">sunshine</span>
                 </span>
               )}
               {avgHumidity != null && (

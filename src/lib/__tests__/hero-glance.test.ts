@@ -1,17 +1,22 @@
 import { describe, expect, it } from "vitest";
 import { PLACES_BY_ID } from "../../data/places";
-import { fourthHeroStat, observedSunnyDaysPerYear, precipHeroLabel } from "../hero-glance";
+import { fourthHeroStat, observedSunshinePct, precipHeroLabel } from "../hero-glance";
 import { makeClimate, makePlace } from "./test-fixtures";
 
 describe("hero glance", () => {
-  it("estimates sunny days only from percent-of-possible sunshine", () => {
+  it("reports percent of possible sunshine, never Daymet solar as sky brightness", () => {
     const withSun = makePlace({
       climate: makeClimate({
         sunshinePct: [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50],
         solarEnergyMjM2Day: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
       }),
     });
-    expect(observedSunnyDaysPerYear(withSun)).toBe(183);
+    expect(observedSunshinePct(withSun)).toBe(50);
+    expect(fourthHeroStat(withSun)).toMatchObject({
+      kind: "sunshine",
+      label: "Sunshine",
+      value: "50%",
+    });
 
     const solarOnly = makePlace({
       climate: makeClimate({
@@ -19,7 +24,7 @@ describe("hero glance", () => {
         solarEnergyMjM2Day: [20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20],
       }),
     });
-    expect(observedSunnyDaysPerYear(solarOnly)).toBeNull();
+    expect(observedSunshinePct(solarOnly)).toBeNull();
     expect(fourthHeroStat(solarOnly).kind).toBe("humidity");
   });
 
@@ -34,11 +39,11 @@ describe("hero glance", () => {
     expect(precipHeroLabel(dry)).toBe("Yearly rain");
   });
 
-  it("serves Sequim sunny days on the first-page quartet", () => {
+  it("serves Sequim sunshine on the first-page quartet", () => {
     const sequim = fourthHeroStat(PLACES_BY_ID["sequim-wa"]);
-    expect(sequim.kind).toBe("sunny-days");
-    expect(sequim.label).toBe("Sunny days");
-    expect(sequim.value).toMatch(/^\d+ days$/);
+    expect(sequim.kind).toBe("sunshine");
+    expect(sequim.label).toBe("Sunshine");
+    expect(sequim.value).toMatch(/^\d+%$/);
   });
 
   it("falls back to growing season when humidity is ordinary and sunshine is missing", () => {

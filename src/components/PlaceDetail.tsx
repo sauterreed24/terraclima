@@ -644,7 +644,7 @@ function DetailHeader({
         <HeroStat icon={<Droplets className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />} label={precipHeroLabel(place)} value={fmtPrecip(annualP, dist)} />
         <HeroStat
           icon={
-            fourthStat.kind === "sunny-days" ? <Sun className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
+            fourthStat.kind === "sunshine" ? <Sun className="w-3.5 h-3.5" style={{ color: "#f0d29c" }} />
             : fourthStat.kind === "humidity" ? <Droplets className="w-3.5 h-3.5" style={{ color: "#8cc8e0" }} />
             : fourthStat.kind === "biome" ? <Mountain className="w-3.5 h-3.5" style={{ color: "#c3e4f1" }} />
             : <Leaf className="w-3.5 h-3.5" style={{ color: "#c6dcbd" }} />

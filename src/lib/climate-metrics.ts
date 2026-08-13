@@ -108,7 +108,7 @@ export function meanWinterSunshinePct(p: Place): number | null {
 
 /**
  * Monthly sunshine % for scoring/ranking. When Daymet solar energy is present,
- * authored sunshine is ignored so restoring it for "sunny days" display cannot
+ * authored sunshine is ignored so restoring it for sunshine-% display cannot
  * shift livability, live-fit, or place-feel scores.
  */
 export function scoringSunshinePct(p: Place): Place["climate"]["sunshinePct"] {
