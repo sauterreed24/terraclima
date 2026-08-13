@@ -106,6 +106,16 @@ export function meanWinterSunshinePct(p: Place): number | null {
   return null;
 }
 
+/**
+ * Monthly sunshine % for scoring/ranking. When Daymet solar energy is present,
+ * authored sunshine is ignored so restoring it for "sunny days" display cannot
+ * shift livability, live-fit, or place-feel scores.
+ */
+export function scoringSunshinePct(p: Place): Place["climate"]["sunshinePct"] {
+  if (p.climate.solarEnergyMjM2Day?.length === 12) return undefined;
+  return p.climate.sunshinePct;
+}
+
 export const SEASONAL_USABILITY = {
   dayComfortC: [16, 28] as const,
   sleepComfortC: [4, 19] as const,

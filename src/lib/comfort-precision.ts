@@ -5,6 +5,7 @@ import {
   getAnnualPrecipMm,
   meanSummerHumidityPct,
   monthlyUsabilityScores,
+  scoringSunshinePct,
 } from "./climate-metrics";
 import { computeKoppen } from "./koppen";
 
@@ -254,7 +255,7 @@ function heatStressScore(apparentHighC: number, wetBulbC: number | null): number
 }
 
 function confidenceForPlace(p: Place, humiditySource: ComfortPrecisionMonth["humiditySource"]): { confidence: ComfortConfidence; note: string } {
-  if (p.climate.humidity && p.climate.sunshinePct && p.climate.diurnalSummerC != null) {
+  if (p.climate.humidity && scoringSunshinePct(p) && p.climate.diurnalSummerC != null) {
     return { confidence: "high", note: "Monthly humidity, sunshine, and authored diurnal recovery are present." };
   }
   if (humiditySource === "measured") {

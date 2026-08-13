@@ -1,5 +1,5 @@
 import type { Place } from "../types";
-import { getAnnualPrecipMm, meanJanLow, meanSummerHigh } from "./climate-metrics";
+import { getAnnualPrecipMm, meanJanLow, meanSummerHigh, scoringSunshinePct } from "./climate-metrics";
 import { compareLensScore, type CompareDecisionProfile } from "./compare-finalist-verdict";
 import { comparisonLensLabel, type ComparisonLensId } from "./compare-workbench";
 
@@ -116,7 +116,7 @@ function evidenceScore(place: Place): number {
     Math.min((place.deepSections?.length ?? 0) * 8, 24) +
     (place.liveSignals ? 12 : 0) +
     (place.climate.humidity?.length ? 5 : 0) +
-    (place.climate.sunshinePct?.length ? 5 : 0)
+    (scoringSunshinePct(place)?.length ? 5 : 0)
   );
 }
 

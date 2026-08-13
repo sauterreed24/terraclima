@@ -12,6 +12,7 @@ import {
   meanWinterSunshinePct,
   monthlyUsabilityScore,
   RISK_VALUE,
+  scoringSunshinePct,
   seasonalUsabilityScore,
   summerDiurnalC,
 } from "../climate-metrics";
@@ -96,6 +97,7 @@ describe("climate-metrics", () => {
     });
     // 10 + 10*3.75 = 47.5 — must not jump to the 90% sunshine series.
     expect(meanAnnualSunshinePct(both)).toBeCloseTo(47.5, 6);
+    expect(scoringSunshinePct(both)).toBeUndefined();
   });
 
   it("scores monthly usability from day comfort, sleep comfort, and precip burden", () => {

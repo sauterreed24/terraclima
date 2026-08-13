@@ -6,6 +6,7 @@ import {
   meanSummerHigh,
   meanWinterSunshinePct,
   RISK_VALUE,
+  scoringSunshinePct,
   seasonalUsabilityScore,
 } from "./climate-metrics";
 import {
@@ -231,7 +232,7 @@ export function winterSunshineScore(place: Place): number {
  *   cultural outdoor expectations is the most mood-damaging pattern.
  */
 function sunshineScore(place: Place): number {
-  const sunny = place.climate.sunshinePct;
+  const sunny = scoringSunshinePct(place);
   const solar = place.climate.solarEnergyMjM2Day;
   const hum = place.climate.humidity;
   const diurnal = place.climate.diurnalSummerC ?? (place.climate.tempHighC[6] - place.climate.tempLowC[6]);
@@ -501,8 +502,9 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
       pushUnique(cautions, "Persistent overcast or fog — mild temperatures can feel colder and greyer than the numbers suggest.", 3);
     }
   }
-  if (place.climate.sunshinePct) {
-    const annualSun = place.climate.sunshinePct.reduce((a, b) => a + b, 0) / 12;
+  const observedSunshine = scoringSunshinePct(place);
+  if (observedSunshine) {
+    const annualSun = observedSunshine.reduce((a, b) => a + b, 0) / 12;
     // US average is ~58%; below 48% (Eureka's level) is a clear quality-of-life drag per research
     if (annualSun < 48) pushUnique(cautions, `Below-average sunshine (~${Math.round(annualSun)}% of possible; US avg 58%) — expect frequent overcast days.`, 3);
     else if (annualSun < 55) pushUnique(cautions, `Sunshine is below the US average of 58% (~${Math.round(annualSun)}%) — overcast days are common.`, 3);

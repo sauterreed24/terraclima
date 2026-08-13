@@ -12,6 +12,7 @@ import {
   meanSummerHigh,
   meanJanLow,
   getAnnualPrecipMm,
+  scoringSunshinePct,
 } from "./climate-metrics";
 import { assessLiveFit, liveFitFilterPass, meanWinterSunshinePct, winterSunshineScore, type LiveFitPresetId } from "./live-fit";
 import {
@@ -156,7 +157,7 @@ export const RANKING_PARAMS = {
  * diurnal swings that prevent quality sleep cooling.
  */
 function sunshineComfortBonus(p: Place): number {
-  const sunny = p.climate.sunshinePct;
+  const sunny = scoringSunshinePct(p);
   const hum = p.climate.humidity;
   const diurnal = p.climate.diurnalSummerC ?? (p.climate.tempHighC[6] - p.climate.tempLowC[6]);
 
