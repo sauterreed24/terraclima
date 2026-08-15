@@ -148,6 +148,20 @@ describe("composePlaceExperience", () => {
     expect(portal.historyParagraphs.join(" ")).toMatch(/Paradise|Portal|Chiricahua/i);
   });
 
+  it("keeps Overview why, history, and immersive at readable depth for every place", () => {
+    const words = (s: string) => s.trim().split(/\s+/).filter(Boolean).length;
+    for (const place of PLACES) {
+      const exp = composePlaceExperience(place);
+      expect(words(exp.whyDifferent), `${place.id} whyDifferent words`).toBeGreaterThanOrEqual(70);
+      expect(words(exp.immersive), `${place.id} immersive words`).toBeGreaterThanOrEqual(80);
+      expect(exp.historyParagraphs.length, `${place.id} history paras`).toBeGreaterThanOrEqual(3);
+      expect(exp.historyParagraphs.reduce((n, p) => n + words(p), 0), `${place.id} history total`).toBeGreaterThanOrEqual(200);
+      for (const para of exp.historyParagraphs) {
+        expect(words(para), `${place.id} history para words`).toBeGreaterThanOrEqual(50);
+      }
+    }
+  });
+
   it("lets authored history and why override the derived portrait", () => {
     const base = PLACES_BY_ID["yuma-az"];
     const authored = composePlaceExperience({

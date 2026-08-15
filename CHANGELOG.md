@@ -8,6 +8,7 @@ All notable changes to Terraclima are tracked here.
 
 - Researched settlement / land-use / people histories now lead the Overview “A short history” block on all 226 profiles, with a longer Field dossier chapter for anyone who wants more than the spotlight.
 - Thin Overview portraits get a fuller “Why it feels different” essay and, where the immersive read was short, a place-grounded opening scene — still sourced, still in corpus voice.
+- Overview depth pass: every place now carries a mechanism `why` of ≥70 words, Overview history of ≥200 words, and an immersive portrait of ≥80 words so generated stitching no longer pads short reads. USA-1 history was thickened; missing and thin `why` essays across Canada and Mexico were expanded; fifteen short authored immersives were extended in the overlay rather than replaced with thinner copy.
 - History prose lives in a lazy `site-history` chunk so Explorer cold load does not pay for dossier depth.
 - Voice pass on overlay closers: dropped formulaic “Fit is for people who…” / “Deep history is…” lists and atlas-scaffolding so Overview and dossier chapters read as ordinary sentences.
 
