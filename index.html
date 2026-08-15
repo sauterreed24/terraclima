@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fffefb" media="(prefers-color-scheme: light)" data-theme-color="light" />
+    <meta name="theme-color" content="#0d1320" media="(prefers-color-scheme: dark)" data-theme-color="dark" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="application-name" content="Terraclima" />
+    <meta name="apple-mobile-web-app-title" content="Terraclima" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <!--
+      Restrict the Referer header to same-origin internals when navigating
+      cross-origin so the editorial corpus doesn't accidentally leak
+      query-string state (selected place id, ranking, filters) to third-
+      party hosts referenced by citation links. Same-origin requests still
+      send the full URL so internal analytics / logs aren't affected.
+    -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      name="description"
+      content="Terraclima — a hand-built North American microclimate atlas for serious readers and curious travelers. Rain shadows, sky islands, and thermal belts across the US, Canada, and Mexico — editorial geography, not a brokerage."
+    />
+    <link rel="canonical" href="https://sauterreed24.github.io/terraclima/" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <link rel="sitemap" type="application/xml" href="./sitemap.xml" />
+
+    <!-- Open Graph + Twitter card. Absolute og:image URL is required by most
+         scrapers; the canonical site URL is the GitHub Pages deployment. If
+         the project moves to a custom domain, update canonical, og:url,
+         og:image, robots.txt, and sitemap.xml together. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Terraclima" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="Terraclima — North American Microclimate Atlas" />
+    <meta
+      property="og:description"
+      content="A hand-built atlas of North American microclimates. Rain shadows, sky islands, marine layers, and thermal belts explained through the mechanisms that make them real."
+    />
+    <meta property="og:url" content="https://sauterreed24.github.io/terraclima/" />
+    <meta property="og:image" content="https://sauterreed24.github.io/terraclima/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Terraclima — North American Microclimate Atlas" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Terraclima — North American Microclimate Atlas" />
+    <meta
+      name="twitter:description"
+      content="A hand-built atlas of North American microclimates. Rain shadows, sky islands, marine layers, and thermal belts."
+    />
+    <meta name="twitter:image" content="https://sauterreed24.github.io/terraclima/og-image.png" />
+    <meta name="twitter:image:alt" content="Terraclima — North American Microclimate Atlas" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Terraclima",
+        "alternateName": "North American Microclimate Atlas",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Any",
+        "url": "https://sauterreed24.github.io/terraclima/",
+        "image": "https://sauterreed24.github.io/terraclima/og-image.png",
+        "description": "A hand-built atlas of North American microclimates. Rain shadows, sky islands, marine layers, and thermal belts explained through the mechanisms that make them real.",
+        "inLanguage": "en",
+        "isAccessibleForFree": true,
+        "sameAs": ["https://github.com/sauterreed24/terraclima"],
+        "about": [
+          "microclimates",
+          "North American climate",
+          "terrain-driven weather",
+          "climate adaptation",
+          "environmental geography"
+        ]
+      }
+    </script>
+
+    <!-- Resource hints. preconnect lets the browser warm up the TLS
+         handshake to the font CDNs before the stylesheet is parsed, which
+         trims ~150 ms off the first contentful paint on typical
+         residential links. dns-prefetch is a fallback for older
+         environments that ignore preconnect. -->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Google Fonts stylesheet. display=swap lets fallback UI show
+         immediately so the app never flashes invisible text. Weights are
+         pruned to the exact set the CSS actually uses. -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Inline critical colour tokens so the right background paints instantly
+         while the bundle is fetched. Pairs the light default with a dark
+         match for `prefers-color-scheme: dark` users so we don't flash the
+         bright paper before the React app applies their theme. The boot
+         script below also applies an explicit `?theme=` / localStorage
+         preference before first paint (mirrors src/lib/theme.ts). -->
+    <style>
+      html, body { background: #fffefb; color: #221a14; }
+      #root { min-height: 100vh; }
+      html[data-theme="dark"], html[data-theme="dark"] body {
+        background: #0d1320; color: #f2f5fb;
+      }
+      html[data-theme="light"], html[data-theme="light"] body {
+        background: #fffefb; color: #221a14;
+      }
+      @media (prefers-color-scheme: dark) {
+        html:not([data-theme="light"]):not([data-theme="dark"]),
+        html:not([data-theme="light"]):not([data-theme="dark"]) body {
+          background: #0d1320; color: #f2f5fb;
+        }
+      }
+    </style>
+    <script>
+      (function () {
+        try {
+          var KEY = "tc.theme";
+          var pref = null;
+          try {
+            var params = new URLSearchParams(window.location.search || "");
+            var fromUrl = params.get("theme");
+            if (fromUrl === "auto" || fromUrl === "light" || fromUrl === "dark") pref = fromUrl;
+          } catch (e) { /* malformed URL */ }
+          if (!pref) {
+            try {
+              var stored = window.localStorage.getItem(KEY);
+              if (stored === "auto" || stored === "light" || stored === "dark") pref = stored;
+            } catch (e) { /* private browsing */ }
+          }
+          if (!pref) pref = "auto";
+          var prefersDark = false;
+          try {
+            prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          } catch (e) { /* no matchMedia */ }
+          var resolved = pref === "dark" ? "dark" : pref === "light" ? "light" : (prefersDark ? "dark" : "light");
+          var root = document.documentElement;
+          root.setAttribute("data-theme", resolved);
+          root.setAttribute("data-theme-preference", pref);
+          root.style.colorScheme = resolved;
+          var lightThemeColor = document.querySelector('meta[data-theme-color="light"]');
+          var darkThemeColor = document.querySelector('meta[data-theme-color="dark"]');
+          if (lightThemeColor) lightThemeColor.media = resolved === "light" ? "all" : "not all";
+          if (darkThemeColor) darkThemeColor.media = resolved === "dark" ? "all" : "not all";
+
+          var reducedMotion = false;
+          try {
+            reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          } catch (e) { /* no matchMedia */ }
+          var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+          var saveData = !!(connection && connection.saveData);
+          var lowMemory = typeof navigator.deviceMemory === "number" && navigator.deviceMemory <= 4;
+          var cores = typeof navigator.hardwareConcurrency === "number" ? navigator.hardwareConcurrency : 8;
+          var richEffects = !reducedMotion && !saveData && !lowMemory && cores > 4;
+          var motion = reducedMotion ? "reduced" : richEffects ? "full" : "minimal";
+          root.setAttribute("data-motion", motion);
+          root.classList.toggle("tc-low-power", !richEffects);
+        } catch (e) { /* never block paint */ }
+      })();
+    </script>
+
+    <title>Terraclima — North American Microclimate Atlas</title>
+    <script type="module" crossorigin src="./assets/index-Ci3N6cdx.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/rolldown-runtime-BYbx6iT9.js">
+    <link rel="modulepreload" crossorigin href="./assets/climate-v2-overlay-CtEnRGJp.js">
+    <link rel="modulepreload" crossorigin href="./assets/climate-v2-Dbt2dVL3.js">
+    <link rel="modulepreload" crossorigin href="./assets/icons-nyLlZPOa.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-DqV1W3OY.js">
+    <link rel="modulepreload" crossorigin href="./assets/vendor-BmLK_YH_.js">
+    <link rel="modulepreload" crossorigin href="./assets/geo-BP2hJBvZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/data-curated-Bir6YMWz.js">
+    <link rel="modulepreload" crossorigin href="./assets/places-canada-BX59Cda1-563bc6f72863.js">
+    <link rel="modulepreload" crossorigin href="./assets/places-mexico-CvnmOkqn-563bc6f72863.js">
+    <link rel="modulepreload" crossorigin href="./assets/places-usa-DxhnkdNh-563bc6f72863.js">
+    <link rel="modulepreload" crossorigin href="./assets/places-Bzx867Ih.js">
+    <link rel="modulepreload" crossorigin href="./assets/place-feel-D3f_K1bP.js">
+    <link rel="modulepreload" crossorigin href="./assets/climate-projection-jFNUhkE6.js">
+    <link rel="modulepreload" crossorigin href="./assets/app-url-BXf0Q2nL.js">
+    <link rel="modulepreload" crossorigin href="./assets/geospatial-analysis-Ces5rcAY.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-DKb-c9dZ.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
