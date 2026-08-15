@@ -4,6 +4,11 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Phone Explorer: let the intro scroll away
+
+- **Problem:** After a little scroll the atlas intro compacted into a sticky bar. On a phone that bar sat under the site header and covered a large slice of the place list.
+- **Fix:** Compact chrome still shrinks the intro on stacked layouts, but below 1024px it is no longer sticky, so the list and map can use the screen.
+
 ### Playtest polish: history, rank badges, filter dock
 
 - **Live-fit history:** Back/Forward to an explicit `?r=live-fit` URL no longer gets rewritten to the pre-constraint ranking. `popstate` clears the in-memory auto live-fit snapshot so history stays the source of truth.
