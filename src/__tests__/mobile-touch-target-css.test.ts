@@ -169,6 +169,15 @@ describe("mobile touch target CSS", () => {
     expectRule(".tc-hero-credit a", /display:\s*grid;[\s\S]*min-height:\s*2\.75rem;/);
   });
 
+  it("lets the compact Explorer intro scroll away instead of sticking over the list", () => {
+    expect(styles).toMatch(
+      /\.panel-hero\[data-compact="true"\]\s*\{[\s\S]*?position:\s*relative;[\s\S]*?top:\s*auto;/,
+    );
+    expect(styles).not.toMatch(
+      /\.panel-hero\[data-compact="true"\]\s*\{[^}]*position:\s*sticky;/,
+    );
+  });
+
   it("reflows narrow evidence controls instead of squeezing their label", () => {
     expect(styles).toMatch(/@media \(max-width:\s*480px\)\s*\{[\s\S]*?\.tc-evidence-summary__toggle\s*\{[\s\S]*?flex-wrap:\s*wrap;[\s\S]*?\.tc-evidence-summary__toggle-lead,\s*\.tc-evidence-summary__toggle-meta\s*\{[\s\S]*?flex:\s*1 1 100%;/);
     expect(styles).toMatch(/@media \(max-width:\s*480px\)\s*\{[\s\S]*?\.tc-evidence-summary__toggle-meta\s*\{[\s\S]*?justify-content:\s*flex-start;/);

@@ -4,6 +4,13 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Playtest: sunshine honesty in Compare and live-fit, compact intro scrolls away
+
+- **Compare sky row:** grouped Compare signals now show **Sunshine** as percent of possible (Sequim 50%, Yuma 92%). Daymet solar MJ is scoring-only and no longer appears as a "Solar resource" sky cell.
+- **False sunshine gaps:** Compare finalist verdicts no longer tell you to "verify sunshine normals" on places that already have authored sunshine or Daymet solar. Restoring `sunshinePct` for display had made `scoringSunshinePct` return empty for the whole corpus.
+- **Live-here cautions:** fog-belt dossiers (Sequim, Forks, Astoria) warn from the authored sunshine percent the first page shows, not from a missing scoring series.
+- **Compact Explorer intro:** shrinking still happens after scroll / Map first, but the bar is no longer sticky. On stacked layouts (phones through 1499px) a sticky intro sat under the site header and covered the place list.
+
 ### Playtest polish: history, rank badges, filter dock
 
 - **Live-fit history:** Back/Forward to an explicit `?r=live-fit` URL no longer gets rewritten to the pre-constraint ranking. `popstate` clears the in-memory auto live-fit snapshot so history stays the source of truth.

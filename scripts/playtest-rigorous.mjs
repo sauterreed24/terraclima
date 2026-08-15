@@ -271,6 +271,35 @@ async function main() {
     await shot(page, "scenario-compare");
   });
 
+  // 5b) Compare sunshine is percent of possible, never Daymet MJ as sky
+  await withPage(browser, {
+    viewport: { width: 1440, height: 900 },
+    reducedMotion: "reduce",
+  }, "compare-sunshine", async (page) => {
+    await page.goto(`${BASE}/?cmp=sequim-wa,yuma-az`, {
+      waitUntil: "domcontentloaded",
+      timeout: 30000,
+    });
+    await page.waitForSelector("[role='dialog']", { timeout: 20000 });
+    const table = page.getByRole("table", { name: /Grouped comparison signals/i });
+    await table.waitFor({ timeout: 10000 });
+    const text = await table.innerText();
+    if (/Solar resource/i.test(text)) {
+      findings.push({ label: "compare-sunshine", kind: "solar-mj-row", snippet: text.slice(0, 400) });
+    }
+    if (/\d+\.\d+\s*MJ/.test(text)) {
+      findings.push({ label: "compare-sunshine", kind: "mj-as-sky", snippet: text.slice(0, 400) });
+    }
+    if (!/Sunshine/i.test(text) || !text.includes("50%") || !text.includes("92%")) {
+      findings.push({ label: "compare-sunshine", kind: "sunshine-percent-missing", snippet: text.slice(0, 400) });
+    }
+    const sourceGap = await page.locator("body").innerText();
+    if (/Verify sunshine normals/i.test(sourceGap)) {
+      findings.push({ label: "compare-sunshine", kind: "false-sunshine-gap" });
+    }
+    await shot(page, "compare-sunshine");
+  });
+
   // 6) Mobile empty recovery + clear-all URL hygiene
   await withPage(browser, {
     viewport: { width: 390, height: 844 },

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PLACES_BY_ID } from "../../data/places";
-import { fourthHeroStat, observedSunshinePct, precipHeroLabel } from "../hero-glance";
+import { fourthHeroStat, hasSourcedSkySeries, observedSunshinePct, precipHeroLabel, sunshineDisplayValue } from "../hero-glance";
 import { makeClimate, makePlace } from "./test-fixtures";
 
 describe("hero glance", () => {
@@ -26,6 +26,11 @@ describe("hero glance", () => {
     });
     expect(observedSunshinePct(solarOnly)).toBeNull();
     expect(fourthHeroStat(solarOnly).kind).toBe("humidity");
+    expect(hasSourcedSkySeries(withSun)).toBe(true);
+    expect(hasSourcedSkySeries(solarOnly)).toBe(true);
+    expect(sunshineDisplayValue(withSun)).toBe("50%");
+    expect(sunshineDisplayValue(solarOnly)).toBe("not sourced");
+    expect(hasSourcedSkySeries(makePlace({ climate: makeClimate({ sunshinePct: undefined, solarEnergyMjM2Day: undefined }) }))).toBe(false);
   });
 
   it("labels snowy places as rain and snow", () => {

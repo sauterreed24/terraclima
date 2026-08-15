@@ -224,6 +224,112 @@ async function main() {
     }
   }
 
+  // ---- Phone: compact intro must scroll away, not stick over the place list ----
+  {
+    const label = "phone-hero-scroll-away";
+    const context = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+      hasTouch: true,
+      isMobile: true,
+      colorScheme: "light",
+      reducedMotion: "reduce",
+    });
+    await attachOfflineRouting(context, BASE);
+    const page = await context.newPage();
+    attachConsoleGuards(page, label, consoleErrors);
+    try {
+      await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded", timeout: 30000 });
+      await page.waitForSelector(".panel-hero", { timeout: 20000 });
+      await page.waitForSelector(".place-card, .tc-map-stage", { timeout: 20000 });
+      await page.evaluate(() => window.scrollTo(0, 2200));
+      await page.waitForTimeout(400);
+      const coverage = await page.evaluate(() => {
+        const hero = document.querySelector(".panel-hero");
+        if (!hero) return { missing: true };
+        const hr = hero.getBoundingClientRect();
+        const style = getComputedStyle(hero);
+        return {
+          missing: false,
+          position: style.position,
+          top: hr.top,
+          bottom: hr.bottom,
+          height: hr.height,
+        };
+      });
+      if (coverage.missing) {
+        findings.push({ label, kind: "hero-missing" });
+      } else {
+        if (coverage.position === "sticky" || coverage.position === "fixed") {
+          findings.push({ label, kind: "hero-stuck-on-phone", position: coverage.position });
+        }
+        if (coverage.top >= -8 && coverage.bottom > 220) {
+          findings.push({
+            label,
+            kind: "hero-still-covering-list",
+            top: coverage.top,
+            bottom: coverage.bottom,
+            height: coverage.height,
+          });
+        }
+      }
+      await shot(page, label);
+    } catch (err) {
+      findings.push({ label, kind: "exception", message: String(err) });
+      try { await shot(page, `${label}-error`); } catch { /* ignore */ }
+    } finally {
+      await context.close();
+    }
+  }
+
+  // ---- Stacked tablet/laptop: compact intro must also scroll away (layout stacks until 1500px) ----
+  {
+    const label = "stacked-hero-scroll-away";
+    const context = await browser.newContext({
+      viewport: { width: 1280, height: 800 },
+      colorScheme: "light",
+      reducedMotion: "reduce",
+    });
+    await attachOfflineRouting(context, BASE);
+    const page = await context.newPage();
+    attachConsoleGuards(page, label, consoleErrors);
+    try {
+      await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded", timeout: 30000 });
+      await page.waitForSelector(".panel-hero", { timeout: 20000 });
+      await page.evaluate(() => window.scrollTo(0, 2400));
+      await page.waitForTimeout(400);
+      const coverage = await page.evaluate(() => {
+        const hero = document.querySelector(".panel-hero");
+        if (!hero) return { missing: true };
+        const hr = hero.getBoundingClientRect();
+        const style = getComputedStyle(hero);
+        return {
+          missing: false,
+          position: style.position,
+          top: hr.top,
+          bottom: hr.bottom,
+        };
+      });
+      if (coverage.missing) {
+        findings.push({ label, kind: "hero-missing" });
+      } else if (coverage.position === "sticky" || coverage.position === "fixed") {
+        findings.push({ label, kind: "hero-stuck-on-stacked-layout", position: coverage.position });
+      } else if (coverage.top >= -8 && coverage.bottom > 180) {
+        findings.push({
+          label,
+          kind: "hero-still-covering-list",
+          top: coverage.top,
+          bottom: coverage.bottom,
+        });
+      }
+      await shot(page, label);
+    } catch (err) {
+      findings.push({ label, kind: "exception", message: String(err) });
+      try { await shot(page, `${label}-error`); } catch { /* ignore */ }
+    } finally {
+      await context.close();
+    }
+  }
+
   // ---- Dossier deep link + evidence + close focus ----
   {
     const label = "dossier-sequim";
