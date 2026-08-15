@@ -8,8 +8,9 @@
 // and a short settlement/land-use history so the first screen has depth.
 //
 // Authored `Place.experience` fields (optional) win field-by-field over the
-// derived read, letting flagship places carry deeper, voice-driven prose
-// without forcing all 226 entries to be hand-written.
+// derived read. Researched site-history overlays (`SITE_HISTORY`) fill Overview
+// history / why / immersive when those experience fields are absent, without
+// shipping that prose in the initial Explorer bundle.
 //
 // Prose convention: temperatures are emitted in °C and localized at render
 // by `localizeProse`. Most season detail is kept qualitative; the precise
@@ -19,6 +20,8 @@
 import type { Place } from "../types";
 import { DRIVER_LABELS } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
+import { SITE_HISTORY } from "../data/places.site-history";
+import type { SiteHistoryEntry } from "../data/site-history/types";
 import {
   RISK_VALUE,
   annualComfortMonthCount,
@@ -26,6 +29,15 @@ import {
   meanJanLow,
   meanSummerHigh,
 } from "./climate-metrics";
+
+/**
+ * Research overlay for Overview history / why / immersive. Skipped when a
+ * test (or caller) explicitly clears `experience` to isolate the derived read.
+ */
+function siteHistoryOverlay(place: Place): SiteHistoryEntry | null {
+  if (place.experience === undefined) return null;
+  return SITE_HISTORY[place.id] ?? null;
+}
 
 export type SeasonKey = "winter" | "spring" | "summer" | "autumn";
 
@@ -830,9 +842,18 @@ function peopleHistoryParagraph(place: Place): string {
   return `${place.name} has always collected ${love.toLowerCase()} — people matching themselves to ${biome}, not to a generic ${place.region} average.${drawBit}`;
 }
 
+function overlayHistoryParagraphs(place: Place): string[] | null {
+  const list = (siteHistoryOverlay(place)?.history ?? [])
+    .map(s => s.trim())
+    .filter(Boolean);
+  return list.length ? list : null;
+}
+
 function deriveHistoryParagraphs(place: Place): string[] {
   const authored = authoredHistoryParagraphs(place);
   if (authored) return authored.slice(0, 4);
+  const overlay = overlayHistoryParagraphs(place);
+  if (overlay) return overlay.slice(0, 4);
 
   const paras: string[] = [landscapeHistoryLead(place)];
   const settlement = settlementHistoryParagraph(place);
@@ -877,27 +898,31 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
   const authoredResident = cleanAuthoredFit(place.experience?.residentFit);
   const authoredTextureRaw = place.experience?.texture;
   const authoredTexture = authoredTextureRaw && !isGeneratedTexture(authoredTextureRaw) ? authoredTextureRaw : undefined;
+  const overlay = siteHistoryOverlay(place);
   const authoredWhy = place.experience?.why?.trim();
+  const overlayWhy = overlay?.why?.trim();
   const authoredHistory = Boolean(authoredHistoryParagraphs(place));
+  const overlayHistory = Boolean(overlayHistoryParagraphs(place));
   const historyParagraphs = deriveHistoryParagraphs(place);
+  const immersiveBase = overlay?.immersive?.trim() || place.summaryImmersive;
 
   const result: PlaceExperienceReading = {
     lede: dequote(place.summaryShort),
-    immersive: enrichImmersive(place, place.summaryImmersive),
+    immersive: enrichImmersive(place, immersiveBase),
     feelLine: authoredFeel ?? deriveFeelLine(place),
     seasons,
     travelerFit: authoredTraveler ?? deriveTravelerFit(place),
     residentFit: authoredResident ?? deriveResidentFit(place),
     wouldNotFit: place.whoMightNot,
     texture: authoredTexture ?? deriveTexture(place),
-    whyDifferent: authoredWhy || place.whyDistinct,
+    whyDifferent: authoredWhy || overlayWhy || place.whyDistinct,
     whyDrivers: deriveWhyDrivers(place),
     contrastItems: deriveContrastItems(place),
     historyParagraphs,
-    historyAuthored: authoredHistory,
+    historyAuthored: authoredHistory || overlayHistory,
     authored: Boolean(
       authoredFeel || authoredTraveler || authoredResident || authoredTexture ||
-      authoredWhy || authoredHistory ||
+      authoredWhy || overlayWhy || authoredHistory || overlayHistory || overlay?.immersive?.trim() ||
       seasons.some(s => s.authored),
     ),
   };

@@ -17,6 +17,7 @@ function jumpLabelForSection(sec: PlaceDeepSection): string {
     "appendix-scouting-diligence": "Homes",
   };
   if (byId[sec.id]) return byId[sec.id]!;
+  if (/(?:^|-)site-history$/.test(sec.id)) return "History";
   const t = sec.title.trim();
   return t.length > 20 ? `${t.slice(0, 18)}…` : t;
 }
