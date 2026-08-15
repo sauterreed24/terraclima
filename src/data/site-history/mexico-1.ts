@@ -134,7 +134,7 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
   },
 
   "alamos-mx": {
-    why: "Foothills of the Sierra Madre Occidental sit low enough, about 406 m, for hot pre-monsoon afternoons, yet they catch a reliable North American Monsoon pulse from July into September. Winters stay dry, bright, and mild by northern Mexican standards. Tropical deciduous forest greens almost overnight when the storms arrive, then browns again. That dry–wet flip, not a gentle spring, is the climate. Heat and drought are the constraints; the colonial stone is the shade strategy.",
+    why: "Foothills of the Sierra Madre Occidental sit at 406 m, low enough for hot pre-monsoon afternoons, yet they catch a reliable North American Monsoon pulse from July into September. Winters stay dry, bright, and mild by northern Mexican standards. Tropical deciduous forest greens almost overnight when the storms arrive, then browns again. That dry–wet flip, not a gentle spring, is the climate. Heat and drought are the constraints; the colonial stone is the shade strategy.",
     immersive:
       "May and June can feel like a furnace in the arroyos, cicadas loud, the Sierra de Álamos a bare brown wall. Then monsoon cells stack over the foothills and the tropical deciduous forest leafs out in days: palo santo, amapa, and understory going from dust to shade. Afternoons in the wet months still run hot, but nights ease and the town’s portales hold cooler air. Winter days are the easy season—sun, dry streets, nights near 10 °C rather than frost. Birders work the green months; snowbirds work the dry ones. Dust, well depth, and a 37 °C afternoon are ordinary, not exceptions. The climate is a two-act year, and the architecture is a thermal mass response to the first act.",
     history: [
@@ -188,7 +188,7 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
   },
 
   "xilitla-mx": {
-    why: "Windward Sierra Madre Oriental at only about 600 m still intercepts Gulf moisture hard enough to drip. Cloud forest, waterfalls, and 1500 mm-class rainfall follow. Afternoons can be warm-humid, nights mild; this is not a cool 2000 m highland. Orographic lift is the whole trick: the same latitude’s interior is far drier. Landslide and flood risk ride with the green. Las Pozas is a garden in that machine, not the machine itself.",
+    why: "Windward Sierra Madre Oriental at 600 m still intercepts Gulf moisture hard enough to drip. Cloud forest, waterfalls, and 1500 mm-class rainfall follow. Afternoons can be warm-humid, nights mild; this is not a cool highland at 2,000 m. Orographic lift is the whole trick: the same latitude’s interior is far drier. Landslide and flood risk ride with the green. Las Pozas is a garden in that machine, not the machine itself.",
     immersive:
       "Gulf air hits the Huasteca escarpment and turns into noise: water on leaves, water in gullies, water on the convent’s old stone. Xilitla’s streets stay slick when the interior plateau is dust. At 600 m the heat never fully leaves—summer afternoons in the low 30s °C are real—but cloud and shade cut the burn, and nights hold in the teens. Orchids, ferns, and coffee tell the same story as the ruined Augustinian fortress: this slope is wet enough to rot wood and grow almost anything. When a norte or a stalled tropical wave sits on the range, the forest drips for days. Sun is a break, not a default. Bring mold strategy along with the walking shoes.",
     history: [
