@@ -7174,6 +7174,22 @@
     opacity: 0.7;
   }
 
+  /* Shared photo / fallback frame — wide enough to read as a landscape,
+     tall enough that a high-res Commons still shows weather, terrain, and
+     light instead of collapsing into a 100px ribbon. */
+  .tc-place-hero-frame {
+    display: block;
+    width: 100%;
+    height: 10.5rem;
+    object-fit: cover;
+    object-position: center 42%;
+  }
+  @media (min-width: 768px) {
+    .tc-place-hero-frame {
+      height: 17rem;
+    }
+  }
+
   /* Dossier hero stand-in when the photo can't load — a Jan→Dec monthly
      temperature panorama (`--tc-hero-ribbon`, set inline from the place's
      normals) under a paper/moonlight veil keyed off `--color-abyss` so it

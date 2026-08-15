@@ -596,9 +596,9 @@ function DetailHeader({
             srcSet={hero.srcSet}
             sizes={hero.sizes}
             alt={hero.alt}
-            width={1280}
-            height={520}
-            className="w-full h-28 md:h-52 object-cover bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
+            width={1600}
+            height={727}
+            className="tc-place-hero-frame bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
             loading="eager"
             decoding="async"
             referrerPolicy="no-referrer"
@@ -693,7 +693,7 @@ function HeroClimateFallback({
 
   return (
     <div
-      className="tc-hero-fallback h-28 md:h-52"
+      className="tc-hero-fallback tc-place-hero-frame"
       style={{ ["--tc-hero-ribbon" as string]: ribbon }}
       role="img"
       aria-label={ariaLabel}
