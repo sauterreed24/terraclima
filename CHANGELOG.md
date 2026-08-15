@@ -8,6 +8,7 @@ All notable changes to Terraclima are tracked here.
 
 - Replaced remaining low-resolution, civic-street, or poorly cropped Commons heroes with verified landscape shots (Bacalar lagoon sunset, Creston Valley aerial, Ensenada’s Punta Banda marine layer, Deep Creek Lake autumn, Bottomless Lakes, Friday Harbor aerial, Worthington Glacier, and others).
 - Live playtest now paints Commons heroes for Bacalar, Ensenada, Creston, and Oakland in addition to Sequim, Beverly Shores, and Tucson.
+- PlaceDetail cold-chunk budget 212 KB → 213 KB for the longer Commons filenames.
 
 ### Corpus: Overview history and site-depth for every place
 

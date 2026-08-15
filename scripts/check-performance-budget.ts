@@ -51,9 +51,10 @@ const BUDGETS = {
   /**
    * PlaceDetail cold chunk raw size ceiling (lazy). Baseline ~149 KB → 200 KB.
    * Photographing every corpus place plus the overview portrait (why / contrast /
-   * history) lands just over 200 KB; keep a small documented allowance.
+   * history) lands just over 200 KB; longer Commons filenames in the hero catalog
+   * need a small extra allowance.
    */
-  placeDetailRaw: 212_000,
+  placeDetailRaw: 213_000,
 } as const;
 
 function extractAttrs(tag: string, attr: string): string | null {
