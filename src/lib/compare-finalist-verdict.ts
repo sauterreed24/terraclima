@@ -1,6 +1,7 @@
 import type { Place } from "../types";
 import { getBestMonths } from "./best-months";
-import { annualComfortMonthCount, avgRisk, RISK_VALUE, scoringSunshinePct } from "./climate-metrics";
+import { annualComfortMonthCount, avgRisk, RISK_VALUE } from "./climate-metrics";
+import { hasSourcedSkySeries } from "./hero-glance";
 import { assessLiveFit, type LiveFitFilters } from "./live-fit";
 import { feltComfortScore, livedFrictionScore, scoreLivability } from "./livability-score";
 import {
@@ -240,7 +241,7 @@ function sourceGapLabels(place: Place): string[] {
   const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
   const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
   const hasHumidity = Boolean(place.climate.humidity?.length);
-  const hasSunshine = Boolean(scoringSunshinePct(place)?.length);
+  const hasSunshine = hasSourcedSkySeries(place);
   return [
     ...(place.confidence === "low" ? ["low-confidence profile"] : place.confidence === "moderate" ? ["moderate-confidence profile"] : []),
     ...(httpsCitations < 2 ? ["second HTTPS source"] : []),

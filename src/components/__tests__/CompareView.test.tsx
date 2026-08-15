@@ -361,6 +361,9 @@ describe("CompareView", () => {
     expect(table).toHaveTextContent("Garden/land");
     expect(table).toHaveTextContent("Evidence");
     expect(table).toHaveTextContent("HTTPS citations");
+    expect(table).toHaveTextContent("Sunshine");
+    expect(table).not.toHaveTextContent("Solar resource");
+    expect(table).not.toHaveTextContent(" MJ");
 
     const beforeRows = within(table).getAllByRole("row").length;
     const toggle = screen.getByRole("button", { name: "Show differences only" });
@@ -558,6 +561,20 @@ describe("CompareView", () => {
     expect(onOpenPlace).toHaveBeenCalledWith(anchor.id, { trigger: reviewButton });
     fireEvent.click(screen.getByRole("button", { name: "Keep scouting" }));
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("shows authored sunshine percent in Compare, never solar MJ as sky brightness", () => {
+    const sequim = PLACES_BY_ID["sequim-wa"]!;
+    const yuma = PLACES_BY_ID["yuma-az"]!;
+    renderCompare({ places: [sequim, yuma] });
+
+    const table = screen.getByRole("table", { name: "Grouped comparison signals for active places" });
+    expect(table).toHaveTextContent("Sunshine");
+    expect(table).toHaveTextContent("50%");
+    expect(table).toHaveTextContent("92%");
+    expect(table).not.toHaveTextContent("Solar resource");
+    expect(table).not.toHaveTextContent(" MJ");
+    expect(screen.getAllByText("Sunshine").length).toBeGreaterThan(0);
   });
 
   it("adds a compact mobile key for bioclimatic comparison rows", () => {

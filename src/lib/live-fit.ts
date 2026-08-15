@@ -19,6 +19,7 @@ import {
   windExposureScore,
 } from "./livability-score";
 import { dominantPlaceFeelDrag, placeFeelScore, scorePlaceFeel } from "./place-feel";
+import { observedSunshinePct } from "./hero-glance";
 
 export type LiveFitPresetId =
   | "cool-summers"
@@ -502,12 +503,15 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
       pushUnique(cautions, "Persistent overcast or fog — mild temperatures can feel colder and greyer than the numbers suggest.", 3);
     }
   }
-  const observedSunshine = scoringSunshinePct(place);
-  if (observedSunshine) {
-    const annualSun = observedSunshine.reduce((a, b) => a + b, 0) / 12;
-    // US average is ~58%; below 48% (Eureka's level) is a clear quality-of-life drag per research
-    if (annualSun < 48) pushUnique(cautions, `Below-average sunshine (~${Math.round(annualSun)}% of possible; US avg 58%) — expect frequent overcast days.`, 3);
-    else if (annualSun < 55) pushUnique(cautions, `Sunshine is below the US average of 58% (~${Math.round(annualSun)}%) — overcast days are common.`, 3);
+  const observedSunshine = observedSunshinePct(place);
+  if (observedSunshine != null) {
+    // US average is ~58%; below 48% (Eureka's level) is a clear quality-of-life drag per research.
+    // Use authored percent-of-possible sunshine (the number the dossier shows), not Daymet solar.
+    if (observedSunshine < 48) {
+      pushUnique(cautions, `Below-average sunshine (~${observedSunshine}% of possible; US avg 58%) — expect frequent overcast days.`, 3);
+    } else if (observedSunshine < 55) {
+      pushUnique(cautions, `Sunshine is below the US average of 58% (~${observedSunshine}%) — overcast days are common.`, 3);
+    }
   }
 
   if (sunEase < 40) pushUnique(cautions, `Sunlight and fog score poorly (${Math.round(sunEase)}/100), so mild temperatures may still feel gloomy.`, 3);

@@ -6,6 +6,7 @@ import { scenarioMeta } from "../lib/climate-projection";
 import { MicroclimateFingerprint } from "./charts/MicroclimateFingerprint";
 import { ClimateRibbon } from "./charts/ClimateRibbon";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm, RISK_VALUE } from "../lib/climate-metrics";
+import { hasSourcedSkySeries, observedSunshinePct, sunshineDisplayValue } from "../lib/hero-glance";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, useProse } from "../lib/units";
 import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
 import { computeBioclim, type BioclimIndex } from "../lib/bioclim";
@@ -1079,6 +1080,7 @@ export function CompareView({
                     <Row label="Summer high" value={fmtTemp(meanSummerHigh(p), temp, { digits: 1 })} />
                     <Row label="Jan low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
+                    <Row label="Sunshine" value={observedSunshinePct(p) == null ? "—" : `${observedSunshinePct(p)}%`} />
                     <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
                     <Row label="Hardiness" value={p.growability.hardinessZone ?? p.climate.hardinessZone ?? "—"} />
                     <Row label="Chill hrs" value={`${p.climate.chillHours ?? "—"}`} />
@@ -1148,7 +1150,7 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
     const deepSections = place.deepSections?.length ?? 0;
     const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
     const hasHumidity = Boolean(place.climate.humidity?.length);
-    const hasSunshine = Boolean(place.climate.solarEnergyMjM2Day?.length || place.climate.sunshinePct?.length);
+    const hasSunshine = hasSourcedSkySeries(place);
     const confidenceScore = place.confidence === "high" ? 34 : place.confidence === "moderate" ? 22 : 10;
     const score = Math.min(100, Math.round(
       confidenceScore +
@@ -1164,7 +1166,7 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
       ...(deepSections < 1 ? ["Expand deep-dive context"] : []),
       ...(!hasLiveSignals ? ["Fill lived-friction signals"] : []),
       ...(!hasHumidity ? ["Source humidity normals"] : []),
-      ...(!hasSunshine ? ["Source solar-resource normals"] : []),
+      ...(!hasSunshine ? ["Source sunshine normals"] : []),
     ].slice(0, 4);
     const label = score >= 78 && gaps.length <= 1
       ? "Ready for scout plan"
@@ -1213,13 +1215,6 @@ function buildGroupedComparisonRows(
   const meanPercent = (values: readonly number[] | undefined) => values?.length
     ? `${Math.round(values.reduce((sum, value) => sum + value, 0) / values.length)}%`
     : "not sourced";
-  const meanSunshine = (place: Place) => {
-    if (place.climate.solarEnergyMjM2Day?.length) {
-      const mean = place.climate.solarEnergyMjM2Day.reduce((a, b) => a + b, 0) / 12;
-      return Number.isFinite(mean) ? `${mean.toFixed(1)} MJ` : "not sourced";
-    }
-    return meanPercent(place.climate.sunshinePct);
-  };
   const meanHumidity = (place: Place) => meanPercent(place.climate.humidity);
   const httpsCitations = (place: Place) => `${place.citations.filter(citation => citation.url?.startsWith("https://")).length}`;
 
@@ -1238,7 +1233,7 @@ function buildGroupedComparisonRows(
       return profile ? `${profile.easyMonths}/12` : "not graded";
     })),
     row("Seasonality", "Annual precip", places.map(place => fmtPrecip(getAnnualPrecipMm(place), distUnit))),
-    row("Seasonality", "Solar resource", places.map(meanSunshine)),
+    row("Seasonality", "Sunshine", places.map(sunshineDisplayValue)),
     row("Seasonality", "Frost-free", places.map(place => place.climate.frostFreeDays == null ? "not sourced" : `${place.climate.frostFreeDays} d`)),
     row("Hazards", "Risk load", places.map(place => {
       const profile = decisionById.get(place.id);

@@ -12794,23 +12794,14 @@ html[data-theme="dark"] .tc-hero-credit {
   }
   .panel-hero[data-compact="true"] {
     --tc-hero-pad: 0.7rem;
-    position: sticky;
-    top: 0.55rem;
-    z-index: 18;
+    position: relative;
+    top: auto;
+    z-index: auto;
     padding: var(--tc-hero-pad) 0.9rem !important;
     gap: 0.55rem !important;
     box-shadow:
       var(--tc-shadow-inset),
       0 14px 28px -22px rgba(26, 21, 17, 0.45);
-  }
-  /* Phones and stacked tablets: compact chrome still shrinks the intro, but
-     it must scroll away. A sticky hero + site header covers the place list. */
-  @media (max-width: 1023px) {
-    .panel-hero[data-compact="true"] {
-      position: relative;
-      top: auto;
-      z-index: auto;
-    }
   }
   .panel-hero[data-compact="true"] .hero-lede,
   .panel-hero[data-compact="true"] .hero-secondary-tip,
@@ -12844,12 +12835,6 @@ html[data-theme="dark"] .tc-hero-credit {
     overflow-x: auto;
     padding-bottom: 0.15rem;
     scrollbar-width: thin;
-  }
-  @media (min-width: 1500px) {
-    .panel-hero[data-compact="true"] {
-      position: relative;
-      top: auto;
-    }
   }
   .hero-action-stack {
     display: flex;

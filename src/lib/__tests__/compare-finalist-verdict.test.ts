@@ -151,4 +151,14 @@ describe("compare finalist verdict", () => {
     expect(profiles.every(row => row.liveFitScore >= 0 && row.liveFitScore <= 100)).toBe(true);
     expect(profiles.every(row => row.riskLoad >= 0 && row.riskLoad <= 100)).toBe(true);
   });
+
+  it("does not treat Daymet solar as a missing sunshine-normal gap", () => {
+    const sequim = PLACES.find(place => place.id === "sequim-wa")!;
+    const yuma = PLACES.find(place => place.id === "yuma-az")!;
+    const forks = PLACES.find(place => place.id === "forks-wa")!;
+    const read = buildCompareDecisionRead(buildCompareDecisionProfiles([sequim, yuma, forks]));
+    const sourceGap = read?.verificationChecklist.find(item => item.id === "source-gap");
+
+    expect(sourceGap?.proof).not.toMatch(/sunshine normals/i);
+  });
 });

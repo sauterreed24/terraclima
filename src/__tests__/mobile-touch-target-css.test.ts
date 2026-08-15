@@ -169,12 +169,12 @@ describe("mobile touch target CSS", () => {
     expectRule(".tc-hero-credit a", /display:\s*grid;[\s\S]*min-height:\s*2\.75rem;/);
   });
 
-  it("lets the compact Explorer intro scroll away on phones instead of sticking over the list", () => {
+  it("lets the compact Explorer intro scroll away instead of sticking over the list", () => {
     expect(styles).toMatch(
-      /\.panel-hero\[data-compact="true"\]\s*\{[\s\S]*?position:\s*sticky;/,
+      /\.panel-hero\[data-compact="true"\]\s*\{[\s\S]*?position:\s*relative;[\s\S]*?top:\s*auto;/,
     );
-    expect(styles).toMatch(
-      /@media \(max-width:\s*1023px\)\s*\{[\s\S]*?\.panel-hero\[data-compact="true"\]\s*\{[\s\S]*?position:\s*relative;[\s\S]*?top:\s*auto;/,
+    expect(styles).not.toMatch(
+      /\.panel-hero\[data-compact="true"\]\s*\{[^}]*position:\s*sticky;/,
     );
   });
 

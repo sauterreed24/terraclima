@@ -14,6 +14,18 @@ export function observedSunshinePct(place: Place): number | null {
   return Math.round(mean);
 }
 
+/** True when the place has a sky series for evidence — authored sunshine or Daymet solar. */
+export function hasSourcedSkySeries(place: Place): boolean {
+  return observedSunshinePct(place) != null
+    || place.climate.solarEnergyMjM2Day?.length === 12;
+}
+
+/** First-page / Compare sunshine cell — percent of possible, never solar MJ. */
+export function sunshineDisplayValue(place: Place): string {
+  const pct = observedSunshinePct(place);
+  return pct == null ? "not sourced" : `${pct}%`;
+}
+
 export function precipHeroLabel(place: Place): string {
   const snow = place.climate.snowCm;
   const annualSnowCm = snow?.reduce((sum, value) => sum + value, 0) ?? 0;

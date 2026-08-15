@@ -182,4 +182,16 @@ describe("live-fit scoring", () => {
     expect(salt).toBeGreaterThan(arctic);
     expect(fog).toBeGreaterThan(heat);
   });
+
+  it("warns from authored sunshine percent, not Daymet solar, on gray-coast dossiers", () => {
+    const sequim = assessLiveFit(PLACES_BY_ID["sequim-wa"]!);
+    const forks = assessLiveFit(PLACES_BY_ID["forks-wa"]!);
+    const astoria = assessLiveFit(PLACES_BY_ID["astoria-or"]!);
+    const yuma = assessLiveFit(PLACES_BY_ID["yuma-az"]!);
+
+    expect(sequim.cautions.some(c => /Sunshine is below the US average of 58% \(~50%\)/.test(c))).toBe(true);
+    expect(forks.cautions.some(c => /Below-average sunshine \(~44% of possible/.test(c))).toBe(true);
+    expect(astoria.cautions.some(c => /Below-average sunshine \(~43% of possible/.test(c))).toBe(true);
+    expect(yuma.cautions.some(c => /sunshine/i.test(c))).toBe(false);
+  });
 });
