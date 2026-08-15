@@ -152,7 +152,7 @@ Structured editorial research backed by public climate and geospatial references
 
 Every place carries citations plus split `editorialConfidence` / `climateDataConfidence`. Derived scores stay conservative; interpretive content is labeled as such. The dossier Evidence disclosure separates measured normals, editorial context, deterministic calculations, projections, and screening scores, including a compact vs-1991–2020 receipt.
 
-The corpus covers **226** North American places, including **8 Tier A flagships** and **54 Tier B** deeper relocation/travel candidates. Tier A/B entries require confidence notes, at least two URL-backed citations, and deep-section coverage. Recent deepening includes Port Orford / Cape Blanco, Klamath Falls / Upper Klamath Basin, Los Alamos / Pajarito Plateau, Lander / Sinks Canyon, Atlin Lake, Fernie / Elk Valley, Valle de Bravo, and Zacatlán de las Manzanas, plus deeper Nelson, Pátzcuaro, Todos Santos, Tapalpa, and Mazamitla.
+The corpus covers **226** North American places, including **8 Tier A flagships** and **54 Tier B** deeper relocation/travel candidates. Tier A/B entries require confidence notes, at least two URL-backed citations, and deep-section coverage. Every profile now carries a researched **Overview history** (settlement, land use, people) plus a longer **People and land** field-dossier chapter, so the first screen is a place you can actually get to know rather than a climate table with a caption.
 
 ## Stack
 

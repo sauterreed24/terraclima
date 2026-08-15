@@ -28,6 +28,7 @@ import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
 import { composePlaceExperience } from "../lib/place-overview";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
+import { SITE_HISTORY, withSiteHistoryDeepSections } from "../data/places.site-history";
 import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
@@ -720,7 +721,7 @@ function HeroStat({ icon, label, value, hint }: { icon: React.ReactNode; label: 
 }
 
 function DetailBody({
-  place, onOpenPlace, liveFitFilters, residencyFitContext, visualSignature, onCompareToggle, inCompare, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, scenario = "now",
+  place: placeRaw, onOpenPlace, liveFitFilters, residencyFitContext, visualSignature, onCompareToggle, inCompare, bookmarked, onBookmarkToggle, homePlace, onHomeBaseToggle, scenario = "now",
 }: {
   place: Place;
   onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
@@ -735,6 +736,10 @@ function DetailBody({
   onHomeBaseToggle?: (id: string) => void;
   scenario?: ScenarioId;
 }) {
+  const place = useMemo(
+    () => withSiteHistoryDeepSections(placeRaw, SITE_HISTORY[placeRaw.id]),
+    [placeRaw],
+  );
   const { temp, dist } = useUnits();
   const prose = useProse();
   const reduceMotion = useReducedMotion();

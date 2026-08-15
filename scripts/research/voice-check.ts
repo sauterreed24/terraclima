@@ -4,6 +4,7 @@
 import { PLACES } from "../../src/data/places";
 import { BANNED_VOICE_PHRASES } from "../../src/lib/research/contracts";
 import * as tierCPolish from "../../src/data/places.tier-c-polish";
+import { SITE_HISTORY } from "../../src/data/places.site-history";
 
 const STRICT = process.argv.includes("--strict");
 
@@ -68,6 +69,13 @@ function main() {
     }
     for (const section of place.deepSections ?? []) {
       section.paragraphs.forEach((p, i) => texts.push({ path: `deep.${section.id}.${i}`, text: p }));
+    }
+    const hist = SITE_HISTORY[place.id];
+    if (hist) {
+      if (hist.why) texts.push({ path: "siteHistory.why", text: hist.why });
+      if (hist.immersive) texts.push({ path: "siteHistory.immersive", text: hist.immersive });
+      hist.history.forEach((p, i) => texts.push({ path: `siteHistory.history.${i}`, text: p }));
+      hist.deep.forEach((p, i) => texts.push({ path: `siteHistory.deep.${i}`, text: p }));
     }
 
     const exp = place.experience;

@@ -25,6 +25,7 @@ const COLD_CHUNK_STEMS = [
   "CollectionsView",
   "LearnMode",
   "atlas-data",
+  "site-history",
 ] as const;
 
 /**

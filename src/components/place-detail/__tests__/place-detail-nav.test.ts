@@ -10,6 +10,7 @@ describe("place detail nav anchors", () => {
     expect(chapterForAnchorId(PD.fieldStory)).toBe("portrait");
     expect(chapterForAnchorId(PD.atAGlance)).toBe("climateLand");
     expect(chapterForAnchorId("deep-sequim-hydrology")).toBe("portrait");
+    expect(chapterForAnchorId("deep-sequim-wa-site-history")).toBe("portrait");
     expect(chapterForAnchorId("appendix-season-pocket")).toBe("portrait");
   });
 });

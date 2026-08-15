@@ -28,6 +28,7 @@ import { CONCEPTS } from "../src/data/glossary";
 import { COLLECTIONS } from "../src/data/collections";
 import { CLIMATE_TRIP_THEMES } from "../src/data/climate-trip-themes";
 import { FIELD_NOTES } from "../src/data/field-notes";
+import { SITE_HISTORY } from "../src/data/places.site-history";
 import type { Place } from "../src/types";
 import {
   ALLOWED_CITATION_KINDS,
@@ -356,6 +357,22 @@ for (const p of PLACES) {
   checkCitationUrls(p);
   checkProjection(p);
   checkEvidenceIntegrity(p);
+}
+for (const p of PLACES) {
+  const hist = SITE_HISTORY[p.id];
+  if (!hist) continue;
+  const fields: Array<[string, string]> = [];
+  if (hist.why) fields.push(["siteHistory.why", hist.why]);
+  if (hist.immersive) fields.push(["siteHistory.immersive", hist.immersive]);
+  hist.history.forEach((para, i) => fields.push([`siteHistory.history.${i}`, para]));
+  fields.push(["siteHistory.deepTitle", hist.deepTitle]);
+  hist.deep.forEach((para, i) => fields.push([`siteHistory.deep.${i}`, para]));
+  for (const [field, text] of fields) {
+    const where = `${p.id}:${field}`;
+    checkUnitResidues(where, text);
+    checkTypography(where, text);
+    checkConsistency(p, where, text);
+  }
 }
 for (const c of CONCEPTS) {
   for (const [field, val] of [["short", c.short], ["long", c.long], ["mechanism", c.mechanism]] as const) {

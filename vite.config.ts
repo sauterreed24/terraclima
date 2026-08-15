@@ -9,6 +9,7 @@ const COLD_HTML_PRELOAD_CHUNK_STEMS = [
   "CollectionsView",
   "LearnMode",
   "atlas-data",
+  "site-history",
 ];
 
 // Country corpus chunks are the app's reality payload; suffix deploy builds so
@@ -135,6 +136,7 @@ export default defineConfig({
           if (id.includes("/data/places.usa")) return "places-usa";
           if (id.includes("/data/places.canada")) return "places-canada";
           if (id.includes("/data/places.mexico")) return "places-mexico";
+          if (id.includes("/data/places.site-history") || id.includes("/data/site-history/")) return "site-history";
           // Compact climate overlay rides with place assembly; full provenance
           // records stay in a separate lazy chunk for evidence surfaces.
           if (id.includes("/data/generated/climate-v2/records")) return "climate-v2-records";
