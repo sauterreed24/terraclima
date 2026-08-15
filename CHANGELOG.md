@@ -9,6 +9,7 @@ All notable changes to Terraclima are tracked here.
 - Researched settlement / land-use / people histories now lead the Overview “A short history” block on all 226 profiles, with a longer Field dossier chapter for anyone who wants more than the spotlight.
 - Thin Overview portraits get a fuller “Why it feels different” essay and, where the immersive read was short, a place-grounded opening scene — still sourced, still in corpus voice.
 - History prose lives in a lazy `site-history` chunk so Explorer cold load does not pay for dossier depth.
+- Voice pass on overlay closers: dropped formulaic “Fit is for people who…” / “Deep history is…” lists and atlas-scaffolding so Overview and dossier chapters read as ordinary sentences.
 
 ### Playtest: sunshine honesty in Compare and live-fit, compact intro scrolls away
 
