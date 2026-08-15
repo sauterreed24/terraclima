@@ -114,7 +114,15 @@ const OVERVIEW_PLACES = [
   "monterey-ca",
   "qualicum-bc",
 ];
-const LIVE_HERO_PLACES = ["sequim-wa", "beverly-shores-in", "tucson-az"];
+const LIVE_HERO_PLACES = [
+  "sequim-wa",
+  "beverly-shores-in",
+  "tucson-az",
+  "bacalar-mx",
+  "ensenada-mx",
+  "creston-bc",
+  "oakland-md",
+];
 
 function resolveChrome() {
   for (const candidate of [
