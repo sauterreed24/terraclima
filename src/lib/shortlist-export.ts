@@ -175,7 +175,7 @@ export function exportShortlistAsICS(
       ? monthRangeStart(range.startMonth, year)
       : new Date(Date.UTC(year, ctx.generatedAt.getUTCMonth(), ctx.generatedAt.getUTCDate()));
     const end = range
-      ? monthRangeEnd(range.endMonth, year)
+      ? monthRangeEnd(range.endMonth, year, range.startMonth)
       : new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() + 1));
     lines.push("BEGIN:VEVENT");
     lines.push(`UID:terraclima-${place.id}-${year}@sauterreed24.github.io`);
@@ -466,9 +466,12 @@ function monthRangeStart(monthIdx: number, year: number): Date {
   return new Date(Date.UTC(year, monthIdx, 1));
 }
 
-function monthRangeEnd(monthIdx: number, year: number): Date {
+function monthRangeEnd(monthIdx: number, year: number, startMonth: number): Date {
   // DTEND is exclusive per VEVENT semantics, so we use the 1st of the next month.
+  // When endMonth precedes startMonth (e.g. "Nov–Feb"), the window wraps into the
+  // next calendar year — otherwise DTEND would precede DTSTART and break RFC 5545.
+  const endYear = monthIdx < startMonth ? year + 1 : year;
   const next = monthIdx + 1;
-  if (next > 11) return new Date(Date.UTC(year + 1, 0, 1));
-  return new Date(Date.UTC(year, next, 1));
+  if (next > 11) return new Date(Date.UTC(endYear + 1, 0, 1));
+  return new Date(Date.UTC(endYear, next, 1));
 }
