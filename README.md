@@ -62,6 +62,8 @@ On a phone, navigation folds into a hamburger and filters into a bottom sheet; o
 
 ### Read the map like a field sheet
 
+Use **Browse places** below the map to jump into the ranked results. Once you scroll past the map, **Back to map** stays available beside the mobile Filters control and restores keyboard focus to the atlas. Numbered circles group nearby places; gold numbers identify the current leaders. Crowded leaders keep their rank badges while decorative rings recede until hover or selection.
+
 - **On a phone:** one-finger drag pans, pinch zooms, clusters stay tappable, and crowded pins spread with leader lines back to exact locations. **Scroll page** / **Use map** lets you stop trapping the page when you need to scroll past the atlas — including on hybrid laptops with touch.
 - **Framing that respects the UI:** Fit, selection, cluster zoom, and rotate/resize keep the landmass clear of docks and compact chrome. Selecting a pin from the map nudges just enough to keep it visible; opening a place from a link centers it. Hover tooltips and the cluster picker stay glued to the right spot after pan, zoom, or resize.
 - **Keyboard:** Tab once into the map, then arrows walk pins *and* clusters; Home/End jump ends; `0` fits all; `=` / `-` zoom; arrows pan. Only one marker sits in the Tab order at a time.
@@ -70,6 +72,8 @@ On a phone, navigation folds into a hamburger and filters into a bottom sheet; o
 ### Open a place and go deep
 
 Each **place profile** is a long-form field guide: opening story, a photograph of the place, at-a-glance facts, practical scouting cards, live-here reasons and cautions, seasonal charts, local contrasts, geospatial screening, soils, growability, risks, climate-change notes, climate twins, settlements, things to do, citations, and confidence notes. The Overview leads with why the climate differs, nearby contrast, a short settlement history, and a season-by-season feel.
+
+**Reading controls:** On phones and tablets, a sticky **On this page** picker groups every section by chapter, with previous/next section buttons. Desktop chapter links use larger text and touch targets. The labeled **Top** button returns to the profile header. Each seasonal card also shows total precipitation, with a short explanation of averages, extremes, and water equivalent.
 
 **Home base (“vs home”):** pin any corpus place as home from the dossier, **H**, or `?hb=`. Cards grow a compact delta strip; dossiers add a **Versus your home base** section; Compare diffs finalists against home (with **Add home**). Deltas use authored 1991–2020 normals; under a 2050 scenario, projected is compared to projected so timelines never mix. See [`src/lib/home-base.ts`](src/lib/home-base.ts).
 
@@ -372,3 +376,8 @@ scripts/                       Audits, goldens, OG/icons, playtest-polish / map 
 Terraclima is an attempt to make complex environmental knowledge *usable*: human enough to scout with curiosity, structured enough to compare under pressure, and disciplined enough that every claim stays tied to evidence.
 
 It is not a toy weather dashboard. It is a working atlas for relocation research, climate travel, agricultural curiosity, adaptation screening, and landscape literacy — built with the same care you’d want if a real decision hung on the next pin you open.
+
+
+### September 2026 reading and evidence review
+
+The latest review corrects precipitation-versus-humidity inference in seasonal prose, avoids treating missing snowfall observations as rain-only evidence, and replaces the gardening-window guarantee with a screening explanation. Comfort cards surface a practical location caution instead of an internal writing score. Pátzcuaro and Driggs received targeted narrative corrections; INAH history sources were added for Pátzcuaro. See [the review record](docs/ATLAS-READING-REVIEW.md) for scope, evidence, validation, and remaining limits.

@@ -13984,3 +13984,80 @@ html[data-theme="dark"] .desktop-scout-board__score {
   background: linear-gradient(180deg, rgba(94, 196, 220, 0.3), rgba(26, 143, 168, 0.18));
   color: var(--color-frost-strong);
 }
+
+/* Reading controls stay available through the full mobile dossier. Native
+   grouped options expose every section without a nested horizontal rail. */
+@layer components {
+  .tc-reading-nav-mobile {
+    position: sticky;
+    top: 0;
+    z-index: 8;
+    margin: -0.25rem -0.25rem 1.5rem;
+    padding: 0.65rem;
+    border: 1px solid var(--tc-inset-border);
+    border-radius: 0 0 0.85rem 0.85rem;
+    background: var(--tc-surface-elevated);
+    box-shadow: 0 8px 22px -18px var(--color-frost);
+  }
+  .tc-reading-nav-mobile__label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-frost);
+  }
+  .tc-reading-nav-mobile__controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 2.75rem 2.75rem;
+    gap: 0.35rem;
+  }
+  .tc-reading-nav-mobile__controls select,
+  .tc-reading-nav-mobile__controls button {
+    min-width: 0;
+    min-height: 2.75rem;
+    border: 1px solid var(--tc-inset-border);
+    border-radius: 0.5rem;
+    color: var(--color-ice);
+    background: var(--tc-surface-elevated);
+    font-size: 1rem;
+  }
+  .tc-reading-nav-mobile__controls select { width: 100%; padding: 0.5rem; }
+  .tc-reading-nav-mobile__controls button { display: grid; place-items: center; cursor: pointer; }
+  .tc-reading-nav-mobile__controls button:disabled { opacity: 0.4; cursor: default; }
+  .tc-reading-nav-mobile__controls :focus-visible { outline: 2px solid var(--tc-focus-ring); outline-offset: 2px; }
+  .tc-reading-nav-desktop .tc-reading-nav-link { min-height: 2.75rem; display: flex; align-items: center; font-size: 0.875rem; }
+  .tc-reading-nav-nested[hidden] { display: none; }
+  .tc-detail-back-to-top { width: auto; min-width: 4.5rem; padding: 0 0.85rem; gap: 0.35rem; font-size: 0.875rem; }
+  .place-overview__season-guide { font-size: 0.875rem; line-height: 1.65; color: var(--color-frost); margin: 0 0 1rem; }
+  .place-overview__season-precip { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem; margin: 0.7rem 0; padding-bottom: 0.6rem; border-bottom: 1px solid var(--tc-inset-border); font-size: 0.8125rem; color: var(--color-frost); }
+  .place-overview__season-precip strong { color: var(--color-ice); font-weight: 600; }
+  .map-btn--fit { flex-direction: column; gap: 0.15rem; font-size: 0.75rem; }
+  .tc-map-reading-key { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; padding: 0.1rem 0.25rem; color: var(--color-frost); font-size: 0.875rem; line-height: 1.5; }
+  .tc-map-reading-key strong { font-weight: 600; color: var(--color-ice); }
+}
+
+@layer components {
+  .tc-map-stage, #ranked-places { scroll-margin-top: 6rem; }
+  .tc-map-reading-key .btn-ghost { margin-left: auto; min-height: 2.75rem; font-size: 0.875rem; }
+  .tc-back-to-map {
+    position: fixed;
+    bottom: max(1.1rem, calc(0.65rem + env(safe-area-inset-bottom, 0px)));
+    right: 1rem;
+    z-index: 20;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    min-height: 2.875rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--tc-inset-border);
+    background: var(--tc-surface-elevated);
+    color: var(--color-ice);
+    box-shadow: 0 5px 20px -10px var(--color-frost);
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+  .tc-back-to-map:focus-visible { outline: 2px solid var(--tc-focus-ring); outline-offset: 3px; }
+  @media (max-width: 359px) { .tc-back-to-map > svg:nth-child(2) { display: none; } }
+}

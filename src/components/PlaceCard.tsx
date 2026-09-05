@@ -170,8 +170,8 @@ export const PlaceCard = memo(function PlaceCard({
 
   const toneRgb = TONE_RGB[tone] ?? TONE_RGB.ice;
   const rankingEvidenceNote = !compact && note ? prose(note) : null;
-  const rankingEvidenceCheck = !compact
-    ? liveFit?.cautions[0] ?? visualSignature?.verify.rationale ?? null
+  const rankingEvidenceCheck = !compact && screeningScores
+    ? liveFit?.cautions[0] ?? place.whoMightNot?.trim() ?? null
     : null;
   const describedBy = [
     rank != null && rankingLabel && rankingScore != null ? rankId : null,

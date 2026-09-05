@@ -2433,7 +2433,7 @@ export const AtlasMap = memo(function AtlasMap({
       {/* Zoom + interaction controls — all map-control affordances grouped in the
           top-right column. Scroll-escape toggle leads when touch can trap page
           scroll (coarse primary or hybrid fine+touch). */}
-      <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-[3]">
+      <div role="group" aria-label="Map navigation" className="map-navigation absolute top-3 right-3 flex flex-col items-end gap-1.5 z-[3]">
         {showScrollEscape ? (
           <button
             type="button"
@@ -2454,7 +2454,7 @@ export const AtlasMap = memo(function AtlasMap({
         </button>
         <button
           type="button"
-          className="map-btn"
+          className="map-btn map-btn--fit"
           data-map-control="fit-all"
           data-map-target="comfortable"
           onClick={reset}
@@ -2462,6 +2462,7 @@ export const AtlasMap = memo(function AtlasMap({
           aria-label={fitAllLabel}
         >
           <Maximize2 className="w-3.5 h-3.5" aria-hidden />
+          <span>Fit</span>
         </button>
         {topoError && !topo ? (
           <button
@@ -3005,6 +3006,7 @@ const Marker = memo(function Marker({
         <circle r={hitR} fill="transparent" stroke="none" pointerEvents="all" />
         {featuredRank ? (
           <g className="map-rank-halo" aria-hidden pointerEvents="none">
+            {(!crowded || isActive || isHover) ? <g className="map-rank-rings">
             <circle
               r={r + 13}
               fill="none"
@@ -3014,6 +3016,7 @@ const Marker = memo(function Marker({
               className={showOrbit ? "map-rank-halo__orbit" : undefined}
             />
             <circle r={r + 8.2} fill="rgba(255, 198, 96, 0.1)" stroke="rgba(255, 238, 190, 0.55)" strokeWidth={1.05} />
+            </g> : null}
             <g
               className="map-rank-badge"
               data-badge-fanned={badgeFanned ? "true" : "false"}

@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Compass, Plane, Home, UserMinus, ThermometerSun, GitCompare, Landmark, Mountain } from "lucide-react";
 import type { Place } from "../../types";
 import { composePlaceExperience } from "../../lib/place-overview";
-import { fmtTemp, useProse, useUnits } from "../../lib/units";
+import { fmtTemp, fmtPrecip, useProse, useUnits } from "../../lib/units";
 
 /**
  * Overview spotlight — the humanistic lead of every place dossier. Answers
@@ -20,7 +20,7 @@ export function PlaceOverviewSpotlight({
   seasonsAnchorId: string;
 }) {
   const prose = useProse();
-  const { temp } = useUnits();
+  const { temp, dist } = useUnits();
   const exp = useMemo(() => composePlaceExperience(place), [place]);
 
   return (
@@ -54,7 +54,7 @@ export function PlaceOverviewSpotlight({
           <ul className="place-overview__contrast-list">
             {exp.contrastItems.map((item, i) => (
               <li key={`${i}:${item.label}`}>
-                <div className="place-overview__contrast-label">{item.label}</div>
+                <div className="place-overview__contrast-label">{prose(item.label)}</div>
                 <p>{prose(item.note)}</p>
               </li>
             ))}
@@ -81,6 +81,7 @@ export function PlaceOverviewSpotlight({
 
       <div id={seasonsAnchorId} className="place-overview__seasons scroll-mt-28" aria-label="Season-by-season feel">
         <div className="place-overview__seasons-label">The year, season by season</div>
+        <p className="place-overview__season-guide">Highs and lows are averages across each three-month season, not extremes. Precipitation includes rain and the water equivalent of snow. Wet and dry seasons may tell you more than the calendar labels here.</p>
         <div className="place-overview__season-grid">
           {exp.seasons.map(season => (
             <article key={season.key} className="place-overview__season" data-tone={season.tone}>
@@ -95,6 +96,7 @@ export function PlaceOverviewSpotlight({
                   <span className="font-mono-num place-overview__season-low">{fmtTemp(season.lowC, temp)}</span>
                 </div>
               </header>
+              <div className="place-overview__season-precip"><span>Season precipitation</span><strong className="font-mono-num">{fmtPrecip(season.precipMm, dist)}</strong></div>
               <div className="place-overview__season-headline">{season.headline}</div>
               <p className="place-overview__season-detail">{prose(season.detail)}</p>
             </article>

@@ -51,6 +51,8 @@ export interface SeasonReading {
   highC: number;
   /** Mean daily low across the season (°C). */
   lowC: number;
+  /** Sum of the three monthly precipitation normals, in mm water equivalent. */
+  precipMm: number;
   /** Coarse warmth band — drives card tinting. */
   tone: SeasonTone;
   /** 2–4 word descriptor, e.g. "Hot & sun-baked". */
@@ -133,12 +135,12 @@ function toneForHigh(highC: number): SeasonTone {
 
 function dayPhrase(tone: SeasonTone): string {
   switch (tone) {
-    case "hot": return "Afternoons turn genuinely hot";
-    case "warm": return "Afternoons land warm and shirtsleeve-easy";
+    case "hot": return "Afternoons turn hot";
+    case "warm": return "Afternoons are warm";
     case "mild": return "Daytime is mild and open-window pleasant";
     case "cool": return "Days stay cool and brisk";
     case "cold": return "Days run cold";
-    case "frigid": return "Daylight barely climbs above freezing";
+    case "frigid": return "Daytime temperatures average near or below freezing";
   }
 }
 
@@ -157,6 +159,7 @@ interface SeasonConditions {
   wet: boolean;
   dry: boolean;
   humid: boolean;
+  dryAir: boolean;
   sunny: boolean;
   gray: boolean;
 }
@@ -172,6 +175,7 @@ function seasonConditions(
     wet: precipMean >= 95,
     dry: precipMean < 25,
     humid: humidityMean != null && humidityMean >= 70,
+    dryAir: humidityMean != null && humidityMean < 40,
     sunny: sunshineMean != null && sunshineMean >= 68,
     gray: sunshineMean != null && sunshineMean < 42,
   };
@@ -179,23 +183,23 @@ function seasonConditions(
 
 function weatherPhrase(c: SeasonConditions, precipMean: number, snowMean: number | null): string {
   let base: string;
-  if ((snowMean ?? 0) >= 28) base = "Heavy snow defines the season";
-  else if (c.snowy) base = "Snow is a regular part of the picture";
-  else if (precipMean < 18) base = "Skies stay mostly dry";
-  else if (precipMean < 45) base = "Rain passes through now and then";
-  else if (precipMean < 95) base = "Expect a healthy share of rain";
-  else base = "Rain is frequent and can be heavy";
+  if ((snowMean ?? 0) >= 28) base = "Snowfall totals are substantial";
+  else if (c.snowy) base = "Snowfall contributes to the seasonal picture";
+  else if (precipMean < 18) base = "Very little precipitation falls in an average month";
+  else if (precipMean < 45) base = "Monthly precipitation totals stay modest";
+  else if (precipMean < 95) base = "Monthly precipitation adds up to a moderate amount";
+  else base = "Monthly precipitation totals are substantial";
 
   // Snowy seasons read cleaner without sky/humidity tag-stacking.
   if (c.snowy) return base;
 
   const tags: string[] = [];
-  if (c.sunny) tags.push("under lots of sun");
-  else if (c.gray) tags.push("under often-gray skies");
-  if (c.humid) tags.push("in soft, humid air");
-  else if (c.dry) tags.push("with notably dry air");
+  if (c.sunny) tags.push("The sunshine record points to bright conditions");
+  else if (c.gray) tags.push("The sunshine record points to often-gray skies");
+  if (c.humid) tags.push("Relative humidity tends to be high");
+  else if (c.dryAir) tags.push("Relative humidity tends to be low");
 
-  return tags.length ? `${base} ${tags.join(", ")}` : base;
+  return [base, ...tags].join(". ");
 }
 
 const RISK_HUMAN: Record<string, string> = {
@@ -228,13 +232,12 @@ function seasonRiskPhrase(place: Place, key: SeasonKey): string | null {
 
   switch (best) {
     case "extremeHeat": return "Heat waves are the thing to plan around";
-    case "wildfire": return key === "summer" ? "Wildfire is the summer wildcard" : "Late-season fire risk lingers";
+    case "wildfire": return "Check local fire-season guidance when planning time in the surrounding landscape";
     case "smoke": return "Wildfire smoke can settle in for stretches";
-    case "extremeCold": return "Arctic outbreaks can still bite";
-    case "storm":
-      return key === "winter" ? "Winter storms roll through" : key === "summer" ? "Afternoon thunderstorms build often" : "Storm systems can be lively";
-    case "flood": return "Snowmelt and spring rain can swell rivers";
-    case "coastal": return "Tropical systems are a fall-season risk";
+    case "extremeCold": return "Cold spells can be much sharper than the seasonal averages";
+    case "storm": return "Storm exposure deserves a closer look in the local risk notes";
+    case "flood": return "Check local flood exposure before choosing a riverside route or home";
+    case "coastal": return "Check the local notes for coastal flooding and erosion exposure";
     default: return null;
   }
 }
@@ -248,14 +251,14 @@ function seasonHeadline(tone: SeasonTone, c: SeasonConditions): string {
     tone === "cold" ? "Cold" : "Frigid";
 
   let texture: string;
-  if (c.snowy) texture = "snow-blanketed";
+  if (c.snowy) texture = "snowy";
   else if (c.wet) texture = "wet";
   else if (c.gray) texture = "often gray";
-  else if (c.dry && (tone === "hot" || tone === "warm")) texture = "sun-baked";
+  else if (c.dry && c.sunny && (tone === "hot" || tone === "warm")) texture = "sun-filled";
   else if (c.dry) texture = "dry";
   else if (c.humid) texture = "humid";
   else if (c.sunny) texture = "sun-filled";
-  else texture = "settled";
+  else texture = "moderately wet";
 
   return `${toneAdj} & ${texture}`;
 }
@@ -344,6 +347,7 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
     glyph: def.glyph,
     highC,
     lowC,
+    precipMm: def.idx.reduce((total, month) => total + place.climate.precipMm[month], 0),
     tone,
     headline: seasonHeadline(tone, conditions),
     detail: useAuthored ? authoredDetail! : sentences.join(" "),
@@ -365,18 +369,15 @@ function winterWord(janLowC: number): string {
   return "warm";
 }
 
-function airWord(place: Place): string {
+function airWord(place: Place): string | null {
   const humidity = meanAnnualHumidityPct(place);
   if (humidity != null) {
     if (humidity >= 74) return "humid";
     if (humidity >= 60) return "moderately humid";
-    if (humidity >= 46) return "balanced";
-    return "dry and clear";
+    if (humidity >= 46) return "moderately humid";
+    return "relatively dry";
   }
-  const k = place.koppen.trim().toUpperCase();
-  if (k.startsWith("B")) return "dry and clear";
-  if (k.startsWith("A")) return "humid";
-  return "balanced";
+  return null;
 }
 
 function deriveFeelLine(place: Place): string {
@@ -386,13 +387,11 @@ function deriveFeelLine(place: Place): string {
   const driverId = place.drivers[0];
   const driverLabel = driverId ? driverPlain(driverId) : null;
   const shapeClause = driverLabel ? `, shaped mainly by ${driverLabel}` : "";
-  const easyClause =
-    easy >= 12 ? `Nearly every month feels easy to be outside`
-    : easy >= 9 ? `Most of the year — about ${easy} months in 12 — feels easy to be outside`
-    : easy >= 5 ? `Roughly ${easy} of the year's 12 months feel easy to be outside`
-    : easy >= 2 ? `Only about ${easy} months a year feel truly easy to be outside`
-    : `Genuine outdoor comfort is a short window here — barely ${easy} month${easy === 1 ? "" : "s"} a year`;
-  return `${easyClause}. Summers run ${summerWord(sh)}, winters ${winterWord(jl)}, and the air tends ${airWord(place)}${shapeClause}.`;
+  const air = airWord(place);
+  const easyClause = `Monthly averages suggest ${easy} of 12 months may feel easy to be outside on the atlas comfort screen`;
+  const airClause = air ? `, with ${air} air` : "";
+  return `${easyClause}. Summers run ${summerWord(sh)} and winters ${winterWord(jl)}${airClause}${shapeClause}.`;
+
 }
 
 /** Cadence-only travel tags ("year-round", "summer") don't read as draws. */
