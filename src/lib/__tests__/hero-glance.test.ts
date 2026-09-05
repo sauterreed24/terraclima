@@ -44,6 +44,11 @@ describe("hero glance", () => {
     expect(precipHeroLabel(dry)).toBe("Yearly rain");
   });
 
+  it("does not label missing snowfall evidence as rain-only", () => {
+    expect(precipHeroLabel(makePlace({ climate: makeClimate({ snowCm: undefined }) }))).toBe("Precipitation");
+    expect(precipHeroLabel(makePlace({ climate: makeClimate({ snowCm: [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }) }))).toBe("Rain & snow");
+  });
+
   it("serves Sequim sunshine on the first-page quartet", () => {
     const sequim = fourthHeroStat(PLACES_BY_ID["sequim-wa"]);
     expect(sequim.kind).toBe("sunshine");

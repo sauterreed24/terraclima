@@ -17,6 +17,7 @@ export function PlaceBackToTop({ panelRef }: { panelRef: { current: HTMLElement 
   useEffect(() => {
     const el = panelRef.current;
     if (!el) return;
+    let frame = 0;
     let ticking = false;
     const update = () => {
       ticking = false;
@@ -25,11 +26,14 @@ export function PlaceBackToTop({ panelRef }: { panelRef: { current: HTMLElement 
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
-      window.requestAnimationFrame(update);
+      frame = window.requestAnimationFrame(update);
     };
     update();
     el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      window.cancelAnimationFrame(frame);
+    };
   }, [panelRef]);
 
   const onClick = useCallback(() => {
@@ -49,6 +53,7 @@ export function PlaceBackToTop({ panelRef }: { panelRef: { current: HTMLElement 
       title={label}
     >
       <ArrowUp className="w-4 h-4" aria-hidden />
+      <span>Top</span>
     </button>
   );
 }

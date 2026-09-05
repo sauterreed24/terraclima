@@ -28,8 +28,9 @@ export function sunshineDisplayValue(place: Place): string {
 
 export function precipHeroLabel(place: Place): string {
   const snow = place.climate.snowCm;
-  const annualSnowCm = snow?.reduce((sum, value) => sum + value, 0) ?? 0;
-  return annualSnowCm >= 25 ? "Rain & snow" : "Yearly rain";
+  // Missing snowfall observations do not establish that precipitation is rain.
+  if (!snow) return "Precipitation";
+  return snow.some(value => value > 0) ? "Rain & snow" : "Yearly rain";
 }
 
 export type HeroFourthKind = "sunshine" | "humidity" | "frost-free" | "hardiness" | "biome";

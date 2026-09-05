@@ -1,5 +1,6 @@
 import { lazy, memo, startTransition, Suspense, useCallback, useDeferredValue, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Compass, Eye, Globe2, HelpCircle, Home, Library, Link2, Map, Menu, MoreHorizontal, Route, Search, ShieldAlert, Shuffle, Snowflake, Sparkles, Target, X, type LucideIcon } from "lucide-react";
+import { ExplorerBackToMap } from "./components/ExplorerBackToMap";
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
@@ -1631,6 +1632,9 @@ export default function App() {
 
                 <div
                   ref={mapStageRef}
+                  tabIndex={-1}
+                  role="region"
+                  aria-label="Atlas map section"
                   className="tc-map-stage relative h-[clamp(320px,50svh,560px)] md:h-[54dvh] md:min-h-[min(480px,46dvh)]"
                   aria-busy={resultsPending || undefined}
                   data-pending={resultsPending || undefined}
@@ -1660,6 +1664,20 @@ export default function App() {
                     onMapEngaged={engageMapFirstChrome}
                   />
                 </div>
+
+                <div className="tc-map-reading-key" role="note" aria-label="Map symbol guide">
+                  <span><strong>Numbered circles</strong> group nearby places.</span>
+                  <span><strong>Gold numbers</strong> mark the current top five.</span>
+                  <span>Open a group to explore; Fit restores the full view.</span>
+                  <button type="button" className="btn-ghost" disabled={ranked.length === 0}
+                    onClick={() => {
+                      const results = document.getElementById("ranked-places");
+                      results?.focus({ preventScroll: true });
+                      results?.scrollIntoView({ block: "start", behavior: prefersReducedMotion() ? "auto" : "smooth" });
+                    }}>Browse places ↓</button>
+                </div>
+
+                <ExplorerBackToMap mapRef={mapStageRef} />
 
                 <PinnedAndRecentRails
                   bookmarkIds={bookmarkIds}
@@ -1833,6 +1851,8 @@ export default function App() {
                   </div>
                 ) : (
                   <section
+                    id="ranked-places"
+                    tabIndex={-1}
                     className="flex flex-col gap-3 min-w-0"
                     aria-labelledby="ranked-places-heading"
                     aria-busy={resultsPending || undefined}

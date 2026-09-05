@@ -180,3 +180,42 @@ describe("composePlaceExperience", () => {
     expect(authored.authored).toBe(true);
   });
 });
+
+
+describe("seasonal evidence boundaries", () => {
+  it("keeps seasonal precipitation in agreement with all 226 monthly records", () => {
+    for (const place of PLACES) {
+      const seasons = composePlaceExperience(place).seasons;
+      expect(seasons.reduce((total, season) => total + season.precipMm, 0), place.id)
+        .toBeCloseTo(place.climate.precipMm.reduce((total, month) => total + month, 0), 7);
+    }
+    const base = PLACES_BY_ID["sequim-wa"];
+    expect(composePlaceExperience(base).seasons[0]!.precipMm)
+      .toBeCloseTo(base.climate.precipMm[11] + base.climate.precipMm[0] + base.climate.precipMm[1], 7);
+  });
+
+  it("does not infer dry air or sunshine from low precipitation", () => {
+    const base = PLACES_BY_ID["sequim-wa"];
+    const dry = Array(12).fill(5) as typeof base.climate.precipMm;
+    const reading = composePlaceExperience({ ...base, experience: undefined,
+      climate: { ...base.climate, precipMm: dry, humidity: undefined, sunshinePct: undefined, snowCm: undefined },
+    });
+    for (const season of reading.seasons) {
+      expect(season.detail).not.toMatch(/dry air|humidity tends to be low|lots of sun|sunshine record/);
+      expect(season.headline).not.toMatch(/sun-baked|sun-filled/);
+    }
+  });
+
+  it("does not infer rain frequency, lasting snow cover, or tropical storms from aggregate fields", () => {
+    const base = PLACES_BY_ID["sequim-wa"];
+    const high = Array(12).fill(150) as typeof base.climate.precipMm;
+    const reading = composePlaceExperience({ ...base, experience: undefined,
+      climate: { ...base.climate, precipMm: high, snowCm: undefined },
+      risks: { ...base.risks, coastal: { level: "high", note: "Coastal erosion" } },
+    });
+    for (const season of reading.seasons) {
+      expect(season.detail).not.toMatch(/Rain is frequent|thunderstorms build often|Tropical systems/);
+      expect(season.headline).not.toContain("snow-blanketed");
+    }
+  });
+});

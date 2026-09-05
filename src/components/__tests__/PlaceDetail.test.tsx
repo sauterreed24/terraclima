@@ -268,7 +268,7 @@ describe("PlaceDetail header accessibility", () => {
     expect(close).toHaveAttribute("title", "Close profile");
   });
 
-  it("describes horizontally scrollable dossier navigation strips", () => {
+  it("exposes the mobile section picker and describes the field-dossier strip", () => {
     const place = PLACES_BY_ID["sequim-wa"];
     expect(place).toBeTruthy();
 
@@ -278,8 +278,8 @@ describe("PlaceDetail header accessibility", () => {
       </UnitProvider>,
     );
 
-    const mobileReadingNav = document.querySelector(".tc-reading-nav-mobile");
-    expect(mobileReadingNav).toHaveAccessibleDescription("Swipe or scroll horizontally to browse more dossier chapters.");
+    expect(screen.getByRole("combobox", { name: "On this page" })).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "Evidence", exact: true })).toBeInTheDocument();
     expect(screen.getByLabelText("Jump within field dossier")).toHaveAccessibleDescription(
       "Swipe or scroll horizontally to browse more field dossier chapters.",
     );
@@ -305,8 +305,8 @@ describe("PlaceDetail header accessibility", () => {
     expect(chapterLinks.length).toBeGreaterThanOrEqual(1);
     fireEvent.click(chapterLinks[0]);
 
-    expect(screen.getAllByRole("link", { name: "Decision lens" })).toHaveLength(2);
-    expect(document.querySelector(".tc-reading-nav-mobile a[href='#pd-residency-brief']")).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: "Decision lens" })).toHaveLength(1);
+    expect(screen.getByRole("option", { name: "Decision lens" })).toHaveValue("pd-residency-brief");
     expect(document.querySelector(".tc-reading-nav-desktop a[href='#pd-residency-brief']")).toBeInTheDocument();
   });
 

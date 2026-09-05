@@ -69,7 +69,7 @@ export function computeBestMonths(place: Place, displayTemp: TempUnit = "F"): Be
       label: "Gardening window",
       glyph: "\u{1F331}",
       range: gardenRange,
-      note: "Mild highs, nights above frost — safe for most annual vegetables.",
+      note: "Mild average highs and lows suggest a gardening window. Check local frost dates, crop needs, and water availability.",
     });
   }
 

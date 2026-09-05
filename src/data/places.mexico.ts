@@ -24,7 +24,7 @@ export const PLACES_MEXICO: Place[] = [
     archetypes: ["eternal-spring-highland", "monsoon-edge", "volcanic-upland"],
     drivers: ["elevation-lapse-rate", "monsoon-lift", "aspect-slope"],
 
-    summaryShort: "A cultural capital where elevation produces almost year-round spring — highs in the low-to-mid 20s month after month.",
+    summaryShort: "A cultural capital in a high valley, with warm dry-season afternoons, cooler nights, and summer rains over the surrounding sierras.",
     summaryImmersive: "At 1555 m in the central valleys of Oaxaca, the city sits at exactly the elevation where subtropical heat yields to temperate comfort. Afternoons hover near 22–26 °C for most of the year; summer nights often sit 14–18 °C, while winter nights can dip near 3–8 °C. The dry season stretches from November through May — golden light, crisp mornings, brilliant skies. The wet season arrives in June with afternoon thunderstorms that build over the surrounding sierras and roll across the valleys, usually dissipating by evening. In ten months of the year you can reasonably plan to eat outdoors. The valleys run east-west, funneling moisture from the Isthmus of Tehuantepec, and the encircling sierras rise over 3000 m, producing pronounced orographic enhancement of summer rainfall. It's a climate shaped by altitude, monsoon geometry, and the sheltering mass of Mexico's great southern ranges.",
     whyDistinct: "Tropical latitude (17°N) combined with 1555 m elevation produces a climate that is effectively 'perpetual spring.' The surrounding sierras both protect the valleys from Gulf/Pacific moisture extremes and enhance convective rainfall in the wet season.",
 
@@ -529,12 +529,12 @@ export const PLACES_MEXICO: Place[] = [
     summaryImmersive: "Pátzcuaro's climate is shaped by altitude and by the great lake at its center. Daytime highs hover in the low-to-mid 20s year-round; nights cool into the single digits in winter, low teens in summer. The wet season brings afternoon storms that build on the volcanic rim and roll across the lake. The Meseta Tarasca — the Purépecha highlands — remains one of the most culturally vibrant and climatically mild regions in Mexico.",
     whyDistinct: "Highland volcanic plateau + large lake moderation + orographic rainfall enhancement from surrounding peaks.",
     experience: {
-      feel: "Pátzcuaro feels like a cool, sacred highland that barely changes. At 2,140 m around its great lake, daytime highs sit in the low-to-mid 20s essentially all year, the Purépecha villages ringing the water, and the volcanic rim catching the afternoon storms of the wet season.",
+      feel: "Cool mornings, warm plazas, and a green volcanic rim give Pátzcuaro its highland rhythm. The dry spring is warmer than the summer rainy season; the difference between sun and shade can matter as much as the month on the calendar.",
       seasons: {
-        winter: "Dry-season bright and crisp — afternoons near 21°C, mornings dropping into the single digits, and clear highland light over the lake.",
-        spring: "The warmest, driest stretch — afternoons near 26°C, dusty and bright, the lake basin waiting for the rains to break the heat.",
-        summer: "Mild and green under the wet season — afternoons in the low 20s, storms building on the volcanic rim and rolling across the lake, then clearing by evening.",
-        autumn: "Rains tapering into golden light — mild afternoons near 22°C, the countryside lush, and Day of the Dead drawing the lake villages together.",
+        winter: "The dry season brings cool mornings and warm afternoon sun. A layer that feels necessary on an early walk may come off by lunchtime; sheltered streets and exposed lakeshore paths can feel quite different.",
+        spring: "The warmest, driest stretch arrives before the summer rains. Exposed paths become dusty and shade is welcome on the plaza, while nights still bring relief from the afternoon warmth.",
+        summer: "Summer rain greens the volcanic slopes and lowers average afternoon temperatures from the spring peak. Plan lake and hillside outings around the daily forecast; seasonal totals cannot tell you which afternoon will be wet.",
+        autumn: "Rain eases through the season and mornings grow cooler. The green left by summer lingers into the approach to Día de Muertos, when family remembrance gives the lake villages a different rhythm.",
       },
       travelerFit: "Visitors come for the lake and Purépecha villages, the famous Day of the Dead vigils on Janitzio, and the cool highland pace.",
       residentFit: "It rewards culture-seekers and quiet-living highlanders who want mild, lake-tempered weather and a deeply rooted Indigenous landscape.",
@@ -566,7 +566,7 @@ export const PLACES_MEXICO: Place[] = [
       ],
     },
     relocationFit: ["cultural immersion", "highland dreamers"], travelFit: ["Día de Muertos", "lake villages"],
-    whoWouldLove: "Those drawn to Purépecha culture and highland water.", whoMightNot: "Heat-seekers.",
+    whoWouldLove: "Those drawn to Purépecha culture and highland water.", whoMightNot: "People seeking tropical warmth or big-city services; check neighborhood water access, drainage, and the condition of older homes.",
     confidence: "high",
     confidenceNotes: "This high-confidence profile is grounded in SMN/CONAGUA, INEGI lake-basin context, and strong lived settlement anchors; lake health, drainage, and neighborhood water access still need local checks.",
     deepSections: [
@@ -596,6 +596,8 @@ export const PLACES_MEXICO: Place[] = [
       },
     ],
     citations: [
+      { label: "INAH — Pátzcuaro history and urban heritage", kind: "other", url: "https://lugares.inah.gob.mx/es/node/4803" },
+      { label: "INAH — Tzintzuntzan and the Purépecha lake basin", kind: "other", url: "https://lugares.inah.gob.mx/es/node/5548" },
       { label: "SMN — Pátzcuaro station", kind: "smn", url: "https://smn.conagua.gob.mx/es/climatologia/informacion-climatologica/normales-climatologicas-por-estado" },
       { label: "INECC — Mexico climate vulnerability context", kind: "inecc", url: "https://www.gob.mx/inecc" },
       { label: "INEGI digital map — Michoacán lake basin and relief", kind: "inegi", url: "https://www.inegi.org.mx/app/mapas/" },
