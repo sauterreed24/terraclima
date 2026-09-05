@@ -33,3 +33,11 @@ Run `npm run quality:check` and the documented browser/map suites before release
 The published Most comfortable view was inspected in light and dark themes. Map-to-profile opening, section jumps, return-to-top, empty search, recovery, and Celsius switching were exercised on that published baseline. This is not a visual test of the patch.
 
 The cloud browser explicitly blocked the local preview URL by security policy. No alternate local browser route was used. Responsive rendering, touch gestures, and visual verification of the changed build remain release requirements; do not describe them as passed on the strength of DOM tests alone.
+
+## Independent follow-up review
+
+The GitHub Quality and Browser smoke logs were independently inspected for revision `1b3b0f2`; both passed. The browser run exercised five explorer viewport sizes plus dossier, comparison, and map samples. No manual visual or physical-device touch pass is implied by that result.
+
+Reviewing the final composed profiles exposed older claims in the Driggs and Oaxaca introductory layers that the initial edits had missed. Driggs's remaining closed-basin and routine extreme-cold claims were removed, including the outdated winter morning figure. Oaxaca's overview, explanation, and fit text now acknowledge spring heat, cooler nights, and summer rain instead of promising perpetual spring. A regression check reads the final composed profiles so later overlays cannot silently restore these contradictions. Climate arrays remain unchanged.
+
+The [NWS explanation of inversions](https://www.weather.gov/source/zhu/ZHU_Training_Page/Miscellaneous/inversion/inversion.html) supports the distinction between valley-floor cooling and temperatures aloft. The local narrative corrections are checked against the app's final monthly climate record; they do not add new extreme-temperature or storm-timing estimates.

@@ -183,6 +183,21 @@ describe("composePlaceExperience", () => {
 
 
 describe("seasonal evidence boundaries", () => {
+  it("keeps corrected location claims consistent after all corpus and story overlays", () => {
+    const driggs = PLACES_BY_ID["driggs-id"];
+    const driggsReading = composePlaceExperience(driggs);
+    const driggsText = JSON.stringify([driggs.summaryImmersive, driggs.whyDistinct, driggsReading]);
+    expect(driggsText).not.toMatch(/closed (?:bowl|basin)|no outlet|without even a cold snap|mornings near −15/);
+    expect(driggsReading.feelLine).toMatch(/valley/i);
+
+    const oaxaca = PLACES_BY_ID["oaxaca-mx"];
+    const oaxacaReading = composePlaceExperience(oaxaca);
+    const oaxacaText = JSON.stringify([oaxaca.summaryImmersive, oaxaca.whyDistinct, oaxacaReading]);
+    expect(oaxacaText).not.toMatch(/22(?:–| to )26|low-to-mid 20s|perpetual spring|calendar barely moves/);
+    expect(Math.max(...oaxaca.climate.tempHighC)).toBeGreaterThan(29);
+    expect(oaxacaReading.feelLine).toContain("Spring");
+  });
+
   it("keeps seasonal precipitation in agreement with all 226 monthly records", () => {
     for (const place of PLACES) {
       const seasons = composePlaceExperience(place).seasons;

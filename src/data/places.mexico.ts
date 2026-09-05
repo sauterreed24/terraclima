@@ -25,20 +25,20 @@ export const PLACES_MEXICO: Place[] = [
     drivers: ["elevation-lapse-rate", "monsoon-lift", "aspect-slope"],
 
     summaryShort: "A cultural capital in a high valley, with warm dry-season afternoons, cooler nights, and summer rains over the surrounding sierras.",
-    summaryImmersive: "At 1555 m in the central valleys of Oaxaca, the city sits at exactly the elevation where subtropical heat yields to temperate comfort. Afternoons hover near 22–26 °C for most of the year; summer nights often sit 14–18 °C, while winter nights can dip near 3–8 °C. The dry season stretches from November through May — golden light, crisp mornings, brilliant skies. The wet season arrives in June with afternoon thunderstorms that build over the surrounding sierras and roll across the valleys, usually dissipating by evening. In ten months of the year you can reasonably plan to eat outdoors. The valleys run east-west, funneling moisture from the Isthmus of Tehuantepec, and the encircling sierras rise over 3000 m, producing pronounced orographic enhancement of summer rainfall. It's a climate shaped by altitude, monsoon geometry, and the sheltering mass of Mexico's great southern ranges.",
-    whyDistinct: "Tropical latitude (17°N) combined with 1555 m elevation produces a climate that is effectively 'perpetual spring.' The surrounding sierras both protect the valleys from Gulf/Pacific moisture extremes and enhance convective rainfall in the wet season.",
+    summaryImmersive: "At about 1555 m in the central valleys of Oaxaca, elevation brings cooler nights than the tropical latitude alone would suggest. The year has a distinct rhythm: dry winter mornings, hotter spring afternoons, then summer rain that greens the surrounding hills. A shaded courtyard and an exposed archaeological site can feel very different on the same day. Plan longer walks around the heat and use the daily forecast for wet-season outings. The city is a starting point for understanding the wider valleys: elevation, slope, shelter, and the built environment all matter beyond the monthly averages. Markets, plazas, and nearby craft communities give that changing landscape a human scale.",
+    whyDistinct: "Elevation moderates the warmth of Oaxaca’s tropical latitude, while the surrounding sierras and the seasonal arrival of moisture shape its wet and dry seasons. Spring heat and cooler nights both matter when comparing the city with lower valleys and higher villages.",
 
     experience: {
-      feel: "Oaxaca feels like the calendar barely moves. At 1,555 m the city sits exactly where subtropical heat yields to temperate ease — afternoons near 22 to 26°C month after month, golden dry-season light most of the year, and ten months when eating outdoors is simply the default.",
+      feel: "Oaxaca pairs warm plazas and shaded courtyards with nights that cool at high-valley elevation. Spring brings the strongest afternoon heat; summer rain changes the pace and greens the hills. The season, shade, and time of day all shape how comfortable a walk feels.",
       seasons: {
         winter: "The heart of the dry season — warm, brilliant afternoons near 25°C, crisp mornings dipping toward 8°C, and skies so clear the surrounding sierras stand sharp on the horizon.",
         spring: "The warmest, driest stretch before the rains — afternoons climbing near 30°C through April and May, dusty and bright, the valleys waiting for the first storms to break the heat.",
-        summer: "The wet-season rhythm sets in: warm mornings give way to afternoon thunderstorms that build over the sierras and clear by evening, holding highs near a comfortable 25°C and greening the whole valley.",
+        summer: "Summer rain greens the valleys, while average afternoon temperatures ease from the spring peak. Warm days and milder nights still call for attention to shade and ventilation; plan exposed outings around the daily forecast rather than assuming every storm will clear by evening.",
         autumn: "Rains taper through September and October back into golden dry-season light — mild afternoons near 25°C, freshening nights, and the valleys at their most lush before the dust returns.",
       },
-      travelerFit: "Visitors come for the food and mezcal, Monte Albán and the craft villages, and Day of the Dead — all under a near-perfect highland sky.",
-      residentFit: "It rewards remote workers, retirees, and culture-seekers who want perpetual spring, deep food and arts traditions, and a walkable historic core.",
-      texture: "An exceptionally easy climate; the things to weigh are lived rather than meteorological — altitude, water reliability, and the pressures that come with a fast-growing visitor economy.",
+      travelerFit: "Visitors come for food and mezcal, Monte Albán, craft villages, and Día de Muertos. Plan time in the plazas and surrounding valleys around the season’s heat and rain.",
+      residentFit: "It rewards people drawn to food and arts traditions and a walkable historic core, with cooler nights than lower tropical cities. Compare neighborhoods for shade, ventilation, services, and water reliability.",
+      texture: "The climate offers warm days and cooler nights, with spring heat and summer rain to plan around. Altitude, water reliability, housing conditions, and the pressures of a growing visitor economy deserve attention alongside the seasonal averages.",
     },
 
     climate: {

@@ -1634,11 +1634,11 @@ export const PLACES_USA: Place[] = [
     drivers: ["cold-air-drainage", "inversion", "elevation-lapse-rate"],
     summaryShort: "One of the coldest winter basins in the lower 48 — by topographic design.",
     summaryImmersive: "Teton Valley is a lesson in cold-air pooling written in capital letters. Enclosed by the Tetons to the east and the Big Hole Mountains west, dense cold air can collect on the basin floor on clear, calm winter nights. Cold spells can be much sharper than the monthly averages, so those averages should not be read as a lower temperature limit. Daytime sun partially warms the valley, but inversions can linger for days, leaving the basin floor a gray freezer while Grand Targhee, 1000 m higher, bakes in February sunshine. Summers are glorious — mild, dry, and long-lit — with July highs in the mid-20s and wildflower meadows that rival anywhere in the Rockies.",
-    whyDistinct: "Cold air drains off the Tetons and Big Hole range into a closed basin; there is no outlet for it to escape. Winter inversions are among the most reliable in North America.",
+    whyDistinct: "Cold air drains from the Tetons and Big Hole Mountains and can pool on the valley floor during clear, calm weather. Winter inversions can leave the low ground colder than nearby slopes; the strength and duration depend on the weather pattern.",
     experience: {
-      feel: "Driggs feels like the cold-air bottom of the Tetons. On the quiet back side of the range the valley is a closed bowl, so still winter nights pour dense cold onto the floor — −30°C without even a cold snap — while summers turn glorious: mild, dry, long-lit, and wildflowered.",
+      feel: "Driggs sits on the floor of Teton Valley, where clear, calm winter nights can gather cold air below the surrounding slopes. Summer changes the rhythm: warm afternoons, cool evenings, and long daylight invite time outside, while the mountains keep their own weather.",
       seasons: {
-        winter: "Reliably, architecturally cold — afternoons struggling near freezing, mornings near −15°C and often far colder as the basin pools air, with deep snow and inversions that can gray the valley for days while the ski hill above bakes in sun.",
+        winter: "Winter brings cold mornings and afternoons that average near freezing. On clear, calm days an inversion can leave the valley floor colder than the slopes above; check the forecast for the elevation you will actually visit.",
         spring: "Late and muddy — snow lingers through April, afternoons finally climbing through the teens, and the Tetons holding white well into the green-up.",
         summer: "The payoff season — warm, dry afternoons near 26°C, cool nights, endless evening light, and wildflower meadows that rival anywhere in the Rockies.",
         autumn: "Short, crisp, and golden — aspens turning under the peaks, frosty mornings arriving early, and the first snows dusting the high country by October.",
