@@ -17,7 +17,7 @@ export const Footer = memo(function Footer() {
         <div className="flex items-center gap-3">
           <Layers className="w-3.5 h-3.5" />
           <span>
-            Terraclima is a curated atlas, not a live weather, appraisal, or parcel feed. Current climate uses Daymet V4 R1 rolling normals ({CLIMATE_NORMALS_PERIOD}; not a WMO standard normal), with {CLIMATE_WMO_NORMALS_PERIOD} as the official comparison period. NOAA, ECCC, and SMN station products validate the grid. Geospatial screening uses consistent terrain-climate logic, Sentinel-2 and Landsat reference families, and a relief-texture proxy; every score points back to place notes, sources, and confidence.
+            Terraclima is a curated atlas, not a live weather, appraisal, or parcel feed. Current climate uses Daymet V4 R1 rolling normals ({CLIMATE_NORMALS_PERIOD}; not a WMO standard normal), with {CLIMATE_WMO_NORMALS_PERIOD} as the official comparison period. NOAA, ECCC, and SMN are reference sources; independent station validation of these grid estimates is still pending. Geospatial screening uses consistent terrain-climate logic, Sentinel-2 and Landsat reference families, and a relief-texture proxy; every score points back to place notes, sources, and confidence.
           </span>
         </div>
         <div className="flex items-center gap-3">

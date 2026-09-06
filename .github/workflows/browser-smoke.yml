@@ -45,6 +45,11 @@ jobs:
           TC_BASE_URL: http://127.0.0.1:4173
           TC_BROWSER_ARTIFACT_DIR: playtest-browser-artifacts
         run: npm run playtest:browser
+      - name: Field guide navigation and data scope
+        env:
+          TC_BASE_URL: http://127.0.0.1:4173
+          TC_FIELD_GUIDE_ARTIFACT_DIR: playtest-browser-artifacts/field-guide
+        run: npm run playtest:field-guide
       - name: Upload artifacts on failure
         if: failure()
         uses: actions/upload-artifact@v4

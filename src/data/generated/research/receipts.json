@@ -1026,7 +1026,7 @@
         {
           "id": "anchorage-ak-src-gnis-or-census",
           "title": "U.S. place identity — Anchorage, Alaska",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -1555,7 +1555,7 @@
         {
           "id": "apalachicola-fl-src-gnis-or-census",
           "title": "U.S. place identity — Apalachicola, Florida",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -1613,9 +1613,9 @@
           "id": "apalachicola-fl-src-lived-1",
           "title": "NOAA — Hurricane Michael summary",
           "publisher": "Lived indicator source",
-          "url": "https://www.ncei.noaa.gov/access/monitoring/monthly-report/hurricane/201810",
+          "url": "https://www.nhc.noaa.gov/data/tcr/AL142018_Michael.pdf",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -2029,7 +2029,7 @@
         {
           "id": "asheville-nc-src-gnis-or-census",
           "title": "U.S. place identity — Asheville, North Carolina",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -2088,18 +2088,18 @@
           "id": "asheville-nc-src-lived-1",
           "title": "Mission Hospital — Asheville",
           "publisher": "Lived indicator source",
-          "url": "https://www.missionhealth.org/location-hub/mission-hospital/",
+          "url": "https://www.missionhealth.org/locations/mission-hospital",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
           "id": "asheville-nc-src-lived-2",
-          "title": "City of Asheville — hazard mitigation context",
+          "title": "City of Asheville — emergency preparedness",
           "publisher": "Lived indicator source",
-          "url": "https://www.ashevillenc.gov/department/community_resilience/hazard_mitigation/",
+          "url": "https://www.ashevillenc.gov/service/prepare-for-an-emergency/",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -2514,7 +2514,7 @@
         {
           "id": "ashland-or-src-gnis-or-census",
           "title": "U.S. place identity — Ashland, Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -3003,7 +3003,7 @@
         {
           "id": "astoria-or-src-gnis-or-census",
           "title": "U.S. place identity — Astoria, Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -3466,7 +3466,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for atlin-lake-bc",
           "geography": "region"
         },
@@ -3502,9 +3502,9 @@
           "id": "atlin-lake-bc-src-cite-2",
           "title": "Natural Resources Canada topographic context",
           "publisher": "OTHER",
-          "url": "https://natural-resources.canada.ca/maps-tools-and-publications/maps",
+          "url": "https://natural-resources.canada.ca/maps-tools-publications/maps/atlas-canada",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -3910,7 +3910,7 @@
         {
           "id": "austin-tx-src-gnis-or-census",
           "title": "U.S. place identity — Austin, Texas",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -3968,18 +3968,18 @@
           "id": "austin-tx-src-lived-1",
           "title": "City of Austin — housing and planning",
           "publisher": "Lived indicator source",
-          "url": "https://www.austintexas.gov/department/housing-and-planning",
+          "url": "https://www.austintexas.gov/housing/austin-housing",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
           "id": "austin-tx-src-lived-2",
           "title": "Central Texas hospitals — Ascension Seton",
           "publisher": "Lived indicator source",
-          "url": "https://healthcare.ascension.org/Locations/Texas/AUSTN/AUSTN/seton-medical-center-austin",
+          "url": "https://healthcare.ascension.org/locations/texas/txaus/austin-ascension-seton-medical-center-austin",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -4905,7 +4905,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for baie-saint-paul-qc",
           "geography": "region"
         },
@@ -4941,9 +4941,9 @@
           "id": "baie-saint-paul-qc-src-cite-2",
           "title": "AAFC Canadian Soil Information Service — Soil Landscapes of Canada",
           "publisher": "OTHER",
-          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/",
+          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -5377,7 +5377,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for banff-ab",
           "geography": "region"
         },
@@ -5861,7 +5861,7 @@
         {
           "id": "bar-harbor-me-src-gnis-or-census",
           "title": "U.S. place identity — Bar Harbor, Maine",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -6310,7 +6310,7 @@
         {
           "id": "beverly-shores-in-src-gnis-or-census",
           "title": "U.S. place identity — Beverly Shores, Indiana",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -6743,7 +6743,7 @@
         {
           "id": "bishop-ca-src-gnis-or-census",
           "title": "U.S. place identity — Bishop, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -7252,7 +7252,7 @@
         {
           "id": "bismarck-nd-src-gnis-or-census",
           "title": "U.S. place identity — Bismarck, North Dakota",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -7685,7 +7685,7 @@
         {
           "id": "black-mountain-nc-src-gnis-or-census",
           "title": "U.S. place identity — Black Mountain, North Carolina",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -8185,7 +8185,7 @@
         {
           "id": "block-island-ri-src-gnis-or-census",
           "title": "U.S. place identity — New Shoreham, Rhode Island",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -8634,7 +8634,7 @@
         {
           "id": "boone-nc-src-gnis-or-census",
           "title": "U.S. place identity — Boone, North Carolina",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -9095,7 +9095,7 @@
         {
           "id": "borrego-springs-ca-src-gnis-or-census",
           "title": "U.S. place identity — Borrego Springs, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -9153,9 +9153,9 @@
           "id": "borrego-springs-ca-src-lived-1",
           "title": "San Diego County — Borrego Springs community plan",
           "publisher": "Lived indicator source",
-          "url": "https://www.sandiegocounty.gov/content/sdc/pds/borrego-springs.html",
+          "url": "https://www.sandiegocounty.gov/content/sdc/pds/gpupdate/comm/borrego.html",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -9569,7 +9569,7 @@
         {
           "id": "boulder-co-src-gnis-or-census",
           "title": "U.S. place identity — Boulder, Colorado",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -9618,9 +9618,9 @@
           "id": "boulder-co-src-cite-2",
           "title": "City of Boulder — climate and hazard planning",
           "publisher": "OTHER",
-          "url": "https://bouldercolorado.gov/services/climate",
+          "url": "https://bouldercolorado.gov/future-climate-action",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -9643,11 +9643,11 @@
         },
         {
           "id": "boulder-co-src-lived-2",
-          "title": "UCHealth — Foothills Hospital",
+          "title": "Boulder Community Health — Foothills Hospital",
           "publisher": "Lived indicator source",
-          "url": "https://www.uchealth.org/locations/uchealth-foothills-hospital/",
+          "url": "https://www.bch.org/locations/foothills-hospital/",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -10062,7 +10062,7 @@
         {
           "id": "bozeman-mt-src-gnis-or-census",
           "title": "U.S. place identity — Bozeman, Montana",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -10109,11 +10109,11 @@
         },
         {
           "id": "bozeman-mt-src-cite-2",
-          "title": "City of Bozeman — housing and growth",
+          "title": "City of Bozeman — community housing plans and resources",
           "publisher": "OTHER",
-          "url": "https://www.bozeman.net/government/community-development/housing",
+          "url": "https://www.bozeman.net/home/showpublisheddocument/13887/638418776919470000",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -10545,7 +10545,7 @@
         {
           "id": "broken-bow-ok-src-gnis-or-census",
           "title": "U.S. place identity — Broken Bow, Oklahoma",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -11019,7 +11019,7 @@
         {
           "id": "brookings-or-src-gnis-or-census",
           "title": "U.S. place identity — Brookings, Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -11467,7 +11467,7 @@
         {
           "id": "buffalo-ny-src-gnis-or-census",
           "title": "U.S. place identity — Buffalo, New York",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -11940,7 +11940,7 @@
         {
           "id": "burkes-garden-va-src-gnis-or-census",
           "title": "U.S. place identity — Tazewell County, Virginia",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -12414,7 +12414,7 @@
         {
           "id": "burlington-vt-src-gnis-or-census",
           "title": "U.S. place identity — Burlington, Vermont",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -13420,7 +13420,7 @@
         {
           "id": "canaan-valley-wv-src-gnis-or-census",
           "title": "U.S. place identity — Davis / Canaan Valley, West Virginia",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -13904,7 +13904,7 @@
         {
           "id": "cannon-beach-or-src-gnis-or-census",
           "title": "U.S. place identity — Cannon Beach, Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -14378,7 +14378,7 @@
         {
           "id": "cape-may-nj-src-gnis-or-census",
           "title": "U.S. place identity — Cape May, New Jersey",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -14851,7 +14851,7 @@
         {
           "id": "charleston-sc-src-gnis-or-census",
           "title": "U.S. place identity — Charleston, South Carolina",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -15339,7 +15339,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for charlottetown-pei",
           "geography": "region"
         },
@@ -15759,7 +15759,7 @@
         {
           "id": "chattanooga-tn-src-gnis-or-census",
           "title": "U.S. place identity — Chattanooga, Tennessee",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -16247,7 +16247,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for churchill-mb",
           "geography": "region"
         },
@@ -16731,7 +16731,7 @@
         {
           "id": "clayton-ga-src-gnis-or-census",
           "title": "U.S. place identity — Clayton, Georgia",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -17204,7 +17204,7 @@
         {
           "id": "cloudcroft-nm-src-gnis-or-census",
           "title": "U.S. place identity — Cloudcroft, New Mexico",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -18199,7 +18199,7 @@
         {
           "id": "cody-wy-src-gnis-or-census",
           "title": "U.S. place identity — Cody, Wyoming",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -18672,7 +18672,7 @@
         {
           "id": "columbia-sc-src-gnis-or-census",
           "title": "U.S. place identity — Columbia, South Carolina",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -19145,7 +19145,7 @@
         {
           "id": "corpus-christi-tx-src-gnis-or-census",
           "title": "U.S. place identity — Corpus Christi, Texas",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -20101,7 +20101,7 @@
         {
           "id": "crested-butte-co-src-gnis-or-census",
           "title": "U.S. place identity — Crested Butte, Colorado",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -20613,7 +20613,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for creston-bc",
           "geography": "region"
         },
@@ -22612,7 +22612,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for cypress-hills-sk",
           "geography": "region"
         },
@@ -23110,7 +23110,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for dawson-city-yt",
           "geography": "region"
         },
@@ -23569,7 +23569,7 @@
         {
           "id": "death-valley-ca-src-gnis-or-census",
           "title": "U.S. place identity — Furnace Creek, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -24053,7 +24053,7 @@
         {
           "id": "des-moines-ia-src-gnis-or-census",
           "title": "U.S. place identity — Des Moines, Iowa",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -24526,7 +24526,7 @@
         {
           "id": "driggs-id-src-gnis-or-census",
           "title": "U.S. place identity — Driggs, Idaho",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -25025,7 +25025,7 @@
         {
           "id": "duluth-mn-src-gnis-or-census",
           "title": "U.S. place identity — Duluth, Minnesota",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -25499,7 +25499,7 @@
         {
           "id": "durango-co-src-gnis-or-census",
           "title": "U.S. place identity — Durango, Colorado",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -25557,9 +25557,9 @@
           "id": "durango-co-src-lived-1",
           "title": "Mercy Hospital — Durango",
           "publisher": "Lived indicator source",
-          "url": "https://www.mercy.net/locations/colorado/mercy-hospital/",
+          "url": "https://www.mountain.commonspirit.org/location/mercy-hospital",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -26469,7 +26469,7 @@
         {
           "id": "ellensburg-wa-src-gnis-or-census",
           "title": "U.S. place identity — Ellensburg, Washington",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -26967,7 +26967,7 @@
         {
           "id": "ely-mn-src-gnis-or-census",
           "title": "U.S. place identity — Ely, Minnesota",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -27440,7 +27440,7 @@
         {
           "id": "eminence-mo-src-gnis-or-census",
           "title": "U.S. place identity — Eminence, Missouri",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -28385,7 +28385,7 @@
         {
           "id": "erie-pa-src-gnis-or-census",
           "title": "U.S. place identity — Erie, Pennsylvania",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -28858,7 +28858,7 @@
         {
           "id": "eureka-ca-src-gnis-or-census",
           "title": "U.S. place identity — Eureka, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -29357,7 +29357,7 @@
         {
           "id": "eureka-springs-ar-src-gnis-or-census",
           "title": "U.S. place identity — Eureka Springs, Arkansas",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -29849,7 +29849,7 @@
         {
           "id": "fairbanks-ak-src-gnis-or-census",
           "title": "U.S. place identity — Fairbanks, Alaska",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -30377,7 +30377,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for fernie-elk-valley-bc",
           "geography": "region"
         },
@@ -30846,7 +30846,7 @@
         {
           "id": "flagstaff-az-src-gnis-or-census",
           "title": "U.S. place identity — Flagstaff, Arizona",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -31345,7 +31345,7 @@
         {
           "id": "flint-hills-ks-src-gnis-or-census",
           "title": "U.S. place identity — Cottonwood Falls, Kansas",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -31828,7 +31828,7 @@
         {
           "id": "forks-wa-src-gnis-or-census",
           "title": "U.S. place identity — Forks, Washington",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -32301,7 +32301,7 @@
         {
           "id": "fort-davis-tx-src-gnis-or-census",
           "title": "U.S. place identity — Fort Davis, Texas",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -32775,7 +32775,7 @@
         {
           "id": "friday-harbor-wa-src-gnis-or-census",
           "title": "U.S. place identity — Friday Harbor, Washington",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -33248,7 +33248,7 @@
         {
           "id": "galena-il-src-gnis-or-census",
           "title": "U.S. place identity — Galena, Illinois",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -33735,7 +33735,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for gaspe-qc",
           "geography": "region"
         },
@@ -34219,7 +34219,7 @@
         {
           "id": "gatlinburg-tn-src-gnis-or-census",
           "title": "U.S. place identity — Gatlinburg, Tennessee",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -34692,7 +34692,7 @@
         {
           "id": "geneva-on-the-lake-oh-src-gnis-or-census",
           "title": "U.S. place identity — Geneva-on-the-Lake, Ohio",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -35179,7 +35179,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for grand-manan-nb",
           "geography": "region"
         },
@@ -35638,7 +35638,7 @@
         {
           "id": "grand-marais-mi-src-gnis-or-census",
           "title": "U.S. place identity — Grand Marais, Michigan",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -36136,7 +36136,7 @@
         {
           "id": "grand-marais-mn-src-gnis-or-census",
           "title": "U.S. place identity — Grand Marais, Minnesota",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -37108,7 +37108,7 @@
         {
           "id": "gunnison-co-src-gnis-or-census",
           "title": "U.S. place identity — Gunnison, Colorado",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -37606,7 +37606,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for haida-gwaii-bc",
           "geography": "region"
         },
@@ -38104,7 +38104,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for halifax-ns",
           "geography": "region"
         },
@@ -39036,7 +39036,7 @@
         {
           "id": "highlands-nc-src-gnis-or-census",
           "title": "U.S. place identity — Highlands, North Carolina",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -39499,7 +39499,7 @@
         {
           "id": "hilo-hi-src-gnis-or-census",
           "title": "U.S. place identity — Hilo, Hawaii",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -39973,7 +39973,7 @@
         {
           "id": "honolulu-hi-src-gnis-or-census",
           "title": "U.S. place identity — Honolulu, Hawaii",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -40446,7 +40446,7 @@
         {
           "id": "hood-river-gorge-src-gnis-or-census",
           "title": "U.S. place identity — Hood River (Gorge East), Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -40504,9 +40504,9 @@
           "id": "hood-river-gorge-src-lived-1",
           "title": "USFS — Eagle Creek Fire recovery",
           "publisher": "Lived indicator source",
-          "url": "https://www.fs.usda.gov/detail/columbiariver/home/?cid=fseprd555444",
+          "url": "https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd615948.pdf",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
@@ -40954,7 +40954,7 @@
         {
           "id": "hood-river-or-src-gnis-or-census",
           "title": "U.S. place identity — Hood River, Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -41443,7 +41443,7 @@
         {
           "id": "houghton-mi-src-gnis-or-census",
           "title": "U.S. place identity — Houghton, Michigan",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -41941,7 +41941,7 @@
         {
           "id": "huachuca-az-src-gnis-or-census",
           "title": "U.S. place identity — Sierra Vista, Arizona",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -41981,9 +41981,9 @@
           "id": "huachuca-az-src-cite-2",
           "title": "San Pedro Riparian NCA — BLM",
           "publisher": "OTHER",
-          "url": "https://www.blm.gov/programs/national-conservation-lands/arizona/san-pedro",
+          "url": "https://www.blm.gov/national-conservation-lands/arizona/san-pedro",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -42006,11 +42006,11 @@
         },
         {
           "id": "huachuca-az-src-lived-2",
-          "title": "Cochise County - Community Wildfire Protection Plan update",
+          "title": "Cochise County — emergency and wildfire protection plans",
           "publisher": "Lived indicator source",
-          "url": "https://www.cochise.az.gov/m/newsflash/Home/Detail/412",
+          "url": "https://www.cochise.az.gov/288/County-Emergency-Plans",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -42440,7 +42440,7 @@
         {
           "id": "international-falls-mn-src-gnis-or-census",
           "title": "U.S. place identity — International Falls, Minnesota",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -42927,7 +42927,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for inuvik-nt",
           "geography": "region"
         },
@@ -43425,7 +43425,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for iqaluit-nu",
           "geography": "region"
         },
@@ -43909,7 +43909,7 @@
         {
           "id": "ithaca-ny-src-gnis-or-census",
           "title": "U.S. place identity — Ithaca, New York",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -44408,7 +44408,7 @@
         {
           "id": "jackson-wy-src-gnis-or-census",
           "title": "U.S. place identity — Jackson, Wyoming",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -44881,7 +44881,7 @@
         {
           "id": "joseph-or-src-gnis-or-census",
           "title": "U.S. place identity — Joseph, Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -45393,7 +45393,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for kamloops-bc",
           "geography": "region"
         },
@@ -45891,7 +45891,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for kelowna-bc",
           "geography": "region"
         },
@@ -46375,7 +46375,7 @@
         {
           "id": "key-west-fl-src-gnis-or-census",
           "title": "U.S. place identity — Key West, Florida",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -46859,7 +46859,7 @@
         {
           "id": "klamath-falls-upper-klamath-basin-or-src-gnis-or-census",
           "title": "U.S. place identity — Klamath Falls, Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -46899,18 +46899,18 @@
           "id": "klamath-falls-upper-klamath-basin-or-src-cite-1",
           "title": "USGS Upper Klamath Basin science",
           "publisher": "USGS",
-          "url": "https://www.usgs.gov/centers/oregon-water-science-center/science/upper-klamath-basin",
+          "url": "https://www.usgs.gov/centers/oregon-water-science-center/science/upper-klamath-basin-groundwater-studies",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
           "id": "klamath-falls-upper-klamath-basin-or-src-cite-2",
-          "title": "USFWS Klamath Basin National Wildlife Refuge Complex",
+          "title": "USFWS — Lower Klamath refuge and the Klamath Basin complex",
           "publisher": "OTHER",
-          "url": "https://www.fws.gov/refuge/klamath-basin",
+          "url": "https://www.fws.gov/refuge/lower-klamath",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -48336,7 +48336,7 @@
         {
           "id": "lander-sinks-canyon-wy-src-gnis-or-census",
           "title": "U.S. place identity — Lander, Wyoming",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -48819,7 +48819,7 @@
         {
           "id": "leadville-co-src-gnis-or-census",
           "title": "U.S. place identity — Leadville, Colorado",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -48877,9 +48877,9 @@
           "id": "leadville-co-src-lived-1",
           "title": "St. Vincent Hospital — Leadville",
           "publisher": "Lived indicator source",
-          "url": "https://www.svhealthcare.org/locations/st-vincent-hospital-leadville",
+          "url": "https://www.stvincent.health/emergency-medicine",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -49331,7 +49331,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for leamington-on",
           "geography": "region"
         },
@@ -49815,7 +49815,7 @@
         {
           "id": "leavenworth-wa-src-gnis-or-census",
           "title": "U.S. place identity — Leavenworth, Washington",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -50302,7 +50302,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for lethbridge-ab",
           "geography": "region"
         },
@@ -50338,9 +50338,9 @@
           "id": "lethbridge-ab-src-cite-3",
           "title": "Agriculture & Agri-Food Canada — Soil Landscapes of Canada",
           "publisher": "OTHER",
-          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/",
+          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -50831,7 +50831,7 @@
         {
           "id": "lewes-de-src-gnis-or-census",
           "title": "U.S. place identity — Lewes, Delaware",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -51304,7 +51304,7 @@
         {
           "id": "loess-hills-ia-src-gnis-or-census",
           "title": "U.S. place identity — Missouri Valley, Iowa",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -51796,7 +51796,7 @@
         {
           "id": "logan-ut-src-gnis-or-census",
           "title": "U.S. place identity — Logan, Utah",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -51845,9 +51845,9 @@
           "id": "logan-ut-src-lived-0",
           "title": "Utah DEQ — Cache Valley air quality",
           "publisher": "Lived indicator source",
-          "url": "https://deq.utah.gov/air-quality/",
+          "url": "https://deq.utah.gov/division-air-quality",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
@@ -52280,7 +52280,7 @@
         {
           "id": "lone-pine-ca-src-gnis-or-census",
           "title": "U.S. place identity — Lone Pine, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -52753,7 +52753,7 @@
         {
           "id": "los-alamos-pajarito-plateau-nm-src-gnis-or-census",
           "title": "U.S. place identity — Los Alamos, New Mexico",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -53256,7 +53256,7 @@
         {
           "id": "lubbock-tx-src-gnis-or-census",
           "title": "U.S. place identity — Lubbock, Texas",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -53729,7 +53729,7 @@
         {
           "id": "mammoth-lakes-ca-src-gnis-or-census",
           "title": "U.S. place identity — Mammoth Lakes, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -53778,9 +53778,9 @@
           "id": "mammoth-lakes-ca-src-lived-0",
           "title": "Town of Mammoth Lakes — housing",
           "publisher": "Lived indicator source",
-          "url": "https://www.townofmammothlakes.ca.gov/departments/housing",
+          "url": "https://www.townofmammothlakes.ca.gov/633/Housing",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
@@ -54227,7 +54227,7 @@
         {
           "id": "marfa-tx-src-gnis-or-census",
           "title": "U.S. place identity — Marfa, Texas",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -54702,7 +54702,7 @@
         {
           "id": "marquette-mi-src-gnis-or-census",
           "title": "U.S. place identity — Marquette, Michigan",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -56154,7 +56154,7 @@
         {
           "id": "medford-or-src-gnis-or-census",
           "title": "U.S. place identity — Medford, Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -56641,7 +56641,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for medicine-hat-ab",
           "geography": "region"
         },
@@ -57125,7 +57125,7 @@
         {
           "id": "mentone-al-src-gnis-or-census",
           "title": "U.S. place identity — Mentone, Alabama",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -58095,7 +58095,7 @@
         {
           "id": "missoula-mt-src-gnis-or-census",
           "title": "U.S. place identity — Missoula, Montana",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -58144,9 +58144,9 @@
           "id": "missoula-mt-src-lived-0",
           "title": "Providence — St. Patrick Hospital",
           "publisher": "Lived indicator source",
-          "url": "https://www.providence.org/locations/mt/st-patrick",
+          "url": "https://www.providence.org/locations/mt/st-patrick-hospital",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
@@ -58593,7 +58593,7 @@
         {
           "id": "moab-ut-src-gnis-or-census",
           "title": "U.S. place identity — Moab, Utah",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -59066,7 +59066,7 @@
         {
           "id": "mobile-al-src-gnis-or-census",
           "title": "U.S. place identity — Mobile, Alabama",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -59539,7 +59539,7 @@
         {
           "id": "monterey-ca-src-gnis-or-census",
           "title": "U.S. place identity — Monterey, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -60597,7 +60597,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for morden-mb",
           "geography": "region"
         },
@@ -60624,9 +60624,9 @@
           "id": "morden-mb-src-cite-1",
           "title": "AAFC Canadian Soil Information Service — Soil Landscapes of Canada",
           "publisher": "OTHER",
-          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/",
+          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -61529,7 +61529,7 @@
         {
           "id": "morgantown-wv-src-gnis-or-census",
           "title": "U.S. place identity — Morgantown, West Virginia",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -62002,7 +62002,7 @@
         {
           "id": "mount-charleston-nv-src-gnis-or-census",
           "title": "U.S. place identity — Mount Charleston, Nevada",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -62060,9 +62060,9 @@
           "id": "mount-charleston-nv-src-lived-1",
           "title": "Clark County — emergency management",
           "publisher": "Lived indicator source",
-          "url": "https://www.clarkcountynv.gov/government/departments/fire_department/emergency_management/",
+          "url": "https://www.clarkcountynv.gov/government/departments/fire/office-of-emergency-management",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
@@ -62486,7 +62486,7 @@
         {
           "id": "mount-washington-nh-src-gnis-or-census",
           "title": "U.S. place identity — Mt. Washington Summit, New Hampshire",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -62959,7 +62959,7 @@
         {
           "id": "mystic-ct-src-gnis-or-census",
           "title": "U.S. place identity — Mystic, Connecticut",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -63432,7 +63432,7 @@
         {
           "id": "nags-head-nc-src-gnis-or-census",
           "title": "U.S. place identity — Nags Head, North Carolina",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -63905,7 +63905,7 @@
         {
           "id": "napa-ca-src-gnis-or-census",
           "title": "U.S. place identity — Napa, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -64378,7 +64378,7 @@
         {
           "id": "naples-fl-src-gnis-or-census",
           "title": "U.S. place identity — Naples, Florida",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -64865,7 +64865,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for nelson-bc",
           "geography": "region"
         },
@@ -65344,7 +65344,7 @@
         {
           "id": "new-orleans-la-src-gnis-or-census",
           "title": "U.S. place identity — New Orleans, Louisiana",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -65832,7 +65832,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for niagara-on-the-lake",
           "geography": "region"
         },
@@ -66326,7 +66326,7 @@
         {
           "id": "nome-ak-src-gnis-or-census",
           "title": "U.S. place identity — Nome, Alaska",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -66775,7 +66775,7 @@
         {
           "id": "norfolk-ct-src-gnis-or-census",
           "title": "U.S. place identity — Norfolk, Connecticut",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -67248,7 +67248,7 @@
         {
           "id": "oakland-md-src-gnis-or-census",
           "title": "U.S. place identity — Oakland, Maryland",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -68176,7 +68176,7 @@
         {
           "id": "ocean-springs-ms-src-gnis-or-census",
           "title": "U.S. place identity — Ocean Springs, Mississippi",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -68649,7 +68649,7 @@
         {
           "id": "ojai-ca-src-gnis-or-census",
           "title": "U.S. place identity — Ojai, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -69608,7 +69608,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for osoyoos-bc",
           "geography": "region"
         },
@@ -69662,9 +69662,9 @@
           "id": "osoyoos-bc-src-cite-4",
           "title": "AAFC Canadian Soil Information Service — Soil Landscapes of Canada",
           "publisher": "OTHER",
-          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/",
+          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -70145,7 +70145,7 @@
         {
           "id": "paducah-ky-src-gnis-or-census",
           "title": "U.S. place identity — Paducah, Kentucky",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -70618,7 +70618,7 @@
         {
           "id": "page-az-src-gnis-or-census",
           "title": "U.S. place identity — Page, Arizona",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -71588,7 +71588,7 @@
         {
           "id": "palm-springs-ca-src-gnis-or-census",
           "title": "U.S. place identity — Palm Springs, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -73069,7 +73069,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for penticton-bc",
           "geography": "region"
         },
@@ -73567,7 +73567,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for pincher-creek-ab",
           "geography": "region"
         },
@@ -74051,7 +74051,7 @@
         {
           "id": "pittsfield-ma-src-gnis-or-census",
           "title": "U.S. place identity — Pittsfield, Massachusetts",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -74524,7 +74524,7 @@
         {
           "id": "point-reyes-ca-src-gnis-or-census",
           "title": "U.S. place identity — Point Reyes Station, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -75022,7 +75022,7 @@
         {
           "id": "port-orford-cape-blanco-or-src-gnis-or-census",
           "title": "U.S. place identity — Port Orford, Oregon",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -75505,7 +75505,7 @@
         {
           "id": "port-townsend-wa-src-gnis-or-census",
           "title": "U.S. place identity — Port Townsend, Washington",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -75978,7 +75978,7 @@
         {
           "id": "portal-az-src-gnis-or-census",
           "title": "U.S. place identity — Portal, Arizona",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -76056,7 +76056,7 @@
           "publisher": "Lived indicator source",
           "url": "https://www.cochise.az.gov/288/County-Emergency-Plans",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
@@ -76511,7 +76511,7 @@
         {
           "id": "prescott-az-src-gnis-or-census",
           "title": "U.S. place identity — Prescott, Arizona",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -77023,7 +77023,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for prince-edward-co-on",
           "geography": "region"
         },
@@ -77521,7 +77521,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for prince-rupert-bc",
           "geography": "region"
         },
@@ -79461,7 +79461,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for qualicum-bc",
           "geography": "region"
         },
@@ -80394,7 +80394,7 @@
         {
           "id": "rapid-city-sd-src-gnis-or-census",
           "title": "U.S. place identity — Rapid City, South Dakota",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -81339,7 +81339,7 @@
         {
           "id": "redfield-ny-src-gnis-or-census",
           "title": "U.S. place identity — Redfield / Tug Hill, New York",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -81397,9 +81397,9 @@
           "id": "redfield-ny-src-lived-1",
           "title": "Oswego County — emergency management",
           "publisher": "Lived indicator source",
-          "url": "https://www.oswegocounty.com/departments/emergency_management/",
+          "url": "https://www.oswegocountyny.gov/departments/public_safety/emergency_management/index.php",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
@@ -81837,7 +81837,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for revelstoke-bc",
           "geography": "region"
         },
@@ -82321,7 +82321,7 @@
         {
           "id": "roswell-nm-src-gnis-or-census",
           "title": "U.S. place identity — Roswell, New Mexico",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -82808,7 +82808,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for salt-spring-bc",
           "geography": "region"
         },
@@ -84707,7 +84707,7 @@
         {
           "id": "santa-barbara-ca-src-gnis-or-census",
           "title": "U.S. place identity — Santa Barbara, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -85196,7 +85196,7 @@
         {
           "id": "santa-cruz-felton-ca-src-gnis-or-census",
           "title": "U.S. place identity — Felton, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -85694,7 +85694,7 @@
         {
           "id": "santa-fe-nm-src-gnis-or-census",
           "title": "U.S. place identity — Santa Fe, New Mexico",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -86183,7 +86183,7 @@
         {
           "id": "savannah-ga-src-gnis-or-census",
           "title": "U.S. place identity — Savannah, Georgia",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -86656,7 +86656,7 @@
         {
           "id": "scottsbluff-ne-src-gnis-or-census",
           "title": "U.S. place identity — Scottsbluff, Nebraska",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -87129,7 +87129,7 @@
         {
           "id": "sedona-az-src-gnis-or-census",
           "title": "U.S. place identity — Sedona, Arizona",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -87179,9 +87179,9 @@
           "id": "sedona-az-src-lived-0",
           "title": "City of Sedona — housing & community development",
           "publisher": "Lived indicator source",
-          "url": "https://www.sedonaaz.gov/your-government/departments/community-development/housing",
+          "url": "https://www.sedonaaz.gov/your-government/departments-and-programs/community-development/housing",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
@@ -87197,9 +87197,9 @@
           "id": "sedona-az-src-lived-2",
           "title": "Verde Valley Medical Center",
           "publisher": "Lived indicator source",
-          "url": "https://www.nahealth.com/location/verde-valley-medical-center/",
+          "url": "https://www.nahealth.com/contact-us/",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -87638,7 +87638,7 @@
         {
           "id": "sequim-wa-src-gnis-or-census",
           "title": "U.S. place identity — Sequim, Washington",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -87667,7 +87667,7 @@
         },
         {
           "id": "sequim-wa-src-cite-0",
-          "title": "NOAA Climate Normals 1991–2020 — Sequim 2 E",
+          "title": "NOAA climate normals reference portal — local station matching pending",
           "publisher": "NOAA",
           "url": "https://www.ncei.noaa.gov/access/us-climate-normals/",
           "sourceType": "official-page",
@@ -88175,7 +88175,7 @@
         {
           "id": "silver-city-nm-src-gnis-or-census",
           "title": "U.S. place identity — Silver City, New Mexico",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -88664,7 +88664,7 @@
         {
           "id": "sitka-ak-src-gnis-or-census",
           "title": "U.S. place identity — Sitka, Alaska",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -88713,9 +88713,9 @@
           "id": "sitka-ak-src-lived-0",
           "title": "Niche — Sitka AK",
           "publisher": "Lived indicator source",
-          "url": "https://www.niche.com/places-to-live/sitka-and-borough-of-sitka-ak/",
+          "url": "https://www.niche.com/places-to-live/sitka-sitka-ak/",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -89137,7 +89137,7 @@
         {
           "id": "south-padre-tx-src-gnis-or-census",
           "title": "U.S. place identity — South Padre Island, Texas",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -89610,7 +89610,7 @@
         {
           "id": "spearfish-sd-src-gnis-or-census",
           "title": "U.S. place identity — Spearfish, South Dakota",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -89666,11 +89666,11 @@
         },
         {
           "id": "spearfish-sd-src-lived-1",
-          "title": "Spearfish Regional Hospital",
+          "title": "Monument Health Spearfish Hospital",
           "publisher": "Lived indicator source",
-          "url": "https://www.monument.health/locations/spearfish-regional-hospital",
+          "url": "https://monument.health/service/emergency-medicine/",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         }
       ],
@@ -90084,7 +90084,7 @@
         {
           "id": "spokane-wa-src-gnis-or-census",
           "title": "U.S. place identity — Spokane, Washington",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -90571,7 +90571,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for squamish-bc",
           "geography": "region"
         },
@@ -91069,7 +91069,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for st-johns-nl",
           "geography": "region"
         },
@@ -91504,7 +91504,7 @@
         {
           "id": "stanley-id-src-gnis-or-census",
           "title": "U.S. place identity — Stanley, Idaho",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -91977,7 +91977,7 @@
         {
           "id": "state-college-pa-src-gnis-or-census",
           "title": "U.S. place identity — State College, Pennsylvania",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -92464,7 +92464,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for summerland-bc",
           "geography": "region"
         },
@@ -92962,7 +92962,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for sunshine-coast-bc",
           "geography": "region"
         },
@@ -92998,9 +92998,9 @@
           "id": "sunshine-coast-bc-src-lived-0",
           "title": "BC Assessment — property assessments",
           "publisher": "Lived indicator source",
-          "url": "https://www2.gov.bc.ca/gov/content/government/property-taxes-taxes/assessment-bc",
+          "url": "https://www2.gov.bc.ca/gov/content?id=2B1FAC11F0E240F78B8DD9855101C329",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "municipality"
         },
         {
@@ -93460,7 +93460,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for sutton-qc",
           "geography": "region"
         },
@@ -93919,7 +93919,7 @@
         {
           "id": "syracuse-ny-src-gnis-or-census",
           "title": "U.S. place identity — Syracuse, New York",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -94392,7 +94392,7 @@
         {
           "id": "taos-nm-src-gnis-or-census",
           "title": "U.S. place identity — Taos, New Mexico",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -96357,7 +96357,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for thunder-bay-on",
           "geography": "region"
         },
@@ -97312,7 +97312,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for tofino-bc",
           "geography": "region"
         },
@@ -97784,7 +97784,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for tofino-ucluelet-corridor",
           "geography": "region"
         },
@@ -98765,7 +98765,7 @@
         {
           "id": "traverse-city-mi-src-gnis-or-census",
           "title": "U.S. place identity — Traverse City, Michigan",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -99264,7 +99264,7 @@
         {
           "id": "truckee-ca-src-gnis-or-census",
           "title": "U.S. place identity — Truckee, California",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -99762,7 +99762,7 @@
         {
           "id": "tucson-az-src-gnis-or-census",
           "title": "U.S. place identity — Tucson, Arizona",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -100249,7 +100249,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for twillingate-nl",
           "geography": "region"
         },
@@ -100708,7 +100708,7 @@
         {
           "id": "valdez-ak-src-gnis-or-census",
           "title": "U.S. place identity — Valdez, Alaska",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -101181,7 +101181,7 @@
         {
           "id": "valentine-ne-src-gnis-or-census",
           "title": "U.S. place identity — Valentine, Nebraska",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -102657,7 +102657,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for victoria-bc",
           "geography": "region"
         },
@@ -102693,9 +102693,9 @@
           "id": "victoria-bc-src-cite-2",
           "title": "AAFC Canadian Soil Information Service — Soil Landscapes of Canada",
           "publisher": "OTHER",
-          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/",
+          "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -103141,7 +103141,7 @@
         {
           "id": "viroqua-wi-src-gnis-or-census",
           "title": "U.S. place identity — Viroqua, Wisconsin",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -103639,7 +103639,7 @@
         {
           "id": "washington-dc-src-gnis-or-census",
           "title": "U.S. place identity — Washington, District of Columbia",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -104112,7 +104112,7 @@
         {
           "id": "wenatchee-wa-src-gnis-or-census",
           "title": "U.S. place identity — Wenatchee, Washington",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -104625,7 +104625,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for whitehorse-yt",
           "geography": "region"
         },
@@ -105119,7 +105119,7 @@
         {
           "id": "wilmington-de-src-gnis-or-census",
           "title": "U.S. place identity — Wilmington, Delaware",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -105592,7 +105592,7 @@
         {
           "id": "winthrop-wa-src-gnis-or-census",
           "title": "U.S. place identity — Winthrop, Washington",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",
@@ -106104,7 +106104,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for wolfville-ns",
           "geography": "region"
         },
@@ -106131,9 +106131,9 @@
           "id": "wolfville-ns-src-cite-1",
           "title": "AAFC Kentville Research and Development Centre",
           "publisher": "OTHER",
-          "url": "https://agriculture.canada.ca/en/science/agriculture-and-agri-food-research-centres-and-collections/kentville-research-and-development-centre",
+          "url": "https://agriculture.canada.ca/en/science/agriculture-and-agri-food-research-centres/kentville-research-and-development-centre",
           "sourceType": "official-page",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "geography": "region"
         },
         {
@@ -107545,7 +107545,7 @@
           "publisher": "Agriculture and Agri-Food Canada",
           "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html",
           "sourceType": "official-dataset",
-          "accessedOn": "2026-08-10",
+          "accessedOn": "2026-09-06",
           "locator": "SLC context for yellowknife-nt",
           "geography": "region"
         },
@@ -108029,7 +108029,7 @@
         {
           "id": "yuma-az-src-gnis-or-census",
           "title": "U.S. place identity — Yuma, Arizona",
-          "publisher": "U.S. Census Bureau / USGS GNIS",
+          "publisher": "U.S. Census Bureau",
           "url": "https://www.census.gov/quickfacts/",
           "sourceType": "official-page",
           "accessedOn": "2026-08-10",

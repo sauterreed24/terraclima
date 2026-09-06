@@ -458,7 +458,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       note: "Sky Lakes Medical Center and a regional airport anchor services, but Klamath Basin water allocation, winter inversion air quality, and regional smoke days are the live-here filter behind the dry-air comfort numbers.",
       sources: [
         { label: "Sky Lakes Medical Center — Klamath Falls hospital", url: "https://www.skylakes.org/" },
-        { label: "USGS Upper Klamath Basin water science", url: "https://www.usgs.gov/centers/oregon-water-science-center/science/upper-klamath-basin" },
+        { label: "USGS Upper Klamath Basin water science", url: "https://www.usgs.gov/centers/oregon-water-science-center/science/upper-klamath-basin-groundwater-studies" },
         { label: "Oregon DEQ — Klamath Falls air quality", url: "https://www.oregon.gov/deq/" },
       ],
     },
@@ -485,8 +485,8 @@ export const PLACES_USA_EXTRA: Place[] = [
     ],
     citations: [
       { label: "NOAA NCEI U.S. Climate Normals", kind: "noaa", url: "https://www.ncei.noaa.gov/products/land-based-station/us-climate-normals" },
-      { label: "USGS Upper Klamath Basin science", kind: "usgs", url: "https://www.usgs.gov/centers/oregon-water-science-center/science/upper-klamath-basin" },
-      { label: "USFWS Klamath Basin National Wildlife Refuge Complex", kind: "other", url: "https://www.fws.gov/refuge/klamath-basin" },
+      { label: "USGS Upper Klamath Basin science", kind: "usgs", url: "https://www.usgs.gov/centers/oregon-water-science-center/science/upper-klamath-basin-groundwater-studies" },
+      { label: "USFWS — Lower Klamath refuge and the Klamath Basin complex", kind: "other", url: "https://www.fws.gov/refuge/lower-klamath" },
     ],
   },
   {

@@ -26,10 +26,10 @@ export const EVIDENCE_CLASS_META: Record<
   { shortLabel: string; plainLabel: string; description: string }
 > = {
   "observed-normal": {
-    shortLabel: "Measured normals",
-    plainLabel: "Observed climate normals",
+    shortLabel: "Climate estimates",
+    plainLabel: "Gridded climate estimates and reference normals",
     description:
-      `Station products and authored ${CLIMATE_NORMALS_PERIOD} climate normals cited for this place.`,
+      `Daymet ${CLIMATE_NORMALS_PERIOD} grid estimates, alongside separately cited station and editorial context. A grid cell is not a local station measurement.`,
   },
   "authored-context": {
     shortLabel: "Editorial context",
@@ -336,7 +336,7 @@ export function buildPlaceEvidenceSummary(place: Place): PlaceEvidenceSummary {
     sourceGroups,
     missingFields,
     howToRead:
-      "Read measured normals and mechanism first. Treat scores as screening signals, derived indices as calculations, and 2050 layers as coarse regional illustrations.",
+      "Read the climate estimates and physical mechanism first. Treat scores as screening signals, derived indices as calculations, and 2050 layers as coarse regional illustrations.",
   };
 }
 

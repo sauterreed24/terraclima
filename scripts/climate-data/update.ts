@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 /**
  * climate:data:update — fetch Daymet through a complete calendar year, then
  * regenerate committed Climate V2 assets.
@@ -8,7 +9,7 @@
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 
-const ROOT = new URL("../..", import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 
 function run(script: string, args: string[]): void {
   const result = spawnSync(

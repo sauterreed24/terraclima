@@ -19,6 +19,7 @@
     "test:celsius": "tsx scripts/playtest-celsius.ts",
     "playtest:polish": "tsx scripts/playtest-polish.ts",
     "playtest:map": "node scripts/playtest-map.mjs",
+    "playtest:field-guide": "node scripts/playtest-field-guide.mjs",
     "playtest:browser": "node scripts/playtest-browser.mjs",
     "test:browser": "node scripts/playtest-browser.mjs",
     "check:metadata": "tsx scripts/check-site-metadata.ts",

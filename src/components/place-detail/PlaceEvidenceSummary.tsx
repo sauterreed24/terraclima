@@ -12,7 +12,7 @@ import { loadResearchReceipts } from "../../data/generated/research";
 import { groupClaimsByScope, sourcesForClaim } from "../../lib/research/claim-scope";
 import { safeExternalHref } from "../../lib/safe-url";
 import { downloadBlobFile } from "../../lib/download-blob";
-import { useProse } from "../../lib/units";
+import { fmtDelta, useProse, useUnits } from "../../lib/units";
 
 /**
  * Compact “How to read this profile” disclosure for the dossier.
@@ -30,6 +30,7 @@ export function PlaceEvidenceSummary({
   const [receipt, setReceipt] = useState<PlaceResearchReceipt | null>(null);
   const claimGroups = receipt ? groupClaimsByScope(receipt) : [];
   const prose = useProse();
+  const { temp } = useUnits();
   const panelId = useId();
   const [open, setOpen] = useState(false);
 
@@ -73,7 +74,7 @@ export function PlaceEvidenceSummary({
         </span>
         <span className="tc-evidence-summary__toggle-meta">
           <span className="tc-evidence-summary__pill" data-tone="ice">
-            {summary.confidence} confidence
+            {summary.confidence} editorial confidence
           </span>
           <span className="tc-evidence-summary__pill" data-tone="sage">
             {summary.completenessLabel} coverage
@@ -113,7 +114,8 @@ export function PlaceEvidenceSummary({
               <div className="tc-evidence-summary__label">Normals period</div>
               <p className="tc-evidence-summary__body">
                 Charts use Recent · {summary.normalsPeriod} rolling climatology (not a WMO standard normal).
-                Official {`1991–2020`} WMO normals remain the comparison/reference from the same Daymet source.
+                The {`1991–2020`} comparison uses the same Daymet grid for the WMO reference period,
+                rather than an official station normal.
               </p>
               {(() => {
                 const shift = CLIMATE_V2_OVERLAY_BY_ID[place.id]?.recentShift;
@@ -122,8 +124,8 @@ export function PlaceEvidenceSummary({
                   `${n > 0 ? "+" : ""}${n.toFixed(1)}${unit}`;
                 return (
                   <p className="tc-evidence-summary__body mt-2">
-                    vs 1991–2020: summer high {fmt(shift.jjaHighDeltaC, "°C")}, January low{" "}
-                    {fmt(shift.janLowDeltaC, "°C")}, annual precip {fmt(shift.annualPrecipDeltaPct, "%")}.
+                    vs 1991–2020: summer high {fmtDelta(shift.jjaHighDeltaC, temp)}, January low{" "}
+                    {fmtDelta(shift.janLowDeltaC, temp)}, annual precip {fmt(shift.annualPrecipDeltaPct, "%")}.
                   </p>
                 );
               })()}

@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 /**
  * Write current ranking orders + a human review report for Climate V2.
  * Compares against a pre-V2 baseline (`ranks-baseline.json`) when present.
@@ -8,7 +9,7 @@ import { join } from "node:path";
 import { PLACES } from "../../src/data/places";
 import { rankPlaces, type RankingProfile } from "../../src/lib/scoring";
 
-const ROOT = new URL("../..", import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const OUT_DIR = join(ROOT, "data/climate-v2/audit");
 const BASELINE_PATH = join(OUT_DIR, "ranks-baseline.json");
 

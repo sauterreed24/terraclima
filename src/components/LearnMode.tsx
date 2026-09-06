@@ -16,15 +16,15 @@ export function LearnMode({ onOpenPlace }: Props) {
         <h3 className="font-atlas text-lg text-ice mb-2">Where the climate numbers come from</h3>
         <p className="text-sm text-frost leading-relaxed mb-2">
           Default <span className="text-ice font-medium">Recent · 1996–2025</span> is a rolling Daymet V4 R1 climatology
-          — not a WMO standard normal. Official <span className="text-ice font-medium">1991–2020</span> normals stay as
-          the same-source comparison. Station products (NOAA, ECCC, SMN) validate the grid; ERA5-Land is fallback/QA only.
+          — not a WMO standard normal. The WMO reference period <span className="text-ice font-medium">1991–2020</span> stays as
+          the same-source comparison. Station products (NOAA, ECCC, SMN) provide reference context; independent station validation is still pending. ERA5-Land is reserved for fallback or quality checks.
           Solar resource is MJ/m²/day from shortwave radiation × day length, not observed sunshine hours. Daymet SWE is
           snowpack, never snowfall centimetres. Mid-century layers use NEX-GDDP-CMIP6 ensemble deltas when ingested
           (research/screening only — not for engineering design).
         </p>
         <p className="text-xs text-stone leading-relaxed">
-          Full formulas, validation thresholds, and limitations live in the repository doc
-          {" "}<code className="text-ice">docs/CLIMATE-DATA-V2.md</code>.
+          Read the full formulas, validation thresholds, and limitations in the
+          {" "}<a className="text-ice underline" href="https://github.com/sauterreed24/terraclima/blob/main/docs/CLIMATE-DATA-V2.md" target="_blank" rel="noreferrer">climate methodology guide</a>.
         </p>
       </div>
 

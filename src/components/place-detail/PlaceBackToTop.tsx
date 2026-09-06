@@ -17,19 +17,21 @@ export function PlaceBackToTop({ panelRef }: { panelRef: { current: HTMLElement 
   useEffect(() => {
     const el = panelRef.current;
     if (!el) return;
-    let ticking = false;
+    let frame = 0;
     const update = () => {
-      ticking = false;
+      frame = 0;
       setVisible(el.scrollTop > 480);
     };
     const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      window.requestAnimationFrame(update);
+      if (frame) return;
+      frame = window.requestAnimationFrame(update);
     };
     update();
     el.addEventListener("scroll", onScroll, { passive: true });
-    return () => el.removeEventListener("scroll", onScroll);
+    return () => {
+      el.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, [panelRef]);
 
   const onClick = useCallback(() => {
@@ -48,7 +50,7 @@ export function PlaceBackToTop({ panelRef }: { panelRef: { current: HTMLElement 
       aria-label={label}
       title={label}
     >
-      <ArrowUp className="w-4 h-4" aria-hidden />
+      <ArrowUp className="w-4 h-4" aria-hidden /><span>Top</span>
     </button>
   );
 }
