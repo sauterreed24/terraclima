@@ -8398,7 +8398,7 @@
   }
   .place-overview__essay {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.7rem;
   }
   .place-overview__essay-card,
@@ -13984,3 +13984,67 @@ html[data-theme="dark"] .desktop-scout-board__score {
   background: linear-gradient(180deg, rgba(94, 196, 220, 0.3), rgba(26, 143, 168, 0.18));
   color: var(--color-frost-strong);
 }
+
+
+/* Field-guide navigation: keep the map and the next chapter within reach. */
+.tc-map-wayfinding {
+  display: flex; align-items: center; justify-content: space-between; gap: .75rem;
+  padding: .7rem .9rem; border: 1px solid var(--tc-inset-border); border-radius: .8rem;
+  background: var(--color-slate-1); color: var(--color-stone-readable); font-size: .75rem;
+}
+.tc-map-wayfinding p { margin: 0; line-height: 1.5; }
+.tc-map-wayfinding p > span { color: var(--color-glacier-700); margin-right: .3rem; }
+.tc-map-wayfinding a, .tc-return-map {
+  display: inline-flex; align-items: center; gap: .5rem; min-height: 44px;
+  padding: .45rem .8rem; border-radius: .6rem; color: var(--color-glacier-700);
+  background: var(--tc-chip-bg); font-size: .75rem; font-weight: 650; text-decoration: none; flex-shrink: 0;
+}
+#atlas-map, #ranked-places-heading { scroll-margin-top: 6rem; }
+.tc-climate-basis {
+  padding: 1rem 1.1rem; border: 1px solid var(--tc-inset-border); border-left: 3px solid var(--color-glacier-700);
+  border-radius: .7rem; background: var(--tc-chip-bg); color: var(--color-frost-strong);
+  margin-block: 1.5rem; font-size: .85rem; line-height: 1.7;
+}
+.tc-climate-basis__heading { display:flex; flex-wrap:wrap; gap:.35rem 1rem; justify-content:space-between; }
+.tc-climate-basis__heading > span { font-weight:700; color:var(--color-glacier-700); }
+.tc-climate-basis p { margin-top:.65rem; }
+.tc-climate-basis summary { cursor:pointer; min-height:44px; padding-top:.6rem; font-weight:600; }
+.tc-detail-back-to-top { width:auto; min-width:44px; gap:.4rem; padding-inline:.85rem; border-radius:999px; font-size:.75rem; }
+.tc-reading-nav-mobile__label { display:flex; justify-content:space-between; gap:1rem; font-size:.7rem; color:var(--color-stone-readable); margin-bottom:.35rem; }
+.tc-reading-nav-mobile__controls { display:grid; grid-template-columns:44px minmax(0,1fr) 44px; gap:.4rem; }
+.tc-reading-nav-mobile__controls button, .tc-reading-nav-mobile__controls select {
+  min-height:44px; min-width:0; border:1px solid var(--tc-inset-border); border-radius:.6rem;
+  background:var(--color-slate-1); color:var(--color-frost-strong); font:inherit; font-size:.8rem;
+}
+.tc-reading-nav-mobile__controls button { display:flex; justify-content:center; align-items:center; cursor:pointer; }
+.tc-reading-nav-mobile__controls button:disabled { opacity:.4; cursor:default; }
+.tc-reading-nav-mobile__controls select { padding:.5rem; width:100%; }
+@media (max-width:1023px) {
+  .tc-reading-nav-mobile {
+    position:sticky; top:0; z-index:15; padding:.65rem .5rem;
+    background:var(--color-slate-1); border-bottom:1px solid var(--tc-inset-border);
+    box-shadow:0 5px 16px -12px rgba(0,0,0,.3);
+  }
+}
+@media (max-width:640px) {
+  .tc-map-wayfinding { align-items:flex-start; flex-direction:column; gap:.35rem; }
+  .tc-map-wayfinding a { align-self:flex-end; }
+}
+/* Keep the intro's actions on a compact row instead of a tall side tower. */
+@media (min-width:1024px) and (max-width:1499px) {
+  .panel-hero > .flex:first-child { align-items:flex-start; }
+  .hero-action-stack { gap:.5rem; }
+}
+
+.place-overview__essay-card p { line-height:1.75; }
+.place-overview__contrast-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr)); gap:.85rem; }
+
+/* Make the map's compact detail control a genuine touch target. */
+.map-atlas-readout[data-density="compact"] .map-atlas-readout__expand {
+  min-height:44px; min-width:44px; font-size:.65rem;
+}
+.map-atlas-readout__expand:focus-visible {
+  outline:2px solid #b4ecf6; outline-offset:2px;
+}
+.tc-map-stage__caption { background:rgba(6,15,24,.65); }
+.tc-map-stage__caption span { color:rgba(180,236,246,.85); }

@@ -65,8 +65,8 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
       note: "Asheville's climate-refuge reputation has tightened housing affordability against wage base, but Mission Hospital gives the city a stronger service anchor than most mountain counties. Heavy-rain events, landslide exposure on steep slopes, and the French Broad floodplain are the practical climate-friction points.",
       sources: [
         { label: "U.S. Census QuickFacts — Asheville city", url: "https://www.census.gov/quickfacts/fact/table/ashevillecitynorthcarolina/PST045224" },
-        { label: "Mission Hospital — Asheville", url: "https://www.missionhealth.org/location-hub/mission-hospital/" },
-        { label: "City of Asheville — hazard mitigation context", url: "https://www.ashevillenc.gov/department/community_resilience/hazard_mitigation/" },
+        { label: "Mission Hospital — Asheville", url: "https://www.missionhealth.org/locations/mission-hospital" },
+        { label: "City of Asheville — emergency preparedness", url: "https://www.ashevillenc.gov/service/prepare-for-an-emergency/" },
       ],
     },
     deepSections: [
@@ -121,8 +121,8 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
       note: "Austin's tech-and-university growth has put sustained pressure on housing affordability; daily services, hospitals, and Austin-Bergstrom International Airport cover most needs. Urban heat-island nights and 100-year-floodplain redevelopment along Shoal, Walnut, and Onion creeks are the climate-weighted friction points.",
       sources: [
         { label: "U.S. Census QuickFacts — Austin city", url: "https://www.census.gov/quickfacts/fact/table/austincitytexas/PST045224" },
-        { label: "City of Austin — housing and planning", url: "https://www.austintexas.gov/department/housing-and-planning" },
-        { label: "Central Texas hospitals — Ascension Seton", url: "https://healthcare.ascension.org/Locations/Texas/AUSTN/AUSTN/seton-medical-center-austin" },
+        { label: "City of Austin — housing and planning", url: "https://www.austintexas.gov/housing/austin-housing" },
+        { label: "Central Texas hospitals — Ascension Seton", url: "https://healthcare.ascension.org/locations/texas/txaus/austin-ascension-seton-medical-center-austin" },
       ],
     },
     deepSections: [
@@ -285,7 +285,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
     ],
     additionalCitations: [
       { label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" },
-      { label: "City of Boulder — climate and hazard planning", kind: "other", url: "https://bouldercolorado.gov/services/climate" },
+      { label: "City of Boulder — climate and hazard planning", kind: "other", url: "https://bouldercolorado.gov/future-climate-action" },
     ],
   },
   "bozeman-mt": {
@@ -309,7 +309,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
     ],
     additionalCitations: [
       { label: "PRISM Climate Group — gridded 1991–2020 normals", kind: "prism", url: "https://prism.oregonstate.edu/" },
-      { label: "City of Bozeman — housing and growth", kind: "other", url: "https://www.bozeman.net/government/community-development/housing" },
+      { label: "City of Bozeman — community housing plans and resources", kind: "other", url: "https://www.bozeman.net/home/showpublisheddocument/13887/638418776919470000" },
     ],
   },
   "broken-bow-ok": {

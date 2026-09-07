@@ -45,7 +45,7 @@ describe("buildGrowabilityRationale", () => {
     const text = buildGrowabilityRationale(place).lines.join(" ");
 
     expect(text).toContain("Season length caps the score");
-    expect(text).toContain("35 frost-free days");
+    expect(text).toContain("35 non-freezing days per year");
     expect(text).toContain("GDD10 300");
     expect(text).toContain("zone 3a");
   });

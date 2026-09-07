@@ -262,7 +262,7 @@ function confidenceForPlace(p: Place, humiditySource: ComfortPrecisionMonth["hum
     return { confidence: "medium", note: "Monthly humidity is present; sunshine or diurnal detail is partial." };
   }
   if (humiditySource === "analog") {
-    return { confidence: "medium", note: "Humidity is inferred from measured climate analogs; verify with local station normals before committing." };
+    return { confidence: "medium", note: "Humidity is inferred from other atlas locations; verify with local station normals before committing." };
   }
   if (humiditySource === "archetype") {
     return { confidence: "medium", note: "Humidity is archetype-estimated; verify with local station normals before committing." };
@@ -271,9 +271,9 @@ function confidenceForPlace(p: Place, humiditySource: ComfortPrecisionMonth["hum
 }
 
 function humidityBasisNote(analogHumidity: HumidityAnalogSeries | null, source: ComfortPrecisionMonth["humiditySource"]): string {
-  if (source === "measured") return "Monthly humidity normals are authored directly for this place.";
+  if (source === "measured") return "Monthly humidity is available for this place; Daymet humidity is estimated from vapor pressure and temperature, not measured by a local humidity sensor.";
   if (source === "analog" && analogHumidity) {
-    return `Humidity inferred from measured analogs: ${analogHumidity.analogs.slice(0, 3).map(analog => analog.name).join(", ")}.`;
+    return `Humidity inferred from other atlas locations: ${analogHumidity.analogs.slice(0, 3).map(analog => analog.name).join(", ")}.`;
   }
   if (source === "archetype") return "Humidity inferred from this place's microclimate archetype set.";
   return "No humidity basis yet; field-check dew point and wet-bulb values locally.";
@@ -331,7 +331,7 @@ export function buildComfortPrecisionProfile(p: Place, options: ComfortPrecision
     confidence: confidence.confidence,
     confidenceNote: confidence.note,
     humidityBasisNote: humidityBasisNote(analogHumidity, anySource),
-    methodNote: `Peak feel uses NWS-style heat index only when heat and humidity warrant it; when monthly humidity is absent, the model prefers measured-corpus climate analogs before archetype estimates. Wet-bulb is a shade proxy, not WBGT, because this atlas does not model sun angle, cloud cover, or wind speed.`,
+    methodNote: `Peak feel uses NWS-style heat index only when heat and humidity warrant it; when monthly humidity is absent, the model prefers other atlas locations before archetype estimates. Wet-bulb is a shade proxy, not WBGT, because this atlas does not model sun angle, cloud cover, or wind speed.`,
   };
 }
 

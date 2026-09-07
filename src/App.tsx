@@ -1631,6 +1631,8 @@ export default function App() {
 
                 <div
                   ref={mapStageRef}
+                  id="atlas-map"
+                  tabIndex={-1}
                   className="tc-map-stage relative h-[clamp(320px,50svh,560px)] md:h-[54dvh] md:min-h-[min(480px,46dvh)]"
                   aria-busy={resultsPending || undefined}
                   data-pending={resultsPending || undefined}
@@ -1660,6 +1662,17 @@ export default function App() {
                     onMapEngaged={engageMapFirstChrome}
                   />
                 </div>
+
+                <nav className="tc-map-wayfinding" aria-label="Map and place list">
+                  <p><span aria-hidden="true">◎</span> Numbers group nearby places. Zoom or select a group to explore.</p>
+                  {ranked.length > 0 ? <a href="#ranked-places-heading" onClick={event => {
+                    const target = document.getElementById("ranked-places-heading");
+                    if (!target) return;
+                    event.preventDefault();
+                    target.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+                    target.focus({ preventScroll: true });
+                  }}>Browse {ranked.length} places <span aria-hidden="true">↓</span></a> : null}
+                </nav>
 
                 <PinnedAndRecentRails
                   bookmarkIds={bookmarkIds}
@@ -1840,7 +1853,14 @@ export default function App() {
                   >
                     <div className="tc-section-heading pt-1">
                       <div className="tc-section-heading__line opacity-80" aria-hidden />
-                      <span id="ranked-places-heading" className="tc-section-heading__label">Ranked places</span>
+                      <h2 id="ranked-places-heading" tabIndex={-1} className="tc-section-heading__label">Ranked places</h2>
+                      <a className="tc-return-map" href="#atlas-map" onClick={event => {
+                        const target = mapStageRef.current;
+                        if (!target) return;
+                        event.preventDefault();
+                        target.scrollIntoView({ behavior: prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+                        target.focus({ preventScroll: true });
+                      }}>↑ Back to map</a>
                       <div className="tc-section-heading__line opacity-80" aria-hidden />
                     </div>
                     <VirtualPlaceGrid
@@ -2140,8 +2160,8 @@ const TopBar = memo(function TopBar({
 
   return (
     <header className="sticky top-0 z-30 tc-header-bar">
-      <div className="max-w-[1600px] mx-auto px-4 py-3 flex flex-col gap-3 min-[560px]:flex-row min-[560px]:items-center min-[560px]:justify-between min-[560px]:gap-4">
-        <div className="flex items-center justify-between gap-3 min-w-0 min-[560px]:contents">
+      <div className="max-w-[1600px] mx-auto px-4 py-3 flex flex-col gap-3 min-[1024px]:flex-row min-[1024px]:items-center min-[1024px]:justify-between min-[1024px]:gap-4">
+        <div className="flex items-center justify-between gap-3 min-w-0 min-[1024px]:contents">
           <div className="flex items-center gap-3 min-w-0 shrink-0">
             <div className="drop-shadow-[0_2px_14px_rgba(255,196,214,0.45)] shrink-0">
               <LogoMark />
@@ -2156,7 +2176,7 @@ const TopBar = memo(function TopBar({
             ref={menuTriggerRef}
             type="button"
             onClick={menuOpen ? closeMenu : openMenu}
-            className="tc-header-menu-trigger min-[560px]:hidden"
+            className="tc-header-menu-trigger min-[1024px]:hidden"
             aria-haspopup="dialog"
             aria-expanded={menuOpen}
             aria-controls="tc-site-menu"
@@ -2167,7 +2187,7 @@ const TopBar = memo(function TopBar({
           </button>
         </div>
 
-        <nav className="hidden min-[560px]:flex flex-wrap items-center gap-1.5 min-[560px]:justify-end" aria-label="Primary">
+        <nav className="hidden min-[1024px]:flex flex-wrap items-center gap-1.5 min-[1024px]:justify-end" aria-label="Primary">
           <NavBtn active={view === "explorer"} onClick={() => setView("explorer")} icon={<Map className="w-3.5 h-3.5" />} label="Atlas" />
           <NavBtn active={view === "trips"} onClick={() => setView("trips")} icon={<Route className="w-3.5 h-3.5" />} label="Trips" />
           <NavBtn active={view === "collections"} onClick={() => setView("collections")} icon={<Library className="w-3.5 h-3.5" />} label="Collections" />

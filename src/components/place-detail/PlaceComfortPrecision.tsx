@@ -29,7 +29,7 @@ function monthList(months: ComfortPrecisionMonth[]): string {
 }
 
 function humiditySourceLabel(month: ComfortPrecisionMonth): string {
-  if (month.humiditySource === "measured") return "measured humidity";
+  if (month.humiditySource === "measured") return "monthly humidity estimate";
   if (month.humiditySource === "analog") return "climate-analog humidity";
   if (month.humiditySource === "archetype") return "archetype humidity";
   return "humidity unmodeled";

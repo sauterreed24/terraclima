@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
 import type { PlaceNavItem } from "./place-detail-nav";
 import { scrollDetailRootToSection } from "../../lib/detail-scroll-spy";
@@ -23,7 +24,7 @@ function groupByChapter(items: PlaceNavItem[]): ChapterGroup[] {
 }
 
 /**
- * On-this-page navigation: mobile strip and desktop sticky list.
+ * On-this-page navigation: mobile section picker and desktop sticky list.
  *
  * Renders only the five dossier chapters at the top level; a chapter's
  * section links nest underneath it and are only present for the chapter
@@ -38,7 +39,6 @@ export function PlaceDetailReadingNav({
   activeAnchorId?: string | null;
 }) {
   const reduceMotion = useReducedMotion();
-  const mobileStripRef = useRef<HTMLDivElement>(null);
   const desktopNavRef = useRef<HTMLElement>(null);
   const itemKey = useMemo(() => items.map(i => i.id).join("\0"), [items]);
   const debounceRef = useRef(0);
@@ -74,7 +74,6 @@ export function PlaceDetailReadingNav({
         scrollChildIntoContainer(root, link, { axis, behavior });
       };
 
-      run(mobileStripRef.current, "x");
       run(desktopNavRef.current, "y");
     }, 140);
 
@@ -103,60 +102,36 @@ export function PlaceDetailReadingNav({
     "tc-reading-nav-link px-2.5 py-1.5 text-left text-[12.5px] leading-snug text-[color:var(--color-frost-strong)] " +
     "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-[var(--tc-focus-ring)]";
 
-  const mobileLink = `${linkBase} shrink-0 snap-start whitespace-nowrap`;
+  const activeIndex = Math.max(0, items.findIndex(item => item.id === activeAnchorId));
+  const navigateTo = (id: string) => scrollDetailRootToSection(id, { behavior: reduceMotion ? "auto" : "smooth" });
   const desktopLink = `${linkBase} block w-full`;
 
   return (
     <>
-      <nav
-        className="lg:hidden tc-reading-nav-mobile mb-6"
-        aria-label="On this page"
-        aria-describedby="tc-reading-nav-mobile-scroll-hint"
-      >
-        <p id="tc-reading-nav-mobile-scroll-hint" className="sr-only">
-          Swipe or scroll horizontally to browse more dossier chapters.
-        </p>
-        <div className="text-[10px] uppercase tracking-[0.18em] text-stone mb-2 px-0.5">On this page</div>
-        <div
-          ref={mobileStripRef}
-          className="flex gap-1.5 overflow-x-auto pb-2 -mx-1 px-1 scroll-smooth snap-x snap-mandatory [scrollbar-width:thin]"
-        >
-          {chapters.map((chapter, chapterIdx) => {
-            const chapterActive = chapter.label === chapterOfActive;
-            const expanded = chapter.label === openChapter;
-            const nestedId = `${idPrefix}-mobile-chapter-${chapterIdx}`;
-            return (
-              <div key={chapter.label} className="flex gap-1.5 shrink-0">
-                <a
-                  href={`#${chapter.items[0]!.id}`}
-                  className={`${mobileLink} tc-reading-nav-chapter${chapterActive ? " tc-reading-nav-link--active" : ""}`}
-                  onClick={event => onChapterClick(event, chapter)}
-                  aria-current={chapterActive ? "location" : undefined}
-                  aria-expanded={expanded}
-                  aria-controls={nestedId}
-                >
-                  {chapter.label}
-                </a>
-                <div id={nestedId} className="flex gap-1.5 shrink-0" hidden={!expanded}>
-                  {chapter.items.map(it => {
-                    const isActive = activeAnchorId != null && activeAnchorId === it.id;
-                    return (
-                      <a
-                        key={it.id}
-                        href={`#${it.id}`}
-                        className={`${mobileLink} tc-reading-nav-nested-link${isActive ? " tc-reading-nav-link--active" : ""}`}
-                        onClick={event => onNavClick(event, it.id)}
-                        aria-current={isActive ? "location" : undefined}
-                        hidden={!expanded}
-                      >
-                        {it.label}
-                      </a>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          })}
+      <nav className="lg:hidden tc-reading-nav-mobile mb-6" aria-label="On this page">
+        <div className="tc-reading-nav-mobile__label" aria-hidden="true">
+          <span>{chapterOfActive}</span>
+          <span>{activeIndex + 1} / {items.length}</span>
+        </div>
+        <div className="tc-reading-nav-mobile__controls">
+          <button type="button" disabled={activeIndex === 0}
+            aria-label="Previous profile section" title="Previous section"
+            onClick={() => navigateTo(items[activeIndex - 1]!.id)}>
+            <ChevronLeft className="w-4 h-4" aria-hidden />
+          </button>
+          <select id={`${idPrefix}-section`} aria-label="Jump to profile section"
+            value={items[activeIndex]!.id} onChange={event => navigateTo(event.target.value)}>
+            {chapters.map(chapter => (
+              <optgroup key={chapter.label} label={chapter.label}>
+                {chapter.items.map(item => <option key={item.id} value={item.id}>{item.label}</option>)}
+              </optgroup>
+            ))}
+          </select>
+          <button type="button" disabled={activeIndex === items.length - 1}
+            aria-label="Next profile section" title="Next section"
+            onClick={() => navigateTo(items[activeIndex + 1]!.id)}>
+            <ChevronRight className="w-4 h-4" aria-hidden />
+          </button>
         </div>
       </nav>
       <nav

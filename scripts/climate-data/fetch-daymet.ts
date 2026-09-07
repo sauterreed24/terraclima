@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 /**
  * Fetch Daymet Single Pixel CSVs for every climate anchor.
  *
@@ -19,7 +20,7 @@ import { detectCorruptDaymetPayload, parseDaymetCsv } from "./lib/daymet-parse";
 import { fetchWithRetry, mapPool } from "./lib/http";
 import { sha256Hex } from "./lib/hash";
 
-const ROOT = new URL("../..", import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const CACHE_ROOT = join(ROOT, ".cache/daymet");
 const ANCHORS_PATH = join(ROOT, "data/climate-v2/anchors.json");
 const VARS = "tmax,tmin,prcp,vp,srad,dayl,swe";

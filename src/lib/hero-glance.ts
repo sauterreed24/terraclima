@@ -55,9 +55,9 @@ function humidityStat(humidity: number): HeroFourthStat {
 function growingSeasonStat(days: number): HeroFourthStat {
   return {
     kind: "frost-free",
-    label: "Growing season",
+    label: "Non-freezing days",
     value: `${Math.round(days)} days`,
-    hint: "Approximate frost-free days in a typical year — the outdoor growing window.",
+    hint: "Estimated days per year with minimum air temperature at or above freezing. These days need not be consecutive; this is not the frost-free growing season.",
   };
 }
 

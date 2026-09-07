@@ -30,6 +30,21 @@ afterEach(() => {
 });
 
 describe("detail scroll spy", () => {
+  it("lands below the mobile reading toolbar without scrolling the page", () => {
+    const root = document.createElement("div");
+    root.dataset.placeDetail = "true";
+    setBox(root, { top: 20, height: 700 }, { clientHeight: 700, scrollHeight: 3000, scrollTop: 500 });
+    root.scrollTo = vi.fn();
+    const nav = document.createElement("nav");
+    nav.className = "tc-reading-nav-mobile";
+    setBox(nav, { top: 20, height: 90 });
+    const section = sectionAt(800);
+    section.id = "pd-evidence";
+    root.append(nav, section);
+    document.body.append(root);
+    scrollDetailRootToSection(section.id, { behavior: "auto" });
+    expect(root.scrollTo).toHaveBeenCalledWith({ top: 1174, behavior: "auto" });
+  });
   it("finds the place-detail drawer root", () => {
     const root = document.createElement("div");
     root.dataset.placeDetail = "true";

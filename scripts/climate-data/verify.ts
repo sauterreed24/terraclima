@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 /**
  * Offline verification of committed Climate V2 assets.
  *
@@ -12,7 +13,7 @@ import { sha256Hex, stableJsonHash, stableStringify } from "./lib/hash";
 import { parseDaymetCsv } from "./lib/daymet-parse";
 import { aggregateDaymetPeriod, recentShiftReceipt } from "./lib/aggregate";
 
-const ROOT = new URL("../..", import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const MANIFEST_PATH = join(ROOT, "data/climate-v2/manifest.json");
 const OUT_DIR = join(ROOT, "src/data/generated/climate-v2");
 const CACHE_ROOT = join(ROOT, ".cache/daymet");

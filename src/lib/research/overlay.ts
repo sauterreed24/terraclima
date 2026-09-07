@@ -31,6 +31,7 @@ const KIND_BY_PUBLISHER: Record<string, Citation["kind"]> = {
 function citationKindFor(source: CorpusSource): Citation["kind"] {
   if (KIND_BY_PUBLISHER[source.publisher]) return KIND_BY_PUBLISHER[source.publisher];
   const pub = source.publisher.toLowerCase();
+  if (pub.includes("census bureau")) return "oss-data";
   if (pub.includes("noaa") || pub.includes("ncei")) return "noaa";
   if (pub.includes("daymet") || pub.includes("ornl")) return "daymet";
   if (pub.includes("usgs")) return "usgs";

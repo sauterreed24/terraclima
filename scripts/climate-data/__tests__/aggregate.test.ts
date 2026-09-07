@@ -63,6 +63,15 @@ describe("RH and solar", () => {
 });
 
 describe("aggregation", () => {
+  it("counts non-freezing days across interrupted spells, not growing-season length", () => {
+    const rows = syntheticYear(2001, { tmin: -2 });
+    for (const row of rows) if (row.yday % 2 === 0) row.tmin = 0;
+    const { normals } = aggregateDaymetPeriod(rows, {
+      period: "rolling-1996-2025", startYear: 2001, endYear: 2001,
+    });
+    expect(normals.frostFreeDays).toBe(182);
+    expect(normals.frostDays).toBe(183);
+  });
   it("averages monthly precip as yearly totals then mean", () => {
     const rows = [
       ...syntheticYear(1996, { prcp: 2 }),

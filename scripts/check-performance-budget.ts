@@ -53,8 +53,11 @@ const BUDGETS = {
    * Photographing every corpus place plus the overview portrait (why / contrast /
    * history) lands just over 200 KB; longer Commons filenames in the hero catalog
    * need a small extra allowance.
+   * The September field-guide pass adds an always-available climate-basis
+   * explanation and accessible section controls: measured 214,227 bytes.
+   * Allow 2 KB for these additions; initial-load ceilings remain unchanged.
    */
-  placeDetailRaw: 213_000,
+  placeDetailRaw: 215_000,
 } as const;
 
 function extractAttrs(tag: string, attr: string): string | null {

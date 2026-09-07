@@ -19,6 +19,28 @@ const SNAPSHOT_IDS = [
 ] as const;
 
 describe("Climate Data V2 coverage", () => {
+  it("publishes the same core values and validation status as the provenance records", async () => {
+    const records = await loadClimateV2Records();
+    for (const place of PLACES) {
+      const record = records[place.id]!;
+      const overlay = CLIMATE_V2_OVERLAY_BY_ID[place.id]!;
+      const recent = record.periods["rolling-1996-2025"];
+      expect(overlay.validationStatus, place.id).toBe(record.validation.status);
+      for (const key of ["tempHighC", "tempLowC", "precipMm", "humidity", "annualPrecipMm", "frostFreeDays", "gdd10", "solarEnergyMjM2Day"] as const) {
+        expect(overlay.climate[key], `${place.id}: ${key}`).toEqual(recent[key]);
+      }
+      for (const period of Object.values(record.periods)) {
+        expect(period.tempHighC, place.id).toHaveLength(12);
+        expect(period.tempLowC, place.id).toHaveLength(12);
+        expect(period.precipMm, place.id).toHaveLength(12);
+        for (let month = 0; month < 12; month++) {
+          expect(period.tempHighC[month], place.id).toBeGreaterThanOrEqual(period.tempLowC[month]!);
+          expect(period.precipMm[month], place.id).toBeGreaterThanOrEqual(0);
+        }
+        expect(period.precipMm.reduce((a, b) => a + b, 0), place.id).toBeCloseTo(period.annualPrecipMm, 0);
+      }
+    }
+  });
   it("covers every place with generated 1996–2025 overlay normals", () => {
     expect(CLIMATE_V2_PLACE_IDS).toHaveLength(226);
     expect(PLACES).toHaveLength(226);
