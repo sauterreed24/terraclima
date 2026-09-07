@@ -50,8 +50,20 @@ jobs:
           TC_BASE_URL: http://127.0.0.1:4173
           TC_FIELD_GUIDE_ARTIFACT_DIR: playtest-browser-artifacts/field-guide
         run: npm run playtest:field-guide
-      - name: Upload artifacts on failure
-        if: failure()
+      - name: Map, climate scenarios, and adversarial release checks
+        env:
+          TC_BASE_URL: http://127.0.0.1:4173
+          TC_MAP_ARTIFACT_DIR: playtest-browser-artifacts/map
+          TC_RIGOROUS_ARTIFACT_DIR: playtest-browser-artifacts/rigorous
+          TC_V2_REGRESSION_ARTIFACT_DIR: playtest-browser-artifacts/climate
+          TC_RELEASE_AUDIT_ARTIFACT_DIR: playtest-browser-artifacts/release
+        run: |
+          npm run playtest:map
+          node scripts/playtest-rigorous.mjs
+          npm run playtest:climate-v2
+          npm run playtest:release-audit
+      - name: Upload browser evidence
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: playtest-browser-artifacts
