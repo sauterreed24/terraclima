@@ -668,8 +668,8 @@ function contrastDeltaClause(lc: NonNullable<Place["localContrast"]>[number]): s
   if (lc.growingSeasonDeltaDays != null && Math.abs(lc.growingSeasonDeltaDays) >= 8) {
     const mag = Math.abs(Math.round(lc.growingSeasonDeltaDays));
     bits.push(lc.growingSeasonDeltaDays > 0
-      ? `roughly ${mag} extra frost-free days`
-      : `roughly ${mag} fewer frost-free days`);
+      ? `roughly ${mag} extra growing-season days`
+      : `roughly ${mag} fewer growing-season days`);
   }
   if (!bits.length) return null;
   return bits.length === 1 ? bits[0]! : `${bits.slice(0, -1).join(", ")}, and ${bits.at(-1)}`;

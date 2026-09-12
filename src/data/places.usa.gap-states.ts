@@ -506,7 +506,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       note: "Mount Charleston Village sits 45 minutes from Las Vegas services, but wildfire evacuation, winter road closures on NV-156/157, and second-home pricing from heat-island refugees are the live-here filter behind the sky-island comfort.",
       sources: [
         { label: "USFS Spring Mountains National Recreation Area", url: "https://www.fs.usda.gov/detail/htnf/specialplaces/?cid=stelprdb5270088" },
-        { label: "Clark County — emergency management", url: "https://www.clarkcountynv.gov/government/departments/fire_department/emergency_management/" },
+        { label: "Clark County — emergency management", url: "https://www.clarkcountynv.gov/government/departments/fire/office-of-emergency-management" },
         { label: "NWS Las Vegas — Spring Mountains forecast", url: "https://www.weather.gov/vef/" },
       ],
     },
@@ -763,10 +763,10 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     liveSignals: {
       costPressure: 40,
       accessFriction: 42,
-      note: "Spearfish Regional Hospital and Black Hills State University anchor services, but chinook wind volatility, Rapid City specialty backup, and ecotone wildfire exposure are the lived-friction story behind the foehn fame.",
+      note: "Monument Health Spearfish Hospital and Black Hills State University anchor services, but chinook wind volatility, Rapid City specialty backup, and ecotone wildfire exposure are the lived-friction story behind the foehn fame.",
       sources: [
         { label: "City of Spearfish — municipal services", url: "https://www.cityofspearfish.com/" },
-        { label: "Spearfish Regional Hospital", url: "https://www.monument.health/locations/spearfish-regional-hospital" },
+        { label: "Monument Health Spearfish Hospital", url: "https://monument.health/service/emergency-medicine/" },
         { label: "NWS Rapid City — Black Hills climatology", url: "https://www.weather.gov/unr/" },
       ],
     },

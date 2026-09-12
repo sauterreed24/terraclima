@@ -121,8 +121,8 @@ export function buildPracticalReadCards(place: Place): PracticalReadCard[] {
   const driverLabels = place.drivers.map(d => DRIVER_LABELS[d] ?? d);
   const spectral = geo.spectralSignals.slice(0, 2).map(s => s.label);
   const frost = place.climate.frostFreeDays != null
-    ? `about ${place.climate.frostFreeDays} frost-free days`
-    : "frost-free window not estimated";
+    ? `about ${place.climate.frostFreeDays} non-freezing days per year (not a continuous growing season)`
+    : "annual non-freezing-day count not estimated";
   const gdd = place.climate.gdd10 != null ? `GDD10 about ${Math.round(place.climate.gdd10)}` : "heat units not estimated";
   const soilPh = `${place.soil.phRange[0]}-${place.soil.phRange[1]}`;
   const nearbyRows = buildNearbyContextRows(place);

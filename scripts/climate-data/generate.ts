@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 /**
  * Generate compact Climate V2 place records + manifest from cached Daymet CSVs.
  *
@@ -22,7 +23,7 @@ import { aggregateDaymetPeriod, recentShiftReceipt } from "./lib/aggregate";
 import { parseDaymetCsv, type DaymetDailyRow } from "./lib/daymet-parse";
 import { sha256Hex, stableJsonHash, stableStringify } from "./lib/hash";
 
-const ROOT = new URL("../..", import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const CACHE_ROOT = join(ROOT, ".cache/daymet");
 const OUT_DIR = join(ROOT, "src/data/generated/climate-v2");
 const MANIFEST_PATH = join(ROOT, "data/climate-v2/manifest.json");

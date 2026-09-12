@@ -330,7 +330,7 @@ describe("App shell", () => {
 
     const collectionPlace = await screen.findByRole(
       "button",
-      { name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 78 | Comfort" },
+      { name: "Open Sequim profile from Rain-Shadow Sanctuaries collection: Easy 77 | Comfort" },
       { timeout: APP_SHELL_TIMEOUT_MS },
     );
     fireEvent.click(collectionPlace);

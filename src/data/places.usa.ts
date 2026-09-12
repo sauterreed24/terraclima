@@ -31,16 +31,16 @@ export const PLACES_USA: Place[] = [
     archetypes: ["rain-shadow-sanctuary", "mild-winter-foothills", "mediterranean-pocket"],
     drivers: ["rain-shadow", "marine-layer"],
 
-    summaryShort: "The famed Olympic rain shadow keeps Sequim sunny and dry while the Hoh, 50 km west, receives 4000 mm of rain a year.",
-    summaryImmersive: "Sequim sits in one of the most dramatic rain shadows in North America. Pacific systems ride up the Olympic Range, shed their moisture on the windward Quinault and Hoh valleys — among the wettest places on the continent — then descend toward the Dungeness lowland warmer, drier, and already half clear. The town registers roughly 400 mm of annual precipitation, a sixth of what falls just 50 km to the southwest. Summers are cool and breezy off the Strait of Juan de Fuca. Winter mornings glitter under high pressure, with the snowy Olympics standing to the south and Mount Baker visible northeast across the strait. The light here has a distinct quality — a clean, cold-shadow brightness more common in the inland mountain West than along the Pacific.",
+    summaryShort: "In the Olympic rain shadow, Sequim opens onto dry prairie and the Strait of Juan de Fuca while rainforests flourish across the mountains.",
+    summaryImmersive: "Sequim sits in one of the most dramatic rain shadows in North America. Pacific systems ride up the Olympic Range, shed their moisture on the windward Quinault and Hoh valleys — among the wettest places on the continent — then descend toward the Dungeness lowland warmer, drier, and already half clear. The National Park Service describes roughly 410 mm of rain a year at Sequim, compared with about 3550 mm in the Hoh rainforest. These local reference figures describe the landscape contrast; the atlas charts use a separate 1996–2025 Daymet grid estimate. Summers are cool and breezy off the Strait of Juan de Fuca. Winter mornings glitter under high pressure, with the snowy Olympics standing to the south and Mount Baker visible northeast across the strait. The light here has a distinct quality — a clean, cold-shadow brightness more common in the inland mountain West than along the Pacific.",
     whyDistinct: "Prevailing southwesterlies force moist marine air up the Olympic Range, condensing rain and snow on the windward slopes. The same air compresses and dries as it descends toward the Dungeness lowland, producing a narrow band — perhaps 30 km wide — of genuinely Mediterranean character on an otherwise soaking coast. The Strait of Juan de Fuca moderates temperatures in every season.",
 
     experience: {
-      feel: "Sequim feels like someone cut a dry, luminous window into the Pacific Northwest's gray. The Olympics wring the storms out to the southwest, so the Dungeness lowland stays bright and breezy while the Hoh drowns 50 km away — a clean, cold-shadow light you usually only find in the inland mountain West.",
+      feel: "Sequim feels like someone cut a dry, luminous window into the Pacific Northwest's gray. The Olympics wring the storms out to the southwest, so the Dungeness lowland stays bright and breezy while rain gathers in the Hoh valley beyond the mountains — a clean, cold-shadow light you usually only find in the inland mountain West.",
       seasons: {
         winter: "Mornings glitter under high pressure — snow on the Olympics to the south, Mount Baker across the strait — with afternoons near 8°C and frosty starts near 1°C. It is the gray season by Northwest standards, yet Sequim still steals far more sun than Seattle.",
-        spring: "The brightest, driest stretch arrives early: afternoons climb through the teens, the lavender fields green up, and the rain shadow keeps showers brief while the rest of the coast stays sodden.",
-        summer: "Cool, dry, and breezy off the Strait of Juan de Fuca — afternoons top out near 21°C and rarely push past it, sunshine peaks, and rain nearly vanishes. This is open-window, no-AC weather that pulls climate refugees off hotter coasts.",
+        spring: "Afternoons climb through the teens and lavender fields green up as daylight lengthens. Spring still brings showers and cool marine air; the reliably dry stretch comes later, in summer.",
+        summer: "Cool, dry, and breezy off the Strait of Juan de Fuca — typical afternoons sit near 21°C, though heat waves can run much hotter, sunshine peaks, and rain nearly vanishes. This is open-window, no-AC weather that pulls climate refugees off hotter coasts.",
         autumn: "The lavender light lingers into October before the storm track returns. Highs ease back through the teens, the first real rains arrive in November, and the Olympics take their first snow.",
       },
       travelerFit: "Visitors come for the lavender farms, the Dungeness Spit, and a sunny base camp for Olympic National Park's rainforests and alpine meadows.",
@@ -107,11 +107,10 @@ export const PLACES_USA: Place[] = [
     },
 
     localContrast: [
-      { radiusKm: 50, summerHighDeltaC: 0, precipDeltaPct: -75, note: "vs Forks / Hoh valley — approximately one-sixth the annual precipitation." },
-      { radiusKm: 100, precipDeltaPct: -55, note: "vs the broader Olympic Peninsula average." },
+      { radiusKm: 100, note: "Across the Olympic Peninsula, windward rainforest valleys receive far more rain than the Dungeness lowland. This is a regional landscape comparison, not a matched station-pair percentage." },
     ],
     nearbyContrasts: [
-      { label: "Forks, WA (50 km SW)", note: "Forks averages >3000 mm annual precipitation — among the wettest lowlands in the lower 48. Sequim averages ~475 mm." },
+      { label: "Forks and the western Olympic Peninsula", note: "The National Park Service contrasts rainforests on the wet western side with Sequim in the dry northeast. The Hoh reference is about 3550 mm annually; Sequim is about 410 mm in the park weather guide. Check the cited locations and period before comparing either with the atlas grid." },
       { label: "Port Townsend, WA", note: "Also in the rain shadow but marginally cooler in summer due to stronger marine exposure." },
     ],
 
@@ -133,9 +132,11 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Hot-summer lovers; strict four-season enthusiasts; anyone who resents cool cloudy Junes (the Pacific NW 'June gloom' applies in reduced form).",
 
     confidence: "high",
-    confidenceNotes: "Sequim is one of the best-studied rain-shadow microclimates in North America. Station data at WA Sequim 2 E (USW00094240) and PRISM agree well on the precipitation anomaly.",
+    confidenceNotes: "Sequim is one of the best-studied rain-shadow microclimates in North America. The National Park Service documents the wet-west / dry-northeast contrast. The atlas grid has not yet been independently validated against a local station; garden-level frost and precipitation remain site checks.",
     citations: [
-      { label: "NOAA Climate Normals 1991–2020 — Sequim 2 E", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
+      { label: "National Park Service — Olympic weather and rain-shadow comparison", kind: "other", url: "https://www.nps.gov/olym/planyourvisit/weather-brochure.htm" },
+      { label: "National Park Service — Hoh rainforest precipitation", kind: "other", url: "https://www.nps.gov/olym/planyourvisit/visiting-the-hoh.htm" },
+      { label: "NOAA station identity — Quillayute Airport (windward reference, not Sequim)", kind: "noaa", url: "https://www.ncei.noaa.gov/cdo-web/datasets/GHCND/stations/GHCND:USW00094240/detail" },
       { label: "PRISM 30-year normals precipitation grid", kind: "prism", url: "https://prism.oregonstate.edu/normals/" },
       { label: "USDA Plant Hardiness Zone Map 2023", kind: "usda", url: "https://planthardiness.ars.usda.gov/" },
       { label: "Washington State Climatologist — Olympic rain-shadow notes", kind: "academic", url: "https://climate.washington.edu/" },
@@ -145,7 +146,7 @@ export const PLACES_USA: Place[] = [
         id: "sequim-air-masses",
         title: "Air masses, fronts, and the Olympic barrier",
         paragraphs: [
-          "In winter and spring, mid-latitude cyclones approach the Pacific Northwest with deeply maritime air. The Olympic Mountains act as a multi-kilometre wall: saturated westerly flow lifts on windward slopes, wringing out thousands of millimetres on the Quinault and Hoh. Air that reaches the northern rain-shadow has already surrendered most of its water; subsidence and downslope drying further warm and clear it. That is why Sequim can sit under high pressure with crisp visibility while Forks, less than 50 km away, records another soaking day.",
+          "In winter and spring, mid-latitude cyclones approach the Pacific Northwest with deeply maritime air. The Olympic Mountains act as a multi-kilometre wall: saturated westerly flow lifts on windward slopes, wringing out thousands of millimetres on the Quinault and Hoh. Air that reaches the northern rain-shadow has already surrendered most of its water; subsidence and downslope drying further warm and clear it. That is why Sequim can sit under high pressure with crisp visibility while the windward western peninsula records another soaking day.",
           "Summer brings a different rhythm: the North Pacific subtropical high strengthens, and the strait becomes a corridor for cool, stable northwesterlies. June can still feel muted — the Pacific Northwest ‘June gloom’ reaches Sequim in softened form — but July and August are genuinely dry. The combination of rain-shadow subsidence and strait ventilation keeps afternoon highs modest even when interior Washington and Oregon bake.",
         ],
       },
@@ -153,7 +154,7 @@ export const PLACES_USA: Place[] = [
         id: "sequim-hydrology",
         title: "Hydrology, irrigation, and snowpack teleconnections",
         paragraphs: [
-          "Annual precipitation near 475 mm is far below crop demand for most row crops; the Dungeness River and its glacial outwash aquifers are the economic backbone of the valley. Summer irrigation demand rises with temperature and evaporation just as natural recharge is minimal — a classic Mediterranean-style water stress pattern transposed onto the cool Pacific margin.",
+          "Low rainfall during the growing season makes irrigation central to local farming; the Dungeness River and its glacial outwash aquifers are the economic backbone of the valley. Summer irrigation demand rises with temperature and evaporation just as natural recharge is minimal — a classic Mediterranean-style water stress pattern transposed onto the cool Pacific margin.",
           "Olympic snowpack on the Bailey Range and Mount Olympus is the upstream reservoir. Mid-century warming projects earlier melt and tighter late-summer streamflow — a direct challenge for irrigated agriculture and salmon habitat in the lower Dungeness. The microclimate story is not only about rainfall totals; it is about when water arrives and when it does not.",
         ],
       },
@@ -169,7 +170,7 @@ export const PLACES_USA: Place[] = [
         id: "sequim-methods",
         title: "How we know — stations, PRISM, and residual uncertainty",
         paragraphs: [
-          "Sequim 2 E (USW00094240) anchors the lowland signal; PRISM grids capture the sharp gradient toward the Hoh. Residual uncertainty lies in garden-level frost on radiative nights — local cold-air pooling in the Dungeness valley can dip below grid expectations, especially under clear, calm inversions after snow in the Olympics.",
+          "The National Park Service provides the regional rain-shadow reference; Daymet supplies the atlas chart values. NOAA station USW00094240 is Quillayute Airport on the wet western side, not a Sequim station, and must not be used as a lowland validation anchor here. Residual uncertainty lies in garden-level frost on radiative nights — local cold-air pooling in the Dungeness valley can dip below grid expectations, especially under clear, calm inversions after snow in the Olympics.",
           "Confidence in the rain-shadow magnitude is high; confidence in any single farm’s last frost date remains moderate because micro-scale topography within the lowland still matters at the 100–500 m scale.",
         ],
       },
@@ -177,7 +178,7 @@ export const PLACES_USA: Place[] = [
         id: "sequim-strait-ventilation",
         title: "Strait ventilation, ebb-and-flood breezes, and the Olympic lee",
         paragraphs: [
-          "The Strait of Juan de Fuca is not merely a water body — it is a pressure-gradient corridor. When interior British Columbia builds summer high pressure and the Pacific maintains lower pressure offshore, the strait funnels cool, stable northwesterlies onto the northern Olympic lowland. Those breezes cap afternoon heating and keep relative humidity from collapsing the way it does in California’s interior valleys.",
+          "The Strait of Juan de Fuca is not merely a water body — it is a pressure-gradient corridor. When pressure is higher offshore than inland, onshore flow can accelerate through the strait, carrying cool marine air toward the northern Olympic lowland. Those breezes cap afternoon heating and keep relative humidity from collapsing the way it does in California’s interior valleys.",
           "Tidal and local sea-breeze circulations add a second, finer-scale rhythm: onshore components strengthen on many summer afternoons even when synoptic flow is weak. For gardeners, that means afternoon relief and reduced heat stress on crops that would scorch in a continental rain shadow at the same latitude.",
         ],
       },
@@ -467,7 +468,7 @@ export const PLACES_USA: Place[] = [
       sources: [
         { label: "City of Sierra Vista - Municipal Airport", url: "https://www.sierravistaaz.gov/our-city/departments/airport" },
         { label: "Canyon Vista Medical Center - Sierra Vista hospital services", url: "https://www.canyonvistamedicalcenter.com/home" },
-        { label: "Cochise County - Community Wildfire Protection Plan update", url: "https://www.cochise.az.gov/m/newsflash/Home/Detail/412" },
+        { label: "Cochise County — emergency and wildfire protection plans", url: "https://www.cochise.az.gov/288/County-Emergency-Plans" },
       ],
     },
     relocationFit: ["retirees", "birders", "remote workers", "military families (Fort Huachuca)"],
@@ -479,7 +480,7 @@ export const PLACES_USA: Place[] = [
     citations: [
       { label: "NOAA — Sierra Vista / Fort Huachuca coop", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "USFS Coronado National Forest — Huachuca ecosystem", kind: "academic" },
-      { label: "San Pedro Riparian NCA — BLM", kind: "other", url: "https://www.blm.gov/programs/national-conservation-lands/arizona/san-pedro" },
+      { label: "San Pedro Riparian NCA — BLM", kind: "other", url: "https://www.blm.gov/national-conservation-lands/arizona/san-pedro" },
       { label: "Tucson Audubon — Southeast Arizona birding site guides", kind: "field-observation" },
     ],
     settlementsWithinZone: [
@@ -2141,7 +2142,7 @@ export const PLACES_USA: Place[] = [
       sources: [
         { label: "City of Boulder — Housing & Human Services", url: "https://bouldercolorado.gov/housing" },
         { label: "Boulder County Public Health — community health", url: "https://www.bouldercounty.org/departments/public-health/" },
-        { label: "UCHealth — Foothills Hospital", url: "https://www.uchealth.org/locations/uchealth-foothills-hospital/" },
+        { label: "Boulder Community Health — Foothills Hospital", url: "https://www.bch.org/locations/foothills-hospital/" },
       ],
     },
     relocationFit: ["outdoor recreationists", "tech workers"], travelFit: ["mountain access", "climbing"],
@@ -2227,7 +2228,7 @@ export const PLACES_USA: Place[] = [
       note: "Franklin County's estuary economy still carries Hurricane Michael (2018) recovery stress; Gulf storm surge and insurance friction dominate long-term relocation math. Tallahassee Memorial and Panama City are the practical specialty-care anchors — not Apalachicola itself.",
       sources: [
         { label: "Franklin County, FL — emergency management", url: "https://www.franklincountyflorida.com/departments/emergency-management/" },
-        { label: "NOAA — Hurricane Michael summary", url: "https://www.ncei.noaa.gov/access/monitoring/monthly-report/hurricane/201810" },
+        { label: "NOAA — Hurricane Michael summary", url: "https://www.nhc.noaa.gov/data/tcr/AL142018_Michael.pdf" },
       ],
     },
     relocationFit: ["coastal-water lovers"], travelFit: ["oysters", "dark-sky"],
@@ -2558,7 +2559,7 @@ export const PLACES_USA: Place[] = [
       note: "Hood River orchard and wind-sport tourism have tightened housing along the east-gorge corridor; the 2017 Eagle Creek Fire burned the west rim and keeps smoke-season salient. Mid-Columbia Medical Center and Portland access cover daily needs, but wind-exposed sites and fire insurance are parcel-level checks.",
       sources: [
         { label: "City of Hood River — housing & community development", url: "https://www.hoodriver.or.us/community/page/housing" },
-        { label: "USFS — Eagle Creek Fire recovery", url: "https://www.fs.usda.gov/detail/columbiariver/home/?cid=fseprd555444" },
+        { label: "USFS — Eagle Creek Fire recovery", url: "https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd615948.pdf" },
         { label: "Mid-Columbia Medical Center", url: "https://www.mcmc.net/" },
       ],
     },
@@ -2765,7 +2766,7 @@ export const PLACES_USA: Place[] = [
       accessFriction: 70,
       note: "Resort-town worker housing and seasonal employment dominate Mammoth's lived economy; Mammoth Hospital covers basics but Bishop and Reno handle most specialty care. Smoke from Sierra fires and shrinking snowpack are the long-tail climate-relocation risks.",
       sources: [
-        { label: "Town of Mammoth Lakes — housing", url: "https://www.townofmammothlakes.ca.gov/departments/housing" },
+        { label: "Town of Mammoth Lakes — housing", url: "https://www.townofmammothlakes.ca.gov/633/Housing" },
         { label: "Mammoth Hospital", url: "https://www.mammothhospital.org/" },
       ],
     },
@@ -2810,7 +2811,7 @@ export const PLACES_USA: Place[] = [
       note: "International Dark-Sky status and winter perfection come with summer heat stress, groundwater limits, and a long drive to El Centro or San Diego for specialty care. Borrego Valley's unincorporated service base keeps daily errands simple but narrow.",
       sources: [
         { label: "International Dark-Sky Association — Borrego Springs", url: "https://darksky.org/places/borrego-springs-dark-sky-community/" },
-        { label: "San Diego County — Borrego Springs community plan", url: "https://www.sandiegocounty.gov/content/sdc/pds/borrego-springs.html" },
+        { label: "San Diego County — Borrego Springs community plan", url: "https://www.sandiegocounty.gov/content/sdc/pds/gpupdate/comm/borrego.html" },
       ],
     },
     relocationFit: ["winter-only retirees", "astronomers"], travelFit: ["wildflower blooms", "night sky"],
@@ -3008,9 +3009,9 @@ export const PLACES_USA: Place[] = [
       accessFriction: 52,
       note: "Red-rock tourism and second-home demand keep housing tight; the 2014 Slide Fire and ongoing Oak Creek flash-flood risk sharpen wildfire-insurance and parcel checks. Verde Valley Medical Center covers acute care, but Phoenix remains the specialty-care anchor.",
       sources: [
-        { label: "City of Sedona — housing & community development", url: "https://www.sedonaaz.gov/your-government/departments/community-development/housing" },
+        { label: "City of Sedona — housing & community development", url: "https://www.sedonaaz.gov/your-government/departments-and-programs/community-development/housing" },
         { label: "Coconino National Forest — Slide Fire recovery", url: "https://www.fs.usda.gov/detail/coconino/home/?cid=fseprd555444" },
-        { label: "Verde Valley Medical Center", url: "https://www.nahealth.com/location/verde-valley-medical-center/" },
+        { label: "Verde Valley Medical Center", url: "https://www.nahealth.com/contact-us/" },
       ],
     },
     relocationFit: ["wellness retreat life", "retirees"], travelFit: ["red rock hiking", "vortex tourism"],
@@ -3299,7 +3300,7 @@ export const PLACES_USA: Place[] = [
       note: "North America's highest incorporated city trades altitude clarity for thin-air daily life and a small service base; St. Vincent Hospital covers acute care but Denver handles most specialty needs. Winter isolation on US-24 is a seasonal relocation reality.",
       sources: [
         { label: "City of Leadville — community profile", url: "https://www.leadville-co.gov/" },
-        { label: "St. Vincent Hospital — Leadville", url: "https://www.svhealthcare.org/locations/st-vincent-hospital-leadville" },
+        { label: "St. Vincent Hospital — Leadville", url: "https://www.stvincent.health/emergency-medicine" },
       ],
     },
     relocationFit: ["extreme-sport athletes", "altitude trainers"], travelFit: ["climbing fourteeners", "mining history"],
@@ -3342,7 +3343,7 @@ export const PLACES_USA: Place[] = [
       note: "Durango's mild San Juan climate attracts Front Range spillover, tightening housing along the Animas corridor; 416 Fire (2018) and ongoing smoke seasons keep wildfire-insurance salient. Mercy Hospital covers daily care and DRO offers regional air access.",
       sources: [
         { label: "City of Durango — housing", url: "https://www.durangogov.org/166/Housing" },
-        { label: "Mercy Hospital — Durango", url: "https://www.mercy.net/locations/colorado/mercy-hospital/" },
+        { label: "Mercy Hospital — Durango", url: "https://www.mountain.commonspirit.org/location/mercy-hospital" },
       ],
     },
     relocationFit: ["active retirees", "outdoor families"], travelFit: ["ski and mountain access"],
@@ -3406,7 +3407,7 @@ export const PLACES_USA: Place[] = [
       accessFriction: 42,
       note: "University of Montana anchors a modest service base, but winter inversions and very-high wildfire smoke days define daily quality-of-life math. Providence St. Patrick Hospital covers acute care; Spokane and Salt Lake City remain the practical specialty-care anchors.",
       sources: [
-        { label: "Providence — St. Patrick Hospital", url: "https://www.providence.org/locations/mt/st-patrick" },
+        { label: "Providence — St. Patrick Hospital", url: "https://www.providence.org/locations/mt/st-patrick-hospital" },
         { label: "Missoula City-County Air Quality", url: "https://www.ci.missoula.mt.us/" },
       ],
     },
@@ -3492,7 +3493,7 @@ export const PLACES_USA: Place[] = [
       accessFriction: 36,
       note: "USU and the fruit belt keep services local, but winter PM2.5 inversions can persist for weeks — the relocation screen is air quality as much as orchard charm.",
       sources: [
-        { label: "Utah DEQ — Cache Valley air quality", url: "https://deq.utah.gov/air-quality/" },
+        { label: "Utah DEQ — Cache Valley air quality", url: "https://deq.utah.gov/division-air-quality" },
         { label: "City of Logan — municipal services", url: "https://www.loganutah.org/" },
         { label: "Logan Regional Hospital — Intermountain Health", url: "https://intermountainhealthcare.org/locations/logan-regional" },
       ],
@@ -3645,7 +3646,7 @@ export const PLACES_USA: Place[] = [
       note: "Tug Hill snow records draw die-hards, but Oswego County's remote plateau roads, roof-load winters, and Syracuse-or-Watertown specialty-care distance are the lived-friction story behind the lake-effect superlatives.",
       sources: [
         { label: "NWS Buffalo — lake-effect climatology", url: "https://www.weather.gov/buf/lakeeffect" },
-        { label: "Oswego County — emergency management", url: "https://www.oswegocounty.com/departments/emergency_management/" },
+        { label: "Oswego County — emergency management", url: "https://www.oswegocountyny.gov/departments/public_safety/emergency_management/index.php" },
         { label: "NYS DOT — Tug Hill winter travel advisories", url: "https://www.dot.ny.gov/" },
       ],
     },
@@ -4159,7 +4160,7 @@ export const PLACES_USA: Place[] = [
       accessFriction: 78,
       note: "Island-only access via Alaska Marine Highway or daily Alaska Airlines flights; specialty medical care typically requires Seattle or Anchorage trips.",
       sources: [
-        { label: "Niche — Sitka AK", url: "https://www.niche.com/places-to-live/sitka-and-borough-of-sitka-ak/" },
+        { label: "Niche — Sitka AK", url: "https://www.niche.com/places-to-live/sitka-sitka-ak/" },
       ],
     },
     relocationFit: ["rainforest dwellers", "commercial fishers", "maritime-climate purists"], travelFit: ["brown bears", "whale watching", "historic Russian America", "rainforest hiking"],

@@ -235,7 +235,7 @@ async function main() {
       findings.push({ label: "evidence-home-compare", kind: "evidence-not-expanded" });
     }
     const body = await page.locator(".tc-evidence-summary").innerText();
-    if (!/screening/i.test(body) || !/Measured normals|Observed climate/i.test(body)) {
+    if (!/screening/i.test(body) || !/Gridded climate estimates and reference normals/i.test(body)) {
       findings.push({ label: "evidence-home-compare", kind: "evidence-copy-thin", body: body.slice(0, 200) });
     }
     const home = page.getByRole("button", { name: /Set .* as your home base|Set home|Home base/i }).first();
@@ -415,7 +415,7 @@ async function main() {
     { id: "sequim-wa", label: "Sunshine", value: "50%" },
     { id: "yuma-az", label: "Sunshine", value: "92%" },
     { id: "astoria-or", label: "Sunshine", value: "43%", overview: /storm-lashed port/i },
-    { id: "bacalar-mx", label: "Growing season", value: "365 days" },
+    { id: "bacalar-mx", label: "Non-freezing days", value: "365 days" },
     { id: "portal-az", label: "Sunshine", value: "79%", overview: /Paradise|Portal|Chiricahua/i },
   ];
   for (const spot of HERO_SPOTS) {

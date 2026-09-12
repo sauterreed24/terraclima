@@ -3,6 +3,7 @@ import { Compass, Plane, Home, UserMinus, ThermometerSun, GitCompare, Landmark, 
 import type { Place } from "../../types";
 import { composePlaceExperience } from "../../lib/place-overview";
 import { fmtTemp, useProse, useUnits } from "../../lib/units";
+import { PlaceClimateBasis } from "./PlaceClimateBasis";
 
 /**
  * Overview spotlight — the humanistic lead of every place dossier. Answers
@@ -37,6 +38,8 @@ export function PlaceOverviewSpotlight({
 
       <p className="place-overview__immersive">{prose(exp.immersive)}</p>
 
+      <PlaceClimateBasis place={place} />
+
       <div className="place-overview__essay">
         <article className="place-overview__essay-card" data-kind="why">
           <h3 className="place-overview__block-title">
@@ -54,7 +57,7 @@ export function PlaceOverviewSpotlight({
           <ul className="place-overview__contrast-list">
             {exp.contrastItems.map((item, i) => (
               <li key={`${i}:${item.label}`}>
-                <div className="place-overview__contrast-label">{item.label}</div>
+                <div className="place-overview__contrast-label">{prose(item.label)}</div>
                 <p>{prose(item.note)}</p>
               </li>
             ))}

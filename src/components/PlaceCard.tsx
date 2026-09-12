@@ -380,10 +380,10 @@ export const PlaceCard = memo(function PlaceCard({
                 </span>
               )}
               {frostFreeDays != null && (
-                <span className="place-card__ext-stat" title="Approximate frost-free days per year">
+                <span className="place-card__ext-stat" title="Estimated days per year with minimum air temperature at or above freezing; not necessarily consecutive or a safe planting season">
                   <Leaf className="w-3 h-3 shrink-0" aria-hidden style={{ color: "#3d8f55" }} />
                   <span className="font-mono-num">{frostFreeDays}</span>
-                  <span className="text-stone-readable/60">frost-free days</span>
+                  <span className="text-stone-readable/60">non-freezing days/yr</span>
                 </span>
               )}
             </div>

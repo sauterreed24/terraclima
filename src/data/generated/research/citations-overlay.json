@@ -128,7 +128,7 @@
       },
       {
         "label": "U.S. place identity — Anchorage, Alaska",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Anchorage (Cook Inlet) · Alaska · 61.2181,−149.9003",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -205,7 +205,7 @@
       },
       {
         "label": "U.S. place identity — Apalachicola, Florida",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Apalachicola · Florida · 29.7258,−84.9852",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -239,7 +239,7 @@
       {
         "label": "NOAA — Hurricane Michael summary",
         "kind": "other",
-        "url": "https://www.ncei.noaa.gov/access/monitoring/monthly-report/hurricane/201810"
+        "url": "https://www.nhc.noaa.gov/data/tcr/AL142018_Michael.pdf"
       }
     ],
     "asheville-nc": [
@@ -251,7 +251,7 @@
       },
       {
         "label": "U.S. place identity — Asheville, North Carolina",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Asheville · North Carolina · 35.5951,−82.5515",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -286,12 +286,12 @@
       {
         "label": "Mission Hospital — Asheville",
         "kind": "other",
-        "url": "https://www.missionhealth.org/location-hub/mission-hospital/"
+        "url": "https://www.missionhealth.org/locations/mission-hospital"
       },
       {
-        "label": "City of Asheville — hazard mitigation context",
+        "label": "City of Asheville — emergency preparedness",
         "kind": "other",
-        "url": "https://www.ashevillenc.gov/department/community_resilience/hazard_mitigation/"
+        "url": "https://www.ashevillenc.gov/service/prepare-for-an-emergency/"
       }
     ],
     "ashland-or": [
@@ -303,7 +303,7 @@
       },
       {
         "label": "U.S. place identity — Ashland, Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Ashland & the Rogue Valley · Oregon · 42.1946,−122.7095",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -349,7 +349,7 @@
       },
       {
         "label": "U.S. place identity — Astoria, Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Astoria (Columbia Mouth) · Oregon · 46.1879,−123.8313",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -419,7 +419,7 @@
       {
         "label": "Natural Resources Canada topographic context",
         "kind": "other",
-        "url": "https://natural-resources.canada.ca/maps-tools-and-publications/maps"
+        "url": "https://natural-resources.canada.ca/maps-tools-publications/maps/atlas-canada"
       },
       {
         "label": "British Columbia — rural and northern community services",
@@ -436,7 +436,7 @@
       },
       {
         "label": "U.S. place identity — Austin, Texas",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Austin (Edwards Plateau Edge) · Texas · 30.2672,−97.7431",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -470,12 +470,12 @@
       {
         "label": "City of Austin — housing and planning",
         "kind": "other",
-        "url": "https://www.austintexas.gov/department/housing-and-planning"
+        "url": "https://www.austintexas.gov/housing/austin-housing"
       },
       {
         "label": "Central Texas hospitals — Ascension Seton",
         "kind": "other",
-        "url": "https://healthcare.ascension.org/Locations/Texas/AUSTN/AUSTN/seton-medical-center-austin"
+        "url": "https://healthcare.ascension.org/locations/texas/txaus/austin-ascension-seton-medical-center-austin"
       }
     ],
     "bacalar-mx": [
@@ -560,11 +560,6 @@
         "url": "https://climateatlas.ca/"
       },
       {
-        "label": "AAFC Canadian Soil Information Service — Soil Landscapes of Canada",
-        "kind": "other",
-        "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/"
-      },
-      {
         "label": "Ville de Baie-Saint-Paul — municipal services",
         "kind": "other",
         "url": "https://www.ville.baie-saint-paul.qc.ca/"
@@ -625,7 +620,7 @@
       },
       {
         "label": "U.S. place identity — Bar Harbor, Maine",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Bar Harbor (Downeast) · Maine · 44.3876,−68.2039",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -666,7 +661,7 @@
       },
       {
         "label": "U.S. place identity — Beverly Shores, Indiana",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Beverly Shores (Lake Michigan) · Indiana · 41.9125,−86.9806",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -707,7 +702,7 @@
       },
       {
         "label": "U.S. place identity — Bishop, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Bishop & the Owens Valley · California · 37.3614,−118.3950",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -763,7 +758,7 @@
       },
       {
         "label": "U.S. place identity — Bismarck, North Dakota",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Bismarck (Northern Great Plains) · North Dakota · 46.8083,−100.7837",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -804,7 +799,7 @@
       },
       {
         "label": "U.S. place identity — Black Mountain, North Carolina",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Black Mountain & the Swannanoa Thermal Belt · North Carolina · 35.6176,−82.3217",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -850,7 +845,7 @@
       },
       {
         "label": "U.S. place identity — New Shoreham, Rhode Island",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Block Island · Rhode Island · 41.1717,−71.5778",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -891,7 +886,7 @@
       },
       {
         "label": "U.S. place identity — Boone, North Carolina",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Boone (High Country) · North Carolina · 36.2168,−81.6746",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -948,7 +943,7 @@
       },
       {
         "label": "U.S. place identity — Borrego Springs, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Borrego Springs (Anza-Borrego) · California · 33.2559,−116.3748",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -982,7 +977,7 @@
       {
         "label": "San Diego County — Borrego Springs community plan",
         "kind": "other",
-        "url": "https://www.sandiegocounty.gov/content/sdc/pds/borrego-springs.html"
+        "url": "https://www.sandiegocounty.gov/content/sdc/pds/gpupdate/comm/borrego.html"
       }
     ],
     "boulder-co": [
@@ -994,7 +989,7 @@
       },
       {
         "label": "U.S. place identity — Boulder, Colorado",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Boulder · Colorado · 40.0150,−105.2705",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1023,7 +1018,7 @@
       {
         "label": "City of Boulder — climate and hazard planning",
         "kind": "other",
-        "url": "https://bouldercolorado.gov/services/climate"
+        "url": "https://bouldercolorado.gov/future-climate-action"
       },
       {
         "label": "City of Boulder — Housing & Human Services",
@@ -1036,9 +1031,9 @@
         "url": "https://www.bouldercounty.org/departments/public-health/"
       },
       {
-        "label": "UCHealth — Foothills Hospital",
+        "label": "Boulder Community Health — Foothills Hospital",
         "kind": "other",
-        "url": "https://www.uchealth.org/locations/uchealth-foothills-hospital/"
+        "url": "https://www.bch.org/locations/foothills-hospital/"
       }
     ],
     "bozeman-mt": [
@@ -1050,7 +1045,7 @@
       },
       {
         "label": "U.S. place identity — Bozeman, Montana",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Bozeman · Montana · 45.6770,−111.0429",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1077,9 +1072,9 @@
         "url": "https://prism.oregonstate.edu/"
       },
       {
-        "label": "City of Bozeman — housing and growth",
+        "label": "City of Bozeman — community housing plans and resources",
         "kind": "other",
-        "url": "https://www.bozeman.net/government/community-development/housing"
+        "url": "https://www.bozeman.net/home/showpublisheddocument/13887/638418776919470000"
       },
       {
         "label": "Bozeman Health",
@@ -1101,7 +1096,7 @@
       },
       {
         "label": "U.S. place identity — Broken Bow, Oklahoma",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Broken Bow (Ouachita Uplift) · Oklahoma · 34.0293,−94.7372",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1147,7 +1142,7 @@
       },
       {
         "label": "U.S. place identity — Brookings, Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Brookings (Chetco Effect) · Oregon · 42.0526,−124.2840",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1183,7 +1178,7 @@
       },
       {
         "label": "U.S. place identity — Buffalo, New York",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Buffalo (Erie Eastern Shore) · New York · 42.8864,−78.8784",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1219,7 +1214,7 @@
       },
       {
         "label": "U.S. place identity — Tazewell County, Virginia",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Burkes Garden (Cold-Air Pool) · Virginia · 37.0921,−81.3548",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1265,7 +1260,7 @@
       },
       {
         "label": "U.S. place identity — Burlington, Vermont",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Burlington (Lake Champlain) · Vermont · 44.4759,−73.2121",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1363,7 +1358,7 @@
       },
       {
         "label": "U.S. place identity — Davis / Canaan Valley, West Virginia",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Canaan Valley · West Virginia · 39.0500,−79.4500",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1414,7 +1409,7 @@
       },
       {
         "label": "U.S. place identity — Cannon Beach, Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Cannon Beach · Oregon · 45.8917,−123.9615",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1460,7 +1455,7 @@
       },
       {
         "label": "U.S. place identity — Cape May, New Jersey",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Cape May (Atlantic Tip) · New Jersey · 38.9351,−74.9060",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1501,7 +1496,7 @@
       },
       {
         "label": "U.S. place identity — Charleston, South Carolina",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Charleston · South Carolina · 32.7765,−79.9311",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1579,7 +1574,7 @@
       },
       {
         "label": "U.S. place identity — Chattanooga, Tennessee",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Chattanooga (Tennessee River Gap) · Tennessee · 35.0456,−85.3097",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1662,7 +1657,7 @@
       },
       {
         "label": "U.S. place identity — Clayton, Georgia",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Clayton (Blue Ridge Front) · Georgia · 34.8781,−83.4040",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1698,7 +1693,7 @@
       },
       {
         "label": "U.S. place identity — Cloudcroft, New Mexico",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Cloudcroft (Sacramento Mountains) · New Mexico · 32.9548,−105.7420",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1790,7 +1785,7 @@
       },
       {
         "label": "U.S. place identity — Cody, Wyoming",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Cody (Chinook Foothills) · Wyoming · 44.5263,−109.0565",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1826,7 +1821,7 @@
       },
       {
         "label": "U.S. place identity — Columbia, South Carolina",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Columbia (Fall Line) · South Carolina · 34.0007,−81.0348",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1862,7 +1857,7 @@
       },
       {
         "label": "U.S. place identity — Corpus Christi, Texas",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Corpus Christi (Laguna Madre) · Texas · 27.8006,−97.3964",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -1954,7 +1949,7 @@
       },
       {
         "label": "U.S. place identity — Crested Butte, Colorado",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Crested Butte · Colorado · 38.8697,−106.9878",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2281,7 +2276,7 @@
       },
       {
         "label": "U.S. place identity — Furnace Creek, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Death Valley (Furnace Creek) · California · 36.4600,−116.8653",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2332,7 +2327,7 @@
       },
       {
         "label": "U.S. place identity — Des Moines, Iowa",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Des Moines (Corn Belt) · Iowa · 41.5868,−93.6250",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2368,7 +2363,7 @@
       },
       {
         "label": "U.S. place identity — Driggs, Idaho",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Teton Valley (Driggs) · Idaho · 43.7232,−111.1111",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2419,7 +2414,7 @@
       },
       {
         "label": "U.S. place identity — Duluth, Minnesota",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Duluth (Lake Superior) · Minnesota · 46.7867,−92.1005",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2456,7 +2451,7 @@
       },
       {
         "label": "U.S. place identity — Durango, Colorado",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Durango · Colorado · 37.2753,−107.8801",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2490,7 +2485,7 @@
       {
         "label": "Mercy Hospital — Durango",
         "kind": "other",
-        "url": "https://www.mercy.net/locations/colorado/mercy-hospital/"
+        "url": "https://www.mountain.commonspirit.org/location/mercy-hospital"
       }
     ],
     "durango-mx": [
@@ -2543,7 +2538,7 @@
       },
       {
         "label": "U.S. place identity — Ellensburg, Washington",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Ellensburg (Kittitas Valley) · Washington · 46.9965,−120.5478",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2589,7 +2584,7 @@
       },
       {
         "label": "U.S. place identity — Ely, Minnesota",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Ely (Boundary Waters) · Minnesota · 47.9038,−91.8668",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2625,7 +2620,7 @@
       },
       {
         "label": "U.S. place identity — Eminence, Missouri",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Eminence (Ozark Current River) · Missouri · 37.1506,−91.3579",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2702,7 +2697,7 @@
       },
       {
         "label": "U.S. place identity — Erie, Pennsylvania",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Erie (Lake Erie Snowbelt) · Pennsylvania · 42.1292,−80.0851",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2738,7 +2733,7 @@
       },
       {
         "label": "U.S. place identity — Eureka, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Eureka (Humboldt Bay) · California · 40.8021,−124.1637",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2789,7 +2784,7 @@
       },
       {
         "label": "U.S. place identity — Eureka Springs, Arkansas",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Eureka Springs & the Ozark Escarpment · Arkansas · 36.4015,−93.7377",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2845,7 +2840,7 @@
       },
       {
         "label": "U.S. place identity — Fairbanks, Alaska",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Fairbanks · Alaska · 64.8378,−147.7164",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2947,7 +2942,7 @@
       },
       {
         "label": "U.S. place identity — Flagstaff, Arizona",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Flagstaff · Arizona · 35.1983,−111.6513",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -2998,7 +2993,7 @@
       },
       {
         "label": "U.S. place identity — Cottonwood Falls, Kansas",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Flint Hills · Kansas · 38.3706,−96.5428",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3049,7 +3044,7 @@
       },
       {
         "label": "U.S. place identity — Forks, Washington",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Forks & the Hoh Rainforest · Washington · 47.9507,−124.3852",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3090,7 +3085,7 @@
       },
       {
         "label": "U.S. place identity — Fort Davis, Texas",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Fort Davis & the Davis Mountains · Texas · 30.5882,−103.8955",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3136,7 +3131,7 @@
       },
       {
         "label": "U.S. place identity — Friday Harbor, Washington",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Friday Harbor (San Juan Islands) · Washington · 48.5353,−123.0174",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3177,7 +3172,7 @@
       },
       {
         "label": "U.S. place identity — Galena, Illinois",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Galena (Driftless Mississippi) · Illinois · 42.4157,−90.4290",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3259,7 +3254,7 @@
       },
       {
         "label": "U.S. place identity — Gatlinburg, Tennessee",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Gatlinburg (Great Smokies) · Tennessee · 35.7143,−83.5102",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3295,7 +3290,7 @@
       },
       {
         "label": "U.S. place identity — Geneva-on-the-Lake, Ohio",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Geneva-on-the-Lake (Lake Erie Snowbelt) · Ohio · 41.8595,−80.9481",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3372,7 +3367,7 @@
       },
       {
         "label": "U.S. place identity — Grand Marais, Michigan",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Grand Marais (Upper Peninsula) · Michigan · 46.6722,−85.9752",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3418,7 +3413,7 @@
       },
       {
         "label": "U.S. place identity — Grand Marais, Minnesota",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Grand Marais & the Lake Superior North Shore · Minnesota · 47.7506,−90.3343",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3515,7 +3510,7 @@
       },
       {
         "label": "U.S. place identity — Gunnison, Colorado",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Gunnison (Cold Pool) · Colorado · 38.5458,−106.9253",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3699,7 +3694,7 @@
       },
       {
         "label": "U.S. place identity — Highlands, North Carolina",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Highlands (Southern Appalachian Cloud Forest) · North Carolina · 35.0526,−83.1969",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3740,7 +3735,7 @@
       },
       {
         "label": "U.S. place identity — Hilo, Hawaii",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Hilo & Windward Mauna Kea · Hawaii · 19.7241,−155.0869",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3786,7 +3781,7 @@
       },
       {
         "label": "U.S. place identity — Honolulu, Hawaii",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Honolulu ( Oʻahu Lee) · Hawaii · 21.3069,−157.8583",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3822,7 +3817,7 @@
       },
       {
         "label": "U.S. place identity — Hood River (Gorge East), Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Columbia Gorge Gap Corridor · Oregon · 45.6950,−121.2380",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3856,7 +3851,7 @@
       {
         "label": "USFS — Eagle Creek Fire recovery",
         "kind": "other",
-        "url": "https://www.fs.usda.gov/detail/columbiariver/home/?cid=fseprd555444"
+        "url": "https://www.fs.usda.gov/Internet/FSE_DOCUMENTS/fseprd615948.pdf"
       },
       {
         "label": "Mid-Columbia Medical Center",
@@ -3873,7 +3868,7 @@
       },
       {
         "label": "U.S. place identity — Hood River, Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Hood River & the Columbia Gorge Orchard Belt · Oregon · 45.7054,−121.5215",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3919,7 +3914,7 @@
       },
       {
         "label": "U.S. place identity — Houghton, Michigan",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Keweenaw (Houghton) · Michigan · 47.1214,−88.5694",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3965,7 +3960,7 @@
       },
       {
         "label": "U.S. place identity — Sierra Vista, Arizona",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Huachuca Sky Island · Arizona · 31.5455,−110.3069",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -3989,7 +3984,7 @@
       {
         "label": "San Pedro Riparian NCA — BLM",
         "kind": "other",
-        "url": "https://www.blm.gov/programs/national-conservation-lands/arizona/san-pedro"
+        "url": "https://www.blm.gov/national-conservation-lands/arizona/san-pedro"
       },
       {
         "label": "City of Sierra Vista - Municipal Airport",
@@ -4002,9 +3997,9 @@
         "url": "https://www.canyonvistamedicalcenter.com/home"
       },
       {
-        "label": "Cochise County - Community Wildfire Protection Plan update",
+        "label": "Cochise County — emergency and wildfire protection plans",
         "kind": "other",
-        "url": "https://www.cochise.az.gov/m/newsflash/Home/Detail/412"
+        "url": "https://www.cochise.az.gov/288/County-Emergency-Plans"
       }
     ],
     "international-falls-mn": [
@@ -4016,7 +4011,7 @@
       },
       {
         "label": "U.S. place identity — International Falls, Minnesota",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "International Falls · Minnesota · 48.6011,−93.4101",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4144,7 +4139,7 @@
       },
       {
         "label": "U.S. place identity — Ithaca, New York",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Ithaca & the Finger Lakes · New York · 42.4440,−76.5019",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4195,7 +4190,7 @@
       },
       {
         "label": "U.S. place identity — Jackson, Wyoming",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Jackson (Jackson Hole) · Wyoming · 43.4799,−110.7624",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4231,7 +4226,7 @@
       },
       {
         "label": "U.S. place identity — Joseph, Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Joseph (Wallowa Mountains) · Oregon · 45.3546,−117.2301",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4369,7 +4364,7 @@
       },
       {
         "label": "U.S. place identity — Key West, Florida",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Key West · Florida · 24.5551,−81.7800",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4420,7 +4415,7 @@
       },
       {
         "label": "U.S. place identity — Klamath Falls, Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Klamath Falls & Upper Klamath Basin · Oregon · 42.2249,−121.7817",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4444,12 +4439,12 @@
       {
         "label": "USGS Upper Klamath Basin science",
         "kind": "usgs",
-        "url": "https://www.usgs.gov/centers/oregon-water-science-center/science/upper-klamath-basin"
+        "url": "https://www.usgs.gov/centers/oregon-water-science-center/science/upper-klamath-basin-groundwater-studies"
       },
       {
-        "label": "USFWS Klamath Basin National Wildlife Refuge Complex",
+        "label": "USFWS — Lower Klamath refuge and the Klamath Basin complex",
         "kind": "other",
-        "url": "https://www.fws.gov/refuge/klamath-basin"
+        "url": "https://www.fws.gov/refuge/lower-klamath"
       },
       {
         "label": "Sky Lakes Medical Center — Klamath Falls hospital",
@@ -4563,7 +4558,7 @@
       },
       {
         "label": "U.S. place identity — Lander, Wyoming",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Lander & Sinks Canyon · Wyoming · 42.8330,−108.7307",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4614,7 +4609,7 @@
       },
       {
         "label": "U.S. place identity — Leadville, Colorado",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Leadville (Highest City) · Colorado · 39.2508,−106.2925",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4648,7 +4643,7 @@
       {
         "label": "St. Vincent Hospital — Leadville",
         "kind": "other",
-        "url": "https://www.svhealthcare.org/locations/st-vincent-hospital-leadville"
+        "url": "https://www.stvincent.health/emergency-medicine"
       }
     ],
     "leamington-on": [
@@ -4706,7 +4701,7 @@
       },
       {
         "label": "U.S. place identity — Leavenworth, Washington",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Leavenworth (Cascade East Slope) · Washington · 47.5962,−120.6615",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4769,11 +4764,6 @@
         "url": "https://climateatlas.ca/"
       },
       {
-        "label": "Agriculture & Agri-Food Canada — Soil Landscapes of Canada",
-        "kind": "other",
-        "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/"
-      },
-      {
         "label": "City of Lethbridge - Municipal Housing Strategy Needs Assessment (2024)",
         "kind": "other",
         "url": "https://www.lethbridge.ca/media/gm3lkcq1/lethbridge-municipal-housing-strategy-needs-assessment-2024.pdf"
@@ -4808,7 +4798,7 @@
       },
       {
         "label": "U.S. place identity — Lewes, Delaware",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Lewes (Delaware Bay) · Delaware · 38.7746,−75.1393",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4844,7 +4834,7 @@
       },
       {
         "label": "U.S. place identity — Missouri Valley, Iowa",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Loess Hills · Iowa · 41.5560,−95.8977",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4900,7 +4890,7 @@
       },
       {
         "label": "U.S. place identity — Logan, Utah",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Logan (Cache Valley) · Utah · 41.7370,−111.8338",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4929,7 +4919,7 @@
       {
         "label": "Utah DEQ — Cache Valley air quality",
         "kind": "other",
-        "url": "https://deq.utah.gov/air-quality/"
+        "url": "https://deq.utah.gov/division-air-quality"
       },
       {
         "label": "City of Logan — municipal services",
@@ -4951,7 +4941,7 @@
       },
       {
         "label": "U.S. place identity — Lone Pine, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Lone Pine (Owens Valley) · California · 36.6060,−118.0629",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -4987,7 +4977,7 @@
       },
       {
         "label": "U.S. place identity — Los Alamos, New Mexico",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Los Alamos & the Pajarito Plateau · New Mexico · 35.8881,−106.3069",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5048,7 +5038,7 @@
       },
       {
         "label": "U.S. place identity — Lubbock, Texas",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Lubbock (Llano Estacado) · Texas · 33.5779,−101.8552",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5084,7 +5074,7 @@
       },
       {
         "label": "U.S. place identity — Mammoth Lakes, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Mammoth Lakes (Eastern Sierra) · California · 37.6485,−118.9721",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5113,7 +5103,7 @@
       {
         "label": "Town of Mammoth Lakes — housing",
         "kind": "other",
-        "url": "https://www.townofmammothlakes.ca.gov/departments/housing"
+        "url": "https://www.townofmammothlakes.ca.gov/633/Housing"
       },
       {
         "label": "Mammoth Hospital",
@@ -5130,7 +5120,7 @@
       },
       {
         "label": "U.S. place identity — Marfa, Texas",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Marfa · Texas · 30.3094,−104.0205",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5177,7 +5167,7 @@
       },
       {
         "label": "U.S. place identity — Marquette, Michigan",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Marquette (UP) · Michigan · 46.5436,−87.3954",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5310,7 +5300,7 @@
       },
       {
         "label": "U.S. place identity — Medford, Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Medford (Rogue Valley) · Oregon · 42.3265,−122.8756",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5392,7 +5382,7 @@
       },
       {
         "label": "U.S. place identity — Mentone, Alabama",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Mentone (Lookout Mountain) · Alabama · 34.5786,−85.5891",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5474,7 +5464,7 @@
       },
       {
         "label": "U.S. place identity — Missoula, Montana",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Missoula (Valley Inversion) · Montana · 46.8721,−113.9940",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5503,7 +5493,7 @@
       {
         "label": "Providence — St. Patrick Hospital",
         "kind": "other",
-        "url": "https://www.providence.org/locations/mt/st-patrick"
+        "url": "https://www.providence.org/locations/mt/st-patrick-hospital"
       },
       {
         "label": "Missoula City-County Air Quality",
@@ -5520,7 +5510,7 @@
       },
       {
         "label": "U.S. place identity — Moab, Utah",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Moab (Canyon Oasis) · Utah · 38.5733,−109.5498",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5556,7 +5546,7 @@
       },
       {
         "label": "U.S. place identity — Mobile, Alabama",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Mobile (Gulf Maritime) · Alabama · 30.6954,−88.0399",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5592,7 +5582,7 @@
       },
       {
         "label": "U.S. place identity — Monterey, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Monterey & the Fog Coast · California · 36.6002,−121.8947",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5721,11 +5711,6 @@
         "url": "https://climate.weather.gc.ca/climate_normals/index_e.html"
       },
       {
-        "label": "AAFC Canadian Soil Information Service — Soil Landscapes of Canada",
-        "kind": "other",
-        "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/"
-      },
-      {
         "label": "Statistics Canada — census profile search for Morden",
         "kind": "other",
         "url": "https://www12.statcan.gc.ca/census-recensement/2021/dp-pd/prof/search-results.cfm?Lang=E"
@@ -5786,7 +5771,7 @@
       },
       {
         "label": "U.S. place identity — Morgantown, West Virginia",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Morgantown (Appalachian Plateau) · West Virginia · 39.6297,−79.9559",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5822,7 +5807,7 @@
       },
       {
         "label": "U.S. place identity — Mount Charleston, Nevada",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Mount Charleston (Spring Mountains) · Nevada · 36.2958,−115.5931",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5856,7 +5841,7 @@
       {
         "label": "Clark County — emergency management",
         "kind": "other",
-        "url": "https://www.clarkcountynv.gov/government/departments/fire_department/emergency_management/"
+        "url": "https://www.clarkcountynv.gov/government/departments/fire/office-of-emergency-management"
       },
       {
         "label": "NWS Las Vegas — Spring Mountains forecast",
@@ -5873,7 +5858,7 @@
       },
       {
         "label": "U.S. place identity — Mt. Washington Summit, New Hampshire",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Mount Washington Summit · New Hampshire · 44.2706,−71.3033",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5909,7 +5894,7 @@
       },
       {
         "label": "U.S. place identity — Mystic, Connecticut",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Mystic (Fishers Island Sound) · Connecticut · 41.3541,−71.9662",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5950,7 +5935,7 @@
       },
       {
         "label": "U.S. place identity — Nags Head, North Carolina",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Outer Banks (Nags Head) · North Carolina · 35.9574,−75.6240",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -5986,7 +5971,7 @@
       },
       {
         "label": "U.S. place identity — Napa, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Napa Valley Floor · California · 38.2975,−122.2869",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6022,7 +6007,7 @@
       },
       {
         "label": "U.S. place identity — Naples, Florida",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Naples (Gulf Barrier) · Florida · 26.1420,−81.7948",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6114,7 +6099,7 @@
       },
       {
         "label": "U.S. place identity — New Orleans, Louisiana",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "New Orleans · Louisiana · 29.9511,−90.0715",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6207,7 +6192,7 @@
       },
       {
         "label": "U.S. place identity — Nome, Alaska",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Nome (Seward Peninsula) · Alaska · 64.5011,−165.4064",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6243,7 +6228,7 @@
       },
       {
         "label": "U.S. place identity — Norfolk, Connecticut",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Norfolk (NW Highlands) · Connecticut · 41.9465,−73.2019",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6279,7 +6264,7 @@
       },
       {
         "label": "U.S. place identity — Oakland, Maryland",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Oakland (Garrett County Highlands) · Maryland · 39.4115,−79.4048",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6361,7 +6346,7 @@
       },
       {
         "label": "U.S. place identity — Ocean Springs, Mississippi",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Ocean Springs (Mississippi Sound) · Mississippi · 30.4113,−88.8278",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6397,7 +6382,7 @@
       },
       {
         "label": "U.S. place identity — Ojai, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Ojai · California · 34.4480,−119.2429",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6511,11 +6496,6 @@
         "url": "https://wildfiresituation.nrs.gov.bc.ca/map"
       },
       {
-        "label": "AAFC Canadian Soil Information Service — Soil Landscapes of Canada",
-        "kind": "other",
-        "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/"
-      },
-      {
         "label": "Town of Osoyoos - Housing Needs Report (2024)",
         "kind": "other",
         "url": "https://www.osoyoos.ca/sites/osoyoos.ca/files/2025-02/Housing%20Needs%20Report%20%282024%29.pdf"
@@ -6545,7 +6525,7 @@
       },
       {
         "label": "U.S. place identity — Paducah, Kentucky",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Paducah (Ohio–Tennessee Confluence) · Kentucky · 37.0834,−88.6000",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6581,7 +6561,7 @@
       },
       {
         "label": "U.S. place identity — Page, Arizona",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Page (Colorado Plateau) · Arizona · 36.9147,−111.4558",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6663,7 +6643,7 @@
       },
       {
         "label": "U.S. place identity — Palm Springs, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Palm Springs (Coachella) · California · 33.8303,−116.5453",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6888,7 +6868,7 @@
       },
       {
         "label": "U.S. place identity — Pittsfield, Massachusetts",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Pittsfield (Berkshires) · Massachusetts · 42.4501,−73.2455",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6924,7 +6904,7 @@
       },
       {
         "label": "U.S. place identity — Point Reyes Station, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Point Reyes Peninsula · California · 38.0697,−122.8069",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -6970,7 +6950,7 @@
       },
       {
         "label": "U.S. place identity — Port Orford, Oregon",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Port Orford & Cape Blanco · Oregon · 42.7457,−124.4970",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -7021,7 +7001,7 @@
       },
       {
         "label": "U.S. place identity — Port Townsend, Washington",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Port Townsend · Washington · 48.1170,−122.7604",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -7062,7 +7042,7 @@
       },
       {
         "label": "U.S. place identity — Portal, Arizona",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Portal & the Chiricahua Sky Island · Arizona · 31.9133,−109.1414",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -7123,7 +7103,7 @@
       },
       {
         "label": "U.S. place identity — Prescott, Arizona",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Prescott · Arizona · 34.5400,−112.4685",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -7481,7 +7461,7 @@
       },
       {
         "label": "U.S. place identity — Rapid City, South Dakota",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Rapid City (Eastern Black Hills) · South Dakota · 44.0805,−103.2310",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -7558,7 +7538,7 @@
       },
       {
         "label": "U.S. place identity — Redfield / Tug Hill, New York",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Tug Hill Plateau · New York · 43.5450,−75.8920",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -7592,7 +7572,7 @@
       {
         "label": "Oswego County — emergency management",
         "kind": "other",
-        "url": "https://www.oswegocounty.com/departments/emergency_management/"
+        "url": "https://www.oswegocountyny.gov/departments/public_safety/emergency_management/index.php"
       },
       {
         "label": "NYS DOT — Tug Hill winter travel advisories",
@@ -7655,7 +7635,7 @@
       },
       {
         "label": "U.S. place identity — Roswell, New Mexico",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Roswell (Pecos Valley) · New Mexico · 33.3943,−104.5230",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -7865,7 +7845,7 @@
       },
       {
         "label": "U.S. place identity — Santa Barbara, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Santa Barbara · California · 34.4208,−119.6982",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -7911,7 +7891,7 @@
       },
       {
         "label": "U.S. place identity — Felton, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Felton & the Santa Cruz Redwood Belt · California · 37.0513,−122.0727",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -7957,7 +7937,7 @@
       },
       {
         "label": "U.S. place identity — Santa Fe, New Mexico",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Santa Fe · New Mexico · 35.6870,−105.9378",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8003,7 +7983,7 @@
       },
       {
         "label": "U.S. place identity — Savannah, Georgia",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Savannah (Atlantic Bight) · Georgia · 32.0809,−81.0912",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8039,7 +8019,7 @@
       },
       {
         "label": "U.S. place identity — Scottsbluff, Nebraska",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Scottsbluff (High Plains Escarpment) · Nebraska · 41.8666,−103.6672",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8075,7 +8055,7 @@
       },
       {
         "label": "U.S. place identity — Sedona, Arizona",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Sedona (Red Rock Country) · Arizona · 34.8697,−111.7610",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8105,7 +8085,7 @@
       {
         "label": "City of Sedona — housing & community development",
         "kind": "other",
-        "url": "https://www.sedonaaz.gov/your-government/departments/community-development/housing"
+        "url": "https://www.sedonaaz.gov/your-government/departments-and-programs/community-development/housing"
       },
       {
         "label": "Coconino National Forest — Slide Fire recovery",
@@ -8115,7 +8095,7 @@
       {
         "label": "Verde Valley Medical Center",
         "kind": "other",
-        "url": "https://www.nahealth.com/location/verde-valley-medical-center/"
+        "url": "https://www.nahealth.com/contact-us/"
       }
     ],
     "sequim-wa": [
@@ -8127,7 +8107,7 @@
       },
       {
         "label": "U.S. place identity — Sequim, Washington",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Sequim · Washington · 48.0793,−123.1081",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8144,7 +8124,7 @@
         "url": "https://hazards.fema.gov/nri/"
       },
       {
-        "label": "NOAA Climate Normals 1991–2020 — Sequim 2 E",
+        "label": "NOAA climate normals reference portal — local station matching pending",
         "kind": "noaa",
         "url": "https://www.ncei.noaa.gov/access/us-climate-normals/"
       },
@@ -8183,7 +8163,7 @@
       },
       {
         "label": "U.S. place identity — Silver City, New Mexico",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Silver City · New Mexico · 32.7701,−108.2803",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8229,7 +8209,7 @@
       },
       {
         "label": "U.S. place identity — Sitka, Alaska",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Sitka · Alaska · 57.0531,−135.3300",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8258,7 +8238,7 @@
       {
         "label": "Niche — Sitka AK",
         "kind": "other",
-        "url": "https://www.niche.com/places-to-live/sitka-and-borough-of-sitka-ak/"
+        "url": "https://www.niche.com/places-to-live/sitka-sitka-ak/"
       }
     ],
     "south-padre-tx": [
@@ -8270,7 +8250,7 @@
       },
       {
         "label": "U.S. place identity — South Padre Island, Texas",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "South Padre Island · Texas · 26.1068,−97.1681",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8306,7 +8286,7 @@
       },
       {
         "label": "U.S. place identity — Spearfish, South Dakota",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Spearfish (Northern Black Hills) · South Dakota · 44.4908,−103.8591",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8338,9 +8318,9 @@
         "url": "https://www.cityofspearfish.com/"
       },
       {
-        "label": "Spearfish Regional Hospital",
+        "label": "Monument Health Spearfish Hospital",
         "kind": "other",
-        "url": "https://www.monument.health/locations/spearfish-regional-hospital"
+        "url": "https://monument.health/service/emergency-medicine/"
       }
     ],
     "spokane-wa": [
@@ -8352,7 +8332,7 @@
       },
       {
         "label": "U.S. place identity — Spokane, Washington",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Spokane (Inland Empire) · Washington · 47.6588,−117.4260",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8475,7 +8455,7 @@
       },
       {
         "label": "U.S. place identity — Stanley, Idaho",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Stanley (Sawtooth Valley) · Idaho · 44.2157,−114.9319",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8511,7 +8491,7 @@
       },
       {
         "label": "U.S. place identity — State College, Pennsylvania",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "State College (Ridge & Valley) · Pennsylvania · 40.7934,−77.8600",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8622,7 +8602,7 @@
       {
         "label": "BC Assessment — property assessments",
         "kind": "other",
-        "url": "https://www2.gov.bc.ca/gov/content/government/property-taxes-taxes/assessment-bc"
+        "url": "https://www2.gov.bc.ca/gov/content?id=2B1FAC11F0E240F78B8DD9855101C329"
       },
       {
         "label": "BC Ferries — Sunshine Coast schedules",
@@ -8680,7 +8660,7 @@
       },
       {
         "label": "U.S. place identity — Syracuse, New York",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Syracuse · New York · 43.0481,−76.1474",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -8716,7 +8696,7 @@
       },
       {
         "label": "U.S. place identity — Taos, New Mexico",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Taos · New Mexico · 36.4072,−105.5734",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9136,7 +9116,7 @@
       },
       {
         "label": "U.S. place identity — Traverse City, Michigan",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Traverse City & the Leelanau Fruit Belt · Michigan · 44.7631,−85.6206",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9187,7 +9167,7 @@
       },
       {
         "label": "U.S. place identity — Truckee, California",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Truckee (Tahoe Basin) · California · 39.3280,−120.1833",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9233,7 +9213,7 @@
       },
       {
         "label": "U.S. place identity — Tucson, Arizona",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Tucson (Sonoran Basin) · Arizona · 32.2226,−110.9747",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9310,7 +9290,7 @@
       },
       {
         "label": "U.S. place identity — Valdez, Alaska",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Valdez (Prince William Sound) · Alaska · 61.1308,−146.3483",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9351,7 +9331,7 @@
       },
       {
         "label": "U.S. place identity — Valentine, Nebraska",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Valentine & the Nebraska Sandhills · Nebraska · 42.8725,−100.5503",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9531,11 +9511,6 @@
         "url": "https://climateatlas.ca/"
       },
       {
-        "label": "AAFC Canadian Soil Information Service — Soil Landscapes of Canada",
-        "kind": "other",
-        "url": "https://sis.agr.gc.ca/cansis/nsdb/slc/"
-      },
-      {
         "label": "CMHC — Victoria housing market report",
         "kind": "other",
         "url": "https://www.cmhc-schl.gc.ca/"
@@ -9555,7 +9530,7 @@
       },
       {
         "label": "U.S. place identity — Viroqua, Wisconsin",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Viroqua (Driftless Area) · Wisconsin · 43.5559,−90.8876",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9601,7 +9576,7 @@
       },
       {
         "label": "U.S. place identity — Washington, District of Columbia",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Washington, D.C. · District of Columbia · 38.9072,−77.0369",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9637,7 +9612,7 @@
       },
       {
         "label": "U.S. place identity — Wenatchee, Washington",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Wenatchee · Washington · 47.4235,−120.3103",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9744,7 +9719,7 @@
       },
       {
         "label": "U.S. place identity — Wilmington, Delaware",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Wilmington (Brandywine–Piedmont) · Delaware · 39.7447,−75.5484",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9780,7 +9755,7 @@
       },
       {
         "label": "U.S. place identity — Winthrop, Washington",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Winthrop (Methow Valley) · Washington · 48.4779,−120.1777",
         "url": "https://www.census.gov/quickfacts/"
       },
@@ -9850,7 +9825,7 @@
       {
         "label": "AAFC Kentville Research and Development Centre",
         "kind": "other",
-        "url": "https://agriculture.canada.ca/en/science/agriculture-and-agri-food-research-centres-and-collections/kentville-research-and-development-centre"
+        "url": "https://agriculture.canada.ca/en/science/agriculture-and-agri-food-research-centres/kentville-research-and-development-centre"
       },
       {
         "label": "Climate Atlas of Canada — Nova Scotia climate projections",
@@ -10005,7 +9980,7 @@
       },
       {
         "label": "U.S. place identity — Yuma, Arizona",
-        "kind": "usgs",
+        "kind": "oss-data",
         "note": "Yuma · Arizona · 32.7253,−114.6243",
         "url": "https://www.census.gov/quickfacts/"
       },

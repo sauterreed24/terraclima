@@ -61,7 +61,7 @@ describe("hero glance", () => {
     });
     const fourth = fourthHeroStat(place);
     expect(fourth.kind).toBe("frost-free");
-    expect(fourth.label).toBe("Growing season");
+    expect(fourth.label).toBe("Non-freezing days");
     expect(fourth.value).toBe("210 days");
   });
 });

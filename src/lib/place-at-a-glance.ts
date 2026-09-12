@@ -119,7 +119,7 @@ export function buildAtAGlanceTiles(
   const g = place.climate.gdd10;
   if (f != null || g != null) {
     const parts: string[] = [];
-    if (f != null) parts.push(`Frost-free ~${f} d`);
+    if (f != null) parts.push(`Non-freezing ~${f} d/yr`);
     if (g != null) {
       const gddTag = displayTemp === "F" ? "GDD base 50F" : "GDD base 10C";
       parts.push(`${gddTag} ~${Math.round(g)}`);

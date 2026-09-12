@@ -400,8 +400,16 @@ async function main() {
 
     let identityMismatches = 0;
     for (const f of featured) {
-      const pin = page.locator(`[data-marker-id="${f.id}"]`);
-      const box = await pin.boundingBox();
+      // Fanned badges enlarge the SVG group; hover the marker's actual hit circle.
+      const box = await page.evaluate((id) => {
+        const marker = document.querySelector(`[data-marker-id="${id}"]`);
+        const hit = marker?.querySelector("circle[pointer-events='all']")
+          ?? marker?.querySelector("circle[fill='transparent']");
+        const r = (hit ?? marker)?.getBoundingClientRect();
+        return r && r.width >= 2 && r.height >= 2
+          ? { x: r.x, y: r.y, width: r.width, height: r.height }
+          : null;
+      }, f.id);
       if (!box) {
         findings.push({ label, kind: "featured-pin-no-bbox", id: f.id });
         continue;

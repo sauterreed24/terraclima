@@ -58,7 +58,7 @@ function identitySource(place: (typeof PLACES)[number]): CorpusSource {
     return {
       id: `${place.id}-src-gnis-or-census`,
       title: `U.S. place identity — ${place.municipality ?? place.name}, ${place.region}`,
-      publisher: "U.S. Census Bureau / USGS GNIS",
+      publisher: "U.S. Census Bureau",
       url: "https://www.census.gov/quickfacts/",
       sourceType: "official-page",
       accessedOn: TODAY,

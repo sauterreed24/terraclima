@@ -117,7 +117,7 @@ export interface ClimateProfile {
   solarEnergyMjM2Day?: Monthly12;
   /** Annual precipitation (mm), computed or given directly. */
   annualPrecipMm?: number;
-  /** Approximate frost-free days per year. */
+  /** Annual count of days with Tmin >= 0°C in the Daymet overlay; not a continuous growing season. */
   frostFreeDays?: number;
   /** Growing degree days (base 10°C) rough estimate. */
   gdd10?: number;

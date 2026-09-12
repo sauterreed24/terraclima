@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 /**
  * Human-readable Climate V2 audit: coverage, duplicates, elev/temp/precip
  * outliers vs authored corpus, template humidity/solar retirement checks.
@@ -8,7 +9,7 @@ import { join } from "node:path";
 import type { ClimatePlaceRecordV2 } from "../../src/lib/climate-v2/contracts";
 import { AUTHORED_PLACES } from "./shadow-authored";
 
-const ROOT = new URL("../..", import.meta.url).pathname;
+const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const BUNDLE = join(ROOT, "src/data/generated/climate-v2/records.json");
 const AUDIT_MD = join(ROOT, "data/climate-v2/audit/AUDIT.md");
 const AUDIT_JSON = join(ROOT, "data/climate-v2/audit/shadow-diff.json");

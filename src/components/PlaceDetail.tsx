@@ -420,12 +420,9 @@ function DetailHeader({
       data-tone={tone}
       className="detail-drawer-header relative z-10 panel !rounded-none !border-x-0 !border-t-0 px-4 pt-4 pb-3 md:px-6 md:pt-5 md:pb-4 tc-surface-elevated border-b tc-border-warm"
     >
-      {/* Title + actions share a row only from lg up: the drawer is ~706-830px
-          across the md band and the six header actions (~540px, shrink-0)
-          would squeeze the place name into a sliver and clip the archetype
-          chips mid-word. */}
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
-        <div className="min-w-0 w-full">
+      {/* A dedicated action row keeps long names and place descriptions readable. */}
+      <div className="flex flex-col gap-3">
+        <div className="min-w-0 w-full pr-12">
           <div className="flex items-center gap-1.5 md:gap-2 text-xs text-stone mb-1 flex-wrap">
             <MapPin className="w-3 h-3" aria-hidden />
             <span>{place.municipality ? `${place.municipality}, ` : ""}{place.region}, {place.country}</span>
@@ -512,7 +509,7 @@ function DetailHeader({
             </div>
           ) : null}
         </div>
-        <div className="flex items-center gap-1 self-end shrink-0 lg:self-start flex-wrap justify-end">
+        <div className="flex items-center gap-1 self-start shrink-0 flex-wrap justify-start">
           <a
             href={`#${PD.residency}`}
             onClick={(event) => {
@@ -566,7 +563,7 @@ function DetailHeader({
             type="button"
             data-place-detail-close
             onClick={onClose}
-            className="btn-ghost !p-2"
+            className="btn-ghost !p-2 absolute top-4 right-4 md:right-6"
             aria-label="Close profile"
             title="Close profile"
           >
@@ -1292,7 +1289,7 @@ function DetailBody({
         <div className="grid md:grid-cols-[1fr_260px] gap-6 items-center">
           <div className="space-y-2">
             <KeyValue label="Mean annual precipitation" value={fmtPrecip(annualP, dist)} />
-            <KeyValue label="Frost-free days (est.)" value={`${place.climate.frostFreeDays ?? "—"}`} />
+            <KeyValue label="Non-freezing days / year (est.)" value={`${place.climate.frostFreeDays ?? "—"}`} />
             <KeyValue label="Hardiness zone" value={place.climate.hardinessZone ?? place.growability.hardinessZone ?? "—"} />
             <KeyValue label="Chill hours (est.)" value={`${place.climate.chillHours ?? "—"}`} />
             <KeyValue label="Summer diurnal swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { signed: false }) : "—"} />
@@ -1493,7 +1490,7 @@ function DetailBody({
 
       <Section anchorId={PD.soil} title="Agriculture & soil" icon={<Leaf className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
-          The growing read pairs the soil profile with what the climate envelope rewards or fights. Hardiness, frost-free runway, and chill hours sit in the climate signature above; here the focus is dirt, drainage, and what actually thrives.
+          The growing read pairs the soil profile with what the climate envelope rewards or fights. Hardiness, annual non-freezing-day counts, and chill hours sit in the climate signature above; here the focus is dirt, drainage, and what actually thrives.
         </p>
         <div className="grid md:grid-cols-2 gap-4">
           <div className="panel-thin p-4">

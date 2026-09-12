@@ -167,7 +167,7 @@ export const PLACES_CANADA: Place[] = [
       { label: "Wine Growers British Columbia — South Okanagan regional context", kind: "other", url: "https://winebc.com/discover-bc-wine-country/okanagan-valley/" },
       { label: "Climate Atlas of Canada — Osoyoos profile", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
       { label: "BC Wildfire Service historical fire perimeters", kind: "oss-data", url: "https://wildfiresituation.nrs.gov.bc.ca/map" },
-      { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/" },
+      { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html" },
     ],
   },
 
@@ -332,7 +332,7 @@ export const PLACES_CANADA: Place[] = [
       { label: "ECCC Canadian Climate Normals — Lethbridge A 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "University of Lethbridge chinook studies", kind: "academic" },
       { label: "Climate Atlas of Canada — Lethbridge profile", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
-      { label: "Agriculture & Agri-Food Canada — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/" },
+      { label: "Agriculture & Agri-Food Canada — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html" },
     ],
   },
 
@@ -432,7 +432,7 @@ export const PLACES_CANADA: Place[] = [
     citations: [
       { label: "ECCC — Victoria Gonzales Heights 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "Climate Atlas of Canada — Victoria", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
-      { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/" },
+      { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html" },
     ],
   },
 
@@ -586,7 +586,7 @@ export const PLACES_CANADA: Place[] = [
       note: "Acadia University and the Annapolis Valley fruit belt anchor a walkable town, but Fundy fog, hurricane remnants, and Halifax specialty backup are the lived-friction story behind the sheltered valley comfort.",
       sources: [
         { label: "Town of Wolfville — municipal services", url: "https://www.wolfville.ca/" },
-        { label: "AAFC Kentville Research and Development Centre", url: "https://agriculture.canada.ca/en/science/agriculture-and-agri-food-research-centres-and-collections/kentville-research-and-development-centre" },
+        { label: "AAFC Kentville Research and Development Centre", url: "https://agriculture.canada.ca/en/science/agriculture-and-agri-food-research-centres/kentville-research-and-development-centre" },
         { label: "Climate Atlas of Canada — Nova Scotia projections", url: "https://climateatlas.ca/" },
       ],
     },
@@ -622,7 +622,7 @@ export const PLACES_CANADA: Place[] = [
     ],
     citations: [
       { label: "ECCC — Kentville CDA 1991–2020", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
-      { label: "AAFC Kentville Research and Development Centre", kind: "other", url: "https://agriculture.canada.ca/en/science/agriculture-and-agri-food-research-centres-and-collections/kentville-research-and-development-centre" },
+      { label: "AAFC Kentville Research and Development Centre", kind: "other", url: "https://agriculture.canada.ca/en/science/agriculture-and-agri-food-research-centres/kentville-research-and-development-centre" },
       { label: "Climate Atlas of Canada — Nova Scotia climate projections", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
     ],
   },
@@ -795,7 +795,7 @@ export const PLACES_CANADA: Place[] = [
     citations: [
       { label: "ECCC Canadian Climate Normals", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "Climate Atlas of Canada northern projections", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
-      { label: "Natural Resources Canada topographic context", kind: "other", url: "https://natural-resources.canada.ca/maps-tools-and-publications/maps" },
+      { label: "Natural Resources Canada topographic context", kind: "other", url: "https://natural-resources.canada.ca/maps-tools-publications/maps/atlas-canada" },
     ],
   },
   {
@@ -907,7 +907,7 @@ export const PLACES_CANADA: Place[] = [
       accessFriction: 48,
       note: "Ferry-linked Sunshine Coast housing runs below Metro Vancouver but still tight; Gibsons/Sechelt groceries and specialist care often mean a Vancouver-bound trip.",
       sources: [
-        { label: "BC Assessment — property assessments", url: "https://www2.gov.bc.ca/gov/content/government/property-taxes-taxes/assessment-bc" },
+        { label: "BC Assessment — property assessments", url: "https://www2.gov.bc.ca/gov/content?id=2B1FAC11F0E240F78B8DD9855101C329" },
         { label: "BC Ferries — Sunshine Coast schedules", url: "https://www.bcferries.com/" },
       ],
     },
@@ -2117,7 +2117,7 @@ export const PLACES_CANADA: Place[] = [
     citations: [
       { label: "ECCC Canadian Climate Normals — Charlevoix and Quebec station context", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
       { label: "Climate Atlas of Canada — Charlevoix regional projections", kind: "climate-atlas-canada", url: "https://climateatlas.ca/" },
-      { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/" },
+      { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html" },
     ],
   },
   {
@@ -2167,7 +2167,7 @@ export const PLACES_CANADA: Place[] = [
     confidenceNotes: "Tier C entry — station and agricultural context support the warm-pocket read, but escarpment-scale effects need site verification.",
     citations: [
       { label: "ECCC Canadian Climate Normals — Morden and southern Manitoba station context", kind: "eccc", url: "https://climate.weather.gc.ca/climate_normals/index_e.html" },
-      { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/" },
+      { label: "AAFC Canadian Soil Information Service — Soil Landscapes of Canada", kind: "other", url: "https://sis.agr.gc.ca/cansis/nsdb/slc/index.html" },
     ],
   },
   {

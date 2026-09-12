@@ -272,11 +272,11 @@ export function getCorpusContextPanelRows(
   ];
   if (place.climate.frostFreeDays != null) {
     rows.push({
-      metric: "Frost-free days (est.)",
+      metric: "Non-freezing days / year (est.)",
       you: `${place.climate.frostFreeDays} d`,
       context: r.frostAboveShare != null
-        ? `Longer season than ${pct(r.frostAboveShare)} of stops with data`
-        : "Compare within stops that report frost-free days",
+        ? `More non-freezing days than ${pct(r.frostAboveShare)} of stops with data`
+        : "Compare annual counts, not growing-season length",
     });
   }
   if (place.climate.gdd10 != null) {

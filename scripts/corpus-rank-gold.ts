@@ -217,7 +217,8 @@ const GEOSPATIAL_GOLD: { id: string; expected: GeospatialGold }[] = [
     expected: {
       geospatialSignalScore: 44,
       eoObservabilityScore: 70,
-      reliefEnergyMPerKm: 1.1,
+      // Corrected regional contrast radius: 55 m / 100 km (screening proxy).
+      reliefEnergyMPerKm: 0.55,
       hydroSeasonalityRatio: 9.046296,
       terrainExposureIndex: 1.533333,
       analysisConfidence: "high",

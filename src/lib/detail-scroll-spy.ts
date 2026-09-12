@@ -32,7 +32,10 @@ export function scrollDetailRootToSection(
   const targetRect = target.getBoundingClientRect();
   const fallback = options.marginFallback ?? 12;
   const parsedMargin = Number.parseFloat(getComputedStyle(target).scrollMarginTop);
-  const scrollMarginTop = Number.isFinite(parsedMargin) && parsedMargin > 0 ? parsedMargin : fallback;
+  const readingNav = root.querySelector<HTMLElement>(".tc-reading-nav-mobile");
+  const navHeight = readingNav?.getBoundingClientRect().height ?? 0;
+  const scrollMarginTop = Math.max(navHeight > 0 ? navHeight + 16 : 0,
+    Number.isFinite(parsedMargin) && parsedMargin > 0 ? parsedMargin : fallback);
   root.scrollTo({
     top: Math.max(0, root.scrollTop + (targetRect.top - rootRect.top) - scrollMarginTop),
     behavior: options.behavior ?? "smooth",

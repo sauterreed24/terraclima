@@ -438,6 +438,15 @@ function formatLocalizedDecimal(valueF: number, explicitSign: boolean, digits = 
 export function localizeProse(text: string | null | undefined, unit: TempUnit, dist: DistUnit = "imperial"): string {
   if (!text) return "";
 
+  // Authored dual-unit pairs would otherwise become "134°F (134°F)".
+  // Only collapse equivalent numeric pairs; retain qualifiers and disagreements.
+  text = text.replace(/([−+-]?\d+(?:\.\d+)?)\s*°C\s*\(([−+-]?\d+(?:\.\d+)?)\s*°F\)/g,
+    (match, c: string, f: string) => Math.abs(cToF(parseSigned(c)) - parseSigned(f)) <= 0.6
+      ? (unit === "F" ? `${f}°F` : `${c}°C`) : match);
+  text = text.replace(/(\d+(?:\.\d+)?)\s*km\/h\s*\((\d+(?:\.\d+)?)\s*mph\)/g,
+    (match, km: string, mi: string) => Math.abs(kmToMi(Number(km)) - Number(mi)) <= 0.6
+      ? (dist === "imperial" ? `${mi} mph` : `${km} km/h`) : match);
+
   // --- Temperature (°C → °F) ---
   if (unit === "F") {
     // Lapse-rate shorthand is a temperature delta per vertical distance, not

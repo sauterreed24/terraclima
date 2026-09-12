@@ -71,7 +71,7 @@ function buildSeasonLine(place: Place): string {
   const hardiness = place.climate.hardinessZone ?? place.growability.hardinessZone;
   const seasonParts: string[] = [];
 
-  if (frost != null) seasonParts.push(`${formatNumber(frost)} frost-free days`);
+  if (frost != null) seasonParts.push(`${formatNumber(frost)} non-freezing days per year`);
   if (gdd != null) seasonParts.push(`GDD10 ${formatNumber(gdd)}`);
   if (hardiness) seasonParts.push(`zone ${hardiness}`);
 

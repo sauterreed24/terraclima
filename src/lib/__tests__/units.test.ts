@@ -21,6 +21,14 @@ import {
 } from "../units";
 
 describe("conversion primitives", () => {
+  it("renders equivalent dual-unit records once while preserving qualifiers", () => {
+    expect(localizeProse("Record 56.7°C (134°F).", "F")).toBe("Record 134°F.");
+    expect(localizeProse("Record 56.7°C (134°F).", "C")).toBe("Record 56.7°C.");
+    expect(localizeProse("Wind 372 km/h (231 mph).", "F", "imperial")).toBe("Wind 231 mph.");
+    expect(localizeProse("Wind 372 km/h (231 mph).", "C", "metric")).toBe("Wind 372 km/h.");
+    expect(localizeProse("Heat 40°C (104°F in shade).", "F")).toBe("Heat 104°F (104°F in shade).");
+    expect(localizeProse("40°C (110°F)", "C")).toBe("40°C (110°F)");
+  });
   it("cToF / fToC are inverses on integer anchors", () => {
     for (const c of [-40, -20, 0, 10, 20, 37, 100]) {
       expect(fToC(cToF(c))).toBeCloseTo(c, 10);

@@ -1081,7 +1081,7 @@ export function CompareView({
                     <Row label="Jan low" value={fmtTemp(meanJanLow(p), temp, { digits: 1 })} />
                     <Row label="Annual precip" value={fmtPrecip(getAnnualPrecipMm(p), dist)} />
                     <Row label="Sunshine" value={observedSunshinePct(p) == null ? "—" : `${observedSunshinePct(p)}%`} />
-                    <Row label="Frost-free" value={`${p.climate.frostFreeDays ?? "—"} d`} />
+                    <Row label="Non-freezing days / year" value={`${p.climate.frostFreeDays ?? "—"} d`} />
                     <Row label="Hardiness" value={p.growability.hardinessZone ?? p.climate.hardinessZone ?? "—"} />
                     <Row label="Chill hrs" value={`${p.climate.chillHours ?? "—"}`} />
                     <Row label="Live-here fit" value={`${decision.liveFitScore}/100`} />
@@ -1234,7 +1234,7 @@ function buildGroupedComparisonRows(
     })),
     row("Seasonality", "Annual precip", places.map(place => fmtPrecip(getAnnualPrecipMm(place), distUnit))),
     row("Seasonality", "Sunshine", places.map(sunshineDisplayValue)),
-    row("Seasonality", "Frost-free", places.map(place => place.climate.frostFreeDays == null ? "not sourced" : `${place.climate.frostFreeDays} d`)),
+    row("Seasonality", "Non-freezing days / year", places.map(place => place.climate.frostFreeDays == null ? "not sourced" : `${place.climate.frostFreeDays} d`)),
     row("Hazards", "Risk load", places.map(place => {
       const profile = decisionById.get(place.id);
       return profile ? `${profile.riskLoad}/100` : "not graded";
