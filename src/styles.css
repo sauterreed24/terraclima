@@ -6345,7 +6345,7 @@
     width: auto;
     min-width: 0;
     max-width: min(12.75rem, calc(100% - 6.5rem));
-    padding: 0.34rem 0.4rem;
+    padding: 0.3rem 0.4rem;
     touch-action: manipulation;
   }
   .map-atlas-readout[data-density="compact"] .map-atlas-readout__head {
