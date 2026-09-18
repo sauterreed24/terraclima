@@ -132,3 +132,34 @@ describe("rankPlaces — determinism", () => {
     expect(jul[0].score).toBeGreaterThan(jan[0].score);
   });
 });
+
+describe("rankPlaces — sunshine comfort bonus", () => {
+  it("rewards Daymet solar and penalizes summer marine layer on shoulder-season presets", () => {
+    const shoulderHighs = [18, 18, 18, 20, 20, 26, 28, 27, 20, 20, 18, 18];
+    const sunny = makePlace({
+      id: "sunny",
+      name: "Sunny Mesa",
+      climate: makeClimate({
+        tempHighC: shoulderHighs,
+        humidity: Array(12).fill(45) as ReturnType<typeof makeClimate>["humidity"],
+        solarEnergyMjM2Day: Array(12).fill(20) as ReturnType<typeof makeClimate>["solarEnergyMjM2Day"],
+        sunshinePct: undefined,
+        diurnalSummerC: 14,
+      }),
+    });
+    const fogBelt = makePlace({
+      id: "fog",
+      name: "Fog Harbor",
+      climate: makeClimate({
+        tempHighC: shoulderHighs,
+        humidity: [78, 78, 76, 74, 82, 84, 86, 84, 80, 78, 78, 78] as ReturnType<typeof makeClimate>["humidity"],
+        solarEnergyMjM2Day: Array(12).fill(8) as ReturnType<typeof makeClimate>["solarEnergyMjM2Day"],
+        sunshinePct: undefined,
+        diurnalSummerC: 8,
+      }),
+    });
+    const ranked = rankPlaces("best-shoulder-seasons", [fogBelt, sunny]);
+    expect(ranked[0].place.id).toBe("sunny");
+    expect(ranked[0].score).toBeGreaterThan(ranked[1].score);
+  });
+});
