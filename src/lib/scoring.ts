@@ -12,7 +12,7 @@ import {
   meanSummerHigh,
   meanJanLow,
   getAnnualPrecipMm,
-  scoringSunshinePct,
+  meanAnnualSunshinePct,
 } from "./climate-metrics";
 import { assessLiveFit, liveFitFilterPass, meanWinterSunshinePct, winterSunshineScore, type LiveFitPresetId } from "./live-fit";
 import {
@@ -157,15 +157,14 @@ export const RANKING_PARAMS = {
  * diurnal swings that prevent quality sleep cooling.
  */
 function sunshineComfortBonus(p: Place): number {
-  const sunny = scoringSunshinePct(p);
+  const annualSun = meanAnnualSunshinePct(p);
   const hum = p.climate.humidity;
   const diurnal = p.climate.diurnalSummerC ?? (p.climate.tempHighC[6] - p.climate.tempLowC[6]);
 
   let bonus = 0;
 
   // Direct sunshine reward — calibrated to US avg (58% = neutral, 80% ≈ +7.3 pts, 95%+ ≈ +15)
-  if (sunny) {
-    const annualSun = sunny.reduce((a, b) => a + b, 0) / 12;
+  if (annualSun != null) {
     bonus += Math.min(15, Math.max(0, (annualSun - 45) * 0.33));
   }
 
