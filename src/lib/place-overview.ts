@@ -9,8 +9,9 @@
 //
 // Authored `Place.experience` fields (optional) win field-by-field over the
 // derived read. Researched site-history overlays (`SITE_HISTORY`) fill Overview
-// history / why / immersive when those experience fields are absent, without
-// shipping that prose in the initial Explorer bundle.
+// history / why / immersive / feel / seasons / nearby contrast when those
+// fields are absent, without shipping that prose in the initial Explorer
+// bundle. The derived templates below remain the last-resort fallback.
 //
 // Prose convention: temperatures are emitted in °C and localized at render
 // by `localizeProse`. Most season detail is kept qualitative; the precise
@@ -336,6 +337,8 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
 
   const authoredDetail = place.experience?.seasons?.[def.key];
   const useAuthored = Boolean(authoredDetail) && !isGeneratedSeasonDetail(authoredDetail!);
+  const overlayDetail = useAuthored ? undefined : siteHistoryOverlay(place)?.seasons?.[def.key]?.trim();
+  const detail = useAuthored ? authoredDetail! : overlayDetail || sentences.join(" ");
 
   return {
     key: def.key,
@@ -346,8 +349,8 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
     lowC,
     tone,
     headline: seasonHeadline(tone, conditions),
-    detail: useAuthored ? authoredDetail! : sentences.join(" "),
-    authored: useAuthored,
+    detail,
+    authored: useAuthored || Boolean(overlayDetail),
   };
 }
 
@@ -701,6 +704,12 @@ function deriveContrastItems(place: Place): PlaceContrastItem[] {
   }
 
   if (items.length === 0) {
+    for (const c of siteHistoryOverlay(place)?.contrasts ?? []) {
+      if (items.length >= 4) break;
+      push(c.label, c.note);
+    }
+  }
+  if (items.length === 0) {
     push(
       "The surrounding country",
       `${place.reliefContext.replace(/\.$/, "")} — that difference from the surrounding country is why this place belongs in the atlas.`,
@@ -909,7 +918,7 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
   const result: PlaceExperienceReading = {
     lede: dequote(place.summaryShort),
     immersive: enrichImmersive(place, immersiveBase),
-    feelLine: authoredFeel ?? deriveFeelLine(place),
+    feelLine: authoredFeel ?? (overlay?.feel?.trim() || deriveFeelLine(place)),
     seasons,
     travelerFit: authoredTraveler ?? deriveTravelerFit(place),
     residentFit: authoredResident ?? deriveResidentFit(place),
@@ -921,7 +930,7 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
     historyParagraphs,
     historyAuthored: authoredHistory || overlayHistory,
     authored: Boolean(
-      authoredFeel || authoredTraveler || authoredResident || authoredTexture ||
+      authoredFeel || overlay?.feel?.trim() || authoredTraveler || authoredResident || authoredTexture ||
       authoredWhy || overlayWhy || authoredHistory || overlayHistory || overlay?.immersive?.trim() ||
       seasons.some(s => s.authored),
     ),
