@@ -116,7 +116,9 @@ describe("composePlaceExperience", () => {
   it("replaces generated season templates with a sensory read", () => {
     const asheville = composePlaceExperience(PLACES_BY_ID["asheville-nc"]);
     expect(asheville.seasons.find(s => s.key === "winter")!.detail).not.toMatch(/cold months stay close to/);
-    expect(asheville.seasons.find(s => s.key === "winter")!.authored).toBe(false);
+    // The site-history overlay now carries a hand-written winter read.
+    expect(asheville.seasons.find(s => s.key === "winter")!.authored).toBe(true);
+    expect(asheville.seasons.find(s => s.key === "winter")!.detail).toMatch(/Parkway/);
     expect(asheville.travelerFit).not.toMatch(/most leave surprised/i);
     expect(asheville.texture).not.toMatch(/None of that erases the appeal/i);
   });
