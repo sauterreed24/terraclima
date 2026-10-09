@@ -25,6 +25,7 @@ const COLD_CHUNK_STEMS = [
   "CollectionsView",
   "LearnMode",
   "atlas-data",
+  "atlas-hydro",
   "site-history",
 ] as const;
 
@@ -48,6 +49,8 @@ const BUDGETS = {
   maxModulePreloads: 22,
   /** Atlas topology cold chunk raw size ceiling (lazy). Baseline ~222 KB → 280 KB. */
   atlasDataRaw: 280_000,
+  /** Rivers + lakes cold chunk raw size ceiling (lazy). Baseline ~53 KB → 64 KB. */
+  atlasHydroRaw: 64_000,
   /**
    * PlaceDetail cold chunk raw size ceiling (lazy). Baseline ~149 KB → 200 KB.
    * Photographing every corpus place plus the overview portrait (why / contrast /
@@ -165,6 +168,14 @@ if (atlasData) {
   }
 }
 
+const atlasHydro = findAssetByStem("atlas-hydro");
+if (atlasHydro) {
+  const raw = statSync(atlasHydro).size;
+  if (raw > BUDGETS.atlasHydroRaw) {
+    violations.push(`Atlas hydrography chunk raw ${raw} > budget ${BUDGETS.atlasHydroRaw}`);
+  }
+}
+
 const placeDetail = findAssetByStem("PlaceDetail");
 if (placeDetail) {
   const raw = statSync(placeDetail).size;
@@ -195,6 +206,7 @@ console.log(
     `  Initial JS gzip: ${totalInitialJsGzip} / ${BUDGETS.totalInitialJsGzip}` +
       (largestEntry ? ` (entry ${largestEntry.gz} / ${BUDGETS.largestEntryJsGzip})` : ""),
     atlasData ? `  atlas-data raw: ${statSync(atlasData).size} / ${BUDGETS.atlasDataRaw}` : null,
+    atlasHydro ? `  atlas-hydro raw: ${statSync(atlasHydro).size} / ${BUDGETS.atlasHydroRaw}` : null,
     placeDetail ? `  PlaceDetail raw: ${statSync(placeDetail).size} / ${BUDGETS.placeDetailRaw}` : null,
   ]
     .filter(Boolean)

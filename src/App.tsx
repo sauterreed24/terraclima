@@ -1637,6 +1637,7 @@ export default function App() {
                 >
                   <div
                     className="tc-map-stage__caption"
+                    data-map-hud=""
                     role="note"
                     data-mode={mapStageContext.mode}
                     aria-label={mapStageContext.ariaLabel}
@@ -2808,11 +2809,11 @@ const HeroCard = memo(function HeroCard({
   const compactChromeLabel = compact ? "Expand atlas intro" : "Compact atlas intro for the map";
   return (
     <div
-      className="panel panel-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
+      className="panel panel-hero tc-explorer-hero p-4 sm:p-5 anim-fade-in space-y-3 min-[1400px]:space-y-4"
       data-compact={compact ? "true" : "false"}
       style={{ ["--hero-accent-rgb" as string]: heroAccentRgb }}
     >
-      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
+      <div className="tc-explorer-hero__top flex flex-col lg:flex-row lg:items-end lg:justify-between gap-3 min-[1400px]:gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1 flex-wrap">
             <Sparkles className="w-3.5 h-3.5 tc-icon-ochre" aria-hidden />

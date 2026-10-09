@@ -4226,7 +4226,7 @@ export const PLACES_USA: Place[] = [
     koppen: "BWh",
     archetypes: ["high-desert-escape", "desert-oasis", "canyon-sheltered"],
     drivers: ["rain-shadow", "elevation-lapse-rate", "continentality"],
-    summaryShort: "The hottest reliably-measured place on Earth — 56.7°C (134°F) on record — where rain-shadow geometry meets a sub-sea-level heat sink.",
+    summaryShort: "The hottest reliably-measured place on Earth — 56.7°C on record — where rain-shadow geometry meets a sub-sea-level heat sink.",
     summaryImmersive: "Death Valley concentrates heat the way a parabolic dish concentrates light. Pacific storms lose their moisture climbing four successive ranges before reaching here, so annual precipitation averages 50 mm — less than most city parks receive in a thunderstorm. The basin floor sits 86 m below sea level, with peaks rising 3,000 m on both sides. When the sun heats dense air in that bowl, it cannot escape by lifting; it just heats more. The official world high temperature record, 56.7°C, was set at Furnace Creek on July 10, 1913. Modern summers routinely exceed 50°C for multi-day stretches. Winters, by contrast, are superb — mild days, cool nights, brilliant dark skies, and the occasional wildflower superbloom after rare rain events.",
     whyDistinct: "Four-range rain shadow from the Pacific + sub-sea-level basin geometry + radiative heating of dry air + subsidence under a summer thermal low. These all reinforce each other.",
     experience: {
@@ -4328,7 +4328,7 @@ export const PLACES_USA: Place[] = [
     koppen: "ET",
     archetypes: ["alpine-tundra", "gap-wind-corridor"],
     drivers: ["polar-jet-exposure", "gap-winds", "elevation-lapse-rate"],
-    summaryShort: "Officially the 'home of the world's worst weather' — wind gust of 372 km/h (231 mph) once held the world record, and July averages just 9°C.",
+    summaryShort: "Officially the 'home of the world's worst weather' — wind gust of 372 km/h once held the world record, and July averages just 9°C.",
     summaryImmersive: "Mount Washington stands alone as one of the great weather superlatives of North America. Its latitude places it in the convergence path of three major storm tracks; its altitude places it in the free troposphere; and the regional terrain focuses wind over the summit like a nozzle. The result is a climate more characteristic of a Labrador cape than a New England mountain — January highs near −11°C, July highs near 13°C, fog on 60% of days, freezing fog riming the summit observatory year-round. In April 1934, before weather stations in Antarctica, the summit measured a 372 km/h gust that held the world surface-wind record for 62 years. Hikers die here from exposure in any month.",
     whyDistinct: "Convergence of three storm tracks + regional ridge geometry that channels wind over a single summit + altitude into the free troposphere. No other US peak combines all three.",
     climate: {

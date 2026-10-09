@@ -424,7 +424,7 @@ function DetailHeader({
           across the md band and the six header actions (~540px, shrink-0)
           would squeeze the place name into a sliver and clip the archetype
           chips mid-word. */}
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
+      <div className="detail-drawer-header__row flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
         <div className="min-w-0 w-full">
           <div className="flex items-center gap-1.5 md:gap-2 text-xs text-stone mb-1 flex-wrap">
             <MapPin className="w-3 h-3" aria-hidden />
@@ -512,7 +512,7 @@ function DetailHeader({
             </div>
           ) : null}
         </div>
-        <div className="flex items-center gap-1 self-end shrink-0 lg:self-start flex-wrap justify-end">
+        <div className="detail-drawer-header__actions flex items-center gap-1 self-end shrink-0 lg:self-start flex-wrap justify-end">
           <a
             href={`#${PD.residency}`}
             onClick={(event) => {

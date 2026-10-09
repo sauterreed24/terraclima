@@ -204,15 +204,60 @@
     color: var(--color-ice);
   }
 
-  ::-webkit-scrollbar { width: 10px; height: 10px; }
-  ::-webkit-scrollbar-track { background: transparent; }
+  /* Panel scrollbars (dossier drawer, docks) — visible at rest, never a hairline. */
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: rgba(125, 106, 90, 0.07); }
+  ::-webkit-scrollbar-corner { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    background: rgba(110, 95, 82, 0.22);
-    border-radius: 8px;
-    border: 2px solid transparent;
+    min-height: 48px;
+    min-width: 48px;
+    background-color: rgba(96, 82, 70, 0.42);
+    border-radius: 999px;
+    border: 3px solid transparent;
     background-clip: padding-box;
   }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(110, 95, 82, 0.38); background-clip: padding-box; }
+  ::-webkit-scrollbar-thumb:hover { background-color: rgba(96, 82, 70, 0.6); }
+  ::-webkit-scrollbar-thumb:active { background-color: rgba(96, 82, 70, 0.72); }
+
+  /* Page scrollbar (Chromium reads the viewport bar from <body> first, then
+     <html>, so both carry it). The ranked place list makes the document tens of
+     thousands of pixels tall, so a proportional thumb collapses to a few
+     pixels. A wider rail, a brand-tinted thumb, and a floor on its length keep
+     it findable at a glance and easy to grab. */
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar { width: 16px; }
+  html::-webkit-scrollbar-track,
+  body::-webkit-scrollbar-track {
+    background: linear-gradient(90deg, rgba(125, 106, 90, 0.05), rgba(125, 106, 90, 0.11));
+    border-left: 1px solid rgba(125, 106, 90, 0.18);
+  }
+  html::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-thumb {
+    min-height: 88px;
+    background-color: #1a8fa8;
+    background-image: linear-gradient(180deg, #3cb3cb 0%, #1a8fa8 48%, #0d6f84 100%);
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  }
+  html::-webkit-scrollbar-thumb:hover,
+  body::-webkit-scrollbar-thumb:hover {
+    background-color: #0d6f84;
+    background-image: linear-gradient(180deg, #2aa3bb 0%, #0d7d93 52%, #0b5c6e 100%);
+  }
+  html::-webkit-scrollbar-thumb:active,
+  body::-webkit-scrollbar-thumb:active {
+    background-image: linear-gradient(180deg, #1a8fa8 0%, #0b6577 100%);
+  }
+
+  /* Firefox ignores the WebKit pseudo-elements; give it the same colours on the
+     native (full-width) bar. Gated so Chromium keeps the custom geometry above —
+     a standard `scrollbar-color` would switch Chromium back to native bars. */
+  @supports not selector(::-webkit-scrollbar) {
+    html {
+      scrollbar-color: #1a8fa8 rgba(125, 106, 90, 0.12);
+    }
+  }
 
   @supports (view-transition-name: root) {
     @media (prefers-reduced-motion: no-preference) {
@@ -3929,6 +3974,10 @@
   }
   .tc-explorer-dock {
     scrollbar-width: thin;
+    scrollbar-color: rgba(96, 82, 70, 0.38) transparent;
+  }
+  html[data-theme="dark"] .tc-explorer-dock {
+    scrollbar-color: rgba(180, 200, 230, 0.34) transparent;
   }
   @media (min-width: 1024px) {
     .tc-explorer-dock {
@@ -8396,10 +8445,19 @@
     line-height: 1.55;
     text-wrap: pretty;
   }
+  /* The mechanism essay is the longest read in the Overview; give it the
+     full column (two ~16rem columns turned it into a tall, narrow strip) and
+     let the contrast notes tile underneath. Side by side only when the
+     dossier column is genuinely wide. */
   .place-overview__essay {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15.5rem), 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.7rem;
+  }
+  @container dossier (min-width: 60rem) {
+    .place-overview__essay {
+      grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    }
   }
   .place-overview__essay-card,
   .place-overview__history {
@@ -8456,9 +8514,9 @@
     line-height: 1.45;
   }
   .place-overview__contrast-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: 0.65rem 1rem;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -9192,12 +9250,20 @@
     animation-play-state: paused;
   }
 
-  .map-marker .map-marker-label {
+  /* Place-name cards live in their own layer above the pins (see
+     MarkerLabel); hover/selection state arrives as data-label-state. */
+  .map-marker-label-host .map-marker-label {
     transition: opacity 100ms ease, transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .map-marker:hover .map-marker-label {
+  .map-marker-label-host[data-label-state="hover"] .map-marker-label {
     opacity: 1;
     transform: translateY(-1px);
+  }
+  .map-marker-label-host[data-label-state="idle"] .map-marker-label rect:first-child {
+    fill: rgba(8, 14, 24, 0.86);
+  }
+  .map-shell[data-gesturing="true"] .map-marker-label-host[data-label-state="idle"] {
+    opacity: 0.72;
   }
   .map-pin-leader__line {
     transition: stroke 120ms ease, stroke-width 120ms ease, opacity 120ms ease;
@@ -9222,11 +9288,8 @@
   .map-pin-leader--active .map-pin-leader__anchor {
     opacity: 1;
   }
-  .map-marker:hover .map-marker-label rect {
+  .map-marker-label-host[data-label-state="hover"] .map-marker-label rect:first-child {
     stroke: rgba(200, 228, 255, 0.78);
-  }
-  .map-marker:focus-visible .map-marker-label rect {
-    stroke: rgba(240, 210, 156, 0.95);
   }
   /* Keyboard focus ring on the marker itself. Modern browsers support
      `outline` on SVG <g>; Safari falls back to the inset ring on .atlas-svg
@@ -9237,7 +9300,7 @@
     outline-offset: 2px;
     border-radius: 999px;
   }
-  .map-marker--featured .map-marker-label rect {
+  .map-marker-label-host[data-label-state="featured"] .map-marker-label rect:first-child {
     stroke: rgba(255, 228, 166, 0.82);
   }
   .map-marker__signature-aura {
@@ -10075,6 +10138,11 @@
     display: block;
     width: min(8.75rem, 38vw);
     min-height: 50px;
+  }
+  /* Ranked cards carry a rank strip above the header; seat Compare on the
+     reserved spacer under the tier chip instead of on top of the chip. */
+  .place-card[data-ranked="true"] .place-card__compare-btn {
+    top: 6rem;
   }
   .place-card__compare-btn {
     position: absolute;
@@ -11145,8 +11213,8 @@ html[data-motion="minimal"] .map-key-popover {
 }
 html[data-motion="reduced"] .map-btn:hover,
 html[data-motion="minimal"] .map-btn:hover,
-html[data-motion="reduced"] .map-marker:hover .map-marker-label,
-html[data-motion="minimal"] .map-marker:hover .map-marker-label,
+html[data-motion="reduced"] .map-marker-label-host[data-label-state="hover"] .map-marker-label,
+html[data-motion="minimal"] .map-marker-label-host[data-label-state="hover"] .map-marker-label,
 html[data-motion="reduced"] .scenario-remap__row:hover,
 html[data-motion="minimal"] .scenario-remap__row:hover {
   transform: none !important;
@@ -11156,7 +11224,7 @@ html[data-motion="minimal"] .scenario-remap__row:hover {
     animation: none !important;
   }
   .map-btn:hover,
-  .map-marker:hover .map-marker-label,
+  .map-marker-label-host[data-label-state="hover"] .map-marker-label,
   .scenario-remap__row:hover {
     transform: none !important;
   }
@@ -11906,13 +11974,34 @@ html[data-theme="dark"] ::selection {
 }
 
 /* Scrollbar contrast for dark. */
+html[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: rgba(150, 180, 220, 0.06);
+}
 html[data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: rgba(180, 200, 230, 0.22);
-  background-clip: padding-box;
+  background-color: rgba(180, 200, 230, 0.36);
 }
 html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: rgba(180, 200, 230, 0.4);
-  background-clip: padding-box;
+  background-color: rgba(190, 212, 240, 0.54);
+}
+html[data-theme="dark"]::-webkit-scrollbar-track,
+html[data-theme="dark"] body::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, rgba(10, 16, 28, 0.6), rgba(24, 34, 52, 0.75));
+  border-left-color: rgba(140, 170, 210, 0.18);
+}
+html[data-theme="dark"]::-webkit-scrollbar-thumb,
+html[data-theme="dark"] body::-webkit-scrollbar-thumb {
+  background-color: #3fb1c9;
+  background-image: linear-gradient(180deg, #8ad8ea 0%, #4bbcd3 48%, #2690a8 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+html[data-theme="dark"]::-webkit-scrollbar-thumb:hover,
+html[data-theme="dark"] body::-webkit-scrollbar-thumb:hover {
+  background-image: linear-gradient(180deg, #a6e4f1 0%, #5ec4dc 50%, #2f9cb4 100%);
+}
+@supports not selector(::-webkit-scrollbar) {
+  html[data-theme="dark"] {
+    scrollbar-color: #5ec4dc rgba(24, 34, 52, 0.9);
+  }
 }
 
 /* OS dark mode reaches through `auto` preference via the same overrides
@@ -12807,6 +12896,16 @@ html[data-theme="dark"] .tc-hero-credit {
   .tc-hero-compact-toggle:focus-visible {
     border-color: rgba(26, 143, 168, 0.5);
     color: var(--color-ice);
+  }
+  html[data-theme="dark"] .tc-hero-compact-toggle {
+    border-color: rgba(122, 212, 240, 0.38);
+    background: rgba(20, 30, 50, 0.82);
+    color: rgba(170, 228, 244, 0.95);
+  }
+  html[data-theme="dark"] .tc-hero-compact-toggle:hover,
+  html[data-theme="dark"] .tc-hero-compact-toggle:focus-visible {
+    border-color: rgba(122, 212, 240, 0.6);
+    color: rgba(236, 246, 252, 0.98);
   }
   .panel-hero[data-compact="true"] {
     --tc-hero-pad: 0.7rem;
@@ -13983,4 +14082,80 @@ html[data-theme="dark"] .desktop-scout-board__action[data-active="true"] {
 html[data-theme="dark"] .desktop-scout-board__score {
   background: linear-gradient(180deg, rgba(94, 196, 220, 0.3), rgba(26, 143, 168, 0.18));
   color: var(--color-frost-strong);
+}
+
+/* ------------------------------------------------------------------
+   Explorer hero — when the intro panel shares a row with the map it is
+   only ~28rem wide. Side-by-side text + button column then squeezed the
+   headline into a four-line sliver; below 40rem of panel width the actions
+   drop under the intro as a single wrapping row instead. Unlayered so it
+   outranks the Tailwind `lg:flex-row` utility on the same element.
+   ------------------------------------------------------------------ */
+.tc-explorer-hero {
+  container: tc-explorer-hero / inline-size;
+}
+@container tc-explorer-hero (max-width: 40rem) {
+  .tc-explorer-hero__top {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .tc-explorer-hero .hero-action-stack {
+    flex-flow: row wrap;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  .tc-explorer-hero .hero-action-stack > .btn-primary,
+  .tc-explorer-hero .hero-action-stack > .btn-ghost {
+    flex: 1 1 8.5rem;
+    width: auto;
+  }
+  .tc-explorer-hero .hero-action-stack > .hero-more-menu {
+    flex: 0 1 auto;
+    width: auto;
+  }
+  .tc-explorer-hero .hero-action-stack > .tc-share-fallback {
+    flex: 1 1 100%;
+  }
+}
+
+/* Dossier header — the drawer tops out at 900px, so title + six actions on
+   one row squeezed the place name into a ~300px column and stacked every
+   archetype chip on its own line. Below 60rem of header width the action
+   toolbar sits above the title (close button stays top-right) and the
+   name, lede, and chips get the full width. */
+.detail-drawer-header {
+  container: tc-detail-header / inline-size;
+}
+@container tc-detail-header (max-width: 60rem) {
+  .detail-drawer-header__row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+  }
+  .detail-drawer-header__actions {
+    order: -1;
+    align-self: flex-end;
+  }
+}
+
+/* Dossier reading nav (desktop column) — a quiet table of contents rather
+   than a stack of bordered buttons: inactive rows are bare text, hover and
+   the active row get the tinted pill. Touch-sized rows stay 2.75rem. */
+.tc-reading-nav-desktop .tc-reading-nav-link:not(.tc-reading-nav-link--active) {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+.tc-reading-nav-desktop .tc-reading-nav-link:not(.tc-reading-nav-link--active):hover {
+  border-color: var(--tc-inset-border);
+  background: var(--tc-inset-bg);
+}
+.tc-reading-nav-desktop .tc-reading-nav-nested-link:not(.tc-reading-nav-link--active) {
+  color: var(--color-stone-readable);
+}
+@media (pointer: fine) {
+  [data-place-detail] .tc-reading-nav-desktop .tc-reading-nav-nested-link {
+    min-height: 2.15rem;
+  }
 }
