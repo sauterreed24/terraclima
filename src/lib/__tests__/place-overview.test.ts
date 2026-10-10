@@ -104,7 +104,9 @@ describe("composePlaceExperience", () => {
   it("prefers sensory seasons over generated numeric templates", () => {
     const alamos = composePlaceExperience(PLACES_BY_ID["alamos-mx"]);
     expect(alamos.seasons.find(s => s.key === "winter")!.detail).not.toMatch(/keeps winter highs near/);
-    expect(alamos.seasons.find(s => s.key === "winter")!.authored).toBe(false);
+    // The site-history overlay now carries a hand-written winter read.
+    expect(alamos.seasons.find(s => s.key === "winter")!.authored).toBe(true);
+    expect(alamos.seasons.find(s => s.key === "winter")!.detail).toMatch(/Ortiz Tirado/);
   });
 
   it("keeps hand-written Sequim seasons", () => {
