@@ -4,6 +4,17 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Readable scrollbar, real cartography, and place stories worth reading
+
+- **Page scrollbar:** the viewport bar was a ~6×16 px sliver on a very long page. Body and html now get a 16px rail with a brand-teal thumb (88px minimum) in light and dark; panels get a visible 12px bar; Firefox gets matching `scrollbar-color`.
+- **Atlas map:** Natural Earth 1:50m rivers and lakes (lazy `atlas-hydro` chunk), projection-oriented ocean / range / region / lake lettering, named climate-corridor bands in the key, and place-name cards in their own layer so pins can no longer paint over a name.
+- **History and deep dives for all 226 places:** every Overview history and Field dossier chapter was rewritten as story-led, fact-checked narrative — each opens on a scene (Santa Anna's buried leg, Maximilian's last morning, the Hotel Playa Ensenada casino, Steinbeck in La Paz) before the longer arc of peoples, settlement and land use.
+- **What it feels like:** hand-written feel lines, four-season reads, nearby contrasts and "Why people visit / Who lives here happily" cards replace every remaining generated template ("keeps the numbers from reading like a generic BSh town", "People come for colonial center."). The site-history overlay is now the top layer over older corpus text and gains `travelerFit` / `residentFit`.
+- **On the ground:** the Field story section no longer recites Köppen codes, "terrain engines" or text already shown in the Overview; it is a short plain-language note — numbers in words, the communities that share the same air, and where to start.
+- **Units in prose:** imperial mode now converts kilograms, tonnes, hectares, square kilometres, cubic metres, vertical metres, spelled-out quantities ("three kilometres", "twelve-metre tides") and vague phrasings ("a few kilometres", "metres of snow"). Fixed "3 kilometres wide" → "3 miles wide", "500 metres across" → "500 feet across", and "mid-20s °C" → "mid-68–84°F". A sweep of every place's rendered prose finds no metric leaks.
+- **Contrast sweep (light + dark):** fixed the pale dark-mode rank strip on cards, dark-mode Trips fact pills and compare coach metrics, pastel risk-level labels on paper (now a green→amber→red ramp per theme), season headlines and the growability score in light mode, and unlocalized "18.3 C warmer" compare deltas.
+- Corpus audit is clean (0 fatal, 0 warn); voice check 0 errors.
+
 ### Place hero photographs — leftover landscape upgrades
 
 - Replaced remaining low-resolution, civic-street, or poorly cropped Commons heroes with verified landscape shots (Bacalar lagoon sunset, Creston Valley aerial, Ensenada’s Punta Banda marine layer, Deep Creek Lake autumn, Bottomless Lakes, Friday Harbor aerial, Worthington Glacier, and others).
