@@ -558,7 +558,7 @@ function cleanAuthoredFit(text: string | undefined): string | null {
   t = t.replace(/ since year-round living means absorbing the .+$/i, ".");
   t = t.replace(/ the group most likely to find the tradeoffs of living here worth the climate on offer\.?$/i, ".");
   t = t.replace(/, set inside a .+ climate that is easy to underestimate from a distance\.?$/i, ".");
-  t = t.replace(/\s+\./g, ".").replace(/\.\s+\./g, ". ").replace(/[,;]+(?=\.)/g, "").replace(/[,;:\s]+$/g, "");
+  t = t.replace(/\s+\./g, ".").replace(/\.\s+\./g, ". ").replace(/\.{2,}/g, ".").replace(/[,;]+(?=\.)/g, "").replace(/[,;:\s]+$/g, "");
   t = ensurePeriod(t);
   if (t.length < 24) return original;
   return t;
@@ -923,8 +923,8 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
     immersive: enrichImmersive(place, immersiveBase),
     feelLine: overlay?.feel?.trim() || authoredFeel || deriveFeelLine(place),
     seasons,
-    travelerFit: authoredTraveler ?? deriveTravelerFit(place),
-    residentFit: authoredResident ?? deriveResidentFit(place),
+    travelerFit: overlay?.travelerFit?.trim() || (authoredTraveler ?? deriveTravelerFit(place)),
+    residentFit: overlay?.residentFit?.trim() || (authoredResident ?? deriveResidentFit(place)),
     wouldNotFit: place.whoMightNot,
     texture: authoredTexture ?? deriveTexture(place),
     whyDifferent: authoredWhy || overlayWhy || place.whyDistinct,

@@ -86,6 +86,7 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and bright — afternoons near 33°C and often climbing past 38°C, nights cooling to around 13°C in the dry air, and almost no rain from June to September. Wildfire smoke from the surrounding mountains can fill the valley for days or weeks in bad fire years. The Rogue River offers rafting and fishing, and the Oregon Shakespeare Festival in nearby Ashland draws crowds.",
       autumn: "Harvest season — afternoons near 28°C in September cooling to about 13°C by November, pears and wine grapes coming in from the orchards and vineyards, and the first rains of October washing the summer's smoke from the air. Oaks and vineyards turn gold, and the mountains get their first snow.",
     },
+    travelerFit: "Visitors come for Crater Lake and the Rogue River, rafting and steelhead fishing, the pear orchards and wineries of the Rogue Valley, and the Shakespeare festival a short drive away in Ashland.",
     contrasts: [
       { label: "Ashland (≈20 km SE, ≈150 m higher)", note: "Up the valley at the foot of the Siskiyous, Ashland runs a little cooler in summer and wetter in winter, with a touch more snow." },
       { label: "Crater Lake rim (≈90 km NE, ≈1,700 m higher)", note: "Up in the Cascades, the rim of Crater Lake averages more than 10 m of snow a year and stays snowbound well into July." },
@@ -113,6 +114,7 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Cool, dry and luminous — afternoons near 22°C, nights around 12°C, and very little rain from June through September. Sea breezes keep the island comfortable even when the mainland swelters. Long evenings stretch past ten o'clock, kayakers paddle the shoreline, and the harbour fills with sailboats.",
       autumn: "Mellow then stormy — September afternoons near 19°C with crisp, clear air, then the return of the rains by late October. The salmon runs bring orcas close to shore, the madrones shed their bark, and the first gales arrive with November.",
     },
+    travelerFit: "Visitors come by ferry for orca and whale watching, kayaking among the islands, the lavender farm and sculpture park, and the slow pace of an island town in the rain shadow of the Olympics.",
     contrasts: [
       { label: "Seattle (≈100 km SE)", note: "Outside the strongest part of the rain shadow, Seattle gets roughly half again as much rain, with more cloudy days and warmer summers." },
       { label: "Victoria, BC (≈40 km W across Haro Strait)", note: "Victoria sits in the same rain shadow, with a similar mild, dry-summer climate — the islands and the city share the sunny gap in the clouds." },
@@ -163,6 +165,8 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and sunny — afternoons near 30°C, nights cooling to about 13°C, and almost no rain from late June to September. The Wenatchee River offers rafting and tubing, the trails to the Enchantments fill with hikers, and wildfire smoke is a common late-summer visitor.",
       autumn: "Crisp, bright and festive — September afternoons near 24°C cooling to about 8°C by November, apples and pears ripening in the orchards, larches turning gold in the high country, and Oktoberfest filling the streets with lederhosen and brass bands. The first snow usually arrives on the mountains by October.",
     },
+    travelerFit: "Visitors come for the Bavarian-style village and its Oktoberfest and Christmas lights, rafting the Wenatchee River, climbing in Icicle Canyon, and hiking toward the Enchantments, one of the most beautiful alpine basins in the Cascades.",
+    residentFit: "It suits skiers, climbers, orchardists and families who want hot, dry summers and snowy winters in a mountain town, and who can live with tourist crowds, high housing prices and wildfire smoke in late summer.",
     contrasts: [
       { label: "Stevens Pass (≈40 km W, ≈900 m higher)", note: "Up on the Cascade crest, the ski area averages more than 10 m of snow a year, and Pacific storms hit with full force." },
       { label: "Wenatchee (≈35 km SE, ≈150 m lower)", note: "Out where the valley opens onto the Columbia, Wenatchee gets barely a third of Leavenworth's precipitation, and its summers run a little hotter." },
@@ -190,6 +194,7 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and blazing — afternoons near 36°C, nights cooling to about 19°C, and very little rain, though thunderstorms can build over the Sierra and the White Mountains on monsoon afternoons. Hikers flock to Whitney Portal, 2,500 m up, to escape the heat and begin the climb to the highest summit in the lower forty-eight.",
       autumn: "Warm, clear and golden — September afternoons near 32°C easing to about 18°C by November, cool nights and very little rain. Aspens turn gold in the canyons below the Sierra crest in October, the air is still and clear, and it is one of the best seasons for climbing Mount Whitney before the first snows close the high trails.",
     },
+    travelerFit: "Visitors come for the Alabama Hills, where hundreds of westerns were filmed, the trailhead to Mount Whitney, the highest peak in the lower forty-eight, and the Manzanar National Historic Site just up the road.",
     contrasts: [
       { label: "Mount Whitney summit (≈20 km W, ≈3,300 m higher)", note: "The highest peak in the lower forty-eight is an arctic world above town, with freezing nights even in July and snow most of the year." },
       { label: "Death Valley (≈100 km E, ≈1,200 m lower)", note: "Over the Inyo Mountains and down in the sub-sea-level basin, summer afternoons run about 10°C hotter." },
@@ -217,6 +222,8 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and then stormy — afternoons near 37°C, nights around 21°C, and from July the monsoon pushes moist air from the south, building towering thunderstorms over the desert by afternoon. Flash floods can rip through the slot canyons with little warning, even from storms many kilometres away, and canyon tours close when storms threaten. The lake is warm and full of boaters.",
       autumn: "The best season — September afternoons near 31°C easing to 14°C by November, cool and clear nights, calm air and warm lake water through early autumn. The crowds thin, the light softens, and occasional rains from late monsoon storms or Pacific systems freshen the desert.",
     },
+    travelerFit: "Visitors come for the sculpted slot canyons of Antelope Canyon, the bend of the Colorado at Horseshoe Bend, boating on Lake Powell and rafting from Glen Canyon Dam, all within a few kilometres of town.",
+    residentFit: "It suits river guides, tour operators, Navajo Nation families and remote workers who love canyon country and can cope with fierce summer heat, a falling Lake Powell and long drives to any large city.",
     contrasts: [
       { label: "Lees Ferry (≈25 km SW, ≈350 m lower)", note: "Down on the river below the dam, at the head of the Grand Canyon, summer afternoons run a few degrees hotter and the cold, clear river water is a shock." },
       { label: "Grand Canyon North Rim (≈130 km SW, ≈1,200 m higher)", note: "Up on the Kaibab Plateau, the North Rim is buried in snow from November to May and its summer afternoons run about 12°C cooler." },
@@ -244,6 +251,7 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Short, green and pleasant — afternoons near 25°C, nights cooling to about 12°C, and long northern evenings when the light lasts past ten o'clock. Thunderstorms are common, and so are mosquitoes. Rainy Lake and the waters of Voyageurs National Park fill with boaters and anglers chasing walleye.",
       autumn: "Brief and colourful — September afternoons near 18°C with crisp, clear air, aspens and birches turning gold, and the first frosts by mid-month. By late October the snow begins, and the lakes freeze in November.",
     },
+    travelerFit: "Visitors come for Voyageurs National Park, boating and fishing on Rainy Lake in summer, ice fishing, snowmobiling and the bragging rights of a winter in the self-styled Icebox of the Nation.",
     contrasts: [
       { label: "Duluth (≈230 km SE)", note: "On Lake Superior's shore, Duluth's winters are a few degrees milder, though the lake brings more cloud and lake-effect snow." },
       { label: "Minneapolis (≈400 km S)", note: "In the south of the state, January runs about 6°C warmer on average, and summers are notably hotter and more humid." },
@@ -270,6 +278,8 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Mild and refreshing — afternoons near 25°C up the hill but often cooler by the lake, nights around 13°C, and a lake breeze that makes Duluth an escape for people fleeing the heat of the Twin Cities. Freighters sail under the Aerial Lift Bridge, the Lakewalk fills with walkers, and Superior's cold water tempts only the boldest swimmers.",
       autumn: "Crisp, colourful and stormy — September afternoons near 21°C cooling to about 5°C by November, the maples and birches on the hills blazing red and gold by early October, and the gales of November sweeping across the lake, building huge waves that crash over the piers. The first lasting snow usually arrives by late November.",
     },
+    travelerFit: "Visitors come for the lift bridge and the giant ore boats, the lakewalk and Canal Park, the North Shore drive to waterfalls and lighthouses, tall-ship festivals in summer and blazing fall colour along the hills.",
+    residentFit: "It suits outdoor people, remote workers and families who want a real city with trails and lake views, cool summers free of heat waves, and who embrace long, snowy winters rather than enduring them.",
     history: [
       "On 27 January 1871, a congressman from Kentucky named J. Proctor Knott stood up in the House of Representatives to speak against a bill granting land to a railroad that would run to Duluth, then a raw frontier town of a few thousand people on the western tip of Lake Superior. His speech was a masterpiece of mockery. He described how he had searched for Duluth for years without finding it on any map, praised the untold delights of the zenith city of the unsalted seas, and suggested that it must be the centre of the universe. The speech was reprinted across the country, and Duluth, instead of being insulted, adopted the phrase Zenith City as a proud nickname and has used it ever since.",
       "The Ojibwe called the place Onigamiising, the place of the little portage, where travellers could cross the long sand spit of Minnesota Point from the lake into the St. Louis River. The French explorer Daniel Greysolon, Sieur du Lhut, reached the area in 1679, and the city later took his name. In the 1854 Treaty of La Pointe the Ojibwe ceded the land, and the Fond du Lac Band kept a reservation upriver. Duluth boomed in the late 1860s when the financier Jay Cooke made it the terminus of his railroad, then went bust when his bank failed in the Panic of 1873. In 1871 the town dug a canal through Minnesota Point to create a harbour, by local legend racing to finish before an injunction from its jealous rival, Superior, Wisconsin, could arrive.",
@@ -292,6 +302,7 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Warm and breezy — afternoons near 27°C, nights around 17°C, and a lake breeze that keeps the shore pleasant on hot days. The lake warms enough for swimming by July, Presque Isle's beaches fill, and thunderstorms roll across the lake on humid afternoons.",
       autumn: "Mild and long — the lake holds its summer warmth, so September afternoons stay near 23°C, grapes ripen in the vineyards along the shore, and frost comes late. By November, cold winds off the lake bring the first bands of rain, then snow.",
     },
+    residentFit: "It suits Great Lakes people who love summer beaches and boating on Presque Isle Bay, affordable housing and a mid-sized city, and who take lake-effect snowstorms that can bury the city in stride.",
     history: [
       "At sunrise on 10 September 1813, a young American naval commander named Oliver Hazard Perry sailed out to fight the British squadron on Lake Erie in a fleet built in Erie's harbour from green timber cut in the surrounding forest. His flagship, the brig Lawrence, flew a blue battle flag stitched with the dying words of Perry's friend James Lawrence: Don't give up the ship. Within a couple of hours the Lawrence had been shot to pieces and most of its crew killed or wounded. Perry lowered the flag, climbed into a rowboat and, under heavy fire, rowed to his second brig, the Niagara, took command and sailed it straight through the British line. The British surrendered. Perry's message to his commander became famous: We have met the enemy and they are ours.",
       "The Erie people, who gave the lake its name, farmed its southern shore until they were destroyed in wars with the Iroquois in the 1650s. In 1753 the French built a fort on the bay sheltered by the long sandy peninsula they called Presque Isle, almost an island; the British took it in 1760, and in Pontiac's War of 1763 Native warriors captured and burned it. Pennsylvania had no lake shore until 1792, when it bought a small triangle of land from the federal government to gain a port. In 1796 General Anthony Wayne, the hero of the Indian wars, died at the fort; his son later dug up the body, boiled the flesh from the bones, and carried the bones home to eastern Pennsylvania, leaving Wayne with two graves, one in Erie.",
@@ -341,6 +352,8 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Warm, humid and misty — afternoons near 30°C in town but much cooler up on the ridges, nights around 18°C, and almost daily afternoon thunderstorms. The famous blue haze hangs over the mountains, and in early June the synchronous fireflies of Elkmont flash in unison in the forest at night.",
       autumn: "The peak season — September afternoons near 27°C easing to about 16°C by November, crisp, clear mornings, and the forests of the Smokies turning red, orange and gold from the high peaks downward through October, drawing the year's biggest crowds. October is the driest month, and the first frosts arrive in November.",
     },
+    travelerFit: "Visitors come for Great Smoky Mountains National Park — the waterfalls, the Alum Cave and Chimney Tops trails, black bears in Cades Cove, synchronous fireflies in June — and for the fudge shops, distilleries and pancake houses of the town.",
+    residentFit: "It suits hospitality workers, hikers and retirees who love the mountains and the mild, misty climate, and who accept heavy tourist traffic, tight valley housing and the memory of the 2016 wildfire that burned into town.",
     contrasts: [
       { label: "Mount Le Conte (≈10 km SE, ≈1,600 m higher)", note: "Up on the third-highest peak in the Smokies, it's about 10°C cooler, snow is common in winter, and far more rain falls than in town." },
       { label: "Knoxville (≈55 km NW, in the valley)", note: "Out in the broad Tennessee Valley, summer afternoons run a little hotter and the year brings a bit less rain." },
@@ -368,6 +381,8 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and sea-breezy — afternoons near 30°C, nights around 23°C, and warm ocean water ideal for swimming and surfing. Afternoon thunderstorms are common, rip currents are a hazard, and the islands' population swells several times over with beachgoers.",
       autumn: "Hurricane watch, then golden — August through early October is the peak of hurricane season, but by October the humidity drops, afternoons ease to about 23°C, and the ocean stays warm. Fishing peaks as the red drum and striped bass run, and the crowds go home.",
     },
+    travelerFit: "Visitors come for wide Atlantic beaches, the Wright Brothers National Memorial at Kill Devil Hills, hang-gliding off Jockey's Ridge, the wild horses of Corolla and surfing and fishing around Cape Hatteras.",
+    residentFit: "It suits beach people, fishermen and remote workers who love the wind and the ocean, accept that storms will flood the road and erode the beaches, and are prepared to evacuate when a hurricane comes.",
     contrasts: [
       { label: "Norfolk, VA (≈110 km N, mainland)", note: "Away from the open ocean, summer afternoons run a little hotter and winter nights colder, with occasional snow that the Outer Banks usually miss." },
       { label: "Cape Hatteras (≈90 km S)", note: "Further out at the elbow of the Outer Banks, near the warm Gulf Stream, winters are milder still — and the hurricane risk is among the highest on the East Coast." },
@@ -395,6 +410,8 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Warm and pleasant — afternoons near 27°C, nights around 15°C, and breezes off the lake that take the edge off hot days. Thunderstorms roll across the lake, sailboats fill the bay, and the waterfront bike path and farmers' markets are full.",
       autumn: "Spectacular — September afternoons near 22°C, crisp nights, and a blaze of red and orange foliage across the hills by early October. The lake stays warm into the autumn, and the first snow arrives on the mountains by late October.",
     },
+    travelerFit: "Visitors come for Lake Champlain sunsets over the Adirondacks, the pedestrian Church Street Marketplace, the lakefront bike path and the Champlain Islands, and the ski resorts of the Green Mountains within an hour's drive.",
+    residentFit: "It suits university people, remote workers and outdoor families who want a small, progressive city with a lake and mountains on its doorstep, and who can manage long, cold winters and expensive housing.",
     contrasts: [
       { label: "Mount Mansfield (≈35 km E, ≈1,280 m higher)", note: "Vermont's highest peak above Stowe gets several metres of snow a year and runs about 8°C cooler than the lakeshore." },
       { label: "Montpelier (≈55 km SE, in the mountains)", note: "Away from the lake's moderating influence, the state capital has colder winter nights, more snow and a shorter growing season." },
@@ -422,6 +439,8 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Cool, bright and foggy by turns — afternoons near 24°C, nights around 13°C, and fog that rolls in off the cold sea and can blanket the harbour while the mountaintops sit in sunshine. Lobster boats work the bay, cruise ships anchor offshore, and Acadia's trails and carriage roads fill with hikers and cyclists.",
       autumn: "Crisp and colourful — September afternoons near 20°C, nights cooling fast, and a blaze of red maples and golden birches against the dark spruce by mid-October. Storms grow stronger as the season goes on, and the crowds thin after the leaves fall.",
     },
+    travelerFit: "Visitors come for Acadia National Park — sunrise on Cadillac Mountain, the carriage roads, the Park Loop Road and Thunder Hole — along with whale watching, lobster on the pier and the granite-and-spruce coast of Mount Desert Island.",
+    residentFit: "It suits hikers, hospitality workers and retirees who love the rugged coast and cool summers, and who can handle the long, quiet winter after the visitors leave and the scramble for housing in summer.",
     contrasts: [
       { label: "Bangor (≈60 km NW, inland)", note: "Away from the cold ocean, summer afternoons in Bangor run a few degrees warmer and winter nights colder." },
       { label: "Cadillac Mountain summit (≈5 km SW, ≈460 m higher)", note: "The highest point on the Atlantic coast north of Brazil is windier and cooler than town, and from October to March it often catches the first sunrise in the United States." },
@@ -449,6 +468,8 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Hot and dry with stormy evenings — afternoons near 34°C, nights cooling to about 20°C in the dry air, and evening thunderstorms that roll across the plains bringing much of the year's rain. Irrigated cotton grows green against the brown plains, and the evenings are pleasant once the sun goes down.",
       autumn: "The best season — September afternoons near 30°C easing to about 18°C by November, calm winds, clear skies and cool nights. Cotton harvest fills the fields and gins, Texas Tech football fills the stadium, and the first cold fronts arrive in October.",
     },
+    travelerFit: "Visitors come for Palo Duro Canyon to the north, the Buddy Holly Center, a growing High Plains wine country, Texas Tech football and spectacular spring thunderstorms rolling across the Llano Estacado.",
+    residentFit: "It suits agricultural researchers, Texas Tech staff, storm chasers and families who want affordable living under huge skies, and who can take wind, dust storms, hail and hot summers.",
     contrasts: [
       { label: "Amarillo (≈190 km N, ≈120 m higher)", note: "Further up the Panhandle, Amarillo's winters are colder and snowier, with even more relentless wind." },
       { label: "Fort Worth (≈450 km E)", note: "Down off the Caprock in North Texas, the air is far more humid, the year brings nearly twice Lubbock's rain, and winter nights are milder." },
@@ -476,6 +497,7 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Hot, steamy and stormy — afternoons near 33°C, nights barely dropping below 24°C, and a heat index that often feels like 40°C or more. Almost daily afternoon thunderstorms bring torrential downpours that briefly flood streets. People slow down, find the shade of the oaks and the air conditioning, and wait for the evening.",
       autumn: "Hurricane season, then relief — August through October is the peak of hurricane season, and the city watches every storm in the Gulf. By late October, the first real cold fronts bring drier air and afternoons near 26°C, and the city's outdoor life returns with a rush.",
     },
+    travelerFit: "Visitors come for jazz on Frenchman Street, Mardi Gras and Jazz Fest, Creole and Cajun cooking, the French Quarter and Garden District, and swamp tours through the cypress bayous beyond the levees.",
     contrasts: [
       { label: "Baton Rouge (≈120 km NW)", note: "Further inland along the river, summer afternoons run a little hotter and winter nights a few degrees colder." },
       { label: "Grand Isle (≈80 km S, on the Gulf)", note: "On Louisiana's only inhabited barrier island, sea breezes take the edge off summer, but the island takes the full force of every Gulf hurricane." },
@@ -545,6 +567,8 @@ export const SITE_HISTORY_USA_4: Record<string, SiteHistoryEntry> = {
       summer: "Short, cool and bright — afternoons near 14°C, nights around 6°C, and nearly endless daylight in June, when the sun barely dips below the horizon. Rain and fog are common, the tundra blooms with wildflowers, and miners and tourists pan for gold on the beach. Storms can sweep in from the Bering Sea even in summer.",
       autumn: "Brief and stormy — September afternoons near 10°C dropping to below freezing by late October, with the year's strongest storms sweeping in off the open sea and driving waves against the seawall. The tundra turns red and gold, the first snow falls, and the sea begins to freeze by November.",
     },
+    travelerFit: "Visitors come to watch the Iditarod sled dogs finish on Front Street in March, see musk oxen and migrating birds along the roads in summer, pan for gold on the beach and see the aurora over the Bering Sea.",
+    residentFit: "It suits Iñupiat families, miners, researchers and adventurous public servants who are at home in a remote Arctic town with no road to the outside world, months of darkness and fierce winter storms.",
     contrasts: [
       { label: "Fairbanks (≈850 km E, Interior)", note: "In the heart of Alaska, far from the sea, summer afternoons run about 8°C warmer and winter nights are even colder." },
       { label: "Kotzebue (≈290 km N, above the Arctic Circle)", note: "Further north, the sea ice lasts longer, winters are colder, and the sun truly does not set at midsummer." },

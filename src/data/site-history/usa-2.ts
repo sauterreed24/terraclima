@@ -419,6 +419,7 @@ export const SITE_HISTORY_USA_2: Record<string, SiteHistoryEntry> = {
       summer: "Dry heat and long light — afternoons near 28°C, nights cooling to about 11°C, low humidity, and short thunderstorms that blow in off the mountains with more wind and lightning than rain. The rodeo runs every night, the road to Yellowstone fills with traffic, and smoke from distant fires sometimes turns the evening sun copper.",
       autumn: "Golden and quickly cooling — September afternoons near 23°C fading to about 8°C by November, nights dropping below freezing by October, cottonwoods turning gold along the Shoshone River, and the first real snows in late October. Elk bugle in the high country, and hunting season fills the motels.",
     },
+    travelerFit: "Visitors come for the east gate of Yellowstone, the nightly summer rodeo, the five museums of the Buffalo Bill Center of the West, and the wild drive up the Wapiti Valley through red-rock hoodoos.",
     contrasts: [
       { label: "Yellowstone Lake (≈80 km W, ≈800 m higher)", note: "Up on the park plateau, winter is far snowier and colder, the lake stays frozen into late spring, and summer nights can drop to near freezing." },
       { label: "Powell (≈35 km NE, basin floor)", note: "Out on the irrigated floor of the Bighorn Basin, the year brings only about two-thirds of Cody's precipitation, with fewer of the chinook gales that rake the foothills." },

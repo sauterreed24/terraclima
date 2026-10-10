@@ -321,6 +321,7 @@ export const SITE_HISTORY_USA_1: Record<string, SiteHistoryEntry> = {
       winter: "Soft and changeable — afternoons near 19°C, nights near 7°C, and cold fronts that sweep through every few days with a day of rain and a hard north wind that drains the bay down to its oyster bars. Behind them come bright, cool, bugless days; frost is rare but not unknown. Winter has always been the working season on the water.",
       summer: "Hot, heavy, and thundery — afternoons near 33°C, nights that barely dip below 23°C, and humidity you can wear. Sea breezes off the Gulf grow into towering afternoon storms most days, so summer rain runs to well over 500 mm and the early morning is the time to be on the water. Hurricane season runs right through it.",
     },
+    travelerFit: "Visitors come for oysters shucked on the dock, empty barrier-island beaches on St. George and St. Vincent, kayaking the estuary, and an old cotton port that still moves at the pace of the tide.",
     contrasts: [
       { label: "Tallahassee (≈110 km NE, inland)", note: "Away from the Gulf, summer afternoons run hotter and winter nights noticeably colder, with far more frost — the bay breeze that softens Apalachicola never reaches it." },
       { label: "St. George Island (across the bay)", note: "The barrier island takes the full Gulf breeze, runs a touch cooler on summer afternoons, and is first in line when a hurricane's surge comes ashore." },

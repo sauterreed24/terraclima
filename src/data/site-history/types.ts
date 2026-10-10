@@ -14,16 +14,21 @@ export interface SiteHistoryEntry {
   immersive?: string;
   /**
    * Overview feel line — what the place is like on the skin across a year,
-   * and why. Used when the place has no hand-written `experience.feel`
-   * (hand-written copy always wins); otherwise the derived line remains.
+   * and why. This overlay is the newest hand-written layer, so it wins over
+   * `experience.feel`; without it the corpus line (if not a generated
+   * template) or the derived line remains.
    */
   feel?: string;
   /**
-   * Season cards (sensory read + the reason behind it). Each season fills in
-   * only where the place has no hand-written `experience.seasons` prose, so
-   * curated seasons are never replaced. Temperatures in °C, localized at render.
+   * Season cards (sensory read + the reason behind it). Each season present
+   * here wins over `experience.seasons` for that season; missing seasons fall
+   * back to corpus prose or the derived read. Temperatures in °C, localized at render.
    */
   seasons?: Partial<Record<SiteSeasonKey, string>>;
+  /** Overview “Why people visit” card. Wins over `experience.travelerFit`. */
+  travelerFit?: string;
+  /** Overview “Who lives here happily” card. Wins over `experience.residentFit`. */
+  residentFit?: string;
   /**
    * Nearby contrast cards for places with no authored `nearbyContrasts` /
    * `localContrast`; replaces the generic relief-context fallback card.

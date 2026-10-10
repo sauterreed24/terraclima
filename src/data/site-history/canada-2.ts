@@ -38,6 +38,8 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Mild and pleasant — afternoons near 23°C, nights around 11°C, and a lake breeze that keeps the city comfortable. Long evenings, cool nights and occasional thunderstorms. Hikers climb the Sleeping Giant for views over the lake, and the blueberries ripen in the bush by August.",
       autumn: "Crisp and colourful — September afternoons near 18°C cooling quickly, the boreal forest turning gold with aspens and birches, and the first snow arriving by late October. The last grain ships of the season hurry out before the Seaway closes.",
     },
+    travelerFit: "Visitors come for the Sleeping Giant rising out of Lake Superior, Kakabeka Falls, Fort William Historical Park and its fur-trade re-enactments, amethyst mines, and Finnish pancakes at the Hoito.",
+    residentFit: "It suits outdoor families, students and workers in health care, mining and forestry who love the boreal forest and the lake, and who accept long, cold winters and distance from other cities.",
     contrasts: [
       { label: "Duluth, Minnesota (≈300 km SW)", note: "At the western tip of Lake Superior, Duluth has a similar climate, slightly milder in winter and with more lake-effect snow." },
       { label: "Nipigon (≈100 km NE)", note: "Further from the lake's influence, Nipigon has colder winter nights and warmer summer afternoons." },
@@ -65,6 +67,8 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Cool, bright and foggy by turns — afternoons near 20°C, nights around 11°C, and sea fog that can roll in suddenly from the Gulf. Visitors flock to Percé, the gannet colony on Bonaventure Island and the cliffs of Forillon, where whales feed close to shore.",
       autumn: "Crisp and colourful — September afternoons near 17°C, the forests turning red and gold against the sea, and the first storms of the season rolling in. Fishing boats bring in the last catch, and the first snow falls in the mountains by late October.",
     },
+    travelerFit: "Visitors come for Forillon National Park at the end of the Appalachians, the Percé Rock and the gannet colony of Bonaventure Island, whale watching, seafood and the fishing villages of the Gaspé coast.",
+    residentFit: "It suits people who love the sea and the quiet, including fishermen, artists and remote workers, and who can live with long, snowy winters, a short tourist season and great distances from Quebec City and Montreal.",
     contrasts: [
       { label: "Chic-Choc Mountains (≈150 km W, ≈1,250 m higher)", note: "In the Gaspésie's high mountains, snow lingers into June, the summits are alpine tundra, and the last caribou herd south of the St. Lawrence survives." },
       { label: "Quebec City (≈600 km W, inland up the river)", note: "Up the St. Lawrence, summers run several degrees hotter, and winters are colder but less stormy." },
@@ -135,6 +139,7 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Short, warm and endless — afternoons near 20°C, nights around 10°C, and nearly twenty hours of daylight around the summer solstice, when the sun barely sets. Boaters and paddlers take to the lake, and the town celebrates with festivals. Wildfire smoke is a growing threat.",
       autumn: "Brief and colourful — September afternoons near 10°C, the tundra and birches turning gold and red, and the first snow by early October. The aurora returns as the nights lengthen, and the lake begins to freeze by late November.",
     },
+    travelerFit: "Visitors come for some of the best aurora viewing on earth from late August to April, dog sledding, the ice road across Great Slave Lake in winter, the houseboats and fish fry of Old Town and the midnight sun in June.",
     contrasts: [
       { label: "Fort Smith (≈300 km S, on the Alberta border)", note: "Further south, Fort Smith's summers are warmer and its winters a little milder, though still bitterly cold." },
       { label: "Inuvik (≈1,100 km NW, above the Arctic Circle)", note: "In the far north, Inuvik has colder winters with weeks of polar night and a true midnight sun in summer." },
@@ -162,6 +167,7 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Short, cool and alive — afternoons near 17°C, nights around 7°C, and nearly eighteen hours of daylight. Thousands of beluga whales gather in the mouth of the Churchill River to feed and calve, the tundra blooms with wildflowers, and birdwatchers come for the nesting shorebirds. Mosquitoes and black flies are fierce. Cold winds off the ice can drop the temperature sharply.",
       autumn: "Polar bear season — afternoons falling from about 10°C in September to below freezing by late October, and hundreds of polar bears gathering along the coast near town to wait for the bay to freeze so they can hunt seals on the ice. Tourists ride tundra buggies to watch them. The first snow arrives in October, and the bay freezes by mid-November.",
     },
+    travelerFit: "Visitors come to see polar bears gathering along the coast in October and November, thousands of beluga whales in the Churchill River in July and August, the northern lights in winter, and the history of the fur trade at Prince of Wales Fort.",
     contrasts: [
       { label: "Thompson (≈400 km SW, in the boreal forest)", note: "Inland in the forest, Thompson's summers are warmer and its winters similarly cold, but without the bay's fierce winds." },
       { label: "Arviat, Nunavut (≈250 km N, up the bay)", note: "Further north on the treeless tundra, Arviat's winters are even colder and longer, with less snow-sheltering forest." },
@@ -189,6 +195,8 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Warm and breezy — afternoons near 25°C, nights around 15°C, and lake breezes that keep the peninsula comfortable. The beaches and great sand dunes of Sandbanks fill with swimmers, the wineries and farm stands are busy, and cyclists pedal the quiet country roads.",
       autumn: "Long and mellow — the lake keeps September afternoons near 22°C and holds off frost into October, while the grape harvest fills the wineries and the maples blaze. By November afternoons cool to about 8°C, and the winds off the lake turn raw.",
     },
+    travelerFit: "Visitors come for the beaches and great sand dunes of Sandbanks, wineries and farm stands along the county roads, cycling the Millennium Trail and the restaurants and galleries of Picton and Wellington.",
+    residentFit: "It suits winemakers, farmers, chefs, artists and retirees who want a rural, lake-moderated way of life within reach of Toronto, and who accept rising prices and quiet, windy winters.",
     contrasts: [
       { label: "Kingston (≈60 km E)", note: "At the eastern end of Lake Ontario, Kingston has a similar climate, slightly colder in winter and windier off the lake." },
       { label: "Toronto (≈200 km W)", note: "The big city is a little warmer year-round, thanks to its size and its more southerly position on the lake." },
@@ -215,6 +223,7 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Short, cool and luminous — afternoons near 10°C, nights just above freezing, and nearly twenty-one hours of daylight around the solstice. The tundra blooms with tiny wildflowers, the sea ice breaks up, and the annual sealift ships arrive with a year's supply of goods. Fog and drizzle are common.",
       autumn: "Brief and blustery — September afternoons near 6°C, the tundra turning red and gold, and the first snow arriving by late September. Storms sweep in off the bay, and by November the sea is freezing again.",
     },
+    residentFit: "It suits Inuit families, government workers, teachers, nurses and researchers who are drawn to life in the Arctic and to Inuit culture, and who can manage long, dark winters, high prices and flights as the only link to the south.",
     contrasts: [
       { label: "Pangnirtung (≈300 km N, on Cumberland Sound)", note: "Nestled among towering fjord walls near the Arctic Circle, Pangnirtung is windier and gets more dramatic mountain weather." },
       { label: "Kuujjuaq, Quebec (≈650 km S)", note: "Across Hudson Strait in northern Quebec, Kuujjuaq's summers are a little warmer, with scattered trees at the edge of the forest." },
@@ -241,6 +250,8 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Short, warm and endless — afternoons near 17°C and sometimes reaching 30°C, nights that never get dark, and fifty-six days of continuous sunlight from late May to July. The tundra and willows burst into green, mosquitoes swarm, and the community greenhouse grows vegetables in the long light.",
       autumn: "Fast and fleeting — September afternoons near 8°C, the tundra turning red and gold, and the first snow by late September. The days shorten rapidly, the delta channels freeze, and by late November the sun sets for the last time until January.",
     },
+    travelerFit: "Visitors come for the drive up the Dempster Highway, the midnight sun, the Igloo Church, the Gwich'in and Inuvialuit cultural festivals, the Mackenzie Delta, and now the road on to Tuktoyaktuk and the Arctic Ocean.",
+    residentFit: "It suits Gwich'in and Inuvialuit families, researchers and public servants at home in the Far North, who can handle a month without sunrise in winter, extreme cold and long distances to the south.",
     contrasts: [
       { label: "Tuktoyaktuk (≈140 km N, on the Arctic Ocean)", note: "On the treeless coast, Tuktoyaktuk's summers are much cooler and foggier, and winter winds off the frozen ocean bite even harder." },
       { label: "Dawson City, Yukon (≈760 km S by the Dempster Highway)", note: "Further south in the Yukon's interior, Dawson's summers are warmer and its days shorter, with real nights in midsummer." },
@@ -290,6 +301,7 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and blazing — afternoons near 28°C and often above 35°C, nights cooling to about 12°C in the dry air, and very little rain except for occasional thunderstorms with hail. The river valley offers shade and swimming, and the long, sunny evenings stretch past ten o'clock in June.",
       autumn: "Clear and pleasant — September afternoons near 22°C cooling to about 5°C by November, calm winds and bright, crisp days. The cottonwoods along the river turn gold, and the first snow usually falls in October or November.",
     },
+    residentFit: "It suits retirees, gardeners and families who want the sunniest, warmest summers on the Canadian prairies, affordable housing and a river valley full of trails, and who accept dry heat, wind and cold snaps in winter.",
     history: [
       "In 1907 the British writer Rudyard Kipling, travelling across Canada by train, stopped in Medicine Hat, a small prairie town sitting on top of huge deposits of natural gas that the townspeople burned freely for heat and light; the streetlights were left on all day because it was cheaper than paying someone to turn them off. Kipling was delighted, writing that the place seemed to have all hell for a basement. A few years later, when some residents campaigned to change the town's unusual name to something more businesslike, Kipling wrote them a long letter urging them to keep it, arguing that the name had a history and a magic that no other could match. The townspeople voted to keep Medicine Hat.",
       "The river valley was the winter home of the Blackfoot peoples, and several legends explain the city's name. According to one, a Blackfoot medicine man lost his eagle-feather headdress, or saamis, in the river during a battle with the Cree; another says that a spirit in a hole in the river ice gave a young man a magical headdress in exchange for the sacrifice of his wife. The Canadian Pacific Railway arrived in 1883, and while drilling for water, its crews struck natural gas. Medicine Hat became a city in 1906, and its cheap gas lured industries such as brick works, potteries and glass factories.",
@@ -312,6 +324,7 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Cool and bright — afternoons near 19°C, nights around 10°C, and a mix of fog and brilliant sunshine. Icebergs still drift past into June, humpback and minke whales feed in the bays, and puffins and other seabirds nest on the cliffs. The Fish, Fun and Folk Festival fills the town in July.",
       autumn: "Mild then wild — September afternoons near 16°C, the barrens turning red and gold, and the first big storms arriving in October. The tourists leave, the fishing boats are hauled out, and the first snow comes in November.",
     },
+    travelerFit: "Visitors come to see icebergs drifting down Iceberg Alley in May and June, humpback whales in summer, the Long Point Lighthouse, cod fishing trips and the music and fish and brewis of the outport kitchens.",
     contrasts: [
       { label: "Gander (≈90 km S, inland)", note: "Away from the cold sea, Gander's summers run a few degrees warmer and its winters colder, with less fog." },
       { label: "St. John's (≈250 km SE)", note: "On the Avalon Peninsula, St. John's is even more exposed to Atlantic storms, with more freezing rain and slightly milder winters." },
@@ -339,6 +352,8 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and sunny — afternoons near 30°C and often above 35°C, nights cooling to about 14°C, and almost no rain. The lake fills with boats and swimmers, the beaches with sunbathers, and the vineyards with visitors. Wildfire smoke can turn the sky orange in bad years.",
       autumn: "Harvest and colour — September afternoons near 23°C cooling to about 6°C by November, the grape and apple harvests in full swing, and the cottonwoods and larches turning gold. Valley cloud returns by November.",
     },
+    travelerFit: "Visitors come for Okanagan Lake beaches and boating, more than forty wineries, skiing at Big White in winter, golf, and cycling the Kettle Valley Rail Trail across the trestles of Myra Canyon.",
+    residentFit: "It suits retirees, tech and remote workers and wine-industry people who want hot, dry summers and mild valley winters by a lake, and who can afford high housing prices and live with wildfire smoke in some summers.",
     contrasts: [
       { label: "Big White (≈55 km SE, ≈1,400 m higher)", note: "Up at the ski resort, winters bring deep, dry snow, and the summit often basks in sunshine above the valley's grey inversion." },
       { label: "Vernon (≈45 km N)", note: "At the north end of the lake, Vernon is slightly cooler and snowier in winter, and a little wetter." },
@@ -366,6 +381,8 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Warm, sunny and breezy — afternoons near 25°C, nights around 13°C, and a strong afternoon wind that blows up Howe Sound from the sea, making it one of the best kiteboarding spots in Canada. Climbers swarm the Chief, mountain bikers fill the trails, and smoke from interior wildfires sometimes drifts in.",
       autumn: "Wet and colourful — September stays warm and sunny, but by October the heavy rains return. Salmon run up the rivers, and the eagles begin to arrive. The first snow dusts the peaks by late October.",
     },
+    travelerFit: "Visitors come for climbing the granite of the Stawamus Chief, riding the Sea to Sky Gondola, kitesurfing on Howe Sound, mountain biking and watching thousands of bald eagles gather in winter at Brackendale.",
+    residentFit: "It suits climbers, mountain bikers, kiters and young families who commute or work remotely from Vancouver, and who accept heavy winter rain, rising prices and a fast-growing town.",
     contrasts: [
       { label: "Whistler (≈60 km N, ≈670 m higher)", note: "Up the Sea-to-Sky Highway, Whistler gets deep snow in winter and slightly cooler summers, with less rain in town but much more on the mountains." },
       { label: "Vancouver (≈45 km S)", note: "At the mouth of Howe Sound, Vancouver gets a good deal less rain than Squamish, which sits where storms pile up against the mountains." },
@@ -393,6 +410,8 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Warm days and cold nights — afternoons near 22°C, nights falling to around 6°C, and afternoon thunderstorms that build over the peaks. The lakes thaw to their famous turquoise colours, alpine meadows bloom, and the town fills with visitors from around the world.",
       autumn: "Golden and crisp — September afternoons near 17°C, larches turning gold in the high valleys, and elk bugling in the meadows during the rut. The first snow dusts the peaks by September and reaches the town by late October.",
     },
+    travelerFit: "Visitors come for the turquoise lakes of Lake Louise and Moraine Lake, skiing at Sunshine Village and Lake Louise, the hot springs, the Icefields Parkway and wildlife such as elk and bears in the national park.",
+    residentFit: "It suits park staff, hospitality workers and mountain guides who want to live in a national park, and who meet Parks Canada's rule that residents must work in town, along with high costs and long winters.",
     contrasts: [
       { label: "Lake Louise (≈55 km NW, ≈150 m higher)", note: "Further up the Bow Valley, Lake Louise is colder and snowier, with its famous lake frozen from November to June." },
       { label: "Calgary (≈125 km E, ≈300 m lower)", note: "Out on the foothills, Calgary gets more frequent chinooks and warmer summers, with the mountains on its western horizon." },
@@ -420,6 +439,7 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Mild and pleasant — afternoons near 23°C, nights around 13°C, and frequent fog, especially in early summer. The waterfront boardwalk fills with visitors, tall ships and cruise ships call, and the beaches outside the city draw swimmers on warm days.",
       autumn: "Warm, then stormy — September and early October bring some of the best weather of the year, with afternoons near 20°C, but also the risk of hurricanes and tropical storms, which have struck the city several times. The trees turn colour in October, and the first snow usually falls in November.",
     },
+    residentFit: "It suits students, military families and workers in health care, government and the ocean industries who want a lively, historic port city on the Atlantic, and who accept damp, changeable weather and snowy winters.",
     contrasts: [
       { label: "Peggy's Cove (≈40 km SW, on the open coast)", note: "On the exposed granite coast, Peggy's Cove is foggier and windier, with waves that can sweep the rocks even on calm days." },
       { label: "Truro (≈100 km N, inland)", note: "Away from the open Atlantic, Truro's summers run a few degrees warmer and its winters colder, with more snow." },
@@ -447,6 +467,8 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Warm and breezy — afternoons near 23°C, nights around 14°C, and sea breezes that keep the island comfortable. The beaches on the north shore, with water warmer than most of Atlantic Canada, fill with swimmers, and the theatres stage the musical Anne of Green Gables.",
       autumn: "Mild and mellow — the warm gulf keeps September afternoons near 19°C, the potato harvest fills the fields, and the trees turn colour in October. Storms grow stronger, and the remnants of hurricanes sometimes sweep across the island.",
     },
+    travelerFit: "Visitors come for the red-sand beaches of Prince Edward Island, Green Gables and the world of Anne of Green Gables, lobster suppers and mussels, golf, and the Confederation Trail across the island.",
+    residentFit: "It suits families, retirees and newcomers who want a small, friendly capital surrounded by farms and beaches, and who accept snowy winters, the occasional post-tropical storm and a slower pace of life.",
     contrasts: [
       { label: "Moncton, New Brunswick (≈110 km SW, on the mainland)", note: "Away from the moderating sea, Moncton's summers run a little warmer and its winters colder." },
       { label: "The north shore beaches (≈30 km N)", note: "Along the Gulf of St. Lawrence, the sand dunes and beaches are breezier, with warm water in summer and pack ice in winter." },
@@ -492,6 +514,7 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Short, warm and endless — afternoons near 22°C and sometimes above 30°C, nights cool, and nearly twenty-four hours of daylight around the solstice, when the sun barely dips below the hills. Tourists fill the boardwalks, the saloons and the casino, and miners work the creeks around the clock.",
       autumn: "Brief and brilliant — September afternoons near 12°C, the birches and aspens turning gold, and the first snow arriving by late September. The river ferry stops running in October, and the town settles in for winter.",
     },
+    travelerFit: "Visitors come for the Klondike gold rush streets and saloons, Diamond Tooth Gerties' gambling hall, the Sourtoe Cocktail, the Midnight Dome at midsummer, the drive along the Top of the World Highway and the aurora in autumn.",
     contrasts: [
       { label: "Whitehorse (≈530 km S)", note: "In the rain shadow of the Coast Mountains, Whitehorse has milder winters and slightly cooler summers." },
       { label: "Old Crow (≈450 km N, above the Arctic Circle)", note: "In the Yukon's far north, Old Crow's winters are even colder and longer, with weeks of polar night." },
@@ -519,6 +542,7 @@ export const SITE_HISTORY_CANADA_2: Record<string, SiteHistoryEntry> = {
       summer: "Warm, sunny and stormy — afternoons near 26°C, nights around 13°C, and thunderstorms that roll across the prairie, sometimes with hail and tornadoes. Fields of corn and sunflowers ripen, and the Corn and Apple Festival in August fills the town.",
       autumn: "Crisp and golden — September afternoons near 19°C cooling quickly, the harvest in full swing, and the trees along the escarpment turning colour. The first snow often falls in October.",
     },
+    residentFit: "It suits gardeners, farm families and retirees who want one of the longest growing seasons on the Manitoba prairie, a safe, tidy small town and easy access to Winnipeg, and who accept cold winters and summer storms.",
     contrasts: [
       { label: "Winnipeg (≈100 km N)", note: "In the heart of the flat Red River Valley, Winnipeg has similar summers and slightly colder, longer winters." },
       { label: "Brandon (≈170 km NW)", note: "Further west on the prairie, Brandon is drier, with colder winter nights and a shorter growing season." },

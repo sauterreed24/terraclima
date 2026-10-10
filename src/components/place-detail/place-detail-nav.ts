@@ -99,7 +99,7 @@ const PD_SECTION_DEFS: PdSectionDef[] = [
   { id: PD.whyHere, label: "Why it differs", group: "portrait" },
   { id: PD.deepDives, label: "Field dossier", group: "portrait", optional: "deepDives" },
   { id: PD.contrast, label: "Local contrast", group: "portrait", optional: "contrast" },
-  { id: PD.fieldStory, label: "Field story", group: "portrait" },
+  { id: PD.fieldStory, label: "On the ground", group: "portrait" },
 
   // Live or Visit — resident/traveler fit, lived indicators, settlements,
   // activities, and the consolidated decision lens.

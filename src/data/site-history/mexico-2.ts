@@ -10,6 +10,8 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "The rainy season — afternoons near 32°C, nights around 18°C, and thunderstorms building over the volcano most afternoons, bringing nearly two-thirds of the year's rain. The landscape turns lush green, the air smells of wet earth and cooking agave, and rivers rush through the barrancas.",
       autumn: "Green and gently warm — afternoons near 30°C, the rains tapering through October, and clear, fresh days returning by November, when the fields are at their most beautiful, the blue agave set against green grass and the volcano sharp on the horizon.",
     },
+    travelerFit: "Visitors come for the blue agave fields, distillery tours and tastings at Cuervo, Sauza and smaller houses, the tequila train from Guadalajara and the cobbled streets of a UNESCO-listed landscape.",
+    residentFit: "It suits agave growers, distillery workers and families tied to the tequila trade, and newcomers who want small-town life in a warm, sunny valley within easy reach of Guadalajara.",
     contrasts: [
       { label: "Guadalajara (≈55 km SE, ≈380 m higher)", note: "Up on the Atemajac plateau, Jalisco's capital is a touch milder, with slightly cooler afternoons in the hot spring months." },
       { label: "Volcán de Tequila summit (≈10 km S, ≈1,700 m higher)", note: "Up on the flanks of the volcano, pine and oak forest replaces the agave, and nights are cold enough for frost in winter." },
@@ -62,6 +64,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and stormy — afternoons near 34°C, nights around 23°C, and heavy afternoon thunderstorms, especially in June and September. The wind drops, the humidity rises, and the countryside turns green.",
       autumn: "Wet then windy — September and October bring heavy rains and the risk of tropical storms, before the first northerly gales roar back through the gap in late October, drying the land and blowing away the humidity.",
     },
+    residentFit: "It suits wind-farm technicians and the Zapotec farming families who have lived in the Isthmus for generations, and few others: the near-constant wind, heat and dust make it a hard place to settle for comfort.",
     history: [
       "On 23 January 1907, President Porfirio Díaz rode a train across the Isthmus of Tehuantepec to open a railway that, he hoped, would make Mexico the crossroads of world trade. Here, between the Gulf of Mexico and the Pacific, the continent narrows to about 200 km, and the mountains drop to a pass only about 250 m high. For centuries dreamers had imagined a canal or a railway across it; in the 1880s the American engineer James Eads even proposed carrying ocean-going ships across on a railway. Díaz's railway, built by a British firm, was briefly one of the busiest in the world, carrying sugar from Hawaii and goods between the oceans. Then, in 1914, the Panama Canal opened, and the trade vanished almost overnight.",
       "The Isthmus has been home for centuries to the Zapotec people, who call themselves the Binnizá, and to the Ikoots, or Huave, who fish in the lagoons along the Pacific coast. The Zapotec towns of Juchitán and Tehuantepec are famous for their markets, run by women in brightly embroidered blouses and long skirts, the costume that the painter Frida Kahlo made famous around the world. After the Revolution, agrarian reform gave much of the land to communal farms called ejidos, and the people of the Isthmus have long been known for their fierce independence.",
@@ -151,6 +154,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "The rainy season — afternoons near 27°C, nights around 13°C, and thunderstorms building in the afternoons, sometimes sending water streaming down the cobbled streets. The countryside turns green, and the evenings are fresh and cool.",
       autumn: "Mild and festive — afternoons near 25°C, the rains easing in October, and crisp, clear nights by November. In late September the town celebrates its patron saint, Michael the Archangel, with dancers, processions and fireworks.",
     },
+    residentFit: "It suits artists, writers, retirees and remote workers who want a beautiful, walkable colonial town with a mild, dry climate and a large English-speaking community, and who can afford rising prices.",
     history: [
       "In 1938 a young American named Stirling Dickinson, who had fallen in love with a sleepy, half-ruined colonial town in the hills of Guanajuato, helped found an art school in an old convent there. After the Second World War, hundreds of American veterans came to study at the school under the GI Bill, which paid for their education, and the town filled with painters, writers and dreamers. The muralist David Alfaro Siqueiros taught there, and began a mural that he never finished. Later came the Beats: in February 1968 Neal Cassady, the model for Dean Moriarty in Jack Kerouac's On the Road, was found unconscious beside the railway tracks outside the town after a wedding party, and died the next day. By then San Miguel de Allende had become a magnet for American artists and retirees, and it has never stopped.",
       "The Chichimec and Otomí peoples lived in this region when, in 1542, a Franciscan friar named Juan de San Miguel founded a mission near a spring. In 1555 the town was refounded as San Miguel el Grande, to protect the road along which silver from the mines of Zacatecas was carried to Mexico City, and it grew rich on trade, textiles and ranching, building fine churches and mansions. In 1769 a boy named Ignacio Allende was born in a house on the main square. He became a captain in the Spanish army and one of the leaders of the conspiracy for Mexican independence, and in September 1810 he joined the priest Miguel Hidalgo in launching the revolt. Allende was captured and executed in 1811, and in 1826 the town was renamed San Miguel de Allende in his honour.",
@@ -174,6 +178,8 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Scorching — afternoons near 37°C, nights around 21°C, and the occasional thunderstorm building over the mountains. The gypsum dunes glare white in the sun, and the hot season is best spent indoors at midday, venturing out in the early morning and evening.",
       autumn: "Warm and easing — afternoons near 30°C in September, falling to about 25°C by November, with occasional storms bringing some of the year's scarce rain and turning the desert briefly green.",
     },
+    travelerFit: "Visitors come for the turquoise pools and springs, the white gypsum dunes, the stromatolites and endemic fish and turtles, the wineries of the town, and the birthplace of Venustiano Carranza.",
+    residentFit: "It suits ranchers, conservationists and scientists drawn by one of the strangest ecosystems on earth, and who can live with fierce summer heat and the ongoing struggle over the valley's water.",
     contrasts: [
       { label: "Monclova (≈65 km E, ≈150 m lower)", note: "Beyond the mountains, the steel city of Monclova has a similarly hot desert climate, but without the springs and pools that make Cuatro Ciénegas an oasis." },
       { label: "Saltillo (≈200 km SE, ≈850 m higher)", note: "Up on the high desert plateau, Saltillo is several degrees cooler, especially on summer afternoons." },
@@ -201,6 +207,8 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Hot by day, cool by night — afternoons near 31°C, nights around 17°C, and occasional thunderstorms building over the sierras. The grapes ripen in the heat, and the harvest begins in August, celebrated with the town's grape fair.",
       autumn: "Warm and gradually cooling — afternoons near 27°C, September bringing a little of the year's rain, and clear, crisp nights by November, when the vineyards turn gold.",
     },
+    travelerFit: "Visitors come for Casa Madero, the oldest winery in the Americas, the August grape fair, the spring-fed pools, the birthplace of Francisco Madero and the walnut sweets sold around the plaza.",
+    residentFit: "It suits winemakers, growers and families who want a quiet, green oasis in the desert with mild winters and dry air, and who accept hot summers and a small-town pace.",
     contrasts: [
       { label: "Saltillo (≈120 km E, ≈80 m higher)", note: "The state capital, on the high desert to the east, is a touch cooler and drier, without Parras's springs and orchards." },
       { label: "Torreón (≈120 km W, ≈400 m lower)", note: "Down in the cotton country of the Comarca Lagunera, Torreón is noticeably hotter in summer, one of the hottest cities in northern Mexico." },
@@ -227,6 +235,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Cool and wet — afternoons near 22°C, nights around 9°C, and heavy rain most afternoons, often with hail. The valley turns green, the maize grows tall, and the city sees more grey skies than sunshine.",
       autumn: "Fresh and gradually drying — afternoons near 22°C, the rains easing in October, and cold, clear nights returning by November, when the first frosts touch the fields.",
     },
+    residentFit: "It suits families, factory and government workers who want a cool, high-altitude city near Mexico City without its prices, and who are content with cold nights, frosty winters and summer rains.",
     history: [
       "In the 1470s the Aztec emperor Axayácatl led his armies over the mountains from Tenochtitlan into the Toluca valley, a land of lakes and maize fields shared by the Matlatzinca, Otomí, Mazahua and Nahua peoples. At the town of Xiquipilco an Otomí warrior wounded the emperor in the leg, and he barely escaped with his life. But the Aztecs conquered the valley, and its people were forced to pay tribute in maize, beans and warriors. Flushed with victory, Axayácatl then marched west against the Purépecha empire, and suffered one of the worst defeats in Aztec history. The Matlatzinca capital, Calixtlahuaca, with its circular temple to the wind god Ehécatl, still stands on a hill just outside Toluca.",
       "After the Spanish conquest, the Toluca valley became part of the vast estates granted to Hernán Cortés by the king, and Franciscan friars built churches and converted its people in the 1520s. The town grew into a market centre and granary for Mexico City, and in 1830 it became the capital of the State of Mexico. In 1861 it added the name of the liberal politician Miguel Lerdo de Tejada, becoming Toluca de Lerdo. Its long arcaded streets, the portales, built in the nineteenth century, still shelter shops selling local sweets, cheeses and the famous chorizo of Toluca.",
@@ -250,6 +259,8 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Blistering — afternoons near 36°C, nights around 22°C, and spells of humid heat that push the thermometer past 40°C. The mountains trap the haze, the air conditioners hum, and occasional thunderstorms bring brief relief.",
       autumn: "Hot then wet — September is the rainiest month, when tropical storms and hurricanes from the Gulf can unleash floods down the Santa Catarina River, before the weather cools to about 25°C by November.",
     },
+    travelerFit: "Visitors come for the dramatic mountains around the city — Cerro de la Silla, the Huasteca canyon, the García caves and Cola de Caballo waterfall — Parque Fundidora, cabrito and the city's football rivalries.",
+    residentFit: "It suits professionals, engineers and families drawn by one of the strongest job markets in Mexico and excellent universities, and who can handle long, blistering summers, smog and traffic.",
     contrasts: [
       { label: "Saltillo (≈85 km W, ≈1,050 m higher)", note: "Up on the high desert beyond the mountains, Saltillo is several degrees cooler on summer afternoons, with drier air and cooler nights." },
       { label: "Chipinque (≈10 km S, ≈800 m higher)", note: "Up on the forested slopes of the Sierra Madre above the city, the park of Chipinque is cooler and greener, a refuge from the heat of the basin." },
@@ -277,6 +288,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Infernal — afternoons near 40°C, nights around 25°C, and June the hottest and driest month. From July the monsoon brings towering thunderstorms, dust storms and humid heat. Life moves indoors to air-conditioned rooms, and the streets empty at midday.",
       autumn: "Hot then gentle — September is still blazing, with the last of the monsoon storms and the risk of tropical storms from the Pacific, but by November afternoons ease to about 30°C, and the desert breathes again.",
     },
+    residentFit: "It suits families, engineers and factory workers drawn by jobs at the Ford plant and other industries, and people who love dry heat and winter sunshine, but the scorching summers are a real test.",
     contrasts: [
       { label: "Bahía de Kino (≈105 km W, on the Gulf of California)", note: "On the coast, sea breezes take the edge off the summer heat, although the humidity is higher; it is Hermosillo's favourite beach escape." },
       { label: "Phoenix, Arizona (≈500 km N)", note: "Across the border in the same desert, Phoenix has similarly scorching summers but noticeably colder winter nights." },
@@ -304,6 +316,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Hot, sticky and stormy — afternoons near 34°C, nights around 23°C, and the rainy season in full swing from late June, with thunderstorms most evenings that drench the streets and turn the jungle on the hills a vivid green. The humidity is oppressive, and the town is quiet.",
       autumn: "Wet then wonderful — September is the rainiest month and the peak of the hurricane season, before the rains end in October and the town greens, dries and fills with visitors again by November.",
     },
+    travelerFit: "Visitors come for the malecón and its sculptures, the beaches of the Bay of Banderas, humpback whales in winter, the Zona Romántica, boat trips to Los Arcos and Yelapa, and the jungle-covered mountains behind town.",
     contrasts: [
       { label: "San Sebastián del Oeste (≈40 km NE, ≈1,400 m higher)", note: "Up in the pine-clad Sierra Madre, the old silver-mining village is cool and misty, with chilly nights even in summer." },
       { label: "Guadalajara (≈200 km E, ≈1,560 m higher)", note: "Up on the central plateau, Jalisco's capital has a mild, dry highland climate, with cool nights and none of the coast's humidity." },
@@ -331,6 +344,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and stormy — afternoons near 35°C, nights barely cooling below 25°C, and thunderstorms rolling in from July, bringing most of the year's rain. The sea is as warm as a bath, and the air is sticky and heavy.",
       autumn: "Steamy then easing — September and October are hot and humid, with the greatest risk of hurricanes, before the weather turns drier and fresher in November, with afternoons near 32°C.",
     },
+    travelerFit: "Visitors come for the restored historic centre and the Ángela Peralta theatre, one of the world's biggest carnivals, fresh shrimp and aguachile, the cliff divers, the lighthouse climb and the long beaches of the Golden Zone.",
     contrasts: [
       { label: "Durango (≈180 km NE, ≈1,890 m higher)", note: "Up over the Sierra Madre on the high plateau, Durango has a cool, dry climate with frosty winter nights, a world away from the steamy coast." },
       { label: "Culiacán (≈200 km NW, inland)", note: "The state capital, inland on the coastal plain, is noticeably hotter in summer, without Mazatlán's sea breeze." },
@@ -358,6 +372,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and stormy — afternoons near 35°C, nights around 23°C, and thunderstorms most afternoons, bringing torrential downpours that flood the streets. The air is heavy and the jungle inland lush.",
       autumn: "Wet and storm-watched — September and October bring heavy rain and the greatest risk of hurricanes from the Gulf or the Caribbean, before the first nortes arrive in November and cool the air.",
     },
+    residentFit: "It suits families, history lovers and remote workers who want a safe, quiet, walled colonial city on the Gulf with a low cost of living, and who accept heavy heat, humidity and hurricane season.",
     contrasts: [
       { label: "Mérida (≈160 km NE, inland)", note: "The capital of Yucatán, inland on the flat limestone plain, is a touch drier, with a little less of Campeche's sea breeze on summer afternoons." },
       { label: "Ciudad del Carmen (≈190 km SW, on the Gulf)", note: "Further down the coast, the oil town on its island in the Laguna de Términos is wetter and more humid, surrounded by mangroves." },
@@ -385,6 +400,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "Hot, sticky and very wet — afternoons near 33°C, nights around 22°C, and thunderstorms nearly every afternoon, sometimes torrential. The rainforest is at its loudest and lushest, and the waterfalls nearby roar.",
       autumn: "The wettest time of year — September and October bring relentless rains, flooding rivers and the occasional tropical storm, before the nortes take over in November with cooler, drizzly days.",
     },
+    travelerFit: "Visitors come for the Maya ruins, among the most beautiful in Mexico, walks in the rainforest of the national park, howler monkeys at dawn, and the waterfalls of Misol-Ha and Agua Azul.",
     contrasts: [
       { label: "San Cristóbal de las Casas (≈100 km S, ≈2,050 m higher)", note: "Up in the Chiapas highlands, a few hours' drive away, the air is cool, nights are chilly and the jungle gives way to pine forest." },
       { label: "Villahermosa (≈110 km NW, on the Tabasco plain)", note: "Down on the flat, swampy lowland, the capital of Tabasco is even hotter and more humid, without the forested hills." },
@@ -412,6 +428,8 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "The rainy season — afternoons near 28°C, nights around 15°C, and heavy thunderstorms most afternoons, sending water cascading down the steep lanes. The hills turn green, and the air is fresh in the evenings.",
       autumn: "Green and mild — afternoons near 27°C, the rains easing in October, and clear, pleasant days returning by November, when the town celebrates the Day of the Dead and, soon after, the curious festival of the jumil.",
     },
+    travelerFit: "Visitors come for the silver shops and workshops, the Baroque church of Santa Prisca, the steep cobbled lanes and white Beetle taxis, the National Silver Fair and the cable car to Monte Taxco.",
+    residentFit: "It suits silversmiths, artisans and retirees who love a beautiful hill town with a mild climate, and who accept steep streets, crowded weekends and the security concerns that affect parts of Guerrero.",
     contrasts: [
       { label: "Iguala (≈25 km S, ≈1,050 m lower)", note: "Down in the hot valleys toward the Balsas River, Iguala is several degrees hotter, with sweltering spring afternoons." },
       { label: "Cuernavaca (≈55 km NE, ≈300 m lower)", note: "The city of eternal spring has a similar mild climate, a little warmer, and the same summer rains." },
@@ -439,6 +457,8 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "The rainy season — afternoons near 25°C, nights around 11°C, and thunderstorms most afternoons, often with hail. The countryside is green, and the evenings cool and fresh. In August the first chiles en nogada appear in the restaurants.",
       autumn: "Mild and drying — afternoons near 24°C, the rains easing in October, and clear, cool days returning by November, when the city's markets fill with marigolds and sugar skulls for the Day of the Dead.",
     },
+    travelerFit: "Visitors come for the Talavera-tiled churches and mansions, the gilded Rosary Chapel, mole poblano and chiles en nogada, the Great Pyramid of Cholula next door and views of the smoking Popocatépetl.",
+    residentFit: "It suits students, professionals, factory workers and families who want a big, historic, affordable city with a cool highland climate, and who accept smog, traffic and the occasional fall of volcanic ash.",
     contrasts: [
       { label: "Mexico City (≈105 km NW, ≈90 m higher)", note: "Over the volcanoes in the Valley of Mexico, the capital has a very similar highland climate, with more smog and a larger urban heat island." },
       { label: "Atlixco (≈30 km SW, ≈300 m lower)", note: "In a warmer valley at the foot of Popocatépetl, Atlixco has a milder climate, famous for its nurseries and flower gardens." },
@@ -508,6 +528,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
       summer: "The monsoon season — afternoons near 29°C, nights around 14°C, and thunderstorms building over the sierra most afternoons from July, bringing most of the year's rain. The plains turn green, and the air is fresh after the storms.",
       autumn: "Mild and clear — afternoons near 26°C, the rains ending in September and October, and crisp, cool nights returning by November, when the first frosts arrive.",
     },
+    travelerFit: "Visitors come for the Hollywood western sets on the plains, the cathedral and colonial centre, the pine forests of the Sierra Madre and the spectacular highway and Baluarte Bridge to Mazatlán.",
     contrasts: [
       { label: "Mazatlán (≈180 km SW, ≈1,880 m lower)", note: "Over the Sierra Madre on the Pacific coast, Mazatlán is hot and humid, with tropical warmth all year." },
       { label: "El Salto (≈80 km W, ≈700 m higher)", note: "Up in the pine forests of the Sierra Madre, the logging town of El Salto is much colder, with hard frosts and occasional heavy snow." },

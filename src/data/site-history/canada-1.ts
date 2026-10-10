@@ -208,6 +208,7 @@ export const SITE_HISTORY_CANADA_1: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and sunny — afternoons near 29°C in July and often above 35°C, nights cooling to about 14°C, and very little rain. The lake warms for swimming, cherries and apricots ripen in the orchards, and the vineyards on the benches grow heavy with grapes. Wildfire smoke is the season's great risk.",
       autumn: "Harvest season — September afternoons near 23°C, cooling to about 6°C by November, apples and grapes coming in from the orchards and vineyards, and the hills turning gold. The first valley fog of winter creeps in by November.",
     },
+    travelerFit: "Visitors come for the wineries and fruit stands of the Bottleneck Drive, swimming in Okanagan Lake, the steam train of the Kettle Valley Railway and hot, dry summer days that feel more Californian than Canadian.",
     contrasts: [
       { label: "Penticton (≈15 km S)", note: "At the south end of Okanagan Lake, Penticton is slightly warmer and drier, with the hot South Okanagan just beyond." },
       { label: "Osoyoos (≈60 km S)", note: "At the bottom of the valley, in Canada's pocket desert, summer afternoons run a few degrees hotter and the land is far drier." },
@@ -286,6 +287,7 @@ export const SITE_HISTORY_CANADA_1: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and sunny — afternoons near 30°C and often well above 35°C, nights cooling to about 14°C, and very little rain. Thousands of people float down the channel between the lakes on inner tubes, the beaches are packed, and peaches ripen for the August peach festival. Wildfire smoke can fill the valley.",
       autumn: "Harvest season — September afternoons near 23°C, warm enough for the beach, as grapes are picked on the Naramata Bench and the fall wine festival fills the valley in early October. By November afternoons cool to about 7°C, and the first valley fog and grey skies of winter settle in.",
     },
+    travelerFit: "Visitors come for the beaches on two lakes, floating the channel between them on inner tubes, the wineries of the Naramata Bench, the Ironman-style triathlons and rock climbing at Skaha Bluffs.",
     contrasts: [
       { label: "Apex Mountain (≈20 km W, ≈1,500 m higher)", note: "Up at the ski resort, winters are snowy and sunny above the valley's inversion clouds, and summers run far cooler." },
       { label: "Osoyoos (≈50 km S)", note: "At the southern end of the valley, in Canada's pocket desert, summers are hotter and drier still." },
@@ -390,6 +392,7 @@ export const SITE_HISTORY_CANADA_1: Record<string, SiteHistoryEntry> = {
       summer: "Cool, misty and calm — afternoons near 18°C, nights around 11°C, and fog that often rolls in off the cold sea in the mornings. Sunny afternoons bring hikers to the trails and surfers to the beaches. Rain eases off, and salmon fishing boats head out from the harbour.",
       autumn: "Increasingly stormy — afternoons near 14°C, with the rains returning in earnest by October and the first big storms of the season arriving. The salmon return to the rivers, and black bears forage along the shores.",
     },
+    travelerFit: "Visitors come for surfing the long beaches of Pacific Rim National Park, winter storm watching from cosy lodges, the Wild Pacific Trail, whale and bear tours and the old-growth rainforest of Clayoquot Sound.",
     contrasts: [
       { label: "Port Alberni (≈80 km E, inland)", note: "At the head of a long inlet, Port Alberni's summers run about 8°C warmer and much less foggy." },
       { label: "Victoria (≈170 km SE)", note: "In the rain shadow at the southern tip of Vancouver Island, Victoria gets only about a quarter of Ucluelet's rain." },
@@ -417,6 +420,8 @@ export const SITE_HISTORY_CANADA_1: Record<string, SiteHistoryEntry> = {
       summer: "Warm, dry and sunny — afternoons near 23°C, nights around 13°C, and long rainless weeks that make this one of the sunniest corners of the coast. At low tide the beach stretches far out over warm sand flats, and the water in the shallows warms enough for swimming.",
       autumn: "Mellow then wet — September stays warm and dry, with afternoons near 19°C, but by late October the rains return in earnest. Salmon run up the Big and Little Qualicum rivers, drawing anglers and bears.",
     },
+    travelerFit: "Visitors come for the long sandy beaches at low tide, the ancient Douglas firs of Cathedral Grove, Milner Gardens, the Horne Lake caves and the drive across Vancouver Island to Tofino and Pacific Rim.",
+    residentFit: "It suits retirees and gardeners who want some of the mildest winters in Canada, a quiet seaside town and easy access to nature, and who accept grey, rainy winter months and a slower pace of life.",
     contrasts: [
       { label: "Port Alberni (≈45 km W, over the mountains)", note: "On the other side of the island's spine, Port Alberni gets far more rain in winter and hotter afternoons in summer." },
       { label: "Tofino (≈120 km W, on the open Pacific)", note: "On the outer coast, Tofino gets almost three times Qualicum's rain, with cooler, foggier summers." },
@@ -468,6 +473,7 @@ export const SITE_HISTORY_CANADA_1: Record<string, SiteHistoryEntry> = {
       summer: "Warm, sunny and pleasant — afternoons near 24°C, nights cooling to about 9°C, and occasional thunderstorms with hail rolling off the mountains. The foothills are green, and visitors head for Waterton Lakes National Park, a short drive to the south.",
       autumn: "Crisp and golden — September afternoons near 19°C, aspens turning gold in the foothills, and calm, clear days interrupted by the first snowfalls and strong winds by October.",
     },
+    travelerFit: "Visitors come for Waterton Lakes National Park, where the prairie meets the Rockies, the wind farms on the ridges, fishing and skiing at Castle Mountain, and the Frank Slide on the road into the Crowsnest Pass.",
     contrasts: [
       { label: "Waterton Lakes (≈45 km SW, in the mountains)", note: "Where the Rockies rise straight from the prairie, Waterton gets much more precipitation and even fiercer winds." },
       { label: "Lethbridge (≈100 km E, on the plains)", note: "Further out on the prairie, Lethbridge is drier and slightly warmer in summer, but shares the chinooks." },
@@ -495,6 +501,8 @@ export const SITE_HISTORY_CANADA_1: Record<string, SiteHistoryEntry> = {
       summer: "Cool and green — afternoons near 22°C, nights around 9°C, and thunderstorms that build over the hills in the afternoon. The hills are noticeably cooler and greener than the hot prairie below, and campers and cabin-dwellers come for the lakes, the forests and the stars.",
       autumn: "Crisp and golden — September afternoons near 16°C, aspens turning gold among the dark pines, and elk bugling in the meadows. The first snow often falls in October.",
     },
+    travelerFit: "Visitors come for a forested plateau rising out of the prairie, the dark-sky preserve and its star parties, Fort Walsh and the history of the North-West Mounted Police, and lodgepole pine and wildlife far from the mountains.",
+    residentFit: "It suits ranching families and park workers who love open country and big skies, and who are content with a remote, quiet life and cold prairie winters softened by the occasional chinook.",
     history: [
       "On 1 June 1873, a group of American wolf hunters, who poisoned wolves for their pelts, rode into the Cypress Hills looking for horses they believed had been stolen. They came upon a camp of Nakoda, or Assiniboine, people near two whisky trading posts, and after a dispute fuelled by alcohol, the wolfers opened fire. At least twenty Nakoda men, women and children were killed. When news of the Cypress Hills Massacre reached Ottawa, it helped spur the government to create the North-West Mounted Police, and in 1875 the Mounties built Fort Walsh in the hills to keep order. The fort has been reconstructed as a national historic site.",
       "The Cypress Hills have been used by people for at least 7,000 years. In the nineteenth century they were a wintering ground for the Nakoda, Cree, Blackfoot and Métis, a wooded refuge with water, firewood and game when the plains were frozen and windswept. The Métis called them the Montagne de Cyprès, mistaking the lodgepole pines for jack pines, which they called cyprès. After the Battle of the Little Bighorn in 1876, the Lakota leader Sitting Bull and thousands of his followers fled north into Canada, and the Mounties at Fort Walsh and nearby posts dealt with them until they returned to the United States in 1881.",

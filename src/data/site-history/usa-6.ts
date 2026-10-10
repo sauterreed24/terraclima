@@ -77,6 +77,8 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Hot days, cool nights — afternoons near 30°C on the valley floor and much hotter at the northern end, nights cooling to about 13°C as fog and breezes from San Pablo Bay push up the valley. Almost no rain falls from May to October. The big daily swing in temperature is what gives Napa's grapes their balance of ripeness and acidity.",
       autumn: "Harvest season — September afternoons near 30°C, then cooling to about 20°C by November, with the vineyards turning gold and red after the grapes are picked. It is also the season of hot, dry offshore winds that can drive wildfires through the hills, and the first rains usually arrive in late October or November.",
     },
+    travelerFit: "Visitors come for wine tasting along Highway 29 and the Silverado Trail, hot-air balloon flights over the vineyards at dawn, world-famous restaurants, the hot springs of Calistoga and harvest season in autumn.",
+    residentFit: "It suits winemakers, vineyard workers, chefs and retirees who love the Mediterranean climate and the rhythm of the harvest, and who can afford high prices and live with wildfire smoke and the risk of fire.",
     contrasts: [
       { label: "Calistoga (≈40 km N, at the head of the valley)", note: "Further from the bay's cooling influence, summer afternoons run several degrees hotter, and winter nights are frostier." },
       { label: "Carneros & San Pablo Bay (≈10 km S)", note: "On the bay's edge, fog and breezes keep summers much cooler — ideal for Pinot Noir and Chardonnay." },
@@ -104,6 +106,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Brutally hot — afternoons near 41°C and often well above 45°C, nights that barely fall below 25°C, and sunshine every day. Locals stay indoors or head up the aerial tramway to the cool forests on the mountain above. The occasional monsoon surge brings humidity and a dramatic thunderstorm.",
       autumn: "Slowly cooling — September is still very hot, but by November afternoons ease to about 26°C, and the snowbirds return. The desert air is clear, and the town comes back to life after the summer lull.",
     },
+    travelerFit: "Visitors come for winter sun, mid-century modern architecture and Modernism Week, poolside resorts, the aerial tramway up Mount San Jacinto, the Indian Canyons and day trips to Joshua Tree National Park.",
     contrasts: [
       { label: "Mount San Jacinto tramway top (≈10 km W, ≈2,450 m higher)", note: "At the top of the aerial tramway, temperatures run about 20°C cooler, and winter brings deep snow." },
       { label: "Indio (≈40 km SE, ≈150 m lower)", note: "Further down the Coachella Valley, summer afternoons run a couple of degrees hotter still." },
@@ -131,6 +134,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Long, hot and humid — afternoons near 36°C and often above 38°C, nights barely falling below 23°C, and heat that lasts from June into September. Barton Springs pool, fed by cool spring water, and the lakes are the escapes, and at dusk crowds gather on the Congress Avenue Bridge to watch the bats emerge.",
       autumn: "Warm and slowly cooling — September is still hot, but by November afternoons ease to about 23°C, and the city enjoys some of its most pleasant weather. Autumn is also the season of heavy rains from Gulf storms, which can bring dangerous floods.",
     },
+    travelerFit: "Visitors come for live music on Sixth Street and South Congress, the South by Southwest festival, barbecue and tacos, swimming at Barton Springs, and the bats emerging from the Congress Avenue Bridge on summer evenings.",
     contrasts: [
       { label: "Fredericksburg & the Hill Country (≈110 km W, ≈350 m higher)", note: "Up on the Edwards Plateau, the air is drier, nights are cooler, and winter frosts are more frequent." },
       { label: "Houston (≈240 km E)", note: "On the coastal plain, the air is more humid and the summer nights stickier, with more rain and a greater hurricane risk." },
@@ -158,6 +162,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and thunderous — afternoons near 33°C, nights around 24°C, and towering thunderstorms that build almost every afternoon, dumping much of the year's rain in torrential bursts. Mosquitoes thrive, the Gulf is as warm as bathwater, and the town is quiet, with many winter residents gone north.",
       autumn: "Hurricane season at its peak, then the return of the dry season — August through October bring the greatest risk of tropical storms and the heaviest rains, but by November the humidity drops, afternoons ease to about 28°C, and the snowbirds begin to return.",
     },
+    travelerFit: "Visitors come for Gulf beaches and sunsets, the boutiques of Fifth Avenue South, golf, boating among the Ten Thousand Islands and airboat rides and wildlife in the Everglades and Big Cypress swamps.",
     contrasts: [
       { label: "Immokalee (≈55 km NE, inland)", note: "Away from the Gulf breeze, summer afternoons run a little hotter, and on clear winter nights the inland farm country can drop close to freezing." },
       { label: "Miami (≈170 km E, Atlantic side)", note: "Across the Everglades, Miami's winters are slightly warmer and its summers similar, with Atlantic trade winds instead of Gulf breezes." },
@@ -185,6 +190,8 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Warm, breezy and comfortable — afternoons near 26°C, nights around 16°C, and lake breezes that keep the city cooler than most of the Northeast. Sunny days are common, and the waterfront, parks and festivals are full. Buffalo is one of the few big American cities that has never recorded 38°C.",
       autumn: "Long and lovely — the warm lake keeps September afternoons near 23°C, with crisp, clear days and brilliant colour by mid-October. In November the cold winds return, and the first lake-effect snow can arrive in a sudden burst.",
     },
+    travelerFit: "Visitors come for Niagara Falls half an hour away, Frank Lloyd Wright's Darwin Martin House, the Olmsted parks, chicken wings at their birthplace, Bills football and the revived waterfront at Canalside.",
+    residentFit: "It suits families and city people who want an affordable, friendly city with great architecture and a strong community spirit, and who embrace lake-effect snowstorms, grey winters and a short, glorious summer.",
     contrasts: [
       { label: "The Southtowns (≈20 km SE)", note: "The suburbs south of the city, like Orchard Park, often catch the heaviest lake-effect bands; in November 2014 some got nearly 2 m of snow in three days while downtown got little." },
       { label: "Toronto (≈90 km NW, across Lake Ontario)", note: "On the north shore of Lake Ontario, Toronto gets far less lake-effect snow, though its winters are similarly cold." },
@@ -212,6 +219,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and bright — afternoons near 31°C, often well above 35°C, but nights cool to around 14°C in the dry air. Afternoon thunderstorms sometimes bring hail and violent wind. Irrigated fields of sugar beets, corn and beans fill the valley, green against the brown hills.",
       autumn: "Clear and crisp — September afternoons near 26°C easing to about 11°C by November, cool nights and calm, sunny days. The sugar-beet harvest fills the trucks and factories, and the first snow can fall in October.",
     },
+    residentFit: "It suits farm and ranch families, healthcare and remote workers who want a small, affordable town on the high plains with dry, sunny weather, and who can take wind, hail and cold winters.",
     contrasts: [
       { label: "Cheyenne, WY (≈130 km SW, ≈650 m higher)", note: "Up on the high plains near the Rockies, Cheyenne is windier and cooler, with more snow." },
       { label: "North Platte (≈250 km E, ≈350 m lower)", note: "Further down the river, North Platte's summers are a little more humid and its year brings more rain." },
@@ -238,6 +246,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Hot, steamy and very wet — afternoons near 33°C, nights around 23°C, and thunderstorms nearly every afternoon that make Mobile one of the rainiest cities in the United States. The bay breeze helps a little near the water. Hurricane season looms, and people take refuge in the shade of the live oaks and on the beaches of Dauphin Island.",
       autumn: "Hurricane season, then sweet relief — September is hot and humid, with afternoons near 31°C and the greatest risk of tropical storms from the Gulf, but by late October the humidity breaks and the city enjoys clear, warm days and cool nights, with afternoons near 22°C by November.",
     },
+    travelerFit: "Visitors come for the oldest Mardi Gras in the United States, the battleship USS Alabama, antebellum streets and azalea gardens, Gulf seafood and boat trips into the vast Mobile-Tensaw Delta.",
     contrasts: [
       { label: "Dauphin Island (≈50 km S, at the mouth of the bay)", note: "Out on the barrier island, the Gulf breeze keeps summer afternoons a couple of degrees cooler, but the island is fully exposed to hurricanes." },
       { label: "Montgomery (≈250 km NE)", note: "Inland, summer afternoons run hotter, winters are colder, and the year brings noticeably less rain." },
@@ -265,6 +274,8 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and stormy — afternoons near 33°C, nights around 23°C, and almost daily afternoon thunderstorms that cool the streets briefly. The sea breeze helps near Tybee Island. People slow down, and the shade of the oaks and the river breeze are precious.",
       autumn: "Warm then lovely — August and September are the peak of hurricane season, but by October the humidity drops, afternoons ease to about 26°C, and the city enjoys some of its most comfortable weather. The marshes turn gold, and the oak leaves stay green.",
     },
+    travelerFit: "Visitors come for the leafy squares of the historic district, Spanish moss and antebellum mansions, the riverfront, ghost tours, Low Country cooking, the art school's galleries and the beaches of Tybee Island.",
+    residentFit: "It suits artists, students, retirees and port and hospitality workers who love the history and the mild winters, and who can manage hot, humid summers, hurricanes and rising flood risk.",
     contrasts: [
       { label: "Tybee Island (≈25 km E)", note: "Out on the beach, ocean breezes keep summer afternoons a few degrees cooler, but the island takes the full force of Atlantic storms." },
       { label: "Augusta (≈200 km NW, inland)", note: "Up the Savannah River at the fall line, summer afternoons run a couple of degrees hotter, and winter nights are colder." },
@@ -292,6 +303,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Hot and humid — afternoons near 30°C, nights around 19°C, and afternoon thunderstorms that roll across the Piedmont. Heat waves can push temperatures above 35°C. The shady Brandywine Park and the riverfront are the city's cool retreats.",
       autumn: "Mild and colourful — September afternoons near 26°C easing to about 13°C by November, with crisp, clear days and the forests of the Brandywine Valley turning red and gold by late October.",
     },
+    travelerFit: "Visitors come for the du Pont estates and gardens of the Brandywine Valley — Winterthur, Nemours, Hagley and nearby Longwood — the Delaware Art Museum and the riverfront, within easy reach of Philadelphia.",
     contrasts: [
       { label: "Philadelphia (≈45 km NE)", note: "The bigger city up the Delaware has a nearly identical climate, with slightly warmer nights from its larger urban heat island." },
       { label: "Lewes & the Delaware beaches (≈150 km S)", note: "Down on the coast, ocean and bay breezes keep summer afternoons a couple of degrees cooler, and winters are milder." },
@@ -319,6 +331,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Warm and breezy — afternoons near 26°C, nights around 17°C, and sea breezes that keep the shore comfortable when inland towns swelter. Sailboats fill the river and the sound, and visitors crowd the seaport, the aquarium and the pizza parlour made famous by a film.",
       autumn: "Mild and golden — the sea holds its warmth, so September afternoons stay near 23°C, foliage turns colour by late October, and the hurricane season occasionally sends a storm up the coast.",
     },
+    travelerFit: "Visitors come for Mystic Seaport Museum and its historic ships, the Mystic Aquarium, the drawbridge in the village, sailing on the sound, oysters and pizza made famous by the film Mystic Pizza.",
     contrasts: [
       { label: "Hartford (≈75 km NW, inland)", note: "Up the Connecticut River valley, summer afternoons run a few degrees hotter, and winters are colder and snowier." },
       { label: "Block Island (≈30 km SE, offshore)", note: "Out in the open Atlantic, Block Island's summers are a little cooler and its winters milder still." },
@@ -346,6 +359,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Warm and green — afternoons near 27°C, nights around 15°C, and afternoon thunderstorms. The town is quieter with most students gone, and the summer arts festival fills the streets in July.",
       autumn: "Crisp and glorious — September afternoons near 23°C cooling to about 10°C by November, the ridges ablaze with red and orange by mid-October, and football weekends that swell the town with more than a hundred thousand fans.",
     },
+    travelerFit: "Visitors come for Penn State football at Beaver Stadium, the Arts Festival in July, hiking and mountain biking in Rothrock State Forest, and the fishing streams and fall colour of the Nittany Valley.",
     contrasts: [
       { label: "Harrisburg (≈110 km SE, in the Susquehanna valley)", note: "Lower and further from the mountains, Harrisburg has warmer summers, milder winters and less snow." },
       { label: "Pittsburgh (≈180 km W)", note: "West of the Alleghenies, Pittsburgh is cloudier and gets more frequent light snow, with a similar overall climate." },
@@ -373,6 +387,8 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Long, hot and humid — afternoons near 33°C and often above 37°C, nights around 21°C, and humidity that makes the heat index soar. Afternoon thunderstorms bring brief relief, and people head for the lakes and rivers or stay in the air conditioning.",
       autumn: "Warm and slow to cool — September is still hot, but by November afternoons ease to about 20°C, the humidity drops, and the leaves turn colour late in the season. Football Saturdays at the university fill the city.",
     },
+    travelerFit: "Visitors come for Congaree National Park, with its giant old-growth trees and synchronous fireflies, University of South Carolina football, the State House, and kayaking and tubing on the city's three rivers.",
+    residentFit: "It suits government and university workers, military families from Fort Jackson and young families who want an affordable Southern city, and who can handle long, sweltering summers.",
     contrasts: [
       { label: "Charleston (≈170 km SE, on the coast)", note: "Down on the coast, sea breezes keep summer afternoons a couple of degrees cooler and winter nights milder." },
       { label: "Greenville (≈150 km NW, ≈220 m higher)", note: "Up in the Piedmont near the mountains, Greenville is a little cooler in summer and gets more winter snow." },
@@ -400,6 +416,8 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and thundery — afternoons near 29°C and often above 32°C, nights around 17°C, and humidity rising off the endless cornfields. Thunderstorm complexes roll across the plains at night with spectacular lightning. The Iowa State Fair fills the city in August.",
       autumn: "Crisp and golden — September afternoons near 25°C cooling to about 10°C by November, harvest time on the farms, and trees turning colour along the rivers by mid-October. The first snow usually falls in November.",
     },
+    travelerFit: "Visitors come for the Iowa State Fair and its butter cow, the sculpture park and art museum, the Saturday farmers' market, and hundreds of kilometres of bike trails, including the famous High Trestle Trail.",
+    residentFit: "It suits young families and insurance, finance and agriculture professionals who want an affordable, friendly city with a short commute, and who accept cold winters, humid summers and the odd tornado warning.",
     contrasts: [
       { label: "Minneapolis (≈380 km N)", note: "Further north, Minneapolis has colder, longer winters and slightly cooler summers." },
       { label: "Kansas City (≈280 km SW)", note: "To the south, Kansas City's winters are a little milder, and its summers a little hotter and more humid." },
@@ -454,6 +472,8 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Cool, green and endless — afternoons near 19°C, nights around 10°C, and almost twenty hours of daylight in June. Salmon run in Ship Creek in the middle of town, gardens grow giant vegetables, and residents hike, fish and camp late into the bright evenings. Rain increases in August.",
       autumn: "Brief and colourful — birch and aspen turn gold in early September, the first snow dusts the Chugach peaks, and afternoons fall from about 13°C to below freezing by late October. Autumn is the wettest season.",
     },
+    travelerFit: "Visitors come for the Chugach Mountains on the edge of town, moose on the bike trails, flightseeing over Denali and the glaciers, the start of the Iditarod and the long, light-filled summer days.",
+    residentFit: "It suits outdoor lovers, military families and oil, aviation and logistics workers who want city services with wilderness at the door, and who can live with dark winters and the risk of earthquakes.",
     contrasts: [
       { label: "Fairbanks (≈420 km N, in the Interior)", note: "Far from the sea, Fairbanks has much colder winters and warmer summers, with even greater swings in daylight." },
       { label: "Whittier & Prince William Sound (≈60 km SE)", note: "On the wet side of the Chugach Mountains, Whittier gets several times Anchorage's rain and snow." },
@@ -481,6 +501,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Warm, breezy and dry — afternoons near 30°C, nights around 23°C, and reliable trade winds that keep the heat comfortable. Rain is scarce on the south shore, surf builds on the south-facing beaches, and the city's festivals and outdoor concerts fill the long evenings.",
       autumn: "Warm and gradually wetter — afternoons near 30°C in September easing to about 28°C by November, nights around 22°C, and trade winds that occasionally falter, leaving the air muggy. Showers become more frequent by November, the first big winter swells reach the north shore, and the central Pacific hurricane season, though rarely felt, runs to the end of November.",
     },
+    travelerFit: "Visitors come for Waikiki Beach and surfing, the USS Arizona Memorial at Pearl Harbor, hiking Diamond Head, Hawaiian culture and food, and the giant winter waves of the North Shore.",
     contrasts: [
       { label: "Mānoa Valley (≈5 km NE)", note: "Tucked into the Koʻolau Range just behind the city, Mānoa gets several times as much rain as Waikiki, which keeps it lush, misty and rich in rainbows." },
       { label: "Kapolei & the leeward coast (≈30 km W)", note: "Further into the rain shadow, the leeward side of Oʻahu is hotter and drier, with brown hills and only a fraction of the rain." },
@@ -508,6 +529,7 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Hot, dry and then stormy — afternoons near 35°C and often higher in June, nights cooling to about 18°C, and from July monsoon thunderstorms that build over the mountains to the west and roll across the plains with lightning, hail and short, heavy downpours. The UFO festival in early July fills the town with visitors in alien costumes.",
       autumn: "Warm and calm — September afternoons near 31°C easing to about 19°C by November, with clear skies, light winds and cool nights. The pecan harvest begins in the orchards along the river, and the first frost usually arrives in late October.",
     },
+    travelerFit: "Visitors come for the International UFO Museum, the alien-themed street lamps and the UFO Festival each July, the swimming holes of Bottomless Lakes State Park and the Bitter Lake wildlife refuge.",
     contrasts: [
       { label: "Ruidoso (≈110 km W, ≈1,100 m higher)", note: "Up in the pine-covered Sacramento Mountains, Ruidoso runs about 8°C cooler in summer and gets real winter snow." },
       { label: "Carlsbad (≈120 km S, ≈150 m lower)", note: "Further down the Pecos valley, Carlsbad's summers run a little hotter and its winters a touch milder." },
@@ -562,6 +584,8 @@ export const SITE_HISTORY_USA_6: Record<string, SiteHistoryEntry> = {
       summer: "Short, bright and glorious — afternoons near 27°C, but nights that drop to around 6°C, with frost possible even in July on the valley floor. Afternoon thunderstorms build over the Tetons, wildflowers fill the meadows, and the Snake River and the national parks draw crowds. Wildfire smoke can haze the views in late summer.",
       autumn: "Brief and golden — September afternoons near 21°C with frosty nights, aspens and cottonwoods turning gold, and elk bugling in the meadows. By late October the first lasting snows arrive, and by November afternoons barely reach 5°C as the valley braces for winter.",
     },
+    travelerFit: "Visitors come for Grand Teton and Yellowstone national parks, wildlife in the valley — elk, bison, moose and bears — the steep skiing of Jackson Hole Mountain Resort and the cowboy bars around the town square.",
+    residentFit: "It suits skiers, climbers, guides and the very wealthy who love mountain wilderness and are willing to pay some of the highest housing costs in the country for it, and to endure long, bitterly cold winters.",
     contrasts: [
       { label: "Rendezvous Mountain summit (≈20 km NW, ≈1,300 m higher)", note: "At the top of the ski resort's aerial tram, winter brings around 11 m of snow and the air runs about 8°C colder than in town." },
       { label: "Teton Valley, Idaho (≈40 km W, over Teton Pass)", note: "On the far side of the Tetons, Driggs and Victor share the same cold winters and high-altitude summers, at far lower housing costs." },

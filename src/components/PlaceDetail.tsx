@@ -947,7 +947,7 @@ function DetailBody({
           ))}
         </div>
         <p className="text-[11px] text-stone italic mt-2">
-          Woven from this place&apos;s terrain, climate, and community notes — read it together with the summaries above, not instead of them.
+          Plain-language numbers and starting points from this place&apos;s climate normals and community notes.
         </p>
       </Section>
 

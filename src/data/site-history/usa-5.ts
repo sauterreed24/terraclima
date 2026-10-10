@@ -11,6 +11,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and breezy — afternoons near 34°C, nights barely falling below 25°C, and a sea breeze that keeps the bayfront cooler than inland towns. Rain is sparse except for the odd thunderstorm or tropical system. The beaches on Padre and Mustang islands fill with swimmers and fishermen, and the hurricane season looms.",
       autumn: "Hot and storm-watched, then pleasant — September is the wettest month and the heart of the hurricane season, with afternoons near 32°C and heavy tropical downpours. By October the first northers bring relief, and by November afternoons ease to about 24°C, with dry, breezy days and migrating birds filling the coastal marshes.",
     },
+    travelerFit: "Visitors come for Padre Island National Seashore, sea-turtle hatchling releases, windsurfing and kiteboarding on the bay, the USS Lexington aircraft carrier museum and world-class birding along the coast.",
     contrasts: [
       { label: "Kingsville & the King Ranch (≈60 km SW, inland)", note: "Away from the bay breeze, summer afternoons run a couple of degrees hotter and the ranchland is drier and dustier." },
       { label: "Port Aransas & Mustang Island (≈30 km E)", note: "Out on the barrier island, ocean breezes trim summer afternoons, but the island takes the full force of Gulf storms." },
@@ -37,6 +38,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Hot and steamy — afternoons near 32°C, nights around 21°C, and humidity that hangs over the river bottoms. Afternoon thunderstorms are common, and the long, hot evenings bring out the fireflies. Barges churn up and down the rivers, and boaters head to Kentucky Lake and Lake Barkley.",
       autumn: "Mellow and dry — September afternoons near 28°C easing to about 15°C by November, the driest stretch of the year, with oaks and maples turning colour by late October. Morning fog returns to the rivers as the nights cool.",
     },
+    travelerFit: "Visitors come for the National Quilt Museum and the huge quilt show each April, the floodwall murals along the Ohio River, a lively historic downtown and the lakes of the Land Between the Lakes nearby.",
     contrasts: [
       { label: "St. Louis (≈220 km NW)", note: "Further north on the Mississippi, St. Louis has colder winters with more snow, and similar steamy summers." },
       { label: "Memphis (≈260 km SW)", note: "Further down the river, Memphis runs a degree or two hotter in summer and milder in winter, with heavier Gulf humidity." },
@@ -63,6 +65,8 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Warm, sunny and stormy — afternoons near 29°C, nights cooling to about 14°C in the dry air, and evening thunderstorms that roll across the plains with hail and spectacular lightning. Long days, cool evenings and the river make it a pleasant season. Sunflower fields bloom in late July.",
       autumn: "Crisp, golden and short — September afternoons near 23°C cooling to about 5°C by November, cottonwoods turning gold along the river, and the harvest of wheat and sunflowers. The first snow usually falls in October.",
     },
+    travelerFit: "Visitors come for the Missouri River and Fort Abraham Lincoln, where Custer rode out in 1876, the Lewis and Clark trail, the North Dakota Heritage Center and the open prairie under an enormous sky.",
+    residentFit: "It suits families, state government and energy workers who want a safe, affordable small city, and who accept long, bitterly cold winters with blizzards and arctic air in exchange for bright, sunny summers.",
     contrasts: [
       { label: "Fargo (≈310 km E, Red River Valley)", note: "In the flat Red River Valley, Fargo gets more rain and more humid summers, and is just as cold in winter." },
       { label: "Rapid City, SD (≈450 km SSW)", note: "Near the Black Hills, chinook winds give Rapid City noticeably milder winter afternoons and less bitter cold." },
@@ -190,6 +194,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Warm but noticeably cooler than the valleys — afternoons near 29°C, nights around 18°C, and afternoon thunderstorms. The breeze along the brow of the mountain and the shade of the forests make it a refuge from the steamy lowlands of Alabama and Georgia, and summer camps fill with children.",
       autumn: "Bright and colourful — September afternoons near 26°C cooling to about 15°C by November, crisp nights, and a blaze of red and gold foliage across the plateau by late October, one of the best displays in the Deep South.",
     },
+    travelerFit: "Visitors come for DeSoto State Park and its waterfalls, Little River Canyon, hang-gliding off the brow of Lookout Mountain, antique shops and cabins, and cooler summer air than the valleys below.",
     contrasts: [
       { label: "Fort Payne (≈15 km SW, ≈300 m lower)", note: "Down in Wills Valley, summer afternoons run a few degrees hotter and nights stay muggier." },
       { label: "Birmingham (≈130 km SW)", note: "In the heart of Alabama, summers are longer, hotter and more humid, and winter frosts are less frequent." },
@@ -217,6 +222,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Mild and green — afternoons near 25°C, nights cooling to about 14°C, and the occasional thunderstorm. The cool evenings and shady woods make Norfolk a summer refuge, and the music festival fills the old Music Shed with concerts on summer nights.",
       autumn: "Brilliant and crisp — September afternoons near 21°C, frost by late September in the hollows, and a blaze of maple, birch and oak colour by early October, often a week ahead of the rest of the state. The first snow can fall by late October.",
     },
+    travelerFit: "Visitors come for the summer chamber music of the Norfolk Music Festival, the village green and old churches, hiking and fall colour in the Litchfield Hills, and cross-country skiing in Connecticut's snowiest corner.",
     contrasts: [
       { label: "Hartford (≈45 km SE, ≈400 m lower)", note: "Down in the Connecticut River valley, summer afternoons run about 4°C hotter, and the city gets barely half of Norfolk's snow." },
       { label: "Pittsfield, MA (≈50 km N)", note: "Up in the Berkshires, Pittsfield shares Norfolk's cold winters and snow, with slightly cooler summers." },
@@ -243,6 +249,8 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Warm and breezy — afternoons near 29°C, nights around 19°C, and sea breezes off the bay and the ocean that keep the beaches cooler than inland Delaware. Humidity is high, and afternoon thunderstorms occasionally roll through. The beaches at Cape Henlopen fill with swimmers, and the historic streets are busy with visitors.",
       autumn: "Mild and golden — September afternoons near 26°C with the ocean still warm, easing to about 15°C by November. The crowds leave after Labor Day, migrating monarchs and hawks pass along the coast, and the occasional hurricane or nor'easter churns the bay.",
     },
+    travelerFit: "Visitors come for Cape Henlopen State Park and its dunes and bunkers, quiet bay beaches, the ferry across the bay to Cape May, historic streets settled by the Dutch in 1631, and horseshoe crabs and shorebirds in May.",
+    residentFit: "It suits retirees, remote workers and families who want a walkable historic beach town with mild winters, and who can accept summer crowds, rising prices and the risk of coastal storms and flooding.",
     contrasts: [
       { label: "Dover (≈60 km NW, inland)", note: "Away from the sea breezes, Delaware's capital has hotter summer afternoons and colder winter nights." },
       { label: "Cape May, NJ (≈27 km across the bay)", note: "On the other side of the bay mouth, Cape May has a similar maritime climate, a little cooler in summer thanks to the ocean on two sides." },
@@ -270,6 +278,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Warm but tempered — afternoons near 29°C, nights around 17°C, and almost daily afternoon thunderstorms. The mountains offer relief from the heat of Atlanta, and rafters and kayakers head for the Chattooga River.",
       autumn: "Glorious — September afternoons near 26°C easing to about 16°C by November, crisp nights, and a riot of red, orange and gold leaves on the mountains by late October. Apples and pumpkins fill the roadside stands.",
     },
+    travelerFit: "Visitors come for the waterfalls and trails of the Blue Ridge, the Chattooga River, where Deliverance was filmed, Tallulah Gorge, apple orchards and the cooler mountain summers of Rabun County.",
     contrasts: [
       { label: "Highlands, NC (≈20 km NE, ≈650 m higher)", note: "Up on the plateau, summer afternoons run about 4°C cooler, and the rainfall is among the highest in the eastern United States." },
       { label: "Atlanta (≈150 km SW, ≈300 m lower)", note: "Down on the Piedmont, summer afternoons run several degrees hotter and muggier, and snow is rare." },
@@ -297,6 +306,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Warm, humid and green — afternoons near 28°C, nights around 16°C, and thunderstorms that roll across the bluffs, sometimes with flash floods on the Galena River. The wooded hills and farm valleys are lush, and the town's Main Street fills with visitors.",
       autumn: "Crisp and colourful — September afternoons near 24°C easing to about 8°C by November, cool nights, and the wooded bluffs turning red, orange and gold in mid-October, when visitors crowd the town for the colour and the harvest.",
     },
+    travelerFit: "Visitors come for the remarkably preserved nineteenth-century main street, Ulysses S. Grant's home, the bluffs of the Mississippi Palisades, autumn colour and cosy inns in a corner of Illinois that looks nothing like the flat Midwest.",
     contrasts: [
       { label: "Dubuque, IA (≈25 km NW, across the Mississippi)", note: "The river city across the water has a nearly identical climate, though its broader valley floor doesn't trap cold air quite as sharply." },
       { label: "Chicago (≈230 km E)", note: "On Lake Michigan's shore, Chicago's summer afternoons are often cooled by lake breezes, and its winters are a touch milder." },
@@ -323,6 +333,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Warm and breezy — afternoons near 28°C, nights around 17°C, and lake breezes that keep the beach cooler than the inland towns. The lake warms enough for swimming by July, and the beaches fill with visitors from Chicago. Thunderstorms roll across the lake on humid afternoons.",
       autumn: "Mild and colourful — the lake holds its warmth, so September afternoons stay near 24°C, and the oak and maple forests turn red and gold by October. By November, cold winds bring the first lake-effect rain and snow.",
     },
+    travelerFit: "Visitors come for Indiana Dunes National Park, Mount Baldy and the beaches of Lake Michigan, the Century of Progress houses moved here from the 1933 Chicago World's Fair, and spring and autumn bird migrations.",
     contrasts: [
       { label: "Chicago (≈70 km W)", note: "Across the lake's southern tip, the city is a little warmer at night thanks to the urban heat island, and usually misses the heaviest lake-effect snow." },
       { label: "Valparaiso (≈25 km S, inland)", note: "Away from the lake, summer afternoons run a few degrees hotter and winter brings less snow." },
@@ -350,6 +361,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Cool for Maryland — afternoons near 25°C, nights around 14°C, and refreshing evenings that have drawn visitors from the hot cities since the 1800s. Thunderstorms build over the mountains in the afternoons, and Deep Creek Lake fills with boaters and swimmers.",
       autumn: "Early and brilliant — September afternoons near 22°C cooling to about 10°C by November, frost arriving by early October, and the forests and meadows turning red and gold weeks before the lowlands. Showers come often, and the first snow can fall in late October.",
     },
+    residentFit: "It suits families, skiers and lake-house owners who want real snowy winters and cool summers in the mountains, and who can manage long, icy drives, a small-town economy and the occasional heavy storm.",
     contrasts: [
       { label: "Cumberland (≈60 km NE, ≈550 m lower)", note: "Down in the Potomac valley, summer afternoons run about 5°C hotter, and the town gets a fraction of Oakland's snow." },
       { label: "Deep Creek Lake & Wisp (≈15 km N, ≈150 m higher)", note: "Around the lake and the ski resort, winters are snowier still, and the lake moderates temperatures slightly." },
@@ -377,6 +389,8 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Mild and pleasant — afternoons near 26°C, nights cooling to about 13°C, and the occasional thunderstorm. Cool evenings make it the season of outdoor music at Tanglewood, dance at Jacob's Pillow and theatre across the region, and the lakes fill with swimmers and paddlers.",
       autumn: "The great show — September afternoons near 21°C, crisp nights with early frosts, and the hills ablaze with red and orange maple leaves by early October. Apples ripen in the orchards, and the first snow falls on Greylock by late October.",
     },
+    travelerFit: "Visitors come for Tanglewood and the summer music, dance and theatre of the Berkshires, Hancock Shaker Village, the hiking and fall colour of the Taconic hills and skiing at Jiminy Peak and Bousquet.",
+    residentFit: "It suits culture lovers, second-home owners and families priced out of Boston who want New England seasons, the Berkshires' arts scene and lower housing costs, and who accept long, snowy winters.",
     contrasts: [
       { label: "Mount Greylock (≈20 km N, ≈750 m higher)", note: "The highest point in Massachusetts runs about 5°C cooler, wears rime and snow through much of the winter, and catches clouds that pass over the city." },
       { label: "Albany, NY (≈55 km W, in the Hudson valley)", note: "Down in the Hudson valley, summers run a couple of degrees warmer and winters bring somewhat less snow." },
@@ -404,6 +418,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and stormy — afternoons near 32°C, nights around 23°C, and almost daily afternoon thunderstorms that bring torrential rain. The sea breeze off the sound helps a little. Locals head out on boats to the barrier islands, and the season's long evenings are spent on screened porches.",
       autumn: "Hurricane watch, then sweet relief — August and September are the peak of hurricane season, and the coast watches every storm in the Gulf. By October the humidity drops, afternoons ease to about 27°C, and the Peter Anderson Arts and Crafts Festival fills the streets in November.",
     },
+    travelerFit: "Visitors come for the Walter Anderson Museum of Art, the galleries and cafés under the live oaks, boat trips to Gulf Islands National Seashore, fresh Gulf seafood and the Peter Anderson Arts and Crafts Festival in autumn.",
     contrasts: [
       { label: "Biloxi (≈5 km W, across the bay)", note: "Across Biloxi Bay, the climate is virtually identical, though Biloxi's beachfront casinos sit even more exposed to Gulf storms." },
       { label: "Jackson, MS (≈250 km N, inland)", note: "In central Mississippi, summer afternoons run a degree or two hotter, and winter nights are noticeably colder, with more frequent freezes." },
@@ -431,6 +446,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Hot and humid — afternoons near 32°C, nights around 18°C, and afternoon thunderstorms. The rivers are the escape: canoes, kayaks and inner tubes fill the Current and Jacks Fork, and the spring-fed water stays cool enough to refresh even in July.",
       autumn: "Mellow and colourful — September afternoons near 28°C easing to about 15°C by November, the driest stretch of the year, and a blaze of oak, hickory and maple colour across the hills by late October.",
     },
+    travelerFit: "Visitors come for the clear spring-fed rivers of the Ozark National Scenic Riverways, canoeing and float trips on the Jacks Fork and Current rivers, wild horses, caves and huge springs such as Alley and Big Spring.",
     contrasts: [
       { label: "Big Spring & the Current River (≈60 km SE)", note: "The great springs pour out water at about 14°C all year, so the river corridors feel cool in summer and steam on cold winter mornings." },
       { label: "Springfield (≈190 km W, ≈200 m higher)", note: "Up on the Ozark Plateau, Springfield runs slightly cooler and windier, without the shelter of the deep river valleys." },
@@ -473,6 +489,8 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Warm and sea-breezy — afternoons near 29°C, nights around 19°C, and breezes off the ocean and the bay that keep the town several degrees cooler than inland New Jersey. Humidity is high, and the occasional thunderstorm rolls in. The beaches, porches and trolleys are packed with visitors, and the ocean is warm enough for swimming.",
       autumn: "The bird season — September stays warm, with afternoons near 25°C and a warm ocean, then October brings crisp, clear days and one of the great migration spectacles in North America, as hawks, songbirds and monarch butterflies funnel down the peninsula. Hurricanes and nor'easters are a risk, and the crowds thin after Labor Day.",
     },
+    travelerFit: "Visitors come for the painted Victorian houses and inns, quiet beaches, the lighthouse, and one of the greatest bird migrations in North America, when hawks, songbirds and monarch butterflies funnel through the peninsula in autumn.",
+    residentFit: "It suits retirees, historic-home lovers, birders and innkeepers who want a walkable seaside town with milder winters than inland New Jersey, and who can accept summer crowds and a very quiet off-season.",
     contrasts: [
       { label: "Philadelphia (≈130 km NW)", note: "Inland, summer afternoons run about 3°C hotter, and winters are colder, with more snow." },
       { label: "Lewes, DE (≈27 km across the bay)", note: "Across the mouth of Delaware Bay, Lewes has a nearly identical climate, slightly warmer in summer with less ocean on its doorstep." },
@@ -500,6 +518,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Warm and breezy — afternoons near 27°C, nights around 17°C, and lake breezes that take the edge off the heat. The lake warms enough for swimming by July. The strip comes alive with families, motorcyclists and teenagers, and the sunsets over the lake draw crowds to the bluff.",
       autumn: "Long and mellow — the lake holds its summer warmth, so September afternoons stay near 23°C, and frosts come late. Grapes are harvested in the vineyards of the Grand River Valley, the leaves turn colour by mid-October, and the first lake-effect rain and snow arrive in November.",
     },
+    travelerFit: "Visitors come for the old-fashioned summer strip of arcades and ice-cream stands, Lake Erie beaches, the wineries of the Grand River Valley and covered bridges of Ashtabula County, and dramatic lake-effect storms in winter.",
     contrasts: [
       { label: "Chardon (≈40 km SW, ≈180 m higher)", note: "Up on the hills inland, Chardon is the snowiest town in Ohio, receiving far more lake-effect snow than the shoreline." },
       { label: "Cleveland (≈70 km W)", note: "On the west side of the snowbelt, Cleveland gets less lake-effect snow and slightly warmer summer afternoons." },
@@ -554,6 +573,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       summer: "Mild and breezy — afternoons near 25°C, nights around 17°C, and sea breezes that keep the island several degrees cooler than the mainland. Fog can roll in on any day. The beaches, cycling roads and harbour are full of visitors, and ferries arrive packed from the mainland.",
       autumn: "Warm and golden — the ocean holds its heat, so September afternoons stay near 22°C, and autumn is one of the best times to visit, when the crowds are gone. Millions of migrating songbirds pass through, and the hurricane season brings an occasional storm.",
     },
+    travelerFit: "Visitors come by ferry for the Mohegan Bluffs and Southeast Light, quiet beaches, cycling the island's narrow roads, birding in autumn and a cool, breezy summer far from the crowds of the mainland.",
     contrasts: [
       { label: "Providence (≈70 km N, mainland)", note: "On the mainland, summer afternoons run a few degrees hotter and winter nights noticeably colder, with more snow." },
       { label: "Newport (≈40 km NE)", note: "On Aquidneck Island at the mouth of Narragansett Bay, Newport shares Block Island's maritime climate, with slightly warmer summers." },

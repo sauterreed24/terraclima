@@ -149,6 +149,7 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and thundery — afternoons near 37°C, nights around 22°C, and the monsoon arriving in late June or early July, bringing towering thunderstorms over the Sierra Madre and torrential afternoon downpours. Within days the dry forest bursts into green, and the streams run again.",
       autumn: "Green and gradually cooling — the last monsoon storms fade in September, and by November afternoons ease to about 30°C, with clear skies and pleasant evenings. The forest stays green until the dry season sets in, and the winter visitors begin to return.",
     },
+    travelerFit: "Visitors come for the colonial mansions and arcaded plaza, birding in the tropical dry forest, the Alfonso Ortiz Tirado music festival in January and a warm, dry winter far from the crowds of the beach resorts.",
     contrasts: [
       { label: "Navojoa (≈50 km W, on the coastal plain)", note: "Down on the flat, irrigated plain, Navojoa is hotter and drier, without the hills and forest that shelter Álamos." },
       { label: "Hermosillo (≈350 km NW, in the Sonoran Desert)", note: "Further north in the desert, Hermosillo's summers are even hotter, among the hottest in Mexico, with much less rain." },
@@ -216,6 +217,8 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "Hot, humid and very wet — afternoons near 33°C, nights around 20°C, and heavy rain most afternoons, sometimes with tropical storms from the Gulf. The waterfalls roar, the jungle is at its lushest, and the paths through Las Pozas are slick with moss.",
       autumn: "Wet then clearing — September and October bring some of the heaviest rains of the year, with the risk of floods and landslides, before the weather cools and dries in November. The coffee berries ripen red on the bushes.",
     },
+    travelerFit: "Visitors come for Las Pozas, Edward James's surreal concrete garden in the jungle, along with the turquoise rivers, waterfalls and swallow-filled pit caves of the Huasteca Potosina.",
+    residentFit: "It suits artists, coffee growers and nature lovers who want a small town in the cloud forest, and who accept heavy rains, muggy summers and a long, winding road to the nearest city.",
     contrasts: [
       { label: "Ciudad Valles (≈90 km N, in the lowlands)", note: "Down on the coastal plain, Ciudad Valles is hotter and drier, without the mist of the cloud forest." },
       { label: "Jalpan de Serra (≈50 km SW, in the Sierra Gorda)", note: "In a valley on the drier side of the mountains, Jalpan's climate is warmer and less rainy, with dry scrub on the hills." },
@@ -243,6 +246,8 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "The rainy season — afternoons near 27°C, nights around 13°C, and clouds building by midday into heavy afternoon thunderstorms, often with hail. The hills turn green, the air is fresh after the rains, and the evenings are cool.",
       autumn: "Green and gentle — afternoons near 26°C, the rains easing in October, and clear, crisp days returning by November. The Morelia International Film Festival fills the city's theatres in October, and Day of the Dead brings candlelit vigils to the region's cemeteries.",
     },
+    travelerFit: "Visitors come for the pink-stone cathedral and colonial centre, the aqueduct, the Morelia film festival in October and the monarch butterfly sanctuaries a few hours to the east in winter.",
+    residentFit: "It suits students, families, professionals and retirees who want a mild, eternal-spring climate in a beautiful colonial city with universities and good food, and who accept the security concerns that affect parts of Michoacán.",
     contrasts: [
       { label: "Pátzcuaro (≈55 km SW, ≈220 m higher)", note: "Up in the lake basin, Pátzcuaro is a little cooler, with chillier nights and frequent winter frosts." },
       { label: "Uruapan (≈110 km W, ≈300 m lower)", note: "On the wetter slopes descending toward the coast, Uruapan is warmer and much rainier, the heart of Mexico's avocado country." },
@@ -270,6 +275,8 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "The rainy season — afternoons near 27°C, nights around 13°C, and thunderstorms building over the sierra by afternoon, sometimes sending torrents down the steep streets. The surrounding hills turn green, and the evenings are cool and fresh.",
       autumn: "Mild and lively — afternoons near 25°C, the rains easing in October, and the city bursting with music and theatre during the Festival Internacional Cervantino, which draws artists and crowds from around the world.",
     },
+    travelerFit: "Visitors come for the colourful houses climbing the canyon, the tunnels beneath the city, the Mummy Museum, the Alley of the Kiss and the Cervantino festival, which fills the city with music and theatre each October.",
+    residentFit: "It suits students, artists and cultural expats who love a compact, walkable university city with a mild climate, and who are happy to climb steep stairways and lanes every day.",
     contrasts: [
       { label: "León (≈50 km W, ≈200 m lower)", note: "Out on the open plains of the Bajío, the industrial city of León is a little warmer and windier, without the shelter of the canyon." },
       { label: "San Miguel de Allende (≈55 km E)", note: "On a hillside above a broad valley, San Miguel has a similar mild highland climate, slightly drier." },
@@ -297,6 +304,8 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "Mild and stormy — afternoons near 25°C, nights around 12°C, and afternoon thunderstorms that sweep across the plateau, sometimes with hail. The surrounding fields of beans and maize turn green, and the city's festivals fill the streets.",
       autumn: "Cool and clear — afternoons near 22°C, the rains ending in October, and crisp, clear nights. The first frosts arrive in November.",
     },
+    travelerFit: "Visitors come for the pink-stone cathedral, the cable car to the Cerro de la Bufa, the Mina El Edén silver mine, the mask museum and the history of Pancho Villa's great victory.",
+    residentFit: "It suits students, professionals and retirees who want a historic city with cool summers and crisp, sunny winters, and who can handle thin air, cold nights and a dry climate.",
     contrasts: [
       { label: "Aguascalientes (≈120 km S, ≈550 m lower)", note: "Lower on the plateau, Aguascalientes is several degrees warmer, with milder winter nights." },
       { label: "Fresnillo (≈60 km NW)", note: "Out on the high plain, the mining town of Fresnillo, home to one of the world's largest silver mines, is drier and windier." },
@@ -323,6 +332,7 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "Warm days and cool nights — afternoons near 30°C, nights around 16°C, and thunderstorms building over the mountains in the afternoons, bringing most of the year's scant rain in short, heavy bursts. Down in Monterrey it is several degrees hotter and sticky; up here the desert air dries the sweat as fast as it forms.",
       autumn: "Mild and briefly green — afternoons near 25°C, nights around 11°C, and September the wettest month of the year, when the desert scrub flushes green. By November the skies have cleared and the first cold fronts arrive from the north.",
     },
+    travelerFit: "Visitors come for the Churrigueresque cathedral and colonial centre, the Museo del Desierto and its dinosaurs, sarapes and Saltillo pan de pulque, and the orchards and pine forests of the Sierra de Arteaga nearby.",
     contrasts: [
       { label: "Monterrey (≈85 km E, ≈1,050 m lower)", note: "Down on the plain beyond the mountains, Monterrey runs several degrees hotter on summer afternoons, with heavy, humid air that Saltillo's altitude escapes." },
       { label: "Sierra de Arteaga (≈30 km E, ≈1,000 m higher)", note: "Up in the pine and fir forests of the sierra, summers are cool, winters bring hard frosts and occasional snow, and the valleys are full of apple orchards." },
@@ -350,6 +360,7 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "The monsoon season — afternoons near 30°C, nights cooling to about 15°C, and thunderstorms rolling in most afternoons from July, bringing nearly two-thirds of the year's rain. Hail is the great enemy of the orchards, which are covered with black netting, and the plains turn green.",
       autumn: "Harvest time — afternoons near 26°C, nights cooling fast, the rains fading in September, and the apple harvest in full swing, with trucks loaded with fruit heading south. By November the first frosts return.",
     },
+    travelerFit: "Visitors come for the Mennonite colonies — their cheese, bakeries and museum — the apple orchards, and the road west into the Sierra Tarahumara and the Copper Canyon on the Chepe railway.",
     contrasts: [
       { label: "Chihuahua City (≈85 km E, ≈600 m lower)", note: "Down in the state capital, summers are noticeably hotter and the land is true desert, too dry for the orchards that thrive on the plateau." },
       { label: "Creel (≈105 km SW, ≈300 m higher)", note: "Up in the pine forests of the Sierra Tarahumara, Creel is colder and wetter, with regular winter snow and the canyons of the Barranca del Cobre beyond." },
@@ -403,6 +414,8 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "Scorching — afternoons near 37°C, nights around 24°C, and the bay as warm as bathwater. The coromuel cools the evenings, and the town lives outdoors after dark, but by August the air grows humid and the first tropical storms can roll up from the south.",
       autumn: "Hot and storm-watched — September is the wettest and most dangerous month, when hurricanes from the Pacific can bring a year's rain in a single night. By November afternoons ease to about 30°C, the skies clear and the snowbirds and sailors return.",
     },
+    travelerFit: "Visitors come for swimming with whale sharks in the bay, playing with sea lions at Espíritu Santo, kayaking and sailing in the Sea of Cortez, sunsets on the malecón and fish tacos.",
+    residentFit: "It suits snowbirds, sailors, divers, marine biologists and retirees who want a relaxed, safe seaside capital with glorious winters, and who accept blistering summers, scarce water and the risk of hurricanes.",
     contrasts: [
       { label: "Todos Santos (≈75 km SW, on the Pacific coast)", note: "Across the peninsula on the Pacific side, the cold California Current keeps Todos Santos several degrees cooler in summer, with fresher, foggier mornings." },
       { label: "Cabo San Lucas (≈140 km S, at the tip of the peninsula)", note: "At the meeting of the Pacific and the Sea of Cortez, Cabo has slightly milder summers but sits more squarely in the path of hurricanes." },
@@ -430,6 +443,7 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "The rainy season — afternoons near 34°C, nights around 22°C, and heavy downpours most afternoons and evenings, especially in June and September. The jungle bursts into green, the humidity is thick, Zicatela's waves are at their biggest and most dangerous, and hurricanes are a real threat.",
       autumn: "Wet then clearing — September and October bring some of the heaviest rains of the year and the peak of the hurricane season, before the skies clear in November and the dry season returns, with lush hills and warm water.",
     },
+    travelerFit: "Visitors come for the giant waves of Zicatela, quieter swimming beaches, sea-turtle releases, the bioluminescent lagoon of Manialtepec and the cheap, laid-back surf town life.",
     contrasts: [
       { label: "Oaxaca City (≈135 km N, ≈1,550 m higher)", note: "Up in the central valleys beyond the Sierra Madre del Sur, Oaxaca enjoys a mild, spring-like highland climate with cool nights all year." },
       { label: "Huatulco (≈100 km E, on the same coast)", note: "Further along the coast, the planned resort of Huatulco has a similar hot climate but calmer, sheltered bays and drier scrub forest." },
@@ -484,6 +498,8 @@ export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
       summer: "Hot, sticky and very wet — afternoons near 34°C, nights around 23°C, and thunderstorms rolling in most afternoons, sometimes clouding the lagoon with runoff from the surrounding jungle. The forest is lush and loud with birds and insects.",
       autumn: "Wet and stormy — September and October bring heavy rains and the peak of the hurricane season, which can drive storms in from the Caribbean. By November the rains ease, the trade winds return and the lagoon clears again.",
     },
+    travelerFit: "Visitors come for the Lagoon of Seven Colours, kayaking and paddleboarding at dawn, the stromatolites, Cenote Azul, the Fuerte de San Felipe and a slower, quieter alternative to the Riviera Maya.",
+    residentFit: "It suits tropical lovers, small hotel owners and remote workers who want a lakeside village with warm weather all year, and who accept humidity, mosquitoes, hurricanes and the strain tourism puts on the lagoon.",
     contrasts: [
       { label: "Chetumal (≈25 km S, on the Bay of Chetumal)", note: "The state capital, on a shallow bay of the Caribbean at the Belize border, has a similar hot climate with sea breezes, and a long history of hurricane damage." },
       { label: "Mahahual (≈70 km E, on the Caribbean coast)", note: "Out on the open Caribbean, the fishing village of Mahahual is a little cooler and breezier, with the coral of the Mesoamerican Reef just offshore." },

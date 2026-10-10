@@ -11332,6 +11332,8 @@ html[data-motion="minimal"] .scenario-remap__row:hover {
      paper"); on moonlit chrome the same role needs a bright teal or links
      all but vanish (#0d5f72 on #0d1320 is ~1.6:1). */
   --color-glacier-700: #7ad0e6;
+  /* Sage-700 is likewise text-only ("ready", "Drivers", rain figures). */
+  --color-sage-700: #93d3a2;
 }
 
 html[data-theme="dark"],
@@ -12433,6 +12435,15 @@ html[data-theme="dark"] .place-card__signature-band {
 html[data-theme="dark"] .place-card__signature-band > div {
   background: rgba(28, 38, 60, 0.5);
 }
+html[data-theme="dark"] .place-card__rank-strip {
+  border-color: rgba(120, 210, 232, 0.2);
+  background: linear-gradient(90deg, rgba(28, 52, 64, 0.72), rgba(28, 38, 60, 0.58));
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .place-card__rank-number:not(.place-card__rank-number--medal) {
+  background: rgba(94, 196, 220, 0.2);
+  color: rgba(180, 236, 246, 0.95);
+}
 html[data-theme="dark"] .place-card__ranking-evidence {
   border-color: rgba(120, 210, 232, 0.2);
   border-left-color: rgba(120, 210, 232, 0.58);
@@ -12690,6 +12701,8 @@ html[data-theme="dark"] .tc-hero-credit {
   .place-card__stat-value[data-tone="glacier"] { color: var(--color-glacier-700); }
   .place-card__stat-value[data-tone="sage"] { color: var(--color-sage-700); }
   .place-card__stat-value[data-tone="ice"] { color: var(--color-glacier-500); }
+  html[data-theme="dark"] .place-card__stat-value[data-tone="ochre"] { color: #f0b45e; }
+  html[data-theme="dark"] .place-card__stat-value[data-tone="ice"] { color: #6fcbe2; }
   .place-card__live-fit-panel {
     border: 1px solid rgba(26, 143, 168, 0.22);
     background: var(--tc-surface-muted);
