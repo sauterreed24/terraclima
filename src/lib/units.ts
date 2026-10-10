@@ -527,6 +527,32 @@ function formatUSNumber(n: number, digits = 0): string {
  *     "summit", altitude, crest, ridge, m.a.s.l., etc.), to avoid mangling
  *     data like "8 m wetland" or "Route 5 m".
  */
+const SPELLED_UNITS_BASE: Record<string, number> = {
+  a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+  eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17,
+  eighteen: 18, nineteen: 19, twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60,
+  seventy: 70, eighty: 80, ninety: 90,
+};
+const SPELLED_METRIC_QUANTITY =
+  /\b((?:a|an|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)(?:\s+(?:hundred|thousand))?)\s+(met(?:er|re)s?|kilomet(?:er|re)s?|hectares)\b/gi;
+
+/** "three hundred" → 300; "a thousand" → 1000. Bare "a"/"an" need a multiplier. */
+function spelledNumberValue(words: string): number | null {
+  const parts = words.toLowerCase().split(/\s+/);
+  const base = SPELLED_UNITS_BASE[parts[0]!];
+  if (base == null) return null;
+  if (parts.length === 1) return parts[0] === "a" || parts[0] === "an" ? null : base;
+  return base * (parts[1] === "hundred" ? 100 : 1000);
+}
+
+/** Areas read best as round figures in prose. */
+function roundAreaForProse(v: number): number {
+  if (v >= 10000) return Math.round(v / 1000) * 1000;
+  if (v >= 1000) return Math.round(v / 100) * 100;
+  if (v >= 100) return Math.round(v / 10) * 10;
+  return Math.round(v);
+}
+
 function localizeDistanceProse(text: string): string {
   // --- Hyphenated adjectival forms ---
   //
@@ -603,6 +629,107 @@ function localizeDistanceProse(text: string): string {
     }
   );
 
+  // Areas: hectares → acres and square kilometres → square miles, including
+  // spelled-out quantities ("a thousand hectares", "a 1,300-hectare spit").
+  text = text.replace(
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*hectares?\b/gi,
+    (_m, n: string) => `${formatUSNumber(roundAreaForProse(parseLooseNum(n) * 2.47105))}-acre`,
+  );
+  text = text.replace(
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s*(?:hectares?|ha\b)/gi,
+    (_m, n: string, plus: string) => `${formatUSNumber(roundAreaForProse(parseLooseNum(n) * 2.47105))}${plus} acres`,
+  );
+  text = text.replace(
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s*(?:square\s+kilomet(?:er|re)s?|sq\.?\s*km|km²|km2)\b/gi,
+    (_m, n: string, plus: string) => `${formatUSNumber(roundAreaForProse(parseLooseNum(n) * 0.386102))}${plus} square miles`,
+  );
+  text = text.replace(/\b(thousands|hundreds|tens)(\s+of\s+thousands)?\s+of\s+hectares\b/gi, (_m, q: string, t?: string) => `${q}${t ?? ""} of acres`);
+  text = text.replace(/\b(thousands|hundreds)\s+of\s+square\s+kilomet(?:er|re)s\b/gi, (_m, q: string) => `${q} of square miles`);
+
+  // Spelled-out quantities ("two metres", "sixty kilometres", "a thousand
+  // hectares", "three hundred metres") become digits so the numeric passes
+  // below convert them.
+  text = text.replace(SPELLED_METRIC_QUANTITY, (_m, words: string, unit: string) => {
+    const value = spelledNumberValue(words);
+    return value == null ? _m : `${formatUSNumber(value)} ${unit}`;
+  });
+  text = text.replace(
+    /\b(\d+(?:,\d{3})*)\s+hectares\b/gi,
+    (_m, n: string) => `${formatUSNumber(roundAreaForProse(parseLooseNum(n) * 2.47105))} acres`,
+  );
+
+  // Mass: tonnes → US tons, kilograms handled separately below.
+  text = text.replace(
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)(\s+(?:million|billion))?\s+(?:metric\s+)?tonnes?\b/gi,
+    (_m, n: string, mult: string | undefined) => {
+      const v = parseLooseNum(n) * 1.10231;
+      return `${formatUSNumber(mult ? v : roundAreaForProse(v), mult && v < 10 ? 1 : 0)}${mult ?? ""} tons`;
+    },
+  );
+  text = text.replace(/\btonnes\b/gi, "tons").replace(/\btonne\b/gi, "ton");
+
+  // Large areas and volumes with million multipliers or no figure at all.
+  text = text.replace(
+    /\b(\d+(?:\.\d+)?)\s+million\s+hectares\b/gi,
+    (_m, n: string) => `${formatUSNumber(parseLooseNum(n) * 2.47105, parseLooseNum(n) * 2.47105 < 10 ? 1 : 0)} million acres`,
+  );
+  text = text.replace(/\bhalf\s+a\s+million\s+hectares\b/gi, "1.2 million acres");
+  text = text.replace(
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)(\s+million)?\s+cubic\s+met(?:er|re)s\b/gi,
+    (_m, n: string, mult: string | undefined) => {
+      const v = parseLooseNum(n) * 1.30795;
+      return `${formatUSNumber(v, mult && v < 10 ? 1 : 0)}${mult ?? ""} cubic yards`;
+    },
+  );
+  text = text.replace(/\bhundreds\s+of\s+cubic\s+kilomet(?:er|re)s\b/gi, "dozens of cubic miles");
+  text = text.replace(/\bthousands\s+of\s+square\s+met(?:er|re)s\b/gi, "tens of thousands of square feet");
+  text = text.replace(
+    /(\d+(?:\.\d+)?)\s*(person|people)\s*\/\s*km²/gi,
+    (_m, n: string, who: string) => `${formatUSNumber(parseLooseNum(n) * 2.58999, 0)} ${who}/sq mi`,
+  );
+
+  // Vertical metres and spelled hyphen forms ("twelve-metre tides").
+  text = text.replace(
+    /\b(\d+(?:,\d{3})*)\s+vertical\s+met(?:er|re)s\b/gi,
+    (_m, n: string) => `${formatUSNumber(parseLooseNum(n) * 3.28084)} vertical feet`,
+  );
+  text = text.replace(/\b(a\s+few\s+hundred|several\s+hundred|hundreds\s+of)\s+vertical\s+met(?:er|re)s\b/gi, (_m, q: string) => `${q} vertical feet`);
+  text = text.replace(/\ba\s+few\s+vertical\s+kilomet(?:er|re)s\b/gi, "a vertical mile or so");
+  text = text.replace(
+    /\b(one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|forty|fifty)-met(?:er|re)\b/gi,
+    (_m, w: string) => `${formatUSNumber(SPELLED_UNITS_BASE[w.toLowerCase()]! * 3.28084)}-foot`,
+  );
+  text = text.replace(
+    /\b(one|two|three|four|five|six|seven|eight|nine|ten)\s+and\s+a\s+half\s+met(?:er|re)s\b/gi,
+    (_m, w: string) => `${formatUSNumber((SPELLED_UNITS_BASE[w.toLowerCase()]! + 0.5) * 3.28084)} feet`,
+  );
+
+  // Snow, rain and tide measured loosely in metres or centimetres.
+  text = text.replace(/\b(several|a\s+few|few)\s+centimet(?:er|re)s\b/gi, "an inch or more");
+  text = text.replace(/\ba\s+few\s+millimet(?:er|re)s\b/gi, "a fraction of an inch");
+  text = text.replace(/\b(?:a\s+)?couple\s+of\s+hundred\s+millimet(?:er|re)s\b/gi, "eight inches or so");
+  text = text.replace(/\ba\s+couple\s+of\s+met(?:er|re)s\b/gi, "six feet or so");
+  text = text.replace(/(?<![\d+]\s)\bmet(?:er|re)s\s+of\s+/gi, "feet of ");
+  text = text.replace(/\bin\s+met(?:er|re)s\b/gi, "in feet");
+  text = text.replace(/\b(in|not)\s+centimet(?:er|re)s\b/gi, (_m, w: string) => `${w} inches`);
+  text = text.replace(/\b(rise|rises|rose)\s+met(?:er|re)s\b/gi, (_m, v: string) => `${v} many feet`);
+  text = text.replace(/\bby\s+the\s+met(?:er|re)\b/gi, "by the yard");
+  text = text.replace(/\ba\s+full\s+kilomet(?:er|re)\b/gi, "more than half a mile");
+  text = text.replace(/\bkilomet(?:er|re)\s+after\s+kilomet(?:er|re)\b/gi, "mile after mile");
+  text = text.replace(/\b(several|a\s+few)\s+hundred\s+kilomet(?:er|re)s\b/gi, (_m, q: string) => `${/few/i.test(q) ? "a couple of" : "a few"} hundred miles`);
+  text = text.replace(/\b(a\s+few\s+dozen|dozens\s+of)\s+kilomet(?:er|re)s\b/gi, (_m, q: string) => `${q} miles`);
+  text = text.replace(/(?<![\d+]\s)\bkilomet(?:er|re)s\s+(away|of)\b/gi, (_m, w: string) => `miles ${w}`);
+
+  // Vague metric quantities. Keep the vagueness, swap the unit.
+  text = text.replace(/\b(a\s+few|few|several|many|for|tens\s+of|thousands\s+of)\s+kilomet(?:er|re)s\b/gi, (_m, q: string) => `${q} miles`);
+  text = text.replace(/(?<![\d+]\s)\bkilomet(?:er|re)s\s+(long|wide)\b/gi, (_m, dim: string) => `miles ${dim}`);
+  text = text.replace(/\b(several|a\s+few)\s+hundred\s+met(?:er|re)s\b/gi, (_m, q: string) => /few/i.test(q) ? _m : `${q} hundred yards`);
+  text = text.replace(/\ba\s+metre\b|\ba\s+meter\b/gi, "a yard");
+  text = text.replace(/\ba\s+kilomet(?:er|re)\b/gi, "half a mile");
+  text = text.replace(/\b(a\s+few|few|several|many)\s+met(?:er|re)s\b/gi, (_m, q: string) => `${q} yards`);
+  text = text.replace(/\btens\s+of\s+met(?:er|re)s\b/gi, "dozens of feet");
+  text = text.replace(/(?<![\d+]\s)\bmet(?:er|re)s\s+(deep|high|thick)\b/gi, (_m, dim: string) => `feet ${dim}`);
+
   // Qualitative word-form metric lengths ("thousands of meters", "hundreds of
   // kilometers", "a few hundred meters"). Convert unit nouns only — the
   // quantity words stay, matching common US climate writing.
@@ -610,8 +737,8 @@ function localizeDistanceProse(text: string): string {
   text = text.replace(/\bhundreds of met(?:er|re)s\b/gi, "hundreds of feet");
   text = text.replace(/\bhundreds of (?:kilomet(?:er|re)s|km)\b/gi, "hundreds of miles");
   text = text.replace(/\b((?:a\s+)?few\s+hundred)\s+met(?:er|re)s\b/gi, (_m, qty: string) => `${qty} feet`);
-  text = text.replace(/\bmet(?:er|re)s across\b/gi, "feet across");
-  text = text.replace(/\b(?:kilomet(?:er|re)s|kilometers) wide\b/gi, "miles wide");
+  text = text.replace(/(?<![\d+]\s)\bmet(?:er|re)s across\b/gi, "feet across");
+  text = text.replace(/(?<![\d+]\s)\b(?:kilomet(?:er|re)s|kilometers) wide\b/gi, "miles wide");
 
   // Spelled-out ranges BEFORE singular spelled-out units so "3–6 meters"
   // becomes "10–20 feet" rather than orphaning the first endpoint.
@@ -802,9 +929,17 @@ function localizeDistanceProse(text: string): string {
         /^\s*[)\]]/.test(afterRaw) ||     // "(3429 m)" or "[3429 m]"
         /^\s*[A-Z][\w-]*(?:\s+[A-Z][\w-]*){0,3}\s+(?:peaks?|crest|ridge|summit|plateau|escarpment|mountains|hills|range)\b/.test(afterRaw);
 
-      if (!beforeHit && !afterHit) return match;
-
       const v = parseLooseNum(n);
+      // Three- and four-digit figures are elevations in this corpus when they
+      // lead a phrase ("— 1400 m in Sierra Vista", "a 2040 m Sierra Norte
+      // town", "1474 m of sunshine") or follow an approximation word.
+      const bigNumberHit =
+        v >= 300 &&
+        (/^\s+(?:in|on|of|into|across|along)\b/i.test(afterRaw) || /(?:—|–|\bnear|\ba|\babout|\bsome|\broughly)\s*$/i.test(beforeRaw));
+      const approxHit = /\b(?:offset\s+by\s+(?:about\s+)?|by\s+about|about|nearly|roughly|almost)\s*$/i.test(beforeRaw) && /^[\s]*[.,;]/.test(afterRaw);
+
+      if (!beforeHit && !afterHit && !bigNumberHit && !approxHit) return match;
+
       const ft = v * 3.28084;
       return `${formatUSNumber(ft)} ft`;
     }
