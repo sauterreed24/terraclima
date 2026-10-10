@@ -7,11 +7,13 @@
 // The same engine also supplies the mechanism explanation, nearby contrast,
 // and a short settlement/land-use history so the first screen has depth.
 //
-// Authored `Place.experience` fields (optional) win field-by-field over the
-// derived read. Researched site-history overlays (`SITE_HISTORY`) fill Overview
-// history / why / immersive / feel / seasons / nearby contrast when those
-// fields are absent, without shipping that prose in the initial Explorer
-// bundle. The derived templates below remain the last-resort fallback.
+// Researched site-history overlays (`SITE_HISTORY`) are the newest
+// hand-written layer: their feel, seasons and traveler/resident fit win over
+// `Place.experience`, and their history / why / immersive / nearby contrast
+// fill in where the corpus has none — without shipping that prose in the
+// initial Explorer bundle. Authored `Place.experience` fields come next (when
+// they are not generated templates); the derived templates below remain the
+// last-resort fallback.
 //
 // Prose convention: temperatures are emitted in °C and localized at render
 // by `localizeProse`. Most season detail is kept qualitative; the precise
@@ -935,6 +937,7 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
     authored: Boolean(
       authoredFeel || overlay?.feel?.trim() || authoredTraveler || authoredResident || authoredTexture ||
       authoredWhy || overlayWhy || authoredHistory || overlayHistory || overlay?.immersive?.trim() ||
+      overlay?.travelerFit?.trim() || overlay?.residentFit?.trim() ||
       seasons.some(s => s.authored),
     ),
   };

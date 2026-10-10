@@ -2506,13 +2506,10 @@ export const AtlasMap = memo(function AtlasMap({
             ))}
           </g>
 
-          {/* Ranked, hovered, and selected pins stay above the trail for clear hit targets and badges. */}
-          <g>
-            {topMarkerRenderOrder.map(renderMarker)}
-          </g>
-
-          {/* Place-name cards ride above every pin (same priority order), so a
-              neighbouring glyph can never paint over a name. */}
+          {/* Place-name cards ride above ordinary pins (same priority order), so
+              background glyphs never paint over a name — but below the ranked,
+              hovered and selected pins, so an expanded label can never swallow
+              the hover or click of a neighbouring top pin. */}
           <g className="map-pin-labels">
             {markerRenderOrder.map(pt => {
               const labelMode = pinLabelModes.get(pt.place.id) ?? "hidden";
@@ -2536,6 +2533,11 @@ export const AtlasMap = memo(function AtlasMap({
                 />
               );
             })}
+          </g>
+
+          {/* Ranked, hovered, and selected pins stay above the trail for clear hit targets and badges. */}
+          <g>
+            {topMarkerRenderOrder.map(renderMarker)}
           </g>
         </g>
 

@@ -233,6 +233,19 @@ describe("localizeProse — distances", () => {
     expect(L("a ski town — 2424 m on the east Sierra flank")).toContain("7,953 ft");
     expect(L("dump meters of snow")).toContain("feet of snow");
     expect(L("Route 5 m")).toBe("Route 5 m");
+    // Review regressions: compound numbers, "half a kilometre", km², capitals, ranges, money.
+    expect(L("Twenty-five kilometres inland")).toBe("16 miles inland");
+    expect(L("two hundred and fifty metres")).toBe("820 feet");
+    expect(L("most days, and thirty kilometers inland")).toBe("most days, and 19 miles inland");
+    expect(L("a twenty-five-metre cliff")).toBe("a 82-foot cliff");
+    expect(L("Less than half a kilometre downstream")).toBe("Less than a third of a mile downstream");
+    expect(L("a kilometre-long beach")).toBe("a half-mile-long beach");
+    expect(L("roughly 50,000 km² — the largest")).toContain("19,000 square miles");
+    expect(L("Metres of snow fall")).toBe("Feet of snow fall");
+    expect(L("pine forests 2000–3000 m in the Sierra")).toBe("pine forests 2000–3000 m in the Sierra");
+    expect(L("raised $300 m in bonds")).toBe("raised $300 m in bonds");
+    expect(L("5 kg/ha")).toBe("5 kg/ha");
+    expect(L("0.4°C milder January low")).toBe("1°F milder January low");
   });
 
   it("converts kilogram weights to pounds", () => {
