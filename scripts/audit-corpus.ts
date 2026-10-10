@@ -145,7 +145,8 @@ function checkUnitResidues(where: string, text: string) {
 
 // Tokens that legitimately repeat (e.g. "had had" isn't in our corpus, but
 // some idioms like "one-on-one" can look like repeats if tokenized badly).
-const REPEAT_WORD_WHITELIST = new Set(["that", "had", "is"]);
+// "choo": the song title "Chattanooga Choo Choo".
+const REPEAT_WORD_WHITELIST = new Set(["that", "had", "is", "choo"]);
 
 function checkTypography(where: string, text: string) {
   // Repeated adjacent words (case-insensitive, word chars only, min length 2).
