@@ -207,6 +207,53 @@ describe("localizeProse — distances", () => {
     expect(localizeProse("The hiking belt runs 5–10 km from town.", "F", "imperial")).toContain("3.1–6.2 mi");
     expect(localizeProse("Snow depth often reaches 20-40 cm.", "F", "imperial")).toContain("8-16 in");
   });
+  it("converts hyphenated Celsius decade bands", () => {
+    const out = localizeProse("afternoons that rarely push past the mid-20s °C", "F", "imperial");
+    expect(out).not.toMatch(/mid-\d/);
+    expect(out).toMatch(/°F/);
+  });
+
+  it("converts areas and spelled-out or vague metric quantities", () => {
+    const L = (t: string) => localizeProse(t, "F", "imperial");
+    expect(L("covers some 7,000 hectares of marsh")).toContain("17,000 acres");
+    expect(L("a 1,300-hectare sand spit")).toContain("3,200-acre");
+    expect(L("about 350,000 square kilometres of land")).toContain("135,000 square miles");
+    expect(L("more than a thousand hectares")).toContain("2,500 acres");
+    expect(L("barely three kilometres wide")).toContain("1.9 miles wide");
+    expect(L("a crater 500 metres across")).toContain("1,640 feet across");
+    expect(L("travelled thousands of kilometres")).toContain("thousands of miles");
+    expect(L("only a few metres deep")).toContain("a few yards deep");
+    expect(L("barely more than a metre high")).toContain("a yard high");
+    expect(L("two metres of snow")).toContain("7 feet of snow");
+    expect(localizeProse("covers some 7,000 hectares", "C", "metric")).toContain("7,000 hectares");
+    expect(L("removed about 400,000 tonnes of rock")).toContain("441,000 tons");
+    expect(L("About 80 million tonnes of rock")).toContain("88 million tons");
+    expect(L("climbs 1800 vertical meters")).toContain("5,906 vertical feet");
+    expect(L("twelve-metre tides")).toContain("39-foot tides");
+    expect(L("a ski town — 2424 m on the east Sierra flank")).toContain("7,953 ft");
+    expect(L("dump meters of snow")).toContain("feet of snow");
+    expect(L("Route 5 m")).toBe("Route 5 m");
+    // Review regressions: compound numbers, "half a kilometre", km², capitals, ranges, money.
+    expect(L("Twenty-five kilometres inland")).toBe("16 miles inland");
+    expect(L("two hundred and fifty metres")).toBe("820 feet");
+    expect(L("most days, and thirty kilometers inland")).toBe("most days, and 19 miles inland");
+    expect(L("a twenty-five-metre cliff")).toBe("a 82-foot cliff");
+    expect(L("Less than half a kilometre downstream")).toBe("Less than a third of a mile downstream");
+    expect(L("a kilometre-long beach")).toBe("a half-mile-long beach");
+    expect(L("roughly 50,000 km² — the largest")).toContain("19,000 square miles");
+    expect(L("Metres of snow fall")).toBe("Feet of snow fall");
+    expect(L("pine forests 2000–3000 m in the Sierra")).toBe("pine forests 2000–3000 m in the Sierra");
+    expect(L("raised $300 m in bonds")).toBe("raised $300 m in bonds");
+    expect(L("5 kg/ha")).toBe("5 kg/ha");
+    expect(L("0.4°C milder January low")).toBe("1°F milder January low");
+  });
+
+  it("converts kilogram weights to pounds", () => {
+    expect(localizeProse("a cow sculpted from about 270 kg of butter", "F", "imperial")).toContain("595 lb");
+    expect(localizeProse("trout can weigh more than 10 kg", "F", "imperial")).toContain("22 lb");
+    expect(localizeProse("about 270 kg of butter", "C", "metric")).toContain("270 kg");
+  });
+
   it("converts km/h before bare km", () => {
     expect(localizeProse("Gusts reach 80 km/h.", "F", "imperial")).toContain("50 mph");
   });

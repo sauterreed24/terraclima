@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { geoPath, geoAlbers } from "d3-geo";
 import type { GeoProjection } from "d3-geo";
 import { feature, mesh } from "topojson-client";
@@ -9,6 +9,15 @@ import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useUnits } from "../lib/units";
 import { atlasLandFeatureCollection, getCachedAtlasTopology, loadAtlasTopology, type AtlasTopology } from "../lib/atlas-map-topology";
+import {
+  getCachedAtlasHydrography,
+  loadAtlasHydrography,
+  riverTier,
+  riverTierOpacity,
+  type AtlasHydrography,
+  type RiverTier,
+} from "../lib/atlas-map-hydrography";
+import { physicalLabelOpacity, projectPhysicalLabels, type PhysicalLabelKind } from "../lib/atlas-map-physical-labels";
 import { motionPolicy, useRichVisualEffects } from "../lib/device-profile";
 import {
   atlasSafeAreaForChrome,
@@ -58,7 +67,7 @@ import {
 import { layoutAtlasMapPins } from "../lib/atlas-map-pin-layout";
 import { defaultRankBadgeOffset, layoutRankBadges } from "../lib/atlas-map-rank-badges";
 import { placeMapSecondaryLine, truncateMapTitle } from "../lib/atlas-map-label";
-import { computePinLabelModes, type MapPinLabelMode } from "../lib/atlas-map-label-visibility";
+import { computePinLabelModes, type MapPinLabelMode, type MapScreenRect } from "../lib/atlas-map-label-visibility";
 import {
   ATLAS_DEFAULT_TOUCH_MODE,
   atlasTouchActionForMode,
@@ -141,6 +150,8 @@ type RenderedClusterPoint = ClusterPoint & {
 
 type ClimateRibbon = {
   id: string;
+  /** Lettered along the band at mid zoom so the corridor explains itself. */
+  label: string;
   d: string;
   color: string;
   width: number;
@@ -544,6 +555,8 @@ export const AtlasMap = memo(function AtlasMap({
   clusterPickerOpenRef.current = clusterPicker != null;
   const selectionFromMapRef = useRef(false);
   const [atlasReadoutExpanded, setAtlasReadoutExpanded] = useState(false);
+  /** Map chrome footprints (viewport px) that background pin labels avoid. */
+  const [hudRects, setHudRects] = useState<readonly MapScreenRect[]>(NO_HUD_RECTS);
   // Compact chrome (phones / narrow shells): keep the atlas read as a corner
   // chip so it cannot dominate the map mid-band while the user scrolls places.
   const hoverClearTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -650,6 +663,18 @@ export const AtlasMap = memo(function AtlasMap({
     setTopoRetryNonce(n => n + 1);
   }, []);
 
+  // Rivers and lakes are decorative context: load after the borders land and
+  // fail quietly (the atlas stays fully usable without them).
+  const [hydro, setHydro] = useState<AtlasHydrography | null>(getCachedAtlasHydrography);
+  useEffect(() => {
+    if (!topo || hydro) return;
+    let cancelled = false;
+    loadAtlasHydrography()
+      .then(h => { if (!cancelled) setHydro(h); })
+      .catch(() => { /* decorative layer — keep the map without water detail */ });
+    return () => { cancelled = true; };
+  }, [topo, hydro]);
+
   // Topology features (decoded once, only once the chunk is present)
   const focusFC = useMemo<FeatureCollection<Geometry, { name: string }> | null>(() => {
     if (!topo) return null;
@@ -700,6 +725,19 @@ export const AtlasMap = memo(function AtlasMap({
     () => countryBorderMesh ? pathGen(countryBorderMesh as never) : null,
     [countryBorderMesh, pathGen]
   );
+  const lakePath = useMemo(() => {
+    if (!hydro) return "";
+    return hydro.lakes.map(l => pathGen(l.geometry) ?? "").join(" ");
+  }, [hydro, pathGen]);
+  const riverPaths = useMemo<Record<RiverTier, string>>(() => {
+    const out: Record<RiverTier, string[]> = { trunk: [], major: [], regional: [] };
+    for (const r of hydro?.rivers ?? []) out[riverTier(r.rank)].push(pathGen(r.geometry) ?? "");
+    return { trunk: out.trunk.join(" "), major: out.major.join(" "), regional: out.regional.join(" ") };
+  }, [hydro, pathGen]);
+  const physicalLabels = useMemo(() => projectPhysicalLabels(projection), [projection]);
+  const ribbonIdPrefix = `tc-ribbon-${useId().replace(/[^a-zA-Z0-9_-]/g, "")}`;
+  /** Phone-width maps hold continent lettering until the reader zooms in. */
+  const smallMapLettering = width < 560;
 
   const pts = useMemo(() => {
     const out: { place: Place; x: number; y: number }[] = [];
@@ -880,6 +918,7 @@ export const AtlasMap = memo(function AtlasMap({
   const climateRibbons = useMemo<ClimateRibbon[]>(() => {
     const ribbons: Array<{
       id: string;
+      label: string;
       lonLat: Array<[number, number]>;
       color: string;
       width: number;
@@ -888,6 +927,7 @@ export const AtlasMap = memo(function AtlasMap({
     }> = [
       {
         id: "marine-layer",
+        label: "marine-layer coast",
         lonLat: [[-129, 51], [-126, 47], [-124, 43], [-122, 39], [-120, 35], [-116, 31]],
         color: "rgba(120, 220, 245, 0.42)",
         width: 16,
@@ -895,6 +935,7 @@ export const AtlasMap = memo(function AtlasMap({
       },
       {
         id: "rocky-rain-shadow",
+        label: "Rocky Mountain rain shadow",
         lonLat: [[-116, 51], [-113, 46], [-110, 42], [-107, 38], [-105, 34], [-104, 30]],
         color: "rgba(255, 204, 112, 0.4)",
         width: 14,
@@ -902,6 +943,7 @@ export const AtlasMap = memo(function AtlasMap({
       },
       {
         id: "gulf-moisture",
+        label: "Gulf moisture corridor",
         lonLat: [[-98, 24], [-93, 29], [-88, 33], [-83, 37], [-77, 41]],
         color: "rgba(143, 217, 154, 0.38)",
         width: 15,
@@ -909,6 +951,7 @@ export const AtlasMap = memo(function AtlasMap({
       },
       {
         id: "sierra-madre",
+        label: "monsoon spine",
         lonLat: [[-108, 31], [-104, 27], [-101, 23], [-98, 19], [-95, 16]],
         color: "rgba(212, 168, 255, 0.4)",
         width: 13,
@@ -1107,8 +1150,9 @@ export const AtlasMap = memo(function AtlasMap({
       viewportWidth: width,
       viewportHeight: height,
       featuredRankById,
+      reservedRects: hudRects,
     }),
-    [laidOutMarkerPoints, settledView, selectedId, hoverId, width, height, featuredRankById]
+    [laidOutMarkerPoints, settledView, selectedId, hoverId, width, height, featuredRankById, hudRects]
   );
 
   /**
@@ -1168,6 +1212,42 @@ export const AtlasMap = memo(function AtlasMap({
     }),
     [places, featuredIds, featuredLabel, clusterItems.length, markerPoints.length],
   );
+
+  // Measure the HUD (zoom column, scale bar, readout, key, and the stage
+  // caption App overlays on the map) so background labels never slide under
+  // chrome. Re-measured on resize and whenever a HUD element changes size.
+  const measureHud = useCallback(() => {
+    const shell = shellRef.current;
+    const svg = svgRef.current;
+    if (!shell || !svg) return;
+    const svgRect = svg.getBoundingClientRect();
+    if (svgRect.width < 1 || svgRect.height < 1) return;
+    const sx = width / svgRect.width;
+    const sy = height / svgRect.height;
+    const next: MapScreenRect[] = [];
+    (shell.parentElement ?? shell).querySelectorAll<HTMLElement>("[data-map-hud]").forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return;
+      if (r.right <= svgRect.left || r.left >= svgRect.right || r.bottom <= svgRect.top || r.top >= svgRect.bottom) return;
+      next.push({
+        left: Math.round((r.left - svgRect.left) * sx),
+        right: Math.round((r.right - svgRect.left) * sx),
+        top: Math.round((r.top - svgRect.top) * sy),
+        bottom: Math.round((r.bottom - svgRect.top) * sy),
+      });
+    });
+    setHudRects(prev => sameScreenRects(prev, next) ? prev : next);
+  }, [width, height]);
+  useLayoutEffect(() => {
+    measureHud();
+  }, [measureHud, atlasReadoutExpanded, legendOpen, atlasMapReadout?.headline]);
+  useEffect(() => {
+    const shell = shellRef.current;
+    if (!shell || typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(() => measureHud());
+    (shell.parentElement ?? shell).querySelectorAll<HTMLElement>("[data-map-hud]").forEach(el => ro.observe(el));
+    return () => ro.disconnect();
+  }, [measureHud, atlasMapReadout, coarsePointer, showScrollEscape]);
 
   // Roving-tabindex layout points — pins and clusters in one list so Tab
   // hits a single entry and arrows walk both. Screen coords drive Up/Down.
@@ -1861,15 +1941,11 @@ export const AtlasMap = memo(function AtlasMap({
     scheduleHoverClear();
   }, [scheduleHoverClear]);
   const renderMarker = (pt: RenderedClusterPoint) => {
-    const screenX = pt.x * settledView.k + settledView.x;
-    const labelSide: "left" | "right" = screenX > width * 0.62 ? "left" : "right";
     return (
       <Marker
         key={pt.place.id}
         pt={pt}
         k={view.k}
-        labelMode={pinLabelModes.get(pt.place.id) ?? "hidden"}
-        labelSide={labelSide}
         isActive={pt.place.id === selectedId}
         isHover={pt.place.id === hoverId}
         featuredRank={featuredRankById.get(pt.place.id)}
@@ -2015,6 +2091,13 @@ export const AtlasMap = memo(function AtlasMap({
             <circle cx="3" cy="7" r="0.22" fill="rgba(240,210,156,0.06)" />
           </pattern>
 
+          {/* Inland water — a touch lighter than open ocean so lakes read as
+              still water sitting on the land rather than holes in it. */}
+          <linearGradient id="lakeGrad" x1="0" y1="0" x2="0.4" y2="1">
+            <stop offset="0" stopColor="#24395a" />
+            <stop offset="1" stopColor="#152640" />
+          </linearGradient>
+
           {/* Vignette */}
           <radialGradient id="vignette" cx="50%" cy="50%" r="78%">
             <stop offset="0.5" stopColor="rgba(0,0,0,0)" />
@@ -2134,6 +2217,45 @@ export const AtlasMap = memo(function AtlasMap({
               </g>
             ) : null}
 
+            {/* Hydrography — Natural Earth 1:50m lakes and rivers. Strokes are
+                non-scaling so rivers stay hairline-crisp at every zoom; the
+                regional tier fades in only once the map is close enough. */}
+            {lakePath ? (
+              <path
+                className="map-hydro-lakes"
+                d={lakePath}
+                fill="url(#lakeGrad)"
+                stroke="rgba(150, 206, 232, 0.42)"
+                strokeWidth="0.7"
+                strokeLinejoin="round"
+                vectorEffect="non-scaling-stroke"
+                pointerEvents="none"
+              />
+            ) : null}
+            {riverPaths.trunk || riverPaths.major || riverPaths.regional ? (
+              <g className="map-hydro-rivers" fill="none" strokeLinecap="round" strokeLinejoin="round" pointerEvents="none" aria-hidden>
+                {richEffects && riverPaths.trunk ? (
+                  <path
+                    d={riverPaths.trunk}
+                    stroke="rgba(110, 190, 235, 0.16)"
+                    strokeWidth="4"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ) : null}
+                {(["regional", "major", "trunk"] as const).map(tier => riverPaths[tier] ? (
+                  <path
+                    key={tier}
+                    data-river-tier={tier}
+                    d={riverPaths[tier]}
+                    stroke={tier === "trunk" ? "rgba(140, 205, 240, 0.95)" : "rgba(128, 194, 232, 0.9)"}
+                    strokeWidth={tier === "trunk" ? 1.45 : tier === "major" ? 1.05 : 0.75}
+                    opacity={riverTierOpacity(tier, view.k)}
+                    vectorEffect="non-scaling-stroke"
+                  />
+                ) : null)}
+              </g>
+            ) : null}
+
             {/* Sunward rim on landmass — 1 extra path, no filter */}
             <path
               d={landPath.length > 8 ? landPath : focusPath}
@@ -2149,6 +2271,7 @@ export const AtlasMap = memo(function AtlasMap({
               {climateRibbons.map(ribbon => (
                 <path
                   key={ribbon.id}
+                  id={`${ribbonIdPrefix}-${ribbon.id}`}
                   d={ribbon.d}
                   fill="none"
                   stroke={ribbon.color}
@@ -2160,11 +2283,31 @@ export const AtlasMap = memo(function AtlasMap({
                   opacity={richEffects ? ribbon.opacity : ribbon.opacity * 0.55}
                 />
               ))}
+              {/* Corridor names ride the bands once the map is close enough to
+                  read them; font size is divided by zoom so the lettering holds
+                  a steady screen size inside the pan/zoom group. */}
+              {view.k >= 1.05 && view.k <= 3 ? climateRibbons.map(ribbon => (
+                <text
+                  key={`${ribbon.id}-label`}
+                  className="map-signal-ribbons__label"
+                  fontSize={9.5 / view.k}
+                  letterSpacing={`${0.9 / view.k}`}
+                  fontStyle="italic"
+                  fontFamily="var(--font-serif), Georgia, serif"
+                  fill={ribbon.color.replace(/[\d.]+\)$/, "0.9)")}
+                  opacity={Math.min(1, (view.k - 1.05) / 0.3) * Math.min(1, (3 - view.k) / 0.6)}
+                  dy={-5 / view.k}
+                >
+                  <textPath href={`#${ribbonIdPrefix}-${ribbon.id}`} startOffset="50%" textAnchor="middle">
+                    {ribbon.label}
+                  </textPath>
+                </text>
+              )) : null}
             </g>
           </g>
 
           {/* Graticule (lat/lon grid with edge tick labels) */}
-          <Graticule pathGen={pathGen} projection={projection} richEffects={richEffects} />
+          <Graticule pathGen={pathGen} projection={projection} richEffects={richEffects} k={view.k} />
 
           {/* Borders — also fade with the cartography group */}
           <g
@@ -2211,6 +2354,47 @@ export const AtlasMap = memo(function AtlasMap({
                 </g>
               </g>
             ))}
+          </g>
+
+          {/* Physical geography lettering — seas in italic serif, mountain
+              spines in spaced capitals — under the pins so places always win. */}
+          <g className="map-physical-labels" pointerEvents="none" aria-hidden style={{ opacity: topo ? 1 : 0 }}>
+            {physicalLabels.map(label => {
+              // Phone-sized maps are too small for continent-scale lettering;
+              // wait until the reader zooms in, then draw slightly smaller.
+              const opacity = physicalLabelOpacity(
+                smallMapLettering ? { minK: Math.max(label.minK, 0.95), maxK: label.maxK } : label,
+                view.k,
+              );
+              if (opacity <= 0.02) return null;
+              const style = PHYSICAL_LABEL_STYLE[label.kind];
+              const text = style.upper ? label.text.toUpperCase() : label.text;
+              return (
+                <g
+                  key={label.id}
+                  transform={`translate(${label.x} ${label.y})`}
+                  opacity={opacity}
+                  data-physical-label={label.kind}
+                >
+                  <g data-atlas-inv-scale="" transform={`scale(${1 / view.k})`}>
+                    <text
+                      transform={label.angle ? `rotate(${label.angle.toFixed(1)})` : undefined}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      fontSize={smallMapLettering ? style.size * 0.88 : style.size}
+                      fontStyle={style.italic ? "italic" : undefined}
+                      fontWeight={style.weight}
+                      letterSpacing={style.tracking}
+                      fill={style.fill}
+                      fontFamily={style.serif ? "var(--font-serif), Georgia, serif" : "var(--font-sans), system-ui, sans-serif"}
+                      style={style.halo
+                        ? { paintOrder: "stroke fill", stroke: style.halo, strokeWidth: 2.6, strokeLinejoin: "round" }
+                        : undefined}
+                    >{text}</text>
+                  </g>
+                </g>
+              );
+            })}
           </g>
 
           {/* Clustered pins (mobile / low zoom) */}
@@ -2322,6 +2506,35 @@ export const AtlasMap = memo(function AtlasMap({
             ))}
           </g>
 
+          {/* Place-name cards ride above ordinary pins (same priority order), so
+              background glyphs never paint over a name — but below the ranked,
+              hovered and selected pins, so an expanded label can never swallow
+              the hover or click of a neighbouring top pin. */}
+          <g className="map-pin-labels">
+            {markerRenderOrder.map(pt => {
+              const labelMode = pinLabelModes.get(pt.place.id) ?? "hidden";
+              if (labelMode === "hidden") return null;
+              const screenX = pt.x * settledView.k + settledView.x;
+              return (
+                <MarkerLabel
+                  key={pt.place.id}
+                  pt={pt}
+                  k={view.k}
+                  labelMode={labelMode}
+                  labelSide={screenX > width * 0.62 ? "left" : "right"}
+                  isActive={pt.place.id === selectedId}
+                  isHover={pt.place.id === hoverId}
+                  featuredRank={featuredRankById.get(pt.place.id)}
+                  onSelect={selectFromMap}
+                  onToggleBookmark={onToggleBookmark}
+                  onHoverEnter={onMarkerHoverEnter}
+                  onLeave={scheduleHoverClear}
+                  shouldSuppressTouchActivation={shouldSuppressTouchActivation}
+                />
+              );
+            })}
+          </g>
+
           {/* Ranked, hovered, and selected pins stay above the trail for clear hit targets and badges. */}
           <g>
             {topMarkerRenderOrder.map(renderMarker)}
@@ -2343,7 +2556,7 @@ export const AtlasMap = memo(function AtlasMap({
           only; coarse pointers keep just the scale bar plus the compact Key
           access. (The scale bar reports real distance, so a raw zoom multiplier
           would be redundant — we deliberately don't show one.) */}
-      <div className="map-scale-stack absolute bottom-3 left-3 z-[3] flex flex-col items-start gap-2 pointer-events-none max-w-[min(calc(100vw-8rem),22rem)]">
+      <div data-map-hud="" className="map-scale-stack absolute bottom-3 left-3 z-[3] flex flex-col items-start gap-2 pointer-events-none max-w-[min(calc(100vw-8rem),22rem)]">
         <div className="map-cartography-cluster">
           {!coarsePointer ? <MapCompassGlyph /> : null}
           <div className="flex flex-col gap-1 w-[104px] shrink-0">
@@ -2379,6 +2592,7 @@ export const AtlasMap = memo(function AtlasMap({
 
       {atlasMapReadout ? (
         <aside
+          data-map-hud=""
           className="map-atlas-readout map-chrome-panel"
           aria-label="Current map read"
           data-expanded={atlasReadoutExpanded ? "true" : "false"}
@@ -2433,7 +2647,7 @@ export const AtlasMap = memo(function AtlasMap({
       {/* Zoom + interaction controls — all map-control affordances grouped in the
           top-right column. Scroll-escape toggle leads when touch can trap page
           scroll (coarse primary or hybrid fine+touch). */}
-      <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-[3]">
+      <div data-map-hud="" className="absolute top-3 right-3 flex flex-col items-end gap-1.5 z-[3]">
         {showScrollEscape ? (
           <button
             type="button"
@@ -2480,7 +2694,7 @@ export const AtlasMap = memo(function AtlasMap({
 
       {/* Map key — tucked above the button so it does not sit on the atlas by default. */}
       {!coarsePointer ? (
-        <div className="map-key-dock absolute bottom-3 right-3 z-[4] pointer-events-auto">
+        <div data-map-hud="" className="map-key-dock absolute bottom-3 right-3 z-[4] pointer-events-auto">
           <button
             ref={legendToggleRef}
             type="button"
@@ -2563,6 +2777,7 @@ export const AtlasMap = memo(function AtlasMap({
               <span className="text-[rgba(255,220,150,0.95)]">Mexico</span>
               {" "}— fill stays the climate driver.
             </p>
+            <p>Blue lines and fills are rivers and lakes (Natural Earth 1:50m). Soft coloured bands trace four climate corridors: the marine-layer coast, the Rocky Mountain rain shadow, the Gulf moisture corridor, and the Sierra Madre monsoon spine.</p>
             <p>Geospatial numbers are atlas screening analytics (terrain + climate + reference EO design goals). They are not live Sentinel, Landsat, or lidar products.</p>
             <p>Chart numbers use Daymet rolling {CLIMATE_NORMALS_PERIOD} climatology (not a WMO standard normal); 1991–2020 remains the official comparison period.</p>
             <p className="map-key-notes__credit">Projection: Albers equal-area conic, centered on North America (north is up).</p>
@@ -2659,11 +2874,6 @@ export const AtlasMap = memo(function AtlasMap({
 interface MarkerProps {
   pt: RenderedClusterPoint;
   k: number;
-  labelMode: MapPinLabelMode;
-  /** Side of the pin to draw the label on. Flips to "left" when the marker
-   * sits in the right band of the visible viewport so the label never clips
-   * past the SVG edge at high zoom. */
-  labelSide: "left" | "right";
   isActive: boolean;
   isHover: boolean;
   featuredRank?: number;
@@ -2819,7 +3029,7 @@ const ClusterMarker = memo(function ClusterMarker({
 });
 
 const Marker = memo(function Marker({
-  pt, k, labelMode, labelSide, isActive, isHover, featuredRank, richEffects, isRovingFocused,
+  pt, k, isActive, isHover, featuredRank, richEffects, isRovingFocused,
   onSelect, onToggleBookmark, onHoverEnter, onFocusEnter, onLeave, onFocusLeave, shouldSuppressTouchActivation, onArrow, onHomeEnd, onFocusReceived,
 }: MarkerProps) {
   const { place, x, y, needsLeader, crowded, badgeDx, badgeDy, badgeFanned } = pt;
@@ -2827,8 +3037,7 @@ const Marker = memo(function Marker({
   const color = TONE[tone];
   const signature = useMemo(() => getPlaceVisualSignature(place), [place]);
 
-  const baseSize = place.tier === "A" ? 7.2 : place.tier === "B" ? 5.4 : 4.35;
-  const r = isActive ? baseSize + 1.8 : isHover ? baseSize + 1.2 : baseSize;
+  const r = markerPinRadius(place, isActive, isHover);
   const badgeSeat = featuredRank
     ? (badgeDx != null && badgeDy != null
         ? { dx: badgeDx, dy: badgeDy }
@@ -2848,33 +3057,6 @@ const Marker = memo(function Marker({
   const showAura = k >= 1.0;
   const showCountryRing = k >= 1.0;
   const showOrbit = richEffects && k >= 1.15;
-
-  const titleLimit =
-    labelMode === "compact"
-      ? 16
-      : labelMode === "full"
-        ? isActive || isHover
-          ? 120
-          : k >= 1.65
-            ? 56
-            : Math.max(12, Math.min(30, Math.floor(11 + k * 11)))
-        : 0;
-  const titleDisp =
-    labelMode === "hidden" ? "" : truncateMapTitle(place.name, Math.max(1, titleLimit));
-  const showSub =
-    labelMode === "full" &&
-    (isActive || isHover || k >= 1.45) &&
-    subLine.length > 0;
-  const showSignatureLine = showSub && (isActive || isHover || k >= 1.65);
-  const labelW = Math.min(
-    320,
-    Math.max(
-      titleDisp.length * 6.15 + 18,
-      showSub ? subLine.length * 5.2 + 18 : 0,
-      showSignatureLine ? signature.mapLabel.length * 5.2 + 32 : 0,
-    )
-  );
-  const labelH = showSignatureLine ? 48 : showSub ? 34 : labelMode === "compact" ? 18 : 18;
 
   const activate = useCallback(
     (e: React.SyntheticEvent) => {
@@ -3117,18 +3299,184 @@ const Marker = memo(function Marker({
           />
         )}
 
-        {labelMode !== "hidden" ? (() => {
+        {/* Hit target on top so touch/stylus picks the marker, not the map pan layer beneath. */}
+        <circle r={Math.max(hitR, crowded ? hitR : r + 18)} fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
+      </g>
+    </g>
+  );
+}, (prev, next) =>
+  prev.onSelect === next.onSelect &&
+  prev.onToggleBookmark === next.onToggleBookmark &&
+  prev.onHoverEnter === next.onHoverEnter &&
+  prev.onFocusEnter === next.onFocusEnter &&
+  prev.onLeave === next.onLeave &&
+  prev.onFocusLeave === next.onFocusLeave &&
+  prev.isActive === next.isActive &&
+  prev.isHover === next.isHover &&
+  prev.featuredRank === next.featuredRank &&
+  prev.k === next.k &&
+  prev.richEffects === next.richEffects &&
+  prev.isRovingFocused === next.isRovingFocused &&
+  prev.shouldSuppressTouchActivation === next.shouldSuppressTouchActivation &&
+  prev.onArrow === next.onArrow &&
+  prev.onHomeEnd === next.onHomeEnd &&
+  prev.onFocusReceived === next.onFocusReceived &&
+  prev.pt.x === next.pt.x &&
+  prev.pt.y === next.pt.y &&
+  prev.pt.anchorX === next.pt.anchorX &&
+  prev.pt.anchorY === next.pt.anchorY &&
+  prev.pt.needsLeader === next.pt.needsLeader &&
+  prev.pt.crowded === next.pt.crowded &&
+  prev.pt.badgeDx === next.pt.badgeDx &&
+  prev.pt.badgeDy === next.pt.badgeDy &&
+  prev.pt.badgeFanned === next.pt.badgeFanned &&
+  prev.pt.place === next.pt.place
+);
+
+/** Lettering for physical labels, in screen pixels (counter-scaled with zoom). */
+const PHYSICAL_LABEL_STYLE: Record<PhysicalLabelKind, {
+  size: number;
+  weight: number;
+  tracking: string;
+  fill: string;
+  italic: boolean;
+  serif: boolean;
+  upper: boolean;
+  halo?: string;
+}> = {
+  ocean: { size: 13, weight: 400, tracking: "0.32em", fill: "rgba(150, 202, 236, 0.5)", italic: true, serif: true, upper: true },
+  sea: { size: 11.5, weight: 400, tracking: "0.14em", fill: "rgba(156, 206, 238, 0.58)", italic: true, serif: true, upper: false },
+  lake: { size: 9.5, weight: 400, tracking: "0.06em", fill: "rgba(176, 218, 242, 0.72)", italic: true, serif: true, upper: false, halo: "rgba(14, 26, 46, 0.7)" },
+  range: { size: 8.4, weight: 650, tracking: "0.34em", fill: "rgba(240, 218, 182, 0.56)", italic: false, serif: false, upper: true, halo: "rgba(10, 18, 32, 0.62)" },
+  region: { size: 11, weight: 400, tracking: "0.12em", fill: "rgba(214, 228, 244, 0.46)", italic: true, serif: true, upper: false, halo: "rgba(10, 18, 32, 0.55)" },
+};
+
+
+const NO_HUD_RECTS: readonly MapScreenRect[] = [];
+
+function sameScreenRects(a: readonly MapScreenRect[], b: readonly MapScreenRect[]): boolean {
+  if (a.length !== b.length) return false;
+  return a.every((r, i) => {
+    const o = b[i]!;
+    return r.left === o.left && r.right === o.right && r.top === o.top && r.bottom === o.bottom;
+  });
+}
+
+/** Pin glyph radius in screen px (before the counter-scale). */
+function markerPinRadius(place: Place, isActive: boolean, isHover: boolean): number {
+  const baseSize = place.tier === "A" ? 7.2 : place.tier === "B" ? 5.4 : 4.35;
+  return isActive ? baseSize + 1.8 : isHover ? baseSize + 1.2 : baseSize;
+}
+
+interface MarkerLabelProps {
+  pt: RenderedClusterPoint;
+  k: number;
+  labelMode: Exclude<MapPinLabelMode, "hidden">;
+  /** Side of the pin to draw the label on. Flips to "left" when the marker
+   * sits in the right band of the visible viewport so the label never clips
+   * past the SVG edge at high zoom. */
+  labelSide: "left" | "right";
+  isActive: boolean;
+  isHover: boolean;
+  featuredRank?: number;
+  onSelect: (id: string) => void;
+  onToggleBookmark?: (id: string) => void;
+  onHoverEnter: (id: string, x: number, y: number) => void;
+  onLeave: () => void;
+  shouldSuppressTouchActivation: () => boolean;
+}
+
+/**
+ * Place-name card for a pin. Lives in its own layer above every pin so a
+ * neighbouring glyph can never paint over a name; it follows the same
+ * collision-spread position and counter-scale as its marker. Ranked, hovered,
+ * and selected labels are clickable and open their own place.
+ */
+const MarkerLabel = memo(function MarkerLabel({
+  pt, k, labelMode, labelSide, isActive, isHover, featuredRank,
+  onSelect, onToggleBookmark, onHoverEnter, onLeave, shouldSuppressTouchActivation,
+}: MarkerLabelProps) {
+  const { place, x, y } = pt;
+  const signature = useMemo(() => getPlaceVisualSignature(place), [place]);
+  const r = markerPinRadius(place, isActive, isHover);
+  const inv = 1 / k;
+  const subLine = placeMapSecondaryLine(place);
+  const emphasized = Boolean(featuredRank) || isActive || isHover;
+
+  const titleLimit =
+    labelMode === "compact"
+      ? 16
+      : isActive || isHover
+        ? 120
+        : k >= 1.65
+          ? 56
+          : Math.max(12, Math.min(30, Math.floor(11 + k * 11)));
+  const titleDisp = truncateMapTitle(place.name, Math.max(1, titleLimit));
+  const showSub =
+    labelMode === "full" &&
+    (isActive || isHover || k >= 1.45) &&
+    subLine.length > 0;
+  // The feel/strength signature line is reserved for emphasized pins so a
+  // zoomed-in field of background labels stays two lines tall.
+  const showSignatureLine = showSub && emphasized && (isActive || isHover || k >= 1.25);
+  const labelW = Math.min(
+    320,
+    Math.max(
+      titleDisp.length * 6.15 + 18,
+      showSub ? subLine.length * 5.2 + 18 : 0,
+      showSignatureLine ? signature.mapLabel.length * 5.2 + 32 : 0,
+    )
+  );
+  const labelH = showSignatureLine ? 48 : showSub ? 34 : 18;
+
+  const activate = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (shouldSuppressTouchActivation()) return;
+      if (onToggleBookmark && (e.altKey || e.metaKey || e.shiftKey)) {
+        onToggleBookmark(place.id);
+        return;
+      }
+      onSelect(place.id);
+    },
+    [onSelect, onToggleBookmark, place.id, shouldSuppressTouchActivation],
+  );
+  const stopPan = useCallback((e: React.PointerEvent) => {
+    if (e.pointerType === "touch") return;
+    e.stopPropagation();
+  }, []);
+  const handleHoverEnter = useCallback((event: React.PointerEvent) => {
+    if (event.pointerType === "touch" || event.pointerType === "pen") return;
+    onHoverEnter(place.id, x, y);
+  }, [onHoverEnter, place.id, x, y]);
+
+  const interactive = emphasized;
+  return (
+    <g
+      transform={`translate(${x} ${y})`}
+      className="map-marker-label-host"
+      data-label-for={place.id}
+      data-label-state={isActive ? "active" : isHover ? "hover" : featuredRank ? "featured" : "idle"}
+      aria-hidden
+    >
+      <g transform={`scale(${inv})`} data-atlas-inv-scale="">
+        {(() => {
           // Label sits to the right of the pin by default. When `labelSide`
           // is "left", the entire group is shifted by -(labelW + r + 6) so
           // its right edge lands just before the pin — never past the SVG
           // edge at high zoom.
           const labelDx = labelSide === "right" ? r + 6 : -(r + 6) - labelW;
-          const labelPointerEvents = featuredRank || isActive || isHover ? "auto" : "none";
+          const labelPointerEvents = interactive ? "auto" : "none";
           return (
             <g
               transform={`translate(${labelDx} ${showSub ? 2 : 4})`}
               pointerEvents={labelPointerEvents}
               className="map-marker-label"
+              style={interactive ? { cursor: "pointer" } : undefined}
+              onPointerDown={interactive ? stopPan : undefined}
+              onClick={interactive ? activate : undefined}
+              onPointerEnter={interactive ? handleHoverEnter : undefined}
+              onPointerLeave={interactive ? onLeave : undefined}
             >
               <rect
                 x={-2}
@@ -3187,42 +3535,11 @@ const Marker = memo(function Marker({
               ) : null}
             </g>
           );
-        })() : null}
-        {/* Hit target on top so touch/stylus picks the marker, not the map pan layer beneath. */}
-        <circle r={Math.max(hitR, crowded ? hitR : r + 18)} fill="transparent" stroke="none" pointerEvents="all" aria-hidden />
+        })()}
       </g>
     </g>
   );
-}, (prev, next) =>
-  prev.onSelect === next.onSelect &&
-  prev.onToggleBookmark === next.onToggleBookmark &&
-  prev.onHoverEnter === next.onHoverEnter &&
-  prev.onFocusEnter === next.onFocusEnter &&
-  prev.onLeave === next.onLeave &&
-  prev.onFocusLeave === next.onFocusLeave &&
-  prev.labelMode === next.labelMode &&
-  prev.labelSide === next.labelSide &&
-  prev.isActive === next.isActive &&
-  prev.isHover === next.isHover &&
-  prev.featuredRank === next.featuredRank &&
-  prev.k === next.k &&
-  prev.richEffects === next.richEffects &&
-  prev.isRovingFocused === next.isRovingFocused &&
-  prev.shouldSuppressTouchActivation === next.shouldSuppressTouchActivation &&
-  prev.onArrow === next.onArrow &&
-  prev.onHomeEnd === next.onHomeEnd &&
-  prev.onFocusReceived === next.onFocusReceived &&
-  prev.pt.x === next.pt.x &&
-  prev.pt.y === next.pt.y &&
-  prev.pt.anchorX === next.pt.anchorX &&
-  prev.pt.anchorY === next.pt.anchorY &&
-  prev.pt.needsLeader === next.pt.needsLeader &&
-  prev.pt.crowded === next.pt.crowded &&
-  prev.pt.badgeDx === next.pt.badgeDx &&
-  prev.pt.badgeDy === next.pt.badgeDy &&
-  prev.pt.badgeFanned === next.pt.badgeFanned &&
-  prev.pt.place === next.pt.place
-);
+});
 
 /** Driver hues — saturated so diamonds / rings / squares read at a glance on dark land. */
 const TONE: Record<string, string> = {
@@ -3241,7 +3558,7 @@ const COUNTRY_RING_STROKE: Record<Place["country"], string> = {
   Mexico: "rgba(255, 214, 138, 0.98)",
 };
 
-const Graticule = memo(function Graticule({ pathGen, projection, richEffects }: { pathGen: ReturnType<typeof geoPath>; projection: GeoProjection; richEffects: boolean }) {
+const Graticule = memo(function Graticule({ pathGen, projection, richEffects, k }: { pathGen: ReturnType<typeof geoPath>; projection: GeoProjection; richEffects: boolean; k: number }) {
   const { lines, latLabels, lonLabels } = useMemo(() => {
     const out: string[] = [];
     // Longitudes (meridians)
@@ -3265,12 +3582,12 @@ const Graticule = memo(function Graticule({ pathGen, projection, richEffects }: 
     const latList: Array<{ text: string; x: number; y: number }> = [];
     for (const lat of [30, 45, 60]) {
       const xy = projection([-125, lat]); // left edge of continental US
-      if (xy) latList.push({ text: `${lat}°N`, x: xy[0] - 4, y: xy[1] + 3 });
+      if (xy) latList.push({ text: `${lat}°N`, x: xy[0], y: xy[1] });
     }
     const lonList: Array<{ text: string; x: number; y: number }> = [];
     for (const lon of [-120, -100, -80]) {
       const xy = projection([lon, 22]); // bottom edge ~MX gulf
-      if (xy) lonList.push({ text: `${Math.abs(lon)}°W`, x: xy[0], y: xy[1] + 10 });
+      if (xy) lonList.push({ text: `${Math.abs(lon)}°W`, x: xy[0], y: xy[1] });
     }
     return { lines: out, latLabels: latList, lonLabels: lonList };
   }, [pathGen, projection]);
@@ -3290,30 +3607,37 @@ const Graticule = memo(function Graticule({ pathGen, projection, richEffects }: 
           vectorEffect="non-scaling-stroke"
         />
       ))}
-      <g pointerEvents="none">
+      {/* Degree ticks are counter-scaled like pins so they stay small
+          instrument marks instead of ballooning when the map zooms in. */}
+      <g pointerEvents="none" className="map-graticule-ticks">
         {latLabels.map(l => (
-          <text
-            key={l.text}
-            x={l.x}
-            y={l.y}
-            textAnchor="end"
-            fontSize={8}
-            fill={tickFill}
-            fontFamily="var(--font-sans),system-ui,sans-serif"
-            letterSpacing="0.05em"
-          >{l.text}</text>
+          <g key={l.text} transform={`translate(${l.x} ${l.y})`}>
+            <g data-atlas-inv-scale="" transform={`scale(${1 / k})`}>
+              <text
+                x={-5}
+                y={3}
+                textAnchor="end"
+                fontSize={9}
+                fill={tickFill}
+                fontFamily="var(--font-mono),ui-monospace,monospace"
+                letterSpacing="0.04em"
+              >{l.text}</text>
+            </g>
+          </g>
         ))}
         {lonLabels.map(l => (
-          <text
-            key={l.text}
-            x={l.x}
-            y={l.y}
-            textAnchor="middle"
-            fontSize={8}
-            fill={tickFill}
-            fontFamily="var(--font-sans),system-ui,sans-serif"
-            letterSpacing="0.05em"
-          >{l.text}</text>
+          <g key={l.text} transform={`translate(${l.x} ${l.y})`}>
+            <g data-atlas-inv-scale="" transform={`scale(${1 / k})`}>
+              <text
+                y={13}
+                textAnchor="middle"
+                fontSize={9}
+                fill={tickFill}
+                fontFamily="var(--font-mono),ui-monospace,monospace"
+                letterSpacing="0.04em"
+              >{l.text}</text>
+            </g>
+          </g>
         ))}
       </g>
     </g>

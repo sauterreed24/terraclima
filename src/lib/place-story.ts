@@ -1,14 +1,7 @@
 import type { Place } from "../types";
-import { ARCHETYPE_BY_ID } from "../data/archetypes";
-import { DRIVER_LABELS } from "../types";
 import { meanJanLow, meanSummerHigh, getAnnualPrecipMm } from "./climate-metrics";
-import { fmtElev, fmtPrecip, fmtTemp } from "./units";
+import { fmtPrecip, fmtTemp } from "./units";
 import type { DistUnit, TempUnit } from "./units";
-
-function firstSentence(text: string): string {
-  const first = text.split(/(?<=[.!?])\s+/)[0]?.trim() ?? text.trim();
-  return first;
-}
 
 function joinHumanList(items: readonly string[], max = 4): string {
   const clean = Array.from(new Set(items.map(s => s.trim()).filter(Boolean))).slice(0, max);
@@ -18,15 +11,12 @@ function joinHumanList(items: readonly string[], max = 4): string {
   return `${clean.slice(0, -1).join(", ")}, and ${clean.at(-1)}`;
 }
 
-function ensurePeriod(text: string): string {
-  const t = text.trim();
-  if (!t) return t;
-  return /[.!?]$/.test(t) ? t : `${t}.`;
-}
-
 /**
- * Scene-first narrative from structured place data. Leads with mechanism and
- * sensation; numbers arrive as supporting texture, not a score readout.
+ * A short, practical companion to the overview. The overview already carries
+ * the authored feel, why-it-differs read, contrasts and history, so this
+ * section does not repeat them: it puts the numbers into plain words, names
+ * the communities that share the same air, and says where to start on the
+ * ground.
  */
 export function composeFieldStory(
   place: Place,
@@ -36,66 +26,30 @@ export function composeFieldStory(
   const jh = meanSummerHigh(place);
   const jl = meanJanLow(place);
   const annualP = getAnnualPrecipMm(place);
-  const archetypeLabel = ARCHETYPE_BY_ID[place.archetypes[0]]?.label ?? "this landscape";
-  const driverLabels = place.drivers.map(d => DRIVER_LABELS[d] ?? d);
-  const feel = place.experience?.feel?.trim();
-  const texture = place.experience?.texture?.trim();
-  const why = place.whyDistinct.trim();
+  const annualSnowCm = place.climate.snowCm?.reduce((a, b) => a + (b ?? 0), 0) ?? 0;
+  const wet = annualSnowCm >= 25 ? "rain and snow" : "rain";
 
-  const paragraphs: string[] = [];
-
-  if (feel) {
-    paragraphs.push(feel);
-    if (firstSentence(why) !== feel) paragraphs.push(why);
-  } else {
-    paragraphs.push(why);
-  }
-
-  paragraphs.push(
-    `${place.name} sits near ${fmtElev(place.elevationM, dist)} in ${archetypeLabel.toLowerCase()} country, where ${place.reliefContext.replace(/\.$/, "")}. Terrain engines on the record are ${joinHumanList(driverLabels, 5)}.`,
-  );
-
-  const nearby = (place.nearbyContrasts ?? []).filter(n => n.note).slice(0, 2);
-  if (nearby.length) {
-    paragraphs.push(
-      nearby.map(n => `${n.label}: ${n.note.replace(/\.$/, "")}.`).join(" "),
-    );
-  }
-
-  paragraphs.push(
-    `High-summer afternoons run around ${fmtTemp(jh, temp)}, winter lows near ${fmtTemp(jl, temp)}, with about ${fmtPrecip(annualP, dist)} of precipitation — Köppen ${place.koppen}, ${place.biome}.`,
-  );
+  const paragraphs: string[] = [
+    `In round numbers: summer afternoons around ${fmtTemp(jh, temp)}, winter nights near ${fmtTemp(jl, temp)}, and about ${fmtPrecip(annualP, dist)} of ${wet} in a typical year.`,
+  ];
 
   if (place.settlementsWithinZone?.length) {
     const slice = place.settlementsWithinZone.slice(0, 5);
-    const names = slice.map(s => s.name + (s.population ? ` (${s.population})` : "")).join(", ");
-    const more =
-      place.settlementsWithinZone.length > slice.length
-        ? `, plus ${place.settlementsWithinZone.length - slice.length} more communities in the same air mass`
-        : "";
-    paragraphs.push(`The lived map is anchored by ${names}${more}.`);
+    const names = slice.map(s => s.name + (s.population ? ` (${s.population})` : ""));
+    const extra = place.settlementsWithinZone.length - slice.length;
+    const list = extra > 0 ? [...names, `${extra} more ${extra === 1 ? "community" : "communities"}`] : names;
+    paragraphs.push(`The same air wraps around ${joinHumanList(list, 6)}.`);
   }
 
   if (place.thingsToDo?.length) {
-    const bits = place.thingsToDo.slice(0, 5).map(t => {
-      const season = t.season ? ` (${t.season})` : "";
-      return `${t.label}${season}`;
-    });
-    paragraphs.push(`To feel the microclimate rather than just read it, start with ${bits.join("; ")}.`);
+    const bits = place.thingsToDo.slice(0, 5).map(t => (t.season ? `${t.label} (${t.season})` : t.label));
+    paragraphs.push(`To feel the climate rather than just read about it, start with ${bits.join("; ")}.`);
   } else if (place.travelFit.length) {
-    paragraphs.push(`Travelers often show up for ${joinHumanList(place.travelFit, 4)}, which is the practical side of the same climate signal.`);
-  }
-
-  if (texture) {
-    paragraphs.push(texture);
-  } else {
-    paragraphs.push(
-      `Strongest for ${ensurePeriod(place.whoWouldLove)} Harder for ${ensurePeriod(place.whoMightNot)}`,
-    );
+    paragraphs.push(`Visitors tend to come for ${joinHumanList(place.travelFit, 4)}.`);
   }
 
   return {
-    title: `Field story: ${place.name}`,
+    title: `On the ground: ${place.name}`,
     paragraphs,
   };
 }

@@ -11,6 +11,20 @@ export interface MapPinLabelOptions {
   viewportWidth: number;
   viewportHeight: number;
   featuredRankById?: ReadonlyMap<string, number>;
+  /**
+   * Screen-pixel rectangles covered by map chrome (zoom buttons, scale bar,
+   * readout chips). Background labels that would slide under them are hidden
+   * instead of being half-covered; selected / hovered labels always draw.
+   */
+  reservedRects?: readonly MapScreenRect[];
+}
+
+/** Axis-aligned rectangle in map-viewport pixels. */
+export interface MapScreenRect {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
 }
 
 function priority(place: Place, featuredRank?: number): number {
@@ -18,12 +32,7 @@ function priority(place: Place, featuredRank?: number): number {
   return featuredBoost + TIER_RANK[place.tier] * 100_000 - place.name.length;
 }
 
-interface LabelBox {
-  left: number;
-  right: number;
-  top: number;
-  bottom: number;
-}
+type LabelBox = MapScreenRect;
 
 function estimateLabelBox(
   place: Place,
@@ -48,7 +57,9 @@ function estimateLabelBox(
     mode === "full" ? 320 : 168,
     Math.max(mode === "full" ? 104 : 72, titleWidth, secondaryWidth),
   );
-  const height = mode === "full" ? (emphasized || mapZoomK >= 1.65 ? 54 : 40) : 24;
+  // Background labels stop at name + region; only emphasized pins (ranked,
+  // hovered, selected) grow the third signature line.
+  const height = mode === "full" ? (emphasized ? 54 : 40) : 24;
   const gap = mode === "full" ? 13 : 11;
   const left = side === "right" ? screenX + gap : screenX - gap - width;
   return {
@@ -172,6 +183,16 @@ export function computePinLabelModes(
       Boolean(pt.featuredRank),
     );
     if (accepted.some(other => intersects(box, other, gutter))) {
+      out.set(pt.place.id, "hidden");
+      continue;
+    }
+    // A name hanging off the map edge reads as a rendering bug; let it
+    // reappear once the pin pans inward.
+    if (box.top < -4 || box.bottom > opts.viewportHeight + 4 || box.left < -4 || box.right > opts.viewportWidth + 4) {
+      out.set(pt.place.id, "hidden");
+      continue;
+    }
+    if (opts.reservedRects?.some(rect => intersects(box, rect, 4))) {
       out.set(pt.place.id, "hidden");
       continue;
     }

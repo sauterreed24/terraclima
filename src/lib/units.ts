@@ -227,7 +227,7 @@ export function precipTickStep(maxVal: number, dist: DistUnit): number {
  * Tight word boundaries prevent false positives like "windchills"
  * triggering on "chill", or "continentality" on "tall".
  */
-const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narrower|stronger|weaker|apart|bigger|smaller|greater|above|below)\b/;
+const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narrower|stronger|weaker|apart|bigger|smaller|greater|above|below|milder|harsher)\b/;
 // Bare "of" is NOT a delta cue — "lows of −30°C" / "highs of 28°C" /
 // "afternoons of 25°C" are absolute readings. Compound delta forms that
 // happen to contain "of" ("swing of", "drop of", "range of", …) are
@@ -359,7 +359,7 @@ function localizeImplicitCelsiusBands(text: string): string {
   };
 
   text = text.replace(
-    /\b((?:(low|mid|upper|high)(?:[-\s]+to[-\s]+(low|mid|upper|high))?\s+)?([1-4]0)s)(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
+    /\b((?:(low|mid|upper|high)(?:[-\s]+to[-\s]+(low|mid|upper|high))?[-\s]+)?([1-4]0)s)(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
     (match, _phrase: string, q1: string | undefined, q2: string | undefined, tens: string, unitToken: string | undefined, offset: number, full: string) => {
       const base = parseInt(tens, 10);
       const [lo, hi] = qualifierRange(q1, q2, base, base + 9);
@@ -527,6 +527,53 @@ function formatUSNumber(n: number, digits = 0): string {
  *     "summit", altitude, crest, ridge, m.a.s.l., etc.), to avoid mangling
  *     data like "8 m wetland" or "Route 5 m".
  */
+const SPELLED_UNITS_BASE: Record<string, number> = {
+  a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+  eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17,
+  eighteen: 18, nineteen: 19, twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60,
+  seventy: 70, eighty: 80, ninety: 90,
+};
+// Compound tens ("twenty-five") are parsed whole; a number that follows a
+// hyphen or "… hundred and" is left alone rather than half-converted.
+const SPELLED_NUMBER = "(?:a|an|(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)(?:-(?:one|two|three|four|five|six|seven|eight|nine))?|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen)";
+const SPELLED_METRIC_QUANTITY = new RegExp(
+  `(?<![\\w-])(?<!\\b(?:hundred|thousand)\\s+and\\s)(${SPELLED_NUMBER}(?:\\s+(?:hundred|thousand)(?:\\s+and\\s+${SPELLED_NUMBER})?)?)(?!\\s+and\\b)\\s+(met(?:er|re)s?|kilomet(?:er|re)s?|hectares)\\b`,
+  "gi",
+);
+const SPELLED_HYPHEN_METRE = new RegExp(`(?<![\\w-])(${SPELLED_NUMBER})-met(?:er|re)\\b`, "gi");
+
+/** "three hundred" → 300; "a thousand" → 1000. Bare "a"/"an" need a multiplier. */
+function spelledNumberValue(words: string): number | null {
+  const parts = words.toLowerCase().split(/\s+/);
+  const base = parts[0]!.split("-").reduce<number | null>((sum, w) => {
+    const v = SPELLED_UNITS_BASE[w];
+    return sum == null || v == null ? null : sum + v;
+  }, 0);
+  if (base == null) return null;
+  if (parts.length === 1) return parts[0] === "a" || parts[0] === "an" ? null : base;
+  const scaled = base * (parts[1] === "hundred" ? 100 : 1000);
+  if (parts[2] !== "and" || !parts[3]) return scaled;
+  const tail = spelledNumberValue(parts[3]);
+  return tail == null ? null : scaled + tail;
+}
+
+/** Areas read best as round figures in prose. */
+function roundAreaForProse(v: number): number {
+  if (v >= 10000) return Math.round(v / 1000) * 1000;
+  if (v >= 1000) return Math.round(v / 100) * 100;
+  if (v >= 100) return Math.round(v / 10) * 10;
+  return Math.round(v);
+}
+
+/** Replace while keeping a sentence-initial capital ("Metres of snow" → "Feet of snow"). */
+function swapKeepCase(text: string, re: RegExp, out: string | ((...groups: string[]) => string)): string {
+  return text.replace(re, (...a: unknown[]) => {
+    const m = a[0] as string;
+    const o = typeof out === "string" ? out : out(...(a as string[]));
+    return /^[A-Z]/.test(m) && /^[a-z]/.test(o) ? o.charAt(0).toUpperCase() + o.slice(1) : o;
+  });
+}
+
 function localizeDistanceProse(text: string): string {
   // --- Hyphenated adjectival forms ---
   //
@@ -603,15 +650,124 @@ function localizeDistanceProse(text: string): string {
     }
   );
 
+  // Areas: hectares → acres and square kilometres → square miles, including
+  // spelled-out quantities ("a thousand hectares", "a 1,300-hectare spit").
+  text = swapKeepCase(text, 
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*hectares?\b/gi,
+    (_m, n: string) => `${formatUSNumber(roundAreaForProse(parseLooseNum(n) * 2.47105))}-acre`,
+  );
+  text = swapKeepCase(text, 
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s*(?:hectares?|ha\b)/gi,
+    (_m, n: string, plus: string) => `${formatUSNumber(roundAreaForProse(parseLooseNum(n) * 2.47105))}${plus} acres`,
+  );
+  text = swapKeepCase(text, 
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s*(?:square\s+kilomet(?:er|re)s?\b|sq\.?\s*km\b|km²|km2\b)/gi,
+    (_m, n: string, plus: string) => `${formatUSNumber(roundAreaForProse(parseLooseNum(n) * 0.386102))}${plus} square miles`,
+  );
+  text = swapKeepCase(text, /\b(thousands|hundreds|tens)(\s+of\s+thousands)?\s+of\s+hectares\b/gi, (_m, q: string, t?: string) => `${q}${t ?? ""} of acres`);
+  text = swapKeepCase(text, /\b(thousands|hundreds)\s+of\s+square\s+kilomet(?:er|re)s\b/gi, (_m, q: string) => `${q} of square miles`);
+
+  // Spelled-out quantities ("two metres", "sixty kilometres", "a thousand
+  // hectares", "three hundred metres") become digits so the numeric passes
+  // below convert them.
+  text = swapKeepCase(text, SPELLED_METRIC_QUANTITY, (_m, words: string, unit: string) => {
+    const value = spelledNumberValue(words);
+    return value == null ? _m : `${formatUSNumber(value)} ${unit}`;
+  });
+  text = swapKeepCase(text, 
+    /\b(\d+(?:,\d{3})*)\s+hectares\b/gi,
+    (_m, n: string) => `${formatUSNumber(roundAreaForProse(parseLooseNum(n) * 2.47105))} acres`,
+  );
+
+  // Mass: tonnes → US tons, kilograms handled separately below.
+  text = swapKeepCase(text, 
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)(\s+(?:million|billion))?\s+(?:metric\s+)?tonnes?\b/gi,
+    (_m, n: string, mult: string | undefined) => {
+      const v = parseLooseNum(n) * 1.10231;
+      return `${formatUSNumber(mult ? v : roundAreaForProse(v), mult && v < 10 ? 1 : 0)}${mult ?? ""} tons`;
+    },
+  );
+  text = swapKeepCase(text, /\btonnes\b/gi, "tons");
+  text = swapKeepCase(text, /\btonne\b/gi, "ton");
+
+  // Large areas and volumes with million multipliers or no figure at all.
+  text = swapKeepCase(text, 
+    /\b(\d+(?:\.\d+)?)\s+million\s+hectares\b/gi,
+    (_m, n: string) => `${formatUSNumber(parseLooseNum(n) * 2.47105, parseLooseNum(n) * 2.47105 < 10 ? 1 : 0)} million acres`,
+  );
+  text = swapKeepCase(text, /\bhalf\s+a\s+million\s+hectares\b/gi, "1.2 million acres");
+  text = swapKeepCase(text, 
+    /\b(\d+(?:,\d{3})*(?:\.\d+)?)(\s+million)?\s+cubic\s+met(?:er|re)s\b/gi,
+    (_m, n: string, mult: string | undefined) => {
+      const v = parseLooseNum(n) * 1.30795;
+      return `${formatUSNumber(v, mult && v < 10 ? 1 : 0)}${mult ?? ""} cubic yards`;
+    },
+  );
+  text = swapKeepCase(text, /\bhundreds\s+of\s+cubic\s+kilomet(?:er|re)s\b/gi, "dozens of cubic miles");
+  text = swapKeepCase(text, /\bthousands\s+of\s+square\s+met(?:er|re)s\b/gi, "tens of thousands of square feet");
+  text = swapKeepCase(text, 
+    /(\d+(?:\.\d+)?)\s*(person|people)\s*\/\s*km²/gi,
+    (_m, n: string) => `${formatUSNumber(parseLooseNum(n) * 2.58999, 0)} people/sq mi`,
+  );
+
+  // Vertical metres and spelled hyphen forms ("twelve-metre tides").
+  text = swapKeepCase(text, 
+    /\b(\d+(?:,\d{3})*)\s+vertical\s+met(?:er|re)s\b/gi,
+    (_m, n: string) => `${formatUSNumber(parseLooseNum(n) * 3.28084)} vertical feet`,
+  );
+  text = swapKeepCase(text, /\b(a\s+few\s+hundred|several\s+hundred|hundreds\s+of)\s+vertical\s+met(?:er|re)s\b/gi, (_m, q: string) => `${q} vertical feet`);
+  text = swapKeepCase(text, /\ba\s+few\s+vertical\s+kilomet(?:er|re)s\b/gi, "a vertical mile or so");
+  text = swapKeepCase(text, SPELLED_HYPHEN_METRE, (_m, w: string) => {
+    const v = spelledNumberValue(w);
+    return v == null ? _m : `${formatUSNumber(v * 3.28084)}-foot`;
+  });
+  text = swapKeepCase(text, 
+    /\b(one|two|three|four|five|six|seven|eight|nine|ten)\s+and\s+a\s+half\s+met(?:er|re)s\b/gi,
+    (_m, w: string) => `${formatUSNumber((SPELLED_UNITS_BASE[w.toLowerCase()]! + 0.5) * 3.28084)} feet`,
+  );
+
+  // Snow, rain and tide measured loosely in metres or centimetres.
+  text = swapKeepCase(text, /\b(several|a\s+few|few)\s+centimet(?:er|re)s\b/gi, "an inch or more");
+  text = swapKeepCase(text, /\ba\s+few\s+millimet(?:er|re)s\b/gi, "a fraction of an inch");
+  text = swapKeepCase(text, /\b(?:a\s+)?couple\s+of\s+hundred\s+millimet(?:er|re)s\b/gi, "eight inches or so");
+  text = swapKeepCase(text, /\ba\s+couple\s+of\s+met(?:er|re)s\b/gi, "six feet or so");
+  text = swapKeepCase(text, /(?<![\d+]\s)\bmet(?:er|re)s\s+of\s+/gi, "feet of ");
+  text = swapKeepCase(text, /\bin\s+met(?:er|re)s\b/gi, "in feet");
+  text = swapKeepCase(text, /\b(in|not)\s+centimet(?:er|re)s\b/gi, (_m, w: string) => `${w} inches`);
+  text = swapKeepCase(text, /\b(rise|rises|rose)\s+met(?:er|re)s\b/gi, (_m, v: string) => `${v} many feet`);
+  text = swapKeepCase(text, /\bby\s+the\s+met(?:er|re)\b/gi, "by the yard");
+  text = swapKeepCase(text, /\ba\s+full\s+kilomet(?:er|re)\b/gi, "more than half a mile");
+  text = swapKeepCase(text, /\bkilomet(?:er|re)\s+after\s+kilomet(?:er|re)\b/gi, "mile after mile");
+  text = swapKeepCase(text, /\b(several|a\s+few)\s+hundred\s+kilomet(?:er|re)s\b/gi, (_m, q: string) => `${/few/i.test(q) ? "a couple of" : "a few"} hundred miles`);
+  text = swapKeepCase(text, /\b(a\s+few\s+dozen|dozens\s+of)\s+kilomet(?:er|re)s\b/gi, (_m, q: string) => `${q} miles`);
+  text = swapKeepCase(text, /(?<![\d+]\s)\bkilomet(?:er|re)s\s+(away|of)\b/gi, (_m, w: string) => `miles ${w}`);
+
+  // Vague metric quantities. Keep the vagueness, swap the unit.
+  text = swapKeepCase(text, /\b(a\s+few|few|several|many|for|tens\s+of|thousands\s+of)\s+kilomet(?:er|re)s\b/gi, (_m, q: string) => `${q} miles`);
+  text = swapKeepCase(text, /(?<![\d+]\s)\bkilomet(?:er|re)s\s+(long|wide)\b/gi, (_m, dim: string) => `miles ${dim}`);
+  text = swapKeepCase(text, /\b(several|a\s+few)\s+hundred\s+met(?:er|re)s\b/gi, (_m, q: string) => /few/i.test(q) ? _m : `${q} hundred yards`);
+  text = swapKeepCase(text, /\bhalf\s+a\s+kilomet(?:er|re)\b/gi, "a third of a mile");
+  text = swapKeepCase(text, /\ba\s+kilomet(?:er|re)\s+and\s+a\s+half\b/gi, "about a mile");
+  text = swapKeepCase(text, /\ba\s+kilomet(?:er|re)-/gi, "a half-mile-");
+  text = swapKeepCase(text, /\bhalf\s+a\s+met(?:er|re)\b/gi, "a foot and a half");
+  text = swapKeepCase(text, /\ba\s+met(?:er|re)\s+and\s+a\s+half\b/gi, "five feet");
+  text = swapKeepCase(text, /\ba\s+met(?:er|re)-/gi, "a three-foot-");
+  text = swapKeepCase(text, /\ba\s+metre\b|\ba\s+meter\b/gi, "a yard");
+  text = swapKeepCase(text, /\ba\s+kilomet(?:er|re)\b/gi, "half a mile");
+  text = swapKeepCase(text, /\b(a\s+few|few|several|many)\s+met(?:er|re)s\b/gi, (_m, q: string) => `${q} yards`);
+  text = swapKeepCase(text, /\ba\s+few\s+tens\s+of\s+met(?:er|re)s\b/gi, "a hundred feet or so");
+  text = swapKeepCase(text, /\btens\s+of\s+met(?:er|re)s\b/gi, "dozens of feet");
+  text = swapKeepCase(text, /(?<![\d+]\s)\bmet(?:er|re)s\s+(deep|high|thick)\b/gi, (_m, dim: string) => `feet ${dim}`);
+
   // Qualitative word-form metric lengths ("thousands of meters", "hundreds of
   // kilometers", "a few hundred meters"). Convert unit nouns only — the
   // quantity words stay, matching common US climate writing.
-  text = text.replace(/\bthousands of met(?:er|re)s\b/gi, "thousands of feet");
-  text = text.replace(/\bhundreds of met(?:er|re)s\b/gi, "hundreds of feet");
-  text = text.replace(/\bhundreds of (?:kilomet(?:er|re)s|km)\b/gi, "hundreds of miles");
-  text = text.replace(/\b((?:a\s+)?few\s+hundred)\s+met(?:er|re)s\b/gi, (_m, qty: string) => `${qty} feet`);
-  text = text.replace(/\bmet(?:er|re)s across\b/gi, "feet across");
-  text = text.replace(/\b(?:kilomet(?:er|re)s|kilometers) wide\b/gi, "miles wide");
+  text = swapKeepCase(text, /\bthousands of met(?:er|re)s\b/gi, "thousands of feet");
+  text = swapKeepCase(text, /\bhundreds of met(?:er|re)s\b/gi, "hundreds of feet");
+  text = swapKeepCase(text, /\bhundreds of (?:kilomet(?:er|re)s|km)\b/gi, "hundreds of miles");
+  text = swapKeepCase(text, /\b((?:a\s+)?few\s+hundred)\s+met(?:er|re)s\b/gi, (_m, qty: string) => `${qty} feet`);
+  text = swapKeepCase(text, /(?<![\d+]\s)\bmet(?:er|re)s across\b/gi, "feet across");
+  text = swapKeepCase(text, /(?<![\d+]\s)\b(?:kilomet(?:er|re)s|kilometers) wide\b/gi, "miles wide");
 
   // Spelled-out ranges BEFORE singular spelled-out units so "3–6 meters"
   // becomes "10–20 feet" rather than orphaning the first endpoint.
@@ -707,6 +863,12 @@ function localizeDistanceProse(text: string): string {
     }
   );
 
+  // Weights quoted in site histories ("about 270 kg of butter") → pounds.
+  text = text.replace(/(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:kg|kilogram(?:me)?s?)\b(?!\s*\/)/gi, (_m, n: string) => {
+    const lb = parseLooseNum(n) * 2.20462;
+    return `${formatUSNumber(lb, lb < 10 ? 1 : 0)} lb`;
+  });
+
   // Bare "N km" (word-bounded, not immediately followed by "/" as in km/h which
   // is already handled above).
   text = text.replace(/(\d+(?:[,.]\d+)?)\s*km\b(?!\/)/g, (_m, n: string) => {
@@ -738,7 +900,7 @@ function localizeDistanceProse(text: string): string {
   // and 2500 m"), etc. Run BEFORE the bare-m handler so we consume both
   // numbers as a range.
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![/²^])/g,
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![/²³^])/g,
     (match, n1: string, sep: string, n2: string, offset: number, full: string) => {
       const before = full.substring(Math.max(0, offset - 80), offset).toLowerCase();
       const after = full.substring(offset + match.length, offset + match.length + 64).toLowerCase();
@@ -769,7 +931,7 @@ function localizeDistanceProse(text: string): string {
   // (area). `\b` already prevents matches inside "mm", "cm", "km", "kph",
   // "kmh", "minutes", "meters", etc.
   text = text.replace(
-    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![/²^])/g,
+    /(\d+(?:,\d{3})*(?:\.\d+)?)\s*m\b(?![/²³^])/g,
     (match, n: string, offset: number, full: string) => {
       // Keep tilde "~" and opening parenthesis in the view so "(3429 m)" and
       // "~1200 m" get the contextual signal they need.
@@ -796,9 +958,19 @@ function localizeDistanceProse(text: string): string {
         /^\s*[)\]]/.test(afterRaw) ||     // "(3429 m)" or "[3429 m]"
         /^\s*[A-Z][\w-]*(?:\s+[A-Z][\w-]*){0,3}\s+(?:peaks?|crest|ridge|summit|plateau|escarpment|mountains|hills|range)\b/.test(afterRaw);
 
-      if (!beforeHit && !afterHit) return match;
-
       const v = parseLooseNum(n);
+      // Three- and four-digit figures are elevations in this corpus when they
+      // lead a phrase ("— 1400 m in Sierra Vista", "a 2040 m Sierra Norte
+      // town", "1474 m of sunshine") or follow an approximation word.
+      // Not the second end of a range ("2000–3000 m") or a money figure.
+      const rangeOrMoney = /\d\s*[\u2013\u2014-]\s*$|[$£€]\s*$/.test(beforeRaw);
+      const bigNumberHit =
+        v >= 300 && !rangeOrMoney &&
+        (/^\s+(?:in|on|of|into|across|along)\b/i.test(afterRaw) || /(?:—|–|\bnear|\ba|\babout|\bsome|\broughly)\s*$/i.test(beforeRaw));
+      const approxHit = /\b(?:offset\s+by\s+(?:about\s+)?|by\s+about|about|nearly|roughly|almost)\s*$/i.test(beforeRaw) && /^[\s]*[.,;]/.test(afterRaw);
+
+      if (!beforeHit && !afterHit && !bigNumberHit && !approxHit) return match;
+
       const ft = v * 3.28084;
       return `${formatUSNumber(ft)} ft`;
     }

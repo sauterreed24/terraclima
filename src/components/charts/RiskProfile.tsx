@@ -24,9 +24,12 @@ export function RiskProfile({ place }: Props) {
       {rows.map(([k, v]) => {
         const val = RISK_VALUE[v.level];
         const pct = (val / 5) * 100;
-        const tone = val <= 1 ? "#7ea182" : val <= 2 ? "#c6dfed" : val <= 3 ? "#e6c990" : val <= 4 ? "#d48c66" : "#c46a4a";
+        // Sequential green → amber → red ramp; label text colours are set per
+        // theme in CSS (.risk-profile__level) so they stay readable on paper.
+        const band = val <= 1 ? "low" : val <= 2 ? "moderate" : val <= 3 ? "elevated" : val <= 4 ? "high" : "severe";
+        const tone = val <= 1 ? "#7ea182" : val <= 2 ? "#d9bd6a" : val <= 3 ? "#e3a05a" : val <= 4 ? "#d4764f" : "#c4553f";
         const trendGlyph = v.trend === "improving" ? "↓" : v.trend === "worsening" ? "↑" : v.trend === "mixed" ? "↕" : "→";
-        const trendColor = v.trend === "improving" ? "#7ea182" : v.trend === "worsening" ? "#d48c66" : "#8a99ac";
+        const trendColor = v.trend === "improving" ? "#4f8a5a" : v.trend === "worsening" ? "#c4683f" : "#7a889c";
 
         return (
           <div key={k} className="flex items-center gap-3 text-sm" title={v.note ? prose(v.note) : ""} role="listitem">
@@ -43,7 +46,7 @@ export function RiskProfile({ place }: Props) {
               <div className="h-full rounded-full transition-all" style={{ width: `${pct}%`, background: tone }} />
             </div>
             <div className="w-28 text-right flex items-center justify-end gap-2">
-              <span className="uppercase tracking-wide text-xs" style={{ color: tone }}>{v.level.replace("-", " ")}</span>
+              <span className="risk-profile__level uppercase tracking-wide text-xs" data-band={band}>{v.level.replace("-", " ")}</span>
               <span className="font-mono-num text-xs" style={{ color: trendColor }} aria-label={`trend ${v.trend ?? "stable"}`}>{trendGlyph}</span>
             </div>
           </div>

@@ -424,7 +424,7 @@ function DetailHeader({
           across the md band and the six header actions (~540px, shrink-0)
           would squeeze the place name into a sliver and clip the archetype
           chips mid-word. */}
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
+      <div className="detail-drawer-header__row flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between lg:gap-4">
         <div className="min-w-0 w-full">
           <div className="flex items-center gap-1.5 md:gap-2 text-xs text-stone mb-1 flex-wrap">
             <MapPin className="w-3 h-3" aria-hidden />
@@ -512,7 +512,7 @@ function DetailHeader({
             </div>
           ) : null}
         </div>
-        <div className="flex items-center gap-1 self-end shrink-0 lg:self-start flex-wrap justify-end">
+        <div className="detail-drawer-header__actions flex items-center gap-1 self-end shrink-0 lg:self-start flex-wrap justify-end">
           <a
             href={`#${PD.residency}`}
             onClick={(event) => {
@@ -947,7 +947,7 @@ function DetailBody({
           ))}
         </div>
         <p className="text-[11px] text-stone italic mt-2">
-          Woven from this place&apos;s terrain, climate, and community notes — read it together with the summaries above, not instead of them.
+          Plain-language numbers and starting points from this place&apos;s climate normals and community notes.
         </p>
       </Section>
 
@@ -1510,7 +1510,7 @@ function DetailBody({
           <div className="panel-thin p-4">
             <div className="flex items-center justify-between mb-2">
               <div className="text-[10px] uppercase tracking-wider text-stone">Growability</div>
-              <div className="font-mono-num text-lg" style={{ color: "#c6dcbd" }}>{place.growability.score}<span className="text-sm text-stone">/100</span></div>
+              <div className="font-mono-num text-lg text-[color:var(--color-sage-700)]">{place.growability.score}<span className="text-sm text-stone">/100</span></div>
             </div>
             <div className="mb-3">
               <div className="text-xs text-stone mb-1">Grows well</div>
@@ -1524,8 +1524,8 @@ function DetailBody({
                 {place.growability.tricky.map(g => <span key={g} className="chip max-w-full !whitespace-normal text-left leading-tight" data-tone="ember">{g}</span>)}
               </div>
             </div>
-            <div className="mt-3 rounded-lg border border-[rgba(61,143,85,0.18)] bg-[rgba(236,248,232,0.42)] px-3 py-2.5">
-              <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Why this score?</div>
+            <div className="mt-3 rounded-lg border border-[rgba(61,143,85,0.18)] bg-[color:var(--tc-surface-muted)] px-3 py-2.5">
+              <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1">Why this score?</div>
               <div className="space-y-1.5 text-[12px] leading-snug text-frost">
                 {growabilityRationale.lines.map(line => <p key={line}>{prose(line)}</p>)}
               </div>

@@ -1633,10 +1633,10 @@ export const PLACES_USA: Place[] = [
     archetypes: ["basin-inversion", "high-desert-escape"],
     drivers: ["cold-air-drainage", "inversion", "elevation-lapse-rate"],
     summaryShort: "One of the coldest winter basins in the lower 48 — by topographic design.",
-    summaryImmersive: "Teton Valley is a lesson in cold-air pooling written in capital letters. Enclosed by the Tetons to the east and the Big Hole Mountains west, the basin traps dense cold air on every clear calm winter night. Morning lows of −30°C happen without even a cold snap. Daytime sun partially warms the valley, but inversions can linger for days, leaving the basin floor a gray freezer while Grand Targhee, 1000 m higher, bakes in February sunshine. Summers are glorious — mild, dry, and long-lit — with July highs in the mid-20s and wildflower meadows that rival anywhere in the Rockies.",
+    summaryImmersive: "Teton Valley is a lesson in cold-air pooling written in capital letters. Enclosed by the Tetons to the east and the Big Hole Mountains west, the basin traps dense cold air on every clear calm winter night. Calm, clear mornings sink well below −15°C, and in a real arctic outbreak the valley floor can bottom out near −35°C. Daytime sun partially warms the valley, but inversions can linger for days, leaving the basin floor a gray freezer while Grand Targhee, 1000 m higher, bakes in February sunshine. Summers are glorious — mild, dry, and long-lit — with July highs in the mid-20s and wildflower meadows that rival anywhere in the Rockies.",
     whyDistinct: "Cold air drains off the Tetons and Big Hole range into a closed basin; there is no outlet for it to escape. Winter inversions are among the most reliable in North America.",
     experience: {
-      feel: "Driggs feels like the cold-air bottom of the Tetons. On the quiet back side of the range the valley is a closed bowl, so still winter nights pour dense cold onto the floor — −30°C without even a cold snap — while summers turn glorious: mild, dry, long-lit, and wildflowered.",
+      feel: "Driggs feels like the cold-air bottom of the Tetons. On the quiet back side of the range the valley is a closed bowl, so still winter nights pour dense cold onto the floor — mornings well below −15°C are routine, and arctic outbreaks push toward −35°C — while summers turn glorious: mild, dry, long-lit, and wildflowered.",
       seasons: {
         winter: "Reliably, architecturally cold — afternoons struggling near freezing, mornings near −15°C and often far colder as the basin pools air, with deep snow and inversions that can gray the valley for days while the ski hill above bakes in sun.",
         spring: "Late and muddy — snow lingers through April, afternoons finally climbing through the teens, and the Tetons holding white well into the green-up.",
@@ -4226,7 +4226,7 @@ export const PLACES_USA: Place[] = [
     koppen: "BWh",
     archetypes: ["high-desert-escape", "desert-oasis", "canyon-sheltered"],
     drivers: ["rain-shadow", "elevation-lapse-rate", "continentality"],
-    summaryShort: "The hottest reliably-measured place on Earth — 56.7°C (134°F) on record — where rain-shadow geometry meets a sub-sea-level heat sink.",
+    summaryShort: "The hottest reliably-measured place on Earth — 56.7°C on record — where rain-shadow geometry meets a sub-sea-level heat sink.",
     summaryImmersive: "Death Valley concentrates heat the way a parabolic dish concentrates light. Pacific storms lose their moisture climbing four successive ranges before reaching here, so annual precipitation averages 50 mm — less than most city parks receive in a thunderstorm. The basin floor sits 86 m below sea level, with peaks rising 3,000 m on both sides. When the sun heats dense air in that bowl, it cannot escape by lifting; it just heats more. The official world high temperature record, 56.7°C, was set at Furnace Creek on July 10, 1913. Modern summers routinely exceed 50°C for multi-day stretches. Winters, by contrast, are superb — mild days, cool nights, brilliant dark skies, and the occasional wildflower superbloom after rare rain events.",
     whyDistinct: "Four-range rain shadow from the Pacific + sub-sea-level basin geometry + radiative heating of dry air + subsidence under a summer thermal low. These all reinforce each other.",
     experience: {
@@ -4328,7 +4328,7 @@ export const PLACES_USA: Place[] = [
     koppen: "ET",
     archetypes: ["alpine-tundra", "gap-wind-corridor"],
     drivers: ["polar-jet-exposure", "gap-winds", "elevation-lapse-rate"],
-    summaryShort: "Officially the 'home of the world's worst weather' — wind gust of 372 km/h (231 mph) once held the world record, and July averages just 9°C.",
+    summaryShort: "Officially the 'home of the world's worst weather' — wind gust of 372 km/h once held the world record, and July averages just 9°C.",
     summaryImmersive: "Mount Washington stands alone as one of the great weather superlatives of North America. Its latitude places it in the convergence path of three major storm tracks; its altitude places it in the free troposphere; and the regional terrain focuses wind over the summit like a nozzle. The result is a climate more characteristic of a Labrador cape than a New England mountain — January highs near −11°C, July highs near 13°C, fog on 60% of days, freezing fog riming the summit observatory year-round. In April 1934, before weather stations in Antarctica, the summit measured a 372 km/h gust that held the world surface-wind record for 62 years. Hikers die here from exposure in any month.",
     whyDistinct: "Convergence of three storm tracks + regional ridge geometry that channels wind over a single summit + altitude into the free troposphere. No other US peak combines all three.",
     climate: {

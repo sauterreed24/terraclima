@@ -7,10 +7,13 @@
 // The same engine also supplies the mechanism explanation, nearby contrast,
 // and a short settlement/land-use history so the first screen has depth.
 //
-// Authored `Place.experience` fields (optional) win field-by-field over the
-// derived read. Researched site-history overlays (`SITE_HISTORY`) fill Overview
-// history / why / immersive when those experience fields are absent, without
-// shipping that prose in the initial Explorer bundle.
+// Researched site-history overlays (`SITE_HISTORY`) are the newest
+// hand-written layer: their feel, seasons and traveler/resident fit win over
+// `Place.experience`, and their history / why / immersive / nearby contrast
+// fill in where the corpus has none — without shipping that prose in the
+// initial Explorer bundle. Authored `Place.experience` fields come next (when
+// they are not generated templates); the derived templates below remain the
+// last-resort fallback.
 //
 // Prose convention: temperatures are emitted in °C and localized at render
 // by `localizeProse`. Most season detail is kept qualitative; the precise
@@ -334,8 +337,13 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
   const risk = seasonRiskPhrase(place, def.key);
   if (risk) sentences.push(`${risk}.`);
 
-  const authoredDetail = place.experience?.seasons?.[def.key];
+  // The site-history overlay is the newest hand-written layer, so its season
+  // read wins over older corpus text; corpus text is used only when it is not
+  // one of the generated templates.
+  const overlayDetail = siteHistoryOverlay(place)?.seasons?.[def.key]?.trim();
+  const authoredDetail = overlayDetail ? undefined : place.experience?.seasons?.[def.key];
   const useAuthored = Boolean(authoredDetail) && !isGeneratedSeasonDetail(authoredDetail!);
+  const detail = overlayDetail || (useAuthored ? authoredDetail! : sentences.join(" "));
 
   return {
     key: def.key,
@@ -346,8 +354,8 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
     lowC,
     tone,
     headline: seasonHeadline(tone, conditions),
-    detail: useAuthored ? authoredDetail! : sentences.join(" "),
-    authored: useAuthored,
+    detail,
+    authored: useAuthored || Boolean(overlayDetail),
   };
 }
 
@@ -521,11 +529,11 @@ function wordCount(text: string): number {
 }
 
 function isGeneratedSeasonDetail(text: string): boolean {
-  return /highs near .+°C|keeps winter highs near|climbs toward .+°C spring|in summer means about .+°C heat|cold months stay close to|winter afternoons settle near|asks for .+°C summer-day|holds winter light near|summer highs near .+°C at -?\d+ m still leave|afternoon climate; nights to|shoulder season sits near .+°C days|autumn light means .+°C afternoons|autumn stays usable at .+°C days|autumn highs near .+°C and lows near|in winter is a .+°C daytime story|daytime story; nights to|.°C daytime story|winters run near|shaped by marine layer across|overnight lows test housing|summer afternoons land near .+°C|fall holds about .+°C afternoons|opens spring under roughly|spring feels workable at .+°C days|spring highs near .+°C and lows near|summer is an honest .+°C afternoon|autumn returns to roughly .+°C days|warm season centers on .+°C days|often the clearest travel window|nights are the practical relief/.test(text);
+  return /highs near .+°C|keeps winter highs near|climbs toward .+°C spring|in summer means about .+°C heat|cold months stay close to|winter afternoons settle near|asks for .+°C summer-day|holds winter light near|summer highs near .+°C at -?\d+ m still leave|afternoon climate; nights to|shoulder season sits near .+°C days|autumn light means .+°C afternoons|autumn stays usable at .+°C days|autumn highs near .+°C and lows near|in winter is a .+°C daytime story|daytime story; nights to|.°C daytime story|winters run near|shaped by marine layer across|overnight lows test housing|summer afternoons land near .+°C|fall holds about .+°C afternoons|opens spring under roughly|spring feels workable at .+°C days|spring highs near .+°C and lows near|summer is an honest .+°C afternoon|autumn returns to roughly .+°C days|warm season centers on .+°C days|often the clearest travel window|nights are the practical relief|closes the warm half-year near|spring afternoons reach about .+before peak-season heat arrives/.test(text);
 }
 
 function isGeneratedFeel(text: string): boolean {
-  return /occupies a specific piece of ground|that is the short version of why|The setting comes first in |Elevation does the early work|sets the tone, and the .+ signature shows up|The give-away is |the defining fact about .+ is geography|feel earned rather than a marketing line|read less like a textbook|Step outside in .+ and the terrain announces/.test(text);
+  return /occupies a specific piece of ground|that is the short version of why|The setting comes first in |Elevation does the early work|sets the tone, and the .+ signature shows up|The give-away is |the defining fact about .+ is geography|feel earned rather than a marketing line|read less like a textbook|Step outside in .+ and the terrain announces|keeps the numbers from reading like a generic|the difference is felt daily, not just on a chart|Köppen .+ classification undersells/.test(text);
 }
 
 function isGeneratedTexture(text: string): boolean {
@@ -552,7 +560,7 @@ function cleanAuthoredFit(text: string | undefined): string | null {
   t = t.replace(/ since year-round living means absorbing the .+$/i, ".");
   t = t.replace(/ the group most likely to find the tradeoffs of living here worth the climate on offer\.?$/i, ".");
   t = t.replace(/, set inside a .+ climate that is easy to underestimate from a distance\.?$/i, ".");
-  t = t.replace(/\s+\./g, ".").replace(/\.\s+\./g, ". ").replace(/[,;]+(?=\.)/g, "").replace(/[,;:\s]+$/g, "");
+  t = t.replace(/\s+\./g, ".").replace(/\.\s+\./g, ". ").replace(/\.{2,}/g, ".").replace(/[,;]+(?=\.)/g, "").replace(/[,;:\s]+$/g, "");
   t = ensurePeriod(t);
   if (t.length < 24) return original;
   return t;
@@ -700,6 +708,12 @@ function deriveContrastItems(place: Place): PlaceContrastItem[] {
     push(`Within ${lc.radiusKm} km`, note);
   }
 
+  if (items.length === 0) {
+    for (const c of siteHistoryOverlay(place)?.contrasts ?? []) {
+      if (items.length >= 4) break;
+      push(c.label, c.note);
+    }
+  }
   if (items.length === 0) {
     push(
       "The surrounding country",
@@ -909,10 +923,10 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
   const result: PlaceExperienceReading = {
     lede: dequote(place.summaryShort),
     immersive: enrichImmersive(place, immersiveBase),
-    feelLine: authoredFeel ?? deriveFeelLine(place),
+    feelLine: overlay?.feel?.trim() || authoredFeel || deriveFeelLine(place),
     seasons,
-    travelerFit: authoredTraveler ?? deriveTravelerFit(place),
-    residentFit: authoredResident ?? deriveResidentFit(place),
+    travelerFit: overlay?.travelerFit?.trim() || (authoredTraveler ?? deriveTravelerFit(place)),
+    residentFit: overlay?.residentFit?.trim() || (authoredResident ?? deriveResidentFit(place)),
     wouldNotFit: place.whoMightNot,
     texture: authoredTexture ?? deriveTexture(place),
     whyDifferent: authoredWhy || overlayWhy || place.whyDistinct,
@@ -921,8 +935,9 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
     historyParagraphs,
     historyAuthored: authoredHistory || overlayHistory,
     authored: Boolean(
-      authoredFeel || authoredTraveler || authoredResident || authoredTexture ||
+      authoredFeel || overlay?.feel?.trim() || authoredTraveler || authoredResident || authoredTexture ||
       authoredWhy || overlayWhy || authoredHistory || overlayHistory || overlay?.immersive?.trim() ||
+      overlay?.travelerFit?.trim() || overlay?.residentFit?.trim() ||
       seasons.some(s => s.authored),
     ),
   };

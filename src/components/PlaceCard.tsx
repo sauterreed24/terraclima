@@ -205,6 +205,7 @@ export const PlaceCard = memo(function PlaceCard({
   return (
     <article
       className={`place-card place-card--tinted panel w-full relative overflow-hidden group${selected ? " place-card--selected" : ""}`}
+      data-ranked={rank != null && rankingLabel && rankingScore != null ? "true" : undefined}
       style={{
         // Tint the hover/selected glow with the primary archetype's colour.
         // A string custom property so CSS rgba() can consume it.
@@ -264,9 +265,11 @@ export const PlaceCard = memo(function PlaceCard({
 
         <header className="flex items-start justify-between gap-3 pb-3 border-b tc-border-neutral">
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h3 id={titleId} className="font-atlas text-lg text-ice truncate">{place.name}</h3>
-              <ArrowRight className="w-3 h-3 text-stone opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity shrink-0" aria-hidden />
+            <div className="flex items-start gap-2">
+              {/* Two lines before clipping: long dossier names ("Death Valley
+                  (Furnace Creek)") otherwise truncate to a stub on phones. */}
+              <h3 id={titleId} className="font-atlas text-lg text-ice leading-snug line-clamp-2 min-w-0 [overflow-wrap:anywhere]">{place.name}</h3>
+              <ArrowRight className="w-3 h-3 mt-[0.45rem] text-stone opacity-35 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity shrink-0" aria-hidden />
             </div>
             <p className="text-caption-strong text-stone mt-1 leading-snug">
               {place.region}

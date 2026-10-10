@@ -729,8 +729,9 @@ describe("AtlasMap DOM controls", () => {
     const onSelect = vi.fn();
     renderMap(onSelect, ["a"], defaultMapPlaces(), { featuredLabel: "Live-here fit" });
 
-    const marker = screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ });
-    const label = marker.querySelector(".map-marker-label");
+    expect(screen.getByRole("button", { name: /Current rank #1\. Alpha Valley/ })).toBeInTheDocument();
+    // Labels ride in their own layer above every pin so neighbours never cover a name.
+    const label = document.querySelector('.map-pin-labels [data-label-for="a"] .map-marker-label');
 
     expect(label).toHaveAttribute("pointer-events", "auto");
     fireEvent.click(label!);

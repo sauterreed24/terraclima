@@ -40,7 +40,9 @@ describe("composePlaceExperience", () => {
   });
 
   it("lets authored experience fields override the derived read", () => {
-    const base = PLACES_BY_ID["yuma-az"];
+    // Bishop's site-history overlay carries no feel or summer read, so the
+    // corpus-authored fields are the top layer here.
+    const base = PLACES_BY_ID["bishop-ca"];
     const authored = composePlaceExperience({
       ...base,
       experience: {
@@ -59,6 +61,15 @@ describe("composePlaceExperience", () => {
     expect(summer.detail).toBe("AUTHORED summer detail that is plenty long to pass.");
     expect(summer.authored).toBe(true);
     expect(authored.authored).toBe(true);
+  });
+
+  it("prefers the hand-written site-history overlay over older corpus seasons and feel", () => {
+    const mazamitla = composePlaceExperience(PLACES_BY_ID["mazamitla-mx"]);
+    // The corpus text said "afternoons near 18°C"; the overlay matches the data (~23°C).
+    expect(mazamitla.seasons.find(s => s.key === "winter")!.detail).toMatch(/23°C/);
+    const saltillo = composePlaceExperience(PLACES_BY_ID["saltillo-mx"]);
+    expect(saltillo.feelLine).not.toMatch(/generic|Köppen|felt daily/);
+    expect(saltillo.seasons.every(s => s.authored)).toBe(true);
   });
 
   it("does not mark a place authored when experience override is cleared", () => {
@@ -104,7 +115,9 @@ describe("composePlaceExperience", () => {
   it("prefers sensory seasons over generated numeric templates", () => {
     const alamos = composePlaceExperience(PLACES_BY_ID["alamos-mx"]);
     expect(alamos.seasons.find(s => s.key === "winter")!.detail).not.toMatch(/keeps winter highs near/);
-    expect(alamos.seasons.find(s => s.key === "winter")!.authored).toBe(false);
+    // The site-history overlay now carries a hand-written winter read.
+    expect(alamos.seasons.find(s => s.key === "winter")!.authored).toBe(true);
+    expect(alamos.seasons.find(s => s.key === "winter")!.detail).toMatch(/Ortiz Tirado/);
   });
 
   it("keeps hand-written Sequim seasons", () => {
@@ -116,7 +129,9 @@ describe("composePlaceExperience", () => {
   it("replaces generated season templates with a sensory read", () => {
     const asheville = composePlaceExperience(PLACES_BY_ID["asheville-nc"]);
     expect(asheville.seasons.find(s => s.key === "winter")!.detail).not.toMatch(/cold months stay close to/);
-    expect(asheville.seasons.find(s => s.key === "winter")!.authored).toBe(false);
+    // The site-history overlay now carries a hand-written winter read.
+    expect(asheville.seasons.find(s => s.key === "winter")!.authored).toBe(true);
+    expect(asheville.seasons.find(s => s.key === "winter")!.detail).toMatch(/Parkway/);
     expect(asheville.travelerFit).not.toMatch(/most leave surprised/i);
     expect(asheville.texture).not.toMatch(/None of that erases the appeal/i);
   });

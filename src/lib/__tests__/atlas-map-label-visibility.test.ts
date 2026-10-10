@@ -12,8 +12,8 @@ describe("computePinLabelModes", () => {
   it("uses screen-space label boxes so scaled labels do not collide", () => {
     const modes = computePinLabelModes(
       [
-        { place: place("a", "A", "Alpha Ridge"), x: 0, y: 0 },
-        { place: place("b", "A", "Beta Valley"), x: 70, y: 0 },
+        { place: place("a", "A", "Alpha Ridge"), x: 0, y: 120 },
+        { place: place("b", "A", "Beta Valley"), x: 70, y: 120 },
       ],
       { k: 0.8, x: 0, y: 0 },
       undefined,
@@ -31,8 +31,8 @@ describe("computePinLabelModes", () => {
   it("allows labels when post-layout positions are honestly separated", () => {
     const modes = computePinLabelModes(
       [
-        { place: place("a", "A", "Alpha Ridge"), x: 0, y: 0 },
-        { place: place("b", "A", "Beta Valley"), x: 260, y: 0 },
+        { place: place("a", "A", "Alpha Ridge"), x: 0, y: 120 },
+        { place: place("b", "A", "Beta Valley"), x: 260, y: 120 },
       ],
       { k: 1.9, x: 0, y: 0 },
       undefined,
@@ -47,8 +47,8 @@ describe("computePinLabelModes", () => {
   it("keeps selected labels full and suppresses nearby background labels", () => {
     const modes = computePinLabelModes(
       [
-        { place: place("selected", "C", "Selected Town"), x: 0, y: 0 },
-        { place: place("neighbor", "A", "Neighbor Basin"), x: 18, y: 0 },
+        { place: place("selected", "C", "Selected Town"), x: 0, y: 120 },
+        { place: place("neighbor", "A", "Neighbor Basin"), x: 18, y: 120 },
       ],
       { k: 1.5, x: 0, y: 0 },
       "selected",
@@ -63,8 +63,8 @@ describe("computePinLabelModes", () => {
   it("keeps wide-view maps selective before users zoom in", () => {
     const modes = computePinLabelModes(
       [
-        { place: place("flagship", "A", "Flagship Coast"), x: 0, y: 0 },
-        { place: place("spotlight", "B", "Spotlight Valley"), x: 400, y: 0 },
+        { place: place("flagship", "A", "Flagship Coast"), x: 0, y: 120 },
+        { place: place("spotlight", "B", "Spotlight Valley"), x: 400, y: 120 },
       ],
       { k: 0.8, x: 0, y: 0 },
       undefined,
@@ -82,8 +82,8 @@ describe("computePinLabelModes", () => {
   it("hides non-featured labels below the raised mid-zoom floor", () => {
     const modes = computePinLabelModes(
       [
-        { place: place("flagship", "A", "Flagship Coast"), x: 0, y: 0 },
-        { place: place("spotlight", "B", "Spotlight Valley"), x: 400, y: 0 },
+        { place: place("flagship", "A", "Flagship Coast"), x: 0, y: 120 },
+        { place: place("spotlight", "B", "Spotlight Valley"), x: 400, y: 120 },
       ],
       { k: 1.0, x: 0, y: 0 },
       undefined,
@@ -110,5 +110,40 @@ describe("computePinLabelModes", () => {
     // Mid-zoom: A/B eligible for compact only; collision still suppresses the neighbor.
     expect(modes.get("a")).toBe("compact");
     expect(modes.get("b")).toBe("hidden");
+  });
+
+  it("hides background labels that would hang off the map edge", () => {
+    const modes = computePinLabelModes(
+      [
+        { place: place("edge", "A", "Edge Basin"), x: 60, y: 158 },
+        { place: place("inner", "A", "Inner Basin"), x: 60, y: 60 },
+      ],
+      { k: 2, x: 0, y: 0 },
+      undefined,
+      null,
+      viewport,
+    );
+
+    expect(modes.get("edge")).toBe("hidden");
+    expect(modes.get("inner")).toBe("full");
+  });
+
+  it("keeps background labels out from under map chrome but never hides the engaged pin", () => {
+    const hud = [{ left: 100, right: 400, top: 100, bottom: 160 }];
+    const modes = computePinLabelModes(
+      [
+        { place: place("under", "A", "Under Chrome"), x: 60, y: 65 },
+        { place: place("hovered", "A", "Hovered Pin"), x: 60, y: 130 },
+        { place: place("clear", "A", "Clear Sky"), x: 60, y: 20 },
+      ],
+      { k: 2, x: 0, y: 0 },
+      undefined,
+      "hovered",
+      { ...viewport, reservedRects: hud },
+    );
+
+    expect(modes.get("under")).toBe("hidden");
+    expect(modes.get("hovered")).toBe("full");
+    expect(modes.get("clear")).toBe("full");
   });
 });
