@@ -207,6 +207,12 @@ describe("localizeProse — distances", () => {
     expect(localizeProse("The hiking belt runs 5–10 km from town.", "F", "imperial")).toContain("3.1–6.2 mi");
     expect(localizeProse("Snow depth often reaches 20-40 cm.", "F", "imperial")).toContain("8-16 in");
   });
+  it("converts kilogram weights to pounds", () => {
+    expect(localizeProse("a cow sculpted from about 270 kg of butter", "F", "imperial")).toContain("595 lb");
+    expect(localizeProse("trout can weigh more than 10 kg", "F", "imperial")).toContain("22 lb");
+    expect(localizeProse("about 270 kg of butter", "C", "metric")).toContain("270 kg");
+  });
+
   it("converts km/h before bare km", () => {
     expect(localizeProse("Gusts reach 80 km/h.", "F", "imperial")).toContain("50 mph");
   });

@@ -707,6 +707,12 @@ function localizeDistanceProse(text: string): string {
     }
   );
 
+  // Weights quoted in site histories ("about 270 kg of butter") → pounds.
+  text = text.replace(/(\d+(?:,\d{3})*(?:\.\d+)?)\s*(?:kg|kilogram(?:me)?s?)\b/gi, (_m, n: string) => {
+    const lb = parseLooseNum(n) * 2.20462;
+    return `${formatUSNumber(lb, lb < 10 ? 1 : 0)} lb`;
+  });
+
   // Bare "N km" (word-bounded, not immediately followed by "/" as in km/h which
   // is already handled above).
   text = text.replace(/(\d+(?:[,.]\d+)?)\s*km\b(?!\/)/g, (_m, n: string) => {
