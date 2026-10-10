@@ -40,7 +40,9 @@ describe("composePlaceExperience", () => {
   });
 
   it("lets authored experience fields override the derived read", () => {
-    const base = PLACES_BY_ID["yuma-az"];
+    // Bishop's site-history overlay carries no feel or summer read, so the
+    // corpus-authored fields are the top layer here.
+    const base = PLACES_BY_ID["bishop-ca"];
     const authored = composePlaceExperience({
       ...base,
       experience: {
@@ -59,6 +61,15 @@ describe("composePlaceExperience", () => {
     expect(summer.detail).toBe("AUTHORED summer detail that is plenty long to pass.");
     expect(summer.authored).toBe(true);
     expect(authored.authored).toBe(true);
+  });
+
+  it("prefers the hand-written site-history overlay over older corpus seasons and feel", () => {
+    const mazamitla = composePlaceExperience(PLACES_BY_ID["mazamitla-mx"]);
+    // The corpus text said "afternoons near 18°C"; the overlay matches the data (~23°C).
+    expect(mazamitla.seasons.find(s => s.key === "winter")!.detail).toMatch(/23°C/);
+    const saltillo = composePlaceExperience(PLACES_BY_ID["saltillo-mx"]);
+    expect(saltillo.feelLine).not.toMatch(/generic|Köppen|felt daily/);
+    expect(saltillo.seasons.every(s => s.authored)).toBe(true);
   });
 
   it("does not mark a place authored when experience override is cleared", () => {

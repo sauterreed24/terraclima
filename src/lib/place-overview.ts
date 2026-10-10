@@ -335,10 +335,13 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
   const risk = seasonRiskPhrase(place, def.key);
   if (risk) sentences.push(`${risk}.`);
 
-  const authoredDetail = place.experience?.seasons?.[def.key];
+  // The site-history overlay is the newest hand-written layer, so its season
+  // read wins over older corpus text; corpus text is used only when it is not
+  // one of the generated templates.
+  const overlayDetail = siteHistoryOverlay(place)?.seasons?.[def.key]?.trim();
+  const authoredDetail = overlayDetail ? undefined : place.experience?.seasons?.[def.key];
   const useAuthored = Boolean(authoredDetail) && !isGeneratedSeasonDetail(authoredDetail!);
-  const overlayDetail = useAuthored ? undefined : siteHistoryOverlay(place)?.seasons?.[def.key]?.trim();
-  const detail = useAuthored ? authoredDetail! : overlayDetail || sentences.join(" ");
+  const detail = overlayDetail || (useAuthored ? authoredDetail! : sentences.join(" "));
 
   return {
     key: def.key,
@@ -524,11 +527,11 @@ function wordCount(text: string): number {
 }
 
 function isGeneratedSeasonDetail(text: string): boolean {
-  return /highs near .+°C|keeps winter highs near|climbs toward .+°C spring|in summer means about .+°C heat|cold months stay close to|winter afternoons settle near|asks for .+°C summer-day|holds winter light near|summer highs near .+°C at -?\d+ m still leave|afternoon climate; nights to|shoulder season sits near .+°C days|autumn light means .+°C afternoons|autumn stays usable at .+°C days|autumn highs near .+°C and lows near|in winter is a .+°C daytime story|daytime story; nights to|.°C daytime story|winters run near|shaped by marine layer across|overnight lows test housing|summer afternoons land near .+°C|fall holds about .+°C afternoons|opens spring under roughly|spring feels workable at .+°C days|spring highs near .+°C and lows near|summer is an honest .+°C afternoon|autumn returns to roughly .+°C days|warm season centers on .+°C days|often the clearest travel window|nights are the practical relief/.test(text);
+  return /highs near .+°C|keeps winter highs near|climbs toward .+°C spring|in summer means about .+°C heat|cold months stay close to|winter afternoons settle near|asks for .+°C summer-day|holds winter light near|summer highs near .+°C at -?\d+ m still leave|afternoon climate; nights to|shoulder season sits near .+°C days|autumn light means .+°C afternoons|autumn stays usable at .+°C days|autumn highs near .+°C and lows near|in winter is a .+°C daytime story|daytime story; nights to|.°C daytime story|winters run near|shaped by marine layer across|overnight lows test housing|summer afternoons land near .+°C|fall holds about .+°C afternoons|opens spring under roughly|spring feels workable at .+°C days|spring highs near .+°C and lows near|summer is an honest .+°C afternoon|autumn returns to roughly .+°C days|warm season centers on .+°C days|often the clearest travel window|nights are the practical relief|closes the warm half-year near|spring afternoons reach about .+before peak-season heat arrives/.test(text);
 }
 
 function isGeneratedFeel(text: string): boolean {
-  return /occupies a specific piece of ground|that is the short version of why|The setting comes first in |Elevation does the early work|sets the tone, and the .+ signature shows up|The give-away is |the defining fact about .+ is geography|feel earned rather than a marketing line|read less like a textbook|Step outside in .+ and the terrain announces/.test(text);
+  return /occupies a specific piece of ground|that is the short version of why|The setting comes first in |Elevation does the early work|sets the tone, and the .+ signature shows up|The give-away is |the defining fact about .+ is geography|feel earned rather than a marketing line|read less like a textbook|Step outside in .+ and the terrain announces|keeps the numbers from reading like a generic|the difference is felt daily, not just on a chart|Köppen .+ classification undersells/.test(text);
 }
 
 function isGeneratedTexture(text: string): boolean {
@@ -918,7 +921,7 @@ export function composePlaceExperience(place: Place): PlaceExperienceReading {
   const result: PlaceExperienceReading = {
     lede: dequote(place.summaryShort),
     immersive: enrichImmersive(place, immersiveBase),
-    feelLine: authoredFeel ?? (overlay?.feel?.trim() || deriveFeelLine(place)),
+    feelLine: overlay?.feel?.trim() || authoredFeel || deriveFeelLine(place),
     seasons,
     travelerFit: authoredTraveler ?? deriveTravelerFit(place),
     residentFit: authoredResident ?? deriveResidentFit(place),

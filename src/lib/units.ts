@@ -359,7 +359,7 @@ function localizeImplicitCelsiusBands(text: string): string {
   };
 
   text = text.replace(
-    /\b((?:(low|mid|upper|high)(?:[-\s]+to[-\s]+(low|mid|upper|high))?\s+)?([1-4]0)s)(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
+    /\b((?:(low|mid|upper|high)(?:[-\s]+to[-\s]+(low|mid|upper|high))?[-\s]+)?([1-4]0)s)(\s*(?:\u00b0\s*C|Celsius))?\b/gi,
     (match, _phrase: string, q1: string | undefined, q2: string | undefined, tens: string, unitToken: string | undefined, offset: number, full: string) => {
       const base = parseInt(tens, 10);
       const [lo, hi] = qualifierRange(q1, q2, base, base + 9);
