@@ -90,11 +90,11 @@ function climateContrastDetail(place: Place, active: ActiveClimateAverages): str
   const signals = [
     {
       weight: Math.abs(summerDelta) * 4,
-      detail: `${Math.abs(summerDelta).toFixed(1)} C ${summerDelta < 0 ? "cooler" : "warmer"} summer high than the active average.`,
+      detail: `${Math.abs(summerDelta).toFixed(1)}°C ${summerDelta < 0 ? "cooler" : "warmer"} summer high than the active average.`,
     },
     {
       weight: Math.abs(winterDelta) * 3,
-      detail: `${Math.abs(winterDelta).toFixed(1)} C ${winterDelta > 0 ? "milder" : "colder"} January low than the active average.`,
+      detail: `${Math.abs(winterDelta).toFixed(1)}°C ${winterDelta > 0 ? "milder" : "colder"} January low than the active average.`,
     },
     {
       weight: Math.abs(precipDelta) / 22,

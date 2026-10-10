@@ -8386,7 +8386,8 @@
   }
   .place-overview__season-headline {
     color: rgb(var(--season-accent));
-    filter: saturate(1.15) brightness(0.82);
+    /* Darken the accent enough to read as small caps on the paper card. */
+    filter: saturate(1.2) brightness(0.6);
     font-size: 0.74rem;
     font-weight: 700;
     letter-spacing: 0.02em;
@@ -12434,6 +12435,23 @@ html[data-theme="dark"] .place-card__signature-band {
 }
 html[data-theme="dark"] .place-card__signature-band > div {
   background: rgba(28, 38, 60, 0.5);
+}
+.risk-profile__level { font-weight: 600; }
+.risk-profile__level[data-band="low"] { color: #3f7a4a; }
+.risk-profile__level[data-band="moderate"] { color: #866812; }
+.risk-profile__level[data-band="elevated"] { color: #9c5418; }
+.risk-profile__level[data-band="high"] { color: #a8432a; }
+.risk-profile__level[data-band="severe"] { color: #962f22; }
+html[data-theme="dark"] .risk-profile__level[data-band="low"] { color: #9cc5a0; }
+html[data-theme="dark"] .risk-profile__level[data-band="moderate"] { color: #e6c990; }
+html[data-theme="dark"] .risk-profile__level[data-band="elevated"] { color: #eda86e; }
+html[data-theme="dark"] .risk-profile__level[data-band="high"] { color: #ef8f6c; }
+html[data-theme="dark"] .risk-profile__level[data-band="severe"] { color: #f2806a; }
+html[data-theme="dark"] .compare-workbench__coach-metric { color: #f2a083; }
+html[data-theme="dark"] .climate-trip-hero-facts span {
+  border-color: rgba(120, 210, 232, 0.22);
+  background: rgba(28, 40, 62, 0.72);
+  color: var(--color-frost-strong);
 }
 html[data-theme="dark"] .place-card__rank-strip {
   border-color: rgba(120, 210, 232, 0.2);

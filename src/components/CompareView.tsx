@@ -567,7 +567,7 @@ export function CompareView({
                     const CandidateActionIcon = actionCue.Icon;
                     const title = [
                       candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`,
-                      candidateInsight ? `${candidateInsight.label}: ${candidateInsight.detail}` : null,
+                      candidateInsight ? `${candidateInsight.label}: ${prose(candidateInsight.detail)}` : null,
                       replacementPlace ? `Replaces oldest active slot: ${replacementPlace.name}.` : null,
                     ].filter(Boolean).join(" ");
                     return (
@@ -610,7 +610,7 @@ export function CompareView({
                             aria-label={`${candidate.place.name} swap insight`}
                           >
                             <strong>{candidateInsight.label}</strong>
-                            <span>{candidateInsight.detail}</span>
+                            <span>{prose(candidateInsight.detail)}</span>
                           </span>
                         ) : null}
                         {replacementPlace ? (
@@ -654,7 +654,7 @@ export function CompareView({
                           <span className="compare-workbench__coach-label">{recommendation.label}</span>
                           <strong>{recommendation.place.name}</strong>
                           <span className="compare-workbench__coach-metric">{recommendation.metric}</span>
-                          <span className="compare-workbench__coach-detail">{recommendation.detail}</span>
+                          <span className="compare-workbench__coach-detail">{prose(recommendation.detail)}</span>
                         </button>
                       );
                     })}
