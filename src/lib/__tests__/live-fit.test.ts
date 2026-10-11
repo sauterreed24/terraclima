@@ -189,7 +189,7 @@ describe("live-fit scoring", () => {
     const astoria = assessLiveFit(PLACES_BY_ID["astoria-or"]!);
     const yuma = assessLiveFit(PLACES_BY_ID["yuma-az"]!);
 
-    expect(sequim.cautions.some(c => /Sunshine is below the US average of 58% \(~50%\)/.test(c))).toBe(true);
+    expect(sequim.cautions.some(c => /Sunshine runs about 50% of possible, below the US average of 58%/.test(c))).toBe(true);
     expect(forks.cautions.some(c => /Below-average sunshine \(~44% of possible/.test(c))).toBe(true);
     expect(astoria.cautions.some(c => /Below-average sunshine \(~43% of possible/.test(c))).toBe(true);
     expect(yuma.cautions.some(c => /sunshine/i.test(c))).toBe(false);

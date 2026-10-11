@@ -767,11 +767,12 @@ describe("PlaceDetail home-base anchor", () => {
     );
 
     expect(screen.getByRole("heading", { name: "Versus your home base" })).toBeInTheDocument();
-    expect(screen.getByRole("complementary", { name: "First-session climate journey" })).toBeInTheDocument();
+    // The duplicate "first-session journey" bridge is gone; the section owns the call to action.
+    expect(screen.queryByRole("complementary", { name: "First-session climate journey" })).toBeNull();
     expect(screen.getByRole("heading", { name: "Climate twins" })).toBeInTheDocument();
     expect(
       screen.getAllByRole("button", { name: `Set ${place.name} as your home base for climate deltas` }).length,
-    ).toBeGreaterThanOrEqual(2);
+    ).toBeGreaterThanOrEqual(1);
     const sectionAction = screen
       .getAllByRole("button", { name: `Set ${place.name} as your home base for climate deltas` })
       .find(button => button.closest("#pd-vs-home"));
@@ -789,7 +790,7 @@ describe("PlaceDetail home-base anchor", () => {
       </UnitProvider>,
     );
 
-    const why = screen.getByRole("heading", { name: "Why this climate is different here" });
+    const why = screen.getByRole("heading", { name: "What shapes the climate here" });
     const dossier = screen.getByRole("heading", { name: "Field dossier" });
     const vsHome = screen.getByRole("heading", { name: "Versus your home base" });
     const twins = screen.getByRole("heading", { name: "Climate twins" });

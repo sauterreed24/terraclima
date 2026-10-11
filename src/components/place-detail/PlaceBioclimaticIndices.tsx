@@ -155,11 +155,12 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
   const undefinedReads = cardReads.filter(({ idx }) => idx.value === null);
 
   return (
-    <section id={anchorId} className="detail-doc-section anim-fade-in scroll-mt-28">
-      <h3 className="font-atlas text-[1.15rem] md:text-lg text-ice mb-3.5 flex items-center gap-2 tracking-tight border-b border-[rgba(200,170,140,0.35)] pb-2">
+    <details id={anchorId} className="place-score-details detail-doc-section anim-fade-in scroll-mt-28">
+      <summary className="place-score-details__summary">
         <Layers className="w-4 h-4 shrink-0" style={{ color: ICON_COLOR }} aria-hidden />
         Bioclimatic indices
-      </h3>
+      </summary>
+      <div className="place-score-details__body">
       <div className="flex flex-wrap items-center gap-2 mb-2">
         <EvidenceClassLabel cls={classifyDossierSection("bioclim")} />
       </div>
@@ -193,6 +194,7 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
           );
         })}
       </div>
-    </section>
+      </div>
+    </details>
   );
 });

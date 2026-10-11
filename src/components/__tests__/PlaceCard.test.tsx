@@ -34,7 +34,7 @@ describe("PlaceCard overlay warmup", () => {
     renderPlaceCard();
     const bioclim = screen.getByLabelText("Bioclimatic signature");
 
-    expect(bioclim.textContent).toContain("K ");
+    expect(bioclim.textContent).toMatch(/oceanic|continental/);
   });
 
   it("surfaces ranking evidence near the top of the card and describes the open target", () => {

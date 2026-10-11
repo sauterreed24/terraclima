@@ -86,8 +86,8 @@ describe("atlas corpus stats", () => {
     const hint = getCorpusMapHint(place);
     expect(getCorpusCardTeaser(place)).toBe(teaser);
     expect(getCorpusMapHint(place)).toBe(hint);
-    expect(teaser).toContain("Vs full atlas:");
-    expect(teaser).toContain("bioclim:");
+    expect(teaser).toContain("Against the full atlas:");
+    expect(teaser).not.toMatch(/JJA|bioclim:/);
     expect(hint).toContain("Water year wetter than");
   });
 
@@ -95,7 +95,8 @@ describe("atlas corpus stats", () => {
     const signal = getBioclimCardSignal(PLACES.find(p => p.id === "yuma-az") ?? PLACES[0]!);
 
     expect(signal).not.toBeNull();
-    expect(signal!.label).toContain("K ");
+    expect(signal!.label).toMatch(/· (?:strongly |mildly )?(?:oceanic|continental)$/);
+    expect(signal!.label).not.toMatch(/\bK \d/);
     expect(signal!.title).toContain("De Martonne");
     expect(signal!.title).toContain("Conrad K");
   });

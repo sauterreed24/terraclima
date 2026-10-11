@@ -1861,11 +1861,6 @@ export default function App() {
                       bookmarkIds={bookmarkIds}
                       onBookmarkToggle={toggleBookmark}
                     />
-                    <div className="panel-thin p-3 flex flex-wrap items-center justify-between gap-2">
-                      <div className="text-xs text-stone">
-                        Showing <span className="font-mono-num text-frost">{ranked.length}</span> places in this filtered set — scroll to browse
-                      </div>
-                    </div>
                   </section>
                 )}
               </div>

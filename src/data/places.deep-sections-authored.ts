@@ -20,6 +20,12 @@
 // place with its own deepSections (curated in places.*.ts) always
 // wins, so this file only fills the gap where deepSections is absent
 // or empty.
+//
+// Display note: these template chapters stay on the record (evidence and
+// compare counts read them), but the Field dossier leaves them out of the
+// reading (see isTemplateDeepSection in src/lib/place-appendix-sections.ts).
+// The researched site-history chapter and the derived chapters cover the
+// same ground without the template's misreadings.
 // ============================================================
 
 import type { PlaceDeepSection } from "../types";

@@ -54,16 +54,16 @@ export function ContrastChart({ contrasts }: Props) {
 }
 
 function DeltaBadge({ label, valueNative, display, unit }: { label: string; valueNative: number; display: number; unit: string }) {
-  const up = valueNative > 0;
-  const color = up ? "#f0d29c" : "#8cc8e0";
-  const bg = up ? "rgba(240,210,156,0.12)" : "rgba(140,200,224,0.12)";
-  const sign = up ? "+" : "−";
   const abs = Math.abs(display);
   const digits = abs % 1 === 0 || abs >= 20 ? 0 : 1;
+  // A difference that rounds to zero reads as "about the same", never "−0°F".
+  const same = Number(abs.toFixed(digits)) === 0;
+  const dir = same ? "same" : valueNative > 0 ? "up" : "down";
+  const value = same ? "≈ same" : `${valueNative > 0 ? "+" : "−"}${abs.toFixed(digits)}${unit}`;
   return (
-    <div className="flex items-baseline gap-1.5 px-2.5 py-1 rounded-md border" style={{ background: bg, borderColor: color + "55" }}>
+    <div className="contrast-delta flex items-baseline gap-1.5 px-2.5 py-1 rounded-md border" data-dir={dir}>
       <span className="text-[11px] uppercase tracking-wide text-frost">{label}</span>
-      <span className="font-mono-num text-sm" style={{ color }}>{sign}{abs.toFixed(digits)}{unit}</span>
+      <span className="contrast-delta__value font-mono-num text-sm">{value}</span>
     </div>
   );
 }

@@ -47,6 +47,8 @@ import type { Place } from "../../types";
 import { mergeDeepSections } from "../../lib/place-appendix-sections";
 import { getBestMonths } from "../../lib/best-months";
 import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../../lib/practical-read";
+import type { NearbyContextRow } from "../../lib/practical-read";
+import { composePlaceExperience } from "../../lib/place-overview";
 
 /**
  * The five reading chapters the dossier is organized into. Replaces the
@@ -96,7 +98,7 @@ const PD_SECTION_DEFS: PdSectionDef[] = [
   // Portrait — story first: overview, mechanism, authored dossier, contrast, field story.
   { id: PD.overview, label: "Overview", group: "portrait" },
   { id: PD.seasons, label: "Season by season", group: "portrait" },
-  { id: PD.whyHere, label: "Why it differs", group: "portrait" },
+  { id: PD.whyHere, label: "Climate drivers", group: "portrait" },
   { id: PD.deepDives, label: "Field dossier", group: "portrait", optional: "deepDives" },
   { id: PD.contrast, label: "Local contrast", group: "portrait", optional: "contrast" },
   { id: PD.fieldStory, label: "On the ground", group: "portrait" },
@@ -104,8 +106,7 @@ const PD_SECTION_DEFS: PdSectionDef[] = [
   // Live or Visit — resident/traveler fit, lived indicators, settlements,
   // activities, and the consolidated decision lens.
   { id: PD.vsHome, label: "Versus home", group: "liveOrVisit" },
-  { id: PD.similarTeaser, label: "Climate twins", group: "liveOrVisit" },
-  { id: PD.similar, label: "Twins detail", group: "liveOrVisit" },
+  { id: PD.similar, label: "Climate twins", group: "liveOrVisit" },
   { id: PD.residency, label: "Decision lens", group: "liveOrVisit" },
   { id: PD.liveHereFit, label: "Full fit detail", group: "liveOrVisit" },
   { id: PD.livability, label: "Livability breakdown", group: "liveOrVisit" },
@@ -114,7 +115,7 @@ const PD_SECTION_DEFS: PdSectionDef[] = [
   { id: PD.activities, label: "Things to do", group: "liveOrVisit", optional: "activities" },
   { id: PD.practical, label: "Practical read", group: "liveOrVisit" },
   { id: PD.tourism, label: "Climate tourism", group: "liveOrVisit" },
-  { id: PD.who, label: "Who fits", group: "liveOrVisit" },
+  { id: PD.who, label: "Who it suits", group: "liveOrVisit" },
 
   // Climate & Land — monthly climate, screening scores, terrain, soil.
   { id: PD.atAGlance, label: "At a glance", group: "climateLand" },
@@ -157,7 +158,7 @@ export function chapterForAnchorId(id: string): PdChapterKey | null {
 
 /** Builds the table of contents for the current place (conditional sections omitted). */
 export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
-  const nearbyRows = buildNearbyContextRows(place);
+  const nearbyRows = buildLocalContrastRows(place);
   const settlementAnchors = buildSettlementAnchors(place);
   const activities = buildPracticalActivities(place);
   const bestMonths = getBestMonths(place);
@@ -168,11 +169,32 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
     settlements: settlementAnchors.length > 0,
     activities: activities.length > 0,
     bestMonths: bestMonths.length > 0,
-    contrast: nearbyRows.length > 0,
+    contrast: nearbyRows.length > 0 || Boolean(place.localContrast?.length),
     deepDives: deepSections.length > 0,
   };
 
   return PD_SECTION_DEFS
     .filter(def => !def.optional || optionalOk[def.optional])
     .map(def => ({ id: def.id, label: def.label, group: PD_NAV_GROUP[def.group] }));
+}
+
+/** First word of a place label, lower-cased ("Forks, WA (50 km SW)" → "forks"). */
+function contrastKey(label: string): string {
+  return label.toLowerCase().replace(/^(?:the|lake|mount|mt\.?)\s+/, "").split(/[\s,(/–-]+/)[0] ?? "";
+}
+
+/**
+ * Rows for the dossier's "Local contrast" list. The overview already shows the
+ * nearby-contrast cards and the chart above already shows each radius note, so
+ * this keeps only what neither of those says: linked atlas neighbours, and any
+ * other nearby contrast the overview does not name.
+ */
+export function buildLocalContrastRows(place: Place): NearbyContextRow[] {
+  const shown = new Set(composePlaceExperience(place).contrastItems.map(c => contrastKey(c.label)));
+  const hasChart = Boolean(place.localContrast?.length);
+  return buildNearbyContextRows(place).filter(row => {
+    if (row.source === "local-contrast") return !hasChart;
+    if (row.source === "derived") return false;
+    return Boolean(row.placeId) || !shown.has(contrastKey(row.label));
+  });
 }

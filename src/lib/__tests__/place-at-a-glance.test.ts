@@ -18,7 +18,7 @@ describe("buildAtAGlanceTiles", () => {
       const labels = tiles.map(t => t.label);
       expect(labels).toContain("Place feel");
       expect(labels).toContain("Climate class");
-      expect(labels).toContain("Terrain engines");
+      expect(labels).toContain("Climate drivers");
       expect(labels).toContain("Data confidence");
       expect(labels).toContain("Remote sensing");
       expect(labels).toContain("Geospatial signal");

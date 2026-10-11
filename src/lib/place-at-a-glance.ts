@@ -79,7 +79,7 @@ export function buildAtAGlanceTiles(
   });
 
   out.push({
-    label: "Terrain engines",
+    label: "Climate drivers",
     value: `${place.drivers.length} driver${place.drivers.length === 1 ? "" : "s"}`,
     hint: place.drivers.slice(0, 2).map(d => DRIVER_LABELS[d]).join(" / "),
     tone: "ochre",

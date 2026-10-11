@@ -227,3 +227,14 @@ export function formatMonthMask(mask: readonly boolean[]): string | null {
     })
     .join(", ");
 }
+
+/**
+ * The window to recommend for a visit: outdoor comfort first, then dry or
+ * crisp travel weather, then snow; the gardening window answers a different
+ * question and is only the last resort.
+ */
+export function pickVisitWindow(windows: readonly BestWindow[]): BestWindow | null {
+  const good = windows.filter(w => w.kind === "good");
+  const order: BestWindow["id"][] = ["outdoor", "dry", "crisp", "snow", "garden"];
+  return order.map(id => good.find(w => w.id === id)).find((w): w is BestWindow => Boolean(w)) ?? good[0] ?? null;
+}

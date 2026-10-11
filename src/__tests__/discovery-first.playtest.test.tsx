@@ -80,7 +80,7 @@ describe("Discovery-first playtest", () => {
 
       await screen.findByRole("button", { name: "Close profile" }, { timeout: TIMEOUT });
       // Lazy PlaceDetail body: wait for mechanism heading before asserting guide.
-      await screen.findByRole("heading", { name: "Why this climate is different here" }, { timeout: TIMEOUT });
+      await screen.findByRole("heading", { name: "What shapes the climate here" }, { timeout: TIMEOUT });
       // Archetype field guide is collapsed by default; expand via the primary chip.
       const primaryChip = await screen.findByRole("button", { name: /expand field guide below/i }, { timeout: TIMEOUT });
       fireEvent.click(primaryChip);
@@ -89,10 +89,8 @@ describe("Discovery-first playtest", () => {
       expect(guide).toHaveAttribute("id", "place-archetype-guide");
       expect(guide).not.toHaveAttribute("hidden");
       expect(guide.textContent?.length ?? 0).toBeGreaterThan(40);
-      expect(screen.getByRole("complementary", { name: "First-session climate journey" })).toBeInTheDocument();
       expect(screen.getByRole("heading", { name: "Versus your home base" })).toBeInTheDocument();
       expect(screen.getByRole("heading", { name: "Climate twins" })).toBeInTheDocument();
-      expect(screen.getByLabelText("Climate twins teaser")).toBeInTheDocument();
     } finally {
       randomSpy.mockRestore();
     }
@@ -106,7 +104,7 @@ describe("Discovery-first playtest", () => {
       fireEvent.click(screen.getByRole("button", { name: "Open a unique microclimate from the current filtered list" }));
       await screen.findByRole("button", { name: "Close profile" }, { timeout: TIMEOUT });
 
-      await screen.findByRole("heading", { name: "Why this climate is different here" }, { timeout: TIMEOUT });
+      await screen.findByRole("heading", { name: "What shapes the climate here" }, { timeout: TIMEOUT });
       await screen.findByRole("heading", { name: "Versus your home base" }, { timeout: TIMEOUT });
 
       const setHomeButtons = await screen.findAllByRole("button", { name: /Set .+ as your home base for climate deltas/ });
@@ -117,8 +115,7 @@ describe("Discovery-first playtest", () => {
       }, { timeout: TIMEOUT });
 
       expect(screen.getByRole("heading", { name: "Climate twins" })).toBeInTheDocument();
-      expect(screen.getByLabelText("Climate twins teaser")).toBeInTheDocument();
-      expect(screen.getAllByRole("button", { name: /Twin, but —/i }).length).toBeGreaterThan(0);
+      expect(screen.getByRole("group", { name: "Find a twin, but shifted" })).toBeInTheDocument();
     } finally {
       randomSpy.mockRestore();
     }
