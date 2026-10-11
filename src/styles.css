@@ -7377,6 +7377,11 @@
     color: var(--color-ice);
     padding: 0.7rem 0.85rem;
   }
+  .place-score-details__title {
+    margin: 0;
+    font: inherit;
+    color: inherit;
+  }
   .place-score-details__summary::-webkit-details-marker {
     display: none;
   }

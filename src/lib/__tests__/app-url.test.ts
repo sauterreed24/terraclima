@@ -381,6 +381,16 @@ describe("history writers", () => {
     expect(window.history.length).toBeGreaterThanOrEqual(before);
   });
 
+  it("replaceAppUrl keeps a shared section hash until the lazy profile can resolve it", () => {
+    window.history.replaceState(null, "", "/?p=sequim-wa#pd-risk");
+
+    replaceAppUrl(null, { view: "explorer", placeId: "sequim-wa", collectionId: null, collectionExists: ce });
+    expect(window.location.hash).toBe("#pd-risk");
+
+    replaceAppUrl(null, { view: "explorer", placeId: null, collectionId: null, collectionExists: ce });
+    expect(window.location.hash).toBe("");
+  });
+
   it("replaceAppUrl drops a dossier hash when the selected place changes", () => {
     window.history.replaceState(null, "", "/?p=sequim-wa#deep-sequim-hydrology");
 

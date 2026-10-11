@@ -23,7 +23,7 @@ describe("synthesizePlaceSignals", () => {
     expect(lines[1].value).toContain("Jun");
     expect(lines[1].value).toContain("driest month nearly rainless");
     expect(lines[2].label).toContain("Comfort-window months");
-    // Highs in 12–28°C: 20, 22, 26, 25, 20 → Jan, Feb, Mar, Nov, Dec = 5 months.
+    // Highs in 12–30°C: 20, 22, 26, 25, 20 → Jan, Feb, Mar, Nov, Dec = 5 months.
     expect(lines[2].value).toBe("5 / 12");
     expect(topRisks).toEqual([]); // No risks at elevated+ in baseline fixture
   });

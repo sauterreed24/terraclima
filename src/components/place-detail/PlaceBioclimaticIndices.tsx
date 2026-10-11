@@ -158,7 +158,7 @@ export const PlaceBioclimaticIndices = memo(function PlaceBioclimaticIndices({ p
     <details id={anchorId} className="place-score-details detail-doc-section anim-fade-in scroll-mt-28">
       <summary className="place-score-details__summary">
         <Layers className="w-4 h-4 shrink-0" style={{ color: ICON_COLOR }} aria-hidden />
-        Bioclimatic indices
+        <h3 className="place-score-details__title">Bioclimatic indices</h3>
       </summary>
       <div className="place-score-details__body">
       <div className="flex flex-wrap items-center gap-2 mb-2">

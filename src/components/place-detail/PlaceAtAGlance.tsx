@@ -24,7 +24,7 @@ export function PlaceAtAGlance({ place, anchorId }: { place: Place; anchorId: st
     <details id={anchorId} className="place-score-details detail-doc-section anim-fade-in scroll-mt-28">
       <summary className="place-score-details__summary">
         <LayoutGrid className="w-4 h-4 shrink-0" style={{ color: "var(--color-glacier-500)" }} aria-hidden />
-        At a glance
+        <h3 className="place-score-details__title">At a glance</h3>
       </summary>
       <div className="place-score-details__body">
       <p className="text-[12px] text-stone-readable leading-relaxed mb-3.5 max-w-2xl">
