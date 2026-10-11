@@ -1,4 +1,4 @@
-import { memo, useLayoutEffect, useRef, useState } from "react";
+import { memo, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { PlaceCard } from "./PlaceCard";
 import type { BestWindow } from "../lib/best-months";
@@ -20,6 +20,13 @@ export const PLACE_GRID_ROW_ESTIMATE_PX = {
   screeningMobile: 1140,
 } as const;
 const OVERSCAN_ROWS = 3;
+/**
+ * The list reveals places in batches. Reserving virtual height for all 226
+ * cards made the document ~96,000px tall (~208,000px on phones), so one pixel
+ * of scrollbar-thumb drag jumped 120–270px. Batches keep the page short enough
+ * that the scrollbar is controllable; "Show more" / "Show all" extend it.
+ */
+export const PLACE_GRID_BATCH = 36;
 const disableScrollAdjustment = () => false;
 
 function useGridColumns(): 1 | 2 {
@@ -75,7 +82,26 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
 }) {
   const cols = useGridColumns();
   const showScreeningScores = shouldShowPlaceCardScreeningScores(rankingProfile, liveFitFilters);
-  const rowCount = ranked.length === 0 ? 0 : Math.ceil(ranked.length / cols);
+
+  // A new ranking or filter set starts again from the first batch.
+  const listKey = `${rankingLabel}|${ranked.length}|${ranked.slice(0, 6).map(r => r.place.id).join(",")}`;
+  const [reveal, setReveal] = useState({ key: listKey, count: PLACE_GRID_BATCH });
+  let visibleCount = reveal.key === listKey ? reveal.count : PLACE_GRID_BATCH;
+  // Opening a place from the map or search reveals the batch that holds it.
+  const selectedIndex = selectedId ? ranked.findIndex(r => r.place.id === selectedId) : -1;
+  if (selectedIndex >= visibleCount) visibleCount = Math.ceil((selectedIndex + 1) / PLACE_GRID_BATCH) * PLACE_GRID_BATCH;
+  visibleCount = Math.min(visibleCount, ranked.length);
+  const visible = useMemo(() => ranked.slice(0, visibleCount), [ranked, visibleCount]);
+  const remaining = ranked.length - visibleCount;
+  // Keep a selection-driven reveal after the place closes, so the list does
+  // not shrink out from under the reader.
+  useLayoutEffect(() => {
+    if (reveal.key !== listKey || visibleCount > reveal.count) setReveal({ key: listKey, count: visibleCount });
+  }, [listKey, reveal, visibleCount]);
+  const showMore = (all: boolean) =>
+    setReveal({ key: listKey, count: all ? ranked.length : visibleCount + PLACE_GRID_BATCH });
+
+  const rowCount = visible.length === 0 ? 0 : Math.ceil(visible.length / cols);
   const anchorRef = useRef<HTMLDivElement>(null);
   const [scrollMargin, setScrollMargin] = useState(0);
 
@@ -121,14 +147,14 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
 
   useLayoutEffect(() => {
     if (!selectedId || rowCount === 0) return;
-    const idx = ranked.findIndex(r => r.place.id === selectedId);
+    const idx = visible.findIndex(r => r.place.id === selectedId);
     if (idx < 0) return;
     const row = Math.floor(idx / cols);
     const t = window.setTimeout(() => {
       virtualizer.scrollToIndex(row, { align: "center" });
     }, 50);
     return () => window.clearTimeout(t);
-  }, [selectedId, ranked, cols, rowCount, virtualizer]);
+  }, [selectedId, visible, cols, rowCount, virtualizer]);
 
   if (rowCount === 0) return null;
 
@@ -143,7 +169,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
       >
         {virtualizer.getVirtualItems().map(vRow => {
           const start = vRow.index * cols;
-          const row = ranked.slice(start, start + cols);
+          const row = visible.slice(start, start + cols);
           if (row.length === 0) return null;
           return (
             <div
@@ -182,6 +208,34 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
             </div>
           );
         })}
+      </div>
+      <div className="tc-card-grid__more panel-thin" role="group" aria-label="Ranked list length">
+        <p className="tc-card-grid__count">
+          {remaining > 0 ? (
+            <>
+              Showing <span className="font-mono-num text-frost">{visibleCount}</span> of{" "}
+              <span className="font-mono-num text-frost">{ranked.length}</span> places, best first
+            </>
+          ) : (
+            <>
+              Showing {ranked.length === 1 ? "the only matching place" : (
+                <>all <span className="font-mono-num text-frost">{ranked.length}</span> places</>
+              )}
+            </>
+          )}
+        </p>
+        {remaining > 0 ? (
+          <div className="tc-card-grid__more-actions">
+            <button type="button" className="btn btn-ghost" onClick={() => showMore(false)}>
+              Show {Math.min(PLACE_GRID_BATCH, remaining)} more
+            </button>
+            {remaining > PLACE_GRID_BATCH ? (
+              <button type="button" className="btn btn-ghost" onClick={() => showMore(true)}>
+                Show all {ranked.length}
+              </button>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </div>
   );

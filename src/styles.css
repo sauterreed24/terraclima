@@ -8087,12 +8087,11 @@
   .residency-brief__fact strong {
     grid-area: value;
     min-width: 0;
-    overflow: hidden;
     color: var(--color-ice);
     font-size: 0.86rem;
     line-height: 1.25;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    /* Wrap rather than clip ("Gardening window · May–S…"). */
+    overflow-wrap: anywhere;
   }
   .residency-brief__fact small {
     grid-area: note;
@@ -11931,6 +11930,16 @@ html[data-theme="dark"] .comfort-precision-month {
   border-color: rgba(120, 138, 178, 0.24);
   box-shadow: var(--tc-shadow-inset);
 }
+html[data-theme="dark"] .comfort-precision-panel__footer div {
+  background: rgba(18, 26, 44, 0.72);
+  border-color: rgba(94, 196, 220, 0.22);
+}
+html[data-theme="dark"] .comfort-precision-panel__footer span {
+  color: var(--color-stone-readable);
+}
+html[data-theme="dark"] .comfort-precision-panel__footer strong {
+  color: var(--color-frost-strong);
+}
 
 /* Reading nav strip in dossier. */
 html[data-theme="dark"] .place-detail-reading-nav,
@@ -12447,7 +12456,124 @@ html[data-theme="dark"] .risk-profile__level[data-band="moderate"] { color: #e6c
 html[data-theme="dark"] .risk-profile__level[data-band="elevated"] { color: #eda86e; }
 html[data-theme="dark"] .risk-profile__level[data-band="high"] { color: #ef8f6c; }
 html[data-theme="dark"] .risk-profile__level[data-band="severe"] { color: #f2806a; }
+.contrast-delta[data-dir="up"] { background: rgba(214, 140, 60, 0.1); border-color: rgba(214, 140, 60, 0.34); }
+.contrast-delta[data-dir="down"] { background: rgba(26, 143, 168, 0.08); border-color: rgba(26, 143, 168, 0.3); }
+.contrast-delta[data-dir="same"] { background: var(--tc-surface-muted); border-color: var(--tc-border-neutral); }
+.contrast-delta[data-dir="up"] .contrast-delta__value { color: #9a5a12; }
+.contrast-delta[data-dir="down"] .contrast-delta__value { color: var(--color-glacier-700); }
+.contrast-delta[data-dir="same"] .contrast-delta__value { color: var(--color-stone-readable); }
+html[data-theme="dark"] .contrast-delta[data-dir="up"] { background: rgba(240, 210, 156, 0.12); border-color: rgba(240, 210, 156, 0.33); }
+html[data-theme="dark"] .contrast-delta[data-dir="down"] { background: rgba(140, 200, 224, 0.12); border-color: rgba(140, 200, 224, 0.33); }
+html[data-theme="dark"] .contrast-delta[data-dir="up"] .contrast-delta__value { color: #f0d29c; }
+html[data-theme="dark"] .contrast-delta[data-dir="down"] .contrast-delta__value { color: #8cc8e0; }
+/* Score numbers: deep tones on paper, the original pastels on dark chrome. */
+.score-pill__value[data-tone="glacier"] { color: var(--color-glacier-700); }
+.score-pill__value[data-tone="sage"] { color: #2f6b40; }
+.score-pill__value[data-tone="ochre"] { color: #8a5d0e; }
+.score-pill__value[data-tone="ember"] { color: #a8432a; }
+html[data-theme="dark"] .score-pill__value[data-tone="glacier"] { color: #8cc8e0; }
+html[data-theme="dark"] .score-pill__value[data-tone="sage"] { color: #c6dcbd; }
+html[data-theme="dark"] .score-pill__value[data-tone="ochre"] { color: #f0d29c; }
+html[data-theme="dark"] .score-pill__value[data-tone="ember"] { color: #e8977a; }
+.detail-dossier-chapter-toggle {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--tc-border-neutral);
+  background: var(--tc-surface-muted);
+  color: var(--color-glacier-700);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.detail-dossier-chapter-toggle:hover { border-color: rgba(26, 143, 168, 0.45); }
+.detail-dossier-chapter-toggle:focus-visible { outline: 2px solid rgba(26, 143, 168, 0.65); outline-offset: 2px; }
+.detail-dossier-chapter-toggle svg { transition: transform 160ms ease; }
+.detail-dossier-chapter[data-open] .detail-dossier-chapter-toggle svg { transform: rotate(180deg); }
+.detail-dossier-teaser {
+  margin: 0.15rem 0 0;
+  color: var(--color-stone-readable);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.tc-card-grid__more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+}
+.tc-card-grid__count {
+  margin: 0;
+  color: var(--color-stone-readable);
+  font-size: 0.75rem;
+}
+.tc-card-grid__more-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
 html[data-theme="dark"] .compare-workbench__coach-metric { color: #f2a083; }
+html[data-theme="dark"] .compare-workbench__candidate-insight { background: rgba(18, 26, 44, 0.66); }
+html[data-theme="dark"] .compare-workbench__candidate-insight[data-tone="upgrade"] { background: rgba(26, 70, 84, 0.55); }
+html[data-theme="dark"] .compare-workbench__candidate-insight[data-tone="contrast"] { background: rgba(90, 66, 28, 0.5); }
+html[data-theme="dark"] .compare-workbench__candidate-insight[data-tone="risk"],
+html[data-theme="dark"] .compare-workbench__candidate-insight[data-tone="garden"] { background: rgba(36, 68, 46, 0.55); }
+html[data-theme="dark"] .compare-workbench__candidate-insight[data-tone="evidence"] { background: rgba(36, 48, 78, 0.6); }
+/* Climate twins + residency brief: these panels were paper-only and read as
+   light-on-light grey slabs in dark mode. */
+html[data-theme="dark"] .tc-twin-shift {
+  border-color: rgba(120, 138, 178, 0.32);
+  background: rgba(28, 40, 62, 0.82);
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .tc-twin-shift[aria-pressed="true"] {
+  border-color: rgba(94, 196, 220, 0.55);
+  background: rgba(94, 196, 220, 0.18);
+  color: #9be0f0;
+}
+html[data-theme="dark"] .tc-twins__tradeoff {
+  border-color: rgba(120, 210, 232, 0.22);
+  background: linear-gradient(160deg, rgba(28, 48, 62, 0.88), rgba(24, 32, 52, 0.86));
+}
+html[data-theme="dark"] .tc-twins__tradeoff-kicker { color: #7ad0e6; }
+html[data-theme="dark"] .tc-twins__tradeoff-chip {
+  border-color: rgba(120, 210, 232, 0.24);
+  background: rgba(18, 26, 44, 0.7);
+  color: var(--color-frost-strong);
+}
+html[data-theme="dark"] .tc-twins__tradeoff-chip[data-tone="watch"] {
+  border-color: rgba(232, 160, 110, 0.35);
+  background: rgba(72, 44, 28, 0.6);
+  color: #f6cfa8;
+}
+html[data-theme="dark"] .tc-twins__tradeoff-action { border-top-color: rgba(120, 138, 178, 0.2); }
+html[data-theme="dark"] .tc-twin-lead,
+html[data-theme="dark"] .tc-twin-card {
+  border-color: rgba(120, 138, 178, 0.3);
+  background: linear-gradient(160deg, rgba(30, 42, 66, 0.95), rgba(24, 32, 52, 0.92));
+}
+html[data-theme="dark"] .residency-brief__primary,
+html[data-theme="dark"] .residency-brief__fact,
+html[data-theme="dark"] .residency-brief__lane {
+  border-color: rgba(120, 138, 178, 0.26);
+  background: rgba(18, 26, 44, 0.66);
+}
+html[data-theme="dark"] .residency-brief__score {
+  background:
+    radial-gradient(circle at center, rgba(22, 30, 50, 0.98) 0 57%, transparent 58%),
+    conic-gradient(rgb(var(--signature-rgb)) 0 var(--score-deg), rgba(120, 138, 178, 0.28) var(--score-deg) 360deg);
+}
 html[data-theme="dark"] .climate-trip-hero-facts span {
   border-color: rgba(120, 210, 232, 0.22);
   background: rgba(28, 40, 62, 0.72);

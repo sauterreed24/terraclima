@@ -1,6 +1,6 @@
 import type { Place, RiskLevel, TopographicDriver } from "../types";
 import { ARCHETYPE_LABELS, DRIVER_LABELS } from "../types";
-import { getBestMonths } from "./best-months";
+import { getBestMonths, pickVisitWindow } from "./best-months";
 import { avgRisk, meanJanLow, meanSummerHigh, RISK_VALUE } from "./scoring";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import {
@@ -273,8 +273,7 @@ function vibeFor(place: Place): ClimateTourismProfile["vibe"] {
 
 function bestVisitWindow(place: Place): ClimateTourismProfile["bestVisitWindow"] {
   const windows = getBestMonths(place);
-  const good = windows.filter(w => w.kind === "good");
-  const first = good[0] ?? windows[0];
+  const first = pickVisitWindow(windows) ?? windows[0];
   if (!first) {
     return {
       label: "Scouting window",
@@ -302,7 +301,7 @@ function habitatCues(place: Place): ClimateTourismProfile["wildlifeAndHabitat"] 
     ...place.travelFit.filter(t => /wildlife|bird|whale|bear|puffin|beluga|habitat|refuge|reserve|park/i.test(t)),
   ], 4);
   const cues = compact([
-    explicit.length > 0 ? `Corpus wildlife cue: ${explicit.join(", ")}` : undefined,
+    explicit.length > 0 ? `Known wildlife draws: ${explicit.join(", ")}` : undefined,
     `Habitat cue: ${place.biome}`,
     place.reliefContext ? `Terrain cue: ${sentence(place.reliefContext, "Read slope, water, shade, and exposure together.", 150)}` : undefined,
     place.climate.snowCm?.some(cm => cm >= 15) ? "Seasonal cue: snow persistence changes access, albedo, and habitat timing." : undefined,
@@ -315,7 +314,7 @@ function habitatCues(place: Place): ClimateTourismProfile["wildlifeAndHabitat"] 
   ], 5);
 
   return {
-    headline: explicit.length > 0 ? "Use the named corpus cue, then read the habitat." : "Read habitat cues, not an invented species list.",
+    headline: explicit.length > 0 ? "Wildlife and habitat" : "Habitat to look for",
     cues: cues.length > 0 ? cues : ["Habitat cue: compare shade, water, slope, and wind exposure in person."],
     caveat: "Wildlife notes are habitat cues unless the atlas corpus explicitly names an activity or species. Verify access, closures, and local conservation guidance.",
   };
@@ -471,13 +470,13 @@ export function buildClimateTourismProfile(place: Place): ClimateTourismProfile 
     ),
     bestVisitWindow: window,
     growThere: {
-      headline: `Climate-and-ground fit for ${bestFits[0] ?? "garden experiments"}`,
+      headline: "What grows well here",
       bestFits: bestFits.length > 0 ? bestFits : ["Use the growability score as a climate screen."],
       tricky: tricky.length > 0 ? tricky : ["Verify water, frost pockets, soil depth, and local exposure."],
     },
     wildlifeAndHabitat: habitat,
     soilRead: {
-      headline: "Read soil as part of the climate mechanism.",
+      headline: "The soil underfoot",
       bullets: soilBullets,
     },
     riskRead: {
@@ -491,11 +490,11 @@ export function buildClimateTourismProfile(place: Place): ClimateTourismProfile 
     scores,
     scoreNotes: {
       tourismAppeal:
-        `Tourism appeal blends uniqueness, hidden-gem signal, trip richness, seasonal clarity, geospatial signal, and risk ease. Label: ${tourismScoreLabel(scores.tourismAppeal)}.`,
+        `${tourismScoreLabel(scores.tourismAppeal).replace(/^./, c => c.toUpperCase())} for a visit. Blends how unusual the climate is, how much there is to do, how clear its seasons are, and how low its hazards run.`,
       wouldLiveHere:
-        "Would I live here? is limited to climate comfort, hazards, resilience, growability, and tradeoffs. It does not use demographics, school quality, crime, politics, income, or market claims.",
+        "Climate only: comfort, hazards, resilience, growing conditions and tradeoffs. Schools, crime, politics, income and housing markets are not part of it.",
       climateLandOptionality:
-        "Investment lens: climate/land signal only. This is not financial advice, not a real estate valuation, not a parcel-level recommendation, and not a recommendation to buy.",
+        "How well the climate and land hold up over time. A screening signal only: not financial advice, not a real estate valuation and not a recommendation to buy.",
     },
   };
 }

@@ -34,6 +34,29 @@ const RISK_LABEL: Record<(typeof RISK_KEYS)[number], string> = {
 
 const MO = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
 
+function listJoin(items: readonly string[]): string {
+  if (items.length <= 1) return items[0] ?? "";
+  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
+}
+
+/** Driver chip labels are title-cased; mid-sentence they read lower-case except proper names. */
+function inlineDriverLabel(label: string): string {
+  return /^(?:Santa Ana|Chinook)/.test(label) ? label : label.charAt(0).toLowerCase() + label.slice(1);
+}
+
+function stripPeriod(text: string): string {
+  return text.replace(/\.+$/, "");
+}
+
+function withPeriod(text: string): string {
+  const t = text.trim();
+  return /[.!?]$/.test(t) ? t : `${t}.`;
+}
+
+function fmtC(c: number): string {
+  return `${c < 0 ? "−" : ""}${Math.abs(c)}°C`;
+}
+
 function wetDryIndices(precip: readonly number[]): { wet: number; dry: number } {
   let wet = 0;
   let dry = 0;
@@ -72,7 +95,6 @@ const RISK_LEVEL_RANK: Record<RiskLevel, number> = {
 };
 
 const MAX_SOIL_NOTE_CHARS = 340;
-const MAX_NEARBY_NOTE_CHARS = 260;
 
 function trimProse(s: string, max: number): string {
   const t = s.trim();
@@ -81,12 +103,24 @@ function trimProse(s: string, max: number): string {
 }
 
 /**
+ * The fill-only overlay in `places.deep-sections-authored.ts` restates the
+ * record's numbers in a fixed template (and misreads missing snow series as
+ * "no snow"). Every place now has a researched site-history chapter, and the
+ * chapters derived below cover the same ground from the same fields, so the
+ * template chapters stay on the record (evidence counts read them) but are
+ * left out of the reading.
+ */
+export function isTemplateDeepSection(section: PlaceDeepSection): boolean {
+  return /-(?:terrain-mechanism|risk-and-ground-truth)$/.test(section.id);
+}
+
+/**
  * Extra `PlaceDeepSection`s synthesized from structured fields so every place
  * gains the same **scaffold** of organized reading, after any hand-authored
  * `deepSections` in the corpus.
  */
 export function mergeDeepSections(place: Place): PlaceDeepSection[] {
-  const base = place.deepSections ?? [];
+  const base = (place.deepSections ?? []).filter(s => !isTemplateDeepSection(s));
   const append = buildDerivedDeepSections(place);
   const ids = new Set(base.map(s => s.id));
   return [...base, ...append.filter(a => !ids.has(a.id))];
@@ -107,28 +141,28 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     const dryM = MO[dry] ?? "—";
     const hasCalendarWindows = getBestMonths(place).length > 0;
     const chartHint = hasCalendarWindows
-      ? "The monthly strip sits under Seasonal rhythm below. Best months for… on this same page already turns these normals into garden, outdoor-comfort, dry-travel, and snow windows — this block stays on how total rain stacks month to month."
-      : "The monthly precipitation strip lives in Seasonal rhythm a little farther down this page — read narrative here first, then line it up against the bars.";
+      ? "The month-by-month bars sit under Seasonal rhythm further down, and Best months for… turns the same normals into garden, outdoor, dry-travel and snow windows; this chapter sticks to how the rain stacks up through the year."
+      : "The month-by-month bars sit under Seasonal rhythm further down, if you want to line this up against the numbers.";
 
     let lead: string;
     if (precipAllEqual(precip) || Math.max(...precip) <= 0) {
       lead =
-        `Monthly precipitation normals are effectively even across the year — seasonal planning leans more on temperature, humidity, and wind than on a single rainy season. ${chartHint}`;
+        `Rain is spread almost evenly across the year, so seasonal planning leans more on temperature, humidity and wind than on a rainy season. ${chartHint}`;
     } else if (flat) {
       const mid = hasCalendarWindows
         ? "Irrigation, drainage, and storm cadence still move month to month, but the calendar is gentler than in strongly seasonal climates."
         : "Irrigation, drainage, and travel timing still move month to month, but the calendar is gentler than in strongly seasonal climates.";
-      lead = `Monthly precipitation stays in a fairly tight band — no sharp monsoon–dry split. ${mid} ${chartHint}`;
+      lead = `Rain stays in a fairly tight band from month to month, with no sharp wet-season/dry-season split. ${mid} ${chartHint}`;
     } else if (mild) {
       const mid = hasCalendarWindows
         ? "Roof work, irrigation, and canopy management still track that rhythm."
         : "Roof work, travel windows, and how hard you lean on irrigation still track that rhythm.";
-      lead = `Wettest pool toward ${wetM} and the lightest stretch around ${dryM}, but the wet–dry swing is moderate. ${mid} ${chartHint}`;
+      lead = `The wettest month is ${wetM} and the driest is ${dryM}, but the swing between them is moderate. ${mid} ${chartHint}`;
     } else {
       const mid = hasCalendarWindows
         ? "That rhythm shapes roof work, stormwater design, and how aggressively you need irrigation or drainage on a parcel."
         : "That rhythm shapes roof work, travel timing, and how aggressively you need irrigation or drainage on a parcel.";
-      lead = `Monthly normals concentrate the wettest signal in ${wetM} and the driest stretch around ${dryM}. ${mid} ${chartHint}`;
+      lead = `Rain peaks sharply around ${wetM} and bottoms out around ${dryM}. ${mid} ${chartHint}`;
     }
 
     const paras: string[] = [lead];
@@ -137,43 +171,57 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
       const snowMonths = snow.map((cm, i) => (cm > 1 ? MO[i] : null)).filter(Boolean) as string[];
       if (snowMonths.length > 0) {
         paras.push(
-          `Snow shows in normals across ${snowMonths.slice(0, 6).join(", ")}${snowMonths.length > 6 ? ", …" : ""} — a planning season distinct from rainfall alone.`,
+          `Snow turns up in the normals in ${listJoin(snowMonths.slice(0, 6))}${snowMonths.length > 6 ? " and beyond" : ""}, so winter brings its own planning season on top of the rain.`,
         );
+      }
+    } else if (!snow) {
+      const coldestHigh = Math.round(Math.min(...place.climate.tempHighC));
+      const coldestLow = Math.round(Math.min(...place.climate.tempLowC));
+      if (coldestHigh <= 3) {
+        paras.push(
+          `This entry has no monthly snowfall series, but with midwinter highs near ${fmtC(coldestHigh)} expect a real snow season: check local snowfall records before planning winter access or roof loads.`,
+        );
+      } else if (coldestLow <= 0) {
+        paras.push(
+          `This entry has no monthly snowfall series. With the coldest nights near ${fmtC(coldestLow)}, occasional snow or ice is possible, but the normals can't say how often.`,
+        );
+      } else {
+        paras.push("Snow is minor or absent here; winter is mostly temperature, wind, and rain.");
       }
     } else {
       paras.push(
         flat
-          ? "Snow is minor or absent in these normals; winter is mostly temperature, wind, and liquid precip."
-          : "Snow plays a minor or absent role in the monthly normals here; winter challenges lean more toward temperature, wind, or rain than ploughing.",
+          ? "Snow is minor or absent in these normals; winter is mostly temperature, wind, and rain."
+          : "Snow plays little or no part in the monthly normals; winter here is about temperature, wind, and rain rather than ploughing.",
       );
     }
     if (place.climate.frostFreeDays != null) {
       paras.push(
-        `Estimated frost-free days for this entry: about ${place.climate.frostFreeDays} — pair with growability for tender plants.`,
+        `Expect about ${place.climate.frostFreeDays} frost-free days a year, the window tender plants have to work with (more under Agriculture, soils, and garden fit).`,
       );
     }
     out.push({
       id: "appendix-season-pocket",
-      title: "When rain and snow stack through the year",
+      title: (place.climate.snowCm ?? []).reduce((t, v) => t + (v ?? 0), 0) >= 10
+        ? "How rain and snow fall through the year"
+        : "How the rain falls through the year",
       paragraphs: paras.slice(0, 3),
     });
   }
 
   // --- Mechanisms (cross-links the driver chips section) ---
   if (!existing.has("appendix-forces-atlas") && place.drivers.length > 0) {
-    const labels = place.drivers.map(d => DRIVER_LABELS[d] ?? d);
+    const labels = place.drivers.map(d => inlineDriverLabel(DRIVER_LABELS[d] ?? d));
     const maxShow = 7;
     const head = labels.slice(0, maxShow);
     const more = labels.length - head.length;
-    const list =
-      more > 0
-        ? `${head.join(" · ")} — plus ${more} more in the same chip row.`
-        : head.join(" · ");
+    const list = more > 0 ? `${head.join(", ")}, plus ${more} more` : listJoin(head);
+    const lead = labels.length === 1 ? `The main driver at work here is ${list}.` : `The main drivers at work here are ${list}.`;
     out.push({
       id: "appendix-forces-atlas",
-      title: "Spatial logic and terrain engines",
+      title: "How the terrain shapes the climate",
       paragraphs: [
-        `${list} Slope, exposure, water, elevation, and air-mass pathways explain why one map dot can feel unlike the surrounding region. Tap the matching chips under "Why this climate is different here" for glossary definitions.`,
+        `${lead} Slope and exposure, nearby water, elevation, and the paths air masses take are why one spot on the map can feel so unlike the country around it. Tap the matching chips under "What shapes the climate here" for a plain-language explanation of each.`,
       ],
     });
   }
@@ -186,7 +234,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     const tricky = g.tricky.length ? g.tricky.slice(0, 4).join(", ") : "—";
     const ph = `${s.phRange[0]}–${s.phRange[1]}`;
     const groundParas = [
-      `${s.texture} Drainage is ${s.drainage}; soil pH about ${ph}. The garden screen is ${g.score}/100. Crops and plants called out as strong fits: ${grows}. Worth extra care: ${tricky}.`,
+      `${withPeriod(s.texture)} Drainage is ${s.drainage} and soil pH runs about ${ph}. The garden score is ${g.score}/100. Grows well: ${grows}. Needs extra care: ${tricky}.`,
     ];
     if (s.notes) groundParas.push(trimProse(s.notes, MAX_SOIL_NOTE_CHARS));
     if (g.homeGarden) groundParas.push(`Home garden angle: ${trimProse(g.homeGarden, 240)}`);
@@ -198,41 +246,23 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     });
   }
 
-  // --- Local contrasts (only curated notes already on the record) ---
-  if (!existing.has("appendix-nearby-differences")) {
-    const paras: string[] = [];
-    for (const lc of place.localContrast ?? []) {
-      if (lc.note) paras.push(`Within roughly ${lc.radiusKm} km: ${trimProse(lc.note, MAX_NEARBY_NOTE_CHARS)}`);
-      if (paras.length >= 2) break;
-    }
-    for (const nc of place.nearbyContrasts ?? []) {
-      if (paras.length >= 3) break;
-      paras.push(`${nc.label}: ${trimProse(nc.note, MAX_NEARBY_NOTE_CHARS)}`);
-    }
-    if (paras.length > 0) {
-      out.push({
-        id: "appendix-nearby-differences",
-        title: "Nearby contrasts and side trips",
-        paragraphs: paras.slice(0, 3),
-      });
-    }
-  }
+  // Nearby contrasts are not repeated here: the Overview's nearby cards and
+  // the Local contrast section already show the same curated notes.
 
   // --- Scouting / diligence (last in this bundle; relocation voice) ---
   if (!existing.has("appendix-scouting-diligence")) {
-    const rel = place.relocationFit.length ? place.relocationFit.join(", ") : "general readers";
-    const travel = place.travelFit.length ? place.travelFit.join(", ") : "year-round curiosity";
     const trade = place.scores.tradeoff >= 55
-      ? "This profile carries real tradeoffs — read risks and seasonal limits before committing money or a move."
+      ? `A tradeoff score of ${place.scores.tradeoff}/100 means real compromises: read the risks and seasonal limits before committing money or a move.`
       : place.scores.tradeoff >= 35
-        ? "Tradeoffs exist but are manageable for many households if you align expectations with the dry season, winter, or smoke windows."
-        : "On paper the tradeoff load is modest relative to other atlas stops — still verify against your own health and insurance context.";
+        ? `A tradeoff score of ${place.scores.tradeoff}/100 means the compromises are manageable for many households that plan around the hard season.`
+        : `A tradeoff score of ${place.scores.tradeoff}/100 is light next to other places in the atlas; still check it against your own health and insurance needs.`;
 
     type RiskRow = { key: (typeof RISK_KEYS)[number]; line: string; level: RiskLevel; hasNote: boolean };
     const riskRows: RiskRow[] = RISK_KEYS.map(k => {
       const r = place.risks[k];
       const label = RISK_LABEL[k];
-      const line = r.note ? `${label} (${r.level}): ${trimProse(r.note, 120)}` : `${label}: ${r.level}`;
+      const level = r.level.replace("-", " ");
+      const line = r.note ? `${label} (${level}): ${stripPeriod(trimProse(r.note, 120))}` : `${label}: ${level}`;
       return { key: k, line, level: r.level, hasNote: Boolean(r.note) };
     });
     riskRows.sort((a, b) => {
@@ -241,16 +271,18 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
       return (b.hasNote ? 1 : 0) - (a.hasNote ? 1 : 0);
     });
     const riskBits = riskRows.slice(0, 5).map(r => r.line);
+    const confidenceRaw = place.confidenceNotes
+      ? stripPeriod(place.confidenceNotes.replace(/^Tier [A-C] entry\s*[—–-]\s*/i, "").trim())
+      : "";
+    const confidenceNote = confidenceRaw.charAt(0).toUpperCase() + confidenceRaw.slice(1);
 
     out.push({
       id: "appendix-scouting-diligence",
       title: "Homes, land, and long-term fit",
       paragraphs: [
-        `If you are scouting a home or small land parcel, start with who already thrives here: ${place.whoWouldLove} Relocation tags we attach include ${rel} — they are editorial shorthand, not census demographics.`,
-        `Be equally clear on poor fit so you do not waste a site visit: ${place.whoMightNot} Travel-wise, people often show up for ${travel}.`,
-        `Comfort, resilience, and garden screens (${place.scores.comfort}, ${place.scores.resilience}, and ${place.scores.growability} of 100) summarize habitability, climate-change positioning, and yard or orchard potential — not appraisal or lending rules. ${trade}`,
+        `If you are scouting a home or a small parcel, ${trade.charAt(0).toLowerCase()}${trade.slice(1)} The comfort, resilience, and garden scores (${place.scores.comfort}, ${place.scores.resilience}, and ${place.scores.growability} out of 100) describe how livable the climate is, how well it should hold up as the climate changes, and what a yard or orchard can do. They are not an appraisal or a lending rule.`,
         `Risk diligence (always verify locally): ${riskBits.join(" · ")}.`,
-        `Confidence here is ${place.confidence}${place.confidenceNotes ? ` — ${place.confidenceNotes}` : ""}. Use citations at the end of this sheet as your jump-off for primary sources.`,
+        `Confidence in this entry is ${place.confidence}.${confidenceNote ? ` ${confidenceNote}.` : ""} The citations at the end of this page are the place to start for primary sources.`,
       ],
     });
   }

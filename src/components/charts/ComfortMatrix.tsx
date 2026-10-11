@@ -63,7 +63,8 @@ export function ComfortMatrix({ place }: Props) {
                 height={barH + 1}
                 rx="6.5"
                 fill="none"
-                stroke="rgba(241, 246, 252, 0.65)"
+                stroke="var(--color-ice)"
+                strokeOpacity="0.55"
                 strokeWidth="0.8"
               />
             )}
@@ -71,7 +72,7 @@ export function ComfortMatrix({ place }: Props) {
               x={x + barW / 2}
               y={top + barH + 13}
               fontSize="10"
-              fill={isPeak ? "#f1f6fc" : "#8a99ac"}
+              fill={isPeak ? "var(--color-ice)" : "var(--color-stone-readable)"}
               textAnchor="middle"
               fontFamily="Inter"
               fontWeight={isPeak ? 600 : 400}

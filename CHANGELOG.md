@@ -4,6 +4,15 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Calmer scrollbar, tidier place pages, and text that adds up
+
+- **Scrollbar sensitivity:** the ranked list reserved height for all 226 cards, so each pixel of thumb drag moved the page ~112 px (134 px at 1024 wide). The list now shows the best 36 first with "Show 36 more" / "Show all" (and grows to keep a selected card in view). The page is ~16.5k px instead of ~96k, so a drag moves ~19 px per px (24 at 1024). Place pages are ~15–30% shorter because long dossier chapters and technical tables fold. Wheel and trackpad scrolling are unchanged.
+- **Field dossier:** the first two chapters open; the rest show a two-line teaser and a Read/Hide toggle (jump links and `#deep-…` links open their chapter). The 270 templated "terrain mechanism" / "risk and ground truth" chapters on 135 places are no longer shown. They mislabeled climates (Tucson's BWh desert as "transitional"), printed "drains good" and cut-off titles, put Page, AZ's paragraphs on Santa Cruz, and claimed snow was "minor or absent" in Duluth and International Falls. The researched history chapter and the derived chapters already cover that ground.
+- **Derived chapters:** fixed run-on sentences ("Cold-air drainage Slope, exposure…", "Sandy loam Drainage is…"), doubled periods, raw "very-high" levels and "Tier C entry" jargon. A missing snowfall series is no longer read as "no snow". The nearby chapter (already shown in the Overview and Local contrast) is dropped, and "Homes, land, and long-term fit" no longer repeats the Who it suits cards.
+- **Less repetition:** removed the second why-here paragraph, the journey bridge, the twins teaser, the duplicate poor-fit card and the Climate story card. Local contrast rows no longer repeat what the chart shows. "Climate drivers", "Climate twins" and "Who it suits" now match their section headings.
+- **Consistent logic:** the visit window prefers outdoor/dry/crisp/snow windows over garden-only ones everywhere. Comfort months count highs of 12–30°C in every card. Wet/dry ratios read as words ("4.0× wetter") instead of "∞". Card signals and Köppen/Conrad labels are in plain language. Contrast deltas show "≈ same" instead of "+0".
+- **Dark mode:** fixed low-contrast twins cards, residency brief, compare insights, score pills, comfort matrix labels and the comfort-precision footer. A light + dark sweep of explorer, dossier and compare finds no low-contrast text (two labels drawn over the map canvas are only flagged because the checker cannot see the map behind them).
+
 ### Readable scrollbar, real cartography, and place stories worth reading
 
 - **Page scrollbar:** the viewport bar was a ~6×16 px sliver on a very long page. Body and html now get a 16px rail with a brand-teal thumb (88px minimum) in light and dark; panels get a visible 12px bar; Firefox gets matching `scrollbar-color`.

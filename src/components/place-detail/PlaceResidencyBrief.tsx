@@ -11,6 +11,7 @@
 import { ArrowLeftRight, Calendar, ShieldAlert } from "lucide-react";
 import type { Place } from "../../types";
 import type { BestWindow } from "../../lib/best-months";
+import { pickVisitWindow } from "../../lib/best-months";
 import { LIVE_FIT_PRESETS, type LiveFitAssessment, type LiveFitFilters } from "../../lib/live-fit";
 import type { LivabilityResult } from "../../lib/livability-score";
 import type { PlaceVisualSignature } from "../../lib/place-visual-signature";
@@ -101,7 +102,7 @@ export function PlaceResidencyBrief({
 }) {
   const { temp } = useUnits();
   const prose = useProse();
-  const bestWindow = bestMonths.find(w => w.kind === "good") ?? null;
+  const bestWindow = pickVisitWindow(bestMonths);
   const cautionWindow = bestMonths.find(w => w.kind === "caution") ?? null;
   const fitContextRead = buildFitContextRead(liveFitFilters, temp, fitContext);
   const leadDriver =

@@ -118,7 +118,7 @@ export function ScorePill({
     <div className="panel-thin p-3">
       <div className="text-[10px] uppercase tracking-wider text-stone">{label}</div>
       <div className="flex items-baseline gap-2">
-        <span className="font-mono-num text-xl" style={{ color: c[tone] }}>{value}</span>
+        <span className="score-pill__value font-mono-num text-xl" data-tone={tone}>{value}</span>
         <span className="text-xs text-stone">/ 100</span>
       </div>
       <div

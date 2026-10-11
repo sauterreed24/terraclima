@@ -18,17 +18,29 @@ describe("synthesizePlaceSignals", () => {
     expect(lines[0].label).toBe("Annual thermal span");
     expect(lines[0].value).toContain("8°C to 42°C");
     expect(lines[1].label).toBe("Wettest / driest month");
-    // Wettest = Aug (30), driest = Jun (1), ratio 30×
+    // Wettest = Aug (30), driest = Jun (1): a near-rainless month reads in words, not as "30.0×".
     expect(lines[1].value).toContain("Aug");
     expect(lines[1].value).toContain("Jun");
-    expect(lines[1].value).toContain("30.0×");
+    expect(lines[1].value).toContain("driest month nearly rainless");
     expect(lines[2].label).toContain("Comfort-window months");
     // Highs in 12–28°C: 20, 22, 26, 25, 20 → Jan, Feb, Mar, Nov, Dec = 5 months.
     expect(lines[2].value).toBe("5 / 12");
     expect(topRisks).toEqual([]); // No risks at elevated+ in baseline fixture
   });
 
-  it("uses ∞ when the driest month is essentially zero", () => {
+  it("states a moderate wet/dry ratio when the driest month still gets rain", () => {
+    const place = makePlace({
+      id: "ratio",
+      climate: {
+        tempHighC: [10, 12, 15, 18, 22, 26, 28, 28, 24, 18, 13, 10],
+        tempLowC: [0, 1, 3, 6, 10, 14, 16, 16, 12, 7, 3, 1],
+        precipMm: [40, 40, 40, 40, 40, 20, 20, 40, 60, 80, 80, 40],
+      },
+    });
+    expect(synthesizePlaceSignals(place, "C", "metric").lines[1].value).toContain("4.0× wetter");
+  });
+
+  it("reads a rainless driest month in words rather than ∞", () => {
     const place = makePlace({
       id: "atacama",
       climate: {
@@ -38,7 +50,8 @@ describe("synthesizePlaceSignals", () => {
       },
     });
     const { lines } = synthesizePlaceSignals(place, "C", "metric");
-    expect(lines[1].value).toContain("∞");
+    expect(lines[1].value).toContain("driest month nearly rainless");
+    expect(lines[1].value).not.toContain("∞");
   });
 
   it("includes a humidity regime line when humidity data is present", () => {

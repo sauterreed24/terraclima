@@ -21,12 +21,7 @@ export function PlaceTourismRead({ place, anchorId }: { place: Place; anchorId: 
       <div className="grid md:grid-cols-3 gap-2 mb-4">
         <TourismScore label="Tourism appeal" value={profile.scores.tourismAppeal} note={profile.scoreNotes.tourismAppeal} />
         <TourismScore label="Would I live here?" value={profile.scores.wouldLiveHere} note={profile.scoreNotes.wouldLiveHere} />
-        <TourismScore label="Investment lens: climate/land signal" value={profile.scores.climateLandOptionality} note={profile.scoreNotes.climateLandOptionality} />
-      </div>
-
-      <div className="panel-field-story p-4 md:p-5 rounded-2xl border border-[rgba(199,181,234,0.22)] mb-4">
-        <div className="text-[10px] uppercase tracking-wider text-stone mb-2">Climate story</div>
-        <p className="text-[color:var(--color-frost-strong)] leading-[1.7] text-sm">{prose(profile.climateStory)}</p>
+        <TourismScore label="Long-term climate & land" value={profile.scores.climateLandOptionality} note={profile.scoreNotes.climateLandOptionality} />
       </div>
 
       <div className="grid md:grid-cols-2 gap-3">

@@ -11,7 +11,7 @@ import { Thermometer } from "lucide-react";
 import type { ComfortPrecisionMonth, ComfortPrecisionProfile } from "../../lib/comfort-precision";
 import { apparentComfortIndexFromProfile } from "../../lib/comfort-precision";
 import { fmtDelta, fmtTemp, useUnits, type TempUnit } from "../../lib/units";
-import { Section } from "./place-detail-ui";
+import { ScoreDetails } from "./place-detail-ui";
 import { PD } from "./place-detail-nav";
 
 function precisionTemp(value: number | null, temp: TempUnit): string {
@@ -78,7 +78,7 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
   ] as const;
 
   return (
-    <Section anchorId={PD.comfortPrecision} title="Comfort precision" icon={<Thermometer className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
+    <ScoreDetails id={PD.comfortPrecision} title="Comfort precision" icon={<Thermometer className="w-4 h-4" style={{ color: "#5ec4dc" }} />}>
       <div className="comfort-precision-panel">
         <div className="comfort-precision-panel__head">
           <div>
@@ -141,6 +141,6 @@ export function PlaceComfortPrecision({ profile }: { profile: ComfortPrecisionPr
         <p className="comfort-precision-panel__method">{profile.methodNote}</p>
         <p className="comfort-precision-panel__method">{utci.methodNote}</p>
       </div>
-    </Section>
+    </ScoreDetails>
   );
 }

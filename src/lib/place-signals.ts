@@ -66,9 +66,15 @@ export function synthesizePlaceSignals(
   const dryIdx = precip.reduce((best, v, i, arr) => (v < arr[best] ? i : best), 0);
   const wet = precip[wetIdx];
   const dry = precip[dryIdx];
-  const wetDryRatio = dry <= 0.1 ? "∞" : `${(wet / dry).toFixed(1)}×`;
+  // A near-rainless driest month makes the ratio meaningless ("147.1×").
+  const ratio = wet / Math.max(dry, 0.01);
+  const wetDryRatio = dry < 5
+    ? "driest month nearly rainless"
+    : ratio >= 10 ? `about ${Math.round(ratio)}× wetter` : `${ratio.toFixed(1)}× wetter`;
 
-  const comfortMonths = highs.filter(h => h >= 12 && h <= 28).length;
+  // Same ceiling as the month-by-month comfort strip (penalties start above 30°C),
+  // so the two reads on one page never disagree.
+  const comfortMonths = highs.filter(h => h >= 12 && h <= 30).length;
 
   const lines: PlaceSignal[] = [
     {
@@ -81,8 +87,8 @@ export function synthesizePlaceSignals(
     },
     {
       label: temp === "F"
-        ? "Comfort-window months (54–82°F highs)"
-        : "Comfort-window months (12–28°C highs)",
+        ? "Comfort-window months (54–86°F highs)"
+        : "Comfort-window months (12–30°C highs)",
       value: `${comfortMonths} / 12`,
     },
   ];

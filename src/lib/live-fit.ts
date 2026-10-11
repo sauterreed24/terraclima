@@ -510,7 +510,7 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
     if (observedSunshine < 48) {
       pushUnique(cautions, `Below-average sunshine (~${observedSunshine}% of possible; US avg 58%) — expect frequent overcast days.`, 3);
     } else if (observedSunshine < 55) {
-      pushUnique(cautions, `Sunshine is below the US average of 58% (~${observedSunshine}%) — overcast days are common.`, 3);
+      pushUnique(cautions, `Sunshine runs about ${observedSunshine}% of possible, below the US average of 58% — overcast days are common.`, 3);
     }
   }
 

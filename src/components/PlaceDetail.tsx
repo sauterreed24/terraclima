@@ -22,8 +22,6 @@ import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtDelta, useProse } from "../li
 import { getBestMonths } from "../lib/best-months";
 import { CopyPlaceLink } from "./place-detail/CopyPlaceLink";
 import { PlaceClimateTwins } from "./place-detail/PlaceClimateTwins";
-import { PlaceClimateTwinsTeaser } from "./place-detail/PlaceClimateTwinsTeaser";
-import { PlaceDiscoveryJourneyBridge } from "./place-detail/PlaceDiscoveryJourneyBridge";
 import { composeFieldStory } from "../lib/place-story";
 import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
 import { composePlaceExperience } from "../lib/place-overview";
@@ -44,7 +42,7 @@ import { useDetailReadingSpy } from "../hooks/use-detail-reading-spy";
 import { scrollDetailRootToSection } from "../lib/detail-scroll-spy";
 import { useMediaQuery } from "../hooks/use-media-query";
 import { PlaceDeepSections } from "./place-detail/PlaceDeepSections";
-import { PD, PD_ALL_IDS, PD_NAV_GROUP, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
+import { PD, PD_ALL_IDS, PD_NAV_GROUP, buildLocalContrastRows, buildPlaceDetailNavItems } from "./place-detail/place-detail-nav";
 import { PlaceDetailReadingNav } from "./place-detail/PlaceDetailReadingNav";
 import { PlaceAtAGlance } from "./place-detail/PlaceAtAGlance";
 import { PlaceOverviewSpotlight } from "./place-detail/PlaceOverviewSpotlight";
@@ -58,7 +56,7 @@ import { PlaceBackToTop } from "./place-detail/PlaceBackToTop";
 import { PlaceReadingProgress } from "./place-detail/PlaceReadingProgress";
 import { Section, KeyValue, LabelRow, Legend, ScorePill, ScoreDetails, ZoneDivider, titleCaseLocal } from "./place-detail/place-detail-ui";
 import { synthesizePlaceSignals } from "../lib/place-signals";
-import { buildNearbyContextRows, buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
+import { buildPracticalActivities, buildSettlementAnchors } from "../lib/practical-read";
 import { buildGrowabilityRationale } from "../lib/growability-score";
 import {
   X, ArrowLeftRight, BookOpen, MapPin, Mountain, Sparkles, Leaf, CloudRain, Wind,
@@ -795,7 +793,7 @@ function DetailBody({
   const comfortRead = useMemo(() => describeHumanComfort(place), [place]);
   const settlementAnchors = useMemo(() => buildSettlementAnchors(place), [place]);
   const practicalActivities = useMemo(() => buildPracticalActivities(place), [place]);
-  const nearbyContextRows = useMemo(() => buildNearbyContextRows(place), [place]);
+  const nearbyContextRows = useMemo(() => buildLocalContrastRows(place), [place]);
   const growabilityRationale = useMemo(() => buildGrowabilityRationale(place), [place]);
   const navItems = useMemo(() => buildPlaceDetailNavItems(place), [place]);
   const navDomIds = useMemo(() => navItems.map(i => i.id), [navItems]);
@@ -818,8 +816,10 @@ function DetailBody({
       <div className="min-w-0 space-y-10 tc-detail-prose">
       <PlaceOverviewSpotlight place={place} anchorId={PD.overview} seasonsAnchorId={PD.seasons} />
 
-      <Section anchorId={PD.whyHere} icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="Why this climate is different here">
-        <p className="text-[color:var(--color-frost-strong)] leading-relaxed">{prose(place.whyDistinct)}</p>
+      {/* The overview's "Why it feels different" essay carries the mechanism in
+          prose; this section names the drivers and explains each on demand. */}
+      <Section anchorId={PD.whyHere} icon={<Sparkles className="w-4 h-4" style={{ color: "#f0d29c" }} />} title="What shapes the climate here">
+        <p className="text-sm text-stone-readable">Tap a driver for a plain-language explanation of how it works.</p>
 
         <div className="flex flex-wrap gap-1.5 mt-3">
           {place.drivers.map(d => {
@@ -906,12 +906,12 @@ function DetailBody({
         </div>
       ) : null}
 
-      {nearbyContextRows.length > 0 ? (
+      {nearbyContextRows.length > 0 || place.localContrast?.length ? (
         <Section anchorId={PD.contrast} title="Local contrast" icon={<TrendingUp className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
           {place.localContrast && <ContrastChart contrasts={place.localContrast} />}
           {nearbyContextRows.length > 0 && (
             <div className="mt-4 space-y-2">
-              <div className="text-[10px] uppercase tracking-wider text-stone">Nearby contrasts and scouting checks</div>
+              <div className="text-[10px] uppercase tracking-wider text-stone-readable">More nearby contrasts</div>
               {nearbyContextRows.map((n, i) => {
                 const linked = n.placeId && PLACES_BY_ID[n.placeId];
                 return linked ? (
@@ -928,7 +928,7 @@ function DetailBody({
                   </button>
                 ) : (
                   <div key={i} className="panel-thin p-3">
-                    <div className="font-medium text-frost text-sm">{n.label}</div>
+                    <div className="font-medium text-frost text-sm">{prose(n.label)}</div>
                     <div className="text-stone text-sm leading-relaxed">{prose(n.note)}</div>
                   </div>
                 );
@@ -958,22 +958,11 @@ function DetailBody({
         icon={<Users className="w-3.5 h-3.5" aria-hidden />}
       />
 
-      <PlaceDiscoveryJourneyBridge
-        place={place}
-        homePlace={homePlace}
-        onHomeBaseToggle={onHomeBaseToggle}
-        reduceMotion={Boolean(reduceMotion)}
-      />
-
+      {/* Versus-home carries its own "set home" call to action, and the twins
+          section opens on the closest match, so neither needs a teaser above it. */}
       <PlaceVersusHome place={place} home={homePlace ?? null} onHomeBaseToggle={onHomeBaseToggle} scenario={scenario} />
 
-      <PlaceClimateTwinsTeaser
-        place={place}
-        onOpenPlace={onOpenPlace}
-        reduceMotion={Boolean(reduceMotion)}
-      />
-
-      <Section anchorId={PD.similar} title="Climate twins detail" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
+      <Section anchorId={PD.similar} title="Climate twins" icon={<Link2 className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
         <PlaceClimateTwins place={place} onOpenPlace={onOpenPlace} />
       </Section>
 
@@ -1256,16 +1245,12 @@ function DetailBody({
 
       <PlaceTourismRead place={place} anchorId={PD.tourism} />
 
-      <Section anchorId={PD.who} title="Who would love this · who might not">
-        <div className="grid md:grid-cols-2 gap-3">
-          <div className="panel-thin p-3 border-l-2" style={{ borderLeftColor: "#c6dcbd" }}>
-            <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Fits best</div>
-            <div className="text-sm text-frost">{prose(place.whoWouldLove)}</div>
-          </div>
-          <div className="panel-thin p-3 border-l-2" style={{ borderLeftColor: "#d37c5b" }}>
-            <div className="text-[10px] uppercase tracking-wider text-stone mb-1">Poor fit</div>
-            <div className="text-sm text-frost">{prose(place.whoMightNot)}</div>
-          </div>
+      {/* "Who might not" already closes the overview, so this keeps only the
+          best-fit read and the relocation / travel tags. */}
+      <Section anchorId={PD.who} title="Who it suits">
+        <div className="panel-thin p-3 border-l-2" style={{ borderLeftColor: "#7ea182" }}>
+          <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1">Fits best</div>
+          <div className="text-sm text-frost">{prose(place.whoWouldLove)}</div>
         </div>
         <div className="flex flex-wrap gap-1.5 mt-3">
           {place.relocationFit.map(t => <span key={t} className="chip" data-tone="glacier">Relocation · {t}</span>)}
@@ -1316,11 +1301,11 @@ function DetailBody({
             <LabelRow label="Month-by-month comfort" />
             <ComfortMatrix place={place} />
             <div className="text-[10px] text-stone-readable mt-2 flex items-center gap-3 flex-wrap">
-              <Legend color="#89af88" text="Ideal" />
-              <Legend color="#c6dcbd" text="Very good" />
-              <Legend color="#f0d29c" text="Good" />
-              <Legend color="#d37c5b" text="Stressed" />
-              <Legend color="#9a4a2a" text="Harsh" />
+              <Legend color="#7ea182" text="Ideal" />
+              <Legend color="#b9cdb4" text="Very good" />
+              <Legend color="#e6c990" text="Good" />
+              <Legend color="#d48c66" text="Stressed" />
+              <Legend color="#8b3f22" text="Harsh" />
             </div>
           </div>
         </div>
@@ -1371,7 +1356,7 @@ function DetailBody({
         </div>
       </Section>
 
-      <Section anchorId={PD.corpus} title="How this place sits in the full atlas" icon={<Scale className="w-4 h-4" style={{ color: "var(--color-glacier-500)" }} />}>
+      <ScoreDetails id={PD.corpus} title="How this place sits in the full atlas" icon={<Scale className="w-4 h-4" style={{ color: "var(--color-glacier-500)" }} />}>
         <p className="text-sm text-stone leading-relaxed mb-3 max-w-2xl">
           Every row compares this stop to the other <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> curated places on the same map — same fields as the header stats and comfort matrix. A high &ldquo;wetter than&rdquo; share means annual totals here beat most other entries, not that more rain is intrinsically &ldquo;better.&rdquo;
         </p>
@@ -1395,7 +1380,7 @@ function DetailBody({
         <p className="text-[11px] text-stone italic mt-2">
           Percent shares count strict inequalities in the same snapshot distribution (not a parametric fit). Ties in rounded normals are common, so 50/50-style splits are normal in dense Köppen classes.
         </p>
-      </Section>
+      </ScoreDetails>
 
       <Section anchorId={PD.geospatial} title="Geospatial analysis" icon={<Satellite className="w-4 h-4" style={{ color: "#c7b5ea" }} />}>
         <div className="flex flex-wrap items-center gap-2 mb-2">
@@ -1611,7 +1596,7 @@ function DetailBody({
               const href = safeExternalHref(c.url);
               return (
                 <li key={i} className="flex items-start gap-2 text-frost">
-                  <span className="chip" data-tone="ice" style={{ fontSize: "10px" }}>{c.kind.toUpperCase()}</span>
+                  <span className="chip shrink-0" data-tone="ice" style={{ fontSize: "10px" }}>{c.kind.toUpperCase()}</span>
                   <span>
                     {href ? (
                       <a

@@ -41,30 +41,54 @@ describe("place appendix sections", () => {
     const season = buildDerivedDeepSections(place).find(section => section.id === "appendix-season-pocket");
 
     expect(season).toBeTruthy();
-    expect(season?.paragraphs.join(" ")).toMatch(/wettest signal in Dec/i);
-    expect(season?.paragraphs.join(" ")).toMatch(/driest stretch around Jul/i);
-    expect(season?.paragraphs.join(" ")).toMatch(/Snow shows in normals across Jan, Feb, Mar/i);
+    expect(season?.paragraphs.join(" ")).toMatch(/Rain peaks sharply around Dec/i);
+    expect(season?.paragraphs.join(" ")).toMatch(/bottoms out around Jul/i);
+    expect(season?.paragraphs.join(" ")).toMatch(/Snow turns up in the normals in Jan, Feb, Mar/i);
     expect(season?.paragraphs.join(" ")).toMatch(/about 146/i);
   });
 
-  it("builds nearby contrast chapters only from curated local and nearby contrast fields", () => {
+  it("leaves nearby contrasts to the Overview and Local contrast sections", () => {
     const place = makePlace({
       localContrast: [
         { radiusKm: 20, note: "South-facing slopes run warmer and drier than the shaded creek bottoms." },
-        { radiusKm: 45, note: "A higher bench keeps late snow while the town floor greens first." },
       ],
       nearbyContrasts: [
         { label: "Valley floor", note: "Hotter afternoons and weaker night recovery." },
-        { label: "Ridge crest", note: "Windier, colder, and more exposed in storms." },
       ],
     });
 
-    const nearby = buildDerivedDeepSections(place).find(section => section.id === "appendix-nearby-differences");
+    expect(buildDerivedDeepSections(place).map(section => section.id)).not.toContain("appendix-nearby-differences");
+  });
 
-    expect(nearby).toBeTruthy();
-    expect(nearby?.paragraphs).toHaveLength(3);
-    expect(nearby?.paragraphs[0]).toContain("Within roughly 20 km");
-    expect(nearby?.paragraphs[2]).toContain("Valley floor");
+  it("hides the templated overlay chapters from the reading", () => {
+    const place = makePlace({
+      id: "demo",
+      deepSections: [
+        { id: "demo-site-history", title: "Rail and timber", paragraphs: ["Researched history."] },
+        { id: "demo-terrain-mechanism", title: "Elevation, airflow, and the Dfb classification here", paragraphs: ["Template."] },
+        { id: "demo-risk-and-ground-truth", title: "Housing, access, and who this place actually fits", paragraphs: ["Template."] },
+      ],
+    });
+
+    const ids = mergeDeepSections(place).map(section => section.id);
+    expect(ids[0]).toBe("demo-site-history");
+    expect(ids).not.toContain("demo-terrain-mechanism");
+    expect(ids).not.toContain("demo-risk-and-ground-truth");
+  });
+
+  it("does not read a missing snowfall series as no snow in a cold winter", () => {
+    const place = makePlace({
+      climate: makeClimate({
+        tempHighC: monthly(-9, -6, 1, 10, 18, 23, 26, 25, 18, 10, 0, -7),
+        tempLowC: monthly(-20, -18, -11, -2, 4, 10, 13, 11, 6, 0, -8, -16),
+        snowCm: undefined,
+      }),
+    });
+
+    const text = buildDerivedDeepSections(place).find(section => section.id === "appendix-season-pocket")?.paragraphs.join(" ") ?? "";
+    expect(text).toMatch(/no monthly snowfall series/);
+    expect(text).toMatch(/expect a real snow season/);
+    expect(text).not.toMatch(/minor or absent|little or no part/);
   });
 
   it("orders scouting risk diligence by severity before low-note richness", () => {
@@ -87,11 +111,5 @@ describe("place appendix sections", () => {
     expect(diligence).toContain("Flood (low)");
     expect(diligence?.indexOf("Drought (high)")).toBeLessThan(diligence?.indexOf("Smoke / air quality (elevated)") ?? Infinity);
     expect(diligence?.indexOf("Smoke / air quality (elevated)")).toBeLessThan(diligence?.indexOf("Flood (low)") ?? Infinity);
-  });
-
-  it("omits optional nearby contrast chapters when the place has no contrast fields", () => {
-    const place = makePlace({ localContrast: undefined, nearbyContrasts: undefined });
-
-    expect(buildDerivedDeepSections(place).map(section => section.id)).not.toContain("appendix-nearby-differences");
   });
 });

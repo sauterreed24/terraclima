@@ -5,7 +5,9 @@ import { detailScrollRoot, pickActiveSectionIndex } from "../../lib/detail-scrol
 import { replaceDossierHash } from "../../lib/dossier-url-hash";
 import { childOverflowsContainer, scrollChildIntoContainer } from "../../lib/scroll-within-container";
 import { useReducedMotion } from "framer-motion";
-import { BookOpen } from "lucide-react";
+import { BookOpen, ChevronDown } from "lucide-react";
+
+const DEFAULT_OPEN_CHAPTERS = 2;
 
 /** Short jump labels for derived appendix ids; curator sections fall back to trimmed title. */
 function jumpLabelForSection(sec: PlaceDeepSection): string {
@@ -13,13 +15,16 @@ function jumpLabelForSection(sec: PlaceDeepSection): string {
     "appendix-season-pocket": "Rain year",
     "appendix-forces-atlas": "Mechanisms",
     "appendix-ground-garden": "Gardens",
-    "appendix-nearby-differences": "Nearby",
     "appendix-scouting-diligence": "Homes",
   };
   if (byId[sec.id]) return byId[sec.id]!;
   if (/(?:^|-)site-history$/.test(sec.id)) return "History";
-  const t = sec.title.trim();
-  return t.length > 20 ? `${t.slice(0, 18)}…` : t;
+  // Shorten at a word boundary ("Why Mérida reads as…", not "Why Mérida reads a…").
+  const t = sec.title.trim().replace(/\s+[—–-]\s+.*$/, "");
+  if (t.length <= 22) return t;
+  const cut = t.slice(0, 21);
+  const space = t[21] === " " ? 21 : cut.lastIndexOf(" ");
+  return `${(space >= 6 ? cut.slice(0, space) : cut).replace(/[,;:]$/, "")}…`;
 }
 
 export const PlaceDeepSections = memo(function PlaceDeepSections({
@@ -39,6 +44,34 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
   const sectionIdsKey = useMemo(() => sections.map(s => s.id).join("\0"), [sections]);
 
   const [activeId, setActiveId] = useState<string | null>(null);
+  // The first two chapters (history, then the lead essay) open by default;
+  // the rest are a click or a jump link away, which keeps the drawer short
+  // enough for its scrollbar to stay controllable.
+  const [openIds, setOpenIds] = useState<Set<string>>(() => new Set(sections.slice(0, DEFAULT_OPEN_CHAPTERS).map(s => s.id)));
+  useEffect(() => {
+    setOpenIds(prev => {
+      const next = new Set(sections.slice(0, DEFAULT_OPEN_CHAPTERS).map(s => s.id));
+      for (const id of prev) if (sections.some(s => s.id === id)) next.add(id);
+      return next;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- reset per section set
+  }, [sectionIdsKey]);
+  const openChapter = useCallback((id: string) => {
+    setOpenIds(prev => (prev.has(id) ? prev : new Set(prev).add(id)));
+  }, []);
+  const toggleChapter = useCallback((id: string) => {
+    setOpenIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }, []);
+  // A shared #deep-… link opens its chapter.
+  useEffect(() => {
+    const m = /^#deep-(.+)$/.exec(window.location.hash);
+    if (m && sections.some(s => s.id === m[1])) openChapter(m[1]!);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- on section set change only
+  }, [sectionIdsKey]);
   const jumpStripRef = useRef<HTMLElement | null>(null);
   const rafRef = useRef(0);
   const hashDebounceRef = useRef(0);
@@ -149,10 +182,10 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
             Field dossier
           </h3>
         </div>
-        <p className="text-[11px] md:text-xs text-stone-readable leading-relaxed mt-2 max-w-[52rem]">
+        <p className="text-[13px] md:text-sm text-stone-readable leading-relaxed mt-2 max-w-[52rem]">
           {hasBestMonthsGuide
-            ? "Read this as the atlas field notebook. Any authored essay comes first; then the shared backbone follows: rain year, terrain mechanisms, soil and gardens, nearby contrasts when present, and homes or long-term fit. Best months for... handles calendars below; this section explains why the place behaves the way it does. Temperatures follow the unit in the header."
-            : "Read this as the atlas field notebook. Any authored essay comes first; then the shared backbone follows: rain year, terrain mechanisms, soil and gardens, nearby contrasts when present, and homes or long-term fit. Temperatures follow the unit in the header."}
+            ? "The long read: the place's history and deeper stories first, then how its rain year runs, how the terrain shapes the climate, what grows, and what living here involves. For the best months to visit, see Best months for… further down."
+            : "The long read: the place's history and deeper stories first, then how its rain year runs, how the terrain shapes the climate, what grows, and what living here involves."}
         </p>
         <p id="field-dossier-jump-scroll-hint" className="sr-only">
           Swipe or scroll horizontally to browse more field dossier chapters.
@@ -171,27 +204,26 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
                 href={`#deep-${j.id}`}
                 className={`detail-dossier-jump ${isActive ? "detail-dossier-jump--active" : ""}`}
                 aria-current={isActive ? "location" : undefined}
+                onClick={() => openChapter(j.id)}
               >
                 {j.label}
               </a>
             );
           })}
         </nav>
-        <p className="mt-2 text-[10px] text-stone leading-relaxed">
-          <span className="font-medium text-frost">Copy link</span> can pass this chapter. While you read the dossier, the URL may pick up a short{" "}
-          <span className="font-mono-num text-frost/90">#deep-…</span>
-          {" "}suffix for the chapter in view; scroll elsewhere and it falls away so the main place link stays clean.
-        </p>
       </div>
 
       <div className="detail-dossier-shell contain-paint">
         {sections.map((sec, idx) => {
           const chapterTitleId = `deep-${sec.id}-title`;
+          const bodyId = `deep-${sec.id}-body`;
+          const open = openIds.has(sec.id);
           return (
             <article
               key={sec.id}
               id={`deep-${sec.id}`}
               className="detail-dossier-chapter scroll-mt-28"
+              data-open={open || undefined}
               aria-labelledby={chapterTitleId}
             >
               <header className="detail-dossier-chapter-head">
@@ -206,12 +238,29 @@ export const PlaceDeepSections = memo(function PlaceDeepSections({
                 >
                   {sec.title}
                 </h4>
+                <button
+                  type="button"
+                  className="detail-dossier-chapter-toggle"
+                  aria-expanded={open}
+                  aria-controls={bodyId}
+                  onClick={() => toggleChapter(sec.id)}
+                >
+                  <span>{open ? "Hide" : "Read"}</span>
+                  <ChevronDown className="w-3.5 h-3.5" aria-hidden />
+                  <span className="sr-only"> {sec.title}</span>
+                </button>
               </header>
-              <div className="detail-dossier-body space-y-3 text-[15px] leading-[1.78] text-[color:var(--color-frost-strong)] pl-0 md:pl-10">
-                {sec.paragraphs.map((p, i) => (
-                  <p key={i} className={i === 0 ? "detail-deep-lead" : undefined}>{prose(p)}</p>
-                ))}
-              </div>
+              {open ? (
+                <div id={bodyId} className="detail-dossier-body space-y-3 text-[15px] leading-[1.78] text-[color:var(--color-frost-strong)] pl-0 md:pl-10">
+                  {sec.paragraphs.map((p, i) => (
+                    <p key={i} className={i === 0 ? "detail-deep-lead" : undefined}>{prose(p)}</p>
+                  ))}
+                </div>
+              ) : (
+                <p id={bodyId} className="detail-dossier-teaser pl-0 md:pl-10">
+                  {prose(sec.paragraphs[0] ?? "")}
+                </p>
+              )}
             </article>
           );
         })}

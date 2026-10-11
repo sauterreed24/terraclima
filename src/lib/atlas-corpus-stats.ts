@@ -357,9 +357,9 @@ export function getPlaceBioclimRanks(place: Place): PlaceBioclimRanks {
 
 function shortConradClass(cls: string): string {
   switch (cls) {
-    case "extreme-oceanic": return "ext. oceanic";
-    case "sub-continental": return "sub-cont";
-    case "extreme-continental": return "ext. continental";
+    case "extreme-oceanic": return "strongly oceanic";
+    case "sub-continental": return "mildly continental";
+    case "extreme-continental": return "strongly continental";
     default: return cls;
   }
 }
@@ -381,7 +381,9 @@ export function getBioclimCardSignal(place: Place): BioclimCardSignal | null {
     return null;
   }
 
-  const conradShort = `K ${Math.round(b.conrad.value)} ${shortConradClass(b.conrad.class)}`;
+  // Plain words on the card ("Very humid · continental"); the index values
+  // (Conrad K, De Martonne, PET) stay in the hover title for readers who want them.
+  const conradShort = shortConradClass(b.conrad.class);
   const waterLabel = b.deMartonne.value !== null ? b.deMartonne.classLabel : "Frozen-year";
   const titleParts = [
     b.deMartonne.value !== null
@@ -418,8 +420,8 @@ export function getCorpusCardTeaser(place: Place): string {
   const cached = PLACE_CORPUS_CARD_TEASER_CACHE.get(place);
   if (cached) return cached;
   const r = getPlaceCorpusRanks(place);
-  const bioclim = getBioclimCardSignal(place);
-  const teaser = `Vs full atlas: wetter than ${pct(r.wetterThanAtlasShare)} of stops · cooler JJA than ${pct(r.coolerSummersThanAtlasShare)} · higher ground than ${pct(r.higherElevationThanAtlasShare)}${bioclim ? ` · bioclim: ${bioclim.label}` : ""}.`;
+  // The bioclim chip sits directly above this line on the card, so it is not repeated here.
+  const teaser = `Against the full atlas: wetter than ${pct(r.wetterThanAtlasShare)} of places · cooler summers than ${pct(r.coolerSummersThanAtlasShare)} · higher ground than ${pct(r.higherElevationThanAtlasShare)}.`;
   PLACE_CORPUS_CARD_TEASER_CACHE.set(place, teaser);
   return teaser;
 }

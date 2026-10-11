@@ -150,11 +150,11 @@ export function buildPracticalReadCards(place: Place): PracticalReadCard[] {
       title: "How to read the terrain",
       tone: "ice",
       body:
-        `This is a landscape pattern, not just a weather-station average. The profile scores ${geo.geospatialSignalScore}/100 for geospatial signal and ${geo.eoObservabilityScore}/100 for earth-observation fit, with ${geo.analysisConfidence} analysis confidence.`,
+        `This climate is a landscape pattern, not a single weather-station average: walk or drive across it and the slope, water and shade change what you feel. Its terrain signal scores ${geo.geospatialSignalScore}/100 (${geo.analysisConfidence} confidence).`,
       bullets: [
-        `Terrain engines: ${cleanList(driverLabels, 4)}`,
+        `Climate drivers: ${cleanList(driverLabels, 4)}`,
         `Relief context: ${trimSentence(place.reliefContext, "Read slope, aspect, water, and elevation together.")}`,
-        `Analyst checks: ${cleanList(spectral, 3)}; relief texture ${geo.structuralTextureScore}/100`,
+        `From satellite imagery: ${cleanList(spectral, 3)}; terrain ruggedness ${geo.structuralTextureScore}/100`,
       ],
     },
     {
