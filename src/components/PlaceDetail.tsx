@@ -275,7 +275,9 @@ export function PlaceDetail({ place, onClose, onCompareToggle, inCompareIds, onP
       // reorg, or from a copied section link): scroll straight to the
       // section. The reading nav then expands the right chapter on its own,
       // since chapter expansion follows the scroll-spy's active anchor.
-      const legacyId = hash.slice(1);
+      const rawLegacyId = hash.slice(1);
+      // The twins teaser was folded into the Climate twins section.
+      const legacyId = rawLegacyId === PD.similarTeaser ? PD.similar : rawLegacyId;
       if (legacyId && (PD_ALL_IDS as readonly string[]).includes(legacyId)) {
         didResolveHash = true;
         // Opens collapsed score `<details>` (#pd-at-a-glance, #pd-place-feel,

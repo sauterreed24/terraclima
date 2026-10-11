@@ -52,7 +52,7 @@ export function ScoreDetails({
     <details id={id} className="place-score-details detail-doc-section anim-fade-in scroll-mt-28">
       <summary className="place-score-details__summary">
         {icon}
-        {title}
+        <h3 className="place-score-details__title">{title}</h3>
       </summary>
       <div className="place-score-details__body">{children}</div>
     </details>

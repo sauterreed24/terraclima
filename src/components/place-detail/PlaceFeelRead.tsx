@@ -18,7 +18,7 @@ export function PlaceFeelRead({ place, anchorId }: { place: Place; anchorId: str
     <details id={anchorId} className="place-score-details detail-doc-section anim-fade-in scroll-mt-28">
       <summary className="place-score-details__summary">
         <Gauge className="w-4 h-4 shrink-0" style={{ color: "#c7b5ea" }} aria-hidden />
-        Place feel
+        <h3 className="place-score-details__title">Place feel</h3>
       </summary>
 
       <div className="place-score-details__body">

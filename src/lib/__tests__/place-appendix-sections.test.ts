@@ -85,10 +85,22 @@ describe("place appendix sections", () => {
       }),
     });
 
-    const text = buildDerivedDeepSections(place).find(section => section.id === "appendix-season-pocket")?.paragraphs.join(" ") ?? "";
+    const season = buildDerivedDeepSections(place).find(section => section.id === "appendix-season-pocket");
+    const text = season?.paragraphs.join(" ") ?? "";
+    expect(season?.title).toBe("How rain and snow fall through the year");
     expect(text).toMatch(/no monthly snowfall series/);
     expect(text).toMatch(/expect a real snow season/);
     expect(text).not.toMatch(/minor or absent|little or no part/);
+  });
+
+  it("titles the chapter for snow whenever it describes snow months, however light", () => {
+    const place = makePlace({
+      climate: makeClimate({ snowCm: monthly(2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2) }),
+    });
+
+    const season = buildDerivedDeepSections(place).find(section => section.id === "appendix-season-pocket");
+    expect(season?.paragraphs.join(" ")).toMatch(/Snow turns up in the normals in Jan, Feb and Dec/);
+    expect(season?.title).toBe("How rain and snow fall through the year");
   });
 
   it("orders scouting risk diligence by severity before low-note richness", () => {

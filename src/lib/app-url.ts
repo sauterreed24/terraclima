@@ -278,8 +278,11 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
 function withPreservedDossierHash(state: AppUrlState, relativeUrl: string): string {
   if (typeof window === "undefined" || !state.placeId) return relativeUrl;
 
+  // `#deep-…` dossier chapters and `#pd-…` section links both survive URL
+  // syncs while the same place stays open; the lazy profile resolves them
+  // once it mounts, which is after the first sync.
   const hash = window.location.hash;
-  if (!hash.startsWith("#deep-")) return relativeUrl;
+  if (!hash.startsWith("#deep-") && !hash.startsWith("#pd-")) return relativeUrl;
 
   const currentPlaceId = new URLSearchParams(window.location.search).get("p");
   if (currentPlaceId !== state.placeId) return relativeUrl;

@@ -1,4 +1,4 @@
-import { memo, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
 import { PlaceCard } from "./PlaceCard";
 import type { BestWindow } from "../lib/best-months";
@@ -98,8 +98,20 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
   useLayoutEffect(() => {
     if (reveal.key !== listKey || visibleCount > reveal.count) setReveal({ key: listKey, count: visibleCount });
   }, [listKey, reveal, visibleCount]);
-  const showMore = (all: boolean) =>
-    setReveal({ key: listKey, count: all ? ranked.length : visibleCount + PLACE_GRID_BATCH });
+  // When a reveal ends the list its buttons unmount; hand keyboard focus to
+  // the count line so the next Tab continues from the list footer.
+  const countRef = useRef<HTMLParagraphElement>(null);
+  const focusCountRef = useRef(false);
+  const showMore = (all: boolean) => {
+    const count = all ? ranked.length : visibleCount + PLACE_GRID_BATCH;
+    focusCountRef.current = count >= ranked.length;
+    setReveal({ key: listKey, count });
+  };
+  useEffect(() => {
+    if (!focusCountRef.current || remaining > 0) return;
+    focusCountRef.current = false;
+    countRef.current?.focus({ preventScroll: true });
+  }, [remaining]);
 
   const rowCount = visible.length === 0 ? 0 : Math.ceil(visible.length / cols);
   const anchorRef = useRef<HTMLDivElement>(null);
@@ -210,7 +222,7 @@ export const VirtualPlaceGrid = memo(function VirtualPlaceGrid({
         })}
       </div>
       <div className="tc-card-grid__more panel-thin" role="group" aria-label="Ranked list length">
-        <p className="tc-card-grid__count">
+        <p ref={countRef} className="tc-card-grid__count" tabIndex={-1} aria-live="polite">
           {remaining > 0 ? (
             <>
               Showing <span className="font-mono-num text-frost">{visibleCount}</span> of{" "}

@@ -6,7 +6,7 @@ import { observedSunshinePct, precipHeroLabel } from "../lib/hero-glance";
 import { MiniClimateStrip } from "./charts/MiniClimateStrip";
 import { useUnits, fmtTemp, fmtPrecip, fmtElev, fmtSnow, useProse } from "../lib/units";
 import { getBioclimCardSignal, getCorpusCardTeaser } from "../lib/atlas-corpus-stats";
-import { getBestMonths, type BestWindow } from "../lib/best-months";
+import { getBestMonths, pickVisitWindow, type BestWindow } from "../lib/best-months";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
 import { ArrowRight, Droplets, Home, Leaf, Sun } from "lucide-react";
@@ -126,13 +126,15 @@ export const PlaceCard = memo(function PlaceCard({
       ? shouldShowPlaceCardScreeningScores(rankingProfile, liveFitFilters)
       : shouldShowPlaceCardScreeningScores("most-unique", liveFitFilters));
 
-  // Compute the single "best window" teaser for the card. Memoized because
-  // PlaceCard is already wrapped in React.memo and `place` is stable — so
-  // this cost is paid exactly once per card per session.
+  // The single "best window" teaser: the window the current ranking is about
+  // when the place has one, otherwise the same visit window the profile's
+  // residency brief and climate-tourism read lead with.
   const topWindow = useMemo(() => {
     if (compact) return null;
-    return getBestMonths(place, temp).find(w => w.kind === "good") ?? null;
-  }, [place, compact, temp]);
+    const windows = getBestMonths(place, temp);
+    const resonant = resonantWindow ? windows.find(w => w.kind === "good" && w.id === resonantWindow) : undefined;
+    return resonant ?? pickVisitWindow(windows);
+  }, [place, compact, temp, resonantWindow]);
 
   const corpusTeaser = useMemo(() => (compact ? "" : getCorpusCardTeaser(place)), [place, compact]);
   const bioclimSignal = useMemo(() => (compact ? null : getBioclimCardSignal(place)), [place, compact]);

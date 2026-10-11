@@ -102,6 +102,41 @@ function trimProse(s: string, max: number): string {
   return `${t.slice(0, Math.max(0, max - 1)).trimEnd()}…`;
 }
 
+/** The season chapter's snow paragraph, and whether it describes a snow season. */
+function snowLine(place: Place, flatPrecip: boolean): { text: string; snowy: boolean } {
+  const snow = place.climate.snowCm;
+  if (snow && snow.some(s => s > 1)) {
+    const snowMonths = snow.map((cm, i) => (cm > 1 ? MO[i] : null)).filter(Boolean) as string[];
+    return {
+      text: `Snow turns up in the normals in ${listJoin(snowMonths.slice(0, 6))}${snowMonths.length > 6 ? " and beyond" : ""}, so winter brings its own planning season on top of the rain.`,
+      snowy: true,
+    };
+  }
+  if (!snow) {
+    const coldestHigh = Math.round(Math.min(...place.climate.tempHighC));
+    const coldestLow = Math.round(Math.min(...place.climate.tempLowC));
+    if (coldestHigh <= 3) {
+      return {
+        text: `This entry has no monthly snowfall series, but with midwinter highs near ${fmtC(coldestHigh)} expect a real snow season: check local snowfall records before planning winter access or roof loads.`,
+        snowy: true,
+      };
+    }
+    if (coldestLow <= 0) {
+      return {
+        text: `This entry has no monthly snowfall series. With the coldest nights near ${fmtC(coldestLow)}, occasional snow or ice is possible, but the normals can't say how often.`,
+        snowy: false,
+      };
+    }
+    return { text: "Snow is minor or absent here; winter is mostly temperature, wind, and rain.", snowy: false };
+  }
+  return {
+    text: flatPrecip
+      ? "Snow is minor or absent in these normals; winter is mostly temperature, wind, and rain."
+      : "Snow plays little or no part in the monthly normals; winter here is about temperature, wind, and rain rather than ploughing.",
+    snowy: false,
+  };
+}
+
 /**
  * The fill-only overlay in `places.deep-sections-authored.ts` restates the
  * record's numbers in a fixed template (and misreads missing snow series as
@@ -139,9 +174,12 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     const { wet, dry } = wetDryIndices(precip);
     const wetM = MO[wet] ?? "—";
     const dryM = MO[dry] ?? "—";
+    // Decide the snow line first: it sets the chapter title and the hint
+    // wording, so the title can never say "rain" over a snow paragraph.
+    const { text: snowPara, snowy } = snowLine(place, flat);
     const hasCalendarWindows = getBestMonths(place).length > 0;
     const chartHint = hasCalendarWindows
-      ? "The month-by-month bars sit under Seasonal rhythm further down, and Best months for… turns the same normals into garden, outdoor, dry-travel and snow windows; this chapter sticks to how the rain stacks up through the year."
+      ? `The month-by-month bars sit under Seasonal rhythm further down, and Best months for… turns the same normals into garden, outdoor, dry-travel and snow windows; this chapter sticks to how the ${snowy ? "rain and snow stack" : "rain stacks"} up through the year.`
       : "The month-by-month bars sit under Seasonal rhythm further down, if you want to line this up against the numbers.";
 
     let lead: string;
@@ -165,36 +203,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
       lead = `Rain peaks sharply around ${wetM} and bottoms out around ${dryM}. ${mid} ${chartHint}`;
     }
 
-    const paras: string[] = [lead];
-    const snow = place.climate.snowCm;
-    if (snow && snow.some(s => s > 1)) {
-      const snowMonths = snow.map((cm, i) => (cm > 1 ? MO[i] : null)).filter(Boolean) as string[];
-      if (snowMonths.length > 0) {
-        paras.push(
-          `Snow turns up in the normals in ${listJoin(snowMonths.slice(0, 6))}${snowMonths.length > 6 ? " and beyond" : ""}, so winter brings its own planning season on top of the rain.`,
-        );
-      }
-    } else if (!snow) {
-      const coldestHigh = Math.round(Math.min(...place.climate.tempHighC));
-      const coldestLow = Math.round(Math.min(...place.climate.tempLowC));
-      if (coldestHigh <= 3) {
-        paras.push(
-          `This entry has no monthly snowfall series, but with midwinter highs near ${fmtC(coldestHigh)} expect a real snow season: check local snowfall records before planning winter access or roof loads.`,
-        );
-      } else if (coldestLow <= 0) {
-        paras.push(
-          `This entry has no monthly snowfall series. With the coldest nights near ${fmtC(coldestLow)}, occasional snow or ice is possible, but the normals can't say how often.`,
-        );
-      } else {
-        paras.push("Snow is minor or absent here; winter is mostly temperature, wind, and rain.");
-      }
-    } else {
-      paras.push(
-        flat
-          ? "Snow is minor or absent in these normals; winter is mostly temperature, wind, and rain."
-          : "Snow plays little or no part in the monthly normals; winter here is about temperature, wind, and rain rather than ploughing.",
-      );
-    }
+    const paras: string[] = [lead, snowPara];
     if (place.climate.frostFreeDays != null) {
       paras.push(
         `Expect about ${place.climate.frostFreeDays} frost-free days a year, the window tender plants have to work with (more under Agriculture, soils, and garden fit).`,
@@ -202,9 +211,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     }
     out.push({
       id: "appendix-season-pocket",
-      title: (place.climate.snowCm ?? []).reduce((t, v) => t + (v ?? 0), 0) >= 10
-        ? "How rain and snow fall through the year"
-        : "How the rain falls through the year",
+      title: snowy ? "How rain and snow fall through the year" : "How the rain falls through the year",
       paragraphs: paras.slice(0, 3),
     });
   }
