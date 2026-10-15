@@ -25,7 +25,7 @@ export const PLACES_CANADA: Place[] = [
     drivers: ["rain-shadow", "river-moderation"],
 
     summaryShort: "Canada's only pocket desert — antelope-brush and rattlesnakes 800 km north of any other desert.",
-    summaryImmersive: "Osoyoos sits at the northern tip of a dry valley that is, improbably, an extension of the Great Basin Desert. The Cascade Range 200 km west shadows it completely from Pacific moisture, while the Coast Range funnels warm dry air down the valley. Annual precipitation barely breaks 330 mm. Summers are the hottest in Canada outside the deep interior — 35°C afternoons, nights mild over the warm lake. The result is a remarkable north-tip ecosystem where antelope-brush, prickly-pear, and western rattlesnakes live alongside vineyards producing genuinely hot-climate wines — Cabernet, Syrah — at latitude 49°N. The lake itself is among the warmest in Canada for swimming.",
+    summaryImmersive: "Osoyoos sits at the northern tip of a dry valley that is, improbably, an extension of the Great Basin Desert. The Cascade Range 200 km west shadows it completely from Pacific moisture, while the Coast Range funnels warm dry air down the valley. Annual precipitation barely breaks 330 mm. Summers are among the hottest in Canada — afternoons above 30°C and heat waves past 35°C, nights mild over the warm lake. The result is a remarkable north-tip ecosystem where antelope-brush, prickly-pear, and western rattlesnakes live alongside vineyards producing genuinely hot-climate wines — Cabernet, Syrah — at latitude 49°N. The lake itself is among the warmest in Canada for swimming.",
     whyDistinct: "Cascade rain shadow + continental interior + low valley elevation + shallow warm lake = a desert pocket that simply shouldn't exist at this latitude. The climate gradient from Penticton (north) to Osoyoos (south) is one of the sharpest in Canada.",
 
     experience: {
@@ -100,12 +100,12 @@ export const PLACES_CANADA: Place[] = [
     },
 
     localContrast: [
-      { radiusKm: 100, summerHighDeltaC: 3, precipDeltaPct: -40, note: "vs Penticton/Kelowna north in the Okanagan — warmer, drier, closer to desert edge." },
+      { radiusKm: 100, summerHighDeltaC: 2, precipDeltaPct: -10, note: "vs Penticton/Kelowna north in the Okanagan — warmer, drier, closer to desert edge." },
       { radiusKm: 200, precipDeltaPct: -75, note: "vs Pacific-side Hope/Manning — soaking wet year-round." },
     ],
     nearbyContrasts: [
       { label: "Penticton, BC", note: "50 km north; slightly cooler, wetter, longer winter." },
-      { label: "Hope, BC (west of Cascades)", note: "Annual precipitation 1900 mm vs Osoyoos 290 mm." },
+      { label: "Hope, BC (west of Cascades)", note: "Annual precipitation 1900 mm vs Osoyoos 330 mm." },
     ],
 
     scores: { hiddenGem: 56, microclimateUniqueness: 94, comfort: 72, resilience: 48, growability: 86, tradeoff: 52 },
@@ -265,7 +265,7 @@ export const PLACES_CANADA: Place[] = [
     },
 
     localContrast: [
-      { radiusKm: 100, winterLowDeltaC: 6, note: "vs Medicine Hat / Swift Current — less chinook-moderated." },
+      { radiusKm: 160, winterLowDeltaC: 6, note: "vs Medicine Hat / Swift Current — less chinook-moderated." },
       { radiusKm: 200, winterLowDeltaC: 10, note: "vs Edmonton region — chinook differential creates a sharply milder winter envelope." },
     ],
     nearbyContrasts: [
@@ -1423,7 +1423,7 @@ export const PLACES_CANADA: Place[] = [
   // ====================================================================
 
   {
-    id: "gaspe-qc", tier: "C", country: "Canada", region: "Québec", municipality: "Gaspé", name: "Gaspé Peninsula Tip",
+    id: "gaspe-qc", tier: "C", country: "Canada", region: "Quebec", municipality: "Gaspé", name: "Gaspé Peninsula Tip",
     lat: 48.8313, lon: -64.4857, elevationM: 10,
     reliefContext: "Tip of the Gaspé Peninsula, where Appalachian ridges drop into the Gulf of St. Lawrence.",
     biome: "Boreal-Acadian transition with salt-spray flora", koppen: "Dfb (maritime-modified)",

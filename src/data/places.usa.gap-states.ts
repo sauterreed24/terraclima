@@ -217,8 +217,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     region: "Indiana",
     municipality: "Beverly Shores",
     name: "Beverly Shores (Lake Michigan)",
-    lat: 41.9125,
-    lon: -86.9806,
+    lat: 41.6925,
+    lon: -86.9786,
     elevationM: 185,
     reliefContext: "Dune-and-swale coast on southern Lake Michigan; part of the Indiana Dunes National Park ecosystem.",
     biome: "Great Lakes beachgrass and oak savanna",
@@ -471,7 +471,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     experience: {
       feel: "Mount Charleston feels like an impossible cool island floating above Las Vegas. Drive 45 minutes and 2,000 m up from the Mojave furnace and you reach conifer forest, bristlecones, and snow — summer afternoons near 25°C while the basin below bakes past 40°C.",
       seasons: {
-        winter: "Genuinely alpine — afternoons near freezing, nights near −12°C, and real snowpack stacking up for skiing while the desert below stays warm and dry.",
+        winter: "Genuinely alpine — afternoons only a few degrees above freezing, nights near −5°C, and real snowpack stacking up for skiing while the desert below stays warm and dry.",
         spring: "Slow to melt out — snow lingering on the high country, afternoons climbing through the teens, and the forest greening weeks behind the basin.",
         summer: "The whole point — afternoons near 25°C with cool, often-frosty nights, a startling escape from Las Vegas heat, and occasional upslope thunderstorms building on the crest.",
         autumn: "Crisp and quiet — aspens turning, frosty mornings returning early, and the first snows reclaiming the summits while the valley stays warm.",

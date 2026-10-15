@@ -285,7 +285,7 @@ export const SITE_HISTORY_MEXICO_2: Record<string, SiteHistoryEntry> = {
     seasons: {
       winter: "Warm, sunny and glorious — afternoons near 26°C, nights cooling to about 7°C, and clear skies almost every day. The occasional winter storm from the Pacific brings a day or two of rain. It is the best time of year in the desert, and the season for the city's outdoor festivals.",
       spring: "Hot and bone-dry — afternoons climbing from about 30°C in March to 36°C by May, with almost no rain and the desert parched. The heat builds week by week, and by late May it is already ferocious.",
-      summer: "Infernal — afternoons near 40°C, nights around 25°C, and June the hottest and driest month. From July the monsoon brings towering thunderstorms, dust storms and humid heat. Life moves indoors to air-conditioned rooms, and the streets empty at midday.",
+      summer: "Infernal — afternoons near 40°C, nights around 25°C, and June the hottest month, with late spring bone-dry until the monsoon. From July the monsoon brings towering thunderstorms, dust storms and humid heat. Life moves indoors to air-conditioned rooms, and the streets empty at midday.",
       autumn: "Hot then gentle — September is still blazing, with the last of the monsoon storms and the risk of tropical storms from the Pacific, but by November afternoons ease to about 30°C, and the desert breathes again.",
     },
     residentFit: "It suits families, engineers and factory workers drawn by jobs at the Ford plant and other industries, and people who love dry heat and winter sunshine, but the scorching summers are a real test.",

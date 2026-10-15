@@ -111,7 +111,7 @@ export const PLACES_USA: Place[] = [
       { radiusKm: 100, precipDeltaPct: -55, note: "vs the broader Olympic Peninsula average." },
     ],
     nearbyContrasts: [
-      { label: "Forks, WA (50 km SW)", note: "Forks averages >3000 mm annual precipitation — among the wettest lowlands in the lower 48. Sequim averages ~475 mm." },
+      { label: "Forks, WA (95 km W)", note: "Forks averages >3000 mm annual precipitation — among the wettest lowlands in the lower 48. Sequim averages ~475 mm." },
       { label: "Port Townsend, WA", note: "Also in the rain shadow but marginally cooler in summer due to stronger marine exposure." },
     ],
 
@@ -453,7 +453,7 @@ export const PLACES_USA: Place[] = [
     },
     localContrast: [
       { radiusKm: 20, summerHighDeltaC: -4, precipDeltaPct: 40, note: "vs Tombstone / Sulphur Springs Valley floor — Sierra Vista runs ~4°C cooler in summer and receives substantially more monsoon rain." },
-      { radiusKm: 60, summerHighDeltaC: -6, precipDeltaPct: 70, note: "vs Tucson's central basin — the Huachuca apron is the cool, wet pocket of southeastern Arizona." },
+      { radiusKm: 100, summerHighDeltaC: -6, precipDeltaPct: 70, note: "vs Tucson's central basin — the Huachuca apron is the cool, wet pocket of southeastern Arizona." },
     ],
     nearbyContrasts: [
       { placeId: "portal-az", label: "Portal / Chiricahua Sky Island", note: "Sibling sky-island 100 km northeast — similar archetype but more remote and roughly 2°C cooler at matched elevation." },
@@ -925,7 +925,7 @@ export const PLACES_USA: Place[] = [
     climateChange: { outlook2050: "Hotter summers, reduced Sierra snowpack, increasing wildfire smoke from Sierra fires.", outlook2100: "Sierra snowpack decline is the critical variable — the rain shadow stays, but the irrigation supply that makes Bishop livable is directly threatened.", keyShifts: [{variable: "Sierra snowpack", direction: "down"}, {variable: "Summer heat", direction: "up"}, {variable: "Smoke days", direction: "up"}], resilienceNote: "Economic and agricultural resilience is directly tied to the Sierra snowpack above." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "low", trend: "stable"}, drought: {level: "high", trend: "worsening"}, extremeHeat: {level: "elevated", trend: "worsening"}, extremeCold: {level: "moderate", trend: "improving"}, smoke: {level: "elevated", trend: "worsening"}, storm: {level: "low", trend: "stable"}, landslide: {level: "low", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
     localContrast: [{ radiusKm: 50, precipDeltaPct: -85, note: "vs Mammoth Lakes on the Sierra crest — Bishop receives less than a fifth of the precipitation." }],
-    nearbyContrasts: [{ label: "Mammoth Lakes (2400 m, 50 km NW)", note: "~1700 mm annual precipitation; ski-town snow climate." }, { label: "Death Valley (south, lower)", note: "Driest place in NA; Bishop's shadow is still in the rain-shadow belt but higher and cooler." }],
+    nearbyContrasts: [{ label: "Mammoth Lakes (2400 m, 50 km NW)", note: "Roughly four times Bishop's precipitation, much of it as deep snow; ski-town snow climate." }, { label: "Death Valley (south, lower)", note: "Driest place in NA; Bishop's shadow is still in the rain-shadow belt but higher and cooler." }],
     scores: { hiddenGem: 72, microclimateUniqueness: 94, comfort: 64, resilience: 52, growability: 58, tradeoff: 50 },
     liveSignals: {
       costPressure: 62,
@@ -997,7 +997,7 @@ export const PLACES_USA: Place[] = [
       seasons: {
         winter: "Snowy and bright — afternoons near 8°C, nights dropping near −8°C, and real mountain snowfall stacking up while the desert two hours south stays warm. Bluebird days follow the storms.",
         spring: "Slow to arrive and windy: snow lingers into April on the Peaks, afternoons climb through the teens, and the dry fore-monsoon months are the fire-watch season.",
-        summer: "Warm, dry mornings near 28°C give way to the July monsoon — dependable afternoon thunderstorms building on the San Francisco Peaks, then cool, star-thick nights. It is the desert state's great summer refuge.",
+        summer: "Warm, dry afternoons near 28°C give way to the July monsoon — dependable afternoon thunderstorms building on the San Francisco Peaks, then cool, star-thick nights. It is the desert state's great summer refuge.",
         autumn: "Crisp and golden — aspens turning on the Peaks, warm days, frosty nights, and the clearest skies of the year before winter's first snows.",
       },
       travelerFit: "Visitors come for Grand Canyon access, San Francisco Peaks skiing and hiking, Route 66, and dark-sky observing.",
@@ -2312,7 +2312,7 @@ export const PLACES_USA: Place[] = [
     climateChange: { outlook2050: "Warmer summers with heightened heat events; longer growing season stretching the bloom-frost risk window.", outlook2100: "Chill-hour decline may force apple-cultivar migration to higher elevations.", keyShifts: [{variable: "Summer heat extremes", direction: "up"}, {variable: "Chill hours", direction: "down"}, {variable: "Fire smoke days", direction: "up"}], resilienceNote: "Irrigation infrastructure and cold-chain storage buffer agricultural vulnerability; fire-smoke air quality is the emerging risk." },
     risks: { wildfire: {level: "elevated", trend: "worsening", note: "Surrounding foothills burn regularly."}, flood: {level: "moderate", trend: "mixed"}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "elevated", trend: "worsening", note: "2021 heat dome brought 43°C."}, extremeCold: {level: "moderate", trend: "improving"}, smoke: {level: "high", trend: "worsening"}, storm: {level: "low", trend: "stable"}, landslide: {level: "low", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
     localContrast: [{ radiusKm: 80, precipDeltaPct: -88, summerHighDeltaC: 6, note: "vs. Stevens Pass at Cascade crest" }],
-    nearbyContrasts: [{ label: "Leavenworth (35 km W)", note: "Transitional — wetter, colder, alpine character." }, { label: "Ellensburg (100 km S)", note: "Windier rain-shadow analog on Kittitas side." }],
+    nearbyContrasts: [{ label: "Leavenworth (35 km W)", note: "Transitional — wetter, colder, alpine character." }, { label: "Ellensburg (50 km S)", note: "Windier rain-shadow analog on Kittitas side." }],
     scores: { hiddenGem: 32, microclimateUniqueness: 80, comfort: 74, resilience: 58, growability: 88, tradeoff: 48 },
     liveSignals: {
       costPressure: 52,
@@ -2406,10 +2406,10 @@ export const PLACES_USA: Place[] = [
     biome: "Temperate rainforest (Sitka spruce–western hemlock)", koppen: "Cfb",
     archetypes: ["hyper-maritime", "cool-summer-maritime"], drivers: ["orographic-lift", "marine-layer"],
     summaryShort: "The rainforest to Sequim's rain shadow — 3500+ mm of annual rainfall in one of North America's greatest orographic sinks.",
-    summaryImmersive: "Forks and the Hoh Valley sit at the foot of the Olympics on the Pacific-facing side. Storms hit the west slope first, unleashing their moisture as they climb — producing one of the wettest climates in the contiguous US. Moss drips from every surface; temperatures barely vary from 4 to 16°C; sunshine is rare and precious. And yet the same storm system that gives Forks 400 mm in December gives Sequim 150 km away less than 30 mm.",
+    summaryImmersive: "Forks and the Hoh Valley sit at the foot of the Olympics on the Pacific-facing side. Storms hit the west slope first, unleashing their moisture as they climb — producing one of the wettest climates in the contiguous US. Moss drips from every surface; temperatures barely vary from 4 to 16°C; sunshine is rare and precious. And yet the same storm system that gives Forks 400 mm in December gives Sequim, 95 km away, less than 30 mm.",
     whyDistinct: "Direct Pacific exposure plus Olympic orographic lift produces persistent, heavy precipitation year-round — the windward twin of Sequim's rain shadow.",
     experience: {
-      feel: "Forks feels like living inside a green cathedral — the wettest corner of the contiguous US where moss drips from every surface, temperatures barely wander between 4 and 22°C, and a December storm can drop 400 mm while Sequim, 150 km east, sees 30.",
+      feel: "Forks feels like living inside a green cathedral — the wettest corner of the contiguous US where moss drips from every surface, temperatures barely wander between 4 and 22°C, and a December storm can drop 400 mm while Sequim, 95 km east, sees 30.",
       seasons: {
         winter: "Soaking and mild — highs near 8°C, nights near 2°C, and rain that falls as steady sheets rather than bursts; the Hoh stays green when the rest of the peninsula freezes.",
         spring: "Still wet, brightening — lengthening days lift highs into the low teens, the rainforest floor erupts in sword fern and moss, and dry windows are measured in hours not weeks.",
@@ -2851,7 +2851,10 @@ export const PLACES_USA: Place[] = [
     growability: { score: 54, hardinessZone: "7b", growsWell: ["Drought-tolerant stone fruit", "Agave cultivars", "Xeric perennials"], tricky: ["Water-demanding crops"] },
     climateChange: { outlook2050: "Warmer; fire risk rising in pine-oak.", outlook2100: "Potential conversion of higher elevations to desert scrub if drought persists.", keyShifts: [{variable: "Fire risk", direction: "up"}, {variable: "Monsoon reliability", direction: "mixed"}], resilienceNote: "Elevation provides real protection; aquifer health is the long-term concern." },
     risks: { wildfire: {level: "elevated", trend: "worsening"}, flood: {level: "moderate", trend: "worsening", note: "Flash flooding in canyons."}, drought: {level: "elevated", trend: "worsening"}, extremeHeat: {level: "low", trend: "worsening"}, extremeCold: {level: "low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "low", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
-    localContrast: [{ radiusKm: 50, summerHighDeltaC: -10, precipDeltaPct: 40, note: "vs. Marfa plains and Chihuahuan floor" }],
+    localContrast: [
+      { radiusKm: 35, summerHighDeltaC: -1, note: "vs. the Marfa plains — much the same high-desert climate, with a little more shade and cloud off the Davis Mountains." },
+      { radiusKm: 100, summerHighDeltaC: -8, note: "vs. the Chihuahuan Desert floor along the Rio Grande at Presidio, where summer afternoons run near 40°C." },
+    ],
     scores: { hiddenGem: 84, microclimateUniqueness: 84, comfort: 74, resilience: 62, growability: 54, tradeoff: 40 },
     liveSignals: {
       costPressure: 34,
@@ -2908,10 +2911,10 @@ export const PLACES_USA: Place[] = [
     archetypes: ["high-desert-escape", "badland-steppe", "monsoon-edge"],
     drivers: ["continentality", "monsoon-lift", "elevation-lapse-rate"],
     summaryShort: "High-desert grassland plain at 1470 m — cool nights, explosive monsoon skies, and mysteriously flat distances.",
-    summaryImmersive: "Marfa sits on a high grassland at 1470 m, a full kilometer above the Rio Grande. The altitude tempers what would otherwise be desert heat; summer afternoons peak near 31°C while nights drop to 13°C. Winter brings occasional snow and freezing fog. The Mystery Lights aside, the climate's signature is the sky itself — the biggest of the West Texas big skies, with monsoon-season thunderstorms that climb 15 km high.",
+    summaryImmersive: "Marfa sits on a high grassland at 1470 m, a full kilometer above the Rio Grande. The altitude tempers what would otherwise be desert heat; summer afternoons peak near 33°C while nights drop to around 17°C. Winter brings occasional snow and freezing fog. The Mystery Lights aside, the climate's signature is the sky itself — the biggest of the West Texas big skies, with monsoon-season thunderstorms that climb 15 km high.",
     whyDistinct: "High-plain elevation in deep continental latitude produces strong diurnal swings, cool nights, monsoon convection.",
     experience: {
-      feel: "Marfa feels like altitude on a grassland stage — 1470 m of Chihuahuan high desert where summer afternoons peak near 31°C but nights drop to 13°C, monsoon towers climb 15 km, and the Chinati light is the real attraction.",
+      feel: "Marfa feels like altitude on a grassland stage — 1470 m of Chihuahuan high desert where summer afternoons peak near 33°C but nights drop to around 17°C, monsoon towers climb 15 km, and the Chinati light is the real attraction.",
       seasons: {
         winter: "Bright and cold — highs near 15°C, nights that dip below freezing, occasional snow, and the big-sky clarity that draws artists and stargazers.",
         spring: "Wind and bloom — highs in the low 20s, desert wildflowers after sparse winter rains, and dust that can turn the horizon apricot before a front.",
@@ -3165,10 +3168,10 @@ export const PLACES_USA: Place[] = [
     archetypes: ["cold-air-pool", "basin-inversion", "alpine-tundra", "high-desert-escape"],
     drivers: ["cold-air-drainage", "inversion", "continentality", "elevation-lapse-rate"],
     summaryShort: "One of the coldest regularly-inhabited valleys in the Lower 48 — Gunnison's winter inversion pools air to −40°C.",
-    summaryImmersive: "Gunnison's upper basin is a textbook cold pool: high elevation, closed topography, clear Rocky Mountain skies, and light winds that allow cold air to drain from surrounding peaks and settle against the valley floor. Winter mornings of −35°C are normal; the US record low for that month's date has been set here repeatedly. Ridgetops above can be 20°C warmer. The ecological and human consequences are everywhere — from the lack of deciduous trees to the insulation of every wall in town. Summers are brief, brilliant, and punctuated by monsoon storms.",
+    summaryImmersive: "Gunnison's upper basin is a textbook cold pool: high elevation, closed topography, clear Rocky Mountain skies, and light winds that allow cold air to drain from surrounding peaks and settle against the valley floor. Winter mornings well below −20°C are routine and arctic outbreaks reach toward −35°C; the US record low for that month's date has been set here repeatedly. Ridgetops above can be 20°C warmer. The ecological and human consequences are everywhere — from the lack of deciduous trees to the insulation of every wall in town. Summers are brief, brilliant, and punctuated by monsoon storms.",
     whyDistinct: "Closed high-elevation basin geometry produces some of the most intense winter inversions in North America; clear-sky radiative cooling builds −30°C layers over weeks.",
     experience: {
-      feel: "Gunnison feels like one of the coldest addresses in the Lower 48 — by design. High, closed, and clear, the basin drains mountain cold onto its floor until −35°C mornings are simply winter, while ridgetops a few hundred metres up sit far warmer.",
+      feel: "Gunnison feels like one of the coldest addresses in the Lower 48 — by design. High, closed, and clear, the basin drains mountain cold onto its floor until mornings far below −15°C are simply winter, while ridgetops a few hundred metres up sit far warmer.",
       seasons: {
         winter: "Severely, famously cold — afternoons barely above freezing, mornings near −18°C and routinely far lower in the pooled basin air, under brilliant, bone-dry Rocky Mountain sun. The cold is the town's defining fact.",
         spring: "Slow and brown before the green — afternoons climbing through the teens, snow receding from the sage, and the valley waking for raft and ranch season.",
@@ -3184,7 +3187,7 @@ export const PLACES_USA: Place[] = [
     growability: { score: 20, hardinessZone: "4a", growsWell: ["Hardiest perennials", "Season-extended greens"], tricky: ["Virtually all fruit and warm-season vegetables"] },
     climateChange: { outlook2050: "Winters warming faster than summers; snowpack decline.", outlook2100: "Cold-pool signature weakens; growing season expands.", keyShifts: [{variable: "Extreme cold frequency", direction: "down"}, {variable: "Snowpack", direction: "down"}], resilienceNote: "Elevation resilient; cold-pool character softening." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "low", trend: "stable"}, drought: {level: "moderate", trend: "worsening"}, extremeHeat: {level: "very-low", trend: "worsening"}, extremeCold: {level: "very-high", trend: "improving"}, smoke: {level: "elevated", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "low", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
-    localContrast: [{ radiusKm: 15, winterLowDeltaC: -18, note: "vs. Crested Butte ridgetops on inversion mornings" }],
+    localContrast: [{ radiusKm: 40, winterLowDeltaC: -18, note: "vs. Crested Butte ridgetops on inversion mornings" }],
     scores: { hiddenGem: 76, microclimateUniqueness: 92, comfort: 40, resilience: 52, growability: 20, tradeoff: 68 },
     liveSignals: {
       costPressure: 48,
@@ -4311,7 +4314,7 @@ export const PLACES_USA: Place[] = [
     climateChange: { outlook2050: "Shorter snow season; summer highs warmer by ~3°C; frost frequency slightly reduced but cold-pool geometry persists.", outlook2100: "Cold-pool mechanism is geometric, not meteorological — the valley will continue producing extreme lows even as averages warm.", keyShifts: [{ variable: "Snowpack depth", direction: "down" }, { variable: "Summer heat", direction: "up" }, { variable: "Fire season", direction: "up" }, { variable: "Extreme cold frequency", direction: "down" }], resilienceNote: "Geographic drivers of cold are robust; dependent economy (fishing, skiing, tourism) is more climate-exposed than the climate itself." },
     risks: { wildfire: { level: "elevated", trend: "worsening" }, flood: { level: "moderate", trend: "stable" }, drought: { level: "moderate", trend: "worsening" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "very-high", trend: "improving" }, smoke: { level: "high", trend: "worsening" }, storm: { level: "low", trend: "stable" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
     localContrast: [{ radiusKm: 25, winterLowDeltaC: -8, note: "vs surrounding ridges during inversion events." }],
-    nearbyContrasts: [{ placeId: "gunnison-co", label: "Gunnison, CO", note: "Same cold-pool archetype at similar elevation — Stanley is even tighter and colder." }],
+    nearbyContrasts: [{ placeId: "gunnison-co", label: "Gunnison, CO", note: "Same cold-pool archetype at similar elevation — Stanley's basin is tighter, though Gunnison's winter nights run colder still." }],
     scores: { hiddenGem: 72, microclimateUniqueness: 94, comfort: 38, resilience: 52, growability: 24, tradeoff: 74 },
     relocationFit: ["extreme-cold enthusiasts", "river guides", "off-grid homesteaders"], travelFit: ["Sawtooth backpacking", "Salmon River rafting", "dark-sky observers (Central Idaho DSR)"],
     whoWouldLove: "People who find 30°C diurnal swings clarifying and silence medicinal.", whoMightNot: "Gardeners; anyone whose knees mind persistent cold.",
@@ -4371,7 +4374,7 @@ export const PLACES_USA: Place[] = [
     growability: { score: 74, growsWell: ["Winter vegetables (leafy greens, brassicas, carrots)", "Citrus", "Dates", "Cotton", "Melons (summer)"], tricky: ["Any non-irrigated crop", "Cool-season crops in summer"], orchard: "Date palms are the emblematic Yuma crop; Medjool and Deglet Noor are both commercially significant." },
     climateChange: { outlook2050: "Higher extreme heat (48°C+ possible); Colorado River flows reduced, threatening irrigation; cooling demand rising.", outlook2100: "Water scarcity is the defining issue — climate itself remains viable but agriculture depends on imported water that is becoming more contested.", keyShifts: [{ variable: "Summer heat extremes", direction: "up" }, { variable: "Colorado River flow", direction: "down" }, { variable: "Winter mildness", direction: "up" }, { variable: "Monsoon intensity", direction: "mixed" }], resilienceNote: "Sunshine and mild winters are robust; water supply is the vulnerability." },
     risks: { wildfire: { level: "very-low", trend: "stable" }, flood: { level: "low", trend: "worsening", note: "Flash flooding during monsoon." }, drought: { level: "very-high", trend: "worsening", note: "Colorado River Basin megadrought." }, extremeHeat: { level: "very-high", trend: "worsening" }, extremeCold: { level: "very-low", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "low", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
-    nearbyContrasts: [{ placeId: "flagstaff-az", label: "Flagstaff, AZ", note: "Two hours north and 2,100 m higher — 20°C cooler in summer, surrounded by ponderosa pine forest." }],
+    nearbyContrasts: [{ placeId: "flagstaff-az", label: "Flagstaff, AZ", note: "About five hours' drive north-east and 2,100 m higher — 20°C cooler in summer, surrounded by ponderosa pine forest." }],
     scores: { hiddenGem: 42, microclimateUniqueness: 84, comfort: 58, resilience: 38, growability: 74, tradeoff: 62 },
     relocationFit: ["winter-escape retirees (snowbirds)", "agricultural workers", "sun-obsessed"], travelFit: ["winter dark-sky", "date-palm heritage", "Sonoran Desert access"],
     whoWouldLove: "Anyone whose body heals in sun. Winter snowbirds. Desert-crop agronomists.", whoMightNot: "Summer residents; water-conservation idealists; humidity-lovers.",

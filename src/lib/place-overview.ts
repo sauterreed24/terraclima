@@ -281,9 +281,14 @@ function joinHumanList(items: readonly string[], max = 4): string {
   return `${clean.slice(0, -1).join(", ")}, and ${clean.at(-1)}`;
 }
 
+/** First sentence, without stopping at decimals ("2.3 km") or abbreviations ("St. John's"). */
 function firstSentence(text: string): string {
-  const m = text.match(/^[^.!?]*[.!?]/);
-  return (m ? m[0] : text).trim();
+  const end = /[.!?](?=\s+[A-Z“"(¿¡]|\s*$)/g;
+  for (let m = end.exec(text); m; m = end.exec(text)) {
+    if (/\b(?:St|Ste|Mt|Ft|Pt|Dr|Mr|Mrs|Ms|No|vs|approx|ca|U\.S|e\.g|i\.e)$/i.test(text.slice(0, m.index))) continue;
+    return text.slice(0, m.index + 1).trim();
+  }
+  return text.trim();
 }
 
 function dequote(text: string): string {
@@ -708,8 +713,11 @@ function deriveContrastItems(place: Place): PlaceContrastItem[] {
   }
   for (const lc of place.localContrast ?? []) {
     if (items.length >= 4) break;
-    const delta = contrastDeltaClause(lc);
-    const note = [lc.note?.trim(), delta ? `${delta.charAt(0).toUpperCase()}${delta.slice(1)}.` : ""]
+    // A note that already quotes its own temperature gap does not need the
+    // generated clause repeating it ("…6°C cooler. About 6°C cooler in summer.").
+    const delta = /\d\s*°\s*C/.test(lc.note ?? "") ? null : contrastDeltaClause(lc);
+    const noteText = lc.note?.trim() ? ensurePeriod(lc.note.trim()) : "";
+    const note = [noteText, delta ? `${delta.charAt(0).toUpperCase()}${delta.slice(1)}.` : ""]
       .filter(Boolean)
       .join(" ");
     push(`Within ${lc.radiusKm} km`, note);
