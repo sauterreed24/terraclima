@@ -13,7 +13,6 @@ on:
       - src/lib/place-hero-media.ts
       - scripts/check-place-hero-files.ts
       - .github/workflows/hero-media-audit.yml
-      - scripts/hero-explore.json
 
 permissions:
   contents: read
@@ -33,9 +32,5 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
-      - name: Explore replacement photos
-        if: hashFiles('scripts/hero-explore.json') != ''
-        run: npx tsx scripts/explore-hero-candidates.ts
       - name: Audit hero photos
-        if: hashFiles('scripts/hero-explore.json') == ''
         run: npx tsx scripts/check-place-hero-files.ts --candidates
