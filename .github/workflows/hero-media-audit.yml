@@ -1,0 +1,36 @@
+# Live check of every place hero photograph against Wikimedia Commons:
+# the file exists, the exact thumbnail URL the app requests returns an image,
+# plus size / orientation / Commons quality assessment, with replacement
+# candidates listed for photos Commons has not assessed. Network-bound, so it
+# runs only when the photo list or the checker changes (or by hand).
+name: Hero media audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+    paths:
+      - src/lib/place-hero-media.ts
+      - scripts/check-place-hero-files.ts
+      - .github/workflows/hero-media-audit.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hero-media-audit-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-node@v6.4.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Audit hero photos
+        run: npx tsx scripts/check-place-hero-files.ts --candidates

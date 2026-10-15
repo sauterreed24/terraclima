@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PLACES } from "../../data/places";
-import { externalMapLinks, getPlaceHeroMedia, listPlaceHeroFiles, placeHeroMediaCount } from "../place-hero-media";
+import { COMMONS_STANDARD_WIDTHS, externalMapLinks, getPlaceHeroMedia, listPlaceHeroFiles, placeHeroMediaCount } from "../place-hero-media";
 
 describe("place hero media", () => {
   it("serves responsive, attributable media for default live-fit leaders", () => {
@@ -8,7 +8,7 @@ describe("place hero media", () => {
       const media = getPlaceHeroMedia(placeId);
       expect(media).not.toBeNull();
       expect(media!.src).toContain("Special:FilePath");
-      expect(media!.srcSet).toContain("640w");
+      expect(media!.srcSet).toContain("500w");
       expect(media!.srcSet).toContain("1280w");
       expect(media!.sizes).toContain("100vw");
       expect(media!.sourceUrl).toContain("commons.wikimedia.org/wiki/File:");
@@ -47,5 +47,14 @@ describe("place hero media", () => {
     expect(links[0]!.href).toBe("https://www.google.com/maps/search/?api=1&query=49.6956%2C-112.8451");
     expect(links[1]!.href).toBe("https://maps.apple.com/?ll=49.6956,-112.8451&q=Lethbridge%20%26%20the%20Chinook%20Belt&z=10");
     expect(links[2]!.href).toBe("https://www.openstreetmap.org/?mlat=49.6956&mlon=-112.8451#map=10/49.6956/-112.8451");
+  });
+
+  it("only requests Wikimedia's standard thumbnail widths, which hotlinks are limited to", () => {
+    const standard = new Set<number>(COMMONS_STANDARD_WIDTHS);
+    for (const place of PLACES) {
+      const media = getPlaceHeroMedia(place.id)!;
+      const widths = [media.src, ...media.srcSet.split(", ")].map(url => Number(url.match(/[?&]width=(\d+)/)?.[1]));
+      for (const width of widths) expect(standard.has(width), `${place.id} width ${width}`).toBe(true);
+    }
   });
 });

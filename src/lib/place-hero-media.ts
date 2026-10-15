@@ -15,7 +15,15 @@ export type PlaceHeroMedia = {
 const CREDIT =
   "Photo: Wikimedia Commons. Open the file page for photographer and license.";
 
-function commonsFile(file: string, width = 1600): string {
+/**
+ * Wikimedia serves thumbnails only at its standard widths and rejects (or
+ * rate-limits) other widths on hotlinked requests, so every width we ask for
+ * must come from this list. https://www.mediawiki.org/wiki/Common_thumbnail_sizes
+ */
+export const COMMONS_STANDARD_WIDTHS = [20, 40, 60, 120, 250, 330, 500, 960, 1280, 1920, 3840] as const;
+type CommonsWidth = (typeof COMMONS_STANDARD_WIDTHS)[number];
+
+function commonsFile(file: string, width: CommonsWidth = 1280): string {
   return `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(file)}?width=${width}`;
 }
 
@@ -24,7 +32,7 @@ function commonsFilePage(file: string): string {
 }
 
 function commonsSrcSet(file: string): string {
-  return [640, 960, 1280, 1920]
+  return ([500, 960, 1280, 1920] as const)
     .map(width => `${commonsFile(file, width)} ${width}w`)
     .join(", ");
 }
