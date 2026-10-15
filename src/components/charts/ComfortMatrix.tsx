@@ -12,12 +12,17 @@ interface Props { place: Place }
  */
 export function ComfortMatrix({ place }: Props) {
   const glowId = `comfort-glow-${useId().replace(/:/g, "")}`;
-  const scores = MONTHS.map((_, i) => scoreMonth(place, i));
-  const peakIdx = scores.reduce((best, v, i, arr) => (v > arr[best] ? i : best), 0);
-  const stressIdx = scores.reduce((best, v, i, arr) => (v < arr[best] ? i : best), 0);
-  const matrixLabel =
-    `Monthly comfort matrix. Most comfortable ${MONTHS[peakIdx]} (score ${scores[peakIdx]!.toFixed(1)} of 4); ` +
-    `most stressed ${MONTHS[stressIdx]} (score ${scores[stressIdx]!.toFixed(1)} of 4).`;
+  // Raw scores keep the "ideal band" bonus above the 4-point cap, so the
+  // highlighted month is the genuinely best one rather than the first month
+  // that reaches the cap.
+  const raw = MONTHS.map((_, i) => scoreMonth(place, i));
+  const scores = raw.map(v => Math.min(4, v));
+  const peakIdx = raw.reduce((best, v, i, arr) => (v > arr[best] ? i : best), 0);
+  const stressIdx = raw.reduce((best, v, i, arr) => (v < arr[best] ? i : best), 0);
+  const matrixLabel = scores[stressIdx]! >= 3.4
+    ? `Monthly comfort matrix. Comfortable year-round; every month scores at least ${scores[stressIdx]!.toFixed(1)} of 4, best in ${MONTHS[peakIdx]}.`
+    : `Monthly comfort matrix. Most comfortable ${MONTHS[peakIdx]} (score ${scores[peakIdx]!.toFixed(1)} of 4); ` +
+      `most stressed ${MONTHS[stressIdx]} (score ${scores[stressIdx]!.toFixed(1)} of 4).`;
 
   const W = 560, H = 56;
   const PAD_L = 6, PAD_R = 6;
@@ -94,13 +99,16 @@ function scoreMonth(p: Place, i: number): number {
   let s = 4;
   if (hi > 30) s -= Math.min(2, (hi - 30) * 0.2);
   if (hi > 35) s -= 1;
-  if (hi < 5) s -= Math.min(2, (5 - hi) * 0.2);
+  // Cold days and hard-frost nights both cost comfort; a 0°C-high month with
+  // −13°C nights should read "stressed", not "very good".
+  if (hi < 10) s -= Math.min(2.5, (10 - hi) * 0.18);
+  if (lo < -5) s -= Math.min(1.5, (-5 - lo) * 0.1);
   if (lo < -15) s -= 1;
   if (hum > 80 && hi > 25) s -= 1;
   if (hum < 20 && hi > 30) s -= 0.5;
   if (hi >= 18 && hi <= 26 && lo >= 8 && lo <= 16) s += 0.4;
 
-  return Math.max(0, Math.min(4, s));
+  return Math.max(0, s);
 }
 
 function colorFor(s: number): string {

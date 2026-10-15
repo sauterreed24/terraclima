@@ -56,6 +56,15 @@ function pct(share: number): string {
   return `${Math.max(0, Math.min(100, Math.round(share * 100)))}%`;
 }
 
+/**
+ * "wetter than 72%" reads well; "wetter than 0%" (Death Valley) does not.
+ * Below the median, flip to the opposite comparison ("drier than 99%").
+ */
+function rankPhrase(share: number, above: string, below: string): string {
+  if (share >= 0.5) return `${above} than ${pct(Math.min(share, 0.99))}`;
+  return `${below} than ${pct(Math.min(1 - share, 0.99))}`;
+}
+
 export interface AtlasCorpusDistributions {
   readonly n: number;
   /** Mean Jun-Aug high (°C) */
@@ -421,7 +430,7 @@ export function getCorpusCardTeaser(place: Place): string {
   if (cached) return cached;
   const r = getPlaceCorpusRanks(place);
   // The bioclim chip sits directly above this line on the card, so it is not repeated here.
-  const teaser = `Against the full atlas: wetter than ${pct(r.wetterThanAtlasShare)} of places · cooler summers than ${pct(r.coolerSummersThanAtlasShare)} · higher ground than ${pct(r.higherElevationThanAtlasShare)}.`;
+  const teaser = `Against the full atlas: ${rankPhrase(r.wetterThanAtlasShare, "wetter", "drier")} of places · ${rankPhrase(r.coolerSummersThanAtlasShare, "cooler summers", "hotter summers")} · ${rankPhrase(r.higherElevationThanAtlasShare, "higher ground", "lower ground")}.`;
   PLACE_CORPUS_CARD_TEASER_CACHE.set(place, teaser);
   return teaser;
 }

@@ -12,6 +12,21 @@ All notable changes to Terraclima are tracked here.
 - **Less repetition:** removed the second why-here paragraph, the journey bridge, the twins teaser, the duplicate poor-fit card and the Climate story card. Local contrast rows no longer repeat what the chart shows. "Climate drivers", "Climate twins" and "Who it suits" now match their section headings.
 - **Consistent logic:** the visit window prefers outdoor/dry/crisp/snow windows over garden-only ones everywhere. Comfort months count highs of 12–30°C in every card. Wet/dry ratios read as words ("4.0× wetter") instead of "∞". Card signals and Köppen/Conrad labels are in plain language. Contrast deltas show "≈ same" instead of "+0".
 - **Live map links:** the profile's single "Open this area on a live map (OpenStreetMap)" link failed whenever openstreetmap.org rate-limited the visitor's network (HTTP 429, "Error 54113"). It is now a "See this area on a live map" row with Google Maps first, then Apple Maps and OpenStreetMap, each pinned to the place's coordinates, so one busy map site no longer leaves a dead end.
+- **Independent-reader fixes:**
+  - **Visit advice:** the dry-travel window now needs highs of at least 10°C (50°F), so Duluth is no longer pitched for "road trips" in December–March.
+  - **Explorer counts:** the top line says "All 226 places" or "79 of 226 places match", so it no longer reads against the list footer's "Showing 36 of 226".
+  - **Precipitation chart:** snowfall depth is off the rain axis (it was scaled ×8 in metric and ×0.8 in imperial, so snowy winters out-towered the wettest month). Snowy months show their real depth in a labelled ❄ row. Chart text uses theme colours.
+  - **Comfort strip:** a 0°C-high month with −13°C nights reads "Stressed", not "Very good", and the highlight lands on the genuinely best month.
+  - **Season cards:** mild winters (Oaxaca, Honolulu) lose the snowflake. Chinook places read "snow-and-thaw". The catch-all "settled" tag is replaced by a tone-matched word.
+  - **Dossier titles:** 36 history chapters whose catchy title named something the chapter never mentions ("Tomb 7 and Juárez", "Whoop-Up country") are now "More of the story".
+  - **Things to do:** derived field checks move under "Scouting tasks", and the section and sidebar say so when a place has no listed attractions.
+  - **Templated text:**
+    - Rewrote the itinerary evening line and the drivers sentences ("how Chinook / foehn downslope, Gap winds changes shade").
+    - "Compare against" no longer lists "Within 62 mi" or runs comma-separated place names together.
+    - "Start with: none called out" is gone.
+    - Orchard and vineyard lodging advice is only given to orchard-valley places.
+  - **Units:** the livability breakdown and the Overview's nearby labels follow the °F/inch and mile settings.
+  - **Card wording:** extreme places read "drier than 99% of places" instead of "wetter than 0%".
 - **Review follow-ups:**
   - **Snow chapter title:** the rain-year chapter is titled for rain and snow whenever its text describes snow. It used to say "How the rain falls" over "expect a real snow season" on 18 places, including Duluth, Banff and Huachuca.
   - **Keyboard focus:** "Show all" and the last "Show more" hand focus to the list count instead of dropping it to the top of the page.

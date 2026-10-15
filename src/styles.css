@@ -41,6 +41,8 @@
   --color-ochre-300: #ffe066;
   --color-ochre-500: #e89b20;
   --color-ochre-700: #a86a0c;
+  /* Driest-month and mean-line text in the precipitation chart. */
+  --tc-precip-dry: #8f5a08;
 
   /* Quaternary — bougainvillea & sunset pink */
   --color-aurora-300: #ffc4d6;
@@ -11389,6 +11391,7 @@ html[data-motion="minimal"] .scenario-remap__row:hover {
      paper"); on moonlit chrome the same role needs a bright teal or links
      all but vanish (#0d5f72 on #0d1320 is ~1.6:1). */
   --color-glacier-700: #7ad0e6;
+  --tc-precip-dry: #f0d29c;
   /* Sage-700 is likewise text-only ("ready", "Drivers", rain figures). */
   --color-sage-700: #93d3a2;
 }

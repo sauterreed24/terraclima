@@ -54,7 +54,7 @@ export function PlaceOverviewSpotlight({
           <ul className="place-overview__contrast-list">
             {exp.contrastItems.map((item, i) => (
               <li key={`${i}:${item.label}`}>
-                <div className="place-overview__contrast-label">{item.label}</div>
+                <div className="place-overview__contrast-label">{prose(item.label)}</div>
                 <p>{prose(item.note)}</p>
               </li>
             ))}

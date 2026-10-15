@@ -98,3 +98,17 @@ describe("resonantWindowFor", () => {
     expect(resonantWindowFor("hidden-gems")).toBeNull();
   });
 });
+
+describe("dry travel window", () => {
+  const m = (...v: number[]) => v as unknown as Monthly12;
+  it("skips dry months that are too cold to travel in", () => {
+    const place = makePlace({
+      climate: makeClimate({
+        tempHighC: m(-5, -3, 2, 10, 17, 22, 26, 25, 19, 12, 3, -3),
+        tempLowC: m(-15, -14, -8, -1, 5, 10, 14, 13, 8, 2, -5, -12),
+        precipMm: m(20, 18, 25, 50, 80, 107, 100, 95, 90, 60, 40, 25),
+      }),
+    });
+    expect(computeBestMonths(place).find(w => w.id === "dry")).toBeUndefined();
+  });
+});

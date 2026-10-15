@@ -1,6 +1,7 @@
 import type { Place, RiskLevel, TopographicDriver } from "../types";
 import { ARCHETYPE_LABELS, DRIVER_LABELS } from "../types";
 import { getBestMonths, pickVisitWindow } from "./best-months";
+import { inlineDriverLabel, listJoin } from "./place-appendix-sections";
 import { avgRisk, meanJanLow, meanSummerHigh, RISK_VALUE } from "./scoring";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import {
@@ -327,7 +328,7 @@ function lodgingRead(place: Place): ClimateTourismProfile["lodgingRead"] {
     place.tier === "A" ? "look for walkable historic-core stays or quiet edge-of-town rentals" : undefined,
     place.archetypes.includes("fog-belt-coast") ? "search near the water edge, fog belt, or sheltered harbor" : undefined,
     place.archetypes.includes("sky-island-refuge") ? "search for mountain-town bases near a valley-to-ridge road" : undefined,
-    place.archetypes.includes("orchard-valley") || /wine|orchard|fruit|vineyard/i.test(`${place.name} ${place.growability.orchard ?? ""}`)
+    place.archetypes.includes("orchard-valley") || /wine|orchard|vineyard/i.test(place.name)
       ? "search near orchard benches, vineyard districts, or the main valley town"
       : undefined,
     buildSettlementAnchors(place).slice(1, 3).map(s => `compare ${s.name} as a secondary base`).join("; ") || undefined,
@@ -351,7 +352,7 @@ function buildItinerary(place: Place, profileBits: {
   const secondActivity = activities[1] ?? firstActivity;
   const contrast = nearby[0];
   const secondContrast = nearby[1] ?? contrast;
-  const drivers = topDriverLabels(place).join(", ") || "terrain drivers";
+  const drivers = listJoin(topDriverLabels(place).map(inlineDriverLabel)) || "the terrain";
   return {
     title: `Three-day climate scouting loop from ${base}`,
     days: [
@@ -362,7 +363,7 @@ function buildItinerary(place: Place, profileBits: {
         afternoon: firstActivity
           ? `${firstActivity.label}: ${sentence(firstActivity.note, "Use the activity as a field check, not just a stop.", 150)}`
           : "Use a short local walk or overlook to compare sun, shade, slope, and water edges.",
-        evening: `Review the day's notes against ${place.summaryShort}`,
+        evening: `Back in ${base}, check the day's notes against the season card for the month you are visiting.`,
         climateLens: `Look for the contrast: ${drivers}.`,
       },
       {
