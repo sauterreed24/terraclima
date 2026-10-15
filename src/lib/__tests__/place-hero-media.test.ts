@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { PLACES } from "../../data/places";
-import { getPlaceHeroMedia, listPlaceHeroFiles, placeHeroMediaCount } from "../place-hero-media";
+import { externalMapLinks, getPlaceHeroMedia, listPlaceHeroFiles, placeHeroMediaCount } from "../place-hero-media";
 
 describe("place hero media", () => {
   it("serves responsive, attributable media for default live-fit leaders", () => {
@@ -38,5 +38,14 @@ describe("place hero media", () => {
       expect(file, `${place.id} missing Commons filename`).toBeTruthy();
       expect(/\.(jpe?g|png|webp)$/i.test(file!), `${place.id} unexpected file ${file}`).toBe(true);
     }
+  });
+
+  it("offers dependable live-map links before OpenStreetMap, all pinned to the place", () => {
+    const links = externalMapLinks(49.6956, -112.8451, "Lethbridge & the Chinook Belt");
+
+    expect(links.map(link => link.id)).toEqual(["google", "apple", "osm"]);
+    expect(links[0]!.href).toBe("https://www.google.com/maps/search/?api=1&query=49.6956%2C-112.8451");
+    expect(links[1]!.href).toBe("https://maps.apple.com/?ll=49.6956,-112.8451&q=Lethbridge%20%26%20the%20Chinook%20Belt&z=10");
+    expect(links[2]!.href).toBe("https://www.openstreetmap.org/?mlat=49.6956&mlon=-112.8451#map=10/49.6956/-112.8451");
   });
 });

@@ -23,7 +23,7 @@ import { getBestMonths } from "../lib/best-months";
 import { CopyPlaceLink } from "./place-detail/CopyPlaceLink";
 import { PlaceClimateTwins } from "./place-detail/PlaceClimateTwins";
 import { composeFieldStory } from "../lib/place-story";
-import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
+import { externalMapLinks, getPlaceHeroMedia } from "../lib/place-hero-media";
 import { composePlaceExperience } from "../lib/place-overview";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { SITE_HISTORY, withSiteHistoryDeepSections } from "../data/places.site-history";
@@ -408,7 +408,13 @@ function DetailHeader({
   // Tracked by src (not a boolean) so switching places resets the fallback.
   const [failedHeroSrc, setFailedHeroSrc] = useState<string | null>(null);
   const heroFailed = hero != null && failedHeroSrc === hero.src;
-  const osmHref = safeExternalHref(openStreetMapUrl(place.lat, place.lon, 10)) ?? "https://www.openstreetmap.org/";
+  const mapLinks = useMemo(
+    () => externalMapLinks(place.lat, place.lon, place.name).flatMap(link => {
+      const href = safeExternalHref(link.href);
+      return href ? [{ ...link, href }] : [];
+    }),
+    [place.lat, place.lon, place.name],
+  );
   const homeBaseLabel = isHome
     ? `Clear ${place.name} as your home base`
     : `Set ${place.name} as your home base for climate deltas`;
@@ -622,17 +628,25 @@ function DetailHeader({
         </figcaption>
       </figure>
 
-      <div className="mt-2">
-        <a
-          href={osmHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="tc-detail-map-link inline-flex items-center gap-1.5 text-[11px] font-medium text-glacier-700 hover:text-glacier-500 hover:underline"
-        >
+      <div className="tc-detail-maps mt-2" role="group" aria-labelledby={`${place.id}-maps-label`}>
+        <span id={`${place.id}-maps-label`} className="tc-detail-maps__label">
           <MapPin className="w-3.5 h-3.5 shrink-0" aria-hidden />
-          Open this area on a live map (OpenStreetMap)
-          <ExternalLink className="w-3 h-3 shrink-0 opacity-80" aria-hidden />
-        </a>
+          See this area on a live map
+        </span>
+        {mapLinks.map(link => (
+          <a
+            key={link.id}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tc-detail-map-link"
+            data-primary={link.id === "google" || undefined}
+            aria-label={`Open ${place.name} in ${link.label} (new tab)`}
+          >
+            {link.label}
+            <ExternalLink className="w-3 h-3 shrink-0 opacity-80" aria-hidden />
+          </a>
+        ))}
       </div>
 
       <div className="text-[10px] uppercase tracking-wider text-stone-readable mt-4 flex items-center gap-1.5">
