@@ -34,13 +34,13 @@ const RISK_LABEL: Record<(typeof RISK_KEYS)[number], string> = {
 
 const MO = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] as const;
 
-function listJoin(items: readonly string[]): string {
+export function listJoin(items: readonly string[]): string {
   if (items.length <= 1) return items[0] ?? "";
   return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 }
 
 /** Driver chip labels are title-cased; mid-sentence they read lower-case except proper names. */
-function inlineDriverLabel(label: string): string {
+export function inlineDriverLabel(label: string): string {
   return /^(?:Santa Ana|Chinook)/.test(label) ? label : label.charAt(0).toLowerCase() + label.slice(1);
 }
 

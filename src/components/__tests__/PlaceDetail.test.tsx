@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { PLACES_BY_ID } from "../../data/places";
 import { UnitProvider } from "../../lib/units";
@@ -129,9 +129,14 @@ describe("PlaceDetail overview spotlight", () => {
     expect(screen.getByRole("heading", { name: "Why it feels different" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Nearby contrast" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "A short history" })).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: "Open this area on a live map (OpenStreetMap)" }),
-    ).toHaveClass("tc-detail-map-link");
+    const maps = screen.getByRole("group", { name: "See this area on a live map" });
+    const mapLinks = within(maps).getAllByRole("link");
+    expect(mapLinks.map(link => link.textContent)).toEqual(["Google Maps", "Apple Maps", "OpenStreetMap"]);
+    for (const link of mapLinks) {
+      expect(link).toHaveClass("tc-detail-map-link");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link.getAttribute("href")).toMatch(/^https:\/\//);
+    }
     expect(screen.getByText("The year, season by season")).toBeInTheDocument();
     for (const season of ["Winter", "Spring", "Summer", "Autumn"]) {
       expect(screen.getByText(season)).toBeInTheDocument();

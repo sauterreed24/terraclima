@@ -1759,11 +1759,15 @@ export default function App() {
                       authoritative announcement lives in the sr-only sibling
                       below so screen readers hear only the final value. */}
                   <div className="text-xs text-stone-readable" aria-hidden="true">
-                    Showing <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} paused={resultsPending} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places · ranked by <span className="text-frost">{scenarioRankingLabel}</span>
+                    {ranked.length === PLACE_COUNTS.total ? (
+                      <>All <span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} paused={resultsPending} /></span> places</>
+                    ) : (
+                      <><span className="font-mono-num text-frost tabular-nums"><AnimatedNumber value={ranked.length} paused={resultsPending} /></span> of <span className="font-mono-num text-frost">{PLACE_COUNTS.total}</span> places match</>
+                    )} · ranked by <span className="text-frost">{scenarioRankingLabel}</span>
                     {resultsPending ? <span className="tc-results-pending-inline"> · Updating…</span> : null}
                   </div>
                   <div className="sr-only" role="status" aria-live="polite" aria-atomic="true">
-                    {`Showing ${ranked.length} of ${PLACE_COUNTS.total} places, ranked by ${scenarioRankingLabel}.${homeBasePlace ? ` Cards show climate deltas against your home base, ${homeBasePlace.name}.` : ""}`}
+                    {`${ranked.length === PLACE_COUNTS.total ? `All ${ranked.length} places` : `${ranked.length} of ${PLACE_COUNTS.total} places match`}, ranked by ${scenarioRankingLabel}.${homeBasePlace ? ` Cards show climate deltas against your home base, ${homeBasePlace.name}.` : ""}`}
                   </div>
                   {homeBasePlace ? (
                     <div className="text-xs text-stone flex items-center gap-1.5 min-w-0">

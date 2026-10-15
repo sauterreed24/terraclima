@@ -102,8 +102,11 @@ export function computeBestMonths(place: Place, displayTemp: TempUnit = "F"): Be
     }
   }
 
+  // The driest third of the year, but only months mild enough to travel in:
+  // in continental climates the driest months are midwinter, and a frozen
+  // January is not a "road trip" window just because it is dry.
   const p33 = quantile(precip, 0.33);
-  const dryMask = precip.map(v => v <= p33);
+  const dryMask = precip.map((v, i) => v <= p33 && highs[i] >= 10);
   const dryRange = formatMonthMask(dryMask);
   if (dryRange) {
     windows.push({

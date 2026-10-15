@@ -23,7 +23,7 @@ import { getBestMonths } from "../lib/best-months";
 import { CopyPlaceLink } from "./place-detail/CopyPlaceLink";
 import { PlaceClimateTwins } from "./place-detail/PlaceClimateTwins";
 import { composeFieldStory } from "../lib/place-story";
-import { getPlaceHeroMedia, openStreetMapUrl } from "../lib/place-hero-media";
+import { externalMapLinks, getPlaceHeroMedia } from "../lib/place-hero-media";
 import { composePlaceExperience } from "../lib/place-overview";
 import { mergeDeepSections } from "../lib/place-appendix-sections";
 import { SITE_HISTORY, withSiteHistoryDeepSections } from "../data/places.site-history";
@@ -408,7 +408,13 @@ function DetailHeader({
   // Tracked by src (not a boolean) so switching places resets the fallback.
   const [failedHeroSrc, setFailedHeroSrc] = useState<string | null>(null);
   const heroFailed = hero != null && failedHeroSrc === hero.src;
-  const osmHref = safeExternalHref(openStreetMapUrl(place.lat, place.lon, 10)) ?? "https://www.openstreetmap.org/";
+  const mapLinks = useMemo(
+    () => externalMapLinks(place.lat, place.lon, place.name).flatMap(link => {
+      const href = safeExternalHref(link.href);
+      return href ? [{ ...link, href }] : [];
+    }),
+    [place.lat, place.lon, place.name],
+  );
   const homeBaseLabel = isHome
     ? `Clear ${place.name} as your home base`
     : `Set ${place.name} as your home base for climate deltas`;
@@ -622,17 +628,25 @@ function DetailHeader({
         </figcaption>
       </figure>
 
-      <div className="mt-2">
-        <a
-          href={osmHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="tc-detail-map-link inline-flex items-center gap-1.5 text-[11px] font-medium text-glacier-700 hover:text-glacier-500 hover:underline"
-        >
+      <div className="tc-detail-maps mt-2" role="group" aria-labelledby={`${place.id}-maps-label`}>
+        <span id={`${place.id}-maps-label`} className="tc-detail-maps__label">
           <MapPin className="w-3.5 h-3.5 shrink-0" aria-hidden />
-          Open this area on a live map (OpenStreetMap)
-          <ExternalLink className="w-3 h-3 shrink-0 opacity-80" aria-hidden />
-        </a>
+          See this area on a live map
+        </span>
+        {mapLinks.map(link => (
+          <a
+            key={link.id}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tc-detail-map-link"
+            data-primary={link.id === "google" || undefined}
+            aria-label={`Open ${place.name} in ${link.label} (new tab)`}
+          >
+            {link.label}
+            <ExternalLink className="w-3 h-3 shrink-0 opacity-80" aria-hidden />
+          </a>
+        ))}
       </div>
 
       <div className="text-[10px] uppercase tracking-wider text-stone-readable mt-4 flex items-center gap-1.5">
@@ -1047,7 +1061,7 @@ function DetailBody({
                 <li
                   key={c.key}
                   className="tc-livability-row"
-                  title={c.rationale}
+                  title={prose(c.rationale)}
                 >
                   <div className="tc-livability-row__label">{c.label}</div>
                   <div className="tc-livability-row__bar">
@@ -1061,7 +1075,7 @@ function DetailBody({
                     {Math.round(c.value)}
                     <span className="text-stone text-[10px]">/100</span>
                   </div>
-                  <span className="sr-only">{c.rationale}</span>
+                  <span className="sr-only">{prose(c.rationale)}</span>
                 </li>
               ))}
             </ul>
@@ -1206,42 +1220,59 @@ function DetailBody({
         </Section>
       )}
 
-      {practicalActivities.length > 0 && (
-        <Section anchorId={PD.activities} title="Things to do nearby" icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}>
-          <div className="grid md:grid-cols-2 gap-2">
-            {practicalActivities.map((a, i) => (
-              <div key={`${a.label}-${i}`} className="panel-thin p-3">
-                <div className="flex items-start gap-2">
-                  <div className="text-lg leading-none pt-0.5" aria-hidden="true">
-                    {ACTIVITY_KIND_GLYPH[a.kind] ?? "✶"}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm text-ice leading-snug">{a.label}</div>
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      <span className="chip" data-tone={ACTIVITY_KIND_TONE[a.kind] ?? "ice"} style={{ fontSize: "10px" }}>
-                        {ACTIVITY_KIND_LABEL[a.kind] ?? a.kind}
-                      </span>
-                      {a.season && (
-                        <span className="chip chip--multiline" data-tone="glacier" style={{ fontSize: "10px" }}>
-                          {a.season}
-                        </span>
-                      )}
-                      {a.source === "derived" && (
-                        <span className="chip" data-tone="ice" style={{ fontSize: "10px" }}>
-                          Derived
-                        </span>
-                      )}
-                    </div>
-                    {a.note && (
-                      <div className="text-[12px] text-frost italic mt-1 leading-snug">{prose(a.note)}</div>
-                    )}
-                  </div>
-                </div>
+      {practicalActivities.length > 0 && (() => {
+        // Listed attractions and derived scouting chores are different
+        // things; keep the chores out of "Things to do" and say what they are.
+        const attractions = practicalActivities.filter(a => a.source !== "derived");
+        const tasks = practicalActivities.filter(a => a.source === "derived");
+        const card = (a: (typeof practicalActivities)[number], i: number) => (
+          <div key={`${a.label}-${i}`} className="panel-thin p-3">
+            <div className="flex items-start gap-2">
+              <div className="text-lg leading-none pt-0.5" aria-hidden="true">
+                {ACTIVITY_KIND_GLYPH[a.kind] ?? "✶"}
               </div>
-            ))}
+              <div className="min-w-0 flex-1">
+                <div className="text-sm text-ice leading-snug">{a.label}</div>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  <span className="chip" data-tone={ACTIVITY_KIND_TONE[a.kind] ?? "ice"} style={{ fontSize: "10px" }}>
+                    {ACTIVITY_KIND_LABEL[a.kind] ?? a.kind}
+                  </span>
+                  {a.season && (
+                    <span className="chip chip--multiline" data-tone="glacier" style={{ fontSize: "10px" }}>
+                      {a.season}
+                    </span>
+                  )}
+                </div>
+                {a.note && (
+                  <div className="text-[12px] text-frost italic mt-1 leading-snug">{prose(a.note)}</div>
+                )}
+              </div>
+            </div>
           </div>
-        </Section>
-      )}
+        );
+        return (
+          <Section
+            anchorId={PD.activities}
+            title={attractions.length > 0 ? "Things to do nearby" : "Scouting tasks"}
+            icon={<Compass className="w-4 h-4" style={{ color: "#c6dcbd" }} />}
+          >
+            {attractions.length > 0 ? (
+              <div className="grid md:grid-cols-2 gap-2">{attractions.map(card)}</div>
+            ) : null}
+            {tasks.length > 0 ? (
+              <>
+                {attractions.length > 0 ? (
+                  <h4 className="text-[11px] uppercase tracking-wider text-stone-readable mt-4 mb-2">Scouting tasks</h4>
+                ) : null}
+                <p className="text-[12px] text-stone-readable mb-2">
+                  Field checks worked out from this place's climate and terrain, for anyone sizing it up in person.
+                </p>
+                <div className="grid md:grid-cols-2 gap-2">{tasks.map(card)}</div>
+              </>
+            ) : null}
+          </Section>
+        );
+      })()}
 
       <PlacePracticalRead place={place} anchorId={PD.practical} />
 
@@ -1296,7 +1327,7 @@ function DetailBody({
             <ClimateRibbon highs={place.climate.tempHighC} lows={place.climate.tempLowC} />
           </div>
           <div>
-            <LabelRow label={`Monthly precipitation · snow band shown where applicable`} />
+            <LabelRow label={place.climate.snowCm?.some(v => v > 1) ? "Monthly precipitation (rain and melted snow) · ❄ row: snowfall depth" : "Monthly precipitation"} />
             <PrecipBars precip={place.climate.precipMm} snow={place.climate.snowCm} />
           </div>
           <div>

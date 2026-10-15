@@ -175,7 +175,13 @@ export function buildPlaceDetailNavItems(place: Place): PlaceNavItem[] {
 
   return PD_SECTION_DEFS
     .filter(def => !def.optional || optionalOk[def.optional])
-    .map(def => ({ id: def.id, label: def.label, group: PD_NAV_GROUP[def.group] }));
+    .map(def => ({
+      id: def.id,
+      // Matches the section heading, which says "Scouting tasks" when the
+      // place has no listed attractions, only derived field checks.
+      label: def.id === PD.activities && !activities.some(a => a.source !== "derived") ? "Scouting tasks" : def.label,
+      group: PD_NAV_GROUP[def.group],
+    }));
 }
 
 /** First word of a place label, lower-cased ("Forks, WA (50 km SW)" → "forks"). */

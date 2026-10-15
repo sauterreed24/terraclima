@@ -41,6 +41,8 @@
   --color-ochre-300: #ffe066;
   --color-ochre-500: #e89b20;
   --color-ochre-700: #a86a0c;
+  /* Driest-month and mean-line text in the precipitation chart. */
+  --tc-precip-dry: #8f5a08;
 
   /* Quaternary — bougainvillea & sunset pink */
   --color-aurora-300: #ffc4d6;
@@ -7540,6 +7542,58 @@
   [data-place-detail] .tc-detail-map-link {
     display: inline-flex;
   }
+  .tc-detail-maps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.5rem;
+  }
+  .tc-detail-maps__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-right: 0.15rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-stone-readable);
+  }
+  .tc-detail-map-link {
+    gap: 0.35rem;
+    padding: 0 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--tc-border-neutral);
+    background: var(--tc-surface-muted);
+    color: var(--color-glacier-700);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+  }
+  .tc-detail-map-link[data-primary] {
+    border-color: rgba(26, 143, 168, 0.45);
+    background: rgba(26, 143, 168, 0.1);
+  }
+  .tc-detail-map-link:hover {
+    border-color: var(--color-glacier-500);
+    color: var(--color-glacier-500);
+  }
+  .tc-detail-map-link:focus-visible {
+    outline: 2px solid var(--color-glacier-500);
+    outline-offset: 2px;
+  }
+  html[data-theme="dark"] .tc-detail-map-link {
+    color: var(--color-frost-strong);
+    background: rgba(18, 26, 44, 0.72);
+    border-color: rgba(120, 138, 178, 0.32);
+  }
+  html[data-theme="dark"] .tc-detail-map-link[data-primary] {
+    border-color: rgba(94, 196, 220, 0.5);
+    background: rgba(94, 196, 220, 0.12);
+  }
+  html[data-theme="dark"] .tc-detail-map-link:hover {
+    color: var(--color-ice);
+    border-color: rgba(94, 196, 220, 0.7);
+  }
   [data-place-detail] .tc-reading-nav-link {
     display: inline-flex;
   }
@@ -11337,6 +11391,7 @@ html[data-motion="minimal"] .scenario-remap__row:hover {
      paper"); on moonlit chrome the same role needs a bright teal or links
      all but vanish (#0d5f72 on #0d1320 is ~1.6:1). */
   --color-glacier-700: #7ad0e6;
+  --tc-precip-dry: #f0d29c;
   /* Sage-700 is likewise text-only ("ready", "Drivers", rain figures). */
   --color-sage-700: #93d3a2;
 }

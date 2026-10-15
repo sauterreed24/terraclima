@@ -284,3 +284,31 @@ export function placeHeroMediaCount(): number {
 export function openStreetMapUrl(lat: number, lon: number, zoom = 10): string {
   return `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=${zoom}/${lat}/${lon}`;
 }
+
+export interface ExternalMapLink {
+  id: "google" | "apple" | "osm";
+  label: string;
+  href: string;
+}
+
+/**
+ * Live-map links for a place, most dependable first. OpenStreetMap's site
+ * rate-limits busy networks (HTTP 429), so it is offered alongside Google
+ * Maps and Apple Maps rather than as the only way to see the area.
+ */
+export function externalMapLinks(lat: number, lon: number, name: string, zoom = 10): ExternalMapLink[] {
+  const coords = `${lat},${lon}`;
+  return [
+    {
+      id: "google",
+      label: "Google Maps",
+      href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(coords)}`,
+    },
+    {
+      id: "apple",
+      label: "Apple Maps",
+      href: `https://maps.apple.com/?ll=${coords}&q=${encodeURIComponent(name)}&z=${zoom}`,
+    },
+    { id: "osm", label: "OpenStreetMap", href: openStreetMapUrl(lat, lon, zoom) },
+  ];
+}

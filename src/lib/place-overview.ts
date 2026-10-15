@@ -242,7 +242,7 @@ function seasonRiskPhrase(place: Place, key: SeasonKey): string | null {
   }
 }
 
-function seasonHeadline(tone: SeasonTone, c: SeasonConditions): string {
+function seasonHeadline(tone: SeasonTone, c: SeasonConditions, chinook = false): string {
   const toneAdj =
     tone === "hot" ? "Hot" :
     tone === "warm" ? "Warm" :
@@ -251,14 +251,20 @@ function seasonHeadline(tone: SeasonTone, c: SeasonConditions): string {
     tone === "cold" ? "Cold" : "Frigid";
 
   let texture: string;
-  if (c.snowy) texture = "snow-blanketed";
+  // Chinook winters swing between snow and bare-ground thaws.
+  if (c.snowy) texture = chinook ? "snow-and-thaw" : "snow-blanketed";
   else if (c.wet) texture = "wet";
   else if (c.gray) texture = "often gray";
   else if (c.dry && (tone === "hot" || tone === "warm")) texture = "sun-baked";
   else if (c.dry) texture = "dry";
   else if (c.humid) texture = "humid";
   else if (c.sunny) texture = "sun-filled";
-  else texture = "settled";
+  else texture =
+    tone === "hot" ? "steady" :
+    tone === "warm" ? "pleasant" :
+    tone === "mild" ? "easygoing" :
+    tone === "cool" ? "brisk" :
+    tone === "cold" ? "raw" : "bitter";
 
   return `${toneAdj} & ${texture}`;
 }
@@ -349,11 +355,12 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
     key: def.key,
     label: def.label,
     monthsLabel: def.monthsLabel,
-    glyph: def.glyph,
+    // A frost-free, mild-to-hot winter (Oaxaca, Honolulu) should not wear a snowflake.
+    glyph: def.key === "winter" && !conditions.snowy && (tone === "mild" || tone === "warm" || tone === "hot") ? "🌤️" : def.glyph,
     highC,
     lowC,
     tone,
-    headline: seasonHeadline(tone, conditions),
+    headline: seasonHeadline(tone, conditions, place.drivers.includes("chinook-foehn")),
     detail,
     authored: useAuthored || Boolean(overlayDetail),
   };

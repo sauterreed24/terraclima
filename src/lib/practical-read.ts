@@ -1,6 +1,7 @@
 import type { Place, RiskLevel, ZoneActivity, ZoneSettlement } from "../types";
 import { DRIVER_LABELS } from "../types";
 import { getBestMonths } from "./best-months";
+import { inlineDriverLabel, listJoin } from "./place-appendix-sections";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 
 export type PracticalReadId = "agriculture" | "spatial" | "housing" | "nearby";
@@ -61,7 +62,9 @@ function cleanList(items: readonly string[], max = 4): string {
   if (clean.length === 0) return "none called out";
   const head = clean.slice(0, max);
   const rest = clean.length - head.length;
-  return rest > 0 ? `${head.join(", ")}, plus ${rest} more` : head.join(", ");
+  // Place names such as "Pincher Creek, AB" carry their own commas.
+  const sep = head.some(s => s.includes(",")) ? "; " : ", ";
+  return rest > 0 ? `${head.join(sep)}${sep}plus ${rest} more` : head.join(sep);
 }
 
 function trimSentence(s: string | undefined, fallback: string, max = 220): string {
@@ -180,7 +183,10 @@ export function buildPracticalReadCards(place: Place): PracticalReadCard[] {
       bullets: [
         `Trip modes: ${cleanList(place.travelFit, 4)}`,
         `Outdoor window: ${bestOutdoorSeason(place)}; water year is ${waterYearPhrase(place)}`,
-        `Compare against: ${cleanList(nearbyRows.map(r => r.label), 3)}; start with ${cleanList(activities.map(a => a.label), 2)}`,
+        [
+          `Compare against: ${cleanList(nearbyRows.map(r => r.label).filter(label => !/^within\b/i.test(label)), 3)}`,
+          activities.length > 0 ? `Start with: ${cleanList(activities.map(a => a.label), 2)}` : null,
+        ].filter(Boolean).join(". "),
       ],
     },
   ];
@@ -199,7 +205,8 @@ export function buildPracticalActivities(place: Place): PracticalActivity[] {
     out.push({ ...activity, source: "derived" });
   };
 
-  const drivers = cleanList(place.drivers.map(d => DRIVER_LABELS[d] ?? d), 3);
+  const driverLabels = place.drivers.slice(0, 3).map(d => inlineDriverLabel(DRIVER_LABELS[d] ?? d));
+  const drivers = driverLabels.length > 0 ? listJoin(driverLabels) : "the terrain";
   const bestSeason = bestOutdoorSeason(place);
   const water = waterYearPhrase(place);
 
@@ -207,7 +214,7 @@ export function buildPracticalActivities(place: Place): PracticalActivity[] {
     label: "Read the terrain gradient on foot or by road",
     kind: "trail",
     season: bestSeason,
-    note: `Use short walks, overlooks, or a valley-to-ridge drive to see how ${drivers} changes shade, wind, and temperature.`,
+    note: `Use short walks, overlooks, or a valley-to-ridge drive to see how ${drivers} ${driverLabels.length === 1 ? "shapes" : "shape"} shade, wind, and temperature.`,
   });
   add({
     label: "Compare the main town with a nearby climate contrast",
