@@ -2743,7 +2743,7 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Mammoth sits at 2424 m on the east side of the Sierra crest where storms deposit their snow before descending to the Owens Valley rain shadow. The climate is subalpine — 30 inches of water equivalent in an average winter, 300+ sunny days, intense UV, and summer afternoons that rarely exceed 25°C. The volcanic geology (still an active caldera) adds geothermal features that shape local micro-microclimates.",
     whyDistinct: "East-Sierra position captures snow but sits in the partial rain shadow of higher peaks immediately to the west; extreme elevation dominates.",
     experience: {
-      feel: "Mammoth feels like California's highest major ski town — 2424 m on the east Sierra flank where storms dump deep snow, 300+ sunny days burn intense UV, and summer afternoons rarely exceed 25°C above an still-active volcanic caldera.",
+      feel: "Mammoth feels like California's highest major ski town — 2424 m on the east Sierra flank where storms dump deep snow, 300+ sunny days burn intense UV, and summer afternoons rarely exceed 25°C above a still-active volcanic caldera.",
       seasons: {
         winter: "The reason the town exists — metres of snow, afternoons near 3°C, nights near −11°C, and a resort economy built around one of the deepest snowpacks in the Sierra.",
         spring: "Corn-snow season — snowpack retreating slowly, the first bare-ground days in June, and geothermal features steaming in the partial rain shadow.",
@@ -3904,7 +3904,7 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Key West sits at 24.5° latitude, ringed on every side with ocean that holds near 27°C, bathed in trade winds. Its climate is fully tropical: January afternoons average 25°C, August afternoons 32°C — an annual range barely larger than a typical day's swing elsewhere. Frost has never been recorded in historical memory. The seasons are rainfall: a wet season June through October (dominated by thunderstorms and hurricanes), a dry season November through May.",
     whyDistinct: "Tropical latitude plus complete ocean surround plus steady trade winds produces the US's only truly isothermal climate; hurricane exposure shapes everything from architecture to insurance.",
     experience: {
-      feel: "Key West feels like the tropics with a US zip code. Ringed by 27°C water and steady trade winds, it barely has seasons in the temperature sense — January afternoons near 25°C, August near 32°C — only a dry winter and a wet, storm-prone summer.",
+      feel: "Key West feels like the tropics with a US zip code. Ringed by water near 27°C and steady trade winds, it barely has seasons in the temperature sense — January afternoons near 25°C, August near 32°C — only a dry winter and a wet, storm-prone summer.",
       seasons: {
         winter: "The dry-season sweet spot — warm, breezy afternoons near 25°C, balmy nights, little rain, and trade winds keeping the humidity bearable. Peak visitor weather.",
         spring: "Warming and still mostly dry — afternoons climbing toward 30°C, the sea warming, and the calm before the wet season's afternoon build-ups begin.",
