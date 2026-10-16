@@ -165,8 +165,12 @@ describe("formatAppRelativeUrl", () => {
       formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, comparisonLens: "balanced", collectionExists: ce }),
     ).toBe("/");
     expect(
+      formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, compareIds: ["sequim-wa"], comparisonLens: "risk", collectionExists: ce }),
+    ).toBe("/?cmp=sequim-wa&clens=risk");
+    // With nothing being compared the lens is meaningless and stays out of the URL.
+    expect(
       formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, comparisonLens: "risk", collectionExists: ce }),
-    ).toBe("/?clens=risk");
+    ).toBe("/");
     expect(parseAppSearch("?clens=remote").comparisonLens).toBe("remote");
   });
   it("preserves order: v then p then col", () => {
@@ -398,5 +402,18 @@ describe("history writers", () => {
 
     expect(window.location.search).toBe("?p=portal-az");
     expect(window.location.hash).toBe("");
+  });
+
+  it("keeps a closed Compare closed across reloads, while bare shared compare links still open it", () => {
+    const places = { "sequim-wa": {}, "portal-az": {} };
+    expect(validatedStateFromSearch("?cmp=sequim-wa,portal-az", places, {}).compareOpen).toBe(true);
+    expect(validatedStateFromSearch("?cmp=sequim-wa,portal-az&cmpopen=0", places, {}).compareOpen).toBe(false);
+    expect(validatedStateFromSearch("?cmp=sequim-wa", places, {}).compareOpen).toBe(false);
+
+    const ce = () => false;
+    expect(formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, compareIds: ["sequim-wa", "portal-az"], compareClosed: true, collectionExists: ce }))
+      .toContain("cmpopen=0");
+    expect(formatAppRelativeUrl({ view: "explorer", placeId: null, collectionId: null, compareIds: ["sequim-wa", "portal-az"], compareClosed: false, collectionExists: ce }))
+      .not.toContain("cmpopen");
   });
 });

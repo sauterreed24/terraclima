@@ -26,6 +26,16 @@ All notable changes to Terraclima are tracked here.
   - Contrast notes ran into their generated deltas ("…inversion mornings About 18°C colder").
   - First sentences stopped at "2.3 km" or "St. John's".
   - "zone 12a equiv.." had a double period, and Gaspé's region was spelled differently from the other Quebec places.
+  - Honolulu's name read "Honolulu ( Oʻahu Lee)". It is now "Honolulu (Leeward Oʻahu)".
+- **Interface bugs:**
+  - **Explorer "More" menu:** its items dropped under the chip row below it and couldn't be clicked. The menu now sits on top and closes on Escape (focus returns to the button) or on a click outside it.
+  - **Map pins:** a quick click on a pin often did nothing. Hovering raised the pin to the top of the map, which moved it between mouse-down and mouse-up, so the browser dropped the click. A pressed pin now keeps its place until the click lands. The hover label also no longer shifts (a CSS transform was overriding its SVG position).
+  - **Mixed units:** the recent-shift figure, climate-change variables, "grows well" chips, biome and settlement lines now follow the °F/°C and mile/km settings.
+  - **Compare:** between about 768 and 900 px the source filter was squeezed to 49 px and its buttons slid under the Sort menu. The search, filter and sort tools now wrap. With a full set, adding a place replaces the weakest one on the active read and names it, instead of silently replacing the oldest. A closed compare tray stays closed after a reload (`cmpopen=0` in the URL), and an empty compare no longer writes a stray `clens` parameter.
+  - **Collections and trips:** a lens limited to a collection or trip says so in its receipt, for example "Limited to the Sky-Island Refuges collection (11 places)", with a chip to clear it.
+  - **Back button:** switching between Atlas, Compare and Trips now adds a history entry, so Back returns to the previous view instead of leaving the app.
+  - **Mobile profile:** the section links stay pinned to the top while you scroll.
+  - **Map tooltip:** long archetype names wrap instead of running out of the tooltip.
 
 ### Calmer scrollbar, tidier place pages, and text that adds up
 

@@ -148,6 +148,15 @@ interface Props {
   variant?: "dock" | "sheet";
   scenario?: ScenarioId;
   onScenarioChange?: (next: ScenarioId) => void;
+  /** A pinned collection or trip that limits the list, shown in the lens receipt. */
+  lensScope?: LensScope | null;
+}
+
+export interface LensScope {
+  kind: "collection" | "trip";
+  title: string;
+  count: number;
+  onClear: () => void;
 }
 
 export const FilterBar = memo(function FilterBar({
@@ -160,6 +169,7 @@ export const FilterBar = memo(function FilterBar({
   variant = "dock",
   scenario = "now",
   onScenarioChange,
+  lensScope,
 }: Props) {
   const prose = useProse();
   const { temp } = useUnits();
@@ -298,6 +308,7 @@ export const FilterBar = memo(function FilterBar({
         scenario={scenario}
         onScenarioChange={onScenarioChange}
         hideClearAll={variant === "sheet"}
+        lensScope={lensScope}
       />
 
       {variant === "sheet" ? (
@@ -719,6 +730,7 @@ function LensReceipt({
   scenario = "now",
   onScenarioChange,
   hideClearAll = false,
+  lensScope = null,
 }: {
   rankingLabel: string;
   filters: FilterState;
@@ -731,6 +743,7 @@ function LensReceipt({
   scenario?: ScenarioId;
   onScenarioChange?: (next: ScenarioId) => void;
   hideClearAll?: boolean;
+  lensScope?: LensScope | null;
 }) {
   const liveSignalCount = countLiveSignals(filters);
   const chips: { key: string; label: string; tone?: string; onDismiss?: () => void }[] = [];
@@ -827,7 +840,21 @@ function LensReceipt({
     });
   }
 
-  const lensLine = activeBundle
+  if (lensScope) {
+    chips.unshift({
+      key: "scope",
+      label: lensScope.title,
+      tone: "ochre",
+      onDismiss: lensScope.onClear,
+    });
+  }
+
+  const scopeLine = lensScope
+    ? `Limited to the ${lensScope.title} ${lensScope.kind} (${lensScope.count} place${lensScope.count === 1 ? "" : "s"}).`
+    : null;
+  const lensLine = scopeLine
+    ? scopeLine
+    : activeBundle
     ? activeBundle.description
     : scenario !== "now"
       ? `${scenarioMeta(scenario).label} — ensemble projection reshaping ranks and cards.`

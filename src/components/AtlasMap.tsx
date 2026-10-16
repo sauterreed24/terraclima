@@ -542,6 +542,31 @@ export const AtlasMap = memo(function AtlasMap({
   const [hoverId, setHoverId] = useState<string | null>(null);
   const hoverIdRef = useRef<string | null>(null);
   hoverIdRef.current = hoverId;
+  // Raising the hovered pin to the top re-orders the SVG, which re-inserts its
+  // node. If that lands between pointerdown and pointerup the browser drops the
+  // click, so a quick click on a pin the pointer has only just reached did
+  // nothing. Hold the paint order while a button is down; raise afterwards.
+  const pointerPressedRef = useRef(false);
+  const raisedHoverRef = useRef<string | null>(null);
+  const [, bumpRaise] = useState(0);
+  useEffect(() => {
+    const down = () => { pointerPressedRef.current = true; };
+    const up = () => {
+      pointerPressedRef.current = false;
+      // After the click has been dispatched, not between pointerup and click.
+      if (raisedHoverRef.current !== hoverIdRef.current) window.setTimeout(() => bumpRaise(n => n + 1), 0);
+    };
+    document.addEventListener("pointerdown", down, true);
+    document.addEventListener("pointerup", up, true);
+    document.addEventListener("pointercancel", up, true);
+    return () => {
+      document.removeEventListener("pointerdown", down, true);
+      document.removeEventListener("pointerup", up, true);
+      document.removeEventListener("pointercancel", up, true);
+    };
+  }, []);
+  if (!pointerPressedRef.current) raisedHoverRef.current = hoverId;
+  const raisedHoverId = raisedHoverRef.current;
   /** Distinguishes pointer peek from keyboard-compact preview. */
   const tooltipInputRef = useRef<"pointer" | "keyboard">("pointer");
   /** Pin id that owns the keyboard compact peek until blur. */
@@ -1170,7 +1195,7 @@ export const AtlasMap = memo(function AtlasMap({
     let selected: RenderedClusterPoint | null = null;
     for (const pt of laidOutMarkerPoints) {
       if (pt.place.id === selectedId) selected = pt;
-      else if (pt.place.id === hoverId) hover = pt;
+      else if (pt.place.id === raisedHoverId) hover = pt;
       else if (featuredRankById.has(pt.place.id)) featured.push(pt);
       else base.push(pt);
     }
@@ -1183,7 +1208,7 @@ export const AtlasMap = memo(function AtlasMap({
     if (hover) base.push(hover);
     if (selected) base.push(selected);
     return base;
-  }, [laidOutMarkerPoints, selectedId, hoverId, featuredRankById]);
+  }, [laidOutMarkerPoints, selectedId, raisedHoverId, featuredRankById]);
 
   const rankTrailTopMarkerIds = useMemo(() => {
     const ids = new Set(featuredRankById.keys());

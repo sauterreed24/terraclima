@@ -661,7 +661,7 @@ export const PLACES_USA_ROUND2: Place[] = [
     country: "USA",
     region: "Hawaii",
     municipality: "Honolulu",
-    name: "Honolulu ( Oʻahu Lee)",
+    name: "Honolulu (Leeward Oʻahu)",
     lat: 21.3069,
     lon: -157.8583,
     elevationM: 5,

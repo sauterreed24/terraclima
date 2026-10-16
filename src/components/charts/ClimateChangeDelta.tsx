@@ -19,7 +19,7 @@ export function ClimateChangeDelta({ place }: Props) {
           {cc.keyShifts.map((k, i) => (
             <div key={i} className="flex items-center gap-3 text-sm">
               <DirArrow dir={k.direction} />
-              <div className="text-frost font-medium">{k.variable}</div>
+              <div className="text-frost font-medium">{prose(k.variable)}</div>
               {k.note && <div className="text-stone text-xs italic">{prose(k.note)}</div>}
             </div>
           ))}

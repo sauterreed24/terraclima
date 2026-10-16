@@ -315,6 +315,10 @@
     position: relative;
     z-index: 1;
   }
+  /* The top row holds the "More" menu, which drops over the chip row below. */
+  .panel-hero > .tc-explorer-hero__top {
+    z-index: 3;
+  }
 
   .tc-icon-ochre {
     color: var(--color-ochre-400, #f0d29c);
@@ -4348,15 +4352,26 @@
     padding-bottom: 0.08rem;
     scrollbar-width: thin;
   }
+  /* A wrapping row rather than a fixed three-column grid: between ~768 and
+     900px the grid squeezed the source filter to 49px and its buttons slid
+     under the Sort select. Now each part keeps its size and wraps. */
   .compare-workbench__candidate-tools {
-    display: grid;
-    grid-template-columns: minmax(12rem, 1fr) auto minmax(8rem, 0.42fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.48rem;
     align-items: center;
     min-width: 0;
   }
   .compare-workbench__candidate-search {
+    flex: 1 1 12rem;
     min-width: 0;
+  }
+  .compare-workbench__candidate-tools > .compare-workbench__source-filter {
+    flex: 0 0 auto;
+    max-width: 100%;
+  }
+  .compare-workbench__candidate-tools > .compare-workbench__candidate-sort {
+    flex: 1 1 8rem;
   }
   .compare-workbench__candidate-search input {
     width: 100%;
@@ -9133,9 +9148,17 @@
     border: 1px solid rgba(200, 175, 150, 0.32);
   }
 
+  /* Stays pinned while the dossier scrolls (as the desktop rail does), so a
+     chapter's section links remain reachable after jumping into it. */
   .tc-reading-nav-mobile {
-    padding-bottom: 0.15rem;
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    padding: 0.45rem 0.25rem 0.15rem;
     border-bottom: 1px solid rgba(200, 175, 150, 0.35);
+    background: var(--tc-surface-elevated);
   }
 
   /* Act group headers in the desktop reading nav. */
@@ -9314,9 +9337,11 @@
   .map-marker-label-host .map-marker-label {
     transition: opacity 100ms ease, transform 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
   }
+  /* No CSS transform here: on an SVG <g> it would replace the
+     translate() attribute that places the card beside its pin, dropping
+     the card on top of the pin and swallowing quick clicks. */
   .map-marker-label-host[data-label-state="hover"] .map-marker-label {
     opacity: 1;
-    transform: translateY(-1px);
   }
   .map-marker-label-host[data-label-state="idle"] .map-marker-label rect:first-child {
     fill: rgba(8, 14, 24, 0.86);
@@ -11272,8 +11297,6 @@ html[data-motion="minimal"] .map-key-popover {
 }
 html[data-motion="reduced"] .map-btn:hover,
 html[data-motion="minimal"] .map-btn:hover,
-html[data-motion="reduced"] .map-marker-label-host[data-label-state="hover"] .map-marker-label,
-html[data-motion="minimal"] .map-marker-label-host[data-label-state="hover"] .map-marker-label,
 html[data-motion="reduced"] .scenario-remap__row:hover,
 html[data-motion="minimal"] .scenario-remap__row:hover {
   transform: none !important;
@@ -11283,7 +11306,6 @@ html[data-motion="minimal"] .scenario-remap__row:hover {
     animation: none !important;
   }
   .map-btn:hover,
-  .map-marker-label-host[data-label-state="hover"] .map-marker-label,
   .scenario-remap__row:hover {
     transform: none !important;
   }

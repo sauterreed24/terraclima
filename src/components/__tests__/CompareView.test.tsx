@@ -58,7 +58,7 @@ function renderCompare({
   onClose?: () => void;
   onRemove?: (id: string) => void;
   onOpenPlace?: (id: string, opts?: { trigger?: HTMLElement | null }) => void;
-  onAddPlace?: (id: string) => void;
+  onAddPlace?: (id: string, replaceId?: string) => void;
   shareStatus?: "idle" | "shared" | "copied" | "failed";
   shareFallbackUrl?: string | null;
   liveFitFilters?: LiveFitFilters;
@@ -138,12 +138,17 @@ describe("CompareView", () => {
     fireEvent.click(activeCandidate);
     expect(onRemove).toHaveBeenCalledWith(PLACES[0].id);
 
+    // A full set swaps out the place the card measures against: the weakest
+    // read for the active lens (here Portal on Risk), not the oldest slot.
     const swapCandidate = screen.getByRole("button", { name: `Swap ${PLACES[4].name} into active comparison` });
     expect(swapCandidate).toHaveTextContent("Swap");
-    expect(swapCandidate).toHaveTextContent(`Replaces ${PLACES[0].name}`);
-    expect(swapCandidate).toHaveAttribute("title", expect.stringContaining(`Replaces oldest active slot: ${PLACES[0].name}.`));
+    expect(swapCandidate).toHaveTextContent(`vs ${PLACES[1].name}'s active risk read`);
+    expect(swapCandidate).toHaveTextContent(`Replaces ${PLACES[1].name}`);
+    expect(swapCandidate).toHaveAttribute("title", expect.stringContaining(`Replaces the weakest active risk read: ${PLACES[1].name}.`));
+    onRemove.mockClear();
     fireEvent.click(screen.getByRole("button", { name: `Swap ${PLACES[4].name} into active comparison` }));
-    expect(onAddPlace).toHaveBeenCalledWith(PLACES[4].id);
+    expect(onRemove).not.toHaveBeenCalled();
+    expect(onAddPlace).toHaveBeenCalledWith(PLACES[4].id, PLACES[1].id);
   });
 
   it("offers direct shortcuts to decision, evidence, differences, and candidates", () => {
@@ -230,6 +235,8 @@ describe("CompareView", () => {
 
     expect(onAddPlace).toHaveBeenCalledTimes(1);
     expect(PLACES.slice(0, 4).map(place => place.id)).not.toContain(onAddPlace.mock.calls[0][0]);
+    // The set is full, so the coach names the active place it swaps out.
+    expect(PLACES.slice(0, 4).map(place => place.id)).toContain(onAddPlace.mock.calls[0][1]);
   });
 
   it("filters the candidate tray by source and search while keeping active slots visible", () => {

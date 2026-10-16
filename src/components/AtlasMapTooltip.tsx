@@ -82,7 +82,7 @@ export const AtlasMapTooltip = memo(function AtlasMapTooltip({
               {place.name}
             </h2>
           </div>
-          <span className="chip shrink-0 max-w-[7.5rem] text-center leading-snug text-[0.62rem]" data-tone={tone}>
+          <span className="chip shrink-0 max-w-[7.5rem] !whitespace-normal text-center leading-snug text-[0.62rem]" data-tone={tone}>
             {archetypeLabel(place.archetypes[0])}
           </span>
         </div>

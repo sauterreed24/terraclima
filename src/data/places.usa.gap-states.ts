@@ -729,7 +729,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     koppen: "Dwb",
     archetypes: ["chinook-corridor", "high-desert-escape", "cold-air-pool"],
     drivers: ["chinook-foehn", "polar-jet-exposure", "aspect-slope", "cold-air-drainage"],
-    summaryShort: "Where winter temperatures can spike 20–30 °F in minutes when downslope winds replace arctic air — a textbook High Plains foehn.",
+    summaryShort: "Where winter temperatures can spike 11–17°C in minutes when downslope winds replace arctic air — a textbook High Plains foehn.",
     summaryImmersive: "Spearfish sits at a canyon mouth where stable westerly flow can descend and warm adiabatically, replacing dense cold air in the valley with dramatic speed. Such events are studied in synoptic meteorology courses because they are so readable on surface traces. Summer is warm and stormy on the Plains edge; winter is a story of wind and rapid change rather than monolithic cold.",
     whyDistinct: "Documented extreme chinook temperature rises + ecotone position between montane forest and High Plains = one of the most meteorologically legible towns in the Great Plains.",
     experience: {
