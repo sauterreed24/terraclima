@@ -12,7 +12,7 @@ import {
   type SetStateAction,
 } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
-import { FilterBar } from "./FilterBar";
+import { FilterBar, type LensScope } from "./FilterBar";
 import { ClimateScenarioControl } from "./chrome/ClimateScenarioControl";
 import { useElementIsolation } from "../hooks/use-element-isolation";
 import { useFocusTrap } from "../hooks/use-focus-trap";
@@ -41,6 +41,7 @@ type Props = {
   detailOpen?: boolean;
   scenario?: ScenarioId;
   onScenarioChange?: (next: ScenarioId) => void;
+  lensScope?: LensScope | null;
   onOpenChange?: (open: boolean) => void;
   projecting?: boolean;
 };
@@ -86,7 +87,7 @@ function summarizeActiveExplorerLens(
 
 export const ExplorerFilterSheet = memo(
   forwardRef<ExplorerFilterSheetHandle, Props>(function ExplorerFilterSheet(
-    { searchInputId, filters, setFilters, ranking, setRanking, onClearAll, footer, detailOpen, scenario, onScenarioChange, onOpenChange, projecting },
+    { searchInputId, filters, setFilters, ranking, setRanking, onClearAll, footer, detailOpen, scenario, onScenarioChange, lensScope, onOpenChange, projecting },
     ref,
   ) {
     const dialogRef = useRef<HTMLDialogElement>(null);
@@ -294,6 +295,7 @@ export const ExplorerFilterSheet = memo(
               onClearAll={onClearAll}
               scenario={scenario}
               onScenarioChange={onScenarioChange}
+              lensScope={lensScope}
             />
             {footer ? <div className="mt-3 space-y-0">{footer}</div> : null}
           </div>

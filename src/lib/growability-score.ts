@@ -73,7 +73,8 @@ function buildSeasonLine(place: Place): string {
 
   if (frost != null) seasonParts.push(`${formatNumber(frost)} frost-free days`);
   if (gdd != null) seasonParts.push(`GDD10 ${formatNumber(gdd)}`);
-  if (hardiness) seasonParts.push(`zone ${hardiness}`);
+  // "12a equiv." would end the sentence twice; spell the qualifier out.
+  if (hardiness) seasonParts.push(`zone ${hardiness.replace(/\s*equiv\.?$/i, " equivalent")}`);
 
   if (seasonParts.length === 0) {
     return "Season length is not separately quantified here, so crop fit carries the practical screen.";

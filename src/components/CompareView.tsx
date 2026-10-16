@@ -30,7 +30,7 @@ import {
   type CompareCandidate,
   type ComparisonLensId,
 } from "../lib/compare-workbench";
-import { buildCompareCandidateSwapInsight, buildCompareCoachRecommendations } from "../lib/compare-workbench-coach";
+import { buildCompareCandidateSwapInsight, buildCompareCoachRecommendations, weakestLensProfile } from "../lib/compare-workbench-coach";
 import { buildHomeBaseComparison, formatHomeDeltaValue, pickHomeDeltaChips } from "../lib/home-base";
 import { COMPARE_LIMIT } from "../lib/app-url";
 import type { ShareStatus } from "../lib/app-constants";
@@ -70,7 +70,8 @@ interface Props {
   /** Home-base anchor (projected to the active scenario by the caller). Columns read deltas against it. */
   homePlace?: Place | null;
   /** Add a place to the compare set — used by the "add home base" affordance. */
-  onAddPlace?: (id: string) => void;
+  /** Adds a place; `replaceId` names the active place it swaps out of a full set. */
+  onAddPlace?: (id: string, replaceId?: string) => void;
   /** Local-only workbench candidates from shortlist, recents, and ranked leaders. */
   candidates?: CompareCandidate[];
   comparisonLens?: ComparisonLensId;
@@ -131,6 +132,12 @@ export function CompareView({
   const decisionById = useMemo(
     () => new Map(decisionProfiles.map(profile => [profile.place.id, profile])),
     [decisionProfiles],
+  );
+  // When the set is full, a swap replaces the place with the weakest read for
+  // the active lens (the one the swap cards compare against), not the oldest.
+  const compareSwapOut = useMemo(
+    () => (places.length >= COMPARE_LIMIT ? weakestLensProfile(decisionProfiles, activeComparisonLens)?.place ?? places[0] ?? null : null),
+    [places, decisionProfiles, activeComparisonLens],
   );
   const columnMetricsById = useMemo(() => {
     const map = new Map<string, {
@@ -544,6 +551,7 @@ export function CompareView({
                 ) : null}
                 <div className="compare-workbench__candidate-scroll">
                   {filteredCandidateTray.length > 0 ? filteredCandidateTray.map(candidate => {
+                    const swapOut = compareSwapOut;
                     const active = activeCandidateIds.has(candidate.place.id);
                     const candidateProfile = candidateDecisionById.get(candidate.place.id);
                     const candidateInsight = !active && candidateProfile
@@ -553,7 +561,7 @@ export function CompareView({
                         lens: activeComparisonLens,
                       })
                       : null;
-                    const replacementPlace = !active && places.length >= COMPARE_LIMIT ? places[0] : null;
+                    const replacementPlace = !active ? swapOut : null;
                     const action = active
                       ? `Remove ${candidate.place.name} from active comparison`
                       : places.length >= COMPARE_LIMIT
@@ -568,7 +576,7 @@ export function CompareView({
                     const title = [
                       candidate.note ?? `${candidate.place.region}, ${candidate.place.country}`,
                       candidateInsight ? `${candidateInsight.label}: ${prose(candidateInsight.detail)}` : null,
-                      replacementPlace ? `Replaces oldest active slot: ${replacementPlace.name}.` : null,
+                      replacementPlace ? `Replaces the weakest active ${activeComparisonLensLabel.toLowerCase()} read: ${replacementPlace.name}.` : null,
                     ].filter(Boolean).join(" ");
                     return (
                       <button
@@ -580,7 +588,11 @@ export function CompareView({
                         aria-pressed={active}
                         aria-label={action}
                         title={title}
-                        onClick={() => active ? onRemove(candidate.place.id) : onAddPlace?.(candidate.place.id)}
+                        onClick={() => {
+                          if (active) return onRemove(candidate.place.id);
+                          if (replacementPlace) onAddPlace?.(candidate.place.id, replacementPlace.id);
+                          else onAddPlace?.(candidate.place.id);
+                        }}
                       >
                         <span className="compare-workbench__candidate-topline">
                           <span className="compare-workbench__candidate-name">{candidate.place.name}</span>
@@ -649,7 +661,10 @@ export function CompareView({
                           className="compare-workbench__coach-card"
                           aria-label={action}
                           title={action}
-                          onClick={() => onAddPlace?.(recommendation.place.id)}
+                          onClick={() => {
+                            if (compareSwapOut) onAddPlace?.(recommendation.place.id, compareSwapOut.id);
+                            else onAddPlace?.(recommendation.place.id);
+                          }}
                         >
                           <span className="compare-workbench__coach-label">{recommendation.label}</span>
                           <strong>{recommendation.place.name}</strong>

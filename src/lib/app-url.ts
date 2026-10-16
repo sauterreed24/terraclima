@@ -10,6 +10,8 @@
  *   a       archetype filter list (comma-separated)
  *   q       search query (raw)
  *   cmp     compare set, comma-separated place ids (capped at COMPARE_LIMIT)
+ *   cmpopen "0" when a compare set of 2+ is queued but the Compare dialog is
+ *           closed (absent: a 2+ set opens Compare, as shared links expect)
  *   r       ranking profile
  *   fit     live-fit preset ids, comma-separated
  *   sh      max mean Jun-Aug high (C)
@@ -72,6 +74,7 @@ export interface ParsedAppUrl {
   scenario: ScenarioId | null;
   comparisonLens: ComparisonLensId | null;
   homeBaseId: string | null;
+  compareClosed: boolean;
 }
 
 const VIEWS = new Set<AppView>(["explorer", "trips", "collections", "learn"]);
@@ -134,6 +137,7 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
   if (cmp) {
     out.compareIds = cmp.split(",").map(t => t.trim()).filter(Boolean).slice(0, COMPARE_LIMIT);
   }
+  if (params.get("cmpopen") === "0") out.compareClosed = true;
   const r = params.get("r");
   if (r && RANKING_VALUES.has(r)) out.ranking = r as RankingProfile;
   const fit = params.get("fit");
@@ -186,6 +190,8 @@ export interface AppUrlState {
   archetypes?: readonly string[];
   search?: string;
   compareIds?: readonly string[];
+  /** Compare dialog is closed while a 2+ set is queued (written as cmpopen=0). */
+  compareClosed?: boolean;
   ranking?: RankingProfile | null;
   fitPresets?: readonly string[];
   maxSummerHighC?: number | null;
@@ -262,8 +268,10 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
     const validate = state.placeExists ?? (() => true);
     const ids = [...compareIds].filter(validate).slice(0, COMPARE_LIMIT);
     if (ids.length > 0) params.set("cmp", ids.join(","));
+    if (ids.length >= 2 && state.compareClosed) params.set("cmpopen", "0");
   }
-  if (state.comparisonLens && state.comparisonLens !== DEFAULT_COMPARISON_LENS) {
+  // The comparison lens only means something while places are being compared.
+  if (state.comparisonLens && state.comparisonLens !== DEFAULT_COMPARISON_LENS && (state.compareIds?.length ?? 0) > 0) {
     params.set("clens", state.comparisonLens);
   }
   if (state.homeBaseId) {
@@ -323,6 +331,8 @@ export interface ValidatedAppState {
   scenario: ScenarioId | null;
   comparisonLens: ComparisonLensId;
   homeBaseId: string | null;
+  /** True when a 2+ compare set should open the Compare dialog. */
+  compareOpen: boolean;
 }
 
 export function validatedStateFromSearch(
@@ -369,6 +379,7 @@ export function validatedStateFromSearch(
     scenario: p.scenario ?? null,
     comparisonLens: p.comparisonLens ?? DEFAULT_COMPARISON_LENS,
     homeBaseId,
+    compareOpen: compareIds.length >= 2 && !p.compareClosed,
   };
 }
 
@@ -401,6 +412,7 @@ export function readInitialAppState(
       scenario: null,
       comparisonLens: DEFAULT_COMPARISON_LENS,
       homeBaseId: null,
+      compareOpen: false,
     };
   }
   return validatedStateFromSearch(window.location.search, placesById, collectionById, archetypesById, resolvePlaceId);

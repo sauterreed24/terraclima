@@ -1196,12 +1196,12 @@ function DetailBody({
                 />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 min-w-0">
-                    <div className="font-atlas text-sm text-ice truncate">{s.name}</div>
+                    <div className="font-atlas text-sm text-ice truncate">{prose(s.name)}</div>
                     <span className="chip" data-tone={SETTLEMENT_ROLE_TONE[s.role] ?? "ice"} style={{ fontSize: "10px" }}>
                       {SETTLEMENT_ROLE_LABEL[s.role] ?? s.role}
                     </span>
                     <span className="chip" data-tone="glacier" style={{ fontSize: "10px" }}>
-                      {s.relation}
+                      {prose(s.relation)}
                     </span>
                   </div>
                   {s.population && (
@@ -1314,7 +1314,7 @@ function DetailBody({
             <KeyValue label="Hardiness zone" value={place.climate.hardinessZone ?? place.growability.hardinessZone ?? "—"} />
             <KeyValue label="Chill hours (est.)" value={`${place.climate.chillHours ?? "—"}`} />
             <KeyValue label="Summer diurnal swing" value={place.climate.diurnalSummerC != null ? fmtDelta(place.climate.diurnalSummerC, temp, { signed: false }) : "—"} />
-            <KeyValue label="Biome" value={place.biome} />
+            <KeyValue label="Biome" value={prose(place.biome)} />
           </div>
           <MicroclimateFingerprint place={place} />
         </div>
@@ -1533,13 +1533,13 @@ function DetailBody({
             <div className="mb-3">
               <div className="text-xs text-stone mb-1">Grows well</div>
               <div className="flex flex-wrap gap-1">
-                {place.growability.growsWell.map(g => <span key={g} className="chip max-w-full !whitespace-normal text-left leading-tight" data-tone="sage">{g}</span>)}
+                {place.growability.growsWell.map(g => <span key={g} className="chip max-w-full !whitespace-normal text-left leading-tight" data-tone="sage">{prose(g)}</span>)}
               </div>
             </div>
             <div className="mb-3">
               <div className="text-xs text-stone mb-1">Tricky</div>
               <div className="flex flex-wrap gap-1">
-                {place.growability.tricky.map(g => <span key={g} className="chip max-w-full !whitespace-normal text-left leading-tight" data-tone="ember">{g}</span>)}
+                {place.growability.tricky.map(g => <span key={g} className="chip max-w-full !whitespace-normal text-left leading-tight" data-tone="ember">{prose(g)}</span>)}
               </div>
             </div>
             <div className="mt-3 rounded-lg border border-[rgba(61,143,85,0.18)] bg-[color:var(--tc-surface-muted)] px-3 py-2.5">

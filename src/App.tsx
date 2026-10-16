@@ -3,7 +3,7 @@ import { ArrowLeftRight, BookmarkCheck, BookOpen, CalendarDays, Clock, Cloud, Co
 import { AtlasMap } from "./components/AtlasMap";
 import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
-import { FilterBar, RANKING_OPTIONS } from "./components/FilterBar";
+import { FilterBar, RANKING_OPTIONS, type LensScope } from "./components/FilterBar";
 import { FootprintPanel } from "./components/FootprintPanel";
 import { TempToggle } from "./components/TempToggle";
 import { useElementIsolation } from "./hooks/use-element-isolation";
@@ -312,7 +312,7 @@ export default function App() {
   }, []);
   const [selectedId, setSelectedId] = useState<string | null>(initialAppState.placeId);
   const [compareIds, setCompareIds] = useState<Set<string>>(() => new Set(initialAppState.compareIds));
-  const [compareOpen, setCompareOpen] = useState(() => initialAppState.compareIds.length >= 2);
+  const [compareOpen, setCompareOpen] = useState(() => initialAppState.compareOpen);
   const [comparisonLens, setComparisonLens] = useState<ComparisonLensId>(() => initialAppState.comparisonLens ?? DEFAULT_COMPARISON_LENS);
   const [activeCollection, setActiveCollection] = useState<string | null>(initialAppState.collectionId);
   const [filters, setFilters] = useState<FilterState>(() => filterStateFromValidated(initialAppState));
@@ -406,6 +406,7 @@ export default function App() {
   }, []);
 
   const prevPlaceIdRef = useRef<string | null>(initialAppState.placeId);
+  const prevViewRef = useRef(initialAppState.view);
   /**
    * First-paint URL sync flag. A useRef instead of a module-level mutable
    * so the contract is explicit and there's no shared mutable state across
@@ -486,6 +487,7 @@ export default function App() {
       archetypes: [...filters.archetypes],
       search: filters.search ?? "",
       compareIds: [...compareIds],
+      compareClosed: !compareOpen,
       ranking: rankingForUrl,
       fitPresets: [...(filters.fitPresets ?? new Set())],
       maxSummerHighC: filters.maxSummerHighC ?? null,
@@ -513,19 +515,27 @@ export default function App() {
       initialUrlSyncDoneRef.current = true;
       replaceAppUrl(null, state);
       prevPlaceIdRef.current = selectedId;
+      prevViewRef.current = view;
       return;
     }
 
     if (haveUrl === wantUrl && haveTc === wantTc) {
       prevPlaceIdRef.current = selectedId;
+      prevViewRef.current = view;
       return;
     }
 
     const prev = prevPlaceIdRef.current;
     const opening = !prev && !!selectedId;
+    // Switching top-level views is navigation: give it a history entry so
+    // Back returns to the previous view instead of leaving the site.
+    const viewChanged = prevViewRef.current !== view;
+    prevViewRef.current = view;
 
     if (opening) {
       pushAppUrl({ tcPlace: true }, state);
+    } else if (viewChanged && !selectedId) {
+      pushAppUrl(null, state);
     } else {
       const st = window.history.state as AppHistoryState | null;
       // Only preserve tcPlace on entries that were created by an in-app place open.
@@ -533,7 +543,7 @@ export default function App() {
       replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection, filters, compareIds, ranking, rankingExplicitInUrl, suppressPersistedRankingInUrl, temp, dist, themePreference, climateScenario, comparisonLens, homeBaseId]);
+  }, [view, selectedId, activeCollection, filters, compareIds, compareOpen, ranking, rankingExplicitInUrl, suppressPersistedRankingInUrl, temp, dist, themePreference, climateScenario, comparisonLens, homeBaseId]);
 
   useEffect(() => {
     const onPop = () => {
@@ -590,7 +600,7 @@ export default function App() {
         catch { /* ignore */ }
         setTheme(resolveInitialTheme("", persisted));
       }
-      setCompareOpen(v.compareIds.length >= 2);
+      setCompareOpen(v.compareOpen);
       prevPlaceIdRef.current = v.placeId;
       // History navigation is the source of truth — drop any in-memory
       // pre-constraint snapshot so Back/Forward to explicit ?r=live-fit
@@ -1003,6 +1013,23 @@ export default function App() {
     });
   }, []);
 
+  // Compare's own add/swap: a full set swaps out the place Compare picked
+  // (its weakest read on the active lens) and says so, as the cap does.
+  const addToCompare = useCallback((id: string, replaceId?: string) => {
+    if (!replaceId) {
+      toggleCompare(id);
+      return;
+    }
+    setCompareIds(s => {
+      if (s.has(id)) return s;
+      const ns = new Set(s);
+      ns.delete(replaceId);
+      ns.add(id);
+      return ns;
+    });
+    setEvictedComparePlaceId(replaceId);
+  }, [toggleCompare]);
+
   const openPlace = useCallback((id: string, opts?: { trigger?: HTMLElement | null; entryIntent?: "surprise" | null }) => {
     preloadPlaceDetail();
     if (opts?.trigger) {
@@ -1268,6 +1295,12 @@ export default function App() {
     setActiveCollection(null);
     focusMainContentNextFrame();
   }, [focusMainContentNextFrame]);
+  // A pinned collection or trip narrows the list, so the lens receipt says so
+  // instead of "Full atlas".
+  const lensScope = useMemo((): LensScope | null => {
+    const set = activeCollection ? CURATED_SET_BY_ID[activeCollection] : null;
+    return set ? { kind: set.kind, title: set.title, count: ranked.length, onClear: clearCollection } : null;
+  }, [activeCollection, ranked.length, clearCollection]);
   const clearArchetypes = useCallback(() => {
     setFilters(f => ({ ...f, archetypes: new Set() }));
     focusMainContentNextFrame();
@@ -1880,6 +1913,7 @@ export default function App() {
                     onClearAll={clearAllFilters}
                     scenario={climateScenario}
                     onScenarioChange={setClimateScenario}
+                    lensScope={lensScope}
                   />
                   <FootprintPanel />
                 </aside>
@@ -1959,6 +1993,7 @@ export default function App() {
             onClearAll={clearAllFilters}
             scenario={climateScenario}
             onScenarioChange={setClimateScenario}
+            lensScope={lensScope}
             projecting={processor.projecting}
             footer={<FootprintPanel />}
             detailOpen={Boolean(selectedId)}
@@ -2029,7 +2064,7 @@ export default function App() {
             shareFallbackUrl={shareFallbackUrl}
                       liveFitFilters={liveFitFilters}
             homePlace={homeBasePlaceForScenario}
-            onAddPlace={toggleCompare}
+            onAddPlace={addToCompare}
             candidates={compareCandidates}
             comparisonLens={comparisonLens}
             onComparisonLensChange={setComparisonLens}
@@ -2796,6 +2831,26 @@ const HeroCard = memo(function HeroCard({
   const findHomeBaseLabel = "Find your home-base analog using Explorer search";
   const scoutToolsLabel = scoutToolsOpen ? "Hide scouting tools" : "Show scouting tools";
   const [heroMoreOpen, setHeroMoreOpen] = useState(false);
+  const heroMoreRef = useRef<HTMLDivElement>(null);
+  // Close the More menu like any menu: Escape (focus back to its button) or
+  // a press anywhere outside it.
+  useEffect(() => {
+    if (!heroMoreOpen) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setHeroMoreOpen(false);
+      heroMoreRef.current?.querySelector<HTMLButtonElement>("button[aria-controls='hero-more-menu-panel']")?.focus();
+    };
+    const onPointer = (event: PointerEvent) => {
+      if (!heroMoreRef.current?.contains(event.target as Node)) setHeroMoreOpen(false);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointer);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointer);
+    };
+  }, [heroMoreOpen]);
   const jumpToScoutBrief = useCallback(() => {
     const target = document.getElementById("explorer-scout-brief");
     if (!target) return;
@@ -2910,7 +2965,7 @@ const HeroCard = memo(function HeroCard({
               Find home base
             </button>
           ) : null}
-          <div className="hero-more-menu relative w-full sm:w-auto">
+          <div ref={heroMoreRef} className="hero-more-menu relative w-full sm:w-auto">
             <button
               type="button"
               className={`btn-ghost !text-xs !py-1.5 w-full sm:w-auto border-[rgba(122,212,240,0.35)] ${shareStatus === "failed" ? "!border-[rgba(232,90,50,0.45)] !text-ember-700" : ""}`}

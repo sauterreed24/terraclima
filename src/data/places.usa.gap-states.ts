@@ -217,8 +217,8 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     region: "Indiana",
     municipality: "Beverly Shores",
     name: "Beverly Shores (Lake Michigan)",
-    lat: 41.9125,
-    lon: -86.9806,
+    lat: 41.6925,
+    lon: -86.9786,
     elevationM: 185,
     reliefContext: "Dune-and-swale coast on southern Lake Michigan; part of the Indiana Dunes National Park ecosystem.",
     biome: "Great Lakes beachgrass and oak savanna",
@@ -471,7 +471,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     experience: {
       feel: "Mount Charleston feels like an impossible cool island floating above Las Vegas. Drive 45 minutes and 2,000 m up from the Mojave furnace and you reach conifer forest, bristlecones, and snow — summer afternoons near 25°C while the basin below bakes past 40°C.",
       seasons: {
-        winter: "Genuinely alpine — afternoons near freezing, nights near −12°C, and real snowpack stacking up for skiing while the desert below stays warm and dry.",
+        winter: "Genuinely alpine — afternoons only a few degrees above freezing, nights near −5°C, and real snowpack stacking up for skiing while the desert below stays warm and dry.",
         spring: "Slow to melt out — snow lingering on the high country, afternoons climbing through the teens, and the forest greening weeks behind the basin.",
         summer: "The whole point — afternoons near 25°C with cool, often-frosty nights, a startling escape from Las Vegas heat, and occasional upslope thunderstorms building on the crest.",
         autumn: "Crisp and quiet — aspens turning, frosty mornings returning early, and the first snows reclaiming the summits while the valley stays warm.",
@@ -729,7 +729,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     koppen: "Dwb",
     archetypes: ["chinook-corridor", "high-desert-escape", "cold-air-pool"],
     drivers: ["chinook-foehn", "polar-jet-exposure", "aspect-slope", "cold-air-drainage"],
-    summaryShort: "Where winter temperatures can spike 20–30 °F in minutes when downslope winds replace arctic air — a textbook High Plains foehn.",
+    summaryShort: "Where winter temperatures can spike 11–17°C in minutes when downslope winds replace arctic air — a textbook High Plains foehn.",
     summaryImmersive: "Spearfish sits at a canyon mouth where stable westerly flow can descend and warm adiabatically, replacing dense cold air in the valley with dramatic speed. Such events are studied in synoptic meteorology courses because they are so readable on surface traces. Summer is warm and stormy on the Plains edge; winter is a story of wind and rapid change rather than monolithic cold.",
     whyDistinct: "Documented extreme chinook temperature rises + ecotone position between montane forest and High Plains = one of the most meteorologically legible towns in the Great Plains.",
     experience: {

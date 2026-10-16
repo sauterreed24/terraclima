@@ -196,7 +196,7 @@ describe("localizeProse — temperatures", () => {
 describe("localizeProse — distances", () => {
   it("converts kilometres in a clearly distance context", () => {
     // Under-10 mile output is rendered with one decimal (10 km ≈ 6.2 mi).
-    expect(localizeProse("Drive 10 km north.", "F", "imperial")).toContain("6.2 mi");
+    expect(localizeProse("Drive 10 km north.", "F", "imperial")).toContain("6 mi");
     expect(localizeProse("Drive 50 km north.", "F", "imperial")).toContain("31 mi");
   });
   it("converts millimetres of precip", () => {
@@ -220,7 +220,7 @@ describe("localizeProse — distances", () => {
     expect(L("about 350,000 square kilometres of land")).toContain("135,000 square miles");
     expect(L("more than a thousand hectares")).toContain("2,500 acres");
     expect(L("barely three kilometres wide")).toContain("1.9 miles wide");
-    expect(L("a crater 500 metres across")).toContain("1,640 feet across");
+    expect(L("a crater 500 metres across")).toContain("1,600 feet across");
     expect(L("travelled thousands of kilometres")).toContain("thousands of miles");
     expect(L("only a few metres deep")).toContain("a few yards deep");
     expect(L("barely more than a metre high")).toContain("a yard high");
@@ -228,7 +228,7 @@ describe("localizeProse — distances", () => {
     expect(localizeProse("covers some 7,000 hectares", "C", "metric")).toContain("7,000 hectares");
     expect(L("removed about 400,000 tonnes of rock")).toContain("441,000 tons");
     expect(L("About 80 million tonnes of rock")).toContain("88 million tons");
-    expect(L("climbs 1800 vertical meters")).toContain("5,906 vertical feet");
+    expect(L("climbs 1800 vertical meters")).toContain("5,900 vertical feet");
     expect(L("twelve-metre tides")).toContain("39-foot tides");
     expect(L("a ski town — 2424 m on the east Sierra flank")).toContain("7,953 ft");
     expect(L("dump meters of snow")).toContain("feet of snow");
@@ -237,7 +237,7 @@ describe("localizeProse — distances", () => {
     expect(L("Twenty-five kilometres inland")).toBe("16 miles inland");
     expect(L("two hundred and fifty metres")).toBe("820 feet");
     expect(L("most days, and thirty kilometers inland")).toBe("most days, and 19 miles inland");
-    expect(L("a twenty-five-metre cliff")).toBe("a 82-foot cliff");
+    expect(L("a twenty-five-metre cliff")).toBe("an 82-foot cliff");
     expect(L("Less than half a kilometre downstream")).toBe("Less than a third of a mile downstream");
     expect(L("a kilometre-long beach")).toBe("a half-mile-long beach");
     expect(L("roughly 50,000 km² — the largest")).toContain("19,000 square miles");
@@ -258,11 +258,11 @@ describe("localizeProse — distances", () => {
     expect(localizeProse("Gusts reach 80 km/h.", "F", "imperial")).toContain("50 mph");
   });
   it("converts elevations with vocabulary cues", () => {
-    expect(localizeProse("The town sits at 1,500 m.", "F", "imperial")).toContain("4,921 ft");
+    expect(localizeProse("The town sits at 1,500 m.", "F", "imperial")).toContain("4,900 ft");
   });
   it("converts between-and elevation bands without orphaning the first endpoint", () => {
     expect(localizeProse("Highland basins between 1500 and 2500 m.", "F", "imperial")).toBe(
-      "Highland basins between 4,921 and 8,202 ft.",
+      "Highland basins between 4,900 and 8,200 ft.",
     );
   });
   it("converts spelled-out metre ranges without orphaning the first endpoint", () => {
@@ -288,7 +288,7 @@ describe("localizeProse — distances", () => {
     expect(localizeProse("5+ meters of annual snow.", "F", "imperial")).toContain("16+ feet");
   });
   it("converts threshold elevations and sensor-resolution metre claims", () => {
-    expect(localizeProse("At more than 2,200 m, Los Alamos keeps strong night cooling.", "F", "imperial")).toContain("7,218 ft");
+    expect(localizeProse("At more than 2,200 m, Los Alamos keeps strong night cooling.", "F", "imperial")).toContain("7,200 ft");
     const sensorText = localizeProse(
       "Sentinel-2 MSI emphasizes 10 m VNIR/SWIR for texture; Landsat OLI-TIRS pairs 30 m multispectral with thermal history.",
       "F",
@@ -315,5 +315,61 @@ describe("localizeProse — null/empty inputs", () => {
     expect(localizeProse(null, "F", "imperial")).toBe("");
     expect(localizeProse(undefined, "F", "imperial")).toBe("");
     expect(localizeProse("", "F", "imperial")).toBe("");
+  });
+});
+
+describe("localizeProse — absolute readings vs differences in corpus sentences", () => {
+  const f = (text: string) => localizeProse(text, "F", "metric");
+  it.each([
+    ["Brutally hot — afternoons near 41°C and often well above 45°C, nights that barely cool.", "near 106°F and often well above 113°F"],
+    ["Cold — afternoons struggling near freezing, mornings near −15°C and often far colder.", "mornings near 5°F"],
+    ["Hot, dry and blazing — afternoons near 29°C and often above 35°C, nights around 14°C.", "near 84°F and often above 95°F"],
+    ["Warm, humid and misty — afternoons near 30°C in town but much cooler up on the ridges.", "near 86°F in town"],
+    ["Warm then glorious — September afternoons near 29°C give way to cooler, drier days.", "near 84°F give way"],
+    ["Afternoons fall from about 13°C to below freezing by late October.", "about 55°F to below"],
+    ["Cool and frosty — nights near 4°C and often dipping below freezing.", "nights near 39°F"],
+    ["The great escape — afternoons near 22°C while the basin below tops 35°C.", "near 72°F while the basin below tops 95°F"],
+    ["Summer afternoons rarely exceed 25°C above a still-active volcanic caldera.", "exceed 77°F above"],
+    ["A furnace — afternoons near 40°C and higher, nights that only fall to about 24°C.", "near 104°F and higher"],
+  ])("keeps %j absolute", (text, expected) => {
+    expect(f(text)).toContain(expected);
+  });
+
+  it.each([
+    ["Lapse-rate cooling drops summit temperatures by roughly 10 °C relative to the surrounding desert.", "by roughly 18°F"],
+    ["Sierra Vista's elevation shaves 4–6°C off low-desert highs.", "shaves 7–11°F off"],
+    ["Elevation supplies on the order of 10 °C of cooling relative to the basin.", "order of 18°F of cooling"],
+    ["The trail drops into a fog-dripping redwood cove and the temperature drops 5°C.", "temperature drops 9°F"],
+    ["Mean monthly highs span only ~6°C from January to August.", "span only ~11°F"],
+    ["Stepping inland 8 km can add 8°C on a summer afternoon.", "can add 14°F"],
+    ["A plunge to around 9°C after dark, a swing of nearly 20°C that makes evenings cool.", "swing of nearly 36°F"],
+    ["A chinook can lift the temperature 15°C in a few hours.", "lift the temperature 27°F"],
+    ["A norther drops the temperature 10°C in a few hours.", "drops the temperature 18°F"],
+    ["Summer highs warmer by ~3°C; frost frequency slightly reduced.", "warmer by ~5°F"],
+    ["Cold-air drainage nets about a 1°C winter low difference over a few hundred metres.", "about a 2°F winter low difference"],
+    ["Warming ~1.5°C; the cloud base rises.", "Warming ~3°F"],
+    ["Down in the Owens Valley, summer afternoons run about 10°C hotter.", "about 18°F hotter"],
+    ["About 7°C colder in winter.", "About 13°F colder"],
+    ["Coulee bottoms can run 5 to 10°C colder than the ridgetop town.", "9 to 18°F colder"],
+  ])("converts %j as a difference", (text, expected) => {
+    expect(f(text)).toContain(expected);
+  });
+
+  it("converts a lapse-rate range per 1,000 m", () => {
+    expect(localizeProse("Air cools 6–7°C per 1,000 m of climb.", "F", "imperial")).toContain("3.3–3.8°F per 1,000 ft");
+  });
+});
+
+describe("localizeProse — round metric figures stay round", () => {
+  const f = (text: string) => localizeProse(text, "C", "imperial");
+  it.each([
+    ["Peaks reach more than 3,000 m.", "more than 9,800 ft"],
+    ["The bench sits nearly 1,000 m above the valley.", "nearly 3,300 ft"],
+    ["Rain totals about 500 mm a year.", "about 20 in"],
+    ["The town sits at 2,424 m on the flank.", "7,953 ft"],
+    ["Sierra Vista's ~1,400-m elevation shaves heat off.", "~4,600-ft elevation"],
+    ["The belt runs 5–10 km from town.", "3.1–6.2 mi"],
+  ])("%j", (text, expected) => {
+    expect(f(text)).toContain(expected);
   });
 });

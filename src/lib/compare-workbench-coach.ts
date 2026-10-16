@@ -128,6 +128,18 @@ function evidenceDetail(place: Place): string {
   return `${place.confidence} confidence, ${citations} HTTPS citation${citations === 1 ? "" : "s"}, ${deepSections} deep section${deepSections === 1 ? "" : "s"}, ${sourceBacked}.`;
 }
 
+/**
+ * The active place with the weakest read for `lens` — the one swap insights
+ * measure a candidate against, and so the one a swap should replace.
+ */
+export function weakestLensProfile(
+  profiles: readonly CompareDecisionProfile[],
+  lens: Parameters<typeof compareLensScore>[1],
+): CompareDecisionProfile | null {
+  const byLens = [...profiles].sort((a, b) => compareLensScore(b, lens) - compareLensScore(a, lens) || byProfileName(a, b));
+  return byLens[byLens.length - 1] ?? null;
+}
+
 export function buildCompareCandidateSwapInsight({
   activeProfiles,
   candidateProfile,
@@ -147,7 +159,7 @@ export function buildCompareCandidateSwapInsight({
 
   const byLens = [...activeProfiles].sort((a, b) => compareLensScore(b, lens) - compareLensScore(a, lens) || byProfileName(a, b));
   const strongestLens = byLens[0]!;
-  const weakestLens = byLens[byLens.length - 1]!;
+  const weakestLens = weakestLensProfile(activeProfiles, lens)!;
   const weakestLensScore = compareLensScore(weakestLens, lens);
   const strongestLensScore = compareLensScore(strongestLens, lens);
   const lowestRisk = pickMin(activeProfiles, profile => profile.riskLoad)!;

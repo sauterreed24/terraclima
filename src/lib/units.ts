@@ -227,7 +227,21 @@ export function precipTickStep(maxVal: number, dist: DistUnit): number {
  * Tight word boundaries prevent false positives like "windchills"
  * triggering on "chill", or "continentality" on "tall".
  */
-const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narrower|stronger|weaker|apart|bigger|smaller|greater|above|below|milder|harsher)\b/;
+const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narrower|stronger|weaker|apart|bigger|smaller|greater|above|below|milder|harsher|relative|differences?|of (?:cooling|warming))\b/;
+/** Comparatives that only ever describe a difference ("10°C hotter"). */
+const TRUE_COMPARATIVE_PAT = /\b(warmer|cooler|colder|hotter|milder|harsher)\b/;
+/**
+ * A comparative only marks the number as a difference when it follows the
+ * number directly ("10°C hotter in summer"). After a conjunction it belongs
+ * to a new thought about an absolute reading: "afternoons near 41°C and often
+ * above 45°C", "nights near −15°C and far colder", "near 30°C in town but much
+ * cooler", "from about 13°C to below freezing".
+ */
+const AFTER_CLAUSE_STOP_PAT = /\b(?:and|but|while|whereas|or|then|yet|though|until|before|after|dropping|falling|rising|climbing|dipping|give|gives|giving|to|in)\b/;
+/** Readings introduced by these words are absolute ("exceed 25°C above the caldera"). */
+const ABSOLUTE_LEAD_PAT = /\b(?:near|around|exceeds?|exceeding|reach(?:es|ed|ing)?|tops?|topping|hits?|hitting|past|at|hover\w*|into)\s*$/;
+/** Hedges that can sit between a delta cue and its number ("by roughly 10 °C"). */
+const APPROX_TAIL_PAT = /\s*(?:about|roughly|nearly|around|approximately|almost|some|over|more than|less than|as much as|~|≈)\s*$/;
 // Bare "of" is NOT a delta cue — "lows of −30°C" / "highs of 28°C" /
 // "afternoons of 25°C" are absolute readings. Compound delta forms that
 // happen to contain "of" ("swing of", "drop of", "range of", …) are
@@ -236,7 +250,7 @@ const DELTA_AFTER_PAT = /\b(warmer|cooler|colder|hotter|higher|lower|wider|narro
 // Bare "by" is kept because corpus prose uses "warmer by 5°C", "punctuated
 // by 25°C warm-ups", "differs by 8°C", and similar. The one absolute
 // "by 27°C water" phrasing has been rewritten in the corpus.
-const DELTA_BEFORE_PAT = /\b(by|spik(?:e|es|ed|ing)(?:\s+temperatures?)?|swing of|range of|spread of|delta|differential|diurnal|amplitude|gradient|shift(?:ed|s)? (?:of|by)|lift(?:ed|s)? (?:of|by)|drop(?:ped|s)? (?:of|by)|rise(?:s)? (?:of|by)|fall(?:s)? (?:of|by)|jump(?:s|ed)? (?:of|by)|climb(?:s|ed)? (?:of|by)|plunge(?:s|d)? (?:of|by)|lift|strip(?:s|ped)?|boost(?:s|ed)? (?:by|of)|warm(?:s|ed|ing)? (?:by|up by)|cool(?:s|ed|ing)? (?:by|down by)|moderat\w+ (?:by)|up to|down to|averag(?:es|ing)? (?:\d+°?\s*[CF] )?(?:warmer|cooler|colder))\s*$/;
+const DELTA_BEFORE_PAT = /\b(by|spik(?:e|es|ed|ing)(?:\s+temperatures?)?|swing of|range of|spread of|delta|differential|diurnal|amplitude|gradient|shift(?:ed|s)? (?:of|by)|lift(?:ed|s)? (?:of|by)|drop(?:ped|s)? (?:of|by)|rise(?:s)? (?:of|by)|fall(?:s)? (?:of|by)|jump(?:s|ed)? (?:of|by)|climb(?:s|ed)? (?:of|by)|plunge(?:s|d)? (?:of|by)|lift|strip(?:s|ped)?|boost(?:s|ed)? (?:by|of)|warm(?:s|ed|ing)? (?:by|up by)|cool(?:s|ed|ing)? (?:by|down by)|moderat\w+ (?:by)|up to|down to|averag(?:es|ing)? (?:\d+°?\s*[CF] )?(?:warmer|cooler|colder)|drop(?:s|ped)?|plunge(?:s|d)?|rise(?:s)?|jump(?:s|ed)?|climb(?:s|ed)?|add(?:s|ed)?|shav(?:e|es|ed|ing)|knock(?:s|ed)?|trim(?:s|med)?|spans?(?: only)?|spanning(?: only)?|warming|cooling|(?:drop|lift|rais|push|knock|send|bump)\w*\s+(?:the\s+)?(?:temperatures?|mercury|readings?))\s*$/;
 
 /** Characters that terminate a clause for the purposes of delta detection. */
 const CLAUSE_TERMINATORS = /[.;:,\u2014\u2013|\n]/;
@@ -289,17 +303,31 @@ function signedCelsiusLooksDelta(before: string, token: string): boolean {
   return token.startsWith("+") && !signedCelsiusLooksAbsolute(before) && !isAbsoluteTemperatureCeilingContext(before);
 }
 
+function stripApproxTail(before: string): string {
+  let out = before;
+  for (let i = 0; i < 3; i++) {
+    const next = out.replace(APPROX_TAIL_PAT, "");
+    if (next === out) break;
+    out = next;
+  }
+  return out;
+}
+
 /** Decide whether a temperature token at `idx` is a delta (vs. absolute). */
 function isDeltaContext(text: string, idx: number, len: number): boolean {
   // Narrow, clause-local windows.
   const before = beforeClauseWindow(text, idx, 40);
-  const after = afterClauseWindow(text, idx + len, 24);
+  const lead = stripApproxTail(before);
+  const afterFull = afterClauseWindow(text, idx + len, 24);
+  const stop = afterFull.match(AFTER_CLAUSE_STOP_PAT);
+  const after = stop ? afterFull.slice(0, stop.index) : afterFull;
   if (isAbsoluteTemperatureCeilingContext(before)) return false;
-  if (DELTA_AFTER_PAT.test(after)) return true;
-  if (DELTA_BEFORE_PAT.test(before)) return true;
+  if (DELTA_BEFORE_PAT.test(before) || DELTA_BEFORE_PAT.test(lead)) return true;
   // Explicit phrasings commonly used for deltas — allow scanning both
   // windows jointly because these phrases are unambiguous.
   if (/\b(thermal windows?|annual (?:temperature )?ranges?|annual swings?|daily ranges?|diurnal swings?|temperature (?:ranges?|differences?|spreads?|gaps?|swings?))\b/.test(before + " " + after)) return true;
+  if (ABSOLUTE_LEAD_PAT.test(lead) && !TRUE_COMPARATIVE_PAT.test(after)) return false;
+  if (DELTA_AFTER_PAT.test(after)) return true;
   return false;
 }
 
@@ -443,10 +471,10 @@ export function localizeProse(text: string | null | undefined, unit: TempUnit, d
     // Lapse-rate shorthand is a temperature delta per vertical distance, not
     // an absolute reading. Convert common °C/km and °C per 1000 m forms to
     // the familiar °F per 1,000 ft expression.
-    const lapseRatePat = /([-+\u2212]?\d+(?:\.\d+)?)\s*\u00b0\s*C\s*(?:\/\s*km|per\s+1,?000\s*m)\b/gi;
-    text = text.replace(lapseRatePat, (_m, n: string) => {
-      const per1000Ft = (parseSigned(n) * 9) / 5 / 3.28084;
-      return `${formatLocalizedDecimal(per1000Ft, n.startsWith("+"))}\u00b0F per 1,000 ft`;
+    const lapseRatePat = /(?:([-+\u2212]?\d+(?:\.\d+)?)\s*([\u2013\u2014-])\s*)?([-+\u2212]?\d+(?:\.\d+)?)\s*\u00b0\s*C\s*(?:\/\s*km|per\s+1,?000\s*m)\b/gi;
+    text = text.replace(lapseRatePat, (_m, n1: string | undefined, dash: string | undefined, n2: string) => {
+      const per1000Ft = (n: string) => formatLocalizedDecimal((parseSigned(n) * 9) / 5 / 3.28084, n.startsWith("+"));
+      return `${n1 ? `${per1000Ft(n1)}${dash}` : ""}${per1000Ft(n2)}\u00b0F per 1,000 ft`;
     });
 
     // Celsius-band shorthand before numeric passes: explicit "20s °C" plus
@@ -565,6 +593,41 @@ function roundAreaForProse(v: number): number {
   return Math.round(v);
 }
 
+/**
+ * A round metric figure ("3,000 m", "100 km", "500 mm") is itself an
+ * approximation, so its conversion should read as one: "9,800 ft" and
+ * "20 in" rather than "9,843 ft" and "19.7 in". Exact figures, such as a
+ * station elevation of 2,424 m, keep their exact conversion.
+ */
+function isRoundMetric(n: string): boolean {
+  const v = parseLooseNum(n);
+  if (!Number.isInteger(v) || v < 10) return false;
+  return v % 100 === 0 || (v < 1000 && v % 50 === 0) || (v < 200 && v % 10 === 0);
+}
+
+function roundTwoSignificant(v: number): number {
+  if (v < 10) return Math.round(v);
+  // Two significant figures, three from 10,000 up (13,780 → 13,800, not 14,000).
+  const step = 10 ** (Math.floor(Math.log10(v)) - (v >= 10000 ? 2 : 1));
+  return Math.round(v / step) * step;
+}
+
+/** Convert a metric figure for prose; small results keep one decimal unless `wholeOnly`. */
+function convertFigure(n: string, factor: number, wholeOnly = false): string {
+  const v = parseLooseNum(n) * factor;
+  if (isRoundMetric(n)) return formatUSNumber(roundTwoSignificant(v));
+  return formatUSNumber(v, !wholeOnly && v < 10 ? 1 : 0);
+}
+
+/** Both ends of a range share one treatment: round only when both are round. */
+function convertPair(n1: string, n2: string, factor: number, wholeOnly = false): [string, string] {
+  if (isRoundMetric(n1) && isRoundMetric(n2)) return [convertFigure(n1, factor, wholeOnly), convertFigure(n2, factor, wholeOnly)];
+  const v1 = parseLooseNum(n1) * factor;
+  const v2 = parseLooseNum(n2) * factor;
+  const digits = !wholeOnly && Math.max(v1, v2) < 10 ? 1 : 0;
+  return [formatUSNumber(v1, digits), formatUSNumber(v2, digits)];
+}
+
 /** Replace while keeping a sentence-initial capital ("Metres of snow" → "Feet of snow"). */
 function swapKeepCase(text: string, re: RegExp, out: string | ((...groups: string[]) => string)): string {
   return text.replace(re, (...a: unknown[]) => {
@@ -588,66 +651,44 @@ function localizeDistanceProse(text: string): string {
   // N-metre[s]- / N-meter[s]-  →  N-foot- (e.g. "980-meter-high" → "3,215-foot-high")
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*met(?:er|re)s?\s*-\s*(high|tall|deep|long|wide|thick)\b/gi,
-    (_m, n: string, qual: string) => {
-      const ft = parseLooseNum(n) * 3.28084;
-      return `${formatUSNumber(ft)}-foot-${qual.toLowerCase()}`;
-    }
+    (_m, n: string, qual: string) => `${convertFigure(n, 3.28084, true)}-foot-${qual.toLowerCase()}`
   );
   // N-metre[s] (no trailing qualifier) as adjectival: "4,200-meter summit"
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*met(?:er|re)s?\b(?!\s*-\s*(?:high|tall|deep|long|wide|thick))/gi,
-    (_m, n: string) => {
-      const ft = parseLooseNum(n) * 3.28084;
-      return `${formatUSNumber(ft)}-foot`;
-    }
+    (_m, n: string) => `${convertFigure(n, 3.28084, true)}-foot`
   );
+  // Short "N-m" adjectival form: "~1,400-m elevation" → "~4,600-ft elevation".
+  text = text.replace(/(\d+(?:,\d{3})*(?:\.\d+)?)-m\b(?![/²³^]|\.\w)/g, (_m, n: string) => `${convertFigure(n, 3.28084, true)}-ft`);
 
   // N-kilometre[s]- / N-km- → N-mile-
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:kilomet(?:er|re)s?|km)\s*-\s*(high|tall|deep|long|wide|thick)\b/gi,
-    (_m, n: string, qual: string) => {
-      const mi = parseLooseNum(n) * 0.621371;
-      return `${formatUSNumber(mi, mi < 10 ? 1 : 0)}-mile-${qual.toLowerCase()}`;
-    }
+    (_m, n: string, qual: string) => `${convertFigure(n, 0.621371)}-mile-${qual.toLowerCase()}`
   );
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:kilomet(?:er|re)s?|km)\b(?!\s*-\s*(?:high|tall|deep|long|wide|thick))/gi,
-    (_m, n: string) => {
-      const mi = parseLooseNum(n) * 0.621371;
-      return `${formatUSNumber(mi, mi < 10 ? 1 : 0)}-mile`;
-    }
+    (_m, n: string) => `${convertFigure(n, 0.621371)}-mile`
   );
 
   // N-centimetre[s]- / N-cm- → N-inch-
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:centimet(?:er|re)s?|cm)\s*-\s*(high|tall|deep|long|wide|thick)\b/gi,
-    (_m, n: string, qual: string) => {
-      const inches = parseLooseNum(n) / 2.54;
-      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}-inch-${qual.toLowerCase()}`;
-    }
+    (_m, n: string, qual: string) => `${convertFigure(n, 1 / 2.54)}-inch-${qual.toLowerCase()}`
   );
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:centimet(?:er|re)s?|cm)\b(?!\s*-\s*(?:high|tall|deep|long|wide|thick))/gi,
-    (_m, n: string) => {
-      const inches = parseLooseNum(n) / 2.54;
-      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}-inch`;
-    }
+    (_m, n: string) => `${convertFigure(n, 1 / 2.54)}-inch`
   );
 
   // N-millimetre[s]- / N-mm- → N-inch-
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:millimet(?:er|re)s?|mm)\s*-\s*(high|tall|deep|long|wide|thick)\b/gi,
-    (_m, n: string, qual: string) => {
-      const inches = parseLooseNum(n) / 25.4;
-      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}-inch-${qual.toLowerCase()}`;
-    }
+    (_m, n: string, qual: string) => `${convertFigure(n, 1 / 25.4)}-inch-${qual.toLowerCase()}`
   );
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*-\s*(?:millimet(?:er|re)s?|mm)\b(?!\s*-\s*(?:high|tall|deep|long|wide|thick))/gi,
-    (_m, n: string) => {
-      const inches = parseLooseNum(n) / 25.4;
-      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}-inch`;
-    }
+    (_m, n: string) => `${convertFigure(n, 1 / 25.4)}-inch`
   );
 
   // Areas: hectares → acres and square kilometres → square miles, including
@@ -713,7 +754,7 @@ function localizeDistanceProse(text: string): string {
   // Vertical metres and spelled hyphen forms ("twelve-metre tides").
   text = swapKeepCase(text, 
     /\b(\d+(?:,\d{3})*)\s+vertical\s+met(?:er|re)s\b/gi,
-    (_m, n: string) => `${formatUSNumber(parseLooseNum(n) * 3.28084)} vertical feet`,
+    (_m, n: string) => `${convertFigure(n, 3.28084, true)} vertical feet`,
   );
   text = swapKeepCase(text, /\b(a\s+few\s+hundred|several\s+hundred|hundreds\s+of)\s+vertical\s+met(?:er|re)s\b/gi, (_m, q: string) => `${q} vertical feet`);
   text = swapKeepCase(text, /\ba\s+few\s+vertical\s+kilomet(?:er|re)s\b/gi, "a vertical mile or so");
@@ -774,20 +815,17 @@ function localizeDistanceProse(text: string): string {
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s+met(?:er|re)s?\b/gi,
     (_m, n1: string, sep: string, n2: string) => {
-      const ft1 = parseLooseNum(n1) * 3.28084;
-      const ft2 = parseLooseNum(n2) * 3.28084;
       const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
-      return `${formatUSNumber(ft1)}${joiner}${formatUSNumber(ft2)} feet`;
+      const [a1, a2] = convertPair(n1, n2, 3.28084, true);
+      return `${a1}${joiner}${a2} feet`;
     }
   );
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s+kilomet(?:er|re)s?\b/gi,
     (_m, n1: string, sep: string, n2: string) => {
-      const mi1 = parseLooseNum(n1) * 0.621371;
-      const mi2 = parseLooseNum(n2) * 0.621371;
-      const digits = Math.max(mi1, mi2) < 10 ? 1 : 0;
       const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
-      return `${formatUSNumber(mi1, digits)}${joiner}${formatUSNumber(mi2, digits)} miles`;
+      const [a1, a2] = convertPair(n1, n2, 0.621371);
+      return `${a1}${joiner}${a2} miles`;
     }
   );
 
@@ -796,31 +834,19 @@ function localizeDistanceProse(text: string): string {
   // instead of matching "980 m" and orphaning "eters").
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s+met(?:er|re)s?\b/gi,
-    (_m, n: string, plus: string) => {
-      const ft = parseLooseNum(n) * 3.28084;
-      return `${formatUSNumber(ft)}${plus} feet`;
-    }
+    (_m, n: string, plus: string) => `${convertFigure(n, 3.28084, true)}${plus} feet`
   );
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s+kilomet(?:er|re)s?\b/gi,
-    (_m, n: string, plus: string) => {
-      const mi = parseLooseNum(n) * 0.621371;
-      return `${formatUSNumber(mi, mi < 10 ? 1 : 0)}${plus} miles`;
-    }
+    (_m, n: string, plus: string) => `${convertFigure(n, 0.621371)}${plus} miles`
   );
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s+centimet(?:er|re)s?\b/gi,
-    (_m, n: string, plus: string) => {
-      const inches = parseLooseNum(n) / 2.54;
-      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}${plus} inches`;
-    }
+    (_m, n: string, plus: string) => `${convertFigure(n, 1 / 2.54)}${plus} inches`
   );
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)(\+?)\s+millimet(?:er|re)s?\b/gi,
-    (_m, n: string, plus: string) => {
-      const inches = parseLooseNum(n) / 25.4;
-      return `${formatUSNumber(inches, inches < 10 ? 1 : 0)}${plus} inches`;
-    }
+    (_m, n: string, plus: string) => `${convertFigure(n, 1 / 25.4)}${plus} inches`
   );
 
   // km/h or kph → mph (do this FIRST so bare "km" doesn't eat the "km" of "km/h")
@@ -835,31 +861,25 @@ function localizeDistanceProse(text: string): string {
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*km\b(?!\/)/gi,
     (_m, n1: string, sep: string, n2: string) => {
-      const v1 = parseLooseNum(n1) * 0.621371;
-      const v2 = parseLooseNum(n2) * 0.621371;
-      const digits = Math.max(v1, v2) < 10 ? 1 : 0;
       const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
-      return `${formatUSNumber(v1, digits)}${joiner}${formatUSNumber(v2, digits)} mi`;
+      const [a1, a2] = convertPair(n1, n2, 0.621371);
+      return `${a1}${joiner}${a2} mi`;
     }
   );
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*mm\b(?![a-zA-Z])/gi,
     (_m, n1: string, sep: string, n2: string) => {
-      const v1 = parseLooseNum(n1) / 25.4;
-      const v2 = parseLooseNum(n2) / 25.4;
-      const digits = Math.max(v1, v2) < 10 ? 1 : 0;
       const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
-      return `${formatUSNumber(v1, digits)}${joiner}${formatUSNumber(v2, digits)} in`;
+      const [a1, a2] = convertPair(n1, n2, 1 / 25.4);
+      return `${a1}${joiner}${a2} in`;
     }
   );
   text = text.replace(
     /(\d+(?:,\d{3})*(?:\.\d+)?)\s*([\u2013\u2014-]|to|and)\s*(\d+(?:,\d{3})*(?:\.\d+)?)\s*cm\b(?![a-zA-Z])/gi,
     (_m, n1: string, sep: string, n2: string) => {
-      const v1 = parseLooseNum(n1) / 2.54;
-      const v2 = parseLooseNum(n2) / 2.54;
-      const digits = Math.max(v1, v2) < 10 ? 1 : 0;
       const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
-      return `${formatUSNumber(v1, digits)}${joiner}${formatUSNumber(v2, digits)} in`;
+      const [a1, a2] = convertPair(n1, n2, 1 / 2.54);
+      return `${a1}${joiner}${a2} in`;
     }
   );
 
@@ -871,29 +891,17 @@ function localizeDistanceProse(text: string): string {
 
   // Bare "N km" (word-bounded, not immediately followed by "/" as in km/h which
   // is already handled above).
-  text = text.replace(/(\d+(?:[,.]\d+)?)\s*km\b(?!\/)/g, (_m, n: string) => {
-    const v = parseLooseNum(n);
-    const mi = v * 0.621371;
-    return `${formatUSNumber(mi, mi < 10 ? 1 : 0)} mi`;
-  });
+  text = text.replace(/(\d+(?:[,.]\d+)?)\s*km\b(?!\/)/g, (_m, n: string) => `${convertFigure(n, 0.621371)} mi`);
 
   // "N mm" — millimetres of precip in this corpus. \b already prevents matching
   // mid-word (e.g. "mm-level" still has \b before the "-"), and any compound
   // unit like "mmHg" can't match because "m" directly followed by "H" isn't a
   // \b-terminated token boundary break we'd be looking at. We block only
   // directly adjacent letters.
-  text = text.replace(/(\d+(?:[,.]\d+)?)\s*mm\b(?![a-zA-Z])/g, (_m, n: string) => {
-    const v = parseLooseNum(n);
-    const inches = v / 25.4;
-    return `${formatUSNumber(inches, inches < 10 ? 1 : 0)} in`;
-  });
+  text = text.replace(/(\d+(?:[,.]\d+)?)\s*mm\b(?![a-zA-Z])/g, (_m, n: string) => `${convertFigure(n, 1 / 25.4)} in`);
 
   // "N cm" — snow / depth contexts in this corpus.
-  text = text.replace(/(\d+(?:[,.]\d+)?)\s*cm\b(?![a-zA-Z])/g, (_m, n: string) => {
-    const v = parseLooseNum(n);
-    const inches = v / 2.54;
-    return `${formatUSNumber(inches, inches < 10 ? 1 : 0)} in`;
-  });
+  text = text.replace(/(\d+(?:[,.]\d+)?)\s*cm\b(?![a-zA-Z])/g, (_m, n: string) => `${convertFigure(n, 1 / 2.54)} in`);
 
   // Metre ranges "N–M m" / "N-M m" / "N to M m" / "N and M m" — used for
   // stratus layers, elevation bands ("homes at 700–900 m", "between 1500
@@ -908,12 +916,9 @@ function localizeDistanceProse(text: string): string {
         /\b(at|to|above|over|between|elevation|altitude|homes?|stratus|layer|depth|rise|rising|drop|peak|peaks|crest|ridge|summit|plateau|capping|band|basins?|relief|dunes?|bluffs?|horizontal)\b/.test(before) ||
         /\b(stratus|layer|peaks?|crest|ridge|summit|plateau|depth|rise|rising|drop|higher|lower|snow|snowfall|annually|elevation|altitude|band|belt|relief|dunes?|bluffs?|horizontal)\b/.test(after);
       if (!elevationy) return match;
-      const v1 = parseLooseNum(n1);
-      const v2 = parseLooseNum(n2);
-      const ft1 = v1 * 3.28084;
-      const ft2 = v2 * 3.28084;
       const joiner = sep === "to" || sep.toLowerCase() === "and" ? ` ${sep.toLowerCase()} ` : sep;
-      return `${formatUSNumber(ft1)}${joiner}${formatUSNumber(ft2)} ft`;
+      const [a1, a2] = convertPair(n1, n2, 3.28084, true);
+      return `${a1}${joiner}${a2} ft`;
     }
   );
 
@@ -971,10 +976,13 @@ function localizeDistanceProse(text: string): string {
 
       if (!beforeHit && !afterHit && !bigNumberHit && !approxHit) return match;
 
-      const ft = v * 3.28084;
-      return `${formatUSNumber(ft)} ft`;
+      return `${convertFigure(n, 3.28084, true)} ft`;
     }
   );
+
+  // "a 8-inch snowpack" → "an 8-inch snowpack" after a conversion lands on an
+  // eight, eleven or eighteen.
+  text = text.replace(/\b([Aa]) (?=(?:8[\d,.]*|1[18](?:,\d{3})*)(?:-|\s))/g, (_m, a: string) => `${a}n `);
 
   return text;
 }

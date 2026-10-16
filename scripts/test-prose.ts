@@ -25,12 +25,12 @@ const cases: Case[] = [
   { input: "Xalapa sits at 1,427 m on the eastern slope", expect: ["4,682 ft"] },
   { input: "Rainfall is heavy and persistent (1,500 mm annually)", expect: ["59 in"] },
   { input: "gets 420 cm of snow in a normal winter", expect: ["165 in"] },
-  { input: "10 km west of the escarpment", expect: ["6.2 mi"] },
+  { input: "10 km west of the escarpment", expect: ["6 mi"] },
   { input: "peak of 3,850 m elevation", expect: ["12,631 ft"] },
   { input: "winds of 25 km/h are routine", expect: ["16 mph"] },
   { input: "storm gusts up to 100 kph", expect: ["62 mph"] },
   { input: "elevation 800 m, with 600 mm of annual precip and 80 cm of snow",
-    expect: ["2,625 ft", "24 in", "31 in"] },
+    expect: ["2,600 ft", "24 in", "31 in"] },
   // Reject cases: things that MUST NOT be touched. Use whole-token checks.
   { input: "held within 10 minutes of the coast", expect: ["10 minutes"], reject: [" ft ", " mi ", " mph "] },
   { input: "Köppen class BSk dominates", expect: ["BSk"], reject: [" ft ", " mi "] },
@@ -71,15 +71,15 @@ const cases: Case[] = [
   { input: "a 980-meter-high ridge funnels the fog",
     expect: ["3,215-foot-high"], reject: ["980-meter", " 980 m"] },
   { input: "the 4,200-meter summit catches the first light",
-    expect: ["13,780-foot"], reject: ["4,200-meter"] },
+    expect: ["13,800-foot"], reject: ["4,200-meter"] },
   { input: "a 12-kilometer corridor of dunes",
     expect: ["7.5-mile corridor"], reject: ["12-kilometer", "12-km"] },
   { input: "a 15-km escarpment rises sharply",
     expect: ["9.3-mile escarpment"], reject: ["15-km", "15 km"] },
   { input: "a 20-centimeter snowpack lingers into April",
-    expect: ["7.9-inch"], reject: ["20-centimeter", "20 cm"] },
+    expect: ["an 8-inch snowpack"], reject: ["20-centimeter", "20 cm"] },
   { input: "a 200-millimeter flood event",
-    expect: ["7.9-inch"], reject: ["200-millimeter", "200 mm"] },
+    expect: ["an 8-inch flood"], reject: ["200-millimeter", "200 mm"] },
 
   // --- Spelled-out metric units (non-hyphenated) ---
   { input: "the tower stands at 980 meters above the valley",
@@ -87,9 +87,9 @@ const cases: Case[] = [
   { input: "the pass is 12 kilometers long",
     expect: ["7.5 miles long"], reject: ["12 kilometers", "12 km "] },
   { input: "20 centimeters of fresh powder",
-    expect: ["7.9 inches"], reject: ["20 centimeters"] },
+    expect: ["8 inches"], reject: ["20 centimeters"] },
   { input: "200 millimeters fell in one afternoon",
-    expect: ["7.9 inches"], reject: ["200 millimeters"] },
+    expect: ["8 inches"], reject: ["200 millimeters"] },
 
   // --- Regression: "lows/highs of N\u00b0C" must stay ABSOLUTE (bare "of" used to
   // false-trigger delta detection and convert \u221230\u00b0C to \u221254\u00b0F instead of \u221222\u00b0F).
@@ -112,13 +112,13 @@ const cases: Case[] = [
 
   // --- Regression: landform-context "N m" conversions (Sandhills / Loess Hills / Eureka) ---
   { input: "rolling dunes 40\u201390 m tall",
-    expect: ["131\u2013295 ft"], reject: ["40\u201390 m"] },
+    expect: ["130\u2013300 ft"], reject: ["40\u201390 m"] },
   { input: "loess up to 60 m thick rising 90 m above the floodplain",
-    expect: ["197 ft thick", "295 ft"], reject: [" 60 m", " 90 m"] },
+    expect: ["200 ft thick", "300 ft"], reject: [" 60 m", " 90 m"] },
   { input: "three steeply dissected ridges with 90 m of relief in less than 500 m of horizontal distance",
-    expect: ["295 ft of relief", "1,640 ft of horizontal"], reject: [" 90 m", " 500 m"] },
+    expect: ["300 ft of relief", "1,600 ft of horizontal"], reject: [" 90 m", " 500 m"] },
   { input: "At more than 2,200 m, Los Alamos keeps strong night cooling.",
-    expect: ["7,218 ft"], reject: ["2,200 m"] },
+    expect: ["7,200 ft"], reject: ["2,200 m"] },
   { input: "Sentinel-2 MSI emphasizes 10 m VNIR/SWIR for texture; Landsat OLI-TIRS pairs 30 m multispectral with thermal history.",
     expect: ["33 ft VNIR/SWIR", "98 ft multispectral"], reject: ["10 m", "30 m"] },
 ];

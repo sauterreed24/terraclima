@@ -522,10 +522,10 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "honolulu-hi": {
     feel: "Honolulu is built 5 m up, on this footprint: South shore of Oʻahu — lee of the Koʻolau Range with trade-wind showers on windward coasts nearby. That is trade-wind regime at work, and it makes Honolulu read less like a textbook As station and more like its own microclimate.",
     seasons: {
-      winter: "Honolulu ( Oʻahu Lee) holds winter light near 26.7°C afternoons and 19.1°C nights at 5 m.",
-      spring: "Honolulu ( Oʻahu Lee) shoulder season sits near 27.6°C days and 20.2°C nights, with trade wind still cooling mornings.",
-      summer: "Honolulu ( Oʻahu Lee) asks for 29.9°C summer-day planning across Tropical dry–wet coastal, then 22.7°C nights for sleep and gardens.",
-      autumn: "Honolulu ( Oʻahu Lee) closes the warm half-year near 29.4°C by day; 22.1°C nights and wetter storms reset the calendar.",
+      winter: "Honolulu (Leeward Oʻahu) holds winter light near 26.7°C afternoons and 19.1°C nights at 5 m.",
+      spring: "Honolulu (Leeward Oʻahu) shoulder season sits near 27.6°C days and 20.2°C nights, with trade wind still cooling mornings.",
+      summer: "Honolulu (Leeward Oʻahu) asks for 29.9°C summer-day planning across Tropical dry–wet coastal, then 22.7°C nights for sleep and gardens.",
+      autumn: "Honolulu (Leeward Oʻahu) closes the warm half-year near 29.4°C by day; 22.1°C nights and wetter storms reset the calendar.",
     },
     travelerFit: "The draw for visitors is straightforward: surf and Pearl Harbor, set inside a tropical isothermal coast climate that is easy to underestimate from a distance.",
     residentFit: "Full-time life in Honolulu tends to reward military families and tourism workers — people who plan their year around the tropical isothermal coast pattern rather than fighting it.",

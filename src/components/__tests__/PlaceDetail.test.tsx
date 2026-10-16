@@ -852,7 +852,7 @@ describe("PlaceDetail archetype field guide", () => {
     fireEvent.click(primaryChip);
 
     const guide = screen.getByRole("region", { name: /Eternal-Spring Highland field guide/i });
-    expect(guide).toHaveTextContent(/4,921 and 8,202 ft/);
+    expect(guide).toHaveTextContent(/4,900 and 8,200 ft/);
     expect(guide).toHaveTextContent(/72–79°F/);
     expect(guide).toHaveTextContent(/46–57°F/);
     expect(guide).not.toHaveTextContent(/°C/);

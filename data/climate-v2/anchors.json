@@ -1689,15 +1689,15 @@
       "name": "Beverly Shores (Lake Michigan)",
       "country": "USA",
       "tier": "C",
-      "lat": 41.9125,
-      "lon": -86.9806,
+      "lat": 41.6925,
+      "lon": -86.9786,
       "elevationM": 185,
       "region": "Indiana",
       "climateAnchor": {
-        "lat": 41.9125,
-        "lon": -86.9806,
+        "lat": 41.6925,
+        "lon": -86.9786,
         "elevationM": 185,
-        "note": "default place coordinate"
+        "note": "default place coordinate (corrected from 41.9125, which sat in Lake Michigan; refresh on the next Daymet update)"
       }
     },
     {

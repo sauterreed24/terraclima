@@ -36,7 +36,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       winter: "Short, grey and changeable — afternoons near 9°C, nights just below freezing, and a mix of rain, occasional snow and the dreaded ice storms that can coat trees and power lines in glaze, as one did disastrously in 2009. Fog often lies thick over the rivers in the mornings.",
       spring: "Lush and stormy — afternoons warming from about 15°C in March to 27°C by late May, flowering dogwoods and redbuds, and the wettest season of the year, with strong thunderstorms and tornado warnings. The rivers rise with spring rains, and every few years they climb high against the floodwall.",
       summer: "Hot and steamy — afternoons near 32°C, nights around 21°C, and humidity that hangs over the river bottoms. Afternoon thunderstorms are common, and the long, hot evenings bring out the fireflies. Barges churn up and down the rivers, and boaters head to Kentucky Lake and Lake Barkley.",
-      autumn: "Mellow and dry — September afternoons near 28°C easing to about 15°C by November, the driest stretch of the year, with oaks and maples turning colour by late October. Morning fog returns to the rivers as the nights cool.",
+      autumn: "Mellow and golden — September afternoons near 28°C easing to about 15°C by November, with long spells of settled, sunny weather, with oaks and maples turning colour by late October. Morning fog returns to the rivers as the nights cool.",
     },
     travelerFit: "Visitors come for the National Quilt Museum and the huge quilt show each April, the floodwall murals along the Ohio River, a lively historic downtown and the lakes of the Land Between the Lakes nearby.",
     contrasts: [
@@ -444,7 +444,7 @@ export const SITE_HISTORY_USA_5: Record<string, SiteHistoryEntry> = {
       winter: "Mild and changeable — afternoons near 9°C, nights a few degrees below freezing, and a mix of rain, light snow and the occasional ice storm. Mist rises from the springs and rivers on cold mornings, because the spring water is so much warmer than the air. The town is quiet, and bald eagles winter along the rivers.",
       spring: "Lush and stormy — afternoons warming from about 16°C in March to 26°C by late May, dogwoods and redbuds blooming in the forests, and the wettest season of the year, with thunderstorms that can send the rivers surging out of their banks.",
       summer: "Hot and humid — afternoons near 32°C, nights around 18°C, and afternoon thunderstorms. The rivers are the escape: canoes, kayaks and inner tubes fill the Current and Jacks Fork, and the spring-fed water stays cool enough to refresh even in July.",
-      autumn: "Mellow and colourful — September afternoons near 28°C easing to about 15°C by November, the driest stretch of the year, and a blaze of oak, hickory and maple colour across the hills by late October.",
+      autumn: "Mellow and colourful — September afternoons near 28°C easing to about 15°C by November, with long spells of settled, sunny weather, and a blaze of oak, hickory and maple colour across the hills by late October.",
     },
     travelerFit: "Visitors come for the clear spring-fed rivers of the Ozark National Scenic Riverways, canoeing and float trips on the Jacks Fork and Current rivers, wild horses, caves and huge springs such as Alley and Big Spring.",
     contrasts: [

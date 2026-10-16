@@ -4,6 +4,39 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Photos checked for every place, honest °F, and facts that match the data
+
+- **Hero photos:** a new audit (`scripts/check-place-hero-files.ts`, run on GitHub by `hero-media-audit.yml`) checks all 226 photos against Wikimedia Commons. It confirms the file exists, the exact URL the app loads returns an image, and the size, orientation and Commons quality rating. All 226 load, and none is under 1,600 px or portrait.
+- **30 photos replaced:**
+  - Three showed the wrong thing. Fernie used *Canmore's* Three Sisters, Napa a wine-cellar interior, and Palenque a close-up of an oil palm.
+  - Others were weak or duplicated: Fairbanks flood water, Penticton's dam, and the Tofino–Ucluelet corridor shared Tofino's photo.
+  - Skylines, plazas and street shots gave way to landscapes, for example Davis Bayou fog, the Mount Nittany overlook, PEI's red cliffs, Mount McLoughlin over Upper Klamath Lake, and an aurora over Fairbanks.
+- **Photo sizes:** Wikimedia now serves hotlinked thumbnails only at standard widths. Photos are requested at 500/960/1280/1920 px instead of 640/1600, and a test keeps them standard.
+- **°F conversions in prose:** in 37 places a real temperature was converted as if it were a difference. "Afternoons near 41°C and often above 45°C" read "near 74°F", and Key West's "27°C water" read "49°F". In 15 places the reverse happened: "drops summit temperatures by roughly 10 °C" read "50°F". Both are fixed, with the reviewer's sentences as tests. All 57 changed conversions across the atlas were checked by hand.
+- **Round figures stay round:** "more than 3,000 m" now reads "more than 9,800 ft" (not "9,843 ft") and "nearly 1,000 m" reads "nearly 3,300 ft". Exact figures such as a 2,424 m elevation keep their exact conversion. "1,400-m elevation" now converts, and "a 8-inch" reads "an 8-inch".
+- **Facts that contradicted the atlas:**
+  - Beverly Shores' pin sat 24 km out in Lake Michigan.
+  - Valle de Bravo was "4°C cooler" than Toluca, though it is 800 m lower and warmer.
+  - Fort Davis was "10°C cooler" than Marfa (it is about the same).
+  - Gunnison's "−35°C mornings are normal" (that is an extreme).
+  - Mammoth Lakes was given 1,800 mm a year (the atlas has 550), and Sequim–Forks was given as 50 or 150 km (it is 95).
+  - Six "Within N km" labels didn't match the coordinates.
+  - Other slips are fixed too: Marfa, Mount Charleston, Grand Marais, Osoyoos, Stanley, Flagstaff, Hermosillo, Eminence, Paducah, Yuma and La Ventosa.
+- **Text glitches:**
+  - Contrast notes ran into their generated deltas ("…inversion mornings About 18°C colder").
+  - First sentences stopped at "2.3 km" or "St. John's".
+  - "zone 12a equiv.." had a double period, and Gaspé's region was spelled differently from the other Quebec places.
+  - Honolulu's name read "Honolulu ( Oʻahu Lee)". It is now "Honolulu (Leeward Oʻahu)".
+- **Interface bugs:**
+  - **Explorer "More" menu:** its items dropped under the chip row below it and couldn't be clicked. The menu now sits on top and closes on Escape (focus returns to the button) or on a click outside it.
+  - **Map pins:** a quick click on a pin often did nothing. Hovering raised the pin to the top of the map, which moved it between mouse-down and mouse-up, so the browser dropped the click. A pressed pin now keeps its place until the click lands. The hover label also no longer shifts (a CSS transform was overriding its SVG position).
+  - **Mixed units:** the recent-shift figure, climate-change variables, "grows well" chips, biome and settlement lines now follow the °F/°C and mile/km settings.
+  - **Compare:** between about 768 and 900 px the source filter was squeezed to 49 px and its buttons slid under the Sort menu. The search, filter and sort tools now wrap. With a full set, adding a place replaces the weakest one on the active read and names it, instead of silently replacing the oldest. A closed compare tray stays closed after a reload (`cmpopen=0` in the URL), and an empty compare no longer writes a stray `clens` parameter.
+  - **Collections and trips:** a lens limited to a collection or trip says so in its receipt, for example "Limited to the Sky-Island Refuges collection (11 places)", with a chip to clear it.
+  - **Back button:** switching between Atlas, Compare and Trips now adds a history entry, so Back returns to the previous view instead of leaving the app.
+  - **Mobile profile:** the section links stay pinned to the top while you scroll.
+  - **Map tooltip:** long archetype names wrap instead of running out of the tooltip.
+
 ### Calmer scrollbar, tidier place pages, and text that adds up
 
 - **Scrollbar sensitivity:** the ranked list reserved height for all 226 cards, so each pixel of thumb drag moved the page ~112 px (134 px at 1024 wide). The list now shows the best 36 first with "Show 36 more" / "Show all" (and grows to keep a selected card in view). The page is ~16.5k px instead of ~96k, so a drag moves ~19 px per px (24 at 1024). Place pages are ~15–30% shorter because long dossier chapters and technical tables fold. Wheel and trackpad scrolling are unchanged.

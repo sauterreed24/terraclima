@@ -99,7 +99,7 @@ export const PLACES_MEXICO: Place[] = [
     },
 
     localContrast: [
-      { radiusKm: 100, summerHighDeltaC: -5, note: "vs Pacific-coast Oaxaca (Puerto Escondido) — valley is ~8°C cooler in July afternoons." },
+      { radiusKm: 140, summerHighDeltaC: -6, note: "vs Pacific-coast Oaxaca (Puerto Escondido) — the valley runs about 6°C cooler on July afternoons." },
       { radiusKm: 50, precipDeltaPct: -30, note: "vs the rainier southern sierra slopes." },
     ],
     nearbyContrasts: [
@@ -648,7 +648,7 @@ export const PLACES_MEXICO: Place[] = [
     growability: { score: 78, growsWell: ["Avocado on warmer slopes", "Maize", "Beans", "Temperate fruit in cooler pockets", "Ornamentals"], tricky: ["Lowland tropical crops", "Water-hungry lawns on slopes"], orchard: "Lake-adjacent gardens can be extremely productive if drainage and water access are sane." },
     climateChange: { outlook2050: "Warmer dry seasons, more intense rain bursts, and more pressure on lake and forest management.", outlook2100: "Watershed health becomes the main determinant of climate resilience.", keyShifts: [{ variable: "Dry-season heat", direction: "up" }, { variable: "Extreme rainfall", direction: "up" }, { variable: "Watershed stress", direction: "up" }], resilienceNote: "Elevation protects human comfort; land-use pressure and watershed health set the ceiling." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "moderate", trend: "worsening" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
-    localContrast: [{ radiusKm: 65, summerHighDeltaC: -4, precipDeltaPct: 30, note: "vs drier plateau towns toward Toluca/Mexico City; the lake basin and slopes hold more moisture and summer cloud." }],
+    localContrast: [{ radiusKm: 65, summerHighDeltaC: 4, note: "vs Toluca up on the high plateau — the lake basin sits about 800 m lower, so afternoons run warmer while the wooded slopes hold summer cloud." }],
     nearbyContrasts: [{ label: "Toluca, Mexico", note: "Higher, cooler, more urban, and more frost-prone." }, { label: "Temascaltepec slopes", note: "Warmer and more subtropical downslope from the lake basin." }],
     scores: { hiddenGem: 62, microclimateUniqueness: 74, comfort: 86, resilience: 62, growability: 78, tradeoff: 36 },
     liveSignals: {
@@ -722,7 +722,7 @@ export const PLACES_MEXICO: Place[] = [
     growability: { score: 82, growsWell: ["Apples", "Pears", "Berries", "Maize", "Beans", "Hydrangeas", "Cool-season vegetables"], tricky: ["Dry-climate herbs", "Tropical heat crops", "Poorly drained slopes"], orchard: "Apple identity is central; cultivar and disease pressure depend on fog, slope, and ventilation." },
     climateChange: { outlook2050: "Warmer nights and more intense rainfall, with cloud-forest stress and landslide exposure increasing.", outlook2100: "Moist highland crops may shift upslope while extreme rain management becomes more important.", keyShifts: [{ variable: "Extreme rainfall", direction: "up" }, { variable: "Cloud-forest stress", direction: "up" }, { variable: "Winter chill", direction: "down" }], resilienceNote: "Cool elevation helps human comfort; moisture and slope hazards drive site risk." },
     risks: { wildfire: { level: "moderate", trend: "mixed" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "mixed" }, extremeHeat: { level: "very-low", trend: "worsening" }, extremeCold: { level: "low", trend: "stable" }, smoke: { level: "low", trend: "mixed" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "elevated", trend: "worsening" }, coastal: { level: "very-low", trend: "stable" } },
-    localContrast: [{ radiusKm: 50, precipDeltaPct: 45, summerHighDeltaC: -3, note: "vs drier Puebla/Tlaxcala highland interiors; the Sierra Norte intercepts much more Gulf moisture." }],
+    localContrast: [{ radiusKm: 100, precipDeltaPct: 45, summerHighDeltaC: -3, note: "vs drier Puebla/Tlaxcala highland interiors; the Sierra Norte intercepts much more Gulf moisture." }],
     nearbyContrasts: [{ label: "Chignahuapan, Puebla", note: "Similar highland setting, slightly more open and thermal-spring oriented." }, { label: "Puebla city", note: "Drier, more urban, and less cloud-forest influenced." }],
     scores: { hiddenGem: 86, microclimateUniqueness: 78, comfort: 82, resilience: 60, growability: 82, tradeoff: 36 },
     liveSignals: {
@@ -1583,7 +1583,7 @@ export const PLACES_MEXICO: Place[] = [
     climateChange: { outlook2050: "Stronger and more persistent gap-wind events as thermal gradients intensify.", outlook2100: "The wind regime is likely to strengthen; temperature rise continues.", keyShifts: [{ variable: "Gap-wind intensity", direction: "up" }, { variable: "Heat stress", direction: "up" }, { variable: "Dry-season drought", direction: "up" }], resilienceNote: "The wind is the resource and the hazard — wind energy expansion continues, structural/transport disruption will worsen." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "moderate", trend: "worsening" }, extremeHeat: { level: "elevated", trend: "worsening" }, extremeCold: { level: "very-low", trend: "stable" }, smoke: { level: "low", trend: "stable" }, storm: { level: "elevated", trend: "worsening", note: "Both hurricane tracks and gap-wind storms." }, landslide: { level: "low", trend: "stable" }, coastal: { level: "moderate", trend: "worsening" } },
     localContrast: [{ radiusKm: 60, summerHighDeltaC: 1, winterLowDeltaC: -2, note: "Gap-wind acceleration changes the felt climate more than the monthly mean: Tehuano events can feel sharply cooler than surrounding lowlands even though seasonal averages stay similar." }],
-    nearbyContrasts: [{ placeId: "oaxaca-mx", label: "Oaxaca City", note: "100 km north across the sierra — cool, calm, spring-like compared to windswept-tropical La Ventosa." }],
+    nearbyContrasts: [{ placeId: "oaxaca-mx", label: "Oaxaca City", note: "About 200 km north-west across the sierra — cool, calm, spring-like compared to windswept-tropical La Ventosa." }],
     scores: { hiddenGem: 78, microclimateUniqueness: 94, comfort: 40, resilience: 48, growability: 48, tradeoff: 74 },
     relocationFit: ["wind energy workers", "meteorology enthusiasts"], travelFit: ["wind farms", "kite/windsurfing", "Zapotec cultural tours"],
     whoWouldLove: "Meteorologists, kite sportspeople, anyone who likes feeling the planet's weather machinery at work.", whoMightNot: "Anyone whose hat would fly off.",
