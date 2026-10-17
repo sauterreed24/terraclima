@@ -186,8 +186,8 @@ export const PLACES_MEXICO: Place[] = [
       seasons: {
         winter: "Clear, calm nights drain cold air onto the basin floor, dropping mornings near freezing while the ridges above stay milder — then afternoons recover to a bright, woodsmoke-scented 22°C.",
         spring: "The warmest, driest window — afternoons near 24°C, mornings still crisp, and the dry-season light at its sharpest before the rains gather in May.",
-        summer: "Cool and wet: mist-draped mornings burn off slowly, afternoons hold near 21°C, and heavy highland rains build daily over the surrounding cloud forest.",
-        autumn: "September is the wettest month before the skies begin to clear — cool afternoons near 21°C, saturated green ridges, and lengthening, crisp nights as the dry season returns.",
+        summer: "Cool and wet: mist-draped mornings burn off slowly, afternoons hold near 23°C, and heavy highland rains build daily over the surrounding cloud forest.",
+        autumn: "September is the wettest month before the skies begin to clear — mild afternoons near 22°C, saturated green ridges, and lengthening, crisp nights as the dry season returns.",
       },
       travelerFit: "Visitors come for the colonial highland streets, Tzotzil and Tzeltal Maya markets and villages, and the cool cloud-forest country of the Chiapas plateau.",
       residentFit: "It rewards travelers-turned-residents who love cool, misty highland air, a deep Indigenous cultural fabric, and a slower, layered mountain-town life.",

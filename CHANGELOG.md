@@ -4,18 +4,18 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
-### Station-checked climate, honest humidity, 50 better photos, and ~300 fact fixes
+### Station-checked climate, honest humidity, 51 better photos, and ~300 fact fixes
 
 - **Station corrections (53 places):** the 1 km Daymet grid smooths away the local effects the atlas is about. Where a representative GHCN-Daily station sits beside a place (within 15 km and 100 m, 15+ overlapping years, no disagreeing neighbour), the grid is corrected month by month to that station. Cold pools get colder (Stanley's January low −13 → −19°C, Crested Butte −15 → −21°C), fog coasts cooler (Ensenada's July high 30 → 26°C), rain shadows drier (Sequim 583 → 426 mm, Honolulu 1,104 → 508 mm). Corrected places show "validated" with the station named.
-- **Humidity (183 places):** Daymet's vapour pressure ran far too dry wherever moist air outlasts the rain. Monterey's September read 27% against 69% at its airport, Mérida's April 31%, Mazatlán's spring 26%. Humidity is now scaled month by month to the nearest representative ISD station's hourly dew points. Deserts barely move, as they should. Scores that leaned on the old numbers were recalibrated:
+- **Humidity (200 places):** Daymet's vapour pressure ran far too dry wherever moist air outlasts the rain. Monterey's September read 27% against 69% at its airport, Mérida's April 31%, Mazatlán's spring 26%, Ensenada's summer 24%. Humidity is now scaled month by month to the nearest representative ISD station's hourly dew points (183 places within 40 km). For 17 more, a reviewed regional station on the same coast, plateau or valley stands in: Ensenada from the San Diego fog coast, Pátzcuaro from Morelia, Palenque from Villahermosa. Deserts barely move, as they should. Scores that leaned on the old numbers were recalibrated:
   - The fog/marine-layer penalty and caution apply only where summer afternoons stay at or below 24°C, so the humid Gulf coast is no longer flagged as "June Gloom".
   - The humidity tax on summer comfort uses dew point instead of relative humidity, so a 24°C highland afternoon isn't scored like Houston.
-  - "Soft, humid air" season tags need warm afternoons.
+  - "Soft, humid air" season tags and "humid" headers need a muggy dew point (about 15°C+). A highland dry season at 70% humidity no longer reads "Warm & humid".
   - The hero card's humidity stat appears only at 78% and above (or 42% and below).
 - **Frost-free season:** now the median season between the last spring and first autumn freeze, not 365 minus a count of frosty days, which overstated mountain growing seasons. Fairbanks 113, Truckee 82, Chattanooga 219, Astoria 226. Prose quoting the old counts was updated.
-- **Hero photos (50 replaced):**
+- **Hero photos (51 replaced):**
   - Off-subject, dim or broken shots are gone: an airliner wing over Mount Charleston and Cody, postcards for Chattanooga and Eminence, a vignetted Valle de Bravo, a near-black Zacatecas, flowers for Canaan Valley.
-  - In their place are on-subject photographs, among them Mission Santa Barbara, Jackson Square, Victoria's Parliament Buildings, Leadville under Mount Massive, Lake Mary at Mammoth, Duluth's ship canal, and Pátzcuaro at sunset.
+  - In their place are on-subject photographs, among them Mission Santa Barbara, Jackson Square, Victoria's Parliament Buildings, Leadville under Mount Massive, Lake Mary at Mammoth, Duluth's ship canal, Charlottetown's harbour, and Pátzcuaro at sunset.
   - The candidate finder (`scripts/hero-contact-sheet.ts`) draws from each place's Wikipedia and Wikivoyage articles, filters out satellite frames, and takes per-place searches.
 - **Feel lines:** 112 templated openings ("the defining fact about X is geography…") were rewritten as place-specific paragraphs. Each was checked against the place's normals.
 - **Facts:** about 300 corrections from an eight-shard review, among them:

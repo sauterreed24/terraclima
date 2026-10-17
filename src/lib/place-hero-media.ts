@@ -99,7 +99,7 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string; focusY?: num
   "kelowna-bc": { file: "Kelowna Skyline.jpg", alt: "Kelowna's skyline across Okanagan Lake, seen from Westbank, British Columbia" },
   "squamish-bc": { file: "Howe Sound, Squamish.jpg", alt: "Howe Sound fjord water and mountains at Squamish" },
   "halifax-ns": { file: "Halifax Harbour Sunset Skyline, Nova Scotia (24237034620).jpg", alt: "Halifax harbour skyline at sunset" },
-  "charlottetown-pei": { file: "Another view of the red cliffs of PEI (11967433303).jpg", alt: "Red sandstone cliffs on the shore just outside Charlottetown" },
+  "charlottetown-pei": { file: "Charlottetown Harbour, Prince Edward Island.jpg", alt: "Boats moored along the waterfront of Charlottetown Harbour, Prince Edward Island" },
   "dawson-city-yt": { file: "Quinta Avenida, Dawson City, Yukón, Canadá, 2017-08-27, DD 30.jpg", alt: "Colourful Klondike-era storefronts on Fifth Avenue in Dawson City beneath northern hills" },
   "baie-saint-paul-qc": { file: "Baie St-Paul (Charlevoix-QC)-Vue de la baie à partir du belvédaire Est-2014-07-21.jpg", alt: "Charlevoix bay, tidal flats, and hills from the eastern lookout at Baie-Saint-Paul" },
   "twillingate-nl": { file: "Lonely Road - Back Harbour - Twillingate - Newfoundlad.JPG", alt: "A harbour road meeting the sea at Twillingate on Newfoundland's iceberg coast" },

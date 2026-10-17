@@ -51,6 +51,13 @@ export function meanJanLow(p: Place): number {
 }
 
 /** Summer diurnal swing (°C); falls back to July high − low. */
+/** Dew point (°C) from air temperature and relative humidity (Magnus). */
+export function dewPointC(tempC: number, relativeHumidityPct: number): number {
+  const rh = Math.min(100, Math.max(1, relativeHumidityPct));
+  const gamma = Math.log(rh / 100) + (17.625 * tempC) / (243.04 + tempC);
+  return (243.04 * gamma) / (17.625 - gamma);
+}
+
 /** July/August afternoons at or below 24°C: the fog-coast and high-latitude summer. */
 export function coolSummer(p: Place): boolean {
   return Math.max(p.climate.tempHighC[6] ?? 0, p.climate.tempHighC[7] ?? 0) <= 24;

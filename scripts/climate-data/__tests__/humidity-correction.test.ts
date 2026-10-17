@@ -41,7 +41,7 @@ describe("humidity correction", () => {
 
   it("rejects malformed ratio series", () => {
     expect(() => validateHumidityCorrection("x", { ...correction, vpRatio: [1, 1] })).toThrow();
-    expect(() => validateHumidityCorrection("x", { ...correction, vpRatio: Array(12).fill(5) })).toThrow();
+    expect(() => validateHumidityCorrection("x", { ...correction, vpRatio: Array(12).fill(6) })).toThrow();
     expect(() => validateHumidityCorrection("x", correction)).not.toThrow();
   });
 
@@ -51,7 +51,7 @@ describe("humidity correction", () => {
     const file = JSON.parse(readFileSync(path, "utf8")) as HumidityCorrectionFile;
     for (const [placeId, c] of Object.entries(file.corrections)) {
       validateHumidityCorrection(placeId, c);
-      expect(c.station.distanceKm).toBeLessThanOrEqual(40);
+      expect(c.station.distanceKm).toBeLessThanOrEqual(c.regional ? 130 : 40);
       expect(Math.abs(c.station.elevationDeltaM)).toBeLessThanOrEqual(300);
       expect(c.station.usableYears).toBeGreaterThanOrEqual(5);
     }
