@@ -15,6 +15,7 @@ import { placeFeelScore } from "./place-feel";
 import { buildShortlistDecisionRows, type ShortlistDecisionRow } from "./decision-matrix";
 import { LIVE_FIT_PRESET_BY_ID, LIVE_FIT_PRESETS, type LiveFitFilters, type LiveFitPresetId } from "./live-fit";
 import type { RankingResult } from "./scoring";
+import { possessive } from "./place-name";
 
 const RISK_LABELS: Record<keyof Place["risks"], string> = {
   wildfire: "Wildfire",
@@ -305,7 +306,7 @@ function buildScoutNextStep(
     return {
       label: "Scout next",
       place: leader.place,
-      action: `Scout ${leader.place.name}'s ${firstWindow.label.toLowerCase()}: ${firstWindow.range}.`,
+      action: `Scout ${possessive(leader.place.name)} ${firstWindow.label.toLowerCase()}: ${firstWindow.range}.`,
       detail: `${firstWindow.label}: ${trimTerminalPunctuation(firstWindow.note ?? "best initial window from monthly normals")}. ${watch} ${compare}`,
     };
   }
@@ -313,7 +314,7 @@ function buildScoutNextStep(
   return {
     label: "Scout next",
     place: leader.place,
-    action: `Read ${leader.place.name}'s dossier before treating it as a finalist.`,
+    action: `Read ${possessive(leader.place.name)} dossier before treating it as a finalist.`,
     detail: `${watch} ${compare}`,
   };
 }
@@ -359,7 +360,7 @@ function buildFieldCheck(leader: Place): ExplorerScoutBrief["fieldCheck"] {
     label: "Field check",
     place: leader,
     target: "Immediate exposure gradient",
-    action: `Walk or drive ${leader.name}'s immediate exposure gradient.`,
+    action: `Walk or drive ${possessive(leader.name)} immediate exposure gradient.`,
     detail: "Compare sun, shade, slope, drainage, and wind over a short route; the atlas point is a screening coordinate, not a parcel survey.",
     source: "derived",
   };

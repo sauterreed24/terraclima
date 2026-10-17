@@ -331,7 +331,7 @@ export const PLACES_MEXICO: Place[] = [
     koppen: "Cwa",
     archetypes: ["eternal-spring-highland", "mild-winter-foothills", "volcanic-upland"],
     drivers: ["elevation-lapse-rate", "aspect-slope"],
-    summaryShort: "The archetype of Mexican eternal-spring towns — the 'City of Eternal Spring' by royal decree.",
+    summaryShort: "The archetype of Mexican eternal-spring towns — the 'City of Eternal Spring', a name traditionally credited to Humboldt.",
     summaryImmersive: "Cuernavaca occupies a south-facing bench on the volcanic belt's flank, 1500 m above the tropical lowlands. Aztec emperors and Spanish viceroys retreated here for the climate: afternoons in the mid-to-high 20s year-round, nights cooling into the mid-teens, bougainvillea spilling off every wall. The rainy season arrives in June with dramatic afternoon convection off the volcanoes above, washing the air clean each evening. Winters are dry, bright, and warm.",
     whyDistinct: "South-facing volcanic slope at 1500 m provides warmer daytime temperatures than higher basins like Mexico City, while altitude still moderates extremes.",
     experience: {

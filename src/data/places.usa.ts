@@ -133,7 +133,7 @@ export const PLACES_USA: Place[] = [
     whoMightNot: "Hot-summer lovers; strict four-season enthusiasts; anyone who resents cool cloudy Junes (the Pacific NW 'June gloom' applies in reduced form).",
 
     confidence: "high",
-    confidenceNotes: "Sequim is one of the best-studied rain-shadow microclimates in North America. Station data at WA Sequim 2 E (USW00094240) and PRISM agree well on the precipitation anomaly.",
+    confidenceNotes: "Sequim is one of the best-studied rain-shadow microclimates in North America. Station data at WA Sequim 2 E (USC00457544) and PRISM agree well on the precipitation anomaly.",
     citations: [
       { label: "NOAA Climate Normals 1991–2020 — Sequim 2 E", kind: "noaa", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
       { label: "PRISM 30-year normals precipitation grid", kind: "prism", url: "https://prism.oregonstate.edu/normals/" },
@@ -145,7 +145,7 @@ export const PLACES_USA: Place[] = [
         id: "sequim-air-masses",
         title: "Air masses, fronts, and the Olympic barrier",
         paragraphs: [
-          "In winter and spring, mid-latitude cyclones approach the Pacific Northwest with deeply maritime air. The Olympic Mountains act as a multi-kilometre wall: saturated westerly flow lifts on windward slopes, wringing out thousands of millimetres on the Quinault and Hoh. Air that reaches the northern rain-shadow has already surrendered most of its water; subsidence and downslope drying further warm and clear it. That is why Sequim can sit under high pressure with crisp visibility while Forks, less than 50 km away, records another soaking day.",
+          "In winter and spring, mid-latitude cyclones approach the Pacific Northwest with deeply maritime air. The Olympic Mountains act as a multi-kilometre wall: saturated westerly flow lifts on windward slopes, wringing out thousands of millimetres on the Quinault and Hoh. Air that reaches the northern rain-shadow has already surrendered most of its water; subsidence and downslope drying further warm and clear it. That is why Sequim can sit under high pressure with crisp visibility while Forks, about 95 km to the west, records another soaking day.",
           "Summer brings a different rhythm: the North Pacific subtropical high strengthens, and the strait becomes a corridor for cool, stable northwesterlies. June can still feel muted — the Pacific Northwest ‘June gloom’ reaches Sequim in softened form — but July and August are genuinely dry. The combination of rain-shadow subsidence and strait ventilation keeps afternoon highs modest even when interior Washington and Oregon bake.",
         ],
       },
@@ -169,7 +169,7 @@ export const PLACES_USA: Place[] = [
         id: "sequim-methods",
         title: "How we know — stations, PRISM, and residual uncertainty",
         paragraphs: [
-          "Sequim 2 E (USW00094240) anchors the lowland signal; PRISM grids capture the sharp gradient toward the Hoh. Residual uncertainty lies in garden-level frost on radiative nights — local cold-air pooling in the Dungeness valley can dip below grid expectations, especially under clear, calm inversions after snow in the Olympics.",
+          "Sequim 2 E (USC00457544) anchors the lowland signal; PRISM grids capture the sharp gradient toward the Hoh. Residual uncertainty lies in garden-level frost on radiative nights — local cold-air pooling in the Dungeness valley can dip below grid expectations, especially under clear, calm inversions after snow in the Olympics.",
           "Confidence in the rain-shadow magnitude is high; confidence in any single farm’s last frost date remains moderate because micro-scale topography within the lowland still matters at the 100–500 m scale.",
         ],
       },
@@ -1192,7 +1192,7 @@ export const PLACES_USA: Place[] = [
     lat: 45.7054,
     lon: -121.5215,
     elevationM: 49,
-    reliefContext: "North bank of the Columbia Gorge; Mt. Hood (3429 m) rises south, Cascade crest divides marine and continental climates.",
+    reliefContext: "South bank of the Columbia Gorge; Mt. Hood (3429 m) rises south, Cascade crest divides marine and continental climates.",
     biome: "Transitional coniferous-oak woodland",
     koppen: "Csb / Dsb transition",
     archetypes: ["orchard-valley", "river-valley-moderation", "thermal-belt", "rain-shadow-sanctuary"],
@@ -1201,7 +1201,7 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "The Columbia River carves the only sea-level gap through the Cascades, and climate tags along. On the west side of the crest, Portland sits in drizzly Pacific maritime. Sixty miles east, Hood River sees more sun, warmer summers, and reliable cold winter nights — perfect for pears, apples, and cherries. Orchards climb the south-facing Hood River Valley slope for miles, each bench a different thermal belt. Mt. Hood stands cloud-capped south; summer winds roar through the Gorge at 30 knots; winters are crisp, dry, and bright.",
     whyDistinct: "The Cascade rain shadow begins right at Hood River — rainfall drops from ~1100 mm at Cascade Locks to ~800 mm at Hood River to ~300 mm at The Dalles, 30 km east. Meanwhile, river-valley moderation, gap winds, and mid-slope thermal belts all converge on a small, famous orchard landscape.",
     experience: {
-      feel: "Hood River feels like the exact seam where wet Oregon becomes dry Oregon. The Columbia cuts the only sea-level gap through the Cascades, so the town banks more sun and warmer summers than Portland just upriver — a world-class pear-and-cherry belt under a cloud-capped Mt. Hood, with gorge winds that built a windsurfing culture.",
+      feel: "Hood River feels like the exact seam where wet Oregon becomes dry Oregon. The Columbia cuts the only sea-level gap through the Cascades, so the town banks more sun and warmer summers than Portland downriver — a world-class pear-and-cherry belt under a cloud-capped Mt. Hood, with gorge winds that built a windsurfing culture.",
       seasons: {
         winter: "Crisp and dry by Northwest standards — afternoons near 6°C, frosty nights, modest valley snow, and an often-clear sky over dormant orchards while the coast drowns.",
         spring: "Blossom season in the orchard benches — afternoons climbing through the teens, the gorge greening, and the famous winds picking back up as the pressure gradient builds.",
@@ -2025,7 +2025,7 @@ export const PLACES_USA: Place[] = [
     koppen: "Cfb",
     archetypes: ["cloud-forest", "cool-summer-maritime", "mild-winter-foothills"],
     drivers: ["orographic-lift", "elevation-lapse-rate"],
-    summaryShort: "The wettest place in the eastern US east of the Olympics — a southern-Appalachian cloud-forest pocket.",
+    summaryShort: "One of the wettest places in the eastern US — a southern-Appalachian cloud-forest pocket.",
     summaryImmersive: "Highlands sits atop the Blue Ridge escarpment at 1230 m — the first high terrain moist Gulf air encounters as it rides north. Annual precipitation regularly tops 2000 mm, with summer afternoons marked by cool orographic showers and evenings that dip into the teens even in July. It is one of the only true temperate rainforest pockets in eastern North America, and the microclimate is dramatic: mountain laurel, rhododendron, and dense hemlock understory coexist with clouds that rest on the ridges most mornings.",
     whyDistinct: "The Blue Ridge escarpment creates a steep climatic gradient — Gulf moisture ascending the wall yields some of the highest rainfall totals east of the Rockies. Elevation keeps summers astonishingly cool for the southeast.",
     experience: {
@@ -2065,7 +2065,7 @@ export const PLACES_USA: Place[] = [
     liveSignals: {
       costPressure: 58,
       accessFriction: 40,
-      note: "Resort-town housing in Highlands runs above rural NC norms; Asheville is the usual hospital and airport anchor under an hour away.",
+      note: "Resort-town housing in Highlands runs above rural NC norms; Highlands has a small hospital; Asheville, about an hour and a half away, is the usual specialist-care and airport anchor.",
       sources: [
         { label: "NOAA — Highlands cooperative climate normals", url: "https://www.ncei.noaa.gov/access/us-climate-normals/" },
         { label: "Town of Highlands — municipal services", url: "https://www.highlandsnc.org/" },
@@ -5141,7 +5141,7 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Brookings is already mild for the Oregon coast, but its claim to fame is episodic winter warmth: when pressure patterns align, air descends through the Chetco River corridor and compresses, producing rapid jumps that can melt frost in minutes while Astoria shivers. Baseline climate is still hyper-maritime — cool wet winters, foggy Junes, and summer highs that rarely tax a sweater.",
     whyDistinct: "Gap winds through a low Coast-Range pass create localized foehn-like warming on otherwise uniform north Pacific air; the phenomenon is rare enough to be news but frequent enough to define local lore.",
     experience: {
-      feel: "Brookings feels like a mild Oregon coast with a secret weapon — baseline hyper-maritime coolness punctuated by the Chetco effect, when pressure patterns align and downslope winds can melt frost in minutes while Astoria shivers 300 km north.",
+      feel: "Brookings feels like a mild Oregon coast with a secret weapon — baseline hyper-maritime coolness punctuated by the Chetco effect, when pressure patterns align and downslope winds can melt frost in minutes while Astoria shivers 450 km north.",
       seasons: {
         winter: "Mild with warm bursts — highs near 13°C most days, but foehn events can spike afternoons into the high teens or low 20s while fog sits offshore.",
         spring: "Foggy brightening — highs climbing through the mid-teens, rhododendrons along the Samuel Boardman corridor, and marine layer mornings that burn off by noon.",

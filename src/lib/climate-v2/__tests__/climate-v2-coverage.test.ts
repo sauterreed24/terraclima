@@ -75,7 +75,27 @@ describe("Climate Data V2 coverage", () => {
       const rec = byId[id]!;
       expect(Math.abs(rec.elevationDeltaM)).toBeGreaterThan(250);
       expect(rec.anchor.overrideReason).toBeTruthy();
-      expect(rec.validation.status).toBe("reviewed-exception");
     }
+    // Redfield's plateau has no representative station: still a documented exception.
+    expect(byId["redfield-ny"]!.validation.status).toBe("reviewed-exception");
+    // The gorge pixel sits ~340 m up the wall; river-level stations now correct it.
+    const gorge = byId["hood-river-gorge"]!;
+    expect(gorge.validation.status).toBe("validated");
+    expect(gorge.validation.stations[0]!.stationId).toBe("USW00024219");
+  });
+
+  it("station-validated places carry their station and a corrected provenance trail", async () => {
+    const byId = await loadClimateV2Records();
+    const validated = Object.values(byId).filter(r => r.validation.status === "validated");
+    expect(validated.length).toBeGreaterThan(40);
+    for (const rec of validated) {
+      expect(rec.validation.stations.length, rec.placeId).toBe(1);
+      expect(rec.validation.stations[0]!.distanceKm, rec.placeId).toBeLessThanOrEqual(15);
+      expect(rec.provenance.some(p => p.fallback === "station-override"), rec.placeId).toBe(true);
+      expect(rec.climateDataConfidence, rec.placeId).toBe("high");
+    }
+    // Cold-air pools the grid smoothed over now read like their towns' stations.
+    expect(byId["stanley-id"]!.periods["wmo-1991-2020"].tempLowC[0]).toBeLessThan(-17);
+    expect(byId["crested-butte-co"]!.periods["wmo-1991-2020"].tempLowC[0]).toBeLessThan(-20);
   });
 });

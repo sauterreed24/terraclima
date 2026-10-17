@@ -10,7 +10,12 @@ export type PlaceHeroMedia = {
   alt: string;
   creditLine: string;
   sourceUrl: string;
+  /** CSS object-position for the wide hero frame, keeping the subject in view. */
+  objectPosition: string;
 };
+
+/** Default vertical focus (%) for the wide hero crop: a little above centre. */
+const DEFAULT_FOCUS_Y = 42;
 
 const CREDIT =
   "Photo: Wikimedia Commons. Open the file page for photographer and license.";
@@ -37,24 +42,28 @@ function commonsSrcSet(file: string): string {
     .join(", ");
 }
 
-/** place.id → Commons filename. Landscape-first; file-page credit only. */
-const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
+/**
+ * place.id → Commons filename. Landscape-first; file-page credit only.
+ * `focusY` (0 = top, 100 = bottom) moves the wide crop when the subject sits
+ * high or low in the frame, such as a summit near the top edge.
+ */
+const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string; focusY?: number }> = {
   "sequim-wa": { file: "D Spit 5783.jpg", alt: "Dungeness Spit reaching into the Strait of Juan de Fuca on a clear rain-shadow day" },
   "monterey-ca": { file: "2016-06-03 USA, CA, Point Lobos DSC 8596 DxO 1.jpg", alt: "Fogbound cypress and rocky Pacific cliffs at Point Lobos on the Monterey fog coast" },
   "black-mountain-nc": { file: "Lookout Mountain Overlook, North Carolina.jpg", alt: "Blue Ridge ridgelines from the Lookout Mountain overlook above Black Mountain" },
-  "hood-river-or": { file: "Hood River OR - aerial.jpg", alt: "Hood River, the Columbia, and snow-capped Mount Hood above orchard country" },
+  "hood-river-or": { file: "Hood River OR - aerial.jpg", alt: "Hood River, the Columbia, and snow-capped Mount Hood above orchard country", focusY: 12 },
   "santa-barbara-ca": { file: "Stearns Wharf - Don Ramey Logan.jpg", alt: "Stearns Wharf and the Santa Ynez Mountains at Santa Barbara" },
   "port-townsend-wa": { file: "Adventuress Schooner Port Townsend Marina , Washington State.jpg", alt: "Port Townsend marina and wooden-boat waterfront on the Olympic rain shadow edge" },
   "tucson-az": { file: "Saguaro National Park East, Arizona, USA 2024 3.jpg", alt: "Saguaro cactus forest and desert hills east of Tucson" },
-  "portal-az": { file: "Echo Canyon Trail, Chiricahua National Monument, Willcox, AZ.jpg", alt: "Hoodoo canyon along Echo Canyon in the Chiricahua sky island" },
-  "flagstaff-az": { file: "San Francisco Peaks Christmas Day 2010.jpg", alt: "Snowy San Francisco Peaks above Flagstaff's ponderosa country" },
-  "sedona-az": { file: "Cathedral Rock - Sedona AZ-1.jpg", alt: "Cathedral Rock at sunset in Sedona's red-rock country" },
+  "portal-az": { file: "Echo Canyon Trail, Chiricahua National Monument, Willcox, AZ.jpg", alt: "Hoodoo canyon along Echo Canyon in the Chiricahua sky island", focusY: 32 },
+  "flagstaff-az": { file: "San Francisco Peaks Christmas Day 2010.jpg", alt: "Snowy San Francisco Peaks above Flagstaff's ponderosa country", focusY: 25 },
+  "sedona-az": { file: "Cathedral Rock - Sedona AZ-1.jpg", alt: "Cathedral Rock at sunset in Sedona's red-rock country", focusY: 35 },
   "santa-fe-nm": { file: "Palace of the Governors.jpg", alt: "Adobe Palace of the Governors and plaza light in Santa Fe" },
   "taos-nm": { file: "Taos_Pueblo.jpg", alt: "Multi-story adobe buildings at Taos Pueblo beneath the Sangre de Cristo" },
   "marfa-tx": { file: "The Chinati Foundation La Fundación Chinati, Marfa, Texas 06.JPG", alt: "Donald Judd concrete works on the high-desert grassland at Chinati in Marfa" },
   "key-west-fl": { file: "Sunset Key and Sailboats, Florida, 2025.jpg", alt: "Turquoise water and sailboats off Sunset Key at the end of the Florida Keys" },
   "charleston-sc": { file: "Rainbow Row Charleston July 2024 1.jpg", alt: "Rainbow Row's pastel houses along Charleston's harbor streets" },
-  "banff-ab": { file: "1 moraine lake pano 2019.jpg", alt: "Moraine Lake's turquoise water and the Valley of the Ten Peaks" },
+  "banff-ab": { file: "1 moraine lake pano 2019.jpg", alt: "Moraine Lake's turquoise water and the Valley of the Ten Peaks", focusY: 28 },
   "victoria-bc": { file: "View from Malahat lookout 1.jpg", alt: "Southern Vancouver Island water and hills near Victoria's rain-shadow coast" },
   "qualicum-bc": { file: "Qualicum Beach, British Columbia - panoramio.jpg", alt: "Qualicum Beach shoreline on Vancouver Island's drier east side" },
   "oaxaca-mx": { file: "Aspecto de Monte Albán, Oaxaca.jpg", alt: "Monte Albán's highland ruins above Oaxaca de Juárez" },
@@ -124,20 +133,20 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
   "xalapa-mx": { file: "Vista del Pico de Orizaba desde Parque Juárez 08.jpg", alt: "Snow-capped Pico de Orizaba seen from Parque Juárez in highland Xalapa" },
   "coatepec-mx": { file: "Arcoiris completo en Coatepec, Veracruz, México.png", alt: "Full rainbow over Coatepec in Veracruz coffee-cloud country" },
   "death-valley-ca": { file: "Morning at Zabriskie Point, Death Valley2.jpg", alt: "Morning light on the badlands of Zabriskie Point in Death Valley" },
-  "cannon-beach-or": { file: "Cannon Beach October 2019 001.jpg", alt: "Haystack Rock and the Needles rising from Cannon Beach on the Oregon coast" },
+  "cannon-beach-or": { file: "Cannon Beach October 2019 001.jpg", alt: "Haystack Rock and the Needles rising from Cannon Beach on the Oregon coast", focusY: 22 },
   "new-orleans-la": { file: "The Cabildo, St. Louis Cathedral, Presbytere, New Orleans from Moonwalk.jpg", alt: "St. Louis Cathedral between the Cabildo and the Presbytère on Jackson Square" },
   "bar-harbor-me": { file: "Cadillac Mountain August 2016.jpg", alt: "Cadillac Mountain granite and Atlantic light above Bar Harbor" },
   "asheville-nc": { file: "Blue Ridge Mountains - Asheville.jpg", alt: "Blue Ridge front above Asheville" },
-  "boulder-co": { file: "Flatirons Sunrise.jpg", alt: "Sunrise light on the Flatirons above Boulder" },
+  "boulder-co": { file: "Flatirons Sunrise.jpg", alt: "Sunrise light on the Flatirons above Boulder", focusY: 22 },
   "moab-ut": { file: "Delicate Arch, Arches National Park (15468451289).jpg", alt: "Delicate Arch sandstone with the La Sal Mountains beyond Moab" },
-  "jackson-wy": { file: "Grand Teton from the Snake River Overlook.jpg", alt: "Grand Teton rising above the Snake River in Jackson Hole" },
+  "jackson-wy": { file: "Grand Teton from the Snake River Overlook.jpg", alt: "Grand Teton rising above the Snake River in Jackson Hole", focusY: 22 },
   "honolulu-hi": { file: "View towards Diamond Head from Waikiki (5216373638).jpg", alt: "Diamond Head from Waikiki on Oʻahu's leeward shore" },
   "anchorage-ak": { file: "Chugach mountains over Anchorage rooftops.jpg", alt: "Chugach front rising over Anchorage rooftops" },
   "napa-ca": { file: "Vineyards in Napa Valley 7.jpg", alt: "Vineyard rows across the floor of the Napa Valley" },
-  "palm-springs-ca": { file: "San Jacinto Mountains - Palm Springs.jpg", alt: "San Jacinto escarpment rising above Palm Springs" },
+  "palm-springs-ca": { file: "San Jacinto Mountains - Palm Springs.jpg", alt: "San Jacinto escarpment rising above Palm Springs", focusY: 60 },
   "austin-tx": { file: "Downtown Austin Skyline - Lady Bird Lake (54987239041).jpg", alt: "Austin skyline across Lady Bird Lake" },
   "savannah-ga": { file: "Savannah GA USA Forsyth Park fountain.jpg", alt: "Live oaks and the fountain in Savannah's Forsyth Park" },
-  "hilo-hi": { file: "Rainbow Falls, Hilo (504333) (23502996901).jpg", alt: "Rainbow Falls in the wet windward country above Hilo Bay" },
+  "hilo-hi": { file: "Rainbow Falls, Hilo (504333) (23502996901).jpg", alt: "Rainbow Falls in the wet windward country above Hilo Bay", focusY: 28 },
   "sitka-ak": { file: "Gavan Hill, Sitka, Alaska May 2013.jpg", alt: "Temperate rainforest slopes of Gavan Hill above Sitka" },
   "valdez-ak": { file: "View of the Worthington Glacier from the Richardson Highway outside of Valdez, Alaska.jpg", alt: "Worthington Glacier descending between green coastal mountains outside Valdez" },
   "fairbanks-ak": { file: "Aurora in Fairbanks 20120411.jpg", alt: "Northern lights over Fairbanks in interior Alaska" },
@@ -147,7 +156,7 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
   "missoula-mt": { file: "University Mountain from Higgins Avenue, Missoula, MT.jpg", alt: "The M on Mount Sentinel above Missoula's dry-grass Clark Fork valley" },
   "bozeman-mt": { file: "080510 bozeman scenery.jpg", alt: "Bridger-front scenery on the Gallatin Valley at Bozeman" },
   "durango-co": { file: "Animas River just north of downtown Durango, CO.jpg", alt: "Animas River valley just north of Durango" },
-  "crested-butte-co": { file: "Crested Butte.jpg", alt: "Crested Butte mountain town in the high Elk Mountains" },
+  "crested-butte-co": { file: "Crested Butte.jpg", alt: "Crested Butte mountain town in the high Elk Mountains", focusY: 30 },
   "leadville-co": { file: ".Mount Elbert Trail.jpg", alt: "Mount Elbert trail country above Leadville, North America's highest city" },
   "cody-wy": { file: "Cody - Buffalo Bill Resevoir.jpg", alt: "Buffalo Bill Reservoir in the Absaroka foothills just west of Cody" },
   "cloudcroft-nm": { file: "Sacramento Mountains, New Mexico (16260719942).jpg", alt: "Sacramento Mountains forest high above the Tularosa Basin" },
@@ -157,7 +166,7 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
   "winthrop-wa": { file: "Winthrop (29822638388).jpg", alt: "Winthrop in the Methow Valley rain shadow of the North Cascades" },
   "brookings-or": { file: "Sea Stacks at Harris Beach State Park near Brookings, Oregon.jpg", alt: "Sea stacks and Pacific surf at Harris Beach near Brookings on the southern Oregon coast" },
   "joseph-or": { file: "Hurwal Divide and Chief Joseph Mountain.jpg", alt: "Wallowa Mountains above Joseph, Oregon" },
-  "stanley-id": { file: "McGown Peak reflected on Stanley Lake, Idaho.jpg", alt: "McGown Peak reflected in Stanley Lake in the Sawtooths" },
+  "stanley-id": { file: "McGown Peak reflected on Stanley Lake, Idaho.jpg", alt: "McGown Peak reflected in Stanley Lake in the Sawtooths", focusY: 22 },
   "mount-washington-nh": { file: "White Mountains 12 30 09 81.jpg", alt: "Presidential Range and Mount Washington in the White Mountains" },
   "ely-mn": { file: "The Boundary Waters, Minnesota.jpg", alt: "Boundary Waters lakes and boreal forest near Ely, Minnesota" },
   "nags-head-nc": { file: "Jockey's Ridge State Park Nags Head 19.jpg", alt: "Wind-sculpted dunes and maritime scrub at Jockey's Ridge in Nags Head" },
@@ -176,7 +185,7 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
   "rapid-city-sd": { file: "Dean Franklin - 06.04.03 Mount Rushmore Monument (by-sa).jpg", alt: "Mount Rushmore in the eastern Black Hills above Rapid City country" },
   "roswell-nm": { file: "Bottomless Lakes State Park (3902035251).jpg", alt: "Desert sinkhole lake and arid plains at Bottomless Lakes near Roswell" },
   "page-az": { file: "Grand Canyon Horseshoe Bend.jpg", alt: "Horseshoe Bend of the Colorado River below Page, Arizona" },
-  "lone-pine-ca": { file: "View of Mt. Whitney from Lone Pine, CA.jpg", alt: "Mount Whitney rising above Lone Pine and the Owens Valley" },
+  "lone-pine-ca": { file: "View of Mt. Whitney from Lone Pine, CA.jpg", alt: "Mount Whitney rising above Lone Pine and the Owens Valley", focusY: 35 },
   "leavenworth-wa": { file: "Between Perfection and Leprechaun Lakes, Enchantments (11 October 2024).jpg", alt: "Alpine lakes in the Enchantments above Leavenworth" },
   "friday-harbor-wa": { file: "Aerial Friday Harbor Washington August 2009.jpg", alt: "Aerial view of Friday Harbor marina and San Juan Island's rain-shadow inland sea" },
   "point-reyes-ca": { file: "Chimney Rock Trail Point Reyes December 2016 panorama 2.jpg", alt: "Pacific headlands and surf along the Chimney Rock Trail at Point Reyes" },
@@ -224,7 +233,7 @@ const HERO_BY_PLACE_ID: Record<string, { file: string; alt: string }> = {
   "erie-pa": { file: "Presque Isle 3 (8666943048).jpg", alt: "Lake Erie shore at Presque Isle State Park off Erie" },
   "paducah-ky": { file: "Confluence of the Ohio and Tennessee Rivers.jpg", alt: "Ohio and Tennessee rivers meeting under summer clouds at Paducah" },
   "port-orford-cape-blanco-or": { file: "Cape Blanco Lighthouse (6) (10846022174).jpg", alt: "Cape Blanco headland and lighthouse on the southern Oregon coast" },
-  "klamath-falls-upper-klamath-basin-or": { file: "Mt. McLoughlin from Upper Klamath Lake - Shelley Snow (11409307594).jpg", alt: "Snowy Mount McLoughlin rising beyond Upper Klamath Lake" },
+  "klamath-falls-upper-klamath-basin-or": { file: "Mt. McLoughlin from Upper Klamath Lake - Shelley Snow (11409307594).jpg", alt: "Snowy Mount McLoughlin rising beyond Upper Klamath Lake", focusY: 18 },
   "los-alamos-pajarito-plateau-nm": { file: "Panorama of Valles Caldera, New Mexico (7271433464).jpg", alt: "Valles Caldera grassland bowl above the Pajarito Plateau" },
   "lander-sinks-canyon-wy": { file: "Sinks Canyon State Park (4679266666).jpg", alt: "Sinks Canyon walls and river west of Lander, Wyoming" },
   "mentone-al": { file: "Desoto Falls, AL 8-27-13 (54).jpg", alt: "DeSoto Falls plunging into a rock amphitheater on Lookout Mountain near Mentone" },
@@ -277,6 +286,7 @@ export function getPlaceHeroMedia(placeId: string): PlaceHeroMedia | null {
     alt: row.alt,
     creditLine: CREDIT,
     sourceUrl: commonsFilePage(row.file),
+    objectPosition: `center ${row.focusY ?? DEFAULT_FOCUS_Y}%`,
   };
 }
 

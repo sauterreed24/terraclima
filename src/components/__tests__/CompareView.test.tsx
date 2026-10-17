@@ -7,6 +7,7 @@ import { buildCompareDecisionProfiles, compareLensScore } from "../../lib/compar
 import type { CompareCandidate, ComparisonLensId } from "../../lib/compare-workbench";
 import type { LiveFitFilters, LiveFitPresetId } from "../../lib/live-fit";
 import { UnitProvider } from "../../lib/units";
+import { possessive } from "../../lib/place-name";
 import type { Place } from "../../types";
 import { CompareView } from "../CompareView";
 
@@ -142,7 +143,7 @@ describe("CompareView", () => {
     // read for the active lens (here Portal on Risk), not the oldest slot.
     const swapCandidate = screen.getByRole("button", { name: `Swap ${PLACES[4].name} into active comparison` });
     expect(swapCandidate).toHaveTextContent("Swap");
-    expect(swapCandidate).toHaveTextContent(`vs ${PLACES[1].name}'s active risk read`);
+    expect(swapCandidate).toHaveTextContent(`vs ${possessive(PLACES[1].name)} active risk read`);
     expect(swapCandidate).toHaveTextContent(`Replaces ${PLACES[1].name}`);
     expect(swapCandidate).toHaveAttribute("title", expect.stringContaining(`Replaces the weakest active risk read: ${PLACES[1].name}.`));
     onRemove.mockClear();

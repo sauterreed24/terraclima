@@ -23,7 +23,8 @@ describe("PlaceClimateTwins", () => {
     expect(note).toHaveTextContent("the main climate tradeoff");
     expect(note).toHaveTextContent("Keeps");
     expect(note).toHaveTextContent("Watch:");
-    expect(note).toHaveTextContent("Open Port Townsend's dossier to pressure-test that tradeoff");
+    // Sequim's closest rain-shadow twin, from its station-corrected normals.
+    expect(note).toHaveTextContent("Open Friday Harbor's dossier to pressure-test that tradeoff");
   });
 
   it("keeps the lead twin card clickable after adding the relocation read", () => {
