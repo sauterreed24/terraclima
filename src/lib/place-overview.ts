@@ -28,6 +28,7 @@ import type { SiteHistoryEntry } from "../data/site-history/types";
 import {
   RISK_VALUE,
   annualComfortMonthCount,
+  dewPointC,
   meanAnnualHumidityPct,
   meanJanLow,
   meanSummerHigh,
@@ -143,12 +144,6 @@ function dayPhrase(tone: SeasonTone): string {
     case "cold": return "Days run cold";
     case "frigid": return "Daylight barely climbs above freezing";
   }
-}
-
-function dewPointC(tempC: number, relativeHumidityPct: number): number {
-  const rh = Math.min(100, Math.max(1, relativeHumidityPct));
-  const gamma = Math.log(rh / 100) + (17.625 * tempC) / (243.04 + tempC);
-  return (243.04 * gamma) / (17.625 - gamma);
 }
 
 function nightPhrase(lowC: number, humidityMean: number | null): string {
