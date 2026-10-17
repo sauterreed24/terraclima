@@ -1,13 +1,23 @@
-# Contact sheets of every place hero photograph, for reviewing the set by eye.
-# Downloads each photo as a 330 px Commons thumbnail, builds labelled 4×4
-# sheets, and uploads them as the "hero-contact-sheets-N" artifacts. The log
-# also carries each thumbnail (small JPEG, base64, "B64 <name> <chunk>" lines)
-# so the photos can be reviewed where the artifact store is out of reach.
-# Network-bound, so it runs only when the photo list changes (or by hand).
+# Contact sheets of place hero photographs, for reviewing them by eye.
+#
+# Default: every current photo as a 330 px Commons thumbnail, in labelled 4×4
+# sheets ("hero-contact-sheets-N" artifacts).
+# Manual run with "candidates" (comma-separated place ids): up to nine
+# replacement candidates per place, in 3×3 sheets, with a CAND line per photo
+# naming the Commons file.
+#
+# The log also carries each thumbnail (small JPEG, base64, "B64 <name> <chunk>"
+# lines) so the photos can be reviewed where the artifact store is out of
+# reach. Network-bound, so it runs only when the photo list changes (or by hand).
 name: Hero contact sheet
 
 on:
   workflow_dispatch:
+    inputs:
+      candidates:
+        description: "Comma-separated place ids to find replacement candidates for (blank = current photos)"
+        required: false
+        default: ""
   push:
     branches-ignore: [main]
     paths:
@@ -19,7 +29,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: hero-contact-sheet-${{ github.ref }}
+  group: hero-contact-sheet-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
@@ -29,7 +39,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4]
+        shard: [1, 2, 3, 4, 5, 6]
+    env:
+      CANDIDATES: ${{ inputs.candidates }}
     steps:
       - uses: actions/checkout@v6.0.2
       - uses: actions/setup-node@v6.4.0
@@ -41,18 +53,27 @@ jobs:
         run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
       - name: Download thumbnails
         id: download
-        run: npx tsx scripts/hero-contact-sheet.ts --out hero-thumbs --shard ${{ matrix.shard }}/4
+        run: |
+          if [ -n "$CANDIDATES" ]; then
+            npx tsx scripts/hero-contact-sheet.ts --out hero-thumbs --candidates "$CANDIDATES" --shard ${{ matrix.shard }}/6
+          else
+            npx tsx scripts/hero-contact-sheet.ts --out hero-thumbs --shard ${{ matrix.shard }}/6
+          fi
         continue-on-error: true
       - name: Build contact sheets
         run: |
           mkdir -p sheets
-          montage -label '%t' hero-thumbs/*.jpg -tile 4x4 -geometry 330x220+6+18 \
-            -background '#1c1c1c' -fill '#f2f2f2' -pointsize 13 -quality 82 \
-            sheets/hero-sheet-${{ matrix.shard }}-%02d.jpg
+          if ls hero-thumbs/*.jpg >/dev/null 2>&1; then
+            tile=4x4; [ -n "$CANDIDATES" ] && tile=3x3
+            montage -label '%t' hero-thumbs/*.jpg -tile "$tile" -geometry 330x220+6+18 \
+              -background '#1c1c1c' -fill '#f2f2f2' -pointsize 13 -quality 82 \
+              sheets/hero-sheet-${{ matrix.shard }}-%02d.jpg
+          fi
           ls -la sheets
       - name: Print thumbnails
         run: |
           for f in hero-thumbs/*.jpg; do
+            [ -e "$f" ] || continue
             name=$(basename "$f")
             convert "$f" -resize '330x330>' -quality 62 -strip jpg:- | base64 -w 0 | fold -w 6000 | sed "s/^/B64 $name /"
             echo
@@ -61,6 +82,7 @@ jobs:
         with:
           name: hero-contact-sheets-${{ matrix.shard }}
           path: sheets/
+          if-no-files-found: ignore
       - name: Fail on missing thumbnails
         if: steps.download.outcome != 'success'
         run: exit 1
