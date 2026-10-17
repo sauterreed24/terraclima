@@ -1,0 +1,64 @@
+# Contact sheets of every place hero photograph, for reviewing the set by eye.
+# Downloads each photo as a 330 px Commons thumbnail, builds labelled 4×4
+# sheets, and uploads them as the "hero-contact-sheets-N" artifacts. The log
+# also carries each thumbnail (small JPEG, base64, "B64 <name> <chunk>" lines)
+# so the photos can be reviewed where the artifact store is out of reach.
+# Network-bound, so it runs only when the photo list changes (or by hand).
+name: Hero contact sheet
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+    paths:
+      - src/lib/place-hero-media.ts
+      - scripts/hero-contact-sheet.ts
+      - .github/workflows/hero-contact-sheet.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hero-contact-sheet-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sheets:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-node@v6.4.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Download thumbnails
+        id: download
+        run: npx tsx scripts/hero-contact-sheet.ts --out hero-thumbs --shard ${{ matrix.shard }}/4
+        continue-on-error: true
+      - name: Build contact sheets
+        run: |
+          mkdir -p sheets
+          montage -label '%t' hero-thumbs/*.jpg -tile 4x4 -geometry 330x220+6+18 \
+            -background '#1c1c1c' -fill '#f2f2f2' -pointsize 13 -quality 82 \
+            sheets/hero-sheet-${{ matrix.shard }}-%02d.jpg
+          ls -la sheets
+      - name: Print thumbnails
+        run: |
+          for f in hero-thumbs/*.jpg; do
+            name=$(basename "$f")
+            convert "$f" -resize '330x330>' -quality 62 -strip jpg:- | base64 -w 0 | fold -w 6000 | sed "s/^/B64 $name /"
+            echo
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hero-contact-sheets-${{ matrix.shard }}
+          path: sheets/
+      - name: Fail on missing thumbnails
+        if: steps.download.outcome != 'success'
+        run: exit 1
