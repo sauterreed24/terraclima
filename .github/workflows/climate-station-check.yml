@@ -1,0 +1,73 @@
+# Compares the Daymet climate grid with nearby GHCN-Daily weather stations
+# (scripts/climate-data/station-bias.ts) and, in "apply" mode, regenerates the
+# Climate V2 assets with the reviewed corrections in
+# data/climate-v2/stations/station-bias.json.
+#
+# Network-bound and manual. The log carries the diagnostics (BIAS lines) and,
+# in apply mode, the regenerated assets as a base64 tar.gz ("TGZ" lines) so
+# they can be reviewed and committed from an environment without NOAA access.
+name: Climate station check
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "diagnose (compare only) or apply (regenerate with station-bias.json)"
+        required: true
+        default: diagnose
+        type: choice
+        options: [diagnose, apply]
+      ids:
+        description: "Comma-separated place ids to diagnose (blank = all)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: climate-station-check-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      IDS: ${{ inputs.ids }}
+    steps:
+      - uses: actions/checkout@v6.0.2
+      - uses: actions/setup-node@v6.4.0
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Restore Daymet cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/daymet
+          key: daymet-v4r1-2025-${{ hashFiles('data/climate-v2/anchors.json') }}
+          restore-keys: daymet-v4r1-2025-
+      - name: Restore GHCN-Daily cache
+        uses: actions/cache@v4
+        with:
+          path: .cache/ghcnd
+          key: ghcnd-${{ github.run_id }}
+          restore-keys: ghcnd-
+      - name: Fetch Daymet (resume-safe)
+        run: npm run climate:data:fetch -- --through=2025 --concurrency=4
+      - name: Compare with stations
+        if: inputs.mode == 'diagnose'
+        run: |
+          npx tsx scripts/climate-data/station-bias.ts --ids "$IDS"
+          gzip -9 -c data/climate-v2/stations/station-bias-diagnostics.json | base64 -w 0 | fold -w 6000 | sed 's/^/DIAG /'
+          echo
+      - name: Regenerate with reviewed corrections
+        if: inputs.mode == 'apply'
+        run: |
+          npm run climate:data:generate
+          npm run climate:data:verify
+          npm run climate:data:audit
+          tar czf /tmp/climate-v2.tgz src/data/generated/climate-v2 data/climate-v2/manifest.json data/climate-v2/audit
+          base64 -w 0 /tmp/climate-v2.tgz | fold -w 6000 | sed 's/^/TGZ /'
+          echo
