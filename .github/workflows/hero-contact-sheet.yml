@@ -30,6 +30,7 @@ on:
     branches-ignore: [main]
     paths:
       - src/lib/place-hero-media.ts
+      - src/data/place-hero-photos.ts
       - scripts/hero-contact-sheet.ts
       - .github/workflows/hero-contact-sheet.yml
 

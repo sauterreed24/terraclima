@@ -138,6 +138,8 @@ export default defineConfig({
           if (id.includes("/data/places.canada")) return "places-canada";
           if (id.includes("/data/places.mexico")) return "places-mexico";
           if (id.includes("/data/places.site-history") || id.includes("/data/site-history/")) return "site-history";
+          // Hero photo table — only the place page reads it; ships beside it.
+          if (id.includes("/data/place-hero-photos")) return "hero-photos";
           // Natural Earth rivers + lakes for the atlas map — decorative, lazy.
           if (id.includes("/data/geo/")) return "atlas-hydro";
           // Compact climate overlay rides with place assembly; full provenance
