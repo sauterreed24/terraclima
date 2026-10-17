@@ -41,7 +41,7 @@ describe("humidity correction", () => {
 
   it("rejects malformed ratio series", () => {
     expect(() => validateHumidityCorrection("x", { ...correction, vpRatio: [1, 1] })).toThrow();
-    expect(() => validateHumidityCorrection("x", { ...correction, vpRatio: Array(12).fill(5) })).toThrow();
+    expect(() => validateHumidityCorrection("x", { ...correction, vpRatio: Array(12).fill(6) })).toThrow();
     expect(() => validateHumidityCorrection("x", correction)).not.toThrow();
   });
 

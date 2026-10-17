@@ -46,8 +46,8 @@ export interface HumidityCorrectionFile {
 }
 
 export function validateHumidityCorrection(placeId: string, c: HumidityCorrection): void {
-  if (c.vpRatio.length !== 12 || c.vpRatio.some(v => !Number.isFinite(v) || v < 0.4 || v > 4)) {
-    throw new Error(`${placeId}: vpRatio needs 12 monthly ratios within 0.4–4`);
+  if (c.vpRatio.length !== 12 || c.vpRatio.some(v => !Number.isFinite(v) || v < 0.4 || v > 5)) {
+    throw new Error(`${placeId}: vpRatio needs 12 monthly ratios within 0.4–5`);
   }
 }
 
