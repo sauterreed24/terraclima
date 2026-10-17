@@ -37,6 +37,8 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
+      - name: Install ImageMagick
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq imagemagick
       - name: Download thumbnails
         id: download
         run: npx tsx scripts/hero-contact-sheet.ts --out hero-thumbs --shard ${{ matrix.shard }}/4
