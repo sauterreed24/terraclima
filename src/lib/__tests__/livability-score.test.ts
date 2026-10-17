@@ -44,7 +44,8 @@ describe("summerComfortScore", () => {
   });
 
   it("penalises hot summers (above plateau)", () => {
-    const p = makePlace({ climate: uniformClimate({ high: 34, low: 20, humidity: 50, diurnalSummerC: 8 }) });
+    // Dry air (dew point ~9°C) isolates the heat penalty from the humidity tax.
+    const p = makePlace({ climate: uniformClimate({ high: 34, low: 20, humidity: 35, diurnalSummerC: 8 }) });
     // 34°C is 8°C above the 26°C cap. With 4 pts/°C that's −32 from 100 = 68.
     expect(summerComfortScore(p)).toBeCloseTo(68, 0);
   });

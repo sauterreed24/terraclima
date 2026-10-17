@@ -1,6 +1,6 @@
 # Climate Data V2 Audit Report
 
-Generated: 2026-10-17T16:45:41.720Z
+Generated: 2026-10-17T17:22:29.458Z
 
 ## Coverage
 - Authored places: 226
@@ -27,7 +27,7 @@ Large differences are a **review queue**, not automatic proof either value is wr
 - none (elevation mismatches have documented climate-anchor overrides; temp/precip deltas are the reviewed queue below)
 
 ## Review queue policy
-Authored-vs-Daymet outliers are **not** auto-corrected. Runtime uses Daymet 1996–2025, except where a reviewed GHCN-Daily station beside the place shows the grid missing a local effect (cold-air pool, fog coast, lake shore, rain shadow): those places use Daymet bias-corrected month by month to that station (`stations/station-bias.json`, status "validated"). See `stations/reviewed-exceptions.json` for named causes (terrain, coastal-exposure, zone-vs-town, elevation-mismatch, authored-blend-divergence, station-mapping-pending).
+Authored-vs-Daymet outliers are **not** auto-corrected. Runtime uses Daymet 1996–2025, except where a reviewed GHCN-Daily station beside the place shows the grid missing a local effect (cold-air pool, fog coast, lake shore, rain shadow): those places use Daymet bias-corrected month by month to that station (`stations/station-bias.json`, status "validated"). Relative humidity uses Daymet vapour pressure scaled month by month to the nearest representative ISD station's hourly dew points where one exists (`stations/humidity-bias.json`); Daymet's aridity correction otherwise runs far too dry on fog coasts and through dry seasons. See `stations/reviewed-exceptions.json` for named causes (terrain, coastal-exposure, zone-vs-town, elevation-mismatch, authored-blend-divergence, station-mapping-pending).
 
 ## Priority review IDs
 - hood-river-gorge

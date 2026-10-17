@@ -2,6 +2,7 @@ import type { Place, RiskLevel } from "../types";
 import {
   annualComfortMonthCount,
   avgRisk,
+  coolSummer,
   meanJanLow,
   meanSummerHigh,
   meanWinterSunshinePct,
@@ -493,17 +494,18 @@ function computeLiveFitAssessment(place: Place, filters: LiveFitFilters = {}): L
 
   // Marine-fog / low-sunshine caution
   const diurnal = place.climate.diurnalSummerC ?? (place.climate.tempHighC[6] - place.climate.tempLowC[6]);
-  if (place.climate.humidity) {
+  const observedSunshine = observedSunshinePct(place);
+  // Measured low sunshine says the same thing more precisely, so it replaces the fog inference.
+  if (place.climate.humidity && coolSummer(place) && !(observedSunshine != null && observedSunshine < 55)) {
     const hum = place.climate.humidity;
     const summerHum = (hum[4] + hum[5] + hum[6] + hum[7]) / 4;
     const annualHum = hum.reduce((a, b) => a + b, 0) / 12;
     if (summerHum > 72 && diurnal < 12) {
-      pushUnique(cautions, "Summer marine layer likely (\"June Gloom\" pattern) — temperatures feel colder and greyer than they appear on paper.", 3);
+      pushUnique(cautions, "Summer fog and low cloud likely — temperatures feel colder and greyer than they appear on paper.", 3);
     } else if (annualHum > 76 && diurnal < 12) {
       pushUnique(cautions, "Persistent overcast or fog — mild temperatures can feel colder and greyer than the numbers suggest.", 3);
     }
   }
-  const observedSunshine = observedSunshinePct(place);
   if (observedSunshine != null) {
     // US average is ~58%; below 48% (Eureka's level) is a clear quality-of-life drag per research.
     // Use authored percent-of-possible sunshine (the number the dossier shows), not Daymet solar.

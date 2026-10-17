@@ -169,12 +169,14 @@ function seasonConditions(
   snowMean: number | null,
   humidityMean: number | null,
   sunshineMean: number | null,
+  highC: number,
 ): SeasonConditions {
   return {
     snowy: (snowMean ?? 0) >= 12,
     wet: precipMean >= 95,
     dry: precipMean < 25,
-    humid: humidityMean != null && humidityMean >= 70,
+    // "Soft, humid air" is warm-season mugginess; cool damp seasons are not it.
+    humid: humidityMean != null && humidityMean >= 70 && highC >= 22,
     sunny: sunshineMean != null && sunshineMean >= 68,
     gray: sunshineMean != null && sunshineMean < 42,
   };
@@ -333,7 +335,7 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
   const sunshineMean = meanOf(place.climate.sunshinePct, def.idx);
 
   const tone = toneForHigh(highC);
-  const conditions = seasonConditions(precipMean, snowMean, humidityMean, sunshineMean);
+  const conditions = seasonConditions(precipMean, snowMean, humidityMean, sunshineMean, highC);
 
   const sentences: string[] = [
     `${dayPhrase(tone)}, ${nightPhrase(lowC, humidityMean)}.`,

@@ -4,6 +4,29 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Station-checked climate, honest humidity, 50 better photos, and ~300 fact fixes
+
+- **Station corrections (53 places):** the 1 km Daymet grid smooths away the local effects the atlas is about. Where a representative GHCN-Daily station sits beside a place (within 15 km and 100 m, 15+ overlapping years, no disagreeing neighbour), the grid is corrected month by month to that station. Cold pools get colder (Stanley's January low −13 → −19°C, Crested Butte −15 → −21°C), fog coasts cooler (Ensenada's July high 30 → 26°C), rain shadows drier (Sequim 583 → 426 mm, Honolulu 1,104 → 508 mm). Corrected places show "validated" with the station named.
+- **Humidity (183 places):** Daymet's vapour pressure ran far too dry wherever moist air outlasts the rain. Monterey's September read 27% against 69% at its airport, Mérida's April 31%, Mazatlán's spring 26%. Humidity is now scaled month by month to the nearest representative ISD station's hourly dew points. Deserts barely move, as they should. Scores that leaned on the old numbers were recalibrated:
+  - The fog/marine-layer penalty and caution apply only where summer afternoons stay at or below 24°C, so the humid Gulf coast is no longer flagged as "June Gloom".
+  - The humidity tax on summer comfort uses dew point instead of relative humidity, so a 24°C highland afternoon isn't scored like Houston.
+  - "Soft, humid air" season tags need warm afternoons.
+  - The hero card's humidity stat appears only at 78% and above (or 42% and below).
+- **Frost-free season:** now the median season between the last spring and first autumn freeze, not 365 minus a count of frosty days, which overstated mountain growing seasons. Fairbanks 113, Truckee 82, Chattanooga 219, Astoria 226. Prose quoting the old counts was updated.
+- **Hero photos (50 replaced):**
+  - Off-subject, dim or broken shots are gone: an airliner wing over Mount Charleston and Cody, postcards for Chattanooga and Eminence, a vignetted Valle de Bravo, a near-black Zacatecas, flowers for Canaan Valley.
+  - In their place are on-subject photographs, among them Mission Santa Barbara, Jackson Square, Victoria's Parliament Buildings, Leadville under Mount Massive, Lake Mary at Mammoth, Duluth's ship canal, and Pátzcuaro at sunset.
+  - The candidate finder (`scripts/hero-contact-sheet.ts`) draws from each place's Wikipedia and Wikivoyage articles, filters out satellite frames, and takes per-place searches.
+- **Feel lines:** 112 templated openings ("the defining fact about X is geography…") were rewritten as place-specific paragraphs. Each was checked against the place's normals.
+- **Facts:** about 300 corrections from an eight-shard review, among them:
+  - Sitka's rain (nearly 3,000 mm) and Humboldt Bay's port.
+  - Leamington has Canada's *warmest* growing season, not its longest.
+  - St. John's is Canada's foggiest city, not North America's.
+  - Bozeman sits at the southern end of the Bridgers, Mentone 280 m above Wills Valley, Taos's coin toss was lost, and Acadia began as a 1916 monument.
+  - Tequila's agave landscape is 35,000 ha, the Flint Hills burn in March–April, and Monterrey is the second-largest metro.
+  - Climate prose now matches the corrected normals throughout.
+- **Copy:** possessives drop parenthetical qualifiers ("Friday Harbor's dossier", not "Friday Harbor (San Juan Islands)'s").
+
 ### Photos checked for every place, honest °F, and facts that match the data
 
 - **Hero photos:** a new audit (`scripts/check-place-hero-files.ts`, run on GitHub by `hero-media-audit.yml`) checks all 226 photos against Wikimedia Commons. It confirms the file exists, the exact URL the app loads returns an image, and the size, orientation and Commons quality rating. All 226 load, and none is under 1,600 px or portrait.

@@ -59,6 +59,7 @@ import type { MicroclimateArchetype, Place, TopographicDriver } from "../types";
 import {
   avgRisk,
   annualComfortMonthCount,
+  coolSummer,
   getAnnualPrecipMm,
   meanAnnualHumidityPct,
   meanAnnualSunshinePct,
@@ -102,10 +103,15 @@ export const THERMAL_COMFORT = {
   diurnalCreditFloorC: 8,
   diurnalCreditPerDegC: 0.4,
   diurnalCreditMaxPts: 8,
-  /** Humidity tax: pts per % above this floor, only when summerHigh > 22°C. */
-  humidityComfortFloorPct: 50,
+  /**
+   * Humidity tax: pts per °C of summer dew point above this floor, only when
+   * summerHigh > 22°C. Dew point, not relative humidity: a 24°C highland
+   * afternoon at 78% RH (dew point ~13°C) is comfortable; the Gulf's ~22°C
+   * dew points are not.
+   */
+  humidityDewPointFloorC: 13,
   humidityHeatThresholdC: 22,
-  humidityPerPct: 0.6,
+  humidityPerDewPointC: 1.5,
   /** Warm nights erase recovery even when afternoon highs look acceptable. */
   summerNightHeatFloorC: 20,
   summerNightHeatPerDegC: 2.15,
@@ -383,12 +389,12 @@ export function summerComfortScore(p: Place): number {
   // is inferred from the local archetype so humid coasts and tropical entries
   // do not get a free neutral score while measured desert entries stay dry.
   const summerHum = estimatedSummerHumidityPct(p);
+  const summerLow = meanSummerLow(p);
   if (summerHum != null && sh > THERMAL_COMFORT.humidityHeatThresholdC) {
-    const excess = Math.max(0, summerHum - THERMAL_COMFORT.humidityComfortFloorPct);
-    base -= excess * THERMAL_COMFORT.humidityPerPct;
+    const dewPoint = dewPointC((sh + summerLow) / 2, summerHum);
+    base -= Math.max(0, dewPoint - THERMAL_COMFORT.humidityDewPointFloorC) * THERMAL_COMFORT.humidityPerDewPointC;
   }
 
-  const summerLow = meanSummerLow(p);
   if (summerLow > THERMAL_COMFORT.summerNightHeatFloorC) {
     base -= (summerLow - THERMAL_COMFORT.summerNightHeatFloorC) * THERMAL_COMFORT.summerNightHeatPerDegC;
   }
@@ -453,13 +459,15 @@ export function skyComfortScore(p: Place): number {
     ? SKY_COMFORT.missingDataNeutral
     : clamp(50 + (annualSun - SKY_COMFORT.annualSunBaselinePct) * SKY_COMFORT.sunshinePerPct);
 
-  if (summerHumidity != null && summerHumidity > SKY_COMFORT.summerFogHumidityPct && diurnal < SKY_COMFORT.fogDiurnalCeilingC) {
+  // The humidity fog proxy only applies where summers stay cool; the Gulf's humid heat is not fog.
+  const foggable = coolSummer(p);
+  if (foggable && summerHumidity != null && summerHumidity > SKY_COMFORT.summerFogHumidityPct && diurnal < SKY_COMFORT.fogDiurnalCeilingC) {
     score -= Math.min(
       SKY_COMFORT.fogPenaltyMaxPts,
       (summerHumidity - SKY_COMFORT.summerFogHumidityPct) * 0.9 +
         (SKY_COMFORT.fogDiurnalCeilingC - diurnal) * 1.4,
     );
-  } else if (annualHumidity != null && annualHumidity > 78 && diurnal < 10) {
+  } else if (foggable && annualHumidity != null && annualHumidity > 78 && diurnal < 10) {
     score -= Math.min(18, (annualHumidity - 78) * 0.5 + (10 - diurnal) * 0.9);
   }
 

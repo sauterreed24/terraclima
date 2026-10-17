@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { PLACES_BY_ID } from "../../data/places";
+import { PLACES, PLACES_BY_ID } from "../../data/places";
 import { LIVE_FIT_PRESETS, assessLiveFit, liveFitFilterPass, rankLiveFit, type LiveFitPresetId } from "../live-fit";
 import { makeClimate, makePlace } from "./test-fixtures";
 import type { Monthly12 } from "../../types";
@@ -193,5 +193,15 @@ describe("live-fit scoring", () => {
     expect(forks.cautions.some(c => /Below-average sunshine \(~44% of possible/.test(c))).toBe(true);
     expect(astoria.cautions.some(c => /Below-average sunshine \(~43% of possible/.test(c))).toBe(true);
     expect(yuma.cautions.some(c => /sunshine/i.test(c))).toBe(false);
+  });
+
+  it("keeps the fog caution to cool-summer coasts, not humid heat", () => {
+    for (const place of PLACES) {
+      const fog = assessLiveFit(place).cautions.some(c => /fog and low cloud|Persistent overcast or fog/.test(c));
+      if (fog) expect(Math.max(place.climate.tempHighC[6]!, place.climate.tempHighC[7]!)).toBeLessThanOrEqual(24);
+    }
+    for (const id of ["apalachicola-fl", "naples-fl", "mobile-al", "merida-mx", "campeche-mx"]) {
+      expect(assessLiveFit(PLACES_BY_ID[id]!).cautions.some(c => /fog/i.test(c))).toBe(false);
+    }
   });
 });
