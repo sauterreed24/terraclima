@@ -25,6 +25,10 @@ on:
         description: "Comma-separated place ids to diagnose (blank = all)"
         required: false
         default: ""
+      radius:
+        description: "Humidity mode: station search radius in km"
+        required: false
+        default: "40"
   push:
     branches-ignore: [main]
     paths:
@@ -45,6 +49,7 @@ jobs:
     timeout-minutes: 120
     env:
       IDS: ${{ inputs.ids }}
+      RADIUS: ${{ inputs.radius || '40' }}
     steps:
       - uses: actions/checkout@v6.0.2
       - uses: actions/setup-node@v6.4.0
@@ -82,7 +87,7 @@ jobs:
       - name: Compare humidity with stations
         if: inputs.mode == 'humidity'
         run: |
-          npx tsx scripts/climate-data/station-humidity.ts --ids "$IDS"
+          npx tsx scripts/climate-data/station-humidity.ts --ids "$IDS" --radius-km "$RADIUS"
           gzip -9 -c data/climate-v2/stations/humidity-bias-diagnostics.json | base64 -w 0 | fold -w 6000 | sed 's/^/DIAG /'
           echo
       - name: Regenerate with reviewed corrections
