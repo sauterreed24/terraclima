@@ -11,6 +11,7 @@ on:
     branches-ignore: [main]
     paths:
       - src/lib/place-hero-media.ts
+      - src/data/place-hero-photos.ts
       - scripts/check-place-hero-files.ts
       - .github/workflows/hero-media-audit.yml
 
