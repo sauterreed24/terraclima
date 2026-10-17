@@ -3,9 +3,10 @@
 # Climate V2 assets with the reviewed corrections in
 # data/climate-v2/stations/station-bias.json.
 #
-# Network-bound: runs by hand, or (diagnose only) when the checker changes. The log carries the diagnostics (BIAS lines) and,
-# in apply mode, the regenerated assets as a base64 tar.gz ("TGZ" lines) so
-# they can be reviewed and committed from an environment without NOAA access.
+# Network-bound: runs by hand, or (diagnose only) when the checker changes.
+# The log carries the diagnostics (BIAS lines) and, in apply mode, the
+# regenerated assets as a base64 tar.gz ("TGZ" lines) so they can be reviewed
+# and committed from an environment without NOAA access.
 name: Climate station check
 
 on:

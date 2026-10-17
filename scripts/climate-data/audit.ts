@@ -164,7 +164,7 @@ Large differences are a **review queue**, not automatic proof either value is wr
 ${unexplained.length ? unexplained.map(u => `- ${u}`).join("\n") : "- none (elevation mismatches have documented climate-anchor overrides; temp/precip deltas are the reviewed queue below)"}
 
 ## Review queue policy
-Authored-vs-Daymet outliers are **not** auto-corrected. Runtime uses Daymet 1996–2025. See \`stations/reviewed-exceptions.json\` for named causes (terrain, coastal-exposure, zone-vs-town, elevation-mismatch, authored-blend-divergence, station-mapping-pending).
+Authored-vs-Daymet outliers are **not** auto-corrected. Runtime uses Daymet 1996–2025, except where a reviewed GHCN-Daily station beside the place shows the grid missing a local effect (cold-air pool, fog coast, lake shore, rain shadow): those places use Daymet bias-corrected month by month to that station (\`stations/station-bias.json\`, status "validated"). See \`stations/reviewed-exceptions.json\` for named causes (terrain, coastal-exposure, zone-vs-town, elevation-mismatch, authored-blend-divergence, station-mapping-pending).
 
 ## Priority review IDs
 ${[...new Set([

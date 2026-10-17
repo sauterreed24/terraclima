@@ -1,0 +1,1916 @@
+{
+ "version": 1,
+ "notes": [
+  "Reviewed station corrections for the Daymet grid, applied by scripts/climate-data/generate.ts.",
+  "Each delta is the mean station-minus-grid difference for that calendar month over every day both reported, 1991–2025 (scripts/climate-data/station-bias.ts); the precipitation ratio is station total ÷ grid total over the same days and scales every month alike.",
+  "Selection: a GHCN-Daily station within 15 km and 100 m of elevation of the climate anchor with at least 15 usable years (11 for Marfa), a material gap (mean |ΔT| ≥ 1.2°C, a month ≥ 2°C, or rainfall off by more than 20%), and no disagreeing nearby station. Mexican and other places where nearby stations disagree keep the uncorrected grid."
+ ],
+ "period": "1991-2025",
+ "corrections": {
+  "sequim-wa": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00457544",
+    "name": "SEQUIM 2 E",
+    "lat": 48.085,
+    "lon": -123.0639,
+    "elevationM": 15.2,
+    "distanceKm": 3.3,
+    "elevationDeltaM": -40,
+    "usableYears": 31
+   },
+   "reason": "Rain-shadow town station; the 1 km grid blends in wetter foothills and misses the cold-air pool.",
+   "tmaxDeltaC": [
+    0.2,
+    0.1,
+    0,
+    -0.3,
+    -0.3,
+    -0.3,
+    -0.4,
+    -0.5,
+    -0.5,
+    0,
+    0.4,
+    0.5
+   ],
+   "tminDeltaC": [
+    -2,
+    -1.8,
+    -1.7,
+    -1.6,
+    -1,
+    -0.6,
+    -0.8,
+    -1,
+    -1.7,
+    -2.1,
+    -2.1,
+    -1.9
+   ],
+   "precipRatio": 0.73
+  },
+  "monterey-ca": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00045795",
+    "name": "MONTEREY",
+    "lat": 36.5928,
+    "lon": -121.8556,
+    "elevationM": 37.2,
+    "distanceKm": 3.6,
+    "elevationDeltaM": 14,
+    "usableYears": 31
+   },
+   "reason": "Fog coast: the grid runs summer afternoons ~2°C warm; three Monterey stations agree.",
+   "tmaxDeltaC": [
+    -0.9,
+    -0.8,
+    -0.8,
+    -1.2,
+    -1.5,
+    -2,
+    -2,
+    -2,
+    -1.3,
+    -1,
+    -0.9,
+    -1
+   ],
+   "tminDeltaC": [
+    0.6,
+    0.4,
+    0.3,
+    0.1,
+    -0.2,
+    -0.3,
+    -0.4,
+    -0.2,
+    0,
+    0.4,
+    0.5,
+    0.6
+   ]
+  },
+  "bishop-ca": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00023157",
+    "name": "BISHOP AP",
+    "lat": 37.3711,
+    "lon": -118.3589,
+    "elevationM": 1252.7,
+    "distanceKm": 3.4,
+    "elevationDeltaM": 0,
+    "usableYears": 35
+   },
+   "reason": "Owens Valley floor: colder clear-sky nights and drier than the grid.",
+   "tmaxDeltaC": [
+    0.3,
+    0.4,
+    0.4,
+    0.6,
+    0.6,
+    0.7,
+    0.6,
+    0.5,
+    0.3,
+    0.2,
+    0.2,
+    0.3
+   ],
+   "tminDeltaC": [
+    -1.5,
+    -1.5,
+    -1.4,
+    -1.3,
+    -1.3,
+    -1.7,
+    -2,
+    -2.3,
+    -2.2,
+    -2,
+    -2,
+    -1.8
+   ],
+   "precipRatio": 0.71
+  },
+  "silver-city-nm": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00293265",
+    "name": "FT BAYARD 4W",
+    "lat": 32.79,
+    "lon": -108.2269,
+    "elevationM": 1874.2,
+    "distanceKm": 5.5,
+    "elevationDeltaM": 61,
+    "usableYears": 21
+   },
+   "reason": "Town station; the grid's nights run cold.",
+   "tmaxDeltaC": [
+    0.8,
+    0.7,
+    0.6,
+    0.5,
+    0.1,
+    0.3,
+    0.1,
+    0.3,
+    0.6,
+    0.5,
+    0.5,
+    0.7
+   ],
+   "tminDeltaC": [
+    2.3,
+    2.1,
+    2,
+    1.8,
+    1.8,
+    1.8,
+    1.2,
+    1.2,
+    1.9,
+    2.2,
+    2.2,
+    2.3
+   ]
+  },
+  "ashland-or": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00350304",
+    "name": "ASHLAND",
+    "lat": 42.2131,
+    "lon": -122.7147,
+    "elevationM": 527,
+    "distanceKm": 2.1,
+    "elevationDeltaM": -68,
+    "usableYears": 34
+   },
+   "reason": "Town station; valley nights colder than the grid.",
+   "tmaxDeltaC": [
+    0.1,
+    0.1,
+    -0.2,
+    -0.3,
+    -0.6,
+    -0.8,
+    -1.1,
+    -1.1,
+    -1,
+    -0.6,
+    0,
+    0.2
+   ],
+   "tminDeltaC": [
+    -1,
+    -0.9,
+    -0.9,
+    -1,
+    -0.9,
+    -1,
+    -1.6,
+    -1.7,
+    -2,
+    -1.9,
+    -1.2,
+    -1
+   ]
+  },
+  "grand-marais-mn": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00213282",
+    "name": "GRAND MARAIS",
+    "lat": 47.7517,
+    "lon": -90.3283,
+    "elevationM": 186.5,
+    "distanceKm": 0.5,
+    "elevationDeltaM": 2,
+    "usableYears": 34
+   },
+   "reason": "Lakeshore station; Lake Superior chills spring and summer afternoons; two Grand Marais stations agree.",
+   "tmaxDeltaC": [
+    0.8,
+    0.5,
+    -0.2,
+    -0.8,
+    -2.1,
+    -2.8,
+    -1.9,
+    -1.1,
+    -0.6,
+    0,
+    0.4,
+    0.8
+   ],
+   "tminDeltaC": [
+    1.2,
+    1.1,
+    0.8,
+    0.2,
+    -0.5,
+    -1.6,
+    -0.9,
+    0.1,
+    0.3,
+    0.3,
+    0.4,
+    0.7
+   ]
+  },
+  "astoria-or": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00094224",
+    "name": "ASTORIA AP (PORT OF)",
+    "lat": 46.1569,
+    "lon": -123.8833,
+    "elevationM": 3.4,
+    "distanceKm": 5.3,
+    "elevationDeltaM": -4,
+    "usableYears": 35
+   },
+   "reason": "Astoria airport; the grid overstates rainfall at the river mouth.",
+   "precipRatio": 0.79
+  },
+  "hood-river-gorge": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00024219",
+    "name": "DALLESPORT AP",
+    "lat": 45.6189,
+    "lon": -121.1658,
+    "elevationM": 71.3,
+    "distanceKm": 10.2,
+    "elevationDeltaM": 1,
+    "usableYears": 35
+   },
+   "reason": "River-level stations; the grid pixel sits ~340 m up the gorge wall. Temperature only (rain varies steeply along the gorge).",
+   "tmaxDeltaC": [
+    1.4,
+    2.1,
+    2.6,
+    2.9,
+    2.9,
+    2.9,
+    2.6,
+    2.6,
+    2.6,
+    2.4,
+    1.9,
+    1.6
+   ],
+   "tminDeltaC": [
+    1.5,
+    1.5,
+    1.7,
+    2.3,
+    2.7,
+    3.1,
+    3.2,
+    2.9,
+    2.2,
+    1.7,
+    1.5,
+    1.6
+   ]
+  },
+  "eureka-ca": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00024213",
+    "name": "EUREKA WFO WOODLEY IS",
+    "lat": 40.8097,
+    "lon": -124.1603,
+    "elevationM": 6.1,
+    "distanceKm": 0.9,
+    "elevationDeltaM": 0,
+    "usableYears": 35
+   },
+   "reason": "Humboldt Bay fog coast; the grid runs summer afternoons warm.",
+   "tmaxDeltaC": [
+    -0.3,
+    -0.5,
+    -0.7,
+    -0.9,
+    -1.2,
+    -1.5,
+    -2.3,
+    -2.3,
+    -2.6,
+    -1.8,
+    -0.5,
+    -0.1
+   ],
+   "tminDeltaC": [
+    -0.4,
+    -0.1,
+    0,
+    0.1,
+    0.1,
+    -0.1,
+    -0.7,
+    -0.5,
+    -0.8,
+    -0.7,
+    -0.5,
+    -0.4
+   ]
+  },
+  "gunnison-co": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00053662",
+    "name": "GUNNISON 3SW",
+    "lat": 38.5253,
+    "lon": -106.9672,
+    "elevationM": 2323.2,
+    "distanceKm": 4.3,
+    "elevationDeltaM": -24,
+    "usableYears": 32
+   },
+   "reason": "Cold-air pool; the grid misses the valley-floor inversion nights.",
+   "tmaxDeltaC": [
+    -1.9,
+    -1.4,
+    -0.5,
+    0.1,
+    -0.1,
+    -0.4,
+    -0.6,
+    -0.7,
+    -0.6,
+    0.1,
+    -0.1,
+    -1.1
+   ],
+   "tminDeltaC": [
+    -4.3,
+    -2.7,
+    -0.7,
+    -0.7,
+    -0.7,
+    -1,
+    -0.5,
+    -0.6,
+    -1.4,
+    -2.2,
+    -2.3,
+    -3.5
+   ]
+  },
+  "crested-butte-co": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00051959",
+    "name": "CRESTED BUTTE",
+    "lat": 38.8739,
+    "lon": -106.9772,
+    "elevationM": 2702.7,
+    "distanceKm": 1,
+    "elevationDeltaM": -4,
+    "usableYears": 35
+   },
+   "reason": "Cold-air pool; town station nights 3–6°C colder than the grid.",
+   "tmaxDeltaC": [
+    -1.9,
+    -1.8,
+    -2,
+    -1.4,
+    -0.4,
+    0.3,
+    0.6,
+    0.7,
+    0.5,
+    0.4,
+    -0.3,
+    -1.5
+   ],
+   "tminDeltaC": [
+    -5.8,
+    -5,
+    -4.1,
+    -2,
+    -1.6,
+    -2.6,
+    -2.6,
+    -2.5,
+    -2.8,
+    -2.6,
+    -3.4,
+    -5.3
+   ]
+  },
+  "leadville-co": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00093009",
+    "name": "LEADVILLE LAKE CO AP",
+    "lat": 39.2281,
+    "lon": -106.3164,
+    "elevationM": 3030.6,
+    "distanceKm": 3.3,
+    "elevationDeltaM": -63,
+    "usableYears": 35
+   },
+   "reason": "High-basin station; the grid overstates precipitation.",
+   "precipRatio": 0.71
+  },
+  "marquette-mi": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00014838",
+    "name": "MARQUETTE",
+    "lat": 46.5458,
+    "lon": -87.3794,
+    "elevationM": 202.7,
+    "distanceKm": 1.2,
+    "elevationDeltaM": 13,
+    "usableYears": 34
+   },
+   "reason": "Lakeshore station; Lake Superior keeps nights milder than the grid.",
+   "tmaxDeltaC": [
+    0.1,
+    -0.2,
+    -0.5,
+    -1.1,
+    -1.8,
+    -1.8,
+    -1,
+    -0.5,
+    -0.2,
+    0,
+    0.1,
+    0.2
+   ],
+   "tminDeltaC": [
+    1.4,
+    2,
+    2,
+    1.2,
+    0.5,
+    0.5,
+    1.4,
+    2,
+    1.9,
+    1.5,
+    1.3,
+    1.3
+   ]
+  },
+  "valdez-ak": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00026442",
+    "name": "VALDEZ WSO",
+    "lat": 61.1303,
+    "lon": -146.3517,
+    "elevationM": 29,
+    "distanceKm": 0.2,
+    "elevationDeltaM": 19,
+    "usableYears": 23
+   },
+   "reason": "Town station on Port Valdez; milder nights than the grid.",
+   "tmaxDeltaC": [
+    1.1,
+    0.5,
+    0.2,
+    0,
+    -0.1,
+    -0.3,
+    -0.5,
+    -0.5,
+    -0.3,
+    0.3,
+    0.8,
+    1.2
+   ],
+   "tminDeltaC": [
+    2.1,
+    1.7,
+    1.6,
+    0.8,
+    0.8,
+    0.5,
+    -0.1,
+    -0.1,
+    0.1,
+    0.7,
+    1.5,
+    1.9
+   ]
+  },
+  "eureka-springs-ar": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00032356",
+    "name": "EUREKA SPRINGS 3 WNW",
+    "lat": 36.4164,
+    "lon": -93.7917,
+    "elevationM": 432.8,
+    "distanceKm": 5.1,
+    "elevationDeltaM": 3,
+    "usableYears": 19
+   },
+   "reason": "Ozark hill-town station; milder nights than the grid.",
+   "tmaxDeltaC": [
+    0.5,
+    0.6,
+    0.9,
+    1.1,
+    0.3,
+    -0.1,
+    0,
+    0.2,
+    -0.1,
+    0.2,
+    0.4,
+    0.4
+   ],
+   "tminDeltaC": [
+    1.4,
+    1.7,
+    1.5,
+    1.6,
+    1.1,
+    0.9,
+    0.9,
+    1.1,
+    1.3,
+    1.7,
+    1.6,
+    1.5
+   ]
+  },
+  "brookings-or": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00351058",
+    "name": "BROOKINGS",
+    "lat": 42.0464,
+    "lon": -124.2878,
+    "elevationM": 25,
+    "distanceKm": 0.8,
+    "elevationDeltaM": -15,
+    "usableYears": 16
+   },
+   "reason": "Town station on the Chetco coast; two Brookings stations agree.",
+   "tmaxDeltaC": [
+    -0.2,
+    0.1,
+    -0.4,
+    -0.6,
+    -0.7,
+    -0.9,
+    -1.9,
+    -2.2,
+    -1.4,
+    -0.6,
+    -0.1,
+    0.1
+   ],
+   "tminDeltaC": [
+    -0.2,
+    -0.1,
+    -0.1,
+    -0.1,
+    -0.2,
+    -0.4,
+    -1.2,
+    -1.3,
+    -1.3,
+    -0.7,
+    -0.5,
+    -0.1
+   ]
+  },
+  "winthrop-wa": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00459376",
+    "name": "WINTHROP 1 WSW",
+    "lat": 48.4742,
+    "lon": -120.1886,
+    "elevationM": 533.1,
+    "distanceKm": 0.9,
+    "elevationDeltaM": 13,
+    "usableYears": 35
+   },
+   "reason": "Methow valley floor; colder nights than the grid.",
+   "tmaxDeltaC": [
+    -0.8,
+    0.2,
+    1,
+    1.3,
+    1.2,
+    1,
+    0.9,
+    1,
+    1.5,
+    1.8,
+    0.5,
+    -0.7
+   ],
+   "tminDeltaC": [
+    -2.1,
+    -1.7,
+    -1,
+    -0.7,
+    -0.8,
+    -0.8,
+    -1.3,
+    -1.7,
+    -2,
+    -1.7,
+    -1.1,
+    -1.9
+   ]
+  },
+  "duluth-mn": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00478349",
+    "name": "SUPERIOR",
+    "lat": 46.7269,
+    "lon": -92.0719,
+    "elevationM": 185,
+    "distanceKm": 7,
+    "elevationDeltaM": -25,
+    "usableYears": 33
+   },
+   "reason": "Lake-level station across the harbour; Lake Superior chills spring and summer afternoons; Duluth Harbor station agrees.",
+   "tmaxDeltaC": [
+    0.1,
+    -0.1,
+    -0.9,
+    -1.8,
+    -2.9,
+    -2.6,
+    -1,
+    -0.7,
+    -0.8,
+    -0.4,
+    0.1,
+    0.2
+   ],
+   "tminDeltaC": [
+    0.9,
+    1.1,
+    1.1,
+    0.6,
+    0.2,
+    0.1,
+    0.7,
+    0.9,
+    0.8,
+    0.7,
+    0.6,
+    0.7
+   ]
+  },
+  "hilo-hi": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00021504",
+    "name": "HILO INTL AP 87",
+    "lat": 19.7192,
+    "lon": -155.0489,
+    "elevationM": 8.8,
+    "distanceKm": 4,
+    "elevationDeltaM": -9,
+    "usableYears": 35
+   },
+   "reason": "Hilo airport; milder nights than the grid.",
+   "tmaxDeltaC": [
+    0.7,
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    0.8,
+    0.7,
+    0.6,
+    0.6,
+    0.6,
+    0.6,
+    0.6
+   ],
+   "tminDeltaC": [
+    1.3,
+    1.2,
+    1.3,
+    1.2,
+    1.3,
+    1.4,
+    1.3,
+    1.2,
+    1.3,
+    1.2,
+    1,
+    1.1
+   ]
+  },
+  "port-orford-cape-blanco-or": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00356784",
+    "name": "PORT ORFORD #2",
+    "lat": 42.7514,
+    "lon": -124.5017,
+    "elevationM": 7,
+    "distanceKm": 0.7,
+    "elevationDeltaM": -11,
+    "usableYears": 35
+   },
+   "reason": "Town station; the grid overstates rainfall on this coast.",
+   "precipRatio": 0.77
+  },
+  "klamath-falls-upper-klamath-basin-or": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00094236",
+    "name": "KLAMATH FALLS INTL AP",
+    "lat": 42.1469,
+    "lon": -121.7256,
+    "elevationM": 1244.5,
+    "distanceKm": 9.8,
+    "elevationDeltaM": -3,
+    "usableYears": 28
+   },
+   "reason": "Klamath basin station; the grid overstates precipitation.",
+   "precipRatio": 0.68
+  },
+  "los-alamos-pajarito-plateau-nm": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00295084",
+    "name": "LOS ALAMOS",
+    "lat": 35.8644,
+    "lon": -106.3214,
+    "elevationM": 2262.8,
+    "distanceKm": 2.9,
+    "elevationDeltaM": 32,
+    "usableYears": 35
+   },
+   "reason": "Mesa-top town station; milder nights than the grid.",
+   "tmaxDeltaC": [
+    -1.2,
+    -1.1,
+    -0.7,
+    -0.5,
+    -0.5,
+    -0.4,
+    -0.5,
+    -0.7,
+    -0.6,
+    -0.7,
+    -0.8,
+    -1
+   ],
+   "tminDeltaC": [
+    1.5,
+    1.6,
+    1.7,
+    1.7,
+    2,
+    2.3,
+    1.3,
+    1.2,
+    1.7,
+    1.8,
+    1.7,
+    1.5
+   ]
+  },
+  "spokane-wa": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00094176",
+    "name": "SPOKANE FELTS FLD",
+    "lat": 47.6858,
+    "lon": -117.3214,
+    "elevationM": 594.7,
+    "distanceKm": 8.4,
+    "elevationDeltaM": 33,
+    "usableYears": 27
+   },
+   "reason": "Spokane valley station; milder nights than the grid.",
+   "tmaxDeltaC": [
+    0.7,
+    0.7,
+    0.5,
+    0.2,
+    0.3,
+    0.3,
+    0.3,
+    0.1,
+    0.1,
+    0.2,
+    0.5,
+    0.8
+   ],
+   "tminDeltaC": [
+    1.2,
+    1.1,
+    1,
+    1,
+    1.1,
+    1.6,
+    1.9,
+    1.6,
+    1.5,
+    1.3,
+    1.1,
+    1.2
+   ]
+  },
+  "palm-springs-ca": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00046635",
+    "name": "PALM SPRINGS",
+    "lat": 33.8275,
+    "lon": -116.5097,
+    "elevationM": 129.5,
+    "distanceKm": 3.3,
+    "elevationDeltaM": -16,
+    "usableYears": 18
+   },
+   "reason": "Town station; warmer nights than the grid; two Palm Springs stations agree.",
+   "tmaxDeltaC": [
+    0.4,
+    0.6,
+    0.9,
+    1.4,
+    1.4,
+    1.4,
+    1.2,
+    1,
+    1,
+    1,
+    0.4,
+    0.2
+   ],
+   "tminDeltaC": [
+    1.1,
+    1,
+    1.1,
+    1.4,
+    1.4,
+    1.8,
+    2,
+    1.9,
+    1.8,
+    1.7,
+    1.3,
+    0.9
+   ]
+  },
+  "state-college-pa": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00368449",
+    "name": "STATE COLLEGE",
+    "lat": 40.7933,
+    "lon": -77.8672,
+    "elevationM": 356.6,
+    "distanceKm": 0.6,
+    "elevationDeltaM": -3,
+    "usableYears": 35
+   },
+   "reason": "Town station; milder nights than the grid.",
+   "tmaxDeltaC": [
+    0.1,
+    -0.2,
+    -0.5,
+    -0.5,
+    -0.6,
+    -0.6,
+    -0.6,
+    -0.5,
+    -0.4,
+    -0.3,
+    0,
+    0.2
+   ],
+   "tminDeltaC": [
+    1,
+    1,
+    0.9,
+    1.3,
+    1.6,
+    1.6,
+    1.5,
+    1.5,
+    1.3,
+    1.3,
+    1.2,
+    1
+   ]
+  },
+  "jackson-wy": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00484910",
+    "name": "JACKSON",
+    "lat": 43.4864,
+    "lon": -110.7617,
+    "elevationM": 1892.8,
+    "distanceKm": 0.7,
+    "elevationDeltaM": -8,
+    "usableYears": 31
+   },
+   "reason": "Town station; the grid overstates valley-floor precipitation.",
+   "precipRatio": 0.77
+  },
+  "atlin-lake-bc": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN01200560",
+    "name": "ATLIN",
+    "lat": 59.5667,
+    "lon": -133.7,
+    "elevationM": 673.6,
+    "distanceKm": 1.4,
+    "elevationDeltaM": 4,
+    "usableYears": 29
+   },
+   "reason": "Town station; the grid overstates precipitation in the Coast Mountains' lee.",
+   "precipRatio": 0.69
+  },
+  "fernie-elk-valley-bc": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN01152850",
+    "name": "FERNIE",
+    "lat": 49.4887,
+    "lon": -115.0733,
+    "elevationM": 1001,
+    "distanceKm": 1.9,
+    "elevationDeltaM": -9,
+    "usableYears": 25
+   },
+   "reason": "Town station; the grid understates the Elk Valley's heavy snow and rain.",
+   "precipRatio": 1.53
+  },
+  "thunder-bay-on": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN06048268",
+    "name": "THUNDER BAY CS",
+    "lat": 48.3694,
+    "lon": -89.3272,
+    "elevationM": 199.4,
+    "distanceKm": 6,
+    "elevationDeltaM": 16,
+    "usableYears": 20
+   },
+   "reason": "Thunder Bay climate station; colder nights than the grid; three stations agree.",
+   "tmaxDeltaC": [
+    -0.5,
+    -0.2,
+    0.1,
+    0.8,
+    1,
+    0.9,
+    0.9,
+    0.8,
+    0.7,
+    0.3,
+    0,
+    -0.5
+   ],
+   "tminDeltaC": [
+    -2,
+    -1.9,
+    -1.4,
+    -1.2,
+    -1,
+    -0.8,
+    -1,
+    -1.6,
+    -2.1,
+    -2,
+    -1.7,
+    -1.8
+   ]
+  },
+  "gaspe-qc": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN07052605",
+    "name": "GASPE A",
+    "lat": 48.7769,
+    "lon": -64.4781,
+    "elevationM": 34.1,
+    "distanceKm": 6.1,
+    "elevationDeltaM": 24,
+    "usableYears": 21
+   },
+   "reason": "Gaspé airport station; two records of it agree.",
+   "tmaxDeltaC": [
+    0.3,
+    0.5,
+    0.9,
+    1.4,
+    2.1,
+    2.3,
+    2.2,
+    2,
+    1.7,
+    1.2,
+    0.6,
+    0.2
+   ],
+   "tminDeltaC": [
+    -1.7,
+    -1.8,
+    -1.3,
+    -0.7,
+    -1,
+    -1,
+    -1,
+    -1.4,
+    -1.6,
+    -1.1,
+    -1,
+    -1.2
+   ]
+  },
+  "churchill-mb": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN05060600",
+    "name": "CHURCHILL A",
+    "lat": 58.7392,
+    "lon": -94.0664,
+    "elevationM": 29.3,
+    "distanceKm": 6.5,
+    "elevationDeltaM": 0,
+    "usableYears": 16
+   },
+   "reason": "Churchill airport station; Hudson Bay keeps early summer cooler than the grid.",
+   "tmaxDeltaC": [
+    0,
+    -0.7,
+    -1.4,
+    -2.1,
+    -2.3,
+    -1.6,
+    -1.1,
+    -0.7,
+    -0.7,
+    -0.4,
+    0.3,
+    -0.1
+   ],
+   "tminDeltaC": [
+    0,
+    0.1,
+    -0.3,
+    -0.8,
+    -0.7,
+    -1.6,
+    -1.4,
+    -0.6,
+    -0.1,
+    0.1,
+    0.3,
+    0.1
+   ]
+  },
+  "iqaluit-nu": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN02402592",
+    "name": "IQALUIT CLIMATE",
+    "lat": 63.7472,
+    "lon": -68.5444,
+    "elevationM": 33.5,
+    "distanceKm": 1.3,
+    "elevationDeltaM": -2,
+    "usableYears": 20
+   },
+   "reason": "Iqaluit climate station; colder nights than the grid; three stations agree.",
+   "tmaxDeltaC": [
+    -1.6,
+    -1.4,
+    -0.8,
+    -0.2,
+    -0.1,
+    0.1,
+    0,
+    0.1,
+    -0.2,
+    -0.6,
+    -1,
+    -0.9
+   ],
+   "tminDeltaC": [
+    -2.3,
+    -2.2,
+    -2.1,
+    -1,
+    0.1,
+    0.2,
+    -0.1,
+    -0.4,
+    -0.6,
+    -0.9,
+    -1.8,
+    -2.1
+   ]
+  },
+  "inuvik-nt": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN02202570",
+    "name": "INUVIK A",
+    "lat": 68.3042,
+    "lon": -133.4828,
+    "elevationM": 67.7,
+    "distanceKm": 11.7,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "reason": "Inuvik airport station.",
+   "tmaxDeltaC": [
+    0.2,
+    0.4,
+    0.4,
+    0.7,
+    1.4,
+    2.4,
+    1.4,
+    1.2,
+    0.7,
+    0.2,
+    0.1,
+    0.1
+   ],
+   "tminDeltaC": [
+    -0.7,
+    -0.8,
+    -1,
+    -0.2,
+    0.2,
+    0.3,
+    0,
+    -0.3,
+    -0.5,
+    -0.8,
+    -0.8,
+    -0.6
+   ]
+  },
+  "morelia-mx": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "MXN00016512",
+    "name": "EL COLEGIO",
+    "lat": 19.7667,
+    "lon": -101.1667,
+    "elevationM": 1879.7,
+    "distanceKm": 7.4,
+    "elevationDeltaM": -40,
+    "usableYears": 18
+   },
+   "reason": "Station on the city's edge; warmer days and colder nights than the grid; Cuitzillo agrees on nights.",
+   "tmaxDeltaC": [
+    1,
+    1,
+    0.7,
+    0.6,
+    0.9,
+    1.4,
+    1.5,
+    1.6,
+    1.6,
+    1.5,
+    1.3,
+    1.1
+   ],
+   "tminDeltaC": [
+    -2,
+    -2,
+    -2.9,
+    -2.9,
+    -1.8,
+    -1.2,
+    -1,
+    -1.1,
+    -1,
+    -1.6,
+    -1.5,
+    -1.9
+   ]
+  },
+  "hermosillo-mx": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "MXN00026139",
+    "name": "HERMOSILLO II (DGE)",
+    "lat": 29.0833,
+    "lon": -110.95,
+    "elevationM": 221,
+    "distanceKm": 1.3,
+    "elevationDeltaM": 21,
+    "usableYears": 22
+   },
+   "reason": "City station; much warmer nights than the grid.",
+   "tmaxDeltaC": [
+    -0.5,
+    -0.5,
+    -0.3,
+    -0.2,
+    0.1,
+    0.1,
+    0.1,
+    0,
+    -0.1,
+    -0.3,
+    -0.5,
+    -0.5
+   ],
+   "tminDeltaC": [
+    4.1,
+    3.9,
+    4.2,
+    4.3,
+    4.5,
+    3.6,
+    1.6,
+    1.5,
+    2.3,
+    4,
+    4.3,
+    4
+   ]
+  },
+  "mazatlan-mx": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "MXM00076458",
+    "name": "COLONIA JUAN CARRAS",
+    "lat": 23.2,
+    "lon": -106.417,
+    "elevationM": 4,
+    "distanceKm": 5.5,
+    "elevationDeltaM": -1,
+    "usableYears": 23
+   },
+   "reason": "Coastal station; sea-cooled afternoons the grid misses.",
+   "tmaxDeltaC": [
+    -1.2,
+    -1.6,
+    -2,
+    -2,
+    -1.7,
+    -1.1,
+    -0.8,
+    -0.6,
+    -0.5,
+    -0.5,
+    -0.7,
+    -1
+   ],
+   "tminDeltaC": [
+    0.9,
+    0.9,
+    1,
+    1.2,
+    1.2,
+    0.8,
+    0.4,
+    0.4,
+    0.4,
+    0.8,
+    1,
+    0.8
+   ]
+  },
+  "puebla-mx": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "MXN00021035",
+    "name": "PUEBLA (DGE)",
+    "lat": 19,
+    "lon": -98.1833,
+    "elevationM": 2121.7,
+    "distanceKm": 5.2,
+    "elevationDeltaM": -28,
+    "usableYears": 18
+   },
+   "reason": "City station; milder nights than the grid.",
+   "tmaxDeltaC": [
+    0.2,
+    0.1,
+    0.4,
+    0.4,
+    0.7,
+    0.7,
+    1,
+    0.9,
+    0.8,
+    0.7,
+    0.5,
+    0.3
+   ],
+   "tminDeltaC": [
+    1,
+    1.1,
+    1.4,
+    1.6,
+    1.4,
+    1.3,
+    1.3,
+    1.3,
+    1.1,
+    1,
+    1.2,
+    1
+   ]
+  },
+  "driggs-id": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00102676",
+    "name": "DRIGGS",
+    "lat": 43.7792,
+    "lon": -111.1111,
+    "elevationM": 1879.1,
+    "distanceKm": 6.2,
+    "elevationDeltaM": 13,
+    "usableYears": 31
+   },
+   "reason": "Town station; the grid overstates Teton Valley floor precipitation.",
+   "precipRatio": 0.68
+  },
+  "truckee-ca": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00049043",
+    "name": "TRUCKEE RS",
+    "lat": 39.3331,
+    "lon": -120.173,
+    "elevationM": 1774.9,
+    "distanceKm": 1.1,
+    "elevationDeltaM": -35,
+    "usableYears": 18
+   },
+   "reason": "Truckee ranger station in town; colder nights than the grid; Donner Memorial agrees.",
+   "tmaxDeltaC": [
+    -0.9,
+    -0.4,
+    -0.5,
+    -0.1,
+    0.2,
+    0.5,
+    0.6,
+    0.8,
+    0.7,
+    0.5,
+    -0.2,
+    -0.7
+   ],
+   "tminDeltaC": [
+    -1.7,
+    -1.1,
+    -0.8,
+    -0.5,
+    -0.6,
+    -0.8,
+    -1,
+    -1.4,
+    -1.5,
+    -1.6,
+    -1.5,
+    -1.6
+   ]
+  },
+  "friday-harbor-wa": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00094276",
+    "name": "FRIDAY HARBOR AP",
+    "lat": 48.52,
+    "lon": -123.0264,
+    "elevationM": 34.1,
+    "distanceKm": 1.8,
+    "elevationDeltaM": 14,
+    "usableYears": 28
+   },
+   "reason": "Town airport; San Juan Islands rain shadow drier than the grid.",
+   "precipRatio": 0.71
+  },
+  "qualicum-bc": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN01024638",
+    "name": "LITTLE QUALICUM HATCHERY",
+    "lat": 49.3528,
+    "lon": -124.5122,
+    "elevationM": 30,
+    "distanceKm": 5.2,
+    "elevationDeltaM": 10,
+    "usableYears": 22
+   },
+   "reason": "Little Qualicum hatchery; colder nights than the grid; Coombs agrees.",
+   "tmaxDeltaC": [
+    -0.1,
+    0.1,
+    0.2,
+    0.2,
+    0.3,
+    0.4,
+    0.4,
+    0.4,
+    0.2,
+    0.2,
+    -0.1,
+    -0.3
+   ],
+   "tminDeltaC": [
+    -1.4,
+    -1.7,
+    -1.6,
+    -1.8,
+    -1.9,
+    -1.8,
+    -2.1,
+    -2.3,
+    -2.4,
+    -2,
+    -1.6,
+    -1.4
+   ]
+  },
+  "prince-rupert-bc": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN01066481",
+    "name": "PRINCE RUPERT A",
+    "lat": 54.2925,
+    "lon": -130.4447,
+    "elevationM": 35.4,
+    "distanceKm": 8.4,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "reason": "Prince Rupert airport; colder nights than the grid.",
+   "tmaxDeltaC": [
+    0.7,
+    0.6,
+    0.3,
+    0.1,
+    -0.4,
+    -0.7,
+    -0.8,
+    -0.6,
+    0.1,
+    0.2,
+    0.4,
+    0.4
+   ],
+   "tminDeltaC": [
+    -1.4,
+    -1.6,
+    -1.4,
+    -1.4,
+    -1.5,
+    -1,
+    -0.7,
+    -1,
+    -1.3,
+    -1.5,
+    -1.4,
+    -1
+   ]
+  },
+  "stanley-id": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00108676",
+    "name": "STANLEY",
+    "lat": 44.2208,
+    "lon": -114.9347,
+    "elevationM": 1904.7,
+    "distanceKm": 0.6,
+    "elevationDeltaM": -42,
+    "usableYears": 28
+   },
+   "reason": "Sawtooth Valley cold pool; town station nights 3–6°C colder and markedly drier than the grid.",
+   "tmaxDeltaC": [
+    -3.4,
+    -2.2,
+    -1.1,
+    -0.4,
+    0.1,
+    0.2,
+    0,
+    0.1,
+    0.3,
+    0.5,
+    -0.6,
+    -2.6
+   ],
+   "tminDeltaC": [
+    -5.6,
+    -5.2,
+    -3.6,
+    -2,
+    -1.8,
+    -2.1,
+    -3.7,
+    -4.1,
+    -4.1,
+    -3.2,
+    -2.9,
+    -4.6
+   ],
+   "precipRatio": 0.65
+  },
+  "santa-barbara-ca": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00047902",
+    "name": "SANTA BARBARA",
+    "lat": 34.4167,
+    "lon": -119.6844,
+    "elevationM": 4.9,
+    "distanceKm": 1.3,
+    "elevationDeltaM": -10,
+    "usableYears": 30
+   },
+   "reason": "Downtown station; sea-cooled afternoons and milder nights than the grid.",
+   "tmaxDeltaC": [
+    -0.5,
+    -0.3,
+    -0.5,
+    -0.5,
+    -1.4,
+    -2.4,
+    -2.9,
+    -2.8,
+    -2.4,
+    -1.6,
+    -1,
+    -0.8
+   ],
+   "tminDeltaC": [
+    1.5,
+    1.5,
+    1.4,
+    1.6,
+    1.4,
+    1.3,
+    1,
+    1.1,
+    1.3,
+    1.7,
+    1.7,
+    1.8
+   ]
+  },
+  "charleston-sc": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00013782",
+    "name": "DWTN CHARLESTON",
+    "lat": 32.775,
+    "lon": -79.9239,
+    "elevationM": 3,
+    "distanceKm": 0.7,
+    "elevationDeltaM": 0,
+    "usableYears": 35
+   },
+   "reason": "Downtown peninsula station; harbour-moderated days and nights.",
+   "tmaxDeltaC": [
+    -0.7,
+    -1.1,
+    -1.4,
+    -1.5,
+    -1.5,
+    -1.5,
+    -1.2,
+    -1.2,
+    -1,
+    -0.9,
+    -0.8,
+    -0.6
+   ],
+   "tminDeltaC": [
+    1.9,
+    1.8,
+    1.9,
+    2.1,
+    1.9,
+    1.5,
+    1.4,
+    1.4,
+    1.5,
+    2,
+    2.2,
+    2
+   ]
+  },
+  "sedona-az": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00027708",
+    "name": "SEDONA",
+    "lat": 34.8611,
+    "lon": -111.8197,
+    "elevationM": 1350.3,
+    "distanceKm": 5.4,
+    "elevationDeltaM": -22,
+    "usableYears": 20
+   },
+   "reason": "Town station; milder nights than the grid.",
+   "tmaxDeltaC": [
+    1,
+    0.9,
+    0.5,
+    0.6,
+    0.6,
+    0.6,
+    0.7,
+    0.8,
+    0.6,
+    0.8,
+    0.7,
+    1
+   ],
+   "tminDeltaC": [
+    2.1,
+    2.1,
+    1.9,
+    1.9,
+    2.2,
+    2.6,
+    1.9,
+    1.8,
+    2.5,
+    2.9,
+    2.5,
+    2.1
+   ]
+  },
+  "medford-or": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USW00024225",
+    "name": "MEDFORD INTL AP",
+    "lat": 42.375,
+    "lon": -122.8769,
+    "elevationM": 400.2,
+    "distanceKm": 5.4,
+    "elevationDeltaM": -30,
+    "usableYears": 35
+   },
+   "reason": "Medford airport; the city's long-record station.",
+   "tmaxDeltaC": [
+    -0.6,
+    -0.2,
+    -0.2,
+    -0.1,
+    0,
+    0,
+    0.2,
+    0.2,
+    0.2,
+    0,
+    -0.4,
+    -0.7
+   ],
+   "tminDeltaC": [
+    0.2,
+    0.6,
+    1,
+    1.3,
+    1.5,
+    1.8,
+    2.2,
+    2.3,
+    1.7,
+    0.9,
+    0.4,
+    0.2
+   ]
+  },
+  "santa-cruz-felton-ca": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00040673",
+    "name": "BEN LOMOND #4",
+    "lat": 37.0869,
+    "lon": -122.0822,
+    "elevationM": 132.6,
+    "distanceKm": 4,
+    "elevationDeltaM": 13,
+    "usableYears": 34
+   },
+   "reason": "Ben Lomond redwood-valley station; warmer afternoons and colder nights than the grid; the short Felton record agrees.",
+   "tmaxDeltaC": [
+    0.8,
+    1.1,
+    1.7,
+    2.5,
+    3.1,
+    3.8,
+    4.1,
+    4.2,
+    3.8,
+    2.9,
+    1.5,
+    0.6
+   ],
+   "tminDeltaC": [
+    -1.8,
+    -1.5,
+    -1.4,
+    -1.3,
+    -1.2,
+    -1.4,
+    -1.6,
+    -1.8,
+    -2,
+    -2.3,
+    -2.1,
+    -1.7
+   ]
+  },
+  "ensenada-mx": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "MXN00002104",
+    "name": "El CIPRES",
+    "lat": 31.7833,
+    "lon": -116.5833,
+    "elevationM": 7.9,
+    "distanceKm": 9.9,
+    "elevationDeltaM": -7,
+    "usableYears": 15
+   },
+   "reason": "Coastal station south of town; the grid runs summer afternoons 4–5°C warm (Punta Banda agrees).",
+   "tmaxDeltaC": [
+    -1.4,
+    -1.4,
+    -1.7,
+    -2.3,
+    -3.2,
+    -4.1,
+    -4.6,
+    -4.7,
+    -4,
+    -3.1,
+    -2.4,
+    -1.5
+   ],
+   "tminDeltaC": [
+    1.1,
+    1.1,
+    1.3,
+    1.7,
+    1.6,
+    1.8,
+    1.8,
+    1.5,
+    2.3,
+    1.6,
+    1.6,
+    0.8
+   ]
+  },
+  "marfa-tx": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00415596",
+    "name": "MARFA 3W",
+    "lat": 30.3125,
+    "lon": -104.0722,
+    "elevationM": 1460,
+    "distanceKm": 5,
+    "elevationDeltaM": -10,
+    "usableYears": 11
+   },
+   "reason": "Marfa station; high-desert nights 2–4°C colder than the grid.",
+   "tmaxDeltaC": [
+    -0.9,
+    -0.9,
+    -1.2,
+    -1.2,
+    -1,
+    -0.8,
+    -0.9,
+    -1,
+    -1.1,
+    -1,
+    -0.9,
+    -1
+   ],
+   "tminDeltaC": [
+    -3.3,
+    -3.3,
+    -3.2,
+    -3.4,
+    -2.6,
+    -2.4,
+    -1.9,
+    -2.1,
+    -2.5,
+    -2.9,
+    -3.1,
+    -3.2
+   ]
+  },
+  "joseph-or": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00354329",
+    "name": "JOSEPH",
+    "lat": 45.3497,
+    "lon": -117.2242,
+    "elevationM": 1275.3,
+    "distanceKm": 0.7,
+    "elevationDeltaM": -17,
+    "usableYears": 15
+   },
+   "reason": "Town station; the grid overstates precipitation at the foot of the Wallowas.",
+   "precipRatio": 0.75
+  },
+  "port-townsend-wa": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00456678",
+    "name": "PORT TOWNSEND",
+    "lat": 48.1161,
+    "lon": -122.7586,
+    "elevationM": 30.5,
+    "distanceKm": 0.2,
+    "elevationDeltaM": 1,
+    "usableYears": 14
+   },
+   "reason": "Town station; rain-shadow drier than the grid (Coupeville and Sequim agree).",
+   "precipRatio": 0.76
+  },
+  "honolulu-hi": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "USC00519397",
+    "name": "WAIKIKI 717.2",
+    "lat": 21.2717,
+    "lon": -157.8167,
+    "elevationM": 3,
+    "distanceKm": 5.8,
+    "elevationDeltaM": -2,
+    "usableYears": 26
+   },
+   "reason": "Waikiki station; leeward Honolulu is far drier than the grid (the airport agrees).",
+   "precipRatio": 0.46
+  }
+ }
+}
