@@ -10,7 +10,8 @@
  *     Up to nine replacement candidates per listed place, for a human to pick
  *     from: <out>/<place-id>--<N>.jpg plus one CAND line per photo (Commons
  *     title, size, assessment, distance). Candidates are landscape JPEGs at
- *     least 2000 px wide, geotagged near the place or found by its name, with
+ *     least 2000 px wide, geotagged within 10 km, in the town's Commons category
+ *     or assessed pictures naming the town and its state/province, with
  *     maps, signs, postcards, interiors and the like filtered out and Commons
  *     Featured / Quality / Valued pictures ranked first.
  *
@@ -123,26 +124,35 @@ async function imageInfo(titles: string[]): Promise<Map<string, ImageInfo>> {
   return out;
 }
 
+async function categoryFiles(category: string): Promise<string[]> {
+  const res = (await api({
+    action: "query",
+    list: "categorymembers",
+    cmtitle: `Category:${category}`,
+    cmtype: "file",
+    cmlimit: "200",
+  })) as ApiResponse & { query?: { categorymembers?: Array<{ title: string }> } };
+  return (res.query?.categorymembers ?? []).map(m => m.title);
+}
+
 async function candidates(place: (typeof PLACES)[number], current: string): Promise<Array<{ title: string; info: ImageInfo; where: string }>> {
   const found = new Map<string, number>();
+  // Commons caps geosearch at 10 km.
   const geo = await api({
     action: "query",
     list: "geosearch",
     gscoord: `${place.lat}|${place.lon}`,
-    gsradius: "15000",
+    gsradius: "10000",
     gsnamespace: "6",
-    gslimit: "300",
+    gslimit: "500",
   });
   for (const hit of geo.query?.geosearch ?? []) found.set(hit.title, hit.dist);
   const name = (place.municipality ?? place.name).split(/ \(| & |, | — /)[0]!.trim();
-  const queries = [
-    `"${name}" incategory:"Quality images"`,
-    `"${name}" incategory:"Featured pictures on Wikimedia Commons"`,
-    `"${name}" incategory:"Valued images"`,
-    `"${name}" ${place.region} landscape OR view OR panorama`,
-  ];
-  for (const srsearch of queries) {
-    const res = await api({ action: "query", list: "search", srnamespace: "6", srlimit: "40", srsearch });
+  for (const category of [`${name}, ${place.region}`, name]) {
+    for (const title of await categoryFiles(category)) if (!found.has(title)) found.set(title, -2);
+  }
+  for (const label of ["Quality images", "Featured pictures on Wikimedia Commons", "Valued images"]) {
+    const res = await api({ action: "query", list: "search", srnamespace: "6", srlimit: "40", srsearch: `"${name}" "${place.region}" incategory:"${label}"` });
     for (const hit of res.query?.search ?? []) if (!found.has(hit.title)) found.set(hit.title, -1);
   }
   found.delete(`File:${current}`);
@@ -156,13 +166,15 @@ async function candidates(place: (typeof PLACES)[number], current: string): Prom
     })
     .map(([title, info]) => {
       const text = `${title} ${plain(info.extmetadata?.ImageDescription?.value, 400)}`;
+      const dist = found.get(title) ?? -1;
       const score =
         assessmentRank(info) * 10 +
         (GOOD_WORDS.test(text) ? 4 : 0) -
         (MEH_WORDS.test(text) ? 3 : 0) +
-        Math.min(3, (info.width ?? 0) / 2000);
-      const dist = found.get(title) ?? -1;
-      return { title, info, score, where: dist >= 0 ? `${(dist / 1000).toFixed(1)} km` : "by name" };
+        Math.min(3, (info.width ?? 0) / 2000) +
+        (dist >= 0 ? 2 - dist / 5000 : 0);
+      const where = dist >= 0 ? `${(dist / 1000).toFixed(1)} km` : dist === -2 ? "category" : "by name";
+      return { title, info, score, where };
     })
     .sort((a, b) => b.score - a.score)
     .slice(0, PER_PLACE);
