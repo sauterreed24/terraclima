@@ -9,11 +9,13 @@
  *   npx tsx scripts/hero-contact-sheet.ts --out cand --candidates id1,id2 [--shard 1/4]
  *     Up to nine replacement candidates per listed place, for a human to pick
  *     from: <out>/<place-id>--<N>.jpg plus one CAND line per photo (Commons
- *     title, size, assessment, distance). Candidates are landscape JPEGs at
- *     least 2000 px wide, geotagged within 10 km, in the town's Commons category
- *     or assessed pictures naming the town and its state/province, with
- *     maps, signs, postcards, interiors and the like filtered out and Commons
- *     Featured / Quality / Valued pictures ranked first.
+ *     title, size, assessment, source, article use). Candidates are landscape
+ *     JPEGs at least 2000 px wide drawn from the town's Wikipedia / Wikivoyage
+ *     articles, Commons geotags within 10 km, the town's Commons category tree,
+ *     and assessed pictures naming the town and its state/province. Maps,
+ *     signs, postcards, interiors, satellite views and the like are filtered
+ *     out; Commons Featured / Quality / Valued pictures and photos already used
+ *     in the article rank first.
  *
  * Exit 1 if any thumbnail fails to download.
  */
@@ -69,11 +71,11 @@ interface ApiResponse {
   };
 }
 
-async function api(params: Record<string, string>): Promise<ApiResponse> {
+async function api(params: Record<string, string>, endpoint = API): Promise<ApiResponse> {
   const body = new URLSearchParams({ format: "json", formatversion: "1", ...params });
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
-      const res = await fetch(API, {
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "user-agent": UA, "content-type": "application/x-www-form-urlencoded; charset=UTF-8" },
         body: body.toString(),
@@ -89,7 +91,7 @@ async function api(params: Record<string, string>): Promise<ApiResponse> {
 }
 
 const REJECT_TITLE =
-  /\b(map|karte|mapa|sign|signage|logo|plaque|marker|postcard|interior|inside|museum|diagram|chart|poster|stamp|coat of arms|flag of|seal of|document|drawing|painting|engraving|lithograph|airplane|aeroplane|plane window|from the air|selfie|portrait|statue|sculpture|grave|cemetery|menu|screenshot|satellite|landsat|sentinel|nasa|iss0|census|parking)\b/i;
+  /\bISS\d|View of Earth|\b(map|karte|mapa|sign|signage|logo|plaque|marker|postcard|interior|inside|museum|diagram|chart|poster|stamp|coat of arms|flag of|seal of|document|drawing|painting|engraving|lithograph|airplane|aeroplane|plane window|from the air|selfie|portrait|statue|sculpture|grave|cemetery|menu|screenshot|satellite|landsat|sentinel|nasa|census|parking|aerial|airport|jail|gravestone|headstone|tombstone|courthouse|post office|school|hospital|gas station|motel|highway|interstate|overpass|crash|fire damage|cleanup|construction)\b/i;
 const REJECT_CATEGORY = /Postcards|Maps of|Interiors|Signs in|Satellite pictures|Aerial photographs from airplanes|Logos|Historical images|Black and white photographs/i;
 const GOOD_WORDS = /\b(view|vista|panorama|landscape|sunset|sunrise|lake|mountain|peak|beach|coast|valley|river|canyon|falls|waterfall|harbou?r|bay|dunes?|forest|meadow|overlook|skyline|island|cliffs?|lighthouse|vineyard|orchard)\b/i;
 const MEH_WORDS = /\b(street|building|house|church|car|bus|people|festival|parade|store|shop|restaurant|hotel|sign|road)\b/i;
@@ -135,8 +137,52 @@ async function categoryFiles(category: string): Promise<string[]> {
   return (res.query?.categorymembers ?? []).map(m => m.title);
 }
 
+async function searchTitles(srsearch: string, limit: number, namespace = "6", endpoint = API): Promise<string[]> {
+  const res = await api({ action: "query", list: "search", srnamespace: namespace, srlimit: String(limit), srsearch }, endpoint);
+  return (res.query?.search ?? []).map(hit => hit.title);
+}
+
+/** Files shown in the place's own Wikipedia / Wikivoyage article: a curated, on-subject pool. */
+async function articleFiles(endpoint: string, query: string): Promise<string[]> {
+  const [article] = await searchTitles(query, 1, "0", endpoint);
+  if (!article) return [];
+  const res = (await api({ action: "query", titles: article, redirects: "1", prop: "images", imlimit: "200" }, endpoint)) as ApiResponse & {
+    query?: { pages?: Record<string, { images?: Array<{ title: string }> }> };
+  };
+  return Object.values(res.query?.pages ?? {}).flatMap(page => (page.images ?? []).map(image => image.title.replace(/^[^:]+:/, "File:")));
+}
+
+const WIKIS: Record<string, string[]> = {
+  USA: ["https://en.wikipedia.org/w/api.php", "https://en.wikivoyage.org/w/api.php"],
+  Canada: ["https://en.wikipedia.org/w/api.php", "https://en.wikivoyage.org/w/api.php"],
+  Mexico: ["https://en.wikipedia.org/w/api.php", "https://es.wikipedia.org/w/api.php", "https://en.wikivoyage.org/w/api.php"],
+};
+
+async function globalUsage(titles: string[]): Promise<Map<string, number>> {
+  const out = new Map<string, number>();
+  for (let i = 0; i < titles.length; i += 50) {
+    const res = (await api({ action: "query", titles: titles.slice(i, i + 50).join("|"), prop: "globalusage", gunamespace: "0", gulimit: "500" })) as ApiResponse & {
+      query?: { pages?: Record<string, { title?: string; globalusage?: unknown[] }> };
+    };
+    for (const page of Object.values(res.query?.pages ?? {})) if (page.title) out.set(page.title, page.globalusage?.length ?? 0);
+  }
+  return out;
+}
+
+// Where a candidate came from: metres when geotagged nearby, otherwise a source tag.
+type Source = number | "article" | "category" | "by name";
+
 async function candidates(place: (typeof PLACES)[number], current: string): Promise<Array<{ title: string; info: ImageInfo; where: string }>> {
-  const found = new Map<string, number>();
+  const found = new Map<string, Source>();
+  const add = (title: string, source: Source) => {
+    const prior = found.get(title);
+    // An article appearance outranks every other source; otherwise keep the first.
+    if (prior === undefined || source === "article") found.set(title, source);
+  };
+  const name = (place.municipality ?? place.name).split(/ \(| & |, | — /)[0]!.trim();
+  for (const endpoint of WIKIS[place.country] ?? WIKIS.USA!) {
+    for (const title of await articleFiles(endpoint, `${name} ${place.region}`)) add(title, "article");
+  }
   // Commons caps geosearch at 10 km.
   const geo = await api({
     action: "query",
@@ -146,35 +192,37 @@ async function candidates(place: (typeof PLACES)[number], current: string): Prom
     gsnamespace: "6",
     gslimit: "500",
   });
-  for (const hit of geo.query?.geosearch ?? []) found.set(hit.title, hit.dist);
-  const name = (place.municipality ?? place.name).split(/ \(| & |, | — /)[0]!.trim();
+  for (const hit of geo.query?.geosearch ?? []) add(hit.title, hit.dist);
   for (const category of [`${name}, ${place.region}`, name]) {
-    for (const title of await categoryFiles(category)) if (!found.has(title)) found.set(title, -2);
+    for (const title of await categoryFiles(category)) add(title, "category");
+    for (const title of await searchTitles(`deepcat:"${category}" filew:>1999 filemime:image/jpeg`, 100)) add(title, "category");
   }
   for (const label of ["Quality images", "Featured pictures on Wikimedia Commons", "Valued images"]) {
-    const res = await api({ action: "query", list: "search", srnamespace: "6", srlimit: "40", srsearch: `"${name}" "${place.region}" incategory:"${label}"` });
-    for (const hit of res.query?.search ?? []) if (!found.has(hit.title)) found.set(hit.title, -1);
+    for (const title of await searchTitles(`"${name}" "${place.region}" incategory:"${label}"`, 40)) add(title, "by name");
   }
   found.delete(`File:${current}`);
   const infos = await imageInfo([...found.keys()]);
-  return [...infos.entries()]
-    .filter(([title, info]) => {
-      if (!/^image\/jpeg$/.test(info.mime ?? "") || !info.width || !info.height) return false;
-      if (info.width < 2000 || info.width / info.height < 1.3) return false;
-      if (REJECT_TITLE.test(title) || REJECT_CATEGORY.test(info.extmetadata?.Categories?.value ?? "")) return false;
-      return true;
-    })
+  const passing = [...infos.entries()].filter(([title, info]) => {
+    if (!/^image\/jpeg$/.test(info.mime ?? "") || !info.width || !info.height) return false;
+    if (info.width < 2000 || info.width / info.height < 1.3) return false;
+    if (REJECT_TITLE.test(title) || REJECT_CATEGORY.test(info.extmetadata?.Categories?.value ?? "")) return false;
+    return true;
+  });
+  const usage = await globalUsage(passing.map(([title]) => title));
+  return passing
     .map(([title, info]) => {
       const text = `${title} ${plain(info.extmetadata?.ImageDescription?.value, 400)}`;
-      const dist = found.get(title) ?? -1;
+      const source = found.get(title) ?? "by name";
       const score =
         assessmentRank(info) * 10 +
+        (source === "article" ? 8 : 0) +
+        Math.min(6, usage.get(title) ?? 0) +
         (GOOD_WORDS.test(text) ? 4 : 0) -
         (MEH_WORDS.test(text) ? 3 : 0) +
         Math.min(3, (info.width ?? 0) / 2000) +
-        (dist >= 0 ? 2 - dist / 5000 : 0);
-      const where = dist >= 0 ? `${(dist / 1000).toFixed(1)} km` : dist === -2 ? "category" : "by name";
-      return { title, info, score, where };
+        (typeof source === "number" ? 2 - source / 5000 : 0);
+      const where = typeof source === "number" ? `${(source / 1000).toFixed(1)} km` : source;
+      return { title, info, score, where: `${where} u${usage.get(title) ?? 0}` };
     })
     .sort((a, b) => b.score - a.score)
     .slice(0, PER_PLACE);
