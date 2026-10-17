@@ -353,10 +353,10 @@ export const PLACES_CANADA: Place[] = [
     archetypes: ["rain-shadow-sanctuary", "cool-summer-maritime", "mediterranean-pocket", "mild-winter-foothills"],
     drivers: ["rain-shadow", "marine-layer"],
     summaryShort: "Canada's mildest major city — a Mediterranean-leaning rain-shadow pocket on the Pacific.",
-    summaryImmersive: "Victoria sits in the rain shadow of the Olympic Mountains, 60 km south across the Strait of Juan de Fuca. Annual precipitation is roughly half of Vancouver's across the strait. Summers are dry and mild; winters are the softest in Canada — rare freezes, almost no snow, daffodils in February. The Garry oak meadows and arbutus on southern Vancouver Island are the northernmost examples of a Mediterranean-adjacent plant community in North America.",
+    summaryImmersive: "Victoria sits in the rain shadow of the Olympic Mountains, 60 km south across the Strait of Juan de Fuca. Annual precipitation is a half to two-thirds of Vancouver's across the strait. Summers are dry and mild; winters are the softest in Canada — rare freezes, almost no snow, daffodils in February. The Garry oak meadows and arbutus on southern Vancouver Island are the northernmost examples of a Mediterranean-adjacent plant community in North America.",
     whyDistinct: "The Olympic rain shadow extends across the Strait of Juan de Fuca and up onto the Saanich Peninsula. Marine influence moderates temperature in every season.",
     experience: {
-      feel: "Victoria feels like the softest corner of Canada. Tucked in the Olympic rain shadow across the strait, it gets roughly half of Vancouver's rain, almost no snow, and daffodils in February — a Garry-oak, Mediterranean-leaning pocket on the Pacific.",
+      feel: "Victoria feels like the softest corner of Canada. Tucked in the Olympic rain shadow across the strait, it gets a half to two-thirds of Vancouver's rain, almost no snow, and daffodils in February — a Garry-oak, Mediterranean-leaning pocket on the Pacific.",
       seasons: {
         winter: "The mildest in the country — afternoons near 8°C, frost rare, snow rarer still, and the rain arriving soft and gray rather than harsh. Gardens never fully shut down.",
         spring: "Famously early: blossoms by February, afternoons climbing through the teens, and the rain easing as the dry season builds while the rest of Canada thaws.",
@@ -925,10 +925,10 @@ export const PLACES_CANADA: Place[] = [
     biome: "Coastal Douglas-fir / Garry oak", koppen: "Csb",
     archetypes: ["rain-shadow-sanctuary", "mediterranean-pocket", "cool-summer-maritime"], drivers: ["rain-shadow", "marine-layer"],
     summaryShort: "Rain-shadow Gulf Island with a Mediterranean microclimate, Garry oak meadows, dry summers, and ferry-paced island culture.",
-    summaryImmersive: "The Southern Gulf Islands receive roughly half of Vancouver's precipitation — the Olympic rain shadow extends this far north and east. Salt Spring's sheltered bays and Garry oak meadows reveal a climate more Mediterranean than most of coastal BC.",
+    summaryImmersive: "The Southern Gulf Islands get a fraction of the outer coast's rain — the Olympic and Vancouver Island rain shadows reach this far north and east. Salt Spring's sheltered bays and Garry oak meadows reveal a climate more Mediterranean than most of coastal BC.",
     whyDistinct: "Olympic rain shadow + Gulf Island shelter + marine moderation.",
     experience: {
-      feel: "Salt Spring feels like Vancouver's Mediterranean cousin — a Gulf Island in the Olympic rain shadow where precipitation runs roughly half of the mainland, Garry oak meadows meet sheltered bays, and ferry schedule shapes daily life as much as the marine layer.",
+      feel: "Salt Spring feels like Vancouver's Mediterranean cousin — a Gulf Island in the Olympic rain shadow where rain runs at a fraction of the outer coast's, Garry oak meadows meet sheltered bays, and ferry schedule shapes daily life as much as the marine layer.",
       seasons: {
         winter: "Mild and wet — highs near 7°C, nights near 2°C, and enough rain to keep the island green without the mainland's winter gloom.",
         spring: "Green explosion — highs climbing through the low teens, wildflowers on south-facing slopes, and the first warm afternoons that feel earned.",
@@ -992,7 +992,7 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Twelve-meter Fundy tides cycle enormous volumes of cold water past the island, producing a dramatically moderated maritime climate: cool wet summers, mild winters, relentless fog, and a salt-scrubbed plant community.",
     whyDistinct: "The Fundy tidal engine keeps local SSTs cool in summer and warm(er) than air in winter.",
     experience: {
-      feel: "Grand Manan feels like the Bay of Fundy made island — twelve-metre tides cycling enormous volumes of cold water past the shore, cool wet summers, mild winters, relentless fog, and a salt-scrubbed plant community that reads more maritime than mainland New Brunswick.",
+      feel: "Grand Manan feels like the Bay of Fundy made island — five-to-six-metre tides cycling enormous volumes of cold water past the shore, cool wet summers, mild winters, relentless fog, and a salt-scrubbed plant community that reads more maritime than mainland New Brunswick.",
       seasons: {
         winter: "Mild and foggy — highs near −1°C, nights near −8°C, and Fundy storms that can stack snow before the tides moderate the air again.",
         spring: "Slow brightening — puffins returning to the cliffs, afternoons climbing through the single digits, and the first whale-watch boats leaving North Head.",
@@ -1452,11 +1452,11 @@ export const PLACES_CANADA: Place[] = [
     biome: "Boreal-Atlantic coastal heath", koppen: "Cfb / Dfb margin",
     archetypes: ["hyper-maritime", "cool-summer-maritime", "fjord-inlet"],
     drivers: ["marine-layer", "polar-jet-exposure"],
-    summaryShort: "North America's foggiest and windiest major city — where the Labrador Current meets the Atlantic and every storm arrives first.",
-    summaryImmersive: "St. John's holds the distinction of being North America's foggiest, cloudiest, wettest, windiest, and snowiest major city all at once — a consequence of its position on the Avalon Peninsula at the boundary of the cold Labrador Current and the North Atlantic storm track. Summers are cool (highs around 20°C); winters mild by Canadian standards but relentlessly stormy. Annual sunshine is among the lowest on the continent.",
+    summaryShort: "Canada's foggiest and windiest major city — where the Labrador Current meets the Atlantic and every storm arrives first.",
+    summaryImmersive: "St. John's holds the distinction of being Canada's foggiest, cloudiest, wettest, windiest, and snowiest major city all at once — a consequence of its position on the Avalon Peninsula at the boundary of the cold Labrador Current and the North Atlantic storm track. Summers are cool (highs around 20°C); winters mild by Canadian standards but relentlessly stormy. Annual sunshine is among the lowest on the continent.",
     whyDistinct: "Avalon's position in the Labrador Current produces intense fog and cool summers; exposure to Atlantic storm track makes the city the first/last stop for transatlantic weather.",
     experience: {
-      feel: "St. John's feels like the Atlantic's first stop — North America's foggiest, windiest, wettest major city where the Labrador Current meets the storm track, summers barely reach 21°C, and every transatlantic weather system arrives here before anywhere else on the continent.",
+      feel: "St. John's feels like the Atlantic's first stop — Canada's foggiest, windiest, wettest major city where the Labrador Current meets the storm track, summers barely reach 21°C, and every transatlantic weather system arrives here before anywhere else on the continent.",
       seasons: {
         winter: "Stormy and mild for Canada — highs near −1°C, nights near −8°C, snow measured in metres, and gales that can rake the Avalon for days.",
         spring: "Slow thaw — ice retreats from the harbour, highs climb through the single digits, and fog can sit for a week without breaking.",
@@ -1530,12 +1530,12 @@ export const PLACES_CANADA: Place[] = [
     archetypes: ["subarctic-continental", "rain-shadow-sanctuary", "basin-inversion"],
     drivers: ["rain-shadow", "continentality", "inversion"],
     summaryShort: "The driest subarctic capital in North America — a rain-shadow Yukon valley with sun-drenched winter cold and near-midnight-sun summers.",
-    summaryImmersive: "Whitehorse sits at 60.7° latitude but in the deep rain shadow of the Coast Mountains, making it one of the driest subarctic climates on the continent — under 260 mm annual precipitation. Winters are long and cold (January lows near −24°C) but also sunny and strikingly dry. Summer daylight approaches 20 hours; afternoon highs reach the low 20s. The dryness produces clearer winter skies than most Canadian north, contributing to exceptional aurora conditions.",
+    summaryImmersive: "Whitehorse sits at 60.7° latitude but in the deep rain shadow of the Coast Mountains, making it one of the driest subarctic climates on the continent — well under 400 mm of precipitation a year. Winters are long and cold (January lows near −19°C) but also sunny and strikingly dry. Summer daylight approaches 20 hours; afternoon highs reach the low 20s. The dryness produces clearer winter skies than most Canadian north, contributing to exceptional aurora conditions.",
     whyDistinct: "Rain shadow transforms typical subarctic wetness into aridity, producing a unique cold-dry-sunny regime unusual for the latitude.",
     experience: {
-      feel: "Whitehorse feels like the sunny, dry exception to the subarctic. In the Coast Mountains' rain shadow it gets under 260 mm a year, so its winters are cold but bright and crisp rather than dreary — and the dry, clear skies make it one of the continent's great aurora towns.",
+      feel: "Whitehorse feels like the sunny, dry exception to the subarctic. In the Coast Mountains' rain shadow it gets well under 400 mm a year, so its winters are cold but bright and crisp rather than dreary — and the dry, clear skies make it one of the continent's great aurora towns.",
       seasons: {
-        winter: "Long, cold, and strikingly sunny — afternoons well below freezing, lows near −24°C, but dry, clear skies and short brilliant days, with the aurora a regular companion.",
+        winter: "Long, cold, and strikingly sunny — afternoons well below freezing, lows near −19°C, but dry, clear skies and short brilliant days, with the aurora a regular companion.",
         spring: "A slow northern thaw — daylight surging back, the Yukon River breaking up, and afternoons climbing out of the cold into the first real warmth.",
         summer: "Mild and almost endless — afternoons in the low 20s under nearly 20 hours of daylight, dry and pleasant, the boreal forest and rivers at their best.",
         autumn: "Brief and golden — the taiga turning, frosts arriving early, and the dark returning fast to reopen the aurora season.",
@@ -1780,7 +1780,7 @@ export const PLACES_CANADA: Place[] = [
     archetypes: ["chinook-corridor", "badland-steppe", "high-desert-escape"],
     drivers: ["chinook-foehn", "rain-shadow", "continentality"],
     summaryShort: "Canada's 'sunniest city' — averaging 330 sunny days per year in a warm chinook-modulated prairie climate that defies expectations of Canadian winters.",
-    summaryImmersive: "Medicine Hat sits in the South Saskatchewan River valley on Alberta's dry plains, and the Rockies' rain shadow combined with frequent chinook breakthroughs produce a climate unlike anywhere else in Canada. It averages more hours of bright sunshine per year (around 2,500) than any other Canadian city — more than Los Angeles receives. Winters remain cold but are punctuated by chinook events that can lift January temperatures to +15°C for days at a time. Summer brings hot, dry days with abundant sun; July highs regularly exceed 30°C. Precipitation is scarce — 350 mm annually — producing a climate closer to Denver than to the stereotypical 'Canadian prairie.'",
+    summaryImmersive: "Medicine Hat sits in the South Saskatchewan River valley on Alberta's dry plains, and the Rockies' rain shadow combined with frequent chinook breakthroughs produce a climate unlike anywhere else in Canada. It averages around 2,500 hours of bright sunshine a year, among the most of any Canadian city. Winters remain cold but are punctuated by chinook events that can lift January temperatures to +15°C for days at a time. Summer brings hot, dry days with abundant sun; July highs regularly exceed 30°C. Precipitation is scarce — about 300 mm a year — producing a climate closer to Denver than to the stereotypical 'Canadian prairie.'",
     whyDistinct: "Double lee effect: behind both the Rockies and the Purcell/Columbia system + dry continental air mass + chinook penetration deep onto the prairie = one of the driest, sunniest climates in Canada.",
     climate: {
       tempHighC: [-3, 0, 6, 14, 19, 24, 28, 27, 22, 14, 3, -3], tempLowC: [-13, -11, -6, 0, 5, 10, 12, 11, 6, 1, -7, -12],
@@ -1789,7 +1789,7 @@ export const PLACES_CANADA: Place[] = [
       sunshinePct: [48, 56, 62, 62, 60, 62, 72, 72, 64, 55, 42, 40],
       annualPrecipMm: 348, frostFreeDays: 130, hardinessZone: "3b", chillHours: 2600, diurnalSummerC: 16, diurnalWinterC: 10,
     },
-    soil: { texture: "Dark brown chernozem (short-grass prairie)", drainage: "good", phRange: [6.8, 8.0], organicMatterPct: [2, 4], waterHolding: "moderate" },
+    soil: { texture: "Brown chernozem (short-grass prairie)", drainage: "good", phRange: [6.8, 8.0], organicMatterPct: [2, 4], waterHolding: "moderate" },
     growability: { score: 54, growsWell: ["Hardy wheat", "Pulse crops", "Drought-hardy gardens", "Sour cherries"], tricky: ["Moisture-loving crops without irrigation"], homeGarden: "Dry and sunny — Mediterranean herbs, hardy perennials, and drought-adapted natives thrive if irrigated in July." },
     climateChange: { outlook2050: "Hotter, drier summers; more extreme winter warm events; stronger fire weather.", outlook2100: "Aridity approaches desert classification in some projections.", keyShifts: [{ variable: "Summer heat", direction: "up" }, { variable: "Snowpack dependence", direction: "down" }, { variable: "Chinook frequency", direction: "up" }, { variable: "Fire weather", direction: "up" }], resilienceNote: "Sunshine and chinooks remain; water supply becomes the key vulnerability." },
     risks: { wildfire: { level: "moderate", trend: "worsening" }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "elevated", trend: "worsening" }, extremeHeat: { level: "moderate", trend: "worsening" }, extremeCold: { level: "moderate", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
@@ -1811,7 +1811,7 @@ export const PLACES_CANADA: Place[] = [
     archetypes: ["cool-summer-maritime", "hyper-maritime", "fog-belt-coast"],
     drivers: ["marine-layer", "polar-jet-exposure", "continentality"],
     summaryShort: "'Iceberg Alley' — a coast so cooled by the Labrador Current that icebergs drift past in May, and summer highs average just 18°C while winters only dip to −10°C.",
-    summaryImmersive: "Twillingate sits on the northeast coast of Newfoundland directly in the path of the Labrador Current, which carries Arctic water — and icebergs calved from Greenland — southward every spring. The current keeps coastal waters near freezing into June, making this one of the coolest-summer coasts in eastern North America. Fog is chronic in early summer as warm air meets the cold sea. Winters, paradoxically, are relatively mild for the latitude because the sea (though cold) never freezes. Iceberg viewing is so reliable in May and June that 'Iceberg Alley' is now a local brand. Whale encounters — humpbacks, minkes, fin whales — are the summer counterpart.",
+    summaryImmersive: "Twillingate sits on the northeast coast of Newfoundland directly in the path of the Labrador Current, which carries Arctic water — and icebergs calved from Greenland — southward every spring. The current keeps coastal waters near freezing into June, making this one of the coolest-summer coasts in eastern North America. Fog is chronic in early summer as warm air meets the cold sea. Winters, paradoxically, are relatively mild for the latitude because the sea stays open most of the season, though Arctic pack ice can drift in late in winter. Iceberg viewing is so reliable in May and June that 'Iceberg Alley' is now a local brand. Whale encounters — humpbacks, minkes, fin whales — are the summer counterpart.",
     whyDistinct: "Labrador Current + cold-side Gulf Stream boundary position + exposed outer-coast geometry. The annual temperature range is remarkably narrow (~25°C) given the high latitude, and fog/precipitation regimes are fundamentally maritime.",
     climate: {
       tempHighC: [-3, -4, 0, 5, 11, 16, 20, 19, 15, 9, 4, -1], tempLowC: [-10, -10, -7, -2, 3, 7, 11, 12, 9, 4, 0, -6],
@@ -1827,7 +1827,7 @@ export const PLACES_CANADA: Place[] = [
     liveSignals: {
       costPressure: 42,
       accessFriction: 72,
-      note: "Housing is modest but year-round work is thin; the Twillingate–Gander ferry link and St. John's flights are the usual anchors for groceries, care, and specialists.",
+      note: "Housing is modest but year-round work is thin; the causeway road to Gander and St. John's flights are the usual anchors for groceries, care, and specialists.",
       sources: [
         { label: "ECCC — Gander / Twillingate climate reference", url: "https://climate.weather.gc.ca/" },
         { label: "Marine Atlantic — Newfoundland ferry schedules", url: "https://www.marineatlantic.ca/" },

@@ -19,7 +19,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     lat: 34.5786,
     lon: -85.5891,
     elevationM: 548,
-    reliefContext: "Village on the Cumberland Plateau / Lookout Mountain scarp — roughly 550 m above the Tennessee Valley floor to the west.",
+    reliefContext: "Village on the Cumberland Plateau / Lookout Mountain scarp — roughly 280 m above Wills Valley to the west.",
     biome: "Oak–hickory and mesic cove forest",
     koppen: "Cfa",
     archetypes: ["thermal-belt", "mild-winter-foothills", "piedmont-transition"],
@@ -473,7 +473,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
       seasons: {
         winter: "Genuinely alpine — afternoons only a few degrees above freezing, nights near −5°C, and real snowpack stacking up for skiing while the desert below stays warm and dry.",
         spring: "Slow to melt out — snow lingering on the high country, afternoons climbing through the teens, and the forest greening weeks behind the basin.",
-        summer: "The whole point — afternoons near 25°C with cool, often-frosty nights, a startling escape from Las Vegas heat, and occasional upslope thunderstorms building on the crest.",
+        summer: "The whole point — afternoons near 26°C with cool nights near 12°C, a startling escape from Las Vegas heat, and occasional upslope thunderstorms building on the crest.",
         autumn: "Crisp and quiet — aspens turning, frosty mornings returning early, and the first snows reclaiming the summits while the valley stays warm.",
       },
       travelerFit: "Visitors come for a summer cool-down from Las Vegas, winter skiing and snow play, and bristlecone-pine high country.",

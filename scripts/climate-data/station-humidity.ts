@@ -8,12 +8,14 @@
  * winter, and the subarctic's early summer. Hourly dew points from Integrated
  * Surface Database (ISD) stations measure it directly.
  *
- * For each place, finds ISD stations within --radius-km (default 30) and
- * 200 m of the anchor's elevation, reads their hourly dew points (ISD-Lite,
- * 2011–2025), and compares the station's daily mean vapour pressure with the
+ * For each place, finds ISD stations within --radius-km (default 40) and
+ * 300 m of the anchor's elevation, reads their hourly dew points (ISD-Lite,
+ * 2011–2025), and compares the station's daily mean vapour pressure, moved to
+ * the grid pixel's elevation with a 2.5 km vapour scale height, with the
  * place's Daymet pixel over the days both report, month by month: the
  * vapour-pressure ratio (station / grid), plus the resulting mean relative
- * humidity both ways. Results go to
+ * humidity both ways. Up to three stations are compared so their agreement
+ * can be reviewed. Results go to
  * data/climate-v2/stations/humidity-bias-diagnostics.json, plus one summary
  * line per place on stdout.
  *
@@ -42,11 +44,15 @@ const ISD_LITE = "https://www.ncei.noaa.gov/pub/data/noaa/isd-lite";
 const FIRST_YEAR = 2011;
 const LAST_YEAR = 2025;
 const MAX_CANDIDATES = 3;
-const MAX_ELEVATION_DELTA_M = 200;
-/** A station day needs this many hourly dew points to give a daily mean. */
-const MIN_DAY_OBS = 6;
-/** Months need this many paired days (≈ 8 years) to report a ratio. */
-const MIN_MONTH_DAYS = 240;
+const MAX_ELEVATION_DELTA_M = 300;
+/** Vapour pressure falls off with height roughly as exp(−z / 2.5 km). */
+const VAPOUR_SCALE_HEIGHT_M = 2500;
+/** A station day needs this many dew points (synoptic stations report 3-hourly). */
+const MIN_DAY_OBS = 4;
+/** Months need this many paired days (≈ 5 years) to report a ratio. */
+const MIN_MONTH_DAYS = 150;
+/** A year counts as usable with this many paired days. */
+const MIN_YEAR_DAYS = 150;
 
 interface Anchor {
   id: string;
@@ -192,7 +198,7 @@ function daymetDate(year: number, yday: number): string {
 const round0 = (n: number) => Math.round(n);
 const round2 = (n: number) => Math.round(n * 100) / 100;
 
-function compare(daymet: DaymetDailyRow[], station: Map<string, { e: number; rh: number; n: number }>) {
+function compare(daymet: DaymetDailyRow[], station: Map<string, { e: number; rh: number; n: number }>, vpScale: number) {
   const acc = Array.from({ length: 12 }, () => ({ st: 0, grid: 0, rhGrid: 0, rhStationVp: 0, rhHourly: 0, n: 0 }));
   const years = new Map<number, number>();
   for (const row of daymet) {
@@ -200,7 +206,7 @@ function compare(daymet: DaymetDailyRow[], station: Map<string, { e: number; rh:
     const st = station.get(date);
     if (!st || st.n < MIN_DAY_OBS) continue;
     const m = Number(date.slice(5, 7)) - 1;
-    const e = st.e / st.n;
+    const e = (st.e / st.n) * vpScale;
     const es = saturationVaporPressurePa((row.tmax + row.tmin) / 2);
     const a = acc[m]!;
     a.st += e;
@@ -213,7 +219,7 @@ function compare(daymet: DaymetDailyRow[], station: Map<string, { e: number; rh:
   }
   const ok = (a: (typeof acc)[number]) => a.n >= MIN_MONTH_DAYS && a.grid > 0;
   return {
-    usableYears: [...years.values()].filter(n => n >= 300).length,
+    usableYears: [...years.values()].filter(n => n >= MIN_YEAR_DAYS).length,
     pairedDays: acc.reduce((s, a) => s + a.n, 0),
     vpRatio: acc.map(a => (ok(a) ? round2(a.st / a.grid) : null)),
     gridRhPct: acc.map(a => (ok(a) ? round0(a.rhGrid / a.n) : null)),
@@ -223,7 +229,7 @@ function compare(daymet: DaymetDailyRow[], station: Map<string, { e: number; rh:
 }
 
 async function main() {
-  const radiusKm = Number(arg("--radius-km") ?? 30);
+  const radiusKm = Number(arg("--radius-km") ?? 40);
   const only = new Set((arg("--ids") ?? "").split(",").filter(Boolean));
   const anchors = (JSON.parse(readFileSync(ANCHORS_PATH, "utf8")) as { anchors: Anchor[] }).anchors.filter(
     a => only.size === 0 || only.has(a.id),
@@ -257,7 +263,9 @@ async function main() {
           /* truncated file: skip the year */
         }
       }
-      const stats = compare(daymet.rows, days);
+      // Station vapour pressure moved to the grid pixel's elevation.
+      const vpScale = Math.exp((c.s.elevationM - daymet.gridElevationM) / VAPOUR_SCALE_HEIGHT_M);
+      const stats = compare(daymet.rows, days, vpScale);
       candidates.push({
         stationId: c.s.id,
         name: c.s.name,
@@ -268,9 +276,8 @@ async function main() {
         elevationDeltaM: Math.round(c.dz),
         ...stats,
       });
-      if (stats.usableYears >= 8) break; // the nearest usable station is enough
     }
-    const best = candidates.find(c => c.usableYears >= 8);
+    const best = candidates.find(c => c.usableYears >= 5);
     const summary = best
       ? `${best.stationId} ${best.name} ${best.distanceKm} km dz ${best.elevationDeltaM} m yrs ${best.usableYears} vp× ${JSON.stringify(best.vpRatio)} RH grid ${JSON.stringify(best.gridRhPct)} RH station ${JSON.stringify(best.stationVpRhPct)}`
       : `no usable station (${unique.length} in range)`;

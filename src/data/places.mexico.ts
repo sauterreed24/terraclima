@@ -25,7 +25,7 @@ export const PLACES_MEXICO: Place[] = [
     drivers: ["elevation-lapse-rate", "monsoon-lift", "aspect-slope"],
 
     summaryShort: "A cultural capital where elevation produces almost year-round spring — highs in the low-to-mid 20s month after month.",
-    summaryImmersive: "At 1555 m in the central valleys of Oaxaca, the city sits at exactly the elevation where subtropical heat yields to temperate comfort. Afternoons hover near 22–26 °C for most of the year; summer nights often sit 14–18 °C, while winter nights can dip near 3–8 °C. The dry season stretches from November through May — golden light, crisp mornings, brilliant skies. The wet season arrives in June with afternoon thunderstorms that build over the surrounding sierras and roll across the valleys, usually dissipating by evening. In ten months of the year you can reasonably plan to eat outdoors. The valleys run east-west, funneling moisture from the Isthmus of Tehuantepec, and the encircling sierras rise over 3000 m, producing pronounced orographic enhancement of summer rainfall. It's a climate shaped by altitude, monsoon geometry, and the sheltering mass of Mexico's great southern ranges.",
+    summaryImmersive: "At 1555 m in the central valleys of Oaxaca, the city sits at exactly the elevation where subtropical heat yields to temperate comfort. Afternoons hover near 26–30 °C for most of the year; summer nights often sit near 14–15 °C, while winter nights can dip near 3–8 °C. The dry season stretches from November through May — golden light, crisp mornings, brilliant skies. The wet season arrives in June with afternoon thunderstorms that build over the surrounding sierras and roll across the valleys, usually dissipating by evening. In ten months of the year you can reasonably plan to eat outdoors. The valleys run east-west, funneling moisture from the Isthmus of Tehuantepec, and the encircling sierras rise over 3000 m, producing pronounced orographic enhancement of summer rainfall. It's a climate shaped by altitude, monsoon geometry, and the sheltering mass of Mexico's great southern ranges.",
     whyDistinct: "Tropical latitude (17°N) combined with 1555 m elevation produces a climate that is effectively 'perpetual spring.' The surrounding sierras both protect the valleys from Gulf/Pacific moisture extremes and enhance convective rainfall in the wet season.",
 
     experience: {
@@ -70,7 +70,7 @@ export const PLACES_MEXICO: Place[] = [
       hardinessZone: "10b equivalent",
       growsWell: ["Agave (mezcal)", "Maize (milpa system)", "Beans", "Squash", "Avocado", "Citrus", "Coffee (on sierra slopes)", "Stone fruit at higher elevation"],
       tricky: ["Chill-hour-dependent apples in the valley", "Cool-climate perennials"],
-      orchard: "Piedmont orchards of stone fruit and citrus exist; coffee thrives 600 m higher on the sierra flanks.",
+      orchard: "Piedmont orchards of stone fruit and citrus exist; coffee thrives on the sierras' outer flanks, roughly 1,000–1,700 m up.",
       homeGarden: "A remarkable gardening climate — year-round production possible, with wet-season and dry-season crop plans.",
     },
 
@@ -131,7 +131,7 @@ export const PLACES_MEXICO: Place[] = [
         title: "Dry season vs wet season — how the year actually feels",
         paragraphs: [
           "From November into May the valleys sit under dry, stable air most afternoons. Rain is rare; dust picks up on windier days; irrigation and municipal water planning dominate conversation. This is when outdoor markets, rooftop dining, and festival calendars concentrate — the city feels like perpetual spring because humidity is moderate and skies are reliably clear.",
-          "June opens the monsoon gate: convection builds over the sierras first, then cells drift across the valles. Rain tends to arrive mid-afternoon to evening, often intense but short; mornings can still be bright. September is usually the wettest month emotionally as well as hydrologically — roads cut by arroyos, hillside communities watch for debris flows. Anyone scouting property should ask where stormwater goes, not only what the view looks like in February.",
+          "June opens the monsoon gate: convection builds over the sierras first, then cells drift across the valles. Rain tends to arrive mid-afternoon to evening, often intense but short; mornings can still be bright. June and September are usually the wettest months, and September the hardest emotionally as well as hydrologically — roads cut by arroyos, hillside communities watch for debris flows. Anyone scouting property should ask where stormwater goes, not only what the view looks like in February.",
         ],
       },
       {
@@ -184,7 +184,7 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "San Cristóbal feels less like tropical Mexico than a Scottish highland that wandered south. At 2,200 m the basin wakes under a low stratus deck most mornings, the cloud-forest ridges wrapped in mist, and even July afternoons rarely top 23°C — a cooler, stranger 'eternal spring' than the postcard version.",
       seasons: {
-        winter: "Clear, calm nights drain cold air onto the basin floor, dropping mornings near freezing while the ridges above stay milder — then afternoons recover to a bright, woodsmoke-scented 19°C.",
+        winter: "Clear, calm nights drain cold air onto the basin floor, dropping mornings near freezing while the ridges above stay milder — then afternoons recover to a bright, woodsmoke-scented 22°C.",
         spring: "The warmest, driest window — afternoons near 24°C, mornings still crisp, and the dry-season light at its sharpest before the rains gather in May.",
         summer: "Cool and wet: mist-draped mornings burn off slowly, afternoons hold near 21°C, and heavy highland rains build daily over the surrounding cloud forest.",
         autumn: "September is the wettest month before the skies begin to clear — cool afternoons near 21°C, saturated green ridges, and lengthening, crisp nights as the dry season returns.",
@@ -634,7 +634,7 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "Valle de Bravo feels like Mexico City's weekend climate made permanent — a pine-ringed lake at 1850 m where afternoons stay in the low-to-mid 20s, stone terraces catch warm dry-season light, and wet-season storms build against the volcanic rim before washing the air clean each evening.",
       seasons: {
-        winter: "Dry and luminous — afternoons near 21°C, nights near 6°C, and the lake reflecting clear highland sun while Mexico City shivers in inversion fog above.",
+        winter: "Dry and luminous — afternoons near 24°C, nights near 7°C, and the lake reflecting clear highland sun while Mexico City shivers in inversion fog above.",
         spring: "Warming toward the rains — afternoons climbing through the mid-20s, the lake greening, and weekend traffic building as capital-city escapees arrive for the dry-season window.",
         summer: "Monsoon drama — afternoon storms off the surrounding rim, humidity climbing, and the lake basin at its most lush and water-shaped.",
         autumn: "The sweet dry return — rains tapering in October, paragliders over the lake, and terrace evenings cool enough for fireplaces without ever needing heat during the day.",
@@ -885,7 +885,7 @@ export const PLACES_MEXICO: Place[] = [
     experience: {
       feel: "Todos Santos feels like the desert and the cool Pacific made a truce. A freshwater oasis on Baja's Pacific side, it stays several degrees cooler than the Cortez coast, so winters are near-perfect and even summers stay tolerable under a steady marine influence.",
       seasons: {
-        winter: "Just about ideal — warm, sunny afternoons near 24°C, cool nights, almost no rain, and the Pacific keeping the air fresh. This is the season the town fills up for.",
+        winter: "Just about ideal — warm, sunny afternoons near 26°C, cool nights, almost no rain, and the Pacific keeping the air fresh. This is the season the town fills up for.",
         spring: "Warm, dry, and breezy — afternoons climbing through the 20s, the surf consistent, and the desert in bloom after any winter rain.",
         summer: "Warm and humid rather than scorching — afternoons near 31°C tempered by the cool current, with the year's rain arriving as late-summer chubasco storms off the south.",
         autumn: "The wettest, most storm-aware stretch through September — warm, humid days, occasional tropical moisture, then a return to dry, golden weather by November.",
@@ -1234,7 +1234,7 @@ export const PLACES_MEXICO: Place[] = [
       ],
     },
     settlementsWithinZone: [
-      { name: "Saltillo", role: "hub", population: "~880,000 metro", note: "The core service base: hospitals, universities, manufacturing jobs, and dry highland neighborhoods." },
+      { name: "Saltillo", role: "hub", population: "~880,000 (metro ~1 million)", note: "The core service base: hospitals, universities, manufacturing jobs, and dry highland neighborhoods." },
       { name: "Arteaga", role: "town", note: "Foothill and orchard edge with cooler pockets, weekend cabins, and stronger Sierra Madre influence." },
       { name: "Ramos Arizpe", role: "town", note: "Industrial corridor toward Monterrey where commute practicality matters more than historic atmosphere." },
     ],
@@ -1440,12 +1440,12 @@ export const PLACES_MEXICO: Place[] = [
   {
     id: "tequila-mx", tier: "C", country: "Mexico", region: "Jalisco", municipality: "Tequila", name: "Tequila (Agave Country)",
     lat: 20.8833, lon: -103.8333, elevationM: 1180,
-    reliefContext: "Upper slopes of the Tequila Volcano caldera in western Jalisco's agave landscape.",
+    reliefContext: "Valley at the northern foot of the Tequila Volcano, in western Jalisco's agave landscape.",
     biome: "Pine-oak / agave plantations", koppen: "Aw (tropical-dry highland)",
     archetypes: ["volcanic-upland", "eternal-spring-highland", "monsoon-edge"],
     drivers: ["elevation-lapse-rate", "monsoon-lift"],
     summaryShort: "The blue-agave heartland — a volcanic highland where a specific combination of sun, soil, and altitude makes tequila possible.",
-    summaryImmersive: "The Tequila region sits at 1000–1500 m on the flanks of the Tequila Volcano, with volcanic soils rich in minerals and a climate of warm days, cool nights, and concentrated summer rains. Blue agave thrives in this specific combination — and nowhere else at meaningful scale. The 60,000-hectare agave landscape is a UNESCO World Heritage cultural site precisely because the climate-soil combination is irreplaceable.",
+    summaryImmersive: "The Tequila region sits at 1000–1500 m on the flanks of the Tequila Volcano, with volcanic soils rich in minerals and a climate of warm days, cool nights, and concentrated summer rains. Blue agave thrives in this specific combination, shared at scale only with the Los Altos highlands to the east. The 35,000-hectare agave landscape is a UNESCO World Heritage cultural site precisely because the climate-soil combination is irreplaceable.",
     whyDistinct: "Volcanic-upland climate with strong diurnal swing and distinct monsoon rhythm enables blue-agave cultivation at scale.",
     climate: { tempHighC: [26.1, 27.9, 30.2, 31.4, 30.9, 28.1, 25.6, 25.8, 25.9, 26.6, 26.2, 25.3], tempLowC: [10.2, 11.4, 13.6, 15.6, 16.8, 16.8, 16.1, 16.1, 16.0, 14.4, 12.1, 10.4], precipMm: [8, 4, 4, 8, 32, 186, 242, 220, 154, 38, 10, 8], annualPrecipMm: 914, frostFreeDays: 360, hardinessZone: "10b equiv." },
     soil: { texture: "Volcanic tepetate / andisol", drainage: "good", phRange: [6.2, 7.0], waterHolding: "moderate", notes: "Mineral-rich red volcanic soil — the specific terroir of tequila." },
@@ -1885,13 +1885,13 @@ export const PLACES_MEXICO: Place[] = [
   {
     id: "toluca-mx", tier: "C", country: "Mexico", region: "Estado de México", municipality: "Toluca de Lerdo", name: "Toluca (Highest Major Mexican City)",
     lat: 19.2925, lon: -99.6532, elevationM: 2663,
-    reliefContext: "Valley of Toluca at 2,663 m, the highest major valley in Mexico; Nevado de Toluca volcano (4,680 m) rises 15 km south.",
+    reliefContext: "Valley of Toluca at 2,663 m, the highest major valley in Mexico; Nevado de Toluca volcano (4,680 m) rises about 22 km southwest.",
     biome: "Pine-fir montane on volcanic ash",
     koppen: "Cwb",
     archetypes: ["volcanic-upland", "frost-hollow", "basin-inversion"],
     drivers: ["elevation-lapse-rate", "cold-air-drainage", "inversion"],
     summaryShort: "At 2,663 m, the highest large city in North America — where winter nights commonly drop below freezing and summer afternoons rarely pass 23°C, even at 19°N.",
-    summaryImmersive: "Toluca sits in one of the highest basins on Earth with a population over a million, 800 m higher than Denver and 400 m higher than Mexico City. The elevation alone strips nearly 20°C from what the tropical latitude would otherwise suggest. Afternoons rarely exceed 23°C even at peak sun; winter nights regularly drop to −4°C, with frost on car windows 30–60 mornings per year. Despite the latitude, snow falls lightly on some winter days. On clear mornings, the snow-capped Nevado de Toluca volcano looms over the valley. The basin geometry creates pronounced nocturnal inversions that trap cold air and urban emissions.",
+    summaryImmersive: "Toluca sits in one of the highest basins on Earth with a population over a million, more than 1,000 m higher than Denver and 400 m higher than Mexico City. The elevation alone strips nearly 20°C from what the tropical latitude would otherwise suggest. Afternoons rarely top 25°C even at peak sun; winter nights regularly drop to −4°C, with frost on car windows 30–60 mornings per year. Despite the latitude, snow falls lightly on some winter days. On clear mornings, the snow-capped Nevado de Toluca volcano looms over the valley. The basin geometry creates pronounced nocturnal inversions that trap cold air and urban emissions.",
     whyDistinct: "Extreme elevation (one of the highest major cities on Earth) + basin geometry + tropical latitude = the coldest-feeling city in Mexico despite its subtropical position.",
     climate: {
       tempHighC: [19.8, 21.4, 23.4, 24.6, 24.8, 22.8, 21.4, 21.4, 21.2, 21.1, 20.8, 19.6], tempLowC: [-0.4, 1.2, 3.8, 6.6, 8.4, 10.2, 9.8, 9.6, 9.2, 6.4, 2.6, 0.2],
