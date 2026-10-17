@@ -31,6 +31,11 @@ export interface HumidityCorrection {
   vpRatio: number[];
   /** Months filled by interpolation from their neighbours (1-based). */
   interpolatedMonths?: number[];
+  /**
+   * A reviewed stand-in beyond 40 km (up to 130 km) sharing the place's air
+   * mass and setting, used where no station is in range.
+   */
+  regional?: boolean;
 }
 
 export interface HumidityCorrectionFile {
@@ -52,5 +57,6 @@ export function applyHumidityCorrection(rows: DaymetDailyRow[], c: HumidityCorre
 }
 
 export function humidityCorrectionNote(c: HumidityCorrection): string {
-  return `vapour pressure scaled month by month to ISD ${c.station.stationId} (${c.station.name}, ${c.station.distanceKm} km) hourly dew points`;
+  const kind = c.regional ? "regional ISD station" : "ISD";
+  return `vapour pressure scaled month by month to ${kind} ${c.station.stationId} (${c.station.name}, ${c.station.distanceKm} km) hourly dew points`;
 }

@@ -145,6 +145,12 @@ function dayPhrase(tone: SeasonTone): string {
   }
 }
 
+function dewPointC(tempC: number, relativeHumidityPct: number): number {
+  const rh = Math.min(100, Math.max(1, relativeHumidityPct));
+  const gamma = Math.log(rh / 100) + (17.625 * tempC) / (243.04 + tempC);
+  return (243.04 * gamma) / (17.625 - gamma);
+}
+
 function nightPhrase(lowC: number, humidityMean: number | null): string {
   if (lowC <= -12) return "and nights turn bitterly cold";
   if (lowC <= -4) return "and nights drop hard below freezing";
@@ -170,13 +176,14 @@ function seasonConditions(
   humidityMean: number | null,
   sunshineMean: number | null,
   highC: number,
+  lowC: number,
 ): SeasonConditions {
   return {
     snowy: (snowMean ?? 0) >= 12,
     wet: precipMean >= 95,
     dry: precipMean < 25,
-    // "Soft, humid air" is warm-season mugginess; cool damp seasons are not it.
-    humid: humidityMean != null && humidityMean >= 70 && highC >= 22,
+    // "Soft, humid air" is warm-season mugginess (dew point ~15°C+), not cool damp or highland air.
+    humid: humidityMean != null && dewPointC((highC + lowC) / 2, humidityMean) >= 15,
     sunny: sunshineMean != null && sunshineMean >= 68,
     gray: sunshineMean != null && sunshineMean < 42,
   };
@@ -335,7 +342,7 @@ function buildSeason(place: Place, def: SeasonDef): SeasonReading {
   const sunshineMean = meanOf(place.climate.sunshinePct, def.idx);
 
   const tone = toneForHigh(highC);
-  const conditions = seasonConditions(precipMean, snowMean, humidityMean, sunshineMean, highC);
+  const conditions = seasonConditions(precipMean, snowMean, humidityMean, sunshineMean, highC, lowC);
 
   const sentences: string[] = [
     `${dayPhrase(tone)}, ${nightPhrase(lowC, humidityMean)}.`,

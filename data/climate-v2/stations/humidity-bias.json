@@ -3,7 +3,8 @@
  "notes": [
   "Monthly vapour-pressure ratios (ISD station hourly dew points ÷ Daymet vp over the days both report, 2011–2025), from scripts/climate-data/station-humidity.ts; applied by generate.ts before relative humidity is derived.",
   "Station: the nearest ISD station within 40 km and 300 m of the anchor with at least 5 usable years (its vapour pressure moved to the pixel elevation with a 2.5 km scale height); airports preferred over tide-gauge sensors; up to two missing months filled by interpolation.",
-  "Not corrected: Ojai (only fog-coast stations across the hills), Marquette (tide-gauge sensor only), Puerto Vallarta (8 months missing), and places with no station in range."
+  "Regional stations (\"regional\": true, up to 130 km) stand in where no station is within 40 km, only when they share the place's air mass and setting (same coast, plateau or valley system), reviewed one by one.",
+  "Not corrected: Ojai and Crested Butte (only fog-coast or summit stations), Marquette (tide-gauge sensor only), Puerto Vallarta (8 months missing), and places whose nearest stations disagree or sit too far away."
  ],
  "period": "2011-2025",
  "corrections": {
@@ -4950,6 +4951,482 @@
     1.18,
     1.23
    ]
+  },
+  "grand-marais-mi": {
+   "station": {
+    "network": "ISD",
+    "stationId": "720198-54813",
+    "name": "MUNISING LAKESHORE",
+    "lat": 46.412,
+    "lon": -86.65,
+    "elevationM": 186.5,
+    "distanceKm": 59.2,
+    "elevationDeltaM": -3,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.08,
+    1.11,
+    1.1,
+    1.03,
+    1.12,
+    1.17,
+    1.21,
+    1.16,
+    1.17,
+    1.11,
+    1.05,
+    1.05
+   ],
+   "regional": true
+  },
+  "borrego-springs-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "747187-03104",
+    "name": "DESERT RESORTS RGNL ARPT",
+    "lat": 33.632,
+    "lon": -116.164,
+    "elevationM": -36,
+    "distanceKm": 46.2,
+    "elevationDeltaM": -216,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.89,
+    0.82,
+    0.81,
+    0.86,
+    1.06,
+    1.06,
+    1.16,
+    1.19,
+    1.2,
+    1.1,
+    1.1,
+    1.13
+   ],
+   "regional": true
+  },
+  "canaan-valley-wv": {
+   "station": {
+    "network": "ISD",
+    "stationId": "999999-03755",
+    "name": "GARRETT COUNTY AIRPORT",
+    "lat": 39.58,
+    "lon": -79.339,
+    "elevationM": 894,
+    "distanceKm": 59.7,
+    "elevationDeltaM": -86,
+    "usableYears": 12
+   },
+   "vpRatio": [
+    1.12,
+    1.07,
+    1.01,
+    0.95,
+    1.03,
+    1.08,
+    1.1,
+    1.1,
+    1.13,
+    1.09,
+    1.02,
+    1.1
+   ],
+   "regional": true
+  },
+  "winthrop-wa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727890-94197",
+    "name": "OMAK AIRPORT",
+    "lat": 48.461,
+    "lon": -119.521,
+    "elevationM": 397.4,
+    "distanceKm": 48.5,
+    "elevationDeltaM": -123,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.08,
+    1.03,
+    0.99,
+    0.97,
+    1.27,
+    1.41,
+    1.35,
+    1.33,
+    1.32,
+    1.2,
+    1.04,
+    1.1
+   ],
+   "regional": true
+  },
+  "leavenworth-wa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727825-94239",
+    "name": "PANGBORN MEMORIAL AIRPORT",
+    "lat": 47.397,
+    "lon": -120.201,
+    "elevationM": 377.5,
+    "distanceKm": 41.1,
+    "elevationDeltaM": 28,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.03,
+    1.02,
+    0.98,
+    0.87,
+    1.02,
+    1.26,
+    1.54,
+    1.68,
+    1.75,
+    1.27,
+    1.03,
+    1.04
+   ],
+   "regional": true
+  },
+  "gatlinburg-tn": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723260-13891",
+    "name": "MC GHEE TYSON AIRPORT",
+    "lat": 35.818,
+    "lon": -83.986,
+    "elevationM": 295.8,
+    "distanceKm": 44.5,
+    "elevationDeltaM": -94,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.07,
+    1.05,
+    1,
+    1,
+    1.03,
+    1.02,
+    1.02,
+    1.03,
+    1.04,
+    1.09,
+    1.08,
+    1.11
+   ],
+   "regional": true
+  },
+  "norfolk-ct": {
+   "station": {
+    "network": "ISD",
+    "stationId": "744104-14763",
+    "name": "PITTSFIELD MUNICIPAL AP",
+    "lat": 42.427,
+    "lon": -73.289,
+    "elevationM": 351.2,
+    "distanceKm": 53.9,
+    "elevationDeltaM": -76,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.05,
+    1.04,
+    0.98,
+    0.94,
+    1,
+    1,
+    1.01,
+    1.04,
+    1.07,
+    1.07,
+    1.03,
+    1.07
+   ],
+   "regional": true
+  },
+  "eminence-mo": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723484-53901",
+    "name": "WEST PLAINS MUNICIPAL ARPT",
+    "lat": 36.879,
+    "lon": -91.905,
+    "elevationM": 373.6,
+    "distanceKm": 57.2,
+    "elevationDeltaM": 159,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.17,
+    1.17,
+    1.1,
+    1.09,
+    1.13,
+    1.14,
+    1.11,
+    1.12,
+    1.15,
+    1.18,
+    1.16,
+    1.18
+   ],
+   "regional": true
+  },
+  "valle-guadalupe-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722904-03178",
+    "name": "BROWN FIELD MUNICIPAL ARPT",
+    "lat": 32.576,
+    "lon": -116.994,
+    "elevationM": 158.9,
+    "distanceKm": 64.6,
+    "elevationDeltaM": -241,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.31,
+    1.46,
+    1.54,
+    1.78,
+    1.98,
+    3.24,
+    3.19,
+    3.2,
+    3.25,
+    3.39,
+    2.35,
+    1.72
+   ],
+   "regional": true
+  },
+  "patzcuaro-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766650-99999",
+    "name": "MORELIA  MICH.",
+    "lat": 19.7,
+    "lon": -101.183,
+    "elevationM": 1913,
+    "distanceKm": 49.3,
+    "elevationDeltaM": -227,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    2.4,
+    2.59,
+    2.44,
+    2.16,
+    2.25,
+    1.55,
+    1.08,
+    1.03,
+    1.03,
+    1.07,
+    1.18,
+    1.63
+   ],
+   "regional": true
+  },
+  "valle-de-bravo-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766650-99999",
+    "name": "MORELIA  MICH.",
+    "lat": 19.7,
+    "lon": -101.183,
+    "elevationM": 1913,
+    "distanceKm": 123.7,
+    "elevationDeltaM": 63,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    2.31,
+    2.67,
+    2.51,
+    2.26,
+    2.23,
+    1.43,
+    1.08,
+    1.05,
+    1.06,
+    1.07,
+    1.14,
+    1.41
+   ],
+   "regional": true
+  },
+  "zacatlan-de-las-manzanas-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766340-99999",
+    "name": "TULANCINGO  HGO.",
+    "lat": 20.083,
+    "lon": -98.367,
+    "elevationM": 2181,
+    "distanceKm": 45.5,
+    "elevationDeltaM": 141,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    2.27,
+    2.8,
+    2.61,
+    2.18,
+    2.06,
+    1.37,
+    1.19,
+    1.15,
+    1.12,
+    1.13,
+    1.19,
+    1.36
+   ],
+   "regional": true
+  },
+  "puerto-escondido-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "768550-99999",
+    "name": "PUERTO ANGEL  OAX.",
+    "lat": 15.683,
+    "lon": -96.483,
+    "elevationM": 46,
+    "distanceKm": 66.9,
+    "elevationDeltaM": 36,
+    "usableYears": 12
+   },
+   "vpRatio": [
+    2.24,
+    2.88,
+    2.77,
+    2.69,
+    2.44,
+    1.41,
+    1.11,
+    1.07,
+    1.08,
+    1.11,
+    1.14,
+    1.28
+   ],
+   "regional": true
+  },
+  "la-ventosa-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "768400-99999",
+    "name": "ARRIAGA  CHIS.",
+    "lat": 16.233,
+    "lon": -93.9,
+    "elevationM": 48,
+    "distanceKm": 119.2,
+    "elevationDeltaM": 8,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.59,
+    2.45,
+    2.6,
+    2.64,
+    2.57,
+    1.29,
+    1.07,
+    1.08,
+    1.08,
+    1.07,
+    1.07,
+    1.18
+   ],
+   "regional": true
+  },
+  "ensenada-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722909-93115",
+    "name": "NAVAL AUXILIARY LANDING FD",
+    "lat": 32.568,
+    "lon": -117.117,
+    "elevationM": 7.2,
+    "distanceKm": 91.4,
+    "elevationDeltaM": -8,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.58,
+    1.77,
+    1.83,
+    2.24,
+    2.3,
+    3.84,
+    3.8,
+    3.71,
+    3.79,
+    4.05,
+    2.87,
+    1.93
+   ],
+   "regional": true
+  },
+  "cuatrocienegas-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "763420-99999",
+    "name": "MONCLOVA INTL",
+    "lat": 26.956,
+    "lon": -101.47,
+    "elevationM": 568.1,
+    "distanceKm": 59.3,
+    "elevationDeltaM": -172,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.44,
+    1.99,
+    2.09,
+    1.86,
+    1.53,
+    1.22,
+    1.13,
+    1.1,
+    1.18,
+    1.28,
+    1.21,
+    1.27
+   ],
+   "regional": true
+  },
+  "palenque-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "767430-99999",
+    "name": "VILLAHERMOSA  TAB.",
+    "lat": 17.983,
+    "lon": -92.933,
+    "elevationM": 16,
+    "distanceKm": 108.8,
+    "elevationDeltaM": -134,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.22,
+    1.8,
+    2.2,
+    2.35,
+    2.04,
+    1.11,
+    1.01,
+    1.02,
+    1.04,
+    1.04,
+    1.05,
+    1.04
+   ],
+   "regional": true
   }
  }
 }
