@@ -68,6 +68,7 @@ import {
   summerDiurnalC,
 } from "./climate-metrics";
 import { computeBioclim } from "./bioclim";
+import { possessive } from "./place-name";
 
 export type ClimateAnalogAxisKey =
   | "thermalLevel"
@@ -449,7 +450,7 @@ export function buildClimateTwinTradeoffRead(
     summary: `${twin.place.name} is the first same-feel comparison${shiftClause}: it preserves ${sharedClause}; the main climate tradeoff is that it ${tradeoff}.`,
     shared,
     tradeoff,
-    nextAction: `Open ${twin.place.name}'s dossier to pressure-test that tradeoff before shortlisting.`,
+    nextAction: `Open ${possessive(twin.place.name)} dossier to pressure-test that tradeoff before shortlisting.`,
   };
 }
 

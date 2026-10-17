@@ -21,6 +21,18 @@ import { DAYMET_SOURCE, NASA_PROJECTION_DISCLAIMER } from "../../src/lib/climate
 import { aggregateDaymetPeriod, recentShiftReceipt } from "./lib/aggregate";
 import { parseDaymetCsv, type DaymetDailyRow } from "./lib/daymet-parse";
 import { sha256Hex, stableJsonHash, stableStringify } from "./lib/hash";
+import {
+  applyHumidityCorrection,
+  humidityCorrectionNote,
+  validateHumidityCorrection,
+  type HumidityCorrectionFile,
+} from "./lib/humidity-correction";
+import {
+  applyStationCorrection,
+  stationValidation,
+  validateStationCorrection,
+  type StationCorrectionFile,
+} from "./lib/station-correction";
 
 const ROOT = new URL("../..", import.meta.url).pathname;
 const CACHE_ROOT = join(ROOT, ".cache/daymet");
@@ -29,6 +41,8 @@ const MANIFEST_PATH = join(ROOT, "data/climate-v2/manifest.json");
 const ANCHORS_PATH = join(ROOT, "data/climate-v2/anchors.json");
 const STATIONS_PATH = join(ROOT, "data/climate-v2/stations/station-map.json");
 const EXCEPTIONS_PATH = join(ROOT, "data/climate-v2/stations/reviewed-exceptions.json");
+const STATION_BIAS_PATH = join(ROOT, "data/climate-v2/stations/station-bias.json");
+const HUMIDITY_BIAS_PATH = join(ROOT, "data/climate-v2/stations/humidity-bias.json");
 const AUDIT_DIR = join(ROOT, "data/climate-v2/audit");
 
 interface AnchorEntry {
@@ -79,6 +93,7 @@ function metricProvenance(
   method: string,
   units: string,
   flags: ClimateMetricProvenance["qualityFlags"] = ["ok"],
+  fallback: ClimateMetricProvenance["fallback"] = "none",
 ): ClimateMetricProvenance[] {
   return metrics.map(metric => ({
     metric,
@@ -87,7 +102,7 @@ function metricProvenance(
     method,
     units,
     completeness: 1,
-    fallback: "none",
+    fallback,
     qualityFlags: flags,
   }));
 }
@@ -135,6 +150,20 @@ async function main(): Promise<void> {
   const exceptions: Record<string, ClimateValidation> = existsSync(EXCEPTIONS_PATH)
     ? JSON.parse(readFileSync(EXCEPTIONS_PATH, "utf8")).exceptions ?? {}
     : {};
+  const corrections: StationCorrectionFile["corrections"] = existsSync(STATION_BIAS_PATH)
+    ? (JSON.parse(readFileSync(STATION_BIAS_PATH, "utf8")) as StationCorrectionFile).corrections
+    : {};
+  for (const [placeId, correction] of Object.entries(corrections)) {
+    if (!anchors.some(a => a.id === placeId)) throw new Error(`station-bias.json: unknown place ${placeId}`);
+    validateStationCorrection(placeId, correction);
+  }
+  const humidityCorrections: HumidityCorrectionFile["corrections"] = existsSync(HUMIDITY_BIAS_PATH)
+    ? (JSON.parse(readFileSync(HUMIDITY_BIAS_PATH, "utf8")) as HumidityCorrectionFile).corrections
+    : {};
+  for (const [placeId, correction] of Object.entries(humidityCorrections)) {
+    if (!anchors.some(a => a.id === placeId)) throw new Error(`humidity-bias.json: unknown place ${placeId}`);
+    validateHumidityCorrection(placeId, correction);
+  }
 
   mkdirSync(OUT_DIR, { recursive: true });
   mkdirSync(AUDIT_DIR, { recursive: true });
@@ -145,8 +174,12 @@ async function main(): Promise<void> {
   const elevOutliers: Array<{ id: string; authored: number; grid: number; delta: number }> = [];
 
   for (const anchor of anchors) {
-    const { rows, hashes, softwareVersion, gridElevationM } = loadYears(anchor.id, 1991, through);
+    const { rows: gridRows, hashes, softwareVersion, gridElevationM } = loadYears(anchor.id, 1991, through);
     cacheHashes[anchor.id] = hashes;
+    const correction = corrections[anchor.id];
+    const humidityCorrection = humidityCorrections[anchor.id];
+    const stationRows = correction ? applyStationCorrection(gridRows, correction) : gridRows;
+    const rows = humidityCorrection ? applyHumidityCorrection(stationRows, humidityCorrection) : stationRows;
 
     const rolling = aggregateDaymetPeriod(rows, {
       period: "rolling-1996-2025",
@@ -178,22 +211,32 @@ async function main(): Promise<void> {
       });
     }
 
-    const validation = resolveValidation(anchor.id, anchor.tier, stationMap, exceptions);
+    const validation = correction
+      ? stationValidation(correction)
+      : resolveValidation(anchor.id, anchor.tier, stationMap, exceptions);
+    const corrected = correction
+      ? `, bias-corrected month by month to GHCN-Daily ${correction.station.stationId} (${correction.station.name})`
+      : "";
     const provenance: ClimateMetricProvenance[] = [
       ...metricProvenance(
         ["tempHighC", "tempLowC", "precipMm", "annualPrecipMm", "gdd10", "frostFreeDays"],
         sourceId,
         "rolling-1996-2025",
-        "Daymet daily aggregation (monthly mean tmax/tmin; yearly-monthly precip mean)",
+        `Daymet daily aggregation (monthly mean tmax/tmin; yearly-monthly precip mean)${corrected}`,
         "°C / mm / days",
+        ["ok"],
+        correction ? "station-override" : "none",
       ),
       ...metricProvenance(
         ["humidity"],
         sourceId,
         "rolling-1996-2025",
-        "Estimated from Daymet vapor pressure + daily mean temperature (Magnus)",
+        humidityCorrection
+          ? `Estimated from Daymet vapor pressure + daily mean temperature (Magnus), ${humidityCorrectionNote(humidityCorrection)}`
+          : "Estimated from Daymet vapor pressure + daily mean temperature (Magnus)",
         "%",
         ["estimated-from-vapor-pressure"],
+        humidityCorrection ? "station-override" : "none",
       ),
       ...metricProvenance(
         ["solarEnergyMjM2Day"],
@@ -206,8 +249,10 @@ async function main(): Promise<void> {
         ["tempHighC", "tempLowC", "precipMm", "annualPrecipMm"],
         sourceId,
         "wmo-1991-2020",
-        "Same-source Daymet aggregation for WMO comparison period",
+        `Same-source Daymet aggregation for WMO comparison period${corrected}`,
         "°C / mm",
+        ["ok"],
+        correction ? "station-override" : "none",
       ),
     ];
 
@@ -234,7 +279,10 @@ async function main(): Promise<void> {
       recentShift: recentShiftReceipt(rolling.normals, wmo.normals),
       provenance,
       validation,
-      climateDataConfidence: climateDataConfidence(validation, elevDelta),
+      climateDataConfidence: climateDataConfidence(
+        validation,
+        correction?.tmaxDeltaC ? (correction.station.elevationDeltaM ?? 0) : elevDelta,
+      ),
       projection: {
         product: "NASA NEX-GDDP-CMIP6",
         doiOrUrl: "https://www.nasa.gov/nex/gddp",

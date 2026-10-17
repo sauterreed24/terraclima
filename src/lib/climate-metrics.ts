@@ -51,6 +51,11 @@ export function meanJanLow(p: Place): number {
 }
 
 /** Summer diurnal swing (°C); falls back to July high − low. */
+/** July/August afternoons at or below 24°C: the fog-coast and high-latitude summer. */
+export function coolSummer(p: Place): boolean {
+  return Math.max(p.climate.tempHighC[6] ?? 0, p.climate.tempHighC[7] ?? 0) <= 24;
+}
+
 export function summerDiurnalC(p: Place): number {
   if (p.climate.diurnalSummerC != null) return p.climate.diurnalSummerC;
   return p.climate.tempHighC[6] - p.climate.tempLowC[6];

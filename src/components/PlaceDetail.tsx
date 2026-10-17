@@ -605,6 +605,7 @@ function DetailHeader({
             width={1600}
             height={727}
             className="tc-place-hero-frame bg-[linear-gradient(135deg,rgba(140,200,224,0.35),rgba(200,170,140,0.35))]"
+            style={{ objectPosition: hero.objectPosition }}
             loading="eager"
             decoding="async"
             referrerPolicy="no-referrer"

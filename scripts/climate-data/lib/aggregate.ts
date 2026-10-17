@@ -44,6 +44,13 @@ function mean(nums: number[]): number {
   return nums.reduce((a, b) => a + b, 0) / nums.length;
 }
 
+/** Freezes on or before this Daymet yday (≈ 1 July) count as spring freezes. */
+const MIDSUMMER_YDAY = 182;
+
+function median(nums: number[]): number {
+  return percentile([...nums].sort((a, b) => a - b), 0.5);
+}
+
 function percentile(sorted: number[], p: number): number {
   if (sorted.length === 0) return Number.NaN;
   const idx = (sorted.length - 1) * p;
@@ -94,6 +101,8 @@ export function aggregateDaymetPeriod(
   // Derived daily indices accumulators
   let gdd10Sum = 0;
   let frostDaysSum = 0;
+  // Frost-free season per year: last spring freeze to first autumn freeze.
+  const yearlyFrostFreeSeason: number[] = [];
   let warmNightsSum = 0;
   let heatDays35Sum = 0;
   let snowpackDaysSum = 0;
@@ -115,6 +124,8 @@ export function aggregateDaymetPeriod(
     const monthSolar = empty12();
     const monthN = empty12();
 
+    let lastSpringFreeze = 0; // yday; 0 = no spring freeze this year
+    let firstAutumnFreeze = 366; // yday; 366 = no autumn freeze this year
     let dryRun = 0;
     let dryRunSum = 0;
     let dryRunEvents = 0;
@@ -140,6 +151,10 @@ export function aggregateDaymetPeriod(
       // GDD10: max(0, tmean - 10)
       gdd10Sum += Math.max(0, tmean - 10);
       if (row.tmin < 0) frostDaysSum += 1;
+      if (row.tmin <= 0) {
+        if (row.yday <= MIDSUMMER_YDAY) lastSpringFreeze = Math.max(lastSpringFreeze, row.yday);
+        else firstAutumnFreeze = Math.min(firstAutumnFreeze, row.yday);
+      }
       if (row.tmin >= 20) warmNightsSum += 1;
       if (row.tmax >= 35) heatDays35Sum += 1;
       if (row.swe > 0) snowpackDaysSum += 1;
@@ -170,6 +185,7 @@ export function aggregateDaymetPeriod(
       dryRunEvents += 1;
       maxDry = Math.max(maxDry, dryRun);
     }
+    yearlyFrostFreeSeason.push(Math.max(0, firstAutumnFreeze - lastSpringFreeze - 1));
     yearlyRx5.push(max5);
     yearlyMaxDry.push(maxDry);
     yearlyMeanDry.push(dryRunEvents > 0 ? dryRunSum / dryRunEvents : 0);
@@ -221,7 +237,9 @@ export function aggregateDaymetPeriod(
     humidity,
     solarEnergyMjM2Day: solarEnergy,
     // snowCm intentionally omitted — Daymet SWE is not snowfall cm
-    frostFreeDays: round0(365 - frostDaysSum / yearCount),
+    // Median freeze-free season (the growing window), not a count of
+    // scattered frost-free days: a valley with summer frosts has a short season.
+    frostFreeDays: round0(median(yearlyFrostFreeSeason)),
     gdd10: round0(gdd10Sum / yearCount),
     diurnalSummerC,
     diurnalWinterC,

@@ -470,6 +470,8 @@ async function main() {
 
       const pin = page.locator("[data-atlas-marker='true']").first();
       if (await pin.count()) {
+        // On a cold start the pins mount before the map has laid out.
+        await pin.waitFor({ state: "visible", timeout: 10_000 });
         await pin.click({ force: true });
         await page.waitForTimeout(250);
         await page.keyboard.press("Escape");

@@ -74,7 +74,7 @@ export function fourthHeroStat(place: Place): HeroFourthStat {
   }
 
   const humidity = meanAnnualHumidityPct(place);
-  const distinctiveHumidity = humidity != null && (humidity <= 42 || humidity >= 72);
+  const distinctiveHumidity = humidity != null && (humidity <= 42 || humidity >= 78);
   if (distinctiveHumidity && humidity != null) {
     return humidityStat(humidity);
   }

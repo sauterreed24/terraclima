@@ -1,6 +1,6 @@
 # Climate Data V2 Audit Report
 
-Generated: 2026-08-09T16:57:22.941Z
+Generated: 2026-10-17T17:22:29.458Z
 
 ## Coverage
 - Authored places: 226
@@ -8,13 +8,13 @@ Generated: 2026-08-09T16:57:22.941Z
 - Missing: none
 
 ## Validation status
-- validated: 0
-- grid-only: 163
-- reviewed-exception: 63
+- validated: 53
+- grid-only: 126
+- reviewed-exception: 47
 
 ## Shadow diff (authored vs Daymet 1996–2025)
 - Temperature outliers (|Δ| > 2°C annual high or low): **66**
-- Precipitation outliers (|bias| > 30%): **20**
+- Precipitation outliers (|bias| > 30%): **16**
 - Elevation outliers (|Δ| > 250 m): **2**
 
 Large differences are a **review queue**, not automatic proof either value is wrong.
@@ -27,7 +27,7 @@ Large differences are a **review queue**, not automatic proof either value is wr
 - none (elevation mismatches have documented climate-anchor overrides; temp/precip deltas are the reviewed queue below)
 
 ## Review queue policy
-Authored-vs-Daymet outliers are **not** auto-corrected. Runtime uses Daymet 1996–2025. See `stations/reviewed-exceptions.json` for named causes (terrain, coastal-exposure, zone-vs-town, elevation-mismatch, authored-blend-divergence, station-mapping-pending).
+Authored-vs-Daymet outliers are **not** auto-corrected. Runtime uses Daymet 1996–2025, except where a reviewed GHCN-Daily station beside the place shows the grid missing a local effect (cold-air pool, fog coast, lake shore, rain shadow): those places use Daymet bias-corrected month by month to that station (`stations/station-bias.json`, status "validated"). Relative humidity uses Daymet vapour pressure scaled month by month to the nearest representative ISD station's hourly dew points where one exists (`stations/humidity-bias.json`); Daymet's aridity correction otherwise runs far too dry on fog coasts and through dry seasons. See `stations/reviewed-exceptions.json` for named causes (terrain, coastal-exposure, zone-vs-town, elevation-mismatch, authored-blend-divergence, station-mapping-pending).
 
 ## Priority review IDs
 - hood-river-gorge
@@ -39,26 +39,27 @@ Authored-vs-Daymet outliers are **not** auto-corrected. Runtime uses Daymet 1996
 - ensenada-mx
 - iqaluit-nu
 - prince-rupert-bc
-- santa-barbara-ca
+- bishop-ca
+- silver-city-nm
 - driggs-id
 - traverse-city-mi
 - ithaca-ny
-- grand-marais-mn
 - boulder-co
 - grand-marais-mi
 - santa-cruz-felton-ca
-- eureka-ca
 - point-reyes-ca
 - truckee-ca
 - mammoth-lakes-ca
 - fort-davis-tx
 - marfa-tx
 - prescott-az
-- bishop-ca
-- joseph-or
+- cloudcroft-nm
+- stanley-id
+- friday-harbor-wa
 - leavenworth-wa
-- port-orford-cape-blanco-or
-- klamath-falls-upper-klamath-basin-or
 - tucson-az
+- fernie-elk-valley-bc
+- salt-spring-bc
+- whitehorse-yt
 
 See `shadow-diff.json` for full outlier tables and `RANK-DIFF.md` for lens movement >25 places.

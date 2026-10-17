@@ -149,7 +149,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     reliefContext: "Gulf of Mexico embayment; barrier islands; hypersaline Laguna Madre to the west moderates breezes.",
     biome: "Coastal prairie and salt marsh",
     koppen: "Cfa / Aw border",
-    archetypes: ["hurricane-coast", "humidity-refuge", "lake-moderated"],
+    archetypes: ["hurricane-coast", "humidity-refuge"],
     drivers: ["hurricane-track", "sea-breeze", "tropical-convection"],
     summaryShort: "Humid subtropical Gulf city — sea breezes cap summer heat until offshore flow fails ahead of hurricanes.",
     summaryImmersive: "Corpus Christi sits where continental heat meets Gulf moisture. Summer heat indices routinely reach dangerous levels; afternoon sea breezes bring short relief. Tropical storms and hurricanes are the dominant extreme hazard — storm surge into Corpus Christi Bay and Aransas Pass is a recurring engineering problem. Winters are mild; freezes are rare but damaging to citrus when they occur. The Laguna Madre — one of North America’s few hypersaline lagoons — creates unique wind and humidity patterns west of the city.",

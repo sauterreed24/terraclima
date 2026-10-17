@@ -154,8 +154,8 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         id: "bar-harbor-downeast-fog-and-island-buffer",
         title: "Downeast fog and island buffer set the cool-summer read",
         paragraphs: [
-          "Bar Harbor sits on Mount Desert Island where the cold Gulf of Maine and the warm Maine Coastal Current mix, and that mixing zone produces one of the strongest summer-fog signals on the East Coast. Winters are cold and snowy with regular Nor'easters; summers stay in the low-20s with afternoon sea-breeze relief and frequent morning fog.",
-          "Reading the island as a microclimate entry means separating the shoreline from the inland hills. Cadillac Mountain and the surrounding granite domes run warmer on calm summer afternoons but cooler on clear winter nights, while the village waterfront stays maritime-stable almost year-round — a gradient that a single drive up the Park Loop Road can feel.",
+          "Bar Harbor sits on Mount Desert Island, where warm, moist summer air flows over the cold Eastern Maine Coastal Current, and that contrast produces one of the strongest summer-fog signals on the East Coast. Winters are cold and snowy with regular Nor'easters; summers stay in the low-20s with afternoon sea-breeze relief and frequent morning fog.",
+          "Reading the island as a microclimate entry means separating the shoreline from the inland hills. Cadillac Mountain and the surrounding granite domes run cooler on calm summer afternoons but often warmer than the hollows on clear winter nights, while the village waterfront stays maritime-stable almost year-round — a gradient that a single drive up the Park Loop Road can feel.",
         ],
       },
       {
@@ -247,7 +247,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         title: "Anza-Borrego basin geometry and Sonoran heat set the desert read",
         paragraphs: [
           "Borrego Springs sits in a closed desert basin surrounded by the Anza-Borrego Desert State Park mountains, and that enclosed geometry produces one of the hottest sustained summer climates in California. July and August highs routinely exceed 42°C, with overnight lows staying above 24°C on the warmest nights.",
-          "Reading the basin as a microclimate entry means separating the valley floor from the surrounding foothills. A 600 m climb up Montezuma Grade toward Ranchita drops daytime highs 4 to 5°C and brings overnight lows into the mid-teens — the gradient is sharp enough to feel in a single drive.",
+          "Reading the basin as a microclimate entry means separating the valley floor from the surrounding foothills. A roughly 1,000 m climb up Montezuma Grade toward Ranchita drops daytime highs by several degrees and brings overnight lows into the mid-teens — the gradient is sharp enough to feel in a single drive.",
         ],
       },
       {
@@ -294,7 +294,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         id: "bozeman-gallatin-valley-and-bridger-chinook",
         title: "Gallatin Valley and Bridger chinook set the mild-winter read",
         paragraphs: [
-          "Bozeman sits in the Gallatin Valley at the northern end of the Bridger Range, and that geometry gives the city a surprising winter mildness for a Montana town at 1,474 m. The Bridgers funnel westerly chinook flow that can warm afternoon highs 10°C in a single day, and the valley floor runs cooler in summer with strong overnight cooling.",
+          "Bozeman sits in the Gallatin Valley at the southern end of the Bridger Range, and that geometry gives the city a surprising winter mildness for a Montana town at 1,474 m. The Bridgers funnel westerly chinook flow that can warm afternoon highs 10°C in a single day, and the valley floor runs cooler in summer with strong overnight cooling.",
           "Reading the valley as a microclimate entry means separating the downtown from the surrounding slopes. The Springhill and Triple Tree Ranches slopes above town run warmer on calm winter nights as cold air drains to the valley floor, while the downtown basin stays cooler in summer with stronger diurnal recovery — a gradient a drive up to Bridger Bowl can feel.",
         ],
       },
@@ -303,7 +303,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         title: "Growth, housing pressure, and Gallatin wildfire are the live-here filter",
         paragraphs: [
           "Bozeman's tech-and-university growth has tightened housing affordability against a regional wage base, and that cost pressure is the dominant lived filter behind the climate appeal. Bozeman Health Deaconess covers most daily medical needs; Bozeman Yellowstone International Airport offers direct flights to the major hubs.",
-          "Wildfire and Gallatin River flood are the climate side of the same read. The 2012 Gilead Fire, the 2018 Bacon Rind Fire, and the increasing frequency of smoke events from regional fires show how exposed the urban-wildland edge is. A relocation read should weigh wildfire exposure on the foothills lots, flood-zone position along the East Gallatin and Hyalite corridors, and the city's ongoing growth-management investments — the mild-winter climate is real, but it is a fast-growing region with real hazard exposure.",
+          "Wildfire and Gallatin River flood are the climate side of the same read. The 2012 Millie Fire, the 2018 Bacon Rind Fire, and the increasing frequency of smoke events from regional fires show how exposed the urban-wildland edge is. A relocation read should weigh wildfire exposure on the foothills lots, flood-zone position along the East Gallatin and Hyalite corridors, and the city's ongoing growth-management investments — the mild-winter climate is real, but it is a fast-growing region with real hazard exposure.",
         ],
       },
     ],

@@ -4,7 +4,7 @@ import type { AuthoredExperience } from "../types";
 
 export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
   "alamos-mx": {
-    feel: "Elevation does the early work in Álamos, at 406 m: Foothills of the Sierra Madre Occidental. Monsoon convective lift explains most of it — a monsoon-edge zone effect layered over tropical deciduous forest that most neighboring Sonora towns don't get.",
+    feel: "Álamos feels like a colonial silver town with a two-act year. Winters are sunny and dry, with afternoons in the high 20s, and spring bakes the Sierra Madre foothills toward 38°C; then the monsoon breaks in July, thunderstorms stack over the hills, and the leafless tropical dry forest turns green almost overnight.",
     seasons: {
       winter: "Álamos (Monsoon-Edge Colonial) keeps winter highs near 27.1°C while 8.7°C overnight lows test housing and travel plans.",
       spring: "Álamos (Monsoon-Edge Colonial) climbs toward 33.3°C spring afternoons while 406 m elevation preserves 13.2°C nights.",
@@ -40,7 +40,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Asheville means a handful of tradeoffs, manageable ones. The main thing to plan around is that flooding (high) and wildfire smoke (elevated) are the two to weigh. None of that erases the appeal of the mild-winter foothills setting — it just means the decision should be made with eyes open.",
   },
   "austin-tx": {
-    feel: "At 149 m, the defining fact about Austin is geography — Colorado River corridor at the Balcones Escarpment — hill country to the west, coastal plain humidity to the east. Add in juniper–oak savanna margin and you get the combination that makes the river-valley moderation label feel earned rather than a marketing line.",
+    feel: "Austin feels like the hinge between the Hill Country and the Gulf's humid plains. On the Balcones Escarpment, where limestone hills meet the coastal prairie, Gulf moisture and dry western air collide: August afternoons push toward 37°C, May and October bring the heaviest storms of an 880 mm year, and creeks can flash-flood within hours; winters are brief, with January nights near 4°C, and spring-fed Barton Springs stays cool all summer.",
     seasons: {
       winter: "Austin (Edwards Plateau Edge) cold months stay close to 18.2°C days and 5°C nights, with a mixed storm cadence in Texas.",
       spring: "Austin (Edwards Plateau Edge) spring feels workable at 27.1°C days and 14.3°C nights across the Juniper–oak savanna margin.",
@@ -52,7 +52,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Austin sits in the middle — some give, some take. The main thing to plan around is that flooding (high) and drought (elevated) are the two to weigh. None of that erases the appeal of the river-valley moderation setting — it just means the decision should be made with eyes open.",
   },
   "bacalar-mx": {
-    feel: "Bacalar is built 10 m up, on this footprint: Freshwater-stromatolite lagoon on the Yucatán Caribbean slope. That is karst infiltration at work, and it makes Bacalar read less like a textbook Aw station and more like its own microclimate.",
+    feel: "Bacalar feels like a sleepy town beside a lagoon of impossible blues. Groundwater seeping through the Yucatán's limestone fills the long freshwater lagoon with bands of turquoise and cobalt; afternoons run 30–34°C all year and January nights average about 18°C, easterly trade winds make the dry spring bearable, and from June to October the rains bring most of the year's roughly 1,170 mm, along with hurricane season.",
     seasons: {
       winter: "Bacalar (Laguna de los Siete Colores) winter afternoons settle near 30.7°C — nights 18.7°C — under Aw seasonality.",
       spring: "Bacalar (Laguna de los Siete Colores) shoulder season sits near 33.5°C days and 21.5°C nights, with karst infiltration still cooling mornings.",
@@ -64,7 +64,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Bacalar sits in the middle — some give, some take. Where it costs you back: extreme summer heat (elevated) and severe storms (elevated) are the two to weigh. Weigh it against the tropical freshwater lagoon / karst and the tropical wet-dry pattern before writing Bacalar off or romanticizing it.",
   },
   "banff-ab": {
-    feel: "The setting comes first in Banff: Bow River valley inside Banff National Park, 1383 m above sea level. Chinook / foehn downslope sets the tone, and the alpine tundra signature shows up in almost every season here, not just one.",
+    feel: "Banff feels like a town tucked into a fold of the Rockies. On the Bow Valley floor at nearly 1,400 m, winter nights hover around −12°C until a chinook pours over the Divide and brings a sudden thaw; summers are short and bright, with afternoons in the low 20s, chilly nights and thunderstorms building on the limestone peaks.",
     seasons: {
       winter: "Banff (Bow Valley) cold months stay close to −2.7°C days and −12.7°C nights, with a drier storm cadence in Alberta.",
       spring: "Banff (Bow Valley) climbs toward 8.9°C spring afternoons while 1383 m elevation preserves −3.9°C nights.",
@@ -76,7 +76,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Banff is a genuine tradeoff, not a settled question. What a scouting trip should actually check first is that wildfire (elevated) and extreme winter cold (elevated) are the two to weigh. That tradeoff is the price of the chinook corridor pattern that makes Banff worth listing in the first place.",
   },
   "bar-harbor-me": {
-    feel: "The setting comes first in Bar Harbor: East-facing fjord-like coastline near Acadia National Park, 20 m above sea level. Marine layer is the mechanism behind it, layering a cool-summer maritime pattern on top that most of the Maine interior never sees.",
+    feel: "Bar Harbor feels like the North Atlantic running into a mountain range. Acadia's granite domes rise straight out of the cold Gulf of Maine, so July afternoons settle around 25°C and fog can swallow the harbour while Cadillac's summit sits in sun; winters are long and raw, with nor'easters hurling snow, sleet and rain off the sea.",
     seasons: {
       winter: "Bar Harbor (Downeast) cold months stay close to 1.4°C days and −8.2°C nights, with a wetter storm cadence in Maine.",
       spring: "Bar Harbor (Downeast) spring highs near 11.2°C and lows near 0.9°C favor scouting walks over midsummer crowds.",
@@ -88,7 +88,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Bar Harbor sits in the middle — some give, some take. The main thing to plan around is that severe storms (elevated) and coastal flooding and storm surge (elevated) are the two to weigh. None of that erases the appeal of the fjord / inlet coast setting — it just means the decision should be made with eyes open.",
   },
   "beverly-shores-in": {
-    feel: "Beverly Shores occupies a specific piece of ground — Dune-and-swale coast on southern Lake Michigan — at 185 m. The give-away is lake effect, which turns straightforward Dfa-class averages into something sharper on the ground.",
+    feel: "Beverly Shores feels like a quiet dune town between Chicago's industry and the open lake: Lake Michigan cools the early summer, warms the autumn and feeds lake-effect snow in winter, with the Indiana Dunes rising behind the beach.",
     seasons: {
       winter: "Beverly Shores (Lake Michigan) winter afternoons settle near 2.2°C — nights −5.5°C — under Dfa seasonality.",
       spring: "Beverly Shores (Lake Michigan) opens spring under roughly 14.8°C days — wetter moisture — and 4.2°C overnight recovery.",
@@ -96,11 +96,11 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
       autumn: "Beverly Shores (Lake Michigan) autumn returns to roughly 17.2°C days and 7.5°C nights — often the clearest travel window.",
     },
     travelerFit: "Most people show up in Beverly Shores for Indiana Dunes trails and bird migration and stay a day longer than planned once the local rhythm sets in.",
-    residentFit: "Full-time life in Beverly Shores tends to reward Chicago commuters and park lovers — people who plan their year around the lake-effect snowbelt pattern rather than fighting it.",
+    residentFit: "Full-time life in Beverly Shores tends to reward Chicago commuters and park lovers — people who plan their year around the lake's moods rather than fighting them.",
     texture: "Beverly Shores sits in the middle — some give, some take. The honest weight on the other side of the scale: severe-storm risk runs elevated and worsening. The climate case for Beverly Shores still holds; it just isn't the whole story.",
   },
   "bismarck-nd": {
-    feel: "At 514 m, the defining fact about Bismarck is geography — Missouri River valley cut through rolling High Plains. Add in northern mixed grass prairie and you get the combination that makes the subarctic continental label feel earned rather than a marketing line.",
+    feel: "Bismarck feels like a cottonwood-lined river capital under an enormous prairie sky. Far from any ocean, the Missouri River country swings between extremes: arctic air sweeps down from Canada with nothing to slow it, so January nights average near −16°C, while July afternoons reach about 29°C under towering thunderstorms; only about 490 mm of precipitation falls a year, most of it from May to August.",
     seasons: {
       winter: "Bismarck (Northern Great Plains) cold months stay close to −3.3°C days and −14.5°C nights, with a drier storm cadence in North Dakota.",
       spring: "Bismarck (Northern Great Plains) spring highs near 12.4°C and lows near −1.1°C favor scouting walks over midsummer crowds.",
@@ -112,7 +112,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Bismarck asks for a few compromises, nothing extreme. The main thing to plan around is that extreme winter cold (high) and drought (elevated) are the two to weigh. None of that erases the appeal of the subarctic continental setting — it just means the decision should be made with eyes open.",
   },
   "block-island-ri": {
-    feel: "Step outside in New Shoreham and the terrain announces itself at once: Outer-island microclimate in Block Island Sound, 20 m up. Marine layer is the mechanism behind it, layering a cool-summer maritime pattern on top that most of the Rhode Island interior never sees.",
+    feel: "Block Island feels like a scrap of moorland anchored in the open Atlantic, about 14 km off the Rhode Island coast. The sea wins every argument here: summer afternoons stay near 26°C with a steady breeze while the mainland swelters, winters are windy and damp rather than bitter, and fog, salt and gales shape the low moors, stone walls and clay bluffs.",
     seasons: {
       winter: "Block Island winters run near 5.5°C by day and −2.6°C at night, shaped by marine layer across Maritime heath and moors.",
       spring: "Block Island spring feels workable at 12.9°C days and 4.2°C nights across the Maritime heath and moors.",
@@ -124,7 +124,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "New Shoreham is a genuine tradeoff, not a settled question. What a scouting trip should actually check first is that coastal flooding and storm surge (high) and flooding (elevated) are the two to weigh. That tradeoff is the price of the hyper-maritime pattern that makes New Shoreham worth listing in the first place.",
   },
   "boone-nc": {
-    feel: "Elevation does the early work in Boone, at 995 m: High Blue Ridge Escarpment at 1000 m — a climate transect into near-New England character at Southern latitude. Elevation lapse rate explains most of it — a mild-winter foothills effect layered over northern hardwoods in a southern setting that most neighboring North Carolina towns don't get.",
+    feel: "Boone feels like a northern mountain town perched on a Southern ridge. At nearly 1,000 m on the Blue Ridge, July afternoons top out in the mid-20s while the Piedmont below swelters, cloud and fog pour over the escarpment, and winter brings real snow and ice, with rime frosting the trees on the high peaks nearby.",
     seasons: {
       winter: "Boone (High Country) keeps winter highs near 7°C while −3.8°C overnight lows test housing and travel plans.",
       spring: "Boone (High Country) spring highs near 16.5°C and lows near 4.3°C favor scouting walks over midsummer crowds.",
@@ -136,7 +136,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Boone keeps the compromises small. The main thing to plan around is that flooding (elevated) and severe storms (elevated) are the two to weigh. None of that erases the appeal of the mild-winter foothills setting — it just means the decision should be made with eyes open.",
   },
   "broken-bow-ok": {
-    feel: "Step outside in Broken Bow and the terrain announces itself at once: Ouachita Mountains foothills — rare forested hills and mesic pockets in a state dominated by plains, 130 m up. Strip away the Cfa label and what is left is orographic lift pushing the piedmont transition pattern harder than the regional average would suggest.",
+    feel: "Broken Bow feels like a forested slice of the humid South rather than the Oklahoma of open plains. In the pine-and-oak Ouachita foothills of the state's southeast corner, Gulf moisture makes this one of Oklahoma's wettest places, about 1,400 mm a year; summers are thick and green with afternoons near 34°C, and winters are short and mild, broken by the odd ice storm.",
     seasons: {
       winter: "Broken Bow (Ouachita Uplift) winters run near 13.3°C by day and 0.3°C at night, shaped by orographic lift across Shortleaf pine–oak forest.",
       spring: "Broken Bow (Ouachita Uplift) spring highs near 23.4°C and lows near 10°C favor scouting walks over midsummer crowds.",
@@ -148,7 +148,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Broken Bow sits in the middle — some give, some take. The main thing to plan around is that flooding (elevated) and extreme summer heat (elevated) are the two to weigh. None of that erases the appeal of the piedmont transition setting — it just means the decision should be made with eyes open.",
   },
   "buffalo-ny": {
-    feel: "The setting comes first in Buffalo: Eastern end of Lake Erie — long fetch for lake-effect snowbands, 183 m above sea level. Lake effect sets the tone, and the lake-moderated signature shows up in almost every season here, not just one.",
+    feel: "Buffalo feels like a city that lives downwind of Lake Erie. In early winter, arctic air streaming the length of the open lake can lock a narrow band of snow over one set of suburbs for a day or more while downtown sees flurries; in summer the same water turns breezy and cool, keeping July afternoons near 27°C and autumns long and golden.",
     seasons: {
       winter: "Buffalo (Erie Eastern Shore) cold months stay close to 1.8°C days and −5.9°C nights, with a wetter storm cadence in New York.",
       spring: "Buffalo (Erie Eastern Shore) climbs toward 13°C spring afternoons while 183 m elevation preserves 2.3°C nights.",
@@ -160,7 +160,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Buffalo asks for a few compromises, nothing extreme. What a scouting trip should actually check first is that flooding (elevated) and severe storms (elevated) are the two to weigh. That tradeoff is the price of the lake-effect snowbelt pattern that makes Buffalo worth listing in the first place.",
   },
   "burlington-vt": {
-    feel: "At 60 m, the defining fact about Burlington is geography — Eastern shore of Lake Champlain with Adirondack rain shadow to the west. Lake effect explains most of it — a lake-moderated effect layered over northern hardwood forest that most neighboring Vermont towns don't get.",
+    feel: "Burlington feels like a lakeside college town wedged between two mountain ranges. Lake Champlain stretches west toward the Adirondacks and the Green Mountains rise to the east; the cold lake delays spring and its breezes soften summer, when afternoons reach about 28°C, but arctic air funnels down the Champlain Valley in winter, January nights average near −11°C, and about 1,030 mm of rain and snow falls in a year.",
     seasons: {
       winter: "Burlington (Lake Champlain) keeps winter highs near 0°C while −9.6°C overnight lows test housing and travel plans.",
       spring: "Burlington (Lake Champlain) spring highs near 12.9°C and lows near 1.2°C favor scouting walks over midsummer crowds.",
@@ -172,7 +172,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Burlington asks for a few compromises, nothing extreme. What a scouting trip should actually check first is that no single hazard dominates the risk picture. That tradeoff is the price of the lake-moderated pattern that makes Burlington worth listing in the first place.",
   },
   "campeche-mx": {
-    feel: "San Francisco de Campeche sits inside its tropical moist forest margin and mangrove, 5 m up: Walled colonial port on the Gulf of Mexico. That is tropical-cyclone exposure at work, and it makes San Francisco de Campeche read less like a textbook Aw station and more like its own microclimate.",
+    feel: "Campeche feels like a walled port simmering on the edge of the Gulf of Mexico. Winters are the easy season, near 30°C and stirred by the occasional norte; by May the flat limestone coast bakes toward 36°C, and from June the rains arrive in heavy afternoon downpours that flood the streets, with hurricane season watched closely into October.",
     seasons: {
       winter: "Campeche (Gulf Coast Fort) in winter is a 30.4°C daytime story; nights to 18.2°C make hurricane track tangible.",
       spring: "Campeche (Gulf Coast Fort) shoulder season sits near 34.8°C days and 21.8°C nights, with hurricane track still cooling mornings.",
@@ -184,7 +184,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "San Francisco de Campeche sits in the middle — some give, some take. The honest weight on the other side of the scale: severe storms (very-high) and coastal flooding and storm surge (very-high) are the two to weigh. The climate case for San Francisco de Campeche still holds; it just isn't the whole story.",
   },
   "cape-may-nj": {
-    feel: "Cape May sits inside its maritime holly forest and dune scrub, 3 m up: Peninsula tip between Delaware Bay and open Atlantic. It is diurnal sea breeze that keeps the numbers from reading like a generic Cfa town, and the difference is felt daily, not just on a chart.",
+    feel: "Cape May feels like the very end of New Jersey, with Delaware Bay and the Atlantic closing in on three sides. Breezes off both waters keep July afternoons near 30°C, a few degrees cooler than inland, the ocean holds its warmth deep into autumn, and winters are raw and windy but seldom bitter — though nor'easters and hurricanes have a clear shot.",
     seasons: {
       winter: "Cape May (Atlantic Tip) winter afternoons settle near 8.2°C — nights −1.1°C — under Cfa seasonality.",
       spring: "Cape May (Atlantic Tip) spring afternoons reach about 17.3°C, nights near 7°C, before peak-season heat arrives.",
@@ -196,7 +196,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Cape May asks for a few compromises, nothing extreme. Where it costs you back: coastal flooding and storm surge (high) and flooding (elevated) are the two to weigh. Weigh it against the maritime holly forest and dune scrub and the hurricane-exposed coast pattern before writing Cape May off or romanticizing it.",
   },
   "charleston-sc": {
-    feel: "Charleston sits 3 m above sea level, and the ground tells the story: Tidal estuary lowcountry at the meeting of the Ashley and Cooper rivers. Diurnal sea breeze does the heavy lifting here, which is why the Köppen Cfa classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Charleston feels like a city built by and for the water: on its low peninsula between the Ashley and Cooper rivers, the harbour and the afternoon sea breeze take the edge off long, humid summers, while hurricanes and king tides are the price of the setting.",
     seasons: {
       winter: "Charleston holds winter light near 16.6°C afternoons and 5.9°C nights at 3 m.",
       spring: "Charleston spring afternoons reach about 24.3°C, nights near 13.7°C, before peak-season heat arrives.",
@@ -208,7 +208,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Charleston is a genuine tradeoff, not a settled question. Where it costs you back: coastal flooding and storm surge (very-high) and flooding (high) are the two to weigh. Weigh it against the subtropical estuarine / live oak-palmetto and the hurricane-exposed coast pattern before writing Charleston off or romanticizing it.",
   },
   "charlottetown-pei": {
-    feel: "The setting comes first in Charlottetown: Island capital on Gulf of St. Lawrence, 20 m above sea level. Marine layer is the mechanism behind it, layering a lake-moderated pattern on top that most of the Prince Edward Island interior never sees.",
+    feel: "Charlottetown feels like a small island capital that runs on the Gulf of St. Lawrence's schedule. The shallow Gulf warms through summer, keeping July afternoons breezy and near 24°C and stretching autumn out over the red potato fields; then it ices over, and winter turns long, snowy and wind-driven, with nights near −10°C and drifts across open country.",
     seasons: {
       winter: "Charlottetown cold months stay close to −0.5°C days and −8.4°C nights, with a wetter storm cadence in Prince Edward Island.",
       spring: "Charlottetown spring highs near 8°C and lows near −0.5°C favor scouting walks over midsummer crowds.",
@@ -220,7 +220,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Charlottetown is an easy place to settle into, on balance. The main thing to plan around is that severe storms (elevated) and coastal flooding and storm surge (elevated) are the two to weigh. None of that erases the appeal of the cool-summer maritime setting — it just means the decision should be made with eyes open.",
   },
   "chattanooga-tn": {
-    feel: "Chattanooga sits 210 m above sea level, and the ground tells the story: Tennessee River gorge through Cumberland Plateau. River-valley moderation is doing real work on the thermometer, and it is the reason people describe Chattanooga as a river-valley moderation rather than just another Tennessee town.",
+    feel: "Chattanooga feels like a river city cut into the mountains: the Tennessee River loops through a gorge in the Cumberland Plateau, and the ridges that wall it in — Lookout, Signal, Missionary — hold summer humidity on the valley floor while their crests run a few degrees cooler. Summers are long and steamy; winters are short and mostly mild.",
     seasons: {
       winter: "Chattanooga (Tennessee River Gap) in winter is a 11.8°C daytime story; nights to 0.7°C make river moderation tangible.",
       spring: "Chattanooga (Tennessee River Gap) shoulder season sits near 22.5°C days and 9.4°C nights, with river moderation still cooling mornings.",
@@ -232,7 +232,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Chattanooga means a handful of tradeoffs, manageable ones. The honest weight on the other side of the scale: flooding (elevated) and extreme summer heat (elevated) are the two to weigh. The climate case for Chattanooga still holds; it just isn't the whole story.",
   },
   "churchill-mb": {
-    feel: "Churchill occupies a specific piece of ground — Western Hudson Bay coast — at 29 m. The give-away is polar jet / arctic front, which turns straightforward Dfc-class averages into something sharper on the ground.",
+    feel: "Churchill feels like the edge of the Arctic in Manitoba: on the shore of Hudson Bay, ice and open water decide the seasons — long, wind-blasted winters with nights near −30°C, a short cool summer, and polar bears waiting along the coast each autumn for the bay to freeze.",
     seasons: {
       winter: "Churchill (Hudson Bay) holds winter light near −18.7°C afternoons and −27.2°C nights at 29 m.",
       spring: "Churchill (Hudson Bay) spring afternoons reach about −3.6°C, nights near −13.8°C, before peak-season heat arrives.",
@@ -244,7 +244,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "There is no way to describe Churchill honestly without naming the tradeoff up front. The honest weight on the other side of the scale: extreme winter cold (very-high) and severe storms (high) are the two to weigh. The climate case for Churchill still holds; it just isn't the whole story.",
   },
   "clayton-ga": {
-    feel: "The setting comes first in Clayton: Northeast Georgia mountains at the Blue Ridge escarpment, 590 m above sea level. Orographic lift is the mechanism behind it, layering a thermal belt pattern on top that most of the Georgia interior never sees.",
+    feel: "Clayton feels like Georgia's mountain refuge. Here the Blue Ridge escarpment rises abruptly from the Piedmont, wringing about 1,800 mm a year from moist Gulf air forced up its slopes, and at about 590 m July afternoons stay near 30°C, a few degrees cooler than the lowlands, under frequent afternoon thunderstorms; winter brings the occasional snow that closes the steep roads.",
     seasons: {
       winter: "Clayton (Blue Ridge Front) keeps winter highs near 11.3°C while −0.5°C overnight lows test housing and travel plans.",
       spring: "Clayton (Blue Ridge Front) spring highs near 20.9°C and lows near 7.5°C favor scouting walks over midsummer crowds.",
@@ -256,7 +256,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Clayton keeps the compromises small. The main thing to plan around is that flooding (elevated) and severe storms (elevated) are the two to weigh. None of that erases the appeal of the mild-winter foothills setting — it just means the decision should be made with eyes open.",
   },
   "cody-wy": {
-    feel: "Cody sits 1555 m above sea level, and the ground tells the story: Bighorn Basin east of the Absarokas. Chinook / foehn downslope does the heavy lifting here, which is why the Köppen BSk classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Cody feels like the dry gateway to Yellowstone: a high basin in the Absaroka rain shadow with big sun, little rain and strong winds, where a winter chinook can melt the snow in an afternoon and summer days run hot and clear.",
     seasons: {
       winter: "Cody (Chinook Foothills) in winter is a 3.1°C daytime story; nights to −9.2°C make chinook foehn tangible.",
       spring: "Cody (Chinook Foothills) shoulder season sits near 13.7°C days and −0.2°C nights, with chinook foehn still cooling mornings.",
@@ -268,7 +268,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Few places make the tradeoff this gentle — Cody is one of them. Where it costs you back: drought (elevated) and wildfire smoke (elevated) are the two to weigh. Weigh it against the sage steppe / cottonwood riparian and the chinook corridor pattern before writing Cody off or romanticizing it.",
   },
   "columbia-sc": {
-    feel: "Elevation does the early work in Columbia, at 94 m: Congaree River at the Sandhills–coastal plain transition. Strip away the Cfa label and what is left is river-valley moderation pushing the river-valley moderation pattern harder than the regional average would suggest.",
+    feel: "Columbia feels like the place where Carolina heat has nowhere left to go. At the fall line, where the Piedmont drops to the sandhills and coastal plain, it is too far inland for the sea breeze and too low for mountain relief, so July afternoons hover near 33°C under heavy humidity and thunderstorms; winters are short and mild, with frosty nights but rare snow.",
     seasons: {
       winter: "Columbia (Fall Line) keeps winter highs near 15°C while 2.2°C overnight lows test housing and travel plans.",
       spring: "Columbia (Fall Line) spring feels workable at 24.6°C days and 10.7°C nights across the Pine savanna and bottomland hardwood.",
@@ -280,7 +280,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Columbia means a handful of tradeoffs, manageable ones. What a scouting trip should actually check first is that flooding (elevated) and extreme summer heat (elevated) are the two to weigh. That tradeoff is the price of the river-valley moderation pattern that makes Columbia worth listing in the first place.",
   },
   "corpus-christi-tx": {
-    feel: "Corpus Christi is built 2 m up, on this footprint: Gulf of Mexico embayment. That is tropical-cyclone exposure at work, and it makes Corpus Christi read less like a textbook Cfa station and more like its own microclimate.",
+    feel: "Corpus Christi feels like a bayfront city living in a steady Gulf wind. Behind the shelter of Mustang and Padre islands, the bay feeds a near-constant southeasterly breeze that makes humid August afternoons near 34°C bearable and fills the sails on the water; winters are short and mild, with January nights near 9°C until a norther blows through, and September, at the height of hurricane season, is the wettest month at about 150 mm.",
     seasons: {
       winter: "Corpus Christi (Laguna Madre) holds winter light near 20.4°C afternoons and 9.9°C nights at 2 m.",
       spring: "Corpus Christi (Laguna Madre) shoulder season sits near 27.4°C days and 18.3°C nights, with hurricane track still cooling mornings.",
@@ -292,7 +292,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Corpus Christi means accepting a real bargain, not a free ride. Where it costs you back: severe storms (very-high) and coastal flooding and storm surge (very-high) are the two to weigh. Weigh it against the coastal prairie and salt marsh and the hurricane-exposed coast pattern before writing Corpus Christi off or romanticizing it.",
   },
   "creston-bc": {
-    feel: "Creston sits inside its interior cedar-hemlock, 600 m up: Broad valley between the Selkirks and Purcells. It is river-valley moderation that keeps the numbers from reading like a generic Dfb town, and the difference is felt daily, not just on a chart.",
+    feel: "Creston feels like orchard country reclaimed from a river marsh. On the broad Kootenay River flats, walled by the Selkirks to the west and the Purcells to the east, summers run hot and dry, with July afternoons near 29°C ripening cherries on the benches, while winters settle in grey and damp under low valley cloud.",
     seasons: {
       winter: "Creston Valley in winter is a 1.8°C daytime story; nights to −4.8°C make river moderation tangible.",
       spring: "Creston Valley shoulder season sits near 14.4°C days and 2.3°C nights, with river moderation still cooling mornings.",
@@ -304,7 +304,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Few places make the tradeoff this gentle — Creston is one of them. Where it costs you back: wildfire (elevated) and wildfire smoke (elevated) are the two to weigh. Weigh it against the interior cedar-hemlock and the orchard valley pattern before writing Creston off or romanticizing it.",
   },
   "cuatrocienegas-mx": {
-    feel: "Step outside in Cuatro Ciénegas and the terrain announces itself at once: Intermontane desert basin enclosed by Sierra Madre Oriental ranges, 740 m up. Karst infiltration is the mechanism behind it, layering a limestone / karst pocket pattern on top that most of the Coahuila interior never sees.",
+    feel: "Cuatro Ciénegas feels like an oasis that should not exist. Inside a ring of bare limestone ranges, the basin gets only about 220 mm of rain and summer afternoons near 37°C, yet ancient groundwater wells up into hundreds of clear turquoise pools, home to fish, turtles and living stromatolites found nowhere else, beside dunes of blinding white gypsum.",
     seasons: {
       winter: "Cuatro Ciénegas Basin cold months stay close to 22.3°C days and 5.4°C nights, with a drier storm cadence in Coahuila.",
       spring: "Cuatro Ciénegas Basin climbs toward 31.7°C spring afternoons while 740 m elevation preserves 14.1°C nights.",
@@ -316,7 +316,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "There is no way to describe Cuatro Ciénegas honestly without naming the tradeoff up front. What a scouting trip should actually check first is that drought (high) and extreme summer heat (elevated) are the two to weigh. That tradeoff is the price of the desert oasis pattern that makes Cuatro Ciénegas worth listing in the first place.",
   },
   "cuauhtemoc-mx": {
-    feel: "Cuauhtémoc sits inside its Chihuahuan high desert / irrigated orchard, 2060 m up: Central Chihuahua high-desert plateau. It is continental extremity that keeps the numbers from reading like a generic BSk town, and the difference is felt daily, not just on a chart.",
+    feel: "Cuauhtémoc feels like an orchard town borrowed from a colder country. At about 2,060 m on the Chihuahua plateau, the dry air sheds heat fast: winter days are sunny near 19°C but nights hover around freezing, giving the apples their chill, spring is windy and dusty, and the July–September monsoon brings most of the year's 500 mm in storms whose hail threatens the netted orchards.",
     seasons: {
       winter: "Cuauhtémoc (Mennonite Apple Country) in winter is a 19.5°C daytime story; nights to 0.7°C make continentality tangible.",
       spring: "Cuauhtémoc (Mennonite Apple Country) spring afternoons reach about 26.9°C, nights near 7.5°C, before peak-season heat arrives.",
@@ -328,7 +328,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Cuauhtémoc is an easy place to settle into, on balance. Where it costs you back: drought runs elevated and worsening. Weigh it against the Chihuahuan high desert / irrigated orchard and the high-desert escape pattern before writing Cuauhtémoc off or romanticizing it.",
   },
   "cypress-hills-sk": {
-    feel: "Step outside in Maple Creek / Cypress Hills and the terrain announces itself at once: Island-mountain plateau rising 700 m above the surrounding prairie — the highest point between the Rockies and Labrador, 1460 m up. Elevation lapse rate is the mechanism behind it, layering a badland / steppe pocket pattern on top that most of the Saskatchewan interior never sees.",
+    feel: "The Cypress Hills feel like a mountain forest marooned on the prairie. The plateau rises several hundred metres above the southwest Saskatchewan grasslands to about 1,460 m, high enough to be cooler and wetter than the plains, so lodgepole pine and aspen grow where only shortgrass should; July afternoons sit near 24°C, and long, cold winters are eased by the odd chinook.",
     seasons: {
       winter: "Cypress Hills winters run near −3.8°C by day and −14.1°C at night, shaped by elevation lapse rate across Montane forest / fescue grassland.",
       spring: "Cypress Hills climbs toward 8.2°C spring afternoons while 1460 m elevation preserves −3°C nights.",
@@ -340,7 +340,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Maple Creek / Cypress Hills sits in the middle — some give, some take. What a scouting trip should actually check first is that extreme winter cold runs high and improving. That tradeoff is the price of the sky-island refuge pattern that makes Maple Creek / Cypress Hills worth listing in the first place.",
   },
   "dawson-city-yt": {
-    feel: "Dawson City is built 320 m up, on this footprint: Yukon River and Klondike River confluence in a cold interior basin under long subarctic daylight. That is continental extremity at work, and it makes Dawson City read less like a textbook Dfc station and more like its own microclimate.",
+    feel: "Dawson City feels like a gold-rush town caught between two extremes of light. At the Klondike's mouth deep in the Yukon interior, cold air pools in the river valley through long winter nights, so January lows average about −28°C and ice fog hangs over the town; summer flips the switch, with the sun barely setting in June, July afternoons near 23°C, and permafrost heaving the boardwalks and tilting the old false-fronted buildings.",
     seasons: {
       winter: "Dawson City in winter is a −16.7°C daytime story; nights to −26.4°C make continentality tangible.",
       spring: "Dawson City opens spring under roughly 6.6°C days — drier moisture — and −9.4°C overnight recovery.",
@@ -352,7 +352,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Dawson City is a genuine tradeoff, not a settled question. Where it costs you back: extreme winter cold (very-high) and wildfire (elevated) are the two to weigh. Weigh it against the boreal spruce and river alluvium and the subarctic continental pattern before writing Dawson City off or romanticizing it.",
   },
   "des-moines-ia": {
-    feel: "Step outside in Des Moines and the terrain announces itself at once: Raccoon and Des Moines rivers confluence on rolling till plain — classic Midwest convective regime, 291 m up. Strip away the Dfa label and what is left is river-valley moderation pushing the river-valley moderation pattern harder than the regional average would suggest.",
+    feel: "Des Moines feels like the Corn Belt's four seasons played at full volume. Far from any ocean or Great Lake, it swings from January nights near −11°C, with arctic wind sweeping the open till plain, to humid July afternoons near 30°C, when moisture off the cornfields feeds towering night-time thunderstorms; spring brings hail and tornado warnings, and floods come when heavy rain meets snowmelt.",
     seasons: {
       winter: "Des Moines (Corn Belt) keeps winter highs near 1.3°C while −9°C overnight lows test housing and travel plans.",
       spring: "Des Moines (Corn Belt) spring highs near 16.4°C and lows near 4.1°C favor scouting walks over midsummer crowds.",
@@ -364,7 +364,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Des Moines sits in the middle — some give, some take. The main thing to plan around is that flooding (elevated) and severe storms (elevated) are the two to weigh. None of that erases the appeal of the river-valley moderation setting — it just means the decision should be made with eyes open.",
   },
   "duluth-mn": {
-    feel: "Duluth sits 210 m above sea level, and the ground tells the story: Cliff-top city on the western tip of Lake Superior. Lake effect does the heavy lifting here, which is why the Köppen Dfb classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Duluth feels like a cliff-top city with an inland sea at its feet: Lake Superior keeps summer cool and often foggy on the shore — \"cooler by the lake\" is a local truth — while the hills above the harbour take the colder nights and the heavier snow.",
     seasons: {
       winter: "Duluth (Lake Superior) winter afternoons settle near −3.5°C — nights −13.2°C — under Dfb seasonality.",
       spring: "Duluth (Lake Superior) opens spring under roughly 10.1°C days — wetter moisture — and −1.1°C overnight recovery.",
@@ -376,7 +376,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Duluth means a handful of tradeoffs, manageable ones. Where it costs you back: extreme winter cold (elevated) and severe storms (elevated) are the two to weigh. Weigh it against the boreal–temperate transition forest and the lake-moderated pattern before writing Duluth off or romanticizing it.",
   },
   "durango-mx": {
-    feel: "Victoria de Durango sits inside its highland semiarid grassland and pine-oak transition, 1880 m up: High interior basin east of the Sierra Madre Occidental, with dry plateau air and summer monsoon influence. That is monsoon convective lift at work, and it makes Victoria de Durango read less like a textbook BSk station and more like its own microclimate.",
+    feel: "Durango feels like a high, sunlit plateau that spends half the year waiting for the Sierra Madre's storms. At about 1,880 m, winter days are clear and near 21°C with frosty dawns, May and June are the hottest and dustiest months, around 31°C, and then the monsoon arrives in July, with afternoon thunderstorms turning the grasslands green.",
     seasons: {
       winter: "Durango holds winter light near 22.2°C afternoons and 3.1°C nights at 1880 m.",
       spring: "Durango shoulder season sits near 28.7°C days and 8.8°C nights, with monsoon lift still cooling mornings.",
@@ -388,7 +388,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Victoria de Durango sits in the middle — some give, some take. The honest weight on the other side of the scale: drought runs elevated and worsening. The climate case for Victoria de Durango still holds; it just isn't the whole story.",
   },
   "ely-mn": {
-    feel: "Ely sits inside its mixed boreal–northern hardwood forest, 443 m up: Edge of the Boundary Waters Canoe Area Wilderness. It is continental extremity that keeps the numbers from reading like a generic Dfb town, and the difference is felt daily, not just on a chart.",
+    feel: "Ely feels like the frozen front porch of canoe country. On Canadian Shield granite at the edge of the Boundary Waters, still, clear winter nights over snow and lake ice average near −20°C in January and can plunge far lower, making it one of the Lower 48's coldest towns; summer is a short, bright run of afternoons near 25°C and long evenings on the water.",
     seasons: {
       winter: "Ely (Boundary Waters) holds winter light near −6.5°C afternoons and −17.8°C nights at 443 m.",
       spring: "Ely (Boundary Waters) opens spring under roughly 9.7°C days — mixed moisture — and −3.6°C overnight recovery.",
@@ -400,7 +400,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Ely is a genuine tradeoff, not a settled question. Where it costs you back: extreme winter cold (very-high) and wildfire (elevated) are the two to weigh. Weigh it against the mixed boreal–northern hardwood forest and the lake-moderated pattern before writing Ely off or romanticizing it.",
   },
   "eminence-mo": {
-    feel: "At 215 m, the defining fact about Eminence is geography — Dissected Ozark plateau on the Jacks Fork / Current River — spring-fed corridors with groundwater-dominated microclimates. Add in oak–hickory forest and karst springs and you get the combination that makes the limestone / karst pocket label feel earned rather than a marketing line.",
+    feel: "Eminence feels like a hot Ozark summer with a cold river running through it. Springs welling out of the limestone feed the Current and Jacks Fork at a near-constant chill, so mist hangs on the water at dawn while the oak–hickory ridges bake toward 32°C on July afternoons; winters are short, with January nights near −5°C, and spring storms bring the heaviest of its roughly 1,210 mm of rain, sending the rivers up fast.",
     seasons: {
       winter: "Eminence (Ozark Current River) cold months stay close to 8.6°C days and −3.5°C nights, with a wetter storm cadence in Missouri.",
       spring: "Eminence (Ozark Current River) spring highs near 20.8°C and lows near 6.9°C favor scouting walks over midsummer crowds.",
@@ -412,7 +412,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Eminence sits in the middle — some give, some take. The main thing to plan around is that flooding (elevated) and severe storms (elevated) are the two to weigh. None of that erases the appeal of the limestone / karst pocket setting — it just means the decision should be made with eyes open.",
   },
   "erie-pa": {
-    feel: "Step outside in Erie and the terrain announces itself at once: Presque Isle bay and shoreline on Lake Erie's southern shore, 200 m up. Lake effect is the mechanism behind it, layering a lake-moderated pattern on top that most of the Pennsylvania interior never sees.",
+    feel: "Erie feels like two different lake towns, one for July and one for December. In summer, Presque Isle's beaches fill and lake breezes keep afternoons near 27°C; from late fall, cold winds crossing the still-open lake throw narrow bands of heavy snow onto the city under weeks of grey sky, until the lake ices over and the snow machine shuts down.",
     seasons: {
       winter: "Erie (Lake Erie Snowbelt) keeps winter highs near 2.4°C while −5°C overnight lows test housing and travel plans.",
       spring: "Erie (Lake Erie Snowbelt) spring feels workable at 13.5°C days and 3.2°C nights across the Temperate deciduous forest and lakeshore dunes.",
@@ -424,7 +424,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Erie asks for a few compromises, nothing extreme. What a scouting trip should actually check first is that severe-storm risk runs elevated and worsening. That tradeoff is the price of the lake-effect snowbelt pattern that makes Erie worth listing in the first place.",
   },
   "friday-harbor-wa": {
-    feel: "At 20 m, the defining fact about Friday Harbor is geography — East side of San Juan Island. Rain shadow explains most of it — a cool-summer maritime effect layered over dry garry oak meadow and coastal prairie that most neighboring Washington towns don't get.",
+    feel: "Friday Harbor feels like a sunny gap in the Northwest's clouds. In the rain shadow of the Olympic Mountains and Vancouver Island, San Juan Island gets only about 460 mm of rain a year, most of it in winter, so July and August bring dry, breezy afternoons near 22°C over golden grass and Garry oaks; winters are grey and damp but mild, with nights near 3°C and the surrounding sea keeping hard frost rare.",
     seasons: {
       winter: "Friday Harbor (San Juan Islands) winters run near 8.1°C by day and 2.7°C at night, shaped by rain shadow across Dry Garry oak meadow and coastal prairie.",
       spring: "Friday Harbor (San Juan Islands) spring highs near 13.8°C and lows near 5.7°C favor scouting walks over midsummer crowds.",
@@ -436,7 +436,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Friday Harbor asks for a few compromises, nothing extreme. What a scouting trip should actually check first is that no single hazard dominates the risk picture. That tradeoff is the price of the cool-summer maritime pattern that makes Friday Harbor worth listing in the first place.",
   },
   "galena-il": {
-    feel: "Galena sits at 193 m: Mississippi River bluffs and dissected uplands at the Illinois edge of the Driftless Area — unglaciated terrain in a glaciated state. It is slope / aspect that keeps the numbers from reading like a generic Dfa town, and the difference is felt daily, not just on a chart.",
+    feel: "Galena feels like a brick river town hidden in hills the glaciers missed. In the Driftless Area near the Mississippi, steep bluffs and ravines let cold air pool in the Galena River bottom on still nights, so frost lingers there while the slopes above stay clear and January lows average near −11°C; summers are humid and stormy, with July afternoons near 29°C, and June is the wettest month of a roughly 980 mm year.",
     seasons: {
       winter: "Galena (Driftless Mississippi) in winter is a −0.2°C daytime story; nights to −9.7°C make aspect slope tangible.",
       spring: "Galena (Driftless Mississippi) spring afternoons reach about 14.9°C, nights near 3°C, before peak-season heat arrives.",
@@ -460,7 +460,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Gaspé sits in the middle — some give, some take. What a scouting trip should actually check first is that severe storms (high) and coastal flooding and storm surge (high) are the two to weigh. That tradeoff is the price of the cool-summer maritime pattern that makes Gaspé worth listing in the first place.",
   },
   "gatlinburg-tn": {
-    feel: "Gatlinburg is built 390 m up, on this footprint: Tourism gateway on the West Fork of the Little Pigeon River. Orographic lift does the heavy lifting here, which is why the Köppen Cfb classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Gatlinburg feels like a resort strip squeezed into a damp green hollow at the foot of the Smokies. Moist southerly air rising over the mountains wrings out about 1,500 mm of rain a year, so mornings often begin with cloud on the ridges and the West Prong of the Little Pigeon running loud; July afternoons reach about 30°C in town while Mount Le Conte above stays far cooler, and January nights dip near −3°C.",
     seasons: {
       winter: "Gatlinburg (Great Smokies) winter afternoons settle near 10.8°C — nights −1.2°C — under Cfb seasonality.",
       spring: "Gatlinburg (Great Smokies) opens spring under roughly 21.3°C days — wetter moisture — and 7.1°C overnight recovery.",
@@ -472,7 +472,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Gatlinburg sits in the middle — some give, some take. The honest weight on the other side of the scale: flooding (elevated) and severe storms (elevated) are the two to weigh. The climate case for Gatlinburg still holds; it just isn't the whole story.",
   },
   "geneva-on-the-lake-oh": {
-    feel: "Geneva-on-the-Lake occupies a specific piece of ground — Lake Erie shoreline east of Cleveland where westerly flow produces long-fetch lake-effect streamers — at 185 m. Lake effect is doing real work on the thermometer, and it is the reason people describe Geneva-on-the-Lake as a lake-effect snowbelt rather than just another Ohio town.",
+    feel: "Geneva-on-the-Lake feels like an old-fashioned summer strip on Lake Erie that turns into snowbelt country when the wind swings northwest. The lake keeps July nights mild and autumn lingering, then feeds the lake-effect bands that bury this shore east of Cleveland in winter.",
     seasons: {
       winter: "Geneva-on-the-Lake (Lake Erie Snowbelt) in winter is a 2.8°C daytime story; nights to −4.7°C make lake effect tangible.",
       spring: "Geneva-on-the-Lake (Lake Erie Snowbelt) shoulder season sits near 14.2°C days and 3.8°C nights, with lake effect still cooling mornings.",
@@ -496,7 +496,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Guanajuato keeps the compromises small. The main thing to plan around is that flooding runs elevated and worsening. None of that erases the appeal of the eternal-spring highland setting — it just means the decision should be made with eyes open.",
   },
   "halifax-ns": {
-    feel: "The setting comes first in Halifax: Atlantic coast on Chebucto Bay, 30 m above sea level. Marine layer sets the tone, and the hurricane-exposed coast signature shows up in almost every season here, not just one.",
+    feel: "Halifax feels like a working harbour city that can never get away from the Atlantic. Sea fog drifts over the hilly peninsula through early summer and holds July and August afternoons near 23°C, winter storms flip between snow, freezing rain and rain, sometimes in a single day, and September brings some of the year's best weather along with the odd hurricane remnant.",
     seasons: {
       winter: "Halifax cold months stay close to 1.9°C days and −6.5°C nights, with a wetter storm cadence in Nova Scotia.",
       spring: "Halifax spring feels workable at 9.4°C days and 0.6°C nights across the Acadian mixed forest.",
@@ -508,7 +508,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Halifax sits in the middle — some give, some take. What a scouting trip should actually check first is that severe storms (elevated) and coastal flooding and storm surge (elevated) are the two to weigh. That tradeoff is the price of the cool-summer maritime pattern that makes Halifax worth listing in the first place.",
   },
   "hermosillo-mx": {
-    feel: "Hermosillo sits inside its desert scrub and irrigated agriculture, 200 m up: Central Sonoran desert basin. That is continental extremity at work, and it makes Hermosillo read less like a textbook BWh station and more like its own microclimate.",
+    feel: "Hermosillo feels like the Sonoran Desert at full blast. Inland on the flat desert floor, out of reach of the Gulf of California's breezes, June and July afternoons average near 40°C and nights hover around 26°C; the monsoon adds July–September thunderstorms, dust and humidity, and then winter repays everyone with bright, dry afternoons near 25°C.",
     seasons: {
       winter: "Hermosillo (Sonoran Desert) in winter is a 26°C daytime story; nights to 7.5°C make continentality tangible.",
       spring: "Hermosillo (Sonoran Desert) opens spring under roughly 33°C days — drier moisture — and 12.6°C overnight recovery.",
@@ -520,7 +520,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Hermosillo is a genuine tradeoff, not a settled question. The honest weight on the other side of the scale: extreme summer heat (very-high) and drought (high) are the two to weigh. The climate case for Hermosillo still holds; it just isn't the whole story.",
   },
   "honolulu-hi": {
-    feel: "Honolulu is built 5 m up, on this footprint: South shore of Oʻahu — lee of the Koʻolau Range with trade-wind showers on windward coasts nearby. That is trade-wind regime at work, and it makes Honolulu read less like a textbook As station and more like its own microclimate.",
+    feel: "Honolulu feels like a city on the dry, sunny side of a rain machine. Trade winds pile cloud against the green Koʻolau Range behind town and wring out their rain on the windward side and the crest, leaving the south shore only about 510 mm a year, most of it from October to March; afternoons barely shift from about 27°C in January to 30°C in August, and winter nights still average near 19°C.",
     seasons: {
       winter: "Honolulu (Leeward Oʻahu) holds winter light near 26.7°C afternoons and 19.1°C nights at 5 m.",
       spring: "Honolulu (Leeward Oʻahu) shoulder season sits near 27.6°C days and 20.2°C nights, with trade wind still cooling mornings.",
@@ -532,7 +532,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Honolulu asks for a few compromises, nothing extreme. Where it costs you back: coastal flooding and storm surge (high) and flooding (elevated) are the two to weigh. Weigh it against the tropical dry–wet coastal and the tropical isothermal coast pattern before writing Honolulu off or romanticizing it.",
   },
   "international-falls-mn": {
-    feel: "The setting comes first in International Falls: Rainy River lowland on the Canadian border, 340 m above sea level. Cold-air drainage is the mechanism behind it, layering a subarctic continental pattern on top that most of the Minnesota interior never sees.",
+    feel: "International Falls feels like a border town that wears its cold as a badge. In the low Rainy River country deep in the continent, arctic air settles in on still, clear winter nights, so January lows average near −20°C and can plunge toward −40°C; then summer arrives in a rush, with lakes opening, long northern evenings and July afternoons near 26°C.",
     seasons: {
       winter: "International Falls keeps winter highs near −6.9°C while −18.3°C overnight lows test housing and travel plans.",
       spring: "International Falls spring highs near 10°C and lows near −3.4°C favor scouting walks over midsummer crowds.",
@@ -544,7 +544,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "There is no way to describe International Falls honestly without naming the tradeoff up front. The main thing to plan around is that extreme winter cold runs very-high and improving. None of that erases the appeal of the cold-air pool setting — it just means the decision should be made with eyes open.",
   },
   "inuvik-nt": {
-    feel: "Elevation does the early work in Inuvik, at 68 m: Mackenzie River Delta, 200 km north of the Arctic Circle. Continental extremity explains most of it — a subarctic continental effect layered over subarctic taiga-tundra transition that most neighboring Northwest Territories towns don't get.",
+    feel: "Inuvik feels like a town run by the Arctic's light switch. On the edge of the Mackenzie Delta, about 200 km north of the Arctic Circle, the sun stays up for nearly two months in summer and July afternoons reach about 20°C; then it vanishes for roughly a month, January afternoons hover near −21°C, and houses stand on piles above the permafrost.",
     seasons: {
       winter: "Inuvik cold months stay close to −20°C days and −27.5°C nights, with a drier storm cadence in Northwest Territories.",
       spring: "Inuvik spring feels workable at −5.6°C days and −15.3°C nights across the Subarctic taiga-tundra transition.",
@@ -568,7 +568,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Iqaluit means accepting a real bargain, not a free ride. What a scouting trip should actually check first is that extreme winter cold (very-high) and coastal flooding and storm surge (elevated) are the two to weigh. That tradeoff is the price of the subarctic continental pattern that makes Iqaluit worth listing in the first place.",
   },
   "jackson-wy": {
-    feel: "Jackson sits inside its montane sage and conifer, 1901 m up: Flat-floored valley between the Tetons and Gros Ventre — iconic cold pool and orographic snow. It is cold-air drainage that keeps the numbers from reading like a generic Dfc town, and the difference is felt daily, not just on a chart.",
+    feel: "Jackson feels like a high-mountain bowl that holds onto cold. On the flat floor of Jackson Hole at about 1,900 m, beneath the Tetons, frigid air pools on still winter nights, sometimes leaving town colder than the ski slopes above; summer is short and brilliant, with dry afternoons near 28°C and nights that can still flirt with frost.",
     seasons: {
       winter: "Jackson (Jackson Hole) holds winter light near −1°C afternoons and −12.7°C nights at 1901 m.",
       spring: "Jackson (Jackson Hole) spring afternoons reach about 10.7°C, nights near −3.8°C, before peak-season heat arrives.",
@@ -580,7 +580,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Jackson asks for a few compromises, nothing extreme. Where it costs you back: wildfire (elevated) and extreme winter cold (elevated) are the two to weigh. Weigh it against the montane sage and conifer and the cold-air pool pattern before writing Jackson off or romanticizing it.",
   },
   "kamloops-bc": {
-    feel: "Kamloops occupies a specific piece of ground — Confluence of Thompson rivers in the BC Interior Plateau — one of Canada's driest climates — at 345 m. The give-away is rain shadow, which turns straightforward BSk-class averages into something sharper on the ground.",
+    feel: "Kamloops feels like Canada's semi-desert: where the Thompson rivers meet in the dry interior, sagebrush hills and hoodoos surround a city with hot, sunny summers and only about 300 mm of precipitation a year.",
     seasons: {
       winter: "Kamloops winter afternoons settle near 1.6°C — nights −5.2°C — under BSk seasonality.",
       spring: "Kamloops opens spring under roughly 15.7°C days — drier moisture — and 3.1°C overnight recovery.",
@@ -592,7 +592,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Kamloops means a handful of tradeoffs, manageable ones. The honest weight on the other side of the scale: wildfire (high) and extreme summer heat (high) are the two to weigh. The climate case for Kamloops still holds; it just isn't the whole story.",
   },
   "kelowna-bc": {
-    feel: "Step outside in Kelowna and the terrain announces itself at once: East shore of Okanagan Lake, 344 m up. Strip away the BSk label and what is left is rain shadow pushing the rain-shadow sanctuary pattern harder than the regional average would suggest.",
+    feel: "Kelowna feels like a sun-trap in July and a cloud bowl in December. In the rain shadow of the Coast and Cascade ranges, the Okanagan Valley gets only about 350 mm a year, so summer afternoons run dry and near 30°C over orchards, vineyards and the deep lake; in winter a grey inversion lid settles in while the ski hills above bask in sun.",
     seasons: {
       winter: "Kelowna (Central Okanagan) keeps winter highs near 2.5°C while −3.3°C overnight lows test housing and travel plans.",
       spring: "Kelowna (Central Okanagan) spring feels workable at 15.7°C days and 3.8°C nights across the Ponderosa pine–bunchgrass and irrigated orchard.",
@@ -604,7 +604,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Kelowna means a handful of tradeoffs, manageable ones. The main thing to plan around is that wildfire (high) and wildfire smoke (high) are the two to weigh. None of that erases the appeal of the rain-shadow sanctuary setting — it just means the decision should be made with eyes open.",
   },
   "la-paz-mx": {
-    feel: "Step outside in La Paz and the terrain announces itself at once: Sheltered Bahía de La Paz on the Sea of Cortez side of Baja Sur, 10 m up. Diurnal sea breeze is the mechanism behind it, layering a humidity refuge pattern on top that most of the Baja California Sur interior never sees.",
+    feel: "La Paz feels like a desert city with its feet in warm water. Its sheltered bay on the Sea of Cortez sees barely 160 mm of rain a year, so winters are bright, dry and near 25°C, while summer pushes afternoons toward 37°C and warms the bay like bathwater, with the evening coromuel breeze off the Pacific bringing relief until hurricane season peaks in September.",
     seasons: {
       winter: "La Paz (Sea of Cortez) winters run near 26.1°C by day and 12.2°C at night, shaped by sea breeze across Sonoran desert coast / mangrove.",
       spring: "La Paz (Sea of Cortez) spring feels workable at 31.3°C days and 15.1°C nights across the Sonoran desert coast / mangrove.",
@@ -616,7 +616,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in La Paz means a handful of tradeoffs, manageable ones. What a scouting trip should actually check first is that drought (high) and extreme summer heat (elevated) are the two to weigh. That tradeoff is the price of the desert oasis pattern that makes La Paz worth listing in the first place.",
   },
   "la-ventosa-mx": {
-    feel: "La Ventosa / Tehuantepec sits at 40 m: The low-elevation gap at the Isthmus of Tehuantepec — the narrowest and lowest crossing between the Sierra Madre de Chiapas and the Sierra Madre de Oaxaca. It is gap winds that keep the numbers from reading like a generic Aw town, and the difference is felt daily, not just on a chart.",
+    feel: "La Ventosa feels like a town living in a wind tunnel. The mountains of southern Mexico sink to a low gap across the Isthmus of Tehuantepec, and from November to March northerly gales from the Gulf of Mexico pour through it as the Tehuano, bending trees and spinning ranks of wind turbines; those months are almost rainless, May afternoons reach about 35°C, and the summer rains bring nearly all of the year's roughly 990 mm.",
     seasons: {
       winter: "La Ventosa (Tehuantepec Gap) winter afternoons settle near 31.2°C — nights 19.2°C — under Aw seasonality.",
       spring: "La Ventosa (Tehuantepec Gap) spring afternoons reach about 34.3°C, nights near 21.9°C, before peak-season heat arrives.",
@@ -628,7 +628,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "La Ventosa / Tehuantepec is a genuine tradeoff, not a settled question. The honest weight on the other side of the scale: extreme summer heat (elevated) and severe storms (elevated) are the two to weigh. The climate case for La Ventosa / Tehuantepec still holds; it just isn't the whole story.",
   },
   "leamington-on": {
-    feel: "Leamington sits at 183 m: Canada's southernmost mainland, on Lake Erie's north shore. It is lake effect that keeps the numbers from reading like a generic Dfa town, and the difference is felt daily, not just on a chart.",
+    feel: "Leamington feels like Canada's southern porch, with Lake Erie at the foot of its fields. On the lake's north shore beside Point Pelee, the southernmost tip of mainland Canada, the warm, shallow lake holds summer heat into autumn and stretches the frost-free season to about 195 days, enough for tomatoes, peaches and kilometres of greenhouses; July afternoons near 27°C are humid, and January nights average a fairly mild −6°C by Canadian standards.",
     seasons: {
       winter: "Leamington / Pelee winter afternoons settle near 1.4°C — nights −5.1°C — under Dfa (warmest Dfa in Canada) seasonality.",
       spring: "Leamington / Pelee spring afternoons reach about 12.7°C, nights near 3.7°C, before peak-season heat arrives.",
@@ -640,7 +640,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Leamington is an easy place to settle into, on balance. The honest weight on the other side of the scale: severe-storm risk runs elevated and worsening. The climate case for Leamington still holds; it just isn't the whole story.",
   },
   "leavenworth-wa": {
-    feel: "Leavenworth sits 350 m above sea level, and the ground tells the story: Wenatchee River valley at the eastern foothills of the Cascades. Rain shadow is doing real work on the thermometer, and it is the reason people describe Leavenworth as a rain-shadow sanctuary rather than just another Washington town.",
+    feel: "Leavenworth feels like the sunny side of the Cascades: the Wenatchee River leaves the mountains here, the rain shadow takes hold, and hot, dry summer days give way to deep, reliable winter snow in the canyon. Larch-lit autumns in the high country and a Bavarian-styled main street complete the picture.",
     seasons: {
       winter: "Leavenworth (Cascade East Slope) winter afternoons settle near 3.2°C — nights −4.1°C — under Dsa seasonality.",
       spring: "Leavenworth (Cascade East Slope) spring afternoons reach about 16.2°C, nights near 2.3°C, before peak-season heat arrives.",
@@ -652,7 +652,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Leavenworth means a handful of tradeoffs, manageable ones. The honest weight on the other side of the scale: wildfire (high) and wildfire smoke (high) are the two to weigh. The climate case for Leavenworth still holds; it just isn't the whole story.",
   },
   "lewes-de": {
-    feel: "Lewes sits 3 m above sea level, and the ground tells the story: Historic baymouth settlement where Delaware Bay narrows toward the Atlantic. Diurnal sea breeze is doing real work on the thermometer, and it is the reason people describe Lewes as a lake-moderated rather than just another Delaware town.",
+    feel: "Lewes feels like a small old port where Delaware Bay meets the Atlantic: water on two sides tempers the extremes, and on summer afternoons a sea breeze knocks a few degrees off the inland heat. Winters are raw but rarely severe.",
     seasons: {
       winter: "Lewes (Delaware Bay) in winter is a 8.6°C daytime story; nights to −1°C make sea breeze tangible.",
       spring: "Lewes (Delaware Bay) spring afternoons reach about 17.9°C, nights near 7.2°C, before peak-season heat arrives.",
@@ -664,7 +664,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Lewes means a handful of tradeoffs, manageable ones. The honest weight on the other side of the scale: coastal flooding and storm surge (high) and flooding (elevated) are the two to weigh. The climate case for Lewes still holds; it just isn't the whole story.",
   },
   "lone-pine-ca": {
-    feel: "Lone Pine sits inside its saltbush desert scrub and alluvial fans, 1130 m up: Owens Valley floor between the Sierra Nevada and Inyo/White mountains. That is temperature inversion at work, and it makes Lone Pine read less like a textbook BWk station and more like its own microclimate.",
+    feel: "Lone Pine feels like living at the foot of a granite wall. Mount Whitney and the High Sierra rise some 3,300 m above the valley floor beyond the Alabama Hills and strip the Pacific storms dry, leaving the Owens Valley floor sunny, gusty and parched — July afternoons near 37°C, crisp winter days in the low teens, and snow on the crest that glows pink at dawn.",
     seasons: {
       winter: "Lone Pine (Owens Valley) winter afternoons settle near 13.6°C — nights 1°C — under BWk seasonality.",
       spring: "Lone Pine (Owens Valley) shoulder season sits near 23.1°C days and 7.8°C nights, with inversion still cooling mornings.",
@@ -676,7 +676,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Lone Pine means accepting a real bargain, not a free ride. The honest weight on the other side of the scale: drought (high) and extreme summer heat (high) are the two to weigh. The climate case for Lone Pine still holds; it just isn't the whole story.",
   },
   "lubbock-tx": {
-    feel: "The setting comes first in Lubbock: High Plains caprock escarpment east of the New Mexico border, 980 m above sea level. Continental extremity sets the tone, and the high-desert escape signature shows up in almost every season here, not just one.",
+    feel: "Lubbock feels like living on an enormous tabletop under an even bigger sky. The Llano Estacado runs dead flat to every horizon at nearly 1,000 m, so nothing slows the wind: spring brings blowing dust and dryline supercells, summer afternoons bake near 34°C in thin, dry air, and a winter blue norther can turn a mild afternoon bitter within hours.",
     seasons: {
       winter: "Lubbock (Llano Estacado) keeps winter highs near 13.8°C while −2.2°C overnight lows test housing and travel plans.",
       spring: "Lubbock (Llano Estacado) climbs toward 24.5°C spring afternoons while 980 m elevation preserves 7.7°C nights.",
@@ -688,7 +688,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Lubbock is a genuine tradeoff, not a settled question. What a scouting trip should actually check first is that severe storms (very-high) and drought (high) are the two to weigh. That tradeoff is the price of the badland / steppe pocket pattern that makes Lubbock worth listing in the first place.",
   },
   "marquette-mi": {
-    feel: "At 190 m, the defining fact about Marquette is geography — Lake Superior's south shore on a rocky peninsula. Lake effect explains most of it — a lake-moderated effect layered over boreal-northern hardwood transition that most neighboring Michigan towns don't get.",
+    feel: "Marquette feels like a harbour town on a freshwater sea. Lake Superior is so deep and cold that it sets the calendar: spring lingers in fog and drifting ice, July afternoons settle near 24°C with a breeze off the water, and once arctic air crosses the open lake in late autumn, lake-effect snow buries the granite hills, with January nights averaging about −10°C.",
     seasons: {
       winter: "Marquette (UP) keeps winter highs near −2.3°C while −10.4°C overnight lows test housing and travel plans.",
       spring: "Marquette (UP) spring highs near 9.5°C and lows near −1.4°C favor scouting walks over midsummer crowds.",
@@ -700,7 +700,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Marquette means a handful of tradeoffs, manageable ones. What a scouting trip should actually check first is that extreme winter cold (high) and severe storms (elevated) are the two to weigh. That tradeoff is the price of the lake-moderated pattern that makes Marquette worth listing in the first place.",
   },
   "mazatlan-mx": {
-    feel: "Mazatlán sits inside its tropical savanna and coastal mangrove margin, 5 m up: Long sandy beach on Gulf of California opening. That is tropical convective regime at work, and it makes Mazatlán read less like a textbook Aw station and more like its own microclimate.",
+    feel: "Mazatlán feels like two different cities sharing one long malecón. Through the dry season, sea breezes and cloudless skies give winter days near 27°C and cool, comfortable nights; then the summer monsoon arrives, afternoons climb toward 34°C, the air turns heavy and sticky, and July-to-September thunderstorms deliver most of the year's rain, with hurricane season riding along.",
     seasons: {
       winter: "Mazatlán (Pacific Humid Tropical) winter afternoons settle near 28.2°C — nights 13.6°C — under Aw seasonality.",
       spring: "Mazatlán (Pacific Humid Tropical) shoulder season sits near 31°C days and 16.7°C nights, with tropical convection still cooling mornings.",
@@ -712,7 +712,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Mazatlán asks for a few compromises, nothing extreme. The honest weight on the other side of the scale: severe storms (very-high) and coastal flooding and storm surge (very-high) are the two to weigh. The climate case for Mazatlán still holds; it just isn't the whole story.",
   },
   "medford-or": {
-    feel: "Elevation does the early work in Medford, at 430 m: Floor of the Rogue Valley south of the Klamath Mountains. Strip away the Csa label and what is left is rain shadow pushing the rain-shadow sanctuary pattern harder than the regional average would suggest.",
+    feel: "Medford feels like a hot, dry bowl set in the middle of green western Oregon. The Klamath and Siskiyou mountains wring out Pacific storms, so the Rogue Valley floor gets nearly rainless summers with July afternoons near 34°C — perfect for pears and wine grapes, grim when wildfire smoke settles in — and winters when cold fog pools on the valley floor for days.",
     seasons: {
       winter: "Medford (Rogue Valley) cold months stay close to 10.4°C days and 0.2°C nights, with a wetter storm cadence in Oregon.",
       spring: "Medford (Rogue Valley) climbs toward 19.2°C spring afternoons while 430 m elevation preserves 3.9°C nights.",
@@ -724,7 +724,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Medford sits in the middle — some give, some take. What a scouting trip should actually check first is that wildfire (high) and wildfire smoke (high) are the two to weigh. That tradeoff is the price of the rain-shadow sanctuary pattern that makes Medford worth listing in the first place.",
   },
   "medicine-hat-ab": {
-    feel: "Medicine Hat sits at 717 m: South Saskatchewan River valley on the semiarid short-grass prairie of southeastern Alberta. The give-away is chinook / foehn downslope, which turns straightforward BSk-class averages into something sharper on the ground.",
+    feel: "Medicine Hat feels like a sun trap sunk into the dry prairie. In the South Saskatchewan River valley, deep in the Rockies' rain shadow, it gets only about 280 mm of precipitation a year, with June the wettest month, and July afternoons reach about 28°C under huge, clear skies; winters are cold, with January nights near −13°C, but a warm, dry chinook from the west can thaw the coulees within a day.",
     seasons: {
       winter: "Medicine Hat in winter is a −1.7°C daytime story; nights to −13°C make chinook foehn tangible.",
       spring: "Medicine Hat spring afternoons reach about 12.5°C, nights near −1.1°C, before peak-season heat arrives.",
@@ -736,7 +736,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Medicine Hat means a handful of tradeoffs, manageable ones. Where it costs you back: drought runs elevated and worsening. Weigh it against the mixed short-grass prairie and the chinook corridor pattern before writing Medicine Hat off or romanticizing it.",
   },
   "mentone-al": {
-    feel: "Mentone sits inside its oak–hickory and mesic cove forest, 548 m up: Village on the Cumberland Plateau / Lookout Mountain scarp — roughly 550 m above the Tennessee Valley floor to the west. It is elevation lapse rate that keeps the numbers from reading like a generic Cfa town, and the difference is felt daily, not just on a chart.",
+    feel: "Mentone feels like a cool mountain porch above the Deep South. Perched on the brow of Lookout Mountain about 550 m up, it catches breezes and fog the valleys below miss, so July afternoons top out near 30°C, winter brings real frosts and the odd dusting of snow, and generous year-round rain keeps DeSoto Falls and the Little River running hard.",
     seasons: {
       winter: "Mentone (Lookout Mountain) in winter is a 10.1°C daytime story; nights to −0.5°C make elevation lapse rate tangible.",
       spring: "Mentone (Lookout Mountain) opens spring under roughly 20.4°C days — wetter moisture — and 8°C overnight recovery.",
@@ -748,7 +748,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Mentone sits in the middle — some give, some take. Where it costs you back: flooding (elevated) and severe storms (elevated) are the two to weigh. Weigh it against the oak–hickory and mesic cove forest and the thermal belt pattern before writing Mentone off or romanticizing it.",
   },
   "merida-mx": {
-    feel: "Mérida occupies a specific piece of ground — Central Yucatán limestone plateau — at 9 m. Karst infiltration is doing real work on the thermometer, and it is the reason people describe Mérida as a tropical wet-dry rather than just another Yucatán town.",
+    feel: "Mérida feels like heat held in white stone: a flat limestone plain with no rivers, where rain sinks straight into cenotes, afternoons sit in the 30s °C most of the year, and life moves to shaded courtyards and evening plazas. The wet season brings short, heavy storms from June.",
     seasons: {
       winter: "Mérida holds winter light near 29.8°C afternoons and 17.4°C nights at 9 m.",
       spring: "Mérida spring afternoons reach about 34.3°C, nights near 20.7°C, before peak-season heat arrives.",
@@ -760,7 +760,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Mérida sits in the middle — some give, some take. Where it costs you back: extreme summer heat (elevated) and severe storms (elevated) are the two to weigh. Weigh it against the tropical deciduous / thorn forest and the tropical wet-dry pattern before writing Mérida off or romanticizing it.",
   },
   "moab-ut": {
-    feel: "Step outside in Moab and the terrain announces itself at once: Colorado River canyon with Arches and Canyonlands national parks adjacent, 1245 m up. Strip away the BWk label and what is left is rain shadow pushing the desert oasis pattern harder than the regional average would suggest.",
+    feel: "Moab feels like a cottonwood oasis at the bottom of a red-rock oven. The Colorado River keeps the canyon floor green, but the sandstone walls soak up sun all day and give it back all night, so July runs near 38°C by afternoon and only about 20°C by dawn; spring and autumn are the prize, with snow on the La Sals above warm slickrock.",
     seasons: {
       winter: "Moab (Canyon Oasis) cold months stay close to 7.6°C days and −4.7°C nights, with a drier storm cadence in Utah.",
       spring: "Moab (Canyon Oasis) climbs toward 22.3°C spring afternoons while 1245 m elevation preserves 5.7°C nights.",
@@ -772,7 +772,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Moab asks for a few compromises, nothing extreme. The main thing to plan around is that drought (high) and extreme summer heat (high) are the two to weigh. None of that erases the appeal of the desert oasis setting — it just means the decision should be made with eyes open.",
   },
   "mobile-al": {
-    feel: "Mobile sits 3 m above sea level, and the ground tells the story: Mobile Bay and Mississippi Sound — warm shelf water and frequent Gulf moisture influx. Diurnal sea breeze is doing real work on the thermometer, and it is the reason people describe Mobile as a hurricane-exposed coast rather than just another Alabama town.",
+    feel: "Mobile feels like the wettest corner of the Gulf Coast: warm water in Mobile Bay and Mississippi Sound feeds daily summer storms, so the city collects some of the heaviest rainfall of any US city under its live oaks and Spanish moss. Hurricanes are the season's real risk.",
     seasons: {
       winter: "Mobile (Gulf Maritime) in winter is a 17.6°C daytime story; nights to 5.6°C make sea breeze tangible.",
       spring: "Mobile (Gulf Maritime) opens spring under roughly 25.6°C days — wetter moisture — and 13.6°C overnight recovery.",
@@ -796,7 +796,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Monterrey asks for a few compromises, nothing extreme. The main thing to plan around is that extreme summer heat (high) and flooding (elevated) are the two to weigh. None of that erases the appeal of the monsoon-edge zone setting — it just means the decision should be made with eyes open.",
   },
   "morden-mb": {
-    feel: "Elevation does the early work in Morden, at 300 m: Southern Manitoba warm pocket near the Pembina Escarpment, west of the Red River Valley. Slope / aspect explains most of it — an orchard valley effect layered over tallgrass prairie and parkland transition that most neighboring Manitoba towns don't get.",
+    feel: "Morden feels like a garden someone dared to plant on the open prairie. Tucked against the Pembina Escarpment, the old shoreline of glacial Lake Agassiz, in one of Manitoba's warmest corners, it gets enough summer heat — July afternoons near 26°C — to ripen orchards, corn and sunflowers, yet January nights still average near −19°C, with blizzards sweeping the flats.",
     seasons: {
       winter: "Morden & the Pembina Escarpment winters run near −8°C by day and −17.5°C at night, shaped by aspect slope across Tallgrass prairie and parkland transition.",
       spring: "Morden & the Pembina Escarpment climbs toward 9.3°C spring afternoons while 300 m elevation preserves −2.4°C nights.",
@@ -820,7 +820,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Morelia keeps the compromises small. The main thing to plan around is that no single hazard dominates the risk picture. None of that erases the appeal of the eternal-spring highland setting — it just means the decision should be made with eyes open.",
   },
   "morgantown-wv": {
-    feel: "Morgantown sits 273 m above sea level, and the ground tells the story: Dissected Allegheny Plateau. Orographic lift does the heavy lifting here, which is why the Köppen Cfa classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Morgantown feels like a river town in the folds of the Allegheny Plateau: the Monongahela winds through steep, wooded hills, summers are warm and humid, and winters change their mind often, with snow on the ridges and rain in the valley.",
     seasons: {
       winter: "Morgantown (Appalachian Plateau) winter afternoons settle near 5.7°C — nights −4.2°C — under Cfa / Dfb transition seasonality.",
       spring: "Morgantown (Appalachian Plateau) spring afternoons reach about 17.8°C, nights near 4.4°C, before peak-season heat arrives.",
@@ -832,7 +832,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Morgantown sits in the middle — some give, some take. Where it costs you back: flooding runs elevated and worsening. Weigh it against the mixed mesophytic forest and the river-valley moderation pattern before writing Morgantown off or romanticizing it.",
   },
   "mount-washington-nh": {
-    feel: "At 1917 m, the defining fact about Mt. Washington Summit is geography — Highest peak in the northeastern US, rising above a ridge system that acts as a convergence zone for three storm tracks. Polar jet / arctic front explains most of it — an alpine tundra effect layered over alpine tundra (above treeline) that most neighboring New Hampshire towns don't get.",
+    feel: "Mount Washington's summit feels like a scrap of the Arctic set on top of New England. At 1,917 m, above the treeline of the Presidential Range, it stands in the path of storms converging on the Northeast, and the ridges funnel wind across the top: fog hides it most days, rime feathers every surface, July afternoons reach only about 14°C, January nights sink near −18°C, and about 2,100 mm of precipitation falls a year.",
     seasons: {
       winter: "Mount Washington Summit winters run near −7.8°C by day and −17.2°C at night, shaped by polar jet exposure across Alpine tundra (above treeline).",
       spring: "Mount Washington Summit spring highs near 0.9°C and lows near −7.4°C favor scouting walks over midsummer crowds.",
@@ -844,7 +844,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "There is no way to describe Mt. Washington Summit honestly without naming the tradeoff up front. What a scouting trip should actually check first is that extreme winter cold (very-high) and severe storms (very-high) are the two to weigh. That tradeoff is the price of the alpine tundra pattern that makes Mt. Washington Summit worth listing in the first place.",
   },
   "mystic-ct": {
-    feel: "Elevation does the early work in Mystic, at 3 m: Estuarine village between Long Island Sound and Block Island Sound — persistent maritime air. Strip away the Dfb label and what is left is marine layer pushing the cool-summer maritime pattern harder than the regional average would suggest.",
+    feel: "Mystic feels like New England with the sea's hand on the thermostat. On a tidal river opening onto Fishers Island Sound, it gets a slow, foggy spring, sea-breeze summers that stay near 27°C while inland Connecticut swelters, and raw, gray winters when nor'easters drive surf into the coves — with rain spread evenly through every month of the year.",
     seasons: {
       winter: "Mystic (Fishers Island Sound) keeps winter highs near 5.1°C while −3.7°C overnight lows test housing and travel plans.",
       spring: "Mystic (Fishers Island Sound) spring feels workable at 14°C days and 4°C nights across the Maritime oak–pine.",
@@ -856,7 +856,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Mystic asks for a few compromises, nothing extreme. What a scouting trip should actually check first is that coastal flooding and storm surge (high) and flooding (elevated) are the two to weigh. That tradeoff is the price of the cool-summer maritime pattern that makes Mystic worth listing in the first place.",
   },
   "nags-head-nc": {
-    feel: "Nags Head sits 3 m above sea level, and the ground tells the story: Barrier island on the Atlantic hurricane track. Tropical-cyclone exposure does the heavy lifting here, which is why the Köppen Cfa classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Nags Head feels like a thin line of sand facing the Atlantic: on the Outer Banks the ocean moderates both seasons and the wind hardly stops, building the tall dunes of Jockey's Ridge — and hurricanes, nor'easters and shifting inlets are part of life.",
     seasons: {
       winter: "Outer Banks (Nags Head) holds winter light near 12.4°C afternoons and 3.6°C nights at 3 m.",
       spring: "Outer Banks (Nags Head) shoulder season sits near 20.1°C days and 11.2°C nights, with hurricane track still cooling mornings.",
@@ -868,7 +868,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Nags Head is a genuine tradeoff, not a settled question. Where it costs you back: severe storms (very-high) and coastal flooding and storm surge (very-high) are the two to weigh. Weigh it against the maritime scrub and dune grassland and the hurricane-exposed coast pattern before writing Nags Head off or romanticizing it.",
   },
   "napa-ca": {
-    feel: "The setting comes first in Napa: North-south alluvial trough between the Mayacamas and Vaca ranges, 20 m above sea level. Gap winds are the mechanism behind it, layering an orchard valley pattern on top that most of the California interior never sees.",
+    feel: "Napa feels like a sun trap with the bay's air conditioning switched on every evening. Between the Mayacamas and Vaca ranges the valley floor warms to near 30°C on rainless summer afternoons, then fog and cool breezes off San Pablo Bay slide north and drop nights to about 13°C — the daily swing behind Napa's wine — while winters are mild, green and wet.",
     seasons: {
       winter: "Napa Valley Floor winters run near 15.4°C by day and 4.4°C at night, shaped by gap winds across Mediterranean vineyard and oak savanna.",
       spring: "Napa Valley Floor climbs toward 22°C spring afternoons while 20 m elevation preserves 7.7°C nights.",
@@ -880,7 +880,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Napa means a handful of tradeoffs, manageable ones. The main thing to plan around is that wildfire (high) and drought (elevated) are the two to weigh. None of that erases the appeal of the mediterranean pocket setting — it just means the decision should be made with eyes open.",
   },
   "naples-fl": {
-    feel: "Naples is built 1 m up, on this footprint: Collier County barrier islands and mangrove-lined estuaries. That is diurnal sea breeze at work, and it makes Naples read less like a textbook Aw station and more like its own microclimate.",
+    feel: "Naples feels like a polished Gulf beach town on the edge of the Everglades. Winter is the dry season, with afternoons near 24°C and January nights near 13°C; from June, the afternoon sea breeze pushes inland and sets off almost daily thunderstorms, so about 1,000 mm of its roughly 1,480 mm falls from June to September, while August afternoons hold near 33°C and hurricane season runs its course.",
     seasons: {
       winter: "Naples (Gulf Barrier) in winter is a 24.9°C daytime story; nights to 13.7°C make sea breeze tangible.",
       spring: "Naples (Gulf Barrier) spring afternoons reach about 29.1°C, nights near 18.1°C, before peak-season heat arrives.",
@@ -904,7 +904,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "New Orleans is a genuine tradeoff, not a settled question. The main thing to plan around is that flooding (very-high) and severe storms (very-high) are the two to weigh. None of that erases the appeal of the hurricane-exposed coast setting — it just means the decision should be made with eyes open.",
   },
   "nome-ak": {
-    feel: "Nome is built 6 m up, on this footprint: Bering Sea coast at the mouth of the Snake River. That is polar jet / arctic front at work, and it makes Nome read less like a textbook Dfc station and more like its own microclimate.",
+    feel: "Nome feels like a gold-rush beach at the edge of a frozen sea. On the Bering Sea coast, where the Snake River meets Norton Sound, winter locks the shore in sea ice, January nights average about −18°C and storms drive snow across the treeless tundra; summer is short, cool and often foggy, with July afternoons near 15°C, long light evenings, and more than half of the year's modest 390 mm falling from July to September.",
     seasons: {
       winter: "Nome (Seward Peninsula) in winter is a −9.5°C daytime story; nights to −17.4°C make polar jet exposure tangible.",
       spring: "Nome (Seward Peninsula) shoulder season sits near −1.1°C days and −9.3°C nights, with polar jet exposure still cooling mornings.",
@@ -916,7 +916,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Nome means accepting a real bargain, not a free ride. Where it costs you back: extreme winter cold (very-high) and severe storms (elevated) are the two to weigh. Weigh it against the tundra and dwarf-shrub coastal plain and the subarctic continental pattern before writing Nome off or romanticizing it.",
   },
   "norfolk-ct": {
-    feel: "At 427 m, the defining fact about Norfolk is geography — Highest-incorporated town in Connecticut. Cold-air drainage explains most of it — a cold-air pool effect layered over northern hardwoods and hemlock ravines that most neighboring Connecticut towns don't get.",
+    feel: "Norfolk feels like Connecticut's cold attic. At about 430 m in the Litchfield Hills of the state's northwest corner, clear, still nights let cold air drain into the hollows, so January nights average near −10°C and frost comes early and leaves late; summers stay green and mild, with July afternoons near 26°C under hemlock and maple, and about 1,470 mm of rain and snow is spread evenly through the year.",
     seasons: {
       winter: "Norfolk (NW Highlands) cold months stay close to 0.7°C days and −8.6°C nights, with a wetter storm cadence in Connecticut.",
       spring: "Norfolk (NW Highlands) spring highs near 12.6°C and lows near 0.7°C favor scouting walks over midsummer crowds.",
@@ -928,7 +928,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Norfolk sits in the middle — some give, some take. What a scouting trip should actually check first is that extreme winter cold (elevated) and severe storms (elevated) are the two to weigh. That tradeoff is the price of the cold-air pool pattern that makes Norfolk worth listing in the first place.",
   },
   "oakland-md": {
-    feel: "Oakland sits 750 m above sea level, and the ground tells the story: Highest elevation county in Maryland. Lake effect does the heavy lifting here, which is why the Köppen Dfb classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Oakland feels like the high, cold corner of Maryland: at about 750 m on the Allegheny Plateau, it collects more snow than anywhere else in the state as air rises over the mountains, keeps cool summer nights around Deep Creek Lake, and has winters that look more like New England's than Baltimore's.",
     seasons: {
       winter: "Oakland (Garrett County Highlands) winter afternoons settle near 3.2°C — nights −6.5°C — under Dfb seasonality.",
       spring: "Oakland (Garrett County Highlands) shoulder season sits near 14.9°C days and 2.3°C nights, with lake effect still cooling mornings.",
@@ -940,7 +940,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Oakland sits in the middle — some give, some take. Where it costs you back: extreme winter cold (elevated) and severe storms (elevated) are the two to weigh. Weigh it against the northern hardwoods and hay meadows and the cold-air pool pattern before writing Oakland off or romanticizing it.",
   },
   "ocean-springs-ms": {
-    feel: "Ocean Springs sits 7 m above sea level, and the ground tells the story: Live-oak maritime fringe on Mississippi Sound. Diurnal sea breeze does the heavy lifting here, which is why the Köppen Cfa classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Ocean Springs feels like the Gulf at its gentlest: live oaks, bayous and Mississippi Sound, with long, steamy summers, frequent thunderstorms and mild winters — and hurricanes as the season's lasting risk.",
     seasons: {
       winter: "Ocean Springs (Mississippi Sound) holds winter light near 17.6°C afternoons and 6.7°C nights at 7 m.",
       spring: "Ocean Springs (Mississippi Sound) opens spring under roughly 25.3°C days — wetter moisture — and 14.7°C overnight recovery.",
@@ -952,7 +952,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Ocean Springs sits in the middle — some give, some take. Where it costs you back: severe storms (very-high) and coastal flooding and storm surge (very-high) are the two to weigh. Weigh it against the subtropical live-oak maritime forest and the hurricane-exposed coast pattern before writing Ocean Springs off or romanticizing it.",
   },
   "ojai-ca": {
-    feel: "Ojai is built 227 m up, on this footprint: East-west-oriented Ojai Valley tucked behind the Topatopa Mountains. That is slope / aspect at work, and it makes Ojai read less like a textbook Csa station and more like its own microclimate.",
+    feel: "Ojai feels like a sun-warmed bowl tucked just out of reach of the coastal fog. The east–west valley sits behind hills that block most of the marine layer, so summer afternoons reach about 31°C among the orange groves and oaks while winter nights drop near 4°C; most of its roughly 510 mm of rain falls from November to March, the Topatopa Bluffs glow pink at sunset, and wildfire is the dry season's shadow.",
     seasons: {
       winter: "Ojai holds winter light near 19°C afternoons and 4.5°C nights at 227 m.",
       spring: "Ojai shoulder season sits near 22.5°C days and 7.8°C nights, with aspect slope still cooling mornings.",
@@ -964,7 +964,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Ojai means a handful of tradeoffs, manageable ones. Where it costs you back: wildfire (high) and drought (elevated) are the two to weigh. Weigh it against the mediterranean chaparral / oak savanna and the mediterranean pocket pattern before writing Ojai off or romanticizing it.",
   },
   "orizaba-mx": {
-    feel: "Orizaba sits inside its montane cloud forest and coffee-citrus transition, 1230 m up: Windward mountain city below Pico de Orizaba, where Gulf moisture climbs into the Sierra Madre Oriental. That is orographic lift at work, and it makes Orizaba read less like a textbook Cfb station and more like its own microclimate.",
+    feel: "Orizaba feels like a green, dripping valley at the foot of Mexico's highest volcano. Gulf air piles against the Sierra Madre Oriental here, so summer brings torrential afternoon rain, winter nortes bring the fine drizzle locals call chipi-chipi, and at 1,230 m the air stays soft and mild — afternoons in the mid-to-high 20s, nights around 10–15°C — beneath the snowy cone of Citlaltépetl.",
     seasons: {
       winter: "Orizaba in winter is a 24.6°C daytime story; nights to 10°C make orographic lift tangible.",
       spring: "Orizaba shoulder season sits near 28.7°C days and 13.7°C nights, with orographic lift still cooling mornings.",
@@ -976,7 +976,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Orizaba asks for a few compromises, nothing extreme. The honest weight on the other side of the scale: flooding (elevated) and severe storms (elevated) are the two to weigh. The climate case for Orizaba still holds; it just isn't the whole story.",
   },
   "paducah-ky": {
-    feel: "Elevation does the early work in Paducah, at 113 m: Alluvial plain at the confluence of the Tennessee and Ohio Rivers. River-valley moderation explains most of it — a river-valley moderation effect layered over western mesophytic forest margin and cropland that most neighboring Kentucky towns don't get.",
+    feel: "Paducah feels like a river town wrapped in Gulf humidity. Where the Tennessee pours into the Ohio, mornings often start in fog over the water, summers turn steamy with afternoons near 32°C and nights that hold around 21°C, and about 1,400 mm of rain falls through the year. Winters are short, gray and changeable, prone to the occasional ice storm.",
     seasons: {
       winter: "Paducah (Ohio–Tennessee Confluence) winters run near 8.5°C by day and −1.5°C at night, shaped by river moderation across Western mesophytic forest margin and cropland.",
       spring: "Paducah (Ohio–Tennessee Confluence) spring feels workable at 20.7°C days and 8.7°C nights across the Western mesophytic forest margin and cropland.",
@@ -988,7 +988,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Paducah sits in the middle — some give, some take. The main thing to plan around is that flooding (elevated) and extreme summer heat (elevated) are the two to weigh. None of that erases the appeal of the river-valley moderation setting — it just means the decision should be made with eyes open.",
   },
   "page-az": {
-    feel: "Step outside in Page and the terrain announces itself at once: Glen Canyon rim on the Colorado Plateau, 1310 m up. Strip away the BSk label and what is left is continental extremity pushing the high-desert escape pattern harder than the regional average would suggest.",
+    feel: "Page feels like a sun-blasted mesa perched over a drowned canyon. Lake Powell's deep blue fills Glen Canyon below, yet the slickrock around town gets only about 170 mm of rain a year: July afternoons near 37°C, monsoon cells that can turn dry slot canyons into torrents within minutes, and bright, still winters with frosty nights.",
     seasons: {
       winter: "Page (Colorado Plateau) cold months stay close to 9.2°C days and −1.6°C nights, with a drier storm cadence in Arizona.",
       spring: "Page (Colorado Plateau) climbs toward 22.2°C spring afternoons while 1310 m elevation preserves 7.7°C nights.",
@@ -1000,7 +1000,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Page means accepting a real bargain, not a free ride. The main thing to plan around is that drought (high) and extreme summer heat (high) are the two to weigh. None of that erases the appeal of the high-desert escape setting — it just means the decision should be made with eyes open.",
   },
   "palenque-mx": {
-    feel: "Elevation does the early work in Palenque, at 150 m: Northern Chiapas foothills. Strip away the Af label and what is left is tropical convective regime pushing the cloud forest pattern harder than the regional average would suggest.",
+    feel: "Palenque feels like a steam room with howler monkeys. Where the first green ridges of the Chiapas mountains rise from the Tabasco plains, warm Gulf air piles up and boils into thunderstorms over the rainforest — about 1,800 mm a year — so afternoons sit in the low-to-mid 30s, nights stay near 18–22°C, and even the drier spring months only trade rain for sticky heat.",
     seasons: {
       winter: "Palenque (Lacandon Jungle Edge) cold months stay close to 29.3°C days and 18.1°C nights, with a wetter storm cadence in Chiapas.",
       spring: "Palenque (Lacandon Jungle Edge) spring highs near 33.6°C and lows near 20.8°C favor scouting walks over midsummer crowds.",
@@ -1012,7 +1012,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Palenque means a handful of tradeoffs, manageable ones. What a scouting trip should actually check first is that flooding (elevated) and severe storms (elevated) are the two to weigh. That tradeoff is the price of the cloud forest pattern that makes Palenque worth listing in the first place.",
   },
   "palm-springs-ca": {
-    feel: "Palm Springs sits inside its Colorado desert wash and oasis, 146 m up: Coachella Valley wind corridor north of the Salton Sea. That is gap winds at work, and it makes Palm Springs read less like a textbook BWh station and more like its own microclimate.",
+    feel: "Palm Springs feels like a sunlit stage set against a granite wall. Mount San Jacinto rises some 3,000 m above the palms and blocks most Pacific weather, so winter brings dry, cloudless afternoons near 21°C with snow on the summit, July afternoons near 42°C send everyone indoors or up the tramway, and wind funnels through San Gorgonio Pass to spin the turbine fields.",
     seasons: {
       winter: "Palm Springs (Coachella) winter afternoons settle near 21.4°C — nights 7.8°C — under BWh seasonality.",
       spring: "Palm Springs (Coachella) opens spring under roughly 29.5°C days — drier moisture — and 13.8°C overnight recovery.",
@@ -1036,7 +1036,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Parras de la Fuente means accepting a real bargain, not a free ride. What a scouting trip should actually check first is that drought runs high and worsening. That tradeoff is the price of the high-desert escape pattern that makes Parras de la Fuente worth listing in the first place.",
   },
   "penticton-bc": {
-    feel: "Penticton occupies a specific piece of ground — Isthmus between Skaha and Okanagan Lakes in the deep Okanagan rain-shadow valley — at 344 m. The give-away is rain shadow, which turns straightforward BSk-class averages into something sharper on the ground.",
+    feel: "Penticton feels like a desert town between two lakes: on the isthmus between Okanagan and Skaha lakes, deep in the valley's rain shadow, summers are hot and dry, the lakes soften the winters, and vineyards and orchards climb the benches above town.",
     seasons: {
       winter: "Penticton (South Okanagan) in winter is a 2.7°C daytime story; nights to −3.4°C make rain shadow tangible.",
       spring: "Penticton (South Okanagan) opens spring under roughly 16.1°C days — drier moisture — and 3.7°C overnight recovery.",
@@ -1048,7 +1048,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Penticton asks for a few compromises, nothing extreme. The honest weight on the other side of the scale: wildfire (high) and wildfire smoke (high) are the two to weigh. The climate case for Penticton still holds; it just isn't the whole story.",
   },
   "pincher-creek-ab": {
-    feel: "Pincher Creek occupies a specific piece of ground — Foothills immediately east of the Rockies at the Crowsnest Pass outflow — at 1190 m. Chinook / foehn downslope is doing real work on the thermometer, and it is the reason people describe Pincher Creek as a chinook corridor rather than just another Alberta town.",
+    feel: "Pincher Creek feels like the wind's front door: Pacific air pours through the Crowsnest Pass and down the Rockies' east face, and on a chinook day the foothills can swing from deep cold to thaw in hours. The wind turbines on the ridges are there for a reason.",
     seasons: {
       winter: "Pincher Creek (Chinook Zone) holds winter light near 0.4°C afternoons and −10°C nights at 1190 m.",
       spring: "Pincher Creek (Chinook Zone) shoulder season sits near 10.5°C days and −1.8°C nights, with chinook foehn still cooling mornings.",
@@ -1072,7 +1072,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Pittsfield sits in the middle — some give, some take. The main thing to plan around is that severe-storm risk runs elevated and worsening. None of that erases the appeal of the cold-air pool setting — it just means the decision should be made with eyes open.",
   },
   "prince-edward-co-on": {
-    feel: "Prince Edward County sits 95 m above sea level, and the ground tells the story: Peninsula into Lake Ontario. Lake effect does the heavy lifting here, which is why the Köppen Dfb classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Prince Edward County feels like an island of farmland in Lake Ontario: water on almost every side cools the spring, warms the autumn and stretches the season for its vineyards, while winter brings cold winds off the lake.",
     seasons: {
       winter: "Prince Edward County holds winter light near 0.5°C afternoons and −7.8°C nights at 95 m.",
       spring: "Prince Edward County spring afternoons reach about 11.5°C, nights near 1.8°C, before peak-season heat arrives.",
@@ -1084,7 +1084,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Prince Edward County keeps the compromises small. Where it costs you back: no single hazard dominates the risk picture. Weigh it against the Carolinian-boreal transition on limestone and the lake-moderated pattern before writing Prince Edward County off or romanticizing it.",
   },
   "puebla-mx": {
-    feel: "Elevation does the early work in Puebla, at 2150 m: High basin east of Popocatépetl and Iztaccíhuatl. Strip away the Cwb label and what is left is elevation lapse rate pushing the volcanic upland pattern harder than the regional average would suggest.",
+    feel: "Puebla feels like spring held in place by altitude. At 2,150 m in a high basin beneath smoking Popocatépetl and Iztaccíhuatl, winter brings dry, brilliant days near 23°C and cold nights around 6°C, May is the warm peak near 28°C, and the summer rains arrive as afternoon thunderstorms that leave the evenings cool and damp.",
     seasons: {
       winter: "Puebla (Trans-Mexican Volcanic Belt) keeps winter highs near 23.4°C while 5.3°C overnight lows test housing and travel plans.",
       spring: "Puebla (Trans-Mexican Volcanic Belt) spring highs near 27.3°C and lows near 9.5°C favor scouting walks over midsummer crowds.",
@@ -1096,7 +1096,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Puebla asks for a few compromises, nothing extreme. What a scouting trip should actually check first is that flooding (elevated) and wildfire smoke (elevated) are the two to weigh. That tradeoff is the price of the volcanic upland pattern that makes Puebla worth listing in the first place.",
   },
   "puerto-escondido-mx": {
-    feel: "Puerto Escondido sits 10 m above sea level, and the ground tells the story: Pacific coast of Oaxaca at the eastern edge of the tropical-dry zone. Diurnal sea breeze does the heavy lifting here, which is why the Köppen Aw classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Puerto Escondido feels like hot Pacific surf at the edge of the tropical-dry zone: afternoons stay in the low 30s °C all year, a dry season runs from November to April, and the summer rains arrive with thunderstorms and the occasional hurricane.",
     seasons: {
       winter: "Puerto Escondido winter afternoons settle near 33.2°C — nights 18.3°C — under Aw seasonality.",
       spring: "Puerto Escondido spring afternoons reach about 34.6°C, nights near 20.3°C, before peak-season heat arrives.",
@@ -1120,7 +1120,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Puerto Vallarta sits in the middle — some give, some take. The main thing to plan around is that severe storms (very-high) and coastal flooding and storm surge (very-high) are the two to weigh. None of that erases the appeal of the tropical isothermal coast setting — it just means the decision should be made with eyes open.",
   },
   "qualicum-bc": {
-    feel: "Elevation does the early work in Qualicum Beach, at 20 m: East-side Vancouver Island in the rain shadow of the island's central mountain spine. Strip away the Csb label and what is left is rain shadow pushing the rain-shadow sanctuary pattern harder than the regional average would suggest.",
+    feel: "Qualicum Beach feels like the sunny side of a rainy island. Vancouver Island's mountain spine catches the Pacific storms that soak Tofino, so this Strait of Georgia shore gets warm, dry summers — afternoons near 24°C and weeks without rain over the low-tide sand flats — and winters that are wet and gray but mild, with nights hovering around freezing.",
     seasons: {
       winter: "Qualicum Beach winters run near 6.8°C by day and 1.6°C at night, shaped by rain shadow across Coastal Douglas-fir.",
       spring: "Qualicum Beach spring highs near 13.4°C and lows near 5.1°C favor scouting walks over midsummer crowds.",
@@ -1132,7 +1132,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Qualicum Beach is an easy place to settle into, on balance. What a scouting trip should actually check first is that no single hazard dominates the risk picture. That tradeoff is the price of the rain-shadow sanctuary pattern that makes Qualicum Beach worth listing in the first place.",
   },
   "queretaro-mx": {
-    feel: "Santiago de Querétaro sits inside its highland semiarid scrub and urban valley, 1820 m up: Central Mexican highland basin on the Bajío edge, with semiarid plains and volcanic hills. It is elevation lapse rate that keeps the numbers from reading like a generic BSk town, and the difference is felt daily, not just on a chart.",
+    feel: "Querétaro feels like the Bajío's bright, dry edge. At about 1,820 m, elevation trims the subtropical heat into mild, sunny winter days near 23°C and nights cool enough for a jacket; May warms to about 30°C under dusty skies, and a short season of afternoon storms brings most of the city's modest 480 mm of rain before the hills fade back to beige.",
     seasons: {
       winter: "Querétaro winter afternoons settle near 24°C — nights 6.7°C — under BSk/Cwb transition seasonality.",
       spring: "Querétaro opens spring under roughly 29°C days — drier moisture — and 11.4°C overnight recovery.",
@@ -1144,7 +1144,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Santiago de Querétaro means a handful of tradeoffs, manageable ones. Where it costs you back: drought runs elevated and worsening. Weigh it against the highland semiarid scrub and urban valley and the eternal-spring highland pattern before writing Santiago de Querétaro off or romanticizing it.",
   },
   "rapid-city-sd": {
-    feel: "Rapid City occupies a specific piece of ground — Prairie edge at the Black Hills front — rapid weather changes when Pacific systems meet continental air — at 966 m. Chinook / foehn downslope is doing real work on the thermometer, and it is the reason people describe Rapid City as a chinook corridor rather than just another South Dakota town.",
+    feel: "Rapid City feels like the hinge between the Black Hills and the plains: a winter chinook can lift a frozen morning into a mild afternoon, summer storms build over the Hills and roll out onto the prairie, and the weather turns faster here than almost anywhere in the region.",
     seasons: {
       winter: "Rapid City (Eastern Black Hills) holds winter light near 3.9°C afternoons and −8.8°C nights at 966 m.",
       spring: "Rapid City (Eastern Black Hills) spring afternoons reach about 13.9°C, nights near 0.6°C, before peak-season heat arrives.",
@@ -1156,7 +1156,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Rapid City asks for a few compromises, nothing extreme. Where it costs you back: wildfire (elevated) and flooding (elevated) are the two to weigh. Weigh it against the ponderosa pine savanna margin and the chinook corridor pattern before writing Rapid City off or romanticizing it.",
   },
   "real-catorce-mx": {
-    feel: "Real de Catorce sits at 2756 m: Mining ghost-town on the Sierra de Catorce, a Chihuahuan-steppe mountain refuge. The give-away is elevation lapse rate, which turns straightforward BSk-class averages into something sharper on the ground.",
+    feel: "Real de Catorce feels like a ghost town floating above the desert. At about 2,750 m in the Sierra de Catorce, reached through a tunnel bored through the mountain, the thin, dry air keeps even May afternoons near 25°C, while January nights fall close to 2°C; only about 380 mm of rain arrives, mostly in summer and September storms, and below the stone ruins the Wirikuta plain bakes in the sun.",
     seasons: {
       winter: "Real de Catorce holds winter light near 16.8°C afternoons and 2.4°C nights at 2756 m.",
       spring: "Real de Catorce spring afternoons reach about 22.8°C, nights near 7.1°C, before peak-season heat arrives.",
@@ -1168,7 +1168,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Real de Catorce sits in the middle — some give, some take. Where it costs you back: drought runs elevated and worsening. Weigh it against the semi-arid montane / desert matorral and the sky-island refuge pattern before writing Real de Catorce off or romanticizing it.",
   },
   "revelstoke-bc": {
-    feel: "Revelstoke is built 453 m up, on this footprint: Columbia River valley deep within the Selkirks. That is orographic lift at work, and it makes Revelstoke read less like a textbook Dfb station and more like its own microclimate.",
+    feel: "Revelstoke feels like a snowbound river town in the heart of the Columbia Mountains. Pacific storms that cross the interior rise again over the Monashees and Selkirks and unload on the Columbia valley, so November to January are the wettest months and snowbanks wall the streets, though January nights average only about −6°C; summers turn warm and green, with July afternoons near 27°C and cedar rainforest on the slopes.",
     seasons: {
       winter: "Revelstoke (Snow Capital) holds winter light near −0.2°C afternoons and −6.2°C nights at 453 m.",
       spring: "Revelstoke (Snow Capital) shoulder season sits near 13.3°C days and 1.1°C nights, with orographic lift still cooling mornings.",
@@ -1176,11 +1176,11 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
       autumn: "Revelstoke (Snow Capital) autumn stays usable at 11.4°C days and 2.6°C nights as orographic lift reasserts cooler evenings.",
     },
     travelerFit: "Revelstoke earns its visitors through ski and powder tourism — reason enough on their own, before the climate even factors in.",
-    residentFit: "Full-time life in Revelstoke tends to reward serious skiers and snow-loving families — people who plan their year around the lake-effect snowbelt pattern rather than fighting it.",
+    residentFit: "Full-time life in Revelstoke tends to reward serious skiers and snow-loving families — people who plan their year around the Columbia Mountains' deep snow rather than fighting it.",
     texture: "Revelstoke sits in the middle — some give, some take. Where it costs you back: severe storms (high) and landslide and slope-stability risk (high) are the two to weigh. Weigh it against the interior cedar-hemlock and the lake-effect snowbelt pattern before writing Revelstoke off or romanticizing it.",
   },
   "roswell-nm": {
-    feel: "Roswell sits inside its shortgrass steppe, 1087 m up: Broad Pecos River valley on the Llano Estacado margin — high plains dryness with summer monsoon convection. It is monsoon convective lift that keeps the numbers from reading like a generic BSk town, and the difference is felt daily, not just on a chart.",
+    feel: "Roswell feels like High Plains sky with a river running through it. In the broad Pecos Valley at about 1,100 m, dry air lets temperatures swing hard between day and night — January nights near −4°C, early-summer afternoons near 36°C — spring winds raise dust, and monsoon storms roll off the western mountains with lightning and hail over the pecan orchards.",
     seasons: {
       winter: "Roswell (Pecos Valley) in winter is a 15.2°C daytime story; nights to −3.1°C make monsoon lift tangible.",
       spring: "Roswell (Pecos Valley) spring afternoons reach about 26.2°C, nights near 6.6°C, before peak-season heat arrives.",
@@ -1192,7 +1192,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Roswell sits in the middle — some give, some take. Where it costs you back: drought (high) and extreme summer heat (elevated) are the two to weigh. Weigh it against the shortgrass steppe and the monsoon-edge zone pattern before writing Roswell off or romanticizing it.",
   },
   "saltillo-mx": {
-    feel: "Saltillo sits at 1600 m: High Chihuahuan Desert basin at the eastern Sierra Madre Oriental foothills. It is elevation lapse rate that keeps the numbers from reading like a generic BSh town, and the difference is felt daily, not just on a chart.",
+    feel: "Saltillo feels like Monterrey's cooler, drier upstairs neighbour. At about 1,600 m in a high Chihuahuan Desert basin against the Sierra Madre Oriental, altitude trims the heat, so even June afternoons peak near 30°C and nights cool off, while clear winter nights drop near 4°C with the odd frost; only about 335 mm of rain falls, mostly in summer and early-autumn thunderstorms, on khaki hills of yucca and agave.",
     seasons: {
       winter: "Saltillo holds winter light near 20.1°C afternoons and 4.8°C nights at 1600 m.",
       spring: "Saltillo spring afternoons reach about 27.2°C, nights near 11.1°C, before peak-season heat arrives.",
@@ -1204,7 +1204,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Saltillo is an easy place to settle into, on balance. The honest weight on the other side of the scale: drought runs elevated and worsening. The climate case for Saltillo still holds; it just isn't the whole story.",
   },
   "san-miguel-de-allende-mx": {
-    feel: "San Miguel de Allende sits inside its highland oak-grassland / semiarid scrub, 1910 m up: Central Mexican highland plateau in the Bajío transition, with rolling volcanic uplands and broad valleys. That is elevation lapse rate at work, and it makes San Miguel de Allende read less like a textbook Cwb station and more like its own microclimate.",
+    feel: "San Miguel de Allende feels like warm sun on cold stone. At about 1,900 m on the Mexican plateau, thin, dry air lets winter afternoons reach the low 20s while nights drop to about 5°C — fireplace weather in houses built without heating. May peaks hot and dusty near 30°C, then summer storms bring most of the year's rain and briefly green the hills.",
     seasons: {
       winter: "San Miguel de Allende holds winter light near 23.3°C afternoons and 5.4°C nights at 1910 m.",
       spring: "San Miguel de Allende opens spring under roughly 28.8°C days — drier moisture — and 10.5°C overnight recovery.",
@@ -1216,7 +1216,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "San Miguel de Allende asks for a few compromises, nothing extreme. The honest weight on the other side of the scale: drought runs elevated and worsening. The climate case for San Miguel de Allende still holds; it just isn't the whole story.",
   },
   "savannah-ga": {
-    feel: "At 15 m, the defining fact about Savannah is geography — Estuarine port on the Savannah River near the Georgia Bight — broad shelf and warm Gulf Stream eddies offshore. Diurnal sea breeze explains most of it — a hurricane-exposed coast effect layered over live oak maritime forest that most neighboring Georgia towns don't get.",
+    feel: "Savannah feels like a city built to live in the shade. On a bluff above the Savannah River, about 25 km from the Atlantic, live oaks and Spanish moss shelter its squares through long, steamy summers, when July afternoons near 33°C give way to sea-breeze thunderstorms and June to August brings the wettest stretch of a roughly 1,270 mm year; winters are short and mild, with January nights near 5°C.",
     seasons: {
       winter: "Savannah (Atlantic Bight) winters run near 17.6°C by day and 5.7°C at night, shaped by sea breeze across Live oak maritime forest.",
       spring: "Savannah (Atlantic Bight) spring feels workable at 25.6°C days and 13.4°C nights across the Live oak maritime forest.",
@@ -1228,7 +1228,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Savannah sits in the middle — some give, some take. What a scouting trip should actually check first is that coastal flooding and storm surge (high) and flooding (elevated) are the two to weigh. That tradeoff is the price of the hurricane-exposed coast pattern that makes Savannah worth listing in the first place.",
   },
   "scottsbluff-ne": {
-    feel: "At 1189 m, the defining fact about Scottsbluff is geography — North Platte River at the Wildcat Hills — Plains edge with Pine Ridge scarp to the north. Add in shortgrass prairie and ponderosa islands and you get the combination that makes the high-desert escape label feel earned rather than a marketing line.",
+    feel: "Scottsbluff feels like the first breath of the West after the prairie. At nearly 1,200 m in the North Platte valley, beneath the sandstone bluff that guided pioneers on the Oregon Trail, the thin, dry air swings hard between day and night: July afternoons near 33°C cool quickly after dark, January nights drop near −9°C, and only about 380 mm of rain and snow falls, so irrigation canals keep the valley green.",
     seasons: {
       winter: "Scottsbluff (High Plains Escarpment) cold months stay close to 5.8°C days and −8.8°C nights, with a drier storm cadence in Nebraska.",
       spring: "Scottsbluff (High Plains Escarpment) spring highs near 16.9°C and lows near 0.9°C favor scouting walks over midsummer crowds.",
@@ -1240,7 +1240,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Scottsbluff asks for a few compromises, nothing extreme. The main thing to plan around is that drought (elevated) and extreme winter cold (elevated) are the two to weigh. None of that erases the appeal of the high-desert escape setting — it just means the decision should be made with eyes open.",
   },
   "south-padre-tx": {
-    feel: "At 2 m, the defining fact about South Padre Island is geography — Barrier island on the southern Texas Gulf coast. Diurnal sea breeze explains most of it — a hurricane-exposed coast effect layered over subtropical coastal dune / maritime savanna that most neighboring Texas towns don't get.",
+    feel: "South Padre Island feels like a ribbon of sand with warm water on both sides. Between the Gulf of Mexico and the shallow, salty Laguna Madre, a near-constant sea breeze holds summer afternoons near 33°C while the Rio Grande Valley inland bakes, and January nights average about 12°C; of its roughly 730 mm of rain a year, the most falls in September, the peak of hurricane season.",
     seasons: {
       winter: "South Padre Island winters run near 21.8°C by day and 12.9°C at night, shaped by sea breeze across Subtropical coastal dune / maritime savanna.",
       spring: "South Padre Island spring highs near 27.5°C and lows near 20.2°C favor scouting walks over midsummer crowds.",
@@ -1252,7 +1252,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in South Padre Island means accepting a real bargain, not a free ride. What a scouting trip should actually check first is that severe storms (very-high) and coastal flooding and storm surge (very-high) are the two to weigh. That tradeoff is the price of the hurricane-exposed coast pattern that makes South Padre Island worth listing in the first place.",
   },
   "spokane-wa": {
-    feel: "Spokane sits at 562 m: Spokane River valley on the Columbia Plateau east of the Cascades. The give-away is chinook / foehn downslope, which turns straightforward Dsb-class averages into something sharper on the ground.",
+    feel: "Spokane feels like a pine-ringed river city on the dry side of the mountains. The Cascades wring most of the moisture out of Pacific storms, leaving about 435 mm a year, so July afternoons reach about 31°C under clear, nearly rainless skies before cooling off at night; winters are grey, with freezing fog and snow and January nights near −3°C, while the Spokane River crashes over its falls right downtown.",
     seasons: {
       winter: "Spokane (Inland Empire) winter afternoons settle near 3°C — nights −4.3°C — under Dsb seasonality.",
       spring: "Spokane (Inland Empire) spring afternoons reach about 15.1°C, nights near 2°C, before peak-season heat arrives.",
@@ -1264,7 +1264,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Spokane means a handful of tradeoffs, manageable ones. Where it costs you back: wildfire (elevated) and wildfire smoke (elevated) are the two to weigh. Weigh it against the ponderosa pine–steppe transition and the chinook corridor pattern before writing Spokane off or romanticizing it.",
   },
   "squamish-bc": {
-    feel: "Step outside in Squamish and the terrain announces itself at once: Head of Howe Sound fjord where Squamish River fresh water meets Georgia Strait marine air, 5 m up. Strip away the Cfb label and what is left is marine layer pushing the fjord / inlet coast pattern harder than the regional average would suggest.",
+    feel: "Squamish feels like the sea and the Coast Mountains squeezed into one fjord. At the head of Howe Sound, Pacific storms pile against the granite walls and drop about 2,200 mm of rain, mostly from October to March; summers turn warm and sunny, with afternoons near 25°C and a steady sea wind up the sound, while winter outflow winds can howl down the valley.",
     seasons: {
       winter: "Squamish (Howe Sound) keeps winter highs near 5.7°C while 0.3°C overnight lows test housing and travel plans.",
       spring: "Squamish (Howe Sound) climbs toward 14.5°C spring afternoons while 5 m elevation preserves 5°C nights.",
@@ -1276,7 +1276,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Squamish asks for a few compromises, nothing extreme. The main thing to plan around is that flooding (elevated) and wildfire smoke (elevated) are the two to weigh. None of that erases the appeal of the fjord / inlet coast setting — it just means the decision should be made with eyes open.",
   },
   "stanley-id": {
-    feel: "Stanley sits 1947 m above sea level, and the ground tells the story: High enclosed valley east of the Sawtooth Mountains. Cold-air drainage is doing real work on the thermometer, and it is the reason people describe Stanley as a cold-air pool rather than just another Idaho town.",
+    feel: "Stanley feels like the bottom of a cold bowl: the Sawtooth Valley, at almost 2,000 m, traps cold air on calm nights, so even July mornings flirt with frost and winter lows rank among the coldest in the lower 48 — beneath peaks and lakes that make it one of the most beautiful high valleys in the West.",
     seasons: {
       winter: "Stanley (Sawtooth Valley) holds winter light near 0.5°C afternoons and −12.7°C nights at 1947 m.",
       spring: "Stanley (Sawtooth Valley) opens spring under roughly 10.7°C days — mixed moisture — and −4.9°C overnight recovery.",
@@ -1288,7 +1288,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "There is no way to describe Stanley honestly without naming the tradeoff up front. The honest weight on the other side of the scale: extreme winter cold (very-high) and wildfire smoke (high) are the two to weigh. The climate case for Stanley still holds; it just isn't the whole story.",
   },
   "state-college-pa": {
-    feel: "At 360 m, the defining fact about State College is geography — Nittany Valley in the Appalachian Ridge and Valley — enclosed basins with cold-air pooling. Add in mixed hardwood forest and you get the combination that makes the cold-air pool label feel earned rather than a marketing line.",
+    feel: "State College feels like a college town in a trough between forested ridges. The Nittany Valley lies between Bald Eagle and Tussey mountains, and on clear, still nights cold air drains onto its floor, so frost comes early and leaves late and January nights average near −6°C; summers are warm and humid, with July afternoons near 28°C and thunderstorms drifting along the ridges, and about 1,100 mm falls through the year.",
     seasons: {
       winter: "State College (Ridge & Valley) cold months stay close to 3°C days and −6°C nights, with a wetter storm cadence in Pennsylvania.",
       spring: "State College (Ridge & Valley) spring feels workable at 15.6°C days and 2.9°C nights across the Mixed hardwood forest.",
@@ -1300,7 +1300,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "State College sits in the middle — some give, some take. The main thing to plan around is that flooding (elevated) and severe storms (elevated) are the two to weigh. None of that erases the appeal of the cold-air pool setting — it just means the decision should be made with eyes open.",
   },
   "summerland-bc": {
-    feel: "Summerland sits 453 m above sea level, and the ground tells the story: Mid-Okanagan lakeside. Rain shadow does the heavy lifting here, which is why the Köppen BSk classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Summerland feels like the Okanagan in miniature: orchards and vineyards on benches above Okanagan Lake, a rain shadow that brings hot, dry summers, and a lake that keeps winters milder than the interior around it.",
     seasons: {
       winter: "Summerland (Central Okanagan) holds winter light near 2.1°C afternoons and −4.1°C nights at 453 m.",
       spring: "Summerland (Central Okanagan) opens spring under roughly 14.9°C days — drier moisture — and 3°C overnight recovery.",
@@ -1312,7 +1312,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Summerland asks for a few compromises, nothing extreme. Where it costs you back: wildfire (high) and wildfire smoke (high) are the two to weigh. Weigh it against the interior douglas-fir / bunchgrass and the orchard valley pattern before writing Summerland off or romanticizing it.",
   },
   "sutton-qc": {
-    feel: "Sutton sits at 210 m: Village at the foot of the Sutton Mountains in Quebec's Appalachian uplands. It is orographic lift that keeps the numbers from reading like a generic Dfb town, and the difference is felt daily, not just on a chart.",
+    feel: "Sutton feels like a maple-wood village at the foot of its own mountains. Just north of the Vermont border, the Sutton Mountains lift passing storms into about 1,280 mm of rain and snow a year, so winters are long and white, with January nights near −13°C and skiing on the slopes above town; summers are green and comfortable, with July afternoons near 26°C, and autumn sets the sugar-maple hillsides ablaze.",
     seasons: {
       winter: "Sutton & the Eastern Townships in winter is a −2°C daytime story; nights to −11.6°C make orographic lift tangible.",
       spring: "Sutton & the Eastern Townships spring afternoons reach about 11.2°C, nights near 0°C, before peak-season heat arrives.",
@@ -1324,7 +1324,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Sutton sits in the middle — some give, some take. The honest weight on the other side of the scale: extreme winter cold (elevated) and severe storms (elevated) are the two to weigh. The climate case for Sutton still holds; it just isn't the whole story.",
   },
   "syracuse-ny": {
-    feel: "The setting comes first in Syracuse: Central New York, 125 m above sea level. Lake effect sets the tone, and the lake-moderated signature shows up in almost every season here, not just one.",
+    feel: "Syracuse feels like a city parked directly downwind of a snow machine. When cold northwest winds cross Lake Ontario, bands of lake-effect snow stall over town — about 3 m in a typical winter — under some of the grayest November and December skies in the country; then summer flips to green, humid warmth near 28°C, with thunderstorms rolling across the lake plain.",
     seasons: {
       winter: "Syracuse keeps winter highs near 1.7°C while −6.9°C overnight lows test housing and travel plans.",
       spring: "Syracuse spring feels workable at 13.8°C days and 2.1°C nights across the Eastern hardwood forest.",
@@ -1348,7 +1348,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Taxco de Alarcón sits in the middle — some give, some take. The main thing to plan around is that landslide and slope-stability risk (high) and flooding (elevated) are the two to weigh. None of that erases the appeal of the eternal-spring highland setting — it just means the decision should be made with eyes open.",
   },
   "tequila-mx": {
-    feel: "At 1180 m, the defining fact about Tequila is geography — Upper slopes of the Tequila Volcano caldera in western Jalisco's agave landscape. Add in pine-oak / agave plantations and you get the combination that makes the volcanic upland label feel earned rather than a marketing line.",
+    feel: "Tequila feels like a valley given over to one blue-grey plant. Beneath the Tequila volcano, rows of agave stripe the volcanic soils of western Jalisco; at about 1,180 m the dry season is bright and nearly rainless, warming from January afternoons near 28°C to about 35°C in May, with January nights near 9°C, before the summer monsoon delivers most of the year's 820 mm from June to September and turns the hills green.",
     seasons: {
       winter: "Tequila (Agave Country) cold months stay close to 28.3°C days and 9.8°C nights, with a drier storm cadence in Jalisco.",
       spring: "Tequila (Agave Country) spring highs near 33.3°C and lows near 13.8°C favor scouting walks over midsummer crowds.",
@@ -1360,7 +1360,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Few places make the tradeoff this gentle — Tequila is one of them. The main thing to plan around is that no single hazard dominates the risk picture. None of that erases the appeal of the volcanic upland setting — it just means the decision should be made with eyes open.",
   },
   "thunder-bay-on": {
-    feel: "Step outside in Thunder Bay and the terrain announces itself at once: North shore of Lake Superior, 183 m up. Lake effect is the mechanism behind it, layering a subarctic continental pattern on top that most of the Ontario interior never sees.",
+    feel: "Thunder Bay feels like the boreal north looking out over a cold inland sea. Lake Superior keeps summer gentle, with afternoons near 25°C, cool nights and chilly fog when the wind comes off the water, but it cannot hold back winter: January nights average near −19°C, snow lies from November into April, and the Sleeping Giant turns white across the bay.",
     seasons: {
       winter: "Thunder Bay winters run near −5.1°C by day and −15.2°C at night, shaped by lake effect across Boreal forest.",
       spring: "Thunder Bay climbs toward 8.2°C spring afternoons while 183 m elevation preserves −3.3°C nights.",
@@ -1372,7 +1372,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Thunder Bay means a handful of tradeoffs, manageable ones. What a scouting trip should actually check first is that extreme winter cold (high) and wildfire smoke (elevated) are the two to weigh. That tradeoff is the price of the lake-moderated pattern that makes Thunder Bay worth listing in the first place.",
   },
   "tofino-ucluelet-corridor": {
-    feel: "Ucluelet occupies a specific piece of ground — Outer west coast of Vancouver Island, facing the open North Pacific — at 6 m. Marine layer is doing real work on the thermometer, and it is the reason people describe Ucluelet as a hyper-maritime rather than just another British Columbia town.",
+    feel: "Ucluelet feels like the open Pacific's front porch: storms sweep in off the North Pacific for much of the year, the ocean keeps winter mild and summer cool, and between them the Wild Pacific Trail looks out on surf, rock and fog.",
     seasons: {
       winter: "Ucluelet holds winter light near 8.4°C afternoons and 2.7°C nights at 6 m.",
       spring: "Ucluelet opens spring under roughly 12.1°C days — wetter moisture — and 5.1°C overnight recovery.",
@@ -1384,7 +1384,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Ucluelet sits in the middle — some give, some take. Where it costs you back: severe storms (high) and coastal flooding and storm surge (high) are the two to weigh. Weigh it against the Sitka spruce coastal rainforest and the hyper-maritime pattern before writing Ucluelet off or romanticizing it.",
   },
   "toluca-mx": {
-    feel: "Toluca de Lerdo sits inside its pine-fir montane on volcanic ash, 2663 m up: Valley of Toluca at 2,663 m, the highest major valley in Mexico. That is elevation lapse rate at work, and it makes Toluca de Lerdo read less like a textbook Cwb station and more like its own microclimate.",
+    feel: "Toluca feels like the tropics with the heat switched off. At about 2,660 m, higher than Mexico City, the thin air makes the sun sharp and the shade chilly: winter afternoons near 20°C fall to frosty dawns, May tops out near 25°C, and the summer rains, often with hail, turn the maize valley green beneath the Nevado de Toluca.",
     seasons: {
       winter: "Toluca (Highest Major Mexican City) in winter is a 21°C daytime story; nights to 2.2°C make elevation lapse rate tangible.",
       spring: "Toluca (Highest Major Mexican City) shoulder season sits near 24.7°C days and 6.5°C nights, with elevation lapse rate still cooling mornings.",
@@ -1396,7 +1396,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Toluca de Lerdo asks for a few compromises, nothing extreme. The honest weight on the other side of the scale: wildfire smoke runs elevated and worsening. The climate case for Toluca de Lerdo still holds; it just isn't the whole story.",
   },
   "tucson-az": {
-    feel: "Tucson occupies a specific piece of ground — Santa Cruz River basin ringed by sky-island ranges — core North American Monsoon convection zone — at 728 m. Monsoon convective lift is doing real work on the thermometer, and it is the reason people describe Tucson as a monsoon-edge zone rather than just another Arizona town.",
+    feel: "Tucson feels like the Sonoran Desert in two seasons: long, dry, brutally hot early summers, then the July–August monsoon, when afternoon thunderstorms boil up over the sky-island ranges around the basin and the air smells of creosote and rain. Winters are mild, sunny and bright.",
     seasons: {
       winter: "Tucson (Sonoran Basin) in winter is a 20.4°C daytime story; nights to 4°C make monsoon lift tangible.",
       spring: "Tucson (Sonoran Basin) spring afternoons reach about 29.5°C, nights near 11.3°C, before peak-season heat arrives.",
@@ -1408,7 +1408,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Tucson means accepting a real bargain, not a free ride. Where it costs you back: extreme summer heat (very-high) and drought (high) are the two to weigh. Weigh it against the Sonoran desert scrub and palo verde woodland and the monsoon-edge zone pattern before writing Tucson off or romanticizing it.",
   },
   "twillingate-nl": {
-    feel: "Elevation does the early work in Twillingate, at 12 m: Notre Dame Bay on Newfoundland's northeast coast. Marine layer explains most of it — a cool-summer maritime effect layered over boreal coastal barrens that most neighboring Newfoundland and Labrador towns don't get.",
+    feel: "Twillingate feels like the North Atlantic's front step. The Labrador Current carries Greenland icebergs past the lighthouse each spring and keeps the sea near freezing into early summer, so warmth arrives late and fog rolls in readily; July and August afternoons only reach about 21°C, while winters are long, snowy and gale-driven, with afternoons just below freezing.",
     seasons: {
       winter: "Twillingate (Iceberg Coast) winters run near −0.8°C by day and −7.4°C at night, shaped by marine layer across Boreal coastal barrens.",
       spring: "Twillingate (Iceberg Coast) climbs toward 5.3°C spring afternoons while 12 m elevation preserves −2.1°C nights.",
@@ -1420,7 +1420,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Twillingate means accepting a real bargain, not a free ride. The main thing to plan around is that severe storms (elevated) and coastal flooding and storm surge (elevated) are the two to weigh. None of that erases the appeal of the cool-summer maritime setting — it just means the decision should be made with eyes open.",
   },
   "washington-dc": {
-    feel: "Washington is built 15 m up, on this footprint: Potomac River fall-line city on the Atlantic coastal plain — heat island + Chesapeake moisture. That is continental extremity at work, and it makes Washington read less like a textbook Cfa station and more like its own microclimate.",
+    feel: "Washington feels like a marble-and-brick heat sink on the banks of the Potomac. Where the river drops off the Piedmont onto the coastal plain, humid southerly air settles in for summer and the pavement holds the heat, so July afternoons near 31°C give way to sticky nights and thunderstorms; winters swing between raw rain and the occasional snowstorm, with January nights near −3°C, and about 1,190 mm of precipitation falls a year.",
     seasons: {
       winter: "Washington, D.C. winter afternoons settle near 8.1°C — nights −1.7°C — under Cfa seasonality.",
       spring: "Washington, D.C. opens spring under roughly 19.2°C days — wetter moisture — and 7.4°C overnight recovery.",
@@ -1432,7 +1432,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Washington asks for a few compromises, nothing extreme. Where it costs you back: flooding (elevated) and extreme summer heat (elevated) are the two to weigh. Weigh it against the humid subtropical urban forest and the urban heat contrast pattern before writing Washington off or romanticizing it.",
   },
   "wilmington-de": {
-    feel: "Wilmington sits 28 m above sea level, and the ground tells the story: Fall-line zone where Piedmont meets coastal plain. River-valley moderation does the heavy lifting here, which is why the Köppen Cfa classification undersells how distinct the daily rhythm actually feels.",
+    feel: "Wilmington feels like the line where the Piedmont meets the coastal plain: the Brandywine tumbles down the fall line here, the Delaware River and bay moderate the city, summers are humid and winters changeable but mostly mild.",
     seasons: {
       winter: "Wilmington (Brandywine–Piedmont) holds winter light near 6.6°C afternoons and −2.4°C nights at 28 m.",
       spring: "Wilmington (Brandywine–Piedmont) shoulder season sits near 17.7°C days and 6.5°C nights, with river moderation still cooling mornings.",
@@ -1444,7 +1444,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Wilmington means a handful of tradeoffs, manageable ones. Where it costs you back: flooding (elevated) and severe storms (elevated) are the two to weigh. Weigh it against the temperate mixed forest and the piedmont transition pattern before writing Wilmington off or romanticizing it.",
   },
   "xilitla-mx": {
-    feel: "Step outside in Xilitla and the terrain announces itself at once: Windward Sierra Madre Oriental, 600 m up. Strip away the Cfa label and what is left is orographic lift pushing the cloud forest pattern harder than the regional average would suggest.",
+    feel: "Xilitla feels like a hillside the Gulf never stops watering. Moist air from the Gulf of Mexico runs into the Sierra Madre Oriental here and wrings out about 1,500 mm of rain, mostly June to October, so the Huasteca slopes drip with ferns, orchids and coffee; summer afternoons still reach the low 30s, while winter nortes bring mist, drizzle and nights near 12°C.",
     seasons: {
       winter: "Xilitla (Huasteca Cloud Forest) cold months stay close to 25.6°C days and 12°C nights, with a mixed storm cadence in San Luis Potosí.",
       spring: "Xilitla (Huasteca Cloud Forest) spring highs near 31.5°C and lows near 17.4°C favor scouting walks over midsummer crowds.",
@@ -1456,7 +1456,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Xilitla asks for a few compromises, nothing extreme. The main thing to plan around is that flooding (elevated) and landslide and slope-stability risk (elevated) are the two to weigh. None of that erases the appeal of the cloud forest setting — it just means the decision should be made with eyes open.",
   },
   "yellowknife-nt": {
-    feel: "Yellowknife sits at 206 m: Great Slave Lake's north shore. It is continental extremity that keeps the numbers from reading like a generic Dfc town, and the difference is felt daily, not just on a chart.",
+    feel: "Yellowknife feels like a frontier city built on bare granite beside a lake that freezes over. Once Great Slave Lake ices up it no longer softens the cold, so January nights average about −28°C through long, aurora-lit darkness; then the light swings back, June and July bring days that barely end and afternoons near 22°C, and the dry continental air yields only about 290 mm of precipitation a year.",
     seasons: {
       winter: "Yellowknife in winter is a −17.9°C daytime story; nights to −26.6°C make continentality tangible.",
       spring: "Yellowknife shoulder season sits near −0.1°C days and −12°C nights, with continentality still cooling mornings.",
@@ -1468,7 +1468,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Settling in Yellowknife means accepting a real bargain, not a free ride. The honest weight on the other side of the scale: extreme winter cold (very-high) and wildfire (high) are the two to weigh. The climate case for Yellowknife still holds; it just isn't the whole story.",
   },
   "yuma-az": {
-    feel: "Yuma occupies a specific piece of ground — Lower Colorado River valley at the junction of AZ, CA, and Sonora — at 42 m. Rain shadow is doing real work on the thermometer, and it is the reason people describe Yuma as a desert oasis rather than just another Arizona town.",
+    feel: "Yuma feels like the far, dry end of the Colorado River: one of the sunniest and driest places in the country, with summer highs above 40°C, well under 100 mm of rain a year, and river water that turns the valley into America's winter salad bowl.",
     seasons: {
       winter: "Yuma holds winter light near 22°C afternoons and 7.2°C nights at 42 m.",
       spring: "Yuma spring afternoons reach about 31.4°C, nights near 14.2°C, before peak-season heat arrives.",
@@ -1480,7 +1480,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Yuma is a genuine tradeoff, not a settled question. Where it costs you back: drought (very-high) and extreme summer heat (very-high) are the two to weigh. Weigh it against the Sonoran desert lowland (irrigated riparian oasis) and the desert oasis pattern before writing Yuma off or romanticizing it.",
   },
   "zacatecas-mx": {
-    feel: "The setting comes first in Zacatecas: Northern Sierra Madre silver-mining highlands, 2440 m above sea level. Elevation lapse rate is the mechanism behind it, layering a high-desert escape pattern on top that most of the Zacatecas interior never sees.",
+    feel: "Zacatecas feels like a cool, thin-aired perch above the dry north. Wedged into a ravine beneath the Cerro de la Bufa at about 2,440 m, the city rarely gets hot — May, the warmest month, peaks near 27°C. Winter pairs hard, bright sun with nights near 3°C and occasional frost, and brief summer storms, sometimes with hail, green a semi-arid plateau of mesquite and wind.",
     seasons: {
       winter: "Zacatecas keeps winter highs near 19.3°C while 3.7°C overnight lows test housing and travel plans.",
       spring: "Zacatecas spring feels workable at 25.2°C days and 8.8°C nights across the Semi-arid highland / mesquite-acacia steppe.",

@@ -206,7 +206,7 @@ export function buildDerivedDeepSections(place: Place): PlaceDeepSection[] {
     const paras: string[] = [lead, snowPara];
     if (place.climate.frostFreeDays != null) {
       paras.push(
-        `Expect about ${place.climate.frostFreeDays} frost-free days a year, the window tender plants have to work with (more under Agriculture, soils, and garden fit).`,
+        `Expect a frost-free season of about ${place.climate.frostFreeDays} days between the last spring and first autumn freeze, the window tender plants have to work with (more under Agriculture, soils, and garden fit).`,
       );
     }
     out.push({

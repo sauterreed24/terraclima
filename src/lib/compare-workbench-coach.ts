@@ -3,6 +3,7 @@ import { getAnnualPrecipMm, meanJanLow, meanSummerHigh } from "./climate-metrics
 import { hasSourcedSkySeries } from "./hero-glance";
 import { compareLensScore, type CompareDecisionProfile } from "./compare-finalist-verdict";
 import { comparisonLensLabel, type ComparisonLensId } from "./compare-workbench";
+import { possessive } from "./place-name";
 
 export type CompareCoachLaneId = "lens" | "climate-contrast" | "risk" | "evidence";
 export type CompareCandidateSwapTone = "upgrade" | "contrast" | "risk" | "garden" | "evidence" | "steady";
@@ -171,7 +172,7 @@ export function buildCompareCandidateSwapInsight({
   if (lensDelta >= 4) {
     return {
       label: `${lensLabel} upgrade`,
-      detail: `+${lensDelta} vs ${weakestLens.place.name}'s active ${lensRead} read.`,
+      detail: `+${lensDelta} vs ${possessive(weakestLens.place.name)} active ${lensRead} read.`,
       tone: "upgrade",
       score: lensDelta,
     };

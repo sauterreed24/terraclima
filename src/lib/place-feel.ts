@@ -2,6 +2,7 @@ import type { Place } from "../types";
 import {
   annualComfortMonthCount,
   avgRisk,
+  coolSummer,
   meanJanLow,
   meanSummerHigh,
   RISK_VALUE,
@@ -136,7 +137,7 @@ function skyAirCue(place: Place): number {
   }
   if (place.climate.humidity) {
     const summerHumidity = (place.climate.humidity[5] + place.climate.humidity[6] + place.climate.humidity[7]) / 3;
-    if (summerHumidity > 74 && summerDiurnalC(place) < 11) score -= (summerHumidity - 74) * 0.7;
+    if (summerHumidity > 74 && summerDiurnalC(place) < 11 && coolSummer(place)) score -= (summerHumidity - 74) * 0.7;
   }
   score -= RISK_VALUE[place.risks.smoke.level] * 4;
   score -= RISK_VALUE[place.risks.storm.level] * 2.2;

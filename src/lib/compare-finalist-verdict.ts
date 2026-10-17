@@ -9,6 +9,7 @@ import {
   DEFAULT_COMPARISON_LENS,
   type ComparisonLensId,
 } from "./compare-workbench";
+import { possessive } from "./place-name";
 
 export interface CompareDecisionProfile {
   place: Place;
@@ -421,7 +422,7 @@ function buildVerificationChecklist(
     id: "hazard",
     label: "Hazard check",
     place: highestRisk.place,
-    action: `Resolve ${highestRisk.place.name}'s hardest risk before it stays equivalent to the leader.`,
+    action: `Resolve ${possessive(highestRisk.place.name)} hardest risk before it stays equivalent to the leader.`,
     proof: caveatRead(highestRisk),
     tone: highestRisk.riskLoad >= 34 ? "verify" : "book",
   });
@@ -442,7 +443,7 @@ function buildVerificationChecklist(
     place: weakestEvidence.place,
     action: sourceGaps.length
       ? `Source-check ${weakestEvidence.place.name} before using it as a travel or moving anchor.`
-      : `Keep ${weakestEvidence.place.name}'s evidence profile attached to the comparison packet.`,
+      : `Keep ${possessive(weakestEvidence.place.name)} evidence profile attached to the comparison packet.`,
     proof: sourceGaps.length
       ? `Verify ${sourceGaps.slice(0, 3).join(", ")} before booking around this finalist.`
       : "No major source gap is visible in the current profile; still verify parcel-level hazards and local logistics.",
@@ -492,8 +493,8 @@ export function buildCompareDecisionRead(
     summary: `${primary.place.name} is the first finalist to pressure-test (${compareLensScore(primary, lens)}/100 ${lensRead}); ${riskClause}, and ${landClause}.${counterweightClause}`,
     caution,
     nextAction: counterweight
-      ? `Open ${primary.place.name}'s dossier first; read ${counterweight.place.name} second if ${counterweight.preference}.`
-      : `Open ${primary.place.name}'s dossier first, then add another place to test the tradeoff.`,
+      ? `Open ${possessive(primary.place.name)} dossier first; read ${counterweight.place.name} second if ${counterweight.preference}.`
+      : `Open ${possessive(primary.place.name)} dossier first, then add another place to test the tradeoff.`,
     scoutSequence,
     verificationChecklist,
     tableRows,
