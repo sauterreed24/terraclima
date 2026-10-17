@@ -5207,7 +5207,7 @@ export const PLACES_USA: Place[] = [
     reliefContext: "East side of San Juan Island; rain-shadowed from Olympic moisture by the Strait geometry and island wake.",
     biome: "Dry Garry oak meadow and coastal prairie",
     koppen: "Csb",
-    archetypes: ["cool-summer-maritime", "rain-shadow-sanctuary", "lake-moderated"],
+    archetypes: ["cool-summer-maritime", "rain-shadow-sanctuary"],
     drivers: ["rain-shadow", "sea-breeze", "marine-layer"],
     summaryShort: "A drier, sunnier maritime pocket than Seattle — cool summers, mild wet winters, and half the gloom of the mainland sound.",
     summaryImmersive: "The San Juans sit in a complex rain shadow cast by the Olympics and Vancouver Island — enough moisture for pastoral green, but enough summer sun to support vineyards and apple orchards on south slopes. Marine breezes keep August afternoons civilized; frost is rare near shore.",

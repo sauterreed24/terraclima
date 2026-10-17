@@ -1,6 +1,6 @@
 import type { Place, RiskLevel, ZoneActivity, ZoneSettlement } from "../types";
 import { DRIVER_LABELS } from "../types";
-import { getBestMonths } from "./best-months";
+import { getBestMonths, pickVisitWindow } from "./best-months";
 import { inlineDriverLabel, listJoin } from "./place-appendix-sections";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 
@@ -113,9 +113,10 @@ function waterYearPhrase(place: Place): string {
   return `wettest around ${months[wet]}, driest around ${months[dry]}`;
 }
 
+/** The same window the visit card and itinerary use, so the page agrees with itself. */
 function bestOutdoorSeason(place: Place): string {
   const windows = getBestMonths(place);
-  const outdoor = windows.find(w => /outdoor|hike|dry|comfort/i.test(w.label)) ?? windows[0];
+  const outdoor = pickVisitWindow(windows) ?? windows[0];
   return outdoor ? outdoor.range : "seasonal windows vary by exposure";
 }
 

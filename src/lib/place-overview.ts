@@ -525,7 +525,7 @@ const DRIVER_PLAIN: Record<string, string> = {
   "santa-ana": "downslope desert wind",
   "katabatic-flow": "downslope drainage flow",
   "sea-breeze": "a daily sea breeze",
-  "continentality": "distance from the ocean",
+  "continentality": "continental air with little ocean moderation",
   "polar-jet-exposure": "arctic air when the jet stream dips",
   "tropical-convection": "tropical downpours",
   "trade-wind": "trade winds",
