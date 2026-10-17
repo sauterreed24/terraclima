@@ -25,7 +25,7 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
       higherGrowabilityShare: 0.8097345132743363,
       higherUniquenessShare: 0.9778761061946902,
       gddAboveShare: 0.12831858407079647,
-      frostAboveShare: 0.584070796460177,
+      frostAboveShare: 0.5221238938053098,
     },
   },
   {
@@ -42,7 +42,7 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
       higherGrowabilityShare: 0.26548672566371684,
       higherUniquenessShare: 0.8141592920353983,
       gddAboveShare: 0.10619469026548672,
-      frostAboveShare: 0.6769911504424779,
+      frostAboveShare: 0.6637168141592921,
     },
   },
   {
@@ -76,7 +76,7 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
       higherGrowabilityShare: 0.26548672566371684,
       higherUniquenessShare: 0.911504424778761,
       gddAboveShare: 0.07964601769911504,
-      frostAboveShare: 0.03982300884955752,
+      frostAboveShare: 0.084070796460177,
     },
   },
   {
@@ -93,7 +93,7 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
       higherGrowabilityShare: 0.9867256637168141,
       higherUniquenessShare: 0.9424778761061947,
       gddAboveShare: 0.915929203539823,
-      frostAboveShare: 0.8628318584070797,
+      frostAboveShare: 0.8185840707964602,
     },
   },
   {
@@ -110,7 +110,7 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
       higherGrowabilityShare: 0.8938053097345132,
       higherUniquenessShare: 0.7654867256637168,
       gddAboveShare: 0.8230088495575221,
-      frostAboveShare: 0.8628318584070797,
+      frostAboveShare: 0.8185840707964602,
     },
   },
   {
@@ -127,7 +127,7 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
       higherGrowabilityShare: 0.048672566371681415,
       higherUniquenessShare: 0.6460176991150443,
       gddAboveShare: 0.05752212389380531,
-      frostAboveShare: 0.061946902654867256,
+      frostAboveShare: 0.03982300884955752,
     },
   },
   {
@@ -144,7 +144,7 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
       higherGrowabilityShare: 0.3053097345132743,
       higherUniquenessShare: 0.8141592920353983,
       gddAboveShare: 0.3938053097345133,
-      frostAboveShare: 0.3008849557522124,
+      frostAboveShare: 0.3805309734513274,
     },
   },
   {
@@ -161,7 +161,7 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
       higherGrowabilityShare: 0.8938053097345132,
       higherUniquenessShare: 0.7035398230088495,
       gddAboveShare: 0.18141592920353983,
-      frostAboveShare: 0.7345132743362832,
+      frostAboveShare: 0.7389380530973452,
     },
   },
   {
@@ -178,7 +178,7 @@ const GOLD: { id: string; label: string; expected: Partial<PlaceCorpusRanks> }[]
       higherGrowabilityShare: 0.6061946902654868,
       higherUniquenessShare: 0.21238938053097345,
       gddAboveShare: 0.3230088495575221,
-      frostAboveShare: 0.38495575221238937,
+      frostAboveShare: 0.34513274336283184,
     },
   },
   {

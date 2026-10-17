@@ -1,10 +1,13 @@
 # Compares the Daymet climate grid with nearby GHCN-Daily weather stations
-# (scripts/climate-data/station-bias.ts) and, in "apply" mode, regenerates the
-# Climate V2 assets with the reviewed corrections in
-# data/climate-v2/stations/station-bias.json.
+# (scripts/climate-data/station-bias.ts), or in "humidity" mode its vapour
+# pressure with ISD hourly dew points (scripts/climate-data/station-humidity.ts),
+# and in "apply" mode regenerates the Climate V2 assets with the reviewed
+# corrections in data/climate-v2/stations/station-bias.json and
+# humidity-bias.json.
 #
 # Network-bound: runs by hand, or (diagnose only) when the checker changes.
-# The log carries the diagnostics (BIAS lines) and, in apply mode, the
+# The log carries the diagnostics (BIAS / HUM lines, gzip+base64 DIAG lines)
+# and, in apply mode, the
 # regenerated assets as a base64 tar.gz ("TGZ" lines) so they can be reviewed
 # and committed from an environment without NOAA access.
 name: Climate station check
@@ -13,11 +16,11 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: "diagnose (compare only) or apply (regenerate with station-bias.json)"
+        description: "diagnose (temperature/precipitation), humidity (dew points), or apply (regenerate with the reviewed corrections)"
         required: true
         default: diagnose
         type: choice
-        options: [diagnose, apply]
+        options: [diagnose, humidity, apply]
       ids:
         description: "Comma-separated place ids to diagnose (blank = all)"
         required: false
@@ -26,6 +29,7 @@ on:
     branches-ignore: [main]
     paths:
       - scripts/climate-data/station-bias.ts
+      - scripts/climate-data/station-humidity.ts
       - .github/workflows/climate-station-check.yml
 
 permissions:
@@ -60,13 +64,26 @@ jobs:
           path: .cache/ghcnd
           key: ghcnd-${{ github.run_id }}
           restore-keys: ghcnd-
+      - name: Restore ISD cache
+        if: inputs.mode == 'humidity'
+        uses: actions/cache@v4
+        with:
+          path: .cache/isd
+          key: isd-${{ github.run_id }}
+          restore-keys: isd-
       - name: Fetch Daymet (resume-safe)
         run: npm run climate:data:fetch -- --through=2025 --concurrency=4
       - name: Compare with stations
-        if: inputs.mode != 'apply'
+        if: inputs.mode != 'apply' && inputs.mode != 'humidity'
         run: |
           npx tsx scripts/climate-data/station-bias.ts --ids "$IDS"
           gzip -9 -c data/climate-v2/stations/station-bias-diagnostics.json | base64 -w 0 | fold -w 6000 | sed 's/^/DIAG /'
+          echo
+      - name: Compare humidity with stations
+        if: inputs.mode == 'humidity'
+        run: |
+          npx tsx scripts/climate-data/station-humidity.ts --ids "$IDS"
+          gzip -9 -c data/climate-v2/stations/humidity-bias-diagnostics.json | base64 -w 0 | fold -w 6000 | sed 's/^/DIAG /'
           echo
       - name: Regenerate with reviewed corrections
         if: inputs.mode == 'apply'
