@@ -19,7 +19,7 @@
  * data/climate-v2/stations/humidity-bias-diagnostics.json, plus one summary
  * line per place on stdout.
  *
- *   npx tsx scripts/climate-data/station-humidity.ts [--ids a,b] [--radius-km 30]
+ *   npx tsx scripts/climate-data/station-humidity.ts [--ids a,b] [--radius-km 40]
  *
  * Needs the Daymet cache (.cache/daymet, from climate:data:fetch) and network
  * access to NOAA NCEI (ISD files are cached in .cache/isd). This is a review

@@ -1,0 +1,4955 @@
+{
+ "version": 1,
+ "notes": [
+  "Monthly vapour-pressure ratios (ISD station hourly dew points ÷ Daymet vp over the days both report, 2011–2025), from scripts/climate-data/station-humidity.ts; applied by generate.ts before relative humidity is derived.",
+  "Station: the nearest ISD station within 40 km and 300 m of the anchor with at least 5 usable years (its vapour pressure moved to the pixel elevation with a 2.5 km scale height); airports preferred over tide-gauge sensors; up to two missing months filled by interpolation.",
+  "Not corrected: Ojai (only fog-coast stations across the hills), Marquette (tide-gauge sensor only), Puerto Vallarta (8 months missing), and places with no station in range."
+ ],
+ "period": "2011-2025",
+ "corrections": {
+  "sequim-wa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "742010-99999",
+    "name": "PORT ANGELES CGAS",
+    "lat": 48.141,
+    "lon": -123.414,
+    "elevationM": 4,
+    "distanceKm": 23.7,
+    "elevationDeltaM": -51,
+    "usableYears": 11
+   },
+   "vpRatio": [
+    1.08,
+    1.05,
+    1.03,
+    1.03,
+    1.14,
+    1.34,
+    1.69,
+    1.93,
+    1.68,
+    1.19,
+    1.07,
+    1.08
+   ]
+  },
+  "huachuca-az": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722730-03124",
+    "name": "SIERRA VISTA MUNICIPAL-LIBBY AAF AIRPORT",
+    "lat": 31.588,
+    "lon": -110.344,
+    "elevationM": 1438.4,
+    "distanceKm": 5.9,
+    "elevationDeltaM": 38,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.1,
+    1.01,
+    0.97,
+    0.91,
+    0.92,
+    0.99,
+    1.27,
+    0.89,
+    0.76,
+    0.64,
+    0.77,
+    1.01
+   ]
+  },
+  "monterey-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724915-23259",
+    "name": "MONTEREY PENINSULA AIRPORT",
+    "lat": 36.588,
+    "lon": -121.845,
+    "elevationM": 50.3,
+    "distanceKm": 4.6,
+    "elevationDeltaM": 27,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.98,
+    0.99,
+    1.04,
+    1.08,
+    1.16,
+    1.66,
+    2.47,
+    2.63,
+    2.6,
+    2.14,
+    1.35,
+    1.05
+   ]
+  },
+  "black-mountain-nc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723150-03812",
+    "name": "ASHEVILLE REGIONAL AIRPORT",
+    "lat": 35.432,
+    "lon": -82.538,
+    "elevationM": 645.6,
+    "distanceKm": 28.4,
+    "elevationDeltaM": -54,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.06,
+    1.05,
+    0.98,
+    0.99,
+    1.04,
+    1.04,
+    1.05,
+    1.07,
+    1.07,
+    1.09,
+    1.06,
+    1.11
+   ]
+  },
+  "bishop-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724800-23157",
+    "name": "BISHOP AIRPORT",
+    "lat": 37.371,
+    "lon": -118.359,
+    "elevationM": 1252.9,
+    "distanceKm": 3.4,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.02,
+    0.87,
+    0.9,
+    0.92,
+    1.08,
+    1,
+    1.12,
+    1.12,
+    1.18,
+    1.22,
+    1.24,
+    1.11
+   ]
+  },
+  "flagstaff-az": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723750-03103",
+    "name": "FLAGSTAFF PULLIAM AIRPORT",
+    "lat": 35.144,
+    "lon": -111.666,
+    "elevationM": 2133.3,
+    "distanceKm": 6.2,
+    "elevationDeltaM": 27,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1,
+    0.99,
+    0.94,
+    0.87,
+    1.03,
+    1.23,
+    1.43,
+    1.1,
+    0.94,
+    0.88,
+    0.95,
+    1.05
+   ]
+  },
+  "silver-city-nm": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722721-93063",
+    "name": "GRANT COUNTY AIRPORT",
+    "lat": 32.633,
+    "lon": -108.167,
+    "elevationM": 1637.7,
+    "distanceKm": 18.6,
+    "elevationDeltaM": -175,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.9,
+    0.86,
+    0.84,
+    0.95,
+    1.03,
+    1.11,
+    1.28,
+    0.9,
+    0.79,
+    0.72,
+    0.77,
+    0.89
+   ]
+  },
+  "hood-river-or": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726988-24219",
+    "name": "MUNICIPAL AIRPORT",
+    "lat": 45.619,
+    "lon": -121.166,
+    "elevationM": 71.2,
+    "distanceKm": 29.2,
+    "elevationDeltaM": 22,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.01,
+    0.99,
+    1,
+    0.9,
+    0.9,
+    1.03,
+    1.42,
+    1.77,
+    1.97,
+    1.27,
+    1.01,
+    1
+   ]
+  },
+  "ashland-or": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725970-24225",
+    "name": "ROGUE VALLEY INTL-MEDFORD AIRPORT",
+    "lat": 42.375,
+    "lon": -122.877,
+    "elevationM": 400.3,
+    "distanceKm": 24.3,
+    "elevationDeltaM": -195,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.03,
+    1.04,
+    1.03,
+    0.99,
+    1.01,
+    1.15,
+    1.41,
+    1.66,
+    1.83,
+    1.48,
+    1.07,
+    1.05
+   ]
+  },
+  "santa-fe-nm": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723654-93091",
+    "name": "LOS ALAMOS AIRPORT",
+    "lat": 35.883,
+    "lon": -106.283,
+    "elevationM": 2185.7,
+    "distanceKm": 38,
+    "elevationDeltaM": -8,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.03,
+    1.12,
+    1.25,
+    1.36,
+    1.28,
+    1.18,
+    1.26,
+    1,
+    0.86,
+    0.79,
+    0.88,
+    0.94
+   ]
+  },
+  "santa-barbara-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723925-23190",
+    "name": "SANTA BARBARA MUNICIPAL AIRPORT",
+    "lat": 34.424,
+    "lon": -119.842,
+    "elevationM": 2.5,
+    "distanceKm": 13.2,
+    "elevationDeltaM": -12,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.05,
+    1.03,
+    1.07,
+    1.12,
+    1.31,
+    1.93,
+    2.64,
+    2.7,
+    2.68,
+    2.53,
+    1.9,
+    1.28
+   ]
+  },
+  "driggs-id": {
+   "station": {
+    "network": "ISD",
+    "stationId": "720369-04135",
+    "name": "DRIGGS-REED MEMORIAL AIRPORT",
+    "lat": 43.743,
+    "lon": -111.098,
+    "elevationM": 1898.6,
+    "distanceKm": 2.4,
+    "elevationDeltaM": 33,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.16,
+    1.1,
+    1.03,
+    1,
+    1.03,
+    1.01,
+    1.02,
+    1.03,
+    1.04,
+    0.97,
+    1.01,
+    1.09
+   ]
+  },
+  "traverse-city-mi": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726387-14850",
+    "name": "CHERRY CAPITAL AIRPORT",
+    "lat": 44.739,
+    "lon": -85.568,
+    "elevationM": 185.2,
+    "distanceKm": 4.9,
+    "elevationDeltaM": -5,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.01,
+    1.02,
+    1,
+    1,
+    1.01,
+    1.01,
+    1.02,
+    1.02,
+    1.04,
+    1.03,
+    0.98,
+    0.99
+   ]
+  },
+  "ithaca-ny": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725155-94761",
+    "name": "ITHACA TOMPKINS REGIONAL AIRPORT",
+    "lat": 42.483,
+    "lon": -76.467,
+    "elevationM": 335,
+    "distanceKm": 5.2,
+    "elevationDeltaM": 210,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.13,
+    1.14,
+    1.11,
+    1.13,
+    1.18,
+    1.17,
+    1.17,
+    1.17,
+    1.2,
+    1.17,
+    1.1,
+    1.12
+   ]
+  },
+  "grand-marais-mn": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727469-94992",
+    "name": "GRAND MARAIS",
+    "lat": 47.745,
+    "lon": -90.346,
+    "elevationM": 185,
+    "distanceKm": 1.1,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.17,
+    1.17,
+    1.07,
+    1.05,
+    1.01,
+    0.96,
+    1.01,
+    1.04,
+    1.06,
+    1.02,
+    1.04,
+    1.1
+   ]
+  },
+  "boulder-co": {
+   "station": {
+    "network": "ISD",
+    "stationId": "720533-00160",
+    "name": "BOULDER MUNICIPAL AIRPORT",
+    "lat": 40.033,
+    "lon": -105.217,
+    "elevationM": 1612.1,
+    "distanceKm": 5,
+    "elevationDeltaM": -43,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.81,
+    0.84,
+    0.85,
+    0.84,
+    0.88,
+    0.73,
+    0.75,
+    0.79,
+    0.77,
+    0.79,
+    0.74,
+    0.72
+   ]
+  },
+  "apalachicola-fl": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722200-12832",
+    "name": "APALACHICOLA MUNI AIRPORT",
+    "lat": 29.727,
+    "lon": -85.025,
+    "elevationM": 5.5,
+    "distanceKm": 3.8,
+    "elevationDeltaM": 3,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.15,
+    1.15,
+    1.1,
+    1.12,
+    1.13,
+    1.07,
+    1.06,
+    1.04,
+    1.05,
+    1.09,
+    1.13,
+    1.16
+   ]
+  },
+  "santa-cruz-felton-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "745058-23277",
+    "name": "WATSONVILLE MUNICIPAL ARPT",
+    "lat": 36.939,
+    "lon": -121.79,
+    "elevationM": 49.5,
+    "distanceKm": 28,
+    "elevationDeltaM": -70,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.03,
+    1.04,
+    1.1,
+    1.11,
+    1.11,
+    1.32,
+    2.03,
+    2.34,
+    2.6,
+    2.03,
+    1.28,
+    1.04
+   ]
+  },
+  "wenatchee-wa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727825-94239",
+    "name": "PANGBORN MEMORIAL AIRPORT",
+    "lat": 47.397,
+    "lon": -120.201,
+    "elevationM": 377.5,
+    "distanceKm": 8.7,
+    "elevationDeltaM": 148,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.07,
+    1.05,
+    1.03,
+    1.15,
+    1.4,
+    1.48,
+    1.5,
+    1.6,
+    1.74,
+    1.54,
+    1.07,
+    1.05
+   ]
+  },
+  "ellensburg-wa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727883-24220",
+    "name": "BOWERS FIELD AIRPORT",
+    "lat": 47.034,
+    "lon": -120.531,
+    "elevationM": 532.5,
+    "distanceKm": 4.4,
+    "elevationDeltaM": 67,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.06,
+    1.07,
+    1.13,
+    1.31,
+    1.58,
+    1.67,
+    1.76,
+    1.98,
+    2.25,
+    1.73,
+    1.1,
+    1.07
+   ]
+  },
+  "forks-wa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727970-94240",
+    "name": "QUILLAYUTE AIRPORT",
+    "lat": 47.937,
+    "lon": -124.558,
+    "elevationM": 56.4,
+    "distanceKm": 13,
+    "elevationDeltaM": -49,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.11,
+    1.08,
+    1.1,
+    1.07,
+    1.05,
+    1.06,
+    1.11,
+    1.15,
+    1.13,
+    1.13,
+    1.1,
+    1.12
+   ]
+  },
+  "astoria-or": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727910-94224",
+    "name": "ASTORIA REGIONAL AIRPORT",
+    "lat": 46.157,
+    "lon": -123.883,
+    "elevationM": 3.4,
+    "distanceKm": 5.3,
+    "elevationDeltaM": -4,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.09,
+    1.09,
+    1.1,
+    1.07,
+    1.05,
+    1.05,
+    1.13,
+    1.24,
+    1.31,
+    1.2,
+    1.14,
+    1.1
+   ]
+  },
+  "port-townsend-wa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "994180-99999",
+    "name": "SMITH ISLAND  WA",
+    "lat": 48.321,
+    "lon": -122.831,
+    "elevationM": 20,
+    "distanceKm": 23.3,
+    "elevationDeltaM": -10,
+    "usableYears": 8
+   },
+   "vpRatio": [
+    1.14,
+    1.1,
+    1.08,
+    1.05,
+    1.09,
+    1.16,
+    1.47,
+    1.61,
+    1.45,
+    1.29,
+    1.14,
+    1.12
+   ],
+   "interpolatedMonths": [
+    9
+   ]
+  },
+  "hood-river-gorge": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726988-24219",
+    "name": "MUNICIPAL AIRPORT",
+    "lat": 45.619,
+    "lon": -121.166,
+    "elevationM": 71.2,
+    "distanceKm": 10.1,
+    "elevationDeltaM": 1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.96,
+    0.96,
+    0.94,
+    0.88,
+    0.9,
+    1.03,
+    1.35,
+    1.59,
+    1.75,
+    1.27,
+    0.98,
+    0.97
+   ]
+  },
+  "eureka-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725940-24213",
+    "name": "WOODLEY ISLAND (NEW 10/94)",
+    "lat": 40.81,
+    "lon": -124.16,
+    "elevationM": 6.1,
+    "distanceKm": 0.9,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.01,
+    1.02,
+    1.01,
+    1.01,
+    0.99,
+    1.08,
+    1.45,
+    2.06,
+    2.26,
+    1.36,
+    1.06,
+    1.03
+   ]
+  },
+  "point-reyes-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "720406-00135",
+    "name": "GNOSS FIELD AIRPORT",
+    "lat": 38.15,
+    "lon": -122.55,
+    "elevationM": 1.2,
+    "distanceKm": 24.2,
+    "elevationDeltaM": -14,
+    "usableYears": 12
+   },
+   "vpRatio": [
+    1,
+    0.95,
+    1.01,
+    1.07,
+    1.21,
+    1.58,
+    2.51,
+    2.66,
+    2.45,
+    1.94,
+    1.17,
+    1
+   ]
+  },
+  "truckee-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725846-93201",
+    "name": "TRUCKEE-TAHOE AIRPORT",
+    "lat": 39.32,
+    "lon": -120.139,
+    "elevationM": 1798.3,
+    "distanceKm": 3.9,
+    "elevationDeltaM": -12,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1,
+    1,
+    1.02,
+    1,
+    0.98,
+    1.09,
+    1.52,
+    1.71,
+    1.73,
+    1.28,
+    0.99,
+    0.99
+   ]
+  },
+  "mammoth-lakes-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723894-03181",
+    "name": "MAMMOTH YOSEMITE AIRPORT",
+    "lat": 37.633,
+    "lon": -118.85,
+    "elevationM": 2172.6,
+    "distanceKm": 10.9,
+    "elevationDeltaM": -251,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.81,
+    0.82,
+    0.83,
+    0.82,
+    0.93,
+    1.05,
+    1.28,
+    1.33,
+    1.3,
+    1.04,
+    0.88,
+    0.81
+   ]
+  },
+  "fort-davis-tx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722640-93035",
+    "name": "MARFA MUNICIPAL AIRPORT",
+    "lat": 30.371,
+    "lon": -104.017,
+    "elevationM": 1478,
+    "distanceKm": 26.8,
+    "elevationDeltaM": 0,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.1,
+    1.19,
+    1.23,
+    1.2,
+    1.28,
+    1.29,
+    1.07,
+    0.92,
+    0.9,
+    0.8,
+    0.78,
+    0.86
+   ]
+  },
+  "marfa-tx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722640-93035",
+    "name": "MARFA MUNICIPAL AIRPORT",
+    "lat": 30.371,
+    "lon": -104.017,
+    "elevationM": 1478,
+    "distanceKm": 6.9,
+    "elevationDeltaM": 8,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.14,
+    1.19,
+    1.23,
+    1.19,
+    1.28,
+    1.27,
+    1.08,
+    0.92,
+    0.9,
+    0.8,
+    0.8,
+    0.91
+   ]
+  },
+  "sedona-az": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723756-00375",
+    "name": "SEDONA AIRPORT",
+    "lat": 34.85,
+    "lon": -111.783,
+    "elevationM": 1471.3,
+    "distanceKm": 3,
+    "elevationDeltaM": 99,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.02,
+    0.95,
+    0.87,
+    0.79,
+    0.9,
+    1.03,
+    1.41,
+    1.14,
+    0.87,
+    0.82,
+    0.95,
+    1.1
+   ]
+  },
+  "prescott-az": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723723-23184",
+    "name": "ERNEST A. LOVE FIELD ARPT",
+    "lat": 34.649,
+    "lon": -112.422,
+    "elevationM": 1527.8,
+    "distanceKm": 12.8,
+    "elevationDeltaM": -108,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.81,
+    0.76,
+    0.74,
+    0.67,
+    0.79,
+    0.88,
+    1.14,
+    0.88,
+    0.72,
+    0.64,
+    0.72,
+    0.87
+   ]
+  },
+  "taos-nm": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723663-03012",
+    "name": "TAOS REGIONAL AIRPORT",
+    "lat": 36.45,
+    "lon": -105.667,
+    "elevationM": 2161.3,
+    "distanceKm": 9.6,
+    "elevationDeltaM": 37,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.08,
+    1.23,
+    1.26,
+    1.3,
+    1.36,
+    1.44,
+    1.62,
+    1.36,
+    1.09,
+    0.88,
+    0.89,
+    0.95
+   ]
+  },
+  "gunnison-co": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724677-93007",
+    "name": "GUNSN-CRSTED BUTTE RGL APT",
+    "lat": 38.533,
+    "lon": -106.933,
+    "elevationM": 2336.6,
+    "distanceKm": 1.6,
+    "elevationDeltaM": -10,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.22,
+    1.32,
+    1.59,
+    1.79,
+    1.81,
+    1.89,
+    1.91,
+    1.63,
+    1.26,
+    1.04,
+    1.12,
+    1.17
+   ]
+  },
+  "leadville-co": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724673-93009",
+    "name": "LEADVILLE/LAKE COUNTY APT",
+    "lat": 39.228,
+    "lon": -106.316,
+    "elevationM": 3030.6,
+    "distanceKm": 3.2,
+    "elevationDeltaM": -63,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.96,
+    0.92,
+    0.93,
+    0.97,
+    1.05,
+    1.04,
+    1.15,
+    1.03,
+    0.83,
+    0.75,
+    0.77,
+    0.87
+   ]
+  },
+  "durango-co": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724625-93005",
+    "name": "DURA-LA PLATA CO AIRPORT",
+    "lat": 37.143,
+    "lon": -107.76,
+    "elevationM": 2020.6,
+    "distanceKm": 18.2,
+    "elevationDeltaM": 33,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.07,
+    1.1,
+    1.01,
+    1.02,
+    1.25,
+    1.28,
+    1.4,
+    1.12,
+    0.91,
+    0.83,
+    0.92,
+    1.02
+   ]
+  },
+  "cody-wy": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726700-24045",
+    "name": "YELLOWSTONE REGIONAL ARPT",
+    "lat": 44.517,
+    "lon": -109.017,
+    "elevationM": 1552,
+    "distanceKm": 3.3,
+    "elevationDeltaM": -3,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.03,
+    1.24,
+    1.51,
+    1.46,
+    1.25,
+    1.04,
+    0.93,
+    1.02,
+    1.05,
+    0.93,
+    0.86,
+    0.9
+   ]
+  },
+  "missoula-mt": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727730-24153",
+    "name": "MISSOULA INTERNATIONAL AIRPORT",
+    "lat": 46.921,
+    "lon": -114.094,
+    "elevationM": 973.8,
+    "distanceKm": 9.3,
+    "elevationDeltaM": -1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.05,
+    1.03,
+    1.05,
+    1.12,
+    1.22,
+    1.18,
+    1.06,
+    1.05,
+    1.23,
+    1.13,
+    1.05,
+    1.05
+   ]
+  },
+  "bozeman-mt": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726797-24132",
+    "name": "GALLATIN FIELD AIRPORT",
+    "lat": 45.788,
+    "lon": -111.162,
+    "elevationM": 1350.7,
+    "distanceKm": 15.4,
+    "elevationDeltaM": -123,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    0.89,
+    0.89,
+    1,
+    1.06,
+    1.04,
+    0.99,
+    0.9,
+    0.93,
+    1.02,
+    0.95,
+    0.88,
+    0.88
+   ]
+  },
+  "logan-ut": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724796-94128",
+    "name": "LOGAN-CACHE AIRPORT",
+    "lat": 41.787,
+    "lon": -111.852,
+    "elevationM": 1355.7,
+    "distanceKm": 5.8,
+    "elevationDeltaM": -24,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.1,
+    1.04,
+    1.02,
+    1,
+    1.02,
+    1.01,
+    1.13,
+    1.33,
+    1.35,
+    1.07,
+    1.02,
+    1.09
+   ]
+  },
+  "moab-ut": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724776-93075",
+    "name": "CANYONLANDS FIELD AIRPORT",
+    "lat": 38.75,
+    "lon": -109.763,
+    "elevationM": 1387.1,
+    "distanceKm": 27,
+    "elevationDeltaM": 142,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.12,
+    1.22,
+    1.14,
+    1.08,
+    1.03,
+    0.76,
+    0.95,
+    1.02,
+    0.88,
+    0.87,
+    0.86,
+    0.95
+   ]
+  },
+  "syracuse-ny": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725190-14771",
+    "name": "SYRACUSE HANCOCK INTERNATIONAL AP",
+    "lat": 43.111,
+    "lon": -76.104,
+    "elevationM": 124.9,
+    "distanceKm": 7.8,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.05,
+    1.06,
+    1,
+    0.98,
+    1.02,
+    1.02,
+    1.01,
+    1.05,
+    1.11,
+    1.07,
+    1.01,
+    1.04
+   ]
+  },
+  "houghton-mi": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727440-14858",
+    "name": "HOUGHTON COUNTY MEMO ARPT",
+    "lat": 47.166,
+    "lon": -88.481,
+    "elevationM": 323.9,
+    "distanceKm": 8.3,
+    "elevationDeltaM": 139,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.06,
+    1.09,
+    1.06,
+    1.01,
+    1.06,
+    1.1,
+    1.1,
+    1.11,
+    1.13,
+    1.05,
+    1,
+    1.04
+   ]
+  },
+  "viroqua-wi": {
+   "station": {
+    "network": "ISD",
+    "stationId": "A07355-00241",
+    "name": "VIROQUA MUNICIPAL AIRPORT",
+    "lat": 43.579,
+    "lon": -90.913,
+    "elevationM": 394.1,
+    "distanceKm": 3.3,
+    "elevationDeltaM": -1,
+    "usableYears": 12
+   },
+   "vpRatio": [
+    1.32,
+    1.32,
+    1.19,
+    1.12,
+    1.09,
+    1.11,
+    1.19,
+    1.22,
+    1.22,
+    1.17,
+    1.21,
+    1.26
+   ]
+  },
+  "asheville-nc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723150-03812",
+    "name": "ASHEVILLE REGIONAL AIRPORT",
+    "lat": 35.432,
+    "lon": -82.538,
+    "elevationM": 645.6,
+    "distanceKm": 18.2,
+    "elevationDeltaM": -4,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.08,
+    1.07,
+    1,
+    1.02,
+    1.07,
+    1.07,
+    1.07,
+    1.08,
+    1.08,
+    1.13,
+    1.1,
+    1.13
+   ]
+  },
+  "boone-nc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722198-63819",
+    "name": "BOONE",
+    "lat": 36.2,
+    "lon": -81.65,
+    "elevationM": 910.4,
+    "distanceKm": 2.9,
+    "elevationDeltaM": -85,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.07,
+    1.04,
+    0.97,
+    0.97,
+    1.01,
+    1,
+    1.01,
+    1.04,
+    1.06,
+    1.06,
+    1.03,
+    1.07
+   ]
+  },
+  "key-west-fl": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722010-12836",
+    "name": "KEY WEST INTERNATIONAL AIRPORT",
+    "lat": 24.557,
+    "lon": -81.755,
+    "elevationM": 0.3,
+    "distanceKm": 2.5,
+    "elevationDeltaM": -2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.94,
+    0.95,
+    0.98,
+    1.04,
+    0.99,
+    0.93,
+    0.86,
+    0.86,
+    0.88,
+    0.88,
+    0.89,
+    0.92
+   ]
+  },
+  "charleston-sc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "720606-00198",
+    "name": "CHARLESTON EXECUTIVE AIRPORT",
+    "lat": 32.701,
+    "lon": -80.003,
+    "elevationM": 5.2,
+    "distanceKm": 10.8,
+    "elevationDeltaM": 2,
+    "usableYears": 13
+   },
+   "vpRatio": [
+    1.03,
+    1.06,
+    0.99,
+    1.01,
+    0.99,
+    0.99,
+    0.97,
+    1,
+    1.01,
+    1.02,
+    1.06,
+    1.09
+   ]
+  },
+  "fairbanks-ak": {
+   "station": {
+    "network": "ISD",
+    "stationId": "702615-26498",
+    "name": "WAINWRIGHT AAF AIRPORT",
+    "lat": 64.838,
+    "lon": -147.614,
+    "elevationM": 138.4,
+    "distanceKm": 4.8,
+    "elevationDeltaM": 3,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.13,
+    1.16,
+    1.21,
+    1.43,
+    1.83,
+    1.72,
+    1.32,
+    1.12,
+    1.11,
+    1.1,
+    1.18,
+    1.15
+   ]
+  },
+  "sitka-ak": {
+   "station": {
+    "network": "ISD",
+    "stationId": "703710-25333",
+    "name": "SITKA ROCKY GUTIERREZ ARPT",
+    "lat": 57.047,
+    "lon": -135.367,
+    "elevationM": 6,
+    "distanceKm": 2.3,
+    "elevationDeltaM": -2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1,
+    0.97,
+    0.95,
+    0.98,
+    0.99,
+    1.01,
+    1.02,
+    1.05,
+    1.05,
+    1.02,
+    1.01,
+    1
+   ]
+  },
+  "valdez-ak": {
+   "station": {
+    "network": "ISD",
+    "stationId": "702756-26479",
+    "name": "VALDEZ PIONEER FIELD AIRPORT",
+    "lat": 61.132,
+    "lon": -146.244,
+    "elevationM": 18.3,
+    "distanceKm": 5.6,
+    "elevationDeltaM": 8,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.07,
+    1.07,
+    0.98,
+    0.98,
+    1.02,
+    1,
+    1,
+    1.01,
+    1.03,
+    0.92,
+    0.91,
+    1.04
+   ]
+  },
+  "stanley-id": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726824-04112",
+    "name": "STANLEY RANGER STATION",
+    "lat": 44.171,
+    "lon": -114.927,
+    "elevationM": 1979.7,
+    "distanceKm": 5,
+    "elevationDeltaM": 33,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.15,
+    1.11,
+    1.09,
+    1.07,
+    1.17,
+    1.29,
+    1.37,
+    1.51,
+    1.59,
+    1.15,
+    1.08,
+    1.13
+   ]
+  },
+  "mount-washington-nh": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726130-14755",
+    "name": "MT. WASHINGTON OBSERVATORY",
+    "lat": 44.27,
+    "lon": -71.303,
+    "elevationM": 1911.7,
+    "distanceKm": 0.1,
+    "elevationDeltaM": -5,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.37,
+    1.4,
+    1.26,
+    1.21,
+    1.12,
+    1.1,
+    1.1,
+    1.1,
+    1.07,
+    1.13,
+    1.2,
+    1.34
+   ]
+  },
+  "yuma-az": {
+   "station": {
+    "network": "ISD",
+    "stationId": "740035-03145",
+    "name": "YUMA MCAS",
+    "lat": 32.65,
+    "lon": -114.617,
+    "elevationM": 64.9,
+    "distanceKm": 8.4,
+    "elevationDeltaM": 23,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.2,
+    1.24,
+    1.27,
+    1.08,
+    1.03,
+    0.95,
+    1.18,
+    1.31,
+    1.37,
+    1.19,
+    1.15,
+    1.22
+   ]
+  },
+  "south-padre-tx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722508-12957",
+    "name": "PORT ISABEL-CAMERON CO APT",
+    "lat": 26.16,
+    "lon": -97.338,
+    "elevationM": 5.1,
+    "distanceKm": 18,
+    "elevationDeltaM": 3,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.11,
+    1.14,
+    1.21,
+    1.27,
+    1.24,
+    1.13,
+    1.02,
+    1.07,
+    1.08,
+    0.99,
+    1.02,
+    1.06
+   ]
+  },
+  "ely-mn": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727459-94964",
+    "name": "ELY MUNICIPAL AIRPORT",
+    "lat": 47.817,
+    "lon": -91.833,
+    "elevationM": 443.8,
+    "distanceKm": 10,
+    "elevationDeltaM": 1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.31,
+    1.27,
+    1.13,
+    1.11,
+    1.07,
+    1.05,
+    1.04,
+    1.05,
+    1.07,
+    1.03,
+    1.1,
+    1.22
+   ]
+  },
+  "cannon-beach-or": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727910-94224",
+    "name": "ASTORIA REGIONAL AIRPORT",
+    "lat": 46.157,
+    "lon": -123.883,
+    "elevationM": 3.4,
+    "distanceKm": 30.1,
+    "elevationDeltaM": -7,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.02,
+    1.04,
+    1.06,
+    1.04,
+    1.03,
+    1.03,
+    1.1,
+    1.21,
+    1.28,
+    1.14,
+    1.07,
+    1.04
+   ]
+  },
+  "valentine-ne": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725670-24032",
+    "name": "MILLER FIELD AIRPORT",
+    "lat": 42.859,
+    "lon": -100.551,
+    "elevationM": 791,
+    "distanceKm": 1.5,
+    "elevationDeltaM": 16,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.19,
+    1.37,
+    1.47,
+    1.28,
+    1.08,
+    0.98,
+    0.96,
+    0.98,
+    0.96,
+    0.98,
+    1.01,
+    1.07
+   ]
+  },
+  "loess-hills-ia": {
+   "station": {
+    "network": "ISD",
+    "stationId": "720405-00436",
+    "name": "BLAIR MUNICIPAL AIRPORT",
+    "lat": 41.412,
+    "lon": -96.109,
+    "elevationM": 395.9,
+    "distanceKm": 23.8,
+    "elevationDeltaM": 16,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.29,
+    1.4,
+    1.32,
+    1.19,
+    1.04,
+    1,
+    1.07,
+    1.11,
+    1.09,
+    1.05,
+    1.15,
+    1.23
+   ]
+  },
+  "flint-hills-ks": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724556-13989",
+    "name": "EMPORIA MUNICIPAL AIRPORT",
+    "lat": 38.329,
+    "lon": -96.195,
+    "elevationM": 366.3,
+    "distanceKm": 30.7,
+    "elevationDeltaM": -34,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.13,
+    1.18,
+    1.19,
+    1.1,
+    1.07,
+    0.99,
+    0.95,
+    0.98,
+    0.99,
+    1,
+    1.03,
+    1.11
+   ]
+  },
+  "eureka-springs-ar": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723449-53954",
+    "name": "ROGERS MUNI-CARTER FLD APT",
+    "lat": 36.372,
+    "lon": -94.107,
+    "elevationM": 412.4,
+    "distanceKm": 33.2,
+    "elevationDeltaM": -18,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.07,
+    1.08,
+    1.02,
+    1.01,
+    1.05,
+    1.03,
+    1,
+    1.02,
+    1.04,
+    1.06,
+    1.07,
+    1.08
+   ]
+  },
+  "brookings-or": {
+   "station": {
+    "network": "ISD",
+    "stationId": "720365-24267",
+    "name": "BROOKINGS AIRPORT",
+    "lat": 42.074,
+    "lon": -124.29,
+    "elevationM": 139.9,
+    "distanceKm": 2.4,
+    "elevationDeltaM": 100,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1,
+    1.02,
+    1.05,
+    1.02,
+    1.02,
+    1.01,
+    1.16,
+    1.33,
+    1.45,
+    1.08,
+    1.02,
+    1.02
+   ]
+  },
+  "medford-or": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725970-24225",
+    "name": "ROGUE VALLEY INTL-MEDFORD AIRPORT",
+    "lat": 42.375,
+    "lon": -122.877,
+    "elevationM": 400.3,
+    "distanceKm": 5.4,
+    "elevationDeltaM": -30,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.08,
+    1.08,
+    1.07,
+    1.06,
+    1.13,
+    1.36,
+    1.65,
+    1.85,
+    2.04,
+    1.59,
+    1.12,
+    1.09
+   ]
+  },
+  "friday-harbor-wa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727985-94276",
+    "name": "FRIDAY HARBOR AIRPORT",
+    "lat": 48.52,
+    "lon": -123.026,
+    "elevationM": 34.2,
+    "distanceKm": 1.8,
+    "elevationDeltaM": 14,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.99,
+    0.95,
+    0.95,
+    0.93,
+    1.06,
+    1.25,
+    1.58,
+    1.75,
+    1.46,
+    1.08,
+    0.99,
+    0.98
+   ]
+  },
+  "page-az": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723710-03162",
+    "name": "PAGE MUNICIPAL AIRPORT",
+    "lat": 36.921,
+    "lon": -111.449,
+    "elevationM": 1307,
+    "distanceKm": 0.9,
+    "elevationDeltaM": -3,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.02,
+    1.06,
+    1.05,
+    0.93,
+    0.89,
+    0.64,
+    0.94,
+    1.04,
+    0.96,
+    0.79,
+    0.83,
+    0.94
+   ]
+  },
+  "international-falls-mn": {
+   "station": {
+    "network": "ISD",
+    "stationId": "719620-99999",
+    "name": "FORT FRANCES RCS",
+    "lat": 48.65,
+    "lon": -93.433,
+    "elevationM": 342,
+    "distanceKm": 5.7,
+    "elevationDeltaM": 2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.26,
+    1.28,
+    1.2,
+    1.21,
+    1.22,
+    1.16,
+    1.14,
+    1.14,
+    1.13,
+    1.07,
+    1.1,
+    1.18
+   ]
+  },
+  "duluth-mn": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727456-04919",
+    "name": "SKY HARBOR AIRPORT",
+    "lat": 46.722,
+    "lon": -92.043,
+    "elevationM": 185.9,
+    "distanceKm": 8.4,
+    "elevationDeltaM": -24,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.16,
+    1.15,
+    1.12,
+    1.08,
+    1.04,
+    1.03,
+    1.07,
+    1.06,
+    1.09,
+    1.05,
+    1.06,
+    1.12
+   ]
+  },
+  "erie-pa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725260-14860",
+    "name": "ERIE INTL/T. RIDGE FIELD AIRPORT",
+    "lat": 42.08,
+    "lon": -80.182,
+    "elevationM": 222.2,
+    "distanceKm": 9.7,
+    "elevationDeltaM": 22,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.02,
+    1.01,
+    0.98,
+    0.96,
+    0.98,
+    0.96,
+    0.97,
+    0.97,
+    1,
+    0.98,
+    0.9,
+    0.97
+   ]
+  },
+  "chattanooga-tn": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723240-13882",
+    "name": "LOVELL FIELD AIRPORT",
+    "lat": 35.034,
+    "lon": -85.2,
+    "elevationM": 204,
+    "distanceKm": 10.1,
+    "elevationDeltaM": -6,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.02,
+    0.99,
+    0.95,
+    0.95,
+    0.99,
+    0.99,
+    0.99,
+    0.99,
+    1,
+    1.03,
+    1.02,
+    1.06
+   ]
+  },
+  "nags-head-nc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "720282-03736",
+    "name": "FIRST FLIGHT AIRPORT",
+    "lat": 36.018,
+    "lon": -75.671,
+    "elevationM": 4,
+    "distanceKm": 8,
+    "elevationDeltaM": 1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.03,
+    1.03,
+    0.94,
+    0.91,
+    0.92,
+    0.9,
+    0.91,
+    0.92,
+    0.91,
+    0.93,
+    0.98,
+    1.05
+   ]
+  },
+  "burlington-vt": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726170-14742",
+    "name": "BURLINGTON INTERNATIONAL AIRPORT",
+    "lat": 44.468,
+    "lon": -73.15,
+    "elevationM": 101.1,
+    "distanceKm": 5,
+    "elevationDeltaM": 41,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.07,
+    1.07,
+    0.97,
+    0.93,
+    0.99,
+    0.99,
+    1,
+    1.01,
+    1.07,
+    1.05,
+    0.98,
+    1.05
+   ]
+  },
+  "bar-harbor-me": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726077-14616",
+    "name": "HANCOCK CO-BAR HARBOR ARPT",
+    "lat": 44.45,
+    "lon": -68.367,
+    "elevationM": 26.8,
+    "distanceKm": 14.7,
+    "elevationDeltaM": 7,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.15,
+    1.12,
+    1.02,
+    1,
+    1.05,
+    1.06,
+    1.07,
+    1.09,
+    1.11,
+    1.11,
+    1.11,
+    1.18
+   ]
+  },
+  "lubbock-tx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722670-23042",
+    "name": "LUBBOCK INTERNATIONAL AIRPORT",
+    "lat": 33.666,
+    "lon": -101.823,
+    "elevationM": 993.2,
+    "distanceKm": 10.2,
+    "elevationDeltaM": 13,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.13,
+    1.37,
+    1.53,
+    1.55,
+    1.25,
+    0.99,
+    0.86,
+    0.87,
+    0.97,
+    0.95,
+    0.97,
+    0.97
+   ]
+  },
+  "new-orleans-la": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722315-53917",
+    "name": "LAKEFRONT AIRPORT",
+    "lat": 30.049,
+    "lon": -90.029,
+    "elevationM": 0.9,
+    "distanceKm": 11.6,
+    "elevationDeltaM": 1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.08,
+    1.06,
+    1.02,
+    0.99,
+    0.95,
+    0.94,
+    0.95,
+    0.94,
+    0.95,
+    0.99,
+    1.05,
+    1.09
+   ]
+  },
+  "hilo-hi": {
+   "station": {
+    "network": "ISD",
+    "stationId": "912850-21504",
+    "name": "HILO INTERNATIONAL AIRPORT",
+    "lat": 19.719,
+    "lon": -155.049,
+    "elevationM": 8.8,
+    "distanceKm": 4,
+    "elevationDeltaM": -9,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.06,
+    1.05,
+    1.05,
+    1.05,
+    1.05,
+    1.06,
+    1.06,
+    1.06,
+    1.06,
+    1.08,
+    1.07,
+    1.08
+   ]
+  },
+  "nome-ak": {
+   "station": {
+    "network": "ISD",
+    "stationId": "702000-26617",
+    "name": "NOME AIRPORT",
+    "lat": 64.511,
+    "lon": -165.44,
+    "elevationM": 5.4,
+    "distanceKm": 1.9,
+    "elevationDeltaM": -1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.08,
+    1.12,
+    1.17,
+    1.41,
+    1.72,
+    1.99,
+    1.4,
+    1.11,
+    1.05,
+    1,
+    1.06,
+    1.06
+   ]
+  },
+  "corpus-christi-tx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722510-12924",
+    "name": "CORPUS CHRISTI INTERNATIONAL AIRPORT",
+    "lat": 27.773,
+    "lon": -97.513,
+    "elevationM": 12.5,
+    "distanceKm": 11.9,
+    "elevationDeltaM": 11,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.11,
+    1.14,
+    1.17,
+    1.25,
+    1.18,
+    1.08,
+    1.02,
+    1.06,
+    1.02,
+    0.99,
+    1.03,
+    1.1
+   ]
+  },
+  "paducah-ky": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724350-03816",
+    "name": "BARKLEY REGIONAL AIRPORT",
+    "lat": 37.056,
+    "lon": -88.774,
+    "elevationM": 124.1,
+    "distanceKm": 15.7,
+    "elevationDeltaM": 11,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.05,
+    1.05,
+    0.96,
+    0.97,
+    0.99,
+    1,
+    1.03,
+    1.03,
+    1.03,
+    1.03,
+    1.03,
+    1.07
+   ]
+  },
+  "bismarck-nd": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727640-24011",
+    "name": "BISMARCK MUNICIPAL AIRPORT",
+    "lat": 46.782,
+    "lon": -100.758,
+    "elevationM": 503.2,
+    "distanceKm": 3.5,
+    "elevationDeltaM": -11,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.24,
+    1.44,
+    1.84,
+    1.71,
+    1.37,
+    1.18,
+    1.08,
+    1.04,
+    1.02,
+    1.01,
+    1.12,
+    1.18
+   ]
+  },
+  "morgantown-wv": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724176-13736",
+    "name": "MGTN RGNL-W L B HART FD AP",
+    "lat": 39.65,
+    "lon": -79.921,
+    "elevationM": 373.6,
+    "distanceKm": 3.7,
+    "elevationDeltaM": 101,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.11,
+    1.1,
+    1.02,
+    1,
+    1.06,
+    1.07,
+    1.06,
+    1.07,
+    1.09,
+    1.11,
+    1.07,
+    1.11
+   ]
+  },
+  "klamath-falls-upper-klamath-basin-or": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725895-94236",
+    "name": "KLAMATH FALLS AIRPORT",
+    "lat": 42.147,
+    "lon": -121.726,
+    "elevationM": 1244.5,
+    "distanceKm": 9.8,
+    "elevationDeltaM": -3,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.09,
+    1.07,
+    1.07,
+    1.15,
+    1.3,
+    1.64,
+    2.12,
+    2.3,
+    2.22,
+    1.69,
+    1.15,
+    1.11
+   ]
+  },
+  "los-alamos-pajarito-plateau-nm": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723654-93091",
+    "name": "LOS ALAMOS AIRPORT",
+    "lat": 35.883,
+    "lon": -106.283,
+    "elevationM": 2185.7,
+    "distanceKm": 2.2,
+    "elevationDeltaM": -45,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.06,
+    1.11,
+    1.13,
+    1.17,
+    1.19,
+    1.11,
+    1.19,
+    0.96,
+    0.84,
+    0.79,
+    0.86,
+    0.93
+   ]
+  },
+  "lander-sinks-canyon-wy": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725760-24021",
+    "name": "HUNT FIELD AIRPORT",
+    "lat": 42.815,
+    "lon": -108.726,
+    "elevationM": 1698.5,
+    "distanceKm": 2,
+    "elevationDeltaM": 69,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.18,
+    1.25,
+    1.28,
+    1.19,
+    1.08,
+    0.91,
+    0.91,
+    1.13,
+    1.35,
+    1.11,
+    0.99,
+    1.05
+   ]
+  },
+  "mentone-al": {
+   "station": {
+    "network": "ISD",
+    "stationId": "A00013-63847",
+    "name": "ISBELL FIELD AIRPORT",
+    "lat": 34.474,
+    "lon": -85.721,
+    "elevationM": 267.3,
+    "distanceKm": 16.8,
+    "elevationDeltaM": -281,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.02,
+    1,
+    0.93,
+    0.91,
+    0.94,
+    0.93,
+    0.94,
+    0.93,
+    0.91,
+    0.94,
+    0.98,
+    1.02
+   ]
+  },
+  "lewes-de": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724093-13764",
+    "name": "SUSSEX COUNTY AIRPORT",
+    "lat": 38.69,
+    "lon": -75.362,
+    "elevationM": 15.1,
+    "distanceKm": 21.5,
+    "elevationDeltaM": 12,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.01,
+    1.01,
+    0.95,
+    0.96,
+    1,
+    0.98,
+    0.99,
+    1,
+    1.01,
+    1.05,
+    1.05,
+    1.08
+   ]
+  },
+  "clayton-ga": {
+   "station": {
+    "network": "ISD",
+    "stationId": "A00003-63844",
+    "name": "MACON COUNTY AIRPORT",
+    "lat": 35.223,
+    "lon": -83.419,
+    "elevationM": 615.7,
+    "distanceKm": 38.4,
+    "elevationDeltaM": 26,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.02,
+    1,
+    0.95,
+    0.93,
+    0.99,
+    1,
+    1.01,
+    1.02,
+    1.01,
+    1.04,
+    1,
+    1.06
+   ]
+  },
+  "galena-il": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725470-94908",
+    "name": "DUBUQUE REGIONAL AIRPORT",
+    "lat": 42.398,
+    "lon": -90.709,
+    "elevationM": 316.9,
+    "distanceKm": 23.1,
+    "elevationDeltaM": 124,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.19,
+    1.22,
+    1.12,
+    1.08,
+    1.06,
+    1.06,
+    1.11,
+    1.14,
+    1.13,
+    1.08,
+    1.12,
+    1.14
+   ]
+  },
+  "beverly-shores-in": {
+   "station": {
+    "network": "ISD",
+    "stationId": "997339-99999",
+    "name": "MICHIGAN CITY",
+    "lat": 41.73,
+    "lon": -86.93,
+    "elevationM": 197,
+    "distanceKm": 5.8,
+    "elevationDeltaM": 12,
+    "usableYears": 12
+   },
+   "vpRatio": [
+    1.09,
+    1.08,
+    0.99,
+    0.95,
+    0.98,
+    0.99,
+    1.04,
+    1.04,
+    1.03,
+    1.01,
+    1,
+    1.05
+   ]
+  },
+  "oakland-md": {
+   "station": {
+    "network": "ISD",
+    "stationId": "999999-03755",
+    "name": "GARRETT COUNTY AIRPORT",
+    "lat": 39.58,
+    "lon": -79.339,
+    "elevationM": 894,
+    "distanceKm": 19.6,
+    "elevationDeltaM": 144,
+    "usableYears": 12
+   },
+   "vpRatio": [
+    1.21,
+    1.21,
+    1.12,
+    1.04,
+    1.11,
+    1.14,
+    1.13,
+    1.14,
+    1.18,
+    1.15,
+    1.1,
+    1.19
+   ]
+  },
+  "pittsfield-ma": {
+   "station": {
+    "network": "ISD",
+    "stationId": "744104-14763",
+    "name": "PITTSFIELD MUNICIPAL AP",
+    "lat": 42.427,
+    "lon": -73.289,
+    "elevationM": 351.2,
+    "distanceKm": 4.4,
+    "elevationDeltaM": 34,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.09,
+    1.09,
+    1,
+    0.98,
+    1.05,
+    1.06,
+    1.08,
+    1.11,
+    1.15,
+    1.13,
+    1.09,
+    1.11
+   ]
+  },
+  "ocean-springs-ms": {
+   "station": {
+    "network": "ISD",
+    "stationId": "747686-13820",
+    "name": "KEESLER AIR FORCE BASE",
+    "lat": 30.417,
+    "lon": -88.917,
+    "elevationM": 10.1,
+    "distanceKm": 8.6,
+    "elevationDeltaM": 3,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.14,
+    1.12,
+    1.1,
+    1.07,
+    1.04,
+    1.02,
+    1.01,
+    0.98,
+    1,
+    1.06,
+    1.12,
+    1.15
+   ]
+  },
+  "cape-may-nj": {
+   "station": {
+    "network": "ISD",
+    "stationId": "745966-03726",
+    "name": "CAPE MAY COUNTY AIRPORT",
+    "lat": 39.008,
+    "lon": -74.908,
+    "elevationM": 7,
+    "distanceKm": 8.1,
+    "elevationDeltaM": 4,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.01,
+    1,
+    0.94,
+    0.95,
+    0.99,
+    0.99,
+    0.99,
+    0.97,
+    1.01,
+    1.02,
+    1.02,
+    1.04
+   ]
+  },
+  "geneva-on-the-lake-oh": {
+   "station": {
+    "network": "ISD",
+    "stationId": "998281-99999",
+    "name": "FAIRPORT",
+    "lat": 41.767,
+    "lon": -81.283,
+    "elevationM": 176,
+    "distanceKm": 29.6,
+    "elevationDeltaM": -9,
+    "usableYears": 11
+   },
+   "vpRatio": [
+    1.07,
+    1.08,
+    1.03,
+    1.01,
+    1.04,
+    1.02,
+    1.04,
+    1.04,
+    1.05,
+    1.02,
+    0.93,
+    0.97
+   ]
+  },
+  "broken-bow-ok": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723759-53990",
+    "name": "MC CURTAIN COUNTY REGIONAL AIRPORT",
+    "lat": 33.909,
+    "lon": -94.859,
+    "elevationM": 143.9,
+    "distanceKm": 17.5,
+    "elevationDeltaM": 14,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.13,
+    1.12,
+    1.07,
+    1.08,
+    1.06,
+    1.01,
+    0.96,
+    0.96,
+    1,
+    1.09,
+    1.14,
+    1.14
+   ]
+  },
+  "block-island-ri": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725058-94793",
+    "name": "BLOCK ISLAND STATE AIRPORT",
+    "lat": 41.168,
+    "lon": -71.578,
+    "elevationM": 32,
+    "distanceKm": 0.4,
+    "elevationDeltaM": 12,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.98,
+    0.99,
+    0.92,
+    0.93,
+    1,
+    1.02,
+    1.04,
+    1.05,
+    1.03,
+    1.01,
+    1,
+    1.01
+   ]
+  },
+  "spearfish-sd": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726605-00386",
+    "name": "BLACK HILLS AIRPORT CLYDE ICE FIELD",
+    "lat": 44.483,
+    "lon": -103.783,
+    "elevationM": 1198.2,
+    "distanceKm": 6.1,
+    "elevationDeltaM": 88,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.99,
+    1,
+    1.14,
+    1.1,
+    1.05,
+    1,
+    0.95,
+    0.92,
+    0.87,
+    0.88,
+    0.87,
+    0.91
+   ]
+  },
+  "burkes-garden-va": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724125-03859",
+    "name": "MERCER COUNTY AIRPORT",
+    "lat": 37.298,
+    "lon": -81.204,
+    "elevationM": 870.1,
+    "distanceKm": 26.5,
+    "elevationDeltaM": -50,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.08,
+    1.05,
+    0.98,
+    0.97,
+    1.05,
+    1.07,
+    1.08,
+    1.09,
+    1.11,
+    1.12,
+    1.08,
+    1.1
+   ]
+  },
+  "spokane-wa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "727856-94176",
+    "name": "FELTS FIELD AIRPORT",
+    "lat": 47.686,
+    "lon": -117.321,
+    "elevationM": 594.6,
+    "distanceKm": 8.4,
+    "elevationDeltaM": 33,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.12,
+    1.09,
+    1.04,
+    1.06,
+    1.18,
+    1.28,
+    1.34,
+    1.43,
+    1.8,
+    1.47,
+    1.12,
+    1.12
+   ]
+  },
+  "napa-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724955-93227",
+    "name": "NAPA COUNTY AIRPORT",
+    "lat": 38.208,
+    "lon": -122.28,
+    "elevationM": 4.7,
+    "distanceKm": 10,
+    "elevationDeltaM": -15,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.07,
+    1.06,
+    1.09,
+    1.15,
+    1.22,
+    1.55,
+    2.3,
+    2.46,
+    2.61,
+    2.19,
+    1.32,
+    1.07
+   ]
+  },
+  "palm-springs-ca": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722868-93138",
+    "name": "PALM SPRINGS INTL AIRPORT",
+    "lat": 33.822,
+    "lon": -116.504,
+    "elevationM": 124.7,
+    "distanceKm": 3.9,
+    "elevationDeltaM": -21,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.79,
+    0.76,
+    0.83,
+    0.88,
+    1.07,
+    1.06,
+    1.08,
+    1.1,
+    1.13,
+    1.02,
+    1.01,
+    0.97
+   ]
+  },
+  "austin-tx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722540-13904",
+    "name": "AUSTIN-BERGSTROM INTL AIRPORT",
+    "lat": 30.183,
+    "lon": -97.68,
+    "elevationM": 146.3,
+    "distanceKm": 11.2,
+    "elevationDeltaM": -3,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.06,
+    1.06,
+    1.07,
+    1.12,
+    1.07,
+    0.98,
+    0.94,
+    0.97,
+    1.07,
+    1.09,
+    1.07,
+    1.08
+   ]
+  },
+  "naples-fl": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722038-12897",
+    "name": "NAPLES MUNICIPAL AIRPORT",
+    "lat": 26.155,
+    "lon": -81.775,
+    "elevationM": 2,
+    "distanceKm": 2.4,
+    "elevationDeltaM": 1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.15,
+    1.22,
+    1.29,
+    1.25,
+    1.13,
+    0.99,
+    0.99,
+    0.98,
+    0.99,
+    0.97,
+    1.02,
+    1.08
+   ]
+  },
+  "buffalo-ny": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725280-14733",
+    "name": "BUFFALO NIAGARA INTERNATIONAL AIRPOR",
+    "lat": 42.94,
+    "lon": -78.736,
+    "elevationM": 216.2,
+    "distanceKm": 13,
+    "elevationDeltaM": 33,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.03,
+    1.03,
+    0.99,
+    0.98,
+    0.98,
+    0.96,
+    0.97,
+    0.98,
+    1.02,
+    1,
+    0.94,
+    0.99
+   ]
+  },
+  "scottsbluff-ne": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725660-24028",
+    "name": "WESTERN NE REGIONAL/HEILIG FIELD AP",
+    "lat": 41.875,
+    "lon": -103.601,
+    "elevationM": 1206,
+    "distanceKm": 5.6,
+    "elevationDeltaM": 17,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.27,
+    1.54,
+    1.62,
+    1.49,
+    1.27,
+    1.1,
+    1.02,
+    1.16,
+    1.13,
+    1.14,
+    1.04,
+    1.05
+   ]
+  },
+  "mobile-al": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722235-13838",
+    "name": "MOBILE DOWNTOWN AIRPORT",
+    "lat": 30.615,
+    "lon": -88.063,
+    "elevationM": 4.9,
+    "distanceKm": 9.2,
+    "elevationDeltaM": 2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.16,
+    1.15,
+    1.12,
+    1.12,
+    1.09,
+    1.06,
+    1.04,
+    1.04,
+    1.05,
+    1.1,
+    1.15,
+    1.19
+   ]
+  },
+  "savannah-ga": {
+   "station": {
+    "network": "ISD",
+    "stationId": "747804-13824",
+    "name": "HUNTER ARMY AIRFIELD",
+    "lat": 32.017,
+    "lon": -81.133,
+    "elevationM": 12.5,
+    "distanceKm": 8.1,
+    "elevationDeltaM": -2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.1,
+    1.12,
+    1.04,
+    1.06,
+    1.03,
+    1.01,
+    0.98,
+    0.99,
+    1,
+    1.06,
+    1.1,
+    1.15
+   ]
+  },
+  "wilmington-de": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724180-13781",
+    "name": "WILMINGTON AIRPORT",
+    "lat": 39.674,
+    "lon": -75.606,
+    "elevationM": 22.4,
+    "distanceKm": 9.3,
+    "elevationDeltaM": -6,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.98,
+    0.96,
+    0.91,
+    0.93,
+    0.98,
+    0.96,
+    0.95,
+    0.97,
+    1.01,
+    1.03,
+    1,
+    1.03
+   ]
+  },
+  "mystic-ct": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725046-14707",
+    "name": "GROTON-NEW LONDON AIRPORT",
+    "lat": 41.328,
+    "lon": -72.049,
+    "elevationM": 2.5,
+    "distanceKm": 7.5,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.99,
+    1.01,
+    0.92,
+    0.95,
+    1.01,
+    1.02,
+    1.02,
+    1.04,
+    1.06,
+    1.07,
+    1.04,
+    1.04
+   ]
+  },
+  "state-college-pa": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725128-54739",
+    "name": "UNIVERSITY PARK AIRPORT",
+    "lat": 40.85,
+    "lon": -77.85,
+    "elevationM": 377.7,
+    "distanceKm": 6.3,
+    "elevationDeltaM": 18,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.07,
+    1.06,
+    1.01,
+    0.98,
+    1.06,
+    1.06,
+    1.06,
+    1.09,
+    1.14,
+    1.13,
+    1.06,
+    1.07
+   ]
+  },
+  "columbia-sc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "723104-53867",
+    "name": "COLUMBIA OWENS DOWNTOWN AP",
+    "lat": 33.972,
+    "lon": -80.994,
+    "elevationM": 54.7,
+    "distanceKm": 4.9,
+    "elevationDeltaM": -39,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.06,
+    1.05,
+    0.98,
+    0.97,
+    0.96,
+    0.94,
+    0.95,
+    0.97,
+    0.98,
+    1.05,
+    1.09,
+    1.11
+   ]
+  },
+  "des-moines-ia": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725460-14933",
+    "name": "DES MOINES INTERNATIONAL AIRPORT",
+    "lat": 41.534,
+    "lon": -93.653,
+    "elevationM": 286.3,
+    "distanceKm": 6.3,
+    "elevationDeltaM": -5,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.15,
+    1.18,
+    1.13,
+    1.07,
+    1.02,
+    0.99,
+    1.02,
+    1.06,
+    1.07,
+    1.03,
+    1.07,
+    1.11
+   ]
+  },
+  "tucson-az": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722740-23160",
+    "name": "TUCSON INTERNATIONAL AIRPORT",
+    "lat": 32.132,
+    "lon": -110.956,
+    "elevationM": 777.6,
+    "distanceKm": 10.2,
+    "elevationDeltaM": 50,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.91,
+    0.86,
+    0.86,
+    0.8,
+    0.79,
+    0.8,
+    1.25,
+    0.97,
+    0.71,
+    0.62,
+    0.77,
+    0.97
+   ]
+  },
+  "anchorage-ak": {
+   "station": {
+    "network": "ISD",
+    "stationId": "702735-26409",
+    "name": "MERRILL FIELD AIRPORT",
+    "lat": 61.216,
+    "lon": -149.857,
+    "elevationM": 38.4,
+    "distanceKm": 2.3,
+    "elevationDeltaM": 8,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1,
+    1.02,
+    0.99,
+    1.2,
+    1.63,
+    1.8,
+    1.39,
+    1.06,
+    1,
+    0.97,
+    1.01,
+    1.01
+   ]
+  },
+  "honolulu-hi": {
+   "station": {
+    "network": "ISD",
+    "stationId": "911820-22521",
+    "name": "HONOLULU INTERNATIONAL AIRPORT",
+    "lat": 21.324,
+    "lon": -157.939,
+    "elevationM": 1.9,
+    "distanceKm": 8.6,
+    "elevationDeltaM": -3,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.92,
+    0.9,
+    0.89,
+    0.91,
+    0.87,
+    0.85,
+    0.84,
+    0.89,
+    0.88,
+    0.9,
+    0.86,
+    0.89
+   ]
+  },
+  "roswell-nm": {
+   "station": {
+    "network": "ISD",
+    "stationId": "722680-23009",
+    "name": "ROSWELL INTERNATIONAL AIR CENTER AP",
+    "lat": 33.307,
+    "lon": -104.508,
+    "elevationM": 1104.6,
+    "distanceKm": 9.8,
+    "elevationDeltaM": 18,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.35,
+    1.73,
+    1.61,
+    1.42,
+    1.35,
+    1.27,
+    1.18,
+    1.11,
+    1.1,
+    0.96,
+    0.95,
+    1.04
+   ]
+  },
+  "rapid-city-sd": {
+   "station": {
+    "network": "ISD",
+    "stationId": "726620-24090",
+    "name": "RAPID CITY REGIONAL AIRPORT",
+    "lat": 44.046,
+    "lon": -103.054,
+    "elevationM": 963.8,
+    "distanceKm": 14.7,
+    "elevationDeltaM": -2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.08,
+    1.33,
+    1.51,
+    1.37,
+    1.19,
+    1.04,
+    0.93,
+    0.89,
+    0.85,
+    0.86,
+    0.89,
+    0.92
+   ]
+  },
+  "jackson-wy": {
+   "station": {
+    "network": "ISD",
+    "stationId": "725776-24166",
+    "name": "JACKSON HOLE AIRPORT",
+    "lat": 43.6,
+    "lon": -110.733,
+    "elevationM": 1956.5,
+    "distanceKm": 13.6,
+    "elevationDeltaM": 56,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.19,
+    1.12,
+    1.11,
+    1.08,
+    1.13,
+    1.19,
+    1.27,
+    1.31,
+    1.22,
+    1.03,
+    1.08,
+    1.16
+   ]
+  },
+  "washington-dc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "724050-13743",
+    "name": "RONALD REAGAN WASHINGTON NATL AP",
+    "lat": 38.847,
+    "lon": -77.035,
+    "elevationM": 4.1,
+    "distanceKm": 6.7,
+    "elevationDeltaM": -11,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.95,
+    0.93,
+    0.89,
+    0.9,
+    0.95,
+    0.91,
+    0.9,
+    0.93,
+    0.97,
+    1.02,
+    0.98,
+    1
+   ]
+  },
+  "osoyoos-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "712150-99999",
+    "name": "OSOYOOS CS  BC",
+    "lat": 49.033,
+    "lon": -119.433,
+    "elevationM": 283,
+    "distanceKm": 2.6,
+    "elevationDeltaM": 6,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.03,
+    1.01,
+    0.99,
+    1.13,
+    1.31,
+    1.28,
+    1.28,
+    1.38,
+    1.55,
+    1.3,
+    1.01,
+    1.03
+   ]
+  },
+  "lethbridge-ab": {
+   "station": {
+    "network": "ISD",
+    "stationId": "712430-99999",
+    "name": "LETHBRIDGE CDA",
+    "lat": 49.7,
+    "lon": -112.767,
+    "elevationM": 910,
+    "distanceKm": 5.6,
+    "elevationDeltaM": 0,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    0.99,
+    1.23,
+    1.73,
+    1.93,
+    1.7,
+    1.36,
+    1.28,
+    1.1,
+    1.04,
+    1.01,
+    1.02,
+    1.05
+   ]
+  },
+  "victoria-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "714735-99999",
+    "name": "VICTORIA HARBOUR",
+    "lat": 48.42,
+    "lon": -123.33,
+    "elevationM": 5,
+    "distanceKm": 2.8,
+    "elevationDeltaM": -18,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.99,
+    0.95,
+    0.95,
+    0.91,
+    1.01,
+    1.24,
+    1.69,
+    1.94,
+    1.54,
+    1.08,
+    0.98,
+    0.98
+   ]
+  },
+  "tofino-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "711060-94234",
+    "name": "TOFINO AIRPORT",
+    "lat": 49.083,
+    "lon": -125.767,
+    "elevationM": 24,
+    "distanceKm": 12.8,
+    "elevationDeltaM": 14,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.93,
+    0.89,
+    0.94,
+    0.97,
+    0.99,
+    1.04,
+    1.1,
+    1.11,
+    1.07,
+    1.04,
+    1,
+    0.95
+   ]
+  },
+  "wolfville-ns": {
+   "station": {
+    "network": "ISD",
+    "stationId": "716710-99999",
+    "name": "KENTVILLE CDA",
+    "lat": 45.07,
+    "lon": -64.48,
+    "elevationM": 49,
+    "distanceKm": 9.4,
+    "elevationDeltaM": 35,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.23,
+    1.18,
+    1.05,
+    1.04,
+    1.08,
+    1.09,
+    1.08,
+    1.08,
+    1.12,
+    1.13,
+    1.12,
+    1.17
+   ]
+  },
+  "niagara-on-the-lake": {
+   "station": {
+    "network": "ISD",
+    "stationId": "714320-99999",
+    "name": "PORT WELLER (AUT)  ONT",
+    "lat": 43.25,
+    "lon": -79.217,
+    "elevationM": 79,
+    "distanceKm": 11.6,
+    "elevationDeltaM": -1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.05,
+    1.04,
+    0.99,
+    0.99,
+    1.02,
+    1.01,
+    1.04,
+    1.03,
+    1.05,
+    1.04,
+    1.01,
+    1.02
+   ]
+  },
+  "fernie-elk-valley-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "717820-99999",
+    "name": "SPARWOOD CS  BC",
+    "lat": 49.75,
+    "lon": -114.883,
+    "elevationM": 1138,
+    "distanceKm": 30.2,
+    "elevationDeltaM": 128,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.05,
+    1.03,
+    1.01,
+    0.98,
+    1.05,
+    1.06,
+    1.06,
+    1.04,
+    1.06,
+    1.03,
+    1.02,
+    1.05
+   ]
+  },
+  "sunshine-coast-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "716380-99999",
+    "name": "SECHELT",
+    "lat": 49.45,
+    "lon": -123.7,
+    "elevationM": 86,
+    "distanceKm": 4.8,
+    "elevationDeltaM": 46,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.99,
+    0.94,
+    0.92,
+    0.87,
+    0.87,
+    0.89,
+    1,
+    1.04,
+    1.01,
+    1,
+    0.96,
+    0.98
+   ]
+  },
+  "salt-spring-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "719270-99999",
+    "name": "NORTH COWICHAN",
+    "lat": 48.817,
+    "lon": -123.717,
+    "elevationM": 60,
+    "distanceKm": 16.2,
+    "elevationDeltaM": 20,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.99,
+    0.95,
+    0.94,
+    0.88,
+    0.87,
+    0.94,
+    1.1,
+    1.17,
+    1.07,
+    0.99,
+    0.96,
+    0.99
+   ]
+  },
+  "summerland-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "717680-99999",
+    "name": "SUMMERLAND CS  BC",
+    "lat": 49.567,
+    "lon": -119.65,
+    "elevationM": 454.2,
+    "distanceKm": 4,
+    "elevationDeltaM": 1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.98,
+    0.94,
+    0.91,
+    1.03,
+    1.22,
+    1.07,
+    0.95,
+    0.94,
+    1.06,
+    0.99,
+    0.94,
+    0.96
+   ]
+  },
+  "grand-manan-nb": {
+   "station": {
+    "network": "ISD",
+    "stationId": "710300-99999",
+    "name": "GRAND MANAN SAR CS",
+    "lat": 44.7,
+    "lon": -66.8,
+    "elevationM": 78,
+    "distanceKm": 2.9,
+    "elevationDeltaM": 48,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.2,
+    1.15,
+    1.01,
+    1,
+    1.04,
+    1.06,
+    1.09,
+    1.11,
+    1.1,
+    1.1,
+    1.1,
+    1.17
+   ]
+  },
+  "creston-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "717700-99999",
+    "name": "CRESTON CAMPBELL SCIENTIFIC  BC",
+    "lat": 49.083,
+    "lon": -116.5,
+    "elevationM": 646,
+    "distanceKm": 1.8,
+    "elevationDeltaM": 46,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.08,
+    1.05,
+    1.02,
+    1,
+    1.09,
+    1.2,
+    1.22,
+    1.2,
+    1.26,
+    1.16,
+    1.05,
+    1.05
+   ]
+  },
+  "penticton-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "718890-99999",
+    "name": "PENTICTON",
+    "lat": 49.463,
+    "lon": -119.602,
+    "elevationM": 344.1,
+    "distanceKm": 3.6,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.99,
+    0.96,
+    0.96,
+    1.12,
+    1.33,
+    1.17,
+    1.07,
+    1.09,
+    1.2,
+    1.07,
+    0.96,
+    0.97
+   ]
+  },
+  "kamloops-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "718870-99999",
+    "name": "KAMLOOPS",
+    "lat": 50.702,
+    "lon": -120.444,
+    "elevationM": 345.3,
+    "distanceKm": 8.8,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.97,
+    0.95,
+    0.92,
+    1.16,
+    1.43,
+    1.24,
+    1.09,
+    1,
+    1.05,
+    1,
+    0.96,
+    0.97
+   ]
+  },
+  "nelson-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "717760-99999",
+    "name": "NELSON  BC",
+    "lat": 49.483,
+    "lon": -117.3,
+    "elevationM": 534.9,
+    "distanceKm": 1.2,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.04,
+    1.03,
+    1,
+    0.95,
+    0.99,
+    1.03,
+    1,
+    0.98,
+    1.05,
+    1.06,
+    1.03,
+    1.03
+   ]
+  },
+  "revelstoke-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "718820-99999",
+    "name": "REVELSTOKE A",
+    "lat": 50.967,
+    "lon": -118.183,
+    "elevationM": 445,
+    "distanceKm": 3.7,
+    "elevationDeltaM": -8,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.11,
+    1.14,
+    1.08,
+    1.01,
+    1.1,
+    1.12,
+    1.14,
+    1.17,
+    1.19,
+    1.13,
+    1.09,
+    1.09
+   ]
+  },
+  "tofino-ucluelet-corridor": {
+   "station": {
+    "network": "ISD",
+    "stationId": "711060-94234",
+    "name": "TOFINO AIRPORT",
+    "lat": 49.083,
+    "lon": -125.767,
+    "elevationM": 24,
+    "distanceKm": 22.4,
+    "elevationDeltaM": 18,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.92,
+    0.88,
+    0.94,
+    0.97,
+    0.99,
+    1.05,
+    1.12,
+    1.14,
+    1.08,
+    1.04,
+    1,
+    0.94
+   ]
+  },
+  "qualicum-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "717660-99999",
+    "name": "QUALICUM BEACH AIRPORT",
+    "lat": 49.333,
+    "lon": -124.4,
+    "elevationM": 58,
+    "distanceKm": 3.5,
+    "elevationDeltaM": 38,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.03,
+    1.01,
+    0.99,
+    0.95,
+    0.96,
+    1.01,
+    1.23,
+    1.33,
+    1.19,
+    1.07,
+    1.02,
+    1.02
+   ]
+  },
+  "prince-rupert-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "710220-99999",
+    "name": "PRINCE RUPERT",
+    "lat": 54.283,
+    "lon": -130.433,
+    "elevationM": 35,
+    "distanceKm": 8.1,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1,
+    0.96,
+    0.94,
+    0.94,
+    0.96,
+    0.97,
+    0.99,
+    1.02,
+    1.01,
+    0.98,
+    0.97,
+    0.97
+   ]
+  },
+  "pincher-creek-ab": {
+   "station": {
+    "network": "ISD",
+    "stationId": "710850-99999",
+    "name": "PINCHER CREEK",
+    "lat": 49.517,
+    "lon": -114,
+    "elevationM": 1190,
+    "distanceKm": 5.1,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.91,
+    0.97,
+    1.13,
+    1.2,
+    1.22,
+    1.15,
+    1.15,
+    1.04,
+    0.97,
+    0.93,
+    0.91,
+    0.93
+   ]
+  },
+  "cypress-hills-sk": {
+   "station": {
+    "network": "ISD",
+    "stationId": "711390-99999",
+    "name": "CYPRESS HILLS PARK  SASK",
+    "lat": 49.65,
+    "lon": -109.517,
+    "elevationM": 1271,
+    "distanceKm": 2.4,
+    "elevationDeltaM": -189,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.11,
+    1.13,
+    1.15,
+    1.18,
+    1.1,
+    1.03,
+    0.94,
+    0.85,
+    0.86,
+    0.92,
+    1.04,
+    1.1
+   ]
+  },
+  "leamington-on": {
+   "station": {
+    "network": "ISD",
+    "stationId": "713030-99999",
+    "name": "POINT PELEE CS  ONT",
+    "lat": 41.933,
+    "lon": -82.517,
+    "elevationM": 177,
+    "distanceKm": 14.8,
+    "elevationDeltaM": -6,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.04,
+    1.03,
+    0.99,
+    0.98,
+    0.99,
+    0.99,
+    1.02,
+    1.02,
+    1.04,
+    1.02,
+    0.97,
+    1.01
+   ]
+  },
+  "thunder-bay-on": {
+   "station": {
+    "network": "ISD",
+    "stationId": "710720-99999",
+    "name": "THUNDER BAY",
+    "lat": 48.367,
+    "lon": -89.317,
+    "elevationM": 199,
+    "distanceKm": 5.3,
+    "elevationDeltaM": 16,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.13,
+    1.17,
+    1.08,
+    1.08,
+    1.16,
+    1.16,
+    1.13,
+    1.09,
+    1.11,
+    1.04,
+    1.03,
+    1.09
+   ]
+  },
+  "gaspe-qc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "711880-99999",
+    "name": "GASPE / MICHEL POULIOT",
+    "lat": 48.775,
+    "lon": -64.479,
+    "elevationM": 32.9,
+    "distanceKm": 6.3,
+    "elevationDeltaM": 23,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.09,
+    1.08,
+    0.99,
+    0.96,
+    1.01,
+    1.06,
+    1.09,
+    1.08,
+    1.08,
+    1.03,
+    0.99,
+    1.04
+   ]
+  },
+  "st-johns-nl": {
+   "station": {
+    "network": "ISD",
+    "stationId": "712500-99999",
+    "name": "ST JOHNS WEST CLIMATE",
+    "lat": 47.517,
+    "lon": -52.783,
+    "elevationM": 110,
+    "distanceKm": 7.2,
+    "elevationDeltaM": 50,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.17,
+    1.1,
+    1.07,
+    1.08,
+    1.11,
+    1.16,
+    1.14,
+    1.07,
+    1.1,
+    1.09,
+    1.09,
+    1.08
+   ]
+  },
+  "whitehorse-yt": {
+   "station": {
+    "network": "ISD",
+    "stationId": "719640-99999",
+    "name": "WHITEHORSE INTL / ERIK NIELSEN INTL",
+    "lat": 60.714,
+    "lon": -135.076,
+    "elevationM": 707,
+    "distanceKm": 1.3,
+    "elevationDeltaM": 1,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.12,
+    1.12,
+    1.05,
+    1.11,
+    1.45,
+    1.48,
+    1.26,
+    1.03,
+    0.98,
+    1.02,
+    1.13,
+    1.18
+   ]
+  },
+  "yellowknife-nt": {
+   "station": {
+    "network": "ISD",
+    "stationId": "719360-99999",
+    "name": "YELLOWKNIFE",
+    "lat": 62.463,
+    "lon": -114.44,
+    "elevationM": 205.7,
+    "distanceKm": 3.6,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.13,
+    1.18,
+    1.24,
+    1.71,
+    2.07,
+    2.02,
+    1.63,
+    1.26,
+    1.09,
+    1.04,
+    1.15,
+    1.13
+   ]
+  },
+  "churchill-mb": {
+   "station": {
+    "network": "ISD",
+    "stationId": "716180-99999",
+    "name": "CHURCHILL",
+    "lat": 58.739,
+    "lon": -94.066,
+    "elevationM": 29.3,
+    "distanceKm": 6.6,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.23,
+    1.22,
+    1.49,
+    2.2,
+    2.44,
+    1.95,
+    1.36,
+    1.09,
+    1.04,
+    1.04,
+    1.24,
+    1.25
+   ]
+  },
+  "prince-edward-co-on": {
+   "station": {
+    "network": "ISD",
+    "stationId": "714300-99999",
+    "name": "POINT PETRE (AUT)  ONT",
+    "lat": 43.833,
+    "lon": -77.15,
+    "elevationM": 79,
+    "distanceKm": 14.4,
+    "elevationDeltaM": -16,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.16,
+    1.15,
+    1.01,
+    0.96,
+    0.97,
+    1.01,
+    1.1,
+    1.12,
+    1.14,
+    1.11,
+    1.11,
+    1.13
+   ]
+  },
+  "iqaluit-nu": {
+   "station": {
+    "network": "ISD",
+    "stationId": "713210-99999",
+    "name": "IQALUIT CLIMATE  NU",
+    "lat": 63.75,
+    "lon": -68.55,
+    "elevationM": 34,
+    "distanceKm": 1.7,
+    "elevationDeltaM": -2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.09,
+    1.04,
+    1.15,
+    1.69,
+    1.98,
+    2.02,
+    1.44,
+    1.09,
+    0.96,
+    0.97,
+    0.99,
+    1.06
+   ]
+  },
+  "inuvik-nt": {
+   "station": {
+    "network": "ISD",
+    "stationId": "719570-99999",
+    "name": "INUVIK MIKE ZUBKO",
+    "lat": 68.304,
+    "lon": -133.483,
+    "elevationM": 68.3,
+    "distanceKm": 11.7,
+    "elevationDeltaM": 0,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.15,
+    1.17,
+    1.19,
+    1.71,
+    2.43,
+    2.44,
+    1.89,
+    1.27,
+    1.05,
+    1.06,
+    1.12,
+    1.11
+   ]
+  },
+  "haida-gwaii-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "711010-99999",
+    "name": "SANDSPIT AWOS  BC",
+    "lat": 53.25,
+    "lon": -131.8,
+    "elevationM": 6,
+    "distanceKm": 18.7,
+    "elevationDeltaM": -9,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1,
+    0.95,
+    0.97,
+    0.96,
+    0.96,
+    0.97,
+    1,
+    0.99,
+    0.99,
+    0.98,
+    0.99,
+    0.98
+   ]
+  },
+  "medicine-hat-ab": {
+   "station": {
+    "network": "ISD",
+    "stationId": "710260-99999",
+    "name": "MEDICINE HAT RCS",
+    "lat": 50.033,
+    "lon": -110.717,
+    "elevationM": 715,
+    "distanceKm": 2.9,
+    "elevationDeltaM": -2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.12,
+    1.39,
+    1.88,
+    1.96,
+    1.68,
+    1.4,
+    1.22,
+    1.06,
+    1.06,
+    1.05,
+    1.07,
+    1.12
+   ]
+  },
+  "twillingate-nl": {
+   "station": {
+    "network": "ISD",
+    "stationId": "714020-99999",
+    "name": "TWILLINGATE (AUT)  NFLD",
+    "lat": 49.683,
+    "lon": -54.8,
+    "elevationM": 92,
+    "distanceKm": 3,
+    "elevationDeltaM": 80,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.17,
+    1.15,
+    1.08,
+    1.03,
+    1.06,
+    1.08,
+    1.04,
+    1.04,
+    1.05,
+    1.05,
+    1.06,
+    1.08
+   ]
+  },
+  "kelowna-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "716440-99999",
+    "name": "KELOWNA UBCO",
+    "lat": 49.933,
+    "lon": -119.4,
+    "elevationM": 456,
+    "distanceKm": 8.5,
+    "elevationDeltaM": 112,
+    "usableYears": 11
+   },
+   "vpRatio": [
+    0.98,
+    0.96,
+    0.95,
+    1.13,
+    1.35,
+    1.22,
+    1.1,
+    1.12,
+    1.18,
+    1.09,
+    0.96,
+    0.96
+   ]
+  },
+  "squamish-bc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "712070-99999",
+    "name": "SQUAMISH   BC",
+    "lat": 49.783,
+    "lon": -123.167,
+    "elevationM": 52,
+    "distanceKm": 9.1,
+    "elevationDeltaM": 47,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    0.99,
+    0.97,
+    0.98,
+    0.94,
+    0.93,
+    0.94,
+    1.01,
+    1.03,
+    1.04,
+    1.05,
+    1.01,
+    0.99
+   ]
+  },
+  "banff-ab": {
+   "station": {
+    "network": "ISD",
+    "stationId": "711220-99999",
+    "name": "BANFF CS",
+    "lat": 51.2,
+    "lon": -115.55,
+    "elevationM": 1397,
+    "distanceKm": 2.8,
+    "elevationDeltaM": 14,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1,
+    1.02,
+    1.09,
+    1.16,
+    1.25,
+    1.13,
+    1.04,
+    1.04,
+    1.02,
+    1,
+    1.05,
+    1.05
+   ]
+  },
+  "halifax-ns": {
+   "station": {
+    "network": "ISD",
+    "stationId": "713280-99999",
+    "name": "HALIFAX DOCKYARD",
+    "lat": 44.65,
+    "lon": -63.58,
+    "elevationM": 4,
+    "distanceKm": 0.4,
+    "elevationDeltaM": -26,
+    "usableYears": 13
+   },
+   "vpRatio": [
+    1.22,
+    1.17,
+    1.04,
+    1,
+    1,
+    1.03,
+    1.06,
+    1.05,
+    1.07,
+    1.1,
+    1.1,
+    1.15
+   ]
+  },
+  "charlottetown-pei": {
+   "station": {
+    "network": "ISD",
+    "stationId": "717060-99999",
+    "name": "CHARLOTTETOWN",
+    "lat": 46.283,
+    "lon": -63.133,
+    "elevationM": 48.8,
+    "distanceKm": 5,
+    "elevationDeltaM": 29,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.15,
+    1.14,
+    1.03,
+    1.02,
+    1.07,
+    1.07,
+    1.06,
+    1.07,
+    1.09,
+    1.08,
+    1.06,
+    1.08
+   ]
+  },
+  "baie-saint-paul-qc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "717130-99999",
+    "name": "LA POCATIERE  QUE",
+    "lat": 47.35,
+    "lon": -70.017,
+    "elevationM": 31,
+    "distanceKm": 38.1,
+    "elevationDeltaM": 16,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.16,
+    1.18,
+    1.05,
+    0.99,
+    1.05,
+    1.06,
+    1.07,
+    1.09,
+    1.1,
+    1.05,
+    1.01,
+    1.09
+   ]
+  },
+  "dawson-city-yt": {
+   "station": {
+    "network": "ISD",
+    "stationId": "719664-99999",
+    "name": "DAWSON",
+    "lat": 64.05,
+    "lon": -139.13,
+    "elevationM": 370,
+    "distanceKm": 14.7,
+    "elevationDeltaM": 50,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.16,
+    1.18,
+    1.43,
+    1.98,
+    2.14,
+    1.75,
+    1.25,
+    1.13,
+    1.1,
+    1.13,
+    1.16,
+    1.17
+   ]
+  },
+  "morden-mb": {
+   "station": {
+    "network": "ISD",
+    "stationId": "715640-99999",
+    "name": "MORDEN CDA CS  MAN",
+    "lat": 49.183,
+    "lon": -98.083,
+    "elevationM": 298,
+    "distanceKm": 1.7,
+    "elevationDeltaM": -2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.27,
+    1.33,
+    1.5,
+    1.67,
+    1.33,
+    1.11,
+    1.08,
+    1.07,
+    1.01,
+    1.01,
+    1.11,
+    1.2
+   ]
+  },
+  "sutton-qc": {
+   "station": {
+    "network": "ISD",
+    "stationId": "713730-99999",
+    "name": "FRELIGHSBURG  QUE",
+    "lat": 45.05,
+    "lon": -72.85,
+    "elevationM": 152,
+    "distanceKm": 19.5,
+    "elevationDeltaM": -58,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.18,
+    1.17,
+    1.02,
+    0.94,
+    0.98,
+    1.02,
+    1.05,
+    1.07,
+    1.13,
+    1.08,
+    1.04,
+    1.14
+   ]
+  },
+  "oaxaca-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "767750-99999",
+    "name": "OAXACA  OAX.",
+    "lat": 17.05,
+    "lon": -96.717,
+    "elevationM": 1518,
+    "distanceKm": 2.8,
+    "elevationDeltaM": -37,
+    "usableYears": 11
+   },
+   "vpRatio": [
+    2.22,
+    3.02,
+    2.89,
+    2.74,
+    2.41,
+    1.23,
+    1.08,
+    1.07,
+    1.1,
+    1.09,
+    1.13,
+    1.29
+   ]
+  },
+  "san-cristobal-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "768450-99999",
+    "name": "SN. CRISTOBAL LAS CASAS  CHIS.",
+    "lat": 16.75,
+    "lon": -92.633,
+    "elevationM": 2116,
+    "distanceKm": 1.5,
+    "elevationDeltaM": -84,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.56,
+    2.47,
+    2.94,
+    2.98,
+    2.54,
+    1.32,
+    1.2,
+    1.18,
+    1.19,
+    1.2,
+    1.25,
+    1.31
+   ]
+  },
+  "cuernavaca-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "767260-99999",
+    "name": "GENERAL MARIANO MATAMOROS / CUERNAVACA INTL",
+    "lat": 18.835,
+    "lon": -99.262,
+    "elevationM": 1303.6,
+    "distanceKm": 9.7,
+    "elevationDeltaM": -206,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.69,
+    1.92,
+    1.85,
+    1.72,
+    1.68,
+    1.11,
+    0.89,
+    0.91,
+    0.94,
+    0.94,
+    0.9,
+    1
+   ]
+  },
+  "coatepec-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766870-99999",
+    "name": "JALAPA  VER.",
+    "lat": 19.55,
+    "lon": -96.917,
+    "elevationM": 1389,
+    "distanceKm": 11.7,
+    "elevationDeltaM": 139,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.7,
+    2.48,
+    2.58,
+    2.21,
+    2.05,
+    1.28,
+    1.13,
+    1.14,
+    1.16,
+    1.17,
+    1.22,
+    1.26
+   ]
+  },
+  "morelia-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766650-99999",
+    "name": "MORELIA  MICH.",
+    "lat": 19.7,
+    "lon": -101.183,
+    "elevationM": 1913,
+    "distanceKm": 1.4,
+    "elevationDeltaM": -7,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    2.5,
+    2.71,
+    2.54,
+    2.22,
+    2.22,
+    1.56,
+    1.11,
+    1.06,
+    1.07,
+    1.1,
+    1.22,
+    1.76
+   ]
+  },
+  "guanajuato-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "765770-99999",
+    "name": "GUANAJUATO  GTO.",
+    "lat": 21,
+    "lon": -101.283,
+    "elevationM": 1999,
+    "distanceKm": 3.4,
+    "elevationDeltaM": -1,
+    "usableYears": 12
+   },
+   "vpRatio": [
+    2.8,
+    3.02,
+    3.03,
+    2.79,
+    2.74,
+    2.09,
+    1.41,
+    1.29,
+    1.28,
+    1.35,
+    1.41,
+    1.97
+   ]
+  },
+  "zacatecas-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "765250-99999",
+    "name": "ZACATECAS  ZAC. (LA BUFA  ZAC.)",
+    "lat": 22.783,
+    "lon": -102.567,
+    "elevationM": 2612,
+    "distanceKm": 2.1,
+    "elevationDeltaM": 172,
+    "usableYears": 12
+   },
+   "vpRatio": [
+    1.47,
+    1.47,
+    1.33,
+    1.12,
+    1.27,
+    1.55,
+    1.29,
+    1.02,
+    1,
+    0.96,
+    0.95,
+    1.18
+   ]
+  },
+  "saltillo-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "763900-99999",
+    "name": "PLAN DE GUADALUPE INTL / SALTILLO INTL",
+    "lat": 25.549,
+    "lon": -100.929,
+    "elevationM": 1456.3,
+    "distanceKm": 15.4,
+    "elevationDeltaM": -144,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.48,
+    1.69,
+    1.66,
+    1.55,
+    1.41,
+    1.24,
+    1.13,
+    1.07,
+    1.01,
+    0.95,
+    0.95,
+    1.05
+   ]
+  },
+  "la-paz-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "764050-99999",
+    "name": "LA PAZ  BCS",
+    "lat": 24.167,
+    "lon": -110.3,
+    "elevationM": 18,
+    "distanceKm": 3,
+    "elevationDeltaM": 8,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    2.25,
+    2.35,
+    2.41,
+    2.31,
+    2.18,
+    2.13,
+    2.12,
+    2.19,
+    1.67,
+    1.37,
+    1.36,
+    1.72
+   ]
+  },
+  "merida-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766440-99999",
+    "name": "LICENCIADO MANUEL CRESCENCIO REJON INT / MERIDA INTL",
+    "lat": 20.937,
+    "lon": -89.658,
+    "elevationM": 11.6,
+    "distanceKm": 7.6,
+    "elevationDeltaM": 3,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.23,
+    1.57,
+    2.05,
+    2.17,
+    2.28,
+    1.3,
+    1.08,
+    1.07,
+    1.08,
+    1.07,
+    1.1,
+    1.13
+   ]
+  },
+  "bacalar-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "767500-99999",
+    "name": "CHETUMAL INTL",
+    "lat": 18.505,
+    "lon": -88.327,
+    "elevationM": 11.9,
+    "distanceKm": 20.7,
+    "elevationDeltaM": 2,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.27,
+    1.66,
+    2.05,
+    2.13,
+    2.12,
+    1.31,
+    1.1,
+    1.09,
+    1.12,
+    1.12,
+    1.13,
+    1.15
+   ]
+  },
+  "xalapa-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766870-99999",
+    "name": "JALAPA  VER.",
+    "lat": 19.55,
+    "lon": -96.917,
+    "elevationM": 1389,
+    "distanceKm": 1,
+    "elevationDeltaM": -38,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.67,
+    2.39,
+    2.5,
+    2.19,
+    2.01,
+    1.26,
+    1.12,
+    1.13,
+    1.14,
+    1.16,
+    1.2,
+    1.25
+   ]
+  },
+  "toluca-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766750-99999",
+    "name": "TOLUCA  MEX.",
+    "lat": 19.283,
+    "lon": -99.683,
+    "elevationM": 2720,
+    "distanceKm": 3.3,
+    "elevationDeltaM": 57,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.95,
+    2.2,
+    1.98,
+    1.77,
+    1.81,
+    1.2,
+    1.01,
+    1,
+    1,
+    0.99,
+    0.99,
+    1.21
+   ]
+  },
+  "monterrey-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "763930-99999",
+    "name": "MONTERREY  N.L.",
+    "lat": 25.733,
+    "lon": -100.3,
+    "elevationM": 515,
+    "distanceKm": 5.4,
+    "elevationDeltaM": -25,
+    "usableYears": 13
+   },
+   "vpRatio": [
+    1.87,
+    2.47,
+    2.43,
+    2.13,
+    2.07,
+    1.69,
+    1.29,
+    1.21,
+    1.16,
+    1.2,
+    1.16,
+    1.28
+   ]
+  },
+  "hermosillo-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "761600-99999",
+    "name": "GENERAL IGNACIO P GARCIA INTL / HERMOSILLO INTL",
+    "lat": 29.096,
+    "lon": -111.048,
+    "elevationM": 191.1,
+    "distanceKm": 9.3,
+    "elevationDeltaM": -9,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.39,
+    1.4,
+    1.42,
+    1.41,
+    1.45,
+    1.65,
+    1.61,
+    1.22,
+    0.98,
+    0.86,
+    0.91,
+    1.23
+   ]
+  },
+  "mazatlan-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "764580-99999",
+    "name": "COLONIA JUAN CARRASCO MAZATLAN  SIN.",
+    "lat": 23.2,
+    "lon": -106.417,
+    "elevationM": 4,
+    "distanceKm": 5.5,
+    "elevationDeltaM": -1,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    2.44,
+    3.04,
+    2.95,
+    2.88,
+    2.63,
+    2.08,
+    1.41,
+    1.11,
+    1.04,
+    1.11,
+    1.18,
+    1.53
+   ]
+  },
+  "campeche-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766950-99999",
+    "name": "INGENIERO ALBERTO ACUNA ONGAY INTL / CAMPECHE INTL",
+    "lat": 19.817,
+    "lon": -90.5,
+    "elevationM": 10.4,
+    "distanceKm": 3.9,
+    "elevationDeltaM": 5,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.29,
+    1.83,
+    2.46,
+    2.6,
+    2.52,
+    1.32,
+    1.09,
+    1.1,
+    1.12,
+    1.11,
+    1.13,
+    1.16
+   ]
+  },
+  "puebla-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766850-99999",
+    "name": "HERMANOS SERDAN INTL / PUEBLA INTL",
+    "lat": 19.158,
+    "lon": -98.371,
+    "elevationM": 2243.6,
+    "distanceKm": 21.6,
+    "elevationDeltaM": 94,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    2.04,
+    2.34,
+    2.21,
+    1.97,
+    1.85,
+    1.18,
+    0.97,
+    0.99,
+    1.01,
+    0.98,
+    0.98,
+    1.1
+   ]
+  },
+  "ajijic-lake-chapala-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766133-99999",
+    "name": "DON MIGUEL HIDALGO Y COSTILLA INTL / GUADALAJARA INTL",
+    "lat": 20.522,
+    "lon": -103.311,
+    "elevationM": 1528.9,
+    "distanceKm": 25.4,
+    "elevationDeltaM": -1,
+    "usableYears": 11
+   },
+   "vpRatio": [
+    1.23,
+    1.5,
+    1.36,
+    1.22,
+    1.35,
+    1.5,
+    1.02,
+    0.94,
+    0.93,
+    0.89,
+    0.86,
+    0.92
+   ]
+  },
+  "queretaro-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "766250-99999",
+    "name": "QUERETARO INTERCONTINENTAL",
+    "lat": 20.617,
+    "lon": -100.186,
+    "elevationM": 1919,
+    "distanceKm": 21.5,
+    "elevationDeltaM": 99,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    2.51,
+    2.4,
+    2.19,
+    1.87,
+    1.83,
+    1.51,
+    1.17,
+    1.1,
+    1.07,
+    1.09,
+    1.19,
+    1.76
+   ]
+  },
+  "durango-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "764230-99999",
+    "name": "DURANGO  DGO.",
+    "lat": 24.05,
+    "lon": -104.6,
+    "elevationM": 1872,
+    "distanceKm": 5.9,
+    "elevationDeltaM": -8,
+    "usableYears": 15
+   },
+   "vpRatio": [
+    1.75,
+    1.72,
+    1.5,
+    1.4,
+    1.52,
+    1.72,
+    1.36,
+    1.05,
+    1.02,
+    0.93,
+    0.96,
+    1.25
+   ]
+  },
+  "orizaba-mx": {
+   "station": {
+    "network": "ISD",
+    "stationId": "767370-99999",
+    "name": "ORIZABA  VER.",
+    "lat": 18.85,
+    "lon": -97.1,
+    "elevationM": 1259,
+    "distanceKm": 0.4,
+    "elevationDeltaM": 29,
+    "usableYears": 14
+   },
+   "vpRatio": [
+    1.81,
+    2.52,
+    2.56,
+    2.04,
+    1.83,
+    1.21,
+    1.07,
+    1.09,
+    1.12,
+    1.15,
+    1.18,
+    1.23
+   ]
+  }
+ }
+}

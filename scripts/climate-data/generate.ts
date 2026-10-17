@@ -22,6 +22,12 @@ import { aggregateDaymetPeriod, recentShiftReceipt } from "./lib/aggregate";
 import { parseDaymetCsv, type DaymetDailyRow } from "./lib/daymet-parse";
 import { sha256Hex, stableJsonHash, stableStringify } from "./lib/hash";
 import {
+  applyHumidityCorrection,
+  humidityCorrectionNote,
+  validateHumidityCorrection,
+  type HumidityCorrectionFile,
+} from "./lib/humidity-correction";
+import {
   applyStationCorrection,
   stationValidation,
   validateStationCorrection,
@@ -36,6 +42,7 @@ const ANCHORS_PATH = join(ROOT, "data/climate-v2/anchors.json");
 const STATIONS_PATH = join(ROOT, "data/climate-v2/stations/station-map.json");
 const EXCEPTIONS_PATH = join(ROOT, "data/climate-v2/stations/reviewed-exceptions.json");
 const STATION_BIAS_PATH = join(ROOT, "data/climate-v2/stations/station-bias.json");
+const HUMIDITY_BIAS_PATH = join(ROOT, "data/climate-v2/stations/humidity-bias.json");
 const AUDIT_DIR = join(ROOT, "data/climate-v2/audit");
 
 interface AnchorEntry {
@@ -150,6 +157,13 @@ async function main(): Promise<void> {
     if (!anchors.some(a => a.id === placeId)) throw new Error(`station-bias.json: unknown place ${placeId}`);
     validateStationCorrection(placeId, correction);
   }
+  const humidityCorrections: HumidityCorrectionFile["corrections"] = existsSync(HUMIDITY_BIAS_PATH)
+    ? (JSON.parse(readFileSync(HUMIDITY_BIAS_PATH, "utf8")) as HumidityCorrectionFile).corrections
+    : {};
+  for (const [placeId, correction] of Object.entries(humidityCorrections)) {
+    if (!anchors.some(a => a.id === placeId)) throw new Error(`humidity-bias.json: unknown place ${placeId}`);
+    validateHumidityCorrection(placeId, correction);
+  }
 
   mkdirSync(OUT_DIR, { recursive: true });
   mkdirSync(AUDIT_DIR, { recursive: true });
@@ -163,7 +177,9 @@ async function main(): Promise<void> {
     const { rows: gridRows, hashes, softwareVersion, gridElevationM } = loadYears(anchor.id, 1991, through);
     cacheHashes[anchor.id] = hashes;
     const correction = corrections[anchor.id];
-    const rows = correction ? applyStationCorrection(gridRows, correction) : gridRows;
+    const humidityCorrection = humidityCorrections[anchor.id];
+    const stationRows = correction ? applyStationCorrection(gridRows, correction) : gridRows;
+    const rows = humidityCorrection ? applyHumidityCorrection(stationRows, humidityCorrection) : stationRows;
 
     const rolling = aggregateDaymetPeriod(rows, {
       period: "rolling-1996-2025",
@@ -215,9 +231,12 @@ async function main(): Promise<void> {
         ["humidity"],
         sourceId,
         "rolling-1996-2025",
-        "Estimated from Daymet vapor pressure + daily mean temperature (Magnus)",
+        humidityCorrection
+          ? `Estimated from Daymet vapor pressure + daily mean temperature (Magnus), ${humidityCorrectionNote(humidityCorrection)}`
+          : "Estimated from Daymet vapor pressure + daily mean temperature (Magnus)",
         "%",
         ["estimated-from-vapor-pressure"],
+        humidityCorrection ? "station-override" : "none",
       ),
       ...metricProvenance(
         ["solarEnergyMjM2Day"],
