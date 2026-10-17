@@ -3,7 +3,7 @@
 # Climate V2 assets with the reviewed corrections in
 # data/climate-v2/stations/station-bias.json.
 #
-# Network-bound and manual. The log carries the diagnostics (BIAS lines) and,
+# Network-bound: runs by hand, or (diagnose only) when the checker changes. The log carries the diagnostics (BIAS lines) and,
 # in apply mode, the regenerated assets as a base64 tar.gz ("TGZ" lines) so
 # they can be reviewed and committed from an environment without NOAA access.
 name: Climate station check
@@ -21,6 +21,11 @@ on:
         description: "Comma-separated place ids to diagnose (blank = all)"
         required: false
         default: ""
+  push:
+    branches-ignore: [main]
+    paths:
+      - scripts/climate-data/station-bias.ts
+      - .github/workflows/climate-station-check.yml
 
 permissions:
   contents: read
@@ -57,7 +62,7 @@ jobs:
       - name: Fetch Daymet (resume-safe)
         run: npm run climate:data:fetch -- --through=2025 --concurrency=4
       - name: Compare with stations
-        if: inputs.mode == 'diagnose'
+        if: inputs.mode != 'apply'
         run: |
           npx tsx scripts/climate-data/station-bias.ts --ids "$IDS"
           gzip -9 -c data/climate-v2/stations/station-bias-diagnostics.json | base64 -w 0 | fold -w 6000 | sed 's/^/DIAG /'
