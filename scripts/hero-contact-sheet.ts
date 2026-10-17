@@ -6,7 +6,7 @@
  *   npx tsx scripts/hero-contact-sheet.ts --out hero-thumbs [--shard 1/4]
  *     Current photo for every place: <out>/<NNN>-<place-id>.jpg, atlas order.
  *
- *   npx tsx scripts/hero-contact-sheet.ts --out cand --candidates id1,id2 [--shard 1/4]
+ *   npx tsx scripts/hero-contact-sheet.ts --out cand --candidates id1,id2 [--search "id1=q1|q2;id2=q3"] [--shard 1/4]
  *     Up to nine replacement candidates per listed place, for a human to pick
  *     from: <out>/<place-id>--<N>.jpg plus one CAND line per photo (Commons
  *     title, size, assessment, source, article use). Candidates are landscape
@@ -15,7 +15,8 @@
  *     and assessed pictures naming the town and its state/province. Maps,
  *     signs, postcards, interiors, satellite views and the like are filtered
  *     out; Commons Featured / Quality / Valued pictures and photos already used
- *     in the article rank first.
+ *     in the article rank first. --search adds Commons searches per place
+ *     (e.g. a landmark or waterfront the generic sources miss).
  *
  * Exit 1 if any thumbnail fails to download.
  */
@@ -37,6 +38,14 @@ function arg(name: string): string | undefined {
 const outDir = arg("--out") ?? "hero-thumbs";
 const [shardIndex, shardCount] = (arg("--shard") ?? "1/1").split("/").map(Number) as [number, number];
 const candidateIds = (arg("--candidates") ?? "").split(/[\s,]+/).filter(Boolean);
+/** Extra Commons searches per place: "id=query|query;id2=query". */
+const extraSearches = new Map(
+  (arg("--search") ?? "")
+    .split(";")
+    .map(part => part.split("="))
+    .filter(([id, queries]) => id?.trim() && queries?.trim())
+    .map(([id, queries]) => [id!.trim(), queries!.split("|").map(q => q.trim()).filter(Boolean)] as const),
+);
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -170,7 +179,7 @@ async function globalUsage(titles: string[]): Promise<Map<string, number>> {
 }
 
 // Where a candidate came from: metres when geotagged nearby, otherwise a source tag.
-type Source = number | "article" | "category" | "by name";
+type Source = number | "article" | "category" | "by name" | "search";
 
 async function candidates(place: (typeof PLACES)[number], current: string): Promise<Array<{ title: string; info: ImageInfo; where: string }>> {
   const found = new Map<string, Source>();
@@ -197,6 +206,9 @@ async function candidates(place: (typeof PLACES)[number], current: string): Prom
     for (const title of await categoryFiles(category)) add(title, "category");
     for (const title of await searchTitles(`deepcat:"${category}" filew:>1999 filemime:image/jpeg`, 100)) add(title, "category");
   }
+  for (const query of extraSearches.get(place.id) ?? []) {
+    for (const title of await searchTitles(`${query} filew:>1999 filemime:image/jpeg`, 60)) add(title, "search");
+  }
   for (const label of ["Quality images", "Featured pictures on Wikimedia Commons", "Valued images"]) {
     for (const title of await searchTitles(`"${name}" "${place.region}" incategory:"${label}"`, 40)) add(title, "by name");
   }
@@ -215,7 +227,7 @@ async function candidates(place: (typeof PLACES)[number], current: string): Prom
       const source = found.get(title) ?? "by name";
       const score =
         assessmentRank(info) * 10 +
-        (source === "article" ? 8 : 0) +
+        (source === "article" ? 8 : source === "search" ? 6 : 0) +
         Math.min(6, usage.get(title) ?? 0) +
         (GOOD_WORDS.test(text) ? 4 : 0) -
         (MEH_WORDS.test(text) ? 3 : 0) +
