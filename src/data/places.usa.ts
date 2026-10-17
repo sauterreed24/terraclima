@@ -203,13 +203,13 @@ export const PLACES_USA: Place[] = [
     drivers: ["orographic-lift", "elevation-lapse-rate", "monsoon-lift"],
 
     summaryShort: "A premier Madrean sky island where pine-oak forests and tanagers ride thousands of meters above creosote flats.",
-    summaryImmersive: "Portal is the gateway into one of North America's most biologically celebrated microclimates. The Chiricahuas rise abruptly from the Chihuahuan Desert floor — from creosote and mesquite at 1200 m to Douglas-fir and aspen above 2700 m, a vertical stack of biomes compressed into a single afternoon's drive. The canyon village itself sits at the foot of Cave Creek, sheltered by rhyolitic cliffs that channel cool morning air out of the mountains and buffer afternoon sun. Summer monsoon storms build reliably against the range from July onward, often so localized that you watch rain fall on one ridge while the next stays dry. Winters are sunny and cold at night, with snow on the high peaks and almost never in the village. The Chiricahuas are also one of the northernmost homes of the elegant trogon, a marker of just how profoundly elevation rewrites climate this far south.",
+    summaryImmersive: "Portal is the gateway into one of North America's most biologically celebrated microclimates. The Chiricahuas rise abruptly from the Chihuahuan Desert floor — from creosote and mesquite at 1200 m to Douglas-fir and aspen above 2700 m, a vertical stack of biomes compressed into a single afternoon's drive. The canyon village itself sits at the foot of Cave Creek, sheltered by rhyolitic cliffs that channel cool morning air out of the mountains and buffer afternoon sun. Summer monsoon storms build reliably against the range from July onward, often so localized that you watch rain fall on one ridge while the next stays dry. Winters are sunny and cold at night, with snow on the high peaks and only occasional light snow in the village. The Chiricahuas are also one of the northernmost homes of the elegant trogon, a marker of just how profoundly elevation rewrites climate this far south.",
     whyDistinct: "The Chiricahuas' 1700 m rise intercepts both winter Pacific systems and summer monsoon moisture. Lapse-rate cooling drops mean annual temperature at the summits by ~10°C relative to the surrounding basin, and orographic lift doubles annual precipitation. The village of Portal itself benefits from canyon shelter and cold-air drainage from the peaks, producing a microclimate distinct from both the basin floor and the summits.",
 
     experience: {
       feel: "Portal feels like the desert's front porch to a forested mountain world. The Chiricahuas leap more than 1,600 m straight out of the creosote, so a single morning's drive climbs from cactus heat into Douglas-fir and aspen — and the canyon village sits in the cool seam between, fed by mountain air draining down Cave Creek at dawn.",
       seasons: {
-        winter: "Bright, still, and sharply diurnal: afternoons in the low teens under relentless sun, nights dropping below freezing near −2°C. Snow whitens the high peaks and almost never the village floor.",
+        winter: "Bright, still, and sharply diurnal: afternoons in the low teens under relentless sun, nights dropping below freezing near −2°C. Snow whitens the high peaks and only now and then dusts the village floor.",
         spring: "Dry and dazzling — afternoons warm through the 20s toward 28°C, skies stay deep blue, and the legendary spring birding peaks before the heat and the rains arrive.",
         summer: "Hot afternoons near 32°C give way to the monsoon from July onward: towering storms build against the range so locally you can watch rain fall on one ridge while the next stays bone-dry. Nights stay mild and the desert smells of creosote and wet stone.",
         autumn: "The monsoon fades into golden, calm weeks — warm days, cool nights, and the canyon sycamores turning. It is arguably the finest season to be here.",
@@ -318,14 +318,14 @@ export const PLACES_USA: Place[] = [
       { name: "Paradise", role: "ghost-town", population: "~10", note: "Former silver-mining camp up Cave Creek; scattered residents and one of the best-regarded birding lodges in the southwest." },
       { name: "Rodeo, NM", role: "waypoint", population: "~80", note: "San Simon Valley crossroads 15 km east across the state line; gas and a post office." },
       { name: "San Simon, AZ", role: "waypoint", population: "~150", note: "I-10 exit and ranch-supply stop at the valley's north end." },
-      { name: "Animas, NM", role: "ranching", population: "~230", note: "Bootheel ranching community 60 km south; Malpai Borderlands Group headquarters." },
+      { name: "Animas, NM", role: "ranching", population: "~230", note: "Bootheel ranching community about 30 km east across the state line, in Malpai Borderlands ranch country." },
       { name: "Willcox, AZ", role: "town", population: "~3,200", note: "Playa-basin town 90 km northwest; wine country and sandhill-crane staging on the Willcox Playa." },
     ],
     thingsToDo: [
       { label: "Bird Cave Creek Canyon for the elegant trogon", kind: "wildlife", season: "May – early September", note: "One of ~5 reliable US sites for elegant trogon; the Southwestern Research Station hummingbird feeders routinely draw 14+ species." },
       { label: "Hike South Fork Cave Creek to the Silver Peak trail junction", kind: "trail", season: "year-round; best March – November", note: "~6 km round-trip through sycamore-Arizona cypress riparian into sky-island pine-oak." },
       { label: "Drive the Chiricahua National Monument loop (Heart of Rocks)", kind: "vista", season: "year-round; closed briefly in severe winter storms", note: "Balanced rhyolite pinnacles over 20+ km of scenic drive and trail; the Massai Point overlook is iconic." },
-      { label: "Stargaze the Chiricahua Dark-Sky Communities area", kind: "stargazing", season: "year-round", note: "Bortle 1–2 across the San Simon Valley; the Sky Village observatory at Rodeo has public star parties." },
+      { label: "Stargaze the Chiricahua Dark-Sky Communities area", kind: "stargazing", season: "year-round", note: "Bortle 1–2 across the San Simon Valley; Arizona Sky Village, a private community near Portal, is built around backyard observatories." },
       { label: "Taste wine at the Willcox AVA", kind: "food-drink", season: "year-round; harvest September – October", note: "Arizona's largest wine AVA sits on the valley playa 90 km northwest; over 20 producers." },
       { label: "Watch sandhill cranes at Willcox Playa", kind: "wildlife", season: "late October – February", note: "Up to 30,000 cranes wintering on the playa; dawn fly-outs are spectacular." },
       { label: "Visit the Southwestern Research Station", kind: "culture", season: "open to day visitors most seasons", note: "American Museum of Natural History field station in Cave Creek Canyon; public tours and natural-history lectures." },
@@ -384,7 +384,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["sky-island-refuge", "monsoon-edge", "high-desert-escape"],
     drivers: ["orographic-lift", "elevation-lapse-rate", "monsoon-lift"],
     summaryShort: "The most-visited Madrean sky island — Sierra Vista's anchor and the best US base for Mexican-affinity birds and upland monsoon hiking.",
-    summaryImmersive: "The Huachuca Mountains punch out of the San Pedro–Sulphur Springs trough abruptly enough that you can stand in a saguaro desert at 1,200 m in the morning and reach subalpine fir near 2,800 meters by afternoon. The range is famous among birders: Ramsey and Miller canyons funnel Mexican species north into the US every spring, producing one of the continent's richest small-area species lists. Monsoon storms build reliably against the range from late June through September, dropping sudden sheets of rain on the high country while the valley floor can stay dry. Winters are mild and sunny in Sierra Vista itself — its elevation (~1,400 m) buffers summer heat that would be oppressive 60 km north on the flats — but morning lows below freezing are routine December through February. The San Pedro River, one of the last free-flowing desert rivers in the Southwest, threads the eastern foot of the range and anchors a cottonwood-willow gallery forest that shelters more than half the bird species known in the entire US.",
+    summaryImmersive: "The Huachuca Mountains punch out of the San Pedro–Sulphur Springs trough abruptly enough that you can stand in a saguaro desert at 1,200 m in the morning and reach subalpine fir near 2,800 meters by afternoon. The range is famous among birders: Ramsey and Miller canyons funnel Mexican species north into the US every spring, producing one of the continent's richest small-area species lists. Monsoon storms build reliably against the range from late June through September, dropping sudden sheets of rain on the high country while the valley floor can stay dry. Winters are mild and sunny in Sierra Vista itself — its elevation (~1,400 m) buffers summer heat that would be oppressive 60 km north on the flats — but morning lows below freezing are routine December through February. The San Pedro River, one of the last free-flowing desert rivers in the Southwest, threads the eastern foot of the range and anchors a cottonwood-willow gallery forest that shelters some 350–400 bird species, one of the richest bird lists in the US.",
     whyDistinct: "The combination of ~1,500 m of vertical relief, monsoon-season orographic lift, and binational biogeographic continuity with Mexico's Sierra Madre produces a compact archive of climate zones unmatched elsewhere on the US side of the border. The San Pedro riparian corridor adds a rare hydrologic exception to an otherwise arid regional baseline.",
 
     experience: {
@@ -421,7 +421,7 @@ export const PLACES_USA: Place[] = [
       phRange: [7.2, 8.2],
       organicMatterPct: [1, 3],
       waterHolding: "low",
-      notes: "San Pedro floodplain soils are deeper and more productive. The Huachucas host rare limestone-karst pockets on the range's east flank — Kartchner Caverns is the most famous expression.",
+      notes: "San Pedro floodplain soils are deeper and more productive. Limestone outcrops occur in the Huachucas, but the region's famous karst, Kartchner Caverns, lies in the Whetstone Mountains to the north.",
     },
     growability: {
       score: 58,
@@ -1088,7 +1088,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["sky-island-refuge", "monsoon-edge", "high-desert-escape"],
     drivers: ["elevation-lapse-rate", "monsoon-lift", "orographic-lift"],
     summaryShort: "A 'Goldilocks' desert highland: sunny, mild, dry, with reliable monsoon afternoons all summer.",
-    summaryImmersive: "Silver City is one of the most underappreciated sky-country climates in the American West. At 1800 m on the edge of the Gila Wilderness, it enjoys four genuine seasons in compressed form: cool sunny winters with occasional snow, bright dry springs, monsoonal summers with big afternoon thunderstorms, and golden autumns lasting weeks. Summer highs routinely top out in the high 20s, nights cool to the mid-teens, and the air is dry enough that 30°C feels pleasant rather than oppressive. Walk through town on an August afternoon and you can watch a thunderstorm build against the Mogollons ten kilometers east while you stay dry in the sun.",
+    summaryImmersive: "Silver City is one of the most underappreciated sky-country climates in the American West. At 1800 m on the edge of the Gila Wilderness, it enjoys four genuine seasons in compressed form: cool sunny winters with occasional snow, bright dry springs, monsoonal summers with big afternoon thunderstorms, and golden autumns lasting weeks. Summer highs routinely top out in the high 20s, nights cool to the mid-teens, and the air is dry enough that 30°C feels pleasant rather than oppressive. Walk through town on an August afternoon and you can watch a thunderstorm build over the Pinos Altos Range just north of town while you stay dry in the sun.",
     whyDistinct: "Elevation provides ~10°C of cooling relative to the Chihuahuan basin. The Gila–Mogollon uplift intercepts both winter Pacific storms and summer monsoon, producing 440 mm/year — enough for piñon-juniper savanna and, with care, real gardens.",
     experience: {
       feel: "Silver City feels like the desert's most underrated 'just right.' At 1,800 m on the edge of the Gila, elevation files down the heat, the monsoon delivers reliable afternoon storms, and the air stays dry enough that even a 30°C afternoon feels easy.",
@@ -1926,10 +1926,10 @@ export const PLACES_USA: Place[] = [
     archetypes: ["lake-moderated", "cool-summer-maritime"],
     drivers: ["lake-effect", "aspect-slope"],
     summaryShort: "A cool-summer maritime pocket on the Canadian Shield — Lake Superior acts as a giant inland ocean.",
-    summaryImmersive: "Grand Marais sits on the north shore of Lake Superior, whose sheer thermal mass behaves like a small ocean. Summer highs along the immediate shore often stay 10°C below inland Minnesota — July afternoons in the high teens are normal — while winters are milder than the surrounding Boundary Waters plateau. Inland just 20 km, the boreal forest stretches away into genuinely continental climate. Along the shore, fog belts drift, apples ripen late, and the rocky headlands feel closer to Nova Scotia than to Minneapolis.",
+    summaryImmersive: "Grand Marais sits on the north shore of Lake Superior, whose sheer thermal mass behaves like a small ocean. Summer highs along the immediate shore often run several degrees below inland Minnesota — July afternoons near 22°C are normal — while winters are milder than the surrounding Boundary Waters plateau. Inland just 20 km, the boreal forest stretches away into genuinely continental climate. Along the shore, fog belts drift, apples ripen late, and the rocky headlands feel closer to Nova Scotia than to Minneapolis.",
     whyDistinct: "Lake Superior's cold mass dominates everything. Summer shore highs are maritime-cool; winter shore lows are lake-moderated; fog forms offshore on warm days and drifts inland.",
     experience: {
-      feel: "Grand Marais feels like Nova Scotia transplanted onto the Canadian Shield — a cool, fog-softened shore town where Lake Superior acts as an inland ocean, keeping July afternoons in the high teens while inland Minnesota bakes 10°C warmer.",
+      feel: "Grand Marais feels like Nova Scotia transplanted onto the Canadian Shield — a cool, fog-softened shore town where Lake Superior acts as an inland ocean, keeping July afternoons near 22°C while inland Minnesota bakes several degrees warmer.",
       seasons: {
         winter: "Long and luminous under low sun — afternoons near −7°C, nights near −16°C, but the lake keeps shore lows milder than the Boundary Waters plateau 20 km inland. Lake-effect snow and ice-fog mornings are part of the rhythm.",
         spring: "Slow and late — ice lingers on Superior into May, then the shore wakes in a rush of birch green and the first boat traffic on the harbor.",
@@ -1986,7 +1986,7 @@ export const PLACES_USA: Place[] = [
         id: "grand-marais-mn-superior-mass",
         title: "Lake Superior as inland ocean — summer chill and winter moderation",
         paragraphs: [
-          "Superior’s immense volume and depth keep summer afternoon highs along the shore in the high teens while inland Minnesota climbs toward the high twenties. In winter, open-water heat flux and cloud cover raise minimums relative to the Boundary Waters plateau — the classic maritime versus continental split within one county.",
+          "Superior’s immense volume and depth keep summer afternoon highs along the shore near 22°C while inland Minnesota climbs toward the high twenties. In winter, open-water heat flux and cloud cover raise minimums relative to the Boundary Waters plateau — the classic maritime versus continental split within one county.",
         ],
       },
       {
@@ -2123,7 +2123,7 @@ export const PLACES_USA: Place[] = [
         summer: "Dry and warm — highs near 31°C, afternoon convection climbing the range, low humidity, and open-window evenings that cool into the low teens.",
         autumn: "Golden and crisp — cottonwoods along Boulder Creek, the first upslope snow on the peaks, and a crisp return to single-digit afternoons by November.",
       },
-      travelerFit: "Visitors come for Flatirons climbing, Pearl Street culture, and mountain access fifteen minutes from a major airport.",
+      travelerFit: "Visitors come for Flatirons climbing, Pearl Street culture, and mountain access about 45 minutes from a major airport.",
       residentFit: "It rewards outdoor recreationists and tech workers who want dry mountain-city life — if they accept Marshall Fire-era wildfire insurance friction and housing well above Colorado medians.",
       texture: "A classic chinook-zone foothill city — the main things to weigh are wildfire and smoke on the urban-wildland edge, water-right stress, and cost pressure among the highest in the state.",
     },
@@ -2141,7 +2141,7 @@ export const PLACES_USA: Place[] = [
       sources: [
         { label: "City of Boulder — Housing & Human Services", url: "https://bouldercolorado.gov/housing" },
         { label: "Boulder County Public Health — community health", url: "https://www.bouldercounty.org/departments/public-health/" },
-        { label: "UCHealth — Foothills Hospital", url: "https://www.uchealth.org/locations/uchealth-foothills-hospital/" },
+        { label: "Boulder Community Health — Foothills Hospital", url: "https://www.uchealth.org/locations/uchealth-foothills-hospital/" },
       ],
     },
     relocationFit: ["outdoor recreationists", "tech workers"], travelFit: ["mountain access", "climbing"],
@@ -2181,7 +2181,7 @@ export const PLACES_USA: Place[] = [
     liveSignals: {
       costPressure: 28,
       accessFriction: 82,
-      note: "Algoma County's eastern shore is among the most isolated lake-effect snowbelts in the Lower 48; Munising Memorial Hospital is the nearest acute-care anchor and Marquette or Traverse City handles specialty care. Seasonal tourism and a thinning year-round base shape housing and service availability.",
+      note: "Alger County's eastern shore is among the most isolated lake-effect snowbelts in the Lower 48; Munising Memorial Hospital is the nearest acute-care anchor and Marquette or Traverse City handles specialty care. Seasonal tourism and a thinning year-round base shape housing and service availability.",
       sources: [
         { label: "Munising Memorial Hospital — services", url: "https://www.mgh.org/" },
         { label: "Alger County — community profile", url: "https://www.algercounty.com/" },
@@ -2406,10 +2406,10 @@ export const PLACES_USA: Place[] = [
     biome: "Temperate rainforest (Sitka spruce–western hemlock)", koppen: "Cfb",
     archetypes: ["hyper-maritime", "cool-summer-maritime"], drivers: ["orographic-lift", "marine-layer"],
     summaryShort: "The rainforest to Sequim's rain shadow — 3500+ mm of annual rainfall in one of North America's greatest orographic sinks.",
-    summaryImmersive: "Forks and the Hoh Valley sit at the foot of the Olympics on the Pacific-facing side. Storms hit the west slope first, unleashing their moisture as they climb — producing one of the wettest climates in the contiguous US. Moss drips from every surface; temperatures barely vary from 4 to 16°C; sunshine is rare and precious. And yet the same storm system that gives Forks 400 mm in December gives Sequim, 95 km away, less than 30 mm.",
+    summaryImmersive: "Forks and the Hoh Valley sit at the foot of the Olympics on the Pacific-facing side. Storms hit the west slope first, unleashing their moisture as they climb — producing one of the wettest climates in the contiguous US. Moss drips from every surface; temperatures barely vary from about 2 to 22°C; sunshine is rare and precious. And yet the same storm system that gives Forks 400 mm in December gives Sequim, 95 km away, less than 30 mm.",
     whyDistinct: "Direct Pacific exposure plus Olympic orographic lift produces persistent, heavy precipitation year-round — the windward twin of Sequim's rain shadow.",
     experience: {
-      feel: "Forks feels like living inside a green cathedral — the wettest corner of the contiguous US where moss drips from every surface, temperatures barely wander between 4 and 22°C, and a December storm can drop 400 mm while Sequim, 95 km east, sees 30.",
+      feel: "Forks feels like living inside a green cathedral — the wettest corner of the contiguous US where moss drips from every surface, temperatures barely wander between about 2 and 22°C, and a single December can bring 400 mm of rain while Sequim, 95 km east, gets roughly 60.",
       seasons: {
         winter: "Soaking and mild — highs near 8°C, nights near 2°C, and rain that falls as steady sheets rather than bursts; the Hoh stays green when the rest of the peninsula freezes.",
         spring: "Still wet, brightening — lengthening days lift highs into the low teens, the rainforest floor erupts in sword fern and moss, and dry windows are measured in hours not weeks.",
@@ -2531,11 +2531,11 @@ export const PLACES_USA: Place[] = [
     reliefContext: "The 130-km Columbia Gorge slicing the Cascades east–west at sea level.",
     biome: "Steep transition — rainforest to shrub-steppe over 80 km", koppen: "Csb → BSk gradient",
     archetypes: ["gap-wind-corridor", "rain-shadow-sanctuary", "river-valley-moderation"], drivers: ["gap-winds", "rain-shadow", "river-moderation"],
-    summaryShort: "The planet's most abrupt climate transect — 2500 mm of rain to 250 mm in 80 km of gorge.",
+    summaryShort: "One of the continent's most abrupt climate transects — about 2,000 mm of rain to 350 mm in 80 km of gorge.",
     summaryImmersive: "The Columbia Gorge is one of the world's great natural wind tunnels: the only sea-level gap through a major mountain range. West-to-east, it channels marine air inland, and east-to-west, it channels desert dryness outward — with the resulting pressure gradient producing the world-famous windsurfing winds. The climate transects here are staggering: from moss-dripping rainforest at Bonneville to sagebrush steppe 80 km east at The Dalles.",
     whyDistinct: "Sea-level mountain gap combined with cross-Cascade pressure gradients produces persistent, predictable wind and one of the steepest climate gradients in North America.",
     experience: {
-      feel: "The Columbia Gorge feels like a wind tunnel with a climate dial — from moss-dripping rainforest at Bonneville to sagebrush steppe 80 km east, with world-famous gap winds and a transect so steep that 2500 mm of rain becomes 250 mm before you've finished a drive.",
+      feel: "The Columbia Gorge feels like a wind tunnel with a climate dial — from moss-dripping rainforest at Bonneville to sagebrush steppe 80 km east, with world-famous gap winds and a transect so steep that about 2,000 mm of rain becomes 350 mm before you've finished a drive.",
       seasons: {
         winter: "Wet west, dry east — highs near 5°C in the gap mouth, Pacific storms stacking on the rainforest flank while the east corridor sees clearer cold spells and occasional ice.",
         spring: "Wind season builds — highs climbing through the teens, orchard bloom on the Hood River bench, and predictable afternoon pressure-gradient winds that draw kiteboarders from around the world.",
@@ -2783,7 +2783,7 @@ export const PLACES_USA: Place[] = [
     biome: "Sonoran Desert (Colorado subdivision)", koppen: "BWh",
     archetypes: ["desert-oasis", "humidity-refuge"],
     drivers: ["rain-shadow", "continentality"],
-    summaryShort: "California's only International Dark-Sky Community — a deep desert valley with brutal summers and perfect winters.",
+    summaryShort: "California's first International Dark-Sky Community — a deep desert valley with brutal summers and perfect winters.",
     summaryImmersive: "Borrego Springs sits in a bowl ringed by 2000 m peaks that cast a deep rain shadow. Winters are glorious: 22°C afternoons, 8°C nights, clear sky after clear sky. Summers are apocalyptic — 42°C is normal, dew points often below 10 °C, and the only reasonable activity is waiting for dark. The International Dark-Sky Community designation reflects that: no light leaks from here to anywhere.",
     whyDistinct: "Deep basin rain shadow produces extreme aridity; isolation from urban areas preserves exceptional night-sky quality.",
     experience: {
@@ -2794,7 +2794,7 @@ export const PLACES_USA: Place[] = [
         summer: "Survival mode — highs near 42°C, dew points often below 10%, and any outdoor activity confined to dawn and dusk until the stars return.",
         autumn: "Relief arriving — highs easing back through the 30s, the first comfortable evenings in October, and dark-sky season ramping back up.",
       },
-      travelerFit: "Visitors come for wildflower superblooms, night-sky astronomy, and California's only International Dark-Sky Community in a deep desert valley.",
+      travelerFit: "Visitors come for wildflower superblooms, night-sky astronomy, and California's first International Dark-Sky Community in a deep desert valley.",
       residentFit: "It rewards winter-only retirees and astronomers who can escape summer heat — not year-round residents who cannot tolerate brutal July and August.",
       texture: "Remarkable winter climate with increasingly marginal summers — the main things to weigh are groundwater limits, summer heat stress, and long drives to El Centro or San Diego for care.",
     },
@@ -2911,7 +2911,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["high-desert-escape", "badland-steppe", "monsoon-edge"],
     drivers: ["continentality", "monsoon-lift", "elevation-lapse-rate"],
     summaryShort: "High-desert grassland plain at 1470 m — cool nights, explosive monsoon skies, and mysteriously flat distances.",
-    summaryImmersive: "Marfa sits on a high grassland at 1470 m, a full kilometer above the Rio Grande. The altitude tempers what would otherwise be desert heat; summer afternoons peak near 33°C while nights drop to around 17°C. Winter brings occasional snow and freezing fog. The Mystery Lights aside, the climate's signature is the sky itself — the biggest of the West Texas big skies, with monsoon-season thunderstorms that climb 15 km high.",
+    summaryImmersive: "Marfa sits on a high grassland at 1470 m, some 650 m above the Rio Grande at Presidio. The altitude tempers what would otherwise be desert heat; summer afternoons peak near 33°C while nights drop to around 17°C. Winter brings occasional snow and freezing fog. The Mystery Lights aside, the climate's signature is the sky itself — the biggest of the West Texas big skies, with monsoon-season thunderstorms that climb 15 km high.",
     whyDistinct: "High-plain elevation in deep continental latitude produces strong diurnal swings, cool nights, monsoon convection.",
     experience: {
       feel: "Marfa feels like altitude on a grassland stage — 1470 m of Chihuahuan high desert where summer afternoons peak near 33°C but nights drop to around 17°C, monsoon towers climb 15 km, and the Chinati light is the real attraction.",
@@ -2930,7 +2930,7 @@ export const PLACES_USA: Place[] = [
     growability: { score: 46, hardinessZone: "7b", growsWell: ["Native grasses", "Xeric natives"], tricky: ["Most garden crops"] },
     climateChange: { outlook2050: "Warmer, drier.", outlook2100: "Grassland stress.", keyShifts: [{variable: "Heat waves", direction: "up"}, {variable: "Monsoon variability", direction: "up"}], resilienceNote: "Elevation buys time; water is the long-term issue." },
     risks: { wildfire: {level: "moderate", trend: "worsening"}, flood: {level: "moderate", trend: "worsening"}, drought: {level: "elevated", trend: "worsening"}, extremeHeat: {level: "low", trend: "worsening"}, extremeCold: {level: "low", trend: "improving"}, smoke: {level: "moderate", trend: "worsening"}, storm: {level: "moderate", trend: "stable"}, landslide: {level: "very-low", trend: "stable"}, coastal: {level: "very-low", trend: "stable"} },
-    nearbyContrasts: [{ label: "Chihuahuan basin floor", note: "Off the high plateau the surrounding basins run hotter with weaker overnight cooling and a shorter cold season." }, { label: "Davis Mountains crest", note: "The Davis high country just west is cooler and noticeably wetter, catching orographic storms the grassland misses." }],
+    nearbyContrasts: [{ label: "Chihuahuan basin floor", note: "Off the high plateau the surrounding basins run hotter with weaker overnight cooling and a shorter cold season." }, { label: "Davis Mountains crest", note: "The Davis high country just north is cooler and noticeably wetter, catching orographic storms the grassland misses." }],
     scores: { hiddenGem: 64, microclimateUniqueness: 66, comfort: 72, resilience: 58, growability: 46, tradeoff: 40 },
     liveSignals: {
       costPressure: 72,
@@ -3557,7 +3557,7 @@ export const PLACES_USA: Place[] = [
     summaryImmersive: "Canaan Valley is a geological and climatic anomaly: a 980-meter-high plateau basin in West Virginia that behaves meteorologically like northern Maine or eastern Canada. Summer afternoons rarely exceed 23°C; winter lows routinely fall below −25°C; frost is possible every month. The flora reflects this: red spruce, balsam fir, cranberry bogs, and sphagnum moss — Appalachian remnants of Pleistocene climate. The cold pool forms because the valley is surrounded by higher ridges that trap clear-night radiative cooling, and because the peat soils conduct poorly.",
     whyDistinct: "Combination of high plateau elevation, closed basin geometry, boreal peat soils, and exposure to Canadian air masses produces an anomalously cold climate at southern latitude.",
     experience: {
-      feel: "Canaan Valley feels like northern Maine dropped into West Virginia — a 980 m plateau basin where summer afternoons rarely exceed 24°C, winter lows routinely plunge below −25°C, and red spruce, balsam fir, and cranberry bogs survive as Pleistocene relicts at 39° north.",
+      feel: "Canaan Valley feels like northern Maine dropped into West Virginia — a 980 m plateau basin where summer afternoons rarely exceed 24°C, winter nights often fall well below −15°C, and red spruce, balsam fir, and cranberry bogs survive as Pleistocene relicts at 39° north.",
       seasons: {
         winter: "Severe and boreal — afternoons near freezing, nights near −11°C and often far colder as cold pools form on clear nights, with cross-country skiing on some of the East's best Nordic terrain.",
         spring: "Late and cautious — frost possible into May, bogs greening slowly, and the first warm afternoons in June feeling like a gift after a long cold season.",
@@ -3707,8 +3707,8 @@ export const PLACES_USA: Place[] = [
     reliefContext: "Lake Superior's south shore on a rocky peninsula.",
     biome: "Boreal-northern hardwood transition", koppen: "Dfb",
     archetypes: ["lake-moderated", "lake-effect-snowbelt", "cool-summer-maritime"], drivers: ["lake-effect"],
-    summaryShort: "The Upper Peninsula's Lake Superior hub — cool summers in the teens, heavy snow, dramatic maritime feel.",
-    summaryImmersive: "Marquette sits on a granite peninsula on Lake Superior's south shore. The lake moderates summer (July highs around 23°C) and delivers heavy lake-effect snow — typically 5 m annually. Winter is deep and long; summer is brief, beautiful, and deeply maritime-feeling despite being 1000 km from the ocean. The town's character is shaped by its identity as a Great Lakes port at a latitude where most of North America is already truly northern.",
+    summaryShort: "The Upper Peninsula's Lake Superior hub — cool summers in the low 20s, heavy snow, dramatic maritime feel.",
+    summaryImmersive: "Marquette sits on a granite peninsula on Lake Superior's south shore. The lake moderates summer (July highs around 23°C) and delivers heavy lake-effect snow — close to 4 m a year in the city and around 5 m on the higher ground inland. Winter is deep and long; summer is brief, beautiful, and deeply maritime-feeling despite being 1000 km from the ocean. The town's character is shaped by its identity as a Great Lakes port at a latitude where most of North America is already truly northern.",
     whyDistinct: "Lake Superior behaves like a small inland sea at this latitude — strong seasonal lag, moderate summer highs, heavy lake-effect winter precipitation.",
     climate: { tempHighC: [-4.8, -3.6, 1.8, 8.6, 15.9, 20.6, 23.8, 22.4, 17.6, 11.1, 3.6, -2.6], tempLowC: [-13.6, -14.1, -8.8, -2.2, 3.6, 8.4, 12.1, 11.6, 7.6, 2.2, -3.8, -10.6], precipMm: [42, 38, 56, 62, 76, 90, 94, 92, 110, 98, 80, 60], snowCm: [100, 78, 64, 26, 4, 0, 0, 0, 0, 10, 58, 102], humidity: [78, 76, 74, 70, 70, 72, 74, 78, 80, 78, 82, 82], sunshinePct: [34, 42, 48, 52, 56, 58, 62, 58, 48, 40, 26, 28], annualPrecipMm: 898, frostFreeDays: 130, hardinessZone: "4b" },
     soil: { texture: "Sandy loam over glacial till", drainage: "good", phRange: [5.2, 6.4], waterHolding: "moderate" },
@@ -3899,7 +3899,7 @@ export const PLACES_USA: Place[] = [
   {
     id: "key-west-fl", tier: "B", country: "USA", region: "Florida", municipality: "Key West", name: "Key West",
     lat: 24.5551, lon: -81.7800, elevationM: 2,
-    reliefContext: "End of the Florida Keys — tropical latitude fully surrounded by Gulf of Mexico and Caribbean water.",
+    reliefContext: "End of the Florida Keys — tropical latitude fully surrounded by the Gulf of Mexico and the Straits of Florida.",
     biome: "Caribbean hardwood hammock / mangrove", koppen: "Aw (truly tropical)",
     archetypes: ["tropical-isothermal", "tropical-dry", "hurricane-coast"],
     drivers: ["trade-wind", "hurricane-track", "sea-breeze"],
@@ -4067,7 +4067,7 @@ export const PLACES_USA: Place[] = [
     growability: { score: 52, growsWell: ["Cabbages (giant)", "Potatoes", "Carrots", "Hardy berries (raspberry, haskap)", "Cold-hardy greens", "Rhubarb"], tricky: ["Any warm-season crop", "Tree fruit", "Over-wintering perennials outside zone-1"], orchard: "Hardy cherries and zone-1 apples possible with careful siting above the inversion layer.", homeGarden: "Long-daylight summers drive spectacular vegetable size in 90–100 frost-free days. Winter gardening is under plastic with backup heat or not at all." },
     climateChange: { outlook2050: "Warmer winters (+3 to +5°C) likely fastest on Earth for any populated city; permafrost destabilization; longer growing season approaching 120 days.", outlook2100: "Permafrost retreat and boreal forest transition; wildfire smoke season extending into June and September; ice fog events may decrease as winters warm past critical threshold.", keyShifts: [{ variable: "Winter minimum", direction: "up", note: "Extreme cold events becoming rarer." }, { variable: "Wildfire season length", direction: "up" }, { variable: "Permafrost thaw", direction: "up" }, { variable: "Growing season", direction: "up" }], resilienceNote: "Climate change is reshaping this place faster than almost anywhere in North America. Infrastructure built on permafrost is at substantial risk." },
     risks: { wildfire: { level: "elevated", trend: "worsening", note: "Interior AK has the largest wildfire burn in USA." }, flood: { level: "moderate", trend: "worsening" }, drought: { level: "low", trend: "stable" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "very-high", trend: "improving" }, smoke: { level: "high", trend: "worsening", note: "Interior smoke trapped by same inversions that trap cold." }, storm: { level: "low", trend: "stable" }, landslide: { level: "moderate", trend: "worsening", note: "Thaw-triggered slope failures increasing." }, coastal: { level: "very-low", trend: "stable" } },
-    localContrast: [{ radiusKm: 25, winterLowDeltaC: -12, note: "vs Chena Ridge (350 m higher) during strong inversions." }],
+    localContrast: [{ radiusKm: 25, winterLowDeltaC: -12, note: "vs Chena Ridge (about 150 m higher) during strong inversions." }],
     nearbyContrasts: [{ label: "Chena Ridge (elevation 300 m)", note: "Winter nights often 10–18°C warmer than the valley floor; no ice fog." }, { placeId: "whitehorse-yt", label: "Whitehorse, YT", note: "Similar latitude but milder due to Pacific moisture penetration via the Alaska Highway corridor." }],
     scores: { hiddenGem: 58, microclimateUniqueness: 92, comfort: 36, resilience: 42, growability: 52, tradeoff: 78 },
     liveSignals: {
@@ -4392,7 +4392,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["hurricane-coast", "tropical-isothermal"],
     drivers: ["sea-breeze", "hurricane-track", "marine-layer"],
     summaryShort: "One of the mildest subtropical coasts in the continental US — July highs barely reach 32°C and January lows rarely drop below 10°C, moderated by the Gulf on both sides.",
-    summaryImmersive: "South Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre. The ocean buffers temperature from both sides: summer highs rarely top 33°C because of reliable afternoon sea breeze, and winter lows rarely approach freezing because Gulf water stays in the mid-20s. The annual range here is remarkably narrow for Texas — about 13°C between coolest and warmest months, versus 21°C in inland San Antonio. The trade-off is hurricane exposure: Padre lies in one of the most active tropical-cyclone corridors in the US, and every few decades a major storm reshapes the entire island.",
+    summaryImmersive: "South Padre sits at the southern tip of Texas's barrier-island chain, a narrow ribbon of sand separating the Gulf of Mexico from Laguna Madre. The ocean buffers temperature from both sides: summer highs rarely top 33°C because of reliable afternoon sea breeze, and winter lows rarely approach freezing because Gulf water stays near 18–20°C. The annual range here is remarkably narrow for Texas — about 13°C between coolest and warmest months, versus about 18°C in inland San Antonio. The trade-off is hurricane exposure: Padre lies in one of the most active tropical-cyclone corridors in the US, and every few decades a major storm reshapes the entire island.",
     whyDistinct: "Double-water exposure (Gulf + Laguna Madre) compresses the annual temperature range; low latitude + subsidence inversion limits summer heat; Texas gulf upwelling is minimal but marine-layer moderation is still substantial.",
     climate: {
       tempHighC: [21, 22, 25, 27, 30, 32, 33, 33, 32, 29, 25, 22], tempLowC: [12, 14, 17, 20, 23, 25, 26, 26, 25, 21, 17, 13],
@@ -4420,7 +4420,7 @@ export const PLACES_USA: Place[] = [
     archetypes: ["lake-moderated", "subarctic-continental"],
     drivers: ["continentality", "lake-effect", "polar-jet-exposure"],
     summaryShort: "Arguably the coldest town in the Lower 48 most winters — regularly registering the US's lowest temperature outside the mountain West.",
-    summaryImmersive: "Ely sits where the Canadian Shield reaches into Minnesota: thin soils over granite, thousands of glacier-carved lakes, and a boreal forest climate unlike anywhere else in the contiguous US. On radiative winter nights — still, clear, fresh snow cover — temperatures routinely bottom out near −40°C. Ely and the nearby airport at Embarrass frequently tie for the coldest temperature in the Lower 48. Summers are short but intense, with long daylight, active thunderstorms, and the long twilight characteristic of 48°N. This is the gateway to the Boundary Waters — a million-acre wilderness of lakes and boreal forest where paddling is the only practical travel.",
+    summaryImmersive: "Ely sits where the Canadian Shield reaches into Minnesota: thin soils over granite, thousands of glacier-carved lakes, and a boreal forest climate unlike anywhere else in the contiguous US. On radiative winter nights — still, clear, fresh snow cover — temperatures routinely bottom out near −40°C. Ely and the nearby Embarrass weather station frequently tie for the coldest temperature in the Lower 48. Summers are short but intense, with long daylight, active thunderstorms, and the long twilight characteristic of 48°N. This is the gateway to the Boundary Waters — a million-acre wilderness of lakes and boreal forest where paddling is the only practical travel.",
     whyDistinct: "Deep continental interior + boreal forest snow-covered surface + lack of significant terrain to mix the lower atmosphere + proximity to the polar jet's winter position = extreme winter cold. The innumerable lakes moderate summer somewhat but freeze solid from December to April.",
     climate: {
       tempHighC: [-7, -4, 2, 10, 17, 22, 25, 23, 18, 10, 1, -5], tempLowC: [-21, -19, -12, -3, 4, 10, 13, 12, 7, 1, -7, -16],
@@ -4431,7 +4431,7 @@ export const PLACES_USA: Place[] = [
     growability: { score: 38, growsWell: ["Hardy apples (Honeycrisp heritage)", "Potatoes", "Berries", "Cool-season greens"], tricky: ["Warm-season crops", "Peppers"], homeGarden: "Season too short and cold for most commercial crops; home gardens thrive with season extension." },
     climateChange: { outlook2050: "Warming ~+2°C; longer growing season; less reliable winter ice; more winter rain mixing with snow.", outlook2100: "Boreal-to-mixed-forest transition accelerating; extreme cold events less frequent but still possible.", keyShifts: [{ variable: "Winter minimum temp", direction: "up" }, { variable: "Lake ice duration", direction: "down" }, { variable: "Fire frequency", direction: "up" }, { variable: "Growing season", direction: "up" }], resilienceNote: "Wilderness character remains; cold identity will fade over decades." },
     risks: { wildfire: { level: "elevated", trend: "worsening", note: "Pagami Creek 2011, Greenwood 2021." }, flood: { level: "low", trend: "stable" }, drought: { level: "low", trend: "worsening" }, extremeHeat: { level: "low", trend: "worsening" }, extremeCold: { level: "very-high", trend: "improving" }, smoke: { level: "moderate", trend: "worsening" }, storm: { level: "moderate", trend: "worsening" }, landslide: { level: "very-low", trend: "stable" }, coastal: { level: "very-low", trend: "stable" } },
-    nearbyContrasts: [{ label: "Embarrass, MN (20 km W)", note: "Frequently records slightly colder lows due to being in a more enclosed basin." }],
+    nearbyContrasts: [{ label: "Embarrass, MN (37 km SW)", note: "Frequently records slightly colder lows due to being in a more enclosed basin." }],
     scores: { hiddenGem: 70, microclimateUniqueness: 80, comfort: 44, resilience: 60, growability: 38, tradeoff: 70 },
     relocationFit: ["wilderness-oriented", "winter-sport enthusiasts", "off-grid"], travelFit: ["Boundary Waters canoe trips", "winter sled-dog training", "aurora", "wolf howls"],
     whoWouldLove: "Paddlers, hardy winter-sport people, those who feel at home in silent boreal forest.", whoMightNot: "Anyone unwilling to heat for 7 months; gardeners; humidity-lovers in summer.",
@@ -5110,7 +5110,7 @@ export const PLACES_USA: Place[] = [
     settlementsWithinZone: [
       { name: "Eureka Springs", role: "hub", population: "~2,200", note: "Entire historic district on the National Register; Crescent Hotel (1886) crowns the escarpment." },
       { name: "Berryville", role: "town", population: "~5,500", note: "Carroll County seat 15 km east; flatter plateau top, ranching and apple country." },
-      { name: "Holiday Island", role: "resort", population: "~2,500", note: "Planned lakeside community on a Beaver Lake peninsula 10 km north of Eureka." },
+      { name: "Holiday Island", role: "resort", population: "~2,500", note: "Planned lakeside community on Table Rock Lake 10 km north of Eureka." },
       { name: "Beaver", role: "village", population: "~80", note: "One-lane suspension bridge across the White River; starting point for float trips." },
       { name: "Green Forest", role: "town", population: "~2,900", note: "Poultry-industry hub 25 km east; working-country Ozarks foil to tourist-focused Eureka." },
       { name: "Harrison", role: "town", population: "~13,000", note: "50 km east, Boone County seat; another Ozark-rim base for Buffalo River access." },

@@ -701,7 +701,7 @@ export const PLACES_USA_GAP_STATES: Place[] = [
     liveSignals: {
       costPressure: 78,
       accessFriction: 74,
-      note: "Ferry-only / small-plane access; year-round population ~1,000 with a tight, expensive housing market and limited specialty services.",
+      note: "Ferry-only / small-plane access; year-round population ~1,400 with a tight, expensive housing market and limited specialty services.",
       sources: [
         { label: "Niche — Block Island RI", url: "https://www.niche.com/places-to-live/new-shoreham-washington-ri/" },
       ],

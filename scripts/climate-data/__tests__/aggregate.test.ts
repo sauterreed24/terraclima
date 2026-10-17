@@ -139,3 +139,33 @@ describe("hashing", () => {
     expect(sha256Hex("abc")).toHaveLength(64);
   });
 });
+
+describe("frost-free season", () => {
+  function yearWithFreezes(year: number, freezeYdays: number[]): DaymetDailyRow[] {
+    const freezes = new Set(freezeYdays);
+    return syntheticYear(year).map(row => (freezes.has(row.yday) ? { ...row, tmin: -2 } : row));
+  }
+
+  it("is the median span from the last spring freeze to the first autumn freeze", () => {
+    const rows: DaymetDailyRow[] = [];
+    for (let y = 1991; y <= 2020; y++) rows.push(...yearWithFreezes(y, [10, 100, 280, 300]));
+    const normals = aggregateDaymetPeriod(rows, { period: "wmo-1991-2020", startYear: 1991, endYear: 2020 }).normals;
+    // Last spring freeze yday 100, first autumn freeze yday 280 → 179 frost-free days,
+    // even though only 4 days a year actually freeze.
+    expect(normals.frostFreeDays).toBe(179);
+    expect(normals.frostDays).toBe(4);
+  });
+
+  it("counts a scattered summer frost as the end of the season", () => {
+    const rows: DaymetDailyRow[] = [];
+    for (let y = 1991; y <= 2020; y++) rows.push(...yearWithFreezes(y, [150, 200]));
+    const normals = aggregateDaymetPeriod(rows, { period: "wmo-1991-2020", startYear: 1991, endYear: 2020 }).normals;
+    expect(normals.frostFreeDays).toBe(49);
+  });
+
+  it("gives a frost-free year the whole year", () => {
+    const rows: DaymetDailyRow[] = [];
+    for (let y = 1991; y <= 2020; y++) rows.push(...syntheticYear(y));
+    expect(aggregateDaymetPeriod(rows, { period: "wmo-1991-2020", startYear: 1991, endYear: 2020 }).normals.frostFreeDays).toBe(365);
+  });
+});

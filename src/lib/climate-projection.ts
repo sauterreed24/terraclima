@@ -220,7 +220,12 @@ export function projectClimateProfile(climate: ClimateProfile, delta: ClimateDel
     precipMm,
     annualPrecipMm,
     ...(snowCm ? { snowCm } : {}),
-    frostFreeDays: estimateFrostFreeDays(tempLowC),
+    // Shift the measured season by the modelled change, so present and
+    // future figures share one definition (last spring to first autumn freeze).
+    frostFreeDays:
+      climate.frostFreeDays != null
+        ? Math.max(0, Math.min(365, climate.frostFreeDays + estimateFrostFreeDays(tempLowC) - estimateFrostFreeDays(climate.tempLowC)))
+        : estimateFrostFreeDays(tempLowC),
   };
 }
 

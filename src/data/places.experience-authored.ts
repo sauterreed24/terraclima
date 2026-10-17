@@ -96,7 +96,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
       autumn: "Beverly Shores (Lake Michigan) autumn returns to roughly 17.2°C days and 7.5°C nights — often the clearest travel window.",
     },
     travelerFit: "Most people show up in Beverly Shores for Indiana Dunes trails and bird migration and stay a day longer than planned once the local rhythm sets in.",
-    residentFit: "Full-time life in Beverly Shores tends to reward Chicago commuters and park lovers — people who plan their year around the lake-effect snowbelt pattern rather than fighting it.",
+    residentFit: "Full-time life in Beverly Shores tends to reward Chicago commuters and park lovers — people who plan their year around the lake's moods rather than fighting them.",
     texture: "Beverly Shores sits in the middle — some give, some take. The honest weight on the other side of the scale: severe-storm risk runs elevated and worsening. The climate case for Beverly Shores still holds; it just isn't the whole story.",
   },
   "bismarck-nd": {
@@ -328,7 +328,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Cuauhtémoc is an easy place to settle into, on balance. Where it costs you back: drought runs elevated and worsening. Weigh it against the Chihuahuan high desert / irrigated orchard and the high-desert escape pattern before writing Cuauhtémoc off or romanticizing it.",
   },
   "cypress-hills-sk": {
-    feel: "Step outside in Maple Creek / Cypress Hills and the terrain announces itself at once: Island-mountain plateau rising 700 m above the surrounding prairie — the highest point between the Rockies and Labrador, 1460 m up. Elevation lapse rate is the mechanism behind it, layering a badland / steppe pocket pattern on top that most of the Saskatchewan interior never sees.",
+    feel: "Step outside in Maple Creek / Cypress Hills and the terrain announces itself at once: Island-mountain plateau rising some 600 m above the surrounding prairie — the highest point between the Rockies and Labrador, 1460 m up. Elevation lapse rate is the mechanism behind it, layering a badland / steppe pocket pattern on top that most of the Saskatchewan interior never sees.",
     seasons: {
       winter: "Cypress Hills winters run near −3.8°C by day and −14.1°C at night, shaped by elevation lapse rate across Montane forest / fescue grassland.",
       spring: "Cypress Hills climbs toward 8.2°C spring afternoons while 1460 m elevation preserves −3°C nights.",
@@ -1176,7 +1176,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
       autumn: "Revelstoke (Snow Capital) autumn stays usable at 11.4°C days and 2.6°C nights as orographic lift reasserts cooler evenings.",
     },
     travelerFit: "Revelstoke earns its visitors through ski and powder tourism — reason enough on their own, before the climate even factors in.",
-    residentFit: "Full-time life in Revelstoke tends to reward serious skiers and snow-loving families — people who plan their year around the lake-effect snowbelt pattern rather than fighting it.",
+    residentFit: "Full-time life in Revelstoke tends to reward serious skiers and snow-loving families — people who plan their year around the Columbia Mountains' deep snow rather than fighting it.",
     texture: "Revelstoke sits in the middle — some give, some take. Where it costs you back: severe storms (high) and landslide and slope-stability risk (high) are the two to weigh. Weigh it against the interior cedar-hemlock and the lake-effect snowbelt pattern before writing Revelstoke off or romanticizing it.",
   },
   "roswell-nm": {

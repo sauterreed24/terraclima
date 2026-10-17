@@ -24,12 +24,12 @@ export const PLACES_CANADA: Place[] = [
     archetypes: ["rain-shadow-sanctuary", "orchard-valley", "desert-oasis"],
     drivers: ["rain-shadow", "river-moderation"],
 
-    summaryShort: "Canada's only pocket desert — antelope-brush and rattlesnakes 800 km north of any other desert.",
-    summaryImmersive: "Osoyoos sits at the northern tip of a dry valley that is, improbably, an extension of the Great Basin Desert. The Cascade Range 200 km west shadows it completely from Pacific moisture, while the Coast Range funnels warm dry air down the valley. Annual precipitation barely breaks 330 mm. Summers are among the hottest in Canada — afternoons above 30°C and heat waves past 35°C, nights mild over the warm lake. The result is a remarkable north-tip ecosystem where antelope-brush, prickly-pear, and western rattlesnakes live alongside vineyards producing genuinely hot-climate wines — Cabernet, Syrah — at latitude 49°N. The lake itself is among the warmest in Canada for swimming.",
+    summaryShort: "Canada's only pocket desert — antelope-brush and rattlesnakes at the northern tip of the Columbia Basin's dry country.",
+    summaryImmersive: "Osoyoos sits at the northern tip of a dry valley that is, improbably, an extension of the Great Basin Desert. The Cascade Range, about 100 km west, shadows it from Pacific moisture, while the Coast Range funnels warm dry air down the valley. Annual precipitation barely breaks 330 mm. Summers are among the hottest in Canada — afternoons above 30°C and heat waves past 35°C, nights mild over the warm lake. The result is a remarkable north-tip ecosystem where antelope-brush, prickly-pear, and western rattlesnakes live alongside vineyards producing genuinely hot-climate wines — Cabernet, Syrah — at latitude 49°N. The lake itself is among the warmest in Canada for swimming.",
     whyDistinct: "Cascade rain shadow + continental interior + low valley elevation + shallow warm lake = a desert pocket that simply shouldn't exist at this latitude. The climate gradient from Penticton (north) to Osoyoos (south) is one of the sharpest in Canada.",
 
     experience: {
-      feel: "Osoyoos feels like a slice of the Great Basin smuggled 800 km north into Canada. The Cascades shadow the valley from Pacific moisture, the lake banks heat, and antelope-brush, prickly-pear, and rattlesnakes share the benches with Cabernet vines — the hottest, driest pocket in the country.",
+      feel: "Osoyoos feels like a slice of the Great Basin's dry country carried north into Canada. The Cascades shadow the valley from Pacific moisture, the lake banks heat, and antelope-brush, prickly-pear, and rattlesnakes share the benches with Cabernet vines — the hottest, driest pocket in the country.",
       seasons: {
         winter: "Short and cold by valley standards — afternoons hovering near freezing, nights near −6°C, a little snow that comes and goes. The desert sleeps under low, often-gray skies.",
         spring: "The valley wakes fast: orchards and vineyards blossom, afternoons climb through the teens into the 20s, and the sun returns in force while the benches stay dry.",
@@ -91,7 +91,7 @@ export const PLACES_CANADA: Place[] = [
       wildfire:    { level: "high", trend: "worsening", note: "2021 Nk'Mip Creek Fire nearby; 2003 Okanagan Mountain Park Fire." },
       flood:       { level: "moderate", trend: "worsening" },
       drought:     { level: "elevated", trend: "worsening" },
-      extremeHeat: { level: "elevated", trend: "worsening", note: "2021 heat dome reached 46°C in Lytton nearby; Osoyoos hit 45°C." },
+      extremeHeat: { level: "elevated", trend: "worsening", note: "2021 heat dome set Canada's record of 49.6°C at Lytton; Osoyoos hit 45°C." },
       extremeCold: { level: "low", trend: "improving" },
       smoke:       { level: "high", trend: "worsening" },
       storm:       { level: "low", trend: "stable" },
@@ -1107,7 +1107,7 @@ export const PLACES_CANADA: Place[] = [
     summaryImmersive: "Nelson perches on the north arm of Kootenay Lake, whose 150-km length and 150-m depth provides substantial thermal moderation to the surrounding steep mountain town. Winters are milder and summers cooler than you'd expect at 49° latitude and 535 m elevation. The arts and counter-culture character traces partly to the mild mountain climate — livable year-round in a way that many Rocky Mountain interior towns are not.",
     whyDistinct: "Deep mountain lake plus valley shelter produces notably moderated climate for interior BC; glacier-dominated surrounding terrain contributes cool summer air.",
     experience: {
-      feel: "Nelson feels like a mountain town that forgot to be harsh — Kootenay Lake's 150-km length and deep cold water soften winters and cool summers enough that artists and counter-culture types could build a year-round life at 49° north.",
+      feel: "Nelson feels like a mountain town that forgot to be harsh — Kootenay Lake's 100-km length and deep cold water soften winters and cool summers enough that artists and counter-culture types could build a year-round life at 49° north.",
       seasons: {
         winter: "Mild for the latitude — afternoons near freezing, nights near −6°C, and enough snow on the Selkirks above for serious skiing without the bitter cold of Rocky Mountain interior towns.",
         spring: "Slow thaw along the lake — cherry blossoms on Baker Street, snow retreating up the slopes, and the first patio days when afternoons climb into the low teens.",
@@ -1349,11 +1349,11 @@ export const PLACES_CANADA: Place[] = [
   {
     id: "cypress-hills-sk", tier: "C", country: "Canada", region: "Saskatchewan", municipality: "Maple Creek / Cypress Hills", name: "Cypress Hills",
     lat: 49.6506, lon: -109.4840, elevationM: 1460,
-    reliefContext: "Island-mountain plateau rising 700 m above the surrounding prairie — the highest point between the Rockies and Labrador.",
+    reliefContext: "Island-mountain plateau rising some 600 m above the surrounding prairie — the highest point between the Rockies and Labrador.",
     biome: "Montane forest / fescue grassland", koppen: "Dfb (island)",
     archetypes: ["sky-island-refuge", "badland-steppe", "frost-hollow"],
     drivers: ["elevation-lapse-rate", "continentality", "cold-air-drainage"],
-    summaryShort: "The prairie's surprise — a forested plateau 700 m above the surrounding plains, a sky-island oasis in the Canadian steppe.",
+    summaryShort: "The prairie's surprise — a forested plateau some 600 m above the surrounding plains, a sky-island oasis in the Canadian steppe.",
     summaryImmersive: "Cypress Hills rises abruptly from the Saskatchewan prairie, reaching 1460 m — higher than Banff. The elevation produces a cool island of lodgepole pine and aspen in a sea of short-grass prairie. Summer afternoons top out around 22°C on the plateau while the plain below bakes at 32°C. Winters can be cold but are sheltered from the worst prairie winds. Ecologically, it's a textbook island refuge: species present here and nowhere else for hundreds of kilometers.",
     whyDistinct: "Isolated island-mountain plateau rising above surrounding prairie produces a distinctive climatic and ecological refugium.",
     climate: { tempHighC: [-5.1, -2.8, 2.4, 9.4, 15.8, 19.9, 23.4, 22.8, 17.2, 10.2, 1.6, -4.4], tempLowC: [-14.6, -12.4, -7.9, -2.8, 2.6, 7.1, 9.8, 9.1, 4.2, -1.8, -8.4, -13.4], precipMm: [18, 16, 24, 32, 64, 82, 66, 48, 34, 20, 16, 18], snowCm: [20, 16, 24, 18, 3, 0, 0, 0, 0, 6, 20, 22], annualPrecipMm: 438, frostFreeDays: 90, hardinessZone: "3a" },

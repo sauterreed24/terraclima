@@ -247,7 +247,7 @@ export const TIER_C_POLISH: Record<string, TierCPolishEntry> = {
         title: "Anza-Borrego basin geometry and Sonoran heat set the desert read",
         paragraphs: [
           "Borrego Springs sits in a closed desert basin surrounded by the Anza-Borrego Desert State Park mountains, and that enclosed geometry produces one of the hottest sustained summer climates in California. July and August highs routinely exceed 42°C, with overnight lows staying above 24°C on the warmest nights.",
-          "Reading the basin as a microclimate entry means separating the valley floor from the surrounding foothills. A 600 m climb up Montezuma Grade toward Ranchita drops daytime highs 4 to 5°C and brings overnight lows into the mid-teens — the gradient is sharp enough to feel in a single drive.",
+          "Reading the basin as a microclimate entry means separating the valley floor from the surrounding foothills. A roughly 1,000 m climb up Montezuma Grade toward Ranchita drops daytime highs by several degrees and brings overnight lows into the mid-teens — the gradient is sharp enough to feel in a single drive.",
         ],
       },
       {
