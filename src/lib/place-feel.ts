@@ -10,6 +10,7 @@ import {
   scoringSunshinePct,
   summerDiurnalC,
 } from "./climate-metrics";
+import { researchedChapterCount } from "./research-chapters";
 
 export type PlaceFeelComponentKey =
   | "sensoryComfort"
@@ -80,7 +81,7 @@ function sourceCount(place: Place): number {
 }
 
 function authoredTextureScore(place: Place): number {
-  const deep = place.deepSections?.length ?? 0;
+  const deep = researchedChapterCount(place);
   const settlements = place.settlementsWithinZone?.length ?? 0;
   const activities = place.thingsToDo?.length ?? 0;
   const local = (place.localContrast?.length ?? 0) + (place.nearbyContrasts?.length ?? 0);

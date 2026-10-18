@@ -20,6 +20,7 @@ import { PLACES } from "../../src/data/places";
 import { CLIMATE_V2_OVERLAY_BY_ID } from "../../src/data/generated/climate-v2";
 import type { PlaceResearchReceipt, ResearchLedger } from "../../src/lib/research/contracts";
 import { REQUIRED_FACTUAL_FIELD_GROUPS, REQUIRED_NARRATIVE_BLOCKS } from "../../src/lib/research/contracts";
+import { hasThinChapterDepth } from "../../src/lib/research-chapters";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const TODAY = new Date().toISOString().slice(0, 10);
@@ -64,7 +65,7 @@ function claimsCover(receipt: PlaceResearchReceipt): boolean {
 
 function canVerify(place: (typeof PLACES)[number], receipt: PlaceResearchReceipt): { ok: boolean; reason?: string } {
   if (!experienceComplete(place)) return { ok: false, reason: "incomplete experience" };
-  if ((place.deepSections?.length ?? 0) < 2) return { ok: false, reason: "needs >=2 deep sections" };
+  if (hasThinChapterDepth(place)) return { ok: false, reason: "needs a researched chapter beyond site history" };
   if (!CLIMATE_V2_OVERLAY_BY_ID[place.id]) return { ok: false, reason: "missing Climate V2" };
   if (place.liveSignals?.socialStress != null) return { ok: false, reason: "socialStress residue" };
   const material = receipt.unresolved.filter(u => !u.fieldPaths.every(fp => fp === "projection" || fp.startsWith("projection.")));

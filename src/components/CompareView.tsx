@@ -38,6 +38,7 @@ import { useFocusTrap } from "../hooks/use-focus-trap";
 import { useElementIsolation } from "../hooks/use-element-isolation";
 import { ChevronRight, Clock3, Home, Link2, Plus, RefreshCcw, X } from "lucide-react";
 import { effectiveAccessRemoteness, effectiveHousingPressure } from "../lib/research/lived-indicators";
+import { chapterCountLabel, hasThinChapterDepth, researchedChapterCount } from "../lib/research-chapters";
 
 type CandidateSourceFilter = "all" | CompareCandidateSource;
 type CandidateSortId = "curated" | "lens" | "risk" | "easy" | "name";
@@ -1162,7 +1163,7 @@ interface CompareEvidenceReadiness {
 function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenceReadiness[] {
   return places.map(place => {
     const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
-    const deepSections = place.deepSections?.length ?? 0;
+    const chapters = researchedChapterCount(place);
     const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
     const hasHumidity = Boolean(place.climate.humidity?.length);
     const hasSunshine = hasSourcedSkySeries(place);
@@ -1170,7 +1171,7 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
     const score = Math.min(100, Math.round(
       confidenceScore +
       Math.min(httpsCitations * 8, 24) +
-      Math.min(deepSections * 8, 24) +
+      Math.min(chapters * 8, 24) +
       (hasLiveSignals ? 8 : 0) +
       (hasHumidity ? 5 : 0) +
       (hasSunshine ? 5 : 0),
@@ -1178,7 +1179,7 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
     const gaps = [
       ...(place.confidence === "low" ? ["Low confidence profile"] : place.confidence === "moderate" ? ["Moderate confidence profile"] : []),
       ...(httpsCitations < 2 ? ["Add a second HTTPS source"] : []),
-      ...(deepSections < 1 ? ["Expand deep-dive context"] : []),
+      ...(hasThinChapterDepth(place) ? ["Expand deep-dive context"] : []),
       ...(!hasLiveSignals ? ["Fill lived-friction signals"] : []),
       ...(!hasHumidity ? ["Source humidity normals"] : []),
       ...(!hasSunshine ? ["Source sunshine normals"] : []),
@@ -1200,7 +1201,7 @@ function buildCompareEvidenceReadiness(places: readonly Place[]): CompareEvidenc
       facts: [
         `${place.confidence} confidence`,
         `${httpsCitations} HTTPS source${httpsCitations === 1 ? "" : "s"}`,
-        `${deepSections} deep section${deepSections === 1 ? "" : "s"}`,
+        chapterCountLabel(chapters),
         hasLiveSignals ? "lived signals" : "lived signals missing",
       ],
       gaps: gaps.length ? gaps : ["No major source gaps in the current profile"],
@@ -1269,7 +1270,7 @@ function buildGroupedComparisonRows(
     row("Evidence", "Tier", places.map(place => place.tier)),
     row("Evidence", "Confidence", places.map(place => place.confidence)),
     row("Evidence", "HTTPS citations", places.map(httpsCitations)),
-    row("Evidence", "Deep sections", places.map(place => `${place.deepSections?.length ?? 0}`)),
+    row("Evidence", "Researched chapters", places.map(place => `${researchedChapterCount(place)}`)),
   ];
 }
 

@@ -10,6 +10,7 @@ import {
   type ComparisonLensId,
 } from "./compare-workbench";
 import { possessive } from "./place-name";
+import { hasThinChapterDepth } from "./research-chapters";
 
 export interface CompareDecisionProfile {
   place: Place;
@@ -246,7 +247,7 @@ function sourceGapLabels(place: Place): string[] {
   return [
     ...(place.confidence === "low" ? ["low-confidence profile"] : place.confidence === "moderate" ? ["moderate-confidence profile"] : []),
     ...(httpsCitations < 2 ? ["second HTTPS source"] : []),
-    ...((place.deepSections?.length ?? 0) < 1 ? ["deep-dive context"] : []),
+    ...(hasThinChapterDepth(place) ? ["deep-dive context"] : []),
     ...(!hasLiveSignals ? ["lived-friction signals"] : []),
     ...(!hasHumidity ? ["humidity normals"] : []),
     ...(!hasSunshine ? ["sunshine normals"] : []),

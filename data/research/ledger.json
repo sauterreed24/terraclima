@@ -392,7 +392,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=35"
@@ -470,7 +470,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=81"
@@ -938,7 +938,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 7,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=57"
@@ -977,7 +977,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=88"
@@ -1055,7 +1055,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 10,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=81"
@@ -1094,7 +1094,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=88"
@@ -1211,7 +1211,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=66"
@@ -1250,7 +1250,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=82"
@@ -1328,7 +1328,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=26"
@@ -1367,7 +1367,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=60"
@@ -1406,7 +1406,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=26"
@@ -1445,7 +1445,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=45"
@@ -1484,7 +1484,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=2"
@@ -1523,7 +1523,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=47"
@@ -1562,7 +1562,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=27"
@@ -1679,7 +1679,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=88"
@@ -1718,7 +1718,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=12"
@@ -1757,7 +1757,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=60"
@@ -1796,7 +1796,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 10,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=12"
@@ -1874,7 +1874,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=2"
@@ -1913,7 +1913,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=42"
@@ -1991,7 +1991,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=89"
@@ -2069,7 +2069,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=28"
@@ -2108,7 +2108,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=72"
@@ -2147,7 +2147,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=91"
@@ -2186,7 +2186,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=29"
@@ -2225,7 +2225,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=30"
@@ -2264,7 +2264,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=31"
@@ -2303,7 +2303,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=72"
@@ -2342,7 +2342,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=31"
@@ -2615,7 +2615,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=1"
@@ -2693,7 +2693,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=78"
@@ -2732,7 +2732,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=5"
@@ -2771,7 +2771,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=65"
@@ -2810,7 +2810,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=32"
@@ -2849,7 +2849,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=33"
@@ -2888,7 +2888,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=33"
@@ -2927,7 +2927,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=0"
@@ -3083,7 +3083,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=44"
@@ -3161,7 +3161,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=93"
@@ -3278,7 +3278,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=90"
@@ -3317,7 +3317,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 10,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "reviewed-exception",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=67"
@@ -3395,7 +3395,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=6"
@@ -3473,7 +3473,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=7"
@@ -3512,7 +3512,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=47"
@@ -3551,7 +3551,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=49"
@@ -3629,7 +3629,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=83"
@@ -3668,7 +3668,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=18"
@@ -3707,7 +3707,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=88"
@@ -3746,7 +3746,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=91"
@@ -3863,7 +3863,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=63"
@@ -3902,7 +3902,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=37"
@@ -3980,7 +3980,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=19"
@@ -4019,7 +4019,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=14"
@@ -4058,7 +4058,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=34"
@@ -4136,7 +4136,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=35"
@@ -4253,7 +4253,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=49"
@@ -4331,7 +4331,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=50"
@@ -4370,7 +4370,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=84"
@@ -4448,7 +4448,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=36"
@@ -4526,7 +4526,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=40"
@@ -4565,7 +4565,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=36"
@@ -4604,7 +4604,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=37"
@@ -4643,7 +4643,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=37"
@@ -4682,7 +4682,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=42"
@@ -4721,7 +4721,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=59"
@@ -4760,7 +4760,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=50"
@@ -4799,7 +4799,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=38"
@@ -4877,7 +4877,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=95"
@@ -4916,7 +4916,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=16"
@@ -4994,7 +4994,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=9"
@@ -5072,7 +5072,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=91"
@@ -5111,7 +5111,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=74"
@@ -5150,7 +5150,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=39"
@@ -5189,7 +5189,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=85"
@@ -5228,7 +5228,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=39"
@@ -5306,7 +5306,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=40"
@@ -5423,7 +5423,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=10"
@@ -5462,7 +5462,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=11"
@@ -5540,7 +5540,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=41"
@@ -5579,7 +5579,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=42"
@@ -5618,7 +5618,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=7"
@@ -5696,7 +5696,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=42"
@@ -5735,7 +5735,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=51"
@@ -5774,7 +5774,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=44"
@@ -5813,7 +5813,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=86"
@@ -5852,7 +5852,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=65"
@@ -5930,7 +5930,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=84"
@@ -5969,7 +5969,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=19"
@@ -6008,7 +6008,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=12"
@@ -6047,7 +6047,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=96"
@@ -6125,7 +6125,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=64"
@@ -6203,7 +6203,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=68"
@@ -6242,7 +6242,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=21"
@@ -6281,7 +6281,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 7,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=7"
@@ -6320,7 +6320,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=98"
@@ -6359,7 +6359,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=47"
@@ -6398,7 +6398,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=84"
@@ -6515,7 +6515,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=52"
@@ -6554,7 +6554,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=9"
@@ -6632,7 +6632,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=70"
@@ -6671,7 +6671,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=53"
@@ -6710,7 +6710,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=74"
@@ -6827,7 +6827,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 7,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=77"
@@ -6905,7 +6905,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=79"
@@ -6983,7 +6983,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=87"
@@ -7022,7 +7022,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=53"
@@ -7061,7 +7061,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 10,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=91"
@@ -7178,7 +7178,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=69"
@@ -7217,7 +7217,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=43"
@@ -7295,7 +7295,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=92"
@@ -7334,7 +7334,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=23"
@@ -7412,7 +7412,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=13"
@@ -7451,7 +7451,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=14"
@@ -7490,7 +7490,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=28"
@@ -7529,7 +7529,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=72"
@@ -7568,7 +7568,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=5"
@@ -7607,7 +7607,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=93"
@@ -7646,7 +7646,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=74"
@@ -7724,7 +7724,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=86"
@@ -7802,7 +7802,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=93"
@@ -7919,7 +7919,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=95"
@@ -7958,7 +7958,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=100"
@@ -8036,7 +8036,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=96"
@@ -8075,7 +8075,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=93"
@@ -8114,7 +8114,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=9"
@@ -8153,7 +8153,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=60"
@@ -8348,7 +8348,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=21"
@@ -8387,7 +8387,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=94"
@@ -8504,7 +8504,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=44"
@@ -8543,7 +8543,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=61"
@@ -8621,7 +8621,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=53"
@@ -8660,7 +8660,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=56"
@@ -8699,7 +8699,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 9,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=98"
@@ -8738,7 +8738,7 @@
       ],
       "unresolvedConflicts": [],
       "sourceCount": 8,
-      "claimCount": 25,
+      "claimCount": 21,
       "climateValidationStatus": "grid-only",
       "lastCheckpointCommit": "78530a882316c52e1fe355542979bfe6d6dff678",
       "notes": "housingPressureIndex percentile=55"

@@ -138,24 +138,12 @@ function snowLine(place: Place, flatPrecip: boolean): { text: string; snowy: boo
 }
 
 /**
- * The fill-only overlay in `places.deep-sections-authored.ts` restates the
- * record's numbers in a fixed template (and misreads missing snow series as
- * "no snow"). Every place now has a researched site-history chapter, and the
- * chapters derived below cover the same ground from the same fields, so the
- * template chapters stay on the record (evidence counts read them) but are
- * left out of the reading.
- */
-export function isTemplateDeepSection(section: PlaceDeepSection): boolean {
-  return /-(?:terrain-mechanism|risk-and-ground-truth)$/.test(section.id);
-}
-
-/**
  * Extra `PlaceDeepSection`s synthesized from structured fields so every place
  * gains the same **scaffold** of organized reading, after any hand-authored
  * `deepSections` in the corpus.
  */
 export function mergeDeepSections(place: Place): PlaceDeepSection[] {
-  const base = (place.deepSections ?? []).filter(s => !isTemplateDeepSection(s));
+  const base = place.deepSections ?? [];
   const append = buildDerivedDeepSections(place);
   const ids = new Set(base.map(s => s.id));
   return [...base, ...append.filter(a => !ids.has(a.id))];
