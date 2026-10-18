@@ -39,10 +39,7 @@ function renderFilterBar(
 ) {
   const units: UnitState = {
     temp,
-    dist: temp === "C" ? "metric" : "imperial",
-    setTemp: vi.fn(),
-    setDist: vi.fn(),
-    toggle: vi.fn(),
+    dist: temp === "F" ? "imperial" : "metric",
   };
   const view = render(
     <UnitContext.Provider value={units}>
@@ -67,11 +64,8 @@ describe("FilterBar Live Finder temperature constraints", () => {
         search: "zzzz-no-match",
       });
       const units: UnitState = {
-        temp: "C",
-        dist: "metric",
-        setTemp: vi.fn(),
-        setDist: vi.fn(),
-        toggle: vi.fn(),
+        temp: "F",
+        dist: "imperial",
       };
       return (
         <UnitContext.Provider value={units}>
@@ -137,23 +131,10 @@ describe("FilterBar Live Finder temperature constraints", () => {
     expect(screen.queryByRole("option", { name: ">= -5C" })).not.toBeInTheDocument();
   });
 
-  it("renders threshold choices in Celsius when the app is in Celsius mode", () => {
-    renderFilterBar("C", { openLiveFinder: true });
-
-    expect(screen.getByRole("combobox", { name: "Winter floor" })).toHaveAttribute("title", "Winter floor");
-    expect(screen.getByRole("option", { name: `<= 22${DEG}C` })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: `<= 26${DEG}C` })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: `>= -5${DEG}C` })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: `>= 0${DEG}C` })).toBeInTheDocument();
-    expect(screen.getByRole("option", { name: `>= 2${DEG}C` })).toBeInTheDocument();
-    expect(screen.queryByRole("option", { name: `<= 72${DEG}F` })).not.toBeInTheDocument();
-    expect(screen.queryByRole("option", { name: `>= 23${DEG}F` })).not.toBeInTheDocument();
-  });
-
   it("changes Live Finder threshold constraints from compact menus", () => {
     const setFilters = vi.fn();
     const filters = createEmptyFilterState();
-    renderFilterBar("C", { filters, setFilters, openLiveFinder: true });
+    renderFilterBar("F", { filters, setFilters, openLiveFinder: true });
 
     fireEvent.change(screen.getByRole("combobox", { name: "Summer cap" }), {
       target: { value: "22" },
@@ -227,40 +208,40 @@ describe("FilterBar lifestyle bundles", () => {
   });
 
   it("discloses each path's applied ranking and Live Finder constraints", () => {
-    renderFilterBar("C");
+    renderFilterBar("F");
 
     const coolPath = screen.getByRole("button", { name: /Cool Summer Refuge/ });
     expect(coolPath).toHaveAttribute("aria-describedby", expect.stringContaining("-applies"));
     expect(within(coolPath).getByText("Rank")).toBeInTheDocument();
     expect(within(coolPath).getByText("Signals")).toBeInTheDocument();
     expect(coolPath).toHaveTextContent("Coolest summers");
-    expect(coolPath).toHaveTextContent(`Cool · summer <= 26${DEG}C`);
+    expect(coolPath).toHaveTextContent(`Cool · summer <= 79${DEG}F`);
     const coolAppliesId = coolPath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
     expect(coolAppliesId).toBeTruthy();
     expect(document.getElementById(coolAppliesId!)).toHaveAttribute(
       "aria-label",
-      `Cool Summer Refuge applied settings: Rank: Coolest summers · Fit: Cool · Summer <= 26${DEG}C`,
+      `Cool Summer Refuge applied settings: Rank: Coolest summers · Fit: Cool · Summer <= 79${DEG}F`,
     );
 
     const winterSunPath = screen.getByRole("button", { name: /Winter Sun/ });
     expect(winterSunPath).toHaveTextContent("Sunniest winters");
-    expect(winterSunPath).toHaveTextContent(`Sun · Mild · winter -5${DEG}C+`);
+    expect(winterSunPath).toHaveTextContent(`Sun · Mild · winter 23${DEG}F+`);
     const winterSunAppliesId = winterSunPath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
     expect(document.getElementById(winterSunAppliesId!)).toHaveAttribute(
       "aria-label",
-      `Winter Sun applied settings: Rank: Sunniest winters · Fit: Sun · Fit: Mild · Winter >= -5${DEG}C`,
+      `Winter Sun applied settings: Rank: Sunniest winters · Fit: Sun · Fit: Mild · Winter >= 23${DEG}F`,
     );
 
     const mexicoPath = screen.getByRole("button", { name: /Mexico \/ Southwest/ });
     expect(mexicoPath).toHaveTextContent("Best shoulder seasons");
-    expect(mexicoPath).toHaveTextContent(`Dry · Mild · summer <= 26${DEG}C · winter -5${DEG}C+`);
+    expect(mexicoPath).toHaveTextContent(`Dry · Mild · summer <= 79${DEG}F · winter 23${DEG}F+`);
     expect(mexicoPath).toHaveTextContent("Scope");
     expect(mexicoPath).toHaveTextContent("U.S. + Mexico");
     expect(mexicoPath).toHaveTextContent("Eternal-Spring Highland + Volcanic Upland + Sky-Island Refuge + 3 more");
     const mexicoAppliesId = mexicoPath.getAttribute("aria-describedby")?.split(" ").find(id => id.endsWith("-applies"));
     expect(document.getElementById(mexicoAppliesId!)).toHaveAttribute(
       "aria-label",
-      `Mexico / Southwest applied settings: Rank: Best shoulder seasons · Fit: Dry · Fit: Mild · Region: U.S. + Mexico · Terrain: Eternal-Spring Highland + Volcanic Upland + Sky-Island Refuge + High-Desert Escape + Monsoon-Edge Zone + Mild-Winter Foothills · Summer <= 26${DEG}C · Winter >= -5${DEG}C`,
+      `Mexico / Southwest applied settings: Rank: Best shoulder seasons · Fit: Dry · Fit: Mild · Region: U.S. + Mexico · Terrain: Eternal-Spring Highland + Volcanic Upland + Sky-Island Refuge + High-Desert Escape + Monsoon-Edge Zone + Mild-Winter Foothills · Summer <= 79${DEG}F · Winter >= 23${DEG}F`,
     );
 
     cleanup();
@@ -641,9 +622,6 @@ describe("FilterBar clear all filters", () => {
       <UnitContext.Provider value={{
         temp: "F",
         dist: "imperial",
-        setTemp: vi.fn(),
-        setDist: vi.fn(),
-        toggle: vi.fn(),
       }}
       >
         <FilterBar
@@ -715,9 +693,6 @@ describe("FilterBar climate scenario chip", () => {
     const units: UnitState = {
       temp: "F",
       dist: "imperial",
-      setTemp: vi.fn(),
-      setDist: vi.fn(),
-      toggle: vi.fn(),
     };
     render(
       <UnitContext.Provider value={units}>

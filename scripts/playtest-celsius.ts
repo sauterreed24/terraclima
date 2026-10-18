@@ -1,7 +1,8 @@
 /**
  * Rigorous Celsius play-test for Terraclima.
  *
- * Default mode is Fahrenheit; the user can opt into Celsius. Two
+ * The atlas shows US units only (Fahrenheit, inches, feet, miles); the
+ * data stays in °C and millimetres and converts at the edge. Two
  * invariants must hold:
  *
  *   F-mode: every user-facing string — static corpus text AND

@@ -37,11 +37,10 @@ describe("parseAppSearch", () => {
       minGrowability: 65,
       maxFireRisk: "moderate",
       maxOverallRisk: "elevated",
-      temp: "C",
-      dist: "metric",
     });
   });
-  it("drops unit params the UI cannot represent", () => {
+  it("ignores unit params from older links: the atlas is US units only", () => {
+    expect(parseAppSearch("?temp=C&dist=metric")).toEqual({});
     expect(parseAppSearch("?temp=K&dist=nautical")).toEqual({});
   });
   it("drops Live Finder constraints the UI cannot represent", () => {
@@ -197,12 +196,10 @@ describe("formatAppRelativeUrl", () => {
       minGrowability: 65,
       maxFireRisk: "moderate",
       maxOverallRisk: "elevated",
-      temp: "C",
-      dist: "metric",
       collectionExists: ce,
       archetypeExists: () => true,
     });
-    expect(url).toBe("/?p=foo&c=USA&a=rain-shadow-sanctuary&q=garden+town&r=live-fit&fit=cool-summers%2Cdry-air&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated&temp=C&dist=metric");
+    expect(url).toBe("/?p=foo&c=USA&a=rain-shadow-sanctuary&q=garden+town&r=live-fit&fit=cool-summers%2Cdry-air&sh=22&wl=-5&grow=65&fire=moderate&risk=elevated");
   });
   it("omits the default most-unique ranking from the URL", () => {
     expect(
@@ -358,12 +355,10 @@ describe("history writers", () => {
       placeId: "sequim-wa",
       collectionId: null,
       countries: ["USA"],
-      temp: "C",
-      dist: "metric",
       collectionExists: ce,
     });
 
-    expect(window.location.search).toBe("?p=sequim-wa&c=USA&temp=C&dist=metric");
+    expect(window.location.search).toBe("?p=sequim-wa&c=USA");
     expect(window.location.hash).toBe("#deep-sequim-hydrology");
   });
 

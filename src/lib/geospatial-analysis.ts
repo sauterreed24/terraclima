@@ -2,6 +2,9 @@ import type { MicroclimateArchetype, Place, TopographicDriver } from "../types";
 import { getPlaceCorpusRanks } from "./atlas-corpus-stats";
 import { getAnnualPrecipMm, RISK_VALUE as RISK_NUMERIC } from "./climate-metrics";
 
+/** 1 m of relief per km of distance is 5.28 ft per mile. */
+export const FT_PER_MI_PER_M_PER_KM = 5.28;
+
 /** Archetypes where fine-scale topography or canopy structure usually matters for interpretation. */
 const STRUCTURE_ARCHETYPES: readonly MicroclimateArchetype[] = [
   "rain-shadow-sanctuary",
@@ -381,7 +384,7 @@ export function buildGeospatialAnalysis(place: Place): GeospatialAnalysis {
         : "moderate";
 
   const contextLine =
-    `Relief energy ~${Math.round(reliefEnergyMPerKm)} m/km, ` +
+    `Relief energy ~${Math.round(reliefEnergyMPerKm * FT_PER_MI_PER_M_PER_KM)} ft/mi, ` +
     `hydro seasonality ${hydroSeasonalityRatio.toFixed(1)}x, ` +
     `thermal span ${Math.round(annualThermalAmplitudeC)}°C, ` +
     `structure texture ${structuralTexture}/100, ` +

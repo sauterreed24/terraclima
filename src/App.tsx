@@ -5,7 +5,6 @@ import { VirtualPlaceGrid } from "./components/VirtualPlaceGrid";
 import { ExplorerFilterSheet, type ExplorerFilterSheetHandle } from "./components/ExplorerFilterSheet";
 import { FilterBar, RANKING_OPTIONS, type LensScope } from "./components/FilterBar";
 import { FootprintPanel } from "./components/FootprintPanel";
-import { TempToggle } from "./components/TempToggle";
 import { useElementIsolation } from "./hooks/use-element-isolation";
 import { useFocusTrap } from "./hooks/use-focus-trap";
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts";
@@ -234,7 +233,6 @@ if (typeof window !== "undefined" && (parseAppSearch(window.location.search).com
 
 export default function App() {
   const richVisualEffects = useRichVisualEffects();
-  const { temp, dist, setTemp, setDist } = useUnits();
   useEffect(() => {
     document.documentElement.classList.toggle("tc-low-power", !richVisualEffects);
     return () => document.documentElement.classList.remove("tc-low-power");
@@ -495,8 +493,6 @@ export default function App() {
       minGrowability: filters.minGrowability ?? null,
       maxFireRisk: filters.maxFireRisk ?? null,
       maxOverallRisk: filters.maxOverallRisk ?? null,
-      temp,
-      dist,
       theme: themePreference === "auto" ? null : themePreference,
       scenario: climateScenario === "now" ? null : climateScenario,
       comparisonLens,
@@ -543,7 +539,7 @@ export default function App() {
       replaceAppUrl(selectedId && st?.tcPlace ? { tcPlace: true } : null, state);
     }
     prevPlaceIdRef.current = selectedId;
-  }, [view, selectedId, activeCollection, filters, compareIds, compareOpen, ranking, rankingExplicitInUrl, suppressPersistedRankingInUrl, temp, dist, themePreference, climateScenario, comparisonLens, homeBaseId]);
+  }, [view, selectedId, activeCollection, filters, compareIds, compareOpen, ranking, rankingExplicitInUrl, suppressPersistedRankingInUrl, themePreference, climateScenario, comparisonLens, homeBaseId]);
 
   useEffect(() => {
     const onPop = () => {
@@ -583,12 +579,6 @@ export default function App() {
         }
         return resolved;
       });
-      // Units are a sticky global preference persisted by the UnitProvider.
-      // Only honour an explicit unit param on the target entry — otherwise
-      // Back/Forward to an entry created before a toggle (no temp/dist param)
-      // would silently revert the user's choice and overwrite the saved value.
-      if (v.temp) setTemp(v.temp);
-      if (v.dist) setDist(v.dist);
       // Theme: an explicit ?theme= on the target entry wins. When the entry
       // doesn't carry one, fall back to localStorage / auto, mirroring the
       // first-paint resolution.
@@ -609,7 +599,7 @@ export default function App() {
     };
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
-  }, [setTemp, setDist, setTheme]);
+  }, [setTheme]);
 
   // Pause expensive CSS animations while the tab is backgrounded (battery / CPU).
   useEffect(() => {
@@ -2208,7 +2198,6 @@ const TopBar = memo(function TopBar({
           <NavBtn active={view === "collections"} onClick={() => setView("collections")} icon={<Library className="w-3.5 h-3.5" />} label="Collections" />
           <NavBtn active={view === "learn"} onClick={() => setView("learn")} icon={<Compass className="w-3.5 h-3.5" />} label="Learn" />
 
-          <TempToggle className="ml-1" />
           <ThemeToggle preference={themePreference} onChange={onThemeChange} compact />
 
           {compareCount > 0 && (
@@ -2251,11 +2240,6 @@ const TopBar = memo(function TopBar({
               <NavBtn stretch active={view === "trips"} onClick={() => pickView("trips")} icon={<Route className="w-4 h-4" />} label="Trips" />
               <NavBtn stretch active={view === "collections"} onClick={() => pickView("collections")} icon={<Library className="w-4 h-4" />} label="Collections" />
               <NavBtn stretch active={view === "learn"} onClick={() => pickView("learn")} icon={<Compass className="w-4 h-4" />} label="Learn" />
-
-              <div className="pt-1">
-                <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 px-0.5">Units</div>
-                <TempToggle stretch onAfterChange={closeMenu} />
-              </div>
 
               <div className="pt-1">
                 <div className="text-[10px] uppercase tracking-wider text-stone-readable mb-1.5 px-0.5">Theme</div>
@@ -3351,7 +3335,7 @@ const LivabilityTopTenRail = memo(function LivabilityTopTenRail({
               <span className="livability-weight-pill" title="0.6 × mean-of-9 + 0.4 × max-of-9 — surfaces tail risk that an averaged hazard score would hide.">Hazard cushion {Math.round(LIVABILITY_WEIGHTS.hazardCushion * 100)}%</span>
               <span className="livability-weight-pill">Resilience {Math.round(LIVABILITY_WEIGHTS.resilience * 100)}%</span>
               <span className="livability-weight-pill">Growability {Math.round(LIVABILITY_WEIGHTS.growability * 100)}%</span>
-              <span className="livability-weight-pill" title="U-shaped penalty: full marks 700..1500 mm/yr; both arid (<300) and saturated (>2500) reduce the score.">Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
+              <span className="livability-weight-pill" title={prose("U-shaped penalty: full marks at 700–1,500 mm/yr; both arid (<300 mm) and saturated (>2,500 mm) reduce the score.")}>Precip moderation {Math.round(LIVABILITY_WEIGHTS.precipModeration * 100)}%</span>
               <span className="livability-weight-pill" title="Curated cost, social-fabric, and daily-services friction.">Lived friction {Math.round(LIVABILITY_WEIGHTS.livedFriction * 100)}%</span>
               <span className="livability-weight-pill" title="Derived actual-place read from sensory comfort, daily ease, place identity, and scouting clarity.">Place feel {Math.round(LIVABILITY_WEIGHTS.placeFeel * 100)}%</span>
             </div>

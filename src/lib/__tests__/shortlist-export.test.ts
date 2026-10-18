@@ -73,9 +73,11 @@ describe("exportShortlistAsCSV", () => {
     expect(file.filename).toMatch(/\.csv$/);
     expect(file.mimeType).toBe("text/csv");
     const lines = file.body.split("\r\n");
-    expect(lines[0]).toBe("id,name,region,country,lat,lon,elevation_m,koppen,tier,biome");
+    expect(lines[0]).toBe("id,name,region,country,lat,lon,elevation_ft,koppen,tier,biome");
     // First data row uses the unquoted id but should keep the name unquoted too.
     expect(lines[1]).toContain("alpha-valley");
+    // Elevation is exported in feet (1,200 m → 3,937 ft), like the rest of the atlas.
+    expect(lines[1]).toContain(",3937,");
     // Second row has both a comma in the id and a double quote in the name.
     expect(lines[2]).toContain('"beta, ridge"');
     expect(lines[2]).toContain('"Beta ""Ridge"""');

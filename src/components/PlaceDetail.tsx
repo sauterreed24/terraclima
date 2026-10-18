@@ -30,7 +30,7 @@ import { SITE_HISTORY, withSiteHistoryDeepSections } from "../data/places.site-h
 import { clearDossierHash } from "../lib/dossier-url-hash";
 import { CLIMATE_NORMALS_PERIOD, EARTH_OBSERVATION_SOURCES, GEOSPATIAL_ANALYSIS_METHOD, STRUCTURAL_BASELINE_NOTE } from "../lib/atlas-metadata";
 import { getCorpusSynthesisLines, getCorpusContextPanelRows } from "../lib/atlas-corpus-stats";
-import { buildGeospatialAnalysis } from "../lib/geospatial-analysis";
+import { buildGeospatialAnalysis, FT_PER_MI_PER_M_PER_KM } from "../lib/geospatial-analysis";
 import { assessLiveFit, type LiveFitFilters } from "../lib/live-fit";
 import { formatLivedSources } from "../lib/lived-sources";
 import { effectiveAccessRemoteness, effectiveHousingPressure } from "../lib/research/lived-indicators";
@@ -1435,7 +1435,7 @@ function DetailBody({
             <KeyValue label="Analysis confidence" value={titleCaseLocal(geospatial.analysisConfidence)} />
             <KeyValue
               label="Relief energy"
-              value={`${Math.round(geospatial.reliefEnergyMPerKm)} m/km`}
+              value={`${Math.round(geospatial.reliefEnergyMPerKm * FT_PER_MI_PER_M_PER_KM)} ft/mi`}
             />
             <KeyValue
               label="Hydro seasonality"
@@ -1483,7 +1483,7 @@ function DetailBody({
                   <span className="text-[10px] uppercase tracking-wider text-stone">{signal.sourceId === "sentinel-2" ? "Sentinel-2" : "Landsat"}</span>
                 </div>
                 <div className="font-mono-num text-[12px] text-frost mt-0.5">{signal.index}</div>
-                <p className="text-[12px] text-stone leading-snug mt-1">{signal.reason}</p>
+                <p className="text-[12px] text-stone leading-snug mt-1">{prose(signal.reason)}</p>
               </div>
             ))}
           </div>
@@ -1494,7 +1494,7 @@ function DetailBody({
             {EARTH_OBSERVATION_SOURCES.map(source => (
               <li key={source.id}>
                 <span className="font-medium text-ice">{source.label}</span>{" "}
-                <span className="text-stone">({source.operator}, {source.nominalResolutionM} m, {source.revisitDays})</span>
+                <span className="text-stone">({source.operator}, {fmtElev(source.nominalResolutionM, dist)} pixels, {source.revisitDays})</span>
                 <span className="text-stone"> — {source.role}</span>
               </li>
             ))}

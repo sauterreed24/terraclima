@@ -4,6 +4,17 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### US units throughout
+
+- **Fahrenheit and US units everywhere:** the atlas now shows only Fahrenheit, inches, feet and miles. The °C/metric switch is gone, so a saved preference or an older shared link with `temp=C` or `dist=metric` can't bring metric back; those parameters are ignored and dropped from the address bar.
+- **Leaks fixed:** a browser scan of every view and all 226 dossiers (with collapsed panels opened and hover text included) found metric values that bypassed the converter. They are now in US units:
+  - Explorer card tooltips: evapotranspiration "mm/yr", and the place-feel and score-breakdown notes in °C.
+  - The livability "precip moderation" explainer.
+  - Terrain relief, now in ft/mi rather than m/km.
+  - Satellite pixel sizes, now in feet.
+  - The Learn page's solar unit, now kWh/m² per day (the NREL convention).
+- **Exports:** CSV and JSON give elevation in feet (`elevation_ft`). GeoJSON keeps meters in its coordinates, as the format requires, but its properties carry feet.
+
 ### Whitehorse and Oaxaca station-corrected, prose temperatures audited, sharper photos
 
 - **Whitehorse precipitation:** the grid matched the Whitehorse airport gauge year by year until that gauge stopped reporting in 2012. From 2013 it read half again too wet against the successor gauge. The correction now applies only to the drifted years (new `precipFromYear`), which brings annual precipitation from 350 to 285 mm, in line with both gauges. The station checker reports paired station and grid totals by year, so drift like this shows up.

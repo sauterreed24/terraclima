@@ -1,107 +1,31 @@
-import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { createContext, useCallback, useContext } from "react";
 import type { ReactNode } from "react";
 import React from "react";
 
 /**
- * Terraclima unit system — Fahrenheit-first with a Celsius toggle.
+ * Terraclima unit system — US units throughout: Fahrenheit, inches, feet
+ * and miles.
  *
- * All underlying climate data is stored in Celsius and millimetres.
- * The UI is presented through these helpers which honour the user's
- * preferred unit. Formatting is consistent across charts, chips,
- * cards, and detail pages.
+ * All underlying climate data is stored in Celsius and millimetres; every
+ * surface converts at the edge through these helpers (and `localizeProse`
+ * for authored text). The formatters keep their unit parameter so each
+ * conversion stays testable on its own.
  */
 
 export type TempUnit = "F" | "C";
 export type DistUnit = "imperial" | "metric";
 
-export const UNIT_STORAGE_KEY = "terraclima.units.v1";
-
 export interface UnitState {
   temp: TempUnit;
   dist: DistUnit;
-  setTemp: (t: TempUnit) => void;
-  setDist: (d: DistUnit) => void;
-  toggle: () => void;
 }
 
-const defaultState: UnitState = {
-  temp: "F",
-  dist: "imperial",
-  setTemp: () => {},
-  setDist: () => {},
-  toggle: () => {},
-};
+const US_UNITS: UnitState = { temp: "F", dist: "imperial" };
 
-export const UnitContext = createContext<UnitState>(defaultState);
-
-type UnitPreference = Pick<UnitState, "temp" | "dist">;
-
-export function parseUnitSearch(search: string): Partial<UnitPreference> {
-  let s = search;
-  if (s.startsWith("?")) s = s.slice(1);
-  const params = new URLSearchParams(s);
-  const out: Partial<UnitPreference> = {};
-  const temp = params.get("temp");
-  if (temp === "F" || temp === "C") out.temp = temp;
-  const dist = params.get("dist");
-  if (dist === "imperial" || dist === "metric") out.dist = dist;
-  return out;
-}
-
-function readInitialUnitPreference(): UnitPreference {
-  let next: UnitPreference = { temp: "F", dist: "imperial" };
-  if (typeof window === "undefined") return next;
-
-  try {
-    const raw = localStorage.getItem(UNIT_STORAGE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw) as { temp?: TempUnit; dist?: DistUnit };
-      if (parsed.temp === "F" || parsed.temp === "C") next = { ...next, temp: parsed.temp };
-      if (parsed.dist === "imperial" || parsed.dist === "metric") next = { ...next, dist: parsed.dist };
-    }
-  } catch { /* noop */ }
-
-  try {
-    next = { ...next, ...parseUnitSearch(window.location.search) };
-  } catch { /* noop */ }
-
-  return next;
-}
-
-function persistUnitPreference(next: UnitPreference): void {
-  try { localStorage.setItem(UNIT_STORAGE_KEY, JSON.stringify(next)); } catch { /* noop */ }
-}
+export const UnitContext = createContext<UnitState>(US_UNITS);
 
 export function UnitProvider({ children }: { children: ReactNode }) {
-  const [{ temp, dist }, setUnits] = useState<UnitPreference>(() => readInitialUnitPreference());
-
-  const setTemp = useCallback((t: TempUnit) => {
-    setUnits(current => {
-      const next = { ...current, temp: t };
-      persistUnitPreference(next);
-      return next;
-    });
-  }, []);
-
-  const setDist = useCallback((d: DistUnit) => {
-    setUnits(current => {
-      const next = { ...current, dist: d };
-      persistUnitPreference(next);
-      return next;
-    });
-  }, []);
-
-  const toggle = useCallback(() => {
-    setUnits(current => {
-      const nextTemp: TempUnit = current.temp === "F" ? "C" : "F";
-      const next = { ...current, temp: nextTemp };
-      persistUnitPreference(next);
-      return next;
-    });
-  }, []);
-
-  const value: UnitState = useMemo(() => ({ temp, dist, setTemp, setDist, toggle }), [temp, dist, setTemp, setDist, toggle]);
-  return React.createElement(UnitContext.Provider, { value }, children);
+  return React.createElement(UnitContext.Provider, { value: US_UNITS }, children);
 }
 
 export function useUnits(): UnitState {

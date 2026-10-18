@@ -19,8 +19,6 @@
  *   grow    min growability score
  *   fire    max wildfire risk
  *   risk    max average risk level
- *   temp    temperature unit: "F" (default) | "C"
- *   dist    distance unit: "imperial" (default) | "metric"
  *   theme   color theme: "auto" (default) | "light" | "dark"
  *   scn     climate scenario layer: "now" (default) | "ssp245" | "ssp585"
  *   clens   comparison priority lens: "balanced" (default) | "travel" | "move" | "remote" | "garden" | "risk"
@@ -29,7 +27,6 @@
 
 import type { Country, MicroclimateArchetype, RiskLevel, ScenarioId } from "../types";
 import type { RankingProfile } from "./scoring";
-import type { DistUnit, TempUnit } from "./units";
 import { DEFAULT_RANKING } from "./app-ranking-preference";
 import { ALL_RANKING_PROFILES } from "./ranking-options";
 import type { ThemePreference } from "./theme";
@@ -68,8 +65,6 @@ export interface ParsedAppUrl {
   minGrowability: number | null;
   maxFireRisk: RiskLevel | null;
   maxOverallRisk: RiskLevel | null;
-  temp: TempUnit | null;
-  dist: DistUnit | null;
   theme: ThemePreference | null;
   scenario: ScenarioId | null;
   comparisonLens: ComparisonLensId | null;
@@ -157,10 +152,6 @@ export function parseAppSearch(search: string): Partial<ParsedAppUrl> {
   if (isLiveFitRiskCeiling(fire)) out.maxFireRisk = fire;
   const risk = params.get("risk");
   if (isLiveFitRiskCeiling(risk)) out.maxOverallRisk = risk;
-  const temp = params.get("temp");
-  if (temp === "F" || temp === "C") out.temp = temp;
-  const dist = params.get("dist");
-  if (dist === "imperial" || dist === "metric") out.dist = dist;
   const theme = params.get("theme");
   if (isThemePreference(theme)) out.theme = theme;
   const scn = params.get("scn");
@@ -199,8 +190,6 @@ export interface AppUrlState {
   minGrowability?: number | null;
   maxFireRisk?: RiskLevel | null;
   maxOverallRisk?: RiskLevel | null;
-  temp?: TempUnit | null;
-  dist?: DistUnit | null;
   theme?: ThemePreference | null;
   scenario?: ScenarioId | null;
   comparisonLens?: ComparisonLensId | null;
@@ -253,8 +242,6 @@ export function formatAppRelativeUrl(state: AppUrlState): string {
   if (isAllowedNumber(state.minGrowability, LIVE_FIT_GROWABILITY_FLOORS)) params.set("grow", String(state.minGrowability));
   if (isLiveFitRiskCeiling(state.maxFireRisk)) params.set("fire", state.maxFireRisk);
   if (isLiveFitRiskCeiling(state.maxOverallRisk)) params.set("risk", state.maxOverallRisk);
-  if (state.temp === "C") params.set("temp", state.temp);
-  if (state.dist === "metric") params.set("dist", state.dist);
   if (state.theme === "light" || state.theme === "dark") {
     // "auto" is the implicit default; omit so a link doesn't force a theme.
     params.set("theme", state.theme);
@@ -325,8 +312,6 @@ export interface ValidatedAppState {
   minGrowability: number | null;
   maxFireRisk: RiskLevel | null;
   maxOverallRisk: RiskLevel | null;
-  temp: TempUnit | null;
-  dist: DistUnit | null;
   theme: ThemePreference | null;
   scenario: ScenarioId | null;
   comparisonLens: ComparisonLensId;
@@ -373,8 +358,6 @@ export function validatedStateFromSearch(
     minGrowability: p.minGrowability ?? null,
     maxFireRisk: p.maxFireRisk ?? null,
     maxOverallRisk: p.maxOverallRisk ?? null,
-    temp: p.temp ?? null,
-    dist: p.dist ?? null,
     theme: p.theme ?? null,
     scenario: p.scenario ?? null,
     comparisonLens: p.comparisonLens ?? DEFAULT_COMPARISON_LENS,
@@ -406,8 +389,6 @@ export function readInitialAppState(
       minGrowability: null,
       maxFireRisk: null,
       maxOverallRisk: null,
-      temp: null,
-      dist: null,
       theme: null,
       scenario: null,
       comparisonLens: DEFAULT_COMPARISON_LENS,

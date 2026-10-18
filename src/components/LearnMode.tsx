@@ -18,8 +18,8 @@ export function LearnMode({ onOpenPlace }: Props) {
           Default <span className="text-ice font-medium">Recent · 1996–2025</span> is a rolling Daymet V4 R1 climatology
           — not a WMO standard normal. Official <span className="text-ice font-medium">1991–2020</span> normals stay as
           the same-source comparison. Station products (NOAA, ECCC, SMN) validate the grid; ERA5-Land is fallback/QA only.
-          Solar resource is MJ/m²/day from shortwave radiation × day length, not observed sunshine hours. Daymet SWE is
-          snowpack, never snowfall centimetres. Mid-century layers use NEX-GDDP-CMIP6 ensemble deltas when ingested
+          Solar resource is daily shortwave energy in kWh/m² per day (the NREL convention), from radiation × day length, not observed sunshine hours. Daymet SWE is
+          snowpack, never snowfall inches. Mid-century layers use NEX-GDDP-CMIP6 ensemble deltas when ingested
           (research/screening only — not for engineering design).
         </p>
         <p className="text-xs text-stone leading-relaxed">

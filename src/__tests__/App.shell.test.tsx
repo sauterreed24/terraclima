@@ -643,8 +643,9 @@ describe("App shell", () => {
 
     await waitFor(() => {
       const params = new URLSearchParams(window.location.search);
-      expect(params.get("temp")).toBe("C");
-      expect(params.get("dist")).toBe("metric");
+      // Unit params from older links are dropped: the atlas is US units only.
+      expect(params.get("temp")).toBeNull();
+      expect(params.get("dist")).toBeNull();
       expect(params.get("r")).toBe("best-shoulder-seasons");
     });
   }, APP_SHELL_TIMEOUT_MS);
@@ -1002,8 +1003,8 @@ describe("App shell", () => {
       const manualUrl = await screen.findByRole("textbox", { name: "Shareable Explorer URL for manual copy" });
       const manualValue = (manualUrl as HTMLInputElement).value;
       expect(manualValue).toContain("q=monterey");
-      expect(manualValue).toContain("temp=C");
-      expect(manualValue).toContain("dist=metric");
+      expect(manualValue).not.toContain("temp=");
+      expect(manualValue).not.toContain("dist=");
       await waitFor(() => expect(manualUrl).toHaveFocus());
       await new Promise(resolve => window.setTimeout(resolve, 2400));
       expect(screen.getByRole("textbox", { name: "Shareable Explorer URL for manual copy" })).toHaveValue(manualValue);
@@ -1074,61 +1075,28 @@ describe("App shell", () => {
     expect(screen.queryByText("Manual copy")).not.toBeInTheDocument();
   }, APP_SHELL_TIMEOUT_MS);
 
-  it("preserves unit choices in copied Explorer URLs", async () => {
+  it("shows US units only, even when opened from an older metric link", async () => {
     const writeText = vi.fn().mockResolvedValue(undefined);
     Object.defineProperty(navigator, "clipboard", {
       value: { writeText },
       configurable: true,
     });
-    window.history.replaceState(null, "", "/?q=wenatchee");
+    window.history.replaceState(null, "", "/?q=wenatchee&temp=C&dist=metric");
 
     renderApp();
 
-    fireEvent.click(screen.getByRole("button", { name: CELSIUS_LABEL }));
-    fireEvent.click(screen.getByRole("button", { name: METRIC_DISTANCE_LABEL }));
-
-    await waitFor(() => {
-      expect(window.location.search).toContain("temp=C");
-      expect(window.location.search).toContain("dist=metric");
-    });
+    expect(screen.queryByRole("button", { name: CELSIUS_LABEL })).toBeNull();
+    expect(screen.queryByRole("button", { name: METRIC_DISTANCE_LABEL })).toBeNull();
+    expect(document.body.textContent).toMatch(/°F/);
+    expect(document.body.textContent).not.toMatch(/\d\s?°C/);
 
     clickCopyView();
 
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
     expect(copied.searchParams.get("q")).toBe("wenatchee");
-    expect(copied.searchParams.get("temp")).toBe("C");
-    expect(copied.searchParams.get("dist")).toBe("metric");
-  }, APP_SHELL_TIMEOUT_MS);
-
-  it("hydrates unit choices from a shared URL", () => {
-    window.history.replaceState(null, "", "/?temp=C&dist=metric");
-
-    renderApp();
-
-    expect(screen.getByRole("button", { name: CELSIUS_LABEL })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("button", { name: METRIC_DISTANCE_LABEL })).toHaveAttribute("aria-pressed", "true");
-  }, APP_SHELL_TIMEOUT_MS);
-
-  it("keeps the chosen units when navigating Back to an entry without unit params", async () => {
-    window.history.replaceState(null, "", "/?temp=C&dist=metric");
-    renderApp();
-
-    expect(screen.getByRole("button", { name: CELSIUS_LABEL })).toHaveAttribute("aria-pressed", "true");
-    expect(screen.getByRole("button", { name: METRIC_DISTANCE_LABEL })).toHaveAttribute("aria-pressed", "true");
-
-    // Simulate Back to a history entry created before the unit toggle: its URL
-    // carries no temp/dist param. Units are a sticky global preference, so the
-    // navigation must not silently revert them (and overwrite the saved value).
-    window.history.replaceState(null, "", "/");
-    act(() => {
-      window.dispatchEvent(new PopStateEvent("popstate"));
-    });
-
-    await waitFor(() => {
-      expect(screen.getByRole("button", { name: CELSIUS_LABEL })).toHaveAttribute("aria-pressed", "true");
-    });
-    expect(screen.getByRole("button", { name: METRIC_DISTANCE_LABEL })).toHaveAttribute("aria-pressed", "true");
+    expect(copied.searchParams.get("temp")).toBeNull();
+    expect(copied.searchParams.get("dist")).toBeNull();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("keeps live-fit ranking in shared URLs when live-fit controls are active", async () => {
@@ -1413,8 +1381,8 @@ describe("App shell", () => {
     await waitFor(() => expect(writeText).toHaveBeenCalledTimes(1));
     const copied = new URL(writeText.mock.calls[0][0] as string);
     expect(copied.searchParams.get("cmp")).toBe("sequim-wa,port-townsend-wa");
-    expect(copied.searchParams.get("temp")).toBe("C");
-    expect(copied.searchParams.get("dist")).toBe("metric");
+    expect(copied.searchParams.get("temp")).toBeNull();
+    expect(copied.searchParams.get("dist")).toBeNull();
     await waitFor(() => expect(screen.getAllByText("Link copied").length).toBeGreaterThan(0));
   }, APP_SHELL_TIMEOUT_MS);
 
@@ -1441,7 +1409,7 @@ describe("App shell", () => {
     const copied = new URL(writeText.mock.calls[0][0] as string);
     expect(copied.searchParams.get("cmp")).toBe("sequim-wa,port-townsend-wa");
     expect(copied.searchParams.get("clens")).toBe("risk");
-    expect(copied.searchParams.get("temp")).toBe("C");
+    expect(copied.searchParams.get("temp")).toBeNull();
   }, APP_SHELL_TIMEOUT_MS);
 
   it("clears all filters from URL and restores results after empty-results clear", async () => {

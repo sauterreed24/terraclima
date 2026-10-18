@@ -32,6 +32,7 @@ import { buildShortlistDecisionRows } from "./decision-matrix";
 import { scoreLivability } from "./livability-score";
 import { hasSourcedSkySeries } from "./hero-glance";
 import { chapterCountLabel, hasThinChapterDepth, researchedChapterCount } from "./research-chapters";
+import { mToFt } from "./units";
 
 export interface ShortlistExportFile {
   body: string;
@@ -73,7 +74,7 @@ function placeRow(place: Place) {
     country: place.country,
     lat: place.lat,
     lon: place.lon,
-    elevationM: place.elevationM,
+    elevationFt: Math.round(mToFt(place.elevationM)),
     koppen: place.koppen,
     tier: place.tier,
     biome: place.biome ?? "",
@@ -108,10 +109,10 @@ export function exportShortlistAsCSV(
   ctxPartial?: Partial<ExportContext>,
 ): ShortlistExportFile {
   const ctx = context(ctxPartial);
-  const header = ["id", "name", "region", "country", "lat", "lon", "elevation_m", "koppen", "tier", "biome"];
+  const header = ["id", "name", "region", "country", "lat", "lon", "elevation_ft", "koppen", "tier", "biome"];
   const rows = places.map(p => {
     const r = placeRow(p);
-    return [r.id, r.name, r.region, r.country, r.lat, r.lon, r.elevationM, r.koppen, r.tier, r.biome];
+    return [r.id, r.name, r.region, r.country, r.lat, r.lon, r.elevationFt, r.koppen, r.tier, r.biome];
   });
   const body = [header, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n") + "\r\n";
   return {
@@ -134,7 +135,8 @@ export function exportShortlistAsGeoJSON(
       source: ctx.appUrl,
       features: places.map(place => ({
         type: "Feature",
-        // RFC 7946: lon, lat order. Elevation (m) as the 3rd coordinate.
+        // RFC 7946: lon, lat order; the spec puts altitude (meters) third.
+        // Properties carry the feet the rest of the atlas uses.
         geometry: { type: "Point", coordinates: [place.lon, place.lat, place.elevationM] },
         properties: placeRow(place),
       })),
