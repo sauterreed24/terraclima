@@ -229,7 +229,7 @@ export function listMissingStructuredFields(place: Place): MissingEvidenceField[
     missing.push({
       id: "solar",
       label: "Solar resource",
-      note: "Optional monthly solar-resource normals (MJ/m²/day) are absent.",
+      note: "Optional monthly solar-resource normals (kWh/m² per day) are absent.",
     });
   }
   if (!climate.snowCm) {

@@ -25,8 +25,9 @@ describe("app-url state", () => {
     expect(p.minGrowability).toBe(65);
     expect(p.maxFireRisk).toBe("moderate");
     expect(p.maxOverallRisk).toBe("elevated");
-    expect(p.temp).toBe("C");
-    expect(p.dist).toBe("metric");
+    // Older links carried temp/dist; the atlas is US units only, so they are ignored.
+    expect("temp" in p).toBe(false);
+    expect("dist" in p).toBe(false);
   });
 
   it("validates against unknown ids and drops them", () => {
@@ -67,8 +68,6 @@ describe("app-url state", () => {
       minGrowability: 65,
       maxFireRisk: "moderate",
       maxOverallRisk: "elevated",
-      temp: "C",
-      dist: "metric",
       collectionExists: () => false,
       archetypeExists: () => true,
       placeExists: () => true,
@@ -84,8 +83,7 @@ describe("app-url state", () => {
     expect(url).toMatch(/grow=65/);
     expect(url).toMatch(/fire=moderate/);
     expect(url).toMatch(/risk=elevated/);
-    expect(url).toMatch(/temp=C/);
-    expect(url).toMatch(/dist=metric/);
+    expect(url).not.toMatch(/[?&](temp|dist)=/);
     expect(url).toMatch(/cmp=a%2Cb/);
     expect(url).toMatch(/clens=garden/);
   });
@@ -156,16 +154,13 @@ describe("app-url state", () => {
       ranking: "sunniest-winters",
       fitPresets: ["mild-winters", "sunny-winters"],
       minWinterLowC: -5,
-      temp: "C",
-      dist: "metric",
       collectionExists: () => true,
     });
 
     expect(url).toMatch(/r=sunniest-winters/);
     expect(url).toMatch(/fit=mild-winters%2Csunny-winters/);
     expect(url).toMatch(/wl=-5/);
-    expect(url).toMatch(/temp=C/);
-    expect(url).toMatch(/dist=metric/);
+    expect(url).not.toMatch(/[?&](temp|dist)=/);
   });
 
   it("caps compare set at COMPARE_LIMIT on parse", () => {

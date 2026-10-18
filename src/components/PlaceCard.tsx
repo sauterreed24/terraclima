@@ -334,14 +334,14 @@ export const PlaceCard = memo(function PlaceCard({
             </div>
             <div>
               <dt>Leads with</dt>
-              <dd title={visualSignature.strength.rationale}>
+              <dd title={prose(visualSignature.strength.rationale)}>
                 <span className="place-card__signature-value">{visualSignature.strength.shortLabel}</span>
                 <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.strength.value)}</span>
               </dd>
             </div>
             <div>
               <dt>Verify</dt>
-              <dd title={visualSignature.verify.rationale}>
+              <dd title={prose(visualSignature.verify.rationale)}>
                 <span className="place-card__signature-value">{visualSignature.verify.shortLabel}</span>
                 <span className="place-card__signature-score font-mono-num">{Math.round(visualSignature.verify.value)}</span>
               </dd>
@@ -396,7 +396,7 @@ export const PlaceCard = memo(function PlaceCard({
 
           {bioclimSignal ? (
             <div className="place-card__bioclim-row" aria-label="Bioclimatic signature">
-              <span className="chip place-card__bioclim-chip" data-tone={bioclimSignal.tone} title={bioclimSignal.title}>
+              <span className="chip place-card__bioclim-chip" data-tone={bioclimSignal.tone} title={prose(bioclimSignal.title)}>
                 <Droplets className="w-3 h-3 shrink-0" aria-hidden />
                 <span>{bioclimSignal.label}</span>
               </span>

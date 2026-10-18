@@ -397,7 +397,7 @@ export function getBioclimCardSignal(place: Place): BioclimCardSignal | null {
   const titleParts = [
     b.deMartonne.value !== null
       ? `De Martonne ${b.deMartonne.value.toFixed(1)} (${b.deMartonne.classLabel})`
-      : "De Martonne undefined: mean annual temperature <= -10 C",
+      : "De Martonne undefined: mean annual temperature ≤ −10°C",
     `Conrad K ${b.conrad.value.toFixed(1)} (${b.conrad.classLabel})`,
     `Thornthwaite PET ${Math.round(b.thornthwaitePet.value)} mm/yr`,
   ];
