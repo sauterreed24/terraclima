@@ -23,6 +23,11 @@ export interface StationCorrection {
   tminDeltaC?: number[];
   /** Station total ÷ grid total over the same days; scales every month. */
   precipRatio?: number;
+  /**
+   * Apply precipRatio only from this year on: for a grid that tracked its
+   * station until the station stopped feeding it, then drifted.
+   */
+  precipFromYear?: number;
 }
 
 export interface StationCorrectionFile {
@@ -48,6 +53,9 @@ export function validateStationCorrection(placeId: string, c: StationCorrection)
   if (c.precipRatio !== undefined && !(c.precipRatio >= 0.3 && c.precipRatio <= 3)) {
     throw new Error(`${placeId}: precipRatio ${c.precipRatio} outside 0.3–3`);
   }
+  if (c.precipFromYear !== undefined && (c.precipRatio === undefined || !Number.isInteger(c.precipFromYear))) {
+    throw new Error(`${placeId}: precipFromYear needs a precipRatio and a whole year`);
+  }
   if (c.tmaxDeltaC === undefined && c.precipRatio === undefined) {
     throw new Error(`${placeId}: correction changes nothing`);
   }
@@ -65,7 +73,8 @@ export function applyStationCorrection(rows: DaymetDailyRow[], c: StationCorrect
       tmax = mid;
       tmin = mid;
     }
-    return { ...row, tmax, tmin, prcp: row.prcp * (c.precipRatio ?? 1) };
+    const scalePrecip = c.precipFromYear === undefined || row.year >= c.precipFromYear;
+    return { ...row, tmax, tmin, prcp: scalePrecip ? row.prcp * (c.precipRatio ?? 1) : row.prcp };
   });
 }
 
@@ -76,13 +85,13 @@ export function stationValidation(c: StationCorrection): ClimateValidation {
   const parts: string[] = [];
   const temps = [...(c.tmaxDeltaC ?? []), ...(c.tminDeltaC ?? [])];
   if (temps.length) parts.push("temperature");
-  if (c.precipRatio !== undefined) parts.push("precipitation");
+  if (c.precipRatio !== undefined) parts.push(c.precipFromYear === undefined ? "precipitation" : `precipitation from ${c.precipFromYear}`);
   return {
     status: "validated",
     stations: [{ ...c.station, monthCompletenessMin: 0.8 }],
     bias: {
       ...(temps.length ? { annualTempMaeC: round1(temps.reduce((a, v) => a + Math.abs(v), 0) / temps.length) } : {}),
-      ...(c.precipRatio !== undefined ? { annualPrecipBiasPct: round1((1 / c.precipRatio - 1) * 100) } : {}),
+      ...(c.precipRatio !== undefined && c.precipFromYear === undefined ? { annualPrecipBiasPct: round1((1 / c.precipRatio - 1) * 100) } : {}),
     },
     notes:
       `Daymet ${parts.join(" and ")} corrected to GHCN-Daily ${c.station.stationId} (${c.station.name}, ` +

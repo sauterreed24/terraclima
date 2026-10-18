@@ -8,6 +8,7 @@ import {
   kmToMi,
   fmtTemp,
   fmtDelta,
+  toFixedClean,
   fmtPrecip,
   fmtPrecipSmall,
   fmtSnow,
@@ -371,5 +372,19 @@ describe("localizeProse — round metric figures stay round", () => {
     ["The belt runs 5–10 km from town.", "3.1–6.2 mi"],
   ])("%j", (text, expected) => {
     expect(f(text)).toContain(expected);
+  });
+});
+
+describe("negative zero", () => {
+  it("never prints -0 for small negatives", () => {
+    expect(toFixedClean(-0.4)).toBe("0");
+    expect(toFixedClean(-0.04, 1)).toBe("0.0");
+    expect(toFixedClean(-0.6)).toBe("-1");
+    // Whitehorse's January low, −17.98 °C, is −0.4 °F.
+    expect(fmtTemp(-17.98, "F")).toBe("0°F");
+    expect(fmtTemp(-0.3, "C")).toBe("0°C");
+    expect(fmtDelta(-0.02, "C")).toBe("0.0°C");
+    expect(fmtDelta(0.02, "C")).toBe("0.0°C");
+    expect(fmtDelta(0.3, "C")).toBe("+0.3°C");
   });
 });

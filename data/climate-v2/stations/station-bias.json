@@ -3,7 +3,8 @@
  "notes": [
   "Reviewed station corrections for the Daymet grid, applied by scripts/climate-data/generate.ts.",
   "Each delta is the mean station-minus-grid difference for that calendar month over every day both reported, 1991–2025 (scripts/climate-data/station-bias.ts); the precipitation ratio is station total ÷ grid total over the same days and scales every month alike.",
-  "Selection: a GHCN-Daily station within 15 km and 100 m of elevation of the climate anchor with at least 15 usable years (11 for Marfa), a material gap (mean |ΔT| ≥ 1.2°C, a month ≥ 2°C, or rainfall off by more than 20%), and no disagreeing nearby station. Mexican and other places where nearby stations disagree keep the uncorrected grid."
+  "Selection: a GHCN-Daily station within 15 km and 100 m of elevation of the climate anchor with at least 15 usable years (11 for Marfa), a material gap (mean |ΔT| ≥ 1.2°C, a month ≥ 2°C, or rainfall off by more than 20%), and no disagreeing nearby station. Mexican and other places where nearby stations disagree keep the uncorrected grid.",
+  "precipFromYear limits the precipitation ratio to the years after a grid lost the station it tracked: Whitehorse matched Whitehorse A until 2012, then drifted half again too wet against its successor gauge, Whitehorse Auto (per-year paired totals in the diagnostics)."
  ],
  "period": "1991-2025",
  "corrections": {
@@ -1911,6 +1912,22 @@
    },
    "reason": "Waikiki station; leeward Honolulu is far drier than the grid (the airport agrees).",
    "precipRatio": 0.46
+  },
+  "whitehorse-yt": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "CAN02101310",
+    "name": "WHITEHORSE AUTO",
+    "lat": 60.7331,
+    "lon": -135.0978,
+    "elevationM": 707,
+    "distanceKm": 2.6,
+    "elevationDeltaM": 1,
+    "usableYears": 16
+   },
+   "reason": "Airport gauges; the grid matched Whitehorse A year by year (×0.97) until that station stopped reporting in 2012, then ran half again too wet against Whitehorse Auto (×0.66 over 2013–2025).",
+   "precipRatio": 0.66,
+   "precipFromYear": 2013
   }
  }
 }

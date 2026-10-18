@@ -4274,6 +4274,10 @@
     border: 1px solid rgba(71, 90, 122, 0.16);
     background: rgba(255, 255, 255, 0.68);
   }
+  /* The tray beside it is taller; keep the lens copy and buttons together at the top. */
+  .compare-workbench__lens {
+    align-content: start;
+  }
   .compare-workbench__lens-copy,
   .compare-workbench__tray-head {
     min-width: 0;
@@ -4466,6 +4470,7 @@
   .compare-workbench__candidate {
     flex: 0 0 13.5rem;
     display: grid;
+    align-content: start;
     gap: 0.28rem;
     min-height: 7.25rem;
     padding: 0.52rem 0.58rem;

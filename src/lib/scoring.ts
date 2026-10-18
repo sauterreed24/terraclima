@@ -29,6 +29,7 @@ import {
 import { placeFeelScore } from "./place-feel";
 import { computeKoppen, parseAuthoredKoppen } from "./koppen";
 import { computeBioclim } from "./bioclim";
+import { toFixedClean } from "./units";
 
 // Re-exported so the public surface of scoring.ts stays unchanged for callers
 // (components, charts, tests) that previously imported these from here.
@@ -213,11 +214,11 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
       }
       case "coolest-summers": {
         const s = Math.max(0, 100 - Math.max(0, summerHigh - k.coolSummerIdealHighC) * k.coolSummerPerDegC);
-        return { place: p, score: s, note: `Mean summer high ${summerHigh.toFixed(1)}°C` };
+        return { place: p, score: s, note: `Mean summer high ${toFixedClean(summerHigh, 1)}°C` };
       }
       case "mildest-winters": {
         const s = Math.max(0, 100 - Math.max(0, -janLow) * k.mildWinterPerDegC);
-        return { place: p, score: s, note: `Mean winter low ${janLow.toFixed(1)}°C` };
+        return { place: p, score: s, note: `Mean winter low ${toFixedClean(janLow, 1)}°C` };
       }
       case "sunniest-winters": {
         const winterSun = meanWinterSunshinePct(p);
@@ -230,7 +231,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const base = Math.max(0, 100 - Math.abs(shoulder - k.shoulderIdealHighC) * k.shoulderPerDegC);
         const sunBonus = sunshineComfortBonus(p);
         const s = Math.min(100, base + sunBonus);
-        return { place: p, score: s, note: `Spring/fall highs near ${shoulder.toFixed(1)}°C` };
+        return { place: p, score: s, note: `Spring/fall highs near ${toFixedClean(shoulder, 1)}°C` };
       }
       case "driest-air": {
         const hum = p.climate.humidity
@@ -340,7 +341,7 @@ export function rankPlaces(profile: RankingProfile, pool: Place[] = PLACES, now:
         const precipScore = Math.max(0, 22 - Math.max(0, monthPrecip - 55) * 0.16);
         const snowScore = Math.max(0, 15 - Math.min(15, monthSnow * 0.5));
         const s = Math.min(100, highScore + nightScore + precipScore + snowScore);
-        return { place: p, score: s, note: `${MONTH_NAMES[mi]}: ${monthHigh.toFixed(0)}°C day · ${monthLow.toFixed(0)}°C night · ${monthPrecip.toFixed(0)} mm` };
+        return { place: p, score: s, note: `${MONTH_NAMES[mi]}: ${toFixedClean(monthHigh)}°C day · ${toFixedClean(monthLow)}°C night · ${monthPrecip.toFixed(0)} mm` };
       }
       case "best-for-remote-work": {
         // Cool productive summers + mild winters + low fire + low smoke +

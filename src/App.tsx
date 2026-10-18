@@ -49,7 +49,7 @@ import { buildContextStressRows, CONTEXT_SCENARIO_BY_ID, filtersForContextScenar
 import { getClimateTourismProfile, type ClimateTourismProfile } from "./lib/climate-tourism";
 import { motionPolicy, prefersReducedMotion, useRichVisualEffects } from "./lib/device-profile";
 import { placeDocumentTitle } from "./lib/site-metadata";
-import { fmtDelta, fmtTemp, useProse, useUnits, type UnitState } from "./lib/units";
+import { fmtDelta, fmtTemp, toFixedClean, useProse, useUnits, type UnitState } from "./lib/units";
 import { runViewTransition } from "./lib/view-transition";
 import {
   loadClimateTripsView,
@@ -3475,7 +3475,7 @@ const ScenarioRemapPanel = memo(function ScenarioRemapPanel({
               <span className="scenario-remap__deltas" aria-label={`${row.place.name} projected climate deltas`}>
                 <span>Summer {fmtDelta(row.summerHighDeltaC, temp, { digits: 1 })}</span>
                 <span>Winter {fmtDelta(row.winterLowDeltaC, temp, { digits: 1 })}</span>
-                <span>Precip {row.precipDeltaPct > 0 ? "+" : ""}{row.precipDeltaPct.toFixed(0)}%</span>
+                <span>Precip {row.precipDeltaPct > 0 && toFixedClean(row.precipDeltaPct) !== "0" ? "+" : ""}{toFixedClean(row.precipDeltaPct)}%</span>
               </span>
             </button>
           );
