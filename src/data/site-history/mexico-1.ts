@@ -2,7 +2,7 @@ import type { SiteHistoryEntry } from "./types";
 
 export const SITE_HISTORY_MEXICO_1: Record<string, SiteHistoryEntry> = {
   "oaxaca-mx": {
-    why: "Seventeen degrees north would read as tropical heat if the Valles Centrales sat near sea level. At about 1555 m the lapse rate knocks afternoon highs into the low-to-mid 20s °C for most months, while the Sierra Madre de Oaxaca and Sierra Madre del Sur blunt Gulf and Pacific moisture except when summer monsoon convection builds on the ridges. East–west valley axes still funnel Isthmus air; orographic lift then dumps short, hard afternoon storms. Dry-season light is hard and clear. Wet-season evenings usually recover after the cells collapse.",
+    why: "Seventeen degrees north would read as tropical heat if the Valles Centrales sat near sea level. At about 1555 m the lapse rate holds afternoon highs to the high 20s °C for most months (low 30s in the dry spring before the rains), while the Sierra Madre de Oaxaca and Sierra Madre del Sur blunt Gulf and Pacific moisture except when summer monsoon convection builds on the ridges. East–west valley axes still funnel Isthmus air; orographic lift then dumps short, hard afternoon storms. Dry-season light is hard and clear. Wet-season evenings usually recover after the cells collapse.",
     seasons: {
       summer: "The green, rainy season — afternoons near 27°C, nights around 14°C, and clouds that build over the mountains by midday and break into heavy afternoon thunderstorms, washing the streets and turning the dry hills of the valley green. Mornings are usually sunny and fresh. In July the city celebrates the Guelaguetza, when dancers from the state's many Indigenous communities fill the auditorium on the Cerro del Fortín.",
     },

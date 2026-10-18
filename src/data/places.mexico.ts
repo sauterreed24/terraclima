@@ -29,7 +29,7 @@ export const PLACES_MEXICO: Place[] = [
     whyDistinct: "Tropical latitude (17°N) combined with 1555 m elevation produces a climate that is effectively 'perpetual spring.' The surrounding sierras both protect the valleys from Gulf/Pacific moisture extremes and enhance convective rainfall in the wet season.",
 
     experience: {
-      feel: "Oaxaca feels like the calendar barely moves. At 1,555 m the city sits exactly where subtropical heat yields to temperate ease — afternoons near 22 to 26°C month after month, golden dry-season light most of the year, and ten months when eating outdoors is simply the default.",
+      feel: "Oaxaca feels like the calendar barely moves. At 1,555 m the city sits exactly where subtropical heat yields to temperate ease — afternoons in the high 20s °C month after month, golden dry-season light most of the year, and ten months when eating outdoors is simply the default.",
       seasons: {
         winter: "The heart of the dry season — warm, brilliant afternoons near 25°C, crisp mornings dipping toward 8°C, and skies so clear the surrounding sierras stand sharp on the horizon.",
         spring: "The warmest, driest stretch before the rains — afternoons climbing near 30°C through April and May, dusty and bright, the valleys waiting for the first storms to break the heat.",
@@ -1601,10 +1601,10 @@ export const PLACES_MEXICO: Place[] = [
     archetypes: ["volcanic-upland", "frost-hollow", "high-desert-escape"],
     drivers: ["elevation-lapse-rate", "continentality", "cold-air-drainage"],
     summaryShort: "One of Chihuahua's highest towns — where winter nights drop to −15°C on the plateau while the canyon bottoms 1,800 m below stay subtropical.",
-    summaryImmersive: "Creel is one of the highest towns in Chihuahua, at 2,338 m on the Tarahumara plateau. The thin, dry air produces dramatic diurnal swings: January afternoons around 15°C, January nights regularly −10 to −15°C. Light snow falls most winters — a rarity for Mexico. Yet the Copper Canyon (Barrancas del Cobre) system drops more than 1,800 m directly off the plateau into subtropical microclimates where bananas and citrus grow just 25 km away horizontally. This vertical zonation is among the steepest in North America; the Tarahumara (Rarámuri) people have exploited it for centuries, moving between the plateau in summer and the canyon floor in winter.",
+    summaryImmersive: "Creel is one of the highest towns in Chihuahua, at 2,338 m on the Tarahumara plateau. The thin, dry air produces dramatic diurnal swings: mild, sunny January afternoons and frosty nights, with sharper freezes when Arctic air reaches the Sierra. Light snow falls most winters — a rarity for Mexico. Yet the Copper Canyon (Barrancas del Cobre) system drops more than 1,800 m directly off the plateau into subtropical microclimates where bananas and citrus grow just 25 km away horizontally. This vertical zonation is among the steepest in North America; the Tarahumara (Rarámuri) people have exploited it for centuries, moving between the plateau in summer and the canyon floor in winter.",
     whyDistinct: "High-elevation pine-oak plateau on a dry subtropical latitude + immediate vertical collapse into subtropical canyons = one of the most dramatic climate gradients in North America.",
     experience: {
-      feel: "Creel feels like Mexico's altitude surprise — a pine-oak plateau at 2338 m where January nights drop to −4°C and light snow falls, while subtropical canyon bottoms with bananas and citrus sit just 25 km away and 1800 m below.",
+      feel: "Creel feels like Mexico's altitude surprise — a pine-oak plateau at 2338 m where winter nights frost and light snow falls, while subtropical canyon bottoms with bananas and citrus sit just 25 km away and 1800 m below.",
       seasons: {
         winter: "Cold and clear — afternoons near 15°C, nights regularly below freezing, light snow most winters, and the Copper Canyon railway running through a landscape that feels more Colorado than Chihuahua.",
         spring: "Dry and warming fast — afternoons climbing through the low 20s, the last frost risk in April, and the plateau greening before monsoon arrives.",

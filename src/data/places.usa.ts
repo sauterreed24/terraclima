@@ -896,7 +896,7 @@ export const PLACES_USA: Place[] = [
     experience: {
       feel: "Bishop feels like the desert pressed up against the High Sierra. It sits in North America's deepest rain shadow — barely 130 mm of rain a year — yet Sierra snowmelt runs through town in century-old ditches, and the light off Mount Whitney and the White Mountains is almost unreal.",
       seasons: {
-        winter: "Cold, clear, and sharply diurnal — afternoons near 9°C under brilliant sun, nights dropping below freezing, and just enough valley snow to dust the sage before it melts.",
+        winter: "Cold, clear, and sharply diurnal — afternoons near 13°C under brilliant sun, nights dropping below freezing, and just enough valley snow to dust the sage before it melts.",
         spring: "Windy and luminous — afternoons climbing through the teens into the 20s, the Sierra peaks still deep in snow, and the eastside coming alive for climbers and anglers.",
         summer: "Hot and bone-dry — afternoons near 34°C with humidity often below 10%, but the huge day-night swing drops evenings back into real comfort. Wildfire smoke off the Sierra is the summer wildcard.",
         autumn: "Arguably the finest season — golden cottonwoods, calm warm days, crisp nights, and the famous eastside light at its sharpest before winter.",
@@ -1093,7 +1093,7 @@ export const PLACES_USA: Place[] = [
     experience: {
       feel: "Silver City feels like the desert's most underrated 'just right.' At 1,800 m on the edge of the Gila, elevation files down the heat, the monsoon delivers reliable afternoon storms, and the air stays dry enough that even a 30°C afternoon feels easy.",
       seasons: {
-        winter: "Cool, sunny, and four-season-real — afternoons near 11°C, frosty nights near −5°C, and occasional snow that melts fast under intense high-desert sun.",
+        winter: "Cool, sunny, and four-season-real — afternoons near 11°C, frosty nights a few degrees below freezing, and occasional snow that melts fast under intense high-desert sun.",
         spring: "Bright, dry, and windy — afternoons climbing through the teens into the 20s, the fore-monsoon fire-watch season on, and the Gila greening along its creeks.",
         summer: "Warm rather than brutal — afternoons near 30°C with low humidity, then the monsoon's big afternoon thunderstorms building against the Mogollons through July and August.",
         autumn: "Golden and long — warm days, crisp nights, and weeks of clear, calm weather as the monsoon fades and the cottonwoods turn.",

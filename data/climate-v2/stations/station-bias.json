@@ -1928,6 +1928,48 @@
    "reason": "Airport gauges; the grid matched Whitehorse A year by year (×0.97) until that station stopped reporting in 2012, then ran half again too wet against Whitehorse Auto (×0.66 over 2013–2025).",
    "precipRatio": 0.66,
    "precipFromYear": 2013
+  },
+  "oaxaca-mx": {
+   "station": {
+    "network": "GHCNd",
+    "stationId": "MXM00076775",
+    "name": "OAXACA OAX.",
+    "lat": 17.05,
+    "lon": -96.717,
+    "elevationM": 1518,
+    "distanceKm": 2.8,
+    "elevationDeltaM": -37,
+    "usableYears": 17
+   },
+   "reason": "City synoptic station (6,271 paired days, about 17 years, in broken runs); the grid's afternoons run 2–3°C cool all year, and the Coyotepec and Zaachila valley stations agree (+1.5 to +2.5°C). Nights are close.",
+   "tmaxDeltaC": [
+    2.2,
+    2.4,
+    2.5,
+    3.1,
+    2.4,
+    2.1,
+    2,
+    2.2,
+    2,
+    2.2,
+    2.4,
+    2.2
+   ],
+   "tminDeltaC": [
+    -0.3,
+    -0.3,
+    0.3,
+    0.6,
+    0.9,
+    0.7,
+    0.3,
+    0.5,
+    0.4,
+    0,
+    -0.4,
+    -0.5
+   ]
   }
  }
 }

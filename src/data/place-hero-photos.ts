@@ -57,7 +57,7 @@ export const HERO_BY_PLACE_ID: Record<string, PlaceHeroPhoto> = {
   "kamloops-bc": { file: "Kamloops summer sunset (52782962539).jpg", alt: "Summer sunset over the dry Thompson country at Kamloops" },
   "nelson-bc": { file: "Kootenay Lake at Nelson, BC, Canada (54881215708).jpg", alt: "Kootenay Lake below Nelson in the West Kootenays" },
   "revelstoke-bc": { file: "View of Lake Revelstoke from Mount Revelstoke National Park 20240825 1.jpg", alt: "Lake Revelstoke from the Columbia Mountains snow belt" },
-  "prince-rupert-bc": { file: "Prince Rupert harbour 4.jpg", alt: "Prince Rupert harbour on the very wet North Coast" },
+  "prince-rupert-bc": { file: "Panorama over Cow Bay Marina - Prince Rupert - British Columbia - Canada.jpg", alt: "Cow Bay Marina and the coastal mountains of Prince Rupert harbour on the North Coast" },
   "st-johns-nl": { file: "St. John's Harbour - St. John's, Newfoundland 2019-08-08.jpg", alt: "St. John's harbour and steep streets on the Avalon Peninsula" },
   "whitehorse-yt": { file: "Cañón Miles, Yukón, Canadá, 2017-08-26, DD 130-132 PAN.jpg", alt: "Miles Canyon on the Yukon River at Whitehorse" },
   "yellowknife-nt": { file: "Prince of Wales Northern Heritage Centre, Yellowknife, NT, from city hall.jpg", alt: "Frame Lake and the Prince of Wales Northern Heritage Centre on a summer day in Yellowknife, Northwest Territories" },
