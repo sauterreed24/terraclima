@@ -15,6 +15,7 @@ All notable changes to Terraclima are tracked here.
   - Silver City and Hermosillo: winter nights.
   - Creel: overstated "−10 to −15°C" nights.
   - Puerto Escondido contrast: 5°C, not 6°C.
+  - Bishop's and Hood River's summaries no longer contradict their own dossiers: Mammoth Lakes gets about 550 mm a year (not 1,800), and Cascade Locks about 1,900 mm (not 1,100).
 - **Negative zero:** temperatures that round to zero no longer print as "−0°F" (Whitehorse's January low), in stats, deltas, chart ticks and notes.
 - **Hero photos:**
   - Prince Rupert: a Cow Bay Marina panorama replaces a grey harbour.
