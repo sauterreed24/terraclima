@@ -4,6 +4,24 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Whitehorse and Oaxaca station-corrected, prose temperatures audited, sharper photos
+
+- **Whitehorse precipitation:** the grid matched the Whitehorse airport gauge year by year until that gauge stopped reporting in 2012. From 2013 it read half again too wet against the successor gauge. The correction now applies only to the drifted years (new `precipFromYear`), which brings annual precipitation from 350 to 285 mm, in line with both gauges. The station checker reports paired station and grid totals by year, so drift like this shows up.
+- **Oaxaca temperatures:** the city's synoptic station shows the grid's afternoons running 2–3°C cool all year, and the Coyotepec and Zaachila valley stations agree. Highs now read 28–33°C, matching the city's normals. Oaxaca moves from #5 to #6.
+- **Prose temperature audit:** every visible temperature claim was checked against the place's monthly normals, and the errors were fixed:
+  - Oaxaca: "22–26°C afternoons", and the season lines.
+  - Bishop: winter afternoons are 13°C, not 9°C.
+  - Crested Butte and Stanley: winter nights updated after the station corrections.
+  - Silver City and Hermosillo: winter nights.
+  - Creel: overstated "−10 to −15°C" nights.
+  - Puerto Escondido contrast: 5°C, not 6°C.
+- **Negative zero:** temperatures that round to zero no longer print as "−0°F" (Whitehorse's January low), in stats, deltas, chart ticks and notes.
+- **Hero photos:**
+  - Prince Rupert: a Cow Bay Marina panorama replaces a grey harbour.
+  - La Paz: Playa Balandra's turquoise shallows replace a street of parked cars.
+  - Tofino: blue hour over the tidal flats replaces a flat grey beach.
+- **Compare polish:** the priority-lens and candidate cards keep their content together at the top instead of stretching it across empty space.
+
 ### Template chapters removed; evidence counts researched chapters
 
 - **Hidden template chapters removed:** 135 places carried two fill-in "deep sections" ("Elevation, airflow, and the … classification here" and "Housing, access, and who this place actually fits"). These restated the record's numbers in a fixed template, so the dossier already hid them. They were still being downloaded on every first load, and they still counted as evidence. The 362 KB overlay is gone, and first-load JavaScript drops from about 780 KB to 733 KB gzip. The performance ceiling is tightened to 750 KB so the saving holds.

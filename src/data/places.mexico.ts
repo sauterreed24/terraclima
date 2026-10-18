@@ -25,16 +25,16 @@ export const PLACES_MEXICO: Place[] = [
     drivers: ["elevation-lapse-rate", "monsoon-lift", "aspect-slope"],
 
     summaryShort: "A cultural capital where elevation produces almost year-round spring — highs in the low-to-mid 20s month after month.",
-    summaryImmersive: "At 1555 m in the central valleys of Oaxaca, the city sits at exactly the elevation where subtropical heat yields to temperate comfort. Afternoons hover near 26–30 °C for most of the year; summer nights often sit near 14–15 °C, while winter nights can dip near 3–8 °C. The dry season stretches from November through May — golden light, crisp mornings, brilliant skies. The wet season arrives in June with afternoon thunderstorms that build over the surrounding sierras and roll across the valleys, usually dissipating by evening. In ten months of the year you can reasonably plan to eat outdoors. The valleys run east-west, funneling moisture from the Isthmus of Tehuantepec, and the encircling sierras rise over 3000 m, producing pronounced orographic enhancement of summer rainfall. It's a climate shaped by altitude, monsoon geometry, and the sheltering mass of Mexico's great southern ranges.",
+    summaryImmersive: "At 1555 m in the central valleys of Oaxaca, the city sits at exactly the elevation where subtropical heat yields to temperate comfort. Afternoons hover near 28–32 °C for most of the year; summer nights often sit near 14–15 °C, while winter nights can dip near 3–8 °C. The dry season stretches from November through May — golden light, crisp mornings, brilliant skies. The wet season arrives in June with afternoon thunderstorms that build over the surrounding sierras and roll across the valleys, usually dissipating by evening. In ten months of the year you can reasonably plan to eat outdoors. The valleys run east-west, funneling moisture from the Isthmus of Tehuantepec, and the encircling sierras rise over 3000 m, producing pronounced orographic enhancement of summer rainfall. It's a climate shaped by altitude, monsoon geometry, and the sheltering mass of Mexico's great southern ranges.",
     whyDistinct: "Tropical latitude (17°N) combined with 1555 m elevation produces a climate that is effectively 'perpetual spring.' The surrounding sierras both protect the valleys from Gulf/Pacific moisture extremes and enhance convective rainfall in the wet season.",
 
     experience: {
       feel: "Oaxaca feels like the calendar barely moves. At 1,555 m the city sits exactly where subtropical heat yields to temperate ease — afternoons in the high 20s °C month after month, golden dry-season light most of the year, and ten months when eating outdoors is simply the default.",
       seasons: {
-        winter: "The heart of the dry season — warm, brilliant afternoons near 25°C, crisp mornings dipping toward 8°C, and skies so clear the surrounding sierras stand sharp on the horizon.",
-        spring: "The warmest, driest stretch before the rains — afternoons climbing near 30°C through April and May, dusty and bright, the valleys waiting for the first storms to break the heat.",
+        winter: "The heart of the dry season — warm, brilliant afternoons near 29°C, crisp mornings dipping toward 8°C, and skies so clear the surrounding sierras stand sharp on the horizon.",
+        spring: "The warmest, driest stretch before the rains — afternoons climbing near 33°C through April and May, dusty and bright, the valleys waiting for the first storms to break the heat.",
         summer: "The wet-season rhythm sets in: warm mornings give way to afternoon thunderstorms that build over the sierras and clear by evening, holding highs near a comfortable 25°C and greening the whole valley.",
-        autumn: "Rains taper through September and October back into golden dry-season light — mild afternoons near 25°C, freshening nights, and the valleys at their most lush before the dust returns.",
+        autumn: "Rains taper through September and October back into golden dry-season light — warm afternoons near 29°C, freshening nights, and the valleys at their most lush before the dust returns.",
       },
       travelerFit: "Visitors come for the food and mezcal, Monte Albán and the craft villages, and Day of the Dead — all under a near-perfect highland sky.",
       residentFit: "It rewards remote workers, retirees, and culture-seekers who want perpetual spring, deep food and arts traditions, and a walkable historic core.",
@@ -99,7 +99,7 @@ export const PLACES_MEXICO: Place[] = [
     },
 
     localContrast: [
-      { radiusKm: 140, summerHighDeltaC: -6, note: "vs Pacific-coast Oaxaca (Puerto Escondido) — the valley runs about 6°C cooler on July afternoons." },
+      { radiusKm: 140, summerHighDeltaC: -5, note: "vs Pacific-coast Oaxaca (Puerto Escondido) — the valley runs about 5°C cooler on July afternoons." },
       { radiusKm: 50, precipDeltaPct: -30, note: "vs the rainier southern sierra slopes." },
     ],
     nearbyContrasts: [
