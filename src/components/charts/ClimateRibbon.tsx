@@ -1,6 +1,6 @@
 import { MONTHS } from "../../types";
 import type { Monthly12 } from "../../types";
-import { useUnits, toTempUnit } from "../../lib/units";
+import { useUnits, toFixedClean, toTempUnit } from "../../lib/units";
 import { useId } from "react";
 
 interface Props {
@@ -85,7 +85,7 @@ export function ClimateRibbon({ highs, lows, height = 180, refHighs, refLows, re
             textAnchor="end"
             fontFamily="JetBrains Mono"
           >
-            {t.toFixed(0)}{ti === ticks.length - 1 ? `°${temp}` : "°"}
+            {toFixedClean(t)}{ti === ticks.length - 1 ? `°${temp}` : "°"}
           </text>
         </g>
       ))}

@@ -12,7 +12,7 @@ import { loadResearchReceipts } from "../../data/generated/research";
 import { groupClaimsByScope, sourcesForClaim } from "../../lib/research/claim-scope";
 import { safeExternalHref } from "../../lib/safe-url";
 import { downloadBlobFile } from "../../lib/download-blob";
-import { fmtDelta, useProse, useUnits } from "../../lib/units";
+import { fmtDelta, toFixedClean, useProse, useUnits } from "../../lib/units";
 
 /**
  * Compact “How to read this profile” disclosure for the dossier.
@@ -119,7 +119,7 @@ export function PlaceEvidenceSummary({
               {(() => {
                 const shift = CLIMATE_V2_OVERLAY_BY_ID[place.id]?.recentShift;
                 if (!shift) return null;
-                const pct = (n: number) => `${n > 0 ? "+" : ""}${n.toFixed(1)}%`;
+                const pct = (n: number) => `${n > 0 && toFixedClean(n, 1) !== "0.0" ? "+" : ""}${toFixedClean(n, 1)}%`;
                 const deg = (c: number) => fmtDelta(c, temp, { digits: 1, signed: true });
                 return (
                   <p className="tc-evidence-summary__body mt-2">

@@ -73,6 +73,7 @@ import {
 } from "./climate-metrics";
 import { countLivedSourceEvidence } from "./lived-sources";
 import { dominantPlaceFeelDrag, placeFeelScore } from "./place-feel";
+import { toFixedClean } from "./units";
 
 const RISK_KEYS = [
   "wildfire",
@@ -671,11 +672,11 @@ export function describeHumanComfort(p: Place): HumanComfortNarrative {
   if (felt >= 82) pushLimited(strengths, `${months}/12 months feel broadly usable, not just one perfect shoulder season.`);
   else if (months <= 5) pushLimited(frictions, `Only ${months}/12 months clear the easy day-night-precip screen.`);
 
-  if (summer >= 82 && summerHigh <= 30) pushLimited(strengths, `Summer heat is restrained enough for normal afternoon routines (${summerHigh.toFixed(1)}°C mean high).`);
-  else if (summer < 55) pushLimited(frictions, `Summer heat load is a dominant constraint (${summerHigh.toFixed(1)}°C mean high).`);
+  if (summer >= 82 && summerHigh <= 30) pushLimited(strengths, `Summer heat is restrained enough for normal afternoon routines (${toFixedClean(summerHigh, 1)}°C mean high).`);
+  else if (summer < 55) pushLimited(frictions, `Summer heat load is a dominant constraint (${toFixedClean(summerHigh, 1)}°C mean high).`);
 
-  if (winter >= 82 && winterLow >= -6) pushLimited(strengths, `Winter lows stay within a manageable daily-life band (${winterLow.toFixed(1)}°C mean).`);
-  else if (winter < 55) pushLimited(frictions, `Winter cold is not cosmetic; it changes transport, housing, and outdoor rhythm (${winterLow.toFixed(1)}°C mean low).`);
+  if (winter >= 82 && winterLow >= -6) pushLimited(strengths, `Winter lows stay within a manageable daily-life band (${toFixedClean(winterLow, 1)}°C mean).`);
+  else if (winter < 55) pushLimited(frictions, `Winter cold is not cosmetic; it changes transport, housing, and outdoor rhythm (${toFixedClean(winterLow, 1)}°C mean low).`);
 
   if (diurnal >= 12 && summerHigh < 34) pushLimited(strengths, `Night recovery is strong: summer diurnal swing of ${Math.round(diurnal)}°C lifts sleep quality.`);
   if (sky >= 70) pushLimited(strengths, "Sky and light support outdoor time rather than just mild thermometer readings.");
@@ -811,7 +812,7 @@ function makeRationale(p: Place, key: ComponentKey, value: number): string {
     case "thermalComfort": {
       const sh = meanSummerHigh(p);
       const jl = meanJanLow(p);
-      return `Summer ${sh.toFixed(1)}°C · winter ${jl.toFixed(1)}°C · ${annualComfortMonthCount(p)}/12 easy months · sky ${Math.round(skyComfortScore(p))}/100 · curator ${Math.round(p.scores.comfort)}/100 → felt comfort ${Math.round(value)}/100`;
+      return `Summer ${toFixedClean(sh, 1)}°C · winter ${toFixedClean(jl, 1)}°C · ${annualComfortMonthCount(p)}/12 easy months · sky ${Math.round(skyComfortScore(p))}/100 · curator ${Math.round(p.scores.comfort)}/100 → felt comfort ${Math.round(value)}/100`;
     }
     case "atmosphericEase":
       return `Sky ${Math.round(skyComfortScore(p))}/100 | wind ${Math.round(windExposureScore(p))}/100 | humidity ${Math.round(mugginessScore(p))}/100 | air ${Math.round(airQualityComfortScore(p))}/100 | solar ${Math.round(solarComfortScore(p))}/100`;

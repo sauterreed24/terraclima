@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-17T23:23:44.486Z",
+  "generatedAt": "2026-10-18T05:18:28.933Z",
   "placeCount": 226,
   "generatedCount": 226,
   "missing": [],
@@ -410,7 +410,7 @@
       "daymetHigh": 19.67,
       "authoredLow": -22.13,
       "daymetLow": -17.87,
-      "validation": "reviewed-exception"
+      "validation": "validated"
     },
     {
       "id": "iqaluit-nu",
@@ -483,6 +483,18 @@
       "authoredLow": -14.33,
       "daymetLow": -11.57,
       "validation": "grid-only"
+    },
+    {
+      "id": "oaxaca-mx",
+      "name": "Oaxaca City (Valles Centrales)",
+      "country": "Mexico",
+      "dHigh": 3.43,
+      "dLow": 0.3,
+      "authoredHigh": 26.3,
+      "daymetHigh": 29.73,
+      "authoredLow": 8.27,
+      "daymetLow": 8.57,
+      "validation": "validated"
     },
     {
       "id": "san-cristobal-mx",
@@ -871,14 +883,6 @@
       "validation": "grid-only"
     },
     {
-      "id": "whitehorse-yt",
-      "name": "Whitehorse",
-      "biasPct": 34.7,
-      "authored": 260,
-      "daymet": 350.3,
-      "validation": "reviewed-exception"
-    },
-    {
       "id": "zacatlan-de-las-manzanas-mx",
       "name": "Zacatlan de las Manzanas",
       "biasPct": -34.6,
@@ -949,8 +953,8 @@
   "exactSolarArrayDupGroups": 0,
   "unexplained": [],
   "validationCounts": {
-    "validated": 53,
+    "validated": 55,
     "gridOnly": 126,
-    "reviewedException": 47
+    "reviewedException": 45
   }
 }

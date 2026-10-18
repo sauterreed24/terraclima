@@ -30,7 +30,7 @@ import {
   meanSummerHumidityPct,
   meanWinterSunshinePct,
 } from "./climate-metrics";
-import { fmtDelta, fmtSnow, type DistUnit, type TempUnit } from "./units";
+import { fmtDelta, fmtSnow, toFixedClean, type DistUnit, type TempUnit } from "./units";
 
 // ---------- Persistence ----------
 
@@ -485,7 +485,7 @@ export function formatHomeDeltaValue(signal: HomeDeltaSignal, temp: TempUnit, di
     }
     case "risk": {
       const v = signal.delta;
-      return `${v > 0 ? "+" : ""}${v.toFixed(1)} / 5`;
+      return `${v > 0 && toFixedClean(v, 1) !== "0.0" ? "+" : ""}${toFixedClean(v, 1)} / 5`;
     }
   }
 }

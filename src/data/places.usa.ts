@@ -892,11 +892,11 @@ export const PLACES_USA: Place[] = [
     drivers: ["rain-shadow", "elevation-lapse-rate"],
     summaryShort: "North America's deepest rain shadow, held between the two highest walls of the continental US.",
     summaryImmersive: "Bishop sits in the lee of the Sierra — the mountain wall that wrings Pacific storms dry before they reach the Owens Valley. Annual precipitation is just ~130 mm, yet Sierra snowmelt flows through the valley in irrigation ditches older than California statehood. Summers are hot but dry; winter nights bite under brilliantly clear skies. On a clear February morning you can stand in the valley and see both Whitney's summit and the bristlecone pines of the White Mountains — the oldest non-clonal trees on Earth — in a single view.",
-    whyDistinct: "The Sierra Nevada rises over 3000 m immediately west, producing one of the most extreme rain-shadow gradients on the continent. Yearly precipitation drops from ~1800 mm at Mammoth Lakes to ~130 mm at Bishop only ~50 km east.",
+    whyDistinct: "The Sierra Nevada rises over 3000 m immediately west, producing one of the most extreme rain-shadow gradients on the continent. Yearly precipitation drops from ~550 mm at Mammoth Lakes, much of it as snow, to ~130 mm at Bishop only ~50 km east.",
     experience: {
       feel: "Bishop feels like the desert pressed up against the High Sierra. It sits in North America's deepest rain shadow — barely 130 mm of rain a year — yet Sierra snowmelt runs through town in century-old ditches, and the light off Mount Whitney and the White Mountains is almost unreal.",
       seasons: {
-        winter: "Cold, clear, and sharply diurnal — afternoons near 9°C under brilliant sun, nights dropping below freezing, and just enough valley snow to dust the sage before it melts.",
+        winter: "Cold, clear, and sharply diurnal — afternoons near 13°C under brilliant sun, nights dropping below freezing, and just enough valley snow to dust the sage before it melts.",
         spring: "Windy and luminous — afternoons climbing through the teens into the 20s, the Sierra peaks still deep in snow, and the eastside coming alive for climbers and anglers.",
         summer: "Hot and bone-dry — afternoons near 34°C with humidity often below 10%, but the huge day-night swing drops evenings back into real comfort. Wildfire smoke off the Sierra is the summer wildcard.",
         autumn: "Arguably the finest season — golden cottonwoods, calm warm days, crisp nights, and the famous eastside light at its sharpest before winter.",
@@ -1093,7 +1093,7 @@ export const PLACES_USA: Place[] = [
     experience: {
       feel: "Silver City feels like the desert's most underrated 'just right.' At 1,800 m on the edge of the Gila, elevation files down the heat, the monsoon delivers reliable afternoon storms, and the air stays dry enough that even a 30°C afternoon feels easy.",
       seasons: {
-        winter: "Cool, sunny, and four-season-real — afternoons near 11°C, frosty nights near −5°C, and occasional snow that melts fast under intense high-desert sun.",
+        winter: "Cool, sunny, and four-season-real — afternoons near 11°C, frosty nights a few degrees below freezing, and occasional snow that melts fast under intense high-desert sun.",
         spring: "Bright, dry, and windy — afternoons climbing through the teens into the 20s, the fore-monsoon fire-watch season on, and the Gila greening along its creeks.",
         summer: "Warm rather than brutal — afternoons near 30°C with low humidity, then the monsoon's big afternoon thunderstorms building against the Mogollons through July and August.",
         autumn: "Golden and long — warm days, crisp nights, and weeks of clear, calm weather as the monsoon fades and the cottonwoods turn.",
@@ -1199,7 +1199,7 @@ export const PLACES_USA: Place[] = [
     drivers: ["rain-shadow", "river-moderation", "gap-winds", "aspect-slope"],
     summaryShort: "One of North America's finest fruit belts, on the east-of-crest edge of the Cascades.",
     summaryImmersive: "The Columbia River carves the only sea-level gap through the Cascades, and climate tags along. On the west side of the crest, Portland sits in drizzly Pacific maritime. Sixty miles east, Hood River sees more sun, warmer summers, and reliable cold winter nights — perfect for pears, apples, and cherries. Orchards climb the south-facing Hood River Valley slope for miles, each bench a different thermal belt. Mt. Hood stands cloud-capped south; summer winds roar through the Gorge at 30 knots; winters are crisp, dry, and bright.",
-    whyDistinct: "The Cascade rain shadow begins right at Hood River — rainfall drops from ~1100 mm at Cascade Locks to ~800 mm at Hood River to ~300 mm at The Dalles, 30 km east. Meanwhile, river-valley moderation, gap winds, and mid-slope thermal belts all converge on a small, famous orchard landscape.",
+    whyDistinct: "The Cascade rain shadow begins right at Hood River — rainfall drops from ~1,900 mm at Cascade Locks to ~800 mm at Hood River to ~350 mm at The Dalles, 30 km east. Meanwhile, river-valley moderation, gap winds, and mid-slope thermal belts all converge on a small, famous orchard landscape.",
     experience: {
       feel: "Hood River feels like the exact seam where wet Oregon becomes dry Oregon. The Columbia cuts the only sea-level gap through the Cascades, so the town banks more sun and warmer summers than Portland downriver — a world-class pear-and-cherry belt under a cloud-capped Mt. Hood, with gorge winds that built a windsurfing culture.",
       seasons: {

@@ -9,7 +9,7 @@ import type {
 } from "../../../lib/climate-v2/contracts";
 import overlayJson from "./overlay.json";
 
-export const CLIMATE_V2_GENERATED_AT = "2026-10-17";
+export const CLIMATE_V2_GENERATED_AT = "2026-10-18";
 export const CLIMATE_V2_DATA_THROUGH_YEAR = 2025 as const;
 
 export interface ClimateV2OverlayClimate {

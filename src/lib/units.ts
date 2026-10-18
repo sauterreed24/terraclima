@@ -119,21 +119,28 @@ export const kmToMi = (km: number): number => km * 0.621371;
 
 // ---------- Formatting helpers ----------
 
+/** `toFixed` without the negative zero it gives for small negatives (−0.4 → "0", not "-0"). */
+export function toFixedClean(value: number, digits = 0): string {
+  const s = value.toFixed(digits);
+  return /^-0(?:\.0+)?$/.test(s) ? s.slice(1) : s;
+}
+
 /** Format a temperature in °C to the user's preferred unit. */
 export function fmtTemp(celsius: number | null | undefined, unit: TempUnit, opts?: { digits?: number; unit_symbol?: boolean }): string {
   if (celsius == null || !isFinite(celsius)) return "—";
   const digits = opts?.digits ?? 0;
   const suffix = opts?.unit_symbol !== false ? `°${unit}` : "°";
   const v = unit === "F" ? cToF(celsius) : celsius;
-  return `${v.toFixed(digits)}${suffix}`;
+  return `${toFixedClean(v, digits)}${suffix}`;
 }
 
 /** Format a temperature delta (Δ°C). Fahrenheit deltas use the 9/5 ratio only. */
 export function fmtDelta(deltaC: number, unit: TempUnit, opts?: { digits?: number; signed?: boolean }): string {
   const digits = opts?.digits ?? 1;
   const v = unit === "F" ? (deltaC * 9) / 5 : deltaC;
-  const sign = opts?.signed !== false && v > 0 ? "+" : "";
-  return `${sign}${v.toFixed(digits)}°${unit}`;
+  const s = toFixedClean(v, digits);
+  const sign = opts?.signed !== false && v > 0 && Number(s) !== 0 ? "+" : "";
+  return `${sign}${s}°${unit}`;
 }
 
 /** Convert °C to unit without formatting (used in chart axes). */

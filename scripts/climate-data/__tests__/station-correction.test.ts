@@ -46,6 +46,16 @@ describe("station correction", () => {
     expect(after.frostDays!).toBeGreaterThanOrEqual(before.frostDays!);
   });
 
+  it("scales precipitation only from precipFromYear on", () => {
+    const rows = syntheticYears(2010, 2015);
+    const drift: StationCorrection = { station: correction.station, reason: "Grid drifted.", precipRatio: 0.5, precipFromYear: 2013 };
+    const out = applyStationCorrection(rows, drift);
+    for (const row of out) expect(row.prcp).toBe(row.year >= 2013 ? 1 : 2);
+    expect(stationValidation(drift).notes).toContain("precipitation from 2013 corrected");
+    expect(stationValidation(drift).bias?.annualPrecipBiasPct).toBeUndefined();
+    expect(() => validateStationCorrection("x", { ...drift, precipRatio: undefined })).toThrow(/precipFromYear/);
+  });
+
   it("never leaves a day with Tmin above Tmax", () => {
     const rows = syntheticYears(2000, 2000).map(r => ({ ...r, tmax: 5, tmin: 4.5 }));
     const warmNights = { ...correction, tmaxDeltaC: Array(12).fill(-1), tminDeltaC: Array(12).fill(1) };
