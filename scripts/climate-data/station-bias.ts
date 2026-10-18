@@ -183,6 +183,7 @@ function compare(daymet: DaymetDailyRow[], station: Map<string, StationDay>) {
   const dMin = Array.from({ length: 12 }, () => ({ sum: 0, n: 0 }));
   const pr = Array.from({ length: 12 }, () => ({ s: 0, g: 0, n: 0 }));
   const years = new Map<number, number>();
+  const prYears = new Map<number, { s: number; g: number; n: number }>();
   for (const row of daymet) {
     const date = daymetDate(row.year, row.yday);
     const st = station.get(date);
@@ -199,6 +200,11 @@ function compare(daymet: DaymetDailyRow[], station: Map<string, StationDay>) {
       pr[m]!.s += st.prcp;
       pr[m]!.g += row.prcp;
       pr[m]!.n++;
+      const y = prYears.get(row.year) ?? { s: 0, g: 0, n: 0 };
+      y.s += st.prcp;
+      y.g += row.prcp;
+      y.n++;
+      prYears.set(row.year, y);
     }
   }
   const monthly = (a: { sum: number; n: number }[]) => a.map(x => (x.n >= MIN_MONTH_DAYS ? round1(x.sum / x.n) : null));
@@ -217,6 +223,11 @@ function compare(daymet: DaymetDailyRow[], station: Map<string, StationDay>) {
     tminDeltaC,
     precipRatio,
     annualPrecipRatio: sumG > 0 ? round2(sumS / sumG) : null,
+    /** Paired station and grid totals for each year with at least 330 paired precipitation days. */
+    precipByYear: [...prYears]
+      .filter(([, y]) => y.n >= 330)
+      .sort(([a], [b]) => a - b)
+      .map(([year, y]) => ({ year, stationMm: Math.round(y.s), gridMm: Math.round(y.g), days: y.n })),
     maxAbsTempDeltaC: round1(maxAbs),
   };
 }
