@@ -109,6 +109,12 @@ function main() {
     }
 
     const claimed = new Set(receipt.claims.flatMap(c => c.fieldPaths));
+    const chapterIds = new Set([`${place.id}-site-history`, ...(place.deepSections ?? []).map(s => s.id)]);
+    for (const fp of claimed) {
+      if (fp.startsWith("deepSections.") && !chapterIds.has(fp.slice("deepSections.".length))) {
+        issues.push({ severity: "error", placeId: place.id, message: `Claim points at missing chapter ${fp}` });
+      }
+    }
     for (const block of REQUIRED_NARRATIVE_BLOCKS) {
       if (!claimed.has(block)) {
         issues.push({

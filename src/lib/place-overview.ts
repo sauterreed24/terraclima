@@ -746,8 +746,7 @@ const HISTORY_SKIP = /method|station|how we know|confidence|prism|normals|residu
 const HISTORY_BOOST = /histor|settlement|people|cultur|indigenous|colonial|mining|pueblo|mission|ranch|orchard|farm|wine|lavender|irrigation|land use|ecology|community|cabin/;
 
 function isGeneratedDeepSection(sec: NonNullable<Place["deepSections"]>[number]): boolean {
-  return /terrain-mechanism$|risk-and-ground-truth$/.test(sec.id)
-    || /risk matrix and growability|housing, access, and who this place|honest ledger|the Dfb record|Terrain, lake effect/i.test(`${sec.id} ${sec.title}`);
+  return /risk matrix and growability|housing, access, and who this place|honest ledger|the Dfb record|Terrain, lake effect/i.test(`${sec.id} ${sec.title}`);
 }
 
 function deepHistoryParagraphs(place: Place): string[] {

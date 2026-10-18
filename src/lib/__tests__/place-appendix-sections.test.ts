@@ -60,22 +60,6 @@ describe("place appendix sections", () => {
     expect(buildDerivedDeepSections(place).map(section => section.id)).not.toContain("appendix-nearby-differences");
   });
 
-  it("hides the templated overlay chapters from the reading", () => {
-    const place = makePlace({
-      id: "demo",
-      deepSections: [
-        { id: "demo-site-history", title: "Rail and timber", paragraphs: ["Researched history."] },
-        { id: "demo-terrain-mechanism", title: "Elevation, airflow, and the Dfb classification here", paragraphs: ["Template."] },
-        { id: "demo-risk-and-ground-truth", title: "Housing, access, and who this place actually fits", paragraphs: ["Template."] },
-      ],
-    });
-
-    const ids = mergeDeepSections(place).map(section => section.id);
-    expect(ids[0]).toBe("demo-site-history");
-    expect(ids).not.toContain("demo-terrain-mechanism");
-    expect(ids).not.toContain("demo-risk-and-ground-truth");
-  });
-
   it("does not read a missing snowfall series as no snow in a cold winter", () => {
     const place = makePlace({
       climate: makeClimate({

@@ -42,9 +42,11 @@ const BUDGETS = {
    * Sum of modulepreload + entry script JS gzip (excludes CSS).
    * Historical baseline ~603 KB → 680 KB. Corpus-truth overhaul adds authored
    * experience, deep sections, and compact citation overlays for all 226 places
-   * (~80 KB gzip), so the ceiling is raised to 780 KB with that allowance.
+   * (~80 KB gzip), so the ceiling was raised to 780 KB. Dropping the templated
+   * deep-section overlay (~46 KB gzip) brought it back to ~733 KB; the ceiling
+   * now sits at 750 KB so that saving cannot quietly erode.
    */
-  totalInitialJsGzip: 780_000,
+  totalInitialJsGzip: 750_000,
   /** Total initial modulepreload count. Baseline 15 → 22. */
   maxModulePreloads: 22,
   /** Atlas topology cold chunk raw size ceiling (lazy). Baseline ~222 KB → 280 KB. */

@@ -4,6 +4,13 @@ All notable changes to Terraclima are tracked here.
 
 ## Unreleased
 
+### Template chapters removed; evidence counts researched chapters
+
+- **Hidden template chapters removed:** 135 places carried two fill-in "deep sections" ("Elevation, airflow, and the … classification here" and "Housing, access, and who this place actually fits"). These restated the record's numbers in a fixed template, so the dossier already hid them. They were still being downloaded on every first load, and they still counted as evidence. The 362 KB overlay is gone, and first-load JavaScript drops from about 780 KB to 733 KB gzip. The performance ceiling is tightened to 750 KB so the saving holds.
+- **Evidence counts what you can read:** Compare, the scout-plan export and the finalist verdict now count *researched chapters*: the authored dossier chapters plus the site-history chapter every place carries. Places whose only researched reading is the site history are flagged "expand deep-dive context" instead of passing on template filler. Scores moved by at most one point, and the top 13 are unchanged.
+- **Research ledger:** 540 claims pointed at chapters that no longer exist: these 270 template chapters, plus 270 from an older generation. They are pruned, and ledger claim counts are re-synced. `corpus:research:verify` now fails any claim that points at a missing chapter.
+- **Consistent sky evidence:** the scout-plan export now treats Daymet solar series as sourced sky data, as Compare already did, so the two no longer disagree about the same place.
+
 ### Station-checked climate, honest humidity, 51 better photos, and ~300 fact fixes
 
 - **Station corrections (53 places):** the 1 km Daymet grid smooths away the local effects the atlas is about. Where a representative GHCN-Daily station sits beside a place (within 15 km and 100 m, 15+ overlapping years, no disagreeing neighbour), the grid is corrected month by month to that station. Cold pools get colder (Stanley's January low −13 → −19°C, Crested Butte −15 → −21°C), fog coasts cooler (Ensenada's July high 30 → 26°C), rain shadows drier (Sequim 583 → 426 mm, Honolulu 1,104 → 508 mm). Corrected places show "validated" with the station named.

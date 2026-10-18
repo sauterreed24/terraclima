@@ -30,6 +30,8 @@ import { COMPARE_LIMIT } from "./app-url";
 import { buildCompareDecisionProfiles, buildCompareDecisionRead } from "./compare-finalist-verdict";
 import { buildShortlistDecisionRows } from "./decision-matrix";
 import { scoreLivability } from "./livability-score";
+import { hasSourcedSkySeries } from "./hero-glance";
+import { chapterCountLabel, hasThinChapterDepth, researchedChapterCount } from "./research-chapters";
 
 export interface ShortlistExportFile {
   body: string;
@@ -404,15 +406,15 @@ function markdownCell(s: string): string {
 function buildExportEvidenceReadiness(places: readonly Place[]): ExportEvidenceReadiness[] {
   return places.map(place => {
     const httpsCitations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
-    const deepSections = place.deepSections?.length ?? 0;
+    const chapters = researchedChapterCount(place);
     const hasLiveSignals = Boolean(place.liveSignals && Object.values(place.liveSignals).some(value => typeof value === "number"));
     const hasHumidity = Boolean(place.climate.humidity?.length);
-    const hasSunshine = Boolean(place.climate.sunshinePct?.length);
+    const hasSunshine = hasSourcedSkySeries(place);
     const confidenceScore = place.confidence === "high" ? 34 : place.confidence === "moderate" ? 22 : 10;
     const score = Math.min(100, Math.round(
       confidenceScore +
       Math.min(httpsCitations * 8, 24) +
-      Math.min(deepSections * 8, 24) +
+      Math.min(chapters * 8, 24) +
       (hasLiveSignals ? 8 : 0) +
       (hasHumidity ? 5 : 0) +
       (hasSunshine ? 5 : 0),
@@ -420,7 +422,7 @@ function buildExportEvidenceReadiness(places: readonly Place[]): ExportEvidenceR
     const gaps = [
       ...(place.confidence === "low" ? ["low confidence profile"] : place.confidence === "moderate" ? ["moderate confidence profile"] : []),
       ...(httpsCitations < 2 ? ["adding a second HTTPS source"] : []),
-      ...(deepSections < 1 ? ["expanding deep-dive context"] : []),
+      ...(hasThinChapterDepth(place) ? ["expanding deep-dive context"] : []),
       ...(!hasLiveSignals ? ["filling lived-friction signals"] : []),
       ...(!hasHumidity ? ["sourcing humidity normals"] : []),
       ...(!hasSunshine ? ["sourcing sunshine normals"] : []),
@@ -441,7 +443,7 @@ function buildExportEvidenceReadiness(places: readonly Place[]): ExportEvidenceR
       facts: [
         `${place.confidence} confidence`,
         `${httpsCitations} HTTPS source${httpsCitations === 1 ? "" : "s"}`,
-        `${deepSections} deep section${deepSections === 1 ? "" : "s"}`,
+        chapterCountLabel(chapters),
         hasLiveSignals ? "lived signals present" : "lived signals missing",
         hasHumidity ? "humidity sourced" : "humidity missing",
         hasSunshine ? "sunshine sourced" : "sunshine missing",

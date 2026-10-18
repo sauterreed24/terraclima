@@ -4,6 +4,7 @@ import { hasSourcedSkySeries } from "./hero-glance";
 import { compareLensScore, type CompareDecisionProfile } from "./compare-finalist-verdict";
 import { comparisonLensLabel, type ComparisonLensId } from "./compare-workbench";
 import { possessive } from "./place-name";
+import { chapterCountLabel, researchedChapterCount } from "./research-chapters";
 
 export type CompareCoachLaneId = "lens" | "climate-contrast" | "risk" | "evidence";
 export type CompareCandidateSwapTone = "upgrade" | "contrast" | "risk" | "garden" | "evidence" | "steady";
@@ -115,7 +116,7 @@ function evidenceScore(place: Place): number {
   return (
     confidence +
     Math.min(httpsCitations * 8, 32) +
-    Math.min((place.deepSections?.length ?? 0) * 8, 24) +
+    Math.min(researchedChapterCount(place) * 8, 24) +
     (place.liveSignals ? 12 : 0) +
     (place.climate.humidity?.length ? 5 : 0) +
     (hasSourcedSkySeries(place) ? 5 : 0)
@@ -124,9 +125,8 @@ function evidenceScore(place: Place): number {
 
 function evidenceDetail(place: Place): string {
   const citations = place.citations.filter(citation => citation.url?.startsWith("https://")).length;
-  const deepSections = place.deepSections?.length ?? 0;
   const sourceBacked = place.liveSignals ? "source-backed lived signals" : "limited lived signals";
-  return `${place.confidence} confidence, ${citations} HTTPS citation${citations === 1 ? "" : "s"}, ${deepSections} deep section${deepSections === 1 ? "" : "s"}, ${sourceBacked}.`;
+  return `${place.confidence} confidence, ${citations} HTTPS citation${citations === 1 ? "" : "s"}, ${chapterCountLabel(researchedChapterCount(place))}, ${sourceBacked}.`;
 }
 
 /**
