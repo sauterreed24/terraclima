@@ -5,6 +5,7 @@ import {
   latBand,
   placeForCompareSlot,
   projectClimateProfile,
+  placeForCompareSlot,
   projectPlace,
   projectPool,
   regionalDelta,
