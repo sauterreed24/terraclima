@@ -3,6 +3,7 @@ import { DRIVER_LABELS } from "../types";
 import { getBestMonths, pickVisitWindow } from "./best-months";
 import { inlineDriverLabel, listJoin } from "./place-appendix-sections";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
+import { gddForUnit } from "./units";
 
 export type PracticalReadId = "agriculture" | "spatial" | "housing" | "nearby";
 export type PracticalReadTone = "sage" | "ice" | "ember" | "aurora";
@@ -127,7 +128,7 @@ export function buildPracticalReadCards(place: Place): PracticalReadCard[] {
   const frost = place.climate.frostFreeDays != null
     ? `about ${place.climate.frostFreeDays} frost-free days`
     : "frost-free window not estimated";
-  const gdd = place.climate.gdd10 != null ? `GDD10 about ${Math.round(place.climate.gdd10)}` : "heat units not estimated";
+  const gdd = place.climate.gdd10 != null ? `about ${Math.round(gddForUnit(place.climate.gdd10, "F")).toLocaleString("en-US")} growing degree days (base 50°F)` : "heat units not estimated";
   const soilPh = `${place.soil.phRange[0]}-${place.soil.phRange[1]}`;
   const nearbyRows = buildNearbyContextRows(place);
   const activities = buildPracticalActivities(place);

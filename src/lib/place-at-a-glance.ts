@@ -6,13 +6,12 @@ import type { Place } from "../types";
 import { DRIVER_LABELS } from "../types";
 import { ARCHETYPE_BY_ID } from "../data/archetypes";
 import { PLACE_ANNUAL_PRECIP, PLACE_COUNTS } from "../data/places";
-import { mergeDeepSections } from "./place-appendix-sections";
 import { getPlaceCorpusRanks } from "./atlas-corpus-stats";
 import { buildGeospatialAnalysis } from "./geospatial-analysis";
 import { EARTH_OBSERVATION_SOURCES } from "./atlas-metadata";
 import { scorePlaceFeel } from "./place-feel";
 import { koppenAudit } from "./koppen";
-import type { TempUnit } from "./units";
+import { gddForUnit, type TempUnit } from "./units";
 
 export type AtGlanceTone = "glacier" | "sage" | "ochre" | "ice" | "ember" | "aurora";
 
@@ -92,20 +91,6 @@ export function buildAtAGlanceTiles(
     tone: "glacier",
   });
 
-  out.push({
-    label: "Remote sensing",
-    value: "EO + relief texture",
-    hint: `${EARTH_OBSERVATION_SOURCES.map(s => `${s.label} (${s.nominalResolutionM} m)`).join(" / ")} / screening ${geo.eoObservabilityScore}/100 / relief proxy ${geo.structuralTextureScore}/100`,
-    tone: "ice",
-  });
-
-  out.push({
-    label: "Geospatial signal",
-    value: `${geo.geospatialSignalScore}/100`,
-    hint: `${geo.analysisConfidence} confidence / ${geo.sourceFits.map(s => `${s.sourceId} ${s.score}`).join(" / ")}`,
-    tone: "aurora",
-  });
-
   const annual = PLACE_ANNUAL_PRECIP[place.id] ?? place.climate.annualPrecipMm ?? place.climate.precipMm.reduce((a, b) => a + b, 0);
   const w = Math.max(0, Math.min(100, Math.round(cr.wetterThanAtlasShare * 100)));
   out.push({
@@ -122,29 +107,9 @@ export function buildAtAGlanceTiles(
     if (f != null) parts.push(`Frost-free ~${f} d`);
     if (g != null) {
       const gddTag = displayTemp === "F" ? "GDD base 50F" : "GDD base 10C";
-      parts.push(`${gddTag} ~${Math.round(g)}`);
+      parts.push(`${gddTag} ~${Math.round(gddForUnit(g, displayTemp)).toLocaleString("en-US")}`);
     }
     out.push({ label: "Growing season (est.)", value: parts.join(" / "), hint: "Rough agronomic read from the same table as the charts", tone: "sage" });
-  }
-
-  const nLocal = (place.localContrast?.length ?? 0) + (place.nearbyContrasts?.length ?? 0);
-  if (nLocal > 0) {
-    out.push({
-      label: "Local contrast hooks",
-      value: `${nLocal} comparison${nLocal === 1 ? "" : "s"}`,
-      hint: "Valleys, basins, or named neighbors to compare below",
-      tone: "ember",
-    });
-  }
-
-  const deepN = mergeDeepSections(place).length;
-  if (deepN > 0) {
-    out.push({
-      label: "Field dossier",
-      value: `${deepN} chapter${deepN === 1 ? "" : "s"}`,
-      hint: "Chaptered long-form reading, still tied to structured climate fields",
-      tone: "sage",
-    });
   }
 
   const dSum = place.climate.diurnalSummerC ?? place.climate.tempHighC[6] - place.climate.tempLowC[6];
@@ -158,5 +123,23 @@ export function buildAtAGlanceTiles(
     });
   }
 
-  return out.slice(0, 8);
+  // The grid is four across, so eight tiles keep the last row whole. The
+  // reader-facing tiles come first; the screening tiles (which have their own
+  // Geospatial section below) only fill whatever room is left.
+  const technical: AtGlanceTile[] = [];
+  technical.push({
+    label: "Remote sensing",
+    value: "EO + relief texture",
+    hint: `${EARTH_OBSERVATION_SOURCES.map(s => `${s.label} (${s.nominalResolutionM} m)`).join(" / ")} / screening ${geo.eoObservabilityScore}/100 / relief proxy ${geo.structuralTextureScore}/100`,
+    tone: "ice",
+  });
+
+  technical.push({
+    label: "Geospatial signal",
+    value: `${geo.geospatialSignalScore}/100`,
+    hint: `${geo.analysisConfidence} confidence / ${geo.sourceFits.map(s => `${s.sourceId} ${s.score}`).join(" / ")}`,
+    tone: "aurora",
+  });
+
+  return [...out, ...technical].slice(0, 8);
 }

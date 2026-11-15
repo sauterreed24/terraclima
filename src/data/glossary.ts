@@ -261,7 +261,7 @@ export const CONCEPTS: Concept[] = [
   {
     id: "tropical-isothermal",
     term: "Tropical isothermal climate",
-    short: "Low-latitude elevations where the monthly mean barely varies — often under 2°C range across the year.",
+    short: "Low-latitude elevations where the monthly mean barely varies — often spanning only 2°C or less across the year.",
     long: "At tropical latitudes where the sun's elevation changes only modestly through the year, temperatures at a given altitude stay remarkably constant. Seasons are defined by rainfall, not heat. The classic Mexican highland eternal-spring climate is the paradigm case.",
     exampleIds: ["oaxaca-mx", "san-cristobal-mx", "patzcuaro-mx"],
   },
@@ -291,7 +291,7 @@ export const CONCEPTS: Concept[] = [
     id: "de-martonne-aridity",
     term: "De Martonne aridity index",
     short: "MAP ÷ (MAT + 10) — annual precipitation per degree of mean warmth, with bands from hyperarid to extremely humid.",
-    long: "Emmanuel de Martonne's 1926 index normalizes annual precipitation against mean annual temperature plus 10 °C, so that warmer regions need more rain to reach the same band. Le Houérou's refinement places the bands as: hyperarid (<5), arid (5–10), semi-arid (10–20), Mediterranean (20–24), sub-humid (24–28), humid (28–35), very humid (35–55), extremely humid (≥55). The index becomes undefined as MAT approaches −10 °C, which Terraclima handles by reporting no value for sub-Arctic places.",
+    long: "Emmanuel de Martonne's 1926 index normalizes annual precipitation against mean annual temperature (in Celsius) plus ten, so that warmer regions need more rain to reach the same band. Le Houérou's refinement places the bands as: hyperarid (<5), arid (5–10), semi-arid (10–20), Mediterranean (20–24), sub-humid (24–28), humid (28–35), very humid (35–55), extremely humid (≥55). The index becomes undefined as MAT approaches −10 °C, which Terraclima handles by reporting no value for sub-Arctic places.",
     mechanism: "A water-vs-warmth ratio with a temperature-floor shift; sensitive to both MAP and MAT but blind to seasonality.",
     exampleIds: ["sequim-wa", "yuma-az", "hilo-hi"],
   },

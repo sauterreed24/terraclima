@@ -8,7 +8,7 @@ import type { Place } from "../types";
 import { PLACES, PLACE_ANNUAL_PRECIP } from "../data/places";
 import { getAnnualPrecipMm, meanSummerHigh, meanJanLow, summerDiurnalC } from "./climate-metrics";
 import { computeBioclim } from "./bioclim";
-import type { TempUnit } from "./units";
+import { gddForUnit, type TempUnit } from "./units";
 
 function sortAsc(a: number[]): number[] {
   return [...a].sort((x, y) => x - y);
@@ -292,7 +292,7 @@ export function getCorpusContextPanelRows(
     const gddMetric = displayTemp === "F" ? "GDD (base 50°F) (est.)" : "GDD (base 10°C) (est.)";
     rows.push({
       metric: gddMetric,
-      you: `${Math.round(place.climate.gdd10)}`,
+      you: Math.round(gddForUnit(place.climate.gdd10, displayTemp)).toLocaleString("en-US"),
       context: r.gddAboveShare != null
         ? `More heat units than ${pct(r.gddAboveShare)} of stops with GDD`
         : "Among stops with GDD filled",

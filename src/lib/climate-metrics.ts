@@ -119,6 +119,17 @@ export function meanWinterSunshinePct(p: Place): number | null {
 }
 
 /**
+ * Mean Dec–Feb sunshine as a share of possible, from authored station
+ * sunshine only. The solar-energy proxy above tracks day length as much as
+ * cloud, so it must not stand in when two places' winter skies are compared.
+ */
+export function observedWinterSunshinePct(p: Place): number | null {
+  const sun = p.climate.sunshinePct;
+  if (!sun || sun.length !== 12) return null;
+  return (sun[11] + sun[0] + sun[1]) / 3;
+}
+
+/**
  * Monthly sunshine % for scoring/ranking. When Daymet solar energy is present,
  * authored sunshine is ignored so restoring it for sunshine-% display cannot
  * shift livability, live-fit, or place-feel scores.

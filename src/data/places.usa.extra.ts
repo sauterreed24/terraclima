@@ -103,7 +103,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     koppen: "Dfc",
     archetypes: ["subarctic-continental", "fjord-inlet", "cool-summer-maritime"],
     drivers: ["polar-jet-exposure", "continentality", "marine-layer"],
-    summaryShort: "Subarctic maritime — bitter cold when Siberian highs meet Bering ice; brief cool summers with midnight sun.",
+    summaryShort: "Subarctic maritime — bitter cold when Siberian highs meet Bering ice; brief cool summers with near-midnight sun.",
     summaryImmersive: "Nome is where North America’s cold air masses exit toward the Bering Sea. Winter is long and dark: sea ice damps temperature extremes near shore but storms still rake the coast with wind-driven snow. Spring break-up turns rivers to slush highways; summer brings fog, berries, and cool but pleasant afternoons — t-shirt weather by local standards. The Bering Strait’s proximity means climate teleconnections to both the Pacific and Arctic oscillations show up in storm tracks.",
     whyDistinct: "Coastal subarctic with seasonal sea-ice cover creates a narrower annual temperature range than interior Alaska at the same latitude, but still delivers extreme wind chill when continental air crosses open leads in the ice.",
     climate: { tempHighC: [-13, -11, -6, 1, 7, 12, 14, 13, 8, 1, -6, -10], tempLowC: [-20, -19, -15, -8, -1, 4, 6, 5, 0, -8, -14, -18], precipMm: [18, 16, 14, 18, 22, 28, 50, 65, 48, 32, 24, 20], snowCm: [38, 32, 28, 20, 8, 0, 0, 0, 5, 22, 35, 40], humidity: [78, 76, 74, 72, 74, 76, 78, 80, 80, 78, 76, 74], annualPrecipMm: 355, frostFreeDays: 85, hardinessZone: "2b" },
@@ -128,7 +128,7 @@ export const PLACES_USA_EXTRA: Place[] = [
       },
       {
         id: "nome-light-work",
-        title: "Midnight sun, polar night, and daily rhythm",
+        title: "Summer light, winter dark, and daily rhythm",
         paragraphs: [
           "Summer weeks bring usable light deep into the evening — gardeners and construction crews stretch schedules naturally. Winter reverses the bargain: short daylight concentrates errands and social life into a few bright hours, while artificial light becomes a mental-health variable as much as a utility bill.",
           "Remote workers sometimes love the quiet bandwidth of winter; others discover they need a sun lamp and a travel budget to southern latitudes. Neither choice is wrong — the atlas simply flags that latitude here is a lifestyle contract, not a cosmetic detail.",
@@ -146,7 +146,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     lat: 27.8006,
     lon: -97.3964,
     elevationM: 2,
-    reliefContext: "Gulf of Mexico embayment; barrier islands; hypersaline Laguna Madre to the west moderates breezes.",
+    reliefContext: "Gulf of Mexico embayment; barrier islands; hypersaline Laguna Madre to the south, behind Padre Island.",
     biome: "Coastal prairie and salt marsh",
     koppen: "Cfa / Aw border",
     archetypes: ["hurricane-coast", "humidity-refuge"],
@@ -331,7 +331,7 @@ export const PLACES_USA_EXTRA: Place[] = [
     koppen: "Csb / Cfb",
     archetypes: ["cool-summer-maritime", "coastal-upwelling", "fog-belt-coast", "hyper-maritime"],
     drivers: ["upwelling", "marine-layer", "orographic-lift"],
-    summaryShort: "A brutally specific live-here climate: wind, fog, bright headlands, and summers so cool that 20 C can feel like an event.",
+    summaryShort: "A brutally specific live-here climate: wind, fog, bright headlands, and summers so cool that 20°C can feel like an event.",
     summaryImmersive: "Port Orford and Cape Blanco are for people who want the Pacific to be the room they live in. The cape pushes into the cold California Current, so summer afternoons stay restrained, marine cloud can arrive like a curtain, and winter storms arrive with full ocean force. It is not a generic Oregon coast town: the headland exposure, fishing-port scale, and nearby Coast Range make the weather feel immediate, salty, and legible. Gardens need windbreaks and patience, but summer heat is almost absent.",
     whyDistinct: "Cape Blanco's westward exposure puts the town directly in cool upwelling air while nearby ridges squeeze winter precipitation. The result is tiny annual temperature range, large wind exposure, and a summer climate that behaves more like a headland than an inland latitude.",
     experience: {

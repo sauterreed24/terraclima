@@ -146,7 +146,7 @@ export const PLACES_MEXICO: Place[] = [
         id: "oaxaca-elevation-pocket",
         title: "Why this valley elevation reads cooler than the map latitude suggests",
         paragraphs: [
-          "Free-air lapse rates mean each ~100 m of lift knocks roughly half a degree off afternoon potential temperature — stack that across 1500 m above sea level and tropical latitude stops meaning tropical heat. Add valley shelter from the hottest maritime air masses and you get a climate tourists describe as 'perfect' and agronomists describe as 'carefully scheduled around the rains'.",
+          "Free-air lapse rates mean each ~100 m of lift knocks roughly 0.6°C off afternoon potential temperature — stack that across 1500 m above sea level and tropical latitude stops meaning tropical heat. Add valley shelter from the hottest maritime air masses and you get a climate tourists describe as 'perfect' and agronomists describe as 'carefully scheduled around the rains'.",
           "Small elevation differences within the valles (ridge toes vs basin floor) can separate frost pockets from frost-free gardens. If you are buying land for trees or citrus, walk the parcel at dawn in January, not only at noon in April.",
         ],
       },
@@ -2060,7 +2060,7 @@ export const PLACES_MEXICO: Place[] = [
     drivers: ["elevation-lapse-rate", "aspect-slope", "orographic-lift", "karst-infiltration"],
     summaryShort: "Silver-city balconies perched at 1,773 m — spring-like temperatures while Acapulco swelters at sea level.",
     summaryImmersive: "Taxco demonstrates pure lapse-rate magic: tropical latitude but high enough for cool nights and bougainvillea draped over stone streets. Afternoon thunderstorms arrive in summer with theatrical lightning over ridges.",
-    whyDistinct: "Extreme local relief within kilometers creates micro-wind patterns and rainfall gradients on windward slopes.",
+    whyDistinct: "Extreme local relief within a few kilometers creates micro-wind patterns and rainfall gradients on windward slopes.",
     climate: { tempHighC: [24, 25, 27, 29, 29, 26, 24, 25, 24, 25, 25, 24], tempLowC: [10, 11, 12, 14, 15, 15, 14, 14, 14, 13, 12, 11], precipMm: [18, 12, 10, 15, 55, 165, 180, 175, 160, 75, 35, 15], annualPrecipMm: 925, frostFreeDays: 365, hardinessZone: "10a" },
     soil: { texture: "Thin residual soil on volcanic and limestone", drainage: "good", phRange: [6.0, 7.5], waterHolding: "low" },
     growability: { score: 64, growsWell: ["Temperate flowers", "Avocado", "Coffee nearby"], tricky: ["Low-oxygen exertion for some visitors"] },

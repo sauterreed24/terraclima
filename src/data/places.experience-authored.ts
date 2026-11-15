@@ -40,7 +40,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
     texture: "Living in Asheville means a handful of tradeoffs, manageable ones. The main thing to plan around is that flooding (high) and wildfire smoke (elevated) are the two to weigh. None of that erases the appeal of the mild-winter foothills setting — it just means the decision should be made with eyes open.",
   },
   "austin-tx": {
-    feel: "Austin feels like the hinge between the Hill Country and the Gulf's humid plains. On the Balcones Escarpment, where limestone hills meet the coastal prairie, Gulf moisture and dry western air collide: August afternoons push toward 37°C, May and October bring the heaviest storms of an 880 mm year, and creeks can flash-flood within hours; winters are brief, with January nights near 4°C, and spring-fed Barton Springs stays cool all summer.",
+    feel: "Austin feels like the hinge between the Hill Country and the Gulf's humid plains. On the Balcones Escarpment, where limestone hills meet the coastal prairie, Gulf moisture and dry western air collide: August afternoons push toward 37°C, May and October bring the heaviest storms of a year that totals about 880 mm, and creeks can flash-flood within hours; winters are brief, with January nights near 4°C, and spring-fed Barton Springs stays cool all summer.",
     seasons: {
       winter: "Austin (Edwards Plateau Edge) cold months stay close to 18.2°C days and 5°C nights, with a mixed storm cadence in Texas.",
       spring: "Austin (Edwards Plateau Edge) spring feels workable at 27.1°C days and 14.3°C nights across the Juniper–oak savanna margin.",
@@ -563,7 +563,7 @@ export const EXPERIENCE_AUTHORED: Record<string, AuthoredExperience> = {
       summer: "Iqaluit in summer means about 10.1°C heat, mixed rainfall pattern, and 3.2°C overnight air.",
       autumn: "Iqaluit autumn highs near 0.3°C and lows near −5.1°C suit longer outdoor days than midsummer.",
     },
-    travelerFit: "Short stays here revolve around Inuit cultural tourism, Arctic wildlife, and polar nights / midnight sun; the subarctic continental climate mostly reads as a bonus until you notice how much it shapes the itinerary.",
+    travelerFit: "Short stays here revolve around Inuit cultural tourism, Arctic wildlife, and long winter nights / near-midnight sun; the subarctic continental climate mostly reads as a bonus until you notice how much it shapes the itinerary.",
     residentFit: "Long-term residents in Iqaluit skew toward Nunavut government workers and Arctic researchers, the group most likely to find the tradeoffs of living here worth the climate on offer.",
     texture: "Settling in Iqaluit means accepting a real bargain, not a free ride. What a scouting trip should actually check first is that extreme winter cold (very-high) and coastal flooding and storm surge (elevated) are the two to weigh. That tradeoff is the price of the subarctic continental pattern that makes Iqaluit worth listing in the first place.",
   },
