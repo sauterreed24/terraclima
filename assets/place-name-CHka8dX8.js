@@ -1,0 +1,1 @@
+function e(e){let t=e.replace(/\s*\([^()]*\)\s*$/,``).trim()||e.trim();return/s$/i.test(t)?`${t}'`:`${t}'s`}export{e as t};
